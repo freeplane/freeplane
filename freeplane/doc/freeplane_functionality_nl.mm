@@ -1,6 +1,6 @@
 <map version="0.9.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node TEXT="Basisknoop" ID="ID_45488473" CREATED="1288535648658" MODIFIED="1291736329835">
+<node TEXT="Basisknoop" FOLDED="false" ID="ID_45488473" CREATED="1288535648658" MODIFIED="1291736329835">
 <hook NAME="MapStyle" zoom="0.74711066" max_node_width="600">
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node">
@@ -100,10 +100,15 @@
 </hook>
 <font BOLD="true"/>
 <node TEXT="links van basisknoop" POSITION="left" ID="ID_1772025129" CREATED="1288536311727" MODIFIED="1291736349616" STYLE="bubble" HGAP="21" VSHIFT="21">
-<node TEXT="knoop in wolk" ID="ID_646958243" CREATED="1288541742338" MODIFIED="1288647144255" HGAP="50" VSHIFT="-22">
-<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
-<node TEXT="in wolk" ID="ID_1388178346" CREATED="1288541758195" MODIFIED="1288541766090"/>
-<node TEXT="in wolk" ID="ID_504032805" CREATED="1288541802273" MODIFIED="1288541807141"/>
+<node TEXT="knopen in wolk" ID="ID_1292633494" CREATED="1305277530881" MODIFIED="1305277939742" HGAP="94" VSHIFT="17">
+<cloud COLOR="#f0f0f0" SHAPE="STAR"/>
+<node TEXT="rechthoek" ID="ID_1198357672" CREATED="1305277572322" MODIFIED="1305277769141" HGAP="48" VSHIFT="-46">
+<cloud COLOR="#f0f0f0" SHAPE="RECT"/>
+</node>
+<node TEXT="in wolk" ID="ID_1422611344" CREATED="1305277851508" MODIFIED="1305277859106"/>
+<node TEXT="ster" ID="ID_1434127019" CREATED="1305277804466" MODIFIED="1305277819739">
+<cloud COLOR="#f0f0f0" SHAPE="STAR"/>
+</node>
 </node>
 </node>
 <node TEXT="NAAR HANDLEDING" POSITION="right" ID="ID_1722675325" CREATED="1289120504367" MODIFIED="1289120698955" HGAP="52" VSHIFT="-80" LINK="freeplane_nl.mm">
@@ -126,12 +131,12 @@
 </html></richcontent>
 </node>
 <node TEXT="knoop a" ID="ID_1119041406" CREATED="1288535672221" MODIFIED="1291736448161" STYLE="bubble" HGAP="53" VSHIFT="7">
-<arrowlink DESTINATION="ID_268922755" SOURCE_LABEL="ouder (=label)" TARGET_LABEL="kleinkind" MIDDLE_LABEL="verbindingslijn" STARTINCLINATION="-11;64;" ENDINCLINATION="11;87;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
-<arrowlink DESTINATION="ID_1863548649" STARTINCLINATION="48;0;" ENDINCLINATION="48;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_268922755" SOURCE_LABEL="ouder (=label)" TARGET_LABEL="kleinkind" MIDDLE_LABEL="verbindingslijn" STARTINCLINATION="-11;64;" ENDINCLINATION="11;87;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1863548649" STARTINCLINATION="48;0;" ENDINCLINATION="48;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <node TEXT="knoop b" ID="ID_1908863616" CREATED="1288535688688" MODIFIED="1288536436333">
 <edge STYLE="bezier"/>
 <node TEXT="knoop c" ID="ID_268922755" CREATED="1288535699522" MODIFIED="1291736448161">
-<arrowlink DESTINATION="ID_1863548649" STARTINCLINATION="161;0;" ENDINCLINATION="161;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1863548649" STARTINCLINATION="161;0;" ENDINCLINATION="161;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 </node>
 </node>
@@ -171,8 +176,9 @@
 </node>
 </node>
 <node TEXT="vorm tak" POSITION="right" ID="ID_784697063" CREATED="1288536745875" MODIFIED="1289122245318" HGAP="21" VSHIFT="1">
-<node TEXT="Rechte lijn" ID="ID_884692926" CREATED="1288538234095" MODIFIED="1288539864801" HGAP="53" VSHIFT="-1">
+<node TEXT="Rechte lijn" ID="ID_884692926" CREATED="1288538234095" MODIFIED="1305276198448" HGAP="53" VSHIFT="-1">
 <edge STYLE="linear" WIDTH="4"/>
+<hook NAME="FirstGroupNode"/>
 </node>
 <node TEXT="Bocht" ID="ID_609820168" CREATED="1288538240451" MODIFIED="1288539867421" HGAP="57" VSHIFT="9">
 <edge STYLE="bezier" WIDTH="4"/>
@@ -183,11 +189,14 @@
 <node TEXT="Taps toelopend bocht" ID="ID_895403951" CREATED="1288538470332" MODIFIED="1288540434497" HGAP="70" VSHIFT="15">
 <edge STYLE="sharp_bezier" WIDTH="4"/>
 </node>
+<node TEXT="Aggregatieknoop (accolade)" ID="ID_1818113947" CREATED="1305276198386" MODIFIED="1305278105742" STYLE="bubble">
+<hook NAME="SummaryNode"/>
+</node>
 <node TEXT="Verborgen tak" ID="ID_1675552701" CREATED="1288538507390" MODIFIED="1288548679856" HGAP="77" VSHIFT="18" BACKGROUND_COLOR="#00ffff">
 <edge STYLE="hide_edge" WIDTH="4"/>
 </node>
 </node>
-<node TEXT="knooptekst" POSITION="left" ID="ID_1649509090" CREATED="1288646145389" MODIFIED="1288647096098" VSHIFT="-1" STYLE="bubble">
+<node TEXT="knooptekst" POSITION="left" ID="ID_1649509090" CREATED="1288646145389" MODIFIED="1305277944344" VSHIFT="23" STYLE="bubble">
 <node ID="ID_1520586986" CREATED="1288646162992" MODIFIED="1291735798155">
 <richcontent TYPE="NODE">
 <html>
@@ -226,7 +235,7 @@
   </body>
 </html></richcontent>
 <edge COLOR="#cc0000"/>
-<node ID="ID_477486683" CREATED="1288646162992" MODIFIED="1291759009764">
+<node ID="ID_477486683" CREATED="1288646162992" MODIFIED="1305276483242">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -257,11 +266,12 @@
   </head>
   <body>
     <p>
-      Bijlagetekst
+      Bijlagetekst<br/>Met verborgen notitietekst
     </p>
   </body>
-</html></richcontent>
-<node ID="ID_1010722858" CREATED="1288646162992" MODIFIED="1291753449908">
+</html>
+</richcontent>
+<node ID="ID_1010722858" CREATED="1288646162992" MODIFIED="1305276528482">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -294,10 +304,11 @@
   </head>
   <body>
     <p>
-      Bijlage en<i><b>&#160;attributen</b></i>
+      Bijlage en<b><i>&#160;attributen</i></b><br/>en verborgen notitietekst<br/>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 </node>
@@ -317,67 +328,25 @@
     </p>
   </body>
 </html></richcontent>
-<node ID="ID_344410157" CREATED="1270892460698" MODIFIED="1291735887964">
+<node ID="ID_344410157" CREATED="1270892460698" MODIFIED="1305276663983">
 <richcontent TYPE="NODE">
 <html>
   <head>
     
   </head>
   <body>
-    <h3>
-      HTML Example
-    </h3>
     <p class="msonormal">
-      There are several items:
-    </p>
-    <ul type="disc">
-      <li class="msonormal">
-        Item one
-      </li>
-      <li class="msonormal">
-        Item two
-      </li>
-    </ul>
-    <p class="msonormal">
-      And we have <b>boldface</b>&#160;or <i>italics,</i>&#160;u<u>nderlined</u>&#160;and <strike>strike-through</strike>&#160; as well. We can have a table:
-    </p>
-    <table cellpadding="0" style="border: none" class="msonormaltable" cellspacing="0" border="1">
-      <tr>
-        <td style="border: solid windowtext 1.0pt; padding-top: .75pt; padding-bottom: .75pt; padding-right: .75pt; padding-left: .75pt">
-          <p class="msonormal">
-            Cell1
-          </p>
-        </td>
-        <td style="border: solid windowtext 1.0pt; padding-top: .75pt; padding-bottom: .75pt; border-left: none; padding-left: .75pt; padding-right: .75pt">
-          <p class="msonormal">
-            Cell2
-          </p>
-        </td>
-      </tr>
-      <tr>
-        <td style="border: solid windowtext 1.0pt; padding-top: .75pt; padding-bottom: .75pt; padding-left: .75pt; padding-right: .75pt; border-top: none">
-          <p class="msonormal">
-            Cell3
-          </p>
-        </td>
-        <td style="border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding-top: .75pt; padding-bottom: .75pt; border-left: none; padding-left: .75pt; padding-right: .75pt; border-top: none">
-          <p class="msonormal">
-            Cell4.
-          </p>
-        </td>
-      </tr>
-    </table>
-    <p class="msonormal">
-      &#160;We can have various <font color="#999900">foreground</font>&#160;<font color="#336600">colors</font>.
+      %Schijf groot
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 <node TEXT="Knipperen" ID="ID_1280590016" CREATED="1288548004325" MODIFIED="1288646884531" VSHIFT="-3">
 <hook NAME="accessories/plugins/BlinkingNodeHook.properties"/>
 </node>
-<node TEXT="LaTex" ID="ID_1643428065" CREATED="1271097206186" MODIFIED="1288767745673" STYLE="bubble">
+<node TEXT="Formules tonen (LaTex)" ID="ID_1643428065" CREATED="1271097206186" MODIFIED="1305277378486" STYLE="bubble">
 <hook EQUATION="\begin{array}{l}&#xa;\mbox{I}^\fgcolor{ff0000}{\heartsuit}\mbox{\JLaTeXMath}\\&#xa;\end{array}" NAME="plugins/latex/LatexNodeHook.properties"/>
 </node>
 </node>
@@ -394,7 +363,7 @@
 <icon BUILTIN="button_ok"/>
 <icon BUILTIN="closed"/>
 </node>
-<node TEXT="niet schaalbare afbeelding" POSITION="left" ID="ID_1695130884" CREATED="1289120271958" MODIFIED="1289121018493">
+<node TEXT="Afbeelding in binnengebied&#xa;(niet schaalbaar, basistekst niet zichtbaar)" POSITION="left" ID="ID_1695130884" CREATED="1289120271958" MODIFIED="1305276153130">
 <node ID="ID_1091969981" CREATED="1289120375598" MODIFIED="1289120393257">
 <richcontent TYPE="NODE">
 <html>
@@ -407,19 +376,19 @@
 </html></richcontent>
 </node>
 </node>
-<node POSITION="left" ID="ID_1465950648" CREATED="1289120295849" MODIFIED="1289121030754" HGAP="26" VSHIFT="-50">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      schaalbare afbeelding
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Afbeelding in buitengebied&#xa;(schaalbaar, basistekst blijft zichtbaar)" POSITION="left" ID="ID_1465950648" CREATED="1289120295849" MODIFIED="1305276119606" HGAP="26" VSHIFT="-50">
 <hook URI="examplepicture_nl.JPG" SIZE="0.39583334" NAME="ExternalObject"/>
+</node>
+<node TEXT="%Schijf" POSITION="left" ID="ID_1551071163" CREATED="1305276585054" MODIFIED="1305276613837">
+<icon BUILTIN="25%"/>
+<node TEXT="%Schijf groot" ID="ID_816574996" CREATED="1305276676845" MODIFIED="1305276787199">
+<icon BUILTIN="25%"/>
+<hook URI="../../../../../Desktop/freeplane-1.2.5_06/resources/templates/Progress_quarter_01.svg" SIZE="1.0" NAME="ExternalObject"/>
+</node>
+</node>
+<node TEXT="Automatische knoopnummering" POSITION="left" ID="ID_1097461051" CREATED="1305277030363" MODIFIED="1305277042859" NUMBERED="true">
+<node TEXT="xxx" ID="ID_1240489027" CREATED="1305277061071" MODIFIED="1305277067422" NUMBERED="true"/>
+<node TEXT="yyy" ID="ID_948681138" CREATED="1305277093293" MODIFIED="1305277100813" NUMBERED="true"/>
 </node>
 <node POSITION="right" ID="ID_1109258357" CREATED="1270892460668" MODIFIED="1289122267641" COLOR="#000000" HGAP="23" VSHIFT="6">
 <richcontent TYPE="NODE">
@@ -433,7 +402,7 @@
     </p>
   </body>
 </html></richcontent>
-<arrowlink DESTINATION="ID_1109258357" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1109258357" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <node TEXT="Tak" ID="ID_888638974" CREATED="1286638234353" MODIFIED="1288798709827">
 <node TEXT="van" ID="ID_1442469647" CREATED="1286638265773" MODIFIED="1286638354428">
 <node TEXT="knoop" ID="ID_1008503185" CREATED="1286638271506" MODIFIED="1286638362353">
@@ -445,25 +414,25 @@
 </node>
 </node>
 <node TEXT="Verbinding van de ene knoop" ID="ID_1772815867" CREATED="1270892460668" MODIFIED="1286309489824">
-<arrowlink DESTINATION="ID_799512227" STARTINCLINATION="41;0;" ENDINCLINATION="41;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_799512227" STARTINCLINATION="41;0;" ENDINCLINATION="41;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="Naar een andere knoop" ID="ID_799512227" CREATED="1270892460669" MODIFIED="1286309508638">
-<arrowlink COLOR="#6600ff" DESTINATION="ID_1193921681" STARTINCLINATION="47;0;" ENDINCLINATION="47;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#6600ff" WIDTH="2" TRANSPARENCY="255" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1193921681" STARTINCLINATION="47;0;" ENDINCLINATION="47;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="Met een andere kleur" ID="ID_1193921681" CREATED="1270892460670" MODIFIED="1286309525486">
-<arrowlink DESTINATION="ID_1311780381" STARTINCLINATION="82;44;" ENDINCLINATION="82;44;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1311780381" STARTINCLINATION="82;44;" ENDINCLINATION="82;44;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="En een andere route" ID="ID_1311780381" CREATED="1270892460670" MODIFIED="1286309561428"/>
 <node TEXT="Een verbinding kan de vorm van een lijn hebben" ID="ID_407052458" CREATED="1270893418086" MODIFIED="1288798375285" COLOR="#000000" VGAP="20" HGAP="19" VSHIFT="6">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="1" ID="ID_1159726231" CREATED="1270893450078" MODIFIED="1270893469956">
-<arrowlink EDGE_LIKE="true" DESTINATION="ID_192239530" STARTINCLINATION="46;0;" ENDINCLINATION="46;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="EDGE_LIKE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_192239530" STARTINCLINATION="46;0;" ENDINCLINATION="46;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="2" ID="ID_63372862" CREATED="1270893453278" MODIFIED="1270991928052">
 <node TEXT="22" ID="ID_192239530" CREATED="1270893459959" MODIFIED="1270893460779"/>
 </node>
 <node TEXT="3" ID="ID_237103252" CREATED="1270893454198" MODIFIED="1270893480379">
-<arrowlink EDGE_LIKE="true" DESTINATION="ID_192239530" STARTINCLINATION="47;0;" ENDINCLINATION="47;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="EDGE_LIKE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_192239530" STARTINCLINATION="47;0;" ENDINCLINATION="47;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 </node>
 </node>
