@@ -288,7 +288,7 @@ public class FormatController implements IExtension {
 	 * Removes format if formatString is null. */
 	public static Object format(final Object obj, final String formatString) {
 		try {
-			final PatternFormat format = formatString == null ? null : PatternFormat.guessPatternFormat(formatString);
+			final PatternFormat format = PatternFormat.guessPatternFormat(formatString);
 			// logging for invalid pattern is done in guessPatternFormat()
 			if (obj == null)
 				return obj;

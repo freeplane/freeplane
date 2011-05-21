@@ -141,8 +141,11 @@ public abstract class PatternFormat /*extends Format*/ {
 		+ "(?:[\\d.]+)?" // width
 		+ "([sSdoxXeEfgGaA]|[tT][HIklMSLNpzZsQBbhAaCYyjmdeRTrDFc])"); // conversion
 
+	// this method is null safe
 	public static PatternFormat guessPatternFormat(final String pattern) {
 		try {
+			if (pattern == null || pattern.length() == 0)
+				return null;
 			final Matcher matcher = formatterPattern.matcher(pattern);
 			if (matcher.find()) {
 				// System.err.println("pattern='" + pattern + "' match='" + matcher.group() + "'");
