@@ -258,7 +258,7 @@ class ApplicationViewController extends ViewController {
 				final String scheme = uri.getScheme();
                 if (scheme.equals("file") || scheme.equals("smb")) {
                     if(scheme.equals("smb")){
-                        uriString = uriString.substring("smb:".length()).replace('/', '\\');
+                        uriString = Compat.smbUri2unc(uri);
                     }
 					if (System.getProperty("os.name").startsWith("Windows 2000")) 
 						command = new String[] { "rundll32", "shell32.dll,ShellExec_RunDLL", uriString };

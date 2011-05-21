@@ -48,8 +48,10 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
 		String linkAsString = NodeLinks.getLinkAsString(selectedNode);
-		if(Compat.isWindowsOS() && linkAsString.startsWith("smb:"))
-		    linkAsString = linkAsString.substring("smb:".length()).replace('/', '\\');
+		if(Compat.isWindowsOS() && linkAsString != null && linkAsString.startsWith("smb:")){
+			final URI link = NodeLinks.getValidLink(selectedNode);
+		    linkAsString = Compat.smbUri2unc(link);
+		}
 		final String inputValue = UITools.showInputDialog(
 		    Controller.getCurrentController().getSelection().getSelected(), TextUtils.getText("edit_link_manually"), linkAsString);
 		if (inputValue != null) {
