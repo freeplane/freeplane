@@ -1064,14 +1064,13 @@ public class NodeView extends JComponent implements INodeView {
 			else if(nodeViewSibling.isSummary()){
 				anotherLevel++;
 				if(anotherLevel > level)
-					break;
+				    break;
 			}
 			else
 				anotherLevel = 0;
 			if(anotherLevel == level && nodeViewSibling.isFirstGroupNode())
 				firstGroupNodeFound = true;
 			if(firstGroupNodeFound  && ! nodeViewSibling.isSummary()){
-				i--;
 				break;
 			}
 			
@@ -1083,6 +1082,14 @@ public class NodeView extends JComponent implements INodeView {
 			return;
 		}
 		
+		for (; i >= 0; i--) {
+		    final NodeView nodeViewSibling = (NodeView) getComponent(i);
+		    if (nodeViewSibling.isLeft() != isLeft)
+		        continue;
+		    if(nodeViewSibling.isSummary())
+		        break;
+		}
+
 		NodeView firstView = null;
 		anotherLevel = 0;
 		int y2 = lastView.getY() + lastView.getHeight() - spaceAround;
