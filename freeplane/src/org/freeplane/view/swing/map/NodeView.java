@@ -1037,7 +1037,6 @@ public class NodeView extends JComponent implements INodeView {
 		int anotherLevel = 0;
 		int i;
 		NodeView lastView = null;
-		int x1 = 0;
 		boolean itemFound = false;
 		boolean firstGroupNodeFound = false;
 		for (i = pos - 1; i >= 0; i--) {
@@ -1046,12 +1045,6 @@ public class NodeView extends JComponent implements INodeView {
 				continue;
 			if (lastView == null) {
 				lastView = nodeViewSibling;
-				if (isLeft) {
-					x1 = nodeViewSibling.getX() + spaceAround;
-				}
-				else {
-					x1 = nodeViewSibling.getX() + lastView.getWidth() - spaceAround;
-				}
 			}
 			if(! itemFound){ 
 				if( ! nodeViewSibling.isSummary())
@@ -1081,20 +1074,38 @@ public class NodeView extends JComponent implements INodeView {
 			edge.paint(g);
 			return;
 		}
-		
-		for (; i >= 0; i--) {
-		    final NodeView nodeViewSibling = (NodeView) getComponent(i);
-		    if (nodeViewSibling.isLeft() != isLeft)
-		        continue;
-		    if(nodeViewSibling.isSummary())
-		        break;
-		}
 
-		NodeView firstView = null;
+		if(i >= 0){
+		    for (; i > 0; i--) {
+		        final NodeView nodeViewSibling = (NodeView) getComponent(i);
+		        if (nodeViewSibling.isLeft() != isLeft)
+		            continue;
+		        if(nodeViewSibling.isSummary() || nodeViewSibling.isFirstGroupNode())
+		            break;
+		    }
+
+		    for (; ; i++) {
+		        final NodeView nodeViewSibling = (NodeView) getComponent(i);
+		        if (nodeViewSibling.isLeft() != isLeft)
+		            continue;
+		        if(! nodeViewSibling.isSummary())
+		            break;
+		    }
+		}
+        else
+            i = 0;
+
 		anotherLevel = 0;
 		int y2 = lastView.getY() + lastView.getHeight() - spaceAround;
 		int y1 = y2;
-		for (i = i + 1; i < pos; i++) {
+        int x1;
+        if (isLeft) {
+            x1 = lastView.getX() + spaceAround;
+        }
+        else {
+            x1 = lastView.getX() + lastView.getWidth() - spaceAround;
+        }
+		for (; i < pos; i++) {
 			final NodeView nodeViewSibling = (NodeView) getComponent(i);
 			if (nodeViewSibling.isLeft() != isLeft|| nodeViewSibling.getHeight() == 2 * spaceAround)
 				continue;
@@ -1102,11 +1113,10 @@ public class NodeView extends JComponent implements INodeView {
 				anotherLevel++;
 			else
 				anotherLevel = 0;
-			if (anotherLevel == level && firstView == null) {
-				firstView = nodeViewSibling;
+			if (anotherLevel == level) {
+	            y1 = Math.min(y1, nodeViewSibling.getY() + spaceAround);
+	            y2 = Math.max(y2, nodeViewSibling.getY() + nodeViewSibling.getHeight() - spaceAround);
 			}
-			y1 = Math.min(y1, nodeViewSibling.getY() + spaceAround);
-			y2 = Math.max(y2, nodeViewSibling.getY() + nodeViewSibling.getHeight() - spaceAround);
 			if (isLeft) {
 				x1 = Math.min(x1, nodeViewSibling.getX() + spaceAround);
 			}

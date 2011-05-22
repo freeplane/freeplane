@@ -278,10 +278,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             }
             
             if(isItem){
-                if(branchesOverlap != null)
-                    y -= childTopOverlap;
-                else
-                    top -= childTopOverlap;
+                top -= childTopOverlap;
                 if(Type.SIBLINGS.equals(branchesOverlap) || childShiftY > 0)
                     y += childShiftY;
                 else
@@ -289,8 +286,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                 
                 y += childCloudHeigth/2;
                 data.ly[i] = y;
-                if(branchesOverlap != null)
-                    y -= childBottomOverlap;
+                
                 if(Type.SIBLINGS.equals(branchesOverlap) || childShiftY < 0)
                     y -= childShiftY;
 
