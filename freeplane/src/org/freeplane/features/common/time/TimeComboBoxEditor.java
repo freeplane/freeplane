@@ -155,7 +155,7 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 	            	return oldItem;
 	            if(ResourceController.getResourceController().getBooleanProperty("parse_data") 
 	            		&& item instanceof String){
-	                final Object scannedObject = ScannerController.getInstance().parse((String)item);
+	                final Object scannedObject = ScannerController.getController().parse((String)item);
 	                return scannedObject;
 	            }
 				return item;

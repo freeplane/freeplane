@@ -46,10 +46,11 @@ public class ScannerTest {
 	@BeforeClass
 	public static void initStatics() throws Exception {
 		// FIXME: we have to start Freeplane to create a Controller for script execution
+		System.setProperty("org.freeplane.nosplash", "true");
 		new FreeplaneStarter().createController();
 		MModeControllerFactory.createModeController();
 		formatController = FormatController.getController();
-		scannerController = ScannerController.getInstance();
+		scannerController = ScannerController.getController();
 		datePattern = ((SimpleDateFormat) formatController.getDefaultFormat(TYPE_DATE)).toPattern();
 		datetimePattern = ((SimpleDateFormat) formatController.getDefaultFormat(TYPE_DATETIME)).toPattern();
 	}

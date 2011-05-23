@@ -94,7 +94,6 @@ public class MTextController extends TextController {
 	"parse_data");
 	private EditNodeBase mCurrentEditDialog = null;
 	private final Collection<IEditorPaneListener> editorPaneListeners;
-	private final ScannerController scannerController;
 
 	public static MTextController getController() {
 		return (MTextController) TextController.getController();
@@ -104,12 +103,8 @@ public class MTextController extends TextController {
 		super(modeController);
 		editorPaneListeners = new LinkedList<IEditorPaneListener>();
 		createActions();
-		scannerController = ScannerController.getInstance();
 	}
 
-	/**
-	 *
-	 */
 	private void createActions() {
 		ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new EditAction());
@@ -267,7 +262,7 @@ public class MTextController extends TextController {
 	/** converts strings to date or number if possible. All other data types are left unchanged. */
 	public Object guessObject(final Object text) {
 		if (parseData && text instanceof String)
-			return scannerController.parse((String) text);
+			return ScannerController.getController().parse((String) text);
 		return text;
 	}
 	

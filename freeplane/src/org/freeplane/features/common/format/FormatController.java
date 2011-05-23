@@ -177,7 +177,7 @@ public class FormatController implements IExtension {
 		return PatternFormat.create(simpleDateFormat.toPattern(), dStyle, dType, name, locale);
 	}
 
-	void loadFormats() throws Exception {
+	private void loadFormats() throws Exception {
 		try {
 			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
 			final IXMLReader reader = new StdXMLReader(new BufferedInputStream(new FileInputStream(pathToFile)));

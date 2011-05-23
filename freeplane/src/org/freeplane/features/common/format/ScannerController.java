@@ -25,17 +25,19 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
 
 import org.apache.commons.lang.StringUtils;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.common.map.ModeController;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -46,28 +48,32 @@ import org.freeplane.n3.nanoxml.XMLWriter;
 /**
  * @author Volker Boerchers
  */
-public class ScannerController{
+public class ScannerController implements IExtension {
 	private static final String SCANNER_XML = "scanner.xml";
 	private static final String ROOT_ELEMENT = "scanners";
-    private static ScannerController instance;
 	private String pathToFile;
 	private Scanner selectedScanner;
 	private static List<Scanner> scanners = new ArrayList<Scanner>();
-	private static boolean fileLoaded;
+	private static boolean scannersLoaded;
 	
-	@Deprecated
-	static public ScannerController getInstance(){
-	    //FIXME move ScannerController to core and make it available from ResourceController
-	    if(instance == null)
-	        instance = new ScannerController();
-	    return instance;
-	}
-
-	private ScannerController() {
-		pathToFile = ResourceController.getResourceController().getFreeplaneUserDirectory() + File.separator
-		        + SCANNER_XML;
+	public ScannerController() {
+		final String freeplaneUserDirectory = ResourceController.getResourceController().getFreeplaneUserDirectory();
+		// applets have no user directory and no file access anyhow
+		pathToFile = freeplaneUserDirectory == null ? null : freeplaneUserDirectory + File.separator + SCANNER_XML;
 		initScanners();
 		selectScanner(Locale.getDefault());
+	}
+
+	public static ScannerController getController() {
+		return getController(Controller.getCurrentModeController());
+	}
+
+	public static ScannerController getController(ModeController modeController) {
+		return (ScannerController) modeController.getExtension(ScannerController.class);
+	}
+	
+	public static void install(final ScannerController scannerController) {
+		Controller.getCurrentModeController().addExtension(ScannerController.class, scannerController);
 	}
 
 	public void selectScanner(final Locale locale) {
@@ -94,14 +100,13 @@ public class ScannerController{
 	}
 
 	private void initScanners() {
-		if (fileLoaded)
+		if (scannersLoaded)
 			return;
-        fileLoaded = true;
+        scannersLoaded = true;
 		try {
-			loadScanners();
+			if (pathToFile != null)
+				loadScanners();
 		}
-        catch (final AccessControlException e) {
-        }
         catch (final Exception e) {
 			LogUtils.warn(e);
 			UITools.errorMessage(TextUtils.getText("scanners_not_loaded"));
