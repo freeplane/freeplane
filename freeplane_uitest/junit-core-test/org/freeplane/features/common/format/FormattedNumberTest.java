@@ -35,6 +35,7 @@ public class FormattedNumberTest {
 	@BeforeClass
 	public static void initStatics() {
 		// FIXME: we have to start Freeplane to create a Controller for script execution
+		System.setProperty("org.freeplane.nosplash", "true");
 		new FreeplaneStarter().createController();
 	}
 	

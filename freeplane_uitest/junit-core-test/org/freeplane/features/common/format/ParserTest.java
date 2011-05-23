@@ -45,6 +45,7 @@ public class ParserTest {
 	@BeforeClass
 	public static void initStatics() {
 		// FIXME: we have to start Freeplane to create a Controller for script execution
+		System.setProperty("org.freeplane.nosplash", "true");
 		new FreeplaneStarter().createController();
 		MModeControllerFactory.createModeController();
 		formatController = FormatController.getController();
