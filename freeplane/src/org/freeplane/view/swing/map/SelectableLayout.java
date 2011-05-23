@@ -25,7 +25,7 @@ import java.awt.Dimension;
 import java.awt.LayoutManager;
 import java.awt.Point;
 
-import org.freeplane.features.common.map.BranchesOverlap;
+import org.freeplane.features.common.map.FlexibleLayout;
 import org.freeplane.features.common.styles.MapViewLayout;
 
 /**
@@ -76,7 +76,7 @@ public class SelectableLayout implements INodeViewLayout {
 				layout =  RightNodeViewLayout.getInstance();
 			}
 		}
-		layout.setBranchesOverlap(BranchesOverlap.isEnabled(map.getModel()));
+		layout.setBranchesOverlap(FlexibleLayout.getType(map.getModel()));
 		return layout;
 	}
 

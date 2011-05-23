@@ -26,6 +26,7 @@ import java.net.URISyntaxException;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.link.LinkController;
@@ -46,9 +47,13 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
+		String linkAsString = NodeLinks.getLinkAsString(selectedNode);
+		if(Compat.isWindowsOS() && linkAsString != null && linkAsString.startsWith("smb:")){
+			final URI link = NodeLinks.getValidLink(selectedNode);
+		    linkAsString = Compat.smbUri2unc(link);
+		}
 		final String inputValue = UITools.showInputDialog(
-		    Controller.getCurrentController().getSelection().getSelected(), TextUtils.getText("edit_link_manually"), NodeLinks
-		        .getLinkAsString(selectedNode));
+		    Controller.getCurrentController().getSelection().getSelected(), TextUtils.getText("edit_link_manually"), linkAsString);
 		if (inputValue != null) {
 			final MLinkController linkController = (MLinkController) MLinkController.getController();
 			if (inputValue.equals("")) {

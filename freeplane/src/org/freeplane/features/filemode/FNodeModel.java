@@ -70,15 +70,15 @@ class FNodeModel extends NodeModel {
 	}
 
 	@Override
-	public String getText() {
-		String name = file.getName();
-		if (name.equals("")) {
-			name = "Root";
-		}
-		return name;
-	}
+    public Object getUserObject() {
+        String name = file.getName();
+        if (name.equals("")) {
+            name = "Root";
+        }
+        return name;
+    }
 
-	@Override
+    @Override
 	public boolean hasChildren() {
 		return !file.isFile() && !getChildren().isEmpty();
 	}

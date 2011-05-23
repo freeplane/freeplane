@@ -3,6 +3,7 @@ package org.freeplane.core.util;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Arrays;
@@ -154,6 +155,15 @@ public class Compat {
 		if(PREVIEW_DIR != null)
 			return userFpDir + PREVIEW_DIR;
 		return userFpDir;
+	}
+
+	static public String smbUri2unc(final URI uri) {
+		String uriString;
+ 		uriString = ("//" + uri.getHost() + uri.getPath()) .replace('/', '\\');
+		final String fragment = uri.getFragment();
+		if(fragment != null)
+			uriString = uriString + '#' + fragment;
+		return uriString;
 	}
 
 }

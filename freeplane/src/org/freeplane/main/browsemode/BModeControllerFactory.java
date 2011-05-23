@@ -38,7 +38,7 @@ import org.freeplane.features.common.encrypt.EncryptionController;
 import org.freeplane.features.common.filter.FilterController;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.common.map.BranchesOverlap;
+import org.freeplane.features.common.map.FlexibleLayout;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.SummaryNode;
 import org.freeplane.features.common.map.UnfoldAll;
@@ -84,7 +84,7 @@ public class BModeControllerFactory {
 		}
 		LocationController.install(new LocationController());
 		SummaryNode.install();
-		new BranchesOverlap();
+		new FlexibleLayout();
 		new MapStyle(true);
 		final BToolbarContributor toolbarContributor = new BToolbarContributor();
 		modeController.addMenuContributor(toolbarContributor);
