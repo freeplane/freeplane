@@ -414,7 +414,8 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 	    	parentWindow = SwingUtilities.getWindowAncestor(appendButton);
 	    }
 	    final Component mostRecentFocusOwner = parentWindow.getMostRecentFocusOwner();
-	    if (mostRecentFocusOwner instanceof JTextComponent) {
+		if (mostRecentFocusOwner instanceof JTextComponent
+		        && !(mostRecentFocusOwner.getClass().getName().contains("JSpinField"))) {
 	    	final JTextComponent textComponent = (JTextComponent) mostRecentFocusOwner;
 	    	textComponent.replaceSelection(dateAsString);
 	    	return;
