@@ -102,12 +102,6 @@
 			<menu_action action="ToggleFullScreenAction" />
 			<menu_action action="ViewLayoutTypeAction.OUTLINE" />
 			<menu_separator />
-			<menu_category name="flex">
-				<menu_radio_action action="FlexibleLayoutAction.SIBLINGS" />
-				<menu_radio_action action="FlexibleLayoutAction.CHILDREN" />
-				<menu_radio_action action="FlexibleLayoutAction.null" />
-			</menu_category>
-			<menu_separator />
 			<menu_category name="zoom">
 				<menu_action action="ZoomInAction" accelerator="alt UP" />
 				<menu_action action="ZoomOutAction" accelerator="alt DOWN" />
