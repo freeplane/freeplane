@@ -27,7 +27,6 @@ import java.awt.Point;
 import javax.swing.JComponent;
 
 import org.freeplane.features.common.cloud.CloudModel;
-import org.freeplane.features.common.map.FlexibleLayout.Type;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.view.swing.map.cloud.CloudView;
 
@@ -38,8 +37,6 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             int left;
             int childContentHeight;
             int top;
-            int topOverlap;
-            int bottomOverlap;
             boolean rightDataSet;
             boolean leftDataSet;
             public LayoutData(int childCount) {
@@ -65,8 +62,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     private NodeView view;
     private Dimension contentPreferredSize;
     private int contentWidth;
-    private Type branchesOverlap;
-    
+
     public void addLayoutComponent(final String arg0, final Component arg1) {
     }
     /**
@@ -230,6 +226,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
         
         int childContentHeightSum = 0;
         int visibleChildCounter = 0;
+        int top = 0;
         
         final int[] groupStart = new int[highestSummaryLevel];
         final int[] groupStartContentHeightSum = new int[highestSummaryLevel];
@@ -240,8 +237,6 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
         final int summaryBaseX[] = new int[highestSummaryLevel];
         
         level = highestSummaryLevel;
-        int top = 0;
-        boolean firstChild = true;
         for (int i = 0; i < getChildCount(); i++) {
             final NodeView child = (NodeView) getView().getComponent(i);
             if (child.isLeft() != isLeft) {
@@ -249,8 +244,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             }
             
             final boolean isSummary = child.isSummary();
-            final boolean isItem = ! isSummary || firstChild;
-            firstChild = false;
+            final boolean isItem = ! (isSummary && i > 0);
             int oldLevel = level;
             if(isItem){
                 level = 0;
@@ -258,189 +252,138 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             else{
                 level++;
             }
-             
+                
+            
             final int childCloudHeigth = getAdditionalCloudHeigth(child);
             final int childContentHeight = child.getContent().getHeight();
-            final int childShiftY = child.isContentVisible() ? child.getShift() : 0;
+            final int childShiftY = child.getShift();
             final int childContentShift = child.getContent().getY() - getSpaceAround();
             final int childHGap = child.getContent().isVisible() ? child.getHGap() : 0;
             final int childHeight = child.getHeight() - 2 * getSpaceAround();
-            final int childSummedContentHeight = child.getSummedContentHeight();
-            final int childTopOverlap; 
-            final int childBottomOverlap;
-            if(childSummedContentHeight > childContentHeight){
-                childTopOverlap = childContentShift - (childSummedContentHeight - childContentHeight)/2;
-                childBottomOverlap = childHeight - childContentShift - (childSummedContentHeight + childContentHeight)/2;
-            }
-            else{
-                childTopOverlap = childContentShift;
-                childBottomOverlap = childHeight - childContentShift - childContentHeight;
-            }
             
             if(isItem){
-                if(branchesOverlap != null && childTopOverlap > 0)
-                    y -= childTopOverlap;
-                else
-                    top -= childTopOverlap;
-                if(Type.SIBLINGS.equals(branchesOverlap) || childShiftY > 0)
-                    y += childShiftY;
-                else
-                    top += childShiftY;
-                
-                y += childCloudHeigth/2;
-                data.ly[i] = y;
-                if(branchesOverlap != null && childBottomOverlap > 0)
-                    y -= childBottomOverlap;
-                
-                if(Type.SIBLINGS.equals(branchesOverlap) || childShiftY < 0)
-                    y -= childShiftY;
-
-                if (childHeight != 0) {
-                    y += childHeight + getVGap() + childCloudHeigth/2;
-                }
-                
                 if(oldLevel > 0){
                     summaryBaseX[0] = 0;
                     for(int j = 0; j < oldLevel; j++){
-                        groupStart[j] = i;
-                        groupStartY[j] = Integer.MAX_VALUE;
-                        groupEndY[j] = Integer.MIN_VALUE;
                         groupStartContentHeightSum[j] = childContentHeightSum;
                         groupStartVisibleChildCounter[j] = visibleChildCounter;
+                        groupStartY[j] = y;
+                        groupStart[j] = i;
                     }
                 }
                 else if(child.isFirstGroupNode()){
                     groupStartContentHeightSum[0] = childContentHeightSum;
                     groupStartVisibleChildCounter[0] = visibleChildCounter;
                     summaryBaseX[0] = 0;
+                    groupStartY[0] = y;
                     groupStart[0] = i;
                 }
-                childContentHeightSum += Math.max(childContentHeight, childSummedContentHeight) + childCloudHeigth;
+                childContentHeightSum += childContentHeight + childCloudHeigth;
                 if (child.getHeight() - 2 * getSpaceAround() != 0) {
                     if (visibleChildCounter > 0)
                         childContentHeightSum +=  getVGap();
                     visibleChildCounter++;
                 }
 
-             }
+                if (childShiftY < 0 || i == 0) {
+                    top += childShiftY;
+                }
+                top -= childContentShift;
+
+                y += childCloudHeigth/2;
+                final int x;
+                if(child.isLeft()){
+                    x = - childHGap - child.getContent().getX() - child.getContent().getWidth();
+                    summaryBaseX[0] = Math.min(summaryBaseX[0], x + getSpaceAround());
+                }
+                else{
+                    x = contentWidth + childHGap - child.getContent().getX();
+                    summaryBaseX[0] = Math.max(summaryBaseX[0], x + child.getWidth() - 2 * getSpaceAround());
+                }
+                left = Math.min(left, x);
+                data.lx[i] = x; 
+                if (childShiftY < 0) {
+                    data.ly[i] = y;
+                    groupEndY[0] = y + childHeight;
+                    y -= childShiftY;
+                }
+                else {
+                    if(i > 0)
+                        y += childShiftY;
+                    data.ly[i] = y;
+                    groupEndY[0] = y + childHeight;
+                }
+                if (childHeight != 0) {
+                    y += childHeight + getVGap() + childCloudHeigth/2;
+                }
+            }
             else{
                 final int itemLevel = level - 1;
                 if(child.isFirstGroupNode()){
                     groupStartContentHeightSum[level] = groupStartContentHeightSum[itemLevel];
                     groupStartVisibleChildCounter[level] = groupStartVisibleChildCounter[itemLevel];
                     summaryBaseX[level] = 0;
+                    groupStartY[level] = groupStartY[itemLevel];
                     groupStart[level] = groupStart[itemLevel];
                 }
-                
-                final int groupHeight = groupEndY[itemLevel] - groupStartY[itemLevel];
-                int summaryY = groupStartY[itemLevel] + (groupHeight - childContentHeight)/2- childContentShift + childShiftY;
-                final int deltaY;
-                final int summaryContentHeight = Math.max(childContentHeight, childSummedContentHeight);
-                final int additionalSummaryHeight = summaryContentHeight - (childContentHeightSum - groupStartContentHeightSum[itemLevel]);
-                if(additionalSummaryHeight > 0){
-                    childContentHeightSum += additionalSummaryHeight;
-                    if (view.isContentVisible()) {
-                        top += additionalSummaryHeight/2;
-                    }
+                int summaryY = (groupStartY[itemLevel] + groupEndY[itemLevel] ) / 2 - childContentHeight / 2 + childShiftY - (child.getContent().getY() - getSpaceAround());
+                final int x;
+                if(child.isLeft()){
+                    x = summaryBaseX[itemLevel] - childHGap - child.getContent().getX() - child.getContent().getWidth();
+                    summaryBaseX[level] = Math.min(summaryBaseX[level], x + getSpaceAround());
                 }
-                
-                if(Type.CHILDREN.equals(branchesOverlap)){
-                    final int delta1 = additionalSummaryHeight/2;
-                    final int delta2 = groupStartY[itemLevel] - summaryY;
-                    deltaY = Math.min( delta1, delta2);
-                 }
                 else{
-                    deltaY = groupStartY[itemLevel] - summaryY;
+                    x = summaryBaseX[itemLevel] + childHGap - child.getContent().getX() + getSpaceAround();
+                    summaryBaseX[level] = Math.max(summaryBaseX[level], x + child.getWidth() - 2 * getSpaceAround());
                 }
-                if(deltaY > 0){
-                    for(int j = groupStart[itemLevel]; j < i; j++){
+                left = Math.min(left, x);
+                data.lx[i] = x; 
+                data.ly[i] = summaryY;
+                final int deltaY = summaryY - groupStartY[itemLevel];
+                if(deltaY < 0){
+                    top += deltaY;
+                    y -= deltaY;
+                    for(int j = groupStart[itemLevel]; j <= i; j++){
                         NodeView groupItem = (NodeView) getView().getComponent(j);
                         if(groupItem.isLeft() == isLeft)
-                            data.ly[j]+=deltaY;
+                            data.ly[j]-=deltaY;
                     }
-                    top -= deltaY;
-                    y += deltaY;
-                    summaryY += deltaY;
                 }
-                   
-                groupEndY[level] = Math.max(summaryY + childContentShift + childContentHeight, groupEndY[level]);
-                data.ly[i] = summaryY;
-                final int summaryEnd; 
-                if(branchesOverlap == null)
-                    summaryEnd = summaryY + childHeight;
-                else{
-                    summaryEnd = Math.min(summaryY + childHeight, summaryY  - childShiftY - childBottomOverlap + summaryContentHeight);
+                if (childHeight != 0) {
+                    summaryY += childHeight + getVGap() + childCloudHeigth/2;
                 }
-                y = Math.max(y, summaryEnd);
-            }
-            if(child.isFirstGroupNode()){
-                groupStartY[level] = data.ly[i] + childContentShift;
-                groupEndY[level] = data.ly[i] + childContentShift + childContentHeight;
-            }
-            else{
-                groupStartY[level] = Math.min(groupStartY[level],data.ly[i] + childContentShift);
-                groupEndY[level] = Math.max(data.ly[i] + childContentShift + childContentHeight, groupEndY[level]);
-            }
-            final int x;
-            final int baseX;
-            if(level > 0)
-                baseX = summaryBaseX[level - 1];
-            else{
-                if(child.isLeft()){
-                    baseX = 0;
+                y = Math.max(y, summaryY);
+                final int summaryContentHeight = groupStartContentHeightSum[itemLevel] + childContentHeight;
+                if(childContentHeightSum  < summaryContentHeight){
+                    childContentHeightSum = summaryContentHeight;
                 }
-                else{
-                    baseX = contentWidth;
-                }
+                final int summaryEndY;
+                if(childShiftY < 0)
+                    summaryEndY = summaryY + childShiftY;
+                else
+                    summaryEndY = summaryY;
+                groupEndY[level] = Math.max(groupEndY[itemLevel], summaryEndY);
             }
-            if(child.isLeft()){
-                x = baseX - childHGap - child.getContent().getX() - child.getContent().getWidth();
-                summaryBaseX[level] = Math.min(summaryBaseX[level], x + getSpaceAround());
-            }
-            else{
-                x = baseX + childHGap - child.getContent().getX();
-                summaryBaseX[level] = Math.max(summaryBaseX[level], x + child.getWidth() - getSpaceAround());
-            }
-            left = Math.min(left, x);
-            data.lx[i] = x; 
-
-        }
-        final NodeView view = getView();
-        if (view.isContentVisible()) {
-            top += (contentPreferredSize.height - childContentHeightSum)/2;
-        }
-
-        int minY = Integer.MAX_VALUE;
-        for (int i = 0; i < getChildCount(); i++) {
-            final NodeView child = (NodeView) getView().getComponent(i);
-            if (child.isLeft() != isLeft) {
-                continue;
-            }
-            minY = Math.min(data.ly[i], minY); 
-        }
-        for (int i = 0; i < getChildCount(); i++) {
-            final NodeView child = (NodeView) getView().getComponent(i);
-            if (child.isLeft() != isLeft) {
-                continue;
-            }
-            data.ly[i] -= minY;
         }
         
-        if(minY != Integer.MAX_VALUE){
-            top += minY;
+        if (getView().isContentVisible()) {
+            final Dimension contentPreferredSize = getContent().getPreferredSize();
+            final int contentVerticalShift = (contentPreferredSize.height - childContentHeightSum) / 2;
+            top += contentVerticalShift;
         }
-
         setData(data, isLeft, left, childContentHeightSum, top);
     }
     
     private void setData(final LayoutData data, boolean isLeft, int left, int childContentHeight, int top) {
         if(!isLeft && data.leftDataSet || isLeft && data.rightDataSet){
-            int deltaY = top - data.top;
+            data.left = Math.min(data.left, left);
+            data.childContentHeight = Math.max(data.childContentHeight, childContentHeight);
+            int deltaTop = top - data.top;
             final boolean changeLeft;
-            if(deltaY < 0){
-                changeLeft = !isLeft;
-                deltaY = - deltaY;
+            if(deltaTop < 0){
                 data.top = top;
+                changeLeft = !isLeft;
+                deltaTop = - deltaTop;
             }
             else{
                 changeLeft = isLeft;
@@ -448,16 +391,14 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             for(int i = 0; i < getChildCount(); i++){
                 NodeView child = (NodeView) getView().getComponent(i);
                 if(child.isLeft() == changeLeft){
-                    data.ly[i] += deltaY;
+                    data.ly[i] += deltaTop;
                 }
             }
-            data.childContentHeight = Math.max(data.childContentHeight, childContentHeight);
-            data.left = Math.min(data.left, left);
         }
         else{
-            data.top = top;
-            data.childContentHeight = childContentHeight;
             data.left = left;
+            data.childContentHeight = childContentHeight;
+            data.top = top;
         }
         if(isLeft)
             data.leftDataSet = true;
@@ -469,20 +410,24 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     protected void placeChildren(final LayoutData data) {
         final int contentHeight;
         final NodeView view = getView();
+        final int contentX = Math.max(getSpaceAround(), -data.left);
+        final int contentY = getSpaceAround() + Math.max(0, -data.top);
         if (view.isContentVisible()) {
             contentHeight = contentPreferredSize.height;
-            getContent().setVisible(true);
         }
         else {
             contentHeight = data.childContentHeight;
-            getContent().setVisible(false);
         }
         
-        final int contentX = Math.max(getSpaceAround(), -data.left);
-        final int contentY = getSpaceAround() + Math.max(0, -data.top);
+        if (getView().isContentVisible()) {
+            getContent().setVisible(true);
+        }
+        else {
+            getContent().setVisible(false);
+        }
         getContent().setBounds(contentX, contentY, contentWidth, contentHeight);
         
-        final int baseY = Math.max(0, data.top);
+        final int baseY = contentY - getSpaceAround() + data.top;
     
         int width =  contentX + contentWidth + getSpaceAround();
         int height = contentY + contentHeight + getSpaceAround();
@@ -493,10 +438,6 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             height = Math.max(height, child.getY() + child.getHeight());
         }
         
-        view.setSize(width, height);
-        view.setSummedContentHeight(data.childContentHeight);
-    }
-    public void setBranchesOverlap(Type type) {
-        branchesOverlap = type;
+        getView().setSize(width, height);
     }
 }

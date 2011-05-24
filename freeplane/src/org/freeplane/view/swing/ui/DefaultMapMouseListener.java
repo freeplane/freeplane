@@ -23,15 +23,10 @@ import java.awt.Component;
 import java.awt.Frame;
 import java.awt.Point;
 import java.awt.Window;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPopupMenu;
 

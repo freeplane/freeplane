@@ -37,7 +37,6 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
 import javax.swing.tree.TreeNode;
 
 import org.freeplane.core.controller.Controller;
@@ -51,7 +50,6 @@ import org.freeplane.features.common.cloud.CloudModel;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.icon.HierarchicalIcons;
-import org.freeplane.features.common.map.FlexibleLayout;
 import org.freeplane.features.common.map.HistoryInformationModel;
 import org.freeplane.features.common.map.INodeView;
 import org.freeplane.features.common.map.MapChangeEvent;
@@ -118,16 +116,6 @@ public class NodeView extends JComponent implements INodeView {
 	private Color modelBackgroundColor;
 	public static final int DETAIL_VIEWER_POSITION = 2;
 	
-	private int summedContentHeight;
-
-	public int getSummedContentHeight() {
-    	return summedContentHeight;
-    }
-
-	public void setSummedContentHeight(int summedContentHeight) {
-    	this.summedContentHeight = summedContentHeight;
-    }
-
 	protected NodeView(final NodeModel model, final int position, final MapView map, final Container parent) {
 		setFocusCycleRoot(true);
 		this.model = model;
@@ -855,10 +843,6 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		if (property.equals(HistoryInformationModel.class)) {
 			updateToolTip();
-			return;
-		}
-		if(property.equals(FlexibleLayout.Type.class)){
-			updateAll();
 			return;
 		}
 		update();

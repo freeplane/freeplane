@@ -53,7 +53,6 @@ import org.freeplane.core.resources.components.NextLineProperty;
 import org.freeplane.core.resources.components.NumberProperty;
 import org.freeplane.core.resources.components.SeparatorProperty;
 import org.freeplane.core.util.ColorUtils;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.cloud.CloudModel;

@@ -31,8 +31,6 @@ import java.awt.RenderingHints;
 
 import javax.swing.SwingConstants;
 
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.map.ModeController;
 
 class RootMainView extends MainView {

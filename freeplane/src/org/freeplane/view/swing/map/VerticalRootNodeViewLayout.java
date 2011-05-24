@@ -19,11 +19,8 @@
  */
 package org.freeplane.view.swing.map;
 
-import java.awt.Point;
-
 import javax.swing.JComponent;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 
 /**

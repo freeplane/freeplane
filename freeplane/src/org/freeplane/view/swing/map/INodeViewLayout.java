@@ -20,7 +20,6 @@
 package org.freeplane.view.swing.map;
 
 import java.awt.LayoutManager;
-import java.awt.Point;
 
 public interface INodeViewLayout extends LayoutManager {
 	void layoutNodeMotionListenerView(NodeMotionListenerView view);

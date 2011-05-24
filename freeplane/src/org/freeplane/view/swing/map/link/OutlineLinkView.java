@@ -26,7 +26,6 @@ import java.awt.Point;
 import java.awt.Stroke;
 import java.awt.geom.Line2D;
 
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.edge.EdgeView;

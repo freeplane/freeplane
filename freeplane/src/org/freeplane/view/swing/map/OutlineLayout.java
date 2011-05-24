@@ -21,8 +21,6 @@ package org.freeplane.view.swing.map;
 
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Point;
-
 import org.freeplane.core.resources.ResourceController;
 
 /**

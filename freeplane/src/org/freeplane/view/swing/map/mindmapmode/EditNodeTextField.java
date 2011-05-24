@@ -88,8 +88,6 @@ import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.ZoomableLabel;
-import org.freeplane.view.swing.map.ZoomableLabelUI;
-
 import com.lightdev.app.shtm.SHTMLWriter;
 
 /**

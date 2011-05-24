@@ -25,11 +25,7 @@ import java.awt.Point;
 import java.awt.Stroke;
 import java.awt.geom.CubicCurve2D;
 
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.view.swing.map.MainView;
-import org.freeplane.view.swing.map.MainView.ConnectorLocation;
 import org.freeplane.view.swing.map.NodeView;
-import org.freeplane.view.swing.map.VerticalRootNodeViewLayout;
 import org.freeplane.view.swing.map.link.CollisionDetector;
 
 /**
