@@ -242,6 +242,7 @@
 				<menu_action action="DeleteDetailsAction"/>		
 			</menu_submenu>
 			<menu_submenu name="attributes" name_ref="menu_attributes">
+				<menu_action action="attributes_AddAttributeAction"/>
 				<menu_action action="EditAttributesAction" accelerator="alt F9"/>
 				<menu_action action="AssignAttributesAction" />
 				<menu_separator/>
@@ -573,6 +574,7 @@
 				<menu_action action="DeleteDetailsAction"/>		
 			</menu_submenu>
 			<menu_submenu name="attributes" name_ref="menu_attributes">
+				<menu_action action="attributes_AddAttributeAction"/>
 				<menu_action action="EditAttributesAction" accelerator="alt F9"/>
 				<menu_action action="AssignAttributesAction" />
 				<menu_separator/>

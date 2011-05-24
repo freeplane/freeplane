@@ -69,6 +69,7 @@ import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.time.CreationModificationPlugin;
 import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.features.mindmapmode.attribute.AddAttributeAction;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 import org.freeplane.features.mindmapmode.attribute.RemoveAllAttributesAction;
 import org.freeplane.features.mindmapmode.attribute.RemoveFirstAttributeAction;
@@ -164,6 +165,7 @@ public class MModeControllerFactory {
 		new ReminderHook();
 		new AutomaticEdgeColorHook();
 		new ViewerController();
+		modeController.addAction(new AddAttributeAction());
 		modeController.addAction(new RemoveFirstAttributeAction());
 		modeController.addAction(new RemoveLastAttributeAction());
 		modeController.addAction(new RemoveAllAttributesAction());

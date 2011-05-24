@@ -73,12 +73,12 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		@Override
 		public void actionPerformed(final ActionEvent e) {
 			if (attributeNames.getSelectedItem() == null) {
-				showEmptyStringErrorMessage();
+				UITools.showAttributeEmptyStringErrorMessage();
 				return;
 			}
 			name = attributeNames.getSelectedItem().toString();
 			if (name.equals("")) {
-				showEmptyStringErrorMessage();
+				UITools.showAttributeEmptyStringErrorMessage();
 				return;
 			}
 			final Object valueSelectedItem = attributeValues.getSelectedItem();
@@ -97,7 +97,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		}
 	}
 
-	private static class ClonedComboBoxModel extends AbstractListModel implements ComboBoxModel {
+	protected static class ClonedComboBoxModel extends AbstractListModel implements ComboBoxModel {
 		/**
 		 * 
 		 */
@@ -147,12 +147,12 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		public void actionPerformed(final ActionEvent e) {
 			final Object selectedItem = attributeNames.getSelectedItem();
 			if (selectedItem == null) {
-				showEmptyStringErrorMessage();
+				UITools.showAttributeEmptyStringErrorMessage();
 				return;
 			}
 			name = selectedItem.toString();
 			if (name.equals("")) {
-				showEmptyStringErrorMessage();
+				UITools.showAttributeEmptyStringErrorMessage();
 				return;
 			}
 			super.actionPerformed(e);
@@ -176,12 +176,12 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		@Override
 		public void actionPerformed(final ActionEvent e) {
 			if (attributeNames.getSelectedItem() == null) {
-				showEmptyStringErrorMessage();
+				UITools.showAttributeEmptyStringErrorMessage();
 				return;
 			}
 			name = attributeNames.getSelectedItem().toString();
 			if (name.equals("")) {
-				showEmptyStringErrorMessage();
+				UITools.showAttributeEmptyStringErrorMessage();
 				return;
 			}
 			final Object valueSelectedItem = attributeValues.getSelectedItem();
@@ -237,11 +237,6 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 
 		abstract protected void performAction(NodeModel model);
 
-		protected void showEmptyStringErrorMessage() {
-			JOptionPane.showMessageDialog(AssignAttributeDialog.this, TextUtils
-			    .getText("attributes_adding_empty_attribute_error"), TextUtils.getText("error"),
-			    JOptionPane.ERROR_MESSAGE);
-		}
 	}
 
 	private class ReplaceValueAction extends IteratingAction {
@@ -253,21 +248,21 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		@Override
 		public void actionPerformed(final ActionEvent e) {
 			if (attributeNames.getSelectedItem() == null) {
-				showEmptyStringErrorMessage();
+				UITools.showAttributeEmptyStringErrorMessage();
 				return;
 			}
 			if (replacingAttributeNames.getSelectedItem() == null) {
-				showEmptyStringErrorMessage();
+				UITools.showAttributeEmptyStringErrorMessage();
 				return;
 			}
 			name = attributeNames.getSelectedItem().toString();
 			if (name.equals("")) {
-				showEmptyStringErrorMessage();
+				UITools.showAttributeEmptyStringErrorMessage();
 				return;
 			}
 			replacingName = replacingAttributeNames.getSelectedItem().toString();
 			if (replacingName.equals("")) {
-				showEmptyStringErrorMessage();
+				UITools.showAttributeEmptyStringErrorMessage();
 				return;
 			}
 			final Object valueSelectedItem = attributeValues.getSelectedItem();
@@ -298,7 +293,6 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 	final private AttributeController attributeController;
 	final private JComboBox attributeNames;
 	final private JComboBox attributeValues;
-	// // 	final private Controller Controller.getCurrentController();
 	private IMapSelection mapSelection;
 	final private JComboBox replacingAttributeNames;
 	final private JComboBox replacingAttributeValues;
@@ -352,11 +346,12 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		replaceBtn.addActionListener(new ReplaceValueAction());
 		replaceBtn.setMaximumSize(AssignAttributeDialog.maxButtonDimension);
 		UITools.addEscapeActionToDialog(this);
+		// Size of JComboBoxes (30 chars)
 		final String pattern = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
 		final JLabel patternLabel = new JLabel(pattern);
 		final Dimension comboBoxMaximumSize = patternLabel.getPreferredSize();
 		comboBoxMaximumSize.width += 4;
-		comboBoxMaximumSize.height += 4;
+		comboBoxMaximumSize.height += 10;
 		attributeNames = new JComboBox();
 		attributeNames.setMaximumSize(comboBoxMaximumSize);
 		attributeNames.setPreferredSize(comboBoxMaximumSize);
@@ -378,6 +373,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 			}
 		});
 		replacingAttributeValues = new JComboBox();
+		replacingAttributeValues.setRenderer(new TypedListCellRenderer());
 		replacingAttributeValues.setMaximumSize(comboBoxMaximumSize);
 		replacingAttributeValues.setPreferredSize(comboBoxMaximumSize);
 		final Box addDeleteBtnBox = Box.createVerticalBox();

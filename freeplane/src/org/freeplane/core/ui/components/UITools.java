@@ -296,7 +296,15 @@ public class UITools {
 		SwingUtilities.convertPointToScreen(location, c);
 		UITools.setBounds(dialog, location.x, location.y, dialog.getWidth(), dialog.getHeight());
 	}
-
+	
+	/**
+	 * Shows the error message  "attributes_adding_empty_attribute_error"
+	 */
+	public static void showAttributeEmptyStringErrorMessage() {
+		JOptionPane.showMessageDialog(null, TextUtils.getText("attributes_adding_empty_attribute_error"),
+		    TextUtils.getText("error"), JOptionPane.ERROR_MESSAGE);
+	}
+	
 public static int showConfirmDialog( final NodeModel node, final Object message,
             final String title, final int optionType,final int messageType) {
 final Controller controller = Controller.getCurrentController();
