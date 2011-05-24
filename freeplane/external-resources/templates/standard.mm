@@ -94,6 +94,5 @@
 </map_styles>
 </hook>
 <hook NAME="AutomaticEdgeColor"/>
-<hook NAME="FlexibleLayout" VALUE="CHILDREN"/>
 </node>
 </map>
