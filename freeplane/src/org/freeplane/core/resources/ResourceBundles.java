@@ -38,6 +38,7 @@ import org.freeplane.core.util.collection.MultipleValueMap;
  * Class for managing localized resources. See translation property files.
  */
 public class ResourceBundles extends ResourceBundle {
+	public static final String LANGUAGE_AUTOMATIC = "automatic";
 	private static final String DEFAULT_LANGUAGE = "en";
 	public static final String POSTFIX_TRANSLATE_ME = "[translate me]";
 	public static final String RESOURCE_LANGUAGE = "language";
@@ -163,7 +164,7 @@ public class ResourceBundles extends ResourceBundle {
 
 	private void loadLocalLanguageResources() throws IOException {
 		lang = controller.getProperty(ResourceBundles.RESOURCE_LANGUAGE);
-		if (lang == null || lang.equals("automatic")) {
+		if (lang == null || lang.equals(LANGUAGE_AUTOMATIC)) {
 			final String country = Locale.getDefault().getCountry();
 			if(! country.equals("")){
 				lang = Locale.getDefault().getLanguage() + "_" + country;

@@ -20,6 +20,7 @@
 package org.freeplane.features.common.format;
 
 import java.util.Formatter;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -61,7 +62,7 @@ public abstract class PatternFormat /*extends Format*/ {
 	private final String type;
 	private final String pattern;
 	private String name;
-	private String locale;
+	private Locale locale;
 
 	public PatternFormat(String pattern, String type) {
 		this.type = type;
@@ -86,18 +87,18 @@ public abstract class PatternFormat /*extends Format*/ {
 		this.name = name;
 	}
 	
-	public String getLocale() {
+	public Locale getLocale() {
 		return locale;
 	}
 
-	public void setLocale(String locale) {
+	public void setLocale(Locale locale) {
 		this.locale = locale;
     }
 
 	/** selects the formatter implementation, e.g. "formatter" or "date" */
 	public abstract String getStyle();
 	
-	public static PatternFormat createPatternFormat(final String pattern, final String style, final String type) {
+	public static PatternFormat create(final String pattern, final String style, final String type) {
 		if (style.equals(STYLE_DATE))
 			return new DatePatternFormat(pattern);
 		else if (style.equals(STYLE_FORMATTER))
@@ -108,16 +109,16 @@ public abstract class PatternFormat /*extends Format*/ {
 			throw new IllegalArgumentException("unknown format style");
 	}
 	
-	public static PatternFormat createPatternFormat(final String pattern, final String style, final String type,
+	public static PatternFormat create(final String pattern, final String style, final String type,
 	                                                final String name) {
-		final PatternFormat format = createPatternFormat(pattern, style, type);
+		final PatternFormat format = create(pattern, style, type);
 		format.setName(name);
 		return format;
 	}
 
-	public static PatternFormat createPatternFormat(final String pattern, final String style, final String type,
-	                                                final String name, final String locale) {
-		final PatternFormat format = createPatternFormat(pattern, style, type, name);
+	public static PatternFormat create(final String pattern, final String style, final String type,
+	                                                final String name, final Locale locale) {
+		final PatternFormat format = create(pattern, style, type, name);
 		format.setLocale(locale);
 		return format;
 	}
@@ -140,8 +141,11 @@ public abstract class PatternFormat /*extends Format*/ {
 		+ "(?:[\\d.]+)?" // width
 		+ "([sSdoxXeEfgGaA]|[tT][HIklMSLNpzZsQBbhAaCYyjmdeRTrDFc])"); // conversion
 
+	// this method is null safe
 	public static PatternFormat guessPatternFormat(final String pattern) {
 		try {
+			if (pattern == null || pattern.length() == 0)
+				return null;
 			final Matcher matcher = formatterPattern.matcher(pattern);
 			if (matcher.find()) {
 				// System.err.println("pattern='" + pattern + "' match='" + matcher.group() + "'");
@@ -197,7 +201,7 @@ public abstract class PatternFormat /*extends Format*/ {
 		if (getName() != null)
 			xmlElement.setAttribute("name", getName());
 		if (getLocale() != null)
-			xmlElement.setAttribute("locale", getLocale());
+			xmlElement.setAttribute("locale", getLocale().toString());
 		xmlElement.setContent(getPattern());
 		return xmlElement;
 	}
@@ -208,7 +212,7 @@ public abstract class PatternFormat /*extends Format*/ {
 
 	public static PatternFormat deserialize(String string) {
 		final String[] tokens = string.split(SERIALIZATION_SEPARATOR, 3);
-	    return createPatternFormat(TypeReference.decode(tokens[2]), tokens[1], tokens[0]);
+	    return create(TypeReference.decode(tokens[2]), tokens[1], tokens[0]);
     }
 
 	public boolean acceptsDate() {

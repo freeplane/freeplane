@@ -344,7 +344,8 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		final List<PatternFormat> datePatterns = new FormatController().getDateFormats();
 		int selectedIndex = 0;
 		for (int i = 0; i < datePatterns.size(); ++i) {
-			SimpleDateFormat patternFormat = FormatController.getDateFormat(datePatterns.get(i).getPattern());
+			SimpleDateFormat patternFormat = FormatController.getController().getDateFormat(
+			    datePatterns.get(i).getPattern());
 			values.add(new DateFormatComboBoxElement(patternFormat));
 			if (patternFormat.toPattern().equals(dateFormatPattern)) {
 				dateFormat = patternFormat;
@@ -413,7 +414,8 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 	    	parentWindow = SwingUtilities.getWindowAncestor(appendButton);
 	    }
 	    final Component mostRecentFocusOwner = parentWindow.getMostRecentFocusOwner();
-	    if (mostRecentFocusOwner instanceof JTextComponent) {
+		if (mostRecentFocusOwner instanceof JTextComponent
+		        && !(mostRecentFocusOwner.getClass().getName().contains("JSpinField"))) {
 	    	final JTextComponent textComponent = (JTextComponent) mostRecentFocusOwner;
 	    	textComponent.replaceSelection(dateAsString);
 	    	return;

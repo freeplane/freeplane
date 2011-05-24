@@ -28,6 +28,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import org.freeplane.main.application.FreeplaneStarter;
+import org.freeplane.main.mindmapmode.MModeControllerFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -39,13 +40,17 @@ public class ParserTest {
 	private static final String TYPE_DATETIME = IFormattedObject.TYPE_DATETIME;
 	private static String datePattern;
 	private static String datetimePattern;
+	private static FormatController formatController;
 
 	@BeforeClass
 	public static void initStatics() {
 		// FIXME: we have to start Freeplane to create a Controller for script execution
+		System.setProperty("org.freeplane.nosplash", "true");
 		new FreeplaneStarter().createController();
-		datePattern = ((SimpleDateFormat) FormatController.getDefaultFormat(TYPE_DATE)).toPattern();
-		datetimePattern = ((SimpleDateFormat) FormatController.getDefaultFormat(TYPE_DATETIME)).toPattern();
+		MModeControllerFactory.createModeController();
+		formatController = FormatController.getController();
+		datePattern = ((SimpleDateFormat) formatController.getDefaultFormat(TYPE_DATE)).toPattern();
+		datetimePattern = ((SimpleDateFormat) formatController.getDefaultFormat(TYPE_DATETIME)).toPattern();
 	}
 
 	@Test

@@ -45,8 +45,20 @@
 			tofile="lib/jortho.jar"
 			/>
 	</target>
+
+	<target name="localelist">
+		<!-- updates translations/locales.txt -->
+		<fileset id="resourcebundles" dir="${root}">
+			<include name="resources/translations/*.properties" />
+			<include name="viewer-resources/translations/*.properties" />
+		</fileset>
+		<pathconvert pathsep="${line.separator}" property="locales" refid="resourcebundles">
+			<mapper type="regexp" from=".*Resources_(.*)\.properties" to="\1"/>
+		</pathconvert>
+		<echo file="${root}/resources/translations/locales.txt">${locales}</echo>
+	</target>
 	
-	<target name="build" depends="prepare_jortho">
+	<target name="build" depends="prepare_jortho,localelist">
 		<antcall target="check-translation" />
 		<mkdir dir="${build}" />
 		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" 

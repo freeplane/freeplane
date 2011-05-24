@@ -38,11 +38,12 @@ public class FormattedNumber extends Number implements IFormattedObject, Compara
 	private final boolean isDefaultFormat;
 
 	public FormattedNumber(final Number number) {
-		this(number, FormatController.getDefaultNumberFormat());
+		this(number, FormatController.getController().getDefaultNumberFormat());
 	}
 
 	public FormattedNumber(final Number number, final String pattern) {
-		this(number, pattern, number == null ? null : FormatController.getDecimalFormat(pattern).format(number));
+		this(number, pattern, number == null ? null //
+		        : FormatController.getController().getDecimalFormat(pattern).format(number));
 	}
 
 	public FormattedNumber(final Number number, final String pattern, final String formattedString) {

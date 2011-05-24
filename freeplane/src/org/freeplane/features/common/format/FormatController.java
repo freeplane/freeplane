@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,14 +39,17 @@ import java.util.Properties;
 import java.util.Vector;
 
 import org.apache.commons.lang.StringUtils;
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IValidator;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.common.map.ModeController;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -57,21 +61,23 @@ import org.freeplane.n3.nanoxml.XMLWriter;
  * @author Volker Boerchers
  */
 public class FormatController implements IExtension {
+	private static final String FORMAT_LOCALE = "format_locale";
 	private static final String RESOURCES_NUMBER_FORMAT = "number_format";
 	private static final String RESOURCES_DATETIME_FORMAT = "datetime_format";
 	private static final String RESOURCES_DATE_FORMAT = "date_format";
 	private static final String FORMATS_XML = "formats.xml";
 	private static final String ROOT_ELEMENT = "formats";
 	private String pathToFile;
-	private static List<PatternFormat> dateFormats = new ArrayList<PatternFormat>();
-	private static List<PatternFormat> numberFormats = new ArrayList<PatternFormat>();
-	private static List<PatternFormat> stringFormats = new ArrayList<PatternFormat>();
-	private static boolean formatsLoaded;
-	private static SimpleDateFormat defaultDateFormat;
-	private static SimpleDateFormat defaultDateTimeFormat;
-	private static HashMap<String, SimpleDateFormat> dateFormatCache = new HashMap<String, SimpleDateFormat>();
-	private static DecimalFormat defaultNumberFormat;
-	private static HashMap<String, DecimalFormat> numberFormatCache = new HashMap<String, DecimalFormat>();
+	private Locale locale;
+	private List<PatternFormat> dateFormats = new ArrayList<PatternFormat>();
+	private List<PatternFormat> numberFormats = new ArrayList<PatternFormat>();
+	private List<PatternFormat> stringFormats = new ArrayList<PatternFormat>();
+	private boolean formatsLoaded;
+	private SimpleDateFormat defaultDateFormat;
+	private SimpleDateFormat defaultDateTimeFormat;
+	private HashMap<String, SimpleDateFormat> dateFormatCache = new HashMap<String, SimpleDateFormat>();
+	private DecimalFormat defaultNumberFormat;
+	private HashMap<String, DecimalFormat> numberFormatCache = new HashMap<String, DecimalFormat>();
 
 	public IValidator createValidator (){
 	    return new IValidator() {
@@ -99,21 +105,42 @@ public class FormatController implements IExtension {
 			}
 		};
 	}
-	
+
 	public FormatController() {
-		pathToFile = ResourceController.getResourceController().getFreeplaneUserDirectory() + File.separator
-		        + FORMATS_XML;
+		final String freeplaneUserDirectory = ResourceController.getResourceController().getFreeplaneUserDirectory();
+		// applets have no user directory and no file access anyhow
+		pathToFile = freeplaneUserDirectory == null ? null : freeplaneUserDirectory + File.separator + FORMATS_XML;
+		locale = getFormatLocaleFromResources();
 		initPatternFormats();
 	}
+
+	public static FormatController getController() {
+		return getController(Controller.getCurrentModeController());
+	}
+
+	public static FormatController getController(ModeController modeController) {
+		return (FormatController) modeController.getExtension(FormatController.class);
+	}
+	
+	public static void install(final FormatController formatController) {
+		Controller.getCurrentModeController().addExtension(FormatController.class, formatController);
+	}
+
+	private static Locale getFormatLocaleFromResources() {
+	    final String formatLoc = ResourceController.getResourceController().getProperty(FORMAT_LOCALE);
+		return formatLoc.equals(ResourceBundles.LANGUAGE_AUTOMATIC) ? Locale.getDefault() : new Locale(formatLoc);
+    }
 
 	private void initPatternFormats() {
 		if (formatsLoaded)
 			return;
 		try {
-			loadFormats();
+			if (pathToFile != null)
+				loadFormats();
 			if (numberFormats.isEmpty() && dateFormats.isEmpty() && stringFormats.isEmpty()) {
 				addStandardFormats();
-				saveFormatsNoThrow();
+				if (pathToFile != null)
+					saveFormatsNoThrow();
 			}
 			formatsLoaded = true;
 		}
@@ -125,33 +152,32 @@ public class FormatController implements IExtension {
 
 	private void addStandardFormats() {
 		String number = IFormattedObject.TYPE_NUMBER;
-		numberFormats.add(PatternFormat.createPatternFormat("#0.####", PatternFormat.STYLE_DECIMAL, number,
-		    "default number"));
-		numberFormats.add(PatternFormat.createPatternFormat("#.00", PatternFormat.STYLE_DECIMAL, number, "decimal"));
-		numberFormats.add(PatternFormat.createPatternFormat("#", PatternFormat.STYLE_DECIMAL, number, "integer"));
-		numberFormats.add(PatternFormat.createPatternFormat("#.##%", PatternFormat.STYLE_DECIMAL, number, "percent"));
+		numberFormats.add(PatternFormat.create("#0.####", PatternFormat.STYLE_DECIMAL, number,
+		    "default number", locale));
+		numberFormats.add(PatternFormat.create("#.00", PatternFormat.STYLE_DECIMAL, number, "decimal", locale));
+		numberFormats.add(PatternFormat.create("#", PatternFormat.STYLE_DECIMAL, number, "integer", locale));
+		numberFormats.add(PatternFormat.create("#.##%", PatternFormat.STYLE_DECIMAL, number, "percent", locale));
 		String dType = IFormattedObject.TYPE_DATE;
 		final String dStyle = PatternFormat.STYLE_DATE;
 		dateFormats.add(createLocalPattern("short date", SimpleDateFormat.SHORT, null));
 		dateFormats.add(createLocalPattern("medium date", SimpleDateFormat.MEDIUM, null));
 		dateFormats.add(createLocalPattern("short datetime", SimpleDateFormat.SHORT, SimpleDateFormat.SHORT));
 		dateFormats.add(createLocalPattern("medium datetime", SimpleDateFormat.MEDIUM, SimpleDateFormat.SHORT));
-		dateFormats.add(PatternFormat.createPatternFormat("yyyy-MM-dd", dStyle, dType, "short iso date"));
-		dateFormats.add(PatternFormat.createPatternFormat("yyyy-MM-dd HH:mm", dStyle, dType, "long iso date"));
-		dateFormats.add(PatternFormat.createPatternFormat(FormattedDate.ISO_DATE_TIME_FORMAT_PATTERN, dStyle, dType,
-		    "full iso date"));
+		dateFormats.add(PatternFormat.create("yyyy-MM-dd", dStyle, dType, "short iso date", locale));
+		dateFormats.add(PatternFormat.create("yyyy-MM-dd HH:mm", dStyle, dType, "long iso date", locale));
+		dateFormats.add(PatternFormat.create(FormattedDate.ISO_DATE_TIME_FORMAT_PATTERN, dStyle, dType,
+		    "full iso date", locale));
 	}
 
 	private PatternFormat createLocalPattern(String name, int dateStyle, Integer timeStyle) {
 		final SimpleDateFormat simpleDateFormat = (SimpleDateFormat) (timeStyle == null ? SimpleDateFormat
-		    .getDateInstance(dateStyle) : SimpleDateFormat.getDateTimeInstance(dateStyle, timeStyle));
+		    .getDateInstance(dateStyle, locale) : SimpleDateFormat.getDateTimeInstance(dateStyle, timeStyle, locale));
 		final String dStyle = PatternFormat.STYLE_DATE;
 		final String dType = IFormattedObject.TYPE_DATE;
-		final String locale = Locale.getDefault().toString();
-		return PatternFormat.createPatternFormat(simpleDateFormat.toPattern(), dStyle, dType, name, locale);
+		return PatternFormat.create(simpleDateFormat.toPattern(), dStyle, dType, name, locale);
 	}
 
-	void loadFormats() throws Exception {
+	private void loadFormats() throws Exception {
 		try {
 			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
 			final IXMLReader reader = new StdXMLReader(new BufferedInputStream(new FileInputStream(pathToFile)));
@@ -170,9 +196,8 @@ public class FormatController implements IExtension {
 					        + ", element content=" + content);
 				}
 				else {
-					final PatternFormat format = PatternFormat.createPatternFormat(content, style, type);
-					format.setName(name);
-					format.setLocale(locale);
+					final PatternFormat format = PatternFormat.create(content, style, type, name,
+					    (locale == null ? null : new Locale(locale)));
 					if (type.equals(IFormattedObject.TYPE_DATE)) {
 						dateFormats.add(format);
 					}
@@ -263,7 +288,7 @@ public class FormatController implements IExtension {
 	 * Removes format if formatString is null. */
 	public static Object format(final Object obj, final String formatString) {
 		try {
-			final PatternFormat format = formatString == null ? null : PatternFormat.guessPatternFormat(formatString);
+			final PatternFormat format = PatternFormat.guessPatternFormat(formatString);
 			// logging for invalid pattern is done in guessPatternFormat()
 			if (obj == null)
 				return obj;
@@ -288,7 +313,7 @@ public class FormatController implements IExtension {
 		}
 	}
 
-	public static Format getDefaultFormat(String type) {
+	public Format getDefaultFormat(String type) {
 		if (type.equals(IFormattedObject.TYPE_DATE))
 			return getDefaultDateFormat();
 		else if (type.equals(IFormattedObject.TYPE_DATETIME))
@@ -299,7 +324,7 @@ public class FormatController implements IExtension {
 			throw new IllegalArgumentException("unknown format style");
 	}
 
-	public static SimpleDateFormat getDefaultDateFormat() {
+	public SimpleDateFormat getDefaultDateFormat() {
 		if (defaultDateFormat != null)
 			return defaultDateFormat;
 		final ResourceController resourceController = ResourceController.getResourceController();
@@ -317,12 +342,12 @@ public class FormatController implements IExtension {
 	private static SimpleDateFormat createDateFormat(final String datePattern) {
 		final Integer style = getDateStyle(datePattern);
 		if (style != null)
-			return (SimpleDateFormat) DateFormat.getDateInstance(style);
+			return (SimpleDateFormat) DateFormat.getDateInstance(style, getFormatLocaleFromResources());
 		else
-			return new SimpleDateFormat(datePattern);
+			return new SimpleDateFormat(datePattern, getFormatLocaleFromResources());
 	}
 
-	public static SimpleDateFormat getDefaultDateTimeFormat() {
+	public SimpleDateFormat getDefaultDateTimeFormat() {
 		if (defaultDateTimeFormat != null)
 			return defaultDateTimeFormat;
 		final ResourceController resourceController = ResourceController.getResourceController();
@@ -338,12 +363,13 @@ public class FormatController implements IExtension {
 		return defaultDateTimeFormat;
 	}
 
-	private static SimpleDateFormat createDefaultDateTimeFormat(String datetimePattern) {
+	private SimpleDateFormat createDefaultDateTimeFormat(String datetimePattern) {
 		final String[] styles = datetimePattern.split("\\s*,\\s*");
 		if (styles.length == 2 && getDateStyle(styles[0]) != null && getDateStyle(styles[1]) != null)
-			return (SimpleDateFormat) DateFormat.getDateTimeInstance(getDateStyle(styles[0]), getDateStyle(styles[1]));
+			return (SimpleDateFormat) DateFormat.getDateTimeInstance(getDateStyle(styles[0]), getDateStyle(styles[1]),
+			    getFormatLocaleFromResources());
 		else
-			return new SimpleDateFormat(datetimePattern);
+			return getDateFormat(datetimePattern);
 	}
 
 	private static Integer getDateStyle(final String string) {
@@ -357,9 +383,8 @@ public class FormatController implements IExtension {
 			return DateFormat.FULL;
 		return null;
 	}
-	
 
-	public static DecimalFormat getDefaultNumberFormat() {
+	public DecimalFormat getDefaultNumberFormat() {
 		if (defaultNumberFormat != null)
 			return defaultNumberFormat;
 	    final ResourceController resourceController = ResourceController.getResourceController();
@@ -375,20 +400,20 @@ public class FormatController implements IExtension {
     }
 
 	/** @param pattern either a string (see {@link DecimalFormat}) or null for a default formatter. */
-	public static DecimalFormat getDecimalFormat(final String pattern) {
+	public DecimalFormat getDecimalFormat(final String pattern) {
 		DecimalFormat format = numberFormatCache.get(pattern);
 		if (format == null) {
 			format = (DecimalFormat) ((pattern == null) ? getDefaultNumberFormat()
-			        : new DecimalFormat(pattern));
+			        : new DecimalFormat(pattern, new DecimalFormatSymbols(getFormatLocaleFromResources())));
 			numberFormatCache.put(pattern, format);
 		}
 		return format;
 	}
 
-	public static SimpleDateFormat getDateFormat(String pattern) {
+	public SimpleDateFormat getDateFormat(String pattern) {
 	    SimpleDateFormat parser = dateFormatCache.get(pattern);
         if (parser == null) {
-        	parser = new SimpleDateFormat(pattern);
+        	parser = new SimpleDateFormat(pattern, getFormatLocaleFromResources());
         	dateFormatCache.put(pattern, parser);
         }
 	    return parser;

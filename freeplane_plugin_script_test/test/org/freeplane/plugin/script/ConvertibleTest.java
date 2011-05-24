@@ -33,6 +33,7 @@ public class ConvertibleTest {
 	@BeforeClass
 	public static void initStatics() {
 		// FIXME: we have to start Freeplane to create a Controller for script execution
+		System.setProperty("org.freeplane.nosplash", "true");
 		new FreeplaneStarter().createController();
 		// the package of this test is choosen in order to be allowed to access this method:
 		ScriptingEngine.setNoUserPermissionRequired(true);
