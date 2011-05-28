@@ -947,7 +947,7 @@ public class NodeView extends JComponent implements INodeView {
 					if (isRoot) {
 						paintCloud(g);
 					}
-					paintCloudsAndEdges(g2);
+                    paintClouds(g2);
 					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 			}
 			super.paint(g);
@@ -956,6 +956,7 @@ public class NodeView extends JComponent implements INodeView {
 				case ALL:
 					g2.setStroke(BubbleMainView.DEF_STROKE);
 					modeController.getController().getViewController().setEdgesRenderingHint(g2);
+                    paintEdges(g2);
 					paintDecoration(g2);
 					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 			}
@@ -986,32 +987,47 @@ public class NodeView extends JComponent implements INodeView {
 		cloud.paint(g);
 	}
 
-	private void paintCloudsAndEdges(final Graphics2D g) {
-		for (int i = getComponentCount() - 1; i >= 0; i--) {
-			final Component component = getComponent(i);
-			if (!(component instanceof NodeView)) {
-				continue;
-			}
-			final NodeView nodeView = (NodeView) component;
-			if (nodeView.isContentVisible()) {
-				final Point p = new Point();
-				UITools.convertPointToAncestor(nodeView, p, this);
-				g.translate(p.x, p.y);
-				nodeView.paintCloud(g);
-				g.translate(-p.x, -p.y);
-				if (getMap().getLayoutType() != MapViewLayout.OUTLINE && nodeView.isSummary()) {
-					paintSummaryEdge(g, nodeView, i);
-				}
-				else {
-					final EdgeView edge = EdgeViewFactory.getInstance().getEdge(nodeView);
-					edge.paint(g);
-				}
-			}
-			else {
-				nodeView.paintCloudsAndEdges(g);
-			}
-		}
-	}
+    private void paintClouds(final Graphics2D g) {
+        for (int i = getComponentCount() - 1; i >= 0; i--) {
+            final Component component = getComponent(i);
+            if (!(component instanceof NodeView)) {
+                continue;
+            }
+            final NodeView nodeView = (NodeView) component;
+            if (nodeView.isContentVisible()) {
+                final Point p = new Point();
+                UITools.convertPointToAncestor(nodeView, p, this);
+                g.translate(p.x, p.y);
+                nodeView.paintCloud(g);
+                g.translate(-p.x, -p.y);
+             }
+            else {
+                nodeView.paintClouds(g);
+            }
+        }
+    }
+
+    private void paintEdges(final Graphics2D g) {
+        for (int i = getComponentCount() - 1; i >= 0; i--) {
+            final Component component = getComponent(i);
+            if (!(component instanceof NodeView)) {
+                continue;
+            }
+            final NodeView nodeView = (NodeView) component;
+            if (nodeView.isContentVisible()) {
+                if (getMap().getLayoutType() != MapViewLayout.OUTLINE && nodeView.isSummary()) {
+                    paintSummaryEdge(g, nodeView, i);
+                }
+                else {
+                    final EdgeView edge = EdgeViewFactory.getInstance().getEdge(nodeView);
+                    edge.paint(g);
+                }
+            }
+            else {
+                nodeView.paintEdges(g);
+            }
+        }
+    }
 
 	private void paintSummaryEdge(Graphics2D g, NodeView nodeView, int pos) {
 		final boolean isLeft = nodeView.isLeft();
