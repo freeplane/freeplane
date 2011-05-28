@@ -29,7 +29,7 @@ public class StarCloudView extends CloudView {
 	}
 	@Override
     protected double getDistanceToConvexHull() {
-	    return 1.5 * super.getDistanceToConvexHull();
+	    return 3 * super.getDistanceToConvexHull();
     }
 	
 }

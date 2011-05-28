@@ -41,4 +41,9 @@ public class RectangleCloudView extends CloudView {
     protected void paintDecoration(Graphics2D g, Graphics2D gstroke, double x0, double y0, double x1, double y1,
                                    double dx, double dy, double dxn, double dyn) {	    
     }
+
+    @Override
+    protected double getDistanceToConvexHull() {
+        return 0.5 * super.getDistanceToConvexHull();
+    }
 }

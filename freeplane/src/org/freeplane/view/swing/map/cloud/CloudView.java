@@ -77,7 +77,7 @@ abstract public class CloudView {
 	}
 
 	protected double getDistanceToConvexHull() {
-		return 40 / (getIterativeLevel() + 1) * getZoom();
+		return 20 / (getIterativeLevel() + 1) * getZoom();
 	}
 
 	public Color getExteriorColor(final Color color) {
