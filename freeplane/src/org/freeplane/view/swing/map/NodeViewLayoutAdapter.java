@@ -244,7 +244,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             }
             
             final boolean isSummary = child.isSummary();
-            final boolean isItem = ! (isSummary && i > 0);
+            final boolean isItem = ! (isSummary && visibleChildCounter > 0);
             final int oldLevel = level;
             if(isItem){
                 level = 0;
@@ -267,7 +267,10 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                 }
                 top -= childContentShift;
 
-                y += childCloudHeigth/2;
+                if (visibleChildCounter == 0)
+                    top += childCloudHeigth/2;
+                else
+                    y += childCloudHeigth/2;
                 if (childShiftY < 0) {
                     data.ly[i] = y;
                     y -= childShiftY;
