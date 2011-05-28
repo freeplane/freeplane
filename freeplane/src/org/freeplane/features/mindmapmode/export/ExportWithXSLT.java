@@ -129,7 +129,8 @@ public class ExportWithXSLT extends AExportEngine {
 		try {
 			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
 			    pDirectoryName + File.separator + "map" + UrlManager.FREEPLANE_FILE_EXTENSION)));
-			Controller.getCurrentModeController().getMapController().getFilteredXml(map, fileout, Mode.EXPORT, true);
+			final Mode mode = Mode.valueOf(getProperty("copymode", Mode.EXPORT.name()));
+			Controller.getCurrentModeController().getMapController().getFilteredXml(map, fileout, mode, Mode.EXPORT.equals(mode));
 		}
 		catch (final IOException e) {
 			success = false;
@@ -180,7 +181,7 @@ public class ExportWithXSLT extends AExportEngine {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final Controller controller = modeController.getController();
 		final MapModel map = controller.getMap();
-		modeController.getMapController().getFilteredXml(map, writer, mode, true);
+		modeController.getMapController().getFilteredXml(map, writer, mode, Mode.EXPORT.equals(mode));
 		return writer.getBuffer().toString();
 	}
 

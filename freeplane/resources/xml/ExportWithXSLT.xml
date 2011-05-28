@@ -36,6 +36,7 @@
             files_to_copy="freeplaneviewer.jar"
             file_prefix="$org.freeplane.core.dir.lib"
             copy_map="true"
+            copymode="FILE"
             load_file="true" />
     </action>
     <action
