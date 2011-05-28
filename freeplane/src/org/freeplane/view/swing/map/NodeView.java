@@ -1025,9 +1025,9 @@ public class NodeView extends JComponent implements INodeView {
 		boolean firstGroupNodeFound = false;
 		for (i = pos - 1; i >= 0; i--) {
 			final NodeView nodeViewSibling = (NodeView) getComponent(i);
-			if (nodeViewSibling.isLeft() != isLeft || nodeViewSibling.getHeight() == 2 * spaceAround)
+			if (nodeViewSibling.isLeft() != isLeft)
 				continue;
-			if (lastView == null) {
+			if (lastView == null && nodeViewSibling.getHeight() != 2 * spaceAround) {
 				lastView = nodeViewSibling;
 			}
 			if(! itemFound){ 
