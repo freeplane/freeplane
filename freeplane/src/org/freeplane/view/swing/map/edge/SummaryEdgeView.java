@@ -62,13 +62,19 @@ public class SummaryEdgeView extends EdgeView {
 	}
 
 	private Shape update() {
-		final int sign = (getTarget().isLeft()) ? -1 : 1;
+		final boolean isLeft = getTarget().isLeft();
+        final int sign = isLeft ? -1 : 1;
 		final int xctrl = getMap().getZoomed(sign * SummaryEdgeView.XCTRL);
-		final int childXctrl = getMap().getZoomed(-1 * sign * SummaryEdgeView.CHILD_XCTRL);
+		final int childXctrl = getMap().getZoomed(sign * SummaryEdgeView.CHILD_XCTRL);
 		final GeneralPath path = new GeneralPath(GeneralPath.WIND_EVEN_ODD, 5);
-		path.moveTo(start.x + xctrl, start.y);
-		path.lineTo(start.x + xctrl * 2, start.y);
-		path.curveTo(start.x + xctrl * 3, start.y, end.x + childXctrl, end.y, end.x, end.y);
+		final int startX; 
+		if(isLeft)
+		    startX = Math.min(start.x, end.x - childXctrl);
+		else
+            startX = Math.max(start.x, end.x - childXctrl);
+        path.moveTo(startX + xctrl, start.y);
+		path.lineTo(startX + 2 *xctrl, start.y);
+		path.curveTo(startX + 3 * xctrl, start.y, end.x - childXctrl, end.y, end.x, end.y);
 		return path;
 	}
 
