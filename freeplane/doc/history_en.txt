@@ -3,9 +3,9 @@
 ===============================
 Auto formatting of numbers
 Formatting of attributes
-Free node positioning
 Improved connector editor
 Configurable parsing of dates and numbers
+filter conditions "Attribute contains", "Attribute matches" and "Icon exists"
 
 ===============================
 1.2.5 alpha
