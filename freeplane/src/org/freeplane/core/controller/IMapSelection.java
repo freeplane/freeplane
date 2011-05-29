@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.controller;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.freeplane.features.common.map.NodeModel;
@@ -57,4 +58,6 @@ public interface IMapSelection {
 	public int size();
 
 	public void toggleSelected(final NodeModel node);
+	
+	public void replaceSelection(NodeModel[] nodes);
 }

@@ -167,17 +167,22 @@ public class MNodeDropListener implements DropTargetListener {
 						}
 						actualNode = (actualNode.isRoot()) ? null : actualNode.getParentNode();
 					} while (actualNode != null);
+	                final NodeModel[] array = selecteds.toArray(new NodeModel[selecteds.size()]);
 					final List<NodeModel> sortedSelection = controller.getSelection().getSortedSelection(true);
 					for (final NodeModel node : sortedSelection) {
 						mapController.moveNode(node, targetNode, dropAsSibling, isLeft, isLeft != node.isLeft());
 					}
+					if(dropAsSibling || ! targetNode.isFolded())
+					    controller.getSelection().replaceSelection(array);
+					else
+					    controller.getSelection().selectAsTheOnlyOneSelected(targetNode);
 				}
 				else {
 					trans = ClipboardController.getController().copy(controller.getSelection());
 					((MClipboardController) ClipboardController.getController()).paste(trans, targetNode,
 					    dropAsSibling, isLeft);
+	                controller.getSelection().selectAsTheOnlyOneSelected(targetNode);
 				}
-				controller.getSelection().selectAsTheOnlyOneSelected(targetNode);
 			}
 		}
 		catch (final Exception e) {

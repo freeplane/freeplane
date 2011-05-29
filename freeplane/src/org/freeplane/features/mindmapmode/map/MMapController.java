@@ -387,7 +387,10 @@ public class MMapController extends MapController {
 			child.setParent(newParent);
 			child.setLeft(isLeft);
 		}
-		newParent.insert(child, newIndex);
+		if(oldParent.equals(newParent) && oldIndex < newIndex)
+		    newParent.insert(child, newIndex-1);
+		else
+		    newParent.insert(child, newIndex);
 		fireNodeMoved(oldParent, oldIndex, newParent, child, newIndex);
 		setSaved(newParent.getMap(), false);
 		return newIndex;

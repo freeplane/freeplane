@@ -233,6 +233,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			MapView.this.toggleSelected(getNodeView(node), true);
 		}
 
+        public void replaceSelection(NodeModel[] nodes) {
+            if(nodes.length == 0)
+                return;
+            NodeView views[] = new NodeView[nodes.length];
+            int i = 0;
+            for(NodeModel node : nodes)
+                views[i++] = getNodeView(node);
+            MapView.this.replaceSelection(views);
+        }
+
 	}
 
 	private class Selection {
@@ -298,7 +308,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 
 		public void remove(final NodeView node) {
-			if (mySelected.indexOf(node) == 0) {
+			if (mySelected.get(0).equals(node)) {
 				removeSelectionForHooks(node);
 			}
 			mySelected.remove(node);
@@ -314,6 +324,21 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		public int size() {
 			return mySelected.size();
 		}
+
+        public void replace(NodeView[] views) {
+            if(views.length == 0)
+                return;
+            final boolean selectedChanges = !mySelected.get(0).equals(views[0]);
+            if (selectedChanges) {
+                removeSelectionForHooks(mySelected.get(0));
+            }
+            mySelected.clear();
+            for(NodeView view : views)
+                mySelected.add(view);
+            if (selectedChanges) {
+                addSelectionForHooks(mySelected.get(0));
+            }
+        }
 	}
 
 	private static final int margin = 20;
@@ -396,7 +421,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		disableMoveCursor = ResourceController.getResourceController().getBooleanProperty("disable_cursor_move_paper");
 	}
 
-	// generics trickery
+	public void replaceSelection(NodeView[] views) {
+        selection.replace(views);
+        
+    }
+
+    // generics trickery
 	private Set<AWTKeyStroke> emptyNodeViewSet() {
 	    return Collections.emptySet();
     }
