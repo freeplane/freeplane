@@ -25,6 +25,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
+import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.NamedObject;
@@ -74,45 +75,26 @@ class AttributeConditionController implements IElementaryConditionController {
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_DOES_NOT_EXIST)) {
 			return new AttributeNotExistsCondition(attribute);
 		}
-		if (matchCase) {
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-				return new AttributeCompareCondition(attribute, value, true, 0, true);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_NOT_EQUAL_TO)) {
-				return new AttributeCompareCondition(attribute, value, true, 0, false);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_GT)) {
-				return new AttributeCompareCondition(attribute, value, true, 1, true);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_GE)) {
-				return new AttributeCompareCondition(attribute, value, true, -1, false);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_LT)) {
-				return new AttributeCompareCondition(attribute, value, true, -1, true);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_LE)) {
-				return new AttributeCompareCondition(attribute, value, true, 1, false);
-			}
+		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
+		    return new AttributeCompareCondition(attribute, value, matchCase, 0, true);
 		}
-		else {
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-				return new AttributeCompareCondition(attribute, value, false, 0, true);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_NOT_EQUAL_TO)) {
-				return new AttributeCompareCondition(attribute, value, false, 0, false);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_GT)) {
-				return new AttributeCompareCondition(attribute, value, false, 1, true);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_GE)) {
-				return new AttributeCompareCondition(attribute, value, false, -1, false);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_LT)) {
-				return new AttributeCompareCondition(attribute, value, false, -1, true);
-			}
-			if (simpleCondition.objectEquals(ConditionFactory.FILTER_LE)) {
-				return new AttributeCompareCondition(attribute, value, false, 1, false);
-			}
+		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_NOT_EQUAL_TO)) {
+		    return new AttributeCompareCondition(attribute, value, matchCase, 0, false);
+		}
+		if (simpleCondition.objectEquals(ConditionFactory.FILTER_GT)) {
+		    return new AttributeCompareCondition(attribute, value, matchCase, 1, true);
+		}
+		if (simpleCondition.objectEquals(ConditionFactory.FILTER_GE)) {
+		    return new AttributeCompareCondition(attribute, value, matchCase, -1, false);
+		}
+		if (simpleCondition.objectEquals(ConditionFactory.FILTER_LT)) {
+		    return new AttributeCompareCondition(attribute, value, matchCase, -1, true);
+		}
+		if (simpleCondition.objectEquals(ConditionFactory.FILTER_LE)) {
+		    return new AttributeCompareCondition(attribute, value, matchCase, 1, false);
+		}
+		if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
+		    return new AttributeContainsCondition(attribute, value.toString(), matchCase);
 		}
 		return null;
 	}
@@ -124,7 +106,8 @@ class AttributeConditionController implements IElementaryConditionController {
 		        TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
 		        TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
 		        NamedObject.literal(ConditionFactory.FILTER_GT), NamedObject.literal(ConditionFactory.FILTER_GE),
-		        NamedObject.literal(ConditionFactory.FILTER_LE), NamedObject.literal(ConditionFactory.FILTER_LT) });
+		        NamedObject.literal(ConditionFactory.FILTER_LE), NamedObject.literal(ConditionFactory.FILTER_LT),
+		        TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS),});
 	}
 
 	public ListModel getFilteredProperties() {
@@ -136,7 +119,10 @@ class AttributeConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
-		return TimeComboBoxEditor.getTextDateTimeEditor();
+	    if(selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS) 
+                || selectedCondition.objectEquals(ConditionFactory.FILTER_REGEXP) )
+            return new BasicComboBoxEditor();
+	    return TimeComboBoxEditor.getTextDateTimeEditor();
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object selectedItem, NamedObject simpleCond) {
