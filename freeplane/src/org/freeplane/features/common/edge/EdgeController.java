@@ -31,6 +31,7 @@ import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.map.SummaryNode;
 import org.freeplane.features.common.styles.IStyle;
 import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.MapStyleModel;
@@ -84,9 +85,13 @@ public class EdgeController implements IExtension {
 		});
 		addStyleGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<EdgeStyle, NodeModel>() {
 			public EdgeStyle getProperty(NodeModel node, final EdgeStyle currentValue) {
-				final NodeModel parentNode = node.getParentNode();
-				if(parentNode != null){
-					return getStyle(parentNode);
+			    if(SummaryNode.isSummaryNode(node)){
+			        return EdgeStyle.EDGESTYLE_SUMMARY;
+			    }
+				for(NodeModel parentNode = node.getParentNode();parentNode != null;parentNode = parentNode.getParentNode()){
+					final EdgeStyle style = getStyle(parentNode);
+					if(! EdgeStyle.EDGESTYLE_SUMMARY.equals(style))
+					    return style;
 				}
 				return STANDARD_EDGE_STYLE;
 			}

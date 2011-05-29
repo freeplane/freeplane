@@ -38,9 +38,12 @@ public class EdgeViewFactory {
 		if (edgeStyle.equals(EdgeStyle.EDGESTYLE_LINEAR)) {
 			return new LinearEdgeView(nodeView);
 		}
-		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_BEZIER)) {
-			return new BezierEdgeView(nodeView);
-		}
+        else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_BEZIER)) {
+            return new BezierEdgeView(nodeView);
+        }
+        else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_SUMMARY)) {
+            return new SummaryEdgeView(nodeView);
+        }
 		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_SHARP_LINEAR)) {
 			return new SharpLinearEdgeView(nodeView);
 		}
@@ -67,6 +70,9 @@ public class EdgeViewFactory {
 		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_BEZIER)) {
 			return new BezierEdgeView(source, target);
 		}
+		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_SUMMARY)) {
+            return new SummaryEdgeView(source, target);
+        }
 		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_SHARP_LINEAR)) {
 			return new SharpLinearEdgeView(source, target);
 		}
