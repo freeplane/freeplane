@@ -61,13 +61,17 @@ class IconConditionController implements IElementaryConditionController {
 	}
 
 	public boolean canSelectValues(final Object property, final NamedObject simpleCond) {
-		return true;
-	}
+	    return !simpleCond.objectEquals(ConditionFactory.FILTER_EXIST);
+    }
 
-	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
-	                                            final Object value, final boolean ignoreCase) {
-		return value instanceof UIIcon ? new IconContainedCondition(((UIIcon) value).getName()) : null;
-	}
+    public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
+                                                final Object value, final boolean ignoreCase) {
+        if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS))
+            return value instanceof UIIcon ? new IconContainedCondition(((UIIcon) value).getName()) : null;
+        if (simpleCond.objectEquals(ConditionFactory.FILTER_EXIST))
+            return new IconExistsCondition();
+        return null;
+    }
 
 	public ComboBoxModel getConditionsForProperty(final Object property) {
 		return new DefaultComboBoxModel(getIconConditionNames());
@@ -80,7 +84,10 @@ class IconConditionController implements IElementaryConditionController {
 	}
 
 	public Object[] getIconConditionNames() {
-		return new NamedObject[] { TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS), };
+		return new NamedObject[] { 
+	            TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS), 
+	            TextUtils.createTranslatedString(ConditionFactory.FILTER_EXIST), 
+		};
 	}
 
 	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
@@ -88,10 +95,10 @@ class IconConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object property, NamedObject simpleCond) {
-		final ListModel icons = Controller.getCurrentController().getMap().getIconRegistry().getIconsAsListModel();
-		final ExtendedComboBoxModel extendedComboBoxModel = new ExtendedComboBoxModel();
-		extendedComboBoxModel.setExtensionList(icons);
-		return extendedComboBoxModel;
+	    final ListModel icons = Controller.getCurrentController().getMap().getIconRegistry().getIconsAsListModel();
+	    final ExtendedComboBoxModel extendedComboBoxModel = new ExtendedComboBoxModel();
+	    extendedComboBoxModel.setExtensionList(icons);
+	    return extendedComboBoxModel;
 	}
 
 	public boolean isCaseDependent(final Object property, final NamedObject simpleCond) {
