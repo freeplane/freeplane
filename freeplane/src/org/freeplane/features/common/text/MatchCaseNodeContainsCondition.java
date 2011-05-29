@@ -51,7 +51,7 @@ public class MatchCaseNodeContainsCondition extends ASelectableCondition {
 	}
 
 	private boolean checkText(final String plainTextContent) {
-		return plainTextContent.indexOf(value) > -1;
+		return plainTextContent.contains(value);
 	}
 
 	@Override

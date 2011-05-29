@@ -68,7 +68,6 @@ import org.freeplane.view.swing.map.cloud.CloudView;
 import org.freeplane.view.swing.map.cloud.CloudViewFactory;
 import org.freeplane.view.swing.map.edge.EdgeView;
 import org.freeplane.view.swing.map.edge.EdgeViewFactory;
-import org.freeplane.view.swing.map.edge.SummaryEdgeView;
 
 /**
  * This class represents a single Node of a MindMap (in analogy to

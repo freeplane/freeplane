@@ -32,7 +32,6 @@ import java.util.Vector;
 
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.cloud.CloudModel;
-import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
@@ -58,7 +57,6 @@ abstract public class CloudView {
 	CloudView(final CloudModel cloudModel, final NodeView source) {
 		this.cloudModel = cloudModel;
 		this.source = source;
-		final ModeController modeController = source.getMap().getModeController();
 		iterativeLevel = getCloudIterativeLevel();
 	}
 

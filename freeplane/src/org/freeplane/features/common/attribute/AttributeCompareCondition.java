@@ -60,9 +60,9 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 
 	/**
 	 */
-	public AttributeCompareCondition(final String attribute, final Object value, final boolean MatchCase,
+	public AttributeCompareCondition(final String attribute, final Object value, final boolean matchCase,
 	                                 final int comparationResult, final boolean succeed) {
-		super(value, MatchCase);
+		super(value, matchCase);
 		this.attribute = attribute;
 		this.comparationResult = comparationResult;
 		this.succeed = succeed;
