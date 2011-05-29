@@ -80,14 +80,14 @@ public class EdgeController implements IExtension {
 		});
 		addStyleGetter(IPropertyHandler.STYLE, new IPropertyHandler<EdgeStyle, NodeModel>() {
 			public EdgeStyle getProperty(final NodeModel node, final EdgeStyle currentValu) {
+			    if(SummaryNode.isSummaryNode(node)){
+                    return EdgeStyle.EDGESTYLE_SUMMARY;
+                }
 				return getStyleStyle(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
 			}
 		});
 		addStyleGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<EdgeStyle, NodeModel>() {
 			public EdgeStyle getProperty(NodeModel node, final EdgeStyle currentValue) {
-			    if(SummaryNode.isSummaryNode(node)){
-			        return EdgeStyle.EDGESTYLE_SUMMARY;
-			    }
 				for(NodeModel parentNode = node.getParentNode();parentNode != null;parentNode = parentNode.getParentNode()){
 					final EdgeStyle style = getStyle(parentNode);
 					if(! EdgeStyle.EDGESTYLE_SUMMARY.equals(style))

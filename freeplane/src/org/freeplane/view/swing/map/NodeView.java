@@ -1036,7 +1036,7 @@ public class NodeView extends JComponent implements INodeView {
 		int level = 0;
 		int anotherLevel = 0;
 		int i;
-		NodeView lastView = null;
+		JComponent lastView = null;
 		boolean itemFound = false;
 		boolean firstGroupNodeFound = false;
 		for (i = pos - 1; i >= 0; i--) {
@@ -1070,9 +1070,7 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		
 		if (lastView == null) {
-			final EdgeView edge = EdgeViewFactory.getInstance().getEdge(nodeView);
-			edge.paint(g);
-			return;
+			lastView = getContent();
 		}
 
 		if(i >= 0){
@@ -1096,8 +1094,12 @@ public class NodeView extends JComponent implements INodeView {
             i = 0;
 
 		anotherLevel = 0;
-		int y2 = lastView.getY() + lastView.getHeight() - spaceAround;
-		int y1 = y2;
+        int y1 = lastView.getY();
+		int y2 = y1 + lastView.getHeight();
+		if(lastView instanceof NodeView){
+            y1 += getSpaceAround();
+            y2 -= getSpaceAround();
+		}
         int x1;
         if (isLeft) {
             x1 = lastView.getX() + spaceAround;
