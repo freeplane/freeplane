@@ -128,18 +128,18 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				LinkController.getController(mc).loadURL(e);
 			}
 			else {
-				final NodeModel node = (component).getNodeView().getModel();
-				if (!mapController.hasChildren(node)) {
-					/* If the link exists, follow the link; toggle folded otherwise */
-					if (NodeLinks.getValidLink(mapController.getSelectedNode()) == null) {
-						mapController.toggleFolded();
-					}
-					else {
-						LinkController.getController(mc).loadURL(e);
-					}
-					return;
-				}
-				mapController.toggleFolded(mapController.getSelectedNodes());
+			    final NodeModel node = (component).getNodeView().getModel();
+			    if (!mapController.hasChildren(node)) {
+			        /* If the link exists, follow the link; toggle folded otherwise */
+			        if (NodeLinks.getValidLink(mapController.getSelectedNode()) == null) {
+			            mapController.toggleFolded();
+			        }
+			        else {
+			            LinkController.getController(mc).loadURL(e);
+			        }
+			        return;
+			    }
+			    mapController.toggleFolded(mapController.getSelectedNodes());
 			}
 			e.consume();
 		}
@@ -181,10 +181,8 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	}
 
 	public void mousePressed(final MouseEvent e) {
-		final Controller controller = Controller.getCurrentController();
-		final Component selectedComponent = controller.getViewController().getSelectedComponent();
 		final MainView component = (MainView) e.getComponent();
-		wasFocused = SwingUtilities.isDescendingFrom(component, selectedComponent);
+		wasFocused = component.hasFocus();
 		showPopupMenu(e);
 		extendSelection(e);
 	}
@@ -223,12 +221,13 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 
 	public boolean extendSelection(final MouseEvent e) {
 		final Controller controller = Controller.getCurrentController();
-		final NodeModel newlySelectedNodeView = ((MainView) e.getComponent()).getNodeView().getModel();
+		final MainView mainView = (MainView) e.getComponent();
+        final NodeModel newlySelectedNodeView = mainView.getNodeView().getModel();
 		final boolean extend = Compat.isMacOsX() ? e.isMetaDown() : e.isControlDown();
 		final boolean range = e.isShiftDown();
 		/* windows alt, linux altgraph .... */
 		boolean retValue = false;
-		if (extend || range || !controller.getSelection().isSelected(newlySelectedNodeView)) {
+		if (extend || range || !mainView.hasFocus()) {
 			if (!range) {
 				if (extend) {
 					controller.getSelection().toggleSelected(newlySelectedNodeView);
