@@ -93,9 +93,12 @@ class AttributeConditionController implements IElementaryConditionController {
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_LE)) {
 		    return new AttributeCompareCondition(attribute, value, matchCase, 1, false);
 		}
-		if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
-		    return new AttributeContainsCondition(attribute, value.toString(), matchCase);
-		}
+        if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
+            return new AttributeContainsCondition(attribute, value.toString(), matchCase);
+        }
+        if (simpleCondition.objectEquals(ConditionFactory.FILTER_REGEXP)) {
+            return new AttributeMatchesCondition(attribute, value.toString(), matchCase);
+        }
 		return null;
 	}
 
@@ -107,7 +110,8 @@ class AttributeConditionController implements IElementaryConditionController {
 		        TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
 		        NamedObject.literal(ConditionFactory.FILTER_GT), NamedObject.literal(ConditionFactory.FILTER_GE),
 		        NamedObject.literal(ConditionFactory.FILTER_LE), NamedObject.literal(ConditionFactory.FILTER_LT),
-		        TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS),});
+		        TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS),
+		        TextUtils.createTranslatedString(ConditionFactory.FILTER_REGEXP)});
 	}
 
 	public ListModel getFilteredProperties() {
