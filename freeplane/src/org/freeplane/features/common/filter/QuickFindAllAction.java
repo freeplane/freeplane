@@ -63,19 +63,16 @@ final class QuickFindAllAction extends AFreeplaneAction {
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		final NodeModel selected = selection.getSelected();
-		boolean nodeFound = condition.checkNode(selected);
+        final NodeModel rootNode = selected.getMap().getRootNode();
+		boolean nodeFound = condition.checkNode(rootNode);
 		if(nodeFound){
-			selection.selectAsTheOnlyOneSelected(selected);
+			selection.selectAsTheOnlyOneSelected(rootNode);
 		}
-		final NodeModel rootNode = selected.getMap().getRootNode();
 		NodeModel next = rootNode;
 		for(;;){
 			next = filterController.findNext(next, rootNode, Direction.FORWARD, condition);
 			if(next == null){
-				return;
-			}
-			if(next.equals(selected)){
-				continue;
+				break;
 			}
 			mapController.displayNode(next);
 			if(nodeFound){
@@ -86,5 +83,7 @@ final class QuickFindAllAction extends AFreeplaneAction {
 				nodeFound = true;
 			}
 		}
+		if(condition.checkNode(selected))
+		    selection.makeTheSelected(selected);
 	}
 }
