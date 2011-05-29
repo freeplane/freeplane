@@ -9,6 +9,7 @@ import java.awt.geom.Point2D;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.FocusManager;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
@@ -227,7 +228,9 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		final boolean range = e.isShiftDown();
 		/* windows alt, linux altgraph .... */
 		boolean retValue = false;
-		if (extend || range || !mainView.hasFocus()) {
+		if (extend || range 
+		        || !controller.getSelection().isSelected(newlySelectedNodeView) 
+		        || ! (FocusManager.getCurrentManager().getFocusOwner() instanceof MainView)) {
 			if (!range) {
 				if (extend) {
 					controller.getSelection().toggleSelected(newlySelectedNodeView);
