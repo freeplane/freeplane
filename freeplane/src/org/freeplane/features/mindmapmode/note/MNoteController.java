@@ -55,6 +55,7 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.styles.MapStyle;
+import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
@@ -294,27 +295,30 @@ public class MNoteController extends NoteController {
 	}
 
 	void setDefaultFont() {
-		final StyleSheet styleSheet = noteViewerComponent.getDocument().getStyleSheet();
-		styleSheet.removeStyle("body");
-		styleSheet.removeStyle("p");
-		if (ResourceController.getResourceController().getBooleanProperty(
-				MNoteController.RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO)) {
-			// set default font for notes:
-			final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
-					NodeStyleController.class);
-			MapModel map = Controller.getCurrentModeController().getController().getMap();
-			if(map != null){
-				final Font defaultFont;
-				defaultFont = style.getDefaultFont(map);
-				String rule = "body {";
-				rule += "font-family: " + defaultFont.getFamily() + ";";
-				rule += "font-size: " + defaultFont.getSize() + "pt;";
-				rule += "}\n";
-				styleSheet.addRule(rule);
-			}
-		}
-		if (ResourceController.getResourceController().getBooleanProperty(
-				MNoteController.RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES)) {
+	    final StyleSheet styleSheet = noteViewerComponent.getDocument().getStyleSheet();
+	    styleSheet.removeStyle("body");
+	    styleSheet.removeStyle("p");
+	    // set default font for notes:
+	    final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
+	        NodeStyleController.class);
+	    MapModel map = Controller.getCurrentModeController().getController().getMap();
+	    if(map != null){
+	        final Font defaultFont;
+	        defaultFont = style.getDefaultFont(map, MapStyleModel.NOTE_STYLE);
+	        String rule = "body {";
+	        rule += "font-family: " + defaultFont.getFamily() + ";";
+	        rule += "font-size: " + defaultFont.getSize() + "pt;";
+            if (defaultFont.isItalic()) {
+                rule += "font-style: italic; ";
+            }
+            if (defaultFont.isBold()) {
+                rule += "font-weight: bold; ";
+            }
+	        rule += "}\n";
+	        styleSheet.addRule(rule);
+	    }
+	    if (ResourceController.getResourceController().getBooleanProperty(
+	        MNoteController.RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES)) {
 			/* this is used for paragraph spacing. I put it here, too, as
 			 * the tooltip display uses the same spacing. But it is to be discussed.
 			 * fc, 23.3.2009.

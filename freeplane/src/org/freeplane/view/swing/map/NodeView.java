@@ -1546,4 +1546,10 @@ public class NodeView extends JComponent implements INodeView {
 		return SummaryNode.isFirstGroupNode(getModel());
 	}
 
+    public Color getDetailBackground() {
+        final Color detailBackground = getMap().getDetailBackground();
+        if(detailBackground != null)
+            return detailBackground;
+        return getBackgroundColor();
+     }
 }

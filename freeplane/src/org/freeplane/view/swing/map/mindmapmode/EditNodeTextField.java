@@ -84,6 +84,7 @@ import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 import org.freeplane.features.mindmapmode.text.EditNodeBase;
 import org.freeplane.features.mindmapmode.text.MTextController;
+import org.freeplane.view.swing.map.DetailsView;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
@@ -400,7 +401,7 @@ class EditNodeTextField extends EditNodeBase {
 		textfield.getDocument().removeDocumentListener(documentListener);
 		parent.setPreferredSize(null);
 		nodeView.update();
-		if(nodeView.isRoot())
+		if(nodeView.isRoot() && parent instanceof MainView)
 		    parent.setHorizontalAlignment(JLabel.CENTER);
 		if(layoutMapOnTextChange)
 			parent.remove(0);
@@ -460,7 +461,7 @@ class EditNodeTextField extends EditNodeBase {
 		final ViewController viewController = modeController.getController().getViewController();
 		final MTextController textController = (MTextController) TextController.getController(modeController);
 		nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, parent);
-		font = nodeView.getTextFont();
+		font = parent.getFont();
 		zoom = viewController.getZoom();
 		if (zoom != 1F) {
 			final float fontSize = (int) (Math.rint(font.getSize() * zoom));
@@ -511,7 +512,7 @@ class EditNodeTextField extends EditNodeBase {
 		inputMap.put((KeyStroke) removeFormattingAction.getValue(Action.ACCELERATOR_KEY), "removeFormattingAction");
 		actionMap.put("removeFormattingAction", removeFormattingAction);
 		
-		final Color nodeTextColor = nodeView.getTextColor();
+		final Color nodeTextColor = parent.getForeground();
 		textfield.setCaretColor(nodeTextColor);
 	    textfield.setBackground(getBackground());
 		final StringBuilder ruleBuilder = new StringBuilder(100);
@@ -578,7 +579,7 @@ class EditNodeTextField extends EditNodeBase {
 		}
 
 		final int x;
-		if(nodeView.isRoot() || ! (parent instanceof MainView)) 
+		if(nodeView.isRoot() && parent instanceof MainView) 
 		    x= (horizontalSpace + 1) / 2;
 		else{
 		    final Insets insets = parent.getInsets();
@@ -590,7 +591,7 @@ class EditNodeTextField extends EditNodeBase {
 			UITools.convertPointToAncestor(parent, location, mapView);
 		textfield.setBounds(location.x, location.y, textFieldSize.width, textFieldSize.height);
 		parent.setText("");
-        if(nodeView.isRoot())
+        if(nodeView.isRoot() && parent instanceof MainView)
             parent.setHorizontalAlignment(JLabel.LEFT);
 		if(layoutMapOnTextChange)
 			parent.add(textfield, 0);

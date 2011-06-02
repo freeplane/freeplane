@@ -19,7 +19,9 @@
  */
 package org.freeplane.view.swing.map;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 
 /**
  * @author Dimitry Polivaev
@@ -45,6 +47,20 @@ final class DetailsView extends ZoomableLabel {
     		ownPrefSize.width = mainW;
     	}
     	return ownPrefSize;
+    }
+
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        final Color background = getBackground();
+        if(background != null){
+            final Color oldColor = g.getColor();
+            g.setColor(background);
+            final int iconWidth = getIconWidth() + getIconTextGap();
+            g.fillRect(iconWidth, 0, getWidth() - iconWidth, getHeight());
+            g.setColor(oldColor);
+        }
+        super.paintComponent(g);
     }
 	
 

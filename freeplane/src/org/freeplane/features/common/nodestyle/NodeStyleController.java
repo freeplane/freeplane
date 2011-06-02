@@ -201,27 +201,11 @@ public class NodeStyleController implements IExtension {
 		return ResourceController.getResourceController().getIntProperty("defaultfontsize", 12);
 	}
 
-	public Font getDefaultFont(final MapModel map) {
+	public Font getDefaultFont(final MapModel map, final IStyle style) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
-		final NodeModel styleNode = model.getStyleNode(MapStyleModel.DEFAULT_STYLE);
-		Font baseFont = NodeStyleController.getDefaultFont();
-		if (styleNode == null) {
-			return baseFont;
-		}
-		final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
-		if (styleModel == null) {
-			return baseFont;
-		}
-		return createFont(baseFont, styleModel);
+		final NodeModel styleNode = model.getStyleNodeSafe(style);
+		return getFont(styleNode);
 	}
-
-	private Font createFont(Font baseFont, final NodeStyleModel styleModel) {
-	    final Boolean bold = styleModel.isBold();
-		final Boolean italic = styleModel.isItalic();
-		final String fontFamilyName = styleModel.getFontFamilyName();
-		final Integer fontSize = styleModel.getFontSize();
-		return createFont(baseFont, fontFamilyName, fontSize, bold, italic);
-    }
 
 	private Font getStyleFont(final Font baseFont, final MapModel map, final Collection<IStyle> collection) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);

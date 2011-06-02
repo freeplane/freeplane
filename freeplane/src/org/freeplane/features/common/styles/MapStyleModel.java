@@ -42,7 +42,9 @@ import org.freeplane.features.common.map.NodeModel;
  * Mar 12, 2009
  */
 public class MapStyleModel implements IExtension {
-	public static final IStyle DEFAULT_STYLE = new StyleNamedObject("default");
+    public static final IStyle DEFAULT_STYLE = new StyleNamedObject("default");
+    public static final IStyle DETAILS_STYLE = new StyleNamedObject("defaultstyle.details");
+    public static final IStyle NOTE_STYLE = new StyleNamedObject("defaultstyle.note");
 	private Map<IStyle, NodeModel> styleNodes;
 	private MapModel styleMap;
 	private ConditionalStyleModel conditionalStyleModel;
@@ -134,11 +136,18 @@ public class MapStyleModel implements IExtension {
 		styleNodes.remove(userObject);
 	}
 
-	public NodeModel getStyleNode(final IStyle style) {
+    public NodeModel getStyleNodeSafe(final IStyle style) {
+        final NodeModel node = getStyleNode(style);
+        if(node != null)
+            return node;
+        return  getStyleNode(DEFAULT_STYLE);
+    }
+    public NodeModel getStyleNode(final IStyle style) {
 		if(style instanceof StyleNode){
 			return ((StyleNode)style).getNode();
 		}
-		return styleNodes.get(style);
+		final NodeModel node = styleNodes.get(style);
+        return node;
 	}
 
 	public Color getBackgroundColor() {

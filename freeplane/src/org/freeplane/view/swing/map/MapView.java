@@ -87,6 +87,7 @@ import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.map.SummaryNode;
+import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.features.common.styles.MapStyleModel;
@@ -380,6 +381,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private float anchorVerticalPoint;
 	private ParentListener parentListener;
 	private NodeView nodeToBeCentered;
+    private Font noteFont;
+    private Font detailFont;
+    private Color detailForeground;
+    private Color detailBackground;
 
 	public MapView(final MapModel model, final ModeController modeController) {
 		super();
@@ -406,7 +411,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		this.setLayout(new MindMapLayout());
 		final NoteController noteController = NoteController.getController(getModeController());
 		showNotes= noteController != null && noteController.showNotesInMap(getModel());
-		initRoot();
+        updateContentStyle();
+        initRoot();
 		setBackground(requiredBackground());
 		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(model);
 		zoom = mapStyleModel.getZoom();
@@ -1005,6 +1011,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			setBackground(requiredBackground());
 			return;
 		}
+		if (property.equals(MapStyle.MAP_STYLES)){
+	        // set default font for notes:
+	        updateContentStyle();
+		}
 		if (property.equals(MapStyle.MAP_STYLES) && event.getMap().equals(model)
 		        || property.equals(MapStyle.MAX_NODE_WIDTH)
 		        || property.equals(ModelessAttributeController.ATTRIBUTE_VIEW_TYPE)
@@ -1016,6 +1026,17 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if(property.equals(NoteController.SHOW_NOTES_IN_MAP))
 			setShowNotes();
 	}
+
+    private void updateContentStyle() {
+        final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(NodeStyleController.class);
+        MapModel map = getModel();
+        noteFont = style.getDefaultFont(map, MapStyleModel.NOTE_STYLE);
+        final MapStyleModel model = MapStyleModel.getExtension(map);
+        final NodeModel detailStyleNode = model.getStyleNodeSafe(MapStyleModel.DETAILS_STYLE);
+        detailFont = style.getFont(detailStyleNode);
+        detailBackground = style.getBackgroundColor(detailStyleNode);
+        detailForeground = style.getColor(detailStyleNode);
+    }
 
 	public void move(final KeyEvent e) {
 		final NodeView newSelected = getVisibleNeighbour(e.getKeyCode());
@@ -1691,4 +1712,21 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		selectAsTheOnlyOneSelected(preferred);
     }
 
+    public Font getDefaultNoteFont() {
+        return noteFont;
+    }
+
+    public Font getDetailFont() {
+        return detailFont;
+    }
+
+    public Color getDetailForeground() {
+        return detailForeground;
+    }
+
+    public Color getDetailBackground() {
+        return detailBackground;
+    }
+    
+    
 }

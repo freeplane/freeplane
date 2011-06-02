@@ -19,11 +19,14 @@
  */
 package org.freeplane.main.application;
 
+import java.awt.Font;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
+
+import javax.swing.JLabel;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
@@ -37,6 +40,7 @@ import org.freeplane.features.common.nodestyle.NodeStyleModel;
 import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
+import org.freeplane.features.mindmapmode.note.MNoteController;
 
 /**
  * @author Dimitry Polivaev
@@ -97,11 +101,24 @@ public class UserPropertiesUpdater {
 				LogUtils.severe(e);
 			}
 		}
-		NodeModel styleNode = findDefaultStyleNode(defaultStyleMap);
+        final NodeStyleController nodeStyleController = NodeStyleController.getController(modeController);
+        updateDefaultStyle(nodeStyleController, defaultStyleMap);
+        updateNoteStyle(nodeStyleController, defaultStyleMap);
+
+        try {
+	        fm.writeToFile(defaultStyleMap, userDefault);
+        }
+        catch (IOException e) {
+        }
+        
+
+	}
+   private void updateDefaultStyle(final NodeStyleController nodeStyleController, MapModel defaultStyleMap) {
+        NodeModel styleNode1 = MapStyleModel.getExtension(defaultStyleMap).getStyleNode(MapStyleModel.DEFAULT_STYLE);
+		NodeModel styleNode = styleNode1;
 		styleNode.removeExtension(NodeStyleModel.class);
 		styleNode.removeExtension(EdgeModel.class);
 
-		final NodeStyleController nodeStyleController = NodeStyleController.getController(modeController);
 		final NodeStyleModel nodeStyleModel = new NodeStyleModel();
 
 		nodeStyleModel.setBackgroundColor(nodeStyleController.getBackgroundColor(styleNode));
@@ -113,7 +130,7 @@ public class UserPropertiesUpdater {
 		nodeStyleModel.setShape(nodeStyleController.getShape(styleNode));
 
 		styleNode.addExtension(nodeStyleModel);
-
+		
 		final EdgeModel standardEdgeModel = EdgeModel.getModel(styleNode);
 		if(standardEdgeModel != null){
 			final EdgeModel edgeModel = new EdgeModel();
@@ -122,16 +139,20 @@ public class UserPropertiesUpdater {
 			edgeModel.setWidth(standardEdgeModel.getWidth());
 			styleNode.addExtension(edgeModel);
 		}
+    }
 
-        try {
-	        fm.writeToFile(defaultStyleMap, userDefault);
-        }
-        catch (IOException e) {
-        }
-	}
-	private NodeModel findDefaultStyleNode(MapModel defaultStyleMap) {
-		NodeModel styleNode = MapStyleModel.getExtension(defaultStyleMap).getStyleNode(MapStyleModel.DEFAULT_STYLE);
-        return styleNode;
-	}
-
+   private void updateNoteStyle(final NodeStyleController nodeStyleController, MapModel defaultStyleMap) {
+       if (ResourceController.getResourceController().getBooleanProperty((MNoteController.RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO)))
+           return;
+       final NodeModel styleNode = MapStyleModel.getExtension(defaultStyleMap).getStyleNode(MapStyleModel.NOTE_STYLE);
+       if(styleNode == null)
+           return;
+       styleNode.removeExtension(NodeStyleModel.class);
+       final Font defaultFont = new JLabel().getFont();
+       final NodeStyleModel nodeStyleModel = new NodeStyleModel();
+       nodeStyleModel.setFontFamilyName(defaultFont.getFamily());
+       nodeStyleModel.setFontSize(defaultFont.getSize());
+       styleNode.addExtension(nodeStyleModel);
+   }
 }
+

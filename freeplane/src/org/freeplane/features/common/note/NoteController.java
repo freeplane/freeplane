@@ -130,18 +130,21 @@ public class NoteController implements IExtension {
 					return null;
 				}
 				final StringBuilder rule = new StringBuilder();
-				if (ResourceController.getResourceController().getBooleanProperty(
-					MNoteController.RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO)) {
-					// set default font for notes:
-					final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
-						NodeStyleController.class);
-					MapModel map = Controller.getCurrentModeController().getController().getMap();
-					if(map != null){
-						final Font defaultFont;
-						defaultFont = style.getDefaultFont(map);
-						rule.append("font-family: " + defaultFont.getFamily() + ";");
-						rule.append("font-size: " + defaultFont.getSize() + "pt;");
-					}
+				// set default font for notes:
+				final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
+				    NodeStyleController.class);
+				MapModel map = Controller.getCurrentModeController().getController().getMap();
+				if(map != null){
+				    final Font defaultFont;
+				    defaultFont = style.getDefaultFont(map, MapStyleModel.NOTE_STYLE);
+				    rule.append("font-family: " + defaultFont.getFamily() + ";");
+				    rule.append("font-size: " + defaultFont.getSize() + "pt;");
+	                if (defaultFont.isItalic()) {
+	                    rule.append("font-style: italic; ");
+	                }
+	                if (defaultFont.isBold()) {
+	                    rule.append("font-weight: bold; ");
+	                }
 				}
 				rule.append("margin-top:0;");
 				final StringBuilder tooltipBodyBegin = new StringBuilder("<body><div style=\"");

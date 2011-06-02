@@ -36,6 +36,7 @@ import org.freeplane.features.mindmapmode.text.EditNodeWYSIWYG;
 import org.freeplane.features.mindmapmode.text.IEditBaseCreator;
 import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
 import org.freeplane.view.swing.map.MainView;
+import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.MapViewController;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.ZoomableLabel;
@@ -62,10 +63,6 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 				title = "edit_details";
 			final EditNodeWYSIWYG editNodeWYSIWYG = new EditNodeWYSIWYG(title, node, text, firstEvent, editControl, true);
 			final ViewController viewController = Controller.getCurrentModeController().getController().getViewController();
-			final Font font = viewController.getFont(node);
-			editNodeWYSIWYG.setFont(font);
-			final Color nodeTextColor = viewController.getTextColor(node);
-			editNodeWYSIWYG.setTextColor(nodeTextColor);
 			if(IEditBaseCreator.EditedComponent.TEXT.equals(editedComponent)){ 
 				int preferredHeight = (int) (viewController.getComponent(node).getHeight() * 1.2);
 				preferredHeight = Math.max(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
@@ -82,10 +79,19 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 			}
 			final MainView mainView = (MainView) getComponent(node);
 	        final NodeView nodeView = mainView.getNodeView();
-			if(IEditBaseCreator.EditedComponent.TEXT.equals(editedComponent))
+			if(IEditBaseCreator.EditedComponent.TEXT.equals(editedComponent)){
+	            final Font font = viewController.getFont(node);
+	            editNodeWYSIWYG.setFont(font);
+	            final Color nodeTextColor = viewController.getTextColor(node);
+	            editNodeWYSIWYG.setTextColor(nodeTextColor);
 				editNodeWYSIWYG.setBackground (nodeView.getTextBackground());
-			else if(IEditBaseCreator.EditedComponent.DETAIL.equals(editedComponent))
-				editNodeWYSIWYG.setBackground (nodeView.getBackgroundColor());
+			}
+			else if(IEditBaseCreator.EditedComponent.DETAIL.equals(editedComponent)){
+			    final MapView map = nodeView.getMap();
+                editNodeWYSIWYG.setFont(map.getDetailFont());
+                editNodeWYSIWYG.setTextColor(map.getDetailForeground());
+                editNodeWYSIWYG.setBackground (nodeView.getDetailBackground());
+			}
 			return editNodeWYSIWYG;
 		}
 		else if (editExternal) {
@@ -123,7 +129,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 		if(IEditBaseCreator.EditedComponent.TEXT.equals(parent))
 			textField.setBackground (nodeView.getTextBackground());
 		else if(IEditBaseCreator.EditedComponent.DETAIL.equals(parent))
-			textField.setBackground (nodeView.getBackgroundColor());
+			textField.setBackground (nodeView.getDetailBackground());
 		return textField;
 	}
 

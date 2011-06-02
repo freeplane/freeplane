@@ -51,6 +51,7 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.note.NoteModel;
+import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.text.DetailTextModel;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.note.MNoteController;
@@ -279,16 +280,7 @@ class NodeViewFactory {
 			nodeView.removeContent(NodeView.NOTE_VIEWER_POSITION);
 			return;
 		}
-		if (ResourceController.getResourceController().getBooleanProperty(
-			MNoteController.RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO)) {
-			// set default font for notes:
-			final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
-				NodeStyleController.class);
-			MapModel map = nodeView.getMap().getModel();
-			final Font defaultFont;
-			defaultFont = style.getDefaultFont(map);
-			view.setFont(defaultFont);
-		}
+		view.setFont(nodeView.getMap().getDefaultNoteFont());
 		view.updateText(newText);
 		
 	}
@@ -313,10 +305,10 @@ class NodeViewFactory {
 		}
 		else {
 			detailContent.updateText(detailText.getHtml());
-			final MainView mainView = nodeView.getMainView();
-			detailContent.setFont(mainView.getFont());
-			detailContent.setForeground(mainView.getForeground());
-			detailContent.setBackground(mainView.getBackground());
+			final MapView map = nodeView.getMap();
+			detailContent.setFont(map.getDetailFont());
+			detailContent.setForeground(map.getDetailForeground());
+			detailContent.setBackground(nodeView.getDetailBackground());
 			detailContent.setIcon(new ArrowIcon(nodeView, false));
 		}
 	}
