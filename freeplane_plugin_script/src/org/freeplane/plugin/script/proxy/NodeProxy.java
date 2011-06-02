@@ -304,17 +304,19 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	// Node: R/W
-	public void moveTo(final Proxy.Node parentNode) {
-		final NodeProxy parentNodeProxy = (NodeProxy) parentNode;
-		final MMapController mapController = (MMapController) getModeController().getMapController();
-		mapController.moveNodeAsChild(getDelegate(), parentNodeProxy.getDelegate(), getDelegate().isLeft(), false);
+	public void moveTo(final Proxy.Node parentNodeProxy) {
+		final NodeModel parentNode = ((NodeProxy) parentNodeProxy).getDelegate();
+        final NodeModel movedNode = getDelegate();
+        final MMapController mapController = (MMapController) getModeController().getMapController();
+        mapController.moveNodeAsChild(movedNode, parentNode, movedNode.isLeft(), parentNode.isLeft() != movedNode.isLeft());
 	}
 
 	// Node: R/W
-	public void moveTo(final Proxy.Node parentNode, final int position) {
-		final NodeProxy parentNodeProxy = (NodeProxy) parentNode;
+	public void moveTo(final Proxy.Node parentNodeProxy, final int position) {
+        final NodeModel parentNode = ((NodeProxy) parentNodeProxy).getDelegate();
+        final NodeModel movedNode = getDelegate();
 		final MMapController mapController = (MMapController) getModeController().getMapController();
-		mapController.moveNode(getDelegate(), parentNodeProxy.getDelegate(), position, getDelegate().isLeft(), false);
+		mapController.moveNode(movedNode, parentNode, position, getDelegate().isLeft(), parentNode.isLeft() != movedNode.isLeft());
 	}
 
 	// Node: R/W
