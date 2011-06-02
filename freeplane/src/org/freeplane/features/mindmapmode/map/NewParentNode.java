@@ -91,25 +91,20 @@ public class NewParentNode extends AFreeplaneAction {
 		final int childPosition = oldParent.getChildPosition(selectedNode);
 		final NodeModel newParent = ((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(oldParent,
 		    childPosition, selectedNode.isLeft());
-		return moveToOtherNode(selectedNodes, oldParent, newParent);
-	}
-
-	private NodeModel moveToOtherNode(final List<NodeModel> selectedNodes, final NodeModel oldParent,
-	                                  final NodeModel newParent) {
-		for (final NodeModel node: selectedNodes) {
-			if (node.getParentNode() != oldParent) {
-				UITools.errorMessage(TextUtils.getText("cannot_add_parent_diff_parents"));
-				return null;
-			}
-			if (node.isRoot()) {
-				UITools.errorMessage(TextUtils.getText("cannot_add_parent_to_root"));
-				return null;
-			}
-		}
-		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
-		for (final NodeModel node : selectedNodes) {
-			mapController.moveNodeAsChild(node, newParent, false, false);
-		}
-		return newParent;
+        for (final NodeModel node: selectedNodes) {
+            if (node.getParentNode() != oldParent) {
+                UITools.errorMessage(TextUtils.getText("cannot_add_parent_diff_parents"));
+                return null;
+            }
+            if (node.isRoot()) {
+                UITools.errorMessage(TextUtils.getText("cannot_add_parent_to_root"));
+                return null;
+            }
+        }
+        final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+        for (final NodeModel node : selectedNodes) {
+            mapController.moveNodeAsChild(node, newParent, false, false);
+        }
+        return newParent;
 	}
 }
