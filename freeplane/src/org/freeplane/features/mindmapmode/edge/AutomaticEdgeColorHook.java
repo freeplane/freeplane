@@ -69,7 +69,11 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 				}
 			}
 	    }
-		
+
+        @Override
+        public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+            onNodeInserted(newParent, child, newIndex);
+        }
 	}
 
 	public AutomaticEdgeColorHook() {
