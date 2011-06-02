@@ -13,7 +13,7 @@ import org.freeplane.features.common.map.NodeModel;
  */
 public class ProgressIcons {
 	private static final long serialVersionUID = 1L;
-	public static final String EXTENDED_PROGRESS_ICON_IDENTIFIER = ".*[Pp]rogress_(tenth|quarter)_[0-9]{2}\\.[a-zA-z0-9]*";
+	public static final String EXTENDED_PROGRESS_ICON_IDENTIFIER = ".*[Pp]rogress_(tenth|quarter)_[0-9]{2}\\.[a-zA-Z0-9]*";
 	private final static String[] iconNames = new String[] { "0%", "25%", "50%", "75%", "100%" };
 	private final static MindIcon[] progressIcons = new MindIcon[] { new MindIcon(iconNames[0], iconNames[0] + ".png"),
 	        new MindIcon(iconNames[1], iconNames[1] + ".png"), new MindIcon(iconNames[2], iconNames[2] + ".png"),

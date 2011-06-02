@@ -29,7 +29,7 @@ public class ExtendedProgress25Action extends AMultipleNodeAction {
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		final File file = new File(ResourceController.getResourceController().getResourceBaseDir()
-		        + System.getProperty("file.separator") + "templates" + System.getProperty("file.separator")
+		        + System.getProperty("file.separator") + "svg" + System.getProperty("file.separator")
 		        + "Progress_quarter_00.svg");
 		final ViewerController vc = ((ViewerController) Controller.getCurrentController().getModeController()
 		    .getExtension(ViewerController.class));
