@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.filter.condition.ICondition;
 import org.freeplane.features.common.format.FormattedDate;
 import org.freeplane.features.common.format.FormattedNumber;
@@ -26,6 +27,7 @@ import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.text.DetailTextModel;
 import org.freeplane.features.common.text.TextController;
+import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.map.MMapController;
 import org.freeplane.features.mindmapmode.note.MNoteController;
@@ -75,6 +77,24 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		mapController.insertNode(newNodeModel, getDelegate(), position);
 		return new NodeProxy(newNodeModel, getScriptContext());
 	}
+
+	// Node: R/W
+	public Proxy.Node appendChild(Proxy.NodeRO node) {
+		return appendBranchImpl(node, false);
+	}
+	
+	// Node: R/W
+	public Proxy.Node appendBranch(Proxy.NodeRO node) {
+		return appendBranchImpl(node, true);
+	}
+
+	private Proxy.Node appendBranchImpl(Proxy.NodeRO node, boolean withChildren) {
+	    final MClipboardController clipboardController = (MClipboardController) ClipboardController.getController();
+		final NodeModel newNodeModel = clipboardController.duplicate(((NodeProxy) node).getDelegate(), withChildren);
+		final MMapController mapController = (MMapController) getModeController().getMapController();
+		mapController.insertNode(newNodeModel, getDelegate());
+		return new NodeProxy(newNodeModel, getScriptContext());
+    }
 
 	// Node: R/W
 	public void delete() {

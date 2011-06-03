@@ -750,6 +750,14 @@ public interface Proxy {
 		 * internal stuff */
 		Node createChild(int position);
 
+		/** inserts a copy of node as a new child.
+		 * @since 1.2 */
+		Node appendChild(NodeRO node);
+
+		/** inserts a copy of the branch starting with node as a new child branch.
+		 * @since 1.2 */
+		Node appendBranch(NodeRO node);
+		
 		void delete();
 
 		void moveTo(Node parentNode);
