@@ -125,7 +125,7 @@ public class ClipboardController implements IExtension {
 		final ListIterator<NodeModel> iterator = source.listIterator(source.size());
 		while (iterator.hasPrevious()) {
 			final NodeModel node = iterator.previous();
-			target.add(shallowCopy(node));
+			target.add(duplicate(node, false));
 		}
 		return copy(target, false);
 	}
@@ -269,12 +269,12 @@ public class ClipboardController implements IExtension {
 		}
 	}
 
-	public NodeModel shallowCopy(final NodeModel source) {
+	public NodeModel duplicate(final NodeModel source, boolean withChildren) {
 		try {
 			final StringWriter writer = new StringWriter();
 			ModeController modeController = Controller.getCurrentModeController();
 			modeController.getMapController().getMapWriter()
-			    .writeNodeAsXml(writer, source, Mode.CLIPBOARD, true, false);
+			    .writeNodeAsXml(writer, source, Mode.CLIPBOARD, true, withChildren);
 			final String result = writer.toString();
 			final NodeModel copy = modeController.getMapController().getMapReader().createNodeTreeFromXml(
 			    source.getMap(), new StringReader(result), Mode.CLIPBOARD);
