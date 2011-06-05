@@ -485,14 +485,6 @@
 		<menu_action action="CenterSelectedNodeAction" accelerator="control alt C" />
 	</menu_category>
 	<menu_category name="node_popup">
-		<menu_category name="PasteAction">
-			<menu_action action="CutAction" />
-			<menu_action action="CopyAction" />
-			<menu_action action="PasteAction" />
-		</menu_category>
-		<menu_action action="FormatCopy" accelerator="alt shift C" />
-		<menu_action action="FormatPaste" accelerator="alt shift V" />
-		<menu_separator/>
 		<menu_submenu name="new_node">
 			<menu_action action="NewChildAction" accelerator="INSERT" />
 			<menu_action action="NewSiblingAction" accelerator="ENTER" />
@@ -504,15 +496,6 @@
 			<menu_action action="FirstGroupNodeAction"/>
 			<menu_action action="SummaryNodeAction" />
 		</menu_submenu>
-		<menu_category name="EditAction">
-			<menu_action action="EditAction" />
-			<menu_action action="EditLongAction" />
-		</menu_category>		
-		<menu_category name="join">
-			<menu_action action="JoinNodesAction" accelerator="control J" />
-			<menu_action action="SplitNode" />
-		</menu_category>
-		<menu_action action="ResetNodeLocationAction" />
 		<menu_action action="DeleteAction" />					
 		<menu_separator />
 		<!-- Useless in this contextual menu ?
@@ -609,8 +592,9 @@
 				<menu_action action="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex"/>
 			</menu_submenu>
 		</menu_submenu>
-		<menu_separator/>
-
+		<menu_submenu name="styles" name_ref="styles">
+			<menu_category name="assign" menu_key="node_popup_styles"/>
+		</menu_submenu>
 		<menu_submenu name="format" name_ref="menu_format">
 			<menu_category name="font">				
 				<menu_action action="BoldAction" accelerator="control B" />
@@ -675,9 +659,23 @@
 			<menu_separator />
 			<menu_action action="RemoveFormatAction"/>
 		</menu_submenu>
-		<menu_submenu name="styles" name_ref="styles">
-			<menu_category name="assign" menu_key="node_popup_styles"/>
-		</menu_submenu>
+		<menu_separator />
+		<menu_category name="EditAction">
+			<menu_action action="EditAction" />
+			<menu_action action="EditLongAction" />
+		</menu_category>		
+		<menu_category name="join">
+			<menu_action action="JoinNodesAction" accelerator="control J" />
+			<menu_action action="SplitNode" />
+		</menu_category>
+		<menu_action action="ResetNodeLocationAction" />
+		<menu_category name="PasteAction">
+			<menu_action action="CutAction" />
+			<menu_action action="CopyAction" />
+			<menu_action action="PasteAction" />
+		</menu_category>
+		<menu_action action="FormatCopy" accelerator="alt shift C" />
+		<menu_action action="FormatPaste" accelerator="alt shift V" />
 	</menu_category>
 	<menu_category name="main_toolbar">
 		<menu_separator />
