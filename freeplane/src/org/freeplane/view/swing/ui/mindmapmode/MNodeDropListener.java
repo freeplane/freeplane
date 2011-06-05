@@ -170,7 +170,13 @@ public class MNodeDropListener implements DropTargetListener {
 	                final NodeModel[] array = selecteds.toArray(new NodeModel[selecteds.size()]);
 					final List<NodeModel> sortedSelection = controller.getSelection().getSortedSelection(true);
 					for (final NodeModel node : sortedSelection) {
-						mapController.moveNode(node, targetNode, dropAsSibling, isLeft, isLeft != node.isLeft());
+						boolean changeSide = isLeft != node.isLeft();
+                        if (dropAsSibling) {
+                        	mapController.moveNodeBefore(node, targetNode, isLeft, changeSide);
+                        }
+                        else {
+                        	mapController.moveNodeAsChild(node, targetNode, isLeft, changeSide);
+                        }
 					}
 					if(dropAsSibling || ! targetNode.isFolded())
 					    controller.getSelection().replaceSelection(array);
@@ -179,8 +185,7 @@ public class MNodeDropListener implements DropTargetListener {
 				}
 				else {
 					trans = ClipboardController.getController().copy(controller.getSelection());
-					((MClipboardController) ClipboardController.getController()).paste(trans, targetNode,
-					    dropAsSibling, isLeft);
+					((MClipboardController) ClipboardController.getController()).paste(trans, targetNode, dropAsSibling, isLeft);
 	                controller.getSelection().selectAsTheOnlyOneSelected(targetNode);
 				}
 			}

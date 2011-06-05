@@ -24,21 +24,30 @@ import java.awt.EventQueue;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.TreeSet;
+import java.util.Vector;
+
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.EncryptionModel;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.ModeController;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.common.styles.MapStyleModel;
+import org.freeplane.features.common.styles.MapViewLayout;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.url.UrlManager;
 import org.freeplane.features.mindmapmode.MModeController;
@@ -312,18 +321,8 @@ public class MMapController extends MapController {
 		return ((MFileManager) UrlManager.getController()).loadTree(map, file);
 	}
 
-	public void moveNode(final NodeModel node, final NodeModel targetNode, final boolean asSibling,
-	                     final boolean isLeft, final boolean changeSide) {
-		if (asSibling) {
-			moveNodeBefore(node, targetNode, isLeft, changeSide);
-		}
-		else {
-			moveNodeAsChild(node, targetNode, isLeft, changeSide);
-		}
-	}
-
-	public void moveNode(final NodeModel node, final NodeModel directSibling, final int childCount) {
-		moveNode(node, directSibling, childCount, false, false);
+	public void moveNode(final NodeModel child, final NodeModel newParent, final int childCount) {
+		moveNode(child, newParent, childCount, false, false);
 	}
 
 	public void moveNode(final NodeModel child, final NodeModel newParent, final int newIndex, final boolean isLeft,
@@ -361,14 +360,125 @@ public class MMapController extends MapController {
 
 	public void moveNodeBefore(final NodeModel node, final NodeModel target, final boolean isLeft,
 	                           final boolean changeSide) {
-		NodeModel parent;
-		parent = target.getParentNode();
-		moveNode(node, parent, parent.getChildPosition(target), isLeft, changeSide);
+        final NodeModel newParent = target.getParentNode();
+        final NodeModel oldParent = node.getParentNode();
+		int newIndex = newParent.getChildPosition(target);
+	    if(newParent.equals(oldParent)){ 
+	        final int oldIndex = oldParent.getChildPosition(node);
+            if(oldIndex < newIndex)
+                newIndex--;
+	    }
+        moveNode(node, newParent, newIndex, isLeft, changeSide);
 	}
 
 	public void moveNodes(final NodeModel selected, final List<NodeModel> selecteds, final int direction) {
-		((NodeUpAction) Controller.getCurrentModeController().getAction("NodeUpAction")).moveNodes(selected, selecteds, direction);
+        final IActor actor = new IActor() {
+            public void act() {
+                _moveNodes(selected, selecteds, direction);
+            }
+
+            public String getDescription() {
+                return "moveNodes";
+            }
+
+            public void undo() {
+                _moveNodes(selected, selecteds, -direction);
+            }
+        };
+        Controller.getCurrentModeController().execute(actor, selected.getMap());
 	}
+    private void _moveNodes(final NodeModel selected, final List<NodeModel> selecteds, final int direction) {
+        final Comparator<Object> comparator = (direction == -1) ? null : new Comparator<Object>() {
+            public int compare(final Object o1, final Object o2) {
+                final int i1 = ((Integer) o1).intValue();
+                final int i2 = ((Integer) o2).intValue();
+                return i2 - i1;
+            }
+        };
+        if (!selected.isRoot()) {
+            final NodeModel parent = selected.getParentNode();
+            final Vector<NodeModel> sortedChildren = getSortedSiblings(parent);
+            final TreeSet<Integer> range = new TreeSet<Integer>(comparator);
+            for (final NodeModel node : selecteds) {
+                if (node.getParent() != parent) {
+                    LogUtils.warn("Not all selected nodes have the same parent.");
+                    return;
+                }
+                range.add(new Integer(sortedChildren.indexOf(node)));
+            }
+            Integer last = range.iterator().next();
+            for (final Integer newInt : range) {
+                if (Math.abs(newInt.intValue() - last.intValue()) > 1) {
+                    LogUtils.warn("Not adjacent nodes. Skipped. ");
+                    return;
+                }
+                last = newInt;
+            }
+            for (final Integer position : range) {
+                final NodeModel node = sortedChildren.get(position.intValue());
+                moveNodeTo(node, direction);
+            }
+            final IMapSelection selection = Controller.getCurrentController().getSelection();
+            selection.selectAsTheOnlyOneSelected(selected);
+            for (final Integer position : range) {
+                final NodeModel node = sortedChildren.get(position.intValue());
+                selection.makeTheSelected(node);
+            }
+            Controller.getCurrentController().getViewController().obtainFocusForSelected();
+        }
+    }
+    private int moveNodeTo(final NodeModel child, final int direction) {
+        final NodeModel parent = child.getParentNode();
+        final int index = parent.getIndex(child);
+        int newIndex = index;
+        final int maxIndex = parent.getChildCount();
+        final Vector<NodeModel> sortedNodesIndices = getSortedSiblings(parent);
+        int newPositionInVector = sortedNodesIndices.indexOf(child) + direction;
+        if (newPositionInVector < 0) {
+            newPositionInVector = maxIndex - 1;
+        }
+        if (newPositionInVector >= maxIndex) {
+            newPositionInVector = 0;
+        }
+        final NodeModel destinationNode = (NodeModel) sortedNodesIndices.get(newPositionInVector);
+        newIndex = parent.getIndex(destinationNode);
+        ((MMapController) Controller.getCurrentModeController().getMapController()).moveNodeToWithoutUndo(child, parent, newIndex, false,
+            false);
+        return newIndex;
+    }
+    /**
+     * Sorts nodes by their left/right status. The left are first.
+     */
+    private Vector<NodeModel> getSortedSiblings(final NodeModel node) {
+        final Vector<NodeModel> nodes = new Vector<NodeModel>();
+        for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
+            nodes.add(child);
+        }
+        if(! node.isRoot()){
+            return nodes;
+        }
+        final MapStyleModel mapStyleModel = MapStyleModel.getExtension(node.getMap());
+        MapViewLayout layoutType = mapStyleModel.getMapViewLayout();
+        if(layoutType.equals(MapViewLayout.OUTLINE)){
+            return nodes;
+        }
+
+        Collections.sort(nodes, new Comparator<Object>() {
+            public int compare(final Object o1, final Object o2) {
+                if (o1 instanceof NodeModel) {
+                    final NodeModel n1 = (NodeModel) o1;
+                    if (o2 instanceof NodeModel) {
+                        final NodeModel n2 = (NodeModel) o2;
+                        final int b1 = n1.isLeft() ? 0 : 1;
+                        final int b2 = n2.isLeft() ? 0 : 1;
+                        return b1 - b2;
+                    }
+                }
+                throw new IllegalArgumentException("Elements in LeftRightComparator are not comparable.");
+            }
+        });
+        return nodes;
+    }
 
 	/**
 	 * The direction is used if side left and right are present. then the next
@@ -387,10 +497,7 @@ public class MMapController extends MapController {
 			child.setParent(newParent);
 			child.setLeft(isLeft);
 		}
-		if(oldParent.equals(newParent) && oldIndex < newIndex)
-		    newParent.insert(child, newIndex-1);
-		else
-		    newParent.insert(child, newIndex);
+		newParent.insert(child, newIndex);
 		fireNodeMoved(oldParent, oldIndex, newParent, child, newIndex);
 		setSaved(newParent.getMap(), false);
 		return newIndex;
