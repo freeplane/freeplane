@@ -83,7 +83,7 @@ public class NewUserStyleAction extends AFreeplaneAction {
 		}
 		Controller.getCurrentModeController().copyExtensions(LogicalStyleKeys.NODE_STYLE, selectedNode, newNode);
 		Controller.getCurrentModeController().copyExtensions(Keys.ICONS, selectedNode, newNode);
-		mapController.insertNode(newNode, styleController.getUserStyleParentNode(styleMap), false, false, true);
+		mapController.insertNode(newNode, styleModel.getUserStyleParentNode(styleMap), false, false, true);
 		mapController.select(newNode);
 		final IActor actor = new IActor() {
 			public void undo() {

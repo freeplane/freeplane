@@ -31,7 +31,6 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.styles.IStyle;
-import org.freeplane.features.common.styles.LogicalStyleController;
 import org.freeplane.features.common.styles.LogicalStyleKeys;
 import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.styles.StyleFactory;
@@ -71,8 +70,7 @@ public class NewUserStyleAction extends AFreeplaneAction {
 		newNode.setUserObject(style);
 		Controller.getCurrentModeController().copyExtensions(LogicalStyleKeys.NODE_STYLE, selectedNode, newNode);
 		Controller.getCurrentModeController().copyExtensions(Keys.ICONS, selectedNode, newNode);
-		final LogicalStyleController styleController = LogicalStyleController.getController();
-		mapController.insertNode(newNode, styleController.getUserStyleParentNode(map), false, false, true);
+		mapController.insertNode(newNode, styleModel.getUserStyleParentNode(map), false, false, true);
 		mapController.select(newNode);
 		final IActor actor = new IActor() {
 			public void undo() {

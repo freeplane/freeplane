@@ -25,6 +25,7 @@ import java.io.StringReader;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.freeplane.core.controller.Controller;
@@ -107,6 +108,26 @@ public class MapStyleModel implements IExtension {
 	        root = mapReader.createNodeTreeFromXml(styleMap, styleReader, Mode.FILE);
 			styleMap.setRoot(root);
 			insertStyleMap(parentMap, styleMap);
+			if(styleNodes.get(DEFAULT_STYLE) != null
+			        && styleNodes.get(DETAILS_STYLE) != null
+			        && styleNodes.get(NOTE_STYLE) != null)
+			    return;
+			final NodeModel predefinedStyleParentNode = getPredefinedStyleParentNode(styleMap);
+            if(styleNodes.get(DEFAULT_STYLE) == null){
+                final NodeModel newNode = new NodeModel(DEFAULT_STYLE, styleMap);
+                predefinedStyleParentNode.insert(newNode, 0);
+                addStyleNode(newNode);
+            }
+            if(styleNodes.get(DETAILS_STYLE) == null){
+                final NodeModel newNode = new NodeModel(DETAILS_STYLE, styleMap);
+                predefinedStyleParentNode.insert(newNode, 1);
+                addStyleNode(newNode);
+            }
+            if(styleNodes.get(NOTE_STYLE) == null){
+                final NodeModel newNode = new NodeModel(NOTE_STYLE, styleMap);
+                predefinedStyleParentNode.insert(newNode, 2);
+                addStyleNode(newNode);
+            }
         }
          catch (Exception e) {
 	        e.printStackTrace();
@@ -228,4 +249,26 @@ public class MapStyleModel implements IExtension {
 		return properties.get(key);
 	}
 
+    NodeModel getPredefinedStyleParentNode(final MapModel styleMap) {
+        final String group = "styles.predefined";
+        return getStyleNodeGroup(styleMap, group);
+    }
+    
+    public NodeModel getUserStyleParentNode(final MapModel styleMap) {
+        final String group = "styles.user-defined";
+        return getStyleNodeGroup(styleMap, group);
+    }
+
+    private NodeModel getStyleNodeGroup(final MapModel styleMap, final String group) {
+        final NodeModel rootNode = styleMap.getRootNode();
+        final int childCount = rootNode.getChildCount();
+        for(int i = 0; i < childCount; i++){
+            final NodeModel childNode = (NodeModel) rootNode.getChildAt(i);
+            final StyleNamedObject userObject = (StyleNamedObject) childNode.getUserObject();
+            if(userObject.getObject().equals(group)){
+                return childNode;
+            }
+        }
+        throw new NoSuchElementException();
+    }
 }
