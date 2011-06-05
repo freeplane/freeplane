@@ -11,6 +11,7 @@ Font and colors of node details is controlled by style "Details"
 Font of notes is controlled by style "Notes"
 In-line editor for new details available, edit details in separate dialog is possible as another action
 Always run "assign new short cut" for unassigned F-keys
+Goto Node with ID Action
 
 ===============================
 1.2.5 alpha
