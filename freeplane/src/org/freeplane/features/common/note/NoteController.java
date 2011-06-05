@@ -36,7 +36,6 @@ import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.styles.MapStyleModel;
 import org.freeplane.features.common.text.TextController;
-import org.freeplane.features.mindmapmode.note.MNoteController;
 
 /**
  * @author Dimitry Polivaev

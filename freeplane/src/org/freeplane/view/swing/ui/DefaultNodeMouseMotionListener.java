@@ -1,6 +1,5 @@
 package org.freeplane.view.swing.ui;
 
-import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
