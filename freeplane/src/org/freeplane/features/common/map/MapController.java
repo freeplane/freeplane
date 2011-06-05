@@ -305,6 +305,7 @@ public class MapController extends SelectionController {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new ToggleFoldedAction());
 		modeController.addAction(new ToggleChildrenFoldedAction());
+		modeController.addAction(new GotoNodeAction());
 	}
 
 	public void displayNode(final NodeModel node) {

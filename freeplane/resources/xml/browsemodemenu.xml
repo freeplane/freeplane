@@ -25,6 +25,7 @@
 				<menu_action action="CopySingleAction" accelerator="control shift C" />
 			</menu_category>
 			<menu_category name="find">
+				<menu_action action="GotoNodeAction"/>
 				<menu_action action="FindAction" accelerator="control F" />
 				<menu_action action="FindNextAction" accelerator="control G" />
 			</menu_category>
