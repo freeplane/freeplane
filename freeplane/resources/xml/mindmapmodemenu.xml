@@ -268,6 +268,21 @@
 				<menu_action action="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex"/>
 			</menu_submenu>
 		</menu_submenu>
+		<menu_submenu name="styles" name_ref="styles">
+			<menu_category name="assign" menu_key="main_menu_styles">
+			</menu_category>	
+			<menu_separator />
+			<menu_category name="manage">
+				<menu_action action="NewUserStyleAction" />				
+				<menu_action action="RedefineStyleAction" />				
+				<menu_action action="ManageConditionalStylesAction" />
+				<menu_separator />
+				<menu_action action="AutomaticLayoutAction" />		
+				<menu_separator />
+				<menu_action action="CopyMapStylesAction" />  
+				<menu_action action="EditStylesAction" />
+			</menu_category>		
+		</menu_submenu>
 		<menu_submenu name="format" name_ref="menu_format">
 			<menu_category name="font">				
 				<menu_action action="BoldAction" accelerator="control B" />
@@ -331,21 +346,6 @@
 			</menu_category>
 			<menu_separator />
 			<menu_action action="RemoveFormatAction"/>
-		</menu_submenu>
-		<menu_submenu name="styles" name_ref="styles">
-			<menu_category name="assign" menu_key="main_menu_styles">
-			</menu_category>	
-			<menu_separator />
-			<menu_category name="manage">
-				<menu_action action="NewUserStyleAction" />				
-				<menu_action action="RedefineStyleAction" />				
-				<menu_action action="ManageConditionalStylesAction" />
-				<menu_separator />
-				<menu_action action="AutomaticLayoutAction" />		
-				<menu_separator />
-				<menu_action action="CopyMapStylesAction" />  
-				<menu_action action="EditStylesAction" />
-			</menu_category>		
 		</menu_submenu>
 		<menu_submenu name="navigate" name_ref="menu_navigate">
 			<menu_category name="navigate">
