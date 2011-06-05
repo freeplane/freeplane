@@ -234,6 +234,7 @@
 			</menu_submenu>			
 			<menu_submenu name="details" name_ref="menu_details">
 				<menu_action action="EditDetailsAction"/>
+				<menu_action action="EditDetailsInDialogAction"/>
 				<menu_action action="DeleteDetailsAction"/>		
 			</menu_submenu>
 			<menu_submenu name="attributes" name_ref="menu_attributes">
@@ -574,6 +575,7 @@
 			</menu_submenu>			
 			<menu_submenu name="details" name_ref="menu_details">
 				<menu_action action="EditDetailsAction"/>
+				<menu_action action="EditDetailsInDialogAction"/>
 				<menu_action action="DeleteDetailsAction"/>		
 			</menu_submenu>
 			<menu_submenu name="attributes" name_ref="menu_attributes">

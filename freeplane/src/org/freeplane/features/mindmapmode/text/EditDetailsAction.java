@@ -31,9 +31,11 @@ class EditDetailsAction extends AFreeplaneAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	final private boolean useDialog;
 
-	public EditDetailsAction() {
-		super("EditDetailsAction");
+	public EditDetailsAction(final boolean useDialog) {
+		super(useDialog ? "EditDetailsInDialogAction" : "EditDetailsAction");
+		this.useDialog = useDialog;
 	}
 
 	/*
@@ -49,6 +51,6 @@ class EditDetailsAction extends AFreeplaneAction {
 		final Component node = viewController.getComponent(nodeModel);
 		node.requestFocus();
 		final MTextController textController = (MTextController) MTextController.getController();
-		textController.editDetails(nodeModel, null, true);
+		textController.editDetails(nodeModel, null, useDialog);
 	}
 }

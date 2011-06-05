@@ -551,6 +551,10 @@ class EditNodeTextField extends EditNodeBase {
 		textfield.setBorder(new MatteBorder(2, 2, 2, 2, nodeView.getSelectedColor()));
 		textFieldSize = textfield.getPreferredSize();
 		textFieldSize.width += 1;
+        if(textFieldSize.width < extraWidth)
+            textFieldSize.width = extraWidth;
+        if(textFieldSize.width < 10)
+            textFieldSize.width = 10;
 		if (textFieldSize.width > maxWidth) {
 			textFieldSize.width = maxWidth;
 			setLineWrap();

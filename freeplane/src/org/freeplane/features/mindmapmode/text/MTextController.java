@@ -113,7 +113,8 @@ public class MTextController extends TextController {
 		modeController.addAction(new JoinNodesAction());
 		modeController.addAction(new EditLongAction());
 		modeController.addAction(new SetImageByFileChooserAction());
-		modeController.addAction(new EditDetailsAction());
+        modeController.addAction(new EditDetailsAction(false));
+        modeController.addAction(new EditDetailsAction(true));
 		modeController.addAction(new DeleteDetailsAction());
 	}
 
