@@ -6,6 +6,11 @@ Formatting of attributes
 Improved connector editor
 Configurable parsing of dates and numbers
 filter conditions "Attribute contains", "Attribute matches" and "Icon exists"
+Reorganized user menu
+Font and colors of node details is controlled by style "Details"
+Font of notes is controlled by style "Notes"
+In-line editor for new details available, edit details in separate dialog is possible as another action
+Always run "assign new short cut" for unassigned F-keys
 
 ===============================
 1.2.5 alpha
