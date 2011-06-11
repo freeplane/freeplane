@@ -132,11 +132,11 @@ public class Compat {
 			final MenuBuilder builder = controller.getModeController(mode).getUserInputListenerFactory()
 			    .getMenuBuilder();
 			final String[] keys = { 
-					"/menu_bar/view/toolbars/ToggleMenubarAction", 
-					"/map_popup/toolbars/ToggleMenubarAction", 
-					"/menu_bar/file/quit",
-			        "/menu_bar/extras/first/options/PropertyAction", 
-			        "/menu_bar/help/doc/AboutAction" 
+					"MB_ToggleMenubarAction", 
+					"MP_ToggleMenubarAction", 
+					"MB_QuitAction",
+			        "MB_PropertyAction", 
+			        "MB_AboutAction" 
 			};
 			for (final String key : keys) {
 				if (builder.contains(key)) {

@@ -14,7 +14,7 @@
 			</menu_category>
 			<menu_separator />
 			<menu_category name="quit">
-				<menu_action action="QuitAction" accelerator="control Q" />
+				<menu_action action="QuitAction" accelerator="control Q" menu_key="MB_QuitAction"/>
 			</menu_category>
 			<menu_separator />
 		</menu_submenu>
@@ -27,7 +27,7 @@
 		</menu_submenu>
 		<menu_submenu name="view" name_ref="menu_view">
 			<menu_category name="toolbars">
-				<menu_action action="ToggleMenubarAction" />
+				<menu_action action="ToggleMenubarAction" menu_key="MB_ToggleMenubarAction"/>
 				<menu_action action="ToggleToolbarAction" />
 				<menu_action action="ShowFilterToolbarAction" />
 			</menu_category>
@@ -96,7 +96,7 @@
 				<menu_action action="RequestFeatureAction" />
 				<menu_action action="AskForHelp" />
 				<menu_action action="LicenseAction" />
-				<menu_action action="AboutAction" />
+				<menu_action action="AboutAction" menu_key="MB_AboutAction"/>
 				<menu_action action="UpdateCheckAction" />  
 			</menu_category>
 		</menu_submenu>
@@ -105,7 +105,7 @@
 		<menu_category name="maps" menu_key="map_popup_mindmaps" />
 		<menu_separator />
 		<menu_category name="toolbars">
-			<menu_action action="ToggleMenubarAction" />
+			<menu_action action="ToggleMenubarAction" menu_key="MP_ToggleMenubarAction"/>
 			<menu_action action="ToggleToolbarAction" />
 		</menu_category>
 	</menu_category>

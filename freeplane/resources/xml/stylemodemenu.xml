@@ -5,7 +5,7 @@
             <menu_category name="close">
                 <menu_action action="styledialog.ok"  accelerator="control S"/>
                 <menu_action action="styledialog.cancel" accelerator="control W" />
-                <menu_action action="QuitAction" accelerator="ESCAPE" />
+                <menu_action action="QuitAction" accelerator="ESCAPE" menu_key="MB_QuitAction"/>
                 
             </menu_category>
         </menu_submenu>
@@ -156,7 +156,7 @@
 		<menu_category name="maps" menu_key="map_popup_mindmaps"/>
 		<menu_separator />
 		<menu_category name="toolbars">
-			<menu_action action="ToggleMenubarAction" />
+			<menu_action action="ToggleMenubarAction" menu_key="MB_ToggleMenubarAction"/>
 			<menu_action action="ToggleToolbarAction" />
 			<menu_action action="ToggleLeftToolbarAction" />
 		</menu_category>
