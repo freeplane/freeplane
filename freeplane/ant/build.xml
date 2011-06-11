@@ -55,7 +55,8 @@
 		<pathconvert pathsep="${line.separator}" property="locales" refid="resourcebundles">
 			<mapper type="regexp" from=".*Resources_(.*)\.properties" to="\1"/>
 		</pathconvert>
-		<echo file="${root}/resources/translations/locales.txt">${locales}</echo>
+		<mkdir dir="${build}/translations" />
+		<echo file="${build}/translations/locales.txt">${locales}</echo>
 	</target>
 	
 	<target name="build" depends="prepare_jortho,localelist">
@@ -100,6 +101,7 @@
 				<exclude name="**/filemode/**" />
 				<exclude name="**/ortho/**" />
 				<exclude name="**/core/resources/ui/**" />
+				<exclude name="translations/**" />
 			</fileset>
 			<fileset dir="${viewer-resources}" />
 		</jar>
@@ -110,6 +112,7 @@
 				<include name="**/ortho/**" />
 				<include name="**/filemode/**" />
 				<include name="**/core/resources/ui/**" />
+				<include name="translations/**" />
 				<exclude name="**/*.jar" />
 			</fileset>
 			<fileset dir="${resources}" />
