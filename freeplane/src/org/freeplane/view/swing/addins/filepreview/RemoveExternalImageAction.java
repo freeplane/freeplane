@@ -26,6 +26,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.mindmapmode.icon.ProgressUtilities;
 
 /**
  * 
@@ -43,9 +44,10 @@ public class RemoveExternalImageAction extends AMultipleNodeAction {
 
 	@Override
 	public void actionPerformed(final ActionEvent arg0, final NodeModel node) {
+		final ProgressUtilities progUtil = new ProgressUtilities();
 		final ViewerController vc = ((ViewerController) Controller.getCurrentController().getModeController()
 		    .getExtension(ViewerController.class));
-		if (node.hasExternalResource() && !node.hasExtendedProgressIcon()) {
+		if (progUtil.hasExternalResource(node) && !progUtil.hasExtendedProgressIcon(node)) {
 			vc.undoableDeactivateHook(node);
 		}
 	}
@@ -53,9 +55,10 @@ public class RemoveExternalImageAction extends AMultipleNodeAction {
 	@Override
 	public void setEnabled() {
 		boolean enable = false;
+		final ProgressUtilities progUtil = new ProgressUtilities();
 		final List<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
 		for (final NodeModel node : nodes) {
-			if (node != null && node.hasExternalResource() && !node.hasExtendedProgressIcon()) {
+			if (node != null && progUtil.hasExternalResource(node) && !progUtil.hasExtendedProgressIcon(node)) {
 				enable = true;
 				break;
 			}

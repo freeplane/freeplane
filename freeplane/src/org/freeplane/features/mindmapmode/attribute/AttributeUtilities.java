@@ -19,49 +19,48 @@
  */
 package org.freeplane.features.mindmapmode.attribute;
 
-import java.awt.event.ActionEvent;
-import java.util.List;
-
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.EnabledAction;
-import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.map.NodeModel;
 
 @EnabledAction(checkOnNodeChange = true)
-public class RemoveLastAttributeAction extends AMultipleNodeAction {
+public class AttributeUtilities {
 	/**
 	 * @author Stefan Ott
 	 * 
-	 * This action removes the last attribute of a node
+	 * This class has methods to get informations
+	 * about attributes from a NodeModel
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public RemoveLastAttributeAction() {
-		super("attributes_RemoveLastAttributeAction");
+	public AttributeUtilities() {
 	};
 
-	@Override
-	public void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final AttributeUtilities atrUtil = new AttributeUtilities();
-		if (atrUtil.hasAttributes(node)) {
+	/**
+	 * 
+	 * @return : the number of attributes attached to the node. 0 for none.
+	 */
+	public int getNumberOfAttributes(final NodeModel node) {
+		if (hasAttributes(node)) {
 			final NodeAttributeTableModel natm = NodeAttributeTableModel.getModel(node);
-			AttributeController.getController().performRemoveRow(natm, natm.getRowCount() - 1);
+			return natm.getRowCount();
+		}
+		else {
+			return 0;
 		}
 	}
 
-	@Override
-	public void setEnabled() {
-		boolean enable = false;
-		final AttributeUtilities atrUtil = new AttributeUtilities();
-		final List<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
-		for (final NodeModel node : nodes) {
-			if (node != null && atrUtil.hasAttributes(node)) {
-				enable = true;
-				break;
-			}
+	/**
+	 * 
+	 * @return : true if the node has at least one attribute attached.
+	 */
+	public boolean hasAttributes(final NodeModel node) {
+		final NodeAttributeTableModel natm = NodeAttributeTableModel.getModel(node);
+		if (natm.getRowCount() > 0) {
+			return true;
 		}
-		setEnabled(enable);
+		else {
+			return false;
+		}
 	}
 }

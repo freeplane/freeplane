@@ -39,17 +39,19 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.extension.SmallExtensionMap;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.XmlUtils;
-import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.filter.Filter;
 import org.freeplane.features.common.filter.FilterInfo;
 import org.freeplane.features.common.icon.MindIcon;
 import org.freeplane.features.common.icon.UIIcon;
-import org.freeplane.features.mindmapmode.icon.ProgressIcons;
-import org.freeplane.view.swing.addins.filepreview.ExternalResource;
 
 /**
  * This class represents a single Node of a Tree. It contains direct handles to
  * its parent and children and to its view.
+ * 
+ * Note that this class does not and must not know anything about its extensions,
+ * otherwise this class would become too big.
+ * Extension methods that add functionality to nodes are in the extension packages
+ * and get NodeModel as an argument.
  */
 public class NodeModel implements MutableTreeNode {
 	public enum NodeChangeType {
@@ -359,91 +361,6 @@ public class NodeModel implements MutableTreeNode {
 
 	public boolean hasID() {
 		return id != null;
-	}
-	/**
-	 * 
-	 * @return : the number of attributes attached to the node. 0 for none.
-	 */
-	public int getNumberOfAttributes() {
-		if (hasAttributes()) {
-			final NodeAttributeTableModel natm = NodeAttributeTableModel.getModel(this);
-			return natm.getRowCount();
-		}
-		else {
-			return 0;
-		}
-	}
-	/**
-	 * 
-	 * @return : true if the node has at least one attribute attached.
-	 */
-	public boolean hasAttributes() {
-		final NodeAttributeTableModel natm = NodeAttributeTableModel.getModel(this);
-		if (natm.getRowCount() > 0) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-	/**
-	 * 
-	 * @return : true if the node has an external resource attached.
-	 */
-	public boolean hasExternalResource() {
-		final ExternalResource extResource = (ExternalResource) this.getExtension(ExternalResource.class);
-		if (extResource == null) {
-			return false;
-		}
-		else {
-			return true;
-		}
-	}
-
-	/**
-	 * 
-	 * @return : true if the node has an extended progress icon attached.
-	 */
-	public boolean hasExtendedProgressIcon() {
-		final ExternalResource extResource = (ExternalResource) this.getExtension(ExternalResource.class);
-		if (extResource == null) {
-			return false;
-		}
-		if (extResource.getUri().toString().matches(ProgressIcons.EXTENDED_PROGRESS_ICON_IDENTIFIER)) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * 
-	 * @return : true if OK icon is attached
-	 */
-	public boolean hasOKIcon() {
-		final List<MindIcon> icons = getIcons();
-		for (int i = 0; i < icons.size(); i++) {
-			if (icons.get(i).getName().equals("button_ok")) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * 
-	 * @return : true if the node has a progress icon (0%, 25%, 50%, 75%, 100%) attached
-	 */
-	public boolean hasProgressIcons() {
-		final String[] iconNames = new String[] { "0%", "25%", "50%", "75%", "100%" };
-		final List<MindIcon> icons = getIcons();
-		for (int i = 0; i < icons.size(); i++) {
-			for (int j = 0; j < iconNames.length; j++) {
-				if (icons.get(i).getName().equals(iconNames[j])) {
-					return true;
-				}
-			}
-		}
-		return false;
 	}
 
 	public void insert(final MutableTreeNode child, int index) {

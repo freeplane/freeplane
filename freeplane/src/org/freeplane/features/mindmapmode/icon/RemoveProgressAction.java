@@ -27,12 +27,13 @@ public class RemoveProgressAction extends AMultipleNodeAction {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
+		final ProgressUtilities progUtil = new ProgressUtilities();
 		//remove progress icon if present
-		if (node.hasProgressIcons()) {
+		if (progUtil.hasProgressIcons(node)) {
 			ProgressIcons.removeProgressIcons(node);
 		}
 		//remove extended progress icon
-		if (node.hasExtendedProgressIcon()) {
+		if (progUtil.hasExtendedProgressIcon(node)) {
 			final ViewerController vc = ((ViewerController) Controller.getCurrentController().getModeController()
 			    .getExtension(ViewerController.class));
 			vc.undoableDeactivateHook(node);
@@ -41,10 +42,11 @@ public class RemoveProgressAction extends AMultipleNodeAction {
 
 	@Override
 	public void setEnabled() {
+		final ProgressUtilities progUtil = new ProgressUtilities();
 		boolean enable = false;
 		final List<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
 		for (final NodeModel node : nodes) {
-			if (node != null && (node.hasProgressIcons() || node.hasExtendedProgressIcon())) {
+			if (node != null && (progUtil.hasProgressIcons(node) || progUtil.hasExtendedProgressIcon(node))) {
 				enable = true;
 				break;
 			}
