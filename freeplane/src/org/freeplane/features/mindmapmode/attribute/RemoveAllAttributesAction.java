@@ -44,21 +44,23 @@ public class RemoveAllAttributesAction extends AMultipleNodeAction {
 
 	@Override
 	public void actionPerformed(final ActionEvent e, final NodeModel node) {
-		if (node.hasAttributes()) {
+		final AttributeUtilities atrUtil = new AttributeUtilities();
+		if (atrUtil.hasAttributes(node)) {
 			final NodeAttributeTableModel natm = NodeAttributeTableModel.getModel(node);
 			final int j = natm.getRowCount();
 			for (int i = 0; i < j; i++) {
 				AttributeController.getController().performRemoveRow(natm, 0);
 			}
-		}		
+		}
 	}
 
 	@Override
 	public void setEnabled() {
 		boolean enable = false;
+		final AttributeUtilities atrUtil = new AttributeUtilities();
 		final List<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
 		for (final NodeModel node : nodes) {
-			if (node != null && node.hasAttributes()) {
+			if (node != null && atrUtil.hasAttributes(node)) {
 				enable = true;
 				break;
 			}

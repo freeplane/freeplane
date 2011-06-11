@@ -35,6 +35,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.map.INodeView;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.url.UrlManager;
+import org.freeplane.features.mindmapmode.icon.ProgressUtilities;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -70,12 +71,13 @@ class ExternalImagePopupMenu extends JPopupMenu implements MouseListener {
 	 * @return Returns the delete menu item.
 	 */
 	private JMenuItem getRemove() {
+		final ProgressUtilities progUtil = new ProgressUtilities();
 		if (remove == null) {
 			remove = new JMenuItem(TextUtils.getText("ExternalImage_popupMenu_Remove"));
 			remove.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					final ExternalResource extRes = (ExternalResource) node.getExtension(ExternalResource.class);
-					if (node.hasExternalResource() && !node.hasExtendedProgressIcon()) {
+					if (progUtil.hasExternalResource(node) && !progUtil.hasExtendedProgressIcon(node)) {
 						viewer.remove(node, extRes);
 						NodeView nv = null;
 						final Collection<INodeView> invs = Controller.getCurrentController().getModeController()
@@ -119,6 +121,7 @@ class ExternalImagePopupMenu extends JPopupMenu implements MouseListener {
 	 * @return Returns the change menu item.
 	 */
 	private JMenuItem getChange() {
+		final ProgressUtilities progUtil = new ProgressUtilities();
 		if (change == null) {
 			change = new JMenuItem(TextUtils.getText("ExternalImage_popupMenu_Change"));
 			change.addActionListener(new ActionListener() {
@@ -126,7 +129,7 @@ class ExternalImagePopupMenu extends JPopupMenu implements MouseListener {
 					final ExternalResource extRes = (ExternalResource) viewer.createExtension(node);
 					if (extRes != null) {
 						final File file = new File(extRes.getAbsoluteUri(node.getMap()));
-						if (node.hasExternalResource() && !node.hasExtendedProgressIcon()) {
+						if (progUtil.hasExternalResource(node) && !progUtil.hasExtendedProgressIcon(node)) {
 							viewer.undoableDeactivateHook(node);
 							viewer.paste(file, node, node.isLeft());
 						}
@@ -161,7 +164,8 @@ class ExternalImagePopupMenu extends JPopupMenu implements MouseListener {
 	 * Builds the menu.
 	 */
 	private void make() {
-		if (node.hasExtendedProgressIcon()) {
+		final ProgressUtilities progUtil = new ProgressUtilities();
+		if (progUtil.hasExtendedProgressIcon(node)) {
 			removeAll();
 			add(getOpen());
 			add(getResetZoom());

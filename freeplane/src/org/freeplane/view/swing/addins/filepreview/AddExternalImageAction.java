@@ -27,6 +27,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.mindmapmode.icon.ProgressUtilities;
 
 /**
  * 
@@ -43,6 +44,7 @@ public class AddExternalImageAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {
+		final ProgressUtilities progUtil = new ProgressUtilities();
 		final List<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
 		final ViewerController vc = ((ViewerController) Controller.getCurrentController().getModeController()
 		    .getExtension(ViewerController.class));
@@ -50,7 +52,7 @@ public class AddExternalImageAction extends AFreeplaneAction {
 		if (extRes != null) {
 			final File file = new File(extRes.getAbsoluteUri(nodes.get(0).getMap()));
 			for (final NodeModel node : nodes) {
-				if (!node.hasExternalResource()) {
+				if (!progUtil.hasExternalResource(node)) {
 					vc.paste(file, node, node.isLeft());
 				}
 			}
@@ -60,9 +62,10 @@ public class AddExternalImageAction extends AFreeplaneAction {
 	@Override
 	public void setEnabled() {
 		boolean enable = false;
+		final ProgressUtilities progUtil = new ProgressUtilities();
 		final List<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
 		for (final NodeModel node : nodes) {
-			if (node != null && !node.hasExternalResource()) {
+			if (node != null && !progUtil.hasExternalResource(node)) {
 				enable = true;
 				break;
 			}

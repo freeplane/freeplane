@@ -23,20 +23,23 @@ public class ProgressDownAction extends AMultipleNodeAction {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		if (!node.hasExtendedProgressIcon())
+		final ProgressUtilities progUtil = new ProgressUtilities();
+		if (!progUtil.hasExtendedProgressIcon(node)) {
 			ProgressIcons.updateProgressIcons(node, false);
+		}
 	}
+
+	@Override
 	public void setEnabled() {
 		boolean enable = false;
-		List<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
-		for (NodeModel node: nodes) {
-			if (node !=null && !node.hasExtendedProgressIcon()){
-				
+		final ProgressUtilities progUtil = new ProgressUtilities();
+		final List<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
+		for (final NodeModel node : nodes) {
+			if (node != null && !progUtil.hasExtendedProgressIcon(node)) {
 				enable = true;
 				break;
 			}
 		}
 		setEnabled(enable);
-
 	}
 }

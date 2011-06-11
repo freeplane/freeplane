@@ -30,12 +30,13 @@ public class ProgressIcons {
 	 * 				if false the progress is decreased
 	 */
 	public static void updateProgressIcons(final NodeModel node, final boolean up) {
+		final ProgressUtilities progUtil = new ProgressUtilities();
 		final MIconController Mic = (MIconController) IconController.getController();
 		String ActiveIcon = null;
 		final List<MindIcon> icons = node.getIcons();
 		int iconPos = 0;
 		//get active progress icon and remove it
-		if (node.hasProgressIcons()) {
+		if (progUtil.hasProgressIcons(node)) {
 			for (int i = 0; i < icons.size(); i++) {
 				for (int j = 0; j < iconNames.length; j++) {
 					if (icons.get(i).getName().equals(iconNames[j])) {
@@ -68,7 +69,7 @@ public class ProgressIcons {
 						break;
 					case 75:
 						Mic.addIcon(node, progressIcons[4], 0);
-						if (!node.hasOKIcon()) {
+						if (!progUtil.hasOKIcon(node)) {
 							Mic.addIcon(node, OKIcon, 0);
 						}
 						break;
@@ -185,7 +186,8 @@ public class ProgressIcons {
 	 * @param node : the node from which the progress icons are removed
 	 */
 	public static void removeProgressIcons(final NodeModel node) {
-		if (node.hasProgressIcons() || node.hasOKIcon()) {
+		final ProgressUtilities progUtil = new ProgressUtilities();
+		if (progUtil.hasProgressIcons(node) || progUtil.hasOKIcon(node)) {
 			final MIconController Mic = (MIconController) IconController.getController();
 			final String[] iconNames = new String[] { "0%", "25%", "50%", "75%", "100%", "button_ok" };
 			final List<MindIcon> icons = node.getIcons();
