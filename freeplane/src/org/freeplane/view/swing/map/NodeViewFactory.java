@@ -293,8 +293,9 @@ class NodeViewFactory {
 			detailContent = createDetailView();
 			nodeView.addContent(detailContent, NodeView.DETAIL_VIEWER_POSITION);
 		}
-			if (detailText.isHidden()) {
+		if (detailText.isHidden()) {
 			detailContent.updateText("");
+			detailContent.setBackground(null);
 			detailContent.setIcon(new ArrowIcon(nodeView, true));
 		}
 		else {

@@ -52,14 +52,14 @@ final class DetailsView extends ZoomableLabel {
 
     @Override
     protected void paintComponent(Graphics g) {
-        final Color background = getBackground();
-        if(background != null){
-            final Color oldColor = g.getColor();
-            g.setColor(background);
-            final int iconWidth = getIconWidth() + getIconTextGap();
-            g.fillRect(iconWidth, 0, getWidth() - iconWidth, getHeight());
-            g.setColor(oldColor);
-        }
+    	if(isBackgroundSet()){
+    		final Color background = getBackground();
+    		final Color oldColor = g.getColor();
+    		g.setColor(background);
+    		final int iconWidth = getIconWidth() + getIconTextGap();
+    		g.fillRect(iconWidth, 0, getWidth() - iconWidth, getHeight());
+    		g.setColor(oldColor);
+    	}
         super.paintComponent(g);
     }
 	
