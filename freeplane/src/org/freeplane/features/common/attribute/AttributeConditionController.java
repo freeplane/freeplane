@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.common.attribute;
 
+import java.util.NoSuchElementException;
+
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -132,15 +134,20 @@ class AttributeConditionController implements IElementaryConditionController {
 	public ComboBoxModel getValuesForProperty(final Object selectedItem, NamedObject simpleCond) {
 		final MapModel map = Controller.getCurrentController().getMap();
 		final AttributeRegistry registry = AttributeRegistry.getRegistry(map);
-		final AttributeRegistryElement element = registry.getElement(selectedItem.toString());
-		final SortedComboBoxModel list = element.getValues();
-		SortedComboBoxModel linkedList = new SortedComboBoxModel();
-		for(int i = 0; i < list.getSize();i++){
-			final Object value = list.getElementAt(i);
-			final Object transformedValue = new LinkTransformer(Controller.getCurrentModeController(), 1).transformContent(value, map);
-			linkedList.add(transformedValue);
-		}
-		values.setExtensionList(linkedList);
+		try {
+            final AttributeRegistryElement element = registry.getElement(selectedItem.toString());
+            final SortedComboBoxModel list = element.getValues();
+            SortedComboBoxModel linkedList = new SortedComboBoxModel();
+            for(int i = 0; i < list.getSize();i++){
+            	final Object value = list.getElementAt(i);
+            	final Object transformedValue = new LinkTransformer(Controller.getCurrentModeController(), 1).transformContent(value, map);
+            	linkedList.add(transformedValue);
+            }
+            values.setExtensionList(linkedList);
+        }
+        catch (NoSuchElementException e) {
+            values.setExtensionList(null);
+        }
 		return values;
 	}
 
