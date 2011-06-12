@@ -18,6 +18,7 @@ import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.FreeplaneIconUtils;
 import org.freeplane.core.util.FreeplaneVersion;
@@ -183,15 +184,15 @@ class ControllerProxy implements Proxy.Controller {
     }
 
 	public Map newMap() {
-		commitTransaction(Controller.getCurrentController().getMap());
+		final MapModel oldMap = Controller.getCurrentController().getMap();
 		final MapModel newMap = Controller.getCurrentModeController().getMapController().newMap(((NodeModel) null));
-		startTransaction(newMap);
+		restartTransaction(oldMap, newMap);
 		return new MapProxy(newMap, scriptContext);
 	}
 
 	public Map newMap(URL url) {
 		try {
-			commitTransaction(Controller.getCurrentController().getMap());
+			final MapModel oldMap = Controller.getCurrentController().getMap();
 			Controller.getCurrentModeController().getMapController().newMap(url, false);
 			final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 			final String key = mapViewManager.checkIfFileIsAlreadyOpened(url);
@@ -199,7 +200,7 @@ class ControllerProxy implements Proxy.Controller {
 			if (key == null || !mapViewManager.tryToChangeToMapView(key))
 				throw new RuntimeException("map " + url + " does not seem to be opened");
 			final MapModel newMap = mapViewManager.getModel();
-			startTransaction(newMap);
+			restartTransaction(oldMap, newMap);
 			return new MapProxy(newMap, scriptContext);
 		}
 		catch (Exception e) {
@@ -207,13 +208,18 @@ class ControllerProxy implements Proxy.Controller {
 		}
 	}
 
-	private void commitTransaction(final MapModel map) {
-		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
-		undoHandler.commit();
-    }
-	
-	private void startTransaction(final MapModel map) {
-		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
-		undoHandler.startTransaction();
+	private void restartTransaction(final MapModel oldMap, final MapModel newmap) {
+		final IUndoHandler oldUndoHandler = (IUndoHandler) oldMap.getExtension(IUndoHandler.class);
+		final IUndoHandler newUndoHandler = (IUndoHandler) newmap.getExtension(IUndoHandler.class);
+		final int transactionLevel = oldUndoHandler.getTransactionLevel();
+        if(transactionLevel == 0){
+            return;
+        }
+		if(transactionLevel == 1){
+		    oldUndoHandler.commit();
+		    newUndoHandler.startTransaction();
+		    return;
+		}
+		throw new RuntimeException("can not create map inside transaction");
 	}
 }

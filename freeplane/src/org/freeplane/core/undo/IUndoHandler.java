@@ -61,4 +61,6 @@ public interface IUndoHandler extends IExtension {
 	public void delayedCommit();
 
 	public void delayedRollback();
+	
+	public int getTransactionLevel();
 }

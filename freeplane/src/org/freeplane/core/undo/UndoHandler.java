@@ -308,4 +308,8 @@ public class UndoHandler implements IUndoHandler {
 	public void removeChangeListener(final ChangeListener listener) {
 		listeners.remove(listener);
 	}
+
+    public int getTransactionLevel() {
+        return transactionList.size();
+    }
 }
