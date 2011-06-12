@@ -416,8 +416,13 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		}
 		NodeModel root = null;
 		if (alternativeFile == null) {
-			root = loadTree(map, file);
-			setFile(map, file);
+			if (file.length() != 0) {
+				root = loadTree(map, file);
+				setFile(map, file);
+			}
+			else{
+				root = map.getRootNode();
+			}
 			map.setSaved(true);
 		}
 		else {
@@ -433,9 +438,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	public NodeModel loadTree(final MapModel map, final File file) throws XMLParseException, IOException {
 		try {
-			if (file.length() == 0) {
-				return map.getRootNode();
-			}
 			final NodeModel rootNode = loadTreeImpl(map, file);
 			return rootNode;
 		}
