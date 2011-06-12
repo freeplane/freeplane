@@ -28,8 +28,6 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Vector;
 
-import org.freeplane.core.addins.NodeHookDescriptor;
-import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapLifeCycleListener;
 import org.freeplane.core.extension.IExtension;
@@ -53,6 +51,8 @@ import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.NodeHookDescriptor;
+import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.features.styles.ConditionalStyleModel.Item;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLElement;

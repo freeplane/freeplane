@@ -28,7 +28,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.apache.commons.lang.StringUtils;
-import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
@@ -43,6 +42,7 @@ import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
+import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;

@@ -22,8 +22,6 @@ package org.freeplane.plugin.latex;
 import java.awt.Container;
 import java.util.Set;
 
-import org.freeplane.core.addins.NodeHookDescriptor;
-import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.INodeViewLifeCycleListener;
 import org.freeplane.core.extension.IExtension;
@@ -32,6 +30,8 @@ import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.NodeHookDescriptor;
+import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.view.swing.map.NodeView;
 

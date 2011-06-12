@@ -20,8 +20,6 @@
 package org.freeplane.features.edge.mindmapmode;
 
 import java.awt.Color;
-import org.freeplane.core.addins.NodeHookDescriptor;
-import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
@@ -31,6 +29,8 @@ import org.freeplane.features.map.AMapChangeListenerAdapter;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.NodeHookDescriptor;
+import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**

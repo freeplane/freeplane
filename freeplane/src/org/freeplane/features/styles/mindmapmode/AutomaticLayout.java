@@ -21,14 +21,14 @@
 package org.freeplane.features.styles.mindmapmode;
 
 import java.util.Collection;
-import org.freeplane.core.addins.NodeHookDescriptor;
-import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IPropertyHandler;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.NodeHookDescriptor;
+import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;

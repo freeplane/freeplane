@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.addins;
+package org.freeplane.features.mode;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -39,7 +39,6 @@ import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public abstract class PersistentNodeHook {

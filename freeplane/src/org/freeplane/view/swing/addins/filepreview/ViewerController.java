@@ -29,8 +29,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
 import javax.swing.filechooser.FileFilter;
 
-import org.freeplane.core.addins.NodeHookDescriptor;
-import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.INodeViewLifeCycleListener;
 import org.freeplane.core.extension.IExtension;
@@ -48,6 +46,8 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.NodeHookDescriptor;
+import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLElement;

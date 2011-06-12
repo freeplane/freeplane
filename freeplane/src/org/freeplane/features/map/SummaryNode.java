@@ -19,9 +19,9 @@
  */
 package org.freeplane.features.map;
 
-import org.freeplane.core.addins.NodeHookDescriptor;
-import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.features.mode.NodeHookDescriptor;
+import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
