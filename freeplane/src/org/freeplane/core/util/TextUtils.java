@@ -13,7 +13,14 @@ public class TextUtils {
 		final String text = TextUtils.getText(resourceKey);
 		if (text == null)
 			return null;
-		final MessageFormat formatter = new MessageFormat(text);
+		MessageFormat formatter;
+        try {
+            formatter = new MessageFormat(text);
+        }
+        catch (IllegalArgumentException e) {
+            LogUtils.severe("wrong format " + text + " for property " + resourceKey, e);
+            return text;
+        }
 		final Object[] processedArguments;
 		if(text.startsWith("<html>")){
 			processedArguments = new String[messageArguments.length];
