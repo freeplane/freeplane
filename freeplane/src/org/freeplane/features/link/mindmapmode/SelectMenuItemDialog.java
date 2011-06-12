@@ -50,7 +50,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.factory.MindIconFactory;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 
 /**
  * Presents the menu bar as a tree. Only allows the selection of leaf nodes.

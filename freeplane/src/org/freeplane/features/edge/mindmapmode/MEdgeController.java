@@ -26,8 +26,8 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.EdgeStyle;
-import org.freeplane.features.map.ModeController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.LogicalStyleKeys;
 
 /**

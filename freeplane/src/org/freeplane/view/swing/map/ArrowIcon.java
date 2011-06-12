@@ -28,7 +28,7 @@ import java.awt.RenderingHints;
 import javax.swing.Icon;
 
 import org.freeplane.features.edge.EdgeController;
-import org.freeplane.features.map.ModeController;
+import org.freeplane.features.mode.ModeController;
 
 /**
  * @author Dimitry Polivaev

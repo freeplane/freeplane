@@ -48,7 +48,7 @@ import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
+import org.freeplane.features.mode.mindmapmode.ortho.SpellCheckerController;
 
 /**
  * @author foltin

@@ -32,15 +32,9 @@ import javax.swing.JButton;
 import javax.swing.JPopupMenu;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
-import javax.swing.plaf.basic.BasicComboBoxEditor;
 
-import org.freeplane.core.frame.ViewController;
-import org.freeplane.core.resources.NamedObject;
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.components.ContainerComboBoxEditor;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.IFormattedObject;
-import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.time.swing.JCalendar;
 
 /**
@@ -129,71 +123,6 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 
 	public void setItem() {
 	    updateDate();
-    }
-	
-	public static ComboBoxEditor getTextDateTimeEditor() {
-	    final ContainerComboBoxEditor editor = new ContainerComboBoxEditor();
-		final NamedObject keyText = new NamedObject("text", "1Ab");
-		final BasicComboBoxEditor textEditor = new BasicComboBoxEditor(){
-			private Object oldItem;
-
-			@Override
-            public void setItem(Object object) {
-				oldItem = object;
-				if(object instanceof FormattedDate)
-					super.setItem("");
-				else
-					super.setItem(object);
-            }
-
-			@Override
-            public Object getItem() {
-	            final Object item = super.getItem();
-				final Object oldItem = this.oldItem;
-				this.oldItem = null;
-	            if(item != null && oldItem != null && item.toString().equals(oldItem.toString()))
-	            	return oldItem;
-	            if(ResourceController.getResourceController().getBooleanProperty("parse_data") 
-	            		&& item instanceof String){
-	                final Object scannedObject = ScannerController.getController().parse((String)item);
-	                return scannedObject;
-	            }
-				return item;
-            }
-			
-		};
-		editor.put(keyText, textEditor);
-		
-		final NamedObject keyDate = new NamedObject("date", ""); 
-		keyDate.setIcon(ViewController.dateIcon);
-		final TimeComboBoxEditor dateComboBoxEditor = new TimeComboBoxEditor(false){
-			@Override
-            public void setItem(Object object) {
-				if(object instanceof FormattedDate && !((FormattedDate)object).containsTime())
-					super.setItem(object);
-				else
-					super.setItem(null);
-            }
-		};
-		
-		dateComboBoxEditor.setItem();
-		editor.put(keyDate, dateComboBoxEditor);
-
-		final NamedObject keyDateTime = new NamedObject("date_time", ""); 
-		keyDateTime.setIcon(ViewController.dateTimeIcon);
-		final TimeComboBoxEditor dateTimeComboBoxEditor = new TimeComboBoxEditor(true){
-			@Override
-            public void setItem(Object object) {
-				if(object instanceof FormattedDate && ((FormattedDate)object).containsTime())
-					super.setItem(object);
-				else
-					super.setItem(null);
-            }
-		};
-		dateTimeComboBoxEditor.setItem();
-		editor.put(keyDateTime, dateTimeComboBoxEditor);
-
-		return editor;
     }
 
 	

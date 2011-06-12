@@ -61,9 +61,9 @@ import org.freeplane.features.icon.IconGroup;
 import org.freeplane.features.icon.IconStore;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
-import org.freeplane.features.map.ModeController;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 
 /**
  * @author Dimitry Polivaev

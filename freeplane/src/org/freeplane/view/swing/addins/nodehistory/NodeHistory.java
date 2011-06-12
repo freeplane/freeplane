@@ -26,8 +26,8 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
-import org.freeplane.features.map.ModeController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.view.swing.map.MapView;
 
 /**

@@ -45,8 +45,8 @@ import org.freeplane.features.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.attribute.IAttributeTableModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.view.swing.ui.mindmapmode.INodeSelector;
 import org.freeplane.view.swing.ui.mindmapmode.NodeSelector;
 

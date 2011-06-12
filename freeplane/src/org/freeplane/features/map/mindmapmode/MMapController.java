@@ -44,15 +44,15 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.ModeController;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.features.mindmapmode.file.MFileManager;
+import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**

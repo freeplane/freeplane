@@ -24,7 +24,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.features.map.MapController;
-import org.freeplane.features.map.ModeController;
+import org.freeplane.features.mode.ModeController;
 
 /**
  * @author Dimitry Polivaev

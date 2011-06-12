@@ -30,9 +30,9 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.HistoryInformationModel;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.ITooltipProvider;
-import org.freeplane.features.map.ModeController;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**

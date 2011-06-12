@@ -25,7 +25,7 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.map.ModeController;
+import org.freeplane.features.mode.ModeController;
 
 class CopyAction extends AFreeplaneAction {
 //	private static final String NAME = "copy";

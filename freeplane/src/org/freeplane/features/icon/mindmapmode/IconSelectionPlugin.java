@@ -33,8 +33,8 @@ import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.ModeController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.ModeController;
 
 /**
  * @author adapted to the plugin mechanism by ganzer

@@ -51,7 +51,7 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mindmapmode.file.FileOpener;
+import org.freeplane.features.url.mindmapmode.FileOpener;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 
 class ApplicationViewController extends ViewController {

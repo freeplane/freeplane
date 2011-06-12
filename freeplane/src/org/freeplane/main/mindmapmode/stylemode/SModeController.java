@@ -32,7 +32,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 
 /**
  * @author Dimitry Polivaev

@@ -31,8 +31,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.ModeController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.ModeController;
 
 /**
  * @author Dimitry Polivaev

@@ -25,8 +25,8 @@ import java.net.URI;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.link.LinkController;
-import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.features.url.mindmapmode.MFileManager;
 
 class SetLinkByFileChooserAction extends AFreeplaneAction {
 	/**

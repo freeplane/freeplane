@@ -30,7 +30,7 @@ import org.freeplane.features.link.ArrowType;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.ConnectorModel.Shape;
-import org.freeplane.features.map.ModeController;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.edge.EdgeView;

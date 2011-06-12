@@ -43,6 +43,7 @@ import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterInfo;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.UIIcon;
+import org.freeplane.features.mode.ModeController;
 
 /**
  * This class represents a single Node of a Tree. It contains direct handles to

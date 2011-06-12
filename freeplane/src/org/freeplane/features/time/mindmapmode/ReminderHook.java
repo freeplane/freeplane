@@ -43,8 +43,8 @@ import org.freeplane.features.icon.IconStore;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.ITooltipProvider;
-import org.freeplane.features.map.ModeController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.view.swing.map.attribute.AttributePanelManager;
 

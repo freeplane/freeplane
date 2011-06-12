@@ -45,9 +45,9 @@ import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.NodeLinks;
-import org.freeplane.features.map.ModeController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.text.TextController;
 

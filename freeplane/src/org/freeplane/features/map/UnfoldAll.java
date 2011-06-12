@@ -27,6 +27,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
+import org.freeplane.features.mode.ModeController;
 
 /**
  * @author foltin

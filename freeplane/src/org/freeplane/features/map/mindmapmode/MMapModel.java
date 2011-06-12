@@ -29,11 +29,11 @@ import org.freeplane.core.util.SysUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mindmapmode.file.DoAutomaticSave;
-import org.freeplane.features.mindmapmode.file.DummyLockManager;
-import org.freeplane.features.mindmapmode.file.LockManager;
-import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.features.url.mindmapmode.DoAutomaticSave;
+import org.freeplane.features.url.mindmapmode.DummyLockManager;
+import org.freeplane.features.url.mindmapmode.LockManager;
+import org.freeplane.features.url.mindmapmode.MFileManager;
 
 public class MMapModel extends MapModel {
 	private static int unnamedMapsNumber = 1;

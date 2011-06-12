@@ -41,7 +41,7 @@ import org.freeplane.features.link.ArrowType;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinkModel;
-import org.freeplane.features.map.ModeController;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 

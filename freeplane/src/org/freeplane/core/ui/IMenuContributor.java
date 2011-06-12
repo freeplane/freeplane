@@ -19,7 +19,7 @@
  */
 package org.freeplane.core.ui;
 
-import org.freeplane.features.map.ModeController;
+import org.freeplane.features.mode.ModeController;
 
 public interface IMenuContributor {
 	public void updateMenus(final ModeController modeController, final MenuBuilder builder);

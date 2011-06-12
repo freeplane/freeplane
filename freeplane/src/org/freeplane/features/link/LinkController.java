@@ -70,8 +70,8 @@ import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.map.MapController;
-import org.freeplane.features.map.ModeController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.url.UrlManager;
 

@@ -47,6 +47,7 @@ import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.ComboBoxEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -60,22 +61,27 @@ import javax.swing.JScrollPane;
 import javax.swing.RootPaneContainer;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
+import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.ContainerComboBoxEditor;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.FormattedObject;
+import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.ModeController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.StyleNamedObject;
+import org.freeplane.features.time.TimeComboBoxEditor;
 
 /**
  * @author Dimitry Polivaev
@@ -826,5 +832,70 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		else {
 			addStatusInfo(ResourceController.OBJECT_TYPE, null, null);
 		}
+	}
+
+	public static ComboBoxEditor getTextDateTimeEditor() {
+	    final ContainerComboBoxEditor editor = new ContainerComboBoxEditor();
+		final NamedObject keyText = new NamedObject("text", "1Ab");
+		final BasicComboBoxEditor textEditor = new BasicComboBoxEditor(){
+			private Object oldItem;
+	
+			@Override
+	        public void setItem(Object object) {
+				oldItem = object;
+				if(object instanceof FormattedDate)
+					super.setItem("");
+				else
+					super.setItem(object);
+	        }
+	
+			@Override
+	        public Object getItem() {
+	            final Object item = super.getItem();
+				final Object oldItem = this.oldItem;
+				this.oldItem = null;
+	            if(item != null && oldItem != null && item.toString().equals(oldItem.toString()))
+	            	return oldItem;
+	            if(ResourceController.getResourceController().getBooleanProperty("parse_data") 
+	            		&& item instanceof String){
+	                final Object scannedObject = ScannerController.getController().parse((String)item);
+	                return scannedObject;
+	            }
+				return item;
+	        }
+			
+		};
+		editor.put(keyText, textEditor);
+		
+		final NamedObject keyDate = new NamedObject("date", ""); 
+		keyDate.setIcon(dateIcon);
+		final TimeComboBoxEditor dateComboBoxEditor = new TimeComboBoxEditor(false){
+			@Override
+	        public void setItem(Object object) {
+				if(object instanceof FormattedDate && !((FormattedDate)object).containsTime())
+					super.setItem(object);
+				else
+					super.setItem(null);
+	        }
+		};
+		
+		dateComboBoxEditor.setItem();
+		editor.put(keyDate, dateComboBoxEditor);
+	
+		final NamedObject keyDateTime = new NamedObject("date_time", ""); 
+		keyDateTime.setIcon(dateTimeIcon);
+		final TimeComboBoxEditor dateTimeComboBoxEditor = new TimeComboBoxEditor(true){
+			@Override
+	        public void setItem(Object object) {
+				if(object instanceof FormattedDate && ((FormattedDate)object).containsTime())
+					super.setItem(object);
+				else
+					super.setItem(null);
+	        }
+		};
+		dateTimeComboBoxEditor.setItem();
+		editor.put(keyDateTime, dateTimeComboBoxEditor);
+	
+		return editor;
 	}
 }

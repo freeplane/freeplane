@@ -2,9 +2,9 @@ package org.freeplane.plugin.latex;
 
 import java.util.Hashtable;
 
-import org.freeplane.features.browsemode.BModeController;
-import org.freeplane.features.map.ModeController;
-import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.browsemode.BModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;

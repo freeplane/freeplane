@@ -33,7 +33,7 @@ import java.util.jar.Manifest;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.map.ModeController;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.main.application.FreeplaneStarter;
 import org.freeplane.main.application.SingleInstanceManager;
 import org.osgi.framework.Bundle;

@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.map;
 
+import org.freeplane.features.mode.ModeController;
+
 /**
  * @author Dimitry Polivaev
  * 06.06.2009

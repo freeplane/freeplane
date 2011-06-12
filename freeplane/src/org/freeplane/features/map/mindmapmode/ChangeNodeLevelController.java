@@ -28,9 +28,9 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapController;
-import org.freeplane.features.map.ModeController;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 
 /**
  * @author foltin

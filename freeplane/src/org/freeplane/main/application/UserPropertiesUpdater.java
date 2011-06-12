@@ -33,14 +33,14 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.ModeController;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.features.mindmapmode.file.MFileManager;
+import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.url.mindmapmode.MFileManager;
 
 /**
  * @author Dimitry Polivaev

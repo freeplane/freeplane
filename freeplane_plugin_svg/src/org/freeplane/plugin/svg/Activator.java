@@ -2,12 +2,12 @@ package org.freeplane.plugin.svg;
 
 import java.util.Hashtable;
 
+import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.browsemode.BModeController;
-import org.freeplane.features.map.ModeController;
-import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.features.mindmapmode.export.ExportController;
-import org.freeplane.features.text.mindmapmode.ExampleFileFilter;
+import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.browsemode.BModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.mode.mindmapmode.export.ExportController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
 import org.freeplane.view.swing.addins.filepreview.ViewerController;
 import org.osgi.framework.BundleActivator;

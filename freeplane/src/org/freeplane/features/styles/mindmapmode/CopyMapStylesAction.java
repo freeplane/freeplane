@@ -30,9 +30,9 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.Compat;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.ModeController;
-import org.freeplane.features.mindmapmode.file.MFileManager;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.MapStyle;
+import org.freeplane.features.url.mindmapmode.MFileManager;
 
 /**
  * @author Dimitry Polivaev

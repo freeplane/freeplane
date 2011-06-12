@@ -29,8 +29,8 @@ import javax.swing.event.PopupMenuListener;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
-import org.freeplane.features.map.ModeController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.note.NoteModel;
 
 class RemoveNoteAction extends AFreeplaneAction implements PopupMenuListener {

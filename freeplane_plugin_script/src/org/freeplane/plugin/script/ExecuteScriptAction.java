@@ -32,7 +32,7 @@ import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 
 /**
  * Action that executes a script defined by filename.

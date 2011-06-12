@@ -35,6 +35,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconRegistry;
+import org.freeplane.features.mode.ModeController;
 
 public class MapModel {
 	private static Random ran = new Random();

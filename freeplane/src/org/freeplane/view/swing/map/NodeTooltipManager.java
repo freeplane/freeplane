@@ -29,8 +29,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.map.AMapChangeListenerAdapter;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.MapController;
-import org.freeplane.features.map.ModeController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.ModeController;
 
 public class NodeTooltipManager implements IExtension{
 	private static final String TOOL_TIP_MANAGER = "toolTipManager.";

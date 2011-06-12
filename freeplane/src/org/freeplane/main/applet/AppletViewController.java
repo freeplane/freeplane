@@ -42,7 +42,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.browsemode.BModeController;
+import org.freeplane.features.mode.browsemode.BModeController;
 
 /**
  * @author Dimitry Polivaev

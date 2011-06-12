@@ -52,7 +52,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.IListModel;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 
 /**
  * @author Dimitry Polivaev

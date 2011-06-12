@@ -54,6 +54,7 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel.NodeChangeType;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLParseException;

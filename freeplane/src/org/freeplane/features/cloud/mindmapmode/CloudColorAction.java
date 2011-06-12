@@ -27,8 +27,8 @@ import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.ColorTracker;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.cloud.CloudController;
-import org.freeplane.features.map.ModeController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.ModeController;
 
 class CloudColorAction extends AMultipleNodeAction {
 	/**

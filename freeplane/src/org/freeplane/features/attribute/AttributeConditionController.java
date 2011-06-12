@@ -30,6 +30,7 @@ import javax.swing.ListModel;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
@@ -39,7 +40,6 @@ import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
 import org.freeplane.features.link.LinkTransformer;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.time.TimeComboBoxEditor;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -128,7 +128,7 @@ class AttributeConditionController implements IElementaryConditionController {
 	    if(selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS) 
                 || selectedCondition.objectEquals(ConditionFactory.FILTER_REGEXP) )
             return new BasicComboBoxEditor();
-	    return TimeComboBoxEditor.getTextDateTimeEditor();
+	    return ViewController.getTextDateTimeEditor();
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object selectedItem, NamedObject simpleCond) {

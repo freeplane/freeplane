@@ -29,8 +29,8 @@ import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.IAttributeTableModel;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
-import org.freeplane.features.map.ModeController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.map.NodeView;
 

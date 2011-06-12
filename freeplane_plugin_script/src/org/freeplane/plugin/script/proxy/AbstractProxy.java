@@ -1,7 +1,7 @@
 package org.freeplane.plugin.script.proxy;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.script.ScriptContext;
 
 public abstract class AbstractProxy<T> {
