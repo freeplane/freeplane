@@ -42,6 +42,8 @@ import org.freeplane.features.common.attribute.ModelessAttributeController;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.filter.FilterController;
+import org.freeplane.features.common.format.FormatController;
+import org.freeplane.features.common.format.ScannerController;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.INodeChangeListener;
@@ -118,6 +120,8 @@ public class SModeControllerFactory {
 		MFileManager.install(new MFileManager());
 		LogicalStyleController.install(new LogicalStyleController());
 		AttributeController.install(new MAttributeController(modeController));
+		FormatController.install(new FormatController());
+		ScannerController.install(new ScannerController());
 		modeController.addAction(new EditAttributesAction());
 		userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(new MMouseMotionListener()));
 		final JPopupMenu popupmenu = new JPopupMenu();
