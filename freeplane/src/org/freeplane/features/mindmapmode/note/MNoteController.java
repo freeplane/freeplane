@@ -331,8 +331,8 @@ public class MNoteController extends NoteController {
 	}
 
 	boolean isEditing() {
-		return SwingUtilities.isDescendingFrom(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(),
-		    noteViewerComponent);
+		final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+        return focusOwner != null && noteViewerComponent != null && SwingUtilities.isDescendingFrom(focusOwner, noteViewerComponent);
 	}
 
 	void setFocusToMap() {
