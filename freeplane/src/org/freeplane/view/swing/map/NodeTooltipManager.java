@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -170,22 +171,20 @@ public class NodeTooltipManager implements IExtension{
 //		}
 		final Point locationOnScreen = nearComponent.getLocationOnScreen();
 		final int height = nearComponent.getHeight();
-		final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
-		final Insets screenInsets = defaultToolkit.getScreenInsets(nearComponent.getGraphicsConfiguration());
-		final Dimension screenSize = defaultToolkit.getScreenSize();
-		final int minX = screenInsets.left;
-		final int maxX = screenSize.width - screenInsets.right;
-		final int minY = screenInsets.top;
-		final int maxY = screenSize.height - screenInsets.bottom;
+		Rectangle sBounds = nearComponent.getGraphicsConfiguration().getBounds();
+		final int minX = sBounds.x;
+		final int maxX = sBounds.x + sBounds.width;
+		final int minY = sBounds.y;
+		final int maxY = sBounds.y + sBounds.height;
 		int x = locationOnScreen.x;
 		int y = locationOnScreen.y + height;
 		final Dimension tipSize = tip.getPreferredSize();
 		final int tipWidth = tipSize.width;
 		if(x + tipWidth > maxX){
 			x = maxX - tipWidth;
-			if(x < minX){
-				x = minX;
-			}
+		}
+		if(x < minX){
+			x = minX;
 		}
 		final int tipHeight = tipSize.height;
 		if(y + tipHeight > maxY){
@@ -194,10 +193,10 @@ public class NodeTooltipManager implements IExtension{
 			}
 			else{
 				y = maxY - tipHeight;
-				if(y < minY){
-					y = minY;
-				}
 			}
+		}
+		if(y < minY){
+			y = minY;
 		}
 		focusOwnerRef = new WeakReference<Component>(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());
 		tipPopup = popupFactory.getPopup(nearComponent, tip, x, y);
