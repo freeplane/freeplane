@@ -167,13 +167,16 @@ public class SingleInstanceManager {
 	}
 
 	private void toFront() {
-		final int state = UITools.getFrame().getExtendedState();
+		final Frame frame = UITools.getFrame();
+		if(frame == null)
+		    return;
+        final int state = frame.getExtendedState();
 		if ((state & Frame.ICONIFIED) != 0)
-			UITools.getFrame().setExtendedState(state & ~Frame.ICONIFIED);
-		if (!UITools.getFrame().isVisible())
-			UITools.getFrame().setVisible(true);
-		UITools.getFrame().toFront();
-		UITools.getFrame().requestFocus();
+			frame.setExtendedState(state & ~Frame.ICONIFIED);
+		if (!frame.isVisible())
+			frame.setVisible(true);
+		frame.toFront();
+		frame.requestFocus();
 	}
 
 	private void createLockFile() throws IOException {
