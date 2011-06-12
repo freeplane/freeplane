@@ -9,8 +9,7 @@
 		(c) by Max Bukovskiy, 2011.
 		This code is licensed under the GPLv2 or later. (http://www.gnu.org/copyleft/gpl.html)
 	-->
-<xsl:stylesheet version="1.0"
-	xmlns="http://schemas.microsoft.com/project"; xmlns:xsl="http://www.w3.org/1999/XSL/Transform">;
+<xsl:stylesheet version="1.0" xmlns="http://schemas.microsoft.com/project" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" indent="yes" encoding="UTF-8"	standalone="yes" />
 
 	<xsl:key name="deps" match="arrowlink" use="@DESTINATION" />
