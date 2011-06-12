@@ -30,7 +30,6 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.util.FreeplaneVersion;
-import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -38,6 +37,10 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * 07.12.2008
  */
 public class MapWriter implements IElementWriter, IAttributeWriter {
+
+	public enum WriterHint {
+		FORCE_FORMATTING
+	}
 	private static final String USAGE_COMMENT = "<!--To view this file,"
 	        + " download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->"
 	        + System.getProperty("line.separator");
@@ -87,7 +90,7 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 		final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager, fileout);
 		xmlWriter.setHint(Hint.MODE, mode);
 		if (forceFormat) {
-			xmlWriter.setHint(MapStyle.WriterHint.FORCE_FORMATTING);
+			xmlWriter.setHint(WriterHint.FORCE_FORMATTING);
 		}
 		final XMLElement xmlMap = new XMLElement("map");
 		setSaveInvisible(saveInvisible);
@@ -136,3 +139,4 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 		xmlWriter.flush();
 	}
 }
+

@@ -48,9 +48,6 @@ import org.freeplane.features.common.styles.MapStyleModel;
  * @author Dimitry Polivaev
  */
 public class TextController implements IExtension {
-	public enum Direction {
-		BACK, BACK_N_FOLD, FORWARD, FORWARD_N_FOLD
-	}
 	public static final String FILTER_NODE = "filter_node";
 	public static final String FILTER_PARENT = "filter_parent";
 	public static final String FILTER_DETAILS = "filter_details";

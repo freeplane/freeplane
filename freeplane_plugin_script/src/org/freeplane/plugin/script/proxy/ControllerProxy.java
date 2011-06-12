@@ -18,7 +18,6 @@ import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.FreeplaneIconUtils;
 import org.freeplane.core.util.FreeplaneVersion;

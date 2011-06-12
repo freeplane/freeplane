@@ -32,9 +32,9 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.map.MapController;
+import org.freeplane.features.common.map.MapWriter;
 import org.freeplane.features.common.map.NodeBuilder;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter, IElementWriter {
@@ -104,7 +104,7 @@ class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter, IElem
 	}
 
 	public void writeContent(final ITreeWriter writer, final Object userObject, final String tag) throws IOException {
-		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
+		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 		if (!forceFormatting) {
 			return;
 		}
@@ -113,7 +113,7 @@ class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter, IElem
 
 	public void writeContent(final ITreeWriter writer, final Object userObject, final IExtension extension)
 	        throws IOException {
-		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
+		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 		if (forceFormatting) {
 			return;
 		}

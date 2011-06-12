@@ -174,7 +174,7 @@ public abstract class PersistentNodeHook {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public PersistentNodeHook() {
 		super();
 		final Class<? extends IExtension> extensionClass = getExtensionClass();

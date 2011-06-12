@@ -62,6 +62,10 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * @author Dimitry Polivaev
  */
 public class MapController extends SelectionController {
+	public enum Direction {
+		BACK, BACK_N_FOLD, FORWARD, FORWARD_N_FOLD
+	}
+
 	private static class ActionEnablerOnChange implements INodeChangeListener, INodeSelectionListener, IActionOnChange {
 		final AFreeplaneAction action;
 

@@ -50,7 +50,7 @@ import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.styles.LogicalStyleFilterController;
 import org.freeplane.features.common.styles.MapViewLayout;
 import org.freeplane.features.common.text.TextController;
-import org.freeplane.features.common.text.TextController.Direction;
+import org.freeplane.features.common.map.MapController.Direction;
 import org.freeplane.features.common.time.TimeController;
 import org.freeplane.features.controller.help.HelpController;
 import org.freeplane.features.controller.print.PrintController;

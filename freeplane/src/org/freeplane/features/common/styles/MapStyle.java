@@ -66,10 +66,6 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	public static final String RESOURCES_BACKGROUND_COLOR = "standardbackgroundcolor";
 	public static final String MAP_STYLES = "MAP_STYLES";
 
-	public enum WriterHint {
-		FORCE_FORMATTING
-	};
-
 	public static final String MAX_NODE_WIDTH = "max_node_width";
 	
 	public MapStyle( final boolean persistent) {

@@ -55,6 +55,7 @@ import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.icon.MindIcon;
 import org.freeplane.features.common.icon.UIIcon;
+import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
@@ -328,7 +329,7 @@ public abstract class MainView extends ZoomableLabel {
 
 	private void addOwnIcons(final MultipleImage iconImages, final NodeModel model) {
 		final URI link = NodeLinks.getLink(model);
-			final Icon icon = IconController.getLinkIcon(link, model);
+			final Icon icon = LinkController.getLinkIcon(link, model);
 			if(icon != null)
 				iconImages.addImage(icon);
 	}

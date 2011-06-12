@@ -40,6 +40,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.Box;
+import javax.swing.Icon;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -60,9 +61,13 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.common.filter.FilterController;
+import org.freeplane.features.common.icon.IconStore;
+import org.freeplane.features.common.icon.UIIcon;
+import org.freeplane.features.common.icon.factory.IconStoreFactory;
 import org.freeplane.features.common.link.ConnectorModel.Shape;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.ModeController;
@@ -105,6 +110,11 @@ public class LinkController extends SelectionController implements IExtension {
 		};
 		Controller.getCurrentModeController().getMapController().addNodeSelectionListener(listener);
 	}
+
+	public static final String LINK_ICON = ResourceController.getResourceController().getProperty("link_icon");
+	private static final String MAIL_ICON = ResourceController.getResourceController().getProperty("mail_icon");
+	public static final String LINK_LOCAL_ICON = ResourceController.getResourceController().getProperty(
+	"link_local_icon");
 
 // 	final private ModeController modeController;
 
@@ -536,6 +546,51 @@ public class LinkController extends SelectionController implements IExtension {
 	public String getStandardLabelFontFamily() {
 	    return ResourceController.getResourceController().getProperty("label_font_family");
     }
+
+	private static final String MENUITEM_ICON = "icons/button.png";
+	private static final String EXECUTABLE_ICON = ResourceController.getResourceController().getProperty(
+	    "executable_icon");
+	private static final IconStore ICON_STORE = IconStoreFactory.create();
+	public static Icon getLinkIcon(final URI link, final NodeModel model) {
+		if (link == null) 
+			return null;
+	    final String linkText = link.toString();
+	    final String iconPath;
+	    if (linkText.startsWith("#")) {
+	    	final String id = linkText.substring(1);
+	    	if (model == null || model.getMap().getNodeForID(id) == null) {
+	    		iconPath = null;
+	    	}
+	    	else{
+	    		iconPath = LINK_LOCAL_ICON;
+	    	}
+	    }
+	    else if (linkText.startsWith("mailto:")) {
+	    	iconPath = MAIL_ICON;
+	    }
+	    else if (Compat.executableExtensions.contains(link)) {
+	    	iconPath = EXECUTABLE_ICON;
+	    }
+	    else if (isMenuItemLink(link)) {
+	    	// nodes with menu item link contain the image from the menu if available
+	    	if (model == null || model.getIcons().isEmpty())
+	    		iconPath = MENUITEM_ICON;
+	    	else
+	    		iconPath = null;
+	    }
+	    else if (Compat.isExecutable(linkText)) {
+	    	iconPath = "Executable.png";
+	    }
+	    else{
+	    	iconPath = LinkController.LINK_ICON;
+	    }
+	    if(iconPath == null)
+	    	return null;
+	    final UIIcon uiIcon = ICON_STORE.getUIIcon(iconPath);
+	    if(uiIcon == null)
+	    	return null;
+	    return uiIcon.getIcon();
+	}
 
 
 }

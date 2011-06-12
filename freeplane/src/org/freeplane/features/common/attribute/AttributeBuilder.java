@@ -34,8 +34,8 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TypeReference;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.MapReader;
+import org.freeplane.features.common.map.MapWriter;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -307,7 +307,7 @@ class AttributeBuilder implements IElementDOMHandler {
 		attributeElement.setName(AttributeBuilder.XML_NODE_ATTRIBUTE);
 		attributeElement.setAttribute("NAME", attr.getName());
 		final Object value = attr.getValue();
-		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
+		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 		if (forceFormatting) {
 			attributeElement.setAttribute("VALUE", TextController.getController().getTransformedText(value, node, null));
 		}

@@ -34,9 +34,9 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.FreeplaneVersion;
+import org.freeplane.features.common.map.MapWriter;
 import org.freeplane.features.common.map.NodeBuilder;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, IExtensionAttributeWriter,
@@ -172,7 +172,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 	}
 
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
-		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
+		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 		if (!forceFormatting) {
 			return;
 		}
@@ -181,7 +181,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 	}
 
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final IExtension extension) {
-		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
+		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 		if (forceFormatting) {
 			return;
 		}
@@ -214,7 +214,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 	}
 
 	public void writeContent(final ITreeWriter writer, final Object userObject, final String tag) throws IOException {
-		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
+		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 		if (!forceFormatting) {
 			return;
 		}
@@ -224,7 +224,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 
 	public void writeContent(final ITreeWriter writer, final Object userObject, final IExtension extension)
 	        throws IOException {
-		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
+		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 		if (forceFormatting) {
 			return;
 		}

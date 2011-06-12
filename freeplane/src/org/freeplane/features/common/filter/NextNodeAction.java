@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.text.TextController.Direction;
+import org.freeplane.features.common.map.MapController.Direction;
 
 public class NextNodeAction extends AFreeplaneAction {
 	/**

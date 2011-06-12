@@ -34,7 +34,6 @@ import java.io.InputStream;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JWindow;
 
 import org.freeplane.core.controller.Controller;

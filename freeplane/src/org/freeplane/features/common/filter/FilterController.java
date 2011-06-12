@@ -63,7 +63,7 @@ import org.freeplane.features.common.filter.condition.SelectedViewCondition;
 import org.freeplane.features.common.filter.condition.SelectedViewSnapshotCondition;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.text.TextController.Direction;
+import org.freeplane.features.common.map.MapController.Direction;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;

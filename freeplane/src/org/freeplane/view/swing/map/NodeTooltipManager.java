@@ -3,11 +3,9 @@ package org.freeplane.view.swing.map;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Insets;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;

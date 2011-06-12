@@ -65,7 +65,7 @@ import org.freeplane.features.common.attribute.ColumnWidthChangeEvent;
 import org.freeplane.features.common.attribute.IAttributeTableModel;
 import org.freeplane.features.common.attribute.IColumnWidthChangeListener;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
-import org.freeplane.features.common.icon.IconController;
+import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.map.MapController;
 import org.freeplane.features.common.map.NodeModel;
 import org.freeplane.features.common.text.TextController;
@@ -328,7 +328,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
 	Icon getLinkIcon(final URI uri) {
 		NodeModel nodeModel = ((IAttributeTableModel)getModel()).getNode();
-	    final Icon linkIcon = IconController.getLinkIcon(uri, nodeModel);
+	    final Icon linkIcon = LinkController.getLinkIcon(uri, nodeModel);
 	    return linkIcon;
     }
 	

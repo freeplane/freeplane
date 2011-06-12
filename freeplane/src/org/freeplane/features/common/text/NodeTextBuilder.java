@@ -34,9 +34,9 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TypeReference;
+import org.freeplane.features.common.map.MapWriter;
 import org.freeplane.features.common.map.NodeBuilder;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.styles.MapStyle;
 import org.freeplane.features.common.styles.StyleFactory;
 import org.freeplane.features.common.styles.StyleNamedObject;
 import org.freeplane.features.common.styles.StyleString;
@@ -165,7 +165,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			writer.addAttribute(NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, ((NamedObject) data).getObject().toString());
 			return;
 		}
-		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapStyle.WriterHint.FORCE_FORMATTING));
+		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 		if (forceFormatting) {
 			final String text = TextController.getController().getTransformedText(data, node, data);
 			if (!HtmlUtils.isHtmlNode(text)) {

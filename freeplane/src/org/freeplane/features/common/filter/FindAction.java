@@ -41,7 +41,7 @@ import org.freeplane.features.common.filter.condition.ASelectableCondition;
 import org.freeplane.features.common.filter.condition.ICondition;
 import org.freeplane.features.common.map.MapModel;
 import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.text.TextController.Direction;
+import org.freeplane.features.common.map.MapController.Direction;
 
 class FindAction extends AFreeplaneAction {
 	static final String KEY = "FindAction";
