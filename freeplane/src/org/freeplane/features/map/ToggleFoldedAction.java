@@ -21,8 +21,8 @@ package org.freeplane.features.map;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.mode.Controller;
 
 /**
  * @author foltin

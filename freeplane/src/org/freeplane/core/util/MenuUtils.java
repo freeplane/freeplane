@@ -29,7 +29,6 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.IndexedTree;
@@ -38,6 +37,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 
 public class MenuUtils {
 	/** The userObject type for createMenuEntryTree(). */

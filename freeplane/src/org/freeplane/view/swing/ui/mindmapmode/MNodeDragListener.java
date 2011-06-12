@@ -13,11 +13,11 @@ import java.awt.dnd.DragSourceListener;
 import java.awt.dnd.InvalidDnDOperationException;
 import java.awt.event.InputEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.clipboard.MindMapNodesSelection;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MainView;
 
 /**

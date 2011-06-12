@@ -21,10 +21,10 @@ package org.freeplane.features.map.filemode;
 
 import java.io.File;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.filemode.FModeController;
 
 /**

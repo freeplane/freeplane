@@ -43,17 +43,17 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.SortedComboBoxModel;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.AttributeRegistryElement;
+import org.freeplane.features.frame.IMapViewManager;
 import org.freeplane.features.icon.IconStore;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mode.Controller;
 
 class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	private static final IconStore STORE = IconStoreFactory.create();

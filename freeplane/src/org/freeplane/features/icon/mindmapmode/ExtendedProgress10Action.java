@@ -3,10 +3,10 @@ package org.freeplane.features.icon.mindmapmode;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.addins.filepreview.ViewerController;
 
 /**

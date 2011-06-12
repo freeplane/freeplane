@@ -34,11 +34,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 
 /**

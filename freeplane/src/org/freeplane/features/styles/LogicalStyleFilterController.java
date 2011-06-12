@@ -7,12 +7,12 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class LogicalStyleFilterController implements IElementaryConditionController {

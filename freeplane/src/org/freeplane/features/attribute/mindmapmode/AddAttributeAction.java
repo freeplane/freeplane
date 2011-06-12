@@ -36,7 +36,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.components.TypedListCellRenderer;
@@ -49,6 +48,7 @@ import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.attribute.mindmapmode.AssignAttributeDialog.ClonedComboBoxModel;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 
 @EnabledAction(checkOnNodeChange = true)
 public class AddAttributeAction extends AFreeplaneAction {

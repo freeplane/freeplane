@@ -31,9 +31,9 @@ import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.scilab.forge.jlatexmath.TeXConstants;

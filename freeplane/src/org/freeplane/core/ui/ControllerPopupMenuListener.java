@@ -22,7 +22,7 @@ package org.freeplane.core.ui;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 
-import org.freeplane.core.controller.Controller;
+import org.freeplane.features.mode.Controller;
 
 /**
  * listener, that blocks the controler if the menu is active (PN) Take care!

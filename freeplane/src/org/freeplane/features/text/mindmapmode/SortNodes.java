@@ -22,10 +22,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Vector;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.TextController;
 
 /**

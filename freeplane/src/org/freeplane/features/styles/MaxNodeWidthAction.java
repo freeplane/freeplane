@@ -7,10 +7,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mode.Controller;
 
 public class MaxNodeWidthAction extends AFreeplaneAction {
 	/**

@@ -29,7 +29,6 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
-import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
@@ -37,6 +36,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
+import org.freeplane.features.frame.ViewController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 

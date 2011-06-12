@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.util.FreeplaneIconUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.Filter;
+import org.freeplane.features.frame.ViewController;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.NodeContainsCondition;
 import org.freeplane.features.text.TextController;
 import org.freeplane.plugin.script.proxy.Proxy.Map;

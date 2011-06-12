@@ -2,9 +2,9 @@ package org.freeplane.plugin.formula;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MapView;
 
 class EvaluateAllAction extends AFreeplaneAction {

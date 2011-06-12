@@ -22,10 +22,10 @@ package org.freeplane.features.link.mindmapmode;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 
 /**
  * @author foltin

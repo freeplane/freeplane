@@ -57,16 +57,16 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.text.JTextComponent;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.PatternFormat;
+import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;

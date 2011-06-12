@@ -22,10 +22,10 @@ package org.freeplane.features.text.mindmapmode;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.DetailTextModel;
 
 @EnabledAction(checkOnNodeChange = true)

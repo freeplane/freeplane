@@ -39,9 +39,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.extension.IExtensionCopier;
-import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.IPropertyControlCreator;
@@ -55,13 +52,16 @@ import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.frame.ViewController;
 import org.freeplane.features.icon.IIconInformation;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconGroup;
 import org.freeplane.features.icon.IconStore;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
+import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 

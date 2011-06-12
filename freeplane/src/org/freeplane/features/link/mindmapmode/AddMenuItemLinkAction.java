@@ -22,7 +22,6 @@ package org.freeplane.features.link.mindmapmode;
 import java.awt.event.ActionEvent;
 import java.net.URI;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.MenuUtils.MenuEntry;
 import org.freeplane.features.icon.IconController;
@@ -31,6 +30,7 @@ import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 
 class AddMenuItemLinkAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;

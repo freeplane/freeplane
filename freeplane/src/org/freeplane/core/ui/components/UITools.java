@@ -42,13 +42,13 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.text.JTextComponent;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.frame.ViewController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 
 /**
  * Utilities for accessing the GUI, creating dialogs etc.: In scripts available as "global variable" <code>ui</code>.

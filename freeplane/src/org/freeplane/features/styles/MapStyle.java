@@ -28,8 +28,6 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Vector;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.IMapLifeCycleListener;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IElementContentHandler;
 import org.freeplane.core.io.IElementDOMHandler;
@@ -50,6 +48,8 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.IMapLifeCycleListener;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;

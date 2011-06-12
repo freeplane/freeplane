@@ -29,9 +29,6 @@ import java.util.Vector;
 
 import javax.swing.SwingUtilities;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.IMapLifeCycleListener;
-import org.freeplane.core.controller.INodeViewVisitor;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.SysUtils;
@@ -41,6 +38,9 @@ import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.IMapLifeCycleListener;
+import org.freeplane.features.mode.INodeViewVisitor;
 import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.n3.nanoxml.XMLElement;

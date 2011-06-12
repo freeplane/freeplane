@@ -32,9 +32,9 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
-import org.freeplane.core.controller.AController.IActionOnChange;
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.AController.IActionOnChange;
 
 /**
  * @author Dimitry Polivaev

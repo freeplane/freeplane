@@ -21,11 +21,11 @@ package org.freeplane.features.text;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.IMapSelection;
 
 @SelectableAction(checkOnNodeChange=true)
 class ToggleDetailsAction extends AMultipleNodeAction {

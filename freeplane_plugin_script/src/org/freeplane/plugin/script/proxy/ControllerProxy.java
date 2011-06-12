@@ -12,19 +12,19 @@ import java.util.List;
 
 import javax.swing.Icon;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.IMapSelection;
-import org.freeplane.core.frame.IMapViewManager;
-import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.FreeplaneIconUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.features.filter.condition.ICondition;
+import org.freeplane.features.frame.IMapViewManager;
+import org.freeplane.features.frame.ViewController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.IMapSelection;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;

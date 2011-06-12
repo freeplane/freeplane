@@ -27,7 +27,6 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
@@ -37,6 +36,7 @@ import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.TextController;
 
 class JoinNodesAction extends AFreeplaneAction {

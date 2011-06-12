@@ -29,15 +29,15 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.INodeSelectionListener;
-import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.features.map.IMapChangeListener;
+import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.INodeSelectionListener;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;

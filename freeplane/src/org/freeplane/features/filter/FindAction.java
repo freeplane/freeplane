@@ -31,8 +31,6 @@ import javax.swing.JOptionPane;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
@@ -42,6 +40,8 @@ import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.MapController.Direction;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.IMapSelection;
 
 class FindAction extends AFreeplaneAction {
 	static final String KEY = "FindAction";

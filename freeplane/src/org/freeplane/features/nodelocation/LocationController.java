@@ -19,11 +19,11 @@
  */
 package org.freeplane.features.nodelocation;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.features.map.MapController;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
 /**

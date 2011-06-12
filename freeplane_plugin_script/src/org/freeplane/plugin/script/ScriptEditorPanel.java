@@ -52,12 +52,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.JTextComponent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.BlindIcon;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
 
 /**

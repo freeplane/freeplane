@@ -13,10 +13,10 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
 public class XsltExportEngine implements IExportEngine {

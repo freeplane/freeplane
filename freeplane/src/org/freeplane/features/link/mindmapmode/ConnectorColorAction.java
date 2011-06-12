@@ -24,11 +24,11 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ColorTracker;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.mode.Controller;
 
 class ConnectorColorAction extends AFreeplaneAction {
 	/**

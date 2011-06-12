@@ -27,7 +27,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.util.collection.IListModel;
@@ -36,6 +35,7 @@ import org.freeplane.core.util.collection.SortedMapVector;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**

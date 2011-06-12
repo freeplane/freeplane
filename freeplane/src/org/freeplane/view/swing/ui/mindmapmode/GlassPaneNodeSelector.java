@@ -28,10 +28,10 @@ import java.awt.event.MouseEvent;
 import javax.swing.JScrollBar;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 

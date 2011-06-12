@@ -10,8 +10,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.features.mode.Controller;
 
 /**
  * Provides methods and constants which are dependend on the underlying java version

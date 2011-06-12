@@ -21,14 +21,14 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.frame.IMapViewManager;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 

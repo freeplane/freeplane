@@ -36,9 +36,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JWindow;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.FreeplaneVersion;
+import org.freeplane.features.mode.Controller;
 
 /**
  * Class that displays a splash screen

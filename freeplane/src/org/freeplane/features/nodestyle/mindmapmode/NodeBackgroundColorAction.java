@@ -22,11 +22,11 @@ package org.freeplane.features.nodestyle.mindmapmode;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.ColorTracker;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 

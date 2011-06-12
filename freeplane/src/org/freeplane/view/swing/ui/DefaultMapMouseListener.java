@@ -30,13 +30,13 @@ import java.awt.event.WindowFocusListener;
 import javax.swing.JDialog;
 import javax.swing.JPopupMenu;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.IMapMouseReceiver;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.IMapSelection;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.view.swing.map.MapView;
 

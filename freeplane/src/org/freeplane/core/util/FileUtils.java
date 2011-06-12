@@ -12,8 +12,8 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.mode.Controller;
 
 public class FileUtils {
 	public static void copyFromURL(final URL resource, final File destinationDirectory) {

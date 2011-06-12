@@ -24,7 +24,6 @@ import java.util.Vector;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.resources.components.PropertyAction;
@@ -34,6 +33,7 @@ import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.mindmapmode.MMapModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.mindmapmode.MNoteController;

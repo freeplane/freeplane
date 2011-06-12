@@ -50,10 +50,6 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.IMapSelection;
-import org.freeplane.core.controller.INodeSelectionListener;
-import org.freeplane.core.controller.SelectionController;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -71,7 +67,11 @@ import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.IMapSelection;
+import org.freeplane.features.mode.INodeSelectionListener;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.SelectionController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.url.UrlManager;
 

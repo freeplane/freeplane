@@ -22,7 +22,6 @@ package org.freeplane.features.attribute.mindmapmode;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.collection.SortedComboBoxModel;
 import org.freeplane.features.attribute.Attribute;
@@ -32,6 +31,7 @@ import org.freeplane.features.attribute.AttributeRegistryElement;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
 public class MAttributeController extends AttributeController {

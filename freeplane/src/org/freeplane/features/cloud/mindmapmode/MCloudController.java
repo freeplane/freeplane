@@ -21,14 +21,14 @@ package org.freeplane.features.cloud.mindmapmode;
 
 import java.awt.Color;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.extension.IExtensionCopier;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.cloud.CloudModel.Shape;
+import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.LogicalStyleKeys;
 

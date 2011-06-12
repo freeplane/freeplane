@@ -9,13 +9,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.IMapViewManager;
-import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.features.frame.IMapViewManager;
+import org.freeplane.features.frame.ViewController;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mode.Controller;
 
 abstract class AEditStylesAction extends AFreeplaneAction {
 	private Controller controller = null;

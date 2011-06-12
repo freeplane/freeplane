@@ -21,13 +21,13 @@ package org.freeplane.features.filter;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.MapController.Direction;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.IMapSelection;
 
 /**
  * @author Dimitry Polivaev

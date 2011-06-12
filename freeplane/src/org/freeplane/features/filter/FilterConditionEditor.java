@@ -39,7 +39,6 @@ import javax.swing.ListCellRenderer;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.text.JTextComponent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
@@ -49,6 +48,7 @@ import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mode.Controller;
 
 /**
  * @author Dimitry Polivaev

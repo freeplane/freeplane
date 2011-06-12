@@ -22,8 +22,8 @@ package org.freeplane.features.attribute.mindmapmode;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.mode.Controller;
 
 class ShowAttributeDialogAction extends AFreeplaneAction {
 	/**

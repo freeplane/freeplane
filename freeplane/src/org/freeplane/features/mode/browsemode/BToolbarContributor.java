@@ -26,14 +26,14 @@ import java.net.URL;
 
 import javax.swing.JLabel;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.IMapViewChangeListener;
-import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.PersistentEditableComboBox;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.frame.IMapViewChangeListener;
+import org.freeplane.features.frame.IMapViewManager;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
 public class BToolbarContributor implements IMenuContributor, IMapViewChangeListener {

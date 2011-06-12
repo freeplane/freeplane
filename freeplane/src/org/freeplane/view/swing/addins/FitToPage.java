@@ -24,8 +24,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JViewport;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MapView;
 
 /**

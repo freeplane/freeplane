@@ -20,13 +20,13 @@ package org.freeplane.view.swing.addins.nodehistory;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.frame.IMapViewManager;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.INodeSelectionListener;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.view.swing.map.MapView;
 

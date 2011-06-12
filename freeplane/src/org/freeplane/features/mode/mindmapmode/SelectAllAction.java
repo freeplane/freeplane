@@ -21,9 +21,9 @@ package org.freeplane.features.mode.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 
 /** */
 class SelectAllAction extends AMultipleNodeAction {

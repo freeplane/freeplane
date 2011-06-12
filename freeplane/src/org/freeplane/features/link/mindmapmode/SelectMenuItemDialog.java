@@ -40,7 +40,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
@@ -50,6 +49,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.factory.MindIconFactory;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 
 /**

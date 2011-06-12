@@ -21,9 +21,9 @@ package org.freeplane.view.swing.addins.nodehistory;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
+import org.freeplane.features.mode.Controller;
 
 /**
  * @author Dimitry Polivaev

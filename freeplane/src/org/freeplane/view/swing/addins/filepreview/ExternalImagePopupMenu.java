@@ -30,11 +30,11 @@ import java.util.Collection;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.mindmapmode.ProgressUtilities;
 import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;

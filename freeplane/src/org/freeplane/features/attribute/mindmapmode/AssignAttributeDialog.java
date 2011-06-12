@@ -48,9 +48,6 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListDataListener;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.IMapSelection;
-import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.ui.components.UITools;
@@ -61,8 +58,11 @@ import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.AttributeRegistryElement;
 import org.freeplane.features.attribute.IAttributesListener;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
+import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.IMapSelection;
 
 class AssignAttributeDialog extends JDialog implements IAttributesListener, IMapSelectionListener {
 	private class AddAction extends IteratingAction {

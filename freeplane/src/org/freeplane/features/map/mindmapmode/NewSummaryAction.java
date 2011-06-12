@@ -22,14 +22,14 @@ package org.freeplane.features.map.mindmapmode;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.FirstGroupNode;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNode;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.IMapSelection;
 import org.freeplane.features.mode.ModeController;
 
 class NewSummaryAction extends AFreeplaneAction {

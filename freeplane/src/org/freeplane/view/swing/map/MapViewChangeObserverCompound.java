@@ -21,8 +21,8 @@ package org.freeplane.view.swing.map;
 
 import java.util.HashSet;
 
-import org.freeplane.core.frame.IMapSelectionListener;
-import org.freeplane.core.frame.IMapViewChangeListener;
+import org.freeplane.features.frame.IMapViewChangeListener;
+import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 
 /**

@@ -3,8 +3,8 @@ package org.freeplane.plugin.formula;
 import java.net.URL;
 import java.util.Hashtable;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.text.TextController;

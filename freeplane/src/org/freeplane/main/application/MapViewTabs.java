@@ -41,9 +41,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.plaf.TabbedPaneUI;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.IMapViewChangeListener;
-import org.freeplane.core.frame.ViewController;
+import org.freeplane.features.frame.IMapViewChangeListener;
+import org.freeplane.features.frame.ViewController;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.mindmapmode.FileOpener;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 

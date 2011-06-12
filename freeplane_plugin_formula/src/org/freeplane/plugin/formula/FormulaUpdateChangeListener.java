@@ -2,13 +2,13 @@ package org.freeplane.plugin.formula;
 
 import java.util.List;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.text.IContentTransformer;
 import org.freeplane.plugin.script.FormulaUtils;

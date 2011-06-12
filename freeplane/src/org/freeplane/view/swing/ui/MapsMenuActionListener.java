@@ -24,7 +24,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.SwingUtilities;
 
-import org.freeplane.core.controller.Controller;
+import org.freeplane.features.mode.Controller;
 
 class MapsMenuActionListener implements ActionListener {
 // // 	final private Controller controller;

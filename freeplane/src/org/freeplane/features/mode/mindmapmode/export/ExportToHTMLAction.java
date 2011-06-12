@@ -24,7 +24,6 @@ import java.io.IOException;
 
 import javax.swing.filechooser.FileFilter;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.components.UITools;
@@ -32,6 +31,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 
 class ExportToHTMLAction implements IExportEngine {

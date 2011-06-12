@@ -25,16 +25,16 @@ import javax.swing.Action;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapModel;
+import org.freeplane.features.mode.Controller;
 
 class UndoAction extends AFreeplaneAction implements IMapSelectionListener, INodeChangeListener {
 	/**

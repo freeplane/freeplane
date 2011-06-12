@@ -2,11 +2,11 @@ package org.freeplane.features.note.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
+import org.freeplane.features.frame.ViewController;
+import org.freeplane.features.mode.Controller;
 
 /** Select Note Window at the position action */
 @SelectableAction(checkOnPopup = true)

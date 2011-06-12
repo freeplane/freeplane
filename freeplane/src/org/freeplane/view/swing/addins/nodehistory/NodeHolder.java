@@ -21,8 +21,8 @@ package org.freeplane.view.swing.addins.nodehistory;
 
 import java.lang.ref.WeakReference;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.MapViewController;

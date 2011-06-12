@@ -19,11 +19,11 @@
  */
 package org.freeplane.features.encrypt.mindmapmode;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.encrypt.EncryptionController;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
 /**

@@ -22,13 +22,13 @@ package org.freeplane.view.swing.ui.mindmapmode;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.IMapMouseReceiver;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;

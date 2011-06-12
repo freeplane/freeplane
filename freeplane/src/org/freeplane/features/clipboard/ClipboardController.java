@@ -40,13 +40,13 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.IMapSelection;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.text.TextController;

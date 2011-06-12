@@ -22,12 +22,12 @@ package org.freeplane.features.cloud.mindmapmode;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.ColorTracker;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
 class CloudColorAction extends AMultipleNodeAction {

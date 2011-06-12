@@ -21,8 +21,8 @@ package org.freeplane.features.nodestyle.filemode;
 
 import java.awt.Color;
 
-import org.freeplane.core.controller.IPropertyHandler;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.IPropertyHandler;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 

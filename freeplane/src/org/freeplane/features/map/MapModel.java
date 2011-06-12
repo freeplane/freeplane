@@ -28,13 +28,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconRegistry;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
 public class MapModel {

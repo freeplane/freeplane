@@ -1,6 +1,6 @@
 package org.freeplane.plugin.script.proxy;
 
-import org.freeplane.core.controller.Controller;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.script.ScriptContext;
 

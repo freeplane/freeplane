@@ -47,8 +47,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
@@ -60,7 +58,9 @@ import org.freeplane.features.filter.condition.ConditionNotSatisfiedDecorator;
 import org.freeplane.features.filter.condition.ConjunctConditions;
 import org.freeplane.features.filter.condition.DisjunctConditions;
 import org.freeplane.features.filter.condition.ICombinedCondition;
+import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLElement;
 

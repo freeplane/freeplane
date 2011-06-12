@@ -28,12 +28,12 @@ import java.util.Locale;
 import javax.swing.JPopupMenu;
 import javax.swing.text.JTextComponent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
 import com.inet.jortho.FileUserDictionary;

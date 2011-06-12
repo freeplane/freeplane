@@ -14,11 +14,11 @@ import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 
 import org.apache.commons.lang.StringUtils;
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 public class SingleInstanceManager {

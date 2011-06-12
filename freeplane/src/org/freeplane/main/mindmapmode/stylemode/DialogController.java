@@ -32,10 +32,10 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.RootPaneContainer;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.IMapViewManager;
-import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
+import org.freeplane.features.frame.IMapViewManager;
+import org.freeplane.features.frame.ViewController;
+import org.freeplane.features.mode.Controller;
 
 class DialogController extends ViewController {
 	final private JDialog dialog;

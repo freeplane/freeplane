@@ -21,8 +21,8 @@ package org.freeplane.features.mode.mindmapmode.export;
 
 import java.awt.image.RenderedImage;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mode.Controller;
 
 /**
  * @author foltin

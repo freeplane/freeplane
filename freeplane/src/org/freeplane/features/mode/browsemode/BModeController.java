@@ -19,10 +19,10 @@
  */
 package org.freeplane.features.mode.browsemode;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;

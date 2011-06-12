@@ -19,9 +19,9 @@ package org.freeplane.features.mode.mindmapmode.export;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mode.Controller;
 
 /**
  * @author foltin To change the template for this generated type comment go to

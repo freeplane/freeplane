@@ -37,14 +37,14 @@ import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.INodeSelectionListener;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.view.swing.map.NodeView;
 

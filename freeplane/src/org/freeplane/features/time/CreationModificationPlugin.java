@@ -22,7 +22,6 @@ package org.freeplane.features.time;
 
 import java.awt.EventQueue;
 import java.text.MessageFormat;
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.HistoryInformationModel;
@@ -30,6 +29,7 @@ import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.ITooltipProvider;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;

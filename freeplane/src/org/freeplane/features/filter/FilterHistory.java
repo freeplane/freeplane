@@ -23,8 +23,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mode.Controller;
 
 /**
  * @author Dimitry Polivaev

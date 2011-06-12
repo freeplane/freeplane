@@ -21,8 +21,8 @@ package org.freeplane.features.mode.filemode;
 
 import java.io.File;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.features.map.filemode.FMapController;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
 public class FModeController extends ModeController {

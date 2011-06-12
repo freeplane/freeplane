@@ -2,7 +2,7 @@ package org.freeplane.plugin.bugreport;
 
 import java.util.logging.Logger;
 
-import org.freeplane.core.controller.Controller;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.main.osgi.IControllerExtensionProvider;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;

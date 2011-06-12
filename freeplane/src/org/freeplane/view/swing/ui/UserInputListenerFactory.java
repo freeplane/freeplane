@@ -39,10 +39,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JToolBar;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.IMapSelectionListener;
-import org.freeplane.core.frame.IMapViewManager;
-import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMouseListener;
@@ -52,7 +48,11 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.frame.IMapViewManager;
+import org.freeplane.features.frame.ViewController;
+import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.view.swing.map.MapView;
 

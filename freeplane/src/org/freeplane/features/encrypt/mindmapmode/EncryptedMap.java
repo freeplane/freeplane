@@ -19,12 +19,12 @@ package org.freeplane.features.encrypt.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
 import org.freeplane.features.encrypt.SingleDesEncrypter;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 

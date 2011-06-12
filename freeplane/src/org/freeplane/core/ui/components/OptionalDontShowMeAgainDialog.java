@@ -35,12 +35,12 @@ import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 import org.apache.commons.lang.StringUtils;
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.IMapSelection;
 
 /**
  * Dialog with a decision that can be disabled.

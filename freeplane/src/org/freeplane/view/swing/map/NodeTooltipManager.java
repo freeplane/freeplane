@@ -22,7 +22,6 @@ import javax.swing.PopupFactory;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
@@ -30,6 +29,7 @@ import org.freeplane.features.map.AMapChangeListenerAdapter;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.INodeSelectionListener;
 import org.freeplane.features.mode.ModeController;
 
 public class NodeTooltipManager implements IExtension{

@@ -21,10 +21,10 @@ package org.freeplane.features.clipboard.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 
 class PasteAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;

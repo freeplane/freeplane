@@ -33,7 +33,6 @@ import java.util.TreeMap;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 
-import org.freeplane.core.controller.INodeViewVisitor;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.extension.SmallExtensionMap;
@@ -43,6 +42,7 @@ import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterInfo;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.UIIcon;
+import org.freeplane.features.mode.INodeViewVisitor;
 import org.freeplane.features.mode.ModeController;
 
 /**

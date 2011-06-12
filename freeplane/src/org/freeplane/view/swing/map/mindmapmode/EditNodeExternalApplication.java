@@ -26,11 +26,11 @@ import java.text.MessageFormat;
 
 import javax.swing.JFrame;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 
 /**

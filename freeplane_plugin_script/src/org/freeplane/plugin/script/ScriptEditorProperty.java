@@ -26,10 +26,10 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPopupMenu;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.PropertyBean;
+import org.freeplane.features.mode.Controller;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 

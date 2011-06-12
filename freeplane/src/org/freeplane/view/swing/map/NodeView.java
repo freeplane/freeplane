@@ -39,7 +39,6 @@ import java.util.ListIterator;
 import javax.swing.JComponent;
 import javax.swing.tree.TreeNode;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
@@ -57,6 +56,7 @@ import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.map.NodeModel.NodeChangeType;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;

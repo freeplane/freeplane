@@ -37,7 +37,6 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.GrabKeyDialog;
 import org.freeplane.core.resources.components.IKeystrokeValidator;
@@ -47,6 +46,7 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.IKeyBindingManager;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.mode.Controller;
 
 /**
  * @author Dimitry Polivaev

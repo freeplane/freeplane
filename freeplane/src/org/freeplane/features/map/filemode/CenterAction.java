@@ -22,8 +22,8 @@ package org.freeplane.features.map.filemode;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.mode.Controller;
 
 public class CenterAction extends AFreeplaneAction {
 	/**

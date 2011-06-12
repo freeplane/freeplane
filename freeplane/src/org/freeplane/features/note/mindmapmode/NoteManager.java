@@ -24,10 +24,10 @@ import java.util.regex.Pattern;
 
 import javax.swing.text.html.HTMLDocument;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.INodeSelectionListener;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.mindmapmode.MNoteController.NoteDocumentListener;
 

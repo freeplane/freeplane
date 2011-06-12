@@ -28,7 +28,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.IElementHandler;

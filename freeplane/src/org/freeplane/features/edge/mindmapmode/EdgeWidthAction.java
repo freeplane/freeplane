@@ -21,13 +21,13 @@ package org.freeplane.features.edge.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 
 @SelectableAction(checkOnNodeChange = true)
 class EdgeWidthAction extends AMultipleNodeAction {

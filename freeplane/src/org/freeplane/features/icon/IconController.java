@@ -24,9 +24,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-import org.freeplane.core.controller.CombinedPropertyChain;
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.IPropertyHandler;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -34,6 +31,9 @@ import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.CombinedPropertyChain;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.IPropertyHandler;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;

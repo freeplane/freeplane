@@ -3,7 +3,7 @@ import javax.swing.JFrame;
 
 import junit.framework.Assert;
 
-import org.freeplane.core.controller.Controller;
+import org.freeplane.features.mode.Controller;
 import org.uispec4j.Panel;
 import org.uispec4j.TextBox;
 import org.uispec4j.UIComponent;

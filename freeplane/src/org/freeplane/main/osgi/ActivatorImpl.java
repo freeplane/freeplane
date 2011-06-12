@@ -30,9 +30,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.jar.Manifest;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.main.application.FreeplaneStarter;
 import org.freeplane.main.application.SingleInstanceManager;

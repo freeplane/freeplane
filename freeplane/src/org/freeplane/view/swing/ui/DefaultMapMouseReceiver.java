@@ -26,8 +26,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.IMapMouseReceiver;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MapView;
 
 /**
