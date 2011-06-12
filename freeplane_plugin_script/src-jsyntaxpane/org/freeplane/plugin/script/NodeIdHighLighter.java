@@ -21,10 +21,10 @@ import jsyntaxpane.actions.ActionUtils;
 import jsyntaxpane.components.SyntaxComponent;
 import jsyntaxpane.util.Configuration;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.MapController;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 
 public class NodeIdHighLighter implements SyntaxComponent, CaretListener {
 	private final Pattern nodeIdPattern = Pattern.compile("(ID_\\d+)|(\"ID_\\d+\")");
