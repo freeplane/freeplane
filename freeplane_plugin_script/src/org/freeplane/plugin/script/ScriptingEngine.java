@@ -233,7 +233,8 @@ public class ScriptingEngine {
 
 	static Object executeScriptRecursive(final NodeModel node, final String script) {
 		ModeController modeController = Controller.getCurrentModeController();
-		for (final NodeModel child : modeController.getMapController().childrenUnfolded(node)) {
+		final NodeModel[] children = modeController.getMapController().childrenUnfolded(node).toArray(new NodeModel[]{});
+        for (final NodeModel child : children) {
 			executeScriptRecursive(child, script);
 		}
 		return executeScript(node, script);
