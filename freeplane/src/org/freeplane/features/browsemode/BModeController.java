@@ -20,12 +20,12 @@
 package org.freeplane.features.browsemode;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.features.common.icon.UIIcon;
-import org.freeplane.features.common.icon.factory.IconStoreFactory;
-import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.note.NoteController;
-import org.freeplane.features.common.note.NoteModel;
+import org.freeplane.features.icon.UIIcon;
+import org.freeplane.features.icon.factory.IconStoreFactory;
+import org.freeplane.features.map.ModeController;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.note.NoteController;
+import org.freeplane.features.note.NoteModel;
 
 public class BModeController extends ModeController {
 	static public final String MODENAME = "Browse";

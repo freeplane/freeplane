@@ -51,13 +51,13 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.IMapChangeListener;
-import org.freeplane.features.common.map.MapChangeEvent;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.url.UrlManager;
+import org.freeplane.features.map.IMapChangeListener;
+import org.freeplane.features.map.MapChangeEvent;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.ModeController;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.features.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**

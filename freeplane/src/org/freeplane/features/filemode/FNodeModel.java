@@ -22,9 +22,9 @@ package org.freeplane.features.filemode;
 import java.io.File;
 import java.util.List;
 
-import org.freeplane.features.common.link.NodeLinks;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.link.NodeLinks;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 
 /**
  * This class represents a single Node of a Tree. It contains direct handles to

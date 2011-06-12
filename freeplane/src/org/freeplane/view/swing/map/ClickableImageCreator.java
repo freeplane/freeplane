@@ -24,9 +24,9 @@ import java.util.Vector;
 import javax.swing.JComponent;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.text.TextController;
+import org.freeplane.features.map.ModeController;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.text.TextController;
 
 /** */
 class ClickableImageCreator {

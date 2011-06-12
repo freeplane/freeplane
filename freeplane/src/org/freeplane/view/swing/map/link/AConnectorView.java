@@ -23,7 +23,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
 
-import org.freeplane.features.common.link.ConnectorModel;
+import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 

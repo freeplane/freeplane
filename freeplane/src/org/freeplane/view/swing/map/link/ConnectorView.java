@@ -37,11 +37,11 @@ import java.awt.geom.Point2D;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
-import org.freeplane.features.common.link.ArrowType;
-import org.freeplane.features.common.link.ConnectorModel;
-import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.common.link.NodeLinkModel;
-import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.link.ArrowType;
+import org.freeplane.features.link.ConnectorModel;
+import org.freeplane.features.link.LinkController;
+import org.freeplane.features.link.NodeLinkModel;
+import org.freeplane.features.map.ModeController;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 

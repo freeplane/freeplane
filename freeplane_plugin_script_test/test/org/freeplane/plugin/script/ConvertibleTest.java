@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.main.application.FreeplaneStarter;
 import org.freeplane.plugin.script.proxy.ConversionException;
 import org.freeplane.plugin.script.proxy.Convertible;

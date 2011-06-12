@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.ExecuteScriptException;
 
 public class FormulaCache implements IExtension{

@@ -3,7 +3,7 @@ package org.freeplane.plugin.script.proxy;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.freeplane.features.common.format.FormattedDate;
+import org.freeplane.features.format.FormattedDate;
 
 public class ConvertibleDate extends Convertible {
 	final private Date date;

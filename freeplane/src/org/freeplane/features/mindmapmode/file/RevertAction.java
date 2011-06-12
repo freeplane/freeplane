@@ -33,9 +33,9 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.MapController;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.MapWriter.Mode;
+import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.MapWriter.Mode;
 
 /**
  * Reverts the map to the saved version. In Xml, the old map is stored as xml
@@ -73,7 +73,7 @@ class RevertAction extends AFreeplaneAction {
 						filePrefix = this.getFilePrefix();
 					}
 					final File tempFile = File.createTempFile(filePrefix,
-					    org.freeplane.features.common.url.UrlManager.FREEPLANE_FILE_EXTENSION, new File(
+					    org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION, new File(
 					        ResourceController.getResourceController().getFreeplaneUserDirectory()));
 					final FileWriter fw = new FileWriter(tempFile);
 					fw.write(this.getMap());

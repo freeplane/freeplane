@@ -24,10 +24,10 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.features.common.map.MapController;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.styles.LogicalStyleController;
-import org.freeplane.features.common.styles.MapStyleModel;
+import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.MapStyleModel;
 
 /**
  * @author Dimitry Polivaev

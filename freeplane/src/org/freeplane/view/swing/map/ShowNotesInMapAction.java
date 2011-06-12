@@ -6,9 +6,9 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.note.NoteController;
-import org.freeplane.features.mindmapmode.note.MNoteController;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.note.NoteController;
+import org.freeplane.features.note.mindmapmode.MNoteController;
 
 @SuppressWarnings("serial")
 @SelectableAction(checkOnPopup=true)

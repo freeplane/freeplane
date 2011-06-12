@@ -26,12 +26,12 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.styles.MapStyleModel;
-import org.freeplane.features.common.styles.StyleNamedObject;
-import org.freeplane.features.mindmapmode.map.MMapController;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.ModeController;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.mindmapmode.MMapController;
+import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.StyleNamedObject;
 
 /**
  * @author Dimitry Polivaev

@@ -27,11 +27,11 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Stroke;
 
-import org.freeplane.features.common.edge.EdgeController;
-import org.freeplane.features.common.edge.EdgeStyle;
-import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.nodestyle.NodeStyleModel;
+import org.freeplane.features.edge.EdgeController;
+import org.freeplane.features.edge.EdgeStyle;
+import org.freeplane.features.map.ModeController;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.nodestyle.NodeStyleModel;
 
 class ForkMainView extends MainView {
 	/**

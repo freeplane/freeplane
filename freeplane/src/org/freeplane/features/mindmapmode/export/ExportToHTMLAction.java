@@ -29,10 +29,10 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.clipboard.ClipboardController;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.url.UrlManager;
-import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
+import org.freeplane.features.clipboard.ClipboardController;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.text.mindmapmode.ExampleFileFilter;
+import org.freeplane.features.url.UrlManager;
 
 class ExportToHTMLAction implements IExportEngine {
 	/**

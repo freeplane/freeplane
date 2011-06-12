@@ -26,11 +26,11 @@ import org.freeplane.core.controller.INodeSelectionListener;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.features.common.map.AMapChangeListenerAdapter;
-import org.freeplane.features.common.map.IMapChangeListener;
-import org.freeplane.features.common.map.MapController;
-import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.map.AMapChangeListenerAdapter;
+import org.freeplane.features.map.IMapChangeListener;
+import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.ModeController;
+import org.freeplane.features.map.NodeModel;
 
 public class NodeTooltipManager implements IExtension{
 	private static final String TOOL_TIP_MANAGER = "toolTipManager.";

@@ -48,7 +48,7 @@ import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.map.NodeModel;
 
 /**
  * Utilities for accessing the GUI, creating dialogs etc.: In scripts available as "global variable" <code>ui</code>.

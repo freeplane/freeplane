@@ -25,7 +25,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.map.NodeModel;
 
 public class ReadManager {
 	final private Hashtable<String, Hashtable<String, IAttributeHandler>> attributeHandlers;

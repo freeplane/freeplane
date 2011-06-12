@@ -10,9 +10,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.freeplane.features.common.link.LinkModel;
-import org.freeplane.features.common.link.MapLinks;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.link.LinkModel;
+import org.freeplane.features.link.MapLinks;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.ScriptContext;
 
 class ConnectorInListProxy extends AbstractCollection<Proxy.Connector> {

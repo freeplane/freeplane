@@ -38,7 +38,7 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FreeplaneVersion;
-import org.freeplane.features.common.filter.FilterController;
+import org.freeplane.features.filter.FilterController;
 
 /**
  * @author Dimitry Polivaev

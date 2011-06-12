@@ -24,8 +24,8 @@ import java.awt.event.KeyEvent;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.text.EditNodeDialog;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.text.mindmapmode.EditNodeDialog;
 import org.freeplane.view.swing.ui.mindmapmode.GlassPaneManager;
 import org.freeplane.view.swing.ui.mindmapmode.INodeSelector;
 

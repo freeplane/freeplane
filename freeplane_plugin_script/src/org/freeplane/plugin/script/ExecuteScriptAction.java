@@ -31,7 +31,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
 
 /**

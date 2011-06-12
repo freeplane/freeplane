@@ -28,9 +28,9 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 
-import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.nodestyle.NodeStyleModel;
+import org.freeplane.features.map.ModeController;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.nodestyle.NodeStyleModel;
 
 class BubbleMainView extends MainView {
 

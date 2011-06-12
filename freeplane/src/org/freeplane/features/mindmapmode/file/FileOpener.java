@@ -37,8 +37,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.clipboard.MindMapNodesSelection;
-import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.clipboard.MindMapNodesSelection;
+import org.freeplane.features.map.ModeController;
 import org.freeplane.features.mindmapmode.MModeController;
 
 public class FileOpener implements DropTargetListener {

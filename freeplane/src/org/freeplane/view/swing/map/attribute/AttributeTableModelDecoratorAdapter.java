@@ -25,13 +25,13 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.common.attribute.AttributeController;
-import org.freeplane.features.common.attribute.AttributeRegistry;
-import org.freeplane.features.common.attribute.IAttributeTableModel;
-import org.freeplane.features.common.attribute.NodeAttributeTableModel;
-import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.text.TextController;
+import org.freeplane.features.attribute.AttributeController;
+import org.freeplane.features.attribute.AttributeRegistry;
+import org.freeplane.features.attribute.IAttributeTableModel;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
+import org.freeplane.features.map.ModeController;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.map.NodeView;
 
 /**

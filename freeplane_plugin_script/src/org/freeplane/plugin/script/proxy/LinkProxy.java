@@ -8,10 +8,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.common.link.NodeLinks;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.link.MLinkController;
+import org.freeplane.features.link.LinkController;
+import org.freeplane.features.link.NodeLinks;
+import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 

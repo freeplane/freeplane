@@ -21,7 +21,7 @@ package org.freeplane.features.filemode;
 
 import java.io.File;
 
-import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.map.MapModel;
 
 class FMapModel extends MapModel {
 	public FMapModel(final File root) {

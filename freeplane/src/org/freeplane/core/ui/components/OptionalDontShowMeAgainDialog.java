@@ -40,7 +40,7 @@ import org.freeplane.core.controller.IMapSelection;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.map.NodeModel;
 
 /**
  * Dialog with a decision that can be disabled.

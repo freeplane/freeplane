@@ -32,12 +32,12 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.text.TextController;
-import org.freeplane.features.mindmapmode.link.MLinkController;
-import org.freeplane.features.mindmapmode.map.MMapController;
-import org.freeplane.features.mindmapmode.text.MTextController;
+import org.freeplane.features.link.LinkController;
+import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.mindmapmode.MMapController;
+import org.freeplane.features.text.TextController;
+import org.freeplane.features.text.mindmapmode.MTextController;
 
 class ImportExplorerFavoritesAction extends AFreeplaneAction {
 	/**

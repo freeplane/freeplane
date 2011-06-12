@@ -70,12 +70,12 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.format.FormattedDate;
-import org.freeplane.features.common.format.FormattedObject;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.styles.StyleNamedObject;
+import org.freeplane.features.format.FormattedDate;
+import org.freeplane.features.format.FormattedObject;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.ModeController;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.StyleNamedObject;
 
 /**
  * @author Dimitry Polivaev

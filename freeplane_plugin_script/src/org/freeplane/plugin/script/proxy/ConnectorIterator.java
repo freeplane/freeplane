@@ -6,8 +6,8 @@ package org.freeplane.plugin.script.proxy;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.freeplane.features.common.link.ConnectorModel;
-import org.freeplane.features.common.link.LinkModel;
+import org.freeplane.features.link.ConnectorModel;
+import org.freeplane.features.link.LinkModel;
 import org.freeplane.plugin.script.ScriptContext;
 
 class ConnectorIterator implements Iterator<Proxy.Connector> {

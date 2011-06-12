@@ -19,7 +19,7 @@
  */
 package org.freeplane.view.swing.ui.mindmapmode;
 
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev

@@ -33,8 +33,8 @@ import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.ModeController;
 
 /**
  * Provides the methods to edit/change a Node. Forwards all messages to

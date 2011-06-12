@@ -52,8 +52,8 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.ModeController;
 import org.freeplane.view.swing.map.MapView;
 
 public class UserInputListenerFactory implements IUserInputListenerFactory {

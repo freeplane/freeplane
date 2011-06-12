@@ -34,7 +34,8 @@ import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.map.ModeController;
+
 import com.inet.jortho.FileUserDictionary;
 import com.inet.jortho.LanguageChangeEvent;
 import com.inet.jortho.LanguageChangeListener;

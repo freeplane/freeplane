@@ -9,11 +9,11 @@ import javax.swing.JEditorPane;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.text.AbstractContentTransformer;
-import org.freeplane.features.mindmapmode.text.EditNodeBase;
-import org.freeplane.features.mindmapmode.text.EditNodeDialog;
-import org.freeplane.features.mindmapmode.text.IEditBaseCreator;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.text.AbstractContentTransformer;
+import org.freeplane.features.text.mindmapmode.EditNodeBase;
+import org.freeplane.features.text.mindmapmode.EditNodeDialog;
+import org.freeplane.features.text.mindmapmode.IEditBaseCreator;
 import org.freeplane.plugin.script.ExecuteScriptException;
 import org.freeplane.plugin.script.FormulaUtils;
 

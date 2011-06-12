@@ -9,9 +9,9 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 
-import org.freeplane.features.common.filter.condition.ICondition;
-import org.freeplane.features.common.format.IFormattedObject;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.filter.condition.ICondition;
+import org.freeplane.features.format.IFormattedObject;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 

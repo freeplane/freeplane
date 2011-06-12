@@ -11,7 +11,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
+import org.freeplane.features.text.mindmapmode.ExampleFileFilter;
 
 class XsltExportEngineFactory {
 	final private static String EXPORT_FILTER_PATTERN = "^.*MINDMAPEXPORTFILTER\\s+(\\S+)\\s+(.*)(?:\\s+-->)?$";

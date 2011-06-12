@@ -35,9 +35,9 @@ import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.IndexedTree.Node;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.features.common.icon.MindIcon;
-import org.freeplane.features.common.map.MapController;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.NodeModel;
 
 public class MenuUtils {
 	/** The userObject type for createMenuEntryTree(). */

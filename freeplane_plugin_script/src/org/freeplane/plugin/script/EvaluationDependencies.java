@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.map.NodeModel;
 
 public class EvaluationDependencies implements IExtension{
 	public enum Access {

@@ -70,8 +70,8 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.ModeController;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLException;
 

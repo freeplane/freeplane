@@ -3,7 +3,7 @@ package org.freeplane.plugin.script.proxy;
 import java.util.AbstractList;
 import java.util.List;
 
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.ScriptContext;
 
 public class ProxyFactory {

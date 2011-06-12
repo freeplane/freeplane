@@ -30,7 +30,7 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.ui.components.IconSelectionPopupDialog;
-import org.freeplane.features.common.icon.MindIcon;
+import org.freeplane.features.icon.MindIcon;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 

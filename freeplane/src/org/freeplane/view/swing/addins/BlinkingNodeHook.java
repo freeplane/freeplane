@@ -37,12 +37,12 @@ import org.freeplane.core.controller.INodeViewVisitor;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.SysUtils;
-import org.freeplane.features.common.map.IMapChangeListener;
-import org.freeplane.features.common.map.INodeView;
-import org.freeplane.features.common.map.MapChangeEvent;
-import org.freeplane.features.common.map.MapController;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.map.IMapChangeListener;
+import org.freeplane.features.map.INodeView;
+import org.freeplane.features.map.MapChangeEvent;
+import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.view.swing.map.NodeView;
 

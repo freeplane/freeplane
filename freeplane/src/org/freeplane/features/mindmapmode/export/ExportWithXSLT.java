@@ -50,12 +50,12 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.icon.UIIcon;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.MapWriter.Mode;
-import org.freeplane.features.common.url.UrlManager;
-import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
+import org.freeplane.features.icon.UIIcon;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.ModeController;
+import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.text.mindmapmode.ExampleFileFilter;
+import org.freeplane.features.url.UrlManager;
 
 /**
  * @author foltin To change the template for this generated type comment go to

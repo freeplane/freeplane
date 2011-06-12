@@ -30,8 +30,8 @@ import javax.swing.filechooser.FileFilter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.text.mindmapmode.ExampleFileFilter;
 
 /**
  * This class uses the JFileChooser dialog to allow users to choose a file name to

@@ -22,9 +22,9 @@ package org.freeplane.features.filemode;
 import java.awt.Color;
 
 import org.freeplane.core.controller.IPropertyHandler;
-import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.map.ModeController;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.nodestyle.NodeStyleController;
 
 /**
  * @author Dimitry Polivaev

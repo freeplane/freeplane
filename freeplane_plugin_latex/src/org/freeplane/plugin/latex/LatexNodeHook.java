@@ -28,10 +28,10 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.INodeViewLifeCycleListener;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.features.common.map.INodeView;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.map.INodeView;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.ModeController;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.view.swing.map.NodeView;
 

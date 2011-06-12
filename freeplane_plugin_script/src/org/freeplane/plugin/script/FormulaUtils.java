@@ -7,8 +7,8 @@ import java.util.List;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.proxy.FormulaCache;
 
 public class FormulaUtils {

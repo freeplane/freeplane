@@ -19,7 +19,7 @@
  */
 package org.freeplane.core.controller;
 
-import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.map.MapModel;
 
 /**
  * @author Dimitry Polivaev

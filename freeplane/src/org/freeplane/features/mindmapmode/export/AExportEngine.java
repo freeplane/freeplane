@@ -22,7 +22,7 @@ package org.freeplane.features.mindmapmode.export;
 import java.awt.image.RenderedImage;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.map.MapModel;
 
 /**
  * @author foltin

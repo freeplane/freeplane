@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.freeplane.features.common.link.LinkModel;
-import org.freeplane.features.common.link.NodeLinks;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.link.LinkModel;
+import org.freeplane.features.link.NodeLinks;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.ScriptContext;
 
 class ConnectorOutListProxy extends AbstractCollection<Proxy.Connector> {

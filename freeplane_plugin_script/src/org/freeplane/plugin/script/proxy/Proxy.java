@@ -14,10 +14,10 @@ import javax.swing.Icon;
 
 import org.freeplane.core.util.FreeplaneIconUtils;
 import org.freeplane.core.util.FreeplaneVersion;
-import org.freeplane.features.common.edge.EdgeStyle;
-import org.freeplane.features.common.filter.condition.ICondition;
-import org.freeplane.features.common.link.ArrowType;
-import org.freeplane.features.common.styles.IStyle;
+import org.freeplane.features.edge.EdgeStyle;
+import org.freeplane.features.filter.condition.ICondition;
+import org.freeplane.features.link.ArrowType;
+import org.freeplane.features.styles.IStyle;
 import org.freeplane.plugin.script.ExecuteScriptException;
 
 /**

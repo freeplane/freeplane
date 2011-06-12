@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.map.ModeController;
 import org.freeplane.features.mindmapmode.MModeController;
 
 class OpenAction extends AFreeplaneAction {

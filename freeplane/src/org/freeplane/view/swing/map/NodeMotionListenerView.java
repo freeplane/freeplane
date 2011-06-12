@@ -29,7 +29,7 @@ import javax.swing.JComponent;
 
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.nodelocation.LocationModel;
+import org.freeplane.features.nodelocation.LocationModel;
 
 /**
  * @author Dimitry Polivaev

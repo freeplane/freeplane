@@ -24,7 +24,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.LayoutManager;
 
-import org.freeplane.features.common.styles.MapViewLayout;
+import org.freeplane.features.styles.MapViewLayout;
 
 /**
  * @author Dimitry Polivaev

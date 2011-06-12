@@ -1,10 +1,10 @@
 package org.freeplane;
 
-import org.freeplane.features.common.format.FormattedNumberTest;
-import org.freeplane.features.common.format.FormattedObjectTest;
-import org.freeplane.features.common.format.ParserTest;
-import org.freeplane.features.common.format.PatternFormatTest;
-import org.freeplane.features.common.format.ScannerTest;
+import org.freeplane.features.format.FormattedNumberTest;
+import org.freeplane.features.format.FormattedObjectTest;
+import org.freeplane.features.format.ParserTest;
+import org.freeplane.features.format.PatternFormatTest;
+import org.freeplane.features.format.ScannerTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 

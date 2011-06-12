@@ -31,16 +31,16 @@ import javax.swing.JLabel;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.common.edge.EdgeModel;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.nodestyle.NodeStyleController;
-import org.freeplane.features.common.nodestyle.NodeStyleModel;
-import org.freeplane.features.common.styles.MapStyleModel;
+import org.freeplane.features.edge.EdgeModel;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.ModeController;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
-import org.freeplane.features.mindmapmode.note.MNoteController;
+import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.note.mindmapmode.MNoteController;
+import org.freeplane.features.styles.MapStyleModel;
 
 /**
  * @author Dimitry Polivaev

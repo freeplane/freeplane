@@ -44,7 +44,7 @@ import javax.swing.border.BevelBorder;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.icon.IIconInformation;
+import org.freeplane.features.icon.IIconInformation;
 
 public class IconSelectionPopupDialog extends JDialog implements KeyListener, MouseListener {
 	static class Position {

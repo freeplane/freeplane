@@ -1,6 +1,6 @@
 package org.freeplane.core.extension;
 
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.map.NodeModel;
 
 public interface IExtensionCopier {
 	void copy(Object key, NodeModel from, NodeModel to);

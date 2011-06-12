@@ -38,15 +38,15 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.text.TextController;
-import org.freeplane.features.common.url.UrlManager;
+import org.freeplane.features.link.LinkController;
+import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.features.mindmapmode.link.MLinkController;
-import org.freeplane.features.mindmapmode.map.MMapController;
-import org.freeplane.features.mindmapmode.text.MTextController;
+import org.freeplane.features.text.TextController;
+import org.freeplane.features.text.mindmapmode.MTextController;
+import org.freeplane.features.url.UrlManager;
 
 class ExportBranchAction extends AFreeplaneAction {
 	/**
@@ -85,9 +85,9 @@ class ExportBranchAction extends AFreeplaneAction {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File chosenFile = chooser.getSelectedFile();
 			final String ext = FileUtils.getExtension(chosenFile.getName());
-			if (!ext.equals(org.freeplane.features.common.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+			if (!ext.equals(org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 				chosenFile = new File(chosenFile.getParent(), chosenFile.getName()
-				        + org.freeplane.features.common.url.UrlManager.FREEPLANE_FILE_EXTENSION);
+				        + org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION);
 			}
 			try {
 				Compat.fileToUrl(chosenFile);

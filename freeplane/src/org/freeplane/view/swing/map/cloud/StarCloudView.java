@@ -3,7 +3,7 @@ package org.freeplane.view.swing.map.cloud;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 
-import org.freeplane.features.common.cloud.CloudModel;
+import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.view.swing.map.NodeView;
 
 public class StarCloudView extends CloudView {

@@ -19,8 +19,8 @@
  */
 package org.freeplane.view.swing.map.edge;
 
-import org.freeplane.features.common.edge.EdgeStyle;
-import org.freeplane.features.common.styles.MapViewLayout;
+import org.freeplane.features.edge.EdgeStyle;
+import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.view.swing.map.NodeView;
 
 /**

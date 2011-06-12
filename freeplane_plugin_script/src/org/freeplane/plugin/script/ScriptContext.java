@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.map.NodeModel;
 
 public class ScriptContext {
 	private static final class NodeWrapper {

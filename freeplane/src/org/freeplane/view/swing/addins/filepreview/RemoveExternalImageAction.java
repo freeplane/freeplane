@@ -25,8 +25,8 @@ import java.util.List;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.EnabledAction;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.icon.ProgressUtilities;
+import org.freeplane.features.icon.mindmapmode.ProgressUtilities;
+import org.freeplane.features.map.NodeModel;
 
 /**
  * 

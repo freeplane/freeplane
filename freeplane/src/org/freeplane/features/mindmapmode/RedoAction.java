@@ -26,12 +26,12 @@ import javax.swing.Action;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.features.common.map.INodeChangeListener;
-import org.freeplane.features.common.map.MapController;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.NodeChangeEvent;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.map.MMapModel;
+import org.freeplane.features.map.INodeChangeListener;
+import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeChangeEvent;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.mindmapmode.MMapModel;
 
 class RedoAction extends AFreeplaneAction implements INodeChangeListener{
 	/**

@@ -8,16 +8,16 @@ import java.util.Set;
 
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.ColorUtils;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.nodestyle.NodeStyleController;
-import org.freeplane.features.common.styles.IStyle;
-import org.freeplane.features.common.styles.LogicalStyleController;
-import org.freeplane.features.common.styles.LogicalStyleModel;
-import org.freeplane.features.common.styles.MapStyleModel;
-import org.freeplane.features.common.styles.StyleFactory;
-import org.freeplane.features.common.styles.StyleNamedObject;
-import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
-import org.freeplane.features.mindmapmode.styles.MLogicalStyleController;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
+import org.freeplane.features.styles.IStyle;
+import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.LogicalStyleModel;
+import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.StyleFactory;
+import org.freeplane.features.styles.StyleNamedObject;
+import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
 import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 

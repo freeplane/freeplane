@@ -1,8 +1,8 @@
 package org.freeplane.plugin.script.filter;
 
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.filter.condition.ASelectableCondition;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.filter.condition.ASelectableCondition;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.script.ExecuteScriptException;
 import org.freeplane.plugin.script.ScriptingEngine;

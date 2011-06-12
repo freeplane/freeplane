@@ -32,13 +32,13 @@ import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.note.NoteController;
-import org.freeplane.features.common.url.UrlManager;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.ModeController;
+import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mindmapmode.file.MFileManager;
-import org.freeplane.features.mindmapmode.map.MMapModel;
-import org.freeplane.features.mindmapmode.note.MNoteController;
+import org.freeplane.features.note.NoteController;
+import org.freeplane.features.note.mindmapmode.MNoteController;
+import org.freeplane.features.url.UrlManager;
 
 public class MModeController extends ModeController {
 	static public final String MODENAME = "MindMap";

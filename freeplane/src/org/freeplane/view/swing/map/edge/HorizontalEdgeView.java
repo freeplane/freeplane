@@ -25,7 +25,7 @@ import java.awt.Point;
 import java.awt.Stroke;
 import java.awt.geom.Line2D;
 
-import org.freeplane.features.common.nodelocation.LocationModel;
+import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.link.CollisionDetector;

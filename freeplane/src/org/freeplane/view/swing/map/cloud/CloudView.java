@@ -30,9 +30,9 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Vector;
 
-import org.freeplane.features.common.cloud.CloudController;
-import org.freeplane.features.common.cloud.CloudModel;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.cloud.CloudController;
+import org.freeplane.features.cloud.CloudModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 

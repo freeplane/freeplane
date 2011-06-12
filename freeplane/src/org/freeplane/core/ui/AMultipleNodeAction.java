@@ -25,7 +25,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev

@@ -1,8 +1,8 @@
 package org.freeplane.plugin.script.proxy;
 
 import org.freeplane.core.util.HtmlUtils;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.note.NoteModel;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.note.NoteModel;
 import org.freeplane.plugin.script.FormulaUtils;
 import org.freeplane.plugin.script.ScriptContext;
 

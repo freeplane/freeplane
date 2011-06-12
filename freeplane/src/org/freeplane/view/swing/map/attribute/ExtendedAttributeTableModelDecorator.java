@@ -22,8 +22,8 @@ package org.freeplane.view.swing.map.attribute;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.TableModelEvent;
 
-import org.freeplane.features.common.attribute.Attribute;
-import org.freeplane.features.mindmapmode.attribute.MAttributeController;
+import org.freeplane.features.attribute.Attribute;
+import org.freeplane.features.attribute.mindmapmode.MAttributeController;
 
 /**
  * @author Dimitry Polivaev

@@ -22,9 +22,9 @@ package org.freeplane.features.filemode;
 import java.io.File;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.features.common.map.MapController;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev

@@ -39,25 +39,25 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.browsemode.BModeController;
-import org.freeplane.features.common.attribute.ModelessAttributeController;
-import org.freeplane.features.common.filter.FilterController;
-import org.freeplane.features.common.filter.NextNodeAction;
-import org.freeplane.features.common.icon.IconController;
-import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.common.map.MapController;
-import org.freeplane.features.common.note.NoteController;
-import org.freeplane.features.common.styles.LogicalStyleFilterController;
-import org.freeplane.features.common.styles.MapViewLayout;
-import org.freeplane.features.common.text.TextController;
-import org.freeplane.features.common.map.MapController.Direction;
-import org.freeplane.features.common.time.TimeController;
 import org.freeplane.features.controller.help.HelpController;
 import org.freeplane.features.controller.print.PrintController;
 import org.freeplane.features.filemode.FModeController;
+import org.freeplane.features.filter.FilterController;
+import org.freeplane.features.filter.NextNodeAction;
+import org.freeplane.features.icon.IconController;
+import org.freeplane.features.link.LinkController;
+import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapController.Direction;
 import org.freeplane.features.mindmapmode.LoadAcceleratorPresetsAction;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
+import org.freeplane.features.note.NoteController;
+import org.freeplane.features.styles.LogicalStyleFilterController;
+import org.freeplane.features.styles.MapViewLayout;
+import org.freeplane.features.text.TextController;
+import org.freeplane.features.time.TimeController;
 import org.freeplane.main.browsemode.BModeControllerFactory;
 import org.freeplane.main.filemode.FModeControllerFactory;
 import org.freeplane.main.mindmapmode.MModeControllerFactory;
@@ -202,7 +202,7 @@ public class FreeplaneStarter {
 		for (int i = 0; i < args.length; i++) {
 			String fileArgument = args[i];
 			if (fileArgument.toLowerCase().endsWith(
-			    org.freeplane.features.common.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
+			    org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
 				if (!FileUtils.isAbsolutePath(fileArgument)) {
 					fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
 				}

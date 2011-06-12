@@ -31,7 +31,7 @@ import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mindmapmode.MModeController;
 
 /**

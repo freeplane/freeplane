@@ -30,8 +30,8 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.IMouseListener;
-import org.freeplane.features.common.map.MapController;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 

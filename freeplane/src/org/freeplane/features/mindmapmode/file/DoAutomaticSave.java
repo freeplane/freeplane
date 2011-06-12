@@ -29,10 +29,10 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.url.UrlManager;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.features.mindmapmode.map.MMapModel;
+import org.freeplane.features.url.UrlManager;
 
 public class DoAutomaticSave extends TimerTask {
 	static final String AUTOSAVE_EXTENSION = "autosave";

@@ -23,7 +23,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import org.freeplane.features.common.link.ConnectorModel;
+import org.freeplane.features.link.ConnectorModel;
 
 /**
  * @author Dimitry Polivaev

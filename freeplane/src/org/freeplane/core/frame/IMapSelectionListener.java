@@ -19,7 +19,7 @@
  */
 package org.freeplane.core.frame;
 
-import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.map.MapModel;
 
 public interface IMapSelectionListener {
 	void afterMapChange(MapModel oldMap, MapModel newMap);

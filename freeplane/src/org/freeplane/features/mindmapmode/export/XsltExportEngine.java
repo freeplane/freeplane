@@ -15,9 +15,9 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.MapWriter.Mode;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.ModeController;
+import org.freeplane.features.map.MapWriter.Mode;
 
 public class XsltExportEngine implements IExportEngine {
 	public XsltExportEngine(File xsltFile) {

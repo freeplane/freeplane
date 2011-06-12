@@ -21,7 +21,7 @@ package org.freeplane.core.controller;
 
 import java.util.List;
 
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev

@@ -31,7 +31,7 @@ import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.fop.svg.PDFTranscoder;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mindmapmode.export.ExportController;
 import org.freeplane.view.swing.map.MapView;
 import org.w3c.dom.Document;

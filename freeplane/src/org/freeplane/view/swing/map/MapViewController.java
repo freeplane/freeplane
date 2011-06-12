@@ -41,12 +41,12 @@ import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.features.common.map.MapController;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.styles.MapStyle;
-import org.freeplane.features.common.styles.MapViewLayout;
+import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.ModeController;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.MapStyle;
+import org.freeplane.features.styles.MapViewLayout;
 
 /**
  * Manages the list of MapViews. As this task is very complex, I exported it

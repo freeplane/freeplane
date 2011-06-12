@@ -11,11 +11,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
-import org.freeplane.features.common.attribute.Attribute;
-import org.freeplane.features.common.attribute.AttributeController;
-import org.freeplane.features.common.attribute.NodeAttributeTableModel;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.attribute.MAttributeController;
+import org.freeplane.features.attribute.Attribute;
+import org.freeplane.features.attribute.AttributeController;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
+import org.freeplane.features.attribute.mindmapmode.MAttributeController;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.ScriptContext;
 
 class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attributes {

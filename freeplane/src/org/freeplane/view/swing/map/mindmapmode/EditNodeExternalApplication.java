@@ -30,8 +30,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.text.EditNodeBase;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.text.mindmapmode.EditNodeBase;
 
 /**
  * @author Daniel Polansky

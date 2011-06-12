@@ -3,14 +3,14 @@ package org.freeplane.plugin.formula;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.features.common.attribute.NodeAttributeTableModel;
-import org.freeplane.features.common.map.IMapChangeListener;
-import org.freeplane.features.common.map.INodeChangeListener;
-import org.freeplane.features.common.map.MapChangeEvent;
-import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeChangeEvent;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.text.IContentTransformer;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
+import org.freeplane.features.map.IMapChangeListener;
+import org.freeplane.features.map.INodeChangeListener;
+import org.freeplane.features.map.MapChangeEvent;
+import org.freeplane.features.map.ModeController;
+import org.freeplane.features.map.NodeChangeEvent;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.text.IContentTransformer;
 import org.freeplane.plugin.script.FormulaUtils;
 
 /** cares for updating formula nodes on change of other nodes. */

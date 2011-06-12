@@ -41,12 +41,12 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.attribute.AttributeTableLayoutModel;
-import org.freeplane.features.common.attribute.IAttributeTableModel;
-import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.url.UrlManager;
+import org.freeplane.features.attribute.AttributeTableLayoutModel;
+import org.freeplane.features.attribute.IAttributeTableModel;
+import org.freeplane.features.link.LinkController;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mindmapmode.file.MFileManager;
+import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.ui.mindmapmode.INodeSelector;
 import org.freeplane.view.swing.ui.mindmapmode.NodeSelector;
 

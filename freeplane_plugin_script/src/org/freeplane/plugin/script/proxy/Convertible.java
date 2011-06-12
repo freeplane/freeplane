@@ -11,7 +11,7 @@ import org.apache.commons.lang.NotImplementedException;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.format.FormattedDate;
+import org.freeplane.features.format.FormattedDate;
 
 /** Utility class that is used to convert node texts to different types.
  * It's especially important for Formulas. */

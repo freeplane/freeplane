@@ -7,7 +7,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.view.swing.addins.filepreview.ExternalResource;
 import org.freeplane.view.swing.addins.filepreview.ViewerController;

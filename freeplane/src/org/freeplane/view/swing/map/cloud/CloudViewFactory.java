@@ -2,8 +2,8 @@ package org.freeplane.view.swing.map.cloud;
 
 import java.util.NoSuchElementException;
 
-import org.freeplane.features.common.cloud.CloudModel;
-import org.freeplane.features.common.cloud.CloudModel.Shape;
+import org.freeplane.features.cloud.CloudModel;
+import org.freeplane.features.cloud.CloudModel.Shape;
 import org.freeplane.view.swing.map.NodeView;
 
 public class CloudViewFactory {

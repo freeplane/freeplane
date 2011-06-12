@@ -6,11 +6,11 @@ package org.freeplane.plugin.script.proxy;
 import java.awt.Color;
 
 import org.freeplane.core.util.ColorUtils;
-import org.freeplane.features.common.link.ArrowType;
-import org.freeplane.features.common.link.ConnectorModel;
-import org.freeplane.features.common.link.ConnectorModel.Shape;
-import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.mindmapmode.link.MLinkController;
+import org.freeplane.features.link.ArrowType;
+import org.freeplane.features.link.ConnectorModel;
+import org.freeplane.features.link.LinkController;
+import org.freeplane.features.link.ConnectorModel.Shape;
+import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 

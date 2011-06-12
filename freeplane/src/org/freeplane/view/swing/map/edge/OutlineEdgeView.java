@@ -25,7 +25,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
 
-import org.freeplane.features.common.edge.EdgeStyle;
+import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.view.swing.map.NodeView;
 
 /**

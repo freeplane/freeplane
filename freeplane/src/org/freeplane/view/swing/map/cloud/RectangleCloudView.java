@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 
-import org.freeplane.features.common.cloud.CloudModel;
+import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.view.swing.map.NodeView;
 
 public class RectangleCloudView extends CloudView {

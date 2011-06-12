@@ -27,10 +27,10 @@ import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.common.map.MapModel;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.url.UrlManager;
-import org.freeplane.features.mindmapmode.map.MMapController;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.mindmapmode.MMapController;
+import org.freeplane.features.url.UrlManager;
 
 class ImportBranchAction extends AFreeplaneAction {
 	/**

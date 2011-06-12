@@ -37,9 +37,9 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.features.common.map.MapController;
-import org.freeplane.features.common.map.ModeController;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.ModeController;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public abstract class PersistentNodeHook {

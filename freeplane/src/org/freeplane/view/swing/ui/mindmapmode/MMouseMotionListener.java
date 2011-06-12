@@ -24,12 +24,12 @@ import java.awt.event.MouseEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.IMapMouseReceiver;
-import org.freeplane.features.common.link.ConnectorModel;
-import org.freeplane.features.common.link.ConnectorModel.Shape;
-import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.styles.MapViewLayout;
-import org.freeplane.features.mindmapmode.link.MLinkController;
+import org.freeplane.features.link.ConnectorModel;
+import org.freeplane.features.link.LinkController;
+import org.freeplane.features.link.ConnectorModel.Shape;
+import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 

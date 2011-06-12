@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.view.swing.map.MapView;
 
 class EvaluateAllAction extends AFreeplaneAction {

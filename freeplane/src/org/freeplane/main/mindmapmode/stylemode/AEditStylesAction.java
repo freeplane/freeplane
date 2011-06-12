@@ -15,7 +15,7 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.features.common.map.MapModel;
+import org.freeplane.features.map.MapModel;
 
 abstract class AEditStylesAction extends AFreeplaneAction {
 	private Controller controller = null;

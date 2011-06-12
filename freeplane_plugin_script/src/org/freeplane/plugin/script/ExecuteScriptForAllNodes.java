@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.map.NodeModel;
 
 public class ExecuteScriptForAllNodes extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;

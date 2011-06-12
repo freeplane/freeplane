@@ -23,7 +23,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev

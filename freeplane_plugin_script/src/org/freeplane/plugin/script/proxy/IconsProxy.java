@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.freeplane.features.common.icon.IconController;
-import org.freeplane.features.common.icon.MindIcon;
-import org.freeplane.features.common.icon.factory.IconStoreFactory;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.mindmapmode.icon.MIconController;
+import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.icon.factory.IconStoreFactory;
+import org.freeplane.features.icon.mindmapmode.MIconController;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.ScriptContext;
 
 class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {

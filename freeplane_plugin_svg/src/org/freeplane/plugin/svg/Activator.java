@@ -4,10 +4,10 @@ import java.util.Hashtable;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.browsemode.BModeController;
-import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.map.ModeController;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.export.ExportController;
-import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
+import org.freeplane.features.text.mindmapmode.ExampleFileFilter;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
 import org.freeplane.view.swing.addins.filepreview.ViewerController;
 import org.osgi.framework.BundleActivator;

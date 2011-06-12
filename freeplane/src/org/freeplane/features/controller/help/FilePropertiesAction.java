@@ -43,8 +43,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.icon.factory.ImageIconFactory;
-import org.freeplane.features.common.map.NodeModel;
+import org.freeplane.features.icon.factory.ImageIconFactory;
+import org.freeplane.features.map.NodeModel;
 
 /**
  * @author Stefan Ott

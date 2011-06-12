@@ -20,7 +20,7 @@
 package org.freeplane.plugin.latex;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.features.common.map.ModeController;
+import org.freeplane.features.map.ModeController;
 
 /**
  * @author Stefan Ott

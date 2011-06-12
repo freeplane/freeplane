@@ -32,10 +32,10 @@ import javax.swing.JPopupMenu;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.common.map.INodeView;
-import org.freeplane.features.common.map.NodeModel;
-import org.freeplane.features.common.url.UrlManager;
-import org.freeplane.features.mindmapmode.icon.ProgressUtilities;
+import org.freeplane.features.icon.mindmapmode.ProgressUtilities;
+import org.freeplane.features.map.INodeView;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 

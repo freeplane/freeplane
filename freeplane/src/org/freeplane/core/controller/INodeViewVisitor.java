@@ -19,7 +19,7 @@
  */
 package org.freeplane.core.controller;
 
-import org.freeplane.features.common.map.INodeView;
+import org.freeplane.features.map.INodeView;
 
 public interface INodeViewVisitor {
 	void visit(INodeView view);
