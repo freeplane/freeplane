@@ -263,7 +263,7 @@ public class MTextController extends TextController {
 	/** converts strings to date or number if possible. All other data types are left unchanged. */
 	public Object guessObject(final Object text) {
 		if (parseData && text instanceof String)
-			return ScannerController.getController().parse((String) text);
+			return ScannerController.getController(modeController).parse((String) text);
 		return text;
 	}
 	

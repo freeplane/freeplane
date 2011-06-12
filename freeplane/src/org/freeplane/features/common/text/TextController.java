@@ -57,7 +57,7 @@ public class TextController implements IExtension {
 	private static final Integer NODE_TOOLTIP = 1;
 	private static final Integer DETAILS_TOOLTIP = 2;
 	private final List<IContentTransformer> textTransformers;
-	private final ModeController modeController;
+	protected final ModeController modeController;
 
 	public static TextController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
