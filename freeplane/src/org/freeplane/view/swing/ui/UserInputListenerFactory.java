@@ -19,6 +19,7 @@
  */
 package org.freeplane.view.swing.ui;
 
+import java.awt.Component;
 import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionListener;
@@ -260,13 +261,13 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private void updateMapList(final String mapsMenuPosition) {
 		menuBuilder.removeChildElements(mapsMenuPosition);
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-		final List<MapView> mapViewVector = mapViewManager.getMapViewVector();
+		final List<? extends Component> mapViewVector = mapViewManager.getMapViewVector();
 		if (mapViewVector == null) {
 			return;
 		}
 		final ButtonGroup group = new ButtonGroup();
 		int i = 0;
-		for (final MapView mapView : mapViewVector) {
+		for (final Component mapView : mapViewVector) {
 			final String displayName = mapView.getName();
 			final JRadioButtonMenuItem newItem = new JRadioButtonMenuItem(displayName);
 			newItem.setSelected(false);

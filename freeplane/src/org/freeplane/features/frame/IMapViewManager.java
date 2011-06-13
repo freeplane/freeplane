@@ -33,7 +33,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.IMapSelection;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author Dimitry Polivaev
@@ -91,7 +90,7 @@ public interface IMapViewManager {
 
 	public Component getMapViewComponent();
 
-	public List<MapView> getMapViewVector();
+	public List<? extends Component> getMapViewVector();
 
 	public ModeController getModeController(Component newMap);
 

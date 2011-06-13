@@ -33,9 +33,9 @@ import javax.swing.JPopupMenu;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
+import org.freeplane.core.ui.components.calendar.JCalendar;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.IFormattedObject;
-import org.freeplane.features.time.swing.JCalendar;
 
 /**
  * @author Dimitry Polivaev

@@ -48,7 +48,7 @@ import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.url.UrlManager;
-import org.freeplane.view.swing.addins.filepreview.ViewerController;
+import org.freeplane.view.swing.features.filepreview.ViewerController;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
 
 /**

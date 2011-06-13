@@ -224,11 +224,6 @@ public class MIconController extends IconController {
 		modeController.addAction(new RemoveIconAction(0));
 		modeController.addAction(new RemoveIconAction(-1));
 		modeController.addAction(new RemoveAllIconsAction());
-		modeController.addAction(new ProgressUpAction());
-		modeController.addAction(new ProgressDownAction());
-		modeController.addAction(new ExtendedProgress10Action());
-		modeController.addAction(new ExtendedProgress25Action());
-		modeController.addAction(new RemoveProgressAction());
 		for (final MindIcon icon : STORE.getMindIcons()) {
 			final IconAction myAction = new IconAction(icon);
 			iconActions.put(icon, myAction);

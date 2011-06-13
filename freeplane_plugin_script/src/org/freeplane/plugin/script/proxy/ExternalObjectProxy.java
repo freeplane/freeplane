@@ -9,8 +9,8 @@ import java.net.URISyntaxException;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.ScriptContext;
-import org.freeplane.view.swing.addins.filepreview.ExternalResource;
-import org.freeplane.view.swing.addins.filepreview.ViewerController;
+import org.freeplane.view.swing.features.filepreview.ExternalResource;
+import org.freeplane.view.swing.features.filepreview.ViewerController;
 
 class ExternalObjectProxy extends AbstractProxy<NodeModel> implements Proxy.ExternalObject {
 	ExternalObjectProxy(final NodeModel delegate, final ScriptContext scriptContext) {
