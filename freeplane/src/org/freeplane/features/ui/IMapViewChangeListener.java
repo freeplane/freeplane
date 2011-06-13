@@ -1,8 +1,8 @@
 /*
  *  Freeplane - mind map editor
- *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
+ *  Copyright (C) 2008 Dimitry Polivaev
  *
- *  This file is modified by Dimitry Polivaev in 2008.
+ *  This file author is Dimitry Polivaev
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,26 +17,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.frame;
+package org.freeplane.features.ui;
 
-import java.awt.event.ActionEvent;
+import java.awt.Component;
 
-import org.freeplane.core.ui.AFreeplaneAction;
+public interface IMapViewChangeListener {
+	void afterViewChange(Component oldView, Component newView);
 
-class ZoomOutAction extends AFreeplaneAction {
-	static final String NAME = "zoomOut";
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	final private ViewController viewController;
+	void afterViewClose(Component oldView);
 
-	public ZoomOutAction(final ViewController viewController) {
-		super("ZoomOutAction");
-		this.viewController = viewController;
-	}
+	void afterViewCreated(Component mapView);
 
-	public void actionPerformed(final ActionEvent e) {
-		viewController.zoomOut();
-	}
+	void beforeViewChange(Component oldView, Component newView);
 }

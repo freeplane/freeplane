@@ -22,12 +22,12 @@ import java.util.ListIterator;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.frame.IMapViewManager;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.INodeSelectionListener;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.view.swing.map.MapView;
 
 /**

@@ -26,7 +26,6 @@ import javax.swing.ListModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.IconSelectionPopupDialog;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.frame.ViewController;
 import org.freeplane.features.icon.IIconInformation;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconRegistry;
@@ -35,6 +34,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.ui.ViewController;
 
 /**
  * @author adapted to the plugin mechanism by ganzer

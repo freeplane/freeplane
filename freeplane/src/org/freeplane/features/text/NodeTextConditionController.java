@@ -36,8 +36,8 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
-import org.freeplane.features.frame.ViewController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.ui.ViewController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**

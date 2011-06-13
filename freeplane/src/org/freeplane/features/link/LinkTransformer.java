@@ -24,12 +24,12 @@ import java.net.URI;
 import javax.swing.Icon;
 
 import org.freeplane.core.ui.components.ObjectAndIcon;
-import org.freeplane.features.frame.ViewController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.text.AbstractContentTransformer;
 import org.freeplane.features.text.TextController;
+import org.freeplane.features.ui.ViewController;
 
 /**
  * @author Dimitry Polivaev

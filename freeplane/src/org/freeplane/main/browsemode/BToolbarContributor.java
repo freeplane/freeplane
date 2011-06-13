@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mode.browsemode;
+package org.freeplane.main.browsemode;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -30,13 +30,13 @@ import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.PersistentEditableComboBox;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.frame.IMapViewChangeListener;
-import org.freeplane.features.frame.IMapViewManager;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.ui.IMapViewChangeListener;
+import org.freeplane.features.ui.IMapViewManager;
 
-public class BToolbarContributor implements IMenuContributor, IMapViewChangeListener {
+class BToolbarContributor implements IMenuContributor, IMapViewChangeListener {
 	private static final String BROWSE_URL_STORAGE_KEY = "browse_url_storage";
 // 	final private ModeController modeController;
 	private PersistentEditableComboBox urlfield = null;

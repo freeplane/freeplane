@@ -57,7 +57,6 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.format.ScannerController;
-import org.freeplane.features.frame.ViewController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
@@ -78,6 +77,7 @@ import org.freeplane.features.text.IContentTransformer;
 import org.freeplane.features.text.ShortenedTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.IEditBaseCreator.EditedComponent;
+import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 
 import com.lightdev.app.shtm.SHTMLPanel;

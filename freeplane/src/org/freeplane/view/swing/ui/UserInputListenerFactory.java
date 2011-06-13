@@ -49,12 +49,12 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.frame.IMapViewManager;
-import org.freeplane.features.frame.ViewController;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.ui.IMapViewManager;
+import org.freeplane.features.ui.ViewController;
 import org.freeplane.view.swing.map.MapView;
 
 public class UserInputListenerFactory implements IUserInputListenerFactory {

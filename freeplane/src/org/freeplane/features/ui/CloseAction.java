@@ -1,8 +1,8 @@
 /*
  *  Freeplane - mind map editor
- *  Copyright (C) 2009 Dimitry
+ *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
  *
- *  This file author is Dimitry
+ *  This file is modified by Dimitry Polivaev in 2008.
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,37 +17,28 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.frame;
+package org.freeplane.features.ui;
 
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.mode.Controller;
 
-/**
- * @author Dimitry Polivaev
- * 14.08.2009
- */
-@SelectableAction(checkOnPopup = true)
-public class ToggleFullScreenAction extends AFreeplaneAction {
+/** This closes only the current map */
+class CloseAction extends AFreeplaneAction {
+	static final String NAME = "close";
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+// // 	final private Controller controller;
 
-	public ToggleFullScreenAction(final ViewController viewController) {
-		super("ToggleFullScreenAction");
+	CloseAction() {
+		super("CloseAction");
+//		this.controller = controller;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final ViewController viewController = Controller.getCurrentController().getViewController();
-		viewController.setFullScreen(!viewController.isFullScreenEnabled());
-	}
-
-	@Override
-	public void setSelected() {
-		final ViewController viewController = Controller.getCurrentController().getViewController();
-		setSelected(viewController.isFullScreenEnabled());
+		Controller.getCurrentController().close(false);
 	}
 }

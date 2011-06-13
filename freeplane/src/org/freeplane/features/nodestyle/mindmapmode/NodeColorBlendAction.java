@@ -24,11 +24,11 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AMultipleNodeAction;
-import org.freeplane.features.frame.ViewController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.ui.ViewController;
 
 /**
  * @author foltin

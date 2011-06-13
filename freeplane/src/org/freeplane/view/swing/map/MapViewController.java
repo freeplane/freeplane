@@ -37,8 +37,6 @@ import java.util.Map;
 import java.util.Vector;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.features.frame.IMapViewChangeListener;
-import org.freeplane.features.frame.IMapViewManager;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
@@ -47,6 +45,8 @@ import org.freeplane.features.mode.IMapSelection;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapViewLayout;
+import org.freeplane.features.ui.IMapViewChangeListener;
+import org.freeplane.features.ui.IMapViewManager;
 
 /**
  * Manages the list of MapViews. As this task is very complex, I exported it

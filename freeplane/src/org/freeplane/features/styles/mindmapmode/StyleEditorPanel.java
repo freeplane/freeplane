@@ -59,8 +59,6 @@ import org.freeplane.features.edge.mindmapmode.AutomaticEdgeColorHook;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.IFormattedObject;
-import org.freeplane.features.frame.IMapViewChangeListener;
-import org.freeplane.features.frame.IMapViewManager;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeChangeEvent;
@@ -75,6 +73,8 @@ import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleModel;
+import org.freeplane.features.ui.IMapViewChangeListener;
+import org.freeplane.features.ui.IMapViewManager;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.Borders;

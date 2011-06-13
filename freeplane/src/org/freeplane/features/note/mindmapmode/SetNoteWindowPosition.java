@@ -5,8 +5,8 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
-import org.freeplane.features.frame.ViewController;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.ViewController;
 
 /** Select Note Window at the position action */
 @SelectableAction(checkOnPopup = true)

@@ -46,11 +46,11 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
-import org.freeplane.features.frame.IMapViewManager;
-import org.freeplane.features.frame.ViewController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.IMapSelection;
+import org.freeplane.features.ui.IMapViewManager;
+import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.mindmapmode.FileOpener;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 

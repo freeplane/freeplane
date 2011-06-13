@@ -27,7 +27,6 @@ import java.awt.event.KeyEvent;
 import java.util.regex.Pattern;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.frame.ViewController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -36,6 +35,7 @@ import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EditNodeWYSIWYG;
+import org.freeplane.features.ui.ViewController;
 
 class EditNoteInDialogAction extends AFreeplaneAction {
 	private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);

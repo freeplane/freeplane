@@ -52,7 +52,6 @@ import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.features.frame.ViewController;
 import org.freeplane.features.icon.IIconInformation;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconGroup;
@@ -64,6 +63,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.ui.ViewController;
 
 /**
  * @author Dimitry Polivaev

@@ -17,26 +17,36 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.frame;
+package org.freeplane.features.ui;
 
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.SelectableAction;
 
-class ZoomInAction extends AFreeplaneAction {
-	static final String NAME = "zoomIn";
+@SelectableAction(checkOnPopup = true)
+class ToggleMenubarAction extends AFreeplaneAction {
+	static final String NAME = "toggleMenubar";
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	final private ViewController controller;
 
-	public ZoomInAction(final ViewController controller) {
-		super("ZoomInAction");
-		this.controller = controller;
+	ToggleMenubarAction( final ViewController viewController) {
+		super("ToggleMenubarAction");
+		this.controller = viewController;
 	}
 
-	public void actionPerformed(final ActionEvent e) {
-		controller.zoomIn();
+	public void actionPerformed(final ActionEvent event) {
+		controller.setMenubarVisible(!controller.isMenubarVisible());
+	}
+
+	@Override
+	public void setSelected() {
+		setSelected(controller.isMenubarVisible());
+	}
+	@Override
+	public void afterMapChange(final Object newMap) {
 	}
 }

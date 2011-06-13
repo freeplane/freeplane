@@ -14,10 +14,10 @@ import org.freeplane.core.util.FreeplaneIconUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.Filter;
-import org.freeplane.features.frame.ViewController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.NodeContainsCondition;
 import org.freeplane.features.text.TextController;
+import org.freeplane.features.ui.ViewController;
 import org.freeplane.plugin.script.proxy.Proxy.Map;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 

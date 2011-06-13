@@ -27,7 +27,7 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 import org.freeplane.features.format.FormattedDate;
-import org.freeplane.features.frame.ViewController;
+import org.freeplane.features.ui.ViewController;
 
 /**
  * @author Dimitry Polivaev

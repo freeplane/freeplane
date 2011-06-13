@@ -49,11 +49,11 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.SortedComboBoxModel;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.AttributeRegistryElement;
-import org.freeplane.features.frame.IMapViewManager;
 import org.freeplane.features.icon.IconStore;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.IMapViewManager;
 
 class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	private static final IconStore STORE = IconStoreFactory.create();

@@ -79,7 +79,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.clipboard.ClipboardController;
-import org.freeplane.features.frame.IMapViewManager;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.map.IMapChangeListener;
@@ -96,6 +95,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
+import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 
 /**

@@ -22,9 +22,9 @@ package org.freeplane.features.text.mindmapmode;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.frame.ViewController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.ViewController;
 
 class EditDetailsAction extends AFreeplaneAction {
 	/**

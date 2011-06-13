@@ -38,11 +38,11 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.frame.IMapViewManager;
-import org.freeplane.features.frame.ViewController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.IMapSelection;
 import org.freeplane.features.mode.browsemode.BModeController;
+import org.freeplane.features.ui.IMapViewManager;
+import org.freeplane.features.ui.ViewController;
 
 /**
  * @author Dimitry Polivaev

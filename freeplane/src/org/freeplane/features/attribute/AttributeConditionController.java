@@ -36,10 +36,10 @@ import org.freeplane.core.util.collection.SortedComboBoxModel;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
-import org.freeplane.features.frame.ViewController;
 import org.freeplane.features.link.LinkTransformer;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.ViewController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
