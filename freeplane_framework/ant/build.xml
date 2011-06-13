@@ -186,9 +186,11 @@
 					<include name="freeplane_ant/**" />
 					<include name="freeplane_mac/**" />
 					<include name="freeplane_framework/**" />
+					<include name="freeplane_devresources/**" />
 					<include name="JOrtho_0.4_freeplane/**" />
 					<include name="build.xml" />
 					<exclude name=".*/**" />
+					<exclude name="**/~*" />
 					<exclude name="**/backups/**" />
 					<exclude name="bin/**" />
 					<exclude name="build/**" />
@@ -198,6 +200,7 @@
 					<exclude name="*/build4mac/**" />
 					<exclude name="*/dist/**" />
 					<exclude name="**/.backup/**" />
+					<exclude name="**/backups/**" />
 					<exclude name="JOrtho_0.4_freeplane/src/dictionary_*.ortho" />
 					<exclude name="freeplane_framework/windows-launcher/Objects/**" />
 					<exclude name="freeplane_framework/windows-launcher/*.layout" />
