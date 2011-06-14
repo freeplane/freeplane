@@ -27,7 +27,6 @@ import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.List;
@@ -42,7 +41,10 @@ import javax.swing.SwingConstants;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.filter.Filter;
+import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.icon.factory.ImageIconFactory;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
@@ -61,26 +63,26 @@ class FilePropertiesAction extends AFreeplaneAction {
 	 */
 	public void actionPerformed(final ActionEvent e) {
 		//variables for informations to be displayed
-		String fileNamePath, fileSavedDateTime, fileSize;
-		int fileChangesSinceSave, nodeMainBranches, nodeTotalNodeCount, nodeTotalLeafCount;
-		int nodeRelativeNodeCount = 0, nodeRelativeChildCount = 0, nodeRelativeLeafCount = 0, nodeSelectedNodeCount;
+		final String fileNamePath, fileSavedDateTime, fileSize;
+		final int fileChangesSinceSave;
 		//get informations
 		//if file has been saved once
-		if (Controller.getCurrentController().getMap().getFile() != null) {
+		final MapModel map = Controller.getCurrentController().getMap();
+        if (map.getFile() != null) {
 			//fileNamePath
-			fileNamePath = Controller.getCurrentController().getMap().getFile().toString();
+			fileNamePath = map.getFile().toString();
 			//fleSavedDateTime as formatted string
 			final Calendar c = Calendar.getInstance();
-			c.setTimeInMillis(Controller.getCurrentController().getMap().getFile().lastModified());
+			c.setTimeInMillis(map.getFile().lastModified());
 			final DateFormat df = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
 			fileSavedDateTime = df.format(c.getTime());
 			//fileSize as formatted string
 			final DecimalFormat def = new DecimalFormat();
 			def.setGroupingUsed(true);
-			fileSize = def.format(Controller.getCurrentController().getMap().getFile().length()) + " "
+			fileSize = def.format(map.getFile().length()) + " "
 			        + TextUtils.getText("NewerFileRevisionsFoundDialog.file_size");
 			//fileChangesSinceSave
-			fileChangesSinceSave = Controller.getCurrentController().getMap().getNumberOfChangesSinceLastSave();
+			fileChangesSinceSave = map.getNumberOfChangesSinceLastSave();
 		}
 		else {
 			fileNamePath = TextUtils.getText("FileProperties_NeverSaved");
@@ -89,27 +91,55 @@ class FilePropertiesAction extends AFreeplaneAction {
 			fileChangesSinceSave = 0;
 		}
 		//node statistics
-		nodeMainBranches = Controller.getCurrentController().getMap().getRootNode().getChildCount();
-		nodeTotalNodeCount = getNodeCount(Controller.getCurrentController().getMap().getRootNode(), false).size();
-		nodeTotalLeafCount = getNodeCount(Controller.getCurrentController().getMap().getRootNode(), true).size();
+		final NodeModel rootNode = map.getRootNode();
+        final int nodeMainBranches = rootNode.getChildCount();
+		final ICondition trueCondition = new ICondition() {
+		    public boolean checkNode(NodeModel node) {
+		        return true;
+		    }
+		};
+        final ICondition isLeafCondition = new ICondition() {
+            public boolean checkNode(NodeModel node) {
+                return node.isLeaf();
+            }
+        };
+        final int nodeTotalNodeCount = getNodeCount(rootNode, trueCondition);
+        final int nodeTotalLeafCount = getNodeCount(rootNode, isLeafCondition);
+        final Filter filter = map.getFilter();
+        final int nodeTotalFiltered;
+        if(filter != null){
+            final ICondition matchesFilterCondition = new ICondition() {
+                public boolean checkNode(NodeModel node) {
+                    return filter.matches(node);
+                }
+            };
+            nodeTotalFiltered = getNodeCount(rootNode, matchesFilterCondition);
+        }
+        else{
+            nodeTotalFiltered = -1;
+        }
 		//Multiple nodes may be selected
-		final List<NodeModel> Nodes = Controller.getCurrentController().getSelection().getSelection();
+		final List<NodeModel> nodes = Controller.getCurrentController().getSelection().getSelection();
 		boolean isDescendant = false;
-		for (final NodeModel n : Nodes) {
+        int nodeRelativeChildCount = 0;
+        int nodeRelativeNodeCount = 0;
+        int nodeRelativeLeafCount = 0;
+		for (final NodeModel n : nodes) {
 			nodeRelativeChildCount += n.getChildCount();
 			isDescendant = false;
 			//Nodes and leaf nodes are only counted once per branch
-			for (int i = 0; i < Nodes.size(); i++) {
-				if (n.isDescendantOf(Nodes.get(i))) {
+			for (int i = 0; i < nodes.size(); i++) {
+				if (n.isDescendantOf(nodes.get(i))) {
 					isDescendant = true;
+					break;
 				}
 			}
 			if (!isDescendant) {
-				nodeRelativeNodeCount += getNodeCount(n, false).size();
-				nodeRelativeLeafCount += getNodeCount(n, true).size();
+				nodeRelativeNodeCount += getNodeCount(n, trueCondition);
+				nodeRelativeLeafCount += getNodeCount(n, isLeafCondition);
 			}
 		}
-		nodeSelectedNodeCount = Controller.getCurrentController().getSelection().getSelection().size();
+		final int nodeSelectedNodeCount = Controller.getCurrentController().getSelection().getSelection().size();
 		//build component
 		final JPanel panel = new JPanel();
 		final GridBagLayout gridbag = new GridBagLayout();
@@ -198,9 +228,22 @@ class FilePropertiesAction extends AFreeplaneAction {
 		final JLabel nodeTotalNodeCountLabel = new JLabel(String.valueOf(nodeTotalNodeCount));
 		gridbag.setConstraints(nodeTotalNodeCountLabel, c);
 		panel.add(nodeTotalNodeCountLabel);
-		//nodeTotalLeafCount
-		c.gridy++;
-		c.gridx = 1;
+		//nodeTotalFiltered
+		if(nodeTotalFiltered != -1){
+		    c.gridy++;
+		    c.gridx = 1;
+		    final JLabel nodeTotalFilteredLabelText = new JLabel(TextUtils.getText("FileProperties_TotalFilteredCount"));
+		    gridbag.setConstraints(nodeTotalFilteredLabelText, c);
+		    panel.add(nodeTotalFilteredLabelText);
+		    c.gridx = 2;
+		    final JLabel nodeTotalFilteredLabel = new JLabel(String.valueOf(nodeTotalFiltered));
+		    gridbag.setConstraints(nodeTotalFilteredLabel, c);
+		    panel.add(nodeTotalFilteredLabel);
+		}
+        //nodeTotalLeafCount
+        c.gridy++;
+
+        c.gridx = 1;
 		final JLabel nodeTotalLeafCountText = new JLabel(TextUtils.getText("FileProperties_TotalLeafCount"));
 		gridbag.setConstraints(nodeTotalLeafCountText, c);
 		panel.add(nodeTotalLeafCountText);
@@ -293,21 +336,16 @@ class FilePropertiesAction extends AFreeplaneAction {
 	 * 
 	 * @return Returns a list of nodes
 	 */
-	private List<NodeModel> getNodeCount(final NodeModel node, final boolean CountLeaves) {
-		final List<NodeModel> nodes = new ArrayList<NodeModel>();
+	private int getNodeCount(final NodeModel node, final ICondition condition) {
+	    int result = 0;
 		final Enumeration<NodeModel> children = node.children();
-		if (CountLeaves) {
-			if (node.isLeaf()) {
-				nodes.add(node);
-			}
-		}
-		else {
-			nodes.add(node);
+		if (condition.checkNode(node)) {
+		    result++;
 		}
 		while (children.hasMoreElements()) {
 			final NodeModel child = children.nextElement();
-			nodes.addAll(getNodeCount(child, CountLeaves));
+			result += getNodeCount(child, condition);
 		}
-		return nodes;
+		return result;
 	}
 }

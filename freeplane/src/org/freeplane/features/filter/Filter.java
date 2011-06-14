@@ -246,4 +246,8 @@ public class Filter {
 	public boolean unfoldsInvisibleNodes() {
 		return unfold;
 	}
+
+    public boolean matches(NodeModel nodeModel) {
+        return 0 != (nodeModel.getFilterInfo().get() & FilterInfo.FILTER_SHOW_MATCHED);
+    }
 }
