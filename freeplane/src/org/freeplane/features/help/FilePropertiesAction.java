@@ -107,7 +107,7 @@ class FilePropertiesAction extends AFreeplaneAction {
         final int nodeTotalLeafCount = getNodeCount(rootNode, isLeafCondition);
         final Filter filter = map.getFilter();
         final int nodeTotalFiltered;
-        if(filter != null){
+        if(filter != null && filter.getCondition() != null){
             final ICondition matchesFilterCondition = new ICondition() {
                 public boolean checkNode(NodeModel node) {
                     return filter.matches(node);
