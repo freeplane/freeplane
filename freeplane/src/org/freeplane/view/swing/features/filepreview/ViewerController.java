@@ -650,7 +650,15 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 		return false;
 	}
-
+	public boolean paste(final URI uri, final NodeModel node) {
+		
+		final ExternalResource preview = new ExternalResource();
+		preview.setUri(uri);
+		undoableDeactivateHook(node);
+		undoableActivateHook(node, preview);
+		ProgressIcons.updateExtendedProgressIcons(node, uri.getPath());
+		return true;
+	}
 	public boolean paste(final File file, final NodeModel node, final boolean isLeft) {
 		return paste(file, node, true, isLeft);
 	}
