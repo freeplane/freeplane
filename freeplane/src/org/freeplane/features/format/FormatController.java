@@ -78,6 +78,7 @@ public class FormatController implements IExtension {
 	private HashMap<String, SimpleDateFormat> dateFormatCache = new HashMap<String, SimpleDateFormat>();
 	private DecimalFormat defaultNumberFormat;
 	private HashMap<String, DecimalFormat> numberFormatCache = new HashMap<String, DecimalFormat>();
+    static private boolean firstError = true;
 
 	public IValidator createValidator (){
 	    return new IValidator() {
@@ -137,17 +138,20 @@ public class FormatController implements IExtension {
 		try {
 			if (pathToFile != null)
 				loadFormats();
-			if (numberFormats.isEmpty() && dateFormats.isEmpty() && stringFormats.isEmpty()) {
-				addStandardFormats();
-				if (pathToFile != null)
-					saveFormatsNoThrow();
-			}
-			formatsLoaded = true;
 		}
 		catch (final Exception e) {
 			LogUtils.warn(e);
-			UITools.errorMessage(TextUtils.getText("formats_not_loaded"));
+			if(firstError){
+			    firstError = false;
+			    UITools.errorMessage(TextUtils.getText("formats_not_loaded"));
+			}
 		}
+        if (numberFormats.isEmpty() && dateFormats.isEmpty() && stringFormats.isEmpty()) {
+            addStandardFormats();
+            if (pathToFile != null)
+                saveFormatsNoThrow();
+        }
+        formatsLoaded = true;
 	}
 
 	private void addStandardFormats() {
