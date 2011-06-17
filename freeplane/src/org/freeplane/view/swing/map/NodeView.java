@@ -1548,8 +1548,6 @@ public class NodeView extends JComponent implements INodeView {
 
     public Color getDetailBackground() {
         final Color detailBackground = getMap().getDetailBackground();
-        if(detailBackground != null)
-            return detailBackground;
-        return getBackgroundColor();
+        return detailBackground;
      }
 }
