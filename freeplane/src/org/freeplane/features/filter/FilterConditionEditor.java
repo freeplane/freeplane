@@ -94,7 +94,7 @@ public class FilterConditionEditor extends JComponent {
 		values.setEditor(valueEditor != null ? valueEditor : new BasicComboBoxEditor());
 		
 		final ListCellRenderer valueRenderer = conditionController.getValueRenderer(selectedProperty, selectedCondition);
-		values.setRenderer(valueRenderer != null ? valueRenderer : new TypedListCellRenderer());
+		values.setRenderer(valueRenderer != null ? valueRenderer : filterController.getConditionRenderer());
 		
 		values.setEditable(conditionController.canEditValues(selectedProperty, selectedCondition));
 		if (values.getModel().getSize() > 0) {
@@ -157,7 +157,6 @@ public class FilterConditionEditor extends JComponent {
 		else{
 			gridBagConstraints.gridy++;
 		}
-		values.setRenderer(filterController.getConditionRenderer());
 		values.setEditable(true);
 		// Ignore case checkbox
 		caseSensitive = new JCheckBox();
