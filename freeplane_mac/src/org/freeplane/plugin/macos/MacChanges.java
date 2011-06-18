@@ -21,16 +21,11 @@ package org.freeplane.plugin.macos;
 
 import java.awt.EventQueue;
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Set;
-
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.ViewController;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
-
-import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.ui.ViewController;
 
 import com.apple.eawt.Application;
 import com.apple.eawt.ApplicationAdapter;
