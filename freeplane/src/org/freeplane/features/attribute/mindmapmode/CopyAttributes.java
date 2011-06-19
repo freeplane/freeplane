@@ -136,28 +136,19 @@ class AddStyleAttributes extends AMultipleNodeAction {
 	/**
 	 */
 	private void pasteAttributes(final NodeModel node) {
-		final NodeAttributeTableModel model = getAttributes(node);
+		final NodeModel model = getAttributes(node);
 		if(model == null){
 			return;
 		}
 		final MAttributeController controller = MAttributeController.getController();
-		final int attributeTableLength = model.getAttributeTableLength();
-		for(int i = 0; i < attributeTableLength; i++){
-			final Attribute attribute = model.getAttribute(i);
-			controller.addAttribute(node, new Attribute(attribute.getName(), attribute.getValue()));
-		}
+		controller.copyAttributesToNode(model, node);
 	}
 
-	private NodeAttributeTableModel getAttributes(final NodeModel node) {
+	private NodeModel getAttributes(final NodeModel node) {
 		final IStyle style = LogicalStyleController.getController().getFirstStyle(node);
 		final MapStyleModel extension = MapStyleModel.getExtension(node.getMap());
 		final NodeModel styleNode = extension.getStyleNode(style);
-		if (styleNode == null)
-			return null;
-		final NodeAttributeTableModel model = NodeAttributeTableModel.getModel(styleNode);
-		if (model.getRowCount() > 0)
-			return model;
-		return null;
+		return styleNode;
     }
 	
 	@Override

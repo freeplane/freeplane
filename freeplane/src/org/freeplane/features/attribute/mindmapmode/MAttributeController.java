@@ -839,4 +839,17 @@ public class MAttributeController extends AttributeController {
 		performSetValueAt(model, pAttribute.getName(), pPosition, 0);
 		performSetValueAt(model, pAttribute.getValue(), pPosition, 1);
 	}
+
+    public void copyAttributesToNode(NodeModel source, NodeModel target) {
+        if (source == null)
+            return;
+        final NodeAttributeTableModel model = NodeAttributeTableModel.getModel(source);
+        if (model.getRowCount() == 0)
+            return;
+        final int attributeTableLength = model.getAttributeTableLength();
+        for(int i = 0; i < attributeTableLength; i++){
+            final Attribute attribute = model.getAttribute(i);
+            addAttribute(target, new Attribute(attribute.getName(), attribute.getValue()));
+        }
+    }
 }

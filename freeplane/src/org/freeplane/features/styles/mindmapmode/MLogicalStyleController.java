@@ -28,6 +28,7 @@ import javax.swing.table.TableModel;
 
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.attribute.mindmapmode.MAttributeController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.IMapChangeListener;
@@ -49,6 +50,8 @@ import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.StyleNamedObject;
 import org.freeplane.features.styles.ConditionalStyleModel.Item;
+import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.mindmapmode.MTextController;
 
 /**
  * @author Dimitry Polivaev
@@ -278,8 +281,20 @@ public class MLogicalStyleController extends LogicalStyleController {
 	}
 
 	public void setStyle(final NodeModel node, final IStyle style) {
-		final IStyle oldStyle = LogicalStyleModel.getStyle(node);
+        final MTextController textController = MTextController.getController();
+        if(textController.isFirstEditRunning(node)){
+            final MapStyleModel extension = MapStyleModel.getExtension(node.getMap());
+            final NodeModel styleNode = extension.getStyleNode(style);
+            if(styleNode != null){
+                final MAttributeController attributeController = MAttributeController.getController();
+                attributeController.copyAttributesToNode(styleNode, node);
+                final String detailTextText = DetailTextModel.getDetailTextText(styleNode);
+                if(detailTextText != null)
+                    textController.setDetails(node, detailTextText);
+            }
+        }
 		final ModeController modeController = Controller.getCurrentModeController();
+        final IStyle oldStyle = LogicalStyleModel.getStyle(node);
 		if (oldStyle != null && oldStyle.equals(style) || oldStyle == style) {
 			modeController.getMapController().nodeChanged(node, LogicalStyleModel.class, oldStyle, style);
 			return;

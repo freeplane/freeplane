@@ -273,7 +273,7 @@ public class MModeControllerFactory {
 		}));
 		userInputListenerFactory.setNodeMotionListener(new MNodeMotionListener());
 		modeController.addAction(new EditAttributesAction());
-		SpellCheckerController.install();
+		SpellCheckerController.install(modeController);
 		ExportController.install(new ExportController("/xml/ExportWithXSLT.xml"));
 		new MapStyle(true);
 		final JPopupMenu popupmenu = new JPopupMenu();
