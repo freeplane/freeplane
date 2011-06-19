@@ -32,6 +32,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.DelayedMouseListener;
 import org.freeplane.core.ui.IEditHandler;
@@ -195,7 +196,13 @@ public class MModeControllerFactory {
 		final Controller controller = Controller.getCurrentController();
 		modeController = new MModeController(controller);
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
-		userInputListenerFactory.setNodeMouseMotionListener(new DelayedMouseListener( new DefaultNodeMouseMotionListener() {
+		final int maxClickNumber;
+        if(ResourceController.getResourceController().getBooleanProperty("start_editor_on_double_click"))
+            maxClickNumber = 2;
+        else
+            maxClickNumber = 1;
+		
+        final DelayedMouseListener nodeMouseMotionListener = new DelayedMouseListener( new DefaultNodeMouseMotionListener() {
 			public void mouseClicked(final MouseEvent e) {
 				if (wasFocused() && (e.getModifiers() & ~ (InputEvent.ALT_DOWN_MASK | InputEvent.ALT_MASK)) == InputEvent.BUTTON1_MASK) {
 					/* perform action only if one selected node. */
@@ -210,7 +217,8 @@ public class MModeControllerFactory {
 					else {
 						if (e.getClickCount() == 2 && !e.isControlDown() && !e.isShiftDown() && !e.isMetaDown()
 								&& !e.isPopupTrigger() && e.getButton() == MouseEvent.BUTTON1) {
-							((MTextController) TextController.getController()).edit(e, FirstAction.EDIT_CURRENT, e.isAltDown());
+						    if(ResourceController.getResourceController().getBooleanProperty("start_editor_on_double_click"))
+						        ((MTextController) TextController.getController()).edit(e, FirstAction.EDIT_CURRENT, e.isAltDown());
 							return;
 						}
 						final Component selectedComponent = controller.getViewController().getSelectedComponent();
@@ -222,7 +230,18 @@ public class MModeControllerFactory {
 					e.consume();
 				}
 			}
-		}, 2, MouseEvent.BUTTON1));
+		}, maxClickNumber, MouseEvent.BUTTON1);
+        userInputListenerFactory.setNodeMouseMotionListener(nodeMouseMotionListener);
+        ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
+            public void propertyChanged(String propertyName, String newValue, String oldValue) {
+                if("start_editor_on_double_click".equals(propertyName)){
+                    if(Boolean.parseBoolean(newValue))
+                        nodeMouseMotionListener.setMaxClickNumber(2);
+                    else
+                        nodeMouseMotionListener.setMaxClickNumber(1);
+                }
+            }
+        });
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);

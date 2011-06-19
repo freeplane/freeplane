@@ -27,10 +27,18 @@ public class DelayedMouseListener implements IMouseListener {
 		final Object p = Toolkit.getDefaultToolkit().getDesktopProperty("awt.multiClickInterval");
 		MAX_TIME_BETWEEN_CLICKS = p instanceof Integer ? (Integer) p : 250;
 	}
-	final private int maxClickNumber;
+	private int maxClickNumber;
 	
 
-	public void mouseClicked(final MouseEvent me) {
+	public int getMaxClickNumber() {
+        return maxClickNumber;
+    }
+
+	public void setMaxClickNumber(int maxClickNumber) {
+        this.maxClickNumber = maxClickNumber;
+    }
+
+    public void mouseClicked(final MouseEvent me) {
 		if(me.getButton() != button){
 			delegate.mouseClicked(me);
 			return;
