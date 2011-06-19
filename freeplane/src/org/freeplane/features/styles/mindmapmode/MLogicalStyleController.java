@@ -283,15 +283,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 	public void setStyle(final NodeModel node, final IStyle style) {
         final MTextController textController = MTextController.getController();
         if(textController.isFirstEditRunning(node)){
-            final MapStyleModel extension = MapStyleModel.getExtension(node.getMap());
-            final NodeModel styleNode = extension.getStyleNode(style);
-            if(styleNode != null){
-                final MAttributeController attributeController = MAttributeController.getController();
-                attributeController.copyAttributesToNode(styleNode, node);
-                final String detailTextText = DetailTextModel.getDetailTextText(styleNode);
-                if(detailTextText != null)
-                    textController.setDetails(node, detailTextText);
-            }
+            copyStyleExtensions(style, node);
         }
 		final ModeController modeController = Controller.getCurrentModeController();
         final IStyle oldStyle = LogicalStyleModel.getStyle(node);
@@ -327,6 +319,19 @@ public class MLogicalStyleController extends LogicalStyleController {
 		};
 		modeController.execute(actor, node.getMap());
 	}
+
+    public void copyStyleExtensions(final IStyle style, final NodeModel target) {
+        final MTextController textController = MTextController.getController();
+        final MapStyleModel extension = MapStyleModel.getExtension(target.getMap());
+        final NodeModel styleNode = extension.getStyleNode(style);
+        if(styleNode != null){
+            final MAttributeController attributeController = MAttributeController.getController();
+            attributeController.copyAttributesToNode(styleNode, target);
+            final String detailTextText = DetailTextModel.getDetailTextText(styleNode);
+            if(detailTextText != null)
+                textController.setDetails(target, detailTextText);
+        }
+    }
 
 	void selectActions() {
 		for (final AssignStyleAction action : actions) {
