@@ -3,6 +3,9 @@
 ===============================
 New splash and icons
 Multiple bug fixes
+Enable Details for Styles.  
+Copy style attributes and details if is the first user action performed on an new node assigns a style.
+
 
 ===============================
 1.2.6 alpha
