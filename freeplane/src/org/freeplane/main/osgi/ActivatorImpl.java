@@ -152,7 +152,7 @@ class ActivatorImpl implements BundleActivator {
 		}
 		// initialize ApplicationController - SingleInstanceManager needs the configuration
 		starter = new FreeplaneStarter();
-		final SingleInstanceManager singleInstanceManager = new SingleInstanceManager(starter.getResourceController());
+		final SingleInstanceManager singleInstanceManager = new SingleInstanceManager(starter);
 		singleInstanceManager.start(getCallParameters());
 		if (singleInstanceManager.isSlave()) {
 			LogUtils.info("opened files in master - exiting now");

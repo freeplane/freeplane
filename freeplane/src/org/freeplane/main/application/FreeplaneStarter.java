@@ -88,7 +88,8 @@ public class FreeplaneStarter {
 
 	private ApplicationResourceController applicationResourceController;
 // // 	private Controller controller;
-	private FreeplaneSplashModern splash;
+	private FreeplaneSplashModern splash = null;
+    private boolean startupFinished = false;
 	private ApplicationViewController viewController;
 	/** allows to disable loadLastMap(s) if there already is a second instance running. */
 	private boolean dontLoadLastMaps;
@@ -187,6 +188,7 @@ public class FreeplaneStarter {
 				splash.dispose();
 				splash = null;
 				frame.toFront();
+				startupFinished = true;
 			}
 		});
 	}
@@ -198,7 +200,50 @@ public class FreeplaneStarter {
 		if (alwaysLoadLastMaps && !dontLoadLastMaps) {
 			applicationResourceController.getLastOpenedList().openMapsOnStart();
 		}
-		boolean fileLoaded = false;
+		if (loadMaps(controller, args)) {
+			return;
+		}
+		if (!alwaysLoadLastMaps && !dontLoadLastMaps) {
+			applicationResourceController.getLastOpenedList().openMapsOnStart();
+		}
+		
+		if (null != controller.getMap()) {
+			return;
+		}
+		controller.selectMode(MModeController.MODENAME);
+		final MModeController modeController = (MModeController) controller.getModeController();
+		MFileManager.getController(modeController).newMap();
+	}
+	
+	public void loadMapsLater(final String[] args){
+	    EventQueue.invokeLater(new Runnable() {
+ 
+            public void run() {
+                if(startupFinished && EventQueue.isDispatchThread()){
+                    loadMaps(Controller.getCurrentController(), args);
+                    toFront();
+                    return;
+                }
+                EventQueue.invokeLater(this);
+            }
+        });
+	}
+
+    private void toFront() {
+        final Frame frame = UITools.getFrame();
+        if(frame == null)
+            return;
+        final int state = frame.getExtendedState();
+        if ((state & Frame.ICONIFIED) != 0)
+            frame.setExtendedState(state & ~Frame.ICONIFIED);
+        if (!frame.isVisible())
+            frame.setVisible(true);
+        frame.toFront();
+        frame.requestFocus();
+    }
+    
+    private boolean loadMaps(final Controller controller, final String[] args) {
+        boolean fileLoaded = false;
 		for (int i = 0; i < args.length; i++) {
 			String fileArgument = args[i];
 			if (fileArgument.toLowerCase().endsWith(
@@ -219,20 +264,8 @@ public class FreeplaneStarter {
 				}
 			}
 		}
-		if (fileLoaded) {
-			return;
-		}
-		if (!alwaysLoadLastMaps && !dontLoadLastMaps) {
-			applicationResourceController.getLastOpenedList().openMapsOnStart();
-		}
-		
-		if (null != controller.getMap()) {
-			return;
-		}
-		controller.selectMode(MModeController.MODENAME);
-		final MModeController modeController = (MModeController) controller.getModeController();
-		MFileManager.getController(modeController).newMap();
-	}
+        return fileLoaded;
+    }
 
 	/**
 	 */
