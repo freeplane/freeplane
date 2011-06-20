@@ -1,7 +1,8 @@
 package org.freeplane.view.swing.features.progress.mindmapmode;
 
 import java.awt.event.ActionEvent;
-import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AMultipleNodeAction;
@@ -28,11 +29,13 @@ class ExtendedProgress25Action extends AMultipleNodeAction {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final File file = new File(ResourceController.getResourceController().getResourceBaseDir()
-		        + System.getProperty("file.separator") + "svg" + System.getProperty("file.separator")
-		        + "Progress_quarter_00.svg");
 		final ViewerController vc = ((ViewerController) Controller.getCurrentController().getModeController()
 		    .getExtension(ViewerController.class));
-		vc.paste(file, node, node.isLeft());
+		try {
+	        URI uri = new URI(ResourceController.FREEPLANE_RESOURCE_URL_PROTOCOL, null, "/images/svg/Progress_quarter_00.svg", null);
+			vc.paste(uri, node);
+		} catch (URISyntaxException e1) {
+			e1.printStackTrace();
+		}
 	}
 }

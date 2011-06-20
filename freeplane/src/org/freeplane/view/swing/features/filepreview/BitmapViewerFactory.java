@@ -45,7 +45,7 @@ public class BitmapViewerFactory implements IViewerFactory {
 	}
 
 	private Iterator<ImageReader> getImageReaders(final URI uri) {
-		final String path = uri.getRawPath();
+        String path = uri.getRawPath();
 		final int suffixPos = path.lastIndexOf('.') + 1;
 		if (suffixPos == 0) {
 			final List<ImageReader> empty = Collections.emptyList();

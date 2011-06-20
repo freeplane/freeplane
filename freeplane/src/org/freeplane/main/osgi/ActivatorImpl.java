@@ -25,11 +25,13 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.jar.Manifest;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
@@ -41,6 +43,8 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
+import org.osgi.service.url.URLConstants;
+import org.osgi.service.url.URLStreamHandlerService;
 
 /**
  * @author Dimitry Polivaev
@@ -137,6 +141,7 @@ class ActivatorImpl implements BundleActivator {
 	}
 
 	private void startFramework(final BundleContext context) {
+        registerClasspathUrlHandler(context);
 		if (null == System.getProperty("org.freeplane.core.dir.lib", null)) {
 			final File root = new File(FreeplaneStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();
 			try {
@@ -226,6 +231,12 @@ class ActivatorImpl implements BundleActivator {
 			}
 		});
 	}
+
+    private void registerClasspathUrlHandler(final BundleContext context) {
+        Hashtable<String, String[]> properties = new Hashtable<String, String[]>();
+        properties.put(URLConstants.URL_HANDLER_PROTOCOL, new String[] { ResourceController.FREEPLANE_RESOURCE_URL_PROTOCOL });
+        context.registerService(URLStreamHandlerService.class.getName(), new ResourcesUrlHandler(), properties);
+    }
 
 	public void stop(final BundleContext context) throws Exception {
 		starter.stop();

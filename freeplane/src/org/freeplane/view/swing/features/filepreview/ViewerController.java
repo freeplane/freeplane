@@ -215,21 +215,16 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			catch (final URISyntaxException e1) {
 				e1.printStackTrace();
 			}
-			final File nextFile = new File(nextUri);
-			if (!nextFile.getAbsoluteFile().exists()) {
+			final String sNextURI = nextUri.getPath();
+			if ((sNextURI.contains("_tenth_")&& (i > 10))|| ((sNextURI.contains("_quarter_"))&& (i > 4))) {
 				return false;
-			}
-			final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
-			    "relative");
-			if (useRelativeUri) {
-				nextUri = LinkController.toRelativeURI(map.getFile(), nextFile);
 			}
 			final ExternalResource nextView = new ExternalResource();
 			nextView.setUri(nextUri);
 			nextView.setZoom(activeView.getZoom());
 			remove(node, activeView);
 			add(node, nextView);
-			ProgressIcons.updateExtendedProgressIcons(node, nextFile.getName());
+			ProgressIcons.updateExtendedProgressIcons(node, sNextURI);
 			return true;
 		}
 
@@ -650,7 +645,17 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 		return false;
 	}
+	/**
+	 * This method attaches an image to a node, that is referenced with an uri
+	 * @param uri : The image that is to be attached to a node
+	 * @param node : The node that is worked upon
+	 * @return : true if successful, false otherwise
+	 */
 	public boolean paste(final URI uri, final NodeModel node) {
+		
+		if (uri == null || getViewerFactory(uri) == null) {
+			return false;
+		}
 		
 		final ExternalResource preview = new ExternalResource();
 		preview.setUri(uri);
