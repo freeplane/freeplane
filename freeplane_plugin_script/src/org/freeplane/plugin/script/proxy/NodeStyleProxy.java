@@ -4,6 +4,7 @@
 package org.freeplane.plugin.script.proxy;
 
 import java.awt.Color;
+import java.util.Collection;
 import java.util.Set;
 
 import org.freeplane.core.resources.NamedObject;
@@ -132,4 +133,13 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 	public void setTextColorCode(final String rgbString) {
 		setTextColor(ColorUtils.stringToColor(rgbString));
 	}
+
+	public static boolean hasStyle(NodeModel nodeModel, String styleName) {
+		final Collection<IStyle> styles = LogicalStyleController.getController().getStyles(nodeModel);
+		for (IStyle style : styles) {
+			if (StyleNamedObject.toKeyString(style).equals(styleName))
+				return true;
+		}
+		return false;
+    }
 }

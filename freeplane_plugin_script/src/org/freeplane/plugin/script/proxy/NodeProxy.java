@@ -270,6 +270,11 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	// NodeRO: R
+	public boolean hasStyle(String styleName) {
+		return NodeStyleProxy.hasStyle(getDelegate(), styleName);
+	}
+
+	// NodeRO: R
 	public String getText() {
 		return getDelegate().getText();
 	}

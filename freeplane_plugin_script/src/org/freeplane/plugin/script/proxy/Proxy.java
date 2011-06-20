@@ -435,8 +435,28 @@ public interface Proxy {
 
 	/** Node's icons: <code>node.icons</code> - read-only. */
 	interface IconsRO {
-		/** returns List<Node> of Strings (corresponding to iconID above);
-		 * iconID is one of "Idea","Question","Important", etc. */
+		/** returns the name of the icon at the given index (starting at 0) or null if <code>index >= size</code>.
+		 * Use it like this: <pre>
+		 *   def secondIconName = node.icons[1]
+		 * </pre>
+		 * @since 1.2 */
+		String getAt(int index);
+
+		/** returns the name of the first icon if the node has an icon assigned. Equivalent: <code>node.icons[0]</code>.
+		 * @since 1.2 */
+		String getFirst();
+
+		/** returns true if the node has an icon of this name.
+		 * @since 1.2 */
+		boolean contains(String name);
+
+		/** returns the number of icons the node has.
+		 * @since 1.2 */
+		int size();
+
+		/** returns a read-only list of the names of the icons the node has. Think twice before you use this method
+		 * since it leads to ugly code, e.g. use <code>node.icons.first</code> or <code>node.icons[0]</code> instead of
+		 * <code>node.icons.icons[0]</code>. */
 		List<String> getIcons();
 	}
 
@@ -455,8 +475,10 @@ public interface Proxy {
 		/** @deprecated since 1.2 - use {@link #add(String)} instead. */
 		void addIcon(String name);
 
-		/** deletes first occurence of icon with the given name, returns true if
-		 * success (icon existed); */
+		/** deletes the icon at the given index, returns true if success (icon existed). */
+		boolean remove(int index);
+		
+		/** deletes first occurence of icon with the given name, returns true if success (icon existed). */
 		boolean remove(String name);
 
 		/** @deprecated since 1.2 - use {@link #remove(String)} instead. */
@@ -655,7 +677,25 @@ public interface Proxy {
 		/** @deprecated since 1.2 - use {@link #getParent()} instead. */
 		Node getParentNode();
 
+		/** The style attributes of a node can either be changed by assigning a named style like this:
+		 * <pre>node.style.name = 'style.ok'</pre>
+		 * or by changing attributes for this node individually like this:
+		 * <pre>node.style.textColorCode = '#FF0000'</pre>
+		 * Conditional styles of a node can only be investigated by {@link Node#hasStyle(String)}. Here a script that
+		 * creates an index of all nodes having the style 'todo':
+		 * <pre>
+		 * def todos = node.map.root.createChild('To Do')
+		 * c.find{ it.hasStyle('todo') }.each {
+		 *     def child = todos.createChild(it.text)
+		 *     child.link.node = it
+		 * }
+		 * </pre> */
 		NodeStyle getStyle();
+
+		/** returns true if the node has the style of this name - either manually set or as a conditional style or it is
+		 * "default" which all nodes have. The following statement will always be true:
+		 * @since 1.2 */
+		boolean hasStyle(String styleName);
 
 		/** use this method to remove all tags from an HTML node. Formulas are not evaluated.
 		 * @since 1.2 */

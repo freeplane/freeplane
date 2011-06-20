@@ -42,6 +42,30 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 		return (MIconController) IconController.getController();
 	}
 
+	public String getAt(int index) {
+		final List<MindIcon> icons = getDelegate().getIcons();
+		return icons.size() <= index ? null : icons.get(index).getName();
+	}
+
+	public String getFirst() {
+		final List<MindIcon> icons = getDelegate().getIcons();
+		return icons.isEmpty() ? null : icons.get(0).getName();
+	}
+
+	public boolean contains(String name) {
+		final List<MindIcon> icons = getDelegate().getIcons();
+		for (final MindIcon icon : icons) {
+			if (icon.getName().equals(name))
+				return true;
+		}
+		return false;
+	}
+
+	public int size() {
+		final List<MindIcon> icons = getDelegate().getIcons();
+		return icons.size();
+	}
+
 	public List<String> getIcons() {
 		final List<MindIcon> icons = getDelegate().getIcons();
 		final int size = icons.size();
@@ -52,9 +76,17 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 		for (final MindIcon icon : icons) {
 			list.add(icon.getName());
 		}
-		return list;
+		return Collections.unmodifiableList(list);
 	}
 
+	public boolean remove(final int index) {
+		if (index >= size()) {
+			return false;
+		}
+		getIconController().removeIcon(getDelegate(), index);
+		return true;
+	}
+	
 	public boolean remove(final String iconID) {
 		final int index = findIcon(iconID);
 		if (index == -1) {
