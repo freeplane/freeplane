@@ -37,13 +37,15 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.MenuUtils;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.MenuUtils.MenuEntry;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.browsemode.BModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 
 class DocumentationAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
@@ -105,9 +107,10 @@ class DocumentationAction extends AFreeplaneAction {
 	}
 
 	private void appendAcceleratableMenuEntries() {
-		// use the MModeController for the mindmap mode menu - the browse doesn't contain much entries!
-		final MenuBuilder menuBuilder = Controller.getCurrentModeController()
-		    .getUserInputListenerFactory().getMenuBuilder();
+		// use the MModeController for the mindmap mode menu if possible - the browse menu doesn't have much entries!
+		final ModeController modeController = ResourceController.getResourceController().isApplet() ? Controller
+		    .getCurrentModeController() : MModeController.getMModeController();
+		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		final DefaultMutableTreeNode menuEntryTree = MenuUtils.createAcceleratebleMenuEntryTree(
 		    FreeplaneMenuBar.MENU_BAR_PREFIX, menuBuilder);
 		final MapController mapController = Controller.getCurrentModeController().getMapController();

@@ -55,6 +55,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.IMapSelection;
 import org.freeplane.features.mode.INodeSelectionListener;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.ortho.SpellCheckerController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.styles.LogicalStyleController;
@@ -70,6 +71,7 @@ import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.view.swing.map.MapViewController;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 import org.freeplane.view.swing.map.attribute.EditAttributesAction;
+import org.freeplane.view.swing.map.mindmapmode.MMapViewController;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 import org.freeplane.view.swing.ui.DefaultNodeMouseMotionListener;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
@@ -93,7 +95,7 @@ public class SModeControllerFactory {
 	Controller createController(final JDialog dialog) {
 		final Controller controller = new Controller(ResourceController.getResourceController());
 		Controller.setCurrentController(controller);
-		final MapViewController mapViewController = new MapViewController();
+		final MapViewController mapViewController = new MMapViewController();
 		final DialogController viewController = new DialogController(controller, mapViewController, dialog);
 		controller.setViewController(viewController);
 		FilterController.install();
@@ -112,6 +114,7 @@ public class SModeControllerFactory {
 		controller.addExtension(ModelessAttributeController.class, new ModelessAttributeController());
 		new MMapController(modeController);
 		TextController.install(new MTextController(modeController));
+		SpellCheckerController.install(modeController);
 		IconController.install(new MIconController(modeController));
 		NodeStyleController.install(new MNodeStyleController(modeController));
 		EdgeController.install(new MEdgeController(modeController));

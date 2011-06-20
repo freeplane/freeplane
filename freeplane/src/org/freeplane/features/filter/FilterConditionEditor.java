@@ -42,7 +42,6 @@ import javax.swing.text.JTextComponent;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -94,7 +93,7 @@ public class FilterConditionEditor extends JComponent {
 		values.setEditor(valueEditor != null ? valueEditor : new BasicComboBoxEditor());
 		
 		final ListCellRenderer valueRenderer = conditionController.getValueRenderer(selectedProperty, selectedCondition);
-		values.setRenderer(valueRenderer != null ? valueRenderer : new TypedListCellRenderer());
+		values.setRenderer(valueRenderer != null ? valueRenderer : filterController.getConditionRenderer());
 		
 		values.setEditable(conditionController.canEditValues(selectedProperty, selectedCondition));
 		if (values.getModel().getSize() > 0) {
@@ -157,7 +156,6 @@ public class FilterConditionEditor extends JComponent {
 		else{
 			gridBagConstraints.gridy++;
 		}
-		values.setRenderer(filterController.getConditionRenderer());
 		values.setEditable(true);
 		// Ignore case checkbox
 		caseSensitive = new JCheckBox();

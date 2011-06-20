@@ -1,6 +1,5 @@
 package org.freeplane.main.application;
 
-import java.awt.Frame;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -10,16 +9,12 @@ import java.io.RandomAccessFile;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.mode.Controller;
-import org.freeplane.n3.nanoxml.XMLParseException;
 
 public class SingleInstanceManager {
 	private File lockFile = new File(Compat.getFreeplaneUserDirectory(), "single_instance.lock");
@@ -28,8 +23,11 @@ public class SingleInstanceManager {
 	private Integer port;
 	private boolean isSlave;
 	private boolean isMasterPresent;
+    final private FreeplaneStarter starter;
 
-	public SingleInstanceManager(ResourceController resourceController) {
+	public SingleInstanceManager(FreeplaneStarter starter) {
+	    this.starter = starter;
+	    final ResourceController resourceController = starter.getResourceController();
 		isSingleInstanceMode = resourceController.getBooleanProperty("single_instance");
 		isSingleInstanceForceMode = resourceController.getBooleanProperty("single_instance_force");
 	}
@@ -127,13 +125,9 @@ public class SingleInstanceManager {
 								String[] filesToLoadForClient = (String[]) in.readObject();
 								LogUtils.info("opening '" + StringUtils.join(filesToLoadForClient, "', '")
 								        + "' for client");
-								for (String file : filesToLoadForClient) {
-									Controller.getCurrentModeController().getMapController()
-									    .newMap(Compat.fileToUrl(new File(file)), false);
-								}
-								toFront();
-								in.close();
-								client.close();
+                                in.close();
+                                client.close();
+								starter.loadMapsLater(filesToLoadForClient);
 							}
 							catch (IOException e) {
 								socketClosed = true;
@@ -141,12 +135,6 @@ public class SingleInstanceManager {
 							catch (ClassNotFoundException e) {
 								// this should never happen
 								throw new RuntimeException("implementation error", e);
-							}
-							catch (XMLParseException e) {
-								LogUtils.severe("cannot open input file: " + e.getMessage(), e);
-							}
-							catch (URISyntaxException e) {
-								LogUtils.severe("invalid file: " + e.getMessage(), e);
 							}
 						}
 					}
@@ -164,19 +152,6 @@ public class SingleInstanceManager {
 			LogUtils.severe(e.getMessage(), e);
 			return false;
 		}
-	}
-
-	private void toFront() {
-		final Frame frame = UITools.getFrame();
-		if(frame == null)
-		    return;
-        final int state = frame.getExtendedState();
-		if ((state & Frame.ICONIFIED) != 0)
-			frame.setExtendedState(state & ~Frame.ICONIFIED);
-		if (!frame.isVisible())
-			frame.setVisible(true);
-		frame.toFront();
-		frame.requestFocus();
 	}
 
 	private void createLockFile() throws IOException {

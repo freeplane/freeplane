@@ -547,6 +547,7 @@ public class MTextController extends TextController {
 			MapController mapController = modeController.getMapController();
 			mapController.removeNodeChangeListener(this);
 			mapController.removeNodeSelectionListener(this);
+			nodeModel.removeExtension(FirstEditFlag.getInstance());
         }
 
 		public void install() {
@@ -588,6 +589,8 @@ public class MTextController extends TextController {
 		}
 		node.requestFocus();
 		stopEditing();
+		if(nodeModel.getExtension(FirstEditFlag.class) == null)
+		    nodeModel.addExtension(FirstEditFlag.getInstance());
 		if(isNewNode && firstEvent == null 
 				&& ! ResourceController.getResourceController().getBooleanProperty("display_inline_editor_for_all_new_nodes")){
 			final EditEventDispatcher dispatcher = new EditEventDispatcher(Controller.getCurrentModeController(), nodeModel, prevSelectedModel, isNewNode, parentFolded, editLong);
@@ -611,6 +614,8 @@ public class MTextController extends TextController {
 			private void stop() {
 				Controller.getCurrentModeController().setBlocked(false);
 				viewController.obtainFocusForSelected();
+				if (isNewNode)
+				    nodeModel.removeExtension(FirstEditFlag.getInstance());
 				mCurrentEditDialog = null;
 			}
 
@@ -723,6 +728,10 @@ public class MTextController extends TextController {
     	fireEditorPaneCreated(editorPane, purpose);
 		return editorPane;
     }
+	
+	public boolean isFirstEditRunning(NodeModel nodeModel){
+	    return nodeModel.containsExtension(FirstEditFlag.class);
+	}
 
 }
 

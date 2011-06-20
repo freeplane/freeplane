@@ -30,6 +30,7 @@ import javax.swing.ListModel;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
@@ -181,6 +182,9 @@ class NodeTextConditionController implements IElementaryConditionController {
     }
 
 	public ListCellRenderer getValueRenderer(Object selectedProperty, NamedObject selectedCondition) {
-	    return null;
+        if(selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS) 
+                || selectedCondition.objectEquals(ConditionFactory.FILTER_REGEXP) )
+            return null;
+	    return new TypedListCellRenderer();
     }
 }

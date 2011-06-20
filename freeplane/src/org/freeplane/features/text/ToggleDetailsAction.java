@@ -20,8 +20,10 @@
 package org.freeplane.features.text;
 
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 import org.freeplane.core.ui.AMultipleNodeAction;
+import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -47,13 +49,18 @@ class ToggleDetailsAction extends AMultipleNodeAction {
 		super.actionPerformed(e);
 	}
 	
-	private boolean isHidden() {
-		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
+    private boolean isHidden() {
+        final DetailTextModel detailText = getDetailText();
+        return detailText != null ? detailText.isHidden() : isHidden;
+    }
+
+    private DetailTextModel getDetailText() {
+        final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
 		if(node == null){
-			return false;
+			return null;
 		}
 		final DetailTextModel detailText = DetailTextModel.getDetailText(node);
-		return detailText != null ? detailText.isHidden() : isHidden;
+        return detailText;
     }
 
 	@Override
@@ -66,8 +73,23 @@ class ToggleDetailsAction extends AMultipleNodeAction {
 		controller.setDetailsHidden(node, isHidden);
     }
 
-	@Override
-	public void setSelected() {
-		setSelected(!isHidden());
-	}
+    @Override
+    public void setSelected() {
+        setEnabled();
+        setSelected(!isHidden());
+    }
+    
+    @Override
+    public void setEnabled() {
+        boolean foundDetails = false;
+        final List<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
+        for (final NodeModel node : nodes) {
+            if (node != null && DetailTextModel.getDetailText(node) != null) {
+                foundDetails = true;
+                break;
+            }
+        }
+        setEnabled(foundDetails);
+    }
+
 }
