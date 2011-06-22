@@ -177,7 +177,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 					final AttributeTable table = AttributePopupMenu.this.table;
 					final Object oldValue = table.getValueAt(row, col);
 					final String inputValue = JOptionPane.showInputDialog(table, TextUtils.getText("edit_link_manually"), oldValue.toString());
-					if (inputValue != null && ! oldValue.equals(inputValue)) {
+					if (inputValue != null && (oldValue instanceof String || ! oldValue.equals(inputValue))) {
 						if (inputValue.toString().equals("")) {
 							table.setValueAt("", row, col);
 						}
