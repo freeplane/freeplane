@@ -63,10 +63,13 @@ class CursorUpdater extends MouseAdapter implements MouseMotionListener{
 		final AttributeTable table = (AttributeTable) e.getComponent();
 		final Point point = e.getPoint();
 		final int col = table.columnAtPoint(point);
-		if(col == 0){
+		if(col != 1){
 			return Cursor.DEFAULT_CURSOR;
 		}
 		final int row = table.rowAtPoint(e.getPoint());
+        if(row >= table.getRowCount()){
+            return Cursor.DEFAULT_CURSOR;
+        }
 		Object value = table.getValueAt(row, col);
 		if(!(value instanceof URI)){
 			return Cursor.DEFAULT_CURSOR;
