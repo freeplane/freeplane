@@ -258,6 +258,17 @@ public class MapStyleModel implements IExtension {
         final String group = "styles.user-defined";
         return getStyleNodeGroup(styleMap, group);
     }
+    
+    public NodeModel getStyleNodeGroup(NodeModel styleNode){
+        final int depth = styleNode.depth();
+        if(depth < 1)
+            return null;
+        NodeModel node = styleNode;
+        for(int i = depth; i > 1; i--){
+            node = node.getParentNode();
+        }
+        return node;
+    }
 
     private NodeModel getStyleNodeGroup(final MapModel styleMap, final String group) {
         final NodeModel rootNode = styleMap.getRootNode();

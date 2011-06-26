@@ -11,23 +11,6 @@
 <stylenode LOCALIZED_TEXT="defaultstyle.details"/>
 <stylenode LOCALIZED_TEXT="defaultstyle.note"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right">
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000">
-<font SIZE="20"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,1" COLOR="#0033ff">
-<font SIZE="18"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,2" COLOR="#00b439">
-<font SIZE="16"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,3" COLOR="#990000">
-<font SIZE="14"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,4" COLOR="#111111">
-<font SIZE="12"/>
-</stylenode>
-</stylenode>
 <stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right">
 <stylenode LOCALIZED_TEXT="styles.ok">
 <icon BUILTIN="button_ok"/>
@@ -91,6 +74,23 @@
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.pending" COLOR="#b3b95c">
 <font NAME="Liberation Sans" SIZE="12"/>
+</stylenode>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right">
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000">
+<font SIZE="20"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,1" COLOR="#0033ff">
+<font SIZE="18"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,2" COLOR="#00b439">
+<font SIZE="16"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,3" COLOR="#990000">
+<font SIZE="14"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,4" COLOR="#111111">
+<font SIZE="12"/>
 </stylenode>
 </stylenode>
 </stylenode>

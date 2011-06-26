@@ -11,6 +11,20 @@
 <stylenode LOCALIZED_TEXT="defaultstyle.details"/>
 <stylenode LOCALIZED_TEXT="defaultstyle.note"/>
 </stylenode>
+<stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right">
+<stylenode LOCALIZED_TEXT="styles.topic" COLOR="#18898b" STYLE="fork">
+<font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.subtopic" COLOR="#cc3300" STYLE="fork">
+<font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.subsubtopic" COLOR="#669900">
+<font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.important">
+<icon BUILTIN="yes"/>
+</stylenode>
+</stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right">
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000">
 <font SIZE="20"/>
@@ -26,20 +40,6 @@
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,4" COLOR="#111111">
 <font SIZE="12"/>
-</stylenode>
-</stylenode>
-<stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right">
-<stylenode LOCALIZED_TEXT="styles.topic" COLOR="#18898b" STYLE="fork">
-<font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="styles.subtopic" COLOR="#cc3300" STYLE="fork">
-<font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="styles.subsubtopic" COLOR="#669900">
-<font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="styles.important">
-<icon BUILTIN="yes"/>
 </stylenode>
 </stylenode>
 </stylenode>

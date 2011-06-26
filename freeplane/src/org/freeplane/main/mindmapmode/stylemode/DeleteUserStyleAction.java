@@ -55,12 +55,13 @@ public class DeleteUserStyleAction extends AFreeplaneAction {
 			UITools.errorMessage(TextUtils.getText("can_not_delete_style_group"));
 			return;
 		}
-		if (selected.getUserObject() instanceof StyleNamedObject) {
-			UITools.errorMessage(TextUtils.getText("can_not_delete_predefined_style"));
-			return;
-		}
 		final MapModel map = selected.getMap();
 		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
+		final NodeModel styleNodeGroup = styleModel.getStyleNodeGroup(selected);
+        if (! ((StyleNamedObject)styleNodeGroup.getUserObject()).getObject().equals("styles.user-defined")) {
+            UITools.errorMessage(TextUtils.getText("can_not_delete_predefined_style"));
+            return;
+        }
 		final MMapController mapController = (MMapController) modeController.getMapController();
 		mapController.deleteNode(selected);
 		final IActor actor = new IActor() {
