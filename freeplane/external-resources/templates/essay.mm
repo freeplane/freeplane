@@ -28,7 +28,7 @@
 <font SIZE="12"/>
 </stylenode>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right"/>
+<stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right">
 <stylenode LOCALIZED_TEXT="styles.ok">
 <icon BUILTIN="button_ok"/>
 </stylenode>
@@ -91,6 +91,7 @@
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.pending" COLOR="#b3b95c">
 <font NAME="Liberation Sans" SIZE="12"/>
+</stylenode>
 </stylenode>
 </stylenode>
 </map_styles>

@@ -28,7 +28,7 @@
 <font SIZE="12"/>
 </stylenode>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right"/>
+<stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right">
 <stylenode LOCALIZED_TEXT="styles.topic" COLOR="#18898b" STYLE="fork">
 <font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
 </stylenode>
@@ -40,6 +40,7 @@
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.important">
 <icon BUILTIN="yes"/>
+</stylenode>
 </stylenode>
 </stylenode>
 </map_styles>
