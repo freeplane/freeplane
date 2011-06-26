@@ -267,10 +267,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                 }
                 top -= childContentShift;
 
-                if (visibleChildCounter == 0)
-                    top += childCloudHeigth/2;
-                else
-                    y += childCloudHeigth/2;
+                y += childCloudHeigth/2;
                 if (childShiftY < 0) {
                     data.ly[i] = y;
                     y -= childShiftY;
@@ -317,7 +314,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                 }
                 int summaryY = (groupStartY[itemLevel] + groupEndY[itemLevel] ) / 2 - childContentHeight / 2 + childShiftY - (child.getContent().getY() - getSpaceAround());
                 data.ly[i] = summaryY;
-                final int deltaY = summaryY - groupStartY[itemLevel];
+                final int deltaY = summaryY -childCloudHeigth/2 - groupStartY[itemLevel];
                 if(deltaY < 0){
                     top += deltaY;
                     y -= deltaY;
@@ -337,12 +334,12 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                 }
             }
             if(child.isFirstGroupNode()){
-                groupStartY[level] = data.ly[i];
-                groupEndY[level] = data.ly[i] + childHeight;
+                groupStartY[level] = data.ly[i]-childCloudHeigth/2;
+                groupEndY[level] = data.ly[i] + childHeight+childCloudHeigth/2;
             }
             else{
-                groupStartY[level] = Math.min(groupStartY[level],data.ly[i]);
-                groupEndY[level] = Math.max(data.ly[i] + childHeight, groupEndY[level]);
+                groupStartY[level] = Math.min(groupStartY[level],data.ly[i]-childCloudHeigth/2);
+                groupEndY[level] = Math.max(data.ly[i] + childHeight+childCloudHeigth/2, groupEndY[level]);
             }
             final int x;
             final int baseX;
@@ -437,7 +434,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             NodeView child = (NodeView) getView().getComponent(i);
             child.setLocation(contentX + data.lx[i], baseY + data.ly[i]);
             width = Math.max(width, child.getX() + child.getWidth());
-            height = Math.max(height, child.getY() + child.getHeight());
+            height = Math.max(height, child.getY() + child.getHeight()+ getAdditionalCloudHeigth(child) / 2);
         }
         
         getView().setSize(width, height);
