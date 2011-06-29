@@ -114,23 +114,14 @@ class Tokenizer {
 	 * @return true if it is a web address.
 	 */
 	private boolean isWebAddress(String word) {
-		if (startWord >= sentence.length()) {
+		if (startWord + 2 >= sentence.length()) {
 			return false;
 		}
-		if (sentence.charAt(startWord) == '@') {
-			word += '@';
-			startWord = endWord;
-			endWord = words.next();
-			final String domaine = sentence.substring(startWord, endWord).trim();
-			if (domaine.length() > 3 && domaine.indexOf('.') > 0) {
-				startWord = endWord;
-				endWord = words.next();
-				return true;
-			}
-			return false;
-		}
-		if (startWord + 3 < sentence.length() && sentence.charAt(startWord) == ':'
-		        && sentence.charAt(startWord + 1) == '/' && sentence.charAt(startWord + 2) == '/') {
+		final char char0 = sentence.charAt(startWord);
+        final char char1 = sentence.charAt(startWord + 1);
+        if (char0 == '@' && (Character.isLetter(char1) ||Character.isDigit(char1))
+		    || startWord + 3 < sentence.length() && char0 == ':'
+		        && char1 == '/' && sentence.charAt(startWord + 2) == '/') {
 			while (startWord < endWord) {
 				final String next = sentence.substring(startWord, endWord).trim();
 				if (next.length() > 0) {
