@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 
 import org.freeplane.core.ui.AMultipleNodeAction;
-import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;

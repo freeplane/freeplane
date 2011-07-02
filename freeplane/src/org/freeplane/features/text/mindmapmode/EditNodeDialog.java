@@ -64,7 +64,7 @@ public class EditNodeDialog extends EditNodeBase {
 	private JTextComponent textComponent;
 	private final boolean enableSplit;
 
-	class LongNodeDialog extends EditDialog {
+	private class LongNodeDialog extends EditDialog {
 		/**
 		 * 
 		 */
@@ -226,12 +226,6 @@ public class EditNodeDialog extends EditNodeBase {
 			}
 			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 			setContentPane(panel);
-			if (firstEvent != null) {
-				redispatchKeyEvents(textComponent, firstEvent);
-			}
-			else {
-				textComponent.setCaretPosition(getText().length());
-			}
 		}
 
 		/*
@@ -313,6 +307,12 @@ public class EditNodeDialog extends EditNodeBase {
 			title = TextUtils.getText("edit_long_node");
 		}
 		final EditDialog dialog = new LongNodeDialog(frame, title, getBackground());
+        if (firstEvent != null) {
+            redispatchKeyEvents(textComponent, firstEvent);
+        }
+        else {
+            textComponent.setCaretPosition(getText().length());
+        }
 		dialog.setModal(isModal);
 		dialog.pack();
 		Controller.getCurrentModeController().getController().getViewController().scrollNodeToVisible(node);

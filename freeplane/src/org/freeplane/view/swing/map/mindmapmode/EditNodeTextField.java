@@ -617,12 +617,6 @@ class EditNodeTextField extends EditNodeBase {
 			layout();
 		}
 		textfield.repaint();
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				if(textfield != null){
-					textfield.requestFocus();
-				}
-			}
-		});
+		textfield.requestFocusInWindow();
 	}
 }
