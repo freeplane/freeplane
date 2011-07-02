@@ -32,8 +32,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.LinkedList;
-
+import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -41,7 +40,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
@@ -262,24 +260,24 @@ abstract public class EditNodeBase {
 		}
 		final KeyboardFocusManager currentKeyboardFocusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 		class KeyEventQueue implements KeyEventDispatcher, FocusListener {
-			LinkedList<KeyEvent> events = new LinkedList<KeyEvent>();
+			ArrayList<KeyEvent> events = new ArrayList<KeyEvent>(100);
 
 			public boolean dispatchKeyEvent(final KeyEvent ke) {
-				if(ke.getKeyChar() != 0 && ke.getKeyChar() != KeyEvent.CHAR_UNDEFINED){
-					if (ke.getID() == KeyEvent.KEY_PRESSED){
-						KeyEvent newEvent = new KeyEvent(textComponent, KeyEvent.KEY_TYPED, ke.getWhen(), ke.getModifiers(), KeyEvent.VK_UNDEFINED, ke.getKeyChar(), KeyEvent.KEY_LOCATION_UNKNOWN);
-						events.add(newEvent);
-					}
-				}
+			    if(events.contains(ke)){
+			        return false;
+			    }
+			    KeyEvent newEvent = new KeyEvent(textComponent, ke.getID(), ke.getWhen(), ke.getModifiers(), ke.getKeyCode(), ke.getKeyChar(), ke.getKeyLocation());
+			    events.add(newEvent);
+			    ke.consume();
 				return true;
 			}
 
 			public void focusGained(final FocusEvent e) {
 				e.getComponent().removeFocusListener(this);
-				currentKeyboardFocusManager.removeKeyEventDispatcher(this);
-				for (final KeyEvent ke : events) {
-					SwingUtilities.processKeyBindings(ke);
+				for (int i = 0; i < events.size(); i++) {
+	                e.getComponent().dispatchEvent(events.get(i));
 				}
+				currentKeyboardFocusManager.removeKeyEventDispatcher(this);
 			}
 
 			public void focusLost(final FocusEvent e) {
