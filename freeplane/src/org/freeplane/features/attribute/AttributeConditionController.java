@@ -163,9 +163,12 @@ class AttributeConditionController implements IElementaryConditionController {
 		if (element.getName().equalsIgnoreCase(AttributeExistsCondition.NAME)) {
 			return AttributeExistsCondition.load(element);
 		}
-		if (element.getName().equalsIgnoreCase(AttributeNotExistsCondition.NAME)) {
-			return AttributeNotExistsCondition.load(element);
-		}
+        if (element.getName().equalsIgnoreCase(AttributeNotExistsCondition.NAME)) {
+            return AttributeNotExistsCondition.load(element);
+        }
+        if (element.getName().equalsIgnoreCase(AttributeContainsCondition.NAME)) {
+            return AttributeContainsCondition.load(element);
+        }
 		return null;
 	}
 

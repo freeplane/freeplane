@@ -95,8 +95,10 @@ public class ConditionFactory {
 
 	public ASelectableCondition loadCondition(final XMLElement element) {
 		final ASelectableCondition condition = loadCondition2(element);
-		final String userName = element.getAttribute("user_name", null);
-		condition.setUserName(userName);
+		if(condition != null){
+		    final String userName = element.getAttribute("user_name", null);
+		    condition.setUserName(userName);
+		}
 		return condition;
 	}
 
