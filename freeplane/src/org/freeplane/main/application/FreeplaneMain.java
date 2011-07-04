@@ -40,6 +40,11 @@ public class FreeplaneMain {
 
 	static public void main(final String[] args) {
 		FreeplaneMain.checkJavaVersion();
+        final String oldHandler = System.getProperty("java.protocol.handler.pkgs");
+        String newHandler = "org.freeplane.main.application.protocols";
+        if(oldHandler != null)
+            newHandler = oldHandler + '|' + newHandler;
+        System.setProperty("java.protocol.handler.pkgs", newHandler);
 		final FreeplaneStarter starter = new FreeplaneStarter();
 		starter.run(args);
 	}

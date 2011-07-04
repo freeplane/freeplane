@@ -54,17 +54,8 @@ public abstract class ResourceController {
 	private ResourceBundles resources;
     public static final String FREEPLANE_RESOURCE_URL_PROTOCOL = "freeplaneresource";
 	public static final String OBJECT_TYPE = "ObjectType";
-	private static boolean protocolHandlerSet = false;
 	public ResourceController() {
 		super();
-		if(protocolHandlerSet)
-		    return;
-		protocolHandlerSet = true;
-        final String oldHandler = System.getProperty("java.protocol.handler.pkgs");
-        String newHandler = "org.freeplane.core.resources.protocols";
-        if(oldHandler != null)
-            newHandler = oldHandler + '|' + newHandler;
-		System.setProperty("java.protocol.handler.pkgs", newHandler);
 	}
 
 	public void addLanguageResources(final String language, final URL url) {
