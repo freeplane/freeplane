@@ -25,6 +25,8 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -167,16 +169,20 @@ public class OptionPanel {
 			result.add(validator.validate(properties));
 		}
 		if (!result.isValid()) {
-			UITools.errorMessage(TextUtils.format("OptionPanel.validation_error",
-			    ("<ul><li>" + StringUtils.join(result.getErrors().iterator(), "<li>") + "</ul>")));
+			UITools.errorMessage(formatErrors("OptionPanel.validation_error", result.getErrors()));
 			LogUtils.severe(result.toString());
 		}
 		else if (result.hasWarnings()) {
-			UITools.informationMessage(TextUtils.format("OptionPanel.validation_warning",
-			    ("<ul><li>" + StringUtils.join(result.getWarnings().iterator(), "<li>") + "</ul>")));
+			UITools.informationMessage(formatErrors("OptionPanel.validation_warning", result.getWarnings()));
 			LogUtils.warn(result.toString());
 		}
 		return result.isValid();
+	}
+
+	private String formatErrors(String key, ArrayList<String> errors) {
+		// TextUtils.format() xml escapes the format arguments - we don't want that
+		final MessageFormat formatter = new MessageFormat(TextUtils.getText(key));
+		return formatter.format(new Object[] { StringUtils.join(errors.iterator(), "<br>") });
 	}
 
 	@SuppressWarnings("unchecked")
