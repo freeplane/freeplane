@@ -11,6 +11,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.JToolTip;
 import javax.swing.SwingUtilities;
+import javax.swing.text.html.HTMLDocument;
 
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.UITools;
@@ -55,12 +56,12 @@ public class NodeTooltip extends JToolTip {
 		if (preferredSize.width < maximumWidth) {
 			return ;
 		}
-		final String TABLE_START = "<html><table>";
-		if (!tipText.startsWith(TABLE_START)) {
-			return ;
-		}
-		tipText = "<html><table width=\"" + maximumWidth + "\">" + tipText.substring(TABLE_START.length());
-		tip.setText(tipText);
+        final HTMLDocument document = (HTMLDocument) tip.getDocument();
+        document.getStyleSheet().addRule("body { width: " + maximumWidth  + "}");
+        // bad hack: call "setEditable" only to update view
+        tip.setEditable(false);
+        tip.setEditable(true);
+        tip.putClientProperty("EditNodeTextField.linewrap", true);
     }
 
 	@Override
