@@ -61,7 +61,6 @@ public class NodeTooltip extends JToolTip {
         // bad hack: call "setEditable" only to update view
         tip.setEditable(false);
         tip.setEditable(true);
-        tip.putClientProperty("EditNodeTextField.linewrap", true);
     }
 
 	@Override
