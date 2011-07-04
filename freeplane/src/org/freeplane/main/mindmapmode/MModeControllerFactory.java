@@ -313,6 +313,5 @@ public class MModeControllerFactory {
 		controller.getMapViewManager().addMapSelectionListener(uiFactory);
 		final MToolbarContributor menuContributor = new MToolbarContributor(uiFactory);
 		modeController.addMenuContributor(menuContributor);
-		modeController.getOptionPanelBuilder().addValidator(new FormatController().createValidator());
 	}
 }
