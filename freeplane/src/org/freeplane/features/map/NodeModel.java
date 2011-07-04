@@ -319,27 +319,32 @@ public class NodeModel implements MutableTreeNode {
 		if (toolTip == null) {
 			return null;
 		}
-		final StringBuilder text = new StringBuilder("<html><table>");
+		// perhaps we should use the solution presented in the 3rd answer at
+		// http://stackoverflow.com/questions/3355469/1-pixel-table-border-in-jtextpane-using-html
+		// html/css example: http://www.wer-weiss-was.de/theme35/article3555660.html
+		final String style = "<style type='text/css'>" //
+		        + " body { font-size: 13pt; }" // FIXME: copy from NoteController.setNoteTooltip() ?
+		        + "</style>";
+		final StringBuilder text = new StringBuilder("<html><head>"+style+"</head><body>");
 		boolean tooltipSet = false;
 		for (final ITooltipProvider provider : toolTip.values()) {
 			String value = provider.getTooltip(modeController);
 			if (value == null) {
 				continue;
 			}
-			value = value.replaceFirst("<html>", "<div>");
-			value = value.replaceFirst("<body>", "");
-			value = value.replaceFirst("</body>", "");
-			value = value.replaceFirst("</html>", "</div>");
-			text.append("<tr><td>");
+			value = value.replace("<html>", "<div>");
+			value = value.replaceAll("\\s*</?(body|head)>", "");
+			value = value.replace("<td>", "<td style='background-color: white'>");
+			value = value.replace("</html>", "</div>");
 			if (tooltipSet) {
-				text.append("<hr>");
+				text.append("<br>");
 			}
 			text.append(value);
-			text.append("</td></tr>");
 			tooltipSet = true;
 		}
 		if (tooltipSet) {
-			text.append("</table></html>");
+			text.append("</body></html>");
+//			System.err.println("tooltip=" + text);
 			return text.toString();
 		}
 		return null;

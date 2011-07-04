@@ -1,6 +1,7 @@
 package org.freeplane.view.swing.map;
 
 import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.ComponentAdapter;
@@ -21,6 +22,7 @@ public class NodeTooltip extends JToolTip {
 		tip  = new JEditorPane();
 		tip.setContentType("text/html");
 		tip.setEditable(false);
+		tip.setMargin(new Insets(0, 0, 0, 0));
 		final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(tip);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);

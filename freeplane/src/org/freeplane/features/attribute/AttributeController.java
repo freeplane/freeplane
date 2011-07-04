@@ -183,7 +183,7 @@ public class AttributeController implements IExtension {
 						return null;
 					}
 					final StringBuilder tooltip = new StringBuilder();
-					tooltip.append("<html><body><table  border=\"1\">");
+					tooltip.append("<html><body><table style='border: 1px black solid; background-color: black' width='100%' cellspacing='1' cellpadding='2'>");
 					final int currentRowCount = attributes.getRowCount();
 					for (int i = 0; i < currentRowCount; i++) {
 						tooltip.append("<tr><td>");
