@@ -247,7 +247,8 @@ public class MLogicalStyleController extends LogicalStyleController {
 	}
 
 	protected void removeStyleMenu(final MenuBuilder menuBuilder, final String formatMenuString) {
-		menuBuilder.removeChildElements(formatMenuString);
+	    if(null != menuBuilder.get(formatMenuString))
+	        menuBuilder.removeChildElements(formatMenuString);
 		actions.clear();
 	}
 
@@ -259,8 +260,10 @@ public class MLogicalStyleController extends LogicalStyleController {
 		if (extension == null) {
 			return;
 		}
-		final NodeModel rootNode = extension.getStyleMap().getRootNode();
-		addStyleMenu(menuBuilder, formatMenuString, rootNode, extension);
+		 if(null == menuBuilder.get(formatMenuString))
+		     return;
+		 final NodeModel rootNode = extension.getStyleMap().getRootNode();
+		 addStyleMenu(menuBuilder, formatMenuString, rootNode, extension);
 	}
 
 	private void addStyleMenu(final MenuBuilder menuBuilder, final String category, final NodeModel rootNode, MapStyleModel extension) {
