@@ -83,7 +83,7 @@ public class AttributeContainsCondition extends ASelectableCondition {
 	@Override
 	protected String createDescription() {
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
-		return ConditionFactory.createDescription(attribute, simpleCondition, null, false);
+		return ConditionFactory.createDescription(attribute, simpleCondition, value, matchCase);
 	}
 
 	public void fillXML(final XMLElement child) {
