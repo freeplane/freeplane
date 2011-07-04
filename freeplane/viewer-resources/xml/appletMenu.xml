@@ -124,7 +124,6 @@
 		<menu_submenu name="help" name_ref="help">
 			<menu_category name="doc">
 				<menu_action action="OpenFreeplaneSiteAction" />
-				<menu_action action="FaqOpenURLAction" />
 				<menu_action action="LicenseAction" />
 				<menu_action action="AboutAction" menu_key="MB_AboutAction"/>
 			</menu_category>

@@ -38,38 +38,33 @@ public class HelpController implements IExtension {
 		controller.addExtension(HelpController.class, new HelpController());
 	}
 
-	final private OpenURLAction webDocu;
-
 	public HelpController() {
 		super();
 		Controller controller = Controller.getCurrentController();
+        final ResourceController resourceController = ResourceController.getResourceController();
 		controller.addAction(new AboutAction());
+        controller.addAction(new OpenURLAction("OpenFreeplaneSiteAction",  resourceController.getProperty("webFreeplaneLocation")));
+        controller.addAction(new LicenseAction());
+        if(resourceController.isApplet())
+            return;
 		controller.addAction(new FilePropertiesAction());
-		final ResourceController resourceController = ResourceController.getResourceController();
-		controller.addAction(new OpenURLAction("OpenFreeplaneSiteAction",  resourceController
-		    .getProperty("webFreeplaneLocation")));
-		controller.addAction(new OpenSourceForgeURLAction("ReportBugAction",  resourceController
-		    .getProperty("bugTrackerLocation")));
-		controller.addAction(new OpenSourceForgeURLAction("RequestFeatureAction",  resourceController
-		    .getProperty("featureTrackerLocation")));
-		controller.addAction(new OpenSourceForgeURLAction("AskForHelp",  resourceController
-		    .getProperty("helpForumLocation")));
+		controller.addAction(new OpenSourceForgeURLAction("ReportBugAction",  resourceController.getProperty("bugTrackerLocation")));
+		controller.addAction(new OpenSourceForgeURLAction("RequestFeatureAction",  resourceController.getProperty("featureTrackerLocation")));
+		controller.addAction(new OpenSourceForgeURLAction("AskForHelp",  resourceController.getProperty("helpForumLocation")));
 		controller.addAction(new KeyDocumentationAction());
-		webDocu = new OpenURLAction("WebDocuAction",  resourceController.getProperty("webDocuLocation"));
-		controller.addAction(webDocu);
+		controller.addAction(new OpenURLAction("WebDocuAction",  resourceController.getProperty("webDocuLocation")));
 		final String defaultMap = resourceController.getProperty("docu_map");
 		controller.addAction(new DocumentationAction("DocumentationAction", defaultMap));
 		final String referenceMap = resourceController.getProperty("menuref_map");
 		controller.addAction(new DocumentationAction("MenuReferenceAction", referenceMap));
 		final String hotKeyInfo = resourceController.getProperty("hot_key_info");
 		controller.addAction(new DocumentationAction("HotKeyInfoAction", hotKeyInfo));
-		controller.addAction(new LicenseAction());
 	}
 
 	/**
 	 * @param e
 	 */
 	public void webDocu(final ActionEvent e) {
-		webDocu.actionPerformed(e);
+	    Controller.getCurrentController().getAction("WebDocuAction").actionPerformed(e);
 	}
 }
