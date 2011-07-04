@@ -600,8 +600,10 @@ public class MTextController extends TextController {
 		final EditNodeBase.IEditControl editControl = new EditNodeBase.IEditControl() {
 			public void cancel() {
 				if (isNewNode && nodeModel.getMap().equals(controller.getMap())) {
-					controller.getSelection().selectAsTheOnlyOneSelected(nodeModel);
-					((MModeController) Controller.getCurrentModeController()).undo();
+				    if(nodeModel.getParent() != null){
+				        controller.getSelection().selectAsTheOnlyOneSelected(nodeModel);
+				        ((MModeController) Controller.getCurrentModeController()).undo();
+				    }
 					final MapController mapController = Controller.getCurrentModeController().getMapController();
 					mapController.select(prevSelectedModel);
 					if (parentFolded) {
