@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -16,6 +17,7 @@ import java.awt.event.MouseMotionListener;
 import java.lang.ref.WeakReference;
 
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JToolTip;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
@@ -199,6 +201,7 @@ public class NodeTooltipManager implements IExtension{
 		focusOwnerRef = new WeakReference<Component>(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());
 		tipPopup = popupFactory.getPopup(nearComponent, tip, x, y);
 		tipPopup.show();
+        exitTimer.start();
 	}
 
 	private void hideTipWindow() {
@@ -262,8 +265,8 @@ public class NodeTooltipManager implements IExtension{
 			initiateToolTip(event);
 		}
 		public void mouseExited(MouseEvent event) {
-			exitTimer.start();
 		}
+		
 		public void mouseDragged(MouseEvent e) {
         }
 		@Override
@@ -311,11 +314,18 @@ public class NodeTooltipManager implements IExtension{
 			if(tip == null || insideComponent == null){
 				return;
 			}
+            final KeyboardFocusManager currentKeyboardFocusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+            final Window activeWindow = currentKeyboardFocusManager.getActiveWindow();
+            if(activeWindow instanceof JDialog && ((JDialog) activeWindow).isModal()){
+                hideTipWindow();
+                return;
+            }
+                    
 			if(tip.getMousePosition(true) != null || insideComponent.getMousePosition(true) != null){
 				exitTimer.restart();
 				return;
 			}
-			final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+            final Component focusOwner = currentKeyboardFocusManager.getFocusOwner();
 			if(focusOwner != null){
 				if(SwingUtilities.isDescendingFrom(focusOwner, tip)){
 					exitTimer.restart();
