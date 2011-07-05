@@ -91,8 +91,6 @@ public class MTextController extends TextController {
 	
 	public static final String NODE_TEXT = "NodeText";
 	private static Pattern FORMATTING_PATTERN = null;
-	private static final boolean parseData = ResourceController.getResourceController().getBooleanProperty(
-	"parse_data");
 	private EditNodeBase mCurrentEditDialog = null;
 	private final Collection<IEditorPaneListener> editorPaneListeners;
 
@@ -263,7 +261,8 @@ public class MTextController extends TextController {
 
 	/** converts strings to date or number if possible. All other data types are left unchanged. */
 	public Object guessObject(final Object text) {
-		if (parseData && text instanceof String)
+		if (ResourceController.getResourceController().getBooleanProperty(
+        "parse_data") && text instanceof String)
 			return ScannerController.getController(modeController).parse((String) text);
 		return text;
 	}
