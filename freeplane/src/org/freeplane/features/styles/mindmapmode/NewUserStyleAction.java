@@ -79,7 +79,10 @@ public class NewUserStyleAction extends AFreeplaneAction {
 				continue;
 			}
 			final NodeModel styleNode = styleModel.getStyleNode(style);
-			Controller.getCurrentModeController().copyExtensions(LogicalStyleKeys.NODE_STYLE, selectedNode, styleNode);
+			Controller.getCurrentModeController().copyExtensions(LogicalStyleKeys.NODE_STYLE, styleNode, newNode);
+            if(styleNode == null){
+                continue;
+            }
 		}
 		Controller.getCurrentModeController().copyExtensions(LogicalStyleKeys.NODE_STYLE, selectedNode, newNode);
 		Controller.getCurrentModeController().copyExtensions(Keys.ICONS, selectedNode, newNode);

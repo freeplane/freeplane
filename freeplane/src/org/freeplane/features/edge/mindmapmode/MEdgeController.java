@@ -48,9 +48,15 @@ public class MEdgeController extends EdgeController {
 				return;
 			}
 			final EdgeModel toStyle = EdgeModel.createEdgeModel(to);
-			toStyle.setColor(fromStyle.getColor());
-			toStyle.setStyle(fromStyle.getStyle());
-			toStyle.setWidth(fromStyle.getWidth());
+			final Color color = fromStyle.getColor();
+			if(color != null)
+			    toStyle.setColor(color);
+			final EdgeStyle style = fromStyle.getStyle();
+			if(style != null)
+			    toStyle.setStyle(style);
+			final int width = fromStyle.getWidth();
+			if(width  != EdgeModel.DEFAULT_WIDTH)
+			    toStyle.setWidth(width);
 		}
 
 		public void remove(final Object key, final NodeModel from) {

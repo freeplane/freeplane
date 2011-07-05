@@ -50,8 +50,12 @@ public class MCloudController extends CloudController {
 				return;
 			}
 			final CloudModel toStyle = CloudModel.createModel(to);
-			toStyle.setColor(fromStyle.getColor());
-			toStyle.setShape(fromStyle.getShape());
+			final Color color = fromStyle.getColor();
+			if(color != null)
+			    toStyle.setColor(color);
+			final Shape shape = fromStyle.getShape();
+			if(shape != null)
+			    toStyle.setShape(shape);
 		}
 
 		public void remove(final Object key, final NodeModel from) {

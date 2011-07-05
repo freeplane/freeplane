@@ -135,15 +135,24 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	}
 
 	public NodeStyleModel copyTo(final NodeStyleModel nodeStyleModel) {
-	    nodeStyleModel.setColor(color);
-		nodeStyleModel.setBackgroundColor(backgroundColor);
-		nodeStyleModel.setBold(isBold);
-		nodeStyleModel.setFontFamilyName(fontFamilyName);
-		nodeStyleModel.setFontSize(fontSize);
-		nodeStyleModel.setItalic(isItalic);
-		nodeStyleModel.setShape(shape);
-		nodeStyleModel.setNodeFormat(nodeFormat);
-		nodeStyleModel.setNodeNumbering(nodeNumbering);
+	    if(color != null)
+	        nodeStyleModel.setColor(color);
+	    if(backgroundColor != null)
+	        nodeStyleModel.setBackgroundColor(backgroundColor);
+	    if(isBold != null)
+	        nodeStyleModel.setBold(isBold);
+	    if(fontFamilyName != null)
+	        nodeStyleModel.setFontFamilyName(fontFamilyName);
+	    if(fontSize != null)
+	        nodeStyleModel.setFontSize(fontSize);
+	    if(isItalic != null)
+	        nodeStyleModel.setItalic(isItalic);
+	    if(shape != null)
+	        nodeStyleModel.setShape(shape);
+	    if(nodeFormat != null)
+	            nodeStyleModel.setNodeFormat(nodeFormat);
+	    if(nodeNumbering != null)
+	        nodeStyleModel.setNodeNumbering(nodeNumbering);
 		return nodeStyleModel;
     }
 
