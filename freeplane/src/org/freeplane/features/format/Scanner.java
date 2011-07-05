@@ -105,6 +105,8 @@ public class Scanner {
 	public Object parse(String string) {
 		if (TextUtils.isEmpty(string) || (checkFirstChars && firstChars.indexOf(string.charAt(0)) == -1))
 			return string;
+		if(string.charAt(0) == '\'')
+		    return string.substring(1);
 		for (Parser parser : parsers) {
 			final Object object = parser.parse(string);
 			if (object != null)
