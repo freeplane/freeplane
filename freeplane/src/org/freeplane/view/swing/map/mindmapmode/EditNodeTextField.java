@@ -58,8 +58,10 @@ import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.DefaultEditorKit.PasteAction;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
+import javax.swing.text.NavigationFilter;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledEditorKit;
+import javax.swing.text.Position.Bias;
 import javax.swing.text.StyledEditorKit.BoldAction;
 import javax.swing.text.StyledEditorKit.ForegroundAction;
 import javax.swing.text.StyledEditorKit.ItalicAction;
@@ -88,12 +90,42 @@ import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.ZoomableLabel;
+
 import com.lightdev.app.shtm.SHTMLWriter;
+
 
 /**
  * @author foltin
  */
 class EditNodeTextField extends EditNodeBase {
+    private class MyNavigationFilter extends NavigationFilter {
+        /* (non-Javadoc)
+         * @see javax.swing.text.NavigationFilter#moveDot(javax.swing.text.NavigationFilter.FilterBypass, int, javax.swing.text.Position.Bias)
+         */
+        public void moveDot(final FilterBypass fb, int dot, final Bias bias) {
+            dot = getValidPosition(dot);
+            super.moveDot(fb, dot, bias);
+        }
+
+        /* (non-Javadoc)
+         * @see javax.swing.text.NavigationFilter#setDot(javax.swing.text.NavigationFilter.FilterBypass, int, javax.swing.text.Position.Bias)
+         */
+        public void setDot(final FilterBypass fb, int dot, final Bias bias) {
+            dot = getValidPosition(dot);
+            super.setDot(fb, dot, bias);
+        }
+    }
+
+    private int getValidPosition(int position) {
+        final HTMLDocument doc = (HTMLDocument) textfield.getDocument();
+        if (doc.getDefaultRootElement().getElementCount() > 1) {
+            final int startPos = doc.getDefaultRootElement().getElement(1).getStartOffset();
+            final int validPosition = Math.max(position, startPos);
+            return validPosition;
+        }
+        return position;
+    }
+    
 	private int extraWidth;
 	final private boolean layoutMapOnTextChange;
 
@@ -379,6 +411,7 @@ class EditNodeTextField extends EditNodeBase {
 			final ModeController modeController = Controller.getCurrentModeController();
 			final MTextController textController = (MTextController) TextController.getController(modeController);
 			textfield = textController.createEditorPane(MTextController.NODE_TEXT);
+			textfield.setNavigationFilter(new MyNavigationFilter());
 		}
 	}
 
