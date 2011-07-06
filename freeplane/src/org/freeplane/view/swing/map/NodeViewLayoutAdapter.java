@@ -318,6 +318,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                 if(deltaY < 0){
                     top += deltaY;
                     y -= deltaY;
+                    summaryY -= deltaY;
                     for(int j = groupStart[itemLevel]; j <= i; j++){
                         NodeView groupItem = (NodeView) getView().getComponent(j);
                         if(groupItem.isLeft() == isLeft)
