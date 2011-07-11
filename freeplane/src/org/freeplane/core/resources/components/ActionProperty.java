@@ -28,6 +28,7 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+import org.freeplane.core.ui.OptionPanelButtonListener;
 import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -43,6 +44,7 @@ public class ActionProperty extends PropertyBean implements IPropertyControl {
 	private String labelText;
 	JButton mButton = new JButton();
 	private int modifierMask = 0;
+	private OptionPanelButtonListener buttonListener = new OptionPanelButtonListener();
 
 	/**
 	 */
@@ -62,13 +64,7 @@ public class ActionProperty extends PropertyBean implements IPropertyControl {
 	public void layout(final DefaultFormBuilder builder) {
 		mButton.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
-				
-				final GrabKeyDialog keyDialog = new GrabKeyDialog(getValue(), modifierMask);
-				keyDialog.setVisible(true);
-				if (keyDialog.isOK()) {
-					setValue(keyDialog.getShortcut());
-					firePropertyChangeEvent();
-				}
+				buttonListener.actionPerformed(arg0);
 			}
 		});
 		if (labelText == null) {
