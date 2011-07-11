@@ -160,6 +160,13 @@ public class OptionPanelBuilder {
 			return createKeyOptionCreator(name);
 		}
 	}
+	
+	private class ActionCreator extends PropertyCreator {
+		@Override
+		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
+			return createActionOptionCreator(name);
+		}
+	}
 
 	private class NumberOptionCreator extends PropertyCreator {
 		private IPropertyControlCreator createNumberPropertyCreator(final String name, final int min, final int step,
@@ -379,6 +386,10 @@ public class OptionPanelBuilder {
 		tree.addElement(path, createKeyOptionCreator(name), path + "/" + name, position);
 	}
 
+	public void addActionProperty(final String path, final String name, final int position) {
+		tree.addElement(path, createActionOptionCreator(name), path + "/" + name, position);
+	}
+	
 	public void addNumberProperty(final String path, final String name, final int min, final int max, final int step,
 	                              final int position) {
 		tree.addElement(path, createNumberOptionCreator(name, min, max, step), path + "/" + name, position);
@@ -452,6 +463,16 @@ public class OptionPanelBuilder {
 			}
 		};
 	}
+	
+	private IPropertyControlCreator createActionOptionCreator(final String name) {
+		return new IPropertyControlCreator() {
+			public IPropertyControl createControl() {
+				return new ActionProperty(name);
+			}
+		};
+	}
+	
+	
 
 	private Object createNumberOptionCreator(final String name, final int min, final int max, final int step) {
 		return new IPropertyControlCreator() {
@@ -533,6 +554,7 @@ public class OptionPanelBuilder {
 		readManager.addElementHandler("languages", new LanguagesComboCreator());
 		readManager.addElementHandler("key", new KeyOptionCreator());
 		readManager.addElementHandler("remind_value", new RemindValueCreator());
+		readManager.addElementHandler("action", new ActionCreator());
 	}
 
 	public void load(final URL menu) {
