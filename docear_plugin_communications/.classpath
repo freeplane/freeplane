@@ -7,5 +7,6 @@
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="lib" path="lib/jsr311-api-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/jersey-client-1.1.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/jersey-core-1.1.5.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -17,13 +17,13 @@ public class Activator implements BundleActivator {
 	public void start(BundleContext context) throws Exception {
 		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
 		props.put("mode", new String[] { MModeController.MODENAME });
-		context.registerService(IModeControllerExtensionProvider.class.getName(),
-		    new IModeControllerExtensionProvider() {
-			    public void installExtension(ModeController modeController) {
-			    	new CommunicationsConfiguration();
-				    
-			    }
-		    }, props);
+//		context.registerService(IModeControllerExtensionProvider.class.getName(),
+//		    new IModeControllerExtensionProvider() {
+//			    public void installExtension(ModeController modeController) {
+//			    	new CommunicationsConfiguration();
+//				    
+//			    }
+//		    }, props);
 	}
 	
 	/*
