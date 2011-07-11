@@ -10,6 +10,8 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 
 public class CoreConfiguration {
+	
+	
 	public CoreConfiguration(ModeController modeController) {
 		LogUtils.info("org.docear.plugin.core.CoreConfiguration() initializing...");
 		init(modeController);
