@@ -66,7 +66,7 @@ public class ActionProperty extends PropertyBean implements IPropertyControl {
 		if (labelText == null) {
 			labelText = TextUtils.getOptionalText(getLabel());
 		}
-		mButton.setText("labelText");
+		mButton.setText(labelText);
 		mButton.setEnabled(true);		
 		
 		if (ActionProperty.rowSpec == null) {
