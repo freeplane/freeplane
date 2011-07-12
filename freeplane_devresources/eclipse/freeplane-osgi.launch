@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.pde.ui.EquinoxLauncher">
+<setAttribute key="additional_plugins"/>
 <booleanAttribute key="append.args" value="true"/>
 <booleanAttribute key="automaticAdd" value="true"/>
 <booleanAttribute key="automaticValidate" value="false"/>
@@ -11,6 +12,8 @@
 <booleanAttribute key="default" value="true"/>
 <booleanAttribute key="default_auto_start" value="true"/>
 <intAttribute key="default_start_level" value="1"/>
+<stringAttribute key="featureDefaultLocation" value="workspace"/>
+<stringAttribute key="featurePluginResolution" value="workspace"/>
 <booleanAttribute key="includeOptional" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.JAVA_COMMAND" value="java"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -console"/>
@@ -18,11 +21,167 @@
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512m -Declipse.ignoreApp=true -Dosgi.noShutdown=true -Dosgi.debug=debug.properties -ea -Dorg.freeplane.globalresourcedir=${workspace_loc:freeplane/external-resources} -Dorg.freeplane.nosplash=true -Dorg.freeplane.main.application.FreeplaneSecurityManager.disable=true"/>
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:freeplane/..}"/>
 <stringAttribute key="pde.version" value="3.3"/>
+<setAttribute key="selected_features">
+<setEntry value="org.eclipse.cvs.source:default"/>
+<setEntry value="org.eclipse.cvs:default"/>
+<setEntry value="org.eclipse.datatools.common.doc.user:default"/>
+<setEntry value="org.eclipse.datatools.connectivity.doc.user:default"/>
+<setEntry value="org.eclipse.datatools.connectivity.feature:default"/>
+<setEntry value="org.eclipse.datatools.connectivity.oda.designer.core.feature:default"/>
+<setEntry value="org.eclipse.datatools.connectivity.oda.designer.feature:default"/>
+<setEntry value="org.eclipse.datatools.connectivity.oda.feature:default"/>
+<setEntry value="org.eclipse.datatools.doc.user:default"/>
+<setEntry value="org.eclipse.datatools.enablement.apache.derby.feature:default"/>
+<setEntry value="org.eclipse.datatools.enablement.feature:default"/>
+<setEntry value="org.eclipse.datatools.enablement.hsqldb.feature:default"/>
+<setEntry value="org.eclipse.datatools.enablement.ibm.feature:default"/>
+<setEntry value="org.eclipse.datatools.enablement.ingres.feature:default"/>
+<setEntry value="org.eclipse.datatools.enablement.jdbc.feature:default"/>
+<setEntry value="org.eclipse.datatools.enablement.jdt.feature:default"/>
+<setEntry value="org.eclipse.datatools.enablement.msft.feature:default"/>
+<setEntry value="org.eclipse.datatools.enablement.mysql.feature:default"/>
+<setEntry value="org.eclipse.datatools.enablement.oda.designer.feature:default"/>
+<setEntry value="org.eclipse.datatools.enablement.oda.feature:default"/>
+<setEntry value="org.eclipse.datatools.enablement.oracle.feature:default"/>
+<setEntry value="org.eclipse.datatools.enablement.postgresql.feature:default"/>
+<setEntry value="org.eclipse.datatools.enablement.sap.feature:default"/>
+<setEntry value="org.eclipse.datatools.enablement.sqlite.feature:default"/>
+<setEntry value="org.eclipse.datatools.enablement.sybase.feature:default"/>
+<setEntry value="org.eclipse.datatools.intro:default"/>
+<setEntry value="org.eclipse.datatools.modelbase.feature:default"/>
+<setEntry value="org.eclipse.datatools.sqldevtools.data.feature:default"/>
+<setEntry value="org.eclipse.datatools.sqldevtools.ddl.feature:default"/>
+<setEntry value="org.eclipse.datatools.sqldevtools.ddlgen.feature:default"/>
+<setEntry value="org.eclipse.datatools.sqldevtools.feature:default"/>
+<setEntry value="org.eclipse.datatools.sqldevtools.parsers.feature:default"/>
+<setEntry value="org.eclipse.datatools.sqldevtools.results.feature:default"/>
+<setEntry value="org.eclipse.datatools.sqldevtools.schemaobjecteditor.feature:default"/>
+<setEntry value="org.eclipse.datatools.sqldevtools.sqlbuilder.feature:default"/>
+<setEntry value="org.eclipse.datatools.sqltools.doc.user:default"/>
+<setEntry value="org.eclipse.draw2d:default"/>
+<setEntry value="org.eclipse.emf.codegen.ecore.ui:default"/>
+<setEntry value="org.eclipse.emf.codegen.ecore:default"/>
+<setEntry value="org.eclipse.emf.codegen.ui:default"/>
+<setEntry value="org.eclipse.emf.codegen:default"/>
+<setEntry value="org.eclipse.emf.common.ui:default"/>
+<setEntry value="org.eclipse.emf.common:default"/>
+<setEntry value="org.eclipse.emf.converter:default"/>
+<setEntry value="org.eclipse.emf.databinding.edit:default"/>
+<setEntry value="org.eclipse.emf.databinding:default"/>
+<setEntry value="org.eclipse.emf.ecore.edit:default"/>
+<setEntry value="org.eclipse.emf.ecore.editor:default"/>
+<setEntry value="org.eclipse.emf.ecore:default"/>
+<setEntry value="org.eclipse.emf.edit.ui:default"/>
+<setEntry value="org.eclipse.emf.edit:default"/>
+<setEntry value="org.eclipse.emf.mapping.ecore.editor:default"/>
+<setEntry value="org.eclipse.emf.mapping.ecore:default"/>
+<setEntry value="org.eclipse.emf.mapping.ui:default"/>
+<setEntry value="org.eclipse.emf.mapping:default"/>
+<setEntry value="org.eclipse.emf:default"/>
+<setEntry value="org.eclipse.epp.mpc:default"/>
+<setEntry value="org.eclipse.epp.package.common.feature:default"/>
+<setEntry value="org.eclipse.epp.package.jee.feature:default"/>
+<setEntry value="org.eclipse.epp.usagedata.feature:default"/>
+<setEntry value="org.eclipse.equinox.p2.core.feature.source:default"/>
+<setEntry value="org.eclipse.equinox.p2.core.feature:default"/>
+<setEntry value="org.eclipse.equinox.p2.discovery.feature:default"/>
+<setEntry value="org.eclipse.equinox.p2.extras.feature.source:default"/>
+<setEntry value="org.eclipse.equinox.p2.extras.feature:default"/>
+<setEntry value="org.eclipse.equinox.p2.rcp.feature.source:default"/>
+<setEntry value="org.eclipse.equinox.p2.rcp.feature:default"/>
+<setEntry value="org.eclipse.equinox.p2.user.ui.source:default"/>
+<setEntry value="org.eclipse.equinox.p2.user.ui:default"/>
+<setEntry value="org.eclipse.gef:default"/>
+<setEntry value="org.eclipse.help.source:default"/>
+<setEntry value="org.eclipse.help:default"/>
+<setEntry value="org.eclipse.jdt.source:default"/>
+<setEntry value="org.eclipse.jdt:default"/>
+<setEntry value="org.eclipse.jpt.common.eclipselink.feature:default"/>
+<setEntry value="org.eclipse.jpt.common.feature:default"/>
+<setEntry value="org.eclipse.jpt.dbws.eclipselink.feature:default"/>
+<setEntry value="org.eclipse.jpt.jaxb.eclipselink.feature:default"/>
+<setEntry value="org.eclipse.jpt.jaxb.feature:default"/>
+<setEntry value="org.eclipse.jpt.jpa.eclipselink.feature:default"/>
+<setEntry value="org.eclipse.jpt.jpa.feature:default"/>
+<setEntry value="org.eclipse.jsf.feature:default"/>
+<setEntry value="org.eclipse.jst.common.fproj.enablement.jdt:default"/>
+<setEntry value="org.eclipse.jst.enterprise_core.feature:default"/>
+<setEntry value="org.eclipse.jst.enterprise_ui.feature:default"/>
+<setEntry value="org.eclipse.jst.enterprise_userdoc.feature:default"/>
+<setEntry value="org.eclipse.jst.jsf.apache.trinidad.tagsupport.feature:default"/>
+<setEntry value="org.eclipse.jst.server_adapters.ext.feature:default"/>
+<setEntry value="org.eclipse.jst.server_adapters.feature:default"/>
+<setEntry value="org.eclipse.jst.server_core.feature:default"/>
+<setEntry value="org.eclipse.jst.server_ui.feature:default"/>
+<setEntry value="org.eclipse.jst.server_userdoc.feature:default"/>
+<setEntry value="org.eclipse.jst.web_core.feature:default"/>
+<setEntry value="org.eclipse.jst.web_ui.feature:default"/>
+<setEntry value="org.eclipse.jst.web_userdoc.feature:default"/>
+<setEntry value="org.eclipse.jst.webpageeditor.feature:default"/>
+<setEntry value="org.eclipse.jst.ws.axis2tools.feature:default"/>
+<setEntry value="org.eclipse.jst.ws.cxf.feature:default"/>
+<setEntry value="org.eclipse.jst.ws.jaxws.dom.feature:default"/>
+<setEntry value="org.eclipse.jst.ws.jaxws.feature:default"/>
+<setEntry value="org.eclipse.jst.ws.jaxws_userdoc.feature:default"/>
+<setEntry value="org.eclipse.mylyn.bugzilla_feature:default"/>
+<setEntry value="org.eclipse.mylyn.context_feature:default"/>
+<setEntry value="org.eclipse.mylyn.ide_feature:default"/>
+<setEntry value="org.eclipse.mylyn.java_feature:default"/>
+<setEntry value="org.eclipse.mylyn.team_feature:default"/>
+<setEntry value="org.eclipse.mylyn.wikitext_feature:default"/>
+<setEntry value="org.eclipse.mylyn_feature:default"/>
+<setEntry value="org.eclipse.pde.source:default"/>
+<setEntry value="org.eclipse.pde:default"/>
+<setEntry value="org.eclipse.platform.source:default"/>
+<setEntry value="org.eclipse.platform:default"/>
+<setEntry value="org.eclipse.rcp.source:default"/>
+<setEntry value="org.eclipse.rcp:default"/>
+<setEntry value="org.eclipse.rse.core:default"/>
+<setEntry value="org.eclipse.rse.dstore:default"/>
+<setEntry value="org.eclipse.rse.ftp:default"/>
+<setEntry value="org.eclipse.rse.local:default"/>
+<setEntry value="org.eclipse.rse.ssh:default"/>
+<setEntry value="org.eclipse.rse.telnet:default"/>
+<setEntry value="org.eclipse.rse.terminals:default"/>
+<setEntry value="org.eclipse.rse.useractions:default"/>
+<setEntry value="org.eclipse.rse:default"/>
+<setEntry value="org.eclipse.sdk:default"/>
+<setEntry value="org.eclipse.team.svn.resource.ignore.rules.jdt:default"/>
+<setEntry value="org.eclipse.team.svn:default"/>
+<setEntry value="org.eclipse.tm.terminal.ssh:default"/>
+<setEntry value="org.eclipse.tm.terminal.telnet:default"/>
+<setEntry value="org.eclipse.tm.terminal.view:default"/>
+<setEntry value="org.eclipse.tm.terminal:default"/>
+<setEntry value="org.eclipse.wst.common.fproj:default"/>
+<setEntry value="org.eclipse.wst.common_core.feature:default"/>
+<setEntry value="org.eclipse.wst.common_ui.feature:default"/>
+<setEntry value="org.eclipse.wst.jsdt.feature:default"/>
+<setEntry value="org.eclipse.wst.server_adapters.feature:default"/>
+<setEntry value="org.eclipse.wst.server_core.feature:default"/>
+<setEntry value="org.eclipse.wst.server_ui.feature:default"/>
+<setEntry value="org.eclipse.wst.server_userdoc.feature:default"/>
+<setEntry value="org.eclipse.wst.web_core.feature:default"/>
+<setEntry value="org.eclipse.wst.web_ui.feature:default"/>
+<setEntry value="org.eclipse.wst.web_userdoc.feature:default"/>
+<setEntry value="org.eclipse.wst.ws_core.feature:default"/>
+<setEntry value="org.eclipse.wst.ws_ui.feature:default"/>
+<setEntry value="org.eclipse.wst.ws_userdoc.feature:default"/>
+<setEntry value="org.eclipse.wst.ws_wsdl15.feature:default"/>
+<setEntry value="org.eclipse.wst.xml.xpath2.processor.feature:default"/>
+<setEntry value="org.eclipse.wst.xml_core.feature:default"/>
+<setEntry value="org.eclipse.wst.xml_ui.feature:default"/>
+<setEntry value="org.eclipse.wst.xml_userdoc.feature:default"/>
+<setEntry value="org.eclipse.wst.xsl.feature:default"/>
+<setEntry value="org.knopflerfish.eclipse.ide_feature:default"/>
+<setEntry value="org.polarion.eclipse.team.svn.connector.svnkit16:default"/>
+<setEntry value="org.polarion.eclipse.team.svn.connector:default"/>
+<setEntry value="org.vcs.bazaar.eclipse.feature:default"/>
+</setAttribute>
 <booleanAttribute key="show_selected_only" value="true"/>
 <stringAttribute key="target_bundles" value="org.eclipse.osgi@-1:true"/>
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useCustomFeatures" value="false"/>
 <booleanAttribute key="useDefaultConfigArea" value="true"/>
-<stringAttribute key="workspace_bundles" value="freeplane_plugin_script_test@default:false,freeplane_uitest@default:false,org.docear.plugin.communications@default:default,org.docear.plugin.core@default:default,org.freeplane.core@2:default,org.freeplane.plugin.accountmanager@default:default,org.freeplane.plugin.bugreport@default:default,org.freeplane.plugin.formula@default:default,org.freeplane.plugin.help@default:default,org.freeplane.plugin.latex@default:default,org.freeplane.plugin.script@default:default,org.freeplane.plugin.svg@default:default,org.freeplane.uispec4j@default:default"/>
+<stringAttribute key="workspace_bundles" value="freeplane_plugin_script_test@default:false,freeplane_uitest@default:false,org.docear.plugin.backup@default:default,org.docear.plugin.communications@default:default,org.docear.plugin.core@default:default,org.freeplane.core@2:default,org.freeplane.plugin.accountmanager@default:default,org.freeplane.plugin.bugreport@default:default,org.freeplane.plugin.formula@default:default,org.freeplane.plugin.help@default:default,org.freeplane.plugin.latex@default:default,org.freeplane.plugin.script@default:default,org.freeplane.plugin.svg@default:default,org.freeplane.uispec4j@default:default"/>
 <stringAttribute key="yk-options" value="&#10;snapshots-dir=&#10;additional-options2=onexit\=snapshot&#10;startup=0&#10;"/>
 </launchConfiguration>
