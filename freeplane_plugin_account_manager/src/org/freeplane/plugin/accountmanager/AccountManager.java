@@ -17,6 +17,8 @@ import javax.crypto.spec.DESKeySpec;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.components.OptionPanelBuilder;
+import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
@@ -27,20 +29,20 @@ public class AccountManager implements IFreeplanePropertyListener {
 	private static Hashtable<String, Account> accountList = new Hashtable<String, Account>();
 	
 	public AccountManager() {
-		Controller.getCurrentController().getResourceController().addPropertyChangeListener(this);
 		LogUtils.info("AccountManager started.");
+		Controller.getCurrentController().getResourceController().addPropertyChangeListener(this);		
 	}
 	
 	
 	public static void registerAccount(Account account) {
 		String accountName = account.getAccountName().replaceAll("/^[a-zA-Z0-9]+/i", "_");
-		inititializeAccount(accountName, account);
+		inititializeAccount(accountName, account, false);
 		accountList.put(accountName, account);
 		buildOptionUI(accountName, account);
-		LogUtils.info("Account ("+ accountName +") registered.");
+		LogUtils.info("Account ("+ accountName +") registered.");		
 	}
 
-	private static void inititializeAccount(String accountName, Account account) {		
+	private static void inititializeAccount(String accountName, Account account, boolean isPlainText) {		
 		ResourceController rc = Controller.getCurrentController().getResourceController();
 		// read username from properties
 		String property = rc.getProperty(accountName + ".username", null);
@@ -55,37 +57,39 @@ public class AccountManager implements IFreeplanePropertyListener {
 		// read encrypted password from properties
 		property = rc.getProperty(accountName + ".password", null);
 		if(property != null) {
-			try {
-			
-				DESKeySpec keySpec = new DESKeySpec("Docear 4 world domination!".getBytes("UTF-8"));
-				SecretKey key = SecretKeyFactory.getInstance("DES").generateSecret(keySpec);
-				
-				Cipher cipher = Cipher.getInstance("DES");
-				cipher.init(Cipher.DECRYPT_MODE, key);
-				
-				account.setPassword(ByteBuffer.wrap(cipher.doFinal(property.getBytes("UTF-8"))).asCharBuffer().toString());
-			} catch (NoSuchAlgorithmException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvalidKeyException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvalidKeySpecException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchPaddingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalBlockSizeException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (BadPaddingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			account.setPassword(property);
+//			try {
+//			
+//				DESKeySpec keySpec = new DESKeySpec("Docear 4 world domination!".getBytes("UTF-8"));
+//				SecretKey key = SecretKeyFactory.getInstance("DES").generateSecret(keySpec);
+//				
+//				Cipher cipher = Cipher.getInstance("DES");
+//				cipher.init(Cipher.DECRYPT_MODE, key);
+//				
+//				account.setPassword(ByteBuffer.wrap(cipher.doFinal(property.getBytes("UTF-8"))).asCharBuffer().toString());
+//				
+//			} catch (NoSuchAlgorithmException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (InvalidKeyException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (UnsupportedEncodingException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (InvalidKeySpecException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (NoSuchPaddingException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (IllegalBlockSizeException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (BadPaddingException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 		}
 	}
 	
@@ -145,8 +149,14 @@ public class AccountManager implements IFreeplanePropertyListener {
 	}
 
 	private static void buildOptionUI(String accountName, Account account) {
+		LogUtils.info("build OptionPanel entry for Account(" + accountName + ")");
 		MModeController modeController = (MModeController) Controller.getCurrentModeController();
-		modeController.getOptionPanelBuilder().addSeparator("docear/test_sep", account.getAccountName(), MenuBuilder.AS_CHILD);	
+		OptionPanelBuilder builder = modeController.getOptionPanelBuilder();
+		builder.addSeparator("docear", accountName, IndexedTree.AS_CHILD);
+		builder.addStringProperty("docear/" + accountName, accountName+".username", IndexedTree.AS_CHILD);
+		builder.addStringProperty("docear/" + accountName, accountName+".password", IndexedTree.AS_CHILD);
+		builder.addStringProperty("docear/" + accountName, accountName+".connection_string", IndexedTree.AS_CHILD);
+		builder.addActionProperty("docear/" + accountName, "account_validate", IndexedTree.AS_CHILD);
 	}
 
 	public void propertyChanged(String propertyName, String newValue, String oldValue) {
@@ -155,8 +165,9 @@ public class AccountManager implements IFreeplanePropertyListener {
 			String accountName = propertyName.substring(0, offset);
 			LogUtils.info("Property ("+ accountName +") changed.");
 			if(accountList.containsKey(accountName)) {
-				saveAccount(accountName, accountList.get(accountName));				
-				inititializeAccount(accountName, accountList.get(accountName));
+				//inititializeAccount(accountName, accountList.get(accountName),true);
+				//saveAccount(accountName, accountList.get(accountName));				
+				inititializeAccount(accountName, accountList.get(accountName),false);
 				LogUtils.info("Data for Account ("+ accountName +") updated.");
 			}
 		}

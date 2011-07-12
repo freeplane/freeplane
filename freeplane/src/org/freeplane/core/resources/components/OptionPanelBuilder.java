@@ -161,6 +161,17 @@ public class OptionPanelBuilder {
 		}
 	}
 	
+	private class PasswordOptionCreator extends PropertyCreator {
+		@Override
+		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
+			//TODO: define XML structure 
+//			final int min = Integer.parseInt(data.getAttribute("min", "1"));
+//			final int step = Integer.parseInt(data.getAttribute("step", "1"));
+//			final int max = Integer.parseInt(data.getAttribute("max", MAX_INT));
+			return createPasswordOptionCreator(name);
+		}
+	}
+	
 	private class ActionCreator extends PropertyCreator {
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
@@ -390,6 +401,10 @@ public class OptionPanelBuilder {
 		tree.addElement(path, createActionOptionCreator(name), path + "/" + name, position);
 	}
 	
+	public void addPasswordProperty(final String path, final String name, final int position) {
+		tree.addElement(path, createPasswordOptionCreator(name), path + "/" + name, position);
+	}
+	
 	public void addNumberProperty(final String path, final String name, final int min, final int max, final int step,
 	                              final int position) {
 		tree.addElement(path, createNumberOptionCreator(name, min, max, step), path + "/" + name, position);
@@ -471,7 +486,14 @@ public class OptionPanelBuilder {
 			}
 		};
 	}
-	
+
+	private IPropertyControlCreator createPasswordOptionCreator(final String name) {
+		return new IPropertyControlCreator() {
+			public IPropertyControl createControl() {
+				return new PasswordProperty(name);
+			}
+		};
+	}
 	
 
 	private Object createNumberOptionCreator(final String name, final int min, final int max, final int step) {
@@ -555,6 +577,7 @@ public class OptionPanelBuilder {
 		readManager.addElementHandler("key", new KeyOptionCreator());
 		readManager.addElementHandler("remind_value", new RemindValueCreator());
 		readManager.addElementHandler("action", new ActionCreator());
+		readManager.addElementHandler("password", new PasswordOptionCreator());
 	}
 
 	public void load(final URL menu) {
