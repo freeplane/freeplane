@@ -18,8 +18,7 @@ public class CoreConfiguration {
 	}
 
 	private void init(ModeController modeController) {
-		addPluginDefaults();
-		addPropertiesToOptionPanel();
+		addPluginDefaults();		
 	}
 	
 	private void addPluginDefaults() {
@@ -29,24 +28,7 @@ public class CoreConfiguration {
 		Controller.getCurrentController().getResourceController().addDefaults(defaults);
 	}
 	
-	private void addPropertiesToOptionPanel() {
-		final URL preferences = this.getClass().getResource("preferences.xml");
-		if (preferences == null)
-			throw new RuntimeException("cannot open preferences");
-		MModeController modeController = (MModeController) Controller.getCurrentModeController();
-		
-		ResourceBundles resBundle = ((ResourceBundles)modeController.getController().getResourceController().getResources());
-		
-		String lang = resBundle.getLanguageCode();
-		if (lang == null || lang.equals(ResourceBundles.LANGUAGE_AUTOMATIC)) {
-			lang = "en";
-		}
-		
-		final URL res = this.getClass().getResource("/translations/Resources_"+lang+".properties");
-		resBundle.addResources(resBundle.getLanguageCode(), res);		
-		modeController.getOptionPanelBuilder().load(preferences);
-
-	}
+	
 }
 
 
