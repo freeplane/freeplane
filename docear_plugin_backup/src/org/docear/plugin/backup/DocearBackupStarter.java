@@ -19,6 +19,8 @@ import org.freeplane.features.mode.Controller;
 
 public class DocearBackupStarter implements IMapChangeListener {
 	
+	private CommunicationsConfiguration config = new CommunicationsConfiguration();
+	
 	DocearBackupStarter() {
 		LogUtils.info("starting DocearBackupStarter()");
 		Controller.getCurrentModeController().getMapController().addMapChangeListener(this);
@@ -37,7 +39,7 @@ public class DocearBackupStarter implements IMapChangeListener {
 		StringWriter sw = new StringWriter();
 		try {
 			if (Controller.getCurrentModeController().getController().getResourceController().getProperty("docear_save_backup").equals("true")) {
-				CommunicationsConfiguration config = new CommunicationsConfiguration();
+				config.validateUserData();
 			}
 			System.out.println("docear_save_backup="+Controller.getCurrentModeController().getController().getResourceController().getProperty("docear_save_backup"));
 		} catch (Exception e) {
