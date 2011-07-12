@@ -35,25 +35,20 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.RowSpec;
 
 /**
- * @author Dimitry Polivaev
+ * @author Stefan Langer
  * 27.12.2008
  */
 public class ActionProperty extends PropertyBean implements IPropertyControl {
 	private static RowSpec rowSpec;
 	private Icon icon;
 	private String labelText;
-	JButton mButton = new JButton();
-	private int modifierMask = 0;
+	JButton mButton = new JButton();	
 	private OptionPanelButtonListener buttonListener = new OptionPanelButtonListener();
 
 	/**
 	 */
 	public ActionProperty(final String name) {
 		super(name);
-	}
-
-	public void disableModifiers() {
-		modifierMask = KeyEvent.ALT_MASK | KeyEvent.CTRL_MASK | KeyEvent.META_MASK;
 	}
 
 	@Override
@@ -67,12 +62,13 @@ public class ActionProperty extends PropertyBean implements IPropertyControl {
 				buttonListener.actionPerformed(arg0);
 			}
 		});
+		mButton.setActionCommand(getLabel());
 		if (labelText == null) {
 			labelText = TextUtils.getOptionalText(getLabel());
 		}
-		final JLabel label = new JLabel(labelText, icon, JLabel.RIGHT);
-		String tooltip = TextUtils.getOptionalText(getDescription());
-		label.setToolTipText(tooltip);
+		mButton.setText("labelText");
+		mButton.setEnabled(true);		
+		
 		if (ActionProperty.rowSpec == null) {
 			ActionProperty.rowSpec = new RowSpec("fill:20dlu");
 		}
@@ -83,11 +79,9 @@ public class ActionProperty extends PropertyBean implements IPropertyControl {
 		}
 		else {
 			builder.nextColumn(2);
-		}
-		builder.add(label);
+		}		
 		builder.nextColumn(2);
 		builder.add(mButton);
-		mButton.setToolTipText(tooltip);
 	}
 
 	public void setEnabled(final boolean pEnabled) {
@@ -104,8 +98,6 @@ public class ActionProperty extends PropertyBean implements IPropertyControl {
 
 	@Override
 	public void setValue(final String value) {
-		mButton.setText(value);
-		mButton.setToolTipText(mButton.getText());
 	}
 
 	@Override
