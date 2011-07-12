@@ -64,8 +64,8 @@ public class CommunicationsConfiguration implements ActionListener {
 			Client client = Client.create();
 			client.setConnectTimeout(10000);
 			client.setReadTimeout(70000);
-			this.webresource = client.resource(this.account
-					.getConnectionString());
+			this.webresource = client.resource(this.account.getConnectionString().trim());
+			
 			ClientResponse response = this.webresource.path("user").put(
 					ClientResponse.class, formParams);
 			switch (response.getClientResponseStatus()) {
@@ -125,6 +125,9 @@ public class CommunicationsConfiguration implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		System.out.println("DOCEAR actionPErformed: " + e.toString());
+		if (e.getActionCommand().equals("OptionPanel.docear_validate_credentials")) {			
+			this.validateUserData();
+		}
 	}
 
 }
