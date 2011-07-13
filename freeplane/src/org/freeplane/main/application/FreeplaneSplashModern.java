@@ -57,8 +57,21 @@ public class FreeplaneSplashModern extends JWindow {
 
 	public FreeplaneSplashModern(final JFrame frame) {
 		super(frame);
+		String splashImageName = "";
+		try {
+			splashImageName = ResourceController.getResourceController().getProperty("mainSplashName");
+			
+		}
+		catch (final Exception e) {
+			splashImageName="Freeplane_splash.png";
+		}
+		
+		if (splashImageName == null || splashImageName.length() == 0) {
+			splashImageName="Freeplane_splash.png";
+		}
+		
 		splashImage = new ImageIcon(ResourceController.getResourceController().getResource(
-		    "/images/Freeplane_splash.png"));
+		    "/images/"+splashImageName));
 		getRootPane().setOpaque(false);
 		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		final Dimension labelSize = new Dimension(splashImage.getIconWidth(), splashImage.getIconHeight());
