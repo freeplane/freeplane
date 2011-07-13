@@ -70,7 +70,7 @@ public class AccountManager implements IFreeplanePropertyListener {
 				builder.addStringProperty("account_manager/" + accountName, accountName+".username", IndexedTree.AS_CHILD);
 				builder.addPasswordProperty("account_manager/" + accountName, accountName+".password", IndexedTree.AS_CHILD);
 				builder.addStringProperty("account_manager/" + accountName, accountName+".connection_string", IndexedTree.AS_CHILD);
-				builder.addActionProperty("account_manager/" + accountName, "account_validate", "actionCommand", IndexedTree.AS_CHILD);
+				builder.addActionProperty("account_manager/" + accountName, "account_validate", "docear_validate_credentials", IndexedTree.AS_CHILD);
 			}
 			accountInitBuffer.clear();
 		}
