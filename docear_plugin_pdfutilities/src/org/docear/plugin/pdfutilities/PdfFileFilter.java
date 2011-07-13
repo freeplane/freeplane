@@ -1,6 +1,7 @@
 package org.docear.plugin.pdfutilities;
 
 import java.io.File;
+import java.net.URI;
 
 public class PdfFileFilter {
 	
@@ -9,8 +10,18 @@ public class PdfFileFilter {
         
         String path = file.getPath();
 
-        return accept(path);
+        return file.exists() && accept(path);
     }
+	
+	public boolean accept(URI uri){
+		File file = Tools.getFilefromUri(uri);
+		if(file == null){
+			return false;
+		}
+		else{
+			return this.accept(file);
+		}	
+	}
 
     public boolean accept(String path) {
         if(path == null || path.isEmpty()) return false;

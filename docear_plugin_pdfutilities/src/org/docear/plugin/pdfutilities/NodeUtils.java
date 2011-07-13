@@ -21,6 +21,16 @@ public class NodeUtils {
 		
 	}
 	
+	public NodeModel insertChildNodesFrom(URI uri, List<PdfAnnotation> annotations, boolean isLeft, NodeModel target){
+		File file = Tools.getFilefromUri(uri);
+		if(file == null){
+			return null;
+		}
+		else{
+			return this.insertChildNodesFrom(file, annotations, isLeft, target);
+		}
+	}
+	
 	public NodeModel insertChildNodesFrom(File file, List<PdfAnnotation> annotations, boolean isLeft, NodeModel target){
 		NodeModel node = this.insertChildNodeFrom(file, isLeft, target);
 		this.insertChildNodesFrom(annotations, isLeft, node);
