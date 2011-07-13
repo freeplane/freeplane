@@ -2,8 +2,7 @@
 <preferences_structure>
 	<tabbed_pane>
 		<tab name="docear">
-			<separator name="docear_backup_options">
-				<boolean name="docear_save_backup" />
+			<separator name="docear_backup_options">				
 				<action name="docear_validate_credentials" /> 
 			</separator>
 		</tab>

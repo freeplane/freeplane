@@ -115,8 +115,35 @@
 			<param name="pluginname" value="org.freeplane.plugin.bugreport"/>
 	    </antcall>
 	</target>
+
+	<target name="build_accountmanager" unless="skip_accountmanager">
+		<antcall target="makePlugin" inheritall="false">
+			<param name="anttarget" value="dist"/>
+			<param name="targetdir" value="plugins"/>
+			<param name="plugindir" value="freeplane_plugin_account_manager"/>
+			<param name="pluginname" value="org.freeplane.plugin.accountmanager"/>
+	    </antcall>
+	</target>
+    
+	<target name="build_communications" unless="skip_communications">
+		<antcall target="makePlugin" inheritall="false">
+			<param name="anttarget" value="dist"/>
+			<param name="targetdir" value="plugins"/>
+			<param name="plugindir" value="docear_plugin_communications"/>
+			<param name="pluginname" value="org.docear.plugin.communications"/>
+	    </antcall>
+	</target>
 	
-	<target name="build" depends="build_core, build_latex, build_svg, build_script, build_formula, build_bugreport">
+	<target name="build_backup" unless="skip_backup">
+		<antcall target="makePlugin" inheritall="false">
+			<param name="anttarget" value="dist"/>
+			<param name="targetdir" value="plugins"/>
+			<param name="plugindir" value="docear_plugin_backup"/>
+			<param name="pluginname" value="org.docear.plugin.backup"/>
+	    </antcall>
+	</target>
+
+	<target name="build" depends="build_core, build_latex, build_svg, build_script, build_formula, build_bugreport, build_accountmanager, build_communications, build_backup">
        <mkdir dir="${build.resources}" />
         <copy todir="${build.resources}">
             <fileset dir="${workspace}/freeplane/dist/resources" />
@@ -436,7 +463,14 @@
 			  dir="${workspace}/freeplane_plugin_formula"/>
 		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
 			  dir="${workspace}/freeplane_plugin_bugreport"/>		
+		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
+			  dir="${workspace}/freeplane_plugin_accountmanager"/>		
+		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
+			  dir="${workspace}/docear_plugin_communications"/>		
+		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
+			  dir="${workspace}/docear_plugin_backup"/>		
 	</target>
 
 </project>
+
 
