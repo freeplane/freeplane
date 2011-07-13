@@ -24,12 +24,14 @@ public class CommunicationsConfiguration implements ActionListener {
 	}
 
 	public static String USERNAME = "userName";
+	public static com.sun.jersey.multipart.impl.MultiPartConfigProvider multipartconfig;
 	private static final String PASSWORD = "password";
 	private WebResource webresource = null;
 
 	private DocearAccount account;
 
 	public CommunicationsConfiguration() {
+		System.out.println(multipartconfig==null? "null":multipartconfig.toString());
 		addPropertiesToOptionPanel();
 		
 		OptionPanelButtonListener.addButtonListener(this);

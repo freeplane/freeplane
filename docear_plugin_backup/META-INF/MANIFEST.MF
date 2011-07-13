@@ -8,6 +8,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.osgi.framework;version="1.3.0"
 Require-Bundle: org.freeplane.core;bundle-version="1.0.1",
+ org.freeplane.plugin.accountmanager;bundle-version="1.0.0",
  org.docear.plugin.communications;bundle-version="1.0.0"
 Export-Package: org.docear.plugin.backup
-Bundle-ClassPath: lib/plugin.jar.jar
+Bundle-ClassPath: lib/plugin.jar
