@@ -42,13 +42,15 @@ public class ActionProperty extends PropertyBean implements IPropertyControl {
 	private static RowSpec rowSpec;
 	private Icon icon;
 	private String labelText;
+	private String actionCommand;
 	JButton mButton = new JButton();	
 	private OptionPanelButtonListener buttonListener = new OptionPanelButtonListener();
 
 	/**
 	 */
-	public ActionProperty(final String name) {
+	public ActionProperty(final String name, final String actionCommand) {
 		super(name);
+		this.actionCommand = actionCommand;
 	}
 
 	@Override
@@ -62,7 +64,7 @@ public class ActionProperty extends PropertyBean implements IPropertyControl {
 				buttonListener.actionPerformed(arg0);
 			}
 		});
-		mButton.setActionCommand(getLabel());
+		mButton.setActionCommand(this.actionCommand);
 		if (labelText == null) {
 			labelText = TextUtils.getOptionalText(getLabel());
 		}

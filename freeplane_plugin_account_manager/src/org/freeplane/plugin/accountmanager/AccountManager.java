@@ -1,28 +1,13 @@
 package org.freeplane.plugin.accountmanager;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.DESKeySpec;
-
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
-import org.freeplane.core.resources.components.TabProperty;
 import org.freeplane.core.ui.IndexedTree;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -85,7 +70,7 @@ public class AccountManager implements IFreeplanePropertyListener {
 				builder.addStringProperty("account_manager/" + accountName, accountName+".username", IndexedTree.AS_CHILD);
 				builder.addPasswordProperty("account_manager/" + accountName, accountName+".password", IndexedTree.AS_CHILD);
 				builder.addStringProperty("account_manager/" + accountName, accountName+".connection_string", IndexedTree.AS_CHILD);
-				builder.addActionProperty("account_manager/" + accountName, "account_validate", IndexedTree.AS_CHILD);
+				builder.addActionProperty("account_manager/" + accountName, "account_validate", "actionCommand", IndexedTree.AS_CHILD);
 			}
 			accountInitBuffer.clear();
 		}
