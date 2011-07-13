@@ -222,8 +222,8 @@ class ActivatorImpl implements BundleActivator {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				final Bundle[] bundles = context.getBundles();
-				final HashSet<String> plugins = new HashSet<String>();
-				for(Bundle bundle:bundles){
+				final HashSet<String> plugins = new HashSet<String>();				
+				for(Bundle bundle:bundles){					
 					plugins.add(bundle.getSymbolicName());
 				}
 				starter.buildMenus(controller, plugins);
