@@ -1,11 +1,16 @@
 ===============================
+1.2.8 alpha
+===============================
+Scripting API has improved support for formats
+Scripting API allows to implement filters in Groovy
+
+===============================
 1.2.7 alpha
 ===============================
 New splash and icons
 Multiple bug fixes
 Enable Details for Styles.  
 Copy style attributes and details if is the first user action performed on an new node assigns a style.
-
 
 ===============================
 1.2.6 alpha
