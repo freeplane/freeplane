@@ -1,46 +1,59 @@
 package org.freeplane.core.resources.components;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class PasswordProperty extends PropertyBean implements IPropertyControl {
-
+	final JPasswordField mTextField;
 	
 	public PasswordProperty(String name, String label, String description) {
 		super(name, label, description);
+		mTextField = new JPasswordField();
+		initialize();
 	}
 
 	public PasswordProperty(String name) {
 		super(name);
+		mTextField = new JPasswordField();
+		
+		initialize();
 	}
 	
 	public void layout(DefaultFormBuilder builder) {
-		// TODO Auto-generated method stub
+		layout(builder, mTextField);
 
 	}
 
 	public void setEnabled(boolean pEnabled) {
-		// TODO Auto-generated method stub
-
+		mTextField.setEnabled(pEnabled);
 	}
 
-	@Override
 	public String getValue() {
-		// TODO Auto-generated method stub
-		return null;
+		return new String(mTextField.getPassword());
 	}
 
-	@Override
 	public void setValue(String value) {
-		// TODO Auto-generated method stub
+		mTextField.setText(value);
+		mTextField.selectAll();
 
 	}
-
-	@Override
+	
 	protected Component[] getComponents() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Component[]{mTextField};
+	}
+	
+	private void initialize() {		
+		mTextField.addActionListener(new ActionListener() {
+			public void actionPerformed(final ActionEvent pE) {
+				firePropertyChangeEvent();
+			}
+		});
 	}
 
 }
