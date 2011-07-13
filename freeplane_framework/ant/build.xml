@@ -474,7 +474,7 @@
 		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
 			  dir="${workspace}/freeplane_plugin_bugreport"/>		
 		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
-			  dir="${workspace}/freeplane_plugin_accountmanager"/>		
+			  dir="${workspace}/freeplane_plugin_account_manager"/>		
 		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
 			  dir="${workspace}/docear_plugin_core"/>		
 		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
