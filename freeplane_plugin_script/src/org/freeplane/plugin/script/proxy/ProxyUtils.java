@@ -42,7 +42,11 @@ public class ProxyUtils {
 	}
 
 	static List<Node> find(final Closure closure, final NodeModel node, final ScriptContext scriptContext) {
-		final ICondition condition = new ICondition() {
+		return ProxyUtils.find(createCondition(closure, scriptContext), node, scriptContext);
+	}
+
+	static ICondition createCondition(final Closure closure, final ScriptContext scriptContext) {
+	    final ICondition condition = new ICondition() {
 			public boolean checkNode(final NodeModel node) {
 				try {
 					final Object result = closure
@@ -58,8 +62,8 @@ public class ProxyUtils {
 				}
 			}
 		};
-		return ProxyUtils.find(condition, node, scriptContext);
-	}
+	    return condition;
+    }
 
 	/** finds from any node downwards.
 	 * @param condition if null every node will match. */
