@@ -127,7 +127,7 @@ public class CommunicationsConfiguration implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		System.out.println("DOCEAR actionPErformed: " + e.toString());
-		if (e.getActionCommand().equals("OptionPanel.docear_validate_credentials")) {			
+		if (e.getActionCommand().equals("docear_validate_credentials")) {			
 			this.validateUserData();
 		}
 	}

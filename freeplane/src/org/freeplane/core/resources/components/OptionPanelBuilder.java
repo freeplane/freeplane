@@ -175,7 +175,8 @@ public class OptionPanelBuilder {
 	private class ActionCreator extends PropertyCreator {
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
-			return createActionOptionCreator(name);
+			String actionCommand = data.getAttribute("actionCommand", name);
+			return createActionOptionCreator(name, actionCommand);
 		}
 	}
 
@@ -401,6 +402,10 @@ public class OptionPanelBuilder {
 		tree.addElement(path, createActionOptionCreator(name), path + "/" + name, position);
 	}
 	
+	public void addActionProperty(final String path, final String name, String actionCommand, final int position) {
+		tree.addElement(path, createActionOptionCreator(name, actionCommand), path + "/" + name, position);
+	}
+	
 	public void addPasswordProperty(final String path, final String name, final int position) {
 		tree.addElement(path, createPasswordOptionCreator(name), path + "/" + name, position);
 	}
@@ -482,7 +487,15 @@ public class OptionPanelBuilder {
 	private IPropertyControlCreator createActionOptionCreator(final String name) {
 		return new IPropertyControlCreator() {
 			public IPropertyControl createControl() {
-				return new ActionProperty(name);
+				return new ActionProperty(name, name);
+			}
+		};
+	}
+	
+	private IPropertyControlCreator createActionOptionCreator(final String name, final String actionCommand) {
+		return new IPropertyControlCreator() {
+			public IPropertyControl createControl() {
+				return new ActionProperty(name, actionCommand);
 			}
 		};
 	}

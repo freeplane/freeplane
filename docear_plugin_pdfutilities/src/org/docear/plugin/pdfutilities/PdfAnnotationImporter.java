@@ -2,6 +2,7 @@ package org.docear.plugin.pdfutilities;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +33,16 @@ public class PdfAnnotationImporter {
 		}
 		
 		return annotationMap;
+	}
+	
+	public List<PdfAnnotation> importAnnotations(URI uri) throws IOException, COSLoadException{
+		File file = Tools.getFilefromUri(uri);
+		if(file == null){
+			return new ArrayList<PdfAnnotation>();
+		}
+		else{
+			return this.importAnnotations(file);
+		}
 	}
 	
 	public List<PdfAnnotation> importAnnotations(File file) throws IOException, COSLoadException{

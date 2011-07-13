@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -55,9 +56,8 @@ public class DocearNodeDropListener extends MNodeDropListener {
 	                fileList = this.textURIListToFileList((String) transferable.getTransferData(uriListFlavor));
 	            }	            
 	            
-	            for(File file : fileList){
-	                //TODO: ask for auto import Action
-	            	boolean importAnnotations = true; //ResourceController.getResourceController().getBooleanProperty("docear_import_annotations");
+	            for(File file : fileList){	                
+	            	boolean importAnnotations = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.AUTO_IMPORT_PROP_KEY);
 	                if(pdfFileFilter.accept(file) && importAnnotations){
 	                	PdfAnnotationImporter importer = new PdfAnnotationImporter();
 	                    List<PdfAnnotation> annotations = importer.importAnnotations(file);
