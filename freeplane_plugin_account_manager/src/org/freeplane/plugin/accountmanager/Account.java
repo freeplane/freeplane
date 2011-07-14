@@ -1,9 +1,13 @@
 package org.freeplane.plugin.accountmanager;
 
+import java.security.InvalidParameterException;
+
 public abstract class Account {
 	private String username = null;
 	private String password = null;
 	private String connectionString = null;
+	private String buttonText = null;
+	private String buttonAction = null;
 	
 	public abstract String getAccountName();
 	
@@ -51,6 +55,23 @@ public abstract class Account {
 		return this.hasConnectionString()||this.hasPassword()||this.hasUsername();
 	}
 	
-	 
+	public String getButtonText() {
+		return this.buttonText ;
+	}
+	
+	public String getButtonAction() {
+		return this.buttonAction ;
+	}
+	
+	public boolean wantsButtonAction() {
+		return (this.getButtonText()!=null)&&(this.getButtonAction()!=null);
+	}
+	
+	public void enableButton(final String buttonText, final String buttonAction) {
+		if(buttonText == null) throw new InvalidParameterException("First parameter cannot be NULL!");
+		if(buttonAction == null) throw new InvalidParameterException("Second parameter cannot be NULL!");
+		this.buttonText = buttonText;
+		this.buttonAction = buttonAction;
+	}
 	
 }

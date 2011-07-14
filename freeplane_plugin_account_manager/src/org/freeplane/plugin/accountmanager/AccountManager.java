@@ -1,10 +1,12 @@
 package org.freeplane.plugin.accountmanager;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.ui.IndexedTree;
@@ -21,9 +23,26 @@ public class AccountManager implements IFreeplanePropertyListener {
 	private static String secretString;
 	
 	public AccountManager() {
-		LogUtils.info("AccountManager started.");
+		MModeController modeController = (MModeController) Controller.getCurrentModeController();
+		
+		final URL preferences = this.getClass().getResource("preferences.xml");
+		if (preferences == null)
+			throw new RuntimeException("cannot open preferences");
+				
+		ResourceBundles resBundle = ((ResourceBundles)modeController.getController().getResourceController().getResources());
+		
+		String lang = resBundle.getLanguageCode();
+		if (lang == null || lang.equals(ResourceBundles.LANGUAGE_AUTOMATIC)) {
+			lang = "en";
+		}
+		
+		final URL res = this.getClass().getResource("/translations/Resources_"+lang+".properties");
+		resBundle.addResources(resBundle.getLanguageCode(), res);
+		
+		modeController.getOptionPanelBuilder().load(preferences);
+		
 		Controller.getCurrentController().getResourceController().addPropertyChangeListener(this);
-		OptionPanelBuilder builder = ((MModeController) Controller.getCurrentModeController()).getOptionPanelBuilder();
+		OptionPanelBuilder builder = modeController.getOptionPanelBuilder();
 		builder.addTab("account_manager", "right:max(40dlu;p), 4dlu, 200dlu:grow, 7dlu", IndexedTree.PREPEND);
 		isInitialized = true;
 		buildOptionUI();
@@ -64,13 +83,16 @@ public class AccountManager implements IFreeplanePropertyListener {
 		if(isInitialized) {			
 			for(String accountName : accountInitBuffer) {
 				LogUtils.info("build OptionPanel entry for Account(" + accountName + ")");
+				Account account = accountList.get(accountName);
 				OptionPanelBuilder builder = ((MModeController) Controller.getCurrentModeController()).getOptionPanelBuilder();
 				
 				builder.addSeparator("account_manager", accountName, IndexedTree.AS_CHILD);
 				builder.addStringProperty("account_manager/" + accountName, accountName+".username", IndexedTree.AS_CHILD);
 				builder.addPasswordProperty("account_manager/" + accountName, accountName+".password", IndexedTree.AS_CHILD);
 				builder.addStringProperty("account_manager/" + accountName, accountName+".connection_string", IndexedTree.AS_CHILD);
-				builder.addActionProperty("account_manager/" + accountName, "account_validate", "docear_validate_credentials", IndexedTree.AS_CHILD);
+				if(account.wantsButtonAction()) {
+					builder.addActionProperty("account_manager/" + accountName, account.getButtonText(), account.getButtonAction(), IndexedTree.AS_CHILD);
+				}
 			}
 			accountInitBuffer.clear();
 		}
