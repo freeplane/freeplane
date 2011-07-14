@@ -21,4 +21,3 @@ backups
 ./freeplane_plugin_script/build-nodehighlighter
 ./freeplane_plugin_script/lib/jsyntaxpane/nodehighlighter.jar
 ./freeplane_framework/temp
-./freeplane_devresources/eclipse/freeplane-osgi.launch
