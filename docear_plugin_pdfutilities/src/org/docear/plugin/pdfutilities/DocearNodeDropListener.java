@@ -4,11 +4,8 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DropTargetDropEvent;
 import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
@@ -53,7 +50,7 @@ public class DocearNodeDropListener extends MNodeDropListener {
 	            }
 	            else if(transferable.isDataFlavorSupported(uriListFlavor)){
 	            	dtde.acceptDrop(dtde.getDropAction());
-	                fileList = this.textURIListToFileList((String) transferable.getTransferData(uriListFlavor));
+	                fileList = Tools.textURIListToFileList((String) transferable.getTransferData(uriListFlavor));
 	            }	            
 	            
 	            for(File file : fileList){	                
@@ -85,27 +82,7 @@ public class DocearNodeDropListener extends MNodeDropListener {
 			return;
 		 }
 		 super.drop(dtde);
-	}	
+	}
 	
-	private List<File> textURIListToFileList(String data) {
-	    List<File> list = new ArrayList<File>();
-	    StringTokenizer stringTokenizer = new StringTokenizer(data, "\r\n");
-	    while(stringTokenizer.hasMoreTokens()) {
-	    	String string = stringTokenizer.nextToken();
-	    	// the line is a comment (as per the RFC 2483)
-	    	if (string.startsWith("#")) continue;
-		    		    
-			try {
-				URI uri = new URI(string);
-				File file = new File(uri);
-			    list.add(file);
-			} catch (URISyntaxException e) {
-				LogUtils.warn("DocearNodeDropListener could not parse uri to file because an URISyntaxException occured. URI: " + string);
-			} catch (IllegalArgumentException e) {
-				LogUtils.warn("DocearNodeDropListener could not parse uri to file because an IllegalArgumentException occured. URI: " + string);
-		    }	    
-	    }	     
-	    return list;
-	}	
 
 }

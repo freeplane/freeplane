@@ -6,6 +6,7 @@ import java.net.URL;
 
 import javax.swing.JMenu;
 
+import org.docear.plugin.pdfutilities.actions.DocearPasteAction;
 import org.docear.plugin.pdfutilities.actions.ImportAllAnnotationsAction;
 import org.docear.plugin.pdfutilities.actions.ImportNewAnnotationsAction;
 import org.docear.plugin.pdfutilities.actions.RadioButtonAction;
@@ -43,22 +44,22 @@ public class PdfUtilitiesController {
 		this.modecontroller = modeController;
 		this.addPluginDefaults();
 		this.addPluginLangResources();
-		this.registerActions();			
+		this.registerActions();		
+		this.registerListener();		
+		this.addMenuEntries();
+	}
+	
+	private void registerActions() {
+		this.importAllAnnotationsAction = new ImportAllAnnotationsAction(IMPORT_ALL_ANNOTATIONS_LANG_KEY);
+		this.modecontroller.getMapController().addListenerForAction(importAllAnnotationsAction);
+		this.importNewAnnotationsAction = new ImportNewAnnotationsAction(IMPORT_NEW_ANNOTATIONS_LANG_KEY);
+		this.modecontroller.getMapController().addListenerForAction(importNewAnnotationsAction);
 		
-		this.modecontroller.addINodeViewLifeCycleListener(new INodeViewLifeCycleListener(){
-			
-			public void onViewCreated(Container nodeView) {
-				NodeView node = (NodeView)nodeView;
-				final DropTarget dropTarget = new DropTarget(node.getMainView(), new DocearNodeDropListener());
-				dropTarget.setActive(true);			
-			}
+		this.modecontroller.removeAction("PasteAction");
+		this.modecontroller.addAction(new DocearPasteAction());
+	}
 
-			public void onViewRemoved(Container nodeView) {
-				// TODO Auto-generated method stub				
-			}
-			
-		});	
-		
+	private void addMenuEntries() {
 		this.modecontroller.addMenuContributor(new IMenuContributor() {
 			
 			public void updateMenus(ModeController modeController, MenuBuilder builder) {
@@ -71,13 +72,22 @@ public class PdfUtilitiesController {
 			}
 		});
 	}
-	
-	private void registerActions() {
-		this.importAllAnnotationsAction = new ImportAllAnnotationsAction(IMPORT_ALL_ANNOTATIONS_LANG_KEY);
-		this.modecontroller.getMapController().addListenerForAction(importAllAnnotationsAction);
-		this.importNewAnnotationsAction = new ImportNewAnnotationsAction(IMPORT_NEW_ANNOTATIONS_LANG_KEY);
-		this.modecontroller.getMapController().addListenerForAction(importNewAnnotationsAction);
-	}
+
+	private void registerListener() {
+		this.modecontroller.addINodeViewLifeCycleListener(new INodeViewLifeCycleListener(){
+			
+			public void onViewCreated(Container nodeView) {
+				NodeView node = (NodeView)nodeView;
+				final DropTarget dropTarget = new DropTarget(node.getMainView(), new DocearNodeDropListener());
+				dropTarget.setActive(true);			
+			}
+
+			public void onViewRemoved(Container nodeView) {
+				// TODO Auto-generated method stub				
+			}
+			
+		});
+	}	
 
 	private void addPluginDefaults() {
 		final URL defaults = this.getClass().getResource(ResourceController.PLUGIN_DEFAULTS_RESOURCE);
