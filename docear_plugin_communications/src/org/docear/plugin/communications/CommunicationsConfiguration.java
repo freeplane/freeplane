@@ -16,6 +16,7 @@ import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.IPropertyControlCreator;
 import org.freeplane.core.resources.components.PropertyBean;
 import org.freeplane.core.ui.OptionPanelButtonListener;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -78,19 +79,10 @@ public class CommunicationsConfiguration implements ActionListener {
 			switch (response.getClientResponseStatus()) {
 
 			case BAD_REQUEST:
-				JOptionPane.showMessageDialog(null,
-						"user.name.is.not.allowed.to.be.empty", "error",
-						JOptionPane.OK_OPTION);
 				return ValidationState.NOT_VALID;
 			case UNAUTHORIZED:
-				JOptionPane.showMessageDialog(null,
-						"user.name.or.password.wrong", "error",
-						JOptionPane.OK_OPTION);
 				return ValidationState.NOT_VALID;
-			case OK:
-				String username = response.getEntity(String.class);
-				System.out.println("debug username: " + username);
-
+			case OK:								
 				return ValidationState.VALID;
 			default:
 				return ValidationState.EXCEPTION;
@@ -137,12 +129,17 @@ public class CommunicationsConfiguration implements ActionListener {
 			ValidationState state = this.validateUserData();
 			if (state == ValidationState.VALID) {
 				JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getFrame(),
-						"account_credentials are valid", "information",
+						TextUtils.getText("account_credentials_valid"), "information",
 						JOptionPane.INFORMATION_MESSAGE);
+			}
+			else if(state == ValidationState.NOT_VALID) {
+				JOptionPane.showMessageDialog(null,
+						TextUtils.getText("account_credentials_invalid"), "error",
+						JOptionPane.ERROR_MESSAGE);
 			}
 			else {
 				JOptionPane.showMessageDialog(null,
-						"could not connect to webservice", "error",
+						TextUtils.getText("webservice_unreachable"), "error",
 						JOptionPane.ERROR_MESSAGE);
 			}
 			
