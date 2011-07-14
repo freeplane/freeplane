@@ -486,42 +486,87 @@
 		<menu_action action="CenterSelectedNodeAction" accelerator="control alt C" />
 	</menu_category>
 	<menu_category name="node_popup">
-		<menu_submenu name="new_node">
-			<menu_action action="NewChildAction" accelerator="INSERT" />
-			<menu_action action="NewSiblingAction" accelerator="ENTER" />
-			<menu_action action="NewPreviousSiblingAction" accelerator="shift ENTER" />
-			<menu_action action="NewParentNode" accelerator="shift INSERT" />					
+		<menu_submenu name="edit" name_ref="edit">			
+			<menu_category name="paste">
+				<menu_action action="CutAction" accelerator="control X" />
+				<menu_action action="CopyAction" accelerator="control C" />
+				<menu_action action="PasteAction" accelerator="control V" />
+				<menu_action action="SelectedPasteAction" />
+			</menu_category>
+			<menu_separator />
+			<menu_action action="CopySingleAction" accelerator="control shift C" />
+			<menu_action action="CopyIDAction" />
+			<menu_separator />
+			<menu_action action="FormatCopy" accelerator="alt shift C" />
+			<menu_action action="FormatPaste" accelerator="alt shift V" />
+			<menu_separator />
+			<menu_action action="CopyAttributes" />
+			<menu_action action="PasteAttributes" />
 		</menu_submenu>
-		<menu_submenu name="summary_nodes">
-			<menu_action action="NewSummaryAction"/>
-			<menu_action action="FirstGroupNodeAction"/>
-			<menu_action action="SummaryNodeAction" />
+		<menu_submenu name="nodes" name_ref="menu_nodes">
+			<menu_category name="insert_delete">
+				<menu_action action="NewChildAction" accelerator="INSERT" />
+				<menu_action action="NewSiblingAction" accelerator="ENTER" />
+				<menu_action action="NewPreviousSiblingAction" accelerator="shift ENTER" />
+				<menu_action action="NewParentNode" accelerator="shift INSERT" />		
+			</menu_category>			
+			<menu_separator/>
+			<menu_category name="edit">
+				<menu_action action="EditAction" accelerator="F2" />
+				<menu_action action="EditLongAction" accelerator="alt ENTER" />
+			</menu_category>				
+			<menu_separator/>
+			<menu_category name="join">
+				<menu_action action="JoinNodesAction" accelerator="control J" />
+				<menu_action action="SplitNode" />
+			</menu_category>
+			<menu_separator/>
+			<menu_action action="SetShortenerStateAction" />	
+			<menu_action action="AddConnectorAction" accelerator="control L" />						
+			<menu_category name="position">			
+				<menu_action action="ResetNodeLocationAction" />			
+			</menu_category>		
+			<menu_separator/>			
+			<menu_category name="remove">
+				<menu_action action="DeleteAction" accelerator="DELETE" />
+			</menu_category>	
 		</menu_submenu>
-		<menu_action action="DeleteAction" />					
-		<menu_separator />
-		<!-- Useless in this contextual menu ?
-		<menu_category name="view_or_hide">
-			<menu_action action="SetShortenerStateAction" />
-			<menu_action action="ToggleDetailsAction"/>
-		</menu_category>
-		<menu_separator />
-		Comment end --> 
 		<menu_submenu name="node features" name_ref="menu_node_features">
+			<menu_submenu name="details" name_ref="menu_details">
+				<menu_action action="EditDetailsAction"/>
+				<menu_action action="EditDetailsInDialogAction"/>
+				<menu_action action="DeleteDetailsAction"/>		
+			</menu_submenu>
+			<menu_submenu name="attributes" name_ref="menu_attributes">
+				<menu_action action="attributes_AddAttributeAction"/>
+				<menu_action action="AddStyleAttributes" />
+				<menu_separator/>
+				<menu_action action="EditAttributesAction" accelerator="alt F9"/>
+				<menu_action action="AssignAttributesAction" />							
+				<menu_separator/>
+				<menu_action action="attributes_RemoveFirstAttributeAction"/>
+				<menu_action action="attributes_RemoveLastAttributeAction"/>
+				<menu_action action="attributes_RemoveAllAttributesAction"/>				
+				<menu_separator/>				
+				<menu_action action="ShowAttributeDialogAction" />
+			</menu_submenu>			
+			<menu_submenu name="notes" name_ref="menu_notes">
+				<menu_action action="EditNoteInDialogAction" />
+				<menu_action action="RemoveNoteAction" />				
+			</menu_submenu>		
+			<menu_separator/>
 			<menu_submenu name="icons" name_ref="icon_menu">
 				<menu_category name="actions">
 					<menu_action action="IconSelectionPlugin" accelerator="control F2"/>
-				</menu_category>
+				</menu_category>	
+				<menu_separator />				
+				<menu_category name="icons list" menu_key="popup_menu_icons">
+				</menu_category>	
 				<menu_separator />
-				<menu_category name="automaticLayout2">
-					<menu_action action="HierarchicalIconsAction" />
-					<menu_action action="HierarchicalIcons2Action" />
-				</menu_category>
-				<menu_separator />
-				<menu_category name="remove icons" menu_key="popup_menu_icons">
+				<menu_category name="remove icons" >
 					<menu_action action="RemoveIcon_0_Action" />
 					<menu_action action="RemoveIconAction" />
-					<menu_action action="RemoveAllIconsAction" />
-					<menu_separator/>
+					<menu_action action="RemoveAllIconsAction" />					
 				</menu_category>
 			</menu_submenu>
 			<menu_submenu name="image" name_ref="menu_image">
@@ -540,7 +585,6 @@
 				<menu_separator/>
 				<menu_action action="IconProgressRemoveAction" />
 			</menu_submenu>
-
 			<menu_separator/>
 			<menu_submenu name="links" name_ref="menu_links">
 				<menu_category name="sub links">
@@ -551,30 +595,7 @@
 					<menu_action action="AddLocalLinkAction" accelerator="alt shift L" />
 					<menu_action action="AddMenuItemLinkAction" accelerator="" />
 				</menu_category>
-			</menu_submenu>
-			<menu_separator/>
-			<menu_submenu name="notes" name_ref="menu_notes">
-				<menu_action action="EditNoteInDialogAction" />
-				<menu_action action="RemoveNoteAction" />				
-			</menu_submenu>			
-			<menu_submenu name="details" name_ref="menu_details">
-				<menu_action action="EditDetailsAction"/>
-				<menu_action action="EditDetailsInDialogAction"/>
-				<menu_action action="DeleteDetailsAction"/>		
-			</menu_submenu>
-			<menu_submenu name="attributes" name_ref="menu_attributes">
-				<menu_action action="attributes_AddAttributeAction"/>
-				<menu_action action="EditAttributesAction" accelerator="alt F9"/>
-				<menu_action action="AssignAttributesAction" />
-				<menu_separator/>
-				<menu_action action="AddStyleAttributes" />
-				<menu_separator/>
-				<menu_action action="attributes_RemoveFirstAttributeAction"/>
-				<menu_action action="attributes_RemoveLastAttributeAction"/>
-				<menu_action action="attributes_RemoveAllAttributesAction"/>				
-				<menu_separator/>				
-				<menu_action action="ShowAttributeDialogAction" />
-			</menu_submenu>
+			</menu_submenu>	
 			<menu_separator/>
 			<menu_submenu name="time" name_ref="menu_time">
 				<menu_category name="time_management">
@@ -660,23 +681,28 @@
 			<menu_separator />
 			<menu_action action="RemoveFormatAction"/>
 		</menu_submenu>
-		<menu_separator />
-		<menu_category name="EditAction">
-			<menu_action action="EditAction" />
-			<menu_action action="EditLongAction" />
-		</menu_category>		
-		<menu_category name="join">
-			<menu_action action="JoinNodesAction" accelerator="control J" />
-			<menu_action action="SplitNode" />
-		</menu_category>
-		<menu_action action="ResetNodeLocationAction" />
-		<menu_category name="PasteAction">
-			<menu_action action="CutAction" />
-			<menu_action action="CopyAction" />
-			<menu_action action="PasteAction" />
-		</menu_category>
-		<menu_action action="FormatCopy" accelerator="alt shift C" />
-		<menu_action action="FormatPaste" accelerator="alt shift V" />
+		<menu_submenu name="navigate" name_ref="menu_navigate">
+			<menu_category name="navigate">				
+				<menu_action action="CenterSelectedNodeAction" accelerator="control alt C" />
+				<menu_separator />
+				<menu_category name="folding">
+					<menu_action action="ToggleFoldedAction" accelerator="SPACE" />
+					<menu_action action="ToggleChildrenFoldedAction" accelerator="control SPACE" />
+					<menu_action action="UnfoldOneLevelAction" accelerator="alt PAGE_DOWN" />
+					<menu_action action="FoldOneLevelAction" accelerator="alt PAGE_UP" />
+					<menu_action action="UnfoldAllAction" accelerator="alt END" />
+					<menu_action action="FoldAllAction" accelerator="alt HOME" />				
+				</menu_category>
+				<menu_separator />
+				<menu_action action="MoveToRootAction" accelerator="ESCAPE" />
+				<menu_action action="GotoNodeAction"/>				
+			</menu_category>			
+			<menu_separator />
+			<menu_category name="links">
+				<menu_action action="FollowLinkAction" accelerator="control ENTER" />
+				<!-- goto -->
+			</menu_category>
+		</menu_submenu>
 	</menu_category>
 	<menu_category name="main_toolbar">
 		<menu_separator />
