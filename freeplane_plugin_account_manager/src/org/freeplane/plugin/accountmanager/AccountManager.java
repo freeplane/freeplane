@@ -4,23 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Properties;
-import java.util.Vector;
-
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.components.IPropertyControl;
-import org.freeplane.core.resources.components.IPropertyControlCreator;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
-import org.freeplane.core.resources.components.PropertyBean;
 import org.freeplane.core.ui.IndexedTree;
-import org.freeplane.core.ui.OptionPanelButtonListener;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -30,12 +21,11 @@ public class AccountManager implements IFreeplanePropertyListener, ActionListene
 	private static Hashtable<String, Account> accountList = new Hashtable<String, Account>();
 	private static List<String> accountInitBuffer = new ArrayList<String>();
 	private static boolean isInitialized = false;
-	private boolean isWorking = false;
-	private static String secretString;
+	private boolean isWorking = false;	
 	
 	public AccountManager() {
 		MModeController modeController = (MModeController) Controller.getCurrentModeController();
-		OptionPanelButtonListener.addButtonListener(this);
+		Controller.getCurrentController().getOptionPanelController().addButtonListener(this);
 		
 		final URL preferences = this.getClass().getResource("preferences.xml");
 		if (preferences == null)
@@ -57,9 +47,7 @@ public class AccountManager implements IFreeplanePropertyListener, ActionListene
 		OptionPanelBuilder builder = modeController.getOptionPanelBuilder();
 		builder.addTab("account_manager", "right:max(40dlu;p), 4dlu, 200dlu:grow, 7dlu", IndexedTree.PREPEND);
 		isInitialized = true;
-		buildOptionUI();
-		secretString = "Docear 4 world domination!";
-		
+		buildOptionUI();		
 	}
 	
 	

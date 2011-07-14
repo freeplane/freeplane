@@ -1,5 +1,9 @@
 package org.freeplane.core.resources;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -8,6 +12,18 @@ import org.freeplane.core.resources.components.PropertyBean;
 
 public class OptionPanelController {	
 	private Vector<IPropertyControl> propertyControls = new Vector<IPropertyControl>();
+	private List<ActionListener> list = new ArrayList<ActionListener>();	
+	
+	public void addButtonListener(ActionListener listener) {
+		list.add(listener);
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		for(ActionListener listener : list) {
+			listener.actionPerformed(e);
+		}
+
+	}
 	
 	public void setCurrentPropertyControls(final Vector<IPropertyControl> props) {
 		this.propertyControls = props;
