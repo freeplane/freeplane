@@ -10,7 +10,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.OptionPanelButtonListener;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.accountmanager.AccountManager;
 
 import com.sun.jersey.api.client.Client;
@@ -40,11 +40,7 @@ public class CommunicationsConfiguration implements ActionListener {
 	}
 	
 	private void addPropertiesToOptionPanel() {
-		final URL preferences = this.getClass().getResource("preferences.xml");
-		if (preferences == null)
-			throw new RuntimeException("cannot open preferences");
-		MModeController modeController = (MModeController) Controller.getCurrentModeController();
-		
+		ModeController modeController = Controller.getCurrentModeController();
 		ResourceBundles resBundle = ((ResourceBundles)modeController.getController().getResourceController().getResources());
 		
 		String lang = resBundle.getLanguageCode();
@@ -53,9 +49,8 @@ public class CommunicationsConfiguration implements ActionListener {
 		}
 		
 		final URL res = this.getClass().getResource("/translations/Resources_"+lang+".properties");
-		resBundle.addResources(resBundle.getLanguageCode(), res);		
-		modeController.getOptionPanelBuilder().load(preferences);
-
+		resBundle.addResources(resBundle.getLanguageCode(), res);	
+		
 	}
 
 	public ValidationState validateUserData() {
