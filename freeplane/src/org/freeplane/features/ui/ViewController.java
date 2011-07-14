@@ -29,6 +29,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics2D;
+import java.awt.KeyboardFocusManager;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -725,6 +726,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 
 	void setFullScreen(final boolean fullScreen) {
 		final Frame frame = getFrame();
+		final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 		if (fullScreen == isFullScreenEnabled()) {
 			return;
 		}
@@ -762,6 +764,8 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			}
 			frame.setVisible(true);
 		}
+		if(focusOwner != null)
+		    focusOwner.requestFocus();
 	}
 
 	boolean isToolbarVisible(final JComponent toolBar) {
