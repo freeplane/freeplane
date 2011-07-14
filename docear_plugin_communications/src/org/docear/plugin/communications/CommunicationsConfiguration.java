@@ -3,14 +3,22 @@ package org.docear.plugin.communications;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
+import java.util.Enumeration;
+import java.util.Properties;
+import java.util.Vector;
 
 import javax.swing.JOptionPane;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.IPropertyControlCreator;
+import org.freeplane.core.resources.components.PropertyBean;
 import org.freeplane.core.ui.OptionPanelButtonListener;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.accountmanager.AccountManager;
 
 import com.sun.jersey.api.client.Client;
@@ -87,10 +95,7 @@ public class CommunicationsConfiguration implements ActionListener {
 			default:
 				return ValidationState.EXCEPTION;
 			}
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null,
-					"could not connect to webservice", "error",
-					JOptionPane.OK_OPTION);
+		} catch (Exception e) {			
 			return ValidationState.EXCEPTION;
 			// String msg = "Could not validate Userdata:  Username: "
 			// +username+"; ";
@@ -125,11 +130,24 @@ public class CommunicationsConfiguration implements ActionListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		System.out.println("DOCEAR actionPErformed: " + e.toString());
+	public void actionPerformed(ActionEvent e) {		
+		//ResourceController.getResourceController().getPropertyChangeListeners().ge
+		System.out.println("DOCEAR actionPerformed: " + e.toString());
 		if (e.getActionCommand().equals("docear_validate_credentials")) {			
-			this.validateUserData();
+			ValidationState state = this.validateUserData();
+			if (state == ValidationState.VALID) {
+				JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getFrame(),
+						"account_credentials are valid", "information",
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+			else {
+				JOptionPane.showMessageDialog(null,
+						"could not connect to webservice", "error",
+						JOptionPane.ERROR_MESSAGE);
+			}
+			
+				
 		}
 	}
-
+	
 }

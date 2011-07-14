@@ -44,6 +44,7 @@ import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IValidator.ValidationResult;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.OptionPanelButtonListener;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -110,6 +111,7 @@ public class OptionPanel {
 		String lastTabName = null;
 		initControls(controlsTree);
 		final Iterator<IPropertyControl> iterator = controls.iterator();
+		OptionPanelButtonListener.setPropertyControls(controls);
 		while (iterator.hasNext()) {
 			final IPropertyControl control = iterator.next();
 			if (control instanceof TabProperty) {

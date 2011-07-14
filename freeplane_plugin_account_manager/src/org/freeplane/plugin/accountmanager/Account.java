@@ -74,4 +74,8 @@ public abstract class Account {
 		this.buttonAction = buttonAction;
 	}
 	
+	public String toString() {
+		return "Account[name="+this.getAccountName()+";username="+this.getUsername()+";password="+this.getPassword()+";buttonText="+this.getButtonText()+";buttonAction="+this.getButtonAction()+"]\n";
+	}
+	
 }
