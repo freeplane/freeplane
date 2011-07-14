@@ -10,6 +10,7 @@ import org.docear.plugin.pdfutilities.actions.DocearPasteAction;
 import org.docear.plugin.pdfutilities.actions.ImportAllAnnotationsAction;
 import org.docear.plugin.pdfutilities.actions.ImportNewAnnotationsAction;
 import org.docear.plugin.pdfutilities.actions.RadioButtonAction;
+import org.docear.plugin.pdfutilities.listener.DocearNodeDropListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IMenuContributor;

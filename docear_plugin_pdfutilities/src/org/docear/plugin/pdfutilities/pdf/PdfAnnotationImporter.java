@@ -1,4 +1,4 @@
-package org.docear.plugin.pdfutilities;
+package org.docear.plugin.pdfutilities.pdf;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.docear.plugin.pdfutilities.util.Tools;
 
 import de.intarsys.pdf.cds.CDSRectangle;
 import de.intarsys.pdf.parser.COSLoadException;

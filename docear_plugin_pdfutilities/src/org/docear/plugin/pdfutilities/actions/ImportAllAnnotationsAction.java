@@ -5,14 +5,15 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
-import org.docear.plugin.pdfutilities.NodeUtils;
-import org.docear.plugin.pdfutilities.PdfAnnotation;
-import org.docear.plugin.pdfutilities.PdfAnnotationImporter;
+import org.docear.plugin.pdfutilities.pdf.PdfAnnotation;
+import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
+import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+
 
 import de.intarsys.pdf.parser.COSLoadException;
 
