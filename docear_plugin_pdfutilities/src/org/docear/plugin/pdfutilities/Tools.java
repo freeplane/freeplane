@@ -3,7 +3,12 @@ package org.docear.plugin.pdfutilities;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
@@ -26,5 +31,26 @@ public class Tools {
 			return null;
 		}
 	}
+	
+	public static List<File> textURIListToFileList(String data) {
+	    List<File> list = new ArrayList<File>();
+	    StringTokenizer stringTokenizer = new StringTokenizer(data, "\r\n");
+	    while(stringTokenizer.hasMoreTokens()) {
+	    	String string = stringTokenizer.nextToken();
+	    	// the line is a comment (as per the RFC 2483)
+	    	if (string.startsWith("#")) continue;
+		    		    
+			try {
+				URI uri = new URI(string);
+				File file = new File(uri);
+			    list.add(file);
+			} catch (URISyntaxException e) {
+				LogUtils.warn("DocearNodeDropListener could not parse uri to file because an URISyntaxException occured. URI: " + string);
+			} catch (IllegalArgumentException e) {
+				LogUtils.warn("DocearNodeDropListener could not parse uri to file because an IllegalArgumentException occured. URI: " + string);
+		    }	    
+	    }	     
+	    return list;
+	}	
 
 }
