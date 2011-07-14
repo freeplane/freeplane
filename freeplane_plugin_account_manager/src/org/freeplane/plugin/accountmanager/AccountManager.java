@@ -130,7 +130,7 @@ public class AccountManager implements IFreeplanePropertyListener, ActionListene
 
 
 	public void actionPerformed(ActionEvent e) {
-		Properties props = getOptionProperties();
+		Properties props = Controller.getCurrentController().getOptionPanelController().getCurrentOptionProperties();
 		for(String key : accountList.keySet()) {
 			Account account = accountList.get(key);
 			if (e.getActionCommand().equals(account.getButtonAction())) {
@@ -139,23 +139,4 @@ public class AccountManager implements IFreeplanePropertyListener, ActionListene
 			}
 		}
 	}
-		
-	
-	private Properties getOptionProperties() {
-		final Properties p = new Properties();
-		Vector<IPropertyControl> controls = OptionPanelButtonListener.getPropertyControls(); 
-		for (final IPropertyControl control : controls) {
-			if (control instanceof PropertyBean) {
-				final PropertyBean bean = (PropertyBean) control;
-				final String value = bean.getValue();				
-				if (value != null) {
-					p.setProperty(bean.getName(), value);
-				}
-			}
-		}
-		return p;
-	}
-	
-	
-
 }

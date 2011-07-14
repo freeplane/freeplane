@@ -4,13 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
-
-import org.freeplane.core.resources.components.IPropertyControl;
 
 public class OptionPanelButtonListener implements ActionListener {
 	private static List<ActionListener> list = new ArrayList<ActionListener>();
-	private static Vector<IPropertyControl> propertyControls = new Vector<IPropertyControl>();
+	
 	
 	
 	public static void addButtonListener(ActionListener listener) {
@@ -24,12 +21,6 @@ public class OptionPanelButtonListener implements ActionListener {
 
 	}
 	
-	public static void setPropertyControls(final Vector<IPropertyControl> props) {
-		propertyControls = props;
-	}
 	
-	public static Vector<IPropertyControl> getPropertyControls() {
-		return propertyControls;
-	}
 
 }
