@@ -62,7 +62,9 @@ public class CommunicationsConfiguration implements ActionListener {
 		MultivaluedMap<String, String> formParams = new MultivaluedMapImpl();
 		formParams.add(USERNAME, this.account.getUsername());
 		formParams.add(PASSWORD, this.account.getPassword());
+		final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 		try {
+			Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
 			Client client = Client.create();
 			client.setConnectTimeout(10000);
 			client.setReadTimeout(70000);
@@ -105,6 +107,9 @@ public class CommunicationsConfiguration implements ActionListener {
 			// else{
 			// return ValidationState.CONNECTION_PROBLEM;
 			// }
+		}
+		finally{
+			Thread.currentThread().setContextClassLoader(contextClassLoader);			
 		}
 	}
 
