@@ -89,16 +89,6 @@ public class CommunicationsConfiguration implements ActionListener {
 			}
 		} catch (Exception e) {			
 			return ValidationState.EXCEPTION;
-			// String msg = "Could not validate Userdata:  Username: "
-			// +username+"; ";
-			// SciPloreUtils.log(SciPloreWebClient.class.getName(), msg,
-			// Level.WARNING);
-			// if(isInternetReachable()){
-			// return ValidationState.SERVICE_DOWN;
-			// }
-			// else{
-			// return ValidationState.CONNECTION_PROBLEM;
-			// }
 		}
 		finally{
 			Thread.currentThread().setContextClassLoader(contextClassLoader);			
@@ -122,10 +112,8 @@ public class CommunicationsConfiguration implements ActionListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {		
-		//ResourceController.getResourceController().getPropertyChangeListeners().ge
-		System.out.println("DOCEAR actionPerformed: " + e.toString());
-		if (e.getActionCommand().equals("docear_validate_credentials")) {			
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals(DocearAccount.VALIDATE)) {			
 			ValidationState state = this.validateUserData();
 			if (state == ValidationState.VALID) {
 				JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getFrame(),
