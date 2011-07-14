@@ -110,6 +110,8 @@ public class OptionPanel {
 		String lastTabName = null;
 		initControls(controlsTree);
 		final Iterator<IPropertyControl> iterator = controls.iterator();
+		//MaG: 
+		Controller.getCurrentController().getOptionPanelController().setCurrentPropertyControls(controls);
 		while (iterator.hasNext()) {
 			final IPropertyControl control = iterator.next();
 			if (control instanceof TabProperty) {

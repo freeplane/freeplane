@@ -22,14 +22,12 @@ package org.freeplane.core.resources.components;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 
 import javax.swing.Icon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 
-import org.freeplane.core.ui.OptionPanelButtonListener;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.mode.Controller;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.RowSpec;
@@ -44,8 +42,7 @@ public class ActionProperty extends PropertyBean implements IPropertyControl {
 	private String labelText;
 	private String actionCommand;
 	JButton mButton = new JButton();	
-	private OptionPanelButtonListener buttonListener = new OptionPanelButtonListener();
-
+	
 	/**
 	 */
 	public ActionProperty(final String name, final String actionCommand) {
@@ -61,7 +58,7 @@ public class ActionProperty extends PropertyBean implements IPropertyControl {
 	public void layout(final DefaultFormBuilder builder) {
 		mButton.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
-				buttonListener.actionPerformed(arg0);
+				Controller.getCurrentController().getOptionPanelController().actionPerformed(arg0);
 			}
 		});
 		mButton.setActionCommand(this.actionCommand);

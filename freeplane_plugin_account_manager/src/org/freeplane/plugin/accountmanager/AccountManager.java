@@ -1,29 +1,31 @@
 package org.freeplane.plugin.accountmanager;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Properties;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 
-public class AccountManager implements IFreeplanePropertyListener {
+public class AccountManager implements IFreeplanePropertyListener, ActionListener {
 	
 	private static Hashtable<String, Account> accountList = new Hashtable<String, Account>();
 	private static List<String> accountInitBuffer = new ArrayList<String>();
 	private static boolean isInitialized = false;
-	private boolean isWorking = false;
-	private static String secretString;
+	private boolean isWorking = false;	
 	
 	public AccountManager() {
 		MModeController modeController = (MModeController) Controller.getCurrentModeController();
+		Controller.getCurrentController().getOptionPanelController().addButtonListener(this);
 		
 		final URL preferences = this.getClass().getResource("preferences.xml");
 		if (preferences == null)
@@ -45,9 +47,7 @@ public class AccountManager implements IFreeplanePropertyListener {
 		OptionPanelBuilder builder = modeController.getOptionPanelBuilder();
 		builder.addTab("account_manager", "right:max(40dlu;p), 4dlu, 200dlu:grow, 7dlu", IndexedTree.PREPEND);
 		isInitialized = true;
-		buildOptionUI();
-		secretString = "Docear 4 world domination!";
-		
+		buildOptionUI();		
 	}
 	
 	
@@ -60,8 +60,11 @@ public class AccountManager implements IFreeplanePropertyListener {
 		LogUtils.info("Account ("+ accountName +") registered.");		
 	}
 
-	private static void inititializeAccount(String accountName, Account account) {		
-		ResourceController rc = Controller.getCurrentController().getResourceController();
+	private static void inititializeAccount(String accountName, Account account) {
+		inititializeAccount(accountName, account, Controller.getCurrentController().getResourceController().getProperties());
+	}
+	
+	private static void inititializeAccount(String accountName, Account account, Properties rc) {
 		// read username from properties
 		String property = rc.getProperty(accountName + ".username", null);
 		if(property != null)
@@ -112,7 +115,16 @@ public class AccountManager implements IFreeplanePropertyListener {
 		}
 		isWorking = false;
 	}
-	
-	
 
+
+	public void actionPerformed(ActionEvent e) {
+		Properties props = Controller.getCurrentController().getOptionPanelController().getCurrentOptionProperties();
+		for(String key : accountList.keySet()) {
+			Account account = accountList.get(key);
+			if (e.getActionCommand().equals(account.getButtonAction())) {
+				String accountName = account.getAccountName().replaceAll("/^[a-zA-Z0-9]+/i", "_");
+				inititializeAccount(accountName, account, props);				
+			}
+		}
+	}
 }

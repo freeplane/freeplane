@@ -8,7 +8,6 @@ import javax.swing.JOptionPane;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.freeplane.core.resources.ResourceBundles;
-import org.freeplane.core.ui.OptionPanelButtonListener;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.accountmanager.AccountManager;
@@ -34,7 +33,7 @@ public class CommunicationsConfiguration implements ActionListener {
 		System.out.println(multipartconfig==null? "null":multipartconfig.toString());
 		addPropertiesToOptionPanel();
 		
-		OptionPanelButtonListener.addButtonListener(this);
+		Controller.getCurrentController().getOptionPanelController().addButtonListener(this);
 		this.account = new DocearAccount();
 		AccountManager.registerAccount(account);
 	}
@@ -87,10 +86,7 @@ public class CommunicationsConfiguration implements ActionListener {
 			default:
 				return ValidationState.EXCEPTION;
 			}
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null,
-					"could not connect to webservice", "error",
-					JOptionPane.OK_OPTION);
+		} catch (Exception e) {			
 			return ValidationState.EXCEPTION;
 			// String msg = "Could not validate Userdata:  Username: "
 			// +username+"; ";
@@ -125,11 +121,24 @@ public class CommunicationsConfiguration implements ActionListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		System.out.println("DOCEAR actionPErformed: " + e.toString());
+	public void actionPerformed(ActionEvent e) {		
+		//ResourceController.getResourceController().getPropertyChangeListeners().ge
+		System.out.println("DOCEAR actionPerformed: " + e.toString());
 		if (e.getActionCommand().equals("docear_validate_credentials")) {			
-			this.validateUserData();
+			ValidationState state = this.validateUserData();
+			if (state == ValidationState.VALID) {
+				JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getFrame(),
+						"account_credentials are valid", "information",
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+			else {
+				JOptionPane.showMessageDialog(null,
+						"could not connect to webservice", "error",
+						JOptionPane.ERROR_MESSAGE);
+			}
+			
+				
 		}
 	}
-
+	
 }
