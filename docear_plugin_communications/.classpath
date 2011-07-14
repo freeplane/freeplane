@@ -4,8 +4,8 @@
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="lib" path="lib/jersey-client-1.1.5.1.jar" sourcepath="/home/dimitry/Downloads/jersey-client-1.1.5.1-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jersey-core-1.1.5.1.jar" sourcepath="/home/dimitry/Downloads/jersey-core-1.1.5.1-sources.jar"/>
+	<classpathentry kind="lib" path="lib/jersey-client-1.1.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/jersey-core-1.1.5.1.jar"/>
 	<classpathentry kind="lib" path="lib/jersey-multipart-1.1.5.1.jar"/>
 	<classpathentry kind="lib" path="lib/jsr311-api-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/mimepull-1.3.jar"/>
