@@ -126,8 +126,10 @@ public class ScriptingEngine {
 		else {
 			scriptingSecurityManager = null;
 		}
+        final ClassLoader initialContextClassLoader = Thread.currentThread().getContextClassLoader();
 		try {
 			System.setOut(pOutStream);
+            Thread.currentThread().setContextClassLoader(ScriptingEngine.class.getClassLoader());
 			final GroovyShell shell = new GroovyShell(binding, createCompilerConfiguration()) {
 				/**
 				 * Evaluates some script against the current Binding and returns the result
@@ -197,6 +199,7 @@ public class ScriptingEngine {
 			throw new ExecuteScriptException(e.getMessage(), e);
 		}
 		finally {
+		    Thread.currentThread().setContextClassLoader(initialContextClassLoader);
 			System.setOut(oldOut);
 			/* restore preferences (and assure that the values are unchanged!). */
 			scriptingPermissions.restorePermissions();
