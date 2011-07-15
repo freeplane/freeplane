@@ -19,8 +19,6 @@
 package org.freeplane.plugin.script;
 
 import groovy.lang.Binding;
-import groovy.lang.GroovyClassLoader;
-import groovy.lang.GroovyCodeSource;
 import groovy.lang.GroovyRuntimeException;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
@@ -130,34 +128,30 @@ public class ScriptingEngine {
 		}
 		try {
 			System.setOut(pOutStream);
-			final GroovyShell shell = new GroovyShell(ScriptingEngine.class.getClassLoader(), binding, createCompilerConfiguration()) {
-			    /**
-			     * Evaluates some script against the current Binding and returns the result
-			     *
-			     * @param codeSource
-			     * @throws CompilationFailedException
-			     */
-			    public Object evaluate(GroovyCodeSource codeSource) throws CompilationFailedException {
-                    Script script = null;
-                    final ClassLoader initialContextClassLoader = Thread.currentThread().getContextClassLoader();
-                    try {
-                        final GroovyClassLoader groovyClassLoader = getClassLoader();
-                        Thread.currentThread().setContextClassLoader(groovyClassLoader);
-                        script = parse(codeSource);
-                        script.setBinding(getContext());
-                        if (needsSecurityManager)
-                            securityManager.setFinalSecurityManager(scriptingSecurityManager);
-                        return script.run();
-                    }
-                    finally {
-                        Thread.currentThread().setContextClassLoader(initialContextClassLoader);
-                        if (script != null) {
-                            InvokerHelper.removeClass(script.getClass());
-                            if (needsSecurityManager)
-                                securityManager.removeFinalSecurityManager(scriptingSecurityManager);
-                        }
-                    }
-			    }
+			final GroovyShell shell = new GroovyShell(binding, createCompilerConfiguration()) {
+				/**
+				 * Evaluates some script against the current Binding and returns the result
+				 *
+				 * @param in       the stream reading the script
+				 * @param fileName is the logical file name of the script (which is used to create the class name of the script)
+				 */
+				@Override
+				public Object evaluate(final InputStream in, final String fileName) throws CompilationFailedException {
+					Script script = null;
+					try {
+						script = parse(in, fileName);
+						if (needsSecurityManager)
+							securityManager.setFinalSecurityManager(scriptingSecurityManager);
+						return script.run();
+					}
+					finally {
+						if (script != null) {
+							InvokerHelper.removeClass(script.getClass());
+							if (needsSecurityManager)
+								securityManager.removeFinalSecurityManager(scriptingSecurityManager);
+						}
+					}
+				}
 			};
 			Object result = shell.evaluate(script);
 			if (assignResult && result != null) {
