@@ -8,7 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.util.Tools;
+import org.freeplane.core.resources.ResourceController;
 
 import de.intarsys.pdf.cds.CDSRectangle;
 import de.intarsys.pdf.parser.COSLoadException;
@@ -66,6 +68,9 @@ public class PdfAnnotationImporter {
 	
 	private List<PdfAnnotation> importBookmarks(PDOutlineNode parent){
 		List<PdfAnnotation> annotations = new ArrayList<PdfAnnotation>();
+		if(!ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.IMPORT_BOOKMARKS_KEY)){
+			return annotations;
+		}
 		if(parent == null) return annotations;
 		@SuppressWarnings("unchecked")
 		List<PDOutlineItem> children = parent.getChildren();
@@ -83,6 +88,8 @@ public class PdfAnnotationImporter {
 	
 	private List<PdfAnnotation> importAnnotations(PDDocument document){
 		List<PdfAnnotation> annotations = new ArrayList<PdfAnnotation>();
+		boolean importComments = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.IMPORT_COMMENTS_KEY);
+		boolean importHighlightedTexts = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.IMPORT_HIGHLIGHTED_TEXTS_KEY);
 		String lastString = "";
 		
 		@SuppressWarnings("unchecked")
@@ -105,14 +112,14 @@ public class PdfAnnotationImporter {
                    anno_rec.getUpperRightX() < page_rec.getLowerLeftX() ||
                    anno_rec.getUpperRightY() < page_rec.getLowerLeftY())  continue;
             }
-            if(annotation.getClass() == PDAnyAnnotation.class || annotation.getClass() == PDTextAnnotation.class){
+            if((annotation.getClass() == PDAnyAnnotation.class || annotation.getClass() == PDTextAnnotation.class) && importComments){
             	PdfAnnotation pdfAnnotation = new PdfAnnotation();
             	pdfAnnotation.setFile(currentFile);
             	pdfAnnotation.setTitle(annotation.getContents()); 
             	pdfAnnotation.setAnnotationType(PdfAnnotation.COMMENT);
     			annotations.add(pdfAnnotation);
             }
-            if(annotation.getClass() == PDTextMarkupAnnotation.class || annotation.getClass() == PDHighlightAnnotation.class){
+            if((annotation.getClass() == PDTextMarkupAnnotation.class || annotation.getClass() == PDHighlightAnnotation.class) && importHighlightedTexts){
             	PdfAnnotation pdfAnnotation = new PdfAnnotation();
             	pdfAnnotation.setFile(currentFile);
             	pdfAnnotation.setTitle(annotation.getContents()); 

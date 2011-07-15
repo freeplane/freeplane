@@ -35,12 +35,23 @@ import org.freeplane.view.swing.map.NodeView;
 
 public class PdfUtilitiesController {
 	
+	public static final String OPEN_ON_PAGE_READER_PATH_KEY = "docear_open_on_page_reader_path";
+	public static final String OPEN_PDF_VIEWER_ON_PAGE_KEY = "docear_open_on_page";
+	public static final String OPEN_INTERNAL_PDF_VIEWER_KEY = "docear_open_internal";
+	public static final String OPEN_STANDARD_PDF_VIEWER_KEY = "docear_open_standard";
+	public static final String AUTO_IMPORT_ANNOTATIONS_KEY = "docear_automatic_annotation_import";
+	public static final String IMPORT_BOOKMARKS_KEY = "docear_import_bookmarks";
+	public static final String IMPORT_COMMENTS_KEY = "docear_import_comments";
+	public static final String IMPORT_HIGHLIGHTED_TEXTS_KEY = "docear_import_highlighted_text";
+	
+	
+	
+	
 	public static final String MENU_BAR = "/menu_bar";
 	public static final String NODE_POPUP_MENU = "/node_popup";
 	public static final String NODE_FEATURES_MENU = "/node features";
 	public static final String STYLES_MENU = "/styles";
-	public static final String PDF_MANAGEMENT_MENU = "/pdf_management";
-	public static final String AUTO_IMPORT_PROP_KEY = "docear_automatic_annotation_import";
+	public static final String PDF_MANAGEMENT_MENU = "/pdf_management";	
 	public static final String AUTO_IMPORT_LANG_KEY = "menu_auto_import_annotations";
 	public static final String PDF_MANAGEMENT_MENU_LANG_KEY = "menu_pdf_utilities";
 	public static final String IMPORT_ALL_ANNOTATIONS_LANG_KEY = "menu_import_all_annotations";
@@ -83,7 +94,7 @@ public class PdfUtilitiesController {
 			    ResourceController resourceController =  ResourceController.getResourceController();
 			    
 				builder.addMenuItem(MENU_BAR + STYLES_MENU, new JMenu(TextUtils.getText(PDF_MANAGEMENT_MENU_LANG_KEY)), MENU_BAR + PDF_MANAGEMENT_MENU, MenuBuilder.AFTER);
-				builder.addRadioItem(MENU_BAR + PDF_MANAGEMENT_MENU, new RadioButtonAction(AUTO_IMPORT_LANG_KEY, AUTO_IMPORT_PROP_KEY), resourceController.getBooleanProperty(AUTO_IMPORT_PROP_KEY));
+				builder.addRadioItem(MENU_BAR + PDF_MANAGEMENT_MENU, new RadioButtonAction(AUTO_IMPORT_LANG_KEY, AUTO_IMPORT_ANNOTATIONS_KEY), resourceController.getBooleanProperty(AUTO_IMPORT_ANNOTATIONS_KEY));
 				builder.addAction(MENU_BAR + PDF_MANAGEMENT_MENU, importAllAnnotationsAction, MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + PDF_MANAGEMENT_MENU, importNewAnnotationsAction, MenuBuilder.AS_CHILD);
 				builder.addMenuItem(NODE_POPUP_MENU + NODE_FEATURES_MENU, new JMenu(TextUtils.getText(PDF_MANAGEMENT_MENU_LANG_KEY)), NODE_POPUP_MENU + PDF_MANAGEMENT_MENU, MenuBuilder.BEFORE);
@@ -116,23 +127,23 @@ public class PdfUtilitiesController {
 				Object source = event.getSource();
 				if(source != null && source instanceof JRadioButton){
 					JRadioButton radioButton = (JRadioButton)event.getSource();					
-					if(radioButton.getName().equals("open_standard")){
-						((RadioButtonProperty)optionController.getPropertyControl("open_standard")).setValue(true);
-						((RadioButtonProperty)optionController.getPropertyControl("open_internal")).setValue(false);
-						((RadioButtonProperty)optionController.getPropertyControl("open_on_page")).setValue(false);
-						((IPropertyControl)optionController.getPropertyControl("open_on_page_reader_path")).setEnabled(false);
+					if(radioButton.getName().equals(OPEN_STANDARD_PDF_VIEWER_KEY)){
+						((RadioButtonProperty)optionController.getPropertyControl(OPEN_STANDARD_PDF_VIEWER_KEY)).setValue(true);
+						((RadioButtonProperty)optionController.getPropertyControl(OPEN_INTERNAL_PDF_VIEWER_KEY)).setValue(false);
+						((RadioButtonProperty)optionController.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY)).setValue(false);
+						((IPropertyControl)optionController.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY)).setEnabled(false);
 					}
-					if(radioButton.getName().equals("open_internal")){
-						((RadioButtonProperty)optionController.getPropertyControl("open_internal")).setValue(true);
-						((RadioButtonProperty)optionController.getPropertyControl("open_standard")).setValue(false);
-						((RadioButtonProperty)optionController.getPropertyControl("open_on_page")).setValue(false);
-						((IPropertyControl)optionController.getPropertyControl("open_on_page_reader_path")).setEnabled(false);
+					if(radioButton.getName().equals(OPEN_INTERNAL_PDF_VIEWER_KEY)){
+						((RadioButtonProperty)optionController.getPropertyControl(OPEN_INTERNAL_PDF_VIEWER_KEY)).setValue(true);
+						((RadioButtonProperty)optionController.getPropertyControl(OPEN_STANDARD_PDF_VIEWER_KEY)).setValue(false);
+						((RadioButtonProperty)optionController.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY)).setValue(false);
+						((IPropertyControl)optionController.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY)).setEnabled(false);
 					}
-					if(radioButton.getName().equals("open_on_page")){
-						((RadioButtonProperty)optionController.getPropertyControl("open_internal")).setValue(false);
-						((RadioButtonProperty)optionController.getPropertyControl("open_standard")).setValue(false);
-						((RadioButtonProperty)optionController.getPropertyControl("open_on_page")).setValue(true);
-						((IPropertyControl)optionController.getPropertyControl("open_on_page_reader_path")).setEnabled(true);
+					if(radioButton.getName().equals(OPEN_PDF_VIEWER_ON_PAGE_KEY)){
+						((RadioButtonProperty)optionController.getPropertyControl(OPEN_INTERNAL_PDF_VIEWER_KEY)).setValue(false);
+						((RadioButtonProperty)optionController.getPropertyControl(OPEN_STANDARD_PDF_VIEWER_KEY)).setValue(false);
+						((RadioButtonProperty)optionController.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY)).setValue(true);
+						((IPropertyControl)optionController.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY)).setEnabled(true);
 					}
 				}			
 			}
@@ -141,26 +152,26 @@ public class PdfUtilitiesController {
 		optionController.addPropertyLoadListener(new PropertyLoadListener() {			
 			public void propertiesLoaded(Collection<IPropertyControl> properties) {
 							
-				((RadioButtonProperty)optionController.getPropertyControl("open_standard")).addPropertyChangeListener(new PropertyChangeListener() {			
+				((RadioButtonProperty)optionController.getPropertyControl(OPEN_STANDARD_PDF_VIEWER_KEY)).addPropertyChangeListener(new PropertyChangeListener() {			
 					public void propertyChange(PropertyChangeEvent evt) {
 						if(evt.getNewValue().equals("true")){
-							((IPropertyControl)optionController.getPropertyControl("open_on_page_reader_path")).setEnabled(false);
+							((IPropertyControl)optionController.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY)).setEnabled(false);
 						}						
 					}
 				});
 				
-				((RadioButtonProperty)optionController.getPropertyControl("open_internal")).addPropertyChangeListener(new PropertyChangeListener() {			
+				((RadioButtonProperty)optionController.getPropertyControl(OPEN_INTERNAL_PDF_VIEWER_KEY)).addPropertyChangeListener(new PropertyChangeListener() {			
 					public void propertyChange(PropertyChangeEvent evt) {
 						if(evt.getNewValue().equals(true)){
-							((IPropertyControl)optionController.getPropertyControl("open_on_page_reader_path")).setEnabled(false);
+							((IPropertyControl)optionController.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY)).setEnabled(false);
 						}						
 					}
 				});
 				
-				((RadioButtonProperty)optionController.getPropertyControl("open_on_page")).addPropertyChangeListener(new PropertyChangeListener() {			
+				((RadioButtonProperty)optionController.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY)).addPropertyChangeListener(new PropertyChangeListener() {			
 					public void propertyChange(PropertyChangeEvent evt) {
 						if(evt.getNewValue().equals(true)){
-							((IPropertyControl)optionController.getPropertyControl("open_on_page_reader_path")).setEnabled(true);
+							((IPropertyControl)optionController.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY)).setEnabled(true);
 						}						
 					}
 				});

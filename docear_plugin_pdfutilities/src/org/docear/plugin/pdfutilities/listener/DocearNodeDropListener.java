@@ -61,7 +61,7 @@ public class DocearNodeDropListener extends MNodeDropListener {
 	            }	            
 	            
 	            for(File file : fileList){	                
-	            	boolean importAnnotations = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.AUTO_IMPORT_PROP_KEY);
+	            	boolean importAnnotations = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.AUTO_IMPORT_ANNOTATIONS_KEY);
 	                if(pdfFileFilter.accept(file) && importAnnotations){
 	                	PdfAnnotationImporter importer = new PdfAnnotationImporter();
 	                    List<PdfAnnotation> annotations = importer.importAnnotations(file);
