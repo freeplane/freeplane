@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preferences_structure>
+	<tabbed_pane>
+		<tab name="pdf_management">
+			<separator name="annotations_import">
+				<boolean name="import_bookmarks" />
+				<boolean name="import_comments" />
+				<boolean name="import_highlighted_text" />
+			</separator>
+			<separator name="annotations_edit">
+			    <!--text name="edit_annotations_info"/--> 
+			    <boolean name="edit_bookmarks" />
+                <boolean name="edit_bookmarks" />
+                <boolean name="edit_comment" /> 
+			</separator>
+			<separator name ="annotations_open">
+			    <radiobutton name = "open_standard"/>
+			    <radiobutton name = "open_internal" enabled = "false"/>
+			    <radiobutton name = "open_on_page"/> 
+			    <path name = "open_on_page_reader_path"/>
+			</separator>
+		</tab>
+	</tabbed_pane>
+</preferences_structure>

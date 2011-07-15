@@ -3,6 +3,7 @@ package org.freeplane.core.resources;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
@@ -12,7 +13,12 @@ import org.freeplane.core.resources.components.PropertyBean;
 
 public class OptionPanelController {	
 	private Vector<IPropertyControl> propertyControls = new Vector<IPropertyControl>();
-	private List<ActionListener> list = new ArrayList<ActionListener>();	
+	private List<ActionListener> list = new ArrayList<ActionListener>();
+	private List<PropertyLoadListener> loadListener = new ArrayList<PropertyLoadListener>();
+	
+	public void addPropertyLoadListener(PropertyLoadListener listener){
+		loadListener.add(listener);
+	}
 	
 	public void addButtonListener(ActionListener listener) {
 		list.add(listener);
@@ -27,6 +33,18 @@ public class OptionPanelController {
 	
 	public void setCurrentPropertyControls(final Vector<IPropertyControl> props) {
 		this.propertyControls = props;
+		for(PropertyLoadListener listener : loadListener){
+			listener.propertiesLoaded(props);
+		}
+	}
+	
+	public IPropertyControl getPropertyControl(String name){
+		for(IPropertyControl control : this.propertyControls){
+			if(control.getName() != null && control.getName().equals(name)){
+				return control;
+			}
+		}
+		return null;
 	}
 		
 	public Properties getCurrentOptionProperties() {
@@ -42,5 +60,11 @@ public class OptionPanelController {
 			}
 		}
 		return p;
+	}
+	
+	public interface PropertyLoadListener {
+		
+		public void propertiesLoaded(Collection<IPropertyControl> properties);
+		
 	}
 }

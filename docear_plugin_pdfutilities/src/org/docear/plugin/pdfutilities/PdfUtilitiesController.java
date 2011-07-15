@@ -2,17 +2,27 @@ package org.docear.plugin.pdfutilities;
 
 import java.awt.Container;
 import java.awt.dnd.DropTarget;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.net.URL;
+import java.util.Collection;
 
 import javax.swing.JMenu;
+import javax.swing.JRadioButton;
 
 import org.docear.plugin.pdfutilities.actions.DocearPasteAction;
 import org.docear.plugin.pdfutilities.actions.ImportAllAnnotationsAction;
 import org.docear.plugin.pdfutilities.actions.ImportNewAnnotationsAction;
 import org.docear.plugin.pdfutilities.actions.RadioButtonAction;
 import org.docear.plugin.pdfutilities.listener.DocearNodeDropListener;
+import org.freeplane.core.resources.OptionPanelController;
+import org.freeplane.core.resources.OptionPanelController.PropertyLoadListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.RadioButtonProperty;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
@@ -20,11 +30,14 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.INodeViewLifeCycleListener;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.view.swing.map.NodeView;
 
 public class PdfUtilitiesController {
 	
 	public static final String MENU_BAR = "/menu_bar";
+	public static final String NODE_POPUP_MENU = "/node_popup";
+	public static final String NODE_FEATURES_MENU = "/node features";
 	public static final String STYLES_MENU = "/styles";
 	public static final String PDF_MANAGEMENT_MENU = "/pdf_management";
 	public static final String AUTO_IMPORT_PROP_KEY = "docear_automatic_annotation_import";
@@ -43,8 +56,11 @@ public class PdfUtilitiesController {
 		
 		LogUtils.info("starting DocearPdfUtilitiesStarter(ModeController)");
 		this.modecontroller = modeController;
+		
+		this.addPluginLangResources();		
+		this.addPropertiesToOptionPanel();
 		this.addPluginDefaults();
-		this.addPluginLangResources();
+		
 		this.registerActions();		
 		this.registerListener();		
 		this.addMenuEntries();
@@ -70,6 +86,10 @@ public class PdfUtilitiesController {
 				builder.addRadioItem(MENU_BAR + PDF_MANAGEMENT_MENU, new RadioButtonAction(AUTO_IMPORT_LANG_KEY, AUTO_IMPORT_PROP_KEY), resourceController.getBooleanProperty(AUTO_IMPORT_PROP_KEY));
 				builder.addAction(MENU_BAR + PDF_MANAGEMENT_MENU, importAllAnnotationsAction, MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + PDF_MANAGEMENT_MENU, importNewAnnotationsAction, MenuBuilder.AS_CHILD);
+				builder.addMenuItem(NODE_POPUP_MENU + NODE_FEATURES_MENU, new JMenu(TextUtils.getText(PDF_MANAGEMENT_MENU_LANG_KEY)), NODE_POPUP_MENU + PDF_MANAGEMENT_MENU, MenuBuilder.BEFORE);
+				builder.addSeparator(NODE_POPUP_MENU + "/DeleteAction", MenuBuilder.AFTER);
+				builder.addAction(NODE_POPUP_MENU + PDF_MANAGEMENT_MENU, importAllAnnotationsAction, MenuBuilder.AS_CHILD);
+				builder.addAction(NODE_POPUP_MENU + PDF_MANAGEMENT_MENU, importNewAnnotationsAction, MenuBuilder.AS_CHILD);
 			}
 		});
 	}
@@ -88,6 +108,67 @@ public class PdfUtilitiesController {
 			}
 			
 		});
+		
+		final OptionPanelController optionController = Controller.getCurrentController().getOptionPanelController();
+		optionController.addButtonListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent event) {
+				Object source = event.getSource();
+				if(source != null && source instanceof JRadioButton){
+					JRadioButton radioButton = (JRadioButton)event.getSource();					
+					if(radioButton.getName().equals("open_standard")){
+						((RadioButtonProperty)optionController.getPropertyControl("open_standard")).setValue(true);
+						((RadioButtonProperty)optionController.getPropertyControl("open_internal")).setValue(false);
+						((RadioButtonProperty)optionController.getPropertyControl("open_on_page")).setValue(false);
+						((IPropertyControl)optionController.getPropertyControl("open_on_page_reader_path")).setEnabled(false);
+					}
+					if(radioButton.getName().equals("open_internal")){
+						((RadioButtonProperty)optionController.getPropertyControl("open_internal")).setValue(true);
+						((RadioButtonProperty)optionController.getPropertyControl("open_standard")).setValue(false);
+						((RadioButtonProperty)optionController.getPropertyControl("open_on_page")).setValue(false);
+						((IPropertyControl)optionController.getPropertyControl("open_on_page_reader_path")).setEnabled(false);
+					}
+					if(radioButton.getName().equals("open_on_page")){
+						((RadioButtonProperty)optionController.getPropertyControl("open_internal")).setValue(false);
+						((RadioButtonProperty)optionController.getPropertyControl("open_standard")).setValue(false);
+						((RadioButtonProperty)optionController.getPropertyControl("open_on_page")).setValue(true);
+						((IPropertyControl)optionController.getPropertyControl("open_on_page_reader_path")).setEnabled(true);
+					}
+				}			
+			}
+		});
+		
+		optionController.addPropertyLoadListener(new PropertyLoadListener() {			
+			public void propertiesLoaded(Collection<IPropertyControl> properties) {
+							
+				((RadioButtonProperty)optionController.getPropertyControl("open_standard")).addPropertyChangeListener(new PropertyChangeListener() {			
+					public void propertyChange(PropertyChangeEvent evt) {
+						if(evt.getNewValue().equals("true")){
+							((IPropertyControl)optionController.getPropertyControl("open_on_page_reader_path")).setEnabled(false);
+						}						
+					}
+				});
+				
+				((RadioButtonProperty)optionController.getPropertyControl("open_internal")).addPropertyChangeListener(new PropertyChangeListener() {			
+					public void propertyChange(PropertyChangeEvent evt) {
+						if(evt.getNewValue().equals(true)){
+							((IPropertyControl)optionController.getPropertyControl("open_on_page_reader_path")).setEnabled(false);
+						}						
+					}
+				});
+				
+				((RadioButtonProperty)optionController.getPropertyControl("open_on_page")).addPropertyChangeListener(new PropertyChangeListener() {			
+					public void propertyChange(PropertyChangeEvent evt) {
+						if(evt.getNewValue().equals(true)){
+							((IPropertyControl)optionController.getPropertyControl("open_on_page_reader_path")).setEnabled(true);
+						}						
+					}
+				});
+				
+			}
+		});
+		
+		
 	}	
 
 	private void addPluginDefaults() {
@@ -109,5 +190,12 @@ public class PdfUtilitiesController {
 		resBundle.addResources(resBundle.getLanguageCode(), res);		
 	}
 
-	
+	private void addPropertiesToOptionPanel() {
+		final URL preferences = this.getClass().getResource("preferences.xml");
+		if (preferences == null)
+			throw new RuntimeException("cannot open docear.pdf_utilities plugin preferences");
+		MModeController modeController = (MModeController) Controller.getCurrentModeController();
+		
+		modeController.getOptionPanelBuilder().load(preferences);
+	}
 }
