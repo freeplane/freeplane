@@ -106,15 +106,29 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 				return;
 			}
 			internalConditionsModel = null;
-			if (source == btnOK || source == btnCancel) {
-				dispose();
+			if (source == btnOK) {
+				dispose(true);
+			}
+			else if (source == btnCancel) {
+				dispose(false);
 			}
 			else {
 				initInternalConditionModel();
 			}
 		}
+
 	}
 
+	private boolean success;
+
+	public boolean isSuccess() {
+    	return success;
+    }
+
+	private void dispose(boolean b) {
+        this.success = b;
+        dispose();
+    }
 	private class ConditionListMouseListener extends MouseAdapter {
 		@Override
 		public void mouseClicked(final MouseEvent e) {
@@ -122,7 +136,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						if (selectCondition()) {
-							dispose();
+							dispose(true);
 						}
 					}
 				});
@@ -613,6 +627,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 	@Override
 	public void show() {
 		initInternalConditionModel();
+		success = false;
 		super.show();
 	}
 }

@@ -231,11 +231,15 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			else {
 				style = StyleFactory.create(styleElement.getAttribute("STYLE_REF", null));
 			}
-			final XMLElement conditionElement = styleElement.getChildAtIndex(0);
-			final ASelectableCondition condition = conditionFactory.loadCondition(conditionElement);
-			if(condition != null){
-				conditionalStyleModel.addCondition(isActive, condition, style, isLast);
+			final ASelectableCondition condition;
+			if(styleElement.getChildrenCount() == 1){
+				final XMLElement conditionElement = styleElement.getChildAtIndex(0);
+				condition = conditionFactory.loadCondition(conditionElement);
 			}
+			else{
+				condition = null;
+			}
+			conditionalStyleModel.addCondition(isActive, condition, style, isLast);
 		}
     }
 	private void saveConditionalStyles(ConditionalStyleModel conditionalStyleModel, XMLElement parent) {
@@ -246,20 +250,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		final XMLElement conditionalStylesRoot = parent.createElement("conditional_styles");
 		parent.addChild(conditionalStylesRoot);
 		for(final Item item : conditionalStyleModel){
-			final XMLElement itemElement = conditionalStylesRoot.createElement("conditional_style");
-			conditionalStylesRoot.addChild(itemElement);
-			itemElement.setAttribute("ACTIVE", Boolean.toString(item.isActive()));
-			final Object style = item.getStyle();
-			if (style instanceof StyleNamedObject) {
-				final String referencedStyle = ((StyleNamedObject)style).getObject().toString();
-				itemElement.setAttribute("LOCALIZED_STYLE_REF", referencedStyle);
-			}
-			else {
-				final String referencedStyle = style.toString();
-				itemElement.setAttribute("STYLE_REF", referencedStyle);
-			}
-			itemElement.setAttribute("LAST", Boolean.toString(item.isLast()));
-			item.getCondition().toXml(itemElement);
+			item.toXml(conditionalStylesRoot);
 		}
 	    
     }

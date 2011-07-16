@@ -37,7 +37,7 @@ class FilterComposerDialog extends AFilterComposerDialog{
 		for(int i : selectedIndices){
 			conditions.add((ASelectableCondition) model.getElementAt(i));
 		}
-	    return ! conditions.isEmpty();
+	    return true;
     }
 			
 	final private List<ASelectableCondition> conditions ;

@@ -75,18 +75,9 @@ public class ManageConditionalStylesAction extends AFreeplaneAction {
 	    create.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 	    create.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				final MLogicalStyleController styleController = MLogicalStyleController.getController();
-				final FilterComposerDialog filterComposerDialog = styleController.getFilterComposerDialog();
-				filterComposerDialog.acceptMultipleConditions(true);
-				filterComposerDialog.show();
-				final List<ASelectableCondition> conditions = filterComposerDialog.getConditions();
 				int row = conditionalStyleTable.getRowCount();
-				for(final ASelectableCondition condition : conditions){
-					LogicalStyleController.getController().addConditionalStyle(map, true, condition, MapStyleModel.DEFAULT_STYLE, false);
-				}
-				if(row < conditionalStyleTable.getRowCount()){
-					conditionalStyleTable.setRowSelectionInterval(row, row);
-				}
+				LogicalStyleController.getController().addConditionalStyle(map, true, null, MapStyleModel.DEFAULT_STYLE, false);
+				conditionalStyleTable.setRowSelectionInterval(row, row);
 			} 
 		});
 
