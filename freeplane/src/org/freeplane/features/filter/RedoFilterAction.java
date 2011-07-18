@@ -46,8 +46,6 @@ final class RedoFilterAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final FilterHistory history = filterController.getHistory();
-		history.redo();
-		filterController.updateSettingsFromHistory();
+		filterController.redo();
 	}
 }

@@ -1,10 +1,13 @@
 package org.freeplane.core.util;
 
+import java.text.DecimalFormat;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.format.FormatController;
 
 /** utilities for translations, conversions to/from number and dates etc.
  * In scripts available as "global variable" <code>textUtils</code>. */
@@ -109,5 +112,20 @@ public class TextUtils {
 
 	public static boolean isEmpty(final String str) {
 	    return str == null || str.length() == 0;
+	}
+
+	/** accessor for scripts. */
+	public DecimalFormat getDefaultNumberFormat() {
+		return FormatController.getController().getDefaultNumberFormat();
+	}
+	
+	/** accessor for scripts. */
+	public SimpleDateFormat getDefaultDateFormat() {
+		return FormatController.getController().getDefaultDateFormat();
+	}
+	
+	/** accessor for scripts. */
+	public SimpleDateFormat getDefaultDateTimeFormat() {
+		return FormatController.getController().getDefaultDateTimeFormat();
 	}
 }

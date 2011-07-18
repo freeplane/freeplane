@@ -26,6 +26,9 @@ import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.mindmapmode.MNoteController;
@@ -66,7 +69,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	// Node: R/W
 	public Proxy.Node createChild(final Object value) {
 		final Node child = createChild();
-		child.setText(value);
+		child.setObject(value);
 		return child;
 	}
 
@@ -278,6 +281,23 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	public String getText() {
 		return getDelegate().getText();
 	}
+	
+	// NodeRO: R
+	public Object getObject() {
+		final Object userObject = getDelegate().getUserObject();
+		if (userObject instanceof IFormattedObject)
+			return ((IFormattedObject) userObject).getObject();
+		return userObject;
+	}
+
+	// NodeRO: R
+	public String getFormat() {
+		final NodeModel nodeModel = getDelegate();
+		final String format = TextController.getController().getNodeFormat(nodeModel);
+		if (format == null && nodeModel.getUserObject() instanceof IFormattedObject)
+			return ((IFormattedObject) nodeModel.getUserObject()).getPattern();
+		return format;
+	}
 
 	// NodeRO: R
 	public Convertible getTo() {
@@ -380,21 +400,43 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// Node: R/W
 	public void setText(final Object value) {
+		setObject(value);
+	}
+	
+	// Node: R/W
+	public void setObject(final Object object) {
 		final MTextController textController = (MTextController) TextController.getController();
-		if (value instanceof IFormattedObject)
-			textController.setNodeObject(getDelegate(), value);
-		else if (value instanceof Number)
-			textController.setNodeObject(getDelegate(), new FormattedNumber((Number) value));
-		else if (value instanceof Date)
-			textController.setNodeObject(getDelegate(), createDefaultFormattedDate((Date) value));
-		else if (value instanceof Calendar)
-			textController.setNodeObject(getDelegate(), createDefaultFormattedDate(((Calendar) value).getTime()));
-		textController.setNodeText(getDelegate(), Convertible.toString(value));
+		if (object instanceof IFormattedObject)
+			textController.setNodeObject(getDelegate(), object);
+		else if (object instanceof Number)
+			textController.setNodeObject(getDelegate(), new FormattedNumber((Number) object));
+		else if (object instanceof Date)
+			textController.setNodeObject(getDelegate(), createDefaultFormattedDate((Date) object));
+		else if (object instanceof Calendar)
+			textController.setNodeObject(getDelegate(), createDefaultFormattedDate(((Calendar) object).getTime()));
+		else
+			textController.setNodeText(getDelegate(), Convertible.toString(object));
+	}
+	
+	// Node: R/W
+	public void setDateTime(final Date date) {
+		final MTextController textController = (MTextController) TextController.getController();
+		textController.setNodeObject(getDelegate(), createDefaultFormattedDateTime(date));
+	}
+
+	public void setFormat(final String format) {
+		final MNodeStyleController styleController = (MNodeStyleController) Controller.getCurrentModeController()
+		    .getExtension(NodeStyleController.class);
+		styleController.setNodeFormat(getDelegate(), format);
 	}
 
 	private FormattedDate createDefaultFormattedDate(final Date date) {
 	    return FormattedDate.createDefaultFormattedDate(date.getTime(), IFormattedObject.TYPE_DATE);
     }
+	
+	private FormattedDate createDefaultFormattedDateTime(final Date date) {
+		return FormattedDate.createDefaultFormattedDate(date.getTime(), IFormattedObject.TYPE_DATETIME);
+	}
 
 	// NodeRO: R
 	public Proxy.Map getMap() {

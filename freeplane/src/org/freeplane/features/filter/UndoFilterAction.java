@@ -46,7 +46,6 @@ final class UndoFilterAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		filterController.getHistory().undo();
-		filterController.updateSettingsFromHistory();
+		filterController.undo();
 	}
 }

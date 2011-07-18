@@ -16,6 +16,10 @@ import org.freeplane.core.util.FreeplaneIconUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.filter.condition.ICondition;
+import org.freeplane.features.format.FormattedDate;
+import org.freeplane.features.format.FormattedNumber;
+import org.freeplane.features.format.FormattedObject;
+import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.link.ArrowType;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.plugin.script.ExecuteScriptException;
@@ -102,7 +106,11 @@ public interface Proxy {
 		int size();
 	}
 
-	/** Node's attribute table: <code>node.attributes</code> - read-write. */
+	/** Node's attribute table: <code>node.attributes</code> - read-write.
+	 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	 * FIXME: add note about formatted objects
+	 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	 */
 	interface Attributes extends AttributesRO {
 		/** sets the value of the attribute at an index. This method will not create new attributes.
 		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
@@ -589,6 +597,57 @@ public interface Proxy {
 		/** Sets the map (frame/tab) title. Note that there is <em>no undo</em> for this method!
 		 * @since 1.2 */
 		void setName(String title);
+		
+		/** install a Groovy closure as the current filter in this map. If <code>closure</code> is null then filtering will
+		 * be disabled. The filter state of a node can be checked by {@link Node#isVisible()}. <br>
+		 * To undo filtering use <em>Tools -> Undo</em>. After execution of the following you have to use it seven times to
+		 * return to the initial filter state.
+		 * <pre>
+		 * // show only matching nodes
+		 * node.map.filter{ it.text.contains("todo") }
+		 * // equivalent:
+		 * node.map.filter = { it.text.contains("todo") }
+		 * 
+		 * // show anchestors of matching nodes
+		 * node.map.filter(true, false){ it.text.contains("todo") }
+		 * // equivalent:
+		 * node.map.setFilter(true, false, { it.text.contains("todo") })
+		 * 
+		 * // show descendants of matching nodes
+		 * node.map.filter(false, true){ it.text.contains("todo") }
+		 * // equivalent:
+		 * node.map.setFilter(false, true, { it.text.contains("todo") })
+		 * 
+		 * // remove filter
+		 * node.map.filter = null
+		 * </pre>
+		 * @since 1.2 */
+		public void filter(final Closure<Boolean> closure);
+
+		/** alias for {@link #filter(Closure)}. Enables assignment to the <code>filter</code> property.
+		 * @since 1.2 */
+		public void setFilter(final Closure<Boolean> closure);
+		
+		/** With {@link #filter(Closure)} neither anchestors not descendants of the visible nodes are shown. Use this
+		 * method to control these options.
+		 * @see #filter(Closure)
+		 * @since 1.2 */
+		public void filter(final boolean showAnchestors, final boolean showDescendants, final Closure<Boolean> closure);
+
+		/** alias for {@link #setFilter(boolean, boolean, Closure)}
+		 * @see #filter(Closure)
+		 * @since 1.2 */
+		public void setFilter(final boolean showAnchestors, final boolean showDescendants, final Closure<Boolean> closure);
+
+		/** reinstalls the previously undone filter if there is any.
+		 * Note: undo/redo for filters is separate to the undo/redo for other map state.
+		*  @since 1.2 */
+		public void redoFilter();
+
+		/** removes the current filter and reinstalls the previous filter if there is any.
+		 * Note: undo/redo for filters is separate to the undo/redo for other map state.
+		 *  @since 1.2 */
+		public void undoFilter();
 	}
 
 	/** The currently selected node: <code>node</code> - read-only. */
@@ -598,6 +657,9 @@ public interface Proxy {
 		/** allows to access attribute values like array elements. Note that the returned type is a
 		 * {@link Convertible}, not a String. Nevertheless it behaves like a String in almost all respects,
 		 * that is, in Groovy scripts it understands all String methods like lenght(), matches() etc.
+		 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		 * FIXME: do lenght()... work for FormattedDate...?
+		 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		 * <pre>
 		 *   // standard way
 		 *   node.attributes.set("attribute name", "12")
@@ -708,6 +770,17 @@ public interface Proxy {
 		/** The raw text of this node. Use {@link #getPlainText()} to remove HTML.
 		 * @since 1.2 */
 		String getText();
+		
+		/** The object that's displayed as the node text - normally the raw text of this node (then this method is
+		 * equivalent to {@link #getText()}).
+		 * But in case of typed content (for numbers, dates and calendars) {@link #getObject()} returns
+		 * a proper {@link IFormattedObject}. Use {@link #getPlainText()} to remove HTML.
+		 * @since 1.2 */
+		Object getObject();
+
+		/** returns the format string of the formatter if available and null otherwise.
+		 * @since 1.2 */
+		String getFormat();
 
 		/**
 		 * returns an object that performs conversions (method name is choosen to give descriptive code):
@@ -782,7 +855,13 @@ public interface Proxy {
 		 * internal stuff inserts as last child. */
 		Node createChild();
 
-		/** same as {@link #createChild()} but sets the node text to the given text.
+		/** like {@link #createChild()} but sets the node text to the given text.
+		 * <pre>
+		 * // instead of 
+		 * def child = node.createChild(); child.setObject(value);
+		 * // use
+		 * def child = node.createChild(value);
+		 * </pre>
 		 * @since 1.2 */
 		Node createChild(Object value);
 
@@ -866,30 +945,93 @@ public interface Proxy {
 		/** @deprecated since 1.2 - use {@link #setNote(Object)} instead. */
 		void setNoteText(String text);
 
-		/**
-		 * A node's text is String valued. This methods provides automatic conversion to String in a way that
-		 * node.to.getXyz() methods will be able to convert the string properly to the wanted type.
-		 * Special conversion is provided for dates and calendars: They will be converted in a way that
-		 * node.to.date and node.to.calendar will work. All other types are converted via value.toString():
-		 * <pre>
-		 *   // converts non-Dates with toString()
-		 *   node.text = 1.2
-		 *   assert node.to.text == "1.2"
-		 *   assert node.to.num == 1.2d
-		 *   // == dates
-		 *   // a date in some non-GMT time zone
-		 *   def date = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").
-		 *       parse("1970-01-01 00:00:00.000-0200")
-		 *   // converts to "1970-01-01T02:00:00.000+0000" (GMT)
-		 *   // - note the shift due to the different time zone
-		 *   node.text = date
-		 *   assert node.to.text == "1970-01-01T02:00:00.000+0000"
-		 *   assert node.to.date == date
-		 * </pre>
-		 * @param value A not-null object for conversion to String. Works well for all types that {@link Convertible}
-		 *        handles, particularly {@link Convertible}s itself.
-		 */
+		/** An alias for {@link #setValue(Object)}.
+		 * @see #setObject(Object)
+		 * @since 1.2 */
 		void setText(Object value);
+		
+		/**
+		 * A node's text object is normally String valued but it can be of any type since every Object can be converted
+		 * to String for display. This methods provides automatic conversion to String in a way that node.to.getXyz()
+		 * methods will be able to convert the string properly to the wanted type.
+		 * <p>
+		 * Special support is provided for numbers, dates and calendars that are stored unconverted. For display of
+		 * them a standard formatter is used (use #setFormat() to change it). You may also pass {@link IFormattedObject}
+		 * instances ({@link FormattedDate}, {@link FormattedNumber} or {@link FormattedObject}) directly to determine
+		 * the format in one pass.
+		 * <p>
+		 * All other types are converted via value.toString().
+		 * <p><b>Numbers</b>
+		 * <pre>
+		 * double number = 1.2222222d
+		 * node.object = number
+		 * // to enable math with node.object its type is not FormattedNumber
+		 * assert node.object.class.simpleName == "Double"
+		 * assert node.to.object.class.simpleName == "Double"
+		 * // use globally bound TextUtils object
+		 * def defaultNumberFormat = textUtils.defaultNumberFormat
+		 * assert node.format != null
+		 * // e.g. "1.22"
+		 * assert node.text == defaultNumberFormat.format(number)
+		 * assert node.to.num == number
+		 * assert node.to.num + 1.0 == number + 1.0
+		 * assert node.object + 1.0 == number + 1.0
+		 * </pre>
+		 * <p><b>Dates</b>
+		 * <pre>
+		 * def date = new Date(0) // when Unix time began
+		 * node.object = date
+		 * assert node.object.class.simpleName == "FormattedDate"
+		 * assert node.to.object.class.simpleName == "FormattedDate"
+		 * // use globally bound TextUtils object
+		 * def defaultDateFormat = textUtils.defaultDateFormat
+		 * assert node.object.toString() == defaultDateFormat.format(date)
+		 * assert node.format == defaultDateFormat.pattern
+		 * // e.g. "01/01/1970"
+		 * assert node.text == defaultDateFormat.format(date)
+		 * assert node.to.date == date
+		 * </pre>
+		 * <p><b>Date/Time</b>
+		 * <pre>
+		 * def date = new Date(0) // when Unix time began
+		 * // the default format for dates does not contain a time component. Use node.dateTime to override it.
+		 * node.dateTime = date
+		 * assert node.object.class.simpleName == "FormattedDate"
+		 * assert node.to.object.class.simpleName == "FormattedDate"
+		 * // use globally bound TextUtils object
+		 * def defaultDateFormat = textUtils.defaultDateTimeFormat
+		 * assert node.object.toString() == defaultDateFormat.format(date)
+		 * assert node.format == defaultDateFormat.pattern
+		 * // e.g. "01/01/1970 01:00"
+		 * assert node.text == defaultDateFormat.format(date)
+		 * assert node.to.date == date
+		 * </pre>
+		 * @param value A not-null object.
+		 * @since 1.2 */
+		void setObject(Object value);
+
+		/** sets the node text to a default formatted datetime object. (After setObject(Date) no time component is
+		 * displayed so use this method if you want the time to be displayed.)
+		 * @see #setObject(Object)
+		 * @since 1.2 */
+		void setDateTime(Date date);
+		
+		/** sets the format string of the formatter. It has to be appropriate for the data type of the contained object,
+		 * otherwise the format is simply ignored. For instance use "dd.MM.yyyy" for dates but not for numbers:
+		 * <pre>
+		 * node.object = new Date()
+		 * node.format = "dd.MMM.yyyy"  // ok: "13.07.2011"
+		 * node.format = "#.00"  // still "13.07.2011". See log: "cannot format 13.07.2011 with #.00: multiple points"
+		 * </pre>
+		 * Numbers:
+		 * <pre>
+		 * node.object = 1.122
+		 * node.format = "#.##"   // ok: "1.12" (US, GB, ...) or "1,12" (Germany, ...)
+		 * node.format = "#.0000" // ok: "1.1220" (US, GB, ...) or "1,1220" (Germany, ...)
+		 * </pre>
+		 * @see #setObject(Object)
+		 * @since 1.2 */
+		void setFormat(String format);
 
 		void setLastModifiedAt(Date date);
 
@@ -899,6 +1041,10 @@ public interface Proxy {
 		/**
 		 * Allows to set and to change attribute like array elements.
 		 * <p>
+		 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		 * FIXME: not correct anymore!
+		 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		 * 
 		 * Note that attributes are String valued. This methods provides automatic conversion to String in a way that
 		 * node["a name"].getXyz() methods will be able to convert the string properly to the wanted type.
 		 * Special conversion is provided for dates and calendars: They will be converted in a way that

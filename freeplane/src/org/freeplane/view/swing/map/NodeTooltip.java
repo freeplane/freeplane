@@ -59,8 +59,8 @@ public class NodeTooltip extends JToolTip {
         final HTMLDocument document = (HTMLDocument) tip.getDocument();
         document.getStyleSheet().addRule("body { width: " + maximumWidth  + "}");
         // bad hack: call "setEditable" only to update view
-        tip.setEditable(false);
         tip.setEditable(true);
+        tip.setEditable(false);
     }
 
 	@Override
