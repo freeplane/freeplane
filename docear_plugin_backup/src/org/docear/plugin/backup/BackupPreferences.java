@@ -6,9 +6,9 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 
-public class DocearBackupPreferences {
+public class BackupPreferences {
 	
-	DocearBackupPreferences() {
+	BackupPreferences() {
 		LogUtils.info("starting DocearBackupPreferences()");
 		addPropertiesToOptionPanel();
 	}

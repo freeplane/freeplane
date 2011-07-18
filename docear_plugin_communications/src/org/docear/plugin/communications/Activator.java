@@ -2,9 +2,7 @@ package org.docear.plugin.communications;
 
 import java.util.Hashtable;
 
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.main.osgi.IModeControllerExtensionProvider;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -20,7 +18,7 @@ public class Activator implements BundleActivator {
 //		context.registerService(IModeControllerExtensionProvider.class.getName(),
 //		    new IModeControllerExtensionProvider() {
 //			    public void installExtension(ModeController modeController) {
-//			    	new CommunicationsConfiguration();
+//			    	new Communication();
 //				    
 //			    }
 //		    }, props);

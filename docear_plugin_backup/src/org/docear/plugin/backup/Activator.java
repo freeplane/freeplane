@@ -21,8 +21,8 @@ public class Activator implements BundleActivator {
 		    new IModeControllerExtensionProvider() {
 			    public void installExtension(ModeController modeController) {
 			    	new BackupConfiguration();
-				    new DocearBackupStarter();
-				    new DocearBackupPreferences();
+				    new BackupStarter();
+				    new BackupPreferences();
 			    }
 		    }, props);
 	}

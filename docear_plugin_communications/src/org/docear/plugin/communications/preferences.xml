@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preferences_structure>
+	<tabbed_pane>
+		<tab name="docear">
+			<separator name="docear_options">
+				<boolean name="docear_save_backup" />
+				<boolean name="docear_anonymous" />
+				<boolean name="docear_allow_information_retrieval" />
+				<boolean name="docear_show_recommendations" />
+			</separator>
+		</tab>
+	</tabbed_pane>
+</preferences_structure>
