@@ -3,10 +3,13 @@ package org.docear.plugin.backup;
 import java.io.StringWriter;
 import java.net.URL;
 
+import javax.swing.JOptionPane;
+
 import org.docear.plugin.communications.CommunicationsConfiguration;
 import org.docear.plugin.communications.Filetransfer;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapWriter.Mode;
@@ -17,6 +20,7 @@ import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.plugin.accountmanager.Account;
 
 public class BackupStarter implements IMapChangeListener {
 	
@@ -56,7 +60,12 @@ public class BackupStarter implements IMapChangeListener {
 	}
 	
 	private void backup() {
-		config.validateUserData();
+		Account account = config.getAccount();
+		if (!account.hasUsername() || !account.hasPassword() || !account.hasConnectionString()) {
+			JOptionPane.showMessageDialog(null,
+					TextUtils.getText("account_credentials_invalid"), "error",
+					JOptionPane.ERROR_MESSAGE);
+		}
 		
 		Controller controller = Controller.getCurrentController();
 		ModeController modeController = Controller.getCurrentModeController(); 

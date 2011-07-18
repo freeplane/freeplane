@@ -31,11 +31,11 @@ public class DocearAccount extends Account {
 		Thread.currentThread().setContextClassLoader(contextClassLoader);
 		
 		this.enableButton(DocearAccount.VALIDATE, DocearAccount.VALIDATE);
+		
 	}
 
 	@Override
-	public String getAccountName() {
-		
+	public String getAccountName() {		
 		return "Docear";
 	}
 
