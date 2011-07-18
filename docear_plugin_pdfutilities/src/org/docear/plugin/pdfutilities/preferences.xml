@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preferences_structure>
+	<tabbed_pane>
+		<tab name="pdf_management">
+			<separator name="annotations_import">
+				<boolean name="docear_import_bookmarks" />
+				<boolean name="docear_import_comments" />
+				<boolean name="docear_import_highlighted_text" />
+			</separator>
+			<separator name="annotations_edit">
+			    <!--text name="edit_annotations_info"/--> 
+			    <boolean name="docear_edit_bookmarks" />                
+                <boolean name="docear_edit_comment" /> 
+			</separator>
+			<separator name ="annotations_open">
+			    <radiobutton name = "docear_open_standard"/>
+			    <radiobutton name = "docear_open_internal" enabled = "false"/>
+			    <radiobutton name = "docear_open_on_page"/> 
+			    <path name = "docear_open_on_page_reader_path"/>
+			</separator>
+		</tab>
+	</tabbed_pane>
+</preferences_structure>

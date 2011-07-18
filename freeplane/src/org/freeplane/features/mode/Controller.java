@@ -29,6 +29,7 @@ import java.util.Set;
 
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.OptionPanelController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
@@ -50,13 +51,15 @@ public class Controller extends AController {
 	final private Map<String, ModeController> modeControllers = new LinkedHashMap<String, ModeController>();
 	private ViewController viewController;
 	final private ResourceController resourceController;
+	final private OptionPanelController optionPanelController;
 
 	public Controller(ResourceController resourceController) {
 		super();
 		if(currentController == null){
 			currentController = this;
 		}
-		this.resourceController = resourceController; 
+		this.resourceController = resourceController;
+		this.optionPanelController = new OptionPanelController();
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		addAction(new MoveToRootAction());
 		addAction(new CenterSelectedNodeAction());
@@ -205,5 +208,9 @@ public class Controller extends AController {
 
 	public ResourceController getResourceController() {
 	    return resourceController;
+    }
+	
+	public OptionPanelController getOptionPanelController() {
+	    return optionPanelController;
     }
 }

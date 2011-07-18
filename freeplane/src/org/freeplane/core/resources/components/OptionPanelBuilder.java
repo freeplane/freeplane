@@ -172,12 +172,22 @@ public class OptionPanelBuilder {
 		}
 	}
 	
-	private class ActionCreator extends PropertyCreator {
+	private class RadioButtonCreator extends PropertyCreator {
+		@Override
+		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
+			String enabled = data.getAttribute("enabled", name);
+			return createRadioButtonOptionCreator(name, enabled);
+		}
+	}
+	
+	private class ActionCreator extends PropertyCreator{
+		
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
 			String actionCommand = data.getAttribute("actionCommand", name);
 			return createActionOptionCreator(name, actionCommand);
 		}
+		
 	}
 
 	private class NumberOptionCreator extends PropertyCreator {
@@ -508,6 +518,13 @@ public class OptionPanelBuilder {
 		};
 	}
 	
+	private IPropertyControlCreator createRadioButtonOptionCreator(final String name,final String enabled) {
+		return new IPropertyControlCreator() {
+			public IPropertyControl createControl() {
+				return new RadioButtonProperty(name, enabled);
+			}
+		};
+	}	
 
 	private Object createNumberOptionCreator(final String name, final int min, final int max, final int step) {
 		return new IPropertyControlCreator() {
@@ -591,6 +608,7 @@ public class OptionPanelBuilder {
 		readManager.addElementHandler("remind_value", new RemindValueCreator());
 		readManager.addElementHandler("action", new ActionCreator());
 		readManager.addElementHandler("password", new PasswordOptionCreator());
+		readManager.addElementHandler("radiobutton", new RadioButtonCreator());
 	}
 
 	public void load(final URL menu) {

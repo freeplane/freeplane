@@ -31,6 +31,7 @@ import java.util.Arrays;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -68,6 +69,7 @@ public class PathProperty extends PropertyBean implements IPropertyControl {
 	private String path;
 	private JTextField filenameField;
 	private JButton selectButton;
+	private JLabel nameLabel;
 
 	public PathProperty(final String name, final boolean isDir, final String[] suffixes) {
 		super(name);
@@ -142,7 +144,7 @@ public class PathProperty extends PropertyBean implements IPropertyControl {
 		selectButton.addActionListener(new SelectFileAction());
 		selectButton.setMaximumSize(new Dimension(1000, 1000));
 		box.add(selectButton);
-		layout(builder, box);
+		this.nameLabel = layout(builder, box);
 	}
 
 	public void setEnabled(final boolean enabled) {
@@ -150,6 +152,8 @@ public class PathProperty extends PropertyBean implements IPropertyControl {
 			selectButton.setEnabled(enabled);
 		if (filenameField != null)
 			filenameField.setEnabled(enabled);
+		if (nameLabel != null)
+			nameLabel.setEnabled(enabled);
 	}
 
 	@Override

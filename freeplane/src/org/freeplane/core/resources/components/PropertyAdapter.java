@@ -67,10 +67,11 @@ public class PropertyAdapter {
 		return name;
 	}
 	
-	protected void layout(DefaultFormBuilder builder, JComponent component){
+	protected JLabel layout(DefaultFormBuilder builder, JComponent component){
 		final JLabel label = builder.append(TextUtils.getOptionalText(getLabel()), component);
 		String tooltip = TextUtils.getOptionalText(getDescription());
 		label.setToolTipText(tooltip);
 		component.setToolTipText(tooltip);
+		return label;
 	}
 }

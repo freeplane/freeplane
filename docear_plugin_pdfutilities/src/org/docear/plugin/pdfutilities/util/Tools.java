@@ -1,4 +1,4 @@
-package org.docear.plugin.pdfutilities;
+package org.docear.plugin.pdfutilities.util;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -15,8 +15,22 @@ import org.freeplane.features.url.UrlManager;
 
 public class Tools {
 	
+	//TODO: getFilefromUri and getAbsoluteUri currently are working for current Map only !!! 
+	
+	//TODO: check if URI refers to a local file !!
+	
 	public static File getFilefromUri(URI uri){
-		if(uri == null) return null;
+		uri = getAbsoluteUri(uri);
+		if(uri == null){
+			return null;
+		}
+		else{
+			return new File(uri);
+		}		
+	}
+	
+	public static URI getAbsoluteUri(URI uri){
+		if(uri == null /*|| !isLocalFile(uri)*/) return null;
 		try{
 			if(!uri.isAbsolute()){
 				final UrlManager urlManager = (UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class);
@@ -24,13 +38,24 @@ public class Tools {
 				if(map == null || urlManager == null) return null;
 				uri = urlManager.getAbsoluteUri(map, uri);				
 			}
-			return new File(uri);
+			return uri;
 		} catch(IllegalArgumentException e){
 			return null;
 		} catch (MalformedURLException e) {
 			return null;
 		}
 	}
+	
+	
+    public static boolean isLocalFile(URI uri) {
+        String scheme = uri.getScheme();
+        return "file".equalsIgnoreCase(scheme) && !hasHost(uri);
+    }
+
+    public static boolean hasHost(URI uri) {
+        String host = uri.getHost();
+        return host != null && !"".equals(host);
+    }
 	
 	public static List<File> textURIListToFileList(String data) {
 	    List<File> list = new ArrayList<File>();

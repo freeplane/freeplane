@@ -8,13 +8,11 @@ import javax.swing.JOptionPane;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.freeplane.core.resources.ResourceBundles;
-import org.freeplane.core.ui.OptionPanelButtonListener;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.accountmanager.AccountManager;
 
-import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
@@ -56,8 +54,7 @@ public class CommunicationsConfiguration implements ActionListener {
 
 	public CommunicationsConfiguration() {
 		addPropertiesToOptionPanel();
-
-		OptionPanelButtonListener.addButtonListener(this);
+		Controller.getCurrentController().getOptionPanelController().addButtonListener(this);
 		this.account = new DocearAccount();
 		AccountManager.registerAccount(account);
 

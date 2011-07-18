@@ -1,7 +1,9 @@
-package org.docear.plugin.pdfutilities;
+package org.docear.plugin.pdfutilities.pdf;
 
 import java.io.File;
 import java.net.URI;
+
+import org.docear.plugin.pdfutilities.util.Tools;
 
 public class PdfFileFilter {
 	
