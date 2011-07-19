@@ -1,0 +1,17 @@
+<workspace_structure name="My Workspace">
+	<group id="library" name="Library">
+		<filesystem_link id="ref1" name="New Papersand Annotations" />
+		<filesystem_link id="ref2" name="Papers, Annotations and Ideas" />
+		<filesystem_link id="ref3" name="My Publications" />
+		<filesystem_link id="ref4" name="My PDFs" />
+	</group>
+	<group id="projects" name="Projects">
+		<filesystem_folder id="project1" name="Paper example 1" path="c:\temp"/>
+		<filesystem_folder id="project2" name="Paper example 2" />
+		<filesystem_folder id="project3" name="Paper example 3" />
+	</group>
+	<filesystem_link id="fav_projects" name="Interesting Projects" />
+	<filesystem_link id="notes" name="Notes" />
+	<filesystem_link id="search" name="Search" />
+	
+</workspace_structure>
