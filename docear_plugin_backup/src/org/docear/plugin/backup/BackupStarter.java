@@ -5,7 +5,7 @@ import java.io.StringWriter;
 import java.net.URL;
 
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
 import org.docear.plugin.communications.CommunicationsConfiguration;
 import org.docear.plugin.communications.Filetransfer;
@@ -20,6 +20,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.accountmanager.Account;
@@ -112,58 +113,57 @@ public class BackupStarter implements IMapChangeListener {
 	}
 
 	private void insert(final String xml, final String filename) {
-		final Controller controller = Controller.getCurrentController();
-		final ModeController modeController = Controller.getCurrentModeController();
+		SwingWorker<Void, Void> runner = new SwingWorker<Void, Void>() {
 
-		Thread runner = new Thread() {
-			public void run() {
-				synchronized (this) {
-					Runnable runnable = new Runnable() {
-						public void run() {
-							String mindmap_id;
-							try {
-								mindmap_id = Filetransfer.insertMindmap(config, xml, filename);
-								MapStyle mapStyle = (MapStyle) modeController.getExtension(MapStyle.class);
-								mapStyle.setProperty(controller.getMap(), MINDMAP_ID, mindmap_id);
-								((MFileManager) UrlManager.getController()).save(controller.getMap());
-							}
-							catch (Exception e) {
-								e.printStackTrace();
-								JOptionPane.showMessageDialog(null, TextUtils.getText("error_backup_insert"), "error",
-										JOptionPane.ERROR_MESSAGE);
-							}
-						}
-					};
-					EventQueue.invokeLater(runnable);
+			public Void doInBackground() {
+				final ViewController viewController = Controller.getCurrentController().getViewController();
+				viewController.addStatusInfo("org.docear.plugin.backup", TextUtils.getText("backup_saved"), null);
+				
+				final Controller controller = Controller.getCurrentController();
+				final ModeController modeController = Controller.getCurrentModeController();
+
+				String mindmap_id;
+				try {
+					mindmap_id = Filetransfer.insertMindmap(config, xml, filename);
+					MapStyle mapStyle = (MapStyle) modeController.getExtension(MapStyle.class);
+					mapStyle.setProperty(controller.getMap(), MINDMAP_ID, mindmap_id);
+					((MFileManager) UrlManager.getController()).save(controller.getMap());
 				}
+				catch (Exception e) {
+					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, TextUtils.getText("error_backup_insert"), "error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+				viewController.removeStatus("org.docear.plugin.backup");
+				return null;
 			}
 		};
-		runner.start();
+
+		runner.execute();
+
 	}
 
 	private void update(final String mindmapId, final String xml, final String filename) {
-		Thread runner = new Thread() {
-			public void run() {
-				synchronized (this) {
-					Runnable runnable = new Runnable() {
+		SwingWorker<Void, Void> runner = new SwingWorker<Void, Void>() {
 
-						public void run() {
-							try {
-								Filetransfer.updateMindmap(config, xml, mindmapId, filename);
+			public Void doInBackground() {
+				final ViewController viewController = Controller.getCurrentController().getViewController();
+				viewController.addStatusInfo("org.docear.plugin.backup", TextUtils.getText("backup_saved"), null);
 
-							}
-							catch (Exception e) {
-								e.printStackTrace();
-								JOptionPane.showMessageDialog(null, TextUtils.getText("error_backup_update"), "error",
-										JOptionPane.ERROR_MESSAGE);
-							}						
-						}
-					};
-					SwingUtilities.invokeLater(runnable);
+				try {
+					Filetransfer.updateMindmap(config, xml, mindmapId, filename);
 				}
+				catch (Exception e) {
+					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, TextUtils.getText("error_backup_update"), "error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+				viewController.removeStatus("org.docear.plugin.backup");
+				return null;
 			}
 		};
-		runner.start();
+		runner.execute();
+
 	}
 
 	public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
