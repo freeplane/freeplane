@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.freeplane.plugin.workspace
+Bundle-SymbolicName: org.freeplane.plugin.workspace
+Bundle-Version: 1.0.0
+Bundle-Activator: org.freeplane.plugin.workspace.Activator
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: org.osgi.framework;version="1.3.0"
+Require-Bundle: org.freeplane.core;bundle-version="1.0.1"
+Export-Package: org.freeplane.plugin.workspace
+Bundle-ClassPath: lib/plugin.jar
