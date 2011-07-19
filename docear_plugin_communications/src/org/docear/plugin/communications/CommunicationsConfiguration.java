@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -29,7 +30,7 @@ public class CommunicationsConfiguration implements ActionListener {
 	public static final String USER_TYPE = "userType";
 	public static final String ANONYMOUS_USER_TYPE = "3";
 	public static final String FILENAME = "filename";
-
+		
 	public static final int READ_TIMEOUT = 10000;
 	public static final int CONNECTION_TIMEOUT = 70000;
 
@@ -53,6 +54,7 @@ public class CommunicationsConfiguration implements ActionListener {
 	private DocearAccount account;
 
 	public CommunicationsConfiguration() {
+		addPluginDefaults();
 		addPropertiesToOptionPanel();
 		Controller.getCurrentController().getOptionPanelController().addButtonListener(this);
 		this.account = new DocearAccount();
@@ -64,6 +66,13 @@ public class CommunicationsConfiguration implements ActionListener {
 //		this.client.setConnectTimeout(CONNECTION_TIMEOUT);
 //		this.client.setReadTimeout(READ_TIMEOUT);
 //		Thread.currentThread().setContextClassLoader(contextClassLoader);
+	}
+	
+	private void addPluginDefaults() {
+		final URL defaults = this.getClass().getResource(ResourceController.PLUGIN_DEFAULTS_RESOURCE);
+		if (defaults == null)
+			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
+		Controller.getCurrentController().getResourceController().addDefaults(defaults);
 	}
 
 	public DocearAccount getAccount() {
