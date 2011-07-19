@@ -117,7 +117,7 @@ public class BackupStarter implements IMapChangeListener {
 
 			public Void doInBackground() {
 				final ViewController viewController = Controller.getCurrentController().getViewController();
-				viewController.addStatusInfo("org.docear.plugin.backup", TextUtils.getText("backup_saved"), null);
+				viewController.addStatusInfo("org.docear.plugin.backup", TextUtils.getText("running_backup"), null);
 				
 				final Controller controller = Controller.getCurrentController();
 				final ModeController modeController = Controller.getCurrentModeController();
@@ -148,7 +148,7 @@ public class BackupStarter implements IMapChangeListener {
 
 			public Void doInBackground() {
 				final ViewController viewController = Controller.getCurrentController().getViewController();
-				viewController.addStatusInfo("org.docear.plugin.backup", TextUtils.getText("backup_saved"), null);
+				viewController.addStatusInfo("org.docear.plugin.backup", TextUtils.getText("running_backup"), null);
 
 				try {
 					Filetransfer.updateMindmap(config, xml, mindmapId, filename);
