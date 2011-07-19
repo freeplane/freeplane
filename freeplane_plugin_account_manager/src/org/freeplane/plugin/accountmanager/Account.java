@@ -22,7 +22,7 @@ public abstract class Account {
 	}
 	
 	public boolean hasUsername() {
-		return this.username==null;
+		return this.username!=null;
 	}
 	
 	
@@ -35,7 +35,7 @@ public abstract class Account {
 	}
 	
 	public boolean hasPassword() {
-		return this.password==null;
+		return this.password!=null;
 	}
 	
 	
@@ -48,7 +48,7 @@ public abstract class Account {
 	}	
 	
 	public boolean hasConnectionString() {
-		return this.connectionString==null;
+		return this.connectionString!=null;
 	}
 	
 	public boolean hasVisibleProperties() {
