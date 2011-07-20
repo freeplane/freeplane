@@ -6,14 +6,14 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-public class IconCellRenderer extends DefaultTreeCellRenderer {
+public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public IconCellRenderer() {
+	public WorkspaceNodeRenderer() {
 	    setLeafIcon(null);
 	    setOpenIcon(null);
 	    setClosedIcon(null);
@@ -28,7 +28,7 @@ public class IconCellRenderer extends DefaultTreeCellRenderer {
 		    setText(obj.toString());
 		    if (obj instanceof Boolean)
 		        setText("Retrieving data...");
-	    } 
+	    }
 	    return result;
 	}
 }

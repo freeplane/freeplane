@@ -2,6 +2,7 @@ package org.freeplane.plugin.workspace.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -13,6 +14,9 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
+
+import org.freeplane.plugin.workspace.controller.NodeExpansionListener;
+import org.freeplane.plugin.workspace.controller.NodeSelectionListener;
 
 public class TreeView extends JPanel {
     /**
@@ -35,14 +39,13 @@ public class TreeView extends JPanel {
     
     public TreeView(MutableTreeNode conigurationRoot) {
     	this.setLayout(new BorderLayout());
-    	this.setMinimumSize(new Dimension(200, 480));
+    	this.setMinimumSize(new Dimension(200, 100));
         
         m_model = new DefaultTreeModel(conigurationRoot);
         
         m_tree = new JTree(m_model);
         m_tree.putClientProperty("JTree.lineStyle", "Angled");
-        IconCellRenderer renderer = new IconCellRenderer();
-        m_tree.setCellRenderer(renderer);
+        m_tree.setCellRenderer(new WorkspaceNodeRenderer());
         m_tree.addTreeExpansionListener(new NodeExpansionListener());
         m_tree.addTreeSelectionListener(new NodeSelectionListener());
         m_tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -60,6 +63,10 @@ public class TreeView extends JPanel {
 
 	public DefaultTreeModel getTreeModel() {		
 		return m_model;
+	}
+	
+	public void addTreeMouseListener(MouseListener l) {
+		this.m_tree.addMouseListener(l);
 	}
     
 }

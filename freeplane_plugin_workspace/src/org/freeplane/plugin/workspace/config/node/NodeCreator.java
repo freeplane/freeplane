@@ -65,7 +65,7 @@ public abstract class NodeCreator implements IElementDOMHandler {
 		}
 		final DefaultMutableTreeNode treeNode = tree.get(path.path);
 		if (treeNode.getUserObject() == this) {
-			final ConfigurationNode node = getNode(id, lastBuiltElement);
+			final WorkspaceNode node = getNode(id, lastBuiltElement);
 			if(node != null) 
 				treeNode.setUserObject(node);
 			else 
@@ -73,5 +73,5 @@ public abstract class NodeCreator implements IElementDOMHandler {
 		}
 	}
 
-	abstract public ConfigurationNode getNode(String id, XMLElement data);
+	abstract public WorkspaceNode getNode(String id, XMLElement data);
 }

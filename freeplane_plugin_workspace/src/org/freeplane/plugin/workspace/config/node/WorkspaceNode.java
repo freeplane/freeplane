@@ -1,10 +1,10 @@
 package org.freeplane.plugin.workspace.config.node;
 
-public abstract class ConfigurationNode {
+public abstract class WorkspaceNode {
 	private String id;
 	private String name;
 	
-	public ConfigurationNode(String id) {
+	public WorkspaceNode(String id) {
 		this.id=id;
 	}
 	

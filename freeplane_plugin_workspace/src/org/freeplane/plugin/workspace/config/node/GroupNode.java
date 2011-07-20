@@ -1,6 +1,6 @@
 package org.freeplane.plugin.workspace.config.node;
 
-public class GroupNode extends ConfigurationNode {
+public class GroupNode extends WorkspaceNode {
 
 	public GroupNode(String id) {
 		super(id); 

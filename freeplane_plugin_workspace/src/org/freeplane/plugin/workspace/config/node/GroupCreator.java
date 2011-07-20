@@ -10,7 +10,7 @@ public class GroupCreator extends NodeCreator {
 	}
 
 	@Override
-	public ConfigurationNode getNode(String id, XMLElement data) {
+	public WorkspaceNode getNode(String id, XMLElement data) {
 		GroupNode node = new GroupNode(id);
 		String name = data.getAttribute("name", null);
 		node.setName(name==null? "group" : name);

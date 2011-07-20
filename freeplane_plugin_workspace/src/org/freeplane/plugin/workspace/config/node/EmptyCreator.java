@@ -9,7 +9,7 @@ public class EmptyCreator extends NodeCreator {
 		super(tree);
 	}
 
-	public ConfigurationNode getNode(final String name, final XMLElement data) {
+	public WorkspaceNode getNode(final String name, final XMLElement data) {
 		return null;
 	}
 }
