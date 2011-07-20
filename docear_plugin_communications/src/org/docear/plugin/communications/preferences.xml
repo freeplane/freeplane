@@ -7,7 +7,7 @@
 				<boolean name="docear_anonymous" />
 				<boolean name="docear_allow_information_retrieval" />
 				<boolean name="docear_show_recommendations" />
-				<number name="save_backup_automcatically"/> 
+				<number name="save_backup_automcatically" min="0" max="120"/> 
 			</separator>
 		</tab>
 	</tabbed_pane>
