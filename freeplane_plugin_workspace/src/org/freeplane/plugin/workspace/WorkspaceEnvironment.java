@@ -28,6 +28,7 @@ import org.freeplane.plugin.workspace.controller.WorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.view.TreeView;
 
 public class WorkspaceEnvironment implements ComponentListener, MouseListener {
+
 	private static String WORKSPACE_WIDTH_PROPERTY_KEY = "workspace_view_width";
 	
 	private class SingleContentPane extends JPanel {
