@@ -28,7 +28,6 @@ import org.freeplane.plugin.workspace.controller.WorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.view.TreeView;
 
 public class WorkspaceEnvironment implements ComponentListener, MouseListener {
-	private static String SHOW_WORKSPACE_PROPERTY_KEY = "show_workspace";
 	private static String WORKSPACE_WIDTH_PROPERTY_KEY = "workspace_view_width";
 	
 	private class SingleContentPane extends JPanel {
@@ -112,7 +111,7 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener {
 		ViewController viewController = (ViewController)Controller.getCurrentController().getViewController();
 		viewController.getJFrame().setContentPane(new JPanel(new BorderLayout()));
 		viewController.getJFrame().getContentPane().add(getContentPane());
-		showWorkspaceView(Controller.getCurrentController().getResourceController().getBooleanProperty(SHOW_WORKSPACE_PROPERTY_KEY));
+		showWorkspaceView(Controller.getCurrentController().getResourceController().getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_RESOURCE));
 	}
 	
 	private SingleContentPane getContentPane() {		
@@ -126,7 +125,7 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener {
 	public void showWorkspaceView(boolean visible) {
 		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
 		
-		resCtrl.setProperty(SHOW_WORKSPACE_PROPERTY_KEY, visible);
+		resCtrl.setProperty(WorkspacePreferences.SHOW_WORKSPACE_RESOURCE, visible);
 		if(visible) {
 			getContentPane().setComponent(getWSContentPane());
 			getContentPane().revalidate();
