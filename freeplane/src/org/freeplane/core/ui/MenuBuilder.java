@@ -44,6 +44,7 @@ import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -713,7 +714,35 @@ public class MenuBuilder extends UIBuilder {
 		addListeners(key, action);
 		return item;
 	}
-
+	
+	public JMenuItem addCheckboxItem(final String category, final AFreeplaneAction action, final boolean isSelected) {
+		assert action != null;
+		final String actionKey = "$" + action.getKey() + '$';
+		for(int i = 0; i < 1000; i++){
+			String key = actionKey + i;
+			if (null == get(key)){
+				return addCheckboxItem(category, key, action, isSelected);
+			}
+		}
+		return addCheckboxItem(category, category + '/' + actionKey, action, isSelected);
+	}
+	
+	public JMenuItem addCheckboxItem(final String category, final String key,
+			final AFreeplaneAction action, final boolean isSelected) {
+		assert key != null;
+		final JCheckBoxMenuItem item;
+		if (action.getClass().getAnnotation(SelectableAction.class) != null) {
+			item = new JAutoCheckBoxMenuItem(decorateAction(category, action));
+		}
+		else {
+			item = new JCheckBoxMenuItem(decorateAction(category, action));
+		}
+		addMenuItem(category, item, key, MenuBuilder.AS_CHILD);
+		item.setSelected(isSelected);
+		addListeners(key, action);
+		return item;
+	}
+			
 	public void addSeparator() {
 		addElement(this, new JPopupMenu.Separator(), UIBuilder.AS_CHILD);
 	}

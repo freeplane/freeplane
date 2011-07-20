@@ -18,7 +18,7 @@ import com.sun.jersey.multipart.FormDataMultiPart;
 public class Filetransfer {
 	private final static String MINDMAP_ID = "mindmapId";
 
-	public static void copyMindmapToServer(CommunicationsConfiguration config) {
+	public static synchronized void copyMindmapToServer(CommunicationsConfiguration config) {
 		System.out.println("insert or update 1");
 		ModeController modeController = Controller.getCurrentModeController();
 		Controller controller = Controller.getCurrentController();

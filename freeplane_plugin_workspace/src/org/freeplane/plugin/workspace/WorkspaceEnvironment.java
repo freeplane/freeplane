@@ -18,6 +18,7 @@ public class WorkspaceEnvironment implements ComponentListener {
 	private WorkspaceConfiguration config;
 	private static WorkspaceEnvironment currentWorkspace;
 	private TreeView view;
+	private WorkspacePreferences preferences;
 
 	public WorkspaceEnvironment() {
 		LogUtils.info("Initializing WorkspaceEnvironment");
@@ -25,6 +26,7 @@ public class WorkspaceEnvironment implements ComponentListener {
 		prepareModel();
 		hookIntoView();
 		currentWorkspace = this;
+		this.preferences = new WorkspacePreferences();
 	}
 	
 	public static WorkspaceEnvironment getCurrentWorkspaceEnvironment() {
