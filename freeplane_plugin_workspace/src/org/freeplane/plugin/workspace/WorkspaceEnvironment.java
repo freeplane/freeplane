@@ -47,6 +47,8 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener {
 	private Container oldContentPane;
 	private Container WSContentPane;
 	private SingleContentPane contentPane;
+	private WorkspacePreferences preferences;
+
 
 	public WorkspaceEnvironment() {
 		
@@ -54,6 +56,7 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener {
 		initializeConfiguration();
 		initView();
 		currentWorkspace = this;
+		this.preferences = new WorkspacePreferences();
 	}
 	
 	public static WorkspaceEnvironment getCurrentWorkspaceEnvironment() {
