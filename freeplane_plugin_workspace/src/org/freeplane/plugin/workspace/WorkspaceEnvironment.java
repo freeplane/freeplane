@@ -1,6 +1,8 @@
 package org.freeplane.plugin.workspace;
 
 import java.awt.Component;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.net.URL;
 
 import javax.swing.JSplitPane;
@@ -12,7 +14,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.view.TreeView;
 
-public class WorkspaceEnvironment {
+public class WorkspaceEnvironment implements ComponentListener {
 	private WorkspaceConfiguration config;
 	private static WorkspaceEnvironment currentWorkspace;
 	private TreeView view;
@@ -57,10 +59,11 @@ public class WorkspaceEnvironment {
 		Component[] components = modeController.getController().getViewController().getJFrame().getContentPane().getComponents();
 		  
 		modeController.getController().getViewController().getJFrame().getContentPane().removeAll();
-		JSplitPane splitPane = new JSplitPane();
+		JSplitPane splitPane = new JSplitPane();		
 		splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 		this.view = new TreeView(this.getConfig().getConigurationRoot());
 		splitPane.setLeftComponent(this.view);
+		this.view.addComponentListener(this);
 		for(Component component : components){
 			splitPane.setRightComponent(component);
 		}  
@@ -69,6 +72,23 @@ public class WorkspaceEnvironment {
 	
 	public DefaultTreeModel getViewModel() {
 		return this.view.getTreeModel();
+	}
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+		System.out.println("Workspace: "+ e.getComponent().getWidth());		
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {	
 	}
 		
 }
