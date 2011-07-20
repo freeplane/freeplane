@@ -1,10 +1,7 @@
 package org.freeplane.plugin.workspace.view;
 
-import java.net.InterfaceAddress;
-
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 
@@ -12,8 +9,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 //only occurs within the event dispatching thread.
 public class NodeExpansionListener implements TreeExpansionListener {
 		
-    public void treeExpanded(TreeExpansionEvent event) {
-    	
+    public void treeExpanded(TreeExpansionEvent event) {    	
         final DefaultMutableTreeNode node = (DefaultMutableTreeNode)event.getPath().getLastPathComponent();
         if(hasInterface(node.getUserObject())) {
         	((TreeExpansionListener)node.getUserObject()).treeExpanded(event);

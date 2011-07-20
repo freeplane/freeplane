@@ -6,7 +6,6 @@ import java.net.URL;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.ui.IndexedTree;
-import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class FilesystemFolderCreator extends NodeCreator {
@@ -27,10 +26,8 @@ public class FilesystemFolderCreator extends NodeCreator {
 				url = new URL("file://"+path);
 			}
 			catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println(url);
 			node.setFolderPath(url);
 		}
 		return node;
