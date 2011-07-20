@@ -9,7 +9,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.plugin.workspace.WorkspaceEnvironment;
 
-public class FilesystemFolderNode extends ConfigurationNode implements TreeExpansionListener{
+public class FilesystemFolderNode extends WorkspaceNode implements TreeExpansionListener{
 
 	private URL folderPath;
 	private boolean isUpToDate = false;

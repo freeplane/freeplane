@@ -9,7 +9,7 @@ public class WorkspaceCreator extends NodeCreator {
 	}
 
 	@Override
-	public ConfigurationNode getNode(String id, XMLElement data) {		
+	public WorkspaceNode getNode(String id, XMLElement data) {		
 		WorkspaceRoot node = new WorkspaceRoot(id);
 		String name = data.getAttribute("name", null);
 		node.setName(name==null? "workspace" : name);

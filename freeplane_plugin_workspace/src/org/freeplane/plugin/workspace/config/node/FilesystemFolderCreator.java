@@ -15,7 +15,7 @@ public class FilesystemFolderCreator extends NodeCreator {
 	}
 
 	@Override
-	public ConfigurationNode getNode(String id, XMLElement data) {
+	public WorkspaceNode getNode(String id, XMLElement data) {
 		FilesystemFolderNode node = new FilesystemFolderNode(id);
 		String name = data.getAttribute("name", null);
 		node.setName(name==null? "folder" : name);

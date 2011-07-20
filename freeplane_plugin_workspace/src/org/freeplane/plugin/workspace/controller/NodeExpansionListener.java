@@ -1,4 +1,4 @@
-package org.freeplane.plugin.workspace.view;
+package org.freeplane.plugin.workspace.controller;
 
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
