@@ -1,40 +1,20 @@
-package org.freeplane.plugin.workspace.config.node;
+package org.freeplane.plugin.workspace.config.creator;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.n3.nanoxml.XMLElement;
+import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
 
-public abstract class NodeCreator implements IElementDOMHandler {
+public abstract class ConfigurationNodeCreator implements IElementDOMHandler {
+	
+	abstract public WorkspaceNode getNode(String id, XMLElement data);
+	
 	
 	protected IndexedTree tree;
-	
-	protected static class Path {
-		static Path emptyPath() {
-			final Path Path = new Path(null);
-			Path.path = null;
-			return Path;
-		}
-
-		String parentPath;
-		String path;
-
-		Path(final String path) {
-			parentPath = path;
-		}
-
-		void setName(final String name) {
-			path = parentPath == null ? name : parentPath + '/' + name;
-		}
-
-		@Override
-		public String toString() {
-			return path;
-		}
-	};	
-	
-	public NodeCreator(IndexedTree tree) {
+		
+	public ConfigurationNodeCreator(IndexedTree tree) {
 		this.tree = tree;
 	}
 	
@@ -73,5 +53,29 @@ public abstract class NodeCreator implements IElementDOMHandler {
 		}
 	}
 
-	abstract public WorkspaceNode getNode(String id, XMLElement data);
+	
+	
+	protected static class Path {
+		static Path emptyPath() {
+			final Path Path = new Path(null);
+			Path.path = null;
+			return Path;
+		}
+
+		String parentPath;
+		String path;
+
+		Path(final String path) {
+			parentPath = path;
+		}
+
+		void setName(final String name) {
+			path = parentPath == null ? name : parentPath + '/' + name;
+		}
+
+		@Override
+		public String toString() {
+			return path;
+		}
+	};
 }

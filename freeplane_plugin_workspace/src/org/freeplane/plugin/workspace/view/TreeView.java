@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -19,16 +18,9 @@ import org.freeplane.plugin.workspace.controller.NodeExpansionListener;
 import org.freeplane.plugin.workspace.controller.NodeSelectionListener;
 
 public class TreeView extends JPanel {
-    /**
-	 * 
-	 */
+  
 	private static final long serialVersionUID = 1L;
-	public static final String APP_NAME = "Directories Tree";
-    public static final ImageIcon ICON_COMPUTER = new ImageIcon("computer.gif");
-    public static final ImageIcon ICON_DISK = new ImageIcon("disk.gif");
-    public static final ImageIcon ICON_FOLDER = new ImageIcon("folder.gif");
-    public static final ImageIcon ICON_EXPANDEDFOLDER = new ImageIcon("expandedfolder.gif");
-    protected JTree  m_tree;
+	protected JTree  m_tree;
     protected DefaultTreeModel m_model;
     protected JTextField m_display;
     

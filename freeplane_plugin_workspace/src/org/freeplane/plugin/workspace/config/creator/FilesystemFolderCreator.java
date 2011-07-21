@@ -1,4 +1,4 @@
-package org.freeplane.plugin.workspace.config.node;
+package org.freeplane.plugin.workspace.config.creator;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -9,8 +9,10 @@ import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
+import org.freeplane.plugin.workspace.config.node.FilesystemFolderNode;
+import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
 
-public class FilesystemFolderCreator extends NodeCreator {
+public class FilesystemFolderCreator extends ConfigurationNodeCreator {
 
 	public FilesystemFolderCreator(IndexedTree tree) {
 		super(tree);

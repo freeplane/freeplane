@@ -19,11 +19,11 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLException;
+import org.freeplane.plugin.workspace.config.creator.FilesystemFolderCreator;
+import org.freeplane.plugin.workspace.config.creator.FilesystemLinkCreator;
+import org.freeplane.plugin.workspace.config.creator.GroupCreator;
+import org.freeplane.plugin.workspace.config.creator.WorkspaceCreator;
 import org.freeplane.plugin.workspace.WorkspacePreferences;
-import org.freeplane.plugin.workspace.config.node.FilesystemFolderCreator;
-import org.freeplane.plugin.workspace.config.node.FilesystemLinkCreator;
-import org.freeplane.plugin.workspace.config.node.GroupCreator;
-import org.freeplane.plugin.workspace.config.node.WorkspaceCreator;
 
 public class WorkspaceConfiguration {
 	final private ReadManager readManager;
