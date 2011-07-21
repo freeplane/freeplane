@@ -2,26 +2,13 @@ package org.freeplane.plugin.workspace.io;
 
 import java.io.File;
 import java.util.LinkedList;
-import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.freeplane.core.io.IElementContentHandler;
-import org.freeplane.core.io.IElementDOMHandler;
-import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.ListHashTable;
-import org.freeplane.core.io.ReadManager;
-import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.plugin.workspace.WorkspaceEnvironment;
 
 public class FilesystemReader {
-	
-	private Object currentElement;
-	final private LinkedList<Object> elementStack = new LinkedList<Object>();
-	private IFileTypeHandler nodeCreator;
-	final private LinkedList<IFileTypeHandler> nodeCreatorStack = new LinkedList<IFileTypeHandler>();
-	private Object parentElement;
-	
+		
 	private final FileReadManager typeManager;
 	
 	public FilesystemReader(final FileReadManager typeManager) {
@@ -32,11 +19,11 @@ public class FilesystemReader {
 		return typeManager.getFileTypeHandlers();
 	}
 		
-	private void interateFolder(File folder, DefaultMutableTreeNode parent) {
-		interateFolder(folder, parent, true);
+	private void iterateFolder(File folder, DefaultMutableTreeNode parent) {
+		iterateFolder(folder, parent, true);
 	}
 	
-	private void interateFolder(File folder, DefaultMutableTreeNode parent, boolean first) {
+	private void iterateFolder(File folder, DefaultMutableTreeNode parent, boolean first) {
 		DefaultMutableTreeNode folderNode;
 		if(first)
 			folderNode = parent;
@@ -45,10 +32,10 @@ public class FilesystemReader {
 		
 		for(File file : folder.listFiles()) {
 			if(file.isDirectory()) {
-				interateFolder(file, folderNode, false);
+				iterateFolder(file, folderNode, false);
 			}
 			else {
-				folderNode.add(createFileNode(file));
+				folderNode.add(createFileNode(join(parent.getPath()), file));
 			}
 		}
 		if(parent != folderNode)
@@ -60,16 +47,27 @@ public class FilesystemReader {
 		
 		if(file != null && file.exists()) {
 			if(file.isDirectory()) {		
-				interateFolder(file, node);
+				iterateFolder(file, node);
 			} 
 			else {
-				node.add(createFileNode(file));
+				node.add(createFileNode(join(node.getPath()), file));
 			}
 		}
 	}
 	
-	private DefaultMutableTreeNode createFileNode(File file) {
+	private DefaultMutableTreeNode createFileNode(final Object parent, final File file) {
+		ListHashTable<String, IFileTypeHandler> creators = getFileTypeHandlers();
+		IFileTypeHandler creator = creators.list("*").get(0);
+		//return new DefaultMutableTreeNode(creator.createFileNode(parent, "*", file));
 		return new DefaultMutableTreeNode(new String(file.getName()));
+	}
+	
+	private String join(Object[] arry) {
+		String joined = "";
+		for(Object o : arry) {
+			joined += "/"+o.toString();
+		}
+		return joined;
 	}
 	
 }

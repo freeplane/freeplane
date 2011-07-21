@@ -99,7 +99,11 @@ public class WorkspaceConfiguration {
 	}
 
 	public MutableTreeNode getConfigurationRoot() {
-		return tree.getRoot();
+		return getTree().getRoot();
+	}
+	
+	public IndexedTree getTree() {
+		return this.tree;
 	}
 
 }

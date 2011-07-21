@@ -18,6 +18,7 @@ import javax.swing.tree.TreePath;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -27,6 +28,8 @@ import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.FileReadManager;
 import org.freeplane.plugin.workspace.io.FilesystemReader;
+import org.freeplane.plugin.workspace.io.creator.DefaultFileNodeCreator;
+import org.freeplane.plugin.workspace.io.creator.ImageFileNodeCreator;
 import org.freeplane.plugin.workspace.view.TreeView;
 
 public class WorkspaceEnvironment implements ComponentListener, MouseListener, IFreeplanePropertyListener {
@@ -192,6 +195,9 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 	private FileReadManager getFileTypeManager() {
 		if(this.fileTypeManager == null) {
 			this.fileTypeManager = new FileReadManager();
+			this.fileTypeManager.addFileHandler("*", new DefaultFileNodeCreator(getConfig().getTree()));
+			this.fileTypeManager.addFileHandler(".gif", new ImageFileNodeCreator(getConfig().getTree()));
+			this.fileTypeManager.addFileHandler(".jpg", new ImageFileNodeCreator(getConfig().getTree()));
 		}
 		return this.fileTypeManager;
 	}

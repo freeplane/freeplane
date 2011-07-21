@@ -7,7 +7,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.config.node.FilesystemFolderNode;
 import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
@@ -24,17 +23,12 @@ public class FilesystemFolderCreator extends ConfigurationNodeCreator {
 		String name = data.getAttribute("name", null);
 		node.setName(name==null? "folder" : name);
 		String path = data.getAttribute("path", null);
-		
-		String filesystemPath = null;
-		if (path!=null) {
-			LogUtils.info("path: "+path);
-			filesystemPath = Controller.getCurrentController().getResourceController().getProperty(path);
-		}		
-		if(filesystemPath!=null) {
-			LogUtils.info("FilesystemPath: "+filesystemPath);
+				
+		if(path!=null) {
+			LogUtils.info("FilesystemPath: "+path);
 			URL url = null;
 			try {
-				url = new URL("file://"+filesystemPath);
+				url = new URL("file:///"+path);
 			}
 			catch (MalformedURLException e) {
 				e.printStackTrace();
