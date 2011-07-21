@@ -18,7 +18,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.styles.mindmapmode;
+package org.freeplane.features.styles;
 
 import java.util.Collection;
 import org.freeplane.core.extension.IExtension;
@@ -30,10 +30,6 @@ import org.freeplane.features.mode.IPropertyHandler;
 import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.styles.IStyle;
-import org.freeplane.features.styles.LogicalStyleController;
-import org.freeplane.features.styles.MapStyleModel;
-import org.freeplane.features.styles.StyleFactory;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 @NodeHookDescriptor(hookName = "accessories/plugins/AutomaticLayout.properties")
@@ -47,7 +43,9 @@ public class AutomaticLayout extends PersistentNodeHook implements IExtension {
 		LogicalStyleController.getController().addStyleGetter(IPropertyHandler.AUTO, new IPropertyHandler<Collection<IStyle>, NodeModel>() {
 			public Collection<IStyle> getProperty(NodeModel model, Collection<IStyle> currentValue) {
 				if(model.getMap().getRootNode().containsExtension(AutomaticLayout.class)){
-					currentValue.add(getStyle(model));
+					final IStyle autoStyle = getStyle(model);
+					LogicalStyleController.getController().add(model, currentValue, autoStyle);
+					currentValue.add(autoStyle);
 				}
 				return currentValue;
 			}

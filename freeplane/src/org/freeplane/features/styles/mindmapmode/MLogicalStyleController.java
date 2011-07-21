@@ -22,7 +22,6 @@ package org.freeplane.features.styles.mindmapmode;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.JMenu;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
@@ -49,7 +48,6 @@ import org.freeplane.features.styles.LogicalStyleKeys;
 import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
-import org.freeplane.features.styles.StyleNamedObject;
 import org.freeplane.features.styles.ConditionalStyleModel.Item;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.mindmapmode.MTextController;
@@ -280,9 +278,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 		for (final NodeModel child : children) {
 			final IStyle style = (IStyle) child.getUserObject();
 			if (child.hasChildren()) {
-				final String newCategory = category + '/' + StyleNamedObject.toKeyString(style);
-				menuBuilder.addMenuItem(category, new JMenu(style.toString()), newCategory, MenuBuilder.AS_CHILD);
-				addStyleMenu(menuBuilder, newCategory, child, extension);
+				addStyleMenu(menuBuilder, category, child, extension);
 			}
 			else if(null != extension.getStyleNode(style)){
 				final AssignStyleAction action = new AssignStyleAction(style, style.toString(), null);

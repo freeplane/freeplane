@@ -269,8 +269,8 @@
 			</menu_submenu>
 		</menu_submenu>
 		<menu_submenu name="styles" name_ref="styles">
-			<menu_category name="assign" menu_key="main_menu_styles">
-			</menu_category>	
+			<menu_submenu name="styles" name_ref="styles" menu_key="main_menu_styles">
+			</menu_submenu>	
 			<menu_separator />
 			<menu_category name="manage">
 				<menu_action action="NewUserStyleAction" />				

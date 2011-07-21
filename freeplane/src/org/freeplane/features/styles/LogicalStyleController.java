@@ -81,18 +81,28 @@ public class LogicalStyleController implements IExtension {
 		});
 		addStyleGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Collection<IStyle>, NodeModel>() {
 			public Collection<IStyle> getProperty(NodeModel node, Collection<IStyle> currentValue) {
-				final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
-				add(node, styleModel, currentValue, MapStyleModel.DEFAULT_STYLE);
+				add(node, currentValue, MapStyleModel.DEFAULT_STYLE);
 				return currentValue;
 			}
 		});
 	}
 
+	protected void addAll(NodeModel node, Collection<IStyle> currentValue, Collection<IStyle> collection) {
+		final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
+		addAll(node, styleModel, currentValue, collection);
+	}
+	
 	protected void addAll(NodeModel node, MapStyleModel styleModel, Collection<IStyle> currentValue, Collection<IStyle> collection) {
 		for(IStyle styleKey : collection){
 			add(node, styleModel, currentValue, styleKey);
 		}
     }
+
+	public void add(NodeModel node, Collection<IStyle> currentValue, IStyle style) {
+		final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
+		add(node, styleModel, currentValue, style);
+    }
+	
 	protected void add(NodeModel node, MapStyleModel styleModel, Collection<IStyle> currentValue, IStyle styleKey) {
 			if(!currentValue.add(styleKey)){
 				return;
