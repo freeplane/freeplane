@@ -10,16 +10,16 @@ import org.freeplane.core.io.ListHashTable;
 import org.freeplane.features.map.NodeModel;
 
 public class FileReadManager {
-	final private ListHashTable<String, IFileHandler> fileHandlers;
+	final private ListHashTable<String, IFileTypeHandler> fileHandlers;
 	final private Collection<IReadCompletionListener> readCompletionListeners;
 
 	public FileReadManager() {
 		super();
-		fileHandlers = new ListHashTable<String, IFileHandler>();
+		fileHandlers = new ListHashTable<String, IFileTypeHandler>();
 		readCompletionListeners = new LinkedList<IReadCompletionListener>();
 	}
 
-	public void addFileHandler(final String fileExtension, final IFileHandler handler) {
+	public void addFileHandler(final String fileExtension, final IFileTypeHandler handler) {
 		fileHandlers.add(fileExtension, handler);
 	}
 
@@ -27,7 +27,7 @@ public class FileReadManager {
 		readCompletionListeners.add(listener);
 	}
 
-	public ListHashTable<String, IFileHandler> getElementHandlers() {
+	public ListHashTable<String, IFileTypeHandler> getFileTypeHandlers() {
 		return fileHandlers;
 	}
 
@@ -38,7 +38,7 @@ public class FileReadManager {
 		}
 	}
 
-	public void removeElementHandler(final String fileExtension, final IFileHandler handler) {
+	public void removeElementHandler(final String fileExtension, final IFileTypeHandler handler) {
 		final boolean removed = fileHandlers.remove(fileExtension, handler);
 		assert removed;
 	}

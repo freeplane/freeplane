@@ -28,32 +28,7 @@ public class FilesystemFolderNode extends WorkspaceNode implements TreeExpansion
 
 	public void setFolderPath(URL folderPath) {
 		this.folderPath = folderPath;
-	}
-		
-	private void interateFolder(File folder, DefaultMutableTreeNode parent) {
-		interateFolder(folder, parent, true);
-	}
-	
-	private void interateFolder(File folder, DefaultMutableTreeNode parent, boolean first) {
-		DefaultMutableTreeNode folderNode;
-		if(first)
-			folderNode = parent;
-		else
-			folderNode = new DefaultMutableTreeNode(new String(folder.getName()));
-		
-		for(File file : folder.listFiles()) {
-			if(file.isDirectory()) {
-				interateFolder(file, folderNode, false);
-			}
-			else {
-				folderNode.add(new DefaultMutableTreeNode(new String(file.getName())));
-			}
-		}
-		if(parent != folderNode)
-			parent.add(folderNode);
-		
-	}
-	
+	}	
 	
 	@Override
 	public void treeCollapsed(TreeExpansionEvent event) {
@@ -65,7 +40,7 @@ public class FilesystemFolderNode extends WorkspaceNode implements TreeExpansion
 		if(folder.isDirectory()) {
 			final DefaultMutableTreeNode node = (DefaultMutableTreeNode)event.getPath().getLastPathComponent();
 			node.removeAllChildren();
-			interateFolder(folder, node);
+			WorkspaceEnvironment.getCurrentWorkspaceEnvironment().getFilesystemReader().scanFilesystem(node, folder);
 			WorkspaceEnvironment.getCurrentWorkspaceEnvironment().getViewModel().reload(node);
 			isUpToDate = true;
 		}

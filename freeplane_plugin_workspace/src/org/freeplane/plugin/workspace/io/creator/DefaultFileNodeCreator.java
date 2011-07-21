@@ -37,7 +37,7 @@ public class DefaultFileNodeCreator extends FileNodeCreator {
 	 **********************************************************************************/
 	
 	public WorkspaceNode getNode(String name, File file) {
-		DefaultFileNode node = new DefaultFileNode(name);
+		DefaultFileNode node = new DefaultFileNode(name, file);
 		return node;
 	}
 	

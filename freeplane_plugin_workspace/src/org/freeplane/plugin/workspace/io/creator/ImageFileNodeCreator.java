@@ -8,6 +8,7 @@ import java.io.File;
 
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
+import org.freeplane.plugin.workspace.io.node.ImageFileNode;
 
 /**
  * 
@@ -24,7 +25,6 @@ public class ImageFileNodeCreator extends FileNodeCreator {
 	 */
 	public ImageFileNodeCreator(IndexedTree tree) {
 		super(tree);
-		// TODO Auto-generated constructor stub
 	}
 	
 	/***********************************************************************************
@@ -37,8 +37,8 @@ public class ImageFileNodeCreator extends FileNodeCreator {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	
-	public WorkspaceNode getNode(String id, File file) {
-		// TODO Auto-generated method stub
-		return null;
+	public WorkspaceNode getNode(String name, File file) {
+		ImageFileNode node = new ImageFileNode(name, file);
+		return node;
 	}
 }

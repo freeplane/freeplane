@@ -10,9 +10,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
-import org.freeplane.plugin.workspace.io.IFileHandler;
+import org.freeplane.plugin.workspace.io.IFileTypeHandler;
 
-public abstract class FileNodeCreator implements IFileHandler {
+public abstract class FileNodeCreator implements IFileTypeHandler {
 	abstract public WorkspaceNode getNode(String name, File file);
 	
 	

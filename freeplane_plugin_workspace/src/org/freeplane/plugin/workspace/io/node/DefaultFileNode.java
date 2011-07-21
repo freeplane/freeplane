@@ -4,32 +4,36 @@
  */
 package org.freeplane.plugin.workspace.io.node;
 
-import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
+import java.io.File;
+
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.io.PhysicalNode;
 
 /**
  * 
  */
-public class DefaultFileNode extends WorkspaceNode implements IWorkspaceNodeEventListener {
+public class DefaultFileNode extends PhysicalNode implements IWorkspaceNodeEventListener {
 
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
-
+	
 	/**
-	 * @param id
+	 * @param name
+	 * @param file
 	 */
-	public DefaultFileNode(String id) {
-		super(id);
+	public DefaultFileNode(String name, File file) {
+		super(name, file);
 		// TODO Auto-generated constructor stub
 	}
+	
 	
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
 
-	
+		
 
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
@@ -37,6 +41,6 @@ public class DefaultFileNode extends WorkspaceNode implements IWorkspaceNodeEven
 	
 	public void handleEvent(WorkspaceNodeEvent event) {
 		// TODO Auto-generated method stub
-
+		System.out.println("DefaultFileNode: "+ event);
 	}
 }

@@ -11,8 +11,8 @@ public class ImageFileNode extends PhysicalNode implements IWorkspaceNodeEventLi
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
-	public ImageFileNode(String id, File file) {
-		super(id, file);
+	public ImageFileNode(String name, File file) {
+		super(name, file);
 	}
 	
 	/***********************************************************************************
@@ -28,7 +28,7 @@ public class ImageFileNode extends PhysicalNode implements IWorkspaceNodeEventLi
 	@Override
 	public void handleEvent(WorkspaceNodeEvent event) {
 		// TODO Auto-generated method stub
-		
+		System.out.println("ImageFileNode: "+ event);
 	}
 
 }
