@@ -28,8 +28,7 @@ import org.freeplane.plugin.workspace.controller.WorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.view.TreeView;
 
 public class WorkspaceEnvironment implements ComponentListener, MouseListener {
-	private static String WORKSPACE_WIDTH_PROPERTY_KEY = "workspace_view_width";
-	
+		
 	private class SingleContentPane extends JPanel {
 
 		private static final long serialVersionUID = 1L;
@@ -40,22 +39,22 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener {
 		}
 	}
 	
+	private WorkspacePreferences preferences;
 	private WorkspaceConfiguration config;
 	private static WorkspaceEnvironment currentWorkspace;
 	private TreeView view;
 	private Container oldContentPane;
 	private Container WSContentPane;
 	private SingleContentPane contentPane;
-	private WorkspacePreferences preferences;
+	
 
 
 	public WorkspaceEnvironment() {
-		
+		this.preferences = new WorkspacePreferences();
 		LogUtils.info("Initializing WorkspaceEnvironment");
 		initializeConfiguration();
 		initView();
-		currentWorkspace = this;
-		this.preferences = new WorkspacePreferences();
+		currentWorkspace = this;		
 	}
 	
 	public static WorkspaceEnvironment getCurrentWorkspaceEnvironment() {
@@ -89,7 +88,7 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener {
 			ResourceController resCtrl = Controller.getCurrentController().getResourceController();
 			JSplitPane splitPane = new JSplitPane();
 			splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-			getWorkspaceView().setMinimumSize(new Dimension(resCtrl.getIntProperty(WORKSPACE_WIDTH_PROPERTY_KEY, 200), 1));
+			getWorkspaceView().setMinimumSize(new Dimension(resCtrl.getIntProperty(WorkspacePreferences.WORKSPACE_WIDTH_PROPERTY_KEY, 200), 1));
 			splitPane.setLeftComponent(getWorkspaceView());
 			splitPane.setRightComponent(getOldContentPane());
 			this.WSContentPane = splitPane;
@@ -144,7 +143,7 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener {
 	public void componentResized(ComponentEvent e) {
 		if(e.getComponent() == getWorkspaceView()) {
 			ResourceController resCtrl = Controller.getCurrentController().getResourceController();
-			resCtrl.setProperty(WORKSPACE_WIDTH_PROPERTY_KEY, String.valueOf(e.getComponent().getWidth()));
+			resCtrl.setProperty(WorkspacePreferences.WORKSPACE_WIDTH_PROPERTY_KEY, String.valueOf(e.getComponent().getWidth()));
 		}
 	}
 
