@@ -8,7 +8,6 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.net.URL;
 
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -24,8 +23,8 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
+import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.view.TreeView;
 
 public class WorkspaceEnvironment implements ComponentListener, MouseListener, IFreeplanePropertyListener {
@@ -191,9 +190,9 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	
-	public void propertyChanged(String propertyName, String newValue, String oldValue) {
-		System.out.println("FISHI: initialize workspace configuration: "+propertyName);
-		if (propertyName.equals(WorkspacePreferences.WORKSPACE_LOCATION)) {			
+	public void propertyChanged(String propertyName, String newValue, String oldValue) {		
+		if (propertyName.equals(WorkspacePreferences.WORKSPACE_LOCATION)) {
+			System.out.println("FISHI: initialize workspace configuration: "+propertyName);
 			initializeConfiguration();
 			reloadView();
 		}

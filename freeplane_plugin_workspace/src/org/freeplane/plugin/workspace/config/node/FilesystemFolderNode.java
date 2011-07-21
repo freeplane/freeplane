@@ -62,7 +62,7 @@ public class FilesystemFolderNode extends WorkspaceNode implements TreeExpansion
 	public void treeExpanded(TreeExpansionEvent event) {
 		if(isUpToDate||getFolderPath()==null) return;
 		File folder = new File(getFolderPath().getFile());
-		if(folder.isDirectory()) {			
+		if(folder.isDirectory()) {
 			final DefaultMutableTreeNode node = (DefaultMutableTreeNode)event.getPath().getLastPathComponent();
 			node.removeAllChildren();
 			interateFolder(folder, node);
