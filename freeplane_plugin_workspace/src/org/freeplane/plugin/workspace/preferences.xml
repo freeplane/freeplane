@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preferences_structure>
+	<tabbed_pane>
+		<tab name="workspace">
+			<separator name="workspace_main_options">
+				<path name="workspace_location" dir="true" />				 
+			</separator>
+		</tab>
+	</tabbed_pane>
+</preferences_structure>
