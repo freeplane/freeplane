@@ -1,7 +1,7 @@
 package org.freeplane.plugin.workspace.view;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
@@ -38,9 +38,7 @@ public class TreeView extends JPanel {
     }
     
     public TreeView(MutableTreeNode conigurationRoot) {
-    	this.setLayout(new BorderLayout());
-    	this.setMinimumSize(new Dimension(200, 100));
-        
+    	this.setLayout(new BorderLayout());        
         m_model = new DefaultTreeModel(conigurationRoot);
         
         m_tree = new JTree(m_model);
@@ -67,6 +65,10 @@ public class TreeView extends JPanel {
 	
 	public void addTreeMouseListener(MouseListener l) {
 		this.m_tree.addMouseListener(l);
+	}
+	
+	public void addTreeComponentListener(ComponentListener l) {
+		this.m_tree.addComponentListener(l);
 	}
     
 }
