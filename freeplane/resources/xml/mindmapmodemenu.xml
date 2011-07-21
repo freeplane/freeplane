@@ -276,6 +276,7 @@
 				<menu_action action="NewUserStyleAction" />				
 				<menu_action action="RedefineStyleAction" />				
 				<menu_action action="ManageConditionalStylesAction" />
+				<menu_action action="ManageNodeConditionalStylesAction" />
 				<menu_separator />
 				<menu_action action="AutomaticLayoutAction" />		
 				<menu_separator />

@@ -63,6 +63,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
  */
 @NodeHookDescriptor(hookName = "MapStyle")
 public class MapStyle extends PersistentNodeHook implements IExtension, IMapLifeCycleListener {
+	private static final String NODE_CONDITIONAL_STYLES = "NodeConditionalStyles";
 	public static final String RESOURCES_BACKGROUND_COLOR = "standardbackgroundcolor";
 	public static final String MAP_STYLES = "MAP_STYLES";
 
@@ -74,19 +75,47 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		if (persistent) {
 			final MapController mapController = modeController.getMapController();
 			mapController.getWriteManager().addExtensionElementWriter(getExtensionClass(),
-			    new XmlWriter());
+				new XmlWriter());
 			mapController.getReadManager().addElementHandler("conditional_styles", new IElementDOMHandler() {
 				public Object createElement(Object parent, String tag, XMLElement attributes) {
 					return parent;
 				}
-				
+
 				public void endElement(Object parent, String tag, Object element, XMLElement dom) {
 					final NodeModel node = (NodeModel) parent;
 					final MapStyleModel mapStyleModel = MapStyleModel.getExtension(node);
 					loadConditionalStyles(mapStyleModel.getConditionalStyleModel(), dom);
 				}
+				});
+
+				mapController.getWriteManager().addExtensionElementWriter(ConditionalStyleModel.class,
+					new IExtensionElementWriter() {
+					public void writeContent(ITreeWriter writer, Object element, IExtension extension) throws IOException {
+						final ConditionalStyleModel conditionalStyleModel = (ConditionalStyleModel) extension;
+						if (conditionalStyleModel.getStyleCount() == 0)
+							return;
+						final XMLElement hook = new XMLElement("hook");
+						hook.setAttribute("NAME", NODE_CONDITIONAL_STYLES);
+						saveConditionalStyles(conditionalStyleModel, hook, false);
+						writer.addElement(null, hook);
+					}
+				});
+				
+				mapController.getReadManager().addElementHandler("hook", new IElementDOMHandler() {
+					public Object createElement(Object parent, String tag, XMLElement attributes) {
+						if (attributes == null 
+								|| !NODE_CONDITIONAL_STYLES.equals(attributes.getAttribute("NAME", null))) {
+							return null;
+					}
+					final ConditionalStyleModel conditionalStyleModel = new ConditionalStyleModel();
+					((NodeModel)parent).addExtension(conditionalStyleModel);
+					return conditionalStyleModel;
+				}
+				
+				public void endElement(Object parent, String tag, Object element, XMLElement dom) {
+					loadConditionalStyles((ConditionalStyleModel) element, dom);
+				}
 			});
-			
 			mapController.getReadManager().addElementHandler("map_styles",  new IElementContentHandler() {
 				public Object createElement(Object parent, String tag, XMLElement attributes) {
 	                return parent;
@@ -242,13 +271,18 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			conditionalStyleModel.addCondition(isActive, condition, style, isLast);
 		}
     }
-	private void saveConditionalStyles(ConditionalStyleModel conditionalStyleModel, XMLElement parent) {
+	private void saveConditionalStyles(ConditionalStyleModel conditionalStyleModel, XMLElement parent, boolean createRoot) {
 		final int styleCount = conditionalStyleModel.getStyleCount();
 		if(styleCount == 0){
 			return;
 		}
-		final XMLElement conditionalStylesRoot = parent.createElement("conditional_styles");
+		final XMLElement conditionalStylesRoot;
+		if(createRoot){
+			conditionalStylesRoot = parent.createElement("conditional_styles");
 		parent.addChild(conditionalStylesRoot);
+		}
+		else
+			conditionalStylesRoot = parent;
 		for(final Item item : conditionalStyleModel){
 			item.toXml(conditionalStylesRoot);
 		}
@@ -356,7 +390,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			element.setAttribute("layout", layout.toString());
 		}
 		element.setAttribute("max_node_width", Integer.toString(mapStyleModel.getMaxNodeWidth()));
-		saveConditionalStyles(mapStyleModel.getConditionalStyleModel(), element);
+		saveConditionalStyles(mapStyleModel.getConditionalStyleModel(), element, true);
 		saveProperties(mapStyleModel.getProperties(), element);
 	}
 	

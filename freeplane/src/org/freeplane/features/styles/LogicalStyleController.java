@@ -71,6 +71,11 @@ public class LogicalStyleController implements IExtension {
 				if(style != null){
 					currentValue.add(style);
 				}
+				final ConditionalStyleModel conditionalStyleModel = (ConditionalStyleModel) node.getExtension(ConditionalStyleModel.class);
+				if(conditionalStyleModel != null){
+					Collection<IStyle> condStyles = conditionalStyleModel.getStyles(node);
+					currentValue.addAll(condStyles);
+				}
 				return currentValue;
 			}
 		});
@@ -242,26 +247,27 @@ public class LogicalStyleController implements IExtension {
 		return cachedStyle;
 	}
 	
-	public void moveConditionalStyleDown(final MapModel map, int index){
-		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
-		styleModel.getConditionalStyleModel().moveDown(index);
-	}
-	public void moveConditionalStyleUp(final MapModel map, int index){
-		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
-		styleModel.getConditionalStyleModel().moveUp(index);
-	}
-	public void addConditionalStyle(final MapModel map, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast){
-		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
-		styleModel.getConditionalStyleModel().addCondition(isActive, condition, style, isLast);
-	}
-	public void insertConditionalStyle(final MapModel map, int index, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast){
-		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
-		styleModel.getConditionalStyleModel().insertCondition(index, isActive, condition, style, isLast);
-	}
-	public Item removeConditionalStyle(final MapModel map, int index){
-		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
-		return styleModel.getConditionalStyleModel().removeCondition(index);
-	}
+	public void moveConditionalStyleDown(final ConditionalStyleModel conditionalStyleModel, int index) {
+	    conditionalStyleModel.moveDown(index);
+    }
+
+	public void moveConditionalStyleUp(final ConditionalStyleModel conditionalStyleModel, int index) {
+	    conditionalStyleModel.moveUp(index);
+    }
+
+	public void addConditionalStyle(final ConditionalStyleModel conditionalStyleModel, boolean isActive,
+                                    ASelectableCondition condition, IStyle style, boolean isLast) {
+	    conditionalStyleModel.addCondition(isActive, condition, style, isLast);
+    }
+
+	public void insertConditionalStyle(final ConditionalStyleModel conditionalStyleModel, int index, boolean isActive,
+                                       ASelectableCondition condition, IStyle style, boolean isLast) {
+	    conditionalStyleModel.insertCondition(index, isActive, condition, style, isLast);
+    }
+	
+	public Item removeConditionalStyle(final ConditionalStyleModel conditionalStyleModel, int index) {
+	    return conditionalStyleModel.removeCondition(index);
+    }
 
 	private void clearCache() {
 	    cachedStyle = null;
