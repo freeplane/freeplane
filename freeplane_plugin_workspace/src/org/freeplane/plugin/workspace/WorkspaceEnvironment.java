@@ -25,6 +25,8 @@ import org.freeplane.features.ui.ViewController;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.io.FileReadManager;
+import org.freeplane.plugin.workspace.io.FilesystemReader;
 import org.freeplane.plugin.workspace.view.TreeView;
 
 public class WorkspaceEnvironment implements ComponentListener, MouseListener, IFreeplanePropertyListener {
@@ -35,6 +37,8 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 	private Container WSContentPane;
 	private SingleContentPane contentPane;
 	private WorkspacePreferences preferences;
+	private final FilesystemReader fsReader;
+	private FileReadManager fileTypeManager;
 
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -45,6 +49,7 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 		initializeConfiguration();
 		initializeView();
 		initializePreferences();
+		this.fsReader = new FilesystemReader(getFileTypeManager());
 		currentWorkspace = this;
 	}
 
@@ -73,7 +78,6 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 		resetWorkspaceView();
 
 		if (!getConfig().isConfigValid()) {
-			System.out.println("FISHI: config is not valid!");
 			showWorkspaceView(false);
 			return;
 		}
@@ -107,7 +111,6 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 	}
 
 	private void setWorkspaceWidth(int width) {
-		System.out.println("FISH workspacewidth: " + width);
 		JSplitPane splitPane = (JSplitPane) (getWSContentPane().getComponent(0));
 		getWorkspaceView().setVisible(width > 0);
 		getWorkspaceView().setSize(width, 0);
@@ -167,11 +170,8 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
 		resCtrl.setProperty(WorkspacePreferences.SHOW_WORKSPACE_RESOURCE, visible);
 		if (visible) {
-			System.out.println("FISH visible");
 			int width = resCtrl.getIntProperty(WorkspacePreferences.WORKSPACE_WIDTH_PROPERTY_KEY, 200);
-			System.out.println("FISH visible: " + width);
 			setWorkspaceWidth(width);
-
 			getContentPane().revalidate();
 		}
 		else {
@@ -183,6 +183,17 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 
 	public DefaultTreeModel getViewModel() {
 		return this.view.getTreeModel();
+	}
+	
+	public FilesystemReader getFilesystemReader() {
+		return this.fsReader;
+	}
+	
+	private FileReadManager getFileTypeManager() {
+		if(this.fileTypeManager == null) {
+			this.fileTypeManager = new FileReadManager();
+		}
+		return this.fileTypeManager;
 	}
 
 	private boolean canHandleEvent(Object object) {
