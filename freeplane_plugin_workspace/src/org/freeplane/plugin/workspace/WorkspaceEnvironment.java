@@ -60,7 +60,8 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 		if (this.config != null) {
 			return this.config;
 		}
-		else setConfig(new WorkspaceConfiguration());
+		else
+			setConfig(new WorkspaceConfiguration());
 		return config;
 	}
 
@@ -68,9 +69,9 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 		this.config = config;
 	}
 
-	private void initializeConfiguration() {		
+	private void initializeConfiguration() {
 		resetWorkspaceView();
-		
+
 		if (!getConfig().isConfigValid()) {
 			System.out.println("FISHI: config is not valid!");
 			showWorkspaceView(false);
@@ -106,8 +107,10 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 	}
 
 	private void setWorkspaceWidth(int width) {
+		System.out.println("FISH workspacewidth: " + width);
 		JSplitPane splitPane = (JSplitPane) (getWSContentPane().getComponent(0));
 		getWorkspaceView().setVisible(width > 0);
+		getWorkspaceView().setSize(width, 0);
 		splitPane.setDividerLocation(width + 1);
 		splitPane.setDividerSize((width > 0 ? 4 : 0));
 		splitPane.setEnabled(width > 0);
@@ -122,10 +125,11 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 		}
 		return this.view;
 	}
-	
+
 	private void resetWorkspaceView() {
 		this.config = null;
-		this.view = null;		
+		this.view = null;
+		this.WSContentPane = null;
 	}
 
 	private void initializeView() {
@@ -135,7 +139,7 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 		viewController.getJFrame().getContentPane().add(getContentPane());
 		reloadView();
 	}
-	
+
 	private void reloadView() {
 		getContentPane().setComponent(getWSContentPane());
 		showWorkspaceView(Controller.getCurrentController().getResourceController()
@@ -163,10 +167,15 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
 		resCtrl.setProperty(WorkspacePreferences.SHOW_WORKSPACE_RESOURCE, visible);
 		if (visible) {
-			setWorkspaceWidth(resCtrl.getIntProperty(WorkspacePreferences.WORKSPACE_WIDTH_PROPERTY_KEY, 200));
+			System.out.println("FISH visible");
+			int width = resCtrl.getIntProperty(WorkspacePreferences.WORKSPACE_WIDTH_PROPERTY_KEY, 200);
+			System.out.println("FISH visible: " + width);
+			setWorkspaceWidth(width);
+
 			getContentPane().revalidate();
 		}
 		else {
+			System.out.println("FISH invisible");
 			setWorkspaceWidth(-1);
 			getContentPane().revalidate();
 		}
@@ -189,15 +198,19 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
-	
-	public void propertyChanged(String propertyName, String newValue, String oldValue) {		
+
+	public void propertyChanged(String propertyName, String newValue, String oldValue) {
 		if (propertyName.equals(WorkspacePreferences.WORKSPACE_LOCATION)) {
-			System.out.println("FISHI: initialize workspace configuration: "+propertyName);
-			initializeConfiguration();
-			reloadView();
+			if (newValue != null && !newValue.isEmpty()) {
+				Controller.getCurrentController().getResourceController()
+						.setProperty(WorkspacePreferences.SHOW_WORKSPACE_RESOURCE, true);
+				initializeConfiguration();
+				reloadView();
+
+			}
 		}
 	}
-	
+
 	public void componentResized(ComponentEvent e) {
 		if (Controller.getCurrentController().getResourceController()
 				.getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_RESOURCE)
@@ -236,8 +249,8 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 				else {
 					eventType += WorkspaceNodeEvent.MOUSE_CLICK;
 				}
-				((IWorkspaceNodeEventListener) node.getUserObject()).handleEvent(new WorkspaceNodeEvent(node, eventType, e.getX(),
-						e.getY()));
+				((IWorkspaceNodeEventListener) node.getUserObject()).handleEvent(new WorkspaceNodeEvent(node, eventType,
+						e.getX(), e.getY()));
 			}
 
 		}
@@ -269,7 +282,5 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 			this.add(comp);
 		}
 	}
-
-	
 
 }
