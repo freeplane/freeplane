@@ -66,16 +66,8 @@ public class LogicalStyleController implements IExtension {
 		registerChangeListener();
 		addStyleGetter(IPropertyHandler.NODE, new IPropertyHandler<Collection<IStyle>, NodeModel>() {
 			public Collection<IStyle> getProperty(NodeModel node, Collection<IStyle> currentValue) {
-				currentValue.add(new StyleNode(node));
-				IStyle style = LogicalStyleModel.getStyle(node);
-				if(style != null){
-					currentValue.add(style);
-				}
-				final ConditionalStyleModel conditionalStyleModel = (ConditionalStyleModel) node.getExtension(ConditionalStyleModel.class);
-				if(conditionalStyleModel != null){
-					Collection<IStyle> condStyles = conditionalStyleModel.getStyles(node);
-					currentValue.addAll(condStyles);
-				}
+				final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
+				add(node, styleModel, currentValue, new StyleNode(node));
 				return currentValue;
 			}
 		});
@@ -83,17 +75,43 @@ public class LogicalStyleController implements IExtension {
 			public Collection<IStyle> getProperty(NodeModel node, Collection<IStyle> currentValue) {
 				final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
 				Collection<IStyle> condStyles = styleModel.getConditionalStyleModel().getStyles(node);
-				currentValue.addAll(condStyles);
+				addAll(node, styleModel, currentValue, condStyles);
 				return currentValue;
 			}
 		});
 		addStyleGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Collection<IStyle>, NodeModel>() {
-			public Collection<IStyle> getProperty(NodeModel model, Collection<IStyle> currentValue) {
-				currentValue.add(MapStyleModel.DEFAULT_STYLE);
+			public Collection<IStyle> getProperty(NodeModel node, Collection<IStyle> currentValue) {
+				final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
+				add(node, styleModel, currentValue, MapStyleModel.DEFAULT_STYLE);
 				return currentValue;
 			}
 		});
 	}
+
+	protected void addAll(NodeModel node, MapStyleModel styleModel, Collection<IStyle> currentValue, Collection<IStyle> collection) {
+		for(IStyle styleKey : collection){
+			add(node, styleModel, currentValue, styleKey);
+		}
+    }
+	protected void add(NodeModel node, MapStyleModel styleModel, Collection<IStyle> currentValue, IStyle styleKey) {
+			if(!currentValue.add(styleKey)){
+				return;
+			}
+			final NodeModel styleNode = styleModel.getStyleNode(styleKey);
+			if (styleNode == null) {
+				return;
+			}
+			if(styleKey instanceof StyleNode){
+				IStyle style = LogicalStyleModel.getStyle(styleNode);
+				if(style != null){
+					add(node, styleModel, currentValue, style);
+				}
+			}
+			final ConditionalStyleModel conditionalStyleModel = (ConditionalStyleModel) styleNode.getExtension(ConditionalStyleModel.class);
+			if(conditionalStyleModel == null)
+				return;
+			addAll(node, styleModel, currentValue, conditionalStyleModel.getStyles(node));
+    }
 
 	private void registerChangeListener() {
 		ModeController modeController = Controller.getCurrentModeController();

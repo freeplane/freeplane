@@ -264,7 +264,9 @@ public class MModeControllerFactory {
 		userInputListenerFactory.setNodeDragListener(new MNodeDragListener());
 		userInputListenerFactory.setNodeDropTargetListener(new MNodeDropListener());
 		LocationController.install(new MLocationController());
-		LogicalStyleController.install(new MLogicalStyleController());
+		final MLogicalStyleController logicalStyleController = new MLogicalStyleController();
+		LogicalStyleController.install(logicalStyleController);
+		logicalStyleController.initM();
 		AttributeController.install(new MAttributeController(modeController));
 		userInputListenerFactory.setNodeKeyListener(new DefaultNodeKeyListener(new IEditHandler() {
 			public void edit(final KeyEvent e, final FirstAction action, final boolean editLong) {

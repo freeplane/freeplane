@@ -183,7 +183,15 @@ public class MLogicalStyleController extends LogicalStyleController {
 	public MLogicalStyleController() {
 		super();
 //		this.modeController = modeController;
-		final ModeController modeController = Controller.getCurrentModeController();
+		actions = new LinkedList<AssignStyleAction>();
+	}
+
+	public void initS() {
+	    final ModeController modeController = Controller.getCurrentModeController();
+		modeController.addAction(new ManageNodeConditionalStylesAction());
+	}
+	public void initM() {
+	    final ModeController modeController = Controller.getCurrentModeController();
 		modeController.getMapController().addNodeChangeListener(new StyleRemover());
 		modeController.registerExtensionCopier(new ExtensionCopier());
 		modeController.addAction(new RedefineStyleAction());
@@ -194,7 +202,6 @@ public class MLogicalStyleController extends LogicalStyleController {
 			modeController.addAction(new MapBackgroundColorAction());
 			modeController.addAction(new CopyMapStylesAction());
 		}
-		actions = new LinkedList<AssignStyleAction>();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		Controller.getCurrentController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
 			public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
@@ -246,7 +253,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 			public void onDeselect(final NodeModel node) {
 			}
 		});
-	}
+    }
 
 	protected void removeStyleMenu(final MenuBuilder menuBuilder, final String formatMenuString) {
 	    if(null != menuBuilder.get(formatMenuString))

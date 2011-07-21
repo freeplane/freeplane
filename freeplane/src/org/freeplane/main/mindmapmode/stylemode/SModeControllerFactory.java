@@ -62,6 +62,7 @@ import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.MapViewLayout;
+import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
 import org.freeplane.features.styles.mindmapmode.StyleEditorPanel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
@@ -121,7 +122,9 @@ public class SModeControllerFactory {
 		CloudController.install(new MCloudController(modeController));
 		LinkController.install(new LinkController());
 		MFileManager.install(new MFileManager());
-		LogicalStyleController.install(new LogicalStyleController());
+		final MLogicalStyleController logicalStyleController = new MLogicalStyleController();
+		logicalStyleController.initS();
+		LogicalStyleController.install(logicalStyleController);
 		AttributeController.install(new MAttributeController(modeController));
 		FormatController.install(new FormatController());
 		ScannerController.install(new ScannerController());
