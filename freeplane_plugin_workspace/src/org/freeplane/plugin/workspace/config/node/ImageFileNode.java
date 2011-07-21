@@ -1,9 +1,9 @@
 package org.freeplane.plugin.workspace.config.node;
 
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeEventListener;
+import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 
-public class ImageFileNode extends WorkspaceNode implements WorkspaceNodeEventListener {
+public class ImageFileNode extends WorkspaceNode implements IWorkspaceNodeEventListener {
 	
 	public ImageFileNode(String id) {
 		super(id);
@@ -15,7 +15,7 @@ public class ImageFileNode extends WorkspaceNode implements WorkspaceNodeEventLi
 
 	@Override
 	public void handleEvent(WorkspaceNodeEvent event) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

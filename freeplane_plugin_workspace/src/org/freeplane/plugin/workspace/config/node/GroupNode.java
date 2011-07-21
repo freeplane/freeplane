@@ -1,6 +1,9 @@
 package org.freeplane.plugin.workspace.config.node;
 
-public class GroupNode extends WorkspaceNode {
+import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
+
+public class GroupNode extends WorkspaceNode implements IWorkspaceNodeEventListener {
 
 	public GroupNode(String id) {
 		super(id); 
@@ -8,6 +11,12 @@ public class GroupNode extends WorkspaceNode {
 	
 	public String toString() {
 		return this.getName();
+	}
+
+	@Override
+	public void handleEvent(WorkspaceNodeEvent event) {
+		System.out.println("Event: "+event);
+		
 	}
 
 

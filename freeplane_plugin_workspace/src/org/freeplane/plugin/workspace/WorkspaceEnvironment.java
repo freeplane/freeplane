@@ -25,7 +25,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeEventListener;
+import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.view.TreeView;
 
 public class WorkspaceEnvironment implements ComponentListener, MouseListener, IFreeplanePropertyListener {
@@ -58,6 +58,10 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 	}
 
 	public WorkspaceConfiguration getConfig() {
+		if (this.config != null) {
+			return this.config;
+		}
+		else setConfig(new WorkspaceConfiguration());
 		return config;
 	}
 
@@ -65,11 +69,14 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 		this.config = config;
 	}
 
-	private void initializeConfiguration() {
-		//TODO: FISHI ersetzen
+	private void initializeConfiguration() {		
 		resetWorkspaceView();
-		final URL configURL = this.getClass().getResource("workspace_default.xml");
-		setConfig(new WorkspaceConfiguration(configURL));
+		
+		if (!getConfig().isConfigValid()) {
+			System.out.println("FISHI: config is not valid!");
+			showWorkspaceView(false);
+			return;
+		}
 
 	}
 
@@ -110,7 +117,7 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 
 	private Container getWorkspaceView() {
 		if (this.view == null) {
-			this.view = new TreeView(getConfig().getConigurationRoot());
+			this.view = new TreeView(getConfig().getConfigurationRoot());
 			this.view.addComponentListener(this);
 			this.view.addTreeMouseListener(this);
 		}
@@ -118,6 +125,7 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 	}
 	
 	private void resetWorkspaceView() {
+		this.config = null;
 		this.view = null;		
 	}
 
@@ -126,6 +134,10 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 		ViewController viewController = (ViewController) Controller.getCurrentController().getViewController();
 		viewController.getJFrame().setContentPane(new JPanel(new BorderLayout()));
 		viewController.getJFrame().getContentPane().add(getContentPane());
+		reloadView();
+	}
+	
+	private void reloadView() {
 		getContentPane().setComponent(getWSContentPane());
 		showWorkspaceView(Controller.getCurrentController().getResourceController()
 				.getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_RESOURCE));
@@ -168,7 +180,7 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 	private boolean canHandleEvent(Object object) {
 		Class<?>[] interfaces = object.getClass().getInterfaces();
 		for (Class<?> interf : interfaces) {
-			if (WorkspaceNodeEventListener.class.getName().equals(interf.getName())) {
+			if (IWorkspaceNodeEventListener.class.getName().equals(interf.getName())) {
 				return true;
 			}
 		}
@@ -180,10 +192,10 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 	 **********************************************************************************/
 	
 	public void propertyChanged(String propertyName, String newValue, String oldValue) {
-		if (propertyName.equals(WorkspacePreferences.WORKSPACE_LOCATION)) {
-			System.out.println("FISHI: initialize workspace configuration");
+		System.out.println("FISHI: initialize workspace configuration: "+propertyName);
+		if (propertyName.equals(WorkspacePreferences.WORKSPACE_LOCATION)) {			
 			initializeConfiguration();
-			initializeView();
+			reloadView();
 		}
 	}
 	
@@ -225,7 +237,7 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 				else {
 					eventType += WorkspaceNodeEvent.MOUSE_CLICK;
 				}
-				((WorkspaceNodeEventListener) node.getUserObject()).handleEvent(new WorkspaceNodeEvent(node, eventType, e.getX(),
+				((IWorkspaceNodeEventListener) node.getUserObject()).handleEvent(new WorkspaceNodeEvent(node, eventType, e.getX(),
 						e.getY()));
 			}
 

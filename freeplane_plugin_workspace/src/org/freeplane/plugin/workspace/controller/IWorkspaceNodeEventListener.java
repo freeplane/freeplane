@@ -1,5 +1,5 @@
 package org.freeplane.plugin.workspace.controller;
 
-public interface WorkspaceNodeEventListener {
+public interface IWorkspaceNodeEventListener {
 	public void handleEvent(WorkspaceNodeEvent event);
 }
