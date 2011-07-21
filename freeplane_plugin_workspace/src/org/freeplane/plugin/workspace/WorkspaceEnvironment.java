@@ -17,6 +17,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
@@ -27,7 +28,7 @@ import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.view.TreeView;
 
-public class WorkspaceEnvironment implements ComponentListener, MouseListener {
+public class WorkspaceEnvironment implements ComponentListener, MouseListener, IFreeplanePropertyListener {
 	private WorkspaceConfiguration config;
 	private static WorkspaceEnvironment currentWorkspace;
 	private TreeView view;
@@ -43,8 +44,8 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener {
 	public WorkspaceEnvironment() {
 		LogUtils.info("Initializing WorkspaceEnvironment");
 		initializeConfiguration();
-		initView();
-		initPreferences();
+		initializeView();
+		initializePreferences();
 		currentWorkspace = this;
 	}
 
@@ -65,6 +66,8 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener {
 	}
 
 	private void initializeConfiguration() {
+		//TODO: FISHI ersetzen
+		resetWorkspaceView();
 		final URL configURL = this.getClass().getResource("workspace_default.xml");
 		setConfig(new WorkspaceConfiguration(configURL));
 
@@ -113,8 +116,12 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener {
 		}
 		return this.view;
 	}
+	
+	private void resetWorkspaceView() {
+		this.view = null;		
+	}
 
-	private void initView() {
+	private void initializeView() {
 		getOldContentPane();
 		ViewController viewController = (ViewController) Controller.getCurrentController().getViewController();
 		viewController.getJFrame().setContentPane(new JPanel(new BorderLayout()));
@@ -132,9 +139,11 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener {
 		return this.contentPane;
 	}
 
-	private WorkspacePreferences initPreferences() {
+	private WorkspacePreferences initializePreferences() {
 		if (this.preferences == null) {
 			this.preferences = new WorkspacePreferences();
+			ResourceController resCtrl = Controller.getCurrentController().getResourceController();
+			resCtrl.addPropertyChangeListener(this);
 		}
 		return this.preferences;
 	}
@@ -169,7 +178,15 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener {
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
-
+	
+	public void propertyChanged(String propertyName, String newValue, String oldValue) {
+		if (propertyName.equals(WorkspacePreferences.WORKSPACE_LOCATION)) {
+			System.out.println("FISHI: initialize workspace configuration");
+			initializeConfiguration();
+			initializeView();
+		}
+	}
+	
 	public void componentResized(ComponentEvent e) {
 		if (Controller.getCurrentController().getResourceController()
 				.getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_RESOURCE)
@@ -241,5 +258,7 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener {
 			this.add(comp);
 		}
 	}
+
+	
 
 }

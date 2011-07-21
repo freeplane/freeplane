@@ -30,6 +30,7 @@ public class WorkspacePreferences {
 	public static final String SHOW_WORKSPACE_TEXT = "show_workspace";
 	public static final String SHOW_WORKSPACE_RESOURCE = "show_workspace";
 	public static final String WORKSPACE_WIDTH_PROPERTY_KEY = "workspace_view_width";
+	public static final String WORKSPACE_LOCATION = "workspace_location";
 
 	private ModeController modeController;
 
