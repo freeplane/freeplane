@@ -30,17 +30,7 @@ import org.freeplane.plugin.workspace.view.TreeView;
 public class WorkspaceEnvironment implements ComponentListener, MouseListener {
 
 	private static String WORKSPACE_WIDTH_PROPERTY_KEY = "workspace_view_width";
-	
-	private class SingleContentPane extends JPanel {
-
-		private static final long serialVersionUID = 1L;
-
-		public void setComponent(Component comp) {
-			this.removeAll();
-			this.add(comp);
-		}
-	}
-	
+		
 	private WorkspaceConfiguration config;
 	private static WorkspaceEnvironment currentWorkspace;
 	private TreeView view;
@@ -49,15 +39,21 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener {
 	private SingleContentPane contentPane;
 	private WorkspacePreferences preferences;
 
-
-	public WorkspaceEnvironment() {
-		
+	/***********************************************************************************
+	 * CONSTRUCTORS
+	 **********************************************************************************/
+	
+	public WorkspaceEnvironment() {		
 		LogUtils.info("Initializing WorkspaceEnvironment");
 		initializeConfiguration();
 		initView();
-		currentWorkspace = this;
-		this.preferences = new WorkspacePreferences();
+		initPreferences();
+		currentWorkspace = this;		
 	}
+	
+	/***********************************************************************************
+	 * METHODS
+	 **********************************************************************************/
 	
 	public static WorkspaceEnvironment getCurrentWorkspaceEnvironment() {
 		return currentWorkspace;
@@ -78,24 +74,38 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener {
 	}
 	
 	private Container getOldContentPane() {
-		if(this.oldContentPane == null) {
+		if(this.oldContentPane == null) {			
 			MModeController modeController = (MModeController)Controller.getCurrentModeController();
-			this.oldContentPane = modeController.getController().getViewController().getJFrame().getContentPane();
+			this.oldContentPane = new JPanel(new BorderLayout());
+			for(Component comp : modeController.getController().getViewController().getJFrame().getContentPane().getComponents()) {
+				this.oldContentPane.add(comp);
+			}
+			
 		}
 		return this.oldContentPane;
 	}
 	
 	private Container getWSContentPane() {
 		if(this.WSContentPane == null) {
-			ResourceController resCtrl = Controller.getCurrentController().getResourceController();
+			this.WSContentPane = new JPanel(new BorderLayout());
+			this.WSContentPane.setMinimumSize(new Dimension(0,0));
 			JSplitPane splitPane = new JSplitPane();
 			splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-			getWorkspaceView().setMinimumSize(new Dimension(resCtrl.getIntProperty(WORKSPACE_WIDTH_PROPERTY_KEY, 200), 1));
+			splitPane.setAutoscrolls(true);
 			splitPane.setLeftComponent(getWorkspaceView());
 			splitPane.setRightComponent(getOldContentPane());
-			this.WSContentPane = splitPane;
+			this.WSContentPane.add(splitPane);
 		}
 		return this.WSContentPane;
+	}
+	
+	private void setWorkspaceWidth(int width) {
+		JSplitPane splitPane = (JSplitPane)(getWSContentPane().getComponent(0));
+		getWorkspaceView().setVisible(width>0);
+		splitPane.setDividerLocation(width+1);
+		splitPane.setDividerSize((width>0 ? 4 : 0));
+		splitPane.setEnabled(width>0);
+		
 	}
 	
 	private Container getWorkspaceView() {
@@ -112,6 +122,7 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener {
 		ViewController viewController = (ViewController)Controller.getCurrentController().getViewController();
 		viewController.getJFrame().setContentPane(new JPanel(new BorderLayout()));
 		viewController.getJFrame().getContentPane().add(getContentPane());
+		getContentPane().setComponent(getWSContentPane());
 		showWorkspaceView(Controller.getCurrentController().getResourceController().getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_RESOURCE));
 	}
 	
@@ -123,16 +134,22 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener {
 		return this.contentPane;
 	}
 	
+	private WorkspacePreferences initPreferences() {
+		if(this.preferences == null) {
+			this.preferences = new WorkspacePreferences();
+		}
+		return this.preferences;
+	}
+	
 	public void showWorkspaceView(boolean visible) {
 		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
-		
 		resCtrl.setProperty(WorkspacePreferences.SHOW_WORKSPACE_RESOURCE, visible);
 		if(visible) {
-			getContentPane().setComponent(getWSContentPane());
-			getContentPane().revalidate();
+			setWorkspaceWidth(resCtrl.getIntProperty(WORKSPACE_WIDTH_PROPERTY_KEY, 200));			
+			getContentPane().revalidate();			
 		}
 		else {
-			getContentPane().setComponent(getOldContentPane());
+			setWorkspaceWidth(-1);
 			getContentPane().revalidate();
 		}
 	}
@@ -140,27 +157,7 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener {
 	public DefaultTreeModel getViewModel() {
 		return this.view.getTreeModel();
 	}
-
-	@Override
-	public void componentResized(ComponentEvent e) {
-		if(e.getComponent() == getWorkspaceView()) {
-			ResourceController resCtrl = Controller.getCurrentController().getResourceController();
-			resCtrl.setProperty(WORKSPACE_WIDTH_PROPERTY_KEY, String.valueOf(e.getComponent().getWidth()));
-		}
-	}
-
-	@Override
-	public void componentMoved(ComponentEvent e) {
-	}
-
-	@Override
-	public void componentShown(ComponentEvent e) {
-	}
-
-	@Override
-	public void componentHidden(ComponentEvent e) {	
-	}
-
+	
 	private boolean canHandleEvent(Object object) {
 		Class<?>[] interfaces = object.getClass().getInterfaces();
     	for(Class<?> interf : interfaces) {
@@ -171,7 +168,27 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener {
 		return false;
 	}
 	
-	@Override
+	/***********************************************************************************
+	 * REQUIRED METHODS FOR INTERFACES
+	 **********************************************************************************/
+	
+	public void componentResized(ComponentEvent e) {
+		if(Controller.getCurrentController().getResourceController().getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_RESOURCE) && e.getComponent() == getWorkspaceView()) {
+			System.out.println("change width: "+e.getComponent().getWidth());
+			ResourceController resCtrl = Controller.getCurrentController().getResourceController();
+			resCtrl.setProperty(WORKSPACE_WIDTH_PROPERTY_KEY, String.valueOf(e.getComponent().getWidth()));
+		}
+	}
+
+	public void componentMoved(ComponentEvent e) {
+	}
+
+	public void componentShown(ComponentEvent e) {
+	}
+
+	public void componentHidden(ComponentEvent e) {	
+	}
+
 	public void mouseClicked(MouseEvent e) {
 		TreePath path = ((JTree)e.getComponent()).getPathForLocation(e.getX(), e.getY());
 		if(path != null) {
@@ -195,25 +212,34 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener {
 			}
 			
 		}
-	}
+	}	
 
-	
-
-	@Override
 	public void mousePressed(MouseEvent e) {		
 	}
 
-	@Override
 	public void mouseReleased(MouseEvent e) {
 	}
 
-	@Override
 	public void mouseEntered(MouseEvent e) {
 		
 	}
 
-	@Override
 	public void mouseExited(MouseEvent e) {		
+	}
+	
+	
+	/***********************************************************************************
+	 * INTERNAL CLASSES
+	 **********************************************************************************/
+	
+	private class SingleContentPane extends JPanel {
+
+		private static final long serialVersionUID = 1L;
+
+		public void setComponent(Component comp) {
+			this.removeAll();
+			this.add(comp);
+		}
 	}
 		
 }
