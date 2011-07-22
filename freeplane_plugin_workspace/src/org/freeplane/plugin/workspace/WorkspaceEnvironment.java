@@ -18,7 +18,6 @@ import javax.swing.tree.TreePath;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -29,6 +28,7 @@ import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.FileReadManager;
 import org.freeplane.plugin.workspace.io.FilesystemReader;
 import org.freeplane.plugin.workspace.io.creator.DefaultFileNodeCreator;
+import org.freeplane.plugin.workspace.io.creator.FolderFileNodeCreator;
 import org.freeplane.plugin.workspace.io.creator.ImageFileNodeCreator;
 import org.freeplane.plugin.workspace.view.TreeView;
 
@@ -194,21 +194,12 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 	private FileReadManager getFileTypeManager() {
 		if(this.fileTypeManager == null) {
 			this.fileTypeManager = new FileReadManager();
-			this.fileTypeManager.addFileHandler("*", new DefaultFileNodeCreator(getConfig().getTree()));
+			this.fileTypeManager.addFileHandler(FileReadManager.FOLDER_HANDLE, new FolderFileNodeCreator(getConfig().getTree()));
+			this.fileTypeManager.addFileHandler(FileReadManager.DEFAULT_HANDLE, new ImageFileNodeCreator(getConfig().getTree()));
 			this.fileTypeManager.addFileHandler(".gif", new ImageFileNodeCreator(getConfig().getTree()));
 			this.fileTypeManager.addFileHandler(".jpg", new ImageFileNodeCreator(getConfig().getTree()));
 		}
 		return this.fileTypeManager;
-	}
-
-	private boolean canHandleEvent(Object object) {
-		Class<?>[] interfaces = object.getClass().getInterfaces();
-		for (Class<?> interf : interfaces) {
-			if (IWorkspaceNodeEventListener.class.getName().equals(interf.getName())) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	/***********************************************************************************
@@ -246,12 +237,12 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 	public void componentHidden(ComponentEvent e) {
 	}
 
-	public void mouseClicked(MouseEvent e) {
+	public void mouseClicked(MouseEvent e) {		
 		TreePath path = ((JTree) e.getComponent()).getPathForLocation(e.getX(), e.getY());
 		if (path != null) {
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-
-			if (canHandleEvent(node.getUserObject())) {
+			
+			if (node.getUserObject() instanceof IWorkspaceNodeEventListener) {
 				int eventType = 0;
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					eventType += WorkspaceNodeEvent.MOUSE_LEFT;
@@ -265,8 +256,7 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 				else {
 					eventType += WorkspaceNodeEvent.MOUSE_CLICK;
 				}
-				((IWorkspaceNodeEventListener) node.getUserObject()).handleEvent(new WorkspaceNodeEvent(node, eventType,
-						e.getX(), e.getY()));
+				((IWorkspaceNodeEventListener) node.getUserObject()).handleEvent(new WorkspaceNodeEvent(node, eventType, e.getX(), e.getY()));
 			}
 
 		}

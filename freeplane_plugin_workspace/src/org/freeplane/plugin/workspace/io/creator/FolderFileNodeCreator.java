@@ -1,47 +1,42 @@
 /**
  * author: Marcel Genzmehr
- * 21.07.2011
+ * 22.07.2011
  */
-package org.freeplane.plugin.workspace.io.node;
+package org.freeplane.plugin.workspace.io.creator;
 
 import java.io.File;
 
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
-import org.freeplane.plugin.workspace.io.PhysicalNode;
+import org.freeplane.core.ui.IndexedTree;
+import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
+import org.freeplane.plugin.workspace.io.node.FolderFileNode;
 
 /**
  * 
  */
-public class DefaultFileNode extends PhysicalNode {
+public class FolderFileNodeCreator extends FileNodeCreator {
 
+	
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 	
 	/**
-	 * @param name
-	 * @param file
+	 * @param tree
 	 */
-	public DefaultFileNode(String name, File file) {
-		super(name, file);
+	public FolderFileNodeCreator(IndexedTree tree) {
+		super(tree);
 		// TODO Auto-generated constructor stub
 	}
-	
-	
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
-	public String toString() {
-		return this.getName();
-	}
-		
 
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	
-	public void handleEvent(WorkspaceNodeEvent event) {
-		// TODO Auto-generated method stub
-		System.out.println("DefaultFileNode: "+ event);
+	public WorkspaceNode getNode(String name, File file) {
+		FolderFileNode node = new FolderFileNode(file.getName(), file);
+		return node;
 	}
 }

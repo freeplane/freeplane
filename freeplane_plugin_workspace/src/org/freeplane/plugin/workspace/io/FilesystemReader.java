@@ -1,13 +1,12 @@
 package org.freeplane.plugin.workspace.io;
 
 import java.io.File;
-import java.util.LinkedList;
-
-import javax.swing.tree.DefaultMutableTreeNode;
+import java.util.List;
 
 import org.freeplane.core.io.ListHashTable;
 
 public class FilesystemReader {
+	
 		
 	private final FileReadManager typeManager;
 	
@@ -19,55 +18,42 @@ public class FilesystemReader {
 		return typeManager.getFileTypeHandlers();
 	}
 		
-	private void iterateFolder(File folder, DefaultMutableTreeNode parent) {
-		iterateFolder(folder, parent, true);
-	}
-	
-	private void iterateFolder(File folder, DefaultMutableTreeNode parent, boolean first) {
-		DefaultMutableTreeNode folderNode;
-		if(first)
-			folderNode = parent;
-		else
-			folderNode = new DefaultMutableTreeNode(new String(folder.getName()));
 		
+	private void iterateFolder(Object object, File folder) {		
 		for(File file : folder.listFiles()) {
 			if(file.isDirectory()) {
-				iterateFolder(file, folderNode, false);
+				Object path = createFileNode(object, FileReadManager.FOLDER_HANDLE, file);
+				iterateFolder(path, file);
 			}
 			else {
-				folderNode.add(createFileNode(join(parent.getPath()), file));
+				createFileNode(object, file);
 			}
-		}
-		if(parent != folderNode)
-			parent.add(folderNode);
-		
+		}		
 	}
 	
-	public void scanFilesystem(final DefaultMutableTreeNode node, final File file) {
+	public void scanFilesystem(final Object object, final File file) {
 		
 		if(file != null && file.exists()) {
 			if(file.isDirectory()) {		
-				iterateFolder(file, node);
+				iterateFolder(object,file);
 			} 
 			else {
-				node.add(createFileNode(join(node.getPath()), file));
+				createFileNode(object,file);
 			}
 		}
 	}
 	
-	private DefaultMutableTreeNode createFileNode(final Object parent, final File file) {
-		ListHashTable<String, IFileTypeHandler> creators = getFileTypeHandlers();
-		IFileTypeHandler creator = creators.list("*").get(0);
-		//return new DefaultMutableTreeNode(creator.createFileNode(parent, "*", file));
-		return new DefaultMutableTreeNode(new String(file.getName()));
+	private Object createFileNode(final Object path, final File file) {
+		String fileExtension = FileReadManager.DEFAULT_HANDLE;
+		return createFileNode(path, fileExtension, file);		
 	}
 	
-	private String join(Object[] arry) {
-		String joined = "";
-		for(Object o : arry) {
-			joined += "/"+o.toString();
+	private Object createFileNode(final Object path, final String fileExtension, final File file) {		
+		List<IFileTypeHandler> handlers = getFileTypeHandlers().list(fileExtension);	
+		if (handlers != null && handlers.size() == 1) {
+			IFileTypeHandler nodeCreator = handlers.get(0);
+			return nodeCreator.createFileNode(path, fileExtension, file);
 		}
-		return joined;
-	}
-	
+		return path;
+	}	
 }

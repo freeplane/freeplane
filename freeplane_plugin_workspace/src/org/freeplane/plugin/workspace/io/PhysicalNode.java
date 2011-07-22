@@ -7,11 +7,12 @@ package org.freeplane.plugin.workspace.io;
 import java.io.File;
 
 import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
+import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 
 /**
  * 
  */
-public abstract class PhysicalNode extends WorkspaceNode{
+public abstract class PhysicalNode extends WorkspaceNode implements IWorkspaceNodeEventListener{
 
 	private final File file;
 	
@@ -23,7 +24,8 @@ public abstract class PhysicalNode extends WorkspaceNode{
 	 * @param name
 	 */
 	public PhysicalNode(String name, File file) {
-		super(name);
+		super(file.getName());
+		this.setName(name);
 		this.file = file;
 	}
 
@@ -34,7 +36,7 @@ public abstract class PhysicalNode extends WorkspaceNode{
 	public File getFile() {
 		return this.file;
 	}
-
+	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
