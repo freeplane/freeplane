@@ -17,13 +17,17 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.StreamHandler;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.plaf.TextUI;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.mode.Controller;
 
 public class XmlRpcHandler extends StreamHandler {
 	private class SubmitRunner implements Runnable {
@@ -57,6 +61,9 @@ public class XmlRpcHandler extends StreamHandler {
 	private final static String BUG_TRACKER_REFERENCE_URL = "http://freeplane.sourceforge.net/info/bugtracker.ref.txt";
 	private static String BUG_TRACKER_URL = null;
 	static boolean disabled = false;
+	private static int errorCounter = 0;
+	static Icon errorIcon = null;
+
 	private static String info;
 	static final private String OPTION = "org.freeplane.plugin.bugreport";
 	private static ByteArrayOutputStream out = null;
@@ -172,9 +179,7 @@ public class XmlRpcHandler extends StreamHandler {
 
 	@Override
 	public synchronized void publish(final LogRecord record) {
-		if (disabled || isRunning) {
-			return;
-		}
+		errorCounter++;
 		if (out == null) {
 			out = new ByteArrayOutputStream();
 			setOutputStream(out);
@@ -182,10 +187,22 @@ public class XmlRpcHandler extends StreamHandler {
 		if (!isLoggable(record)) {
 			return;
 		}
-		if (!reportCollected) {
+		if (!(disabled || isRunning  || reportCollected)) {
 			reportCollected = true;
 			EventQueue.invokeLater(new SubmitStarter());
 		}
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				if(errorIcon == null)
+					errorIcon = new ImageIcon(ResourceController.getResourceController().getResource(
+						"/images/icons/messagebox_warning.png"));
+				final ResourceController resourceController = ResourceController.getResourceController();
+				final String freeplaneUserDirectory = resourceController.getFreeplaneUserDirectory();
+				String tooltip = TextUtils.format("internal_error_tooltip", freeplaneUserDirectory);
+				Controller.getCurrentController().getViewController()
+				    .addStatusInfo("internal_error", Integer.toString(errorCounter), errorIcon, tooltip);
+			}
+		});
 		super.publish(record);
 	}
 
