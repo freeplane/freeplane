@@ -109,4 +109,7 @@ class SModeController extends MModeController {
 	    dialog.setVisible(false);
     }
 
+	@Override
+    public void startup() {
+    }
 }

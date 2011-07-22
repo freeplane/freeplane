@@ -241,7 +241,8 @@ public class MNoteController extends NoteController {
 				}
 				setStateIcon(node, enabled);
 				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NOTE_TEXT, oldText, text);
-				noteManager.updateEditor();
+				if(noteManager != null)
+					noteManager.updateEditor();
 			}
 
 			public void undo() {
