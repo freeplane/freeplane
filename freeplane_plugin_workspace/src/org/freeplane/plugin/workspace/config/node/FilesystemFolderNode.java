@@ -40,12 +40,10 @@ public class FilesystemFolderNode extends WorkspaceNode implements TreeExpansion
 		if(folder.isDirectory()) {
 			final DefaultMutableTreeNode node = (DefaultMutableTreeNode)event.getPath().getLastPathComponent();
 			node.removeAllChildren();
-			WorkspaceEnvironment.getCurrentWorkspaceEnvironment().getFilesystemReader().scanFilesystem(node, folder);
+			WorkspaceEnvironment.getCurrentWorkspaceEnvironment().getFilesystemReader().scanFilesystem(node.getUserObject(), folder);
 			WorkspaceEnvironment.getCurrentWorkspaceEnvironment().getViewModel().reload(node);
 			isUpToDate = true;
 		}
 		
-	}
-	
-	
+	}	
 }

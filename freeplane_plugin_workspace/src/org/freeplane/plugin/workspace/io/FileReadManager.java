@@ -10,6 +10,9 @@ import org.freeplane.core.io.ListHashTable;
 import org.freeplane.features.map.NodeModel;
 
 public class FileReadManager {
+	public final static String FOLDER_HANDLE = "__MaG__FS_FOLDER__MaG__";
+	public final static String DEFAULT_HANDLE = "__MaG__FS_DEFAULT__MaG__";
+	
 	final private ListHashTable<String, IFileTypeHandler> fileHandlers;
 	final private Collection<IReadCompletionListener> readCompletionListeners;
 

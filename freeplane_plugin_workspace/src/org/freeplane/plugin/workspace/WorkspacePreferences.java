@@ -1,14 +1,9 @@
 package org.freeplane.plugin.workspace;
 
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.net.URL;
 
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JFrame;
 
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
@@ -19,7 +14,6 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.plugin.workspace.imageviewer.ImageViewer;
 
 public class WorkspacePreferences {
 
@@ -79,7 +73,6 @@ public class WorkspacePreferences {
 			public void updateMenus(ModeController modeController, MenuBuilder builder) {
 				builder.addCheckboxItem(MENU_BAR + VIEW_MENU, new CheckBoxAction(SHOW_WORKSPACE_TEXT, SHOW_WORKSPACE_RESOURCE),
 						resourceController.getBooleanProperty(SHOW_WORKSPACE_RESOURCE));
-				builder.addAction(MENU_BAR + VIEW_MENU, new ButtonAction("BLUBB"), MenuBuilder.AS_CHILD);
 
 			}
 		});
@@ -109,35 +102,6 @@ public class WorkspacePreferences {
 			else {
 				WorkspaceEnvironment.getCurrentWorkspaceEnvironment().showWorkspaceView(false);
 			}
-		}
-	}
-
-	private class ButtonAction extends AFreeplaneAction {		
-		private static final long serialVersionUID = 1L;
-
-		public ButtonAction(String key) {
-			super(key);
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			System.out.println("DEBUG ACTION");
-
-			Image image = Toolkit.getDefaultToolkit().getImage("/home/stefan/stefan.jpg");
-
-			final JFrame f = new ImageViewer(image, true, "PICTURE");
-			//f.setMinimumSize(new Dimension(500, 300));
-			f.addWindowListener(new WindowAdapter() {
-				public void windowClosing(WindowEvent e) {
-					f.dispose();
-				}
-			});
-			f.pack();
-			f.setVisible(true);
-
-			// Controller.getCurrentController().getViewController().getContentPane().add(imageViewer);
-			// imageViewer.setVisible(true);
-			// ImageViewer
 		}
 	}
 }

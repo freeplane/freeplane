@@ -495,11 +495,7 @@ public class OptionPanelBuilder {
 	}
 	
 	private IPropertyControlCreator createActionOptionCreator(final String name) {
-		return new IPropertyControlCreator() {
-			public IPropertyControl createControl() {
-				return new ActionProperty(name, name);
-			}
-		};
+		return createActionOptionCreator(name, name);
 	}
 	
 	private IPropertyControlCreator createActionOptionCreator(final String name, final String actionCommand) {

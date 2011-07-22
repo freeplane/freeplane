@@ -38,7 +38,11 @@ public abstract class FileNodeCreator implements IFileTypeHandler {
 	/* (non-Javadoc)
 	 * @see org.freeplane.plugin.workspace.io.IFileHandler#createFileNode(java.lang.Object, java.lang.String, java.io.File)
 	 */
-	public Object createFileNode(Object parent, String fileExtension, File file) {
+	public Object createFileNode(Object object, String fileExtension,final File file) {
+		Object parent = object;
+		if(object instanceof WorkspaceNode) {
+			parent = tree.getKeyByUserObject(object);
+		}
 		final Path path = new Path(parent == null ? null : parent.toString());		
 		path.setName(file.getName());		
 		if (!tree.contains(path.path)) {
@@ -50,7 +54,10 @@ public abstract class FileNodeCreator implements IFileTypeHandler {
 				else 
 					tree.removeElement(path.path);
 			}
-		}		
+		} 
+		else {
+			
+		}
 		return path;		
 	}
 
