@@ -72,8 +72,8 @@ public class WorkspacePreferences {
 			ResourceController resourceController = Controller.getCurrentController().getResourceController();
 
 			public void updateMenus(ModeController modeController, MenuBuilder builder) {
-				builder.addCheckboxItem(MENU_BAR + VIEW_MENU, new CheckBoxAction(SHOW_WORKSPACE_TEXT, SHOW_WORKSPACE_RESOURCE),
-						resourceController.getBooleanProperty(SHOW_WORKSPACE_RESOURCE));
+				builder.addCheckboxItem(MENU_BAR + VIEW_MENU, new CheckBoxAction(SHOW_WORKSPACE_TEXT, RESOURCE_SHOW_WORKSPACE),
+						resourceController.getBooleanProperty(RESOURCE_SHOW_WORKSPACE));
 			}
 		});
 	}
