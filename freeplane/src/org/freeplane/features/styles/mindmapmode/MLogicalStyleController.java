@@ -41,6 +41,9 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.INodeSelectionListener;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.note.NoteController;
+import org.freeplane.features.note.NoteModel;
+import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.styles.ConditionalStyleModel;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
@@ -338,6 +341,12 @@ public class MLogicalStyleController extends LogicalStyleController {
             final String detailTextText = DetailTextModel.getDetailTextText(styleNode);
             if(detailTextText != null)
                 textController.setDetails(target, detailTextText);
+            final String noteText = NoteModel.getNoteText(styleNode);
+            if(noteText != null)
+            {
+            	MNoteController noteController = (MNoteController) NoteController.getController();
+            	noteController.setNoteText(target, noteText);
+            }
         }
     }
 

@@ -58,6 +58,8 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.ortho.SpellCheckerController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
+import org.freeplane.features.note.NoteController;
+import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
@@ -120,6 +122,7 @@ public class SModeControllerFactory {
 		NodeStyleController.install(new MNodeStyleController(modeController));
 		EdgeController.install(new MEdgeController(modeController));
 		CloudController.install(new MCloudController(modeController));
+		NoteController.install(new MNoteController(modeController));
 		LinkController.install(new LinkController());
 		MFileManager.install(new MFileManager());
 		final MLogicalStyleController logicalStyleController = new MLogicalStyleController();
