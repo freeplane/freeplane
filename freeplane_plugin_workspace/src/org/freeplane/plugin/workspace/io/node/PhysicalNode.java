@@ -2,7 +2,7 @@
  * author: Marcel Genzmehr
  * 21.07.2011
  */
-package org.freeplane.plugin.workspace.io;
+package org.freeplane.plugin.workspace.io.node;
 
 import java.io.File;
 
@@ -13,7 +13,7 @@ import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
  * 
  */
 public abstract class PhysicalNode extends WorkspaceNode implements IWorkspaceNodeEventListener{
-
+	
 	private final File file;
 	
 	/***********************************************************************************
@@ -27,6 +27,7 @@ public abstract class PhysicalNode extends WorkspaceNode implements IWorkspaceNo
 		super(file.getName());
 		this.setName(name);
 		this.file = file;
+		
 	}
 
 	/***********************************************************************************

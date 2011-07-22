@@ -8,6 +8,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.util.Properties;
 
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -27,9 +29,7 @@ import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.FileReadManager;
 import org.freeplane.plugin.workspace.io.FilesystemReader;
-import org.freeplane.plugin.workspace.io.creator.DefaultFileNodeCreator;
-import org.freeplane.plugin.workspace.io.creator.FolderFileNodeCreator;
-import org.freeplane.plugin.workspace.io.creator.ImageFileNodeCreator;
+import org.freeplane.plugin.workspace.io.creator.FileNodeCreator;
 import org.freeplane.plugin.workspace.view.TreeView;
 
 public class WorkspaceEnvironment implements ComponentListener, MouseListener, IFreeplanePropertyListener {
@@ -195,10 +195,33 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 	private FileReadManager getFileTypeManager() {
 		if(this.fileTypeManager == null) {
 			this.fileTypeManager = new FileReadManager();
-			this.fileTypeManager.addFileHandler(FileReadManager.FOLDER_HANDLE, new FolderFileNodeCreator(getConfig().getTree()));
-			this.fileTypeManager.addFileHandler(FileReadManager.DEFAULT_HANDLE, new ImageFileNodeCreator(getConfig().getTree()));
-			this.fileTypeManager.addFileHandler(".gif", new ImageFileNodeCreator(getConfig().getTree()));
-			this.fileTypeManager.addFileHandler(".jpg", new ImageFileNodeCreator(getConfig().getTree()));
+			Properties props = new Properties();
+			try {
+				props.load(this.getClass().getResourceAsStream("filenodetypes.properties"));
+				Class<?>[] args = {getConfig().getTree().getClass()};
+				for(Object key : props.keySet()) {
+					try {
+						Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass(key.toString());
+						FileNodeCreator handler = (FileNodeCreator)clazz.getConstructor(args).newInstance(getConfig().getTree());
+						handler.setFileTypeList(props.getProperty(key.toString(),""), "\\|");
+						this.fileTypeManager.addFileHandler(handler);
+					}
+					catch (ClassNotFoundException e) {
+						System.out.println("Class not found ["+key+"]");
+					}
+					catch (ClassCastException e) {
+						System.out.println("Class ["+key+"] is not of type: PhysicalNode");
+					}
+					catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}					
+				}
+			}
+			catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}		
 		}
 		return this.fileTypeManager;
 	}
@@ -220,11 +243,8 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 	}
 
 	public void componentResized(ComponentEvent e) {
-		if (Controller.getCurrentController().getResourceController()
-				.getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_RESOURCE)
-				&& e.getComponent() == getWorkspaceView()) {
-			System.out.println("change width: " + e.getComponent().getWidth());
-			ResourceController resCtrl = Controller.getCurrentController().getResourceController();
+		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
+		if (resCtrl.getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_RESOURCE) && e.getComponent() == getWorkspaceView()) {			
 			resCtrl.setProperty(WorkspacePreferences.WORKSPACE_WIDTH_PROPERTY_KEY, String.valueOf(e.getComponent().getWidth()));
 		}
 	}
@@ -257,7 +277,7 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 				else {
 					eventType += WorkspaceNodeEvent.MOUSE_CLICK;
 				}
-				((IWorkspaceNodeEventListener) node.getUserObject()).handleEvent(new WorkspaceNodeEvent(node, eventType, e.getX(), e.getY()));
+				((IWorkspaceNodeEventListener) node.getUserObject()).handleEvent(new WorkspaceNodeEvent(e.getComponent(), eventType, e.getX(), e.getY()));
 			}
 
 		}

@@ -7,7 +7,6 @@ package org.freeplane.plugin.workspace.io.node;
 import java.io.File;
 
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
-import org.freeplane.plugin.workspace.io.PhysicalNode;
 
 /**
  * 
@@ -44,4 +43,5 @@ public class DefaultFileNode extends PhysicalNode {
 		// TODO Auto-generated method stub
 		System.out.println("DefaultFileNode: "+ event);
 	}
+
 }

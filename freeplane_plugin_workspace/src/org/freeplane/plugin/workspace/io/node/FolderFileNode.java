@@ -7,7 +7,6 @@ package org.freeplane.plugin.workspace.io.node;
 import java.io.File;
 
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
-import org.freeplane.plugin.workspace.io.PhysicalNode;
 
 /**
  * 
@@ -42,4 +41,8 @@ public class FolderFileNode extends PhysicalNode {
 		// TODO Auto-generated method stub
 		System.out.println("FolderFileNode: "+ event);
 	}
+
+	/* (non-Javadoc)
+	 * @see org.freeplane.plugin.workspace.io.node.PhysicalNode#getSupportedFileTypes()
+	 */
 }

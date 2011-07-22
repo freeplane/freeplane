@@ -11,7 +11,6 @@ import javax.swing.JFrame;
 
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.imageviewer.ImageViewer;
-import org.freeplane.plugin.workspace.io.PhysicalNode;
 
 public class ImageFileNode extends PhysicalNode {
 	
@@ -57,5 +56,4 @@ public class ImageFileNode extends PhysicalNode {
 		}
 		
 	}
-
 }

@@ -3,11 +3,13 @@ package org.freeplane.plugin.workspace.io;
 import java.io.File;
 import java.util.List;
 
+import javax.activation.MimetypesFileTypeMap;
+
 import org.freeplane.core.io.ListHashTable;
+import org.freeplane.plugin.workspace.io.creator.IFileTypeHandler;
 
 public class FilesystemReader {
 	
-		
 	private final FileReadManager typeManager;
 	
 	public FilesystemReader(final FileReadManager typeManager) {
@@ -45,13 +47,23 @@ public class FilesystemReader {
 	
 	private Object createFileNode(final Object path, final File file) {
 		String fileExtension = FileReadManager.DEFAULT_HANDLE;
+		int dot = file.getPath().lastIndexOf('.');
+		if(-1 != dot) {
+			fileExtension = file.getPath().substring(dot);
+			System.out.println("Filetype: " + new MimetypesFileTypeMap().getContentType(file) + " " + file.getPath().substring(dot));
+		}		
 		return createFileNode(path, fileExtension, file);		
 	}
 	
-	private Object createFileNode(final Object path, final String fileExtension, final File file) {		
-		List<IFileTypeHandler> handlers = getFileTypeHandlers().list(fileExtension);	
+	private Object createFileNode(final Object path, String fileExtension, final File file) {		
+		List<IFileTypeHandler> handlers = getFileTypeHandlers().list(fileExtension);
+		if(handlers == null) {
+			fileExtension = FileReadManager.DEFAULT_HANDLE;
+			handlers = getFileTypeHandlers().list(fileExtension);
+		}
 		if (handlers != null && handlers.size() == 1) {
 			IFileTypeHandler nodeCreator = handlers.get(0);
+			System.out.println(nodeCreator);
 			return nodeCreator.createFileNode(path, fileExtension, file);
 		}
 		return path;
