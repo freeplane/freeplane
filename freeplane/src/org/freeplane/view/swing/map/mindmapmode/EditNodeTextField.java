@@ -44,11 +44,11 @@ import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JEditorPane;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
+import javax.swing.RootPaneContainer;
 import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.DocumentEvent;
@@ -488,7 +488,7 @@ class EditNodeTextField extends EditNodeBase {
 	 */
 	@SuppressWarnings("serial")
     @Override
-	public void show(final JFrame frame) {
+	public void show(final RootPaneContainer frame) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final ViewController viewController = modeController.getController().getViewController();
 		final MTextController textController = (MTextController) TextController.getController(modeController);

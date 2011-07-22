@@ -26,6 +26,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.regex.Pattern;
 
+import javax.swing.RootPaneContainer;
+import javax.swing.SwingUtilities;
+
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -97,7 +100,8 @@ class EditNoteInDialogAction extends AFreeplaneAction {
 		    final Font defaultFont = style.getDefaultFont(map, MapStyleModel.NOTE_STYLE);
 		    editNodeWYSIWYG.setFont(defaultFont);
 		}
-		editNodeWYSIWYG.show(controller.getViewController().getJFrame());
+		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities.getWindowAncestor(controller.getViewController().getMapView());
+		editNodeWYSIWYG.show(frame);
     }
 
 

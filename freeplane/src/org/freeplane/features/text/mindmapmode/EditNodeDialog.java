@@ -23,7 +23,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -38,11 +37,11 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JEditorPane;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.RootPaneContainer;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
@@ -70,7 +69,7 @@ public class EditNodeDialog extends EditNodeBase {
 		 */
 		private static final long serialVersionUID = 1L;
 
-		public LongNodeDialog(final Frame frame, final String title, final Color background) {
+		public LongNodeDialog(final RootPaneContainer frame, final String title, final Color background) {
 			super(EditNodeDialog.this, title, frame);
 			final ViewController viewController = Controller.getCurrentModeController().getController()
 			    .getViewController();
@@ -225,7 +224,7 @@ public class EditNodeDialog extends EditNodeBase {
 				panel.add(buttonPane);
 			}
 			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-			setContentPane(panel);
+			getDialog().setContentPane(panel);
 		}
 
 		/*
@@ -240,7 +239,7 @@ public class EditNodeDialog extends EditNodeBase {
 
 		@Override
 		public Component getMostRecentFocusOwner() {
-			if (isFocused()) {
+			if (getDialog().isFocused()) {
 				return getFocusOwner();
 			}
 			else {
@@ -302,7 +301,7 @@ public class EditNodeDialog extends EditNodeBase {
 		textComponent = textEditor;
 	}
 
-	public void show(final JFrame frame) {
+	public void show(final RootPaneContainer frame) {
 		if (title == null) {
 			title = TextUtils.getText("edit_long_node");
 		}
@@ -313,17 +312,17 @@ public class EditNodeDialog extends EditNodeBase {
         else {
             textComponent.setCaretPosition(getText().length());
         }
-		dialog.setModal(isModal);
-		dialog.pack();
+		dialog.getDialog().setModal(isModal);
+		dialog.getDialog().pack();
 		Controller.getCurrentModeController().getController().getViewController().scrollNodeToVisible(node);
 		if (ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")) {
-			UITools.setDialogLocationUnder(dialog, getNode());
+			UITools.setDialogLocationUnder(dialog.getDialog(), getNode());
 		}
 		else {
-			UITools.setDialogLocationRelativeTo(dialog, getNode());
+			UITools.setDialogLocationRelativeTo(dialog.getDialog(), getNode());
 		}
 		dialog.show();
-		dialog.addComponentListener(new ComponentListener() {
+		dialog.getDialog().addComponentListener(new ComponentListener() {
 			public void componentShown(final ComponentEvent e) {
 			}
 
