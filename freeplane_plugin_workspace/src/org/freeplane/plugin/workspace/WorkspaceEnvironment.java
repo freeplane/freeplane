@@ -149,7 +149,7 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 	private void reloadView() {
 		getContentPane().setComponent(getWSContentPane());
 		showWorkspaceView(Controller.getCurrentController().getResourceController()
-				.getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_RESOURCE));
+				.getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY));
 	}
 
 	private SingleContentPane getContentPane() {
@@ -171,14 +171,13 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 
 	public void showWorkspaceView(boolean visible) {
 		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
-		resCtrl.setProperty(WorkspacePreferences.SHOW_WORKSPACE_RESOURCE, visible);
+		resCtrl.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, visible);
 		if (visible) {
 			int width = resCtrl.getIntProperty(WorkspacePreferences.WORKSPACE_WIDTH_PROPERTY_KEY, 200);
 			setWorkspaceWidth(width);
 			getContentPane().revalidate();
 		}
 		else {
-			System.out.println("FISH invisible");
 			setWorkspaceWidth(-1);
 			getContentPane().revalidate();
 		}
@@ -231,10 +230,10 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 	 **********************************************************************************/
 
 	public void propertyChanged(String propertyName, String newValue, String oldValue) {
-		if (propertyName.equals(WorkspacePreferences.WORKSPACE_LOCATION)) {
+		if (propertyName.equals(WorkspacePreferences.WORKSPACE_LOCATION_NEW)) {
 			if (newValue != null && !newValue.isEmpty()) {
 				Controller.getCurrentController().getResourceController()
-						.setProperty(WorkspacePreferences.SHOW_WORKSPACE_RESOURCE, true);
+						.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, true);
 				initializeConfiguration();
 				reloadView();
 
@@ -244,7 +243,7 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 
 	public void componentResized(ComponentEvent e) {
 		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
-		if (resCtrl.getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_RESOURCE) && e.getComponent() == getWorkspaceView()) {			
+		if (resCtrl.getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY) && e.getComponent() == getWorkspaceView()) {			
 			resCtrl.setProperty(WorkspacePreferences.WORKSPACE_WIDTH_PROPERTY_KEY, String.valueOf(e.getComponent().getWidth()));
 		}
 	}

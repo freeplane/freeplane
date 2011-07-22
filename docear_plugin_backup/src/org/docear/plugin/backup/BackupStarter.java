@@ -79,9 +79,10 @@ public class BackupStarter implements IMapChangeListener, INodeChangeListener {
 		LogUtils.info("Docear: onPreNodeDeleteEvent");
 	}
 	
-	public void nodeChanged(NodeChangeEvent event) {
+	public void nodeChanged(NodeChangeEvent event) {		
 		LogUtils.info("Docear: nodeChangedEvent");
 		if (event.getOldValue() != null) {			
+			System.out.println("FISH: event: "+event);
 			this.backupRunner.setMapChanged(true);
 		}
 	}

@@ -22,9 +22,10 @@ public class WorkspacePreferences {
 	public static final String VIEW_MENU = "/view";
 
 	public static final String SHOW_WORKSPACE_TEXT = "show_workspace";
-	public static final String SHOW_WORKSPACE_RESOURCE = "show_workspace";
+	public static final String SHOW_WORKSPACE_PROPERTY_KEY = "show_workspace";
 	public static final String WORKSPACE_WIDTH_PROPERTY_KEY = "workspace_view_width";
 	public static final String WORKSPACE_LOCATION = "workspace_location";
+	public static final String WORKSPACE_LOCATION_NEW = "workspace_location_new";
 
 	private ModeController modeController;
 
@@ -71,9 +72,8 @@ public class WorkspacePreferences {
 			ResourceController resourceController = Controller.getCurrentController().getResourceController();
 
 			public void updateMenus(ModeController modeController, MenuBuilder builder) {
-				builder.addCheckboxItem(MENU_BAR + VIEW_MENU, new CheckBoxAction(SHOW_WORKSPACE_TEXT, SHOW_WORKSPACE_RESOURCE),
-						resourceController.getBooleanProperty(SHOW_WORKSPACE_RESOURCE));
-
+				builder.addCheckboxItem(MENU_BAR + VIEW_MENU, new CheckBoxAction(SHOW_WORKSPACE_TEXT, SHOW_WORKSPACE_PROPERTY_KEY),
+						resourceController.getBooleanProperty(SHOW_WORKSPACE_PROPERTY_KEY));
 			}
 		});
 	}
