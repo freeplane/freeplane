@@ -79,7 +79,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.mode.mindmapmode.ortho.SpellCheckerController;
+import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 
 /**
  * @author Dimitry Polivaev

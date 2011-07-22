@@ -1,4 +1,4 @@
-package org.freeplane.features.mode.mindmapmode.export;
+package org.freeplane.features.export.mindmapmode;
 
 import java.net.URL;
 import java.util.ArrayList;

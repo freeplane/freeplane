@@ -47,7 +47,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.mindmapmode.ortho.SpellCheckerController;
+import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 
 import com.lightdev.app.shtm.SHTMLEditorPane;
 import com.lightdev.app.shtm.SHTMLPanel;
