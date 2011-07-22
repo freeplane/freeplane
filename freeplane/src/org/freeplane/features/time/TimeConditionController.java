@@ -43,7 +43,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class TimeConditionController implements IElementaryConditionController {
 	static final String FILTER_TIME = "filter_time";
 // // //	final private Controller controller;
-	private final ComboBoxEditor editor = new TimeComboBoxEditor(false);
+	private final ComboBoxEditor editor = new TimeComboBoxEditor(true);
 	private final ComboBoxModel values = new DefaultComboBoxModel();
 
 	public TimeConditionController() {
