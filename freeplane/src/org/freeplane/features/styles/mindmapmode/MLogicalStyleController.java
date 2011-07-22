@@ -199,6 +199,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 		modeController.addAction(new NewUserStyleAction());
 		modeController.addAction(new ManageMapConditionalStylesAction());
 		modeController.addAction(new ManageNodeConditionalStylesAction());
+		modeController.addAction(new CopyStyleExtensionsAction());
 		if (modeController.getModeName().equals("MindMap")) {
 			modeController.addAction(new MapBackgroundColorAction());
 			modeController.addAction(new CopyMapStylesAction());

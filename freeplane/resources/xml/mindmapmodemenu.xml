@@ -277,6 +277,7 @@
 				<menu_action action="RedefineStyleAction" />				
 				<menu_action action="ManageConditionalStylesAction" />
 				<menu_action action="ManageNodeConditionalStylesAction" />
+				<menu_action action="CopyStyleExtensionsAction" />
 				<menu_separator />
 				<menu_action action="AutomaticLayoutAction" />		
 				<menu_separator />
