@@ -10,12 +10,15 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.channels.FileChannel;
 
+import javax.swing.JOptionPane;
 import javax.swing.tree.MutableTreeNode;
 
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IndexedTree;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.plugin.workspace.WorkspacePreferences;
@@ -48,19 +51,60 @@ public class WorkspaceConfiguration {
 	private void initializeConfig() throws FileNotFoundException, IOException {
 		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
 		String workspaceLocation = resCtrl.getProperty(WorkspacePreferences.WORKSPACE_LOCATION);
+		String workspaceLocationNew = resCtrl.getProperty(WorkspacePreferences.WORKSPACE_LOCATION_NEW);
+		
 		if (workspaceLocation == null || workspaceLocation.isEmpty()) {
+			if (workspaceLocationNew == null || workspaceLocationNew.isEmpty()) {
+				setConfigValid(false);
+				resCtrl.setProperty(WorkspacePreferences.RESOURCE_SHOW_WORKSPACE, false);
+				return;
+			}
+		}
+		if (workspaceLocationNew != null && !workspaceLocationNew.isEmpty() && !workspaceLocation.equals(workspaceLocationNew)) {
+			workspaceLocation = initializeNewConfig(workspaceLocationNew);
+		}
+
+		File configFile = new File(workspaceLocation + File.separator + CONFIG_FILE_NAME);
+
+		if (!configFile.exists()) {
 			setConfigValid(false);
-			resCtrl.setProperty(WorkspacePreferences.SHOW_WORKSPACE_RESOURCE, false);
 			return;
 		}
-		File config = new File(workspaceLocation + File.separator + CONFIG_FILE_NAME);
-		
-		if (!config.exists()) {
-			copyDefaultConfigTo(config);
-		}		
-		this.load(new URL("file:///"+config.getPath()));
-		
+
+		this.load(new URL("file:///" + configFile.getPath()));
 		setConfigValid(true);
+	}
+
+	private String initializeNewConfig(String workspaceLocationNew) throws FileNotFoundException, IOException {
+		ResourceController resourceController = Controller.getCurrentController().getResourceController();
+		File configFile = new File(workspaceLocationNew + File.separator + CONFIG_FILE_NAME);
+		
+		if (!configFile.exists()) {
+			int yesorno = JOptionPane.OK_OPTION;
+			yesorno = JOptionPane.showConfirmDialog(Controller.getCurrentController().getViewController().getContentPane(),
+					TextUtils.getText("confirm_create_workspace_text") + workspaceLocationNew,
+					TextUtils.getText("confirm_create_workspace_title"), JOptionPane.OK_CANCEL_OPTION);
+			if (yesorno == JOptionPane.OK_OPTION) {
+				//CREATE NEW WORKSPACE
+				copyDefaultConfigTo(configFile);				
+				resourceController.setProperty(WorkspacePreferences.WORKSPACE_LOCATION, workspaceLocationNew);
+				return workspaceLocationNew;
+			}
+			else {
+				//DO NOT CREATE NEW WORKSPACE - USE OLD WORKSPACE INSTEAD
+				resourceController.setProperty(WorkspacePreferences.WORKSPACE_LOCATION_NEW,
+						resourceController.getProperty(WorkspacePreferences.WORKSPACE_LOCATION));
+				return resourceController.getProperty(WorkspacePreferences.WORKSPACE_LOCATION);
+			}
+		}
+		else {
+			//NEW WORKSPACE EXISTS, USE IT
+			resourceController.setProperty(WorkspacePreferences.WORKSPACE_LOCATION, workspaceLocationNew);
+			return workspaceLocationNew;
+		}
+		
+		
+		
 	}
 
 	private void copyDefaultConfigTo(File config) throws FileNotFoundException, IOException {
@@ -101,7 +145,7 @@ public class WorkspaceConfiguration {
 	public MutableTreeNode getConfigurationRoot() {
 		return getTree().getRoot();
 	}
-	
+
 	public IndexedTree getTree() {
 		return this.tree;
 	}

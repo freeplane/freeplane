@@ -3,7 +3,7 @@
 	<tabbed_pane>
 		<tab name="workspace">
 			<separator name="workspace_main_options">
-				<path name="workspace_location" dir="true" />				 
+				<path name="workspace_location_new" dir="true" />				 
 			</separator>
 		</tab>
 	</tabbed_pane>

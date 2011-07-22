@@ -149,7 +149,7 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 	private void reloadView() {
 		getContentPane().setComponent(getWSContentPane());
 		showWorkspaceView(Controller.getCurrentController().getResourceController()
-				.getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_RESOURCE));
+				.getBooleanProperty(WorkspacePreferences.RESOURCE_SHOW_WORKSPACE));
 	}
 
 	private SingleContentPane getContentPane() {
@@ -171,14 +171,13 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 
 	public void showWorkspaceView(boolean visible) {
 		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
-		resCtrl.setProperty(WorkspacePreferences.SHOW_WORKSPACE_RESOURCE, visible);
+		resCtrl.setProperty(WorkspacePreferences.RESOURCE_SHOW_WORKSPACE, visible);
 		if (visible) {
 			int width = resCtrl.getIntProperty(WorkspacePreferences.WORKSPACE_WIDTH_PROPERTY_KEY, 200);
 			setWorkspaceWidth(width);
 			getContentPane().revalidate();
 		}
 		else {
-			System.out.println("FISH invisible");
 			setWorkspaceWidth(-1);
 			getContentPane().revalidate();
 		}
@@ -217,10 +216,10 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 	 **********************************************************************************/
 
 	public void propertyChanged(String propertyName, String newValue, String oldValue) {
-		if (propertyName.equals(WorkspacePreferences.WORKSPACE_LOCATION)) {
+		if (propertyName.equals(WorkspacePreferences.WORKSPACE_LOCATION_NEW)) {
 			if (newValue != null && !newValue.isEmpty()) {
 				Controller.getCurrentController().getResourceController()
-						.setProperty(WorkspacePreferences.SHOW_WORKSPACE_RESOURCE, true);
+						.setProperty(WorkspacePreferences.RESOURCE_SHOW_WORKSPACE, true);
 				initializeConfiguration();
 				reloadView();
 
@@ -230,7 +229,7 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 
 	public void componentResized(ComponentEvent e) {
 		if (Controller.getCurrentController().getResourceController()
-				.getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_RESOURCE)
+				.getBooleanProperty(WorkspacePreferences.RESOURCE_SHOW_WORKSPACE)
 				&& e.getComponent() == getWorkspaceView()) {
 			System.out.println("change width: " + e.getComponent().getWidth());
 			ResourceController resCtrl = Controller.getCurrentController().getResourceController();
