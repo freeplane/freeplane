@@ -25,14 +25,23 @@ import java.util.TimerTask;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.SysUtils;
+import org.freeplane.features.icon.IconStore;
+import org.freeplane.features.icon.UIIcon;
+import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 
 /**
  * @author Dimitry Polivaev 30.11.2008
  */
 class ReminderExtension implements IExtension, IMapChangeListener {
+	private static final IconStore STORE = IconStoreFactory.create();
+	private static UIIcon bellIcon;
+	private static UIIcon clockIcon;
+	private static UIIcon flagIcon;
+	final private String STATE_TOOLTIP = ReminderExtension.class.getName() + "_STATE_";
 	/**
 	 */
 	public static ReminderExtension getExtension(final NodeModel node) {
@@ -42,22 +51,20 @@ class ReminderExtension implements IExtension, IMapChangeListener {
 	private final NodeModel node;
 	private long remindUserAt = 0;
 	private Timer timer;
-	private final ReminderHook reminderHook;
 
-	public ReminderExtension(final ReminderHook reminderHook, final NodeModel node) {
+	public ReminderExtension(final NodeModel node) {
 		this.node = node;
-		this.reminderHook = reminderHook;
 	}
 
 	public NodeModel getNode() {
 		return node;
 	}
 
-	long getRemindUserAt() {
+	public long getRemindUserAt() {
 		return remindUserAt;
 	}
 
-	void setRemindUserAt(final long remindUserAt) {
+	public void setRemindUserAt(final long remindUserAt) {
 		this.remindUserAt = remindUserAt;
 	}
 
@@ -65,7 +72,7 @@ class ReminderExtension implements IExtension, IMapChangeListener {
 		if (timer == null) {
 			timer = SysUtils.createTimer(getClass().getSimpleName());
 		}
-		timer.schedule(task, date);
+		timer.schedule(task, date, 1000);
 	}
 
 	public void deactivateTimer() {
@@ -80,7 +87,7 @@ class ReminderExtension implements IExtension, IMapChangeListener {
 		if (!isAncestorNode(parent)) {
 			return;
 		}
-		reminderHook.displayState(this, state, parent, true);
+		displayState(state, parent, true);
 	}
 
 	private boolean isAncestorNode(final NodeModel parent) {
@@ -115,4 +122,55 @@ class ReminderExtension implements IExtension, IMapChangeListener {
 
 	public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
 	}
+	
+	public void displayState(final ClockState stateAdded, final NodeModel pNode,
+	                  final boolean recurse) {
+		UIIcon icon = null;
+		if (stateAdded == ClockState.CLOCK_VISIBLE) {
+			icon = getClockIcon();
+		}
+		else if (stateAdded == ClockState.CLOCK_INVISIBLE) {
+			if (pNode == getNode()) {
+				icon = getBellIcon();
+			}
+			else {
+				icon = getFlagIcon();
+			}
+		}
+		if (stateAdded != ClockState.REMOVE_CLOCK || pNode == getNode()
+		        || ReminderExtension.getExtension(pNode) == null) {
+			pNode.setStateIcon(STATE_TOOLTIP, icon, true);
+		}
+		Controller.getCurrentModeController().getMapController().nodeRefresh(pNode);
+		if (!recurse) {
+			return;
+		}
+		final NodeModel parentNode = pNode.getParentNode();
+		if (parentNode == null) {
+			return;
+		}
+		displayState(stateAdded, parentNode, recurse);
+	}
+	private UIIcon getBellIcon() {
+		if (bellIcon == null) {
+			bellIcon = STORE.getUIIcon("bell.png");
+		}
+		return bellIcon;
+	}
+
+	private UIIcon getClockIcon() {
+		if (clockIcon == null) {
+			clockIcon = STORE.getUIIcon("clock.png");
+		}
+		return clockIcon;
+	}
+
+	private UIIcon getFlagIcon() {
+		if (flagIcon == null) {
+			flagIcon = STORE.getUIIcon("flag.png");
+		}
+		return flagIcon;
+	}
+
+
 }

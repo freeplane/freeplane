@@ -23,6 +23,7 @@ import java.util.Date;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ConditionFactory;
+import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.map.NodeModel;
 
 /**
@@ -32,7 +33,7 @@ import org.freeplane.features.map.NodeModel;
 public class TimeConditionCreatedBefore extends TimeCondition {
 	static final String NAME = "time_condition_created_before";
 
-	public TimeConditionCreatedBefore(final Date date) {
+	public TimeConditionCreatedBefore(final FormattedDate date) {
 		super(date);
 	}
 
@@ -46,7 +47,7 @@ public class TimeConditionCreatedBefore extends TimeCondition {
 	@Override
 	protected String createDescription() {
 		final String filterTime = TextUtils.getText(TimeConditionController.FILTER_TIME);
-		final String dateAsString = TimeCondition.format(getDate());
+		final String dateAsString = getDate().toString();
 		final String before = TextUtils.getText(FILTER_CREATED_BEFORE);
 		return ConditionFactory.createDescription(filterTime, before, dateAsString, false);
 	}

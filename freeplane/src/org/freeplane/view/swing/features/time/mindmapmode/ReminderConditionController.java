@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.time;
+package org.freeplane.view.swing.features.time.mindmapmode;
 
 import java.util.Date;
 
@@ -35,21 +35,20 @@ import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.IFormattedObject;
+import org.freeplane.features.time.TimeComboBoxEditor;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
  * 21.12.2008
  */
-public class TimeConditionController implements IElementaryConditionController {
-	static final String FILTER_TIME = "filter_time";
-// // //	final private Controller controller;
+public class ReminderConditionController implements IElementaryConditionController {
+	static final String FILTER_REMINDER = "filter_reminder";
 	private final ComboBoxEditor editor = new TimeComboBoxEditor(true);
 	private final ComboBoxModel values = new DefaultComboBoxModel();
 
-	public TimeConditionController() {
+	public ReminderConditionController() {
 		super();
-//		this.controller = controller;
 	}
 
 	public boolean canEditValues(final Object property, final NamedObject simpleCond) {
@@ -61,16 +60,20 @@ public class TimeConditionController implements IElementaryConditionController {
 			return false;
 		}
 		final NamedObject namedObject = (NamedObject) selectedItem;
-		return namedObject.objectEquals(TimeConditionController.FILTER_TIME);
+		return namedObject.objectEquals(ReminderConditionController.FILTER_REMINDER);
 	}
 
 	public boolean canSelectValues(final Object property, final NamedObject simpleCond) {
+		if(simpleCond.objectEquals(ReminderConditionLater.FILTER_REMINDER_LATER))
+			return false;
+		if(simpleCond.objectEquals(ReminderConditionExecuted.FILTER_REMINDER_EXECUTED))
+			return false;
 		return true;
 	}
 
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
 	                                            final Object value, final boolean ignoreCase) {
-		return TimeCondition.create(simpleCond, (FormattedDate) value);
+		return ReminderConditionController.create(simpleCond, (FormattedDate) value);
 	}
 
 	public ComboBoxModel getConditionsForProperty(final Object property) {
@@ -79,15 +82,16 @@ public class TimeConditionController implements IElementaryConditionController {
 
 	public ListModel getFilteredProperties() {
 		final DefaultListModel list = new DefaultListModel();
-		list.addElement(TextUtils.createTranslatedString(FILTER_TIME));
+		list.addElement(TextUtils.createTranslatedString(FILTER_REMINDER));
 		return list;
 	}
 
 	public Object[] getTimeConditionNames() {
-		return new NamedObject[] { TextUtils.createTranslatedString(TimeCondition.FILTER_MODIFIED_AFTER),
-		        TextUtils.createTranslatedString(TimeCondition.FILTER_MODIFIED_BEFORE),
-		        TextUtils.createTranslatedString(TimeCondition.FILTER_CREATED_AFTER),
-		        TextUtils.createTranslatedString(TimeCondition.FILTER_CREATED_BEFORE) };
+		return new NamedObject[] {
+		        TextUtils.createTranslatedString(ReminderConditionLater.FILTER_REMINDER_LATER),
+		        TextUtils.createTranslatedString(ReminderConditionExecuted.FILTER_REMINDER_EXECUTED),
+		        TextUtils.createTranslatedString(ReminderCondition.FILTER_REMINDER_AFTER),
+		        TextUtils.createTranslatedString(ReminderCondition.FILTER_REMINDER_BEFORE) };
 	}
 
 	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
@@ -105,25 +109,21 @@ public class TimeConditionController implements IElementaryConditionController {
 
 	public ASelectableCondition loadCondition(final XMLElement element) {
 		try {
-			if (element.getName().equalsIgnoreCase(TimeConditionCreatedBefore.NAME)) {
-				final String dateString = element.getAttribute(TimeCondition.DATE, null);
-				FormattedDate date  = FormattedDate.createDefaultFormattedDate(Long.parseLong(dateString), IFormattedObject.TYPE_DATETIME);
-				return new TimeConditionCreatedBefore(date);
+			if (element.getName().equalsIgnoreCase(ReminderConditionLater.NAME)) {
+				return new ReminderConditionLater();
 			}
-			if (element.getName().equalsIgnoreCase(TimeConditionCreatedAfter.NAME)) {
-				final String dateString = element.getAttribute(TimeCondition.DATE, null);
-				FormattedDate date  = FormattedDate.createDefaultFormattedDate(Long.parseLong(dateString), IFormattedObject.TYPE_DATETIME);
-				return new TimeConditionCreatedAfter(date);
+			if (element.getName().equalsIgnoreCase(ReminderConditionExecuted.NAME)) {
+				return new ReminderConditionExecuted();
 			}
-			if (element.getName().equalsIgnoreCase(TimeConditionModifiedBefore.NAME)) {
-				final String dateString = element.getAttribute(TimeCondition.DATE, null);
-				FormattedDate date  = FormattedDate.createDefaultFormattedDate(Long.parseLong(dateString), IFormattedObject.TYPE_DATETIME);
-				return new TimeConditionModifiedBefore(date);
+			if (element.getName().equalsIgnoreCase(ReminderConditionBefore.NAME)) {
+				final String dateString = element.getAttribute(ReminderCondition.DATE, null);
+				final FormattedDate date = FormattedDate.createDefaultFormattedDate(Long.parseLong(dateString), IFormattedObject.TYPE_DATETIME);
+				return new ReminderConditionBefore(date);
 			}
-			if (element.getName().equalsIgnoreCase(TimeConditionModifiedAfter.NAME)) {
-				final String dateString = element.getAttribute(TimeCondition.DATE, null);
-				FormattedDate date  = FormattedDate.createDefaultFormattedDate(Long.parseLong(dateString), IFormattedObject.TYPE_DATETIME);
-				return new TimeConditionModifiedAfter(date);
+			if (element.getName().equalsIgnoreCase(ReminderConditionAfter.NAME)) {
+				final String dateString = element.getAttribute(ReminderCondition.DATE, null);
+				final FormattedDate date = FormattedDate.createDefaultFormattedDate(Long.parseLong(dateString), IFormattedObject.TYPE_DATETIME);
+				return new ReminderConditionAfter(date);
 			}
 		}
 		catch (final Exception e) {
@@ -134,5 +134,21 @@ public class TimeConditionController implements IElementaryConditionController {
 
 	public ListCellRenderer getValueRenderer(Object selectedProperty, NamedObject selectedCondition) {
 	    return null;
+    }
+
+	public static ASelectableCondition create(final NamedObject simpleCond, final FormattedDate date) {
+    	if (simpleCond.objectEquals(ReminderConditionLater.FILTER_REMINDER_LATER)) {
+    		return new ReminderConditionLater();
+    	}
+    	if (simpleCond.objectEquals(ReminderConditionExecuted.FILTER_REMINDER_EXECUTED)) {
+    		return new ReminderConditionExecuted();
+    	}
+    	if (simpleCond.objectEquals(ReminderCondition.FILTER_REMINDER_AFTER)) {
+    		return new ReminderConditionAfter(date);
+    	}
+    	if (simpleCond.objectEquals(ReminderCondition.FILTER_REMINDER_BEFORE)) {
+    		return new ReminderConditionBefore(date);
+    	}
+    	return null;
     }
 }

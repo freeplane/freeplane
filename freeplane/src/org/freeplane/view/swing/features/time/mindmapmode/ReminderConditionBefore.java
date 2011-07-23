@@ -17,7 +17,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.time;
+package org.freeplane.view.swing.features.time.mindmapmode;
+
+import java.util.Date;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ConditionFactory;
@@ -26,26 +28,31 @@ import org.freeplane.features.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev
- * Mar 5, 2009
+ * Mar 6, 2009
  */
-public class TimeConditionModifiedAfter extends TimeConditionModifiedBefore{
-	static final String NAME = "time_condition_modified_after";
+public class ReminderConditionBefore extends ReminderCondition {
+	static final String NAME = "reminder_condition_before";
 
-	public TimeConditionModifiedAfter(final FormattedDate date) {
+	public ReminderConditionBefore(final FormattedDate date) {
 		super(date);
 	}
 
-	@Override
 	public boolean checkNode(final NodeModel node) {
-		return !super.checkNode(node);
+		final ReminderExtension reminder = ReminderExtension.getExtension(node);
+		if(reminder == null)
+			return false;
+		final long reminderTime = reminder.getRemindUserAt();
+		final Date filterDate = getDate();
+		final boolean before = reminderTime < filterDate.getTime();
+		return before;
 	}
 
 	@Override
 	protected String createDescription() {
-		final String filterTime = TextUtils.getText(TimeConditionController.FILTER_TIME);
+		final String filterTime = TextUtils.getText(ReminderConditionController.FILTER_REMINDER);
 		final String dateAsString = getDate().toString();
-		final String after = TextUtils.getText(FILTER_MODIFIED_AFTER);
-		return ConditionFactory.createDescription(filterTime, after, dateAsString, false);
+		final String before = TextUtils.getText(FILTER_REMINDER_BEFORE);
+		return ConditionFactory.createDescription(filterTime, before, dateAsString, false);
 	}
 
 	@Override
