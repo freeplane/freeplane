@@ -32,6 +32,9 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
 import org.freeplane.n3.nanoxml.XMLElement;
+import org.freeplane.plugin.script.ScriptComboBoxEditor;
+import org.freeplane.plugin.script.ScriptRenderer;
+
 
 /**
  * @author Dimitry Polivaev

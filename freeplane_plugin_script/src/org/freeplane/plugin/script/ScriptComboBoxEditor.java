@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.plugin.script.filter;
+package org.freeplane.plugin.script;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -27,7 +27,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.ComboBoxEditor;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
@@ -41,7 +40,7 @@ import org.freeplane.core.util.TextUtils;
  * @author Dimitry Polivaev
  * Mar 5, 2009
  */
-class ScriptComboBoxEditor implements ComboBoxEditor {
+public class ScriptComboBoxEditor implements ComboBoxEditor {
 
 	final private JButton showEditorBtn;
 	final private List<ActionListener> actionListeners;
@@ -60,7 +59,7 @@ class ScriptComboBoxEditor implements ComboBoxEditor {
 		showEditorBtn.setPreferredSize(preferredSize);
 		actionListeners = new LinkedList<ActionListener>();
 	}
-
+	
 	protected void editScript(boolean selectAll) {
 		JEditorPane textEditor = new JEditorPane();
 		final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
@@ -113,16 +112,13 @@ class ScriptComboBoxEditor implements ComboBoxEditor {
 	public void removeActionListener(final ActionListener l) {
 		actionListeners.remove(l);
 	}
-}
-
-class  ScriptRenderer extends DefaultListCellRenderer{
-    private static final long serialVersionUID = 1L;
-
-	@Override
-    public Dimension getPreferredSize() {
-	    final Dimension preferredSize = super.getPreferredSize();
-	    preferredSize.width = 100;
-		return preferredSize;
-    }
 	
+	public void setPreferredSize(Dimension preferredSize) {
+	    showEditorBtn.setPreferredSize(preferredSize);
+    }
+
+	public Dimension getPreferredSize() {
+	    return showEditorBtn.getPreferredSize();
+    }
+
 }
