@@ -513,6 +513,12 @@
 				<menu_action action="NewParentNode" accelerator="shift INSERT" />		
 			</menu_category>			
 			<menu_separator/>
+			<menu_category name="summary">
+				<menu_action action="NewSummaryAction" accelerator="alt shift INSERT" />
+				<menu_action action="FirstGroupNodeAction" accelerator = "alt shift B"/>
+				<menu_action action="SummaryNodeAction" accelerator = "alt shift S"/>
+			</menu_category>	
+			<menu_separator/>
 			<menu_category name="edit">
 				<menu_action action="EditAction" accelerator="F2" />
 				<menu_action action="EditLongAction" accelerator="alt ENTER" />
