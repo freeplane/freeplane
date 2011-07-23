@@ -77,6 +77,7 @@ import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.IMapSelection;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
@@ -542,7 +543,8 @@ public class MLinkController extends LinkController {
                 if (Boolean.TRUE.equals(component.getClientProperty(CANCEL))) {
                     return;
                 }
-                if (Controller.getCurrentController().getSelection().getSelected() == null)
+                final IMapSelection selection = Controller.getCurrentController().getSelection();
+				if (selection == null || selection.getSelected() == null)
                     return;
                 if(twoNodesConnector){
                     setSourceLabel(link, sourceLabelEditor.getText());
