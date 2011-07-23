@@ -846,6 +846,9 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		else if (value instanceof Number) {
 			addStatusInfo(ResourceController.OBJECT_TYPE, null, ViewController.numberIcon);
 		}
+		else if (value instanceof URI) {
+			addStatusInfo(ResourceController.OBJECT_TYPE, null, ViewController.linkIcon);
+		}
 		else {
 			addStatusInfo(ResourceController.OBJECT_TYPE, null, null);
 		}
