@@ -592,12 +592,13 @@ class EditNodeTextField extends EditNodeBase {
 			textFieldSize.width = maxWidth;
 			setLineWrap();
 			textFieldSize.height = textfield.getPreferredSize().height;
-			horizontalSpace = nodeWidth - textFieldSize.width;
-			verticalSpace = nodeHeight - textFieldSize.height;
 		}
-		else {
-			horizontalSpace = nodeWidth - textFieldSize.width;
-			verticalSpace = nodeHeight - textFieldSize.height;
+		horizontalSpace = nodeWidth - textFieldSize.width;
+		verticalSpace = nodeHeight - textFieldSize.height;
+		iconWidth = parent.getIconWidth();
+		if (iconWidth != 0) {
+			iconWidth += mapView.getZoomed(parent.getIconTextGap());
+			horizontalSpace -= iconWidth;
 		}
 		if (horizontalSpace < 0) {
 			horizontalSpace = 0;
@@ -606,13 +607,8 @@ class EditNodeTextField extends EditNodeBase {
 			verticalSpace = 0;
 		}
 		textfield.setSize(textFieldSize.width, textFieldSize.height);
-		parent.setPreferredSize(new Dimension(textFieldSize.width + horizontalSpace, textFieldSize.height
-		        + verticalSpace));
-		iconWidth = parent.getIconWidth();
-		if (iconWidth != 0) {
-			iconWidth += mapView.getZoomed(parent.getIconTextGap());
-			horizontalSpace -= iconWidth;
-		}
+		parent.setPreferredSize(new Dimension(textFieldSize.width + iconWidth + horizontalSpace, textFieldSize.height
+	        + verticalSpace));
 
 		final int x;
 		if(nodeView.isRoot() && parent instanceof MainView) 
