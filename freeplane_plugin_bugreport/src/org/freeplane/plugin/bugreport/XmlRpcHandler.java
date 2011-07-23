@@ -179,7 +179,6 @@ public class XmlRpcHandler extends StreamHandler {
 
 	@Override
 	public synchronized void publish(final LogRecord record) {
-		errorCounter++;
 		if (out == null) {
 			out = new ByteArrayOutputStream();
 			setOutputStream(out);
@@ -196,11 +195,12 @@ public class XmlRpcHandler extends StreamHandler {
 				if(errorIcon == null)
 					errorIcon = new ImageIcon(ResourceController.getResourceController().getResource(
 						"/images/icons/messagebox_warning.png"));
+				errorCounter++;
 				final ResourceController resourceController = ResourceController.getResourceController();
 				final String freeplaneUserDirectory = resourceController.getFreeplaneUserDirectory();
 				String tooltip = TextUtils.format("internal_error_tooltip", freeplaneUserDirectory);
 				Controller.getCurrentController().getViewController()
-				    .addStatusInfo("internal_error", Integer.toString(errorCounter), errorIcon, tooltip);
+				    .addStatusInfo("internal_error", TextUtils.format("errornumber", errorCounter), errorIcon, tooltip);
 			}
 		});
 		super.publish(record);
