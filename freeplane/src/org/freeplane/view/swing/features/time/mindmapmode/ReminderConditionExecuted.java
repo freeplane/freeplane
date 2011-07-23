@@ -19,8 +19,6 @@
  */
 package org.freeplane.view.swing.features.time.mindmapmode;
 
-import java.util.Date;
-
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
