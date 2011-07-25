@@ -19,11 +19,11 @@
 package org.freeplane.plugin.script;
 
 import groovy.lang.Binding;
+import groovy.lang.GroovyCodeSource;
 import groovy.lang.GroovyRuntimeException;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
 
-import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Collections;
 import java.util.HashMap;
@@ -62,7 +62,6 @@ public class ScriptingEngine {
 	public static final String RESOURCES_SCRIPT_DIRECTORIES = "script_directories";
 	public static final String RESOURCES_SCRIPT_CLASSPATH = "script_classpath";
 	public static final String SCRIPT_PREFIX = "script";
-	private static final long serialVersionUID = 1L;
 	private static final HashMap<String, Object> sScriptCookies = new HashMap<String, Object>();
 	private static Boolean noUserPermissionRequired = false;
 	private static Pattern attributeNamePattern = Pattern.compile("^([a-zA-Z0-9_]*)=");
@@ -128,7 +127,8 @@ public class ScriptingEngine {
 		}
 		try {
 			System.setOut(pOutStream);
-			final GroovyShell shell = new GroovyShell(ScriptingEngine.class.getClassLoader(), binding, createCompilerConfiguration()) {
+			final ClassLoader classLoader = ScriptingEngine.class.getClassLoader();
+			final GroovyShell shell = new GroovyShell(classLoader, binding, createCompilerConfiguration()) {
 				/**
 				 * Evaluates some script against the current Binding and returns the result
 				 *
@@ -136,10 +136,11 @@ public class ScriptingEngine {
 				 * @param fileName is the logical file name of the script (which is used to create the class name of the script)
 				 */
 				@Override
-				public Object evaluate(final InputStream in, final String fileName) throws CompilationFailedException {
+				public Object evaluate(GroovyCodeSource codeSource) throws CompilationFailedException {
 					Script script = null;
 					try {
-						script = parse(in, fileName);
+						script = parse(codeSource);
+						script.setBinding(getContext());
 						if (needsSecurityManager)
 							securityManager.setFinalSecurityManager(scriptingSecurityManager);
 						return script.run();
@@ -153,7 +154,7 @@ public class ScriptingEngine {
 					}
 				}
 			};
-			Object result = shell.evaluate(script);
+			final Object result = shell.evaluate(script);
 			if (assignResult && result != null) {
 				if (assignTo == null) {
 					((MTextController) TextController.getController()).setNodeText(node, result.toString());
