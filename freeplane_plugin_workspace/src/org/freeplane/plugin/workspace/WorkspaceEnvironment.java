@@ -26,6 +26,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
+import org.freeplane.plugin.workspace.controller.PopupMenus;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.FileReadManager;
 import org.freeplane.plugin.workspace.io.FilesystemReader;
@@ -42,6 +43,7 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 	private WorkspacePreferences preferences;
 	private final FilesystemReader fsReader;
 	private FileReadManager fileTypeManager;
+	private final PopupMenus popups;
 
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -52,6 +54,7 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 		initializeConfiguration();
 		initializeView();
 		initializePreferences();
+		popups = new PopupMenus();
 		this.fsReader = new FilesystemReader(getFileTypeManager());
 		currentWorkspace = this;
 	}
@@ -224,6 +227,10 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 		}
 		return this.fileTypeManager;
 	}
+	
+	public PopupMenus getPopups() {
+		return popups;
+	}
 
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
@@ -294,6 +301,8 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 
 	public void mouseExited(MouseEvent e) {
 	}
+
+	
 
 	/***********************************************************************************
 	 * INTERNAL CLASSES
