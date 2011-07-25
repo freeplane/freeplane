@@ -128,7 +128,7 @@ public class ScriptingEngine {
 		}
 		try {
 			System.setOut(pOutStream);
-			final GroovyShell shell = new GroovyShell(binding, createCompilerConfiguration()) {
+			final GroovyShell shell = new GroovyShell(ScriptingEngine.class.getClassLoader(), binding, createCompilerConfiguration()) {
 				/**
 				 * Evaluates some script against the current Binding and returns the result
 				 *
