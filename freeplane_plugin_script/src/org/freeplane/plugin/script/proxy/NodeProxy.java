@@ -454,7 +454,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	// NodeRO: R
-	public List<Node> find(final Closure closure) {
+	public List<Node> find(final Closure<List<Node>> closure) {
 		final NodeModel delegate = getDelegate();
 		if (getScriptContext() != null)
 			getScriptContext().accessBranch(delegate);

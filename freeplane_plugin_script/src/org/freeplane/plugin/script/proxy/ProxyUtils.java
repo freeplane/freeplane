@@ -41,11 +41,11 @@ public class ProxyUtils {
 		return ProxyUtils.createNodeList(ProxyUtils.findImpl(null, node, breadthFirst), scriptContext);
 	}
 
-	static List<Node> find(final Closure closure, final NodeModel node, final ScriptContext scriptContext) {
+	static List<Node> find(final Closure<List<Node>> closure, final NodeModel node, final ScriptContext scriptContext) {
 		return ProxyUtils.find(createCondition(closure, scriptContext), node, scriptContext);
 	}
 
-	static ICondition createCondition(final Closure closure, final ScriptContext scriptContext) {
+	static ICondition createCondition(final Closure<List<Node>> closure, final ScriptContext scriptContext) {
 	    final ICondition condition = new ICondition() {
 			public boolean checkNode(final NodeModel node) {
 				try {
