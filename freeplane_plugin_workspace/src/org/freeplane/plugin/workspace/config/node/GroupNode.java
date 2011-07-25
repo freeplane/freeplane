@@ -6,7 +6,7 @@ import javax.swing.JPopupMenu;
 
 import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.plugin.workspace.WorkspaceEnvironment;
+import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.PopupMenus;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
@@ -23,7 +23,7 @@ public class GroupNode extends WorkspaceNode implements IWorkspaceNodeEventListe
 			Component component = (Component) event.getSource();			
 			
 			final ControllerPopupMenuListener popupListener = new ControllerPopupMenuListener();
-			final JPopupMenu popupmenu = WorkspaceEnvironment.getCurrentWorkspaceEnvironment().getPopups().getWorkspacePopupMenu();
+			final JPopupMenu popupmenu = WorkspaceController.getCurrentWorkspaceController().getPopups().getWorkspacePopupMenu();
 			if (popupmenu != null) {
 				System.out.println("FISH popupmenu is not null: ");
 				
@@ -38,6 +38,11 @@ public class GroupNode extends WorkspaceNode implements IWorkspaceNodeEventListe
 		}
 		System.out.println("Event: " + event);
 
+	}
+	
+
+	public String getTagName() {
+		return "group";
 	}
 
 }

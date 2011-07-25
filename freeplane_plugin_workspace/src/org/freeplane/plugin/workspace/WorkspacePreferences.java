@@ -97,10 +97,10 @@ public class WorkspacePreferences {
 			Controller.getCurrentController().getResourceController().setProperty(this.propertyKey, checked);
 
 			if (checked) {
-				WorkspaceEnvironment.getCurrentWorkspaceEnvironment().showWorkspaceView(true);
+				WorkspaceController.getCurrentWorkspaceController().showWorkspaceView(true);
 			}
 			else {
-				WorkspaceEnvironment.getCurrentWorkspaceEnvironment().showWorkspaceView(false);
+				WorkspaceController.getCurrentWorkspaceController().showWorkspaceView(false);
 			}
 		}
 	}

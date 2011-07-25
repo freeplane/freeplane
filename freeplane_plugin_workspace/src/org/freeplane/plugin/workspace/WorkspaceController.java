@@ -9,6 +9,7 @@ import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.Properties;
 
 import javax.swing.JPanel;
@@ -31,11 +32,12 @@ import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.FileReadManager;
 import org.freeplane.plugin.workspace.io.FilesystemReader;
 import org.freeplane.plugin.workspace.io.creator.FileNodeCreator;
+import org.freeplane.plugin.workspace.io.xml.ConfigurationWriter;
 import org.freeplane.plugin.workspace.view.TreeView;
 
-public class WorkspaceEnvironment implements ComponentListener, MouseListener, IFreeplanePropertyListener {
+public class WorkspaceController implements ComponentListener, MouseListener, IFreeplanePropertyListener {
 	private WorkspaceConfiguration config;
-	private static WorkspaceEnvironment currentWorkspace;
+	private static WorkspaceController currentWorkspace;
 	private TreeView view;
 	private Container oldContentPane;
 	private Container WSContentPane;
@@ -43,19 +45,21 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 	private WorkspacePreferences preferences;
 	private final FilesystemReader fsReader;
 	private FileReadManager fileTypeManager;
+	private ConfigurationWriter configWriter;
 	private final PopupMenus popups;
 
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 
-	public WorkspaceEnvironment() {
+	public WorkspaceController() {
 		LogUtils.info("Initializing WorkspaceEnvironment");
 		initializeConfiguration();
 		initializeView();
 		initializePreferences();
-		popups = new PopupMenus();
 		this.fsReader = new FilesystemReader(getFileTypeManager());
+		this.configWriter = new ConfigurationWriter(this);
+		this.popups = new PopupMenus();
 		currentWorkspace = this;
 	}
 
@@ -63,7 +67,7 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 	 * METHODS
 	 **********************************************************************************/
 
-	public static WorkspaceEnvironment getCurrentWorkspaceEnvironment() {
+	public static WorkspaceController getCurrentWorkspaceController() {
 		return currentWorkspace;
 	}
 
@@ -82,7 +86,6 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 
 	private void initializeConfiguration() {
 		resetWorkspaceView();
-
 		if (!getConfig().isConfigValid()) {
 			showWorkspaceView(false);
 			return;
@@ -228,10 +231,19 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 		return this.fileTypeManager;
 	}
 	
+	public void saveConfigurationAsXML(Writer writer) {
+		try {
+			this.configWriter.writeConfigurationAsXml(writer);
+		}
+		catch (final IOException e) {
+			LogUtils.severe(e);
+		}
+	}
+
 	public PopupMenus getPopups() {
 		return popups;
 	}
-
+	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
@@ -301,8 +313,6 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 
 	public void mouseExited(MouseEvent e) {
 	}
-
-	
 
 	/***********************************************************************************
 	 * INTERNAL CLASSES

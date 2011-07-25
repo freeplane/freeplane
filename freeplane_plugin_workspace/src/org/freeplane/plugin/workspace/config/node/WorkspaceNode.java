@@ -36,4 +36,6 @@ public abstract class WorkspaceNode {
 	public void setMode(int mode) {
 		this.currentMode = mode;
 	}
+	
+	abstract public String getTagName();
 }

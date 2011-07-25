@@ -11,7 +11,7 @@ import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.plugin.workspace.WorkspaceEnvironment;
+import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspacePreferences;
 
 public class PopupMenus {
@@ -62,10 +62,10 @@ public class PopupMenus {
 			Controller.getCurrentController().getResourceController().setProperty(this.propertyKey, checked);
 
 			if (checked) {
-				WorkspaceEnvironment.getCurrentWorkspaceEnvironment().showWorkspaceView(true);
+				WorkspaceController.getCurrentWorkspaceController().showWorkspaceView(true);
 			}
 			else {
-				WorkspaceEnvironment.getCurrentWorkspaceEnvironment().showWorkspaceView(false);
+				WorkspaceController.getCurrentWorkspaceController().showWorkspaceView(false);
 			}
 		}
 	}

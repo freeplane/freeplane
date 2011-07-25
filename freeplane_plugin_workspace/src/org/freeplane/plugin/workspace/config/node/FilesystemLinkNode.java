@@ -13,4 +13,8 @@ public class FilesystemLinkNode extends WorkspaceNode implements IWorkspaceNodeE
 	public void handleEvent(WorkspaceNodeEvent event) {
 	}
 
+
+	public String getTagName() {
+		return "filesystem_link";
+	}
 }
