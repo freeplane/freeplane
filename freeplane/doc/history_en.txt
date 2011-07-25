@@ -13,8 +13,9 @@ Script based filter conditions
 ===============================
 New splash and icons
 Multiple bug fixes
-Enable Details for Styles.  
-Copy style attributes and details if is the first user action performed on an new node assigns a style.
+Enable Details for Styles
+Copy style attributes and details if is the first user action performed on an new node assigns a style
+Improved design of attributes in node tooltips
 
 ===============================
 1.2.6 alpha
