@@ -22,7 +22,7 @@ package org.freeplane.plugin.formula;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JEditorPane;
-import javax.swing.JFrame;
+import javax.swing.RootPaneContainer;
 
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.mindmapmode.EditNodeDialog;
@@ -45,7 +45,7 @@ class FormulaEditor extends EditNodeDialog implements INodeSelector {
     }
 
 	@Override
-    public void show(JFrame frame) {
+    public void show(RootPaneContainer frame) {
 	    textEditor.addAncestorListener(new GlassPaneManager(frame.getRootPane(), this));
 	    super.show(frame);
     }

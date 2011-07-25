@@ -3,6 +3,10 @@
 ===============================
 Scripting API has improved support for formats
 Scripting API allows to implement filters in Groovy
+Conditional styles for single nodes and for styles (!!)
+Notes can be edited on styles and assigned to related nodes
+Reminder based filter conditions
+Script based filter conditions
 
 ===============================
 1.2.7 alpha

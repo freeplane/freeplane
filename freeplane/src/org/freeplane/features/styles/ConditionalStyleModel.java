@@ -12,6 +12,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 public class ConditionalStyleModel implements IExtension, Iterable<ConditionalStyleModel.Item>{
 	public class Item{
@@ -51,6 +52,26 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 	        return isLast;
         }
 		
+		public void toXml(XMLElement conditionalStylesRoot)
+		{
+			final XMLElement itemElement = conditionalStylesRoot.createElement("conditional_style");
+			conditionalStylesRoot.addChild(itemElement);
+			itemElement.setAttribute("ACTIVE", Boolean.toString(isActive()));
+			final Object style = getStyle();
+			if (style instanceof StyleNamedObject) {
+				final String referencedStyle = ((StyleNamedObject)style).getObject().toString();
+				itemElement.setAttribute("LOCALIZED_STYLE_REF", referencedStyle);
+			}
+			else {
+				final String referencedStyle = style.toString();
+				itemElement.setAttribute("STYLE_REF", referencedStyle);
+			}
+			itemElement.setAttribute("LAST", Boolean.toString(isLast()));
+			if(condition != null)
+				condition.toXml(itemElement);
+
+		}
+		
 	}
 	private ArrayList<Item> styles;
 	public ConditionalStyleModel() {
@@ -68,7 +89,7 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 			Collection<IStyle> matchingStyles = new LinkedHashSet<IStyle>();
 			for(Item item : styles){
 				final ASelectableCondition condition = item.getCondition();
-				if(condition != null && item.isActive() && condition.checkNode(node)){
+				if( item.isActive() && (condition == null || condition.checkNode(node))){
 					matchingStyles.add(item.style);
 					if(item.isLast()){
 						break;
@@ -207,19 +228,20 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 				switch(columnIndex){
 					case 0:
 						item.setActive((Boolean) aValue);
-						return;
+						break;
 					case 1:
 						item.setCondition((ASelectableCondition) aValue);
-						return;
+						break;
 					case 2:
 						 item.setStyle((IStyle) aValue);
-						 return;
+						 break;
 					case 3:
 						item.setLast((Boolean) aValue);
-						return;
+						break;
 					default:
 						throw new ArrayIndexOutOfBoundsException();
 				}
+				fireTableCellUpdated(rowIndex, columnIndex);
             }
 
 			@Override

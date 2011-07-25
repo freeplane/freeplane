@@ -34,6 +34,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
 import org.freeplane.features.format.FormattedDate;
+import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -43,7 +44,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class TimeConditionController implements IElementaryConditionController {
 	static final String FILTER_TIME = "filter_time";
 // // //	final private Controller controller;
-	private final ComboBoxEditor editor = new TimeComboBoxEditor(false);
+	private final ComboBoxEditor editor = new TimeComboBoxEditor(true);
 	private final ComboBoxModel values = new DefaultComboBoxModel();
 
 	public TimeConditionController() {
@@ -69,7 +70,7 @@ public class TimeConditionController implements IElementaryConditionController {
 
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
 	                                            final Object value, final boolean ignoreCase) {
-		return TimeCondition.create(simpleCond, (Date) value);
+		return TimeCondition.create(simpleCond, (FormattedDate) value);
 	}
 
 	public ComboBoxModel getConditionsForProperty(final Object property) {
@@ -94,7 +95,7 @@ public class TimeConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object selectedItem, NamedObject simpleCond) {
-		values.setSelectedItem(new FormattedDate(new Date(), FormattedDate.ISO_DATE_FORMAT_PATTERN));
+		values.setSelectedItem(FormattedDate.createDefaultFormattedDate(new Date().getTime(), IFormattedObject.TYPE_DATETIME));
 		return values;
 	}
 
@@ -106,22 +107,22 @@ public class TimeConditionController implements IElementaryConditionController {
 		try {
 			if (element.getName().equalsIgnoreCase(TimeConditionCreatedBefore.NAME)) {
 				final String dateString = element.getAttribute(TimeCondition.DATE, null);
-				final Date date = new Date(Long.parseLong(dateString));
+				FormattedDate date  = FormattedDate.createDefaultFormattedDate(Long.parseLong(dateString), IFormattedObject.TYPE_DATETIME);
 				return new TimeConditionCreatedBefore(date);
 			}
 			if (element.getName().equalsIgnoreCase(TimeConditionCreatedAfter.NAME)) {
 				final String dateString = element.getAttribute(TimeCondition.DATE, null);
-				final Date date = new Date(Long.parseLong(dateString));
+				FormattedDate date  = FormattedDate.createDefaultFormattedDate(Long.parseLong(dateString), IFormattedObject.TYPE_DATETIME);
 				return new TimeConditionCreatedAfter(date);
 			}
 			if (element.getName().equalsIgnoreCase(TimeConditionModifiedBefore.NAME)) {
 				final String dateString = element.getAttribute(TimeCondition.DATE, null);
-				final Date date = new Date(Long.parseLong(dateString));
+				FormattedDate date  = FormattedDate.createDefaultFormattedDate(Long.parseLong(dateString), IFormattedObject.TYPE_DATETIME);
 				return new TimeConditionModifiedBefore(date);
 			}
 			if (element.getName().equalsIgnoreCase(TimeConditionModifiedAfter.NAME)) {
 				final String dateString = element.getAttribute(TimeCondition.DATE, null);
-				final Date date = new Date(Long.parseLong(dateString));
+				FormattedDate date  = FormattedDate.createDefaultFormattedDate(Long.parseLong(dateString), IFormattedObject.TYPE_DATETIME);
 				return new TimeConditionModifiedAfter(date);
 			}
 		}

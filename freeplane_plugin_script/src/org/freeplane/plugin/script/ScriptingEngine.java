@@ -226,6 +226,14 @@ public class ScriptingEngine {
 		return ScriptingEngine.executeScript(node, script, null, false);
 	}
 	
+	public static Object executeScript(NodeModel node, String script, PrintStream printStream) {
+		return ScriptingEngine.executeScript(node, script, printStream, null, false);
+    }
+	
+	public static Object executeScript(NodeModel node, String script, PrintStream printStream, final ScriptContext scriptContext, boolean restricted) {
+		return ScriptingEngine.executeScript(node, script, scriptErrorHandler, printStream, scriptContext, restricted);
+    }
+
 	public static Object executeScript(final NodeModel node, final String script, final ScriptContext scriptContext,
 	                                   boolean restricted) {
 		return ScriptingEngine.executeScript(node, script, scriptErrorHandler, System.out, scriptContext, restricted);

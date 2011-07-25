@@ -215,6 +215,8 @@ public class MIconController extends IconController {
 	}
 
 	private void addIconsToMenu(final ModeController modeController, final MenuBuilder builder, final String iconMenuString) {
+		if(builder.get(iconMenuString) == null)
+			return;
 		for (final IconGroup iconGroup : STORE.getGroups()) {
 			addIconGroupToMenu(builder, iconMenuString, iconGroup);
 		}

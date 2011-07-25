@@ -27,9 +27,9 @@ import java.io.OutputStreamWriter;
 
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.export.mindmapmode.ExportController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.mindmapmode.export.ExportController;
 import org.freeplane.view.swing.map.MapView;
 
 class ExportSvg extends ExportVectorGraphic {

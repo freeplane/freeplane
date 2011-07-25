@@ -31,6 +31,7 @@ import org.freeplane.features.map.AMapChangeListenerAdapter;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.INodeSelectionListener;
 import org.freeplane.features.mode.ModeController;
 
@@ -316,7 +317,8 @@ public class NodeTooltipManager implements IExtension{
 			}
             final KeyboardFocusManager currentKeyboardFocusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
             final Window activeWindow = currentKeyboardFocusManager.getActiveWindow();
-            if(activeWindow instanceof JDialog && ((JDialog) activeWindow).isModal()){
+            if(activeWindow instanceof JDialog && ((JDialog) activeWindow).isModal() 
+            		&& ! SwingUtilities.isDescendingFrom(Controller.getCurrentController().getViewController().getMapView(), activeWindow)){
                 hideTipWindow();
                 return;
             }

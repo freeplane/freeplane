@@ -19,11 +19,11 @@
  */
 package org.freeplane.features.time;
 
-import java.text.DateFormat;
 import java.util.Date;
 
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.features.filter.condition.ASelectableCondition;
+import org.freeplane.features.format.FormattedDate;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public abstract class TimeCondition extends ASelectableCondition {
@@ -33,7 +33,7 @@ public abstract class TimeCondition extends ASelectableCondition {
 	static final String FILTER_MODIFIED_AFTER = "filter_modified_after";
 	static final String FILTER_MODIFIED_BEFORE = "filter_modified_before";
 
-	public static ASelectableCondition create(final NamedObject simpleCond, final Date date) {
+	public static ASelectableCondition create(final NamedObject simpleCond, final FormattedDate date) {
 		if (simpleCond.objectEquals(TimeCondition.FILTER_MODIFIED_AFTER)) {
 			return new TimeConditionModifiedAfter(date);
 		}
@@ -49,12 +49,8 @@ public abstract class TimeCondition extends ASelectableCondition {
 		return null;
 	}
 
-	public static String format(final Date date) {
-		return DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT).format(date);
-	}
-
-	final private Date date;
-	public TimeCondition(final Date date) {
+	final private FormattedDate date;
+	public TimeCondition(final FormattedDate date) {
 		this.date = date;
 	}
 

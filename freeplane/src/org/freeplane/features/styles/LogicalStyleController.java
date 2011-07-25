@@ -66,11 +66,8 @@ public class LogicalStyleController implements IExtension {
 		registerChangeListener();
 		addStyleGetter(IPropertyHandler.NODE, new IPropertyHandler<Collection<IStyle>, NodeModel>() {
 			public Collection<IStyle> getProperty(NodeModel node, Collection<IStyle> currentValue) {
-				currentValue.add(new StyleNode(node));
-				IStyle style = LogicalStyleModel.getStyle(node);
-				if(style != null){
-					currentValue.add(style);
-				}
+				final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
+				add(node, styleModel, currentValue, new StyleNode(node));
 				return currentValue;
 			}
 		});
@@ -78,17 +75,53 @@ public class LogicalStyleController implements IExtension {
 			public Collection<IStyle> getProperty(NodeModel node, Collection<IStyle> currentValue) {
 				final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
 				Collection<IStyle> condStyles = styleModel.getConditionalStyleModel().getStyles(node);
-				currentValue.addAll(condStyles);
+				addAll(node, styleModel, currentValue, condStyles);
 				return currentValue;
 			}
 		});
 		addStyleGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Collection<IStyle>, NodeModel>() {
-			public Collection<IStyle> getProperty(NodeModel model, Collection<IStyle> currentValue) {
-				currentValue.add(MapStyleModel.DEFAULT_STYLE);
+			public Collection<IStyle> getProperty(NodeModel node, Collection<IStyle> currentValue) {
+				add(node, currentValue, MapStyleModel.DEFAULT_STYLE);
 				return currentValue;
 			}
 		});
 	}
+
+	protected void addAll(NodeModel node, Collection<IStyle> currentValue, Collection<IStyle> collection) {
+		final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
+		addAll(node, styleModel, currentValue, collection);
+	}
+	
+	protected void addAll(NodeModel node, MapStyleModel styleModel, Collection<IStyle> currentValue, Collection<IStyle> collection) {
+		for(IStyle styleKey : collection){
+			add(node, styleModel, currentValue, styleKey);
+		}
+    }
+
+	public void add(NodeModel node, Collection<IStyle> currentValue, IStyle style) {
+		final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
+		add(node, styleModel, currentValue, style);
+    }
+	
+	protected void add(NodeModel node, MapStyleModel styleModel, Collection<IStyle> currentValue, IStyle styleKey) {
+			if(!currentValue.add(styleKey)){
+				return;
+			}
+			final NodeModel styleNode = styleModel.getStyleNode(styleKey);
+			if (styleNode == null) {
+				return;
+			}
+			if(styleKey instanceof StyleNode){
+				IStyle style = LogicalStyleModel.getStyle(styleNode);
+				if(style != null){
+					add(node, styleModel, currentValue, style);
+				}
+			}
+			final ConditionalStyleModel conditionalStyleModel = (ConditionalStyleModel) styleNode.getExtension(ConditionalStyleModel.class);
+			if(conditionalStyleModel == null)
+				return;
+			addAll(node, styleModel, currentValue, conditionalStyleModel.getStyles(node));
+    }
 
 	private void registerChangeListener() {
 		ModeController modeController = Controller.getCurrentModeController();
@@ -242,26 +275,27 @@ public class LogicalStyleController implements IExtension {
 		return cachedStyle;
 	}
 	
-	public void moveConditionalStyleDown(final MapModel map, int index){
-		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
-		styleModel.getConditionalStyleModel().moveDown(index);
-	}
-	public void moveConditionalStyleUp(final MapModel map, int index){
-		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
-		styleModel.getConditionalStyleModel().moveUp(index);
-	}
-	public void addConditionalStyle(final MapModel map, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast){
-		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
-		styleModel.getConditionalStyleModel().addCondition(isActive, condition, style, isLast);
-	}
-	public void insertConditionalStyle(final MapModel map, int index, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast){
-		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
-		styleModel.getConditionalStyleModel().insertCondition(index, isActive, condition, style, isLast);
-	}
-	public Item removeConditionalStyle(final MapModel map, int index){
-		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
-		return styleModel.getConditionalStyleModel().removeCondition(index);
-	}
+	public void moveConditionalStyleDown(final ConditionalStyleModel conditionalStyleModel, int index) {
+	    conditionalStyleModel.moveDown(index);
+    }
+
+	public void moveConditionalStyleUp(final ConditionalStyleModel conditionalStyleModel, int index) {
+	    conditionalStyleModel.moveUp(index);
+    }
+
+	public void addConditionalStyle(final ConditionalStyleModel conditionalStyleModel, boolean isActive,
+                                    ASelectableCondition condition, IStyle style, boolean isLast) {
+	    conditionalStyleModel.addCondition(isActive, condition, style, isLast);
+    }
+
+	public void insertConditionalStyle(final ConditionalStyleModel conditionalStyleModel, int index, boolean isActive,
+                                       ASelectableCondition condition, IStyle style, boolean isLast) {
+	    conditionalStyleModel.insertCondition(index, isActive, condition, style, isLast);
+    }
+	
+	public Item removeConditionalStyle(final ConditionalStyleModel conditionalStyleModel, int index) {
+	    return conditionalStyleModel.removeCondition(index);
+    }
 
 	private void clearCache() {
 	    cachedStyle = null;

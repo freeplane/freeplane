@@ -39,15 +39,18 @@ import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.time.TimeConditionController;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptEditorPanel.IScriptModel;
 import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
 import org.freeplane.plugin.script.ScriptEditorProperty.IScriptEditorStarter;
 import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
 import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
+import org.freeplane.plugin.script.filter.ScriptConditionController;
 
 class ScriptingRegistration {
 	final private class PatternScriptModel implements IScriptModel {
@@ -174,6 +177,8 @@ class ScriptingRegistration {
 			}
 		});
 		createUserScriptsDirectory();
+		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(10,
+		    new ScriptConditionController());
 	}
 
 	private void createUserScriptsDirectory() {

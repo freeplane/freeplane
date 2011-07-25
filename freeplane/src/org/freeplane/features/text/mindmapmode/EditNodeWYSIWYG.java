@@ -24,7 +24,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -33,9 +32,9 @@ import java.net.URL;
 
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
+import javax.swing.RootPaneContainer;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
@@ -48,7 +47,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.mindmapmode.ortho.SpellCheckerController;
+import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 
 import com.lightdev.app.shtm.SHTMLEditorPane;
 import com.lightdev.app.shtm.SHTMLPanel;
@@ -65,11 +64,11 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		private SHTMLPanel htmlEditorPanel;
 		private JButton splitButton;
 
-		HTMLDialog(final EditNodeBase base, final String title, String purpose, final Frame frame) throws Exception {
+		HTMLDialog(final EditNodeBase base, final String title, String purpose, final RootPaneContainer frame) throws Exception {
 			super(base, title, frame);
 			createEditorPanel(purpose);
 			getContentPane().add(htmlEditorPanel, BorderLayout.CENTER);
-			UITools.addEscapeActionToDialog(this, new CancelAction());
+			UITools.addEscapeActionToDialog(getDialog(), new CancelAction());
 			final JButton okButton = new JButton();
 			final JButton cancelButton = new JButton();
 			splitButton = new JButton();
@@ -91,7 +90,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 					split();
 				}
 			});
-			UITools.addKeyActionToDialog(this, new SubmitAction(), "alt ENTER", "submit");
+			UITools.addKeyActionToDialog(getDialog(), new SubmitAction(), "alt ENTER", "submit");
 			final JPanel buttonPane = new JPanel();
 			buttonPane.add(okButton);
 			buttonPane.add(cancelButton);
@@ -139,7 +138,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 
 		@Override
 		public Component getMostRecentFocusOwner() {
-			if (isFocused()) {
+			if (getDialog().isFocused()) {
 				return getFocusOwner();
 			}
 			else {
@@ -230,13 +229,13 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		this.purpose = purpose;
 	}
 
-	public void show(final JFrame frame) {
+	public void show(final RootPaneContainer frame) {
 		try {
 			HTMLDialog htmlEditorWindow = createHtmlEditor(frame);
 			htmlEditorWindow.setBase(this);
 			final String title;
 			title = TextUtils.getText(purpose);
-			htmlEditorWindow.setTitle(title);
+			htmlEditorWindow.getDialog().setTitle(title);
 			htmlEditorWindow.setSplitEnabled(enableSplit);
 			final SHTMLPanel htmlEditorPanel = (htmlEditorWindow).getHtmlEditorPanel();
 			final StringBuilder ruleBuilder = new StringBuilder(100);
@@ -274,12 +273,12 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 				document.setBase(new URL("file: "));
 			}
 			htmlEditorPanel.setContentPanePreferredSize(preferredSize);
-			htmlEditorWindow.pack();
+			htmlEditorWindow.getDialog().pack();
 			if (ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")) {
-				UITools.setDialogLocationUnder(htmlEditorWindow, node);
+				UITools.setDialogLocationUnder(htmlEditorWindow.getDialog(), node);
 			}
 			else {
-				UITools.setDialogLocationRelativeTo(htmlEditorWindow, node);
+				UITools.setDialogLocationRelativeTo(htmlEditorWindow.getDialog(), node);
 			}
 			String content = text;
 			if (!HtmlUtils.isHtmlNode(content)) {
@@ -304,13 +303,13 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		}
 	}
 
-	public HTMLDialog createHtmlEditor(final JFrame frame) throws Exception {
-		final JRootPane rootPane = frame.getRootPane();
+	public HTMLDialog createHtmlEditor(final RootPaneContainer frame) throws Exception {
+		final JRootPane rootPane = ((RootPaneContainer)frame).getRootPane();
 		HTMLDialog htmlEditorWindow = (HTMLDialog) rootPane.getClientProperty(HTMLDialog.class);
-	    if (htmlEditorWindow == null) {
-	    	htmlEditorWindow = new HTMLDialog(this, "", "", frame);
-	    	rootPane.putClientProperty(HTMLDialog.class, htmlEditorWindow);
-	    }
+		if (htmlEditorWindow == null) {
+			htmlEditorWindow = new HTMLDialog(this, "", "", frame);
+			rootPane.putClientProperty(HTMLDialog.class, htmlEditorWindow);
+		}
 	    return htmlEditorWindow;
     }
 }

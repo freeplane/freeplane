@@ -36,9 +36,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.icon.IconStore;
-import org.freeplane.features.icon.UIIcon;
-import org.freeplane.features.icon.factory.IconStoreFactory;
+import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.map.ITooltipProvider;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -53,7 +51,6 @@ import org.freeplane.view.swing.map.attribute.AttributePanelManager;
  */
 @NodeHookDescriptor(hookName = "plugins/TimeManagementReminder.xml", onceForMap = false)
 public class ReminderHook extends PersistentNodeHook {
-	private static final IconStore STORE = IconStoreFactory.create();
 
 	//******************************************	
 	@EnabledAction(checkOnNodeChange = true)
@@ -116,14 +113,10 @@ public class ReminderHook extends PersistentNodeHook {
 		}
 	}
 
-	private static UIIcon bellIcon;
-	private static UIIcon clockIcon;
-	private static UIIcon flagIcon;
 	//******************************************
 	static final String PLUGIN_LABEL = "plugins/TimeManagementReminder.xml";
 	static final String REMINDUSERAT = "REMINDUSERAT";
 	private static final Integer REMINDER_TOOLTIP = 12;
-	final private String STATE_TOOLTIP = TimerBlinkTask.class.getName() + "_STATE_";
 
 	/**
 	 *
@@ -149,6 +142,9 @@ public class ReminderHook extends PersistentNodeHook {
 		registerAction(new TimeListAction());
 		registerAction(new NodeListAction());
 		registerAction(new AllMapsNodeListAction());
+		
+		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(9,
+		    new ReminderConditionController());
 	}
 
 	@Override
@@ -160,17 +156,15 @@ public class ReminderHook extends PersistentNodeHook {
 	}
 
 	void blink(final ReminderExtension model, final boolean stateAdded) {
-		model.setRemindUserAt(System.currentTimeMillis() + 3000);
-		scheduleTimer(model, new TimerBlinkTask(this, model, stateAdded));
 		if (model.getNode().getMap() != Controller.getCurrentController().getMap()) {
 			return;
 		}
-		displayState(model, (stateAdded) ? ClockState.CLOCK_VISIBLE : ClockState.CLOCK_INVISIBLE, model.getNode(), true);
+		model.displayState((stateAdded) ? ClockState.CLOCK_VISIBLE : ClockState.CLOCK_INVISIBLE, model.getNode(), true);
 	}
 
 	@Override
 	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
-		final ReminderExtension reminderExtension = new ReminderExtension(this, node);
+		final ReminderExtension reminderExtension = new ReminderExtension(node);
 		final String attribute = element.getFirstChildNamed("Parameters").getAttribute(REMINDUSERAT, "0");
 		reminderExtension.setRemindUserAt(Long.parseLong(attribute));
 		return reminderExtension;
@@ -181,59 +175,9 @@ public class ReminderHook extends PersistentNodeHook {
 		return new ReminderHookAction();
 	}
 
-	void displayState(final ReminderExtension model, final ClockState stateAdded, final NodeModel pNode,
-	                  final boolean recurse) {
-		UIIcon icon = null;
-		if (stateAdded == ClockState.CLOCK_VISIBLE) {
-			icon = getClockIcon();
-		}
-		else if (stateAdded == ClockState.CLOCK_INVISIBLE) {
-			if (pNode == model.getNode()) {
-				icon = getBellIcon();
-			}
-			else {
-				icon = getFlagIcon();
-			}
-		}
-		if (stateAdded != ClockState.REMOVE_CLOCK || pNode == model.getNode()
-		        || ReminderExtension.getExtension(pNode) == null) {
-			pNode.setStateIcon(STATE_TOOLTIP, icon, true);
-		}
-		Controller.getCurrentModeController().getMapController().nodeRefresh(pNode);
-		if (!recurse) {
-			return;
-		}
-		final NodeModel parentNode = pNode.getParentNode();
-		if (parentNode == null) {
-			return;
-		}
-		displayState(model, stateAdded, parentNode, recurse);
-	}
-
-	private UIIcon getBellIcon() {
-		if (bellIcon == null) {
-			bellIcon = STORE.getUIIcon("bell.png");
-		}
-		return bellIcon;
-	}
-
-	private UIIcon getClockIcon() {
-		if (clockIcon == null) {
-			clockIcon = STORE.getUIIcon("clock.png");
-		}
-		return clockIcon;
-	}
-
 	@Override
 	protected Class<? extends IExtension> getExtensionClass() {
 		return ReminderExtension.class;
-	}
-
-	private UIIcon getFlagIcon() {
-		if (flagIcon == null) {
-			flagIcon = STORE.getUIIcon("flag.png");
-		}
-		return flagIcon;
 	}
 
 	@Override
@@ -241,7 +185,7 @@ public class ReminderHook extends PersistentNodeHook {
 		final ReminderExtension reminderExtension = (ReminderExtension) extension;
 		setToolTip(reminderExtension.getNode(), null);
 		reminderExtension.deactivateTimer();
-		displayState(reminderExtension, ClockState.REMOVE_CLOCK, reminderExtension.getNode(), true);
+		reminderExtension.displayState(ClockState.REMOVE_CLOCK, reminderExtension.getNode(), true);
 		Controller.getCurrentModeController().getMapController().removeMapChangeListener(reminderExtension);
 		super.remove(node, extension);
 	}
@@ -263,7 +207,7 @@ public class ReminderHook extends PersistentNodeHook {
 		    .getText("plugins/TimeManagement.xml_reminderNode_tooltip"));
 		final String message = formatter.format(messageArguments);
 		setToolTip(model.getNode(), message);
-		displayState(model, ClockState.CLOCK_VISIBLE, model.getNode(), false);
+		model.displayState(ClockState.CLOCK_VISIBLE, model.getNode(), false);
 	}
 
 	private void scheduleTimer(final ReminderExtension model, final TimerTask task) {

@@ -18,6 +18,7 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.DefaultConditionRenderer;
 import org.freeplane.features.styles.IStyle;
@@ -87,7 +88,7 @@ class ConditionalStyleTable extends JTable {
 	    setAutoResizeMode(JTable.AUTO_RESIZE_OFF); 
 //	    setSelectionBackground(DefaultConditionRenderer.SELECTED_BACKGROUND);
 	    setRowHeight(20);
-		conditionRenderer = new DefaultConditionRenderer("");
+		conditionRenderer = new DefaultConditionRenderer(TextUtils.getText("always"));
 		columnModel.getColumn(1).setCellRenderer(conditionRenderer);
 		columnModel.getColumn(1).setCellEditor(new ConditionEditor());
 		final JComboBox styleBox = new JComboBox();
