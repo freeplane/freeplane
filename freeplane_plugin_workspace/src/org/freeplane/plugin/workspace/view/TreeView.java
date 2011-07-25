@@ -9,6 +9,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -16,6 +17,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import org.freeplane.plugin.workspace.controller.NodeExpansionListener;
 import org.freeplane.plugin.workspace.controller.NodeSelectionListener;
+import org.freeplane.plugin.workspace.model.WorkspaceTreeModel;
 
 public class TreeView extends JPanel {
   
@@ -31,16 +33,17 @@ public class TreeView extends JPanel {
     
     public TreeView(MutableTreeNode conigurationRoot) {
     	this.setLayout(new BorderLayout());        
-        m_model = new DefaultTreeModel(conigurationRoot);
+        m_model = new WorkspaceTreeModel(conigurationRoot);
         
         m_tree = new JTree(m_model);
         m_tree.putClientProperty("JTree.lineStyle", "Angled");
         m_tree.setCellRenderer(new WorkspaceNodeRenderer());
+        m_tree.setCellEditor(new WorkspaceCellEditor(m_tree, (DefaultTreeCellRenderer)m_tree.getCellRenderer()));
         m_tree.addTreeExpansionListener(new NodeExpansionListener());
         m_tree.addTreeSelectionListener(new NodeSelectionListener());
         m_tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         m_tree.setShowsRootHandles(false);
-        m_tree.setEditable(false);
+        m_tree.setEditable(true);        
         
         JScrollPane s = new JScrollPane();
         s.getViewport().add(m_tree);

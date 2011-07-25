@@ -5,9 +5,4 @@ public class WorkspaceRoot extends WorkspaceNode {
 	public WorkspaceRoot(String id) {
 		super(id);
 	}
-	
-	public String toString() {
-		return this.getName();
-	}
-
 }

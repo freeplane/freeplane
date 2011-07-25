@@ -5,7 +5,11 @@
 package org.freeplane.plugin.workspace.io.node;
 
 import java.io.File;
+import java.util.Enumeration;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 
 /**
@@ -23,26 +27,39 @@ public class FolderFileNode extends PhysicalNode {
 	 */
 	public FolderFileNode(String name, File file) {
 		super(name, file);
-		// TODO Auto-generated constructor stub
 	}
 
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
-	public String toString() {
-		return this.getName();
-	}
+	
 	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	@Override
-	public void handleEvent(WorkspaceNodeEvent event) {
-		// TODO Auto-generated method stub
+	public void handleEvent(WorkspaceNodeEvent event) {	
 		System.out.println("FolderFileNode: "+ event);
+		if(event.getType() == WorkspaceNodeEvent.WSNODE_CHANGED) {
+			if(rename(event.getBaggage().toString())) {
+				setName(event.getBaggage().toString());
+				if(event.getSource() instanceof DefaultMutableTreeNode) {
+					Enumeration<?> childs = ((DefaultMutableTreeNode)event.getSource()).children();
+					while(childs.hasMoreElements()) {
+						DefaultMutableTreeNode node = ((DefaultMutableTreeNode) childs.nextElement());
+						if(node.getUserObject() instanceof PhysicalNode) {
+							((PhysicalNode)node.getUserObject()).relocateFile(getFile());
+							
+						}
+					}
+				}
+			}
+			else {
+				LogUtils.warn("Could not rename File("+getName()+") to File("+event.getBaggage()+")");
+			}
+			
+		} else {
+			super.handleEvent(event);
+		}
 	}
-
-	/* (non-Javadoc)
-	 * @see org.freeplane.plugin.workspace.io.node.PhysicalNode#getSupportedFileTypes()
-	 */
 }

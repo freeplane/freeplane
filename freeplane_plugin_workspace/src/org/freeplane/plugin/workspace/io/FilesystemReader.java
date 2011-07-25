@@ -3,8 +3,6 @@ package org.freeplane.plugin.workspace.io;
 import java.io.File;
 import java.util.List;
 
-import javax.activation.MimetypesFileTypeMap;
-
 import org.freeplane.core.io.ListHashTable;
 import org.freeplane.plugin.workspace.io.creator.IFileTypeHandler;
 
@@ -50,7 +48,7 @@ public class FilesystemReader {
 		int dot = file.getPath().lastIndexOf('.');
 		if(-1 != dot) {
 			fileExtension = file.getPath().substring(dot);
-			System.out.println("Filetype: " + new MimetypesFileTypeMap().getContentType(file) + " " + file.getPath().substring(dot));
+			//LogUtils.info("Filetype: " + new MimetypesFileTypeMap().getContentType(file) + " " + file.getPath().substring(dot));
 		}		
 		return createFileNode(path, fileExtension, file);		
 	}
@@ -63,7 +61,6 @@ public class FilesystemReader {
 		}
 		if (handlers != null && handlers.size() == 1) {
 			IFileTypeHandler nodeCreator = handlers.get(0);
-			System.out.println(nodeCreator);
 			return nodeCreator.createFileNode(path, fileExtension, file);
 		}
 		return path;

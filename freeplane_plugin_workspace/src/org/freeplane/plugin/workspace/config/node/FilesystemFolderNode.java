@@ -17,11 +17,7 @@ public class FilesystemFolderNode extends WorkspaceNode implements TreeExpansion
 	public FilesystemFolderNode(String id) {
 		super(id);
 	}
-
-	public String toString() {
-		return this.getName();
-	}
-
+	
 	public URL getFolderPath() {
 		return folderPath;
 	}

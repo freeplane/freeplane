@@ -256,9 +256,9 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 
 	public void componentHidden(ComponentEvent e) {
 	}
-
+	
 	public void mouseClicked(MouseEvent e) {		
-		TreePath path = ((JTree) e.getComponent()).getPathForLocation(e.getX(), e.getY());
+		TreePath path = ((JTree) e.getSource()).getPathForLocation(e.getX(), e.getY());
 		if (path != null) {
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
 			
@@ -307,6 +307,6 @@ public class WorkspaceEnvironment implements ComponentListener, MouseListener, I
 			this.removeAll();
 			this.add(comp);
 		}
-	}
+	}	
 
 }

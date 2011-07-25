@@ -6,6 +6,8 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
+
 public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 	
 	/**
@@ -28,6 +30,9 @@ public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 		    setText(obj.toString());
 		    if (obj instanceof Boolean)
 		        setText("Retrieving data...");
+		    else if (obj instanceof WorkspaceNode) {
+		    	setText(((WorkspaceNode)obj).getName());
+		    }
 	    }
 	    return result;
 	}

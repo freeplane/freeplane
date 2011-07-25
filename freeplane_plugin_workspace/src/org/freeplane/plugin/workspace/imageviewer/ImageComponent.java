@@ -32,12 +32,13 @@ public class ImageComponent extends JComponent {
 		double scalex = (double) size.getWidth() / image.getWidth(this);
 		double scaley = (double) size.getHeight() / image.getHeight(this);
 		double scale = Math.min(scalex, scaley);
-
+		
+		System.out.println(scale +" width: "+ (int) (image.getWidth(this) * scale)+ " height: "+(int) (image.getHeight(this) * scale));
 		if (image == null)
 			return;
 		if (scaled)
 			g.drawImage(image, insets.left, insets.top, (int) (image.getWidth(this) * scale) - insets.left - insets.right,
-					(int) (image.getWidth(this) * scale) - insets.top - insets.bottom, this);
+					(int) (image.getHeight(this) * scale) - insets.top - insets.bottom, this);
 		else
 			g.drawImage(image, insets.left, insets.top, this);
 	}

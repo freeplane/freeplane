@@ -8,10 +8,6 @@ public class GroupNode extends WorkspaceNode implements IWorkspaceNodeEventListe
 	public GroupNode(String id) {
 		super(id); 
 	}
-	
-	public String toString() {
-		return this.getName();
-	}
 
 	@Override
 	public void handleEvent(WorkspaceNodeEvent event) {

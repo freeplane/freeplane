@@ -8,10 +8,6 @@ public class FilesystemLinkNode extends WorkspaceNode implements IWorkspaceNodeE
 	public FilesystemLinkNode(String id) {
 		super(id);
 	}
-	
-	public String toString() {
-		return this.getName();
-	}
 
 	@Override
 	public void handleEvent(WorkspaceNodeEvent event) {

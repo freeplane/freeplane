@@ -30,9 +30,6 @@ public class DefaultFileNode extends PhysicalNode {
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
-	public String toString() {
-		return this.getName();
-	}
 		
 
 	/***********************************************************************************
@@ -40,8 +37,8 @@ public class DefaultFileNode extends PhysicalNode {
 	 **********************************************************************************/
 	
 	public void handleEvent(WorkspaceNodeEvent event) {
-		// TODO Auto-generated method stub
 		System.out.println("DefaultFileNode: "+ event);
+		super.handleEvent(event);
 	}
 
 }
