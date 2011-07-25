@@ -71,7 +71,7 @@ public class MModeController extends ModeController {
 
 	@Override
 	public void commit() {
-		final MMapModel map = (MMapModel) getController().getMap();
+		final MapModel map = getController().getMap();
 		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
 		undoHandler.commit();
 	}
@@ -145,7 +145,7 @@ public class MModeController extends ModeController {
 
 	@Override
 	public void rollback() {
-		final MMapModel map = (MMapModel) getController().getMap();
+		final MapModel map = getController().getMap();
 		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
 		undoHandler.rollback();
 	}
@@ -168,7 +168,7 @@ public class MModeController extends ModeController {
 
 	@Override
 	public void startTransaction() {
-		final MMapModel map = (MMapModel) getController().getMap();
+		final MapModel map = getController().getMap();
 		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
 		undoHandler.startTransaction();
 	}

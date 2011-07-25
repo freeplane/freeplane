@@ -24,7 +24,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.text.MessageFormat;
 
-import javax.swing.JFrame;
+import javax.swing.RootPaneContainer;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.FileUtils;
@@ -42,7 +42,7 @@ class EditNodeExternalApplication extends EditNodeBase {
 		super(node, text, editControl);
 	}
 
-	public void show(JFrame frame) {
+	public void show(RootPaneContainer frame) {
 		new Thread() {
 			@Override
 			public void run() {

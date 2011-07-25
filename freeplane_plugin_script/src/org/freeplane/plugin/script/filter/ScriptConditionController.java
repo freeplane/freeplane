@@ -17,9 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.time;
-
-import java.util.Date;
+package org.freeplane.plugin.script.filter;
 
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
@@ -33,23 +31,23 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
-import org.freeplane.features.format.FormattedDate;
-import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.n3.nanoxml.XMLElement;
+import org.freeplane.plugin.script.ScriptComboBoxEditor;
+import org.freeplane.plugin.script.ScriptRenderer;
+
 
 /**
  * @author Dimitry Polivaev
  * 21.12.2008
  */
-public class TimeConditionController implements IElementaryConditionController {
-	static final String FILTER_TIME = "filter_time";
-// // //	final private Controller controller;
-	private final ComboBoxEditor editor = new TimeComboBoxEditor(true);
+public class ScriptConditionController implements IElementaryConditionController {
+	static final String FILTER_SCRIPT = "filter_script";
+	private final ComboBoxEditor editor = new ScriptComboBoxEditor();
+	private final ListCellRenderer renderer = new ScriptRenderer();
 	private final ComboBoxModel values = new DefaultComboBoxModel();
 
-	public TimeConditionController() {
+	public ScriptConditionController() {
 		super();
-//		this.controller = controller;
 	}
 
 	public boolean canEditValues(final Object property, final NamedObject simpleCond) {
@@ -61,7 +59,7 @@ public class TimeConditionController implements IElementaryConditionController {
 			return false;
 		}
 		final NamedObject namedObject = (NamedObject) selectedItem;
-		return namedObject.objectEquals(TimeConditionController.FILTER_TIME);
+		return namedObject.objectEquals(ScriptConditionController.FILTER_SCRIPT);
 	}
 
 	public boolean canSelectValues(final Object property, final NamedObject simpleCond) {
@@ -70,24 +68,26 @@ public class TimeConditionController implements IElementaryConditionController {
 
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
 	                                            final Object value, final boolean ignoreCase) {
-		return TimeCondition.create(simpleCond, (FormattedDate) value);
+		if(value == null)
+			return null;
+		final String string = (String) value;
+		if("".equals(string))
+			return null;
+		return new ScriptCondition(string);
 	}
 
 	public ComboBoxModel getConditionsForProperty(final Object property) {
-		return new DefaultComboBoxModel(getTimeConditionNames());
+		return new DefaultComboBoxModel(getScriptConditionNames());
 	}
 
 	public ListModel getFilteredProperties() {
 		final DefaultListModel list = new DefaultListModel();
-		list.addElement(TextUtils.createTranslatedString(FILTER_TIME));
+		list.addElement(TextUtils.createTranslatedString(FILTER_SCRIPT));
 		return list;
 	}
 
-	public Object[] getTimeConditionNames() {
-		return new NamedObject[] { TextUtils.createTranslatedString(TimeCondition.FILTER_MODIFIED_AFTER),
-		        TextUtils.createTranslatedString(TimeCondition.FILTER_MODIFIED_BEFORE),
-		        TextUtils.createTranslatedString(TimeCondition.FILTER_CREATED_AFTER),
-		        TextUtils.createTranslatedString(TimeCondition.FILTER_CREATED_BEFORE) };
+	public Object[] getScriptConditionNames() {
+		return new NamedObject[] { new NamedObject(ScriptCondition.NAME, " ")};
 	}
 
 	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
@@ -95,7 +95,7 @@ public class TimeConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object selectedItem, NamedObject simpleCond) {
-		values.setSelectedItem(FormattedDate.createDefaultFormattedDate(new Date().getTime(), IFormattedObject.TYPE_DATETIME));
+		values.setSelectedItem("");
 		return values;
 	}
 
@@ -105,25 +105,9 @@ public class TimeConditionController implements IElementaryConditionController {
 
 	public ASelectableCondition loadCondition(final XMLElement element) {
 		try {
-			if (element.getName().equalsIgnoreCase(TimeConditionCreatedBefore.NAME)) {
-				final String dateString = element.getAttribute(TimeCondition.DATE, null);
-				FormattedDate date  = FormattedDate.createDefaultFormattedDate(Long.parseLong(dateString), IFormattedObject.TYPE_DATETIME);
-				return new TimeConditionCreatedBefore(date);
-			}
-			if (element.getName().equalsIgnoreCase(TimeConditionCreatedAfter.NAME)) {
-				final String dateString = element.getAttribute(TimeCondition.DATE, null);
-				FormattedDate date  = FormattedDate.createDefaultFormattedDate(Long.parseLong(dateString), IFormattedObject.TYPE_DATETIME);
-				return new TimeConditionCreatedAfter(date);
-			}
-			if (element.getName().equalsIgnoreCase(TimeConditionModifiedBefore.NAME)) {
-				final String dateString = element.getAttribute(TimeCondition.DATE, null);
-				FormattedDate date  = FormattedDate.createDefaultFormattedDate(Long.parseLong(dateString), IFormattedObject.TYPE_DATETIME);
-				return new TimeConditionModifiedBefore(date);
-			}
-			if (element.getName().equalsIgnoreCase(TimeConditionModifiedAfter.NAME)) {
-				final String dateString = element.getAttribute(TimeCondition.DATE, null);
-				FormattedDate date  = FormattedDate.createDefaultFormattedDate(Long.parseLong(dateString), IFormattedObject.TYPE_DATETIME);
-				return new TimeConditionModifiedAfter(date);
+			if (element.getName().equalsIgnoreCase(ScriptCondition.NAME)) {
+				final String script = element.getAttribute(ScriptCondition.SCRIPT, null);
+				return new ScriptCondition(script);
 			}
 		}
 		catch (final Exception e) {
@@ -133,6 +117,6 @@ public class TimeConditionController implements IElementaryConditionController {
 	}
 
 	public ListCellRenderer getValueRenderer(Object selectedProperty, NamedObject selectedCondition) {
-	    return null;
+	    return renderer;
     }
 }

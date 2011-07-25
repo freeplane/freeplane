@@ -42,7 +42,11 @@ public class LogicalStyleFilterController implements IElementaryConditionControl
 
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
 	                                            final Object value, final boolean ignoreCase) {
-		return new StyleCondition((IStyle) value);
+		if(simpleCond.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO))
+			return new StyleCondition((IStyle) value);
+		if(simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS))
+			return new StyleContainsCondition((IStyle) value);
+		return null;
 	}
 
 	public ComboBoxModel getConditionsForProperty(final Object property) {
@@ -50,7 +54,8 @@ public class LogicalStyleFilterController implements IElementaryConditionControl
 	}
 
 	private Object[] getStyleConditionNames() {
-		return new NamedObject[] { TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO) };
+		return new NamedObject[] { TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO) , 
+				TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS) };
 	}
 
 	public ListModel getFilteredProperties() {
@@ -76,6 +81,9 @@ public class LogicalStyleFilterController implements IElementaryConditionControl
 	public ASelectableCondition loadCondition(final XMLElement element) {
 		if (element.getName().equalsIgnoreCase(StyleCondition.NAME)) {
 			return StyleCondition.load(element);
+		}
+		if (element.getName().equalsIgnoreCase(StyleContainsCondition.NAME)) {
+			return StyleContainsCondition.load(element);
 		}
 		return null;
 	}

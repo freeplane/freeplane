@@ -5,8 +5,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
-
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -21,24 +19,26 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.styles.ConditionalStyleModel;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
 
-public class ManageConditionalStylesAction extends AFreeplaneAction {
+abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 	private static final int BUTTON_GAP = 15;
 	/**
      * 
      */
     private static final long serialVersionUID = 1L;
 
-	public ManageConditionalStylesAction() {
-	    super("ManageConditionalStylesAction");
+	public AManageConditionalStylesAction(final String name) {
+	    super(name);
     }
 
 	public void actionPerformed(ActionEvent e) {
 		final Controller controller = Controller.getCurrentController();
 		final MapModel map = controller.getMap();
-		Component pane = createConditionalStylePane(map);
+		final ConditionalStyleModel conditionalStyleModel = getConditionalStyleModel();
+		Component pane = createConditionalStylePane(map, conditionalStyleModel);
 		Controller.getCurrentModeController().startTransaction();
 		try{
 			final int confirmed = JOptionPane.showConfirmDialog(controller.getViewController().getMapView(), pane, "", JOptionPane.OK_CANCEL_OPTION);
@@ -57,10 +57,12 @@ public class ManageConditionalStylesAction extends AFreeplaneAction {
 		}
 	}
 
-	private Component createConditionalStylePane(final MapModel map) {
+	abstract public ConditionalStyleModel getConditionalStyleModel();
+
+	private Component createConditionalStylePane(final MapModel map, final ConditionalStyleModel conditionalStyleModel) {
 		final JPanel pane = new JPanel(new BorderLayout());
 	    final MapStyleModel styles = MapStyleModel.getExtension(map);
-		final TableModel tableModel = MLogicalStyleController.getController().getConditionalStyleModelAsTableModel(map);
+		final TableModel tableModel = MLogicalStyleController.getController().getConditionalStyleModelAsTableModel(map, conditionalStyleModel);
 		final ConditionalStyleTable conditionalStyleTable = new ConditionalStyleTable(styles, tableModel);
 		if(conditionalStyleTable.getRowCount() > 0){
 			conditionalStyleTable.setRowSelectionInterval(0, 0);
@@ -75,18 +77,10 @@ public class ManageConditionalStylesAction extends AFreeplaneAction {
 	    create.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 	    create.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				final MLogicalStyleController styleController = MLogicalStyleController.getController();
-				final FilterComposerDialog filterComposerDialog = styleController.getFilterComposerDialog();
-				filterComposerDialog.acceptMultipleConditions(true);
-				filterComposerDialog.show();
-				final List<ASelectableCondition> conditions = filterComposerDialog.getConditions();
 				int row = conditionalStyleTable.getRowCount();
-				for(final ASelectableCondition condition : conditions){
-					LogicalStyleController.getController().addConditionalStyle(map, true, condition, MapStyleModel.DEFAULT_STYLE, false);
-				}
-				if(row < conditionalStyleTable.getRowCount()){
-					conditionalStyleTable.setRowSelectionInterval(row, row);
-				}
+				final ConditionalStyleModel conditionalStyleModel = getConditionalStyleModel();
+				((MLogicalStyleController)LogicalStyleController.getController()).addConditionalStyle(map, conditionalStyleModel, true, null, MapStyleModel.DEFAULT_STYLE, false);
+				conditionalStyleTable.setRowSelectionInterval(row, row);
 			} 
 		});
 
@@ -115,7 +109,8 @@ public class ManageConditionalStylesAction extends AFreeplaneAction {
 				if(selectedRow == -1){
 					return;
 				}
-				LogicalStyleController.getController().removeConditionalStyle(map, selectedRow);
+				final ConditionalStyleModel conditionalStyleModel = getConditionalStyleModel();
+				((MLogicalStyleController)LogicalStyleController.getController()).removeConditionalStyle(map, conditionalStyleModel, selectedRow);
 				if(conditionalStyleTable.getRowCount() == selectedRow){
 					selectedRow--;
 				}
@@ -134,7 +129,8 @@ public class ManageConditionalStylesAction extends AFreeplaneAction {
 				if(selectedRow <= 0){
 					return;
 				}
-				LogicalStyleController.getController().moveConditionalStyleUp(map, selectedRow);
+				final ConditionalStyleModel conditionalStyleModel = getConditionalStyleModel();
+				((MLogicalStyleController)LogicalStyleController.getController()).moveConditionalStyleUp(map, conditionalStyleModel, selectedRow);
 				selectedRow--;
 				conditionalStyleTable.setRowSelectionInterval(selectedRow, selectedRow);
 			}
@@ -148,7 +144,8 @@ public class ManageConditionalStylesAction extends AFreeplaneAction {
 				if(selectedRow == -1 || selectedRow == conditionalStyleTable.getRowCount() - 1){
 					return;
 				}
-				LogicalStyleController.getController().moveConditionalStyleDown(map, selectedRow);
+				final ConditionalStyleModel conditionalStyleModel = getConditionalStyleModel();
+				((MLogicalStyleController)LogicalStyleController.getController()).moveConditionalStyleDown(map, conditionalStyleModel, selectedRow);
 				selectedRow++;
 				conditionalStyleTable.setRowSelectionInterval(selectedRow, selectedRow);
 			}

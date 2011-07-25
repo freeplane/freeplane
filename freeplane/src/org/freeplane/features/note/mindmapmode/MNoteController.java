@@ -51,10 +51,10 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.IMapSelection;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.mode.mindmapmode.ortho.SpellCheckerController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
+import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.mindmapmode.MTextController;
@@ -241,7 +241,8 @@ public class MNoteController extends NoteController {
 				}
 				setStateIcon(node, enabled);
 				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NOTE_TEXT, oldText, text);
-				noteManager.updateEditor();
+				if(noteManager != null)
+					noteManager.updateEditor();
 			}
 
 			public void undo() {

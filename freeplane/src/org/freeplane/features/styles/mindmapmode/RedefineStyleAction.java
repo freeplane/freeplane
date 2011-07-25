@@ -22,6 +22,8 @@ public class RedefineStyleAction extends AFreeplaneAction {
 		final IStyle style = LogicalStyleController.getController().getFirstStyle(node);
 		final MapStyleModel extension = MapStyleModel.getExtension(node.getMap());
 		final NodeModel styleNode = extension.getStyleNode(style);
+		if(styleNode == null)
+			return;
 		Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, node, styleNode);
 		Controller.getCurrentModeController().undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, node);
 		LogicalStyleController.getController().refreshMap(node.getMap());

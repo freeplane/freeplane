@@ -44,11 +44,11 @@ import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JEditorPane;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
+import javax.swing.RootPaneContainer;
 import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.DocumentEvent;
@@ -80,7 +80,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.mode.mindmapmode.ortho.SpellCheckerController;
+import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
@@ -488,7 +488,7 @@ class EditNodeTextField extends EditNodeBase {
 	 */
 	@SuppressWarnings("serial")
     @Override
-	public void show(final JFrame frame) {
+	public void show(final RootPaneContainer frame) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final ViewController viewController = modeController.getController().getViewController();
 		final MTextController textController = (MTextController) TextController.getController(modeController);
@@ -592,12 +592,13 @@ class EditNodeTextField extends EditNodeBase {
 			textFieldSize.width = maxWidth;
 			setLineWrap();
 			textFieldSize.height = textfield.getPreferredSize().height;
-			horizontalSpace = nodeWidth - textFieldSize.width;
-			verticalSpace = nodeHeight - textFieldSize.height;
 		}
-		else {
-			horizontalSpace = nodeWidth - textFieldSize.width;
-			verticalSpace = nodeHeight - textFieldSize.height;
+		horizontalSpace = nodeWidth - textFieldSize.width;
+		verticalSpace = nodeHeight - textFieldSize.height;
+		iconWidth = parent.getIconWidth();
+		if (iconWidth != 0) {
+			iconWidth += mapView.getZoomed(parent.getIconTextGap());
+			horizontalSpace -= iconWidth;
 		}
 		if (horizontalSpace < 0) {
 			horizontalSpace = 0;
@@ -606,13 +607,8 @@ class EditNodeTextField extends EditNodeBase {
 			verticalSpace = 0;
 		}
 		textfield.setSize(textFieldSize.width, textFieldSize.height);
-		parent.setPreferredSize(new Dimension(textFieldSize.width + horizontalSpace, textFieldSize.height
-		        + verticalSpace));
-		iconWidth = parent.getIconWidth();
-		if (iconWidth != 0) {
-			iconWidth += mapView.getZoomed(parent.getIconTextGap());
-			horizontalSpace -= iconWidth;
-		}
+		parent.setPreferredSize(new Dimension(textFieldSize.width + iconWidth + horizontalSpace, textFieldSize.height
+	        + verticalSpace));
 
 		final int x;
 		if(nodeView.isRoot() && parent instanceof MainView) 

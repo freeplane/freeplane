@@ -163,6 +163,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			}
 			if (focusedTable != newTable) {
 				if (focusedTable.isEditing()) {
+					focusedTable.clearSelection();
 					focusedTable.getCellEditor().stopCellEditing();
 				}
 				if (!focusedTable.attributeView.isPopupShown()) {
@@ -800,9 +801,9 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	private void setSelectedCellTypeInfo() {
 		final int r = getSelectedRow();
 		final int c = getSelectedColumn();
-		final ViewController viewController = Controller.getCurrentController().getViewController();
 		if(r >= 0 && c >= 0){
 			final Object value = getValueAt(r, c);
+			final ViewController viewController = Controller.getCurrentController().getViewController();
 			viewController.addObjectTypeInfo(value);
 		}
     }

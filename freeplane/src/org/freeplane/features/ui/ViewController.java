@@ -492,7 +492,19 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		status.setText(msg);
 	}
 
+	public void addStatusInfo(final String key, final String info) {
+		addStatusInfo(key, info, null, null);
+	}
+	
+	public void addStatusInfo(final String key, Icon icon) {
+		addStatusInfo(key, null, icon, null);
+	}
+	
 	public void addStatusInfo(final String key, final String info, Icon icon) {
+		addStatusInfo(key, info, icon, null);
+	}
+	
+	public void addStatusInfo(final String key, final String info, Icon icon, final String tooltip) {
 		JLabel label = statusInfos.get(key);
 		if (label == null) {
 			label = new JLabel(info);
@@ -507,6 +519,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			label.revalidate();
 			label.repaint();
 		}
+		label.setToolTipText(tooltip);
 		label.setVisible(info != null || icon != null);
 	}
 
@@ -832,6 +845,9 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		}
 		else if (value instanceof Number) {
 			addStatusInfo(ResourceController.OBJECT_TYPE, null, ViewController.numberIcon);
+		}
+		else if (value instanceof URI) {
+			addStatusInfo(ResourceController.OBJECT_TYPE, null, ViewController.linkIcon);
 		}
 		else {
 			addStatusInfo(ResourceController.OBJECT_TYPE, null, null);

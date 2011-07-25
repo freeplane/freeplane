@@ -22,6 +22,7 @@ package org.freeplane.features.text.mindmapmode;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Frame;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
@@ -37,22 +38,27 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.RootPaneContainer;
 import javax.swing.WindowConstants;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.mindmapmode.ortho.SpellCheckerController;
+import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 
 /**
  * @author foltin
  */
 abstract public class EditNodeBase {
-	abstract static class EditDialog extends JDialog {
+	abstract static class EditDialog{
+		 private final JDialog dialog; 
+		protected JDialog getDialog() {
+        	return dialog;
+        }
+
 		class CancelAction extends AbstractAction {
 			/**
 			 * 
@@ -78,7 +84,7 @@ abstract public class EditNodeBase {
 			 */
 			@Override
 			public void windowClosing(final WindowEvent e) {
-				if (isVisible()) {
+				if (dialog.isVisible()) {
 					confirmedSubmit();
 				}
 			}
@@ -112,22 +118,22 @@ abstract public class EditNodeBase {
 		private static final long serialVersionUID = 1L;
 		private EditNodeBase base;
 
-		EditDialog(final EditNodeBase base, final String title, final Frame frame) {
-			super(frame, title, /*modal=*/true);
-			getContentPane().setLayout(new BorderLayout());
-			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		protected EditDialog(final EditNodeBase base, final String title, final RootPaneContainer frame) {
+			dialog = frame instanceof Frame ? new JDialog((Frame)frame, title, /*modal=*/true) : new JDialog((JDialog)frame, title, /*modal=*/true);
+			dialog.getContentPane().setLayout(new BorderLayout());
+			dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 			final DialogWindowListener dfl = new DialogWindowListener();
-			addWindowListener(dfl);
+			dialog.addWindowListener(dfl);
 			this.base = base;
 		}
 
 		protected void cancel() {
-			setVisible(false);
+			dialog.setVisible(false);
 		}
 
 		protected void confirmedCancel() {
 			if (isChanged()) {
-				final int action = JOptionPane.showConfirmDialog(this, TextUtils.getText("long_node_changed_cancel"), "",
+				final int action = JOptionPane.showConfirmDialog(dialog, TextUtils.getText("long_node_changed_cancel"), "",
 				    JOptionPane.OK_CANCEL_OPTION);
 				if (action == JOptionPane.CANCEL_OPTION) {
 					return;
@@ -138,7 +144,7 @@ abstract public class EditNodeBase {
 
 		protected void confirmedSubmit() {
 			if (isChanged()) {
-				final int action = JOptionPane.showConfirmDialog(this, TextUtils.getText("long_node_changed_submit"), "",
+				final int action = JOptionPane.showConfirmDialog(dialog, TextUtils.getText("long_node_changed_submit"), "",
 				    JOptionPane.YES_NO_CANCEL_OPTION);
 				if (action == JOptionPane.CANCEL_OPTION) {
 					return;
@@ -169,12 +175,34 @@ abstract public class EditNodeBase {
 		}
 
 		protected void split() {
-			setVisible(false);
+			dialog.setVisible(false);
 		}
 
 		protected void submit() {
-			setVisible(false);
+			dialog.setVisible(false);
 		}
+
+		public void show() {
+	        dialog.show();
+        }
+
+		public void dispose() {
+	        dialog.dispose();
+        }
+
+		public Container getContentPane() {
+	        return dialog.getContentPane();
+        }
+
+		public Component getFocusOwner() {
+	        return dialog.getFocusOwner();
+        }
+
+		public Component getMostRecentFocusOwner() {
+	        return dialog.getMostRecentFocusOwner();
+        }
+		
+		
 	}
 
 	protected JPopupMenu createPopupMenu(Component component){
@@ -313,7 +341,7 @@ abstract public class EditNodeBase {
 		textFieldListener = listener;
 	}
 
-	abstract public void show(JFrame frame);
+	abstract public void show(RootPaneContainer frame);
 	public void setBackground(Color background) {
 	    this.background = background;
 	    

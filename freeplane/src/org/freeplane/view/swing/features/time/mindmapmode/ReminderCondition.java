@@ -17,46 +17,25 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.time;
+package org.freeplane.view.swing.features.time.mindmapmode;
 
-import java.util.Date;
-
-import org.freeplane.core.resources.NamedObject;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public abstract class TimeCondition extends ASelectableCondition {
+public abstract class ReminderCondition extends ASelectableCondition {
 	static final String DATE = "DATE";
-	static final String FILTER_CREATED_AFTER = "filter_created_after";
-	static final String FILTER_CREATED_BEFORE = "filter_created_before";
-	static final String FILTER_MODIFIED_AFTER = "filter_modified_after";
-	static final String FILTER_MODIFIED_BEFORE = "filter_modified_before";
-
-	public static ASelectableCondition create(final NamedObject simpleCond, final FormattedDate date) {
-		if (simpleCond.objectEquals(TimeCondition.FILTER_MODIFIED_AFTER)) {
-			return new TimeConditionModifiedAfter(date);
-		}
-		if (simpleCond.objectEquals(TimeCondition.FILTER_MODIFIED_BEFORE)) {
-			return new TimeConditionModifiedBefore(date);
-		}
-		if (simpleCond.objectEquals(TimeCondition.FILTER_CREATED_AFTER)) {
-			return new TimeConditionCreatedAfter(date);
-		}
-		if (simpleCond.objectEquals(TimeCondition.FILTER_CREATED_BEFORE)) {
-			return new TimeConditionCreatedBefore(date);
-		}
-		return null;
-	}
+	static final String FILTER_REMINDER_AFTER = "filter_reminder_after";
+	static final String FILTER_REMINDER_BEFORE = "filter_reminder_before";
 
 	final private FormattedDate date;
-	public TimeCondition(final FormattedDate date) {
+	public ReminderCondition(final FormattedDate date) {
 		this.date = date;
 	}
 
 	abstract protected String createDescription();
 
-	public Date getDate() {
+	public FormattedDate getDate() {
 		return date;
 	}
 

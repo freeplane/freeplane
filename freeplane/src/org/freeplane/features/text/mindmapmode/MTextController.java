@@ -41,6 +41,8 @@ import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.RootPaneContainer;
+import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
@@ -360,7 +362,7 @@ public class MTextController extends TextController {
 			}
 		};
 		mCurrentEditDialog = createEditor(nodeModel, IEditBaseCreator.EditedComponent.DETAIL, editControl, text, e, false, editLong, true);
-		final JFrame frame = controller.getViewController().getJFrame();
+		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities.getWindowAncestor(controller.getViewController().getMapView());
 		mCurrentEditDialog.show(frame);
     }
 
