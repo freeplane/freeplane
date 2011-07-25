@@ -37,5 +37,10 @@ public class GroupNode extends WorkspaceNode implements IWorkspaceNodeEventListe
 		System.out.println("Event: " + event);
 
 	}
+	
+
+	public String getTagName() {
+		return "group";
+	}
 
 }

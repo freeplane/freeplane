@@ -20,7 +20,7 @@ public class Activator implements BundleActivator {
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
 			    public void installExtension(ModeController modeController) {
-				    new WorkspaceEnvironment();
+				    new WorkspaceController();
 			    }
 		    }, props);
 	}

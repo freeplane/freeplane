@@ -5,7 +5,9 @@
 package org.freeplane.plugin.workspace.io.node;
 
 import java.io.File;
+import java.io.StringWriter;
 
+import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 
 /**
@@ -38,7 +40,13 @@ public class DefaultFileNode extends PhysicalNode {
 	
 	public void handleEvent(WorkspaceNodeEvent event) {
 		System.out.println("DefaultFileNode: "+ event);
-		super.handleEvent(event);
+		if(event.getType() == WorkspaceNodeEvent.MOUSE_LEFT_DBLCLICK) {
+			StringWriter writer = new StringWriter();
+			WorkspaceController.getCurrentWorkspaceController().saveConfigurationAsXML(writer);
+			System.out.println(writer.toString());
+		} 
+		else 
+			super.handleEvent(event);
 	}
 
 }

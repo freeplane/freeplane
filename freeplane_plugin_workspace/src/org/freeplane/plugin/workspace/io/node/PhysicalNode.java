@@ -71,4 +71,8 @@ public abstract class PhysicalNode extends WorkspaceNode implements IWorkspaceNo
 			
 		}
 	}
+	
+	public String getTagName() {
+		return null;
+	}
 }

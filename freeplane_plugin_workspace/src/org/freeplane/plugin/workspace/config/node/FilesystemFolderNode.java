@@ -7,7 +7,7 @@ import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.freeplane.plugin.workspace.WorkspaceEnvironment;
+import org.freeplane.plugin.workspace.WorkspaceController;
 
 public class FilesystemFolderNode extends WorkspaceNode implements TreeExpansionListener{
 
@@ -36,10 +36,14 @@ public class FilesystemFolderNode extends WorkspaceNode implements TreeExpansion
 		if(folder.isDirectory()) {
 			final DefaultMutableTreeNode node = (DefaultMutableTreeNode)event.getPath().getLastPathComponent();
 			node.removeAllChildren();
-			WorkspaceEnvironment.getCurrentWorkspaceEnvironment().getFilesystemReader().scanFilesystem(node.getUserObject(), folder);
-			WorkspaceEnvironment.getCurrentWorkspaceEnvironment().getViewModel().reload(node);
+			WorkspaceController.getCurrentWorkspaceController().getFilesystemReader().scanFilesystem(node.getUserObject(), folder);
+			WorkspaceController.getCurrentWorkspaceController().getViewModel().reload(node);
 			isUpToDate = true;
 		}
 		
+	}
+	
+	public String getTagName() {
+		return "filesystem_folder";
 	}	
 }
