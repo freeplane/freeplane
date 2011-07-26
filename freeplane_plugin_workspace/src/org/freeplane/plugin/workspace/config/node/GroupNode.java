@@ -23,10 +23,8 @@ public class GroupNode extends WorkspaceNode implements IWorkspaceNodeEventListe
 			Component component = (Component) event.getSource();			
 			
 			final ControllerPopupMenuListener popupListener = new ControllerPopupMenuListener();
-			final JPopupMenu popupmenu = WorkspaceController.getCurrentWorkspaceController().getPopups().getWorkspacePopupMenu();
+			final JPopupMenu popupmenu = WorkspaceController.getCurrentWorkspaceController().getPopups().getWorkspaceNodePopupMenu();
 			if (popupmenu != null) {
-				System.out.println("FISH popupmenu is not null: ");
-				
                 popupmenu.addHierarchyListener(popupListener);
                 popupmenu.show(component, event.getX(), event.getY());
                 //event.consume();
