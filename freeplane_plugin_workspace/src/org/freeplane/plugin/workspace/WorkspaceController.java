@@ -25,9 +25,9 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.ViewController;
+import org.freeplane.plugin.workspace.config.PopupMenus;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
-import org.freeplane.plugin.workspace.controller.PopupMenus;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.FileReadManager;
 import org.freeplane.plugin.workspace.io.FilesystemReader;
@@ -53,14 +53,20 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 	 **********************************************************************************/
 
 	public WorkspaceController() {
-		LogUtils.info("Initializing WorkspaceEnvironment");
-		initializeConfiguration();
-		initializeView();
+		currentWorkspace = this;
+		LogUtils.info("Initializing WorkspaceEnvironment");	
+		
 		initializePreferences();
+		
+		this.popups = new PopupMenus();
+		
+		initializeConfiguration();
+		initializeView();		
 		this.fsReader = new FilesystemReader(getFileTypeManager());
 		this.configWriter = new ConfigurationWriter(this);
-		this.popups = new PopupMenus();
-		currentWorkspace = this;
+		
+		
+		
 	}
 
 	/***********************************************************************************
@@ -192,45 +198,45 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 	public DefaultTreeModel getViewModel() {
 		return this.view.getTreeModel();
 	}
-	
+
 	public FilesystemReader getFilesystemReader() {
 		return this.fsReader;
 	}
-	
+
 	private FileReadManager getFileTypeManager() {
-		if(this.fileTypeManager == null) {
+		if (this.fileTypeManager == null) {
 			this.fileTypeManager = new FileReadManager();
 			Properties props = new Properties();
 			try {
 				props.load(this.getClass().getResourceAsStream("filenodetypes.properties"));
-				Class<?>[] args = {getConfig().getTree().getClass()};
-				for(Object key : props.keySet()) {
+				Class<?>[] args = { getConfig().getTree().getClass() };
+				for (Object key : props.keySet()) {
 					try {
 						Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass(key.toString());
-						FileNodeCreator handler = (FileNodeCreator)clazz.getConstructor(args).newInstance(getConfig().getTree());
-						handler.setFileTypeList(props.getProperty(key.toString(),""), "\\|");
+						FileNodeCreator handler = (FileNodeCreator) clazz.getConstructor(args).newInstance(getConfig().getTree());
+						handler.setFileTypeList(props.getProperty(key.toString(), ""), "\\|");
 						this.fileTypeManager.addFileHandler(handler);
 					}
 					catch (ClassNotFoundException e) {
-						System.out.println("Class not found ["+key+"]");
+						System.out.println("Class not found [" + key + "]");
 					}
 					catch (ClassCastException e) {
-						System.out.println("Class ["+key+"] is not of type: PhysicalNode");
+						System.out.println("Class [" + key + "] is not of type: PhysicalNode");
 					}
 					catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}					
+					}
 				}
 			}
 			catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}		
+			}
 		}
 		return this.fileTypeManager;
 	}
-	
+
 	public void saveConfigurationAsXML(Writer writer) {
 		try {
 			this.configWriter.writeConfigurationAsXml(writer);
@@ -243,7 +249,7 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 	public PopupMenus getPopups() {
 		return popups;
 	}
-	
+
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
@@ -262,7 +268,8 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 
 	public void componentResized(ComponentEvent e) {
 		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
-		if (resCtrl.getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY) && e.getComponent() == getWorkspaceView()) {			
+		if (resCtrl.getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY)
+				&& e.getComponent() == getWorkspaceView()) {
 			resCtrl.setProperty(WorkspacePreferences.WORKSPACE_WIDTH_PROPERTY_KEY, String.valueOf(e.getComponent().getWidth()));
 		}
 	}
@@ -275,12 +282,12 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 
 	public void componentHidden(ComponentEvent e) {
 	}
-	
-	public void mouseClicked(MouseEvent e) {		
+
+	public void mouseClicked(MouseEvent e) {
 		TreePath path = ((JTree) e.getSource()).getPathForLocation(e.getX(), e.getY());
 		if (path != null) {
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-			
+
 			if (node.getUserObject() instanceof IWorkspaceNodeEventListener) {
 				int eventType = 0;
 				if (e.getButton() == MouseEvent.BUTTON1) {
@@ -295,9 +302,16 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 				else {
 					eventType += WorkspaceNodeEvent.MOUSE_CLICK;
 				}
-				((IWorkspaceNodeEventListener) node.getUserObject()).handleEvent(new WorkspaceNodeEvent(e.getComponent(), eventType, e.getX(), e.getY()));
+				((IWorkspaceNodeEventListener) node.getUserObject()).handleEvent(new WorkspaceNodeEvent(e.getComponent(),
+						eventType, e.getX(), e.getY()));
 			}
 
+		}
+		else {
+			if (e.getButton() == MouseEvent.BUTTON3) {
+				getPopups().openPopup(
+						new WorkspaceNodeEvent(e.getComponent(), WorkspaceNodeEvent.MOUSE_RIGHT_CLICK, e.getX(), e.getY()));
+			}
 		}
 	}
 
@@ -326,6 +340,6 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 			this.removeAll();
 			this.add(comp);
 		}
-	}	
+	}
 
 }

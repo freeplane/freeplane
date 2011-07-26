@@ -31,7 +31,7 @@ import org.freeplane.plugin.workspace.io.xml.WorkspaceNodeWriter;
 public class WorkspaceConfiguration {
 	final private ReadManager readManager;
 	final private WriteManager writeManager;
-	private IndexedTree tree;
+	private IndexedTree tree;	
 	private final URL DEFAULT_CONFIG = this.getClass().getResource("workspace_default.xml");
 	private final static String CONFIG_FILE_NAME = "workspace.xml";
 
