@@ -7,8 +7,8 @@ import javax.swing.JPopupMenu;
 import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.config.PopupMenus;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
-import org.freeplane.plugin.workspace.controller.PopupMenus;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 
 public class GroupNode extends WorkspaceNode implements IWorkspaceNodeEventListener {
