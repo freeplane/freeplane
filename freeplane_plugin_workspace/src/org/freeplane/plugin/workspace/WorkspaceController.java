@@ -53,14 +53,20 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 	 **********************************************************************************/
 
 	public WorkspaceController() {
-		LogUtils.info("Initializing WorkspaceEnvironment");
-		initializeConfiguration();
-		initializeView();
+		currentWorkspace = this;
+		LogUtils.info("Initializing WorkspaceEnvironment");	
+		
 		initializePreferences();
+		
+		this.popups = new PopupMenus();
+		
+		initializeConfiguration();
+		initializeView();		
 		this.fsReader = new FilesystemReader(getFileTypeManager());
 		this.configWriter = new ConfigurationWriter(this);
-		this.popups = new PopupMenus();
-		currentWorkspace = this;
+		
+		
+		
 	}
 
 	/***********************************************************************************

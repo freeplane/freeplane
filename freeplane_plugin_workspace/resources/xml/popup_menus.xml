@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <menu_structure>
 	<menu_category name="workspace_popup">
-		<menu_action action="HideWorkspace" />	
-		<menu_action action="ShowWorkspace" />
-		<menu_action action="TestAction" />
+		<menu_action action="SetWorkspaceLocation" />
+		<menu_action action="HideWorkspace" />
+		<menu_action action="ExpandWorkspaceTree" />
+		<menu_action action="CollapseWorkspaceTree" />
 	</menu_category>
 	
 	<menu_category name="workspace_node_popup">
