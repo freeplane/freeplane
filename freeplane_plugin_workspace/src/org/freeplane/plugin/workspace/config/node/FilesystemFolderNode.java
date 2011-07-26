@@ -8,6 +8,7 @@ import javax.swing.event.TreeExpansionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 
 public class FilesystemFolderNode extends WorkspaceNode implements TreeExpansionListener{
 
@@ -18,6 +19,7 @@ public class FilesystemFolderNode extends WorkspaceNode implements TreeExpansion
 		super(id);
 	}
 	
+	@ExportAsAttribute("path")
 	public URL getFolderPath() {
 		return folderPath;
 	}
