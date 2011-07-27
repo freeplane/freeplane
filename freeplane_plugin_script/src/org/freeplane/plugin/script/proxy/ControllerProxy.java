@@ -162,7 +162,7 @@ class ControllerProxy implements Proxy.Controller {
 		return ProxyUtils.find(condition, Controller.getCurrentController().getMap().getRootNode(), scriptContext);
 	}
 
-	public List<Node> find(final Closure<List<Node>> closure) {
+	public List<Node> find(final Closure<Boolean> closure) {
 		if (scriptContext != null)
 			scriptContext.accessAll();
 		return ProxyUtils.find(closure, Controller.getCurrentController().getMap().getRootNode(), scriptContext);

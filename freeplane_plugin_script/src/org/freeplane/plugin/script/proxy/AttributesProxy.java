@@ -80,7 +80,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		return result;
 	}
 
-	public List<? extends Convertible> findValues(Closure<List<? extends Convertible>> closure) {
+	public List<? extends Convertible> findValues(Closure<Boolean> closure) {
 		try {
 			final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
 			if (nodeAttributeTableModel == null) {
