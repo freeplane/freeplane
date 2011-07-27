@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
@@ -27,15 +28,17 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.plugin.workspace.config.PopupMenus;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
+import org.freeplane.plugin.workspace.controller.IWorkspaceDragController;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.controller.WorkspaceTransferHandler;
 import org.freeplane.plugin.workspace.io.FileReadManager;
 import org.freeplane.plugin.workspace.io.FilesystemReader;
 import org.freeplane.plugin.workspace.io.creator.FileNodeCreator;
 import org.freeplane.plugin.workspace.io.xml.ConfigurationWriter;
 import org.freeplane.plugin.workspace.view.TreeView;
 
-public class WorkspaceController implements ComponentListener, MouseListener, IFreeplanePropertyListener {
+public class WorkspaceController implements ComponentListener, MouseListener, IFreeplanePropertyListener, IWorkspaceDragController {
 	private WorkspaceConfiguration config;
 	private static WorkspaceController currentWorkspace;
 	private TreeView view;
@@ -47,6 +50,7 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 	private FileReadManager fileTypeManager;
 	private ConfigurationWriter configWriter;
 	private final PopupMenus popups;
+	private WorkspaceTransferHandler transferHandler;
 
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -64,9 +68,7 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 		initializeView();		
 		this.fsReader = new FilesystemReader(getFileTypeManager());
 		this.configWriter = new ConfigurationWriter(this);
-		
-		
-		
+		this.transferHandler = WorkspaceTransferHandler.configureDragAndDrop(((TreeView)getWorkspaceView()).getTree(), this);
 	}
 
 	/***********************************************************************************
@@ -135,7 +137,7 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 
 	}
 
-	private Container getWorkspaceView() {
+	private TreeView getWorkspaceView() {
 		if (this.view == null) {
 			this.view = new TreeView(getConfig().getConfigurationRoot());
 			this.view.addComponentListener(this);
@@ -143,7 +145,11 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 		}
 		return this.view;
 	}
-
+	
+	public JTree getWorspaceTree() {
+		return this.getWorkspaceView().getTree();
+	}
+	
 	private void resetWorkspaceView() {
 		this.config = null;
 		this.view = null;
@@ -250,6 +256,14 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 		return popups;
 	}
 
+	public WorkspaceTransferHandler getTransferHandler() {
+		return transferHandler;
+	}
+
+//	public void setTransferHandler(WorkspaceTransferHandler transferHandler) {
+//		this.transferHandler = transferHandler;
+//	}
+
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
@@ -327,6 +341,26 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 
 	public void mouseExited(MouseEvent e) {
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.freeplane.plugin.workspace.controller.IWorkspaceDragController#canPerformAction(javax.swing.JTree, java.lang.Object, int, java.awt.Point)
+	 */
+	@Override
+	public boolean canPerformAction(JTree target, Object draggedNode, int action, Point location) {
+		// TODO Auto-generated method stub
+		System.out.println("canPerformAction");
+		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.freeplane.plugin.workspace.controller.IWorkspaceDragController#executeDrop(javax.swing.JTree, java.lang.Object, java.lang.Object, int)
+	 */
+	@Override
+	public boolean executeDrop(JTree tree, Object draggedNode, Object newParentNode, int action) {
+		// TODO Auto-generated method stub
+		System.out.println("executeDrop");
+		return false;
+	}
 
 	/***********************************************************************************
 	 * INTERNAL CLASSES
@@ -341,5 +375,7 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 			this.add(comp);
 		}
 	}
+
+	
 
 }
