@@ -5,6 +5,7 @@
 package org.freeplane.plugin.workspace.io.xml;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.Writer;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -20,7 +21,9 @@ import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
 
 /**
- * 
+ * StringWriter writer = new StringWriter();
+			WorkspaceController.getCurrentWorkspaceController().saveConfigurationAsXML(writer);
+			System.out.println(writer.toString());
  */
 public class ConfigurationWriter implements IElementWriter, IAttributeWriter {
 

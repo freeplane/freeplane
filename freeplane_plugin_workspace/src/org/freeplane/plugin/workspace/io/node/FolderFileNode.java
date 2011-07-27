@@ -15,7 +15,7 @@ import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 /**
  * 
  */
-public class FolderFileNode extends PhysicalNode {
+public class FolderFileNode extends DefaultFileNode {
 
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -47,8 +47,8 @@ public class FolderFileNode extends PhysicalNode {
 					Enumeration<?> childs = ((DefaultMutableTreeNode)event.getSource()).children();
 					while(childs.hasMoreElements()) {
 						DefaultMutableTreeNode node = ((DefaultMutableTreeNode) childs.nextElement());
-						if(node.getUserObject() instanceof PhysicalNode) {
-							((PhysicalNode)node.getUserObject()).relocateFile(getFile());
+						if(node.getUserObject() instanceof DefaultFileNode) {
+							((DefaultFileNode)node.getUserObject()).relocateFile(getFile());
 							
 						}
 					}

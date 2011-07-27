@@ -13,6 +13,8 @@ public class WorkspaceNodeEvent {
 	public static final int MOUSE_RIGHT_DBLCLICK = MOUSE_RIGHT+MOUSE_DBLCLICK;
 	
 	public static final int WSNODE_CHANGED = 128;
+	
+	public static final int WSNODE_OPEN_DOCUMENT = MOUSE_LEFT_DBLCLICK;
 		
 	final private Object source;
 	final private int eventType;
