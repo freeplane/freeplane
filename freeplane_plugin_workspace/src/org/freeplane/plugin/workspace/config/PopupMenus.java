@@ -14,13 +14,13 @@ import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.config.actions.CollapseWorkspaceTree;
-import org.freeplane.plugin.workspace.config.actions.CopyPhysicalNode;
-import org.freeplane.plugin.workspace.config.actions.CutPhysicalNode;
-import org.freeplane.plugin.workspace.config.actions.DeletePhysicalNode;
+import org.freeplane.plugin.workspace.config.actions.CopyFileNode;
+import org.freeplane.plugin.workspace.config.actions.CutFileNode;
+import org.freeplane.plugin.workspace.config.actions.DeleteFileNode;
 import org.freeplane.plugin.workspace.config.actions.ExpandWorkspaceTree;
 import org.freeplane.plugin.workspace.config.actions.HideWorkspace;
-import org.freeplane.plugin.workspace.config.actions.PastePhysicalNode;
-import org.freeplane.plugin.workspace.config.actions.RenamePhysicalNode;
+import org.freeplane.plugin.workspace.config.actions.PasteFileNode;
+import org.freeplane.plugin.workspace.config.actions.RenameFileNode;
 import org.freeplane.plugin.workspace.config.actions.SetWorkspaceLocation;
 
 public class PopupMenus {
@@ -28,7 +28,7 @@ public class PopupMenus {
 	private static final String WORKSPACE_POPUP_MENU_KEY = "/workspace_popup";
 	private static final String WORKSPACE_NODE_POPUP_MENU_KEY = "/workspace_node_popup";
 	private static final String WORKSPACE_POPUP_MENU_CONFIG = "/xml/popup_menus.xml";
-	private static final String WORKSPACE_PHYSICAL_NODE_POPUP_MENU_KEY = "workspace_physical_node_popup";
+	private static final String WORKSPACE_PHYSICAL_NODE_POPUP_MENU_KEY = "/workspace_physical_node_popup";
 
 	private final HashMap<String, PopupObject> popupMap;
 
@@ -38,11 +38,11 @@ public class PopupMenus {
 		Controller.getCurrentModeController().addAction(new HideWorkspace());
 		Controller.getCurrentModeController().addAction(new SetWorkspaceLocation());
 		
-		Controller.getCurrentModeController().addAction(new CopyPhysicalNode());
-		Controller.getCurrentModeController().addAction(new CutPhysicalNode());
-		Controller.getCurrentModeController().addAction(new DeletePhysicalNode());
-		Controller.getCurrentModeController().addAction(new PastePhysicalNode());
-		Controller.getCurrentModeController().addAction(new RenamePhysicalNode());
+		Controller.getCurrentModeController().addAction(new CopyFileNode());
+		Controller.getCurrentModeController().addAction(new CutFileNode());
+		Controller.getCurrentModeController().addAction(new DeleteFileNode());
+		Controller.getCurrentModeController().addAction(new PasteFileNode());
+		Controller.getCurrentModeController().addAction(new RenameFileNode());
 
 		popupMap = new HashMap<String, PopupMenus.PopupObject>();
 
@@ -122,6 +122,7 @@ public class PopupMenus {
 
 	public void showPopup(String popupKey, Component component, int x, int y) {
 		PopupObject popObj = this.popupMap.get(popupKey);
+		
 		final JPopupMenu popupmenu = popObj.popupMenu;
 		if (popupmenu != null) {
 			popupmenu.show(component, x, y);

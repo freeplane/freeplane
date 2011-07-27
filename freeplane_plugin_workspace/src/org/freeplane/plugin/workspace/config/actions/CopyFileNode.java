@@ -9,19 +9,19 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.IMapSelection;
 import org.freeplane.features.mode.ModeController;
 
-public class RenamePhysicalNode extends AFreeplaneAction {
+public class CopyFileNode extends AFreeplaneAction {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public RenamePhysicalNode() {
-		super("RenamePhysicalNode");
+	public CopyFileNode() {
+		super("CopyFileNode");
 	}
 	
 	public void actionPerformed(final ActionEvent e) {
-        System.out.println("RenamePhysicalNode: "+e.getActionCommand()+" : "+e.getID());
+        System.out.println("CopyFileNode: "+e.getActionCommand()+" : "+e.getID());
     }
 
 

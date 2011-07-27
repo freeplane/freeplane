@@ -9,19 +9,19 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.IMapSelection;
 import org.freeplane.features.mode.ModeController;
 
-public class CutPhysicalNode extends AFreeplaneAction {
+public class DeleteFileNode extends AFreeplaneAction {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public CutPhysicalNode() {
-		super("CutPhysicalNode");
+	public DeleteFileNode() {
+		super("DeleteFileNode");
 	}
 	
 	public void actionPerformed(final ActionEvent e) {
-        System.out.println("CutPhysicalNode: "+e.getActionCommand()+" : "+e.getID());
+        System.out.println("DeleteFileNode: "+e.getActionCommand()+" : "+e.getID());
     }
 
 

@@ -9,19 +9,19 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.IMapSelection;
 import org.freeplane.features.mode.ModeController;
 
-public class PastePhysicalNode extends AFreeplaneAction {
+public class CutFileNode extends AFreeplaneAction {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public PastePhysicalNode() {
-		super("PastePhysicalNode");
+	public CutFileNode() {
+		super("CutFileNode");
 	}
 	
 	public void actionPerformed(final ActionEvent e) {
-        System.out.println("PastePhysicalNode: "+e.getActionCommand()+" : "+e.getID());
+        System.out.println("CutFileNode: "+e.getActionCommand()+" : "+e.getID());
     }
 
 
