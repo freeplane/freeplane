@@ -4,11 +4,13 @@
  */
 package org.freeplane.plugin.workspace.io.node;
 
+import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
 
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
@@ -80,6 +82,12 @@ public class DefaultFileNode extends WorkspaceNode implements IWorkspaceNodeEven
 				LogUtils.warn("could not open document ("+getFile()+")", e);
 			}
 		}
+		else if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {
+            System.out.println("FISH        showPhysicalNode");
+            WorkspaceController.getCurrentWorkspaceController().getPopups()
+                    .showPhysicalNodePopup((Component) event.getSource(), event.getX(), event.getY());
+        }
+
 	}
 	
 	public String getTagName() {

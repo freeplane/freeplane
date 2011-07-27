@@ -309,8 +309,8 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 		}
 		else {
 			if (e.getButton() == MouseEvent.BUTTON3) {
-				getPopups().openPopup(
-						new WorkspaceNodeEvent(e.getComponent(), WorkspaceNodeEvent.MOUSE_RIGHT_CLICK, e.getX(), e.getY()));
+				getPopups().showWorkspacePopup(e.getComponent(), e.getX(), e.getY());
+				
 			}
 		}
 	}

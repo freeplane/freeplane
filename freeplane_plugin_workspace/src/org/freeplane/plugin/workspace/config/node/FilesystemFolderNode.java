@@ -1,5 +1,6 @@
 package org.freeplane.plugin.workspace.config.node;
 
+import java.awt.Component;
 import java.io.File;
 import java.net.URL;
 
@@ -8,12 +9,16 @@ import javax.swing.event.TreeExpansionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
+import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 
-public class FilesystemFolderNode extends WorkspaceNode implements TreeExpansionListener{
+public class FilesystemFolderNode extends WorkspaceNode implements TreeExpansionListener, IWorkspaceNodeEventListener {
 
 	private URL folderPath;
 	private boolean isUpToDate = false;
+	
+	private static String POPUP_KEY = "filesystem_folder";
 	
 	public FilesystemFolderNode(String id) {
 		super(id);
@@ -47,5 +52,29 @@ public class FilesystemFolderNode extends WorkspaceNode implements TreeExpansion
 	
 	public String getTagName() {
 		return "filesystem_folder";
+	}
+	
+	private void initializePopup() {
+		//if (!isInit) {
+			WorkspaceController.getCurrentWorkspaceController().getPopups().registerPopupMenu(POPUP_KEY);
+//			AFreeplaneAction action = WorkspaceController.getCurrentWorkspaceController().getPopups().new CheckBoxAction("BLUBB",
+//					"BLUBB");
+//			WorkspaceController.getCurrentWorkspaceController().getPopups()
+//					.addCechkbox(POPUP_KEY, "/workspace_node_popup", action, true);
+			
+//			isInit = true;
+	//	}
+	}
+
+	@Override
+	public void handleEvent(WorkspaceNodeEvent event) {
+		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {
+			initializePopup();
+			Component component = (Component) event.getSource();
+
+			WorkspaceController.getCurrentWorkspaceController().getPopups()
+					.showPopup(POPUP_KEY, component, event.getX(), event.getY());
+
+		}
 	}	
 }

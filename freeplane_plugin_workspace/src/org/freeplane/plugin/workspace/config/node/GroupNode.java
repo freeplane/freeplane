@@ -4,33 +4,31 @@ import java.awt.Component;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.WorkspacePreferences;
+import org.freeplane.plugin.workspace.config.PopupMenus;
+import org.freeplane.plugin.workspace.config.PopupMenus.CheckBoxAction;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 
 public class GroupNode extends WorkspaceNode implements IWorkspaceNodeEventListener {
 	private final static String POPUP_KEY = "group_popup";
-	private static boolean isInit = false;
 
 	public GroupNode(String id) {
 		super(id);
+		initializePopup();
 	}
 
 	private void initializePopup() {
-		if (!isInit) {
-			WorkspaceController.getCurrentWorkspaceController().getPopups().registerPopupMenu(POPUP_KEY);
-			AFreeplaneAction action = WorkspaceController.getCurrentWorkspaceController().getPopups().new CheckBoxAction(
-					WorkspacePreferences.SHOW_WORKSPACE_TEXT, WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY);
-			WorkspaceController.getCurrentWorkspaceController().getPopups()
-					.addMenuEntry(POPUP_KEY, "/workspace_node_popup", action);
-			isInit = true;
+		PopupMenus popupMenu = WorkspaceController.getCurrentWorkspaceController().getPopups();
+		if (popupMenu.registerPopupMenu(POPUP_KEY)) {
+			AFreeplaneAction action = popupMenu.new CheckBoxAction("BLUBB", "BLUBB");
+			popupMenu.addCechkbox(POPUP_KEY, "/workspace_node_popup", action, true);
 		}
 	}
 
 	@Override
 	public void handleEvent(WorkspaceNodeEvent event) {
 		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {
-			initializePopup();
+			// initializePopup();
 			Component component = (Component) event.getSource();
 
 			WorkspaceController.getCurrentWorkspaceController().getPopups()

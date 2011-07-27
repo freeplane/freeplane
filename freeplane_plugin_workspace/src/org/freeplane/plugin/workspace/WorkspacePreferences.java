@@ -1,24 +1,19 @@
 package org.freeplane.plugin.workspace;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.net.URL;
 
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JPopupMenu;
 
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 
 public class WorkspacePreferences {
 

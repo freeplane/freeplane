@@ -10,5 +10,13 @@
 	<menu_category name="workspace_node_popup">
 		<menu_action action="ExpandWorkspaceTree" />
 		<menu_action action="CollapseWorkspaceTree" />
-	</menu_category>	
+	</menu_category>
+	
+	<menu_category name="workspace_physical_node_popup">
+		<menu_action action="CopyPhysicalNode" />
+		<menu_action action="CutPhysicalNode" />
+		<menu_action action="DeletePhysicalNode" />
+		<menu_action action="PastePhysicalNode" />
+		<menu_action action="RenamePhysicalNode" />
+	</menu_category>
 </menu_structure>

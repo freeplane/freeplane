@@ -79,7 +79,7 @@ import org.freeplane.n3.nanoxml.XMLException;
 public class MenuBuilder extends UIBuilder {
 	private static class ActionHolder implements INameMnemonicHolder {
 		final private Action action;
-
+		
 		public ActionHolder(final Action action) {
 			super();
 			this.action = action;
@@ -938,4 +938,5 @@ public class MenuBuilder extends UIBuilder {
 	public Map<KeyStroke, Node> getAcceleratorMap() {
 		return Collections.unmodifiableMap(accelerators);
 	}
+	
 }
