@@ -23,7 +23,7 @@ import javax.swing.tree.TreePath;
 /**
  * 
  */
-public class WorkspaceDropTarget implements DropTargetListener {
+public class WorkspaceDropTargetListener implements DropTargetListener {
 
 	private final DropTarget target;
 
@@ -33,7 +33,7 @@ public class WorkspaceDropTarget implements DropTargetListener {
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 
-	public WorkspaceDropTarget(JTree tree) {
+	public WorkspaceDropTargetListener(JTree tree) {
 		targetTree = tree;
 		target = new DropTarget(targetTree, this);
 	}
@@ -53,7 +53,10 @@ public class WorkspaceDropTarget implements DropTargetListener {
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
-
+	/**
+	 * 
+	 * @param dtde
+	 */
 	public void dragEnter(DropTargetDragEvent dtde) {
 		TreeNode node = getNodeForEvent(dtde);
 		if (node.isLeaf()) {
