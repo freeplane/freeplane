@@ -20,6 +20,7 @@ import org.freeplane.plugin.workspace.config.actions.DeleteFileNode;
 import org.freeplane.plugin.workspace.config.actions.ExpandWorkspaceTree;
 import org.freeplane.plugin.workspace.config.actions.HideWorkspace;
 import org.freeplane.plugin.workspace.config.actions.PasteFileNode;
+import org.freeplane.plugin.workspace.config.actions.RefreshWorkspaceTree;
 import org.freeplane.plugin.workspace.config.actions.RenameFileNode;
 import org.freeplane.plugin.workspace.config.actions.SetWorkspaceLocation;
 
@@ -43,6 +44,7 @@ public class PopupMenus {
 		Controller.getCurrentModeController().addAction(new DeleteFileNode());
 		Controller.getCurrentModeController().addAction(new PasteFileNode());
 		Controller.getCurrentModeController().addAction(new RenameFileNode());
+		Controller.getCurrentModeController().addAction(new RefreshWorkspaceTree());
 
 		popupMap = new HashMap<String, PopupMenus.PopupObject>();
 

@@ -5,7 +5,6 @@ import java.awt.Component;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.config.PopupMenus;
-import org.freeplane.plugin.workspace.config.PopupMenus.CheckBoxAction;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 

@@ -6,7 +6,6 @@ package org.freeplane.plugin.workspace.io.creator;
 
 import java.io.File;
 
-import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
 import org.freeplane.plugin.workspace.io.node.ImageFileNode;
 
@@ -23,8 +22,7 @@ public class ImageFileNodeCreator extends FileNodeCreator {
 	/**
 	 * @param tree
 	 */
-	public ImageFileNodeCreator(IndexedTree tree) {
-		super(tree);
+	public ImageFileNodeCreator() {
 	}
 	
 	/***********************************************************************************

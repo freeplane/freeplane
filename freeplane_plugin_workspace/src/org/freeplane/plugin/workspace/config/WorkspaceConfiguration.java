@@ -11,13 +11,11 @@ import java.net.URL;
 import java.nio.channels.FileChannel;
 
 import javax.swing.JOptionPane;
-import javax.swing.tree.MutableTreeNode;
 
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLException;
@@ -31,7 +29,7 @@ import org.freeplane.plugin.workspace.io.xml.WorkspaceNodeWriter;
 public class WorkspaceConfiguration {
 	final private ReadManager readManager;
 	final private WriteManager writeManager;
-	private IndexedTree tree;	
+		
 	private final URL DEFAULT_CONFIG = this.getClass().getResource("workspace_default.xml");
 	private final static String CONFIG_FILE_NAME = "workspace.xml";
 
@@ -40,7 +38,6 @@ public class WorkspaceConfiguration {
 	public WorkspaceConfiguration() {
 		readManager = new ReadManager();
 		writeManager = new WriteManager();
-		tree = new IndexedTree(null);
 		initReadManager();
 		initWriteManager();
 		try {
@@ -127,10 +124,10 @@ public class WorkspaceConfiguration {
 	}
 
 	private void initReadManager() {
-		readManager.addElementHandler("workspace_structure", new WorkspaceCreator(tree));
-		readManager.addElementHandler("group", new GroupCreator(tree));
-		readManager.addElementHandler("filesystem_folder", new FilesystemFolderCreator(tree));
-		readManager.addElementHandler("filesystem_link", new FilesystemLinkCreator(tree));
+		readManager.addElementHandler("workspace_structure", new WorkspaceCreator());
+		readManager.addElementHandler("group", new GroupCreator());
+		readManager.addElementHandler("filesystem_folder", new FilesystemFolderCreator());
+		readManager.addElementHandler("filesystem_link", new FilesystemLinkCreator());
 	}
 	
 	private void initWriteManager() {
@@ -151,6 +148,7 @@ public class WorkspaceConfiguration {
 	public void load(final URL xmlFile) {
 		final TreeXmlReader reader = new TreeXmlReader(readManager);
 		try {
+			//FISH
 			reader.load(new InputStreamReader(new BufferedInputStream(xmlFile.openStream())));
 		}
 		catch (final IOException e) {
@@ -159,14 +157,6 @@ public class WorkspaceConfiguration {
 		catch (final XMLException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	public MutableTreeNode getConfigurationRoot() {
-		return getTree().getRoot();
-	}
-
-	public IndexedTree getTree() {
-		return this.tree;
 	}
 	
 	public WriteManager getWriteManager() {

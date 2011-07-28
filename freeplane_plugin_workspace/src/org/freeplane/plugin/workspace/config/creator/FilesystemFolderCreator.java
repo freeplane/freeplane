@@ -8,13 +8,13 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
+import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.config.node.FilesystemFolderNode;
 import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
 
 public class FilesystemFolderCreator extends ConfigurationNodeCreator {
 
-	public FilesystemFolderCreator(IndexedTree tree) {
-		super(tree);
+	public FilesystemFolderCreator() {
 	}
 
 	@Override
@@ -39,6 +39,7 @@ public class FilesystemFolderCreator extends ConfigurationNodeCreator {
 	}
 	
 	public void endElement(final Object parent, final String tag, final Object userObject, final XMLElement lastBuiltElement) {
+		final IndexedTree tree = WorkspaceController.getCurrentWorkspaceController().getTree();
 		super.endElement(parent, tag, userObject, lastBuiltElement);
 		final Path path = (Path)userObject;
 		if (path.path == null) {

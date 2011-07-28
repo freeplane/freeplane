@@ -5,6 +5,7 @@
 		<menu_action action="HideWorkspace" />
 		<menu_action action="ExpandWorkspaceTree" />
 		<menu_action action="CollapseWorkspaceTree" />
+		<menu_action action="RefreshWorkspaceTree" />
 	</menu_category>
 	
 	<menu_category name="workspace_node_popup">

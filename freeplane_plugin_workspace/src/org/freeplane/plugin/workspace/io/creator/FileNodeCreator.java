@@ -10,20 +10,18 @@ import java.util.Vector;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.ui.IndexedTree;
+import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
 
 public abstract class FileNodeCreator implements IFileTypeHandler {
 	abstract public WorkspaceNode getNode(String name, File file);
-	
-	protected IndexedTree tree;
 	private final Vector<Object> typeList = new Vector<Object>();
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 
-	public FileNodeCreator(IndexedTree tree) {
-		this.tree = tree;
+	public FileNodeCreator() {
 	}
 	
 
@@ -59,6 +57,7 @@ public abstract class FileNodeCreator implements IFileTypeHandler {
 	 **********************************************************************************/
 	public Object createFileNode(Object object, String fileExtension,final File file) {
 		Object parent = object;
+		final IndexedTree tree = WorkspaceController.getCurrentWorkspaceController().getTree();
 		if(object instanceof WorkspaceNode) {
 			parent = tree.getKeyByUserObject(object);
 		}

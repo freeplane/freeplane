@@ -39,15 +39,22 @@ public class FilesystemFolderNode extends WorkspaceNode implements TreeExpansion
 	
 	public void treeExpanded(TreeExpansionEvent event) {
 		if(isUpToDate||getFolderPath()==null) return;
+		refreshFolder((DefaultMutableTreeNode)event.getPath().getLastPathComponent());
+		System.out.println("FISH: "+this);
+	}
+
+	public void refreshFolder(final DefaultMutableTreeNode node) {
+		// if folder path is not correctly set
+		if (getFolderPath() == null)
+			return;
+		
 		File folder = new File(getFolderPath().getFile());
-		if(folder.isDirectory()) {
-			final DefaultMutableTreeNode node = (DefaultMutableTreeNode)event.getPath().getLastPathComponent();
+		if(folder.isDirectory()) {			 
 			node.removeAllChildren();
 			WorkspaceController.getCurrentWorkspaceController().getFilesystemReader().scanFilesystem(node.getUserObject(), folder);
 			WorkspaceController.getCurrentWorkspaceController().getViewModel().reload(node);
 			isUpToDate = true;
 		}
-		
 	}
 	
 	public String getTagName() {
@@ -77,4 +84,8 @@ public class FilesystemFolderNode extends WorkspaceNode implements TreeExpansion
 
 		}
 	}	
+	
+	public String toString() {
+		return this.getClass().getSimpleName()+"[id="+this.getId()+";name="+this.getName()+";path="+this.getFolderPath()+"]";
+	}
 }

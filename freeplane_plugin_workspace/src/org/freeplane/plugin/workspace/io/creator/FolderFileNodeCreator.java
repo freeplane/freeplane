@@ -6,7 +6,6 @@ package org.freeplane.plugin.workspace.io.creator;
 
 import java.io.File;
 
-import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
 import org.freeplane.plugin.workspace.io.node.FolderFileNode;
 
@@ -23,9 +22,7 @@ public class FolderFileNodeCreator extends FileNodeCreator {
 	/**
 	 * @param tree
 	 */
-	public FolderFileNodeCreator(IndexedTree tree) {
-		super(tree);
-		// TODO Auto-generated constructor stub
+	public FolderFileNodeCreator() {
 	}
 	/***********************************************************************************
 	 * METHODS

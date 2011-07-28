@@ -6,7 +6,6 @@ package org.freeplane.plugin.workspace.io.creator;
 
 import java.io.File;
 
-import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 
@@ -22,9 +21,7 @@ public class DefaultFileNodeCreator extends FileNodeCreator {
 	/**
 	 * @param tree
 	 */
-	public DefaultFileNodeCreator(IndexedTree tree) {
-		super(tree);
-		// TODO Auto-generated constructor stub
+	public DefaultFileNodeCreator() {
 	}
 	
 	/***********************************************************************************

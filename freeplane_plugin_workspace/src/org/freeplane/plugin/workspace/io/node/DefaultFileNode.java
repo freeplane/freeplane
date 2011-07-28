@@ -83,7 +83,6 @@ public class DefaultFileNode extends WorkspaceNode implements IWorkspaceNodeEven
 			}
 		}
 		else if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {
-            System.out.println("FISH        showPhysicalNode");
             WorkspaceController.getCurrentWorkspaceController().getPopups()
                     .showPhysicalNodePopup((Component) event.getSource(), event.getX(), event.getY());
         }

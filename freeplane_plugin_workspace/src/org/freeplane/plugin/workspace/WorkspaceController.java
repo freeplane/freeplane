@@ -18,10 +18,12 @@ import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -51,6 +53,7 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 	private ConfigurationWriter configWriter;
 	private final PopupMenus popups;
 	private WorkspaceTransferHandler transferHandler;
+	private IndexedTree tree;
 
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -59,7 +62,7 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 	public WorkspaceController() {
 		currentWorkspace = this;
 		LogUtils.info("Initializing WorkspaceEnvironment");	
-		
+		initTree();
 		initializePreferences();
 		
 		this.popups = new PopupMenus();
@@ -69,6 +72,10 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 		this.fsReader = new FilesystemReader(getFileTypeManager());
 		this.configWriter = new ConfigurationWriter(this);
 		this.transferHandler = WorkspaceTransferHandler.configureDragAndDrop(((TreeView)getWorkspaceView()).getTree(), this);
+	}
+
+	private void initTree() {
+		this.tree = new IndexedTree(null);
 	}
 
 	/***********************************************************************************
@@ -139,13 +146,17 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 
 	private TreeView getWorkspaceView() {
 		if (this.view == null) {
-			this.view = new TreeView(getConfig().getConfigurationRoot());
+			this.view = new TreeView(getWorkspaceRoot());
 			this.view.addComponentListener(this);
 			this.view.addTreeMouseListener(this);
 		}
 		return this.view;
 	}
 	
+	public DefaultMutableTreeNode getWorkspaceRoot() {
+		return getTree().getRoot();
+	}
+
 	public JTree getWorspaceTree() {
 		return this.getWorkspaceView().getTree();
 	}
@@ -215,11 +226,11 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 			Properties props = new Properties();
 			try {
 				props.load(this.getClass().getResourceAsStream("filenodetypes.properties"));
-				Class<?>[] args = { getConfig().getTree().getClass() };
+				Class<?>[] args = { };
 				for (Object key : props.keySet()) {
 					try {
 						Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass(key.toString());
-						FileNodeCreator handler = (FileNodeCreator) clazz.getConstructor(args).newInstance(getConfig().getTree());
+						FileNodeCreator handler = (FileNodeCreator) clazz.getConstructor(args).newInstance();
 						handler.setFileTypeList(props.getProperty(key.toString(), ""), "\\|");
 						this.fileTypeManager.addFileHandler(handler);
 					}
@@ -260,9 +271,19 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 		return transferHandler;
 	}
 
+	public void refreshWorkspace() {
+		initTree();
+		initializeConfiguration();		
+		reloadView();
+	}
+	
 //	public void setTransferHandler(WorkspaceTransferHandler transferHandler) {
 //		this.transferHandler = transferHandler;
 //	}
+
+	public IndexedTree getTree() {
+		return tree;
+	}
 
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
@@ -273,9 +294,7 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 			if (newValue != null && !newValue.isEmpty()) {
 				Controller.getCurrentController().getResourceController()
 						.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, true);
-				initializeConfiguration();
-				reloadView();
-
+				refreshWorkspace();
 			}
 		}
 	}
