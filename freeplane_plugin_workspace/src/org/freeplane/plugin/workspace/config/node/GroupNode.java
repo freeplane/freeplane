@@ -19,8 +19,8 @@ public class GroupNode extends WorkspaceNode implements IWorkspaceNodeEventListe
 	private void initializePopup() {
 		PopupMenus popupMenu = WorkspaceController.getCurrentWorkspaceController().getPopups();
 		if (popupMenu.registerPopupMenu(POPUP_KEY)) {
-			AFreeplaneAction action = popupMenu.new CheckBoxAction("BLUBB", "BLUBB");
-			popupMenu.addCechkbox(POPUP_KEY, "/workspace_node_popup", action, true);
+//			AFreeplaneAction action = popupMenu.new CheckBoxAction("BLUBB", "BLUBB");
+//			popupMenu.addCechkbox(POPUP_KEY, "/workspace_node_popup", action, true);
 		}
 	}
 

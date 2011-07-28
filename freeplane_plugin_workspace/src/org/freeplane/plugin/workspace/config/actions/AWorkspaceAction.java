@@ -34,5 +34,11 @@ public abstract class AWorkspaceAction extends AFreeplaneAction {
 		TreePath path = tree.getPathForLocation(x, y);	
 		return (DefaultMutableTreeNode)path.getLastPathComponent();
 	}
+	
+	protected Component getComponentFromActionEvent(ActionEvent e) {
+		WorkspacePopupMenu pop = (WorkspacePopupMenu)((Component) e.getSource()).getParent();		
+		JTree tree = (JTree)pop.getInvoker();
+		return tree.getComponentAt(pop.getInvokerLocation());
+	}
 
 }
