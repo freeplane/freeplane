@@ -53,6 +53,10 @@ public class DefaultFileNode extends WorkspaceNode implements IWorkspaceNodeEven
 		return false;
 	}
 	
+	public void delete() {
+		this.file.delete();
+	}
+	
 	public void relocateFile(final File parentFolder) {
 		File newFile = new File(parentFolder.getPath() + File.separator + getName());
 		if(newFile.exists()) {
@@ -64,7 +68,7 @@ public class DefaultFileNode extends WorkspaceNode implements IWorkspaceNodeEven
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	
-	public void handleEvent(WorkspaceNodeEvent event) {		
+	public void handleEvent(WorkspaceNodeEvent event) {	
 		if(event.getType() == WorkspaceNodeEvent.WSNODE_CHANGED) {
 			if(rename(event.getBaggage().toString())) {
 				setName(event.getBaggage().toString());
@@ -86,7 +90,6 @@ public class DefaultFileNode extends WorkspaceNode implements IWorkspaceNodeEven
             WorkspaceController.getCurrentWorkspaceController().getPopups()
                     .showPhysicalNodePopup((Component) event.getSource(), event.getX(), event.getY());
         }
-
 	}
 	
 	public String getTagName() {

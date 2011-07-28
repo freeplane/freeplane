@@ -1,13 +1,13 @@
 package org.freeplane.plugin.workspace.config;
 
 import java.awt.Component;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
 
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JPopupMenu;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ControllerPopupMenuListener;
@@ -23,9 +23,10 @@ import org.freeplane.plugin.workspace.config.actions.PasteFileNode;
 import org.freeplane.plugin.workspace.config.actions.RefreshWorkspaceTree;
 import org.freeplane.plugin.workspace.config.actions.RenameFileNode;
 import org.freeplane.plugin.workspace.config.actions.SetWorkspaceLocation;
+import org.freeplane.plugin.workspace.view.WorkspacePopupMenu;
 
 public class PopupMenus {
-
+	
 	private static final String WORKSPACE_POPUP_MENU_KEY = "/workspace_popup";
 	private static final String WORKSPACE_NODE_POPUP_MENU_KEY = "/workspace_node_popup";
 	private static final String WORKSPACE_POPUP_MENU_CONFIG = "/xml/popup_menus.xml";
@@ -64,7 +65,7 @@ public class PopupMenus {
 
 	public void registerPopupMenu(final String key, final String xmlKey, final String xmlFile) {
 		if (!this.popupMap.containsKey(key)) {
-			PopupObject popObj = new PopupObject(new JPopupMenu(), new MenuBuilder(Controller.getCurrentModeController()));
+			PopupObject popObj = new PopupObject(new WorkspacePopupMenu(), new MenuBuilder(Controller.getCurrentModeController()));
 
 			this.popupMap.put(key, popObj);
 			popObj.menuBuilder.addPopupMenu(popObj.popupMenu, xmlKey);
@@ -125,17 +126,18 @@ public class PopupMenus {
 	public void showPopup(String popupKey, Component component, int x, int y) {
 		PopupObject popObj = this.popupMap.get(popupKey);
 		
-		final JPopupMenu popupmenu = popObj.popupMenu;
-		if (popupmenu != null) {
-			popupmenu.show(component, x, y);
+		final WorkspacePopupMenu popupMenu = popObj.popupMenu;
+		popupMenu.setInvokerLocation(new Point(x, y));
+		if (popupMenu != null) {
+			popupMenu.show(component, x, y);
 		}
 	}
 
 	private class PopupObject {
-		public JPopupMenu popupMenu;
+		public WorkspacePopupMenu popupMenu;
 		public MenuBuilder menuBuilder;
 
-		public PopupObject(final JPopupMenu popupMenu, final MenuBuilder menuBuilder) {
+		public PopupObject(final WorkspacePopupMenu popupMenu, final MenuBuilder menuBuilder) {
 			this.menuBuilder = menuBuilder;
 			this.popupMenu = popupMenu;
 		}
