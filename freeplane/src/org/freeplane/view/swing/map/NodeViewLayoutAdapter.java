@@ -60,8 +60,8 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     private int spaceAround;
     private int vGap;
     private NodeView view;
-    private Dimension contentPreferredSize;
     private int contentWidth;
+    private int contentHeight;
 
     public void addLayoutComponent(final String arg0, final Component arg1) {
     }
@@ -167,12 +167,15 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             setVGap(getView().getVisibleParentView().getVGap());
         }
         spaceAround = view.getSpaceAround();
-        if (view.isContentVisible()) {
+		if (view.isContentVisible()) {
+	        Dimension contentPreferredSize;
             contentPreferredSize = getContent().getPreferredSize();
             contentWidth = contentPreferredSize.width;
+            contentHeight = contentPreferredSize.height;
         }
         else {
-            contentWidth = 0;
+        	contentHeight = 0;
+        	contentWidth = 0;
         }
     }
 
@@ -256,9 +259,9 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             
             final int childCloudHeigth = getAdditionalCloudHeigth(child);
             final int childContentHeight = child.getContent().getHeight();
-            final int childShiftY = child.getShift();
+            final int childShiftY = child.isContentVisible() ? child.getShift() : 0;
             final int childContentShift = child.getContent().getY() - getSpaceAround();
-            final int childHGap = child.getContent().isVisible() ? child.getHGap() : 0;
+            final int childHGap = child.isContentVisible() ? child.getHGap() : 0;
             final int childHeight = child.getHeight() - 2 * getSpaceAround();
             
             if(isItem){
@@ -366,11 +369,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             data.lx[i] = x; 
         }
         
-        if (getView().isContentVisible()) {
-            final Dimension contentPreferredSize = getContent().getPreferredSize();
-            final int contentVerticalShift = (contentPreferredSize.height - childContentHeightSum) / 2;
-            top += contentVerticalShift;
-        }
+        top += (contentHeight - childContentHeightSum) / 2;
         setData(data, isLeft, left, childContentHeightSum, top);
     }
     
@@ -408,16 +407,8 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     
 
     protected void placeChildren(final LayoutData data) {
-        final int contentHeight;
-        final NodeView view = getView();
         final int contentX = Math.max(getSpaceAround(), -data.left);
-        final int contentY = getSpaceAround() + Math.max(0, -data.top);
-        if (view.isContentVisible()) {
-            contentHeight = contentPreferredSize.height;
-        }
-        else {
-            contentHeight = data.childContentHeight;
-        }
+        final int contentY= getSpaceAround() + Math.max(0, -data.top);
         
         if (getView().isContentVisible()) {
             getContent().setVisible(true);
