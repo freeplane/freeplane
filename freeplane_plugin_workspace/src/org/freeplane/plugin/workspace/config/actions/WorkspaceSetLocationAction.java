@@ -2,13 +2,16 @@ package org.freeplane.plugin.workspace.config.actions;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.Collections;
 
 import javax.swing.JFileChooser;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspacePreferences;
 
@@ -25,7 +28,7 @@ public class WorkspaceSetLocationAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		System.out.println("WorkspaceSetLocationAction: " + e.getActionCommand() + " : " + e.getID());
-		showLocationSwitcherDialog();
+		showLocationSwitcherDialog();		
 	}
 
 	private void showLocationSwitcherDialog() {
@@ -40,6 +43,8 @@ public class WorkspaceSetLocationAction extends AFreeplaneAction {
 			Controller.getCurrentController().getResourceController()
 					.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, true);
 			WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();
+			final MenuBuilder menuBuilder = Controller.getCurrentModeController().getUserInputListenerFactory().getMenuBuilder();
+			
 		}
 
 	}
