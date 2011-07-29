@@ -189,7 +189,6 @@ public class CommunicationsConfiguration implements ActionListener {
 		}
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals(DocearAccount.VALIDATE)) {
 			this.validateUserData(true);

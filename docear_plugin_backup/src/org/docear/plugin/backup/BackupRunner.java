@@ -1,7 +1,6 @@
 package org.docear.plugin.backup;
 
 import javax.swing.JOptionPane;
-import javax.swing.SwingWorker;
 
 import org.docear.plugin.communications.CommunicationsConfiguration;
 import org.docear.plugin.communications.Filetransfer;
@@ -10,6 +9,8 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.accountmanager.Account;
+import org.jdesktop.swingworker.SwingWorker;
+
 
 public class BackupRunner {
 	// TODO: inserting the mindmapId into the mindmapmodel fires an mapchanged
@@ -43,7 +44,10 @@ public class BackupRunner {
 
 		LogUtils.info("org.docear.plugin.backup: automatic backup every " + auto_backup_minutes + " minutes.");
 
-		SwingWorker<Void, Void> runner = new SwingWorker<Void, Void>() {
+		final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+		Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
+		SwingWorker<Void, Void> runner;
+		runner = new SwingWorker<Void, Void>() {
 			public Void doInBackground() {
 				while (true) {
 					synchronized (this) {
@@ -63,6 +67,9 @@ public class BackupRunner {
 				}
 			}
 		};
+		Thread.currentThread().setContextClassLoader(contextClassLoader);
+		
+		
 		runner.execute();
 
 	}
