@@ -32,18 +32,21 @@ public class WorkspaceSetLocationAction extends AFreeplaneAction {
 	}
 
 	private void showLocationSwitcherDialog() {
-		JFileChooser fileChooser = new JFileChooser();
+		JFileChooser fileChooser = new JFileChooser();		
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		ResourceController resourceController = ResourceController.getResourceController();
+		String currentLocation = resourceController.getProperty(WorkspacePreferences.WORKSPACE_LOCATION);
+		fileChooser.setSelectedFile(new File(currentLocation));
 
 		int retVal = fileChooser.showOpenDialog(UITools.getFrame());
 		if (retVal == JFileChooser.APPROVE_OPTION) {
+			
 			File selectedfile = fileChooser.getSelectedFile();
 			ResourceController.getResourceController().setProperty(WorkspacePreferences.WORKSPACE_LOCATION_NEW,
 					selectedfile.getPath());
 			Controller.getCurrentController().getResourceController()
 					.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, true);
 			WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();
-			final MenuBuilder menuBuilder = Controller.getCurrentModeController().getUserInputListenerFactory().getMenuBuilder();
 			
 		}
 

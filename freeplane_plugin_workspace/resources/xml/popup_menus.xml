@@ -8,9 +8,10 @@
 		<menu_action action="WorkspaceRefreshAction" />
 	</menu_category>
 	
-	<menu_category name="workspace_node_popup">
-		<!-- menu_action action="ExpandWorkspaceTree" />
-		<menu_action action="CollapseWorkspaceTree" /-->
+	<menu_category name="workspace_groupnode_popup">
+		<menu_action action="AddExistingFilesystemFolderAction" />
+		<menu_action action="AddNewFilesystemFolderAction" />
+		<menu_action action="RemoveFolderFromWorkspaceAction" />
 	</menu_category>
 	
 	<menu_category name="workspace_physical_node_popup">

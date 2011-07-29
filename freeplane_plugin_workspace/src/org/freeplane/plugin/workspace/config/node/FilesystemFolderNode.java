@@ -23,10 +23,17 @@ public class FilesystemFolderNode extends AWorkspaceNode implements TreeExpansio
 	public FilesystemFolderNode(String id) {
 		super(id);
 	}
-	
-	@ExportAsAttribute("path")
+		
 	public URL getFolderPath() {
 		return folderPath;
+	}
+	
+	@ExportAsAttribute("path")
+	public String getFolderPathString() {
+		if (folderPath == null || folderPath.getPath() == null) {
+			return "";
+		}
+		return folderPath.getPath();
 	}
 
 	public void setFolderPath(URL folderPath) {
@@ -39,7 +46,6 @@ public class FilesystemFolderNode extends AWorkspaceNode implements TreeExpansio
 	public void treeExpanded(TreeExpansionEvent event) {
 		if(isUpToDate||getFolderPath()==null) return;
 		refreshFolder((DefaultMutableTreeNode)event.getPath().getLastPathComponent());
-		System.out.println("FISH: "+this);
 	}
 
 	public void refreshFolder(final DefaultMutableTreeNode node) {

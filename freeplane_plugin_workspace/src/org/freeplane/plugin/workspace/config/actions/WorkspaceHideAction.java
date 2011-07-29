@@ -27,6 +27,7 @@ public class WorkspaceHideAction extends AFreeplaneAction {
 		ResourceController.getResourceController().setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, false);
 		WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();
 
+		//TODO: UPDATE MENU!!!
 //		MyPropertyBean bean = new MyPropertyBean(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY);
 //		bean.firePropertyChanged();
 	}
