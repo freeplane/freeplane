@@ -69,7 +69,7 @@ public class WorkspaceNodeWriter implements IElementWriter, IAttributeWriter {
 			value = m.invoke(object, args);
 			if(value != null) {
 				String attrName = m.getAnnotation(ExportAsAttribute.class).value();
-				if(attrName.trim().isEmpty()) throw new IllegalArgumentException("value for annotation 'ExportAsAttribute' must not be empty!");
+				if(attrName.trim().length()==0) throw new IllegalArgumentException("value for annotation 'ExportAsAttribute' must not be empty!");
 				writer.addAttribute(attrName.trim(), value.toString());
 			}
 		}

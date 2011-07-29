@@ -25,7 +25,7 @@ public class FileReadManager {
 
 	public void addFileHandler(final String fileExtension, final IFileTypeHandler handler) {
 		assert(fileExtension != null);
-		assert(!fileExtension.isEmpty());
+		assert(fileExtension.length()>0);
 		if(fileExtension.toLowerCase().endsWith("default_handle")) {
 			fileHandlers.add(DEFAULT_HANDLE, handler);
 			return;

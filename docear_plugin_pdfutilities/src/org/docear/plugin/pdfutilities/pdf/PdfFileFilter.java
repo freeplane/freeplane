@@ -26,7 +26,7 @@ public class PdfFileFilter {
 	}
 
     public boolean accept(String path) {
-        if(path == null || path.isEmpty()) return false;
+        if(path == null || path.trim().length()==0) return false;
         
         if(path.matches(".*[.][pP][dD][fF]")){
             return true;

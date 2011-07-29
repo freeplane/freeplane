@@ -291,7 +291,7 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 
 	public void propertyChanged(String propertyName, String newValue, String oldValue) {
 		if (propertyName.equals(WorkspacePreferences.WORKSPACE_LOCATION_NEW)) {
-			if (newValue != null && !newValue.isEmpty()) {
+			if (newValue != null && newValue.trim().length()>0) {
 				Controller.getCurrentController().getResourceController()
 						.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, true);
 				refreshWorkspace();

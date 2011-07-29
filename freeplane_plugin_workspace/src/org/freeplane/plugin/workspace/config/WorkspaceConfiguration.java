@@ -54,14 +54,14 @@ public class WorkspaceConfiguration {
 		String workspaceLocation = resCtrl.getProperty(WorkspacePreferences.WORKSPACE_LOCATION);
 		String workspaceLocationNew = resCtrl.getProperty(WorkspacePreferences.WORKSPACE_LOCATION_NEW);
 		
-		if (workspaceLocation == null || workspaceLocation.isEmpty()) {
-			if (workspaceLocationNew == null || workspaceLocationNew.isEmpty()) {
+		if (workspaceLocation == null || workspaceLocation.trim().length()==0) {
+			if (workspaceLocationNew == null || workspaceLocationNew.trim().length()==0) {
 				setConfigValid(false);
 				resCtrl.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, false);
 				return;
 			}
 		}
-		if (workspaceLocationNew != null && !workspaceLocationNew.isEmpty() && !workspaceLocation.equals(workspaceLocationNew)) {
+		if (workspaceLocationNew != null && workspaceLocationNew.trim().length()>0 && !workspaceLocation.equals(workspaceLocationNew)) {
 			workspaceLocation = initializeNewConfig(workspaceLocationNew);
 		}
 
