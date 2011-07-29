@@ -42,8 +42,7 @@ public class TreeView extends JPanel {
 		m_tree.addTreeSelectionListener(new NodeSelectionListener());
 		m_tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		m_tree.setShowsRootHandles(false);
-		m_tree.setEditable(true);
-		m_tree.setDragEnabled(true);
+		m_tree.setEditable(true);		
 		
 		this.add(new JScrollPane(m_tree), BorderLayout.CENTER);
 	}

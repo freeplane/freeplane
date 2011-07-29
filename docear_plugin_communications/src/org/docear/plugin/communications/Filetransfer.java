@@ -79,7 +79,7 @@ public class Filetransfer {
 		Controller controller = Controller.getCurrentController();
 		final MapStyleModel styleModel = MapStyleModel.getExtension(controller.getMap());		
 		String mindmapId = styleModel.getProperty(MINDMAP_ID);
-		if (mindmapId == null || mindmapId.isEmpty()) {
+		if (mindmapId == null || mindmapId.trim().length() == 0) {
 			insertMindmap(config, formDataMultiPart, username);
 		}
 		else {
