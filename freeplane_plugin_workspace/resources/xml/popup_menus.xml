@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <menu_structure>
 	<menu_category name="workspace_popup">
-		<menu_action action="SetWorkspaceLocation" />
-		<menu_action action="HideWorkspace" />
-		<menu_action action="ExpandWorkspaceTree" />
-		<menu_action action="CollapseWorkspaceTree" />
-		<menu_action action="RefreshWorkspaceTree" />
+		<menu_action action="WorkspaceSetLocationAction" />
+		<menu_action action="WorkspaceHideAction" />
+		<menu_action action="WorkspaceExpandAction" />
+		<menu_action action="WorkspaceCollapseAction" />
+		<menu_action action="WorkspaceRefreshAction" />
 	</menu_category>
 	
 	<menu_category name="workspace_node_popup">
@@ -14,10 +14,10 @@
 	</menu_category>
 	
 	<menu_category name="workspace_physical_node_popup">
-		<menu_action action="CopyFileNode" />
-		<menu_action action="CutFileNode" />
-		<menu_action action="DeleteFileNode" />
-		<menu_action action="PasteFileNode" />
-		<menu_action action="RenameFileNode" />
+		<menu_action action="FileNodeCopyAction" />
+		<menu_action action="FileNodeCutAction" />
+		<menu_action action="FileNodeDeleteAction" />
+		<menu_action action="FileNodePasteAction" />
+		<menu_action action="FileNodeRenameAction" />
 	</menu_category>
 </menu_structure>
