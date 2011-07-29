@@ -12,7 +12,7 @@ import javax.swing.tree.TreePath;
 import org.freeplane.core.ui.components.JFreeplaneMenuItem;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
+import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.view.WorkspacePopupMenu;
 
@@ -32,7 +32,7 @@ public class RenameFileNode extends AWorkspaceAction {
 		WorkspacePopupMenu menu = (WorkspacePopupMenu) ((JFreeplaneMenuItem) e.getSource()).getParent();
 		JTree tree = (JTree) menu.getInvoker();			
 		
-		String oldFileName = ((WorkspaceNode) node.getUserObject()).getName();		
+		String oldFileName = ((AWorkspaceNode) node.getUserObject()).getName();		
 		String newFileName = JOptionPane.showInputDialog(Controller.getCurrentController().getViewController().getContentPane(),
 				TextUtils.getText("confirm_rename_file_action"), oldFileName);
 

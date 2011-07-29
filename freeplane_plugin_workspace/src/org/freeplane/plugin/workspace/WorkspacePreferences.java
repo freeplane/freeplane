@@ -91,7 +91,6 @@ public class WorkspacePreferences {
 			this.propertyKey = propertyKey;
 		}
 
-		@Override
 		public void actionPerformed(ActionEvent e) {
 			boolean checked = ((JCheckBoxMenuItem) e.getSource()).isSelected();
 			Controller.getCurrentController().getResourceController().setProperty(this.propertyKey, checked);

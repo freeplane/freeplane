@@ -6,13 +6,13 @@ package org.freeplane.plugin.workspace.io.creator;
 
 import java.io.File;
 
-import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
+import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 import org.freeplane.plugin.workspace.io.node.MindMapFileNode;
 
 /**
  * 
  */
-public class MindMapFileNodeCreator extends FileNodeCreator {
+public class MindMapFileNodeCreator extends AFileNodeCreator {
 
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -33,7 +33,7 @@ public class MindMapFileNodeCreator extends FileNodeCreator {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	
-	public WorkspaceNode getNode(String name, File file) {
+	public AWorkspaceNode getNode(String name, File file) {
 		MindMapFileNode node = new MindMapFileNode(name, file);
 		return node;
 	}

@@ -11,7 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellEditor;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
+import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 
 /**
  * 
@@ -39,8 +39,8 @@ public class WorkspaceCellEditor extends DefaultTreeCellEditor {
 				boolean isSelected,
 				boolean expanded,
 				boolean leaf, int row) {
-		if(value instanceof DefaultMutableTreeNode && ((DefaultMutableTreeNode)value).getUserObject() instanceof WorkspaceNode)
-			return super.getTreeCellEditorComponent(tree, ((WorkspaceNode)((DefaultMutableTreeNode)value).getUserObject()).getName(), isSelected, expanded, leaf, row);
+		if(value instanceof DefaultMutableTreeNode && ((DefaultMutableTreeNode)value).getUserObject() instanceof AWorkspaceNode)
+			return super.getTreeCellEditorComponent(tree, ((AWorkspaceNode)((DefaultMutableTreeNode)value).getUserObject()).getName(), isSelected, expanded, leaf, row);
 		else 
 			return super.getTreeCellEditorComponent(tree, value, isSelected, expanded, leaf, row);
 		

@@ -5,7 +5,6 @@
 package org.freeplane.plugin.workspace.io.xml;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.io.Writer;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -18,7 +17,7 @@ import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
+import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 
 /**
  * StringWriter writer = new StringWriter();
@@ -52,7 +51,7 @@ public class ConfigurationWriter implements IElementWriter, IAttributeWriter {
 	}
 
 	private void writeNode(final ITreeWriter xmlWriter, final DefaultMutableTreeNode node) throws IOException {
-		final String nodeTag = ((WorkspaceNode)node.getUserObject()).getTagName();
+		final String nodeTag = ((AWorkspaceNode)node.getUserObject()).getTagName();
 		if(nodeTag == null) return;
 
 		xmlWriter.addElement(node, nodeTag);
@@ -68,12 +67,10 @@ public class ConfigurationWriter implements IElementWriter, IAttributeWriter {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 
-	@Override
 	public void writeAttributes(ITreeWriter writer, Object userObject, String tag) {
 		System.out.println("write attributes for "+tag);
 	}
 
-	@Override
 	public void writeContent(ITreeWriter writer, Object element, String tag) throws IOException {
 		final DefaultMutableTreeNode node = (DefaultMutableTreeNode) element;
 		writeNode(writer, node);

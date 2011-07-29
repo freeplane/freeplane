@@ -100,7 +100,6 @@ public class PopupMenus {
 			this.propertyKey = propertyKey;
 		}
 
-		@Override
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("PopupMenus.actionPerformed: " + e.getActionCommand() + " " + this.propertyKey);
 			boolean checked = ((JCheckBoxMenuItem) e.getSource()).isSelected();

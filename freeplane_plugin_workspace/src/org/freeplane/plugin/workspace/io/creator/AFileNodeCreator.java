@@ -11,17 +11,17 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
+import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 
-public abstract class FileNodeCreator implements IFileTypeHandler {
-	abstract public WorkspaceNode getNode(String name, File file);
+public abstract class AFileNodeCreator implements IFileTypeHandler {
+	abstract public AWorkspaceNode getNode(String name, File file);
 	private final Vector<Object> typeList = new Vector<Object>();
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 
-	public FileNodeCreator() {
+	public AFileNodeCreator() {
 	}
 	
 
@@ -58,7 +58,7 @@ public abstract class FileNodeCreator implements IFileTypeHandler {
 	public Object createFileNode(Object object, String fileExtension,final File file) {
 		Object parent = object;
 		final IndexedTree tree = WorkspaceController.getCurrentWorkspaceController().getTree();
-		if(object instanceof WorkspaceNode) {
+		if(object instanceof AWorkspaceNode) {
 			parent = tree.getKeyByUserObject(object);
 		}
 		final Path path = new Path(parent == null ? null : parent.toString());		
@@ -66,7 +66,7 @@ public abstract class FileNodeCreator implements IFileTypeHandler {
 		if (!tree.contains(path.path)) {
 			final DefaultMutableTreeNode treeNode =	tree.addElement(path.parentPath == null ? tree : path.parentPath, this, path.path, IndexedTree.AS_CHILD);			
 			if (treeNode.getUserObject() == this) {
-				final WorkspaceNode node = getNode(file.getName(), file);
+				final AWorkspaceNode node = getNode(file.getName(), file);
 				if(node != null) 
 					treeNode.setUserObject(node);
 				else 

@@ -6,13 +6,13 @@ import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
+import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 
-public abstract class ConfigurationNodeCreator implements IElementDOMHandler {
+public abstract class AConfigurationNodeCreator implements IElementDOMHandler {
 	
-	abstract public WorkspaceNode getNode(String id, XMLElement data);
+	abstract public AWorkspaceNode getNode(String id, XMLElement data);
 			
-	public ConfigurationNodeCreator() {
+	public AConfigurationNodeCreator() {
 	}
 	
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
@@ -44,7 +44,7 @@ public abstract class ConfigurationNodeCreator implements IElementDOMHandler {
 		}
 		final DefaultMutableTreeNode treeNode = tree.get(path.path);
 		if (treeNode.getUserObject() == this) {
-			final WorkspaceNode node = getNode(id, lastBuiltElement);
+			final AWorkspaceNode node = getNode(id, lastBuiltElement);
 			if(node != null) 
 				treeNode.setUserObject(node);
 			else 

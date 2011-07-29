@@ -11,14 +11,14 @@ import java.io.IOException;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
+import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 
 /**
  * 
  */
-public class DefaultFileNode extends WorkspaceNode implements IWorkspaceNodeEventListener{
+public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEventListener{
 	
 	private File file;
 	

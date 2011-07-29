@@ -6,7 +6,7 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
+import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 
@@ -38,7 +38,7 @@ public class WorkspaceTreeModel extends DefaultTreeModel {
 			nodeChanged(node);
 		}
 		else {
-			((WorkspaceNode)node.getUserObject()).setName(newValue.toString());
+			((AWorkspaceNode)node.getUserObject()).setName(newValue.toString());
 		}		
 	}
 

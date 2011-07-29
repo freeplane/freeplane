@@ -2,13 +2,12 @@ package org.freeplane.plugin.workspace.config.node;
 
 import java.awt.Component;
 
-import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.config.PopupMenus;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 
-public class GroupNode extends WorkspaceNode implements IWorkspaceNodeEventListener {
+public class GroupNode extends AWorkspaceNode implements IWorkspaceNodeEventListener {
 	private final static String POPUP_KEY = "group_popup";
 
 	public GroupNode(String id) {
@@ -24,7 +23,6 @@ public class GroupNode extends WorkspaceNode implements IWorkspaceNodeEventListe
 		}
 	}
 
-	@Override
 	public void handleEvent(WorkspaceNodeEvent event) {
 		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {
 			// initializePopup();

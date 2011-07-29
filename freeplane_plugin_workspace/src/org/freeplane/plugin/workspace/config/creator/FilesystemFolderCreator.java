@@ -10,15 +10,15 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.config.node.FilesystemFolderNode;
-import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
+import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 
-public class FilesystemFolderCreator extends ConfigurationNodeCreator {
+public class FilesystemFolderCreator extends AConfigurationNodeCreator {
 
 	public FilesystemFolderCreator() {
 	}
 
 	@Override
-	public WorkspaceNode getNode(String id, XMLElement data) {
+	public AWorkspaceNode getNode(String id, XMLElement data) {
 		FilesystemFolderNode node = new FilesystemFolderNode(id);
 		String name = data.getAttribute("name", null);
 		node.setName(name==null? "folder" : name);

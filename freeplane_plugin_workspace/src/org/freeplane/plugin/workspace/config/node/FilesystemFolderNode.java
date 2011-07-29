@@ -13,7 +13,7 @@ import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 
-public class FilesystemFolderNode extends WorkspaceNode implements TreeExpansionListener, IWorkspaceNodeEventListener {
+public class FilesystemFolderNode extends AWorkspaceNode implements TreeExpansionListener, IWorkspaceNodeEventListener {
 
 	private URL folderPath;
 	private boolean isUpToDate = false;
@@ -33,7 +33,6 @@ public class FilesystemFolderNode extends WorkspaceNode implements TreeExpansion
 		this.folderPath = folderPath;
 	}	
 	
-	@Override
 	public void treeCollapsed(TreeExpansionEvent event) {
 	}
 	
@@ -73,7 +72,6 @@ public class FilesystemFolderNode extends WorkspaceNode implements TreeExpansion
 	//	}
 	}
 
-	@Override
 	public void handleEvent(WorkspaceNodeEvent event) {
 		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {
 			initializePopup();

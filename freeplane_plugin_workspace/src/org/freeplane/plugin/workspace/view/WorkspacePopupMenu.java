@@ -3,7 +3,6 @@ package org.freeplane.plugin.workspace.view;
 import java.awt.Point;
 
 import javax.swing.JPopupMenu;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 public class WorkspacePopupMenu extends JPopupMenu {
 	/**

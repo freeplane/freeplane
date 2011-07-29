@@ -18,7 +18,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
@@ -36,7 +35,7 @@ import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.controller.WorkspaceTransferHandler;
 import org.freeplane.plugin.workspace.io.FileReadManager;
 import org.freeplane.plugin.workspace.io.FilesystemReader;
-import org.freeplane.plugin.workspace.io.creator.FileNodeCreator;
+import org.freeplane.plugin.workspace.io.creator.AFileNodeCreator;
 import org.freeplane.plugin.workspace.io.xml.ConfigurationWriter;
 import org.freeplane.plugin.workspace.view.TreeView;
 
@@ -230,7 +229,7 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 				for (Object key : props.keySet()) {
 					try {
 						Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass(key.toString());
-						FileNodeCreator handler = (FileNodeCreator) clazz.getConstructor(args).newInstance();
+						AFileNodeCreator handler = (AFileNodeCreator) clazz.getConstructor(args).newInstance();
 						handler.setFileTypeList(props.getProperty(key.toString(), ""), "\\|");
 						this.fileTypeManager.addFileHandler(handler);
 					}
@@ -364,7 +363,6 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 	/* (non-Javadoc)
 	 * @see org.freeplane.plugin.workspace.controller.IWorkspaceDragController#canPerformAction(javax.swing.JTree, java.lang.Object, int, java.awt.Point)
 	 */
-	@Override
 	public boolean canPerformAction(JTree target, Object draggedNode, int action, Point location) {
 		// TODO Auto-generated method stub
 		System.out.println("canPerformAction");
@@ -374,7 +372,6 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 	/* (non-Javadoc)
 	 * @see org.freeplane.plugin.workspace.controller.IWorkspaceDragController#executeDrop(javax.swing.JTree, java.lang.Object, java.lang.Object, int)
 	 */
-	@Override
 	public boolean executeDrop(JTree tree, Object draggedNode, Object newParentNode, int action) {
 		// TODO Auto-generated method stub
 		System.out.println("executeDrop");

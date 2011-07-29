@@ -13,7 +13,7 @@ import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.plugin.workspace.config.node.WorkspaceNode;
+import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 
 /**
@@ -44,10 +44,9 @@ public class WorkspaceNodeWriter implements IElementWriter, IAttributeWriter {
 	 * org.freeplane.core.io.IAttributeWriter#writeAttributes(org.freeplane.
 	 * core.io.ITreeWriter, java.lang.Object, java.lang.String)
 	 */
-	@Override
 	public void writeAttributes(ITreeWriter writer, Object userObject, String tag) {		
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) userObject;
-		WorkspaceNode wsNode = (WorkspaceNode) node.getUserObject();
+		AWorkspaceNode wsNode = (AWorkspaceNode) node.getUserObject();
 		if(wsNode.getId() != null) writer.addAttribute("id", wsNode.getId());
 		if(wsNode.getName() != null) writer.addAttribute("name", wsNode.getName());
 		for(Method m : wsNode.getClass().getDeclaredMethods()) {
@@ -81,13 +80,12 @@ public class WorkspaceNodeWriter implements IElementWriter, IAttributeWriter {
 		}		
 	}
 
-	@Override
 	public void writeContent(ITreeWriter writer, Object element, String tag) throws IOException {
 		final DefaultMutableTreeNode node = (DefaultMutableTreeNode) element;
 		for (int i=0; i < node.getChildCount(); i++) {
 			DefaultMutableTreeNode child = (DefaultMutableTreeNode) node.getChildAt(i);
-			if(child.getUserObject() instanceof WorkspaceNode) {
-				WorkspaceNode wsNode = (WorkspaceNode) child.getUserObject();
+			if(child.getUserObject() instanceof AWorkspaceNode) {
+				AWorkspaceNode wsNode = (AWorkspaceNode) child.getUserObject();
 				if(wsNode.getTagName() == null) continue;
 				writer.addElement(child, wsNode.getTagName());
 			}
