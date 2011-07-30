@@ -970,11 +970,11 @@ public class NodeView extends JComponent implements INodeView {
 		if (PAINT_DEBUG_BORDER && isSelected()){
 			final int spaceAround = getZoomed(SPACE_AROUND);
 			g.drawRect(spaceAround, spaceAround, getWidth() - 2 * spaceAround, getHeight() - 2 * spaceAround);
-			if(getMap().getLayoutType().equals(MapViewLayout.MAP)){
-			    Point p = new Point();
-			    UITools.convertPointToAncestor(getContent(), p, getMap().getRoot());
-			    g.drawString("" + p.x + ":" + p.y, spaceAround, getHeight() - spaceAround + 15);
-			}
+//			if(getMap().getLayoutType().equals(MapViewLayout.MAP)){
+//			    Point p = new Point();
+//			    UITools.convertPointToAncestor(getContent(), p, getMap().getRoot());
+//			    g.drawString("" + p.x + ":" + p.y, spaceAround, getHeight() - spaceAround + 15);
+//			}
 		}
 	}
 
