@@ -368,8 +368,8 @@ public class StyleEditorPanel extends JPanel {
 	
 	private static String[] initializeEdgeStyles() {
 		final EdgeStyle[] enumConstants = EdgeStyle.class.getEnumConstants();
-		final String[] strings = new String[enumConstants.length];
-		for (int i = 0; i < enumConstants.length; i++) {
+		final String[] strings = new String[enumConstants.length-1];
+		for (int i = 0; i < enumConstants.length-1; i++) {
 			strings[i] = enumConstants[i].toString();
 		}
 		return strings;
