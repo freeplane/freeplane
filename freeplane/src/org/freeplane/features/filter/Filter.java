@@ -185,7 +185,7 @@ public class Filter {
 		return isDescendantSelected;
 	}
 
-	public Object getCondition() {
+	public ICondition getCondition() {
 		return condition;
 	}
 
