@@ -1018,7 +1018,7 @@ public class NodeView extends JComponent implements INodeView {
                     paintSummaryEdge(g, nodeView, i);
                 }
                 else {
-                    final EdgeView edge = EdgeViewFactory.getInstance().getEdge(nodeView);
+                    final EdgeView edge = EdgeViewFactory.getInstance().getEdge(this, nodeView, this);
                     edge.paint(g);
                 }
             }
@@ -1130,7 +1130,7 @@ public class NodeView extends JComponent implements INodeView {
 		int x = nodeView.getX() + content.getX();
 		if (isLeft)
 			x += nodeView.getWidth() - 2 * spaceAround;
-		final EdgeView edgeView = EdgeViewFactory.getInstance().getEdge(nodeView);
+		final EdgeView edgeView = EdgeViewFactory.getInstance().getEdge(this, nodeView, this);
 		final Point start1 = new Point(x1, y1);
         final Point start2 = new Point(x1, y2);
 		final NodeView parentView = nodeView.getParentView();

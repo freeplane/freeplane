@@ -21,6 +21,7 @@ package org.freeplane.view.swing.map.edge;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
@@ -188,15 +189,6 @@ public abstract class EdgeView {
 
 	abstract protected void draw(Graphics2D g);
 
-	public EdgeView(final NodeView target) {
-		source = target.getVisibleParentView();
-		this.target = target;
-		createStart();
-        UITools.convertPointToAncestor(target.getMainView(), end, source);
-        UITools.convertPointToAncestor(source.getMainView(), start, source);
-        align(start, end);
-	}
-
 	public void paint(final Graphics2D g) {
 		final Stroke stroke = g.getStroke();
 		final Color color = g.getColor();
@@ -205,13 +197,12 @@ public abstract class EdgeView {
 		g.setColor(color);
 	}
 
-	public EdgeView(final NodeView source, final NodeView target) {
+	public EdgeView(final NodeView source, final NodeView target, final Component paintedComponent) {
 		this.source = source;
 		this.target = target;
 		createStart();
-        final MapView map = getMap();
-        UITools.convertPointToAncestor(target.getMainView(), end, map);
-		UITools.convertPointToAncestor(source.getMainView(), start, map);
+        UITools.convertPointToAncestor(target.getMainView(), end, paintedComponent);
+		UITools.convertPointToAncestor(source.getMainView(), start, paintedComponent);
         align(start, end);
 	}
 

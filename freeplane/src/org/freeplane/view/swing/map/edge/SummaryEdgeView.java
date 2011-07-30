@@ -20,6 +20,7 @@
 package org.freeplane.view.swing.map.edge;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
@@ -36,13 +37,9 @@ public class SummaryEdgeView extends EdgeView {
 	private static final int CHILD_XCTRL = 20;
 	private static final int XCTRL = 6;
 
-	public SummaryEdgeView(final NodeView source, final NodeView target) {
-		super(source, target);
-	}
-
-	public SummaryEdgeView(final NodeView target) {
-		super(target);
-	}
+	public SummaryEdgeView(NodeView source, NodeView target, Component paintedComponent) {
+	    super(source, target, paintedComponent);
+    }
 
 	@Override
 	protected void draw(final Graphics2D g) {
