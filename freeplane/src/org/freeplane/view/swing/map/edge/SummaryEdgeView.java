@@ -64,7 +64,7 @@ public class SummaryEdgeView extends EdgeView {
             startX = Math.max(start.x, end.x - childXctrl);
         path.moveTo(startX + xctrl, start.y);
 		path.lineTo(startX + 2 *xctrl, start.y);
-		path.curveTo(startX + 3 * xctrl, start.y, end.x - childXctrl, end.y, end.x, end.y);
+		path.curveTo(startX + 3 * xctrl, start.y, startX, end.y, end.x, end.y);
 		return path;
 	}
 

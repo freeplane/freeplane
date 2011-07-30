@@ -87,7 +87,7 @@ class NodeViewFactory {
 				final Component component = parent.getComponent(i);
 				if (component.isVisible()) {
 					component.validate();
-					final Dimension preferredCompSize = component.getPreferredSize();
+					final Dimension preferredCompSize = width == 0 ? new Dimension() : component.getPreferredSize();
 					if (component instanceof MainView) {
 						component.setBounds(0, y, width, preferredCompSize.height);
 					}
@@ -99,6 +99,9 @@ class NodeViewFactory {
 					if (component instanceof ForkMainView){
 						y += ((ForkMainView)component).getEdgeWidth();
 					}
+				}
+				else{
+					component.setBounds(0, y, 0, 0);
 				}
 			}
 		}

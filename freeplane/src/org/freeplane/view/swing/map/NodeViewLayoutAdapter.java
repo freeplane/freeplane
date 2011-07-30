@@ -28,6 +28,7 @@ import javax.swing.JComponent;
 
 import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.view.swing.map.cloud.CloudView;
 
 abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
@@ -261,7 +262,13 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             final int childContentHeight = child.getContent().getHeight();
             final int childShiftY = child.isContentVisible() ? child.getShift() : 0;
             final int childContentShift = child.getContent().getY() - getSpaceAround();
-            final int childHGap = child.isContentVisible() ? child.getHGap() : 0;
+            final int childHGap;
+            if(child.isContentVisible())
+            	childHGap =  child.getHGap(); 
+            else if(child.isSummary())
+            	childHGap = child.getZoomed(LocationModel.HGAP);
+            else
+            	childHGap = 0;
             final int childHeight = child.getHeight() - 2 * getSpaceAround();
             
             if(isItem){

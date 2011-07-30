@@ -37,6 +37,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 import javax.swing.tree.TreeNode;
 
 import org.freeplane.core.resources.ResourceController;
@@ -239,6 +240,8 @@ public class NodeView extends JComponent implements INodeView {
 			remove(index);
 			contentPane.add(mainView);
 			mainView.putClientProperty("NODE_VIEW_CONTENT_POSITION", MAIN_VIEWER_POSITION);
+			if(! mainView.isVisible())
+				mainView.setVisible(true);
 			add(contentPane, index);
 		}
 		return contentPane;
@@ -1014,15 +1017,28 @@ public class NodeView extends JComponent implements INodeView {
                 continue;
             }
             final NodeView nodeView = (NodeView) component;
-            if (nodeView.isContentVisible()) {
-            	if (getMap().getLayoutType() == MapViewLayout.OUTLINE  ||  ! paintSummaryEdge(g, source, nodeView, i)) {
+        	if (getMap().getLayoutType() != MapViewLayout.OUTLINE  &&  paintSummaryEdge(g, source, nodeView, i)) {
+        		if(! nodeView.isContentVisible()){
+        			final Rectangle bounds =  SwingUtilities.convertRectangle(this, nodeView.getBounds(), source);
+        			final Graphics cg = g.create(bounds.x, bounds.y, bounds.width, bounds.height);
+        			try{
+        				nodeView.paintEdges((Graphics2D) cg, nodeView);
+        			}
+        			finally{
+        				cg.dispose();
+        			}
+        			
+        		}
+            }
+        	else{
+        		if (nodeView.isContentVisible()) {
             		final EdgeView edge = EdgeViewFactory.getInstance().getEdge(source, nodeView, source);
             		edge.paint(g);
             	}
-            }
-            else {
-            	nodeView.paintEdges(g, source);
-            }
+                else {
+                	nodeView.paintEdges(g, source);
+                }
+        	}
         }
     }
 
@@ -1035,7 +1051,7 @@ public class NodeView extends JComponent implements INodeView {
 		int level = 0;
 		int anotherLevel = 0;
 		int i;
-		JComponent lastView = null;
+		NodeView lastView = null;
 		boolean itemFound = false;
 		boolean firstGroupNodeFound = false;
 		for (i = pos - 1; i >= 0; i--) {
@@ -1069,7 +1085,7 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		
 		if (lastView == null) {
-			lastView = getContent();
+			return false;
 		}
 
 		if(i >= 0){
@@ -1093,12 +1109,8 @@ public class NodeView extends JComponent implements INodeView {
             i = 0;
 
 		anotherLevel = 0;
-        int y1 = lastView.getY();
-		int y2 = y1 + lastView.getHeight();
-		if(lastView instanceof NodeView){
-            y1 += getSpaceAround();
-            y2 -= getSpaceAround();
-		}
+        int y1 = lastView.getY() + getSpaceAround();
+		int y2 = y1 + lastView.getHeight() - getSpaceAround();
         int x1;
         if (isLeft) {
             x1 = lastView.getX() + spaceAround;
@@ -1429,6 +1441,8 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	private void setContentComponentVisible(final boolean componentsVisible) {
+		if(contentPane == null)
+			return;
 		final Component[] components = getContentPane().getComponents();
 		int index;
 		for (index = 0; index < components.length; index++) {
