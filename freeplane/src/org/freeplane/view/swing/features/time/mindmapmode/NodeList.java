@@ -731,12 +731,20 @@ class NodeList {
 		}
 		dialog.setTitle(TextUtils.getText(windowTitle));
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		dialog.addWindowListener(new WindowAdapter() {
+		final WindowAdapter windowListener = new WindowAdapter() {
+			
+			@Override
+            public void windowGainedFocus(WindowEvent e) {
+				mFilterTextSearchField.getEditor().selectAll();
+            }
+
 			@Override
 			public void windowClosing(final WindowEvent event) {
 				disposeDialog();
 			}
-		});
+		};
+		dialog.addWindowListener(windowListener);
+		dialog.addWindowFocusListener(windowListener);
 		UITools.addEscapeActionToDialog(dialog, new AbstractAction() {
 			/**
 			 * 
