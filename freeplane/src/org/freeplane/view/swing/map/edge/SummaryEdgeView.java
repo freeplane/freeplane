@@ -49,13 +49,6 @@ public class SummaryEdgeView extends EdgeView {
 		final Stroke stroke = getStroke();
 		g.setStroke(stroke);
 		g.draw(graph);
-		if (isTargetEclipsed()) {
-			g.setColor(g.getBackground());
-			g.setStroke(EdgeView.getEclipsedStroke());
-			g.draw(graph);
-			g.setStroke(stroke);
-			g.setColor(color);
-		}
 	}
 
 	private Shape update() {
