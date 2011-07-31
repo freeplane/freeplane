@@ -162,7 +162,7 @@ public class MModeControllerFactory {
 		new BlinkingNodeHook();
 		SummaryNode.install();
 		new CreationModificationPlugin();
-		new ReminderHook();
+		new ReminderHook(modeController);
 		new AutomaticEdgeColorHook();
 		new ViewerController();
 		modeController.addAction(new AddAttributeAction());

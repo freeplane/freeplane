@@ -22,6 +22,7 @@ package org.freeplane.view.swing.features.time.mindmapmode;
 import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.Map;
 import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
@@ -34,16 +35,24 @@ import javax.swing.JTabbedPane;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
+import org.freeplane.core.ui.IMenuContributor;
+import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
+import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.ITooltipProvider;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.INodeSelectionListener;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;
+import org.freeplane.features.script.IScriptStarter;
 import org.freeplane.n3.nanoxml.XMLElement;
+import org.freeplane.view.swing.features.time.mindmapmode.TimeManagement.JTimePanel;
 import org.freeplane.view.swing.map.attribute.AttributePanelManager;
 
 /**
@@ -116,28 +125,21 @@ public class ReminderHook extends PersistentNodeHook {
 	//******************************************
 	static final String PLUGIN_LABEL = "plugins/TimeManagementReminder.xml";
 	static final String REMINDUSERAT = "REMINDUSERAT";
+	static final String SCRIPT = "SCRIPT";
 	private static final Integer REMINDER_TOOLTIP = 12;
+	private ModeController modeController;
 
 	/**
 	 *
 	 */
-	public ReminderHook() {
+	public ReminderHook(ModeController modeController) {
 		super();
-		final TimeManagement timeManagement = new TimeManagement(this);
-		final int axis = BoxLayout.Y_AXIS;
-		final JComponent timePanel = timeManagement.createTimePanel(null, false, axis);
-		timePanel.setBorder(BorderFactory.createTitledBorder(TextUtils.getText("calendar_panel")));
-		final JPanel tablePanel = new AttributePanelManager(Controller.getCurrentModeController()).getTablePanel();
-		tablePanel.setBorder(BorderFactory.createTitledBorder(TextUtils.getText("attributes_attribute")));
-		final Box panel = new Box(axis);
-		panel.add(timePanel);
-		panel.add(tablePanel);
-		final JTabbedPane tabs = (JTabbedPane) Controller.getCurrentModeController().getUserInputListenerFactory().getToolBar("/format").getComponent(1);
-		final JScrollPane timeScrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-		    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		UITools.setScrollbarIncrement(timeScrollPane);
-		tabs.add(TextUtils.getText("calendar_attributes_panel"), timeScrollPane);
-
+		this.modeController = modeController;
+		modeController.addMenuContributor(new IMenuContributor() {
+			public void updateMenus(ModeController modeController, MenuBuilder builder) {
+				createTimePanel();
+			}
+		});
 		registerAction(new TimeManagementAction(this));
 		registerAction(new TimeListAction());
 		registerAction(new NodeListAction());
@@ -147,11 +149,43 @@ public class ReminderHook extends PersistentNodeHook {
 		    new ReminderConditionController());
 	}
 
+	private void createTimePanel() {
+	    final TimeManagement timeManagement = new TimeManagement(this);
+		final int axis = BoxLayout.Y_AXIS;
+		final JTimePanel timePanel = timeManagement.createTimePanel(null, false, axis);
+		modeController.getMapController().addNodeSelectionListener(new INodeSelectionListener() {
+			public void onSelect(NodeModel node) {
+				timePanel.update(node);
+			}
+			
+			public void onDeselect(NodeModel node) {
+			}
+		});
+		modeController.getMapController().addNodeChangeListener(new INodeChangeListener() {
+			public void nodeChanged(NodeChangeEvent event) {
+				final NodeModel node = event.getNode();
+				if(event.getProperty().equals(getExtensionClass()) && node.equals(modeController.getMapController().getSelectedNode()))
+						timePanel.update(node);
+			}
+		});
+		timePanel.setBorder(BorderFactory.createTitledBorder(TextUtils.getText("calendar_panel")));
+		final JPanel tablePanel = new AttributePanelManager(modeController).getTablePanel();
+		tablePanel.setBorder(BorderFactory.createTitledBorder(TextUtils.getText("attributes_attribute")));
+		final Box panel = new Box(axis);
+		panel.add(timePanel);
+		panel.add(tablePanel);
+		final JTabbedPane tabs = (JTabbedPane) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
+		final JScrollPane timeScrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		UITools.setScrollbarIncrement(timeScrollPane);
+		tabs.add(TextUtils.getText("calendar_attributes_panel"), timeScrollPane);
+    }
+
 	@Override
 	protected void add(final NodeModel node, final IExtension extension) {
 		final ReminderExtension reminderExtension = (ReminderExtension) extension;
 		scheduleTimer(reminderExtension);
-		Controller.getCurrentModeController().getMapController().addMapChangeListener(reminderExtension);
+		modeController.getMapController().addMapChangeListener(reminderExtension);
 		super.add(node, extension);
 	}
 
@@ -165,8 +199,11 @@ public class ReminderHook extends PersistentNodeHook {
 	@Override
 	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
 		final ReminderExtension reminderExtension = new ReminderExtension(node);
-		final String attribute = element.getFirstChildNamed("Parameters").getAttribute(REMINDUSERAT, "0");
+		final XMLElement parameters = element.getFirstChildNamed("Parameters");
+		final String attribute = parameters.getAttribute(REMINDUSERAT, "0");
 		reminderExtension.setRemindUserAt(Long.parseLong(attribute));
+		final String script = parameters.getAttribute(SCRIPT, null);
+		reminderExtension.setScript(script);
 		return reminderExtension;
 	}
 
@@ -186,7 +223,7 @@ public class ReminderHook extends PersistentNodeHook {
 		setToolTip(reminderExtension.getNode(), null);
 		reminderExtension.deactivateTimer();
 		reminderExtension.displayState(ClockState.REMOVE_CLOCK, reminderExtension.getNode(), true);
-		Controller.getCurrentModeController().getMapController().removeMapChangeListener(reminderExtension);
+		modeController.getMapController().removeMapChangeListener(reminderExtension);
 		super.remove(node, extension);
 	}
 
@@ -196,12 +233,17 @@ public class ReminderHook extends PersistentNodeHook {
 		final ReminderExtension reminderExtension = (ReminderExtension) extension;
 		final XMLElement parameters = element.createElement("Parameters");
 		parameters.setAttribute(REMINDUSERAT, Long.toString(reminderExtension.getRemindUserAt()));
+		final String script = reminderExtension.getScript();
+		if(script != null){
+			parameters.setAttribute(SCRIPT, script);
+		}
+		
 		element.addChild(parameters);
 	}
 
 	private void scheduleTimer(final ReminderExtension model) {
-		scheduleTimer(model, new TimerBlinkTask(this, model, false));
 		final Date date = new Date(model.getRemindUserAt());
+		scheduleTimer(model, new TimerBlinkTask(this, model, false, System.currentTimeMillis() < date.getTime() + ReminderExtension.BLINKING_PERIOD));
 		final Object[] messageArguments = { date };
 		final MessageFormat formatter = new MessageFormat(TextUtils
 		    .getText("plugins/TimeManagement.xml_reminderNode_tooltip"));
@@ -222,4 +264,22 @@ public class ReminderHook extends PersistentNodeHook {
 			}
 		});
 	}
+
+	ModeController getModeController() {
+    	return modeController;
+    }
+	public void runScript(ReminderExtension reminderExtension) {
+		final String script = reminderExtension.getScript();
+		if(script == null || script.equals(""))
+			return;
+		final IScriptStarter starter = (IScriptStarter) modeController.getExtension(IScriptStarter.class);
+		if(starter == null)
+			return;
+		final NodeModel node = reminderExtension.getNode();
+		final MapModel map = node.getMap();
+		final Controller controller = modeController.getController();
+		if(! controller.getMapViewManager().getMaps(modeController.getModeName()).containsValue(map))
+			return;
+		starter.executeScript(node, script);
+    }
 }

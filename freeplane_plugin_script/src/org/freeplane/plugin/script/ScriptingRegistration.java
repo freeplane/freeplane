@@ -20,6 +20,7 @@
  */
 package org.freeplane.plugin.script;
 
+import java.awt.Dimension;
 import java.io.File;
 import java.io.PrintStream;
 import java.net.URL;
@@ -29,6 +30,7 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import javax.swing.ComboBoxEditor;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
@@ -40,13 +42,15 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.script.IScriptEditorStarter;
+import org.freeplane.features.script.IScriptStarter;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptEditorPanel.IScriptModel;
 import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
-import org.freeplane.plugin.script.ScriptEditorProperty.IScriptEditorStarter;
 import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
 import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
 import org.freeplane.plugin.script.filter.ScriptConditionController;
@@ -115,7 +119,6 @@ class ScriptingRegistration {
 
 // 	final private MModeController modeController;
 	final private HashMap<String, Object> mScriptCookies = new HashMap<String, Object>();
-	private IScriptEditorStarter mScriptEditorStarter;
 
 	public ScriptingRegistration(ModeController modeController) {
 		register(modeController);
@@ -154,15 +157,26 @@ class ScriptingRegistration {
 	}
 
 	private void register(ModeController modeController) {
-		mScriptEditorStarter = new ScriptEditorProperty.IScriptEditorStarter() {
+		modeController.addExtension(IScriptEditorStarter.class, new IScriptEditorStarter() {
 			public String startEditor(final String pScriptInput) {
 				final PatternScriptModel patternScriptModel = new PatternScriptModel(pScriptInput);
 				final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(patternScriptModel, false);
 				scriptEditorPanel.setVisible(true);
 				return patternScriptModel.getScript();
 			}
-		};
-		modeController.addExtension(ScriptEditorProperty.IScriptEditorStarter.class, mScriptEditorStarter);
+
+			public ComboBoxEditor createComboBoxEditor(Dimension minimumSize) {
+	            final ScriptComboBoxEditor scriptComboBoxEditor = new ScriptComboBoxEditor();
+	            if(minimumSize != null)
+	            	scriptComboBoxEditor.setMinimumSize(minimumSize);
+				return scriptComboBoxEditor;
+            }
+		});
+		modeController.addExtension(IScriptStarter.class, new IScriptStarter() {
+			public void executeScript(NodeModel node, String script) {
+				ScriptingEngine.executeScript(node, script);
+			}
+		}); 
 		addPropertiesToOptionPanel();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		modeController.addAction(new ScriptEditor());

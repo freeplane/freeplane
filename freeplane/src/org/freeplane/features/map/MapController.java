@@ -485,7 +485,10 @@ public class MapController extends SelectionController {
 	}
 
 	public NodeModel getSelectedNode() {
-		return Controller.getCurrentController().getSelection().getSelected();
+		final IMapSelection selection = Controller.getCurrentController().getSelection();
+		if(selection != null)
+			return selection.getSelected();
+		return null;
 	}
 
 	/**

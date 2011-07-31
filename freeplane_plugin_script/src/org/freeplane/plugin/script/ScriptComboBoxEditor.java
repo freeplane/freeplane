@@ -21,6 +21,7 @@ package org.freeplane.plugin.script;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
@@ -45,6 +46,8 @@ public class ScriptComboBoxEditor implements ComboBoxEditor {
 	final private JButton showEditorBtn;
 	final private List<ActionListener> actionListeners;
 	private String script;
+	private Dimension minimumSize;
+	private Rectangle bounds;
 
 	public ScriptComboBoxEditor() {
 		showEditorBtn = new JButton();
@@ -54,16 +57,22 @@ public class ScriptComboBoxEditor implements ComboBoxEditor {
 				editScript(false);
 			}
 		});
-		final Dimension preferredSize = showEditorBtn.getPreferredSize();
-		preferredSize.width = 100;
-		showEditorBtn.setPreferredSize(preferredSize);
 		actionListeners = new LinkedList<ActionListener>();
+		minimumSize = new Dimension(100, 60);
 	}
 	
+	public Dimension getMinimumSize() {
+    	return minimumSize;
+    }
+
+	public void setMinimumSize(Dimension minimumSize) {
+    	this.minimumSize = minimumSize;
+    }
+
 	protected void editScript(boolean selectAll) {
 		JEditorPane textEditor = new JEditorPane();
 		final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
-		scrollPane.setMinimumSize(new Dimension(100, 60));
+		scrollPane.setMinimumSize(minimumSize);
 		textEditor.setContentType("text/groovy");
 		textEditor.setText(script);
 		if(selectAll){
@@ -73,7 +82,10 @@ public class ScriptComboBoxEditor implements ComboBoxEditor {
 		final JOptionPane optionPane = new JOptionPane(scrollPane, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
 		final JDialog dialog = optionPane.createDialog(showEditorBtn, title);
 		dialog.setResizable(true);
+		if(bounds != null)
+			dialog.setBounds(bounds);
 		dialog.setVisible(true);
+		bounds = dialog.getBounds();
 		final Integer result = ((Integer)optionPane.getValue());
 		if(result != JOptionPane.OK_OPTION)
 			return;
@@ -93,8 +105,8 @@ public class ScriptComboBoxEditor implements ComboBoxEditor {
 			script = "";
 		else
 			this.script = (String)anObject;
-		if("".equals(anObject))
-			showEditorBtn.setText(TextUtils.getText("EditFilterAction.text") + "...");
+		if("".equals(script))
+			showEditorBtn.setText(TextUtils.getText("EditScript"));
 		else
 			showEditorBtn.setText(script);
     }

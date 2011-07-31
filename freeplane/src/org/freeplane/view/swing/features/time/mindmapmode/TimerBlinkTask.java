@@ -35,21 +35,28 @@ class TimerBlinkTask extends TimerTask {
 	 */
 	private final ReminderExtension reminderExtension;
 	private boolean stateAdded = false;
+	private boolean runScript;
 
 	/**
+	 * @param b 
 	 */
 	public TimerBlinkTask(final ReminderHook reminderController, final ReminderExtension reminderExtension,
-	                      final boolean stateAdded) {
+	                      final boolean stateAdded, boolean runScript) {
 		super();
 		this.reminderController = reminderController;
 		this.reminderExtension = reminderExtension;
 		this.stateAdded = stateAdded;
+		this.runScript = runScript;
 	}
 
 	@Override
 	public void run() {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
+				if(runScript){
+					runScript = false;
+					reminderController.runScript(reminderExtension);
+				}
 				stateAdded = !stateAdded;
 				reminderController.blink(reminderExtension, stateAdded);
 			}
