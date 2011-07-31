@@ -1109,7 +1109,7 @@ public class NodeView extends JComponent implements INodeView {
 
 		anotherLevel = 0;
         int y1 = lastView.getY() + getSpaceAround();
-		int y2 = y1 + lastView.getHeight() - getSpaceAround();
+		int y2 = lastView.getY() + lastView.getHeight() - getSpaceAround();
         int x1;
         if (isLeft) {
             x1 = lastView.getX() + spaceAround;
