@@ -181,8 +181,8 @@ public class MLogicalStyleController extends LogicalStyleController {
 	final private List<AssignStyleAction> actions;
 	private FilterComposerDialog filterComposerDialog;
 
-	public MLogicalStyleController() {
-		super();
+	public MLogicalStyleController(ModeController modeController) {
+		super(modeController);
 //		this.modeController = modeController;
 		actions = new LinkedList<AssignStyleAction>();
 	}

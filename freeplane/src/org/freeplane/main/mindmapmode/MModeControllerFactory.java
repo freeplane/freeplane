@@ -264,7 +264,7 @@ public class MModeControllerFactory {
 		userInputListenerFactory.setNodeDragListener(new MNodeDragListener());
 		userInputListenerFactory.setNodeDropTargetListener(new MNodeDropListener());
 		LocationController.install(new MLocationController());
-		final MLogicalStyleController logicalStyleController = new MLogicalStyleController();
+		final MLogicalStyleController logicalStyleController = new MLogicalStyleController(modeController);
 		LogicalStyleController.install(logicalStyleController);
 		logicalStyleController.initM();
 		AttributeController.install(new MAttributeController(modeController));

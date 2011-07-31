@@ -125,7 +125,7 @@ public class SModeControllerFactory {
 		NoteController.install(new MNoteController(modeController));
 		LinkController.install(new LinkController());
 		MFileManager.install(new MFileManager());
-		final MLogicalStyleController logicalStyleController = new MLogicalStyleController();
+		final MLogicalStyleController logicalStyleController = new MLogicalStyleController(modeController);
 		logicalStyleController.initS();
 		LogicalStyleController.install(logicalStyleController);
 		AttributeController.install(new MAttributeController(modeController));
