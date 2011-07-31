@@ -26,6 +26,7 @@ import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.map.IMapSelection;
 
 /**
  * @author foltin

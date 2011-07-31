@@ -23,9 +23,9 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.IMapSelection;
 
 
 @SelectableAction(checkOnNodeChange=true)
