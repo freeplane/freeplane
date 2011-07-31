@@ -87,6 +87,7 @@ public class NoteController implements IExtension {
 		final WriteManager writeManager = modeController.getMapController().getWriteManager();
 		writeManager.addAttributeWriter("map", noteWriter);
 		writeManager.addExtensionElementWriter(NoteModel.class, noteWriter);
+		registerNoteTooltip(modeController);
 	}
 
 	public final String getNoteText(final NodeModel node) {
@@ -112,27 +113,22 @@ public class NoteController implements IExtension {
 			showIcon = false;
 		}
 		node.setStateIcon(NoteController.NODE_NOTE_ICON, (showIcon) ? noteIcon : null, true);
-		setNoteTooltip(node, enabled);
 	}
 
-	void setNoteTooltip(final NodeModel node, final boolean enabled) {
-		if (!enabled) {
-			(Controller.getCurrentModeController().getMapController()).setToolTip(node, NODE_TOOLTIP, null);
-			return;
-		}
-		final String noteText = NoteModel.getNoteText(node);
-		if (noteText == null) 
-			return;
-		(Controller.getCurrentModeController().getMapController()).setToolTip(node, NODE_TOOLTIP, new ITooltipProvider() {
-			public String getTooltip(ModeController modeController) {
-				if(showNotesInMap(node.getMap()) && ! TextController.getController().getIsShortened(node)){
+	private void registerNoteTooltip(ModeController modeController) {
+		modeController.addToolTipProvider(NODE_TOOLTIP, new ITooltipProvider() {
+			public String getTooltip(ModeController modeController, NodeModel node) {
+				if(showNotesInMap(node.getMap()) && ! TextController.getController(modeController).getIsShortened(node)){
 					return null;
 				}
+				final String noteText = NoteModel.getNoteText(node);
+				if (noteText == null)
+					return null;
 				final StringBuilder rule = new StringBuilder();
 				// set default font for notes:
 				final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
 				    NodeStyleController.class);
-				MapModel map = Controller.getCurrentModeController().getController().getMap();
+				MapModel map = modeController.getController().getMap();
 				if(map != null){
 				    final Font defaultFont;
 				    defaultFont = style.getDefaultFont(map, MapStyleModel.NOTE_STYLE);

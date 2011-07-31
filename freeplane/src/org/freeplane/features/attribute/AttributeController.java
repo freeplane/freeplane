@@ -75,6 +75,7 @@ public class AttributeController implements IExtension {
 			public void onRemove(final MapModel map) {
 			}
 		});
+		registerTooltipProvider();
 	}
 
 	public NodeAttributeTableModel createAttributeTableModel(final NodeModel node) {
@@ -162,63 +163,57 @@ public class AttributeController implements IExtension {
 			}
 			node.setStateIcon(STATE_ICON, attributeIcon, true);
 		}
-		setTooltip(attributes);
 	}
 
-	// FIXME: isn't this view logic?
-	protected void setTooltip(final NodeAttributeTableModel attributes) {
-		final NodeModel node = attributes.getNode();
-		final int rowCount = attributes.getRowCount();
-		if (rowCount == 0) {
-			node.setToolTip(ATTRIBUTE_TOOLTIP, null);
-			return;
-		}
-		if (rowCount == 1) {
-			node.setToolTip(ATTRIBUTE_TOOLTIP, new ITooltipProvider() {
-				public String getTooltip(ModeController modeController) {
-					final AttributeRegistry registry = AttributeRegistry.getRegistry(node.getMap());
-					final TextController textController = TextController.getController(modeController);
-					if (registry.getAttributeViewType().equals(AttributeTableLayoutModel.SHOW_ALL)
-							&& ! textController.getIsShortened(node)) {
-						return null;
-					}
-					final StringBuilder tooltip = new StringBuilder();
-					tooltip.append("<html><body><table style='border: 1px black solid; background-color: black' width='100%' cellspacing='1' cellpadding='2'>");
-					final int currentRowCount = attributes.getRowCount();
-					for (int i = 0; i < currentRowCount; i++) {
-						tooltip.append("<tr><td>");
-						tooltip.append(attributes.getValueAt(i, 0));
-						tooltip.append("</td><td>");
-						tooltip.append(getTransformedValue(textController, String.valueOf(attributes.getValueAt(i, 1))));
-						tooltip.append("</td></tr>");
-					}
-					tooltip.append("</table></body></html>");
-					return tooltip.toString();
+	private void registerTooltipProvider() {
+		modeController.addToolTipProvider(ATTRIBUTE_TOOLTIP, new ITooltipProvider() {
+			public String getTooltip(ModeController modeController, NodeModel node) {
+				final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
+				final int rowCount = attributes.getRowCount();
+				if (rowCount == 0) {
+					return null;
 				}
+				final AttributeRegistry registry = AttributeRegistry.getRegistry(node.getMap());
+				final TextController textController = TextController.getController(modeController);
+				if (registry.getAttributeViewType().equals(AttributeTableLayoutModel.SHOW_ALL)
+						&& ! textController.getIsShortened(node)) {
+					return null;
+				}
+				final StringBuilder tooltip = new StringBuilder();
+				tooltip.append("<html><body><table style='border: 1px black solid; background-color: black' width='100%' cellspacing='1' cellpadding='2'>");
+				final int currentRowCount = attributes.getRowCount();
+				for (int i = 0; i < currentRowCount; i++) {
+					tooltip.append("<tr><td>");
+					tooltip.append(attributes.getValueAt(i, 0));
+					tooltip.append("</td><td>");
+					tooltip.append(getTransformedValue(node, textController, String.valueOf(attributes.getValueAt(i, 1))));
+					tooltip.append("</td></tr>");
+				}
+				tooltip.append("</table></body></html>");
+				return tooltip.toString();
+			}
 
-				private String getTransformedValue(final TextController textController, final String originalText) {
-					try {
-						final String text = textController.getTransformedText(originalText, node, null);
-						final boolean markTransformedText = !Controller.getCurrentController().getResourceController()
-						    .getBooleanProperty(IContentTransformer.DONT_MARK_TRANSFORMED_TEXT);
-						if (markTransformedText && text != originalText)
-							return colorize(text, "green");
-						else
-							return text;
-					}
-					catch (Throwable e) {
-						LogUtils.warn(e.getMessage(), e);
-						return colorize(
-						    TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage())
-						        .replace("\n", "<br>"), "red");
-					}
+			private String getTransformedValue(NodeModel node, final TextController textController, final String originalText) {
+				try {
+					final String text = textController.getTransformedText(originalText, node, null);
+					final boolean markTransformedText = !Controller.getCurrentController().getResourceController()
+					.getBooleanProperty(IContentTransformer.DONT_MARK_TRANSFORMED_TEXT);
+					if (markTransformedText && text != originalText)
+						return colorize(text, "green");
+					else
+						return text;
 				}
+				catch (Throwable e) {
+					LogUtils.warn(e.getMessage(), e);
+					return colorize(
+						TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage())
+						.replace("\n", "<br>"), "red");
+				}
+			}
 
-				private String colorize(final String text, String color) {
-					return "<span style=\"color:" + color + ";font-style:italic;\">" + text + "</span>";
-				}
-			});
-		}
+			private String colorize(final String text, String color) {
+				return "<span style=\"color:" + color + ";font-style:italic;\">" + text + "</span>";
+			}
+		});
 	}
-
 }

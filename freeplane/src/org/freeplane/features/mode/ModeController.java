@@ -25,7 +25,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
@@ -36,6 +38,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.features.map.IExtensionCopier;
+import org.freeplane.features.map.ITooltipProvider;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -53,6 +56,7 @@ public class ModeController extends AController {
 	private final Collection<IExtensionCopier> copiers;
 	private boolean isBlocked = false;
 	private MapController mapController;
+	final private Map<Integer, ITooltipProvider> toolTip = new TreeMap<Integer, ITooltipProvider>();
 	final private List<IMenuContributor> menuContributors = new LinkedList<IMenuContributor>();
 	/**
 	 * The model, this controller belongs to. It may be null, if it is the
@@ -328,5 +332,49 @@ public class ModeController extends AController {
 
 	public boolean canEdit() {
 		return false;
+	}
+	public String createToolTip(final NodeModel node) {
+		// perhaps we should use the solution presented in the 3rd answer at
+		// http://stackoverflow.com/questions/3355469/1-pixel-table-border-in-jtextpane-using-html
+		// html/css example: http://www.wer-weiss-was.de/theme35/article3555660.html
+		final String style = "<style type='text/css'>" //
+		        + " body { font-size: 13pt; }" // FIXME: copy from NoteController.setNoteTooltip() ?
+		        + "</style>";
+		final StringBuilder text = new StringBuilder("<html><head>"+style+"</head><body>");
+		boolean tooltipSet = false;
+		for (final ITooltipProvider provider : toolTip.values()) {
+			String value = provider.getTooltip(this, node);
+			if (value == null) {
+				continue;
+			}
+			value = value.replace("<html>", "<div>");
+			value = value.replaceAll("\\s*</?(body|head)>", "");
+			value = value.replace("<td>", "<td style='background-color: white'>");
+			value = value.replace("</html>", "</div>");
+			if (tooltipSet) {
+				text.append("<br>");
+			}
+			text.append(value);
+			tooltipSet = true;
+		}
+		if (tooltipSet) {
+			text.append("</body></html>");
+//			System.err.println("tooltip=" + text);
+			return text.toString();
+		}
+		return null;
+	}
+
+	/**
+	 */
+	public void addToolTipProvider(final Integer key, final ITooltipProvider tooltip) {
+		if (tooltip == null) {
+			if (toolTip.containsKey(key)) {
+				toolTip.remove(key);
+			}
+		}
+		else {
+			toolTip.put(key, tooltip);
+		}
 	}
 }

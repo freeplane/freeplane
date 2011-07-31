@@ -845,7 +845,6 @@ public class NodeView extends JComponent implements INodeView {
 			return;
 		}
 		if (property.equals(HistoryInformationModel.class)) {
-			updateToolTip();
 			return;
 		}
 		update();
@@ -1396,7 +1395,6 @@ public class NodeView extends JComponent implements INodeView {
 		updateShortener(getModel());
 		mainView.updateText(getModel());
 		mainView.updateIcons(this);
-		updateToolTip();
 		updateCloud();
 		updateEdge();
 		modelBackgroundColor = NodeStyleController.getController(getMap().getModeController()).getBackgroundColor(model);
@@ -1474,19 +1472,6 @@ public class NodeView extends JComponent implements INodeView {
 		setMainView(newMainView);
 		if (map.getSelected() == this) {
 			requestFocusInWindow();
-		}
-	}
-
-	/**
-	 *
-	 */
-	/**
-	 * Updates the tool tip of the node.
-	 */
-	private void updateToolTip() {
-		if (mainView != null) {
-			final NodeModel nodeModel = getModel();
-			mainView.setToolTipText(nodeModel.getToolTip(getMap().getModeController()));
 		}
 	}
 

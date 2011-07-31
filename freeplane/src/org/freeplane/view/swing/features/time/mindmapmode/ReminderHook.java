@@ -22,13 +22,11 @@ package org.freeplane.view.swing.features.time.mindmapmode;
 import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
 import java.util.Date;
-import java.util.Map;
 import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -144,13 +142,31 @@ public class ReminderHook extends PersistentNodeHook {
 		registerAction(new TimeListAction());
 		registerAction(new NodeListAction());
 		registerAction(new AllMapsNodeListAction());
-		
+		registerTooltipProvider();
+
 		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(9,
-		    new ReminderConditionController());
+			new ReminderConditionController());
+	}
+
+	private void registerTooltipProvider() {
+		modeController.addToolTipProvider(REMINDER_TOOLTIP, new ITooltipProvider() {
+			public String getTooltip(ModeController modeController, NodeModel node) {
+				final ReminderExtension model = ReminderExtension.getExtension(node);
+				if(model == null)
+					return null;
+				final Date date = new Date(model.getRemindUserAt());
+				final Object[] messageArguments = { date };
+				final MessageFormat formatter = new MessageFormat(TextUtils
+					.getText("plugins/TimeManagement.xml_reminderNode_tooltip"));
+				final String message = formatter.format(messageArguments);
+				return message;
+			}
+		});
+
 	}
 
 	private void createTimePanel() {
-	    final TimeManagement timeManagement = new TimeManagement(this);
+		final TimeManagement timeManagement = new TimeManagement(this);
 		final int axis = BoxLayout.Y_AXIS;
 		final JTimePanel timePanel = timeManagement.createTimePanel(null, false, axis);
 		modeController.getMapController().addNodeSelectionListener(new INodeSelectionListener() {
@@ -220,7 +236,6 @@ public class ReminderHook extends PersistentNodeHook {
 	@Override
 	protected void remove(final NodeModel node, final IExtension extension) {
 		final ReminderExtension reminderExtension = (ReminderExtension) extension;
-		setToolTip(reminderExtension.getNode(), null);
 		reminderExtension.deactivateTimer();
 		reminderExtension.displayState(ClockState.REMOVE_CLOCK, reminderExtension.getNode(), true);
 		modeController.getMapController().removeMapChangeListener(reminderExtension);
@@ -244,25 +259,12 @@ public class ReminderHook extends PersistentNodeHook {
 	private void scheduleTimer(final ReminderExtension model) {
 		final Date date = new Date(model.getRemindUserAt());
 		scheduleTimer(model, new TimerBlinkTask(this, model, false, System.currentTimeMillis() < date.getTime() + ReminderExtension.BLINKING_PERIOD));
-		final Object[] messageArguments = { date };
-		final MessageFormat formatter = new MessageFormat(TextUtils
-		    .getText("plugins/TimeManagement.xml_reminderNode_tooltip"));
-		final String message = formatter.format(messageArguments);
-		setToolTip(model.getNode(), message);
 		model.displayState(ClockState.CLOCK_VISIBLE, model.getNode(), false);
 	}
 
 	private void scheduleTimer(final ReminderExtension model, final TimerTask task) {
 		final Date date = new Date(model.getRemindUserAt());
 		model.scheduleTimer(task, date);
-	}
-
-	private void setToolTip(final NodeModel node, final String value) {
-		(Controller.getCurrentModeController().getMapController()).setToolTip(node, REMINDER_TOOLTIP, new ITooltipProvider() {
-			public String getTooltip(ModeController modeController) {
-				return value;
-			}
-		});
 	}
 
 	ModeController getModeController() {

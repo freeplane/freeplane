@@ -762,13 +762,6 @@ public class MapController extends SelectionController {
 		mapModel.setSaved(saved);
 	}
 
-	/**
-	*
-	*/
-	public void setToolTip(final NodeModel node, final Integer key, final ITooltipProvider value) {
-		node.setToolTip(key, value);
-		nodeRefresh(node);
-	}
 
 	public void sortNodesByDepth(final List<NodeModel> collection) {
 		Collections.sort(collection, new NodesDepthComparator());
