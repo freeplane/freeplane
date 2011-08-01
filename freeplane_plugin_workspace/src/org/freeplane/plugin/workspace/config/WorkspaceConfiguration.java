@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.nio.channels.FileChannel;
 
 import javax.swing.JOptionPane;
 
@@ -121,11 +120,6 @@ public class WorkspaceConfiguration {
 		}
 		in.close();
 		out.close();
-		
-//		FileChannel from = ().getChannel();
-//		FileChannel to = new FileOutputStream(config).getChannel();
-//
-//		to.transferFrom(from, 0, from.size());
 	}
 
 	public boolean isConfigValid() {
