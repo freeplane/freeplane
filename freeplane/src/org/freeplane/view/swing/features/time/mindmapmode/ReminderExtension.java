@@ -37,6 +37,7 @@ import org.freeplane.features.mode.Controller;
  * @author Dimitry Polivaev 30.11.2008
  */
 class ReminderExtension implements IExtension, IMapChangeListener {
+	static final int BLINKING_PERIOD = 1000;
 	private static final IconStore STORE = IconStoreFactory.create();
 	private static UIIcon bellIcon;
 	private static UIIcon clockIcon;
@@ -51,6 +52,7 @@ class ReminderExtension implements IExtension, IMapChangeListener {
 	private final NodeModel node;
 	private long remindUserAt = 0;
 	private Timer timer;
+	private String script;
 
 	public ReminderExtension(final NodeModel node) {
 		this.node = node;
@@ -67,12 +69,21 @@ class ReminderExtension implements IExtension, IMapChangeListener {
 	public void setRemindUserAt(final long remindUserAt) {
 		this.remindUserAt = remindUserAt;
 	}
+	
+
+	String getScript() {
+    	return script;
+    }
+
+	void setScript(String script) {
+    	this.script = script;
+    }
 
 	public void scheduleTimer(final TimerTask task, final Date date) {
 		if (timer == null) {
 			timer = SysUtils.createTimer(getClass().getSimpleName());
 		}
-		timer.schedule(task, date, 1000);
+		timer.schedule(task, date, BLINKING_PERIOD);
 	}
 
 	public void deactivateTimer() {
@@ -171,6 +182,4 @@ class ReminderExtension implements IExtension, IMapChangeListener {
 		}
 		return flagIcon;
 	}
-
-
 }

@@ -19,8 +19,9 @@
  */
 package org.freeplane.view.swing.map.edge;
 
+import java.awt.Component;
+
 import org.freeplane.features.edge.EdgeStyle;
-import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -30,64 +31,32 @@ import org.freeplane.view.swing.map.NodeView;
 public class EdgeViewFactory {
 	final private static EdgeViewFactory instance = new EdgeViewFactory();
 
-	public EdgeView getEdge(final NodeView nodeView) {
-		if (nodeView.getMap().getLayoutType() == MapViewLayout.OUTLINE) {
-			return new OutlineEdgeView(nodeView);
-		}
-		final EdgeStyle edgeStyle = nodeView.getEdgeStyle();
-		if (edgeStyle.equals(EdgeStyle.EDGESTYLE_LINEAR)) {
-			return new LinearEdgeView(nodeView);
-		}
-        else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_BEZIER)) {
-            return new BezierEdgeView(nodeView);
-        }
-        else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_SUMMARY)) {
-            return new SummaryEdgeView(nodeView);
-        }
-		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_SHARP_LINEAR)) {
-			return new SharpLinearEdgeView(nodeView);
-		}
-		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_SHARP_BEZIER)) {
-			return new SharpBezierEdgeView(nodeView);
-		}
-		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_HORIZONTAL)) {
-			return new HorizontalEdgeView(nodeView);
-		}
-		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_HIDDEN)) {
-			return new HiddenEdgeView(nodeView);
-		}
-		else {
-			System.err.println("Unknown Edge Type.");
-			return new LinearEdgeView(nodeView);
-		}
-	}
-
-	public EdgeView getEdge(final NodeView source, final NodeView target) {
+	public EdgeView getEdge(final NodeView source, final NodeView target, Component paintedComponent) {
 		final EdgeStyle edgeStyle = target.getEdgeStyle();
 		if (edgeStyle.equals(EdgeStyle.EDGESTYLE_LINEAR)) {
-			return new LinearEdgeView(source, target);
+			return new LinearEdgeView(source, target, paintedComponent);
 		}
 		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_BEZIER)) {
-			return new BezierEdgeView(source, target);
+			return new BezierEdgeView(source, target, paintedComponent);
 		}
 		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_SUMMARY)) {
-            return new SummaryEdgeView(source, target);
+            return new SummaryEdgeView(source, target, paintedComponent);
         }
 		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_SHARP_LINEAR)) {
-			return new SharpLinearEdgeView(source, target);
+			return new SharpLinearEdgeView(source, target, paintedComponent);
 		}
 		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_SHARP_BEZIER)) {
-			return new SharpBezierEdgeView(source, target);
+			return new SharpBezierEdgeView(source, target, paintedComponent);
 		}
 		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_HORIZONTAL)) {
-			return new HorizontalEdgeView(source, target);
+			return new HorizontalEdgeView(source, target, paintedComponent);
 		}
 		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_HIDDEN)) {
-			return new HiddenEdgeView(source, target);
+			return new HiddenEdgeView(source, target, paintedComponent);
 		}
 		else {
 			System.err.println("Unknown Edge Type.");
-			return new LinearEdgeView(source, target);
+			return new LinearEdgeView(source, target, paintedComponent);
 		}
 	}
 

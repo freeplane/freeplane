@@ -32,6 +32,7 @@ import java.awt.RenderingHints;
 import javax.swing.SwingConstants;
 
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodelocation.LocationModel;
 
 class RootMainView extends MainView {
 	/**
@@ -159,8 +160,11 @@ class RootMainView extends MainView {
             }
             final double nWidth = mainView.getWidth() / 2f;
             final double nHeight = mainView.getHeight() / 2f;
-            double angle = Math.atan((p.y - nHeight) / (p.x - nWidth));
-            if (p.x < nWidth) {
+            int dx = getNodeView().getZoomed(LocationModel.HGAP);
+            if(p.x < 0)
+            	dx = -dx;
+			double angle = Math.atan((p.y - nHeight) / dx);
+            if (dx < 0) {
                 angle += Math.PI;
             }
             final Point out = new Point((int) ((1f + Math.cos(angle)) * nWidth), (int) ((1f + Math.sin(angle)) * nHeight));

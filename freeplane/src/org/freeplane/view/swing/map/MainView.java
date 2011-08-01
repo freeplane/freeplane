@@ -30,6 +30,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.net.URI;
 import java.util.Collection;
 import java.util.Map.Entry;
@@ -417,20 +418,6 @@ public abstract class MainView extends ZoomableLabel {
         return tip;
     }
 
-	@Override
-    public void setToolTipText(String text) {
-        String oldText = getToolTipText();
-        putClientProperty(TOOL_TIP_TEXT_KEY, text);
-        NodeTooltipManager toolTipManager = NodeTooltipManager.getSharedInstance(getMap().getModeController());
-        if (text != null) {
-	    if (oldText == null) {
-                toolTipManager.registerComponent(this);
-	    }
-        } else {
-            toolTipManager.unregisterComponent(this);
-        }
-    }
-
     @Override
     public void setBorder(Border border) {
     }
@@ -471,4 +458,29 @@ public abstract class MainView extends ZoomableLabel {
     public Point getBottomPoint() {
         return new Point(getWidth()/2, getHeight());
     }
+
+	@Override
+    public String getToolTipText() {
+	    final String toolTipText = super.getToolTipText();
+	    if(toolTipText != null)
+	    	return toolTipText;
+	    return createToolTipText();
+    }
+
+	private String createToolTipText() {
+		final NodeView nodeView = getNodeView();
+		final ModeController modeController = nodeView.getMap().getModeController();
+		final NodeModel node = nodeView.getModel();
+		return modeController.createToolTip(node);
+    }
+
+	@Override
+    public String getToolTipText(MouseEvent event) {
+	    final String toolTipText = super.getToolTipText(event);
+	    if(toolTipText != null)
+	    	return toolTipText;
+	    return createToolTipText();
+    }
+    
+    
 }

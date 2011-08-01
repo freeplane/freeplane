@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
-import org.freeplane.features.filter.FilterHistory;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;

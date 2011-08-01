@@ -58,11 +58,11 @@ import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.AttributeRegistryElement;
 import org.freeplane.features.attribute.IAttributesListener;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.IMapSelection;
 
 class AssignAttributeDialog extends JDialog implements IAttributesListener, IMapSelectionListener {
 	private class AddAction extends IteratingAction {

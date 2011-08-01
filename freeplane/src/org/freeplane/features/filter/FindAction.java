@@ -37,11 +37,11 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ICondition;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.MapController.Direction;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.IMapSelection;
 
 class FindAction extends AFreeplaneAction {
 	static final String KEY = "FindAction";

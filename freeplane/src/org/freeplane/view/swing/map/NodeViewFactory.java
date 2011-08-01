@@ -43,6 +43,7 @@ import org.freeplane.core.ui.DelayedMouseListener;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.note.NoteController;
@@ -87,7 +88,7 @@ class NodeViewFactory {
 				final Component component = parent.getComponent(i);
 				if (component.isVisible()) {
 					component.validate();
-					final Dimension preferredCompSize = component.getPreferredSize();
+					final Dimension preferredCompSize = width == 0 ? new Dimension() : component.getPreferredSize();
 					if (component instanceof MainView) {
 						component.setBounds(0, y, width, preferredCompSize.height);
 					}
@@ -99,6 +100,9 @@ class NodeViewFactory {
 					if (component instanceof ForkMainView){
 						y += ((ForkMainView)component).getEdgeWidth();
 					}
+				}
+				else{
+					component.setBounds(0, y, 0, 0);
 				}
 			}
 		}
@@ -150,21 +154,28 @@ class NodeViewFactory {
 	}
 
 	MainView newMainView(final NodeView node) {
+		final ModeController modeController = node.getMap().getModeController();
 		final NodeModel model = node.getModel();
+		MainView view;
 		if (model.isRoot()) {
-			return new RootMainView();
+			view = new RootMainView();
 		}
-		final String shape = NodeStyleController.getController(node.getMap().getModeController()).getShape(model);
-		if (shape.equals(NodeStyleModel.STYLE_FORK)) {
-			return new ForkMainView();
+		else{
+			final String shape = NodeStyleController.getController(modeController).getShape(model);
+			if (shape.equals(NodeStyleModel.STYLE_FORK)) {
+				view = new ForkMainView();
+			}
+			else if (shape.equals(NodeStyleModel.STYLE_BUBBLE)) {
+				view =  new BubbleMainView();
+			}
+			else {
+				System.err.println("Tried to create a NodeView of unknown Style " + shape);
+				view = new ForkMainView();
+			}
 		}
-		else if (shape.equals(NodeStyleModel.STYLE_BUBBLE)) {
-			return new BubbleMainView();
-		}
-		else {
-			System.err.println("Tried to create a NodeView of unknown Style " + shape);
-			return new ForkMainView();
-		}
+		NodeTooltipManager toolTipManager = NodeTooltipManager.getSharedInstance(modeController);
+		toolTipManager.registerComponent(view);
+		return view;
 	}
 
 	/**

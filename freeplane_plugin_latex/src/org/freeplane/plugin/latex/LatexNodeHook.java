@@ -28,10 +28,10 @@ import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.INodeViewLifeCycleListener;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;
+import org.freeplane.features.ui.INodeViewLifeCycleListener;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.view.swing.map.NodeView;
 

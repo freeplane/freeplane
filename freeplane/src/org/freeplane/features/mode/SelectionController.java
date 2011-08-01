@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.NodeModel;
 
 /**

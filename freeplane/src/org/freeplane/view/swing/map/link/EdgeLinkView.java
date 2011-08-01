@@ -32,6 +32,7 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.MapViewLayout;
+import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.edge.EdgeView;
 import org.freeplane.view.swing.map.edge.EdgeViewFactory;
@@ -46,11 +47,12 @@ public class EdgeLinkView extends AConnectorView {
 	public EdgeLinkView(final ConnectorModel model, final ModeController modeController, final NodeView source,
 	                    final NodeView target) {
 		super(model, source, target);
-		if (source.getMap().getLayoutType() == MapViewLayout.OUTLINE) {
-			edgeView = new OutlineLinkView(source, target);
+		final MapView map = source.getMap();
+		if (map.getLayoutType() == MapViewLayout.OUTLINE) {
+			edgeView = new OutlineLinkView(source, target, map);
 		}
 		else{
-			edgeView = EdgeViewFactory.getInstance().getEdge(source, target);
+			edgeView = EdgeViewFactory.getInstance().getEdge(source, target, map);
 		}
 		Color color;
 		if (Shape.EDGE_LIKE.equals(model.getShape())) {

@@ -78,7 +78,6 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			final DetailTextModel note = new DetailTextModel("true".equals(attributes.getAttribute("HIDDEN", "false")));
 			note.setXml(xmlText);
 			nodeModel.addExtension((IExtension) note);
-			TextController.getController().setDetailsTooltip(nodeModel);
 		}
 	}
 
@@ -105,7 +104,6 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 				try {
 					if(Boolean.valueOf(value)){
 						node.addExtension(new ShortenedTextModel());
-						TextController.getController().setNodeTextTooltip(node);
 					}
 				}
 				catch (Exception e) {

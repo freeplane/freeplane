@@ -100,7 +100,7 @@ public interface Proxy {
 		 * </pre>
 		 * @param closure A closure that accepts two arguments (String key, Object value) and returns boolean/Boolean. 
 		 * @since 1.2 */
-		List<? extends Convertible> findValues(Closure closure);
+		List<? extends Convertible> findValues(Closure<Boolean> closure);
 
 		/** the number of attributes. It is <code>size() == getAttributeNames().size()</code>. */
 		int size();
@@ -256,7 +256,7 @@ public interface Proxy {
 		 * @return all nodes for which <code>closure.call(NodeModel)</code> returns true.
 		 * @see Node#find(Closure) for searches on subtrees
 		 */
-		List<Node> find(Closure closure);
+		List<Node> find(Closure<Boolean> closure);
 
 		/**
 		 * Returns all nodes of the map in breadth-first order, that is, for the following map,
@@ -824,7 +824,7 @@ public interface Proxy {
 
 		/** Starting from this node, recursively searches for nodes for which <code>closure.call(node)</code>
 		 * returns true. See {@link Controller#find(Closure)} for details. */
-		List<Node> find(Closure closure);
+		List<Node> find(Closure<Boolean> closure);
 
 		/** Returns all nodes of the branch that starts with this node in breadth-first order.
 		 * @see Controller#findAll() for subtrees

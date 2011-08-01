@@ -23,8 +23,8 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.IMapSelection;
 import org.freeplane.features.mode.ModeController;
 
 class CopyAction extends AFreeplaneAction {

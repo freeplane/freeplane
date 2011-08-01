@@ -32,6 +32,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.OptionPanelController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;

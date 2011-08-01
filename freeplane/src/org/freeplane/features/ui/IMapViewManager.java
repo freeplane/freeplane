@@ -28,10 +28,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.IMapSelection;
 import org.freeplane.features.mode.ModeController;
 
 /**

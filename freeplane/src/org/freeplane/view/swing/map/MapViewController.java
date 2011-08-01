@@ -37,11 +37,11 @@ import java.util.Map;
 import java.util.Vector;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.IMapSelection;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapViewLayout;
