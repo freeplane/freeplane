@@ -36,7 +36,13 @@ public class WorkspaceSetLocationAction extends AFreeplaneAction {
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		ResourceController resourceController = ResourceController.getResourceController();
 		String currentLocation = resourceController.getProperty(WorkspacePreferences.WORKSPACE_LOCATION);
-		fileChooser.setSelectedFile(new File(currentLocation));
+		
+		if (currentLocation != null) {
+			File file = new File(currentLocation);
+			if (file.exists()) {
+				fileChooser.setSelectedFile(file);
+			}
+		}
 
 		int retVal = fileChooser.showOpenDialog(UITools.getFrame());
 		if (retVal == JFileChooser.APPROVE_OPTION) {
