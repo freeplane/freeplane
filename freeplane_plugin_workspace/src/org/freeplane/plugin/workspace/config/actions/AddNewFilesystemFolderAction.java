@@ -17,6 +17,7 @@ public class AddNewFilesystemFolderAction extends AFreeplaneAction {
 	
 	public void actionPerformed(final ActionEvent e) {
         System.out.println("AddNewFilesystemFolderAction: "+e.getActionCommand()+" : "+e.getID());
+        //TODO: User AddExistingFilesystemFolderAction --> why does new created folder not appear?
     }
 
 

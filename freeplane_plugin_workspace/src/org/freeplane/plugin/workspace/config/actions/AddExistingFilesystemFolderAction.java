@@ -42,6 +42,7 @@ public class AddExistingFilesystemFolderAction extends AWorkspaceAction {
 		fileChooser.setSelectedFile(new File(currentLocation));
 
 		int retVal = fileChooser.showOpenDialog(UITools.getFrame());
+		System.out.println("RETVAL: "+retVal+" : "+JFileChooser.APPROVE_OPTION);
 		if (retVal == JFileChooser.APPROVE_OPTION) {
 			createNode(e, fileChooser.getSelectedFile(), currentLocation);
 		}
