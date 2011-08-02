@@ -2,16 +2,12 @@ package org.freeplane.plugin.workspace.config.actions;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.util.Collections;
 
 import javax.swing.JFileChooser;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspacePreferences;
 
@@ -45,15 +41,9 @@ public class WorkspaceSetLocationAction extends AFreeplaneAction {
 		}
 
 		int retVal = fileChooser.showOpenDialog(UITools.getFrame());
-		if (retVal == JFileChooser.APPROVE_OPTION) {
-			
+		if (retVal == JFileChooser.APPROVE_OPTION) {			
 			File selectedfile = fileChooser.getSelectedFile();
-			ResourceController.getResourceController().setProperty(WorkspacePreferences.WORKSPACE_LOCATION_NEW,
-					selectedfile.getPath());
-			Controller.getCurrentController().getResourceController()
-					.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, true);
-			WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();
-			
+			WorkspaceController.getCurrentWorkspaceController().setWorkspaceLocation(selectedfile.getPath());
 		}
 
 	}

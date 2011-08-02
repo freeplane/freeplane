@@ -37,7 +37,7 @@ public class WorkspacePreferences {
 		addDefaultPreferences();
 		addPreferencesToOptionsPanel();
 	}
-	
+
 	private void addDefaultPreferences() {
 		final URL defaults = this.getClass().getResource(ResourceController.PLUGIN_DEFAULTS_RESOURCE);
 		if (defaults == null)
@@ -56,15 +56,15 @@ public class WorkspacePreferences {
 		final URL res = this.getClass().getResource("/translations/Resources_" + lang + ".properties");
 		resBundle.addResources(resBundle.getLanguageCode(), res);
 	}
-	
+
 	private void addPreferencesToOptionsPanel() {
 		final URL preferences = this.getClass().getResource("preferences.xml");
 		if (preferences == null)
 			throw new RuntimeException("cannot open preferences");
 		MModeController modeController = (MModeController) Controller.getCurrentModeController();
-		
+
 		modeController.getOptionPanelBuilder().load(preferences);
-		
+
 	}
 
 	private void addMenuEntries() {
@@ -73,15 +73,13 @@ public class WorkspacePreferences {
 			ResourceController resourceController = Controller.getCurrentController().getResourceController();
 
 			public void updateMenus(ModeController modeController, MenuBuilder builder) {
-				builder.addCheckboxItem(MENU_BAR + VIEW_MENU, new CheckBoxAction(SHOW_WORKSPACE_TEXT, SHOW_WORKSPACE_PROPERTY_KEY),
+				builder.addCheckboxItem(MENU_BAR + VIEW_MENU,
+						new CheckBoxAction(SHOW_WORKSPACE_TEXT, SHOW_WORKSPACE_PROPERTY_KEY),
 						resourceController.getBooleanProperty(SHOW_WORKSPACE_PROPERTY_KEY));
 			}
 		});
 	}
-	
-	
-	
-	
+
 	private class CheckBoxAction extends AFreeplaneAction {
 
 		private static final long serialVersionUID = 1256514415353330887L;
@@ -97,7 +95,12 @@ public class WorkspacePreferences {
 			Controller.getCurrentController().getResourceController().setProperty(this.propertyKey, checked);
 
 			if (checked) {
-				WorkspaceController.getCurrentWorkspaceController().showWorkspaceView(true);
+				String currentLocation = WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation();
+				if (currentLocation == null || currentLocation.length()==0) {
+					LocationDialog locationDialog = new LocationDialog();
+					locationDialog.setVisible(true);
+				}
+				//WorkspaceController.getCurrentWorkspaceController().showWorkspaceView(true);
 			}
 			else {
 				WorkspaceController.getCurrentWorkspaceController().showWorkspaceView(false);
@@ -105,10 +108,4 @@ public class WorkspacePreferences {
 		}
 	}
 
-
-
-
-	
 }
-
-

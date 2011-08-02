@@ -13,13 +13,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.mode.Controller;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
+
 import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
 public class LocationDialog extends JDialog {
@@ -39,11 +38,7 @@ public class LocationDialog extends JDialog {
 	}
 	
 	private void onOkButton() {
-		ResourceController.getResourceController().setProperty(WorkspacePreferences.WORKSPACE_LOCATION_NEW,
-				location.getText());
-		Controller.getCurrentController().getResourceController()
-				.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, true);
-		WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();
+		WorkspaceController.getCurrentWorkspaceController().setWorkspaceLocation(location.getText());
 		this.dispose();
 	}
 	
@@ -104,9 +99,8 @@ public class LocationDialog extends JDialog {
 					FormFactory.DEFAULT_ROWSPEC,}));
 			location = new JTextField();
 			panel.add(location, "2, 2");
-			
-			ResourceController resourceController = ResourceController.getResourceController();
-			String currentLocation = resourceController.getProperty(WorkspacePreferences.WORKSPACE_LOCATION);
+						
+			String currentLocation = WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation();
 			if (currentLocation != null && currentLocation.length()>0) {
 				location.setText(currentLocation);
 			}
