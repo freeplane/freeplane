@@ -32,7 +32,7 @@ public class FilesystemFolderCreator extends AConfigurationNodeCreator {
 				path = WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation()+File.separator+path;
 				f = new File(path);
 				if (!f.exists()) {
-					if (f.mkdir()) {
+					if (f.mkdirs()) {
 						LogUtils.info("New Filesystem Folder Created: "+f.getAbsolutePath());
 					}
 				}

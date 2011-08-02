@@ -155,7 +155,6 @@ public class WorkspaceConfiguration {
 	public void load(final URL xmlFile) {
 		final TreeXmlReader reader = new TreeXmlReader(readManager);
 		try {
-			// FISH
 			reader.load(new InputStreamReader(new BufferedInputStream(xmlFile.openStream())));
 		}
 		catch (final IOException e) {
