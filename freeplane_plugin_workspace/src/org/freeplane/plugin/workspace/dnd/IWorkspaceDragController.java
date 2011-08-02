@@ -2,7 +2,7 @@
  * author: Marcel Genzmehr
  * 27.07.2011
  */
-package org.freeplane.plugin.workspace.controller;
+package org.freeplane.plugin.workspace.dnd;
 
 import java.awt.Point;
 
