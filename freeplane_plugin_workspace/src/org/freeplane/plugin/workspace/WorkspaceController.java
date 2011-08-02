@@ -101,7 +101,13 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 
 	private void initializeConfiguration() {
 		resetWorkspaceView();
+		setConfig(new WorkspaceConfiguration());
 		if (!getConfig().isConfigValid()) {
+			LocationDialog locationDialog = new LocationDialog();
+			locationDialog.setVisible(true);
+		}
+			
+		if (!getConfig().isConfigValid()) {			
 			showWorkspaceView(false);
 			return;
 		}
