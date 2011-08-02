@@ -17,6 +17,7 @@ import org.docear.plugin.pdfutilities.actions.ImportAllAnnotationsAction;
 import org.docear.plugin.pdfutilities.actions.ImportNewAnnotationsAction;
 import org.docear.plugin.pdfutilities.actions.RadioButtonAction;
 import org.docear.plugin.pdfutilities.listener.DocearNodeDropListener;
+import org.docear.plugin.pdfutilities.listener.DocearNodeMouseMotionListener;
 import org.freeplane.core.resources.OptionPanelController;
 import org.freeplane.core.resources.OptionPanelController.PropertyLoadListener;
 import org.freeplane.core.resources.ResourceBundles;
@@ -24,6 +25,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.RadioButtonProperty;
 import org.freeplane.core.ui.IMenuContributor;
+import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -69,7 +71,7 @@ public class PdfUtilitiesController {
 
 		this.registerActions();
 		this.registerListener();
-		this.addMenuEntries();
+		this.addMenuEntries();		
 	}
 
 	private void registerActions() {
@@ -111,6 +113,13 @@ public class PdfUtilitiesController {
 				NodeView node = (NodeView) nodeView;
 				final DropTarget dropTarget = new DropTarget(node.getMainView(), new DocearNodeDropListener());
 				dropTarget.setActive(true);
+				
+				IMouseListener defaultMouseListener = modecontroller.getUserInputListenerFactory().getNodeMouseMotionListener();
+				IMouseListener docearMouseListener = new DocearNodeMouseMotionListener(defaultMouseListener);
+				node.getMainView().removeMouseMotionListener(defaultMouseListener);
+				node.getMainView().addMouseMotionListener(docearMouseListener);
+				node.getMainView().removeMouseListener(defaultMouseListener);
+				node.getMainView().addMouseListener(docearMouseListener);
 			}
 
 			public void onViewRemoved(Container nodeView) {

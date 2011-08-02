@@ -21,6 +21,7 @@ public class PdfAnnotation {
 	private List<PdfAnnotation> children = new ArrayList<PdfAnnotation>();
 	private int annotationType;
 	private boolean isNew;
+	private Integer page;	
 	
 	public PdfAnnotation(){}
 
@@ -40,6 +41,14 @@ public class PdfAnnotation {
 	public void setFile(File file) {
 		this.file = file;
 	}
+
+	public Integer getPage() {
+		return page;
+	}
+
+	public void setPage(Integer page) {
+		this.page = page;
+	}	
 
 	public String getTitle() {
 		return title;
