@@ -30,7 +30,7 @@ public class Tools {
 	}
 	
 	public static URI getAbsoluteUri(URI uri){
-		if(uri == null /*|| !isLocalFile(uri)*/) return null;
+		if(uri == null /*|| !isFile(uri)*/) return null;
 		try{
 			if(!uri.isAbsolute()){
 				final UrlManager urlManager = (UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class);
@@ -47,9 +47,9 @@ public class Tools {
 	}
 	
 	
-    public static boolean isLocalFile(URI uri) {
-        String scheme = uri.getScheme();
-        return "file".equalsIgnoreCase(scheme) && !hasHost(uri);
+    public static boolean isFile(URI uri) {
+    	final String scheme = uri.getScheme();
+		return scheme != null && scheme.equalsIgnoreCase("file");
     }
 
     public static boolean hasHost(URI uri) {

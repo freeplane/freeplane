@@ -106,7 +106,7 @@ public class NodeUtils {
 	}
 	
 	public static boolean isPdfLinkedNode(NodeModel node){
-		URI link = NodeLinks.getLink(node);		
+		URI link = NodeLinks.getValidLink(node);		
         return new PdfFileFilter().accept(link);
     }
 
