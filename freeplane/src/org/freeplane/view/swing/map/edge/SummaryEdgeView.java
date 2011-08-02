@@ -20,6 +20,7 @@
 package org.freeplane.view.swing.map.edge;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
@@ -36,13 +37,9 @@ public class SummaryEdgeView extends EdgeView {
 	private static final int CHILD_XCTRL = 20;
 	private static final int XCTRL = 6;
 
-	public SummaryEdgeView(final NodeView source, final NodeView target) {
-		super(source, target);
-	}
-
-	public SummaryEdgeView(final NodeView target) {
-		super(target);
-	}
+	public SummaryEdgeView(NodeView source, NodeView target, Component paintedComponent) {
+	    super(source, target, paintedComponent);
+    }
 
 	@Override
 	protected void draw(final Graphics2D g) {
@@ -52,13 +49,6 @@ public class SummaryEdgeView extends EdgeView {
 		final Stroke stroke = getStroke();
 		g.setStroke(stroke);
 		g.draw(graph);
-		if (isTargetEclipsed()) {
-			g.setColor(g.getBackground());
-			g.setStroke(EdgeView.getEclipsedStroke());
-			g.draw(graph);
-			g.setStroke(stroke);
-			g.setColor(color);
-		}
 	}
 
 	private Shape update() {
@@ -74,7 +64,7 @@ public class SummaryEdgeView extends EdgeView {
             startX = Math.max(start.x, end.x - childXctrl);
         path.moveTo(startX + xctrl, start.y);
 		path.lineTo(startX + 2 *xctrl, start.y);
-		path.curveTo(startX + 3 * xctrl, start.y, end.x - childXctrl, end.y, end.x, end.y);
+		path.curveTo(startX + 3 * xctrl, start.y, startX, end.y, end.x, end.y);
 		return path;
 	}
 

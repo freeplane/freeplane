@@ -19,6 +19,9 @@
  */
 package org.freeplane.plugin.script.filter;
 
+import java.awt.Component;
+import java.awt.Dimension;
+
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -48,6 +51,11 @@ public class ScriptConditionController implements IElementaryConditionController
 
 	public ScriptConditionController() {
 		super();
+		Component showEditorBtn = editor.getEditorComponent();
+		final Dimension preferredSize = showEditorBtn.getPreferredSize();
+		preferredSize.width = 100;
+		showEditorBtn.setPreferredSize(preferredSize);
+
 	}
 
 	public boolean canEditValues(final Object property, final NamedObject simpleCond) {

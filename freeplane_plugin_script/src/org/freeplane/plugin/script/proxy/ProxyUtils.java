@@ -41,20 +41,20 @@ public class ProxyUtils {
 		return ProxyUtils.createNodeList(ProxyUtils.findImpl(null, node, breadthFirst), scriptContext);
 	}
 
-	static List<Node> find(final Closure closure, final NodeModel node, final ScriptContext scriptContext) {
+	static List<Node> find(final Closure<Boolean> closure, final NodeModel node, final ScriptContext scriptContext) {
 		return ProxyUtils.find(createCondition(closure, scriptContext), node, scriptContext);
 	}
 
-	static ICondition createCondition(final Closure closure, final ScriptContext scriptContext) {
+	static ICondition createCondition(final Closure<Boolean> closure, final ScriptContext scriptContext) {
 	    final ICondition condition = new ICondition() {
 			public boolean checkNode(final NodeModel node) {
 				try {
-					final Object result = closure
+					final Boolean result = closure
 					    .call(new Object[] { new NodeProxy(node, scriptContext) });
 					if (result == null) {
 						throw new RuntimeException("find(): closure returned null instead of boolean/Boolean");
 					}
-					return (Boolean) result;
+					return result;
 				}
 				catch (final ClassCastException e) {
 					throw new RuntimeException("find(): closure returned " + e.getMessage()

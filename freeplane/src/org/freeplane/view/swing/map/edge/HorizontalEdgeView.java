@@ -20,6 +20,7 @@
 package org.freeplane.view.swing.map.edge;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
@@ -37,13 +38,9 @@ public class HorizontalEdgeView extends EdgeView {
 	private int xs[];
 	private int ys[];
 
-	public HorizontalEdgeView(final NodeView source, final NodeView target) {
-		super(source, target);
-	}
-
-	public HorizontalEdgeView(final NodeView target) {
-		super(target);
-	}
+	public HorizontalEdgeView(NodeView source, NodeView target, Component paintedComponent) {
+	    super(source, target, paintedComponent);
+    }
 
 	@Override
 	protected void createStart() {

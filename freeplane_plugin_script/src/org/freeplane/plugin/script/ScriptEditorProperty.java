@@ -26,18 +26,14 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPopupMenu;
 
-import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.PropertyBean;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.script.IScriptEditorStarter;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 class ScriptEditorProperty extends PropertyBean implements IPropertyControl, ActionListener {
-	public interface IScriptEditorStarter extends IExtension {
-		String startEditor(String scriptInput);
-	}
-
 	JButton mButton;
 	final JPopupMenu menu = new JPopupMenu();
 // 	final private ModeController mMindMapController;

@@ -19,6 +19,7 @@
  */
 package org.freeplane.view.swing.map.edge;
 
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
@@ -35,14 +36,9 @@ import org.freeplane.view.swing.map.link.CollisionDetector;
 public class SharpBezierEdgeView extends SharpEdgeView {
 	private static final float XCTRL = 12;
 	Point2D.Float one, two;
-    public SharpBezierEdgeView(final NodeView source, final NodeView target) {
-		super(source, target);
-	}
-
-	public SharpBezierEdgeView(final NodeView target) {
-		super(target);
-	}
-
+	public SharpBezierEdgeView(NodeView source, NodeView target, Component paintedComponent) {
+	    super(source, target, paintedComponent);
+    }
 
 	@Override
 	public Stroke getStroke() {

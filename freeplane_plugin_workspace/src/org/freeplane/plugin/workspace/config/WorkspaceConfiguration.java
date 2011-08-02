@@ -1,14 +1,15 @@
 package org.freeplane.plugin.workspace.config;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.nio.channels.FileChannel;
 
 import javax.swing.JOptionPane;
 
@@ -31,6 +32,7 @@ public class WorkspaceConfiguration {
 	final private WriteManager writeManager;
 
 	private final URL DEFAULT_CONFIG = this.getClass().getResource("workspace_default.xml");
+	private final static String DEFAULT_CONFIG_FILE_NAME = "workspace_default.xml";
 	private final static String CONFIG_FILE_NAME = "workspace.xml";
 
 	private boolean configValid = false;
@@ -108,10 +110,16 @@ public class WorkspaceConfiguration {
 	}
 
 	private void copyDefaultConfigTo(File config) throws FileNotFoundException, IOException {
-		FileChannel from = ((FileInputStream) DEFAULT_CONFIG.openStream()).getChannel();
-		FileChannel to = new FileOutputStream(config).getChannel();
-
-		to.transferFrom(from, 0, from.size());
+		InputStream in = getClass().getResourceAsStream(DEFAULT_CONFIG_FILE_NAME);
+		DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(config)));
+		byte[] buffer = new byte[1024];
+		int len = in.read(buffer);
+		while (len != -1) {
+		    out.write(buffer, 0, len);
+		    len = in.read(buffer);
+		}
+		in.close();
+		out.close();
 	}
 
 	public boolean isConfigValid() {

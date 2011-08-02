@@ -20,6 +20,7 @@
 package org.freeplane.view.swing.map.edge;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
@@ -34,13 +35,10 @@ import org.freeplane.view.swing.map.link.CollisionDetector;
 public class BezierEdgeView extends EdgeView {
 	private static final int CHILD_XCTRL = 20;
 	private static final int XCTRL = 12;
-	public BezierEdgeView(final NodeView source, final NodeView target) {
-		super(source, target);
-	}
 
-	public BezierEdgeView(final NodeView target) {
-		super(target);
-	}
+	public BezierEdgeView(NodeView source, NodeView target, Component paintedComponent) {
+	    super(source, target, paintedComponent);
+    }
 
 	@Override
 	protected void draw(final Graphics2D g) {

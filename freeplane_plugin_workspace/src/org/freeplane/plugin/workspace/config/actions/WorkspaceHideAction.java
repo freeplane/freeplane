@@ -9,7 +9,6 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspacePreferences;
 
-import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class WorkspaceHideAction extends AFreeplaneAction {
 

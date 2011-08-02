@@ -59,13 +59,13 @@ import org.freeplane.features.edge.mindmapmode.AutomaticEdgeColorHook;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.IFormattedObject;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeChangeListener;
+import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.IMapSelection;
-import org.freeplane.features.mode.INodeSelectionListener;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
@@ -368,8 +368,8 @@ public class StyleEditorPanel extends JPanel {
 	
 	private static String[] initializeEdgeStyles() {
 		final EdgeStyle[] enumConstants = EdgeStyle.class.getEnumConstants();
-		final String[] strings = new String[enumConstants.length];
-		for (int i = 0; i < enumConstants.length; i++) {
+		final String[] strings = new String[enumConstants.length-1];
+		for (int i = 0; i < enumConstants.length-1; i++) {
 			strings[i] = enumConstants[i].toString();
 		}
 		return strings;

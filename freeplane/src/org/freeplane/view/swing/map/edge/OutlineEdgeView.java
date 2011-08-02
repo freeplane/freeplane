@@ -21,6 +21,7 @@ package org.freeplane.view.swing.map.edge;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
@@ -33,9 +34,9 @@ import org.freeplane.view.swing.map.NodeView;
  * 29.08.2009
  */
 public class OutlineEdgeView extends EdgeView {
-	public OutlineEdgeView(final NodeView target) {
-		super(target);
-	}
+	public OutlineEdgeView(NodeView source, NodeView target, Component paintedComponent) {
+	    super(source, target, paintedComponent);
+    }
 
 	@Override
 	public boolean detectCollision(final Point p) {

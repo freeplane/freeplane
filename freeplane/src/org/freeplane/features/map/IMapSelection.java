@@ -17,11 +17,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mode;
+package org.freeplane.features.map;
 
 import java.util.List;
 
-import org.freeplane.features.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev

@@ -80,8 +80,8 @@ public abstract class ResourceController {
 		}
 	}
 
-	public void clearLanguageResources() {
-		resources.reloadLanguage();
+	protected void loadAnotherLanguage() {
+		resources.loadAnotherLanguage();
 	}
 
 	protected void firePropertyChanged(final String property, final String value, final String oldValue) {

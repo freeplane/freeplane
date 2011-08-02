@@ -87,7 +87,7 @@ public class ApplicationResourceController extends ResourceController {
 		addPropertyChangeListener(new IFreeplanePropertyListener() {
 			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 				if (propertyName.equals(ResourceBundles.RESOURCE_LANGUAGE)) {
-					clearLanguageResources();
+					loadAnotherLanguage();
 				}
 			}
 		});

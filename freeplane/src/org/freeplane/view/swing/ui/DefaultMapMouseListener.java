@@ -35,8 +35,8 @@ import org.freeplane.core.ui.IMapMouseReceiver;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.IMapSelection;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.view.swing.map.MapView;
 

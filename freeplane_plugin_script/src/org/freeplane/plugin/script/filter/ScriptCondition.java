@@ -2,8 +2,6 @@ package org.freeplane.plugin.script.filter;
 
 import java.awt.KeyboardFocusManager;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintStream;
 
 import javax.swing.JOptionPane;

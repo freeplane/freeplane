@@ -28,8 +28,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.TreeMap;
-
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 
@@ -42,8 +40,7 @@ import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterInfo;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.UIIcon;
-import org.freeplane.features.mode.INodeViewVisitor;
-import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.ui.INodeViewVisitor;
 
 /**
  * This class represents a single Node of a Tree. It contains direct handles to
@@ -84,7 +81,6 @@ public class NodeModel implements MutableTreeNode {
 		return userObject;
 	}
 
-	private Map<Integer, ITooltipProvider> toolTip = null;
 	private Collection<INodeView> views = null;
 	private String xmlText = null;
 
@@ -159,12 +155,6 @@ public class NodeModel implements MutableTreeNode {
 			id = getMap().registryNode(this);
 		}
 		return id;
-	}
-
-	private void createToolTip() {
-		if (toolTip == null) {
-			toolTip = new TreeMap<Integer, ITooltipProvider>();
-		}
 	}
 
 	public void fireNodeChanged(final NodeChangeEvent nodeChangeEvent) {
@@ -310,44 +300,6 @@ public class NodeModel implements MutableTreeNode {
 			string = userObject.toString();
 		}
 		return string;
-	}
-
-	/**
-	 * @param modeController 
-	 */
-	public String getToolTip(final ModeController modeController) {
-		if (toolTip == null) {
-			return null;
-		}
-		// perhaps we should use the solution presented in the 3rd answer at
-		// http://stackoverflow.com/questions/3355469/1-pixel-table-border-in-jtextpane-using-html
-		// html/css example: http://www.wer-weiss-was.de/theme35/article3555660.html
-		final String style = "<style type='text/css'>" //
-		        + " body { font-size: 13pt; }" // FIXME: copy from NoteController.setNoteTooltip() ?
-		        + "</style>";
-		final StringBuilder text = new StringBuilder("<html><head>"+style+"</head><body>");
-		boolean tooltipSet = false;
-		for (final ITooltipProvider provider : toolTip.values()) {
-			String value = provider.getTooltip(modeController);
-			if (value == null) {
-				continue;
-			}
-			value = value.replace("<html>", "<div>");
-			value = value.replaceAll("\\s*</?(body|head)>", "");
-			value = value.replace("<td>", "<td style='background-color: white'>");
-			value = value.replace("</html>", "</div>");
-			if (tooltipSet) {
-				text.append("<br>");
-			}
-			text.append(value);
-			tooltipSet = true;
-		}
-		if (tooltipSet) {
-			text.append("</body></html>");
-//			System.err.println("tooltip=" + text);
-			return text.toString();
-		}
-		return null;
 	}
 
 	public Collection<INodeView> getViewers() {
@@ -588,26 +540,6 @@ public class NodeModel implements MutableTreeNode {
 		}
 		userObject = data;
 		xmlText = null;
-	}
-
-	/**
-	 */
-	public void setToolTip(final Integer key, final ITooltipProvider tooltip) {
-		if (tooltip == null && toolTip == null) {
-			return;
-		}
-		createToolTip();
-		if (tooltip == null) {
-			if (toolTip.containsKey(key)) {
-				toolTip.remove(key);
-			}
-			if (toolTip.size() == 0) {
-				toolTip = null;
-			}
-		}
-		else {
-			toolTip.put(key, tooltip);
-		}
 	}
 
 	public final void setXmlText(final String pXmlText) {
