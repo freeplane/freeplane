@@ -23,6 +23,8 @@ package org.freeplane.view.swing.map.edge;
  * @author Dimitry Polivaev
  * May 8, 2011
  */
+import java.awt.Component;
+
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -38,12 +40,8 @@ public abstract class SharpEdgeView extends EdgeView {
         return deltaX;
     }
 
-    public SharpEdgeView(NodeView target) {
-        super(target);
-    }
-
-    public SharpEdgeView(NodeView source, NodeView target) {
-        super(source, target);
+	public SharpEdgeView(NodeView source, NodeView target, Component paintedComponent) {
+	    super(source, target, paintedComponent);
     }
 
     @Override

@@ -22,8 +22,8 @@ package org.freeplane.features.mode.mindmapmode;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.IMapSelection;
 
 /** */
 class SelectBranchAction extends AFreeplaneAction {

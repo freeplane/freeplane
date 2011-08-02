@@ -4,6 +4,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.ui.IndexedTree;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
@@ -45,6 +46,7 @@ public abstract class AConfigurationNodeCreator implements IElementDOMHandler {
 		final DefaultMutableTreeNode treeNode = tree.get(path.path);
 		if (treeNode.getUserObject() == this) {
 			final AWorkspaceNode node = getNode(id, lastBuiltElement);
+			LogUtils.info("AConfigurationNode.node,isNull? : "+(node==null));
 			if(node != null) 
 				treeNode.setUserObject(node);
 			else 

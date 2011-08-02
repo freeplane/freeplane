@@ -32,10 +32,14 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.INodeChangeListener;
+import org.freeplane.features.map.ITooltipProvider;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
@@ -55,11 +59,12 @@ import org.freeplane.features.styles.ConditionalStyleModel.Item;
 public class LogicalStyleController implements IExtension {
 // 	final private ModeController modeController;
 	
+	private static final int STYLE_TOOLTIP = 0;
 	private WeakReference<NodeModel> cachedNode;
 	private Collection<IStyle>  cachedStyle;
 	final private CombinedPropertyChain<Collection<IStyle>, NodeModel> styleHandlers;
 
-	public LogicalStyleController() {
+	public LogicalStyleController(ModeController modeController) {
 //	    this.modeController = modeController;
 		styleHandlers = new CombinedPropertyChain<Collection<IStyle>, NodeModel>(false);		
 		createBuilder();
@@ -83,6 +88,23 @@ public class LogicalStyleController implements IExtension {
 			public Collection<IStyle> getProperty(NodeModel node, Collection<IStyle> currentValue) {
 				add(node, currentValue, MapStyleModel.DEFAULT_STYLE);
 				return currentValue;
+			}
+		});
+		modeController.addToolTipProvider(STYLE_TOOLTIP, new ITooltipProvider() {
+			public String getTooltip(ModeController modeController, NodeModel node) {
+				if(!ResourceController.getResourceController().getBooleanProperty("show_styles_in_tooltip"))
+					return null;
+				final Collection<IStyle> styles = getStyles(node);
+				StringBuilder sb = new StringBuilder(TextUtils.getText("node_styles"));
+				int i = 0;
+				for(IStyle style :styles){
+					if(i > 1)
+						sb.append(", ");
+					if(i != 0)
+						sb.append(style.toString());
+					i++;
+				}
+				return HtmlUtils.plainToHTML(sb.toString());
 			}
 		});
 	}

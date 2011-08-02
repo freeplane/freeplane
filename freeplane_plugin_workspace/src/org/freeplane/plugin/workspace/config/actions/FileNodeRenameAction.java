@@ -6,7 +6,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import org.freeplane.core.ui.components.JFreeplaneMenuItem;
@@ -16,18 +15,19 @@ import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.view.WorkspacePopupMenu;
 
-public class RenameFileNode extends AWorkspaceAction {
+public class FileNodeRenameAction extends AWorkspaceAction {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public RenameFileNode() {
-		super("RenameFileNode");
+	public FileNodeRenameAction() {
+		super("FileNodeRenameAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
+		System.out.println("FileNodeRenameAction: "+e.getActionCommand()+" : "+e.getID());
 		DefaultMutableTreeNode node = this.getNodeFromActionEvent(e);
 		WorkspacePopupMenu menu = (WorkspacePopupMenu) ((JFreeplaneMenuItem) e.getSource()).getParent();
 		JTree tree = (JTree) menu.getInvoker();			

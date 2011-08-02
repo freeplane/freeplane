@@ -27,11 +27,11 @@ import javax.swing.ImageIcon;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.filter.condition.ICondition;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.IMapSelection;
 import org.freeplane.features.mode.ModeController;
 
 /**
@@ -185,7 +185,7 @@ public class Filter {
 		return isDescendantSelected;
 	}
 
-	public Object getCondition() {
+	public ICondition getCondition() {
 		return condition;
 	}
 

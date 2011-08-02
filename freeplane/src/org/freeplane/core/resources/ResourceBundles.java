@@ -56,7 +56,10 @@ public class ResourceBundles extends ResourceBundle {
 		externalResources = new MultipleValueMap<String, URL>();
 		try {
 			loadLocalLanguageResources();
-			defaultResources = getLanguageResources(DEFAULT_LANGUAGE);
+			if(lang.equals(DEFAULT_LANGUAGE))
+				defaultResources = languageResources;
+			else
+				defaultResources = getLanguageResources(DEFAULT_LANGUAGE);
 		}
 		catch (final Exception ex) {
 			LogUtils.severe(ex);
@@ -198,9 +201,10 @@ public class ResourceBundles extends ResourceBundle {
 		System.exit(1);
 	}
 
-	public void reloadLanguage() {
+	public void loadAnotherLanguage() {
 		try {
-			loadLocalLanguageResources();
+			if(! lang.equals(controller.getProperty(ResourceBundles.RESOURCE_LANGUAGE)))
+				loadLocalLanguageResources();
 		}
 		catch (final IOException e) {
 			LogUtils.severe(e);

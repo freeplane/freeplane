@@ -1,6 +1,5 @@
 package org.freeplane.features.map;
 
-import org.freeplane.features.mode.IMapLifeCycleListener;
 
 abstract public class AMapChangeListenerAdapter implements IMapChangeListener, INodeChangeListener, IMapLifeCycleListener {
 	public void mapChanged(MapChangeEvent event) {

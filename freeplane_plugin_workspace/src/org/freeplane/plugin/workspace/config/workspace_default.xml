@@ -6,9 +6,9 @@
 		<filesystem_link id="ref4" name="My PDFs" />
 	</group>
 	<group id="projects" name="Projects">
-		<filesystem_folder id="project1" name="Paper example 1" path="project1"/>
+		<!-- filesystem_folder id="project1" name="Paper example 1" path="project1"/>
 		<filesystem_folder id="project2" name="Paper example 2" />
-		<filesystem_folder id="project3" name="Paper example 3" />
+		<filesystem_folder id="project3" name="Paper example 3" /-->
 	</group>
 	<filesystem_link id="fav_projects" name="Interesting Projects" />
 	<filesystem_link id="notes" name="Notes" />

@@ -54,6 +54,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.filter.condition.DefaultConditionRenderer;
+import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.filter.condition.NoFilteringCondition;
 import org.freeplane.features.filter.condition.SelectedViewCondition;
 import org.freeplane.features.filter.condition.SelectedViewSnapshotCondition;
@@ -221,7 +222,11 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	void applyFilter(final boolean force) {
 		final ASelectableCondition selectedCondition = getSelectedCondition();
 		final Filter filter = createFilter(selectedCondition);
-		applyFilter(filter, Controller.getCurrentController().getMap(), force);
+		final ICondition condition = filter.getCondition();
+		if(condition != selectedCondition && condition instanceof ASelectableCondition)
+			getFilterConditions().setSelectedItem(condition);
+		else
+			applyFilter(filter, Controller.getCurrentController().getMap(), force);
 	}
 
 	public void applyFilter(final Filter filter, MapModel map, final boolean force) {

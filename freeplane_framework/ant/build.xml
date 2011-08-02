@@ -125,7 +125,17 @@
 	    </antcall>
 	</target>
 
-	<target name="build_docear_core" unless="skip_communications">
+
+	<target name="build_workspace" unless="skip_workspace">
+		<antcall target="makePlugin" inheritall="false">
+			<param name="anttarget" value="dist"/>
+			<param name="targetdir" value="plugins"/>
+			<param name="plugindir" value="freeplane_plugin_workspace"/>
+			<param name="pluginname" value="org.freeplane.plugin.workspace"/>
+	    </antcall>
+	</target>
+
+	<target name="build_docear_core" unless="skip_core">
 		<antcall target="makePlugin" inheritall="false">
 			<param name="anttarget" value="dist"/>
 			<param name="targetdir" value="plugins"/>
@@ -153,7 +163,7 @@
 	</target>
 
 	<target name="build" depends="build_core, build_latex, build_svg, build_script, build_formula, build_bugreport, build_accountmanager, 
-    build_docear_core, build_docear_communications, build_docear_backup">
+    build_workspace, build_docear_core, build_docear_communications, build_docear_backup">
        <mkdir dir="${build.resources}" />
         <copy todir="${build.resources}">
             <fileset dir="${workspace}/freeplane/dist/resources" />
@@ -475,6 +485,8 @@
 			  dir="${workspace}/freeplane_plugin_bugreport"/>		
 		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
 			  dir="${workspace}/freeplane_plugin_account_manager"/>		
+		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
+			  dir="${workspace}/freeplane_plugin_workspace"/>		
 		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
 			  dir="${workspace}/docear_plugin_core"/>		
 		  <ant antfile="ant/build.xml" target="clean" inheritall="false"

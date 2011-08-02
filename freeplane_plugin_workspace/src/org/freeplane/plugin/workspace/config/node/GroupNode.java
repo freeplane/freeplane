@@ -8,7 +8,7 @@ import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 
 public class GroupNode extends AWorkspaceNode implements IWorkspaceNodeEventListener {
-	private final static String POPUP_KEY = "group_popup";
+	private final static String POPUP_KEY = "workspace_groupnode_popup";
 
 	public GroupNode(String id) {
 		super(id);

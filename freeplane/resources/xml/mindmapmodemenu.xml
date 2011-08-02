@@ -134,6 +134,7 @@
 			<menu_separator />
 			<menu_action action="SetBooleanPropertyAction.show_node_tooltips" />	
 			<menu_action action="CreationModificationPluginAction" />					
+			<menu_action action="SetBooleanPropertyAction.show_styles_in_tooltip" />	
 			<menu_separator />
 			<menu_category name="general">							
 				<menu_action action="MaxNodeWidthAction" />
@@ -351,8 +352,8 @@
 		</menu_submenu>
 		<menu_submenu name="navigate" name_ref="menu_navigate">
 			<menu_category name="navigate">
-				<menu_action action="NavigationPreviousMapAction" accelerator="alt shift LEFT" />
-				<menu_action action="NavigationNextMapAction" accelerator="alt shift RIGHT" />
+				<menu_action action="NavigationPreviousMapAction" accelerator="control shift TAB" />
+				<menu_action action="NavigationNextMapAction" accelerator="control TAB" />
 				<menu_separator />
 				<menu_action action="CenterSelectedNodeAction" accelerator="control alt C" />
 				<menu_separator />

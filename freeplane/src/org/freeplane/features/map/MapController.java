@@ -48,9 +48,6 @@ import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel.NodeChangeType;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.IMapLifeCycleListener;
-import org.freeplane.features.mode.IMapSelection;
-import org.freeplane.features.mode.INodeSelectionListener;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.SelectionController;
 import org.freeplane.features.mode.AController.IActionOnChange;
@@ -485,7 +482,10 @@ public class MapController extends SelectionController {
 	}
 
 	public NodeModel getSelectedNode() {
-		return Controller.getCurrentController().getSelection().getSelected();
+		final IMapSelection selection = Controller.getCurrentController().getSelection();
+		if(selection != null)
+			return selection.getSelected();
+		return null;
 	}
 
 	/**
@@ -762,13 +762,6 @@ public class MapController extends SelectionController {
 		mapModel.setSaved(saved);
 	}
 
-	/**
-	*
-	*/
-	public void setToolTip(final NodeModel node, final Integer key, final ITooltipProvider value) {
-		node.setToolTip(key, value);
-		nodeRefresh(node);
-	}
 
 	public void sortNodesByDepth(final List<NodeModel> collection) {
 		Collections.sort(collection, new NodesDepthComparator());

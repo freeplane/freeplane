@@ -64,6 +64,7 @@ public class WorkspacePreferences {
 		MModeController modeController = (MModeController) Controller.getCurrentModeController();
 		
 		modeController.getOptionPanelBuilder().load(preferences);
+		
 	}
 
 	private void addMenuEntries() {

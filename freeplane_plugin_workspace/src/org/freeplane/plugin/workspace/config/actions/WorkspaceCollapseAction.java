@@ -10,18 +10,19 @@ import javax.swing.tree.TreePath;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.plugin.workspace.WorkspaceController;
 
-public class CollapseWorkspaceTree extends AFreeplaneAction {
+public class WorkspaceCollapseAction extends AFreeplaneAction {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public CollapseWorkspaceTree() {
-		super("CollapseWorkspaceTree");
+	public WorkspaceCollapseAction() {
+		super("WorkspaceCollapseAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
+		System.out.println("WorkspaceCollapseAction: "+e.getActionCommand()+" : "+e.getID());
 		JTree workspaceTree = WorkspaceController.getCurrentWorkspaceController().getWorspaceTree();
 		collapseAll(workspaceTree);
 	}

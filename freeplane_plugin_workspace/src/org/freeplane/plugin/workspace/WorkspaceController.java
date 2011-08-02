@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.io.Writer;
+import java.net.JarURLConnection;
 import java.util.Properties;
 
 import javax.swing.JPanel;
@@ -225,17 +226,33 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 			Properties props = new Properties();
 			try {
 				props.load(this.getClass().getResourceAsStream("filenodetypes.properties"));
+				
 				Class<?>[] args = { };
 				for (Object key : props.keySet()) {
 					try {
-						Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass(key.toString());
+						//TODO: IMPLEMENT WITH REFLECTIONS - HAS TO WORK WITH JAR FILES
+						Class<?> clazz =  org.freeplane.plugin.workspace.io.creator.DefaultFileNodeCreator.class;
+						
+						if (key.toString().equals("org.freeplane.plugin.workspace.io.creator.FolderFileNodeCreator")) {
+							clazz = org.freeplane.plugin.workspace.io.creator.FolderFileNodeCreator.class;
+						}
+						else if (key.toString().equals("org.freeplane.plugin.workspace.io.creator.ImageFileNodeCreator")) {
+							clazz = org.freeplane.plugin.workspace.io.creator.ImageFileNodeCreator.class;
+						}
+						else if (key.toString().equals("org.freeplane.plugin.workspace.io.creator.MindMapFileNodeCreator")) {
+							clazz = org.freeplane.plugin.workspace.io.creator.MindMapFileNodeCreator.class;
+						}
+							
+//						Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass(key.toString());
+						
 						AFileNodeCreator handler = (AFileNodeCreator) clazz.getConstructor(args).newInstance();
 						handler.setFileTypeList(props.getProperty(key.toString(), ""), "\\|");
 						this.fileTypeManager.addFileHandler(handler);
 					}
-					catch (ClassNotFoundException e) {
-						System.out.println("Class not found [" + key + "]");
-					}
+//					catch (ClassNotFoundException e) {
+//						e.printStackTrace();
+//						System.out.println("Class not found [" + key + "]");
+//					}
 					catch (ClassCastException e) {
 						System.out.println("Class [" + key + "] is not of type: PhysicalNode");
 					}

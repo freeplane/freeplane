@@ -1,13 +1,10 @@
-/**
- * author: Marcel Genzmehr
- * 21.07.2011
- */
 package org.freeplane.plugin.workspace.io.node;
 
 import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
 
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceController;
@@ -80,9 +77,9 @@ public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEve
 		}
 		else if(event.getType() == WorkspaceNodeEvent.WSNODE_OPEN_DOCUMENT) {
 			try {
-				Controller.getCurrentController().getViewController().openDocument(getFile().toURI());
+				Controller.getCurrentController().getViewController().openDocument(Compat.fileToUrl(getFile()));
 			}
-			catch (IOException e) {
+			catch (Exception e) {
 				LogUtils.warn("could not open document ("+getFile()+")", e);
 			}
 		}

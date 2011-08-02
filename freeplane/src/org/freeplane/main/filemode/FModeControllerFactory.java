@@ -69,7 +69,7 @@ public class FModeControllerFactory {
 		CloudController.install(new CloudController(modeController));
 		ClipboardController.install(new ClipboardController());
 		LocationController.install(new LocationController());
-		LogicalStyleController.install(new LogicalStyleController());
+		LogicalStyleController.install(new LogicalStyleController(modeController));
 		new MapStyle(true);
 		NodeStyleController.getController().addShapeGetter(new Integer(0),
 		    new IPropertyHandler<String, NodeModel>() {

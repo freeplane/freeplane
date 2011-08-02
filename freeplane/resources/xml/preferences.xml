@@ -202,6 +202,7 @@
             <number name="toolTipManager.initialDelay" min = "0"/>
             <number name="toolTipManager.dismissDelay" min = "0"/>
             <number name="toolTipManager.reshowDelay" min = "0"/>
+            <boolean name="show_styles_in_tooltip"/>
         </separator>
         <separator name="editing">
         	<number name="editor_extra_width" min="0" max="1000" step = "40" />

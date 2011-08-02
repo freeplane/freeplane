@@ -20,9 +20,9 @@
 package org.freeplane.features.filter.condition;
 
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.IMapSelection;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class SelectedViewCondition extends ASelectableCondition {

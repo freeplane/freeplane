@@ -91,6 +91,8 @@ public class TextController implements IExtension {
 		modeController.addAction(new SetShortenerStateAction());
 //		modeController.addAction(new ToggleNodeNumberingAction());
 		addTextTransformer(new FormatContentTransformer(this, 50));
+		registerDetailsTooltip();
+		registerNodeTextTooltip();
 	}
 
 	public void addTextTransformer(IContentTransformer textTransformer) {
@@ -166,16 +168,14 @@ public class TextController implements IExtension {
 		}
 		details.setHidden(isHidden);
 		node.addExtension(details);
-		setDetailsTooltip(node);
 		Controller.getCurrentModeController().getMapController().nodeChanged(node, "DETAILS_HIDDEN", ! isHidden, isHidden);    
 	}
 
-	protected void setDetailsTooltip(final NodeModel node) {
-		final DetailTextModel detailText = DetailTextModel.getDetailText(node);
-		if (detailText != null) {
-			(Controller.getCurrentModeController().getMapController()).setToolTip(node, DETAILS_TOOLTIP, new ITooltipProvider() {
-				public String getTooltip(ModeController modeController) {
-					 if (! (detailText.isHidden() || ShortenedTextModel.isShortened(node)) ){
+	private void registerDetailsTooltip() {
+		modeController.addToolTipProvider(DETAILS_TOOLTIP, new ITooltipProvider() {
+				public String getTooltip(ModeController modeController, NodeModel node) {
+					final DetailTextModel detailText = DetailTextModel.getDetailText(node);
+					if (detailText == null || ! (detailText.isHidden() || ShortenedTextModel.isShortened(node)) ){
 						 return null;
 					 }
 					final NodeStyleController style = (NodeStyleController) modeController.getExtension(NodeStyleController.class);
@@ -190,14 +190,11 @@ public class TextController implements IExtension {
 					return tooltipText;
 				}
 			});
-			return;
 		}
-		(Controller.getCurrentModeController().getMapController()).setToolTip(node, DETAILS_TOOLTIP, null);
-	}
 
-	protected void setNodeTextTooltip(final NodeModel node) {
-		(Controller.getCurrentModeController().getMapController()).setToolTip(node, NODE_TOOLTIP, new ITooltipProvider() {
-			    public String getTooltip(final ModeController modeController) {
+	private void registerNodeTextTooltip() {
+		modeController.addToolTipProvider(NODE_TOOLTIP, new ITooltipProvider() {
+			    public String getTooltip(final ModeController modeController, NodeModel node) {
 				    if (!ShortenedTextModel.isShortened(node)) {
 					    return null;
 				    }
@@ -233,7 +230,6 @@ public class TextController implements IExtension {
 		}
 		if(shortened){
 			ShortenedTextModel.createShortenedTextModel(node);
-			setNodeTextTooltip(node);
 		}
 		else{
 			node.removeExtension(ShortenedTextModel.class);

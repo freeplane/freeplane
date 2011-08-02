@@ -63,13 +63,13 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.INodeChangeListener;
+import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.INodeSelectionListener;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
@@ -405,7 +405,6 @@ public class MTextController extends TextController {
 						}
 					}
 				}
-				setDetailsTooltip(node);
 				Controller.getCurrentModeController().getMapController().nodeChanged(node, DetailTextModel.class, oldText, text);
 			}
 
@@ -442,7 +441,6 @@ public class MTextController extends TextController {
 				setHidden(! isHidden);
 			}
 		};
-		setDetailsTooltip(node);
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
@@ -464,7 +462,6 @@ public class MTextController extends TextController {
 				if(state){
 					final ShortenedTextModel details = ShortenedTextModel.createShortenedTextModel(node);
 					node.addExtension(details);
-					setNodeTextTooltip(node);
 				}
 				else{
 					node.removeExtension(ShortenedTextModel.class);

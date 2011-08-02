@@ -13,19 +13,19 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.view.WorkspacePopupMenu;
 
-public class DeleteFileNode extends AWorkspaceAction {
+public class FileNodeDeleteAction extends AWorkspaceAction {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public DeleteFileNode() {
-		super("DeleteFileNode");
+	public FileNodeDeleteAction() {
+		super("FileNodeDeleteAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		System.out.println("DeleteFileNode: " + e.getActionCommand() + " : " + e.getID());
+		System.out.println("FileNodeDeleteAction: " + e.getActionCommand() + " : " + e.getID());
 
 		int yesorno = JOptionPane.OK_OPTION;
 		yesorno = JOptionPane.showConfirmDialog(Controller.getCurrentController().getViewController().getContentPane(),
