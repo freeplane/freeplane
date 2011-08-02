@@ -29,11 +29,17 @@ public class FilesystemFolderCreator extends AConfigurationNodeCreator {
 			LogUtils.info("FilesystemPath: "+path);
 			File f = new File(path);
 			if (!f.isAbsolute()) {
-				
+				path = WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation()+File.separator+path;
+				f = new File(path);
+				if (!f.exists()) {
+					if (f.mkdir()) {
+						LogUtils.info("New Filesystem Folder Created: "+f.getAbsolutePath());
+					}
+				}
 			}
 			URL url = null;
 			try {
-				url = new URL("file:///"+path);
+				url = new URL("file://"+path);
 				LogUtils.info("FilesystemFolderCreator.getNode: "+url);
 			}
 			catch (MalformedURLException e) {

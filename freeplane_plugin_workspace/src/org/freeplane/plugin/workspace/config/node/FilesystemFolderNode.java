@@ -2,6 +2,8 @@ package org.freeplane.plugin.workspace.config.node;
 
 import java.awt.Component;
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.swing.event.TreeExpansionEvent;
@@ -33,6 +35,20 @@ public class FilesystemFolderNode extends AWorkspaceNode implements TreeExpansio
 		if (folderPath == null || folderPath.getPath() == null) {
 			return "";
 		}
+		try {
+			URI path = new URI(folderPath.getPath());
+			URI workspaceLocation = new URI(WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation());
+			
+			System.out.println("PATH: "+path);
+			System.out.println("WORKSPACE: "+workspaceLocation);
+			System.out.println("RELATIVE PATH: "+workspaceLocation.relativize(path).getPath());
+			
+			return workspaceLocation.relativize(path).getPath();
+		}
+		catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		
 		return folderPath.getPath();
 	}
 
