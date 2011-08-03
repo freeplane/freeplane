@@ -1,6 +1,7 @@
 package org.freeplane.plugin.workspace;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.net.URL;
 
 import javax.swing.JCheckBoxMenuItem;
@@ -17,6 +18,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 
 public class WorkspacePreferences {
 
+	private static final String DEFAULT_LANGUAGE = "en";
 	public static final String VIEW_ACTION = "viewaction";
 	public static final String MENU_BAR = "/menu_bar";
 	public static final String VIEW_MENU = "/view";
@@ -46,15 +48,26 @@ public class WorkspacePreferences {
 	}
 
 	private void addLanguageResources() {
-		ResourceBundles resBundle = ((ResourceBundles) modeController.getController().getResourceController().getResources());
-
+		ResourceBundles resBundle = ((ResourceBundles)Controller.getCurrentModeController().getController().getResourceController().getResources());
 		String lang = resBundle.getLanguageCode();
 		if (lang == null || lang.equals(ResourceBundles.LANGUAGE_AUTOMATIC)) {
-			lang = "en";
+			lang = DEFAULT_LANGUAGE;
 		}
-
-		final URL res = this.getClass().getResource("/translations/Resources_" + lang + ".properties");
+		
+		URL res = this.getClass().getResource("/translations/Resources_"+lang+".properties");
+		if (res == null) {
+			lang = DEFAULT_LANGUAGE;
+			res = this.getClass().getResource("/translations/Resources_"+lang+".properties");
+		}
+		
+		File f = new File(res.getPath());
+		if (!f.exists()) {
+			lang = DEFAULT_LANGUAGE;
+			res = this.getClass().getResource("/translations/Resources_"+lang+".properties");
+		}
+				
 		resBundle.addResources(resBundle.getLanguageCode(), res);
+		
 	}
 
 	private void addPreferencesToOptionsPanel() {

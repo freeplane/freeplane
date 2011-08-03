@@ -17,7 +17,7 @@
 	<property name="java_source_version" value="1.5" />
 	<property name="java_target_version" value="1.5" />
 	<property name="build.compiler" value="modern" />
-	<property name="classpath" value="${framework.jar}:${freeplane.jars}:${external.jars}:${jhall.jar}:${communications.jar}:${swingworker.jar}:${accountmanager.jar}"/>
+	<property name="classpath" value="${framework.jar}:${freeplane.jars}:${external.jars}:${jhall.jar}:${communications.jar}:${swingworker.jar}:${accountmanager.jar}:${core.jar}"/>
 
 	<target name="build">
 		<mkdir dir="${build}" />

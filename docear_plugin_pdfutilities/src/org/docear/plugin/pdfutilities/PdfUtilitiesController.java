@@ -12,6 +12,7 @@ import java.util.Collection;
 import javax.swing.JMenu;
 import javax.swing.JRadioButton;
 
+import org.docear.plugin.core.ALanguageController;
 import org.docear.plugin.pdfutilities.actions.DocearPasteAction;
 import org.docear.plugin.pdfutilities.actions.ImportAllAnnotationsAction;
 import org.docear.plugin.pdfutilities.actions.ImportNewAnnotationsAction;
@@ -20,7 +21,6 @@ import org.docear.plugin.pdfutilities.listener.DocearNodeDropListener;
 import org.docear.plugin.pdfutilities.listener.DocearNodeMouseMotionListener;
 import org.freeplane.core.resources.OptionPanelController;
 import org.freeplane.core.resources.OptionPanelController.PropertyLoadListener;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.RadioButtonProperty;
@@ -35,7 +35,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.INodeViewLifeCycleListener;
 import org.freeplane.view.swing.map.NodeView;
 
-public class PdfUtilitiesController {
+public class PdfUtilitiesController extends ALanguageController {
 
 	public static final String OPEN_ON_PAGE_READER_PATH_KEY = "docear_open_on_page_reader_path";
 	public static final String OPEN_PDF_VIEWER_ON_PAGE_KEY = "docear_open_on_page";
@@ -61,11 +61,11 @@ public class PdfUtilitiesController {
 	private ImportNewAnnotationsAction importNewAnnotationsAction;
 
 	public PdfUtilitiesController(ModeController modeController) {
+		super();
 
 		LogUtils.info("starting DocearPdfUtilitiesStarter(ModeController)");
 		this.modecontroller = modeController;
-
-		this.addPluginLangResources();
+		
 		this.addPropertiesToOptionPanel();
 		this.addPluginDefaults();
 
@@ -200,18 +200,6 @@ public class PdfUtilitiesController {
 		if (defaults == null)
 			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
 		Controller.getCurrentController().getResourceController().addDefaults(defaults);
-	}
-
-	private void addPluginLangResources() {
-		ResourceBundles resBundle = ((ResourceBundles) ResourceController.getResourceController().getResources());
-
-		String lang = resBundle.getLanguageCode();
-		if (lang == null || lang.equals(ResourceBundles.LANGUAGE_AUTOMATIC)) {
-			lang = "en";
-		}
-
-		final URL res = this.getClass().getResource("/translations/Resources_" + lang + ".properties");
-		resBundle.addResources(resBundle.getLanguageCode(), res);
 	}
 
 	private void addPropertiesToOptionPanel() {

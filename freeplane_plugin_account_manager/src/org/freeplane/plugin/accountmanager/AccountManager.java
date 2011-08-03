@@ -2,6 +2,7 @@ package org.freeplane.plugin.accountmanager;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -23,6 +24,8 @@ public class AccountManager implements IFreeplanePropertyListener, ActionListene
 	private static boolean isInitialized = false;
 	private boolean isWorking = false;	
 	
+	private static final String DEFAULT_LANGUAGE = "en";
+	
 	public AccountManager() {
 		MModeController modeController = (MModeController) Controller.getCurrentModeController();
 		Controller.getCurrentController().getOptionPanelController().addButtonListener(this);
@@ -31,15 +34,7 @@ public class AccountManager implements IFreeplanePropertyListener, ActionListene
 		if (preferences == null)
 			throw new RuntimeException("cannot open preferences");
 				
-		ResourceBundles resBundle = ((ResourceBundles)modeController.getController().getResourceController().getResources());
-		
-		String lang = resBundle.getLanguageCode();
-		if (lang == null || lang.equals(ResourceBundles.LANGUAGE_AUTOMATIC)) {
-			lang = "en";
-		}
-		
-		final URL res = this.getClass().getResource("/translations/Resources_"+lang+".properties");
-		resBundle.addResources(resBundle.getLanguageCode(), res);
+		addLanguageResources();
 		
 		modeController.getOptionPanelBuilder().load(preferences);
 		
@@ -50,6 +45,27 @@ public class AccountManager implements IFreeplanePropertyListener, ActionListene
 		buildOptionUI();		
 	}
 	
+	public void addLanguageResources() {
+		ResourceBundles resBundle = ((ResourceBundles)Controller.getCurrentModeController().getController().getResourceController().getResources());
+		String lang = resBundle.getLanguageCode();
+		if (lang == null || lang.equals(ResourceBundles.LANGUAGE_AUTOMATIC)) {
+			lang = DEFAULT_LANGUAGE;
+		}
+		
+		URL res = this.getClass().getResource("/translations/Resources_"+lang+".properties");
+		if (res == null) {
+			lang = DEFAULT_LANGUAGE;
+			res = this.getClass().getResource("/translations/Resources_"+lang+".properties");
+		}
+		
+		File f = new File(res.getPath());
+		if (!f.exists()) {
+			lang = DEFAULT_LANGUAGE;
+			res = this.getClass().getResource("/translations/Resources_"+lang+".properties");
+		}
+				
+		resBundle.addResources(resBundle.getLanguageCode(), res);
+	}
 	
 	public static synchronized void registerAccount(Account account) {
 		String accountName = account.getAccountName().replaceAll("/^[a-zA-Z0-9]+/i", "_");
