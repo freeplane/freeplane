@@ -8,16 +8,16 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
-import org.freeplane.plugin.workspace.config.node.FilesystemLinkNode;
+import org.freeplane.plugin.workspace.config.node.FilesystemMindMapLinkNode;
 
-public class FilesystemLinkCreator extends AConfigurationNodeCreator {
+public class FilesystemMindMapLinkCreator extends AConfigurationNodeCreator {
 
-	public FilesystemLinkCreator() {
+	public FilesystemMindMapLinkCreator() {
 	}
 
 	@Override
 	public AWorkspaceNode getNode(String id, XMLElement data) {
-		FilesystemLinkNode node = new FilesystemLinkNode(id);
+		FilesystemMindMapLinkNode node = new FilesystemMindMapLinkNode(id);
 		String name = data.getAttribute("name", null);
 		node.setName(name == null ? "reference" : name);
 
@@ -41,5 +41,7 @@ public class FilesystemLinkCreator extends AConfigurationNodeCreator {
 		return node;
 
 	}
+
+	
 
 }
