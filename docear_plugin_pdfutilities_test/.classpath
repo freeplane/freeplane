@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/docear_plugin_pdfutilities"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/freeplane"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="/docear_plugin_pdfutilities/lib/jpod/iscwt.jar"/>
+	<classpathentry kind="lib" path="/docear_plugin_pdfutilities/lib/jpod/isrt.jar"/>
+	<classpathentry kind="lib" path="/docear_plugin_pdfutilities/lib/jpod/jbig2.jar"/>
+	<classpathentry kind="lib" path="/docear_plugin_pdfutilities/lib/jpod/jPod.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

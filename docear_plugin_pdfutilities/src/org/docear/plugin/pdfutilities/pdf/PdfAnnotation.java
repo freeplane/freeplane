@@ -14,6 +14,8 @@ public class PdfAnnotation {
 	public static final int BOOKMARK = 0;
 	public static final int COMMENT = 1;
 	public static final int HIGHLIGHTED_TEXT = 2;
+	public static final int BOOKMARK_WITHOUT_DESTINATION = 3;
+	public static final int BOOKMARK_WITH_URI = 4;
 	
 	
 	private File file;
@@ -21,7 +23,8 @@ public class PdfAnnotation {
 	private List<PdfAnnotation> children = new ArrayList<PdfAnnotation>();
 	private int annotationType;
 	private boolean isNew;
-	private Integer page;	
+	private Integer page;
+	private URI destinationUri;
 	
 	public PdfAnnotation(){}
 
@@ -56,6 +59,14 @@ public class PdfAnnotation {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public URI getDestinationUri() {
+		return destinationUri;
+	}
+
+	public void setDestinationUri(URI uri) {
+		this.destinationUri = uri;
 	}
 
 	public List<PdfAnnotation> getChildren() {
