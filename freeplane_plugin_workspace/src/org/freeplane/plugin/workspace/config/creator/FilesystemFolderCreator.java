@@ -1,5 +1,6 @@
 package org.freeplane.plugin.workspace.config.creator;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -7,11 +8,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.config.node.FilesystemFolderNode;
 import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
+import org.freeplane.plugin.workspace.config.node.FilesystemFolderNode;
 
 public class FilesystemFolderCreator extends AConfigurationNodeCreator {
 
@@ -27,9 +27,19 @@ public class FilesystemFolderCreator extends AConfigurationNodeCreator {
 				
 		if(path!=null) {
 			LogUtils.info("FilesystemPath: "+path);
+			File f = new File(path);
+			if (!f.isAbsolute()) {
+				path = WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation()+File.separator+path;
+				f = new File(path);
+				if (!f.exists()) {
+					if (f.mkdirs()) {
+						LogUtils.info("New Filesystem Folder Created: "+f.getAbsolutePath());
+					}
+				}
+			}
 			URL url = null;
 			try {
-				url = new URL("file:///"+path);
+				url = new URL("file://"+path);
 				LogUtils.info("FilesystemFolderCreator.getNode: "+url);
 			}
 			catch (MalformedURLException e) {

@@ -12,10 +12,8 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JFreeplaneMenuItem;
 import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.WorkspacePreferences;
 import org.freeplane.plugin.workspace.view.WorkspacePopupMenu;
 
 public class RemoveFolderFromWorkspaceAction extends AWorkspaceAction {
@@ -30,7 +28,7 @@ public class RemoveFolderFromWorkspaceAction extends AWorkspaceAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		String currentLocation = ResourceController.getResourceController().getProperty(WorkspacePreferences.WORKSPACE_LOCATION);
+		String currentLocation = WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation();
 		String temp = currentLocation + File.separator + "workspace_temp.xml";
 		String config = currentLocation + File.separator + "workspace.xml";
 		
@@ -48,6 +46,11 @@ public class RemoveFolderFromWorkspaceAction extends AWorkspaceAction {
 			FileChannel to = new FileOutputStream(config).getChannel();
 
 			to.transferFrom(from, 0, from.size());
+			to.close();
+			from.close();
+			
+			File tempFile = new File(temp);
+			tempFile.delete();
 		}
 		catch (IOException e1) {
 			// TODO Auto-generated catch block

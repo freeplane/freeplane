@@ -190,6 +190,7 @@ public class ReminderHook extends PersistentNodeHook {
 		final Box panel = new Box(axis);
 		panel.add(timePanel);
 		panel.add(tablePanel);
+		System.out.println("REMINDERHOOK: "+modeController);
 		final JTabbedPane tabs = (JTabbedPane) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
 		final JScrollPane timeScrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 		    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);

@@ -13,4 +13,5 @@ Bundle-ClassPath: .,
  lib/jpod/jPod.jar,
  lib/jpod/iscwt.jar,
  lib/jpod/isrt.jar,
- lib/jpod/jbig2.jar
+ lib/jpod/jbig2.jar,
+ lib/plugin.jar

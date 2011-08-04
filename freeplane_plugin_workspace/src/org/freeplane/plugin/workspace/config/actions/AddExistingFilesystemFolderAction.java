@@ -13,12 +13,10 @@ import java.nio.channels.FileChannel;
 import javax.swing.JFileChooser;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.WorkspacePreferences;
 import org.freeplane.plugin.workspace.config.node.FilesystemFolderNode;
 
 public class AddExistingFilesystemFolderAction extends AWorkspaceAction {
@@ -37,8 +35,7 @@ public class AddExistingFilesystemFolderAction extends AWorkspaceAction {
 		
 		JFileChooser fileChooser = new JFileChooser();		
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		ResourceController resourceController = ResourceController.getResourceController();
-		String currentLocation = resourceController.getProperty(WorkspacePreferences.WORKSPACE_LOCATION);
+		String currentLocation = WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation();
 		fileChooser.setSelectedFile(new File(currentLocation));
 
 		int retVal = fileChooser.showOpenDialog(UITools.getFrame());
@@ -84,11 +81,15 @@ public class AddExistingFilesystemFolderAction extends AWorkspaceAction {
 			
 			FileChannel from = new FileInputStream(temp).getChannel();
 			FileChannel to = new FileOutputStream(config).getChannel();
-
+			
 			to.transferFrom(from, 0, from.size());
+			to.close();
+			from.close();
+			
+			File tempFile = new File(temp);
+			tempFile.delete();
 		}
 		catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}

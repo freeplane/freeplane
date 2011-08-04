@@ -23,6 +23,7 @@ import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.plugin.workspace.WorkspacePreferences;
 import org.freeplane.plugin.workspace.config.creator.FilesystemFolderCreator;
 import org.freeplane.plugin.workspace.config.creator.FilesystemLinkCreator;
+import org.freeplane.plugin.workspace.config.creator.FilesystemMindMapLinkCreator;
 import org.freeplane.plugin.workspace.config.creator.GroupCreator;
 import org.freeplane.plugin.workspace.config.creator.WorkspaceCreator;
 import org.freeplane.plugin.workspace.io.xml.WorkspaceNodeWriter;
@@ -63,9 +64,14 @@ public class WorkspaceConfiguration {
 				return;
 			}
 		}
-		if (workspaceLocationNew != null && workspaceLocationNew.trim().length() > 0
-				&& !workspaceLocationNew.equals(workspaceLocation)) {
-			workspaceLocation = initializeNewConfig(workspaceLocationNew);
+		if (workspaceLocationNew != null && workspaceLocationNew.trim().length() > 0) {
+			File configFile = new File(workspaceLocationNew + File.separator + CONFIG_FILE_NAME);
+			if (!configFile.exists()) {
+				workspaceLocation = initializeNewConfig(workspaceLocationNew);
+			}
+			else {
+				workspaceLocation = workspaceLocationNew;
+			}
 		}
 
 		File configFile = new File(workspaceLocation + File.separator + CONFIG_FILE_NAME);
@@ -115,8 +121,8 @@ public class WorkspaceConfiguration {
 		byte[] buffer = new byte[1024];
 		int len = in.read(buffer);
 		while (len != -1) {
-		    out.write(buffer, 0, len);
-		    len = in.read(buffer);
+			out.write(buffer, 0, len);
+			len = in.read(buffer);
 		}
 		in.close();
 		out.close();
@@ -135,6 +141,7 @@ public class WorkspaceConfiguration {
 		readManager.addElementHandler("group", new GroupCreator());
 		readManager.addElementHandler("filesystem_folder", new FilesystemFolderCreator());
 		readManager.addElementHandler("filesystem_link", new FilesystemLinkCreator());
+		readManager.addElementHandler("filesystem_mindmap_link", new FilesystemMindMapLinkCreator());
 	}
 
 	private void initWriteManager() {
@@ -150,12 +157,14 @@ public class WorkspaceConfiguration {
 
 		writeManager.addElementWriter("filesystem_link", writer);
 		writeManager.addAttributeWriter("filesystem_link", writer);
+		
+		writeManager.addElementWriter("filesystem_mindmap_link", writer);
+		writeManager.addAttributeWriter("filesystem_mindmap_link", writer);
 	}
 
 	public void load(final URL xmlFile) {
 		final TreeXmlReader reader = new TreeXmlReader(readManager);
 		try {
-			// FISH
 			reader.load(new InputStreamReader(new BufferedInputStream(xmlFile.openStream())));
 		}
 		catch (final IOException e) {

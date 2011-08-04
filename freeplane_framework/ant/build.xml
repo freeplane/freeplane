@@ -153,6 +153,15 @@
 	    </antcall>
 	</target>
 	
+	<target name="build_docear_pdfutilities" unless="skip_pdfutilities">
+		<antcall target="makePlugin" inheritall="false">
+			<param name="anttarget" value="dist"/>
+			<param name="targetdir" value="plugins"/>
+			<param name="plugindir" value="docear_plugin_pdfutilities"/>
+			<param name="pluginname" value="org.docear.plugin.pdfutilities"/>
+	    </antcall>
+	</target>
+
 	<target name="build_docear_backup" unless="skip_backup">
 		<antcall target="makePlugin" inheritall="false">
 			<param name="anttarget" value="dist"/>
@@ -162,8 +171,17 @@
 	    </antcall>
 	</target>
 
+	<target name="build_docear_optionpane" unless="skip_optionpane">
+		<antcall target="makePlugin" inheritall="false">
+			<param name="anttarget" value="dist"/>
+			<param name="targetdir" value="plugins"/>
+			<param name="plugindir" value="docear_plugin_optionpane"/>
+			<param name="pluginname" value="org.docear.plugin.optionpane"/>
+	    </antcall>
+	</target>
+
 	<target name="build" depends="build_core, build_latex, build_svg, build_script, build_formula, build_bugreport, build_accountmanager, 
-    build_workspace, build_docear_core, build_docear_communications, build_docear_backup">
+    build_workspace, build_docear_core, build_docear_communications, build_docear_pdfutilities, build_docear_backup, build_docear_optionpane">
        <mkdir dir="${build.resources}" />
         <copy todir="${build.resources}">
             <fileset dir="${workspace}/freeplane/dist/resources" />
@@ -492,7 +510,11 @@
 		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
 			  dir="${workspace}/docear_plugin_communications"/>		
 		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
+			  dir="${workspace}/docear_plugin_pdfutilities"/>		
+		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
 			  dir="${workspace}/docear_plugin_backup"/>		
+		  <ant antfile="ant/build.xml" target="clean" inheritall="false"
+			  dir="${workspace}/docear_plugin_optionpane"/>		
 	</target>
 
 </project>

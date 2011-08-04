@@ -11,7 +11,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.io.Writer;
-import java.net.JarURLConnection;
 import java.util.Properties;
 
 import javax.swing.JPanel;
@@ -54,6 +53,8 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 	private final PopupMenus popups;
 	private WorkspaceTransferHandler transferHandler;
 	private IndexedTree tree;
+	
+	private String workspaceLocation;
 
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -85,6 +86,10 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 	public static WorkspaceController getCurrentWorkspaceController() {
 		return currentWorkspace;
 	}
+	
+//	public static void reinitializeWorkspaceController() {
+//		currentWorkspace = new WorkspaceController();
+//	}
 
 	public WorkspaceConfiguration getConfig() {
 		if (this.config != null) {
@@ -101,7 +106,13 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 
 	private void initializeConfiguration() {
 		resetWorkspaceView();
+		setConfig(new WorkspaceConfiguration());
 		if (!getConfig().isConfigValid()) {
+			LocationDialog locationDialog = new LocationDialog();
+			locationDialog.setVisible(true);
+		}
+			
+		if (!getConfig().isConfigValid()) {			
 			showWorkspaceView(false);
 			return;
 		}
@@ -132,6 +143,23 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 			this.WSContentPane.add(splitPane);
 		}
 		return this.WSContentPane;
+	}
+	
+	public String getWorkspaceLocation() {
+		if (this.workspaceLocation == null) {
+			this.workspaceLocation = ResourceController.getResourceController().getProperty(WorkspacePreferences.WORKSPACE_LOCATION);
+		}
+		return workspaceLocation;
+	}
+
+	public void setWorkspaceLocation(String workspaceLocation) {
+		ResourceController.getResourceController().setProperty(WorkspacePreferences.WORKSPACE_LOCATION_NEW,
+				workspaceLocation);
+		Controller.getCurrentController().getResourceController()
+				.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, true);
+		WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();
+		
+		this.workspaceLocation = workspaceLocation;
 	}
 
 	private void setWorkspaceWidth(int width) {

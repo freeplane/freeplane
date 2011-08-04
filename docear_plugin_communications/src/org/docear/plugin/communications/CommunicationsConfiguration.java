@@ -7,6 +7,7 @@ import java.net.URL;
 import javax.swing.JOptionPane;
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.docear.plugin.core.ALanguageController;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
@@ -17,7 +18,7 @@ import org.freeplane.plugin.accountmanager.AccountManager;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
-public class CommunicationsConfiguration implements ActionListener {
+public class CommunicationsConfiguration extends ALanguageController implements ActionListener {
 	public static final String PASSWORD = "password";
 	public static final String USER_NAME = "userName";
 	public static final String ALLOW_INFORMATION_RETRIEVAL = "allowIR"; // allow
@@ -54,6 +55,8 @@ public class CommunicationsConfiguration implements ActionListener {
 	private DocearAccount account;
 
 	public CommunicationsConfiguration() {
+		super();
+		
 		addPluginDefaults();
 		addPropertiesToOptionPanel();
 		Controller.getCurrentController().getOptionPanelController().addButtonListener(this);
@@ -127,19 +130,6 @@ public class CommunicationsConfiguration implements ActionListener {
 				.getCurrentModeController();
 
 		modeController.getOptionPanelBuilder().load(preferences);
-
-		ResourceBundles resBundle = ((ResourceBundles) modeController
-				.getController().getResourceController().getResources());
-
-		String lang = resBundle.getLanguageCode();
-		if (lang == null || lang.equals(ResourceBundles.LANGUAGE_AUTOMATIC)) {
-			lang = "en";
-		}
-
-		final URL res = this.getClass().getResource(
-				"/translations/Resources_" + lang + ".properties");
-		resBundle.addResources(resBundle.getLanguageCode(), res);
-
 	}
 
 	private ValidationState getValidationState() {

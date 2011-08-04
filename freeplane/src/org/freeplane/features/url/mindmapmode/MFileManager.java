@@ -541,7 +541,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		mapController.setSaved(map, SET_NEW_MAP_SAVED);
 	}
 
-	private File defaultTemplateFile() {
+	public File defaultTemplateFile() {
 		final String userDefinedTemplateFile = getStandardTemplateName();
 		final File absolute = new File(userDefinedTemplateFile);
 		if(absolute.isAbsolute() && absolute.exists() && ! absolute.isDirectory()){
