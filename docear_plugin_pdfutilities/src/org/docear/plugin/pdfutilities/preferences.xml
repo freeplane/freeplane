@@ -16,7 +16,7 @@
 			    <radiobutton name = "docear_open_standard"/>
 			    <radiobutton name = "docear_open_internal" enabled = "false"/>
 			    <radiobutton name = "docear_open_on_page"/> 
-			    <path name = "docear_open_on_page_reader_path"/>
+			    <path name = "docear_open_on_page_reader_path" suffixes = "exe"/>
 			</separator>
 		</tab>
 	</tabbed_pane>

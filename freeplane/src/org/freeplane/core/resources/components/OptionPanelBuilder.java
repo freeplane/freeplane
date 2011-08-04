@@ -222,7 +222,7 @@ public class OptionPanelBuilder {
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
 			final boolean isDir = Boolean.parseBoolean(data.getAttribute("dir", "false"));
-			final String[] suffixes = parseCSV(data.getAttribute("suffixes", ""));
+			final String[] suffixes = parseCSV(data.getAttribute("suffixes", null));
 			return createPathPropertyCreator(name, isDir, suffixes);
 		}
 

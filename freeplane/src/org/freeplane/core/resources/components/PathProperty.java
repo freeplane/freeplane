@@ -27,6 +27,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
 import java.util.Arrays;
+import java.util.Locale;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -86,15 +87,27 @@ public class PathProperty extends PropertyBean implements IPropertyControl {
 		if (isDir) {
 		    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		}
-		else if (suffixes != null) {
+		else if (suffixes != null && suffixes.length > 0) {
+			
 			filter = new FileFilter() {
 				@Override
 				public String getDescription() {
-					return Arrays.asList(suffixes).toString();
+					String result = "";
+					for(String s : Arrays.asList(suffixes)){
+						if(result.length() <= 0){
+							result = "*." + s.toLowerCase(Locale.ENGLISH);
+						}
+						else{
+							result += "; *." + s.toLowerCase(Locale.ENGLISH);
+						}
+					}
+					return result;
 				}
 
 				@Override
 				public boolean accept(File f) {
+					if(f == null) return false;
+					if(f.isDirectory()) return true;
 					String extension = FileUtils.getExtension(f);
 					for (String suffix : suffixes) {
 						if (suffix.equalsIgnoreCase(extension))
