@@ -52,6 +52,7 @@ public class FilesystemMindMapLinkNode extends AWorkspaceNode implements IWorksp
 	}
 
 	public void handleEvent(WorkspaceNodeEvent event) {
+		System.out.println("event: "+event.getType());
 		if (event.getType() == WorkspaceNodeEvent.MOUSE_LEFT_DBLCLICK) {
 			System.out.println("doublecklicked MindmapNode");
 			try {
@@ -94,6 +95,6 @@ public class FilesystemMindMapLinkNode extends AWorkspaceNode implements IWorksp
 	}
 
 	public String getTagName() {
-		return "filesystem_link";
+		return "filesystem_mindmap_link";
 	}
 }
