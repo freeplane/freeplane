@@ -1,6 +1,7 @@
 package org.freeplane.core.util;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -8,8 +9,11 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Locale;
+import java.util.Properties;
 import java.util.Set;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.mode.Controller;
 
@@ -150,7 +154,13 @@ public class Compat {
 	public static String getFreeplaneUserDirectory() {
 		String userFpDir = System.getProperty("org.freeplane.userfpdir");
 		if(userFpDir == null){
-			userFpDir = System.getProperty("user.home")+ File.separator + ".freeplane";
+			Properties freeplaneProperties = new Properties();
+			try {
+				freeplaneProperties.load(Compat.class.getClassLoader().getResourceAsStream(ResourceController.FREEPLANE_PROPERTIES));
+			} catch (IOException e) {
+				LogUtils.warn(e);
+			}			
+			userFpDir = System.getProperty("user.home")+ File.separator + "." + freeplaneProperties.getProperty("ApplicationName", "freeplane").toLowerCase(Locale.ENGLISH);			
 		}
 		if(PREVIEW_DIR != null)
 			return userFpDir + PREVIEW_DIR;
