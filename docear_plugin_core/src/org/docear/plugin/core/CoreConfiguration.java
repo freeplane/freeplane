@@ -25,6 +25,7 @@ public class CoreConfiguration {
 	}
 	
 	private void addDocearProperties() {
+		 
 		ResourceBundles bundles = ((ResourceBundles)ResourceController.getResourceController().getResources());
 		Controller controller = Controller.getCurrentController();
 		for (Enumeration<?> i = bundles.getKeys(); i.hasMoreElements();){
@@ -43,7 +44,13 @@ public class CoreConfiguration {
 			}			
 		}
 		
+		ResourceController.getResourceController().setProperty("webFreeplaneLocation", "http://www.docear.org");
+		//ResourceController.getResourceController().setDefaultProperty("webFreeplaneLocation", "www.docear.org");
 		
+		
+		controller.removeAction("OpenFreeplaneSiteAction");
+		//controller.addAction(new OpenURLAction("OpenFreeplaneSiteAction",  ResourceController.getResourceController().getProperty("webFreeplaneLocation")));
+		System.out.println();
 		//.putResourceString("mode_title", "Docear - {0}");
 		//((ResourceBundles)ResourceController.getResourceController().getResources()).putResourceString("OpenFreeplaneSiteAction.text", "Docear &Webseite");
 		

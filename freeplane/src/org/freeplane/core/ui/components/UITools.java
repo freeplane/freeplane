@@ -130,10 +130,11 @@ public class UITools {
 		else {
 			myMessage = TextUtils.getText("undefined_error");
 		}
+		final String title = ResourceController.getResourceController().getProperty("ApplicationName", "Freeplane");
 		LogUtils.warn(myMessage);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				JOptionPane.showMessageDialog(UITools.getFrame(), myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(UITools.getFrame(), myMessage, title, JOptionPane.ERROR_MESSAGE);
 			}
 		});
 	}
@@ -167,7 +168,8 @@ public class UITools {
 	}
 
 	static public void informationMessage(final Frame frame, final String message) {
-		UITools.informationMessage(frame, message, "Freeplane");
+		final String title = ResourceController.getResourceController().getProperty("ApplicationName", "Freeplane");
+		UITools.informationMessage(frame, message, title);
 	}
 
 	static public void informationMessage(final Frame frame, final String message, final String title) {
