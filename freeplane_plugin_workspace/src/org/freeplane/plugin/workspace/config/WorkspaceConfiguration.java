@@ -32,7 +32,6 @@ public class WorkspaceConfiguration {
 	final private ReadManager readManager;
 	final private WriteManager writeManager;
 
-	private final URL DEFAULT_CONFIG = this.getClass().getResource("workspace_default.xml");
 	private final static String DEFAULT_CONFIG_FILE_NAME = "workspace_default.xml";
 	private final static String CONFIG_FILE_NAME = "workspace.xml";
 

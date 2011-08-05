@@ -153,13 +153,13 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 	}
 
 	public void setWorkspaceLocation(String workspaceLocation) {
+		this.workspaceLocation = workspaceLocation;
 		ResourceController.getResourceController().setProperty(WorkspacePreferences.WORKSPACE_LOCATION_NEW,
 				workspaceLocation);
 		Controller.getCurrentController().getResourceController()
 				.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, true);
 		WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();
-		
-		this.workspaceLocation = workspaceLocation;
+			
 	}
 
 	private void setWorkspaceWidth(int width) {
