@@ -59,8 +59,7 @@ public class FreeplaneSplashModern extends JWindow {
 		super(frame);
 		String splashImageName = "";
 		try {
-			splashImageName = ResourceController.getResourceController().getProperty("mainSplashName");
-			
+			splashImageName = ResourceController.getResourceController().getProperty("ApplicationName")+"_splash.png";
 		}
 		catch (final Exception e) {
 			splashImageName="Freeplane_splash.png";

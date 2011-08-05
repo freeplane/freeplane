@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.net.URI;
 
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
+import org.docear.plugin.pdfutilities.pdf.PdfAnnotation;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
+import org.docear.plugin.pdfutilities.pdf.PdfReaderFileFilter;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.docear.plugin.pdfutilities.util.Tools;
 import org.freeplane.core.resources.ResourceController;
@@ -63,14 +65,37 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 			
 			URI uri = NodeLinks.getValidLink(selectedNode);					
 			uri = Tools.getAbsoluteUri(uri);
-			Integer page = null;
+			String command = null;
+			PdfAnnotation annotation = null;
 			try{
-				page = new PdfAnnotationImporter().getAnnotationDestination(Tools.getFilefromUri(uri), selectedNode);
+				annotation = new PdfAnnotationImporter().searchAnnotation(Tools.getFilefromUri(uri), selectedNode.getText());
 				
-				if(page == null){
+				if(annotation == null){
 					this.mouseListener.mouseClicked(e);
 					return;
 				}
+				
+				switch(annotation.getAnnotationType()){
+				
+					case PdfAnnotation.BOOKMARK:
+					case PdfAnnotation.COMMENT:
+					case PdfAnnotation.HIGHLIGHTED_TEXT:
+						if(annotation.getPage() != null){
+							command = getExecCommand(readerPath, uri, annotation.getPage());
+							break;
+						}
+						if(annotation.getPage() == null){
+							//TODO Error Message for User ??
+							this.mouseListener.mouseClicked(e);							
+							return;
+						}
+						
+					case PdfAnnotation.BOOKMARK_WITHOUT_DESTINATION:
+					case PdfAnnotation.BOOKMARK_WITH_URI:
+						command = getExecCommand(readerPath, uri, 1);
+						break;
+				}
+				
 			}catch(IOException x){
 				this.mouseListener.mouseClicked(e);
 				return;
@@ -80,14 +105,15 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 			}
 			
 			LinkController.getController().onDeselect(selectedNode);
-					
+			
+			
+			//TODO Are all URI's working ??
 			/*String uriString = uri.toString();
 			final String UNC_PREFIX = "file:////";
 			if (uriString.startsWith(UNC_PREFIX)) {
 				uriString = "file://" + uriString.substring(UNC_PREFIX.length());
-			}*/
-			
-			final String command = getExecCommand(readerPath, uri, page);	
+			}*/			
+				
 			try {								
 				Controller.exec(command);
 				return;
@@ -105,11 +131,18 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 	}
 
 	private String getExecCommand(String readerPath, URI uriToFile, int page) {
-		return readerPath + " /A page=" + page + " " + Tools.getFilefromUri(uriToFile).getAbsolutePath();
+		PdfReaderFileFilter readerFilter = new PdfReaderFileFilter();
+		if(readerFilter.isAdobe(new File(readerPath))){
+			return readerPath + " /A page=" + page + " " + Tools.getFilefromUri(uriToFile).getAbsolutePath();
+		}
+		if(readerFilter.isFoxit(new File(readerPath))){
+			return readerPath + " \"" + Tools.getFilefromUri(uriToFile).getAbsolutePath() + "\" /A page=" + page;
+		}
+		return null;
 	}
 
 	private boolean isValidReaderPath(String readerPath) {		
-		return readerPath != null && readerPath.length() > 0 && new File(readerPath).exists();
+		return readerPath != null && readerPath.length() > 0 && new File(readerPath).exists() && new PdfReaderFileFilter().accept(new File(readerPath));
 	}
 
 	public void mousePressed(MouseEvent e) {

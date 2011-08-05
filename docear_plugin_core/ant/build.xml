@@ -4,6 +4,7 @@
 	<property name="resources" value="resources" />
 	<property name="root" value="."/>
 	<property name="osgimanifest" value="${root}/META-INF/MANIFEST.MF" />	
+	<property name="license" value="${root}/src/license.txt" />	
 	<property file="${workspace}/freeplane_framework/ant/ant.properties" />
 	<property file="${workspace}/freeplane/ant/ant.properties" />
 	<property file="ant/ant.properties" />
@@ -34,6 +35,7 @@
 			<fileset dir="${src}">
                 <include name="**/*.xml"/>
                 <include name="**/*.properties"/>
+                <include name="*.txt"/>
             </fileset>
 		</jar>
 		<delete dir="${dist.osgi.dir}" quiet="true"/>
@@ -45,6 +47,7 @@
 		</copy>
 		<mkdir dir="${dist.osgi.dir}/META-INF" />
 		<copy tofile="${dist.osgi.dir}/META-INF/MANIFEST.MF" file="${osgimanifest}"/>
+		<copy tofile="${dist.osgi.dir}/license.txt" file="${license}"/>
 		<delete file="lib/plugin.jar" quiet="true"/>
 	</target>
 

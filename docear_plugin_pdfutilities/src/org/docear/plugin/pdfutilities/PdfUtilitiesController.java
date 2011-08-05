@@ -6,8 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.net.URL;
 import java.util.Collection;
+import java.util.Properties;
 
 import javax.swing.JMenu;
 import javax.swing.JRadioButton;
@@ -19,10 +21,13 @@ import org.docear.plugin.pdfutilities.actions.ImportNewAnnotationsAction;
 import org.docear.plugin.pdfutilities.actions.RadioButtonAction;
 import org.docear.plugin.pdfutilities.listener.DocearNodeDropListener;
 import org.docear.plugin.pdfutilities.listener.DocearNodeMouseMotionListener;
+import org.docear.plugin.pdfutilities.pdf.PdfReaderFileFilter;
+import org.docear.plugin.pdfutilities.util.ExeFileFilter;
 import org.freeplane.core.resources.OptionPanelController;
 import org.freeplane.core.resources.OptionPanelController.PropertyLoadListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.IValidator;
 import org.freeplane.core.resources.components.RadioButtonProperty;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.IMouseListener;
@@ -45,7 +50,9 @@ public class PdfUtilitiesController extends ALanguageController {
 	public static final String IMPORT_BOOKMARKS_KEY = "docear_import_bookmarks";
 	public static final String IMPORT_COMMENTS_KEY = "docear_import_comments";
 	public static final String IMPORT_HIGHLIGHTED_TEXTS_KEY = "docear_import_highlighted_text";
-
+	public static final String OPEN_ON_PAGE_WARNING_KEY = "OptionPanel.docear_open_on_page_reader_path_warning";
+	public static final String OPEN_ON_PAGE_ERROR_KEY = "OptionPanel.docear_open_on_page_reader_path_error";
+	
 	public static final String MENU_BAR = "/menu_bar";
 	public static final String NODE_POPUP_MENU = "/node_popup";
 	public static final String NODE_FEATURES_MENU = "/node features";
@@ -209,5 +216,25 @@ public class PdfUtilitiesController extends ALanguageController {
 		MModeController modeController = (MModeController) Controller.getCurrentModeController();
 
 		modeController.getOptionPanelBuilder().load(preferences);
+		modeController.getOptionPanelBuilder().addValidator(new IValidator(){
+
+			public ValidationResult validate(Properties properties) {
+				ValidationResult result = new ValidationResult();
+				boolean openOnPageActivated = Boolean.parseBoolean(properties.getProperty(OPEN_PDF_VIEWER_ON_PAGE_KEY));
+				if(openOnPageActivated){
+					String readerPath = properties.getProperty(OPEN_ON_PAGE_READER_PATH_KEY, "");
+					if(!(new PdfReaderFileFilter().accept(new File(readerPath)))){
+						if(new ExeFileFilter().accept(new File(readerPath))){
+							result.addWarning(TextUtils.getText(OPEN_ON_PAGE_WARNING_KEY));
+						}
+						else{
+							result.addWarning(TextUtils.getText(OPEN_ON_PAGE_ERROR_KEY));
+						}
+					}
+				}
+				return result;
+			}
+			
+		});
 	}
 }
