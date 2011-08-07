@@ -36,7 +36,7 @@ public class SetBooleanPropertyAction extends AFreeplaneAction{
 	private String propertyName;
 	public SetBooleanPropertyAction(String propertyName) {
 	    super("SetBooleanPropertyAction." + propertyName, 
-	    	TextUtils.getText("OptionPanel." + propertyName),
+	    	TextUtils.getRawText("OptionPanel." + propertyName),
 	    	null);
 	    this.propertyName = propertyName;
     }

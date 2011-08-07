@@ -72,9 +72,9 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			final JButton okButton = new JButton();
 			final JButton cancelButton = new JButton();
 			splitButton = new JButton();
-			MenuBuilder.setLabelAndMnemonic(okButton, TextUtils.getText("ok"));
-			MenuBuilder.setLabelAndMnemonic(cancelButton, TextUtils.getText("cancel"));
-			MenuBuilder.setLabelAndMnemonic(splitButton, TextUtils.getText("split"));
+			MenuBuilder.setLabelAndMnemonic(okButton, TextUtils.getRawText("ok"));
+			MenuBuilder.setLabelAndMnemonic(cancelButton, TextUtils.getRawText("cancel"));
+			MenuBuilder.setLabelAndMnemonic(splitButton, TextUtils.getRawText("split"));
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					submit();

@@ -27,10 +27,6 @@ abstract class AEditStylesAction extends AFreeplaneAction {
 		super(key);
 	}
 
-	public AEditStylesAction(String key, String title, ImageIcon icon) {
-		super(key, title, icon);
-	}
-	
 	SModeController getModeController() {
 	    return modeController;
     }

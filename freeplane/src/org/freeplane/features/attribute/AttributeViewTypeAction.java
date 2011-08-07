@@ -13,11 +13,6 @@ public abstract class AttributeViewTypeAction extends AFreeplaneAction {
 		super(key);
 	}
 
-	public AttributeViewTypeAction(final String key, final String title,
-	                               final ImageIcon icon) {
-		super(key, title, icon);
-	}
-
 	protected void setAttributeViewType(final String type) {
 		final MapModel map = Controller.getCurrentController().getMap();
 		ModelessAttributeController.getController().setAttributeViewType(map, type);

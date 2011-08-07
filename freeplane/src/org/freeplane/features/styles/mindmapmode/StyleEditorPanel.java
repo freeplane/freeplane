@@ -707,7 +707,7 @@ public class StyleEditorPanel extends JPanel {
 				}
 			});
 		}
-	    final String label = TextUtils.removeMnemonic(TextUtils.getText("AutomaticLayoutAction.text"));
+	    final String label = TextUtils.getText("AutomaticLayoutAction.text");
 	    rightBuilder.append(new JLabel(label), 5);
 	    rightBuilder.append(mAutomaticLayoutCheckBox);
 	    rightBuilder.nextLine();
@@ -723,7 +723,7 @@ public class StyleEditorPanel extends JPanel {
 					}
 				});
 			}
-			final String label = TextUtils.removeMnemonic(TextUtils.getText("AutomaticEdgeColorHookAction.text"));
+			final String label = TextUtils.getText("AutomaticEdgeColorHookAction.text");
 			rightBuilder.append(new JLabel(label), 5);
 			rightBuilder.append(mAutomaticEdgeColorCheckBox);
 		    rightBuilder.nextLine();

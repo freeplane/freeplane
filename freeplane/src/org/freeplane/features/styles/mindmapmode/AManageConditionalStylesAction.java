@@ -50,7 +50,7 @@ abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 	    final Box buttons = Box.createVerticalBox();
 	    
 	    JButton create = new JButton();
-	    MenuBuilder.setLabelAndMnemonic(create, TextUtils.getText("new"));
+	    MenuBuilder.setLabelAndMnemonic(create, TextUtils.getRawText("new"));
 	    create.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 	    create.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -62,7 +62,7 @@ abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 		});
 
 	    JButton edit = new JButton();
-	    MenuBuilder.setLabelAndMnemonic(edit, TextUtils.getText("edit"));
+	    MenuBuilder.setLabelAndMnemonic(edit, TextUtils.getRawText("edit"));
 	    edit.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 	    edit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -78,7 +78,7 @@ abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 		});
 
 	    JButton delete = new JButton();
-	    MenuBuilder.setLabelAndMnemonic(delete, TextUtils.getText("delete"));
+	    MenuBuilder.setLabelAndMnemonic(delete, TextUtils.getRawText("delete"));
 	    delete.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 	    delete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -98,7 +98,7 @@ abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 			}
 		});
 	    JButton up = new JButton();
-	    MenuBuilder.setLabelAndMnemonic(up, TextUtils.getText("up"));
+	    MenuBuilder.setLabelAndMnemonic(up, TextUtils.getRawText("up"));
 	    up.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 	    up.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -113,7 +113,7 @@ abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 			}
 		});
 	    JButton down = new JButton();
-	    MenuBuilder.setLabelAndMnemonic(down, TextUtils.getText("down"));
+	    MenuBuilder.setLabelAndMnemonic(down, TextUtils.getRawText("down"));
 	    down.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 	    down.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

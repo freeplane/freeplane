@@ -149,8 +149,8 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	final private DefaultTreeModel treeModel;
 
 	public ImportAttributesDialog( final Component parentComponent) {
-		super(Controller.getCurrentController().getViewController().getFrame(), TextUtils.removeMnemonic(TextUtils
-		    .getText("attributes_import")), true);
+		super(Controller.getCurrentController().getViewController().getFrame(), TextUtils
+		    .getText("attributes_import"), true);
 //		this.controller = controller;
 		this.parentComponent = parentComponent;
 		final TreeNodeInfo nodeInfo = new TreeNodeInfo(TextUtils.getText("attribute_top"));
@@ -166,7 +166,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		final Box buttons = Box.createHorizontalBox();
 		buttons.setBorder(new EmptyBorder(5, 5, 5, 5));
 		final JButton okBtn = new JButton();
-		MenuBuilder.setLabelAndMnemonic(okBtn, TextUtils.getText("ok"));
+		MenuBuilder.setLabelAndMnemonic(okBtn, TextUtils.getRawText("ok"));
 		okBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				performImport(topNode);
@@ -174,7 +174,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 			}
 		});
 		final JButton cancelBtn = new JButton();
-		MenuBuilder.setLabelAndMnemonic(cancelBtn, TextUtils.getText("cancel"));
+		MenuBuilder.setLabelAndMnemonic(cancelBtn, TextUtils.getRawText("cancel"));
 		cancelBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				dispose();

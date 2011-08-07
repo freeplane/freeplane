@@ -141,14 +141,14 @@ public class OptionPanel {
 		    rightComponent);
 		topDialog.getContentPane().add(centralPanel, BorderLayout.CENTER);
 		final JButton cancelButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(cancelButton, TextUtils.getText("cancel"));
+		MenuBuilder.setLabelAndMnemonic(cancelButton, TextUtils.getRawText("cancel"));
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
 				closeWindow();
 			}
 		});
 		final JButton okButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(okButton, TextUtils.getText("ok"));
+		MenuBuilder.setLabelAndMnemonic(okButton, TextUtils.getRawText("ok"));
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
 				if (validate()) {

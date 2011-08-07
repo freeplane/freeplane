@@ -187,7 +187,7 @@ public class OptionalDontShowMeAgainDialog {
 		else {
 			boxString = "OptionalDontShowMeAgainDialog.rememberMyDescision";
 		}
-		mDontShowAgainBox = new JCheckBox(TextUtils.getText(boxString));
+		mDontShowAgainBox = new JCheckBox(TextUtils.getRawText(boxString));
 		MenuBuilder.setLabelAndMnemonic(mDontShowAgainBox, null);
 		mDialog.getContentPane().add(
 		    mDontShowAgainBox,
@@ -195,10 +195,10 @@ public class OptionalDontShowMeAgainDialog {
 		        5, 5, 0, 0), 0, 0));
 		final String okText;
 		if(mMessageType == ONLY_OK_SELECTION_IS_SHOWN){
-			okText = TextUtils.getText("ok");
+			okText = TextUtils.getRawText("ok");
 		}
 		else{
-			okText = TextUtils.getText("OptionalDontShowMeAgainDialog.ok");
+			okText = TextUtils.getRawText("OptionalDontShowMeAgainDialog.ok");
 		}
 		final JButton okButton = new JButton(okText);
 		MenuBuilder.setLabelAndMnemonic(okButton, null);
@@ -208,7 +208,7 @@ public class OptionalDontShowMeAgainDialog {
 		    new GridBagConstraints(2, 3, 1, 1, 1.0, 1.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(
 		        5, 5, 0, 0), 0, 0));
 		if(mMessageType != ONLY_OK_SELECTION_IS_SHOWN){
-			final JButton cancelButton = new JButton(TextUtils.getText("OptionalDontShowMeAgainDialog.cancel"));
+			final JButton cancelButton = new JButton(TextUtils.getRawText("OptionalDontShowMeAgainDialog.cancel"));
 			MenuBuilder.setLabelAndMnemonic(cancelButton, null);
 			cancelButton.addActionListener(cancelAction);
 			mDialog.getContentPane().add(

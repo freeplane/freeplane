@@ -196,7 +196,7 @@ public class MMapController extends MapController {
 			final List<Component> views = Controller.getCurrentController().getMapViewManager().getViews(map);
 			if (views.size() == 1) {
 				final String text = TextUtils.getText("save_unsaved") + "\n" + map.getTitle();
-				final String title = TextUtils.removeMnemonic(TextUtils.getText("SaveAction.text"));
+				final String title = TextUtils.getText("SaveAction.text");
 				final int returnVal = JOptionPane.showOptionDialog(
 				    Controller.getCurrentController().getViewController().getContentPane(), text, title,
 				    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);

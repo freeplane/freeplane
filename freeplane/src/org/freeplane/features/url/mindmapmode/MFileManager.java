@@ -684,7 +684,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		else {
 			chooser.setSelectedFile(map.getFile());
 		}
-		chooser.setDialogTitle(TextUtils.removeMnemonic(TextUtils.getText("SaveAsAction.text")));
+		chooser.setDialogTitle(TextUtils.getText("SaveAsAction.text"));
 		final int returnVal = chooser
 		    .showSaveDialog(Controller.getCurrentController().getViewController().getMapView());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {

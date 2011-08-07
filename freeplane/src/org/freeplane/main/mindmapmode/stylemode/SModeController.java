@@ -98,7 +98,7 @@ class SModeController extends MModeController {
 	    	return;
 	    }
 	    final String text = TextUtils.getText("save_unsaved_styles");
-	    final String title = TextUtils.removeMnemonic(TextUtils.getText("SaveAction.text"));
+	    final String title = TextUtils.getText("SaveAction.text");
 	    final int returnVal = JOptionPane.showOptionDialog(
 	    	dialog, text, title,
 	    	JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);

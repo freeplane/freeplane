@@ -39,7 +39,7 @@ class EdgeWidthAction extends AMultipleNodeAction {
 	private static String getWidthTitle( final int width) {
 		String returnValue;
 		if (width <= 0) {
-			returnValue = TextUtils.getText(EdgeWidthAction.width2String(width) + ".text");
+			returnValue = TextUtils.getRawText(EdgeWidthAction.width2String(width) + ".text");
 		}
 		else {
 			returnValue = Integer.toString(width);

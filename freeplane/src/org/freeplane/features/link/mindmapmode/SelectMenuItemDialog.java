@@ -147,7 +147,7 @@ class SelectMenuItemDialog extends JDialog {
 
 	private JButton createButton(final String key, final CloseAction closeAction) {
 		final JButton button = new JButton();
-		MenuBuilder.setLabelAndMnemonic(button, TextUtils.getText(key));
+		MenuBuilder.setLabelAndMnemonic(button, TextUtils.getRawText(key));
 		button.addActionListener(closeAction);
 		button.setMaximumSize(new Dimension(1000, 1000));
 		return button;

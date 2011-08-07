@@ -226,7 +226,7 @@ abstract public class EditNodeBase {
 	protected void addAction(JPopupMenu menu, final Action action, final String label) {
 		if(action == null)
 			return;
-	    final String text = TextUtils.getText(label);
+	    final String text = TextUtils.getRawText(label);
 	    final JMenuItem item = menu.add(new JMenuItem());
 	    MenuBuilder.setLabelAndMnemonic(item, text);
 	    item.addActionListener(action);
