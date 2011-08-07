@@ -78,6 +78,11 @@ public interface Proxy {
 		 * @since 1.2 */
 		List<? extends Convertible> getValues();
 
+		/** returns all attributes as a map. Note that this will erase duplicate keys.
+		 * <code>node.attributes = otherNode.attributes.map</code>
+		 * @since 1.2 */
+		java.util.Map<String, Object> getMap();
+
 		/** returns the attribute value at the given index.
 		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
 		 *         &lt; 0 || index &gt;= size())</tt>.*/
@@ -945,7 +950,7 @@ public interface Proxy {
 		/** @deprecated since 1.2 - use {@link #setNote(Object)} instead. */
 		void setNoteText(String text);
 
-		/** An alias for {@link #setValue(Object)}.
+		/** An alias for {@link #setObject(Object)}.
 		 * @see #setObject(Object)
 		 * @since 1.2 */
 		void setText(Object value);
