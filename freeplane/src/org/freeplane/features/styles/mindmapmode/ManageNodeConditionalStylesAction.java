@@ -29,13 +29,14 @@ import org.freeplane.features.styles.ConditionalStyleModel;
  */
 public class ManageNodeConditionalStylesAction extends AManageConditionalStylesAction{
 	
+	public static final String NAME = "ManageNodeConditionalStylesAction";
 	/**
      * 
      */
     private static final long serialVersionUID = 1L;
 
 	public ManageNodeConditionalStylesAction() {
-	    super("ManageNodeConditionalStylesAction");
+	    super(NAME);
     }
 
 	public ConditionalStyleModel getConditionalStyleModel() {

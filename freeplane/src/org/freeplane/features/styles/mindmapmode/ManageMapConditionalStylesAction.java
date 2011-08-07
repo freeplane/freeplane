@@ -30,13 +30,14 @@ import org.freeplane.features.styles.MapStyleModel;
  */
 public class ManageMapConditionalStylesAction extends AManageConditionalStylesAction{
 	
+	public static final String NAME = "ManageConditionalStylesAction";
 	/**
      * 
      */
     private static final long serialVersionUID = 1L;
 
 	public ManageMapConditionalStylesAction() {
-	    super("ManageConditionalStylesAction");
+	    super(NAME);
     }
 
 	public ConditionalStyleModel getConditionalStyleModel() {

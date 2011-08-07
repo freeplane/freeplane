@@ -23,6 +23,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,9 +33,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.plaf.basic.BasicButtonUI;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.BooleanProperty;
@@ -47,7 +54,11 @@ import org.freeplane.core.resources.components.NextColumnProperty;
 import org.freeplane.core.resources.components.NextLineProperty;
 import org.freeplane.core.resources.components.NumberProperty;
 import org.freeplane.core.resources.components.SeparatorProperty;
+import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.JAutoScrollBarPane;
+import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.cloud.CloudModel;
@@ -59,9 +70,12 @@ import org.freeplane.features.edge.mindmapmode.AutomaticEdgeColorHook;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.IFormattedObject;
+import org.freeplane.features.map.AMapChangeListenerAdapter;
+import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
+import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
@@ -74,6 +88,7 @@ import org.freeplane.features.styles.AutomaticLayout;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleModel;
+import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.IMapViewManager;
 
@@ -419,15 +434,20 @@ public class StyleEditorPanel extends JPanel {
 	        "30", "36", "48", "72" };
 	private final boolean addStyleBox;
 	private final MUIFactory uiFactory;
+	private final ModeController modeController;
+	private JButton mNodeStyleButton;
+	private JButton mMapStyleButton;
 
 	/**
 	 * @throws HeadlessException
 	 */
-	public StyleEditorPanel(final MUIFactory uiFactory,
+	public StyleEditorPanel(final ModeController modeController, final MUIFactory uiFactory,
 	                        final boolean addStyleBox) throws HeadlessException {
 		super();
+		this.modeController = modeController;
 		this.addStyleBox = addStyleBox;
 		this.uiFactory = uiFactory;
+		init();
 	}
 
 	private void addBgColorControl(final List<IPropertyControl> controls) {
@@ -623,15 +643,19 @@ public class StyleEditorPanel extends JPanel {
 	 * Creates all controls and adds them to the frame.
 	 * @param modeController 
 	 */
-	public void init() {
+	private void init() {
 		final String form = "right:max(20dlu;p), 2dlu, p, 1dlu,right:max(20dlu;p), 4dlu, 80dlu, 7dlu";
 		final FormLayout rightLayout = new FormLayout(form, "");
 		final DefaultFormBuilder rightBuilder = new DefaultFormBuilder(rightLayout);
 		rightBuilder.setBorder(Borders.DLU2_BORDER);
+		rightBuilder.appendSeparator(TextUtils.getText("OptionPanel.separator.NodeStyle"));
 		if (addStyleBox) {
-			rightBuilder.appendSeparator(TextUtils.getText("OptionPanel.separator.NodeStyle"));
 			addAutomaticLayout(rightBuilder);
 			addStyleBox(rightBuilder);
+		}
+		mNodeStyleButton = addStyleButton(rightBuilder, "node_styles", modeController.getAction(ManageNodeConditionalStylesAction.NAME));
+		if (addStyleBox) {
+			mMapStyleButton = addStyleButton(rightBuilder, "map_styles", modeController.getAction(ManageMapConditionalStylesAction.NAME));
 		}
 		mControls = getControls();
 		for (final IPropertyControl control : mControls) {
@@ -642,9 +666,23 @@ public class StyleEditorPanel extends JPanel {
 		setFont(this, 10);
 	}
 
+	private JButton addStyleButton(DefaultFormBuilder rightBuilder, String label, AFreeplaneAction action) {
+	    final JButton button = new JButton(){
+			private static final long serialVersionUID = 1L;
+			{
+				setUI(BasicButtonUI.createUI(this));
+				
+			}
+		};
+	    button.addActionListener(action);
+	    button.setHorizontalAlignment(SwingConstants.LEFT);
+	    rightBuilder.append(TextUtils.getText(label) + ": ", button, rightBuilder.getColumnCount() - 2);
+		rightBuilder.nextLine();
+		return button;
+    }
+
 	private void addStyleBox(final DefaultFormBuilder rightBuilder) {
 	    mStyleBox = uiFactory.createStyleBox();
-	    rightBuilder.nextLine();
 	    mSetStyle = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		final StyleChangeListener listener = new StyleChangeListener();
 		mSetStyle.addPropertyChangeListener(listener);
@@ -672,6 +710,7 @@ public class StyleEditorPanel extends JPanel {
 	    final String label = TextUtils.removeMnemonic(TextUtils.getText("AutomaticLayoutAction.text"));
 	    rightBuilder.append(new JLabel(label), 5);
 	    rightBuilder.append(mAutomaticLayoutCheckBox);
+	    rightBuilder.nextLine();
 		}
 		{
 			if(mAutomaticEdgeColorCheckBox == null){
@@ -687,6 +726,7 @@ public class StyleEditorPanel extends JPanel {
 			final String label = TextUtils.removeMnemonic(TextUtils.getText("AutomaticEdgeColorHookAction.text"));
 			rightBuilder.append(new JLabel(label), 5);
 			rightBuilder.append(mAutomaticEdgeColorCheckBox);
+		    rightBuilder.nextLine();
 		}
 	}
 
@@ -703,10 +743,13 @@ public class StyleEditorPanel extends JPanel {
 		}
 		internalChange = true;
 		try {
+			final LogicalStyleController logicalStyleController = LogicalStyleController.getController();
 			if(addStyleBox){
 				final boolean isStyleSet = LogicalStyleModel.getStyle(node) != null;
 				mSetStyle.setValue(isStyleSet);
+				setStyleList(mMapStyleButton, logicalStyleController.getMapStyleNames(node, "\n"));
 			}
+			setStyleList(mNodeStyleButton, logicalStyleController.getNodeStyleNames(node, "\n"));
 			final NodeStyleController styleController = NodeStyleController.getController();
 			{
 				final Color nodeColor = NodeStyleModel.getColor(node);
@@ -811,6 +854,10 @@ public class StyleEditorPanel extends JPanel {
 		}
 	}
 
+	private void setStyleList(JButton btn, String styles) {
+		btn.setToolTipText(HtmlUtils.plainToHTML(styles));
+		btn.setText(styles.replaceAll("\n", ", "));
+    }
 
 	private void addListeners() {
 		final Controller controller = Controller.getCurrentController();
@@ -841,6 +888,21 @@ public class StyleEditorPanel extends JPanel {
 					setStyle(node);
 				}
 			}
+		});
+		mapController.addMapChangeListener(new AMapChangeListenerAdapter() {
+
+			@Override
+            public void mapChanged(MapChangeEvent event) {
+				if(! MapStyle.MAP_STYLES.equals(event.getProperty()))
+					return;
+				final IMapSelection selection = controller.getSelection();
+				if (selection == null) {
+					return;
+				}
+				final NodeModel node = selection.getSelected();
+				setStyle(node);
+            }
+			
 		});
 		final IMapViewManager mapViewManager = controller.getMapViewManager();
 		mapViewManager.addMapViewChangeListener(new IMapViewChangeListener() {
