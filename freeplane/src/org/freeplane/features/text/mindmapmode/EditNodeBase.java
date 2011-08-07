@@ -38,6 +38,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.JDialog;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.RootPaneContainer;
@@ -45,6 +46,7 @@ import javax.swing.WindowConstants;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
 
+import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
@@ -212,17 +214,23 @@ abstract public class EditNodeBase {
 		}
 		final ActionMap actionMap = ((JTextComponent)component).getActionMap();
 		final Action copyAction = actionMap.get(DefaultEditorKit.copyAction);
-		if(copyAction != null)
-			menu.add(TextUtils.getText("CopyAction.text")).addActionListener(copyAction);
+		addAction(menu, copyAction, "CopyAction.text");
 		final Action cutAction = actionMap.get(DefaultEditorKit.cutAction);
-		if(cutAction != null)
-			menu.add(TextUtils.getText("CutAction.text")).addActionListener(cutAction);
+		addAction(menu, cutAction, "CutAction.text");
 		final Action pasteAction = actionMap.get(DefaultEditorKit.pasteAction);
-		if(pasteAction != null)
-			menu.add(TextUtils.getText("PasteAction.text")).addActionListener(pasteAction);
+		addAction(menu, pasteAction, "PasteAction.text");
 		SpellCheckerController.getController().addSpellCheckerMenu(menu);
 		return menu;
 	}
+
+	protected void addAction(JPopupMenu menu, final Action action, final String label) {
+		if(action == null)
+			return;
+	    final String text = TextUtils.getText(label);
+	    final JMenuItem item = menu.add(new JMenuItem());
+	    MenuBuilder.setLabelAndMnemonic(item, text);
+	    item.addActionListener(action);
+    }
 
 	public interface IEditControl {
 		void cancel();
