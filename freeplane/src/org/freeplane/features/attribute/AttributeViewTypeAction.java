@@ -1,7 +1,5 @@
 package org.freeplane.features.attribute;
 
-import javax.swing.ImageIcon;
-
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;

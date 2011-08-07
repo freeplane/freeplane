@@ -29,7 +29,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.ConditionalStyleModel;
-import org.freeplane.features.styles.LogicalStyleController;
 
 /**
  * @author Dimitry Polivaev
