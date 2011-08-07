@@ -855,8 +855,14 @@ public class StyleEditorPanel extends JPanel {
 	}
 
 	private void setStyleList(JButton btn, String styles) {
+		if("".equals(styles)){
+			btn.setToolTipText(null);
+			btn.setText(" ");
+			return;
+		}
 		btn.setToolTipText(HtmlUtils.plainToHTML(styles));
-		btn.setText(styles.replaceAll("\n", ", "));
+		final String text = styles.replaceAll("\n", ", ");
+		btn.setText(text);
     }
 
 	private void addListeners() {

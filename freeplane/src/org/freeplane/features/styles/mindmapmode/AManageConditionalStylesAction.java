@@ -34,32 +34,9 @@ abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 	    super(name);
     }
 
-	public void actionPerformed(ActionEvent e) {
-		final Controller controller = Controller.getCurrentController();
-		final MapModel map = controller.getMap();
-		final ConditionalStyleModel conditionalStyleModel = getConditionalStyleModel();
-		Component pane = createConditionalStylePane(map, conditionalStyleModel);
-		Controller.getCurrentModeController().startTransaction();
-		try{
-			final int confirmed = JOptionPane.showConfirmDialog(controller.getViewController().getMapView(), pane, "", JOptionPane.OK_CANCEL_OPTION);
-			if(JOptionPane.OK_OPTION == confirmed){
-				LogicalStyleController.getController().refreshMap(map);
-				Controller.getCurrentModeController().commit();
-			}
-			else{
-				Controller.getCurrentModeController().rollback();
-
-			}
-		}
-		catch(RuntimeException ex){
-			ex.printStackTrace();
-			Controller.getCurrentModeController().rollback();
-		}
-	}
-
 	abstract public ConditionalStyleModel getConditionalStyleModel();
 
-	private Component createConditionalStylePane(final MapModel map, final ConditionalStyleModel conditionalStyleModel) {
+	protected Component createConditionalStylePane(final MapModel map, final ConditionalStyleModel conditionalStyleModel) {
 		final JPanel pane = new JPanel(new BorderLayout());
 	    final MapStyleModel styles = MapStyleModel.getExtension(map);
 		final TableModel tableModel = MLogicalStyleController.getController().getConditionalStyleModelAsTableModel(map, conditionalStyleModel);
