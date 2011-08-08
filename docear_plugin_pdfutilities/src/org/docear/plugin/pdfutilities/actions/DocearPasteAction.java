@@ -64,14 +64,14 @@ public class DocearPasteAction extends AFreeplaneAction {
 	                	PdfAnnotationImporter importer = new PdfAnnotationImporter();
 	                    List<PdfAnnotation> annotations = importer.importAnnotations(file);
 	                    NodeUtils nodeUtils = new NodeUtils();	                    
-	                    nodeUtils.insertChildNodesFrom(file, annotations, parent.isNewChildLeft(), parent);
+	                    nodeUtils.insertChildNodesFromPdf(file, annotations, parent.isNewChildLeft(), parent);
 	                }
 	                else{	                	
 	        			ModeController modeController = Controller.getCurrentModeController();
 	        			ViewerController viewerController = ((ViewerController)modeController.getExtension(ViewerController.class));
 	        			if(!viewerController.paste(file, parent, parent.isNewChildLeft())){
 	        				NodeUtils nodeUtils = new NodeUtils();
-	        				nodeUtils.insertChildNodeFrom(file, parent.isNewChildLeft(), parent);
+	        				nodeUtils.insertChildNodeFrom(file, parent.isNewChildLeft(), parent, null);
 	        			}
 	                }
 	            }

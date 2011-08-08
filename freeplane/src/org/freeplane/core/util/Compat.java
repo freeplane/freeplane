@@ -152,16 +152,24 @@ public class Compat {
 	final private static String PREVIEW_DIR=File.separatorChar + "1.2.x";
 	
 	public static String getFreeplaneUserDirectory() {
-		String userFpDir = System.getProperty("org.freeplane.userfpdir");
-		if(userFpDir == null){
-			Properties freeplaneProperties = new Properties();
-			try {
-				freeplaneProperties.load(Compat.class.getClassLoader().getResourceAsStream(ResourceController.FREEPLANE_PROPERTIES));
-			} catch (IOException e) {
-				LogUtils.warn(e);
-			}			
-			userFpDir = System.getProperty("user.home")+ File.separator + "." + freeplaneProperties.getProperty("ApplicationName", "freeplane").toLowerCase(Locale.ENGLISH);			
+		Properties freeplaneProperties = new Properties();
+		try {
+			freeplaneProperties.load(Compat.class.getClassLoader().getResourceAsStream(ResourceController.FREEPLANE_PROPERTIES));
+		} catch (IOException e) {
+			LogUtils.warn(e);
 		}
+		String applicationName = freeplaneProperties.getProperty("ApplicationName", "freeplane").toLowerCase(Locale.ENGLISH);
+		String userFpDir = null;
+		if(applicationName.equalsIgnoreCase("freeplane")){
+			userFpDir = System.getProperty("org.freeplane.userfpdir");
+		}
+		else{
+			userFpDir = System.getenv("APPDATA") + File.separator + freeplaneProperties.getProperty("ApplicationName", "freeplane");
+		}
+		if(userFpDir == null){						
+			userFpDir = System.getProperty("user.home")+ File.separator + "." + applicationName;			
+		}
+		System.out.println("UserDir: " + userFpDir);
 		if(PREVIEW_DIR != null)
 			return userFpDir + PREVIEW_DIR;
 		return userFpDir;

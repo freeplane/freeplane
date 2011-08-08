@@ -19,6 +19,7 @@ import org.docear.plugin.pdfutilities.actions.DocearPasteAction;
 import org.docear.plugin.pdfutilities.actions.ImportAllAnnotationsAction;
 import org.docear.plugin.pdfutilities.actions.ImportNewAnnotationsAction;
 import org.docear.plugin.pdfutilities.actions.RadioButtonAction;
+import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionController;
 import org.docear.plugin.pdfutilities.listener.DocearNodeDropListener;
 import org.docear.plugin.pdfutilities.listener.DocearNodeMouseMotionListener;
 import org.docear.plugin.pdfutilities.pdf.PdfReaderFileFilter;
@@ -40,7 +41,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.INodeViewLifeCycleListener;
 import org.freeplane.view.swing.map.NodeView;
 
-public class PdfUtilitiesController extends ALanguageController {
+public class PdfUtilitiesController extends ALanguageController{
 
 	public static final String OPEN_ON_PAGE_READER_PATH_KEY = "docear_open_on_page_reader_path";
 	public static final String OPEN_PDF_VIEWER_ON_PAGE_KEY = "docear_open_on_page";
@@ -75,10 +76,14 @@ public class PdfUtilitiesController extends ALanguageController {
 		
 		this.addPropertiesToOptionPanel();
 		this.addPluginDefaults();
-
+		this.registerController();
 		this.registerActions();
 		this.registerListener();
 		this.addMenuEntries();		
+	}
+
+	private void registerController() {
+		PdfAnnotationExtensionController.install(new PdfAnnotationExtensionController(modecontroller));		
 	}
 
 	private void registerActions() {
@@ -237,4 +242,5 @@ public class PdfUtilitiesController extends ALanguageController {
 			
 		});
 	}
+
 }
