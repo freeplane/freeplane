@@ -91,15 +91,7 @@ public class NodeUtils {
 	public NodeModel insertChildNodeFrom(File file, String title, boolean isLeft, NodeModel target){		
 		final NodeModel node = this.currentMapController.newNode(title, target.getMap());
 		
-		final URI uri;
-		if (ResourceController.getResourceController().getProperty("links").equals("relative")) {
-			uri = LinkController.toRelativeURI(node.getMap().getFile(), file);
-		}
-		else {
-			uri = file.getAbsoluteFile().toURI();
-		}
-		
-		((MLinkController) LinkController.getController()).setLink(node, uri, false);
+		((MLinkController) LinkController.getController()).setLinkTypeDependantLink(node, file);
 		this.currentMapController.insertNode(node, target, false, isLeft, isLeft);
 		
 		return node;

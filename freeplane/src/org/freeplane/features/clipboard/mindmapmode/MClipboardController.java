@@ -87,11 +87,8 @@ public class MClipboardController extends ClipboardController {
 			if (m.matches()) {
 				final String body = m.group(2);
 				if (!body.matches(".*<\\s*a.*")) {
-					final String href = m.group(1);
-					final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links")
-					    .equals("relative");
-					((MLinkController) LinkController.getController()).setLink(node, href,
-					    useRelativeUri);
+					final String href = m.group(1);					
+					((MLinkController) LinkController.getController()).setLinkTypeDependantLink(node, href);
 				}
 			}
 			((MMapController) Controller.getCurrentModeController().getMapController()).insertNode(node, target);
@@ -113,15 +110,8 @@ public class MClipboardController extends ClipboardController {
 		public void paste(final NodeModel target, final boolean asSibling, final boolean isLeft) {
 			for (final File file : fileList) {
 				final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
-				final NodeModel node = mapController.newNode(file.getName(), target.getMap());
-				final URI uri;
-				if (ResourceController.getResourceController().getProperty("links").equals("relative")) {
-					uri = LinkController.toRelativeURI(node.getMap().getFile(), file);
-				}
-				else {
-					uri = file.getAbsoluteFile().toURI();
-				}
-				((MLinkController) LinkController.getController()).setLink(node, uri, false);
+				final NodeModel node = mapController.newNode(file.getName(), target.getMap());				
+				((MLinkController) LinkController.getController()).setLinkTypeDependantLink(node, file);
 				mapController.insertNode(node, target, asSibling, isLeft, isLeft);
 			}
 		}
@@ -630,16 +620,13 @@ public class MClipboardController extends ClipboardController {
 		final ArrayList<Integer> parentNodesDepths = new ArrayList<Integer>();
 		parentNodes.add(parent);
 		parentNodesDepths.add(new Integer(-1));
-		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
-		final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
-		    "relative");
+		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();	
 		for (int i = 0; i < textFragments.length; ++i) {
 			final TextFragment textFragment = textFragments[i];
 			final String text = textFragment.text;
 			final NodeModel node = mapController.newNode(text, map);
 			if (textFragment.link != null) {
-				((MLinkController) LinkController.getController()).setLink(node, textFragment.link,
-				    useRelativeUri);
+				((MLinkController) LinkController.getController()).setLinkTypeDependantLink(node, textFragment.link);
 			}
 			for (int j = parentNodes.size() - 1; j >= 0; --j) {
 				if (textFragment.depth > ((Integer) parentNodesDepths.get(j)).intValue()) {

@@ -333,9 +333,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	public URI getLinkByFileChooser(final MapModel map, final FileFilter fileFilter) {
 		JFileChooser chooser = null;
 		final File file = map.getFile();
-		final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links")
-		    .equals("relative");
-		if (file == null && useRelativeUri) {
+		
+		if (file == null && LinkController.getLinkType() != LinkController.LINK_ABSOLUTE) {
 			JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(),
 			    TextUtils.getText("not_saved_for_link_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return null;
@@ -359,10 +358,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		}
 		final File input = chooser.getSelectedFile();
 		setLastCurrentDir(input.getParentFile());
-		if (useRelativeUri) {
-			return LinkController.toRelativeURI(file, input);
-		}
-		return input.toURI();
+		
+		return LinkController.toLinkTypeDependantURI(file, input);		
 	}
 
 	@Override

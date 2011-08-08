@@ -82,6 +82,8 @@ import org.freeplane.features.text.mindmapmode.IEditBaseCreator.EditedComponent;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 
+import sun.security.action.GetLongAction;
+
 import com.lightdev.app.shtm.SHTMLPanel;
 import com.lightdev.app.shtm.TextResources;
 
@@ -181,6 +183,7 @@ public class MTextController extends TextController {
 	}
 
 	public void setImageByFileChooser() {
+		//TODO: DOCEAR: works?
 		boolean picturesAmongSelecteds = false;
 		final ModeController modeController = Controller.getCurrentModeController();
 		for (final NodeModel node : modeController.getMapController().getSelectedNodes()) {
@@ -193,7 +196,8 @@ public class MTextController extends TextController {
 					picturesAmongSelecteds = true;
 					final String encodedLinkString = HtmlUtils.unicodeToHTMLUnicodeEntity(linkString);
 					final String strText = "<html><img src=\"" + encodedLinkString + "\">";
-					((MLinkController) LinkController.getController()).setLink(node, (URI) null, false);
+					//TODO: DOCEAR: maybe relative or absolute everytime?
+					((MLinkController) LinkController.getController()).setLink(node, (URI) null, LinkController.LINK_ABSOLUTE);
 					setNodeText(node, strText);
 				}
 			}
@@ -205,10 +209,8 @@ public class MTextController extends TextController {
 		final ViewController viewController = controller.getViewController();
 		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
 		final MapModel map = selectedNode.getMap();
-		final File file = map.getFile();
-		final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
-		    "relative");
-		if (file == null && useRelativeUri) {
+		final File file = map.getFile();		
+		if (file == null && LinkController.getLinkType() != LinkController.LINK_ABSOLUTE) {
 			JOptionPane.showMessageDialog(viewController.getContentPane(), TextUtils
 			    .getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return;
@@ -235,14 +237,14 @@ public class MTextController extends TextController {
 		}
 		// bad hack: try to interpret file as http link
 		if(! input.exists()){
-			uri = LinkController.toRelativeURI(map.getFile(), input);
+			uri = LinkController.toRelativeURI(map.getFile(), input, LinkController.LINK_RELATIVE_TO_MINDMAP);
 			if(uri == null || ! "http".equals(uri.getScheme())){
 				UITools.errorMessage(TextUtils.format("file_not_found", input.toString()));
 				return;
 			}
 		}
-		else if (useRelativeUri) {
-			uri = LinkController.toRelativeURI(map.getFile(), input);
+		else if (LinkController.getLinkType() != LinkController.LINK_ABSOLUTE) {
+			uri = LinkController.toLinkTypeDependantURI(map.getFile(), input);
 		}
 		String uriString = uri.toString();
 		if(uriString.startsWith("http:/")){

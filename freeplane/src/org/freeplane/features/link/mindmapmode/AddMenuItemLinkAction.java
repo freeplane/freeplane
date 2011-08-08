@@ -54,7 +54,7 @@ class AddMenuItemLinkAction extends AFreeplaneAction {
 			if (icon != null)
 				getIconController().addIcon(selectedNode, icon);
 			((MLinkController) LinkController.getController()).setLink(selectedNode, LinkController
-				.createMenuItemLink(menuItem.getKey()), false);
+				.createMenuItemLink(menuItem.getKey()), LinkController.LINK_ABSOLUTE);
 		}
 	}
 

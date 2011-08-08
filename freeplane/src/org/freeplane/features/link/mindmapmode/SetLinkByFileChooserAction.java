@@ -47,7 +47,7 @@ class SetLinkByFileChooserAction extends AFreeplaneAction {
 		    .getLinkByFileChooser(Controller.getCurrentController().getMap());
 		if (relative != null) {
 			((MLinkController) LinkController.getController()).setLink(Controller.getCurrentModeController()
-			    .getMapController().getSelectedNode(), relative, false);
+			    .getMapController().getSelectedNode(), relative, LinkController.LINK_ABSOLUTE);
 		}
 	}
 }

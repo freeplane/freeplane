@@ -57,12 +57,12 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 		if (inputValue != null) {
 			final MLinkController linkController = (MLinkController) MLinkController.getController();
 			if (inputValue.equals("")) {
-				linkController.setLink(selectedNode, (URI) null, false);
+				linkController.setLink(selectedNode, (URI) null, LinkController.LINK_ABSOLUTE);
 				return;
 			}
 			try {
 				final URI link = LinkController.createURI(inputValue.trim());
-				linkController.setLink(selectedNode, link, false);
+				linkController.setLink(selectedNode, link, LinkController.LINK_ABSOLUTE);
 			}
 			catch (final URISyntaxException e1) {
 				LogUtils.warn(e1);

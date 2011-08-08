@@ -44,6 +44,7 @@
         </separator>
        <separator name="hyperlink_types">        
             <combo name="links">
+                <choice value="relative_to_workspace"/>
                 <choice value="relative"/>
                 <choice value="absolute"/>
             </combo>
