@@ -163,7 +163,7 @@ public class Compat {
 		if(applicationName.equalsIgnoreCase("freeplane")){
 			userFpDir = System.getProperty("org.freeplane.userfpdir");
 		}
-		else{
+		else if(System.getenv("APPDATA") != null && System.getenv("APPDATA").length() > 0){			
 			userFpDir = System.getenv("APPDATA") + File.separator + freeplaneProperties.getProperty("ApplicationName", "freeplane");
 		}
 		if(userFpDir == null){						

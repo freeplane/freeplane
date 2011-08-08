@@ -12,7 +12,6 @@ import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel;
 import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel.AnnotationType;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotation;
 import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
