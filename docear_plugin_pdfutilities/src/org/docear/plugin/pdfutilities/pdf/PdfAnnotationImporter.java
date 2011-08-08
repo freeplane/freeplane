@@ -10,7 +10,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.docear.plugin.pdfutilities.PdfUtilitiesController;
+import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel.AnnotationType;
 import org.docear.plugin.pdfutilities.util.Tools;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 
 import de.intarsys.pdf.cds.CDSNameTreeEntry;
@@ -98,9 +101,9 @@ public class PdfAnnotationImporter {
 	
 	private List<PdfAnnotation> importBookmarks(PDOutlineNode parent) throws IOException, COSLoadException, COSRuntimeException{
 		List<PdfAnnotation> annotations = new ArrayList<PdfAnnotation>();
-		/*if(!ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.IMPORT_BOOKMARKS_KEY)){
+		if(!ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.IMPORT_BOOKMARKS_KEY)){
 			return annotations;
-		}*/
+		}
 		if(parent == null) return annotations;
 		@SuppressWarnings("unchecked")
 		List<PDOutlineItem> children = parent.getChildren();
@@ -111,15 +114,12 @@ public class PdfAnnotationImporter {
 			annotation.setAnnotationType(getAnnotationType(child));
 			annotation.getChildren().addAll(this.importBookmarks(child));
 			
-			switch(annotation.getAnnotationType()){
-				
-				case PdfAnnotation.BOOKMARK_WITH_URI:
-					annotation.setDestinationUri(this.getAnnotationDestinationUri(child));
-					break;
-				case PdfAnnotation.BOOKMARK:
-					annotation.setPage(this.getAnnotationDestinationPage(child));
-					break;
-			}	
+			if(annotation.getAnnotationType() == AnnotationType.BOOKMARK_WITH_URI){
+				annotation.setDestinationUri(this.getAnnotationDestinationUri(child));
+			}
+			if(annotation.getAnnotationType() == AnnotationType.BOOKMARK){
+				annotation.setPage(this.getAnnotationDestinationPage(child));
+			}			
 			
 			annotations.add(annotation);
 		}
@@ -144,23 +144,23 @@ public class PdfAnnotationImporter {
 		return null;
 	}
 
-	private int getAnnotationType(PDOutlineItem bookmark) {
+	private AnnotationType getAnnotationType(PDOutlineItem bookmark) {
 		if(bookmark != null && (bookmark.cosGetField(PDOutlineItem.DK_A) instanceof COSNull)){
-			return PdfAnnotation.BOOKMARK_WITHOUT_DESTINATION;
+			return AnnotationType.BOOKMARK_WITHOUT_DESTINATION;
 		}
 		if(bookmark != null && !(bookmark.cosGetField(PDOutlineItem.DK_A) instanceof COSNull)){
 			COSDictionary cosDictionary = (COSDictionary)bookmark.cosGetField(PDOutlineItem.DK_A);
 			if(!(cosDictionary.get(COSName.create("URI")) instanceof COSNull)){
-				return PdfAnnotation.BOOKMARK_WITH_URI;
+				return AnnotationType.BOOKMARK_WITH_URI;
 			}            
 		}
-		return PdfAnnotation.BOOKMARK;
+		return AnnotationType.BOOKMARK;
 	}
 
 	private List<PdfAnnotation> importAnnotations(PDDocument document){
 		List<PdfAnnotation> annotations = new ArrayList<PdfAnnotation>();
-		boolean importComments = true;//ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.IMPORT_COMMENTS_KEY);
-		boolean importHighlightedTexts = true;//ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.IMPORT_HIGHLIGHTED_TEXTS_KEY);
+		boolean importComments = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.IMPORT_COMMENTS_KEY);
+		boolean importHighlightedTexts = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.IMPORT_HIGHLIGHTED_TEXTS_KEY);
 		String lastString = "";
 		
 		@SuppressWarnings("unchecked")
@@ -187,7 +187,7 @@ public class PdfAnnotationImporter {
             	PdfAnnotation pdfAnnotation = new PdfAnnotation();
             	pdfAnnotation.setFile(currentFile);
             	pdfAnnotation.setTitle(annotation.getContents());            	
-            	pdfAnnotation.setAnnotationType(PdfAnnotation.COMMENT);
+            	pdfAnnotation.setAnnotationType(AnnotationType.COMMENT);
             	pdfAnnotation.setPage(this.getAnnotationDestination(annotation));
     			annotations.add(pdfAnnotation);
             }
@@ -195,7 +195,7 @@ public class PdfAnnotationImporter {
             	PdfAnnotation pdfAnnotation = new PdfAnnotation();
             	pdfAnnotation.setFile(currentFile);
             	pdfAnnotation.setTitle(annotation.getContents());           	
-            	pdfAnnotation.setAnnotationType(PdfAnnotation.HIGHLIGHTED_TEXT); 
+            	pdfAnnotation.setAnnotationType(AnnotationType.HIGHLIGHTED_TEXT); 
             	pdfAnnotation.setPage(this.getAnnotationDestination(annotation));
     			annotations.add(pdfAnnotation);
             }

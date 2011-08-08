@@ -37,7 +37,7 @@ public class DocearLicenseAction extends AFreeplaneAction {
 	    finally{
 	      scanner.close();
 	    }
-	    System.out.println("Text read in: " + text);
+	    
 	    return text.toString();
 	}
 

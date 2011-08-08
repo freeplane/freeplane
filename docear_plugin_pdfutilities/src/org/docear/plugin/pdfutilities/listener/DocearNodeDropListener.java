@@ -67,7 +67,7 @@ public class DocearNodeDropListener extends MNodeDropListener {
 	                    List<PdfAnnotation> annotations = importer.importAnnotations(file);
 	                    NodeUtils nodeUtils = new NodeUtils();
 	                    final boolean isLeft = mainView.dropLeft(dtde.getLocation().getX());
-	                    nodeUtils.insertChildNodesFrom(file, annotations, isLeft, targetNode);
+	                    nodeUtils.insertChildNodesFromPdf(file, annotations, isLeft, targetNode);
 	                }
 	                else{
 	                	final boolean isLeft = mainView.dropLeft(dtde.getLocation().getX());
@@ -75,7 +75,7 @@ public class DocearNodeDropListener extends MNodeDropListener {
 	        			ViewerController viewerController = ((ViewerController)modeController.getExtension(ViewerController.class));
 	        			if(!viewerController.paste(file, targetNode, isLeft)){
 	        				NodeUtils nodeUtils = new NodeUtils();
-	        				nodeUtils.insertChildNodeFrom(file, isLeft, targetNode);
+	        				nodeUtils.insertChildNodeFrom(file, isLeft, targetNode, null);
 	        			}
 	                }
 	            }

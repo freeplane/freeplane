@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.URI;
 
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
+import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel.AnnotationType;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotation;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.docear.plugin.pdfutilities.pdf.PdfReaderFileFilter;
@@ -66,6 +67,7 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 			URI uri = NodeLinks.getValidLink(selectedNode);					
 			uri = Tools.getAbsoluteUri(uri);
 			String command = null;
+			
 			PdfAnnotation annotation = null;
 			try{
 				annotation = new PdfAnnotationImporter().searchAnnotation(Tools.getFilefromUri(uri), selectedNode.getText());
@@ -75,26 +77,24 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 					return;
 				}
 				
-				switch(annotation.getAnnotationType()){
-				
-					case PdfAnnotation.BOOKMARK:
-					case PdfAnnotation.COMMENT:
-					case PdfAnnotation.HIGHLIGHTED_TEXT:
-						if(annotation.getPage() != null){
-							command = getExecCommand(readerPath, uri, annotation.getPage());
-							break;
-						}
-						if(annotation.getPage() == null){
-							//TODO Error Message for User ??
-							this.mouseListener.mouseClicked(e);							
-							return;
-						}
-						
-					case PdfAnnotation.BOOKMARK_WITHOUT_DESTINATION:
-					case PdfAnnotation.BOOKMARK_WITH_URI:
-						command = getExecCommand(readerPath, uri, 1);
-						break;
+				if(annotation.getAnnotationType() == AnnotationType.BOOKMARK ||
+						annotation.getAnnotationType() == AnnotationType.COMMENT ||
+						annotation.getAnnotationType() == AnnotationType.HIGHLIGHTED_TEXT){
+					if(annotation.getPage() != null){
+						command = getExecCommand(readerPath, uri, annotation.getPage());						
+					}
+					if(annotation.getPage() == null){
+						//TODO: DOCEAR Error Message for User ??
+						this.mouseListener.mouseClicked(e);							
+						return;
+					}
 				}
+				
+				if(annotation.getAnnotationType() == AnnotationType.BOOKMARK_WITHOUT_DESTINATION ||
+						annotation.getAnnotationType() == AnnotationType.BOOKMARK_WITH_URI){
+					command = getExecCommand(readerPath, uri, 1);					
+				}
+				
 				
 			}catch(IOException x){
 				this.mouseListener.mouseClicked(e);

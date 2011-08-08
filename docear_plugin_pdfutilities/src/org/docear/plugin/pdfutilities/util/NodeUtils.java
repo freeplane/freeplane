@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel;
+import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel.AnnotationType;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotation;
 import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
 import org.freeplane.core.resources.ResourceController;
@@ -56,18 +58,18 @@ public class NodeUtils {
 		return result;
 	}
 	
-	public NodeModel insertChildNodesFrom(URI uri, List<PdfAnnotation> annotations, boolean isLeft, NodeModel target){
+	public NodeModel insertChildNodesFromPdf(URI uri, List<PdfAnnotation> annotations, boolean isLeft, NodeModel target){
 		File file = Tools.getFilefromUri(uri);
 		if(file == null){
 			return null;
 		}
 		else{
-			return this.insertChildNodesFrom(file, annotations, isLeft, target);
+			return this.insertChildNodesFromPdf(file, annotations, isLeft, target);
 		}
 	}
 	
-	public NodeModel insertChildNodesFrom(File file, List<PdfAnnotation> annotations, boolean isLeft, NodeModel target){
-		NodeModel node = this.insertChildNodeFrom(file, isLeft, target);
+	public NodeModel insertChildNodesFromPdf(File pdfFile, List<PdfAnnotation> annotations, boolean isLeft, NodeModel target){
+		NodeModel node = this.insertChildNodeFrom(pdfFile, isLeft, target, AnnotationType.PDF_FILE);
 		this.insertChildNodesFrom(annotations, isLeft, node);
 		return node;
 	}
@@ -76,7 +78,7 @@ public class NodeUtils {
 		List<NodeModel> nodes = new ArrayList<NodeModel>();
 		
 		for(PdfAnnotation annotation : annotations){
-			NodeModel node = this.insertChildNodeFrom(annotation.getFile(), annotation.getTitle(), isLeft, target);
+			NodeModel node = this.insertChildNodeFrom(annotation.getFile(), annotation, isLeft, target);
 			this.insertChildNodesFrom(annotation.getChildren(), isLeft, node);
 			nodes.add(node);
 		}
@@ -84,15 +86,30 @@ public class NodeUtils {
 		return nodes;
 	}
 	
-	public NodeModel insertChildNodeFrom(File file, boolean isLeft, NodeModel target){
-		return this.insertChildNodeFrom(file, file.getName(), isLeft, target);
+	public NodeModel insertChildNodeFrom(File file, boolean isLeft, NodeModel target, AnnotationType type){
+		final NodeModel node = this.currentMapController.newNode(file.getName(), target.getMap());
+		this.setLinkFrom(file, node);
+		
+		if(type != null){
+			PdfAnnotationExtensionModel model = new PdfAnnotationExtensionModel();
+			model.setAnnotationType(type);
+			PdfAnnotationExtensionModel.setModel(node, model);
+		}
+		
+		return this.insertChildNodeFrom(node, isLeft, target);
 	}
 	
-	public NodeModel insertChildNodeFrom(File file, String title, boolean isLeft, NodeModel target){		
-		final NodeModel node = this.currentMapController.newNode(title, target.getMap());
+	public NodeModel insertChildNodeFrom(File file, PdfAnnotation annotation, boolean isLeft, NodeModel target){		
+		final NodeModel node = this.currentMapController.newNode(annotation.getTitle(), target.getMap());
+		PdfAnnotationExtensionModel model = new PdfAnnotationExtensionModel();
+		model.setAnnotationType(annotation.getAnnotationType());
+		model.setPage(annotation.getPage());
+		PdfAnnotationExtensionModel.setModel(node, model);
 		
-		
-		
+		return insertChildNodeFrom(node, isLeft, target);
+	}
+	
+	public NodeModel setLinkFrom(File file, NodeModel node){
 		final URI uri;
 		if (ResourceController.getResourceController().getProperty("links").equals("relative")) {
 			uri = LinkController.toRelativeURI(node.getMap().getFile(), file);
@@ -102,6 +119,12 @@ public class NodeUtils {
 		}
 		
 		((MLinkController) LinkController.getController()).setLink(node, uri, false);
+		
+		return node;
+	}
+	
+	public NodeModel insertChildNodeFrom(NodeModel node, boolean isLeft, NodeModel target){
+		
 		this.currentMapController.insertNode(node, target, false, isLeft, isLeft);
 		
 		return node;
@@ -119,7 +142,7 @@ public class NodeUtils {
 			if(annotation.isNew() || annotation.hasNewChildren()){
 				NodeModel equalChild = targetHasEqualChild(target, annotation);
 				if(equalChild == null){
-					NodeModel node = this.insertChildNodeFrom(annotation.getFile(), annotation.getTitle(), isLeft, target);
+					NodeModel node = this.insertChildNodeFrom(annotation.getFile(), annotation, isLeft, target);
 					this.insertNewChildNodesFrom(annotation.getChildren(), isLeft, node);
 					nodes.add(node);
 				}

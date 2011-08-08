@@ -7,21 +7,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel.AnnotationType;
 import org.freeplane.features.map.NodeModel;
 
 public class PdfAnnotation{
 	
-	public static final int BOOKMARK = 0;
-	public static final int COMMENT = 1;
-	public static final int HIGHLIGHTED_TEXT = 2;
-	public static final int BOOKMARK_WITHOUT_DESTINATION = 3;
-	public static final int BOOKMARK_WITH_URI = 4;
-	
-	
 	private File file;
 	private String title;
 	private List<PdfAnnotation> children = new ArrayList<PdfAnnotation>();
-	private int annotationType;
+	private AnnotationType annotationType;
 	private boolean isNew;
 	private Integer page;
 	private URI destinationUri;
@@ -73,11 +67,11 @@ public class PdfAnnotation{
 		return children;
 	}	
 
-	public int getAnnotationType() {
+	public AnnotationType getAnnotationType() {
 		return annotationType;
 	}
 
-	public void setAnnotationType(int annotationType) {
+	public void setAnnotationType(AnnotationType annotationType) {
 		this.annotationType = annotationType;
 	}
 	
