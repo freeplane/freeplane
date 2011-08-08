@@ -7,7 +7,10 @@ package org.freeplane.plugin.workspace.dnd;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.List;
 
 import org.freeplane.core.util.LogUtils;
 
@@ -34,7 +37,7 @@ public class WorkspaceTransferable implements Transferable {
 		}
 	}
 	
-	private final HashMap<DataFlavor, Object> dataMap = new HashMap<DataFlavor, Object>();
+	private final Hashtable<DataFlavor, Object> dataMap = new Hashtable<DataFlavor, Object>();
 	
 	
 	/***********************************************************************************
@@ -64,7 +67,12 @@ public class WorkspaceTransferable implements Transferable {
 
 	public DataFlavor[] getTransferDataFlavors() {
 		System.out.println("getTransferDataFlavors");
-		return (DataFlavor[])dataMap.keySet().toArray();
+		DataFlavor[] flavors = new DataFlavor[dataMap.size()];
+		int i = 0;
+		for(Enumeration<DataFlavor> e = dataMap.keys(); e.hasMoreElements(); i++) {
+			flavors[i] = e.nextElement();
+		}
+		return flavors;
 	}
 
 	// Returns whether or not the specified data flavor is supported for

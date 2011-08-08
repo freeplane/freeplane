@@ -4,29 +4,17 @@
  */
 package org.freeplane.plugin.workspace.dnd;
 
-import java.awt.Cursor;
-import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DragGestureEvent;
-import java.awt.dnd.DragGestureListener;
-import java.awt.dnd.DragGestureRecognizer;
-import java.awt.dnd.DragSource;
-import java.awt.dnd.DragSourceContext;
-import java.awt.dnd.DragSourceDragEvent;
-import java.awt.dnd.DragSourceDropEvent;
-import java.awt.dnd.DragSourceEvent;
-import java.awt.dnd.DragSourceListener;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
@@ -35,8 +23,11 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JTree;
 import javax.swing.TransferHandler;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
+import org.freeplane.features.clipboard.ClipboardController;
+import org.freeplane.features.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 
 /**
@@ -53,7 +44,6 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 
 	private JTree tree;
 	private IWorkspaceDragController controller;
-	protected DefaultDragGestureRecognizer recognizer;
 
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -66,7 +56,7 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 		this.tree.setTransferHandler(this);
 		this.tree.setDragEnabled(true);
 		this.tree.setAutoscrolls(true);
-		DropTarget dropTarget = new DropTarget(tree, COPY_OR_MOVE, this);
+		new DropTarget(tree, COPY_OR_MOVE, this);
 	}
 
 	/***********************************************************************************
@@ -95,21 +85,21 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 			Vector<File> paths = new Vector<File>();
 			JTree t = (JTree) comp;
 			for (TreePath p : t.getSelectionPaths()) {
-				if (p.getLastPathComponent() instanceof DefaultFileNode)
-					paths.add(((DefaultFileNode) p.getLastPathComponent()).getFile());
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) p.getLastPathComponent();
+				if (node.getUserObject() instanceof DefaultFileNode)
+					paths.add(((DefaultFileNode) node.getUserObject()).getFile());
 			}
-			if (paths.size() > 0)
-				return new WorkspaceTransferable(WorkspaceTransferable.WORKSPACE_FILE_LIST_FLAVOR, paths);
+			if (paths.size() > 0) {
+				System.out.println("Geschmacksrichtung: " + WorkspaceTransferable.WORKSPACE_FILE_LIST_FLAVOR);
+				final MClipboardController clipboardController = (MClipboardController) ClipboardController.getController();
+				clipboardController.setClipboardContents(new WorkspaceTransferable(WorkspaceTransferable.WORKSPACE_FILE_LIST_FLAVOR, paths));
+				return clipboardController.getClipboardContents();
+			}
 			return new WorkspaceTransferable(WorkspaceTransferable.WORKSPACE_NODE_FLAVOR, Arrays.asList(t.getSelectionPaths()));
 		}
 		return new WorkspaceTransferable(WorkspaceTransferable.WORKSPACE_SERIALIZED_FLAVOR, "");
 
 	}
-
-	// public boolean importData(TransferSupport support) {
-	// System.out.println("importData: "+support);
-	// return super.importData(support);
-	// }
 
 	public boolean importData(JComponent comp, Transferable t) {
 		System.out.println("importData: " + comp);
@@ -128,24 +118,7 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 	// Causes the Swing drag support to be initiated.
 	public void exportAsDrag(JComponent comp, java.awt.event.InputEvent e, int action) {
 		System.out.println("exportAsDrag");
-		int srcActions = getSourceActions(comp);
-		int dragAction = srcActions & action;
-		if (!(e instanceof MouseEvent)) {
-			// only mouse events supported for drag operations
-			dragAction = NONE;
-		}
-		if (dragAction != NONE && !GraphicsEnvironment.isHeadless()) {
-			if (recognizer == null) {
-				recognizer = new DefaultDragGestureRecognizer(new DefaultDragHandler());
-				recognizer.getDragSource().addDragSourceListener(new DefaultDragSourceListener());
-			}
-
-			recognizer.gestured(comp, (MouseEvent) e, srcActions, dragAction);
-		}
-		else {
-			exportDone(comp, null, NONE);
-		}
-		//super.exportAsDrag(comp, e, action);
+		super.exportAsDrag(comp, e, action);
 	}
 
 	// Invoked after data has been exported.
@@ -223,146 +196,7 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 	/***********************************************************************************
 	 * INTERNAL CLASSES
 	 **********************************************************************************/
-
-	private static class DefaultDragGestureRecognizer extends DragGestureRecognizer {
-
-		DefaultDragGestureRecognizer(DragGestureListener dgl) {
-			super(DragSource.getDefaultDragSource(), null, DnDConstants.ACTION_COPY_OR_MOVE, dgl);
-			this.getDragSource().addDragSourceListener(new WorkspaceTransferHandler.DefaultDragHandler());
-		}
-
-		void gestured(JComponent c, MouseEvent e, int srcActions, int action) {
-			setComponent(c);
-			setSourceActions(srcActions);
-			appendEvent(e);
-			fireDragGestureRecognized(action, e.getPoint());
-		}
-
-		/**
-		 * register this DragGestureRecognizer's Listeners with the Component
-		 */
-		protected void registerListeners() {
-		}
-
-		/**
-		 * unregister this DragGestureRecognizer's Listeners with the Component
-		 * 
-		 * subclasses must override this method
-		 */
-		protected void unregisterListeners() {
-		}
-
-	}
-
-	protected static class DefaultDragHandler implements DragGestureListener, DragSourceListener {
-
-		private boolean scrolls;
-
-		// --- DragGestureListener methods -----------------------------------
-
-		/**
-		 * a Drag gesture has been recognized
-		 */
-		public void dragGestureRecognized(DragGestureEvent dge) {
-			JComponent c = (JComponent) dge.getComponent();
-			WorkspaceTransferHandler th = (WorkspaceTransferHandler) c.getTransferHandler();
-			Transferable t = th.createTransferable(c);
-			if (t != null) {
-				scrolls = c.getAutoscrolls();
-				c.setAutoscrolls(false);
-				try {
-					dge.startDrag(null, t, this);
-					return;
-				}
-				catch (RuntimeException re) {
-					c.setAutoscrolls(scrolls);
-				}
-			}
-
-			th.exportDone(c, t, NONE);
-		}
-
-		// --- DragSourceListener methods -----------------------------------
-
-		/**
-		 * as the hotspot enters a platform dependent drop site
-		 */
-		public void dragEnter(DragSourceDragEvent dsde) {
-		}
-
-		/**
-		 * as the hotspot moves over a platform dependent drop site
-		 */
-		public void dragOver(DragSourceDragEvent dsde) {
-		}
-
-		/**
-		 * as the hotspot exits a platform dependent drop site
-		 */
-		public void dragExit(DragSourceEvent dsde) {
-		}
-
-		/**
-		 * as the operation completes
-		 */
-		public void dragDropEnd(DragSourceDropEvent dsde) {
-			DragSourceContext dsc = dsde.getDragSourceContext();
-			JComponent c = (JComponent) dsc.getComponent();
-			if (dsde.getDropSuccess()) {
-				((WorkspaceTransferHandler) c.getTransferHandler()).exportDone(c, dsc.getTransferable(), dsde.getDropAction());
-			}
-			else {
-				((WorkspaceTransferHandler) c.getTransferHandler()).exportDone(c, dsc.getTransferable(), NONE);
-			}
-			c.setAutoscrolls(scrolls);
-		}
-
-		public void dropActionChanged(DragSourceDragEvent dsde) {
-		}
-	}
 	
-	private class DefaultDragSourceListener implements DragSourceListener {
-
-		/* (non-Javadoc)
-		 * @see java.awt.dnd.DragSourceListener#dragEnter(java.awt.dnd.DragSourceDragEvent)
-		 */
-		public void dragEnter(DragSourceDragEvent dsde) {
-			// TODO Auto-generated method stub
-			System.out.println("DragSourceDragEvent"); 
-		}
-
-		/* (non-Javadoc)
-		 * @see java.awt.dnd.DragSourceListener#dragOver(java.awt.dnd.DragSourceDragEvent)
-		 */
-		public void dragOver(DragSourceDragEvent dsde) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		/* (non-Javadoc)
-		 * @see java.awt.dnd.DragSourceListener#dropActionChanged(java.awt.dnd.DragSourceDragEvent)
-		 */
-		public void dropActionChanged(DragSourceDragEvent dsde) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		/* (non-Javadoc)
-		 * @see java.awt.dnd.DragSourceListener#dragExit(java.awt.dnd.DragSourceEvent)
-		 */
-		public void dragExit(DragSourceEvent dse) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		/* (non-Javadoc)
-		 * @see java.awt.dnd.DragSourceListener#dragDropEnd(java.awt.dnd.DragSourceDropEvent)
-		 */
-		public void dragDropEnd(DragSourceDropEvent dsde) {
-			// TODO Auto-generated method stub
-			System.out.println("dragDropEnd");			
-		}
-		
-	}
+	
 
 }
