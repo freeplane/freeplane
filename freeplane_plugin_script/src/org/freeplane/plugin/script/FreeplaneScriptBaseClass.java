@@ -8,6 +8,7 @@ import groovy.lang.Script;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
@@ -28,6 +29,8 @@ public abstract class FreeplaneScriptBaseClass extends Script {
     public FreeplaneScriptBaseClass() {
 	    super();
 	    nodeMetaClass = InvokerHelper.getMetaClass(NodeRO.class);
+	    // Groovy rocks!
+	    DefaultGroovyMethods.mixin(Number.class, NodeArithmeticsCategory.class);
 	    initBinding();
     }
 
