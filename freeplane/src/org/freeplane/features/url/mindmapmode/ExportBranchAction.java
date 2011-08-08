@@ -111,12 +111,11 @@ class ExportBranchAction extends AFreeplaneAction {
 			 */
 			final NodeModel parent = existingNode.getParentNode();
 			final File oldFile = parentMap.getFile();
-			final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
-			    "relative");
-			final URI newUri = useRelativeUri ? LinkController.toRelativeURI(oldFile, chosenFile) : chosenFile.toURI();
-			final URI oldUri = useRelativeUri ? LinkController.toRelativeURI(chosenFile, file) : file.toURI();
+			
+			final URI newUri = LinkController.toLinkTypeDependantURI(oldFile, chosenFile);
+			final URI oldUri = LinkController.toLinkTypeDependantURI(chosenFile, file);
 			((MLinkController) LinkController.getController()).setLink(existingNode,
-			    oldUri, false);
+			    oldUri, LinkController.LINK_ABSOLUTE);
 			final int nodePosition = parent.getChildPosition(existingNode);
 			final MMapController mMapController = (MMapController) Controller.getCurrentModeController().getMapController();
 			mMapController.deleteNode(existingNode);
@@ -162,7 +161,7 @@ class ExportBranchAction extends AFreeplaneAction {
 			    .getText());
 			map.getFile();
 			((MLinkController) LinkController.getController()).setLink(newNode, newUri,
-			    false);
+			    LinkController.LINK_ABSOLUTE);
 			map.destroy();
 		}
 	}

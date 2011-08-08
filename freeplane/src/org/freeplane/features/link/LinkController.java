@@ -78,7 +78,17 @@ import org.freeplane.features.url.UrlManager;
 /**
  * @author Dimitry Polivaev
  */
+
+
 public class LinkController extends SelectionController implements IExtension {
+	public final static int LINK_ABSOLUTE = 0;
+	public final static int LINK_RELATIVE_TO_MINDMAP = 1;
+	public final static int LINK_RELATIVE_TO_WORKSPACE = 2;
+	
+	private final static String LINK_ABSOLUTE_PROPERTY = "absolute";
+	private final static String LINK_RELATIVE_TO_MINDMAP_PROPERTY = "relative";
+	private final static String LINK_RELATIVE_TO_WORKSPACE_PROPERTY = "relative_to_workspace";
+	
 	public static final String MENUITEM_SCHEME = "menuitem";
 	public static LinkController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
@@ -330,14 +340,49 @@ public class LinkController extends SelectionController implements IExtension {
 		ModeController modeController = Controller.getCurrentModeController();
 		return (UrlManager) modeController.getExtension(UrlManager.class);
 	}
-
-	public static URI toRelativeURI(final File map, final File input) {
+	
+	public static int getLinkType() {
+		String linkTypeProperty = ResourceController.getResourceController().getProperty("links");
+		if (linkTypeProperty.equals(LINK_RELATIVE_TO_MINDMAP_PROPERTY)) {
+			return LINK_RELATIVE_TO_MINDMAP;
+		}
+		else if (linkTypeProperty.equals(LINK_RELATIVE_TO_WORKSPACE_PROPERTY)) {
+			return LINK_RELATIVE_TO_WORKSPACE;
+		}
+		return LINK_ABSOLUTE;
+	}
+	
+	public static URI toLinkTypeDependantURI(final File map, final File input) {
+		int linkType = getLinkType();
+		if (linkType == LINK_ABSOLUTE) {
+			return input.getAbsoluteFile().toURI();
+		}
+		return toRelativeURI(map, input, linkType);
+	}
+	
+	public static URI toRelativeURI(final File map, final File input, final int linkType) {
+		if (linkType == LINK_ABSOLUTE) {
+			return null;
+		}
 		try {
 			final URI fileUri = input.getAbsoluteFile().toURI();
 			if (map == null) {
 				return fileUri;
 			}
-			final URI mapUri = map.getAbsoluteFile().toURI();
+			URI mapUri = map.getAbsoluteFile().toURI();
+			
+			if (linkType == LINK_RELATIVE_TO_WORKSPACE) {
+				URI workspaceLocation;			
+				try {
+					workspaceLocation = new URI(ResourceController.getResourceController().getProperty("workspace_location")+File.separator);
+					System.out.println("debug workspace-location: "+workspaceLocation);
+					mapUri = workspaceLocation;
+				}
+				catch (URISyntaxException e1) {
+					e1.printStackTrace();
+					//TODO: DOCEAR: workspace not activated --> show error to user and set link_types to "relative"
+				}				
+			}
 			final String filePathAsString = fileUri.getRawPath();
 			final String mapPathAsString = mapUri.getRawPath();
 			int differencePos;

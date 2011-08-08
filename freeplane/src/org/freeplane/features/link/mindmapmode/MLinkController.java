@@ -721,34 +721,46 @@ public class MLinkController extends LinkController {
 		Controller.getCurrentModeController().execute(actor, link.getSource().getMap());
 	}
 
-	public void setLink(final NodeModel node, final String link, final boolean makeRelative) {
+	public void setLink(final NodeModel node, final String link, final int linkType) {
 		if (link != null && !"".equals(link)) {
 			try {
 				final URI uri = new URI(link);
-				setLink(node, uri, makeRelative);
+				setLink(node, uri, linkType);
 			}
 			catch (final URISyntaxException e) {
 				e.printStackTrace();
 			}
 			return;
 		}
-		setLink(node, (URI) null, false);
+		setLink(node, (URI) null, LINK_ABSOLUTE);
 	}
 
-	private URI relativeLink(final URI argUri, final NodeModel node, final boolean makeRelative) {
-		if (makeRelative && "file".equals(argUri.getScheme())) {
+	private URI relativeLink(final URI argUri, final NodeModel node, final int linkType) {
+		if (linkType != LINK_ABSOLUTE && "file".equals(argUri.getScheme())) {
 			try {
 				final File mapFile = node.getMap().getFile();
-				return LinkController.toRelativeURI(mapFile, new File(argUri));
+				return LinkController.toRelativeURI(mapFile, new File(argUri), linkType);
 			}
 			catch (Exception e) {
 			}
 		}
 		return argUri;
 	}
+	
+	public void setLinkTypeDependantLink(final NodeModel node, final URI argUri) {
+		setLink(node, argUri, getLinkType());
+	}
+	
+	public void setLinkTypeDependantLink(final NodeModel node, final File file) {
+		setLink(node, file.toURI(), getLinkType());
+	}
+	
+	public void setLinkTypeDependantLink(final NodeModel node, final String link) {
+		setLink(node, link, getLinkType());
+	}
 
-	public void setLink(final NodeModel node, final URI argUri, final boolean makeRelative) {
-		final URI uri = relativeLink(argUri, node, makeRelative);
+	public void setLink(final NodeModel node, final URI argUri, final int linkType) {
+		final URI uri = relativeLink(argUri, node, linkType);
 		final IActor actor = new IActor() {
 			private URI oldlink;
 			private String oldTargetID;

@@ -109,16 +109,8 @@ public class NodeUtils {
 		return insertChildNodeFrom(node, isLeft, target);
 	}
 	
-	public NodeModel setLinkFrom(File file, NodeModel node){
-		final URI uri;
-		if (ResourceController.getResourceController().getProperty("links").equals("relative")) {
-			uri = LinkController.toRelativeURI(node.getMap().getFile(), file);
-		}
-		else {
-			uri = file.getAbsoluteFile().toURI();
-		}
-		
-		((MLinkController) LinkController.getController()).setLink(node, uri, false);
+	public NodeModel setLinkFrom(File file, NodeModel node){		
+		((MLinkController) LinkController.getController()).setLinkTypeDependantLink(node, file);
 		
 		return node;
 	}
