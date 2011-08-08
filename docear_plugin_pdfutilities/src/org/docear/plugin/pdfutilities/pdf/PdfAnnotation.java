@@ -9,7 +9,7 @@ import java.util.Map;
 
 import org.freeplane.features.map.NodeModel;
 
-public class PdfAnnotation {
+public class PdfAnnotation{
 	
 	public static final int BOOKMARK = 0;
 	public static final int COMMENT = 1;
