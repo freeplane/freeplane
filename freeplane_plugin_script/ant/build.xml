@@ -31,6 +31,7 @@
 		</javac>
 		<jar jarfile="lib/jsyntaxpane/nodehighlighter.jar">
 			<fileset dir="build-nodehighlighter"/>
+			<fileset dir="src-jsyntaxpane" includes="**/combocompletions.txt"/>
 		</jar>
 	</target>
 

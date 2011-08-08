@@ -503,14 +503,14 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		getContentPane().add(controllerBox, BorderLayout.SOUTH);
 		final CloseAction closeAction = new CloseAction();
 		btnOK = new JButton();
-		MenuBuilder.setLabelAndMnemonic(btnOK, TextUtils.getText("ok"));
+		MenuBuilder.setLabelAndMnemonic(btnOK, TextUtils.getRawText("ok"));
 		btnOK.addActionListener(closeAction);
 		btnOK.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 		controllerBox.add(Box.createHorizontalGlue());
 		controllerBox.add(btnOK);
 		if (!isModal()) {
 			btnApply = new JButton();
-			MenuBuilder.setLabelAndMnemonic(btnApply, TextUtils.getText("apply"));
+			MenuBuilder.setLabelAndMnemonic(btnApply, TextUtils.getRawText("apply"));
 			btnApply.addActionListener(closeAction);
 			btnApply.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 			controllerBox.add(Box.createHorizontalGlue());
@@ -520,7 +520,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 			btnApply = null;
 		}
 		btnCancel = new JButton();
-		MenuBuilder.setLabelAndMnemonic(btnCancel, TextUtils.getText("cancel"));
+		MenuBuilder.setLabelAndMnemonic(btnCancel, TextUtils.getRawText("cancel"));
 		btnCancel.addActionListener(closeAction);
 		btnCancel.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 		controllerBox.add(Box.createHorizontalGlue());
@@ -530,12 +530,12 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		if (!controller.getViewController().isApplet()) {
 			final ActionListener saveAction = new SaveAction();
 			btnSave = new JButton();
-			MenuBuilder.setLabelAndMnemonic(btnSave, TextUtils.getText("SaveAction.text"));
+			MenuBuilder.setLabelAndMnemonic(btnSave, TextUtils.getRawText("SaveAction.text"));
 			btnSave.addActionListener(saveAction);
 			btnSave.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 			final ActionListener loadAction = new LoadAction();
 			btnLoad = new JButton();
-			MenuBuilder.setLabelAndMnemonic(btnLoad, TextUtils.getText("load"));
+			MenuBuilder.setLabelAndMnemonic(btnLoad, TextUtils.getRawText("load"));
 			btnLoad.addActionListener(loadAction);
 			btnLoad.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 			controllerBox.add(btnSave);

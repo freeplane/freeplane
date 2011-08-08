@@ -86,7 +86,7 @@ public class DisjunctConditions extends ASelectableCondition implements ICombine
 		JComponent rendererComponent = cond.createShortRendererComponent();
 		component.add(rendererComponent);
 		for (int i = 1; i < conditions.length; i++) {
-			final String or = TextUtils.removeMnemonic(TextUtils.getText("filter_or"));
+			final String or = TextUtils.getText("filter_or");
 			final String text = ' ' + or + ' ';
 			component.add(new JLabel(text));
 			cond = conditions[i];

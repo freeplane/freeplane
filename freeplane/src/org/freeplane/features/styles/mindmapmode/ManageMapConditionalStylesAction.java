@@ -19,9 +19,15 @@
  */
 package org.freeplane.features.styles.mindmapmode;
 
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+
+import javax.swing.JOptionPane;
+
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.ConditionalStyleModel;
+import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
 
 /**
@@ -30,14 +36,38 @@ import org.freeplane.features.styles.MapStyleModel;
  */
 public class ManageMapConditionalStylesAction extends AManageConditionalStylesAction{
 	
+	public static final String NAME = "ManageConditionalStylesAction";
 	/**
      * 
      */
     private static final long serialVersionUID = 1L;
 
 	public ManageMapConditionalStylesAction() {
-	    super("ManageConditionalStylesAction");
+	    super(NAME);
     }
+
+	public void actionPerformed(ActionEvent e) {
+		final Controller controller = Controller.getCurrentController();
+		final MapModel map = controller.getMap();
+		final ConditionalStyleModel conditionalStyleModel = getConditionalStyleModel();
+		Component pane = createConditionalStylePane(map, conditionalStyleModel);
+		Controller.getCurrentModeController().startTransaction();
+		try{
+			final int confirmed = JOptionPane.showConfirmDialog(controller.getViewController().getMapView(), pane, "", JOptionPane.OK_CANCEL_OPTION);
+			if(JOptionPane.OK_OPTION == confirmed){
+				LogicalStyleController.getController().refreshMap(map);
+				Controller.getCurrentModeController().commit();
+			}
+			else{
+				Controller.getCurrentModeController().rollback();
+
+			}
+		}
+		catch(RuntimeException ex){
+			ex.printStackTrace();
+			Controller.getCurrentModeController().rollback();
+		}
+	}
 
 	public ConditionalStyleModel getConditionalStyleModel() {
 		final Controller controller = Controller.getCurrentController();

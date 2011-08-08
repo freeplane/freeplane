@@ -149,12 +149,12 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 		}
 
 		private void setButtonOpenDefault() {
-			MenuBuilder.setLabelAndMnemonic(btnOpen, TextUtils.getText(NewerFileRevisionsFoundDialog.key("open")));
+			MenuBuilder.setLabelAndMnemonic(btnOpen, TextUtils.getRawText(NewerFileRevisionsFoundDialog.key("open")));
 			btnOpen.setToolTipText(TextUtils.format(NewerFileRevisionsFoundDialog.key("open.tooltip")));
 		}
 
 		private void setButtonOpenRestore(final FileWrapper fileWrapper) {
-			MenuBuilder.setLabelAndMnemonic(btnOpen, TextUtils.getText(NewerFileRevisionsFoundDialog.key("restore")));
+			MenuBuilder.setLabelAndMnemonic(btnOpen, TextUtils.getRawText(NewerFileRevisionsFoundDialog.key("restore")));
 			btnOpen.setToolTipText(TextUtils.format(NewerFileRevisionsFoundDialog.key("restore.tooltip"),
 			    file.getName(), fileWrapper.toString()));
 		}
@@ -263,7 +263,7 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 
 	private JButton createButton(final String key, final String tooltipKey, final ActionListener closeAction) {
 		final JButton button = new JButton();
-		MenuBuilder.setLabelAndMnemonic(button, TextUtils.getText(key));
+		MenuBuilder.setLabelAndMnemonic(button, TextUtils.getRawText(key));
 		button.addActionListener(closeAction);
 		button.setMaximumSize(new Dimension(1000, 1000));
 		final String selectedFileName = getSelectedFile() == null ? null : getSelectedFile().getName();

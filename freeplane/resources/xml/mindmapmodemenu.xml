@@ -186,7 +186,7 @@
 				<menu_action action="DeleteAction" accelerator="DELETE" />
 			</menu_category>	
 		</menu_submenu>
-		<menu_submenu name="node features" name_ref="menu_node_features">
+		<menu_submenu name="node_features" name_ref="menu_node_features">
 			<menu_submenu name="details" name_ref="menu_details">
 				<menu_action action="EditDetailsAction"/>
 				<menu_action action="EditDetailsInDialogAction"/>
@@ -540,7 +540,7 @@
 				<menu_action action="DeleteAction" accelerator="DELETE" />
 			</menu_category>	
 		</menu_submenu>
-		<menu_submenu name="node features" name_ref="menu_node_features">
+		<menu_submenu name="node_features" name_ref="menu_node_features">
 			<menu_submenu name="details" name_ref="menu_details">
 				<menu_action action="EditDetailsAction"/>
 				<menu_action action="EditDetailsInDialogAction"/>

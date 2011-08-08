@@ -86,7 +86,7 @@ public class ConjunctConditions extends ASelectableCondition implements ICombine
 		JComponent rendererComponent = cond.createShortRendererComponent();
 		component.add(rendererComponent);
 		for (int i = 1; i < conditions.length; i++) {
-			final String and = TextUtils.removeMnemonic(TextUtils.getText("filter_and"));
+			final String and = TextUtils.getText("filter_and");
 			final String text = ' ' + and + ' ';
 			component.add(new JLabel(text));
 			cond = conditions[i];

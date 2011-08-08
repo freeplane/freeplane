@@ -6,82 +6,167 @@
 // the Free Software Foundation, either version 2 of the License, or
 // (at your option) any later version.
 
-def lastSection(string){
-    if (string == null)
-        return null
-    String[] p = string.split("\\.");
-    return p[p.size()-1];
+import java.lang.reflect.Method
+import org.freeplane.plugin.script.proxy.Proxy
+import org.freeplane.plugin.script.proxy.Convertible
+
+
+def makeApi(Proxy.Node node, Class clazz, String apiBase) {
+	def classNode = node.createChild(typeToString(clazz))
+	TreeMap<String, Map<String, Object>> memberMap = new TreeMap<String, Map<String, Object>>()
+	classNode.link.text = getApiLink(apiBase, clazz)
+	classNode.style.font.bold = true
+	clazz.getMethods().findAll {
+		it.declaringClass == clazz || it.declaringClass.simpleName.endsWith('RO')
+	}.sort {
+		a,b -> b.name <=> a.name
+	}.each {
+		if (!addProperty(memberMap, it))
+			addMethod(memberMap, it);
+	}
+	classNode.createChild('Package: ' + clazz.getPackage().name)
+	classNode.folded = true
+	memberMap.each { k,v ->
+		createMemberNode(k, v, classNode, apiBase)
+	}
+	// input for freeplane_plugin_script/src-jsyntaxpane/META-INF/services/jsyntaxpane/syntaxkits/groovysyntaxkit/combocompletions.txt
+	boolean printCompletionList = false
+	if (printCompletionList && classNode.to.plain == 'Node')
+		printCompletions(memberMap)
 }
 
-def removeModifiers(String[] parts) {
-    def result = parts.toList()
-    result.remove("final")
-    result.remove("abstract")
-    result.remove("public")
-    return result
+def printCompletions(TreeMap<String, Map<String, Object>> memberMap) {
+	TreeSet completions = new TreeSet()
+	completions.addAll(['logger', 'ui', 'htmlUtils', 'textUtils', 'node', 'import', 'def', 'String'])
+	memberMap.each { memberName,attribs ->
+		if (attribs['method'])
+			completions << memberName + '(|)'
+		else {
+			completions << memberName
+			if (attribs['type_read'] && Collection.class.isAssignableFrom(attribs['type_read'])) {
+				completions << memberName + '.each{ | }'
+				completions << memberName + '.collect{ | }'
+				completions << memberName + '.sum(|){  }'
+			}
+		}
+	}
+	println completions.join("\n")
 }
 
-def newChildNode(node, method){
-    def apiNode    = node.createChild(0);
-    def returnType = apiNode.createChild(0);
-    def iProto     = apiNode.createChild(1);
-
-    def text = method.toString();
-    List parts = removeModifiers(text.split(" "));
-
-    StringBuilder sb = new StringBuilder();
-    sb.append(lastSection(parts[0]));
-
-    returnType.setText(parts[0].replace('Proxy$', ''));
-
-    sb.append(" ");
-    sb.append(method.getName());
-    sb.append("(");
-
-    def Class[] parms = method.getParameterTypes();
-    def protoTxt = new StringBuffer();
-    if(parms.size() >0){
-        for(i in 0..parms.size()-1){
-            protoTxt.append(parms[i].canonicalName);
-            sb.append(lastSection(parms[i].canonicalName));
-            if(i<parms.size()-1){
-                protoTxt.append("\n");
-                sb.append(",");
-            }
-        }
-    }
-    else{
-        protoTxt.append("*none*");
-    }
-    sb.append(")");
-    apiNode.text = sb.toString().replace('Proxy$', '');
-    apiNode.folded = true;
-    iProto.text = protoTxt.toString().replace('Proxy$', '');
+def createMemberNode(String memberName, Map<String, Object> attribs, Proxy.Node classNode, String apiBase) {
+	Proxy.Node memberNode
+	if (attribs['method']) {
+		memberNode = classNode.createChild(attribs['method'])
+		memberNode.icons.add('bookmark')
+	}
+	else {
+		// property
+		def mode = (attribs['type_read'] ? 'r' : '') + (attribs['type_write'] ? 'w' : '')
+		def type = attribs['type_read'] ? attribs['type_read'] : attribs['type_write']
+		//	if (mode == 'rw' && attribs['type_read'] != attribs['type_write']) {
+		//		logger.severe("property ${memberName} has differing getter and setter types")
+		//	}
+		memberNode = classNode.createChild(formatProperty(memberName, typeToString(type), mode))
+		memberNode.icons.add('wizard')
+		[ 'method_read', 'method_write' ].each {
+			if (attribs[it]) {
+				memberNode.createChild(formatMethod(attribs[it])).icons.add('bookmark')
+			}
+		}
+	}
+	attribs['types'].each {
+		if (it.declaringClass == Proxy.class || it == Convertible.class) {
+			def typeNode = memberNode.createChild(typeToString(it))
+			typeNode.link.text = getApiLink(apiBase, it)
+		}
+	}
+	memberNode.folded = true
+	return memberNode
 }
 
-def makeApi(node, clazz, apiBase) {
-    def child = node.createChild()
-    child.text = clazz.simpleName.replace('Proxy$', '')
-    def path = clazz.name.replace('.', '/').replace('$', '.')
-    child.link.text = apiBase + '/' + path + '.html'
-    def methods = clazz.getMethods().findAll{
-        it.declaringClass == clazz || it.declaringClass.simpleName.endsWith('RO')
-    }.sort{ a,b -> b.name <=> a.name }
-    for(i in 0..<methods.size()){
-        newChildNode(child, methods[i]);
-    }
-    child.createChild(0).text = 'Package: ' + clazz.getPackage().name
-    child.folded = true
+def getApiLink(String apiBase, Class clazz) {
+	def path = clazz.name.replace('.', '/').replace('$', '.')
+	return apiBase + '/' + path + '.html'
 }
 
-def initHeading(node) {
-    node.style.font.bold = true
+def typeToString(Class clazz) {
+	return clazz.simpleName.replace('Proxy$', '')
 }
 
-def createChild(parent, text, link) {
-    def result = parent.createChild(text)
-    result.link.text = link
-    return result
+// returns a value if this method is a getter or setter otherwise it returns null
+def addProperty(Map<String, Map<String, Object>> memberMap, Method method) {
+	if (isGetter(method) && ! method.parameterTypes) {
+		def propertyMap = getOrCreatePropertiesMap(memberMap, getPropertyName(method))
+		propertyMap['read'] = true
+		propertyMap['type_read'] = method.returnType
+		propertyMap['types'] = [ method.returnType ]
+		propertyMap['method_read'] = method
+	}
+	else if (isSetter(method) && method.parameterTypes.size() == 1) {
+		def propertyMap = getOrCreatePropertiesMap(memberMap, getPropertyName(method))
+		propertyMap['write'] = true
+		propertyMap['type_write'] = method.parameterTypes[0]
+		propertyMap['types'] = [ method.returnType ]
+		propertyMap['method_write'] = method
+	}
+}
+
+def addMethod(Map<String, Map<String, Object>> memberMap, Method method) {
+	def propertyMap = getOrCreatePropertiesMap(memberMap, method.name)
+	propertyMap['types'] = method.parameterTypes
+	propertyMap['method'] = formatMethod(method)
+}
+
+def formatProperty(String property, String type, String mode) {
+	return "<html><body><b>${property}</b>: ${type} (${mode})"
+// Plain text:
+//	return "${property}: ${type} (${mode})"
+}
+
+def formatMethod(Method method) {
+	return '<html><body>' + typeToString(method.returnType) +
+		' <b>' + method.name + '</b>' +
+		'(' + method.parameterTypes.collect{ typeToString(it) }.join(', ') + ')'
+// Plain text:
+//	return typeToString(method.returnType) +
+//		' ' + method.name +
+//		'(' + method.parameterTypes.collect{ typeToString(it) }.join(', ') + ')'
+}
+
+def isGetter(Method method) {
+	return method.name =~ '^(?:[gs]et|is)[A-Z].*'
+}
+
+def isSetter(Method method) {
+	return method.name =~ '^set[A-Z].*'
+}
+
+/** returns null if this is not a proper bean method name (get/set/is). */
+def getPropertyName(Method method) {
+	def name = method.name.replaceFirst('^(?:[gs]et|is)([A-Z])', '$1')
+	if (name != method.name)
+		return name.substring(0, 1).toLowerCase() + name.substring(1)
+	else
+		return null
+}
+
+private Map getOrCreatePropertiesMap(Map properties, String name) {
+	def propertyMap = properties[name]
+	if (propertyMap == null) {
+		propertyMap = [:]
+		properties[name] = propertyMap
+	}
+	return propertyMap
+}
+
+def initHeading(Proxy.Node node) {
+	node.style.font.bold = true
+}
+
+def createChild(Proxy.Node parent, text, link) {
+	def result = parent.createChild(text)
+	result.link.text = link
+	return result
 }
 
 // == MAIN ==
@@ -89,10 +174,11 @@ def MAP_NAME = textUtils.getText('scripting_api_generator_title')
 def PROXY_NODE = textUtils.getText('scripting_api_generator_proxy')
 def UTILITES_NODE = textUtils.getText('scripting_api_generator_utilities')
 def WEB_NODE = textUtils.getText('scripting_api_generator_web')
+def LEGEND_NODE = textUtils.getText('scripting_api_generator_legend')
 c.deactivateUndo()
 // FIXME: api is installed locally but is there a portable way to find it?
 def apiBase = 'http://freeplane.sourceforge.net/doc/api'
-def newMap = c.newMap()
+Proxy.Map newMap = c.newMap()
 def oldName = newMap.name
 newMap.name = MAP_NAME
 newMap.root.text = MAP_NAME
@@ -132,6 +218,25 @@ createChild(web, 'Groovy tutorials (Codehaus)', 'http://groovy.codehaus.org/Begi
 createChild(web, 'Groovy presentation (Paul King)', 'http://www.asert.com/pubs/Groovy/Groovy.pdf')
 createChild(web, 'Example scripts', 'http://freeplane.sourceforge.net/wiki/index.php/Scripting:_Example_scripts')
 createChild(web, 'Scripting API changes', 'http://freeplane.sourceforge.net/wiki/index.php/Scripting:_API_Changes')
+
+def legend = newMap.root.createChild(LEGEND_NODE)
+initHeading(legend)
+def methodLegend = legend.createChild("normal methods have a 'bookmark' icon")
+methodLegend.icons.add('bookmark')
+methodLegend.folded = true
+def propertyLegend = legend.createChild("Groovy properties have a 'wizard' icon")
+propertyLegend.icons.add('wizard')
+propertyLegend.folded = true
+def propertyBasics = propertyLegend.createChild("With properties you can write simpler expressions than with getters and setters")
+propertyBasics.createChild("  node.text = 'Hello, world!'")
+propertyBasics.createChild("instead of")
+propertyBasics.createChild("  node.setText('Hello, world!')")
+propertyLegend.createChild("read-only properties are indicated by a trailing (r)").
+	createChild('if (node.leaf)\n    println "the id of this leaf node is " + node.id')
+propertyLegend.createChild("write-only and read-write properties are indicated by a trailing (w) or (rw)").
+	createChild('node.text += " some suffix"')
+propertyLegend.createChild("properties with differing type of setter and getter have two nodes")
+legend.folded = true
 
 c.deactivateUndo()
 newMap.saved = true

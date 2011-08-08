@@ -85,7 +85,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	public AFreeplaneAction(final String key) {
 		super();
 		this.key = key;
-		MenuBuilder.setLabelAndMnemonic(this, TextUtils.getText(getTextKey()));
+		MenuBuilder.setLabelAndMnemonic(this, TextUtils.getRawText(getTextKey()));
 		final String iconResource = ResourceController.getResourceController().getProperty(getIconKey(), null);
 		if (iconResource != null) {
 			final URL url = ResourceController.getResourceController().getResource(iconResource);
@@ -97,7 +97,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 				putValue(SMALL_ICON, icon);
 			}
 		}
-		final String tooltip = TextUtils.getText(getTooltipKey(), null);
+		final String tooltip = TextUtils.getRawText(getTooltipKey(), null);
 		if (tooltip != null && !"".equals(tooltip)) {
 			putValue(Action.SHORT_DESCRIPTION, tooltip);
 			putValue(Action.LONG_DESCRIPTION, tooltip);

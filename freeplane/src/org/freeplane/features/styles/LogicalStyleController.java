@@ -22,6 +22,7 @@ package org.freeplane.features.styles;
 import java.awt.EventQueue;
 import java.lang.ref.WeakReference;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -95,23 +96,18 @@ public class LogicalStyleController implements IExtension {
 				if(!ResourceController.getResourceController().getBooleanProperty("show_styles_in_tooltip"))
 					return null;
 				final Collection<IStyle> styles = getStyles(node);
-				StringBuilder sb = new StringBuilder(TextUtils.getText("node_styles"));
-				int i = 0;
-				for(IStyle style :styles){
-					if(i > 1)
-						sb.append(", ");
-					if(i != 0)
-						sb.append(style.toString());
-					i++;
-				}
-				return HtmlUtils.plainToHTML(sb.toString());
+				styles.remove(styles.iterator().next());
+				final String label = TextUtils.getText("node_styles");
+				return HtmlUtils.plainToHTML(label + ": " + getStyleNames(styles, ", "));
 			}
 		});
 	}
 
-	protected void addAll(NodeModel node, Collection<IStyle> currentValue, Collection<IStyle> collection) {
+	protected Collection<IStyle> getResursively(NodeModel node, Collection<IStyle> collection) {
 		final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
-		addAll(node, styleModel, currentValue, collection);
+		Collection<IStyle> set = new LinkedHashSet<IStyle>();
+		addAll(node, styleModel, set, collection);
+		return set;
 	}
 	
 	protected void addAll(NodeModel node, MapStyleModel styleModel, Collection<IStyle> currentValue, Collection<IStyle> collection) {
@@ -335,4 +331,42 @@ public class LogicalStyleController implements IExtension {
 		final IPropertyHandler<Collection<IStyle>, NodeModel> getter) {
 		return styleHandlers.addGetter(key, getter);
 	}
+
+	public String getStyleNames(final Collection<IStyle> styles, String separator) {
+	    StringBuilder sb = new StringBuilder();
+	    int i = 0;
+	    for(IStyle style :styles){
+	    	if(i > 0)
+	    		sb.append(separator);
+	    	sb.append(style.toString());
+	    	i++;
+	    }
+	    return sb.toString();
+    }
+
+	public Collection<IStyle>  getMapStyles(final NodeModel node) {
+		final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
+		Collection<IStyle> condStyles = styleModel.getConditionalStyleModel().getStyles(node);
+		return getResursively(node, condStyles);
+	}
+
+	public Collection<IStyle>  getNodeStyles(final NodeModel node) {
+		final ConditionalStyleModel conditionalStyleModel = (ConditionalStyleModel) node.getExtension(ConditionalStyleModel.class);
+		final Collection<IStyle> condStyles;
+		if(conditionalStyleModel == null){
+			condStyles = Collections.emptySet();
+			return condStyles;
+		}
+		else
+			condStyles = conditionalStyleModel.getStyles(node);
+		return getResursively(node, condStyles);
+	}
+	
+	public String getNodeStyleNames(NodeModel node, String separator) {
+		return getStyleNames(getNodeStyles(node), separator);
+    }
+
+	public String getMapStyleNames(NodeModel node, String separator) {
+		return getStyleNames(getMapStyles(node), separator);
+    }
 }

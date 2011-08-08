@@ -69,7 +69,7 @@ public class AddAttributeAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent arg0) {
 		final List<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
 		final int selection = UITools.showConfirmDialog(Controller.getCurrentController().getSelection().getSelected(),
-		    getDialog(), TextUtils.removeMnemonic(TextUtils.getText("attributes_AddAttributeAction.text")),
+		    getDialog(), TextUtils.getText("attributes_AddAttributeAction.text"),
 		    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 		//OK button pressed
 		if (selection == JOptionPane.OK_OPTION) {

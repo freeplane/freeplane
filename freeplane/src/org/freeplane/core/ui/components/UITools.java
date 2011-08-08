@@ -438,7 +438,7 @@ return JOptionPane.showConfirmDialog(parentComponent, message, title, optionType
 	}
 
 	public static JDialog createCancelDialog(final Component component, final String titel, final String text) {
-        final String[] options = { TextUtils.removeMnemonic(TextUtils.getText("cancel")) };
+        final String[] options = { TextUtils.getText("cancel") };
     	final JOptionPane infoPane = new JOptionPane(text, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null,
     	    options);
     	JDialog dialog = infoPane.createDialog(component, titel);

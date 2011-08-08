@@ -147,8 +147,7 @@ public class SModeControllerFactory {
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
 		final SModeController modeController = this.modeController;
-		final StyleEditorPanel styleEditorPanel = new StyleEditorPanel(null, false);
-		styleEditorPanel.init();
+		final StyleEditorPanel styleEditorPanel = new StyleEditorPanel(modeController, null, false);
 		final MapController mapController = modeController.getMapController();
 		mapController.addNodeSelectionListener(new INodeSelectionListener() {
 			public void onSelect(final NodeModel node) {

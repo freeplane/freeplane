@@ -57,7 +57,7 @@ public class ConditionFactory {
 	public static String createDescription(final String attribute, final String simpleCondition, final String value,
 	                                       final boolean matchCase) {
 		final String description = attribute + " " + simpleCondition + (value != null ? " \"" + value + "\"" : "")
-		        + (matchCase && value != null ? ", " + TextUtils.removeMnemonic(TextUtils.getText(ConditionFactory.FILTER_MATCH_CASE)) : "");
+		        + (matchCase && value != null ? ", " + TextUtils.getText(ConditionFactory.FILTER_MATCH_CASE) : "");
 		return description;
 	}
 

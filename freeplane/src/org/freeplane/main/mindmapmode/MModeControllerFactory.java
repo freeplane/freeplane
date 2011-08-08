@@ -147,8 +147,7 @@ public class MModeControllerFactory {
 	private MUIFactory uiFactory;
 
 	private void createAddIns() {
-		final StyleEditorPanel panel = new StyleEditorPanel(uiFactory, true);
-		panel.init();
+		final StyleEditorPanel panel = new StyleEditorPanel(modeController, uiFactory, true);
 		final JScrollPane styleScrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 		    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		UITools.setScrollbarIncrement(styleScrollPane);

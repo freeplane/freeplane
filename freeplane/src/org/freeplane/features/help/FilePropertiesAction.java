@@ -324,7 +324,7 @@ class FilePropertiesAction extends AFreeplaneAction {
 		panel.add(nodeSelectedNodeCountLabel);
 		//Show dialog
 		JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getViewport(), panel,
-		    TextUtils.removeMnemonic(TextUtils.getText("FilePropertiesAction.text")), JOptionPane.PLAIN_MESSAGE);
+		    TextUtils.getText("FilePropertiesAction.text"), JOptionPane.PLAIN_MESSAGE);
 	}
 
 	/**

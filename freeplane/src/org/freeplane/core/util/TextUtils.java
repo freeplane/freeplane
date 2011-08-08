@@ -39,11 +39,19 @@ public class TextUtils {
 	}
 
 	public static String getOptionalText(final String string) {
-		return string == null ? null : TextUtils.getText(string);
+		return string == null ? null : TextUtils.getRawText(string);
 	}
 
 	public static String removeMnemonic(final String rawLabel) {
-		return rawLabel.replaceFirst("&([^ ])", "$1");
+		final int pos = rawLabel.indexOf('&');
+		if(pos == -1)
+			return rawLabel;
+		final int length = rawLabel.length();
+		StringBuilder sb = new StringBuilder(length);
+		sb.append(rawLabel.subSequence(0, pos));
+		sb.append(rawLabel.subSequence(pos + 1, length));
+		return sb.toString();
+		
 	}
 
 	/** Removes the "TranslateMe" sign from the end of not translated texts. */
@@ -61,6 +69,13 @@ public class TextUtils {
 	}
 
 	public static String getText(final String key) {
+		final String text = getRawText(key);
+		if(text == null)
+			return text;
+		return removeMnemonic(text);
+	}
+
+	public static String getRawText(final String key) {
 		if (key == null) {
 			return null;
 		}
@@ -68,6 +83,12 @@ public class TextUtils {
 	}
 
 	public static String getText(final String key, final String defaultString) {
+		final String text = getRawText(key, defaultString);
+		if(text == null)
+			return text;
+		return removeMnemonic(text);
+	}
+	public static String getRawText(final String key, final String defaultString) {
 		if (key == null) {
 			return defaultString;
 		}
@@ -128,4 +149,5 @@ public class TextUtils {
 	public SimpleDateFormat getDefaultDateTimeFormat() {
 		return FormatController.getController().getDefaultDateTimeFormat();
 	}
+
 }

@@ -35,6 +35,6 @@ class StyleMapModel extends MapModel {
 
     @Override
     public String getTitle() {
-    	return TextUtils.removeMnemonic(TextUtils.getText(STYLES));
+    	return TextUtils.getText(STYLES);
     }
 }

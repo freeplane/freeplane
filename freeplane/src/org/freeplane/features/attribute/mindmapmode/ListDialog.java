@@ -206,18 +206,18 @@ class ListDialog extends JDialog {
 	public void init(final Component locationComp, final String labelText, final IListModel data, final String longValue) {
 	    this.data = data;
 		final JButton closeButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(closeButton, TextUtils.getText("simplyhtml.closeBtnName"));
+		MenuBuilder.setLabelAndMnemonic(closeButton, TextUtils.getRawText("simplyhtml.closeBtnName"));
 		closeButton.addActionListener(new CloseAction());
 		getRootPane().setDefaultButton(closeButton);
 		addButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(addButton, TextUtils.getText("add"));
+		MenuBuilder.setLabelAndMnemonic(addButton, TextUtils.getRawText("add"));
 		final AddAction addAction = new AddAction();
 		addButton.addActionListener(addAction);
 		renameButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(renameButton, TextUtils.getText("rename"));
+		MenuBuilder.setLabelAndMnemonic(renameButton, TextUtils.getRawText("rename"));
 		renameButton.addActionListener(new RenameAction());
 		deleteButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(deleteButton, TextUtils.getText("delete"));
+		MenuBuilder.setLabelAndMnemonic(deleteButton, TextUtils.getRawText("delete"));
 		deleteButton.addActionListener(new DeleteAction());
 		textField = new JTextField(20);
 		textField.getDocument().addDocumentListener(new TextChangeListener());

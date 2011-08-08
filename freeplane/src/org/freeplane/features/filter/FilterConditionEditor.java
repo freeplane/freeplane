@@ -161,7 +161,7 @@ public class FilterConditionEditor extends JComponent {
 		caseSensitive = new JCheckBox();
 		add(caseSensitive, gridBagConstraints);
 		gridBagConstraints.gridx++;
-		MenuBuilder.setLabelAndMnemonic(caseSensitive,TextUtils.getText(PROPERTY_FILTER_MATCH_CASE));
+		MenuBuilder.setLabelAndMnemonic(caseSensitive,TextUtils.getRawText(PROPERTY_FILTER_MATCH_CASE));
 		caseSensitive.setSelected(ResourceController.getResourceController().getBooleanProperty(
 		    PROPERTY_FILTER_MATCH_CASE));
 		mapChanged(Controller.getCurrentController().getMap());

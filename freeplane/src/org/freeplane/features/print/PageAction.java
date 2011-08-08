@@ -65,22 +65,22 @@ class PageAction extends AbstractPrintAction {
 		final ButtonGroup fitButtons = new ButtonGroup();
 		//Fit to page
 		final JRadioButton fitToPage = new JRadioButton();
-		MenuBuilder.setLabelAndMnemonic(fitToPage, TextUtils.getText("fit_map_to_page"));
+		MenuBuilder.setLabelAndMnemonic(fitToPage, TextUtils.getRawText("fit_map_to_page"));
 		fitToPage.setSelected(fitMap == FitMap.PAGE);
 		fitButtons.add(fitToPage);
 		//Fit width
 		final JRadioButton fitToWidth = new JRadioButton();
-		MenuBuilder.setLabelAndMnemonic(fitToWidth, TextUtils.getText("fit_map_to_page_width"));
+		MenuBuilder.setLabelAndMnemonic(fitToWidth, TextUtils.getRawText("fit_map_to_page_width"));
 		fitToWidth.setSelected(fitMap == FitMap.WIDTH);
 		fitButtons.add(fitToWidth);
 		//Fit to heighth
 		final JRadioButton fitToHeighth = new JRadioButton();
-		MenuBuilder.setLabelAndMnemonic(fitToHeighth, TextUtils.getText("fit_map_to_page_height"));
+		MenuBuilder.setLabelAndMnemonic(fitToHeighth, TextUtils.getRawText("fit_map_to_page_height"));
 		fitToHeighth.setSelected(fitMap == FitMap.HEIGHT);
 		fitButtons.add(fitToHeighth);
 		//User defined
 		final JRadioButton userDefaultScale = new JRadioButton();
-		MenuBuilder.setLabelAndMnemonic(userDefaultScale, TextUtils.getText("user_defined_scale"));
+		MenuBuilder.setLabelAndMnemonic(userDefaultScale, TextUtils.getRawText("user_defined_scale"));
 		userDefaultScale.setSelected(fitMap == FitMap.USER_DEFINED);
 		fitButtons.add(userDefaultScale);
 		//User defined label

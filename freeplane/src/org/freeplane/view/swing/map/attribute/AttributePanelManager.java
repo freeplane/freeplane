@@ -185,7 +185,7 @@ public class AttributePanelManager{
             formatChooser.setEditable(true);
             formatChooser.setSelectedItem(null);
             final String NODE_FORMAT = "OptionPanel.nodeformat"; // duplicated from StyleEditorPanel
-            formatChooser.setToolTipText(TextUtils.getText(NODE_FORMAT + ".tooltip"));
+            formatChooser.setToolTipText(TextUtils.getRawText(NODE_FORMAT + ".tooltip"));
             formatChooser.setAlignmentX(Component.LEFT_ALIGNMENT);
             return formatChooser;
         }
