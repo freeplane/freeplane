@@ -117,10 +117,10 @@ public class EditNodeDialog extends EditNodeBase {
 			final JButton splitButton = new JButton();
 			final JCheckBox enterConfirms = new JCheckBox("", ResourceController.getResourceController()
 			    .getBooleanProperty("el__enter_confirms_by_default"));
-			MenuBuilder.setLabelAndMnemonic(okButton, TextUtils.getText("ok"));
-			MenuBuilder.setLabelAndMnemonic(cancelButton, TextUtils.getText("cancel"));
-			MenuBuilder.setLabelAndMnemonic(splitButton, TextUtils.getText("split"));
-			MenuBuilder.setLabelAndMnemonic(enterConfirms, TextUtils.getText("enter_confirms"));
+			MenuBuilder.setLabelAndMnemonic(okButton, TextUtils.getRawText("ok"));
+			MenuBuilder.setLabelAndMnemonic(cancelButton, TextUtils.getRawText("cancel"));
+			MenuBuilder.setLabelAndMnemonic(splitButton, TextUtils.getRawText("split"));
+			MenuBuilder.setLabelAndMnemonic(enterConfirms, TextUtils.getRawText("enter_confirms"));
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					submit();

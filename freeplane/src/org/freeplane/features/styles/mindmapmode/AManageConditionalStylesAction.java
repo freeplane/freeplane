@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Box;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.table.TableModel;
@@ -18,7 +17,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.ConditionalStyleModel;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
@@ -34,32 +32,9 @@ abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 	    super(name);
     }
 
-	public void actionPerformed(ActionEvent e) {
-		final Controller controller = Controller.getCurrentController();
-		final MapModel map = controller.getMap();
-		final ConditionalStyleModel conditionalStyleModel = getConditionalStyleModel();
-		Component pane = createConditionalStylePane(map, conditionalStyleModel);
-		Controller.getCurrentModeController().startTransaction();
-		try{
-			final int confirmed = JOptionPane.showConfirmDialog(controller.getViewController().getMapView(), pane, "", JOptionPane.OK_CANCEL_OPTION);
-			if(JOptionPane.OK_OPTION == confirmed){
-				LogicalStyleController.getController().refreshMap(map);
-				Controller.getCurrentModeController().commit();
-			}
-			else{
-				Controller.getCurrentModeController().rollback();
-
-			}
-		}
-		catch(RuntimeException ex){
-			ex.printStackTrace();
-			Controller.getCurrentModeController().rollback();
-		}
-	}
-
 	abstract public ConditionalStyleModel getConditionalStyleModel();
 
-	private Component createConditionalStylePane(final MapModel map, final ConditionalStyleModel conditionalStyleModel) {
+	protected Component createConditionalStylePane(final MapModel map, final ConditionalStyleModel conditionalStyleModel) {
 		final JPanel pane = new JPanel(new BorderLayout());
 	    final MapStyleModel styles = MapStyleModel.getExtension(map);
 		final TableModel tableModel = MLogicalStyleController.getController().getConditionalStyleModelAsTableModel(map, conditionalStyleModel);
@@ -73,7 +48,7 @@ abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 	    final Box buttons = Box.createVerticalBox();
 	    
 	    JButton create = new JButton();
-	    MenuBuilder.setLabelAndMnemonic(create, TextUtils.getText("new"));
+	    MenuBuilder.setLabelAndMnemonic(create, TextUtils.getRawText("new"));
 	    create.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 	    create.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -85,7 +60,7 @@ abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 		});
 
 	    JButton edit = new JButton();
-	    MenuBuilder.setLabelAndMnemonic(edit, TextUtils.getText("edit"));
+	    MenuBuilder.setLabelAndMnemonic(edit, TextUtils.getRawText("edit"));
 	    edit.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 	    edit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -101,7 +76,7 @@ abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 		});
 
 	    JButton delete = new JButton();
-	    MenuBuilder.setLabelAndMnemonic(delete, TextUtils.getText("delete"));
+	    MenuBuilder.setLabelAndMnemonic(delete, TextUtils.getRawText("delete"));
 	    delete.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 	    delete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -121,7 +96,7 @@ abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 			}
 		});
 	    JButton up = new JButton();
-	    MenuBuilder.setLabelAndMnemonic(up, TextUtils.getText("up"));
+	    MenuBuilder.setLabelAndMnemonic(up, TextUtils.getRawText("up"));
 	    up.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 	    up.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -136,7 +111,7 @@ abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 			}
 		});
 	    JButton down = new JButton();
-	    MenuBuilder.setLabelAndMnemonic(down, TextUtils.getText("down"));
+	    MenuBuilder.setLabelAndMnemonic(down, TextUtils.getRawText("down"));
 	    down.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 	    down.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

@@ -772,7 +772,7 @@ class NodeList {
 		layoutConstraints.gridx++;
 		contentPane.add(Box.createHorizontalStrut(40), layoutConstraints);
 		layoutConstraints.gridx++;
-		contentPane.add(new JLabel(TextUtils.removeMnemonic(TextUtils.getText("filter_match_case"))), layoutConstraints);
+		contentPane.add(new JLabel(TextUtils.getText("filter_match_case")), layoutConstraints);
 		layoutConstraints.gridx++;
 		contentPane.add(matchCase, layoutConstraints);
 		layoutConstraints.gridx++;

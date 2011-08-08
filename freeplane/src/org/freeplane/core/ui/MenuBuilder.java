@@ -337,7 +337,7 @@ public class MenuBuilder extends UIBuilder {
 						if(nameRef == null)
 						    nameRef = attributes.getAttribute("name", null);
 						final String iconResource = ResourceController.getResourceController().getProperty(nameRef + ".icon", null);
-						MenuBuilder.setLabelAndMnemonic(menuItem, TextUtils.getText(nameRef));
+						MenuBuilder.setLabelAndMnemonic(menuItem, TextUtils.getRawText(nameRef));
 						if(iconResource != null){
 							final URL url = ResourceController.getResourceController().getResource(iconResource);
 							menuItem.setIcon(new ImageIcon(url));
@@ -399,14 +399,14 @@ public class MenuBuilder extends UIBuilder {
 
 	static public JMenu createMenu(final String name) {
 		final JMenu menu = new JMenu();
-		final String text = TextUtils.getText(name);
+		final String text = TextUtils.getRawText(name);
 		MenuBuilder.setLabelAndMnemonic(menu, text);
 		return menu;
 	}
 
 	static public JMenuItem createMenuItem(final String name) {
 		final JMenuItem menu = new JFreeplaneMenuItem();
-		final String text = TextUtils.getText(name);
+		final String text = TextUtils.getRawText(name);
 		MenuBuilder.setLabelAndMnemonic(menu, text);
 		return menu;
 	}

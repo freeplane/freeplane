@@ -20,7 +20,6 @@
 package org.freeplane.view.swing.features.time.mindmapmode;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
@@ -68,7 +67,10 @@ import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.IMapSelectionListener;
+import org.freeplane.features.map.INodeChangeListener;
+import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -281,6 +283,8 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 	private JDialog dialog;
 	private final ReminderHook reminderHook;
 	private SimpleDateFormat dateFormat;
+	private INodeChangeListener nodeChangeListener;
+	private INodeSelectionListener nodeSelectionListener;
 
 	public TimeManagement( final ReminderHook reminderHook) {
 		this.reminderHook = reminderHook;
@@ -305,6 +309,10 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		if (dialog == null) {
 			return;
 		}
+		getMindMapController().getMapController().removeNodeSelectionListener(nodeSelectionListener);
+		nodeSelectionListener = null;
+		getMindMapController().getMapController().removeNodeChangeListener(nodeChangeListener);
+		nodeChangeListener = null;
 		dialog.setVisible(false);
 		dialog.dispose();
 		dialog = null;
@@ -336,6 +344,25 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		}
 		TimeManagement.sCurrentlyOpenTimeManagement = this;
 		dialog = new JDialog(Controller.getCurrentController().getViewController().getFrame(), false /*not modal*/);
+		final JTimePanel timePanel =createTimePanel(dialog, true, BoxLayout.X_AXIS);
+		nodeSelectionListener = new INodeSelectionListener() {
+			public void onSelect(NodeModel node) {
+				timePanel.update(node);
+			}
+			
+			public void onDeselect(NodeModel node) {
+			}
+		};
+		getMindMapController().getMapController().addNodeSelectionListener(nodeSelectionListener);
+		nodeChangeListener = new INodeChangeListener() {
+			public void nodeChanged(NodeChangeEvent event) {
+				final NodeModel node = event.getNode();
+				if(event.getProperty().equals(ReminderExtension.class) && node.equals(getMindMapController().getMapController().getSelectedNode()))
+						timePanel.update(node);
+			}
+		};
+		getMindMapController().getMapController().addNodeChangeListener(nodeChangeListener);
+		
 		dialog.setTitle(getResourceString("plugins/TimeManagement.xml_WindowTitle"));
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		dialog.addWindowListener(new WindowAdapter() {
@@ -355,8 +382,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 			}
 		};
 		UITools.addEscapeActionToDialog(dialog, action);
-		final Container contentPane =createTimePanel(dialog, true, BoxLayout.X_AXIS);
-		dialog.setContentPane(contentPane);
+		dialog.setContentPane(timePanel);
 		dialog.pack();
 		UITools.setBounds(dialog, -1, -1, dialog.getWidth(), dialog.getHeight());
 		dialog.setVisible(true);

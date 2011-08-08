@@ -62,28 +62,27 @@ public class JSyntaxPaneProxy {
 			return;
 		}
 		final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-		loader = new URLClassLoader(new URL[] { jsyntaxpaneJar, nodehighlighterJar}, JSyntaxPaneProxy.class.getClassLoader());
+		final URL[] urls = new URL[] { jsyntaxpaneJar, nodehighlighterJar };
+		loader = new URLClassLoader(urls, JSyntaxPaneProxy.class.getClassLoader());
 		try {
 			editorKit = loader.loadClass("jsyntaxpane.DefaultSyntaxKit");
 			Thread.currentThread().setContextClassLoader(loader);
 			editorKit.getMethod("initKit").invoke(null);
 			actionUtils = loader.loadClass("jsyntaxpane.actions.ActionUtils");
+			final String components = "jsyntaxpane.components.PairsMarker" //
+					+ ", jsyntaxpane.components.LineNumbersRuler" //
+					+ ", jsyntaxpane.components.TokenMarker" //
+					+ ", org.freeplane.plugin.script.NodeIdHighLighter";
 			final Class<?> groovySyntaxKit = loader.loadClass("jsyntaxpane.syntaxkits.GroovySyntaxKit");
 			try{
 				loader.loadClass("org.freeplane.plugin.script.NodeIdHighLighter");
 				if (Compat.isLowerJdk(Compat.VERSION_1_6_0)) {
 					final Method setPropertyMethod = editorKit.getMethod("setProperty", Class.class, String.class, String.class);
-					setPropertyMethod.invoke(null, groovySyntaxKit, "Components", "jsyntaxpane.components.PairsMarker" //
-						+ ", jsyntaxpane.components.LineNumbersRuler" //
-						+ ", jsyntaxpane.components.TokenMarker" //
-						+ ", org.freeplane.plugin.script.NodeIdHighLighter");
+					setPropertyMethod.invoke(null, groovySyntaxKit, "Components", components);
 				}
 				else{
 					final Method setPropertyMethod = editorKit.getMethod("setProperty", String.class, String.class);
-					setPropertyMethod.invoke(groovySyntaxKit.newInstance(), "Components", "jsyntaxpane.components.PairsMarker" //
-						+ ", jsyntaxpane.components.LineNumbersRuler" //
-						+ ", jsyntaxpane.components.TokenMarker" //
-						+ ", org.freeplane.plugin.script.NodeIdHighLighter");
+					setPropertyMethod.invoke(groovySyntaxKit.newInstance(), "Components", components);
 				}
 			}
 			catch (Exception e){

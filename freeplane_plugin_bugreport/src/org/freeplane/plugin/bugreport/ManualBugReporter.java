@@ -66,8 +66,8 @@ class ManualBugReporter implements IBugReportListener {
 			if (!question.startsWith("<html>")) {
 				question = HtmlUtils.plainToHTML(question);
 			}
-			final Object[] options = new Object[] { TextUtils.removeMnemonic(TextUtils.getText("ok")),
-			        TextUtils.removeMnemonic(TextUtils.getText("cancel")),
+			final Object[] options = new Object[] { TextUtils.getText("ok"),
+			        TextUtils.getText("cancel"),
 			        TextUtils.getText("org.freeplane.plugin.bugreport.never") };
 			final String reportName = TextUtils.getText("org.freeplane.plugin.bugreport.lastreport");
 			final int choice = BugReportDialogManager.showBugReportDialog(title, question,

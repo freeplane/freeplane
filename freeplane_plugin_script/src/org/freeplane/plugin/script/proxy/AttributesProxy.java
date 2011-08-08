@@ -8,7 +8,9 @@ import groovy.lang.MissingMethodException;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import org.freeplane.features.attribute.Attribute;
@@ -79,6 +81,18 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		}
 		return result;
 	}
+
+	public Map<String, Object> getMap() {
+		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
+		if (nodeAttributeTableModel == null) {
+			return Collections.emptyMap();
+		}
+		final LinkedHashMap<String, Object> result = new LinkedHashMap<String, Object>(nodeAttributeTableModel.getRowCount());
+		for (final Attribute a : nodeAttributeTableModel.getAttributes()) {
+			result.put(a.getName(), a.getValue());
+		}
+		return result;
+    }
 
 	public List<? extends Convertible> findValues(Closure<Boolean> closure) {
 		try {

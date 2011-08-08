@@ -350,19 +350,19 @@ class ScriptEditorPanel extends JDialog {
 		mScriptTextField.repaint();
 		final JMenuBar menuBar = new JMenuBar();
 		final JMenu menu = new JMenu();
-		MenuBuilder.setLabelAndMnemonic(menu, TextUtils.getText("plugins/ScriptEditor.menu_actions"));
+		MenuBuilder.setLabelAndMnemonic(menu, TextUtils.getRawText("plugins/ScriptEditor.menu_actions"));
 		if (pHasNewScriptFunctionality) {
-			addAction(menu, new NewScriptAction(TextUtils.getText("plugins/ScriptEditor.new_script")));
+			addAction(menu, new NewScriptAction(TextUtils.getRawText("plugins/ScriptEditor.new_script")));
 		}
-		mRunAction = new RunAction(TextUtils.getText("plugins/ScriptEditor.run"));
+		mRunAction = new RunAction(TextUtils.getRawText("plugins/ScriptEditor.run"));
 		mRunAction.setEnabled(false);
 		addAction(menu, mRunAction);
-		mSignAction = new SignAction(TextUtils.getText("plugins/ScriptEditor.sign"));
+		mSignAction = new SignAction(TextUtils.getRawText("plugins/ScriptEditor.sign"));
 		mSignAction.setEnabled(false);
 		addAction(menu, mSignAction);
-		final AbstractAction cancelAction = new CancelAction(TextUtils.getText("plugins/ScriptEditor.cancel"));
+		final AbstractAction cancelAction = new CancelAction(TextUtils.getRawText("plugins/ScriptEditor.cancel"));
 		addAction(menu, cancelAction);
-		final AbstractAction exitAction = new ExitAction(TextUtils.getText("plugins/ScriptEditor.exit"));
+		final AbstractAction exitAction = new ExitAction(TextUtils.getRawText("plugins/ScriptEditor.exit"));
 		addAction(menu, exitAction);
 		menuBar.add(menu);
 		this.setJMenuBar(menuBar);
