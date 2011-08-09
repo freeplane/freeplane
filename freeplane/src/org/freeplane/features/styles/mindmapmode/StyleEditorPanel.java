@@ -51,6 +51,7 @@ import org.freeplane.core.resources.components.NextLineProperty;
 import org.freeplane.core.resources.components.NumberProperty;
 import org.freeplane.core.resources.components.SeparatorProperty;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
@@ -669,7 +670,9 @@ public class StyleEditorPanel extends JPanel {
 		};
 	    button.addActionListener(action);
 	    button.setHorizontalAlignment(SwingConstants.LEFT);
-	    rightBuilder.append(TextUtils.getText(label) + ": ", button, rightBuilder.getColumnCount() - 2);
+	    final String labelText = TextUtils.getText(label);
+	    UITools.addTitledBorder(button, labelText, 10);
+	    rightBuilder.append(button, rightBuilder.getColumnCount());
 		rightBuilder.nextLine();
 		return button;
     }

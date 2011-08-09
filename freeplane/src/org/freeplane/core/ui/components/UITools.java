@@ -25,6 +25,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.Point;
@@ -32,12 +33,16 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.text.JTextComponent;
@@ -442,5 +447,19 @@ return JOptionPane.showConfirmDialog(parentComponent, message, title, optionType
     	JDialog dialog = infoPane.createDialog(component, titel);
     	dialog.setModal(false);
     	return dialog;
+    }
+
+	public static void addTitledBorder(final JComponent c, final String title, final float size) {
+        final TitledBorder titledBorder = BorderFactory.createTitledBorder(title);
+        final Font titleFont = titledBorder.getTitleFont();
+        titledBorder.setTitleFont(titleFont.deriveFont(size));
+    	final Border btnBorder = c.getBorder();
+    	if(btnBorder != null){
+    	final CompoundBorder compoundBorder = BorderFactory.createCompoundBorder(titledBorder, btnBorder);
+    	c.setBorder(compoundBorder);
+    	}
+    	else{
+    		c.setBorder(titledBorder);
+    	}
     }
 }
