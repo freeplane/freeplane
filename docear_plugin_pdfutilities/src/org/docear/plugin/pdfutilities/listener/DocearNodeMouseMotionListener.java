@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.net.URI;
 
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
+import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel;
 import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel.AnnotationType;
-import org.docear.plugin.pdfutilities.pdf.PdfAnnotation;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.docear.plugin.pdfutilities.pdf.PdfReaderFileFilter;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
@@ -68,7 +68,7 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 			uri = Tools.getAbsoluteUri(uri);
 			String command = null;
 			
-			PdfAnnotation annotation = null;
+			PdfAnnotationExtensionModel annotation = null;
 			try{
 				annotation = new PdfAnnotationImporter().searchAnnotation(Tools.getFilefromUri(uri), selectedNode.getText());
 				

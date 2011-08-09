@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
-import org.docear.plugin.pdfutilities.pdf.PdfAnnotation;
+import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.ui.EnabledAction;
@@ -13,7 +13,6 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-
 
 import de.intarsys.pdf.parser.COSLoadException;
 
@@ -39,7 +38,7 @@ public class ImportAllAnnotationsAction extends ImportAnnotationsAction {
 			URI uri = NodeLinks.getLink(selected);
             try {
             	PdfAnnotationImporter importer = new PdfAnnotationImporter();            	
-				List<PdfAnnotation> annotations = importer.importAnnotations(uri);
+				List<PdfAnnotationExtensionModel> annotations = importer.importAnnotations(uri);
 				NodeUtils nodeUtils = new NodeUtils();                
                 nodeUtils.insertChildNodesFrom(annotations, selected.isLeft(), selected);
 			} catch (IOException e) {

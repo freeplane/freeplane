@@ -5,7 +5,13 @@
 	<projects>
 	</projects>
 	<buildSpec>
+		<buildCommand>
+			<name>net.sf.eclipsensis.installoptions.InstallOptionsBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
+		<nature>net.sf.eclipsensis.installoptions.InstallOptionsNature</nature>
 	</natures>
 </projectDescription>

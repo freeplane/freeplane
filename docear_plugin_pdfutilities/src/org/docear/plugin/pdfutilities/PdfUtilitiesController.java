@@ -22,6 +22,7 @@ import org.docear.plugin.pdfutilities.actions.RadioButtonAction;
 import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionController;
 import org.docear.plugin.pdfutilities.listener.DocearNodeDropListener;
 import org.docear.plugin.pdfutilities.listener.DocearNodeMouseMotionListener;
+import org.docear.plugin.pdfutilities.listener.DocearNodeSelectionListener;
 import org.docear.plugin.pdfutilities.pdf.PdfReaderFileFilter;
 import org.docear.plugin.pdfutilities.util.ExeFileFilter;
 import org.freeplane.core.resources.OptionPanelController;
@@ -204,6 +205,8 @@ public class PdfUtilitiesController extends ALanguageController{
 
 			}
 		});
+		
+		this.modecontroller.getMapController().addNodeSelectionListener(new DocearNodeSelectionListener());
 
 	}
 
