@@ -27,12 +27,16 @@ import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.ComboBoxEditor;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.TitledBorder;
 
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.util.TextUtils;
@@ -51,6 +55,15 @@ public class ScriptComboBoxEditor implements ComboBoxEditor {
 
 	public ScriptComboBoxEditor() {
 		showEditorBtn = new JButton();
+		final TitledBorder titledBorder = BorderFactory.createTitledBorder(TextUtils.getText("EditScript"));
+		final Border btnBorder = showEditorBtn.getBorder();
+		if(btnBorder != null){
+		final CompoundBorder compoundBorder = BorderFactory.createCompoundBorder(titledBorder, btnBorder);
+		showEditorBtn.setBorder(compoundBorder);
+		}
+		else{
+			showEditorBtn.setBorder(titledBorder);
+		}
 		showEditorBtn.setHorizontalAlignment(SwingConstants.LEFT);
 		showEditorBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -90,11 +103,16 @@ public class ScriptComboBoxEditor implements ComboBoxEditor {
 		if(result != JOptionPane.OK_OPTION)
 			return;
 		script = textEditor.getText();
-		showEditorBtn.setText(script);
+		setButtonText();
 	    final ActionEvent actionEvent = new ActionEvent(this, 0, null);
 	    for (final ActionListener l : actionListeners) {
 	    	l.actionPerformed(actionEvent);
 	    }
+    }
+
+	protected void setButtonText() {
+	    final String text = script.substring(0, Math.min(40, script.length())).trim().replaceAll("\\s+", " ");
+		showEditorBtn.setText(text);
     }
 
 	public Component getEditorComponent() {
@@ -106,9 +124,9 @@ public class ScriptComboBoxEditor implements ComboBoxEditor {
 		else
 			this.script = (String)anObject;
 		if("".equals(script))
-			showEditorBtn.setText(TextUtils.getText("EditScript"));
+			showEditorBtn.setText(" ");
 		else
-			showEditorBtn.setText(script);
+			setButtonText();
     }
 
 	public Object getItem() {
