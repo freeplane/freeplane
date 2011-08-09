@@ -276,6 +276,7 @@ public class FreeplaneStarter {
 			}
 			final Controller controller = createController();
 			createModeControllers(controller);
+			FilterController.getController(controller).loadDefaultConditions();
 			final Set<String> emptySet = Collections.emptySet();
 			buildMenus(controller, emptySet);
 			createFrame(args);
