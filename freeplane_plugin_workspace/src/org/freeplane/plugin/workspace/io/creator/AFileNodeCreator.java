@@ -14,7 +14,7 @@ import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 
 public abstract class AFileNodeCreator implements IFileTypeHandler {
-	abstract public AWorkspaceNode getNode(String name, File file);
+	abstract public AWorkspaceNode getNode(String name, File file, String extension);
 	private final Vector<Object> typeList = new Vector<Object>();
 	
 	/***********************************************************************************
@@ -66,7 +66,12 @@ public abstract class AFileNodeCreator implements IFileTypeHandler {
 		if (!tree.contains(path.path)) {
 			final DefaultMutableTreeNode treeNode =	tree.addElement(path.parentPath == null ? tree : path.parentPath, this, path.path, IndexedTree.AS_CHILD);			
 			if (treeNode.getUserObject() == this) {
-				final AWorkspaceNode node = getNode(file.getName(), file);
+				int dot = file.getPath().lastIndexOf('.');
+				String fileExt = fileExtension;
+				if(-1 != dot) {
+					fileExt = file.getPath().substring(dot);
+				}
+				final AWorkspaceNode node = getNode(file.getName(), file, fileExt);
 				if(node != null) 
 					treeNode.setUserObject(node);
 				else 

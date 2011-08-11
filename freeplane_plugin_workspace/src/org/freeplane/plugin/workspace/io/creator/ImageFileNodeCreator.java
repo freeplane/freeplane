@@ -35,8 +35,9 @@ public class ImageFileNodeCreator extends AFileNodeCreator {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	
-	public AWorkspaceNode getNode(String name, File file) {
+	public AWorkspaceNode getNode(String name, File file, String fileExtension) {
 		ImageFileNode node = new ImageFileNode(name, file);
+		node.setFileExtension(fileExtension);
 		return node;
 	}
 }

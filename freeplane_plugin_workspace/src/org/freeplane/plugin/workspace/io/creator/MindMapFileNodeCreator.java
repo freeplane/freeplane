@@ -33,8 +33,9 @@ public class MindMapFileNodeCreator extends AFileNodeCreator {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	
-	public AWorkspaceNode getNode(String name, File file) {
+	public AWorkspaceNode getNode(String name, File file, String fileExtension) {
 		MindMapFileNode node = new MindMapFileNode(name, file);
+		node.setFileExtension(fileExtension);
 		return node;
 	}
 	
