@@ -355,10 +355,14 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public static URI toLinkTypeDependantURI(final File map, final File input) {
-		int linkType = getLinkType();
-		if (linkType == LINK_ABSOLUTE) {
+		int type = getLinkType();
+		if (type == LINK_ABSOLUTE) {
 			return input.getAbsoluteFile().toURI();
 		}
+		return toRelativeURI(map, input, type);
+	}
+	
+	public static URI toLinkTypeDependantURI(final File map, final File input, final int linkType) {
 		return toRelativeURI(map, input, linkType);
 	}
 	

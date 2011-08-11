@@ -18,6 +18,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.plugin.workspace.config.node.FilesystemFolderNode;
 import org.freeplane.plugin.workspace.config.node.FilesystemLinkNode;
@@ -76,7 +77,7 @@ public class WorkspaceUtils {
 				
 		if(path!=null) {
 			LogUtils.info("FilesystemPath: "+path);
-			node.setFolderPath(MLinkController.toLinkTypeDependantURI(getWorkspaceBaseFile(), path));
+			node.setFolderPath(MLinkController.toLinkTypeDependantURI(getWorkspaceBaseFile(), path, LinkController.LINK_RELATIVE_TO_WORKSPACE));
 		}
 
 		Object key = tree.getKeyByUserObject(targetNode.getUserObject());
@@ -109,7 +110,7 @@ public class WorkspaceUtils {
 				
 		if(path!=null) {
 			LogUtils.info("FilesystemPath: "+path);			
-			node.setLinkPath(MLinkController.toLinkTypeDependantURI(getWorkspaceBaseFile(), path));
+			node.setLinkPath(MLinkController.toLinkTypeDependantURI(getWorkspaceBaseFile(), path, LinkController.LINK_RELATIVE_TO_WORKSPACE));
 		}
 
 		Object key = tree.getKeyByUserObject(targetNode.getUserObject());

@@ -62,7 +62,8 @@ public class DefaultWorkspaceDropHandler implements IWorkspaceDragnDropControlle
 						}
 						else {
 							WorkspaceUtils.createFilesystemLinkNode(file, targetNode);
-						}					
+						}
+						WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();
 					}					
 				}				
 				event.getDropTargetContext().dropComplete(true);
