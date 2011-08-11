@@ -169,7 +169,6 @@ public class Compat {
 		if(userFpDir == null){						
 			userFpDir = System.getProperty("user.home")+ File.separator + "." + applicationName;			
 		}
-		System.out.println("UserDir: " + userFpDir);
 		if(PREVIEW_DIR != null)
 			return userFpDir + PREVIEW_DIR;
 		return userFpDir;

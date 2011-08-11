@@ -15,6 +15,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.config.actions.AddExistingFilesystemFolderAction;
 import org.freeplane.plugin.workspace.config.actions.AddNewFilesystemFolderAction;
+import org.freeplane.plugin.workspace.config.actions.FileNodeAddNewMindmapAction;
 import org.freeplane.plugin.workspace.config.actions.FileNodeCopyAction;
 import org.freeplane.plugin.workspace.config.actions.FileNodeCutAction;
 import org.freeplane.plugin.workspace.config.actions.FileNodeDeleteAction;
@@ -51,6 +52,7 @@ public class PopupMenus {
 	private void registerWorkspaceActions() {
 		Controller.getCurrentModeController().addAction(new WorkspaceCollapseAction());
 		Controller.getCurrentModeController().addAction(new WorkspaceSetLocationAction());
+		Controller.getCurrentModeController().addAction(new FileNodeAddNewMindmapAction());
 		Controller.getCurrentModeController().addAction(new FileNodeCutAction());
 		Controller.getCurrentModeController().addAction(new WorkspaceHideAction());
 		Controller.getCurrentModeController().addAction(new FileNodeRenameAction());

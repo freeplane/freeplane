@@ -306,6 +306,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	}
 
 	public void err(final String msg) {
+		System.out.println(msg);
 		status.setText(msg);
 	}
 

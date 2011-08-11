@@ -102,5 +102,6 @@ Export-Package: com.jgoodies.forms.builder,
  org.freeplane.view.swing.map.link,
  org.freeplane.view.swing.map.mindmapmode,
  org.freeplane.view.swing.ui,
- org.freeplane.view.swing.ui.mindmapmode
+ org.freeplane.view.swing.ui.mindmapmode,
+ org.osgi.service.url
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

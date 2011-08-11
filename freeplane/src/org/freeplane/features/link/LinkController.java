@@ -373,15 +373,9 @@ public class LinkController extends SelectionController implements IExtension {
 			
 			if (linkType == LINK_RELATIVE_TO_WORKSPACE) {
 				URI workspaceLocation;			
-				try {
-					workspaceLocation = new URI(ResourceController.getResourceController().getProperty("workspace_location")+File.separator);
-					System.out.println("debug workspace-location: "+workspaceLocation);
-					mapUri = workspaceLocation;
-				}
-				catch (URISyntaxException e1) {
-					e1.printStackTrace();
-					//TODO: DOCEAR: workspace not activated --> show error to user and set link_types to "relative"
-				}				
+				workspaceLocation = new File(ResourceController.getResourceController().getProperty("workspace_location")+File.separator).toURI();
+				System.out.println("debug workspace-location: "+workspaceLocation);
+				mapUri = workspaceLocation;				
 			}
 			final String filePathAsString = fileUri.getRawPath();
 			final String mapPathAsString = mapUri.getRawPath();
@@ -406,6 +400,10 @@ public class LinkController extends SelectionController implements IExtension {
 				}
 			}
 			relativePath.append(filePathAsString.substring(lastCommonSeparatorPos + 1));
+			
+			if (linkType == LINK_RELATIVE_TO_WORKSPACE) {
+				return new URI("workspace", null, "/"+relativePath.toString(), null);
+			}
 			return new URI(relativePath.toString());
 		}
 		catch (final URISyntaxException e) {

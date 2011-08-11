@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Hashtable;
 import java.util.Properties;
 
 import javax.swing.JPanel;
@@ -27,6 +28,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.ViewController;
+import org.freeplane.main.osgi.ResourcesUrlHandler;
 import org.freeplane.plugin.workspace.config.PopupMenus;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
@@ -38,8 +40,13 @@ import org.freeplane.plugin.workspace.io.FilesystemReader;
 import org.freeplane.plugin.workspace.io.creator.AFileNodeCreator;
 import org.freeplane.plugin.workspace.io.xml.ConfigurationWriter;
 import org.freeplane.plugin.workspace.view.TreeView;
+import org.osgi.framework.BundleContext;
+import org.osgi.service.url.URLConstants;
+import org.osgi.service.url.URLStreamHandlerService;
 
 public class WorkspaceController implements ComponentListener, MouseListener, IFreeplanePropertyListener, IWorkspaceDragController {
+	public static final String WORKSPACE_RESOURCE_URL_PROTOCOL = "workspace";
+	
 	private WorkspaceConfiguration config;
 	private static WorkspaceController currentWorkspace;
 	private TreeView view;
@@ -52,7 +59,7 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 	private ConfigurationWriter configWriter;
 	private final PopupMenus popups;
 	private WorkspaceTransferHandler transferHandler;
-	private IndexedTree tree;
+	private IndexedTree tree;	
 	
 	private String workspaceLocation;
 
@@ -61,6 +68,7 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 	 **********************************************************************************/
 
 	public WorkspaceController() {
+		
 		currentWorkspace = this;
 		LogUtils.info("Initializing WorkspaceEnvironment");	
 		initTree();
@@ -78,7 +86,7 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 	private void initTree() {
 		this.tree = new IndexedTree(null);
 	}
-
+	
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
