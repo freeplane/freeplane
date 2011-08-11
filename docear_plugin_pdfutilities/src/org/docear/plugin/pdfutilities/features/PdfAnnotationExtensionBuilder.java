@@ -18,6 +18,8 @@ public class PdfAnnotationExtensionBuilder implements IElementDOMHandler, IExten
 	
 	private static final String ANNOTATION_PAGE_XML_TAG = "page";
 	private static final String ANNOTATION_TYPE_XML_TAG = "type";
+	private static final String ANNOTATION_OBJECT_NUMBER_XML_TAG = "object_number";
+	private static final String ANNOTATION_GENERATION_NUMBER_XML_TAG = "generation_number";
 	private static final String PDF_ANNOTATION_XML_TAG = "pdf_annotation";
 	
 	
@@ -46,6 +48,32 @@ public class PdfAnnotationExtensionBuilder implements IElementDOMHandler, IExten
 				final PdfAnnotationExtensionModel annotationModel = (PdfAnnotationExtensionModel) node;
 				try{
 					annotationModel.setPage(Integer.parseInt(value));
+				} catch(NumberFormatException e){
+					LogUtils.warn("Could not Parse Pdf Annotation Page Number.");
+				}
+			}
+			
+		});
+		
+		reader.addAttributeHandler(PDF_ANNOTATION_XML_TAG, ANNOTATION_OBJECT_NUMBER_XML_TAG, new IAttributeHandler() {
+			
+			public void setAttribute(Object node, String value) {
+				final PdfAnnotationExtensionModel annotationModel = (PdfAnnotationExtensionModel) node;
+				try{
+					annotationModel.setObjectNumber(Integer.parseInt(value));
+				} catch(NumberFormatException e){
+					LogUtils.warn("Could not Parse Pdf Annotation Page Number.");
+				}
+			}
+			
+		});
+		
+		reader.addAttributeHandler(PDF_ANNOTATION_XML_TAG, ANNOTATION_GENERATION_NUMBER_XML_TAG, new IAttributeHandler() {
+			
+			public void setAttribute(Object node, String value) {
+				final PdfAnnotationExtensionModel annotationModel = (PdfAnnotationExtensionModel) node;
+				try{
+					annotationModel.setGenerationNumber(Integer.parseInt(value));
 				} catch(NumberFormatException e){
 					LogUtils.warn("Could not Parse Pdf Annotation Page Number.");
 				}
@@ -99,6 +127,16 @@ public class PdfAnnotationExtensionBuilder implements IElementDOMHandler, IExten
 		final Integer page = model.getPage();
 		if (page != null) {
 			pdfAnnotation.setAttribute(ANNOTATION_PAGE_XML_TAG, "" + page);
+		}
+		
+		final Integer objectNumber = model.getObjectNumber();
+		if (objectNumber != null) {
+			pdfAnnotation.setAttribute(ANNOTATION_OBJECT_NUMBER_XML_TAG, "" + objectNumber);
+		}
+		
+		final Integer generationNumber = model.getGenerationNumber();
+		if (generationNumber != null) {
+			pdfAnnotation.setAttribute(ANNOTATION_GENERATION_NUMBER_XML_TAG, "" + generationNumber);
 		}
 		
 		writer.addElement(model, pdfAnnotation);

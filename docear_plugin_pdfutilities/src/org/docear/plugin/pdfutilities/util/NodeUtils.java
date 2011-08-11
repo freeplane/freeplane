@@ -10,7 +10,6 @@ import java.util.Map;
 
 import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel;
 import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel.AnnotationType;
-import org.docear.plugin.pdfutilities.pdf.PdfAnnotation;
 import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
@@ -57,7 +56,7 @@ public class NodeUtils {
 		return result;
 	}
 	
-	public NodeModel insertChildNodesFromPdf(URI uri, List<PdfAnnotation> annotations, boolean isLeft, NodeModel target){
+	public NodeModel insertChildNodesFromPdf(URI uri, List<PdfAnnotationExtensionModel> annotations, boolean isLeft, NodeModel target){
 		File file = Tools.getFilefromUri(uri);
 		if(file == null){
 			return null;
@@ -67,16 +66,16 @@ public class NodeUtils {
 		}
 	}
 	
-	public NodeModel insertChildNodesFromPdf(File pdfFile, List<PdfAnnotation> annotations, boolean isLeft, NodeModel target){
+	public NodeModel insertChildNodesFromPdf(File pdfFile, List<PdfAnnotationExtensionModel> annotations, boolean isLeft, NodeModel target){
 		NodeModel node = this.insertChildNodeFrom(pdfFile, isLeft, target, AnnotationType.PDF_FILE);
 		this.insertChildNodesFrom(annotations, isLeft, node);
 		return node;
 	}
 	
-	public List<NodeModel> insertChildNodesFrom(List<PdfAnnotation> annotations, boolean isLeft, NodeModel target){
+	public List<NodeModel> insertChildNodesFrom(List<PdfAnnotationExtensionModel> annotations, boolean isLeft, NodeModel target){
 		List<NodeModel> nodes = new ArrayList<NodeModel>();
 		
-		for(PdfAnnotation annotation : annotations){
+		for(PdfAnnotationExtensionModel annotation : annotations){
 			NodeModel node = this.insertChildNodeFrom(annotation.getFile(), annotation, isLeft, target);
 			this.insertChildNodesFrom(annotation.getChildren(), isLeft, node);
 			nodes.add(node);
@@ -98,12 +97,10 @@ public class NodeUtils {
 		return this.insertChildNodeFrom(node, isLeft, target);
 	}
 	
-	public NodeModel insertChildNodeFrom(File file, PdfAnnotation annotation, boolean isLeft, NodeModel target){		
+	public NodeModel insertChildNodeFrom(File file, PdfAnnotationExtensionModel annotation, boolean isLeft, NodeModel target){		
 		final NodeModel node = this.currentMapController.newNode(annotation.getTitle(), target.getMap());
-		PdfAnnotationExtensionModel model = new PdfAnnotationExtensionModel();
-		model.setAnnotationType(annotation.getAnnotationType());
-		model.setPage(annotation.getPage());
-		PdfAnnotationExtensionModel.setModel(node, model);
+		
+		PdfAnnotationExtensionModel.setModel(node, annotation);
 		
 		return insertChildNodeFrom(node, isLeft, target);
 	}
@@ -126,10 +123,10 @@ public class NodeUtils {
         return new PdfFileFilter().accept(link);
     }
 
-	public List<NodeModel> insertNewChildNodesFrom(Collection<PdfAnnotation> annotations, boolean isLeft, NodeModel target) {
+	public List<NodeModel> insertNewChildNodesFrom(Collection<PdfAnnotationExtensionModel> annotations, boolean isLeft, NodeModel target) {
 		List<NodeModel> nodes = new ArrayList<NodeModel>();
 		
-		for(PdfAnnotation annotation : annotations){
+		for(PdfAnnotationExtensionModel annotation : annotations){
 			if(annotation.isNew() || annotation.hasNewChildren()){
 				NodeModel equalChild = targetHasEqualChild(target, annotation);
 				if(equalChild == null){
@@ -148,7 +145,7 @@ public class NodeUtils {
 		return nodes;
 	}
 	
-	public NodeModel targetHasEqualChild(NodeModel target, PdfAnnotation annotation){
+	public NodeModel targetHasEqualChild(NodeModel target, PdfAnnotationExtensionModel annotation){
 		for(NodeModel child : target.getChildren()){
 			URI uri = NodeLinks.getLink(child);
 			uri = Tools.getAbsoluteUri(uri);

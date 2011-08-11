@@ -163,8 +163,11 @@ public class Compat {
 		if(applicationName.equalsIgnoreCase("freeplane")){
 			userFpDir = System.getProperty("org.freeplane.userfpdir");
 		}
+		else if(System.getProperty("org.freeplane.userfpdir") != null && System.getProperty("org.freeplane.userfpdir").endsWith("Data")){
+			userFpDir = System.getProperty("org.freeplane.userfpdir") + File.separator + freeplaneProperties.getProperty("ApplicationName", "Freeplane");
+		}
 		else if(System.getenv("APPDATA") != null && System.getenv("APPDATA").length() > 0){			
-			userFpDir = System.getenv("APPDATA") + File.separator + freeplaneProperties.getProperty("ApplicationName", "freeplane");
+			userFpDir = System.getenv("APPDATA") + File.separator + freeplaneProperties.getProperty("ApplicationName", "Freeplane");
 		}
 		if(userFpDir == null){						
 			userFpDir = System.getProperty("user.home")+ File.separator + "." + applicationName;			

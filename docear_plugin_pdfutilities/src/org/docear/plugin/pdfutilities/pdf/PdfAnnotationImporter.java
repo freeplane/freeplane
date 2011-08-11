@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
+import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel;
 import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel.AnnotationType;
 import org.docear.plugin.pdfutilities.util.Tools;
 import org.freeplane.core.resources.ResourceController;
@@ -47,8 +48,8 @@ public class PdfAnnotationImporter {
 	private boolean importAll = false;
 	
 	
-	public Map<File, List<PdfAnnotation>> importAnnotations(List<File> files) throws IOException, COSLoadException, COSRuntimeException{
-		Map<File, List<PdfAnnotation>> annotationMap = new HashMap<File, List<PdfAnnotation>>();
+	public Map<File, List<PdfAnnotationExtensionModel>> importAnnotations(List<File> files) throws IOException, COSLoadException, COSRuntimeException{
+		Map<File, List<PdfAnnotationExtensionModel>> annotationMap = new HashMap<File, List<PdfAnnotationExtensionModel>>();
 		
 		for(File file : files){
 			annotationMap.put(file, this.importAnnotations(file));
@@ -57,18 +58,18 @@ public class PdfAnnotationImporter {
 		return annotationMap;
 	}
 	
-	public List<PdfAnnotation> importAnnotations(URI uri) throws IOException, COSLoadException{
+	public List<PdfAnnotationExtensionModel> importAnnotations(URI uri) throws IOException, COSLoadException{
 		File file = Tools.getFilefromUri(uri);
 		if(file == null){
-			return new ArrayList<PdfAnnotation>();
+			return new ArrayList<PdfAnnotationExtensionModel>();
 		}
 		else{
 			return this.importAnnotations(file);
 		}
 	}
 	
-	public List<PdfAnnotation> importAnnotations(File file) throws IOException, COSLoadException{
-		List<PdfAnnotation> annotations = new ArrayList<PdfAnnotation>();
+	public List<PdfAnnotationExtensionModel> importAnnotations(File file) throws IOException, COSLoadException{
+		List<PdfAnnotationExtensionModel> annotations = new ArrayList<PdfAnnotationExtensionModel>();
 		
 		this.currentFile = file;
 		PDDocument document = getPDDocument(file);
@@ -99,20 +100,24 @@ public class PdfAnnotationImporter {
 		return document;
 	}
 	
-	private List<PdfAnnotation> importBookmarks(PDOutlineNode parent) throws IOException, COSLoadException, COSRuntimeException{
-		List<PdfAnnotation> annotations = new ArrayList<PdfAnnotation>();
-		if(!ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.IMPORT_BOOKMARKS_KEY)){
+	private List<PdfAnnotationExtensionModel> importBookmarks(PDOutlineNode parent) throws IOException, COSLoadException, COSRuntimeException{
+		List<PdfAnnotationExtensionModel> annotations = new ArrayList<PdfAnnotationExtensionModel>();
+		
+		if(!this.importAll && !ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.IMPORT_BOOKMARKS_KEY)){
 			return annotations;
 		}
 		if(parent == null) return annotations;
 		@SuppressWarnings("unchecked")
 		List<PDOutlineItem> children = parent.getChildren();
 		for(PDOutlineItem child : children){
-			PdfAnnotation annotation = new PdfAnnotation();
+			PdfAnnotationExtensionModel annotation = new PdfAnnotationExtensionModel();
 			annotation.setFile(currentFile);
 			annotation.setTitle(child.getTitle());			
 			annotation.setAnnotationType(getAnnotationType(child));
+			annotation.setObjectNumber(child.cosGetObject().getIndirectObject().getObjectNumber());
+			annotation.setGenerationNumber(child.cosGetObject().getIndirectObject().getGenerationNumber());
 			annotation.getChildren().addAll(this.importBookmarks(child));
+			
 			
 			if(annotation.getAnnotationType() == AnnotationType.BOOKMARK_WITH_URI){
 				annotation.setDestinationUri(this.getAnnotationDestinationUri(child));
@@ -157,17 +162,26 @@ public class PdfAnnotationImporter {
 		return AnnotationType.BOOKMARK;
 	}
 
-	private List<PdfAnnotation> importAnnotations(PDDocument document){
-		List<PdfAnnotation> annotations = new ArrayList<PdfAnnotation>();
-		boolean importComments = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.IMPORT_COMMENTS_KEY);
-		boolean importHighlightedTexts = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.IMPORT_HIGHLIGHTED_TEXTS_KEY);
+	private List<PdfAnnotationExtensionModel> importAnnotations(PDDocument document){
+		List<PdfAnnotationExtensionModel> annotations = new ArrayList<PdfAnnotationExtensionModel>();
+		boolean importComments = false;
+		boolean importHighlightedTexts = false;
+		if(this.importAll){
+			importComments = true;
+			importHighlightedTexts = true;
+		}
+		else{
+			importComments = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.IMPORT_COMMENTS_KEY);
+			importHighlightedTexts = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.IMPORT_HIGHLIGHTED_TEXTS_KEY);
+		}
+		
 		String lastString = "";
 		
 		@SuppressWarnings("unchecked")
 		List<PDAnnotation> pdAnnotations = document.getAnnotations();
 		for(PDAnnotation annotation : pdAnnotations){
-			// Avoid empty entries
-            if(annotation.getContents().equals("")) continue;
+			// Avoid empty entries			
+            if(annotation.getContents().equals("") /*&& !annotation.isMarkupAnnotation()*/) continue;
             // Avoid double entries (Foxit Reader)
             if(annotation.getContents().equals(lastString)) continue;
             lastString = annotation.getContents();
@@ -183,19 +197,29 @@ public class PdfAnnotationImporter {
                    anno_rec.getUpperRightX() < page_rec.getLowerLeftX() ||
                    anno_rec.getUpperRightY() < page_rec.getLowerLeftY())  continue;
             }
-            if((annotation.getClass() == PDAnyAnnotation.class || annotation.getClass() == PDTextAnnotation.class) && (importComments || this.importAll)){
-            	PdfAnnotation pdfAnnotation = new PdfAnnotation();
+            if((annotation.getClass() == PDAnyAnnotation.class || annotation.getClass() == PDTextAnnotation.class) && importComments){
+            	PdfAnnotationExtensionModel pdfAnnotation = new PdfAnnotationExtensionModel();
             	pdfAnnotation.setFile(currentFile);
             	pdfAnnotation.setTitle(annotation.getContents());            	
             	pdfAnnotation.setAnnotationType(AnnotationType.COMMENT);
+            	pdfAnnotation.setObjectNumber(annotation.cosGetObject().getIndirectObject().getObjectNumber());
+            	pdfAnnotation.setGenerationNumber(annotation.cosGetObject().getIndirectObject().getGenerationNumber());
             	pdfAnnotation.setPage(this.getAnnotationDestination(annotation));
     			annotations.add(pdfAnnotation);
             }
-            if((annotation.getClass() == PDTextMarkupAnnotation.class || annotation.getClass() == PDHighlightAnnotation.class) && (importHighlightedTexts || this.importAll)){
-            	PdfAnnotation pdfAnnotation = new PdfAnnotation();
+            if((annotation.getClass() == PDTextMarkupAnnotation.class || annotation.getClass() == PDHighlightAnnotation.class) && importHighlightedTexts){
+            	PdfAnnotationExtensionModel pdfAnnotation = new PdfAnnotationExtensionModel();
             	pdfAnnotation.setFile(currentFile);
-            	pdfAnnotation.setTitle(annotation.getContents());           	
+            	if(annotation.getContents() != null && annotation.getContents().length() > 0){
+            		pdfAnnotation.setTitle(annotation.getContents()); 
+            	}
+            	/*else{
+            		String test = ((PDMarkupAnnotation)annotation).getRichContent();
+            		System.out.println(test);
+            	}  */          	          	
             	pdfAnnotation.setAnnotationType(AnnotationType.HIGHLIGHTED_TEXT); 
+            	pdfAnnotation.setObjectNumber(annotation.cosGetObject().getIndirectObject().getObjectNumber());
+            	pdfAnnotation.setGenerationNumber(annotation.cosGetObject().getIndirectObject().getGenerationNumber());
             	pdfAnnotation.setPage(this.getAnnotationDestination(annotation));
     			annotations.add(pdfAnnotation);
             }
@@ -307,23 +331,23 @@ public class PdfAnnotationImporter {
 	    return null;
 	}	
 
-	public PdfAnnotation searchAnnotation(File file, String annotationTitle) throws IOException, COSLoadException, COSRuntimeException {
+	public PdfAnnotationExtensionModel searchAnnotation(File file, String annotationTitle) throws IOException, COSLoadException, COSRuntimeException {
 		this.currentFile = file;
 		if(!this.isImportAll()) this.setImportAll(true);
-		List<PdfAnnotation> annotations = this.importAnnotations(file);
+		List<PdfAnnotationExtensionModel> annotations = this.importAnnotations(file);
 		this.setImportAll(false);
 		return searchAnnotation(annotations, annotationTitle);        
    }
 	
-	public PdfAnnotation searchAnnotation(List<PdfAnnotation> annotations, String annotationTitle) {
-		for(PdfAnnotation annotation : annotations){
+	public PdfAnnotationExtensionModel searchAnnotation(List<PdfAnnotationExtensionModel> annotations, String annotationTitle) {
+		for(PdfAnnotationExtensionModel annotation : annotations){
            String title = annotation.getTitle();
            System.out.println(title);
            if(annotation.getTitle().equals(annotationTitle)){
                return annotation;
            }
            else{
-        	   PdfAnnotation searchResult = searchAnnotation(annotation.getChildren(), annotationTitle);
+        	   PdfAnnotationExtensionModel searchResult = searchAnnotation(annotation.getChildren(), annotationTitle);
                if(searchResult != null) return searchResult;
            }
        }
