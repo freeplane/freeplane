@@ -694,17 +694,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			node = targetNode;
 		}
 		final ExternalResource preview = new ExternalResource();
-		String s = "";
-		s += uri.getPath();
-		File f = new File(new String(s));
 		
-		try {
-			System.out.println("DOCEAR URI: "+uri.toURL()+" exists: "+f.exists());
-		}
-		catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		preview.setUri(uri);
 		undoableDeactivateHook(node);
 		undoableActivateHook(node, preview);

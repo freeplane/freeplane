@@ -79,17 +79,17 @@ import org.freeplane.features.url.UrlManager;
  * @author Dimitry Polivaev
  */
 
-
 public class LinkController extends SelectionController implements IExtension {
 	public final static int LINK_ABSOLUTE = 0;
 	public final static int LINK_RELATIVE_TO_MINDMAP = 1;
 	public final static int LINK_RELATIVE_TO_WORKSPACE = 2;
-	
+
 	private final static String LINK_ABSOLUTE_PROPERTY = "absolute";
 	private final static String LINK_RELATIVE_TO_MINDMAP_PROPERTY = "relative";
 	private final static String LINK_RELATIVE_TO_WORKSPACE_PROPERTY = "relative_to_workspace";
-	
+
 	public static final String MENUITEM_SCHEME = "menuitem";
+
 	public static LinkController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		return getController(modeController);
@@ -98,12 +98,13 @@ public class LinkController extends SelectionController implements IExtension {
 	public static LinkController getController(ModeController modeController) {
 		return (LinkController) modeController.getExtension(LinkController.class);
 	}
+
 	public static void install() {
-		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(3,
-		    new LinkConditionController());
+		FilterController.getCurrentFilterController().getConditionFactory()
+				.addConditionController(3, new LinkConditionController());
 	}
 
-	public static void install( final LinkController linkController) {
+	public static void install(final LinkController linkController) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(LinkController.class, linkController);
 		final INodeSelectionListener listener = new INodeSelectionListener() {
@@ -123,13 +124,12 @@ public class LinkController extends SelectionController implements IExtension {
 
 	public static final String LINK_ICON = ResourceController.getResourceController().getProperty("link_icon");
 	private static final String MAIL_ICON = ResourceController.getResourceController().getProperty("mail_icon");
-	public static final String LINK_LOCAL_ICON = ResourceController.getResourceController().getProperty(
-	"link_local_icon");
+	public static final String LINK_LOCAL_ICON = ResourceController.getResourceController().getProperty("link_local_icon");
 
-// 	final private ModeController modeController;
+	// final private ModeController modeController;
 
 	public LinkController() {
-//		this.modeController = modeController;
+		// this.modeController = modeController;
 		createActions();
 		final ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
@@ -145,38 +145,38 @@ public class LinkController extends SelectionController implements IExtension {
 		final IMapSelection selection = Controller.getCurrentModeController().getController().getSelection();
 		if (!selection.isSelected(source)) {
 			GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(this, source);
-            addAction(arrowLinkPopup, gotoLinkNodeAction);
+			addAction(arrowLinkPopup, gotoLinkNodeAction);
 		}
 	}
 
-    protected void addPopupComponent(final JComponent arrowLinkPopup, final String label, final JComponent component) {
-        final JComponent componentBox;
-        if(label != null){
-            componentBox = Box.createHorizontalBox(); 
-            componentBox.add(Box.createHorizontalStrut(10));
-            final JLabel jlabel = new JLabel(label);
-            componentBox.add(jlabel);
-            componentBox.add(Box.createHorizontalStrut(10));
-            componentBox.add(component);
-        }
-        else
-            componentBox = component;
-        componentBox.setAlignmentX(JComponent.LEFT_ALIGNMENT);
-        componentBox.setMinimumSize(new Dimension());
-        componentBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
-        arrowLinkPopup.add(componentBox);
-    }
+	protected void addPopupComponent(final JComponent arrowLinkPopup, final String label, final JComponent component) {
+		final JComponent componentBox;
+		if (label != null) {
+			componentBox = Box.createHorizontalBox();
+			componentBox.add(Box.createHorizontalStrut(10));
+			final JLabel jlabel = new JLabel(label);
+			componentBox.add(jlabel);
+			componentBox.add(Box.createHorizontalStrut(10));
+			componentBox.add(component);
+		}
+		else
+			componentBox = component;
+		componentBox.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+		componentBox.setMinimumSize(new Dimension());
+		componentBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+		arrowLinkPopup.add(componentBox);
+	}
 
-    protected void addAction(final JComponent arrowLinkPopup, Action action) {
-        JButton comp = new JButton(action);
-        comp.setHorizontalAlignment(JButton.LEFT);
-        comp.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.getWindowAncestor(arrowLinkPopup).setVisible(false);
-            }
-        });
-        addPopupComponent (arrowLinkPopup, null, comp);
-    }
+	protected void addAction(final JComponent arrowLinkPopup, Action action) {
+		JButton comp = new JButton(action);
+		comp.setHorizontalAlignment(JButton.LEFT);
+		comp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SwingUtilities.getWindowAncestor(arrowLinkPopup).setVisible(false);
+			}
+		});
+		addPopupComponent(arrowLinkPopup, null, comp);
+	}
 
 	/**
 	 *
@@ -186,30 +186,32 @@ public class LinkController extends SelectionController implements IExtension {
 		modeController.addAction(new FollowLinkAction());
 	}
 
-    @SuppressWarnings("serial")
-    public static final class ClosePopupAction extends AbstractAction {
-        final private String reason;
-    
-        public ClosePopupAction(String reason) {
-            this.reason = reason;
-        }
-    
-        public void actionPerformed(ActionEvent e) {
-            JComponent src = (JComponent) e.getSource();
-            src.putClientProperty(reason, Boolean.TRUE);
-            SwingUtilities.getWindowAncestor(src).setVisible(false);
-        }
-    }
+	@SuppressWarnings("serial")
+	public static final class ClosePopupAction extends AbstractAction {
+		final private String reason;
+
+		public ClosePopupAction(String reason) {
+			this.reason = reason;
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			JComponent src = (JComponent) e.getSource();
+			src.putClientProperty(reason, Boolean.TRUE);
+			SwingUtilities.getWindowAncestor(src).setVisible(false);
+		}
+	}
 
 	protected static final String CANCEL = "CANCEL";
 	protected static final String CLOSE = "CLOSE";
+
 	protected void createArrowLinkPopup(final ConnectorModel link, final JComponent arrowLinkPopup) {
-		
+
 		final InputMap inputMap = arrowLinkPopup.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		final ActionMap actionMap = arrowLinkPopup.getActionMap();
 		inputMap.put(KeyStroke.getKeyStroke("ESCAPE"), CANCEL);
 		actionMap.put(CANCEL, new ClosePopupAction(CANCEL));
-		final boolean enterConfirms = ResourceController.getResourceController().getBooleanProperty("el__enter_confirms_by_default");
+		final boolean enterConfirms = ResourceController.getResourceController().getBooleanProperty(
+				"el__enter_confirms_by_default");
 		final KeyStroke close = KeyStroke.getKeyStroke(enterConfirms ? "ENTER" : "alt ENTER");
 		inputMap.put(close, CLOSE);
 		actionMap.put(CLOSE, new ClosePopupAction(CLOSE));
@@ -279,7 +281,7 @@ public class LinkController extends SelectionController implements IExtension {
 	private static final String RESOURCES_CONNECTOR_SHAPE = "connector_shape";
 	private static final String RESOURCES_CONNECTOR_COLOR_ALPHA = "connector_alpha";
 	private static final String RESOURCES_CONNECTOR_WIDTH = "connector_width";
-	
+
 	public int getWidth(final ConnectorModel model) {
 		return model.getWidth();
 	}
@@ -340,7 +342,7 @@ public class LinkController extends SelectionController implements IExtension {
 		ModeController modeController = Controller.getCurrentModeController();
 		return (UrlManager) modeController.getExtension(UrlManager.class);
 	}
-	
+
 	public static int getLinkType() {
 		String linkTypeProperty = ResourceController.getResourceController().getProperty("links");
 		if (linkTypeProperty.equals(LINK_RELATIVE_TO_MINDMAP_PROPERTY)) {
@@ -351,7 +353,7 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 		return LINK_ABSOLUTE;
 	}
-	
+
 	public static URI toLinkTypeDependantURI(final File map, final File input) {
 		int linkType = getLinkType();
 		if (linkType == LINK_ABSOLUTE) {
@@ -359,7 +361,7 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 		return toRelativeURI(map, input, linkType);
 	}
-	
+
 	public static URI toRelativeURI(final File map, final File input, final int linkType) {
 		if (linkType == LINK_ABSOLUTE) {
 			return null;
@@ -370,12 +372,12 @@ public class LinkController extends SelectionController implements IExtension {
 				return fileUri;
 			}
 			URI mapUri = map.getAbsoluteFile().toURI();
-			
+
 			if (linkType == LINK_RELATIVE_TO_WORKSPACE) {
-				URI workspaceLocation;			
-				workspaceLocation = new File(ResourceController.getResourceController().getProperty("workspace_location")+File.separator).toURI();
-				System.out.println("debug workspace-location: "+workspaceLocation);
-				mapUri = workspaceLocation;				
+				URI workspaceLocation;
+				workspaceLocation = new File(ResourceController.getResourceController().getProperty("workspace_location")
+						+ File.separator).getAbsoluteFile().toURI();				
+				mapUri = workspaceLocation;
 			}
 			final String filePathAsString = fileUri.getRawPath();
 			final String mapPathAsString = mapUri.getRawPath();
@@ -384,8 +386,8 @@ public class LinkController extends SelectionController implements IExtension {
 			final int lastIndexOfSeparatorInFilePath = filePathAsString.lastIndexOf("/");
 			int lastCommonSeparatorPos = 0;
 			for (differencePos = 1; differencePos <= lastIndexOfSeparatorInMapPath
-			        && differencePos <= lastIndexOfSeparatorInFilePath
-			        && filePathAsString.charAt(differencePos) == mapPathAsString.charAt(differencePos); differencePos++) {
+					&& differencePos <= lastIndexOfSeparatorInFilePath
+					&& filePathAsString.charAt(differencePos) == mapPathAsString.charAt(differencePos); differencePos++) {
 				if (filePathAsString.charAt(differencePos) == '/') {
 					lastCommonSeparatorPos = differencePos;
 				}
@@ -400,9 +402,9 @@ public class LinkController extends SelectionController implements IExtension {
 				}
 			}
 			relativePath.append(filePathAsString.substring(lastCommonSeparatorPos + 1));
-			
+
 			if (linkType == LINK_RELATIVE_TO_WORKSPACE) {
-				return new URI("workspace", null, "/"+relativePath.toString(), null);
+				return new URI(ResourceController.FREEPLANE_WORKSPACE_URL_PROTOCOL+":/"+relativePath.toString());
 			}
 			return new URI(relativePath.toString());
 		}
@@ -414,24 +416,25 @@ public class LinkController extends SelectionController implements IExtension {
 
 	// patterns only need to be compiled once
 	static Pattern patSMB = Pattern.compile( // \\host\path[#fragement]
-	    "(?:\\\\\\\\([^\\\\]+)\\\\)(.*?)(?:#([^#]*))?");
+			"(?:\\\\\\\\([^\\\\]+)\\\\)(.*?)(?:#([^#]*))?");
 	static Pattern patFile = Pattern.compile( // [drive:]path[#fragment]
-	    "((?:\\p{Alpha}:)?([/\\\\])?(?:[^:#?]*))?(?:#([^#]*))?");
+			"((?:\\p{Alpha}:)?([/\\\\])?(?:[^:#?]*))?(?:#([^#]*))?");
 	static Pattern patURI = Pattern.compile( // [scheme:]scheme-specific-part[#fragment]
-	    "(?:(\\p{Alpha}[\\p{Alnum}+.-]+):)?(.*?)(?:#([^#]*))?");
+			"(?:(\\p{Alpha}[\\p{Alnum}+.-]+):)?(.*?)(?:#([^#]*))?");
 
-	/* Function that tries to transform a not necessarily well-formed
-	 * string into a valid URI. We use the fact that the single-argument
-	 * URI constructor doesn't escape invalid characters (especially
-	 * spaces), whereas the 3-argument constructors does do escape
-	 * them (e.g. space into %20).
+	/*
+	 * Function that tries to transform a not necessarily well-formed string
+	 * into a valid URI. We use the fact that the single-argument URI
+	 * constructor doesn't escape invalid characters (especially spaces),
+	 * whereas the 3-argument constructors does do escape them (e.g. space into
+	 * %20).
 	 */
 	public static URI createURI(final String inputValue) throws URISyntaxException {
 		try { // first, we try if the string can be interpreted as URI
 			return new URI(inputValue);
 		}
 		catch (final URISyntaxException e) {
-			// [scheme:]scheme-specific-part[#fragment] 
+			// [scheme:]scheme-specific-part[#fragment]
 			// we check first if the string matches an SMB
 			// of the form \\host\path[#fragment]
 			{
@@ -506,13 +509,16 @@ public class LinkController extends SelectionController implements IExtension {
 		return null;
 	}
 
-	/** 
+	/**
 	 * the syntax of menu item URIs is
+	 * 
 	 * <pre>
 	 *   "menuitem" + ":" + "_" + <menuItemKey>
 	 * </pre>
-	 * Compared to <code>mailto:abc@somewhere.com</code> a "_" is added to prevent the rest being parsed
-	 * as a regular path. (Menu item keys start with "/").
+	 * 
+	 * Compared to <code>mailto:abc@somewhere.com</code> a "_" is added to
+	 * prevent the rest being parsed as a regular path. (Menu item keys start
+	 * with "/").
 	 */
 	public static URI createMenuItemLink(final String menuItemKey) {
 		try {
@@ -532,23 +538,23 @@ public class LinkController extends SelectionController implements IExtension {
 	public static String parseMenuItemLink(final URI uri) {
 		return uri.getSchemeSpecificPart().substring(1);
 	}
-	
+
 	public int getStandardConnectorWidth() {
 		final String standardWidth = ResourceController.getResourceController().getProperty(RESOURCES_CONNECTOR_WIDTH);
 		final int width = Integer.valueOf(standardWidth);
 		return width;
 	}
-	
+
 	public void setStandardConnectorWidth(final int width) {
 		final String value = Integer.toString(width);
 		ResourceController.getResourceController().setProperty(RESOURCES_CONNECTOR_WIDTH, value);
 	}
 
 	public Color getStandardConnectorColor() {
-        final String standardColor = ResourceController.getResourceController().getProperty(RESOURCES_LINK_COLOR);
+		final String standardColor = ResourceController.getResourceController().getProperty(RESOURCES_LINK_COLOR);
 		final Color color = ColorUtils.stringToColor(standardColor);
-        return color;
-    }
+		return color;
+	}
 
 	public void setStandardConnectorColor(final Color color) {
 		String value = ColorUtils.colorToString(color);
@@ -560,19 +566,18 @@ public class LinkController extends SelectionController implements IExtension {
 		final Shape shape = Shape.valueOf(standardShape);
 		return shape;
 	}
-	
+
 	public void setStandardConnectorShape(final Shape shape) {
 		String value = shape.toString();
 		ResourceController.getResourceController().setProperty(RESOURCES_CONNECTOR_SHAPE, value);
 	}
-
 
 	public int getStandardConnectorAlpha() {
 		final String standardAlpha = ResourceController.getResourceController().getProperty(RESOURCES_CONNECTOR_COLOR_ALPHA);
 		final int alpha = Integer.valueOf(standardAlpha);
 		return alpha;
 	}
-	
+
 	public void setStandardAlpha(final int alpha) {
 		final String value = Integer.toString(alpha);
 		ResourceController.getResourceController().setProperty(RESOURCES_CONNECTOR_COLOR_ALPHA, value);
@@ -580,60 +585,60 @@ public class LinkController extends SelectionController implements IExtension {
 
 	public int getAlpha(ConnectorModel connectorModel) {
 		return connectorModel.getAlpha();
-    }
+	}
 
 	public int getStandardLabelFontSize() {
 		return ResourceController.getResourceController().getIntProperty("label_font_size", 12);
-    }
-
-	public String getStandardLabelFontFamily() {
-	    return ResourceController.getResourceController().getProperty("label_font_family");
-    }
-
-	private static final String MENUITEM_ICON = "icons/button.png";
-	private static final String EXECUTABLE_ICON = ResourceController.getResourceController().getProperty(
-	    "executable_icon");
-	private static final IconStore ICON_STORE = IconStoreFactory.create();
-	public static Icon getLinkIcon(final URI link, final NodeModel model) {
-		if (link == null) 
-			return null;
-	    final String linkText = link.toString();
-	    final String iconPath;
-	    if (linkText.startsWith("#")) {
-	    	final String id = linkText.substring(1);
-	    	if (model == null || model.getMap().getNodeForID(id) == null) {
-	    		iconPath = null;
-	    	}
-	    	else{
-	    		iconPath = LINK_LOCAL_ICON;
-	    	}
-	    }
-	    else if (linkText.startsWith("mailto:")) {
-	    	iconPath = MAIL_ICON;
-	    }
-	    else if (Compat.executableExtensions.contains(link)) {
-	    	iconPath = EXECUTABLE_ICON;
-	    }
-	    else if (isMenuItemLink(link)) {
-	    	// nodes with menu item link contain the image from the menu if available
-	    	if (model == null || model.getIcons().isEmpty())
-	    		iconPath = MENUITEM_ICON;
-	    	else
-	    		iconPath = null;
-	    }
-	    else if (Compat.isExecutable(linkText)) {
-	    	iconPath = "Executable.png";
-	    }
-	    else{
-	    	iconPath = LinkController.LINK_ICON;
-	    }
-	    if(iconPath == null)
-	    	return null;
-	    final UIIcon uiIcon = ICON_STORE.getUIIcon(iconPath);
-	    if(uiIcon == null)
-	    	return null;
-	    return uiIcon.getIcon();
 	}
 
+	public String getStandardLabelFontFamily() {
+		return ResourceController.getResourceController().getProperty("label_font_family");
+	}
+
+	private static final String MENUITEM_ICON = "icons/button.png";
+	private static final String EXECUTABLE_ICON = ResourceController.getResourceController().getProperty("executable_icon");
+	private static final IconStore ICON_STORE = IconStoreFactory.create();
+
+	public static Icon getLinkIcon(final URI link, final NodeModel model) {
+		if (link == null)
+			return null;
+		final String linkText = link.toString();
+		final String iconPath;
+		if (linkText.startsWith("#")) {
+			final String id = linkText.substring(1);
+			if (model == null || model.getMap().getNodeForID(id) == null) {
+				iconPath = null;
+			}
+			else {
+				iconPath = LINK_LOCAL_ICON;
+			}
+		}
+		else if (linkText.startsWith("mailto:")) {
+			iconPath = MAIL_ICON;
+		}
+		else if (Compat.executableExtensions.contains(link)) {
+			iconPath = EXECUTABLE_ICON;
+		}
+		else if (isMenuItemLink(link)) {
+			// nodes with menu item link contain the image from the menu if
+			// available
+			if (model == null || model.getIcons().isEmpty())
+				iconPath = MENUITEM_ICON;
+			else
+				iconPath = null;
+		}
+		else if (Compat.isExecutable(linkText)) {
+			iconPath = "Executable.png";
+		}
+		else {
+			iconPath = LinkController.LINK_ICON;
+		}
+		if (iconPath == null)
+			return null;
+		final UIIcon uiIcon = ICON_STORE.getUIIcon(iconPath);
+		if (uiIcon == null)
+			return null;
+		return uiIcon.getIcon();
+	}
 
 }

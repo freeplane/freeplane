@@ -35,21 +35,6 @@ public class Activator implements BundleActivator {
         properties.put(URLConstants.URL_HANDLER_PROTOCOL, new String[] { WorkspaceController.WORKSPACE_RESOURCE_URL_PROTOCOL });
 		
         context.registerService(URLStreamHandlerService.class.getName(), new WorkspaceUrlHandler(), properties);
-        
-        try {
-			URI test = new URI(WorkspaceController.WORKSPACE_RESOURCE_URL_PROTOCOL, null, "/../Desktop/Desktop/kendo01.jpg", null);
-			System.out.println("DOCEAR URI: test: "+test);			
-		}
-		catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-//        properties.put(URLConstants.URL_HANDLER_PROTOCOL, urlHandlerProtocols);
-//		
-//        
-//        properties.put(URLConstants.URL_HANDLER_PROTOCOL, new String[] { WorkspaceController.WORKSPACE_RESOURCE_URL_PROTOCOL });
-//        context.registerService(URLStreamHandlerService.class.getName(), new WorkspaceUrlHandler(), properties);
     }
 	
 	/*
