@@ -1,7 +1,5 @@
 package org.freeplane.plugin.workspace;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Hashtable;
 
 import org.freeplane.features.mode.ModeController;

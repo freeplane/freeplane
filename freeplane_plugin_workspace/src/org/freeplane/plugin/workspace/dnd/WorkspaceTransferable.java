@@ -7,10 +7,8 @@ package org.freeplane.plugin.workspace.dnd;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.List;
 
 import org.freeplane.core.util.LogUtils;
 

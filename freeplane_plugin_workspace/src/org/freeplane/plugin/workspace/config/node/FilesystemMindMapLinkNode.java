@@ -2,26 +2,23 @@ package org.freeplane.plugin.workspace.config.node;
 
 import java.io.File;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.mindmapmode.MFileManager;
-import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 
 public class FilesystemMindMapLinkNode extends AWorkspaceNode implements IWorkspaceNodeEventListener {
-	private URL linkPath;
+	private URI linkPath;
 
 	public FilesystemMindMapLinkNode(String id) {
 		super(id);
 	}
 
-	public URL getLinkURL() {
+	public URI getLinkURL() {
 		return this.linkPath;
 	}
 
@@ -30,24 +27,11 @@ public class FilesystemMindMapLinkNode extends AWorkspaceNode implements IWorksp
 		if (linkPath == null || linkPath.getPath() == null) {
 			return "";
 		}
-		try {
-			URI path = new URI(linkPath.getPath());
-			URI workspaceLocation = new URI(WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation());
 
-			System.out.println("PATH: " + path);
-			System.out.println("WORKSPACE: " + workspaceLocation);
-			System.out.println("RELATIVE PATH: " + workspaceLocation.relativize(path).getPath());
-
-			return workspaceLocation.relativize(path).getPath();
-		}
-		catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-
-		return linkPath.getPath();
+		return linkPath.toString();
 	}
 
-	public void setLinkPath(URL linkPath) {
+	public void setLinkPath(URI linkPath) {
 		this.linkPath = linkPath;
 	}
 
@@ -60,7 +44,7 @@ public class FilesystemMindMapLinkNode extends AWorkspaceNode implements IWorksp
 				if (!f.exists()) {
 					createNewMindmap(f);
 				}
-				Controller.getCurrentModeController().getMapController().newMap(getLinkURL(), false);
+				Controller.getCurrentModeController().getMapController().newMap(getLinkURL().toURL(), false);
 
 			}
 			catch (Exception e) {

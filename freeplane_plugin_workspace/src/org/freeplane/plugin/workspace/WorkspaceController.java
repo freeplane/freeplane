@@ -4,14 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Hashtable;
 import java.util.Properties;
 
 import javax.swing.JPanel;
@@ -19,7 +13,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreePath;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
@@ -28,25 +21,21 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.ViewController;
-import org.freeplane.main.osgi.ResourcesUrlHandler;
 import org.freeplane.plugin.workspace.config.PopupMenus;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
-import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
-import org.freeplane.plugin.workspace.dnd.IWorkspaceDragController;
+import org.freeplane.plugin.workspace.controller.DefaultWorkspaceComponentHandler;
+import org.freeplane.plugin.workspace.controller.DefaultWorkspaceDropHandler;
+import org.freeplane.plugin.workspace.controller.DefaultWorkspaceKeyHandler;
+import org.freeplane.plugin.workspace.controller.DefaultWorkspaceMouseHandler;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferHandler;
 import org.freeplane.plugin.workspace.io.FileReadManager;
 import org.freeplane.plugin.workspace.io.FilesystemReader;
 import org.freeplane.plugin.workspace.io.creator.AFileNodeCreator;
 import org.freeplane.plugin.workspace.io.xml.ConfigurationWriter;
 import org.freeplane.plugin.workspace.view.TreeView;
-import org.osgi.framework.BundleContext;
-import org.osgi.service.url.URLConstants;
-import org.osgi.service.url.URLStreamHandlerService;
 
-public class WorkspaceController implements ComponentListener, MouseListener, IFreeplanePropertyListener, IWorkspaceDragController {
+public class WorkspaceController implements IFreeplanePropertyListener {
 	public static final String WORKSPACE_RESOURCE_URL_PROTOCOL = "workspace";
-	
 	private WorkspaceConfiguration config;
 	private static WorkspaceController currentWorkspace;
 	private TreeView view;
@@ -80,11 +69,6 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 		initializeView();		
 		this.fsReader = new FilesystemReader(getFileTypeManager());
 		this.configWriter = new ConfigurationWriter(this);
-		this.transferHandler = WorkspaceTransferHandler.configureDragAndDrop(((TreeView)getWorkspaceView()).getTree(), this);
-	}
-
-	private void initTree() {
-		this.tree = new IndexedTree(null);
 	}
 	
 	/***********************************************************************************
@@ -94,10 +78,6 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 	public static WorkspaceController getCurrentWorkspaceController() {
 		return currentWorkspace;
 	}
-	
-//	public static void reinitializeWorkspaceController() {
-//		currentWorkspace = new WorkspaceController();
-//	}
 
 	public WorkspaceConfiguration getConfig() {
 		if (this.config != null) {
@@ -112,6 +92,96 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 		this.config = config;
 	}
 
+	public String getWorkspaceLocation() {
+		if (this.workspaceLocation == null) {
+			this.workspaceLocation = ResourceController.getResourceController().getProperty(WorkspacePreferences.WORKSPACE_LOCATION);
+		}
+		return workspaceLocation;
+	}
+
+	public void setWorkspaceLocation(String workspaceLocation) {
+		this.workspaceLocation = workspaceLocation;
+		ResourceController.getResourceController().setProperty(WorkspacePreferences.WORKSPACE_LOCATION_NEW,
+				workspaceLocation);
+		Controller.getCurrentController().getResourceController()
+				.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, true);
+		WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();
+			
+	}
+
+	public TreeView getWorkspaceView() {
+		if (this.view == null) {
+			this.view = new TreeView(getWorkspaceRoot());
+			this.view.addComponentListener(new DefaultWorkspaceComponentHandler());
+			this.view.getTree().addMouseListener(new DefaultWorkspaceMouseHandler());
+			this.view.getTree().addKeyListener(new DefaultWorkspaceKeyHandler());
+			this.transferHandler = WorkspaceTransferHandler.configureDragAndDrop(this.view.getTree(), new DefaultWorkspaceDropHandler());
+		}
+		return this.view;
+	}
+	
+	public DefaultMutableTreeNode getWorkspaceRoot() {
+		return getTree().getRoot();
+	}
+
+	public JTree getWorspaceTree() {
+		return this.getWorkspaceView().getTree();
+	}
+	
+	public void showWorkspaceView(boolean visible) {
+		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
+		resCtrl.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, visible);
+		if (visible) {
+			int width = resCtrl.getIntProperty(WorkspacePreferences.WORKSPACE_WIDTH_PROPERTY_KEY, 200);
+			setWorkspaceWidth(width);
+			getContentPane().revalidate();
+		}
+		else {
+			setWorkspaceWidth(-1);
+			getContentPane().revalidate();
+		}
+	}
+
+	public DefaultTreeModel getViewModel() {
+		return this.view.getTreeModel();
+	}
+
+	public FilesystemReader getFilesystemReader() {
+		return this.fsReader;
+	}
+
+	public void saveConfigurationAsXML(Writer writer) {
+		try {
+			this.configWriter.writeConfigurationAsXml(writer);
+		}
+		catch (final IOException e) {
+			LogUtils.severe(e);
+		}
+	}
+
+	public PopupMenus getPopups() {
+		return popups;
+	}
+
+	public WorkspaceTransferHandler getTransferHandler() {
+		return transferHandler;
+	}
+
+	public void refreshWorkspace() {
+		initTree();
+		initializeConfiguration();		
+		reloadView();
+	}
+
+	public IndexedTree getTree() {
+		return tree;
+	}
+
+	
+	private void initTree() {
+		this.tree = new IndexedTree(null);
+	}
+	
 	private void initializeConfiguration() {
 		resetWorkspaceView();
 		setConfig(new WorkspaceConfiguration());
@@ -151,24 +221,7 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 			this.WSContentPane.add(splitPane);
 		}
 		return this.WSContentPane;
-	}
-	
-	public String getWorkspaceLocation() {
-		if (this.workspaceLocation == null) {
-			this.workspaceLocation = ResourceController.getResourceController().getProperty(WorkspacePreferences.WORKSPACE_LOCATION);
-		}
-		return workspaceLocation;
-	}
-
-	public void setWorkspaceLocation(String workspaceLocation) {
-		this.workspaceLocation = workspaceLocation;
-		ResourceController.getResourceController().setProperty(WorkspacePreferences.WORKSPACE_LOCATION_NEW,
-				workspaceLocation);
-		Controller.getCurrentController().getResourceController()
-				.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, true);
-		WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();
-			
-	}
+	}	
 
 	private void setWorkspaceWidth(int width) {
 		JSplitPane splitPane = (JSplitPane) (getWSContentPane().getComponent(0));
@@ -178,24 +231,7 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 		splitPane.setDividerSize((width > 0 ? 4 : 0));
 		splitPane.setEnabled(width > 0);
 
-	}
-
-	private TreeView getWorkspaceView() {
-		if (this.view == null) {
-			this.view = new TreeView(getWorkspaceRoot());
-			this.view.addComponentListener(this);
-			this.view.addTreeMouseListener(this);
-		}
-		return this.view;
-	}
-	
-	public DefaultMutableTreeNode getWorkspaceRoot() {
-		return getTree().getRoot();
-	}
-
-	public JTree getWorspaceTree() {
-		return this.getWorkspaceView().getTree();
-	}
+	}	
 	
 	private void resetWorkspaceView() {
 		this.config = null;
@@ -232,28 +268,6 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 			resCtrl.addPropertyChangeListener(this);
 		}
 		return this.preferences;
-	}
-
-	public void showWorkspaceView(boolean visible) {
-		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
-		resCtrl.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, visible);
-		if (visible) {
-			int width = resCtrl.getIntProperty(WorkspacePreferences.WORKSPACE_WIDTH_PROPERTY_KEY, 200);
-			setWorkspaceWidth(width);
-			getContentPane().revalidate();
-		}
-		else {
-			setWorkspaceWidth(-1);
-			getContentPane().revalidate();
-		}
-	}
-
-	public DefaultTreeModel getViewModel() {
-		return this.view.getTreeModel();
-	}
-
-	public FilesystemReader getFilesystemReader() {
-		return this.fsReader;
 	}
 
 	private FileReadManager getFileTypeManager() {
@@ -306,37 +320,6 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 		return this.fileTypeManager;
 	}
 
-	public void saveConfigurationAsXML(Writer writer) {
-		try {
-			this.configWriter.writeConfigurationAsXml(writer);
-		}
-		catch (final IOException e) {
-			LogUtils.severe(e);
-		}
-	}
-
-	public PopupMenus getPopups() {
-		return popups;
-	}
-
-	public WorkspaceTransferHandler getTransferHandler() {
-		return transferHandler;
-	}
-
-	public void refreshWorkspace() {
-		initTree();
-		initializeConfiguration();		
-		reloadView();
-	}
-	
-//	public void setTransferHandler(WorkspaceTransferHandler transferHandler) {
-//		this.transferHandler = transferHandler;
-//	}
-
-	public IndexedTree getTree() {
-		return tree;
-	}
-
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
@@ -349,87 +332,8 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 				refreshWorkspace();
 			}
 		}
-	}
-
-	public void componentResized(ComponentEvent e) {
-		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
-		if (resCtrl.getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY)
-				&& e.getComponent() == getWorkspaceView()) {
-			resCtrl.setProperty(WorkspacePreferences.WORKSPACE_WIDTH_PROPERTY_KEY, String.valueOf(e.getComponent().getWidth()));
-		}
-	}
-
-	public void componentMoved(ComponentEvent e) {
-	}
-
-	public void componentShown(ComponentEvent e) {
-	}
-
-	public void componentHidden(ComponentEvent e) {
-	}
-
-	public void mouseClicked(MouseEvent e) {
-		TreePath path = ((JTree) e.getSource()).getPathForLocation(e.getX(), e.getY());
-		if (path != null) {
-			DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-
-			if (node.getUserObject() instanceof IWorkspaceNodeEventListener) {
-				int eventType = 0;
-				if (e.getButton() == MouseEvent.BUTTON1) {
-					eventType += WorkspaceNodeEvent.MOUSE_LEFT;
-				}
-				if (e.getButton() == MouseEvent.BUTTON3) {
-					eventType += WorkspaceNodeEvent.MOUSE_RIGHT;
-				}
-				if (e.getClickCount() % 2 == 0) {
-					eventType += WorkspaceNodeEvent.MOUSE_DBLCLICK;
-				}
-				else {
-					eventType += WorkspaceNodeEvent.MOUSE_CLICK;
-				}
-				((IWorkspaceNodeEventListener) node.getUserObject()).handleEvent(new WorkspaceNodeEvent(e.getComponent(),
-						eventType, e.getX(), e.getY()));
-			}
-
-		}
-		else {
-			if (e.getButton() == MouseEvent.BUTTON3) {
-				getPopups().showWorkspacePopup(e.getComponent(), e.getX(), e.getY());
-				
-			}
-		}
-	}
-
-	public void mousePressed(MouseEvent e) {
-	}
-
-	public void mouseReleased(MouseEvent e) {
-	}
-
-	public void mouseEntered(MouseEvent e) {
-
-	}
-
-	public void mouseExited(MouseEvent e) {
-	}
+	}	
 	
-	/* (non-Javadoc)
-	 * @see org.freeplane.plugin.workspace.controller.IWorkspaceDragController#canPerformAction(javax.swing.JTree, java.lang.Object, int, java.awt.Point)
-	 */
-	public boolean canPerformAction(JTree target, Object draggedNode, int action, Point location) {
-		// TODO Auto-generated method stub
-		System.out.println("canPerformAction");
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.freeplane.plugin.workspace.controller.IWorkspaceDragController#executeDrop(javax.swing.JTree, java.lang.Object, java.lang.Object, int)
-	 */
-	public boolean executeDrop(JTree tree, Object draggedNode, Object newParentNode, int action) {
-		// TODO Auto-generated method stub
-		System.out.println("executeDrop");
-		return false;
-	}
 
 	/***********************************************************************************
 	 * INTERNAL CLASSES
@@ -443,8 +347,7 @@ public class WorkspaceController implements ComponentListener, MouseListener, IF
 			this.removeAll();
 			this.add(comp);
 		}
-	}
-
+	}	
 	
 
 }

@@ -51,8 +51,8 @@ public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 		//System.out.println(userObject);
 		if(userObject == null || userObject instanceof WorkspaceRoot) {
 			setLeafIcon(defaultLeafIcon);
-		    setOpenIcon(defaultLeafIcon);
-		    setClosedIcon(defaultLeafIcon);
+		    setOpenIcon(defaultOpenIcon);
+		    setClosedIcon(defaultClosedIcon);
 		} 
 		else {
 //			setLeafIcon(defaultLeafIcon);

@@ -2,22 +2,12 @@ package org.freeplane.plugin.workspace.config.actions;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.channels.FileChannel;
 
 import javax.swing.JFileChooser;
-import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.config.node.FilesystemFolderNode;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 
 public class AddExistingFilesystemFolderAction extends AWorkspaceAction {
 
@@ -41,57 +31,58 @@ public class AddExistingFilesystemFolderAction extends AWorkspaceAction {
 		int retVal = fileChooser.showOpenDialog(UITools.getFrame());
 		System.out.println("RETVAL: "+retVal+" : "+JFileChooser.APPROVE_OPTION);
 		if (retVal == JFileChooser.APPROVE_OPTION) {
-			createNode(e, fileChooser.getSelectedFile(), currentLocation);
+			//createNode(e, fileChooser.getSelectedFile(), currentLocation);
+			WorkspaceUtils.createFilesystemFolderNode(fileChooser.getSelectedFile(), this.getNodeFromActionEvent(e));
 		}
 		
 		WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();
 	}
 
-	private void createNode(final ActionEvent e, final File path, String currentLocation) {
-		String temp = currentLocation + File.separator + "workspace_temp.xml";
-		String config = currentLocation + File.separator + "workspace.xml";
-		
-		DefaultMutableTreeNode treeNode = this.getNodeFromActionEvent(e);
-		IndexedTree tree = WorkspaceController.getCurrentWorkspaceController().getTree();
-		
-		FilesystemFolderNode node = new FilesystemFolderNode(path.getPath().replace(File.separator, ""));
-		String name = path.getName();
-		
-		node.setName(name==null? "folder" : name);
-				
-		if(path!=null) {
-			LogUtils.info("FilesystemPath: "+path);
-			URL url = null;
-			try {
-				url = path.toURL();				
-			}
-			catch (MalformedURLException ex) {
-				ex.printStackTrace();
-			}
-			node.setFolderPath(url);
-		}
-		
-		Object key = tree.getKeyByUserObject(treeNode.getUserObject());
-		tree.addElement(key, node, IndexedTree.AS_CHILD);
-		
-		WorkspaceController.getCurrentWorkspaceController().getViewModel().reload(treeNode);
-		
-		try {
-			WorkspaceController.getCurrentWorkspaceController().saveConfigurationAsXML(new FileWriter(temp));
-			
-			FileChannel from = new FileInputStream(temp).getChannel();
-			FileChannel to = new FileOutputStream(config).getChannel();
-			
-			to.transferFrom(from, 0, from.size());
-			to.close();
-			from.close();
-			
-			File tempFile = new File(temp);
-			tempFile.delete();
-		}
-		catch (IOException e1) {
-			e1.printStackTrace();
-		}
-	}
+//	private void createNode(final ActionEvent e, final File path, String currentLocation) {
+//		String temp = currentLocation + File.separator + "workspace_temp.xml";
+//		String config = currentLocation + File.separator + "workspace.xml";
+//		
+//		DefaultMutableTreeNode treeNode = this.getNodeFromActionEvent(e);
+//		IndexedTree tree = WorkspaceController.getCurrentWorkspaceController().getTree();
+//		
+//		FilesystemFolderNode node = new FilesystemFolderNode(path.getPath().replace(File.separator, ""));
+//		String name = path.getName();
+//		
+//		node.setName(name==null? "folder" : name);
+//				
+//		if(path!=null) {
+//			LogUtils.info("FilesystemPath: "+path);
+//			URL url = null;
+//			try {
+//				url = path.toURL();				
+//			}
+//			catch (MalformedURLException ex) {
+//				ex.printStackTrace();
+//			}
+//			node.setFolderPath(url);
+//		}
+//		
+//		Object key = tree.getKeyByUserObject(treeNode.getUserObject());
+//		tree.addElement(key, node, IndexedTree.AS_CHILD);
+//		
+//		WorkspaceController.getCurrentWorkspaceController().getViewModel().reload(treeNode);
+//		
+//		try {
+//			WorkspaceController.getCurrentWorkspaceController().saveConfigurationAsXML(new FileWriter(temp));
+//			
+//			FileChannel from = new FileInputStream(temp).getChannel();
+//			FileChannel to = new FileOutputStream(config).getChannel();
+//			
+//			to.transferFrom(from, 0, from.size());
+//			to.close();
+//			from.close();
+//			
+//			File tempFile = new File(temp);
+//			tempFile.delete();
+//		}
+//		catch (IOException e1) {
+//			e1.printStackTrace();
+//		}
+//	}
 
 }

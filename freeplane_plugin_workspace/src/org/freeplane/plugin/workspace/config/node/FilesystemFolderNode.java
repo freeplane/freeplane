@@ -2,6 +2,7 @@ package org.freeplane.plugin.workspace.config.node;
 
 import java.awt.Component;
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -10,14 +11,16 @@ import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 
 public class FilesystemFolderNode extends AWorkspaceNode implements TreeExpansionListener, IWorkspaceNodeEventListener {
 
-	private URL folderPath;
+	private URI folderPath;
 	private boolean isUpToDate = false;
 	
 	private static String POPUP_KEY = "filesystem_folder";
@@ -26,7 +29,7 @@ public class FilesystemFolderNode extends AWorkspaceNode implements TreeExpansio
 		super(id);
 	}
 		
-	public URL getFolderPath() {
+	public URI getFolderPath() {
 		return folderPath;
 	}
 	
@@ -35,24 +38,11 @@ public class FilesystemFolderNode extends AWorkspaceNode implements TreeExpansio
 		if (folderPath == null || folderPath.getPath() == null) {
 			return "";
 		}
-		try {
-			URI path = new URI(folderPath.getPath());
-			URI workspaceLocation = new URI(WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation());
-			
-			System.out.println("PATH: "+path);
-			System.out.println("WORKSPACE: "+workspaceLocation);
-			System.out.println("RELATIVE PATH: "+workspaceLocation.relativize(path).getPath());
-			
-			return workspaceLocation.relativize(path).getPath();
-		}
-		catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
 		
 		return folderPath.getPath();
 	}
 
-	public void setFolderPath(URL folderPath) {
+	public void setFolderPath(URI folderPath) {
 		this.folderPath = folderPath;
 	}	
 	
@@ -69,12 +59,25 @@ public class FilesystemFolderNode extends AWorkspaceNode implements TreeExpansio
 		if (getFolderPath() == null)
 			return;
 		
-		File folder = new File(getFolderPath().getFile());
-		if(folder.isDirectory()) {			 
-			node.removeAllChildren();
-			WorkspaceController.getCurrentWorkspaceController().getFilesystemReader().scanFilesystem(node.getUserObject(), folder);
-			WorkspaceController.getCurrentWorkspaceController().getViewModel().reload(node);
-			isUpToDate = true;
+		File folder;
+		try {
+			URL absoluteUrl = UrlManager.getController().getAbsoluteUrl(WorkspaceUtils.getWorkspaceBaseUrl().toURI(), getFolderPath());
+			
+			folder = new File(absoluteUrl.getFile());		
+			if(folder.isDirectory()) {			 
+				node.removeAllChildren();
+				WorkspaceController.getCurrentWorkspaceController().getFilesystemReader().scanFilesystem(node.getUserObject(), folder);
+				WorkspaceController.getCurrentWorkspaceController().getViewModel().reload(node);
+				isUpToDate = true;
+			}
+		}
+		catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
