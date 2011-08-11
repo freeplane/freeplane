@@ -2,11 +2,14 @@ package org.freeplane.plugin.workspace.config.node;
 
 import java.io.File;
 import java.net.URI;
+import java.net.URL;
 
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
@@ -18,17 +21,9 @@ public class FilesystemMindMapLinkNode extends AWorkspaceNode implements IWorksp
 		super(id);
 	}
 
-	public URI getLinkURL() {
-		return this.linkPath;
-	}
-
-	@ExportAsAttribute("path")
-	public String getLinkPath() {
-		if (linkPath == null || linkPath.getPath() == null) {
-			return "";
-		}
-
-		return linkPath.toString();
+		@ExportAsAttribute("path")
+	public URI getLinkPath() {		
+		return linkPath;
 	}
 
 	public void setLinkPath(URI linkPath) {
@@ -40,15 +35,16 @@ public class FilesystemMindMapLinkNode extends AWorkspaceNode implements IWorksp
 		if (event.getType() == WorkspaceNodeEvent.MOUSE_LEFT_DBLCLICK) {
 			System.out.println("doublecklicked MindmapNode");
 			try {
-				File f = new File(getLinkURL().getPath());
+				URL url = UrlManager.getController().getAbsoluteUrl(WorkspaceUtils.getWorkspaceBaseUrl().toURI(), getLinkPath());
+				File f = new File(url.getFile());
 				if (!f.exists()) {
 					createNewMindmap(f);
 				}
-				Controller.getCurrentModeController().getMapController().newMap(getLinkURL().toURL(), false);
+				Controller.getCurrentModeController().getMapController().newMap(url, false);
 
 			}
 			catch (Exception e) {
-				LogUtils.warn("could not open document (" + getLinkURL().getPath() + ")", e);
+				LogUtils.warn("could not open document (" + getLinkPath() + ")", e);
 			}
 		}
 	}

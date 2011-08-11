@@ -235,6 +235,14 @@ class ApplicationViewController extends ViewController {
 
 	@Override
 	public void openDocument(final URI uri) throws IOException {
+//		try {
+//			throw new Exception("DOCEAR");
+//		}
+//		catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
 		String uriString = uri.toString();
 		final String UNC_PREFIX = "file:////";
 		if (uriString.startsWith(UNC_PREFIX)) {

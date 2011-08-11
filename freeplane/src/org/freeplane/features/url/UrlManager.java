@@ -389,7 +389,7 @@ public class UrlManager implements IExtension {
 			sb.append('#');
 			sb.append(fragment);
 		}
-		if (!uri.isAbsolute() || uri.isOpaque()) {
+		if (!uri.isAbsolute() || uri.isOpaque() || uri.getScheme().length()>0) {
 			final URL mapUrl = map.getURL();
 			final String scheme = uri.getScheme();
 			if (scheme == null || mapUrl.getProtocol().equals(scheme)) {
@@ -414,7 +414,7 @@ public class UrlManager implements IExtension {
 			sb.append('#');
 			sb.append(fragment);
 		}
-		if (!uri.isAbsolute() || uri.isOpaque()) {
+		if (!uri.isAbsolute() || uri.isOpaque() || uri.getScheme().length()>0) {
 			final URL baseUrl = base.toURL();
 			final String scheme = uri.getScheme();
 			if (scheme == null || baseUrl.getProtocol().equals(scheme)) {

@@ -33,7 +33,6 @@ public class FolderFileNodeCreator extends AFileNodeCreator {
 	 **********************************************************************************/
 	
 	public AWorkspaceNode getNode(String name, File file) {
-		System.out.println("FolderFileNodeCreator.getNode: "+name+" : "+file.toString());
 		FolderFileNode node = new FolderFileNode(file.getName(), file);
 		return node;
 	}

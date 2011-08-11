@@ -84,7 +84,7 @@ public class LinkController extends SelectionController implements IExtension {
 	public final static int LINK_RELATIVE_TO_MINDMAP = 1;
 	public final static int LINK_RELATIVE_TO_WORKSPACE = 2;
 
-	private final static String LINK_ABSOLUTE_PROPERTY = "absolute";
+//	private final static String LINK_ABSOLUTE_PROPERTY = "absolute";
 	private final static String LINK_RELATIVE_TO_MINDMAP_PROPERTY = "relative";
 	private final static String LINK_RELATIVE_TO_WORKSPACE_PROPERTY = "relative_to_workspace";
 
@@ -368,6 +368,7 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 		try {
 			final URI fileUri = input.getAbsoluteFile().toURI();
+			
 			if (map == null) {
 				return fileUri;
 			}

@@ -9,8 +9,8 @@ import org.osgi.service.url.AbstractURLStreamHandlerService;
 public class WorkspaceUrlHandler extends AbstractURLStreamHandlerService {
 
 	public URLConnection openConnection(URL url) throws IOException {
-		URL ret = new URL("file", null, WorkspaceUtils.getWorkspaceBaseUrl().getPath() + "/"
-				+ url.getPath());
+		URL ret = new URL("file", null, WorkspaceUtils.getWorkspaceBaseUrl().getPath()
+				+ url.getPath());		
 		return ret.openConnection();
 	}
 }

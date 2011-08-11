@@ -14,12 +14,8 @@ public class FilesystemLinkNode extends AWorkspaceNode implements IWorkspaceNode
 	}
 	
 	@ExportAsAttribute("path")
-	public String getLinkPathString() {		
-		if (linkPath == null || linkPath.getPath() == null) {
-			return "";
-		}
-		
-		return linkPath.toString();
+	public URI getLinkPath() {
+		return linkPath;
 	}
 	
 	public void setLinkPath(URI linkPath) {
