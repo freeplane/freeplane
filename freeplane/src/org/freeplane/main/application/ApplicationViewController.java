@@ -32,6 +32,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.MessageFormat;
 import javax.swing.ImageIcon;
@@ -235,15 +236,14 @@ class ApplicationViewController extends ViewController {
 
 	@Override
 	public void openDocument(final URI uri) throws IOException {
-//		try {
-//			throw new Exception("DOCEAR");
-//		}
-//		catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
-		String uriString = uri.toString();
+		URI absoluteURI;
+		try {
+			absoluteURI = uri.toURL().openConnection().getURL().toURI();
+		}
+		catch (URISyntaxException e) {
+			throw new IOException(e.getMessage());
+		}
+		String uriString = absoluteURI.toString();
 		final String UNC_PREFIX = "file:////";
 		if (uriString.startsWith(UNC_PREFIX)) {
 			uriString = "file://" + uriString.substring(UNC_PREFIX.length());
@@ -263,10 +263,10 @@ class ApplicationViewController extends ViewController {
 				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
 				    .getProperty(propertyString));
 				final String browserCommand = formatter.format(messageArguments);
-				final String scheme = uri.getScheme();
+				final String scheme = absoluteURI.getScheme();
                 if (scheme.equals("file") || scheme.equals("smb")) {
                     if(scheme.equals("smb")){
-                        uriString = Compat.smbUri2unc(uri);
+                        uriString = Compat.smbUri2unc(absoluteURI);
                     }
 					if (System.getProperty("os.name").startsWith("Windows 2000")) 
 						command = new String[] { "rundll32", "shell32.dll,ShellExec_RunDLL", uriString };
@@ -334,7 +334,8 @@ class ApplicationViewController extends ViewController {
 	 */
 	@Override
 	public void openDocument(final URL url) throws Exception {
-		final URI uri = new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getQuery(), url.getRef());
+		URL absoluteURL = url.openConnection().getURL();
+		final URI uri = new URI(absoluteURL.getProtocol(), absoluteURL.getHost(), absoluteURL.getPath(), absoluteURL.getQuery(), absoluteURL.getRef());
 		openDocument(uri);
 	}
 

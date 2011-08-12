@@ -34,7 +34,7 @@ public class FilesystemFolderCreator extends AConfigurationNodeCreator {
 			File f;
 			try {
 				uri = new URI(path);
-				f = new File (UrlManager.getController().getAbsoluteUrl(WorkspaceUtils.getWorkspaceBaseUrl().toURI(), uri).getFile());
+				f = new File (UrlManager.getController().getAbsoluteUrl(WorkspaceUtils.getWorkspaceBaseURI(), uri).getFile());
 			}
 			catch (URISyntaxException e) {
 				e.printStackTrace();

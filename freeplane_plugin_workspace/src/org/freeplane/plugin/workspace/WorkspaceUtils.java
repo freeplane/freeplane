@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.nio.channels.FileChannel;
 
@@ -122,14 +123,9 @@ public class WorkspaceUtils {
 		saveCurrentConfiguration();
 	}
 	
-	public static URL getWorkspaceBaseUrl() {
-		URL ret = null;
-		try {
-			ret = getWorkspaceBaseFile().toURL();
-		}
-		catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
+	public static URI getWorkspaceBaseURI() {
+		URI ret = null;
+		ret = getWorkspaceBaseFile().toURI();
 		return ret;
 	}
 	

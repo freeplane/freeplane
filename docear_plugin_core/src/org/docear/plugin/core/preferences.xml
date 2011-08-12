@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preferences_structure>
+	<tabbed_pane>
+		<tab name="workspace">			
+				<path name="workspace_pdf_location" dir="true" />
+		</tab>
+	</tabbed_pane>
+</preferences_structure>
