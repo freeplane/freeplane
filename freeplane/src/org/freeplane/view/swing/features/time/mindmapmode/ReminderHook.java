@@ -168,7 +168,7 @@ public class ReminderHook extends PersistentNodeHook {
 	private void createTimePanel() {
 		final TimeManagement timeManagement = new TimeManagement(this);
 		final int axis = BoxLayout.Y_AXIS;
-		final JTimePanel timePanel = timeManagement.createTimePanel(null, false, axis);
+		final JTimePanel timePanel = timeManagement.createTimePanel(null, false, 1);
 		modeController.getMapController().addNodeSelectionListener(new INodeSelectionListener() {
 			public void onSelect(NodeModel node) {
 				timePanel.update(node);
