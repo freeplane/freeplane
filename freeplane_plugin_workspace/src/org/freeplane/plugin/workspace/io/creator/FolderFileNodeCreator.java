@@ -32,8 +32,9 @@ public class FolderFileNodeCreator extends AFileNodeCreator {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	
-	public AWorkspaceNode getNode(String name, File file) {
+	public AWorkspaceNode getNode(String name, File file, String fileExtension) {
 		FolderFileNode node = new FolderFileNode(file.getName(), file);
+		node.setFileExtension(fileExtension);
 		return node;
 	}
 }

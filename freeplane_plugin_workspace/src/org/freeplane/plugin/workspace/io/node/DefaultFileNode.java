@@ -24,11 +24,12 @@ import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEventListener{
 	
 	private File file;
+	private String fileExtension;
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
-	
+
 	/**
 	 * @param name
 	 */
@@ -38,6 +39,11 @@ public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEve
 		this.file = file;
 		
 	}
+	
+	public DefaultFileNode(final String name, final File file, String fileExtension) {
+		this(name, file);
+		setFileExtension(fileExtension);		
+	}
 
 	/***********************************************************************************
 	 * METHODS
@@ -45,6 +51,14 @@ public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEve
 	
 	public File getFile() {
 		return this.file;
+	}
+	
+	public String getFileExtension() {
+		return fileExtension;
+	}
+
+	public void setFileExtension(String fileExtension) {
+		this.fileExtension = fileExtension;
 	}
 	
 	public boolean rename(final String name) {
