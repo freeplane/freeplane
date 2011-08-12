@@ -230,11 +230,11 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
         
         int childContentHeightSum = 0;
         int visibleChildCounter = 0;
+        int summedChildCounter = 0;
         int top = 0;
         
         final int[] groupStart = new int[highestSummaryLevel];
         final int[] groupStartContentHeightSum = new int[highestSummaryLevel];
-        final int[] groupStartVisibleChildCounter = new int[highestSummaryLevel];
         final int[] groupStartY = new int[highestSummaryLevel];
         final int[] groupEndY = new int[highestSummaryLevel];
         
@@ -248,7 +248,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             }
             
             final boolean isSummary = child.isSummary();
-            final boolean isItem = ! (isSummary && visibleChildCounter > 0);
+            final boolean isItem = !isSummary || visibleChildCounter <= summedChildCounter;
             final int oldLevel = level;
             if(isItem){
                 level = 0;
@@ -292,11 +292,6 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                 }
                 
                 childContentHeightSum += childContentHeight + childCloudHeigth;
-                if (child.getHeight() - 2 * getSpaceAround() != 0) {
-                    if (visibleChildCounter > 0)
-                        childContentHeightSum +=  getVGap();
-                    visibleChildCounter++;
-                }
                 if(oldLevel > 0){
                     summaryBaseX[0] = 0;
                     for(int j = 0; j < oldLevel; j++){
@@ -304,21 +299,26 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                         groupStartY[j] = Integer.MAX_VALUE;
                         groupEndY[j] = Integer.MIN_VALUE;
                         groupStartContentHeightSum[j] = childContentHeightSum;
-                        groupStartVisibleChildCounter[j] = visibleChildCounter;
                     }
+                    summedChildCounter = visibleChildCounter;
                 }
                 else if(child.isFirstGroupNode()){
                     groupStartContentHeightSum[0] = childContentHeightSum;
-                    groupStartVisibleChildCounter[0] = visibleChildCounter;
                     summaryBaseX[0] = 0;
                     groupStart[0] = i;
                 }
+                if (child.getHeight() - 2 * getSpaceAround() != 0) {
+                    if (visibleChildCounter > 0)
+                        childContentHeightSum +=  getVGap();
+                    visibleChildCounter++;
+                }
+                if(isSummary)
+                    summedChildCounter = visibleChildCounter;
            }
             else{
                 final int itemLevel = level - 1;
                 if(child.isFirstGroupNode()){
                     groupStartContentHeightSum[level] = groupStartContentHeightSum[itemLevel];
-                    groupStartVisibleChildCounter[level] = groupStartVisibleChildCounter[itemLevel];
                     summaryBaseX[level] = 0;
                     groupStart[level] = groupStart[itemLevel];
                 }
