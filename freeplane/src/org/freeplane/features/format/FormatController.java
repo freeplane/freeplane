@@ -323,7 +323,9 @@ public class FormatController implements IExtension {
 			}
 		}
 		catch (Exception e) {
-			LogUtils.warn("cannot format " + obj.toString() + " with " + formatString + ": " + e.getMessage());
+			// Be quiet, just like Excel does...
+			// LogUtils.warn("cannot format '" + StringUtils.abbreviate(obj.toString(), 20) + "' with " + formatString
+			//               + ": " + e.getMessage());
 			return obj;
 		}
 	}
