@@ -16,6 +16,9 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
@@ -28,6 +31,7 @@ import javax.swing.tree.TreePath;
 
 import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.clipboard.mindmapmode.MClipboardController;
+import org.freeplane.plugin.workspace.config.node.FilesystemLinkNode;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 
 /**
@@ -86,8 +90,24 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 			JTree t = (JTree) comp;
 			for (TreePath p : t.getSelectionPaths()) {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) p.getLastPathComponent();
-				if (node.getUserObject() instanceof DefaultFileNode)
+				if (node.getUserObject() instanceof DefaultFileNode) {
 					paths.add(((DefaultFileNode) node.getUserObject()).getFile());
+				} 
+				else if (node.getUserObject() instanceof FilesystemLinkNode) {
+					URL url;
+					try {
+						url = ((FilesystemLinkNode) node.getUserObject()).getLinkPath().toURL().openConnection().getURL();
+						paths.add(new File(url.toURI()));
+					}
+					catch (IOException e) {
+						
+						e.printStackTrace();
+					}
+					catch (URISyntaxException e) {
+						e.printStackTrace();
+					}
+					
+				} 
 			}
 			if (paths.size() > 0) {
 				System.out.println("Geschmacksrichtung: " + WorkspaceTransferable.WORKSPACE_FILE_LIST_FLAVOR);
