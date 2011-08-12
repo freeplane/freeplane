@@ -36,6 +36,7 @@ import org.freeplane.plugin.workspace.view.TreeView;
 
 public class WorkspaceController implements IFreeplanePropertyListener {
 	public static final String WORKSPACE_RESOURCE_URL_PROTOCOL = "workspace";
+	public static final String PROPERTY_RESOURCE_URL_PROTOCOL = "property";
 	private WorkspaceConfiguration config;
 	private static WorkspaceController currentWorkspace;
 	private TreeView view;
@@ -100,7 +101,7 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 	}
 
 	public void setWorkspaceLocation(String workspaceLocation) {
-		this.workspaceLocation = workspaceLocation;
+		this.workspaceLocation = workspaceLocation;		
 		ResourceController.getResourceController().setProperty(WorkspacePreferences.WORKSPACE_LOCATION_NEW,
 				workspaceLocation);
 		Controller.getCurrentController().getResourceController()

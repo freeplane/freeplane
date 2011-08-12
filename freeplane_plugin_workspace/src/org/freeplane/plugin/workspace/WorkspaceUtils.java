@@ -20,6 +20,7 @@ import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.config.node.FilesystemFolderNode;
 import org.freeplane.plugin.workspace.config.node.FilesystemLinkNode;
 
@@ -132,7 +133,11 @@ public class WorkspaceUtils {
 		return ret;
 	}
 	
-	public static File getWorkspaceBaseFile() {
-		return new File(ResourceController.getResourceController().getProperty("workspace_location"));
+	public static File getWorkspaceBaseFile(){
+		String location = ResourceController.getResourceController().getProperty("workspace_location");
+		if (location==null || location.length()==0) {
+			location = ResourceController.getResourceController().getProperty("workspace_location_new");
+		}
+		return new File(location);
 	}
 }

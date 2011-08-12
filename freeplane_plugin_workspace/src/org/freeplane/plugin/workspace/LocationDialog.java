@@ -30,6 +30,8 @@ public class LocationDialog extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField location;
 		
+	private JPanel mainPanel = new JPanel();
+		
 	/**
 	 * Create the dialog.
 	 */
@@ -62,7 +64,7 @@ public class LocationDialog extends JDialog {
 	public LocationDialog() {
 		this.setModal(true);
 		setTitle(TextUtils.getText("no_location_set"));
-		setBounds(100, 100, 450, 148);
+		setBounds(100, 100, 484, 200);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -87,18 +89,20 @@ public class LocationDialog extends JDialog {
 					RowSpec.decode("default:grow"),}));
 		}
 		{
-			JPanel panel = new JPanel();
-			contentPanel.add(panel, "1, 1, 12, 4, fill, fill");
-			panel.setLayout(new FormLayout(new ColumnSpec[] {
+			mainPanel = new JPanel();
+			contentPanel.add(mainPanel, "1, 1, 12, 4, fill, fill");
+			mainPanel.setLayout(new FormLayout(new ColumnSpec[] {
 					FormFactory.RELATED_GAP_COLSPEC,
-					FormFactory.DEFAULT_COLSPEC,
+					ColumnSpec.decode("default:grow"),
 					FormFactory.RELATED_GAP_COLSPEC,
 					FormFactory.DEFAULT_COLSPEC,},
 				new RowSpec[] {
 					FormFactory.RELATED_GAP_ROWSPEC,
+					FormFactory.DEFAULT_ROWSPEC,
+					FormFactory.RELATED_GAP_ROWSPEC,
 					FormFactory.DEFAULT_ROWSPEC,}));
 			location = new JTextField();
-			panel.add(location, "2, 2");
+			mainPanel.add(location, "2, 2, fill, fill");
 						
 			String currentLocation = WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation();
 			if (currentLocation != null && currentLocation.length()>0) {
@@ -107,7 +111,7 @@ public class LocationDialog extends JDialog {
 			location.setColumns(30);
 			{
 				JButton btnBrowse = new JButton(TextUtils.getText("browse"));
-				panel.add(btnBrowse, "4, 2");
+				mainPanel.add(btnBrowse, "4, 2");				
 				btnBrowse.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						onShowButton();					
@@ -141,6 +145,22 @@ public class LocationDialog extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}	
+	}
+
+	public void addDirectoryOption(String text, JButton button) {
+		JTextField position = new JTextField();
+		position.setText(text);
+		position.setColumns(30);
+		mainPanel.add(position, "2, 4, fill, fill");
+	
+		//JButton btnPdf = new JButton("PDF");
+		mainPanel.add(button, "4, 4, fill, fill");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				onShowButton();					
+			}
+		});
+		
 	}
 	
 	

@@ -11,6 +11,7 @@ public class WorkspaceUrlHandler extends AbstractURLStreamHandlerService {
 	public URLConnection openConnection(URL url) throws IOException {
 		URL ret = new URL("file", null, WorkspaceUtils.getWorkspaceBaseUrl().getPath()
 				+ url.getPath());		
+        System.out.println("WorkspaceUrlHandler returns: "+ret);
 		return ret.openConnection();
 	}
 }

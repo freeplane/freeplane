@@ -38,8 +38,11 @@ public class Activator implements BundleActivator {
 	private void registerClasspathUrlHandler(final BundleContext context) {
 		Hashtable<String, String[]> properties = new Hashtable<String, String[]>();
         properties.put(URLConstants.URL_HANDLER_PROTOCOL, new String[] { WorkspaceController.WORKSPACE_RESOURCE_URL_PROTOCOL });
-		
         context.registerService(URLStreamHandlerService.class.getName(), new WorkspaceUrlHandler(), properties);
+        
+        properties = new Hashtable<String, String[]>();
+        properties.put(URLConstants.URL_HANDLER_PROTOCOL, new String[] { WorkspaceController.PROPERTY_RESOURCE_URL_PROTOCOL });
+        context.registerService(URLStreamHandlerService.class.getName(), new PropertyUrlHandler(), properties);
     }
 	
 	private void registerLinkTypeOption() {

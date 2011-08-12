@@ -3,9 +3,7 @@
 		<filesystem_mindmap_link id="lib_new_papers" name="New Papers and Annotations" path="workspace:/Library/NewPapersandAnnotations.mm" />
 		<filesystem_mindmap_link id="lib_papers" name="Papers, Annotations and Ideas" path="workspace:/Library/PapersAnnotationsAndIdeas.mm" />
 		<filesystem_mindmap_link id="lib_publications" name="My Publications" path="workspace:/Library/MyPublications.mm" />
-		<group id="library_pdf" name="PDFs">
-			<filesystem_folder id="lib_pdfs" name="My PDFs" path="workspace:/MyPDFs" />
-		</group>
+		<filesystem_folder id="lib_pdfs" name="My PDFs" path="property:/workspace_pdf_location" />		
 	</group>
 	<group id="projects" name="Projects">		
 	</group>

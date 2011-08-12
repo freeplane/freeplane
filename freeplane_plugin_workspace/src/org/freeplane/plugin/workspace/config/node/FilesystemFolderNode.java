@@ -4,26 +4,39 @@ import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.components.PathProperty;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 
 public class FilesystemFolderNode extends AWorkspaceNode implements TreeExpansionListener, IWorkspaceNodeEventListener {
-
+	private String folderPathProperty;
 	private URI folderPath;
+	
 	private boolean isUpToDate = false;
 
 	private static String POPUP_KEY = "filesystem_folder";
 
 	public FilesystemFolderNode(String id) {
 		super(id);
+	}
+	
+	@ExportAsAttribute("pathProperty")
+	public String getFolderPathProperty() {
+		return folderPathProperty;
+	}
+	
+	public void setFolderPathProperty(String pathProperty) {
+		this.folderPathProperty = pathProperty;
 	}
 
 	@ExportAsAttribute("path")
@@ -46,8 +59,10 @@ public class FilesystemFolderNode extends AWorkspaceNode implements TreeExpansio
 
 	public void refreshFolder(final DefaultMutableTreeNode node) {
 		// if folder path is not correctly set
-		if (getFolderPath() == null)
+		if (getFolderPath() == null) {
 			return;
+		}
+		System.out.println("DOCEAR: folderPath: "+getFolderPath());
 
 		File folder;
 		try {
