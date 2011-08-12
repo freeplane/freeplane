@@ -17,8 +17,12 @@ public class PropertyUrlHandler extends AbstractURLStreamHandlerService {
 		
 		String property = ResourceController.getResourceController().getProperty(propertyName);
 		
-		URL ret = new URL("file", null, property);		
-        System.out.println("PropertyUrlHandler returns: "+ret);
-		return ret.openConnection();
+		if (property!=null && property.length()>0) {		
+			URL ret = new URL("file", null, property);		
+	        System.out.println("PropertyUrlHandler returns: "+ret);
+			return ret.openConnection();
+		}
+		System.out.println("Property Path :"+url+" is unknown");
+		return null;
 	}
 }

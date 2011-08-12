@@ -66,7 +66,13 @@ public class FilesystemFolderNode extends AWorkspaceNode implements TreeExpansio
 
 		File folder;
 		try {
-			URL absoluteUrl = getFolderPath().toURL().openConnection().getURL();			
+			URL absoluteUrl;
+			try {
+				absoluteUrl = getFolderPath().toURL().openConnection().getURL();
+			}
+			catch(NullPointerException e) {
+				return;
+			}
 			folder = new File(absoluteUrl.toURI());			
 			if (folder.isDirectory()) {				
 				node.removeAllChildren();
