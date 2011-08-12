@@ -16,6 +16,7 @@ import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel.Annot
 import org.docear.plugin.pdfutilities.util.Tools;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.map.NodeModel;
 
 import de.intarsys.pdf.cds.CDSNameTreeEntry;
 import de.intarsys.pdf.cds.CDSNameTreeNode;
@@ -331,25 +332,39 @@ public class PdfAnnotationImporter {
 	    return null;
 	}	
 
-	public PdfAnnotationExtensionModel searchAnnotation(File file, String annotationTitle) throws IOException, COSLoadException, COSRuntimeException {
+	public PdfAnnotationExtensionModel searchAnnotation(File file, NodeModel node) throws IOException, COSLoadException, COSRuntimeException {
 		this.currentFile = file;
 		if(!this.isImportAll()) this.setImportAll(true);
 		List<PdfAnnotationExtensionModel> annotations = this.importAnnotations(file);
 		this.setImportAll(false);
-		return searchAnnotation(annotations, annotationTitle);        
+		return searchAnnotation(annotations, node);        
    }
 	
-	public PdfAnnotationExtensionModel searchAnnotation(List<PdfAnnotationExtensionModel> annotations, String annotationTitle) {
-		for(PdfAnnotationExtensionModel annotation : annotations){
-           String title = annotation.getTitle();
-           System.out.println(title);
-           if(annotation.getTitle().equals(annotationTitle)){
-               return annotation;
-           }
-           else{
-        	   PdfAnnotationExtensionModel searchResult = searchAnnotation(annotation.getChildren(), annotationTitle);
-               if(searchResult != null) return searchResult;
-           }
+	public PdfAnnotationExtensionModel searchAnnotation(List<PdfAnnotationExtensionModel> annotations, NodeModel node) {
+		for(PdfAnnotationExtensionModel annotation : annotations){           
+			PdfAnnotationExtensionModel extensionModel = PdfAnnotationExtensionModel.getModel(node);
+			if(extensionModel == null){
+				if(annotation.getTitle().equals(node.getText())){
+					//TODO: DOCEAR is Update nodeModel good here??
+					//TODO: DOCEAR How to deal with nodes without extension(and object number) and changed annotation title ??
+					PdfAnnotationExtensionModel.setModel(node, annotation);
+					return annotation;
+				}
+				else{
+					PdfAnnotationExtensionModel searchResult = searchAnnotation(annotation.getChildren(), node);
+					if(searchResult != null) return searchResult;
+				}
+			}
+			else{
+				if(annotation.getObjectNumber().equals(extensionModel.getObjectNumber())){
+					return annotation;
+				}
+				else{
+					PdfAnnotationExtensionModel searchResult = searchAnnotation(annotation.getChildren(), node);
+					if(searchResult != null) return searchResult;
+				}
+			}
+           
        }
 		return null;
 	}	

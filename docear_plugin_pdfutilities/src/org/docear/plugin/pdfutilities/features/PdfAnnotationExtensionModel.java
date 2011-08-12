@@ -1,14 +1,22 @@
 package org.docear.plugin.pdfutilities.features;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
+import org.docear.plugin.pdfutilities.util.NodeUtils;
+import org.docear.plugin.pdfutilities.util.Tools;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.NodeModel;
+
+import de.intarsys.pdf.cos.COSRuntimeException;
+import de.intarsys.pdf.parser.COSLoadException;
 
 public class PdfAnnotationExtensionModel implements IExtension{
 	
@@ -21,6 +29,7 @@ public class PdfAnnotationExtensionModel implements IExtension{
 	private File file;
 	private String title;
 	private boolean isNew;
+	private boolean isConflicted;
 	private List<PdfAnnotationExtensionModel> children = new ArrayList<PdfAnnotationExtensionModel>();
 	
 	public enum AnnotationType{
@@ -102,6 +111,18 @@ public class PdfAnnotationExtensionModel implements IExtension{
 		return this.isNew;
 	}
 	
+	public boolean isConflicted() {
+		return isConflicted;
+	}
+
+	public void setConflicted(boolean isConflicted) {
+		this.isConflicted = isConflicted;
+	}
+	
+	public String toString(){
+		return this.title;
+	}
+	
 	public URI getAbsoluteUri(){
 		if(this.file != null){
 			return this.file.getAbsoluteFile().toURI();
@@ -120,6 +141,24 @@ public class PdfAnnotationExtensionModel implements IExtension{
 		return false;
 	}
 	
+	public boolean hasConflictedChildren(){
+		for(PdfAnnotationExtensionModel child : this.children){
+			if(child.isConflicted() || child.hasConflictedChildren()){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static boolean hasConflicts(Collection<PdfAnnotationExtensionModel> annotations){
+		for(PdfAnnotationExtensionModel model : annotations){
+			if(model.isConflicted || model.hasConflictedChildren()){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void markNewAnnotations(Map<URI, Collection<NodeModel>> pdfLinkedNodes){
 		for(PdfAnnotationExtensionModel child : this.getChildren()){
 			child.markNewAnnotations(pdfLinkedNodes);
@@ -127,21 +166,29 @@ public class PdfAnnotationExtensionModel implements IExtension{
 		if(pdfLinkedNodes.containsKey(this.getAbsoluteUri())){
 			for(NodeModel node : pdfLinkedNodes.get(this.getAbsoluteUri())){
 				PdfAnnotationExtensionModel model = PdfAnnotationExtensionModel.getModel(node);
-				if(model != null && model.getObjectNumber() != null && this.getObjectNumber() != null){
-					if(model.getObjectNumber().equals(this.getObjectNumber())){
-						//TODO: DOCEAR Update Model values like text etc ???
+				
+				if(model == null){
+					model = PdfAnnotationExtensionModel.setModel(node);
+				}				
+				if(model == null || model.getObjectNumber() == null || this.getObjectNumber() == null){
+					if(node.getText().equals(this.getTitle())){
 						this.setNew(false);
 						return;
 					}
 				}
-				else if(node.getText().equals(this.getTitle())){
-					this.setNew(false);
-					return;
+				if(model != null && model.getObjectNumber() != null && this.getObjectNumber() != null){
+					if(model.getObjectNumber().equals(this.getObjectNumber())){						
+						this.setNew(false);						
+						return;
+					}
 				}
+				
 			}
 		}
 		this.setNew(true);
 	}
+	
+	
 	
 	public static Collection<PdfAnnotationExtensionModel> markNewAnnotations(Collection<PdfAnnotationExtensionModel> annotations, 
 										  Map<URI, Collection<NodeModel>> pdfLinkedNodes){
@@ -149,7 +196,7 @@ public class PdfAnnotationExtensionModel implements IExtension{
 			annotation.markNewAnnotations(pdfLinkedNodes);
 		}
 		return annotations;
-	}	
+	}
 	
 	public static PdfAnnotationExtensionModel getModel(final NodeModel node) {
 		return (PdfAnnotationExtensionModel) node.getExtension(PdfAnnotationExtensionModel.class);
@@ -175,7 +222,24 @@ public class PdfAnnotationExtensionModel implements IExtension{
 		}
 	}
 	
-	
-	
+	public static PdfAnnotationExtensionModel setModel(final NodeModel node){
+		if(!NodeUtils.isPdfLinkedNode(node)){
+			return null;
+		}
+		URI uri = NodeLinks.getValidLink(node);					
+		uri = Tools.getAbsoluteUri(uri);
+		File file = Tools.getFilefromUri(uri);
+		try {
+			PdfAnnotationExtensionModel model = new PdfAnnotationImporter().searchAnnotation(file, node);			
+			return model;
+		} catch (COSRuntimeException e) {
+			// TODO: DOCEAR exception handling ?			
+		} catch (IOException e) {
+			
+		} catch (COSLoadException e) {
+			
+		}
+		return null;
+	}
 	
 }

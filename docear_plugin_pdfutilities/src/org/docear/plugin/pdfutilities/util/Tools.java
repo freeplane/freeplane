@@ -76,6 +76,15 @@ public class Tools {
 		    }	    
 	    }	     
 	    return list;
+	}
+
+	public static String reshapeString(String s, int i) {
+		s = s.trim();
+		if(s.length() > i){
+			s = s.substring(0, i - 4);
+			s = s + "...";
+		}
+		return s;
 	}	
 
 }

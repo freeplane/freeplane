@@ -8,6 +8,8 @@ import java.util.Map;
 
 import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
+import org.docear.plugin.pdfutilities.ui.ImportConflictDialog;
+import org.docear.plugin.pdfutilities.ui.ImportConflictModel;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.util.LogUtils;
@@ -30,6 +32,7 @@ public class ImportNewAnnotationsAction extends ImportAnnotationsAction {
 	}
 
 	public void actionPerformed(ActionEvent event) {
+		
 		NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
 		if(selected == null){
 			return;
@@ -43,6 +46,12 @@ public class ImportNewAnnotationsAction extends ImportAnnotationsAction {
 				NodeUtils nodeUtils = new NodeUtils();
 				Map<URI, Collection<NodeModel>> pdfLinkedNodes = nodeUtils.getPdfLinkedNodesFromCurrentMap();
 				annotations = PdfAnnotationExtensionModel.markNewAnnotations(annotations, pdfLinkedNodes);
+				ImportConflictModel importConflicts = new ImportConflictModel(annotations, pdfLinkedNodes);
+				if(importConflicts.hasConflicts()){
+					ImportConflictDialog dialog = new ImportConflictDialog(importConflicts);
+					dialog.showDialog();
+				}
+				System.out.println("Test");
                 nodeUtils.insertNewChildNodesFrom(annotations, selected.isLeft(), selected);
 			} catch (IOException e) {
 				LogUtils.severe("ImportAllAnnotationsAction IOException at URI("+uri+"): ", e);

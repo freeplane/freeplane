@@ -70,7 +70,7 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 			
 			PdfAnnotationExtensionModel annotation = null;
 			try{
-				annotation = new PdfAnnotationImporter().searchAnnotation(Tools.getFilefromUri(uri), selectedNode.getText());
+				annotation = new PdfAnnotationImporter().searchAnnotation(Tools.getFilefromUri(uri), selectedNode);
 				
 				if(annotation == null){
 					this.mouseListener.mouseClicked(e);
@@ -107,7 +107,7 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 			LinkController.getController().onDeselect(selectedNode);
 			
 			
-			//TODO Are all URI's working ??
+			//TODO: DOCEAR Are all URI's working ??
 			/*String uriString = uri.toString();
 			final String UNC_PREFIX = "file:////";
 			if (uriString.startsWith(UNC_PREFIX)) {
