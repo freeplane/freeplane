@@ -5,14 +5,18 @@
 package org.freeplane.plugin.workspace.controller;
 
 import java.awt.Point;
+import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTargetDropEvent;
 import java.io.File;
+import java.net.URI;
+import java.net.URL;
 import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.freeplane.core.util.Compat;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.dnd.IWorkspaceDragnDropController;
@@ -43,6 +47,9 @@ public class DefaultWorkspaceDropHandler implements IWorkspaceDragnDropControlle
 	public boolean executeDrop(DropTargetDropEvent event) {
 		try {
 			Transferable transferable = event.getTransferable();
+			for (DataFlavor f : transferable.getTransferDataFlavors()) {
+				System.out.println("DOCEAR: "+f);
+			}
 			if (transferable.isDataFlavorSupported(WorkspaceTransferable.WORKSPACE_FILE_LIST_FLAVOR)) {
 				event.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
 				List<?> list = (List<?>) transferable.getTransferData(WorkspaceTransferable.WORKSPACE_FILE_LIST_FLAVOR);
@@ -66,6 +73,35 @@ public class DefaultWorkspaceDropHandler implements IWorkspaceDragnDropControlle
 						WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();
 					}					
 				}				
+				event.getDropTargetContext().dropComplete(true);
+				return true;
+			}
+			if (transferable.isDataFlavorSupported(WorkspaceTransferable.WORKSPACE_GNOME_FILE_LIST_FLAVOR)) {
+				event.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
+				String list = (String) transferable.getTransferData(WorkspaceTransferable.WORKSPACE_GNOME_FILE_LIST_FLAVOR);
+				System.out.println(list);
+				if (!list.startsWith("file://")) {
+					return false;
+				}
+				final URI uri = new URI(new URL(list).toString());
+				final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
+				final File file = Compat.urlToFile(url);
+				final Point location = event.getLocation();
+				DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) WorkspaceController.getCurrentWorkspaceController().getWorkspaceView().getTree().getPathForLocation(location.x, location.y).getLastPathComponent();
+				if(targetNode.getUserObject() instanceof DefaultFileNode) {
+					do {
+						targetNode = (DefaultMutableTreeNode) targetNode.getParent();
+					} while(targetNode.getUserObject() instanceof DefaultFileNode);
+				} 
+				System.out.println("Drop Item ("+file.toString()+") on "+targetNode.getUserObject()+" at "+location);
+				if(file.isDirectory()) {
+					WorkspaceUtils.createFilesystemFolderNode(file, targetNode);
+				}
+				else {
+					WorkspaceUtils.createFilesystemLinkNode(file, targetNode);
+				}
+				WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();
+				
 				event.getDropTargetContext().dropComplete(true);
 				return true;
 			}

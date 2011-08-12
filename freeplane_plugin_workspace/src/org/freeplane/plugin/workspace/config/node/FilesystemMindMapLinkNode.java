@@ -35,12 +35,12 @@ public class FilesystemMindMapLinkNode extends AWorkspaceNode implements IWorksp
 		if (event.getType() == WorkspaceNodeEvent.MOUSE_LEFT_DBLCLICK) {
 			System.out.println("doublecklicked MindmapNode");
 			try {
-				URL url = UrlManager.getController().getAbsoluteUrl(WorkspaceUtils.getWorkspaceBaseUrl().toURI(), getLinkPath());
-				File f = new File(url.getFile());
+				URL absoluteUrl = getLinkPath().toURL().openConnection().getURL();				
+				File f = new File(absoluteUrl.getFile());
 				if (!f.exists()) {
 					createNewMindmap(f);
 				}
-				Controller.getCurrentModeController().getMapController().newMap(url, false);
+				Controller.getCurrentModeController().getMapController().newMap(absoluteUrl, false);
 
 			}
 			catch (Exception e) {
