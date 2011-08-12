@@ -1,6 +1,7 @@
 package org.docear.plugin.pdfutilities.util;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -19,14 +20,14 @@ public class Tools {
 	
 	//TODO: check if URI refers to a local file !!
 	
-	public static File getFilefromUri(URI uri){
-		uri = getAbsoluteUri(uri);
-		if(uri == null){
-			return null;
+	public static File getFilefromUri(URI uri){		
+		if(uri == null) return null;
+		try {
+			return new File(uri.normalize());
+		} 
+		catch (IllegalArgumentException e) {
+			return new File(getAbsoluteUri(uri));
 		}
-		else{
-			return new File(uri);
-		}		
 	}
 	
 	public static URI getAbsoluteUri(URI uri){
@@ -38,10 +39,19 @@ public class Tools {
 				if(map == null || urlManager == null) return null;
 				uri = urlManager.getAbsoluteUri(map, uri);				
 			}
-			return uri;
-		} catch(IllegalArgumentException e){
+			if(uri.getScheme().equals("file")) return uri;
+			return uri.toURL().openConnection().getURL().toURI();
+		} 
+		catch(IllegalArgumentException e){
 			return null;
-		} catch (MalformedURLException e) {
+		} 
+		catch (MalformedURLException e) {
+			return null;
+		}
+		catch (URISyntaxException e) {
+			return null;
+		}
+		catch (IOException e) {
 			return null;
 		}
 	}

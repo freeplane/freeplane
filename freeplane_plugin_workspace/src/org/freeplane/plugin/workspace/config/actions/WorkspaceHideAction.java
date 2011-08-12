@@ -1,10 +1,8 @@
 package org.freeplane.plugin.workspace.config.actions;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.components.PropertyBean;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspacePreferences;

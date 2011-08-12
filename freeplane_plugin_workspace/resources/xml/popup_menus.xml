@@ -15,6 +15,7 @@
 	</menu_category>
 	
 	<menu_category name="workspace_physical_node_popup">
+		<menu_action action="AddNewMindmapAction" />
 		<menu_action action="FileNodeCopyAction" />
 		<menu_action action="FileNodeCutAction" />
 		<menu_action action="FileNodeDeleteAction" />

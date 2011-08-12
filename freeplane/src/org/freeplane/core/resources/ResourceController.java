@@ -53,6 +53,7 @@ public abstract class ResourceController {
 	final private List<IFreeplanePropertyListener> propertyChangeListeners = new Vector<IFreeplanePropertyListener>();
 	private ResourceBundles resources;
     public static final String FREEPLANE_RESOURCE_URL_PROTOCOL = "freeplaneresource";
+    public static final String FREEPLANE_WORKSPACE_URL_PROTOCOL = "workspace";
 	public static final String OBJECT_TYPE = "ObjectType";
 	public ResourceController() {
 		super();

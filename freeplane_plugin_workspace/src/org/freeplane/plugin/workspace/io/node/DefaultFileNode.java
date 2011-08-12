@@ -1,8 +1,14 @@
 package org.freeplane.plugin.workspace.io.node;
 
 import java.awt.Component;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
@@ -18,11 +24,12 @@ import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEventListener{
 	
 	private File file;
+	private String fileExtension;
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
-	
+
 	/**
 	 * @param name
 	 */
@@ -32,6 +39,11 @@ public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEve
 		this.file = file;
 		
 	}
+	
+	public DefaultFileNode(final String name, final File file, String fileExtension) {
+		this(name, file);
+		setFileExtension(fileExtension);		
+	}
 
 	/***********************************************************************************
 	 * METHODS
@@ -39,6 +51,14 @@ public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEve
 	
 	public File getFile() {
 		return this.file;
+	}
+	
+	public String getFileExtension() {
+		return fileExtension;
+	}
+
+	public void setFileExtension(String fileExtension) {
+		this.fileExtension = fileExtension;
 	}
 	
 	public boolean rename(final String name) {
@@ -51,7 +71,7 @@ public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEve
 	}
 	
 	public void delete() {
-		this.file.delete();
+		getFile().delete();
 	}
 	
 	public void relocateFile(final File parentFolder) {
@@ -59,6 +79,54 @@ public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEve
 		if(newFile.exists()) {
 			this.file = newFile;
 		}
+	}
+	
+	private void copyFileContent(File source, File destination) {
+		try {
+			InputStream in = new DataInputStream(new FileInputStream(source));		
+			DataOutputStream out = new DataOutputStream(new FileOutputStream(destination));
+			byte[] buffer = new byte[1024];
+			int len = in.read(buffer);
+			while (len != -1) {
+				out.write(buffer, 0, len);
+				len = in.read(buffer);
+			}
+			in.close();
+			out.close();
+		}
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void copyFileTo(File file, File parentFolder) throws IOException {
+		if(parentFolder.isDirectory()) {				
+			File target = new File(parentFolder.getAbsolutePath()+File.separator+file.getName());
+			if(file.isDirectory()) {
+				if(target.mkdir()) {
+					for(File child : file.listFiles()) {
+						copyFileTo(child, target);
+					}
+				}
+				else {
+					throw new IOException("Could not create folder: "+target);
+				}
+			}
+			else {
+				if(target.createNewFile()) {
+					copyFileContent(file, target);
+				}
+				else {
+					throw new IOException("Could not create file: "+target);
+				}
+			}
+		}
+		else {
+			throw new IOException("File "+parentFolder+" is no folder");
+		}	
 	}
 	
 	/***********************************************************************************
@@ -91,5 +159,26 @@ public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEve
 	
 	public String getTagName() {
 		return null;
+	}
+
+	/**
+	 * @param file
+	 * @throws IOException 
+	 */
+	public void copyHere(File file) throws IOException {
+		if(getFile().isDirectory()) {
+			copyFileTo(file, getFile());
+		} 
+		else {
+			copyFileTo(file, getFile().getParentFile());
+		}
+		
+	
+		
+	}
+	
+	public void moveHere(File file) throws IOException {
+		copyHere(file);
+		if(!file.delete()) throw new IOException("Could not delete File "+ file);
 	}
 }

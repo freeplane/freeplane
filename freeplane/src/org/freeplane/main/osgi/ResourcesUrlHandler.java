@@ -29,6 +29,7 @@ import org.osgi.service.url.AbstractURLStreamHandlerService;
 public class ResourcesUrlHandler extends AbstractURLStreamHandlerService{
 
     public URLConnection openConnection(URL url) throws IOException{
+    	System.out.println("openconnection: "+url);
         return ResourceController.getResourceController().getResource(url.getPath()).openConnection();
     }
 }

@@ -2,6 +2,7 @@ package org.freeplane.plugin.workspace.config.node;
 
 import java.awt.Component;
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -10,88 +11,94 @@ import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.components.PathProperty;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 
 public class FilesystemFolderNode extends AWorkspaceNode implements TreeExpansionListener, IWorkspaceNodeEventListener {
-
-	private URL folderPath;
+	private String folderPathProperty;
+	private URI folderPath;
+	
 	private boolean isUpToDate = false;
-	
+
 	private static String POPUP_KEY = "filesystem_folder";
-	
+
 	public FilesystemFolderNode(String id) {
 		super(id);
 	}
-		
-	public URL getFolderPath() {
-		return folderPath;
+	
+	@ExportAsAttribute("pathProperty")
+	public String getFolderPathProperty() {
+		return folderPathProperty;
 	}
 	
-	@ExportAsAttribute("path")
-	public String getFolderPathString() {
-		if (folderPath == null || folderPath.getPath() == null) {
-			return "";
-		}
-		try {
-			URI path = new URI(folderPath.getPath());
-			URI workspaceLocation = new URI(WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation());
-			
-			System.out.println("PATH: "+path);
-			System.out.println("WORKSPACE: "+workspaceLocation);
-			System.out.println("RELATIVE PATH: "+workspaceLocation.relativize(path).getPath());
-			
-			return workspaceLocation.relativize(path).getPath();
-		}
-		catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-		
-		return folderPath.getPath();
+	public void setFolderPathProperty(String pathProperty) {
+		this.folderPathProperty = pathProperty;
 	}
 
-	public void setFolderPath(URL folderPath) {
+	@ExportAsAttribute("path")
+	public URI getFolderPath() {
+		return folderPath;
+	}
+
+	public void setFolderPath(URI folderPath) {
 		this.folderPath = folderPath;
-	}	
-	
+	}
+
 	public void treeCollapsed(TreeExpansionEvent event) {
 	}
-	
+
 	public void treeExpanded(TreeExpansionEvent event) {
-		if(isUpToDate||getFolderPath()==null) return;
-		refreshFolder((DefaultMutableTreeNode)event.getPath().getLastPathComponent());
+		if (isUpToDate || getFolderPath() == null)
+			return;
+		refreshFolder((DefaultMutableTreeNode) event.getPath().getLastPathComponent());
 	}
 
 	public void refreshFolder(final DefaultMutableTreeNode node) {
 		// if folder path is not correctly set
-		if (getFolderPath() == null)
+		if (getFolderPath() == null) {
 			return;
-		
-		File folder = new File(getFolderPath().getFile());
-		if(folder.isDirectory()) {			 
-			node.removeAllChildren();
-			WorkspaceController.getCurrentWorkspaceController().getFilesystemReader().scanFilesystem(node.getUserObject(), folder);
-			WorkspaceController.getCurrentWorkspaceController().getViewModel().reload(node);
-			isUpToDate = true;
+		}
+		System.out.println("DOCEAR: folderPath: "+getFolderPath());
+
+		File folder;
+		try {
+			URL absoluteUrl;
+			try {
+				absoluteUrl = getFolderPath().toURL().openConnection().getURL();
+			}
+			catch(NullPointerException e) {
+				return;
+			}
+			folder = new File(absoluteUrl.toURI());			
+			if (folder.isDirectory()) {				
+				node.removeAllChildren();
+				WorkspaceController.getCurrentWorkspaceController().getFilesystemReader()
+						.scanFilesystem(node.getUserObject(), folder);
+				WorkspaceController.getCurrentWorkspaceController().getViewModel().reload(node);
+				isUpToDate = true;
+			}
+			
+			
+		}
+		catch (IOException e) {			
+			e.printStackTrace();
+		}
+		catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
-	
+
 	public String getTagName() {
 		return "filesystem_folder";
 	}
-	
+
 	private void initializePopup() {
-		//if (!isInit) {
-			WorkspaceController.getCurrentWorkspaceController().getPopups().registerPopupMenu(POPUP_KEY);
-//			AFreeplaneAction action = WorkspaceController.getCurrentWorkspaceController().getPopups().new CheckBoxAction("BLUBB",
-//					"BLUBB");
-//			WorkspaceController.getCurrentWorkspaceController().getPopups()
-//					.addCechkbox(POPUP_KEY, "/workspace_node_popup", action, true);
-			
-//			isInit = true;
-	//	}
+		WorkspaceController.getCurrentWorkspaceController().getPopups().registerPopupMenu(POPUP_KEY);
 	}
 
 	public void handleEvent(WorkspaceNodeEvent event) {
@@ -103,9 +110,10 @@ public class FilesystemFolderNode extends AWorkspaceNode implements TreeExpansio
 					.showPopup(POPUP_KEY, component, event.getX(), event.getY());
 
 		}
-	}	
-	
+	}
+
 	public String toString() {
-		return this.getClass().getSimpleName()+"[id="+this.getId()+";name="+this.getName()+";path="+this.getFolderPath()+"]";
+		return this.getClass().getSimpleName() + "[id=" + this.getId() + ";name=" + this.getName() + ";path="
+				+ this.getFolderPath() + "]";
 	}
 }

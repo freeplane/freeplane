@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.text.html.HTMLDocument;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
@@ -693,6 +694,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			node = targetNode;
 		}
 		final ExternalResource preview = new ExternalResource();
+		
 		preview.setUri(uri);
 		undoableDeactivateHook(node);
 		undoableActivateHook(node, preview);

@@ -55,14 +55,7 @@ public class WorkspaceConfiguration {
 		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
 		String workspaceLocation = resCtrl.getProperty(WorkspacePreferences.WORKSPACE_LOCATION);
 		String workspaceLocationNew = resCtrl.getProperty(WorkspacePreferences.WORKSPACE_LOCATION_NEW);
-
-		if (workspaceLocation == null || workspaceLocation.trim().length() == 0) {
-			if (workspaceLocationNew == null || workspaceLocationNew.trim().length() == 0) {
-				setConfigValid(false);
-				resCtrl.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, false);
-				return;
-			}
-		}
+		
 		if (workspaceLocationNew != null && workspaceLocationNew.trim().length() > 0) {
 			File configFile = new File(workspaceLocationNew + File.separator + CONFIG_FILE_NAME);
 			if (!configFile.exists()) {

@@ -33,8 +33,8 @@ public class DefaultFileNodeCreator extends AFileNodeCreator {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	
-	public AWorkspaceNode getNode(String name, File file) {
-		DefaultFileNode node = new DefaultFileNode(name, file);
+	public AWorkspaceNode getNode(String name, File file, String fileExtension) {
+		DefaultFileNode node = new DefaultFileNode(name, file, fileExtension);
 		return node;
 	}
 	

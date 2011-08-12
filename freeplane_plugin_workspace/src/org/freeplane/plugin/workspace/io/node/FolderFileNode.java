@@ -32,7 +32,18 @@ public class FolderFileNode extends DefaultFileNode {
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
+	public void delete() {
+		delete(getFile());
+	}
 	
+	private void delete(File file) {
+		if(file.isDirectory()) {
+			for(File child : file.listFiles()) {
+				delete(child);
+			}			
+		}
+		file.delete();	
+	}
 	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES

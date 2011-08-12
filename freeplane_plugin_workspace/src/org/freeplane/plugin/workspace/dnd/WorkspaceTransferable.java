@@ -7,10 +7,8 @@ package org.freeplane.plugin.workspace.dnd;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.List;
 
 import org.freeplane.core.util.LogUtils;
 
@@ -24,6 +22,7 @@ public class WorkspaceTransferable implements Transferable {
 	public static DataFlavor WORKSPACE_FILE_LIST_FLAVOR; // = DataFlavor.javaFileListFlavor;
 	public static DataFlavor WORKSPACE_FREEPLANE_NODE_FLAVOR; // = new DataFlavor("text/freeplane-nodes; class=java.lang.String");
 	public static DataFlavor WORKSPACE_SERIALIZED_FLAVOR;
+	public static DataFlavor WORKSPACE_GNOME_FILE_LIST_FLAVOR;
 	static {
 		try {
 			WORKSPACE_DROP_ACTION_FLAVOR = new DataFlavor("text/drop-action; class=java.lang.String");
@@ -31,6 +30,7 @@ public class WorkspaceTransferable implements Transferable {
 			WORKSPACE_FILE_LIST_FLAVOR = DataFlavor.javaFileListFlavor;
 			WORKSPACE_FREEPLANE_NODE_FLAVOR = new DataFlavor("text/freeplane-nodes; class=java.lang.String");
 			WORKSPACE_SERIALIZED_FLAVOR = new DataFlavor("application/x-java-serialized-object; class=java.lang.String");
+			WORKSPACE_GNOME_FILE_LIST_FLAVOR = new DataFlavor("text/uri-list; class=java.lang.String");
 		}
 		catch (final Exception e) {
 			LogUtils.severe(e);

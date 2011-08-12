@@ -2,52 +2,29 @@ package org.freeplane.plugin.workspace.config.node;
 
 import java.io.File;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.mindmapmode.MFileManager;
-import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 
 public class FilesystemMindMapLinkNode extends AWorkspaceNode implements IWorkspaceNodeEventListener {
-	private URL linkPath;
+	private URI linkPath;
 
 	public FilesystemMindMapLinkNode(String id) {
 		super(id);
 	}
 
-	public URL getLinkURL() {
-		return this.linkPath;
+		@ExportAsAttribute("path")
+	public URI getLinkPath() {		
+		return linkPath;
 	}
 
-	@ExportAsAttribute("path")
-	public String getLinkPath() {
-		if (linkPath == null || linkPath.getPath() == null) {
-			return "";
-		}
-		try {
-			URI path = new URI(linkPath.getPath());
-			URI workspaceLocation = new URI(WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation());
-
-			System.out.println("PATH: " + path);
-			System.out.println("WORKSPACE: " + workspaceLocation);
-			System.out.println("RELATIVE PATH: " + workspaceLocation.relativize(path).getPath());
-
-			return workspaceLocation.relativize(path).getPath();
-		}
-		catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-
-		return linkPath.getPath();
-	}
-
-	public void setLinkPath(URL linkPath) {
+	public void setLinkPath(URI linkPath) {
 		this.linkPath = linkPath;
 	}
 
@@ -56,15 +33,16 @@ public class FilesystemMindMapLinkNode extends AWorkspaceNode implements IWorksp
 		if (event.getType() == WorkspaceNodeEvent.MOUSE_LEFT_DBLCLICK) {
 			System.out.println("doublecklicked MindmapNode");
 			try {
-				File f = new File(getLinkURL().getPath());
+				URL absoluteUrl = getLinkPath().toURL().openConnection().getURL();				
+				File f = new File(absoluteUrl.getFile());
 				if (!f.exists()) {
 					createNewMindmap(f);
 				}
-				Controller.getCurrentModeController().getMapController().newMap(getLinkURL(), false);
+				Controller.getCurrentModeController().getMapController().newMap(absoluteUrl, false);
 
 			}
 			catch (Exception e) {
-				LogUtils.warn("could not open document (" + getLinkURL().getPath() + ")", e);
+				LogUtils.warn("could not open document (" + getLinkPath() + ")", e);
 			}
 		}
 	}
