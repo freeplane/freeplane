@@ -1,3 +1,6 @@
+// @ExecutionModes(on_single_node)
+// @ExecutionModes(on_selected_node)
+// @ExecutionModes(on_selected_node_recursively)
 addConnectorTo(|)
 appendBranch(|)
 appendChild(|)
