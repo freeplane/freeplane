@@ -12,8 +12,9 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 
-public class CoreConfiguration {
+public class CoreConfiguration extends ALanguageController {
 	
 	
 	private static final String ABOUT_TEXT = "about_text";
@@ -36,8 +37,19 @@ public class CoreConfiguration {
 	private static final String WEB_FREEPLANE_LOCATION = "webFreeplaneLocation";
 
 	public CoreConfiguration(ModeController modeController) {
+		addPreferencesToOptionsPanel();
 		LogUtils.info("org.docear.plugin.core.CoreConfiguration() initializing...");
 		init(modeController);
+	}
+	
+	private void addPreferencesToOptionsPanel() {
+		final URL preferences = this.getClass().getResource("preferences.xml");
+		if (preferences == null)
+			throw new RuntimeException("cannot open preferences");
+		MModeController modeController = (MModeController) Controller.getCurrentModeController();
+
+		modeController.getOptionPanelBuilder().load(preferences);
+
 	}
 
 	private void init(ModeController modeController) {
