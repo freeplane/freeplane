@@ -75,6 +75,10 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 	public void layout(final DefaultFormBuilder builder) {
 		layout(builder, mComboBox);
 	}
+	
+	public Vector<String> getPossibleValues() {
+		return possibleValues;
+	}
 
 	public void setEnabled(final boolean pEnabled) {
 		mComboBox.setEnabled(pEnabled);

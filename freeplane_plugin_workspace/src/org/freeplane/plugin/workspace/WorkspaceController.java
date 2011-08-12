@@ -324,7 +324,7 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 
-	public void propertyChanged(String propertyName, String newValue, String oldValue) {
+	public void propertyChanged(String propertyName, String newValue, String oldValue) {		
 		if (propertyName.equals(WorkspacePreferences.WORKSPACE_LOCATION_NEW)) {
 			if (newValue != null && newValue.trim().length()>0) {
 				Controller.getCurrentController().getResourceController()
