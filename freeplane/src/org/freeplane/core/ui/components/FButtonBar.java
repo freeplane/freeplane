@@ -41,6 +41,7 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IAcceleratorChangeListener;
@@ -219,11 +220,15 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 						break;
 					default:
 					    if (keyCode >= KeyEvent.VK_F1 && keyCode <= KeyEvent.VK_F12 ) {
+					        final JButton btn = buttons.get(nextModifiers)[keyCode - KeyEvent.VK_F1];
+					        if(btn.getAction() instanceof SetAcceleratorOnNextClickAction 
+					        		&& e.getComponent() instanceof JTextComponent)
+					        	return false;
 					        if(timer.isRunning()){
 					            timer.stop();
 					            onModifierChangeImpl();
 					        }
-					        buttons.get(nextModifiers)[keyCode - KeyEvent.VK_F1].doClick();
+							btn.doClick();
 					        return true;
 					    }
 						break;
