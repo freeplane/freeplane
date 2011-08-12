@@ -178,6 +178,7 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 			}
 		}
 		catch (Exception e) {
+			e.printStackTrace();
 			event.rejectDrop();
 		}
 	}

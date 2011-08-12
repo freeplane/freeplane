@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.swing.event.TreeExpansionEvent;
@@ -51,10 +52,9 @@ public class FilesystemFolderNode extends AWorkspaceNode implements TreeExpansio
 
 		File folder;
 		try {
-			URL absoluteUrl = getFolderPath().toURL().openConnection().getURL();
-			
-			folder = new File(absoluteUrl.getFile());
-			if (folder.isDirectory()) {
+			URL absoluteUrl = getFolderPath().toURL().openConnection().getURL();			
+			folder = new File(absoluteUrl.toURI());			
+			if (folder.isDirectory()) {				
 				node.removeAllChildren();
 				WorkspaceController.getCurrentWorkspaceController().getFilesystemReader()
 						.scanFilesystem(node.getUserObject(), folder);
@@ -65,6 +65,10 @@ public class FilesystemFolderNode extends AWorkspaceNode implements TreeExpansio
 			
 		}
 		catch (IOException e) {			
+			e.printStackTrace();
+		}
+		catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

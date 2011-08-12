@@ -21,15 +21,13 @@ public class Tools {
 	//TODO: check if URI refers to a local file !!
 	
 	public static File getFilefromUri(URI uri){		
-		if(uri == null) return null; 
+		if(uri == null) return null;
 		try {
-			return new File(uri.toURL().openConnection().getURL().getFile());
+			return new File(uri.normalize());
+		} 
+		catch (IllegalArgumentException e) {
+			return new File(getAbsoluteUri(uri));
 		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-				
 	}
 	
 	public static URI getAbsoluteUri(URI uri){
@@ -41,10 +39,19 @@ public class Tools {
 				if(map == null || urlManager == null) return null;
 				uri = urlManager.getAbsoluteUri(map, uri);				
 			}
-			return uri;
-		} catch(IllegalArgumentException e){
+			if(uri.getScheme().equals("file")) return uri;
+			return uri.toURL().openConnection().getURL().toURI();
+		} 
+		catch(IllegalArgumentException e){
 			return null;
-		} catch (MalformedURLException e) {
+		} 
+		catch (MalformedURLException e) {
+			return null;
+		}
+		catch (URISyntaxException e) {
+			return null;
+		}
+		catch (IOException e) {
 			return null;
 		}
 	}
