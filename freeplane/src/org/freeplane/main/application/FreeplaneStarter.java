@@ -39,6 +39,8 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.NextNodeAction;
+import org.freeplane.features.format.FormatController;
+import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.help.HelpController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.link.LinkController;
@@ -129,6 +131,8 @@ public class FreeplaneStarter {
 			mapViewController.addMapViewChangeListener(applicationResourceController.getLastOpenedList());
 			FilterController.install();
 			PrintController.install();
+			ScannerController.install(new ScannerController());
+			FormatController.install(new FormatController());
 			ModelessAttributeController.install();
 			TextController.install();
 			NoteController.install();

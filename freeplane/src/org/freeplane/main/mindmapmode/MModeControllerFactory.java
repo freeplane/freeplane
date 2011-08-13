@@ -61,8 +61,6 @@ import org.freeplane.features.encrypt.mindmapmode.MEncryptionController;
 import org.freeplane.features.export.mindmapmode.ExportController;
 import org.freeplane.features.export.mindmapmode.ImportMindmanagerFiles;
 import org.freeplane.features.filter.FilterController;
-import org.freeplane.features.format.FormatController;
-import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.icon.HierarchicalIcons;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.mindmapmode.IconSelectionPlugin;
@@ -153,8 +151,6 @@ public class MModeControllerFactory {
 		UITools.setScrollbarIncrement(styleScrollPane);
 		final JComponent tabs = (JComponent) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
 		tabs.add(TextUtils.getText("format_panel"), styleScrollPane);
-		FormatController.install(new FormatController());
-		ScannerController.install(new ScannerController());
 		new AttributePanelManager(modeController);
 		new HierarchicalIcons();
 		new AutomaticLayout();

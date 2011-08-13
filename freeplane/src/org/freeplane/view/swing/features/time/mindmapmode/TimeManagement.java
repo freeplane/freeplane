@@ -78,11 +78,9 @@ import org.freeplane.features.script.IScriptEditorStarter;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 
-import com.jgoodies.forms.builder.ButtonBarBuilder;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.RowSpec;
 
 /**
  * @author foltin
@@ -422,7 +420,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		final List<PatternFormat> datePatterns = new FormatController().getDateFormats();
 		int selectedIndex = 0;
 		for (int i = 0; i < datePatterns.size(); ++i) {
-			SimpleDateFormat patternFormat = FormatController.getController(reminderHook.getModeController()).getDateFormat(
+			SimpleDateFormat patternFormat = FormatController.getController(reminderHook.getModeController().getController()).getDateFormat(
 			    datePatterns.get(i).getPattern());
 			values.add(new DateFormatComboBoxElement(patternFormat));
 			if (patternFormat.toPattern().equals(dateFormatPattern)) {

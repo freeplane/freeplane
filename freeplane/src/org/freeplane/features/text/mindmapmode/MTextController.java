@@ -265,7 +265,7 @@ public class MTextController extends TextController {
 	public Object guessObject(final Object text) {
 		if (ResourceController.getResourceController().getBooleanProperty(
         "parse_data") && text instanceof String)
-			return ScannerController.getController(modeController).parse((String) text);
+			return ScannerController.getController(modeController.getController()).parse((String) text);
 		return text;
 	}
 	
