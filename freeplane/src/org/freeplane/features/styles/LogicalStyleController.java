@@ -352,14 +352,18 @@ public class LogicalStyleController implements IExtension {
 	}
 
 	public Collection<IStyle>  getNodeStyles(final NodeModel node) {
+		final Collection<IStyle> condStyles = new LinkedHashSet<IStyle>();
+		IStyle style = LogicalStyleModel.getStyle(node);
+		if(style != null){
+			condStyles.add(style);
+		}
+		
 		final ConditionalStyleModel conditionalStyleModel = (ConditionalStyleModel) node.getExtension(ConditionalStyleModel.class);
-		final Collection<IStyle> condStyles;
 		if(conditionalStyleModel == null){
-			condStyles = Collections.emptySet();
-			return condStyles;
+			return getResursively(node, condStyles);
 		}
 		else
-			condStyles = conditionalStyleModel.getStyles(node);
+			condStyles.addAll(conditionalStyleModel.getStyles(node));
 		return getResursively(node, condStyles);
 	}
 	
