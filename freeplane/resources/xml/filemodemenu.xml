@@ -1,133 +1,134 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<menu_structure>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><menu_structure>
 	<menu_category name="menu_bar">
-		<menu_submenu name="file" name_ref="file">
-			<menu_category name="close">
-				<menu_action action="CloseAction" accelerator="control W" />
-			</menu_category>
-			<menu_separator />
-			<menu_submenu name="last" name_ref="most_recent_files" menu_key="main_menu_most_recent_files"/>
+		<menu_submenu name="file" name_ref="file">	
+			<menu_category name="file">
+				<menu_submenu menu_key="main_menu_most_recent_files" name="last" name_ref="most_recent_files"/>				
+			</menu_category>			
 			<menu_category name="print">
-				<menu_action action="PageAction" />
-				<menu_action action="PrintAction" accelerator="control P" />
-				<menu_action action="PrintPreviewAction"  />
+				<menu_action action="PageAction"/>				
+				<menu_action action="PrintPreviewAction"/>
+				<menu_action accelerator="control P" action="PrintAction"/>
 			</menu_category>
-			<menu_separator />
 			<menu_category name="quit">
-				<menu_action action="QuitAction" accelerator="control Q" menu_key="MB_QuitAction"/>
+				<menu_action accelerator="control W" action="CloseAction"/>
+				<menu_action accelerator="control Q" action="QuitAction" menu_key="MB_QuitAction"/>
 			</menu_category>
-			<menu_separator />
 		</menu_submenu>
 		<menu_submenu name="edit" name_ref="edit">
-			<menu_category name="find">
-				<menu_action action="FindAction" accelerator="control F"/>
-				<menu_action action="FindNextAction" accelerator="control G" />
+			<menu_category name="find">				
+				<menu_action accelerator="control F" action="FindAction"/>
+				<menu_action accelerator="control G" action="FindNextAction"/>
 				<menu_action action="OpenPathAction"/>
-			</menu_category>
+				</menu_category>
 		</menu_submenu>
 		<menu_submenu name="view" name_ref="menu_view">
 			<menu_category name="toolbars">
-				<menu_action action="ToggleMenubarAction" menu_key="MB_ToggleMenubarAction"/>
-				<menu_action action="ToggleToolbarAction" />
-				<menu_action action="ShowFilterToolbarAction" />
-			</menu_category>
-			<menu_separator />
-			<menu_category name="general">
-				<menu_action action="ShowSelectionAsRectangleAction" />
-				<menu_action action="ViewLayoutTypeAction.OUTLINE" />
-                <menu_action action="MaxNodeWidthAction"/>
-			</menu_category>
-			<menu_action action="CenterSelectedNodeAction" accelerator="control alt C" />
+				<menu_submenu name="toolbars" name_ref="menu_toolbars">
+					<menu_action action="ToggleMenubarAction" menu_key="MB_ToggleMenubarAction"/>
+					<menu_action action="ToggleToolbarAction"/>
+					<menu_action action="ShowFilterToolbarAction"/>
+					</menu_submenu>
+				</menu_category>
+			<menu_action action="ViewLayoutTypeAction.OUTLINE"/>
 			<menu_category name="zoom">
-				<menu_action action="ZoomInAction" accelerator="alt UP" />
-				<menu_action action="ZoomOutAction" accelerator="alt DOWN" />
+				<menu_action accelerator="alt UP" action="ZoomInAction"/>
+				<menu_action accelerator="alt DOWN" action="ZoomOutAction"/>
+				</menu_category>
+			<menu_action action="ShowSelectionAsRectangleAction"/>					
+			<menu_category name="general">							
+				<menu_action action="MaxNodeWidthAction"/>
 			</menu_category>
-		</menu_submenu>
-		<menu_submenu name="filter" name_ref="menu_filter">
-			<menu_action action="UndoFilterAction" />
-			<menu_action action="RedoFilterAction" />
-			<menu_action action="ReapplyFilterAction" />
-			<menu_separator />
-			<menu_action action="ApplyNoFilteringAction" accelerator="shift F2"/>
-			<menu_action action="ApplySelectedViewConditionAction"  accelerator="shift F3"/>
-			<menu_action action="ApplyToVisibleAction" />
-			<menu_action action="UnfoldFilteredAncestorsAction" />
-			<menu_action action="ShowAncestorsAction" />
-			<menu_action action="ShowDescendantsAction" />
-			<menu_separator />
-			<menu_action action="QuickFindAction.BACK" />
-			<menu_action action="QuickFindAction.FORWARD" />
-			<menu_action action="QuickFilterAction" />
-			<menu_action action="QuickFindAllAction" />
-			<menu_separator />
-			<menu_action action="ShowFilterToolbarAction" />
-			<menu_action action="EditFilterAction" />
 		</menu_submenu>
 		<menu_submenu name="navigate" name_ref="menu_navigate">
 			<menu_category name="navigate">
-				<menu_action action="NavigationPreviousMapAction" accelerator="control shift TAB" />
-				<menu_action action="NavigationNextMapAction" accelerator="control TAB" />
-				<menu_action action="NextNodeAction.BACK" accelerator="control alt LEFT" />
-				<menu_action action="NextNodeAction.FORWARD" accelerator="control alt RIGHT" />
-			</menu_category>
-			<menu_separator />
-			<menu_category name="nodes">
-				<menu_action action="MoveToRootAction" accelerator="ESCAPE" />
-			</menu_category>
-			<menu_separator />
-			<menu_category name="folding">
-				<menu_action action="ToggleFoldedAction" accelerator="SPACE"  />
-				<menu_action action="ToggleChildrenFoldedAction"   accelerator="control SPACE" />
-			</menu_category>
-			<menu_separator />
+				<menu_action accelerator="control shift TAB" action="NavigationPreviousMapAction"/>
+				<menu_action accelerator="control TAB" action="NavigationNextMapAction"/>
+				<menu_action accelerator="control alt C" action="CenterSelectedNodeAction"/>
+				<menu_category name="folding">
+					<menu_action accelerator="SPACE" action="ToggleFoldedAction"/>
+					<menu_action accelerator="control SPACE" action="ToggleChildrenFoldedAction"/>
+					</menu_category>
+				<menu_action accelerator="ESCAPE" action="MoveToRootAction"/>
+				<menu_action accelerator="control alt LEFT" action="NextNodeAction.BACK"/>
+				<menu_action accelerator="control alt RIGHT" action="NextNodeAction.FORWARD"/>
+				</menu_category>			
+			</menu_submenu>
+		<menu_submenu name="filter" name_ref="menu_filter">
+			<menu_action action="UndoFilterAction"/>
+			<menu_action action="RedoFilterAction"/>
+			<menu_action action="ReapplyFilterAction"/>
+			<menu_action action="ApplyNoFilteringAction"/>
+			<menu_action action="ApplySelectedViewConditionAction"/>
+			<menu_action action="ApplyToVisibleAction"/>
+			<menu_action action="UnfoldFilteredAncestorsAction"/>
+			<menu_action action="ShowAncestorsAction"/>
+			<menu_action action="ShowDescendantsAction"/>
+			<menu_action action="QuickFindAction.BACK"/>
+			<menu_action action="QuickFindAction.FORWARD"/>
+			<menu_action action="QuickFilterAction"/>
+			<menu_action action="QuickFindAllAction"/>
+			<menu_action action="EditFilterAction"/>
 		</menu_submenu>
 		<menu_submenu name="mindmaps" name_ref="mindmaps">
-			<menu_category name="modes" menu_key="main_menu_modes"/>
-			<menu_category name="navigate" menu_key="main_menu_navigate_maps"/>
-			<menu_separator />
-			<menu_category name="mindmaps" menu_key="main_menu_mindmaps"/>
+			<menu_category menu_key="main_menu_modes" name="modes"/>
+			<menu_category menu_key="main_menu_navigate_maps" name="navigate"/>
+			<menu_category menu_key="main_menu_mindmaps" name="mindmaps"/>
 		</menu_submenu>
 		<menu_submenu name="help" name_ref="help">
-			<menu_category name="doc">
-				<menu_action action="DocumentationAction" accelerator="F1"/>
-                <menu_action action="MenuReferenceAction"/>
-				<menu_action action="OpenFreeplaneSiteAction" />
-				<menu_action action="ReportBugAction" />
-				<menu_action action="RequestFeatureAction" />
-				<menu_action action="AskForHelp" />
-				<menu_action action="LicenseAction" />
-				<menu_action action="AboutAction" menu_key="MB_AboutAction"/>
-				<menu_action action="UpdateCheckAction" />  
-			</menu_category>
+			<menu_category name="documentation">
+				<menu_action accelerator="shift F1" action="MenuReferenceAction"/>
+				</menu_category>				
+			<menu_category name="update">
+				<menu_action action="UpdateCheckAction"/>
+			</menu_category>			
+			<menu_category name="Web resources">
+				<menu_action action="OpenFreeplaneSiteAction"/>
+				<menu_action action="AskForHelp"/>
+				<menu_action action="ReportBugAction"/>
+				<menu_action action="RequestFeatureAction"/>	
+			</menu_category>				
+			<menu_category name="legacy">
+				<menu_action action="LicenseAction"/>
+				<menu_action action="AboutAction" menu_key="MB_AboutAction"/>	
+			</menu_category>				
+			<menu_action accelerator="F1" action="DocumentationAction"/>		
 		</menu_submenu>
 	</menu_category>
 	<menu_category name="map_popup">
-		<menu_category name="maps" menu_key="map_popup_mindmaps" />
-		<menu_separator />
+		<menu_category menu_key="map_popup_mindmaps" name="maps"/>
 		<menu_category name="toolbars">
-			<menu_action action="ToggleMenubarAction" menu_key="MP_ToggleMenubarAction"/>
-			<menu_action action="ToggleToolbarAction" />
-		</menu_category>
+			<menu_submenu name="toolbars" name_ref="menu_toolbars">
+				<menu_action action="ToggleMenubarAction" menu_key="MP_ToggleMenubarAction"/>
+				<menu_action action="ToggleToolbarAction"/>
+				<menu_action action="ShowFilterToolbarAction"/>
+				</menu_submenu>
+			</menu_category>
+		<menu_action action="ViewLayoutTypeAction.OUTLINE"/>
+		<menu_action accelerator="control alt C" action="CenterSelectedNodeAction"/>
 	</menu_category>
 	<menu_category name="node_popup">
-			<menu_action action="CenterAction"/>
-			<menu_separator />
-			<menu_action action="FindAction"  />
-			<menu_action action="FindNextAction"  />
-		<menu_separator />
+		<menu_action action="CenterAction"/>
+		<menu_submenu name="navigate" name_ref="menu_navigate">
+			<menu_category name="navigate">				
+				<menu_action accelerator="control alt C" action="CenterSelectedNodeAction"/>
+				<menu_category name="folding">
+					<menu_action accelerator="SPACE" action="ToggleFoldedAction"/>
+					<menu_action accelerator="control SPACE" action="ToggleChildrenFoldedAction"/>
+					</menu_category>
+				<menu_action accelerator="ESCAPE" action="MoveToRootAction"/>
+				</menu_category>			
+			</menu_submenu>
 	</menu_category>
 	<menu_category name="main_toolbar">
-		<menu_separator />
-		<menu_category name="update"/>
+		<menu_category menu_key="main_toolbar_update" name="update"/>
 		<menu_category name="main">
-			<menu_action action="NavigationPreviousMapAction" />
-			<menu_action action="NavigationNextMapAction" />
-			<menu_action action="PrintAction" />
+			<menu_action action="NavigationPreviousMapAction"/>
+			<menu_action action="NavigationNextMapAction"/>			
 		</menu_category>
-		<menu_category name="zoom">
+		<menu_category name="open">
+			<menu_action action="PrintAction"/>
+			<menu_action action="CloseAction"/>
 		</menu_category>
-		<menu_separator />
-		<menu_action action="CenterAction" />
-		<menu_category name="history"/>
-	</menu_category>
+		<menu_action action="CenterAction"/>
+		</menu_category>
 </menu_structure>
