@@ -117,8 +117,8 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 			this.view.addComponentListener(new DefaultWorkspaceComponentHandler());
 			this.view.getTree().addMouseListener(new DefaultWorkspaceMouseHandler());
 			this.view.getTree().addKeyListener(new DefaultWorkspaceKeyHandler());
-			this.transferHandler = WorkspaceTransferHandler.configureDragAndDrop(this.view.getTree(),
-					new DefaultWorkspaceDropHandler());
+			this.view.getTree().setRowHeight(18);
+			this.transferHandler = WorkspaceTransferHandler.configureDragAndDrop(this.view.getTree(), new DefaultWorkspaceDropHandler());
 		}
 		return this.view;
 	}
