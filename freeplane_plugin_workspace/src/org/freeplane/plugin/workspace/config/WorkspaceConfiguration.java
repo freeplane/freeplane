@@ -20,6 +20,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLException;
+import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspacePreferences;
 import org.freeplane.plugin.workspace.config.creator.FilesystemFolderCreator;
 import org.freeplane.plugin.workspace.config.creator.FilesystemLinkCreator;
@@ -72,8 +73,9 @@ public class WorkspaceConfiguration {
 			setConfigValid(false);
 			return;
 		}
-
-		this.load(new URL("file:///" + configFile.getPath()));
+		WorkspaceController.getCurrentWorkspaceController().getTree().removeChildElements(WorkspaceController.getCurrentWorkspaceController().getTree());
+		//WorkspaceController.getCurrentWorkspaceController().getTree().getRoot().removeAllChildren();
+		this.load(configFile.toURI().toURL());
 		setConfigValid(true);
 	}
 

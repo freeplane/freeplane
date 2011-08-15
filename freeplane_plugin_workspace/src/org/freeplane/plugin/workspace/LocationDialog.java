@@ -36,6 +36,8 @@ public class LocationDialog extends JDialog {
 	 * Create the dialog.
 	 */
 	private void onCancelButton() {
+		WorkspaceController.getCurrentWorkspaceController().setWorkspaceLocation("");
+		WorkspaceController.getCurrentWorkspaceController().showWorkspaceView(false);
 		this.dispose();
 	}
 	

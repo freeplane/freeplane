@@ -25,6 +25,7 @@ import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.config.PopupMenus;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
+import org.freeplane.plugin.workspace.config.node.WorkspaceRoot;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceComponentHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceDropHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceKeyHandler;
@@ -108,7 +109,6 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 		Controller.getCurrentController().getResourceController()
 				.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, true);
 		WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();
-
 	}
 
 	public TreeView getWorkspaceView() {
@@ -182,6 +182,7 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 
 	private void initTree() {
 		this.tree = new IndexedTree(null);
+		this.tree.addElement(this.tree, new WorkspaceRoot("root"), "root", IndexedTree.AS_CHILD);
 	}
 
 	private void initializeConfiguration() {

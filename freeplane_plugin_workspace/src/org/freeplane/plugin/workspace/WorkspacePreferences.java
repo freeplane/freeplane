@@ -113,7 +113,7 @@ public class WorkspacePreferences {
 					LocationDialog locationDialog = new LocationDialog();
 					locationDialog.setVisible(true);
 				}
-				//WorkspaceController.getCurrentWorkspaceController().showWorkspaceView(true);
+				WorkspaceController.getCurrentWorkspaceController().showWorkspaceView(true);
 			}
 			else {
 				WorkspaceController.getCurrentWorkspaceController().showWorkspaceView(false);
