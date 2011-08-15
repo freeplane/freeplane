@@ -456,12 +456,25 @@ class ApplicationViewController extends ViewController {
 		if (!Compat.isMacOsX()) {
 			final ImageIcon mWindowIcon;
 			if (Compat.isLowerJdk(Compat.VERSION_1_6_0)) {
-				mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-				    "/images/Freeplane_frame_icon.png"));
+				if(ResourceController.getResourceController().getProperty("ApplicationName", "Freeplane").equals("Docear")) {
+					mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
+						    "/images/Docear16.png"));
+				}
+				else {
+					mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
+						    "/images/Freeplane_frame_icon.png"));
+				}
+				
 			}
 			else {
-				mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-				    "/images/Freeplane_frame_icon_32x32.png"));
+				if(ResourceController.getResourceController().getProperty("ApplicationName", "Freeplane").equals("Docear")) {
+					mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
+						    "/images/Docear32.png"));
+				}
+				else {
+					mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
+					    "/images/Freeplane_frame_icon_32x32.png"));
+				}
 			}
 			frame.setIconImage(mWindowIcon.getImage());
 		}

@@ -123,6 +123,28 @@ public class WorkspaceUtils {
 		saveCurrentConfiguration();
 	}
 
+	public static void createGroupNode(String groupName, final DefaultMutableTreeNode parent) {
+		if (groupName == null || groupName.trim().length() <= 0) {
+			return;
+		}
+
+		IndexedTree tree = WorkspaceController.getCurrentWorkspaceController().getTree();
+
+		DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) (parent == null ? WorkspaceController
+				.getCurrentWorkspaceController().getViewModel().getRoot() : parent);
+
+		GroupNode node = new GroupNode(stripIllegalChars(groupName));
+		node.setName(groupName);
+
+		Object key = tree.getKeyByUserObject(targetNode.getUserObject());
+		tree.addElement(key, node, IndexedTree.AS_CHILD);
+
+		WorkspaceController.getCurrentWorkspaceController().getViewModel().reload(targetNode);
+
+		saveCurrentConfiguration();
+
+	}
+
 	public static URI getWorkspaceBaseURI() {
 		URI ret = null;
 		ret = getWorkspaceBaseFile().toURI();
@@ -137,29 +159,8 @@ public class WorkspaceUtils {
 		return new File(location);
 	}
 
-	public static void createGroupNode(String groupName, final DefaultMutableTreeNode parent) {
-		if(groupName == null || groupName.trim().length() <= 0) {
-			return;
-		}
-		
-		DefaultMutableTreeNode targetNode = parent;
-
-		IndexedTree tree = WorkspaceController.getCurrentWorkspaceController().getTree();
-
-		GroupNode node = new GroupNode(stripIllegalChars(groupName));
-		node.setName(groupName);
-
-		Object key = tree.getKeyByUserObject(targetNode.getUserObject());
-		tree.addElement(key, node, IndexedTree.AS_CHILD);
-
-		WorkspaceController.getCurrentWorkspaceController().getViewModel().reload(targetNode);
-
-		saveCurrentConfiguration();
-		
-	}
-
 	public static String stripIllegalChars(String str) {
-		return str.replaceAll("^[a-zA-Z0-9]+", "");
+		return str.replaceAll("[^a-zA-Z0-9]+", "");
 	}
 
 }

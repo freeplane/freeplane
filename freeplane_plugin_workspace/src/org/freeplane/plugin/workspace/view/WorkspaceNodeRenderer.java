@@ -34,7 +34,7 @@ public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 			DEFAULT_ICON = new ImageIcon(this.getClass().getResource("/images/16x16/text-x-preview.png"));
 			WEB_ICON = new ImageIcon(this.getClass().getResource("/images/16x16/text-html-2.png"));
 			if(ResourceController.getResourceController().getProperty("ApplicationName", "Freeplane").equals("Docear")) {
-				MINDMAP_ICON = new ImageIcon(this.getClass().getResource("/images/16x16/docear16.png"));
+				MINDMAP_ICON = new ImageIcon(ResourceController.class.getResource("/images/docear16.png"));
 			}
 			else {
 				MINDMAP_ICON = new ImageIcon(ResourceController.class.getResource("/images/Freeplane_frame_icon.png"));
