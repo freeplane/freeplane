@@ -14,6 +14,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.PathProperty;
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.config.PopupMenus;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
@@ -21,20 +22,21 @@ import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 public class FilesystemFolderNode extends AWorkspaceNode implements TreeExpansionListener, IWorkspaceNodeEventListener {
 	private String folderPathProperty;
 	private URI folderPath;
-	
+
 	private boolean isUpToDate = false;
 
-	private static String POPUP_KEY = "filesystem_folder";
+	private static String POPUP_KEY = "/filesystem_folder";
 
 	public FilesystemFolderNode(String id) {
 		super(id);
+		initializePopup();
 	}
-	
+
 	@ExportAsAttribute("pathProperty")
 	public String getFolderPathProperty() {
 		return folderPathProperty;
 	}
-	
+
 	public void setFolderPathProperty(String pathProperty) {
 		this.folderPathProperty = pathProperty;
 	}
@@ -62,7 +64,7 @@ public class FilesystemFolderNode extends AWorkspaceNode implements TreeExpansio
 		if (getFolderPath() == null) {
 			return;
 		}
-		System.out.println("DOCEAR: folderPath: "+getFolderPath());
+		System.out.println("DOCEAR: folderPath: " + getFolderPath());
 
 		File folder;
 		try {
@@ -70,21 +72,20 @@ public class FilesystemFolderNode extends AWorkspaceNode implements TreeExpansio
 			try {
 				absoluteUrl = getFolderPath().toURL().openConnection().getURL();
 			}
-			catch(NullPointerException e) {
+			catch (NullPointerException e) {
 				return;
 			}
-			folder = new File(absoluteUrl.toURI());			
-			if (folder.isDirectory()) {				
+			folder = new File(absoluteUrl.toURI());
+			if (folder.isDirectory()) {
 				node.removeAllChildren();
 				WorkspaceController.getCurrentWorkspaceController().getFilesystemReader()
 						.scanFilesystem(node.getUserObject(), folder);
 				WorkspaceController.getCurrentWorkspaceController().getViewModel().reload(node);
 				isUpToDate = true;
 			}
-			
-			
+
 		}
-		catch (IOException e) {			
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 		catch (URISyntaxException e) {
@@ -98,12 +99,14 @@ public class FilesystemFolderNode extends AWorkspaceNode implements TreeExpansio
 	}
 
 	private void initializePopup() {
-		WorkspaceController.getCurrentWorkspaceController().getPopups().registerPopupMenu(POPUP_KEY);
+		PopupMenus popupMenu = WorkspaceController.getCurrentWorkspaceController().getPopups();
+		popupMenu.registerPopupMenuNodeDefault(POPUP_KEY);
+//		popupMenu.registerPopupMenu(POPUP_KEY, POPUP_KEY);
+		popupMenu.buildPopupMenu(POPUP_KEY);
 	}
 
 	public void handleEvent(WorkspaceNodeEvent event) {
-		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {
-			initializePopup();
+		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {			
 			Component component = (Component) event.getSource();
 
 			WorkspaceController.getCurrentWorkspaceController().getPopups()

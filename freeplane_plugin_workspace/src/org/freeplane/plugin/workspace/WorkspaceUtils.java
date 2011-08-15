@@ -9,9 +9,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.nio.channels.FileChannel;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -21,9 +19,9 @@ import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
-import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.config.node.FilesystemFolderNode;
 import org.freeplane.plugin.workspace.config.node.FilesystemLinkNode;
+import org.freeplane.plugin.workspace.config.node.GroupNode;
 
 /**
  * 
@@ -74,7 +72,7 @@ public class WorkspaceUtils {
 
 		IndexedTree tree = WorkspaceController.getCurrentWorkspaceController().getTree();
 
-		FilesystemFolderNode node = new FilesystemFolderNode(path.getPath().replace(File.separator, ""));
+		FilesystemFolderNode node = new FilesystemFolderNode(stripIllegalChars(path.getPath()));
 		String name = path.getName();
 
 		node.setName(name == null ? "folder" : name);
@@ -106,7 +104,7 @@ public class WorkspaceUtils {
 
 		IndexedTree tree = WorkspaceController.getCurrentWorkspaceController().getTree();
 
-		FilesystemLinkNode node = new FilesystemLinkNode(path.getPath().replace(File.separator, ""));
+		FilesystemLinkNode node = new FilesystemLinkNode(stripIllegalChars(path.getPath()));
 		String name = path.getName();
 
 		node.setName(name == null ? "fileLink" : name);
@@ -137,6 +135,31 @@ public class WorkspaceUtils {
 			location = ResourceController.getResourceController().getProperty("workspace_location_new");
 		}
 		return new File(location);
+	}
+
+	public static void createGroupNode(String groupName, final DefaultMutableTreeNode parent) {
+		if(groupName == null || groupName.trim().length() <= 0) {
+			return;
+		}
+		
+		DefaultMutableTreeNode targetNode = parent;
+
+		IndexedTree tree = WorkspaceController.getCurrentWorkspaceController().getTree();
+
+		GroupNode node = new GroupNode(stripIllegalChars(groupName));
+		node.setName(groupName);
+
+		Object key = tree.getKeyByUserObject(targetNode.getUserObject());
+		tree.addElement(key, node, IndexedTree.AS_CHILD);
+
+		WorkspaceController.getCurrentWorkspaceController().getViewModel().reload(targetNode);
+
+		saveCurrentConfiguration();
+		
+	}
+
+	public static String stripIllegalChars(String str) {
+		return str.replaceAll("^[a-zA-Z0-9]+", "");
 	}
 
 }
