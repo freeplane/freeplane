@@ -22,6 +22,8 @@ import javax.swing.JTree;
 import javax.swing.TransferHandler;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
+
+import org.freeplane.plugin.workspace.WorkspaceController;
 /**
  * 
  */
@@ -118,6 +120,9 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 	/* DropTarget Methods */
 
 	public final void drop(DropTargetDropEvent event) {
+		if(WorkspaceController.getCurrentWorkspaceController().getWorkspaceView().getTree().getPathForLocation(event.getLocation().x, event.getLocation().y) == null) {
+			return;
+		}
 		System.out.println("drop: " + event.getSource());
 		if(controller.canPerformAction(event)) {
 			if(controller.executeDrop(event)) {
