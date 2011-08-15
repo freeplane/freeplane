@@ -19,6 +19,7 @@
  */
 package org.freeplane.view.swing.features.time.mindmapmode;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
 import java.util.Date;
@@ -150,7 +151,7 @@ public class ReminderHook extends PersistentNodeHook {
 
 	private void registerTooltipProvider() {
 		modeController.addToolTipProvider(REMINDER_TOOLTIP, new ITooltipProvider() {
-			public String getTooltip(ModeController modeController, NodeModel node) {
+			public String getTooltip(ModeController modeController, NodeModel node, Component view) {
 				final ReminderExtension model = ReminderExtension.getExtension(node);
 				if(model == null)
 					return null;

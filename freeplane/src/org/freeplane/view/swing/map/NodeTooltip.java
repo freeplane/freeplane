@@ -11,7 +11,9 @@ import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.JToolTip;
 import javax.swing.SwingUtilities;
+import javax.swing.text.Document;
 import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.UITools;
@@ -24,6 +26,12 @@ public class NodeTooltip extends JToolTip {
 		tip.setContentType("text/html");
 		tip.setEditable(false);
 		tip.setMargin(new Insets(0, 0, 0, 0));
+		final HTMLDocument document = (HTMLDocument) tip.getDocument();
+		final StyleSheet styleSheet = document.getStyleSheet();
+		styleSheet.removeStyle("p");
+		styleSheet.removeStyle("body");
+		styleSheet.addRule("p {margin-top:0;}\n");
+
 		final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(tip);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);

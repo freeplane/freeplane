@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.mode;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.util.Collection;
 import java.util.HashMap;
@@ -43,6 +44,7 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.ui.INodeViewLifeCycleListener;
+import org.freeplane.view.swing.map.MainView;
 
 /**
  * Derive from this class to implement the Controller for your mode. Overload
@@ -333,7 +335,7 @@ public class ModeController extends AController {
 	public boolean canEdit() {
 		return false;
 	}
-	public String createToolTip(final NodeModel node) {
+	public String createToolTip(final NodeModel node, Component view) {
 		// perhaps we should use the solution presented in the 3rd answer at
 		// http://stackoverflow.com/questions/3355469/1-pixel-table-border-in-jtextpane-using-html
 		// html/css example: http://www.wer-weiss-was.de/theme35/article3555660.html
@@ -343,7 +345,7 @@ public class ModeController extends AController {
 		final StringBuilder text = new StringBuilder("<html><head>"+style+"</head><body>");
 		boolean tooltipSet = false;
 		for (final ITooltipProvider provider : toolTip.values()) {
-			String value = provider.getTooltip(this, node);
+			String value = provider.getTooltip(this, node, view);
 			if (value == null) {
 				continue;
 			}

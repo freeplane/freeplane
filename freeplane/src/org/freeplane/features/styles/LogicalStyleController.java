@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.styles;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.lang.ref.WeakReference;
 import java.util.Collection;
@@ -92,7 +93,7 @@ public class LogicalStyleController implements IExtension {
 			}
 		});
 		modeController.addToolTipProvider(STYLE_TOOLTIP, new ITooltipProvider() {
-			public String getTooltip(ModeController modeController, NodeModel node) {
+			public String getTooltip(ModeController modeController, NodeModel node, Component view) {
 				if(!ResourceController.getResourceController().getBooleanProperty("show_styles_in_tooltip"))
 					return null;
 				final Collection<IStyle> styles = getStyles(node);

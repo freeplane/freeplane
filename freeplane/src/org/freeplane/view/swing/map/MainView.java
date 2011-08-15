@@ -471,7 +471,7 @@ public abstract class MainView extends ZoomableLabel {
 		final NodeView nodeView = getNodeView();
 		final ModeController modeController = nodeView.getMap().getModeController();
 		final NodeModel node = nodeView.getModel();
-		return modeController.createToolTip(node);
+		return modeController.createToolTip(node, this);
     }
 
 	@Override
