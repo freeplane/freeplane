@@ -51,6 +51,7 @@
 			</menu_submenu>
 		<menu_submenu name="nodes" name_ref="menu_nodes">
 			<menu_action action="SetShortenerStateAction"/>	
+			<menu_action action="EnterPassword" />
 			</menu_submenu>
 		<menu_submenu name="navigate" name_ref="menu_navigate">
 			<menu_category name="navigate">
@@ -164,5 +165,6 @@
 			<menu_action action="UnfoldAllAction"/>
 			<menu_action action="FoldAllAction"/>
 		</menu_category>
+		<menu_action action="EnterPassword" />
 	</menu_category>
 </menu_structure>
