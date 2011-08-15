@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Properties;
@@ -21,6 +22,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.config.PopupMenus;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceComponentHandler;
@@ -49,8 +51,8 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 	private ConfigurationWriter configWriter;
 	private final PopupMenus popups;
 	private WorkspaceTransferHandler transferHandler;
-	private IndexedTree tree;	
-	
+	private IndexedTree tree;
+
 	private String workspaceLocation;
 
 	/***********************************************************************************
@@ -58,20 +60,19 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 	 **********************************************************************************/
 
 	public WorkspaceController() {
-		
 		currentWorkspace = this;
-		LogUtils.info("Initializing WorkspaceEnvironment");	
+		LogUtils.info("Initializing WorkspaceEnvironment");
 		initTree();
 		initializePreferences();
-		
+
 		this.popups = new PopupMenus();
-		
+
 		initializeConfiguration();
-		initializeView();		
+		initializeView();
 		this.fsReader = new FilesystemReader(getFileTypeManager());
 		this.configWriter = new ConfigurationWriter(this);
 	}
-	
+
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
@@ -95,19 +96,19 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 
 	public String getWorkspaceLocation() {
 		if (this.workspaceLocation == null) {
-			this.workspaceLocation = ResourceController.getResourceController().getProperty(WorkspacePreferences.WORKSPACE_LOCATION);
+			this.workspaceLocation = ResourceController.getResourceController().getProperty(
+					WorkspacePreferences.WORKSPACE_LOCATION);
 		}
 		return workspaceLocation;
 	}
 
 	public void setWorkspaceLocation(String workspaceLocation) {
-		this.workspaceLocation = workspaceLocation;		
-		ResourceController.getResourceController().setProperty(WorkspacePreferences.WORKSPACE_LOCATION_NEW,
-				workspaceLocation);
+		this.workspaceLocation = workspaceLocation;
+		ResourceController.getResourceController().setProperty(WorkspacePreferences.WORKSPACE_LOCATION_NEW, workspaceLocation);
 		Controller.getCurrentController().getResourceController()
 				.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, true);
 		WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();
-			
+
 	}
 
 	public TreeView getWorkspaceView() {
@@ -116,11 +117,12 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 			this.view.addComponentListener(new DefaultWorkspaceComponentHandler());
 			this.view.getTree().addMouseListener(new DefaultWorkspaceMouseHandler());
 			this.view.getTree().addKeyListener(new DefaultWorkspaceKeyHandler());
-			this.transferHandler = WorkspaceTransferHandler.configureDragAndDrop(this.view.getTree(), new DefaultWorkspaceDropHandler());
+			this.transferHandler = WorkspaceTransferHandler.configureDragAndDrop(this.view.getTree(),
+					new DefaultWorkspaceDropHandler());
 		}
 		return this.view;
 	}
-	
+
 	public DefaultMutableTreeNode getWorkspaceRoot() {
 		return getTree().getRoot();
 	}
@@ -128,7 +130,7 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 	public JTree getWorspaceTree() {
 		return this.getWorkspaceView().getTree();
 	}
-	
+
 	public void showWorkspaceView(boolean visible) {
 		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
 		resCtrl.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, visible);
@@ -170,7 +172,7 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 
 	public void refreshWorkspace() {
 		initTree();
-		initializeConfiguration();		
+		initializeConfiguration();
 		reloadView();
 	}
 
@@ -178,11 +180,10 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 		return tree;
 	}
 
-	
 	private void initTree() {
 		this.tree = new IndexedTree(null);
 	}
-	
+
 	private void initializeConfiguration() {
 		resetWorkspaceView();
 		setConfig(new WorkspaceConfiguration());
@@ -190,12 +191,14 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 			LocationDialog locationDialog = new LocationDialog();
 			locationDialog.setVisible(true);
 		}
-			
-		if (!getConfig().isConfigValid()) {			
+
+		if (!getConfig().isConfigValid()) {
 			showWorkspaceView(false);
 			return;
 		}
 
+		UrlManager.getController().setLastCurrentDir(
+				new File(WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation()));
 	}
 
 	private Container getOldContentPane() {
@@ -222,7 +225,7 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 			this.WSContentPane.add(splitPane);
 		}
 		return this.WSContentPane;
-	}	
+	}
 
 	private void setWorkspaceWidth(int width) {
 		JSplitPane splitPane = (JSplitPane) (getWSContentPane().getComponent(0));
@@ -232,8 +235,8 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 		splitPane.setDividerSize((width > 0 ? 4 : 0));
 		splitPane.setEnabled(width > 0);
 
-	}	
-	
+	}
+
 	private void resetWorkspaceView() {
 		this.config = null;
 		this.view = null;
@@ -277,13 +280,14 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 			Properties props = new Properties();
 			try {
 				props.load(this.getClass().getResourceAsStream("filenodetypes.properties"));
-				
-				Class<?>[] args = { };
+
+				Class<?>[] args = {};
 				for (Object key : props.keySet()) {
 					try {
-						//TODO: IMPLEMENT WITH REFLECTIONS - HAS TO WORK WITH JAR FILES
-						Class<?> clazz =  org.freeplane.plugin.workspace.io.creator.DefaultFileNodeCreator.class;
-						
+						// TODO: IMPLEMENT WITH REFLECTIONS - HAS TO WORK WITH
+						// JAR FILES
+						Class<?> clazz = org.freeplane.plugin.workspace.io.creator.DefaultFileNodeCreator.class;
+
 						if (key.toString().equals("org.freeplane.plugin.workspace.io.creator.FolderFileNodeCreator")) {
 							clazz = org.freeplane.plugin.workspace.io.creator.FolderFileNodeCreator.class;
 						}
@@ -293,17 +297,18 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 						else if (key.toString().equals("org.freeplane.plugin.workspace.io.creator.MindMapFileNodeCreator")) {
 							clazz = org.freeplane.plugin.workspace.io.creator.MindMapFileNodeCreator.class;
 						}
-							
-//						Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass(key.toString());
-						
+
+						// Class<?> clazz =
+						// Thread.currentThread().getContextClassLoader().loadClass(key.toString());
+
 						AFileNodeCreator handler = (AFileNodeCreator) clazz.getConstructor(args).newInstance();
 						handler.setFileTypeList(props.getProperty(key.toString(), ""), "\\|");
 						this.fileTypeManager.addFileHandler(handler);
 					}
-//					catch (ClassNotFoundException e) {
-//						e.printStackTrace();
-//						System.out.println("Class not found [" + key + "]");
-//					}
+					// catch (ClassNotFoundException e) {
+					// e.printStackTrace();
+					// System.out.println("Class not found [" + key + "]");
+					// }
 					catch (ClassCastException e) {
 						System.out.println("Class [" + key + "] is not of type: PhysicalNode");
 					}
@@ -325,16 +330,15 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 
-	public void propertyChanged(String propertyName, String newValue, String oldValue) {		
+	public void propertyChanged(String propertyName, String newValue, String oldValue) {
 		if (propertyName.equals(WorkspacePreferences.WORKSPACE_LOCATION_NEW)) {
-			if (newValue != null && newValue.trim().length()>0) {
+			if (newValue != null && newValue.trim().length() > 0) {
 				Controller.getCurrentController().getResourceController()
 						.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, true);
 				refreshWorkspace();
 			}
 		}
-	}	
-	
+	}
 
 	/***********************************************************************************
 	 * INTERNAL CLASSES
@@ -348,7 +352,6 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 			this.removeAll();
 			this.add(comp);
 		}
-	}	
-	
+	}
 
 }
