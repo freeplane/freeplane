@@ -647,9 +647,9 @@ public class StyleEditorPanel extends JPanel {
 			addAutomaticLayout(rightBuilder);
 			addStyleBox(rightBuilder);
 		}
-		mNodeStyleButton = addStyleButton(rightBuilder, "node_styles", modeController.getAction(ManageNodeConditionalStylesAction.NAME));
+		mNodeStyleButton = addStyleButton(rightBuilder, "actual_node_styles", modeController.getAction(ManageNodeConditionalStylesAction.NAME));
 		if (addStyleBox) {
-			mMapStyleButton = addStyleButton(rightBuilder, "map_styles", modeController.getAction(ManageMapConditionalStylesAction.NAME));
+			mMapStyleButton = addStyleButton(rightBuilder, "actual_map_styles", modeController.getAction(ManageMapConditionalStylesAction.NAME));
 		}
 		mControls = getControls();
 		for (final IPropertyControl control : mControls) {
