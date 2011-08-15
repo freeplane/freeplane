@@ -76,9 +76,9 @@ public class DefaultWorkspaceDropHandler implements IWorkspaceDragnDropControlle
 				event.getDropTargetContext().dropComplete(true);
 				return true;
 			}
-			if (transferable.isDataFlavorSupported(WorkspaceTransferable.WORKSPACE_GNOME_FILE_LIST_FLAVOR)) {
+			if (transferable.isDataFlavorSupported(WorkspaceTransferable.WORKSPACE_URI_LIST_FLAVOR)) {
 				event.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-				String list = (String) transferable.getTransferData(WorkspaceTransferable.WORKSPACE_GNOME_FILE_LIST_FLAVOR);
+				String list = (String) transferable.getTransferData(WorkspaceTransferable.WORKSPACE_URI_LIST_FLAVOR);
 				System.out.println(list);
 				if (!list.startsWith("file://")) {
 					return false;

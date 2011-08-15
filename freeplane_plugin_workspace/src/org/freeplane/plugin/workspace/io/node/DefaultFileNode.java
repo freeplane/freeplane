@@ -1,6 +1,7 @@
 package org.freeplane.plugin.workspace.io.node;
 
 import java.awt.Component;
+import java.awt.datatransfer.Transferable;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -9,6 +10,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Vector;
 
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
@@ -17,11 +22,13 @@ import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.dnd.IWorkspaceTransferableCreator;
+import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
 
 /**
  * 
  */
-public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEventListener{
+public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEventListener, IWorkspaceTransferableCreator {
 	
 	private File file;
 	private String fileExtension;
@@ -129,6 +136,27 @@ public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEve
 		}	
 	}
 	
+	/**
+	 * @param file
+	 * @throws IOException 
+	 */
+	public void copyHere(File file) throws IOException {
+		if(getFile().isDirectory()) {
+			copyFileTo(file, getFile());
+		} 
+		else {
+			copyFileTo(file, getFile().getParentFile());
+		}
+		
+	
+		
+	}
+	
+	public void moveHere(File file) throws IOException {
+		copyHere(file);
+		if(!file.delete()) throw new IOException("Could not delete File "+ file);
+	}
+	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
@@ -160,25 +188,22 @@ public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEve
 	public String getTagName() {
 		return null;
 	}
-
-	/**
-	 * @param file
-	 * @throws IOException 
-	 */
-	public void copyHere(File file) throws IOException {
-		if(getFile().isDirectory()) {
-			copyFileTo(file, getFile());
-		} 
-		else {
-			copyFileTo(file, getFile().getParentFile());
+	
+	public Transferable getTransferable() {
+		WorkspaceTransferable transferable = new WorkspaceTransferable();
+		try {
+			URI uri = getFile().toURL().openConnection().getURL().toURI().normalize();
+			transferable.addData(WorkspaceTransferable.WORKSPACE_URI_LIST_FLAVOR, uri.toString());
+			List<File> fileList = new Vector<File>();
+			fileList.add(new File(uri));
+			transferable.addData(WorkspaceTransferable.WORKSPACE_FILE_LIST_FLAVOR, fileList);
 		}
-		
-	
-		
-	}
-	
-	public void moveHere(File file) throws IOException {
-		copyHere(file);
-		if(!file.delete()) throw new IOException("Could not delete File "+ file);
+		catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		return transferable;
 	}
 }

@@ -24,9 +24,15 @@ public abstract class AConfigurationNodeCreator implements IElementDOMHandler {
 		String id = attributes.getAttribute("id", null);
 		if (id == null) {
 			if(WorkspaceCreator.class.isInstance(this)) {
-				tree.getRoot().setUserObject(getNode(id, attributes));
+//				tree.getRoot().setUserObject(getNode(id, attributes));
+				Path path = new Path(parent == null ? null : parent.toString());
+				path.setName("root");
+				tree.addElement(path.parentPath == null ? tree : path.parentPath, this, path.path, IndexedTree.AS_CHILD);				
+				return path;
 			} 
-			return parent == null ? Path.emptyPath() : parent;
+			else {
+				return parent == null ? Path.emptyPath() : parent;
+			}
 		}
 		final Path path = new Path(parent == null ? null : parent.toString());
 		path.setName(id);
