@@ -192,7 +192,7 @@ public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEve
 	public Transferable getTransferable() {
 		WorkspaceTransferable transferable = new WorkspaceTransferable();
 		try {
-			URI uri = getFile().toURL().openConnection().getURL().toURI().normalize();
+			URI uri = getFile().toURI().toURL().openConnection().getURL().toURI().normalize();
 			transferable.addData(WorkspaceTransferable.WORKSPACE_URI_LIST_FLAVOR, uri.toString());
 			List<File> fileList = new Vector<File>();
 			fileList.add(new File(uri));
