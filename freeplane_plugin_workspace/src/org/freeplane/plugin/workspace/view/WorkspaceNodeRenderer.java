@@ -26,7 +26,6 @@ public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 	private static Icon MINDMAP_ICON;
 	private static Icon DEFAULT_ICON;
 	private static Icon WEB_ICON;
-	private static Icon DOCEAR_ICON;
 
 	public WorkspaceNodeRenderer() {
 		if (ACROBAT_ICON == null) {
@@ -34,9 +33,14 @@ public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 			GRAPHICS_ICON = new ImageIcon(this.getClass().getResource("/images/16x16/image-x-generic.png"));
 			DEFAULT_ICON = new ImageIcon(this.getClass().getResource("/images/16x16/text-x-preview.png"));
 			WEB_ICON = new ImageIcon(this.getClass().getResource("/images/16x16/text-html-2.png"));
-			DOCEAR_ICON = new ImageIcon(this.getClass().getResource("/images/16x16/docear16.png"));
+			if(ResourceController.getResourceController().getProperty("ApplicationName", "Freeplane").equals("Docear")) {
+				MINDMAP_ICON = new ImageIcon(this.getClass().getResource("/images/16x16/docear16.png"));
+			}
+			else {
+				MINDMAP_ICON = new ImageIcon(ResourceController.class.getResource("/images/Freeplane_frame_icon.png"));
+			}
 			
-			MINDMAP_ICON = new ImageIcon(ResourceController.class.getResource("/images/Freeplane_frame_icon.png"));
+			
 			
 		}
 	}
@@ -99,7 +103,7 @@ public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 			}
 		}
 		else if (userObject instanceof FilesystemMindMapLinkNode) {
-			renderer.setLeafIcon(DOCEAR_ICON);
+			renderer.setLeafIcon(MINDMAP_ICON);
 		}
 		else if (userObject instanceof FilesystemLinkNode) {
 			renderer.setLeafIcon(DEFAULT_ICON);
