@@ -25,6 +25,10 @@ public class WorkspaceTreeModel extends DefaultTreeModel {
 		super(root, false);
 	}
 	
+	public Object getRoot() {
+        return root.getChildAt(0);
+    }
+	
 	public void nodeChanged(TreeNode node) {
 		super.nodeChanged(node);
 		LogUtils.info("wsNode changed: "+node);
