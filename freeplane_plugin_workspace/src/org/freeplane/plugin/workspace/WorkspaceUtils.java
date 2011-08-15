@@ -36,21 +36,23 @@ public class WorkspaceUtils {
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
-	
+
 	public static void saveCurrentConfiguration() {
-		String temp = WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation() + File.separator + "workspace_temp.xml";
-		String config = WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation() + File.separator + "workspace.xml";
-		
+		String temp = WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation() + File.separator
+				+ "workspace_temp.xml";
+		String config = WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation() + File.separator
+				+ "workspace.xml";
+
 		try {
 			WorkspaceController.getCurrentWorkspaceController().saveConfigurationAsXML(new FileWriter(temp));
-			
+
 			FileChannel from = new FileInputStream(temp).getChannel();
 			FileChannel to = new FileOutputStream(config).getChannel();
-			
+
 			to.transferFrom(from, 0, from.size());
 			to.close();
 			from.close();
-			
+
 			File tempFile = new File(temp);
 			tempFile.delete();
 		}
@@ -58,82 +60,83 @@ public class WorkspaceUtils {
 			e1.printStackTrace();
 		}
 	}
-	
+
 	public static void createFilesystemFolderNode(final File path, final DefaultMutableTreeNode parent) {
-		if(!path.isDirectory()) {
+		if (!path.isDirectory()) {
 			LogUtils.warn("the given path is no folder.");
 			return;
 		}
-		
+
 		DefaultMutableTreeNode targetNode = parent;
-		if(parent.getUserObject() instanceof FilesystemFolderNode) { 
+		if (parent.getUserObject() instanceof FilesystemFolderNode) {
 			targetNode = (DefaultMutableTreeNode) parent.getParent();
 		}
-		
+
 		IndexedTree tree = WorkspaceController.getCurrentWorkspaceController().getTree();
-		
+
 		FilesystemFolderNode node = new FilesystemFolderNode(path.getPath().replace(File.separator, ""));
 		String name = path.getName();
-		
-		node.setName(name==null? "folder" : name);
-				
-		if(path!=null) {
-			LogUtils.info("FilesystemPath: "+path);
-			node.setFolderPath(MLinkController.toLinkTypeDependantURI(getWorkspaceBaseFile(), path, LinkController.LINK_RELATIVE_TO_WORKSPACE));
+
+		node.setName(name == null ? "folder" : name);
+
+		if (path != null) {
+			LogUtils.info("FilesystemPath: " + path);
+			node.setFolderPath(MLinkController.toLinkTypeDependantURI(getWorkspaceBaseFile(), path,
+					LinkController.LINK_RELATIVE_TO_WORKSPACE));
 		}
 
 		Object key = tree.getKeyByUserObject(targetNode.getUserObject());
 		tree.addElement(key, node, IndexedTree.AS_CHILD);
-		
+
 		WorkspaceController.getCurrentWorkspaceController().getViewModel().reload(targetNode);
-		
+
 		saveCurrentConfiguration();
 	}
 
-	
-	
 	public static void createFilesystemLinkNode(final File path, final DefaultMutableTreeNode parent) {
-		if(!path.isFile()) {
+		if (!path.isFile()) {
 			LogUtils.warn("the given path is no file.");
 			return;
 		}
-		
+
 		DefaultMutableTreeNode targetNode = parent;
-		if(parent.getUserObject() instanceof FilesystemLinkNode) { 
+		if (parent.getUserObject() instanceof FilesystemLinkNode) {
 			targetNode = (DefaultMutableTreeNode) parent.getParent();
 		}
-		
+
 		IndexedTree tree = WorkspaceController.getCurrentWorkspaceController().getTree();
-		
+
 		FilesystemLinkNode node = new FilesystemLinkNode(path.getPath().replace(File.separator, ""));
 		String name = path.getName();
-		
-		node.setName(name==null? "fileLink" : name);
-				
-		if(path!=null) {
-			LogUtils.info("FilesystemPath: "+path);			
-			node.setLinkPath(MLinkController.toLinkTypeDependantURI(getWorkspaceBaseFile(), path, LinkController.LINK_RELATIVE_TO_WORKSPACE));
+
+		node.setName(name == null ? "fileLink" : name);
+
+		if (path != null) {
+			LogUtils.info("FilesystemPath: " + path);
+			node.setLinkPath(MLinkController.toLinkTypeDependantURI(getWorkspaceBaseFile(), path,
+					LinkController.LINK_RELATIVE_TO_WORKSPACE));
 		}
 
 		Object key = tree.getKeyByUserObject(targetNode.getUserObject());
 		tree.addElement(key, node, IndexedTree.AS_CHILD);
-		
+
 		WorkspaceController.getCurrentWorkspaceController().getViewModel().reload(targetNode);
-		
+
 		saveCurrentConfiguration();
 	}
-	
+
 	public static URI getWorkspaceBaseURI() {
 		URI ret = null;
 		ret = getWorkspaceBaseFile().toURI();
 		return ret;
 	}
-	
-	public static File getWorkspaceBaseFile(){
+
+	public static File getWorkspaceBaseFile() {
 		String location = ResourceController.getResourceController().getProperty("workspace_location");
-		if (location==null || location.length()==0) {
+		if (location == null || location.length() == 0) {
 			location = ResourceController.getResourceController().getProperty("workspace_location_new");
 		}
 		return new File(location);
 	}
+
 }
