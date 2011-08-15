@@ -76,6 +76,8 @@ class ReducedAttributeTableModelDecorator extends AttributeTableModelDecoratorAd
 	}
 
 	public Object getValueAt(final int row, final int col) {
+		if(index == null)
+			return null;
 		return getNodeAttributeModel().getValueAt(calcRow(row), col);
 	}
 

@@ -392,20 +392,22 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 	private void initConditions() {
 		filterConditions = new DefaultComboBoxModel();
-		try {
-			loadConditions(filterConditions, pathToFilterFile);
-		}
-		catch (final Exception e) {
-			LogUtils.severe(e);
-		}
 		addStandardConditions();
 		filterConditions.setSelectedItem(filterConditions.getElementAt(0));
 		filterConditions.addListDataListener(filterChangeListener);
 	}
 
+	public void loadDefaultConditions() {
+	    try {
+			loadConditions(filterConditions, pathToFilterFile);
+		}
+		catch (final Exception e) {
+			LogUtils.severe(e);
+		}
+    }
+
 	void loadConditions(final DefaultComboBoxModel filterConditionModel, final String pathToFilterFile)
 	        throws IOException {
-		filterConditionModel.removeAllElements();
 		try {
 			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
 			final IXMLReader reader = new StdXMLReader(new BufferedInputStream(new FileInputStream(pathToFilterFile)));

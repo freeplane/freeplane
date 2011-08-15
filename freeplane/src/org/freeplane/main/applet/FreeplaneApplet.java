@@ -143,6 +143,7 @@ public class FreeplaneApplet extends JApplet {
 			IconController.install();
 			final BModeController browseController = BModeControllerFactory.createModeController();
 			final Set<String> emptySet = Collections.emptySet();
+			FilterController.getController(controller).loadDefaultConditions();
 			browseController.updateMenus("/xml/appletMenu.xml", emptySet);
 			controller.addAction(new ShowSelectionAsRectangleAction());
 			controller.addAction(new NextNodeAction(Direction.FORWARD));

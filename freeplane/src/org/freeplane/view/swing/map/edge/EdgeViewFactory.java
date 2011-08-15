@@ -22,6 +22,7 @@ package org.freeplane.view.swing.map.edge;
 import java.awt.Component;
 
 import org.freeplane.features.edge.EdgeStyle;
+import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -32,6 +33,9 @@ public class EdgeViewFactory {
 	final private static EdgeViewFactory instance = new EdgeViewFactory();
 
 	public EdgeView getEdge(final NodeView source, final NodeView target, Component paintedComponent) {
+		if (source.getMap().getLayoutType() == MapViewLayout.OUTLINE) {
+			return new OutlineEdgeView(source, target, paintedComponent);
+		}
 		final EdgeStyle edgeStyle = target.getEdgeStyle();
 		if (edgeStyle.equals(EdgeStyle.EDGESTYLE_LINEAR)) {
 			return new LinearEdgeView(source, target, paintedComponent);

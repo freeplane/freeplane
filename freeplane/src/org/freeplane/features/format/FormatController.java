@@ -51,7 +51,6 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -118,19 +117,19 @@ public class FormatController implements IExtension {
 	}
 
 	public static FormatController getController() {
-		return getController(Controller.getCurrentModeController());
+		return getController(Controller.getCurrentController());
 	}
 
-	public static FormatController getController(ModeController modeController) {
-		return (FormatController) modeController.getExtension(FormatController.class);
+	public static FormatController getController(Controller controller) {
+		return (FormatController) controller.getExtension(FormatController.class);
 	}
 	
 	public static void install(final FormatController formatController) {
-		final ModeController modeController = Controller.getCurrentModeController();
-		modeController.addExtension(FormatController.class, formatController);
+		final Controller controller = Controller.getCurrentController();
+		controller.addExtension(FormatController.class, formatController);
 		try {
-			final Method getOptionPanelBuilder = modeController.getClass().getMethod("getOptionPanelBuilder");
-			final Object optionPanelBuilder = getOptionPanelBuilder.invoke(modeController);
+			final Method getOptionPanelBuilder = controller.getClass().getMethod("getOptionPanelBuilder");
+			final Object optionPanelBuilder = getOptionPanelBuilder.invoke(controller);
 			((OptionPanelBuilder) optionPanelBuilder).addValidator(formatController.createValidator());
 		}
 		catch (Exception e) {
@@ -323,7 +322,9 @@ public class FormatController implements IExtension {
 			}
 		}
 		catch (Exception e) {
-			LogUtils.warn("cannot format " + obj.toString() + " with " + formatString + ": " + e.getMessage());
+			// Be quiet, just like Excel does...
+			// LogUtils.warn("cannot format '" + StringUtils.abbreviate(obj.toString(), 20) + "' with " + formatString
+			//               + ": " + e.getMessage());
 			return obj;
 		}
 	}

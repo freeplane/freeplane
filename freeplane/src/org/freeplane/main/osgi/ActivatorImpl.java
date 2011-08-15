@@ -34,6 +34,7 @@ import java.util.jar.Manifest;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.main.application.FreeplaneStarter;
@@ -226,6 +227,7 @@ class ActivatorImpl implements BundleActivator {
 				for(Bundle bundle:bundles){					
 					plugins.add(bundle.getSymbolicName());
 				}
+				FilterController.getController(controller).loadDefaultConditions();
 				starter.buildMenus(controller, plugins);
 				starter.createFrame(getCallParameters());
 			}
