@@ -2,7 +2,8 @@ package org.docear.plugin.pdfutilities.features;
 
 import java.io.IOException;
 
-import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel.AnnotationType;
+import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
+import org.docear.plugin.pdfutilities.util.Tools;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementDOMHandler;
@@ -14,7 +15,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public class PdfAnnotationExtensionBuilder implements IElementDOMHandler, IExtensionElementWriter {
+public class AnnotationXmlBuilder implements IElementDOMHandler, IExtensionElementWriter {
 	
 	private static final String ANNOTATION_PAGE_XML_TAG = "page";
 	private static final String ANNOTATION_TYPE_XML_TAG = "type";
@@ -23,21 +24,21 @@ public class PdfAnnotationExtensionBuilder implements IElementDOMHandler, IExten
 	private static final String PDF_ANNOTATION_XML_TAG = "pdf_annotation";
 	
 	
-	public PdfAnnotationExtensionBuilder(){		
+	public AnnotationXmlBuilder(){		
 	}
 	
 	public void registerBy(final ReadManager reader, final WriteManager writer) {
 		reader.addElementHandler(PDF_ANNOTATION_XML_TAG, this);
 		registerAttributeHandlers(reader);
-		writer.addExtensionElementWriter(PdfAnnotationExtensionModel.class, this);		
+		writer.addExtensionElementWriter(AnnotationModel.class, this);		
 	}
 
 	private void registerAttributeHandlers(ReadManager reader) {
 		reader.addAttributeHandler(PDF_ANNOTATION_XML_TAG, ANNOTATION_TYPE_XML_TAG, new IAttributeHandler() {
 			
 			public void setAttribute(Object node, String value) {
-				final PdfAnnotationExtensionModel annotationModel = (PdfAnnotationExtensionModel) node;
-				annotationModel.setAnnotationType(PdfAnnotationExtensionModel.AnnotationType.valueOf(value));				
+				final AnnotationModel annotation = (AnnotationModel) node;
+				annotation.setAnnotationType(AnnotationModel.AnnotationType.valueOf(value));				
 			}
 			
 		});
@@ -45,9 +46,9 @@ public class PdfAnnotationExtensionBuilder implements IElementDOMHandler, IExten
 		reader.addAttributeHandler(PDF_ANNOTATION_XML_TAG, ANNOTATION_PAGE_XML_TAG, new IAttributeHandler() {
 			
 			public void setAttribute(Object node, String value) {
-				final PdfAnnotationExtensionModel annotationModel = (PdfAnnotationExtensionModel) node;
+				final AnnotationModel annotation = (AnnotationModel) node;
 				try{
-					annotationModel.setPage(Integer.parseInt(value));
+					annotation.setPage(Integer.parseInt(value));
 				} catch(NumberFormatException e){
 					LogUtils.warn("Could not Parse Pdf Annotation Page Number.");
 				}
@@ -58,9 +59,9 @@ public class PdfAnnotationExtensionBuilder implements IElementDOMHandler, IExten
 		reader.addAttributeHandler(PDF_ANNOTATION_XML_TAG, ANNOTATION_OBJECT_NUMBER_XML_TAG, new IAttributeHandler() {
 			
 			public void setAttribute(Object node, String value) {
-				final PdfAnnotationExtensionModel annotationModel = (PdfAnnotationExtensionModel) node;
+				final AnnotationModel annotation = (AnnotationModel) node;
 				try{
-					annotationModel.setObjectNumber(Integer.parseInt(value));
+					annotation.setObjectNumber(Integer.parseInt(value));
 				} catch(NumberFormatException e){
 					LogUtils.warn("Could not Parse Pdf Annotation Page Number.");
 				}
@@ -71,9 +72,9 @@ public class PdfAnnotationExtensionBuilder implements IElementDOMHandler, IExten
 		reader.addAttributeHandler(PDF_ANNOTATION_XML_TAG, ANNOTATION_GENERATION_NUMBER_XML_TAG, new IAttributeHandler() {
 			
 			public void setAttribute(Object node, String value) {
-				final PdfAnnotationExtensionModel annotationModel = (PdfAnnotationExtensionModel) node;
+				final AnnotationModel annotation = (AnnotationModel) node;
 				try{
-					annotationModel.setGenerationNumber(Integer.parseInt(value));
+					annotation.setGenerationNumber(Integer.parseInt(value));
 				} catch(NumberFormatException e){
 					LogUtils.warn("Could not Parse Pdf Annotation Page Number.");
 				}
@@ -85,12 +86,14 @@ public class PdfAnnotationExtensionBuilder implements IElementDOMHandler, IExten
 
 	public Object createElement(Object parent, String tag, XMLElement attributes) {
 		if (tag.equals(PDF_ANNOTATION_XML_TAG)) {
-			final PdfAnnotationExtensionModel oldAnnotationModel = PdfAnnotationExtensionModel.getModel((NodeModel) parent);
+			final AnnotationModel oldAnnotationModel = AnnotationController.getModel((NodeModel) parent, false);
 			if(oldAnnotationModel != null){
 				return oldAnnotationModel;
 			}
 			else{
-				return new PdfAnnotationExtensionModel();				
+				AnnotationModel model = new AnnotationModel();
+				model.setUri(Tools.getAbsoluteUri((NodeModel) parent));
+				return new AnnotationModel();				
 			}
 		}
 		return null;
@@ -99,9 +102,9 @@ public class PdfAnnotationExtensionBuilder implements IElementDOMHandler, IExten
 	public void endElement(final Object parent, final String tag, final Object userObject, final XMLElement dom) {
 		if (parent instanceof NodeModel) {
 			final NodeModel node = (NodeModel) parent;
-			if (userObject instanceof PdfAnnotationExtensionModel) {
-				final PdfAnnotationExtensionModel annotationModel = (PdfAnnotationExtensionModel) userObject;
-				PdfAnnotationExtensionModel.setModel(node, annotationModel);
+			if (userObject instanceof AnnotationModel) {
+				final AnnotationModel annotation = (AnnotationModel) userObject;
+				AnnotationController.setModel(node, annotation);
 			}
 		}
 	}
@@ -112,7 +115,7 @@ public class PdfAnnotationExtensionBuilder implements IElementDOMHandler, IExten
 
 	public void writeContentImpl(final ITreeWriter writer, final NodeModel node, final IExtension extension) throws IOException {
 		
-		final PdfAnnotationExtensionModel model = extension != null ? (PdfAnnotationExtensionModel) extension : PdfAnnotationExtensionModel.getModel(node);
+		final AnnotationModel model = extension != null ? (AnnotationModel) extension : AnnotationController.getModel(node, false);
 		if (model == null) {
 			return;
 		}

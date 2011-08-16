@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
-import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel;
+import org.docear.plugin.pdfutilities.features.AnnotationModel;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
@@ -62,16 +62,16 @@ public class DocearPasteAction extends AFreeplaneAction {
 	            	boolean importAnnotations = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.AUTO_IMPORT_ANNOTATIONS_KEY);
 	                if(pdfFileFilter.accept(file) && importAnnotations){
 	                	PdfAnnotationImporter importer = new PdfAnnotationImporter();
-	                    List<PdfAnnotationExtensionModel> annotations = importer.importAnnotations(file);
+	                    List<AnnotationModel> annotations = importer.importAnnotations(file.toURI());
 	                    NodeUtils nodeUtils = new NodeUtils();	                    
-	                    nodeUtils.insertChildNodesFromPdf(file, annotations, parent.isNewChildLeft(), parent);
+	                    nodeUtils.insertChildNodesFromPdf(file.toURI(), annotations, parent.isNewChildLeft(), parent);
 	                }
 	                else{	                	
 	        			ModeController modeController = Controller.getCurrentModeController();
 	        			ViewerController viewerController = ((ViewerController)modeController.getExtension(ViewerController.class));
 	        			if(!viewerController.paste(file, parent, parent.isNewChildLeft())){
 	        				NodeUtils nodeUtils = new NodeUtils();
-	        				nodeUtils.insertChildNodeFrom(file, parent.isNewChildLeft(), parent, null);
+	        				nodeUtils.insertChildNodeFrom(file.toURI(), parent.isNewChildLeft(), parent, null);
 	        			}
 	                }
 	            }

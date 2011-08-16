@@ -16,13 +16,12 @@ public class PdfFileFilter implements FileFilter{
         return file.exists() && accept(path);
     }
 	
-	public boolean accept(URI uri){
-		File file = Tools.getFilefromUri(uri);
-		if(file == null){
+	public boolean accept(URI uri){		
+		if(uri == null || !Tools.exists(uri)){
 			return false;
 		}
 		else{
-			return this.accept(file);
+			return this.accept(uri.toString());
 		}	
 	}
 

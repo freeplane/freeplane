@@ -28,15 +28,11 @@ public class PdfConflictPanel extends JPanel {
 		init();		
 	}
 	
-	public PdfConflictPanel(URI uri, ImportConflictModel conflicts) {
-		init();
+	public PdfConflictPanel(URI uri) {
+		init();	
 		String fileName = Tools.getFilefromUri(uri).getName();
 		this.setTitle(fileName);
-		for(Integer objectNumber : conflicts.getConflictedAnnotations(uri).keySet()){
-		AnnotationConflictPanel conflictPanel = new AnnotationConflictPanel(fileName, objectNumber, conflicts.getConflictedAnnotations(uri).get(objectNumber));
-			this.addAnnotationConflictPanel(conflictPanel);
-		}
-	}
+	}	
 
 	private void init() {
 		setBorder(new TitledBorder(null, "PDF Name", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -57,7 +53,7 @@ public class PdfConflictPanel extends JPanel {
 	}
 
 	public void setTitle(String fileName){
-		fileName = Tools.reshapeString(fileName, 30);
+		fileName = Tools.reshapeString(fileName, 200);
 		this.setBorder(new TitledBorder(null, fileName, TitledBorder.LEADING, TitledBorder.TOP, null, null));
 	}
 	

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
-import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel;
+import org.docear.plugin.pdfutilities.features.AnnotationModel;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
@@ -64,10 +64,10 @@ public class DocearNodeDropListener extends MNodeDropListener {
 	            	boolean importAnnotations = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.AUTO_IMPORT_ANNOTATIONS_KEY);
 	                if(pdfFileFilter.accept(file) && importAnnotations){
 	                	PdfAnnotationImporter importer = new PdfAnnotationImporter();
-	                    List<PdfAnnotationExtensionModel> annotations = importer.importAnnotations(file);
+	                    List<AnnotationModel> annotations = importer.importAnnotations(file.toURI());
 	                    NodeUtils nodeUtils = new NodeUtils();
 	                    final boolean isLeft = mainView.dropLeft(dtde.getLocation().getX());
-	                    nodeUtils.insertChildNodesFromPdf(file, annotations, isLeft, targetNode);
+	                    nodeUtils.insertChildNodesFromPdf(file.toURI(), annotations, isLeft, targetNode);
 	                }
 	                else{
 	                	final boolean isLeft = mainView.dropLeft(dtde.getLocation().getX());
@@ -75,7 +75,7 @@ public class DocearNodeDropListener extends MNodeDropListener {
 	        			ViewerController viewerController = ((ViewerController)modeController.getExtension(ViewerController.class));
 	        			if(!viewerController.paste(file, targetNode, isLeft)){
 	        				NodeUtils nodeUtils = new NodeUtils();
-	        				nodeUtils.insertChildNodeFrom(file, isLeft, targetNode, null);
+	        				nodeUtils.insertChildNodeFrom(file.toURI(), isLeft, targetNode, null);
 	        			}
 	                }
 	            }

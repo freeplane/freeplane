@@ -1,16 +1,18 @@
 package org.docear.plugin.pdfutilities.ui;
 
-import javax.swing.JPanel;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.factories.FormFactory;
-import javax.swing.JLabel;
-import java.awt.Font;
 import java.awt.Color;
-import java.util.Collection;
+import java.awt.Font;
 
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
+
+import org.docear.plugin.pdfutilities.util.Tools;
+
+import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.RowSpec;
 
 public class AnnotationConflictPanel extends JPanel {
 
@@ -28,13 +30,11 @@ public class AnnotationConflictPanel extends JPanel {
 		init();
 	}
 	
-	public AnnotationConflictPanel(String fileName, Integer objectNumber, Collection<AnnotationConflictModel> annotationConflicts) {
+	public AnnotationConflictPanel(Integer objectNumber) {
+		init();
 		this.setTitle(objectNumber);
-		for(AnnotationConflictModel annotationConflict : annotationConflicts){
-			AnnotationConflictDropdownBoxPanel dropdownBoxPanel = new AnnotationConflictDropdownBoxPanel();
-			dropdownBoxPanel.setAnnotationData(fileName, annotationConflicts, annotationConflict);
-		}
 	}
+	
 
 	private void init() {
 		setLayout(new FormLayout(new ColumnSpec[] {
@@ -63,6 +63,10 @@ public class AnnotationConflictPanel extends JPanel {
 	
 	public void setTitle(Integer objectNumber){
 		label.setText("Conflict at Annotation " + objectNumber);
+	}
+	
+	public void setTitle(String annotationTitle){
+		label.setText("Conflict at Annotation \"" + Tools.reshapeString(annotationTitle, 100) + "\"");
 	}
 
 	public void addDropdownBoxPanel(AnnotationConflictDropdownBoxPanel dropdownBoxPanel){

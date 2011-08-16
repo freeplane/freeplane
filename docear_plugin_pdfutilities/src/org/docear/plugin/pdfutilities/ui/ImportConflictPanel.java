@@ -70,17 +70,7 @@ public class ImportConflictPanel extends JPanel {
 		
 		JLabel lblChooseWhichAnnotations = new JLabel("Choose which annotations should be overwritten ");
 		lblChooseWhichAnnotations.setFont(new Font("Dialog", Font.PLAIN, 13));
-		panel_1.add(lblChooseWhichAnnotations, "2, 1");
-		
-		
-		PdfConflictPanel conflictPanel = new PdfConflictPanel();
-		PdfConflictPanel conflictPanel1 = new PdfConflictPanel();
-		PdfConflictPanel conflictPanel2 = new PdfConflictPanel();
-		
-		this.addPdfConflictPanel(conflictPanel);
-		this.addPdfConflictPanel(conflictPanel1);
-		this.addPdfConflictPanel(conflictPanel2);
-
+		panel_1.add(lblChooseWhichAnnotations, "2, 1");		
 	}
 	
 	public void addPdfConflictPanel(PdfConflictPanel pdfConflictPanel){

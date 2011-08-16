@@ -1,6 +1,7 @@
 package org.docear.plugin.pdfutilities.listener;
 
-import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel;
+import org.docear.plugin.pdfutilities.features.AnnotationController;
+import org.docear.plugin.pdfutilities.features.IAnnotation;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -12,7 +13,7 @@ public class DocearNodeSelectionListener implements INodeSelectionListener {
 	}
 
 	public void onSelect(NodeModel node) {
-		PdfAnnotationExtensionModel model = PdfAnnotationExtensionModel.getModel(node);
+		IAnnotation model = AnnotationController.getModel(node, false);
 		
 		if(model != null){
 			StringBuilder builder = new StringBuilder();
@@ -30,6 +31,10 @@ public class DocearNodeSelectionListener implements INodeSelectionListener {
 			
 			if(model.getGenerationNumber() != null){
 				builder.append(" Generation Number: " + model.getGenerationNumber());
+			}
+			
+			if(model.getAnnotationID() != null){
+				builder.append(" AnnotationID: " + model.getAnnotationID());
 			}
 			
 			Controller.getCurrentController().getViewController().addStatusInfo("Annotation Info", builder.toString());

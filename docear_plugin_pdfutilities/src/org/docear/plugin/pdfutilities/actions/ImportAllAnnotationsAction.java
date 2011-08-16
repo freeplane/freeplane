@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
-import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel;
+import org.docear.plugin.pdfutilities.features.AnnotationModel;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.ui.EnabledAction;
@@ -38,7 +38,7 @@ public class ImportAllAnnotationsAction extends ImportAnnotationsAction {
 			URI uri = NodeLinks.getLink(selected);
             try {
             	PdfAnnotationImporter importer = new PdfAnnotationImporter();            	
-				List<PdfAnnotationExtensionModel> annotations = importer.importAnnotations(uri);
+				List<AnnotationModel> annotations = importer.importAnnotations(uri);
 				NodeUtils nodeUtils = new NodeUtils();                
                 nodeUtils.insertChildNodesFrom(annotations, selected.isLeft(), selected);
 			} catch (IOException e) {
