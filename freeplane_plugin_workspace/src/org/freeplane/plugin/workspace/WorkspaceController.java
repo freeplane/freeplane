@@ -81,6 +81,11 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 	public static WorkspaceController getCurrentWorkspaceController() {
 		return currentWorkspace;
 	}
+	
+	public String getVersion() {
+		//TODO: DOCEAR get Version from XML
+		return "Freeplane Workspace 1.0";
+	}
 
 	public WorkspaceConfiguration getConfig() {
 		if (this.config != null) {
