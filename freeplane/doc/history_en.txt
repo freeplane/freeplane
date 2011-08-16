@@ -8,6 +8,8 @@ Notes can be edited on styles and assigned to related nodes
 Reminder based filter conditions
 Script based filter conditions
 Scripts in reminders
+Scripting support math with nodes: node.text = "2"; assert 3 * node * 2 == 12
+Code completion in formula editor
 
 ===============================
 1.2.7 alpha

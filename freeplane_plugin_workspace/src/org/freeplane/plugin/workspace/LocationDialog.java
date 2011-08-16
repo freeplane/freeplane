@@ -36,6 +36,8 @@ public class LocationDialog extends JDialog {
 	 * Create the dialog.
 	 */
 	private void onCancelButton() {
+		WorkspaceController.getCurrentWorkspaceController().setWorkspaceLocation("");
+		WorkspaceController.getCurrentWorkspaceController().showWorkspaceView(false);
 		this.dispose();
 	}
 	
@@ -124,6 +126,16 @@ public class LocationDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
+				JButton cancelButton = new JButton(TextUtils.getText("cancel"));
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						onCancelButton();
+					}
+				});
+				cancelButton.setActionCommand("cancel");
+				buttonPane.add(cancelButton);
+			}
+			{
 				JButton okButton = new JButton(TextUtils.getText("ok"));
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -133,16 +145,6 @@ public class LocationDialog extends JDialog {
 				okButton.setActionCommand("ok");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
-			}
-			{
-				JButton cancelButton = new JButton(TextUtils.getText("cancel"));
-				cancelButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						onCancelButton();
-					}
-				});
-				cancelButton.setActionCommand("cancel");
-				buttonPane.add(cancelButton);
 			}
 		}	
 	}

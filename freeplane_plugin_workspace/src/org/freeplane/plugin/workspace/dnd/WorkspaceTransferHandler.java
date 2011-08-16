@@ -15,13 +15,7 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.JComponent;
 import javax.swing.JTree;
@@ -29,11 +23,7 @@ import javax.swing.TransferHandler;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import org.freeplane.features.clipboard.ClipboardController;
-import org.freeplane.features.clipboard.mindmapmode.MClipboardController;
-import org.freeplane.plugin.workspace.config.node.FilesystemLinkNode;
-import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
-
+import org.freeplane.plugin.workspace.WorkspaceController;
 /**
  * 
  */
@@ -86,36 +76,13 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 	public Transferable createTransferable(JComponent comp) {
 		System.out.println("createTransferable for " + comp);
 		if (comp instanceof JTree) {
-			Vector<File> paths = new Vector<File>();
 			JTree t = (JTree) comp;
 			for (TreePath p : t.getSelectionPaths()) {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) p.getLastPathComponent();
-				if (node.getUserObject() instanceof DefaultFileNode) {
-					paths.add(((DefaultFileNode) node.getUserObject()).getFile());
-				} 
-				else if (node.getUserObject() instanceof FilesystemLinkNode) {
-					URL url;
-					try {
-						url = ((FilesystemLinkNode) node.getUserObject()).getLinkPath().toURL().openConnection().getURL();
-						paths.add(new File(url.toURI()));
-					}
-					catch (IOException e) {
-						
-						e.printStackTrace();
-					}
-					catch (URISyntaxException e) {
-						e.printStackTrace();
-					}
-					
-				} 
+				if (node.getUserObject() instanceof IWorkspaceTransferableCreator) {
+					return ((IWorkspaceTransferableCreator)node.getUserObject()).getTransferable();
+				}
 			}
-			if (paths.size() > 0) {
-				System.out.println("Geschmacksrichtung: " + WorkspaceTransferable.WORKSPACE_FILE_LIST_FLAVOR);
-				final MClipboardController clipboardController = (MClipboardController) ClipboardController.getController();
-				clipboardController.setClipboardContents(new WorkspaceTransferable(WorkspaceTransferable.WORKSPACE_FILE_LIST_FLAVOR, paths));
-				return clipboardController.getClipboardContents();
-			}
-			return new WorkspaceTransferable(WorkspaceTransferable.WORKSPACE_NODE_FLAVOR, Arrays.asList(t.getSelectionPaths()));
 		}
 		return new WorkspaceTransferable(WorkspaceTransferable.WORKSPACE_SERIALIZED_FLAVOR, "");
 
@@ -153,6 +120,9 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 	/* DropTarget Methods */
 
 	public final void drop(DropTargetDropEvent event) {
+		if(WorkspaceController.getCurrentWorkspaceController().getWorkspaceView().getTree().getPathForLocation(event.getLocation().x, event.getLocation().y) == null) {
+			return;
+		}
 		System.out.println("drop: " + event.getSource());
 		if(controller.canPerformAction(event)) {
 			if(controller.executeDrop(event)) {

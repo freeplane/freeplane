@@ -31,7 +31,10 @@ public abstract class AWorkspaceAction extends AFreeplaneAction {
 		int x = pop.getInvokerLocation().x;
 		int y = pop.getInvokerLocation().y;
 		JTree tree = (JTree)pop.getInvoker();
-		TreePath path = tree.getPathForLocation(x, y);	
+		TreePath path = tree.getPathForLocation(x, y);
+		if(path == null) {
+			return null;
+		}
 		return (DefaultMutableTreeNode)path.getLastPathComponent();
 	}
 	

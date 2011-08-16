@@ -1071,6 +1071,8 @@ public class NodeView extends JComponent implements INodeView {
 			else if(nodeViewSibling.isSummary()){
 				anotherLevel++;
 				if(anotherLevel > level)
+					if(lastView == nodeViewSibling)
+						return false;
 				    break;
 			}
 			else

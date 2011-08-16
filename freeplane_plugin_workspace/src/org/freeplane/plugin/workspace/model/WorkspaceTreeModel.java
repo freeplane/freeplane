@@ -11,37 +11,36 @@ import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 
 public class WorkspaceTreeModel extends DefaultTreeModel {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	public WorkspaceTreeModel(TreeNode root, boolean asksAllowsChildren) {
-		super(root, asksAllowsChildren);
+		super(root.getChildAt(0), asksAllowsChildren);
 	}
-	
+
 	public WorkspaceTreeModel(TreeNode root) {
-		super(root, false);
+		this(root, false);
 	}
-	
+
 	public void nodeChanged(TreeNode node) {
 		super.nodeChanged(node);
-		LogUtils.info("wsNode changed: "+node);
+		LogUtils.info("wsNode changed: " + node);
 	}
-	
+
 	public void valueForPathChanged(TreePath path, Object newValue) {
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-		
-		if (node.getUserObject() instanceof IWorkspaceNodeEventListener) {			
-			((IWorkspaceNodeEventListener) node.getUserObject()).handleEvent(new WorkspaceNodeEvent(node, WorkspaceNodeEvent.WSNODE_CHANGED, newValue));
+
+		if (node.getUserObject() instanceof IWorkspaceNodeEventListener) {
+			((IWorkspaceNodeEventListener) node.getUserObject()).handleEvent(new WorkspaceNodeEvent(node,
+					WorkspaceNodeEvent.WSNODE_CHANGED, newValue));
 			nodeChanged(node);
 		}
 		else {
-			((AWorkspaceNode)node.getUserObject()).setName(newValue.toString());
-		}		
+			((AWorkspaceNode) node.getUserObject()).setName(newValue.toString());
+		}
 	}
-
-
 
 }

@@ -37,7 +37,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -65,15 +64,15 @@ public class ScannerController implements IExtension {
 	}
 
 	public static ScannerController getController() {
-		return getController(Controller.getCurrentModeController());
+		return getController(Controller.getCurrentController());
 	}
 
-	public static ScannerController getController(ModeController modeController) {
-		return (ScannerController) modeController.getExtension(ScannerController.class);
+	public static ScannerController getController(Controller controller) {
+		return (ScannerController) controller.getExtension(ScannerController.class);
 	}
 	
 	public static void install(final ScannerController scannerController) {
-		Controller.getCurrentModeController().addExtension(ScannerController.class, scannerController);
+		Controller.getCurrentController().addExtension(ScannerController.class, scannerController);
 	}
 
 	public void selectScanner(final Locale locale) {

@@ -1,7 +1,8 @@
 package org.freeplane.plugin.workspace.config.node;
 
+
 public abstract class AWorkspaceNode {
-	final public static int WSNODE_DEFAULT_MODE = 0;
+	final public static int WSNODE_DEFAULT_MODE = 0;	
 	
 	private String id;
 	private String name;

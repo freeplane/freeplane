@@ -78,6 +78,10 @@ import org.freeplane.features.script.IScriptEditorStarter;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.FormLayout;
+
 /**
  * @author foltin
  */
@@ -91,9 +95,9 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		private ComboBoxEditor scriptEditor;
 		private JCalendar calendarComponent;
 
-		public JTimePanel(boolean useTriple, int axis) {
+		public JTimePanel(boolean useTriple, int colCount) {
 	        super();
-	        init(useTriple, axis);
+	        init(useTriple, colCount);
 	        final NodeModel selected = reminderHook.getModeController().getMapController().getSelectedNode();
 	        update(selected);
         }
@@ -115,7 +119,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 					scriptEditor.setItem(null);
 		}
 
-		private void init(boolean useTriple, int axis) {
+		private void init(boolean useTriple, int colCount) {
 			final JComponent calendarContainer;
 			if (useTriple) {
 				final JTripleCalendar trippleCalendar = new JTripleCalendar();
@@ -141,11 +145,15 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 			calendarComponent.getDayChooser().addPropertyChangeListener(TimeManagement.this);
 			calendarContainer.setAlignmentX(0.5f);
 			add(calendarContainer);
-			Box buttonBox = new Box(axis);
-			buttonBox.setAlignmentX(0.5f);
-			add(buttonBox);
-			add(Box.createVerticalStrut(5));
-			final Dimension btnSize = new Dimension();
+			
+			DefaultFormBuilder btnBuilder = new DefaultFormBuilder(new FormLayout(FormFactory.GROWING_BUTTON_COLSPEC.toString(), ""));
+			 btnBuilder.getLayout().addGroupedColumn(btnBuilder.getColumnCount());
+			 for(int i = 1; i< colCount; i++){
+				 btnBuilder.appendRelatedComponentsGapColumn();
+				 btnBuilder.appendColumn(FormFactory.GROWING_BUTTON_COLSPEC);
+				 btnBuilder.getLayout().addGroupedColumn(btnBuilder.getColumnCount());
+			}
+
 			{
 				final JButton todayButton = new JButton(getResourceString("plugins/TimeManagement.xml_todayButton"));
 				todayButton.addActionListener(new ActionListener() {
@@ -156,13 +164,11 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 						calendarComponent.setCalendar(TimeManagement.this.calendar);
 					}
 				});
-				increaseSize(btnSize, todayButton);
-				buttonBox.add(todayButton);
+				addButton(btnBuilder, todayButton, colCount);
 			}
 			{
 				final JComboBox dateFormatChooser = createDateFormatChooser();
-				increaseSize(btnSize, dateFormatChooser);
-				buttonBox.add(dateFormatChooser);
+				addButton(btnBuilder, dateFormatChooser, colCount);
 			}
 			{
 				final JButton appendButton = new JButton(getResourceString("plugins/TimeManagement.xml_appendButton"));
@@ -175,8 +181,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 						insertTime(dialog, appendButton);
 					}
 				});
-				increaseSize(btnSize, appendButton);
-				buttonBox.add(appendButton);
+				addButton(btnBuilder, appendButton, colCount);
 			}
 			{
 				scriptEditor = null;
@@ -184,8 +189,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 				if(editor != null){
 					scriptEditor = editor.createComboBoxEditor(new Dimension(600, 400));
 					Component scriptButton = scriptEditor.getEditorComponent();
-					increaseSize(btnSize, scriptButton);
-					buttonBox.add(scriptButton);
+					addButton(btnBuilder, scriptButton, colCount);
 				}
 			}
 			{
@@ -197,8 +201,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 						addReminder();
 					}
 				});
-				increaseSize(btnSize, setReminderButton);
-				buttonBox.add(setReminderButton);
+				addButton(btnBuilder, setReminderButton, colCount);
 			}
 			{
 				removeReminderButton = new JButton(
@@ -212,8 +215,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 	               }
 					
 				});
-				increaseSize(btnSize, removeReminderButton);
-				buttonBox.add(removeReminderButton);
+				addButton(btnBuilder, removeReminderButton, colCount);
 			}
 			if (dialog != null) {
 				final JButton cancelButton = new JButton(getResourceString("plugins/TimeManagement.xml_closeButton"));
@@ -224,12 +226,15 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 						disposeDialog();
 					}
 				});
-				increaseSize(btnSize, cancelButton);
-				buttonBox.add(cancelButton);
+				addButton(btnBuilder, cancelButton, colCount);
 			}
-			for (int i = 0; i < buttonBox.getComponentCount(); i++) {
-				buttonBox.getComponent(i).setMaximumSize(btnSize);
-			}
+			final JPanel btnPanel = btnBuilder.getPanel();
+			btnPanel.setAlignmentX(CENTER_ALIGNMENT);
+			add(btnPanel);
+        }
+
+		private void addButton(DefaultFormBuilder btnBuilder, Component component, int colCount) {
+	        btnBuilder.append(component);
         }
         
 		private void addReminder() {
@@ -270,12 +275,6 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 				}
 			}
 	    }
-		private void increaseSize(final Dimension btnSize, final Component comp) {
-		    final Dimension preferredSize = comp.getPreferredSize();
-		    btnSize.width =  Math.max(btnSize.width, preferredSize.width);
-		    btnSize.height =  Math.max(btnSize.height, preferredSize.height);
-	    }
-
 	}
 	private Calendar calendar;
 	public final static String REMINDER_HOOK_NAME = "plugins/TimeManagementReminder.xml";
@@ -344,7 +343,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		}
 		TimeManagement.sCurrentlyOpenTimeManagement = this;
 		dialog = new JDialog(Controller.getCurrentController().getViewController().getFrame(), false /*not modal*/);
-		final JTimePanel timePanel =createTimePanel(dialog, true, BoxLayout.X_AXIS);
+		final JTimePanel timePanel =createTimePanel(dialog, true, 4);
 		nodeSelectionListener = new INodeSelectionListener() {
 			public void onSelect(NodeModel node) {
 				timePanel.update(node);
@@ -388,13 +387,13 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		dialog.setVisible(true);
 	}
 	
-	public JTimePanel createTimePanel(final Dialog dialog, boolean useTriple, int axis) {
+	public JTimePanel createTimePanel(final Dialog dialog, boolean useTriple, int colCount) {
 		if (this.calendar == null) {
 			this.calendar = Calendar.getInstance();
 			this.calendar.set(Calendar.SECOND, 0);
 			this.calendar.set(Calendar.MILLISECOND, 0);
 		}
-		JTimePanel contentPane = new JTimePanel(useTriple, axis);
+		JTimePanel contentPane = new JTimePanel(useTriple, colCount);
 		return contentPane;
 	}
 
@@ -421,7 +420,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		final List<PatternFormat> datePatterns = new FormatController().getDateFormats();
 		int selectedIndex = 0;
 		for (int i = 0; i < datePatterns.size(); ++i) {
-			SimpleDateFormat patternFormat = FormatController.getController(reminderHook.getModeController()).getDateFormat(
+			SimpleDateFormat patternFormat = FormatController.getController(reminderHook.getModeController().getController()).getDateFormat(
 			    datePatterns.get(i).getPattern());
 			values.add(new DateFormatComboBoxElement(patternFormat));
 			if (patternFormat.toPattern().equals(dateFormatPattern)) {

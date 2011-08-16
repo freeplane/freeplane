@@ -38,6 +38,8 @@ def makeApi(Proxy.Node node, Class clazz, String apiBase) {
 def printCompletions(TreeMap<String, Map<String, Object>> memberMap) {
 	TreeSet completions = new TreeSet()
 	completions.addAll(['logger', 'ui', 'htmlUtils', 'textUtils', 'node', 'import', 'def', 'String'])
+	completions.addAll(['single_node', 'selected_node', 'selected_node_recursively'].collect{ "// @ExecutionModes($it)" })
+	
 	memberMap.each { memberName,attribs ->
 		if (attribs['method'])
 			completions << memberName + '(|)'

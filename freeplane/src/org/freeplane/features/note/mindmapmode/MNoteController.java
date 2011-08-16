@@ -128,6 +128,7 @@ public class MNoteController extends NoteController {
 	 */
 	public MNoteController(ModeController modeController) {
 		super();
+		noteManager = new NoteManager(this);
 		modeController.addAction(new SelectNoteAction(this));
 		modeController.addAction(new ShowHideNoteAction(this));
 		modeController.addAction(new EditNoteInDialogAction());
@@ -356,7 +357,6 @@ public class MNoteController extends NoteController {
 
 	public void startupController() {
 		final ModeController modeController = Controller.getCurrentModeController();
-		noteManager = new NoteManager(this);
 		if (shouldUseSplitPane()) {
 			showNotesPanel(false);
 		}

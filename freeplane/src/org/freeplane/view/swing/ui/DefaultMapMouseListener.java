@@ -127,7 +127,8 @@ public class DefaultMapMouseListener implements IMouseListener {
 		final MapView map = (MapView) source;
 		final Controller controller = map.getModeController().getController();
 		final IMapSelection selection = controller.getSelection();
-		selection.selectAsTheOnlyOneSelected(selection.getSelected());
+		if(selection != null)
+			selection.selectAsTheOnlyOneSelected(selection.getSelected());
 	}
 
 	public void mouseDragged(final MouseEvent e) {

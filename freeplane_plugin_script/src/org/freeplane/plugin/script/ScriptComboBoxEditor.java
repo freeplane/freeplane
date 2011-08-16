@@ -35,6 +35,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 
 /**
@@ -51,6 +52,8 @@ public class ScriptComboBoxEditor implements ComboBoxEditor {
 
 	public ScriptComboBoxEditor() {
 		showEditorBtn = new JButton();
+		final String title = TextUtils.getText("EditScript");
+		UITools.addTitledBorder(showEditorBtn, title, 10);
 		showEditorBtn.setHorizontalAlignment(SwingConstants.LEFT);
 		showEditorBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -60,7 +63,7 @@ public class ScriptComboBoxEditor implements ComboBoxEditor {
 		actionListeners = new LinkedList<ActionListener>();
 		minimumSize = new Dimension(100, 60);
 	}
-	
+
 	public Dimension getMinimumSize() {
     	return minimumSize;
     }
@@ -90,11 +93,16 @@ public class ScriptComboBoxEditor implements ComboBoxEditor {
 		if(result != JOptionPane.OK_OPTION)
 			return;
 		script = textEditor.getText();
-		showEditorBtn.setText(script);
+		setButtonText();
 	    final ActionEvent actionEvent = new ActionEvent(this, 0, null);
 	    for (final ActionListener l : actionListeners) {
 	    	l.actionPerformed(actionEvent);
 	    }
+    }
+
+	protected void setButtonText() {
+	    final String text = script.substring(0, Math.min(40, script.length())).trim().replaceAll("\\s+", " ");
+		showEditorBtn.setText(text);
     }
 
 	public Component getEditorComponent() {
@@ -106,9 +114,9 @@ public class ScriptComboBoxEditor implements ComboBoxEditor {
 		else
 			this.script = (String)anObject;
 		if("".equals(script))
-			showEditorBtn.setText(TextUtils.getText("EditScript"));
+			showEditorBtn.setText(" ");
 		else
-			showEditorBtn.setText(script);
+			setButtonText();
     }
 
 	public Object getItem() {

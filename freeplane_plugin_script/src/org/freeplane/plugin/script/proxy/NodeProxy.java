@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.codehaus.groovy.runtime.DefaultGroovyMethods;
+import org.codehaus.groovy.runtime.typehandling.NumberMath;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.clipboard.ClipboardController;
@@ -40,6 +42,9 @@ import org.freeplane.plugin.script.proxy.Proxy.Attributes;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 class NodeProxy extends AbstractProxy<NodeModel> implements Node {
+	private static final Integer ONE = 1;
+	private static final Integer ZERO = 0;
+
 	public NodeProxy(final NodeModel node, final ScriptContext scriptContext) {
 		super(node, scriptContext);
 		if (scriptContext != null)
@@ -388,6 +393,9 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		if (value == null)
 			return null;
 		final String text = Convertible.toString(value);
+		// the text content of a Convertible object might be null
+		if (text == null)
+			return null;
 		return HtmlUtils.isHtmlNode(text) ? text : HtmlUtils.plainToHTML(text);
 	}
 
@@ -523,5 +531,100 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 			}
 		};
 		getModeController().execute(actor, getDelegate().getMap());
+	}
+
+	//
+	// Node arithmetics for
+	//     Node <operator> Number
+	//     Node <operator> Node
+	// See NodeArithmeticsCategory for 
+	//     Number <operator> Node
+	//
+	public Number and(final Number number) {
+		return NumberMath.and(this.getTo().getNum0(), number);
+	}
+
+	public Number and(final Proxy.Node node) {
+		return NumberMath.and(this.getTo().getNum0(), node.getTo().getNum0());
+	}
+
+	public Number div(final Number number) {
+		return NumberMath.divide(this.getTo().getNum0(), number);
+	}
+
+	public Number div(final Proxy.Node node) {
+		return NumberMath.divide(this.getTo().getNum0(), node.getTo().getNum0());
+	}
+
+	public Number minus(final Number number) {
+		return NumberMath.subtract(this.getTo().getNum0(), number);
+	}
+
+	public Number minus(final Proxy.Node node) {
+		return NumberMath.subtract(this.getTo().getNum0(), node.getTo().getNum0());
+	}
+
+	public Number mod(final Number number) {
+		return NumberMath.mod(this.getTo().getNum0(), number);
+	}
+
+	public Number mod(final Proxy.Node node) {
+		return NumberMath.mod(this.getTo().getNum0(), node.getTo().getNum0());
+	}
+
+	public Number multiply(final Number number) {
+		return NumberMath.multiply(this.getTo().getNum0(), number);
+	}
+
+	public Number multiply(final Proxy.Node node) {
+		return NumberMath.multiply(this.getTo().getNum0(), node.getTo().getNum0());
+	}
+
+	public Number or(final Number number) {
+		return NumberMath.or(this.getTo().getNum0(), number);
+	}
+
+	public Number or(final Proxy.Node node) {
+		return NumberMath.or(this.getTo().getNum0(), node.getTo().getNum0());
+	}
+
+	public Number plus(final Number number) {
+		return NumberMath.add(this.getTo().getNum0(), number);
+	}
+
+	public Number plus(final Proxy.Node node) {
+		return NumberMath.add(this.getTo().getNum0(), node.getTo().getNum0());
+	}
+
+	public Number power(final Number number) {
+		return DefaultGroovyMethods.power(this.getTo().getNum0(), number);
+	}
+
+	public Number power(final Proxy.Node node) {
+		return DefaultGroovyMethods.power(this.getTo().getNum0(), node.getTo().getNum0());
+	}
+
+	public Number xor(final Number number) {
+		return NumberMath.xor(this.getTo().getNum0(), number);
+	}
+
+	public Number xor(final Proxy.Node node) {
+		return NumberMath.xor(this.getTo().getNum0(), node.getTo().getNum0());
+	}
+
+	public Number negative() {
+		return NumberMath.subtract(ZERO, this.getTo().getNum0());
+	}
+
+	public Number next() {
+		return NumberMath.add(this.getTo().getNum0(), ONE);
+	}
+
+	public Number positive() {
+		return this.getTo().getNum0();
+	}
+
+	public Number previous() {
+		return NumberMath.subtract(this.getTo().getNum0(), ONE);
 	}
 }

@@ -371,6 +371,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				try {
 					final File theFile = chooser.getSelectedFile();
+					internalConditionsModel.removeAllElements();
 					filterController.loadConditions(internalConditionsModel, theFile.getCanonicalPath());
 				}
 				catch (final Exception ex) {

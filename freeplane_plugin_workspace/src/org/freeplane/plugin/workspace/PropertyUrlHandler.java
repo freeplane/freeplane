@@ -1,5 +1,6 @@
 package org.freeplane.plugin.workspace;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -16,10 +17,10 @@ public class PropertyUrlHandler extends AbstractURLStreamHandlerService {
 		}
 		
 		String property = ResourceController.getResourceController().getProperty(propertyName);
+		File file = new File(property);
 		
-		if (property!=null && property.length()>0) {		
-			URL ret = new URL("file", null, property);		
-	        System.out.println("PropertyUrlHandler returns: "+ret);
+		if (property!=null && property.length()>0) {
+			URL ret = file.toURI().toURL();	        
 			return ret.openConnection();
 		}
 		System.out.println("Property Path :"+url+" is unknown");

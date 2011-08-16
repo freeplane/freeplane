@@ -8,24 +8,22 @@ import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 
 public class GroupNode extends AWorkspaceNode implements IWorkspaceNodeEventListener {
-	private final static String POPUP_KEY = "workspace_groupnode_popup";
+	private final static String POPUP_KEY = "/workspace_groupnode_popup";
 
 	public GroupNode(String id) {
 		super(id);
 		initializePopup();
 	}
 
-	private void initializePopup() {
+	public void initializePopup() {
 		PopupMenus popupMenu = WorkspaceController.getCurrentWorkspaceController().getPopups();
-		if (popupMenu.registerPopupMenu(POPUP_KEY)) {
-//			AFreeplaneAction action = popupMenu.new CheckBoxAction("BLUBB", "BLUBB");
-//			popupMenu.addCechkbox(POPUP_KEY, "/workspace_node_popup", action, true);
-		}
+		popupMenu.registerPopupMenuNodeDefault(POPUP_KEY);
+		popupMenu.registerPopupMenu(POPUP_KEY, POPUP_KEY);
+		popupMenu.buildPopupMenu(POPUP_KEY);
 	}
 
 	public void handleEvent(WorkspaceNodeEvent event) {
-		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {
-			// initializePopup();
+		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {			
 			Component component = (Component) event.getSource();
 
 			WorkspaceController.getCurrentWorkspaceController().getPopups()

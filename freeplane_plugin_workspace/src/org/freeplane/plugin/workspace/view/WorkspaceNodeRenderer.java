@@ -14,7 +14,6 @@ import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 import org.freeplane.plugin.workspace.config.node.FilesystemLinkNode;
 import org.freeplane.plugin.workspace.config.node.FilesystemMindMapLinkNode;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
-import org.freeplane.plugin.workspace.io.node.MindMapFileNode;
 
 public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 
@@ -27,17 +26,22 @@ public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 	private static Icon MINDMAP_ICON;
 	private static Icon DEFAULT_ICON;
 	private static Icon WEB_ICON;
-	private static Icon defaultLeaveIcon;
 
 	public WorkspaceNodeRenderer() {
 		if (ACROBAT_ICON == null) {
-			defaultLeaveIcon = this.getDefaultLeafIcon();
 			ACROBAT_ICON = new ImageIcon(this.getClass().getResource("/images/16x16/acrobat.png"));
 			GRAPHICS_ICON = new ImageIcon(this.getClass().getResource("/images/16x16/image-x-generic.png"));
 			DEFAULT_ICON = new ImageIcon(this.getClass().getResource("/images/16x16/text-x-preview.png"));
 			WEB_ICON = new ImageIcon(this.getClass().getResource("/images/16x16/text-html-2.png"));
+			if(ResourceController.getResourceController().getProperty("ApplicationName", "Freeplane").equals("Docear")) {
+				MINDMAP_ICON = new ImageIcon(ResourceController.class.getResource("/images/docear16.png"));
+			}
+			else {
+				MINDMAP_ICON = new ImageIcon(ResourceController.class.getResource("/images/Freeplane_frame_icon.png"));
+			}
 			
-			MINDMAP_ICON = new ImageIcon(ResourceController.class.getResource("/images/Freeplane_frame_icon.png"));
+			
+			
 		}
 	}
 
@@ -66,7 +70,7 @@ public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 	/**
 	 * @param value
 	 */
-	private void setNodeIcon(DefaultTreeCellRenderer renderer, Object userObject) {
+	protected void setNodeIcon(DefaultTreeCellRenderer renderer, Object userObject) {
 		if (userObject instanceof DefaultFileNode) {
 			DefaultFileNode fileNode = (DefaultFileNode) userObject;
 			if (fileNode.getFile().isFile()) {
@@ -90,7 +94,7 @@ public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 						|| fileNode.getFileExtension().equalsIgnoreCase(".css")
 						|| fileNode.getFileExtension().equalsIgnoreCase(".xhtml")) {
 					renderer.setLeafIcon(WEB_ICON);
-				}
+				}			
 				else {
 					renderer.setLeafIcon(DEFAULT_ICON);
 				}

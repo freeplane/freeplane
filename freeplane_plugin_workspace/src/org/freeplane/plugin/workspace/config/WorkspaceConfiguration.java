@@ -20,6 +20,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLException;
+import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspacePreferences;
 import org.freeplane.plugin.workspace.config.creator.FilesystemFolderCreator;
 import org.freeplane.plugin.workspace.config.creator.FilesystemLinkCreator;
@@ -55,7 +56,7 @@ public class WorkspaceConfiguration {
 		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
 		String workspaceLocation = resCtrl.getProperty(WorkspacePreferences.WORKSPACE_LOCATION);
 		String workspaceLocationNew = resCtrl.getProperty(WorkspacePreferences.WORKSPACE_LOCATION_NEW);
-		
+
 		if (workspaceLocationNew != null && workspaceLocationNew.trim().length() > 0) {
 			File configFile = new File(workspaceLocationNew + File.separator + CONFIG_FILE_NAME);
 			if (!configFile.exists()) {
@@ -72,8 +73,9 @@ public class WorkspaceConfiguration {
 			setConfigValid(false);
 			return;
 		}
-
-		this.load(new URL("file:///" + configFile.getPath()));
+		WorkspaceController.getCurrentWorkspaceController().getTree().removeChildElements(WorkspaceController.getCurrentWorkspaceController().getTree());
+		//WorkspaceController.getCurrentWorkspaceController().getTree().getRoot().removeAllChildren();
+		this.load(configFile.toURI().toURL());
 		setConfigValid(true);
 	}
 
@@ -88,6 +90,15 @@ public class WorkspaceConfiguration {
 					TextUtils.getText("confirm_create_workspace_title"), JOptionPane.OK_CANCEL_OPTION);
 			if (yesorno == JOptionPane.OK_OPTION) {
 				// CREATE NEW WORKSPACE
+				File folder = new File(workspaceLocationNew);
+				if (!folder.exists() || !folder.isDirectory()) {
+					if (!folder.mkdirs()) {
+						JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(),
+								TextUtils.getText("error_create_workspace_folder")+" "+workspaceLocationNew,
+								TextUtils.getText("error_create_workspace_folder_title"), JOptionPane.ERROR_MESSAGE);
+						return null;
+					}
+				}
 				copyDefaultConfigTo(configFile);
 				resourceController.setProperty(WorkspacePreferences.WORKSPACE_LOCATION, workspaceLocationNew);
 				return workspaceLocationNew;
@@ -149,7 +160,7 @@ public class WorkspaceConfiguration {
 
 		writeManager.addElementWriter("filesystem_link", writer);
 		writeManager.addAttributeWriter("filesystem_link", writer);
-		
+
 		writeManager.addElementWriter("filesystem_mindmap_link", writer);
 		writeManager.addAttributeWriter("filesystem_mindmap_link", writer);
 	}

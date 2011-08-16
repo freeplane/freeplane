@@ -16,15 +16,15 @@ import org.freeplane.core.ui.components.JFreeplaneMenuItem;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.view.WorkspacePopupMenu;
 
-public class RemoveFolderFromWorkspaceAction extends AWorkspaceAction {
+public class RemoveNodeFromWorkspaceAction extends AWorkspaceAction {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public RemoveFolderFromWorkspaceAction() {
-		super("RemoveFolderFromWorkspaceAction");
+	public RemoveNodeFromWorkspaceAction() {
+		super("RemoveNodeFromWorkspaceAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

@@ -8,10 +8,14 @@ public class StyleNamedObject implements IStyle {
 
 	public StyleNamedObject(NamedObject namedObject) {
 	    super();
+	    if(namedObject == null)
+	    	throw new NullPointerException();
 	    this.namedObject = namedObject;
     }
 
 	public StyleNamedObject(String string) {
+		if(string == null)
+			throw new NullPointerException();
 		namedObject = new NamedObject(string);
     }
 
