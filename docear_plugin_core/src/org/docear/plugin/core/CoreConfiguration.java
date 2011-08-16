@@ -52,11 +52,11 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	}
 	
 	private void showLocationDialogIfNeeded() {		
-		String workspaceVersion = WorkspaceController.getCurrentWorkspaceController().getVersion();
+		/*String workspaceVersion = WorkspaceController.getCurrentWorkspaceController().getVersion();
 		if (!workspaceVersion.toLowerCase().startsWith("docear")) {
 			LocationDialog dialog = new LocationDialog();
 	    	dialog.setVisible(true);
-		}
+		}*/
 	}
 
 	private void addPropertyChangeListener() {
