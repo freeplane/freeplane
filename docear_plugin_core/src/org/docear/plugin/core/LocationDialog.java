@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URL;
-import javax.swing.filechooser.FileFilter;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
