@@ -5,22 +5,25 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.net.URL;
+import javax.swing.filechooser.FileFilter;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.plugin.workspace.WorkspaceController;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
-import javax.swing.JLabel;
 
 public class LocationDialog extends JDialog {
 
@@ -31,54 +34,92 @@ public class LocationDialog extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 		
 	private JPanel mainPanel = new JPanel();
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-		
+	private JTextField projectsLocation;
+	private JTextField bibtexLocation;
+	private JTextField literatureLocation;
+	
+	private final static String LITERATURE_LOCATION = "workspace:/literature";
+	//TODO: DOCEAR: profile name
+	private final static String BIBTEX_LOCATION = "workspace:/bibtex";
+	private final static String PROJECTS_LOCATION = "workspace:/projects";
+	
+	private File workspaceLocation;
 	/**
 	 * Create the dialog.
 	 */
-	private void browsePdf() {
-		
+	private void browseLiterature() {
+		JFileChooser fileChooser = new JFileChooser();		
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		if (literatureLocation != null) {
+			File file = new File(this.literatureLocation.getText());
+			if (file.exists()) {
+				fileChooser.setSelectedFile(file);
+			}
+			else {
+				fileChooser.setSelectedFile(this.workspaceLocation);
+			}
+		}
+
+		int retVal = fileChooser.showOpenDialog(UITools.getFrame());
+		if (retVal == JFileChooser.APPROVE_OPTION) {			
+			File selectedfile = fileChooser.getSelectedFile();
+			this.literatureLocation.setText(selectedfile.getPath());						
+		}		
 	}
 	
-	private void browseBibtex() {	
-		
+	private void browseBibtex() {
+		JFileChooser fileChooser = new JFileChooser();		
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);		
+		if (bibtexLocation != null) {
+			File file = new File(this.bibtexLocation.getText());
+			if (file.exists()) {
+				fileChooser.setSelectedFile(file);
+			}
+			else {
+				fileChooser.setSelectedFile(this.workspaceLocation);
+			}
+		}
+
+		int retVal = fileChooser.showOpenDialog(UITools.getFrame());
+		if (retVal == JFileChooser.APPROVE_OPTION) {			
+			File selectedfile = fileChooser.getSelectedFile();
+			this.bibtexLocation.setText(selectedfile.getPath());						
+		}
 	}
 	
-	private void browseProjects() {	
-		
+	private void browseProjects() {
+		JFileChooser fileChooser = new JFileChooser();		
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		if (projectsLocation != null) {
+			File file = new File(this.projectsLocation.getText());
+			if (file.exists()) {
+				fileChooser.setSelectedFile(file);
+			}
+			else {
+				fileChooser.setSelectedFile(this.workspaceLocation);
+			}
+		}
+
+		int retVal = fileChooser.showOpenDialog(UITools.getFrame());
+		if (retVal == JFileChooser.APPROVE_OPTION) {			
+			File selectedfile = fileChooser.getSelectedFile();
+			this.projectsLocation.setText(selectedfile.getPath());						
+		}
 	}
 	
 	private void onCancelButton() {
-//		WorkspaceController.getCurrentWorkspaceController().setWorkspaceLocation("");
-//		WorkspaceController.getCurrentWorkspaceController().showWorkspaceView(false);
 		this.dispose();
 	}
 	
 	private void onOkButton() {
-//		WorkspaceController.getCurrentWorkspaceController().setWorkspaceLocation(location.getText());
+		//TODO: DOCEAR: create Docear-Workspace
 		this.dispose();
 	}
 	
-//	private void onShowButton() {
-//		JFileChooser fileChooser = new JFileChooser();		
-//		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-//		if (literatureLocation != null) {
-//			File file = new File(this.literatureLocation.getText());
-//			if (file.exists()) {
-//				fileChooser.setSelectedFile(file);
-//			}
-//		}
-//
-//		int retVal = fileChooser.showOpenDialog(UITools.getFrame());
-//		if (retVal == JFileChooser.APPROVE_OPTION) {			
-//			File selectedfile = fileChooser.getSelectedFile();
-//			this.literatureLocation.setText(selectedfile.getPath());						
-//		}
-//	}
 	
 	public LocationDialog() {
+		this.workspaceLocation = new File(WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation());
+		
 		this.setModal(true);
 		setTitle(TextUtils.getText("docear_initialization"));
 		setBounds(100, 100, 516, 282);
@@ -126,39 +167,48 @@ public class LocationDialog extends JDialog {
 					FormFactory.DEFAULT_ROWSPEC,
 					FormFactory.NARROW_LINE_GAP_ROWSPEC,
 					FormFactory.DEFAULT_ROWSPEC,}));
-						
-//			String currentLocation = WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation();
-//			String currentLocation = "";
-//			if (currentLocation != null && currentLocation.length()>0) {
-//				literatureLocation.setText(currentLocation);
-//			}
+			
 			{
-				JLabel lblPdflocation = new JLabel(TextUtils.getText("literature_location"));
-				mainPanel.add(lblPdflocation, "2, 2, fill, fill");
+				JLabel lblLiteraturelocation = new JLabel(TextUtils.getText("literature_location"));
+				mainPanel.add(lblLiteraturelocation, "2, 2, fill, fill");
 			}
 			{
-				{
-					textField_2 = new JTextField();
-					textField_2.setColumns(30);
-					mainPanel.add(textField_2, "2, 4, fill, center");
+				{					
+					literatureLocation = new JTextField();
+					literatureLocation.setColumns(30);
+					try {
+						File f = new File(new URL(LITERATURE_LOCATION).openConnection().getURL().toURI());
+						literatureLocation.setText(f.getPath());
+					}
+					catch (Exception e) {					
+						e.printStackTrace();
+					}
+					mainPanel.add(literatureLocation, "2, 4, fill, center");
 				}
 				{
-					JButton btnBrowsePdf = new JButton(TextUtils.getText("browse"));
-					btnBrowsePdf.addActionListener(new ActionListener() {						
+					JButton btnBrowseLiterature = new JButton(TextUtils.getText("browse"));
+					btnBrowseLiterature.addActionListener(new ActionListener() {						
 						public void actionPerformed(ActionEvent e) {
-							browsePdf();
+							browseLiterature();
 						}						
 					});
-					mainPanel.add(btnBrowsePdf, "4, 4, right, center");
+					mainPanel.add(btnBrowseLiterature, "4, 4, right, center");
 				}
 				{
 					JLabel lblBibtexFile = new JLabel(TextUtils.getText("bibtex_location"));
 					mainPanel.add(lblBibtexFile, "2, 6, fill, fill");
 				}
 				{
-					textField_1 = new JTextField();
-					textField_1.setColumns(30);
-					mainPanel.add(textField_1, "2, 8, fill, center");
+					bibtexLocation = new JTextField();
+					bibtexLocation.setColumns(30);
+					try {
+						File f = new File(new URL(BIBTEX_LOCATION).openConnection().getURL().toURI());
+						bibtexLocation.setText(f.getPath());
+					}
+					catch (Exception e) {					
+						e.printStackTrace();
+					}
+					mainPanel.add(bibtexLocation, "2, 8, fill, center");
 				}
 				{
 					JButton btnBrowseBibtex = new JButton(TextUtils.getText("browse"));
@@ -174,9 +224,16 @@ public class LocationDialog extends JDialog {
 					mainPanel.add(lblProjectsLocation, "2, 10, fill, fill");
 				}
 				{
-					textField = new JTextField();
-					textField.setColumns(30);
-					mainPanel.add(textField, "2, 12, fill, center");
+					projectsLocation = new JTextField();
+					projectsLocation.setColumns(30);
+					try {
+						File f = new File(new URL(PROJECTS_LOCATION).openConnection().getURL().toURI());
+						projectsLocation.setText(f.getPath());
+					}
+					catch (Exception e) {					
+						e.printStackTrace();
+					}
+					mainPanel.add(projectsLocation, "2, 12, fill, center");
 				}
 				{
 					JButton btnBrowseProjects = new JButton(TextUtils.getText("browse"));
