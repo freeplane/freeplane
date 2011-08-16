@@ -458,7 +458,7 @@ class ApplicationViewController extends ViewController {
 			if (Compat.isLowerJdk(Compat.VERSION_1_6_0)) {
 				if(ResourceController.getResourceController().getProperty("ApplicationName", "Freeplane").equals("Docear")) {
 					mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-						    "/images/Docear16.png"));
+						    "/images/docear16.png"));
 				}
 				else {
 					mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
@@ -469,7 +469,7 @@ class ApplicationViewController extends ViewController {
 			else {
 				if(ResourceController.getResourceController().getProperty("ApplicationName", "Freeplane").equals("Docear")) {
 					mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-						    "/images/Docear32.png"));
+						    "/images/docear32.png"));
 				}
 				else {
 					mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
