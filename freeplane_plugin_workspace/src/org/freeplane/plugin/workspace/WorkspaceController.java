@@ -68,11 +68,12 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 
 		this.popups = new PopupMenus();
 
-		initializeConfiguration();
-		initializeView();
 		this.fsReader = new FilesystemReader(getFileTypeManager());
 		this.configWriter = new ConfigurationWriter(this);
-	}
+	
+		initializeConfiguration();
+		initializeView();
+	}	
 
 	/***********************************************************************************
 	 * METHODS
@@ -187,7 +188,7 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 
 	private void initTree() {
 		this.tree = new IndexedTree(null);
-		this.tree.addElement(this.tree, new WorkspaceRoot("root"), "root", IndexedTree.AS_CHILD);
+		this.tree.addElement(this.tree, new WorkspaceRoot(), "root", IndexedTree.AS_CHILD);
 	}
 
 	private void initializeConfiguration() {

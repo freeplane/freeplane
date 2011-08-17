@@ -22,20 +22,27 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspacePreferences;
-import org.freeplane.plugin.workspace.config.creator.FilesystemFolderCreator;
-import org.freeplane.plugin.workspace.config.creator.FilesystemLinkCreator;
-import org.freeplane.plugin.workspace.config.creator.FilesystemMindMapLinkCreator;
-import org.freeplane.plugin.workspace.config.creator.GroupCreator;
-import org.freeplane.plugin.workspace.config.creator.WorkspaceCreator;
+import org.freeplane.plugin.workspace.config.creator.AWorkspaceNodeCreator;
+import org.freeplane.plugin.workspace.config.creator.FolderCreator;
+import org.freeplane.plugin.workspace.config.creator.FolderTypePhysicalCreator;
+import org.freeplane.plugin.workspace.config.creator.FolderTypeVirtualCreator;
+import org.freeplane.plugin.workspace.config.creator.LinkCreator;
+import org.freeplane.plugin.workspace.config.creator.LinkTypeFileCreator;
+import org.freeplane.plugin.workspace.config.creator.WorkspaceRootCreator;
 import org.freeplane.plugin.workspace.io.xml.WorkspaceNodeWriter;
 
 public class WorkspaceConfiguration {
 	final private ReadManager readManager;
 	final private WriteManager writeManager;
+	
+	public final static int WSNODE_FOLDER = 1;
+	public final static int WSNODE_LINK = 2;
 
 	private final static String DEFAULT_CONFIG_FILE_NAME = "workspace_default.xml";
 	private final static String CONFIG_FILE_NAME = "workspace.xml";
-
+	
+	private FolderCreator folderCreator = null;
+	private LinkCreator linkCreator = null;
 	private boolean configValid = false;
 
 	public WorkspaceConfiguration() {
@@ -140,31 +147,58 @@ public class WorkspaceConfiguration {
 	}
 
 	private void initReadManager() {
-		readManager.addElementHandler("workspace_structure", new WorkspaceCreator());
-		readManager.addElementHandler("group", new GroupCreator());
-		readManager.addElementHandler("filesystem_folder", new FilesystemFolderCreator());
-		readManager.addElementHandler("filesystem_link", new FilesystemLinkCreator());
-		readManager.addElementHandler("filesystem_mindmap_link", new FilesystemMindMapLinkCreator());
+		readManager.addElementHandler("workspace", new WorkspaceRootCreator());
+		readManager.addElementHandler("folder", getFolderCreator());
+		readManager.addElementHandler("link", getLinkCreator());
+		
+		registerTypeCreator(WorkspaceConfiguration.WSNODE_FOLDER, "virtual", new FolderTypeVirtualCreator());
+		registerTypeCreator(WorkspaceConfiguration.WSNODE_FOLDER, "physical", new FolderTypePhysicalCreator());
+		registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, "file", new LinkTypeFileCreator());
 	}
 
 	private void initWriteManager() {
 		WorkspaceNodeWriter writer = new WorkspaceNodeWriter();
-		writeManager.addElementWriter("workspace_structure", writer);
-		writeManager.addAttributeWriter("workspace_structure", writer);
-
-		writeManager.addElementWriter("group", writer);
-		writeManager.addAttributeWriter("group", writer);
-
-		writeManager.addElementWriter("filesystem_folder", writer);
-		writeManager.addAttributeWriter("filesystem_folder", writer);
-
-		writeManager.addElementWriter("filesystem_link", writer);
-		writeManager.addAttributeWriter("filesystem_link", writer);
-
-		writeManager.addElementWriter("filesystem_mindmap_link", writer);
-		writeManager.addAttributeWriter("filesystem_mindmap_link", writer);
+		writeManager.addElementWriter("workspace", writer);
+		writeManager.addAttributeWriter("workspace", writer);
+		
+		writeManager.addElementWriter("folder", writer);
+		writeManager.addAttributeWriter("folder", writer);
+		
+		writeManager.addElementWriter("link", writer);
+		writeManager.addAttributeWriter("link", writer);
+	}
+	
+	private FolderCreator getFolderCreator() {
+		if(this.folderCreator == null) {
+			this.folderCreator = new FolderCreator();
+		}
+		return this.folderCreator;
+	}
+	
+	private LinkCreator getLinkCreator() {
+		if(this.linkCreator == null) {
+			this.linkCreator = new LinkCreator();
+		}
+		return this.linkCreator;
 	}
 
+	public void registerTypeCreator(final int nodeType, final String typeName, final AWorkspaceNodeCreator creator) {
+		switch(nodeType) {
+			case WSNODE_FOLDER: {
+				getFolderCreator().addTypeCreator(typeName, creator);
+				break;
+			}
+			case WSNODE_LINK: {
+				getLinkCreator().addTypeCreator(typeName, creator);
+				break;
+			}
+			default: {
+				throw new IllegalArgumentException("not allowed argument for nodeType. Use only WorkspaceConfiguration.WSNODE_FOLDER or WorkspaceConfiguration.WSNODE_LINK.");
+			}
+		}
+		
+	}
+	
 	public void load(final URL xmlFile) {
 		final TreeXmlReader reader = new TreeXmlReader(readManager);
 		try {

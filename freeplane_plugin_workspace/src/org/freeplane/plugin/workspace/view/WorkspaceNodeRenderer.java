@@ -11,8 +11,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
-import org.freeplane.plugin.workspace.config.node.FilesystemLinkNode;
-import org.freeplane.plugin.workspace.config.node.FilesystemMindMapLinkNode;
+import org.freeplane.plugin.workspace.config.node.FolderNode;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 
 public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
@@ -26,9 +25,13 @@ public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 	private static Icon MINDMAP_ICON;
 	private static Icon DEFAULT_ICON;
 	private static Icon WEB_ICON;
+	private static Icon DEFAULT_FOLDER_CLOSED_ICON;
+	private static Icon DEFAULT_FOLDER_OPEN_ICON;
 
 	public WorkspaceNodeRenderer() {
 		if (ACROBAT_ICON == null) {
+			DEFAULT_FOLDER_CLOSED_ICON = new ImageIcon(this.getClass().getResource("/images/16x16/folder-blue.png"));
+			DEFAULT_FOLDER_OPEN_ICON = new ImageIcon(this.getClass().getResource("/images/16x16/folder-blue_open.png"));
 			ACROBAT_ICON = new ImageIcon(this.getClass().getResource("/images/16x16/acrobat.png"));
 			GRAPHICS_ICON = new ImageIcon(this.getClass().getResource("/images/16x16/image-x-generic.png"));
 			DEFAULT_ICON = new ImageIcon(this.getClass().getResource("/images/16x16/text-x-preview.png"));
@@ -38,10 +41,7 @@ public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 			}
 			else {
 				MINDMAP_ICON = new ImageIcon(ResourceController.class.getResource("/images/Freeplane_frame_icon.png"));
-			}
-			
-			
-			
+			}			
 		}
 	}
 
@@ -52,8 +52,8 @@ public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 		// super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf,
 		// row, hasFocus);
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-		Object obj = node.getUserObject();
-		setNodeIcon(renderer, obj);
+		setNodeIcon(renderer, node);
+		Object obj = node.getUserObject();		
 		JLabel label = (JLabel) renderer.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 		if (obj != null) {
 			label.setText(obj.toString());
@@ -70,7 +70,10 @@ public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 	/**
 	 * @param value
 	 */
-	protected void setNodeIcon(DefaultTreeCellRenderer renderer, Object userObject) {
+	protected void setNodeIcon(DefaultTreeCellRenderer renderer, DefaultMutableTreeNode node) {
+		renderer.setOpenIcon(DEFAULT_FOLDER_OPEN_ICON);
+		renderer.setClosedIcon(DEFAULT_FOLDER_CLOSED_ICON);
+		Object userObject = node.getUserObject();
 		if (userObject instanceof DefaultFileNode) {
 			DefaultFileNode fileNode = (DefaultFileNode) userObject;
 			if (fileNode.getFile().isFile()) {
@@ -100,12 +103,14 @@ public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 				}
 				
 
+			} else {
+				renderer.setLeafIcon(DEFAULT_FOLDER_CLOSED_ICON);
 			}
 		}
-		else if (userObject instanceof FilesystemMindMapLinkNode) {
-			renderer.setLeafIcon(MINDMAP_ICON);
+		else if (userObject instanceof FolderNode) {
+			renderer.setLeafIcon(DEFAULT_FOLDER_CLOSED_ICON);
 		}
-		else if (userObject instanceof FilesystemLinkNode) {
+		else {
 			renderer.setLeafIcon(DEFAULT_ICON);
 		}
 	}

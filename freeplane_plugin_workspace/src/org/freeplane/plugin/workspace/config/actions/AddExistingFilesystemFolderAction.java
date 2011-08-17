@@ -32,7 +32,7 @@ public class AddExistingFilesystemFolderAction extends AWorkspaceAction {
 		System.out.println("RETVAL: "+retVal+" : "+JFileChooser.APPROVE_OPTION);
 		if (retVal == JFileChooser.APPROVE_OPTION) {
 			//createNode(e, fileChooser.getSelectedFile(), currentLocation);
-			WorkspaceUtils.createFilesystemFolderNode(fileChooser.getSelectedFile(), this.getNodeFromActionEvent(e));
+			WorkspaceUtils.createPhysicalFolderNode(fileChooser.getSelectedFile(), this.getNodeFromActionEvent(e));
 		}
 		
 		WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();

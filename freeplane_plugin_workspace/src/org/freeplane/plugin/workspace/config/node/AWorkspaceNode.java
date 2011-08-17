@@ -2,15 +2,14 @@ package org.freeplane.plugin.workspace.config.node;
 
 
 public abstract class AWorkspaceNode {
-	final public static int WSNODE_DEFAULT_MODE = 0;	
+	final public static int WSNODE_DEFAULT_MODE = 0;
 	
-	private String id;
 	private String name;
 	private int currentMode;
+	private final String type;
 	
-	public AWorkspaceNode(String id) {
-		this.id=id;
-		this.name = id;
+	public AWorkspaceNode(final String type) {
+		this.type = type;
 		this.currentMode = WSNODE_DEFAULT_MODE;
 	}
 	
@@ -22,12 +21,12 @@ public abstract class AWorkspaceNode {
 		this.name = name;
 	}
 	
-	public String getId() {
-		return id;
+	public final String getId() {
+		return Integer.toHexString(super.toString().hashCode()).toUpperCase();
 	}
 	
 	public String toString() {
-		return this.getClass().getSimpleName()+"[id="+this.getId()+";name="+this.getName()+"]";
+		return this.getClass().getSimpleName()+"[type="+this.getType()+";name="+this.getName()+"]";
 	}
 	
 	public int getMode() {
@@ -36,6 +35,10 @@ public abstract class AWorkspaceNode {
 	
 	public void setMode(int mode) {
 		this.currentMode = mode;
+	}
+	
+	public String getType() {
+		return this.type;
 	}
 	
 	abstract public String getTagName();

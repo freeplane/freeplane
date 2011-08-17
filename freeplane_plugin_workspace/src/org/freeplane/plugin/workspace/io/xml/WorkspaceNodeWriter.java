@@ -47,8 +47,9 @@ public class WorkspaceNodeWriter implements IElementWriter, IAttributeWriter {
 	public void writeAttributes(ITreeWriter writer, Object userObject, String tag) {		
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) userObject;
 		AWorkspaceNode wsNode = (AWorkspaceNode) node.getUserObject();
-		if(wsNode.getId() != null) writer.addAttribute("id", wsNode.getId());
+		if(wsNode.getType() != null) writer.addAttribute("type", wsNode.getType());
 		if(wsNode.getName() != null) writer.addAttribute("name", wsNode.getName());
+		
 		for(Method m : wsNode.getClass().getDeclaredMethods()) {
 			if(m.getAnnotation(ExportAsAttribute.class) != null && m.getParameterTypes().length == 0 && m.getReturnType() != void.class) {				
 				writeAdditionalAttribute(writer, wsNode, m);

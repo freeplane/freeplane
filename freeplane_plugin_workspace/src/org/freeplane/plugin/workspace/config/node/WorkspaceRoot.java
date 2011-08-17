@@ -8,12 +8,12 @@ import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 
 public class WorkspaceRoot extends AWorkspaceNode implements IWorkspaceNodeEventListener {
 
-	public WorkspaceRoot(String id) {
-		super(id);
+	public WorkspaceRoot() {
+		super(null);
 	}
 
 	public String getTagName() {
-		return "workspace_structure";
+		return "workspace";
 	}
 
 	public void handleEvent(WorkspaceNodeEvent event) {

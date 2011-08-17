@@ -7,11 +7,11 @@ import org.freeplane.plugin.workspace.config.PopupMenus;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 
-public class GroupNode extends AWorkspaceNode implements IWorkspaceNodeEventListener {
+public class VirtualFolderNode extends FolderNode implements IWorkspaceNodeEventListener {
 	private final static String POPUP_KEY = "/workspace_groupnode_popup";
 
-	public GroupNode(String id) {
-		super(id);
+	public VirtualFolderNode(String type) {
+		super(type);
 		initializePopup();
 	}
 
@@ -33,9 +33,4 @@ public class GroupNode extends AWorkspaceNode implements IWorkspaceNodeEventList
 		System.out.println("Event: " + event);
 
 	}
-
-	public String getTagName() {
-		return "group";
-	}
-
 }
