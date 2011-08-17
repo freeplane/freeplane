@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 
@@ -28,6 +30,11 @@ public class Tools {
 		catch (IllegalArgumentException e) {
 			return new File(getAbsoluteUri(uri));
 		}
+	}
+	
+	public static URI getAbsoluteUri(NodeModel node){
+		URI uri = NodeLinks.getValidLink(node);
+		return Tools.getAbsoluteUri(uri);
 	}
 	
 	public static URI getAbsoluteUri(URI uri){
@@ -86,6 +93,31 @@ public class Tools {
 		    }	    
 	    }	     
 	    return list;
+	}
+
+	public static String reshapeString(String s, int i) {
+		s = s.trim();
+		if(s.length() > i){
+			s = s.substring(0, i - 4);
+			s = s + "...";
+		}
+		return s;
+	}
+
+	public static boolean exists(URI uri) {
+		uri = Tools.getAbsoluteUri(uri);
+		try {
+			if(uri.toURL().openConnection().getContentLength() > 0) {
+				return true;
+			}
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}	
 
 }

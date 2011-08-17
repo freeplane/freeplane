@@ -19,7 +19,7 @@ import org.docear.plugin.pdfutilities.actions.DocearPasteAction;
 import org.docear.plugin.pdfutilities.actions.ImportAllAnnotationsAction;
 import org.docear.plugin.pdfutilities.actions.ImportNewAnnotationsAction;
 import org.docear.plugin.pdfutilities.actions.RadioButtonAction;
-import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionController;
+import org.docear.plugin.pdfutilities.features.AnnotationController;
 import org.docear.plugin.pdfutilities.listener.DocearNodeDropListener;
 import org.docear.plugin.pdfutilities.listener.DocearNodeMouseMotionListener;
 import org.docear.plugin.pdfutilities.listener.DocearNodeSelectionListener;
@@ -84,7 +84,7 @@ public class PdfUtilitiesController extends ALanguageController{
 	}
 
 	private void registerController() {
-		PdfAnnotationExtensionController.install(new PdfAnnotationExtensionController(modecontroller));		
+		AnnotationController.install(new AnnotationController(modecontroller));		
 	}
 
 	private void registerActions() {

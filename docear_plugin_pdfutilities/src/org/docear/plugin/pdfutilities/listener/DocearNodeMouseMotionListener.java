@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.net.URI;
 
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
-import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel;
-import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel.AnnotationType;
+import org.docear.plugin.pdfutilities.features.IAnnotation;
+import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.docear.plugin.pdfutilities.pdf.PdfReaderFileFilter;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
@@ -17,7 +17,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.link.LinkController;
-import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -64,13 +63,13 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 				return;
 			}
 			
-			URI uri = NodeLinks.getValidLink(selectedNode);					
-			uri = Tools.getAbsoluteUri(uri);
+			URI uri = Tools.getAbsoluteUri(selectedNode);				
+			
 			String command = null;
 			
-			PdfAnnotationExtensionModel annotation = null;
+			IAnnotation annotation = null;
 			try{
-				annotation = new PdfAnnotationImporter().searchAnnotation(Tools.getFilefromUri(uri), selectedNode.getText());
+				annotation = new PdfAnnotationImporter().searchAnnotation(uri, selectedNode);
 				
 				if(annotation == null){
 					this.mouseListener.mouseClicked(e);
@@ -107,7 +106,7 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 			LinkController.getController().onDeselect(selectedNode);
 			
 			
-			//TODO Are all URI's working ??
+			//TODO: DOCEAR Are all URI's working ??
 			/*String uriString = uri.toString();
 			final String UNC_PREFIX = "file:////";
 			if (uriString.startsWith(UNC_PREFIX)) {

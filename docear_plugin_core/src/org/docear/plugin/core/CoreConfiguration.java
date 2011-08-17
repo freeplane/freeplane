@@ -42,10 +42,23 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	public CoreConfiguration(ModeController modeController) {
 		addPropertyChangeListener();
 		addPreferencesToOptionsPanel();
+		
+		
+		//TODO: DOCEAR change behaviour?
+		showLocationDialogIfNeeded();
+		
 		LogUtils.info("org.docear.plugin.core.CoreConfiguration() initializing...");
 		init(modeController);
 	}
 	
+	private void showLocationDialogIfNeeded() {		
+		/*String workspaceVersion = WorkspaceController.getCurrentWorkspaceController().getVersion();
+		if (!workspaceVersion.toLowerCase().startsWith("docear")) {
+			LocationDialog dialog = new LocationDialog();
+	    	dialog.setVisible(true);
+		}*/
+	}
+
 	private void addPropertyChangeListener() {
 		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
 		resCtrl.addPropertyChangeListener(this);

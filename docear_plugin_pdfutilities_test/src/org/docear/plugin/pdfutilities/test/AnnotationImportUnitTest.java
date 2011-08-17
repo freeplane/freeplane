@@ -2,12 +2,17 @@ package org.docear.plugin.pdfutilities.test;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel;
-import org.docear.plugin.pdfutilities.features.PdfAnnotationExtensionModel.AnnotationType;
+import org.docear.plugin.pdfutilities.features.AnnotationID;
+import org.docear.plugin.pdfutilities.features.AnnotationModel;
+import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
 import org.junit.Assert;
@@ -41,7 +46,7 @@ public class AnnotationImportUnitTest {
 				System.out.println("Testing file " + (pdfFiles.indexOf(pdfFile) + 1) + " of " + totalFiles);			
 				PdfAnnotationImporter importer = new PdfAnnotationImporter();
 				importer.setImportAll(true);
-				List<PdfAnnotationExtensionModel> annotations = importer.importAnnotations(pdfFile);
+				List<AnnotationModel> annotations = importer.importAnnotations(pdfFile.toURI());
 				importer.setImportAll(false);
 				boolean fileFailed = false;
 				if(checkPages(annotations) == false){
@@ -115,7 +120,7 @@ public class AnnotationImportUnitTest {
 		try {
 			System.out.println("Testing file " + pdfFile.getAbsolutePath());			
 			
-			List<PdfAnnotationExtensionModel> annotations = new PdfAnnotationImporter().importAnnotations(pdfFile);
+			List<AnnotationModel> annotations = new PdfAnnotationImporter().importAnnotations(pdfFile.toURI());
 			if(checkPages(annotations) == false){
 				failCounter++;
 				pageNotFoundCounter++;				
@@ -150,12 +155,12 @@ public class AnnotationImportUnitTest {
 	}
 	
 	
-	private boolean checkGenerationNumber(List<PdfAnnotationExtensionModel> annotations) {
+	private boolean checkGenerationNumber(List<AnnotationModel> annotations) {
 		boolean result = true;
-		for(PdfAnnotationExtensionModel annotation : annotations){
+		for(AnnotationModel annotation : annotations){
 			if(annotation.getGenerationNumber() == null || annotation.getGenerationNumber() < 0){
 				System.out.println("Could not get Generation Number from annotation: " + annotation.getTitle());
-				System.out.println("Annotation file: " + annotation.getFile().getAbsolutePath());
+				System.out.println("Annotation file: " + annotation.getUri());
 				System.out.println("Annotation type: " + annotation.getAnnotationType());
 				System.out.println("Annotation Objectnumber: " + annotation.getObjectNumber());
 				System.out.println("Annotation Generationnumber: " + annotation.getGenerationNumber());
@@ -168,13 +173,13 @@ public class AnnotationImportUnitTest {
 		return result;
 	}
 
-	private boolean checkObjectNumberUnique(List<PdfAnnotationExtensionModel> annotations, List<Integer> objectNumbers) {
+	private boolean checkObjectNumberUnique(List<AnnotationModel> annotations, List<Integer> objectNumbers) {
 		boolean result = true;
-		for(PdfAnnotationExtensionModel annotation : annotations){
+		for(AnnotationModel annotation : annotations){
 			if(annotation.getObjectNumber() != null && annotation.getObjectNumber() > 0){
 				if(objectNumbers.contains(annotation.getObjectNumber())){
 					System.out.println("Could not get Generation Number from annotation: " + annotation.getTitle());
-					System.out.println("Annotation file: " + annotation.getFile().getAbsolutePath());
+					System.out.println("Annotation file: " + annotation.getUri());
 					System.out.println("Annotation type: " + annotation.getAnnotationType());
 					System.out.println("Annotation Objectnumber: " + annotation.getObjectNumber());
 					System.out.println("Annotation Generationnumber: " + annotation.getGenerationNumber());
@@ -192,12 +197,12 @@ public class AnnotationImportUnitTest {
 		return result;
 	}
 
-	private boolean checkObjectNumber(List<PdfAnnotationExtensionModel> annotations) {
+	private boolean checkObjectNumber(List<AnnotationModel> annotations) {
 		boolean result = true;
-		for(PdfAnnotationExtensionModel annotation : annotations){
+		for(AnnotationModel annotation : annotations){
 			if(annotation.getObjectNumber() == null || annotation.getObjectNumber() <= 0){
 				System.out.println("Could not get Object Number from annotation: " + annotation.getTitle());
-				System.out.println("Annotation file: " + annotation.getFile().getAbsolutePath());
+				System.out.println("Annotation file: " + annotation.getUri());
 				System.out.println("Annotation type: " + annotation.getAnnotationType());
 				System.out.println("Annotation Objectnumber: " + annotation.getObjectNumber());
 				System.out.println("Annotation Generationnumber: " + annotation.getGenerationNumber());
@@ -210,12 +215,12 @@ public class AnnotationImportUnitTest {
 		return result;
 	}
 
-	private boolean checkPages(List<PdfAnnotationExtensionModel> annotations) {
+	private boolean checkPages(List<AnnotationModel> annotations) {
 		boolean result = true;
-		for(PdfAnnotationExtensionModel annotation : annotations){
+		for(AnnotationModel annotation : annotations){
 			if(annotation.getPage() == null && annotation.getAnnotationType() != AnnotationType.BOOKMARK_WITH_URI && annotation.getAnnotationType() != AnnotationType.BOOKMARK_WITHOUT_DESTINATION){
 				System.out.println("Could not get page from annotation: " + annotation.getTitle());
-				System.out.println("Annotation file: " + annotation.getFile().getAbsolutePath());
+				System.out.println("Annotation file: " + annotation.getUri());
 				System.out.println("Annotation type: " + annotation.getAnnotationType());
 				result =  false;
 			}
@@ -224,6 +229,19 @@ public class AnnotationImportUnitTest {
 			}
 		}
 		return result;
+	}
+	
+	@Test
+	public void testAnnotationIDComparability() throws IllegalArgumentException, URISyntaxException {
+		AnnotationID id1 = new AnnotationID(new URI("file://C:/test.mm"), 359);
+		AnnotationID id2 = new AnnotationID(new URI("file://C:/test.mm").normalize(), 359);
+		Map<AnnotationID, String> map = new HashMap<AnnotationID, String>();
+		System.out.println("id1 hash :" + id1.hashCode());
+		System.out.println("id1 hash :" + id2.hashCode());
+		map.put(id1, "id1");
+		Assert.assertTrue("Objects are not equal", id1.equals(id2));
+		Assert.assertTrue(map.containsKey(id2));
+		
 	}
 	
 	
