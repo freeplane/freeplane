@@ -41,7 +41,7 @@ public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEve
 	 * @param name
 	 */
 	public DefaultFileNode(final String name, final File file) {
-		super(file.getName());
+		super("physical_file");
 		this.setName(name);
 		this.file = file;
 		

@@ -7,11 +7,11 @@ import org.freeplane.plugin.workspace.config.PopupMenus;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 
-public class GroupNode extends AWorkspaceNode implements IWorkspaceNodeEventListener {
+public class VirtualFolderNode extends AWorkspaceNode implements IWorkspaceNodeEventListener {
 	private final static String POPUP_KEY = "/workspace_groupnode_popup";
 
-	public GroupNode(String id) {
-		super(id);
+	public VirtualFolderNode(String type) {
+		super(type);
 		initializePopup();
 	}
 

@@ -11,7 +11,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
-import org.freeplane.plugin.workspace.config.node.FilesystemLinkNode;
+import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
 import org.freeplane.plugin.workspace.config.node.FilesystemMindMapLinkNode;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 
@@ -105,7 +105,7 @@ public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 		else if (userObject instanceof FilesystemMindMapLinkNode) {
 			renderer.setLeafIcon(MINDMAP_ICON);
 		}
-		else if (userObject instanceof FilesystemLinkNode) {
+		else if (userObject instanceof LinkTypeFileNode) {
 			renderer.setLeafIcon(DEFAULT_ICON);
 		}
 	}

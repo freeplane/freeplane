@@ -65,10 +65,10 @@ public class DefaultWorkspaceDropHandler implements IWorkspaceDragnDropControlle
 						} 
 						System.out.println("Drop Item ("+file.toString()+") on "+targetNode.getUserObject()+" at "+location);
 						if(file.isDirectory()) {
-							WorkspaceUtils.createFilesystemFolderNode(file, targetNode);
+							WorkspaceUtils.createPhysicalFolderNode(file, targetNode);
 						}
 						else {
-							WorkspaceUtils.createFilesystemLinkNode(file, targetNode);
+							WorkspaceUtils.createLinkTypeFileNode(file, targetNode);
 						}
 						WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();
 					}					
@@ -95,10 +95,10 @@ public class DefaultWorkspaceDropHandler implements IWorkspaceDragnDropControlle
 				} 
 				System.out.println("Drop Item ("+file.toString()+") on "+targetNode.getUserObject()+" at "+location);
 				if(file.isDirectory()) {
-					WorkspaceUtils.createFilesystemFolderNode(file, targetNode);
+					WorkspaceUtils.createPhysicalFolderNode(file, targetNode);
 				}
 				else {
-					WorkspaceUtils.createFilesystemLinkNode(file, targetNode);
+					WorkspaceUtils.createLinkTypeFileNode(file, targetNode);
 				}
 				WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();
 				

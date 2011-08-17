@@ -22,13 +22,13 @@ import org.freeplane.plugin.workspace.dnd.IWorkspaceTransferableCreator;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 
-public class FilesystemLinkNode extends AWorkspaceNode implements IWorkspaceNodeEventListener, IWorkspaceTransferableCreator {
+public class LinkTypeFileNode extends AWorkspaceNode implements IWorkspaceNodeEventListener, IWorkspaceTransferableCreator {
 	private final String POPUP_KEY="/filesystem_link";
 	private URI linkPath;
 	
 	
-	public FilesystemLinkNode(String id) {
-		super(id);	
+	public LinkTypeFileNode(String type) {
+		super(type);	
 		initializePopup();
 	}
 	

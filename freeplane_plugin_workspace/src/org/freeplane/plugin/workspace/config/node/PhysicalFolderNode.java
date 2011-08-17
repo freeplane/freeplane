@@ -2,30 +2,24 @@ package org.freeplane.plugin.workspace.config.node;
 
 import java.awt.Component;
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 
-import javax.swing.event.TreeExpansionEvent;
-import javax.swing.event.TreeExpansionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.PopupMenus;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 
-public class FilesystemFolderNode extends AWorkspaceNode implements TreeExpansionListener, IWorkspaceNodeEventListener {
+public class PhysicalFolderNode extends AWorkspaceNode implements IWorkspaceNodeEventListener {
 	private String folderPathProperty;
 	private URI folderPath;
 
-	private boolean isUpToDate = false;
-
 	private static String POPUP_KEY = "/filesystem_folder";
 
-	public FilesystemFolderNode(String id) {
+	public PhysicalFolderNode(String id) {
 		super(id);
 		initializePopup();
 	}
@@ -48,47 +42,30 @@ public class FilesystemFolderNode extends AWorkspaceNode implements TreeExpansio
 		this.folderPath = folderPath;
 	}
 
-	public void treeCollapsed(TreeExpansionEvent event) {
-	}
-
-	public void treeExpanded(TreeExpansionEvent event) {
-		if (isUpToDate || getFolderPath() == null)
-			return;
-		refreshFolder((DefaultMutableTreeNode) event.getPath().getLastPathComponent());
-	}
-
-	public void refreshFolder(final DefaultMutableTreeNode node) {
+	public static void refresh(DefaultMutableTreeNode treeNode) {
 		// if folder path is not correctly set
-		if (getFolderPath() == null) {
-			return;
-		}
-		System.out.println("DOCEAR: folderPath: " + getFolderPath());
-
-		File folder;
-		try {
-			URL absoluteUrl;
-			try {
-				absoluteUrl = getFolderPath().toURL().openConnection().getURL();
-			}
-			catch (NullPointerException e) {
+		if(treeNode.getUserObject() instanceof PhysicalFolderNode) {
+			PhysicalFolderNode node = (PhysicalFolderNode) treeNode.getUserObject();
+			if (node.getFolderPath() == null) {
 				return;
 			}
-			folder = new File(absoluteUrl.toURI());
-			if (folder.isDirectory()) {
-				node.removeAllChildren();
-				WorkspaceController.getCurrentWorkspaceController().getFilesystemReader()
-						.scanFilesystem(node.getUserObject(), folder);
-				WorkspaceController.getCurrentWorkspaceController().getViewModel().reload(node);
-				isUpToDate = true;
+	
+			File folder;
+			WorkspaceController controller = WorkspaceController.getCurrentWorkspaceController();
+			try {
+				folder = WorkspaceUtils.resolveURI(node.getFolderPath());
+				if (folder.isDirectory()) {
+					treeNode.removeAllChildren();
+					controller.getFilesystemReader().scanFilesystem(node, folder);
+					if(controller.getViewModel() != null) {
+						controller.getViewModel().reload(treeNode);
+					}
+				}
+	
 			}
-
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
