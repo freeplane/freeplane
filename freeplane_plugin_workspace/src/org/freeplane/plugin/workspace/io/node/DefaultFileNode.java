@@ -185,7 +185,7 @@ public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEve
         }
 	}
 	
-	public String getTagName() {
+	public final String getTagName() {
 		return null;
 	}
 	

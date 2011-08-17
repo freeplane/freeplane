@@ -13,7 +13,7 @@ import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 
-public class PhysicalFolderNode extends AWorkspaceNode implements IWorkspaceNodeEventListener {
+public class PhysicalFolderNode extends FolderNode implements IWorkspaceNodeEventListener {
 	private String folderPathProperty;
 	private URI folderPath;
 
@@ -67,10 +67,6 @@ public class PhysicalFolderNode extends AWorkspaceNode implements IWorkspaceNode
 				e.printStackTrace();
 			}
 		}
-	}
-
-	public String getTagName() {
-		return "filesystem_folder";
 	}
 
 	private void initializePopup() {

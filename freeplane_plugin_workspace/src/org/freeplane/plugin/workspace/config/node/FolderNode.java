@@ -14,6 +14,9 @@ public class FolderNode extends AWorkspaceNode{
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 
+	final public static String FOLDER_TYPE_PHYSICAL = "physical";
+	final public static String FOLDER_TYPE_VIRTUAL = "virtual";
+
 	/**
 	 * @param type
 	 */

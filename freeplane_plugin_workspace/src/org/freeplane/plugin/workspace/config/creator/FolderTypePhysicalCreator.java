@@ -11,8 +11,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
+import org.freeplane.plugin.workspace.config.node.FolderNode;
 import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
-import org.freeplane.plugin.workspace.config.node.VirtualFolderNode;
 
 public class FolderTypePhysicalCreator extends AWorkspaceNodeCreator {
 
@@ -21,7 +21,7 @@ public class FolderTypePhysicalCreator extends AWorkspaceNodeCreator {
 
 	public AWorkspaceNode getNode(XMLElement data) {
 
-		String type = data.getAttribute("type", VirtualFolderNode.WSNODE_FOLDER_TYPE_PHYSICAL);
+		String type = data.getAttribute("type", FolderNode.FOLDER_TYPE_PHYSICAL);
 		PhysicalFolderNode node = new PhysicalFolderNode(type);
 
 		String path = data.getAttribute("path", null);

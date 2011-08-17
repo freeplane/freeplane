@@ -4,9 +4,6 @@ package org.freeplane.plugin.workspace.config.node;
 public abstract class AWorkspaceNode {
 	final public static int WSNODE_DEFAULT_MODE = 0;
 	
-	final public static String WSNODE_FOLDER_TYPE_PHYSICAL = "physical";
-	final public static String WSNODE_FOLDER_TYPE_VIRTUAL = "virtual";
-	
 	private String name;
 	private int currentMode;
 	private final String type;

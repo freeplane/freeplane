@@ -1,12 +1,9 @@
 package org.freeplane.plugin.workspace.config.actions;
 
 import java.awt.event.ActionEvent;
-import java.io.File;
 
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceController;
@@ -29,7 +26,7 @@ public class AddNewGroupAction extends AWorkspaceAction {
 		String groupName = JOptionPane.showInputDialog(Controller.getCurrentController().getViewController().getContentPane(),
 				TextUtils.getText("enter_group_name"));
 		
-		WorkspaceUtils.createGroupNode(groupName, this.getNodeFromActionEvent(e));
+		WorkspaceUtils.createVirtualFolderNode(groupName, this.getNodeFromActionEvent(e));
 		
 		WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();
 	}

@@ -22,7 +22,7 @@ import org.freeplane.plugin.workspace.dnd.IWorkspaceTransferableCreator;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 
-public class LinkTypeFileNode extends AWorkspaceNode implements IWorkspaceNodeEventListener, IWorkspaceTransferableCreator {
+public class LinkTypeFileNode extends LinkNode implements IWorkspaceNodeEventListener, IWorkspaceTransferableCreator {
 	private final String POPUP_KEY="/filesystem_link";
 	private URI linkPath;
 	
@@ -64,10 +64,6 @@ public class LinkTypeFileNode extends AWorkspaceNode implements IWorkspaceNodeEv
 					.showPopup(POPUP_KEY, component, event.getX(), event.getY());
 
 		}
-	}
-
-	public String getTagName() {
-		return "filesystem_link";
 	}
 
 	public Transferable getTransferable() {

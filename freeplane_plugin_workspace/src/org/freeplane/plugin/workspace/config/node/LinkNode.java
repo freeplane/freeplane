@@ -12,6 +12,8 @@ public class LinkNode extends AWorkspaceNode {
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 	
+	public static final String LINK_TYPE_FILE = "file";
+
 	/**
 	 * @param type
 	 */
