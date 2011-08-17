@@ -54,12 +54,12 @@ public class ImportNewAnnotationsAction extends ImportAnnotationsAction {
 					ImportConflictDialog dialog = new ImportConflictDialog(Controller.getCurrentController().getViewController().getJFrame(), conflicts);
 					dialog.showDialog();
 				}
-				System.out.println("Test");
+				System.out.println("Test"); //$NON-NLS-1$
                 nodeUtils.insertNewChildNodesFrom(annotations, selected.isLeft(), selected);
 			} catch (IOException e) {
-				LogUtils.severe("ImportAllAnnotationsAction IOException at URI("+uri+"): ", e);
+				LogUtils.severe("ImportAllAnnotationsAction IOException at URI("+uri+"): ", e); //$NON-NLS-1$ //$NON-NLS-2$
 			} catch (COSLoadException e) {
-				LogUtils.severe("ImportAllAnnotationsAction ImportException at URI("+uri+"): ", e);
+				LogUtils.severe("ImportAllAnnotationsAction ImportException at URI("+uri+"): ", e); //$NON-NLS-1$ //$NON-NLS-2$
 			}	
 		}
 

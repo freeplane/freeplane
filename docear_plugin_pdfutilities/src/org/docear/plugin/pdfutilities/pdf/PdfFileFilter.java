@@ -8,6 +8,7 @@ import org.docear.plugin.pdfutilities.util.Tools;
 
 public class PdfFileFilter implements FileFilter{
 	
+	
 	public boolean accept(File file) {
         if(file == null) return false;
         
@@ -35,6 +36,7 @@ public class PdfFileFilter implements FileFilter{
             return false;
         }
     }
+	
 
     
 

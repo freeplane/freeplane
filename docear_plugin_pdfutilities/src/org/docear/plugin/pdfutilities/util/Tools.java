@@ -1,11 +1,14 @@
 package org.docear.plugin.pdfutilities.util;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -18,8 +21,6 @@ import org.freeplane.features.url.UrlManager;
 
 public class Tools {
 	
-	//TODO: getFilefromUri and getAbsoluteUri currently are working for current Map only !!! 
-	
 	//TODO: check if URI refers to a local file !!
 	
 	public static File getFilefromUri(URI uri){		
@@ -28,22 +29,35 @@ public class Tools {
 			return new File(uri.normalize());
 		} 
 		catch (IllegalArgumentException e) {
-			return new File(getAbsoluteUri(uri));
+			//return new File(getAbsoluteUri(uri, map));
+			LogUtils.severe("(getFilefromUri) Uri has to be absolute: " + uri);
+			return null;
 		}
 	}
 	
 	public static URI getAbsoluteUri(NodeModel node){
 		URI uri = NodeLinks.getValidLink(node);
-		return Tools.getAbsoluteUri(uri);
+		return Tools.getAbsoluteUri(uri, node.getMap());
+	}
+	
+	public static URI getAbsoluteUri(NodeModel node, MapModel map){
+		URI uri = NodeLinks.getValidLink(node);
+		return Tools.getAbsoluteUri(uri, map);
 	}
 	
 	public static URI getAbsoluteUri(URI uri){
-		if(uri == null /*|| !isFile(uri)*/) return null;
+		return Tools.getAbsoluteUri(uri, Controller.getCurrentController().getMap());
+	}
+	
+	public static URI getAbsoluteUri(URI uri, MapModel map){
+		if(uri == null) return null;
 		try{
+			// uri with scheme is always "absolute" ( so are workspace relative links)
 			if(!uri.isAbsolute()){
 				final UrlManager urlManager = (UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class);
-				MapModel map = Controller.getCurrentController().getMap();
+				//MapModel map = Controller.getCurrentController().getMap();
 				if(map == null || urlManager == null) return null;
+				if(uri.getScheme() == null ||uri.getScheme().equals(""))
 				uri = urlManager.getAbsoluteUri(map, uri);				
 			}
 			if(uri.getScheme().equals("file")) return uri;
@@ -62,6 +76,8 @@ public class Tools {
 			return null;
 		}
 	}
+	
+	
 	
 	
     public static boolean isFile(URI uri) {
@@ -103,9 +119,13 @@ public class Tools {
 		}
 		return s;
 	}
-
+	
 	public static boolean exists(URI uri) {
-		uri = Tools.getAbsoluteUri(uri);
+		return Tools.exists(uri, Controller.getCurrentController().getMap());
+	}
+
+	public static boolean exists(URI uri, MapModel map) {
+		uri = Tools.getAbsoluteUri(uri, map);
 		try {
 			if(uri.toURL().openConnection().getContentLength() > 0) {
 				return true;
@@ -118,6 +138,30 @@ public class Tools {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	public static Collection<URI> getFilteredFileList(URI absoluteURI, FileFilter fileFilter, boolean readSubDirectories) {
+		Collection<URI> result = new ArrayList<URI>();
+		Collection<File> tempResult = new ArrayList<File>();
+		if(!absoluteURI.isAbsolute()) return result;
+		
+		File monitoringDir = Tools.getFilefromUri(absoluteURI);
+		File[] monitorFiles = monitoringDir.listFiles(fileFilter);
+		if(monitorFiles != null && monitorFiles.length > 0){
+			tempResult.addAll(Arrays.asList(monitorFiles));
+		}	
+		for(File file : tempResult){
+			result.add(file.toURI());
+		}
+		if(readSubDirectories){
+			File[] subDirs = monitoringDir.listFiles(new DirectoryFileFilter());
+			if(subDirs != null && subDirs.length > 0){
+				for(File subDir : subDirs){
+					result.addAll(Tools.getFilteredFileList(subDir.toURI(), fileFilter, readSubDirectories));
+				}
+			}			
+		}		
+		return result;
 	}	
 
 }

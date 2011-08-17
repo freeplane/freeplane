@@ -68,7 +68,7 @@ public class FilesystemFolderNode extends AWorkspaceNode implements TreeExpansio
 		try {
 			URL absoluteUrl;
 			try {
-				absoluteUrl = getFolderPath().toURL().openConnection().getURL();
+				absoluteUrl = getFolderPath().toURL().openConnection().getURL();				
 			}
 			catch (NullPointerException e) {
 				return;

@@ -1,11 +1,12 @@
 package org.docear.plugin.pdfutilities.features;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 
 public class AnnotationID implements Comparable<AnnotationID>{
 	
 	private String id;
+	private URI uri;
+	private Integer objectNumber;
 	
 	public AnnotationID(URI absoluteUri, Integer objectNumber) throws IllegalArgumentException{
 		this.setId(absoluteUri, objectNumber);
@@ -22,29 +23,25 @@ public class AnnotationID implements Comparable<AnnotationID>{
 		if(objectNumber == null){
 			throw new IllegalArgumentException(this.getClass().getName() + ": Object number can not be null.");
 		}
-		String uri = absoluteUri.toString();
+		
+		String uri = absoluteUri.getPath();
 		uri = uri.trim();
 		this.id = uri + " " + objectNumber;
+		this.objectNumber = objectNumber;
+		this.uri = absoluteUri;
 	}
 	
 	public URI getUri(){		
-		String uri = this.id.split(" ")[0];
-		try {
-			return new URI(uri);
-		} catch (URISyntaxException e) {
-			return null;
-		}
+		return this.uri;
 	}
 	
 	public Integer getObjectNumber(){		
-		String objectNumber = this.id.split(" ")[1];
-		return Integer.valueOf(objectNumber);
+		return this.objectNumber;
 	}
 	
 	public boolean equals(Object object){
 		if(object instanceof AnnotationID){
 			return this.getUri().equals(((AnnotationID) object).getUri()) && this.getObjectNumber().equals(((AnnotationID) object).getObjectNumber());
-			//return this.id.equals(((AnnotationID) object).getId());
 		}
 		else{
 			return super.equals(object);

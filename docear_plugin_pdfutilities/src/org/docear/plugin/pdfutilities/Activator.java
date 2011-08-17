@@ -17,7 +17,7 @@ public class Activator implements BundleActivator {
 	 */
 	public void start(BundleContext context) throws Exception {
 		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
-		props.put("mode", new String[] { MModeController.MODENAME });
+		props.put("mode", new String[] { MModeController.MODENAME }); //$NON-NLS-1$
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
 			    public void installExtension(ModeController modeController) {
@@ -31,7 +31,7 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
-		System.out.println("Goodbye World!!");
+		System.out.println("Goodbye World!!"); //$NON-NLS-1$
 	}
 
 }
