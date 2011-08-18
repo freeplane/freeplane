@@ -37,6 +37,7 @@ import java.util.Map.Entry;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JToolTip;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
@@ -92,6 +93,7 @@ public abstract class MainView extends ZoomableLabel {
 		setHorizontalAlignment(SwingConstants.LEFT);
 		setVerticalAlignment(SwingConstants.CENTER);
 		setHorizontalTextPosition(SwingConstants.TRAILING);
+		setVerticalTextPosition(JLabel.TOP);
 	}
 
 	protected void convertPointFromMap(final Point p) {
