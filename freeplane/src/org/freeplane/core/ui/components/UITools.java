@@ -40,6 +40,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
@@ -451,7 +452,7 @@ return JOptionPane.showConfirmDialog(parentComponent, message, title, optionType
 
 	public static void addTitledBorder(final JComponent c, final String title, final float size) {
         final TitledBorder titledBorder = BorderFactory.createTitledBorder(title);
-        final Font titleFont = titledBorder.getTitleFont();
+        final Font titleFont = UIManager.getFont("TitledBorder.font");
         titledBorder.setTitleFont(titleFont.deriveFont(size));
     	final Border btnBorder = c.getBorder();
     	if(btnBorder != null){
