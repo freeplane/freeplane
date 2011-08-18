@@ -442,8 +442,11 @@ public abstract class MainView extends ZoomableLabel {
             return getRightPoint();
         if(relativeLocation.x < 0)
             return getLeftPoint();
-        if(relativeLocation.y > getHeight())
-            return getBottomPoint();
+        if(relativeLocation.y > getHeight()){
+            final Point bottomPoint = getBottomPoint();
+            bottomPoint.y = getNodeView().getContent().getHeight();
+			return bottomPoint;
+        }
         if(relativeLocation.y <0)
             return getTopPoint();
         return getCenterPoint();
