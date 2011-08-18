@@ -15,6 +15,7 @@ import javax.swing.JMenu;
 import javax.swing.JRadioButton;
 
 import org.docear.plugin.core.ALanguageController;
+import org.docear.plugin.pdfutilities.actions.AbstractMonitoringAction;
 import org.docear.plugin.pdfutilities.actions.AddMonitoringFolderAction;
 import org.docear.plugin.pdfutilities.actions.DocearPasteAction;
 import org.docear.plugin.pdfutilities.actions.ImportAllAnnotationsAction;
@@ -72,7 +73,7 @@ public class PdfUtilitiesController extends ALanguageController{
 	private ModeController modecontroller;
 	private ImportAllAnnotationsAction importAllAnnotationsAction;
 	private ImportNewAnnotationsAction importNewAnnotationsAction;
-	private AddMonitoringFolderAction addMonitoringFolderAction;
+	private AbstractMonitoringAction addMonitoringFolderAction;
 
 	public PdfUtilitiesController(ModeController modeController) {
 		super();

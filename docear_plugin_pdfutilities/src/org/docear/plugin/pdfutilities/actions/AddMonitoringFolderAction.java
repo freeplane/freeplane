@@ -1,47 +1,30 @@
 package org.docear.plugin.pdfutilities.actions;
 
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 import javax.swing.JFileChooser;
 
-import org.docear.plugin.pdfutilities.features.AnnotationID;
-import org.docear.plugin.pdfutilities.features.AnnotationNodeModel;
-import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
-import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
-import org.docear.plugin.pdfutilities.util.Tools;
-import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.link.mindmapmode.MLinkController;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.url.UrlManager;
-import org.freeplane.features.url.mindmapmode.MFileManager;
-import org.freeplane.n3.nanoxml.XMLParseException;
 import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.attribute.AttributePanelManager;
 import org.freeplane.view.swing.map.attribute.AttributeView;
-import org.jdesktop.swingworker.SwingWorker;
 
 @EnabledAction( checkOnNodeChange = true )
-public class AddMonitoringFolderAction extends AFreeplaneAction {
+public class AddMonitoringFolderAction extends AbstractMonitoringAction {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+
 
 	public AddMonitoringFolderAction(String key) {
 		super(key);		
@@ -70,26 +53,9 @@ public class AddMonitoringFolderAction extends AFreeplaneAction {
         	}   		
         }	
 		
-	}
-	
-	private void updateNodesAgainstMonitoringDir(NodeModel target, URI monitoringDir, URI mindmapDir) {
-			PdfAnnotationImporter importer = new PdfAnnotationImporter();
-			monitoringDir = Tools.getAbsoluteUri(monitoringDir);
-			Collection<URI> monitorFiles = Tools.getFilteredFileList(monitoringDir, new PdfFileFilter(), true);
-			Map<AnnotationID, Collection<AnnotationNodeModel>> oldAnnotations = new NodeUtils().getOldAnnotationsFromCurrentMap();
-			
-			System.out.println("");
-	}
+	}	
 
-	private void printNodes(NodeModel node) {
-		System.out.println("Node Text:" + node.getText());
-		URI link = Tools.getAbsoluteUri(node, node.getMap());
-		System.out.println("Node Link:" + link);
-		for(NodeModel child : node.getChildren()){
-			this.printNodes(child);
-		}		
-	}
-
+	@Override
 	public void setEnabled(){
 		NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
 		if(selected == null){

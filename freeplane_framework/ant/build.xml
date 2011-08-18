@@ -2,6 +2,7 @@
 	<property name="workspace" location=".." />
 	<property file="${workspace}/freeplane/viewer-resources/version.properties" />
 	<property file="ant/ant.properties" />
+	<property file="${workspace}/freeplane/viewer-resources/freeplane.properties" />
 	<property name="freeplaneant.jar" value="${workspace}/freeplane_ant/dist/freeplaneant.jar" />
 	<property name="root" value="." />
 	<property name="build" value="${root}/build" />
@@ -48,12 +49,30 @@
 
 		<mkdir dir="${build}" />
 		<copy todir="${build}">
-			<fileset dir="${script}" />
-			<fileset file="${framework.jar}" />
-            <fileset file="windows-launcher/freeplane.exe" />
-		    <fileset file="windows-launcher/freeplaneConsole.exe" />
+			<fileset dir="${script}" />            			
+			<mapper type="regexp" from="(.*)freeplane(.*)(\.bat|\.sh)" to="\1${ApplicationName}\2\3"/>
 		</copy>
-		<chmod file="${build}/freeplane.sh" perm="ugo+rx" />
+		<copy todir="${build}">
+            <fileset dir="${script}" />                     
+            <mapper type="regexp" from="(.*)freeplane(.*)(\.exe)" to="\1${ApplicationName}\2\3"/>
+        </copy>
+		<copy todir="${build}">
+            <fileset dir="${script}" />                     
+            <regexpmapper from="(.*)${ApplicationName}(.*)(\.svg|\.png)" to="\0" casesensitive="no"/>
+        </copy>
+		<copy todir="${build}">
+            <fileset dir="${script}">
+            	<patternset id="non.executables">	              
+	              <exclude name="**/*.bat"/>
+	              <exclude name="**/*.sh"/>
+            	  <exclude name="**/*.svg"/>
+            	  <exclude name="**/*.png"/>	
+	            </patternset>
+            </fileset>
+            <fileset file="${framework.jar}" />
+			<fileset file="windows-launcher/${ApplicationName}.exe" casesensitive="no"/>				
+		</copy>
+		<chmod file="${build}/${ApplicationName}.sh" perm="ugo+rx" />
 		<antcall target="makePlugin" inheritall="false">
 			<param name="anttarget" value="osgi_dist"/>
 			<param name="targetdir" value="core"/>
@@ -232,9 +251,9 @@
 	<target name="binzip" depends="build, mkdistdir">
 		<zip destfile="${dist}/freeplane_bin-${ver}.zip" compress="true">
 			<zipfileset dir="${build}" prefix="freeplane-${ver}">
-				<exclude name="freeplane.sh"/>
+				<exclude name="${ApplicationName}.sh"/>
 			</zipfileset>
-            <zipfileset file="${build}/freeplane.sh" filemode="775" prefix="freeplane-${ver}"/>
+            <zipfileset file="${build}/${ApplicationName}.sh" filemode="775" prefix="freeplane-${ver}"/>
 			<zipfileset dir="${root}" prefix="freeplane-${ver}">
 				<include name="${license}" />
 			</zipfileset>
@@ -430,8 +449,8 @@
 		</copy>
 
     <!-- Restore the eXecutable permission flags on the Unix script -->
-    <echo message="Setting eXecutable permissions on ${macappfullpath}/Contents/Resources/Java/freeplane.sh" />
-		<chmod file="${macappfullpath}/Contents/Resources/Java/freeplane.sh" perm="ugo+rx" />
+    <echo message="Setting eXecutable permissions on ${macappfullpath}/Contents/Resources/Java/${ApplicationName}.sh" />
+		<chmod file="${macappfullpath}/Contents/Resources/Java/${ApplicationName}.sh" perm="ugo+rx" />
 	</target>
 
 	<target name="zip4mac" depends="bzr_version_info, macosxapp">

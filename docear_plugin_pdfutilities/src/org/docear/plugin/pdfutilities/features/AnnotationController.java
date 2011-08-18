@@ -154,7 +154,7 @@ public class AnnotationController implements IExtension{
 		}
 	}
 	
-	private static void addConflictedAnnotations(Map<AnnotationID, Collection<IAnnotation>> conflicts, Map<AnnotationID, Collection<IAnnotation>> result){
+	public static void addConflictedAnnotations(Map<AnnotationID, Collection<IAnnotation>> conflicts, Map<AnnotationID, Collection<IAnnotation>> result){
 		for(AnnotationID id :conflicts.keySet()){
 			if(result.containsKey(id)){
 				result.get(id).addAll(conflicts.get(id));

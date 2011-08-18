@@ -12,7 +12,7 @@ import org.docear.plugin.pdfutilities.features.AnnotationModel;
 import org.docear.plugin.pdfutilities.features.AnnotationNodeModel;
 import org.docear.plugin.pdfutilities.features.IAnnotation;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
-import org.docear.plugin.pdfutilities.ui.ImportConflictDialog;
+import org.docear.plugin.pdfutilities.ui.conflict.ImportConflictDialog;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.docear.plugin.pdfutilities.util.Tools;
 import org.freeplane.core.ui.EnabledAction;
@@ -54,7 +54,7 @@ public class ImportNewAnnotationsAction extends ImportAnnotationsAction {
 					ImportConflictDialog dialog = new ImportConflictDialog(Controller.getCurrentController().getViewController().getJFrame(), conflicts);
 					dialog.showDialog();
 				}
-				System.out.println("Test"); //$NON-NLS-1$
+				
                 nodeUtils.insertNewChildNodesFrom(annotations, selected.isLeft(), selected);
 			} catch (IOException e) {
 				LogUtils.severe("ImportAllAnnotationsAction IOException at URI("+uri+"): ", e); //$NON-NLS-1$ //$NON-NLS-2$
