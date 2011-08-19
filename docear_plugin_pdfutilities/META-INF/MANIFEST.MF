@@ -8,7 +8,8 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: org.osgi.framework;version="1.3.0"
 Require-Bundle: org.freeplane.core;bundle-version="1.0.1",
- org.docear.plugin.core;bundle-version="1.0.0"
+ org.docear.plugin.core;bundle-version="1.0.0",
+ org.freeplane.plugin.script;bundle-version="1.0.1"
 Bundle-ClassPath: .,
  lib/jpod/jPod.jar,
  lib/jpod/iscwt.jar,

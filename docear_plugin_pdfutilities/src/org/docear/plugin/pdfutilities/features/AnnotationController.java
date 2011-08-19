@@ -1,5 +1,6 @@
 package org.docear.plugin.pdfutilities.features;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
@@ -103,6 +104,14 @@ public class AnnotationController implements IExtension{
 		if(annotation != null && annotation.getAnnotationType() != null && !annotation.getAnnotationType().equals(AnnotationType.PDF_FILE)){
 			return new AnnotationNodeModel(node, new AnnotationID(Tools.getAbsoluteUri(node), annotation.getObjectNumber()), annotation.getAnnotationType());
 		}
+		File file = Tools.getFilefromUri(Tools.getAbsoluteUri(node));
+		if(annotation != null && file != null && annotation.getAnnotationType().equals(AnnotationType.PDF_FILE)){
+			return new AnnotationNodeModel(node, new AnnotationID(Tools.getAbsoluteUri(node), 0), AnnotationType.PDF_FILE); 
+		}		
+		if(annotation == null && file != null && file.getName().equals(node.getText())){
+			return new AnnotationNodeModel(node, new AnnotationID(Tools.getAbsoluteUri(node), 0), AnnotationType.PDF_FILE); 
+		}
+		
 		return null;
 	}
 

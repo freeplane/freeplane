@@ -15,6 +15,7 @@ import org.docear.plugin.pdfutilities.features.IAnnotation;
 import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
 import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
@@ -116,20 +117,30 @@ public class NodeUtils {
 		URI link = Tools.getAbsoluteUri(node);		
         return new PdfFileFilter().accept(link);
     }
+	
+	public List<NodeModel> insertNewChildNodesFrom(URI pdfFile, Collection<AnnotationModel> annotations, boolean isLeft, NodeModel target){
+		AnnotationModel root = new AnnotationModel(new AnnotationID(Tools.getAbsoluteUri(pdfFile), 0), AnnotationType.PDF_FILE);
+		root.setTitle(Tools.getFilefromUri(Tools.getAbsoluteUri(pdfFile)).getName());
+		root.getChildren().addAll(annotations);
+		Collection<AnnotationModel> newList = new ArrayList<AnnotationModel>();
+		newList.add(root);
+		return insertNewChildNodesFrom(newList, isLeft, target, target);
+	}
 
-	public List<NodeModel> insertNewChildNodesFrom(Collection<AnnotationModel> annotations, boolean isLeft, NodeModel target) {
+	public List<NodeModel> insertNewChildNodesFrom(Collection<AnnotationModel> annotations, boolean isLeft, NodeModel target, NodeModel rootTarget) {
 		List<NodeModel> nodes = new ArrayList<NodeModel>();
 		
-		for(AnnotationModel annotation : annotations){
+		for(AnnotationModel annotation : annotations){			
 			if(annotation.isNew() || annotation.hasNewChildren()){
-				NodeModel equalChild = targetHasEqualChild(target, annotation);
+				NodeModel equalChild = targetHasEqualChild(rootTarget, annotation);
+				
 				if(equalChild == null){
 					NodeModel node = this.insertChildNodeFrom(annotation.getUri(), annotation, isLeft, target);
-					this.insertNewChildNodesFrom(annotation.getChildren(), isLeft, node);
+					this.insertNewChildNodesFrom(annotation.getChildren(), isLeft, node, rootTarget);
 					nodes.add(node);
 				}
 				else{
-					this.insertNewChildNodesFrom(annotation.getChildren(), isLeft, equalChild);
+					this.insertNewChildNodesFrom(annotation.getChildren(), isLeft, equalChild, rootTarget);
 					nodes.add(equalChild);
 				}
 				
@@ -140,8 +151,22 @@ public class NodeUtils {
 	}
 	
 	public NodeModel targetHasEqualChild(NodeModel target, IAnnotation annotation){
+		if(annotation == null)	return null;
+		
 		for(NodeModel child : target.getChildren()){
 			IAnnotation oldAnnotation = AnnotationController.getAnnotationNodeModel(child);
+			NodeModel equalChild = this.targetHasEqualChild(child, annotation);
+			if(equalChild != null){
+				return equalChild;
+			}
+			if(oldAnnotation == null || oldAnnotation.getAnnotationType() != annotation.getAnnotationType()){
+				continue;
+			}
+			if(annotation.getAnnotationType().equals(AnnotationType.PDF_FILE)){
+				if(annotation.getUri().equals(Tools.getAbsoluteUri(child))){
+					return child;
+				}
+			}			
 			if(oldAnnotation != null && oldAnnotation.getAnnotationID().equals(annotation.getAnnotationID())){
 				return child;
 			}
@@ -152,6 +177,35 @@ public class NodeUtils {
 	public static boolean isMonitoringNode(NodeModel node) {
 		NodeAttributeTableModel attributeModel = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
 		return (attributeModel != null && attributeModel.getAttributeKeyList().contains(TextUtils.getText("mon_incoming_folder")));
+	}
+
+	public static URI getPdfDirFromMonitoringNode(NodeModel node) {
+		if(!NodeUtils.isMonitoringNode(node)) return null;
+		NodeAttributeTableModel attributeModel = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
+		if(attributeModel == null || !attributeModel.getAttributeKeyList().contains(TextUtils.getText("mon_incoming_folder"))){
+			return null;
+		}
+		
+		return (URI)attributeModel.getValue(attributeModel.getAttributePosition(TextUtils.getText("mon_incoming_folder")));
+	}
+	
+	public static URI getMindmapDirFromMonitoringNode(NodeModel node) {
+		if(!NodeUtils.isMonitoringNode(node)) return null;
+		NodeAttributeTableModel attributeModel = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
+		if(attributeModel == null || !attributeModel.getAttributeKeyList().contains(TextUtils.getText("mon_mindmap_folder"))){
+			return null;
+		}
+		
+		return (URI)attributeModel.getValue(attributeModel.getAttributePosition(TextUtils.getText("mon_mindmap_folder")));
+	}
+
+	public static void removeMonitoringEntries(NodeModel selected) {
+		NodeAttributeTableModel attributeModel = (NodeAttributeTableModel) selected.getExtension(NodeAttributeTableModel.class);
+		if(attributeModel == null) return;
+		
+		if(attributeModel.getAttributeKeyList().contains(TextUtils.getText("mon_incoming_folder"))){
+			AttributeController.getController().performRemoveRow(attributeModel, attributeModel.getAttributePosition(TextUtils.getText("mon_incoming_folder")));			
+		}
 	}
 
 }

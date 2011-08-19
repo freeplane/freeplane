@@ -55,7 +55,7 @@ public class ImportNewAnnotationsAction extends ImportAnnotationsAction {
 					dialog.showDialog();
 				}
 				
-                nodeUtils.insertNewChildNodesFrom(annotations, selected.isLeft(), selected);
+                nodeUtils.insertNewChildNodesFrom(annotations, selected.isLeft(), selected, selected);
 			} catch (IOException e) {
 				LogUtils.severe("ImportAllAnnotationsAction IOException at URI("+uri+"): ", e); //$NON-NLS-1$ //$NON-NLS-2$
 			} catch (COSLoadException e) {

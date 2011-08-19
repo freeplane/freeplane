@@ -45,8 +45,7 @@ public class ImportConflictDialog extends JDialog {
 	public void showDialog() {
 		this.setSize(640, 480);
 		this.setLocationRelativeTo(parent);
-		this.setModal(true);
-		//this.pack();
+		this.setModal(true);		
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		this.setVisible(true);		
 	}

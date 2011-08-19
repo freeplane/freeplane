@@ -45,7 +45,7 @@ public class AddMonitoringFolderAction extends AbstractMonitoringAction {
         		NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
         		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(selected);
         		AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), TextUtils.getText("mon_incoming_folder"), pdfDir); //$NON-NLS-1$
-        		AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), "mon_mindmap_folder", mindmapDir);
+        		AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), TextUtils.getText("mon_mindmap_folder"), mindmapDir);
         		AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
         		attributeView.setOptimalColumnWidths();
         		

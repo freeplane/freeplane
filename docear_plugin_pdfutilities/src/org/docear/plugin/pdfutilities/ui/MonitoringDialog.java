@@ -25,6 +25,12 @@ import java.awt.event.WindowStateListener;
 
 public class MonitoringDialog extends JDialog implements PropertyChangeListener {
 
+	public static final String SET_PROGRESS_BAR_DETERMINATE = "setProgressBardeterminate";
+	public static final String SET_PROGRESS_BAR_INDETERMINATE = "setProgressBarIndeterminate";
+	public static final String IS_DONE = "isDone";
+	public static final String NEW_NODES = "newNodes";
+	public static final String NEW_FILE = "newFile";
+	public static final String PROGRESS = "progress";
 	/**
 	 * 
 	 */
@@ -161,25 +167,33 @@ public class MonitoringDialog extends JDialog implements PropertyChangeListener 
 	}
 
 	public void propertyChange(PropertyChangeEvent evt) {
-		if(evt.getPropertyName().equals("progress")){
+		if(evt.getPropertyName().equals(PROGRESS)){
 			progressBar.setValue((Integer)evt.getNewValue());
 		}
-		if(evt.getPropertyName().equals("newFile")){
+		if(evt.getPropertyName().equals(NEW_FILE)){
 			lblWorkingOn.setText("Importing " + evt.getNewValue());
 			//textArea.append("\n-----------------------------------------\n");
 			//textArea.append("Importing " + evt.getNewValue() +"\n\n");
 		}
-		if(evt.getPropertyName().equals("newNodes")){
+		if(evt.getPropertyName().equals(NEW_NODES)){
 			@SuppressWarnings("unchecked")
 			Collection<AnnotationModel> annotations = (Collection<AnnotationModel>)evt.getNewValue();
 			for(AnnotationModel annotation : annotations){
 				textArea.append("Imported " + annotation.getTitle() +"\n");
 			}			
 		}
-		if(evt.getPropertyName().equals("isDone")){
+		if(evt.getPropertyName().equals(IS_DONE)){
+			this.progressBar.setValue(100);
+			lblWorkingOn.setText("Import complete.");
 			okButton.setEnabled(true);
 		}
-		
+		if(evt.getPropertyName().equals(SET_PROGRESS_BAR_INDETERMINATE)){
+			this.progressBar.setIndeterminate(true);
+			lblWorkingOn.setText("Reading files...");			
+		}
+		if(evt.getPropertyName().equals(SET_PROGRESS_BAR_DETERMINATE)){			
+			this.progressBar.setIndeterminate(false);
+		}
 	}
 
 }
