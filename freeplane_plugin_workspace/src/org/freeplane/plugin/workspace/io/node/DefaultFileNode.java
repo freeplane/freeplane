@@ -157,6 +157,10 @@ public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEve
 		if(!file.delete()) throw new IOException("Could not delete File "+ file);
 	}
 	
+	public boolean isEditable() {
+		return false;
+	}
+	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
@@ -180,7 +184,7 @@ public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEve
 			}
 		}
 		else if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {
-            WorkspaceController.getCurrentWorkspaceController().getPopups()
+            WorkspaceController.getController().getPopups()
                     .showPhysicalNodePopup((Component) event.getSource(), event.getX(), event.getY());
         }
 	}

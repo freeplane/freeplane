@@ -28,9 +28,9 @@ public class Activator implements BundleActivator {
 		registerClasspathUrlHandler(context);		
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
-			    public void installExtension(ModeController modeController) {
+				public void installExtension(ModeController modeController) {
 			    	registerLinkTypeOption();
-				    new WorkspaceController();
+				    WorkspaceController.getController().initialStart();
 			    }
 		    }, props);
 	}

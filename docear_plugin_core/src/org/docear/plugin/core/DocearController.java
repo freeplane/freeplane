@@ -1,39 +1,32 @@
 /**
  * author: Marcel Genzmehr
- * 16.08.2011
+ * 19.08.2011
  */
-package org.freeplane.plugin.workspace.config.node;
+package org.docear.plugin.core;
 
 /**
  * 
  */
-public class FolderNode extends AWorkspaceNode {
-
+public class DocearController {
+	
+	private final static DocearController docearController = new DocearController();
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
-
-	final public static String FOLDER_TYPE_PHYSICAL = "physical";
-	final public static String FOLDER_TYPE_VIRTUAL = "virtual";
-
-	/**
-	 * @param type
-	 */
-	public FolderNode(String type) {
-		super(type);
-	}
 	
+	protected DocearController() {
+	}
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
 
-
+	public static DocearController getController() {
+		return docearController;
+	}
+	
+	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
-	
-	public final String getTagName() {
-		return "folder";
-	}
 }

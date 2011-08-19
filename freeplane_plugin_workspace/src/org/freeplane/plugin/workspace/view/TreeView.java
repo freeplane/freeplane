@@ -47,7 +47,7 @@ public class TreeView extends JPanel {
 		this.add(new JScrollPane(m_tree), BorderLayout.CENTER);
 	}
 	
-	public JTree getTree() {
+	public JTree getTreeView() {
 		return m_tree;
 	}
 

@@ -27,16 +27,16 @@ import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 public class ConfigurationWriter implements IElementWriter, IAttributeWriter {
 
 	final private WriteManager writeManager;
-	final private WorkspaceController wsController;
 
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 
-	public ConfigurationWriter(final WorkspaceController wsController) {
-		this.wsController = wsController;
-		writeManager = wsController.getConfig().getWriteManager();
+	public ConfigurationWriter(final WriteManager manager) {
+		writeManager = manager;
+		
 	}
+	
 
 	/***********************************************************************************
 	 * METHODS
@@ -45,7 +45,7 @@ public class ConfigurationWriter implements IElementWriter, IAttributeWriter {
 	public void writeConfigurationAsXml(final Writer fileout) throws IOException {
 		final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager, fileout);
 		xmlWriter.setHint(Hint.MODE, MapWriter.Mode.FILE);
-		writeNode(xmlWriter, (DefaultMutableTreeNode) wsController.getViewModel().getRoot());
+		writeNode(xmlWriter, (DefaultMutableTreeNode) WorkspaceController.getController().getViewModel().getRoot());
 		xmlWriter.flush();
 		fileout.close();
 	}

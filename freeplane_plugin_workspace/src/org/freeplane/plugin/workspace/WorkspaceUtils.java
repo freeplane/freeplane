@@ -41,13 +41,13 @@ public class WorkspaceUtils {
 	 **********************************************************************************/
 
 	public static void saveCurrentConfiguration() {
-		String temp = WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation() + File.separator
+		String temp = WorkspaceController.getController().getWorkspaceLocation() + File.separator
 				+ "workspace_temp.xml";
-		String config = WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation() + File.separator
+		String config = WorkspaceController.getController().getWorkspaceLocation() + File.separator
 				+ "workspace.xml";
 
 		try {
-			WorkspaceController.getCurrentWorkspaceController().saveConfigurationAsXML(new FileWriter(temp));
+			WorkspaceController.getController().saveConfigurationAsXML(new FileWriter(temp));
 
 			FileChannel from = new FileInputStream(temp).getChannel();
 			FileChannel to = new FileOutputStream(config).getChannel();
@@ -109,7 +109,7 @@ public class WorkspaceUtils {
 		}
 
 		DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) (parent == null ? WorkspaceController
-				.getCurrentWorkspaceController().getViewModel().getRoot() : parent);
+				.getController().getViewModel().getRoot() : parent);
 
 		VirtualFolderNode node = new VirtualFolderNode(FolderNode.FOLDER_TYPE_VIRTUAL);
 		node.setName(folderName);
@@ -158,11 +158,11 @@ public class WorkspaceUtils {
 	 * @param node
 	 */
 	private static void addAndSave(DefaultMutableTreeNode targetNode, AWorkspaceNode node) {
-		IndexedTree tree = WorkspaceController.getCurrentWorkspaceController().getTree();
+		IndexedTree tree = WorkspaceController.getController().getIndexTree();
 		Object key = tree.getKeyByUserObject(targetNode.getUserObject());
 		tree.addElement(key, node, key + "/" + node.getId(), IndexedTree.AS_CHILD);
 
-		WorkspaceController.getCurrentWorkspaceController().getViewModel().reload(targetNode);
+		WorkspaceController.getController().getViewModel().reload(targetNode);
 
 		saveCurrentConfiguration();
 	}

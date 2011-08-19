@@ -42,7 +42,7 @@ public class FileNodeAddNewMindmapAction extends AWorkspaceAction {
 					file = file.getParentFile();
 				}
 				if (createNewMindmap(new File(file.getPath()+File.separator+fileName))) {
-					WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();
+					WorkspaceController.getController().reloadWorkspace();
 				}
 			}
 		}

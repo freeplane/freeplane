@@ -5,6 +5,12 @@ import java.util.Enumeration;
 
 import org.docear.plugin.core.actions.DocearLicenseAction;
 import org.docear.plugin.core.actions.DocearOpenUrlAction;
+import org.docear.plugin.core.workspace.creator.FolderTypeLibraryCreator;
+import org.docear.plugin.core.workspace.creator.FolderTypeLiteratureRepositoryCreator;
+import org.docear.plugin.core.workspace.creator.LinkTypeLiteratureCollectionCreator;
+import org.docear.plugin.core.workspace.creator.LinkTypeMyPublicationsCreator;
+import org.docear.plugin.core.workspace.creator.LinkTypeNewLiteratureCreator;
+import org.docear.plugin.core.workspace.creator.LinkTypeReferencesCreator;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
@@ -15,8 +21,11 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
+import org.freeplane.plugin.workspace.controller.IWorkspaceListener;
+import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 
-public class CoreConfiguration extends ALanguageController implements IFreeplanePropertyListener {
+public class CoreConfiguration extends ALanguageController implements IFreeplanePropertyListener, IWorkspaceListener {
 
 	private static final String ABOUT_TEXT = "about_text";
 	private static final String DOCEAR = "Docear";
@@ -43,9 +52,11 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		addPropertyChangeListener();
 		addPreferencesToOptionsPanel();
 		
-		
 		//TODO: DOCEAR change behaviour?
 		showLocationDialogIfNeeded();
+		System.out.println(DocearController.getController());
+		System.out.println(DocearController.getController());
+		System.out.println(DocearController.getController());
 		
 		LogUtils.info("org.docear.plugin.core.CoreConfiguration() initializing...");
 		init(modeController);
@@ -76,8 +87,21 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	}
 
 	private void init(ModeController modeController) {
+		prepareWorkspace();
 		addPluginDefaults();
 		replaceFreeplaneStringsAndActions();
+	}
+	
+	private void prepareWorkspace() {
+		WorkspaceController controller = WorkspaceController.getController();
+		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_FOLDER, FolderTypeLibraryCreator.FOLDER_TYPE_LIBRARY, new FolderTypeLibraryCreator());
+		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_FOLDER, FolderTypeLiteratureRepositoryCreator.FOLDER_TYPE_LITERATUREREPOSITORY, new FolderTypeLiteratureRepositoryCreator());
+		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, LinkTypeMyPublicationsCreator.LINK_TYPE_MYPUBLICATIONS , new LinkTypeMyPublicationsCreator());
+		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, LinkTypeReferencesCreator.LINK_TYPE_REFERENCES , new LinkTypeReferencesCreator());
+		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, LinkTypeLiteratureCollectionCreator.LINK_TYPE_LITERATURECOLLECTION , new LinkTypeLiteratureCollectionCreator());
+		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, LinkTypeNewLiteratureCreator.LINK_TYPE_NEWLITERATURE , new LinkTypeNewLiteratureCreator());
+		controller.addWorkspaceListener(this);
+		controller.reloadWorkspace();
 	}
 
 	private void replaceFreeplaneStringsAndActions() {
@@ -151,10 +175,33 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	}
 
 	public void propertyChanged(String propertyName, String newValue, String oldValue) {
-		System.out.println("DOCEAR propertyChanged: "+propertyName);
 		if (propertyName.equals(WORKSPACE_PDF_LOCATION)) {
-			WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();
+			WorkspaceController.getController().reloadWorkspace();
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.freeplane.plugin.workspace.controller.IWorkspaceListener#workspaceChanged(org.freeplane.plugin.workspace.controller.WorkspaceEvent)
+	 */
+	public void workspaceChanged(WorkspaceEvent event) {
+		// TODO Auto-generated method stub
+		System.out.println("DOCEAR CORE: workspaceChanged(WorkspaceEvent):"+ event);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.freeplane.plugin.workspace.controller.IWorkspaceListener#workspaceInitialize(org.freeplane.plugin.workspace.controller.WorkspaceEvent)
+	 */
+	public void workspaceInitialize(WorkspaceEvent event) {
+		// TODO Auto-generated method stub
+		System.out.println("DOCEAR CORE: workspaceInitialize(WorkspaceEvent):"+ event);
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see org.freeplane.plugin.workspace.controller.IWorkspaceListener#workspaceFinalize(org.freeplane.plugin.workspace.controller.WorkspaceEvent)
+	 */
+	public void workspaceFinalize(WorkspaceEvent event) {
+		System.out.println("DOCEAR CORE: workspaceFinalize(WorkspaceEvent):"+ event);		
 	}
 
 }

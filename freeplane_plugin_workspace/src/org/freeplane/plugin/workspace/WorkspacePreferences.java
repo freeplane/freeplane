@@ -108,15 +108,15 @@ public class WorkspacePreferences {
 			Controller.getCurrentController().getResourceController().setProperty(this.propertyKey, checked);
 
 			if (checked) {
-				String currentLocation = WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation();
+				String currentLocation = WorkspaceController.getController().getWorkspaceLocation();
 				if (currentLocation == null || currentLocation.length()==0) {
 					LocationDialog locationDialog = new LocationDialog();
 					locationDialog.setVisible(true);
 				}
-				WorkspaceController.getCurrentWorkspaceController().showWorkspaceView(true);
+				WorkspaceController.getController().showWorkspace(true);
 			}
 			else {
-				WorkspaceController.getCurrentWorkspaceController().showWorkspaceView(false);
+				WorkspaceController.getController().showWorkspace(false);
 			}
 		}
 	}

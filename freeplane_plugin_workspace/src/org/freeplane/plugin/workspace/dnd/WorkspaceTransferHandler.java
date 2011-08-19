@@ -120,7 +120,7 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 	/* DropTarget Methods */
 
 	public final void drop(DropTargetDropEvent event) {
-		if(WorkspaceController.getCurrentWorkspaceController().getWorkspaceView().getTree().getPathForLocation(event.getLocation().x, event.getLocation().y) == null) {
+		if(WorkspaceController.getController().getWorkspaceViewTree().getPathForLocation(event.getLocation().x, event.getLocation().y) == null) {
 			return;
 		}
 		System.out.println("drop: " + event.getSource());

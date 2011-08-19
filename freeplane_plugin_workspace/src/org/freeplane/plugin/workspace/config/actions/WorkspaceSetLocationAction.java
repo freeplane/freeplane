@@ -43,7 +43,7 @@ public class WorkspaceSetLocationAction extends AFreeplaneAction {
 		int retVal = fileChooser.showOpenDialog(UITools.getFrame());
 		if (retVal == JFileChooser.APPROVE_OPTION) {			
 			File selectedfile = fileChooser.getSelectedFile();
-			WorkspaceController.getCurrentWorkspaceController().setWorkspaceLocation(selectedfile.getPath());
+			WorkspaceController.getController().setWorkspaceLocation(selectedfile.getPath());
 		}
 
 	}

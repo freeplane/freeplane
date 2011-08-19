@@ -26,7 +26,6 @@ public class MindMapFileNode extends DefaultFileNode {
 	 */
 	public MindMapFileNode(String name, File file) {
 		super(name, file);
-		LogUtils.info("Linked Mindmap ("+file+")");
 	}
 	/***********************************************************************************
 	 * METHODS
@@ -36,7 +35,6 @@ public class MindMapFileNode extends DefaultFileNode {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	public void handleEvent(WorkspaceNodeEvent event) {
-		System.out.println("DefaultFileNode: "+ event);
 		if(event.getType() == WorkspaceNodeEvent.WSNODE_OPEN_DOCUMENT) {
 			try {
 				final URL mapUrl = Compat.fileToUrl(getFile());

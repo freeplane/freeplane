@@ -32,7 +32,7 @@ public class DefaultWorkspaceMouseHandler implements MouseListener {
 	 **********************************************************************************/
 	public void mouseClicked(MouseEvent e) {
 		TreePath path = ((JTree) e.getSource()).getPathForLocation(e.getX(), e.getY());
-		WorkspaceController.getCurrentWorkspaceController().getWorkspaceView().getTree().addSelectionPath(path);
+		WorkspaceController.getController().getWorkspaceViewTree().addSelectionPath(path);
 		if (path != null) {
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
 
@@ -57,7 +57,7 @@ public class DefaultWorkspaceMouseHandler implements MouseListener {
 		}
 		else {
 			if (e.getButton() == MouseEvent.BUTTON3) {
-				WorkspaceController.getCurrentWorkspaceController().getPopups().showWorkspacePopup(e.getComponent(), e.getX(), e.getY());
+				WorkspaceController.getController().getPopups().showWorkspacePopup(e.getComponent(), e.getX(), e.getY());
 				
 			}
 		}

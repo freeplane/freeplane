@@ -1,39 +1,31 @@
 /**
  * author: Marcel Genzmehr
- * 16.08.2011
+ * 18.08.2011
  */
-package org.freeplane.plugin.workspace.config.node;
+package org.docear.plugin.core.workspace.node;
+
+import org.freeplane.plugin.workspace.config.node.FolderNode;
 
 /**
  * 
  */
-public class FolderNode extends AWorkspaceNode {
+public class FolderTypeLibraryNode extends FolderNode {
 
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 
-	final public static String FOLDER_TYPE_PHYSICAL = "physical";
-	final public static String FOLDER_TYPE_VIRTUAL = "virtual";
-
-	/**
-	 * @param type
-	 */
-	public FolderNode(String type) {
+	public FolderTypeLibraryNode(String type) {
 		super(type);
+		// TODO Auto-generated constructor stub
 	}
 	
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
 
-
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
-	
-	public final String getTagName() {
-		return "folder";
-	}
 }

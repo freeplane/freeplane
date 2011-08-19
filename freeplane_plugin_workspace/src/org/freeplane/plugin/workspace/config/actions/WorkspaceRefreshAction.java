@@ -19,7 +19,7 @@ public class WorkspaceRefreshAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		System.out.println("WorkspaceRefreshAction");
 		
-		WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();	
+		WorkspaceController.getController().reloadWorkspace();	
 	}	
 	
 	

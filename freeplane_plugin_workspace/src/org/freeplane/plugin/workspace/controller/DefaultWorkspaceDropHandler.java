@@ -57,7 +57,7 @@ public class DefaultWorkspaceDropHandler implements IWorkspaceDragnDropControlle
 					if(item instanceof File) {
 						File file = (File)item;
 						final Point location = event.getLocation();
-						DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) WorkspaceController.getCurrentWorkspaceController().getWorkspaceView().getTree().getPathForLocation(location.x, location.y).getLastPathComponent();
+						DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) WorkspaceController.getController().getWorkspaceViewTree().getPathForLocation(location.x, location.y).getLastPathComponent();
 						if(targetNode.getUserObject() instanceof DefaultFileNode) {
 							do {
 								targetNode = (DefaultMutableTreeNode) targetNode.getParent();
@@ -70,7 +70,7 @@ public class DefaultWorkspaceDropHandler implements IWorkspaceDragnDropControlle
 						else {
 							WorkspaceUtils.createLinkTypeFileNode(file, targetNode);
 						}
-						WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();
+						WorkspaceController.getController().reloadWorkspace();
 					}					
 				}				
 				event.getDropTargetContext().dropComplete(true);
@@ -87,7 +87,7 @@ public class DefaultWorkspaceDropHandler implements IWorkspaceDragnDropControlle
 				final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
 				final File file = Compat.urlToFile(url);
 				final Point location = event.getLocation();
-				DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) WorkspaceController.getCurrentWorkspaceController().getWorkspaceView().getTree().getPathForLocation(location.x, location.y).getLastPathComponent();
+				DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) WorkspaceController.getController().getWorkspaceViewTree().getPathForLocation(location.x, location.y).getLastPathComponent();
 				if(targetNode.getUserObject() instanceof DefaultFileNode) {
 					do {
 						targetNode = (DefaultMutableTreeNode) targetNode.getParent();
@@ -100,7 +100,7 @@ public class DefaultWorkspaceDropHandler implements IWorkspaceDragnDropControlle
 				else {
 					WorkspaceUtils.createLinkTypeFileNode(file, targetNode);
 				}
-				WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();
+				WorkspaceController.getController().reloadWorkspace();
 				
 				event.getDropTargetContext().dropComplete(true);
 				return true;

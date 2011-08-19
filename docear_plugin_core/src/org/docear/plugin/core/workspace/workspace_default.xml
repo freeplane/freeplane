@@ -1,0 +1,14 @@
+<workspace version="1.0" meta="docear_workspace" name="My Workspace">
+	<group id="library" name="Library">
+		<filesystem_mindmap_link id="lib_new_papers" name="New Papers and Annotations" path="workspace:/Library/NewPapersandAnnotations.mm" />
+		<filesystem_mindmap_link id="lib_papers" name="Papers, Annotations and Ideas" path="workspace:/Library/PapersAnnotationsAndIdeas.mm" />
+		<filesystem_mindmap_link id="lib_publications" name="My Publications" path="workspace:/Library/MyPublications.mm" />
+		<filesystem_folder id="lib_pdfs" name="My PDFs" path="property:/workspace_pdf_location" />		
+	</group>
+	<group id="projects" name="Projects">		
+	</group>
+	<filesystem_link id="fav_projects" name="Interesting Projects" />
+	<filesystem_link id="notes" name="Notes" />
+	<filesystem_link id="search" name="Search" />
+	
+</workspace>

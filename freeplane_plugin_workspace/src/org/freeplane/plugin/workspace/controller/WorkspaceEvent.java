@@ -1,39 +1,45 @@
 /**
  * author: Marcel Genzmehr
- * 16.08.2011
+ * 19.08.2011
  */
-package org.freeplane.plugin.workspace.config.node;
+package org.freeplane.plugin.workspace.controller;
+
+import java.util.EventObject;
 
 /**
  * 
  */
-public class FolderNode extends AWorkspaceNode {
+public class WorkspaceEvent extends EventObject {
 
+	public static final int WORKSPACE_EVENT_TYPE_CHANGE = 1;
+	public static final int WORKSPACE_EVENT_TYPE_INITIALIZE = 2;
+	public static final int WORKSPACE_EVENT_TYPE_FINALIZE = 4;
 	
+	private static final long serialVersionUID = 1L;
+	
+	private final int type;
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
-
-	final public static String FOLDER_TYPE_PHYSICAL = "physical";
-	final public static String FOLDER_TYPE_VIRTUAL = "virtual";
-
 	/**
-	 * @param type
+	 * @param source
 	 */
-	public FolderNode(String type) {
-		super(type);
+	public WorkspaceEvent(final int type, final Object source) {
+		super(source);
+		this.type = type;
+	}
+	/**
+	 * @return
+	 */
+	public int getType() {
+		return this.type;
 	}
 	
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
 
-
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
-	
-	public final String getTagName() {
-		return "folder";
-	}
 }
