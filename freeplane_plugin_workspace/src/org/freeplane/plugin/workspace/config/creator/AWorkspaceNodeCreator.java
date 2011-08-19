@@ -15,7 +15,7 @@ public abstract class AWorkspaceNodeCreator implements IElementDOMHandler {
 	}
 	
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
-		final IndexedTree tree = WorkspaceController.getCurrentWorkspaceController().getTree();
+		final IndexedTree tree = WorkspaceController.getController().getIndexTree();
 		if (attributes == null) {
 			return null;
 		}		
@@ -47,7 +47,7 @@ public abstract class AWorkspaceNodeCreator implements IElementDOMHandler {
 		}
 
 		String parentPath;
-		String path;
+		public String path;
 
 		Path(final String path) {
 			parentPath = path;

@@ -41,5 +41,11 @@ public abstract class AWorkspaceNode {
 		return this.type;
 	}
 	
+	public boolean isEditable() {
+		return true;
+	}
+	
 	abstract public String getTagName();
+
+	
 }

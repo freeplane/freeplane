@@ -25,7 +25,7 @@ public class AddExistingFilesystemFolderAction extends AWorkspaceAction {
 		
 		JFileChooser fileChooser = new JFileChooser();		
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		String currentLocation = WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation();
+		String currentLocation = WorkspaceController.getController().getWorkspaceLocation();
 		fileChooser.setSelectedFile(new File(currentLocation));
 
 		int retVal = fileChooser.showOpenDialog(UITools.getFrame());
@@ -35,7 +35,7 @@ public class AddExistingFilesystemFolderAction extends AWorkspaceAction {
 			WorkspaceUtils.createPhysicalFolderNode(fileChooser.getSelectedFile(), this.getNodeFromActionEvent(e));
 		}
 		
-		WorkspaceController.getCurrentWorkspaceController().refreshWorkspace();
+		WorkspaceController.getController().reloadWorkspace();
 	}
 
 //	private void createNode(final ActionEvent e, final File path, String currentLocation) {

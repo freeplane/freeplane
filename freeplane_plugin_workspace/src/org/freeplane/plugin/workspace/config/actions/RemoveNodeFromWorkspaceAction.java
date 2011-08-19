@@ -28,7 +28,7 @@ public class RemoveNodeFromWorkspaceAction extends AWorkspaceAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		String currentLocation = WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation();
+		String currentLocation = WorkspaceController.getController().getWorkspaceLocation();
 		String temp = currentLocation + File.separator + "workspace_temp.xml";
 		String config = currentLocation + File.separator + "workspace.xml";
 		
@@ -40,7 +40,7 @@ public class RemoveNodeFromWorkspaceAction extends AWorkspaceAction {
 		treeModel.removeNodeFromParent(node);
 		
 		try {
-			WorkspaceController.getCurrentWorkspaceController().saveConfigurationAsXML(new FileWriter(temp));
+			WorkspaceController.getController().saveConfigurationAsXML(new FileWriter(temp));
 			
 			FileChannel from = new FileInputStream(temp).getChannel();
 			FileChannel to = new FileOutputStream(config).getChannel();

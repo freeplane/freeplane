@@ -117,7 +117,7 @@ public class LocationDialog extends JDialog {
 	
 	
 	public LocationDialog() {
-		this.workspaceLocation = new File(WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation());
+		this.workspaceLocation = new File(WorkspaceController.getController().getWorkspaceLocation());
 		
 		this.setModal(true);
 		setTitle(TextUtils.getText("docear_initialization"));

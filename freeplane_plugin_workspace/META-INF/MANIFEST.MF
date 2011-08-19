@@ -9,5 +9,25 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: org.osgi.framework;version="1.3.0",
  org.osgi.service.url;version="1.0.0"
 Require-Bundle: org.freeplane.core;bundle-version="1.0.1"
-Export-Package: org.freeplane.plugin.workspace
+Export-Package: org.freeplane.plugin.workspace;
+  uses:="javax.swing.tree,
+   org.osgi.service.url,
+   org.freeplane.plugin.workspace.dnd,
+   org.freeplane.plugin.workspace.io,
+   org.freeplane.core.resources,
+   org.freeplane.plugin.workspace.view,
+   javax.swing,
+   org.freeplane.core.ui,
+   org.freeplane.plugin.workspace.config,
+   org.osgi.framework",
+ org.freeplane.plugin.workspace.config;uses:="org.freeplane.plugin.workspace.config.creator,org.freeplane.core.ui,org.freeplane.core.io",
+ org.freeplane.plugin.workspace.config.actions;uses:="javax.swing.tree,javax.swing,org.freeplane.core.ui",
+ org.freeplane.plugin.workspace.config.creator;uses:="org.freeplane.plugin.workspace.config.node,org.freeplane.core.io,org.freeplane.n3.nanoxml",
+ org.freeplane.plugin.workspace.config.node;uses:="javax.swing.tree,org.freeplane.plugin.workspace.controller,org.freeplane.plugin.workspace.dnd",
+ org.freeplane.plugin.workspace.controller;uses:="javax.swing.event,org.freeplane.plugin.workspace.dnd",
+ org.freeplane.plugin.workspace.dnd;uses:="javax.swing",
+ org.freeplane.plugin.workspace.io;uses:="org.freeplane.plugin.workspace.io.creator,org.freeplane.features.map,org.freeplane.core.io",
+ org.freeplane.plugin.workspace.io.annotation,
+ org.freeplane.plugin.workspace.io.creator;uses:="org.freeplane.plugin.workspace.config.node",
+ org.freeplane.plugin.workspace.io.node;uses:="org.freeplane.plugin.workspace.config.node,org.freeplane.plugin.workspace.controller,org.freeplane.plugin.workspace.dnd"
 Bundle-ClassPath: lib/plugin.jar

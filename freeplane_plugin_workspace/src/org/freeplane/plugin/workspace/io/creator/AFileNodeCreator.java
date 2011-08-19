@@ -57,7 +57,7 @@ public abstract class AFileNodeCreator implements IFileTypeHandler {
 	 **********************************************************************************/
 	public Object createFileNode(Object object, String fileExtension,final File file) {
 		Object parent = object;
-		final IndexedTree tree = WorkspaceController.getCurrentWorkspaceController().getTree();
+		final IndexedTree tree = WorkspaceController.getController().getIndexTree();
 		if(object instanceof AWorkspaceNode) {
 			parent = tree.getKeyByUserObject(object);
 		}

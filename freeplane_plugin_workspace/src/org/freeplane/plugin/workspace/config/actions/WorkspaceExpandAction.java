@@ -20,7 +20,7 @@ public class WorkspaceExpandAction extends AFreeplaneAction {
 	
 	public void actionPerformed(final ActionEvent e) {
 		System.out.println("WorkspaceExpandAction: "+e.getActionCommand()+" : "+e.getID());
-        JTree workspaceTree = WorkspaceController.getCurrentWorkspaceController().getWorspaceTree();
+        JTree workspaceTree = WorkspaceController.getController().getWorkspaceViewTree();
         for (int i = 1; i < workspaceTree.getRowCount(); i++) {
                  workspaceTree.expandRow(i);
         }       

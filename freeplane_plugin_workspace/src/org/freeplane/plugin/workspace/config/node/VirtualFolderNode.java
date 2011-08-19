@@ -16,7 +16,7 @@ public class VirtualFolderNode extends FolderNode implements IWorkspaceNodeEvent
 	}
 
 	public void initializePopup() {
-		PopupMenus popupMenu = WorkspaceController.getCurrentWorkspaceController().getPopups();
+		PopupMenus popupMenu = WorkspaceController.getController().getPopups();
 		popupMenu.registerPopupMenuNodeDefault(POPUP_KEY);
 		popupMenu.registerPopupMenu(POPUP_KEY, POPUP_KEY);
 		popupMenu.buildPopupMenu(POPUP_KEY);
@@ -26,7 +26,7 @@ public class VirtualFolderNode extends FolderNode implements IWorkspaceNodeEvent
 		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {			
 			Component component = (Component) event.getSource();
 
-			WorkspaceController.getCurrentWorkspaceController().getPopups()
+			WorkspaceController.getController().getPopups()
 					.showPopup(POPUP_KEY, component, event.getX(), event.getY());
 
 		}

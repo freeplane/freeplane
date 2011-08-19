@@ -1,29 +1,48 @@
-package org.freeplane.plugin.workspace.config.creator;
+/**
+ * author: Marcel Genzmehr
+ * 18.08.2011
+ */
+package org.docear.plugin.core.workspace.creator;
 
 import java.io.File;
 import java.net.URI;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.docear.plugin.core.workspace.node.FolderTypeLiteratureRepositoryNode;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
+import org.freeplane.plugin.workspace.config.creator.AWorkspaceNodeCreator;
 import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
-import org.freeplane.plugin.workspace.config.node.FolderNode;
-import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
 
-public class FolderTypePhysicalCreator extends AWorkspaceNodeCreator {
+/**
+ * 
+ */
+public class FolderTypeLiteratureRepositoryCreator extends AWorkspaceNodeCreator {
 
-	public FolderTypePhysicalCreator() {
-	}
+	public static final String FOLDER_TYPE_LITERATUREREPOSITORY = "literature_repository";
+	
+	/***********************************************************************************
+	 * CONSTRUCTORS
+	 **********************************************************************************/
 
+	/***********************************************************************************
+	 * METHODS
+	 **********************************************************************************/
+
+	
+
+	/***********************************************************************************
+	 * REQUIRED METHODS FOR INTERFACES
+	 **********************************************************************************/
+	
 	public AWorkspaceNode getNode(XMLElement data) {
-
-		String type = data.getAttribute("type", FolderNode.FOLDER_TYPE_PHYSICAL);
-		PhysicalFolderNode node = new PhysicalFolderNode(type);
-
+		String type = data.getAttribute("type", FOLDER_TYPE_LITERATUREREPOSITORY);
+		FolderTypeLiteratureRepositoryNode node = new FolderTypeLiteratureRepositoryNode(type);
+		//TODO: add missing attribute handling
 		String path = data.getAttribute("path", null);
 		if (path == null) {
 			return null;
@@ -40,10 +59,10 @@ public class FolderTypePhysicalCreator extends AWorkspaceNodeCreator {
 
 		String name = data.getAttribute("name", file.getName());
 		node.setName(name);
-
+		
 		return node;
 	}
-
+	
 	public void endElement(final Object parent, final String tag, final Object userObject, final XMLElement lastBuiltElement) {
 		final IndexedTree tree = WorkspaceController.getController().getIndexTree();
 		super.endElement(parent, tag, userObject, lastBuiltElement);
@@ -53,11 +72,10 @@ public class FolderTypePhysicalCreator extends AWorkspaceNodeCreator {
 		}
 		final DefaultMutableTreeNode treeNode = tree.get(path.path);
 		if (treeNode.getChildCount() == 0) {
-			PhysicalFolderNode node = (PhysicalFolderNode) treeNode.getUserObject();
+			FolderTypeLiteratureRepositoryNode node = (FolderTypeLiteratureRepositoryNode) treeNode.getUserObject();
 			WorkspaceController.getController().getFilesystemReader()
 					.scanFilesystem(node, WorkspaceUtils.resolveURI(node.getFolderPath()));
 		}
 
 	}
-
 }

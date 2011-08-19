@@ -23,7 +23,7 @@ public class WorkspaceCollapseAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		System.out.println("WorkspaceCollapseAction: "+e.getActionCommand()+" : "+e.getID());
-		JTree workspaceTree = WorkspaceController.getCurrentWorkspaceController().getWorspaceTree();
+		JTree workspaceTree = WorkspaceController.getController().getWorkspaceViewTree();
 		collapseAll(workspaceTree);
 	}
 

@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Writer;
 import java.net.URL;
 
 import javax.swing.JOptionPane;
@@ -17,6 +18,7 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLException;
@@ -29,6 +31,7 @@ import org.freeplane.plugin.workspace.config.creator.FolderTypeVirtualCreator;
 import org.freeplane.plugin.workspace.config.creator.LinkCreator;
 import org.freeplane.plugin.workspace.config.creator.LinkTypeFileCreator;
 import org.freeplane.plugin.workspace.config.creator.WorkspaceRootCreator;
+import org.freeplane.plugin.workspace.io.xml.ConfigurationWriter;
 import org.freeplane.plugin.workspace.io.xml.WorkspaceNodeWriter;
 
 public class WorkspaceConfiguration {
@@ -39,24 +42,27 @@ public class WorkspaceConfiguration {
 	public final static int WSNODE_LINK = 2;
 
 	private final static String DEFAULT_CONFIG_FILE_NAME = "workspace_default.xml";
+	private final static String DEFAULT_CONFIG_FILE_NAME_DOCEAR = "workspace_default_docear.xml";
 	private final static String CONFIG_FILE_NAME = "workspace.xml";
 	
 	private FolderCreator folderCreator = null;
 	private LinkCreator linkCreator = null;
+	private WorkspaceRootCreator workspaceRootCreator = null;
 	private boolean configValid = false;
+	private IConfigurationInfo configurationInfo;
+	
+	private ConfigurationWriter configWriter;
 
 	public WorkspaceConfiguration() {
-		readManager = new ReadManager();
-		writeManager = new WriteManager();
+		this.readManager = new ReadManager();
+		this.writeManager = new WriteManager();
+		this.configWriter = new ConfigurationWriter(writeManager);
 		initReadManager();
 		initWriteManager();
-		try {
-			initializeConfig();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			this.setConfigValid(false);
-		}
+	}
+	
+	public IConfigurationInfo getConfigurationInfo() {
+		return this.configurationInfo;
 	}
 
 	private void initializeConfig() throws FileNotFoundException, IOException {
@@ -80,7 +86,7 @@ public class WorkspaceConfiguration {
 			setConfigValid(false);
 			return;
 		}
-		WorkspaceController.getCurrentWorkspaceController().getTree().removeChildElements(WorkspaceController.getCurrentWorkspaceController().getTree());
+		WorkspaceController.getController().getIndexTree().removeChildElements(WorkspaceController.getController().getIndexTree());
 		//WorkspaceController.getCurrentWorkspaceController().getTree().getRoot().removeAllChildren();
 		this.load(configFile.toURI().toURL());
 		setConfigValid(true);
@@ -126,7 +132,14 @@ public class WorkspaceConfiguration {
 	}
 
 	private void copyDefaultConfigTo(File config) throws FileNotFoundException, IOException {
-		InputStream in = getClass().getResourceAsStream(DEFAULT_CONFIG_FILE_NAME);
+		String appName = Controller.getCurrentController().getResourceController().getProperty("ApplicationName", "Freeplane");
+		InputStream in;
+		if(appName.equalsIgnoreCase("docear")) {
+			in = getClass().getResourceAsStream(DEFAULT_CONFIG_FILE_NAME_DOCEAR);
+		}
+		else {
+			in = getClass().getResourceAsStream(DEFAULT_CONFIG_FILE_NAME);
+		}
 		DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(config)));
 		byte[] buffer = new byte[1024];
 		int len = in.read(buffer);
@@ -147,7 +160,7 @@ public class WorkspaceConfiguration {
 	}
 
 	private void initReadManager() {
-		readManager.addElementHandler("workspace", new WorkspaceRootCreator());
+		readManager.addElementHandler("workspace", getWorkspaceRootCreator());
 		readManager.addElementHandler("folder", getFolderCreator());
 		readManager.addElementHandler("link", getLinkCreator());
 		
@@ -168,8 +181,17 @@ public class WorkspaceConfiguration {
 		writeManager.addAttributeWriter("link", writer);
 	}
 	
+	private WorkspaceRootCreator getWorkspaceRootCreator() {
+		if(this.workspaceRootCreator == null) {
+			LogUtils.info("WORKSPACE: get new WorkspaceRootCreator");
+			this.workspaceRootCreator = new WorkspaceRootCreator(this);
+		}
+		return this.workspaceRootCreator;
+	}
+	
 	private FolderCreator getFolderCreator() {
 		if(this.folderCreator == null) {
+			LogUtils.info("WORKSPACE: get new FolderCreator");
 			this.folderCreator = new FolderCreator();
 		}
 		return this.folderCreator;
@@ -177,12 +199,14 @@ public class WorkspaceConfiguration {
 	
 	private LinkCreator getLinkCreator() {
 		if(this.linkCreator == null) {
+			LogUtils.info("WORKSPACE: get new LinkCreator");
 			this.linkCreator = new LinkCreator();
 		}
 		return this.linkCreator;
 	}
 
 	public void registerTypeCreator(final int nodeType, final String typeName, final AWorkspaceNodeCreator creator) {
+		if(typeName == null || typeName.trim().length() <= 0) return;
 		switch(nodeType) {
 			case WSNODE_FOLDER: {
 				getFolderCreator().addTypeCreator(typeName, creator);
@@ -199,7 +223,18 @@ public class WorkspaceConfiguration {
 		
 	}
 	
-	public void load(final URL xmlFile) {
+	public void reload() {
+		try {
+			initializeConfig();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			this.setConfigValid(false);
+		}		
+	}
+	
+	private void load(final URL xmlFile) {
+		LogUtils.info("WORKSPACE: load Config from XML: "+xmlFile);
 		final TreeXmlReader reader = new TreeXmlReader(readManager);
 		try {
 			reader.load(new InputStreamReader(new BufferedInputStream(xmlFile.openStream())));
@@ -212,8 +247,20 @@ public class WorkspaceConfiguration {
 		}
 	}
 
-	public WriteManager getWriteManager() {
-		return this.writeManager;
+	/**
+	 * @param node
+	 */
+	public void setConfigurationInfo(IConfigurationInfo info) {
+		this.configurationInfo = info;		
 	}
-
+	
+	public void saveConfiguration(Writer writer) {
+		try {
+			this.configWriter.writeConfigurationAsXml(writer);
+		}
+		catch (final IOException e) {
+			LogUtils.severe(e);
+		}
+	}
+	
 }

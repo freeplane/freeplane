@@ -36,13 +36,13 @@ public class LocationDialog extends JDialog {
 	 * Create the dialog.
 	 */
 	private void onCancelButton() {
-		WorkspaceController.getCurrentWorkspaceController().setWorkspaceLocation("");
-		WorkspaceController.getCurrentWorkspaceController().showWorkspaceView(false);
+		WorkspaceController.getController().setWorkspaceLocation("");
+		WorkspaceController.getController().showWorkspace(false);
 		this.dispose();
 	}
 	
 	private void onOkButton() {
-		WorkspaceController.getCurrentWorkspaceController().setWorkspaceLocation(location.getText());
+		WorkspaceController.getController().setWorkspaceLocation(location.getText());
 		this.dispose();
 	}
 	
@@ -106,7 +106,7 @@ public class LocationDialog extends JDialog {
 			location = new JTextField();
 			mainPanel.add(location, "2, 2, fill, fill");
 						
-			String currentLocation = WorkspaceController.getCurrentWorkspaceController().getWorkspaceLocation();
+			String currentLocation = WorkspaceController.getController().getWorkspaceLocation();
 			if (currentLocation != null && currentLocation.length()>0) {
 				location.setText(currentLocation);
 			}
