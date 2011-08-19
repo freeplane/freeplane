@@ -1,4 +1,4 @@
-package org.docear.plugin.pdfutilities.ui;
+package org.docear.plugin.pdfutilities.ui.conflict;
 
 public class DoNothingCommand implements ISolveConflictCommand {
 

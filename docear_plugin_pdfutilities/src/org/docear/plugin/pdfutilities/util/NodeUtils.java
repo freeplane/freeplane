@@ -14,6 +14,8 @@ import org.docear.plugin.pdfutilities.features.AnnotationNodeModel;
 import org.docear.plugin.pdfutilities.features.IAnnotation;
 import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
 import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.NodeModel;
@@ -145,6 +147,11 @@ public class NodeUtils {
 			}
 		}
 		return null;
+	}
+
+	public static boolean isMonitoringNode(NodeModel node) {
+		NodeAttributeTableModel attributeModel = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
+		return (attributeModel != null && attributeModel.getAttributeKeyList().contains(TextUtils.getText("mon_incoming_folder")));
 	}
 
 }

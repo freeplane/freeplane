@@ -17,7 +17,9 @@ import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
 import org.docear.plugin.pdfutilities.util.Tools;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 
 import de.intarsys.pdf.cds.CDSNameTreeEntry;
 import de.intarsys.pdf.cds.CDSNameTreeNode;
@@ -48,6 +50,7 @@ import de.intarsys.tools.locator.FileLocator;
 public class PdfAnnotationImporter {
 	
 	private URI currentFile;
+	private MapModel map = Controller.getCurrentController().getMap();
 	private boolean importAll = false;
 	
 	
@@ -123,10 +126,10 @@ public class PdfAnnotationImporter {
 	}
 
 	private PDDocument getPDDocument(URI uri) throws IOException,	COSLoadException, COSRuntimeException {
-		if(uri == null || !Tools.exists(uri) || !new PdfFileFilter().accept(uri)){
+		if(uri == null || !Tools.exists(uri, this.map) || !new PdfFileFilter().accept(uri)){
 			return null;
 		}
-		FileLocator locator = new FileLocator(Tools.getFilefromUri(uri));
+		FileLocator locator = new FileLocator(Tools.getFilefromUri(Tools.getAbsoluteUri(uri, this.map)));
 		PDDocument document = PDDocument.createFromLocator(locator);
 		return document;
 	}
@@ -412,6 +415,14 @@ public class PdfAnnotationImporter {
 
 	public void setImportAll(boolean importAll) {
 		this.importAll = importAll;
+	}
+
+	public MapModel getMap() {
+		return map;
+	}
+
+	public void setMap(MapModel map) {
+		this.map = map;
 	}
 
 }

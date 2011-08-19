@@ -34,7 +34,7 @@ public class DocearNodeSelectionListener implements INodeSelectionListener {
 			}
 			
 			if(model.getAnnotationID() != null){
-				builder.append(" AnnotationID: " + model.getAnnotationID());
+				builder.append(" AnnotationID: " + model.getAnnotationID().getId());
 			}
 			
 			Controller.getCurrentController().getViewController().addStatusInfo("Annotation Info", builder.toString());

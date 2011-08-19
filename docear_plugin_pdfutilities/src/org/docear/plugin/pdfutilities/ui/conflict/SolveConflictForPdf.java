@@ -1,4 +1,4 @@
-package org.docear.plugin.pdfutilities.ui;
+package org.docear.plugin.pdfutilities.ui.conflict;
 
 import java.io.IOException;
 

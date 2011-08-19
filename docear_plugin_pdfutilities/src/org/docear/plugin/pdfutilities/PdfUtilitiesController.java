@@ -15,6 +15,8 @@ import javax.swing.JMenu;
 import javax.swing.JRadioButton;
 
 import org.docear.plugin.core.ALanguageController;
+import org.docear.plugin.pdfutilities.actions.AbstractMonitoringAction;
+import org.docear.plugin.pdfutilities.actions.AddMonitoringFolderAction;
 import org.docear.plugin.pdfutilities.actions.DocearPasteAction;
 import org.docear.plugin.pdfutilities.actions.ImportAllAnnotationsAction;
 import org.docear.plugin.pdfutilities.actions.ImportNewAnnotationsAction;
@@ -44,35 +46,39 @@ import org.freeplane.view.swing.map.NodeView;
 
 public class PdfUtilitiesController extends ALanguageController{
 
-	public static final String OPEN_ON_PAGE_READER_PATH_KEY = "docear_open_on_page_reader_path";
-	public static final String OPEN_PDF_VIEWER_ON_PAGE_KEY = "docear_open_on_page";
-	public static final String OPEN_INTERNAL_PDF_VIEWER_KEY = "docear_open_internal";
-	public static final String OPEN_STANDARD_PDF_VIEWER_KEY = "docear_open_standard";
-	public static final String AUTO_IMPORT_ANNOTATIONS_KEY = "docear_automatic_annotation_import";
-	public static final String IMPORT_BOOKMARKS_KEY = "docear_import_bookmarks";
-	public static final String IMPORT_COMMENTS_KEY = "docear_import_comments";
-	public static final String IMPORT_HIGHLIGHTED_TEXTS_KEY = "docear_import_highlighted_text";
-	public static final String OPEN_ON_PAGE_WARNING_KEY = "OptionPanel.docear_open_on_page_reader_path_warning";
-	public static final String OPEN_ON_PAGE_ERROR_KEY = "OptionPanel.docear_open_on_page_reader_path_error";
+	public static final String OPEN_ON_PAGE_READER_PATH_KEY = "docear_open_on_page_reader_path"; //$NON-NLS-1$
+	public static final String OPEN_PDF_VIEWER_ON_PAGE_KEY = "docear_open_on_page"; //$NON-NLS-1$
+	public static final String OPEN_INTERNAL_PDF_VIEWER_KEY = "docear_open_internal"; //$NON-NLS-1$
+	public static final String OPEN_STANDARD_PDF_VIEWER_KEY = "docear_open_standard"; //$NON-NLS-1$
+	public static final String AUTO_IMPORT_ANNOTATIONS_KEY = "docear_automatic_annotation_import"; //$NON-NLS-1$
+	public static final String IMPORT_BOOKMARKS_KEY = "docear_import_bookmarks"; //$NON-NLS-1$
+	public static final String IMPORT_COMMENTS_KEY = "docear_import_comments"; //$NON-NLS-1$
+	public static final String IMPORT_HIGHLIGHTED_TEXTS_KEY = "docear_import_highlighted_text"; //$NON-NLS-1$
+	public static final String OPEN_ON_PAGE_WARNING_KEY = "OptionPanel.docear_open_on_page_reader_path_warning"; //$NON-NLS-1$
+	public static final String OPEN_ON_PAGE_ERROR_KEY = "OptionPanel.docear_open_on_page_reader_path_error"; //$NON-NLS-1$
 	
-	public static final String MENU_BAR = "/menu_bar";
-	public static final String NODE_POPUP_MENU = "/node_popup";
-	public static final String NODE_FEATURES_MENU = "/node features";
-	public static final String STYLES_MENU = "/styles";
-	public static final String PDF_MANAGEMENT_MENU = "/pdf_management";
-	public static final String AUTO_IMPORT_LANG_KEY = "menu_auto_import_annotations";
-	public static final String PDF_MANAGEMENT_MENU_LANG_KEY = "menu_pdf_utilities";
-	public static final String IMPORT_ALL_ANNOTATIONS_LANG_KEY = "menu_import_all_annotations";
-	public static final String IMPORT_NEW_ANNOTATIONS_LANG_KEY = "menu_import_new_annotations";
+	public static final String MENU_BAR = "/menu_bar"; //$NON-NLS-1$
+	public static final String NODE_POPUP_MENU = "/node_popup"; //$NON-NLS-1$
+	public static final String NODE_FEATURES_MENU = "/node_features"; //$NON-NLS-1$
+	public static final String STYLES_MENU = "/styles"; //$NON-NLS-1$
+	public static final String PDF_MANAGEMENT_MENU = "/pdf_management"; //$NON-NLS-1$
+	public static final String MONITORING_MENU = "/monitoring"; //$NON-NLS-1$
+	public static final String AUTO_IMPORT_LANG_KEY = "menu_auto_import_annotations"; //$NON-NLS-1$
+	public static final String PDF_MANAGEMENT_MENU_LANG_KEY = "menu_pdf_utilities"; //$NON-NLS-1$
+	public static final String MONITORING_MENU_LANG_KEY = "menu_monitoring_utilities"; //$NON-NLS-1$
+	public static final String IMPORT_ALL_ANNOTATIONS_LANG_KEY = "menu_import_all_annotations"; //$NON-NLS-1$
+	public static final String IMPORT_NEW_ANNOTATIONS_LANG_KEY = "menu_import_new_annotations"; //$NON-NLS-1$
+	public static final String ADD_MONITORING_FOLDER_LANG_KEY = "menu_import_add_monitoring_folder"; //$NON-NLS-1$
 
 	private ModeController modecontroller;
 	private ImportAllAnnotationsAction importAllAnnotationsAction;
 	private ImportNewAnnotationsAction importNewAnnotationsAction;
+	private AbstractMonitoringAction addMonitoringFolderAction;
 
 	public PdfUtilitiesController(ModeController modeController) {
 		super();
 
-		LogUtils.info("starting DocearPdfUtilitiesStarter(ModeController)");
+		LogUtils.info("starting DocearPdfUtilitiesStarter(ModeController)"); //$NON-NLS-1$
 		this.modecontroller = modeController;
 		
 		this.addPropertiesToOptionPanel();
@@ -92,6 +98,8 @@ public class PdfUtilitiesController extends ALanguageController{
 		this.modecontroller.getMapController().addListenerForAction(importAllAnnotationsAction);
 		this.importNewAnnotationsAction = new ImportNewAnnotationsAction(IMPORT_NEW_ANNOTATIONS_LANG_KEY);
 		this.modecontroller.getMapController().addListenerForAction(importNewAnnotationsAction);
+		this.addMonitoringFolderAction = new AddMonitoringFolderAction(ADD_MONITORING_FOLDER_LANG_KEY);
+		this.modecontroller.getMapController().addListenerForAction(addMonitoringFolderAction);
 
 		this.modecontroller.removeAction("PasteAction");
 		this.modecontroller.addAction(new DocearPasteAction());
@@ -110,11 +118,15 @@ public class PdfUtilitiesController extends ALanguageController{
 				builder.addAction(MENU_BAR + PDF_MANAGEMENT_MENU, importAllAnnotationsAction, MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + PDF_MANAGEMENT_MENU, importNewAnnotationsAction, MenuBuilder.AS_CHILD);
 				builder.addMenuItem(NODE_POPUP_MENU + NODE_FEATURES_MENU,
+						new JMenu(TextUtils.getText(MONITORING_MENU_LANG_KEY)), NODE_POPUP_MENU + MONITORING_MENU,
+						MenuBuilder.BEFORE);
+				builder.addAction(NODE_POPUP_MENU + MONITORING_MENU, addMonitoringFolderAction, MenuBuilder.AS_CHILD);
+				builder.addMenuItem(NODE_POPUP_MENU + NODE_FEATURES_MENU,
 						new JMenu(TextUtils.getText(PDF_MANAGEMENT_MENU_LANG_KEY)), NODE_POPUP_MENU + PDF_MANAGEMENT_MENU,
 						MenuBuilder.BEFORE);
 				builder.addSeparator(NODE_POPUP_MENU + "/DeleteAction", MenuBuilder.AFTER);
 				builder.addAction(NODE_POPUP_MENU + PDF_MANAGEMENT_MENU, importAllAnnotationsAction, MenuBuilder.AS_CHILD);
-				builder.addAction(NODE_POPUP_MENU + PDF_MANAGEMENT_MENU, importNewAnnotationsAction, MenuBuilder.AS_CHILD);
+				builder.addAction(NODE_POPUP_MENU + PDF_MANAGEMENT_MENU, importNewAnnotationsAction, MenuBuilder.AS_CHILD);				
 			}
 		});
 	}
@@ -176,7 +188,7 @@ public class PdfUtilitiesController extends ALanguageController{
 				((RadioButtonProperty) optionController.getPropertyControl(OPEN_STANDARD_PDF_VIEWER_KEY))
 						.addPropertyChangeListener(new PropertyChangeListener() {
 							public void propertyChange(PropertyChangeEvent evt) {
-								if (evt.getNewValue().equals("true")) {
+								if (evt.getNewValue().equals("true")) { //$NON-NLS-1$
 									((IPropertyControl) optionController.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY))
 											.setEnabled(false);
 								}
@@ -213,14 +225,14 @@ public class PdfUtilitiesController extends ALanguageController{
 	private void addPluginDefaults() {
 		final URL defaults = this.getClass().getResource(ResourceController.PLUGIN_DEFAULTS_RESOURCE);
 		if (defaults == null)
-			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
+			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE); //$NON-NLS-1$
 		Controller.getCurrentController().getResourceController().addDefaults(defaults);
 	}
 
 	private void addPropertiesToOptionPanel() {
 		final URL preferences = this.getClass().getResource("preferences.xml");
 		if (preferences == null)
-			throw new RuntimeException("cannot open docear.pdf_utilities plugin preferences");
+			throw new RuntimeException("cannot open docear.pdf_utilities plugin preferences"); //$NON-NLS-1$
 		MModeController modeController = (MModeController) Controller.getCurrentModeController();
 
 		modeController.getOptionPanelBuilder().load(preferences);
@@ -230,7 +242,7 @@ public class PdfUtilitiesController extends ALanguageController{
 				ValidationResult result = new ValidationResult();
 				boolean openOnPageActivated = Boolean.parseBoolean(properties.getProperty(OPEN_PDF_VIEWER_ON_PAGE_KEY));
 				if(openOnPageActivated){
-					String readerPath = properties.getProperty(OPEN_ON_PAGE_READER_PATH_KEY, "");
+					String readerPath = properties.getProperty(OPEN_ON_PAGE_READER_PATH_KEY, ""); //$NON-NLS-1$
 					if(!(new PdfReaderFileFilter().accept(new File(readerPath)))){
 						if(new ExeFileFilter().accept(new File(readerPath))){
 							result.addWarning(TextUtils.getText(OPEN_ON_PAGE_WARNING_KEY));
