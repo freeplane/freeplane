@@ -134,7 +134,7 @@ class NodeViewFactory {
 			return new BubbleMainView();
 		}
 		else {
-			System.err.println("Tried to create a NodeView of unknown Style.");
+			System.err.println("Tried to create a NodeView of unknown Style " + String.valueOf(shape));
 			return new ForkMainView();
 		}
 	}
