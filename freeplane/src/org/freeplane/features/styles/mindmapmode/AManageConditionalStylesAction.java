@@ -42,8 +42,9 @@ abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 		if(conditionalStyleTable.getRowCount() > 0){
 			conditionalStyleTable.setRowSelectionInterval(0, 0);
 		}
-	    JScrollPane scrollPane = new JScrollPane(conditionalStyleTable);
-	    scrollPane.setPreferredSize(new Dimension(600, 400));
+	    JScrollPane scrollPane = new JScrollPane(conditionalStyleTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	    final int tablePreferredWidth = scrollPane.getViewport().getViewSize().width;
+	    scrollPane.setPreferredSize(new Dimension(tablePreferredWidth, 400));
 	    pane.add(scrollPane, BorderLayout.CENTER);
 	    final Box buttons = Box.createVerticalBox();
 	    
