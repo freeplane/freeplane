@@ -842,6 +842,7 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		if (property.equals(NodeModel.NOTE_TEXT)) {
 			NodeViewFactory.getInstance().updateNoteViewer(this);
+			mainView.updateIcons(this);
 			return;
 		}
 		if (property.equals(HistoryInformationModel.class)) {
