@@ -112,7 +112,7 @@ public class NodeView extends JComponent implements INodeView {
 	private NodeMotionListenerView motionListenerView;
 	private NodeView preferredChild;
 	private EdgeStyle edgeStyle = EdgeStyle.EDGESTYLE_HIDDEN;
-	private int edgeWidth = 1;
+	private Integer edgeWidth = 1;
 	private Color edgeColor = Color.BLACK;
 	private Color modelBackgroundColor;
 	public static final int DETAIL_VIEWER_POSITION = 2;
@@ -1405,23 +1405,27 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	private void updateEdge() {
-	    if(! isRoot()) {
-	        final EdgeController edgeController = EdgeController.getController(getMap().getModeController());
-	        this.edgeStyle = edgeController.getStyle(model);
-	    	this.edgeWidth = edgeController.getWidth(model);
-	    	this.edgeColor = edgeController.getColor(model);
-        }
+        final EdgeController edgeController = EdgeController.getController(getMap().getModeController());
+		this.edgeStyle = edgeController.getStyle(model, false);
+		this.edgeWidth = edgeController.getWidth(model, false);
+		this.edgeColor = edgeController.getColor(model, false);
     }
 
 	public EdgeStyle getEdgeStyle() {
-    	return edgeStyle;
+		if(edgeStyle != null)
+			return edgeStyle;
+		return getParentView().getEdgeStyle();
     }
 
 	public int getEdgeWidth() {
-	    return edgeWidth;
+		if(edgeStyle != null)
+		    return edgeWidth;
+		return getParentView().getEdgeWidth();
     }
 	public Color getEdgeColor() {
-	    return edgeColor;
+		if(edgeColor != null)
+			return edgeColor;
+		return getParentView().getEdgeColor();
     }
 	
 	private void updateCloud() {

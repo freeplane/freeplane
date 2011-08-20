@@ -70,9 +70,8 @@ public class EdgeController implements IExtension {
 		});
 		addColorGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(NodeModel node, final Color currentValue) {
-				final NodeModel parentNode = node.getParentNode();
-				if(parentNode != null){
-					return getColor(parentNode);
+				if(node.getParentNode() != null){
+					return null;
 				}
 				return STANDARD_EDGE_COLOR;
 			}
@@ -84,9 +83,8 @@ public class EdgeController implements IExtension {
 		});
 		addStyleGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<EdgeStyle, NodeModel>() {
 			public EdgeStyle getProperty(NodeModel node, final EdgeStyle currentValue) {
-				for(NodeModel parentNode = node.getParentNode();parentNode != null;){
-					final EdgeStyle style = getStyle(parentNode);
-					return style;
+				if(node.getParentNode() != null){
+					return null;
 				}
 				return STANDARD_EDGE_STYLE;
 			}
@@ -99,9 +97,8 @@ public class EdgeController implements IExtension {
 		
 		addWidthGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Integer, NodeModel>() {
 			public Integer getProperty(NodeModel node, final Integer currentValue) {
-				final NodeModel parentNode = node.getParentNode();
-				if(parentNode != null){
-					return getWidth(parentNode);
+				if(node.getParentNode() != null){
+					return null;
 				}
 				return new Integer(EdgeModel.WIDTH_THIN);
 			}
@@ -129,16 +126,37 @@ public class EdgeController implements IExtension {
 	}
 
 	public Color getColor(final NodeModel node) {
-		return colorHandlers.getProperty(node);
+		return getColor(node, true);
 	}
+
+	public Color getColor(final NodeModel node, final boolean resolveParent) {
+	    final Color color = colorHandlers.getProperty(node);
+		if(color == null && resolveParent)
+			return getColor(node.getParentNode());
+		return color;
+    }
 
 	public EdgeStyle getStyle(final NodeModel node) {
-		return styleHandlers.getProperty(node);
+		return getStyle(node, true);
 	}
 
+	public EdgeStyle getStyle(final NodeModel node, final boolean resolveParent) {
+	    final EdgeStyle style = styleHandlers.getProperty(node);
+		if(style == null && resolveParent)
+			return getStyle(node.getParentNode());
+		return style;
+    }
+
 	public int getWidth(final NodeModel node) {
-		return widthHandlers.getProperty(node).intValue();
+		return getWidth(node, true);
 	}
+
+	public Integer getWidth(final NodeModel node, final boolean resolveParent) {
+	    final Integer width = widthHandlers.getProperty(node);
+		if(width == null && resolveParent)
+			return getWidth(node.getParentNode());
+		return width;
+    }
 
 	public IPropertyHandler<Color, NodeModel> removeColorGetter(final Integer key) {
 		return colorHandlers.removeGetter(key);

@@ -120,14 +120,11 @@ class ForkMainView extends MainView {
 
 	@Override
 	void paintDecoration(final NodeView nodeView, final Graphics2D g) {
-	    final ModeController modeController = getNodeView().getMap().getModeController();
-		final NodeModel model = nodeView.getModel();
 		final Stroke oldStroke = g.getStroke();
 		float edgeWidth  = getEdgeWidth();
 		g.setStroke(new BasicStroke(edgeWidth));
 		final Color oldColor = g.getColor();
-		EdgeController edgeController = EdgeController.getController(modeController);
-		g.setColor(edgeController.getColor(model));
+		g.setColor(nodeView.getEdgeColor());
 		Point leftLinePoint = getLeftPoint();
 		g.drawLine(leftLinePoint.x, leftLinePoint.y, leftLinePoint.x + getWidth(), leftLinePoint.y);
 		g.setColor(oldColor);

@@ -207,8 +207,7 @@ public abstract class MainView extends ZoomableLabel {
 		final Color color = g.getColor();
 		g.setColor(itself ? Color.WHITE : Color.GRAY);
 		g.fillOval(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2, zoomedFoldingSymbolHalfWidth * 2);
-		final NodeModel model = nodeView.getModel();
-		final Color edgeColor = EdgeController.getController(nodeView.getMap().getModeController()).getColor(model);
+		final Color edgeColor = nodeView.getEdgeColor();
 		g.setColor(edgeColor);
 		g.drawOval(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2, zoomedFoldingSymbolHalfWidth * 2);
 		g.setColor(color);
