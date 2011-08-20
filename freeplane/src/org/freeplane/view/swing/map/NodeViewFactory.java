@@ -43,6 +43,7 @@ import org.freeplane.core.ui.DelayedMouseListener;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
@@ -161,8 +162,20 @@ class NodeViewFactory {
 			view = new RootMainView();
 		}
 		else{
-			final String shape = NodeStyleController.getController(modeController).getShape(model);
-			if (shape.equals(NodeStyleModel.STYLE_FORK)) {
+			String shape = NodeStyleController.getController(modeController).getShape(model);
+			if (shape.equals(NodeStyleModel.SHAPE_COMBINED)) {
+				if (Controller.getCurrentModeController().getMapController().isFolded(model)) {
+					shape= NodeStyleModel.STYLE_BUBBLE;
+				}
+				else {
+					shape = NodeStyleModel.STYLE_FORK;
+				}
+			}
+			else if(shape.equals(NodeStyleModel.SHAPE_AS_PARENT)){
+				shape = node.getParentView().getMainView().getStyle();
+			}
+
+			if (shape == null || shape.equals(NodeStyleModel.STYLE_FORK)) {
 				view = new ForkMainView();
 			}
 			else if (shape.equals(NodeStyleModel.STYLE_BUBBLE)) {

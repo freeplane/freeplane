@@ -762,7 +762,7 @@ public class StyleEditorPanel extends JPanel {
 			}
 			{
 				final String shape = NodeStyleModel.getShape(node);
-				final String viewShape = styleController.getShapeEx(node);
+				final String viewShape = styleController.getShape(node);
 				mSetNodeShape.setValue(shape != null);
 				mNodeShape.setValue(viewShape);
 			}

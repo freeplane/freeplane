@@ -114,15 +114,7 @@ public class NodeStyleController implements IExtension {
 			}
 
 			private String getShape(final NodeModel node) {
-				final String returnedString;
-				final NodeModel parentNode = node.getParentNode();
-				if (parentNode == null) {
-					returnedString = "fork";
-				}
-				else {
-					returnedString = getShape(node.getParentNode());
-				}
-				return returnedString;
+				return NodeStyleModel.SHAPE_AS_PARENT;
 			}
 		});
 		final MapController mapController = modeController.getMapController();
@@ -313,21 +305,9 @@ public class NodeStyleController implements IExtension {
 	}
 
 	public String getShape(final NodeModel node) {
-		final String returnedString = getShapeEx(node);
-		if (returnedString.equals(NodeStyleModel.SHAPE_COMBINED)) {
-			if (Controller.getCurrentModeController().getMapController().isFolded(node)) {
-				return NodeStyleModel.STYLE_BUBBLE;
-			}
-			else {
-				return NodeStyleModel.STYLE_FORK;
-			}
-		}
+		final String returnedString = shapeHandlers.getProperty(node);
 		return returnedString;
 	}
-
-	public String getShapeEx(final NodeModel node) {
-	    return shapeHandlers.getProperty(node);
-    }
 
 	public boolean isBold(final NodeModel node) {
 		return getFont(node).isBold();
