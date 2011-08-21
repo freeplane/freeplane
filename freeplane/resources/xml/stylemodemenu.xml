@@ -258,7 +258,7 @@
 			<menu_action action="UndoAction"/>
 			<menu_action action="RedoAction"/>
 		</menu_category>
-		<menu_category name="font">
+		<menu_category name="font" menu_key="main_toolbar_font">
 			<menu_action action="BoldAction"/>
 			<menu_action action="ItalicAction"/>
 		</menu_category>

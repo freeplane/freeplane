@@ -173,6 +173,7 @@
 		<menu_category name="paste">
 			<menu_action action="CopyAction"/>
 			</menu_category>
+		<menu_category name="zoom" menu_key="main_toolbar_zoom"/>	
 		<menu_category name="folding">
 			<menu_action action="UnfoldOneLevelAction"/>
 			<menu_action action="FoldOneLevelAction"/>
@@ -180,5 +181,7 @@
 			<menu_action action="FoldAllAction"/>
 		</menu_category>
 		<menu_action action="EnterPassword" />
+		<menu_separator />
+		<menu_category name="url" menu_key="main_toolbar_url"/>
 	</menu_category>
 </menu_structure>

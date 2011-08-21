@@ -746,7 +746,7 @@
 			<menu_action action="ShowAttributeDialogAction" />
 		</menu_category>
 		<menu_separator />
-		<menu_category name="font">
+		<menu_category name="font" menu_key="main_toolbar_font">
 			<menu_action action="BoldAction" />
 			<menu_action action="ItalicAction" />
 		</menu_category>

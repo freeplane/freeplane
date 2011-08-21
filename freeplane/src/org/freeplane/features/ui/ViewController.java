@@ -707,7 +707,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	}
 
 	public void updateMenus(final MenuBuilder menuBuilder) {
-		if (menuBuilder.contains("/main_toolbar/zoom")) {
+		if (menuBuilder.contains("main_toolbar_zoom")) {
 			final JComboBox zoomBox = new JComboBox(zoomModel);
 			zoomBox.addItemListener(new ItemListener() {
 				public void itemStateChanged(final ItemEvent e) {
@@ -716,7 +716,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 					}
 				}
 			});
-			menuBuilder.addElement("/main_toolbar/zoom", zoomBox, MenuBuilder.AS_CHILD);
+			menuBuilder.addElement("main_toolbar_zoom", zoomBox, MenuBuilder.AS_CHILD);
 		}
 	}
 

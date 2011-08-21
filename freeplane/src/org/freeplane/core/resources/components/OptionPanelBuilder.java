@@ -125,7 +125,7 @@ public class OptionPanelBuilder {
 			final String name = "/translations/locales.txt";
 			final InputStream stream = ResourceController.class.getResourceAsStream(name);
 			if (stream == null) {
-				LogUtils.warn("available locales not found");
+				LogUtils.info("available locales not found");
 				return locales;
 			}
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
