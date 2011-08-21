@@ -39,12 +39,13 @@ class RootMainView extends MainView {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private String shape;
 
 	
-	
-	public RootMainView() {
+	public RootMainView(String shape) {
         super();
         setHorizontalAlignment(SwingConstants.CENTER);
+    	this.shape = shape;
     }
 
     @Override
@@ -94,9 +95,13 @@ class RootMainView extends MainView {
 	 * @see freeplane.view.mindmapview.NodeView#getStyle()
 	 */
 	@Override
-	String getStyle() {
-		return null;
+	String getShape() {
+		return shape;
 	}
+
+	void setShape(String shape) {
+    	this.shape = shape;
+    }
 
 	@Override
 	public void paint(final Graphics graphics) {

@@ -101,7 +101,7 @@ class ForkMainView extends MainView {
 	 * @see freeplane.view.mindmapview.NodeView#getStyle()
 	 */
 	@Override
-	String getStyle() {
+	String getShape() {
 		return NodeStyleModel.STYLE_FORK;
 	}
 
