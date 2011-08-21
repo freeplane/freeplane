@@ -997,16 +997,16 @@ public class NodeView extends JComponent implements INodeView {
                 continue;
             }
             final NodeView nodeView = (NodeView) component;
+            final Point p = new Point();
+            UITools.convertPointToAncestor(nodeView, p, this);
+            g.translate(p.x, p.y);
             if (nodeView.isContentVisible()) {
-                final Point p = new Point();
-                UITools.convertPointToAncestor(nodeView, p, this);
-                g.translate(p.x, p.y);
                 nodeView.paintCloud(g);
-                g.translate(-p.x, -p.y);
              }
             else {
                 nodeView.paintClouds(g);
             }
+            g.translate(-p.x, -p.y);
         }
     }
 
