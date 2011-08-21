@@ -154,7 +154,7 @@ class NodeViewFactory {
 		return new ContentPane();
 	}
 
-	MainView newMainView(final NodeView node) {
+	MainView newMainView(NodeView node) {
 		final ModeController modeController = node.getMap().getModeController();
 		final NodeModel model = node.getModel();
 		MainView view;
@@ -167,8 +167,12 @@ class NodeViewFactory {
 				shape = NodeStyleModel.STYLE_FORK;
 			}
 		}
-		else if(shape.equals(NodeStyleModel.SHAPE_AS_PARENT)){
-			shape = node.getParentView().getMainView().getShape();
+		else while(shape.equals(NodeStyleModel.SHAPE_AS_PARENT)){
+				node = node.getParentView();
+				if (node == null)
+					shape = NodeStyleModel.STYLE_FORK;
+				else
+					shape = node.getMainView().getShape();
 		}
 
 		if (shape == null || shape.equals(NodeStyleModel.STYLE_FORK)) {
