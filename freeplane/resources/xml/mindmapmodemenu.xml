@@ -441,10 +441,6 @@
 			<menu_category name="mindmaps" menu_key="main_menu_mindmaps"/>
 		</menu_submenu>
 		<menu_submenu name="help" name_ref="help">
-			<menu_category name="documentation">
-				<menu_action action="MenuReferenceAction" accelerator="shift F1"/>
-				<menu_action action="HotKeyInfoAction"/>				
-			</menu_category>				
 			<menu_separator />
 			<menu_category name="update">
 				<menu_action action="UpdateCheckAction" />

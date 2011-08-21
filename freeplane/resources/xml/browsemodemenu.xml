@@ -103,9 +103,6 @@
 			<menu_category menu_key="main_menu_mindmaps" name="mindmaps"/>
 		</menu_submenu>
 		<menu_submenu name="help" name_ref="help">
-			<menu_category name="documentation">
-				<menu_action accelerator="shift F1" action="MenuReferenceAction"/>
-				</menu_category>				
 			<menu_category name="update">
 				<menu_action action="UpdateCheckAction"/>
 			</menu_category>			
