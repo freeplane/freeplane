@@ -60,8 +60,10 @@ public class LinkTypeNewLiteratureNode extends LinkNode implements IWorkspaceNod
 		mFileManager.newMap();
 		MapModel map = Controller.getCurrentController().getMap();
 		map.getRootNode().setText(getName());
+		DocearEvent evnt = new DocearEvent(this, DocearConstants.NEW_LITERATURE_MAP, map);
+		DocearController.getController().dispatchDocearEvent(evnt);
 		
-		mFileManager.save(Controller.getCurrentController().getMap(), f);
+		mFileManager.save(Controller.getCurrentController().getMap(), f);		
 		Controller.getCurrentController().close(false);
 
 		LogUtils.info("New Mindmap Created: " + f.getAbsolutePath());
@@ -92,8 +94,7 @@ public class LinkTypeNewLiteratureNode extends LinkNode implements IWorkspaceNod
 					createNewMindmap(f);
 				}
 				Controller.getCurrentModeController().getMapController().newMap(absoluteUrl, false);
-				DocearEvent evnt = new DocearEvent(this, DocearConstants.NEW_LITERATURE_MAP, Controller.getCurrentController().getMap());
-				DocearController.getController().dispatchDocearEvent(evnt);
+				
 			}
 			catch (Exception e) {
 				LogUtils.warn("could not open document (" + getLinkPath() + ")", e);
