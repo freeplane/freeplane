@@ -16,6 +16,7 @@ import org.docear.plugin.pdfutilities.features.AnnotationID;
 import org.docear.plugin.pdfutilities.features.AnnotationModel;
 import org.docear.plugin.pdfutilities.features.AnnotationNodeModel;
 import org.docear.plugin.pdfutilities.features.IAnnotation;
+import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
 import org.docear.plugin.pdfutilities.ui.MonitoringDialog;
@@ -81,8 +82,14 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 						firePropertyChange(MonitoringDialog.NEW_FILE, null, Tools.getFilefromUri(uri).getName());
 						PdfAnnotationImporter importer = new PdfAnnotationImporter();
 						Collection<AnnotationModel> annotations = importer.importAnnotations(uri);
+						AnnotationModel root = new AnnotationModel(new AnnotationID(Tools.getAbsoluteUri(uri), 0), AnnotationType.PDF_FILE);
+						root.setTitle(Tools.getFilefromUri(Tools.getAbsoluteUri(uri)).getName());
+						root.getChildren().addAll(annotations);
+						annotations = new ArrayList<AnnotationModel>();
+						annotations.add(root);
 						annotations = AnnotationController.markNewAnnotations(annotations, oldAnnotations);
 						AnnotationController.addConflictedAnnotations(AnnotationController.getConflictedAnnotations(annotations, oldAnnotations), conflicts);
+						
 						final Collection<AnnotationModel> finalAnnotations = annotations;
 						SwingUtilities.invokeAndWait(
 						        new Runnable() {

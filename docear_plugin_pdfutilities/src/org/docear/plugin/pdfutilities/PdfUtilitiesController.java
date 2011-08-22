@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Properties;
@@ -18,6 +20,7 @@ import org.docear.plugin.core.ALanguageController;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.DocearEvent;
 import org.docear.plugin.core.IDocearEventListener;
+import org.docear.plugin.core.workspace.node.DocearConstants;
 import org.docear.plugin.pdfutilities.actions.AbstractMonitoringAction;
 import org.docear.plugin.pdfutilities.actions.AddMonitoringFolderAction;
 import org.docear.plugin.pdfutilities.actions.DocearPasteAction;
@@ -31,6 +34,7 @@ import org.docear.plugin.pdfutilities.listener.DocearNodeMouseMotionListener;
 import org.docear.plugin.pdfutilities.listener.DocearNodeSelectionListener;
 import org.docear.plugin.pdfutilities.pdf.PdfReaderFileFilter;
 import org.docear.plugin.pdfutilities.util.ExeFileFilter;
+import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.resources.OptionPanelController;
 import org.freeplane.core.resources.OptionPanelController.PropertyLoadListener;
 import org.freeplane.core.resources.ResourceController;
@@ -42,6 +46,7 @@ import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -241,7 +246,16 @@ public class PdfUtilitiesController extends ALanguageController{
 		DocearController.getController().addDocearEventListener(new IDocearEventListener() {
 			
 			public void handleEvent(DocearEvent event) {
-				if(event.getType() == )
+				if(event.getType().equals(DocearConstants.NEW_LITERATURE_MAP)){
+					MapModel map = (MapModel)event.getEventObject();
+					try {
+						NodeUtils.addMonitoringDir(map.getRootNode(), new URI("property:/workspace_pdf_location"));
+						NodeUtils.addMindmapDir(map.getRootNode(), new URI("workspace:/mindmaps"));
+					} catch (URISyntaxException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 				
 			}
 		});

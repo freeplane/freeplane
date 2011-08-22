@@ -1,5 +1,7 @@
 package org.docear.plugin.pdfutilities.util;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -8,6 +10,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.docear.plugin.pdfutilities.features.AnnotationController;
 import org.docear.plugin.pdfutilities.features.AnnotationID;
@@ -27,6 +30,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.attribute.AttributeView;
 
@@ -40,10 +44,35 @@ public class NodeUtils {
 		
 	}
 	
+	public static boolean isMapCurrentlyOpened(MapModel map){
+		Map<String, MapModel> maps = Controller.getCurrentController().getMapViewManager().getMaps();
+		for(Entry<String, MapModel> entry : maps.entrySet()){
+			if(entry.getValue().getFile().equals(map.getFile())){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static boolean saveMap(MapModel map){		
+		try {
+			((MFileManager) UrlManager.getController()).writeToFile(map, map.getFile());
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;			
+		}
+		return true;
+	}
+	
 	public Map<AnnotationID, Collection<AnnotationNodeModel>> getOldAnnotationsFromMaps(Collection<URI> mindmaps){
 		Map<AnnotationID, Collection<AnnotationNodeModel>> result = new HashMap<AnnotationID, Collection<AnnotationNodeModel>>();
-		for(URI mindmap : mindmaps){
-			Map<AnnotationID, Collection<AnnotationNodeModel>> temp = getOldAnnotationsFromMap(mindmap);
+		for(MapModel map : this.getMapsFromUris(mindmaps)){
+			Map<AnnotationID, Collection<AnnotationNodeModel>> temp = this.getOldAnnotationsFrom(map.getRootNode());
 			for(AnnotationID id : temp.keySet()){
 				if(!result.containsKey(id)){
 					result.put(id, new ArrayList<AnnotationNodeModel>());				
@@ -54,15 +83,40 @@ public class NodeUtils {
 		return result;
 	}
 	
-	public Map<AnnotationID, Collection<AnnotationNodeModel>> getOldAnnotationsFromMap(URI mindmap){		
+	public Map<AnnotationID, Collection<AnnotationNodeModel>> getOldAnnotationsFromMap(URI mindmap){
+		MapModel map = this.getMapFromUri(mindmap);
+		if(map != null){
+			return this.getOldAnnotationsFrom(map.getRootNode());
+		}
+		return new HashMap<AnnotationID, Collection<AnnotationNodeModel>>();
+	}
+	
+	public Collection<MapModel> getMapsFromUris(Collection<URI> mindmaps){
+		Collection<MapModel> maps = new ArrayList<MapModel>();
+		for(URI uri : mindmaps){
+			MapModel map = getMapFromUri(uri);
+			if(map != null){
+				maps.add(map);
+			}
+		}
+		return maps;
+	}
+	
+	
+	public MapModel getMapFromUri(URI uri) {
+		Map<String, MapModel> maps = Controller.getCurrentController().getMapViewManager().getMaps();
+		for(Entry<String, MapModel> entry : maps.entrySet()){
+			if(entry.getValue().getFile().toURI().equals(uri)){
+				return entry.getValue();
+			}
+		}
 		try {
-			final UrlManager urlManager = (UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class);
-			
+			final UrlManager urlManager = (UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class);			
 			MapModel map = new MapModel(null);
 			AttributeRegistry.createRegistry(map);
-			URL url = mindmap.toURL();
+			URL url = Tools.getFilefromUri(uri).toURL();
 			urlManager.loadImpl(url, map);
-			return this.getOldAnnotationsFrom(map.getRootNode());
+			return map;
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -72,8 +126,7 @@ public class NodeUtils {
 		}
 		return null;
 	}
-	
-	
+
 	public Map<AnnotationID, Collection<AnnotationNodeModel>> getOldAnnotationsFromCurrentMap(){
 		return getOldAnnotationsFrom(this.currentMapController.getRootNode());
 	}
