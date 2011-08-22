@@ -27,6 +27,8 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.attribute.AttributeView;
 
 
 public class NodeUtils {
@@ -245,6 +247,32 @@ public class NodeUtils {
 		if(attributeModel.getAttributeKeyList().contains(TextUtils.getText("mon_incoming_folder"))){
 			AttributeController.getController().performRemoveRow(attributeModel, attributeModel.getAttributePosition(TextUtils.getText("mon_incoming_folder")));			
 		}
+	}
+	
+	public static boolean addMonitoringDir(NodeModel target, URI monitoringDir){
+		if(target == null || monitoringDir == null) return false;
+		
+		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
+		if(attributes != null){
+			AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), TextUtils.getText("mon_incoming_folder"), monitoringDir); //$NON-NLS-1$
+			AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
+    		attributeView.setOptimalColumnWidths();
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean addMindmapDir(NodeModel target, URI mindmapDir){
+		if(target == null || mindmapDir == null) return false;
+		
+		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
+		if(attributes != null){
+			AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), TextUtils.getText("mon_mindmap_folder"), mindmapDir); //$NON-NLS-1$
+			AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
+    		attributeView.setOptimalColumnWidths();
+			return true;
+		}
+		return false;
 	}
 
 }
