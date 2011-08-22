@@ -6,6 +6,8 @@ package org.docear.plugin.core;
 
 import java.util.EventObject;
 
+import org.docear.plugin.core.workspace.node.DocearConstants;
+
 /**
  * 
  */
@@ -13,21 +15,21 @@ public class DocearEvent extends EventObject {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private final int type;	
+	private final DocearConstants type;	
 	private final Object eventObject;
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 	
 	public DocearEvent(Object source) {
-		this(source, -1, null);
+		this(source, DocearConstants.NULL, null);
 	}
 	
-	public DocearEvent(Object source, int type) {
+	public DocearEvent(Object source, DocearConstants type) {
 		this(source, type, null);
 	}
 	
-	public DocearEvent(Object source, int type, Object eventObj) {
+	public DocearEvent(Object source, DocearConstants type, Object eventObj) {
 		super(source);
 		this.type = type;
 		this.eventObject = eventObj;
@@ -39,7 +41,7 @@ public class DocearEvent extends EventObject {
 	 * METHODS
 	 **********************************************************************************/
 
-	public int getType() {
+	public DocearConstants getType() {
 		return type;
 	}
 	
