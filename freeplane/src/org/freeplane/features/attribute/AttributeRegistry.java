@@ -44,8 +44,9 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class AttributeRegistry implements IExtension {
 	static public final int GLOBAL = -1;
 	private static final int TABLE_FONT_SIZE = 12;
-
-	static AttributeRegistry createRegistry( final MapModel map) {
+	
+	// TODO: DOCEAR Made this method public so a map can be loaded in background (i don't want to fire map created event..)
+	public static AttributeRegistry createRegistry( final MapModel map) {
 		AttributeRegistry registry = AttributeRegistry.getRegistry(map);
 		if (registry == null) {
 			final AttributeController attributeController = AttributeController.getController();

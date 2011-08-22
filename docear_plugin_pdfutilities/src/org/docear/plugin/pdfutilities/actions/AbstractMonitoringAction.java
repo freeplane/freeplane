@@ -20,6 +20,7 @@ import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
 import org.docear.plugin.pdfutilities.ui.MonitoringDialog;
 import org.docear.plugin.pdfutilities.ui.conflict.ImportConflictDialog;
+import org.docear.plugin.pdfutilities.util.CustomFileFilter;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.docear.plugin.pdfutilities.util.Tools;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -28,6 +29,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.url.mindmapmode.SaveAll;
 import org.jdesktop.swingworker.SwingWorker;
 
 import de.intarsys.pdf.cos.COSRuntimeException;
@@ -51,8 +53,10 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 		super(key, title, icon);
 	}
 
-	protected void updateNodesAgainstMonitoringDir(final NodeModel target, final URI monitoringDir, URI mindmapDir) {
+	protected void updateNodesAgainstMonitoringDir(final NodeModel target, final URI monitoringDir, final URI mindmapDir) {
 		if(target == null || monitoringDir == null || mindmapDir == null) return;
+		
+		new SaveAll().actionPerformed(null);
 					
 		SwingWorker<Map<AnnotationID, Collection<IAnnotation>>, AnnotationModel[]> thread = new SwingWorker<Map<AnnotationID, Collection<IAnnotation>>, AnnotationModel[]>(){
 			
@@ -62,8 +66,13 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 				firePropertyChange(MonitoringDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
 				Map<AnnotationID, Collection<IAnnotation>> conflicts = new HashMap<AnnotationID, Collection<IAnnotation>>();
 				URI monDir = Tools.getAbsoluteUri(monitoringDir);
+				URI mapDir = Tools.getAbsoluteUri(mindmapDir);
 				Collection<URI> monitorFiles = Tools.getFilteredFileList(monDir, new PdfFileFilter(), true);
-				Map<AnnotationID, Collection<AnnotationNodeModel>> oldAnnotations = new NodeUtils().getOldAnnotationsFromCurrentMap();
+				Collection<URI> mindmapFiles = Tools.getFilteredFileList(mapDir, new CustomFileFilter(".*[.][mM][mM]"), true);
+				if(!mindmapFiles.contains(Controller.getCurrentController().getMap().getFile().toURI())){
+					mindmapFiles.add(Controller.getCurrentController().getMap().getFile().toURI());
+				}
+				Map<AnnotationID, Collection<AnnotationNodeModel>> oldAnnotations = new NodeUtils().getOldAnnotationsFromMaps(mindmapFiles);
 				int count = 0;
 				firePropertyChange(MonitoringDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
 				for(final URI uri : monitorFiles){

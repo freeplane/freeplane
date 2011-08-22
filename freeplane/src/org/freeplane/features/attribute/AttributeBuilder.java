@@ -126,7 +126,7 @@ class AttributeBuilder implements IElementDOMHandler {
 			if (tag.equals(AttributeBuilder.XML_NODE_ATTRIBUTE)) {
 				final AttributeProperties ap = (AttributeProperties) userObject;
 				final Attribute attribute = new Attribute(ap.attributeName, ap.getValue());
-				attributeController.createAttributeTableModel(node);
+				NodeAttributeTableModel m = attributeController.createAttributeTableModel(node);
 				final NodeAttributeTableModel model = NodeAttributeTableModel.getModel(node);
 				model.addRowNoUndo(attribute);
 				attributeController.setStateIcon(model);

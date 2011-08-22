@@ -2,6 +2,7 @@ package org.docear.plugin.pdfutilities.util;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -136,6 +137,34 @@ public class Tools {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public static boolean FileIsLocatedInDir(URI absoluteFile, URI absoluteDir, boolean readSubDirectories){
+		if(!absoluteFile.isAbsolute() || !absoluteDir.isAbsolute()) return false;
+		
+		final File file = Tools.getFilefromUri(absoluteFile);
+		File dir = Tools.getFilefromUri(absoluteDir);
+		File[] matchingFiles = dir.listFiles(new FilenameFilter() {
+			
+			public boolean accept(File dir, String name) {				
+				return name.equals(file.getName());
+			}
+		});
+		
+		if(matchingFiles.length > 0){
+			return true;
+		}
+		else if(readSubDirectories){
+			File[] subDirs = dir.listFiles(new DirectoryFileFilter());
+			if(subDirs != null && subDirs.length > 0){
+				for(File subDir : subDirs){
+					if(Tools.FileIsLocatedInDir(file.toURI(), subDir.toURI(), readSubDirectories)){
+						return true;
+					}
+				}
+			}
 		}
 		return false;
 	}

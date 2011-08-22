@@ -47,7 +47,7 @@ public class ImportNewAnnotationsAction extends ImportAnnotationsAction {
             	PdfAnnotationImporter importer = new PdfAnnotationImporter();            	
 				Collection<AnnotationModel> annotations = importer.importAnnotations(uri);
 				NodeUtils nodeUtils = new NodeUtils();
-				Map<AnnotationID, Collection<AnnotationNodeModel>> oldAnnotations = nodeUtils.getOldAnnotationsFromCurrentMap();
+				Map<AnnotationID, Collection<AnnotationNodeModel>> oldAnnotations = nodeUtils.getOldAnnotationsFromCurrentMap();				
 				annotations = AnnotationController.markNewAnnotations(annotations, oldAnnotations);
 				Map<AnnotationID, Collection<IAnnotation>> conflicts = AnnotationController.getConflictedAnnotations(annotations, oldAnnotations);
 				if(conflicts.size() > 0){

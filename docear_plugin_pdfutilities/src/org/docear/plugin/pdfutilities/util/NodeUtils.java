@@ -1,6 +1,8 @@
 package org.docear.plugin.pdfutilities.util;
 
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -16,12 +18,15 @@ import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
 import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeController;
+import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.url.UrlManager;
 
 
 public class NodeUtils {
@@ -32,6 +37,40 @@ public class NodeUtils {
 		this.currentMapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		
 	}
+	
+	public Map<AnnotationID, Collection<AnnotationNodeModel>> getOldAnnotationsFromMaps(Collection<URI> mindmaps){
+		Map<AnnotationID, Collection<AnnotationNodeModel>> result = new HashMap<AnnotationID, Collection<AnnotationNodeModel>>();
+		for(URI mindmap : mindmaps){
+			Map<AnnotationID, Collection<AnnotationNodeModel>> temp = getOldAnnotationsFromMap(mindmap);
+			for(AnnotationID id : temp.keySet()){
+				if(!result.containsKey(id)){
+					result.put(id, new ArrayList<AnnotationNodeModel>());				
+				}
+				result.get(id).addAll(temp.get(id));
+			}
+		}
+		return result;
+	}
+	
+	public Map<AnnotationID, Collection<AnnotationNodeModel>> getOldAnnotationsFromMap(URI mindmap){		
+		try {
+			final UrlManager urlManager = (UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class);
+			
+			MapModel map = new MapModel(null);
+			AttributeRegistry.createRegistry(map);
+			URL url = mindmap.toURL();
+			urlManager.loadImpl(url, map);
+			return this.getOldAnnotationsFrom(map.getRootNode());
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	
 	public Map<AnnotationID, Collection<AnnotationNodeModel>> getOldAnnotationsFromCurrentMap(){
 		return getOldAnnotationsFrom(this.currentMapController.getRootNode());
