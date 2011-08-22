@@ -15,6 +15,9 @@ import javax.swing.JMenu;
 import javax.swing.JRadioButton;
 
 import org.docear.plugin.core.ALanguageController;
+import org.docear.plugin.core.DocearController;
+import org.docear.plugin.core.DocearEvent;
+import org.docear.plugin.core.IDocearEventListener;
 import org.docear.plugin.pdfutilities.actions.AbstractMonitoringAction;
 import org.docear.plugin.pdfutilities.actions.AddMonitoringFolderAction;
 import org.docear.plugin.pdfutilities.actions.DocearPasteAction;
@@ -234,6 +237,14 @@ public class PdfUtilitiesController extends ALanguageController{
 		});
 		
 		this.modecontroller.getMapController().addNodeSelectionListener(new DocearNodeSelectionListener());
+		
+		DocearController.getController().addDocearEventListener(new IDocearEventListener() {
+			
+			public void handleEvent(DocearEvent event) {
+				if(event.getType() == )
+				
+			}
+		});
 
 	}
 

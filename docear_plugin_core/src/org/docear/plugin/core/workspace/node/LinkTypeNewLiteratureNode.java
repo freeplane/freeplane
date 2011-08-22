@@ -2,7 +2,7 @@
  * author: Marcel Genzmehr
  * 19.08.2011
  */
-package org.docear.plugin.core.workspace.creator;
+package org.docear.plugin.core.workspace.node;
 
 import java.io.File;
 import java.net.URI;
@@ -13,13 +13,14 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.workspace.config.node.LinkNode;
+import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 
 /**
  * 
  */
-public class LinkTypeNewLiteratureNode extends LinkNode {
+public class LinkTypeNewLiteratureNode extends LinkNode implements IWorkspaceNodeEventListener {
 	
 	
 	private URI linkPath;
@@ -89,7 +90,6 @@ public class LinkTypeNewLiteratureNode extends LinkNode {
 					createNewMindmap(f);
 				}
 				Controller.getCurrentModeController().getMapController().newMap(absoluteUrl, false);
-
 			}
 			catch (Exception e) {
 				LogUtils.warn("could not open document (" + getLinkPath() + ")", e);
