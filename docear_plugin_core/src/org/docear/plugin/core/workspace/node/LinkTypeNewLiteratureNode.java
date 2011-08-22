@@ -8,6 +8,8 @@ import java.io.File;
 import java.net.URI;
 import java.net.URL;
 
+import org.docear.plugin.core.DocearController;
+import org.docear.plugin.core.DocearEvent;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
@@ -90,6 +92,8 @@ public class LinkTypeNewLiteratureNode extends LinkNode implements IWorkspaceNod
 					createNewMindmap(f);
 				}
 				Controller.getCurrentModeController().getMapController().newMap(absoluteUrl, false);
+				DocearEvent evnt = new DocearEvent(this, DocearConstants.NEW_LITERATURE_MAP, Controller.getCurrentController().getMap());
+				DocearController.getController().dispatchDocearEvent(evnt);
 			}
 			catch (Exception e) {
 				LogUtils.warn("could not open document (" + getLinkPath() + ")", e);
