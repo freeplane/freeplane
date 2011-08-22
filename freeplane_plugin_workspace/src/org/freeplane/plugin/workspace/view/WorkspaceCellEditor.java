@@ -48,8 +48,8 @@ public class WorkspaceCellEditor extends DefaultTreeCellEditor {
 
 	}
 
-	public boolean isCellEditable(EventObject event) {
-		if (event.getSource() instanceof JTree) {
+	public boolean isCellEditable(EventObject event) {		
+		if (event != null && event.getSource() instanceof JTree) {
 			setTree((JTree) event.getSource());
 			if (event instanceof MouseEvent) {
 				TreePath path = tree.getPathForLocation(((MouseEvent) event).getX(), ((MouseEvent) event).getY());

@@ -6,19 +6,21 @@ package org.freeplane.plugin.workspace.controller;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.view.WorkspaceNodeRenderer;
 
 /**
  * 
  */
-public class DefaultWorkspaceMouseHandler implements MouseListener {
+public class DefaultWorkspaceMouseHandler implements MouseListener, MouseMotionListener {
 
-	
+	private TreePath lastSelection = null;
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
@@ -27,13 +29,18 @@ public class DefaultWorkspaceMouseHandler implements MouseListener {
 	 * METHODS
 	 **********************************************************************************/
 
+	public final TreePath getLastSelectionPath() {
+		return lastSelection;
+	}
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	public void mouseClicked(MouseEvent e) {
 		TreePath path = ((JTree) e.getSource()).getPathForLocation(e.getX(), e.getY());
+		
 		WorkspaceController.getController().getWorkspaceViewTree().addSelectionPath(path);
 		if (path != null) {
+			
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
 
 			if (node.getUserObject() instanceof IWorkspaceNodeEventListener) {
@@ -70,9 +77,38 @@ public class DefaultWorkspaceMouseHandler implements MouseListener {
 	}
 
 	public void mouseEntered(MouseEvent e) {
-
 	}
 
 	public void mouseExited(MouseEvent e) {
+	}
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
+	 */
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent)
+	 */
+	public void mouseMoved(MouseEvent e) {
+		JTree tree = ((JTree) e.getSource());		
+		TreePath path = tree.getPathForLocation(e.getX(), e.getY());
+		if(path == getLastSelectionPath()) {
+			return;
+		}
+		WorkspaceNodeRenderer renderer = (WorkspaceNodeRenderer) tree.getCellRenderer();
+		if(path != null && path != getLastSelectionPath()) {								
+			lastSelection = path;			
+			renderer.highlightRow(tree.getRowForLocation(e.getX(), e.getY()));
+			tree.repaint();
+		} 
+		else if(getLastSelectionPath() != null) {			
+			lastSelection = null;
+			renderer.highlightRow(-1);
+			tree.repaint();
+		}		
 	}
 }

@@ -2,10 +2,12 @@ package org.freeplane.plugin.workspace.view;
 
 import java.awt.Component;
 
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTree;
+import javax.swing.UIManager;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
@@ -16,6 +18,7 @@ import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 
 public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 
+	private int highlightedRow = -1;
 	/**
 	 * 
 	 */
@@ -49,8 +52,6 @@ public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 			boolean hasFocus) {
 
 		DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
-		// super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf,
-		// row, hasFocus);
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
 		setNodeIcon(renderer, node);
 		Object obj = node.getUserObject();		
@@ -63,7 +64,10 @@ public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 				label.setText(((AWorkspaceNode) obj).getName());
 			}
 		}
-
+		if(row == this.highlightedRow) {
+			label.setBorder(BorderFactory.createLineBorder(UIManager.getColor(borderSelectionColor), 1));
+		} 
+		//itemIndex.put(row, label);
 		return label;
 	}
 
@@ -115,4 +119,7 @@ public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 		}
 	}
 	
+	public void highlightRow(int row) {
+		this.highlightedRow = row;
+	}
 }

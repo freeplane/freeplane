@@ -24,6 +24,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.view.WorkspaceNodeRenderer;
 /**
  * 
  */
@@ -181,8 +182,24 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 		 System.out.println("dragExit: " + dte);
 	}
 
+	private TreePath lastPathLocation = null;
 	public final void dragOver(DropTargetDragEvent dtde) {
-		autoscroll(this.tree, dtde.getLocation());
+		autoscroll(this.tree, dtde.getLocation());		
+		TreePath path = tree.getPathForLocation(dtde.getLocation().x, dtde.getLocation().y);
+		if(path == lastPathLocation) {
+			return;
+		}
+		WorkspaceNodeRenderer renderer = (WorkspaceNodeRenderer) tree.getCellRenderer();
+		if(path != null && path != lastPathLocation) {								
+			lastPathLocation = path;			
+			renderer.highlightRow(tree.getRowForLocation(dtde.getLocation().x, dtde.getLocation().y));
+			tree.repaint();
+		} 
+		else if(lastPathLocation != null) {			
+			lastPathLocation = null;
+			renderer.highlightRow(-1);
+			tree.repaint();
+		}
 	}
 
 	public final void dropActionChanged(DropTargetDragEvent dtde) {
