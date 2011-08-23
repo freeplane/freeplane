@@ -1,5 +1,6 @@
 package org.docear.plugin.pdfutilities.ui.conflict;
 
+import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 
@@ -17,7 +18,15 @@ public class SolveConflictForNode implements ISolveConflictCommand {
 	public void solveConflict() {
 		NodeChangeEvent event = new NodeChangeEvent(this.getTarget(), NodeModel.NODE_TEXT, this.getTarget().getText(), this.getNewTitle());
 		this.getTarget().setText(getNewTitle());
-		this.getTarget().fireNodeChanged(event);
+		this.getTarget().getMap().setSaved(false);
+		if(NodeUtils.isMapCurrentlyOpened(this.getTarget().getMap())){			
+			this.getTarget().fireNodeChanged(event);
+		}
+		else{
+			boolean test = NodeUtils.saveMap(this.getTarget().getMap());
+			System.out.println("Saved in background: " + test);
+		}
+		
 	}
 
 	public String getNewTitle() {

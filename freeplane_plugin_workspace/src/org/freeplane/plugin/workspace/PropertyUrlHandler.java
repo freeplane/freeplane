@@ -15,12 +15,11 @@ public class PropertyUrlHandler extends AbstractURLStreamHandlerService {
 		if (propertyName.startsWith("/")) {
 			propertyName = propertyName.substring(1);
 		}
-		// FIXME: DOCEAR bad hard coded default
-		String property = ResourceController.getResourceController().getProperty(propertyName, "file://C:/Windows");
 		
-		File file = new File(property);
+		String property = ResourceController.getResourceController().getProperty(propertyName);	
 		
 		if (property!=null && property.length()>0) {
+			File file = new File(property);
 			URL ret = file.toURI().toURL();	        
 			return ret.openConnection();
 		}
