@@ -9,7 +9,8 @@ import java.net.URI;
 import java.net.URL;
 
 import org.docear.plugin.core.DocearController;
-import org.docear.plugin.core.DocearEvent;
+import org.docear.plugin.core.event.DocearEvent;
+import org.docear.plugin.core.event.DocearEventType;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
@@ -60,7 +61,7 @@ public class LinkTypeNewLiteratureNode extends LinkNode implements IWorkspaceNod
 		mFileManager.newMap();
 		MapModel map = Controller.getCurrentController().getMap();
 		map.getRootNode().setText(getName());
-		DocearEvent evnt = new DocearEvent(this, DocearConstants.NEW_LITERATURE_MAP, map);
+		DocearEvent evnt = new DocearEvent(this, DocearEventType.NEW_LITERATURE_MAP, map);
 		DocearController.getController().dispatchDocearEvent(evnt);
 		
 		mFileManager.save(Controller.getCurrentController().getMap(), f);		

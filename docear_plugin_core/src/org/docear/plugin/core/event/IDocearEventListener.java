@@ -2,7 +2,7 @@
  * author: Marcel Genzmehr
  * 22.08.2011
  */
-package org.docear.plugin.core;
+package org.docear.plugin.core.event;
 
 /**
  * 

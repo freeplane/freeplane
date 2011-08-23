@@ -2,11 +2,10 @@
  * author: Marcel Genzmehr
  * 22.08.2011
  */
-package org.docear.plugin.core;
+package org.docear.plugin.core.event;
 
 import java.util.EventObject;
 
-import org.docear.plugin.core.workspace.node.DocearConstants;
 
 /**
  * 
@@ -15,21 +14,21 @@ public class DocearEvent extends EventObject {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private final DocearConstants type;	
+	private final DocearEventType type;	
 	private final Object eventObject;
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 	
 	public DocearEvent(Object source) {
-		this(source, DocearConstants.NULL, null);
+		this(source, DocearEventType.NULL, null);
 	}
 	
-	public DocearEvent(Object source, DocearConstants type) {
+	public DocearEvent(Object source, DocearEventType type) {
 		this(source, type, null);
 	}
 	
-	public DocearEvent(Object source, DocearConstants type, Object eventObj) {
+	public DocearEvent(Object source, DocearEventType type, Object eventObj) {
 		super(source);
 		this.type = type;
 		this.eventObject = eventObj;
@@ -41,12 +40,16 @@ public class DocearEvent extends EventObject {
 	 * METHODS
 	 **********************************************************************************/
 
-	public DocearConstants getType() {
+	public DocearEventType getType() {
 		return type;
 	}
 	
 	public Object getEventObject() {
 		return eventObject;
+	}
+	
+	public String toString() {
+		return this.getClass().getSimpleName()+"[type="+getType()+";eventObject="+getEventObject()+";source="+getSource()+"]";
 	}
 	
 	/***********************************************************************************

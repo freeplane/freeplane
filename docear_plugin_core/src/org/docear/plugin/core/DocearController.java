@@ -6,13 +6,20 @@ package org.docear.plugin.core;
 
 import java.util.Vector;
 
+import org.docear.plugin.core.event.DocearEvent;
+import org.docear.plugin.core.event.DocearEventType;
+import org.docear.plugin.core.event.IDocearEventListener;
+import org.freeplane.core.util.LogUtils;
+
 /**
  * 
  */
-public class DocearController {
+public class DocearController implements IDocearEventListener {
 	
-	private final static DocearController docearController = new DocearController();
-	private final Vector<IDocearEventListener> docearListener = new Vector<IDocearEventListener>();
+	private final Vector<IDocearEventListener> docearListeners = new Vector<IDocearEventListener>();
+	private final static DocearController docearController = new DocearController();	
+	
+	private IDocearLibrary currentLibrary = null;
 	
 	
 	/***********************************************************************************
@@ -20,6 +27,7 @@ public class DocearController {
 	 **********************************************************************************/
 	
 	protected DocearController() {
+		addDocearEventListener(this);
 	}
 	/***********************************************************************************
 	 * METHODS
@@ -30,28 +38,41 @@ public class DocearController {
 	}
 	
 	public void addDocearEventListener(IDocearEventListener listener) {
-		if(this.docearListener.contains(listener)) {
+		if(this.docearListeners.contains(listener)) {
 			return;
 		}
-		this.docearListener.add(listener);
+		this.docearListeners.add(listener);
 	}
 	
 	public void removeDocearEventListener(IDocearEventListener listener) {
-		this.docearListener.remove(listener);
+		this.docearListeners.remove(listener);
 	}
 	
 	public void removeAllDocearEventListeners() {
-		this.docearListener.removeAllElements();
+		this.docearListeners.removeAllElements();
 	}
 	
 	public void dispatchDocearEvent(DocearEvent event) {
-		for(IDocearEventListener listener : this.docearListener) {
+		LogUtils.info("DOCEAR: dispatchEvent: "+ event);
+		for(IDocearEventListener listener : this.docearListeners) {
 			listener.handleEvent(event);
 		}
+	}
+	
+	public IDocearLibrary getLibrary() {
+		return currentLibrary;
 	}
 	
 	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
+
+	public void handleEvent(DocearEvent event) {
+		if(event.getType() == DocearEventType.NEW_LIBRARY && event.getSource() instanceof IDocearLibrary) {
+			this.currentLibrary = (IDocearLibrary) event.getSource();
+			LogUtils.info("DOCEAR: new DocearLibrary set");
+		}
+		
+	}
 }

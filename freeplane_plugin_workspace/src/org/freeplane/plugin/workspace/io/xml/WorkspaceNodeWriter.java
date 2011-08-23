@@ -50,7 +50,7 @@ public class WorkspaceNodeWriter implements IElementWriter, IAttributeWriter {
 		if(wsNode.getType() != null) writer.addAttribute("type", wsNode.getType());
 		if(wsNode.getName() != null) writer.addAttribute("name", wsNode.getName());
 		
-		for(Method m : wsNode.getClass().getDeclaredMethods()) {
+		for(Method m : wsNode.getClass().getMethods()) {
 			if(m.getAnnotation(ExportAsAttribute.class) != null && m.getParameterTypes().length == 0 && m.getReturnType() != void.class) {				
 				writeAdditionalAttribute(writer, wsNode, m);
 			}

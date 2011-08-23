@@ -183,7 +183,7 @@ public class WorkspaceConfiguration {
 	
 	private WorkspaceRootCreator getWorkspaceRootCreator() {
 		if(this.workspaceRootCreator == null) {
-			LogUtils.info("WORKSPACE: get new WorkspaceRootCreator");
+			//LogUtils.info("WORKSPACE: get new WorkspaceRootCreator");
 			this.workspaceRootCreator = new WorkspaceRootCreator(this);
 		}
 		return this.workspaceRootCreator;
@@ -191,7 +191,7 @@ public class WorkspaceConfiguration {
 	
 	private FolderCreator getFolderCreator() {
 		if(this.folderCreator == null) {
-			LogUtils.info("WORKSPACE: get new FolderCreator");
+			//LogUtils.info("WORKSPACE: get new FolderCreator");
 			this.folderCreator = new FolderCreator();
 		}
 		return this.folderCreator;
@@ -199,7 +199,7 @@ public class WorkspaceConfiguration {
 	
 	private LinkCreator getLinkCreator() {
 		if(this.linkCreator == null) {
-			LogUtils.info("WORKSPACE: get new LinkCreator");
+			//LogUtils.info("WORKSPACE: get new LinkCreator");
 			this.linkCreator = new LinkCreator();
 		}
 		return this.linkCreator;

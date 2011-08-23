@@ -8,6 +8,9 @@ import java.io.File;
 import java.net.URI;
 import java.net.URL;
 
+import org.docear.plugin.core.DocearController;
+import org.docear.plugin.core.event.DocearEvent;
+import org.docear.plugin.core.event.DocearEventType;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
@@ -43,6 +46,10 @@ public class LinkTypeLiteratureCollectionNode extends LinkNode implements IWorks
 	
 	public void setLinkPath(URI linkPath) {
 		this.linkPath = linkPath;
+		if(this.linkPath != null) {
+			DocearEvent event = new DocearEvent(this, DocearEventType.LIBRARY_NEW_MINDMAP_INDEXING_REQUEST, getLinkPath());
+			DocearController.getController().dispatchDocearEvent(event);
+		}
 	}
 	
 	private boolean createNewMindmap(final File f) {

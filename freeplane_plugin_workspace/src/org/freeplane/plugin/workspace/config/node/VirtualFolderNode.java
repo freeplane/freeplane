@@ -8,7 +8,7 @@ import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 
 public class VirtualFolderNode extends FolderNode implements IWorkspaceNodeEventListener {
-	private final static String POPUP_KEY = "/workspace_groupnode_popup";
+	public final static String POPUP_KEY = "/workspace_groupnode_popup";
 
 	public VirtualFolderNode(String type) {
 		super(type);
