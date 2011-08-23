@@ -237,6 +237,7 @@ public class MapViewController implements IMapViewManager {
 		final Graphics g = myImage.getGraphics();
 		g.translate(-innerBounds.x, -innerBounds.y);
 		view.print(g);
+		view.endPrinting();
 		return myImage;
 	}
 

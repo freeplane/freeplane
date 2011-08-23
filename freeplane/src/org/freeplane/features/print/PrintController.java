@@ -27,6 +27,7 @@ import java.awt.print.PrinterJob;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.Compat;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author Dimitry Polivaev
@@ -112,7 +113,11 @@ public class PrintController implements IExtension {
 		}
 		getPrinterJob().setPrintable(mapView, getPageFormat());
 		if(! showDlg || printDialog()){
+			if(mapView instanceof MapView)
+				((MapView)mapView).preparePrinting();
 			getPrinterJob().print();
+			if(mapView instanceof MapView)
+				((MapView)mapView).endPrinting();
 		}
 	}
 }

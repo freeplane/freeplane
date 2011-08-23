@@ -62,6 +62,7 @@ abstract class ExportVectorGraphic extends AExportEngine {
 		g2d.setSVGCanvasSize(new Dimension(innerBounds.width, innerBounds.height));
 		g2d.translate(-innerBounds.x, -innerBounds.y);
 		view.print(g2d);
+		view.endPrinting();
 		return g2d;
 	}
 

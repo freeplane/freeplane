@@ -564,17 +564,17 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 * to minimize calculation efforts
 	 */
 	public void endPrinting() {
-		if (isPreparedForPrinting == true) {
-			isPrinting = false;
-			if (zoom == 1f) {
-				getRoot().updateAll();
-				validateTree();
-			}
-			if (MapView.printOnWhiteBackground) {
-				setBackground(background);
-			}
-		}
+		if (isPreparedForPrinting == false)
+			return;
 		isPreparedForPrinting = false;
+		isPrinting = false;
+		if (zoom == 1f) {
+			getRoot().updateAll();
+			validateTree();
+		}
+		if (MapView.printOnWhiteBackground) {
+			setBackground(background);
+		}
 	}
 
 	private void extendSelectionWithKeyMove(final NodeView newlySelectedNodeView, final KeyEvent e) {
@@ -1071,6 +1071,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 */
 	@Override
 	public void paint(final Graphics g) {
+		if(isPrinting == false && isPreparedForPrinting == true){
+			isPreparedForPrinting = false;
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					endPrinting();
+					repaint();
+				}
+			});
+			return;
+		}
 		if (isValid()) {
 			anchorContentLocation = getAnchorCenterPoint();
 		}
@@ -1210,8 +1220,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 * to minimize calculation efforts
 	 */
 	public void preparePrinting() {
+		isPrinting = true;
 		if (isPreparedForPrinting == false) {
-			isPrinting = true;
 			if (zoom == 1f) {
 				getRoot().updateAll();
 				validateTree();
@@ -1233,7 +1243,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			super.print(g);
 		}
 		finally {
-			endPrinting();
+			isPrinting = false;
 		}
 	}
 	
@@ -1269,44 +1279,39 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return Printable.NO_SUCH_PAGE;
 		}
 		final Graphics2D graphics2D = (Graphics2D) graphics;
-		try {
-			preparePrinting();
-			double zoomFactor = 1;
-			if (fitMap == FitMap.PAGE) {
-				final double zoomFactorX = pageFormat.getImageableWidth() / boundingRectangle.getWidth();
-				final double zoomFactorY = pageFormat.getImageableHeight() / boundingRectangle.getHeight();
-				zoomFactor = Math.min(zoomFactorX, zoomFactorY);
+		preparePrinting();
+		double zoomFactor = 1;
+		if (fitMap == FitMap.PAGE) {
+			final double zoomFactorX = pageFormat.getImageableWidth() / boundingRectangle.getWidth();
+			final double zoomFactorY = pageFormat.getImageableHeight() / boundingRectangle.getHeight();
+			zoomFactor = Math.min(zoomFactorX, zoomFactorY);
+		}
+		else {
+			if (fitMap == FitMap.WIDTH) {
+				zoomFactor = pageFormat.getImageableWidth() / boundingRectangle.getWidth();
+			}
+			else if (fitMap == FitMap.HEIGHT) {
+				zoomFactor = pageFormat.getImageableHeight() / boundingRectangle.getHeight();
 			}
 			else {
-				if (fitMap == FitMap.WIDTH) {
-					zoomFactor = pageFormat.getImageableWidth() / boundingRectangle.getWidth();
-				}
-				else if (fitMap == FitMap.HEIGHT) {
-					zoomFactor = pageFormat.getImageableHeight() / boundingRectangle.getHeight();
-				}
-				else {
-					zoomFactor = userZoomFactor;
-				}
-				final int nrPagesInWidth = (int) Math.ceil(zoomFactor * boundingRectangle.getWidth()
-				        / pageFormat.getImageableWidth());
-				final int nrPagesInHeight = (int) Math.ceil(zoomFactor * boundingRectangle.getHeight()
-				        / pageFormat.getImageableHeight());
-				if (pageIndex >= nrPagesInWidth * nrPagesInHeight) {
-					return Printable.NO_SUCH_PAGE;
-				}
-				final int yPageCoord = (int) Math.floor(pageIndex / nrPagesInWidth);
-				final int xPageCoord = pageIndex - yPageCoord * nrPagesInWidth;
-				graphics2D.translate(-pageFormat.getImageableWidth() * xPageCoord, -pageFormat.getImageableHeight()
-				        * yPageCoord);
+				zoomFactor = userZoomFactor;
 			}
-			graphics2D.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
-			graphics2D.scale(zoomFactor, zoomFactor);
-			graphics2D.translate(-boundingRectangle.getX(), -boundingRectangle.getY());
-			print(graphics2D);
+			final int nrPagesInWidth = (int) Math.ceil(zoomFactor * boundingRectangle.getWidth()
+				/ pageFormat.getImageableWidth());
+			final int nrPagesInHeight = (int) Math.ceil(zoomFactor * boundingRectangle.getHeight()
+				/ pageFormat.getImageableHeight());
+			if (pageIndex >= nrPagesInWidth * nrPagesInHeight) {
+				return Printable.NO_SUCH_PAGE;
+			}
+			final int yPageCoord = (int) Math.floor(pageIndex / nrPagesInWidth);
+			final int xPageCoord = pageIndex - yPageCoord * nrPagesInWidth;
+			graphics2D.translate(-pageFormat.getImageableWidth() * xPageCoord, -pageFormat.getImageableHeight()
+				* yPageCoord);
 		}
-		finally {
-			endPrinting();
-		}
+		graphics2D.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+		graphics2D.scale(zoomFactor, zoomFactor);
+		graphics2D.translate(-boundingRectangle.getX(), -boundingRectangle.getY());
+		print(graphics2D);
 		return Printable.PAGE_EXISTS;
 	}
 

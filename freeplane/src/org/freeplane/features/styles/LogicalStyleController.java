@@ -23,7 +23,6 @@ import java.awt.Component;
 import java.awt.EventQueue;
 import java.lang.ref.WeakReference;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
