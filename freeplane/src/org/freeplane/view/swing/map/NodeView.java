@@ -1418,7 +1418,7 @@ public class NodeView extends JComponent implements INodeView {
     }
 
 	public int getEdgeWidth() {
-		if(edgeStyle != null)
+		if(edgeWidth != null)
 		    return edgeWidth;
 		return getParentView().getEdgeWidth();
     }
