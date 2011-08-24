@@ -19,7 +19,6 @@
  */
 package org.freeplane.view.swing.map.mindmapmode;
 
-import java.awt.event.InputEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.text.MessageFormat;
@@ -38,7 +37,7 @@ import org.freeplane.features.text.mindmapmode.EditNodeBase;
  */
 class EditNodeExternalApplication extends EditNodeBase {
 
-	public EditNodeExternalApplication(final NodeModel node, final String text, final InputEvent firstEvent, final IEditControl editControl) {
+	public EditNodeExternalApplication(final NodeModel node, final String text, final IEditControl editControl) {
 		super(node, text, editControl);
 	}
 

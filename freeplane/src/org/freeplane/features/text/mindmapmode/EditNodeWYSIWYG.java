@@ -26,7 +26,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.net.URL;
 
@@ -190,7 +189,6 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 
 	private static final Dimension PREFERRED_SIZE = new Dimension(600, 400);
 
-	final private InputEvent firstEvent;
 	final private boolean enableSplit;
 	final private String purpose;
 	
@@ -222,9 +220,8 @@ public class EditNodeWYSIWYG extends EditNodeBase {
     	this.preferredSize = preferredSize;
     }
 
-	public EditNodeWYSIWYG(String purpose, final NodeModel node, final String text, final InputEvent firstEvent, final IEditControl editControl, boolean enableSplit) {
+	public EditNodeWYSIWYG(String purpose, final NodeModel node, final String text, final IEditControl editControl, boolean enableSplit) {
 		super(node, text, editControl);
-		this.firstEvent = firstEvent;
 		this.enableSplit = enableSplit;
 		this.purpose = purpose;
 	}
@@ -286,8 +283,8 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 				content = HtmlUtils.plainToHTML(content);
 			}
 			htmlEditorPanel.setCurrentDocumentContent(content);
-			if (firstEvent instanceof KeyEvent) {
-				final KeyEvent firstKeyEvent = (KeyEvent) firstEvent;
+			final KeyEvent firstKeyEvent = KeyEventQueue.getInstance().getFirstEvent();
+			if (firstKeyEvent != null) {
 				final JTextComponent currentPane = htmlEditorPanel.getEditorPane();
 				if (currentPane == htmlEditorPanel.getMostRecentFocusOwner()) {
 					redispatchKeyEvents(currentPane, firstKeyEvent);

@@ -37,6 +37,6 @@ class NewChildAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = Controller.getCurrentModeController();
         final MMapController mapController = (MMapController) modeController.getMapController();
-		mapController.addNewNode(MMapController.NEW_CHILD, null);
+		mapController.addNewNode(MMapController.NEW_CHILD);
 	}
 }

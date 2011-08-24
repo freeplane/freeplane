@@ -21,7 +21,6 @@ package org.freeplane.features.map.mindmapmode;
 
 import java.awt.Component;
 import java.awt.EventQueue;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -83,7 +82,7 @@ public class MMapController extends MapController {
 			});
 	}
 
-	public NodeModel addNewNode(int newNodeMode, final KeyEvent e) {
+	public NodeModel addNewNode(int newNodeMode) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final TextController textController = TextController.getController();
 		if (textController instanceof MTextController) {
@@ -115,17 +114,8 @@ public class MMapController extends MapController {
 						return null;
 					}
 					select(newNode);
-					if (e != null) {
-						((MTextController) textController).edit(newNode, targetNode, e, true, false, false);
-					}
-					else {
-						EventQueue.invokeLater(new Runnable() {
-							public void run() {
-								((MTextController) textController).edit(newNode, targetNode, e, true, false, false);
-							}
-						});
-					}
-					break;
+						((MTextController) textController).edit(newNode, targetNode, true, false, false);
+						break;
 				}
 				else {
 					newNodeMode = MMapController.NEW_CHILD;
@@ -148,7 +138,7 @@ public class MMapController extends MapController {
 				}
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
-						((MTextController) textController).edit(newNode, targetNode, e, true, parentFolded, false);
+						((MTextController) textController).edit(newNode, targetNode, true, parentFolded, false);
 					}
 				});
 				break;

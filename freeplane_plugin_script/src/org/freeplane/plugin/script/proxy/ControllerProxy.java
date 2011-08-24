@@ -55,7 +55,7 @@ class ControllerProxy implements Proxy.Controller {
 	private void editImpl(Node node, boolean editInline) {
 	    final NodeModel nodeModel = ((NodeProxy) node).getDelegate();
 		Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(nodeModel);
-		((MTextController) TextController.getController()).edit(null, FirstAction.EDIT_CURRENT, !editInline);
+		((MTextController) TextController.getController()).edit(FirstAction.EDIT_CURRENT, !editInline);
     }
 
 	public Node getSelected() {

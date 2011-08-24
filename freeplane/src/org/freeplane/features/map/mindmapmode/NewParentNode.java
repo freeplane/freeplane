@@ -80,7 +80,7 @@ public class NewParentNode extends AFreeplaneAction {
 		Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(newNode);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				((MTextController) TextController.getController()).edit(newNode, selectedNode, null, true, false, false);
+				((MTextController) TextController.getController()).edit(newNode, selectedNode, true, false, false);
 			}
 		});
 

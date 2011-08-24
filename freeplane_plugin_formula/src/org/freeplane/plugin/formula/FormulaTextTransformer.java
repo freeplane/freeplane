@@ -1,7 +1,6 @@
 package org.freeplane.plugin.formula;
 
 import java.awt.Dimension;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JEditorPane;
@@ -14,6 +13,7 @@ import org.freeplane.features.text.AbstractContentTransformer;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EditNodeDialog;
 import org.freeplane.features.text.mindmapmode.IEditBaseCreator;
+import org.freeplane.features.text.mindmapmode.KeyEventQueue;
 import org.freeplane.plugin.script.ExecuteScriptException;
 import org.freeplane.plugin.script.FormulaUtils;
 
@@ -41,13 +41,8 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 	}
 
 	public EditNodeBase createEditor(final NodeModel node, final EditedComponent editedComponent,
-	                                 final EditNodeBase.IEditControl editControl, String text, final InputEvent firstEvent,
-	                                 final boolean editLong) {
-		final KeyEvent firstKeyEvent; 
-		if(firstEvent instanceof KeyEvent)
-			firstKeyEvent = (KeyEvent) firstEvent;
-		else
-			firstKeyEvent = null;
+	                                 final EditNodeBase.IEditControl editControl, String text, final boolean editLong) {
+		final KeyEvent firstKeyEvent = KeyEventQueue.getInstance().getFirstEvent(); 
 		if(firstKeyEvent != null){
 			if (firstKeyEvent.getKeyChar() == '='){
 				text = "=";

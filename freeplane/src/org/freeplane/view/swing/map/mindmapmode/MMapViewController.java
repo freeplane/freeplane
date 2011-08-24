@@ -22,7 +22,6 @@ package org.freeplane.view.swing.map.mindmapmode;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.InputEvent;
 import javax.swing.JComponent;
 
 import org.apache.commons.lang.StringUtils;
@@ -47,8 +46,7 @@ import org.freeplane.view.swing.map.ZoomableLabel;
  */
 public class MMapViewController extends MapViewController implements IEditBaseCreator {
 	public EditNodeBase createEditor(final NodeModel node, final EditedComponent editedComponent,
-                             final EditNodeBase.IEditControl editControl, String text, final InputEvent firstEvent,
-                             final boolean editLong) {
+                             final EditNodeBase.IEditControl editControl, String text, final boolean editLong) {
 	    final String htmlEditingOption = ResourceController.getResourceController().getProperty("html_editing_option");
 		final boolean editInternalWysiwyg = editLong && StringUtils.equals(htmlEditingOption, "internal-wysiwyg");
 		final boolean editExternal = editLong && StringUtils.equals(htmlEditingOption, "external");
@@ -61,7 +59,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 				title = "edit_long_node";
 			else
 				title = "edit_details";
-			final EditNodeWYSIWYG editNodeWYSIWYG = new EditNodeWYSIWYG(title, node, text, firstEvent, editControl, true);
+			final EditNodeWYSIWYG editNodeWYSIWYG = new EditNodeWYSIWYG(title, node, text, editControl, true);
 			final ViewController viewController = Controller.getCurrentModeController().getController().getViewController();
 			if(IEditBaseCreator.EditedComponent.TEXT.equals(editedComponent)){ 
 				int preferredHeight = (int) (viewController.getComponent(node).getHeight() * 1.2);
@@ -95,18 +93,17 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 			return editNodeWYSIWYG;
 		}
 		else if (editExternal) {
-			return new EditNodeExternalApplication(node, text, firstEvent, editControl);
+			return new EditNodeExternalApplication(node, text, editControl);
 		}
 		else {
-			final EditNodeBase textfield = createEditor(node, editedComponent, text, firstEvent, editControl);
+			final EditNodeBase textfield = createEditor(node, editedComponent, text, editControl);
 			if(textfield != null)
 				return textfield;
 		}
-		return createEditor(node, editedComponent, editControl, text, firstEvent, true);
+		return createEditor(node, editedComponent, editControl, text, true);
     }
 	
 	private EditNodeBase createEditor(final NodeModel node, final IEditBaseCreator.EditedComponent parent, final String text,
-	                                                     final InputEvent firstEvent,
 	                                                     final IEditControl editControl) {
 		final ZoomableLabel parentComponent;
 		final MainView mainView = (MainView) getComponent(node);
@@ -125,7 +122,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 		if(parentComponent == null || ! parentComponent.isVisible()){
 			return null;
 		}
-		final EditNodeTextField textField = new EditNodeTextField(node, (ZoomableLabel) parentComponent, text, firstEvent,editControl);
+		final EditNodeTextField textField = new EditNodeTextField(node, (ZoomableLabel) parentComponent, text, editControl);
 		if(IEditBaseCreator.EditedComponent.TEXT.equals(parent))
 			textField.setBackground (nodeView.getTextBackground());
 		else if(IEditBaseCreator.EditedComponent.DETAIL.equals(parent))
@@ -134,7 +131,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 	}
 
 	public MMapViewController() {
-		new EditNodeTextField(null, null, null, null, null);
+		new EditNodeTextField(null, null, null, null);
     }
 	
 }
