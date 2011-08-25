@@ -546,7 +546,6 @@ class EditNodeTextField extends EditNodeBase {
 		
 		final Color nodeTextColor = parent.getForeground();
 		textfield.setCaretColor(nodeTextColor);
-	    textfield.setBackground(getBackground());
 		final StringBuilder ruleBuilder = new StringBuilder(100);
 		ruleBuilder.append("body {");
 		ruleBuilder.append("font-family: ").append(font.getFamily()).append(";");
@@ -558,6 +557,8 @@ class EditNodeTextField extends EditNodeBase {
 			ruleBuilder.append("font-weight: bold; ");
 		}
 		ruleBuilder.append("color: ").append(ColorUtils.colorToString(nodeTextColor)).append(";");
+	    final Color bgColor = getBackground();
+		ruleBuilder.append("background-color: ").append(ColorUtils.colorToString(bgColor)).append(";");
 		ruleBuilder.append("}\n");
 		ruleBuilder.append("p {margin-top:0;}\n");
 		final HTMLDocument document = (HTMLDocument) textfield.getDocument();

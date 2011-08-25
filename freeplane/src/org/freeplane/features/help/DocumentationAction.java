@@ -46,6 +46,8 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.browsemode.BModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.styles.LogicalStyleModel;
+import org.freeplane.features.styles.StyleFactory;
 
 class DocumentationAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
@@ -117,7 +119,8 @@ class DocumentationAction extends AFreeplaneAction {
 		final NodeModel rootNode = mapController.getRootNode();
 		final NodeModel newNode = mapController.newNode(TextUtils.getText("hot_keys"), rootNode.getMap());
 		newNode.setFolded(true);
-		newNode.setLeft(true);
+		newNode.setLeft(false);
+		LogicalStyleModel.createExtension(newNode).setStyle(StyleFactory.create("Title"));
 		final int HOT_KEYS_INDEX = 2;
 		mapController.insertNodeIntoWithoutUndo(newNode, rootNode, HOT_KEYS_INDEX);
 		insertAcceleratorHtmlTable(newNode, menuEntryTree);

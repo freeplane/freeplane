@@ -54,6 +54,7 @@ import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
 import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
 import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
 import org.freeplane.plugin.script.filter.ScriptConditionController;
+import org.freeplane.plugin.script.manager.ManageScriptsAction;
 
 class ScriptingRegistration {
 	final private class PatternScriptModel implements IScriptModel {
@@ -206,6 +207,9 @@ class ScriptingRegistration {
 	private void registerScripts(final MenuBuilder menuBuilder, ScriptingConfiguration configuration) {
 		final HashSet<String> registeredLocations = new HashSet<String>();
 		final String scriptsParentLocation = ScriptingConfiguration.getScriptsParentLocation();
+//		Uncomment here:
+//		menuBuilder.addAction(scriptsParentLocation, new ManageScriptsAction(), MenuBuilder.AS_CHILD);
+		
 		final String scriptsLocation = ScriptingConfiguration.getScriptsLocation();
 		addSubMenu(menuBuilder, scriptsParentLocation, scriptsLocation, TextUtils.getText("ExecuteScripts.text"));
 		registeredLocations.add(scriptsLocation);

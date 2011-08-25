@@ -252,6 +252,8 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			}
 			if(textColor != null)
 				ruleBuilder.append("color: ").append(ColorUtils.colorToString(textColor)).append(";");
+		    final Color bgColor = getBackground();
+			ruleBuilder.append("background-color: ").append(ColorUtils.colorToString(bgColor)).append(";");
 			ruleBuilder.append("}\n");
 			ruleBuilder.append("p {margin-top:0;}\n");
 			final HTMLDocument document = htmlEditorPanel.getDocument();
@@ -260,7 +262,6 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 				editorPane.setForeground(textColor);
 				editorPane.setCaretColor(textColor);
 			}
-			editorPane.setBackground(getBackground());
 			final StyleSheet styleSheet = document.getStyleSheet();
 			styleSheet.removeStyle("p");
 			styleSheet.removeStyle("body");

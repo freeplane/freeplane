@@ -94,7 +94,7 @@ public class ZoomableLabelUI extends BasicLabelUI {
 			g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, newRenderingHintFM);
 		}
 		final AffineTransform transform = g2.getTransform();
-		final float zoom = mainView.getZoom();
+		final float zoom = mainView.getZoom() * 0.97f;
 		g2.scale(zoom, zoom);
 		final boolean htmlViewSet = null != label.getClientProperty(BasicHTML.propertyKey);
 		try {

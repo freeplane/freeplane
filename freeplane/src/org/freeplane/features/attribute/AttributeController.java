@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.attribute;
 
+import java.awt.Component;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -167,7 +169,7 @@ public class AttributeController implements IExtension {
 
 	private void registerTooltipProvider() {
 		modeController.addToolTipProvider(ATTRIBUTE_TOOLTIP, new ITooltipProvider() {
-			public String getTooltip(ModeController modeController, NodeModel node) {
+			public String getTooltip(ModeController modeController, NodeModel node, Component view) {
 				final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
 				final int rowCount = attributes.getRowCount();
 				if (rowCount == 0) {

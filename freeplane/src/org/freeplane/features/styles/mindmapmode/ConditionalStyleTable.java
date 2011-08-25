@@ -114,6 +114,7 @@ class ConditionalStyleTable extends JTable {
 			
 		});
 		columnModel.getColumn(1).setPreferredWidth(300);
+		columnModel.getColumn(2).setPreferredWidth(180);
 		columnModel.getColumn(2).setCellRenderer(new DefaultStyleRenderer());
     }
 

@@ -38,8 +38,8 @@ class MToolbarContributor implements IMenuContributor {
 
 	public void updateMenus(final ModeController modeController, final MenuBuilder builder) {
 		final AFreeplaneAction action = modeController.getAction("IncreaseNodeFontAction");
-		builder.addComponent("/main_toolbar/font", uiFactory.createFontBox(), action, MenuBuilder.AS_CHILD);
-		builder.addComponent("/main_toolbar/font", uiFactory.createSizeBox(), action, MenuBuilder.AS_CHILD);
-		builder.addComponent("/main_toolbar/font", uiFactory.createStyleBox(), action, MenuBuilder.AS_CHILD);
+		builder.addComponent("main_toolbar_font", uiFactory.createFontBox(), action, MenuBuilder.AS_CHILD);
+		builder.addComponent("main_toolbar_font", uiFactory.createSizeBox(), action, MenuBuilder.AS_CHILD);
+		builder.addComponent("main_toolbar_font", uiFactory.createStyleBox(), action, MenuBuilder.AS_CHILD);
 	}
 }

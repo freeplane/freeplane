@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.map;
 
+import java.awt.Component;
+
 import org.freeplane.features.mode.ModeController;
 
 /**
@@ -26,5 +28,5 @@ import org.freeplane.features.mode.ModeController;
  * 06.06.2009
  */
 public interface ITooltipProvider {
-	String getTooltip(ModeController modeController, NodeModel node);
+	String getTooltip(ModeController modeController, NodeModel node, Component view);
 }

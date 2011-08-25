@@ -87,7 +87,7 @@ class BToolbarContributor implements IMenuContributor, IMapViewChangeListener {
 	}
 
 	public void updateMenus(final ModeController modeController, final MenuBuilder builder) {
-		builder.addElement("/main_toolbar/url", new JLabel("URL:"), MenuBuilder.AS_CHILD);
-		builder.addElement("/main_toolbar/url", urlfield, MenuBuilder.AS_CHILD);
+		builder.addElement("main_toolbar_url", new JLabel("URL:"), MenuBuilder.AS_CHILD);
+		builder.addElement("main_toolbar_url", urlfield, MenuBuilder.AS_CHILD);
 	}
 }

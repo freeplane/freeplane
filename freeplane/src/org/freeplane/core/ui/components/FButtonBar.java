@@ -47,6 +47,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IAcceleratorChangeListener;
 import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 
 /**
  * @author Dimitry Polivaev
@@ -152,6 +154,8 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 	}
 
 	public boolean dispatchKeyEvent(final KeyEvent e) {
+		if(! (Controller.getCurrentModeController() instanceof MModeController ))
+			return false;
 		if (ownWindowAncestor == null) {
 			ownWindowAncestor = (JFrame) SwingUtilities.getWindowAncestor(this);
 			if (ownWindowAncestor == null) {

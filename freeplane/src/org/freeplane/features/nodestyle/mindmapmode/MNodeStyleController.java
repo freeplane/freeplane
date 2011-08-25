@@ -419,18 +419,21 @@ public class MNodeStyleController extends NodeStyleController {
 			public void act() {
 				NodeStyleModel.setShape(node, shape);
 				modeController.getMapController().nodeChanged(node);
-				nodeShapeRefresh(node);
+				childShapeRefresh(node);
 			}
 
 			public String getDescription() {
 				return "setShape";
 			}
 
-			private void nodeShapeRefresh(final NodeModel node) {
+			private void childShapeRefresh(final NodeModel node) {
 				for (final NodeModel child : modeController.getMapController().childrenFolded(node)) {
-					if (NodeStyleModel.getShape(child) == null) {
+					if(child.getViewers().isEmpty())
+						continue;
+					final String childShape = NodeStyleModel.getShape(child);
+					if (childShape == null || NodeStyleModel.SHAPE_AS_PARENT.equals(childShape)) {
 						modeController.getMapController().nodeRefresh(child);
-						nodeShapeRefresh(child);
+						childShapeRefresh(child);
 					}
 				}
 			}
@@ -438,7 +441,7 @@ public class MNodeStyleController extends NodeStyleController {
 			public void undo() {
 				NodeStyleModel.setShape(node, oldShape);
 				modeController.getMapController().nodeChanged(node);
-				nodeShapeRefresh(node);
+				childShapeRefresh(node);
 			}
 		};
 		modeController.execute(actor, node.getMap());

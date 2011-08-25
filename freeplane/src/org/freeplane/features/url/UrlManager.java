@@ -251,17 +251,17 @@ public class UrlManager implements IExtension {
 
 	public void handleLoadingException(final Exception ex) {
 		final String exceptionType = ex.getClass().getName();
-		if (exceptionType.equals("freeplane.main.XMLParseException")) {
+		if (exceptionType.equals(XMLParseException.class.getName())) {
 			final int showDetail = JOptionPane.showConfirmDialog(Controller.getCurrentController().getViewController().getMapView(),
 			    TextUtils.getText("map_corrupted"), "Freeplane", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
 			if (showDetail == JOptionPane.YES_OPTION) {
 				UITools.errorMessage(ex);
 			}
 		}
-		else if (exceptionType.equals("java.io.FileNotFoundException")) {
+		else if (exceptionType.equals(FileNotFoundException.class.getName())) {
 			UITools.errorMessage(ex.getMessage());
 		}
-		else if (exceptionType.equals("org.freeplane.features.mindmapmode.file.SkipException")) {
+		else if (exceptionType.equals("org.freeplane.features.url.mindmapmode.SkipException")) {
 			return;
 		}
 		else {
