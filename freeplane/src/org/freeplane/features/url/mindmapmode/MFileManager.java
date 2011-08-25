@@ -384,7 +384,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
         final File input = chooser.getSelectedFile();
         setLastCurrentDir(input.getParentFile());
         if (useRelativeUri) {
-        	return LinkController.toRelativeURI(file, input);
+        	return LinkController.toLinkTypeDependantURI(file, input);
         }
         return input.toURI();
 //>>>>>>> MERGE-SOURCE
