@@ -23,9 +23,12 @@ import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
 import org.docear.plugin.pdfutilities.actions.AbstractMonitoringAction;
 import org.docear.plugin.pdfutilities.actions.AddMonitoringFolderAction;
+import org.docear.plugin.pdfutilities.actions.DocearAction;
 import org.docear.plugin.pdfutilities.actions.DocearPasteAction;
 import org.docear.plugin.pdfutilities.actions.ImportAllAnnotationsAction;
+import org.docear.plugin.pdfutilities.actions.ImportAllChildAnnotationsAction;
 import org.docear.plugin.pdfutilities.actions.ImportNewAnnotationsAction;
+import org.docear.plugin.pdfutilities.actions.ImportNewChildAnnotationsAction;
 import org.docear.plugin.pdfutilities.actions.RadioButtonAction;
 import org.docear.plugin.pdfutilities.actions.UpdateMonitoringFolderAction;
 import org.docear.plugin.pdfutilities.features.AnnotationController;
@@ -33,6 +36,7 @@ import org.docear.plugin.pdfutilities.listener.DocearNodeDropListener;
 import org.docear.plugin.pdfutilities.listener.DocearNodeMouseMotionListener;
 import org.docear.plugin.pdfutilities.listener.DocearNodeSelectionListener;
 import org.docear.plugin.pdfutilities.pdf.PdfReaderFileFilter;
+import org.docear.plugin.pdfutilities.ui.JDocearMenu;
 import org.docear.plugin.pdfutilities.util.ExeFileFilter;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.resources.OptionPanelController;
@@ -77,6 +81,8 @@ public class PdfUtilitiesController extends ALanguageController{
 	public static final String MONITORING_MENU_LANG_KEY = "menu_monitoring_utilities"; //$NON-NLS-1$
 	public static final String IMPORT_ALL_ANNOTATIONS_LANG_KEY = "menu_import_all_annotations"; //$NON-NLS-1$
 	public static final String IMPORT_NEW_ANNOTATIONS_LANG_KEY = "menu_import_new_annotations"; //$NON-NLS-1$
+	public static final String IMPORT_ALL_CHILD_ANNOTATIONS_LANG_KEY = "menu_import_all_child_annotations"; //$NON-NLS-1$
+	public static final String IMPORT_NEW_CHILD_ANNOTATIONS_LANG_KEY = "menu_import_new_child_annotations"; //$NON-NLS-1$
 	public static final String ADD_MONITORING_FOLDER_LANG_KEY = "menu_import_add_monitoring_folder"; //$NON-NLS-1$
 	public static final String UPDATE_MONITORING_FOLDER_LANG_KEY = "menu_import_update_monitoring_folder"; //$NON-NLS-1$
 
@@ -85,6 +91,8 @@ public class PdfUtilitiesController extends ALanguageController{
 	private ImportNewAnnotationsAction importNewAnnotationsAction;
 	private AbstractMonitoringAction addMonitoringFolderAction;
 	private UpdateMonitoringFolderAction updateMonitoringFolderAction;
+	private ImportAllChildAnnotationsAction importAllChildAnnotationsAction;
+	private ImportNewChildAnnotationsAction importNewChildAnnotationsAction;
 
 	public PdfUtilitiesController(ModeController modeController) {
 		super();
@@ -113,12 +121,17 @@ public class PdfUtilitiesController extends ALanguageController{
 		this.modecontroller.getMapController().addListenerForAction(addMonitoringFolderAction);
 		this.updateMonitoringFolderAction = new UpdateMonitoringFolderAction(UPDATE_MONITORING_FOLDER_LANG_KEY);
 		this.modecontroller.getMapController().addListenerForAction(updateMonitoringFolderAction);
+		this.importAllChildAnnotationsAction = new ImportAllChildAnnotationsAction(IMPORT_ALL_CHILD_ANNOTATIONS_LANG_KEY);
+		this.modecontroller.getMapController().addListenerForAction(importAllChildAnnotationsAction);
+		this.importNewChildAnnotationsAction = new ImportNewChildAnnotationsAction(IMPORT_NEW_CHILD_ANNOTATIONS_LANG_KEY);
+		this.modecontroller.getMapController().addListenerForAction(importNewChildAnnotationsAction);
 
 		this.modecontroller.removeAction("PasteAction");
 		this.modecontroller.addAction(new DocearPasteAction());
 	}
 
 	private void addMenuEntries() {
+		
 		this.modecontroller.addMenuContributor(new IMenuContributor() {
 
 			public void updateMenus(ModeController modeController, MenuBuilder builder) {
@@ -131,6 +144,8 @@ public class PdfUtilitiesController extends ALanguageController{
 						AUTO_IMPORT_ANNOTATIONS_KEY), resourceController.getBooleanProperty(AUTO_IMPORT_ANNOTATIONS_KEY));				
 				builder.addAction(MENU_BAR + PDF_MANAGEMENT_MENU, importAllAnnotationsAction, MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + PDF_MANAGEMENT_MENU, importNewAnnotationsAction, MenuBuilder.AS_CHILD);
+				builder.addAction(MENU_BAR + PDF_MANAGEMENT_MENU, importAllChildAnnotationsAction, MenuBuilder.AS_CHILD);
+				builder.addAction(MENU_BAR + PDF_MANAGEMENT_MENU, importNewChildAnnotationsAction, MenuBuilder.AS_CHILD);
 				
 				builder.addMenuItem(MENU_BAR + PDF_MANAGEMENT_MENU,
 						new JMenu(TextUtils.getText(MONITORING_MENU_LANG_KEY)), MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU,
@@ -144,12 +159,28 @@ public class PdfUtilitiesController extends ALanguageController{
 				builder.addAction(NODE_POPUP_MENU + MONITORING_MENU, addMonitoringFolderAction, MenuBuilder.AS_CHILD);
 				builder.addAction(NODE_POPUP_MENU + MONITORING_MENU, updateMonitoringFolderAction, MenuBuilder.AS_CHILD);
 				
-				builder.addMenuItem(NODE_POPUP_MENU + NODE_FEATURES_MENU,
-						new JMenu(TextUtils.getText(PDF_MANAGEMENT_MENU_LANG_KEY)), NODE_POPUP_MENU + PDF_MANAGEMENT_MENU,
+				JDocearMenu pdfManagementPopupMenu = new JDocearMenu(TextUtils.getText(PDF_MANAGEMENT_MENU_LANG_KEY));
+				
+				builder.addMenuItem(NODE_POPUP_MENU + NODE_FEATURES_MENU, pdfManagementPopupMenu, NODE_POPUP_MENU + PDF_MANAGEMENT_MENU,
 						MenuBuilder.BEFORE);
 				builder.addSeparator(NODE_POPUP_MENU + "/DeleteAction", MenuBuilder.AFTER);
 				builder.addAction(NODE_POPUP_MENU + PDF_MANAGEMENT_MENU, importAllAnnotationsAction, MenuBuilder.AS_CHILD);
-				builder.addAction(NODE_POPUP_MENU + PDF_MANAGEMENT_MENU, importNewAnnotationsAction, MenuBuilder.AS_CHILD);				
+				builder.addAction(NODE_POPUP_MENU + PDF_MANAGEMENT_MENU, importNewAnnotationsAction, MenuBuilder.AS_CHILD);	
+				builder.addAction(NODE_POPUP_MENU + PDF_MANAGEMENT_MENU, importAllChildAnnotationsAction, MenuBuilder.AS_CHILD);
+				builder.addAction(NODE_POPUP_MENU + PDF_MANAGEMENT_MENU, importNewChildAnnotationsAction, MenuBuilder.AS_CHILD);	
+				
+				importAllAnnotationsAction.getViews().clear();
+				importAllAnnotationsAction.getViews().addAll(DocearAction.getMenuKey(builder, importAllAnnotationsAction));
+				importAllAnnotationsAction.addPropertyChangeListener(pdfManagementPopupMenu);
+				importNewAnnotationsAction.getViews().clear();
+				importNewAnnotationsAction.getViews().addAll(DocearAction.getMenuKey(builder, importNewAnnotationsAction));
+				importNewAnnotationsAction.addPropertyChangeListener(pdfManagementPopupMenu);
+				importAllChildAnnotationsAction.getViews().clear();
+				importAllChildAnnotationsAction.getViews().addAll(DocearAction.getMenuKey(builder, importAllChildAnnotationsAction));
+				importAllChildAnnotationsAction.addPropertyChangeListener(pdfManagementPopupMenu);
+				importNewChildAnnotationsAction.getViews().clear();
+				importNewChildAnnotationsAction.getViews().addAll(DocearAction.getMenuKey(builder, importNewChildAnnotationsAction));
+				importNewChildAnnotationsAction.addPropertyChangeListener(pdfManagementPopupMenu);
 			}
 		});
 	}

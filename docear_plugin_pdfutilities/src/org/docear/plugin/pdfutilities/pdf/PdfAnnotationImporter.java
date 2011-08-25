@@ -64,7 +64,7 @@ public class PdfAnnotationImporter {
 		return annotationMap;
 	}	
 	
-	public List<AnnotationModel> importAnnotations(URI uri) throws IOException, COSLoadException{
+	public List<AnnotationModel> importAnnotations(URI uri) throws IOException, COSLoadException, COSRuntimeException{
 		List<AnnotationModel> annotations = new ArrayList<AnnotationModel>();
 		
 		this.currentFile = uri;

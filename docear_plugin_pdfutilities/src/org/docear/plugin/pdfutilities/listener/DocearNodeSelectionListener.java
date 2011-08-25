@@ -12,8 +12,7 @@ public class DocearNodeSelectionListener implements INodeSelectionListener {
 		Controller.getCurrentController().getViewController().removeStatus("Annotation Info");
 	}
 
-	public void onSelect(NodeModel node) {
-		Controller.getCurrentController().getViewController().addStatusInfo("View Info", "AreViewsEmpty: " + node.areViewsEmpty());
+	public void onSelect(NodeModel node) {		
 		IAnnotation model = AnnotationController.getModel(node, false);
 		
 		if(model != null){

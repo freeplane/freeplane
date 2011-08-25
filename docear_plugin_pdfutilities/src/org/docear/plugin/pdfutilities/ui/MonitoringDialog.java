@@ -21,6 +21,7 @@ import org.jdesktop.swingworker.SwingWorker;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.event.WindowStateListener;
 
 public class MonitoringDialog extends JDialog implements PropertyChangeListener {
@@ -74,6 +75,27 @@ public class MonitoringDialog extends JDialog implements PropertyChangeListener 
 				}
 				
 			}
+		});
+		
+		this.addWindowListener(new WindowListener() {
+			
+			public void windowOpened(WindowEvent e) {}
+			
+			public void windowIconified(WindowEvent e) {}
+			
+			public void windowDeiconified(WindowEvent e) {}
+			
+			public void windowDeactivated(WindowEvent e) {}
+			
+			public void windowClosing(WindowEvent e) {
+				onCancel();
+			}
+			
+			public void windowClosed(WindowEvent e) {
+				onCancel();
+			}
+			
+			public void windowActivated(WindowEvent e) {}
 		});
 		
 		setModal(true);

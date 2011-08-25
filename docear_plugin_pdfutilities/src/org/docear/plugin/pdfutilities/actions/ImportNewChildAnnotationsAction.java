@@ -22,10 +22,11 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
+import de.intarsys.pdf.cos.COSRuntimeException;
 import de.intarsys.pdf.parser.COSLoadException;
 
 @EnabledAction( checkOnNodeChange = true )
-public class ImportNewAnnotationsAction extends ImportAnnotationsAction {
+public class ImportNewChildAnnotationsAction extends ImportAnnotationsAction {
 
 	/**
 	 * 
@@ -33,40 +34,43 @@ public class ImportNewAnnotationsAction extends ImportAnnotationsAction {
 	private static final long serialVersionUID = 1L;
 
 	@SuppressWarnings("serial")
-	public ImportNewAnnotationsAction(String key) {
+	public ImportNewChildAnnotationsAction(String key) {
 		super(key);
-		this.setEnableType(new ArrayList<AnnotationType>(){{ add(AnnotationType.PDF_FILE); }});
+		this.setEnableType(new ArrayList<AnnotationType>(){{ add(AnnotationType.BOOKMARK); 
+															 add(AnnotationType.BOOKMARK_WITH_URI);
+															 add(AnnotationType.BOOKMARK_WITHOUT_DESTINATION);
+														   }});
 	}
 
-	public void actionPerformed(ActionEvent event) {
-		
+	public void actionPerformed(ActionEvent evt) {
 		NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
 		if(selected == null){
 			return;
 		}
 		
-		else{
+		else{			
+			PdfAnnotationImporter importer = new PdfAnnotationImporter();    
 			URI uri = Tools.getAbsoluteUri(selected);
-            try {
-            	PdfAnnotationImporter importer = new PdfAnnotationImporter();            	
-				Collection<AnnotationModel> annotations = importer.importAnnotations(uri);
+			try {
+				AnnotationModel annotation = importer.searchAnnotation(uri, selected);
 				NodeUtils nodeUtils = new NodeUtils();
 				Map<AnnotationID, Collection<AnnotationNodeModel>> oldAnnotations = nodeUtils.getOldAnnotationsFromCurrentMap();				
-				annotations = AnnotationController.markNewAnnotations(annotations, oldAnnotations);
+				Collection<AnnotationModel> annotations = AnnotationController.markNewAnnotations(annotation.getChildren(), oldAnnotations);
 				Map<AnnotationID, Collection<IAnnotation>> conflicts = AnnotationController.getConflictedAnnotations(annotations, oldAnnotations);
 				if(conflicts.size() > 0){
 					ImportConflictDialog dialog = new ImportConflictDialog(Controller.getCurrentController().getViewController().getJFrame(), conflicts);
 					dialog.showDialog();
 				}
 				
-                nodeUtils.insertNewChildNodesFrom(annotations, selected.isLeft(), selected, selected);
+				nodeUtils.insertNewChildNodesFrom(annotations, selected.isLeft(), selected, selected);
+			} catch (COSRuntimeException e) {
+				LogUtils.severe("ImportAllChildAnnotationsAction COSRuntimeException at URI("+uri+"): ", e);
 			} catch (IOException e) {
-				LogUtils.severe("ImportAllAnnotationsAction IOException at URI("+uri+"): ", e); //$NON-NLS-1$ //$NON-NLS-2$
+				LogUtils.severe("ImportAllChildAnnotationsAction IOException at URI("+uri+"): ", e);
 			} catch (COSLoadException e) {
-				LogUtils.severe("ImportAllAnnotationsAction ImportException at URI("+uri+"): ", e); //$NON-NLS-1$ //$NON-NLS-2$
-			}	
+				LogUtils.severe("ImportAllChildAnnotationsAction COSLoadException at URI("+uri+"): ", e);
+			}
 		}
-
 	}
 
 }

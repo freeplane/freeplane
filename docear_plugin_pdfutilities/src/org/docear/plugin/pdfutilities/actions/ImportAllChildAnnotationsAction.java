@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.docear.plugin.pdfutilities.features.AnnotationModel;
 import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
@@ -20,40 +19,44 @@ import de.intarsys.pdf.cos.COSRuntimeException;
 import de.intarsys.pdf.parser.COSLoadException;
 
 @EnabledAction( checkOnNodeChange = true )
-public class ImportAllAnnotationsAction extends ImportAnnotationsAction {
+public class ImportAllChildAnnotationsAction extends ImportAnnotationsAction {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;	
+	private static final long serialVersionUID = 1L;
 
 	@SuppressWarnings("serial")
-	public ImportAllAnnotationsAction(String key) {
+	public ImportAllChildAnnotationsAction(String key) {
 		super(key);
-		this.setEnableType(new ArrayList<AnnotationType>(){{ add(AnnotationType.PDF_FILE); }});
+		this.setEnableType(new ArrayList<AnnotationType>(){{ add(AnnotationType.BOOKMARK); 
+															 add(AnnotationType.BOOKMARK_WITH_URI);
+															 add(AnnotationType.BOOKMARK_WITHOUT_DESTINATION);
+														   }});
 	}
 
-	public void actionPerformed(ActionEvent event) {
+	public void actionPerformed(ActionEvent evt) {
 		NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
 		if(selected == null){
 			return;
 		}
 		
-		else{
+		else{			
+			PdfAnnotationImporter importer = new PdfAnnotationImporter();    
 			URI uri = Tools.getAbsoluteUri(selected);
-            try {
-            	PdfAnnotationImporter importer = new PdfAnnotationImporter();            	
-				List<AnnotationModel> annotations = importer.importAnnotations(uri);
+			try {
+				AnnotationModel annotation = importer.searchAnnotation(uri, selected);
 				NodeUtils nodeUtils = new NodeUtils();                
-                nodeUtils.insertChildNodesFrom(annotations, selected.isLeft(), selected);
-			} catch (IOException e) {
-				LogUtils.severe("ImportAllAnnotationsAction IOException at URI("+uri+"): ", e);
-			} catch (COSLoadException e) {
-				LogUtils.severe("ImportAllAnnotationsAction COSLoadException at URI("+uri+"): ", e);
+                nodeUtils.insertChildNodesFrom(annotation.getChildren(), selected.isLeft(), selected);
 			} catch (COSRuntimeException e) {
-				LogUtils.severe("ImportAllAnnotationsAction COSRuntimeException at URI("+uri+"): ", e);
+				LogUtils.severe("ImportAllChildAnnotationsAction COSRuntimeException at URI("+uri+"): ", e);
+			} catch (IOException e) {
+				LogUtils.severe("ImportAllChildAnnotationsAction IOException at URI("+uri+"): ", e);
+			} catch (COSLoadException e) {
+				LogUtils.severe("ImportAllChildAnnotationsAction COSLoadException at URI("+uri+"): ", e);
 			}
 		}
+
 	}
-	
+
 }
