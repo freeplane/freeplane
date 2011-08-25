@@ -1,6 +1,7 @@
 package org.freeplane.features.export.mindmapmode;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
@@ -36,6 +37,9 @@ public class XsltExportEngine implements IExportEngine {
         	final TransformerFactory transFact = TransformerFactory.newInstance();
         	final Transformer trans = transFact.newTransformer(xsltSource);
         	trans.transform(xmlSource, result);
+        }
+        catch (final FileNotFoundException e) {
+        	LogUtils.warn(e);
         }
         catch (final Exception e) {
         	LogUtils.severe(e);

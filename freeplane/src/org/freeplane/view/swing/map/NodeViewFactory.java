@@ -43,6 +43,7 @@ import org.freeplane.core.ui.DelayedMouseListener;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
@@ -153,25 +154,42 @@ class NodeViewFactory {
 		return new ContentPane();
 	}
 
-	MainView newMainView(final NodeView node) {
+	MainView newMainView(NodeView node) {
 		final ModeController modeController = node.getMap().getModeController();
 		final NodeModel model = node.getModel();
 		MainView view;
-		if (model.isRoot()) {
-			view = new RootMainView();
-		}
-		else{
-			final String shape = NodeStyleController.getController(modeController).getShape(model);
-			if (shape.equals(NodeStyleModel.STYLE_FORK)) {
-				view = new ForkMainView();
-			}
-			else if (shape.equals(NodeStyleModel.STYLE_BUBBLE)) {
-				view =  new BubbleMainView();
+		String shape = NodeStyleController.getController(modeController).getShape(model);
+		if (shape.equals(NodeStyleModel.SHAPE_COMBINED)) {
+			if (Controller.getCurrentModeController().getMapController().isFolded(model)) {
+				shape= NodeStyleModel.STYLE_BUBBLE;
 			}
 			else {
-				System.err.println("Tried to create a NodeView of unknown Style " + shape);
-				view = new ForkMainView();
+				shape = NodeStyleModel.STYLE_FORK;
 			}
+		}
+		else while(shape.equals(NodeStyleModel.SHAPE_AS_PARENT)){
+				node = node.getParentView();
+				if (node == null)
+					shape = NodeStyleModel.STYLE_FORK;
+				else
+					shape = node.getMainView().getShape();
+		}
+
+		if (shape == null || shape.equals(NodeStyleModel.STYLE_FORK)) {
+			if (model.isRoot())
+				view = new RootMainView(NodeStyleModel.STYLE_FORK);
+			else
+				view = new ForkMainView();
+		}
+		else if (shape.equals(NodeStyleModel.STYLE_BUBBLE)) {
+			if (model.isRoot())
+				view = new RootMainView(NodeStyleModel.STYLE_BUBBLE);
+			else
+				view =  new BubbleMainView();
+		}
+		else {
+			System.err.println("Tried to create a NodeView of unknown Style " + String.valueOf(shape));
+			view = new ForkMainView();
 		}
 		NodeTooltipManager toolTipManager = NodeTooltipManager.getSharedInstance(modeController);
 		toolTipManager.registerComponent(view);
@@ -208,7 +226,7 @@ class NodeViewFactory {
 				NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, c);
 				if(nodeView == null)
 					return;
-				final Color iconColor = EdgeController.getController(nodeView.getMap().getModeController()).getColor(nodeView.getModel());
+				final Color iconColor =  nodeView.getEdgeColor();
 				createColoredIcon(iconColor).paintIcon(c, g, x, y);
 			}
 			

@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.text;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.util.Collection;
 import java.util.Collections;
@@ -28,6 +30,7 @@ import java.util.List;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -173,7 +176,7 @@ public class TextController implements IExtension {
 
 	private void registerDetailsTooltip() {
 		modeController.addToolTipProvider(DETAILS_TOOLTIP, new ITooltipProvider() {
-				public String getTooltip(ModeController modeController, NodeModel node) {
+				public String getTooltip(ModeController modeController, NodeModel node, Component view) {
 					final DetailTextModel detailText = DetailTextModel.getDetailText(node);
 					if (detailText == null || ! (detailText.isHidden() || ShortenedTextModel.isShortened(node)) ){
 						 return null;
@@ -183,7 +186,6 @@ public class TextController implements IExtension {
 					final StringBuilder rule = new StringBuilder();
 					rule.append("font-family: " + font.getFamily() + ";");
 					rule.append("font-size: " + font.getSize() + "pt;");
-					rule.append("margin-top:0;");
 					String noteText= detailText.getHtml();
 					final String tooltipText = noteText.replaceFirst("<body>", "<body><div style=\"" + rule + "\">")
 					    .replaceFirst("</body>", "</div></body>");
@@ -194,7 +196,7 @@ public class TextController implements IExtension {
 
 	private void registerNodeTextTooltip() {
 		modeController.addToolTipProvider(NODE_TOOLTIP, new ITooltipProvider() {
-			    public String getTooltip(final ModeController modeController, NodeModel node) {
+			    public String getTooltip(final ModeController modeController, NodeModel node, Component view) {
 				    if (!ShortenedTextModel.isShortened(node)) {
 					    return null;
 				    }
@@ -204,6 +206,14 @@ public class TextController implements IExtension {
 				    rule.append("font-family: " + font.getFamily() + ";");
 				    rule.append("font-size: " + font.getSize() + "pt;");
 				    rule.append("margin-top:0;");
+					if (font.isItalic()) {
+						rule.append("font-style: italic; ");
+					}
+					if (font.isBold()) {
+						rule.append("font-weight: bold; ");
+					}
+					final Color nodeTextColor = view.getForeground();
+					rule.append("color: ").append(ColorUtils.colorToString(nodeTextColor)).append(";");
 				    final Object data = node.getUserObject();
 				    String text;
 				    try {

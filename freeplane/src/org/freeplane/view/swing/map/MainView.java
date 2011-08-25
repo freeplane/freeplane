@@ -37,6 +37,7 @@ import java.util.Map.Entry;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JToolTip;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
@@ -92,6 +93,7 @@ public abstract class MainView extends ZoomableLabel {
 		setHorizontalAlignment(SwingConstants.LEFT);
 		setVerticalAlignment(SwingConstants.CENTER);
 		setHorizontalTextPosition(SwingConstants.TRAILING);
+		setVerticalTextPosition(JLabel.TOP);
 	}
 
 	protected void convertPointFromMap(final Point p) {
@@ -153,7 +155,7 @@ public abstract class MainView extends ZoomableLabel {
 
 	public abstract Point getRightPoint();
 
-	abstract String getStyle();
+	abstract String getShape();
 
 	int getZoomedFoldingSymbolHalfWidth() {
 		return getNodeView().getZoomedFoldingSymbolHalfWidth();
@@ -205,8 +207,7 @@ public abstract class MainView extends ZoomableLabel {
 		final Color color = g.getColor();
 		g.setColor(itself ? Color.WHITE : Color.GRAY);
 		g.fillOval(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2, zoomedFoldingSymbolHalfWidth * 2);
-		final NodeModel model = nodeView.getModel();
-		final Color edgeColor = EdgeController.getController(nodeView.getMap().getModeController()).getColor(model);
+		final Color edgeColor = nodeView.getEdgeColor();
 		g.setColor(edgeColor);
 		g.drawOval(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2, zoomedFoldingSymbolHalfWidth * 2);
 		g.setColor(color);
@@ -440,8 +441,11 @@ public abstract class MainView extends ZoomableLabel {
             return getRightPoint();
         if(relativeLocation.x < 0)
             return getLeftPoint();
-        if(relativeLocation.y > getHeight())
-            return getBottomPoint();
+        if(relativeLocation.y > getHeight()){
+            final Point bottomPoint = getBottomPoint();
+            bottomPoint.y = getNodeView().getContent().getHeight();
+			return bottomPoint;
+        }
         if(relativeLocation.y <0)
             return getTopPoint();
         return getCenterPoint();
@@ -471,7 +475,7 @@ public abstract class MainView extends ZoomableLabel {
 		final NodeView nodeView = getNodeView();
 		final ModeController modeController = nodeView.getMap().getModeController();
 		final NodeModel node = nodeView.getModel();
-		return modeController.createToolTip(node);
+		return modeController.createToolTip(node, this);
     }
 
 	@Override

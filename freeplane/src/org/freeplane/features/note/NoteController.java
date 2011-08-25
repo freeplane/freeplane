@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.note;
 
+import java.awt.Component;
 import java.awt.Font;
 import java.net.URL;
 
@@ -117,7 +118,7 @@ public class NoteController implements IExtension {
 
 	private void registerNoteTooltip(ModeController modeController) {
 		modeController.addToolTipProvider(NODE_TOOLTIP, new ITooltipProvider() {
-			public String getTooltip(ModeController modeController, NodeModel node) {
+			public String getTooltip(ModeController modeController, NodeModel node, Component view) {
 				if(showNotesInMap(node.getMap()) && ! TextController.getController(modeController).getIsShortened(node)){
 					return null;
 				}
@@ -141,7 +142,6 @@ public class NoteController implements IExtension {
 	                    rule.append("font-weight: bold; ");
 	                }
 				}
-				rule.append("margin-top:0;");
 				final StringBuilder tooltipBodyBegin = new StringBuilder("<body><div style=\"");
 				tooltipBodyBegin.append(rule);
 				tooltipBodyBegin.append("\">");

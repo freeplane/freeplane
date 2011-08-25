@@ -20,6 +20,7 @@
  */
 package org.freeplane.features.time;
 
+import java.awt.Component;
 import java.text.MessageFormat;
 
 import org.freeplane.core.extension.IExtension;
@@ -43,7 +44,7 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IE
 	public CreationModificationPlugin() {
 	    super();
 	    Controller.getCurrentModeController().addToolTipProvider(CREATION_TOOLTIP, new ITooltipProvider() {
-			public String getTooltip(ModeController modeController, NodeModel node) {
+			public String getTooltip(ModeController modeController, NodeModel node, Component view) {
 				if (! isActive(node))
 					return null;
 				final Object[] messageArguments = { node.getHistoryInformation().getCreatedAt(),
