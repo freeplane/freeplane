@@ -329,40 +329,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	public URI getLinkByFileChooser(final MapModel map) {
 		FileFilter fileFilter = getFileFilter();
 		JFileChooser chooser = null;
-//<<<<<<< TREE
-//		final File file = map.getFile();
-//		
-//		if (file == null && LinkController.getLinkType() != LinkController.LINK_ABSOLUTE) {
-//			JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(),
-//			    TextUtils.getText("not_saved_for_link_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
-//			return null;
-//		}
-//		if (getLastCurrentDir() != null) {
-//			chooser = new JFileChooser(getLastCurrentDir());
-//		}
-//		else {
-//			chooser = new JFileChooser();
-//		}
-//		if (fileFilter != null) {
-//			chooser.setFileFilter(fileFilter);
-//		}
-//		else {
-//			chooser.setFileFilter(chooser.getAcceptAllFileFilter());
-//		}
-//		final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController()
-//		    .getContentPane());
-//		if (returnVal != JFileChooser.APPROVE_OPTION) {
-//			return null;
-//		}
-//		final File input = chooser.getSelectedFile();
-//		setLastCurrentDir(input.getParentFile());
-//		
-//		return LinkController.toLinkTypeDependantURI(file, input);		
-//=======
         final File file = map.getFile();
-        final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links")
-            .equals("relative");
-        if (file == null && useRelativeUri) {
+        if (file == null && LinkController.getLinkType() == LinkController.LINK_RELATIVE_TO_MINDMAP) {
         	JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(),
         	    TextUtils.getText("not_saved_for_link_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
         	return null;
@@ -383,11 +351,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
         }
         final File input = chooser.getSelectedFile();
         setLastCurrentDir(input.getParentFile());
-        if (useRelativeUri) {
-        	return LinkController.toLinkTypeDependantURI(file, input);
-        }
-        return input.toURI();
-//>>>>>>> MERGE-SOURCE
+        
+        return LinkController.toLinkTypeDependantURI(file, input);
 	}
 
 	@Override

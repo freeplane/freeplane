@@ -102,7 +102,7 @@ public class DocearNodeDropListener extends MNodeDropListener {
 			                		LogUtils.warn("Exception during import on file: " + file.getName(), e);
 			                	}
 			                }
-			                else{
+			                else {
 			                	final boolean isLeft = mainView.dropLeft(dtde.getLocation().getX());
 			        			ModeController modeController = controller.getModeController();
 			        			final ViewerController viewerController = ((ViewerController)modeController.getExtension(ViewerController.class));

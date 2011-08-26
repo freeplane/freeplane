@@ -428,7 +428,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		final ViewController viewController = controller.getViewController();
 		final MapModel map = node.getMap();
 		final File file = map.getFile();
-		if (file == null && LinkController.getLinkType() != LinkController.LINK_ABSOLUTE) {
+		if (file == null && LinkController.getLinkType() == LinkController.LINK_RELATIVE_TO_MINDMAP) {
 			JOptionPane.showMessageDialog(viewController.getContentPane(), TextUtils
 			    .getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return null;
@@ -676,7 +676,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			return false;
 		}
 		final File mapFile = targetNode.getMap().getFile();
-		if (mapFile == null && LinkController.getLinkType()!=LinkController.LINK_ABSOLUTE) {
+		if (mapFile == null && LinkController.getLinkType() == LinkController.LINK_RELATIVE_TO_MINDMAP) {
 			JOptionPane.showMessageDialog(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(),
 			    TextUtils.getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return false;
