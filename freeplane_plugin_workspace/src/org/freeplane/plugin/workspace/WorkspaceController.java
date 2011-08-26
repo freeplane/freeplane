@@ -110,7 +110,7 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 
 	public String getWorkspaceLocation() {
 		if (this.workspaceLocation == null) {
-			this.workspaceLocation = ResourceController.getResourceController().getProperty(
+			this.workspaceLocation = Controller.getCurrentController().getResourceController().getProperty(
 					WorkspacePreferences.WORKSPACE_LOCATION);
 		}
 		return workspaceLocation;
@@ -213,8 +213,7 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 			return;
 		}
 
-		UrlManager.getController().setLastCurrentDir(
-				new File(WorkspaceController.getController().getWorkspaceLocation()));
+		UrlManager.getController().setLastCurrentDir(new File(getWorkspaceLocation()));
 	}
 	
 	private TreeView getWorkspaceView() {

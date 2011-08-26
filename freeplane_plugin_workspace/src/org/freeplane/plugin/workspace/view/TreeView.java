@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -21,6 +22,7 @@ import org.freeplane.plugin.workspace.model.WorkspaceTreeModel;
 public class TreeView extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	private static final int view_margin = 3;
 	
 	protected JTree m_tree;
 	protected DefaultTreeModel m_model;
@@ -32,9 +34,11 @@ public class TreeView extends JPanel {
 
 	public TreeView(MutableTreeNode conigurationRoot) {
 		this.setLayout(new BorderLayout());
+		
 		m_model = new WorkspaceTreeModel(conigurationRoot);
 
 		m_tree = new JTree(m_model);
+		m_tree.setBorder(BorderFactory.createEmptyBorder(2, view_margin, view_margin, view_margin));
 		m_tree.putClientProperty("JTree.lineStyle", "Angled");
 		m_tree.setCellRenderer(new WorkspaceNodeRenderer());
 		m_tree.setCellEditor(new WorkspaceCellEditor(m_tree, (DefaultTreeCellRenderer) m_tree.getCellRenderer()));

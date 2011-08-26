@@ -50,16 +50,18 @@ public class FolderTypeLiteratureRepositoryCreator extends AWorkspaceNodeCreator
 		node.setFolderPath(URI.create(path));
 
 		File file = WorkspaceUtils.resolveURI(node.getFolderPath());
-
-		if (!file.exists()) {
-			if (file.mkdirs()) {
-				LogUtils.info("New Filesystem Folder Created: " + file.getAbsolutePath());
-			}
-		}
-
-		String name = data.getAttribute("name", file.getName());
-		node.setName(name);
 		
+		if(file != null) {
+			if (!file.exists()) {
+				if (file.mkdirs()) {
+					LogUtils.info("New Filesystem Folder Created: " + file.getAbsolutePath());
+				}
+			}			
+			node.setName(file.getName());
+		} 
+		else {
+			node.setName("no folder selected!");
+		}
 		return node;
 	}
 	

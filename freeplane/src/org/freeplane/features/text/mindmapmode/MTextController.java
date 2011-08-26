@@ -210,7 +210,7 @@ public class MTextController extends TextController {
 		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
 		final MapModel map = selectedNode.getMap();
 		final File file = map.getFile();		
-		if (file == null && LinkController.getLinkType() != LinkController.LINK_ABSOLUTE) {
+		if (file == null && LinkController.getLinkType() == LinkController.LINK_RELATIVE_TO_MINDMAP) {
 			JOptionPane.showMessageDialog(viewController.getContentPane(), TextUtils
 			    .getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return;

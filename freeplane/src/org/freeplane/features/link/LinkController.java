@@ -373,10 +373,10 @@ public class LinkController extends SelectionController implements IExtension {
 		try {
 			final URI fileUri = input.getAbsoluteFile().toURI();
 			
-			if (map == null) {
-				return fileUri;
-			}
-			URI mapUri = map.getAbsoluteFile().toURI();
+			URI mapUri = null;
+			if (map != null) {
+				mapUri = map.getAbsoluteFile().toURI();
+			} 
 
 			if (linkType == LINK_RELATIVE_TO_WORKSPACE) {
 				URI workspaceLocation;

@@ -76,7 +76,10 @@ public class WorkspaceConfiguration {
 				workspaceLocation = initializeNewConfig(workspaceLocationNew);
 			}
 			else {
-				workspaceLocation = workspaceLocationNew;
+				if(workspaceLocation == null) {
+					resCtrl.setProperty(WorkspacePreferences.WORKSPACE_LOCATION, workspaceLocationNew);
+				}
+				workspaceLocation = workspaceLocationNew;				
 			}
 		}
 

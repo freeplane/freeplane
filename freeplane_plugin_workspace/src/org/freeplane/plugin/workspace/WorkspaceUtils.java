@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -23,8 +24,8 @@ import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 import org.freeplane.plugin.workspace.config.node.FolderNode;
 import org.freeplane.plugin.workspace.config.node.LinkNode;
-import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
+import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
 import org.freeplane.plugin.workspace.config.node.VirtualFolderNode;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 
@@ -137,7 +138,13 @@ public class WorkspaceUtils {
 
 	public static URI absoluteURI(final URI uri) {
 		try {
-			return uri.toURL().openConnection().getURL().toURI();
+			URLConnection urlConnection =  uri.toURL().openConnection();
+			if(urlConnection == null) {
+				return null;
+			} 
+			else {
+				return urlConnection.getURL().toURI();
+			} 
 		}
 		catch (URISyntaxException e) {
 			e.printStackTrace();
@@ -150,7 +157,11 @@ public class WorkspaceUtils {
 	}
 
 	public static File resolveURI(final URI uri) {
-		return new File(absoluteURI(uri));
+		URI absoluteUri = absoluteURI(uri);
+		if(absoluteUri == null) {
+			return null;
+		}
+		return new File(absoluteUri);
 	}
 
 	/**
