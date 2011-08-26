@@ -9,6 +9,7 @@ import java.io.FileFilter;
 import java.util.List;
 
 import org.freeplane.core.io.ListHashTable;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.plugin.workspace.io.creator.IFileTypeHandler;
 
 public class FilesystemReader {
@@ -46,18 +47,11 @@ public class FilesystemReader {
 
 	private void iterateFolder(Object object, File folder) {
 		for (File file : folder.listFiles(new FolderFilter())) {
-			if (filtering && file.getName().startsWith(".")) {
-				continue;
-			}
 			Object path = createFileNode(object, FileReadManager.FOLDER_HANDLE, file);
 			iterateFolder(path, file);
 
 		}
 		for (File file : folder.listFiles(new NoFolderFilter())) {
-			if (filtering && file.getName().startsWith(".")) {
-				continue;
-			}
-
 			createFileNode(object, file);
 		}
 	}
@@ -95,8 +89,12 @@ public class FilesystemReader {
 	 **********************************************************************************/
 	
 	private class FolderFilter implements FileFilter  {
-
+		private boolean filtering = true;
+		
 		public boolean accept(File pathname) {
+			if(filtering && pathname.getName().startsWith(".") && !pathname.getName().equals("."+ResourceController.getResourceController().getProperty("workspace.profile"))) {
+				return false;
+			}
 			if (pathname.isDirectory()) {
 				return true;
 			}
@@ -105,8 +103,12 @@ public class FilesystemReader {
 	}
 	
 	private class NoFolderFilter implements FileFilter {
-
+		private boolean filtering = true;
+		
 		public boolean accept(File pathname) {
+			if(filtering && pathname.getName().startsWith(".")) {
+				return false;
+			}
 			if (pathname.isFile()) {
 				return true;
 			}
