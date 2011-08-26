@@ -52,23 +52,17 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	public CoreConfiguration(ModeController modeController) {
 		addPropertyChangeListener();
 		addPreferencesToOptionsPanel();
-		
-		//TODO: DOCEAR change behaviour?
-		showLocationDialogIfNeeded();
-		System.out.println(DocearController.getController());
-		System.out.println(DocearController.getController());
-		System.out.println(DocearController.getController());
-		
+				
 		LogUtils.info("org.docear.plugin.core.CoreConfiguration() initializing...");
 		init(modeController);
 	}
 	
 	private void showLocationDialogIfNeeded() {		
-		/*String workspaceVersion = WorkspaceController.getCurrentWorkspaceController().getVersion();
-		if (!workspaceVersion.toLowerCase().startsWith("docear")) {
+		String workspaceInfo = (String)WorkspaceController.getController().getConfiguration().getConfigurationInfo().getMeta();
+		if (!workspaceInfo.toLowerCase().contains("docear")) {
 			LocationDialog dialog = new LocationDialog();
 	    	dialog.setVisible(true);
-		}*/
+		}
 	}
 
 	private void addPropertyChangeListener() {
@@ -203,7 +197,9 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	 * @see org.freeplane.plugin.workspace.controller.IWorkspaceListener#workspaceFinalize(org.freeplane.plugin.workspace.controller.WorkspaceEvent)
 	 */
 	public void workspaceFinalize(WorkspaceEvent event) {
-		System.out.println("DOCEAR CORE: workspaceFinalize(WorkspaceEvent):"+ event);		
+		System.out.println("DOCEAR CORE: workspaceFinalize(WorkspaceEvent):"+ event);
+		//TODO: DOCEAR change behaviour?
+		showLocationDialogIfNeeded();
 	}
 
 }
