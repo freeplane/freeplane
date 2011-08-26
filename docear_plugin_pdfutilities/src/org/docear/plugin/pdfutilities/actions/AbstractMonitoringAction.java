@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.Icon;
@@ -148,7 +149,10 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 		} catch (ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	
+		} catch (CancellationException e){
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 					
 	}

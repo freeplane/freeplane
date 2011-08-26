@@ -2,8 +2,12 @@ package org.docear.plugin.pdfutilities.ui.conflict;
 
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+
 import org.docear.plugin.pdfutilities.features.AnnotationModel;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
 
 import de.intarsys.pdf.cos.COSRuntimeException;
 import de.intarsys.pdf.parser.COSLoadException;
@@ -22,15 +26,23 @@ public class SolveConflictForPdf implements ISolveConflictCommand {
 	public void solveConflict() {
 		try {
 			new PdfAnnotationImporter().renameAnnotation(getTarget(), getNewTitle());
-		} catch (COSRuntimeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if(e.getMessage().equals("destination is read only")){
+				int result = UITools.showConfirmDialog(null, "Could not rename annotation in PDF file.\n Please close the file in other Applications. ", "Could not rename annotation.", JOptionPane.OK_CANCEL_OPTION);
+				if( result == JOptionPane.OK_OPTION){
+					this.solveConflict();
+				}
+				else{
+					//Controller.getCurrentModeController().rollback();
+				}
+			}
+			else{
+				LogUtils.severe("SolveConflictForPdf IOException at Target("+target.getTitle()+"): ", e);
+			}			
 		} catch (COSLoadException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LogUtils.severe("SolveConflictForPdf COSLoadException at Target("+target.getTitle()+"): ", e);
+		} catch (COSRuntimeException e) {
+			LogUtils.severe("SolveConflictForPdf COSRuntimeException at Target("+target.getTitle()+"): ", e);
 		}
 	}
 

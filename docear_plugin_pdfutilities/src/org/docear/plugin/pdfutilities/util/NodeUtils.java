@@ -112,7 +112,7 @@ public class NodeUtils {
 		}
 		try {
 			final UrlManager urlManager = (UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class);			
-			MapModel map = new MapModel(null);
+			MapModel map = new MapModel(null);			
 			AttributeRegistry.createRegistry(map);
 			URL url = Tools.getFilefromUri(uri).toURL();
 			urlManager.loadImpl(url, map);
@@ -298,7 +298,11 @@ public class NodeUtils {
 		if(attributeModel == null) return;
 		
 		if(attributeModel.getAttributeKeyList().contains(TextUtils.getText("mon_incoming_folder"))){
-			AttributeController.getController().performRemoveRow(attributeModel, attributeModel.getAttributePosition(TextUtils.getText("mon_incoming_folder")));			
+			AttributeController.getController(Controller.getCurrentModeController()).performRemoveRow(attributeModel, attributeModel.getAttributePosition(TextUtils.getText("mon_incoming_folder")));			
+		}
+		
+		if(attributeModel.getAttributeKeyList().contains(TextUtils.getText("mon_mindmap_folder"))){
+			AttributeController.getController(Controller.getCurrentModeController()).performRemoveRow(attributeModel, attributeModel.getAttributePosition(TextUtils.getText("mon_mindmap_folder")));			
 		}
 	}
 	

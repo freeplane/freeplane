@@ -122,7 +122,12 @@ public class Tools {
 	}
 	
 	public static boolean exists(URI uri) {
-		return Tools.exists(uri, Controller.getCurrentController().getMap());
+		if(Controller.getCurrentController() != null && Controller.getCurrentController().getMap() != null){
+			return Tools.exists(uri, Controller.getCurrentController().getMap());
+		}
+		else{
+			return Tools.exists(uri, null);
+		}
 	}
 
 	public static boolean exists(URI uri, MapModel map) {

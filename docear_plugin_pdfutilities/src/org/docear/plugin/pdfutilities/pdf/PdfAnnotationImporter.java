@@ -13,6 +13,7 @@ import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.features.AnnotationController;
 import org.docear.plugin.pdfutilities.features.AnnotationID;
 import org.docear.plugin.pdfutilities.features.AnnotationModel;
+import org.docear.plugin.pdfutilities.features.IAnnotation;
 import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
 import org.docear.plugin.pdfutilities.util.Tools;
 import org.freeplane.core.resources.ResourceController;
@@ -50,8 +51,14 @@ import de.intarsys.tools.locator.FileLocator;
 public class PdfAnnotationImporter {
 	
 	private URI currentFile;
-	private MapModel map = Controller.getCurrentController().getMap();
+	private MapModel map;
 	private boolean importAll = false;
+	
+	public PdfAnnotationImporter(){
+		if(Controller.getCurrentController() != null && Controller.getCurrentController().getMap() != null){
+			this.map = Controller.getCurrentController().getMap();
+		}
+	}
 	
 	
 	public Map<URI, List<AnnotationModel>> importAnnotations(List<URI> files) throws IOException, COSLoadException, COSRuntimeException{
@@ -87,7 +94,7 @@ public class PdfAnnotationImporter {
 		return annotations;
 	}
 	
-	public boolean renameAnnotation(AnnotationModel annotation, String newTitle) throws COSRuntimeException, IOException, COSLoadException{
+	public boolean renameAnnotation(IAnnotation annotation, String newTitle) throws COSRuntimeException, IOException, COSLoadException{
 		List<AnnotationModel> annotations = new ArrayList<AnnotationModel>();
 		boolean ret = false;
 		this.currentFile = annotation.getUri();
@@ -116,7 +123,7 @@ public class PdfAnnotationImporter {
 					((PDAnnotation)pdObject).setContents(newTitle);
 					ret = true;
 				}
-				document.save();				
+				document.save();			
 			}
 			if(document != null)
 			document.close();
@@ -125,7 +132,7 @@ public class PdfAnnotationImporter {
 		return ret;
 	}
 
-	private PDDocument getPDDocument(URI uri) throws IOException,	COSLoadException, COSRuntimeException {
+	public PDDocument getPDDocument(URI uri) throws IOException,	COSLoadException, COSRuntimeException {
 		if(uri == null || !Tools.exists(uri, this.map) || !new PdfFileFilter().accept(uri)){
 			return null;
 		}
@@ -215,9 +222,9 @@ public class PdfAnnotationImporter {
 		List<PDAnnotation> pdAnnotations = document.getAnnotations();
 		for(PDAnnotation annotation : pdAnnotations){
 			// Avoid empty entries			
-            if(annotation.getContents().equals("") /*&& !annotation.isMarkupAnnotation()*/) continue;
+            if(annotation.getContents().equals("")/* && !annotation.isMarkupAnnotation()*/) continue;
             // Avoid double entries (Foxit Reader)
-            if(annotation.getContents().equals(lastString)) continue;
+            if(annotation.getContents().equals(lastString)/* && !annotation.isMarkupAnnotation()*/) continue;
             lastString = annotation.getContents();
             // Sometimes page = NULL though this is a proper annotation
             if(annotation.getPage() != null)
@@ -396,7 +403,7 @@ public class PdfAnnotationImporter {
 		return null;
 	}
 	
-	public AnnotationModel searchAnnotation(List<AnnotationModel> annotations, AnnotationModel target) {
+	public AnnotationModel searchAnnotation(List<AnnotationModel> annotations, IAnnotation target) {
 		for(AnnotationModel annotation : annotations){ 
 			if(annotation.getObjectNumber().equals(target.getObjectNumber())){
 				return annotation;

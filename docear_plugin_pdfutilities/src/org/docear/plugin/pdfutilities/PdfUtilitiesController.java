@@ -23,6 +23,7 @@ import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
 import org.docear.plugin.pdfutilities.actions.AbstractMonitoringAction;
 import org.docear.plugin.pdfutilities.actions.AddMonitoringFolderAction;
+import org.docear.plugin.pdfutilities.actions.DeleteMonitoringFolderAction;
 import org.docear.plugin.pdfutilities.actions.DocearAction;
 import org.docear.plugin.pdfutilities.actions.DocearPasteAction;
 import org.docear.plugin.pdfutilities.actions.ImportAllAnnotationsAction;
@@ -35,6 +36,7 @@ import org.docear.plugin.pdfutilities.features.AnnotationController;
 import org.docear.plugin.pdfutilities.listener.DocearNodeDropListener;
 import org.docear.plugin.pdfutilities.listener.DocearNodeMouseMotionListener;
 import org.docear.plugin.pdfutilities.listener.DocearNodeSelectionListener;
+import org.docear.plugin.pdfutilities.listener.DocearRenameAnnotationListener;
 import org.docear.plugin.pdfutilities.pdf.PdfReaderFileFilter;
 import org.docear.plugin.pdfutilities.ui.JDocearMenu;
 import org.docear.plugin.pdfutilities.util.ExeFileFilter;
@@ -85,12 +87,14 @@ public class PdfUtilitiesController extends ALanguageController{
 	public static final String IMPORT_NEW_CHILD_ANNOTATIONS_LANG_KEY = "menu_import_new_child_annotations"; //$NON-NLS-1$
 	public static final String ADD_MONITORING_FOLDER_LANG_KEY = "menu_import_add_monitoring_folder"; //$NON-NLS-1$
 	public static final String UPDATE_MONITORING_FOLDER_LANG_KEY = "menu_import_update_monitoring_folder"; //$NON-NLS-1$
+	public static final String DELETE_MONITORING_FOLDER_LANG_KEY = "menu_import_delete_monitoring_folder"; //$NON-NLS-1$
 
 	private ModeController modecontroller;
 	private ImportAllAnnotationsAction importAllAnnotationsAction;
 	private ImportNewAnnotationsAction importNewAnnotationsAction;
 	private AbstractMonitoringAction addMonitoringFolderAction;
 	private UpdateMonitoringFolderAction updateMonitoringFolderAction;
+	private DeleteMonitoringFolderAction deleteMonitoringFolderAction;
 	private ImportAllChildAnnotationsAction importAllChildAnnotationsAction;
 	private ImportNewChildAnnotationsAction importNewChildAnnotationsAction;
 
@@ -125,7 +129,10 @@ public class PdfUtilitiesController extends ALanguageController{
 		this.modecontroller.getMapController().addListenerForAction(importAllChildAnnotationsAction);
 		this.importNewChildAnnotationsAction = new ImportNewChildAnnotationsAction(IMPORT_NEW_CHILD_ANNOTATIONS_LANG_KEY);
 		this.modecontroller.getMapController().addListenerForAction(importNewChildAnnotationsAction);
+		this.deleteMonitoringFolderAction = new DeleteMonitoringFolderAction(DELETE_MONITORING_FOLDER_LANG_KEY);
+		this.modecontroller.getMapController().addListenerForAction(deleteMonitoringFolderAction);
 
+		
 		this.modecontroller.removeAction("PasteAction");
 		this.modecontroller.addAction(new DocearPasteAction());
 	}
@@ -152,12 +159,14 @@ public class PdfUtilitiesController extends ALanguageController{
 						MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU, addMonitoringFolderAction, MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU, updateMonitoringFolderAction, MenuBuilder.AS_CHILD);
+				builder.addAction(MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU, deleteMonitoringFolderAction, MenuBuilder.AS_CHILD);
 				
 				builder.addMenuItem(NODE_POPUP_MENU + NODE_FEATURES_MENU,
 						new JMenu(TextUtils.getText(MONITORING_MENU_LANG_KEY)), NODE_POPUP_MENU + MONITORING_MENU,
 						MenuBuilder.BEFORE);
 				builder.addAction(NODE_POPUP_MENU + MONITORING_MENU, addMonitoringFolderAction, MenuBuilder.AS_CHILD);
 				builder.addAction(NODE_POPUP_MENU + MONITORING_MENU, updateMonitoringFolderAction, MenuBuilder.AS_CHILD);
+				builder.addAction(NODE_POPUP_MENU + MONITORING_MENU, deleteMonitoringFolderAction, MenuBuilder.AS_CHILD);
 				
 				JDocearMenu pdfManagementPopupMenu = new JDocearMenu(TextUtils.getText(PDF_MANAGEMENT_MENU_LANG_KEY));
 				
@@ -198,7 +207,7 @@ public class PdfUtilitiesController extends ALanguageController{
 				node.getMainView().removeMouseMotionListener(defaultMouseListener);
 				node.getMainView().addMouseMotionListener(docearMouseListener);
 				node.getMainView().removeMouseListener(defaultMouseListener);
-				node.getMainView().addMouseListener(docearMouseListener);
+				node.getMainView().addMouseListener(docearMouseListener);				
 			}
 
 			public void onViewRemoved(Container nodeView) {
@@ -290,6 +299,8 @@ public class PdfUtilitiesController extends ALanguageController{
 				
 			}
 		});
+		
+		this.modecontroller.getMapController().addNodeChangeListener(new DocearRenameAnnotationListener());
 
 	}
 

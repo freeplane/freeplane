@@ -1,5 +1,7 @@
 package org.docear.plugin.pdfutilities.test;
 
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -18,8 +20,14 @@ import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
 import org.junit.Assert;
 import org.junit.Test;
 
+import de.intarsys.pdf.content.CSDeviceBasedInterpreter;
+import de.intarsys.pdf.content.text.CSTextExtractor;
 import de.intarsys.pdf.cos.COSRuntimeException;
 import de.intarsys.pdf.parser.COSLoadException;
+import de.intarsys.pdf.pd.PDAnnotation;
+import de.intarsys.pdf.pd.PDDocument;
+import de.intarsys.pdf.pd.PDPage;
+import de.intarsys.pdf.tools.kernel.PDFGeometryTools;
 
 public class AnnotationImportUnitTest {
 
@@ -244,6 +252,77 @@ public class AnnotationImportUnitTest {
 		
 	}
 	
+	@Test
+	public void testHighlightedTextImport(){
+		File pdfFile = new File("C:\\_Dissertation\\test\\00_Campbell_Copy Detection Systems for Digital Documents_NORMAN.PDF");
+		System.out.println("Testing file " + pdfFile.getAbsolutePath());			
+		
+		try {
+			this.extractText(pdfFile);
+			PdfAnnotationImporter importer = new PdfAnnotationImporter();
+			importer.setImportAll(true);
+			List<AnnotationModel> annotations = importer.importAnnotations(pdfFile.toURI());
+			importer.setImportAll(false);
+			System.out.println(annotations.size());
+		} catch (COSRuntimeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (COSLoadException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
+	protected void extractText(File file) {
+		PdfAnnotationImporter importer = new PdfAnnotationImporter();
+		PDDocument doc = null;
+		try {
+			doc = importer.getPDDocument(file.toURI());
+			@SuppressWarnings("unchecked")
+			List<PDAnnotation> pdAnnotations = doc.getAnnotations();
+			for(PDAnnotation annotation : pdAnnotations){
+				if(annotation.isMarkupAnnotation()){
+					PDPage page = annotation.getPage();
+					CSTextExtractor extractor = new CSTextExtractor();
+					AffineTransform pageTx = new AffineTransform();
+					PDFGeometryTools.adjustTransform(pageTx, page);
+					extractor.setDeviceTransform(pageTx);
+					CSDeviceBasedInterpreter interpreter = new CSDeviceBasedInterpreter(
+							null, extractor);
+					interpreter.process(page.getContentStream(), page
+							.getResources());
+					String test = extractor.getContent();
+					System.out.println(test);
+				}
+			}
+		} catch (COSRuntimeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (COSLoadException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally{
+			try {				
+				doc.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+			
+			
+			
+			
+			
+			
+		
+	}
 
 }
