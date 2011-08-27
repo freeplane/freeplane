@@ -99,6 +99,7 @@ class ForkMainView extends MainView {
 	 * @see freeplane.view.mindmapview.NodeView#getStyle()
 	 */
 	@Override
+    public
 	String getShape() {
 		return NodeStyleModel.STYLE_FORK;
 	}

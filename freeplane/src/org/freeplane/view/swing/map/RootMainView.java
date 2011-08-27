@@ -95,6 +95,7 @@ class RootMainView extends MainView {
 	 * @see freeplane.view.mindmapview.NodeView#getStyle()
 	 */
 	@Override
+    public
 	String getShape() {
 		return shape;
 	}

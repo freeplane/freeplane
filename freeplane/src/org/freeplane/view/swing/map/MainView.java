@@ -154,7 +154,7 @@ public abstract class MainView extends ZoomableLabel {
 
 	public abstract Point getRightPoint();
 
-	abstract String getShape();
+	public abstract String getShape();
 
 	int getZoomedFoldingSymbolHalfWidth() {
 		return getNodeView().getZoomedFoldingSymbolHalfWidth();
