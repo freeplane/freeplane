@@ -69,7 +69,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
-import org.freeplane.features.text.mindmapmode.KeyEventQueue;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
 import org.freeplane.features.text.mindmapmode.IEditBaseCreator.EditedComponent;
@@ -398,11 +397,11 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 		if(col == 1){
 			final KeyEvent kev;
+			final MTextController textController = (MTextController) TextController.getController();
 			if(e instanceof KeyEvent){
 				kev = (KeyEvent) e;
-				KeyEventQueue.getInstance().activate(kev);
+				textController.getEventQueue().activate(kev);
 			}
-			final MTextController textController = (MTextController) TextController.getController();
 			final IAttributeTableModel model = (IAttributeTableModel) getModel();
 			final String text = getValueAt(row, col).toString();
 			final DialogTableCellEditor dialogTableCellEditor = new DialogTableCellEditor();

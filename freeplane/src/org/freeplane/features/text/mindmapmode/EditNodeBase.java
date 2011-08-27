@@ -290,7 +290,7 @@ abstract public class EditNodeBase {
 		if (textComponent.hasFocus()) {
 			return;
 		}
-		final KeyEventQueue keyEventDispatcher = KeyEventQueue.getInstance();
+		final EventBuffer keyEventDispatcher = MTextController.getController().getEventQueue();
 		keyEventDispatcher.activate();
 		keyEventDispatcher.setTextComponent(textComponent);
 		if (firstKeyEvent == null) {

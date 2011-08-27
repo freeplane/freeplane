@@ -19,7 +19,6 @@
  */
 package org.freeplane.view.swing.map.mindmapmode;
 
-import java.awt.AWTEvent;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -84,7 +83,7 @@ import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
-import org.freeplane.features.text.mindmapmode.KeyEventQueue;
+import org.freeplane.features.text.mindmapmode.EventBuffer;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.view.swing.map.MainView;
@@ -628,14 +627,16 @@ class EditNodeTextField extends EditNodeBase {
 			parent.add(textfield, 0);
 		else
 			mapView.add(textfield, 0);
-		KeyEvent firstEvent = KeyEventQueue.getInstance().getFirstEvent();
+		final EventBuffer eventQueue = MTextController.getController().getEventQueue();
+		KeyEvent firstEvent = eventQueue.getFirstEvent();
 		if (firstEvent != null) {
 			redispatchKeyEvents(textfield, firstEvent);
 		}
 		else {
-			AWTEvent currentEvent = EventQueue.getCurrentEvent();
+			MouseEvent currentEvent = eventQueue.getMouseEvent();
+			eventQueue.setTextComponent(textfield);
 			int pos = document.getLength();
-			if(currentEvent instanceof MouseEvent){
+			if(currentEvent != null){
 				MouseEvent mouseEvent = (MouseEvent) currentEvent;
 				if(mouseEvent.getComponent().equals(parent)){
 					final Point point = mouseEvent.getPoint();

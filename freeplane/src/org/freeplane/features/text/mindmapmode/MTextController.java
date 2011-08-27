@@ -95,6 +95,8 @@ public class MTextController extends TextController {
 	private static Pattern FORMATTING_PATTERN = null;
 	private EditNodeBase mCurrentEditDialog = null;
 	private final Collection<IEditorPaneListener> editorPaneListeners;
+	private final EventBuffer eventQueue;
+
 
 	public static MTextController getController() {
 		return (MTextController) TextController.getController();
@@ -102,6 +104,7 @@ public class MTextController extends TextController {
 
 	public MTextController(ModeController modeController) {
 		super(modeController);
+		eventQueue = new EventBuffer();
 		editorPaneListeners = new LinkedList<IEditorPaneListener>();
 		createActions();
 	}
@@ -528,7 +531,7 @@ public class MTextController extends TextController {
 	    			return false;
 	    	}
 	    	uninstall();
-	    	KeyEventQueue.getInstance().activate(e);
+	    	eventQueue.activate(e);
 	    	edit(nodeModel, prevSelectedModel, isNewNode, parentFolded, editLong);
 	    	return true;
 	    }
@@ -582,7 +585,7 @@ public class MTextController extends TextController {
 		stopEditing();
 		if(nodeModel.getExtension(FirstEditFlag.class) == null)
 		    nodeModel.addExtension(FirstEditFlag.getInstance());
-		if(isNewNode && ! KeyEventQueue.getInstance().isActive() 
+		if(isNewNode && ! eventQueue.isActive() 
 				&& ! ResourceController.getResourceController().getBooleanProperty("display_inline_editor_for_all_new_nodes")){
 			final EditEventDispatcher dispatcher = new EditEventDispatcher(Controller.getCurrentModeController(), nodeModel, prevSelectedModel, isNewNode, parentFolded, editLong);
 			dispatcher.install();
@@ -720,6 +723,10 @@ public class MTextController extends TextController {
 	public boolean isFirstEditRunning(NodeModel nodeModel){
 	    return nodeModel.containsExtension(FirstEditFlag.class);
 	}
+
+	public EventBuffer getEventQueue() {
+    	return eventQueue;
+    }
 
 }
 

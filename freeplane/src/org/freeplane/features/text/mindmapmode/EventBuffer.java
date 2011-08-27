@@ -24,27 +24,25 @@ import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 /**
  * @author Dimitry Polivaev
  * Aug 23, 2011
  */
-public class KeyEventQueue implements KeyEventDispatcher, FocusListener {
-	private static final KeyEventQueue instance = new KeyEventQueue();
+public class EventBuffer implements KeyEventDispatcher, FocusListener {
 	ArrayList<KeyEvent> events = new ArrayList<KeyEvent>(100);
 	private Component textComponent;
 	boolean isActive = false;
+	private MouseEvent mouseEvent;
 	
 	public boolean isActive() {
     	return isActive;
     }
-	private KeyEventQueue(){}
-	static public KeyEventQueue getInstance(){
-		return instance;
-	}
-
+	EventBuffer(){}
 	public Component getTextComponent() {
     	return textComponent;
     }
@@ -102,10 +100,14 @@ public class KeyEventQueue implements KeyEventDispatcher, FocusListener {
     		textComponent.removeFocusListener(this);
 		textComponent = null;
 		events.clear();
+		mouseEvent = null;
     }
-	public void activate(KeyEvent e) {
+	public void activate(InputEvent e) {
 	    activate();
-	    dispatchKeyEvent(e);
+	    if(e instanceof KeyEvent)
+	    	dispatchKeyEvent((KeyEvent) e);
+	    else if(e instanceof MouseEvent)
+	    	mouseEvent = (MouseEvent)e;
     }
 	
 	public KeyEvent getFirstEvent(){
@@ -113,4 +115,7 @@ public class KeyEventQueue implements KeyEventDispatcher, FocusListener {
 			return null;
 		return events.get(0);
 	}
+	public MouseEvent getMouseEvent() {
+    	return mouseEvent;
+    }
 }

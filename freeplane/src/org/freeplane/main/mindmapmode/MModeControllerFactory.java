@@ -91,7 +91,6 @@ import org.freeplane.features.styles.mindmapmode.MUIFactory;
 import org.freeplane.features.styles.mindmapmode.ShowFormatPanelAction;
 import org.freeplane.features.styles.mindmapmode.StyleEditorPanel;
 import org.freeplane.features.text.TextController;
-import org.freeplane.features.text.mindmapmode.KeyEventQueue;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.text.mindmapmode.SortNodes;
 import org.freeplane.features.text.mindmapmode.SplitNode;
@@ -213,8 +212,11 @@ public class MModeControllerFactory {
 					else {
 						if (e.getClickCount() == 2 && !e.isControlDown() && !e.isShiftDown() && !e.isMetaDown()
 								&& !e.isPopupTrigger() && e.getButton() == MouseEvent.BUTTON1) {
-						    if(ResourceController.getResourceController().getBooleanProperty("start_editor_on_double_click"))
-						        ((MTextController) TextController.getController()).edit(FirstAction.EDIT_CURRENT, e.isAltDown());
+						    if(ResourceController.getResourceController().getBooleanProperty("start_editor_on_double_click")) {
+	                            final MTextController textController = (MTextController) MTextController.getController(modeController);
+	                            textController.getEventQueue().activate(e);
+							    textController.edit(FirstAction.EDIT_CURRENT, e.isAltDown());
+                            }
 							return;
 						}
 						final Component selectedComponent = controller.getViewController().getSelectedComponent();
@@ -266,7 +268,7 @@ public class MModeControllerFactory {
 		AttributeController.install(new MAttributeController(modeController));
 		userInputListenerFactory.setNodeKeyListener(new DefaultNodeKeyListener(new IEditHandler() {
 			public void edit(final KeyEvent e, final FirstAction action, final boolean editLong) {
-				KeyEventQueue.getInstance().activate(e);
+				((MTextController) MTextController.getController(modeController)).getEventQueue().activate(e);
 				textController.edit(action, editLong);
 			}
 		}));

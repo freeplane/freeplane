@@ -13,7 +13,7 @@ import org.freeplane.features.text.AbstractContentTransformer;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EditNodeDialog;
 import org.freeplane.features.text.mindmapmode.IEditBaseCreator;
-import org.freeplane.features.text.mindmapmode.KeyEventQueue;
+import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.plugin.script.ExecuteScriptException;
 import org.freeplane.plugin.script.FormulaUtils;
 
@@ -42,7 +42,7 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 
 	public EditNodeBase createEditor(final NodeModel node, final EditedComponent editedComponent,
 	                                 final EditNodeBase.IEditControl editControl, String text, final boolean editLong) {
-		final KeyEvent firstKeyEvent = KeyEventQueue.getInstance().getFirstEvent(); 
+		final KeyEvent firstKeyEvent = MTextController.getController().getEventQueue().getFirstEvent(); 
 		if(firstKeyEvent != null){
 			if (firstKeyEvent.getKeyChar() == '='){
 				text = "=";

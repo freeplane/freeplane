@@ -283,7 +283,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 				content = HtmlUtils.plainToHTML(content);
 			}
 			htmlEditorPanel.setCurrentDocumentContent(content);
-			final KeyEvent firstKeyEvent = KeyEventQueue.getInstance().getFirstEvent();
+			final KeyEvent firstKeyEvent = MTextController.getController().getEventQueue().getFirstEvent();
 			if (firstKeyEvent != null) {
 				final JTextComponent currentPane = htmlEditorPanel.getEditorPane();
 				if (currentPane == htmlEditorPanel.getMostRecentFocusOwner()) {
