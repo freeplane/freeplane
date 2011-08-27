@@ -160,14 +160,21 @@ public class ChangeNodeLevelController {
 		final List<NodeModel> selectedNodes = Controller.getCurrentController().getSelection().getSortedSelection(true);
 		int position;
 		final boolean changeSide;
+		boolean leftSide = selectedNode.isLeft();
 		if (selectedParent.isRoot()) {
 			final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 			final Component mapViewComponent = mapViewManager.getMapViewComponent();
 			if (!mapViewManager.isLeftTreeSupported(mapViewComponent)) {
 				return;
 			}
-			position = selectedParent.getChildCount() - 1;
 			changeSide = true;
+			leftSide = ! leftSide;
+			final int childCount = selectedParent.getChildCount();
+			for(position = childCount - 1; 
+				position >= 0 && ((NodeModel)selectedParent.getChildAt(position)).isLeft() != leftSide;
+				position--);
+			if(position != childCount - 1 )
+				position++;
 		}
 		else {
 			final NodeModel grandParent = selectedParent.getParentNode();
@@ -176,7 +183,7 @@ public class ChangeNodeLevelController {
 			changeSide = false;
 		}
 		for (final NodeModel node : selectedNodes) {
-			mapController.moveNode(node, selectedParent, position, !node.isLeft(), changeSide);
+			mapController.moveNode(node, selectedParent, position, leftSide, changeSide);
 			if (!changeSide) {
 				position++;
 			}

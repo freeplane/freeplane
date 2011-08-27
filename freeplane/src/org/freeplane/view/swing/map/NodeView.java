@@ -887,13 +887,13 @@ public class NodeView extends JComponent implements INodeView {
 				}
 			}
 		}
+		numberingChanged(index+1);
 		node.remove();
 		NodeView preferred = getPreferredVisibleChild(false, preferredChildIsLeft);
 		if (preferred == null) {
 			preferred = this;
 		}
 		getMap().selectVisibleAncestorOrSelf(preferred);
-		numberingChanged(index);
 		revalidate();
 	}
 
@@ -909,8 +909,6 @@ public class NodeView extends JComponent implements INodeView {
 
 	public void onNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
 	                        final NodeModel child, final int newIndex) {
-		onNodeDeleted(oldParent, child, oldIndex);
-		onNodeInserted(newParent, child, newIndex);
 	}
 
 	public void onPreNodeDelete(final NodeModel oldParent, final NodeModel child, final int oldIndex) {
