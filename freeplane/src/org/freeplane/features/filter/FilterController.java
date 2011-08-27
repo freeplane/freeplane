@@ -227,8 +227,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 	public void applyFilter(final Filter filter, MapModel map, final boolean force) {
 	    filter.applyFilter(this, map, force);
-		final boolean isActive = filter.getCondition() != null;
-		applyToVisibleNodeOnly.setSelected(isActive);
 		history.add(filter);
     }
 
@@ -472,8 +470,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	void updateSettingsFromHistory() {
 		final Filter filter = history.getCurrentFilter();
 		updateSettingsFromFilter(filter);
-		final boolean isActive = filter.getCondition() != null;
-		applyToVisibleNodeOnly.setSelected(isActive);
 	}
 
 	NodeModel findNext(final NodeModel from, final NodeModel end, final Direction direction,
