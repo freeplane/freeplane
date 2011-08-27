@@ -344,13 +344,13 @@ public class LogicalStyleController implements IExtension {
 	    return sb.toString();
     }
 
-	public Collection<IStyle>  getMapStyles(final NodeModel node) {
+	public Collection<IStyle>  getConditionalMapStyles(final NodeModel node) {
 		final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
 		Collection<IStyle> condStyles = styleModel.getConditionalStyleModel().getStyles(node);
 		return getResursively(node, condStyles);
 	}
 
-	public Collection<IStyle>  getNodeStyles(final NodeModel node) {
+	public Collection<IStyle>  getConditionalNodeStyles(final NodeModel node) {
 		final Collection<IStyle> condStyles = new LinkedHashSet<IStyle>();
 		IStyle style = LogicalStyleModel.getStyle(node);
 		if(style != null){
@@ -358,19 +358,20 @@ public class LogicalStyleController implements IExtension {
 		}
 		
 		final ConditionalStyleModel conditionalStyleModel = (ConditionalStyleModel) node.getExtension(ConditionalStyleModel.class);
-		if(conditionalStyleModel == null){
-			return getResursively(node, condStyles);
-		}
-		else
+		if(conditionalStyleModel != null)
 			condStyles.addAll(conditionalStyleModel.getStyles(node));
-		return getResursively(node, condStyles);
+		final Collection<IStyle> all = getResursively(node, condStyles);
+		if(style != null){
+			all.remove(style);
+		}
+		return all;
 	}
 	
 	public String getNodeStyleNames(NodeModel node, String separator) {
-		return getStyleNames(getNodeStyles(node), separator);
+		return getStyleNames(getConditionalNodeStyles(node), separator);
     }
 
 	public String getMapStyleNames(NodeModel node, String separator) {
-		return getStyleNames(getMapStyles(node), separator);
+		return getStyleNames(getConditionalMapStyles(node), separator);
     }
 }
