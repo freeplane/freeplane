@@ -42,6 +42,8 @@ import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.NextNodeAction;
+import org.freeplane.features.format.FormatController;
+import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.help.HelpController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.link.LinkController;
@@ -50,6 +52,7 @@ import org.freeplane.features.map.MapController.Direction;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.browsemode.BModeController;
 import org.freeplane.features.print.PrintController;
+import org.freeplane.features.styles.LogicalStyleFilterController;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.time.TimeController;
@@ -134,6 +137,7 @@ public class FreeplaneApplet extends JApplet {
 			PrintController.install();
 			HelpController.install();
 			NodeHistory.install(controller);
+			FormatController.install(new FormatController());
 			ModelessAttributeController.install();
 			TextController.install();
 			MapController.install();
@@ -141,6 +145,8 @@ public class FreeplaneApplet extends JApplet {
 			TimeController.install();
 			LinkController.install();
 			IconController.install();
+			FilterController.getCurrentFilterController().getConditionFactory().addConditionController(7,
+			    new LogicalStyleFilterController());
 			final BModeController browseController = BModeControllerFactory.createModeController();
 			final Set<String> emptySet = Collections.emptySet();
 			FilterController.getController(controller).loadDefaultConditions();
