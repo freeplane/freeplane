@@ -767,11 +767,6 @@ public class MapController extends SelectionController {
 		Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(node);
 	}
 
-	public void selectBranch(final NodeModel selected, final boolean extend) {
-		displayNode(selected);
-		Controller.getCurrentController().getSelection().selectBranch(selected, extend);
-	}
-
 	public void selectMultipleNodes(final NodeModel focussed, final Collection<NodeModel> selecteds) {
 		for (final NodeModel node : selecteds) {
 			displayNode(node);
