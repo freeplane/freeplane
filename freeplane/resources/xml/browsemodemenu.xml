@@ -88,7 +88,6 @@
 			<menu_action action="ApplyNoFilteringAction"/>
 			<menu_action action="ApplySelectedViewConditionAction"/>
 			<menu_action action="ApplyToVisibleAction"/>
-			<menu_action action="UnfoldFilteredAncestorsAction"/>
 			<menu_action action="ShowAncestorsAction"/>
 			<menu_action action="ShowDescendantsAction"/>
 			<menu_action action="QuickFindAction.BACK"/>

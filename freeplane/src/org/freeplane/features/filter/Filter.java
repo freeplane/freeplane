@@ -32,23 +32,21 @@ import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 
 /**
  * @author Dimitry Polivaev
  */
 public class Filter {
 	static Filter createTransparentFilter() {
-		return new Filter(null, true, false, false, false);
+		return new Filter(null, true, false, false);
 	}
 
 	final private boolean appliesToVisibleNodesOnly;
 	final private ICondition condition;
 	final private int options;
-	final private boolean unfold;
 
 	public Filter(final ICondition condition, final boolean areAnchestorsShown,
-	              final boolean areDescendantsShown, final boolean applyToVisibleNodesOnly, final boolean unfold) {
+	              final boolean areDescendantsShown, final boolean applyToVisibleNodesOnly) {
 		super();
 		this.condition = condition;
 		int options = FilterInfo.FILTER_INITIAL_VALUE | FilterInfo.FILTER_SHOW_MATCHED;
@@ -61,7 +59,6 @@ public class Filter {
 		}
 		this.options = options;
 		appliesToVisibleNodesOnly = condition != null && applyToVisibleNodesOnly;
-		this.unfold = unfold;
 	}
 
 	void addFilterResult(final NodeModel node, final int flag) {
@@ -141,10 +138,6 @@ public class Filter {
 		        || isAncestorEclipsed)) {
 			addFilterResult(node, FilterInfo.FILTER_SHOW_ANCESTOR);
 			isDescendantSelected = true;
-			if (true && unfold && !isVisible(node) && node.isFolded()) {
-				final ModeController modeController = Controller.getCurrentModeController();
-				modeController.getMapController().setFolded(node, false);
-			}
 		}
 		return isDescendantSelected;
 	}
@@ -236,10 +229,6 @@ public class Filter {
 			mapSelection.selectAsTheOnlyOneSelected(selected.getVisibleAncestorOrSelf());
 		}
 		mapSelection.setSiblingMaxLevel(mapSelection.getSelected().getNodeLevel(false));
-	}
-
-	public boolean unfoldsInvisibleNodes() {
-		return unfold;
 	}
 
     public boolean matches(NodeModel nodeModel) {

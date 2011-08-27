@@ -43,7 +43,6 @@ import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.NextNodeAction;
 import org.freeplane.features.format.FormatController;
-import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.help.HelpController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.link.LinkController;
