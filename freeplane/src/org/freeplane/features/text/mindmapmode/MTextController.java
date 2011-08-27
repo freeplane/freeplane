@@ -469,7 +469,7 @@ public class MTextController extends TextController {
 				else{
 					node.removeExtension(ShortenedTextModel.class);
 				}
-				Controller.getCurrentModeController().getMapController().nodeChanged(node, "SHORTENER", ! state, state);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node, ShortenedTextModel.SHORTENER, ! state, state);
 			}
 
 			public void undo() {

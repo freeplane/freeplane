@@ -203,7 +203,8 @@ class NodeViewFactory {
 		model.addViewer(newView);
 		newView.setLayout(SelectableLayout.getInstance());
 		newView.setMainView(newMainView(newView));
-        updateNoteViewer(newView);
+		if(newView.isShortened())
+			updateNoteViewer(newView);
         newView.update();
         fireNodeViewCreated(newView); 
 		return newView;

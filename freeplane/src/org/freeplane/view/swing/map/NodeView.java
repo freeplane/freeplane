@@ -62,6 +62,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.MapViewLayout;
+import org.freeplane.features.text.ShortenedTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.map.MapView.PaintingMode;
 import org.freeplane.view.swing.map.attribute.AttributeView;
@@ -845,6 +846,10 @@ public class NodeView extends JComponent implements INodeView {
 			mainView.updateIcons(this);
 			return;
 		}
+		if (property.equals(ShortenedTextModel.SHORTENER)) {
+			NodeViewFactory.getInstance().updateNoteViewer(this);
+		}
+		
 		if (property.equals(HistoryInformationModel.class)) {
 			return;
 		}
@@ -1384,23 +1389,34 @@ public class NodeView extends JComponent implements INodeView {
 		if (attributeView != null) {
 			attributeView.update();
 		}
-		NodeViewFactory.getInstance().updateDetails(this);
-		if (contentPane != null) {
-			final int componentCount = contentPane.getComponentCount();
-			for (int i = 1; i < componentCount; i++) {
-				final Component component = contentPane.getComponent(i);
-				if (component instanceof JComponent) {
-					((JComponent) component).revalidate();
+		final boolean textShortened = isShortened();
+
+		if(! textShortened){
+			NodeViewFactory.getInstance().updateDetails(this);
+			if (contentPane != null) {
+				final int componentCount = contentPane.getComponentCount();
+				for (int i = 1; i < componentCount; i++) {
+					final Component component = contentPane.getComponent(i);
+					if (component instanceof JComponent) {
+						((JComponent) component).revalidate();
+					}
 				}
 			}
 		}
-		updateShortener(getModel());
+		updateShortener(getModel(), textShortened);
 		mainView.updateText(getModel());
 		mainView.updateIcons(this);
 		updateCloud();
 		modelBackgroundColor = NodeStyleController.getController(getMap().getModeController()).getBackgroundColor(model);
 		revalidate();
 	}
+
+	public boolean isShortened() {
+	    final ModeController modeController = getMap().getModeController();
+		final TextController textController = TextController.getController(modeController);
+		final boolean textShortened = textController.getIsShortened(getModel());
+	    return textShortened;
+    }
 
 	private void updateEdge() {
         final EdgeController edgeController = EdgeController.getController(getMap().getModeController());
@@ -1435,10 +1451,7 @@ public class NodeView extends JComponent implements INodeView {
 		return (CloudModel) getClientProperty(CloudModel.class);
     }
 
-	private void updateShortener(NodeModel nodeModel) {
-		final ModeController modeController = getMap().getModeController();
-		final TextController textController = TextController.getController(modeController);
-		final boolean textShortened = textController.getIsShortened(nodeModel);
+	private void updateShortener(NodeModel nodeModel, boolean textShortened) {
 		final boolean componentsVisible = !textShortened;
 		setContentComponentVisible(componentsVisible);
 	}
