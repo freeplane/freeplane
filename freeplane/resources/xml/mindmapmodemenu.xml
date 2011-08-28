@@ -457,6 +457,7 @@
 				<menu_action action="AboutAction" menu_key="MB_AboutAction"/>	
 			</menu_category>				
 			<menu_separator />
+			<menu_action action="GettingStartedAction"/>		
 			<menu_action action="DocumentationAction" accelerator="F1" />		
 		</menu_submenu>
 	</menu_category>

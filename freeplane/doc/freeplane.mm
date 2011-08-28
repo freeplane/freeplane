@@ -56,6 +56,9 @@
                 <time_condition_modified_before DATE="1314509208580"/>
             </conjunct_condition>
         </conditional_style>
+        <conditional_style ACTIVE="false" LOCALIZED_STYLE_REF="default" LAST="false">
+            <time_condition_modified_after DATE="1314509734623"/>
+        </conditional_style>
     </conditional_styles>
     <properties show_notes_in_map="false"/>
 <map_styles>
@@ -10356,7 +10359,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Time management" FOLDED="true" ID="ID_1959496513" CREATED="1303932101749" MODIFIED="1311405889292" TEXT_SHORTENED="true">
+<node TEXT="Time management" ID="ID_1959496513" CREATED="1303932101749" MODIFIED="1311405889292" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <richcontent TYPE="DETAILS">
 <html>
@@ -10387,7 +10390,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="5"/>
-<node TEXT="Show Calendar...[Time manager]" FOLDED="true" ID="ID_1104707017" CREATED="1267746559867" MODIFIED="1314474490978" TEXT_SHORTENED="true">
+<node TEXT="Show Calendar...[Manage time]" FOLDED="true" ID="ID_1104707017" CREATED="1267746559867" MODIFIED="1314532396979" TEXT_SHORTENED="true">
 <icon BUILTIN="../TimeManagementAction"/>
 <richcontent TYPE="DETAILS">
 <html>
@@ -10429,7 +10432,7 @@
 <attribute NAME="Chapter" VALUE="5"/>
 </node>
 </node>
-<node TEXT="Show Time Scheduler List... [Task manager]" ID="ID_1106133151" CREATED="1266247905093" MODIFIED="1314474497639" BACKGROUND_COLOR="#ffffff" TEXT_SHORTENED="true">
+<node TEXT="Show Time Scheduler List... [Manage tasks]" ID="ID_1106133151" CREATED="1266247905093" MODIFIED="1314532410114" BACKGROUND_COLOR="#ffffff" TEXT_SHORTENED="true">
 <icon BUILTIN="../TimeListAction"/>
 <richcontent TYPE="DETAILS">
 <html>

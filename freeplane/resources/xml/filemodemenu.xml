@@ -87,6 +87,7 @@
 				<menu_action action="LicenseAction"/>
 				<menu_action action="AboutAction" menu_key="MB_AboutAction"/>	
 			</menu_category>				
+			<menu_action action="GettingStartedAction"/>		
 			<menu_action accelerator="F1" action="DocumentationAction"/>		
 		</menu_submenu>
 	</menu_category>
