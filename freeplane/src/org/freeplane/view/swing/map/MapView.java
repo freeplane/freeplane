@@ -1469,51 +1469,45 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 	}
 
-	void selectContinuous(final NodeView nodeView) {
-		/* fc, 25.1.2004: corrected due to completely inconsistent behaviour. */
-		NodeView oldSelected = null;
-		final NodeView newSelected = nodeView;
-		for (final NodeView selectedNode : selection.getSelection()) {
-			if (selectedNode != newSelected && newSelected.isSiblingOf(selectedNode)) {
-				oldSelected = selectedNode;
-				break;
-			}
-		}
-		if (oldSelected == null) {
-			if (!isSelected(newSelected) && newSelected.isContentVisible()) {
-				selection.add(newSelected);
-			}
+	void selectContinuous(final NodeView newSelected) {
+		if(newSelected.isRoot()){
+			selection.add(newSelected);
 			return;
 		}
-		final boolean oldPositionLeft = oldSelected.isLeft();
-		final boolean newPositionLeft = newSelected.isLeft();
-		/* find old starting point. */
-		ListIterator<NodeView> i = newSelected.getSiblingViews().listIterator();
-		while (i.hasNext()) {
-			final NodeView next = (NodeView) i.next();
-			if (next == oldSelected) {
-				break;
-			}
-		}
-		i = newSelected.getSiblingViews().listIterator();
-		while (i.hasNext()) {
-			final NodeView next = (NodeView) i.next();
-			if (next == newSelected || next == oldSelected) {
-				if (next.isContentVisible()) {
-					addSelected(next);
+		final NodeView parentView = newSelected.getParentView();
+		final boolean isLeft = newSelected.isLeft();
+		final int newY = getMainViewY(newSelected);
+		int yGapAbove = Integer.MAX_VALUE;
+		int yGapBelow = Integer.MIN_VALUE;
+		final LinkedList<NodeView> childrenViews = parentView.getChildrenViews();
+		for(NodeView sibling : childrenViews){
+			if(newSelected == sibling || sibling.isLeft() != isLeft || ! sibling.isSelected())
+				continue;
+			final int y2 = getMainViewY(sibling);
+			final int yGap = newY - y2;
+			if(yGap > 0){
+				if(yGap < yGapAbove){
+					yGapAbove = yGap;
 				}
-				break;
+			}
+			else if(yGapAbove == Integer.MAX_VALUE){
+				if(yGap > yGapBelow){
+					yGapBelow = yGap;
+				}
 			}
 		}
-		/* select all up to the end point. */
-		while (i.hasNext()) {
-			final NodeView next = (NodeView) i.next();
-			if ((next.isLeft() == oldPositionLeft || next.isLeft() == newPositionLeft) && next.isContentVisible()) {
-				addSelected(next);
-			}
-			if (next == newSelected || next == oldSelected) {
-				break;
-			}
+		if(yGapAbove == Integer.MAX_VALUE && yGapBelow == Integer.MIN_VALUE){
+			selection.add(newSelected);
+			return;
+		}
+		for(NodeView sibling : childrenViews){
+			if(sibling.isLeft() != isLeft)
+				continue;
+			final int y2 = getMainViewY(sibling);
+			final int yGap = newY - y2;
+			if(yGap >= 0 && yGapAbove < Integer.MAX_VALUE && yGap < yGapAbove
+					|| yGap <= 0 && yGapAbove == Integer.MAX_VALUE && yGapBelow > Integer.MIN_VALUE  && yGap > yGapBelow)
+				selection.add(sibling);
 		}
 	}
 

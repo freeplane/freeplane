@@ -102,9 +102,9 @@ public class UITools {
 		dialog.getRootPane().getActionMap().put(action.getValue(Action.NAME), action);
 	}
 
-	public static void convertPointFromAncestor(final Component source, final Point p, Component c) {
+	public static void convertPointFromAncestor(final Component ancestor, final Point p, Component c) {
 		int x, y;
-		while (c != source) {
+		while (c != ancestor) {
 			x = c.getX();
 			y = c.getY();
 			p.x -= x;
