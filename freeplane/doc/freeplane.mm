@@ -6,7 +6,7 @@
 </attribute_registry>
 <node TEXT="Documentation&#xa;Freeplane 1.2" STYLE_REF="MainMenu" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1314023121716" VGAP="4">
 <icon BUILTIN="bee"/>
-<hook NAME="MapStyle" zoom="1.1" max_node_width="600">
+<hook NAME="MapStyle" max_node_width="600">
     <conditional_styles>
         <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
             <conjunct_condition user_name="V8">
@@ -126,16 +126,16 @@
 <stylenode TEXT="ProcedureStep">
 <edge STYLE="bezier"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.topic" POSITION="right" COLOR="#18898b" STYLE="fork">
+<stylenode LOCALIZED_TEXT="styles.topic" COLOR="#18898b" STYLE="fork">
 <font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.subtopic" POSITION="right" COLOR="#cc3300" STYLE="fork">
+<stylenode LOCALIZED_TEXT="styles.subtopic" COLOR="#cc3300" STYLE="fork">
 <font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.subsubtopic" POSITION="right" COLOR="#669900">
+<stylenode LOCALIZED_TEXT="styles.subsubtopic" COLOR="#669900">
 <font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.important" POSITION="right">
+<stylenode LOCALIZED_TEXT="styles.important">
 <icon BUILTIN="yes"/>
 </stylenode>
 </stylenode>

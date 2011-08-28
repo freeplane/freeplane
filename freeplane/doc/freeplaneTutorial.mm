@@ -6,7 +6,7 @@
 </attribute_registry>
 <node TEXT="Tutorial&#xa;Freeplane 1.2" STYLE_REF="Introduction" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1314382396151" VGAP="4">
 <icon BUILTIN="bee"/>
-<hook NAME="MapStyle" zoom="1.1" max_node_width="600">
+<hook NAME="MapStyle" max_node_width="600">
     <conditional_styles>
         <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
             <conjunct_condition user_name="V2">

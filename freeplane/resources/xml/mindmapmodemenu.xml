@@ -716,7 +716,7 @@
 			<menu_action action="NavigationPreviousMapAction" />
 			<menu_action action="NavigationNextMapAction" />			
 		</menu_category>
-		<menu_category name="zoom">
+		<menu_category name="zoom"  menu_key="main_toolbar_zoom">
 		</menu_category>
 		<menu_category name="open">
 			<menu_action action="OpenAction" />

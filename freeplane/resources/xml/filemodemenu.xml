@@ -126,6 +126,7 @@
 			<menu_action action="PrintAction"/>
 			<menu_action action="CloseAction"/>
 		</menu_category>
+		<menu_category name="zoom" menu_key="main_toolbar_zoom"/>
 		<menu_action action="CenterAction"/>
 		</menu_category>
 </menu_structure>
