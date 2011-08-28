@@ -22,10 +22,10 @@ package org.freeplane.features.mode;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import org.freeplane.core.extension.IExtension;
@@ -284,7 +284,7 @@ public abstract class PersistentNodeHook {
 	}
 
 	protected NodeModel[] getSelectedNodes() {
-		final List<NodeModel> selection = Controller.getCurrentController().getSelection().getSelection();
+		final Collection<NodeModel> selection = Controller.getCurrentController().getSelection().getSelection();
 		final int size = selection.size();
 		final NodeModel[] nodes = new NodeModel[size];
 		final Iterator<NodeModel> iterator = selection.iterator();

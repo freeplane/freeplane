@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.EventQueue;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -361,7 +362,7 @@ public class MMapController extends MapController {
         moveNode(node, newParent, newIndex, isLeft, changeSide);
 	}
 
-	public void moveNodes(final NodeModel selected, final List<NodeModel> selecteds, final int direction) {
+	public void moveNodes(final NodeModel selected, final Collection<NodeModel> selecteds, final int direction) {
         final IActor actor = new IActor() {
             public void act() {
                 _moveNodes(selected, selecteds, direction);
@@ -377,7 +378,7 @@ public class MMapController extends MapController {
         };
         Controller.getCurrentModeController().execute(actor, selected.getMap());
 	}
-    private void _moveNodes(final NodeModel selected, final List<NodeModel> selecteds, final int direction) {
+    private void _moveNodes(final NodeModel selected, final Collection<NodeModel> selecteds, final int direction) {
         final Comparator<Object> comparator = (direction == -1) ? null : new Comparator<Object>() {
             public int compare(final Object o1, final Object o2) {
                 final int i1 = ((Integer) o1).intValue();

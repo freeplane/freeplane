@@ -19,6 +19,7 @@ package org.freeplane.features.map.mindmapmode;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.util.Collection;
 import java.util.List;
 
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -99,12 +100,12 @@ public class ChangeNodeLevelController {
 		final ModeController currentModeController = Controller.getCurrentModeController();
 		final MapController mapController = currentModeController.getMapController();
 		final NodeModel selectedNode = mapController.getSelectedNode();
-		final List<NodeModel> selectedNodes = mapController.getSelectedNodes();
 		if (selectedNode.isRoot()) {
 			UITools.errorMessage(TextUtils.getText("cannot_add_parent_to_root"));
 			return false;
 		}
 		final NodeModel selectedParent = selectedNode.getParentNode();
+		final Collection<NodeModel> selectedNodes = mapController.getSelectedNodes();
 		for (final NodeModel node : selectedNodes) {
 			if (node.getParentNode() != selectedParent) {
 				UITools.errorMessage(TextUtils.getText("cannot_add_parent_diff_parents"));

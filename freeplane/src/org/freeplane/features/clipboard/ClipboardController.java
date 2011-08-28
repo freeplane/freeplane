@@ -36,8 +36,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 import java.util.Vector;
 
 import org.freeplane.core.extension.IExtension;
@@ -120,12 +118,14 @@ public class ClipboardController implements IExtension {
 		return new MindMapNodesSelection(stringWriter.toString(), null, null, null, null, null);
 	}
 
-	public Transferable copySingle(final List<NodeModel> source) {
-		final Collection<NodeModel> target = new Vector<NodeModel>(source.size());
-		final ListIterator<NodeModel> iterator = source.listIterator(source.size());
-		while (iterator.hasPrevious()) {
-			final NodeModel node = iterator.previous();
-			target.add(duplicate(node, false));
+	public Transferable copySingle(final Collection<NodeModel> source) {
+		final int size = source.size();
+		final Vector<NodeModel> target = new Vector<NodeModel>(size);
+		target.setSize(size);
+		int i = size - 1;
+		for (NodeModel node : source) {
+			target.set(i, duplicate(node, false));
+			i--;
 		}
 		return copy(target, false);
 	}

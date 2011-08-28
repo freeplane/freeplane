@@ -26,7 +26,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.List;
+import java.util.Collection;
 import java.util.NoSuchElementException;
 
 import javax.swing.ComboBoxModel;
@@ -67,7 +67,7 @@ public class AddAttributeAction extends AFreeplaneAction {
 	};
 
 	public void actionPerformed(final ActionEvent arg0) {
-		final List<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
+		final Collection<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
 		final int selection = UITools.showConfirmDialog(Controller.getCurrentController().getSelection().getSelected(),
 		    getDialog(), TextUtils.getText("attributes_AddAttributeAction.text"),
 		    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);

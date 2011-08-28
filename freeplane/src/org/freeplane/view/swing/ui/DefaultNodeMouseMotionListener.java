@@ -228,6 +228,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		/* windows alt, linux altgraph .... */
 		boolean retValue = false;
 		if (extend || range 
+		        || controller.getSelection().size() != 1 
 		        || !controller.getSelection().isSelected(newlySelectedNodeView) 
 		        || ! (FocusManager.getCurrentManager().getFocusOwner() instanceof MainView)) {
 			if (!range) {

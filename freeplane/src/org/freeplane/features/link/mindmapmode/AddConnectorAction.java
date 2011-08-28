@@ -20,10 +20,10 @@
 package org.freeplane.features.link.mindmapmode;
 
 import java.awt.event.ActionEvent;
-import java.util.List;
-
+import java.util.Collection;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
@@ -43,14 +43,20 @@ class AddConnectorAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final List<NodeModel> selecteds = Controller.getCurrentModeController().getMapController().getSelectedNodes();
+		final MapController mapController = Controller.getCurrentModeController().getMapController();
+		final Collection<NodeModel> selecteds = mapController.getSelectedNodes();
 		final MLinkController linkController = (MLinkController) LinkController.getController();
+		final NodeModel selectedNode = mapController.getSelectedNode();
 		if (selecteds.size() < 2) {
-			linkController.addConnector(selecteds.get(0), selecteds.get(0));
+			linkController.addConnector(selectedNode, mapController.getSelectedNode());
 			return;
 		}
-		for (int i = 1; i < selecteds.size(); i++) {
-			linkController.addConnector(selecteds.get(i), selecteds.get(0));
+		boolean next = false;
+		for (NodeModel node : selecteds) {
+			if(next)
+				linkController.addConnector(node, selectedNode);
+			else
+				next = true;
 		}
 	}
 }

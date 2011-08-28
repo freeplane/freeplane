@@ -2,12 +2,17 @@ package org.freeplane.plugin.script.proxy;
 
 import groovy.lang.Closure;
 
+import java.util.AbstractCollection;
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.ConcurrentModificationException;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.IFormattedObject;
@@ -30,6 +35,35 @@ public class ProxyUtils {
 			public int size() {
 				return nodeModels.size();
 			}
+		};
+	}
+	static Collection<Node> createNodeCollection(final Collection<NodeModel> list, final ScriptContext scriptContext) {
+		return new AbstractCollection<Node>() {
+			final private Collection<NodeModel> nodeModels = list;
+
+			@Override
+			public int size() {
+				return nodeModels.size();
+			}
+
+			@Override
+            public Iterator<Node> iterator() {
+	            return new Iterator<Proxy.Node>() {
+					final private Iterator<NodeModel> i = nodeModels.iterator();
+
+					public boolean hasNext() {
+	                    return i.hasNext();
+                    }
+
+					public Node next() {
+	                    return i.hasNext() ? new NodeProxy(i.next(), scriptContext) : null;
+                    }
+
+					public void remove() {
+	                    i.remove();
+                    }
+				};
+            }
 		};
 	}
 
@@ -125,5 +159,71 @@ public class ProxyUtils {
     	else if (value instanceof Date)
     		return new ConvertibleDate((Date) value);
     	return new ConvertibleNodeText(nodeModel, scriptContext);
+    }
+	
+	public static <T>  List<T> createList(final Collection<T> collection) {
+		return new AbstractList<T>() {
+			private int lastIndex;
+			private Iterator<T> iterator;
+			@Override
+            public T get(int index) {
+				if(index >= size())
+					throw new NoSuchElementException();
+				if(index == 0)
+					return collection.iterator().next();
+				if(iterator == null || index <= lastIndex){
+					lastIndex = -1;
+					iterator = collection.iterator();
+				}
+				try{
+					T object;
+					for(object = null; lastIndex < index; lastIndex++)
+						object = iterator.next();
+					return object;
+				}
+				catch (ConcurrentModificationException e) {
+					iterator = null;
+					return get(index);
+				}
+            }
+
+			@Override
+            public int indexOf(Object o) {
+				final Iterator<T> it = iterator();
+				int i = -1;
+				while(it.hasNext()){
+					i++;
+					final T next = it.next();
+					if(o ==next || o != null && o.equals(next))
+						return i;
+				}
+				return -1;
+			}
+
+			@Override
+			public int lastIndexOf(Object o) {
+				final Iterator<T> it = iterator();
+				int i = -1;
+				int result = -1;
+				while(it.hasNext()){
+					i++;
+					final T next = it.next();
+					if(o ==next || o != null && o.equals(next))
+						result = i;
+				}
+				return result;
+			}
+
+			@Override
+            public Iterator<T> iterator() {
+	            return collection.iterator();
+            }
+
+
+			@Override
+            public int size() {
+	            return collection.size();
+            }
+		};		
     }
 }

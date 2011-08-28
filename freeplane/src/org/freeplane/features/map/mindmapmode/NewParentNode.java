@@ -20,6 +20,7 @@ package org.freeplane.features.map.mindmapmode;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -65,7 +66,7 @@ public class NewParentNode extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel focussed = Controller.getCurrentModeController().getMapController().getSelectedNode();
 		final NodeModel selectedNode = focussed;
-		List<NodeModel> unmodifyable = Controller.getCurrentModeController().getMapController().getSelectedNodes();
+		Collection<NodeModel> unmodifyable = Controller.getCurrentModeController().getMapController().getSelectedNodes();
 		final List<NodeModel> selectedNodes = new ArrayList<NodeModel>(unmodifyable.size());
 		selectedNodes.addAll(unmodifyable);
 		Controller.getCurrentModeController().getMapController().sortNodesByDepth(selectedNodes);

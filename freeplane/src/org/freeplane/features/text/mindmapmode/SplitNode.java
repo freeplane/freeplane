@@ -21,9 +21,7 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.List;
-import java.util.ListIterator;
-
+import java.util.Collection;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import javax.swing.text.html.HTMLDocument;
@@ -62,10 +60,8 @@ public class SplitNode extends AFreeplaneAction {
 	 * java.util.List)
 	 */
 	public void actionPerformed(final ActionEvent e) {
-		final List<NodeModel> list = Controller.getCurrentModeController().getMapController().getSelectedNodes();
-		final ListIterator<NodeModel> listIterator = list.listIterator();
-		while (listIterator.hasNext()) {
-			final NodeModel next = listIterator.next();
+		final Collection<NodeModel> list = Controller.getCurrentModeController().getMapController().getSelectedNodes();
+		for (NodeModel next : list) {
 			splitNode(next);
 		}
 	}

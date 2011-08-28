@@ -447,7 +447,7 @@ public class MapController extends SelectionController {
 	 *            an iterator of MindMapNodes.
 	 * @return true, if the nodes should be folded.
 	 */
-	public boolean getFoldingState(final List<NodeModel> list) {
+	public boolean getFoldingState(final Collection<NodeModel> list) {
 		/*
 		 * Retrieve the information whether or not all nodes have the same
 		 * folding state.
@@ -520,7 +520,7 @@ public class MapController extends SelectionController {
 	 *
 	 * @return returns a list of MindMapNode s.
 	 */
-	public List<NodeModel> getSelectedNodes() {
+	public Collection<NodeModel> getSelectedNodes() {
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
 		if (selection == null) {
 			final List<NodeModel> list = Collections.emptyList();
@@ -788,20 +788,20 @@ public class MapController extends SelectionController {
 	}
 
 	public void toggleFolded() {
-		final List<NodeModel> selectedNodes = getSelectedNodes();
+		final Collection<NodeModel> selectedNodes = getSelectedNodes();
 		toggleFolded(selectedNodes);
 	}
 
-	public void toggleFolded(final List<NodeModel> list) {
-		if(list.size() != 1){
-			final boolean fold = getFoldingState(list);
-			final NodeModel nodes[] = list.toArray(new NodeModel[]{});
+	public void toggleFolded(final Collection<NodeModel> collection) {
+		if(collection.size() != 1){
+			final boolean fold = getFoldingState(collection);
+			final NodeModel nodes[] = collection.toArray(new NodeModel[]{});
 			for (final NodeModel node:nodes) {
 				setFolded(node, fold);
 			}
 		}
 		else {
-			final NodeModel node = list.get(0);
+			final NodeModel node = collection.iterator().next();
 			if(node.isRoot()){
 				setFolded(node, false);
 			}

@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.styles.mindmapmode;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -359,7 +360,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 
 	public void setStyle(final IStyle style) {
 		final ModeController modeController = Controller.getCurrentModeController();
-		final List<NodeModel> selectedNodes = modeController.getMapController().getSelectedNodes();
+		final Collection<NodeModel> selectedNodes = modeController.getMapController().getSelectedNodes();
 		for (final NodeModel selected : selectedNodes) {
 			setStyle(selected, style);
 		}

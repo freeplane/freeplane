@@ -19,9 +19,7 @@
  */
 package org.freeplane.features.filter;
 
-import java.util.List;
-import java.util.ListIterator;
-
+import java.util.Collection;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
@@ -212,26 +210,30 @@ public class Filter {
 
 	private void selectVisibleNode() {
 		final IMapSelection mapSelection = Controller.getCurrentController().getSelection();
-		final List<NodeModel> selectedNodes = mapSelection.getSelection();
-		final int lastSelectedIndex = selectedNodes.size() - 1;
-		if (lastSelectedIndex == -1) {
-			return;
-		}
-		final ListIterator<NodeModel> iterator = selectedNodes.listIterator(lastSelectedIndex);
-		while (iterator.hasPrevious()) {
-			final NodeModel previous = iterator.previous();
-			if (!previous.isVisible()) {
-				mapSelection.toggleSelected(previous);
+		final Collection<NodeModel> selectedNodes = mapSelection.getSelection();
+		final NodeModel[] array = new NodeModel[selectedNodes.size()];
+		boolean next = false;
+		for(NodeModel node : selectedNodes.toArray(array)){
+			if(next){
+				if (!node.isVisible()) {
+					mapSelection.toggleSelected(node);
+				}
 			}
+			else
+				next = true;
 		}
 		NodeModel selected = mapSelection.getSelected();
 		if (!selected.isVisible()) {
-			mapSelection.selectAsTheOnlyOneSelected(selected.getVisibleAncestorOrSelf());
+			if(mapSelection.getSelection().size() > 1){
+				mapSelection.toggleSelected(selected);
+			}
+			else
+				mapSelection.selectAsTheOnlyOneSelected(selected.getVisibleAncestorOrSelf());
 		}
 		mapSelection.setSiblingMaxLevel(mapSelection.getSelected().getNodeLevel(false));
 	}
 
-    public boolean matches(NodeModel nodeModel) {
-        return 0 != (nodeModel.getFilterInfo().get() & FilterInfo.FILTER_SHOW_MATCHED);
-    }
+	public boolean matches(NodeModel nodeModel) {
+		return 0 != (nodeModel.getFilterInfo().get() & FilterInfo.FILTER_SHOW_MATCHED);
+	}
 }

@@ -21,7 +21,6 @@ package org.freeplane.features.mode.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
