@@ -84,11 +84,12 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 	 * METHODS
 	 **********************************************************************************/
 
-	public void initialStart() {	
+	public void initialStart() {
+		dispatchWorkspaceEvent(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_EVENT_TYPE_INITIALIZE, this));
 		initializeConfiguration();
 		dispatchWorkspaceEvent(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_EVENT_TYPE_FINALIZE, this));
 		initializeView();
-		
+		isInitialized = true;
 	}
 	
 	public static WorkspaceController getController() {
@@ -97,11 +98,6 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 	
 	public boolean isInitialized() {
 		return isInitialized;
-	}
-
-	public String getVersion() {
-		//TODO: DOCEAR get Version from XML
-		return "Freeplane Workspace 1.0";
 	}
 
 	public WorkspaceConfiguration getConfiguration() {
