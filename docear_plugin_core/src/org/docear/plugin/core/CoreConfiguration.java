@@ -47,7 +47,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	private static final String WEB_DOCEAR_LOCATION = "webDocearLocation";
 	private static final String WEB_FREEPLANE_LOCATION = "webFreeplaneLocation";
 
-	private static final String DOCUMENT_REPOSITORY_PATH = "document_repository_path";
+	public static final String DOCUMENT_REPOSITORY_PATH = "document_repository_path";
 
 	public CoreConfiguration(ModeController modeController) {
 		addPropertyChangeListener();
@@ -173,31 +173,19 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	}
 
 	public void propertyChanged(String propertyName, String newValue, String oldValue) {
-		if (propertyName.equals(DOCUMENT_REPOSITORY_PATH)) {
-			WorkspaceController.getController().reloadWorkspace();
-		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.freeplane.plugin.workspace.controller.IWorkspaceListener#workspaceChanged(org.freeplane.plugin.workspace.controller.WorkspaceEvent)
-	 */
 	public void workspaceChanged(WorkspaceEvent event) {
 		// TODO Auto-generated method stub
 		System.out.println("DOCEAR CORE: workspaceChanged(WorkspaceEvent):"+ event);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.freeplane.plugin.workspace.controller.IWorkspaceListener#workspaceInitialize(org.freeplane.plugin.workspace.controller.WorkspaceEvent)
-	 */
 	public void workspaceInitialize(WorkspaceEvent event) {
 		// TODO Auto-generated method stub
 		System.out.println("DOCEAR CORE: workspaceInitialize(WorkspaceEvent):"+ event);
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see org.freeplane.plugin.workspace.controller.IWorkspaceListener#workspaceFinalize(org.freeplane.plugin.workspace.controller.WorkspaceEvent)
-	 */
 	public void workspaceFinalize(WorkspaceEvent event) {
 		System.out.println("DOCEAR CORE: workspaceFinalize(WorkspaceEvent):"+ event);
 		//TODO: DOCEAR change behaviour?

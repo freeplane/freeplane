@@ -28,6 +28,8 @@ public class WorkspacePreferences {
 	public static final String WORKSPACE_WIDTH_PROPERTY_KEY = "workspace_view_width";
 	public static final String WORKSPACE_LOCATION = "workspace_location";
 	public static final String WORKSPACE_LOCATION_NEW = "workspace_location_new";
+	public static final String WORKSPACE_PROFILE = "workspace.profile";
+	public static final String WORKSPACE_PROFILE_DEFAULT = "default";
 
 	private ModeController modeController;
 
@@ -38,6 +40,14 @@ public class WorkspacePreferences {
 		addMenuEntries();
 		addDefaultPreferences();
 		addPreferencesToOptionsPanel();
+	}
+	
+	public String getWorkspaceProfile() {
+		return Controller.getCurrentController().getResourceController().getProperty(WORKSPACE_PROFILE, WORKSPACE_PROFILE_DEFAULT);
+	}
+	
+	public void setWorkspaceProfile(String profile) {
+		Controller.getCurrentController().getResourceController().setProperty(WORKSPACE_PROFILE, (profile == null || profile.trim().length() <= 0 ) ? WORKSPACE_PROFILE_DEFAULT : profile);
 	}
 
 	private void addDefaultPreferences() {
