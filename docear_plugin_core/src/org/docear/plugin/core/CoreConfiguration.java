@@ -47,7 +47,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	private static final String WEB_DOCEAR_LOCATION = "webDocearLocation";
 	private static final String WEB_FREEPLANE_LOCATION = "webFreeplaneLocation";
 
-	private static final String DOCUMENT_REPOSITORY_PATH = "document_repository_path";
+	private static final String DOCUMENT_REPOSITORY_PATH = LocationDialog.DOCUMENT_REPOSITORY_PATH_PROPERTY;
 
 	public CoreConfiguration(ModeController modeController) {
 		addPropertyChangeListener();
