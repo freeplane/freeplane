@@ -9,12 +9,13 @@ import java.util.Vector;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
+import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.util.LogUtils;
 
 /**
  * 
  */
-public class DocearController implements IDocearEventListener {
+public class DocearController implements IDocearEventListener, IFreeplanePropertyListener {
 	
 	private final Vector<IDocearEventListener> docearListeners = new Vector<IDocearEventListener>();		
 	private final static DocearController docearController = new DocearController();
@@ -74,5 +75,9 @@ public class DocearController implements IDocearEventListener {
 			LogUtils.info("DOCEAR: new DocearLibrary set");
 		}
 		
+	}
+
+	public void propertyChanged(String propertyName, String newValue, String oldValue) {
+		// TODO Auto-generated method stub
 	}
 }
