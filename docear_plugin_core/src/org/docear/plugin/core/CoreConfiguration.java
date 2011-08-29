@@ -47,7 +47,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	private static final String WEB_DOCEAR_LOCATION = "webDocearLocation";
 	private static final String WEB_FREEPLANE_LOCATION = "webFreeplaneLocation";
 
-	private static final String WORKSPACE_PDF_LOCATION = "workspace_pdf_location";
+	private static final String DOCUMENT_REPOSITORY_PATH = "document_repository_path";
 
 	public CoreConfiguration(ModeController modeController) {
 		addPropertyChangeListener();
@@ -171,7 +171,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	}
 
 	public void propertyChanged(String propertyName, String newValue, String oldValue) {
-		if (propertyName.equals(WORKSPACE_PDF_LOCATION)) {
+		if (propertyName.equals(DOCUMENT_REPOSITORY_PATH)) {
 			WorkspaceController.getController().reloadWorkspace();
 		}
 	}

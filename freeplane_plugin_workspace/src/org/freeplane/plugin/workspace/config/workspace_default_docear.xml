@@ -4,7 +4,7 @@
         <link type="new_literature" name="New Literature and Annotations" path="workspace:/Library/NewPapersandAnnotations.mm" window="new" system="true" />
         <link type="literature_collection" name="Literature, Annotations, and Ideas" path="workspace:/Library/PapersAnnotationsAndIdeas.mm" system="true" />
         <link type="my_publications" name="My Publications" path="workspace:/Library/MyPublications.mm" system="true" />
-        <folder type="literature_repository" path="property:/workspace_pdf_location" system="true" />
+        <folder type="literature_repository" path="property:/document_repository_path" system="true" />
         <link type="references" path="workspace:/references.bib" system="true" />
 
     </folder>

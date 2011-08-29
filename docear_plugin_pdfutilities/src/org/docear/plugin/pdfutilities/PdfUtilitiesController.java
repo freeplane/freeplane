@@ -289,7 +289,7 @@ public class PdfUtilitiesController extends ALanguageController{
 				if(event.getType().equals(DocearEventType.NEW_LITERATURE_MAP)){
 					MapModel map = (MapModel)event.getEventObject();
 					try {
-						NodeUtils.addMonitoringDir(map.getRootNode(), new URI("property:/workspace_pdf_location"));
+						NodeUtils.addMonitoringDir(map.getRootNode(), new URI("property:/document_repository_path"));
 						NodeUtils.addMindmapDir(map.getRootNode(), new URI("workspace:/mindmaps"));
 					} catch (URISyntaxException e) {
 						// TODO Auto-generated catch block
