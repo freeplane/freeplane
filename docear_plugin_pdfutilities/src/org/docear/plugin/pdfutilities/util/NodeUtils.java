@@ -72,6 +72,7 @@ public class NodeUtils {
 	public Map<AnnotationID, Collection<AnnotationNodeModel>> getOldAnnotationsFromMaps(Collection<URI> mindmaps){
 		Map<AnnotationID, Collection<AnnotationNodeModel>> result = new HashMap<AnnotationID, Collection<AnnotationNodeModel>>();
 		for(MapModel map : this.getMapsFromUris(mindmaps)){
+			
 			Map<AnnotationID, Collection<AnnotationNodeModel>> temp = this.getOldAnnotationsFrom(map.getRootNode());
 			for(AnnotationID id : temp.keySet()){
 				if(!result.containsKey(id)){
@@ -133,7 +134,11 @@ public class NodeUtils {
 	
 	private Map<AnnotationID, Collection<AnnotationNodeModel>> getOldAnnotationsFrom(NodeModel parent){
 		Map<AnnotationID, Collection<AnnotationNodeModel>> result = new HashMap<AnnotationID, Collection<AnnotationNodeModel>>();
-		
+		try {
+			Thread.sleep(1L);
+			if(Thread.currentThread().isInterrupted()) return result;				
+		} catch (InterruptedException e) {			
+		}
 		if(isPdfLinkedNode(parent)){
 			URI uri = Tools.getAbsoluteUri(parent);
 			AnnotationNodeModel oldAnnotation = AnnotationController.getAnnotationNodeModel(parent);

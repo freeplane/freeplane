@@ -80,7 +80,7 @@ public class ImportConflictDialog extends JDialog {
 				if(conflictedAnnotation instanceof AnnotationNodeModel) continue;
 				annotationConflictPanel.setTitle(conflictedAnnotation.getTitle());
 				AnnotationConflictDropdownBoxPanel dropdownBoxPanel = new AnnotationConflictDropdownBoxPanel();
-				dropdownBoxPanel.setAnnotationData(conflicts.get(id), conflictedAnnotation);
+				dropdownBoxPanel.setAnnotationData(new ArrayList<IAnnotation>(conflicts.get(id)), conflictedAnnotation);
 				annotationConflictPanel.addDropdownBoxPanel(dropdownBoxPanel);
 				this.dropdownBoxPanels.add(dropdownBoxPanel);
 			}
@@ -88,7 +88,7 @@ public class ImportConflictDialog extends JDialog {
 			for(IAnnotation conflictedAnnotation : conflicts.get(id)){
 				if(conflictedAnnotation instanceof AnnotationNodeModel){
 					AnnotationConflictDropdownBoxPanel dropdownBoxPanel = new AnnotationConflictDropdownBoxPanel();
-					dropdownBoxPanel.setAnnotationData(conflicts.get(id), conflictedAnnotation);
+					dropdownBoxPanel.setAnnotationData(new ArrayList<IAnnotation>(conflicts.get(id)), conflictedAnnotation);
 					annotationConflictPanel.addDropdownBoxPanel(dropdownBoxPanel);
 					this.dropdownBoxPanels.add(dropdownBoxPanel);
 				}

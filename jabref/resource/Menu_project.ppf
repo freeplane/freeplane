@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project type="java bundle">
+<settings name="project">
+<replacespace enable="false" string="_"/>
+<emptykeys enable="true"/>
+<saveWYSIWYGmode enable="true"/>
+</settings>
+<files workdirectory=".">
+<file filename="Menu_da.properties">
+<properties encoding="java utf" visible="true" withescape="true"/>
+</file>
+<file filename="Menu_de.properties">
+<properties encoding="java utf" visible="false" withescape="true"/>
+</file>
+<file filename="Menu_en.properties">
+<properties encoding="java utf" visible="true" withescape="true"/>
+</file>
+<file filename="Menu_es.properties">
+<properties encoding="java utf" visible="false" withescape="true"/>
+</file>
+<file filename="Menu_fr.properties">
+<properties encoding="java utf" visible="false" withescape="true"/>
+</file>
+<file filename="Menu_in.properties">
+<properties encoding="java utf" visible="false" withescape="true"/>
+</file>
+<file filename="Menu_it.properties">
+<properties encoding="java utf" visible="false" withescape="true"/>
+</file>
+<file filename="Menu_ja.properties">
+<properties encoding="java utf" visible="false" withescape="true"/>
+</file>
+<file filename="Menu_nl.properties">
+<properties encoding="java utf" visible="false" withescape="true"/>
+</file>
+<file filename="Menu_no.properties">
+<properties encoding="java utf" visible="true" withescape="true"/>
+</file>
+<file filename="Menu_tr.properties">
+<properties encoding="java utf" visible="false" withescape="true"/>
+</file>
+<file filename="Menu_vi.properties">
+<properties encoding="java utf" visible="false" withescape="true"/>
+</file>
+<file filename="Menu_zh.properties">
+<properties encoding="java utf" visible="false" withescape="true"/>
+</file>
+</files>
+<scanner>
+<files enable="false" rootdir="./"/>
+</scanner>
+</project>

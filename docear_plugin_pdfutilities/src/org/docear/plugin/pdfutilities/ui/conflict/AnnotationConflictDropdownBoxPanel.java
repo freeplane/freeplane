@@ -1,5 +1,6 @@
 package org.docear.plugin.pdfutilities.ui.conflict;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.swing.DefaultComboBoxModel;
@@ -63,6 +64,16 @@ public class AnnotationConflictDropdownBoxPanel extends JPanel {
 		this.target = target;
 		String fileName = getFileName(target);		
 		this.label.setText("Annotation name in " + fileName + " : ");
+		Collection<IAnnotation> doubleEntries = new ArrayList<IAnnotation>();
+		for(IAnnotation annotation : annotations){
+			if(doubleEntries.contains(annotation)) continue;
+			for(IAnnotation otherAnnotation : annotations){
+				if(!annotation.equals(otherAnnotation) && annotation.getTitle().equals(otherAnnotation.getTitle())){
+					doubleEntries.add(otherAnnotation);
+				}
+			}
+		}
+		annotations.removeAll(doubleEntries);
 		this.comboBox.setModel(new DefaultComboBoxModel(annotations.toArray()));
 		this.comboBox.setSelectedItem(target);		
 	}
