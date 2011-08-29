@@ -243,17 +243,42 @@ public class MapController extends SelectionController {
 		if (node == null) {
 			throw new IllegalArgumentException("setFolded was called with a null node.");
 		}
-		if (node.getChildCount() == 0
-				|| node.isFolded() == folded
-				|| node.isRoot() && folded) 
+		if (node.getChildCount() == 0) 
 			return;
-		node.setFolded(folded);
-		final ResourceController resourceController = ResourceController.getResourceController();
-		if (resourceController.getProperty(NodeBuilder.RESOURCES_SAVE_FOLDING).equals(
-		    NodeBuilder.RESOURCES_ALWAYS_SAVE_FOLDING)) {
-			final MapModel map = node.getMap();
-			setSaved(map, false);
+		boolean mapChanged = false;
+	    if(! folded)
+	    	mapChanged = unfoldInvisibleChildren(node, true);
+		if (node.isFolded() != folded && !(node.isRoot() && folded)){ 
+			node.setFolded(folded);
+			mapChanged = true;
 		}
+		if(mapChanged){
+			final ResourceController resourceController = ResourceController.getResourceController();
+			if (resourceController.getProperty(NodeBuilder.RESOURCES_SAVE_FOLDING).equals(
+				NodeBuilder.RESOURCES_ALWAYS_SAVE_FOLDING)) {
+				final MapModel map = node.getMap();
+				setSaved(map, false);
+			}
+		}
+	}
+
+
+	private boolean unfoldInvisibleChildren(final NodeModel node, final boolean reportUnfolded) {
+		boolean visibleFound = false;
+		boolean unfolded = false;
+		for(int i = 0; i < node.getChildCount(); i++){
+			final NodeModel child = (NodeModel) node.getChildAt(i);
+			if(child.isVisible())
+				visibleFound = true;
+			else if(unfoldInvisibleChildren(child, false) && child.isFolded()){	
+				visibleFound = unfolded = true;
+				child.setFolded(false);
+			}
+		}
+		if(reportUnfolded)
+			return unfolded;
+		else
+			return visibleFound;
 	}
 
 	public void addMapChangeListener(final IMapChangeListener listener) {
@@ -422,7 +447,7 @@ public class MapController extends SelectionController {
 	 *            an iterator of MindMapNodes.
 	 * @return true, if the nodes should be folded.
 	 */
-	public boolean getFoldingState(final List<NodeModel> list) {
+	public boolean getFoldingState(final Collection<NodeModel> list) {
 		/*
 		 * Retrieve the information whether or not all nodes have the same
 		 * folding state.
@@ -495,7 +520,7 @@ public class MapController extends SelectionController {
 	 *
 	 * @return returns a list of MindMapNode s.
 	 */
-	public List<NodeModel> getSelectedNodes() {
+	public Collection<NodeModel> getSelectedNodes() {
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
 		if (selection == null) {
 			final List<NodeModel> list = Collections.emptyList();
@@ -742,11 +767,6 @@ public class MapController extends SelectionController {
 		Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(node);
 	}
 
-	public void selectBranch(final NodeModel selected, final boolean extend) {
-		displayNode(selected);
-		Controller.getCurrentController().getSelection().selectBranch(selected, extend);
-	}
-
 	public void selectMultipleNodes(final NodeModel focussed, final Collection<NodeModel> selecteds) {
 		for (final NodeModel node : selecteds) {
 			displayNode(node);
@@ -768,14 +788,25 @@ public class MapController extends SelectionController {
 	}
 
 	public void toggleFolded() {
-		toggleFolded(getSelectedNodes());
+		final Collection<NodeModel> selectedNodes = getSelectedNodes();
+		toggleFolded(selectedNodes);
 	}
 
-	public void toggleFolded(final List<NodeModel> list) {
-		final boolean fold = getFoldingState(list);
-		final NodeModel nodes[] = list.toArray(new NodeModel[]{});
-		for (final NodeModel node:nodes) {
-			setFolded(node, fold);
+	public void toggleFolded(final Collection<NodeModel> collection) {
+		if(collection.size() != 1){
+			final boolean fold = getFoldingState(collection);
+			final NodeModel nodes[] = collection.toArray(new NodeModel[]{});
+			for (final NodeModel node:nodes) {
+				setFolded(node, fold);
+			}
+		}
+		else {
+			final NodeModel node = collection.iterator().next();
+			if(node.isRoot()){
+				setFolded(node, false);
+			}
+			else
+				setFolded(node, ! node.isFolded());
 		}
 	}
 }

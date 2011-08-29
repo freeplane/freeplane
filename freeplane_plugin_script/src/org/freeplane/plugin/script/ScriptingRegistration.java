@@ -54,7 +54,6 @@ import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
 import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
 import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
 import org.freeplane.plugin.script.filter.ScriptConditionController;
-import org.freeplane.plugin.script.manager.ManageScriptsAction;
 
 class ScriptingRegistration {
 	final private class PatternScriptModel implements IScriptModel {

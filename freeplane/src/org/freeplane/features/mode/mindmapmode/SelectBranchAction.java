@@ -21,12 +21,13 @@ package org.freeplane.features.mode.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
 /** */
-class SelectBranchAction extends AFreeplaneAction {
+class SelectBranchAction extends AMultipleNodeAction {
 	/**
 	 * 
 	 */
@@ -39,8 +40,9 @@ class SelectBranchAction extends AFreeplaneAction {
 		super("SelectBranchAction");
 	}
 
-	public void actionPerformed(final ActionEvent e) {
+	@Override
+    protected void actionPerformed(ActionEvent e, NodeModel node) {
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
-		selection.selectBranch(selection.getSelected(), true);
-	}
+		selection.selectBranch(node, true);
+    }
 }

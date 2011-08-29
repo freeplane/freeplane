@@ -44,7 +44,6 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.ui.INodeViewLifeCycleListener;
-import org.freeplane.view.swing.map.MainView;
 
 /**
  * Derive from this class to implement the Controller for your mode. Overload

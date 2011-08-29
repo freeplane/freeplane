@@ -203,9 +203,9 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		return false;
 	}
 
-	protected void setFolded(final NodeModel node, final boolean state) {
+	private void setFolded(final NodeModel node, final boolean state) {
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
-		if (mapController.hasChildren(node) && (mapController.isFolded(node) != state)) {
+		if (! node.isRoot() && mapController.hasChildren(node) && (mapController.isFolded(node) != state)) {
 			mapController.setFolded(node, state);
 		}
 	}

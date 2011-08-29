@@ -26,6 +26,8 @@ import org.freeplane.features.map.NodeModel;
  * @author Dimitry Polivaev
  */
 public class ShortenedTextModel implements IExtension {
+	public static final String SHORTENER = "SHORTENER";
+
 	public ShortenedTextModel() {
     }
 

@@ -2,7 +2,7 @@
 <preferences_structure>
 	<tabbed_pane>
 		<tab name="workspace">			
-				<path name="workspace_pdf_location" dir="true" />
+				<path name="document_repository_path" dir="true" />
 		</tab>
 	</tabbed_pane>
 </preferences_structure>

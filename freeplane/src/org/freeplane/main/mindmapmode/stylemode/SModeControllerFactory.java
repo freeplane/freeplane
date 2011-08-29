@@ -146,7 +146,6 @@ public class SModeControllerFactory {
 		new MapStyle(false);
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
-		FilterController.getController(controller).loadDefaultConditions();
 		final SModeController modeController = this.modeController;
 		final StyleEditorPanel styleEditorPanel = new StyleEditorPanel(modeController, null, false);
 		final MapController mapController = modeController.getMapController();

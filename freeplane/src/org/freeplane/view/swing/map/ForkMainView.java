@@ -27,10 +27,8 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Stroke;
 
-import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 
 class ForkMainView extends MainView {
@@ -101,6 +99,7 @@ class ForkMainView extends MainView {
 	 * @see freeplane.view.mindmapview.NodeView#getStyle()
 	 */
 	@Override
+    public
 	String getShape() {
 		return NodeStyleModel.STYLE_FORK;
 	}

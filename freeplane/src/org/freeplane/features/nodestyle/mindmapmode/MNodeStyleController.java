@@ -21,7 +21,7 @@ package org.freeplane.features.nodestyle.mindmapmode;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.util.List;
+import java.util.Collection;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.map.IExtensionCopier;
@@ -300,7 +300,7 @@ public class MNodeStyleController extends NodeStyleController {
 	}
 
 	public void setFontSize(final int size) {
-		final List<NodeModel> selectedNodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
+		final Collection<NodeModel> selectedNodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
 		for (final NodeModel selected : selectedNodes) {
 			setFontSize(selected, size);
 		}

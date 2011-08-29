@@ -7,6 +7,7 @@ import groovy.lang.Closure;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -55,7 +56,7 @@ class ControllerProxy implements Proxy.Controller {
 	private void editImpl(Node node, boolean editInline) {
 	    final NodeModel nodeModel = ((NodeProxy) node).getDelegate();
 		Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(nodeModel);
-		((MTextController) TextController.getController()).edit(null, FirstAction.EDIT_CURRENT, !editInline);
+		((MTextController) TextController.getController()).edit(FirstAction.EDIT_CURRENT, !editInline);
     }
 
 	public Node getSelected() {
@@ -67,8 +68,9 @@ class ControllerProxy implements Proxy.Controller {
 	public List<Node> getSelecteds() {
 		if (scriptContext != null)
 			scriptContext.accessAll();
-		return ProxyUtils
-		    .createNodeList(Controller.getCurrentController().getSelection().getSelection(), scriptContext);
+		final Collection<Node> collection = ProxyUtils
+		    .createNodeCollection(Controller.getCurrentController().getSelection().getSelection(), scriptContext);
+		return ProxyUtils.createList(collection);
 	}
 
 	public List<Node> getSortedSelection(final boolean differentSubtrees) {

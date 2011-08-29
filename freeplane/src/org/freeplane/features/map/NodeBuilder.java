@@ -154,21 +154,19 @@ public class NodeBuilder implements IElementDOMHandler {
 			}
 		});
 		reader.addReadCompletionListener(new IReadCompletionListener() {
-			private void foldAll(final NodeModel node, int nodeCount) {
+			private int foldAll(final NodeModel node, int nodeCount) {
 				if (node.getChildCount() == 0) {
-					return;
+					return nodeCount;
 				}
-				if (nodeCount >= 0) {
-					for (final NodeModel child : node.getChildren()) {
-						nodeCount -= child.getChildCount();
-					}
-				}
-				if (nodeCount < 0) {
+				if (nodeCount <= 0) {
 					node.setFolded(true);
+					return nodeCount;
 				}
+				nodeCount -= node.getChildCount();
 				for (final NodeModel child : node.getChildren()) {
-					foldAll(child, nodeCount);
+					nodeCount = foldAll(child, nodeCount);
 				}
+				return nodeCount;
 			}
 
 			public void readingCompleted(final NodeModel topNode, final HashMap<String, String> newIds) {
@@ -182,10 +180,11 @@ public class NodeBuilder implements IElementDOMHandler {
 				final String loadFolding = resourceController.getProperty(NodeBuilder.RESOURCES_LOAD_FOLDING);
 				if (loadFolding.equals(NodeBuilder.RESOURCES_ALWAYS_FOLD_ALL_AFTER_LOAD)
 				        || loadFolding.equals(NodeBuilder.RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_FOLD_ALL)) {
-					final int nodeCount = resourceController.getIntProperty(NodeBuilder.MAX_DISPLAYED_NODE_COUNT, 20);
+					int nodeCount = resourceController.getIntProperty(NodeBuilder.MAX_DISPLAYED_NODE_COUNT, 20);
 					final List<NodeModel> children = topNode.getChildren();
+					nodeCount = nodeCount - 1 - children.size();
 					for (final NodeModel child : children) {
-						foldAll(child, nodeCount - 1 - children.size());
+						nodeCount = foldAll(child, nodeCount);
 					}
 				}
 			}

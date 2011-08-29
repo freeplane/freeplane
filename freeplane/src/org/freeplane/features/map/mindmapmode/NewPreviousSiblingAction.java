@@ -35,6 +35,6 @@ class NewPreviousSiblingAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(MMapController.NEW_SIBLING_BEFORE, null);
+		((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(MMapController.NEW_SIBLING_BEFORE);
 	}
 }

@@ -61,11 +61,11 @@ public class DefaultConditionRenderer implements ListCellRenderer, TableCellRend
 	}
 	
 	private Component getCellRendererComponent(final Object value, final boolean isSelected) {
+		final JComponent component;
 		if (value == null) {
-			return new JLabel(noValueText);
+			component =  new JLabel(noValueText);
 		}
-		JComponent component;
-		if (value instanceof UIIcon) {
+		else if (value instanceof UIIcon) {
 			component = new JLabel(((UIIcon) value).getIcon());
 		}
 		else if (value instanceof ASelectableCondition) {

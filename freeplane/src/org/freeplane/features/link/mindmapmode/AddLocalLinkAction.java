@@ -20,12 +20,12 @@
 package org.freeplane.features.link.mindmapmode;
 
 import java.awt.event.ActionEvent;
-import java.util.List;
-
+import java.util.Collection;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -47,17 +47,18 @@ class AddLocalLinkAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = Controller.getCurrentModeController();
-		final List<NodeModel> selecteds = modeController.getMapController().getSelectedNodes();
+		final MapController mapController = modeController.getMapController();
+		final Collection<NodeModel> selecteds = mapController.getSelectedNodes();
 		if (selecteds.size() < 2) {
 			Controller.getCurrentController();
 			UITools.errorMessage(TextUtils.getText("less_than_two_selected_nodes"));
 			return;
 		}
-		final NodeModel target = selecteds.get(0);
+		final NodeModel target = mapController.getSelectedNode();
 		final String targetId = (target).createID();
-		for (int i = 1; i < selecteds.size(); i++) {
-			final NodeModel source = selecteds.get(i);
-			((MLinkController) LinkController.getController()).setLink(source, ("#" + targetId), LinkController.LINK_ABSOLUTE);
+		for (NodeModel source : selecteds) {
+            if(source != target)
+    			((MLinkController) LinkController.getController()).setLink(source, ("#" + targetId), LinkController.LINK_ABSOLUTE);
 		}
 	}
 }

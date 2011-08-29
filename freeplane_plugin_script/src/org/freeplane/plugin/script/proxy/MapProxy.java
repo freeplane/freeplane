@@ -113,7 +113,7 @@ public class MapProxy extends AbstractProxy<MapModel> implements Map {
 		}
 		else {
 			final Filter filter = new Filter(ProxyUtils.createCondition(closure, getScriptContext()), false, false,
-			    true, true);
+			    true);
 			filterController.applyFilter(filter, getDelegate(), true);
 		}
 	}
@@ -131,7 +131,7 @@ public class MapProxy extends AbstractProxy<MapModel> implements Map {
 		}
 		else {
 			final Filter filter = new Filter(ProxyUtils.createCondition(closure, getScriptContext()), showAnchestors,
-			    showDescendants, true, true);
+			    showDescendants, true);
 			filterController.applyFilter(filter, getDelegate(), true);
 		}
 	}

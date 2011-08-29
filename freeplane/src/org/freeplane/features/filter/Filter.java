@@ -19,9 +19,7 @@
  */
 package org.freeplane.features.filter;
 
-import java.util.List;
-import java.util.ListIterator;
-
+import java.util.Collection;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
@@ -32,23 +30,21 @@ import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 
 /**
  * @author Dimitry Polivaev
  */
 public class Filter {
 	static Filter createTransparentFilter() {
-		return new Filter(null, true, false, false, false);
+		return new Filter(null, true, false, false);
 	}
 
 	final private boolean appliesToVisibleNodesOnly;
 	final private ICondition condition;
 	final private int options;
-	final private boolean unfold;
 
 	public Filter(final ICondition condition, final boolean areAnchestorsShown,
-	              final boolean areDescendantsShown, final boolean applyToVisibleNodesOnly, final boolean unfold) {
+	              final boolean areDescendantsShown, final boolean applyToVisibleNodesOnly) {
 		super();
 		this.condition = condition;
 		int options = FilterInfo.FILTER_INITIAL_VALUE | FilterInfo.FILTER_SHOW_MATCHED;
@@ -61,7 +57,6 @@ public class Filter {
 		}
 		this.options = options;
 		appliesToVisibleNodesOnly = condition != null && applyToVisibleNodesOnly;
-		this.unfold = unfold;
 	}
 
 	void addFilterResult(final NodeModel node, final int flag) {
@@ -141,10 +136,6 @@ public class Filter {
 		        || isAncestorEclipsed)) {
 			addFilterResult(node, FilterInfo.FILTER_SHOW_ANCESTOR);
 			isDescendantSelected = true;
-			if (true && unfold && !isVisible(node) && node.isFolded()) {
-				final ModeController modeController = Controller.getCurrentModeController();
-				modeController.getMapController().setFolded(node, false);
-			}
 		}
 		return isDescendantSelected;
 	}
@@ -219,30 +210,30 @@ public class Filter {
 
 	private void selectVisibleNode() {
 		final IMapSelection mapSelection = Controller.getCurrentController().getSelection();
-		final List<NodeModel> selectedNodes = mapSelection.getSelection();
-		final int lastSelectedIndex = selectedNodes.size() - 1;
-		if (lastSelectedIndex == -1) {
-			return;
-		}
-		final ListIterator<NodeModel> iterator = selectedNodes.listIterator(lastSelectedIndex);
-		while (iterator.hasPrevious()) {
-			final NodeModel previous = iterator.previous();
-			if (!previous.isVisible()) {
-				mapSelection.toggleSelected(previous);
+		final Collection<NodeModel> selectedNodes = mapSelection.getSelection();
+		final NodeModel[] array = new NodeModel[selectedNodes.size()];
+		boolean next = false;
+		for(NodeModel node : selectedNodes.toArray(array)){
+			if(next){
+				if (!node.isVisible()) {
+					mapSelection.toggleSelected(node);
+				}
 			}
+			else
+				next = true;
 		}
 		NodeModel selected = mapSelection.getSelected();
 		if (!selected.isVisible()) {
-			mapSelection.selectAsTheOnlyOneSelected(selected.getVisibleAncestorOrSelf());
+			if(mapSelection.getSelection().size() > 1){
+				mapSelection.toggleSelected(selected);
+			}
+			else
+				mapSelection.selectAsTheOnlyOneSelected(selected.getVisibleAncestorOrSelf());
 		}
 		mapSelection.setSiblingMaxLevel(mapSelection.getSelected().getNodeLevel(false));
 	}
 
-	public boolean unfoldsInvisibleNodes() {
-		return unfold;
+	public boolean matches(NodeModel nodeModel) {
+		return 0 != (nodeModel.getFilterInfo().get() & FilterInfo.FILTER_SHOW_MATCHED);
 	}
-
-    public boolean matches(NodeModel nodeModel) {
-        return 0 != (nodeModel.getFilterInfo().get() & FilterInfo.FILTER_SHOW_MATCHED);
-    }
 }

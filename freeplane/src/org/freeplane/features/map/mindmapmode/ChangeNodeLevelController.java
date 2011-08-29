@@ -19,6 +19,7 @@ package org.freeplane.features.map.mindmapmode;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.util.Collection;
 import java.util.List;
 
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -99,12 +100,12 @@ public class ChangeNodeLevelController {
 		final ModeController currentModeController = Controller.getCurrentModeController();
 		final MapController mapController = currentModeController.getMapController();
 		final NodeModel selectedNode = mapController.getSelectedNode();
-		final List<NodeModel> selectedNodes = mapController.getSelectedNodes();
 		if (selectedNode.isRoot()) {
 			UITools.errorMessage(TextUtils.getText("cannot_add_parent_to_root"));
 			return false;
 		}
 		final NodeModel selectedParent = selectedNode.getParentNode();
+		final Collection<NodeModel> selectedNodes = mapController.getSelectedNodes();
 		for (final NodeModel node : selectedNodes) {
 			if (node.getParentNode() != selectedParent) {
 				UITools.errorMessage(TextUtils.getText("cannot_add_parent_diff_parents"));
@@ -160,14 +161,21 @@ public class ChangeNodeLevelController {
 		final List<NodeModel> selectedNodes = Controller.getCurrentController().getSelection().getSortedSelection(true);
 		int position;
 		final boolean changeSide;
+		boolean leftSide = selectedNode.isLeft();
 		if (selectedParent.isRoot()) {
 			final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 			final Component mapViewComponent = mapViewManager.getMapViewComponent();
 			if (!mapViewManager.isLeftTreeSupported(mapViewComponent)) {
 				return;
 			}
-			position = selectedParent.getChildCount() - 1;
 			changeSide = true;
+			leftSide = ! leftSide;
+			final int childCount = selectedParent.getChildCount();
+			for(position = childCount - 1; 
+				position >= 0 && ((NodeModel)selectedParent.getChildAt(position)).isLeft() != leftSide;
+				position--);
+			if(position != childCount - 1 )
+				position++;
 		}
 		else {
 			final NodeModel grandParent = selectedParent.getParentNode();
@@ -176,7 +184,7 @@ public class ChangeNodeLevelController {
 			changeSide = false;
 		}
 		for (final NodeModel node : selectedNodes) {
-			mapController.moveNode(node, selectedParent, position, !node.isLeft(), changeSide);
+			mapController.moveNode(node, selectedParent, position, leftSide, changeSide);
 			if (!changeSide) {
 				position++;
 			}

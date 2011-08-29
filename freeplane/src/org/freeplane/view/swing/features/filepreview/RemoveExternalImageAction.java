@@ -20,8 +20,7 @@
 package org.freeplane.view.swing.features.filepreview;
 
 import java.awt.event.ActionEvent;
-import java.util.List;
-
+import java.util.Collection;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.map.NodeModel;
@@ -56,7 +55,7 @@ public class RemoveExternalImageAction extends AMultipleNodeAction {
 	public void setEnabled() {
 		boolean enable = false;
 		final ProgressUtilities progUtil = new ProgressUtilities();
-		final List<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
+		final Collection<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
 		for (final NodeModel node : nodes) {
 			if (node != null && progUtil.hasExternalResource(node) && !progUtil.hasExtendedProgressIcon(node)) {
 				enable = true;

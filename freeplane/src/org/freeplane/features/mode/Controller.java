@@ -105,7 +105,6 @@ public class Controller extends AController {
 	}
 
 	public ModeController getModeController(final String modeName) {
-		LogUtils.info("requesting mode: " + modeName);
 		return modeControllers.get(modeName);
 	}
 
@@ -146,6 +145,7 @@ public class Controller extends AController {
 		if (oldModeController != null) {
 			oldModeController.shutdown();
 		}
+		LogUtils.info("requesting mode: " + newModeController.getModeName());
 		modeController = newModeController;
 		viewController.selectMode(oldModeController, newModeController);
 		getMapViewManager().changeToMode(newModeController.getModeName());
