@@ -6,7 +6,6 @@ package org.docear.plugin.core.workspace.node;
 
 import java.io.File;
 import java.net.URI;
-import java.net.URL;
 
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
@@ -15,6 +14,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.node.LinkNode;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
@@ -88,13 +88,15 @@ public class LinkTypeNewLiteratureNode extends LinkNode implements IWorkspaceNod
 		System.out.println("event: "+event.getType());
 		if (event.getType() == WorkspaceNodeEvent.MOUSE_LEFT_DBLCLICK) {
 			System.out.println("doublecklicked MindmapNode");
-			try {
-				URL absoluteUrl = getLinkPath().toURL().openConnection().getURL();				
-				File f = new File(absoluteUrl.getFile());
+			try {				
+				File f = WorkspaceUtils.resolveURI(getLinkPath());
+				if(f == null) {
+					return;
+				}
 				if (!f.exists()) {
 					createNewMindmap(f);
 				}
-				Controller.getCurrentModeController().getMapController().newMap(absoluteUrl, false);
+				Controller.getCurrentModeController().getMapController().newMap(f.toURL(), false);
 				
 			}
 			catch (Exception e) {
