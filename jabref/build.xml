@@ -1,0 +1,653 @@
+<?xml version="1.0"?>
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+   Filename: $RCSfile$
+   Purpose:  Ant build file for Jabref.
+
+             Ant-Download: http://jakarta.apache.org/ant
+             Ant-Manual:   http://jakarta.apache.org/ant/manual/index.html
+
+             Jabref-Homepage:    http://jabref.sourceforge.net
+             Jabref@SourceForge: http://sourceforge.net/projects/jabref
+             Jabref@FreshMeat:   http://freshmeat.net
+             Jabref-CVSRoot:     :pserver:anonymous@cvs.jabref.sourceforge.net:/cvsroot/jabref
+
+             Further questions:
+               help mailing list:      must be inserted
+
+   Precondition: 1. Ant should be installed.
+                 2. JAVA_HOME environment variable contains the path to JDK1.5 or higher
+                 3. ANT_HOME environment variable contains the path to ant's home directory
+
+   Language: XML
+   Compiler: Ant
+   Authors:  Joerg K. Wegner, wegnerj@informatik.uni-tuebingen.de
+             Morten O. Alver
+   Version:  $Revision: 3571 $
+             $Date: 2011-08-08 17:20:51 +0200 (Mon, 08 Aug 2011) $
+             $Author: mortenalver $
+
+   modified:
+             23.11.2006 c.oezbek
+             - tried to fix classpath issues
+             28.07.2005 r.nagel
+             - insert dynamic build info generation (resource/build.properties)
+             - copy fonts directory, used by the new about dialog
+             - change static "version" into mainfest file into ${jabref.version}
+             09.06.2005 r.nagel
+             - bugfix, first it should be made a rebuild of the build directory
+             and then a jar should be generated from this directory
+             - take all files for the jar archive !!! FROM BUILD directory !!!
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+<project name="JabRef" default="jars" basedir=".">
+
+	<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        PROPERTY SETUP
+     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+	<!-- some version information -->
+	<property name="jabref.version" value="2.7" />
+	<property name="jabref.placeholder.version" value="@version@" />
+	<!-- used by replace task -->
+
+	<!-- Set the properties for intermediate directory -->
+	<property name="build.jar" value="JabRef-${jabref.version}.jar" />
+	<property name="build.dir" value="build" />
+	<property name="build.classes" value="${build.dir}/classes" />
+	<property name="build.tmp" value="${build.dir}/tmp" />
+	<property name="build.osx" value="${build.dir}/classes/osxadapter" />
+	<property name="build.lib" value="${build.dir}/lib" />
+	<property name="build.win" value="${build.dir}/windows" />
+	<property name="build.images" value="${build.dir}/images" />
+	<property name="build.fonts" value="${build.dir}/images/font" />
+	<property name="build.resource" value="${build.dir}/resource" />
+	<property name="build.help" value="${build.dir}/help" />
+	<property name="build.javadocs" value="${build.dir}/docs/API" />
+	<property name="build.extensions" value="${build.dir}/extensions" />
+	<property name="build.extension-javadocs" value="${build.extensions}/API" />
+	<property name="build.extension-layout" value="${build.extensions}/layout" />
+	<property name="build.openoffice.meta" value="${build.resource}/openoffice" />
+	<property name="build.tests" value="${build.dir}/tests" />
+
+	<!-- Set the properties for source directories -->
+	<property name="src.dir" value="src" />
+	<property name="src.tests" value="src/java/tests" />
+	<property name="plugin.dir" value="src/plugins/" />
+	<property name="txt.dir" value="src/txt" />
+	<property name="java.dir" value="${src.dir}/java" />
+	<property name="osx.dir" value="${src.dir}/osx" />
+	<property name="win.installer.dir" value="${src.dir}/windows/nsis" />
+	<property name="resource.dir" value="${src.dir}/resource" />
+	<property name="bin.dir" value="${src.dir}/scripts" />
+	<property name="images.dir" value="${src.dir}/images" />
+	<property name="fonts.dir" value="${src.dir}/images/font" />
+	<property name="help.dir" value="${src.dir}/help" />
+	<property name="extensions.dir" value="${src.dir}/extensions" />
+	<property name="layout.dir" value="${src.dir}/resource/layout" />
+	<property name="lib.dir" value="lib" />
+	<property name="tests.dir" value="${src.dir}/tests" />
+
+	<property name="nsis.executable" value="makensis.exe"/>
+	<property name="nsis.executable.linux" value="makensis"/>
+
+	<!-- Load user dependent properties -->
+	<!-- For instance to redefine the NSIS-compiler write 
+		nsis.executable="d:\prog\dev\NSIS\makensis.exe"
+	  -->
+	<property file="user.properties" />
+
+	<!-- win.installer can only be build under Windows if the nsis.executable is found -->
+	<condition property="is.windows">
+	  <and>
+	    <isset property="nsis.executable" />
+	    <os family="windows" />
+	  </and>
+	</condition>
+
+	<fileset id="jarsFileset" dir="${lib.dir}">
+		<include name="antlr.jar" />
+		<include name="antlr-3.0b5.jar" />
+		<include name="looks-2.3.1.jar" />
+		<include name="forms-1.1.0.jar" />
+		<include name="spin.jar" />
+		<include name="glazedlists-1.7.0_java15.jar" />
+		<include name="microba.jar" />
+		<include name="PDFBox-0.7.3-dev-reduced.jar" />
+		<include name="JempBox-0.2.0.jar" />
+		<include name="zoom-java.jar" />
+    	<include name="mysql-connector-java-5.0.7-bin.jar" />
+        <!--<include name="substance-4.1.jar" />-->
+        <!-- Plugin runtime dependencies -->
+		<include name="plugin/JPFCodeGenerator-rt.jar" />
+		<include name="plugin/jpf.jar" />
+		<include name="plugin/jpf-boot.jar" />
+		<include name="plugin/commons-logging.jar" />
+	</fileset>
+    <!-- Done by MrDlib -->
+    <fileset id="splJars" dir="${lib.dir}">
+        <include name="spl/**/*.jar" />
+        <include name="spl/*.jar" />
+    </fileset>
+    <!-- Done by MrDlib -->
+
+	<!-- Build classpath -->
+	<path id="classpath">
+		<pathelement path="${build.classes}" />
+		<pathelement path="${build.dir}" />
+        <!-- Done by MrDlib -->
+        <pathelement path="${lib.dir}/spl" />
+        <fileset refid="splJars" />
+        <!-- Done by MrDlib -->
+		<fileset refid="jarsFileset" />
+	</path>
+
+	<!-- Classpath for running the code generator -->
+	<path id="codegenerator">
+		<pathelement location="${lib.dir}/plugin/JPFCodeGenerator.jar" />
+		<pathelement location="${lib.dir}/plugin/jpf.jar" />
+		<pathelement location="${lib.dir}/plugin/jpf-boot.jar" />
+		<pathelement location="${lib.dir}/plugin/velocity-dep-1.5.jar" />
+	</path>
+
+	<!-- Classpath for tests -->
+	<path id="classpathTest">
+		<path refid="classpath" />
+		<pathelement location="${lib.dir}/junit.jar" />
+	</path>
+
+	<target name="run" depends="build">
+		<java classname="net.sf.jabref.JabRefMain" fork="true">
+			<classpath refid="classpath" />
+		</java>
+	</target>
+
+	<!-- Runs project -->
+	<target name="runFromJar">
+		<java dir="${build.lib}" classname="net.sf.jabref.JabRefMain" fork="true">
+			<classpath>
+				<pathelement location="${build.lib}/${build.jar}" />
+			</classpath>
+		</java>
+	</target>
+
+	<!-- Only rerun the code generator if plug-in xml or jars are newer than generated java file. -->
+	<uptodate property="needsNoRegenerate" targetfile="${java.dir}/net/sf/jabref/plugin/core/generated/_JabRefPlugin.java">
+		<srcfiles dir=".">
+			<include name="${plugin.dir}/**/plugin.xml" />
+			<include name="${lib.dir}/plugin/*.jar" />
+		</srcfiles>
+	</uptodate>
+
+	<!-- Run the JPF Code Generator -->
+	<target name="generate" unless="needsNoRegenerate">
+		<java classname="net.sf.jabref.plugin.util.CodeGenerator" fork="true">
+			<arg value="${plugin.dir}" />
+			<classpath refid="codegenerator" />
+		</java>
+	</target>
+
+	<!-- Compiles project excluding tests -->
+	<target name="compile" depends="generate">
+		<mkdir dir="${build.classes}" />
+		<javac debug="on" deprecation="on" destdir="${build.classes}" encoding="UTF8"
+		   source="1.5" target="1.5">
+			<src path="${java.dir}" />
+			<exclude name="tests/**" />
+			<exclude name="**/JabRefMain.java" />
+			<classpath refid="classpath" />
+		</javac>
+		<javac debug="off" deprecation="on" destdir="${build.classes}" source="1.4" target="1.4">
+			<src path="${java.dir}" />
+			<include name="**/JabRefMain.java" />
+		</javac>
+	</target>
+
+	<!-- Compiles project including tests -->
+	<target name="compiletest">
+		<mkdir dir="${build.classes}" />
+		<javac debug="on" destdir="${build.classes}" source="1.5" target="1.5">
+			<src path="${java.dir}" />
+			<include name="tests/**" />
+			<classpath refid="classpathTest" />
+		</javac>
+	</target>
+
+	<!-- Builds the OSXAdapter -->
+	<target name="osx">
+		<mkdir dir="${build.classes}" />
+
+		<javac srcdir="${osx.dir}" debug="off" destdir="${build.classes}" target="1.5">
+		</javac>
+	</target>
+
+	<!-- Copies in the OSXAdapter class, which is compilable only on Mac  -->
+	<target name="non_osx">
+		<mkdir dir="${build.osx}" />
+		<copy file="${lib.dir}/OSXAdapter.class" todir="${build.osx}" />
+	</target>
+
+	<!-- Jars up project -->
+	<target name="jars" depends="build, unjarlib">
+		<mkdir dir="${build.lib}" />
+        <!-- Done by MrDlib -->
+        <copy todir="${build.lib}/lib">
+            <fileset dir="${lib.dir}">
+                <include name="spl/**/*.jar" />
+                <include name="spl/*.jar" />
+            </fileset>
+        </copy>
+        <!-- Done by MrDlib -->
+		<mkdir dir="${build.tmp}" />
+		<jar destfile="${build.lib}/${build.jar}" manifest="${src.dir}/MANIFEST.MF"><!-- Done by MrDlib -->
+
+			<fileset dir="${build.classes}" />
+			<fileset dir="${build.tmp}" />
+			<fileset dir="${build.dir}">
+				<include name="images/**" />
+				<include name="help/**" />
+				<include name="help/de/**" />
+				<include name="help/no/**" />
+				<include name="resource/**" />
+			</fileset>
+
+			<!-- Add Plugins -->
+			<fileset dir="${src.dir}">
+				<include name="plugins/**" />
+			</fileset>
+             <!-- Done by MrDlib -->
+            <fileset dir ="${java.dir}">
+                <include name="spl/localization/spljabref.properties"/>
+                <include name="spl/gui/ajax-loader.gif"/>
+                <include name="spl/gui/mrdlib header.png"/>
+            </fileset>
+            <!-- Done by MrDlib -->
+			<fileset dir="${lib.dir}">
+				<include name="EndNote.zip" />
+			</fileset>
+			<fileset dir="${txt.dir}">
+				<include name="gpl.txt" />
+				<include name="lesser.txt" />
+				<include name="jgoodies.txt" />
+				<include name="README" />
+			</fileset>
+			<manifest>
+				<attribute name="Main-Class" value="net.sf.jabref.JabRefMain" />
+                <attribute name="Class-Path" value="." />
+			</manifest>
+		</jar>
+
+	</target>
+
+	<!-- copy all necessary files and insert version informations -->
+	<target name="build" depends="compile, buildinfos" description="Build project">
+
+		<mkdir dir="${build.resource}" />
+
+		<copy todir="${build.resource}">
+			<fileset dir="${resource.dir}">
+				<include name="**" />
+			</fileset>
+		</copy>
+		<mkdir dir="${build.images}" />
+		<copy todir="${build.images}">
+			<fileset dir="${images.dir}">
+				<include name="**" />
+			</fileset>
+		</copy>
+
+		<mkdir dir="${build.help}" />
+		<copy todir="${build.help}">
+			<fileset dir="${help.dir}" />
+		</copy>
+
+		<!-- Insert version informations -->
+		<replace dir="${build.help}" token="${jabref.placeholder.version}" value="${jabref.version}">
+			<include name="**/About.html" />
+		</replace>
+		<replace dir="${build.openoffice.meta}" token="${jabref.placeholder.version}" value="${jabref.version}">
+			<include name="meta.xml" />
+		</replace>
+
+	</target>
+
+	<!-- Prepare for testing -->
+	<target name="buildtest" depends="build, compiletest" description="Build project for testing">
+
+		<mkdir dir="${build.tests}" />
+		<copy todir="${build.tests}">
+			<fileset dir="${tests.dir}">
+				<include name="**" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- generate and save some build infos !!! necessary for dynamic build infos !!! -->
+	<!-- todo : replace it by the replace task :-),
+          src/resource/build.properties = template
+          build/resource/build.properties = real info file
+	-->
+	<target name="buildinfos">
+		<tstamp />
+		<!-- get date -->
+		<buildnumber />
+		<!-- generate new build number -> build.number -->
+		<echo message="build number = ${build.number}" />
+		<!-- write the file, please do not edit this lines -->
+		<echo file="${resource.dir}/build.properties">builddate=${TODAY}
+build=${build.number}
+version=${jabref.version}</echo>
+	</target>
+
+
+	<!-- Creates all docs -->
+	<target name="docs" depends="javadocs" description="Generates all the documentation" />
+
+	<!-- Creates javadocs -->
+	<target name="javadocs" depends="compile" description="Generates the javadocs">
+		<mkdir dir="${build.javadocs}" />
+		<javadoc sourcepath="${java.dir}" destdir="${build.javadocs}" author="true" version="true" windowtitle="JabRef API" link="http://java.sun.com/j2se/1.4.1/docs/api/">
+
+			<fileset dir="${java.dir}" defaultexcludes="yes">
+				<include name="**/*.java" />
+			</fileset>
+
+			<classpath refid="classpath" />
+		</javadoc>
+	</target>
+
+	<!-- Creates javadocs for the extensions -->
+	<target name="extension-javadocs" depends="build" description="Generates the javadocs for the extensions archive">
+		<mkdir dir="${build.extension-javadocs}" />
+		<copy todir="${build.extension-javadocs}">
+			<fileset dir="${help.dir}" defaultexcludes="yes">
+				<include name="CustomExports.html" />
+				<include name="CustomImports.html" />
+			</fileset>
+		</copy>
+
+		<javadoc sourcepath="${java.dir}" destdir="${build.extension-javadocs}" author="true" version="true" windowtitle="JabRef-Extensions API" link="http://java.sun.com/j2se/1.4.1/docs/api/" Overview="${extensions.dir}/API/overview.html" access="protected">
+			<!-- 
+                 create javadoc only selectively for classes that 
+                 users extending JabRef are likely to use
+              -->
+			<fileset dir="${java.dir}" defaultexcludes="yes">
+				<include name="net/sf/jabref/imports/ImportFormat.java" />
+				<include name="net/sf/jabref/imports/ImportFormatReader.java" />
+				<include name="net/sf/jabref/BibtexEntry.java" />
+				<include name="net/sf/jabref/BibtexEntryType.java" />
+				<include name="net/sf/jabref/AuthorList.java" />
+				<include name="net/sf/jabref/AuthorList.java" />
+				<include name="net/sf/jabref/export/layout/LayoutFormatter.java" />
+			</fileset>
+
+			<classpath refid="classpath" />
+		</javadoc>
+	</target>
+
+	<!-- Creates javadocs for the extensions -->
+	<target name="extensions" depends="extension-javadocs" description="Generates the extensions archive">
+		<!-- copy examples -->
+		<copy todir="${build.extensions}">
+			<fileset dir="${java.dir}">
+				<include name="net/sf/jabref/export/layout/format/CurrentDate.java" />
+				<include name="net/sf/jabref/export/layout/format/ToLowerCase.java" />
+				<include name="net/sf/jabref/export/layout/format/HTMLChars.java" />
+				<include name="net/sf/jabref/imports/*Importer.java" />
+			</fileset>
+		</copy>
+		<mkdir dir="${build.extension-layout}" />
+		<copy todir="${build.extension-layout}">
+			<fileset dir="${layout.dir}" />
+		</copy>
+		<copy todir="${build.extensions}">
+			<fileset dir="${extensions.dir}" />
+			<filterset>
+				<filter token="version" value="${jabref.version}" />
+			</filterset>
+		</copy>
+		<!-- create extensions-zip file -->
+		<zip destfile="${build.dir}/jabref-extensions.zip">
+			<zipfileset dir="${build.extensions}" prefix="jabref-extensions" />
+		</zip>
+	</target>
+
+	<target name="clean" depends="win.installer.clean" description="Clean project">
+		<delete dir="${build.dir}" />
+	</target>
+
+	<!-- Unpacks jar needed jar files from lib directory into temp directory. -->
+	<target name="unjarlib" description="Unpacks jars from library">
+		<mkdir dir="${build.tmp}" />
+		<unjar dest="${build.tmp}">
+			<fileset refid="jarsFileset" />
+		</unjar>
+		<delete dir="${build.tmp}/META-INF" />
+		<!-- rename the microba license file -->
+		<move file="${build.tmp}/license.txt" tofile="${build.tmp}/microba-license.txt" />
+	</target>
+
+
+	<target name="osxjar">
+		<jarbundler dir="${build.lib}"
+                    name="JabRef"
+                    mainclass="net.sf.jabref.JabRef"
+                    jars="${build.lib}/${build.jar}"
+                    icon="${images.dir}/JabRef-Logo.icns"
+                    version="${jabref.version}"
+                    jvmversion="1.4+"
+                    stubfile="${lib.dir}/JavaApplicationStub"
+                    signature="JABr">
+            <documenttype name="BibTeX file" extensions="bib" role="Editor"
+                          iconFile="${images.dir}/JabRef-Logo.icns"/>
+        </jarbundler>
+	</target>
+
+
+	<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<!-- Build Windows Installer                                                    -->
+	<!--                                                                            -->
+	<!-- Don't forget to set nsis.executable property                               -->
+	<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+	<target name="win.installer.clean" description="Delete Installer and Exe-Wrapper + Temp-files">
+		<delete failonerror="false" dir="${win.installer.dir}/dist" />
+		<delete file="${win.installer.dir}/JabRefSetup.exe" />
+	</target>
+
+	<target name="win.installer" description="Copy files in place to be used by the installer" depends="jars">
+
+		<fail unless="is.windows" message="Not running on windows or NSIS not found. Please make sure that user.properties exists" />
+
+		<!-- Gather everything that will go into the installer in dist -->
+		<mkdir dir="${win.installer.dir}/dist" />
+
+		<copy file="${build.lib}/${build.jar}" todir="${win.installer.dir}/dist" />
+
+		<available property="win.installer.jar.available" file="${win.installer.dir}/dist/${build.jar}" />
+
+		<fail unless="win.installer.jar.available" message="Did not find jar: ${build.jar}" />
+
+		<copy todir="${win.installer.dir}/dist">
+			<fileset dir="${txt.dir}">
+				<include name="gpl.txt" />
+				<include name="lesser.txt" />
+				<include name="README" />
+			</fileset>
+		</copy>
+
+		<!-- "Create Exe-Wrapper" -->
+		<exec dir="." executable="${nsis.executable}" failonerror="true">
+		  <arg line="'/DJARFILE=${build.jar}' '/DVERSION=${jabref.version}' '/DAPPICON=../../../${images.dir}/JabRef.ico' ${win.installer.dir}/launcher.nsi" />
+		</exec>
+
+		<!-- Finally create Windows-Installer -->
+		<exec dir="." executable="${nsis.executable}" failonerror="true">
+			<arg line="'/DVERSION=${jabref.version}' ${win.installer.dir}/setup.nsi" />
+		</exec>
+
+		<delete dir="${win.installer.dir}/dist" />
+
+	</target>
+
+	<target name="win.installer.linux" description="Copy files in place to be used by the installer" depends="jars">
+
+		<!-- Gather everything that will go into the installer in dist -->
+		<mkdir dir="${win.installer.dir}/dist" />
+
+		<copy file="${build.lib}/${build.jar}" todir="${win.installer.dir}/dist" />
+
+		<available property="win.installer.jar.available" file="${win.installer.dir}/dist/${build.jar}" />
+
+		<fail unless="win.installer.jar.available" message="Did not find jar: ${build.jar}" />
+
+		<copy todir="${win.installer.dir}/dist">
+			<fileset dir="${txt.dir}">
+				<include name="gpl.txt" />
+				<include name="lesser.txt" />
+				<include name="README" />
+			</fileset>
+		</copy>
+
+		<!-- "Create Exe-Wrapper" -->
+		<exec dir="." executable="${nsis.executable.linux}" failonerror="true">
+		  <arg line="'-DJARFILE=${build.jar}' '-DVERSION=${jabref.version}' '-DAPPICON=../../../${images.dir}/JabRef.ico' ${win.installer.dir}/launcher.nsi" />
+		</exec>
+
+		<!-- Finally create Windows-Installer -->
+		<exec dir="." executable="${nsis.executable.linux}" failonerror="true">
+			<arg line="'-DVERSION=${jabref.version}' ${win.installer.dir}/setup.nsi" />
+		</exec>
+
+		<delete dir="${win.installer.dir}/dist" />
+
+	</target>
+
+	<target name="test" depends="buildtest" description="Runs all unit tests">
+		<java fork="yes" classname="junit.textui.TestRunner" failonerror="true">
+			<arg value="tests.net.sf.jabref.AllTests" />
+			<classpath refid="classpathTest" />
+		</java>
+	</target>
+
+
+	<!--+++++++++++++++++++++++++++++++++++++++++++++++++
+	   Auxiliary targets
+	  +++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+	<target name="profile" depends="jars" description="Profile JabRef">
+		<fail unless="netbeans.home">This target can only run inside the NetBeans IDE.</fail>
+
+		<nbprofiledirect>
+			<classpath refid="classpath" />
+		</nbprofiledirect>
+
+		<property environment="env" />
+		<java fork="true" classname="net.sf.jabref.JabRef" dir="${build.dir}" jvm="${profiler.info.jvm}">
+			<jvmarg value="${profiler.info.jvmargs.agent}" />
+			<jvmarg line="${profiler.info.jvmargs}" />
+			<env key="LD_LIBRARY_PATH" path="${profiler.info.agentpath}:${env.LD_LIBRARY_PATH}" />
+			<classpath refid="classpath" />
+		</java>
+	</target>
+
+	<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        What's about the software design ?!;-)
+    ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+	<target name="pmd" description="SOFTWAREDESIGN: Project Mess Detector !;-)">
+		<echo>Checking Project Mess Detection (PMD) rulesets.</echo>
+		<taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask">
+			<classpath>
+				<pathelement path="${classpath}" />
+				<fileset dir="${lib.dir}">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</taskdef>
+		<!-- allowed Pretty Much Done rulsets -->
+		<!-- rulesets/basic.xml -->
+		<!-- rulesets/braces.xml -->
+		<!-- rulesets/codesize.xml-->
+		<!-- rulesets/controversial.xml-->
+		<!-- rulesets/coupling.xml-->
+		<!-- rulesets/design.xml -->
+		<!-- rulesets/experimental.xml -->
+		<!-- rulesets/favorites.xml -->
+		<!-- rulesets/imports.xml -->
+		<!-- rulesets/naming.xml -->
+		<!-- rulesets/javabean.xml -->
+		<!-- rulesets/junit.xml -->
+		<!-- rulesets/scratchpad.xml -->
+		<!-- rulesets/strictexception.xml -->
+		<!-- rulesets/strings.xml -->
+		<!-- rulesets/unusedcode.xml -->
+
+		<pmd rulesetfiles="rulesets/unusedcode.xml,rulesets/basic.xml" failonerror="no">
+			<formatter type="html" toFile="${build.dir}/pmd_report.html" />
+			<fileset dir="${src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+		</pmd>
+
+		<!-- check for duplicated code -->
+		<echo>WARNING: use environment variable: ANT_OPTS=-Xmx512m or this task will fail.</echo>
+		<echo>Checking for duplicated code using the Copy/Paste Detector (CPD).</echo>
+		<taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask">
+			<classpath>
+				<pathelement path="${classpath}" />
+				<fileset dir="${lib.dir}">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</taskdef>
+		<cpd format="text" minimumTokenCount="100" outputFile="${build.dir}/duplicated_code_report.txt">
+			<fileset dir="${src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+		</cpd>
+	</target>
+
+
+	<target name="javancss" description="SOFTWAREDESIGN: Determining the NCSS and CCN code metrics for JOELib.">
+		<taskdef name="javancss" classname="javancss.JavancssAntTask">
+			<classpath>
+				<pathelement path="${classpath}" />
+				<fileset dir="${lib.dir}">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</taskdef>
+		<echo>Cyclomatic
+Complexity             Ease of       Risk
+Number (CCN)           maintenance
+(McCabe metric)
+---------------------------------------------
+1-10, simple           easy          minimum
+11-20, complex         moderate      moderate
+21-50, more complex    hard          high
+>50, unstable          very hard     very high
+
+</echo>
+		<javancss srcdir="${src.dir}" includes="**/*.java" excludes="jama/**/*.java, jmat/**/*.java, cformat/**/*.java" abortOnFail="false" ccnPerFuncMax="30" generateReport="true" outputfile="${build.dir}/javancss_report.plain" format="plain" packageMetrics="true" classMetrics="false" functionMetrics="false" />
+	</target>
+
+	<target name="jalopy" description="SOFTWAREDESIGN: source code formatter using the JOELib convention.">
+		<taskdef name="jalopy" classname="de.hunsicker.jalopy.plugin.ant.AntPlugin">
+			<classpath>
+				<pathelement path="${classpath}" />
+				<fileset dir="${lib.dir}">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</taskdef>
+		<jalopy fileformat="unix" convention="${src.dir}/java/jalopy.format.convention.xml" history="file" historymethod="adler32" loglevel="error" threads="2" classpathref="classpath" backup="bak">
+			<fileset dir="${src.dir}">
+				<include name="java/net/sf/jabref/**/*.java" />
+			</fileset>
+		</jalopy>
+	</target>
+
+	<taskdef name="jarbundler" classpath="${lib.dir}/jarbundler-2.2.0.jar" classname="net.sourceforge.jarbundler.JarBundler" />
+
+</project>

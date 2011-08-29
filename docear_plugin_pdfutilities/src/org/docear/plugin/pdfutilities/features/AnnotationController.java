@@ -76,14 +76,16 @@ public class AnnotationController implements IExtension{
 		if(oldAnnotations.containsKey(importedAnnotation.getAnnotationID())){
 			for(AnnotationNodeModel oldAnnotation : oldAnnotations.get(importedAnnotation.getAnnotationID())){
 				if(!importedAnnotation.getTitle().equals(oldAnnotation.getTitle()) && !oldAnnotation.getAnnotationType().equals(AnnotationType.PDF_FILE)){
-					importedAnnotation.setConflicted(true);
-					addConflictedAnnotation(oldAnnotation, result);
+					importedAnnotation.setConflicted(true);					
 				}
 				
 			}
 		}
 		if(importedAnnotation.isConflicted()){
 			addConflictedAnnotation(importedAnnotation, result);
+			for(AnnotationNodeModel oldAnnotation : oldAnnotations.get(importedAnnotation.getAnnotationID())){
+				addConflictedAnnotation(oldAnnotation, result);
+			}
 		}
 		for(AnnotationModel child : importedAnnotation.getChildren()){
 			addConflictedAnnotations(getConflictedAnnotations(child, oldAnnotations), result);

@@ -59,82 +59,85 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 		if(target == null || monitoringDir == null || mindmapDir == null) return;
 		
 		new SaveAll().actionPerformed(null);
-					
-		SwingWorker<Map<AnnotationID, Collection<IAnnotation>>, AnnotationModel[]> thread = new SwingWorker<Map<AnnotationID, Collection<IAnnotation>>, AnnotationModel[]>(){
-			
-					
-			@Override
-			protected Map<AnnotationID, Collection<IAnnotation>> doInBackground() throws Exception {
-				firePropertyChange(MonitoringDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
-				Map<AnnotationID, Collection<IAnnotation>> conflicts = new HashMap<AnnotationID, Collection<IAnnotation>>();
-				URI monDir = Tools.getAbsoluteUri(monitoringDir);
-				URI mapDir = Tools.getAbsoluteUri(mindmapDir);
-				Collection<URI> monitorFiles = Tools.getFilteredFileList(monDir, new PdfFileFilter(), true);
-				Collection<URI> mindmapFiles = Tools.getFilteredFileList(mapDir, new CustomFileFilter(".*[.][mM][mM]"), true);
-				if(!mindmapFiles.contains(Controller.getCurrentController().getMap().getFile().toURI())){
-					mindmapFiles.add(Controller.getCurrentController().getMap().getFile().toURI());
-				}
-				Map<AnnotationID, Collection<AnnotationNodeModel>> oldAnnotations = new NodeUtils().getOldAnnotationsFromMaps(mindmapFiles);
-				int count = 0;
-				firePropertyChange(MonitoringDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
-				for(final URI uri : monitorFiles){
-					try{
-						if(Thread.currentThread().isInterrupted()) return conflicts;
-						firePropertyChange(MonitoringDialog.NEW_FILE, null, Tools.getFilefromUri(uri).getName());
-						PdfAnnotationImporter importer = new PdfAnnotationImporter();
-						Collection<AnnotationModel> annotations = importer.importAnnotations(uri);
-						AnnotationModel root = new AnnotationModel(new AnnotationID(Tools.getAbsoluteUri(uri), 0), AnnotationType.PDF_FILE);
-						root.setTitle(Tools.getFilefromUri(Tools.getAbsoluteUri(uri)).getName());
-						root.getChildren().addAll(annotations);
-						annotations = new ArrayList<AnnotationModel>();
-						annotations.add(root);
-						annotations = AnnotationController.markNewAnnotations(annotations, oldAnnotations);
-						AnnotationController.addConflictedAnnotations(AnnotationController.getConflictedAnnotations(annotations, oldAnnotations), conflicts);
-						
-						final Collection<AnnotationModel> finalAnnotations = annotations;
-						SwingUtilities.invokeAndWait(
-						        new Runnable() {
-						            public void run(){
-						            	new NodeUtils().insertNewChildNodesFrom(uri, finalAnnotations, target.isLeft(), target);
-										//foldAll(target);
-										firePropertyChange(MonitoringDialog.NEW_NODES, null, getInsertedNodes(finalAnnotations));										
-						            }
-						        }
-						   );						
-						count++;
-						setProgress(100 * count / monitorFiles.size());
-					} catch(IOException e){
-						LogUtils.severe("IOexception during update file: "+ uri);
-					} catch(COSRuntimeException e){
-						LogUtils.severe("COSRuntimeException during update file: "+ uri);
-					} catch(COSLoadException e){
-						LogUtils.severe("COSLoadException during update file: "+ uri);
-					}
-				}					
-				return conflicts;
-			}		
-			
-			@Override
-		    protected void done() {
-				firePropertyChange(MonitoringDialog.IS_DONE, null, null);
-			}
-			
-			private Collection<AnnotationModel> getInsertedNodes(Collection<AnnotationModel> annotations){
-				Collection<AnnotationModel> result = new ArrayList<AnnotationModel>();
-				for(AnnotationModel annotation : annotations){
-					if(annotation.isNew()){
-						result.add(annotation);
-					}
-					if(annotation.hasNewChildren()){
-						result.addAll(this.getInsertedNodes(annotation.getChildren()));
-					}
-				}
-				return result;
-			}
-			
-		};
 		
-		try {
+		try {			
+			SwingWorker<Map<AnnotationID, Collection<IAnnotation>>, AnnotationModel[]> thread = new SwingWorker<Map<AnnotationID, Collection<IAnnotation>>, AnnotationModel[]>(){
+				
+				Map<AnnotationID, Collection<IAnnotation>> conflicts = new HashMap<AnnotationID, Collection<IAnnotation>>();
+				
+				@Override
+				protected Map<AnnotationID, Collection<IAnnotation>> doInBackground() throws Exception {
+					firePropertyChange(MonitoringDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
+					
+					URI monDir = Tools.getAbsoluteUri(monitoringDir);
+					URI mapDir = Tools.getAbsoluteUri(mindmapDir);
+					Collection<URI> monitorFiles = Tools.getFilteredFileList(monDir, new PdfFileFilter(), true);					
+					Collection<URI> mindmapFiles = Tools.getFilteredFileList(mapDir, new CustomFileFilter(".*[.][mM][mM]"), true);
+					
+					if(!mindmapFiles.contains(Controller.getCurrentController().getMap().getFile().toURI())){
+						mindmapFiles.add(Controller.getCurrentController().getMap().getFile().toURI());
+					}
+					Map<AnnotationID, Collection<AnnotationNodeModel>> oldAnnotations = new NodeUtils().getOldAnnotationsFromMaps(mindmapFiles);
+					int count = 0;
+					firePropertyChange(MonitoringDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
+					for(final URI uri : monitorFiles){
+						try{
+							if(Thread.currentThread().isInterrupted()) return conflicts;
+							firePropertyChange(MonitoringDialog.NEW_FILE, null, Tools.getFilefromUri(uri).getName());
+							PdfAnnotationImporter importer = new PdfAnnotationImporter();
+							Collection<AnnotationModel> annotations = importer.importAnnotations(uri);
+							AnnotationModel root = new AnnotationModel(new AnnotationID(Tools.getAbsoluteUri(uri), 0), AnnotationType.PDF_FILE);
+							root.setTitle(Tools.getFilefromUri(Tools.getAbsoluteUri(uri)).getName());
+							root.getChildren().addAll(annotations);
+							annotations = new ArrayList<AnnotationModel>();
+							annotations.add(root);
+							annotations = AnnotationController.markNewAnnotations(annotations, oldAnnotations);
+							AnnotationController.addConflictedAnnotations(AnnotationController.getConflictedAnnotations(annotations, oldAnnotations), conflicts);
+							
+							final Collection<AnnotationModel> finalAnnotations = annotations;
+							SwingUtilities.invokeAndWait(
+							        new Runnable() {
+							            public void run(){
+							            	new NodeUtils().insertNewChildNodesFrom(uri, finalAnnotations, target.isLeft(), target);
+											//foldAll(target);
+											firePropertyChange(MonitoringDialog.NEW_NODES, null, getInsertedNodes(finalAnnotations));										
+							            }
+							        }
+							   );						
+							count++;
+							setProgress(100 * count / monitorFiles.size());
+						} catch(IOException e){
+							LogUtils.severe("IOexception during update file: "+ uri);
+						} catch(COSRuntimeException e){
+							LogUtils.severe("COSRuntimeException during update file: "+ uri);
+						} catch(COSLoadException e){
+							LogUtils.severe("COSLoadException during update file: "+ uri);
+						}
+					}					
+					return conflicts;
+				}		
+				
+				@Override
+			    protected void done() {
+					firePropertyChange(MonitoringDialog.IS_DONE, null, null);
+				}
+				
+				private Collection<AnnotationModel> getInsertedNodes(Collection<AnnotationModel> annotations){
+					Collection<AnnotationModel> result = new ArrayList<AnnotationModel>();
+					for(AnnotationModel annotation : annotations){
+						if(annotation.isNew()){
+							result.add(annotation);
+						}
+						if(annotation.hasNewChildren()){
+							result.addAll(this.getInsertedNodes(annotation.getChildren()));
+						}
+					}
+					return result;
+				}
+				
+			};
+		
+		
 			MonitoringDialog monitoringDialog = new MonitoringDialog(Controller.getCurrentController().getViewController().getJFrame());
 			monitoringDialog.showDialog(thread);
 			
@@ -142,14 +145,13 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			if(conflicts != null && conflicts.size() > 0){
 				ImportConflictDialog dialog = new ImportConflictDialog(Controller.getCurrentController().getViewController().getJFrame(), conflicts);
 				dialog.showDialog();
-			}
+			}		
+		} catch (CancellationException e){
+			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (CancellationException e){
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -136,6 +136,7 @@ public class PdfAnnotationImporter {
 		if(uri == null || !Tools.exists(uri, this.map) || !new PdfFileFilter().accept(uri)){
 			return null;
 		}
+		
 		FileLocator locator = new FileLocator(Tools.getFilefromUri(Tools.getAbsoluteUri(uri, this.map)));
 		PDDocument document = PDDocument.createFromLocator(locator);
 		return document;
