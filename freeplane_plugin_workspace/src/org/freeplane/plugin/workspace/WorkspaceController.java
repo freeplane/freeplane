@@ -73,7 +73,7 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 	protected WorkspaceController() {
 		LogUtils.info("Initializing WorkspaceEnvironment");
 		initTree();		
-		initializePreferences();
+		getPreferences();
 		
 		this.popups = new PopupMenus();
 		
@@ -190,6 +190,15 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 	public IndexedTree getIndexTree() {
 		return tree;
 	}
+	
+	public WorkspacePreferences getPreferences() {
+		if (this.preferences == null) {
+			this.preferences = new WorkspacePreferences();
+			ResourceController resCtrl = Controller.getCurrentController().getResourceController();
+			resCtrl.addPropertyChangeListener(this);
+		}
+		return this.preferences;
+	}
 
 	private void initTree() {
 		this.tree = new IndexedTree(null);
@@ -287,15 +296,6 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 			this.contentPane.setLayout(new BorderLayout());
 		}
 		return this.contentPane;
-	}
-
-	private WorkspacePreferences initializePreferences() {
-		if (this.preferences == null) {
-			this.preferences = new WorkspacePreferences();
-			ResourceController resCtrl = Controller.getCurrentController().getResourceController();
-			resCtrl.addPropertyChangeListener(this);
-		}
-		return this.preferences;
 	}
 
 	private FileReadManager getFileTypeManager() {

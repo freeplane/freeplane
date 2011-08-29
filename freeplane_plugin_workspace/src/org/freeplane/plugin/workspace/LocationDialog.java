@@ -4,11 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
@@ -30,7 +29,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
-public class LocationDialog extends JDialog implements VetoableChangeListener {
+public class LocationDialog extends JDialog {
 
 	/**
 	 * 
@@ -40,6 +39,7 @@ public class LocationDialog extends JDialog implements VetoableChangeListener {
 	private JTextField location;
 
 	private JPanel mainPanel = new JPanel();
+	private JComboBox profileComboBox;
 
 	/**
 	 * Create the dialog.
@@ -52,6 +52,8 @@ public class LocationDialog extends JDialog implements VetoableChangeListener {
 
 	private void onOkButton() {
 		WorkspaceController.getController().setWorkspaceLocation(location.getText());
+		ProfileListObject item = (ProfileListObject) profileComboBox.getSelectedItem();
+		WorkspaceController.getController().getPreferences().setWorkspaceProfile(item.getName());
 		this.dispose();
 	}
 
@@ -69,6 +71,7 @@ public class LocationDialog extends JDialog implements VetoableChangeListener {
 		if (retVal == JFileChooser.APPROVE_OPTION) {
 			File selectedfile = fileChooser.getSelectedFile();
 			this.location.setText(selectedfile.getPath());
+			workspaceChange(this.location.getText());
 		}
 	}
 
@@ -103,14 +106,13 @@ public class LocationDialog extends JDialog implements VetoableChangeListener {
 				location.setText(currentLocation);
 			}
 			location.setColumns(30);
-			location.addVetoableChangeListener(this);
 			{
 				JButton btnBrowse = new JButton(TextUtils.getText("browse"));
 				mainPanel.add(btnBrowse, "4, 2");
 				{
-					JComboBox comboBox = new JComboBox();
-					mainPanel.add(comboBox, "2, 4, fill, default");
-					comboBox.setModel(new WorkspaceProfileListModel());
+					profileComboBox = new JComboBox();
+					mainPanel.add(profileComboBox, "2, 4, fill, default");
+					profileComboBox.setModel(new WorkspaceProfileListModel());
 				}
 				{
 					JButton btnCreateNew = new JButton(TextUtils.getText("workspace.profile.new"));
@@ -167,8 +169,11 @@ public class LocationDialog extends JDialog implements VetoableChangeListener {
 
 	}
 
-	public void vetoableChange(PropertyChangeEvent evt) throws PropertyVetoException {
-		evt.getNewValue();
+	private void workspaceChange(final String newValue) {
+		System.out.println("valuechanged");
+		if(newValue != null) {	
+			((WorkspaceProfileListModel)profileComboBox.getModel()).reload(newValue);
+		}
 	}
 
 	private class WorkspaceProfileListModel implements MutableComboBoxModel, Serializable {
@@ -176,14 +181,50 @@ public class LocationDialog extends JDialog implements VetoableChangeListener {
 		Vector<ProfileListObject> itemList;
 
 		private static final long serialVersionUID = 1L;
+		private final FileFilter profileFilter = new FileFilter() {
+				public boolean accept(File pathname) {
+					if(pathname.isDirectory() 
+							&& pathname.getName().startsWith(".") 
+							&& Arrays.asList(pathname.list()).contains("workspace.xml")) {
+						System.out.println(pathname);
+						return true;					
+					}
+					return false;
+				}
+			};
+		private Object selectedObject;	
+			
+			
 		
 		public WorkspaceProfileListModel() {
-			itemList = new Vector<LocationDialog.ProfileListObject>();
-			itemList.add(new ProfileListObject(WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT, "<"+WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT+"> profile"));
+			reload(null);
+		}
+		
+		private void initProfileList(File workspaceBase) {
+			if(workspaceBase.isDirectory()) {
+				for(File folder : workspaceBase.listFiles(profileFilter)) {					
+					itemList.add(new ProfileListObject(folder.getName().substring(1), folder.getName().substring(1)));
+					if(WorkspaceController.getController().getPreferences().getWorkspaceProfile().equals(folder.getName().substring(1))) {
+						selectedObject = internalModel.getElementAt(internalModel.getSize()-1);
+					}
+				}				
+			}
 		}
 		
 		public void reload(String path) {
+			itemList = new Vector<LocationDialog.ProfileListObject>();
+			itemList.add(new ProfileListObject(WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT, "<"+WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT+"> profile"));
+			selectedObject = internalModel.getElementAt(0);
+			if(path != null) {
+				File file = new File(path);
+				if(file.exists()) {					
+					initProfileList(file);
+				} else {
+					//TODO: DOCEAR> do sth.
+				}
+			}
 			this.internalModel = new DefaultComboBoxModel(itemList.toArray());
+			setSelectedItem(selectedObject);
 		}
 
 		public int getSize() {
