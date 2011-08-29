@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.workspace.WorkspaceController;
@@ -37,15 +38,34 @@ public class LocationDialog extends JDialog {
 	private JTextField bibtexLocation;
 	private JTextField literatureLocation;
 	
-	private final static String LITERATURE_LOCATION = "workspace:/literature";
+	private final static String LITERATURE_LOCATION_INIT = "workspace:/literature";
+	private final static String LITERATURE_LOCATION_PROPERTY = "docear_literature_location";
 	//TODO: DOCEAR: profile name
-	private final static String BIBTEX_LOCATION = "workspace:/bibtex";
-	private final static String PROJECTS_LOCATION = "workspace:/projects";
+	private final static String BIBTEX_LOCATION_INIT = "workspace:/bibtex";
+	private final static String BIBTEX_LOCATION_PROPERTY = "docear_bibtex_location";
+	
+	private final static String PROJECTS_LOCATION_INIT = "workspace:/projects";
+	private final static String PROJECTS_LOCATION_PROPERTY = "docear_projects_location";
+	
 	
 	private File workspaceLocation;
 	/**
 	 * Create the dialog.
 	 */
+	
+	public static boolean allVariablesSet() {
+		ResourceController resCtrl = ResourceController.getResourceController();
+		
+		boolean variablesSet = true;
+		variablesSet = variablesSet && (resCtrl.getProperty(LITERATURE_LOCATION_PROPERTY, "").length()>0);
+		variablesSet = variablesSet && (resCtrl.getProperty(BIBTEX_LOCATION_PROPERTY, "").length()>0);
+		variablesSet = variablesSet && (resCtrl.getProperty(PROJECTS_LOCATION_PROPERTY, "").length()>0);
+		
+		System.out.println("DOCEAR: allVariablesSet: "+variablesSet);
+		
+		return variablesSet;
+	}
+	
 	private void browseLiterature() {
 		JFileChooser fileChooser = new JFileChooser();		
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -111,7 +131,12 @@ public class LocationDialog extends JDialog {
 	}
 	
 	private void onOkButton() {
+		
+		setLiteratureLocation(literatureLocation.getText());
+		setBibtexLocation(bibtexLocation.getText());
+		setProjectsLocation(projectsLocation.getText());
 		//TODO: DOCEAR: create Docear-Workspace
+		
 		this.dispose();
 	}
 	
@@ -175,13 +200,7 @@ public class LocationDialog extends JDialog {
 				{					
 					literatureLocation = new JTextField();
 					literatureLocation.setColumns(30);
-					try {
-						File f = new File(new URL(LITERATURE_LOCATION).openConnection().getURL().toURI());
-						literatureLocation.setText(f.getPath());
-					}
-					catch (Exception e) {					
-						e.printStackTrace();
-					}
+					literatureLocation.setText(getLiteratureLocation());
 					mainPanel.add(literatureLocation, "2, 4, fill, center");
 				}
 				{
@@ -200,13 +219,7 @@ public class LocationDialog extends JDialog {
 				{
 					bibtexLocation = new JTextField();
 					bibtexLocation.setColumns(30);
-					try {
-						File f = new File(new URL(BIBTEX_LOCATION).openConnection().getURL().toURI());
-						bibtexLocation.setText(f.getPath());
-					}
-					catch (Exception e) {					
-						e.printStackTrace();
-					}
+					bibtexLocation.setText(getBibtexLocation());
 					mainPanel.add(bibtexLocation, "2, 8, fill, center");
 				}
 				{
@@ -225,13 +238,7 @@ public class LocationDialog extends JDialog {
 				{
 					projectsLocation = new JTextField();
 					projectsLocation.setColumns(30);
-					try {
-						File f = new File(new URL(PROJECTS_LOCATION).openConnection().getURL().toURI());
-						projectsLocation.setText(f.getPath());
-					}
-					catch (Exception e) {					
-						e.printStackTrace();
-					}
+					projectsLocation.setText(getProjectsLocation());
 					mainPanel.add(projectsLocation, "2, 12, fill, center");
 				}
 				{
@@ -272,7 +279,48 @@ public class LocationDialog extends JDialog {
 			}
 		}	
 	}
-
+		
+	private String getLiteratureLocation() {				
+		return getPropertyLocation(LITERATURE_LOCATION_PROPERTY, LITERATURE_LOCATION_INIT);
+		
+	}
 	
+	private void setLiteratureLocation(String location) {
+		ResourceController.getResourceController().setProperty(LITERATURE_LOCATION_PROPERTY, location);
+	}
+	
+	private String getBibtexLocation() {
+		return getPropertyLocation(BIBTEX_LOCATION_PROPERTY, BIBTEX_LOCATION_INIT);
+	}
+	
+	private void setBibtexLocation(String location) {
+		ResourceController.getResourceController().setProperty(BIBTEX_LOCATION_PROPERTY, location);
+	}
+	
+	private String getProjectsLocation() {
+		return getPropertyLocation(PROJECTS_LOCATION_PROPERTY, PROJECTS_LOCATION_INIT);
+	}
+	
+	private void setProjectsLocation(String location) {
+		ResourceController.getResourceController().setProperty(PROJECTS_LOCATION_PROPERTY, location);
+	}
+
+
+	private String getPropertyLocation(String property, String init) {
+		String location = ResourceController.getResourceController().getProperty(property, "");		
+		if (location.length() > 0) {
+			return location;
+		}
+		
+		try {
+			File f = new File(new URL(init).openConnection().getURL().toURI());
+			return f.getPath();
+		}
+		catch (Exception e) {					
+			e.printStackTrace();
+		}
+		
+		return "";
+	}
 
 }

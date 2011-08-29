@@ -393,7 +393,7 @@
     <!-- Delete any existing Freeplane.app (it's a directory) -->
 	<mkdir dir="${build4mac}"/>
     <delete dir="${build4mac}/Freeplane.app"/>
-    <!--jarbundler dir="${build4mac}"
+    <jarbundler dir="${build4mac}"
                 name="Freeplane"
                 mainclass="org.knopflerfish.framework.Main"
                 version="${ver}"
@@ -407,7 +407,7 @@
                 icon="${mac-jarbundler}/freeplane.icns"
                 stubfile="${mac-jarbundler}/FreeplaneJavaApplicationStub"
                 signature="FP"
-                -->
+                >
       <!-- For OSGI we want the entire build/ tree except WIndows-related stuff
              Commented out to allow testing jar=framework.jar
       <jarfileset dir="${macosgidir}">

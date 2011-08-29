@@ -58,9 +58,11 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	}
 	
 	private void showLocationDialogIfNeeded() {		
+		ResourceController resCtrl = ResourceController.getResourceController();
 		String workspaceInfo = (String)WorkspaceController.getController().getConfiguration().getConfigurationInfo().getMeta();
-		if (!workspaceInfo.toLowerCase().contains("docear")) {
-			LocationDialog dialog = new LocationDialog();
+		
+		if (!workspaceInfo.toLowerCase().contains("docear") || !LocationDialog.allVariablesSet()) {
+			LocationDialog dialog = new LocationDialog(); 
 	    	dialog.setVisible(true);
 		}
 	}
