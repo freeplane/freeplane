@@ -52,11 +52,17 @@ import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.IMapChangeListener;
+import org.freeplane.features.map.IMapLifeCycleListener;
+import org.freeplane.features.map.IMapSelectionListener;
+import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.INodeViewLifeCycleListener;
+import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.view.swing.map.NodeView;
 
 public class PdfUtilitiesController extends ALanguageController{
@@ -301,7 +307,35 @@ public class PdfUtilitiesController extends ALanguageController{
 		});
 		
 		this.modecontroller.getMapController().addNodeChangeListener(new DocearRenameAnnotationListener());
-
+		Controller.getCurrentController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
+			
+			private int count = 0;
+			
+			public void beforeMapChange(MapModel oldMap, MapModel newMap) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void afterMapClose(MapModel oldMap) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void afterMapChange(MapModel oldMap, MapModel newMap) {
+				
+				if(!WorkspaceController.getController().isInitialized()){
+					count++;
+				}
+				else{
+					count++;
+					System.out.println(count + " Maps to convert..");	
+					count = 0;
+				}
+				
+				
+			}
+		});
+		
 	}
 
 	private void addPluginDefaults() {
