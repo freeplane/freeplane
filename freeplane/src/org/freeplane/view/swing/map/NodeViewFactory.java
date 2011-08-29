@@ -41,7 +41,6 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.ui.AMouseListener;
 import org.freeplane.core.ui.DelayedMouseListener;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -204,7 +203,8 @@ class NodeViewFactory {
 		model.addViewer(newView);
 		newView.setLayout(SelectableLayout.getInstance());
 		newView.setMainView(newMainView(newView));
-        updateNoteViewer(newView);
+		if(newView.isShortened())
+			updateNoteViewer(newView);
         newView.update();
         fireNodeViewCreated(newView); 
 		return newView;

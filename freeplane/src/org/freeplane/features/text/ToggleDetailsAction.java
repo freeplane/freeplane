@@ -20,8 +20,7 @@
 package org.freeplane.features.text;
 
 import java.awt.event.ActionEvent;
-import java.util.List;
-
+import java.util.Collection;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.map.IMapSelection;
@@ -81,7 +80,7 @@ class ToggleDetailsAction extends AMultipleNodeAction {
     @Override
     public void setEnabled() {
         boolean foundDetails = false;
-        final List<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
+        final Collection<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
         for (final NodeModel node : nodes) {
             if (node != null && DetailTextModel.getDetailText(node) != null) {
                 foundDetails = true;

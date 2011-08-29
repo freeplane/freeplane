@@ -30,6 +30,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -341,7 +342,7 @@ public class StyleEditorPanel extends JPanel {
 				enabled = true;
 				mSet.setValue(true);
 			}
-			final List<NodeModel> nodes = Controller.getCurrentController().getSelection().getSelection();
+			final Collection<NodeModel> nodes = Controller.getCurrentController().getSelection().getSelection();
 			if (enabled )
 				internalChange = true;
 			for (final NodeModel node : nodes) {

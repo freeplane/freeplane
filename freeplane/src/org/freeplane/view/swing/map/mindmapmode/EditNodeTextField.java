@@ -32,7 +32,6 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -84,6 +83,7 @@ import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
+import org.freeplane.features.text.mindmapmode.EventBuffer;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.view.swing.map.MainView;
@@ -343,16 +343,13 @@ class EditNodeTextField extends EditNodeBase {
 		}
 	}
 
-	final private InputEvent firstEvent;
 	private JEditorPane textfield;
 	private final DocumentListener documentListener;
 	private int maxWidth;
 
 	@SuppressWarnings("serial")
-    public EditNodeTextField(final NodeModel node, final ZoomableLabel parent, final String text, final InputEvent firstEvent,
-	                         final IEditControl editControl) {
+    public EditNodeTextField(final NodeModel node, final ZoomableLabel parent, final String text, final IEditControl editControl) {
 		super(node, text, editControl);
-		this.firstEvent = firstEvent;
 		this.parent = parent;
 		this.layoutMapOnTextChange = ResourceController.getResourceController().getBooleanProperty("layout_map_on_text_change");
 		documentListener = new MyDocumentListener();
@@ -630,17 +627,25 @@ class EditNodeTextField extends EditNodeBase {
 			parent.add(textfield, 0);
 		else
 			mapView.add(textfield, 0);
-		if (firstEvent instanceof KeyEvent) {
-			redispatchKeyEvents(textfield, (KeyEvent) firstEvent);
+		final EventBuffer eventQueue = MTextController.getController().getEventQueue();
+		KeyEvent firstEvent = eventQueue.getFirstEvent();
+		if (firstEvent != null) {
+			redispatchKeyEvents(textfield, firstEvent);
 		}
-		else if(firstEvent instanceof MouseEvent){
-			final Point point = ((MouseEvent) firstEvent).getPoint();
-			point.x -= x + iconWidth;
-			point.y -= y;
-			textfield.setCaretPosition(textfield.viewToModel(point));;
-		}
-		else{
-			textfield.setCaretPosition(document.getLength());
+		else {
+			MouseEvent currentEvent = eventQueue.getMouseEvent();
+			eventQueue.setTextComponent(textfield);
+			int pos = document.getLength();
+			if(currentEvent != null){
+				MouseEvent mouseEvent = (MouseEvent) currentEvent;
+				if(mouseEvent.getComponent().equals(parent)){
+					final Point point = mouseEvent.getPoint();
+					point.x -= x + iconWidth;
+					point.y -= y;
+					pos = textfield.viewToModel(point);
+				}
+			}
+			textfield.setCaretPosition(pos);
 		}
 		document.addDocumentListener(documentListener);
 		if(textController.getIsShortened(node)){

@@ -52,10 +52,12 @@ import org.freeplane.features.styles.StyleFactory;
 class DocumentationAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private final String document;
+	private final boolean addHotKeys;
 
-	DocumentationAction( final String actionName, final String document) {
+	DocumentationAction( final String actionName, final String document, final boolean addHotKeys) {
 		super(actionName);
 		this.document = document;
+		this.addHotKeys = addHotKeys;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -85,7 +87,7 @@ class DocumentationAction extends AFreeplaneAction {
 					try {
 						if (endUrl.getFile().endsWith(".mm")) {
 							 Controller.getCurrentController().selectMode(BModeController.MODENAME);
-							if (Controller.getCurrentModeController().getMapController().newMap(endUrl, false)) {
+							if (Controller.getCurrentModeController().getMapController().newMap(endUrl, false) && addHotKeys) {
 								appendAcceleratableMenuEntries();
 							}
 						}

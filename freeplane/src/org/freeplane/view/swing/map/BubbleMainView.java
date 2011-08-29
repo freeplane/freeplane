@@ -80,6 +80,7 @@ class BubbleMainView extends MainView {
 	 * @see freeplane.view.mindmapview.NodeView#getStyle()
 	 */
 	@Override
+    public
 	String getShape() {
 		return NodeStyleModel.STYLE_BUBBLE;
 	}

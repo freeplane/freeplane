@@ -42,7 +42,7 @@ class EditAction extends AFreeplaneAction {
 	 * generated.instance.XmlAction)
 	 */
 	public void actionPerformed(final ActionEvent arg0) {
-		((MTextController) TextController.getController()).edit(null, FirstAction.EDIT_CURRENT, false);
+		((MTextController) TextController.getController()).edit(FirstAction.EDIT_CURRENT, false);
 	}
 
 }

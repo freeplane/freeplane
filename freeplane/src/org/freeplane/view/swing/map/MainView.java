@@ -21,7 +21,6 @@ package org.freeplane.view.swing.map;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -52,7 +51,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.UIIcon;
@@ -155,7 +153,7 @@ public abstract class MainView extends ZoomableLabel {
 
 	public abstract Point getRightPoint();
 
-	abstract String getShape();
+	public abstract String getShape();
 
 	int getZoomedFoldingSymbolHalfWidth() {
 		return getNodeView().getZoomedFoldingSymbolHalfWidth();
@@ -354,11 +352,11 @@ public abstract class MainView extends ZoomableLabel {
 			return;
 		final ModeController modeController = nodeView.getMap().getModeController();
 		final TextController textController = TextController.getController(modeController);
-		final boolean textShortened = textController.getIsShortened(nodeModel);
+		isShortened = textController.getIsShortened(nodeModel);
 		Object content = nodeModel.getUserObject();
 		String text;
 		try {
-			if(textShortened && (content instanceof String))
+			if(isShortened && (content instanceof String))
 				content = HtmlUtils.htmlToPlain((String) content);
 			final Object obj = textController.getTransformedObject(content, nodeModel, content);
 			if(nodeView.isSelected()){
@@ -372,11 +370,8 @@ public abstract class MainView extends ZoomableLabel {
 			text = TextUtils.format("MainView.errorUpdateText", String.valueOf(content), e.getLocalizedMessage());
 			textModified = TextModificationState.FAILURE;
 		}
-		if(textShortened){
+		if(isShortened){
 			text = shortenText(text);
-		}
-		else{
-			isShortened = false;
 		}
 		updateText(text);
 	}
@@ -394,12 +389,6 @@ public abstract class MainView extends ZoomableLabel {
 	    final int maxNodeWidth = ResourceController.getResourceController().getIntProperty("max_shortened_text_length");
 		if(eolPosition == -1 || eolPosition >= length || eolPosition >= maxNodeWidth){
 	    	if(length <= maxNodeWidth){
-	    		final Container parent = getParent();
-	    		if(parent instanceof NodeView || parent.getComponentCount() == 1){
-	    			isShortened = false;
-	    			return longText;
-	    		}
-	    		isShortened = true;
 	    		return text;
 	    	}
 	    	length = maxNodeWidth;
@@ -408,7 +397,6 @@ public abstract class MainView extends ZoomableLabel {
 	    	length = eolPosition;
 	    }
 	    text = text.substring(0, length);
-	    isShortened = true;
 	    return text;
     }
 

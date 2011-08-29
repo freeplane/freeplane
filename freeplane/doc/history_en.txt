@@ -10,6 +10,10 @@ Script based filter conditions
 Scripts in reminders
 Scripting support math with nodes: node.text = "2"; assert 3 * node * 2 == 12
 Code completion in formula editor
+Performance optimizations for printing
+Filter flag "Unfold hidden nodes" removed
+Filter flag "apply to visible nodes" no more automatically set / unset
+Obsolete documentation key maps and menu references removed 
 
 ===============================
 1.2.7 alpha

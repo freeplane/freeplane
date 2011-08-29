@@ -54,6 +54,9 @@ final class QuickFilterAction extends AFreeplaneAction {
 		if(condition == null){
 			return;
 		}
-		filterController.getFilterConditions().setSelectedItem(condition);
+		if(condition.equals(filterController.getFilterConditions().getSelectedItem()))
+			filterController.applyFilter(true);
+		else
+			filterController.getFilterConditions().setSelectedItem(condition);
 	}
 }

@@ -23,7 +23,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.util.regex.Pattern;
 
 import javax.swing.RootPaneContainer;
@@ -75,8 +74,7 @@ class EditNoteInDialogAction extends AFreeplaneAction {
 		if(text ==  null){
 			text = "";
 		}
-		KeyEvent firstEvent= null;
-		final EditNodeWYSIWYG editNodeWYSIWYG = new EditNodeWYSIWYG("EditNoteInDialogAction.text", nodeModel, text, firstEvent, new EditNodeBase.IEditControl() {
+		final EditNodeWYSIWYG editNodeWYSIWYG = new EditNodeWYSIWYG("EditNoteInDialogAction.text", nodeModel, text, new EditNodeBase.IEditControl() {
 			public void cancel() {
 				Controller.getCurrentModeController().setBlocked(false);
 				mCurrentEditDialog = null;

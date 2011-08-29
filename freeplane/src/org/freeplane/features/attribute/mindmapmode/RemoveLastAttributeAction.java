@@ -20,8 +20,7 @@
 package org.freeplane.features.attribute.mindmapmode;
 
 import java.awt.event.ActionEvent;
-import java.util.List;
-
+import java.util.Collection;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.attribute.AttributeController;
@@ -55,7 +54,7 @@ public class RemoveLastAttributeAction extends AMultipleNodeAction {
 	public void setEnabled() {
 		boolean enable = false;
 		final AttributeUtilities atrUtil = new AttributeUtilities();
-		final List<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
+		final Collection<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
 		for (final NodeModel node : nodes) {
 			if (node != null && atrUtil.hasAttributes(node)) {
 				enable = true;

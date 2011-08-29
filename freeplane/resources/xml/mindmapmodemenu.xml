@@ -389,7 +389,6 @@
 			<menu_action action="ApplyNoFilteringAction"/>
 			<menu_action action="ApplySelectedViewConditionAction"/>
 			<menu_action action="ApplyToVisibleAction" />
-			<menu_action action="UnfoldFilteredAncestorsAction" />
 			<menu_action action="ShowAncestorsAction" />
 			<menu_action action="ShowDescendantsAction" />
 			<menu_separator />
@@ -458,6 +457,7 @@
 				<menu_action action="AboutAction" menu_key="MB_AboutAction"/>	
 			</menu_category>				
 			<menu_separator />
+			<menu_action action="GettingStartedAction"/>		
 			<menu_action action="DocumentationAction" accelerator="F1" />		
 		</menu_submenu>
 	</menu_category>
@@ -716,7 +716,7 @@
 			<menu_action action="NavigationPreviousMapAction" />
 			<menu_action action="NavigationNextMapAction" />			
 		</menu_category>
-		<menu_category name="zoom">
+		<menu_category name="zoom"  menu_key="main_toolbar_zoom">
 		</menu_category>
 		<menu_category name="open">
 			<menu_action action="OpenAction" />

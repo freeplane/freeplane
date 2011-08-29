@@ -24,16 +24,12 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Frame;
-import java.awt.KeyEventDispatcher;
-import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
-import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -294,34 +290,9 @@ abstract public class EditNodeBase {
 		if (textComponent.hasFocus()) {
 			return;
 		}
-		final KeyboardFocusManager currentKeyboardFocusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-		class KeyEventQueue implements KeyEventDispatcher, FocusListener {
-			ArrayList<KeyEvent> events = new ArrayList<KeyEvent>(100);
-
-			public boolean dispatchKeyEvent(final KeyEvent ke) {
-			    if(events.contains(ke)){
-			        return false;
-			    }
-			    KeyEvent newEvent = new KeyEvent(textComponent, ke.getID(), ke.getWhen(), ke.getModifiers(), ke.getKeyCode(), ke.getKeyChar(), ke.getKeyLocation());
-			    events.add(newEvent);
-			    ke.consume();
-				return true;
-			}
-
-			public void focusGained(final FocusEvent e) {
-				e.getComponent().removeFocusListener(this);
-				for (int i = 0; i < events.size(); i++) {
-	                e.getComponent().dispatchEvent(events.get(i));
-				}
-				currentKeyboardFocusManager.removeKeyEventDispatcher(this);
-			}
-
-			public void focusLost(final FocusEvent e) {
-			}
-		};
-		final KeyEventQueue keyEventDispatcher = new KeyEventQueue();
-		currentKeyboardFocusManager.addKeyEventDispatcher(keyEventDispatcher);
-		textComponent.addFocusListener(keyEventDispatcher);
+		final EventBuffer keyEventDispatcher = MTextController.getController().getEventQueue();
+		keyEventDispatcher.activate();
+		keyEventDispatcher.setTextComponent(textComponent);
 		if (firstKeyEvent == null) {
 			return;
 		}
@@ -339,7 +310,6 @@ abstract public class EditNodeBase {
 		}
 		else {
 			textComponent.selectAll();
-			keyEventDispatcher.dispatchKeyEvent(firstKeyEvent);
 		}
 	}
 

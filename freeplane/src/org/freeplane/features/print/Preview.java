@@ -26,6 +26,7 @@ import java.awt.print.PrinterException;
 import javax.swing.JComponent;
 
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.view.swing.map.MapView;
 
 class Preview extends JComponent {
 	final private static int DEFAULT_PREVIEW_SIZE = 300;
@@ -103,9 +104,13 @@ class Preview extends JComponent {
 				previewPageImage = (BufferedImage) createImage(getPageWidth(format) - 1, getPageHeight(format) - 1);
 				imageGraphics = previewPageImage.createGraphics();
 				imageGraphics.scale(zoom, zoom);
+				if(view instanceof MapView)
+					((MapView)view).preparePrinting();
 				while (Printable.NO_SUCH_PAGE == view.print(imageGraphics, format, index) && index > 0) {
-					index -= 1;
+					index --;
 				}
+				if(view instanceof MapView)
+					((MapView)view).endPrinting();
 			}
 			g2d.drawImage(previewPageImage, 0, 0, this);
 		}

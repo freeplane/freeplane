@@ -28,9 +28,8 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Enumeration;
-import java.util.List;
-
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -119,7 +118,7 @@ class FilePropertiesAction extends AFreeplaneAction {
             nodeTotalFiltered = -1;
         }
 		//Multiple nodes may be selected
-		final List<NodeModel> nodes = Controller.getCurrentController().getSelection().getSelection();
+		final Collection<NodeModel> nodes = Controller.getCurrentController().getSelection().getSelection();
 		boolean isDescendant = false;
         int nodeRelativeChildCount = 0;
         int nodeRelativeNodeCount = 0;
@@ -128,8 +127,8 @@ class FilePropertiesAction extends AFreeplaneAction {
 			nodeRelativeChildCount += n.getChildCount();
 			isDescendant = false;
 			//Nodes and leaf nodes are only counted once per branch
-			for (int i = 0; i < nodes.size(); i++) {
-				if (n.isDescendantOf(nodes.get(i))) {
+			for (NodeModel node : nodes) {
+				if (n.isDescendantOf(node)) {
 					isDescendant = true;
 					break;
 				}

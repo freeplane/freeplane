@@ -397,17 +397,15 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 		if(col == 1){
 			final KeyEvent kev;
+			final MTextController textController = (MTextController) TextController.getController();
 			if(e instanceof KeyEvent){
 				kev = (KeyEvent) e;
+				textController.getEventQueue().activate(kev);
 			}
-			else{
-				kev = null;
-			}
-			final MTextController textController = (MTextController) TextController.getController();
 			final IAttributeTableModel model = (IAttributeTableModel) getModel();
 			final String text = getValueAt(row, col).toString();
 			final DialogTableCellEditor dialogTableCellEditor = new DialogTableCellEditor();
-			EditNodeBase base = textController.getEditNodeBase(model.getNode(), text, EditedComponent.TEXT, dialogTableCellEditor.getEditControl(), kev, false);
+			EditNodeBase base = textController.getEditNodeBase(model.getNode(), text, EditedComponent.TEXT, dialogTableCellEditor.getEditControl(), false);
 			if(base != null){
 				dialogTableCellEditor.setEditBase(base);
 				return dialogTableCellEditor;

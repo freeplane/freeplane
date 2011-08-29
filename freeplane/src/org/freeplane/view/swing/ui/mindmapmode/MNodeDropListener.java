@@ -27,6 +27,7 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -154,7 +155,7 @@ public class MNodeDropListener implements DropTargetListener {
 			}
 			else {
 				Transferable trans = null;
-				final List<NodeModel> selecteds = mapController.getSelectedNodes();
+				final Collection<NodeModel> selecteds = mapController.getSelectedNodes();
 				if (DnDConstants.ACTION_MOVE == dropAction) {
 					NodeModel actualNode = targetNode;
 					do {

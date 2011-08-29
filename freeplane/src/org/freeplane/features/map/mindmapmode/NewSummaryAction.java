@@ -54,8 +54,8 @@ class NewSummaryAction extends AFreeplaneAction {
 		final int start = this.start;
 		final int end = this.end;
 		final ModeController modeController = Controller.getCurrentModeController();
-		List<NodeModel> selection = modeController.getController().getSelection().getSelection();
-		NodeModel selected = selection.get(0);
+		final IMapSelection selection = modeController.getController().getSelection();
+		NodeModel selected = selection.getSelected();
 		final NodeModel parentNode = selected.getParentNode();
 		final boolean isLeft = selected.isLeft();
 		final MMapController mapController = (MMapController) modeController.getMapController();
