@@ -170,7 +170,6 @@ public class LocationDialog extends JDialog {
 	}
 
 	private void workspaceChange(final String newValue) {
-		System.out.println("valuechanged");
 		if(newValue != null) {	
 			((WorkspaceProfileListModel)profileComboBox.getModel()).reload(newValue);
 		}
@@ -186,7 +185,6 @@ public class LocationDialog extends JDialog {
 					if(pathname.isDirectory() 
 							&& pathname.getName().startsWith(".") 
 							&& Arrays.asList(pathname.list()).contains("workspace.xml")) {
-						System.out.println(pathname);
 						return true;					
 					}
 					return false;
@@ -205,7 +203,7 @@ public class LocationDialog extends JDialog {
 				for(File folder : workspaceBase.listFiles(profileFilter)) {					
 					itemList.add(new ProfileListObject(folder.getName().substring(1), folder.getName().substring(1)));
 					if(WorkspaceController.getController().getPreferences().getWorkspaceProfile().equals(folder.getName().substring(1))) {
-						selectedObject = internalModel.getElementAt(internalModel.getSize()-1);
+						selectedObject = itemList.elementAt(itemList.size()-1);
 					}
 				}				
 			}
@@ -214,7 +212,7 @@ public class LocationDialog extends JDialog {
 		public void reload(String path) {
 			itemList = new Vector<LocationDialog.ProfileListObject>();
 			itemList.add(new ProfileListObject(WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT, "<"+WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT+"> profile"));
-			selectedObject = internalModel.getElementAt(0);
+			selectedObject = itemList.elementAt(0);
 			if(path != null) {
 				File file = new File(path);
 				if(file.exists()) {					
