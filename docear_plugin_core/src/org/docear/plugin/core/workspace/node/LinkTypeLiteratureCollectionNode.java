@@ -15,6 +15,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.node.LinkNode;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
@@ -86,14 +87,16 @@ public class LinkTypeLiteratureCollectionNode extends LinkNode implements IWorks
 		System.out.println("event: "+event.getType());
 		if (event.getType() == WorkspaceNodeEvent.MOUSE_LEFT_DBLCLICK) {
 			System.out.println("doublecklicked MindmapNode");
-			try {
-				URL absoluteUrl = getLinkPath().toURL().openConnection().getURL();				
-				File f = new File(absoluteUrl.getFile());
+			try {				
+				File f = WorkspaceUtils.resolveURI(getLinkPath());
+				if(f == null) {
+					return;
+				}
 				if (!f.exists()) {
 					createNewMindmap(f);
 				}
-				Controller.getCurrentModeController().getMapController().newMap(absoluteUrl, false);
-
+				Controller.getCurrentModeController().getMapController().newMap(f.toURL(), false);
+				
 			}
 			catch (Exception e) {
 				LogUtils.warn("could not open document (" + getLinkPath() + ")", e);
