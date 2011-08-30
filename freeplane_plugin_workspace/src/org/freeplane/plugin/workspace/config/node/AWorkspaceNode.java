@@ -22,7 +22,8 @@ public abstract class AWorkspaceNode {
 	}
 	
 	public final String getId() {
-		return Integer.toHexString(super.toString().hashCode()).toUpperCase();
+		return Integer.toHexString(getName() == null ? "".hashCode() : getName().hashCode()).toUpperCase();
+		//return Integer.toHexString(super.toString().hashCode()).toUpperCase();
 	}
 	
 	public String toString() {

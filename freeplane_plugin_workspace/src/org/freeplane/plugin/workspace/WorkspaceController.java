@@ -27,10 +27,12 @@ import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.config.PopupMenus;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.config.node.WorkspaceRoot;
+import org.freeplane.plugin.workspace.controller.AWorkspaceExpansionStateHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceComponentHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceDropHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceKeyHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceMouseHandler;
+import org.freeplane.plugin.workspace.controller.DefaultWorkspaceExpansionStateHandler;
 import org.freeplane.plugin.workspace.controller.IWorkspaceListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferHandler;
@@ -65,6 +67,7 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 
 	private String workspaceLocation;
 	private boolean isInitialized = false;
+	private DefaultWorkspaceExpansionStateHandler expansionStateHandler;
 
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -178,6 +181,7 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 		initTree();
 		initializeConfiguration();
 		reloadView();
+		getExpansionStateHandler().restoreExpansionState();
 	}
 	
 	public void refreshWorkspace() {
@@ -185,6 +189,7 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 		getConfiguration().reload();
 		getWorkspaceView().getTreeModel().setRoot(getIndexTree().getRoot().getChildAt(0));
 		getWorkspaceView().getTreeModel().reload();
+		getExpansionStateHandler().restoreExpansionState();
 	}
 
 	public IndexedTree getIndexTree() {
@@ -198,6 +203,14 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 			resCtrl.addPropertyChangeListener(this);
 		}
 		return this.preferences;
+	}
+	
+
+	public AWorkspaceExpansionStateHandler getExpansionStateHandler() {
+		if(expansionStateHandler == null) {
+			expansionStateHandler = new DefaultWorkspaceExpansionStateHandler();
+		}
+		return expansionStateHandler;
 	}
 
 	private void initTree() {
@@ -230,6 +243,7 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 			this.view.getTreeView().addMouseMotionListener(mouseHandler);
 			this.view.getTreeView().addKeyListener(new DefaultWorkspaceKeyHandler());
 			this.view.getTreeView().setRowHeight(18);
+			this.view.getTreeView().addTreeExpansionListener((DefaultWorkspaceExpansionStateHandler)getExpansionStateHandler());
 			this.transferHandler = WorkspaceTransferHandler.configureDragAndDrop(this.view.getTreeView(), new DefaultWorkspaceDropHandler());
 		}
 		return this.view;
