@@ -4,7 +4,10 @@ import java.awt.Component;
 import java.io.File;
 import java.net.URI;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
@@ -14,8 +17,13 @@ import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 
 public class PhysicalFolderNode extends FolderNode implements IWorkspaceNodeEventListener {
+	private static Icon FOLDER_OPEN_ICON = new ImageIcon(PhysicalFolderNode.class.getResource("/images/16x16/folder-orange_open.png"));
+	private static final Icon FOLDER_CLOSED_ICON = new ImageIcon(PhysicalFolderNode.class.getResource("/images/16x16/folder-orange.png"));
+		
 	private String folderPathProperty;
 	private URI folderPath;
+	
+	
 
 	private static String POPUP_KEY = "/filesystem_folder";
 
@@ -84,6 +92,13 @@ public class PhysicalFolderNode extends FolderNode implements IWorkspaceNodeEven
 					.showPopup(POPUP_KEY, component, event.getX(), event.getY());
 
 		}
+	}
+	
+	public boolean setIcons(DefaultTreeCellRenderer renderer) {
+		renderer.setOpenIcon(FOLDER_OPEN_ICON);
+		renderer.setClosedIcon(FOLDER_CLOSED_ICON);
+		renderer.setLeafIcon(FOLDER_CLOSED_ICON);
+		return true;
 	}
 
 	public String toString() {

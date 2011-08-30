@@ -120,7 +120,8 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 		ResourceController.getResourceController().setProperty(WorkspacePreferences.WORKSPACE_LOCATION_NEW, workspaceLocation);
 		Controller.getCurrentController().getResourceController()
 				.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, true);
-		WorkspaceController.getController().reloadWorkspace();
+		getExpansionStateHandler().reset();
+		reloadWorkspace();
 	}
 
 	public DefaultMutableTreeNode getWorkspaceRoot() {

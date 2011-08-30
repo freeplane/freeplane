@@ -7,9 +7,14 @@ package org.docear.plugin.core.workspace.node;
 import java.io.File;
 import java.net.URI;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.tree.DefaultTreeCellRenderer;
+
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
@@ -24,7 +29,7 @@ import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
  * 
  */
 public class LinkTypeNewLiteratureNode extends LinkNode implements IWorkspaceNodeEventListener {
-	
+	private static final Icon DEFAULT_ICON = new ImageIcon(ResourceController.class.getResource("/images/docear16.png"));
 	
 	private URI linkPath;
 	
@@ -50,6 +55,13 @@ public class LinkTypeNewLiteratureNode extends LinkNode implements IWorkspaceNod
 	
 	public void setLinkPath(URI linkPath) {
 		this.linkPath = linkPath;
+	}
+	
+	public boolean setIcons(DefaultTreeCellRenderer renderer) {
+		renderer.setOpenIcon(DEFAULT_ICON);
+		renderer.setClosedIcon(DEFAULT_ICON);
+		renderer.setLeafIcon(DEFAULT_ICON);
+		return true;
 	}
 	
 	private boolean createNewMindmap(final File f) {
