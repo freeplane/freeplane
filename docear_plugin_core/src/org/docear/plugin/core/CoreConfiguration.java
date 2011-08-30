@@ -52,6 +52,15 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	public CoreConfiguration(ModeController modeController) {
 		addPropertyChangeListener();
 		addPreferencesToOptionsPanel();
+		
+		try {
+			if (WorkspaceController.getController().isInitialized()) {
+				showLocationDialogIfNeeded();
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 				
 		LogUtils.info("org.docear.plugin.core.CoreConfiguration() initializing...");
 		init(modeController);
