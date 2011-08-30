@@ -41,10 +41,10 @@ public class LocationDialog extends JDialog {
 	private final static String DOCUMENT_REPOSITORY_INIT_PATH = "workspace:/document_repository";
 	public final static String DOCUMENT_REPOSITORY_PATH_PROPERTY = "document_repository_path";
 	//TODO: DOCEAR: profile name
-	private final static String BIBTEX_INIT_PATH = "workspace:/bibtex";
+	private static String BIBTEX_PATH_INIT;
 	public final static String BIBTEX_PATH_PROPERTY = "docear_bibtex_path";
 	
-	private final static String PROJECTS_PATH_INIT = "workspace:/projects";
+	private static String PROJECTS_PATH_INIT;
 	public final static String PROJECTS_PATH_PROPERTY = "docear_projects_path";
 	
 	
@@ -142,7 +142,11 @@ public class LocationDialog extends JDialog {
 	
 	
 	public LocationDialog() {
-		this.workspaceLocation = new File(WorkspaceController.getController().getWorkspaceLocation());
+		WorkspaceController workspaceController = WorkspaceController.getController();
+		this.workspaceLocation = new File(workspaceController.getWorkspaceLocation());
+		
+		BIBTEX_PATH_INIT = "workspace:/."+workspaceController.getPreferences().getWorkspaceProfile()+"/bibtex.bib";
+		PROJECTS_PATH_INIT = "workspace:/."+workspaceController.getPreferences().getWorkspaceProfile()+"/projects";
 		
 		this.setModal(true);
 		setTitle(TextUtils.getText("docear_initialization"));
@@ -290,7 +294,7 @@ public class LocationDialog extends JDialog {
 	}
 	
 	private String getBibtexLocation() {
-		return getPropertyLocation(BIBTEX_PATH_PROPERTY, BIBTEX_INIT_PATH);
+		return getPropertyLocation(BIBTEX_PATH_PROPERTY, BIBTEX_PATH_INIT);
 	}
 	
 	private void setBibtexLocation(String location) {

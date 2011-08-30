@@ -1,17 +1,16 @@
 <workspace name="My Workspace" version="1.0" meta="docear">
 	<folder name="Library" type="library" system="true">
 
-        <link type="new_literature" name="New Literature and Annotations" path="workspace:/Library/NewPapersandAnnotations.mm" window="new" system="true" />
-        <link type="literature_collection" name="Literature, Annotations, and Ideas" path="workspace:/Library/PapersAnnotationsAndIdeas.mm" system="true" />
-        <link type="my_publications" name="My Publications" path="workspace:/Library/MyPublications.mm" system="true" />
+        <link type="new_literature" name="New Literature and Annotations" path="workspace:/@@PROFILENAME@@/Library/NewPapersandAnnotations.mm" window="new" system="true" />
+        <link type="literature_collection" name="Literature, Annotations, and Ideas" path="workspace:/@@PROFILENAME@@/Library/PapersAnnotationsAndIdeas.mm" system="true" />
+        <link type="my_publications" name="My Publications" path="workspace:/@@PROFILENAME@@/Library/MyPublications.mm" system="true" />
         <folder type="literature_repository" path="property:/document_repository_path" system="true" />
-        <link type="references" path="workspace:/references.bib" system="true" />
+        <link type="references" path="property:/docear_bibtex_path" system="true" />
 
     </folder>
-    <folder type="virtual" name="Mindmaps">
-    	<folder type="physical" path="workspace:/mindmaps/" />
-    </folder>
-
+    
+    <folder type="physical" path="property:/docear_projects_path" />
+    
     <folder type="virtual" name="Miscellaneous" >
         <link type="file" path="workspace:/mindmaps/new_mindmap.mm" />
         <link type="file" path="workspace:/other_mindmap.mm" />

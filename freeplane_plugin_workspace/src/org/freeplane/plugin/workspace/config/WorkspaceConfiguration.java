@@ -2,6 +2,7 @@ package org.freeplane.plugin.workspace.config;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,8 +10,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
@@ -44,6 +50,8 @@ public class WorkspaceConfiguration {
 	private final static String DEFAULT_CONFIG_FILE_NAME = "workspace_default.xml";
 	private final static String DEFAULT_CONFIG_FILE_NAME_DOCEAR = "workspace_default_docear.xml";
 	private final static String CONFIG_FILE_NAME = "workspace.xml";
+	
+	private final static String PLACEHOLDER_PROFILENAME = "@@PROFILENAME@@";
 	
 	private FolderCreator folderCreator = null;
 	private LinkCreator linkCreator = null;
@@ -136,21 +144,22 @@ public class WorkspaceConfiguration {
 
 	private void copyDefaultConfigTo(File config) throws FileNotFoundException, IOException {
 		String appName = Controller.getCurrentController().getResourceController().getProperty("ApplicationName", "Freeplane");
-		InputStream in;
+		String xml;
 		if(appName.equalsIgnoreCase("docear")) {
-			in = getClass().getResourceAsStream(DEFAULT_CONFIG_FILE_NAME_DOCEAR);
+			xml = getSubstitutedWorkspaceXml(DEFAULT_CONFIG_FILE_NAME_DOCEAR);
 		}
 		else {
-			in = getClass().getResourceAsStream(DEFAULT_CONFIG_FILE_NAME);
+			xml = getSubstitutedWorkspaceXml(DEFAULT_CONFIG_FILE_NAME);
 		}
 		DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(config)));
-		byte[] buffer = new byte[1024];
-		int len = in.read(buffer);
-		while (len != -1) {
-			out.write(buffer, 0, len);
-			len = in.read(buffer);
-		}
-		in.close();
+		out.write(xml.getBytes());
+//		byte[] buffer = new byte[1024];
+//		int len = in.read(buffer);
+//		while (len != -1) {
+//			out.write(buffer, 0, len);
+//			len = in.read(buffer);
+//		}
+//		in.close();
 		out.close();
 	}
 
@@ -249,6 +258,45 @@ public class WorkspaceConfiguration {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	private String getSubstitutedWorkspaceXml(String filename) {
+        String ret = "";
+        try {
+            ret = this.getFileContent(filename);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Pattern pattern = Pattern.compile(PLACEHOLDER_PROFILENAME);
+        Matcher mainMatcher = pattern.matcher(ret);
+        ret = mainMatcher.replaceAll("."+WorkspaceController.getController().getPreferences().getWorkspaceProfile());
+        
+        return ret;
+    }
+
+	
+	private String getFileContent(String filename) throws IOException {
+        InputStream in = getClass().getResourceAsStream(filename);
+        Writer writer = new StringWriter();
+        char[] buffer = new char[1024];
+
+        try {
+            Reader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+            int n;
+
+            while ((n = reader.read(buffer)) != -1) {
+                writer.write(buffer, 0, n);
+            }
+
+        }
+        finally {
+            in.close();
+        }
+
+        return writer.toString();
+    }
+
 
 	/**
 	 * @param node
