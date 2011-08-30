@@ -15,14 +15,17 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.MutableComboBoxModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListDataListener;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.mode.Controller;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -40,10 +43,21 @@ public class LocationDialog extends JDialog {
 
 	private JPanel mainPanel = new JPanel();
 	private JComboBox profileComboBox;
+	private JButton btnCreateNew;
 
 	/**
 	 * Create the dialog.
 	 */
+	private void onCreateNewProfile() {
+		String profileName = JOptionPane.showInputDialog(Controller.getCurrentController().getViewController().getContentPane(),
+				TextUtils.getText("new_profile_name"), "");
+		profileName = WorkspaceUtils.stripIllegalChars(profileName);
+
+		if (profileName != null && profileName.length() > 0) {
+			workspaceChange(this.location.getText(), profileName);
+		}
+	}
+
 	private void onCancelButton() {
 		WorkspaceController.getController().setWorkspaceLocation("");
 		WorkspaceController.getController().showWorkspace(false);
@@ -51,6 +65,14 @@ public class LocationDialog extends JDialog {
 	}
 
 	private void onOkButton() {
+		WorkspaceProfileListModel model = (WorkspaceProfileListModel) this.profileComboBox.getModel();
+		String profileName = ((ProfileListObject) model.getSelectedItem()).getName();
+
+		if (location.getText().length() == 0 || profileName.length() == 0) {
+			return;
+		}
+
+		ResourceController.getResourceController().setProperty(WorkspacePreferences.WORKSPACE_PROFILE, profileName);
 		WorkspaceController.getController().setWorkspaceLocation(location.getText());
 		ProfileListObject item = (ProfileListObject) profileComboBox.getSelectedItem();
 		WorkspaceController.getController().getPreferences().setWorkspaceProfile(item.getName());
@@ -109,15 +131,30 @@ public class LocationDialog extends JDialog {
 			{
 				JButton btnBrowse = new JButton(TextUtils.getText("browse"));
 				mainPanel.add(btnBrowse, "4, 2");
+
 				{
 					profileComboBox = new JComboBox();
 					mainPanel.add(profileComboBox, "2, 4, fill, default");
-					profileComboBox.setModel(new WorkspaceProfileListModel());
+					profileComboBox.setModel(new WorkspaceProfileListModel());					
 				}
 				{
-					JButton btnCreateNew = new JButton(TextUtils.getText("workspace.profile.new"));
+					this.btnCreateNew = new JButton(TextUtils.getText("workspace.profile.new"));
+					btnCreateNew.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							onCreateNewProfile();
+						}
+					});
 					mainPanel.add(btnCreateNew, "4, 4");
 				}
+				if (location.getText().trim().length() == 0) {
+					this.profileComboBox.setVisible(false);
+					this.btnCreateNew.setVisible(false);
+				}
+				else {
+					this.profileComboBox.setVisible(true);
+					this.btnCreateNew.setVisible(true);
+				}
+
 				btnBrowse.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						onShowButton();
@@ -169,9 +206,16 @@ public class LocationDialog extends JDialog {
 
 	}
 
-	private void workspaceChange(final String newValue) {
-		if(newValue != null) {	
-			((WorkspaceProfileListModel)profileComboBox.getModel()).reload(newValue);
+	private void workspaceChange(final String newPath) {
+		workspaceChange(newPath, null);
+	}
+
+	private void workspaceChange(final String newPath, final String newProfileName) {
+		if (newPath != null && newPath.trim().length()>0) {
+			((WorkspaceProfileListModel) profileComboBox.getModel()).reload(newPath, newProfileName);
+			this.btnCreateNew.setVisible(true);
+			this.profileComboBox.setVisible(true);
+			this.profileComboBox.repaint();
 		}
 	}
 
@@ -181,44 +225,53 @@ public class LocationDialog extends JDialog {
 
 		private static final long serialVersionUID = 1L;
 		private final FileFilter profileFilter = new FileFilter() {
-				public boolean accept(File pathname) {
-					if(pathname.isDirectory() 
-							&& pathname.getName().startsWith(".") 
-							&& Arrays.asList(pathname.list()).contains("workspace.xml")) {
-						return true;					
-					}
-					return false;
+			public boolean accept(File pathname) {
+				if (pathname.isDirectory() && pathname.getName().startsWith(".")
+						&& Arrays.asList(pathname.list()).contains("workspace.xml")) {
+					return true;
 				}
-			};
-		private Object selectedObject;	
-			
-			
-		
+				return false;
+			}
+		};
+		private Object selectedObject;
+
 		public WorkspaceProfileListModel() {
 			reload(null);
 		}
-		
+
 		private void initProfileList(File workspaceBase) {
-			if(workspaceBase.isDirectory()) {
-				for(File folder : workspaceBase.listFiles(profileFilter)) {					
+			if (workspaceBase.isDirectory()) {
+				for (File folder : workspaceBase.listFiles(profileFilter)) {
 					itemList.add(new ProfileListObject(folder.getName().substring(1), folder.getName().substring(1)));
-					if(WorkspaceController.getController().getPreferences().getWorkspaceProfile().equals(folder.getName().substring(1))) {
-						selectedObject = itemList.elementAt(itemList.size()-1);
+					if (WorkspaceController.getController().getPreferences().getWorkspaceProfile()
+							.equals(folder.getName().substring(1))) {
+						selectedObject = itemList.elementAt(itemList.size() - 1);
 					}
-				}				
+				}
 			}
 		}
-		
+
 		public void reload(String path) {
+			reload(path, null);
+		}
+
+		public void reload(String path, String newProfileName) {
 			itemList = new Vector<LocationDialog.ProfileListObject>();
-			itemList.add(new ProfileListObject(WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT, "<"+WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT+"> profile"));
+			itemList.add(new ProfileListObject(WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT, "<"
+					+ WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT + "> profile"));
 			selectedObject = itemList.elementAt(0);
-			if(path != null) {
+			if (newProfileName != null) {
+				itemList.add(new ProfileListObject(newProfileName, newProfileName));
+				selectedObject = itemList.elementAt(1);
+			}
+
+			if (path != null) {
 				File file = new File(path);
-				if(file.exists()) {					
+				if (file.exists()) {
 					initProfileList(file);
-				} else {
-					//TODO: DOCEAR> do sth.
+				}
+				else {
+					// TODO: DOCEAR> do sth.
 				}
 			}
 			this.internalModel = new DefaultComboBoxModel(itemList.toArray());
@@ -232,23 +285,23 @@ public class LocationDialog extends JDialog {
 		public Object getElementAt(int index) {
 			return internalModel.getElementAt(index);
 		}
-		
+
 		public Object getSelectedItem() {
-	        if(internalModel.getSelectedItem() == null) {
-	        	return internalModel.getElementAt(0); 
-	        }
+			if (internalModel.getSelectedItem() == null) {
+				return internalModel.getElementAt(0);
+			}
 			return internalModel.getSelectedItem();
-	    }
+		}
 
 		public void setSelectedItem(Object anItem) {
-			if(anItem == null) {
+			if (anItem == null) {
 				internalModel.setSelectedItem(internalModel.getElementAt(0));
 			}
 			internalModel.setSelectedItem(anItem);
 		}
 
 		public void addListDataListener(ListDataListener l) {
-			internalModel.addListDataListener(l);	
+			internalModel.addListDataListener(l);
 		}
 
 		public void removeListDataListener(ListDataListener l) {
@@ -256,11 +309,11 @@ public class LocationDialog extends JDialog {
 		}
 
 		public void addElement(Object obj) {
-			internalModel.addElement(obj);			
+			internalModel.addElement(obj);
 		}
 
 		public void removeElement(Object obj) {
-			internalModel.removeElement(obj);			
+			internalModel.removeElement(obj);
 		}
 
 		public void insertElementAt(Object obj, int index) {
@@ -268,7 +321,7 @@ public class LocationDialog extends JDialog {
 		}
 
 		public void removeElementAt(int index) {
-			internalModel.removeElementAt(index);			
+			internalModel.removeElementAt(index);
 		}
 
 	}
@@ -276,16 +329,16 @@ public class LocationDialog extends JDialog {
 	public class ProfileListObject {
 		private final String name;
 		private final String displayName;
-		
+
 		public ProfileListObject(final String name, final String displayName) {
 			this.name = name;
 			this.displayName = displayName;
 		}
-		
+
 		public String getName() {
 			return this.name;
 		}
-		
+
 		public String toString() {
 			return displayName;
 		}

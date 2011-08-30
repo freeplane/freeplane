@@ -27,6 +27,7 @@ public class AddNewGroupAction extends AWorkspaceAction {
 				TextUtils.getText("enter_group_name"));
 		
 		WorkspaceUtils.createVirtualFolderNode(groupName, this.getNodeFromActionEvent(e));
+		WorkspaceUtils.saveCurrentConfiguration();	
 		
 		WorkspaceController.getController().reloadWorkspace();
 	}

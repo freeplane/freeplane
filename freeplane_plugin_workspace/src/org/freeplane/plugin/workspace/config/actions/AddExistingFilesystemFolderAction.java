@@ -35,6 +35,8 @@ public class AddExistingFilesystemFolderAction extends AWorkspaceAction {
 			WorkspaceUtils.createPhysicalFolderNode(fileChooser.getSelectedFile(), this.getNodeFromActionEvent(e));
 		}
 		
+		WorkspaceUtils.saveCurrentConfiguration();	
+		
 		WorkspaceController.getController().reloadWorkspace();
 	}
 

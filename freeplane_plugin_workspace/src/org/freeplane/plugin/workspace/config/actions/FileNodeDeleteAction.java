@@ -10,6 +10,7 @@ import javax.swing.tree.DefaultTreeModel;
 import org.freeplane.core.ui.components.JFreeplaneMenuItem;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.view.WorkspacePopupMenu;
 
@@ -34,6 +35,7 @@ public class FileNodeDeleteAction extends AWorkspaceAction {
 		if (yesorno == JOptionPane.OK_OPTION) {
 			deleteFile(e);
 		}
+		WorkspaceUtils.saveCurrentConfiguration();	
 	}
 
 	private void deleteFile(final ActionEvent e) {

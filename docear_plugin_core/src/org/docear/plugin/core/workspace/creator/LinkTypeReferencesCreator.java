@@ -39,8 +39,14 @@ public class LinkTypeReferencesCreator extends AWorkspaceNodeCreator {
 		if (path == null) {
 			return null;
 		}	
-		node.setLinkPath(URI.create(path)); 		
-		String name = data.getAttribute("name", WorkspaceUtils.resolveURI(node.getLinkPath()).getName());
+		node.setLinkPath(URI.create(path));
+		String name;
+		try {
+			name = data.getAttribute("name", WorkspaceUtils.resolveURI(node.getLinkPath()).getName());
+		}
+		catch(NullPointerException e) {
+			return null;
+		}
 		node.setName(name);
 		return node;
 	}
