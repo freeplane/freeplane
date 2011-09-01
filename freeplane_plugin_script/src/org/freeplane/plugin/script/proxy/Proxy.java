@@ -87,6 +87,11 @@ public interface Proxy {
 		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
 		 *         &lt; 0 || index &gt;= size())</tt>.*/
 		Object get(final int index);
+		
+		/** returns the attribute key at the given index.
+		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
+		 *         &lt; 0 || index &gt;= size())</tt>.*/
+		String getKey(final int index);
 
 		/** @deprecated since 1.2 - use {@link #findFirst(String)} instead. */
 		int findAttribute(final String name);
