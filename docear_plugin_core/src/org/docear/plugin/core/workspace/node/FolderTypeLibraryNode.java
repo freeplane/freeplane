@@ -8,6 +8,10 @@ import java.net.URI;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.tree.DefaultTreeCellRenderer;
+
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.IDocearLibrary;
 import org.docear.plugin.core.event.DocearEvent;
@@ -20,7 +24,8 @@ import org.freeplane.plugin.workspace.config.node.FolderNode;
  * 
  */
 public class FolderTypeLibraryNode extends FolderNode implements IDocearEventListener, IDocearLibrary {
-
+	private static final Icon DEFAULT_ICON = new ImageIcon(FolderTypeLibraryNode.class.getResource("/images/folder-database.png"));
+	
 	private final Vector<URI> mindmapIndex = new Vector<URI>();
 	
 	/***********************************************************************************
@@ -38,6 +43,12 @@ public class FolderTypeLibraryNode extends FolderNode implements IDocearEventLis
 	 * METHODS
 	 **********************************************************************************/
 	
+	public boolean setIcons(DefaultTreeCellRenderer renderer) {
+		renderer.setOpenIcon(DEFAULT_ICON);
+		renderer.setClosedIcon(DEFAULT_ICON);
+		renderer.setLeafIcon(DEFAULT_ICON);
+		return true;
+	}
 	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES

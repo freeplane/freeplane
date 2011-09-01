@@ -186,7 +186,11 @@ public class WorkspaceUtils {
 		}
 		return new File(absoluteUri);
 	}
-
+	
+	public static URI getURI(final File f) {
+		return f.toURI();
+	}
+	
 	/**
 	 * @param targetNode
 	 * @param node

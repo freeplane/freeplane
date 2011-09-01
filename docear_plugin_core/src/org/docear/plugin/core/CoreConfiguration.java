@@ -66,7 +66,11 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		init(modeController);
 	}
 	
-	private void showLocationDialogIfNeeded() {		
+	private void showLocationDialogIfNeeded() {
+		if (WorkspaceController.getController().getPreferences().getWorkspaceLocation() == null) {
+			return;
+		}
+		
 		String workspaceInfo = (String)WorkspaceController.getController().getConfiguration().getConfigurationInfo().getMeta();
 		
 		if (!workspaceInfo.toLowerCase().contains("docear") || !LocationDialog.allVariablesSet()) {
@@ -185,7 +189,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 
 	public void workspaceChanged(WorkspaceEvent event) {
 		// TODO Auto-generated method stub
-		System.out.println("DOCEAR CORE: workspaceChanged(WorkspaceEvent):"+ event);
+		System.out.println("DOCEAR CORE: workspaceChanged(WorkspaceEvent):"+ event);		
 	}
 
 	public void workspaceInitialize(WorkspaceEvent event) {

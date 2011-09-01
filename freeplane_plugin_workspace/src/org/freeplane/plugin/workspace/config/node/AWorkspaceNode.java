@@ -1,5 +1,7 @@
 package org.freeplane.plugin.workspace.config.node;
 
+import javax.swing.tree.DefaultTreeCellRenderer;
+
 
 public abstract class AWorkspaceNode {
 	final public static int WSNODE_DEFAULT_MODE = 0;
@@ -46,7 +48,19 @@ public abstract class AWorkspaceNode {
 		return true;
 	}
 	
+	public boolean setIcons(DefaultTreeCellRenderer renderer) {
+		return false;
+	}
+	
 	abstract public String getTagName();
+	
+	
+
+	/**
+	 * @param renderer
+	 * @param node
+	 */
+	
 
 	
 }

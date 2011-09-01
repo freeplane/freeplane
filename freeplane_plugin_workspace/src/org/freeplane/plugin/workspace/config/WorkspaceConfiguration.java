@@ -24,13 +24,11 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.WorkspacePreferences;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.creator.AWorkspaceNodeCreator;
 import org.freeplane.plugin.workspace.config.creator.FolderCreator;
@@ -58,7 +56,6 @@ public class WorkspaceConfiguration {
 	private FolderCreator folderCreator = null;
 	private LinkCreator linkCreator = null;
 	private WorkspaceRootCreator workspaceRootCreator = null;
-	private boolean configValid = false;
 	private IConfigurationInfo configurationInfo;
 
 	private ConfigurationWriter configWriter;
@@ -75,85 +72,44 @@ public class WorkspaceConfiguration {
 		return this.configurationInfo;
 	}
 
-	private void initializeConfig() throws FileNotFoundException, IOException, URISyntaxException {
-		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
-		String workspaceLocation = resCtrl.getProperty(WorkspacePreferences.WORKSPACE_LOCATION, null);
-		String workspaceLocationNew = resCtrl.getProperty(WorkspacePreferences.WORKSPACE_LOCATION_NEW, null);
+	private boolean initializeConfig() throws NullPointerException, FileNotFoundException, IOException, URISyntaxException {
+		String workspaceLocation = WorkspaceController.getController().getPreferences().getWorkspaceLocation();
+		String profileName = WorkspaceController.getController().getPreferences().getWorkspaceProfile();
 
-		String profileName = resCtrl.getProperty(WorkspacePreferences.WORKSPACE_PROFILE, null);
-
-		if (workspaceLocationNew != null && profileName != null) {
-			URI uri = new URI(WorkspaceController.WORKSPACE_RESOURCE_URL_PROTOCOL + ":/." + profileName + "/" + CONFIG_FILE_NAME);
-			File configFile = WorkspaceUtils.resolveURI(uri);
-			if (!configFile.exists()) {
-				workspaceLocation = initializeNewConfig(workspaceLocationNew, profileName);
-			}
-			else {
-				if (workspaceLocation == null) {
-					resCtrl.setProperty(WorkspacePreferences.WORKSPACE_LOCATION, workspaceLocationNew);
-				}
-				workspaceLocation = workspaceLocationNew;
-			}
+		if (workspaceLocation == null) {
+			return false;
 		}
 
-		URI uri = new URI(WorkspaceController.WORKSPACE_RESOURCE_URL_PROTOCOL + ":/." + profileName + "/" + CONFIG_FILE_NAME);
-		File configFile;
-		try {
-			 configFile = WorkspaceUtils.resolveURI(uri);
-		}
-		catch (NullPointerException e) {
-			return;
-		}
-
-		if (!configFile.exists()) {
-			setConfigValid(false);
-			return;
-		}
-		WorkspaceController.getController().getIndexTree()
-				.removeChildElements(WorkspaceController.getController().getIndexTree());
-		// WorkspaceController.getCurrentWorkspaceController().getTree().getRoot().removeAllChildren();
-		this.load(configFile.toURI().toURL());
-		setConfigValid(true);
-	}
-
-	private String initializeNewConfig(String workspaceLocationNew, String profileName) throws FileNotFoundException, IOException, URISyntaxException {
-		ResourceController resourceController = Controller.getCurrentController().getResourceController();
-		URI uri = new URI(WorkspaceController.WORKSPACE_RESOURCE_URL_PROTOCOL + ":/." + profileName + "/" + CONFIG_FILE_NAME);
+		URI uri = new URI("file", null, workspaceLocation + "/." + profileName + "/" + CONFIG_FILE_NAME, null);
 		File configFile = WorkspaceUtils.resolveURI(uri);
-
 		if (!configFile.exists()) {
 			int yesorno = JOptionPane.OK_OPTION;
 			yesorno = JOptionPane.showConfirmDialog(Controller.getCurrentController().getViewController().getContentPane(),
-					TextUtils.getText("confirm_create_workspace_text") + workspaceLocationNew,
+					TextUtils.getText("confirm_create_workspace_text") + workspaceLocation,
 					TextUtils.getText("confirm_create_workspace_title"), JOptionPane.OK_CANCEL_OPTION);
 			if (yesorno == JOptionPane.OK_OPTION) {
-				// CREATE NEW WORKSPACE				
-				File folder = new File(workspaceLocationNew+File.separator+"."+profileName);
-				if (!folder.exists() || !folder.isDirectory()) {
-					if (!folder.mkdirs()) {
+				// CREATE NEW WORKSPACE
+				File profileFolder = new File(workspaceLocation + File.separator + "." + profileName);
+				if (!profileFolder.exists() || !profileFolder.isDirectory()) {
+					if (!profileFolder.mkdirs()) {
 						JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(),
-								TextUtils.getText("error_create_workspace_folder") + " " + workspaceLocationNew,
+								TextUtils.getText("error_create_workspace_folder") + " " + workspaceLocation,
 								TextUtils.getText("error_create_workspace_folder_title"), JOptionPane.ERROR_MESSAGE);
-						return null;
+						return false;
 					}
 				}
 				copyDefaultConfigTo(configFile);
-				resourceController.setProperty(WorkspacePreferences.WORKSPACE_LOCATION, workspaceLocationNew);
-				return workspaceLocationNew;
 			}
 			else {
-				// DO NOT CREATE NEW WORKSPACE - USE OLD WORKSPACE INSTEAD
-				resourceController.setProperty(WorkspacePreferences.WORKSPACE_LOCATION_NEW,
-						resourceController.getProperty(WorkspacePreferences.WORKSPACE_LOCATION));
-				return resourceController.getProperty(WorkspacePreferences.WORKSPACE_LOCATION);
+				return false;
 			}
 		}
-		else {
-			// NEW WORKSPACE EXISTS, USE IT
-			resourceController.setProperty(WorkspacePreferences.WORKSPACE_LOCATION, workspaceLocationNew);
-			return workspaceLocationNew;
-		}
 
+		WorkspaceController.getController().getIndexTree()
+				.removeChildElements(WorkspaceController.getController().getIndexTree());
+		this.load(configFile.toURI().toURL());
+
+		return true;
 	}
 
 	private void copyDefaultConfigTo(File config) throws FileNotFoundException, IOException {
@@ -167,22 +123,7 @@ public class WorkspaceConfiguration {
 		}
 		DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(config)));
 		out.write(xml.getBytes());
-		// byte[] buffer = new byte[1024];
-		// int len = in.read(buffer);
-		// while (len != -1) {
-		// out.write(buffer, 0, len);
-		// len = in.read(buffer);
-		// }
-		// in.close();
 		out.close();
-	}
-
-	public boolean isConfigValid() {
-		return configValid;
-	}
-
-	public void setConfigValid(boolean configValid) {
-		this.configValid = configValid;
 	}
 
 	private void initReadManager() {
@@ -251,13 +192,13 @@ public class WorkspaceConfiguration {
 
 	}
 
-	public void reload() {
+	public boolean reload() {
 		try {
-			initializeConfig();
+			return initializeConfig();			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			this.setConfigValid(false);
+			return false;
 		}
 	}
 

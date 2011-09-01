@@ -4,6 +4,7 @@
  */
 package org.freeplane.plugin.workspace.controller;
 
+import java.util.Iterator;
 import java.util.Stack;
 
 import javax.swing.JTree;
@@ -43,9 +44,13 @@ public class DefaultWorkspaceExpansionStateHandler extends AWorkspaceExpansionSt
 		IndexedTree index = WorkspaceController.getController().getIndexTree();
 		DefaultTreeModel model = WorkspaceController.getController().getViewModel();
 		JTree view = WorkspaceController.getController().getWorkspaceViewTree();
-		for(String key : getSet()) {
+		Iterator<String> iterator = getSet().iterator(); 
+		while(iterator.hasNext()) {
+			String key = iterator.next();
 			if(index.contains(key)) {			
 				view.expandPath(new TreePath(model.getPathToRoot(index.get(key))));
+			} else {
+				iterator.remove();
 			}
 		}
 		while(!collapseStack.isEmpty()) {
@@ -55,6 +60,10 @@ public class DefaultWorkspaceExpansionStateHandler extends AWorkspaceExpansionSt
 			}
 		}
 		unlock();
+	}
+	
+	public void reset() {
+		removeAll();
 	}
 	
 	private boolean lock() {
@@ -78,8 +87,7 @@ public class DefaultWorkspaceExpansionStateHandler extends AWorkspaceExpansionSt
 	/** 
 	 * {@inheritDoc}
 	 */
-	public void treeExpanded(TreeExpansionEvent event) {
-		
+	public void treeExpanded(TreeExpansionEvent event) {		
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) event.getPath().getLastPathComponent();
 		if(node != null) {
 			String key = (String) WorkspaceController.getController().getIndexTree().getKeyByUserObject(node.getUserObject());

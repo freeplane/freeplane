@@ -22,17 +22,14 @@ import javax.swing.MutableComboBoxModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListDataListener;
 
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.mode.Controller;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
-public class LocationDialog extends JDialog {
+public class WorkspaceChooserDialog extends JDialog {
 
 	/**
 	 * 
@@ -49,7 +46,7 @@ public class LocationDialog extends JDialog {
 	 * Create the dialog.
 	 */
 	private void onCreateNewProfile() {
-		String profileName = JOptionPane.showInputDialog(Controller.getCurrentController().getViewController().getContentPane(),
+		String profileName = JOptionPane.showInputDialog(this,
 				TextUtils.getText("new_profile_name"), "");
 		profileName = WorkspaceUtils.stripIllegalChars(profileName);
 
@@ -58,24 +55,23 @@ public class LocationDialog extends JDialog {
 		}
 	}
 
-	private void onCancelButton() {
-		WorkspaceController.getController().setWorkspaceLocation("");
-		WorkspaceController.getController().showWorkspace(false);
+	private void onCancelButton() {		
 		this.dispose();
 	}
 
 	private void onOkButton() {
-		WorkspaceProfileListModel model = (WorkspaceProfileListModel) this.profileComboBox.getModel();
-		String profileName = ((ProfileListObject) model.getSelectedItem()).getName();
+		ProfileListObject item = (ProfileListObject) profileComboBox.getSelectedItem();		
+		String profileName = item.getName();
 
 		if (location.getText().length() == 0 || profileName.length() == 0) {
 			return;
 		}
-
-		ResourceController.getResourceController().setProperty(WorkspacePreferences.WORKSPACE_PROFILE, profileName);
-		WorkspaceController.getController().setWorkspaceLocation(location.getText());
-		ProfileListObject item = (ProfileListObject) profileComboBox.getSelectedItem();
-		WorkspaceController.getController().getPreferences().setWorkspaceProfile(item.getName());
+		
+		File f = new File(this.location.getText());
+		WorkspaceController.getController().getPreferences().setNewWorkspaceLocation(WorkspaceUtils.getURI(f));
+		WorkspaceController.getController().getPreferences().setWorkspaceProfile(profileName);
+		
+		//WorkspaceController.getController().getPreferences().setWorkspaceLocation(this, location.getText());
 		this.dispose();
 	}
 
@@ -89,7 +85,7 @@ public class LocationDialog extends JDialog {
 			}
 		}
 
-		int retVal = fileChooser.showOpenDialog(UITools.getFrame());
+		int retVal = fileChooser.showOpenDialog(this);
 		if (retVal == JFileChooser.APPROVE_OPTION) {
 			File selectedfile = fileChooser.getSelectedFile();
 			this.location.setText(selectedfile.getPath());
@@ -97,7 +93,7 @@ public class LocationDialog extends JDialog {
 		}
 	}
 
-	public LocationDialog() {
+	public WorkspaceChooserDialog() {
 		this.setModal(true);
 		setTitle(TextUtils.getText("no_location_set"));
 		setBounds(100, 100, 484, 200);
@@ -123,7 +119,7 @@ public class LocationDialog extends JDialog {
 			location = new JTextField();
 			mainPanel.add(location, "2, 2, fill, fill");
 
-			String currentLocation = WorkspaceController.getController().getWorkspaceLocation();
+			String currentLocation = WorkspaceController.getController().getPreferences().getWorkspaceLocation();
 			if (currentLocation != null && currentLocation.length() > 0) {
 				location.setText(currentLocation);
 			}
@@ -256,7 +252,7 @@ public class LocationDialog extends JDialog {
 		}
 
 		public void reload(String path, String newProfileName) {
-			itemList = new Vector<LocationDialog.ProfileListObject>();
+			itemList = new Vector<WorkspaceChooserDialog.ProfileListObject>();
 			itemList.add(new ProfileListObject(WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT, "<"
 					+ WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT + "> profile"));
 			selectedObject = itemList.elementAt(0);

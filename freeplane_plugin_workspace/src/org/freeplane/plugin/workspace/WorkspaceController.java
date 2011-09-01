@@ -65,7 +65,7 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 	private WorkspaceTransferHandler transferHandler;
 	private IndexedTree tree;
 
-	private String workspaceLocation;
+	String workspaceLocation;
 	private boolean isInitialized = false;
 	private DefaultWorkspaceExpansionStateHandler expansionStateHandler;
 
@@ -89,6 +89,10 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 
 	public void initialStart() {
 		dispatchWorkspaceEvent(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_EVENT_TYPE_INITIALIZE, this));
+		if (getPreferences().getWorkspaceLocation() == null) {
+			WorkspaceChooserDialog dialog = new WorkspaceChooserDialog();
+			dialog.setVisible(true);
+		}
 		initializeConfiguration();
 		dispatchWorkspaceEvent(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_EVENT_TYPE_FINALIZE, this));
 		initializeView();
@@ -105,22 +109,6 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 
 	public WorkspaceConfiguration getConfiguration() {
 		return configuration;
-	}
-
-	public String getWorkspaceLocation() {
-		if (this.workspaceLocation == null) {
-			this.workspaceLocation = Controller.getCurrentController().getResourceController().getProperty(
-					WorkspacePreferences.WORKSPACE_LOCATION);
-		}
-		return workspaceLocation;
-	}
-
-	public void setWorkspaceLocation(String workspaceLocation) {
-		this.workspaceLocation = workspaceLocation;
-		ResourceController.getResourceController().setProperty(WorkspacePreferences.WORKSPACE_LOCATION_NEW, workspaceLocation);
-		Controller.getCurrentController().getResourceController()
-				.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, true);
-		WorkspaceController.getController().reloadWorkspace();
 	}
 
 	public DefaultMutableTreeNode getWorkspaceRoot() {
@@ -218,20 +206,36 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 		this.tree.addElement(this.tree, new WorkspaceRoot(), "root", IndexedTree.AS_CHILD);
 	}
 
-	private void initializeConfiguration() {
-		resetWorkspaceView();
-		getConfiguration().reload();
-		if (!getConfiguration().isConfigValid()) {
-			LocationDialog locationDialog = new LocationDialog();
-			locationDialog.setVisible(true);
-		}
-
-		if (!getConfiguration().isConfigValid()) {
+	private void initializeConfiguration() {		
+		String workspaceLocation = getPreferences().getWorkspaceLocation();
+		if (workspaceLocation == null || workspaceLocation.trim().length() <= 0) {
 			showWorkspace(false);
 			return;
 		}
-
-		UrlManager.getController().setLastCurrentDir(new File(getWorkspaceLocation()));
+		
+		resetWorkspaceView();
+		
+		if (getConfiguration().reload()) {
+			showWorkspace(true);
+			UrlManager.getController().setLastCurrentDir(new File(preferences.getWorkspaceLocation()));
+			dispatchWorkspaceEvent(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_EVENT_TYPE_CHANGE, getConfiguration()));
+		}
+		else {
+			showWorkspace(false);
+			getPreferences().setNewWorkspaceLocation(null);
+		}
+		
+//		if (!getConfiguration().isConfigValid()) {
+//			WorkspaceChooserDialog locationDialog = new WorkspaceChooserDialog();
+//			locationDialog.setVisible(true);
+//		}
+//
+//		if (!getConfiguration().isConfigValid()) {
+//			showWorkspace(false);
+//			return;
+//		}
+//
+//		
 	}
 	
 	private TreeView getWorkspaceView() {
