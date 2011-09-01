@@ -12,8 +12,7 @@ import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 
 public class VirtualFolderNode extends FolderNode implements IWorkspaceNodeEventListener {
-	private static final Icon FOLDER_OPEN_ICON = new ImageIcon(AWorkspaceNode.class.getResource("/images/16x16/folder-blue_open.png"));
-	private static final Icon FOLDER_CLOSED_ICON = new ImageIcon(AWorkspaceNode.class.getResource("/images/16x16/folder-blue.png"));
+	private static final Icon DEFAULT_ICON = new ImageIcon(AWorkspaceNode.class.getResource("/images/16x16/object-group-2.png"));
 	
 	public final static String POPUP_KEY = "/workspace_groupnode_popup";
 
@@ -30,9 +29,9 @@ public class VirtualFolderNode extends FolderNode implements IWorkspaceNodeEvent
 	}
 	
 	public boolean setIcons(DefaultTreeCellRenderer renderer) {
-		renderer.setOpenIcon(FOLDER_OPEN_ICON);
-		renderer.setClosedIcon(FOLDER_CLOSED_ICON);
-		renderer.setLeafIcon(FOLDER_CLOSED_ICON);
+		renderer.setOpenIcon(DEFAULT_ICON);
+		renderer.setClosedIcon(DEFAULT_ICON);
+		renderer.setLeafIcon(DEFAULT_ICON);
 		return true;
 	}
 

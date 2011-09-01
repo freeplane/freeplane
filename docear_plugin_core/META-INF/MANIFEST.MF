@@ -19,4 +19,5 @@ Export-Package: org.docear.plugin.core;
  org.docear.plugin.core.workspace.node,
  org.jdesktop.swingworker
 Bundle-ClassPath: lib/plugin.jar,
- lib/swingworker-backport.jar
+ lib/swingworker-backport.jar,
+ lib/commons-io-2.0.1.jar
