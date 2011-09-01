@@ -80,8 +80,7 @@ public class WorkspaceConfiguration {
 			return false;
 		}
 
-		URI uri = new URI("file", null, workspaceLocation + "/." + profileName + "/" + CONFIG_FILE_NAME, null);
-		File configFile = WorkspaceUtils.resolveURI(uri);
+		File configFile = new File(workspaceLocation + File.separator + "." + profileName + File.separator + CONFIG_FILE_NAME);
 		if (!configFile.exists()) {
 			int yesorno = JOptionPane.OK_OPTION;
 			yesorno = JOptionPane.showConfirmDialog(Controller.getCurrentController().getViewController().getContentPane(),

@@ -46,8 +46,7 @@ public class WorkspaceChooserDialog extends JDialog {
 	 * Create the dialog.
 	 */
 	private void onCreateNewProfile() {
-		String profileName = JOptionPane.showInputDialog(this,
-				TextUtils.getText("new_profile_name"), "");
+		String profileName = JOptionPane.showInputDialog(this, TextUtils.getText("new_profile_name"), "");
 		profileName = WorkspaceUtils.stripIllegalChars(profileName);
 
 		if (profileName != null && profileName.length() > 0) {
@@ -55,23 +54,22 @@ public class WorkspaceChooserDialog extends JDialog {
 		}
 	}
 
-	private void onCancelButton() {		
+	private void onCancelButton() {
 		this.dispose();
 	}
 
 	private void onOkButton() {
-		ProfileListObject item = (ProfileListObject) profileComboBox.getSelectedItem();		
+		ProfileListObject item = (ProfileListObject) profileComboBox.getSelectedItem();
 		String profileName = item.getName();
 
 		if (location.getText().length() == 0 || profileName.length() == 0) {
 			return;
 		}
-		
+
 		File f = new File(this.location.getText());
 		WorkspaceController.getController().getPreferences().setNewWorkspaceLocation(WorkspaceUtils.getURI(f));
 		WorkspaceController.getController().getPreferences().setWorkspaceProfile(profileName);
-		
-		//WorkspaceController.getController().getPreferences().setWorkspaceLocation(this, location.getText());
+
 		this.dispose();
 	}
 
@@ -132,6 +130,7 @@ public class WorkspaceChooserDialog extends JDialog {
 					profileComboBox = new JComboBox();
 					mainPanel.add(profileComboBox, "2, 4, fill, default");
 					profileComboBox.setModel(new WorkspaceProfileListModel());					
+					
 				}
 				{
 					this.btnCreateNew = new JButton(TextUtils.getText("workspace.profile.new"));
@@ -141,6 +140,9 @@ public class WorkspaceChooserDialog extends JDialog {
 						}
 					});
 					mainPanel.add(btnCreateNew, "4, 4");
+				}
+				if (currentLocation != null && currentLocation.length() > 0) {
+					workspaceChange(this.location.getText());
 				}
 				if (location.getText().trim().length() == 0) {
 					this.profileComboBox.setVisible(false);
@@ -207,7 +209,7 @@ public class WorkspaceChooserDialog extends JDialog {
 	}
 
 	private void workspaceChange(final String newPath, final String newProfileName) {
-		if (newPath != null && newPath.trim().length()>0) {
+		if (newPath != null && newPath.trim().length() > 0) {
 			((WorkspaceProfileListModel) profileComboBox.getModel()).reload(newPath, newProfileName);
 			this.btnCreateNew.setVisible(true);
 			this.profileComboBox.setVisible(true);
@@ -222,8 +224,8 @@ public class WorkspaceChooserDialog extends JDialog {
 		private static final long serialVersionUID = 1L;
 		private final FileFilter profileFilter = new FileFilter() {
 			public boolean accept(File pathname) {
-				if (pathname.isDirectory() && pathname.getName().startsWith(".")
-						&& Arrays.asList(pathname.list()).contains("workspace.xml")) {
+				if (pathname.isDirectory() && !pathname.getName().equals("." + WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT)
+						&& pathname.getName().startsWith(".") && Arrays.asList(pathname.list()).contains("workspace.xml")) {
 					return true;
 				}
 				return false;
@@ -257,8 +259,7 @@ public class WorkspaceChooserDialog extends JDialog {
 					+ WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT + "> profile"));
 			selectedObject = itemList.elementAt(0);
 			if (newProfileName != null) {
-				itemList.add(new ProfileListObject(newProfileName, newProfileName));
-				selectedObject = itemList.elementAt(1);
+				itemList.add(new ProfileListObject(newProfileName, newProfileName));				
 			}
 
 			if (path != null) {
@@ -271,6 +272,9 @@ public class WorkspaceChooserDialog extends JDialog {
 				}
 			}
 			this.internalModel = new DefaultComboBoxModel(itemList.toArray());
+			if (newProfileName != null) {
+				selectedObject = itemList.elementAt(1);
+			}
 			setSelectedItem(selectedObject);
 		}
 
