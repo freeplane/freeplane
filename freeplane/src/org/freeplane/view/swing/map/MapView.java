@@ -922,10 +922,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    return -1;
     }
 
-	private NodeView getVisibleNeighbour(final int directionCode) {
-		return getVisibleNeighbour(directionCode, false);
-	}
-	
 	private NodeView getVisibleNeighbour(final int directionCode, boolean unselected) {
 		final NodeView oldSelected = getSelected();
 		NodeView newSelected = null;
@@ -945,14 +941,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			case KeyEvent.VK_UP:
 				for (
     				newSelected = oldSelected.getPreviousVisibleSibling(); 
-    				unselected && newSelected != null && newSelected.isSelected();
+    				unselected && newSelected != null && newSelected != oldSelected && newSelected.isSelected();
     				newSelected = newSelected.getPreviousVisibleSibling()
 				);
 				break;
 			case KeyEvent.VK_DOWN:
 				for (
     				newSelected = oldSelected.getNextVisibleSibling(); 
-    				unselected && newSelected != null && newSelected.isSelected();
+    				unselected && newSelected != null && newSelected != oldSelected && newSelected.isSelected();
     				newSelected = newSelected.getNextVisibleSibling()
 				);
 				break;
