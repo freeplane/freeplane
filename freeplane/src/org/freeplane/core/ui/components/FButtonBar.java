@@ -19,9 +19,11 @@
  */
 package org.freeplane.core.ui.components;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.KeyEventDispatcher;
-import java.awt.KeyboardFocusManager;
+import java.awt.LayoutManager;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,6 +40,8 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -70,9 +74,26 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 			onModifierChangeImpl();
 		}
 	});
+	
+	@SuppressWarnings("serial")
+    private class ContentPane extends JPanel{
+		@Override
+        protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
+			if (condition == JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
+				return dispatchKeyEvent(e);
+			return false;
+        }
+	}
 
-	public FButtonBar() {
-		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
+	public FButtonBar(JRootPane rootPane) {
+		final Container oldContentPane = rootPane.getContentPane();
+		final ContentPane newContentPane = new ContentPane();
+		final LayoutManager layoutManager = oldContentPane.getLayout();
+		oldContentPane.setLayout(null);
+		newContentPane.setLayout(layoutManager);
+		for (Component c : oldContentPane.getComponents())
+			newContentPane.add(c);
+		rootPane.setContentPane(newContentPane);
 		buttons = new HashMap<Integer, JButton[]>();
 		onModifierChange();
 	}
@@ -136,7 +157,6 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 			if (System.getProperty("os.name").startsWith("Mac OS")) {
 				button.setBorderPainted(false);
 			}
-			button.setContentAreaFilled(false);
             KeyStroke ks = KeyStroke.getKeyStroke(KeyEvent.VK_F1 + i, modifiers);
             setAcceleratorAction(button, ks);
             
