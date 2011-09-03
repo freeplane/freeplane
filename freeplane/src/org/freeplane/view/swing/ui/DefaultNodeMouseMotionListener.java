@@ -173,10 +173,9 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			currentController.getViewController().out(
 			    LinkController.getController(currentController.getModeController()).getLinkShortText(node.getNodeView().getModel()));
 		}
-		if (controlRegionForDelayedSelection != null) {
-			if (!controlRegionForDelayedSelection.contains(e.getPoint())) {
+		if (controlRegionForDelayedSelection == null 
+				|| !controlRegionForDelayedSelection.contains(e.getPoint())) {
 				createTimer(e);
-			}
 		}
 	}
 
