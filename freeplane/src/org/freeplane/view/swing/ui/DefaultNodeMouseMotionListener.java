@@ -184,7 +184,8 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		final MainView component = (MainView) e.getComponent();
 		wasFocused = component.hasFocus();
 		showPopupMenu(e);
-		extendSelection(e);
+		if(! e.isPopupTrigger() && e.getButton() == 1)
+			extendSelection(e);
 	}
 
 	protected boolean wasFocused() {
