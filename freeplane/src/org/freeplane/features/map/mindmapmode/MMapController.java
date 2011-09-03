@@ -21,6 +21,8 @@ package org.freeplane.features.map.mindmapmode;
 
 import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
@@ -60,7 +62,6 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  */
 public class MMapController extends MapController {
 	public static final int NEW_CHILD = 2;
-	public static final int NEW_CHILD_WITHOUT_FOCUS = 1;
 	public static final int NEW_SIBLING_BEFORE = 4;
 	public static final int NEW_SIBLING_BEHIND = 3;
 	public static final String RESOURCES_CONVERT_TO_CURRENT_VERSION = "convert_to_current_version";
@@ -114,16 +115,26 @@ public class MMapController extends MapController {
 					if (newNode == null) {
 						return null;
 					}
+					final Component component = Controller.getCurrentController().getViewController().getComponent(newNode);
+					if(component == null)
+						return newNode;
+					component.addFocusListener(new FocusListener() {
+						public void focusLost(FocusEvent e) {
+						}
+						
+						public void focusGained(FocusEvent e) {
+							e.getComponent().removeFocusListener(this);
+							((MTextController) textController).edit(newNode, targetNode, true, false, false);
+						}
+					});
 					select(newNode);
-						((MTextController) textController).edit(newNode, targetNode, true, false, false);
-						break;
+					break;
 				}
 				else {
 					newNodeMode = MMapController.NEW_CHILD;
 				}
 			}
-			case MMapController.NEW_CHILD:
-			case MMapController.NEW_CHILD_WITHOUT_FOCUS: {
+			case MMapController.NEW_CHILD: {
 				final boolean parentFolded = isFolded(targetNode);
 				if (parentFolded) {
 					setFolded(targetNode, false);
@@ -134,14 +145,19 @@ public class MMapController extends MapController {
 				if (newNode == null) {
 					return null;
 				}
-				if (newNodeMode == MMapController.NEW_CHILD) {
-					select(newNode);
-				}
-				EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						((MTextController) textController).edit(newNode, targetNode, true, parentFolded, false);
+				final Component component = Controller.getCurrentController().getViewController().getComponent(newNode);
+				if(component == null)
+					return newNode;
+				component.addFocusListener(new FocusListener() {
+					public void focusLost(FocusEvent e) {
+					}
+					
+					public void focusGained(FocusEvent e) {
+						e.getComponent().removeFocusListener(this);
+						((MTextController) textController).edit(newNode, targetNode, true, false, false);
 					}
 				});
+				select(newNode);
 				break;
 			}
 			default:
