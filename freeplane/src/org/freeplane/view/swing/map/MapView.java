@@ -41,11 +41,11 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
-import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
-import java.util.AbstractCollection;
+import java.util.AbstractList;
+import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -73,10 +73,10 @@ import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.link.ConnectorModel;
+import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.LinkModel;
 import org.freeplane.features.link.NodeLinks;
-import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeView;
@@ -173,10 +173,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return selected == null ? null : selected.getModel();
 		}
 
-		public Collection<NodeModel> getSelection() {
+		public Set<NodeModel> getSelection() {
 			return MapView.this.getSelectedNodes();
 		}
 
+
+		public List<NodeModel> getOrderedSelection() {
+			return MapView.this.getOrderedSelectedNodes();
+        }
 		public List<NodeModel> getSortedSelection(final boolean differentSubtrees) {
 			return MapView.this.getSelectedNodesSortedByY(differentSubtrees);
 		}
@@ -251,6 +255,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private class Selection {
 		final private Set<NodeView> selectedSet = new LinkedHashSet<NodeView>();
+		final private List<NodeView> selectedList = new ArrayList<NodeView>();
 		private NodeView selectedNode = null;
 
 		public Selection() {
@@ -259,6 +264,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		private void select(final NodeView node) {
 			clear();
 			selectedSet.add(node);
+			selectedList.add(node);
 			selectedNode = node;
 			addSelectionForHooks(node);
 			node.repaintSelected();
@@ -271,6 +277,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 			else{
 				if(selectedSet.add(node)){
+					selectedList.add(node);
 					node.repaintSelected();
 					return true;
 				}
@@ -289,8 +296,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			if (selectedNode != null) {
 				removeSelectionForHooks(selectedNode);
 				selectedNode = null;
+				selectedSet.clear();
+				selectedList.clear();
 			}
-			selectedSet.clear();
 		}
 
 		private boolean contains(final NodeView node) {
@@ -305,12 +313,17 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 
 
-		private boolean remove(final NodeView node) {
+		private boolean deselect(final NodeView node) {
 			final boolean selectedChanged = selectedNode != null && selectedNode.equals(node);
 			if (selectedChanged) {
 				removeSelectionForHooks(node);
 			}
 			if (selectedSet.remove(node)){
+				final int last = selectedList.size() - 1;
+				if(selectedList.get(last) .equals(node))
+					selectedList.remove(last);
+				else
+					selectedList.remove(node);
 				node.repaintSelected();
 				if(selectedChanged && size() > 0){
 					selectedNode = selectedSet.iterator().next();
@@ -342,18 +355,24 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             	selectedNode = views[0];
             }
             selectedSet.clear();
+            selectedList.clear();
             for(NodeView view : views)
-                selectedSet.add(view);
+                if (selectedSet.add(view))
+                	selectedList.add(view);
             if (selectedChanges) {
                 addSelectionForHooks(selectedNode);
             }
         }
 
 		public NodeView[] toArray() {
-	        return selectedSet.toArray(new NodeView[selectedSet.size()]);
+	        return selectedList.toArray(new NodeView[selectedList.size()]);
         }
 
-		private Set<NodeView> getSelecteds() {
+		private List<NodeView> getSelectedList() {
+	        return selectedList;
+        }
+
+		private Set<NodeView> getSelectedSet() {
 	        return selectedSet;
         }
 	}
@@ -390,7 +409,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private NodeView rootView = null;
 	private boolean selectedsValid = true;
 	final private Selection selection = new Selection();
-	private NodeView shiftSelectionOrigin = null;
 	private int siblingMaxLevel;
 	private float zoom = 1F;
 	private float anchorHorizontalPoint;
@@ -541,7 +559,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public void deselect(final NodeView newSelected) {
-		if (selection.remove(newSelected)) {
+		if (selection.deselect(newSelected)) {
 			newSelected.repaintSelected();
 		}
 	}
@@ -580,75 +598,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		if (MapView.printOnWhiteBackground) {
 			setBackground(background);
-		}
-	}
-
-	private void extendSelectionWithKeyMove(final NodeView newlySelectedNodeView, final KeyEvent e) {
-		if (e.isShiftDown()) {
-			if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_RIGHT) {
-				shiftSelectionOrigin = null;
-				if(newlySelectedNodeView.isParentOf(getSelected())){
-					selectAsTheOnlyOneSelected(newlySelectedNodeView);
-					addBranchToSelection(newlySelectedNodeView);
-				}
-				else{
-					addBranchToSelection(getSelected());
-				}
-				return;
-			}
-			if (shiftSelectionOrigin == null) {
-				shiftSelectionOrigin = getSelected();
-			}
-			final int newY = getMainViewY(newlySelectedNodeView);
-			final int selectionOriginY = getMainViewY(shiftSelectionOrigin);
-			final int deltaY = newY - selectionOriginY;
-			NodeView currentSelected = getSelected();
-			if (e.getKeyCode() == KeyEvent.VK_PAGE_UP) {
-				for (;;) {
-					final int currentSelectedY = getMainViewY(currentSelected);
-					if (currentSelectedY > selectionOriginY) {
-						deselect(currentSelected);
-					}
-					else {
-						addSelected(currentSelected);
-					}
-					if (currentSelectedY <= newY) {
-						break;
-					}
-					currentSelected = currentSelected.getPreviousVisibleSibling();
-				}
-				return;
-			}
-			if (e.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
-				for (;;) {
-					final int currentSelectedY = getMainViewY(currentSelected);
-					if (currentSelectedY < selectionOriginY) {
-						deselect(currentSelected);
-					}
-					else {
-						addSelected(currentSelected);
-					}
-					if (currentSelectedY >= newY) {
-						break;
-					}
-					currentSelected = currentSelected.getNextVisibleSibling();
-				}
-				return;
-			}
-			final boolean enlargingMove = (deltaY > 0) && (e.getKeyCode() == KeyEvent.VK_DOWN) || (deltaY < 0)
-			        && (e.getKeyCode() == KeyEvent.VK_UP);
-			if (enlargingMove) {
-				toggleSelected(newlySelectedNodeView);
-				getSelected().requestFocusInWindow();
-			}
-			else {
-				toggleSelected(getSelected());
-				addSelected(newlySelectedNodeView);
-			}
-		}
-		else {
-			shiftSelectionOrigin = null;
-			selectAsTheOnlyOneSelected(newlySelectedNodeView);
 		}
 	}
 
@@ -734,6 +683,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return contentXY;
 	}
 
+	private NodeView getNodeView(Object o) {
+        if(! (o instanceof NodeModel))
+			return null;
+		final NodeView nodeView = getNodeView((NodeModel)o);
+		return nodeView;
+    }
+
 	public NodeView getNodeView(final NodeModel node) {
 		if (node == null) {
 			return null;
@@ -771,8 +727,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return selection.selectedNode;
 	}
 
-	public Collection<NodeModel> getSelectedNodes() {
-		return new AbstractCollection<NodeModel>() {
+	public Set<NodeModel> getSelectedNodes() {
+		return new AbstractSet<NodeModel>() {
 
 			@Override
 			public int size() {
@@ -780,9 +736,33 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 
 			@Override
+            public boolean contains(Object o) {
+                final NodeView nodeView = getNodeView(o);
+                if(nodeView == null)
+                	return false;
+                return selection.contains(nodeView);
+            }
+
+			@Override
+            public boolean add(NodeModel o) {
+				final NodeView nodeView = getNodeView(o);
+				if(nodeView == null)
+					return false;
+				return selection.add(nodeView);
+            }
+
+			@Override
+            public boolean remove(Object o) {
+				final NodeView nodeView = getNodeView(o);
+				if(nodeView == null)
+					return false;
+				return selection.deselect(nodeView);
+            }
+
+			@Override
             public Iterator<NodeModel> iterator() {
 				return new Iterator<NodeModel>() {
-					final Iterator<NodeView> i = selection.getSelecteds().iterator();
+					final Iterator<NodeView> i = selection.getSelectedSet().iterator();
 
 					public boolean hasNext() {
 	                    return i.hasNext();
@@ -801,6 +781,49 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		};
 	}
 
+	public List<NodeModel> getOrderedSelectedNodes() {
+		return new AbstractList<NodeModel>(){
+
+			@Override
+            public boolean add(NodeModel o) {
+				final NodeView nodeView = getNodeView(o);
+				if(nodeView == null)
+					return false;
+				return selection.add(nodeView);
+            }
+			
+			
+
+			@Override
+            public boolean contains(Object o) {
+                final NodeView nodeView = getNodeView(o);
+                if(nodeView == null)
+                	return false;
+                return selection.contains(nodeView);
+            }
+
+
+
+			@Override
+            public boolean remove(Object o) {
+				final NodeView nodeView = getNodeView(o);
+				if(nodeView == null)
+					return false;
+				return selection.deselect(nodeView);
+            }
+
+			@Override
+            public NodeModel get(int index) {
+	            return selection.getSelectedList().get(index).getModel();
+            }
+
+			@Override
+            public int size() {
+	            return selection.size();
+            }
+		};
+    }
+
 	/**
 	 * @param differentSubtrees
 	 * @return an ArrayList of MindMapNode objects. If both ancestor and
@@ -808,10 +831,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 */
 	ArrayList<NodeModel> getSelectedNodesSortedByY(final boolean differentSubtrees) {
 		final TreeMap<Integer, LinkedList<NodeModel>> sortedNodes = new TreeMap<Integer, LinkedList<NodeModel>>();
-		iteration: for (final NodeView view : selection.getSelecteds()) {
+		iteration: for (final NodeView view : selection.getSelectedSet()) {
 			if (differentSubtrees) {
 				for (Component parent = view.getParent(); parent != null; parent = parent.getParent()) {
-					if (selection.getSelecteds().contains(parent)) {
+					if (selection.getSelectedSet().contains(parent)) {
 						continue iteration;
 					}
 				}
@@ -919,38 +942,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    return -1;
     }
 
-	private NodeView getVisibleNeighbour(final int directionCode) {
-		final NodeView oldSelected = getSelected();
-		NodeView newSelected = null;
-		switch (directionCode) {
-			case KeyEvent.VK_LEFT:
-				newSelected = getVisibleLeft(oldSelected);
-				if (newSelected != null) {
-					setSiblingMaxLevel(newSelected.getModel().getNodeLevel(false));
-				}
-				return newSelected;
-			case KeyEvent.VK_RIGHT:
-				newSelected = getVisibleRight(oldSelected);
-				if (newSelected != null) {
-					setSiblingMaxLevel(newSelected.getModel().getNodeLevel(false));
-				}
-				return newSelected;
-			case KeyEvent.VK_UP:
-   				newSelected = oldSelected.getPreviousVisibleSibling(); 
-				break;
-			case KeyEvent.VK_DOWN:
-   				newSelected = oldSelected.getNextVisibleSibling(); 
-				break;
-			case KeyEvent.VK_PAGE_UP:
-				newSelected = oldSelected.getPreviousPage();
-				break;
-			case KeyEvent.VK_PAGE_DOWN:
-				newSelected = oldSelected.getNextPage();
-				break;
-		}
-		return newSelected != oldSelected ? newSelected : null;
-	}
-
 	private NodeView getVisibleRight(final NodeView oldSelected) {
 		NodeView newSelected = oldSelected;
 		final NodeModel oldModel = oldSelected.getModel();
@@ -1043,16 +1034,86 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         detailForeground = style.getColor(detailStyleNode);
     }
 
-	public void move(final KeyEvent e) {
-		final NodeView newSelected = getVisibleNeighbour(e.getKeyCode());
-		if (newSelected != null) {
-			if (!(newSelected == getSelected())) {
-				extendSelectionWithKeyMove(newSelected, e);
-				scrollNodeToVisible(newSelected);
-			}
-			e.consume();
+	public boolean selectLeft(boolean continious) {
+		NodeView selected = getSelected();
+		NodeView newSelected = getVisibleLeft(selected);
+		return selectRightOrLeft(newSelected, continious);
+    }
+
+	private boolean selectRightOrLeft(NodeView newSelected, boolean continious) {
+	    if (newSelected == null) {
+	    	return false;
 		}
+		setSiblingMaxLevel(newSelected.getModel().getNodeLevel(false));
+		if(continious){
+			if(newSelected.isParentOf(getSelected())){
+				selectAsTheOnlyOneSelected(newSelected);
+				addBranchToSelection(newSelected);
+			}
+			else{
+				addBranchToSelection(getSelected());
+			}
+		}
+		else
+			selectAsTheOnlyOneSelected(newSelected);
+		return true;
+    }
+
+	public boolean selectRight(boolean continious) {
+		NodeView selected = getSelected();
+		NodeView newSelected = getVisibleRight(selected);
+		return selectRightOrLeft(newSelected, continious);
+    }
+    
+
+	public boolean selectUp(boolean continious) {
+		return selectSibling(continious, false, false);
 	}
+	
+	private boolean selectSibling(boolean continious, boolean page, boolean down) {
+		NodeView nextSelected = getSelected();
+		do {
+			nextSelected = getNextVisibleSibling(nextSelected, down);
+			if(nextSelected == null || nextSelected == getSelected())
+				return false;
+		} while (nextSelected.isSelected());
+		if(page){
+			NodeView sibling = nextSelected;
+			for(;;)  {
+				sibling = getNextVisibleSibling(sibling, down);
+				if(sibling == nextSelected || sibling.getParentView() != nextSelected.getParentView())
+					break;
+				nextSelected = sibling;
+			}
+		}
+		if(continious){
+			selectAsTheOnlyOneSelected(getSelected());
+			NodeView node = getSelected();
+			do{
+				node = getNextVisibleSibling(node, down);
+				addSelected(node);
+			}while(node != nextSelected);
+		}
+		else
+			selectAsTheOnlyOneSelected(nextSelected);
+		return true;
+    }
+
+	public NodeView getNextVisibleSibling(NodeView node, boolean down) {
+	    return down ? node.getNextVisibleSibling() : node.getPreviousVisibleSibling();
+    }
+
+	public boolean selectDown(boolean continious) {
+		return selectSibling(continious, false, true);
+	}
+    
+	public boolean selectPageDown(boolean continious) {
+		return selectSibling(continious, true, true);
+    }
+
+	public boolean selectPageUp(boolean continious) {
+		return selectSibling(continious, true, false);
+    }
 
 	public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
 	}
@@ -1332,10 +1393,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return mapBackground;
 	}
 
-	public void resetShiftSelectionOrigin() {
-		shiftSelectionOrigin = null;
-	}
-
 	void revalidateSelecteds() {
 		selectedsValid = false;
 	}
@@ -1460,37 +1517,38 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		final NodeView parentView = newSelected.getParentView();
 		final boolean isLeft = newSelected.isLeft();
-		final int newY = getMainViewY(newSelected);
-		int yGapAbove = Integer.MAX_VALUE;
-		int yGapBelow = Integer.MIN_VALUE;
+		final NodeModel parent = parentView.getModel();
+		final int newIndex = parent.getIndex(newSelected.getModel());
+		int indexGapAbove = Integer.MAX_VALUE;
+		int indexGapBelow = Integer.MIN_VALUE;
 		final LinkedList<NodeView> childrenViews = parentView.getChildrenViews();
 		for(NodeView sibling : childrenViews){
 			if(newSelected == sibling || sibling.isLeft() != isLeft || ! sibling.isSelected())
 				continue;
-			final int y2 = getMainViewY(sibling);
-			final int yGap = newY - y2;
-			if(yGap > 0){
-				if(yGap < yGapAbove){
-					yGapAbove = yGap;
+			final int index2 = parent.getIndex(sibling.getModel());
+			final int indexGap = newIndex - index2;
+			if(indexGap > 0){
+				if(indexGap < indexGapAbove){
+					indexGapAbove = indexGap;
 				}
 			}
-			else if(yGapAbove == Integer.MAX_VALUE){
-				if(yGap > yGapBelow){
-					yGapBelow = yGap;
+			else if(indexGapAbove == Integer.MAX_VALUE){
+				if(indexGap > indexGapBelow){
+					indexGapBelow = indexGap;
 				}
 			}
 		}
-		if(yGapAbove == Integer.MAX_VALUE && yGapBelow == Integer.MIN_VALUE){
+		if(indexGapAbove == Integer.MAX_VALUE && indexGapBelow == Integer.MIN_VALUE){
 			selection.add(newSelected);
 			return;
 		}
 		for(NodeView sibling : childrenViews){
 			if(sibling.isLeft() != isLeft)
 				continue;
-			final int y2 = getMainViewY(sibling);
-			final int yGap = newY - y2;
-			if(yGap >= 0 && yGapAbove < Integer.MAX_VALUE && yGap < yGapAbove
-					|| yGap <= 0 && yGapAbove == Integer.MAX_VALUE && yGapBelow > Integer.MIN_VALUE  && yGap > yGapBelow)
+			final int index2 = parent.getIndex(sibling.getModel());
+			final int indexGap = newIndex - index2;
+			if(indexGap >= 0 && indexGapAbove < Integer.MAX_VALUE && indexGap < indexGapAbove
+					|| indexGap <= 0 && indexGapAbove == Integer.MAX_VALUE && indexGapBelow > Integer.MIN_VALUE  && indexGap > indexGapBelow)
 				selection.add(sibling);
 		}
 	}
@@ -1584,7 +1642,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private void toggleSelected(final NodeView nodeView) {
 		if (isSelected(nodeView)) {
 			if(selection.size() > 1)
-				selection.remove(nodeView);
+				selection.deselect(nodeView);
 		}
 		else {
 			selection.add(nodeView);
@@ -1676,6 +1734,5 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     public Color getDetailBackground() {
         return detailBackground;
     }
-    
     
 }

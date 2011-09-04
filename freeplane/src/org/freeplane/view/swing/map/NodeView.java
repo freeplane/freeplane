@@ -472,22 +472,6 @@ public class NodeView extends JComponent implements INodeView {
 		return motionListenerView;
 	}
 
-	protected NodeView getNextPage() {
-		if (getModel().isRoot()) {
-			return this;
-		}
-		NodeView sibling = getNextVisibleSibling();
-		if (sibling == this) {
-			return this;
-		}
-		NodeView nextSibling = sibling.getNextVisibleSibling();
-		while (nextSibling != sibling && sibling.getParentView() == nextSibling.getParentView()) {
-			sibling = nextSibling;
-			nextSibling = nextSibling.getNextVisibleSibling();
-		}
-		return sibling;
-	}
-
 	protected NodeView getNextSiblingSingle() {
 		LinkedList<NodeView> v = null;
 		if (getParentView().getModel().isRoot()) {
@@ -611,22 +595,6 @@ public class NodeView extends JComponent implements INodeView {
 			}
 		}
 		return newSelected;
-	}
-
-	protected NodeView getPreviousPage() {
-		if (getModel().isRoot()) {
-			return this;
-		}
-		NodeView sibling = getPreviousVisibleSibling();
-		if (sibling == this) {
-			return this;
-		}
-		NodeView previousSibling = sibling.getPreviousVisibleSibling();
-		while (previousSibling != sibling && sibling.getParentView() == previousSibling.getParentView()) {
-			sibling = previousSibling;
-			previousSibling = previousSibling.getPreviousVisibleSibling();
-		}
-		return sibling;
 	}
 
 	protected NodeView getPreviousSiblingSingle() {
@@ -863,7 +831,6 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
-		getMap().resetShiftSelectionOrigin();
 		if (getMap().getModeController().getMapController().isFolded(model)) {
 			return;
 		}
@@ -1367,7 +1334,6 @@ public class NodeView extends JComponent implements INodeView {
 	 * event.TreeModelEvent)
 	 */
 	private void treeStructureChanged() {
-		getMap().resetShiftSelectionOrigin();
 		for (final ListIterator<NodeView> i = getChildrenViews().listIterator(); i.hasNext();) {
 			i.next().remove();
 		}
