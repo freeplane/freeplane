@@ -1210,7 +1210,6 @@ public class NodeView extends JComponent implements INodeView {
 		if (model.getParentNode() == null && !model.isRoot()) {
 			return;
 		}
-		mainView.updateTextColor(this);
 		if (getEdgeStyle().equals(EdgeStyle.EDGESTYLE_HIDDEN)) {
 			final NodeView visibleParentView = getVisibleParentView();
 			if (visibleParentView != null) {

@@ -345,23 +345,30 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return selectedSet.size();
 		}
 
-		private void replace(NodeView[] views) {
-            if(views.length == 0)
+		private void replace(NodeView[] newSelection) {
+            if(newSelection.length == 0)
                 return;
-            final boolean selectedChanges = views[0].equals(selectedNode);
+            final boolean selectedChanges = ! newSelection[0].equals(selectedNode);
             if (selectedChanges) {
             	if(selectedNode != null)
             		removeSelectionForHooks(selectedNode);
-            	selectedNode = views[0];
+            	selectedNode = newSelection[0];
             }
+            for(NodeView view : newSelection)
+                if (!selectedSet.contains(view))
+                	view.repaintSelected();
+            final NodeView[] oldSelection = selectedSet.toArray(new NodeView[selectedSet.size()]);
             selectedSet.clear();
             selectedList.clear();
-            for(NodeView view : views)
+            for(NodeView view : newSelection)
                 if (selectedSet.add(view))
                 	selectedList.add(view);
             if (selectedChanges) {
                 addSelectionForHooks(selectedNode);
             }
+            for(NodeView view : oldSelection)
+                if (!selectedSet.contains(view))
+                	view.repaintSelected();
         }
 
 		public NodeView[] toArray() {
