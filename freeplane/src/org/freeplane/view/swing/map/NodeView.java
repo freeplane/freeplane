@@ -580,7 +580,7 @@ public class NodeView extends JComponent implements INodeView {
 			if (getUpper) {
 				return childView;
 			}
-			final Point childPoint = new Point(childView.getContent().getWidth() / 2, childView.getContent().getHeight() / 2);
+			final Point childPoint = new Point(left ? childView.getContent().getWidth() : 0, childView.getContent().getHeight() / 2);
 			UITools.convertPointToAncestor(childView.getContent(), childPoint, baseComponent);
 			final int dy = childPoint.y - ownY;
 			final int dx = childPoint.x - ownX;
