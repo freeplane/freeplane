@@ -352,6 +352,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		public NodeView[] toArray() {
 	        return selectedSet.toArray(new NodeView[selectedSet.size()]);
         }
+
+		private Set<NodeView> getSelecteds() {
+	        return selectedSet;
+        }
 	}
 
 	private static final int margin = 20;
@@ -778,7 +782,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			@Override
             public Iterator<NodeModel> iterator() {
 				return new Iterator<NodeModel>() {
-					final Iterator<NodeView> i = selection.selectedSet.iterator();
+					final Iterator<NodeView> i = selection.getSelecteds().iterator();
 
 					public boolean hasNext() {
 	                    return i.hasNext();
@@ -803,22 +807,18 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 *         descandant node are selected, only the ancestor ist returned
 	 */
 	ArrayList<NodeModel> getSelectedNodesSortedByY(final boolean differentSubtrees) {
-		final HashSet<NodeModel> selectedNodesSet = new HashSet<NodeModel>();
-		for (NodeModel node : getSelectedNodes()) {
-			selectedNodesSet.add(node);
-		}
 		final TreeMap<Integer, LinkedList<NodeModel>> sortedNodes = new TreeMap<Integer, LinkedList<NodeModel>>();
-		iteration: for (final NodeView view : selection.selectedSet) {
-			final NodeModel node = view.getModel();
+		iteration: for (final NodeView view : selection.getSelecteds()) {
 			if (differentSubtrees) {
-				for (NodeModel parent = node.getParentNode(); parent != null; parent = parent.getParentNode()) {
-					if (selectedNodesSet.contains(parent)) {
+				for (Component parent = view.getParent(); parent != null; parent = parent.getParent()) {
+					if (selection.getSelecteds().contains(parent)) {
 						continue iteration;
 					}
 				}
 			}
 			final Point point = new Point();
 			UITools.convertPointToAncestor(view.getParent(), point, this);
+			final NodeModel node = view.getModel();
 			if(node.getParentNode() != null){
 			    point.y += node.getParentNode().getIndex(node); 
 			}
@@ -919,7 +919,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    return -1;
     }
 
-	private NodeView getVisibleNeighbour(final int directionCode, boolean unselected) {
+	private NodeView getVisibleNeighbour(final int directionCode) {
 		final NodeView oldSelected = getSelected();
 		NodeView newSelected = null;
 		switch (directionCode) {
@@ -936,18 +936,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				}
 				return newSelected;
 			case KeyEvent.VK_UP:
-				for (
-    				newSelected = oldSelected.getPreviousVisibleSibling(); 
-    				unselected && newSelected != null && newSelected != oldSelected && newSelected.isSelected();
-    				newSelected = newSelected.getPreviousVisibleSibling()
-				);
+   				newSelected = oldSelected.getPreviousVisibleSibling(); 
 				break;
 			case KeyEvent.VK_DOWN:
-				for (
-    				newSelected = oldSelected.getNextVisibleSibling(); 
-    				unselected && newSelected != null && newSelected != oldSelected && newSelected.isSelected();
-    				newSelected = newSelected.getNextVisibleSibling()
-				);
+   				newSelected = oldSelected.getNextVisibleSibling(); 
 				break;
 			case KeyEvent.VK_PAGE_UP:
 				newSelected = oldSelected.getPreviousPage();
@@ -1052,7 +1044,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     }
 
 	public void move(final KeyEvent e) {
-		final NodeView newSelected = getVisibleNeighbour(e.getKeyCode(), e.isShiftDown());
+		final NodeView newSelected = getVisibleNeighbour(e.getKeyCode());
 		if (newSelected != null) {
 			if (!(newSelected == getSelected())) {
 				extendSelectionWithKeyMove(newSelected, e);
