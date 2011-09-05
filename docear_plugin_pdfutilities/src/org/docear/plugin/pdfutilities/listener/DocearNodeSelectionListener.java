@@ -1,5 +1,7 @@
 package org.docear.plugin.pdfutilities.listener;
 
+import org.docear.plugin.core.features.DocearMapModelController;
+import org.docear.plugin.core.features.DocearMapModelExtension;
 import org.docear.plugin.pdfutilities.features.AnnotationController;
 import org.docear.plugin.pdfutilities.features.IAnnotation;
 import org.freeplane.features.map.INodeSelectionListener;
@@ -12,7 +14,18 @@ public class DocearNodeSelectionListener implements INodeSelectionListener {
 		Controller.getCurrentController().getViewController().removeStatus("Annotation Info");
 	}
 
-	public void onSelect(NodeModel node) {		
+	public void onSelect(NodeModel node) {	
+		DocearMapModelExtension mapExtension = DocearMapModelController.getModel(node.getMap());
+		String mapVersion = "";
+		if(mapExtension != null){
+			mapVersion = "Map Version: docear " + mapExtension.getVersion(); 
+		}
+		else{
+			mapVersion = "Map Version: not docear"; 
+		}
+		Controller.getCurrentController().getViewController().addStatusInfo("Map Version", mapVersion);
+		
+		
 		IAnnotation model = AnnotationController.getModel(node, false);
 		
 		if(model != null){

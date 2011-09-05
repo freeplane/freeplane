@@ -16,6 +16,7 @@ Export-Package: org.docear.plugin.core;
    org.osgi.framework",
  org.docear.plugin.core.actions;uses:="org.freeplane.core.ui",
  org.docear.plugin.core.event,
+ org.docear.plugin.core.features,
  org.docear.plugin.core.workspace.node,
  org.jdesktop.swingworker
 Bundle-ClassPath: lib/plugin.jar,

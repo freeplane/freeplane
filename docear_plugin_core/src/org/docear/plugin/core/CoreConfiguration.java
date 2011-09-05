@@ -5,6 +5,7 @@ import java.util.Enumeration;
 
 import org.docear.plugin.core.actions.DocearLicenseAction;
 import org.docear.plugin.core.actions.DocearOpenUrlAction;
+import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.workspace.creator.FolderTypeLibraryCreator;
 import org.docear.plugin.core.workspace.creator.FolderTypeLiteratureRepositoryCreator;
 import org.docear.plugin.core.workspace.creator.FolderTypeProjectsCreator;
@@ -57,8 +58,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		init(modeController);
 	}
 	
-	private void showLocationDialogIfNeeded() {		
-		ResourceController resCtrl = ResourceController.getResourceController();
+	private void showLocationDialogIfNeeded() {			
 		String workspaceInfo = (String)WorkspaceController.getController().getConfiguration().getConfigurationInfo().getMeta();
 		
 		if (!workspaceInfo.toLowerCase().contains("docear") || !LocationDialog.allVariablesSet()) {
@@ -87,6 +87,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		prepareWorkspace();
 		addPluginDefaults();
 		replaceFreeplaneStringsAndActions();
+		DocearMapModelController.install(new DocearMapModelController(modeController));
 	}
 	
 	private void prepareWorkspace() {

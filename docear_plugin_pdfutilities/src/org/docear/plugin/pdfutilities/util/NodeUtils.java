@@ -92,8 +92,8 @@ public class NodeUtils {
 		return new HashMap<AnnotationID, Collection<AnnotationNodeModel>>();
 	}
 	
-	public Collection<MapModel> getMapsFromUris(Collection<URI> mindmaps){
-		Collection<MapModel> maps = new ArrayList<MapModel>();
+	public List<MapModel> getMapsFromUris(Collection<URI> mindmaps){
+		List<MapModel> maps = new ArrayList<MapModel>();
 		for(URI uri : mindmaps){
 			MapModel map = getMapFromUri(uri);
 			if(map != null){
@@ -159,7 +159,8 @@ public class NodeUtils {
 		}
 		
 		return result;
-	}	
+	}
+	
 	public NodeModel insertChildNodesFromPdf(URI pdfFile, List<AnnotationModel> annotations, boolean isLeft, NodeModel target){
 		NodeModel node = this.insertChildNodeFrom(pdfFile, isLeft, target, AnnotationType.PDF_FILE);
 		this.insertChildNodesFrom(annotations, isLeft, node);

@@ -15,7 +15,7 @@ import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.features.AnnotationModel;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
-import org.docear.plugin.pdfutilities.ui.MonitoringDialog;
+import org.docear.plugin.pdfutilities.ui.SwingWorkerDialog;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.docear.plugin.pdfutilities.util.Tools;
 import org.freeplane.core.resources.ResourceController;
@@ -74,10 +74,10 @@ public class DocearNodeDropListener extends MNodeDropListener {
 					@Override
 					protected Void doInBackground() throws Exception {
 						int count = 0;
-						firePropertyChange(MonitoringDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
+						firePropertyChange(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
 						for(final File file : finalFileList){	
 							if(Thread.currentThread().isInterrupted()) return null;
-							firePropertyChange(MonitoringDialog.NEW_FILE, null, file.getName());
+							firePropertyChange(SwingWorkerDialog.NEW_FILE, null, file.getName());
 			            	boolean importAnnotations = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.AUTO_IMPORT_ANNOTATIONS_KEY);
 			                if(pdfFileFilter.accept(file) && importAnnotations){
 			                	try{
@@ -89,7 +89,7 @@ public class DocearNodeDropListener extends MNodeDropListener {
 									        new Runnable() {
 									            public void run(){
 									            	nodeUtils.insertChildNodesFromPdf(file.toURI(), annotations, isLeft, targetNode);	            
-													firePropertyChange(MonitoringDialog.NEW_NODES, null, getInsertedNodes(annotations));										
+													firePropertyChange(SwingWorkerDialog.NEW_NODES, null, getInsertedNodes(annotations));										
 									            }
 									        }
 									   );						
@@ -126,7 +126,7 @@ public class DocearNodeDropListener extends MNodeDropListener {
 					
 					@Override
 				    protected void done() {
-						firePropertyChange(MonitoringDialog.IS_DONE, null, null);
+						firePropertyChange(SwingWorkerDialog.IS_DONE, null, null);
 					}
 					
 					private Collection<AnnotationModel> getInsertedNodes(Collection<AnnotationModel> annotations){
@@ -141,7 +141,7 @@ public class DocearNodeDropListener extends MNodeDropListener {
 	            };
 	            
 	            if(finalFileList.size() > 10){
-	            	MonitoringDialog monitoringDialog = new MonitoringDialog(Controller.getCurrentController().getViewController().getJFrame());
+	            	SwingWorkerDialog monitoringDialog = new SwingWorkerDialog(Controller.getCurrentController().getViewController().getJFrame());
 	    			monitoringDialog.showDialog(thread);
 	            }
 	            else{
