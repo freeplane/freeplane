@@ -48,17 +48,31 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	private static final String WEB_DOCEAR_LOCATION = "webDocearLocation";
 	private static final String WEB_FREEPLANE_LOCATION = "webFreeplaneLocation";
 
-	public static final String DOCUMENT_REPOSITORY_PATH = "document_repository_path";
+	public static final String DOCUMENT_REPOSITORY_PATH = LocationDialog.DOCUMENT_REPOSITORY_PATH_PROPERTY;
 
 	public CoreConfiguration(ModeController modeController) {
 		addPropertyChangeListener();
 		addPreferencesToOptionsPanel();
+		
+		try {
+			if (WorkspaceController.getController().isInitialized()) {
+				showLocationDialogIfNeeded();
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 				
 		LogUtils.info("org.docear.plugin.core.CoreConfiguration() initializing...");
 		init(modeController);
 	}
 	
-	private void showLocationDialogIfNeeded() {			
+
+	private void showLocationDialogIfNeeded() {
+		if (WorkspaceController.getController().getPreferences().getWorkspaceLocation() == null) {
+			return;
+		}
+		
 		String workspaceInfo = (String)WorkspaceController.getController().getConfiguration().getConfigurationInfo().getMeta();
 		
 		if (!workspaceInfo.toLowerCase().contains("docear") || !LocationDialog.allVariablesSet()) {
@@ -178,7 +192,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 
 	public void workspaceChanged(WorkspaceEvent event) {
 		// TODO Auto-generated method stub
-		System.out.println("DOCEAR CORE: workspaceChanged(WorkspaceEvent):"+ event);
+		System.out.println("DOCEAR CORE: workspaceChanged(WorkspaceEvent):"+ event);		
 	}
 
 	public void workspaceInitialize(WorkspaceEvent event) {

@@ -21,6 +21,7 @@ import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 import org.freeplane.plugin.workspace.config.node.FolderNode;
 import org.freeplane.plugin.workspace.config.node.LinkNode;
@@ -42,10 +43,29 @@ public class WorkspaceUtils {
 	 **********************************************************************************/
 
 	public static void saveCurrentConfiguration() {
-		String temp = WorkspaceController.getController().getWorkspaceLocation() + File.separator
-				+ "workspace_temp.xml";
-		String config = WorkspaceController.getController().getWorkspaceLocation() + File.separator
-				+ "workspace.xml";
+		String profileName = ResourceController.getResourceController().getProperty(WorkspacePreferences.WORKSPACE_PROFILE, null);
+
+		URI uri;
+		File temp, config;
+		try {
+			uri = new URI(WorkspaceController.WORKSPACE_RESOURCE_URL_PROTOCOL + ":/." + profileName + "/tmp_"
+					+ WorkspaceConfiguration.CONFIG_FILE_NAME);
+			temp = WorkspaceUtils.resolveURI(uri);
+			uri = new URI(WorkspaceController.WORKSPACE_RESOURCE_URL_PROTOCOL + ":/." + profileName + "/"
+					+ WorkspaceConfiguration.CONFIG_FILE_NAME);
+			config = WorkspaceUtils.resolveURI(uri);
+		}
+		catch (URISyntaxException e) {
+			// TODO DOCEAR: error message
+			e.printStackTrace();
+			return;
+		}
+		
+		// String temp =
+		// WorkspaceController.getController().getWorkspaceLocation() +
+		// File.separator + "workspace_temp.xml";
+		
+		//String config = WorkspaceController.getController().getWorkspaceLocation() + File.separator + "workspace.xml";
 
 		try {
 			WorkspaceController.getController().saveConfigurationAsXML(new FileWriter(temp));
@@ -56,9 +76,8 @@ public class WorkspaceUtils {
 			to.transferFrom(from, 0, from.size());
 			to.close();
 			from.close();
-
-			File tempFile = new File(temp);
-			tempFile.delete();
+			
+			temp.delete();
 		}
 		catch (IOException e1) {
 			e1.printStackTrace();
@@ -89,7 +108,7 @@ public class WorkspaceUtils {
 			LogUtils.warn("the given path is no file.");
 			return;
 		}
-		
+
 		LinkTypeFileNode node = new LinkTypeFileNode(LinkNode.LINK_TYPE_FILE);
 		String name = path.getName();
 
@@ -109,8 +128,8 @@ public class WorkspaceUtils {
 			return;
 		}
 
-		DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) (parent == null ? WorkspaceController
-				.getController().getViewModel().getRoot() : parent);
+		DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) (parent == null ? WorkspaceController.getController()
+				.getViewModel().getRoot() : parent);
 
 		VirtualFolderNode node = new VirtualFolderNode(FolderNode.FOLDER_TYPE_VIRTUAL);
 		node.setName(folderName);
@@ -132,19 +151,23 @@ public class WorkspaceUtils {
 		return new File(location);
 	}
 
-	public static String stripIllegalChars(String str) {
-		return str.replaceAll("[^a-zA-Z0-9]+", "");
+	public static String stripIllegalChars(String string) {
+		if (string == null) {
+			return null;
+		}
+		
+		return string.replaceAll("[^a-zA-Z0-9äöüÄÖÜ]+", "");
 	}
 
 	public static URI absoluteURI(final URI uri) {
 		try {
-			URLConnection urlConnection =  uri.toURL().openConnection();
-			if(urlConnection == null) {
+			URLConnection urlConnection = uri.toURL().openConnection();
+			if (urlConnection == null) {
 				return null;
-			} 
+			}
 			else {
 				return urlConnection.getURL().toURI();
-			} 
+			}
 		}
 		catch (URISyntaxException e) {
 			e.printStackTrace();
@@ -158,12 +181,16 @@ public class WorkspaceUtils {
 
 	public static File resolveURI(final URI uri) {
 		URI absoluteUri = absoluteURI(uri);
-		if(absoluteUri == null) {
+		if (absoluteUri == null) {
 			return null;
 		}
 		return new File(absoluteUri);
 	}
-
+	
+	public static URI getURI(final File f) {
+		return f.toURI();
+	}
+	
 	/**
 	 * @param targetNode
 	 * @param node
@@ -181,8 +208,7 @@ public class WorkspaceUtils {
 	public static DefaultMutableTreeNode findAllowedTargetNode(final DefaultMutableTreeNode node) {
 		DefaultMutableTreeNode targetNode = node;
 		// DOCEAR: drops are not allowed on physical nodes, for the moment
-		while (targetNode.getUserObject() instanceof DefaultFileNode 
-				|| targetNode.getUserObject() instanceof PhysicalFolderNode
+		while (targetNode.getUserObject() instanceof DefaultFileNode || targetNode.getUserObject() instanceof PhysicalFolderNode
 				|| targetNode.getUserObject() instanceof LinkNode) {
 			targetNode = (DefaultMutableTreeNode) targetNode.getParent();
 		}

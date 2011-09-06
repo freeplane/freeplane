@@ -43,14 +43,11 @@ public class FolderTypeLiteratureRepositoryNode extends PhysicalFolderNode imple
 		if (propertyName.equals(CoreConfiguration.DOCUMENT_REPOSITORY_PATH) && newValue != null && newValue.trim().length() > 0) {
 			IndexedTree indexTree = WorkspaceController.getController().getIndexTree();
 			String key = (String) indexTree.getKeyByUserObject(this);
+			if(key == null) {
+				//FIXME: DOCEAR> remove this node from "Controller.getCurrentController().getResourceController().removePropertyChangeListener(this);" !!!ConcurrentModificationException
+				return;
+			}
 			final DefaultMutableTreeNode node = indexTree.get(key);
-//			StringBuilder strBuilder = new StringBuilder();
-//			for(TreeNode tNode : WorkspaceController.getController().getViewModel().getPathToRoot(node)) {
-//				AWorkspaceNode wsNode = (AWorkspaceNode) ((DefaultMutableTreeNode)tNode).getUserObject();
-//				strBuilder.append("/");
-//				strBuilder.append(wsNode.getId());				
-//			}
-//			strBuilder.replace(0, 1, "");
 			try {
 				File file = new File(newValue);
 				if (file != null) {

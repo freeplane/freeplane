@@ -38,14 +38,14 @@ public class LocationDialog extends JDialog {
 	private JTextField bibtexLocation;
 	private JTextField literatureLocation;
 	
-	private final static String LITERATURE_LOCATION_INIT = "workspace:/literature";
-	private final static String LITERATURE_LOCATION_PROPERTY = "docear_literature_location";
+	private final static String DOCUMENT_REPOSITORY_INIT_PATH = "workspace:/document_repository";
+	public final static String DOCUMENT_REPOSITORY_PATH_PROPERTY = "document_repository_path";
 	//TODO: DOCEAR: profile name
-	private final static String BIBTEX_LOCATION_INIT = "workspace:/bibtex";
-	private final static String BIBTEX_LOCATION_PROPERTY = "docear_bibtex_location";
+	private static String BIBTEX_PATH_INIT;
+	public final static String BIBTEX_PATH_PROPERTY = "docear_bibtex_path";
 	
-	private final static String PROJECTS_LOCATION_INIT = "workspace:/projects";
-	private final static String PROJECTS_LOCATION_PROPERTY = "docear_projects_location";
+	private static String PROJECTS_PATH_INIT;
+	public final static String PROJECTS_PATH_PROPERTY = "docear_projects_path";
 	
 	
 	private File workspaceLocation;
@@ -57,9 +57,9 @@ public class LocationDialog extends JDialog {
 		ResourceController resCtrl = ResourceController.getResourceController();
 		
 		boolean variablesSet = true;
-		variablesSet = variablesSet && (resCtrl.getProperty(LITERATURE_LOCATION_PROPERTY, "").length()>0);
-		variablesSet = variablesSet && (resCtrl.getProperty(BIBTEX_LOCATION_PROPERTY, "").length()>0);
-		variablesSet = variablesSet && (resCtrl.getProperty(PROJECTS_LOCATION_PROPERTY, "").length()>0);
+		variablesSet = variablesSet && (resCtrl.getProperty(DOCUMENT_REPOSITORY_PATH_PROPERTY, "").length()>0);
+		variablesSet = variablesSet && (resCtrl.getProperty(BIBTEX_PATH_PROPERTY, "").length()>0);
+		variablesSet = variablesSet && (resCtrl.getProperty(PROJECTS_PATH_PROPERTY, "").length()>0);
 		
 		System.out.println("DOCEAR: allVariablesSet: "+variablesSet);
 		
@@ -142,7 +142,11 @@ public class LocationDialog extends JDialog {
 	
 	
 	public LocationDialog() {
-		this.workspaceLocation = new File(WorkspaceController.getController().getWorkspaceLocation());
+		WorkspaceController workspaceController = WorkspaceController.getController();
+		this.workspaceLocation = new File(workspaceController.getPreferences().getWorkspaceLocation());
+		
+		BIBTEX_PATH_INIT = "workspace:/."+workspaceController.getPreferences().getWorkspaceProfile()+"/bibtex.bib";
+		PROJECTS_PATH_INIT = "workspace:/."+workspaceController.getPreferences().getWorkspaceProfile()+"/projects";
 		
 		this.setModal(true);
 		setTitle(TextUtils.getText("docear_initialization"));
@@ -281,28 +285,28 @@ public class LocationDialog extends JDialog {
 	}
 		
 	private String getLiteratureLocation() {				
-		return getPropertyLocation(LITERATURE_LOCATION_PROPERTY, LITERATURE_LOCATION_INIT);
+		return getPropertyLocation(DOCUMENT_REPOSITORY_PATH_PROPERTY, DOCUMENT_REPOSITORY_INIT_PATH);
 		
 	}
 	
 	private void setLiteratureLocation(String location) {
-		ResourceController.getResourceController().setProperty(LITERATURE_LOCATION_PROPERTY, location);
+		ResourceController.getResourceController().setProperty(DOCUMENT_REPOSITORY_PATH_PROPERTY, location);
 	}
 	
 	private String getBibtexLocation() {
-		return getPropertyLocation(BIBTEX_LOCATION_PROPERTY, BIBTEX_LOCATION_INIT);
+		return getPropertyLocation(BIBTEX_PATH_PROPERTY, BIBTEX_PATH_INIT);
 	}
 	
 	private void setBibtexLocation(String location) {
-		ResourceController.getResourceController().setProperty(BIBTEX_LOCATION_PROPERTY, location);
+		ResourceController.getResourceController().setProperty(BIBTEX_PATH_PROPERTY, location);
 	}
 	
 	private String getProjectsLocation() {
-		return getPropertyLocation(PROJECTS_LOCATION_PROPERTY, PROJECTS_LOCATION_INIT);
+		return getPropertyLocation(PROJECTS_PATH_PROPERTY, PROJECTS_PATH_INIT);
 	}
 	
 	private void setProjectsLocation(String location) {
-		ResourceController.getResourceController().setProperty(PROJECTS_LOCATION_PROPERTY, location);
+		ResourceController.getResourceController().setProperty(PROJECTS_PATH_PROPERTY, location);
 	}
 
 

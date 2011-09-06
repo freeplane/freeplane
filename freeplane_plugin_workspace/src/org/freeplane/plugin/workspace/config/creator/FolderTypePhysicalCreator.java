@@ -31,6 +31,9 @@ public class FolderTypePhysicalCreator extends AWorkspaceNodeCreator {
 		node.setFolderPath(URI.create(path));
 
 		File file = WorkspaceUtils.resolveURI(node.getFolderPath());
+		if (file == null) {
+			return null;
+		}
 
 		if (!file.exists()) {
 			if (file.mkdirs()) {

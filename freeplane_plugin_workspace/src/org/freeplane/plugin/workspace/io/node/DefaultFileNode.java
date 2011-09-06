@@ -15,6 +15,11 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.tree.DefaultTreeCellRenderer;
+
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
@@ -29,6 +34,16 @@ import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
  * 
  */
 public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEventListener, IWorkspaceTransferableCreator {
+	private static final Icon FOLDER_OPEN_ICON = new ImageIcon(AWorkspaceNode.class.getResource("/images/16x16/folder-orange_open.png"));
+	private static final Icon FOLDER_CLOSED_ICON = new ImageIcon(AWorkspaceNode.class.getResource("/images/16x16/folder-orange.png"));
+	private static final Icon ACROBAT_ICON = new ImageIcon(AWorkspaceNode.class.getResource("/images/16x16/acrobat.png"));
+	private static final Icon GRAPHICS_ICON = new ImageIcon(AWorkspaceNode.class.getResource("/images/16x16/image-x-generic.png"));
+	private static final Icon DEFAULT_ICON = new ImageIcon(AWorkspaceNode.class.getResource("/images/16x16/text-x-preview.png"));
+	private static final Icon WEB_ICON = new ImageIcon(AWorkspaceNode.class.getResource("/images/16x16/text-html-2.png"));
+	private static final Icon DOCEAR_ICON = new ImageIcon(ResourceController.class.getResource("/images/docear16.png"));
+	private static final Icon FREEPLANE_ICON = new ImageIcon(ResourceController.class.getResource("/images/Freeplane_frame_icon.png"));
+	
+	
 	
 	private File file;
 	private String fileExtension;
@@ -159,6 +174,45 @@ public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEve
 	
 	public boolean isEditable() {
 		return false;
+	}
+	
+	public boolean setIcons(DefaultTreeCellRenderer renderer) {
+		if (getFile().isFile()) {
+			if (getFileExtension().equalsIgnoreCase(".pdf")
+					|| getFileExtension().equalsIgnoreCase(".ps")) {
+				renderer.setLeafIcon(ACROBAT_ICON);
+			}
+			else if (getFileExtension().equalsIgnoreCase(".jpg")
+					|| getFileExtension().equalsIgnoreCase(".png")
+					|| getFileExtension().equalsIgnoreCase(".gif")
+					|| getFileExtension().equalsIgnoreCase(".bmp")
+					|| getFileExtension().equalsIgnoreCase(".jpeg")) {
+				renderer.setLeafIcon(GRAPHICS_ICON);
+			}
+			else if (getFileExtension().equalsIgnoreCase(".mm")
+					|| getFileExtension().equalsIgnoreCase(".dcr")) {
+				if(ResourceController.getResourceController().getProperty("ApplicationName", "Freeplane").equals("Docear")) {
+					renderer.setLeafIcon(DOCEAR_ICON);
+				} else {
+					renderer.setLeafIcon(FREEPLANE_ICON);
+				}
+			}
+			else if (getFileExtension().equalsIgnoreCase(".html")
+					|| getFileExtension().equalsIgnoreCase(".htm")
+					|| getFileExtension().equalsIgnoreCase(".css")
+					|| getFileExtension().equalsIgnoreCase(".xhtml")) {
+				renderer.setLeafIcon(WEB_ICON);
+			}			
+			else {
+				renderer.setLeafIcon(DEFAULT_ICON);
+			}
+		} 
+		else {
+			renderer.setOpenIcon(FOLDER_OPEN_ICON);
+			renderer.setClosedIcon(FOLDER_CLOSED_ICON);
+			renderer.setLeafIcon(FOLDER_CLOSED_ICON);
+		}
+		return true;
 	}
 	
 	/***********************************************************************************

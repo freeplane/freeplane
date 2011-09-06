@@ -45,8 +45,11 @@ public class FolderTypeProjectsCreator extends AWorkspaceNodeCreator {
 		catch (Exception e) {
 			uri = URI.create("workspace:/projects");
 		}
-		
 		node.setPathURI(uri);
+		
+		
+		boolean monitor = Boolean.parseBoolean(data.getAttribute("monitor", "false"));
+		node.enableMonitoring(monitor);
 		
 		File file = WorkspaceUtils.resolveURI(node.getPathURI());
 		if (!file.exists()) {

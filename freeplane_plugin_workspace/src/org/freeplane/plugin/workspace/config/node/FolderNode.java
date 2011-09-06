@@ -4,11 +4,11 @@
  */
 package org.freeplane.plugin.workspace.config.node;
 
+
 /**
  * 
  */
 public class FolderNode extends AWorkspaceNode {
-
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -27,7 +27,6 @@ public class FolderNode extends AWorkspaceNode {
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
-
 
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES

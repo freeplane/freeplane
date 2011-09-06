@@ -27,10 +27,12 @@ import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.config.PopupMenus;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.config.node.WorkspaceRoot;
+import org.freeplane.plugin.workspace.controller.AWorkspaceExpansionStateHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceComponentHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceDropHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceKeyHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceMouseHandler;
+import org.freeplane.plugin.workspace.controller.DefaultWorkspaceExpansionStateHandler;
 import org.freeplane.plugin.workspace.controller.IWorkspaceListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferHandler;
@@ -63,8 +65,9 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 	private WorkspaceTransferHandler transferHandler;
 	private IndexedTree tree;
 
-	private String workspaceLocation;
+	String workspaceLocation;
 	private boolean isInitialized = false;
+	private DefaultWorkspaceExpansionStateHandler expansionStateHandler;
 
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -73,7 +76,7 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 	protected WorkspaceController() {
 		LogUtils.info("Initializing WorkspaceEnvironment");
 		initTree();		
-		initializePreferences();
+		getPreferences();
 		
 		this.popups = new PopupMenus();
 		
@@ -86,6 +89,10 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 
 	public void initialStart() {
 		dispatchWorkspaceEvent(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_EVENT_TYPE_INITIALIZE, this));
+		if (getPreferences().getWorkspaceLocation() == null) {
+			WorkspaceChooserDialog dialog = new WorkspaceChooserDialog();
+			dialog.setVisible(true);
+		}
 		initializeConfiguration();
 		dispatchWorkspaceEvent(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_EVENT_TYPE_FINALIZE, this));
 		initializeView();
@@ -102,22 +109,6 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 
 	public WorkspaceConfiguration getConfiguration() {
 		return configuration;
-	}
-
-	public String getWorkspaceLocation() {
-		if (this.workspaceLocation == null) {
-			this.workspaceLocation = Controller.getCurrentController().getResourceController().getProperty(
-					WorkspacePreferences.WORKSPACE_LOCATION);
-		}
-		return workspaceLocation;
-	}
-
-	public void setWorkspaceLocation(String workspaceLocation) {
-		this.workspaceLocation = workspaceLocation;
-		ResourceController.getResourceController().setProperty(WorkspacePreferences.WORKSPACE_LOCATION_NEW, workspaceLocation);
-		Controller.getCurrentController().getResourceController()
-				.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, true);
-		WorkspaceController.getController().reloadWorkspace();
 	}
 
 	public DefaultMutableTreeNode getWorkspaceRoot() {
@@ -143,7 +134,7 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 	}
 
 	public DefaultTreeModel getViewModel() {
-		return this.view.getTreeModel();
+		return getWorkspaceView().getTreeModel();
 	}
 
 	public FilesystemReader getFilesystemReader() {
@@ -178,6 +169,7 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 		initTree();
 		initializeConfiguration();
 		reloadView();
+		getExpansionStateHandler().restoreExpansionState();
 	}
 	
 	public void refreshWorkspace() {
@@ -185,10 +177,28 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 		getConfiguration().reload();
 		getWorkspaceView().getTreeModel().setRoot(getIndexTree().getRoot().getChildAt(0));
 		getWorkspaceView().getTreeModel().reload();
+		getExpansionStateHandler().restoreExpansionState();
 	}
 
 	public IndexedTree getIndexTree() {
 		return tree;
+	}
+	
+	public WorkspacePreferences getPreferences() {
+		if (this.preferences == null) {
+			this.preferences = new WorkspacePreferences();
+			ResourceController resCtrl = Controller.getCurrentController().getResourceController();
+			resCtrl.addPropertyChangeListener(this);
+		}
+		return this.preferences;
+	}
+	
+
+	public AWorkspaceExpansionStateHandler getExpansionStateHandler() {
+		if(expansionStateHandler == null) {
+			expansionStateHandler = new DefaultWorkspaceExpansionStateHandler();
+		}
+		return expansionStateHandler;
 	}
 
 	private void initTree() {
@@ -196,20 +206,36 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 		this.tree.addElement(this.tree, new WorkspaceRoot(), "root", IndexedTree.AS_CHILD);
 	}
 
-	private void initializeConfiguration() {
-		resetWorkspaceView();
-		getConfiguration().reload();
-		if (!getConfiguration().isConfigValid()) {
-			LocationDialog locationDialog = new LocationDialog();
-			locationDialog.setVisible(true);
-		}
-
-		if (!getConfiguration().isConfigValid()) {
+	private void initializeConfiguration() {		
+		String workspaceLocation = getPreferences().getWorkspaceLocation();
+		if (workspaceLocation == null || workspaceLocation.trim().length() <= 0) {
 			showWorkspace(false);
 			return;
 		}
-
-		UrlManager.getController().setLastCurrentDir(new File(getWorkspaceLocation()));
+		
+		resetWorkspaceView();
+		
+		if (getConfiguration().reload()) {
+			showWorkspace(true);
+			UrlManager.getController().setLastCurrentDir(new File(preferences.getWorkspaceLocation()));
+			dispatchWorkspaceEvent(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_EVENT_TYPE_CHANGE, getConfiguration()));
+		}
+		else {
+			showWorkspace(false);
+			getPreferences().setNewWorkspaceLocation(null);
+		}
+		
+//		if (!getConfiguration().isConfigValid()) {
+//			WorkspaceChooserDialog locationDialog = new WorkspaceChooserDialog();
+//			locationDialog.setVisible(true);
+//		}
+//
+//		if (!getConfiguration().isConfigValid()) {
+//			showWorkspace(false);
+//			return;
+//		}
+//
+//		
 	}
 	
 	private TreeView getWorkspaceView() {
@@ -221,6 +247,7 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 			this.view.getTreeView().addMouseMotionListener(mouseHandler);
 			this.view.getTreeView().addKeyListener(new DefaultWorkspaceKeyHandler());
 			this.view.getTreeView().setRowHeight(18);
+			this.view.getTreeView().addTreeExpansionListener((DefaultWorkspaceExpansionStateHandler)getExpansionStateHandler());
 			this.transferHandler = WorkspaceTransferHandler.configureDragAndDrop(this.view.getTreeView(), new DefaultWorkspaceDropHandler());
 		}
 		return this.view;
@@ -287,15 +314,6 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 			this.contentPane.setLayout(new BorderLayout());
 		}
 		return this.contentPane;
-	}
-
-	private WorkspacePreferences initializePreferences() {
-		if (this.preferences == null) {
-			this.preferences = new WorkspacePreferences();
-			ResourceController resCtrl = Controller.getCurrentController().getResourceController();
-			resCtrl.addPropertyChangeListener(this);
-		}
-		return this.preferences;
 	}
 
 	private FileReadManager getFileTypeManager() {
@@ -379,13 +397,13 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 	 **********************************************************************************/
 
 	public void propertyChanged(String propertyName, String newValue, String oldValue) {
-		if (propertyName.equals(WorkspacePreferences.WORKSPACE_LOCATION_NEW)) {
-			if (newValue != null && newValue.trim().length() > 0) {
-				Controller.getCurrentController().getResourceController()
-						.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, true);
-				reloadWorkspace();
-			}
-		}
+//		if (propertyName.equals(WorkspacePreferences.WORKSPACE_LOCATION_NEW)) {
+//			if (newValue != null && newValue.trim().length() > 0) {
+//				Controller.getCurrentController().getResourceController()
+//						.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, true);
+//				reloadWorkspace();
+//			}
+//		}
 	}
 
 	/***********************************************************************************

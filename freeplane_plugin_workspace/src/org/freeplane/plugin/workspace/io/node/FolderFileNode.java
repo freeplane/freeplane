@@ -7,7 +7,10 @@ package org.freeplane.plugin.workspace.io.node;
 import java.io.File;
 import java.util.Enumeration;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
@@ -16,7 +19,10 @@ import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
  * 
  */
 public class FolderFileNode extends DefaultFileNode {
-
+	private static final Icon FOLDER_OPEN_ICON = new ImageIcon(DefaultFileNode.class.getResource("/images/16x16/folder-orange_open.png"));
+	private static final Icon FOLDER_CLOSED_ICON = new ImageIcon(DefaultFileNode.class.getResource("/images/16x16/folder-orange.png"));
+	
+	
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
@@ -43,6 +49,13 @@ public class FolderFileNode extends DefaultFileNode {
 			}			
 		}
 		file.delete();	
+	}
+	
+	public boolean setIcons(DefaultTreeCellRenderer renderer) {
+		renderer.setOpenIcon(FOLDER_OPEN_ICON);
+		renderer.setClosedIcon(FOLDER_CLOSED_ICON);
+		renderer.setLeafIcon(FOLDER_CLOSED_ICON);
+		return true;
 	}
 	
 	/***********************************************************************************

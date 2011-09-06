@@ -2,9 +2,11 @@ package org.freeplane.plugin.workspace;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.net.URI;
 import java.net.URL;
 
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JOptionPane;
 
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
@@ -12,6 +14,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -103,6 +106,30 @@ public class WorkspacePreferences {
 		});
 	}
 
+	public String getWorkspaceLocation() {
+		return Controller.getCurrentController().getResourceController().getProperty(WorkspacePreferences.WORKSPACE_LOCATION);
+	}
+
+	public void setNewWorkspaceLocation(URI newWorkspaceLocation) {
+		if (newWorkspaceLocation == null) {
+			ResourceController.getResourceController().getProperties().remove(WORKSPACE_LOCATION);
+			return;
+		}
+		
+		File f = WorkspaceUtils.resolveURI(newWorkspaceLocation);
+		if (f != null) {
+			if (!f.exists()) {
+				if (!f.mkdirs()) {
+					JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(),
+							TextUtils.getText("error_create_workspace_folder") + " " + f.getAbsolutePath(),
+							TextUtils.getText("error_create_workspace_folder_title"), JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			}
+			ResourceController.getResourceController().setProperty(WorkspacePreferences.WORKSPACE_LOCATION, f.getAbsolutePath());			
+		}
+	}
+
 	private class CheckBoxAction extends AFreeplaneAction {
 
 		private static final long serialVersionUID = 1256514415353330887L;
@@ -118,9 +145,9 @@ public class WorkspacePreferences {
 			Controller.getCurrentController().getResourceController().setProperty(this.propertyKey, checked);
 
 			if (checked) {
-				String currentLocation = WorkspaceController.getController().getWorkspaceLocation();
+				String currentLocation = getWorkspaceLocation();
 				if (currentLocation == null || currentLocation.length()==0) {
-					LocationDialog locationDialog = new LocationDialog();
+					WorkspaceChooserDialog locationDialog = new WorkspaceChooserDialog();
 					locationDialog.setVisible(true);
 				}
 				WorkspaceController.getController().showWorkspace(true);

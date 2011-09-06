@@ -4,11 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
@@ -16,13 +15,13 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.MutableComboBoxModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListDataListener;
 
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.factories.FormFactory;
@@ -30,7 +29,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
-public class LocationDialog extends JDialog implements VetoableChangeListener {
+public class WorkspaceChooserDialog extends JDialog {
 
 	/**
 	 * 
@@ -40,18 +39,37 @@ public class LocationDialog extends JDialog implements VetoableChangeListener {
 	private JTextField location;
 
 	private JPanel mainPanel = new JPanel();
+	private JComboBox profileComboBox;
+	private JButton btnCreateNew;
 
 	/**
 	 * Create the dialog.
 	 */
+	private void onCreateNewProfile() {
+		String profileName = JOptionPane.showInputDialog(this, TextUtils.getText("new_profile_name"), "");
+		profileName = WorkspaceUtils.stripIllegalChars(profileName);
+
+		if (profileName != null && profileName.length() > 0) {
+			workspaceChange(this.location.getText(), profileName);
+		}
+	}
+
 	private void onCancelButton() {
-		WorkspaceController.getController().setWorkspaceLocation("");
-		WorkspaceController.getController().showWorkspace(false);
 		this.dispose();
 	}
 
 	private void onOkButton() {
-		WorkspaceController.getController().setWorkspaceLocation(location.getText());
+		ProfileListObject item = (ProfileListObject) profileComboBox.getSelectedItem();
+		String profileName = item.getName();
+
+		if (location.getText().length() == 0 || profileName.length() == 0) {
+			return;
+		}
+
+		File f = new File(this.location.getText());
+		WorkspaceController.getController().getPreferences().setNewWorkspaceLocation(WorkspaceUtils.getURI(f));
+		WorkspaceController.getController().getPreferences().setWorkspaceProfile(profileName);
+
 		this.dispose();
 	}
 
@@ -65,14 +83,15 @@ public class LocationDialog extends JDialog implements VetoableChangeListener {
 			}
 		}
 
-		int retVal = fileChooser.showOpenDialog(UITools.getFrame());
+		int retVal = fileChooser.showOpenDialog(this);
 		if (retVal == JFileChooser.APPROVE_OPTION) {
 			File selectedfile = fileChooser.getSelectedFile();
 			this.location.setText(selectedfile.getPath());
+			workspaceChange(this.location.getText());
 		}
 	}
 
-	public LocationDialog() {
+	public WorkspaceChooserDialog() {
 		this.setModal(true);
 		setTitle(TextUtils.getText("no_location_set"));
 		setBounds(100, 100, 484, 200);
@@ -98,24 +117,42 @@ public class LocationDialog extends JDialog implements VetoableChangeListener {
 			location = new JTextField();
 			mainPanel.add(location, "2, 2, fill, fill");
 
-			String currentLocation = WorkspaceController.getController().getWorkspaceLocation();
+			String currentLocation = WorkspaceController.getController().getPreferences().getWorkspaceLocation();
 			if (currentLocation != null && currentLocation.length() > 0) {
 				location.setText(currentLocation);
 			}
 			location.setColumns(30);
-			location.addVetoableChangeListener(this);
 			{
 				JButton btnBrowse = new JButton(TextUtils.getText("browse"));
 				mainPanel.add(btnBrowse, "4, 2");
+
 				{
-					JComboBox comboBox = new JComboBox();
-					mainPanel.add(comboBox, "2, 4, fill, default");
-					comboBox.setModel(new WorkspaceProfileListModel());
+					profileComboBox = new JComboBox();
+					mainPanel.add(profileComboBox, "2, 4, fill, default");
+					profileComboBox.setModel(new WorkspaceProfileListModel());					
+					
 				}
 				{
-					JButton btnCreateNew = new JButton(TextUtils.getText("workspace.profile.new"));
+					this.btnCreateNew = new JButton(TextUtils.getText("workspace.profile.new"));
+					btnCreateNew.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							onCreateNewProfile();
+						}
+					});
 					mainPanel.add(btnCreateNew, "4, 4");
 				}
+				if (currentLocation != null && currentLocation.length() > 0) {
+					workspaceChange(this.location.getText());
+				}
+				if (location.getText().trim().length() == 0) {
+					this.profileComboBox.setVisible(false);
+					this.btnCreateNew.setVisible(false);
+				}
+				else {
+					this.profileComboBox.setVisible(true);
+					this.btnCreateNew.setVisible(true);
+				}
+
 				btnBrowse.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						onShowButton();
@@ -167,8 +204,17 @@ public class LocationDialog extends JDialog implements VetoableChangeListener {
 
 	}
 
-	public void vetoableChange(PropertyChangeEvent evt) throws PropertyVetoException {
-		evt.getNewValue();
+	private void workspaceChange(final String newPath) {
+		workspaceChange(newPath, null);
+	}
+
+	private void workspaceChange(final String newPath, final String newProfileName) {
+		if (newPath != null && newPath.trim().length() > 0) {
+			((WorkspaceProfileListModel) profileComboBox.getModel()).reload(newPath, newProfileName);
+			this.btnCreateNew.setVisible(true);
+			this.profileComboBox.setVisible(true);
+			this.profileComboBox.repaint();
+		}
 	}
 
 	private class WorkspaceProfileListModel implements MutableComboBoxModel, Serializable {
@@ -176,14 +222,60 @@ public class LocationDialog extends JDialog implements VetoableChangeListener {
 		Vector<ProfileListObject> itemList;
 
 		private static final long serialVersionUID = 1L;
-		
+		private final FileFilter profileFilter = new FileFilter() {
+			public boolean accept(File pathname) {
+				if (pathname.isDirectory() && !pathname.getName().equals("." + WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT)
+						&& pathname.getName().startsWith(".") && Arrays.asList(pathname.list()).contains("workspace.xml")) {
+					return true;
+				}
+				return false;
+			}
+		};
+		private Object selectedObject;
+
 		public WorkspaceProfileListModel() {
-			itemList = new Vector<LocationDialog.ProfileListObject>();
-			itemList.add(new ProfileListObject(WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT, "<"+WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT+"> profile"));
+			reload(null);
 		}
-		
+
+		private void initProfileList(File workspaceBase) {
+			if (workspaceBase.isDirectory()) {
+				for (File folder : workspaceBase.listFiles(profileFilter)) {
+					itemList.add(new ProfileListObject(folder.getName().substring(1), folder.getName().substring(1)));
+					if (WorkspaceController.getController().getPreferences().getWorkspaceProfile()
+							.equals(folder.getName().substring(1))) {
+						selectedObject = itemList.elementAt(itemList.size() - 1);
+					}
+				}
+			}
+		}
+
 		public void reload(String path) {
+			reload(path, null);
+		}
+
+		public void reload(String path, String newProfileName) {
+			itemList = new Vector<WorkspaceChooserDialog.ProfileListObject>();
+			itemList.add(new ProfileListObject(WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT, "<"
+					+ WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT + "> profile"));
+			selectedObject = itemList.elementAt(0);
+			if (newProfileName != null) {
+				itemList.add(new ProfileListObject(newProfileName, newProfileName));				
+			}
+
+			if (path != null) {
+				File file = new File(path);
+				if (file.exists()) {
+					initProfileList(file);
+				}
+				else {
+					// TODO: DOCEAR> do sth.
+				}
+			}
 			this.internalModel = new DefaultComboBoxModel(itemList.toArray());
+			if (newProfileName != null) {
+				selectedObject = itemList.elementAt(1);
+			}
+			setSelectedItem(selectedObject);
 		}
 
 		public int getSize() {
@@ -193,23 +285,23 @@ public class LocationDialog extends JDialog implements VetoableChangeListener {
 		public Object getElementAt(int index) {
 			return internalModel.getElementAt(index);
 		}
-		
+
 		public Object getSelectedItem() {
-	        if(internalModel.getSelectedItem() == null) {
-	        	return internalModel.getElementAt(0); 
-	        }
+			if (internalModel.getSelectedItem() == null) {
+				return internalModel.getElementAt(0);
+			}
 			return internalModel.getSelectedItem();
-	    }
+		}
 
 		public void setSelectedItem(Object anItem) {
-			if(anItem == null) {
+			if (anItem == null) {
 				internalModel.setSelectedItem(internalModel.getElementAt(0));
 			}
 			internalModel.setSelectedItem(anItem);
 		}
 
 		public void addListDataListener(ListDataListener l) {
-			internalModel.addListDataListener(l);	
+			internalModel.addListDataListener(l);
 		}
 
 		public void removeListDataListener(ListDataListener l) {
@@ -217,11 +309,11 @@ public class LocationDialog extends JDialog implements VetoableChangeListener {
 		}
 
 		public void addElement(Object obj) {
-			internalModel.addElement(obj);			
+			internalModel.addElement(obj);
 		}
 
 		public void removeElement(Object obj) {
-			internalModel.removeElement(obj);			
+			internalModel.removeElement(obj);
 		}
 
 		public void insertElementAt(Object obj, int index) {
@@ -229,7 +321,7 @@ public class LocationDialog extends JDialog implements VetoableChangeListener {
 		}
 
 		public void removeElementAt(int index) {
-			internalModel.removeElementAt(index);			
+			internalModel.removeElementAt(index);
 		}
 
 	}
@@ -237,16 +329,16 @@ public class LocationDialog extends JDialog implements VetoableChangeListener {
 	public class ProfileListObject {
 		private final String name;
 		private final String displayName;
-		
+
 		public ProfileListObject(final String name, final String displayName) {
 			this.name = name;
 			this.displayName = displayName;
 		}
-		
+
 		public String getName() {
 			return this.name;
 		}
-		
+
 		public String toString() {
 			return displayName;
 		}
