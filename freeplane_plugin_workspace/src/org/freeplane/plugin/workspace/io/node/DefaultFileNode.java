@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.List;
 import java.util.Vector;
 
@@ -230,6 +231,32 @@ public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEve
 			
 		}
 		else if(event.getType() == WorkspaceNodeEvent.WSNODE_OPEN_DOCUMENT) {
+			
+			if(getFile() != null) {
+				int dot = getFile().getPath().lastIndexOf('.');
+				String fileExt = "";
+				if(-1 != dot) {
+					fileExt = file.getPath().substring(dot);
+				}				
+				if(fileExt.equalsIgnoreCase(".mm") || fileExt.equalsIgnoreCase(".dcr")) {
+					try {
+						final URL mapUrl = Compat.fileToUrl(getFile());
+						Controller.getCurrentModeController().getMapController().newMap(mapUrl, false);
+					}
+					catch (final Exception e) {
+						LogUtils.severe(e);
+					}
+				}
+				else {
+					try {
+						Controller.getCurrentController().getViewController().openDocument(Compat.fileToUrl(getFile()));
+					}
+					catch (Exception e) {
+						LogUtils.warn("could not open document ("+getFile()+")", e);
+					}
+				}
+			}
+			
 			try {
 				Controller.getCurrentController().getViewController().openDocument(Compat.fileToUrl(getFile()));
 			}
