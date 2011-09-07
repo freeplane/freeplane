@@ -15,6 +15,7 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.PopupMenus;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
@@ -51,12 +52,30 @@ public class LinkTypeFileNode extends LinkNode implements IWorkspaceNodeEventLis
 
 	public void handleEvent(WorkspaceNodeEvent event) {
 		if(event.getType() == WorkspaceNodeEvent.WSNODE_OPEN_DOCUMENT) {
-			try {
-				URL url = getLinkPath().toURL().openConnection().getURL();
-				Controller.getCurrentController().getViewController().openDocument(Compat.fileToUrl(new File(url.toURI())));
-			}
-			catch (Exception e) {
-				LogUtils.warn("could not open document ("+getLinkPath()+")", e);
+			File file = WorkspaceUtils.resolveURI(getLinkPath());
+			if(file != null) {
+				int dot = file.getPath().lastIndexOf('.');
+				String fileExt = "";
+				if(-1 != dot) {
+					fileExt = file.getPath().substring(dot);
+				}				
+				if(fileExt.equalsIgnoreCase(".mm") || fileExt.equalsIgnoreCase(".dcr")) {
+					try {
+						final URL mapUrl = Compat.fileToUrl(file);
+						Controller.getCurrentModeController().getMapController().newMap(mapUrl, false);
+					}
+					catch (final Exception e) {
+						LogUtils.severe(e);
+					}
+				}
+				else {
+					try {
+						Controller.getCurrentController().getViewController().openDocument(Compat.fileToUrl(file));
+					}
+					catch (Exception e) {
+						LogUtils.warn("could not open document ("+getLinkPath()+")", e);
+					}
+				}
 			}
 		}
 		else if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {			
