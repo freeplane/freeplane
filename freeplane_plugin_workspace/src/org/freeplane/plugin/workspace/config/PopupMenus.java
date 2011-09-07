@@ -37,18 +37,12 @@ public class PopupMenus {
 	private static final String WORKSPACE_POPUP_MENU_CONFIG = "/xml/popup_menus.xml";
 	private static final String WORKSPACE_PHYSICAL_NODE_POPUP_MENU_KEY = "/workspace_physical_node_popup";
 
-	private final HashMap<String, PopupObject> popupMap;
+	private HashMap<String, PopupObject> popupMap;
 
 	public PopupMenus() {
 		registerWorkspaceActions();
 
-		popupMap = new HashMap<String, PopupMenus.PopupObject>();
-
-		// Default Node Popups
-		registerPopupMenu(WORKSPACE_POPUP_MENU_KEY, WORKSPACE_POPUP_MENU_KEY);
-		buildPopupMenu(WORKSPACE_POPUP_MENU_KEY);
-		registerPopupMenu(WORKSPACE_PHYSICAL_NODE_POPUP_MENU_KEY, WORKSPACE_PHYSICAL_NODE_POPUP_MENU_KEY);
-		buildPopupMenu(WORKSPACE_PHYSICAL_NODE_POPUP_MENU_KEY);
+		initialize();
 	}
 
 	private void registerWorkspaceActions() {
@@ -78,7 +72,7 @@ public class PopupMenus {
 	// return true;
 	// }
 	//
-	public void registerPopupMenuNodeDefault(String key) {
+	public void registerPopupMenuNodeDefault(String key) {		
 		registerPopupMenu(key, "/workspace_node_default");
 	}
 
@@ -169,7 +163,11 @@ public class PopupMenus {
 
 	public void showPopup(String popupKey, Component component, int x, int y) {
 		PopupObject popObj = this.popupMap.get(popupKey);
-
+		if (popObj==null) {			
+			//no popup menu registered
+			return;
+		}
+		
 		final WorkspacePopupMenu popupMenu = popObj.popupMenu;
 		popupMenu.setInvokerLocation(new Point(x, y));
 		if (popupMenu != null) {
@@ -187,5 +185,15 @@ public class PopupMenus {
 			this.popupMenu = popupMenu;
 		}
 
+	}
+	
+	public void initialize() {
+		popupMap = new HashMap<String, PopupMenus.PopupObject>();
+
+		// Default Node Popups
+		registerPopupMenu(WORKSPACE_POPUP_MENU_KEY, WORKSPACE_POPUP_MENU_KEY);
+		buildPopupMenu(WORKSPACE_POPUP_MENU_KEY);
+		registerPopupMenu(WORKSPACE_PHYSICAL_NODE_POPUP_MENU_KEY, WORKSPACE_PHYSICAL_NODE_POPUP_MENU_KEY);
+		buildPopupMenu(WORKSPACE_PHYSICAL_NODE_POPUP_MENU_KEY);
 	}
 }

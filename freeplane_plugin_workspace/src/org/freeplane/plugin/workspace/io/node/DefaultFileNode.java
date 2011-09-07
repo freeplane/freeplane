@@ -264,4 +264,10 @@ public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEve
 		}
 		return transferable;
 	}
+
+	@Override
+	public void initializePopup() {
+		// TODO Auto-generated method stub
+		
+	}
 }

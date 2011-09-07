@@ -59,4 +59,8 @@ public class WorkspaceRoot extends AWorkspaceNode implements IConfigurationInfo,
 		renderer.setLeafIcon(DEFAULT_ICON);
 		return true;
 	}
+
+	@Override
+	public void initializePopup() {	
+	}
 }

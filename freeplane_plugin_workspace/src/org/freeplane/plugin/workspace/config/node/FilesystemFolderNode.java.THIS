@@ -26,8 +26,7 @@ public class FilesystemFolderNode extends AWorkspaceNode implements TreeExpansio
 	private static String POPUP_KEY = "/filesystem_folder";
 
 	public FilesystemFolderNode(String id) {
-		super(id);
-		initializePopup();
+		super(id);		
 	}
 
 	@ExportAsAttribute("pathProperty")

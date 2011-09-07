@@ -29,7 +29,6 @@ public class PhysicalFolderNode extends FolderNode implements IWorkspaceNodeEven
 
 	public PhysicalFolderNode(String id) {
 		super(id);
-		initializePopup();
 	}
 
 	@ExportAsAttribute("pathProperty")
@@ -77,10 +76,11 @@ public class PhysicalFolderNode extends FolderNode implements IWorkspaceNodeEven
 		}
 	}
 
-	private void initializePopup() {
+	public void initializePopup() {
 		PopupMenus popupMenu = WorkspaceController.getController().getPopups();
-		popupMenu.registerPopupMenuNodeDefault(POPUP_KEY);
-//		popupMenu.registerPopupMenu(POPUP_KEY, POPUP_KEY);
+		if (!isSystem()) {			
+			popupMenu.registerPopupMenuNodeDefault(POPUP_KEY);
+		}
 		popupMenu.buildPopupMenu(POPUP_KEY);
 	}
 

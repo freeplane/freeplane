@@ -34,4 +34,10 @@ public class LinkNode extends AWorkspaceNode {
 	public final String getTagName() {
 		return "link";
 	}
+
+	@Override
+	public void initializePopup() {
+		// TODO Auto-generated method stub
+		
+	}
 }

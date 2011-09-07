@@ -29,13 +29,15 @@ public class LinkTypeFileNode extends LinkNode implements IWorkspaceNodeEventLis
 	
 	public LinkTypeFileNode(String type) {
 		super(type);	
-		initializePopup();
 	}
 	
-	private void initializePopup() {
-		PopupMenus popupMenu = WorkspaceController.getController().getPopups();
-		popupMenu.registerPopupMenuNodeDefault(POPUP_KEY);
+	public void initializePopup() {
+		PopupMenus popupMenu = WorkspaceController.getController().getPopups();		
+		if (!isSystem()) {
+			popupMenu.registerPopupMenuNodeDefault(POPUP_KEY);			
+		}
 		popupMenu.buildPopupMenu(POPUP_KEY);
+		
 	}
 	
 	@ExportAsAttribute("path")
