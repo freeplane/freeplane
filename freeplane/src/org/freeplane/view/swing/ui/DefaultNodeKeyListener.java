@@ -42,13 +42,33 @@ public class DefaultNodeKeyListener implements KeyListener {
 			case KeyEvent.VK_INSERT:
 			case KeyEvent.VK_TAB:
 				return;
+		}
+		final boolean continious = e.isShiftDown();
+		final MapView mapView = (MapView) Controller.getCurrentController().getViewController().getMapView();
+		switch (e.getKeyCode()) {
 			case KeyEvent.VK_UP:
+				if (mapView.selectUp(continious)) 
+					e.consume();
+				return;
 			case KeyEvent.VK_DOWN:
+				if (mapView.selectDown(continious)) 
+					e.consume();
+				return;
 			case KeyEvent.VK_LEFT:
+				if (mapView.selectLeft(continious)) 
+					e.consume();
+				return;
 			case KeyEvent.VK_RIGHT:
+				if (mapView.selectRight(continious)) 
+					e.consume();
+				return;
 			case KeyEvent.VK_PAGE_UP:
+				if (mapView.selectPageUp(continious)) 
+					e.consume();
+				return;
 			case KeyEvent.VK_PAGE_DOWN:
-				((MapView) Controller.getCurrentController().getViewController().getMapView()).move(e);
+				if (mapView.selectPageDown(continious)) 
+					e.consume();
 				return;
 			case KeyEvent.VK_HOME:
 			case KeyEvent.VK_END:
@@ -60,8 +80,7 @@ public class DefaultNodeKeyListener implements KeyListener {
 			case KeyEvent.VK_CONTEXT_MENU:
 				final ModeController modeController = Controller.getCurrentModeController();
 				final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
-				final NodeView nodeView = ((MapView) Controller.getCurrentController().getViewController().getMapView())
-				    .getNodeView(node);
+				final NodeView nodeView = mapView.getNodeView(node);
 				final JPopupMenu popupmenu = modeController.getUserInputListenerFactory().getNodePopupMenu();
 				if (popupmenu != null) {
 					popupmenu.addHierarchyListener(new ControllerPopupMenuListener());
@@ -83,9 +102,6 @@ public class DefaultNodeKeyListener implements KeyListener {
 	}
 
 	public void keyReleased(final KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
-			((MapView) Controller.getCurrentController().getViewController().getMapView()).resetShiftSelectionOrigin();
-		}
 	}
 
 	public void keyTyped(final KeyEvent e) {

@@ -61,6 +61,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.ShortenedTextModel;
 import org.freeplane.features.text.TextController;
@@ -471,22 +472,6 @@ public class NodeView extends JComponent implements INodeView {
 		return motionListenerView;
 	}
 
-	protected NodeView getNextPage() {
-		if (getModel().isRoot()) {
-			return this;
-		}
-		NodeView sibling = getNextVisibleSibling();
-		if (sibling == this) {
-			return this;
-		}
-		NodeView nextSibling = sibling.getNextVisibleSibling();
-		while (nextSibling != sibling && sibling.getParentView() == nextSibling.getParentView()) {
-			sibling = nextSibling;
-			nextSibling = nextSibling.getNextVisibleSibling();
-		}
-		return sibling;
-	}
-
 	protected NodeView getNextSiblingSingle() {
 		LinkedList<NodeView> v = null;
 		if (getParentView().getModel().isRoot()) {
@@ -595,7 +580,7 @@ public class NodeView extends JComponent implements INodeView {
 			if (getUpper) {
 				return childView;
 			}
-			final Point childPoint = new Point(childView.getContent().getWidth() / 2, childView.getContent().getHeight() / 2);
+			final Point childPoint = new Point(left ? childView.getContent().getWidth() : 0, childView.getContent().getHeight() / 2);
 			UITools.convertPointToAncestor(childView.getContent(), childPoint, baseComponent);
 			final int dy = childPoint.y - ownY;
 			final int dx = childPoint.x - ownX;
@@ -610,22 +595,6 @@ public class NodeView extends JComponent implements INodeView {
 			}
 		}
 		return newSelected;
-	}
-
-	protected NodeView getPreviousPage() {
-		if (getModel().isRoot()) {
-			return this;
-		}
-		NodeView sibling = getPreviousVisibleSibling();
-		if (sibling == this) {
-			return this;
-		}
-		NodeView previousSibling = sibling.getPreviousVisibleSibling();
-		while (previousSibling != sibling && sibling.getParentView() == previousSibling.getParentView()) {
-			sibling = previousSibling;
-			previousSibling = previousSibling.getPreviousVisibleSibling();
-		}
-		return sibling;
 	}
 
 	protected NodeView getPreviousSiblingSingle() {
@@ -830,6 +799,9 @@ public class NodeView extends JComponent implements INodeView {
 		final Object property = event.getProperty();
 		if (property == NodeChangeType.FOLDING) {
 			treeStructureChanged();
+			String shape = NodeStyleController.getController(getMap().getModeController()).getShape(model);
+			if (shape.equals(NodeStyleModel.SHAPE_COMBINED))
+				update();
 			return;
 		}
 		// is node is not fully initialized, skip the rest.
@@ -859,7 +831,6 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
-		getMap().resetShiftSelectionOrigin();
 		if (getMap().getModeController().getMapController().isFolded(model)) {
 			return;
 		}
@@ -1239,7 +1210,6 @@ public class NodeView extends JComponent implements INodeView {
 		if (model.getParentNode() == null && !model.isRoot()) {
 			return;
 		}
-		mainView.updateTextColor(this);
 		if (getEdgeStyle().equals(EdgeStyle.EDGESTYLE_HIDDEN)) {
 			final NodeView visibleParentView = getVisibleParentView();
 			if (visibleParentView != null) {
@@ -1363,7 +1333,6 @@ public class NodeView extends JComponent implements INodeView {
 	 * event.TreeModelEvent)
 	 */
 	private void treeStructureChanged() {
-		getMap().resetShiftSelectionOrigin();
 		for (final ListIterator<NodeView> i = getChildrenViews().listIterator(); i.hasNext();) {
 			i.next().remove();
 		}

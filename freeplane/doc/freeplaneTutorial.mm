@@ -9,9 +9,15 @@
 <hook NAME="MapStyle" max_node_width="600">
     <conditional_styles>
         <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
-            <conjunct_condition user_name="V2">
-                <time_condition_modified_after DATE="1314394234929"/>
-                <time_condition_modified_before DATE="1314530897141"/>
+            <conjunct_condition user_name="V4">
+                <time_condition_modified_before DATE="1314731996193"/>
+                <time_condition_modified_after DATE="1314559196193"/>
+            </conjunct_condition>
+        </conditional_style>
+        <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
+            <conjunct_condition user_name="V4">
+                <time_condition_modified_before DATE="1314731996193"/>
+                <time_condition_modified_after DATE="1314559196193"/>
             </conjunct_condition>
         </conditional_style>
     </conditional_styles>
@@ -71,8 +77,8 @@
 </map_styles>
 </hook>
 <hook NAME="FirstGroupNode"/>
-<node TEXT="Introduction" STYLE_REF="Introduction" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1314122148851" NUMBERED="true">
-<node TEXT="Goal" STYLE_REF="Introduction" FOLDED="true" ID="ID_1383326901" CREATED="1314121906559" MODIFIED="1314122196369">
+<node TEXT="Introduction" STYLE_REF="Introduction" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1314647613419" NUMBERED="true" VSHIFT="90">
+<node TEXT="Goal" STYLE_REF="Introduction" ID="ID_1383326901" CREATED="1314121906559" MODIFIED="1314122196369">
 <node ID="ID_884522515" CREATED="1314121650937" MODIFIED="1314521640631" STYLE="bubble">
 <richcontent TYPE="NODE">
 <html>
@@ -100,8 +106,8 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="What is a mind map" STYLE_REF="Introduction" FOLDED="true" ID="ID_448981847" CREATED="1314122243021" MODIFIED="1314123716724">
-<node ID="ID_109166132" CREATED="1314122290117" MODIFIED="1314521692875" STYLE="bubble">
+<node TEXT="What is a mind map" STYLE_REF="Introduction" ID="ID_448981847" CREATED="1314122243021" MODIFIED="1314123716724">
+<node ID="ID_109166132" CREATED="1314122290117" MODIFIED="1314732319784" STYLE="bubble" HGAP="40">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -124,7 +130,7 @@
 </html></richcontent>
 <hook NAME="FirstGroupNode"/>
 </node>
-<node FOLDED="true" ID="ID_1971514033" CREATED="1314122290117" MODIFIED="1314521709037" STYLE="bubble">
+<node FOLDED="true" ID="ID_1971514033" CREATED="1314122290117" MODIFIED="1314732325541" STYLE="bubble" HGAP="40">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -163,8 +169,8 @@
 <hook NAME="SummaryNode"/>
 </node>
 </node>
-<node TEXT="Hidden text" STYLE_REF="Introduction" FOLDED="true" ID="ID_1552798241" CREATED="1314301771122" MODIFIED="1314302030191">
-<node ID="ID_413786068" CREATED="1314301838684" MODIFIED="1314521830436">
+<node TEXT="Hidden text" STYLE_REF="Introduction" ID="ID_1552798241" CREATED="1314301771122" MODIFIED="1314302030191">
+<node ID="ID_413786068" CREATED="1314301838684" MODIFIED="1314732361499">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -172,14 +178,17 @@
   </head>
   <body>
     <p>
-      A node may have part of its text hidden. This is the case if the node shows a small <b>triangle</b>. You must then click the triangle to reveal the hidden text.&#160;&#160;Clicking a second time will make the text hidden again. <i><b>Try this for the node below.</b></i>
+      A node may have part of its text hidden. This is the case if the node shows a small <b>triangle</b>. You must then click the triangle to reveal the hidden text.&#160;&#160;Clicking a second time will make the text hidden again.
+    </p>
+    <p>
+      <b><i>Try this for the node below.</i></b>
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Hovering" STYLE_REF="Introduction" ID="ID_675482486" CREATED="1314301369085" MODIFIED="1314521923927">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Hovering" STYLE_REF="Introduction" ID="ID_675482486" CREATED="1314301369085" MODIFIED="1314732207792">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
@@ -191,7 +200,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Folding" STYLE_REF="Introduction" ID="ID_1338867820" CREATED="1314122456335" MODIFIED="1314521895099" TEXT_SHORTENED="true">
+<node TEXT="Folding" STYLE_REF="Introduction" ID="ID_1338867820" CREATED="1314122456335" MODIFIED="1314642816317" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -199,13 +208,121 @@
   </head>
   <body>
     <p>
-      You can <b>fold</b>&#160;and <b>unfold</b>&#160;a node by clicking the node. Unfolding will reveal hidden children. Folding will hide possible children. If a node is folded, it shows a small <b>circle</b>&#160;at its <b>child side</b>.&#160;<br/><br/>&#160;Now click on node <i>Introduction</i>&#160;&#160;to hide its children &#160;and notice the circle!&#160;&#160;And thereafter, click again to continue reading the following node.
+      You can <b>fold</b>&#160;and <b>unfold</b>&#160;a node by clicking the node. Unfolding will reveal hidden children. Folding will hide possible children. If a node is folded, it shows a small <b>circle</b>&#160;at its <b>child side</b>.&#160;
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      If you have me unfolded, you see 4 icons wich also are displayed in the toolbar at the top of the screen. These are icon-buttons with which you can fold/unfold the descendants of a selected node.<br/><br/>&#160;Now click on node <i>Introduction</i>&#160;&#160;to hide its children &#160;and notice the circle!&#160;&#160;And thereafter, click again to continue reading the following node.
     </p>
   </body>
 </html></richcontent>
+<node TEXT="Unfold one level" ID="ID_321295556" CREATED="1310134532663" MODIFIED="1314647916310" TEXT_SHORTENED="true">
+<icon BUILTIN="../unfold_one_level"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Progressively unfolds the descendants of the selected node. Clicking once unfolds the children, clicking again unfolds the grandchildren, etc.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Note" STYLE_REF="Introduction" FOLDED="true" ID="ID_571097520" CREATED="1314208825274" MODIFIED="1314208841436">
-<node ID="ID_1900839378" CREATED="1314208846669" MODIFIED="1314521990898" STYLE="bubble">
+<node TEXT="Fold one level" ID="ID_831251421" CREATED="1310134532679" MODIFIED="1314647922253" TEXT_SHORTENED="true">
+<icon BUILTIN="../fold_one_level"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Progressively folds the descendants of the selected node, starting at the deepest level in the hierarchy. If four levels exist, clicking once folds the great grandchildren, clicking again folds the grandchildren, clicking again folds the children, etc.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Unfold all" ID="ID_933325044" CREATED="1310134532679" MODIFIED="1314647894049" TEXT_SHORTENED="true">
+<icon BUILTIN="../unfold_all"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Unfolds (makes visible) all nodes that are descendants of the selected node, including all children, grandchildren, etc. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Hot key</b>
+    </p>
+    <ul>
+      <li>
+        press <i>Space; or</i>
+      </li>
+      <li>
+        single click on the node; or
+      </li>
+      <li>
+        click icon-button in <i>Toolbar</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Fold all" ID="ID_657829947" CREATED="1310134532679" MODIFIED="1314647894049" TEXT_SHORTENED="true">
+<icon BUILTIN="../fold_all"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Folds (hides) all nodes that are descendants of the selected node, including all children, grandchildren, etc. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Hot key</b>
+    </p>
+    <ul>
+      <li>
+        press <i>Space; or</i>
+      </li>
+      <li>
+        single click on the node; or
+      </li>
+      <li>
+        click icon-button in Toolbar
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Important" STYLE_REF="Introduction" FOLDED="true" ID="ID_571097520" CREATED="1314208825274" MODIFIED="1314732465239">
+<node ID="ID_1900839378" CREATED="1314208846669" MODIFIED="1314732433571" STYLE="bubble">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -213,28 +330,13 @@
   </head>
   <body>
     <p>
-      The layout in this tutorial&#160;&#160;differs from node to node.
-    </p>
-    <p>
-      In this way you can experience the pro's and con's
-    </p>
-    <p>
-      of different possibilities. It may give a chaotic
-    </p>
-    <p>
-      appearance however. Therefore, fold nodes and/or hide
-    </p>
-    <p>
-      content when you are finished reading a node.
+      The layout in this tutorial&#160;&#160;differs from node to node. In this way you can experience the pro's and con's of different possibilities. It may give a chaotic appearance however. Therefore, fold nodes and/or hide content when you are finished reading a node.
     </p>
     <p>
       
     </p>
     <p>
-      <b>Now fold node&#160; <i>1</i>&#160;<i>Introduction</i>&#160;to make space for the rest of </b>
-    </p>
-    <p>
-      <b>the tutorial.</b>
+      <b>Now fold node&#160; <i>1</i>&#160;<i>Introduction</i>&#160;to make space for the rest of the tutorial.</b>
     </p>
   </body>
 </html></richcontent>
@@ -242,7 +344,7 @@
 </node>
 </node>
 <node TEXT="Basic map" STYLE_REF="Introduction" FOLDED="true" POSITION="right" ID="ID_1337127972" CREATED="1314109409850" MODIFIED="1314126004367" NUMBERED="true">
-<node TEXT="Edit node title in-line" STYLE_REF="Introduction" ID="ID_268413071" CREATED="1314125550476" MODIFIED="1314522229516">
+<node TEXT="Edit node title in-line" STYLE_REF="Introduction" ID="ID_268413071" CREATED="1314125550476" MODIFIED="1314645728608">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -263,16 +365,149 @@
         To add a new line, press <i>Shift + Enter.</i>
       </li>
       <li>
-        If you right-click when editing text, a so called <b>context menu</b>&#160; opens giving quick acces to functions like copy and paste.
+        If you right-click when editing text, a so called <b>context menu</b>&#160; opens giving quick access to formatting functions like copy and paste.
       </li>
       <li>
-        If you select a text and right-click, a <i>Format</i>&#160;menu is displayed to make text bold etc.
+        If you select a text and right-click, a <i>Format</i>&#160;menu is displayed to make text bold etc. This formatting only applies to the selected&#160; text.
       </li>
     </ul>
   </body>
 </html></richcontent>
+<node TEXT="New map" ID="ID_1310307853" CREATED="1310134532663" MODIFIED="1314707917494" TEXT_SHORTENED="true">
+<icon BUILTIN="../filenew"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Look up in the toolbar at the top of the screen.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Edit node title in dialog" STYLE_REF="Introduction" ID="ID_1279324490" CREATED="1314126040831" MODIFIED="1314522219407">
+<node TEXT="Open saved map.." ID="ID_1284635316" CREATED="1310134532663" MODIFIED="1314707783735" TEXT_SHORTENED="true">
+<icon BUILTIN="../fileopen"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Look up in the toolbar
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Print map [Print]" ID="ID_111478060" CREATED="1310134532663" MODIFIED="1314708443582" TEXT_SHORTENED="true">
+<icon BUILTIN="../fileprint"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Opens the dialog box associated with the printer on which the map will print.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Cut" ID="ID_353410114" CREATED="1310134532663" MODIFIED="1314559544053" TEXT_SHORTENED="true">
+<icon BUILTIN="../editcut"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Cuts the node currently selected and all of its children.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Copy" ID="ID_1274800359" CREATED="1310134532663" MODIFIED="1314559562383" TEXT_SHORTENED="true">
+<icon BUILTIN="../editcopy"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Copies the node selected and all of its children.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Paste" ID="ID_1705754282" CREATED="1310134532663" MODIFIED="1314708511223" TEXT_SHORTENED="true">
+<icon BUILTIN="../editpaste"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif">Pasts copied text. If the selected node is in edit mode, the text will be added to the contents of the node. If the selected node is not in edit mode, the text will be added as a child node.</font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="New child node" ID="ID_942355748" CREATED="1266249828031" MODIFIED="1314708540754" TEXT_SHORTENED="true">
+<icon BUILTIN="../idea"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif">Creates a new node as a child of&#160;&#160;the currently-selected node. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><b>Same effect: </b></font>
+    </p>
+    <ul>
+      <li>
+        <font color="#000000" face="SansSerif, sans-serif">press key <i>Ins</i></font>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Edit node title in dialog" STYLE_REF="Introduction" ID="ID_1279324490" CREATED="1314126040831" MODIFIED="1314645737453">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -296,8 +531,8 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Formatting edges" STYLE_REF="Introduction" ID="ID_1318820057" CREATED="1314128584510" MODIFIED="1314522423222">
-<richcontent TYPE="DETAILS">
+<node TEXT="Formatting edges" STYLE_REF="Introduction" ID="ID_1318820057" CREATED="1314128584510" MODIFIED="1314645084693">
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -318,8 +553,8 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Scientific formula&apos;s (LaTeX)" STYLE_REF="Introduction" ID="ID_616494746" CREATED="1314361765668" MODIFIED="1314361941091">
-<richcontent TYPE="DETAILS">
+<node TEXT="Scientific formula&apos;s (LaTeX)" STYLE_REF="Introduction" ID="ID_616494746" CREATED="1314361765668" MODIFIED="1314645088125">
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -340,8 +575,8 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Saving" STYLE_REF="Introduction" ID="ID_48547188" CREATED="1314127927655" MODIFIED="1314522498929">
-<richcontent TYPE="DETAILS">
+<node TEXT="Saving" STYLE_REF="Introduction" ID="ID_48547188" CREATED="1314127927655" MODIFIED="1314645091994">
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -352,11 +587,63 @@
     </p>
   </body>
 </html></richcontent>
+<node TEXT="Save map" ID="ID_1253878525" CREATED="1310134532663" MODIFIED="1314649197070" TEXT_SHORTENED="true">
+<icon BUILTIN="../filesave"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Look in the toolbar for the icon button to save the current map.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Save map as..." ID="ID_449363060" CREATED="1310134532663" MODIFIED="1314707773065" TEXT_SHORTENED="true">
+<icon BUILTIN="../filesaveas"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Look up in the toolbar
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Close current map" ID="ID_1018458898" CREATED="1310134532663" MODIFIED="1314708579848" TEXT_SHORTENED="true">
+<icon BUILTIN="../close"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Closes the map that has focus. If multiple maps are open, focus refers to the tab that you are currently editing.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
 </node>
 </node>
 <node TEXT="Title or content" STYLE_REF="Introduction" FOLDED="true" POSITION="right" ID="ID_143196514" CREATED="1314206563418" MODIFIED="1314524787456" NUMBERED="true">
-<node TEXT="What is node content (details) ?" STYLE_REF="Introduction" ID="ID_383568018" CREATED="1314195795821" MODIFIED="1314522796452">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="What is node content (details) ?" STYLE_REF="Introduction" ID="ID_383568018" CREATED="1314195795821" MODIFIED="1314645767545">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
@@ -374,8 +661,8 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="How to create node content ?" STYLE_REF="Introduction" ID="ID_898889730" CREATED="1314197390735" MODIFIED="1314522972982">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="How to create node content ?" STYLE_REF="Introduction" ID="ID_898889730" CREATED="1314197390735" MODIFIED="1314645770447">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
@@ -396,7 +683,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Hide and set as hover text (tool tip)" STYLE_REF="Introduction" ID="ID_288274844" CREATED="1314206958207" MODIFIED="1314524535484">
+<node TEXT="Hide and set as hover text (tool tip)" STYLE_REF="Introduction" ID="ID_288274844" CREATED="1314206958207" MODIFIED="1314644457003">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -469,8 +756,8 @@
 </node>
 </node>
 <node TEXT="Moving nodes" STYLE_REF="Introduction" FOLDED="true" POSITION="right" ID="ID_272980743" CREATED="1314248580003" MODIFIED="1314248629690" NUMBERED="true">
-<node TEXT="Navigating" STYLE_REF="Introduction" ID="ID_1945042033" CREATED="1314248633083" MODIFIED="1314363901180" NUMBERED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="Navigating" STYLE_REF="Introduction" ID="ID_1945042033" CREATED="1314248633083" MODIFIED="1314645850803" NUMBERED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -495,7 +782,7 @@
 </html></richcontent>
 </node>
 <node TEXT="Selecting" STYLE_REF="Introduction" FOLDED="true" ID="ID_988945254" CREATED="1314248646507" MODIFIED="1314304307140" NUMBERED="true">
-<node TEXT="Automatic selection" STYLE_REF="Introduction" ID="ID_1387234491" CREATED="1314249066966" MODIFIED="1314524849217" HGAP="65" VSHIFT="9">
+<node TEXT="Automatic selection" STYLE_REF="Introduction" ID="ID_1387234491" CREATED="1314249066966" MODIFIED="1314732758410" HGAP="65" VSHIFT="29">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -517,10 +804,13 @@
     <p>
       select it.
     </p>
+    <p>
+      
+    </p>
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Keeping selection" STYLE_REF="Introduction" ID="ID_970057223" CREATED="1314248859369" MODIFIED="1314365885619" HGAP="92" VSHIFT="9">
+<node TEXT="Keeping selection" STYLE_REF="Introduction" ID="ID_970057223" CREATED="1314248859369" MODIFIED="1314732750922" HGAP="62" VSHIFT="-1">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -542,10 +832,13 @@
     <p>
       the cursor over other nodes.
     </p>
+    <p>
+      
+    </p>
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Key to the root" STYLE_REF="Introduction" ID="ID_1316263866" CREATED="1314249586526" MODIFIED="1314365902701" HGAP="119">
+<node TEXT="Key to the root" STYLE_REF="Introduction" ID="ID_1316263866" CREATED="1314249586526" MODIFIED="1314732743309" HGAP="59">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -558,12 +851,15 @@
     <p>
       <i>Escape</i>&#160;the selection will jump to the root at once.
     </p>
+    <p>
+      
+    </p>
   </body>
 </html></richcontent>
 </node>
 </node>
 <node TEXT="Moving" STYLE_REF="Introduction" FOLDED="true" ID="ID_1560992291" CREATED="1314248654564" MODIFIED="1314304312007" NUMBERED="true">
-<node TEXT="Moving in space" STYLE_REF="Introduction" ID="ID_293115184" CREATED="1314249849956" MODIFIED="1314524948854">
+<node TEXT="Moving in space" STYLE_REF="Introduction" ID="ID_293115184" CREATED="1314249849956" MODIFIED="1314732687165" HGAP="70" VSHIFT="30">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -571,12 +867,39 @@
   </head>
   <body>
     <p>
-      To displace a node while leaving its connections in tact, find the oval handle which is at the parent side of a node. Move the cursor over,the left side of the node (in this case), until the ovel lights up. Then click the oval and drag wherever you want the node to go. All other nodes may move with it. The child nodes of the node with title&#160; &quot;Selecting&quot;, see above, were moved in this way.
+      To displace a node while leaving its
+    </p>
+    <p>
+      connections in tact, find the oval handle
+    </p>
+    <p>
+      which is at the parent side of a node. Move
+    </p>
+    <p>
+      the cursor over,the left side of the node (in
+    </p>
+    <p>
+      this case), until the ovel lights up. Then
+    </p>
+    <p>
+      click the oval and drag wherever you want
+    </p>
+    <p>
+      the node to go. All other nodes may move
+    </p>
+    <p>
+      with it. The child nodes of the node with title
+    </p>
+    <p>
+      &#160;&quot;Selecting&quot;, see above, were moved in this way.
+    </p>
+    <p>
+      
     </p>
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Moving in the hierarchy" STYLE_REF="Introduction" FOLDED="true" ID="ID_125921821" CREATED="1314250124540" MODIFIED="1314525175288">
+<node TEXT="Moving in the hierarchy" STYLE_REF="Introduction" ID="ID_125921821" CREATED="1314250124540" MODIFIED="1314732672392" HGAP="70" VSHIFT="-10">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -603,6 +926,9 @@
     </p>
     <p>
       that you can also move nodes by sorting.
+    </p>
+    <p>
+      
     </p>
   </body>
 </html></richcontent>
@@ -639,7 +965,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Sorting nodes" STYLE_REF="Introduction" ID="ID_1014457432" CREATED="1314338769195" MODIFIED="1314339078286">
+<node TEXT="Sorting nodes" STYLE_REF="Introduction" ID="ID_1014457432" CREATED="1314338769195" MODIFIED="1314769892550">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -650,11 +976,30 @@
       Using titles you may want to sort nodes alphabetically. If you select a node,
     </p>
     <p>
-      you can sort its children using&#160; <i>Edit &gt; Sort child nodes.</i>
+      you can sort its children using&#160; <i>Node &gt; Sort child nodes.</i>
     </p>
   </body>
 </html></richcontent>
 </node>
+</node>
+<node TEXT="Free scrolling the map" STYLE_REF="Introduction" ID="ID_1577961914" CREATED="1314644535914" MODIFIED="1314732676775" HGAP="70" VSHIFT="-20">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      You can drag the whole map by clicking in
+    </p>
+    <p>
+      the background and drag the map around.
+    </p>
+    <p>
+      
+    </p>
+  </body>
+</html></richcontent>
 </node>
 </node>
 </node>
@@ -672,7 +1017,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Connectors" STYLE_REF="Introduction" FOLDED="true" ID="ID_1073407528" CREATED="1314129123086" MODIFIED="1314304495152">
+<node TEXT="Connectors" STYLE_REF="Introduction" ID="ID_1073407528" CREATED="1314129123086" MODIFIED="1314304495152">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -707,14 +1052,14 @@
     </ul>
   </body>
 </html></richcontent>
-<node TEXT="a" FOLDED="true" ID="ID_1328399304" CREATED="1314130936565" MODIFIED="1314131031024">
+<node TEXT="a" ID="ID_1328399304" CREATED="1314130936565" MODIFIED="1314643339573">
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_581303769" MIDDLE_LABEL="label" STARTINCLINATION="9;-23;" ENDINCLINATION="-28;-89;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<node TEXT="b" FOLDED="true" ID="ID_273400211" CREATED="1314130940427" MODIFIED="1314130942274">
+<node TEXT="b" ID="ID_273400211" CREATED="1314130940427" MODIFIED="1314130942274">
 <node TEXT="c" ID="ID_581303769" CREATED="1314130942275" MODIFIED="1314130945036"/>
 </node>
 </node>
 </node>
-<node TEXT="Summary node group" STYLE_REF="Introduction" FOLDED="true" ID="ID_1700918771" CREATED="1314129783832" MODIFIED="1314525347996">
+<node TEXT="Summary node group" STYLE_REF="Introduction" ID="ID_1700918771" CREATED="1314129783832" MODIFIED="1314525347996">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -746,7 +1091,7 @@
 <hook NAME="SummaryNode"/>
 </node>
 </node>
-<node TEXT="Cloud node group" STYLE_REF="Introduction" FOLDED="true" ID="ID_1150908697" CREATED="1314130460475" MODIFIED="1314525484372">
+<node TEXT="Cloud node group" STYLE_REF="Introduction" ID="ID_1150908697" CREATED="1314130460475" MODIFIED="1314525484372">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -758,15 +1103,43 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="cloud a" FOLDED="true" ID="ID_1742435994" CREATED="1314130827910" MODIFIED="1314208588810">
+<node TEXT="cloud a" FOLDED="true" ID="ID_1742435994" CREATED="1314130827910" MODIFIED="1314643371553" HGAP="30">
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <node TEXT="b" ID="ID_1270291744" CREATED="1314130833239" MODIFIED="1314130836016"/>
 <node TEXT="c" ID="ID_1022872809" CREATED="1314130837348" MODIFIED="1314130840017"/>
 </node>
-<node TEXT="cloud b" FOLDED="true" ID="ID_539843005" CREATED="1314208596772" MODIFIED="1314208687160" VSHIFT="-9">
+<node TEXT="cloud b" FOLDED="true" ID="ID_539843005" CREATED="1314208596772" MODIFIED="1314643375796" HGAP="30" VSHIFT="-9">
 <cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
 <node TEXT="e" ID="ID_249943796" CREATED="1314208605486" MODIFIED="1314208607670"/>
 <node TEXT="f" ID="ID_1428582117" CREATED="1314208608472" MODIFIED="1314208611937"/>
+</node>
+<node ID="ID_649516172" CREATED="1310106596579" MODIFIED="1314647983967" TEXT_SHORTENED="true">
+<icon BUILTIN="../Cloud24"/>
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      icon <i>Add default cloud</i>
+    </p>
+  </body>
+</html></richcontent>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Find this icon button in the toolbar
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
 </node>
 </node>
 </node>
@@ -844,8 +1217,8 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Email link" STYLE_REF="Introduction" ID="ID_869144882" CREATED="1270892460675" MODIFIED="1314526068327" LINK="mailto:%20jokro@freeplane.nl">
-<richcontent TYPE="DETAILS">
+<node TEXT="Email link" STYLE_REF="Introduction" ID="ID_869144882" CREATED="1270892460675" MODIFIED="1314645982405" LINK="mailto:%20jokro@freeplane.nl">
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -868,8 +1241,8 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Remove hyperlink or e-mail" STYLE_REF="Introduction" ID="ID_1464441556" CREATED="1310047903960" MODIFIED="1314526103069">
-<richcontent TYPE="DETAILS">
+<node TEXT="Remove hyperlink or e-mail" STYLE_REF="Introduction" ID="ID_1464441556" CREATED="1310047903960" MODIFIED="1314645986710">
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -889,9 +1262,9 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Hyperlink in attribute" STYLE_REF="Introduction" ID="ID_457929879" CREATED="1312540477537" MODIFIED="1314528415022">
+<node TEXT="Hyperlink in attribute" STYLE_REF="Introduction" ID="ID_457929879" CREATED="1312540477537" MODIFIED="1314645990080">
 <attribute_layout NAME_WIDTH="48" VALUE_WIDTH="101"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -903,8 +1276,8 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="F-keys" STYLE_REF="Introduction" ID="ID_1819697018" CREATED="1314526511158" MODIFIED="1314526637370">
-<richcontent TYPE="DETAILS">
+<node TEXT="F-keys" STYLE_REF="Introduction" ID="ID_1819697018" CREATED="1314526511158" MODIFIED="1314645998051">
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -916,8 +1289,8 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Hyperlink to menu item" STYLE_REF="Introduction" ID="ID_350080162" CREATED="1314359739019" MODIFIED="1314526647978">
-<richcontent TYPE="DETAILS">
+<node TEXT="Hyperlink to menu item" STYLE_REF="Introduction" ID="ID_350080162" CREATED="1314359739019" MODIFIED="1314646001047">
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -944,7 +1317,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Editing a property" STYLE_REF="Introduction" FOLDED="true" ID="ID_1707940964" CREATED="1314163244315" MODIFIED="1314526868406">
+<node TEXT="Editing a property" STYLE_REF="Introduction" ID="ID_1707940964" CREATED="1314163244315" MODIFIED="1314526868406">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -968,21 +1341,21 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="curved" ID="ID_1333040751" CREATED="1314172748460" MODIFIED="1314172914001">
+<node TEXT="curved" ID="ID_1333040751" CREATED="1314172748460" MODIFIED="1314645251629" HGAP="40" VSHIFT="-30">
 <edge STYLE="bezier"/>
 </node>
-<node TEXT="hidden" ID="ID_1968961455" CREATED="1314172761269" MODIFIED="1314172825455">
+<node TEXT="hidden" ID="ID_1968961455" CREATED="1314172761269" MODIFIED="1314645257027" HGAP="50">
 <edge STYLE="hide_edge"/>
 </node>
-<node TEXT="linear" ID="ID_34702829" CREATED="1314172753397" MODIFIED="1314172992305" HGAP="29" VSHIFT="9">
-<edge STYLE="linear"/>
-</node>
-<node TEXT="horizontal" ID="ID_494591913" CREATED="1314172936705" MODIFIED="1314173018981" HGAP="29" VSHIFT="27">
+<node TEXT="horizontal" ID="ID_494591913" CREATED="1314172936705" MODIFIED="1314645317204" HGAP="49" VSHIFT="27">
 <edge STYLE="horizontal"/>
 </node>
+<node TEXT="linear" ID="ID_34702829" CREATED="1314172753397" MODIFIED="1314645313881" HGAP="29" VSHIFT="19">
+<edge STYLE="linear"/>
 </node>
-<node TEXT="Automatic edge color" STYLE_REF="Introduction" ID="ID_1005719714" CREATED="1314164029738" MODIFIED="1314526940149">
-<richcontent TYPE="DETAILS">
+</node>
+<node TEXT="Automatic edge color" STYLE_REF="Introduction" ID="ID_1005719714" CREATED="1314164029738" MODIFIED="1314770618903">
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -994,8 +1367,8 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Automatic node numbering" STYLE_REF="Introduction" ID="ID_1861361284" CREATED="1314283445398" MODIFIED="1314305215202">
-<richcontent TYPE="DETAILS">
+<node TEXT="Automatic node numbering" STYLE_REF="Introduction" ID="ID_1861361284" CREATED="1314283445398" MODIFIED="1314645394798">
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -1007,9 +1380,9 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Other properties" STYLE_REF="Introduction" ID="ID_457725429" CREATED="1314167397870" MODIFIED="1314366764234">
+<node TEXT="Other properties" STYLE_REF="Introduction" ID="ID_457725429" CREATED="1314167397870" MODIFIED="1314645397294">
 <font ITALIC="false"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -1021,8 +1394,8 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Menu Format" STYLE_REF="Introduction" ID="ID_1128382958" CREATED="1314167687616" MODIFIED="1314305091790">
-<richcontent TYPE="DETAILS">
+<node TEXT="Menu Format" STYLE_REF="Introduction" ID="ID_1128382958" CREATED="1314167687616" MODIFIED="1314645399463">
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -1033,9 +1406,48 @@
     </p>
   </body>
 </html></richcontent>
-</node>
-<node TEXT="Tool bar" STYLE_REF="Introduction" ID="ID_1235607524" CREATED="1314167879005" MODIFIED="1314526982955">
+<node TEXT="Bold" ID="ID_25890496" CREATED="1266251692562" MODIFIED="1314644274108" TEXT_SHORTENED="true">
+<icon BUILTIN="../Bold16"/>
+<font NAME="SansSerif" SIZE="12" BOLD="true" ITALIC="false"/>
 <richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      This icon-button in the toolbar affects thee whole node text.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Italic" ID="ID_408787243" CREATED="1266251689531" MODIFIED="1314644325994" TEXT_SHORTENED="true">
+<icon BUILTIN="../Italic16"/>
+<font ITALIC="true"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <ul>
+      <li>
+        This icon-button in the toolbar affects the whole node text
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Tool bar" STYLE_REF="Introduction" ID="ID_1235607524" CREATED="1314167879005" MODIFIED="1314645412816">
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -1065,7 +1477,7 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Images" STYLE_REF="Introduction" FOLDED="true" POSITION="right" ID="ID_475633626" CREATED="1314281837074" MODIFIED="1314354895654" NUMBERED="true">
+<node TEXT="Images" STYLE_REF="Introduction" FOLDED="true" POSITION="right" ID="ID_475633626" CREATED="1314281837074" MODIFIED="1314642233741" NUMBERED="true" VSHIFT="-80">
 <node TEXT="Images in nodes" STYLE_REF="Introduction" ID="ID_575269438" CREATED="1314215157545" MODIFIED="1314528078701">
 <richcontent TYPE="DETAILS">
 <html>
@@ -1093,7 +1505,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Hyperlinks to images" STYLE_REF="Introduction" ID="ID_1955041924" CREATED="1314282007169" MODIFIED="1314366845447">
+<node TEXT="Hyperlinks to images" STYLE_REF="Introduction" ID="ID_1955041924" CREATED="1314282007169" MODIFIED="1314645362319">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -1101,15 +1513,12 @@
   </head>
   <body>
     <p>
-      
-    </p>
-    <p>
       An image in a node takes visual space which is scarce.&#160;&#160;A hyperlink does not have this disadvantage, while you can still view the image if you press the hyperlink. To add a hyperlink, copy the image source and paste it in the node (this is unlike drag and drop !). If you paste on the upper part of the node a hyperlink to the image will be added in the node itself. If you paste at the child side of the node a child node will be created with the hyperlink. This hyperlink appears as a red arrow. After pasting, also the textual path to the image will appear. You can safely erase it or replace it with your own text.
     </p>
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Inline-images" STYLE_REF="Introduction" ID="ID_680497355" CREATED="1314282819174" MODIFIED="1314305842308">
+<node TEXT="In-line images" STYLE_REF="Introduction" ID="ID_680497355" CREATED="1314282819174" MODIFIED="1314646052293">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -1240,12 +1649,12 @@
 </node>
 </node>
 </node>
-<node TEXT="Attributes" STYLE_REF="Introduction" FOLDED="true" POSITION="left" ID="ID_1324773677" CREATED="1314208168037" MODIFIED="1314208191532" NUMBERED="true">
-<node TEXT="What is an attribute ?" STYLE_REF="Introduction" ID="ID_1657366174" CREATED="1314209542018" MODIFIED="1314367070977">
+<node TEXT="Attributes" STYLE_REF="Introduction" FOLDED="true" POSITION="left" ID="ID_1324773677" CREATED="1314208168037" MODIFIED="1314642226113" NUMBERED="true" VSHIFT="20">
+<node TEXT="What is an attribute ?" STYLE_REF="Introduction" ID="ID_1657366174" CREATED="1314209542018" MODIFIED="1314646087892">
 <attribute_layout NAME_WIDTH="34" VALUE_WIDTH="92"/>
 <attribute NAME="Name" VALUE="John"/>
 <attribute NAME="email" VALUE="john@gmail.com"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
@@ -1257,8 +1666,8 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="How to make this example ?" STYLE_REF="Introduction" ID="ID_1441506319" CREATED="1314210058883" MODIFIED="1314528505299">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="How to make this example ?" STYLE_REF="Introduction" ID="ID_1441506319" CREATED="1314210058883" MODIFIED="1314646095489">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
@@ -1312,7 +1721,7 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Date &amp; Time" STYLE_REF="Introduction" FOLDED="true" POSITION="left" ID="ID_1959496513" CREATED="1303932101749" MODIFIED="1314367176246" TEXT_SHORTENED="true" NUMBERED="true">
+<node TEXT="Date &amp; time" STYLE_REF="Introduction" FOLDED="true" POSITION="left" ID="ID_1959496513" CREATED="1303932101749" MODIFIED="1314646121042" TEXT_SHORTENED="true" NUMBERED="true">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -1476,19 +1885,41 @@
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
-<node TEXT="Styles" STYLE_REF="Introduction" FOLDED="true" POSITION="left" ID="ID_1778719162" CREATED="1291143603918" MODIFIED="1314529253063" TEXT_SHORTENED="true" NUMBERED="true">
+<node TEXT="Styles &amp; format" STYLE_REF="Introduction" FOLDED="true" POSITION="left" ID="ID_1778719162" CREATED="1291143603918" MODIFIED="1314769564435" TEXT_SHORTENED="true" NUMBERED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
 </hook>
-<node TEXT="Find &amp; apply a style" STYLE_REF="Introduction" ID="ID_512501370" CREATED="1291199304490" MODIFIED="1314367587697">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="What is a style" STYLE_REF="Introduction" ID="ID_1838680824" CREATED="1314646406529" MODIFIED="1314646588481">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      <font color="#000000" face="SansSerif, sans-serif">Freeplane comes with a number of system styles which you may extend with your own styles. The list of styles is displayed if in properties group <i>Node Style</i>&#160;in the <i>Properties panel </i>you click <i>Style</i>. You can apply a style to the selected node by clicking a style in the list. For the node you are reading now, style <i>Introduction</i>&#160;was applied. </font>
+      Styles (classes) are a means to quickly&#160;&#160;apply or change a group of visual properties or content&#160;&#160;for all related nodes at once. Styles can also be used to find, select or filter nodes which are associated with a particular type of content or structure.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Find &amp; apply a style" STYLE_REF="Introduction" ID="ID_512501370" CREATED="1291199304490" MODIFIED="1314646369987">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Freeplane comes with a number of system styles which you may extend with your own styles. The list of styles is displayed if in properties group <i>Node Style</i>&#160;in the <i>Properties panel </i>you click <i>Style</i>. You can apply a style to the selected node by clicking a style in the list. For the node you are reading now, style <i>Introduction</i>&#160;was applied. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><b>Note</b> </font>
+    </p>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Styles are also available in the field next to the cloud-icon in the toolbar. Click this field and a list drops down where you can select a style.</font>
     </p>
   </body>
 </html></richcontent>
@@ -1538,7 +1969,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Apply multiple styles" STYLE_REF="Introduction" ID="ID_270284358" CREATED="1314342119553" MODIFIED="1314529393276">
+<node TEXT="Apply multiple styles" STYLE_REF="Introduction" ID="ID_270284358" CREATED="1314342119553" MODIFIED="1314770854183">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -1587,7 +2018,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Apply styles conditionally" STYLE_REF="Introduction" ID="ID_1632551821" CREATED="1314343996581" MODIFIED="1314529658664">
+<node TEXT="Conditional styles" STYLE_REF="Introduction" ID="ID_1632551821" CREATED="1314343996581" MODIFIED="1314908378374">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -1601,7 +2032,7 @@
       
     </p>
     <p>
-      <b>Example</b>
+      <b>Example: Revisions</b>
     </p>
     <p>
       Conditional styles are used in this map to signal revisions. To achieve this first a style <i>Revision </i>was defined&#160;with a special revision-icon (see the styles list). Then in the<i>&#160;Properties panel</i>&#160; I clicked below<i>&#160;Conditional map styles </i>to open its dialog<i>.</i>&#160;I pressed <i>New</i>&#160;to add a filter. I clicked the new rule and defined a filter (Modified after, date). I selected this filter rule and pressed <i>OK</i>.&#160;&#160;As a result you can see which nodes I modified after the date set, they are displaying the i-icon. You can see this happen if you check the rule I defined for this in the conditional styles list. (N.B. In the internet version of this tutorial you cannot do this).
@@ -1616,9 +2047,10 @@
       Read more about conditional node styles and conditional map styles in the Freeplane documentation.
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="Hierarchical level styles" STYLE_REF="Introduction" ID="ID_521918713" CREATED="1314344484933" MODIFIED="1314529746555">
+<node TEXT="Hierarchical level styles" STYLE_REF="Introduction" ID="ID_521918713" CREATED="1314344484933" MODIFIED="1314908386736">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -1632,7 +2064,7 @@
       
     </p>
     <p>
-      To save you the work Freeplane has predefined this case for you. In <i>Properties panel</i>&#160;you can check&#160; <b>Automatic Layout </b>in the properties group Node Style. If checked each&#160;node level will get a different appearence automatically.
+      To save you the work Freeplane has predefined this case for you. In <i>Properties panel</i>&#160;you can check&#160; <b>Apply level styles </b>in the properties group Node Style. If checked each&#160;node level will get a different appearance automatically.
     </p>
     <p>
       
@@ -1661,7 +2093,8 @@
       You may find more information in the Freeplane documentation.
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="Template-like information" STYLE_REF="Introduction" ID="ID_1403178597" CREATED="1311948532074" MODIFIED="1314529928638">
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -1693,9 +2126,9 @@
 </hook>
 </node>
 </node>
-<node TEXT="Publish &amp; Share" STYLE_REF="Introduction" FOLDED="true" POSITION="left" ID="ID_1613405030" CREATED="1314258163054" MODIFIED="1314353558989" NUMBERED="true">
-<node TEXT="Printing" STYLE_REF="Introduction" ID="ID_1344283469" CREATED="1314352873779" MODIFIED="1314368259715">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Publish &amp; share" STYLE_REF="Introduction" FOLDED="true" POSITION="left" ID="ID_1613405030" CREATED="1314258163054" MODIFIED="1314646661536" NUMBERED="true">
+<node TEXT="Printing" STYLE_REF="Introduction" ID="ID_1344283469" CREATED="1314352873779" MODIFIED="1314646671723">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
@@ -1710,8 +2143,8 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Sharing" STYLE_REF="Introduction" ID="ID_566359973" CREATED="1314352830240" MODIFIED="1314368293645">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Sharing" STYLE_REF="Introduction" ID="ID_566359973" CREATED="1314352830240" MODIFIED="1314646674703">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
@@ -1723,8 +2156,8 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Publish on the internet" STYLE_REF="Introduction" ID="ID_1417348323" CREATED="1314352836706" MODIFIED="1314530143591">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Publish on the internet" STYLE_REF="Introduction" ID="ID_1417348323" CREATED="1314352836706" MODIFIED="1314646683563">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
@@ -1762,9 +2195,9 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Filtering" STYLE_REF="Introduction" FOLDED="true" POSITION="left" ID="ID_828862571" CREATED="1314109608813" MODIFIED="1314362592985" NUMBERED="true">
-<node TEXT="Why filtering ?" STYLE_REF="Introduction" ID="ID_887149959" CREATED="1314362530273" MODIFIED="1314530291588">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Filter &amp; find" STYLE_REF="Introduction" FOLDED="true" POSITION="left" ID="ID_828862571" CREATED="1314109608813" MODIFIED="1314769463924" NUMBERED="true">
+<node TEXT="Why filtering ?" STYLE_REF="Introduction" ID="ID_887149959" CREATED="1314362530273" MODIFIED="1314646709179">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
@@ -1776,28 +2209,28 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Basics of filtering" STYLE_REF="Introduction" ID="ID_1598853306" CREATED="1314362902185" MODIFIED="1314368541108">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Basics of filtering" STYLE_REF="Introduction" ID="ID_1598853306" CREATED="1314362902185" MODIFIED="1314647070631">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      <font color="#000000" face="SansSerif, sans-serif">Before you can filter you have to define a filter rule with the Filter toolbar. This toolbar is the horizontal row of icons and entry fields, just above the work area of the map. The filter rule consists of:</font>
+      <font face="SansSerif, sans-serif" color="#000000">Before you can filter you have to define a filter rule with the Filter toolbar. This toolbar is the horizontal row of icons and entry fields, just above the work area of the map. The filter rule consists of:</font>
     </p>
     <ul>
       <li>
         <i>Node <b>component</b></i>&#160;(Node Text, Details, Icon, etc.)
       </li>
       <li>
-        <i><b>Type of rule: </b></i>&#160;component <i>exists, contains, =</i>, &gt; etc.
+        <b><i>Type of rule: </i></b>&#160;component <i>exists, contains, =</i>, &gt; etc.
       </li>
       <li>
-        <i><b>Value</b></i>&#160;of component
+        <b><i>Value</i></b>&#160;of component
       </li>
       <li>
-        If value is text, relevancy of <i><b>case</b></i>
+        If value is text, relevancy of <b><i>case</i></b>
       </li>
     </ul>
     <p>
@@ -1815,8 +2248,103 @@
     <p>
       The Freeplane documentation contains a full description and examples.
     </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <p>
+      You can use a filter rule also to find nodes one by one.
+    </p>
   </body>
 </html></richcontent>
+<node TEXT="Quick filter" FOLDED="true" ID="ID_1189166757" CREATED="1310134532663" MODIFIED="1314646958389" TEXT_SHORTENED="true">
+<icon BUILTIN="../apply_quick_filter"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Look in the toolbar for this icon.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<node TEXT="Find last modified nodes" ID="ID_884023176" CREATED="1311098601253" MODIFIED="1314077884276" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2,9"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To filter for all nodes modified after a certain date, ser a filterrrule (Date filter<i>, Modified after, date, xxx)</i>&#160;and <i>Quick filter</i>&#160;for all modified nodes.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Find and replace all nodes...</i>&#160;for an alternative way.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="No filtering" ID="ID_983064948" CREATED="1310134532663" MODIFIED="1314646980463" TEXT_SHORTENED="true">
+<icon BUILTIN="../remove_filtering"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Find next" ID="ID_507981913" CREATED="1310134532663" MODIFIED="1314362826354" TEXT_SHORTENED="true">
+<icon BUILTIN="../find_next"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Find text or other criteria in the selected node and all its descendant nodes. And if not found, search further in other branches. This is called depth first search.</font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b><font color="#000000" face="SansSerif, sans-serif">Note</font></b>
+    </p>
+    <ul>
+      <li>
+        The found node is selected.
+      </li>
+      <li>
+        If the found node is folded, it is unfolded.
+      </li>
+      <li>
+        If the found node is outside the screen, the mind map is shirgted to bring it in the visible are of the screen.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
 </node>
 <node TEXT="Filter methods" STYLE_REF="Introduction" FOLDED="true" ID="ID_1254354349" CREATED="1266240693156" MODIFIED="1314530392365" TEXT_SHORTENED="true" VSHIFT="18">
 <richcontent TYPE="DETAILS">
@@ -2460,16 +2988,16 @@
 </node>
 </node>
 </node>
-<node TEXT="Protecting" STYLE_REF="Introduction" FOLDED="true" POSITION="left" ID="ID_1878167877" CREATED="1314339453691" MODIFIED="1314362458583" NUMBERED="true">
-<node TEXT="Protecting child nodes" STYLE_REF="Introduction" ID="ID_1225524383" CREATED="1314362016509" MODIFIED="1314530569331">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Password" STYLE_REF="Introduction" FOLDED="true" POSITION="left" ID="ID_1232153769" CREATED="1314339453691" MODIFIED="1314908554234" NUMBERED="true">
+<node TEXT="Protecting child nodes with a password" STYLE_REF="Introduction" ID="ID_1433157907" CREATED="1314362016509" MODIFIED="1314769084305">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      It is possible to protect your whole map, or a part of the map, with a password. If you define a password for a node, then all descendants of the node will keep hidden until the right password has been entered. To define a password, select menu <i>Node features &gt; Protection &gt; (Un)set protection.</i>
+      It is possible to protect your whole map, or a part of the map, with a password. If you define a password for a node, then all descendants of the node will keep hidden until the right password has been entered. Within the same map you can apply different passwords for different nodes and create layers of protection. To define a password, select menu <i>Node features &gt; Protection &gt; (Un)set protection.</i>
     </p>
     <p>
       
@@ -2478,35 +3006,35 @@
       <b>Note</b>
     </p>
     <p>
-      You can read more about protection in the Freeplane documentation.
+      Password protection is implemented with DES type encryption. You can read more about protection (encryption) in the Freeplane documentation.
     </p>
   </body>
 </html></richcontent>
 </node>
-<node TEXT="New encrypted map" STYLE_REF="Introduction" ID="ID_843632552" CREATED="1314362258060" MODIFIED="1314530624197">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="New protected map" STYLE_REF="Introduction" ID="ID_1064538299" CREATED="1314362258060" MODIFIED="1314769099515">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      If you define a new map, you can directly encrypt it. To do this in one action, choose <i>File &gt; New protected map</i>
+      If you define a new map, you can directly protect is with a password. To do this in one action, choose <i>File &gt; New protected map</i>
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Tuning" STYLE_REF="Introduction" FOLDED="true" POSITION="left" ID="ID_1746471823" CREATED="1314215326284" MODIFIED="1314360619746" NUMBERED="true">
-<node TEXT="Preferences" STYLE_REF="Introduction" ID="ID_1923037593" CREATED="1314360573319" MODIFIED="1314368627672">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Fine tune" STYLE_REF="Introduction" FOLDED="true" POSITION="left" ID="ID_1746471823" CREATED="1314215326284" MODIFIED="1314908534000" NUMBERED="true">
+<node TEXT="Preferences" STYLE_REF="Introduction" ID="ID_1923037593" CREATED="1314360573319" MODIFIED="1314730145960">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Freeplane has a lot of tuning options. You can change the behaviour selecting a node and much more. The Freeplane documentation describes them all.
+      Freeplane has a lot of tuning options. You can change setting for the environment, appearance, behaviour, HTML and plugins. Below are some highlights. The Freeplane documentation describes them all.
     </p>
     <p>
       
@@ -2514,8 +3042,172 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Indexing .mm in Windows7" STYLE_REF="Introduction" ID="ID_952466464" CREATED="1313349075257" MODIFIED="1314368889612">
+<node TEXT="Example preferences" STYLE_REF="Introduction" ID="ID_889570489" CREATED="1314730257257" MODIFIED="1314730273700">
+<node TEXT="Environment preferences" STYLE_REF="Introduction" ID="ID_908072469" CREATED="1314708954177" MODIFIED="1314730405349">
 <richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The environment preferences let you set the following:
+    </p>
+    <ul>
+      <li>
+        &#160;one instance or more instances of Freeplane can be running at the same time;
+      </li>
+      <li>
+        protection (experimental file locking) is allowed [ it is no longer experimental !];
+      </li>
+      <li>
+        options for opening and automatic saving of files;
+      </li>
+      <li>
+        if the folding state must be kept when saving a file, to open it with the same folding;
+      </li>
+      <li>
+        the deault character set;
+      </li>
+      <li>
+        if hyperlinks must take relative or absolute addresses
+      </li>
+      <li>
+        and other
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Appearance preferences" STYLE_REF="Introduction" ID="ID_1541392544" CREATED="1314709723082" MODIFIED="1314730408875">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The preferences for appearances let you set:
+    </p>
+    <ul>
+      <li>
+        the standard properties used
+      </li>
+      <li>
+        height and width of nodes, tool tips etc.
+      </li>
+      <li>
+        icons showing or not showing
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Keystrokes preferences" STYLE_REF="Introduction" ID="ID_748518266" CREATED="1314720398255" MODIFIED="1314730412041">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The keystrokes preferences let you set hot keys used for predefined icons.
+    </p>
+    <p>
+      
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Behaviour preferences" STYLE_REF="Introduction" ID="ID_1578508847" CREATED="1314720581515" MODIFIED="1314730414787">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The preferences for Behaviour let you set a.o.:
+    </p>
+    <ul>
+      <li>
+        if automatic selection should be used, delay time
+      </li>
+      <li>
+        the characteristics of hovering (tool tip)
+      </li>
+      <li>
+        if the in-line editor should be displayed for all new nodes
+      </li>
+      <li>
+        if edit needs double click
+      </li>
+      <li>
+        if a key press overwrites text, adds a child, adds sibling or has no effect
+      </li>
+      <li>
+        the position of new branches (first, last)
+      </li>
+      <li>
+        the enabling/disabeling of drag and drop
+      </li>
+      <li>
+        the speed of mouse wheel
+      </li>
+      <li>
+        the size of the grid used to position nodes
+      </li>
+      <li>
+        the kind of data parsing and formatting used
+      </li>
+      <li>
+        if confirmation is used with node deletion
+      </li>
+      <li>
+        if text should be treated as numbers in comparisons
+      </li>
+      <li>
+        spell checker options like case sensitivity
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="HTML preferences" STYLE_REF="Introduction" ID="ID_1185446743" CREATED="1314729741193" MODIFIED="1314730423554">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Browswer settings and settings for HTML export/import.
+    </p>
+    <p>
+      
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Plugins" STYLE_REF="Introduction" ID="ID_1546138946" CREATED="1314729857046" MODIFIED="1314730426737">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Settings for using formula's and scripts.
+    </p>
+    <p>
+      
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Indexing .mm in Windows7" STYLE_REF="Introduction" ID="ID_952466464" CREATED="1313349075257" MODIFIED="1314730373821" VSHIFT="20">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
@@ -2551,31 +3243,31 @@
       
     </p>
     <p>
-      Note
+      <b>Note</b>
     </p>
     <ul>
       <li>
-        Standardly only node properties are indexed, not content. The above procedure also adds the content to the filtering mechanism
+        In the standard mode only node properties are indexed, not content. The above procedure also adds the content to the filtering mechanism
       </li>
     </ul>
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Spell check dictionaries" STYLE_REF="Introduction" ID="ID_141336344" CREATED="1271096394315" MODIFIED="1314368901983" LINK="http://sourceforge.net/projects/freeplane/files/spell_check_dictionaries">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Spell check dictionaries" STYLE_REF="Introduction" ID="ID_141336344" CREATED="1271096394315" MODIFIED="1314709076592" LINK="http://sourceforge.net/projects/freeplane/files/spell_check_dictionaries">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Spell check is preinstalled for English. For other languages, click the hyperlink.
+      Spell check is pre-installed for English. For other languages, click the hyperlink.
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Examples" STYLE_REF="Introduction" FOLDED="true" POSITION="left" ID="ID_722085722" CREATED="1314363768463" MODIFIED="1314363816316" NUMBERED="true">
+<node TEXT="Examples" STYLE_REF="Introduction" FOLDED="true" POSITION="left" ID="ID_722085722" CREATED="1314363768463" MODIFIED="1314642241417" NUMBERED="true" VSHIFT="-10">
 <node TEXT="Click arrow to go to the Wiki" ID="ID_163805859" CREATED="1314422714136" MODIFIED="1314422785574" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#What_is_Mind_Mapping"/>
 </node>
 </node>

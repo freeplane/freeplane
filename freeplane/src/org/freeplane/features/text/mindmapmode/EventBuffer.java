@@ -37,7 +37,7 @@ public class EventBuffer implements KeyEventDispatcher, FocusListener {
 	ArrayList<KeyEvent> events = new ArrayList<KeyEvent>(100);
 	private Component textComponent;
 	boolean isActive = false;
-	private MouseEvent mouseEvent;
+	private InputEvent firstEvent;
 	
 	public boolean isActive() {
     	return isActive;
@@ -100,22 +100,31 @@ public class EventBuffer implements KeyEventDispatcher, FocusListener {
     		textComponent.removeFocusListener(this);
 		textComponent = null;
 		events.clear();
-		mouseEvent = null;
+		firstEvent = null;
     }
 	public void activate(InputEvent e) {
 	    activate();
 	    if(e instanceof KeyEvent)
 	    	dispatchKeyEvent((KeyEvent) e);
 	    else if(e instanceof MouseEvent)
-	    	mouseEvent = (MouseEvent)e;
+	        setFirstEvent(e);
+    }
+	public void setFirstEvent(InputEvent e) {
+	    firstEvent = e;
     }
 	
 	public KeyEvent getFirstEvent(){
+		if(firstEvent instanceof KeyEvent)
+			return (KeyEvent) firstEvent;
 		if(events.size() == 0)
 			return null;
 		return events.get(0);
 	}
+	
 	public MouseEvent getMouseEvent() {
-    	return mouseEvent;
+		if(firstEvent instanceof MouseEvent)
+			return (MouseEvent) firstEvent;
+		else
+			return null;
     }
 }

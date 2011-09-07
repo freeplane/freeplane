@@ -852,4 +852,7 @@ public class MAttributeController extends AttributeController {
             addAttribute(target, new Attribute(attribute.getName(), attribute.getValue()));
         }
     }
+	public boolean canEdit() {
+	    return true;
+    }
 }

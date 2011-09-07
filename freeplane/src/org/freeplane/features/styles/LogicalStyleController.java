@@ -96,7 +96,8 @@ public class LogicalStyleController implements IExtension {
 				if(!ResourceController.getResourceController().getBooleanProperty("show_styles_in_tooltip"))
 					return null;
 				final Collection<IStyle> styles = getStyles(node);
-				styles.remove(styles.iterator().next());
+				if(styles.size() > 0)
+					styles.remove(styles.iterator().next());
 				final String label = TextUtils.getText("node_styles");
 				return HtmlUtils.plainToHTML(label + ": " + getStyleNames(styles, ", "));
 			}

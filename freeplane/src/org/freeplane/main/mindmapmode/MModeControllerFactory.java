@@ -292,7 +292,7 @@ public class MModeControllerFactory {
 		resisableTabs.add(tabs);
 		resisableTabs.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "styleScrollPaneVisible");
 		modeController.getUserInputListenerFactory().addToolBar("/format", ViewController.RIGHT, resisableTabs);
-		final FButtonBar fButtonToolBar = new FButtonBar();
+		final FButtonBar fButtonToolBar = new FButtonBar(controller.getViewController().getRootPaneContainer().getRootPane());
 		fButtonToolBar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "fbarVisible");
 		fButtonToolBar.setVisible(ResourceController.getResourceController().getBooleanProperty("fbarVisible"));
 		userInputListenerFactory.addToolBar("/fbuttons", ViewController.TOP, fButtonToolBar);
