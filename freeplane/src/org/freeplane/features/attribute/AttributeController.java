@@ -218,4 +218,8 @@ public class AttributeController implements IExtension {
 			}
 		});
 	}
+
+	public boolean canEdit() {
+	    return false;
+    }
 }

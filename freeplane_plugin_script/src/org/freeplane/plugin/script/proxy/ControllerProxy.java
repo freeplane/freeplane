@@ -68,9 +68,7 @@ class ControllerProxy implements Proxy.Controller {
 	public List<Node> getSelecteds() {
 		if (scriptContext != null)
 			scriptContext.accessAll();
-		final Collection<Node> collection = ProxyUtils
-		    .createNodeCollection(Controller.getCurrentController().getSelection().getSelection(), scriptContext);
-		return ProxyUtils.createList(collection);
+		return ProxyUtils.createNodeList(Controller.getCurrentController().getSelection().getOrderedSelection(), scriptContext);
 	}
 
 	public List<Node> getSortedSelection(final boolean differentSubtrees) {

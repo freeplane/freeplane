@@ -49,7 +49,7 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 	private static final WorkspaceController workspaceController = new WorkspaceController();
 	private static final WorkspaceConfiguration configuration  = new WorkspaceConfiguration();
 	
-	private final PopupMenus popups;
+	private PopupMenus popups;
 	private final FilesystemReader fsReader;	
 	private final Vector<IWorkspaceListener> workspaceListener = new Vector<IWorkspaceListener>();
 		
@@ -74,11 +74,11 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 	 **********************************************************************************/
 
 	protected WorkspaceController() {
-		LogUtils.info("Initializing WorkspaceEnvironment");
-		initTree();		
+		LogUtils.info("Initializing WorkspaceEnvironment");				
 		getPreferences();
+		initTree();
 		
-		this.popups = new PopupMenus();
+		//this.popups = new PopupMenus();
 		
 		this.fsReader = new FilesystemReader(getFileTypeManager());
 	}	
@@ -146,6 +146,9 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 	}
 
 	public PopupMenus getPopups() {
+		if (popups == null) {
+			popups = new PopupMenus();
+		}
 		return popups;
 	}
 
@@ -165,7 +168,7 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 		this.workspaceListener.removeAllElements();
 	}
 
-	public void reloadWorkspace() {
+	public void reloadWorkspace() {		
 		initTree();
 		initializeConfiguration();
 		reloadView();
@@ -201,7 +204,8 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 		return expansionStateHandler;
 	}
 
-	private void initTree() {
+	private void initTree() {		
+		getPopups().initialize();
 		this.tree = new IndexedTree(null);
 		this.tree.addElement(this.tree, new WorkspaceRoot(), "root", IndexedTree.AS_CHILD);
 	}

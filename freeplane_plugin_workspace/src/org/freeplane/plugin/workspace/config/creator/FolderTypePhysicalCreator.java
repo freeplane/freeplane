@@ -23,7 +23,8 @@ public class FolderTypePhysicalCreator extends AWorkspaceNodeCreator {
 
 		String type = data.getAttribute("type", FolderNode.FOLDER_TYPE_PHYSICAL);
 		PhysicalFolderNode node = new PhysicalFolderNode(type);
-
+		//node.setMandatoryAttributes(data);
+		
 		String path = data.getAttribute("path", null);
 		if (path == null) {
 			return null;

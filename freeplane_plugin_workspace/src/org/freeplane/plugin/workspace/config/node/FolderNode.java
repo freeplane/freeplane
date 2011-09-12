@@ -32,7 +32,13 @@ public class FolderNode extends AWorkspaceNode {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	
+	
 	public final String getTagName() {
 		return "folder";
+	}
+
+	@Override
+	public void initializePopup() {
+		
 	}
 }

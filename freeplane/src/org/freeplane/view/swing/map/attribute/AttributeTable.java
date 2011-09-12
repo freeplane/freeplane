@@ -396,11 +396,10 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			dce.stopCellEditing();
 		}
 		if(col == 1){
-			final KeyEvent kev;
 			final MTextController textController = (MTextController) TextController.getController();
 			if(e instanceof KeyEvent){
-				kev = (KeyEvent) e;
-				textController.getEventQueue().activate(kev);
+				final KeyEvent kev = (KeyEvent) e;
+				textController.getEventQueue().setFirstEvent(kev);
 			}
 			final IAttributeTableModel model = (IAttributeTableModel) getModel();
 			final String text = getValueAt(row, col).toString();

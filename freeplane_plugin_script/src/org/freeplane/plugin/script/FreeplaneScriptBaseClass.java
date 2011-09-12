@@ -6,10 +6,12 @@ import groovy.lang.MissingMethodException;
 import groovy.lang.Script;
 
 import java.util.Map;
+import java.util.Properties;
 import java.util.regex.Pattern;
 
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.InvokerHelper;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -20,6 +22,48 @@ import org.freeplane.plugin.script.proxy.Proxy.NodeRO;
 /** All methods of this class are available as "global" methods in every script.
  * Only documented methods are meant to be used in scripts. */
 public abstract class FreeplaneScriptBaseClass extends Script {
+	/**
+	 * Accessor for Freeplane's configuration: In scripts available
+	 * as "global variable" <code>config</code>.
+	 */
+	public static class ConfigProperties {
+		public boolean getBooleanProperty(final String name) {
+			return ResourceController.getResourceController().getBooleanProperty(name);
+		}
+
+		public double getDoubleProperty(final String name, final double defaultValue) {
+			return ResourceController.getResourceController().getDoubleProperty(name, defaultValue);
+		}
+
+		public int getIntProperty(final String name) {
+			return ResourceController.getResourceController().getIntProperty(name);
+		}
+
+		public int getIntProperty(final String name, final int defaultValue) {
+			return ResourceController.getResourceController().getIntProperty(name, defaultValue);
+		}
+
+		public long getLongProperty(final String name, final int defaultValue) {
+			return ResourceController.getResourceController().getLongProperty(name, defaultValue);
+		}
+
+		public String getProperty(final String name) {
+			return ResourceController.getResourceController().getProperty(name);
+		}
+
+		public String getProperty(final String name, final String defaultValue) {
+			return ResourceController.getResourceController().getProperty(name, defaultValue);
+		}
+
+		public Properties getProperties() {
+			return ResourceController.getResourceController().getProperties();
+		}
+
+		public String getFreeplaneUserDirectory() {
+			return ResourceController.getResourceController().getFreeplaneUserDirectory();
+		}
+	}
+
 	private final Pattern nodeIdPattern = Pattern.compile("ID_\\d+");
 	private final MetaClass nodeMetaClass;
 	private Map<Object, Object> boundVariables;
@@ -52,6 +96,7 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 		binding.setProperty("ui", new UITools());
 		binding.setProperty("htmlUtils", HtmlUtils.getInstance());
 		binding.setProperty("textUtils", new TextUtils());
+		binding.setProperty("config", new ConfigProperties());
 	    return binding;
     }
 
@@ -130,24 +175,6 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 	/** returns valueIfNull if value is null and value otherwise. */
 	public Object ifNull(Object value, Object valueIfNull) {
 		return value == null ? valueIfNull : value;
-	}
-
-	/** rounds a number to integral type. */
-	public Long round(final Double d) {
-		if (d == null)
-			return null;
-		return Math.round(d);
-	}
-	
-	/** round to the given number of decimal places: <code>round(0.1234, 2) -> 0.12</code> */
-	public Double round(final Double d, final int precision) {
-		if (d == null)
-			return d;
-		double factor = 1;
-		for (int i = 0; i < precision; i++) {
-			factor *= 10.;
-		}
-		return Math.round(d * factor) / factor;
 	}
 
 	/** formats according to the internal standard, that is the conversion will be reversible

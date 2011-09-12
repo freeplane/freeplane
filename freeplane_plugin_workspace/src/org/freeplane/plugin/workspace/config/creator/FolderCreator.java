@@ -50,7 +50,9 @@ public class FolderCreator extends AWorkspaceNodeCreator {
 		}
 		
 		AWorkspaceNodeCreator creator = creatorTable.get(type);
-		return creator.getNode(data);
+		AWorkspaceNode node = creator.getNode(data);
+		//node.setMandatoryAttributes(data);
+		return node;
 	}
 	
 	

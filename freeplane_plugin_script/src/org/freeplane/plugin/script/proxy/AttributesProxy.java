@@ -130,6 +130,14 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		return nodeAttributeTableModel.getValue(index);
 	}
 
+    public String getKey(int index) {
+		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
+		if (nodeAttributeTableModel == null) {
+			throw new IndexOutOfBoundsException("getKey:" + index);
+		}
+		return nodeAttributeTableModel.getAttribute(index).getName();
+    }
+
 	public void set(final int index, final Object value) {
 		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
 		if (nodeAttributeTableModel == null) {

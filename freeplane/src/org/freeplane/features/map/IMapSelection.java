@@ -21,6 +21,7 @@ package org.freeplane.features.map;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -32,7 +33,9 @@ public interface IMapSelection {
 
 	public NodeModel getSelected();
 
-	public Collection<NodeModel> getSelection();
+	public Set<NodeModel> getSelection();
+
+	public List<NodeModel> getOrderedSelection();
 
 	public List<NodeModel> getSortedSelection(boolean differentSubtrees);
 

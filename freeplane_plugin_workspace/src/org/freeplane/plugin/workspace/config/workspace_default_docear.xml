@@ -9,7 +9,7 @@
 
     </folder>
     
-    <folder type="physical" path="property:/docear_projects_path" />
+    <folder type="physical" path="property:/docear_projects_path"  system="true"/>
     
     <folder type="virtual" name="Miscellaneous" >
         <link type="file" path="workspace:/mindmaps/new_mindmap.mm" />

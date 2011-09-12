@@ -2,7 +2,6 @@ package org.freeplane.plugin.script.proxy;
 
 import groovy.lang.Closure;
 
-import java.util.AbstractCollection;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,35 +34,6 @@ public class ProxyUtils {
 			public int size() {
 				return nodeModels.size();
 			}
-		};
-	}
-	static Collection<Node> createNodeCollection(final Collection<NodeModel> list, final ScriptContext scriptContext) {
-		return new AbstractCollection<Node>() {
-			final private Collection<NodeModel> nodeModels = list;
-
-			@Override
-			public int size() {
-				return nodeModels.size();
-			}
-
-			@Override
-            public Iterator<Node> iterator() {
-	            return new Iterator<Proxy.Node>() {
-					final private Iterator<NodeModel> i = nodeModels.iterator();
-
-					public boolean hasNext() {
-	                    return i.hasNext();
-                    }
-
-					public Node next() {
-	                    return i.hasNext() ? new NodeProxy(i.next(), scriptContext) : null;
-                    }
-
-					public void remove() {
-	                    i.remove();
-                    }
-				};
-            }
 		};
 	}
 

@@ -135,6 +135,7 @@ public class LocationDialog extends JDialog {
 		setLiteratureLocation(literatureLocation.getText());
 		setBibtexLocation(bibtexLocation.getText());
 		setProjectsLocation(projectsLocation.getText());
+		WorkspaceController.getController().refreshWorkspace();
 		//TODO: DOCEAR: create Docear-Workspace
 		
 		this.dispose();

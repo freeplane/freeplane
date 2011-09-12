@@ -88,7 +88,7 @@ class ExtendedAttributeTableModelDecorator extends AttributeTableModelDecoratorA
 	@Override
 	public boolean isCellEditable(final int row, final int col) {
 		if (row != newRow) {
-			return getAttributeController() instanceof MAttributeController;
+			return getAttributeController().canEdit();
 		}
 		return col == 0;
 	}

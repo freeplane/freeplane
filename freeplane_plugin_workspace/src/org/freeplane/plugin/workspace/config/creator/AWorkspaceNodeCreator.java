@@ -20,12 +20,15 @@ public abstract class AWorkspaceNodeCreator implements IElementDOMHandler {
 			return null;
 		}		
 		
-		AWorkspaceNode node = getNode(attributes);
+		AWorkspaceNode node = getNode(attributes);		
 		
 		if (node == null) { 
 			return null;
 		}
 		String id = node.getId();
+		node.setMandatoryAttributes(attributes);
+		node.initializePopup();
+		System.out.println("create element: "+node.isSystem());
 
 		final Path path = new Path(parent == null ? null : parent.toString());
 		path.setName(id);
@@ -62,4 +65,5 @@ public abstract class AWorkspaceNodeCreator implements IElementDOMHandler {
 			return path;
 		}
 	};
+	
 }
