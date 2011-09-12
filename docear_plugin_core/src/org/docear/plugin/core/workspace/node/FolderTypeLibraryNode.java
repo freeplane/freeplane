@@ -83,11 +83,7 @@ public class FolderTypeLibraryNode extends FolderNode implements IDocearEventLis
 	 * {@inheritDoc}
 	 */
 	public void handleEvent(WorkspaceNodeEvent event) {
-		if(event.getType() == WorkspaceNodeEvent.WSNODE_OPEN_DOCUMENT) {
-			URI uri = getLibraryPath();
-			LogUtils.info(uri.toString());		
-		}
-		
+		//TODO: DOCEAR do nothing atm 
 	}
 	public List<URI> getMindmaps() {
 		return mindmapIndex;
