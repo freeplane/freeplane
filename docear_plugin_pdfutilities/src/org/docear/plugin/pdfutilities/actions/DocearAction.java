@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.AbstractButton;
+
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.IndexedTree.Node;
@@ -29,6 +31,19 @@ public abstract class DocearAction extends AFreeplaneAction {
 		for(Component view : views){
 			view.setVisible(visible);
 		}
+	}
+	
+	public void setSelected(boolean selected){
+		for(Component view : views){
+			if(view instanceof AbstractButton){
+				((AbstractButton)view).setSelected(selected);
+			}
+		}
+	}
+	
+	public void initView(MenuBuilder builder){
+		this.getViews().clear();
+		this.getViews().addAll(DocearAction.getMenuKey(builder, this));
 	}
 	
 	public static List<Component> getMenuKey(final MenuBuilder builder, final AFreeplaneAction action) {

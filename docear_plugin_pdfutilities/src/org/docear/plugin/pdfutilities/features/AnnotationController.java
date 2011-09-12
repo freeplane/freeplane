@@ -157,7 +157,20 @@ public class AnnotationController implements IExtension{
 	
 	private static void addConflictedAnnotation(IAnnotation annotation, Map<AnnotationID, Collection<IAnnotation>> result){
 		if(result.containsKey(annotation.getAnnotationID())){
-			result.get(annotation.getAnnotationID()).add(annotation);
+			boolean add = true;
+			for(IAnnotation conflict: result.get(annotation.getAnnotationID())){
+				if(annotation instanceof AnnotationModel && !(annotation instanceof AnnotationNodeModel) && conflict instanceof AnnotationModel){
+					add = false;
+					break;
+				}
+				if(annotation instanceof AnnotationNodeModel && conflict instanceof AnnotationNodeModel && ((AnnotationNodeModel) annotation).getNode().equals(((AnnotationNodeModel) conflict).getNode())){
+					add = false;
+					break;
+				}
+			}
+			if(add){
+				result.get(annotation.getAnnotationID()).add(annotation);
+			}
 		}
 		else{
 			result.put(annotation.getAnnotationID(), new ArrayList<IAnnotation>());
@@ -168,7 +181,10 @@ public class AnnotationController implements IExtension{
 	public static void addConflictedAnnotations(Map<AnnotationID, Collection<IAnnotation>> conflicts, Map<AnnotationID, Collection<IAnnotation>> result){
 		for(AnnotationID id :conflicts.keySet()){
 			if(result.containsKey(id)){
-				result.get(id).addAll(conflicts.get(id));
+				for(IAnnotation conflict : conflicts.get(id)){
+					addConflictedAnnotation(conflict, result);
+				}
+				//result.get(id).addAll(conflicts.get(id));
 			}
 			else{
 				result.put(id, conflicts.get(id));

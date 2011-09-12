@@ -18,6 +18,7 @@ public class DocearMapConverterListener implements IMapSelectionListener,  Windo
 	private List<MapModel> mapsToConvert = new ArrayList<MapModel>();	
 	private List<MapModel> mapsQuestionedInCurrentSession = new ArrayList<MapModel>();	
 	private boolean startup = true;
+	public static boolean currentlyConverting = false;
 	
 	public void afterMapChange(MapModel oldMap, MapModel newMap) {		
 	}
@@ -40,6 +41,7 @@ public class DocearMapConverterListener implements IMapSelectionListener,  Windo
 	public void windowGainedFocus(WindowEvent e) {
 		if(startup){
 			startup = false;
+			mapsQuestionedInCurrentSession.addAll(mapsToConvert);
 			if(this.mapsToConvert.size() > 0){
 				showConversionDialog();
 			}			
@@ -51,8 +53,10 @@ public class DocearMapConverterListener implements IMapSelectionListener,  Windo
 	
 	private void showConversionDialog() {
 		int result = UITools.showConfirmDialog(null, getMessage(), getTitle(), JOptionPane.OK_CANCEL_OPTION);
-		if(result == JOptionPane.OK_OPTION){
+		if(result == JOptionPane.OK_OPTION){	
+			DocearMapConverterListener.currentlyConverting = true;
 			MapConverter.convert(mapsToConvert);
+			DocearMapConverterListener.currentlyConverting = false;
 		}			
 		mapsQuestionedInCurrentSession.addAll(mapsToConvert);
 		mapsToConvert.clear();

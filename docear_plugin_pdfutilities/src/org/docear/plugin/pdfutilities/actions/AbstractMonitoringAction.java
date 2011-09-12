@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.docear.plugin.core.features.DocearMapModelController;
+import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.features.AnnotationController;
 import org.docear.plugin.pdfutilities.features.AnnotationID;
 import org.docear.plugin.pdfutilities.features.AnnotationModel;
@@ -23,13 +24,14 @@ import org.docear.plugin.pdfutilities.features.AnnotationNodeModel;
 import org.docear.plugin.pdfutilities.features.IAnnotation;
 import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
-import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
 import org.docear.plugin.pdfutilities.ui.SwingWorkerDialog;
 import org.docear.plugin.pdfutilities.ui.conflict.ImportConflictDialog;
 import org.docear.plugin.pdfutilities.util.CustomFileFilter;
+import org.docear.plugin.pdfutilities.util.CustomFileListFilter;
 import org.docear.plugin.pdfutilities.util.MapConverter;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.docear.plugin.pdfutilities.util.Tools;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.components.UITools;
@@ -62,13 +64,14 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 		super(key, title, icon);
 	}
 
-	protected void updateNodesAgainstMonitoringDir(final NodeModel target, final URI monitoringDir, final URI mindmapDir) {
-		if(target == null || monitoringDir == null || mindmapDir == null) return;
+	public static void updateNodesAgainstMonitoringDir(final List<NodeModel> targets, boolean saveall) {		
 		
-		new SaveAll().actionPerformed(null);
+		if(saveall){
+			new SaveAll().actionPerformed(null);
+		}
 		
 		try {			
-			SwingWorker<Map<AnnotationID, Collection<IAnnotation>>, AnnotationModel[]> thread = this.getMonitoringThread(target, monitoringDir, mindmapDir);		
+			SwingWorker<Map<AnnotationID, Collection<IAnnotation>>, AnnotationModel[]> thread = getMonitoringThread(targets);		
 			
 			SwingWorkerDialog workerDialog = new SwingWorkerDialog(Controller.getCurrentController().getViewController().getJFrame());
 			workerDialog.setHeadlineText("Folder Monitoring");
@@ -92,7 +95,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					
 	}
 	
-	protected SwingWorker<Map<AnnotationID, Collection<IAnnotation>>, AnnotationModel[]> getMonitoringThread(final NodeModel target, final URI monitoringDir, final URI mindmapDir){
+	public static SwingWorker<Map<AnnotationID, Collection<IAnnotation>>, AnnotationModel[]> getMonitoringThread(final List<NodeModel> targets){
 		
 		return new SwingWorker<Map<AnnotationID, Collection<IAnnotation>>, AnnotationModel[]>(){
 			
@@ -100,116 +103,143 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			private int totalNodeCount;
 			private int totalNodeProgressCount;
 			
+			
 			@Override
 			protected Map<AnnotationID, Collection<IAnnotation>> doInBackground() throws Exception {
-				fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
-				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Searching monitored files ...");
-				URI monDir = Tools.getAbsoluteUri(monitoringDir);
-				URI mapDir = Tools.getAbsoluteUri(mindmapDir);
-				
-				Thread.sleep(1L);
-				if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
-				Collection<URI> monitorFiles = Tools.getFilteredFileList(monDir, new PdfFileFilter(), true);
-				
-				Thread.sleep(1L);
-				if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
-				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Searching monitored mindmaps ...");
-				Collection<URI> mindmapFiles = Tools.getFilteredFileList(mapDir, new CustomFileFilter(".*[.][mM][mM]"), true);				
-				if(!mindmapFiles.contains(Controller.getCurrentController().getMap().getFile().toURI())){
-					mindmapFiles.add(Controller.getCurrentController().getMap().getFile().toURI());
-				}
-				
-				Thread.sleep(1L);
-				if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
-				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Loading monitored mindmaps ...");
-				List<MapModel> maps = new NodeUtils().getMapsFromUris(mindmapFiles);
-				
-				Thread.sleep(1L);
-				if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
-				List<MapModel> mapsToUpdate = new ArrayList<MapModel>();
-				for(MapModel map : maps){
-					if(DocearMapModelController.getModel(map) == null){
-						mapsToUpdate.add(map);
+				for(final NodeModel target : targets){
+					totalNodeCount = 0;
+					totalNodeProgressCount = 0;
+					fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, "Updating against "+ target.getText() +" in progress....");
+					fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
+					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Searching monitored files ...");
+					URI pdfDir = NodeUtils.getPdfDirFromMonitoringNode(target);
+					URI mindmapDir = NodeUtils.getMindmapDirFromMonitoringNode(target);
+					URI monDir = Tools.getAbsoluteUri(pdfDir);
+					URI mapDir = Tools.getAbsoluteUri(mindmapDir);
+					if(monDir == null || mapDir == null) continue;
+					
+					Thread.sleep(1L);
+					if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
+					boolean monSubdirs = false;
+					int value = (Integer)NodeUtils.getAttributeValue(target, PdfUtilitiesController.MON_SUBDIRS);
+					switch(value){
+						
+						case 0:
+							monSubdirs = false;
+							break;
+							
+						case 1:
+							monSubdirs = true;
+							break;
+							
+						case 2:
+							monSubdirs = ResourceController.getResourceController().getBooleanProperty("docear_subdir_monitoring");
+							break;
 					}
-				}
-				
-				Thread.sleep(1L);
-				if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
-				if(mapsToUpdate.size() > 0){
-					int result = UITools.showConfirmDialog(null, getMessage(mapsToUpdate), getTitle(mapsToUpdate), JOptionPane.OK_CANCEL_OPTION);
-					if(result == JOptionPane.OK_OPTION){
-						fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Converting " + mapsToUpdate.size() + " monitored mindmaps ...");
-						if(!MapConverter.convert(mapsToUpdate)){							
+					Collection<URI> monitorFiles = Tools.getFilteredFileList(monDir, new CustomFileListFilter(ResourceController.getResourceController().getProperty("docear_files_to_import")), monSubdirs);
+					
+					Thread.sleep(1L);
+					if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
+					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Searching monitored mindmaps ...");
+					Collection<URI> mindmapFiles = Tools.getFilteredFileList(mapDir, new CustomFileFilter(".*[.][mM][mM]"), true);				
+					if(!mindmapFiles.contains(target.getMap().getFile().toURI())){
+						mindmapFiles.add(target.getMap().getFile().toURI());
+					}
+					
+					Thread.sleep(1L);
+					if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
+					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Loading monitored mindmaps ...");
+					List<MapModel> maps = new NodeUtils().getMapsFromUris(mindmapFiles);
+					
+					Thread.sleep(1L);
+					if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
+					List<MapModel> mapsToUpdate = new ArrayList<MapModel>();
+					for(MapModel map : maps){
+						if(DocearMapModelController.getModel(map) == null){
+							mapsToUpdate.add(map);
+						}
+					}
+					
+					Thread.sleep(1L);
+					if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
+					if(mapsToUpdate.size() > 0){
+						int result = UITools.showConfirmDialog(null, getMessage(mapsToUpdate), getTitle(mapsToUpdate), JOptionPane.OK_CANCEL_OPTION);
+						if(result == JOptionPane.OK_OPTION){
+							fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Converting " + mapsToUpdate.size() + " monitored mindmaps ...");
+							if(!MapConverter.convert(mapsToUpdate)){							
+								fireStatusUpdate(SwingWorkerDialog.IS_CANCELED, null, "Monitoring canceled.");
+							}
+						}
+						else{
 							fireStatusUpdate(SwingWorkerDialog.IS_CANCELED, null, "Monitoring canceled.");
 						}
 					}
-					else{
-						fireStatusUpdate(SwingWorkerDialog.IS_CANCELED, null, "Monitoring canceled.");
+					
+					Thread.sleep(1L);
+					if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
+					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Computing total node count...");
+					getTotalNodeCount(maps);
+					
+					Thread.sleep(1L);
+					if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
+					fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
+					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Collecting Pdf linked nodes...");				
+					
+					Map<AnnotationID, Collection<AnnotationNodeModel>> oldAnnotations = getOldAnnotationsFromMaps(maps);
+					
+					int count = 0;	
+					
+					for(final URI uri : monitorFiles){
+						try{
+							if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
+							fireStatusUpdate(SwingWorkerDialog.NEW_FILE, null, Tools.getFilefromUri(uri).getName());
+							PdfAnnotationImporter importer = new PdfAnnotationImporter();
+							Collection<AnnotationModel> annotations = importer.importAnnotations(uri);
+							AnnotationModel root = new AnnotationModel(new AnnotationID(Tools.getAbsoluteUri(uri), 0), AnnotationType.PDF_FILE);
+							root.setTitle(Tools.getFilefromUri(Tools.getAbsoluteUri(uri)).getName());
+							root.getChildren().addAll(annotations);
+							annotations = new ArrayList<AnnotationModel>();
+							annotations.add(root);
+							annotations = AnnotationController.markNewAnnotations(annotations, oldAnnotations);							
+							AnnotationController.addConflictedAnnotations(AnnotationController.getConflictedAnnotations(annotations, oldAnnotations), conflicts);
+							
+							final Collection<AnnotationModel> finalAnnotations = annotations;
+							if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
+							SwingUtilities.invokeAndWait(
+							        new Runnable() {
+							            public void run(){
+							            	new NodeUtils().insertNewChildNodesFrom(uri, finalAnnotations, target.isLeft(), target);										
+							            	firePropertyChange(SwingWorkerDialog.NEW_NODES, null, getInsertedNodes(finalAnnotations));										
+							            }
+							        }
+							   );						
+							count++;
+							fireProgressUpdate(100 * count / monitorFiles.size());
+						} catch(IOException e){
+							LogUtils.severe("IOexception during update file: "+ uri);
+						} catch(COSRuntimeException e){
+							LogUtils.severe("COSRuntimeException during update file: "+ uri);
+						} catch(COSLoadException e){
+							LogUtils.severe("COSLoadException during update file: "+ uri);
+						}
+					}
+					for(MapModel map : maps){
+						NodeUtils.saveMap(map);
+						map.setSaved(true);
 					}
 				}
-				
-				Thread.sleep(1L);
-				if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
-				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Computing total node count...");
-				getTotalNodeCount(maps);
-				
-				Thread.sleep(1L);
-				if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
-				fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
-				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Collecting Pdf linked nodes...");				
-				
-				Map<AnnotationID, Collection<AnnotationNodeModel>> oldAnnotations = getOldAnnotationsFromMaps(maps);
-				
-				int count = 0;
-				fireProgressUpdate(100 * count / monitorFiles.size());
-				for(final URI uri : monitorFiles){
-					try{
-						if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
-						fireStatusUpdate(SwingWorkerDialog.NEW_FILE, null, Tools.getFilefromUri(uri).getName());
-						PdfAnnotationImporter importer = new PdfAnnotationImporter();
-						Collection<AnnotationModel> annotations = importer.importAnnotations(uri);
-						AnnotationModel root = new AnnotationModel(new AnnotationID(Tools.getAbsoluteUri(uri), 0), AnnotationType.PDF_FILE);
-						root.setTitle(Tools.getFilefromUri(Tools.getAbsoluteUri(uri)).getName());
-						root.getChildren().addAll(annotations);
-						annotations = new ArrayList<AnnotationModel>();
-						annotations.add(root);
-						annotations = AnnotationController.markNewAnnotations(annotations, oldAnnotations);
-						AnnotationController.addConflictedAnnotations(AnnotationController.getConflictedAnnotations(annotations, oldAnnotations), conflicts);
-						
-						final Collection<AnnotationModel> finalAnnotations = annotations;
-						if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
-						SwingUtilities.invokeAndWait(
-						        new Runnable() {
-						            public void run(){
-						            	new NodeUtils().insertNewChildNodesFrom(uri, finalAnnotations, target.isLeft(), target);										
-						            	firePropertyChange(SwingWorkerDialog.NEW_NODES, null, getInsertedNodes(finalAnnotations));										
-						            }
-						        }
-						   );						
-						count++;
-						fireProgressUpdate(100 * count / monitorFiles.size());
-					} catch(IOException e){
-						LogUtils.severe("IOexception during update file: "+ uri);
-					} catch(COSRuntimeException e){
-						LogUtils.severe("COSRuntimeException during update file: "+ uri);
-					} catch(COSLoadException e){
-						LogUtils.severe("COSLoadException during update file: "+ uri);
-					}
-				}					
 				return conflicts;
 			}			
 
 			@Override
-		    protected void done() {	
-				System.out.println("Yielding");
-				Thread.currentThread().yield();
-				System.out.println(Thread.currentThread().getName() + ": " + Thread.currentThread().getState()); 
+		    protected void done() {			
 				if(this.isCancelled() || Thread.currentThread().isInterrupted()){
 					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, "Import canceled.");
 				}
 				else{
 					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, "Import complete.");
-				}				
+				}
+				
 			}
 			
 			private Collection<AnnotationModel> getInsertedNodes(Collection<AnnotationModel> annotations){

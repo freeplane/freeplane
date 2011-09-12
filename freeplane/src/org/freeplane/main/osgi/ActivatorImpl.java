@@ -242,10 +242,12 @@ class ActivatorImpl implements BundleActivator {
 
 	public void stop(final BundleContext context) throws Exception {
 		starter.stop();
+		String appName = ResourceController.getResourceController().getProperty("ApplicationName", "freeplane").toLowerCase();
+		System.out.println("Test: " + appName);
 		final Bundle[] bundles = context.getBundles();
 		for (int i = 0; i < bundles.length; i++) {
 			final Bundle bundle = bundles[i];
-			if (bundle.getState() >= Bundle.ACTIVE && bundle.getSymbolicName().startsWith("org.freeplane.plugin.")) {
+			if (bundle.getState() >= Bundle.ACTIVE && (bundle.getSymbolicName().startsWith("org.freeplane.plugin.") || bundle.getSymbolicName().startsWith("org."+ appName +".plugin."))) {
 				try {
 					bundle.stop();
 				}

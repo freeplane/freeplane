@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.features.AnnotationController;
 import org.docear.plugin.pdfutilities.features.AnnotationID;
 import org.docear.plugin.pdfutilities.features.AnnotationModel;
@@ -19,6 +20,7 @@ import org.docear.plugin.pdfutilities.features.AnnotationNodeModel;
 import org.docear.plugin.pdfutilities.features.IAnnotation;
 import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
 import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.AttributeRegistry;
@@ -276,39 +278,47 @@ public class NodeUtils {
 
 	public static boolean isMonitoringNode(NodeModel node) {
 		NodeAttributeTableModel attributeModel = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
-		return (attributeModel != null && attributeModel.getAttributeKeyList().contains(TextUtils.getText("mon_incoming_folder")));
+		return (attributeModel != null && attributeModel.getAttributeKeyList().contains(TextUtils.getText(PdfUtilitiesController.MON_INCOMING_FOLDER)));
 	}
 
 	public static URI getPdfDirFromMonitoringNode(NodeModel node) {
 		if(!NodeUtils.isMonitoringNode(node)) return null;
 		NodeAttributeTableModel attributeModel = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
-		if(attributeModel == null || !attributeModel.getAttributeKeyList().contains(TextUtils.getText("mon_incoming_folder"))){
+		if(attributeModel == null || !attributeModel.getAttributeKeyList().contains(TextUtils.getText(PdfUtilitiesController.MON_INCOMING_FOLDER))){
 			return null;
 		}
 		
-		return (URI)attributeModel.getValue(attributeModel.getAttributePosition(TextUtils.getText("mon_incoming_folder")));
+		return (URI)attributeModel.getValue(attributeModel.getAttributePosition(TextUtils.getText(PdfUtilitiesController.MON_INCOMING_FOLDER)));
 	}
 	
 	public static URI getMindmapDirFromMonitoringNode(NodeModel node) {
 		if(!NodeUtils.isMonitoringNode(node)) return null;
 		NodeAttributeTableModel attributeModel = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
-		if(attributeModel == null || !attributeModel.getAttributeKeyList().contains(TextUtils.getText("mon_mindmap_folder"))){
+		if(attributeModel == null || !attributeModel.getAttributeKeyList().contains(TextUtils.getText(PdfUtilitiesController.MON_MINDMAP_FOLDER))){
 			return null;
 		}
 		
-		return (URI)attributeModel.getValue(attributeModel.getAttributePosition(TextUtils.getText("mon_mindmap_folder")));
+		return (URI)attributeModel.getValue(attributeModel.getAttributePosition(TextUtils.getText(PdfUtilitiesController.MON_MINDMAP_FOLDER)));
 	}
 
 	public static void removeMonitoringEntries(NodeModel selected) {
 		NodeAttributeTableModel attributeModel = (NodeAttributeTableModel) selected.getExtension(NodeAttributeTableModel.class);
 		if(attributeModel == null) return;
 		
-		if(attributeModel.getAttributeKeyList().contains(TextUtils.getText("mon_incoming_folder"))){
-			AttributeController.getController(Controller.getCurrentModeController()).performRemoveRow(attributeModel, attributeModel.getAttributePosition(TextUtils.getText("mon_incoming_folder")));			
+		if(attributeModel.getAttributeKeyList().contains(TextUtils.getText(PdfUtilitiesController.MON_INCOMING_FOLDER))){
+			AttributeController.getController(Controller.getCurrentModeController()).performRemoveRow(attributeModel, attributeModel.getAttributePosition(TextUtils.getText(PdfUtilitiesController.MON_INCOMING_FOLDER)));			
 		}
 		
-		if(attributeModel.getAttributeKeyList().contains(TextUtils.getText("mon_mindmap_folder"))){
-			AttributeController.getController(Controller.getCurrentModeController()).performRemoveRow(attributeModel, attributeModel.getAttributePosition(TextUtils.getText("mon_mindmap_folder")));			
+		if(attributeModel.getAttributeKeyList().contains(TextUtils.getText(PdfUtilitiesController.MON_MINDMAP_FOLDER))){
+			AttributeController.getController(Controller.getCurrentModeController()).performRemoveRow(attributeModel, attributeModel.getAttributePosition(TextUtils.getText(PdfUtilitiesController.MON_MINDMAP_FOLDER)));			
+		}
+		
+		if(attributeModel.getAttributeKeyList().contains(TextUtils.getText(PdfUtilitiesController.MON_AUTO))){
+			AttributeController.getController(Controller.getCurrentModeController()).performRemoveRow(attributeModel, attributeModel.getAttributePosition(TextUtils.getText(PdfUtilitiesController.MON_AUTO)));			
+		}
+		
+		if(attributeModel.getAttributeKeyList().contains(TextUtils.getText(PdfUtilitiesController.MON_SUBDIRS))){
+			AttributeController.getController(Controller.getCurrentModeController()).performRemoveRow(attributeModel, attributeModel.getAttributePosition(TextUtils.getText(PdfUtilitiesController.MON_SUBDIRS)));			
 		}
 	}
 	
@@ -317,7 +327,7 @@ public class NodeUtils {
 		
 		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
 		if(attributes != null){
-			AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), TextUtils.getText("mon_incoming_folder"), monitoringDir); //$NON-NLS-1$
+			AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), TextUtils.getText(PdfUtilitiesController.MON_INCOMING_FOLDER), monitoringDir); //$NON-NLS-1$
 			AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
     		attributeView.setOptimalColumnWidths();
 			return true;
@@ -330,12 +340,60 @@ public class NodeUtils {
 		
 		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
 		if(attributes != null){
-			AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), TextUtils.getText("mon_mindmap_folder"), mindmapDir); //$NON-NLS-1$
+			AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), TextUtils.getText(PdfUtilitiesController.MON_MINDMAP_FOLDER), mindmapDir); //$NON-NLS-1$
 			AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
     		attributeView.setOptimalColumnWidths();
 			return true;
 		}
 		return false;
+	}
+	
+	public static boolean setAttributeValue(NodeModel target, String attributeKey, Object value){
+		if(target == null || attributeKey == null || value == null) return false;
+		
+		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
+		if(attributes != null){
+			if(attributes.getAttributeKeyList().contains(TextUtils.getText(attributeKey))){
+				//attributes.getAttribute(attributes.getAttributePosition(TextUtils.getText(attributeKey))).setValue(value);
+				AttributeController.getController().performSetValueAt(attributes, value, attributes.getAttributePosition(attributeKey), 1);
+				return true;
+			}
+			else{
+				AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), TextUtils.getText(attributeKey), value); 
+				return true;
+			}
+		}
+		return false;	
+	}
+
+	public static Object getAttributeValue(NodeModel target, String attributeKey) {
+		if(target == null || attributeKey == null) return null;
+		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
+		if(attributes != null){
+			if(attributes.getAttributeKeyList().contains(TextUtils.getText(attributeKey))){
+				return attributes.getAttribute(attributes.getAttributePosition(TextUtils.getText(attributeKey))).getValue();				
+			}
+		}
+		return null;
+	}
+
+	public static boolean isAutoMonitorNode(NodeModel node) {
+		if(NodeUtils.getAttributeValue(node, PdfUtilitiesController.MON_AUTO) == null) return false;
+		int value = (Integer)NodeUtils.getAttributeValue(node, PdfUtilitiesController.MON_AUTO);
+		switch(value){
+			
+			case 0:
+				return false;				
+				
+			case 1:
+				return true;				
+				
+			case 2:
+				return ResourceController.getResourceController().getBooleanProperty("docear_auto_monitoring");
+				
+			default:
+				return false;
+		}
 	}
 
 }

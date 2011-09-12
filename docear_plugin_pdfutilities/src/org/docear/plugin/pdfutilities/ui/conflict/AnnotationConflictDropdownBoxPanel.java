@@ -75,7 +75,11 @@ public class AnnotationConflictDropdownBoxPanel extends JPanel {
 		}
 		annotations.removeAll(doubleEntries);
 		this.comboBox.setModel(new DefaultComboBoxModel(annotations.toArray()));
-		this.comboBox.setSelectedItem(target);		
+		for(IAnnotation annotation :  annotations){
+			if(annotation.getTitle().equals(target.getTitle())){
+				this.comboBox.setSelectedItem(annotation);		
+			}
+		}		
 	}
 	
 	private void selectionChanged(ItemEvent e){

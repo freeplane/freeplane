@@ -37,6 +37,8 @@ import com.jgoodies.forms.layout.RowSpec;
 
 public class SwingWorkerDialog extends JDialog implements PropertyChangeListener{
 
+	public static final String SET_HEADLINE = "setHeadLine";
+	public static final String SET_SUB_HEADLINE = "setSubHeadLine";
 	public static final String SET_PROGRESS_BAR_DETERMINATE = "setProgressBardeterminate";
 	public static final String SET_PROGRESS_BAR_INDETERMINATE = "setProgressBarIndeterminate";
 	public static final String IS_DONE = "isDone";
@@ -313,6 +315,12 @@ public class SwingWorkerDialog extends JDialog implements PropertyChangeListener
 		}
 		if(evt.getPropertyName().equals(REPAINT)){
 			this.repaint();
+		}
+		if(evt.getPropertyName().equals(SET_HEADLINE)){
+			this.setHeadlineText("" + evt.getNewValue());
+		}
+		if(evt.getPropertyName().equals(SET_SUB_HEADLINE)){
+			this.setSubHeadlineText("" + evt.getNewValue());
 		}
 	}	
 

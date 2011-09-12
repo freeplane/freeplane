@@ -1,7 +1,8 @@
 package org.docear.plugin.pdfutilities.actions;
 
 import java.awt.event.ActionEvent;
-import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.ui.EnabledAction;
@@ -21,10 +22,9 @@ public class UpdateMonitoringFolderAction extends AbstractMonitoringAction{
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
-		URI pdfDir = NodeUtils.getPdfDirFromMonitoringNode(selected);
-		URI mindmapDir = NodeUtils.getMindmapDirFromMonitoringNode(selected);
-		this.updateNodesAgainstMonitoringDir(selected, pdfDir, mindmapDir);
+		List<NodeModel> list = new ArrayList<NodeModel>();
+		list.add(Controller.getCurrentController().getSelection().getSelected());		
+		UpdateMonitoringFolderAction.updateNodesAgainstMonitoringDir(list, true);
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingUtilities;
 
@@ -41,6 +42,7 @@ public class MapConverter {
 			workerDialog.setHeadlineText("Mindmap Converter");
 			workerDialog.setSubHeadlineText("Converting of " + maps.size() + " mindmap(s) in progress....");
 			workerDialog.showDialog(thread);
+			thread.get();
 			if(thread.isCancelled()){
 				thread = null;
 				return false;
@@ -54,6 +56,10 @@ public class MapConverter {
 			return true;
 		} catch (CancellationException e){
 			LogUtils.warn("CancellationException during update of maps.");
+		} catch (InterruptedException e) {
+			LogUtils.warn("InterruptedException during update of maps.");
+		} catch (ExecutionException e) {
+			LogUtils.warn("ExecutionException during update of maps.");
 		}
 		return false;
 	}
@@ -204,9 +210,7 @@ public class MapConverter {
 			}
 
 			@Override
-		    protected void done() {
-				System.out.println("Yielding");
-				Thread.currentThread().yield();
+		    protected void done() {				
 				if(this.isCancelled() || Thread.currentThread().isInterrupted()){
 					firePropertyChange(SwingWorkerDialog.IS_DONE, null, "Update canceled.");
 				}

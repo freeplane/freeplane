@@ -18,6 +18,12 @@
 			    <radiobutton name = "docear_open_on_page"/> 
 			    <path name = "docear_open_on_page_reader_path" suffixes = "exe"/>
 			</separator>
+			<separator name ="folder_monitoring">
+			    <boolean name="docear_auto_monitoring" />
+                <boolean name="docear_subdir_monitoring" />
+                <string name="docear_files_to_import"/>   
+                <string name="docear_subdirs_to_ignore"/>   
+			</separator>
 		</tab>
 	</tabbed_pane>
 </preferences_structure>
