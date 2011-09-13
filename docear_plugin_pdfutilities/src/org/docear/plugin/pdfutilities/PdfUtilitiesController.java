@@ -368,7 +368,9 @@ public class PdfUtilitiesController extends ALanguageController{
 					MapModel map = (MapModel)event.getEventObject();
 					try {
 						NodeUtils.addMonitoringDir(map.getRootNode(), new URI("property:/document_repository_path"));
-						NodeUtils.addMindmapDir(map.getRootNode(), new URI("property:/library"));
+						NodeUtils.addMindmapDir(map.getRootNode(), new URI("workspace:/mindmaps"));
+						NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_AUTO, 2);
+		        		NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_SUBDIRS, 2);						
 					} catch (URISyntaxException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

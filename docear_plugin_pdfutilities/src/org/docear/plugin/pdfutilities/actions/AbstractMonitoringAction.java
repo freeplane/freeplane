@@ -63,6 +63,12 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 	public AbstractMonitoringAction(String key, String title, Icon icon) {
 		super(key, title, icon);
 	}
+	
+	public static void updateNodesAgainstMonitoringDir(NodeModel target, boolean saveall) {
+		List<NodeModel> list = new ArrayList<NodeModel>();
+		list.add(target);
+		AbstractMonitoringAction.updateNodesAgainstMonitoringDir(list, saveall);
+	}
 
 	public static void updateNodesAgainstMonitoringDir(final List<NodeModel> targets, boolean saveall) {		
 		
@@ -77,7 +83,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			workerDialog.setHeadlineText("Folder Monitoring");
 			workerDialog.setSubHeadlineText("Updating against monitored folder in progress....");
 			workerDialog.showDialog(thread);
-						
+			workerDialog = null;			
 			Map<AnnotationID, Collection<IAnnotation>> conflicts = thread.get();
 			
 			if(conflicts != null && conflicts.size() > 0){
@@ -86,11 +92,11 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			}	
 			thread = null;			
 		} catch (CancellationException e){
-			LogUtils.warn("CancellationException during monitoring update.");
+			LogUtils.info("CancellationException during monitoring update.");
 		} catch (InterruptedException e) {
-			LogUtils.severe("InterruptedException during monitoring update.");
+			LogUtils.info("InterruptedException during monitoring update.");
 		} catch (ExecutionException e) {
-			LogUtils.severe("ExecutionException during monitoring update.");
+			LogUtils.info("ExecutionException during monitoring update.");
 		}
 					
 	}
@@ -116,8 +122,14 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					URI mindmapDir = NodeUtils.getMindmapDirFromMonitoringNode(target);
 					URI monDir = Tools.getAbsoluteUri(pdfDir);
 					URI mapDir = Tools.getAbsoluteUri(mindmapDir);
-					if(monDir == null || mapDir == null) continue;
-					
+					if(monDir == null || Tools.getFilefromUri(Tools.getAbsoluteUri(monDir)) == null || !Tools.getFilefromUri(Tools.getAbsoluteUri(monDir)).exists()){
+						UITools.informationMessage("Monitoring directory does not exist.");
+						continue;
+					}
+					if(mapDir == null || Tools.getFilefromUri(Tools.getAbsoluteUri(mapDir)) == null || !Tools.getFilefromUri(Tools.getAbsoluteUri(mapDir)).exists()){
+						UITools.informationMessage("Mindmap directory does not exist.");
+						continue;
+					}
 					Thread.sleep(1L);
 					if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
 					boolean monSubdirs = false;
@@ -233,7 +245,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 
 			@Override
 		    protected void done() {			
-				if(this.isCancelled() || Thread.currentThread().isInterrupted()){
+				if(this.isCancelled() || Thread.currentThread().isInterrupted()){					
 					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, "Import canceled.");
 				}
 				else{

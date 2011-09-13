@@ -7,13 +7,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.event.WindowStateListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -65,13 +63,13 @@ public class SwingWorkerDialog extends JDialog implements PropertyChangeListener
 	private HeaderPanel headerPanel;
 	private JPanel labelPanel;
 	private JLabel lblWorkingOn;
-	private ThreadPoolExecutor executor;
+	private ExecutorService executor;
 
 	/**
 	 * Launch the application.
 	 */
 	public void showDialog(SwingWorker<?,?> thread) {
-		executor = new ThreadPoolExecutor(1, 1, 10, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(1));		
+		executor = Executors.newSingleThreadExecutor();	
 		this.thread = thread;
 		thread.addPropertyChangeListener(this);
 		executor.execute(thread);
@@ -94,16 +92,8 @@ public class SwingWorkerDialog extends JDialog implements PropertyChangeListener
 
 	private void init() {	
 		setResizable(false);				
-		setMinimumSize(new Dimension(640, 480));
-		this.addWindowStateListener(new WindowStateListener() {
-			
-			public void windowStateChanged(WindowEvent e) {
-				if(e.getID() == WindowEvent.WINDOW_CLOSING || e.getID() == WindowEvent.WINDOW_CLOSED){
-					onCancel();
-				}
-				
-			}
-		});
+		setMinimumSize(new Dimension(640, 480));		
+		
 		
 		this.addWindowListener(new WindowListener() {
 			
@@ -115,12 +105,11 @@ public class SwingWorkerDialog extends JDialog implements PropertyChangeListener
 			
 			public void windowDeactivated(WindowEvent e) {}
 			
-			public void windowClosing(WindowEvent e) {
+			public void windowClosing(WindowEvent e) {				
 				onCancel();
 			}
 			
-			public void windowClosed(WindowEvent e) {
-				onCancel();
+			public void windowClosed(WindowEvent e) {				
 			}
 			
 			public void windowActivated(WindowEvent e) {}
@@ -218,7 +207,7 @@ public class SwingWorkerDialog extends JDialog implements PropertyChangeListener
 					okButton.setEnabled(false);
 					okButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
-							dispose();
+							onCancel();
 						}
 					});
 					buttonPanel.add(okButton, "3, 2");
@@ -246,10 +235,10 @@ public class SwingWorkerDialog extends JDialog implements PropertyChangeListener
 		// It's very important to set the thread and the executor = null, 
 		// because otherwise a reference is hold and the thread never finishes but keeps waiting.
 		if(this.thread != null){
-			this.thread.cancel(true);
+			this.thread.cancel(true);			
 			this.thread = null;
 		}
-		if(this.executor != null){
+		if(this.executor != null){			
 			this.executor.shutdownNow();			
 			this.executor = null;
 		}		

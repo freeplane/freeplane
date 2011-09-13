@@ -42,6 +42,7 @@ public class MapConverter {
 			workerDialog.setHeadlineText("Mindmap Converter");
 			workerDialog.setSubHeadlineText("Converting of " + maps.size() + " mindmap(s) in progress....");
 			workerDialog.showDialog(thread);
+			workerDialog = null;
 			thread.get();
 			if(thread.isCancelled()){
 				thread = null;
@@ -55,11 +56,11 @@ public class MapConverter {
 			thread = null;			
 			return true;
 		} catch (CancellationException e){
-			LogUtils.warn("CancellationException during update of maps.");
+			LogUtils.info("CancellationException during update of maps.");
 		} catch (InterruptedException e) {
-			LogUtils.warn("InterruptedException during update of maps.");
+			LogUtils.info("InterruptedException during update of maps.");
 		} catch (ExecutionException e) {
-			LogUtils.warn("ExecutionException during update of maps.");
+			LogUtils.info("ExecutionException during update of maps.");
 		}
 		return false;
 	}
