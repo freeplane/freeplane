@@ -49,6 +49,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	private static final String WEB_FREEPLANE_LOCATION = "webFreeplaneLocation";
 
 	public static final String DOCUMENT_REPOSITORY_PATH = LocationDialog.DOCUMENT_REPOSITORY_PATH_PROPERTY;
+	public static final String LIBRARY_PATH = "library"; 
 
 	public CoreConfiguration(ModeController modeController) {
 		addPropertyChangeListener();
@@ -185,6 +186,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		if (defaults == null)
 			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
 		Controller.getCurrentController().getResourceController().addDefaults(defaults);
+		Controller.getCurrentController().getResourceController().setProperty(LIBRARY_PATH, DocearController.getController().getLibrary().getLibraryPath().toString());
 	}
 
 	public void propertyChanged(String propertyName, String newValue, String oldValue) {

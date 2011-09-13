@@ -17,6 +17,7 @@ import javax.swing.JMenu;
 import javax.swing.JRadioButton;
 
 import org.docear.plugin.core.ALanguageController;
+import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
@@ -367,8 +368,8 @@ public class PdfUtilitiesController extends ALanguageController{
 				if(event.getType().equals(DocearEventType.NEW_LITERATURE_MAP)){
 					MapModel map = (MapModel)event.getEventObject();
 					try {
-						NodeUtils.addMonitoringDir(map.getRootNode(), new URI("property:/document_repository_path"));
-						NodeUtils.addMindmapDir(map.getRootNode(), new URI("workspace:/mindmaps"));
+						NodeUtils.addMonitoringDir(map.getRootNode(), new URI("property:/" + CoreConfiguration.DOCUMENT_REPOSITORY_PATH));
+						NodeUtils.addMindmapDir(map.getRootNode(), new URI("property:/" + CoreConfiguration.LIBRARY_PATH));
 						NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_AUTO, 2);
 		        		NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_SUBDIRS, 2);						
 					} catch (URISyntaxException e) {
