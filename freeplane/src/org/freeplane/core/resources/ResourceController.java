@@ -20,21 +20,22 @@
 package org.freeplane.core.resources;
 
 import java.io.BufferedInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.mode.Controller;
+import org.freeplane.core.util.FileUtils;
 import org.freeplane.features.mode.AController.IActionOnChange;
+import org.freeplane.features.mode.Controller;
 
 /**
  * @author Dimitry Polivaev
@@ -61,6 +62,10 @@ public abstract class ResourceController {
 	public void addLanguageResources(final String language, final URL url) {
 		resources.addResources(language, url);
 	}
+
+	public void addLanguageResources(final String language, final Map<String, String> resources) {
+		this.resources.addResources(language, resources);
+    }
 
 	public void addPropertyChangeListener(final IFreeplanePropertyListener listener) {
 		propertyChangeListeners.add(listener);
@@ -174,6 +179,14 @@ public abstract class ResourceController {
 		return resources;
 	}
 
+	public String getLanguageCode() {
+	    return resources.getLanguageCode();
+    }
+	
+	public String getDefaultLanguageCode() {
+		return resources.getDefaultLanguageCode();
+	}
+
 	public String getText(final String key, final String resource) {
 		return ((ResourceBundles) getResources()).getResourceString(key, resource);
 	}
@@ -207,15 +220,9 @@ public abstract class ResourceController {
 		catch (final Exception ex) {
 			System.err.println("Could not load properties from " + url);
 		}
-		finally {
-			try {
-				if (in != null)
-					in.close();
-			}
-			catch (IOException e) {
-				// there's no remedy
-			}
-		}
+        finally {
+        	FileUtils.silentlyClose(in);
+        }
 		return false;
 	}
 
@@ -223,12 +230,17 @@ public abstract class ResourceController {
 	public void addDefaults(URL propertiesUrl) {
 		Properties props = new Properties();
 		loadProperties(props, propertiesUrl);
-		for (Entry<Object, Object> entry : props.entrySet()) {
+		addDefaults(props);
+    }
+
+	/** use generic to make it useable with Properties. KT and VT must be of type String. */
+	public <KT, VT> void addDefaults(Map<KT, VT> defaultProperties) {
+		for (Entry<KT, VT> entry : defaultProperties.entrySet()) {
 			if (getProperty((String) entry.getKey()) == null)
 				setProperty((String) entry.getKey(), (String) entry.getValue());
 		}
     }
-	
+
 	public boolean isApplet() {
 		return false;
 	}
