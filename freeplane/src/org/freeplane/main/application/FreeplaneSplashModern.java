@@ -29,7 +29,6 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.io.InputStream;
 
 import javax.swing.ImageIcon;
@@ -37,6 +36,7 @@ import javax.swing.JFrame;
 import javax.swing.JWindow;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.features.mode.Controller;
 
@@ -80,13 +80,7 @@ public class FreeplaneSplashModern extends JWindow {
 			versionTextFont = new Font("Arial", Font.PLAIN, 12);
 		}
 		finally {
-			if (fontInputStream != null) {
-				try {
-					fontInputStream.close();
-				}
-				catch (final IOException e) {
-				}
-			}
+			FileUtils.silentlyClose(fontInputStream);
 		}
     }
 

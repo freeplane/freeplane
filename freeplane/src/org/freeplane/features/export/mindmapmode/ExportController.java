@@ -1,5 +1,6 @@
 package org.freeplane.features.export.mindmapmode;
 
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -12,6 +13,7 @@ import javax.swing.filechooser.FileFilter;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
@@ -64,10 +66,12 @@ public class ExportController implements IExtension{
 	}
 	
 	private void createXSLTExportActions( final String xmlDescriptorFile) {
+		InputStream xmlDescriptorStream = null;
 		try {
 			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
 			final URL resource = ResourceController.getResourceController().getResource(xmlDescriptorFile);
-			final IXMLReader reader = new StdXMLReader(resource.openStream());
+			xmlDescriptorStream = resource.openStream();
+			final IXMLReader reader = new StdXMLReader(xmlDescriptorStream);
 			parser.setReader(reader);
 			final XMLElement xml = (XMLElement) parser.parse();
 			final Enumeration<XMLElement> actionDescriptors = xml.enumerateChildren();
@@ -82,6 +86,9 @@ public class ExportController implements IExtension{
 		}
 		catch (final Exception e) {
 			LogUtils.severe(e);
+		}
+		finally {
+			FileUtils.silentlyClose(xmlDescriptorStream);
 		}
 	}
 

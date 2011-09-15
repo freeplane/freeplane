@@ -40,6 +40,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
@@ -100,32 +101,30 @@ public class ExportToOoWriter extends AExportEngine {
 			LogUtils.warn(e);
 			return;
 		}
+		finally {
+			FileUtils.silentlyClose(xsltStream);
+		}
 	}
 
-	/**
-	 * @return true, if successful.
-	 */
+	// note: out is not closed
 	private void copyFromResource(final String fileName, final OutputStream out) {
+		InputStream in = null;
 		try {
 			final URL resource = ResourceController.getResourceController().getResource(fileName);
 			if (resource == null) {
 				LogUtils.severe("Cannot find resource: " + fileName);
 				return;
 			}
-			final InputStream in = resource.openStream();
-			final byte[] buf = new byte[1024];
-			int len;
-			while ((len = in.read(buf)) > 0) {
-				out.write(buf, 0, len);
-			}
-			in.close();
-			return;
+			in = resource.openStream();
+			FileUtils.copyStream(in, out);
 		}
 		catch (final Exception e) {
-			LogUtils.severe("File not found or could not be copied. " + "Was earching for " + fileName
-			        + " and should go to " + out);
-			LogUtils.severe(e);
+			LogUtils.severe("File not found or could not be copied. Was searching for " + fileName
+			        + " and should go to " + out, e);
 			return;
+		}
+		finally {
+			FileUtils.silentlyClose(in);
 		}
 	}
 

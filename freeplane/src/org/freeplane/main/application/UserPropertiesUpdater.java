@@ -29,6 +29,7 @@ import java.util.Properties;
 import javax.swing.JLabel;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.map.MapModel;
@@ -57,8 +58,10 @@ public class UserPropertiesUpdater {
 			return;
 		}
 		Properties userProp = new Properties();
+		FileInputStream inputStream = null;
 		try {
-	        userProp.load(new FileInputStream(oldUserPreferencesFile));
+	        inputStream = new FileInputStream(oldUserPreferencesFile);
+			userProp.load(inputStream);
 	        userProp.remove("lastOpened_1.0.20");
 	        userProp.remove("openedNow_1.0.20");
 	        userProp.remove("browse_url_storage");
@@ -66,6 +69,9 @@ public class UserPropertiesUpdater {
         }
         catch (IOException e) {
         }
+		finally {
+			FileUtils.silentlyClose(inputStream);
+		}
 	}
 	void importOldDefaultStyle() {
 		final ModeController modeController = Controller.getCurrentController().getModeController(MModeController.MODENAME);
