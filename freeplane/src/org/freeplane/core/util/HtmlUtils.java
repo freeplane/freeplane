@@ -28,7 +28,11 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Element;
+import javax.swing.text.html.HTML;
+import javax.swing.text.html.HTMLDocument;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.InputSource;
@@ -659,5 +663,42 @@ public class HtmlUtils {
 		if (end == -1)
 			return "";
 		return text.substring(textBegin, end).trim();
+	}
+
+	/** Gets the string URL of an existing link, or null if none. 
+	 * @param doc 
+	 * @param i */
+	public static String getURLOfExistingLink(HTMLDocument doc, int pos) {
+	    //setIgnoreActions(true);      
+	    final Element linkElement = HtmlUtils.getCurrentLinkElement(doc, pos);
+	    final boolean foundLink = (linkElement != null);
+	    if (!foundLink) {
+	        return null;
+	    }
+	    final AttributeSet elemAttrs = linkElement.getAttributes();
+	    final Object linkAttr = elemAttrs.getAttribute(HTML.Tag.A);
+	    final Object href = ((AttributeSet) linkAttr).getAttribute(HTML.Attribute.HREF);
+	    return href != null ? href.toString() : null;
+	}
+
+	public static Element getCurrentLinkElement(HTMLDocument doc, int pos) {
+	    Element element2 = null;
+	    Element element = doc.getCharacterElement(pos);
+	    Object linkAttribute = null; //elem.getAttributes().getAttribute(HTML.Tag.A);
+	    Object href = null;
+	    while (element != null && linkAttribute == null) {
+	        element2 = element;
+	        linkAttribute = element.getAttributes().getAttribute(HTML.Tag.A);
+	        if (linkAttribute != null) {
+	            href = ((AttributeSet) linkAttribute).getAttribute(HTML.Attribute.HREF);
+	        }
+	        element = element.getParentElement();
+	    }
+	    if (linkAttribute != null && href != null) {
+	        return element2;
+	    }
+	    else {
+	        return null;
+	    }
 	}
 }

@@ -20,7 +20,6 @@
 package org.freeplane.features.map.mindmapmode;
 
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
