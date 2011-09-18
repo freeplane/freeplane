@@ -14,7 +14,9 @@ Performance optimizations for printing
 Filter flag "Unfold hidden nodes" removed
 Filter flag "apply to visible nodes" no more automatically set / unset
 Obsolete documentation key maps and menu references removed 
-Better support for hyperlinks in editor dialog (Edit->Edit link...)
+Better support for hyperlinks in editor dialog 
+Links can be accessed from inline editor and tooltips
+Free positioned nodes
 
 ===============================
 1.2.7 alpha
