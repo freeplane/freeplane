@@ -135,6 +135,10 @@ public class NodeBuilder implements IElementDOMHandler {
 				    node.getHistoryInformation().setLastModifiedAt(TreeXmlReader.xmlToDate(value));
 			    }
 		    });
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "FOLDED", new IAttributeHandler() {
+			public void setAttribute(Object userObject, String value) {
+			}
+		});
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "FOLDED", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
