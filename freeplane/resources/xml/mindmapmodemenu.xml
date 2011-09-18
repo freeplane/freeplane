@@ -404,7 +404,6 @@
 			<menu_separator />
 			<menu_category name="FilterCondition">
 				<menu_action action="ApplyToVisibleAction" />
-				<menu_action action="UnfoldFilteredAncestorsAction" />
 				<menu_action action="ShowAncestorsAction" />
 				<menu_action action="ShowDescendantsAction" />
 			</menu_category>
