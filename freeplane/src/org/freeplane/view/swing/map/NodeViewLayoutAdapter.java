@@ -286,6 +286,8 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                 top -= childContentShift;
 
                 y += childCloudHeigth/2;
+                top += child.getTopOverlap();
+                y -= child.getTopOverlap();
                 if (childShiftY < 0) {
                     data.ly[i] = y;
                     y -= childShiftY;
@@ -297,6 +299,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                 }
                 if (childHeight != 0) {
                     y += childHeight + getVGap() + childCloudHeigth/2;
+                    y -= child.getBottomOverlap();
                 }
                 
                 childContentHeightSum += childContentHeight + childCloudHeigth;
@@ -333,7 +336,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                 int summaryY = (groupStartY[itemLevel] + groupEndY[itemLevel] ) / 2 - childContentHeight / 2 + childShiftY - (child.getContent().getY() - getSpaceAround());
                 data.ly[i] = summaryY;
                 if(!isFreeNode ){
-                	final int deltaY = summaryY -childCloudHeigth/2 - groupStartY[itemLevel];
+                	final int deltaY = summaryY -childCloudHeigth/2 - groupStartY[itemLevel] + child.getTopOverlap();
                 	if(deltaY < 0){
                 		top += deltaY;
                 		y -= deltaY;
@@ -345,7 +348,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                 		}
                 	}
                 	if (childHeight != 0) {
-                		summaryY += childHeight + getVGap() + childCloudHeigth/2;
+                		summaryY += childHeight + getVGap() + childCloudHeigth/2 - child.getBottomOverlap();
                 	}
                 	y = Math.max(y, summaryY);
                 	final int summaryContentHeight = groupStartContentHeightSum[itemLevel] + childContentHeight;
@@ -356,12 +359,12 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             }
 			if(! isItem || ! isFreeNode){
 				if(child.isFirstGroupNode()){
-					groupStartY[level] = data.ly[i]-childCloudHeigth/2;
-					groupEndY[level] = data.ly[i] + childHeight+childCloudHeigth/2;
+					groupStartY[level] = data.ly[i] -childCloudHeigth/2 + child.getTopOverlap();
+					groupEndY[level] = data.ly[i] + childHeight+childCloudHeigth/2 - child.getBottomOverlap();
 				}
 				else{
-					groupStartY[level] = Math.min(groupStartY[level],data.ly[i]-childCloudHeigth/2);
-					groupEndY[level] = Math.max(data.ly[i] + childHeight+childCloudHeigth/2, groupEndY[level]);
+					groupStartY[level] = Math.min(groupStartY[level],data.ly[i]-childCloudHeigth/2 + child.getTopOverlap());
+					groupEndY[level] = Math.max(data.ly[i] + childHeight+childCloudHeigth/2  - child.getBottomOverlap(), groupEndY[level]);
 				}
 			}
             final int x;
@@ -452,17 +455,25 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
         int width =  contentX + contentWidth + getSpaceAround();
         int height = contentY + contentHeight + getSpaceAround();
         getContent().setBounds(contentX, contentY, contentWidth, contentHeight);
+        int topOverlap = -minY;
+        int heigthWithoutOverlap = height;
         for (int i = 0; i < getChildCount(); i++) {
             NodeView child = (NodeView) getView().getComponent(i);
+            final int y;
             if(data.sticky[i]){
-            	child.setLocation(contentX + data.lx[i], contentY + data.ly[i]);
+            	y = contentY + data.ly[i];
             }
-            else
-            	child.setLocation(contentX + data.lx[i], baseY + data.ly[i]);
+            else{
+            	y = baseY + data.ly[i];
+            	heigthWithoutOverlap = Math.max(heigthWithoutOverlap, y + child.getHeight() - child.getBottomOverlap());
+            }
+			child.setLocation(contentX + data.lx[i], y);
             width = Math.max(width, child.getX() + child.getWidth());
-            height = Math.max(height, child.getY() + child.getHeight()+ getAdditionalCloudHeigth(child) / 2);
+            height = Math.max(height, y + child.getHeight());
         }
         
-        getView().setSize(width, height);
+        view.setSize(width, height);
+        view.setTopOverlap(topOverlap);
+        view.setBottomOverlap(height - heigthWithoutOverlap);
     }
 }

@@ -118,6 +118,10 @@ public class NodeView extends JComponent implements INodeView {
 	private Integer edgeWidth = 1;
 	private Color edgeColor = Color.BLACK;
 	private Color modelBackgroundColor;
+	
+	private int topOverlap;
+	private int bottomOverlap;
+	
 	public static final int DETAIL_VIEWER_POSITION = 2;
 	
 	protected NodeView(final NodeModel model, final int position, final MapView map, final Container parent) {
@@ -1557,4 +1561,20 @@ public class NodeView extends JComponent implements INodeView {
         final Color detailBackground = getMap().getDetailBackground();
         return detailBackground;
      }
+
+	int getTopOverlap() {
+		return topOverlap;
+	}
+
+	void setTopOverlap(int topOverlap) {
+		this.topOverlap = topOverlap;
+	}
+
+	int getBottomOverlap() {
+		return bottomOverlap;
+	}
+
+	void setBottomOverlap(int bottomOverlap) {
+		this.bottomOverlap = bottomOverlap;
+	}
 }
