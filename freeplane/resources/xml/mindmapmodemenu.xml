@@ -157,6 +157,7 @@
 				<menu_action action="NewParentNode" accelerator="shift INSERT" />		
 			</menu_category>
 			<menu_separator/>
+            <menu_action action="FreeNodeAction"/>
 			<menu_category name="Aggregation">
 				<menu_action action="NewSummaryAction" accelerator="alt shift INSERT" />
 				<menu_action action="FirstGroupNodeAction" accelerator = "alt shift B"/>
@@ -529,6 +530,7 @@
 				<menu_action action="NewParentNode" accelerator="shift INSERT" />		
 			</menu_category>			
 			<menu_separator/>
+            <menu_action action="FreeNodeAction"/>
 			<menu_category name="summary">
 				<menu_action action="NewSummaryAction" accelerator="alt shift INSERT" />
 				<menu_action action="FirstGroupNodeAction" accelerator = "alt shift B"/>

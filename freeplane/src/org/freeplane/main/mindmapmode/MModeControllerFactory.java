@@ -67,6 +67,7 @@ import org.freeplane.features.icon.mindmapmode.IconSelectionPlugin;
 import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.map.UnfoldAll;
@@ -156,6 +157,7 @@ public class MModeControllerFactory {
 		new AutomaticLayout();
 		new BlinkingNodeHook();
 		SummaryNode.install();
+		FreeNode.install();
 		new CreationModificationPlugin();
 		new ReminderHook(modeController);
 		new AutomaticEdgeColorHook();

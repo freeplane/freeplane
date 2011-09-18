@@ -34,6 +34,7 @@ import org.freeplane.features.encrypt.EncryptionController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.map.UnfoldAll;
@@ -82,6 +83,7 @@ public class BModeControllerFactory {
 		}
 		LocationController.install(new LocationController());
 		SummaryNode.install();
+		FreeNode.install();
 		new MapStyle(true);
 		final BToolbarContributor toolbarContributor = new BToolbarContributor();
 		modeController.addMenuContributor(toolbarContributor);

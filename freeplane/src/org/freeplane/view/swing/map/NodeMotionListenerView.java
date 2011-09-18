@@ -71,14 +71,16 @@ public class NodeMotionListenerView extends JComponent {
 		final MapView parent = (MapView) getParent();
 		parent.getModeController().getController().getViewController().setEdgesRenderingHint(g2);
 		final Color color = g2.getColor();
-		if (LocationModel.getModel(movedView.getModel()).getHGap() <= 0) {
+		if (movedView.isFree()) {
+			g2.setColor(Color.BLUE);
+			g.fillOval(0, 0, getWidth() - 1, getHeight() - 1);
+		}
+		else if (LocationModel.getModel(movedView.getModel()).getHGap() <= 0) {
 			g2.setColor(Color.RED);
 			g.fillOval(0, 0, getWidth() - 1, getHeight() - 1);
 		}
-		else {
-			g2.setColor(Color.BLACK);
-			g.drawOval(0, 0, getWidth() - 1, getHeight() - 1);
-		}
+		g2.setColor(Color.BLACK);
+		g.drawOval(0, 0, getWidth() - 1, getHeight() - 1);
 		g2.setColor(color);
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 	}
