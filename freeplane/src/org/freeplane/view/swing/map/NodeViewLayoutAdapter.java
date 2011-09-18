@@ -35,7 +35,8 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     protected static class LayoutData{
             final int[] lx;
             final int[] ly;
-            final boolean[] sticky;
+            final boolean[] free;
+            final boolean[] summary;
             int left;
             int childContentHeight;
             int top;
@@ -45,7 +46,8 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                 super();
                 this.lx = new int[childCount];
                 this.ly = new int[childCount];
-                this.sticky = new boolean[childCount];
+                this.free = new boolean[childCount];
+                this.summary = new boolean[childCount];
                 this.left = 0;
                 this.childContentHeight = 0;
                 this.top = 0;
@@ -274,8 +276,9 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             final int childHeight = child.getHeight() - 2 * getSpaceAround();
             
             boolean isFreeNode = child.isFree();
+			data.free[i] = isFreeNode;
+			data.summary[i] = ! isItem;
 			if(isItem && isFreeNode){
-				data.sticky[i] = true;
 				data.ly[i] = childShiftY - childContentShift - getSpaceAround();
 				childHGap -= child.getZoomed(LocationModel.HGAP);
             }
@@ -343,7 +346,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                 		summaryY -= deltaY;
                 		for(int j = groupStart[itemLevel]; j <= i; j++){
                 			NodeView groupItem = (NodeView) getView().getComponent(j);
-                			if(groupItem.isLeft() == isLeft && ! data.sticky[j])
+                			if(groupItem.isLeft() == isLeft && (data.summary[j] || !data.free[j]))
                 				data.ly[j]-=deltaY;
                 		}
                 	}
@@ -411,7 +414,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             }
             for(int i = 0; i < getChildCount(); i++){
                 NodeView child = (NodeView) getView().getComponent(i);
-                if(child.isLeft() == changeLeft && ! data.sticky[i]){
+                if(child.isLeft() == changeLeft && (data.summary[i] || !data.free[i])){
                     data.ly[i] += deltaTop;
                 }
             }
@@ -442,7 +445,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
         int baseY = contentY - getSpaceAround() + data.top;
         int minY = 0;
         for (int i = 0; i < getChildCount(); i++) {
-            if(data.sticky[i]){
+            if(!data.summary[i] && data.free[i]){
             	minY = Math.min(minY, contentY + data.ly[i]);
             }
             else
@@ -460,12 +463,13 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
         for (int i = 0; i < getChildCount(); i++) {
             NodeView child = (NodeView) getView().getComponent(i);
             final int y;
-            if(data.sticky[i]){
+            if(!data.summary[i] && data.free[i]){
             	y = contentY + data.ly[i];
             }
             else{
             	y = baseY + data.ly[i];
-            	heigthWithoutOverlap = Math.max(heigthWithoutOverlap, y + child.getHeight() - child.getBottomOverlap());
+            	if(! data.free[i])
+            		heigthWithoutOverlap = Math.max(heigthWithoutOverlap, y + child.getHeight() - child.getBottomOverlap());
             }
 			child.setLocation(contentX + data.lx[i], y);
             width = Math.max(width, child.getX() + child.getWidth());
