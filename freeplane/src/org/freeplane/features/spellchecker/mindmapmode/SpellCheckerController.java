@@ -30,7 +30,6 @@ import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
@@ -131,7 +130,7 @@ public class SpellCheckerController implements IExtension {
 		}
 		String spellingLanguage = resourceController.getProperty(SPELLING_LANGUAGE, null);
 		if (spellingLanguage == null) {
-			spellingLanguage = ((ResourceBundles) resourceController.getResources()).getLanguageCode();
+			spellingLanguage = resourceController.getLanguageCode();
 		}
 		if (!spellingLanguage.equals("disabled")) {
 			SpellChecker.setLanguage(spellingLanguage);

@@ -127,11 +127,11 @@ public class XMLWriter {
 		if (xml.getName() == null) {
 			if (xml.getContent() != null) {
 				if (prettyPrint) {
-					this.writeEncoded(xml.getContent().trim());
+					this.writeEncodedContent(xml.getContent().trim());
 					writer.println();
 				}
 				else {
-					this.writeEncoded(xml.getContent());
+					this.writeEncodedContent(xml.getContent());
 				}
 			}
 		}
@@ -177,7 +177,7 @@ public class XMLWriter {
 			}
 			if ((xml.getContent() != null) && (xml.getContent().length() > 0)) {
 				writer.print('>');
-				this.writeEncoded(xml.getContent());
+				this.writeEncodedContent(xml.getContent());
 				writer.print("</" + xml.getFullName() + '>');
 				if (prettyPrint) {
 					writer.println();
@@ -223,7 +223,7 @@ public class XMLWriter {
 	 * @param str
 	 *            the string to write.
 	 */
-	private void writeEncoded(final String str) {
+	protected void writeEncoded(final String str) {
 		for (int i = 0; i < str.length(); i++) {
 			final char c = str.charAt(i);
 			switch (c) {
@@ -257,4 +257,18 @@ public class XMLWriter {
 			}
 		}
 	}
+
+	/**
+	 * Writes a string as encoded content string.
+	 * 
+	 * @param str
+	 *            the string to write.
+	 */
+	protected void writeEncodedContent(final String str) {
+		writeEncoded(str);
+	}
+
+	public PrintWriter getWriter() {
+	    return writer;
+    }
 }

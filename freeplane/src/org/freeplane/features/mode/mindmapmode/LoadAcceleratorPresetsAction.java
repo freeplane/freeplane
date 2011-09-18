@@ -24,6 +24,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.Properties;
@@ -36,6 +37,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -120,11 +122,16 @@ public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
+		InputStream in = null;
 		try {
-			MenuBuilder.loadAcceleratorPresets(resource.openStream());
+			in = resource.openStream();
+			MenuBuilder.loadAcceleratorPresets(in);
 		}
 		catch (final IOException e1) {
 			e1.printStackTrace();
+		}
+		finally {
+			FileUtils.silentlyClose(in);
 		}
 	}
 }

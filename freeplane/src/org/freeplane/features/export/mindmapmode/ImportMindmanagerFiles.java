@@ -42,6 +42,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLParseException;
@@ -77,8 +78,9 @@ public class ImportMindmanagerFiles extends AFreeplaneAction {
 	}
 
 	private void importMindmanagerFile(final File file) {
+		ZipInputStream in = null;
 		try {
-			final ZipInputStream in = new ZipInputStream(new FileInputStream(file));
+			in = new ZipInputStream(new FileInputStream(file));
 			while (in.available() != 0) {
 				final ZipEntry entry = in.getNextEntry();
 				if (entry == null) {
@@ -95,6 +97,7 @@ public class ImportMindmanagerFiles extends AFreeplaneAction {
 				}
 				final InputStream xsltFile = xsltUrl.openStream();
 				final String xml = transForm(new StreamSource(in), xsltFile);
+				xsltFile.close();
 				if (xml != null) {
 					final File tempFile = File.createTempFile(file.getName(),
 					    org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION, file.getParentFile());
@@ -106,14 +109,11 @@ public class ImportMindmanagerFiles extends AFreeplaneAction {
 				break;
 			}
 		}
-		catch (final IOException e) {
+		catch (final Exception e) {
 			LogUtils.severe(e);
 		}
-		catch (final XMLParseException e) {
-			LogUtils.severe(e);
-		}
-		catch (final URISyntaxException e) {
-			LogUtils.severe(e);
+		finally {
+			FileUtils.silentlyClose(in);
 		}
 	}
 
