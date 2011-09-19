@@ -1035,7 +1035,7 @@ public class NodeView extends JComponent implements INodeView {
 		boolean firstGroupNodeFound = false;
 		for (i = pos - 1; i >= 0; i--) {
 			final NodeView nodeViewSibling = (NodeView) getComponent(i);
-			if (nodeViewSibling.isLeft() != isLeft || ! nodeViewSibling.isSummary() && nodeViewSibling.isFree())
+			if (nodeViewSibling.isLeft() != isLeft)
 				continue;
 			if (lastView == null && nodeViewSibling.getHeight() != 2 * spaceAround) {
 				lastView = nodeViewSibling;
@@ -1072,7 +1072,7 @@ public class NodeView extends JComponent implements INodeView {
 		if(i >= 0){
 		    for (; i > 0; i--) {
 		        final NodeView nodeViewSibling = (NodeView) getComponent(i);
-		        if (nodeViewSibling.isLeft() != isLeft || ! nodeViewSibling.isSummary() && nodeViewSibling.isFree())
+		        if (nodeViewSibling.isLeft() != isLeft)
 		            continue;
 		        if(nodeViewSibling.isSummary() || nodeViewSibling.isFirstGroupNode())
 		            break;
@@ -1080,7 +1080,7 @@ public class NodeView extends JComponent implements INodeView {
 
 		    for (; ; i++) {
 		        final NodeView nodeViewSibling = (NodeView) getComponent(i);
-		        if (nodeViewSibling.isLeft() != isLeft || ! nodeViewSibling.isSummary() && nodeViewSibling.isFree())
+		        if (nodeViewSibling.isLeft() != isLeft)
 		            continue;
 		        if(! nodeViewSibling.isSummary())
 		            break;
@@ -1101,9 +1101,7 @@ public class NodeView extends JComponent implements INodeView {
         }
 		for (; i < pos; i++) {
 			final NodeView nodeViewSibling = (NodeView) getComponent(i);
-			if (nodeViewSibling.isLeft() != isLeft 
-					|| ! nodeViewSibling.isSummary() && nodeViewSibling.isFree()
-					|| nodeViewSibling.getHeight() == 2 * spaceAround)
+			if (nodeViewSibling.isLeft() != isLeft|| nodeViewSibling.getHeight() == 2 * spaceAround)
 				continue;
 			if (nodeViewSibling.isSummary())
 				anotherLevel++;
