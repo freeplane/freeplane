@@ -133,7 +133,7 @@ public class NodeView extends JComponent implements INodeView {
 		parent.add(this, index);
 		if (!model.isRoot()) {
 			motionListenerView = new NodeMotionListenerView(this);
-			map.add(motionListenerView, map.getComponentCount() - 1);
+			map.add(motionListenerView, 0);
 		}
 	}
 

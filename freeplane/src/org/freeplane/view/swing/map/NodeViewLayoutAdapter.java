@@ -280,7 +280,6 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 			data.summary[i] = ! isItem;
 			if(isItem && isFreeNode){
 				data.ly[i] = childShiftY - childContentShift - getSpaceAround();
-				childHGap -= child.getZoomed(LocationModel.HGAP);
             }
             else if(isItem){
                 if (childShiftY < 0 || visibleChildCounter == 0) {
@@ -375,7 +374,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             if(level > 0)
                 baseX = summaryBaseX[level - 1];
             else{
-                if(child.isLeft()){
+                if(child.isLeft() != isItem && isFreeNode){
                     baseX = 0;
                 }
                 else{
@@ -471,7 +470,8 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             	if(! data.free[i])
             		heigthWithoutOverlap = Math.max(heigthWithoutOverlap, y + child.getHeight() - child.getBottomOverlap());
             }
-			child.setLocation(contentX + data.lx[i], y);
+			final int x = contentX + data.lx[i];
+			child.setLocation(x, y);
             width = Math.max(width, child.getX() + child.getWidth());
             height = Math.max(height, y + child.getHeight());
         }

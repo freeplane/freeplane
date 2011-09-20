@@ -39,6 +39,7 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.EncryptionModel;
+import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
@@ -333,6 +334,8 @@ public class MMapController extends MapController {
 
 	public void moveNode(final NodeModel child, final NodeModel newParent, final int newIndex, final boolean isLeft,
 	                     final boolean changeSide) {
+		ModeController modeController = Controller.getCurrentModeController();
+		((FreeNode)modeController.getExtension(FreeNode.class)).undoableDeactivateHook(child);
 		final NodeModel oldParent = child.getParentNode();
 		final int oldIndex = oldParent.getChildPosition(child);
 		final boolean wasLeft = child.isLeft();
@@ -352,7 +355,8 @@ public class MMapController extends MapController {
 				moveNodeToWithoutUndo(child, oldParent, oldIndex, wasLeft, changeSide);
 			}
 		};
-		Controller.getCurrentModeController().execute(actor, newParent.getMap());
+		modeController.execute(actor, newParent.getMap());
+		
 	}
 
 	public void moveNodeAsChild(final NodeModel node, final NodeModel selectedParent, final boolean isLeft,
