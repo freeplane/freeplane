@@ -178,12 +178,16 @@ public class UrlManager implements IExtension {
 	private void createActions() {
 	}
 
+	
+	public JFileChooser getFileChooser(final FileFilter filter, boolean useDirectorySelector) {
+		return getFileChooser(filter, useDirectorySelector, false);
+	}
 	/**
 	 * Creates a file chooser with the last selected directory as default.
 	 * @param useDirectorySelector
 	 */
 	@SuppressWarnings("serial")
-    public JFileChooser getFileChooser(final FileFilter filter, boolean useDirectorySelector) {
+    public JFileChooser getFileChooser(final FileFilter filter, boolean useDirectorySelector, boolean showHiddenFiles) {
 		final File parentFile = getMapsParentFile();
 		if (parentFile != null && getLastCurrentDir() == null) {
 			setLastCurrentDir(parentFile);
@@ -216,6 +220,9 @@ public class UrlManager implements IExtension {
 		};
 		if (getLastCurrentDir() != null) {
 			chooser.setCurrentDirectory(getLastCurrentDir());
+		}
+		if (showHiddenFiles) {
+			chooser.setFileHidingEnabled(false);
 		}
 		if (filter != null) {
 			chooser.addChoosableFileFilter(filter);

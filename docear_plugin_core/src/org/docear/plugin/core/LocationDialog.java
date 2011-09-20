@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.WorkspaceController;
 
 import com.jgoodies.forms.factories.FormFactory;
@@ -67,8 +68,7 @@ public class LocationDialog extends JDialog {
 	}
 	
 	private void browseLiterature() {
-		JFileChooser fileChooser = new JFileChooser();		
-		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		JFileChooser fileChooser = UrlManager.getController().getFileChooser(null, true, true);
 		if (literatureLocation != null) {
 			File file = new File(this.literatureLocation.getText());
 			if (file.exists()) {
@@ -87,8 +87,7 @@ public class LocationDialog extends JDialog {
 	}
 	
 	private void browseBibtex() {
-		JFileChooser fileChooser = new JFileChooser();		
-		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);		
+		JFileChooser fileChooser = UrlManager.getController().getFileChooser(null, false, true);
 		if (bibtexLocation != null) {
 			File file = new File(this.bibtexLocation.getText());
 			if (file.exists()) {
@@ -107,8 +106,7 @@ public class LocationDialog extends JDialog {
 	}
 	
 	private void browseProjects() {
-		JFileChooser fileChooser = new JFileChooser();		
-		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		JFileChooser fileChooser = UrlManager.getController().getFileChooser(null, true, true);
 		if (projectsLocation != null) {
 			File file = new File(this.projectsLocation.getText());
 			if (file.exists()) {
