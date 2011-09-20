@@ -374,7 +374,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             if(level > 0)
                 baseX = summaryBaseX[level - 1];
             else{
-                if(child.isLeft() != isItem && isFreeNode){
+                if(child.isLeft() != (isItem && isFreeNode)){
                     baseX = 0;
                 }
                 else{
