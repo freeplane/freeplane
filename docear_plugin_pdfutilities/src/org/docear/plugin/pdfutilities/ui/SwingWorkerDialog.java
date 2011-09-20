@@ -26,6 +26,7 @@ import javax.swing.border.SoftBevelBorder;
 import javax.swing.text.BadLocationException;
 
 import org.docear.plugin.pdfutilities.features.AnnotationModel;
+
 import org.jdesktop.swingworker.SwingWorker;
 
 import com.jgoodies.forms.factories.FormFactory;

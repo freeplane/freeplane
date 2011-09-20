@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileFilter;
 import java.net.URI;
 
+import org.docear.plugin.core.util.Tools;
+
 public class CustomFileFilter implements FileFilter {
 	
 	String regex;

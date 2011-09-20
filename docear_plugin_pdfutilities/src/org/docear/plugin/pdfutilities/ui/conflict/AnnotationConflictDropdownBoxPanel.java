@@ -8,10 +8,10 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.features.AnnotationModel;
 import org.docear.plugin.pdfutilities.features.AnnotationNodeModel;
 import org.docear.plugin.pdfutilities.features.IAnnotation;
-import org.docear.plugin.pdfutilities.util.Tools;
 import org.freeplane.features.map.NodeModel;
 
 import com.jgoodies.forms.factories.FormFactory;

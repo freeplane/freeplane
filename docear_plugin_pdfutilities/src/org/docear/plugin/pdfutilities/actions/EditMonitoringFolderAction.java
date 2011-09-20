@@ -7,9 +7,9 @@ import java.util.List;
 
 import javax.swing.JFileChooser;
 
+import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
-import org.docear.plugin.pdfutilities.util.Tools;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.mindmapmode.MLinkController;

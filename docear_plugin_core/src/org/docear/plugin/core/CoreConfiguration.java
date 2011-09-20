@@ -1,5 +1,6 @@
 package org.docear.plugin.core;
 
+import java.net.URI;
 import java.net.URL;
 import java.util.Enumeration;
 
@@ -50,6 +51,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 
 	public static final String DOCUMENT_REPOSITORY_PATH = LocationDialog.DOCUMENT_REPOSITORY_PATH_PROPERTY;
 	public static final String LIBRARY_PATH = "library"; 
+	public static final String BIBTEX_PATH = LocationDialog.BIBTEX_PATH_PROPERTY; 
 
 	public CoreConfiguration(ModeController modeController) {
 		addPropertyChangeListener();
@@ -186,7 +188,11 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		if (defaults == null)
 			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
 		Controller.getCurrentController().getResourceController().addDefaults(defaults);
-		Controller.getCurrentController().getResourceController().setProperty(LIBRARY_PATH, DocearController.getController().getLibrary().getLibraryPath().toString());
+		if(DocearController.getController().getLibrary() != null && DocearController.getController().getLibrary().getLibraryPath() != null){
+			URI uri = DocearController.getController().getLibrary().getLibraryPath();
+			Controller.getCurrentController().getResourceController().setProperty(LIBRARY_PATH, uri.getPath());
+		}
+		
 	}
 
 	public void propertyChanged(String propertyName, String newValue, String oldValue) {

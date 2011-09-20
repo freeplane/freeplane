@@ -3,10 +3,10 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="lib" path="lib/jpod/iscwt.jar"/>
 	<classpathentry kind="lib" path="lib/jpod/isrt.jar" sourcepath="C:/Users/Anwender/Downloads/distribution/src/de/intarsys/pdf"/>
 	<classpathentry kind="lib" path="lib/jpod/jbig2.jar"/>
 	<classpathentry kind="lib" path="lib/jpod/jPod.jar"/>
+	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

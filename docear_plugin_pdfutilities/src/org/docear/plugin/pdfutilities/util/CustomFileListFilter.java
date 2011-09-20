@@ -6,6 +6,8 @@ import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.docear.plugin.core.util.Tools;
+
 public class CustomFileListFilter implements FileFilter{
 	
 	List<String> regexList = new ArrayList<String>();

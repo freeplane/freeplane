@@ -2,8 +2,8 @@ package org.docear.plugin.pdfutilities.features;
 
 import java.io.IOException;
 
+import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
-import org.docear.plugin.pdfutilities.util.Tools;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementDOMHandler;

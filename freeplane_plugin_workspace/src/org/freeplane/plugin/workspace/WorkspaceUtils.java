@@ -166,6 +166,7 @@ public class WorkspaceUtils {
 				return null;
 			}
 			else {
+				URI test = urlConnection.getURL().toURI();
 				return urlConnection.getURL().toURI();
 			}
 		}

@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.net.URI;
 
-import org.docear.plugin.pdfutilities.util.Tools;
+import org.docear.plugin.core.util.Tools;
 
 public class PdfFileFilter implements FileFilter{
 	
