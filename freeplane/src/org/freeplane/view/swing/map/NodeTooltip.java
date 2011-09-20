@@ -6,6 +6,9 @@ import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.net.URI;
 
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
@@ -16,6 +19,9 @@ import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.url.UrlManager;
 
 @SuppressWarnings("serial")
 public class NodeTooltip extends JToolTip {
@@ -25,6 +31,20 @@ public class NodeTooltip extends JToolTip {
 		tip.setContentType("text/html");
 		tip.setEditable(false);
 		tip.setMargin(new Insets(0, 0, 0, 0));
+		tip.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(final MouseEvent ev) {
+				if ((ev.getModifiers() & MouseEvent.CTRL_MASK) != 0) {
+					final String linkURL = HtmlUtils.getURLOfExistingLink((HTMLDocument) tip.getDocument(), tip.viewToModel(ev.getPoint()));
+					if (linkURL != null) {
+						try {
+							UrlManager.getController().loadURL(new URI(linkURL));
+						} catch (Exception e) {
+							LogUtils.warn(e);
+						}
+					}
+				}
+			}
+		});
 		final HTMLDocument document = (HTMLDocument) tip.getDocument();
 		final StyleSheet styleSheet = document.getStyleSheet();
 		styleSheet.removeStyle("p");

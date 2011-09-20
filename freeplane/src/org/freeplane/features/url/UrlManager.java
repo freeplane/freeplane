@@ -130,17 +130,7 @@ public class UrlManager implements IExtension {
 						thrownException = ex;
 					}
 					finally {
-						try {
-							if (input != null) {
-								input.close();
-							}
-							if (xsltInputStream != null) {
-								xsltInputStream.close();
-							}
-						}
-						catch (final IOException e) {
-							e.printStackTrace();
-						}
+						FileUtils.silentlyClose(input, xsltInputStream);
 					}
 				}
 
@@ -290,7 +280,6 @@ public class UrlManager implements IExtension {
 			final ModeController modeController = Controller.getCurrentModeController();
 			final NodeModel root = modeController.getMapController().getMapReader().createNodeTreeFromXml(map,
 			    urlStreamReader, Mode.FILE);
-			urlStreamReader.close();
 			if (root != null) {
 				map.setRoot(root);
 			}
@@ -300,7 +289,9 @@ public class UrlManager implements IExtension {
 		}
 		catch (final Exception ex) {
 			LogUtils.severe(ex);
-			return;
+		}
+		finally {
+			FileUtils.silentlyClose(urlStreamReader);
 		}
     }
 

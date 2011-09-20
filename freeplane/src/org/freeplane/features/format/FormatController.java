@@ -47,6 +47,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IValidator;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -192,9 +193,11 @@ public class FormatController implements IExtension {
 	}
 
 	private void loadFormats() throws Exception {
+		BufferedInputStream inputStream = null;
 		try {
 			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
-			final IXMLReader reader = new StdXMLReader(new BufferedInputStream(new FileInputStream(pathToFile)));
+			inputStream = new BufferedInputStream(new FileInputStream(pathToFile));
+			final IXMLReader reader = new StdXMLReader(inputStream);
 			parser.setReader(reader);
 			final XMLElement loader = (XMLElement) parser.parse();
 			final Vector<XMLElement> formats = loader.getChildren();
@@ -230,6 +233,9 @@ public class FormatController implements IExtension {
 		}
 		catch (final IOException e) {
 			LogUtils.warn("error parsing " + pathToFile, e);
+		}
+		finally {
+			FileUtils.silentlyClose(inputStream);
 		}
 	}
 

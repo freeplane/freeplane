@@ -55,6 +55,7 @@ import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.map.NodeModel.NodeChangeType;
 import org.freeplane.features.mode.Controller;
@@ -117,6 +118,10 @@ public class NodeView extends JComponent implements INodeView {
 	private Integer edgeWidth = 1;
 	private Color edgeColor = Color.BLACK;
 	private Color modelBackgroundColor;
+	
+	private int topOverlap;
+	private int bottomOverlap;
+	
 	public static final int DETAIL_VIEWER_POSITION = 2;
 	
 	protected NodeView(final NodeModel model, final int position, final MapView map, final Container parent) {
@@ -1030,7 +1035,7 @@ public class NodeView extends JComponent implements INodeView {
 		boolean firstGroupNodeFound = false;
 		for (i = pos - 1; i >= 0; i--) {
 			final NodeView nodeViewSibling = (NodeView) getComponent(i);
-			if (nodeViewSibling.isLeft() != isLeft)
+			if (nodeViewSibling.isLeft() != isLeft || ! nodeViewSibling.isSummary() && nodeViewSibling.isFree())
 				continue;
 			if (lastView == null && nodeViewSibling.getHeight() != 2 * spaceAround) {
 				lastView = nodeViewSibling;
@@ -1067,7 +1072,7 @@ public class NodeView extends JComponent implements INodeView {
 		if(i >= 0){
 		    for (; i > 0; i--) {
 		        final NodeView nodeViewSibling = (NodeView) getComponent(i);
-		        if (nodeViewSibling.isLeft() != isLeft)
+		        if (nodeViewSibling.isLeft() != isLeft || ! nodeViewSibling.isSummary() && nodeViewSibling.isFree())
 		            continue;
 		        if(nodeViewSibling.isSummary() || nodeViewSibling.isFirstGroupNode())
 		            break;
@@ -1075,7 +1080,7 @@ public class NodeView extends JComponent implements INodeView {
 
 		    for (; ; i++) {
 		        final NodeView nodeViewSibling = (NodeView) getComponent(i);
-		        if (nodeViewSibling.isLeft() != isLeft)
+		        if (nodeViewSibling.isLeft() != isLeft || ! nodeViewSibling.isSummary() && nodeViewSibling.isFree())
 		            continue;
 		        if(! nodeViewSibling.isSummary())
 		            break;
@@ -1096,7 +1101,9 @@ public class NodeView extends JComponent implements INodeView {
         }
 		for (; i < pos; i++) {
 			final NodeView nodeViewSibling = (NodeView) getComponent(i);
-			if (nodeViewSibling.isLeft() != isLeft|| nodeViewSibling.getHeight() == 2 * spaceAround)
+			if (nodeViewSibling.isLeft() != isLeft 
+					|| ! nodeViewSibling.isSummary() && nodeViewSibling.isFree()
+					|| nodeViewSibling.getHeight() == 2 * spaceAround)
 				continue;
 			if (nodeViewSibling.isSummary())
 				anotherLevel++;
@@ -1546,8 +1553,28 @@ public class NodeView extends JComponent implements INodeView {
 		return SummaryNode.isFirstGroupNode(getModel());
 	}
 
+	public boolean isFree() {
+		return FreeNode.isFreeNode(getModel());
+	}
+
     public Color getDetailBackground() {
         final Color detailBackground = getMap().getDetailBackground();
         return detailBackground;
      }
+
+	int getTopOverlap() {
+		return topOverlap;
+	}
+
+	void setTopOverlap(int topOverlap) {
+		this.topOverlap = topOverlap;
+	}
+
+	int getBottomOverlap() {
+		return bottomOverlap;
+	}
+
+	void setBottomOverlap(int bottomOverlap) {
+		this.bottomOverlap = bottomOverlap;
+	}
 }

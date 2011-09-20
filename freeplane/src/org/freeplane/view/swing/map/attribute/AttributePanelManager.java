@@ -180,7 +180,7 @@ public class AttributePanelManager{
         }
 
         private JComboBox createFormatChooser() {
-            final List<String> formatPatterns = new FormatController().getAllPatterns();
+            final List<String> formatPatterns = FormatController.getController().getAllPatterns();
             final JComboBox formatChooser = new JComboBox(new Vector<String>(formatPatterns));
             formatChooser.setEditable(true);
             formatChooser.setSelectedItem(null);

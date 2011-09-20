@@ -20,60 +20,77 @@
  */
 package org.freeplane.plugin.script;
 
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
 import org.freeplane.core.resources.ResourceController;
 
 /**
  * @author Volker Boerchers
  */
-class ScriptingPermissions {
+public class ScriptingPermissions {
+	final Map<String, Boolean> permissions = new LinkedHashMap<String, Boolean>();
 	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING = "execute_scripts_without_asking";
 	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION = "execute_scripts_without_file_restriction";
 	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_WRITE_RESTRICTION = "execute_scripts_without_write_restriction";
 	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION = "execute_scripts_without_exec_restriction";
 	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION = "execute_scripts_without_network_restriction";
-	public static final String RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING = "script_user_key_name_for_signing";
 	public static final String RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED = "signed_script_are_trusted";
-	private String executeWithoutAsking = "false";
-	private String executeWithoutReadRestriction = "false";
-	private String executeWithoutWriteRestriction = "false";
-	private String executeWithoutNetworkRestriction = "false";
-	private String executeWithoutExecRestriction = "false";
-	private String signedScriptsWithoutRestriction = "false";
+	public static final String RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING = "script_user_key_name_for_signing";
+	public static final String[] PERMISSION_NAMES = { //
+		RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING //
+        , RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION //
+        , RESOURCES_EXECUTE_SCRIPTS_WITHOUT_WRITE_RESTRICTION //
+        , RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION //
+        , RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION //
+        , RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED //
+	};
 
-	void initFromPreferences() {
-		executeWithoutAsking = ResourceController.getResourceController().getProperty(
-		    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING);
-		executeWithoutReadRestriction = ResourceController.getResourceController().getProperty(
-		    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION);
-		executeWithoutWriteRestriction = ResourceController.getResourceController().getProperty(
-		    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_WRITE_RESTRICTION);
-		executeWithoutNetworkRestriction = ResourceController.getResourceController().getProperty(
-		    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION);
-		executeWithoutExecRestriction = ResourceController.getResourceController().getProperty(
-		    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION);
-		signedScriptsWithoutRestriction = ResourceController.getResourceController().getProperty(
-		    ScriptingPermissions.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED);
+	public ScriptingPermissions() {
+		// by default nothing is allowed
+		for (String permissionName : PERMISSION_NAMES) {
+			set(permissionName, false);
+		}
+	}
+	
+	public ScriptingPermissions(Properties properties) {
+		// by default nothing is allowed
+		this();
+		for (String permissionName : PERMISSION_NAMES) {
+			final Object value = properties.get(permissionName);
+			if (value != null) {
+				set(permissionName, Boolean.parseBoolean(value.toString()));
+			}
+		}
+	}
+
+	public boolean get(String permissionName) {
+		// there must never be nulls in the map
+		return permissions.get(permissionName).booleanValue();
+	}
+	
+	private void set(String permissionName, boolean value) {
+		permissions.put(permissionName, value);
 	}
 
 	void restorePermissions() {
-		ResourceController.getResourceController().setProperty(
-		    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING, executeWithoutAsking);
-		ResourceController.getResourceController().setProperty(
-		    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION, executeWithoutReadRestriction);
-		ResourceController.getResourceController().setProperty(
-		    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION,
-		    executeWithoutNetworkRestriction);
-		ResourceController.getResourceController().setProperty(
-		    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION, executeWithoutExecRestriction);
-		ResourceController.getResourceController().setProperty(
-		    ScriptingPermissions.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED, signedScriptsWithoutRestriction);
+		for (String permissionName : PERMISSION_NAMES) {
+			restore(permissionName);
+		}
+	}
+
+	private void restore(final String permissionName) {
+		ResourceController.getResourceController().setProperty(permissionName, permissions.get(permissionName));
 	}
 
 	ScriptingSecurityManager getScriptingSecurityManager() {
-		boolean readPerm = Boolean.parseBoolean(executeWithoutReadRestriction);
-		boolean writePerm = Boolean.parseBoolean(executeWithoutWriteRestriction);
-		boolean networkPerm = Boolean.parseBoolean(executeWithoutNetworkRestriction);
-		boolean execPerm = Boolean.parseBoolean(executeWithoutExecRestriction);
+		boolean readPerm = get(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION);
+		boolean writePerm = get(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_WRITE_RESTRICTION);
+		boolean networkPerm = get(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION);
+		boolean execPerm = get(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION);
 		return new ScriptingSecurityManager(readPerm, writePerm, networkPerm, execPerm);
 	}
 
@@ -86,6 +103,10 @@ class ScriptingPermissions {
 	}
 
 	boolean isExecuteSignedScriptsWithoutRestriction() {
-		return Boolean.parseBoolean(signedScriptsWithoutRestriction);
+		return get(RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED);
 	}
+
+	public static List<String> getPermissionNames() {
+		return Arrays.asList(PERMISSION_NAMES);
+    }
 }

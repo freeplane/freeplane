@@ -475,9 +475,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			    .createNodeTreeFromXml(map, reader, Mode.FILE);
 		}
 		finally {
-			if (reader != null) {
-				reader.close();
-			}
+			FileUtils.silentlyClose(reader);
 		}
 	}
 

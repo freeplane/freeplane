@@ -29,6 +29,8 @@ import java.util.ListIterator;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.freeplane.core.util.LogUtils;
+
 public class UndoHandler implements IUndoHandler {
 	final private List<ChangeListener> listeners;
 
@@ -157,6 +159,11 @@ public class UndoHandler implements IUndoHandler {
 		final CompoundActor compoundActor = new CompoundActor(actorList);
 		actionFrameStarted = false;
 		timeOfLastAdd = 0;
+		if (transactionList.isEmpty()) {
+			// FIXME: this happens when new Maps are closed via the scripting API. Fix the basic error instead.
+			LogUtils.warn("transactionList is empty on UndoHandler.commit()");
+			return;
+		}
 		actorList = transactionList.removeLast();
 		actorIterator = transactionIteratorList.removeLast();
 		if (!compoundActor.isEmpty()) {

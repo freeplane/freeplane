@@ -21,7 +21,10 @@
 package org.freeplane.plugin.script;
 
 import java.awt.Dimension;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FilenameFilter;
 import java.io.PrintStream;
 import java.net.URL;
 import java.text.MessageFormat;
@@ -39,6 +42,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IValidator;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
@@ -48,11 +52,19 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.script.IScriptEditorStarter;
 import org.freeplane.features.script.IScriptStarter;
+import org.freeplane.main.addons.AddOnsController;
+import org.freeplane.n3.nanoxml.IXMLParser;
+import org.freeplane.n3.nanoxml.IXMLReader;
+import org.freeplane.n3.nanoxml.StdXMLReader;
+import org.freeplane.n3.nanoxml.XMLElement;
+import org.freeplane.n3.nanoxml.XMLParserFactory;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptEditorPanel.IScriptModel;
 import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
 import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
 import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
+import org.freeplane.plugin.script.addons.ManageAddOnsAction;
+import org.freeplane.plugin.script.addons.ScriptAddOnProperties;
 import org.freeplane.plugin.script.filter.ScriptConditionController;
 
 class ScriptingRegistration {
@@ -176,7 +188,8 @@ class ScriptingRegistration {
 			public void executeScript(NodeModel node, String script) {
 				ScriptingEngine.executeScript(node, script);
 			}
-		}); 
+		});
+		registerScriptAddOns();
 		addPropertiesToOptionPanel();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		modeController.addAction(new ScriptEditor());
@@ -194,9 +207,35 @@ class ScriptingRegistration {
 		    new ScriptConditionController());
 	}
 
+	private void registerScriptAddOns() {
+		File[] addonXmlFiles = AddOnsController.getController().getAddOnsDir().listFiles(new FilenameFilter() {
+			@Override
+			public boolean accept(File dir, String name) {
+				return name.endsWith(".script.xml");
+			}
+		});
+		final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
+		for (File file : addonXmlFiles) {
+			BufferedInputStream inputStream = null;
+			try {
+				inputStream = new BufferedInputStream(new FileInputStream(file));
+				final IXMLReader reader = new StdXMLReader(inputStream);
+				parser.setReader(reader);
+				final ScriptAddOnProperties addOn = new ScriptAddOnProperties((XMLElement) parser.parse());
+				addOn.setAddOnPropertiesFile(file);
+				AddOnsController.getController().registerInstalledAddOn(addOn);
+			}
+			catch (final Exception e) {
+				LogUtils.warn("error parsing " + file, e);
+			}
+			finally {
+				FileUtils.silentlyClose(inputStream);
+			}
+		}
+	}
+
 	private void createUserScriptsDirectory() {
-		final String userDir = ResourceController.getResourceController().getFreeplaneUserDirectory();
-		final File scriptDir = new File(userDir, ScriptingConfiguration.USER_SCRIPTS_DIR);
+		final File scriptDir = ScriptingEngine.getUserScriptDir();
 		if (!scriptDir.exists()) {
 			LogUtils.info("creating user scripts directory " + scriptDir);
 			scriptDir.mkdirs();
@@ -207,7 +246,7 @@ class ScriptingRegistration {
 		final HashSet<String> registeredLocations = new HashSet<String>();
 		final String scriptsParentLocation = ScriptingConfiguration.getScriptsParentLocation();
 //		Uncomment here:
-//		menuBuilder.addAction(scriptsParentLocation, new ManageScriptsAction(), MenuBuilder.AS_CHILD);
+		menuBuilder.addAction(scriptsParentLocation, new ManageAddOnsAction(), MenuBuilder.AS_CHILD);
 		
 		final String scriptsLocation = ScriptingConfiguration.getScriptsLocation();
 		addSubMenu(menuBuilder, scriptsParentLocation, scriptsLocation, TextUtils.getText("ExecuteScripts.text"));

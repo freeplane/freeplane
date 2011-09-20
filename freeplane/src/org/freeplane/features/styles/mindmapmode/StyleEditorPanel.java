@@ -461,7 +461,7 @@ public class StyleEditorPanel extends JPanel {
 		mSetNodeFormat = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetNodeFormat);
 		mNodeFormat = new EditableComboProperty(StyleEditorPanel.NODE_FORMAT,
-		    new FormatController().getAllPatterns());
+		    FormatController.getController().getAllPatterns());
 		controls.add(mNodeFormat);
 		final NodeFormatChangeListener listener = new NodeFormatChangeListener(mSetNodeFormat,
 		    mNodeFormat);

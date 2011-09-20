@@ -29,7 +29,6 @@ import java.util.Enumeration;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
@@ -66,7 +65,7 @@ class DocumentationAction extends AFreeplaneAction {
 		final File file;
 		final int extPosition = document.lastIndexOf('.');
 		if (extPosition != -1) {
-			final String languageCode = ((ResourceBundles) resourceController.getResources()).getLanguageCode();
+			final String languageCode = resourceController.getLanguageCode();
 			final String map = document.substring(0, extPosition) + "_" + languageCode
 			        + document.substring(extPosition);
 			final File localFile = new File(baseDir, map);

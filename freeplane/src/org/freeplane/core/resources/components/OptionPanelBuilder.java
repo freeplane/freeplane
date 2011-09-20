@@ -24,6 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.URL;
 import java.text.Collator;
 import java.util.ArrayList;
@@ -135,6 +136,9 @@ public class OptionPanelBuilder {
 			}
 			catch (IOException e) {
 				// OK - return locales
+			}
+			finally {
+				FileUtils.silentlyClose(stream);
 			}
 			return locales;
 		}
@@ -608,12 +612,23 @@ public class OptionPanelBuilder {
 	}
 
 	public void load(final URL menu) {
-		final TreeXmlReader reader = new TreeXmlReader(readManager);
+		InputStreamReader reader = null;
 		try {
-			reader.load(new InputStreamReader(new BufferedInputStream(menu.openStream())));
+			reader = new InputStreamReader(new BufferedInputStream(menu.openStream()));
+			load(reader);
 		}
 		catch (final IOException e) {
 			throw new RuntimeException(e);
+		}
+		finally {
+			FileUtils.silentlyClose(reader);
+		}
+	}
+	
+	public void load(final Reader inputStreamReader) {
+		final TreeXmlReader treeXmlReader = new TreeXmlReader(readManager);
+		try {
+			treeXmlReader.load(inputStreamReader);
 		}
 		catch (final XMLException e) {
 			throw new RuntimeException(e);

@@ -3,6 +3,7 @@ package org.freeplane.plugin.script;
 import groovy.lang.Binding;
 import groovy.lang.MetaClass;
 import groovy.lang.MissingMethodException;
+import groovy.lang.MissingPropertyException;
 import groovy.lang.Script;
 
 import java.util.Map;
@@ -17,7 +18,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.script.proxy.Convertible;
-import org.freeplane.plugin.script.proxy.Proxy.NodeRO;
+import org.freeplane.plugin.script.proxy.Proxy;
 
 /** All methods of this class are available as "global" methods in every script.
  * Only documented methods are meant to be used in scripts. */
@@ -67,12 +68,13 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 	private final Pattern nodeIdPattern = Pattern.compile("ID_\\d+");
 	private final MetaClass nodeMetaClass;
 	private Map<Object, Object> boundVariables;
-	private NodeRO node;
+	private Proxy.NodeRO node;
+	private Proxy.ControllerRO controller;
 
 	
     public FreeplaneScriptBaseClass() {
 	    super();
-	    nodeMetaClass = InvokerHelper.getMetaClass(NodeRO.class);
+	    nodeMetaClass = InvokerHelper.getMetaClass(Proxy.NodeRO.class);
 	    // Groovy rocks!
 	    DefaultGroovyMethods.mixin(Number.class, NodeArithmeticsCategory.class);
 	    initBinding();
@@ -82,7 +84,8 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 	public void initBinding() {
 	    boundVariables = super.getBinding().getVariables();
 	    // this is important: we need this reference no matter if "node" is overridden later by the user
-	    node = (NodeRO) boundVariables.get("node");
+	    node = (Proxy.NodeRO) boundVariables.get("node");
+	    controller = (Proxy.ControllerRO) boundVariables.get("c");
     }
 
 	@Override
@@ -111,7 +114,7 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 			return node;
 		}			
 		if (property.equals("c")) {
-			return boundVariables.get(property);
+			return controller;
 		}			
 		if (nodeIdPattern.matcher(property).matches()) {
 			return N(property);
@@ -125,7 +128,7 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 				try {
 					return nodeMetaClass.getProperty(node, property);
 				}
-				catch (MissingMethodException e) {
+				catch (MissingPropertyException e) {
 					return super.getProperty(property);
 				}
 			}
@@ -150,20 +153,20 @@ public abstract class FreeplaneScriptBaseClass extends Script {
     }
 
 	/** Shortcut for node.map.node(id) - necessary for ids to other maps. */
-	public NodeRO N(String id) {
-		final NodeRO node = (NodeRO) getBinding().getVariable("node");
+	public Proxy.NodeRO N(String id) {
+		final Proxy.NodeRO node = (Proxy.NodeRO) getBinding().getVariable("node");
 		return node.getMap().node(id);
 	}
 
 	/** Shortcut for node.map.node(id).text. */
 	public String T(String id) {
-		final NodeRO n = N(id);
+		final Proxy.NodeRO n = N(id);
 		return n == null ? null : n.getText();
 	}
 
 	/** Shortcut for node.map.node(id).value. */
 	public Object V(String id) {
-		final NodeRO n = N(id);
+		final Proxy.NodeRO n = N(id);
 		try {
 	        return n == null ? null : n.getValue();
         }
