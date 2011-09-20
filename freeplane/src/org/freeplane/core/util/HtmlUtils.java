@@ -93,11 +93,23 @@ public class HtmlUtils {
 		return HtmlUtils.sInstance;
 	}
 
+	/** equivalent to htmlToPlain(text, strictHTMLOnly=true, removeNewLines=true)
+	 * @see #htmlToPlain(String, boolean, boolean) */
 	public static String htmlToPlain(final String text) {
-		return HtmlUtils.htmlToPlain(text, /* strictHTMLOnly= */true);
+		return HtmlUtils.htmlToPlain(text, /* strictHTMLOnly= */true, /* removeNewLines= */true);
 	}
-	
+
+	/** equivalent to htmlToPlain(text, strictHTMLOnly, removeNewLines=true)
+	 * @see #htmlToPlain(String, boolean, boolean) */
 	public static String htmlToPlain(final String text, final boolean strictHTMLOnly) {
+		return htmlToPlain(text, strictHTMLOnly, /* removeNewLines= */true);
+	}
+
+	/** removes html markup and entities, partly and where appropriate by replacing it by plaintext equivalents like 
+	 * &lt;li&gt; -> '*'.
+	 * @param strictHTMLOnly if true does nothing unless the text starts with &lt;html&gt;
+	 * @param removeNewLines set to false to keep all blank lines. */
+	public static String htmlToPlain(final String text, final boolean strictHTMLOnly, final boolean removeNewLines) {
 		if (strictHTMLOnly && !HtmlUtils.isHtmlNode(text)) {
 			return text;
 		}
@@ -127,7 +139,8 @@ public class HtmlUtils {
 		String intermediate = text;
 		int i = 0;
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll(">");
-		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll(" ");
+		if (removeNewLines)
+			intermediate = PATTERNS[i++].matcher(intermediate).replaceAll(" ");
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("\n");
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("\n");
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("\n");
@@ -139,7 +152,8 @@ public class HtmlUtils {
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("\n   * ");
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("");
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("");
-		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("");
+		if (removeNewLines)
+			intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("");
 		intermediate = intermediate.trim();
 		intermediate = HtmlUtils.unescapeHTMLUnicodeEntity(intermediate);
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("<");
