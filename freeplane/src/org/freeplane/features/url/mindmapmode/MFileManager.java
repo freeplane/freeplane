@@ -664,6 +664,10 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	 * Save as; return false is the action was cancelled
 	 */
 	public boolean saveAs(final MapModel map) {
+		return saveAs(map);
+	}
+	
+	public boolean saveAs(final MapModel map, boolean showHiddenFiles) {
 		final JFileChooser chooser = getFileChooser(true);
 		if (getMapsParentFile() == null) {
 			chooser.setSelectedFile(new File(getFileNameProposal(map)
@@ -671,6 +675,9 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		}
 		else {
 			chooser.setSelectedFile(map.getFile());
+		}
+		if (showHiddenFiles) {
+			chooser.setFileHidingEnabled(false);
 		}
 		chooser.setDialogTitle(TextUtils.getText("SaveAsAction.text"));
 		final int returnVal = chooser
