@@ -22,6 +22,9 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 public class WorkspacePreferences {
 
 	private static final String DEFAULT_LANGUAGE = "en";
+	public static final String RELATIVE_TO_WORKSPACE = "relative_to_workspace";
+	public static final String LINK_PROPERTY_KEY = "links";
+	
 	public static final String VIEW_ACTION = "viewaction";
 	public static final String MENU_BAR = "/menu_bar";
 	public static final String VIEW_MENU = "/view";

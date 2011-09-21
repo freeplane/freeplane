@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -20,8 +21,10 @@ import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.config.PopupMenus;
@@ -45,23 +48,22 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 	public static final String WORKSPACE_RESOURCE_URL_PROTOCOL = "workspace";
 	public static final String PROPERTY_RESOURCE_URL_PROTOCOL = "property";
 	public static final String WORKSPACE_VERSION = "1.0";
-	
+
 	private static final WorkspaceController workspaceController = new WorkspaceController();
-	private static final WorkspaceConfiguration configuration  = new WorkspaceConfiguration();
-	
+	private static final WorkspaceConfiguration configuration = new WorkspaceConfiguration();
+
 	private PopupMenus popups;
-	private final FilesystemReader fsReader;	
+	private final FilesystemReader fsReader;
 	private final Vector<IWorkspaceListener> workspaceListener = new Vector<IWorkspaceListener>();
-		
+
 	private TreeView view;
 	private Container oldContentPane;
 	private Container WSContentPane;
 	private SingleContentPane contentPane;
 	private WorkspacePreferences preferences;
-	
+
 	private FileReadManager fileTypeManager;
-	
-	
+
 	private WorkspaceTransferHandler transferHandler;
 	private IndexedTree tree;
 
@@ -74,14 +76,14 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 	 **********************************************************************************/
 
 	protected WorkspaceController() {
-		LogUtils.info("Initializing WorkspaceEnvironment");				
+		LogUtils.info("Initializing WorkspaceEnvironment");
 		getPreferences();
 		initTree();
-		
-		//this.popups = new PopupMenus();
-		
+
+		// this.popups = new PopupMenus();
+
 		this.fsReader = new FilesystemReader(getFileTypeManager());
-	}	
+	}
 
 	/***********************************************************************************
 	 * METHODS
@@ -92,17 +94,21 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 		if (getPreferences().getWorkspaceLocation() == null) {
 			WorkspaceChooserDialog dialog = new WorkspaceChooserDialog();
 			dialog.setVisible(true);
+			if (getPreferences().getWorkspaceLocation() != null) {
+				ResourceController.getResourceController().setProperty(WorkspacePreferences.LINK_PROPERTY_KEY,
+						WorkspacePreferences.RELATIVE_TO_WORKSPACE);
+			}
 		}
 		initializeConfiguration();
 		dispatchWorkspaceEvent(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_EVENT_TYPE_FINALIZE, this));
 		initializeView();
 		isInitialized = true;
 	}
-	
+
 	public static WorkspaceController getController() {
 		return workspaceController;
 	}
-	
+
 	public boolean isInitialized() {
 		return isInitialized;
 	}
@@ -163,18 +169,18 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 	public void addWorkspaceListener(IWorkspaceListener listener) {
 		this.workspaceListener.add(listener);
 	}
-	
+
 	public void removeAllListeners() {
 		this.workspaceListener.removeAllElements();
 	}
 
-	public void reloadWorkspace() {		
+	public void reloadWorkspace() {
 		initTree();
 		initializeConfiguration();
 		reloadView();
 		getExpansionStateHandler().restoreExpansionState();
 	}
-	
+
 	public void refreshWorkspace() {
 		initTree();
 		getConfiguration().reload();
@@ -186,7 +192,7 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 	public IndexedTree getIndexTree() {
 		return tree;
 	}
-	
+
 	public WorkspacePreferences getPreferences() {
 		if (this.preferences == null) {
 			this.preferences = new WorkspacePreferences();
@@ -195,30 +201,29 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 		}
 		return this.preferences;
 	}
-	
 
 	public AWorkspaceExpansionStateHandler getExpansionStateHandler() {
-		if(expansionStateHandler == null) {
+		if (expansionStateHandler == null) {
 			expansionStateHandler = new DefaultWorkspaceExpansionStateHandler();
 		}
 		return expansionStateHandler;
 	}
 
-	private void initTree() {		
+	private void initTree() {
 		getPopups().initialize();
 		this.tree = new IndexedTree(null);
 		this.tree.addElement(this.tree, new WorkspaceRoot(), "root", IndexedTree.AS_CHILD);
 	}
 
-	private void initializeConfiguration() {		
+	private void initializeConfiguration() {
 		String workspaceLocation = getPreferences().getWorkspaceLocation();
 		if (workspaceLocation == null || workspaceLocation.trim().length() <= 0) {
 			showWorkspace(false);
 			return;
 		}
-		
+
 		resetWorkspaceView();
-		
+
 		if (getConfiguration().reload()) {
 			showWorkspace(true);
 			UrlManager.getController().setLastCurrentDir(new File(preferences.getWorkspaceLocation()));
@@ -228,20 +233,20 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 			showWorkspace(false);
 			getPreferences().setNewWorkspaceLocation(null);
 		}
-		
-//		if (!getConfiguration().isConfigValid()) {
-//			WorkspaceChooserDialog locationDialog = new WorkspaceChooserDialog();
-//			locationDialog.setVisible(true);
-//		}
-//
-//		if (!getConfiguration().isConfigValid()) {
-//			showWorkspace(false);
-//			return;
-//		}
-//
-//		
+
+		// if (!getConfiguration().isConfigValid()) {
+		// WorkspaceChooserDialog locationDialog = new WorkspaceChooserDialog();
+		// locationDialog.setVisible(true);
+		// }
+		//
+		// if (!getConfiguration().isConfigValid()) {
+		// showWorkspace(false);
+		// return;
+		// }
+		//
+		//
 	}
-	
+
 	private TreeView getWorkspaceView() {
 		if (this.view == null) {
 			this.view = new TreeView(getWorkspaceRoot());
@@ -251,8 +256,9 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 			this.view.getTreeView().addMouseMotionListener(mouseHandler);
 			this.view.getTreeView().addKeyListener(new DefaultWorkspaceKeyHandler());
 			this.view.getTreeView().setRowHeight(18);
-			this.view.getTreeView().addTreeExpansionListener((DefaultWorkspaceExpansionStateHandler)getExpansionStateHandler());
-			this.transferHandler = WorkspaceTransferHandler.configureDragAndDrop(this.view.getTreeView(), new DefaultWorkspaceDropHandler());
+			this.view.getTreeView().addTreeExpansionListener((DefaultWorkspaceExpansionStateHandler) getExpansionStateHandler());
+			this.transferHandler = WorkspaceTransferHandler.configureDragAndDrop(this.view.getTreeView(),
+					new DefaultWorkspaceDropHandler());
 		}
 		return this.view;
 	}
@@ -371,28 +377,28 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 		}
 		return this.fileTypeManager;
 	}
-	
+
 	private void dispatchWorkspaceEvent(WorkspaceEvent event) {
-		switch(event.getType()) {
-			case (1): {
-				for(IWorkspaceListener listener : workspaceListener) {
-					listener.workspaceChanged(event);
-				}
-				break;
+		switch (event.getType()) {
+		case (1): {
+			for (IWorkspaceListener listener : workspaceListener) {
+				listener.workspaceChanged(event);
 			}
-			case (2): {
-				for(IWorkspaceListener listener : workspaceListener) {
-					listener.workspaceInitialize(event);
-				}
-				break;
+			break;
+		}
+		case (2): {
+			for (IWorkspaceListener listener : workspaceListener) {
+				listener.workspaceInitialize(event);
 			}
-			case (4): {
-				for(IWorkspaceListener listener : workspaceListener) {
-					listener.workspaceFinalize(event);
-				}
-				break;
+			break;
+		}
+		case (4): {
+			for (IWorkspaceListener listener : workspaceListener) {
+				listener.workspaceFinalize(event);
 			}
-			
+			break;
+		}
+
 		}
 	}
 
@@ -401,13 +407,14 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 	 **********************************************************************************/
 
 	public void propertyChanged(String propertyName, String newValue, String oldValue) {
-//		if (propertyName.equals(WorkspacePreferences.WORKSPACE_LOCATION_NEW)) {
-//			if (newValue != null && newValue.trim().length() > 0) {
-//				Controller.getCurrentController().getResourceController()
-//						.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, true);
-//				reloadWorkspace();
-//			}
-//		}
+		// if (propertyName.equals(WorkspacePreferences.WORKSPACE_LOCATION_NEW))
+		// {
+		// if (newValue != null && newValue.trim().length() > 0) {
+		// Controller.getCurrentController().getResourceController()
+		// .setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, true);
+		// reloadWorkspace();
+		// }
+		// }
 	}
 
 	/***********************************************************************************
