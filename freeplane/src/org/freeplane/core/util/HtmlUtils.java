@@ -141,6 +141,8 @@ public class HtmlUtils {
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll(">");
 		if (removeNewLines)
 			intermediate = PATTERNS[i++].matcher(intermediate).replaceAll(" ");
+		else
+			i++;
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("\n");
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("\n");
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("\n");
@@ -154,6 +156,8 @@ public class HtmlUtils {
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("");
 		if (removeNewLines)
 			intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("");
+		else
+			i++;
 		intermediate = intermediate.trim();
 		intermediate = HtmlUtils.unescapeHTMLUnicodeEntity(intermediate);
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("<");
