@@ -438,7 +438,6 @@ public class MMapController extends MapController {
                 final NodeModel node = sortedChildren.get(position.intValue());
                 selection.makeTheSelected(node);
             }
-            Controller.getCurrentController().getViewController().obtainFocusForSelected();
         }
     }
     private int moveNodeTo(final NodeModel child, final int direction) {
