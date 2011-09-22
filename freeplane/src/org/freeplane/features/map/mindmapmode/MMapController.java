@@ -328,14 +328,16 @@ public class MMapController extends MapController {
 		return ((MFileManager) UrlManager.getController()).loadTree(map, file);
 	}
 
+	public void moveNode(NodeModel node, int i) {
+		   moveNode(node, node.getParentNode(), i);
+	}
+	
 	public void moveNode(final NodeModel child, final NodeModel newParent, final int childCount) {
 		moveNode(child, newParent, childCount, false, false);
 	}
 
 	public void moveNode(final NodeModel child, final NodeModel newParent, final int newIndex, final boolean isLeft,
 	                     final boolean changeSide) {
-		ModeController modeController = Controller.getCurrentModeController();
-		((FreeNode)modeController.getExtension(FreeNode.class)).undoableDeactivateHook(child);
 		final NodeModel oldParent = child.getParentNode();
 		final int oldIndex = oldParent.getChildPosition(child);
 		final boolean wasLeft = child.isLeft();
@@ -355,7 +357,7 @@ public class MMapController extends MapController {
 				moveNodeToWithoutUndo(child, oldParent, oldIndex, wasLeft, changeSide);
 			}
 		};
-		modeController.execute(actor, newParent.getMap());
+		Controller.getCurrentModeController().execute(actor, newParent.getMap());
 		
 	}
 
@@ -365,7 +367,8 @@ public class MMapController extends MapController {
 		if (node.getParent() == selectedParent) {
 			position--;
 		}
-		moveNode(node, selectedParent, position, isLeft, changeSide);
+		((FreeNode)Controller.getCurrentModeController().getExtension(FreeNode.class)).undoableDeactivateHook(node);
+	moveNode(node, selectedParent, position, isLeft, changeSide);
 	}
 
 	public void moveNodeBefore(final NodeModel node, final NodeModel target, final boolean isLeft,
@@ -378,6 +381,7 @@ public class MMapController extends MapController {
             if(oldIndex < newIndex)
                 newIndex--;
 	    }
+		((FreeNode)Controller.getCurrentModeController().getExtension(FreeNode.class)).undoableDeactivateHook(node);
         moveNode(node, newParent, newIndex, isLeft, changeSide);
 	}
 

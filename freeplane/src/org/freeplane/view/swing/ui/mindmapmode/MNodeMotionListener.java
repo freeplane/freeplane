@@ -19,6 +19,8 @@
  */
 package org.freeplane.view.swing.ui.mindmapmode;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -32,8 +34,11 @@ import javax.swing.JScrollPane;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.SummaryNode;
+import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationController;
@@ -217,14 +222,80 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 		final NodeModel node = nodeV.getModel();
 		final NodeModel parentNode = nodeV.getModel().getParentNode();
 		final int parentVGap = LocationModel.getModel(parentNode).getVGap();
-		final int hgap = LocationModel.getModel(node).getHGap();
+		int hgap = LocationModel.getModel(node).getHGap();
 		final int shiftY = LocationModel.getModel(node).getShiftY();
+		int newIndex = -1;
+		boolean changeSide = false;
+		boolean newIsLeft = nodeV.isLeft();
+		if(FreeNode.isFreeNode(node)){
+			newIsLeft = calculateNewNodeSide(nodeV);
+			changeSide =  newIsLeft != nodeV.isLeft();
+			newIndex = calculateNewNodeIndex(nodeV, newIsLeft);
+			hgap = calculateNewHGap(nodeV, hgap, changeSide, newIsLeft);
+		}
 		resetPositions(node);
 		final Controller controller = Controller.getCurrentController();
 		MLocationController locationController = (MLocationController) LocationController.getController(controller.getModeController());
 		locationController.moveNodePosition(node, parentVGap, hgap, shiftY);
+		if(newIndex != -1){
+			MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+			mapController.moveNode(node, node.getParentNode(),  newIndex, newIsLeft, changeSide);
+		}
+			
 		stopDrag();
 	}
+
+	private int calculateNewHGap(NodeView nodeV, int hgap, boolean changeSide, boolean newIsLeft) {
+		if(! changeSide || SummaryNode.isSummaryNode(nodeV.getModel()))
+			return hgap;
+		final int newHgap = nodeV.getParentView().getContent().getWidth() - nodeV.getContent().getWidth() - hgap;
+		return newHgap;
+		
+    }
+
+	private boolean calculateNewNodeSide(NodeView nodeV) {
+		final NodeView parent = nodeV.getParentView();
+		if(! parent.isRoot())
+			return nodeV.isLeft();
+		int refX = getRefX(parent);
+		return nodeV.getX() + getRefX(nodeV) < refX;
+    }
+
+	public int getRefX(final NodeView node) {
+	    return node.getContent().getX() + node.getContent().getWidth()/2;
+    }
+
+	private int calculateNewNodeIndex(final NodeView nodeV, final boolean left) {
+		final NodeModel node = nodeV.getModel();
+		if(SummaryNode.isSummaryNode(node))
+			return -1;
+		final int nodeY = getRefY(nodeV);
+		final NodeView parent = nodeV.getParentView();
+		int newIndex = 0;
+		int wrondSideCount = 0;
+		for(int i = 0; i < parent.getComponentCount(); i++){
+			final Component component = parent.getComponent(i);
+			if(!(component instanceof NodeView))
+				continue;
+			NodeView sibling = (NodeView)component;
+			if(sibling.isLeft() == left 
+					&& ! SummaryNode.isSummaryNode(sibling.getModel())
+				&& getRefY(sibling) > nodeY)
+				return newIndex - wrondSideCount;
+			else
+				if(sibling != nodeV){
+					newIndex++;
+					if(sibling.isLeft() != left)
+						wrondSideCount++;
+					else
+						wrondSideCount = 0;
+				}
+		}
+		return newIndex - wrondSideCount;
+    }
+	private int getRefY(NodeView sibling) {
+	    return sibling.getY() + sibling.getContent().getY();
+    }
 
 	/**
 	 */

@@ -49,11 +49,11 @@ public class FreeNode extends PersistentNodeHook implements IExtension{
 	@Override
 	public void undoableToggleHook(NodeModel node, IExtension extension) {
 		((MLocationController)LocationController.getController()).moveNodePosition(node, 0, LocationModel.HGAP, -1);
-		if(!isFreeNode(node)){
-			MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
-			mapController.moveNode(node, node.getParentNode(), 0);
-		}
 		super.undoableToggleHook(node, extension);
+		if(isFreeNode(node)){
+			MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+			mapController.moveNode(node, 0);
+		}
 	}
 
 
