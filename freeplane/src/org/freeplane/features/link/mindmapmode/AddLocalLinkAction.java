@@ -21,10 +21,13 @@ package org.freeplane.features.link.mindmapmode;
 
 import java.awt.event.ActionEvent;
 import java.util.Collection;
+import java.util.List;
+
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -46,15 +49,15 @@ class AddLocalLinkAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final ModeController modeController = Controller.getCurrentModeController();
-		final MapController mapController = modeController.getMapController();
-		final Collection<NodeModel> selecteds = mapController.getSelectedNodes();
-		if (selecteds.size() < 2) {
+		final IMapSelection selection = Controller.getCurrentController().getSelection();
+		final List<NodeModel> selecteds = selection.getOrderedSelection();
+		final int size = selecteds.size();
+		if (size < 2) {
 			Controller.getCurrentController();
 			UITools.errorMessage(TextUtils.getText("less_than_two_selected_nodes"));
 			return;
 		}
-		final NodeModel target = mapController.getSelectedNode();
+		final NodeModel target = selecteds.get(size-1);
 		final String targetId = (target).createID();
 		for (NodeModel source : selecteds) {
 			if(source != target)
