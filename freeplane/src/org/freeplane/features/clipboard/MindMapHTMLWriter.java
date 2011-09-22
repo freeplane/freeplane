@@ -25,6 +25,7 @@ import java.io.Writer;
 import java.util.Collection;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.link.NodeLinks;
@@ -433,7 +434,7 @@ class MindMapHTMLWriter {
 			fileout.write(output);
 		}
 		else {
-			fileout.write(string);
+			fileout.write(HtmlUtils.unicodeToHTMLUnicodeEntity(string));
 		}
     }
 	private void writeStyle() throws IOException {
