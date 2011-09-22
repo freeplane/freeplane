@@ -22,6 +22,7 @@ package org.docear.plugin.core.actions;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
@@ -37,7 +38,9 @@ public class SaveAsAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		((MFileManager) UrlManager.getController()).saveAs(Controller.getCurrentController().getMap(), true);
+		MapModel map = Controller.getCurrentController().getMap();
+		((MFileManager) UrlManager.getController()).saveAs(map, true);
 		Controller.getCurrentController().getViewController().setTitle();
+		Controller.getCurrentModeController().getMapController().fireMapSavedAs(map);
 	}
 }

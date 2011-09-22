@@ -159,6 +159,9 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 				timer.cancel();
 			}
 		}
+
+		public void onSavedAs(MapModel map) {			
+		}
 	}
 
 	static Vector<Color> colors = new Vector<Color>();

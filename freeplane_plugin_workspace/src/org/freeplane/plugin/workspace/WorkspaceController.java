@@ -7,7 +7,6 @@ import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -22,9 +21,9 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.config.PopupMenus;
@@ -33,9 +32,9 @@ import org.freeplane.plugin.workspace.config.node.WorkspaceRoot;
 import org.freeplane.plugin.workspace.controller.AWorkspaceExpansionStateHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceComponentHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceDropHandler;
+import org.freeplane.plugin.workspace.controller.DefaultWorkspaceExpansionStateHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceKeyHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceMouseHandler;
-import org.freeplane.plugin.workspace.controller.DefaultWorkspaceExpansionStateHandler;
 import org.freeplane.plugin.workspace.controller.IWorkspaceListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferHandler;
@@ -44,7 +43,7 @@ import org.freeplane.plugin.workspace.io.FilesystemReader;
 import org.freeplane.plugin.workspace.io.creator.AFileNodeCreator;
 import org.freeplane.plugin.workspace.view.TreeView;
 
-public class WorkspaceController implements IFreeplanePropertyListener {
+public class WorkspaceController implements IFreeplanePropertyListener, IMapLifeCycleListener {
 	public static final String WORKSPACE_RESOURCE_URL_PROTOCOL = "workspace";
 	public static final String PROPERTY_RESOURCE_URL_PROTOCOL = "property";
 	public static final String WORKSPACE_VERSION = "1.0";
@@ -77,6 +76,7 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 
 	protected WorkspaceController() {
 		LogUtils.info("Initializing WorkspaceEnvironment");
+		registerToIMapLifeCycleListener();
 		getPreferences();
 		initTree();
 
@@ -84,11 +84,14 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 
 		this.fsReader = new FilesystemReader(getFileTypeManager());
 	}
-
+	
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
-
+	private void registerToIMapLifeCycleListener() {
+		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(this);
+	}
+	
 	public void initialStart() {
 		dispatchWorkspaceEvent(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_EVENT_TYPE_INITIALIZE, this));
 		if (getPreferences().getWorkspaceLocation() == null) {
@@ -429,6 +432,20 @@ public class WorkspaceController implements IFreeplanePropertyListener {
 			this.removeAll();
 			this.add(comp);
 		}
+	}
+
+	public void onCreate(MapModel map) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void onRemove(MapModel map) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void onSavedAs(MapModel map) {
+		refreshWorkspace();
 	}
 
 }

@@ -497,4 +497,8 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		};
 		Controller.getCurrentModeController().execute(actor, model);
     }
+
+	public void onSavedAs(MapModel map) {
+		
+	}
 }
