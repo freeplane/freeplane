@@ -50,6 +50,7 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
@@ -69,8 +70,8 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
@@ -616,11 +617,15 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	public boolean save(final MapModel map) {
+		return save(map, false);
+	}
+	
+	public boolean save(final MapModel map, final boolean showHiddenFiles) {
 		if (map == null || map.isSaved()) {
 			return true;
 		}
 		if (map.getURL() == null || map.isReadOnly()) {
-			return saveAs(map);
+			return saveAs(map, showHiddenFiles);
 		}
 		else {
 			return save(map, map.getFile());

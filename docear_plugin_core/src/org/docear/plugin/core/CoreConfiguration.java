@@ -6,6 +6,7 @@ import java.util.Enumeration;
 
 import org.docear.plugin.core.actions.DocearLicenseAction;
 import org.docear.plugin.core.actions.DocearOpenUrlAction;
+import org.docear.plugin.core.actions.SaveAction;
 import org.docear.plugin.core.actions.SaveAsAction;
 import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.workspace.creator.FolderTypeLibraryCreator;
@@ -127,6 +128,8 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		//replace this actions if docear_core is present
 		Controller.getCurrentModeController().removeAction("SaveAsAction");
 		Controller.getCurrentModeController().addAction(new SaveAsAction());
+		Controller.getCurrentModeController().removeAction("SaveAction");
+		Controller.getCurrentModeController().addAction(new SaveAction());
 
 		if (!resourceController.getProperty(APPLICATION_NAME, "").equals(DOCEAR)) {
 			return;

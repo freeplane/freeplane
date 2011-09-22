@@ -155,12 +155,18 @@ public class MModeController extends ModeController {
 	}
 
 	/**
+	 * @param b 
 	 *
 	 */
+
 	public boolean save() {
-		return ((MFileManager) UrlManager.getController()).save(getController().getMap());
+		return save(false);
 	}
 
+	public boolean save(boolean showHiddenFiles) {
+		return ((MFileManager) UrlManager.getController()).save(getController().getMap(), showHiddenFiles);
+	}
+		
 	@Override
 	public void shutdown() {
 		super.shutdown();
