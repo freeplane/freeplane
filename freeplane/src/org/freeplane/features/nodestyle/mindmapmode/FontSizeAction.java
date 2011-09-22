@@ -33,7 +33,7 @@ class FontSizeAction extends AMultipleNodeAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	/** This action is used for all sizes, which have to be set first. */
+	/** This action is used for all FONT_SIZES, which have to be set first. */
 	private int actionSize;
 
 	/**
