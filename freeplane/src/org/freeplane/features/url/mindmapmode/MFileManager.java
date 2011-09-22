@@ -664,7 +664,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	 * Save as; return false is the action was cancelled
 	 */
 	public boolean saveAs(final MapModel map) {
-		return saveAs(map);
+		return saveAs(map, false);
 	}
 	
 	public boolean saveAs(final MapModel map, boolean showHiddenFiles) {
