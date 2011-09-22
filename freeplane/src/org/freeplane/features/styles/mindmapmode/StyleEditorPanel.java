@@ -583,6 +583,7 @@ public class StyleEditorPanel extends JPanel {
 		controls.add(mSetNodeFontSize);
 		final List<String> sizesVector = new ArrayList<String>(Arrays.asList(MUIFactory.FONT_SIZES));
 		mNodeFontSize = new ComboProperty(StyleEditorPanel.NODE_FONT_SIZE, sizesVector, sizesVector);
+		mNodeFontSize.setEditable(true);
 		controls.add(mNodeFontSize);
 		final FontSizeChangeListener listener = new FontSizeChangeListener(mSetNodeFontSize, mNodeFontSize);
 		mSetNodeFontSize.addPropertyChangeListener(listener);
