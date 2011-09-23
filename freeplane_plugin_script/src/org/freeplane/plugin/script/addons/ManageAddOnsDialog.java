@@ -155,17 +155,14 @@ public class ManageAddOnsDialog extends JDialog {
 		install.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 		final JTextField urlField = new JTextField();
 		urlField.getDocument().addDocumentListener(new DocumentListener() {
-			@Override
 			public void insertUpdate(DocumentEvent e) {
 				updateImpl(e);
 			}
 
-			@Override
 			public void removeUpdate(DocumentEvent e) {
 				updateImpl(e);
 			}
 
-			@Override
 			public void changedUpdate(DocumentEvent e) {
 				updateImpl(e);
 			}
@@ -266,7 +263,8 @@ public class ManageAddOnsDialog extends JDialog {
 
 	private JTable createTable(final AddOnTableModel tableModel) {
 		final JTable table = new JTable(tableModel);
-		table.setAutoCreateRowSorter(true);
+//FIXME: Java 6
+//		table.setAutoCreateRowSorter(true);
 		table.setRowHeight(36);
 		table.setBackground(Color.white);
 		final TableColumnModel columnModel = table.getColumnModel();
@@ -292,7 +290,6 @@ public class ManageAddOnsDialog extends JDialog {
 
 	private AbstractAction createConfigureAction(final AddOnTableModel tableModel) {
 		return new AbstractAction() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);
@@ -310,7 +307,6 @@ public class ManageAddOnsDialog extends JDialog {
 
 	private AbstractAction createDeactivateAction(final AddOnTableModel tableModel) {
 		return new AbstractAction() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);
@@ -329,7 +325,6 @@ public class ManageAddOnsDialog extends JDialog {
 
 	private AbstractAction createActivateAction(final AddOnTableModel tableModel) {
 		return new AbstractAction() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);
@@ -349,7 +344,6 @@ public class ManageAddOnsDialog extends JDialog {
 
 	private AbstractAction createDeinstallAction(final AddOnTableModel tableModel) {
 		return new AbstractAction() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);
@@ -488,17 +482,17 @@ class ButtonsInCellRenderer extends AbstractCellEditor implements TableCellRende
 		}
 	}
 
-	@Override
 	public Object getCellEditorValue() {
 		return editorValue;
 	}
 
-	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 	                                               int row, int column) {
 		final ManageAddOnsDialog.AddOnTableModel model = (AddOnTableModel) table.getModel();
 		for (JButton btn : buttons) {
-			final AddOnProperties addOn = model.getAddOnAt(table.convertRowIndexToModel(row));
+//FIXME: Java 6
+//			final AddOnProperties addOn = model.getAddOnAt(table.convertRowIndexToModel(row));
+			final AddOnProperties addOn = model.getAddOnAt(row);
 			btn.setVisible(addOn.supportsOperation(btn.getName()));
 			if (isSelected) {
 				btn.setForeground(table.getSelectionForeground());
@@ -520,15 +514,15 @@ class ButtonsInCellRenderer extends AbstractCellEditor implements TableCellRende
 		return panel;
 	}
 
-	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 		this.editorValue = value;
 		return panel;
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
-		int row = table.convertRowIndexToModel(table.getEditingRow());
+//FIXME: Java 6
+//		int row = table.convertRowIndexToModel(table.getEditingRow());
+		int row = table.getEditingRow();
 		fireEditingStopped();
 		ActionEvent event = new ActionEvent(table, ActionEvent.ACTION_PERFORMED, "" + row);
 		for (int i = 0; i < buttons.length; i++) {
@@ -543,28 +537,23 @@ class ButtonsInCellRenderer extends AbstractCellEditor implements TableCellRende
 	 *  the mouse to another cell before releasing it, the editor is still
 	 *  active. Make sure editing is stopped when the mouse is released.
 	 */
-	@Override
 	public void mousePressed(MouseEvent e) {
 		if (table.isEditing() && table.getCellEditor() == this)
 			isButtonColumnEditor = true;
 	}
 
-	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (isButtonColumnEditor && table.isEditing())
 			table.getCellEditor().stopCellEditing();
 		isButtonColumnEditor = false;
 	}
 
-	@Override
 	public void mouseClicked(MouseEvent e) {
 	}
 
-	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
 
-	@Override
 	public void mouseExited(MouseEvent e) {
 	}
 }

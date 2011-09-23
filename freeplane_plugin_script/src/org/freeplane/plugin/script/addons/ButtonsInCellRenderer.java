@@ -71,12 +71,10 @@ class ButtonsInColumn extends AbstractCellEditor implements TableCellRenderer, T
 		}
 	}
 
-	@Override
 	public Object getCellEditorValue() {
 		return editorValue;
 	}
 
-	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 	                                               int row, int column) {
 		for (JButton btn : buttons) {
@@ -100,15 +98,15 @@ class ButtonsInColumn extends AbstractCellEditor implements TableCellRenderer, T
 		return panel;
 	}
 
-	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 		this.editorValue = value;
 		return panel;
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
-		int row = table.convertRowIndexToModel(table.getEditingRow());
+//FIXME: Java 6
+//		int row = table.convertRowIndexToModel(table.getEditingRow());
+		int row = table.getEditingRow();
 		fireEditingStopped();
 		ActionEvent event = new ActionEvent(table, ActionEvent.ACTION_PERFORMED, "" + row);
 		for (int i = 0; i < buttons.length; i++) {
@@ -123,28 +121,23 @@ class ButtonsInColumn extends AbstractCellEditor implements TableCellRenderer, T
 	 *  the mouse to another cell before releasing it, the editor is still
 	 *  active. Make sure editing is stopped when the mouse is released.
 	 */
-	@Override
 	public void mousePressed(MouseEvent e) {
 		if (table.isEditing() && table.getCellEditor() == this)
 			isButtonColumnEditor = true;
 	}
 
-	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (isButtonColumnEditor && table.isEditing())
 			table.getCellEditor().stopCellEditing();
 		isButtonColumnEditor = false;
 	}
 
-	@Override
 	public void mouseClicked(MouseEvent e) {
 	}
 
-	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
 
-	@Override
 	public void mouseExited(MouseEvent e) {
 	}
 
@@ -157,18 +150,17 @@ class ButtonsInColumn extends AbstractCellEditor implements TableCellRenderer, T
 		}
 		JTable table = new JTable(2, 2);
 		table.setRowHeight(36);
-		table.setAutoCreateRowSorter(true);
+//FIXME: Java 6
+//		table.setAutoCreateRowSorter(true);
 		final TableColumnModel columnModel = table.getColumnModel();
 		columnModel.getColumn(0).setPreferredWidth(200);
 		columnModel.getColumn(1).setPreferredWidth(400);
 		JButton[] btns = new JButton[] { new JButton("Deactivate"), new JButton("Configure") };
 		Action[] actions = new Action[] { new AbstractAction() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(null, "Deactivating");
 			}
 		}, new AbstractAction() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(null, "Configuring");
 			}

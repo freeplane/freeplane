@@ -209,7 +209,6 @@ class ScriptingRegistration {
 
 	private void registerScriptAddOns() {
 		File[] addonXmlFiles = AddOnsController.getController().getAddOnsDir().listFiles(new FilenameFilter() {
-			@Override
 			public boolean accept(File dir, String name) {
 				return name.endsWith(".script.xml");
 			}
