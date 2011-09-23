@@ -211,6 +211,7 @@ public interface Proxy {
 		 * selected node or the selected node for a single node selection. */
 		Node getSelected();
 
+		/** A read-only list of selected nodes. That is you cannot select a node by adding it to the returned list. */
 		List<Node> getSelecteds();
 
 		/** returns List<Node> of Node objects sorted on Y

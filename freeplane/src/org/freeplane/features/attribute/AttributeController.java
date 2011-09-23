@@ -76,6 +76,9 @@ public class AttributeController implements IExtension {
 
 			public void onRemove(final MapModel map) {
 			}
+
+			public void onSavedAs(MapModel map) {				
+			}
 		});
 		registerTooltipProvider();
 	}

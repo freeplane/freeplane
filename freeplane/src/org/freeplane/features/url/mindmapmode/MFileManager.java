@@ -50,6 +50,7 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
@@ -69,8 +70,8 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
@@ -475,9 +476,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			    .createNodeTreeFromXml(map, reader, Mode.FILE);
 		}
 		finally {
-			if (reader != null) {
-				reader.close();
-			}
+			FileUtils.silentlyClose(reader);
 		}
 	}
 
@@ -618,11 +617,15 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	public boolean save(final MapModel map) {
+		return save(map, false);
+	}
+	
+	public boolean save(final MapModel map, final boolean showHiddenFiles) {
 		if (map == null || map.isSaved()) {
 			return true;
 		}
 		if (map.getURL() == null || map.isReadOnly()) {
-			return saveAs(map);
+			return saveAs(map, showHiddenFiles);
 		}
 		else {
 			return save(map, map.getFile());
@@ -666,6 +669,10 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	 * Save as; return false is the action was cancelled
 	 */
 	public boolean saveAs(final MapModel map) {
+		return saveAs(map, false);
+	}
+	
+	public boolean saveAs(final MapModel map, boolean showHiddenFiles) {
 		final JFileChooser chooser = getFileChooser(true);
 		if (getMapsParentFile() == null) {
 			chooser.setSelectedFile(new File(getFileNameProposal(map)
@@ -673,6 +680,9 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		}
 		else {
 			chooser.setSelectedFile(map.getFile());
+		}
+		if (showHiddenFiles) {
+			chooser.setFileHidingEnabled(false);
 		}
 		chooser.setDialogTitle(TextUtils.getText("SaveAsAction.text"));
 		final int returnVal = chooser
@@ -705,6 +715,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		}
 		if (save(map, f)) {
 			Controller.getCurrentController().getMapViewManager().updateMapViewName();
+			Controller.getCurrentModeController().getMapController().fireMapSavedAs(map);
 			return true;
 		}
 		return false;

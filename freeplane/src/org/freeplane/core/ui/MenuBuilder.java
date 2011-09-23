@@ -35,8 +35,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.swing.AbstractButton;
@@ -68,13 +68,13 @@ import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.components.JFreeplaneMenuItem;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.n3.nanoxml.XMLException;
 
 public class MenuBuilder extends UIBuilder {
 	private static class ActionHolder implements INameMnemonicHolder {
@@ -381,16 +381,18 @@ public class MenuBuilder extends UIBuilder {
 		}
 
 		public void processMenu(final URL menu) {
-			final TreeXmlReader reader = new TreeXmlReader(readManager);
+			InputStreamReader streamReader = null;
 			try {
-				reader.load(new InputStreamReader(new BufferedInputStream(menu.openStream())));
+				streamReader = new InputStreamReader(new BufferedInputStream(menu.openStream()));
+				final TreeXmlReader reader = new TreeXmlReader(readManager);
+				reader.load(streamReader);
 			}
-			catch (final IOException e) {
+			catch (final Exception e) {
 				throw new RuntimeException(e);
 			}
-			catch (final XMLException e) {
-				throw new RuntimeException(e);
-			}
+	        finally {
+	        	FileUtils.silentlyClose(streamReader);
+	        }
 		}
 	}
 

@@ -62,10 +62,6 @@ import org.freeplane.features.url.UrlManager;
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class ExportWithXSLT extends AExportEngine {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @param map 
@@ -277,7 +273,10 @@ public class ExportWithXSLT extends AExportEngine {
 		catch (final Exception e) {
 			LogUtils.warn(e);
 			return false;
-		};
+		}
+		finally {
+			FileUtils.silentlyClose(xsltFile);
+		}
 		return true;
 	}
 

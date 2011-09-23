@@ -38,7 +38,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.io.Writer;
-
+import java.net.URI;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
@@ -74,6 +74,7 @@ import javax.swing.text.html.StyleSheet;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
@@ -86,6 +87,7 @@ import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EventBuffer;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
@@ -97,7 +99,7 @@ import com.lightdev.app.shtm.SHTMLWriter;
 /**
  * @author foltin
  */
-class EditNodeTextField extends EditNodeBase {
+public class EditNodeTextField extends EditNodeBase {
     private class MyNavigationFilter extends NavigationFilter {
         /* (non-Javadoc)
          * @see javax.swing.text.NavigationFilter#moveDot(javax.swing.text.NavigationFilter.FilterBypass, int, javax.swing.text.Position.Bias)
@@ -325,7 +327,17 @@ class EditNodeTextField extends EditNodeBase {
 		public void keyTyped(final KeyEvent e) {
 		}
 
-		public void mouseClicked(final MouseEvent e) {
+		public void mouseClicked(final MouseEvent ev) {
+			if ((ev.getModifiers() & MouseEvent.CTRL_MASK) != 0) {
+				final String linkURL = HtmlUtils.getURLOfExistingLink((HTMLDocument) textfield.getDocument(), textfield.viewToModel(ev.getPoint()));
+				if (linkURL != null) {
+					try {
+						UrlManager.getController().loadURL(new URI(linkURL));
+					} catch (Exception e) {
+						LogUtils.warn(e);
+					}
+				}
+			}
 		}
 
 		public void mouseEntered(final MouseEvent e) {

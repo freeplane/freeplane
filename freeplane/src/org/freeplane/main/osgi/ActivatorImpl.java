@@ -33,6 +33,7 @@ import java.util.jar.Manifest;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.mode.Controller;
@@ -109,8 +110,9 @@ class ActivatorImpl implements BundleActivator {
 		}
 		final File manifest = new File(file, "META-INF/MANIFEST.MF");
 		if (manifest.exists()) {
+			InputStream manifestContent = null;
 			try {
-				final InputStream manifestContent = new FileInputStream(manifest);
+				manifestContent = new FileInputStream(manifest);
 				final Manifest bundleManifest = new Manifest(manifestContent);
 				final String name = bundleManifest.getMainAttributes().getValue("Bundle-SymbolicName");
 				if (name == null) {
@@ -131,6 +133,9 @@ class ActivatorImpl implements BundleActivator {
 			}
 			catch (final Exception e) {
 				e.printStackTrace();
+			}
+			finally {
+				FileUtils.silentlyClose(manifestContent);
 			}
 			return;
 		}

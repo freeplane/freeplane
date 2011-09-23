@@ -31,6 +31,7 @@ import org.freeplane.features.map.AMapChangeListenerAdapter;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -89,6 +90,9 @@ public class NodeTooltipManager implements IExtension{
                                     int newIndex) {
 				instance.hideTipWindow();
             }
+
+			public void onSavedAs(MapModel map) {
+			}
 			
 		};
 		MapController mapController = modeController.getMapController();

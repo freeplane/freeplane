@@ -24,6 +24,7 @@ import groovy.lang.GroovyRuntimeException;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
 
+import java.io.File;
 import java.io.PrintStream;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,6 +39,7 @@ import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.runtime.InvokerHelper;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -108,8 +110,8 @@ public class ScriptingEngine {
 		final PrintStream oldOut = System.out;
 		// get preferences (and store them again after the script execution,
 		// such that the scripts are not able to change them).
-		final ScriptingPermissions scriptingPermissions = new ScriptingPermissions();
-		scriptingPermissions.initFromPreferences();
+		final ScriptingPermissions scriptingPermissions = new ScriptingPermissions(ResourceController
+		    .getResourceController().getProperties());
 		final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
 		final ScriptingSecurityManager scriptingSecurityManager;
 		final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
@@ -284,5 +286,10 @@ public class ScriptingEngine {
 		ScriptingEngine.classpath = Collections.unmodifiableList(classpath);
 		if (!classpath.isEmpty())
 			LogUtils.info("extending script's classpath by " + classpath);
+    }
+
+	public static File getUserScriptDir() {
+        final String userDir = ResourceController.getResourceController().getFreeplaneUserDirectory();
+    	return new File(userDir, ScriptingConfiguration.USER_SCRIPTS_DIR);
     }
 }

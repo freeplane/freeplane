@@ -103,7 +103,11 @@ public class MModeController extends ModeController {
 		optionPanelBuilder = new OptionPanelBuilder();
 		final ResourceController resourceController = ResourceController.getResourceController();		
 		optionPanelBuilder.load(resourceController.getResource("/xml/preferences.xml"));
-		final LookAndFeelInfo[] lafInfo = UIManager.getInstalledLookAndFeels();
+		addAction(createPropertyAction(optionPanelBuilder));
+	}
+
+	public static PropertyAction createPropertyAction(OptionPanelBuilder optionPanelBuilder) {
+	    final LookAndFeelInfo[] lafInfo = UIManager.getInstalledLookAndFeels();
 		final Vector<String> lafNames = new Vector<String>(lafInfo.length + 1);
 		final Vector<String> translatedLafNames = new Vector<String>(lafInfo.length + 1);
 		lafNames.add("default");
@@ -116,8 +120,8 @@ public class MModeController extends ModeController {
 		}
 		optionPanelBuilder.addComboProperty("Appearance/look_and_feel/lookandfeel", "lookandfeel", lafNames,
 		    translatedLafNames, IndexedTree.AS_CHILD);
-		addAction(new PropertyAction(optionPanelBuilder.getRoot()));
-	}
+		return new PropertyAction(optionPanelBuilder.getRoot());
+    }
 
 	@Override
 	public void execute(final IActor actor, final MapModel map) {
@@ -151,12 +155,18 @@ public class MModeController extends ModeController {
 	}
 
 	/**
+	 * @param b 
 	 *
 	 */
+
 	public boolean save() {
-		return ((MFileManager) UrlManager.getController()).save(getController().getMap());
+		return save(false);
 	}
 
+	public boolean save(boolean showHiddenFiles) {
+		return ((MFileManager) UrlManager.getController()).save(getController().getMap(), showHiddenFiles);
+	}
+		
 	@Override
 	public void shutdown() {
 		super.shutdown();

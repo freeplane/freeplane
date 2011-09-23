@@ -85,8 +85,8 @@ public class Activator implements BundleActivator {
 		public IPropertyControl createControl() {
 			ComboProperty property = (ComboProperty) creator.createControl();
 			List<String> list = property.getPossibleValues();
-			list.add("relative_to_workspace");
-			return new ComboProperty("links", list.toArray(new String[] {}));
+			list.add(WorkspacePreferences.RELATIVE_TO_WORKSPACE);
+			return new ComboProperty(WorkspacePreferences.LINK_PROPERTY_KEY, list.toArray(new String[] {}));
 		}
 
 	}

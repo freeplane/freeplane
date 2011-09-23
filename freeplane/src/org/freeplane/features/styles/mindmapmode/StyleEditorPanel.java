@@ -72,6 +72,7 @@ import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -461,7 +462,7 @@ public class StyleEditorPanel extends JPanel {
 		mSetNodeFormat = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetNodeFormat);
 		mNodeFormat = new EditableComboProperty(StyleEditorPanel.NODE_FORMAT,
-		    new FormatController().getAllPatterns());
+		    FormatController.getController().getAllPatterns());
 		controls.add(mNodeFormat);
 		final NodeFormatChangeListener listener = new NodeFormatChangeListener(mSetNodeFormat,
 		    mNodeFormat);
@@ -905,6 +906,9 @@ public class StyleEditorPanel extends JPanel {
 				final NodeModel node = selection.getSelected();
 				setStyle(node);
             }
+
+			public void onSavedAs(MapModel map) {
+			}
 			
 		});
 		final IMapViewManager mapViewManager = controller.getMapViewManager();

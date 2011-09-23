@@ -6,6 +6,8 @@ import java.util.Enumeration;
 
 import org.docear.plugin.core.actions.DocearLicenseAction;
 import org.docear.plugin.core.actions.DocearOpenUrlAction;
+import org.docear.plugin.core.actions.SaveAction;
+import org.docear.plugin.core.actions.SaveAsAction;
 import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.workspace.creator.FolderTypeLibraryCreator;
 import org.docear.plugin.core.workspace.creator.FolderTypeLiteratureRepositoryCreator;
@@ -53,7 +55,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	public static final String LIBRARY_PATH = "library"; 
 	public static final String BIBTEX_PATH = LocationDialog.BIBTEX_PATH_PROPERTY; 
 
-	public CoreConfiguration(ModeController modeController) {
+	public CoreConfiguration(ModeController modeController) {		
 		addPropertyChangeListener();
 		addPreferencesToOptionsPanel();
 		
@@ -122,11 +124,18 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 
 	private void replaceFreeplaneStringsAndActions() {
 		ResourceController resourceController = ResourceController.getResourceController();
+		
+		//replace this actions if docear_core is present
+		Controller.getCurrentModeController().removeAction("SaveAsAction");
+		Controller.getCurrentModeController().addAction(new SaveAsAction());
+		Controller.getCurrentModeController().removeAction("SaveAction");
+		Controller.getCurrentModeController().addAction(new SaveAction());
 
 		if (!resourceController.getProperty(APPLICATION_NAME, "").equals(DOCEAR)) {
 			return;
 		}
 
+		//replace if application name is docear
 		replaceResourceBundleStrings();
 
 		replaceActions();

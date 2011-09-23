@@ -26,6 +26,7 @@ import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.map.AMapChangeListenerAdapter;
 import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -74,6 +75,9 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
         public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
             onNodeInserted(newParent, child, newIndex);
         }
+
+		public void onSavedAs(MapModel map) {
+		}
 	}
 
 	public AutomaticEdgeColorHook() {

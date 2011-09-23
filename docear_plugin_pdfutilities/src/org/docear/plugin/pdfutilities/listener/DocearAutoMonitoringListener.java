@@ -58,4 +58,8 @@ public class DocearAutoMonitoringListener implements IMapLifeCycleListener,  Win
 		return result;
 	}
 
+	public void onSavedAs(MapModel map) {		
+		
+	}
+
 }

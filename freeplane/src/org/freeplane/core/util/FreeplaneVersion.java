@@ -45,34 +45,23 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 	}
 
 	public static FreeplaneVersion getVersion(final String pString) throws IllegalArgumentException {
+		if (pString == null)
+			return null;
 		final StringTokenizer t = new StringTokenizer(pString, ". ", false);
 		final String[] info = new String[t.countTokens()];
 		int i = 0;
 		while (t.hasMoreTokens()) {
 			info[i++] = t.nextToken();
 		}
-		if (info.length < 3 | info.length > 5) {
+		if (info.length < 2 | info.length > 5) {
 			throw new IllegalArgumentException("Wrong number of tokens for version information: " + pString);
 		}
 		try {
 			final int maj = Integer.parseInt(info[0]);
 			final int mid = Integer.parseInt(info[1]);
-			final int min = Integer.parseInt(info[2]);
-			final String type;
-			final int num;
-			if (info.length == 3) {
-				type = "";
-				num = 0;
-			}
-			else {
-				type = info[3];
-				if (info.length == 4) {
-					num = 0;
-				}
-				else {
-					num = Integer.parseInt(info[4]);
-				}
-			}
+			final int min = info.length < 3 ? 0 : Integer.parseInt(info[2]);
+			final String type = info.length < 4 ? "" : info[3];
+			final int num = info.length < 5 ? 0 : Integer.parseInt(info[4]);
 			return new FreeplaneVersion(maj, mid, min, type, num);
 		}
 		catch (final NumberFormatException e) {

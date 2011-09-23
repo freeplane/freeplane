@@ -130,17 +130,7 @@ public class UrlManager implements IExtension {
 						thrownException = ex;
 					}
 					finally {
-						try {
-							if (input != null) {
-								input.close();
-							}
-							if (xsltInputStream != null) {
-								xsltInputStream.close();
-							}
-						}
-						catch (final IOException e) {
-							e.printStackTrace();
-						}
+						FileUtils.silentlyClose(input, xsltInputStream);
 					}
 				}
 
@@ -188,12 +178,16 @@ public class UrlManager implements IExtension {
 	private void createActions() {
 	}
 
+	
+	public JFileChooser getFileChooser(final FileFilter filter, boolean useDirectorySelector) {
+		return getFileChooser(filter, useDirectorySelector, false);
+	}
 	/**
 	 * Creates a file chooser with the last selected directory as default.
 	 * @param useDirectorySelector
 	 */
 	@SuppressWarnings("serial")
-    public JFileChooser getFileChooser(final FileFilter filter, boolean useDirectorySelector) {
+    public JFileChooser getFileChooser(final FileFilter filter, boolean useDirectorySelector, boolean showHiddenFiles) {
 		final File parentFile = getMapsParentFile();
 		if (parentFile != null && getLastCurrentDir() == null) {
 			setLastCurrentDir(parentFile);
@@ -226,6 +220,9 @@ public class UrlManager implements IExtension {
 		};
 		if (getLastCurrentDir() != null) {
 			chooser.setCurrentDirectory(getLastCurrentDir());
+		}
+		if (showHiddenFiles) {
+			chooser.setFileHidingEnabled(false);
 		}
 		if (filter != null) {
 			chooser.addChoosableFileFilter(filter);
@@ -290,7 +287,6 @@ public class UrlManager implements IExtension {
 			final ModeController modeController = Controller.getCurrentModeController();
 			final NodeModel root = modeController.getMapController().getMapReader().createNodeTreeFromXml(map,
 			    urlStreamReader, Mode.FILE);
-			urlStreamReader.close();
 			if (root != null) {
 				map.setRoot(root);
 			}
@@ -300,7 +296,9 @@ public class UrlManager implements IExtension {
 		}
 		catch (final Exception ex) {
 			LogUtils.severe(ex);
-			return;
+		}
+		finally {
+			FileUtils.silentlyClose(urlStreamReader);
 		}
     }
 

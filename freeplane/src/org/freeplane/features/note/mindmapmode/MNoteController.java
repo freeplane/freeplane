@@ -30,8 +30,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
-import java.net.URL;
-
+import java.net.URI;
 import javax.swing.BorderFactory;
 import javax.swing.InputMap;
 import javax.swing.JEditorPane;
@@ -58,6 +57,7 @@ import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.mindmapmode.MTextController;
+import org.freeplane.features.url.UrlManager;
 
 import com.lightdev.app.shtm.SHTMLEditorPane;
 import com.lightdev.app.shtm.SHTMLPanel;
@@ -269,8 +269,8 @@ public class MNoteController extends NoteController {
 		noteViewerComponent.setOpenHyperlinkHandler(new ActionListener() {
 			public void actionPerformed(final ActionEvent pE) {
 				try {
-					Controller.getCurrentModeController().getController().getViewController()
-					    .openDocument(new URL(pE.getActionCommand()));
+					String uriText = pE.getActionCommand();
+					UrlManager.getController().loadURL(new URI(uriText));
 				}
 				catch (final Exception e) {
 					LogUtils.severe(e);
