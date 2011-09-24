@@ -101,8 +101,8 @@ class ScriptingConfiguration {
 		}
 	}
 
-	private static final String MENU_BAR_SCRIPTS_PARENT_LOCATION = "main_menu_scripting";
-	private static final String MENU_BAR_SCRIPTS_LOCATION = MENU_BAR_SCRIPTS_PARENT_LOCATION + "/scripts";
+	private static final String[] MENU_BAR_SCRIPTS_PARENT_LOCATIONS = {"main_menu_scripting", "node_popup_scripting"};
+	private static final String MENU_BAR_SCRIPTS_LOCATION = MENU_BAR_SCRIPTS_PARENT_LOCATIONS[0] + "/scripts";	
 	private static final String SCRIPT_REGEX = ".*\\.groovy$";
 	private static final String JAR_REGEX = ".*\\.jar$";
 	// or use property script_directories?
@@ -313,11 +313,11 @@ class ScriptingConfiguration {
 		}
 	}
 
-	public static String getScriptsParentLocation() {
-		return MENU_BAR_SCRIPTS_PARENT_LOCATION;
+	public static String[] getScriptsParentLocations() {
+		return MENU_BAR_SCRIPTS_PARENT_LOCATIONS;
 	}
 
-	public static String getScriptsLocation() {
-		return MENU_BAR_SCRIPTS_LOCATION;
+	public static String getScriptsLocation(String parentKey) {
+		return  parentKey + "/scripts";
 	}
 }

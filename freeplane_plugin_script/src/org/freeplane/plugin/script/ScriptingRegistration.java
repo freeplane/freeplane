@@ -195,6 +195,7 @@ class ScriptingRegistration {
 		modeController.addAction(new ScriptEditor());
 		modeController.addAction(new ExecuteScriptForAllNodes());
 		modeController.addAction(new ExecuteScriptForSelectionAction());
+		modeController.addAction( new ManageAddOnsAction());
 		final ScriptingConfiguration configuration = new ScriptingConfiguration();
 		ScriptingEngine.setClasspath(configuration.getClasspath());
 		modeController.addMenuContributor(new IMenuContributor() {
@@ -243,31 +244,30 @@ class ScriptingRegistration {
 
 	private void registerScripts(final MenuBuilder menuBuilder, ScriptingConfiguration configuration) {
 		final HashSet<String> registeredLocations = new HashSet<String>();
-		final String scriptsParentLocation = ScriptingConfiguration.getScriptsParentLocation();
-//		Uncomment here:
-		menuBuilder.addAction(scriptsParentLocation, new ManageAddOnsAction(), MenuBuilder.AS_CHILD);
-		
-		final String scriptsLocation = ScriptingConfiguration.getScriptsLocation();
-		addSubMenu(menuBuilder, scriptsParentLocation, scriptsLocation, TextUtils.getText("ExecuteScripts.text"));
-		registeredLocations.add(scriptsLocation);
-		if (configuration.getNameScriptMap().isEmpty()) {
-			final String message = "<html><body><em>" + TextUtils.getText("ExecuteScripts.noScriptsAvailable")
-			        + "</em></body></html>";
-			menuBuilder.addMenuItem(scriptsLocation, new JMenuItem(message), "no key", 0);
-		}
-		for (final Entry<String, String> entry : configuration.getNameScriptMap().entrySet()) {
-			final String scriptName = entry.getKey();
-			final ScriptMetaData scriptMetaData = configuration.getNameScriptMetaDataMap().get(scriptName);
-			// in the worst case three actions will cache a script - should not matter that much since it's unlikely
-			// that one script is used in multiple modes by the same user
-			for (final ExecutionMode executionMode : scriptMetaData.getExecutionModes()) {
-				final String location = scriptMetaData.getMenuLocation(executionMode);
-				if (!registeredLocations.contains(location)) {
-					addSubMenu(menuBuilder, scriptsLocation, location, scriptName);
-					registeredLocations.add(location);
+		for (final String scriptsParentLocation : ScriptingConfiguration.getScriptsParentLocations())
+		{
+			final String scriptsLocation = ScriptingConfiguration.getScriptsLocation(scriptsParentLocation);
+			addSubMenu(menuBuilder, scriptsParentLocation, scriptsLocation, TextUtils.getText("ExecuteScripts.text"));
+			registeredLocations.add(scriptsLocation);
+			if (configuration.getNameScriptMap().isEmpty()) {
+				final String message = "<html><body><em>" + TextUtils.getText("ExecuteScripts.noScriptsAvailable")
+						+ "</em></body></html>";
+				menuBuilder.addElement(scriptsLocation, new JMenuItem(message), 0);
+			}
+			for (final Entry<String, String> entry : configuration.getNameScriptMap().entrySet()) {
+				final String scriptName = entry.getKey();
+				final ScriptMetaData scriptMetaData = configuration.getNameScriptMetaDataMap().get(scriptName);
+				// in the worst case three actions will cache a script - should not matter that much since it's unlikely
+				// that one script is used in multiple modes by the same user
+				for (final ExecutionMode executionMode : scriptMetaData.getExecutionModes()) {
+					final String location = scriptMetaData.getMenuLocation(executionMode);
+					if (!registeredLocations.contains(location)) {
+						addSubMenu(menuBuilder, scriptsLocation, location, scriptName);
+						registeredLocations.add(location);
+					}
+					addMenuItem(menuBuilder, location, entry, executionMode, scriptMetaData.cacheContent(),
+						scriptMetaData.getTitleKey(executionMode));
 				}
-				addMenuItem(menuBuilder, location, entry, executionMode, scriptMetaData.cacheContent(),
-				    scriptMetaData.getTitleKey(executionMode));
 			}
 		}
 	}

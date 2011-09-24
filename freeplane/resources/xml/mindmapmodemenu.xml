@@ -377,6 +377,7 @@
 					<menu_action action="ExecuteScriptForSelectionAction" plugin="org.freeplane.plugin.script"/>
 					<menu_action action="ExecuteScriptForAllNodes" plugin="org.freeplane.plugin.script"/>					
 					<menu_action action="ScriptEditor" plugin="org.freeplane.plugin.script"/>					
+					<menu_action action="ManageAddOnsAction" plugin="org.freeplane.plugin.script"/>
 				</menu_category>
 				<menu_separator />
 				<menu_submenu name="formula" name_ref="formula.menuname" plugin="org.freeplane.plugin.formula">
@@ -469,8 +470,9 @@
 		<menu_action action="CopyIDAction" />
 		<menu_action action="PasteAction" accelerator="control V" />
 		<menu_action action="SortNodes" />
-			<menu_separator />
-	</menu_category>
+		<menu_separator />
+		<menu_category name="scripting" plugin="org.freeplane.plugin.script" menu_key="node_popup_scripting"/>	
+		</menu_category>
 		<menu_action action="UndoAction" />
 		<menu_action action="RedoAction" />
 	<menu_category name="main_toolbar">

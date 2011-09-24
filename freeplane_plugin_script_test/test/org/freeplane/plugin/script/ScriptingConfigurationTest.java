@@ -42,7 +42,7 @@ public class ScriptingConfigurationTest {
 		assertEquals("expected only modes set in the script", 2, metaData.getExecutionModes().size());
 		assertTrue("ON_SELECTED_NODE was set", metaData.getExecutionModes().contains(ExecutionMode.ON_SELECTED_NODE));
 		assertEquals("menu location for ON_SELECTED_NODE should be default",
-		    ScriptingConfiguration.getScriptsLocation() + "/" + scriptName,
+		    ScriptingConfiguration.getScriptsLocation(ScriptingConfiguration.getScriptsParentLocations()[0]) + "/" + scriptName,
 		    metaData.getMenuLocation(ExecutionMode.ON_SELECTED_NODE));
 		assertTrue("ON_SELECTED_NODE_RECURSIVELY was set",
 		    metaData.getExecutionModes().contains(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY));
