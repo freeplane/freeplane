@@ -41,6 +41,7 @@ public class BitmapViewerComponent extends JComponent {
 	private static final long serialVersionUID = 1L;
 	private final BufferedImage image;
 	private int hint;
+	private BufferedImage cachedImage;
 
 	protected int getHint() {
 		return hint;
@@ -65,9 +66,6 @@ public class BitmapViewerComponent extends JComponent {
 			super.paintComponent(g);
 			return;
 		}
-		final Image scaledImage;
-		final int x;
-		final int y;
 		final int width = getWidth();
 		final int height = getHeight();
 		final int imageWidth = image.getWidth();
@@ -75,27 +73,31 @@ public class BitmapViewerComponent extends JComponent {
 		if (width == 0 || height == 0 || imageWidth == 0 || imageHeight == 0) {
 			return;
 		}
-		if (imageWidth != width || imageHeight != height) {
-			final double kComponent = (double) height / (double) width;
-			final double kImage = (double) imageHeight / (double) imageWidth;
-			if (kComponent >= kImage) {
-				final int calcHeight = (int) (width * kImage);
-				scaledImage = image.getScaledInstance(width, calcHeight, hint);
-				x = 0;
-				y = (height - calcHeight) / 2;
+		if(cachedImage == null || cachedImage.getWidth() != width || cachedImage.getHeight() != height){
+			if (imageWidth != width || imageHeight != height) {
+				cachedImage = new BufferedImage(width, height, image.getType());
+				final double kComponent = (double) height / (double) width;
+				final double kImage = (double) imageHeight / (double) imageWidth;
+				final Image scaledImage;
+				final int x,y;
+				if (kComponent >= kImage) {
+					final int calcHeight = (int) (width * kImage);
+					scaledImage = image.getScaledInstance(width, calcHeight, hint);
+					x = 0;
+					y = (height - calcHeight) / 2;
+				}
+				else {
+					final int calcWidth = (int) (height / kImage);
+					scaledImage = image.getScaledInstance(calcWidth, height, hint);
+					x = (width - calcWidth) / 2;
+					y = 0;
+				}
+				cachedImage.createGraphics().drawImage(scaledImage, x, y, null);
 			}
 			else {
-				final int calcWidth = (int) (height / kImage);
-				scaledImage = image.getScaledInstance(calcWidth, height, hint);
-				x = (width - calcWidth) / 2;
-				y = 0;
+				cachedImage = image;
 			}
 		}
-		else {
-			scaledImage = image;
-			x = 0;
-			y = 0;
-		}
-		g.drawImage(scaledImage, x, y, null);
+		g.drawImage(cachedImage, 0, 0, null);
 	}
 }
