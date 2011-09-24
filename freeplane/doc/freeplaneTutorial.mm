@@ -153,7 +153,7 @@
     </ol>
   </body>
 </html></richcontent>
-<node TEXT="Filter instruction" STYLE_REF="Advanced" FOLDED="true" ID="ID_1284293100" CREATED="1316177216317" MODIFIED="1316343413501">
+<node TEXT="Filter instruction" STYLE_REF="Advanced" FOLDED="true" ID="ID_1284293100" CREATED="1316177216317" MODIFIED="1316345021111">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -161,7 +161,13 @@
   </head>
   <body>
     <p>
-      Consider using a powerfull feature of Freeplane, filtering, to present to you only the information of one of these 3 levels at a time.
+      Consider using a powerfull feature of Freeplane,
+    </p>
+    <p>
+      filtering, to present to you only the information of
+    </p>
+    <p>
+      one of these 3 levels at a time.
     </p>
     <p>
       
@@ -170,7 +176,13 @@
       <font color="#ff0000">&lt;TO BE IMPLEMENTED&gt;.</font>
     </p>
     <p>
-      The procedure for filtering is described to the right. If you do not see it, click on the colored bar above this text to unhide it.
+      The procedure for filtering is described to the right.
+    </p>
+    <p>
+      &#160;If you do not see it, click on the colored bar above
+    </p>
+    <p>
+      this text to unhide it.
     </p>
     <p>
       
@@ -180,7 +192,7 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="Select filter and Quickfilter" LOCALIZED_STYLE_REF="default" ID="ID_81563733" CREATED="1316156118436" MODIFIED="1316343608798">
+<node TEXT="Select filter and Quickfilter" LOCALIZED_STYLE_REF="default" ID="ID_81563733" CREATED="1316156118436" MODIFIED="1316344938119" LINK="FilterExampleBegin.jpg">
 <icon BUILTIN="full-1"/>
 <richcontent TYPE="DETAILS">
 <html>
@@ -213,13 +225,10 @@
       </li>
     </ol>
   </body>
-</html>
-</richcontent>
-<hook URI="FilterConsumer.jpg" SIZE="0.43770862" NAME="ExternalObject"/>
+</html></richcontent>
 </node>
-<node TEXT="Unfold to make visible" ID="ID_1451237301" CREATED="1316176206878" MODIFIED="1316179770708" VSHIFT="22">
+<node TEXT="Unfold to make visible" ID="ID_1451237301" CREATED="1316176206878" MODIFIED="1316344952362" VSHIFT="22" LINK="FilterExampleEnd.jpg">
 <icon BUILTIN="full-2"/>
-<hook URI="FilterConsumerUnfold.jpg" SIZE="0.43826503" NAME="ExternalObject"/>
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -240,9 +249,8 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="View and finish" ID="ID_1331360426" CREATED="1316177379721" MODIFIED="1316180067530" VSHIFT="26">
+<node TEXT="View and finish" ID="ID_1331360426" CREATED="1316177379721" MODIFIED="1316344974342" VSHIFT="26" LINK="FilterExampleUnfold.jpg">
 <icon BUILTIN="full-3"/>
-<hook URI="FilterConsumerEnd.jpg" SIZE="0.4385965" NAME="ExternalObject"/>
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -569,7 +577,7 @@
 </node>
 </node>
 <node TEXT="Basic map" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_1337127972" CREATED="1314109409850" MODIFIED="1316184801639" NUMBERED="true">
-<node STYLE_REF="Beginner" FOLDED="true" ID="ID_268413071" CREATED="1314125550476" MODIFIED="1316152746028">
+<node STYLE_REF="Beginner" ID="ID_268413071" CREATED="1314125550476" MODIFIED="1316724445771">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -577,7 +585,7 @@
   </head>
   <body>
     <p>
-      Edit text in node core <i>in-line</i>
+      Edit node core text <i>in-line</i>
     </p>
   </body>
 </html></richcontent>
@@ -598,7 +606,7 @@
     </p>
     <ul>
       <li>
-        To add a new line, press <i>Shift + Enter.</i>
+        To add a new line, press <i>Shift&#160;+ Enter.</i>
       </li>
       <li>
         If you right-click when editing text, a so called <b>context menu</b>&#160;for editing text opens, giving quick access to formatting functions like copy and paste.
@@ -645,7 +653,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Print map [Print]" STYLE_REF="BeginnerTopic" ID="ID_111478060" CREATED="1310134532663" MODIFIED="1316165008392" TEXT_SHORTENED="true">
+<node TEXT="Print map" STYLE_REF="BeginnerTopic" ID="ID_111478060" CREATED="1310134532663" MODIFIED="1316702288964" TEXT_SHORTENED="true">
 <icon BUILTIN="../fileprint"/>
 <richcontent TYPE="DETAILS">
 <html>
@@ -742,8 +750,13 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
+<node TEXT="&lt;Ins&gt; New child node" ID="ID_45308529" CREATED="1316701840462" MODIFIED="1316702190036"/>
+<node TEXT="&lt;Shift&gt;+&lt;Enter&gt; New line" ID="ID_396169297" CREATED="1316702242678" MODIFIED="1316724420747"/>
+<node TEXT="&lt;Enter&gt; Finish edit, select node" ID="ID_780427702" CREATED="1316702397734" MODIFIED="1316724515060"/>
+<node TEXT="2*&lt;Enter&gt; New sibling node" ID="ID_420903085" CREATED="1316701822921" MODIFIED="1316724249333"/>
+<node TEXT="Right-click: contextmenu" ID="ID_435495519" CREATED="1316724447049" MODIFIED="1316724466869"/>
 </node>
-<node STYLE_REF="Beginner" ID="ID_1279324490" CREATED="1314126040831" MODIFIED="1316152785512">
+<node STYLE_REF="Beginner" ID="ID_1279324490" CREATED="1314126040831" MODIFIED="1316702664043">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -751,7 +764,7 @@
   </head>
   <body>
     <p>
-      Edit text in node core <i>in dialog</i>
+      Edit node core text <i>in dialog</i>
     </p>
   </body>
 </html></richcontent>
@@ -762,7 +775,7 @@
   </head>
   <body>
     <p>
-      A second way to edit a node is in a separate dialog. Right-click on the node. This opens the contextmenu of the node. (This context menu is different from the context menu for editing text !) In this contextmenu choose&#160;<b><i>Edit core in dialog</i>.</b>&#160;You can now type the text and use the shown options to format the text. When you close the dialog by pressing OK, the text will appear in the node. This dialog has more extensive options for formatting text than available wen performing in-line editing.
+      A second way to edit a node is in a separate dialog. Right-click on the node. This opens the contextmenu of the node. (This context menu is different from the context menu for editing text !) In this contextmenu choose&#160;<i><b>Edit core in dialog</b></i><b>.</b>&#160;You can now type the text and use the shown options to format the text. When you close the dialog by pressing OK, the text will appear in the node. This dialog has more extensive options for formatting text than available wen performing in-line editing.
     </p>
     <p>
       
@@ -772,11 +785,14 @@
     </p>
     <ul>
       <li>
-        You can also open the edit window in the main menu bar. Choose <i>Edit </i>and then&#160;<i>Title </i>and you will see<i>&#160;Edit title in dialog.</i>&#160; In the following we write this procedure as <i>Edit &gt; Title &gt; Edit title or core in dialog</i>.
+        You can also open the edit window in the main menu bar. Choose <i>Edit </i>and then&#160;<i>Node&#160;core &#160;</i>and you will see<i>&#160;Edit node core in dialog.</i>&#160;&#160;In the following we write this procedure as <i>Edit &gt; Node core &gt; Edit node core in dialog</i>.
       </li>
     </ul>
   </body>
 </html></richcontent>
+<node TEXT="Own menu&apos;s" ID="ID_1425310908" CREATED="1316724523734" MODIFIED="1316724583730"/>
+<node TEXT="&lt;Enter&gt; New line" ID="ID_1043315983" CREATED="1316724531504" MODIFIED="1316724545116"/>
+<node TEXT="Right-click: contextmenu" ID="ID_1846126640" CREATED="1316724447049" MODIFIED="1316724466869"/>
 </node>
 <node TEXT="Saving and closing a mind map" STYLE_REF="Beginner" FOLDED="true" ID="ID_48547188" CREATED="1314127927655" MODIFIED="1316152888441">
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -1014,6 +1030,81 @@
   </body>
 </html></richcontent>
 </node>
+</node>
+<node TEXT="Joining and splitting nodes (core only)" STYLE_REF="Advanced" FOLDED="true" ID="ID_1616287661" CREATED="1316668096827" MODIFIED="1316722906509">
+<node TEXT="Splitting a node (core only)" STYLE_REF="Advanced" ID="ID_247213553" CREATED="1316668117473" MODIFIED="1316722917929">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      A multiline node core can be distributed over several nodes with each node containing one line by selecting the node and choosing menu <i>Edit &gt; Node core &gt; Split node</i>.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      The dialog editor contains a button <i>Split</i>. When this button is pressed the node core text will be splitted at the cursor position.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        Other components like node details are not splitted.
+      </li>
+      <li>
+        See Help &gt; Documentation for the details.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Joining two nodes (core only)" STYLE_REF="Advanced" ID="ID_998103410" CREATED="1316668137651" MODIFIED="1316722917990">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The text of different node cores can be combined by selecting the nodes and choosing menu <i>Edit &gt; Node core &gt; Join nodes. </i>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        This only works well if the node doesn't contain other node components like node details.
+      </li>
+      <li>
+        Hot key: <i>Ctrl + J</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Copying and pasting node core format" STYLE_REF="Advanced" ID="ID_1195279427" CREATED="1316670043816" MODIFIED="1316722952018">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The node core has a global&#160;&#160;formatting function which applies to the whole node core. This global core format can be copietd with <i>Edit Node core &gt; Copy format </i>and pasted in another node core with <i>Edit &gt; Node core &gt; Paste.</i>
+    </p>
+  </body>
+</html></richcontent>
 </node>
 <node TEXT="Write scientific formula&apos;s (LaTeX) in node core" STYLE_REF="Professional" ID="ID_616494746" CREATED="1314361765668" MODIFIED="1316152999825">
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -2066,7 +2157,7 @@
 </node>
 </node>
 <node TEXT="Node details" STYLE_REF="Advanced" FOLDED="true" POSITION="left" ID="ID_143196514" CREATED="1314206563418" MODIFIED="1316121605077" NUMBERED="true" VSHIFT="10">
-<node TEXT="Edit text in node details" STYLE_REF="Advanced" ID="ID_898889730" CREATED="1314197390735" MODIFIED="1316329212323">
+<node TEXT="Edit text in node details" STYLE_REF="Advanced" ID="ID_898889730" CREATED="1314197390735" MODIFIED="1316876591745">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -2087,13 +2178,13 @@
         Node details can also be entered with an inline-editor. To open the inline editor, rightclick the node and choose select <i>Edit node details in-line.&#160;</i>To reopen existing node details text for editing in this way, double click the text. This inline editor behaves the same way as described for the node title text. It has the same context menu.
       </li>
       <li>
-        All methods available in context menu's are also accessable through the main menu. For example, the in-line editor is also accessible through <i>Edit &gt; Node details &gt; Edit node details in-lin</i>e.
+        All methods available in context menu's are also accessable through the main menu. For example, the in-line editor is also accessible through <i>Edit &gt; Node extensions &gt; Edit node details in-lin</i>e
       </li>
     </ul>
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Hide and set as hover text (tool tip)" STYLE_REF="Advanced" ID="ID_288274844" CREATED="1314206958207" MODIFIED="1316120137387">
+<node TEXT="Hide and set as hover text (tool tip)" STYLE_REF="Advanced" ID="ID_288274844" CREATED="1314206958207" MODIFIED="1316455409111">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -2107,7 +2198,7 @@
       
     </p>
     <p>
-      To prepare a node for hovering,&#160;right-click the node and choose<i>&#160; Hide and set as hover text (tool tip) </i>to hide the Content text. To restore the non-hidden state, click choose<i>&#160;Hide an set as hover text (tool tip)&#160;</i>again<i>. </i>
+      To prepare a node for hovering,&#160;right-click the node and choose<i>&#160; Set as hover text (tool tip) </i>to hide the node core text. To restore the non-hidden state, click choose<i>&#160;Set as hover text (tool tip)&#160;</i>again<i>. </i>
     </p>
     <p>
       
@@ -2117,13 +2208,16 @@
     </p>
     <ul>
       <li>
-        Besides hiding Details it will also limit the length of the core text. So if you have a long title, it will be shortened. And it will also hide features like images, attributes and notes which are described below
+        Besides hiding node details it will also limit the length of the core text. So if you have a long title, it will be shortened. And it will also hide features like images, attributes and notes which are described below.
+      </li>
+      <li>
+        See <i>Image</i>&#160;below for the deviant behavour of an image in details.
       </li>
     </ul>
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Image in node details" STYLE_REF="Advanced" ID="ID_575269438" CREATED="1314215157545" MODIFIED="1316121256315">
+<node TEXT="Image in node details" STYLE_REF="Advanced" FOLDED="true" ID="ID_575269438" CREATED="1314215157545" MODIFIED="1316455832699">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -2131,7 +2225,7 @@
   </head>
   <body>
     <p>
-      It can be necessary or nice to include images into a mind map. The easiest way is by dragging an image and dropping it onto a node. It is important that the image source is on your computer for this. If the image is on the Internet, first move the image from the Internet to your computer. Once the image appears in the node, you can change the size of the image by dragging one of its corners.
+      It can be necessary or nice to include images into a mind map. The easiest way is by dragging an image and dropping it onto a node. It is important that the image source is on your computer for this. If the image is on the Internet, first move the image from the Internet to your computer. Once the image appears in the node, you can select the node and then change the size of the image by dragging one its lower right corner.
     </p>
     <p>
       
@@ -2145,6 +2239,9 @@
       </li>
       <li>
         You cannot move the position of the image within the node. There is more to learn about (other types of)&#160;&#160;images and about publishing and sharing mind maps with images in the Freeplane documentation.
+      </li>
+      <li>
+        A details image is hidden when by <i>Hide and set as hovertext.&#160;</i>An image which is hidden this way does not show when hovering!
       </li>
     </ul>
   </body>
@@ -2213,7 +2310,7 @@
         <i>Properties panel &gt; Calendar &amp; Attributes</i>
       </li>
       <li>
-        <i>Edit &gt; Node details</i>
+        <i>Edit &gt; Node extensions</i>
       </li>
     </ul>
   </body>
@@ -2240,7 +2337,7 @@
   </head>
   <body>
     <p>
-      There are several options to change e.g. the names of the attributes and/or values of all nodes. <i>Edit &gt; Node details&#160;&#160;&gt; Attributes</i>&#160;for all available methods and the Freeplane documentation for their description.
+      There are several options to change e.g. the names of the attributes and/or values of all nodes. <i>Edit &gt; Node extensions&#160;&#160;&gt; Attributes</i>&#160;for all available methods and the Freeplane documentation for their description.
     </p>
   </body>
 </html></richcontent>
@@ -2248,7 +2345,7 @@
 </node>
 </node>
 <node TEXT="Notes of nodes" STYLE_REF="Advanced" FOLDED="true" POSITION="left" ID="ID_274601394" CREATED="1314208248182" MODIFIED="1316155713741" NUMBERED="true">
-<node TEXT="Special kind of details" STYLE_REF="Advanced" ID="ID_144627544" CREATED="1316155598364" MODIFIED="1316331549387">
+<node TEXT="Special kind of details" STYLE_REF="Advanced" ID="ID_144627544" CREATED="1316155598364" MODIFIED="1316496823916">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -2256,7 +2353,24 @@
   </head>
   <body>
     <p style="margin-top: 0">
-      Notes are a special kind of node details. The main difference is that the text can be displayed screen wide and in&#160;&#160;a window that may stay open when moving from node to node. Consult the Freeplane documentation for more information.
+      Notes are a special kind of node details, the main difference being:
+    </p>
+    <ol>
+      <li>
+        By default notes are presented as hover text. In menu <i>View &gt; Note &gt; Display notes in map</i>&#160;&#160;it can be set that all (!) notes will be displayed.
+      </li>
+      <li>
+        Node text can be displayed screen wide and in&#160;&#160;a window that may stay open when moving from node to node. Consult the Freeplane documentation for more information.
+      </li>
+      <li>
+        Notes have a note-icon.
+      </li>
+    </ol>
+    <p>
+      <b>Note</b>
+    </p>
+    <p>
+      In <i>Tools &gt; Preferences</i>&#160;the note icon can be set&#160;&#160;not to display (for all notes !). Exception: On Intenet (Java applet) the icons keep showing.
     </p>
   </body>
 </html></richcontent>
@@ -3127,6 +3241,43 @@
   <body>
     <p>
       In menu <i>View</i>&#160;you can set characteristics for node core, like width, selection border, border marking for formulas and the background color of revisions. You can set if and how node details should be displayed, with or without hover text (tool tip) and modification times.&#160;&#160;You can set if and which attributes are displayed. Also you can set if and how notes are displayed and with which type of window. Finally it is possible to set some characteristics of icons. Open menu <i>View</i>&#160;and select all options one by one to know which options are available. In the preverences much more can be set.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Scientific suite (Docear)" STYLE_REF="Professional" ID="ID_170927482" CREATED="1316706324268" MODIFIED="1316706874203" LINK="http://docear.org/details.php">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span lang="EN-US">Docear is an &quot;academic literature suite&quot;. It provides to researchers what an office suite provides to office workers. By that we mean, Docear supports you in doing all the tasks related to literature management: </span>
+    </p>
+    <p>
+      <span lang="EN-US">&#160; </span>
+    </p>
+    <p>
+      <span lang="EN-US">&#160;&#160;&#160;1. Finding new literature (searching and exploring) </span>
+    </p>
+    <p>
+      <span lang="EN-US">&#160;&#160;&#160;2. Organizing literature (reading, annotating, and retrieving) </span>
+    </p>
+    <p>
+      <span lang="EN-US">&#160;&#160;&#160;3. Creating your own literature (drafting, writing, referencing, and publishing) </span>
+    </p>
+    <p>
+      <span lang="EN-US">&#160; </span>
+    </p>
+    <p>
+      <span lang="EN-US">Docear is the successor of SciPlore MindMapping and funded by the European Union and German Federal Ministry of Economics and Technology.</span>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>It is expected that Docear will become available as plugin in October 2011: click the red arrow</b>
     </p>
   </body>
 </html></richcontent>
