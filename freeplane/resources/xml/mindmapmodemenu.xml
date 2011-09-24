@@ -395,7 +395,6 @@
 			<menu_separator />
 			<menu_category name="mindmaps" menu_key="main_menu_mindmaps"/>
 			<menu_separator />
-		<menu_category name="maps" menu_key="map_popup_mindmaps"/>
 		</menu_submenu>
 		<menu_submenu name="help" name_ref="help">
 			<menu_category name="update">

@@ -148,7 +148,6 @@
 		</menu_submenu>
 		</menu_category>
 	<menu_category name="map_popup">
-		<menu_category menu_key="map_popup_mindmaps" name="maps"/>
 		<menu_category name="toolbars">
 			<menu_submenu name="toolbars" name_ref="menu_toolbars">
 				<menu_action action="ToggleMenubarAction" menu_key="MP_ToggleMenubarAction"/>

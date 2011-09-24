@@ -254,7 +254,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	public void updateMapList() {
 		updateModeMenu();
-		updateMapList("map_popup_mindmaps");
 		updateMapList("main_menu_mindmaps");
 	}
 
