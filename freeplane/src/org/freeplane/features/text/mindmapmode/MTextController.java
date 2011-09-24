@@ -114,7 +114,6 @@ public class MTextController extends TextController {
 	private void createActions() {
 		ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new EditAction());
-		modeController.addAction(new UseRichFormattingAction());
 		modeController.addAction(new UsePlainTextAction());
 		modeController.addAction(new JoinNodesAction());
 		modeController.addAction(new EditLongAction());

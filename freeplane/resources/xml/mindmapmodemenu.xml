@@ -100,7 +100,7 @@
 				<menu_separator />
 				<menu_action action="SetImageByFileChooserAction" accelerator="alt shift K" />
 			</menu_submenu>
-			<menu_submenu name="menu_details" name_ref="menu_details">
+			<menu_submenu name="menu_extensions" name_ref="menu_extensions">
 				<menu_action action="EditDetailsAction"/>
 				<menu_action action="EditDetailsInDialogAction"/>
 				<menu_action action="CopyStyleExtensionsAction" />
@@ -290,7 +290,6 @@
 				<menu_separator />
 			<menu_action action="RemoveFormatAction"/>
 			</menu_submenu>
-			<menu_action action="UseRichFormattingAction" accelerator="alt shift R" />
 			<menu_action action="UsePlainTextAction" accelerator="alt shift P" />
 		</menu_submenu>
 		<menu_submenu name="navigate" name_ref="menu_navigate">
