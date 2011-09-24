@@ -296,9 +296,9 @@ public class AddOnProperties {
 		final XMLElement addonElement = new XMLElement("addon");
 		addonElement.setAttribute("name", name);
 		addonElement.setAttribute("version", version);
-		addonElement.setAttribute("freeplane.version.from", freeplaneVersionFrom.toString());
+		addonElement.setAttribute("freeplaneVersionFrom", freeplaneVersionFrom.toString());
 		if (freeplaneVersionTo != null)
-			addonElement.setAttribute("freeplane.version.to", freeplaneVersionTo.toString());
+			addonElement.setAttribute("freeplaneVersionTo", freeplaneVersionTo.toString());
 		if (sourceUrl != null)
 			addonElement.setAttribute("source.url", sourceUrl.toString());
 		addonElement.setAttribute("active", Boolean.toString(active));
