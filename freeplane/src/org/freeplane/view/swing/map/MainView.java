@@ -30,7 +30,9 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.Collection;
 import java.util.Map.Entry;
 
@@ -402,8 +404,19 @@ public abstract class MainView extends ZoomableLabel {
 
 	@Override
     public JToolTip createToolTip() {
-        JToolTip tip = new NodeTooltip();
+		NodeTooltip tip = new NodeTooltip();
         tip.setComponent(this);
+		final URL url = getMap().getModel().getURL();
+		if (url != null) {
+			tip.setBase(url);
+		}
+		else {
+			try {
+	            tip.setBase(new URL("file: "));
+            }
+            catch (MalformedURLException e) {
+            }
+		}
         return tip;
     }
 

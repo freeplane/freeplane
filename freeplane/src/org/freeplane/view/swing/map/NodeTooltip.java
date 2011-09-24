@@ -9,6 +9,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URI;
+import java.net.URL;
 
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
@@ -108,5 +109,9 @@ public class NodeTooltip extends JToolTip {
 	void scrollUp() {
 		tip.scrollRectToVisible(new Rectangle(1, 1));
     }
+	
+	public void setBase(URL url){
+		((HTMLDocument)tip.getDocument()).setBase(url);
+	}
 
 }
