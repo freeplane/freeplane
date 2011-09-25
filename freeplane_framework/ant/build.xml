@@ -116,10 +116,11 @@
 	    </antcall>
 	</target>
 	
-	<target name="build" depends="build_core, build_latex, build_svg, build_script, build_formula, build_bugreport">
+	<target name="build" depends="build_core, build_latex, build_svg, build_script, build_formula, build_bugreport, bzr_version_info">
        <mkdir dir="${build.resources}" />
         <copy todir="${build.resources}">
             <fileset dir="${workspace}/freeplane/dist/resources" />
+        	<fileset file="${dist}/bzrinfo.properties"/> 
         </copy>
         <mkdir dir="${build.doc}" />
         <copy todir="${build.doc}">
@@ -164,7 +165,7 @@
         </exec>
 	</target>
 
-	<target name="binzip" depends="build, mkdistdir">
+	<target name="binzip" depends="build">
 		<zip destfile="${dist}/freeplane_bin-${ver}.zip" compress="true">
 			<zipfileset dir="${build}" prefix="freeplane-${ver}">
 				<exclude name="freeplane.sh"/>

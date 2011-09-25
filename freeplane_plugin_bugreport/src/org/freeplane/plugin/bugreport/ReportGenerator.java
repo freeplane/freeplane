@@ -3,6 +3,7 @@ package org.freeplane.plugin.bugreport;
 import java.awt.EventQueue;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
@@ -13,6 +14,7 @@ import java.security.MessageDigest;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.StreamHandler;
@@ -28,7 +30,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 
-public class XmlRpcHandler extends StreamHandler {
+public class ReportGenerator extends StreamHandler {
 	private class SubmitRunner implements Runnable {
 		public void run() {
 			runSubmit();
@@ -67,6 +69,7 @@ public class XmlRpcHandler extends StreamHandler {
 	static final private String OPTION = "org.freeplane.plugin.bugreport";
 	private static ByteArrayOutputStream out = null;
 	private static String version;
+	private static String revision;
 
 	private static String toHexString(final byte[] v) {
 		final String HEX_DIGITS = "0123456789abcdef";
@@ -93,7 +96,7 @@ public class XmlRpcHandler extends StreamHandler {
 		this.bugReportListener = bugReportListener;
 	}
 
-	public XmlRpcHandler() {
+	public ReportGenerator() {
 		super();
 		try {
 			setEncoding("UTF-8");
@@ -109,16 +112,17 @@ public class XmlRpcHandler extends StreamHandler {
 	private String calculateHash() {
 		final String[] lines = log.split("\n");
 		final StringBuffer hashInput = new StringBuffer();
-		hashInput.append(version);
 		for (int i = 0; i < lines.length; i++) {
 			final String s = lines[i];
 			if (s.startsWith("\tat org.freeplane.") || s.startsWith("missing key ")) {
 				hashInput.append(s);
 			}
 		}
-		if (hashInput.length() == version.length()) {
+		if (hashInput.length() == 0) {
 			return null;
 		}
+		hashInput.append(version);
+		hashInput.append(revision);
 		try {
 			return calculateHash(hashInput.toString().getBytes(getEncoding()));
 		}
@@ -133,7 +137,7 @@ public class XmlRpcHandler extends StreamHandler {
 				md = MessageDigest.getInstance("MD5");
 			}
 			final byte[] digest = md.digest(byteArray);
-			return XmlRpcHandler.toHexString(digest);
+			return ReportGenerator.toHexString(digest);
 		}
 		catch (final Exception e) {
 			LogUtils.warn(e);
@@ -149,6 +153,23 @@ public class XmlRpcHandler extends StreamHandler {
 			sb.append(version);
 			sb.append("; freeplane_xml_version = ");
 			sb.append(FreeplaneVersion.XML_VERSION);
+			
+			final URL bzrInfo = ResourceController.getResourceController().getResource("/bzrinfo.properties");
+			if(bzrInfo != null){
+				Properties bzrProps = new Properties();
+				try {
+	                bzrProps.load(bzrInfo.openStream());
+                }
+                catch (IOException e) {
+                }
+				revision = bzrProps.getProperty("bzr-revision-id", "");
+				sb.append("\nbzr revision = ");
+				sb.append(revision);
+			}
+			else{
+				revision = "";
+			}
+			
 			sb.append("\njava_version = ");
 			sb.append(System.getProperty("java.version"));
 			sb.append("; os_name = ");
@@ -234,6 +255,7 @@ public class XmlRpcHandler extends StreamHandler {
 				report.put("hash", hash);
 				report.put("log", log);
 				report.put("version", version);
+				report.put("revision", revision);
 				final String status = sendReport(report);
 				if (bugReportListener == null || status == null) {
 					return;
