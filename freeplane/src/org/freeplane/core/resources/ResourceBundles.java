@@ -118,7 +118,7 @@ public class ResourceBundles extends ResourceBundle {
 		final URL systemResource = ResourceController.getResourceController().getResource(
 		    resourceName);
 		if (systemResource == null) {
-			System.out.println("core resource " + resourceName + " not found");
+			// no double logging: System.out.println("core resource " + resourceName + " not found");
 			return null;
 		}
 		final Map<String, String> resources = getLanguageResources(systemResource);
@@ -187,13 +187,14 @@ public class ResourceBundles extends ResourceBundle {
 				lang = Locale.getDefault().getLanguage() + "_" + country;
 				languageResources = getLanguageResources(lang);
 				if (languageResources != null) {
+					LogUtils.info("language resources for " + lang + " found");
 					return;
 				}
-				LogUtils.info("language resources for " + lang + " not found");
 			}
 			lang = Locale.getDefault().getLanguage();
 			languageResources = getLanguageResources(lang);
 			if (languageResources != null) {
+				LogUtils.info("language resources for " + lang + " found");
 				return;
 			}
 			LogUtils.info("language resources for " + lang + " not found");
