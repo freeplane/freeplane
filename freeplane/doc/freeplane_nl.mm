@@ -4905,7 +4905,7 @@
 <attribute NAME="Chapter" VALUE="3"/>
 </node>
 </node>
-<node TEXT="Knoopdetails [Node details]" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1400990107" CREATED="1315728991618" MODIFIED="1316339865956">
+<node TEXT="Knoopuitbreiding {Node extensions]" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1400990107" CREATED="1315728991618" MODIFIED="1316951054553">
 <node TEXT="Edit details in-line   [Edit node details]" ID="ID_1807308711" CREATED="1291153533418" MODIFIED="1315980814822" TEXT_SHORTENED="true">
 <icon BUILTIN="../edit_details"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">

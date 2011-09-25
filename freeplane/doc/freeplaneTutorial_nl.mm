@@ -4,7 +4,7 @@
     <attribute_name VISIBLE="true" NAME="See also"/>
     <attribute_name VISIBLE="true" NAME="a2"/>
 </attribute_registry>
-<node STYLE_REF="Introduction" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1316297518297" VGAP="4" BACKGROUND_COLOR="#00ff99" STYLE="bubble">
+<node STYLE_REF="Introduction" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1316703313972" VGAP="4" BACKGROUND_COLOR="#00ff99" STYLE="bubble">
 <icon BUILTIN="bee"/>
 <richcontent TYPE="NODE">
 <html>
@@ -99,7 +99,7 @@
 <hook NAME="FirstGroupNode"/>
 <edge STYLE="bezier"/>
 <node TEXT="Inleiding" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1316342821057" BACKGROUND_COLOR="#00cc66" NUMBERED="true" VSHIFT="110">
-<node TEXT="Doel" STYLE_REF="Beginner" ID="ID_1309964220" CREATED="1314735478858" MODIFIED="1316291774833" LINK="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch">
+<node TEXT="Doel" STYLE_REF="Beginner" ID="ID_1309964220" CREATED="1314735478858" MODIFIED="1316345200426" LINK="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -109,10 +109,13 @@
     <p>
       Deze mind map maakt geeft eenoverzicht van de mogelijkheden van Freeplane. De mindmap is niet bedoeld om te laten zien waarvoor je Freeplane allemaal kunt gebruiken. Als je hierover meer wilt weten klik dan op het rode pijltje om naar de Wiki van Freeplane te gaan. Wil je meer weten over de technische mogelijkeheden, raadpleeg dan via het menu <i>Help</i>&#160;van Freeplane de Freeplane documentatie.
     </p>
+    <p>
+      
+    </p>
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Leeswijzer" STYLE_REF="Beginner" FOLDED="true" ID="ID_110608784" CREATED="1316010609737" MODIFIED="1316343113230">
+<node TEXT="Leeswijzer" STYLE_REF="Beginner" ID="ID_110608784" CREATED="1316010609737" MODIFIED="1316343113230">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -146,131 +149,9 @@
       
     </p>
   </body>
-</html>
-</richcontent>
-<node TEXT="Filter instruction" STYLE_REF="Gevorderde" ID="ID_1284293100" CREATED="1316177216317" MODIFIED="1316343173227">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Je kunt deze kleuren gebruiken om informatie te zoeken en te lezen, maar je kunt ook Freeplane zelf gebruiken om alleen de informatie van &#233;&#233;n van de vier niveau's te laten zien. In de tekst rechts wordt uitgelegd hoe dit moet. Zie je deze tekst niet, klik dan op mijn titel om de tekst zichtbaar te maken.
-    </p>
-    <p>
-      &lt;TE IMPLEMENTEREN&gt;
-    </p>
-    <p>
-      Druk op het rode pijltje voor een demonstratie (animatie) hoe filteren gaat.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Click on my title to open.
-    </p>
-  </body>
-</html>
-</richcontent>
-<node TEXT="Select filter and Quickfilter" LOCALIZED_STYLE_REF="default" ID="ID_81563733" CREATED="1316156118436" MODIFIED="1316343326422">
-<icon BUILTIN="full-1"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      To see only the information at the first level of experience (Consumer):
-    </p>
-    <ol>
-      <li>
-        Click in field with <i>&quot;No filtering (remove)&quot;</i>: a list with filters drops down.
-      </li>
-      <li>
-        Select ane of the shown rules e.g. Beginner (formerly Consumer)
-      </li>
-      <li>
-        Click <i>Quick filter</i>&#160;as shown in the image.
-      </li>
-    </ol>
-    <p>
-      P.S. Make sure Show ancestors is UNselected.
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook URI="FilterConsumer.jpg" SIZE="0.43770862" NAME="ExternalObject"/>
-</node>
-<node TEXT="Unfold to make visible" ID="ID_1451237301" CREATED="1316176206878" MODIFIED="1316179770708" VSHIFT="22">
-<icon BUILTIN="full-2"/>
-<hook URI="FilterConsumerUnfold.jpg" SIZE="0.43826503" NAME="ExternalObject"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      You can now click on each item to unhide its content. Or you can unhide all hidden information at once by doing the following:
-    </p>
-    <ol>
-      <li>
-        Move the cursor over the central area (root node) to select it
-      </li>
-      <li>
-        Click on the icon <i>Unfold all </i>to see all selected nodes
-      </li>
-    </ol>
-  </body>
 </html></richcontent>
 </node>
-<node TEXT="View and finish" ID="ID_1331360426" CREATED="1316177379721" MODIFIED="1316180067530" VSHIFT="26">
-<icon BUILTIN="full-3"/>
-<hook URI="FilterConsumerEnd.jpg" SIZE="0.4385965" NAME="ExternalObject"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <ol>
-      <li>
-        Click in an empty area of the background and drag the map around until hou have read all.
-      </li>
-      <li>
-        Do not forget to press icon <i>No filtering</i>&#160;when you are finished.
-      </li>
-    </ol>
-    <p>
-      You can now follow the same procedure for Basic, Intermediate and Advanced.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Animation" STYLE_REF="Example" ID="ID_619551626" CREATED="1316179283159" MODIFIED="1316180208211">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Click the red arrow to follow the annimated user instruction<br/>&#160;for navigating mind maps and unhiding information.<font color="#ff0000">&#160; </font>
-    </p>
-    <p>
-      <font color="#ff0000">&lt;TO BE IMPLEMENTED&gt;</font>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Wat is een mindmap" STYLE_REF="Beginner" ID="ID_448981847" CREATED="1314122243021" MODIFIED="1316291909288">
+<node TEXT="Wat is een mindmap" STYLE_REF="Beginner" FOLDED="true" ID="ID_448981847" CREATED="1314122243021" MODIFIED="1316291909288">
 <node TEXT="Basisinstructie voor het gebruiken van mindmaps (animatie)" STYLE_REF="Beginner" ID="ID_1059593400" CREATED="1316334611538" MODIFIED="1316338198226" LINK="freeplaneTutorialConsumer_nl.htm">
 <richcontent TYPE="DETAILS">
 <html>
@@ -604,7 +485,7 @@
 </node>
 </node>
 <node TEXT="Basis mindmap" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_1337127972" CREATED="1314109409850" MODIFIED="1316291983197" NUMBERED="true">
-<node TEXT="Bewerken knooptitel (snel)" STYLE_REF="Beginner" ID="ID_268413071" CREATED="1314125550476" MODIFIED="1316291966665">
+<node TEXT="Bewerken knooptitel (snel)" STYLE_REF="Beginner" ID="ID_268413071" CREATED="1314125550476" MODIFIED="1316724684405">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -766,6 +647,11 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
+<node TEXT="&lt;Ins&gt; Nieuwe kindknoop" ID="ID_33311014" CREATED="1316702689073" MODIFIED="1316702709400"/>
+<node TEXT="&lt;Shift&gt;+&lt;Enter&gt; Toevoegen nieuwe regel" ID="ID_312543101" CREATED="1316723348757" MODIFIED="1316724642164"/>
+<node TEXT="&lt;Enter&gt; Afsluiten bewerken" ID="ID_1113787270" CREATED="1316702710297" MODIFIED="1316702765163"/>
+<node TEXT="2 x &lt;Enter&gt; Nieuwe zus-knoop" ID="ID_1173879612" CREATED="1316702765996" MODIFIED="1316724094292"/>
+<node TEXT="Rechtsklik: contextmenu" ID="ID_807808681" CREATED="1316723959021" MODIFIED="1316723979820"/>
 </node>
 <node TEXT="Bewerken knooptitel in venster" STYLE_REF="Beginner" ID="ID_1279324490" CREATED="1314126040831" MODIFIED="1316291974770">
 <richcontent TYPE="DETAILS">
@@ -790,8 +676,11 @@
     </ul>
   </body>
 </html></richcontent>
+<node TEXT="Eigen menu&apos;s" ID="ID_1285520943" CREATED="1316723899901" MODIFIED="1316723909563"/>
+<node TEXT="&lt;Enter&gt; Nieuwe regel" ID="ID_1609356152" CREATED="1316723917228" MODIFIED="1316723930927"/>
+<node TEXT="Rechtsklik: contextmenu" ID="ID_1771133184" CREATED="1316723959021" MODIFIED="1316723979820"/>
 </node>
-<node TEXT="Bewaren en sluiten mindmap" STYLE_REF="Beginner" FOLDED="true" ID="ID_48547188" CREATED="1314127927655" MODIFIED="1316292747976">
+<node TEXT="Bewaren en sluiten mindmap" STYLE_REF="Beginner" FOLDED="true" ID="ID_48547188" CREATED="1314127927655" MODIFIED="1316669969273">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -1051,6 +940,69 @@
     <p>
       
     </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Kopieren en plakken knoopkern formaat" STYLE_REF="Gevorderde" ID="ID_1478149178" CREATED="1316702912722" MODIFIED="1316723034391">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      De opmaak die geldt voor de hele knoopkern kan worden gekopieerd met<i>&#160; Bewerken &gt; Knoopkern &gt; Kopieren opmaak</i>. En het gekopieerde formaat kan in een andere knoop worden eplakt met <i>Bewerken &gt; Knoopkern &gt; Plakken opmaak..</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Samenvoegen en splitsen knopen (alleen kern)" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_675930201" CREATED="1316669159372" MODIFIED="1316723045806">
+<node TEXT="Splitsen knoop (kern) in twee knopen" STYLE_REF="Gevorderde" ID="ID_86544018" CREATED="1316669216828" MODIFIED="1316723200183">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een knooptekst van meerdere regels kan worden verdeeld over aparte knopen door de betreffende knoop te selecteren en het kiezen van menu <i>Bewerken &gt; Knoopkern &gt;Splits knoopkern</i>.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Opmerking</b>
+    </p>
+    <ul>
+      <li>
+        Dit werkt alleen goed bij knopen zonere andere componenten zoals knoopdetails.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Samenvoegen twee knopen (kern)" STYLE_REF="Gevorderde" ID="ID_244770286" CREATED="1316669193904" MODIFIED="1316723272163">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om de teksten van de verschillende knopen samen te voegen in &#233;&#233;n knoop, selecteer de knopen en kies menu <i>Bewerken &gt; Knoopdetails &gt; Samenvoegen knoopkernen.</i>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Opmerking</b>
+    </p>
+    <ul>
+      <li>
+        Andere componenten zoals knoopdetails worden niet samengevoegd.
+      </li>
+    </ul>
   </body>
 </html></richcontent>
 </node>
@@ -2196,13 +2148,13 @@
         Net als bij de knooptitel kun je tekst ook op een snellere manier direkt in de knoop invoeren. Rechtsklik hiervoor op de knoop en kies <i>Bewerken knoopinhoud (snel).</i>&#160;Om een tekst die je al hebt ingevoerd opnieuw te bewerken, dubbelklik op de tekst.
       </li>
       <li>
-        Alle acties die via een contextmenu mogelijk zijn, kun je ook in het hoofdmenu terugvinden. Bijvoorbeeld, het snelbewerken van knoopinhoud kun je keizen via Bewerken &gt; Knoopdetails &gt; Bewerken knoopinhoud (snel).
+        Alle acties die via een contextmenu mogelijk zijn, kun je ook in het hoofdmenu terugvinden. Bijvoorbeeld, het snelbewerken van knoopinhoud kun je keizen via Bewerken &gt; Knoopuitbreiding &gt; Bewerken knoopinhoud (snel).
       </li>
     </ul>
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Instellen als zweeftekst (tooltip)" STYLE_REF="Gevorderde" ID="ID_288274844" CREATED="1314206958207" MODIFIED="1316328715470">
+<node TEXT="Instellen als zweeftekst (tooltip)" STYLE_REF="Gevorderde" ID="ID_288274844" CREATED="1314206958207" MODIFIED="1316455599276">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -2216,7 +2168,7 @@
       
     </p>
     <p>
-      Om een knoop zoals deze te maken, maak eerst een knoop met knoopinhoud. Kies vervolgens <i>Knoop &gt; Instellen als zweeftekst (tooltip)</i>. Om de tekst weer permanent te zien, kies nogmaals <i>Knoop &gt; Instellen als zweeftekst (tooltip)</i>.
+      Om een knoop zoals deze te maken, maak eerst een knoop met knoopinhoud. Rechtsklik op de knoop en kies<i>&#160;Instellen als zweeftekst (tooltip)</i>. Om de tekst weer permanent te zien, kies nogmaals <i>Knoop &gt; Instellen als zweeftekst (tooltip)</i>.
     </p>
     <p>
       
@@ -2228,11 +2180,14 @@
       <li>
         De keuze van <i>Knoop &gt; Instellen als zweeftekst (tooltip)</i>&#160;leidt er ook toe dat de lengte van de knoopinhoud wordt beperkt en dat andere kenmerken zoals plaatjes en attributen worden verborgen.
       </li>
+      <li>
+        Zie hieronder <i>Afbeelding</i>&#160;voor afwijkend gedrag van een afbeelding in node details.
+      </li>
     </ul>
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Schaalbaar plaatje in knoopdetails" STYLE_REF="Gevorderde" ID="ID_1572435893" CREATED="1314215157545" MODIFIED="1316330755166">
+<node TEXT="Schaalbaar plaatje in knoopdetails" STYLE_REF="Gevorderde" ID="ID_1572435893" CREATED="1314215157545" MODIFIED="1316455932211">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -2250,7 +2205,7 @@
     </p>
     <ul>
       <li>
-        De beschreven werkwijze maakt een extern plaatje. Dit is een plaatje buiten de knooptitel. De grootte van dit plaatje kan worden gewijzigd door een van de hoekpunten te slepen.
+        De beschreven werkwijze maakt een extern plaatje. Dit is een plaatje buiten de knooptitel. De grootte van dit plaatje kan worden gewijzigd door de knoop te selecteren en dan de hoekpunt rechtsonder te slepen.
       </li>
       <li>
         Het is ook mogelijk een plaatje in de knooptitel te maken (intern plaatje). De grootte hiervan kan niet worden gewijzigd. Raadpleeg de handleiding voor meer mogelijkheden.
@@ -2260,6 +2215,9 @@
       </li>
       <li>
         De bron van het plaatje moet zich op je computer bevinden. Sleep het plaatje zonodig eerst van Internet naar je computer.<br/>
+      </li>
+      <li>
+        Een afbeelding die is verborgen met Instellen zweeftekst (tooltip) blijft bij zweven verborgen.<br/>
       </li>
     </ul>
   </body>
@@ -2322,7 +2280,7 @@
         via het contextmenu voor attributen: rechtsklik op het attribuut. (Merk op dat het naamveld en het waardeveld verschillende contextmenu's hebben !)<br/>
       </li>
       <li>
-        door <i>Bewerken&gt; Knoopdetails &gt; Attributen &gt; Toevoegen attribuut</i>&#160;te kiezen.<br/>
+        door <i>Bewerken&gt; Knoopuitbreiding &gt; Attributen &gt; Toevoegen attribuut</i>&#160;te kiezen.<br/>
       </li>
     </ul>
   </body>
@@ -2370,7 +2328,7 @@
 </node>
 </node>
 <node TEXT="Knoopnotitie" STYLE_REF="Gevorderde" FOLDED="true" POSITION="left" ID="ID_154656521" CREATED="1316331564182" MODIFIED="1316331645225" NUMBERED="true">
-<node ID="ID_1329399780" CREATED="1316331632761" MODIFIED="1316331632761">
+<node ID="ID_1329399780" CREATED="1316331632761" MODIFIED="1316497386656">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -2378,7 +2336,21 @@
   </head>
   <body>
     <p style="margin-top: 0">
-      Een knoopnotitie is een bijzonder vorm van knoopinhoud. Het belangrijkste verschil is dat een knoopnotitie ook in een afzonderlijk venster kan worden getoond dat net zo breed is als het scherm. Zie de Handleiding Freeplane voor meer informatie.
+      Een knoopnotitie is een bijzonder vorm van knoopinhoud. Het belangrijkste verschil is dat
+    </p>
+    <ol>
+      <li>
+        een knoopnotitie standaard is verborgen (zweeftekst). De knoop kan standaard onder knoopdetails worden getoond via menu<i>&#160;Beeld &gt; Knoopnotitie &gt; Tonen notities bij knopen.</i>
+      </li>
+      <li>
+        een knoopnotitie ook in een afzonderlijk venster kan worden getoond dat net zo breed is als het scherm. Het venster kan op verschillende plaatsen op het scherm worden getoond. Zie <i>Beeld &gt; knoopnotite.<br/></i>
+      </li>
+      <li>
+        Een knoopnotitie heeft standaard een notitie-pictogram. In <i>Extra &gt; Voorkeuren</i>&#160;kan worden ingesteld dat dit pictogram niet moet worden getoond. Op Internet (Java applet) werkt dit laatste niet.<i><br/></i>
+      </li>
+    </ol>
+    <p>
+      Zie de Handleiding Freeplane voor meer informatie.
     </p>
   </body>
 </html></richcontent>
@@ -3216,6 +3188,123 @@
   </body>
 </html></richcontent>
 </node>
+<node TEXT="Filter instruction" STYLE_REF="Professional" FOLDED="true" ID="ID_1284293100" CREATED="1316177216317" MODIFIED="1316960259890">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      &lt;TE IMPLEMENTEREN&gt;
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Je kunt filteren gebruiken om &#233;&#233;n van de drie niveau's van deze mindmap te laten zien. In de tekst links wordt
+    </p>
+    <p>
+      uitgelegd hoe dit moet. Zie je deze tekst niet, klik dan op mijn titel om de tekst zichtbaar te maken.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Druk op het rode pijltje voor een demonstratie
+    </p>
+    <p>
+      &#160;(animatie) hoe filteren gaat.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Click on my title to open.
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="Select filter and Quickfilter" LOCALIZED_STYLE_REF="default" ID="ID_1871459381" CREATED="1316156118436" MODIFIED="1316344938119" LINK="FilterExampleBegin.jpg">
+<icon BUILTIN="full-1"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To see only the information at the first level of experience (Consumer):
+    </p>
+    <p>
+      
+    </p>
+    <ol>
+      <li>
+        <ol>
+          <li>
+            Click in field with <i>&quot;No filtering (remove)&quot;</i>: a list with filters drops down.
+          </li>
+          <li>
+            Select ane of the shown rules e.g. Beginner (formerly Consumer)
+          </li>
+          <li>
+            Click <i>Quick filter</i>&#160;as shown in the image.
+          </li>
+        </ol>
+        <p>
+          P.S. Make sure Show ancestors is UNselected.
+        </p>
+      </li>
+    </ol>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Unfold to make visible" ID="ID_367674383" CREATED="1316176206878" MODIFIED="1316344952362" VSHIFT="22" LINK="FilterExampleEnd.jpg">
+<icon BUILTIN="full-2"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      You can now click on each item to unhide its content. Or you can unhide all hidden information at once by doing the following:
+    </p>
+    <ol>
+      <li>
+        Move the cursor over the central area (root node) to select it
+      </li>
+      <li>
+        Click on the icon <i>Unfold all </i>to see all selected nodes
+      </li>
+    </ol>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="View and finish" ID="ID_1976159749" CREATED="1316177379721" MODIFIED="1316344974342" VSHIFT="26" LINK="FilterExampleUnfold.jpg">
+<icon BUILTIN="full-3"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <ol>
+      <li>
+        Click in an empty area of the background and drag the map around until hou have read all.
+      </li>
+      <li>
+        Do not forget to press icon <i>No filtering</i>&#160;when you are finished.
+      </li>
+    </ol>
+    <p>
+      You can now follow the same procedure for Beginner, Advanced and Professional.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
 </node>
 <node TEXT="Beveiligen knopen" STYLE_REF="Professional" FOLDED="true" POSITION="left" ID="ID_1878167877" CREATED="1314339453691" MODIFIED="1316333172353" NUMBERED="true">
 <node TEXT="Nieuwe beveiligde mindmap" STYLE_REF="Professional" ID="ID_843632552" CREATED="1314362258060" MODIFIED="1316333165707">
@@ -3501,6 +3590,43 @@
   <body>
     <p>
       Spellingcontrole is standaard voor Engels ingesteld. Voor het Nederlands moet de woordenlijst worden opgehaald van Internet. Klik op het rode pijltje. Raadpleeg verder de Handleiding Freeplane.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Scientific suite (Docear)" STYLE_REF="Professional" ID="ID_170927482" CREATED="1316706324268" MODIFIED="1316706874203" LINK="http://docear.org/details.php">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span lang="EN-US">Docear is an &quot;academic literature suite&quot;. It provides to researchers what an office suite provides to office workers. By that we mean, Docear supports you in doing all the tasks related to literature management: </span>
+    </p>
+    <p>
+      <span lang="EN-US">&#160; </span>
+    </p>
+    <p>
+      <span lang="EN-US">&#160;&#160;&#160;1. Finding new literature (searching and exploring) </span>
+    </p>
+    <p>
+      <span lang="EN-US">&#160;&#160;&#160;2. Organizing literature (reading, annotating, and retrieving) </span>
+    </p>
+    <p>
+      <span lang="EN-US">&#160;&#160;&#160;3. Creating your own literature (drafting, writing, referencing, and publishing) </span>
+    </p>
+    <p>
+      <span lang="EN-US">&#160; </span>
+    </p>
+    <p>
+      <span lang="EN-US">Docear is the successor of SciPlore MindMapping and funded by the European Union and German Federal Ministry of Economics and Technology.</span>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>It is expected that Docear will become available as plugin in October 2011: click the red arrow</b>
     </p>
   </body>
 </html></richcontent>

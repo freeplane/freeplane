@@ -124,7 +124,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Reading guide" STYLE_REF="Consumer" FOLDED="true" ID="ID_195004053" CREATED="1316097186850" MODIFIED="1316342370284">
+<node TEXT="Reading guide" STYLE_REF="Consumer" ID="ID_195004053" CREATED="1316097186850" MODIFIED="1316959717505" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Meeting_support">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -148,146 +148,24 @@
         <b>Advanced</b>&#160;(yellow): You learn additional elements which could be used for better&#160;&#160;organizing&#160;information and better communicating meaning.
       </li>
       <li>
-        <b>Professional</b>&#160;(orange/brown): You learn about setting preferences and using production and technical tools
-      </li>
-    </ol>
-  </body>
-</html></richcontent>
-<node TEXT="Filter instruction" STYLE_REF="Advanced" FOLDED="true" ID="ID_1284293100" CREATED="1316177216317" MODIFIED="1316345021111">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Consider using a powerfull feature of Freeplane,
-    </p>
-    <p>
-      filtering, to present to you only the information of
-    </p>
-    <p>
-      one of these 3 levels at a time.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <font color="#ff0000">&lt;TO BE IMPLEMENTED&gt;.</font>
-    </p>
-    <p>
-      The procedure for filtering is described to the right.
-    </p>
-    <p>
-      &#160;If you do not see it, click on the colored bar above
-    </p>
-    <p>
-      this text to unhide it.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Click on my title to open.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Select filter and Quickfilter" LOCALIZED_STYLE_REF="default" ID="ID_81563733" CREATED="1316156118436" MODIFIED="1316344938119" LINK="FilterExampleBegin.jpg">
-<icon BUILTIN="full-1"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      To see only the information at the first level of experience (Consumer):
-    </p>
-    <p>
-      
-    </p>
-    <ol>
-      <li>
-        <ol>
-          <li>
-            Click in field with <i>&quot;No filtering (remove)&quot;</i>: a list with filters drops down.
-          </li>
-          <li>
-            Select ane of the shown rules e.g. Beginner (formerly Consumer)
-          </li>
-          <li>
-            Click <i>Quick filter</i>&#160;as shown in the image.
-          </li>
-        </ol>
-        <p>
-          P.S. Make sure Show ancestors is UNselected.
-        </p>
-      </li>
-    </ol>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Unfold to make visible" ID="ID_1451237301" CREATED="1316176206878" MODIFIED="1316344952362" VSHIFT="22" LINK="FilterExampleEnd.jpg">
-<icon BUILTIN="full-2"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      You can now click on each item to unhide its content. Or you can unhide all hidden information at once by doing the following:
-    </p>
-    <ol>
-      <li>
-        Move the cursor over the central area (root node) to select it
-      </li>
-      <li>
-        Click on the icon <i>Unfold all </i>to see all selected nodes
-      </li>
-    </ol>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="View and finish" ID="ID_1331360426" CREATED="1316177379721" MODIFIED="1316344974342" VSHIFT="26" LINK="FilterExampleUnfold.jpg">
-<icon BUILTIN="full-3"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <ol>
-      <li>
-        Click in an empty area of the background and drag the map around until hou have read all.
-      </li>
-      <li>
-        Do not forget to press icon <i>No filtering</i>&#160;when you are finished.
+        <b>Professional</b>&#160;(orange/brown): You learn about setting preferences and using production and technical tools.
       </li>
     </ol>
     <p>
-      You can now follow the same procedure for Beginner, Advanced and Professional.
+      <font color="#ff0000">Click the red arrow to go to the Internet. You will see two examples for respectively the beginning and advanced user. You can also view an introductory video animation for the beginning user.</font>
     </p>
   </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Animation" STYLE_REF="Example" ID="ID_619551626" CREATED="1316179283159" MODIFIED="1316180208211">
-<richcontent TYPE="DETAILS">
+</html>
+</richcontent>
+<richcontent TYPE="NOTE">
 <html>
   <head>
     
   </head>
   <body>
-    <p>
-      Click the red arrow to follow the annimated user instruction<br/>&#160;for navigating mind maps and unhiding information.<font color="#ff0000">&#160; </font>
-    </p>
-    <p>
-      <font color="#ff0000">&lt;TO BE IMPLEMENTED&gt;</font>
-    </p>
   </body>
-</html></richcontent>
-</node>
+</html>
+</richcontent>
 </node>
 <node TEXT="What is a mind map" STYLE_REF="Consumer" FOLDED="true" ID="ID_448981847" CREATED="1314122243021" MODIFIED="1316185051856" VSHIFT="-10">
 <node TEXT="Basic terms" STYLE_REF="Consumer" ID="ID_1368882439" CREATED="1316154547031" MODIFIED="1316155147055" HGAP="40">
@@ -3176,6 +3054,117 @@
     </p>
   </body>
 </html></richcontent>
+</node>
+<node TEXT="Example" STYLE_REF="Professional" FOLDED="true" ID="ID_1284293100" CREATED="1316177216317" MODIFIED="1316959986946">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#ff0000">&lt;TO BE IMPLEMENTED&gt;.</font>
+    </p>
+    <p>
+      Consider using a powerfull feature of Freeplane, filtering, to present to you only the information of
+    </p>
+    <p>
+      one of these 3 levels at a time.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      The procedure for filtering is described to the left. &#160;If you do not see it, click on the colored bar above
+    </p>
+    <p>
+      this text to unhide it.
+    </p>
+    <p>
+      
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="Select filter and Quickfilter" LOCALIZED_STYLE_REF="default" ID="ID_81563733" CREATED="1316156118436" MODIFIED="1316344938119" LINK="FilterExampleBegin.jpg">
+<icon BUILTIN="full-1"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To see only the information at the first level of experience (Consumer):
+    </p>
+    <p>
+      
+    </p>
+    <ol>
+      <li>
+        <ol>
+          <li>
+            Click in field with <i>&quot;No filtering (remove)&quot;</i>: a list with filters drops down.
+          </li>
+          <li>
+            Select ane of the shown rules e.g. Beginner (formerly Consumer)
+          </li>
+          <li>
+            Click <i>Quick filter</i>&#160;as shown in the image.
+          </li>
+        </ol>
+        <p>
+          P.S. Make sure Show ancestors is UNselected.
+        </p>
+      </li>
+    </ol>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Unfold to make visible" ID="ID_1451237301" CREATED="1316176206878" MODIFIED="1316344952362" VSHIFT="22" LINK="FilterExampleEnd.jpg">
+<icon BUILTIN="full-2"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      You can now click on each item to unhide its content. Or you can unhide all hidden information at once by doing the following:
+    </p>
+    <ol>
+      <li>
+        Move the cursor over the central area (root node) to select it
+      </li>
+      <li>
+        Click on the icon <i>Unfold all </i>to see all selected nodes
+      </li>
+    </ol>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="View and finish" ID="ID_1331360426" CREATED="1316177379721" MODIFIED="1316344974342" VSHIFT="26" LINK="FilterExampleUnfold.jpg">
+<icon BUILTIN="full-3"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <ol>
+      <li>
+        Click in an empty area of the background and drag the map around until hou have read all.
+      </li>
+      <li>
+        Do not forget to press icon <i>No filtering</i>&#160;when you are finished.
+      </li>
+    </ol>
+    <p>
+      You can now follow the same procedure for Beginner, Advanced and Professional.
+    </p>
+  </body>
+</html></richcontent>
+</node>
 </node>
 </node>
 <node TEXT="Protecting nodes" STYLE_REF="Professional" FOLDED="true" POSITION="left" ID="ID_1232153769" CREATED="1314339453691" MODIFIED="1316184682704" NUMBERED="true">

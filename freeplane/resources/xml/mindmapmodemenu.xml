@@ -442,10 +442,9 @@
 		<menu_action action="EditLongAction" accelerator="alt ENTER" />
 		<menu_action action="EditDetailsInDialogAction"  />
 		<menu_action action="EditDetailsAction"/>
+		<menu_action action="EditNoteInDialogAction" />
 		<menu_action action="ExternalImageAddAction" />
 		<menu_action action="EditAttributesAction" accelerator="alt F9"/>
-		<menu_action action="EditNoteInDialogAction" />
-		<menu_action action="SetShortenerStateAction" />
 			<menu_separator />
 		<menu_action action="NewSummaryAction" accelerator="alt shift INSERT" />
 		<menu_action action="SummaryNodeAction" accelerator = "alt shift S"/>
@@ -462,7 +461,7 @@
 		</menu_submenu>	
 		<menu_separator />
 		<menu_action action="EnterPassword" />
-		<menu_separator />
+			<menu_separator />
 		<menu_action action="CutAction" accelerator="control X" />
 		<menu_action action="CopyAction" accelerator="control C" />
 		<menu_action action="CopySingleAction" accelerator="control shift C" />
