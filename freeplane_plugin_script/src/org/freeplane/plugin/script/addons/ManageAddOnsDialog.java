@@ -60,6 +60,7 @@ import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.main.addons.AddOnProperties;
 import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.plugin.script.ScriptingEngine;
+import org.freeplane.plugin.script.ScriptingPermissions;
 import org.freeplane.plugin.script.addons.ManageAddOnsDialog.AddOnTableModel;
 
 @SuppressWarnings("serial")
@@ -203,37 +204,39 @@ public class ManageAddOnsDialog extends JDialog {
 						localUrl = downloadUrl(sourceUrl);
 						LogUtils.info("downloaded " + sourceUrl + " to " + localUrl);
 					}
-					// FIXME: i18n
-					setStatusInfo("Installing add-on...");
+					setStatusInfo(getText("status.installing"));
 					Controller.getCurrentModeController().getMapController().newMap(localUrl, false);
 					final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 					final String key = mapViewManager.checkIfFileIsAlreadyOpened(localUrl);
 					// make the map the current map even if it was already opened
-					// FIXME: i18n
 					if (key == null || !mapViewManager.tryToChangeToMapView(key))
-						throw new RuntimeException("Map " + urlField.getText() + " does not seem to be opened");
+						throw new RuntimeException(getText("map.not.opened", urlField.getText()));
 					final MapModel newMap = mapViewManager.getModel();
-					// FIXME: hardcoded, wrong path!
-					final File scriptDir = new File(ResourceController.getResourceController()
-					    .getFreeplaneUserDirectory(), "scripts");
-					final File installScript = new File(scriptDir, "installScriptAddOn.groovy");
 					AddOnProperties addOn = (AddOnProperties) ScriptingEngine.executeScript(newMap.getRootNode(),
-					    FileUtils.slurpFile(installScript));
+					    getInstallScriptSource(), ScriptingPermissions.getPermissiveScriptingPermissions());
 					if (addOn != null) {
 						addOn.setSourceUrl(sourceUrl);
-						// FIXME: i18n
-						setStatusInfo("Successfully nstalled " + addOn.getName());
+						setStatusInfo(getText("status.success", addOn.getName()));
 					}
 					Controller.getCurrentController().getMapViewManager().close(true);
 					//					restartTransaction(oldMap, newMap);
 				}
 				catch (Exception ex) {
-					UITools.errorMessage("Error on installation: " + ex);
+					UITools.errorMessage(getText("error", ex.toString()));
 				}
 				finally {
 					Controller.getCurrentController().getViewController().setWaitingCursor(false);
 				}
 			}
+
+			private String getInstallScriptSource() throws IOException {
+				// FIXME: hardcoded, wrong path!
+				final File scriptDir = new File(ResourceController.getResourceController()
+				    .getFreeplaneUserDirectory(), "scripts");
+				// FIXME: bundled!
+				final File installScript = new File(scriptDir, "installScriptAddOn.groovy");
+	            return FileUtils.slurpFile(installScript);
+            }
 
 			private URL toURL(String urlText) throws MalformedURLException {
 				try {
@@ -270,7 +273,7 @@ public class ManageAddOnsDialog extends JDialog {
 		final TableColumnModel columnModel = table.getColumnModel();
 		columnModel.getColumn(0).setPreferredWidth(150);
 		columnModel.getColumn(1).setPreferredWidth(40);
-		// FIXME: shorten, set tooltip
+		// FIXME: set tooltip
 		columnModel.getColumn(2).setPreferredWidth(270);
 		columnModel.getColumn(3).setPreferredWidth(40);
 		columnModel.getColumn(4).setPreferredWidth(300);
@@ -294,7 +297,7 @@ public class ManageAddOnsDialog extends JDialog {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);
 				if (!addOn.supportsOperation(AddOnProperties.OP_CONFIGURE)) {
-					UITools.errorMessage("Cannot configure " + addOn.getTranslatedName());
+					UITools.errorMessage(getText("cannot.configure", addOn.getTranslatedName()));
 				}
 				else {
 					OptionPanelBuilder optionPanelBuilder = new OptionPanelBuilder();
@@ -311,13 +314,12 @@ public class ManageAddOnsDialog extends JDialog {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);
 				if (!addOn.supportsOperation(AddOnProperties.OP_DEACTIVATE)) {
-					UITools.errorMessage("Cannot deactivate: " + addOn.getTranslatedName() + " is not active");
+					UITools.errorMessage(getText("cannot.deactivate", addOn.getTranslatedName()));
 				}
 				else {
 					addOn.setActive(false);
 					saveAddOn(addOn);
-					UITools.informationMessage(addOn.getTranslatedName()
-					        + " will be deactivated after a restart");
+					UITools.informationMessage(getText("deactivation.success", addOn.getTranslatedName()));
 				}
 			}
 		};
@@ -329,14 +331,12 @@ public class ManageAddOnsDialog extends JDialog {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);
 				if (!addOn.supportsOperation(AddOnProperties.OP_ACTIVATE)) {
-					UITools.errorMessage("Cannot activate: " + addOn.getTranslatedName()
-					        + " is already active");
+					UITools.errorMessage(getText("cannot.activate", addOn.getTranslatedName()));
 				}
 				else {
 					addOn.setActive(true);
 					saveAddOn(addOn);
-					UITools.informationMessage(addOn.getTranslatedName()
-					        + " will be activated after a restart");
+					UITools.informationMessage(getText("activation.success", addOn.getTranslatedName()));
 				}
 			}
 		};
@@ -348,12 +348,11 @@ public class ManageAddOnsDialog extends JDialog {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);
 				if (!addOn.supportsOperation(AddOnProperties.OP_DEINSTALL)) {
-					UITools.errorMessage("Cannot deinstall " + addOn.getTranslatedName());
+					UITools.errorMessage(getText("cannot.deinstall", addOn.getTranslatedName()));
 				}
 				else {
 					AddOnsController.getController().deInstall(addOn);
-					UITools.informationMessage(addOn.getTranslatedName()
-					        + " will be deinstalled after a restart");
+					UITools.informationMessage(getText("deinstallation.success", addOn.getTranslatedName()));
 				}
 			}
 		};
@@ -366,7 +365,7 @@ public class ManageAddOnsDialog extends JDialog {
 	}
 
 	private URL downloadUrl(final URL url) throws IOException {
-		setStatusInfo("Downloading file...");
+		setStatusInfo(getText("status.downloading"));
 		BufferedInputStream in = null;
 		BufferedOutputStream out = null;
 		try {
@@ -413,7 +412,7 @@ public class ManageAddOnsDialog extends JDialog {
 	}
 
 	private void setStatusInfo(final String message) {
-		Controller.getCurrentController().getViewController().out("Installed " + message + "...");
+		Controller.getCurrentController().getViewController().out(message);
 	}
 
 	private void saveAddOn(final AddOnProperties addOn) {
@@ -432,6 +431,10 @@ public class ManageAddOnsDialog extends JDialog {
 	private static String getText(String key) {
 		return TextUtils.getText(getResourceKey(key));
 	}
+
+	private String getText(String key, Object... parameters) {
+		return TextUtils.format(getResourceKey(key), parameters);
+    }
 }
 
 /**

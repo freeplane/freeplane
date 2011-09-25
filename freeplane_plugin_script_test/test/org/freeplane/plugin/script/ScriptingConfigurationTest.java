@@ -41,13 +41,14 @@ public class ScriptingConfigurationTest {
 		ScriptMetaData metaData = new ScriptingConfiguration().analyseScriptContent(content, scriptName);
 		assertEquals("expected only modes set in the script", 2, metaData.getExecutionModes().size());
 		assertTrue("ON_SELECTED_NODE was set", metaData.getExecutionModes().contains(ExecutionMode.ON_SELECTED_NODE));
+		final String scriptsParentLocation = ScriptingConfiguration.getScriptsParentLocations()[0];
 		assertEquals("menu location for ON_SELECTED_NODE should be default",
-		    ScriptingConfiguration.getScriptsLocation(ScriptingConfiguration.getScriptsParentLocations()[0]) + "/" + scriptName,
-		    metaData.getMenuLocation(ExecutionMode.ON_SELECTED_NODE));
+		    ScriptingConfiguration.getScriptsLocation(scriptsParentLocation) + "/" + scriptName,
+		    metaData.getMenuLocation(ExecutionMode.ON_SELECTED_NODE, scriptsParentLocation));
 		assertTrue("ON_SELECTED_NODE_RECURSIVELY was set",
 		    metaData.getExecutionModes().contains(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY));
 		assertEquals("menu location for ON_SELECTED_NODE_RECURSIVELY was set explicitely", "/menu_bar/help",
-		    metaData.getMenuLocation(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY));
+		    metaData.getMenuLocation(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY, scriptsParentLocation));
 		assertTrue("CacheScriptContent was set to true", metaData.cacheContent());
 	}
 
@@ -60,14 +61,16 @@ public class ScriptingConfigurationTest {
 		        + ",\n \tON_SelECTED_NODE_RECURSIVELY = \"/menu_bar/help[Test_Script]\" } )" //
 		        + "\n def test() {}\n";
 		ScriptMetaData metaData = new ScriptingConfiguration().analyseScriptContent(content, scriptName);
+		final String scriptsParentLocation = ScriptingConfiguration.getScriptsParentLocations()[0];
 		assertEquals("expected only modes set in the script", 2, metaData.getExecutionModes().size());
 		assertTrue("ON_SELECTED_NODE was set", metaData.getExecutionModes().contains(ExecutionMode.ON_SELECTED_NODE));
-		assertEquals("wrong menu location", "/menu_bar/help", metaData.getMenuLocation(ExecutionMode.ON_SELECTED_NODE));
+		assertEquals("wrong menu location", "/menu_bar/help",
+		    metaData.getMenuLocation(ExecutionMode.ON_SELECTED_NODE, scriptsParentLocation));
 		assertEquals("wrong title key", "icon_button_ok", metaData.getTitleKey(ExecutionMode.ON_SELECTED_NODE));
 		assertTrue("ON_SELECTED_NODE_RECURSIVELY was set",
 		    metaData.getExecutionModes().contains(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY));
 		assertEquals("wrong menu location", "/menu_bar/help",
-		    metaData.getMenuLocation(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY));
+		    metaData.getMenuLocation(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY, scriptsParentLocation));
 		assertEquals("wrong title key", "Test_Script", metaData.getTitleKey(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY));
 	}
 

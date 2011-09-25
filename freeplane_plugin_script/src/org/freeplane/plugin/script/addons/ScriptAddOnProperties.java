@@ -2,13 +2,10 @@ package org.freeplane.plugin.script.addons;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Vector;
 
-import org.apache.commons.lang.StringUtils;
 import org.freeplane.main.addons.AddOnProperties;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
@@ -19,10 +16,15 @@ public class ScriptAddOnProperties extends AddOnProperties {
 	public static class Script {
 		public String name;
 		public File file;
-		public Map<String, String> menuMapping = new LinkedHashMap<String, String>();
-		public List<ExecutionMode> executionModes;
+		public ExecutionMode executionMode;
+		public String menuTitleKey;
+		public String menuLocation;
 		public ScriptingPermissions permissions;
 		public String scriptBody;
+
+		public String toString() {
+			return name + "(" + executionMode + "/" + menuTitleKey + "/" + menuLocation + "" + ")";
+		}
 	}
 
 	private List<Script> scripts;
@@ -46,10 +48,12 @@ public class ScriptAddOnProperties extends AddOnProperties {
 				throw new RuntimeException(this + ": on parsing add-on XML file: no name");
 			if (!script.file.exists())
 				throw new RuntimeException(this + ": on parsing add-on XML file: Script " + script + " does not exist");
-			if (script.executionModes == null || script.executionModes.isEmpty())
-				throw new RuntimeException(this + ": on parsing add-on XML file: no execution_modes");
-			if (script.menuMapping == null || script.menuMapping.isEmpty())
-				throw new RuntimeException(this + ": on parsing add-on XML file: no menu mappings");
+			if (script.executionMode == null)
+				throw new RuntimeException(this + ": on parsing add-on XML file: no execution_mode");
+			if (script.menuTitleKey == null)
+				throw new RuntimeException(this + ": on parsing add-on XML file: no menu title key");
+			if (script.menuLocation == null)
+				throw new RuntimeException(this + ": on parsing add-on XML file: no menu location");
 			if (script.permissions == null)
 				throw new RuntimeException(this + ": on parsing add-on XML file: no permissions");
 		}
@@ -66,11 +70,14 @@ public class ScriptAddOnProperties extends AddOnProperties {
 					script.name = (String) entry.getValue();
 					script.file = new File(ScriptingEngine.getUserScriptDir(), script.name);
 				}
-				else if (entry.getKey().toString().startsWith("execution_mode")) {
-					script.executionModes = parseExecutionModes(entry.getValue().toString());
+				else if (entry.getKey().equals("executionMode")) {
+					script.executionMode = parseExecutionMode(entry.getValue().toString());
 				}
-				else if (!entry.getKey().toString().startsWith("execute_scripts_")) {
-					script.menuMapping.put(entry.getKey().toString(), entry.getValue().toString());
+				else if (entry.getKey().equals("menuTitleKey")) {
+					script.menuTitleKey = entry.getValue().toString();
+				}
+				else if (entry.getKey().equals("menuLocation")) {
+					script.menuLocation = entry.getValue().toString();
 				}
 			}
 			script.permissions = new ScriptingPermissions(scriptXmlNode.getAttributes());
@@ -79,18 +86,22 @@ public class ScriptAddOnProperties extends AddOnProperties {
 		return scripts;
 	}
 
-	public static List<ExecutionMode> parseExecutionModes(final String executionModesCSV) {
-		final ArrayList<ExecutionMode> executionModes = new ArrayList<ExecutionMode>();
-		for (String string : executionModesCSV.toString().split("\\s*,\\s*")) {
-			try {
-				executionModes.add(ExecutionMode.valueOf(string.toUpperCase()));
-			}
-			catch (Exception e) {
-				throw new RuntimeException("invalid execution mode found in " + executionModesCSV, e);
-			}
+	public static ExecutionMode parseExecutionMode(final String executionModeString) {
+		try {
+			return ExecutionMode.valueOf(executionModeString.toUpperCase());
 		}
-		return executionModes;
+		catch (Exception e) {
+			throw new RuntimeException("invalid execution mode found in " + executionModeString, e);
+		}
 	}
+
+	public List<Script> getScripts() {
+    	return scripts;
+    }
+
+	public static String getNameKey(final String name) {
+        return "addons." + name;
+    }
 
 	public XMLElement toXml() {
 		final XMLElement xmlElement = super.toXml();
@@ -103,13 +114,9 @@ public class ScriptAddOnProperties extends AddOnProperties {
 		for (Script script : scripts) {
 			XMLElement scriptXmlElement = new XMLElement("script");
 			scriptXmlElement.setAttribute("name", script.name);
-			if (script.executionModes != null && !script.executionModes.isEmpty()) {
-				scriptXmlElement.setAttribute("execution_modes",
-				    StringUtils.join(script.executionModes.iterator(), ','));
-			}
-			for (Entry<String, String> entry : script.menuMapping.entrySet()) {
-				scriptXmlElement.setAttribute(entry.getKey(), entry.getValue());
-			}
+			scriptXmlElement.setAttribute("menuTitleKey", script.menuTitleKey);
+			scriptXmlElement.setAttribute("menuLocation", script.menuLocation);
+			scriptXmlElement.setAttribute("executionMode", script.executionMode.toString());
 			final List<String> permissionNames = ScriptingPermissions.getPermissionNames();
 			for (String permission : permissionNames) {
 				scriptXmlElement.setAttribute(permission, Boolean.toString(script.permissions.get(permission)));

@@ -71,7 +71,7 @@ def installationAssert(boolean check, String issue) {
 
 def parseProperties(Map childNodeMap) {
 	def property = 'properties'
-	Proxy.Node propertyNode = childNodeMap[property]
+	Proxy.Node propertyNode = node.map.root
 	configMap[property] = propertyNode.attributes.map.inject([:]){ map,k,v ->
 		if (v)
 			map[k] = k.toString().startsWith('freeplaneVersion') ? parseFreeplaneVersion(k, v) : v
@@ -131,7 +131,7 @@ def parseTranslations(Map childNodeMap) {
 			localeMap[expandVariables(e.key)] = e.value
 			return localeMap
 		}
-		def key = 'addons.${name}'
+		def key = ScriptAddOnProperties.getNameKey(configMap['properties']['name'])
 		def expKey = expandVariables(key)
 		mapStructureAssert(map[locale][expKey], textUtils.format('addons.installer.missing.translation', key, locale))
 		return map
@@ -163,25 +163,23 @@ def parseScripts(Map childNodeMap) {
 	mapStructureAssert( ! propertyNode.isLeaf(), textUtils.getText('addons.installer.no.scripts'))
 
 	configMap[property] = propertyNode.children.inject([]){ scripts, scriptNode ->
-		if (scriptNode.plainText == 'script') {
-			def script = new ScriptAddOnProperties.Script()
-			script.scriptBody = scriptNode.text
-			mapStructureAssert( ! htmlUtils.isHtmlNode(script.scriptBody), textUtils.getText('addons.installer.html.script'))
-			scriptNode.attributes.map.each { k,v ->
-				if (k == "name")
-					script.name = v
-				else if (k.toString().toLowerCase().startsWith('execution_mode'))
-					script.executionModes = ScriptAddOnProperties.parseExecutionModes(v)
-				else if ( ! k.toString().toLowerCase().startsWith('execute_scripts_'))
-					script.menuMapping[expandVariables(k)] = expandVariables(v)
-			}
-			script.permissions = parsePermissions(scriptNode, script.name)
-			mapStructureAssert(script.name, textUtils.format('addons.installer.script.no.name', script))
-			mapStructureAssert(script.executionModes, textUtils.format('addons.installer.script.no.execution_modes', script))
-			mapStructureAssert(script.menuMapping, textUtils.format('addons.installer.script.no.menumapping', script))
-			mapStructureAssert(script.permissions, textUtils.format('addons.installer.script.no.permissions', script))
-			scripts << script
+		def script = new ScriptAddOnProperties.Script()
+		script.name = expandVariables(scriptNode.plainText)
+		script.scriptBody = scriptNode.text
+		mapStructureAssert( ! htmlUtils.isHtmlNode(script.scriptBody), textUtils.getText('addons.installer.html.script'))
+		scriptNode.attributes.map.each { k,v ->
+			if (k == 'executionMode')
+				script[k] = ScriptAddOnProperties.parseExecutionMode(v)
+			else if ( ! k.toString().toLowerCase().startsWith('execute_scripts_'))
+				script[k] = expandVariables(v)
 		}
+		script.permissions = parsePermissions(scriptNode, script.name)
+		mapStructureAssert(script.name.endsWith('.groovy'), textUtils.format('addons.installer.groovy.script.name', script.name))
+		mapStructureAssert(script.menuTitleKey, textUtils.format('addons.installer.script.no.menutitle', script))
+		mapStructureAssert(script.menuLocation, textUtils.format('addons.installer.script.no.menulocation', script))
+		mapStructureAssert(script.executionMode, textUtils.format('addons.installer.script.no.execution_mode', script))
+		mapStructureAssert(script.permissions, textUtils.format('addons.installer.script.no.permissions', script))
+		scripts << script
 		return scripts
 	}
 	mapStructureAssert(configMap[property], textUtils.getText('addons.installer.no.scripts'))
@@ -261,7 +259,6 @@ def expandVariables(String string) {
 
 AddOnProperties install() {
 	def propertyNames = [
-		'properties',
 		'description',
 		'translations',
 		'preferences.xml',

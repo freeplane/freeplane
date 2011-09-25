@@ -48,6 +48,7 @@ public class ScriptingPermissions {
         , RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION //
         , RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED //
 	};
+	final static ScriptingPermissions restrictedPermissions = new ScriptingPermissions();
 
 	public ScriptingPermissions() {
 		// by default nothing is allowed
@@ -95,11 +96,24 @@ public class ScriptingPermissions {
 	}
 
 	ScriptingSecurityManager getRestrictedScriptingSecurityManager() {
-		return new ScriptingSecurityManager(false, false, false, false);
+		return getRestrictedPermissions().getScriptingSecurityManager();
+	}
+	
+	static ScriptingPermissions getRestrictedPermissions() {
+		return restrictedPermissions;
 	}
 
 	ScriptingSecurityManager getPermissiveScriptingSecurityManager() {
 		return new ScriptingSecurityManager(true, true, true, true);
+	}
+	
+	public static ScriptingPermissions getPermissiveScriptingPermissions() {
+		final ScriptingPermissions result = new ScriptingPermissions();
+		result.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION, true);
+		result.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_WRITE_RESTRICTION, true);
+		result.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION, true);
+		result.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION, true);
+		return result;
 	}
 
 	boolean isExecuteSignedScriptsWithoutRestriction() {

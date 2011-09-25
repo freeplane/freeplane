@@ -97,7 +97,7 @@ class ScriptingRegistration {
 		public Object executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
 			final ModeController modeController = Controller.getCurrentModeController();
 			// pattern are like formulas - restrict them!
-			final boolean restrictedPermissions = true;
+			final ScriptingPermissions restrictedPermissions = ScriptingPermissions.getRestrictedPermissions();
 			return ScriptingEngine.executeScript(modeController.getMapController().getSelectedNode(), mScript,
 			    pErrorHandler, pOutStream, null, restrictedPermissions);
 		}
@@ -129,7 +129,6 @@ class ScriptingRegistration {
 		}
 	}
 
-// 	final private MModeController modeController;
 	final private HashMap<String, Object> mScriptCookies = new HashMap<String, Object>();
 
 	public ScriptingRegistration(ModeController modeController) {
@@ -244,29 +243,28 @@ class ScriptingRegistration {
 
 	private void registerScripts(final MenuBuilder menuBuilder, ScriptingConfiguration configuration) {
 		final HashSet<String> registeredLocations = new HashSet<String>();
-		for (final String scriptsParentLocation : ScriptingConfiguration.getScriptsParentLocations())
-		{
+		for (final String scriptsParentLocation : ScriptingConfiguration.getScriptsParentLocations()) {
 			final String scriptsLocation = ScriptingConfiguration.getScriptsLocation(scriptsParentLocation);
 			addSubMenu(menuBuilder, scriptsParentLocation, scriptsLocation, TextUtils.getText("ExecuteScripts.text"));
 			registeredLocations.add(scriptsLocation);
 			if (configuration.getNameScriptMap().isEmpty()) {
 				final String message = "<html><body><em>" + TextUtils.getText("ExecuteScripts.noScriptsAvailable")
-						+ "</em></body></html>";
+				        + "</em></body></html>";
 				menuBuilder.addElement(scriptsLocation, new JMenuItem(message), 0);
 			}
 			for (final Entry<String, String> entry : configuration.getNameScriptMap().entrySet()) {
 				final String scriptName = entry.getKey();
-				final ScriptMetaData scriptMetaData = configuration.getNameScriptMetaDataMap().get(scriptName);
+				final ScriptMetaData metaData = configuration.getNameScriptMetaDataMap().get(scriptName);
 				// in the worst case three actions will cache a script - should not matter that much since it's unlikely
 				// that one script is used in multiple modes by the same user
-				for (final ExecutionMode executionMode : scriptMetaData.getExecutionModes()) {
-					final String location = scriptMetaData.getMenuLocation(executionMode);
+				for (final ExecutionMode executionMode : metaData.getExecutionModes()) {
+					final String location = metaData.getMenuLocation(executionMode, scriptsParentLocation);
 					if (!registeredLocations.contains(location)) {
 						addSubMenu(menuBuilder, scriptsLocation, location, scriptName);
 						registeredLocations.add(location);
 					}
-					addMenuItem(menuBuilder, location, entry, executionMode, scriptMetaData.cacheContent(),
-						scriptMetaData.getTitleKey(executionMode));
+					addMenuItem(menuBuilder, location, entry, executionMode, metaData.cacheContent(),
+					    metaData.getTitleKey(executionMode), metaData.getPermissions());
 				}
 			}
 		}
@@ -289,12 +287,13 @@ class ScriptingRegistration {
 	}
 
 	private void addMenuItem(final MenuBuilder menuBuilder, final String location, final Entry<String, String> entry,
-	                         final ExecutionMode executionMode, final boolean cacheContent, final String titleKey) {
+	                         final ExecutionMode executionMode, final boolean cacheContent, final String titleKey,
+	                         final ScriptingPermissions permissions) {
 		final String scriptName = entry.getKey();
 		final String translation = TextUtils.getText(titleKey, titleKey.replace('_', ' '));
 		final String menuName = translation.contains("{0}") ? MessageFormat.format(translation,
 		    pimpScriptName(scriptName)) : translation;
 		menuBuilder.addAction(location, new ExecuteScriptAction(scriptName, menuName, entry.getValue(), executionMode,
-		    cacheContent), MenuBuilder.AS_CHILD);
+		    cacheContent, permissions), MenuBuilder.AS_CHILD);
 	}
 }

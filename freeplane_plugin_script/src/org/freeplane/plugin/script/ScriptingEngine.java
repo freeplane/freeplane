@@ -74,12 +74,13 @@ public class ScriptingEngine {
     };
 
 	/**
-	 * @param restricted TODO
+	 * @param permissions if null use default scripting permissions.
 	 * @return the result of the script, or null, if the user has cancelled.
 	 * @throws ExecuteScriptException on errors
 	 */
 	static Object executeScript(final NodeModel node, String script, final IErrorHandler pErrorHandler,
-	                            final PrintStream pOutStream, final ScriptContext scriptContext, boolean restricted) {
+	                            final PrintStream pOutStream, final ScriptContext scriptContext,
+	                            final ScriptingPermissions permissions) {
 		if (!noUserPermissionRequired) {
 			final int showResult = OptionalDontShowMeAgainDialog.show("really_execute_script", "confirmation",
 			    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
@@ -110,16 +111,14 @@ public class ScriptingEngine {
 		final PrintStream oldOut = System.out;
 		// get preferences (and store them again after the script execution,
 		// such that the scripts are not able to change them).
-		final ScriptingPermissions scriptingPermissions = new ScriptingPermissions(ResourceController
-		    .getResourceController().getProperties());
+		final ScriptingPermissions scriptingPermissions = (permissions != null) ? permissions //
+		        : new ScriptingPermissions(ResourceController.getResourceController().getProperties());
 		final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
 		final ScriptingSecurityManager scriptingSecurityManager;
 		final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
 		if (needsSecurityManager) {
 			final boolean executeSignedScripts = scriptingPermissions.isExecuteSignedScriptsWithoutRestriction();
-			if (restricted)
-				scriptingSecurityManager = scriptingPermissions.getRestrictedScriptingSecurityManager();
-			else if (executeSignedScripts && new SignedScriptHandler().isScriptSigned(script, pOutStream))
+			if (executeSignedScripts && new SignedScriptHandler().isScriptSigned(script, pOutStream))
 				scriptingSecurityManager = scriptingPermissions.getPermissiveScriptingSecurityManager();
 			else
 				scriptingSecurityManager = scriptingPermissions.getScriptingSecurityManager();
@@ -190,7 +189,7 @@ public class ScriptingEngine {
 			}
 			pOutStream.print("Line number: " + lineNumber);
 			pErrorHandler.gotoLine(lineNumber);
-			throw new ExecuteScriptException(e.getMessage(), e);
+			throw new ExecuteScriptException(e.getMessage() + " at line " + lineNumber, e);
 		}
 		catch (final Throwable e) {
 			if (Controller.getCurrentController().getSelection() != null)
@@ -226,29 +225,32 @@ public class ScriptingEngine {
 	}
 
 	public static Object executeScript(final NodeModel node, final String script) {
-		return ScriptingEngine.executeScript(node, script, null, false);
+		return ScriptingEngine.executeScript(node, script, null, null);
 	}
-	
+
+	public static Object executeScript(NodeModel node, String script, ScriptingPermissions permissions) {
+		return ScriptingEngine.executeScript(node, script, ScriptingEngine.scriptErrorHandler, System.out, null,
+		    permissions);
+	}
+
 	public static Object executeScript(NodeModel node, String script, PrintStream printStream) {
-		return ScriptingEngine.executeScript(node, script, printStream, null, false);
-    }
-	
-	public static Object executeScript(NodeModel node, String script, PrintStream printStream, final ScriptContext scriptContext, boolean restricted) {
-		return ScriptingEngine.executeScript(node, script, scriptErrorHandler, printStream, scriptContext, restricted);
-    }
+		return ScriptingEngine.executeScript(node, script, ScriptingEngine.scriptErrorHandler, printStream, null, null);
+	}
 
 	public static Object executeScript(final NodeModel node, final String script, final ScriptContext scriptContext,
-	                                   boolean restricted) {
-		return ScriptingEngine.executeScript(node, script, scriptErrorHandler, System.out, scriptContext, restricted);
+	                                   final ScriptingPermissions permissions) {
+		return ScriptingEngine.executeScript(node, script, scriptErrorHandler, System.out, scriptContext, permissions);
 	}
 
-	static Object executeScriptRecursive(final NodeModel node, final String script) {
+	static Object executeScriptRecursive(final NodeModel node, final String script,
+	                                     final ScriptingPermissions permissions) {
 		ModeController modeController = Controller.getCurrentModeController();
-		final NodeModel[] children = modeController.getMapController().childrenUnfolded(node).toArray(new NodeModel[]{});
-        for (final NodeModel child : children) {
-			executeScriptRecursive(child, script);
+		final NodeModel[] children = modeController.getMapController().childrenUnfolded(node)
+		    .toArray(new NodeModel[] {});
+		for (final NodeModel child : children) {
+			executeScriptRecursive(child, script, permissions);
 		}
-		return executeScript(node, script);
+		return executeScript(node, script, permissions);
 	}
 
 	static void performScriptOperationRecursive(final NodeModel node) {
