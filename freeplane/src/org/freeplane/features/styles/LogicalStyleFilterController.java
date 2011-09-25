@@ -70,8 +70,7 @@ public class LogicalStyleFilterController implements IElementaryConditionControl
 
 	public ComboBoxModel getValuesForProperty(final Object property, NamedObject simpleCond) {
 		final MapStyleModel mapStyles = MapStyleModel.getExtension(Controller.getCurrentController().getMap());
-		final Object[] styles = mapStyles.getStyles().toArray();
-		return new DefaultComboBoxModel(styles);
+		return mapStyles.getStylesAsComboBoxModel();
 	}
 
 	public boolean isCaseDependent(final Object property, final NamedObject simpleCond) {

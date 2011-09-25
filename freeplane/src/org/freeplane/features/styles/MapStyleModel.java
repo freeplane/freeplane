@@ -22,11 +22,17 @@ package org.freeplane.features.styles;
 import java.awt.Color;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
@@ -49,6 +55,7 @@ public class MapStyleModel implements IExtension {
 	private Map<IStyle, NodeModel> styleNodes;
 	private MapModel styleMap;
 	private ConditionalStyleModel conditionalStyleModel;
+	final private DefaultComboBoxModel stylesComboBoxModel; 
 	final private Map<String, String> properties;
 
 	Map<String, String> getProperties() {
@@ -73,6 +80,7 @@ public class MapStyleModel implements IExtension {
 		conditionalStyleModel = new ConditionalStyleModel();
 		styleNodes = new LinkedHashMap<IStyle, NodeModel>();
 		properties = new LinkedHashMap<String, String>();
+		stylesComboBoxModel = new DefaultComboBoxModel();
 	}
 
 	public ConditionalStyleModel getConditionalStyleModel() {
@@ -88,12 +96,14 @@ public class MapStyleModel implements IExtension {
 		styleMap.putExtension(IUndoHandler.class, map.getExtension(IUndoHandler.class));
 		final MapStyleModel defaultStyleModel = new MapStyleModel();
 		defaultStyleModel.styleNodes = styleNodes;
+		initStylesComboBoxModel();
 		rootNode.putExtension(defaultStyleModel);
 	}
 	
 	public void refreshStyles() {
 		final NodeModel rootNode = styleMap.getRootNode();
 		styleNodes.clear();
+		stylesComboBoxModel.removeAllElements();
 		createNodeStyleMap(rootNode);
     }
 
@@ -149,12 +159,21 @@ public class MapStyleModel implements IExtension {
 
 	public void addStyleNode(final NodeModel node) {
 		final IStyle userObject = (IStyle) node.getUserObject();
-		styleNodes.put(userObject, node);
+		if(null == styleNodes.put(userObject, node))
+			stylesComboBoxModel.addElement(userObject);
 	}
+
+	private void initStylesComboBoxModel() {
+		stylesComboBoxModel.removeAllElements();
+		for(IStyle s : getStyles())
+			stylesComboBoxModel.addElement(s);
+
+    }
 
 	public void removeStyleNode(final NodeModel node) {
 		final Object userObject = node.getUserObject();
-		styleNodes.remove(userObject);
+		if(null != styleNodes.remove(userObject))
+			stylesComboBoxModel.removeElement(userObject);
 	}
 
     public NodeModel getStyleNodeSafe(final IStyle style) {
@@ -226,6 +245,7 @@ public class MapStyleModel implements IExtension {
 		if(overwrite && source.styleMap != null  || styleMap == null){
 			styleMap = source.styleMap;
 			styleNodes = source.styleNodes;
+			initStylesComboBoxModel();
 			conditionalStyleModel = source.conditionalStyleModel;
 		}
 		if(overwrite && source.backgroundColor != null|| backgroundColor == null){
@@ -281,5 +301,10 @@ public class MapStyleModel implements IExtension {
             }
         }
         throw new NoSuchElementException();
+    }
+
+	ArrayList<ListDataListener> listeners = new ArrayList<ListDataListener>();
+	ComboBoxModel getStylesAsComboBoxModel() {
+		return stylesComboBoxModel;
     }
 }
