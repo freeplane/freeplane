@@ -442,6 +442,8 @@
 		<menu_action action="EditLongAction" accelerator="alt ENTER" />
 		<menu_action action="EditDetailsInDialogAction"  />
 		<menu_action action="EditDetailsAction"/>
+		<menu_action action="DeleteDetailsAction"/>		
+		<menu_action action="SetShortenerStateAction" />
 		<menu_action action="EditNoteInDialogAction" />
 		<menu_action action="ExternalImageAddAction" />
 		<menu_action action="EditAttributesAction" accelerator="alt F9"/>
