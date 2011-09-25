@@ -26,6 +26,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
@@ -39,9 +40,10 @@ public class BitmapViewerComponent extends JComponent {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private final BufferedImage image;
 	private int hint;
 	private BufferedImage cachedImage;
+	private final URL url;
+	private final Dimension originalSize;
 
 	protected int getHint() {
 		return hint;
@@ -52,28 +54,38 @@ public class BitmapViewerComponent extends JComponent {
 	}
 
 	public BitmapViewerComponent(final URI uri) throws MalformedURLException, IOException {
-		image = ImageIO.read(uri.toURL());
+		url = uri.toURL();
+		cachedImage = ImageIO.read(url);
+		originalSize = new Dimension(cachedImage.getWidth(), cachedImage.getHeight());
 		hint = Image.SCALE_SMOOTH;
 	}
 
 	public Dimension getOriginalSize() {
-		return new Dimension(image.getWidth(), image.getHeight());
+		return new Dimension(originalSize);
 	}
 
 	@Override
 	protected void paintComponent(final Graphics g) {
-		if (image == null) {
-			super.paintComponent(g);
-			return;
-		}
 		final int width = getWidth();
 		final int height = getHeight();
-		final int imageWidth = image.getWidth();
-		final int imageHeight = image.getHeight();
-		if (width == 0 || height == 0 || imageWidth == 0 || imageHeight == 0) {
+		if (width == 0 || height == 0) {
 			return;
 		}
 		if(cachedImage == null || cachedImage.getWidth() != width || cachedImage.getHeight() != height){
+			BufferedImage image;
+	        try {
+		        image = ImageIO.read(url);
+	        }
+	        catch (IOException e) {
+				super.paintComponent(g);
+				return;
+	        }
+			final int imageWidth = image.getWidth();
+			final int imageHeight = image.getHeight();
+			if(imageWidth == 0 || imageHeight == 0){
+				super.paintComponent(g);
+				return;
+			}
 			if (imageWidth != width || imageHeight != height) {
 				cachedImage = new BufferedImage(width, height, image.getType());
 				final double kComponent = (double) height / (double) width;
