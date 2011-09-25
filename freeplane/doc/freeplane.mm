@@ -271,8 +271,7 @@
       Node <i>Install</i>&#160;describes loading and installing Freeplane and tuning it&#160;&#160;to your wishes. Node Macintosh describes how to use FP on a Macinitosh, because Macintosh uses a slightly different user interface. Node <i>This</i>&#160;<i>documentation</i>&#160;describes the principles and techniques underlying this mind map , it gives you an example of&#160;&#160;how to design and build a complex mind map like this one. It may also help you to still better find information.&#160;Node FAQ contains some&#160;&#160;frequently asked questions. More answers are to be found in the reference. It also contains some known bugs which may bother you.
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <node TEXT="Recognizing content" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1836270960" CREATED="1310900715782" MODIFIED="1313959373704" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
@@ -4906,7 +4905,7 @@
 <attribute NAME="Chapter" VALUE="3"/>
 </node>
 </node>
-<node TEXT="Node details" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1400990107" CREATED="1315728991618" MODIFIED="1316159008038">
+<node TEXT="Node extensions" STYLE_REF="SubMenu" ID="ID_1400990107" CREATED="1315728991618" MODIFIED="1316876395980">
 <node TEXT="Edit details in-line   [Edit node details]" ID="ID_1807308711" CREATED="1291153533418" MODIFIED="1315980814822" TEXT_SHORTENED="true">
 <icon BUILTIN="../edit_details"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
