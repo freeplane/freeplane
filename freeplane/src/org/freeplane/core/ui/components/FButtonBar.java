@@ -244,7 +244,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 						break;
 					default:
 					    if (keyCode >= KeyEvent.VK_F1 && keyCode <= KeyEvent.VK_F12 ) {
-					        final JButton btn = buttons.get(nextModifiers)[keyCode - KeyEvent.VK_F1];
+					        final JButton btn = createButtons(nextModifiers)[keyCode - KeyEvent.VK_F1];
 					        if(btn.getAction() instanceof SetAcceleratorOnNextClickAction 
 					        		&& e.getComponent() instanceof JTextComponent)
 					        	return false;
@@ -317,13 +317,11 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 		final float dw = availableWidth / componentCount;
 		int preferredWidth = 0;
 		int narrowComponentPreferredWidth = 0;
-		int narrowComponentCount = 0;
 		for (int i = 0; i < componentCount; i++) {
 			final int cw = getComponent(i).getPreferredSize().width;
 			preferredWidth += cw;
 			if (cw <= dw) {
 				narrowComponentPreferredWidth += cw;
-				narrowComponentCount++;
 			}
 		}
 		final float k;
