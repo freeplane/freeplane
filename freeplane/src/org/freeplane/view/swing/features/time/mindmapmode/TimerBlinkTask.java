@@ -36,6 +36,7 @@ class TimerBlinkTask extends TimerTask {
 	private final ReminderExtension reminderExtension;
 	private boolean stateAdded = false;
 	private boolean runScript;
+	private boolean alreadyExecuted;
 
 	/**
 	 * @param b 
@@ -47,19 +48,26 @@ class TimerBlinkTask extends TimerTask {
 		this.reminderExtension = reminderExtension;
 		this.stateAdded = stateAdded;
 		this.runScript = runScript;
+		alreadyExecuted = false;
 	}
 
 	@Override
 	public void run() {
 		SwingUtilities.invokeLater(new Runnable() {
+
 			public void run() {
 				if(runScript){
 					runScript = false;
 					reminderController.runScript(reminderExtension);
 				}
+				alreadyExecuted = true;
 				stateAdded = !stateAdded;
 				reminderController.blink(reminderExtension, stateAdded);
 			}
 		});
+	}
+	
+	public boolean alreadyExecuted(){
+		return alreadyExecuted; 
 	}
 }

@@ -263,7 +263,7 @@ public class ReminderHook extends PersistentNodeHook {
 		model.displayState(ClockState.CLOCK_VISIBLE, model.getNode(), false);
 	}
 
-	private void scheduleTimer(final ReminderExtension model, final TimerTask task) {
+	private void scheduleTimer(final ReminderExtension model, final TimerBlinkTask task) {
 		final Date date = new Date(model.getRemindUserAt());
 		model.scheduleTimer(task, date);
 	}
