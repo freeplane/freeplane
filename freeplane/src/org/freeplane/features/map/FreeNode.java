@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.map;
 
+import java.util.Collection;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
@@ -48,12 +50,14 @@ public class FreeNode extends PersistentNodeHook implements IExtension{
 	
 	@Override
 	public void undoableToggleHook(NodeModel node, IExtension extension) {
+		final NodeModel[] selecteds = getSelectedNodes();
 		((MLocationController)LocationController.getController()).moveNodePosition(node, 0, LocationModel.HGAP, -1);
 		super.undoableToggleHook(node, extension);
 		if(isFreeNode(node)){
 			MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 			mapController.moveNode(node, 0);
 		}
+		Controller.getCurrentController().getSelection().replaceSelection(selecteds);
 	}
 
 
