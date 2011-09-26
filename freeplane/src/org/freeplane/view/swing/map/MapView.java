@@ -487,6 +487,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			anchorHorizontalPoint = horizontalPoint;
 			anchorVerticalPoint = verticalPoint;
 			anchorContentLocation = getAnchorCenterPoint();
+			if (nodeToBeVisible == null) {
+				nodeToBeVisible = anchor;
+				extraWidth = 0;
+			}
 		}
 	}
 
