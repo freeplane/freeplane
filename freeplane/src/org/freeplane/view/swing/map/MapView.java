@@ -663,13 +663,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return innerBounds.intersection(maxBounds);
 	}
 
-	private int getMainViewY(final NodeView node) {
-		final Point newSelectedLocation = new Point();
-		UITools.convertPointToAncestor(node.getMainView(), newSelectedLocation, this);
-		final int newY = newSelectedLocation.y;
-		return newY;
-	}
-
 	public IMapSelection getMapSelection() {
 		return new MapSelection();
 	}
