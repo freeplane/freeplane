@@ -198,15 +198,18 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 
 	public void showPopupMenu(final MouseEvent e) {
 		if (e.isPopupTrigger()) {
+			stopTimerForDelayedSelection();
 			final MainView component = (MainView) e.getComponent();
-			if(component.getNodeView().isSelected()){ 
-				ModeController mc = Controller.getCurrentController().getModeController();
-				final JPopupMenu popupmenu = mc.getUserInputListenerFactory().getNodePopupMenu();
-				if (popupmenu != null) {
-					popupmenu.addHierarchyListener(popupListener);
-					popupmenu.show(e.getComponent(), e.getX(), e.getY());
-					e.consume();
-				}
+			final NodeView nodeView = component.getNodeView();
+			if(! nodeView.isSelected()){
+				Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(nodeView.getModel());
+			}
+			ModeController mc = Controller.getCurrentController().getModeController();
+			final JPopupMenu popupmenu = mc.getUserInputListenerFactory().getNodePopupMenu();
+			if (popupmenu != null) {
+				popupmenu.addHierarchyListener(popupListener);
+				popupmenu.show(e.getComponent(), e.getX(), e.getY());
+				e.consume();
 			}
 		}
 	}
