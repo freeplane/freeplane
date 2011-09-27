@@ -84,6 +84,7 @@ class DocumentationAction extends AFreeplaneAction {
 					try {
 						if (endUrl.getFile().endsWith(".mm")) {
 							 Controller.getCurrentController().selectMode(BModeController.MODENAME);
+							 Controller.getCurrentModeController().getMapController().newMap(endUrl, false);
 						}
 						else {
 							Controller.getCurrentController().getViewController().openDocument(endUrl);
