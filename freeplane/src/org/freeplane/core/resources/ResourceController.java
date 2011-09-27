@@ -215,7 +215,7 @@ public abstract class ResourceController {
 		try {
 			in = new BufferedInputStream(url.openStream());
 			resultProps.load(in);
-			System.err.println("Loaded properties from " + url);
+			System.out.println("Loaded properties from " + url);
 			return true;
 		}
 		catch (final Exception ex) {
