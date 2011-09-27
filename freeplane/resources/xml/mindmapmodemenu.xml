@@ -414,7 +414,8 @@
 			</menu_category>				
 			<menu_separator />
 			<menu_action action="GettingStartedAction"/>
-			<menu_action action="DocumentationAction" accelerator="F1" />		
+			<menu_action action="DocumentationAction" accelerator="F1" />	
+			<menu_action action="HotKeyInfoAction"/>
 			<menu_separator />
 		</menu_submenu>
 	</menu_category>
