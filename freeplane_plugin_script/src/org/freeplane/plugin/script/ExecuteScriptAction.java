@@ -99,11 +99,17 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 						ScriptingEngine.executeScript(node, scriptContent, permissions);
 					}
                 }
-                catch (ExecuteScriptException ex) {
+				catch (ExecuteScriptException ex) {
 					LogUtils.warn("error executing script " + script + " - giving up", ex);
 					modeController.delayedRollback();
-					final String message = WordUtils.wrap(ex.getMessage(), 80, "\n    ", false);
-					UITools.errorMessage(TextUtils.format("ExecuteScriptError.text", message));
+					if (ex.getCause() instanceof SecurityException) {
+						final String message = WordUtils.wrap(ex.getCause().getMessage(), 80, "\n    ", false);
+						UITools.errorMessage(TextUtils.format("ExecuteScriptSecurityError.text", message));
+					}
+					else {
+						final String message = WordUtils.wrap(ex.getMessage(), 80, "\n    ", false);
+						UITools.errorMessage(TextUtils.format("ExecuteScriptError.text", message));
+					}
                 	return;
                 }
 			}
