@@ -230,8 +230,10 @@ class ScriptingConfiguration {
 			final ScriptMetaData metaData = createMetaData(file, name, scriptConfig);
 			nameScriptMetaDataMap.put(name, metaData);
 			final File parentFile = file.getParentFile();
-			if (parentFile.equals(getBuiltinScriptsDir()))
+			if (parentFile.equals(getBuiltinScriptsDir())) {
 				metaData.setPermissions(ScriptingPermissions.getPermissiveScriptingPermissions());
+				metaData.setCacheContent(true);
+			}
 		}
 		catch (final IOException e) {
 			LogUtils.warn("problems with script " + file.getAbsolutePath(), e);

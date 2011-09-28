@@ -65,7 +65,7 @@ public class ScriptingEngine {
 	public static final String RESOURCES_SCRIPT_CLASSPATH = "script_classpath";
 	public static final String SCRIPT_PREFIX = "script";
 	private static final HashMap<String, Object> sScriptCookies = new HashMap<String, Object>();
-	private static Boolean noUserPermissionRequired = false;
+	/** @deprecated this is physical pattern stuff - use formulas instead! */
 	private static Pattern attributeNamePattern = Pattern.compile("^([a-zA-Z0-9_]*)=");
 	private static List<String> classpath;
 	private static final IErrorHandler scriptErrorHandler = new IErrorHandler() {
@@ -80,20 +80,14 @@ public class ScriptingEngine {
 	 */
 	static Object executeScript(final NodeModel node, String script, final IErrorHandler pErrorHandler,
 	                            final PrintStream pOutStream, final ScriptContext scriptContext,
-	                            final ScriptingPermissions permissions) {
-		if (!noUserPermissionRequired) {
-			final int showResult = OptionalDontShowMeAgainDialog.show("really_execute_script", "confirmation",
-			    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
-			    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
-			if (showResult != JOptionPane.OK_OPTION) {
-				throw new ExecuteScriptException(new SecurityException(TextUtils.getText("script_execution_disabled")));
-			}
-		}
-		noUserPermissionRequired = Boolean.TRUE;
+	                            ScriptingPermissions permissions) {
 		final Binding binding = new Binding();
 		binding.setVariable("c", ProxyFactory.createController(scriptContext));
 		binding.setVariable("node", ProxyFactory.createNode(node, scriptContext));
 		binding.setVariable("cookies", ScriptingEngine.sScriptCookies);
+		//
+		// == deprecated handling of physical patterns ==
+		//
 		boolean assignResult = false;
 		String assignTo = null;
 		final Matcher matcher = attributeNamePattern.matcher(script);
@@ -109,23 +103,39 @@ public class ScriptingEngine {
 			}
 		}
 		final PrintStream oldOut = System.out;
-		// get preferences (and store them again after the script execution,
-		// such that the scripts are not able to change them).
-		final ScriptingPermissions scriptingPermissions = (permissions != null) ? permissions //
-		        : new ScriptingPermissions(ResourceController.getResourceController().getProperties());
+		//
+		// == Security stuff ==
+		//
 		final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
 		final ScriptingSecurityManager scriptingSecurityManager;
 		final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
+		// get preferences (and store them again after the script execution,
+		// such that the scripts are not able to change them).
+		final ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController
+		    .getResourceController().getProperties());
 		if (needsSecurityManager) {
-			final boolean executeSignedScripts = scriptingPermissions.isExecuteSignedScriptsWithoutRestriction();
+			permissions = (permissions != null) ? permissions //
+			        : originalScriptingPermissions;
+			if (!permissions.executeScriptsWithoutAsking()) {
+				final int showResult = OptionalDontShowMeAgainDialog.show("really_execute_script", "confirmation",
+				    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
+				    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
+				if (showResult != JOptionPane.OK_OPTION) {
+					throw new ExecuteScriptException(new SecurityException(TextUtils.getText("script_execution_disabled")));
+				}
+			}
+			final boolean executeSignedScripts = permissions.isExecuteSignedScriptsWithoutRestriction();
 			if (executeSignedScripts && new SignedScriptHandler().isScriptSigned(script, pOutStream))
-				scriptingSecurityManager = scriptingPermissions.getPermissiveScriptingSecurityManager();
+				scriptingSecurityManager = permissions.getPermissiveScriptingSecurityManager();
 			else
-				scriptingSecurityManager = scriptingPermissions.getScriptingSecurityManager();
+				scriptingSecurityManager = permissions.getScriptingSecurityManager();
 		}
 		else {
 			scriptingSecurityManager = null;
 		}
+		//
+		// == execute ==
+		//
 		try {
 			System.setOut(pOutStream);
 			final ClassLoader classLoader = ScriptingEngine.class.getClassLoader();
@@ -201,7 +211,7 @@ public class ScriptingEngine {
 		finally {
 			System.setOut(oldOut);
 			/* restore preferences (and assure that the values are unchanged!). */
-			scriptingPermissions.restorePermissions();
+			originalScriptingPermissions.restorePermissions();
 		}
 	}
 
@@ -274,10 +284,6 @@ public class ScriptingEngine {
 			}
 		}
 		return;
-	}
-
-	static void setNoUserPermissionRequired(final Boolean noUserPermissionRequired) {
-		ScriptingEngine.noUserPermissionRequired = noUserPermissionRequired;
 	}
 
 	/** allows to set the classpath for scripts. Due to security considerations it's not possible to set

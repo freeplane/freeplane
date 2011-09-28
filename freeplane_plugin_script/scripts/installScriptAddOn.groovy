@@ -1,6 +1,5 @@
-import org.freeplane.core.util.TextUtils;
-
-/*
+/* @ExecutionModes({on_single_node="main_menu_scripting[addons.installer.title]"})
+ * 
  *  Freeplane - mind map editor
  *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
  *
@@ -26,7 +25,6 @@ import org.freeplane.core.resources.ResourceController
 import org.freeplane.core.util.FreeplaneVersion
 import org.freeplane.main.addons.AddOnProperties
 import org.freeplane.plugin.script.ScriptingPermissions
-import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.addons.ScriptAddOnProperties
 import org.freeplane.plugin.script.proxy.Proxy
 
