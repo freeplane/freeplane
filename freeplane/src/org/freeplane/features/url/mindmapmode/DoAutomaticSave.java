@@ -31,6 +31,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.url.UrlManager;
 
@@ -76,6 +77,10 @@ public class DoAutomaticSave extends TimerTask {
 				public void run() {
 					/* Now, it is dirty, we save it. */
 					try {
+						final ModeController currentModeController = Controller.getCurrentModeController();
+						if(currentModeController instanceof MModeController)
+							return;
+						MModeController modeController = ((MModeController) currentModeController);
 						final File pathToStore;
 						final URL url = model.getURL();
 						final File file = new File(url != null ? url.getFile() //
@@ -99,7 +104,6 @@ public class DoAutomaticSave extends TimerTask {
 						if (filesShouldBeDeletedAfterShutdown) {
 							tempFile.deleteOnExit();
 						}
-						MModeController modeController = ((MModeController) Controller.getCurrentModeController());
 						((MFileManager) UrlManager.getController())
 						    .saveInternal((MMapModel) model, tempFile, true /*=internal call*/);
 						modeController.getController().getViewController()
