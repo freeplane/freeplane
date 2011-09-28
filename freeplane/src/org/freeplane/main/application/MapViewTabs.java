@@ -73,7 +73,7 @@ class MapViewTabs implements IMapViewChangeListener {
 		});
 		final FileOpener fileOpener = new FileOpener();
 		new DropTarget(mTabbedPane, fileOpener);
-		mTabbedPane.addMouseListener(new DefaultMapMouseListener(null));
+		mTabbedPane.addMouseListener(new DefaultMapMouseListener());
 
 		final Controller controller = Controller.getCurrentController();
 		controller.getMapViewManager().addMapViewChangeListener(this);

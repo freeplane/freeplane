@@ -52,7 +52,6 @@ import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
-import org.freeplane.view.swing.ui.DefaultMapMouseReceiver;
 
 class NodeViewFactory {
 	private static class ContentPane extends JComponent {
@@ -339,20 +338,9 @@ class NodeViewFactory {
 
 	private DetailsView createDetailView() {
 	    DetailsView detailContent =  new DetailsView();
-	    final DefaultMapMouseReceiver mouseReceiver = new DefaultMapMouseReceiver();
-	    final DefaultMapMouseListener mouseListener = new DefaultMapMouseListener(mouseReceiver);
+	    final DefaultMapMouseListener mouseListener = new DefaultMapMouseListener();
 	    detailContent.addMouseMotionListener(mouseListener);
 	    detailContent.addMouseListener(new DelayedMouseListener(new AMouseListener() {
-	    
-	    	@Override
-	        public void mousePressed(MouseEvent e) {
-	    		mouseReceiver.mousePressed(e);
-	        }
-	    
-	    	@Override
-	        public void mouseReleased(MouseEvent e) {
-	    		mouseReceiver.mouseReleased(e);
-	        }
 	    
 	    	@Override
 	        public void mouseClicked(MouseEvent e) {
