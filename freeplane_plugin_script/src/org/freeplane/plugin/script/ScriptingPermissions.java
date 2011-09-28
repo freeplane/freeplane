@@ -49,6 +49,7 @@ public class ScriptingPermissions {
         , RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED //
 	};
 	final static ScriptingPermissions restrictedPermissions = new ScriptingPermissions();
+	private static ScriptingPermissions permissiveScriptingPermissions;
 
 	public ScriptingPermissions() {
 		// by default nothing is allowed
@@ -108,16 +109,23 @@ public class ScriptingPermissions {
 	}
 	
 	public static ScriptingPermissions getPermissiveScriptingPermissions() {
-		final ScriptingPermissions result = new ScriptingPermissions();
-		result.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION, true);
-		result.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_WRITE_RESTRICTION, true);
-		result.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION, true);
-		result.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION, true);
-		return result;
+		if (permissiveScriptingPermissions == null) {
+			permissiveScriptingPermissions = new ScriptingPermissions();
+			permissiveScriptingPermissions.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING, true);
+			permissiveScriptingPermissions.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION, true);
+			permissiveScriptingPermissions.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_WRITE_RESTRICTION, true);
+			permissiveScriptingPermissions.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION, true);
+			permissiveScriptingPermissions.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION, true);
+		}
+		return permissiveScriptingPermissions;
 	}
 
 	boolean isExecuteSignedScriptsWithoutRestriction() {
 		return get(RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED);
+	}
+	
+	public boolean executeScriptsWithoutAsking() {
+		return get(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING);
 	}
 
 	public static List<String> getPermissionNames() {
