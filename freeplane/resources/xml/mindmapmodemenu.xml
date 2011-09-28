@@ -42,6 +42,7 @@
 				<menu_action action="NewSiblingAction" accelerator="ENTER" />
 				<menu_action action="NewPreviousSiblingAction" accelerator="shift ENTER" />
 				<menu_action action="NewParentNode" accelerator="shift INSERT" />
+				<menu_action action="NewFreeNodeAction" />
 			</menu_submenu>
 			<menu_submenu name="menu_group" name_ref="menu_group">
 				<menu_action action="NewSummaryAction" accelerator="alt shift INSERT" />

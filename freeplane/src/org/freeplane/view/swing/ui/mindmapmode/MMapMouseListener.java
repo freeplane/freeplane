@@ -22,15 +22,21 @@ package org.freeplane.view.swing.ui.mindmapmode;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
+
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
@@ -123,10 +129,22 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 	@Override
     public void mouseClicked(MouseEvent e) {
 		if(e.getClickCount() == 2){
+			final MapView mapView = (MapView) e.getComponent();
+			final Object object = mapView.detectCollision(new Point(originX, originY));
+			if(object != null)
+				return;
 			final ModeController modeController = Controller.getCurrentModeController();
 			final IExtension freeNode = modeController.getExtension(FreeNode.class);
-			if(freeNode != null){
-				
+			if(freeNode != null && modeController instanceof MModeController){
+				final JComponent rootContent = mapView.getRoot().getContent();
+				final Point contentPt = new Point();
+				UITools.convertPointToAncestor(rootContent, contentPt, mapView);
+				final float zoom = mapView.getZoom();
+				final Point eventPoint = e.getPoint();
+				final int x =(int) ((eventPoint.x - contentPt.x)/zoom);
+				final int y =(int) ((eventPoint.y - contentPt.y)/zoom);
+				final Point pt = new Point(x, y);
+				((MMapController)modeController.getMapController()).addFreeNode(pt);
 			}
 		}
 		else
