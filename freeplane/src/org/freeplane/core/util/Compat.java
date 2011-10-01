@@ -169,9 +169,15 @@ public class Compat {
 	}
 
 	static public boolean isCtrlEvent(final MouseEvent e) {
-        if (isMacOsX())
-        	return e.getModifiersEx() == InputEvent.META_DOWN_MASK;
-        return e.getModifiersEx() == InputEvent.CTRL_DOWN_MASK;
+        final int modifiers = e.getModifiersEx() & 
+        		(InputEvent.CTRL_DOWN_MASK 
+        				| InputEvent.META_DOWN_MASK
+        				| InputEvent.SHIFT_DOWN_MASK
+        				| InputEvent.ALT_DOWN_MASK
+        				);
+		if (isMacOsX())
+        	return modifiers == InputEvent.META_DOWN_MASK;
+        return modifiers == InputEvent.CTRL_DOWN_MASK;
     }
 
 }
