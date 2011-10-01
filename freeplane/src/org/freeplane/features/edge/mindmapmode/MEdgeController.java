@@ -79,6 +79,25 @@ public class MEdgeController extends EdgeController {
 				return;
 			}
 			from.removeExtension(fromStyle);
+			EdgeModel delta = new EdgeModel();
+			final Color color = fromStyle.getColor();
+			boolean deltaFound = false;
+			if(color != null && whichStyle.getColor() == null){
+				delta.setColor(color);
+				deltaFound = true;
+			}
+			final EdgeStyle style = fromStyle.getStyle();
+			if(style != null && whichStyle.getStyle() == null){
+				delta.setStyle(style);
+				deltaFound = true;
+			}
+			final int width = fromStyle.getWidth();
+			if(width  != EdgeModel.DEFAULT_WIDTH && whichStyle.getWidth() == EdgeModel.DEFAULT_WIDTH){
+				delta.setWidth(width);
+				deltaFound = true;
+			}
+			if(deltaFound)
+				from.addExtension(delta);
 		}
 	}
 
