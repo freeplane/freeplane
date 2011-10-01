@@ -28,6 +28,7 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
@@ -164,7 +165,11 @@ public abstract class MainView extends ZoomableLabel {
 	public boolean isInFollowLinkRegion(final double xCoord) {
 		final NodeView nodeView = getNodeView();
 		final NodeModel model = nodeView.getModel();
-		return NodeLinks.getValidLink(model) != null && isInVerticalRegion(xCoord, 1. / 4);
+		if (NodeLinks.getValidLink(model) == null)
+			return false;
+		Rectangle iconR = ((ZoomableLabelUI)getUI()).getIconR(this);
+		final double xCoordUnzoomed = xCoord / nodeView.getMap().getZoom();
+		return xCoordUnzoomed >= iconR.x && xCoordUnzoomed < iconR.x + iconR.width;
 	}
 
 	/**
@@ -293,18 +298,6 @@ public abstract class MainView extends ZoomableLabel {
 
 	public void setDraggedOver(final Point p) {
 		setDraggedOver((dropAsSibling(p.getX())) ? NodeView.DRAGGED_OVER_SIBLING : NodeView.DRAGGED_OVER_SON);
-	}
-
-	/**
-	 * @return true if a link is to be displayed and the curser is the hand now.
-	 */
-	public boolean updateCursor(final double xCoord) {
-		final boolean followLink = isInFollowLinkRegion(xCoord);
-		final int requiredCursor = followLink ? Cursor.HAND_CURSOR : Cursor.DEFAULT_CURSOR;
-		if (getCursor().getType() != requiredCursor) {
-			setCursor(requiredCursor != Cursor.DEFAULT_CURSOR ? new Cursor(requiredCursor) : null);
-		}
-		return followLink;
 	}
 
 	public void updateFont(final NodeView node) {

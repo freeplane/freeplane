@@ -1,10 +1,12 @@
 package org.freeplane.view.swing.ui;
 
+import java.awt.Cursor;
 import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
+import java.net.URI;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -18,6 +20,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.SysUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
@@ -25,6 +28,7 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
@@ -167,12 +171,26 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 
 	public void mouseMoved(final MouseEvent e) {
 		final MainView node = ((MainView) e.getComponent());
-		final boolean isLink = (node).updateCursor(e.getX());
-		if (isLink) {
-			Controller currentController = Controller.getCurrentController();
-			currentController.getViewController().out(
-			    LinkController.getController(currentController.getModeController()).getLinkShortText(node.getNodeView().getModel()));
-		}
+		String link = node.getLink(e.getPoint());
+		boolean followLink = link != null;
+		Controller currentController = Controller.getCurrentController();
+        if(! followLink){
+        	followLink = node.isInFollowLinkRegion(e.getX());
+        	if(followLink){
+				link = LinkController.getController(currentController.getModeController()).getLinkShortText(node.getNodeView().getModel());
+        	}
+        }
+        final int requiredCursor;
+        if(followLink){
+			currentController.getViewController().out(link);
+			requiredCursor = Cursor.HAND_CURSOR;
+        }
+        else{
+        	requiredCursor = Cursor.DEFAULT_CURSOR;
+        }
+        if (node.getCursor().getType() != requiredCursor) {
+        	node.setCursor(requiredCursor != Cursor.DEFAULT_CURSOR ? new Cursor(requiredCursor) : null);
+        }
 		if (controlRegionForDelayedSelection == null 
 				|| !controlRegionForDelayedSelection.contains(e.getPoint())) {
 				createTimer(e);
@@ -184,6 +202,19 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		wasFocused = component.hasFocus();
 		showPopupMenu(e);
 		if(! e.isPopupTrigger() && e.getButton() == 1)
+			if((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0 ){
+				final String link = component.getLink(e.getPoint());
+				if(link != null){
+					if (link != null) {
+						try {
+							UrlManager.getController().loadURL(new URI(link));
+						} catch (Exception ex) {
+							LogUtils.warn(ex);
+						}
+					}
+					return;
+				}
+			}
 			extendSelection(e);
 	}
 

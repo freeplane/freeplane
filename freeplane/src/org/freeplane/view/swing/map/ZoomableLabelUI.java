@@ -1,6 +1,7 @@
 package org.freeplane.view.swing.map;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -40,8 +41,12 @@ import javax.swing.plaf.basic.BasicLabelUI;
  * 23.08.2009
  */
 public class ZoomableLabelUI extends BasicLabelUI {
-    private boolean isPainting = false;
+	private boolean isPainting = false;
+
 	static ZoomableLabelUI labelUI = new ZoomableLabelUI();
+	private Rectangle iconR = new Rectangle();
+	private Rectangle textR = new Rectangle();
+	private Rectangle viewR = new Rectangle();
 
 	@Override
 	public Dimension getPreferredSize(final JComponent c) {
@@ -68,13 +73,15 @@ public class ZoomableLabelUI extends BasicLabelUI {
 	protected String layoutCL(final JLabel label, final FontMetrics fontMetrics, final String text, final Icon icon,
 	                          final Rectangle viewR, final Rectangle iconR, final Rectangle textR) {
 		final ZoomableLabel mainView = (ZoomableLabel) label;
-		final float zoom = mainView.getZoom();
 		if (isPainting) {
 			final Insets insets = mainView.getInsets();
-			final int width = (int) (mainView.getWidth() / zoom);
-			viewR.width = width - (insets.left + insets.right);
-			final int height = (int) (mainView.getHeight() / zoom);
-			viewR.height = height - (insets.top + insets.bottom);
+			final int width = mainView.getWidth();
+			final int height = mainView.getHeight();
+			final float zoom = mainView.getZoom();
+			viewR.x = insets.left;
+			viewR.y = insets.top;
+			viewR.width = (int)((width - (insets.left + insets.right)) / zoom);
+			viewR.height = (int)((height - (insets.top + insets.bottom)) / zoom);
 		}
 		super.layoutCL(mainView, mainView.getFontMetrics(), text, icon, viewR, iconR, textR);
 		return text;
@@ -129,5 +136,29 @@ public class ZoomableLabelUI extends BasicLabelUI {
 		GlyphPainterMetricResetter.resetPainter();
     }
 	
-	
+	public Rectangle getIconR(ZoomableLabel label) {
+		layout(label);
+    	return iconR;
+    }
+
+	public Rectangle getTextR(ZoomableLabel label) {
+		layout(label);
+    	return textR;
+    }
+
+	private void layout(ZoomableLabel label) {
+		String text = label.getText();
+		Icon icon = (label.isEnabled()) ? label.getIcon() :
+			label.getDisabledIcon();
+		boolean wasPainting = isPainting;
+		try{
+			isPainting = true;
+	        iconR.x = iconR.y = iconR.width = iconR.height = 0;
+	        textR.x = textR.y = textR.width = textR.height = 0;
+		layoutCL(label, label.getFontMetrics(), text, icon, viewR, iconR,textR);
+		}
+		finally{
+			isPainting = wasPainting;
+		}
+	}
 }

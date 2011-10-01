@@ -38,9 +38,9 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.core.ui.AMouseListener;
 import org.freeplane.core.ui.DelayedMouseListener;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -50,7 +50,6 @@ import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.TextController;
-import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 
 class NodeViewFactory {
@@ -202,8 +201,7 @@ class NodeViewFactory {
 		model.addViewer(newView);
 		newView.setLayout(SelectableLayout.getInstance());
 		newView.setMainView(newMainView(newView));
-		if(newView.isShortened())
-			updateNoteViewer(newView);
+		updateNoteViewer(newView);
         newView.update();
         fireNodeViewCreated(newView); 
 		return newView;
@@ -211,9 +209,13 @@ class NodeViewFactory {
 
 	private static Map<Color, Icon> coloredNoteIcons  = new HashMap<Color, Icon>();
 	private Icon coloredIcon = createColoredIcon();
+	private static final DelayedMouseListener DETAILS_MOUSE_LISTENER = new DelayedMouseListener(new DetailsViewMouseListener(), 2, MouseEvent.BUTTON1);
+	private static final LinkNavigatorMouseListener LINK_MOUSE_LISTENER = new LinkNavigatorMouseListener();
 	
 	public ZoomableLabel createNoteViewer() {
 		final ZoomableLabel label = new ZoomableLabel();
+		label.addMouseListener(LINK_MOUSE_LISTENER);
+		label.addMouseMotionListener(LINK_MOUSE_LISTENER);
 		label.setIcon(coloredIcon);
 		label.setVerticalTextPosition(JLabel.TOP);
 		return label;
@@ -340,22 +342,8 @@ class NodeViewFactory {
 	    DetailsView detailContent =  new DetailsView();
 	    final DefaultMapMouseListener mouseListener = new DefaultMapMouseListener();
 	    detailContent.addMouseMotionListener(mouseListener);
-	    detailContent.addMouseListener(new DelayedMouseListener(new AMouseListener() {
-	    
-	    	@Override
-	        public void mouseClicked(MouseEvent e) {
-	    		final NodeView nodeView = (NodeView)SwingUtilities.getAncestorOfClass(NodeView.class, e.getComponent());
-	    		final NodeModel model = nodeView.getModel();
-	    		TextController controller = TextController.getController();
-	    		final ZoomableLabel component = (ZoomableLabel) e.getComponent();
-	    		if(e.getX() < component.getIconWidth())
-	    			controller.setDetailsHidden(model, ! DetailTextModel.getDetailText(model).isHidden());
-	    		else if(controller instanceof MTextController && e.getClickCount() == 2){
-	    			((MTextController) controller).editDetails(model, e, e.isAltDown());
-	    		}
-	        }
-	    	
-	    }, 2, MouseEvent.BUTTON1));
+	    detailContent.addMouseMotionListener(DETAILS_MOUSE_LISTENER);
+	    detailContent.addMouseListener(DETAILS_MOUSE_LISTENER);
 	    return detailContent;
     }
 
