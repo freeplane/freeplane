@@ -33,6 +33,7 @@ import javax.swing.JScrollPane;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Compat;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
@@ -121,7 +122,7 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 				    .getModel(node).getVGap(), LocationModel.HGAP, 0);
 				return;
 			}
-			if (e.getModifiersEx() == InputEvent.CTRL_DOWN_MASK) {
+			if (Compat.isCtrlEvent(e)) {
 				final NodeView nodeV = getNodeView(e);
 				final NodeModel node = nodeV.getModel();
 				locationController.moveNodePosition(node, LocationModel.VGAP,
@@ -130,6 +131,7 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 			}
 		}
 	}
+
 
 	/** Invoked when a mouse button is pressed on a component and then dragged. */
 	public void mouseDragged(final MouseEvent e) {
@@ -146,7 +148,7 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 			else {
 				ModeController c = Controller.getCurrentController().getModeController();
 				final Point dragNextPoint = point;
-				if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == 0) {
+				if (Compat.isCtrlEvent(e)) {
 					final NodeModel node = nodeV.getModel();
 					final LocationModel locationModel = LocationModel.createLocationModel(node);
 					locationModel.setShiftY(getNodeShiftY(dragNextPoint, node, dragStartingPoint));

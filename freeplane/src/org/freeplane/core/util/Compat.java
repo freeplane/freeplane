@@ -1,5 +1,7 @@
 package org.freeplane.core.util;
 
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -165,5 +167,11 @@ public class Compat {
 			uriString = uriString + '#' + fragment;
 		return uriString;
 	}
+
+	static public boolean isCtrlEvent(final MouseEvent e) {
+        if (isMacOsX())
+        	return e.getModifiersEx() == InputEvent.META_DOWN_MASK;
+        return e.getModifiersEx() == InputEvent.CTRL_DOWN_MASK;
+    }
 
 }

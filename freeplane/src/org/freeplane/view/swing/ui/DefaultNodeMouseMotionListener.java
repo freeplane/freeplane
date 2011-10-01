@@ -202,7 +202,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		wasFocused = component.hasFocus();
 		showPopupMenu(e);
 		if(! e.isPopupTrigger() && e.getButton() == 1)
-			if((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0 ){
+			if(Compat.isCtrlEvent(e)){
 				final String link = component.getLink(e.getPoint());
 				if(link != null){
 					if (link != null) {

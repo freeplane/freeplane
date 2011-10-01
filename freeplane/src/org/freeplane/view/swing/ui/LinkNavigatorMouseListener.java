@@ -29,6 +29,7 @@ import java.awt.event.MouseEvent;
 import java.net.URI;
 
 import org.freeplane.core.ui.AMouseListener;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
@@ -60,7 +61,7 @@ public class LinkNavigatorMouseListener extends AMouseListener {
 	public void mousePressed(final MouseEvent e) {
     	final ZoomableLabel component = (ZoomableLabel) e.getComponent();
     	if(! e.isPopupTrigger() && e.getButton() == 1)
-    		if((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0 ){
+    		if(Compat.isCtrlEvent(e)){
     			final String link = component.getLink(e.getPoint());
     			if(link != null){
     				if (link != null) {
