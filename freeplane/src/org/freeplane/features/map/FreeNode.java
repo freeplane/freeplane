@@ -19,8 +19,6 @@
  */
 package org.freeplane.features.map;
 
-import java.util.Collection;
-
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;

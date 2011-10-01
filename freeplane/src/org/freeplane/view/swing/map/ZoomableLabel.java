@@ -9,14 +9,10 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.net.URL;
-
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicHTML;
-import javax.swing.text.Document;
-import javax.swing.text.Element;
 import javax.swing.text.View;
 import javax.swing.text.html.HTMLDocument;
 

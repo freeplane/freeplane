@@ -40,7 +40,6 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.DelayedMouseListener;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -51,6 +50,8 @@ import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
+import org.freeplane.view.swing.ui.DetailsViewMouseListener;
+import org.freeplane.view.swing.ui.LinkNavigatorMouseListener;
 
 class NodeViewFactory {
 	private static class ContentPane extends JComponent {

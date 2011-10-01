@@ -54,8 +54,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.nodelocation.LocationController;
-import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodelocation.mindmapmode.MLocationController;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.MapViewLayout;

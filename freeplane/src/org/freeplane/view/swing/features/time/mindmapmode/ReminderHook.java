@@ -23,8 +23,6 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
 import java.util.Date;
-import java.util.TimerTask;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;

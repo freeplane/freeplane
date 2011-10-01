@@ -20,7 +20,6 @@
 package org.freeplane.view.swing.ui.mindmapmode;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.Point;
 import java.awt.Rectangle;

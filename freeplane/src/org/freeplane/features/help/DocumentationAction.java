@@ -23,30 +23,12 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Enumeration;
-
 import javax.swing.SwingUtilities;
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.ui.components.FreeplaneMenuBar;
-import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.MenuUtils;
-import org.freeplane.core.util.MenuUtils.MenuEntry;
-import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.map.MapController;
-import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.browsemode.BModeController;
-import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.styles.LogicalStyleModel;
-import org.freeplane.features.styles.StyleFactory;
 
 class DocumentationAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;

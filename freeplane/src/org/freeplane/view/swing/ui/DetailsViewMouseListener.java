@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.view.swing.map;
+package org.freeplane.view.swing.ui;
 
 import java.awt.event.MouseEvent;
 
@@ -27,12 +27,14 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
+import org.freeplane.view.swing.map.NodeView;
+import org.freeplane.view.swing.map.ZoomableLabel;
 
 /**
  * @author Dimitry Polivaev
  * Oct 1, 2011
  */
-class DetailsViewMouseListener extends LinkNavigatorMouseListener {
+public class DetailsViewMouseListener extends LinkNavigatorMouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
     	final NodeView nodeView = (NodeView)SwingUtilities.getAncestorOfClass(NodeView.class, e.getComponent());

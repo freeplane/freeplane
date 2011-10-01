@@ -23,8 +23,6 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
-
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.link.ConnectorModel;

@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.view.swing.map;
+package org.freeplane.view.swing.ui;
 
 /**
  * @author Dimitry Polivaev
@@ -32,6 +32,7 @@ import org.freeplane.core.ui.AMouseListener;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.view.swing.map.ZoomableLabel;
 
 public class LinkNavigatorMouseListener extends AMouseListener {
 	public LinkNavigatorMouseListener() {

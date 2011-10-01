@@ -115,7 +115,6 @@ import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.ShowNotesInMapAction;
 import org.freeplane.view.swing.map.attribute.AttributePanelManager;
 import org.freeplane.view.swing.map.attribute.EditAttributesAction;
-import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 import org.freeplane.view.swing.ui.DefaultNodeKeyListener;
 import org.freeplane.view.swing.ui.DefaultNodeMouseMotionListener;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;

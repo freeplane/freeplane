@@ -31,7 +31,6 @@ import java.util.Set;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import org.freeplane.core.extension.IExtension;

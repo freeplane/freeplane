@@ -21,8 +21,6 @@ package org.freeplane.view.swing.features.time.mindmapmode;
 
 import java.util.Date;
 import java.util.Timer;
-import java.util.TimerTask;
-
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.SysUtils;
 import org.freeplane.features.icon.IconStore;
