@@ -149,7 +149,7 @@
             	<choice value="ADD_SIBLING"/>
             	<choice value="ADD_CHILD"/>
             </combo>
-            <boolean name="draw_rectangle_around_new_free_nodes"/>
+            <boolean name="add_cloud_to_new_free_nodes"/>
         </separator>
         <separator name="data_formats">
             <boolean name="parse_data"/>    
