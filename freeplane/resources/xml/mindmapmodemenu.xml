@@ -225,8 +225,7 @@
 				</menu_submenu>
 			</menu_submenu>
 		<menu_submenu name="format" name_ref="menu_format">
-			<menu_submenu name="menu_applyStyle" name_ref="menu_applyStyle" menu_key="main_menu_styles">
-			</menu_submenu>	
+			<menu_submenu name="menu_applyStyle" name_ref="menu_applyStyle" menu_key="main_menu_styles"/>
 				<menu_action action="AutomaticLayoutAction" />		
 			<menu_submenu name="menu_manageStyles" name_ref="menu_manageStyles">
 				<menu_action action="NewUserStyleAction" />				
@@ -454,6 +453,7 @@
 		<menu_action action="SummaryNodeAction" accelerator = "alt shift S"/>
 		<menu_action action="FreeNodeAction"/>
 		<menu_action action="CloudAction" accelerator="control shift B" />
+		<menu_submenu name="menu_applyStyle" name_ref="menu_applyStyle" menu_key="node_popup_styles"/>
 		<menu_action action="AddConnectorAction" accelerator="control L" />						
 		<menu_submenu name="links" name_ref="menu_links">
 			<menu_action action="SetLinkByFileChooserAction" accelerator="control shift K" />
