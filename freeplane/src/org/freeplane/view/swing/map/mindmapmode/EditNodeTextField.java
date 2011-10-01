@@ -641,12 +641,9 @@ public class EditNodeTextField extends EditNodeBase {
 			mapView.add(textfield, 0);
 		final EventBuffer eventQueue = MTextController.getController().getEventQueue();
 		KeyEvent firstEvent = eventQueue.getFirstEvent();
-		if (firstEvent != null) {
-			redispatchKeyEvents(textfield, firstEvent);
-		}
-		else {
+		redispatchKeyEvents(textfield, firstEvent);
+		if (firstEvent == null) {
 			MouseEvent currentEvent = eventQueue.getMouseEvent();
-			eventQueue.setTextComponent(textfield);
 			int pos = document.getLength();
 			if(currentEvent != null){
 				MouseEvent mouseEvent = (MouseEvent) currentEvent;
