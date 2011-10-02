@@ -68,11 +68,11 @@ import org.freeplane.plugin.script.addons.ScriptAddOnProperties;
 import org.freeplane.plugin.script.filter.ScriptConditionController;
 
 class ScriptingRegistration {
-	final private class PatternScriptModel implements IScriptModel {
+	final private class ScriptModel implements IScriptModel {
 		final private String mOriginalScript;
 		private String mScript;
 
-		public PatternScriptModel(final String pScript) {
+		public ScriptModel(final String pScript) {
 			mScript = pScript;
 			mOriginalScript = pScript;
 		}
@@ -96,8 +96,8 @@ class ScriptingRegistration {
 
 		public Object executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
 			final ModeController modeController = Controller.getCurrentModeController();
-			// pattern are like formulas - restrict them!
-			final ScriptingPermissions restrictedPermissions = ScriptingPermissions.getRestrictedPermissions();
+			// the script is completely in the hand of the user -> no security issues.
+			final ScriptingPermissions restrictedPermissions = ScriptingPermissions.getPermissiveScriptingPermissions();
 			return ScriptingEngine.executeScript(modeController.getMapController().getSelectedNode(), mScript,
 			    pErrorHandler, pOutStream, null, restrictedPermissions);
 		}
@@ -170,10 +170,10 @@ class ScriptingRegistration {
 	private void register(ModeController modeController) {
 		modeController.addExtension(IScriptEditorStarter.class, new IScriptEditorStarter() {
 			public String startEditor(final String pScriptInput) {
-				final PatternScriptModel patternScriptModel = new PatternScriptModel(pScriptInput);
-				final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(patternScriptModel, false);
+				final ScriptModel scriptModel = new ScriptModel(pScriptInput);
+				final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(scriptModel, false);
 				scriptEditorPanel.setVisible(true);
-				return patternScriptModel.getScript();
+				return scriptModel.getScript();
 			}
 
 			public ComboBoxEditor createComboBoxEditor(Dimension minimumSize) {
