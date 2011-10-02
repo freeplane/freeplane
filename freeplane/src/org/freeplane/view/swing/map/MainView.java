@@ -167,8 +167,7 @@ public abstract class MainView extends ZoomableLabel {
 		if (NodeLinks.getValidLink(model) == null)
 			return false;
 		Rectangle iconR = ((ZoomableLabelUI)getUI()).getIconR(this);
-		final double xCoordUnzoomed = xCoord / nodeView.getMap().getZoom();
-		return xCoordUnzoomed >= iconR.x && xCoordUnzoomed < iconR.x + iconR.width;
+		return xCoord >= iconR.x && xCoord < iconR.x + iconR.width;
 	}
 
 	/**

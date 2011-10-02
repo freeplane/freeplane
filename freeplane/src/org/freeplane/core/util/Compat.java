@@ -168,6 +168,16 @@ public class Compat {
 		return uriString;
 	}
 
+	static public boolean isPlainEvent(final MouseEvent e) {
+        final int modifiers = e.getModifiersEx() & 
+        		(InputEvent.CTRL_DOWN_MASK 
+        				| InputEvent.META_DOWN_MASK
+        				| InputEvent.SHIFT_DOWN_MASK
+        				| InputEvent.ALT_DOWN_MASK
+        				);
+        return modifiers == 0;
+    }
+
 	static public boolean isCtrlEvent(final MouseEvent e) {
         final int modifiers = e.getModifiersEx() & 
         		(InputEvent.CTRL_DOWN_MASK 

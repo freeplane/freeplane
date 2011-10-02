@@ -11,6 +11,10 @@ import javax.swing.Timer;
 
 public class DelayedMouseListener implements IMouseListener {
 	final private IMouseListener delegate;
+	public IMouseListener getDelegate() {
+    	return delegate;
+    }
+
 	public void mouseDragged(MouseEvent e) {
 	    delegate.mouseDragged(e);
     }

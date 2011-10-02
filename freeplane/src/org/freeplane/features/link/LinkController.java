@@ -296,9 +296,13 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 	}
 
+	public void loadURL(final NodeModel node, final MouseEvent e) {
+		loadURL(node, new ActionEvent(e.getSource(), e.getID(), null));
+	}
+
 	public void loadURL(final MouseEvent e) {
 		ModeController modeController = Controller.getCurrentModeController();
-		loadURL(modeController.getMapController().getSelectedNode(), new ActionEvent(e.getSource(), e.getID(), null));
+		loadURL(modeController.getMapController().getSelectedNode(), e);
 	}
 
 	void loadURL(final NodeModel selectedNode, final ActionEvent e) {

@@ -71,18 +71,18 @@ public class ZoomableLabelUI extends BasicLabelUI {
 	@Override
 	protected String layoutCL(final JLabel label, final FontMetrics fontMetrics, final String text, final Icon icon,
 	                          final Rectangle viewR, final Rectangle iconR, final Rectangle textR) {
-		final ZoomableLabel mainView = (ZoomableLabel) label;
+		final ZoomableLabel zLabel = (ZoomableLabel) label;
 		if (isPainting) {
-			final Insets insets = mainView.getInsets();
-			final int width = mainView.getWidth();
-			final int height = mainView.getHeight();
-			final float zoom = mainView.getZoom();
+			final Insets insets = zLabel.getInsets();
+			final int width = zLabel.getWidth();
+			final int height = zLabel.getHeight();
+			final float zoom = zLabel.getZoom();
 			viewR.x = insets.left;
 			viewR.y = insets.top;
 			viewR.width = (int)((width - (insets.left + insets.right)) / zoom);
 			viewR.height = (int)((height - (insets.top + insets.bottom)) / zoom);
 		}
-		super.layoutCL(mainView, mainView.getFontMetrics(), text, icon, viewR, iconR, textR);
+		super.layoutCL(zLabel, zLabel.getFontMetrics(), text, icon, viewR, iconR, textR);
 		return text;
 	}
 
@@ -152,9 +152,14 @@ public class ZoomableLabelUI extends BasicLabelUI {
 		boolean wasPainting = isPainting;
 		try{
 			isPainting = true;
-	        iconR.x = iconR.y = iconR.width = iconR.height = 0;
-	        textR.x = textR.y = textR.width = textR.height = 0;
-		layoutCL(label, label.getFontMetrics(), text, icon, viewR, iconR,textR);
+			iconR.x = iconR.y = iconR.width = iconR.height = 0;
+			textR.x = textR.y = textR.width = textR.height = 0;
+			layoutCL(label, label.getFontMetrics(), text, icon, viewR, iconR,textR);
+			final float zoom = label.getZoom();
+			iconR.x = (int)(iconR.x / zoom); 
+			textR.y = (int)(iconR.y / zoom); 
+			iconR.x = (int)(iconR.x / zoom); 
+			textR.y = (int)(iconR.y / zoom); 
 		}
 		finally{
 			isPainting = wasPainting;

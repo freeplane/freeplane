@@ -120,32 +120,45 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	}
 
 	public void mouseClicked(final MouseEvent e) {
+		ModeController mc = Controller.getCurrentController().getModeController();
+		final MainView component = (MainView) e.getComponent();
+		if(e.getButton() == 1){
+			if(Compat.isPlainEvent(e)){
+				if (component.isInFollowLinkRegion(e.getX())) {
+					LinkController.getController(mc).loadURL(component.getNodeView().getModel(), e);
+					return;
+				}
+
+				final String link = component.getLink(e.getPoint());
+				if (link != null) {
+					try {
+						UrlManager.getController().loadURL(new URI(link));
+					} catch (Exception ex) {
+						LogUtils.warn(ex);
+					}
+					return;
+				}
+			}
+		}
+		extendSelection(e);
 		if (wasFocused() && e.getModifiers() == InputEvent.BUTTON1_MASK) {
-			ModeController mc = Controller.getCurrentController().getModeController();
 			/* perform action only if one selected node. */
 			final MapController mapController = mc.getMapController();
 			if (mapController.getSelectedNodes().size() != 1) {
 				return;
 			}
-			final MainView component = (MainView) e.getComponent();
-			if (component.isInFollowLinkRegion(e.getX())) {
-				LinkController.getController(mc).loadURL(e);
+			final NodeModel node = (component).getNodeView().getModel();
+			if (!mapController.hasChildren(node)) {
+				/* If the link exists, follow the link; toggle folded otherwise */
+				if (NodeLinks.getValidLink(mapController.getSelectedNode()) == null) {
+					mapController.toggleFolded();
+				}
+				else {
+					LinkController.getController(mc).loadURL(e);
+				}
+				return;
 			}
-			else {
-			    final NodeModel node = (component).getNodeView().getModel();
-			    if (!mapController.hasChildren(node)) {
-			        /* If the link exists, follow the link; toggle folded otherwise */
-			        if (NodeLinks.getValidLink(mapController.getSelectedNode()) == null) {
-			            mapController.toggleFolded();
-			        }
-			        else {
-			            LinkController.getController(mc).loadURL(e);
-			        }
-			        return;
-			    }
-			    mapController.toggleFolded(mapController.getSelectedNodes());
-			}
-			e.consume();
+			mapController.toggleFolded(mapController.getSelectedNodes());
 		}
 	}
 
@@ -201,24 +214,9 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		final MainView component = (MainView) e.getComponent();
 		wasFocused = component.hasFocus();
 		showPopupMenu(e);
-		if(! e.isPopupTrigger() && e.getButton() == 1)
-			if(Compat.isCtrlEvent(e)){
-				final String link = component.getLink(e.getPoint());
-				if(link != null){
-					if (link != null) {
-						try {
-							UrlManager.getController().loadURL(new URI(link));
-						} catch (Exception ex) {
-							LogUtils.warn(ex);
-						}
-					}
-					return;
-				}
-			}
-			extendSelection(e);
 	}
 
-	protected boolean wasFocused() {
+	public boolean wasFocused() {
     	return wasFocused;
     }
 

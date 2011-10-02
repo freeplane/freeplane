@@ -19,10 +19,6 @@
  */
 package org.freeplane.view.swing.map;
 
-import javax.swing.JComponent;
-
-import org.freeplane.core.ui.components.UITools;
-
 /**
  * @author Dimitry Polivaev
  */

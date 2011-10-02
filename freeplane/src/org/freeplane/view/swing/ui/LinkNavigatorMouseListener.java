@@ -24,7 +24,6 @@ package org.freeplane.view.swing.ui;
  * Oct 1, 2011
  */
 import java.awt.Cursor;
-import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.net.URI;
 
@@ -58,10 +57,10 @@ public class LinkNavigatorMouseListener extends AMouseListener {
         }
     }
 
-	public void mousePressed(final MouseEvent e) {
+	public void mouseClicked(final MouseEvent e) {
     	final ZoomableLabel component = (ZoomableLabel) e.getComponent();
-    	if(! e.isPopupTrigger() && e.getButton() == 1)
-    		if(Compat.isCtrlEvent(e)){
+    	if(e.getClickCount() == 1 && e.getButton() == 1)
+    		if(Compat.isPlainEvent(e)){
     			final String link = component.getLink(e.getPoint());
     			if(link != null){
     				if (link != null) {
