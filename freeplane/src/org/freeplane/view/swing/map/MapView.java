@@ -469,6 +469,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	public void replaceSelection(NodeView[] views) {
         selection.replace(views);
+        if(views.length > 0)
+        	views[0].requestFocusInWindow();
     }
 
     // generics trickery
