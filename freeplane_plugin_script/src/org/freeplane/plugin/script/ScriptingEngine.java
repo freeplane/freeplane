@@ -30,7 +30,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
@@ -43,14 +42,10 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
-import org.freeplane.features.attribute.mindmapmode.MAttributeController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.text.TextController;
-import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.main.application.FreeplaneSecurityManager;
 import org.freeplane.plugin.script.proxy.ProxyFactory;
 
@@ -65,8 +60,6 @@ public class ScriptingEngine {
 	public static final String RESOURCES_SCRIPT_CLASSPATH = "script_classpath";
 	public static final String SCRIPT_PREFIX = "script";
 	private static final HashMap<String, Object> sScriptCookies = new HashMap<String, Object>();
-	/** @deprecated this is physical pattern stuff - use formulas instead! */
-	private static Pattern attributeNamePattern = Pattern.compile("^([a-zA-Z0-9_]*)=");
 	private static List<String> classpath;
 	private static final IErrorHandler scriptErrorHandler = new IErrorHandler() {
     	public void gotoLine(final int pLineNumber) {
@@ -78,30 +71,13 @@ public class ScriptingEngine {
 	 * @return the result of the script, or null, if the user has cancelled.
 	 * @throws ExecuteScriptException on errors
 	 */
-	static Object executeScript(final NodeModel node, String script, final IErrorHandler pErrorHandler,
+	static Object executeScript(final NodeModel node, final String script, final IErrorHandler pErrorHandler,
 	                            final PrintStream pOutStream, final ScriptContext scriptContext,
 	                            ScriptingPermissions permissions) {
 		final Binding binding = new Binding();
 		binding.setVariable("c", ProxyFactory.createController(scriptContext));
 		binding.setVariable("node", ProxyFactory.createNode(node, scriptContext));
 		binding.setVariable("cookies", ScriptingEngine.sScriptCookies);
-		//
-		// == deprecated handling of physical patterns ==
-		//
-		boolean assignResult = false;
-		String assignTo = null;
-		final Matcher matcher = attributeNamePattern.matcher(script);
-		if (matcher.matches()) {
-			assignResult = true;
-			String attributeName = matcher.group(1);
-			if (attributeName.length() == 0) {
-				script = script.substring(1);
-			}
-			else {
-				assignTo = attributeName;
-				script = script.substring(matcher.end());
-			}
-		}
 		final PrintStream oldOut = System.out;
 		//
 		// == Security stuff ==
@@ -131,6 +107,7 @@ public class ScriptingEngine {
 				scriptingSecurityManager = permissions.getScriptingSecurityManager();
 		}
 		else {
+			// will not be used
 			scriptingSecurityManager = null;
 		}
 		//
@@ -165,17 +142,7 @@ public class ScriptingEngine {
 					}
 				}
 			};
-			final Object result = shell.evaluate(script);
-			if (assignResult && result != null) {
-				if (assignTo == null) {
-					((MTextController) TextController.getController()).setNodeText(node, result.toString());
-				}
-				else {
-					((MAttributeController) AttributeController.getController()).editAttribute(node, assignTo,
-					    result.toString());
-				}
-			}
-			return result;
+			return shell.evaluate(script);
 		}
 		catch (final GroovyRuntimeException e) {
 			/*
@@ -295,7 +262,7 @@ public class ScriptingEngine {
 		if (!classpath.isEmpty())
 			LogUtils.info("extending script's classpath by " + classpath);
     }
-
+	
 	public static File getUserScriptDir() {
         final String userDir = ResourceController.getResourceController().getFreeplaneUserDirectory();
     	return new File(userDir, ScriptingConfiguration.USER_SCRIPTS_DIR);
