@@ -75,7 +75,7 @@ public class AttributeMatchesCondition extends ASelectableCondition {
                 continue;
             }
             final Object originalContent = attributes.getValueAt(i, 1);
-            String text = textController.getTransformedObject(originalContent, node, null).toString();
+            String text = textController.getTransformedTextNoThrow(originalContent, node, null);
             if(searchPattern.matcher(text).find())
                 return true;
 		}

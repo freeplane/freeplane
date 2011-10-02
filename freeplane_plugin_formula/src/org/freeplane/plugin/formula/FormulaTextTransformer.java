@@ -28,9 +28,6 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 		}
 		final String text = obj.toString();
 		final String plainText = HtmlUtils.htmlToPlain(text);
-		if (!FormulaUtils.containsFormula(plainText)) {
-			return text;
-		}
 		// starting a new ScriptContext in evalIfScript
 		final Object result = FormulaUtils.evalIfScript(node, null, plainText);
 		if (result == null) {

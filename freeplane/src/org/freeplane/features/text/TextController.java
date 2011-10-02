@@ -115,27 +115,43 @@ public class TextController implements IExtension {
 	}
 	
 	/** @throws RuntimeException if something goes wrong. */
+	public Object getTransformedObject(Object object, final NodeModel nodeModel, Object extension) {
+		for (IContentTransformer textTransformer : getTextTransformers()) {
+			object = textTransformer.transformContent(object, nodeModel, extension);
+		}
+		return object;
+	}
+	
+	/** returns an error message instead of a normal result if something goes wrong. */
+	public Object getTransformedObjectNoThrow(Object data, final NodeModel node, Object extension) {
+		try {
+			return getTransformedObject(data, node, extension);
+		}
+		catch (Throwable e) {
+			LogUtils.warn(e.getMessage(), e);
+			return TextUtils.format("MainView.errorUpdateText", data, e.getLocalizedMessage());
+		}
+	}
+	
+	public Object getTransformedObject(NodeModel node) {
+		final Object userObject = node.getUserObject();
+		return getTransformedObject(userObject, node, userObject);
+	}
+	
+	public Object getTransformedObjectNoThrow(NodeModel node) {
+		final Object userObject = node.getUserObject();
+		return getTransformedObjectNoThrow(userObject, node, userObject);
+	}
+
+	/** convenience method for getTransformedText().toString. */
 	public String getTransformedText(Object text, final NodeModel nodeModel, Object extension) {
 		text = getTransformedObject(text, nodeModel, extension);
 		return text.toString();
 	}
-
-	public Object getTransformedObject(Object object, final NodeModel nodeModel, Object extension) {
-	    for (IContentTransformer textTransformer : getTextTransformers()) {
-			object = textTransformer.transformContent(object, nodeModel, extension);
-		}
-	    return object;
-    }
 	
-	/** returns an error message instead of a normal result if something goes wrong. */
-	public String getTransformedTextNoThrow(Object data, final NodeModel node, Object extension) {
-		try {
-			return getTransformedText(data, node, extension);
-		}
-		catch (Throwable e) {
-			LogUtils.warn(e.getMessage(), e);
-			    return TextUtils.format("MainView.errorUpdateText", data, e.getLocalizedMessage());
-		}
+	public String getTransformedTextNoThrow(Object text, final NodeModel nodeModel, Object extension) {
+		text = getTransformedObjectNoThrow(text, nodeModel, extension);
+		return text.toString();
 	}
 
 	public boolean getIsShortened(NodeModel node){
@@ -281,10 +297,5 @@ public class TextController implements IExtension {
 			}
 		}
 		return false;
-    }
-
-	public Object getTransformedObject(NodeModel node) {
-		final Object userObject = node.getUserObject();
-		return getTransformedObject(userObject, node, userObject);
     }
 }
