@@ -43,7 +43,7 @@ public class FormulaUtils {
 			throw new StackOverflowError(TextUtils.format("formula.error.circularReference",
 			    HtmlUtils.htmlToPlain(scriptContext.getStackFront().getText())));
 		}
-		final ScriptingPermissions restrictedPermissions = ScriptingPermissions.getRestrictedPermissions();
+		final ScriptingPermissions restrictedPermissions = ScriptingPermissions.getFormulaPermissions();
 		try {
 			if (ENABLE_CACHING) {
 				final FormulaCache formulaCache = getFormulaCache(nodeModel.getMap());

@@ -48,7 +48,7 @@ public class ScriptingPermissions {
         , RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION //
         , RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED //
 	};
-	private static ScriptingPermissions restrictedPermissions;
+	private static ScriptingPermissions formulaPermissions;
 	private static ScriptingPermissions permissiveScriptingPermissions;
 
 	public ScriptingPermissions() {
@@ -95,21 +95,19 @@ public class ScriptingPermissions {
 		boolean execPerm = get(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION);
 		return new ScriptingSecurityManager(readPerm, writePerm, networkPerm, execPerm);
 	}
-
-	ScriptingSecurityManager getRestrictedScriptingSecurityManager() {
-		return getRestrictedPermissions().getScriptingSecurityManager();
-	}
 	
-	static ScriptingPermissions getRestrictedPermissions() {
-		if (restrictedPermissions == null) {
-			restrictedPermissions = new ScriptingPermissions();
+	/** this method is called only if the formula plugin is active and so formula evaluation is allowed. */
+	static ScriptingPermissions getFormulaPermissions() {
+		if (formulaPermissions == null) {
+			formulaPermissions = new ScriptingPermissions();
+			formulaPermissions.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING, true);
 			// the classpath is set by the user - this forces us to loose the permissions a bit (if the user permits it)
 			if (ScriptingEngine.getClasspath() != null) {
-				restrictedPermissions.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION, ResourceController
+				formulaPermissions.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION, ResourceController
 				    .getResourceController().getBooleanProperty(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION));
 			}
 		}
-		return restrictedPermissions;
+		return formulaPermissions;
 	}
 
 	ScriptingSecurityManager getPermissiveScriptingSecurityManager() {
