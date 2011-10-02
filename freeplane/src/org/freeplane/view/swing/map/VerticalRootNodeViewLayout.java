@@ -43,14 +43,4 @@ public class VerticalRootNodeViewLayout extends NodeViewLayoutAdapter {
 		calcLayout(false, layoutData);
 		placeChildren(layoutData);
 	}
-
-	public void layoutNodeMotionListenerView(final NodeMotionListenerView view) {
-		final NodeView movedView = view.getMovedView();
-		final JComponent content = movedView.getContent();
-		location.x = 0;
-		location.y = -LISTENER_VIEW_WIDTH;
-		UITools.convertPointToAncestor(content, location, view.getParent());
-		view.setLocation(location);
-		view.setSize(content.getWidth(), LISTENER_VIEW_WIDTH);
-	}
 }

@@ -43,14 +43,4 @@ public class LeftNodeViewLayout extends NodeViewLayoutAdapter {
 		placeChildren(layoutData);
 	}
 
-
-	public void layoutNodeMotionListenerView(final NodeMotionListenerView view) {
-		final NodeView movedView = view.getMovedView();
-		final JComponent content = movedView.getContent();
-		location.x = content.getWidth();
-		location.y = 0;
-		UITools.convertPointToAncestor(content, location, view.getParent());
-		view.setLocation(location);
-		view.setSize(LISTENER_VIEW_WIDTH, content.getHeight());
-	}
 }

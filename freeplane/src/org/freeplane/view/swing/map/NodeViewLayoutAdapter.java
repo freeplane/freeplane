@@ -26,6 +26,7 @@ import java.awt.Point;
 
 import javax.swing.JComponent;
 
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodelocation.LocationModel;
@@ -480,4 +481,14 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
         view.setTopOverlap(topOverlap);
         view.setBottomOverlap(height - heigthWithoutOverlap);
     }
+
+	public void layoutNodeMotionListenerView(final NodeMotionListenerView view) {
+		final NodeView movedView = view.getMovedView();
+		final JComponent content = movedView.getContent();
+		location.x = -LISTENER_VIEW_WIDTH;
+		location.y = 0;
+		UITools.convertPointToAncestor(content, location, view.getParent());
+		view.setLocation(location);
+		view.setSize(LISTENER_VIEW_WIDTH, content.getHeight());
+	}
 }
