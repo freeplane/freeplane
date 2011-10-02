@@ -165,7 +165,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		}
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 		if (forceFormatting) {
-			final String text = TextController.getController().getTransformedText(data, node, data);
+			final String text = TextController.getController().getTransformedTextNoThrow(data, node, data);
 			if (!HtmlUtils.isHtmlNode(text)) {
 				writer.addAttribute(NodeTextBuilder.XML_NODE_TEXT, text.replace('\0', ' '));
 			}

@@ -114,10 +114,14 @@ public class TextController implements IExtension {
 		return nodeModel.getText();
 	}
 	
-	/** @throws RuntimeException if something goes wrong. */
-	public Object getTransformedObject(Object object, final NodeModel nodeModel, Object extension) {
+	public Object getTransformedObject(Object object, final NodeModel nodeModel, Object extension) throws TransformationException{
 		for (IContentTransformer textTransformer : getTextTransformers()) {
-			object = textTransformer.transformContent(object, nodeModel, extension);
+			try {
+	            object = textTransformer.transformContent(object, nodeModel, extension);
+            }
+            catch (RuntimeException e) {
+            	throw new TransformationException(e);
+            }
 		}
 		return object;
 	}
@@ -133,7 +137,7 @@ public class TextController implements IExtension {
 		}
 	}
 	
-	public Object getTransformedObject(NodeModel node) {
+	public Object getTransformedObject(NodeModel node)  throws TransformationException{
 		final Object userObject = node.getUserObject();
 		return getTransformedObject(userObject, node, userObject);
 	}
@@ -144,7 +148,7 @@ public class TextController implements IExtension {
 	}
 
 	/** convenience method for getTransformedText().toString. */
-	public String getTransformedText(Object text, final NodeModel nodeModel, Object extension) {
+	public String getTransformedText(Object text, final NodeModel nodeModel, Object extension)  throws TransformationException{
 		text = getTransformedObject(text, nodeModel, extension);
 		return text.toString();
 	}
