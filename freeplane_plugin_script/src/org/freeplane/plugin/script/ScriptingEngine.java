@@ -262,6 +262,10 @@ public class ScriptingEngine {
 		if (!classpath.isEmpty())
 			LogUtils.info("extending script's classpath by " + classpath);
     }
+
+	static List<String> getClasspath() {
+		return classpath;
+	}
 	
 	public static File getUserScriptDir() {
         final String userDir = ResourceController.getResourceController().getFreeplaneUserDirectory();

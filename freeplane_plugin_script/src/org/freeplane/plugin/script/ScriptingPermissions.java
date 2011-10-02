@@ -48,7 +48,7 @@ public class ScriptingPermissions {
         , RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION //
         , RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED //
 	};
-	final static ScriptingPermissions restrictedPermissions = new ScriptingPermissions();
+	private static ScriptingPermissions restrictedPermissions;
 	private static ScriptingPermissions permissiveScriptingPermissions;
 
 	public ScriptingPermissions() {
@@ -101,6 +101,14 @@ public class ScriptingPermissions {
 	}
 	
 	static ScriptingPermissions getRestrictedPermissions() {
+		if (restrictedPermissions == null) {
+			restrictedPermissions = new ScriptingPermissions();
+			// the classpath is set by the user - this forces us to loose the permissions a bit (if the user permits it)
+			if (ScriptingEngine.getClasspath() != null) {
+				restrictedPermissions.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION, ResourceController
+				    .getResourceController().getBooleanProperty(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION));
+			}
+		}
 		return restrictedPermissions;
 	}
 
