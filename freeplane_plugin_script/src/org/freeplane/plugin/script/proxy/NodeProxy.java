@@ -187,8 +187,8 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// NodeRO: R
 	public Convertible getDetails() {
-		return new ConvertibleText(getDelegate(), getScriptContext(),
-		    DetailTextModel.getDetailTextText(getDelegate()));
+		final String detailsText = DetailTextModel.getDetailTextText(getDelegate());
+		return (detailsText == null) ? null : new ConvertibleText(getDelegate(), getScriptContext(), detailsText);
 	}
 	
 	// NodeRO: R
