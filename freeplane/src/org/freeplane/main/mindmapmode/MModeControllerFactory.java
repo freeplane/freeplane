@@ -110,12 +110,12 @@ import org.freeplane.view.swing.map.ShowNotesInMapAction;
 import org.freeplane.view.swing.map.attribute.AttributePanelManager;
 import org.freeplane.view.swing.map.attribute.EditAttributesAction;
 import org.freeplane.view.swing.ui.DefaultNodeKeyListener;
-import org.freeplane.view.swing.ui.MNodeMouseMotionListener;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
 import org.freeplane.view.swing.ui.mindmapmode.MMapMouseListener;
 import org.freeplane.view.swing.ui.mindmapmode.MNodeDragListener;
 import org.freeplane.view.swing.ui.mindmapmode.MNodeDropListener;
 import org.freeplane.view.swing.ui.mindmapmode.MNodeMotionListener;
+import org.freeplane.view.swing.ui.mindmapmode.MNodeMouseMotionListener;
 
 /**
  * @author Dimitry Polivaev 24.11.2008

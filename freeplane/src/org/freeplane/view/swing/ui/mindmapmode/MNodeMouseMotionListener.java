@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.view.swing.ui;
+package org.freeplane.view.swing.ui.mindmapmode;
 
 import java.awt.event.MouseEvent;
 
@@ -25,6 +25,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.util.Compat;
 import org.freeplane.features.text.mindmapmode.MTextController;
+import org.freeplane.view.swing.ui.DefaultNodeMouseMotionListener;
 
 /**
  * @author Dimitry Polivaev
