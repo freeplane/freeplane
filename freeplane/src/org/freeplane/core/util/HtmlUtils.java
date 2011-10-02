@@ -362,20 +362,26 @@ public class HtmlUtils {
 		/*
 		 * Heuristic reserve for expansion : factor 1.2
 		 */
-		final StringBuilder result = new StringBuilder((int) (text.length() * 1.2));
+		StringBuilder result = null;
 		int intValue;
 		char myChar;
 		for (int i = 0; i < text.length(); ++i) {
 			myChar = text.charAt(i);
 			intValue = text.charAt(i);
 			if (intValue < 32 || intValue > 126) {
+				if(result == null){
+					 result = new StringBuilder((int) (text.length() * 1.2));
+					 result.append(text.subSequence(0, i));
+				}
 				result.append("&#x").append(Integer.toString(intValue, 16)).append(';');
 			}
-			else {
+			else if(result != null){
 				result.append(myChar);
 			}
 		}
-		return result.toString();
+		if(result != null)
+			return result.toString();
+		return text;
 	}
 
 	/**
