@@ -26,6 +26,7 @@ import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Collection;
 
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -221,6 +222,7 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 		final Point point = e.getPoint();
 		UITools.convertPointToAncestor(nodeV, point, JScrollPane.class);
 		final NodeModel node = nodeV.getModel();
+		final ModeController modeController = nodeV.getMap().getModeController();
 		final NodeModel parentNode = nodeV.getModel().getParentNode();
 		final int parentVGap = LocationModel.getModel(parentNode).getVGap();
 		int hgap = LocationModel.getModel(node).getHGap();
@@ -235,12 +237,15 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 			hgap = calculateNewHGap(nodeV, hgap, changeSide, newIsLeft);
 		}
 		resetPositions(node);
-		final Controller controller = Controller.getCurrentController();
+		final Controller controller = modeController.getController();
 		MLocationController locationController = (MLocationController) LocationController.getController(controller.getModeController());
 		locationController.moveNodePosition(node, parentVGap, hgap, shiftY);
 		if(newIndex != -1){
-			MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+			MMapController mapController = (MMapController) modeController.getMapController();
+			final Collection<NodeModel> selecteds = mapController.getSelectedNodes();
+			final NodeModel[] array = selecteds.toArray(new NodeModel[selecteds.size()]);
 			mapController.moveNode(node, node.getParentNode(),  newIndex, newIsLeft, changeSide);
+			controller.getSelection().replaceSelection(array);
 		}
 			
 		stopDrag();
