@@ -148,7 +148,7 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 			else {
 				ModeController c = Controller.getCurrentController().getModeController();
 				final Point dragNextPoint = point;
-				if (Compat.isCtrlEvent(e)) {
+				if (! Compat.isCtrlEvent(e)) {
 					final NodeModel node = nodeV.getModel();
 					final LocationModel locationModel = LocationModel.createLocationModel(node);
 					locationModel.setShiftY(getNodeShiftY(dragNextPoint, node, dragStartingPoint));
