@@ -26,6 +26,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Insets;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -92,6 +93,7 @@ import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.ZoomableLabel;
+import org.freeplane.view.swing.map.ZoomableLabelUI;
 
 import com.lightdev.app.shtm.SHTMLWriter;
 
@@ -205,8 +207,7 @@ public class EditNodeTextField extends EditNodeBase {
 		}
 		textfield.setSize(preferredSize);
 		if(layoutMapOnTextChange)
-			parent.setPreferredSize(new Dimension(preferredSize.width + horizontalSpace + iconWidth, preferredSize.height
-				+ verticalSpace));
+			parent.setPreferredSize(new Dimension(preferredSize.width + horizontalSpace , preferredSize.height + verticalSpace));
 		textfield.revalidate();
 		final NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, parent);
 		final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, nodeView);
@@ -457,9 +458,6 @@ public class EditNodeTextField extends EditNodeBase {
 	private NodeView nodeView;
 	private Font font;
 	private float zoom;
-	private int iconWidth;
-	private int horizontalSpace;
-	private int verticalSpace;
 	private final PasteAction pasteAction;
 	private final BoldAction boldAction;
 	private final ItalicAction italicAction;
@@ -470,6 +468,8 @@ public class EditNodeTextField extends EditNodeBase {
 	private final ForegroundAction blackAction;
 	private StyledTextAction defaultColorAction;
 	private StyledTextAction removeFormattingAction;
+	private int horizontalSpace;
+	private int verticalSpace;
 
 	@Override
     protected JPopupMenu createPopupMenu(Component component) {
@@ -603,32 +603,15 @@ public class EditNodeTextField extends EditNodeBase {
 			setLineWrap();
 			textFieldSize.height = textfield.getPreferredSize().height;
 		}
-		horizontalSpace = nodeWidth - textFieldSize.width;
-		verticalSpace = nodeHeight - textFieldSize.height;
-		iconWidth = parent.getIconWidth();
-		if (iconWidth != 0) {
-			iconWidth += mapView.getZoomed(parent.getIconTextGap());
-			horizontalSpace -= iconWidth;
-		}
-		if (horizontalSpace < 0) {
-			horizontalSpace = 0;
-		}
-		if (verticalSpace < 0) {
-			verticalSpace = 0;
-		}
 		textfield.setSize(textFieldSize.width, textFieldSize.height);
-		parent.setPreferredSize(new Dimension(textFieldSize.width + iconWidth + horizontalSpace, textFieldSize.height
-	        + verticalSpace));
+		final Rectangle textR = ((ZoomableLabelUI)parent.getUI()).getTextR(parent);
+		textR.x -= 2;
+		textR.y -= 2;
+		horizontalSpace = nodeWidth - textR.width;
+		verticalSpace = nodeHeight - textR.height;
+		parent.setPreferredSize(new Dimension(horizontalSpace + textFieldSize.width, verticalSpace + textFieldSize.height));
 
-		final int x;
-		if(nodeView.isRoot() && parent instanceof MainView) 
-		    x= (horizontalSpace + 1) / 2;
-		else{
-		    final Insets insets = parent.getInsets();
-		    x = mapView.getZoomed(insets.left);
-		}
-		final int y = (verticalSpace + 1) / 2;
-		final Point location = new Point(x + iconWidth, y);
+		final Point location = new Point(textR.x, textR.y);
 		if(! layoutMapOnTextChange)
 			UITools.convertPointToAncestor(parent, location, mapView);
 		textfield.setBounds(location.x, location.y, textFieldSize.width, textFieldSize.height);
@@ -649,8 +632,8 @@ public class EditNodeTextField extends EditNodeBase {
 				MouseEvent mouseEvent = (MouseEvent) currentEvent;
 				if(mouseEvent.getComponent().equals(parent)){
 					final Point point = mouseEvent.getPoint();
-					point.x -= x + iconWidth;
-					point.y -= y;
+					point.x -= textR.x;
+					point.y -= textR.y;
 					pos = textfield.viewToModel(point);
 				}
 			}
