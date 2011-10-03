@@ -228,13 +228,9 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 		int hgap = LocationModel.getModel(node).getHGap();
 		final int shiftY = LocationModel.getModel(node).getShiftY();
 		int newIndex = -1;
-		boolean changeSide = false;
-		boolean newIsLeft = nodeV.isLeft();
+		boolean isLeft = nodeV.isLeft();
 		if(FreeNode.isFreeNode(node)){
-			newIsLeft = calculateNewNodeSide(nodeV);
-			changeSide =  newIsLeft != nodeV.isLeft();
-			newIndex = calculateNewNodeIndex(nodeV, newIsLeft);
-			hgap = calculateNewHGap(nodeV, hgap, changeSide, newIsLeft);
+			newIndex = calculateNewNodeIndex(nodeV, isLeft);
 		}
 		resetPositions(node);
 		final Controller controller = modeController.getController();
@@ -244,29 +240,12 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 			MMapController mapController = (MMapController) modeController.getMapController();
 			final Collection<NodeModel> selecteds = mapController.getSelectedNodes();
 			final NodeModel[] array = selecteds.toArray(new NodeModel[selecteds.size()]);
-			mapController.moveNode(node, node.getParentNode(),  newIndex, newIsLeft, changeSide);
+			mapController.moveNode(node, node.getParentNode(),  newIndex, isLeft, false);
 			controller.getSelection().replaceSelection(array);
 		}
 			
 		stopDrag();
 	}
-
-	private int calculateNewHGap(NodeView nodeV, int hgap, boolean changeSide, boolean newIsLeft) {
-		if(! changeSide || SummaryNode.isSummaryNode(nodeV.getModel()))
-			return hgap;
-		final float zoom = nodeV.getMap().getZoom();
-		final int newHgap = (int)((nodeV.getParentView().getContent().getWidth() - nodeV.getContent().getWidth())/zoom) - hgap;
-		return newHgap;
-		
-    }
-
-	private boolean calculateNewNodeSide(NodeView nodeV) {
-		final NodeView parent = nodeV.getParentView();
-		if(! parent.isRoot())
-			return nodeV.isLeft();
-		int refX = getRefX(parent);
-		return nodeV.getX() + getRefX(nodeV) < refX;
-    }
 
 	public int getRefX(final NodeView node) {
 	    return node.getContent().getX() + node.getContent().getWidth()/2;
