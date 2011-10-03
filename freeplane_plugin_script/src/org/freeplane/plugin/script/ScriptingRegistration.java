@@ -263,8 +263,12 @@ class ScriptingRegistration {
 						addSubMenu(menuBuilder, scriptsLocation, location, scriptName);
 						registeredLocations.add(location);
 					}
-					addMenuItem(menuBuilder, location, entry, executionMode, metaData.cacheContent(),
-					    metaData.getTitleKey(executionMode), metaData.getPermissions());
+					final String scriptLocation = location + "/" + scriptName;
+					if (!registeredLocations.contains(scriptLocation)) {
+						addMenuItem(menuBuilder, location, entry, executionMode, metaData.cacheContent(),
+						    metaData.getTitleKey(executionMode), metaData.getPermissions());
+						registeredLocations.add(scriptLocation);
+					}
 				}
 			}
 		}
