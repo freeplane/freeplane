@@ -9,6 +9,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.net.URI;
 import java.net.URL;
 
@@ -29,42 +30,48 @@ import org.freeplane.features.url.UrlManager;
 
 @SuppressWarnings("serial")
 public class NodeTooltip extends JToolTip {
+	public class LinkMouseListener extends MouseAdapter implements MouseMotionListener{
+	    public void mouseMoved(final MouseEvent ev) {
+	    	final String link = HtmlUtils.getURLOfExistingLink((HTMLDocument) tip.getDocument(), tip.viewToModel(ev.getPoint()));
+	    	boolean followLink = link != null;
+	    	Controller currentController = Controller.getCurrentController();
+	        final int requiredCursor;
+	        if(followLink){
+	    		currentController.getViewController().out(link);
+	    		requiredCursor = Cursor.HAND_CURSOR;
+	        }
+	        else{
+	        	requiredCursor = Cursor.DEFAULT_CURSOR;
+	        }
+	        if (tip.getCursor().getType() != requiredCursor) {
+	        	tip.setCursor(requiredCursor != Cursor.DEFAULT_CURSOR ? new Cursor(requiredCursor) : null);
+	        }
+	    }
+
+	    public void mouseClicked(final MouseEvent ev) {
+	    	if (Compat.isPlainEvent(ev)) {
+	    		final String linkURL = HtmlUtils.getURLOfExistingLink((HTMLDocument) tip.getDocument(), tip.viewToModel(ev.getPoint()));
+	    		if (linkURL != null) {
+	    			try {
+	    				UrlManager.getController().loadURL(new URI(linkURL));
+	    			} catch (Exception e) {
+	    				LogUtils.warn(e);
+	    			}
+	    		}
+	    	}
+	    }
+
+		public void mouseDragged(MouseEvent e) {
+        }
+    }
+
 	final private JEditorPane tip; 
 	public NodeTooltip(){
 		tip  = new JEditorPane();
 		tip.setContentType("text/html");
 		tip.setEditable(false);
 		tip.setMargin(new Insets(0, 0, 0, 0));
-		final MouseAdapter mouseListener = new MouseAdapter() {
-			public void mouseMoved(final MouseEvent ev) {
-				final String link = HtmlUtils.getURLOfExistingLink((HTMLDocument) tip.getDocument(), tip.viewToModel(ev.getPoint()));
-		    	boolean followLink = link != null;
-		    	Controller currentController = Controller.getCurrentController();
-		        final int requiredCursor;
-		        if(followLink){
-		    		currentController.getViewController().out(link);
-		    		requiredCursor = Cursor.HAND_CURSOR;
-		        }
-		        else{
-		        	requiredCursor = Cursor.DEFAULT_CURSOR;
-		        }
-		        if (tip.getCursor().getType() != requiredCursor) {
-		        	tip.setCursor(requiredCursor != Cursor.DEFAULT_CURSOR ? new Cursor(requiredCursor) : null);
-		        }
-		    }
-			public void mouseClicked(final MouseEvent ev) {
-				if (Compat.isPlainEvent(ev)) {
-					final String linkURL = HtmlUtils.getURLOfExistingLink((HTMLDocument) tip.getDocument(), tip.viewToModel(ev.getPoint()));
-					if (linkURL != null) {
-						try {
-							UrlManager.getController().loadURL(new URI(linkURL));
-						} catch (Exception e) {
-							LogUtils.warn(e);
-						}
-					}
-				}
-			}
-		};
+		final LinkMouseListener mouseListener = new LinkMouseListener();
 		tip.addMouseListener(mouseListener);
 		tip.addMouseMotionListener(mouseListener);
 		final HTMLDocument document = (HTMLDocument) tip.getDocument();
