@@ -69,9 +69,6 @@
 					<menu_action action="LatexEditLatexAction" plugin="org.freeplane.plugin.latex"/>
 					<menu_action action="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex"/>
 				</menu_submenu>
-				<menu_action action="FormatCopy" accelerator="alt shift C" />
-				<menu_action action="FormatPaste" accelerator="alt shift V" />
-				<menu_separator />
 				<menu_action action="JoinNodesAction" accelerator="control J" />
 				<menu_action action="SplitNode" />
 				<menu_separator />
@@ -236,6 +233,8 @@
 				<menu_action action="CopyMapStylesAction" />  
 				<menu_action action="EditStylesAction" />
 			</menu_submenu>		
+			<menu_action action="FormatCopy" accelerator="alt shift C" />
+			<menu_action action="FormatPaste" accelerator="alt shift V" />
 
 				<menu_separator />
 			<menu_action action="MapBackgroundColorAction" />	
