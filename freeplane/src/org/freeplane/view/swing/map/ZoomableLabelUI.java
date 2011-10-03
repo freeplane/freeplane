@@ -147,6 +147,8 @@ public class ZoomableLabelUI extends BasicLabelUI {
 
 	private void layout(ZoomableLabel label) {
 		String text = label.getText();
+		if(text == null || text.equals(""))
+			text = "!";
 		Icon icon = (label.isEnabled()) ? label.getIcon() :
 			label.getDisabledIcon();
 		boolean wasPainting = isPainting;
@@ -156,10 +158,14 @@ public class ZoomableLabelUI extends BasicLabelUI {
 			textR.x = textR.y = textR.width = textR.height = 0;
 			layoutCL(label, label.getFontMetrics(), text, icon, viewR, iconR,textR);
 			final float zoom = label.getZoom();
-			iconR.x = (int)(iconR.x / zoom); 
-			textR.y = (int)(iconR.y / zoom); 
-			iconR.x = (int)(iconR.x / zoom); 
-			textR.y = (int)(iconR.y / zoom); 
+			iconR.x = (int)(iconR.x * zoom); 
+			iconR.y = (int)(iconR.y * zoom); 
+			iconR.width = (int)(iconR.width * zoom); 
+			iconR.height = (int)(iconR.height * zoom); 
+			textR.x = (int)(textR.x * zoom); 
+			textR.y = (int)(textR.y * zoom); 
+			textR.width = (int)(textR.width * zoom); 
+			textR.height = (int)(textR.height * zoom); 
 		}
 		finally{
 			isPainting = wasPainting;
