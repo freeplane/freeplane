@@ -1358,14 +1358,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (fitMap == FitMap.PAGE) {
 			final double zoomFactorX = pageFormat.getImageableWidth() / boundingRectangle.getWidth();
 			final double zoomFactorY = pageFormat.getImageableHeight() / boundingRectangle.getHeight();
-			zoomFactor = Math.min(zoomFactorX, zoomFactorY);
+			zoomFactor = Math.min(zoomFactorX, zoomFactorY) * 0.99;
 		}
 		else {
 			if (fitMap == FitMap.WIDTH) {
-				zoomFactor = pageFormat.getImageableWidth() / boundingRectangle.getWidth();
+				zoomFactor = pageFormat.getImageableWidth() / boundingRectangle.getWidth() * 0.99;
 			}
 			else if (fitMap == FitMap.HEIGHT) {
-				zoomFactor = pageFormat.getImageableHeight() / boundingRectangle.getHeight();
+				zoomFactor = pageFormat.getImageableHeight() / boundingRectangle.getHeight() * 0.99;
 			}
 			else {
 				zoomFactor = userZoomFactor;
