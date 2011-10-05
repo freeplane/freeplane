@@ -46,5 +46,6 @@ public class DetailsViewMouseListener extends LinkNavigatorMouseListener {
     	else if(controller instanceof MTextController && e.getClickCount() == 2){
     		((MTextController) controller).editDetails(model, e, e.isAltDown());
     	}
+    	else super.mouseClicked(e);
     }
 }
