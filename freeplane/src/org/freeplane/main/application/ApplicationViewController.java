@@ -468,10 +468,10 @@ class ApplicationViewController extends ViewController {
 			 */
 		});
 		frame.setFocusTraversalKeysEnabled(false);
-		final int win_width = ResourceController.getResourceController().getIntProperty("appwindow_width", 0);
-		final int win_height = ResourceController.getResourceController().getIntProperty("appwindow_height", 0);
-		final int win_x = ResourceController.getResourceController().getIntProperty("appwindow_x", 0);
-		final int win_y = ResourceController.getResourceController().getIntProperty("appwindow_y", 0);
+		final int win_width = ResourceController.getResourceController().getIntProperty("appwindow_width", -1);
+		final int win_height = ResourceController.getResourceController().getIntProperty("appwindow_height", -1);
+		final int win_x = ResourceController.getResourceController().getIntProperty("appwindow_x", -1);
+		final int win_y = ResourceController.getResourceController().getIntProperty("appwindow_y", -1);
 		UITools.setBounds(frame, win_x, win_y, win_width, win_height);
 		setFrameSize(frame.getBounds());
 		int win_state = Integer
