@@ -285,7 +285,5 @@ public class MModeControllerFactory {
 		mapController.addNodeSelectionListener(uiFactory);
 		mapController.addMapChangeListener(uiFactory);
 		controller.getMapViewManager().addMapSelectionListener(uiFactory);
-		final MToolbarContributor menuContributor = new MToolbarContributor(uiFactory);
-		modeController.addMenuContributor(menuContributor);
 	}
 }
