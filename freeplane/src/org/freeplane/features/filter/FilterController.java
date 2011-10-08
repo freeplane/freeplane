@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.filter;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -35,9 +36,12 @@ import javax.swing.ButtonModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListDataEvent;
@@ -156,6 +160,18 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		    "/filter_toolbar");
 		quickEditor = new FilterConditionEditor(this, 0, true);
 		quickEditor.setBorder(BorderFactory.createEtchedBorder());
+		quickEditor.addAncestorListener(new AncestorListener() {
+			public void ancestorAdded(final AncestorEvent event) {
+				final Component component = event.getComponent();
+				((FilterConditionEditor) component).focusInputField();
+			}
+
+			public void ancestorMoved(final AncestorEvent event) {
+			}
+
+			public void ancestorRemoved(final AncestorEvent event) {
+			}
+		});
 		controller.addAction(showFilterToolbar);
 		controller.addAction(new ApplyNoFilteringAction(this));
 		controller.addAction(new ApplySelectedViewConditionAction(this));
