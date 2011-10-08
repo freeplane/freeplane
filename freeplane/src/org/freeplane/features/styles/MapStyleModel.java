@@ -36,6 +36,10 @@ import javax.swing.event.ListDataListener;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.features.cloud.CloudModel;
+import org.freeplane.features.cloud.CloudModel.Shape;
+import org.freeplane.features.edge.EdgeModel;
+import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapReader;
 import org.freeplane.features.map.NodeModel;
@@ -51,6 +55,7 @@ public class MapStyleModel implements IExtension {
     public static final IStyle DEFAULT_STYLE = new StyleNamedObject("default");
     public static final IStyle DETAILS_STYLE = new StyleNamedObject("defaultstyle.details");
     public static final IStyle NOTE_STYLE = new StyleNamedObject("defaultstyle.note");
+    public static final IStyle FLOATING_STYLE = new StyleNamedObject("defaultstyle.floating");
 	private Map<IStyle, NodeModel> styleNodes;
 	private MapModel styleMap;
 	private ConditionalStyleModel conditionalStyleModel;
@@ -119,7 +124,8 @@ public class MapStyleModel implements IExtension {
 			insertStyleMap(parentMap, styleMap);
 			if(styleNodes.get(DEFAULT_STYLE) != null
 			        && styleNodes.get(DETAILS_STYLE) != null
-			        && styleNodes.get(NOTE_STYLE) != null)
+			        && styleNodes.get(NOTE_STYLE) != null
+			        && styleNodes.get(FLOATING_STYLE) != null)
 			    return;
 			final NodeModel predefinedStyleParentNode = getPredefinedStyleParentNode(styleMap);
             if(styleNodes.get(DEFAULT_STYLE) == null){
@@ -135,6 +141,13 @@ public class MapStyleModel implements IExtension {
             if(styleNodes.get(NOTE_STYLE) == null){
                 final NodeModel newNode = new NodeModel(NOTE_STYLE, styleMap);
                 predefinedStyleParentNode.insert(newNode, 2);
+                addStyleNode(newNode);
+            }
+            if(styleNodes.get(FLOATING_STYLE) == null){
+                final NodeModel newNode = new NodeModel(FLOATING_STYLE, styleMap);
+                EdgeModel.createEdgeModel(newNode).setStyle(EdgeStyle.EDGESTYLE_HIDDEN);
+                CloudModel.createModel(newNode).setShape(Shape.ROUND_RECT);
+                predefinedStyleParentNode.insert(newNode, 3);
                 addStyleNode(newNode);
             }
         }
