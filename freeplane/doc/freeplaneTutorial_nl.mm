@@ -4,7 +4,7 @@
     <attribute_name VISIBLE="true" NAME="See also"/>
     <attribute_name VISIBLE="true" NAME="a2"/>
 </attribute_registry>
-<node STYLE_REF="Introduction" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1316703313972" VGAP="4" BACKGROUND_COLOR="#00ff99" STYLE="bubble">
+<node STYLE_REF="Introduction" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1316703313972" VGAP="0" BACKGROUND_COLOR="#00ff99" STYLE="bubble">
 <icon BUILTIN="bee"/>
 <richcontent TYPE="NODE">
 <html>
@@ -98,6 +98,11 @@
 </hook>
 <hook NAME="FirstGroupNode"/>
 <edge STYLE="bezier"/>
+<node TEXT="" POSITION="right" ID="ID_1040847136" CREATED="1317837524305" MODIFIED="1317837524352" HGAP="-176" VSHIFT="189">
+<edge STYLE="hide_edge"/>
+<hook NAME="FreeNode"/>
+<cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
+</node>
 <node TEXT="Inleiding" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1316342821057" BACKGROUND_COLOR="#00cc66" NUMBERED="true" VSHIFT="110">
 <node TEXT="Doel" STYLE_REF="Beginner" ID="ID_1309964220" CREATED="1314735478858" MODIFIED="1316345200426" LINK="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch">
 <richcontent TYPE="DETAILS">
@@ -1029,7 +1034,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Berekeningen uitvoeren" STYLE_REF="Professional" ID="ID_448338872" CREATED="1316197624394" MODIFIED="1316293039051" LINK="http://freeplane.sourceforge.net/wiki/index.php/Formula">
+<node TEXT="Berekeningen uitvoeren" STYLE_REF="Professional" ID="ID_448338872" CREATED="1316197624394" MODIFIED="1317663260656" LINK="http://freeplane.sourceforge.net/wiki/index.php/Formula">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -1270,10 +1275,55 @@
   </body>
 </html></richcontent>
 </node>
+<node TEXT="Een vrije knoop maken en verplaatsen" STYLE_REF="Gevorderde" ID="ID_363670846" CREATED="1317136338338" MODIFIED="1317755178567" VGAP="0">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een vrije of vrij-beweegbare knoop is een knoop die kan worden verplaatst zonder dat dit de positie van de andere knopen beinvloedt. Een vrij beweegbare knoop is te herkennen aan een blauw gevuld ovaaltje in plaats van een rood open ovaaltje waaraan de knoop kan worden versleept.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Een vrije knoop kan worden gemaakt door op een vrije plek van de mindmap te dubbelklikken. De nieuw gegenereerde knoop krijgt als standaard eigenschappen een wolk en een verborgen tak (lijn). Een bestaande knoop kan worden omgezet in een vrije knoop (en v.v.) door de knoop te selecteren en <i>Edit&#160;&#160;&gt; Vrij beweegbare knoop</i>&#160;te kiezen. In dit geval wordt niet automatisch een wolk toegevoegd of de tak verborgen.&#160;&#160;De knoop wordt op zijn ouder geplaatst en kan vandaar naar elke positie worden bewogen.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Als een vrije knoop op een andere knoop wordt gesleept, gedraagt de knoop zich weer als normale knoop.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Vrije knoop" ID="ID_1957899877" CREATED="1317754935782" MODIFIED="1317755035187" HGAP="260" VSHIFT="-1">
+<hook NAME="FreeNode"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Zweef met de cursor over mijn linker zijde en
+    </p>
+    <p>
+      zie het blauwe ovaaltje.
+    </p>
+    <p>
+      Sleep mij rond aan dit blauwe ovaaltje.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
 </node>
 </node>
 <node TEXT="Knopen relateren en groeperen" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_215646874" CREATED="1314109445053" MODIFIED="1316293891297" NUMBERED="true">
-<node TEXT="Bewerken afstammingslijnen en takken" STYLE_REF="Beginner" ID="ID_1492225657" CREATED="1314162236991" MODIFIED="1316293979807" VSHIFT="-58">
+<node TEXT="Bewerken afstammingslijnen en takken" STYLE_REF="Beginner" ID="ID_1492225657" CREATED="1314162236991" MODIFIED="1317049270626" VSHIFT="-18">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -1286,8 +1336,8 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Verbindingslijnen" STYLE_REF="Beginner" ID="ID_1073407528" CREATED="1314129123086" MODIFIED="1316294006621">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Verbindingslijnen" STYLE_REF="Beginner" ID="ID_1073407528" CREATED="1314129123086" MODIFIED="1317049317847" VSHIFT="-10">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
@@ -1309,12 +1359,6 @@
       
     </p>
     <p>
-      
-    </p>
-    <p>
-      
-    </p>
-    <p>
       <b>Opmerking</b>
     </p>
     <ul>
@@ -1329,12 +1373,13 @@
 </html></richcontent>
 <node TEXT="a" STYLE_REF="BeginnerOnderwerp" ID="ID_1328399304" CREATED="1314130936565" MODIFIED="1316294034701">
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_581303769" MIDDLE_LABEL="label" STARTINCLINATION="9;-23;" ENDINCLINATION="-28;-89;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<node TEXT="b" STYLE_REF="BeginnerOnderwerp" ID="ID_273400211" CREATED="1314130940427" MODIFIED="1316294034708">
+<node TEXT="b" STYLE_REF="BeginnerOnderwerp" ID="ID_273400211" CREATED="1314130940427" MODIFIED="1317049106061">
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_273400211" MIDDLE_LABEL="lijn of pijl&#xa;zonder begin-&#xa;knoop" STARTINCLINATION="76;68;" ENDINCLINATION="76;68;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <node TEXT="c" STYLE_REF="BeginnerOnderwerp" ID="ID_581303769" CREATED="1314130942275" MODIFIED="1316294034706"/>
 </node>
 </node>
 </node>
-<node TEXT="Groepsknoop met accolade" STYLE_REF="Gevorderde" ID="ID_1700918771" CREATED="1314129783832" MODIFIED="1316294050997">
+<node TEXT="Groepsknoop met accolade" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_1700918771" CREATED="1314129783832" MODIFIED="1317049283215">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -1369,7 +1414,7 @@
 <hook NAME="SummaryNode"/>
 </node>
 </node>
-<node TEXT="Groep knopen binnen een wolk" STYLE_REF="Gevorderde" ID="ID_1150908697" CREATED="1314130460475" MODIFIED="1316294112943">
+<node TEXT="Groep knopen binnen een wolk" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_1150908697" CREATED="1314130460475" MODIFIED="1316294112943">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -1407,7 +1452,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Koppelingen maken" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_114835202" CREATED="1314284617264" MODIFIED="1316294531095" NUMBERED="true" TEXT_SHORTENED="true">
+<node TEXT="Koppelingen maken" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_114835202" CREATED="1314284617264" MODIFIED="1317748880078" NUMBERED="true" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -1415,7 +1460,7 @@
   </head>
   <body>
     <p>
-      Een dynamische koppeling is een electronische verbinding van een bronknoop naar een bestemming. De bestemming kan een map, bestand, webpagina, applicatie, e-mail, enz. zijn. De koppeling is in de bronknoop zichtbaar als een rood pijltje (externe <b>hyperlink</b>) of groen pijltje (interne <b>snelkoppeling</b>) en is klikbaar. De koppeling bevindt zich in de knooptitel of in een atrribuutwaarde.
+      Een dynamische koppeling is een electronische verbinding van een bronknoop naar een bestemming. De bestemming kan een map, bestand, webpagina, applicatie, e-mail, enz. zijn. De koppeling is in de bronknoop zichtbaar als een <b>rood pijltje</b>&#160;(externe&#160;hyperlink) of <b>groen pijltje</b>&#160;(interne snelkoppeling), <b>e-mail pictogram</b>, of onderstreepte tekst&#160;&#160;(<b>inline-koppeling</b>) en is klikbaar. In de knoopkern kan &#233;&#233;n pijl- of e-mail-hyperlink voorkomen en meerdere in-line koppelingen. In Knoopdetails en knoopnotitie kunnen alleen in-line koppelingen voorkomen.
     </p>
   </body>
 </html></richcontent>
@@ -1526,6 +1571,42 @@
   </body>
 </html></richcontent>
 </node>
+<node TEXT="In-line koppeling" STYLE_REF="Gevorderde" ID="ID_241324782" CREATED="1315336877701" MODIFIED="1317749266155">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      In de knoopkern, knoopdetails en in een Notitie kun je een koppeling naar een interne of externe bestemming maken zolas je dit in bijvoorbeeld Word doet. Je opent de knoop in een venster, selecteert een tekstdeel en kiest in het menu van het bewerkingsvenster <i>Bewerken &gt; Kiezen koppeling</i>&#160;of <i>&#160;Bewerken.&gt; Koppeling typen of wijzigen.</i>&#160; In het venster dat opent kun je het adres van de koppeling typen of een gekopieerd adres te plakken door op <i>Ctrl + V </i>te drukken. Voorbeeld: <a href="http://www.kioo.nl/fp">deze link</a>&#160;gaat naar Internet.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      De koppeling wordt niet door een pijljte maar door een onderstreping aangegeven.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Opmerking</b>
+    </p>
+    <ul>
+      <li>
+        In tegenstelling tot de pijltje-koppeling kunnen per veld meerdere koppelingen worden gedefinieerd.
+      </li>
+      <li>
+        De tekst van de koppeling kan worden bewerkt zonder dat de link vernaderd.
+      </li>
+      <li>
+        Het adres van de link kan worden bewerkt door de hele onderstreepte tekst te selecteren en dan <i>Bewerken.&gt; Koppeling typen of wijzigen </i>te kiezen.&#160;
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
 <node TEXT="Koppeling naar menu item" STYLE_REF="Professional" ID="ID_350080162" CREATED="1314359739019" MODIFIED="1316295033407">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
@@ -1539,39 +1620,6 @@
     <p>
       <i>.</i>
     </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Ctrl-koppeling" STYLE_REF="Professional" ID="ID_241324782" CREATED="1315336877701" MODIFIED="1316295033414">
-<richcontent TYPE="DETAILS" HIDDEN="true">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      In Titel, Inhoud en Note kun je een ctrl-koppeling naar een interne of externe bestemming maken door een tekstdeel te selecteren en <i>Bewerken &gt; Koppeling...</i>&#160;te kiezen. In het venster dat opent kun je het adres van de koppeling typen. Op je kunt een gekopieerd adres plakken door op <i>Ctrl + V </i>te drukken.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      De ctrl-koppeling wordt niet door een pijljte maar door een onderstreping aangegeven. De koppeling is te activeren door Ctrl ingedrukt te houden terwijl je op de koppeling klikt.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b>Opmerking</b>
-    </p>
-    <ul>
-      <li>
-        In tegenstelling tot de pijltje-koppeling kunnen per veld meerdere koppelingen worden gedefinieerd.
-      </li>
-      <li>
-        N.B. Deze funtionaliteit is in ontwikkeling en werkt alleen bij een open bewerkingsvenster.
-      </li>
-    </ul>
   </body>
 </html></richcontent>
 </node>
@@ -2126,8 +2174,8 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Knoopdetails" STYLE_REF="Gevorderde" FOLDED="true" POSITION="left" ID="ID_143196514" CREATED="1314206563418" MODIFIED="1316328164001" NUMBERED="true" VSHIFT="80">
-<node TEXT="Tekst bewerken in knoopdetails" STYLE_REF="Gevorderde" ID="ID_898889730" CREATED="1314197390735" MODIFIED="1316328689730">
+<node TEXT="Knoopuitbreiding" STYLE_REF="Gevorderde" FOLDED="true" POSITION="left" ID="ID_143196514" CREATED="1314206563418" MODIFIED="1317221135321" NUMBERED="true" VSHIFT="80">
+<node TEXT="Tekst bewerken in knoopdetails" STYLE_REF="Gevorderde" ID="ID_898889730" CREATED="1314197390735" MODIFIED="1317221965087">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -2135,7 +2183,7 @@
   </head>
   <body>
     <p>
-      Om een knoop zoals deze te maken, maak je eerst een nieuwe knoop zoals je boven hebt geleerd. Vervolgens type je de titel van de knoop iin de knoopkern, zoals je ook al weet. Je maakt de titel op in een vorm zoals je die wilt. Dan kies je <i>Knoopkenmerken &gt; Bewerken knoopinhoud (in venster)</i>&#160;en type je de tekst die onder de knooptitel moet komen. Je sluit af door op <i>OK</i>&#160;&#160;te drukken. Je tekst is nu zichtbaar onder de knooptitel.
+      Om een knoop zoals deze te maken, maak je eerst een nieuwe knoop zoals je boven hebt geleerd. Vervolgens type je de titel van de knoop iin de knoopkern, zoals je ook al weet. Je maakt de titel op in een vorm zoals je die wilt. Dan kies je <i>Knoopkenmerken &gt; Bewerken knoopdetails (in venster)</i>&#160;en type je de tekst die onder de knoopkern moet komen. Je sluit af door op <i>OK</i>&#160;&#160;te drukken. Je tekst is nu zichtbaar onder de knooptitel.
     </p>
     <p>
       
@@ -2145,10 +2193,10 @@
     </p>
     <ul>
       <li>
-        Net als bij de knooptitel kun je tekst ook op een snellere manier direkt in de knoop invoeren. Rechtsklik hiervoor op de knoop en kies <i>Bewerken knoopinhoud (snel).</i>&#160;Om een tekst die je al hebt ingevoerd opnieuw te bewerken, dubbelklik op de tekst.
+        Net als bij de knoopkern kun je tekst ook op een snellere manier direkt in de knoop invoeren. Rechtsklik hiervoor op de knoop en kies <i>Bewerken knoopinhoud (snel).</i>&#160;Om een tekst die je al hebt ingevoerd opnieuw te bewerken, dubbelklik op de tekst.
       </li>
       <li>
-        Alle acties die via een contextmenu mogelijk zijn, kun je ook in het hoofdmenu terugvinden. Bijvoorbeeld, het snelbewerken van knoopinhoud kun je keizen via Bewerken &gt; Knoopuitbreiding &gt; Bewerken knoopinhoud (snel).
+        Alle acties die via een contextmenu mogelijk zijn, kun je ook in het hoofdmenu terugvinden. Bijvoorbeeld, het snelbewerken van knoopinhoud kun je kiezen via <i>Bewerken &gt; Knoopuitbreiding &gt; Bewerken knoopdetails (snel).</i>
       </li>
     </ul>
   </body>
@@ -3223,8 +3271,7 @@
       Click on my title to open.
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <node TEXT="Select filter and Quickfilter" LOCALIZED_STYLE_REF="default" ID="ID_1871459381" CREATED="1316156118436" MODIFIED="1316344938119" LINK="FilterExampleBegin.jpg">
 <icon BUILTIN="full-1"/>
 <richcontent TYPE="DETAILS">
@@ -3581,7 +3628,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Woordenlijsten voor spellingcontrole" STYLE_REF="Professional" ID="ID_141336344" CREATED="1271096394315" MODIFIED="1316334030658" LINK="http://sourceforge.net/projects/freeplane/files/spell_check_dictionaries">
+<node TEXT="Woordenlijsten voor spellingcontrole" STYLE_REF="Professional" ID="ID_141336344" CREATED="1271096394315" MODIFIED="1317837496974" LINK="http://sourceforge.net/projects/freeplane/files/spell_check_dictionaries">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -3589,13 +3636,14 @@
   </head>
   <body>
     <p>
-      Spellingcontrole is standaard voor Engels ingesteld. Voor het Nederlands moet de woordenlijst worden opgehaald van Internet. Klik op het rode pijltje. Raadpleeg verder de Handleiding Freeplane.
+      Spellingcontrole is standaard voor Engels ingesteld. Voor het Nederlands moet de woordenlijst worden opgehaald van Internet. Klik op het rode pijltje. Download het bestand dictionary_nl.ortho. En bewaar dit bestand in Extra &gt; Gebruikersdirectory &gt; Resources/Ortho. &#160;Raadpleeg verder de Handleiding Freeplane.
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="Scientific suite (Docear)" STYLE_REF="Professional" ID="ID_170927482" CREATED="1316706324268" MODIFIED="1316706874203" LINK="http://docear.org/details.php">
-<richcontent TYPE="DETAILS">
+<node TEXT="Scientific suite (Docear)" STYLE_REF="Professional" ID="ID_170927482" CREATED="1316706324268" MODIFIED="1317222002886" LINK="http://docear.org/details.php">
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     

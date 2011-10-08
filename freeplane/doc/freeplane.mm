@@ -1464,7 +1464,19 @@
 </node>
 </node>
 <node TEXT="Install" STYLE_REF="UserGuide" FOLDED="true" ID="ID_931855473" CREATED="1311401499171" MODIFIED="1314857307386" HGAP="31" VSHIFT="2">
-<node TEXT="Download" FOLDED="true" ID="_Freeplane_Link_904501221" CREATED="1270892460638" MODIFIED="1310243962938">
+<node TEXT="Download" FOLDED="true" ID="_Freeplane_Link_904501221" CREATED="1270892460638" MODIFIED="1317904760841" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      On the Freeplane wiki separe support pages exist for different operating systems.
+    </p>
+  </body>
+</html>
+</richcontent>
 <node TEXT="Freeplane&apos;s homepage" ID="ID_916980386" CREATED="1270892460631" MODIFIED="1271530957733" LINK="http://freeplane.sourceforge.net">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
@@ -1529,6 +1541,7 @@
   </body>
 </html></richcontent>
 </node>
+<node TEXT="Ubuntu" ID="ID_461043347" CREATED="1317904627326" MODIFIED="1317904637466"/>
 <node TEXT=" MAC platform" STYLE_REF="Functiegroep" ID="ID_1956173686" CREATED="1289029737710" MODIFIED="1310244086061" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS">
 <html>
@@ -1542,6 +1555,7 @@
   </body>
 </html></richcontent>
 </node>
+<node TEXT="Portable Freeplane" ID="ID_252894978" CREATED="1317904658613" MODIFIED="1317904669815"/>
 </node>
 <node TEXT="Install" FOLDED="true" ID="Freeplane_Link_1822195277" CREATED="1270892460697" MODIFIED="1310903701338" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS">
@@ -1592,15 +1606,15 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Dictionaries for spell check" ID="ID_1124028676" CREATED="1310243241880" MODIFIED="1310282095144" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="Spell check dictionaries" STYLE_REF="Professional" ID="ID_141336344" CREATED="1271096394315" MODIFIED="1317837958205" LINK="http://sourceforge.net/projects/freeplane/files/spell_check_dictionaries">
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Standard spell check is in English
+      Spell check is pre-installed for English. For other languages, click the hyperlink. Download language_XX.ortho, in which XX is a two lettercode fo the language. Save this file in Tools &gt; Open user directory &gt; recources/ortho
     </p>
   </body>
 </html></richcontent>
@@ -3796,7 +3810,7 @@
 <attribute NAME="Chapter" VALUE="4"/>
 </node>
 </node>
-<node TEXT="Connect" FOLDED="true" ID="ID_1803275985" CREATED="1266249966500" MODIFIED="1315727462504" TEXT_SHORTENED="true">
+<node TEXT="Connect" FOLDED="true" ID="ID_1803275985" CREATED="1266249966500" MODIFIED="1317403806450" TEXT_SHORTENED="true">
 <icon BUILTIN="../designer"/>
 <richcontent TYPE="DETAILS">
 <html>
@@ -3817,7 +3831,7 @@
       
     </p>
     <p>
-      <b><font color="#000000" face="SansSerif, sans-serif">See also</font></b>
+      <b><font face="SansSerif, sans-serif" color="#000000">See also</font></b>
     </p>
     <ul>
       <li>
@@ -3832,10 +3846,10 @@
     </p>
     <ul>
       <li>
-        If more than two nodes are selected, several connectors are drawn at once, with the last selected node as the (common) destination.
+        A connector can be made by right-clicking and dragging a node to the other node.<br/>If more than two nodes are selected, several connectors are drawn at once, with the last selected node as the (common) destination.
       </li>
       <li>
-        By making a self-referenced nod it is possible to have a connector appear as a line connected to one node only.
+        By making a self-referenced node it is possible to have a connector appear as a line connected to one node only. Right-click and drag and drop the node on itself.
       </li>
     </ul>
   </body>
@@ -4176,21 +4190,23 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Hyperlinks relative" ID="ID_1942965129" CREATED="1311925599759" MODIFIED="1311925653580" LINK="#ID_1309284534">
+<node TEXT="Hyperlinks relative" ID="ID_1942965129" CREATED="1311925599759" MODIFIED="1317904386624" LINK="#ID_1309284534">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
 </hook>
+<attribute NAME="Chapter" VALUE="3"/>
 </node>
-<node TEXT="Hyperlink in attribute" ID="ID_457929879" CREATED="1312540477537" MODIFIED="1312544796065">
+<node TEXT="Hyperlink in attribute" ID="ID_457929879" CREATED="1312540477537" MODIFIED="1317904347765">
 <attribute_layout NAME_WIDTH="48" VALUE_WIDTH="48"/>
 <attribute NAME="See also" VALUE="#ID_278329781"/>
 <attribute NAME="See also" VALUE="#ID_1279811672"/>
+<attribute NAME="Chapter" VALUE="3"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Link to a node in another map" STYLE_REF="Procedure" ID="ID_199586221" CREATED="1314782923948" MODIFIED="1314783802712" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting:_Example_scripts#Insert_Link_to_a_node_in_another_map" TEXT_SHORTENED="true">
+<node TEXT="Link to a node in another map" STYLE_REF="Procedure" ID="ID_199586221" CREATED="1314782923948" MODIFIED="1317904230359" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting:_Example_scripts#Insert_Link_to_a_node_in_another_map" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -4217,8 +4233,9 @@
     </p>
   </body>
 </html></richcontent>
+<attribute NAME="Chapter" VALUE="3"/>
 </node>
-<node TEXT="Ctrl-Link" STYLE_REF="ToNote" ID="ID_241324782" CREATED="1315336877701" MODIFIED="1315378098899" TEXT_SHORTENED="true">
+<node TEXT="In-line hyperlinks" STYLE_REF="ToNote" ID="ID_408844993" CREATED="1315336877701" MODIFIED="1317904130064">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -4226,13 +4243,13 @@
   </head>
   <body>
     <p>
-      In Title Content and Note you can define a link to an internal or external goal. First open the text dialog for&#160;&#160;Title, Content or Node. Then type and select the piece of text to which the link applies. And finally select&#160; <i>Hyperlink</i>&#160;from the dialog&#180;s <i>Edit</i>&#160; menu. You can then type the address of the hyperlink. Or you can paste a copied address by pressing Ctr + V.
+      It is possible to have multiple in-line links in Node core, Node details, or Note. First open the text dialog for&#160;&#160;Node core, Node details or Note. Then type and select the piece of text to which the link applies. And finally select&#160;&#160;in the Edit menu of the dialog window <i>Add hyperlink (choose)...</i>&#160;or <i>Add or modify hyperlink (type)</i>. In the latter case you can&#160;&#160;type the address of the hyperlink or you can paste a copied address by pressing Ctr + V. Example: Press <a href="https://sourceforge.net/apps/phpbb/freeplane/viewforum.php?f=1">Ctrl-click this link</a>&#160;to go to the Freeplane Open Forum.
     </p>
     <p>
       
     </p>
     <p>
-      The hyperlink is not displayed by a green or red arrow, but by an underlining. If you are still in the editor you can press this hyperlink while keeping Ctrl pressed. This wil open the goal.
+      The hyperlink is not displayed by a green or red arrow, but by an underlining.
     </p>
     <p>
       
@@ -4245,11 +4262,15 @@
         Contrary to the arrow-link, you can have more than one link.
       </li>
       <li>
-        This functionality is not developed fully yet. It is not working when the edit window is closed.
+        You can retype the text of the hyperlink, without altering the hyperlink.
+      </li>
+      <li>
+        To change the address of the hyperlink, select the whole underlined text and then choose again <i>Add hyperlink (choose)...</i>&#160;or <i>Add or modify hyperlink (type).</i>
       </li>
     </ul>
   </body>
 </html></richcontent>
+<attribute NAME="Chapter" VALUE="3"/>
 </node>
 </node>
 </node>
@@ -4905,7 +4926,7 @@
 <attribute NAME="Chapter" VALUE="3"/>
 </node>
 </node>
-<node TEXT="Node extensions" STYLE_REF="SubMenu" ID="ID_1400990107" CREATED="1315728991618" MODIFIED="1316876395980">
+<node TEXT="Node extensions" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1400990107" CREATED="1315728991618" MODIFIED="1316876395980">
 <node TEXT="Edit details in-line   [Edit node details]" ID="ID_1807308711" CREATED="1291153533418" MODIFIED="1315980814822" TEXT_SHORTENED="true">
 <icon BUILTIN="../edit_details"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -6319,7 +6340,49 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Reset start position [Reset position]" ID="ID_1003048503" CREATED="1306060582988" MODIFIED="1315733033453" TEXT_SHORTENED="true">
+<node TEXT="Free positioned node (set/reset)" ID="ID_572207726" CREATED="1317404199533" MODIFIED="1317903835197">
+<attribute NAME="Chapter" VALUE="2"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      If set, the movement of a node (and its children) are independent of the movements of all other nodes. The node can be recognized by a full blue oval handle for moving the node.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <p>
+      A free node is a node which is freely positionable, independently of the position of the other nodes of the mind map. A free node can be recognized by this behaviour and because the oval handle for moving the node is blue and filled in stead of red and open.&#160;&#160;
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      A new, free node can be generated by double-clicking a free place of the mind map. The newly generated free node will have the default properties <i>rectangular cloud</i>&#160;and <i>hidden edge</i>. These properties can be changed in the usual way to e.g. no-cloud and visible edge.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      An existing node can be turned into a free node by selecting it and choosing &#160;<i>Edit-&gt;Free positioned node (set/reset).</i>&#160;In this case the properties of the node (edge, cloud)&#160;&#160;stay as they are. You can set the properties for cloud and hidden edge in the usual way . The freed node initially appears near the root node and can be moved from there to any desired position by dragging its (blue) oval handle. Moving a free positioned node onto another parent / sibling by usual drag and drop cancels its free positioned status.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      A free node made by clicking a free space of the mind map is connected to the root node, also if the connecting edge is invisible. This explains why a child node of this free node, if moved onto the upper half of its parent free node, shifts towards the root node.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Reset start position [Reset position]" ID="ID_1003048503" CREATED="1306060582988" MODIFIED="1317404357750" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -6334,6 +6397,7 @@
     </p>
   </body>
 </html></richcontent>
+<attribute NAME="Chapter" VALUE="2"/>
 </node>
 <node TEXT="Find..." ID="ID_412879235" CREATED="1310134532663" MODIFIED="1314077793686" TEXT_SHORTENED="true">
 <icon BUILTIN="../filefind"/>
@@ -13312,7 +13376,7 @@ elements from the styles activated by conditions are copied.</pre>
 </hook>
 </node>
 </node>
-<node TEXT="Scripts and formulas" FOLDED="true" ID="ID_1686912429" CREATED="1310739619133" MODIFIED="1312912059088" TEXT_SHORTENED="true" LINK="#ID_1528894906">
+<node TEXT="Scripts and formulas" FOLDED="true" ID="ID_1686912429" CREATED="1310739619133" MODIFIED="1317661330776" TEXT_SHORTENED="true" LINK="#ID_1528894906">
 <hook NAME="SummaryNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
@@ -13330,7 +13394,7 @@ elements from the styles activated by conditions are copied.</pre>
     </p>
     <ul>
       <li>
-        To use scripts, preferences must be activated.
+        In preferences formula evaluation can be deactivated.
       </li>
       <li>
         Scrips do not work in published mindmaps (Java Applets)
@@ -14903,13 +14967,6 @@ elements from the styles activated by conditions are copied.</pre>
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="7,8"/>
-<node TEXT="Disable formula plugin" ID="ID_713879634" CREATED="1310759073402" MODIFIED="1311831580448">
-<attribute NAME="Chapter" VALUE="7"/>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
 <node TEXT="Disable formula evaluation cache" ID="ID_1486266663" CREATED="1310759087090" MODIFIED="1311831580433">
 <attribute NAME="Chapter" VALUE="7"/>
 <hook NAME="NodeConditionalStyles">
@@ -14917,7 +14974,14 @@ elements from the styles activated by conditions are copied.</pre>
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Don&apos;t mak formulas with a border" ID="ID_1293139407" CREATED="1310759105693" MODIFIED="1311831613474">
+<node TEXT="Disable formula evaluation" ID="ID_713879634" CREATED="1310759073402" MODIFIED="1317661534808">
+<attribute NAME="Chapter" VALUE="7"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Don&apos;t mark formulas with a border" ID="ID_1293139407" CREATED="1310759105693" MODIFIED="1317661405563">
 <attribute NAME="Chapter" VALUE="7"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
@@ -14931,12 +14995,15 @@ elements from the styles activated by conditions are copied.</pre>
 </hook>
 <hook NAME="SummaryNode"/>
 </node>
-<node TEXT="Script execution enabled" ID="ID_1977472596" CREATED="1310759163843" MODIFIED="1312782103462">
+<node TEXT="Script execution enabled" FOLDED="true" ID="ID_1977472596" CREATED="1310759163843" MODIFIED="1317403552575">
 <attribute NAME="Chapter" VALUE="7"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
+<node TEXT="Enable for Formula" LOCALIZED_STYLE_REF="styles.important" ID="ID_1258843720" CREATED="1317403453032" MODIFIED="1317403524246">
+<attribute NAME="Chapter" VALUE="7"/>
+</node>
 </node>
 <node TEXT="Permit File/Read Operations" ID="ID_881249705" CREATED="1310759181789" MODIFIED="1312782111075">
 <attribute NAME="Chapter" VALUE="7"/>
