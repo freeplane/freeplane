@@ -588,6 +588,8 @@ public class EditNodeTextField extends EditNodeBase {
 		textfield.addMouseListener(textFieldListener);
 		SpellCheckerController.getController().enableAutoSpell(textfield, true);
 		mapView.scrollNodeToVisible(nodeView);
+		if(! parent.isValid())
+			parent.setSize(parent.getPreferredSize());
 		final int nodeWidth = parent.getWidth();
 		final int nodeHeight = parent.getHeight();
 		final Dimension textFieldSize;
