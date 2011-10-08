@@ -126,6 +126,7 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 
 	@Override
     public void mouseClicked(MouseEvent e) {
+
 		if(e.getClickCount() == 2){
 			final MapView mapView = (MapView) e.getComponent();
 			final Object object = mapView.detectCollision(new Point(originX, originY));
@@ -139,10 +140,15 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 				UITools.convertPointToAncestor(rootContent, contentPt, mapView);
 				final float zoom = mapView.getZoom();
 				final Point eventPoint = e.getPoint();
-				final int x =(int) ((eventPoint.x - contentPt.x)/zoom);
+				int x =(int) ((eventPoint.x - contentPt.x)/zoom);
 				final int y =(int) ((eventPoint.y - contentPt.y)/zoom);
+				final int rootContentNormalWidth = (int)(rootContent.getWidth()/zoom);
+				final boolean newNodeIsLeft = x < rootContentNormalWidth/2;
+				if(newNodeIsLeft){
+					x = rootContentNormalWidth - x;
+				}
 				final Point pt = new Point(x, y);
-				((MMapController)modeController.getMapController()).addFreeNode(pt, x < rootContent.getWidth()/(2*zoom));
+				((MMapController)modeController.getMapController()).addFreeNode(pt, newNodeIsLeft);
 			}
 		}
 		else
