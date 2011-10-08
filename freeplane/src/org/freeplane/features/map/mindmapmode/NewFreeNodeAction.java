@@ -19,11 +19,13 @@
  */
 package org.freeplane.features.map.mindmapmode;
 
+import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.ui.ViewController;
 
 public class NewFreeNodeAction extends AFreeplaneAction {
 	/**
@@ -38,6 +40,11 @@ public class NewFreeNodeAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = Controller.getCurrentModeController();
         final MMapController mapController = (MMapController) modeController.getMapController();
-		mapController.addFreeNode(new Point(0, 0));
+        final Controller controller = Controller.getCurrentController();
+		final ViewController viewController = controller.getViewController();
+		final float zoom = viewController.getZoom();
+		final Component component = viewController.getComponent(mapController.getRootNode());
+		int x = (int)(component.getWidth() / zoom);
+		mapController.addFreeNode(new Point(x, 0), false);
 	}
 }

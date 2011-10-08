@@ -560,7 +560,7 @@ public class MMapController extends MapController {
 		}
 	}
 
-	public NodeModel addFreeNode(Point pt) {
+	public NodeModel addFreeNode(Point pt, boolean newNodeIsLeft) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final TextController textController = TextController.getController();
 		if (textController instanceof MTextController) {
@@ -588,7 +588,7 @@ public class MMapController extends MapController {
 		final NodeModel newNode = newNode("", target.getMap());
 		LogicalStyleModel.createExtension(newNode).setStyle(MapStyleModel.FLOATING_STYLE);
 		newNode.addExtension(modeController.getExtension(FreeNode.class));
-		if(! addNewNode(newNode, target, -1, false))
+		if(! addNewNode(newNode, target, -1, newNodeIsLeft))
 			return null;
 		((MLocationController)MLocationController.getController(modeController)).moveNodePosition(newNode, -1, pt.x, pt.y);
 		final Component component = Controller.getCurrentController().getViewController().getComponent(newNode);

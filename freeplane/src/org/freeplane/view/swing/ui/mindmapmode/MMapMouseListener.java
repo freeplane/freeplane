@@ -134,7 +134,7 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 			final ModeController modeController = Controller.getCurrentModeController();
 			final IExtension freeNode = modeController.getExtension(FreeNode.class);
 			if(freeNode != null && modeController instanceof MModeController){
-				final JComponent rootContent = mapView.getRoot().getContent();
+				final JComponent rootContent = mapView.getRoot().getMainView();
 				final Point contentPt = new Point();
 				UITools.convertPointToAncestor(rootContent, contentPt, mapView);
 				final float zoom = mapView.getZoom();
@@ -142,7 +142,7 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 				final int x =(int) ((eventPoint.x - contentPt.x)/zoom);
 				final int y =(int) ((eventPoint.y - contentPt.y)/zoom);
 				final Point pt = new Point(x, y);
-				((MMapController)modeController.getMapController()).addFreeNode(pt);
+				((MMapController)modeController.getMapController()).addFreeNode(pt, x < rootContent.getWidth()/(2*zoom));
 			}
 		}
 		else
