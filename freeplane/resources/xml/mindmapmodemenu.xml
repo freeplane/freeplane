@@ -42,6 +42,7 @@
 				<menu_action action="NewSiblingAction" accelerator="ENTER" />
 				<menu_action action="NewPreviousSiblingAction" accelerator="shift ENTER" />
 				<menu_action action="NewParentNode" accelerator="shift INSERT" />
+				<menu_action action="NewFreeNodeAction" />
 			</menu_submenu>
 			<menu_submenu name="menu_group" name_ref="menu_group">
 				<menu_action action="NewSummaryAction" accelerator="alt shift INSERT" />
@@ -68,9 +69,6 @@
 					<menu_action action="LatexEditLatexAction" plugin="org.freeplane.plugin.latex"/>
 					<menu_action action="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex"/>
 				</menu_submenu>
-				<menu_action action="FormatCopy" accelerator="alt shift C" />
-				<menu_action action="FormatPaste" accelerator="alt shift V" />
-				<menu_separator />
 				<menu_action action="JoinNodesAction" accelerator="control J" />
 				<menu_action action="SplitNode" />
 				<menu_separator />
@@ -224,8 +222,7 @@
 				</menu_submenu>
 			</menu_submenu>
 		<menu_submenu name="format" name_ref="menu_format">
-			<menu_submenu name="menu_applyStyle" name_ref="menu_applyStyle" menu_key="main_menu_styles">
-			</menu_submenu>	
+			<menu_submenu name="menu_applyStyle" name_ref="menu_applyStyle" menu_key="main_menu_styles"/>
 				<menu_action action="AutomaticLayoutAction" />		
 			<menu_submenu name="menu_manageStyles" name_ref="menu_manageStyles">
 				<menu_action action="NewUserStyleAction" />				
@@ -236,6 +233,8 @@
 				<menu_action action="CopyMapStylesAction" />  
 				<menu_action action="EditStylesAction" />
 			</menu_submenu>		
+			<menu_action action="FormatCopy" accelerator="alt shift C" />
+			<menu_action action="FormatPaste" accelerator="alt shift V" />
 
 				<menu_separator />
 			<menu_action action="MapBackgroundColorAction" />	
@@ -414,7 +413,8 @@
 			</menu_category>				
 			<menu_separator />
 			<menu_action action="GettingStartedAction"/>
-			<menu_action action="DocumentationAction" accelerator="F1" />		
+			<menu_action action="DocumentationAction" accelerator="F1" />	
+			<menu_action action="HotKeyInfoAction"/>
 			<menu_separator />
 		</menu_submenu>
 	</menu_category>
@@ -452,6 +452,7 @@
 		<menu_action action="SummaryNodeAction" accelerator = "alt shift S"/>
 		<menu_action action="FreeNodeAction"/>
 		<menu_action action="CloudAction" accelerator="control shift B" />
+		<menu_submenu name="menu_applyStyle" name_ref="menu_applyStyle" menu_key="node_popup_styles"/>
 		<menu_action action="AddConnectorAction" accelerator="control L" />						
 		<menu_submenu name="links" name_ref="menu_links">
 			<menu_action action="SetLinkByFileChooserAction" accelerator="control shift K" />
