@@ -18,8 +18,8 @@
 				<menu_action accelerator="control shift C" action="CopySingleAction"/>
 				</menu_submenu>
 				<menu_category name="find">				
-				<menu_action accelerator="control F" action="FindAction"/>
-				<menu_action accelerator="control G" action="FindNextAction"/>
+				<menu_action accelerator="control G" action="FindAction"/>
+				<menu_action accelerator="control shift G" action="FindNextAction"/>
 				</menu_category>
 		</menu_submenu>
 		<menu_submenu name="view" name_ref="menu_view">
@@ -28,7 +28,7 @@
 						<menu_submenu name="toolbars" name_ref="menu_toolbars">
 							<menu_action action="ToggleMenubarAction" menu_key="MB_ToggleMenubarAction"/>
 							<menu_action action="ToggleToolbarAction"/>
-							<menu_action action="ShowFilterToolbarAction"/>
+							<menu_action action="ShowFilterToolbarAction" accelerator="control F"/>
 							</menu_submenu>
 						</menu_category>
 				</menu_category>
