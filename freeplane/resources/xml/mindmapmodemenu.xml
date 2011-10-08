@@ -42,7 +42,6 @@
 				<menu_action action="NewSiblingAction" accelerator="ENTER" />
 				<menu_action action="NewPreviousSiblingAction" accelerator="shift ENTER" />
 				<menu_action action="NewParentNode" accelerator="shift INSERT" />
-				<menu_action action="NewFreeNodeAction" />
 			</menu_submenu>
 			<menu_submenu name="menu_group" name_ref="menu_group">
 				<menu_action action="NewSummaryAction" accelerator="alt shift INSERT" />
@@ -69,6 +68,9 @@
 					<menu_action action="LatexEditLatexAction" plugin="org.freeplane.plugin.latex"/>
 					<menu_action action="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex"/>
 				</menu_submenu>
+				<menu_action action="FormatCopy" accelerator="alt shift C" />
+				<menu_action action="FormatPaste" accelerator="alt shift V" />
+				<menu_separator />
 				<menu_action action="JoinNodesAction" accelerator="control J" />
 				<menu_action action="SplitNode" />
 				<menu_separator />
@@ -222,7 +224,8 @@
 				</menu_submenu>
 			</menu_submenu>
 		<menu_submenu name="format" name_ref="menu_format">
-			<menu_submenu name="menu_applyStyle" name_ref="menu_applyStyle" menu_key="main_menu_styles"/>
+			<menu_submenu name="menu_applyStyle" name_ref="menu_applyStyle" menu_key="main_menu_styles">
+			</menu_submenu>	
 				<menu_action action="AutomaticLayoutAction" />		
 			<menu_submenu name="menu_manageStyles" name_ref="menu_manageStyles">
 				<menu_action action="NewUserStyleAction" />				
@@ -233,8 +236,6 @@
 				<menu_action action="CopyMapStylesAction" />  
 				<menu_action action="EditStylesAction" />
 			</menu_submenu>		
-			<menu_action action="FormatCopy" accelerator="alt shift C" />
-			<menu_action action="FormatPaste" accelerator="alt shift V" />
 
 				<menu_separator />
 			<menu_action action="MapBackgroundColorAction" />	
@@ -413,8 +414,7 @@
 			</menu_category>				
 			<menu_separator />
 			<menu_action action="GettingStartedAction"/>
-			<menu_action action="DocumentationAction" accelerator="F1" />	
-			<menu_action action="HotKeyInfoAction"/>
+			<menu_action action="DocumentationAction" accelerator="F1" />		
 			<menu_separator />
 		</menu_submenu>
 	</menu_category>
@@ -452,7 +452,6 @@
 		<menu_action action="SummaryNodeAction" accelerator = "alt shift S"/>
 		<menu_action action="FreeNodeAction"/>
 		<menu_action action="CloudAction" accelerator="control shift B" />
-		<menu_submenu name="menu_applyStyle" name_ref="menu_applyStyle" menu_key="node_popup_styles"/>
 		<menu_action action="AddConnectorAction" accelerator="control L" />						
 		<menu_submenu name="links" name_ref="menu_links">
 			<menu_action action="SetLinkByFileChooserAction" accelerator="control shift K" />
@@ -464,6 +463,7 @@
 		</menu_submenu>	
 		<menu_separator />
 		<menu_action action="EnterPassword" />
+		<menu_category name="scripting" plugin="org.freeplane.plugin.script" menu_key="node_popup_scripting"/>	
 			<menu_separator />
 		<menu_action action="CutAction" accelerator="control X" />
 		<menu_action action="CopyAction" accelerator="control C" />
@@ -471,13 +471,15 @@
 		<menu_action action="CopyIDAction" />
 		<menu_action action="PasteAction" accelerator="control V" />
 		<menu_action action="SortNodes" />
-		<menu_separator />
-		<menu_category name="scripting" plugin="org.freeplane.plugin.script" menu_key="node_popup_scripting"/>	
 		</menu_category>
 		<menu_action action="UndoAction" />
 		<menu_action action="RedoAction" />
 	<menu_category name="main_toolbar">
 		<menu_separator />
+		<menu_category name="history">
+			<menu_action action="BackAction" />
+			<menu_action action="ForwardAction" />
+		</menu_category>
 		<menu_category name="update" menu_key="main_toolbar_update" />
 		<menu_category name="main">
 			<menu_action action="NavigationPreviousMapAction" />
@@ -494,44 +496,18 @@
 			<menu_action action="CloseAction" />
 		</menu_category>
 		<menu_separator />
-		<menu_category name="undo">
-			<menu_action action="UndoAction" />
-			<menu_action action="RedoAction" />
-		</menu_category>
-		<menu_separator />
-		<menu_category name="paste">
-			<menu_action action="CutAction" />
-			<menu_action action="CopyAction" />
-			<menu_action action="PasteAction" />
-		</menu_category>
-		<menu_separator />
-		<menu_category name="insert">
-			<menu_action action="NewChildAction" />
-		</menu_category>
-		<menu_separator />
-		<menu_category name="attributes">
-			<menu_action action="ShowAttributeDialogAction" />
-		</menu_category>
-		<menu_separator />
-		<menu_category name="font" menu_key="main_toolbar_font">
-			<menu_action action="BoldAction" />
-			<menu_action action="ItalicAction" />
-		</menu_category>
-		<menu_separator />
-		<menu_category name="clouds">
-			<menu_action action="CloudAction" />
-			<menu_action action="CloudColorAction" />
-		</menu_category>
-		<menu_separator />
-		<menu_category name="history">
-			<menu_action action="BackAction" />
-			<menu_action action="ForwardAction" />
-		</menu_category>
 		<menu_category name="folding">
 			<menu_action action="UnfoldOneLevelAction"/>
 			<menu_action action="FoldOneLevelAction"/>
 			<menu_action action="UnfoldAllAction"/>
 			<menu_action action="FoldAllAction"/>
 		</menu_category>
+			<menu_category name="find">				
+				<menu_action action="FindAction" accelerator="control F" />
+				<menu_action action="QuickFindAction.BACK" />
+				<menu_action action="FindNextAction" accelerator="control G" />
+				<menu_action action="NodeListAction" accelerator="control shift F" />
+			</menu_category>
+			<menu_action action="EnterPassword" />
 	</menu_category>
 </menu_structure>
