@@ -87,7 +87,9 @@ public class BitmapViewerComponent extends JComponent {
 				return;
 			}
 			if (imageWidth != width || imageHeight != height) {
-				cachedImage = new BufferedImage(width, height, image.getType());
+				final int imageType = image.getType();
+				cachedImage = new BufferedImage(width, height, 
+					imageType != BufferedImage.TYPE_CUSTOM ? imageType :  BufferedImage.TYPE_INT_RGB);
 				final double kComponent = (double) height / (double) width;
 				final double kImage = (double) imageHeight / (double) imageWidth;
 				final Image scaledImage;

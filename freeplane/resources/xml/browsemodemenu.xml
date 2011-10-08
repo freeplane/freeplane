@@ -168,5 +168,6 @@
 			<menu_action action="UnfoldAllAction"/>
 			<menu_action action="FoldAllAction"/>
 		</menu_category>
+		<menu_category name="url" menu_key="main_toolbar_url"/>
 	</menu_category>
 </menu_structure>

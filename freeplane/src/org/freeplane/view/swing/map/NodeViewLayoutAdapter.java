@@ -116,9 +116,10 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     abstract protected void layout();
 
     public void layoutContainer(final Container c) {
-        setUp(c);
-        layout();
-        shutDown();
+        if(setUp(c)){
+        	layout();
+        }
+    	shutDown();
     }
 
     /*
@@ -150,8 +151,11 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     public void removeLayoutComponent(final Component arg0) {
     }
 
-    protected void setUp(final Container c) {
+    protected boolean setUp(final Container c) {
         final NodeView localView = (NodeView) c;
+        JComponent content = localView.getContent();
+        if(content == null)
+        	return false;
         final int localChildCount = localView.getComponentCount() - 1;
         for (int i = 0; i < localChildCount; i++) {
             final Component component = localView.getComponent(i);
@@ -162,11 +166,11 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                 component.validate();
             }
         }
+        this.content = content;
         view = localView;
         model = localView.getModel();
         childCount = localChildCount;
-        content = localView.getContent();
-        if (getModel().isVisible()) {
+         if (getModel().isVisible()) {
             setVGap(getView().getVGap());
         }
         else {
@@ -183,6 +187,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
         	contentHeight = 0;
         	contentWidth = 0;
         }
+		return true;
     }
 
     protected void shutDown() {

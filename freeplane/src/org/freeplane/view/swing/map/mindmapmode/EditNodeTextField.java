@@ -103,7 +103,12 @@ import com.lightdev.app.shtm.SHTMLWriter;
  */
 public class EditNodeTextField extends EditNodeBase {
     private class MyNavigationFilter extends NavigationFilter {
-        /* (non-Javadoc)
+    	private final JEditorPane textfield;
+        public MyNavigationFilter(JEditorPane textfield) {
+	        this.textfield = textfield;
+        }
+
+		/* (non-Javadoc)
          * @see javax.swing.text.NavigationFilter#moveDot(javax.swing.text.NavigationFilter.FilterBypass, int, javax.swing.text.Position.Bias)
          */
         public void moveDot(final FilterBypass fb, int dot, final Bias bias) {
@@ -118,16 +123,16 @@ public class EditNodeTextField extends EditNodeBase {
             dot = getValidPosition(dot);
             super.setDot(fb, dot, bias);
         }
-    }
 
-    private int getValidPosition(int position) {
-        final HTMLDocument doc = (HTMLDocument) textfield.getDocument();
-        if (doc.getDefaultRootElement().getElementCount() > 1) {
-            final int startPos = doc.getDefaultRootElement().getElement(1).getStartOffset();
-            final int validPosition = Math.max(position, startPos);
-            return validPosition;
+        private int getValidPosition(int position) {
+        	final HTMLDocument doc = (HTMLDocument) textfield.getDocument();
+        	if (doc.getDefaultRootElement().getElementCount() > 1) {
+        		final int startPos = doc.getDefaultRootElement().getElement(1).getStartOffset();
+        		final int validPosition = Math.max(position, startPos);
+        		return validPosition;
+        	}
+        	return position;
         }
-        return position;
     }
     
 	private int extraWidth;
@@ -421,7 +426,7 @@ public class EditNodeTextField extends EditNodeBase {
 			final ModeController modeController = Controller.getCurrentModeController();
 			final MTextController textController = (MTextController) TextController.getController(modeController);
 			textfield = textController.createEditorPane(MTextController.NODE_TEXT);
-			textfield.setNavigationFilter(new MyNavigationFilter());
+			textfield.setNavigationFilter(new MyNavigationFilter(textfield));
 		}
 	}
 

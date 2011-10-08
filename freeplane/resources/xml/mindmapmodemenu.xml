@@ -472,9 +472,9 @@
 		<menu_action action="CopyIDAction" />
 		<menu_action action="PasteAction" accelerator="control V" />
 		<menu_action action="SortNodes" />
-		</menu_category>
 		<menu_action action="UndoAction" />
 		<menu_action action="RedoAction" />
+		</menu_category>
 	<menu_category name="main_toolbar">
 		<menu_separator />
 		<menu_category name="history">

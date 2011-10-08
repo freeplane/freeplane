@@ -173,21 +173,19 @@ class NodeViewFactory {
 					shape = node.getMainView().getShape();
 		}
 
-		if (shape == null || shape.equals(NodeStyleModel.STYLE_FORK)) {
-			if (model.isRoot())
-				view = new RootMainView(NodeStyleModel.STYLE_FORK);
-			else
-				view = new ForkMainView();
-		}
-		else if (shape.equals(NodeStyleModel.STYLE_BUBBLE)) {
+		if (shape.equals(NodeStyleModel.STYLE_BUBBLE)) {
 			if (model.isRoot())
 				view = new RootMainView(NodeStyleModel.STYLE_BUBBLE);
 			else
 				view =  new BubbleMainView();
 		}
 		else {
-			System.err.println("Tried to create a NodeView of unknown Style " + String.valueOf(shape));
-			view = new ForkMainView();
+			if (shape != null && ! shape.equals(NodeStyleModel.STYLE_FORK))
+				System.err.println("Tried to create a NodeView of unknown Style " + String.valueOf(shape));
+			if (model.isRoot())
+				view = new RootMainView(NodeStyleModel.STYLE_FORK);
+			else
+				view = new ForkMainView();
 		}
 		NodeTooltipManager toolTipManager = NodeTooltipManager.getSharedInstance(modeController);
 		toolTipManager.registerComponent(view);

@@ -154,6 +154,8 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
 		final NodeModel node = (NodeModel) userObject;
 		final Object data = node.getUserObject();
+		if(data == null)
+			return;
 		final Class<? extends Object> dataClass = data.getClass();
 		if (dataClass.equals(StyleNamedObject.class)) {
 			writer.addAttribute(NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, ((StyleNamedObject) data).getObject().toString());

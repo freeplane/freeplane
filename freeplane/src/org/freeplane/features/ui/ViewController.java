@@ -823,7 +823,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			}
 		}
 		catch (final Exception ex) {
-			LogUtils.warn("Error while setting Look&Feel" + lookAndFeel, ex);
+			LogUtils.warn("Error while setting Look&Feel" + lookAndFeel);
 		}
 	}
 

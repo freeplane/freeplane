@@ -114,7 +114,9 @@ public class ReportGenerator extends StreamHandler {
 		final StringBuffer hashInput = new StringBuffer();
 		for (int i = 0; i < lines.length; i++) {
 			final String s = lines[i];
-			if (s.startsWith("\tat org.freeplane.") || s.startsWith("missing key ")) {
+			if (s.startsWith("\tat org.freeplane.")
+					 || s.startsWith("missing key ")
+					) {
 				hashInput.append(s);
 			}
 		}
@@ -218,9 +220,11 @@ public class ReportGenerator extends StreamHandler {
 				errorCounter++;
 				final ResourceController resourceController = ResourceController.getResourceController();
 				final String freeplaneUserDirectory = resourceController.getFreeplaneUserDirectory();
-				String tooltip = TextUtils.format("internal_error_tooltip", freeplaneUserDirectory);
-				Controller.getCurrentController().getViewController()
-				    .addStatusInfo("internal_error", TextUtils.format("errornumber", errorCounter), errorIcon, tooltip);
+				if(TextUtils.getRawText("internal_error_tooltip", null) != null){
+					String tooltip = TextUtils.format("internal_error_tooltip", freeplaneUserDirectory);
+					Controller.getCurrentController().getViewController()
+					.addStatusInfo("internal_error", TextUtils.format("errornumber", errorCounter), errorIcon, tooltip);
+				}
 			}
 		});
 		super.publish(record);
