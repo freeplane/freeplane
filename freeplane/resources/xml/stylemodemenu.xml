@@ -1,71 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><menu_structure>
 	<menu_category name="menu_bar">
 		<menu_submenu name="file" name_ref="file">	
-			<menu_category name="quit">
-				<menu_action accelerator="control N" action="styledialog.ok"/>
-				<menu_action accelerator="" action="styledialog.cancel"/>
-				<menu_action accelerator="control Q" action="QuitAction" menu_key="MB_QuitAction"/>
-			</menu_category>
+			<menu_action action="styledialog.ok"/>
+			<menu_action action="styledialog.cancel"/>
+			<menu_action accelerator="control Q" action="QuitAction" menu_key="MB_QuitAction"/>
 		</menu_submenu>
 		<menu_submenu name="edit" name_ref="edit">
-			<menu_category name="UndoAction">
-				<menu_action accelerator="control Z" action="UndoAction"/>
-				<menu_action accelerator="control Y" action="RedoAction"/>
-			</menu_category>
-			<menu_category name="select">
-				<menu_action accelerator="control A" action="SelectAllAction"/>
-				<menu_action accelerator="control shift A" action="SelectBranchAction"/>
-			</menu_category>
-			<menu_action accelerator="alt shift C" action="FormatCopy"/>
-			<menu_action accelerator="alt shift V" action="FormatPaste"/>
-			<menu_action action="CopyAttributes"/>
-			<menu_action action="PasteAttributes"/>
-			<menu_category name="find">				
-				<menu_action accelerator="control F" action="FindAction"/>
-				<menu_action accelerator="control G" action="FindNextAction"/>
-				</menu_category>
-		</menu_submenu>
-		<menu_submenu name="view" name_ref="menu_view">
-			<menu_category name="toolbars">
-				<menu_submenu name="toolbars" name_ref="menu_toolbars">
-					<menu_action action="ToggleMenubarAction" menu_key="MB_ToggleMenubarAction"/>
-					<menu_action action="ToggleToolbarAction"/>
-					<menu_action action="ToggleLeftToolbarAction"/>
-				</menu_submenu>
-				</menu_category>
-			<menu_action action="ViewLayoutTypeAction.OUTLINE"/>
-			<menu_category name="zoom">
-				<menu_action accelerator="alt UP" action="ZoomInAction"/>
-				<menu_action accelerator="alt DOWN" action="ZoomOutAction"/>
-				</menu_category>
-			<menu_action accelerator="alt F2" action="ToggleDetailsAction"/>
-			<menu_submenu name="attributes" name_ref="menu_attributes">
-				<menu_radio_action action="ShowSelectedAttributesAction"/>
-				<menu_radio_action action="ShowAllAttributesAction"/>
-				<menu_radio_action action="HideAllAttributesAction"/>
-			</menu_submenu>
-			<menu_action action="ShowSelectionAsRectangleAction"/>					
-			</menu_submenu>
-		<menu_submenu name="nodes" name_ref="menu_nodes">
-			<menu_category name="nodes">
-				<menu_action accelerator="control UP" action="NodeUpAction"/>
-				<menu_action accelerator="control DOWN" action="NodeDownAction"/>
-				</menu_category>			
-			</menu_submenu>
-		<menu_submenu name="node_features" name_ref="menu_node_features">
-			<menu_submenu name="details" name_ref="menu_details">
-				<menu_action action="EditDetailsAction"/>
-				<menu_action action="EditDetailsInDialogAction"/>
-				<menu_action action="DeleteDetailsAction"/>		
-			</menu_submenu>
-			<menu_submenu name="attributes" name_ref="menu_attributes">
-				<menu_action accelerator="alt F9" action="EditAttributesAction"/>
-				</menu_submenu>			
-			<menu_submenu name="notes" name_ref="menu_notes">
-				<menu_action action="EditNoteInDialogAction"/>
-				<menu_action action="RemoveNoteAction"/>				
-			</menu_submenu>		
-			<menu_submenu name="icons" name_ref="icon_menu">
+			<menu_submenu name="menu_group" name_ref="menu_group">
+				<menu_action accelerator="control shift B" action="CloudAction"/>
+			</menu_submenu>	
+			<menu_submenu name="menu_title" name_ref="menu_title">
+				<menu_submenu name="icons" name_ref="menu_iconByCategory">
 				<menu_category menu_key="main_menu_icons" name="icons_list">
 				</menu_category>
 				<menu_category name="remove icons">
@@ -73,149 +18,77 @@
 					<menu_action action="RemoveIconAction"/>
 					<menu_action action="RemoveAllIconsAction"/>					
 				</menu_category>
-			</menu_submenu>
-			</menu_submenu>
-		<menu_submenu name="styles" name_ref="styles">
-			<menu_category name="manage">
-				<menu_action accelerator="" action="DeleteUserStyleAction"/>
-				<menu_action action="NewLevelStyleAction"/>
-				<menu_action action="DeleteLevelStyleAction"/>
-				<menu_action action="NewUserStyleAction"/>				
-				<menu_action action="ManageNodeConditionalStylesAction"/>
-				</menu_category>		
-		</menu_submenu>
-		<menu_submenu name="format" name_ref="menu_format">
-			<menu_category name="font">				
-				<menu_action accelerator="control B" action="BoldAction"/>
-				<menu_action accelerator="control I" action="ItalicAction"/>
-				<!--
-						Underlined is not implemented in the view yet. <menu_action
-						action="underlined" />
-					-->
-				<menu_action accelerator="control PLUS" action="IncreaseNodeFontAction"/>
-				<menu_action accelerator="control MINUS" action="DecreaseNodeFontAction"/>
-			</menu_category>
-			<menu_category name="style">
-				<menu_action action="NodeShapeAction.fork"/>
-				<menu_action action="NodeShapeAction.bubble"/>
-			</menu_category>		
-			<menu_category name="nodes">				
-				<menu_action accelerator="alt shift F" action="NodeColorAction"/>
-				<menu_action action="NodeColorBlendAction"/>
-			</menu_category>
-			<menu_category name="colors">	
-				<menu_action action="NodeBackgroundColorAction"/>
-				</menu_category>						
-			<menu_category name="edges">
-				<menu_submenu name="styles" name_ref="format_menu_edge_styles">
-					<menu_radio_action action="EdgeStyleAsParentAction"/>
-					<menu_radio_action action="EdgeStyleAction.linear"/>
-					<menu_radio_action action="EdgeStyleAction.bezier"/>
-					<menu_radio_action action="EdgeStyleAction.sharp_linear"/>
-					<menu_radio_action action="EdgeStyleAction.sharp_bezier"/>
-					<menu_radio_action action="EdgeStyleAction.horizontal"/>
-					<menu_radio_action action="EdgeStyleAction.hide_edge"/>
 				</menu_submenu>
-				<menu_submenu name="widths" name_ref="format_menu_edge_widths">
-					<menu_radio_action action="EdgeWidthAction_width_parent"/>
-					<menu_radio_action action="EdgeWidthAction_width_thin"/>
-					<menu_radio_action action="EdgeWidthAction_1"/>
-					<menu_radio_action action="EdgeWidthAction_2"/>
-					<menu_radio_action action="EdgeWidthAction_4"/>
-					<menu_radio_action action="EdgeWidthAction_8"/>
 				</menu_submenu>
-				<menu_action accelerator="alt shift E" action="EdgeColorAction"/>
-				</menu_category>
-			<menu_category name="clouds">	
-				<menu_action accelerator="control shift B" action="CloudAction"/>
-				<menu_action action="CloudColorAction"/>
-				</menu_category>
-			<menu_action action="RemoveFormatAction"/>
-		</menu_submenu>
-		<menu_submenu name="navigate" name_ref="menu_navigate">
-			<menu_category name="navigate">
-				<menu_action accelerator="control alt C" action="CenterSelectedNodeAction"/>
-				<menu_category name="folding">
-					<menu_action accelerator="SPACE" action="ToggleFoldedAction"/>
-					<menu_action accelerator="control SPACE" action="ToggleChildrenFoldedAction"/>
-					</menu_category>
-				</menu_category>			
-			</menu_submenu>
-		<menu_submenu name="mindmaps" name_ref="mindmaps">
-			<menu_category menu_key="main_menu_modes" name="modes"/>
-			<menu_category menu_key="main_menu_navigate_maps" name="navigate"/>
-			<menu_category menu_key="main_menu_mindmaps" name="mindmaps"/>
-		</menu_submenu>
-		</menu_category>
-	<menu_category name="map_popup">
-		<menu_category menu_key="map_popup_mindmaps" name="maps"/>
-		<menu_category name="toolbars">
-			<menu_submenu name="toolbars" name_ref="menu_toolbars">
-				<menu_action action="ToggleMenubarAction" menu_key="MP_ToggleMenubarAction"/>
-				<menu_action action="ToggleToolbarAction"/>
-				<menu_action action="ToggleLeftToolbarAction"/>				
-			</menu_submenu>
-			</menu_category>
-		<menu_action action="ViewLayoutTypeAction.OUTLINE"/>
-		<menu_action accelerator="control alt C" action="CenterSelectedNodeAction"/>
-	</menu_category>
-	<menu_category name="node_popup">
-		<menu_submenu name="edit" name_ref="edit">			
-			<menu_action accelerator="alt shift C" action="FormatCopy"/>
-			<menu_action accelerator="alt shift V" action="FormatPaste"/>
-			<menu_action action="CopyAttributes"/>
-			<menu_action action="PasteAttributes"/>
-		</menu_submenu>
-		<menu_submenu name="node_features" name_ref="menu_node_features">
-			<menu_submenu name="details" name_ref="menu_details">
+			<menu_submenu name="menu_extensions" name_ref="menu_extensions">
 				<menu_action action="EditDetailsAction"/>
 				<menu_action action="EditDetailsInDialogAction"/>
 				<menu_action action="DeleteDetailsAction"/>		
-			</menu_submenu>
-			<menu_submenu name="attributes" name_ref="menu_attributes">
 				<menu_action accelerator="alt F9" action="EditAttributesAction"/>
+				<menu_action action="CopyAttributes"/>
+				<menu_action action="PasteAttributes"/>
 				</menu_submenu>			
 			<menu_submenu name="notes" name_ref="menu_notes">
 				<menu_action action="EditNoteInDialogAction"/>
 				<menu_action action="RemoveNoteAction"/>				
 			</menu_submenu>		
-			<menu_submenu name="icons" name_ref="icon_menu">
-				<menu_category menu_key="popup_menu_icons" name="icons list">
-				</menu_category>	
-				<menu_category name="remove icons">
-					<menu_action action="RemoveIcon_0_Action"/>
-					<menu_action action="RemoveIconAction"/>
-					<menu_action action="RemoveAllIconsAction"/>					
+			<menu_action accelerator="control Z" action="UndoAction"/>
+			<menu_action accelerator="control Y" action="RedoAction"/>
+			<menu_submenu name="menu_moveNode" name_ref="menu_moveNode">
+				<menu_action accelerator="control UP" action="NodeUpAction"/>
+				<menu_action accelerator="control DOWN" action="NodeDownAction"/>
+				</menu_submenu>			
+			<menu_category name="find">				
+				<menu_action accelerator="control F" action="FindAction"/>
+				<menu_action accelerator="control G" action="FindNextAction"/>
 				</menu_category>
-			</menu_submenu>
 		</menu_submenu>
-		<menu_submenu name="styles" name_ref="styles">
-			<menu_action action="NewUserStyleAction"/>
-    	    <menu_action action="DeleteUserStyleAction"/>
-		</menu_submenu>
+		<menu_submenu name="view" name_ref="menu_view">
+			<menu_category name="Menu_Toolbar_Panel">
+					<menu_category name="toolbars">
+						<menu_submenu name="toolbars" name_ref="menu_toolbars">
+							<menu_action action="ToggleMenubarAction" menu_key="MB_ToggleMenubarAction"/>
+							<menu_action action="ToggleToolbarAction"/>
+							<menu_action action="ToggleLeftToolbarAction"/>
+							</menu_submenu>
+						</menu_category>
+				</menu_category>
+			<menu_category name="MapView">
+				<menu_category name="zoom">
+					<menu_action accelerator="alt UP" action="ZoomInAction"/>
+					<menu_action accelerator="alt DOWN" action="ZoomOutAction"/>
+					<menu_action accelerator="control alt C" action="CenterSelectedNodeAction"/>
+					</menu_category>
+				<menu_action action="ViewLayoutTypeAction.OUTLINE"/>
+				</menu_category>
+				<menu_submenu name="menu_nodeView" name_ref="menu_nodeView">
+					<menu_action action="ShowSelectionAsRectangleAction"/>					
+					</menu_submenu>
+				<menu_submenu name="menu_hoverView" name_ref="menu_hoverView">
+				<menu_action accelerator="alt F2" action="ToggleDetailsAction"/>
+				</menu_submenu>
+			<menu_category name="AttributeView">
+				<menu_submenu name="menu_displayAttributes" name_ref="menu_displayAttributes">
+					<menu_radio_action action="ShowSelectedAttributesAction"/>
+					<menu_radio_action action="ShowAllAttributesAction"/>
+					<menu_radio_action action="HideAllAttributesAction"/>
+					</menu_submenu>
+				</menu_category>
+				</menu_submenu>
 		<menu_submenu name="format" name_ref="menu_format">
-			<menu_category name="font">				
-				<menu_action accelerator="control B" action="BoldAction"/>
-				<menu_action accelerator="control I" action="ItalicAction"/>
-				<!--
-						Underlined is not implemented in the view yet. <menu_action
-						action="underlined" />
-					-->
-				<menu_action accelerator="control PLUS" action="IncreaseNodeFontAction"/>
-				<menu_action accelerator="control MINUS" action="DecreaseNodeFontAction"/>
+			<menu_submenu name="menu_manageStyles" name_ref="menu_manageStyles">
+				<menu_action accelerator="" action="DeleteUserStyleAction"/>
+				<menu_action action="NewLevelStyleAction"/>
+				<menu_action action="DeleteLevelStyleAction"/>
+				<menu_action action="NewUserStyleAction"/>				
+				<menu_action action="ManageNodeConditionalStylesAction"/>
+				</menu_submenu>		
+				<menu_action accelerator="alt shift C" action="FormatCopy"/>
+				<menu_action accelerator="alt shift V" action="FormatPaste"/>
+				<menu_category name="CloudProperties">	
+				<menu_action action="CloudColorAction"/>
 			</menu_category>
-			<menu_category name="style">
-				<menu_action action="NodeShapeAction.fork"/>
-				<menu_action action="NodeShapeAction.bubble"/>
-			</menu_category>		
-			<menu_category name="nodes">				
-				<menu_action accelerator="alt shift F" action="NodeColorAction"/>
-				<menu_action action="NodeColorBlendAction"/>
-			</menu_category>
-			<menu_category name="colors">	
-				<menu_action action="NodeBackgroundColorAction"/>
-				</menu_category>						
-			<menu_category name="edges">
+			<menu_category name="EdgeProperties">
 				<menu_submenu name="styles" name_ref="format_menu_edge_styles">
 					<menu_radio_action action="EdgeStyleAsParentAction"/>
 					<menu_radio_action action="EdgeStyleAction.linear"/>
@@ -235,30 +108,62 @@
 				</menu_submenu>
 				<menu_action accelerator="alt shift E" action="EdgeColorAction"/>
 				</menu_category>
-			<menu_category name="clouds">	
-				<menu_action accelerator="control shift B" action="CloudAction"/>
-				<menu_action action="CloudColorAction"/>
+			<menu_submenu name="menu_titleFormat" name_ref="menu_titleFormat">	
+				<menu_action accelerator="control B" action="BoldAction"/>
+				<menu_action accelerator="control I" action="ItalicAction"/>
+				<menu_action accelerator="control PLUS" action="IncreaseNodeFontAction"/>
+				<menu_action accelerator="control MINUS" action="DecreaseNodeFontAction"/>
+				<menu_action accelerator="alt shift F" action="NodeColorAction"/>
+				<menu_action action="NodeColorBlendAction"/>
+				<menu_action action="NodeBackgroundColorAction"/>
+				<menu_category name="Bubble">
+					<menu_action action="NodeShapeAction.fork"/>
+					<menu_action action="NodeShapeAction.bubble"/>
 				</menu_category>
-			<menu_action action="RemoveFormatAction"/>
-		</menu_submenu>
+				<menu_action action="RemoveFormatAction"/>
+			</menu_submenu>
+			</menu_submenu>
 		<menu_submenu name="navigate" name_ref="menu_navigate">
-			<menu_category name="navigate">				
-				<menu_action accelerator="control alt C" action="CenterSelectedNodeAction"/>
+			<menu_category name="navigate">
 				<menu_category name="folding">
 					<menu_action accelerator="SPACE" action="ToggleFoldedAction"/>
 					<menu_action accelerator="control SPACE" action="ToggleChildrenFoldedAction"/>
 					</menu_category>
-				</menu_category>			
+			</menu_category>			
+			<menu_action accelerator="control A" action="SelectAllAction"/>
+				<menu_action accelerator="control shift A" action="SelectBranchAction"/>
 			</menu_submenu>
+		<menu_submenu name="mindmaps" name_ref="mindmaps">
+			<menu_category menu_key="main_menu_modes" name="modes"/>
+			<menu_category menu_key="main_menu_navigate_maps" name="navigate"/>
+			<menu_category menu_key="main_menu_mindmaps" name="mindmaps"/>
+			</menu_submenu>
+		</menu_category>
+	<menu_category name="map_popup">		
+		<menu_action action="ToggleMenubarAction" menu_key="MP_ToggleMenubarAction"/>
+		<menu_action action="ToggleToolbarAction"/>
+		<menu_action action="ToggleLeftToolbarAction"/>
+		<menu_action action="ViewLayoutTypeAction.OUTLINE"/>
+		<menu_action action="CenterSelectedNodeAction"/>
+		</menu_category>
+	<menu_category name="node_popup">
+		<menu_action action="EditDetailsInDialogAction"/>
+		<menu_action action="EditDetailsAction"/>
+		<menu_action action="DeleteDetailsAction"/>		
+		<menu_action action="EditNoteInDialogAction"/>
+		<menu_action accelerator="alt F9" action="EditAttributesAction"/>
+			<menu_action accelerator="control shift B" action="CloudAction"/>
+			<menu_action action="NewUserStyleAction"/>
+    	    <menu_action action="DeleteUserStyleAction"/>
 	</menu_category>
 	<menu_category name="main_toolbar">
-		<menu_action accelerator="control N" action="styledialog.ok"/>
-		<menu_action accelerator="" action="styledialog.cancel"/>
 		<menu_category name="undo">
+			<menu_action action="styledialog.ok"/>
+			<menu_action action="styledialog.cancel"/>
 			<menu_action action="UndoAction"/>
 			<menu_action action="RedoAction"/>
 		</menu_category>
-		<menu_category name="font" menu_key="main_toolbar_font">
+		<menu_category menu_key="main_toolbar_font" name="font">
 			<menu_action action="BoldAction"/>
 			<menu_action action="ItalicAction"/>
 		</menu_category>

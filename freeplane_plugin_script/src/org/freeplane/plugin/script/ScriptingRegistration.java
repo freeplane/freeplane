@@ -21,7 +21,10 @@
 package org.freeplane.plugin.script;
 
 import java.awt.Dimension;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FilenameFilter;
 import java.io.PrintStream;
 import java.net.URL;
 import java.text.MessageFormat;
@@ -39,6 +42,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IValidator;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
@@ -48,19 +52,27 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.script.IScriptEditorStarter;
 import org.freeplane.features.script.IScriptStarter;
+import org.freeplane.main.addons.AddOnsController;
+import org.freeplane.n3.nanoxml.IXMLParser;
+import org.freeplane.n3.nanoxml.IXMLReader;
+import org.freeplane.n3.nanoxml.StdXMLReader;
+import org.freeplane.n3.nanoxml.XMLElement;
+import org.freeplane.n3.nanoxml.XMLParserFactory;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptEditorPanel.IScriptModel;
 import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
 import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
 import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
+import org.freeplane.plugin.script.addons.ManageAddOnsAction;
+import org.freeplane.plugin.script.addons.ScriptAddOnProperties;
 import org.freeplane.plugin.script.filter.ScriptConditionController;
 
 class ScriptingRegistration {
-	final private class PatternScriptModel implements IScriptModel {
+	final private class ScriptModel implements IScriptModel {
 		final private String mOriginalScript;
 		private String mScript;
 
-		public PatternScriptModel(final String pScript) {
+		public ScriptModel(final String pScript) {
 			mScript = pScript;
 			mOriginalScript = pScript;
 		}
@@ -84,8 +96,8 @@ class ScriptingRegistration {
 
 		public Object executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
 			final ModeController modeController = Controller.getCurrentModeController();
-			// pattern are like formulas - restrict them!
-			final boolean restrictedPermissions = true;
+			// the script is completely in the hand of the user -> no security issues.
+			final ScriptingPermissions restrictedPermissions = ScriptingPermissions.getPermissiveScriptingPermissions();
 			return ScriptingEngine.executeScript(modeController.getMapController().getSelectedNode(), mScript,
 			    pErrorHandler, pOutStream, null, restrictedPermissions);
 		}
@@ -117,7 +129,6 @@ class ScriptingRegistration {
 		}
 	}
 
-// 	final private MModeController modeController;
 	final private HashMap<String, Object> mScriptCookies = new HashMap<String, Object>();
 
 	public ScriptingRegistration(ModeController modeController) {
@@ -159,10 +170,10 @@ class ScriptingRegistration {
 	private void register(ModeController modeController) {
 		modeController.addExtension(IScriptEditorStarter.class, new IScriptEditorStarter() {
 			public String startEditor(final String pScriptInput) {
-				final PatternScriptModel patternScriptModel = new PatternScriptModel(pScriptInput);
-				final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(patternScriptModel, false);
+				final ScriptModel scriptModel = new ScriptModel(pScriptInput);
+				final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(scriptModel, false);
 				scriptEditorPanel.setVisible(true);
-				return patternScriptModel.getScript();
+				return scriptModel.getScript();
 			}
 
 			public ComboBoxEditor createComboBoxEditor(Dimension minimumSize) {
@@ -176,12 +187,14 @@ class ScriptingRegistration {
 			public void executeScript(NodeModel node, String script) {
 				ScriptingEngine.executeScript(node, script);
 			}
-		}); 
+		});
+		registerScriptAddOns();
 		addPropertiesToOptionPanel();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		modeController.addAction(new ScriptEditor());
 		modeController.addAction(new ExecuteScriptForAllNodes());
 		modeController.addAction(new ExecuteScriptForSelectionAction());
+		modeController.addAction( new ManageAddOnsAction());
 		final ScriptingConfiguration configuration = new ScriptingConfiguration();
 		ScriptingEngine.setClasspath(configuration.getClasspath());
 		modeController.addMenuContributor(new IMenuContributor() {
@@ -194,9 +207,34 @@ class ScriptingRegistration {
 		    new ScriptConditionController());
 	}
 
+	private void registerScriptAddOns() {
+		File[] addonXmlFiles = AddOnsController.getController().getAddOnsDir().listFiles(new FilenameFilter() {
+			public boolean accept(File dir, String name) {
+				return name.endsWith(".script.xml");
+			}
+		});
+		final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
+		for (File file : addonXmlFiles) {
+			BufferedInputStream inputStream = null;
+			try {
+				inputStream = new BufferedInputStream(new FileInputStream(file));
+				final IXMLReader reader = new StdXMLReader(inputStream);
+				parser.setReader(reader);
+				final ScriptAddOnProperties addOn = new ScriptAddOnProperties((XMLElement) parser.parse());
+				addOn.setAddOnPropertiesFile(file);
+				AddOnsController.getController().registerInstalledAddOn(addOn);
+			}
+			catch (final Exception e) {
+				LogUtils.warn("error parsing " + file, e);
+			}
+			finally {
+				FileUtils.silentlyClose(inputStream);
+			}
+		}
+	}
+
 	private void createUserScriptsDirectory() {
-		final String userDir = ResourceController.getResourceController().getFreeplaneUserDirectory();
-		final File scriptDir = new File(userDir, ScriptingConfiguration.USER_SCRIPTS_DIR);
+		final File scriptDir = ScriptingEngine.getUserScriptDir();
 		if (!scriptDir.exists()) {
 			LogUtils.info("creating user scripts directory " + scriptDir);
 			scriptDir.mkdirs();
@@ -205,31 +243,33 @@ class ScriptingRegistration {
 
 	private void registerScripts(final MenuBuilder menuBuilder, ScriptingConfiguration configuration) {
 		final HashSet<String> registeredLocations = new HashSet<String>();
-		final String scriptsParentLocation = ScriptingConfiguration.getScriptsParentLocation();
-//		Uncomment here:
-//		menuBuilder.addAction(scriptsParentLocation, new ManageScriptsAction(), MenuBuilder.AS_CHILD);
-		
-		final String scriptsLocation = ScriptingConfiguration.getScriptsLocation();
-		addSubMenu(menuBuilder, scriptsParentLocation, scriptsLocation, TextUtils.getText("ExecuteScripts.text"));
-		registeredLocations.add(scriptsLocation);
-		if (configuration.getNameScriptMap().isEmpty()) {
-			final String message = "<html><body><em>" + TextUtils.getText("ExecuteScripts.noScriptsAvailable")
-			        + "</em></body></html>";
-			menuBuilder.addMenuItem(scriptsLocation, new JMenuItem(message), "no key", 0);
-		}
-		for (final Entry<String, String> entry : configuration.getNameScriptMap().entrySet()) {
-			final String scriptName = entry.getKey();
-			final ScriptMetaData scriptMetaData = configuration.getNameScriptMetaDataMap().get(scriptName);
-			// in the worst case three actions will cache a script - should not matter that much since it's unlikely
-			// that one script is used in multiple modes by the same user
-			for (final ExecutionMode executionMode : scriptMetaData.getExecutionModes()) {
-				final String location = scriptMetaData.getMenuLocation(executionMode);
-				if (!registeredLocations.contains(location)) {
-					addSubMenu(menuBuilder, scriptsLocation, location, scriptName);
-					registeredLocations.add(location);
+		for (final String scriptsParentLocation : ScriptingConfiguration.getScriptsParentLocations()) {
+			final String scriptsLocation = ScriptingConfiguration.getScriptsLocation(scriptsParentLocation);
+			addSubMenu(menuBuilder, scriptsParentLocation, scriptsLocation, TextUtils.getText("ExecuteScripts.text"));
+			registeredLocations.add(scriptsLocation);
+			if (configuration.getNameScriptMap().isEmpty()) {
+				final String message = "<html><body><em>" + TextUtils.getText("ExecuteScripts.noScriptsAvailable")
+				        + "</em></body></html>";
+				menuBuilder.addElement(scriptsLocation, new JMenuItem(message), 0);
+			}
+			for (final Entry<String, String> entry : configuration.getNameScriptMap().entrySet()) {
+				final String scriptName = entry.getKey();
+				final ScriptMetaData metaData = configuration.getNameScriptMetaDataMap().get(scriptName);
+				// in the worst case three actions will cache a script - should not matter that much since it's unlikely
+				// that one script is used in multiple modes by the same user
+				for (final ExecutionMode executionMode : metaData.getExecutionModes()) {
+					final String location = metaData.getMenuLocation(executionMode, scriptsParentLocation);
+					if (!registeredLocations.contains(location)) {
+						addSubMenu(menuBuilder, scriptsLocation, location, scriptName);
+						registeredLocations.add(location);
+					}
+					final String scriptLocation = location + "/" + scriptName;
+					if (!registeredLocations.contains(scriptLocation)) {
+						addMenuItem(menuBuilder, location, entry, executionMode, metaData.cacheContent(),
+						    metaData.getTitleKey(executionMode), metaData.getPermissions());
+						registeredLocations.add(scriptLocation);
+					}
 				}
-				addMenuItem(menuBuilder, location, entry, executionMode, scriptMetaData.cacheContent(),
-				    scriptMetaData.getTitleKey(executionMode));
 			}
 		}
 	}
@@ -251,12 +291,13 @@ class ScriptingRegistration {
 	}
 
 	private void addMenuItem(final MenuBuilder menuBuilder, final String location, final Entry<String, String> entry,
-	                         final ExecutionMode executionMode, final boolean cacheContent, final String titleKey) {
+	                         final ExecutionMode executionMode, final boolean cacheContent, final String titleKey,
+	                         final ScriptingPermissions permissions) {
 		final String scriptName = entry.getKey();
 		final String translation = TextUtils.getText(titleKey, titleKey.replace('_', ' '));
 		final String menuName = translation.contains("{0}") ? MessageFormat.format(translation,
 		    pimpScriptName(scriptName)) : translation;
 		menuBuilder.addAction(location, new ExecuteScriptAction(scriptName, menuName, entry.getValue(), executionMode,
-		    cacheContent), MenuBuilder.AS_CHILD);
+		    cacheContent, permissions), MenuBuilder.AS_CHILD);
 	}
 }

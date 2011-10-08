@@ -121,16 +121,16 @@ public class ExportDialog {
 					});
 					return;
 				}
-				if (evt.getPropertyName().equals(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY)) {
-					if (evt.getNewValue() == null) {
+				if (selectedFile != null && evt.getPropertyName().equals(JFileChooser.DIRECTORY_CHANGED_PROPERTY)) {
 						final ExampleFileFilter filter = (ExampleFileFilter) fileChooser.getFileFilter();
 						final File acceptableFile = getAcceptableFile(selectedFile, filter);
-						EventQueue.invokeLater(new Runnable() {
-							public void run() {
-								fileChooser.setSelectedFile(acceptableFile);
-							}
-						});
-					}
+						final File currentDirectory = fileChooser.getCurrentDirectory();
+						if(currentDirectory != null){
+							final File file = new File (currentDirectory, acceptableFile.getName());
+							fileChooser.setSelectedFile(file);
+						}
+						else
+							fileChooser.setSelectedFile(acceptableFile);
 					return;
 				}
 			}

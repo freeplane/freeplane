@@ -55,6 +55,7 @@ import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.map.NodeModel.NodeChangeType;
 import org.freeplane.features.mode.Controller;
@@ -117,6 +118,10 @@ public class NodeView extends JComponent implements INodeView {
 	private Integer edgeWidth = 1;
 	private Color edgeColor = Color.BLACK;
 	private Color modelBackgroundColor;
+	
+	private int topOverlap;
+	private int bottomOverlap;
+	
 	public static final int DETAIL_VIEWER_POSITION = 2;
 	
 	protected NodeView(final NodeModel model, final int position, final MapView map, final Container parent) {
@@ -128,7 +133,7 @@ public class NodeView extends JComponent implements INodeView {
 		parent.add(this, index);
 		if (!model.isRoot()) {
 			motionListenerView = new NodeMotionListenerView(this);
-			map.add(motionListenerView, map.getComponentCount() - 1);
+			map.add(motionListenerView, 0);
 		}
 	}
 
@@ -1546,8 +1551,28 @@ public class NodeView extends JComponent implements INodeView {
 		return SummaryNode.isFirstGroupNode(getModel());
 	}
 
+	public boolean isFree() {
+		return FreeNode.isFreeNode(getModel());
+	}
+
     public Color getDetailBackground() {
         final Color detailBackground = getMap().getDetailBackground();
         return detailBackground;
      }
+
+	int getTopOverlap() {
+		return topOverlap;
+	}
+
+	void setTopOverlap(int topOverlap) {
+		this.topOverlap = topOverlap;
+	}
+
+	int getBottomOverlap() {
+		return bottomOverlap;
+	}
+
+	void setBottomOverlap(int bottomOverlap) {
+		this.bottomOverlap = bottomOverlap;
+	}
 }

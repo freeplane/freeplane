@@ -25,6 +25,7 @@ import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
@@ -186,8 +187,8 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// NodeRO: R
 	public Convertible getDetails() {
-		return new ConvertibleText(getDelegate(), getScriptContext(),
-		    DetailTextModel.getDetailTextText(getDelegate()));
+		final String detailsText = DetailTextModel.getDetailTextText(getDelegate());
+		return (detailsText == null) ? null : new ConvertibleText(getDelegate(), getScriptContext(), detailsText);
 	}
 	
 	// NodeRO: R
@@ -366,6 +367,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
         final NodeModel parentNode = ((NodeProxy) parentNodeProxy).getDelegate();
         final NodeModel movedNode = getDelegate();
 		final MMapController mapController = (MMapController) getModeController().getMapController();
+		((FreeNode)Controller.getCurrentModeController().getExtension(FreeNode.class)).undoableDeactivateHook(movedNode);
 		mapController.moveNode(movedNode, parentNode, position, getDelegate().isLeft(), parentNode.isLeft() != movedNode.isLeft());
 	}
 

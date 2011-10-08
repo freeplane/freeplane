@@ -114,28 +114,48 @@ public class TextController implements IExtension {
 		return nodeModel.getText();
 	}
 	
-	/** @throws RuntimeException if something goes wrong. */
-	public String getTransformedText(Object text, final NodeModel nodeModel, Object extension) {
-		text = getTransformedObject(text, nodeModel, extension);
-		return text.toString();
-	}
-
-	public Object getTransformedObject(Object object, final NodeModel nodeModel, Object extension) {
-	    for (IContentTransformer textTransformer : getTextTransformers()) {
-			object = textTransformer.transformContent(object, nodeModel, extension);
+	public Object getTransformedObject(Object object, final NodeModel nodeModel, Object extension) throws TransformationException{
+		for (IContentTransformer textTransformer : getTextTransformers()) {
+			try {
+	            object = textTransformer.transformContent(object, nodeModel, extension);
+            }
+            catch (RuntimeException e) {
+            	throw new TransformationException(e);
+            }
 		}
-	    return object;
-    }
+		return object;
+	}
 	
 	/** returns an error message instead of a normal result if something goes wrong. */
-	public String getTransformedTextNoThrow(Object data, final NodeModel node, Object extension) {
+	public Object getTransformedObjectNoThrow(Object data, final NodeModel node, Object extension) {
 		try {
-			return getTransformedText(data, node, extension);
+			return getTransformedObject(data, node, extension);
 		}
 		catch (Throwable e) {
 			LogUtils.warn(e.getMessage(), e);
-			    return TextUtils.format("MainView.errorUpdateText", data, e.getLocalizedMessage());
+			return TextUtils.format("MainView.errorUpdateText", data, e.getLocalizedMessage());
 		}
+	}
+	
+	public Object getTransformedObject(NodeModel node)  throws TransformationException{
+		final Object userObject = node.getUserObject();
+		return getTransformedObject(userObject, node, userObject);
+	}
+	
+	public Object getTransformedObjectNoThrow(NodeModel node) {
+		final Object userObject = node.getUserObject();
+		return getTransformedObjectNoThrow(userObject, node, userObject);
+	}
+
+	/** convenience method for getTransformedText().toString. */
+	public String getTransformedText(Object text, final NodeModel nodeModel, Object extension)  throws TransformationException{
+		text = getTransformedObject(text, nodeModel, extension);
+		return text.toString();
+	}
+	
+	public String getTransformedTextNoThrow(Object text, final NodeModel nodeModel, Object extension) {
+		text = getTransformedObjectNoThrow(text, nodeModel, extension);
+		return text.toString();
 	}
 
 	public boolean getIsShortened(NodeModel node){
@@ -281,10 +301,5 @@ public class TextController implements IExtension {
 			}
 		}
 		return false;
-    }
-
-	public Object getTransformedObject(NodeModel node) {
-		final Object userObject = node.getUserObject();
-		return getTransformedObject(userObject, node, userObject);
     }
 }

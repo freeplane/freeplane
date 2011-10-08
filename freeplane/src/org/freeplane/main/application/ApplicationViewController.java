@@ -117,7 +117,7 @@ class ApplicationViewController extends ViewController {
 			getContentPane().add(mSplitPane, BorderLayout.CENTER);
 			final FileOpener fileOpener = new FileOpener();
 			new DropTarget(mSplitPane, fileOpener);
-			mSplitPane.addMouseListener(new DefaultMapMouseListener(null));
+			mSplitPane.addMouseListener(new DefaultMapMouseListener());
 		}
 		initFrame(frame);
 	}

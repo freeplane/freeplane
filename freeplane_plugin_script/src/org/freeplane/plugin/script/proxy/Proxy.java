@@ -211,6 +211,7 @@ public interface Proxy {
 		 * selected node or the selected node for a single node selection. */
 		Node getSelected();
 
+		/** A read-only list of selected nodes. That is you cannot select a node by adding it to the returned list. */
 		List<Node> getSelecteds();
 
 		/** returns List<Node> of Node objects sorted on Y
@@ -297,6 +298,10 @@ public interface Proxy {
 		 * @see Node#findAllDepthFirst() for subtrees
 		 * @since 1.2 */
 		List<Node> findAllDepthFirst();
+
+		/** returns the current zoom factor. A value of 1 means 100%.
+		 * @since 1.2 */
+		float getZoom();
 	}
 
 	/** Access to global state: <code>c</code> - read-write. */
@@ -360,6 +365,10 @@ public interface Proxy {
 		/** opens a new map for url in the foreground if it isn't opened already.
 		 * @since 1.2 */
 		Map newMap(URL url);
+
+		/** a value of 1 means 100%.
+		 * @since 1.2 */
+		void setZoom(final float ratio);
 	}
 
 	/** Edge to parent node: <code>node.style.edge</code> - read-only. */

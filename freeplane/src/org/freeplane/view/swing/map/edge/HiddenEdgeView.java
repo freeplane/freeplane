@@ -54,7 +54,7 @@ public class HiddenEdgeView extends BezierEdgeView {
 
 	@Override
 	public void paint(final Graphics2D g) {
-		if (!getTarget().isSelected()) {
+		if (getSource().isRoot()  || !getTarget().isSelected()) {
 			return;
 		}
 		super.paint(g);

@@ -55,14 +55,16 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 	private final String script;
 	private final ExecutionMode mode;
 	private final boolean cacheContent;
+	private ScriptingPermissions permissions;
 	private String content;
 
-	public ExecuteScriptAction( final String scriptName, final String menuItemName,
-	                           final String script, final ExecutionMode mode, final boolean cacheContent) {
+	public ExecuteScriptAction(final String scriptName, final String menuItemName, final String script,
+	                           final ExecutionMode mode, final boolean cacheContent, ScriptingPermissions permissions) {
 		super(ExecuteScriptAction.makeMenuItemKey(scriptName, mode), menuItemName, null);
 		this.script = script;
 		this.mode = mode;
 		this.cacheContent = cacheContent;
+		this.permissions = permissions;
 	}
 
 	private static String makeMenuItemKey(final String scriptName, final ExecutionMode mode) {
@@ -91,17 +93,23 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 						// TODO: ensure that a script is invoked only once on every node?
 						// (might be a problem with recursive actions if parent and child
 						// are selected.)
-						ScriptingEngine.executeScriptRecursive(node, scriptContent);
+						ScriptingEngine.executeScriptRecursive(node, scriptContent, permissions);
 					}
 					else {
-						ScriptingEngine.executeScript(node, scriptContent);
+						ScriptingEngine.executeScript(node, scriptContent, permissions);
 					}
                 }
-                catch (ExecuteScriptException ex) {
+				catch (ExecuteScriptException ex) {
 					LogUtils.warn("error executing script " + script + " - giving up", ex);
 					modeController.delayedRollback();
-					final String message = WordUtils.wrap(ex.getMessage(), 80, "\n    ", false);
-					UITools.errorMessage(TextUtils.format("ExecuteScriptError.text", message));
+					if (ex.getCause() instanceof SecurityException) {
+						final String message = WordUtils.wrap(ex.getCause().getMessage(), 80, "\n    ", false);
+						UITools.errorMessage(TextUtils.format("ExecuteScriptSecurityError.text", message));
+					}
+					else {
+						final String message = WordUtils.wrap(ex.getMessage(), 80, "\n    ", false);
+						UITools.errorMessage(TextUtils.format("ExecuteScriptError.text", message));
+					}
                 	return;
                 }
 			}

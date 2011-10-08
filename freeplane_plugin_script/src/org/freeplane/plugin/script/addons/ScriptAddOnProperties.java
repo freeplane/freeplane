@@ -1,0 +1,128 @@
+package org.freeplane.plugin.script.addons;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Vector;
+
+import org.freeplane.main.addons.AddOnProperties;
+import org.freeplane.n3.nanoxml.XMLElement;
+import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
+import org.freeplane.plugin.script.ScriptingEngine;
+import org.freeplane.plugin.script.ScriptingPermissions;
+
+public class ScriptAddOnProperties extends AddOnProperties {
+	public static class Script {
+		public String name;
+		public File file;
+		public ExecutionMode executionMode;
+		public String menuTitleKey;
+		public String menuLocation;
+		public ScriptingPermissions permissions;
+		public String scriptBody;
+
+		public String toString() {
+			return name + "(" + executionMode + "/" + menuTitleKey + "/" + menuLocation + "" + ")";
+		}
+	}
+
+	private List<Script> scripts;
+
+	public ScriptAddOnProperties(String name) {
+		super(AddOnType.SCRIPT);
+		setName(name);
+	}
+
+	public ScriptAddOnProperties(final XMLElement addOnelement) {
+		super(AddOnType.SCRIPT, addOnelement);
+		this.scripts = parseScripts(addOnelement.getChildrenNamed("scripts"));
+		validate();
+	}
+
+	private void validate() {
+		if (scripts == null || scripts.isEmpty())
+			throw new RuntimeException(this + ": on parsing add-on XML file: no scripts defined");
+		for (Script script : scripts) {
+			if (script.name == null)
+				throw new RuntimeException(this + ": on parsing add-on XML file: no name");
+			if (!script.file.exists())
+				throw new RuntimeException(this + ": on parsing add-on XML file: Script " + script + " does not exist");
+			if (script.executionMode == null)
+				throw new RuntimeException(this + ": on parsing add-on XML file: no execution_mode");
+			if (script.menuTitleKey == null)
+				throw new RuntimeException(this + ": on parsing add-on XML file: no menu title key");
+			if (script.menuLocation == null)
+				throw new RuntimeException(this + ": on parsing add-on XML file: no menu location");
+			if (script.permissions == null)
+				throw new RuntimeException(this + ": on parsing add-on XML file: no permissions");
+		}
+	}
+
+	private List<Script> parseScripts(Vector<XMLElement> xmlElements) {
+		final ArrayList<Script> scripts = new ArrayList<Script>();
+		if (xmlElements == null || xmlElements.isEmpty())
+			return scripts;
+		for (XMLElement scriptXmlNode : xmlElements.get(0).getChildren()) {
+			final Script script = new Script();
+			for (Entry<Object, Object> entry : scriptXmlNode.getAttributes().entrySet()) {
+				if (entry.getKey().equals("name")) {
+					script.name = (String) entry.getValue();
+					script.file = new File(ScriptingEngine.getUserScriptDir(), script.name);
+				}
+				else if (entry.getKey().equals("executionMode")) {
+					script.executionMode = parseExecutionMode(entry.getValue().toString());
+				}
+				else if (entry.getKey().equals("menuTitleKey")) {
+					script.menuTitleKey = entry.getValue().toString();
+				}
+				else if (entry.getKey().equals("menuLocation")) {
+					script.menuLocation = entry.getValue().toString();
+				}
+			}
+			script.permissions = new ScriptingPermissions(scriptXmlNode.getAttributes());
+			scripts.add(script);
+		}
+		return scripts;
+	}
+
+	public static ExecutionMode parseExecutionMode(final String executionModeString) {
+		try {
+			return ExecutionMode.valueOf(executionModeString.toUpperCase());
+		}
+		catch (Exception e) {
+			throw new RuntimeException("invalid execution mode found in " + executionModeString, e);
+		}
+	}
+
+	public List<Script> getScripts() {
+    	return scripts;
+    }
+
+	public static String getNameKey(final String name) {
+        return "addons." + name;
+    }
+
+	public XMLElement toXml() {
+		final XMLElement xmlElement = super.toXml();
+		addScriptsAsChild(xmlElement);
+		return xmlElement;
+	}
+
+	private void addScriptsAsChild(XMLElement parent) {
+		XMLElement xmlElement = new XMLElement("scripts");
+		for (Script script : scripts) {
+			XMLElement scriptXmlElement = new XMLElement("script");
+			scriptXmlElement.setAttribute("name", script.name);
+			scriptXmlElement.setAttribute("menuTitleKey", script.menuTitleKey);
+			scriptXmlElement.setAttribute("menuLocation", script.menuLocation);
+			scriptXmlElement.setAttribute("executionMode", script.executionMode.toString());
+			final List<String> permissionNames = ScriptingPermissions.getPermissionNames();
+			for (String permission : permissionNames) {
+				scriptXmlElement.setAttribute(permission, Boolean.toString(script.permissions.get(permission)));
+			}
+			xmlElement.addChild(scriptXmlElement);
+		}
+		parent.addChild(xmlElement);
+	}
+}

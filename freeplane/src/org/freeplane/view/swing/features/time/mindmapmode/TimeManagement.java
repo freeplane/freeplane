@@ -417,11 +417,11 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		final String dateFormatPattern = ResourceController.getResourceController().getProperty(
 		    "date_format");
 		final Vector<DateFormatComboBoxElement> values = new Vector<DateFormatComboBoxElement>();
-		final List<PatternFormat> datePatterns = new FormatController().getDateFormats();
+		final List<PatternFormat> datePatterns = FormatController.getController().getDateFormats();
 		int selectedIndex = 0;
 		for (int i = 0; i < datePatterns.size(); ++i) {
-			SimpleDateFormat patternFormat = FormatController.getController(reminderHook.getModeController().getController()).getDateFormat(
-			    datePatterns.get(i).getPattern());
+			SimpleDateFormat patternFormat = FormatController.getController(
+			    reminderHook.getModeController().getController()).getDateFormat(datePatterns.get(i).getPattern());
 			values.add(new DateFormatComboBoxElement(patternFormat));
 			if (patternFormat.toPattern().equals(dateFormatPattern)) {
 				dateFormat = patternFormat;

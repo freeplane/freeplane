@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
+import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.collection.MultipleValueMap;
 
@@ -67,14 +68,18 @@ public class ResourceBundles extends ResourceBundle {
 		}
 	}
 
+	public void addResources(final String language, final Map<String, String> resources) {
+		if (language.equalsIgnoreCase(DEFAULT_LANGUAGE)) {
+			defaultResources.putAll(resources);
+		}
+		else if (language.equalsIgnoreCase(lang)) {
+			languageResources.putAll(resources);
+		}
+    }
+
 	public void addResources(final String language, final URL url) {
 		try {
-			if (language.equalsIgnoreCase(DEFAULT_LANGUAGE)) {
-				defaultResources.putAll(getLanguageResources(url));
-			}
-			else if (language.equalsIgnoreCase(lang)) {
-				languageResources.putAll(getLanguageResources(url));
-			}
+			addResources(language, getLanguageResources(url));
 			externalResources.put(language, url);
 		}
 		catch (final IOException e) {
@@ -100,6 +105,10 @@ public class ResourceBundles extends ResourceBundle {
 	public String getLanguageCode() {
 		return lang;
 	}
+	
+	public String getDefaultLanguageCode() {
+		return DEFAULT_LANGUAGE;
+	}
 
 	/**
 	 * @throws IOException
@@ -109,7 +118,7 @@ public class ResourceBundles extends ResourceBundle {
 		final URL systemResource = ResourceController.getResourceController().getResource(
 		    resourceName);
 		if (systemResource == null) {
-			System.out.println("core resource " + resourceName + " not found");
+			// no double logging: System.out.println("core resource " + resourceName + " not found");
 			return null;
 		}
 		final Map<String, String> resources = getLanguageResources(systemResource);
@@ -122,11 +131,16 @@ public class ResourceBundles extends ResourceBundle {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
     private Map<String, String> getLanguageResources(final URL systemResource) throws IOException {
-		final InputStream in = new BufferedInputStream(systemResource.openStream());
-		final Properties bundle = new Properties();
-		bundle.load(in);
-		in.close();
-		return new HashMap(bundle);
+		InputStream in = null;
+		try {
+			in = new BufferedInputStream(systemResource.openStream());
+			final Properties bundle = new Properties();
+			bundle.load(in);
+			return new HashMap(bundle);
+        }
+        finally {
+        	FileUtils.silentlyClose(in);
+        }
 	}
 
 	public String getResourceString(final String key) {
@@ -173,13 +187,14 @@ public class ResourceBundles extends ResourceBundle {
 				lang = Locale.getDefault().getLanguage() + "_" + country;
 				languageResources = getLanguageResources(lang);
 				if (languageResources != null) {
+					LogUtils.info("language resources for " + lang + " found");
 					return;
 				}
-				LogUtils.info("language resources for " + lang + " not found");
 			}
 			lang = Locale.getDefault().getLanguage();
 			languageResources = getLanguageResources(lang);
 			if (languageResources != null) {
+				LogUtils.info("language resources for " + lang + " found");
 				return;
 			}
 			LogUtils.info("language resources for " + lang + " not found");

@@ -20,11 +20,15 @@
 package org.freeplane.features.attribute;
 
 import java.awt.Component;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.UIIcon;
@@ -188,7 +192,20 @@ public class AttributeController implements IExtension {
 					tooltip.append("<tr><td>");
 					tooltip.append(attributes.getValueAt(i, 0));
 					tooltip.append("</td><td>");
-					tooltip.append(getTransformedValue(node, textController, String.valueOf(attributes.getValueAt(i, 1))));
+					final Object object = attributes.getValueAt(i, 1);
+					if(object instanceof URI){
+						tooltip.append("<a");
+						tooltip.append(" href=\"");
+						tooltip.append(object);
+						tooltip.append("\"");
+                        tooltip.append(">");
+                        tooltip.append(object);
+						tooltip.append("</a>");
+					}
+					else{
+						final String value = getTransformedValue(node, textController, String.valueOf(object));
+						tooltip.append(value);
+					}
 					tooltip.append("</td></tr>");
 				}
 				tooltip.append("</table></body></html>");
@@ -200,10 +217,11 @@ public class AttributeController implements IExtension {
 					final String text = textController.getTransformedText(originalText, node, null);
 					final boolean markTransformedText = !Controller.getCurrentController().getResourceController()
 					.getBooleanProperty(IContentTransformer.DONT_MARK_TRANSFORMED_TEXT);
+					final String unicodeText = HtmlUtils.unicodeToHTMLUnicodeEntity(text);
 					if (markTransformedText && text != originalText)
-						return colorize(text, "green");
+						return colorize(unicodeText, "green");
 					else
-						return text;
+						return unicodeText;
 				}
 				catch (Throwable e) {
 					LogUtils.warn(e.getMessage(), e);

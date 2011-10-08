@@ -24,12 +24,12 @@ import groovy.lang.GroovyRuntimeException;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
 
+import java.io.File;
 import java.io.PrintStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
@@ -38,17 +38,14 @@ import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.runtime.InvokerHelper;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
-import org.freeplane.features.attribute.mindmapmode.MAttributeController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.text.TextController;
-import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.main.application.FreeplaneSecurityManager;
 import org.freeplane.plugin.script.proxy.ProxyFactory;
 
@@ -63,8 +60,6 @@ public class ScriptingEngine {
 	public static final String RESOURCES_SCRIPT_CLASSPATH = "script_classpath";
 	public static final String SCRIPT_PREFIX = "script";
 	private static final HashMap<String, Object> sScriptCookies = new HashMap<String, Object>();
-	private static Boolean noUserPermissionRequired = false;
-	private static Pattern attributeNamePattern = Pattern.compile("^([a-zA-Z0-9_]*)=");
 	private static List<String> classpath;
 	private static final IErrorHandler scriptErrorHandler = new IErrorHandler() {
     	public void gotoLine(final int pLineNumber) {
@@ -72,59 +67,52 @@ public class ScriptingEngine {
     };
 
 	/**
-	 * @param restricted TODO
+	 * @param permissions if null use default scripting permissions.
 	 * @return the result of the script, or null, if the user has cancelled.
 	 * @throws ExecuteScriptException on errors
 	 */
-	static Object executeScript(final NodeModel node, String script, final IErrorHandler pErrorHandler,
-	                            final PrintStream pOutStream, final ScriptContext scriptContext, boolean restricted) {
-		if (!noUserPermissionRequired) {
-			final int showResult = OptionalDontShowMeAgainDialog.show("really_execute_script", "confirmation",
-			    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
-			    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
-			if (showResult != JOptionPane.OK_OPTION) {
-				throw new ExecuteScriptException(new SecurityException(TextUtils.getText("script_execution_disabled")));
-			}
-		}
-		noUserPermissionRequired = Boolean.TRUE;
+	static Object executeScript(final NodeModel node, final String script, final IErrorHandler pErrorHandler,
+	                            final PrintStream pOutStream, final ScriptContext scriptContext,
+	                            ScriptingPermissions permissions) {
 		final Binding binding = new Binding();
 		binding.setVariable("c", ProxyFactory.createController(scriptContext));
 		binding.setVariable("node", ProxyFactory.createNode(node, scriptContext));
 		binding.setVariable("cookies", ScriptingEngine.sScriptCookies);
-		boolean assignResult = false;
-		String assignTo = null;
-		final Matcher matcher = attributeNamePattern.matcher(script);
-		if (matcher.matches()) {
-			assignResult = true;
-			String attributeName = matcher.group(1);
-			if (attributeName.length() == 0) {
-				script = script.substring(1);
-			}
-			else {
-				assignTo = attributeName;
-				script = script.substring(matcher.end());
-			}
-		}
 		final PrintStream oldOut = System.out;
-		// get preferences (and store them again after the script execution,
-		// such that the scripts are not able to change them).
-		final ScriptingPermissions scriptingPermissions = new ScriptingPermissions();
-		scriptingPermissions.initFromPreferences();
+		//
+		// == Security stuff ==
+		//
 		final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
 		final ScriptingSecurityManager scriptingSecurityManager;
 		final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
+		// get preferences (and store them again after the script execution,
+		// such that the scripts are not able to change them).
+		final ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController
+		    .getResourceController().getProperties());
 		if (needsSecurityManager) {
-			final boolean executeSignedScripts = scriptingPermissions.isExecuteSignedScriptsWithoutRestriction();
-			if (restricted)
-				scriptingSecurityManager = scriptingPermissions.getRestrictedScriptingSecurityManager();
-			else if (executeSignedScripts && new SignedScriptHandler().isScriptSigned(script, pOutStream))
-				scriptingSecurityManager = scriptingPermissions.getPermissiveScriptingSecurityManager();
+			permissions = (permissions != null) ? permissions //
+			        : originalScriptingPermissions;
+			if (!permissions.executeScriptsWithoutAsking()) {
+				final int showResult = OptionalDontShowMeAgainDialog.show("really_execute_script", "confirmation",
+				    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
+				    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
+				if (showResult != JOptionPane.OK_OPTION) {
+					throw new ExecuteScriptException(new SecurityException(TextUtils.getText("script_execution_disabled")));
+				}
+			}
+			final boolean executeSignedScripts = permissions.isExecuteSignedScriptsWithoutRestriction();
+			if (executeSignedScripts && new SignedScriptHandler().isScriptSigned(script, pOutStream))
+				scriptingSecurityManager = permissions.getPermissiveScriptingSecurityManager();
 			else
-				scriptingSecurityManager = scriptingPermissions.getScriptingSecurityManager();
+				scriptingSecurityManager = permissions.getScriptingSecurityManager();
 		}
 		else {
+			// will not be used
 			scriptingSecurityManager = null;
 		}
+		//
+		// == execute ==
+		//
 		try {
 			System.setOut(pOutStream);
 			final ClassLoader classLoader = ScriptingEngine.class.getClassLoader();
@@ -154,17 +142,7 @@ public class ScriptingEngine {
 					}
 				}
 			};
-			final Object result = shell.evaluate(script);
-			if (assignResult && result != null) {
-				if (assignTo == null) {
-					((MTextController) TextController.getController()).setNodeText(node, result.toString());
-				}
-				else {
-					((MAttributeController) AttributeController.getController()).editAttribute(node, assignTo,
-					    result.toString());
-				}
-			}
-			return result;
+			return shell.evaluate(script);
 		}
 		catch (final GroovyRuntimeException e) {
 			/*
@@ -188,7 +166,7 @@ public class ScriptingEngine {
 			}
 			pOutStream.print("Line number: " + lineNumber);
 			pErrorHandler.gotoLine(lineNumber);
-			throw new ExecuteScriptException(e.getMessage(), e);
+			throw new ExecuteScriptException(e.getMessage() + " at line " + lineNumber, e);
 		}
 		catch (final Throwable e) {
 			if (Controller.getCurrentController().getSelection() != null)
@@ -200,7 +178,7 @@ public class ScriptingEngine {
 		finally {
 			System.setOut(oldOut);
 			/* restore preferences (and assure that the values are unchanged!). */
-			scriptingPermissions.restorePermissions();
+			originalScriptingPermissions.restorePermissions();
 		}
 	}
 
@@ -224,29 +202,32 @@ public class ScriptingEngine {
 	}
 
 	public static Object executeScript(final NodeModel node, final String script) {
-		return ScriptingEngine.executeScript(node, script, null, false);
+		return ScriptingEngine.executeScript(node, script, null, null);
 	}
-	
+
+	public static Object executeScript(NodeModel node, String script, ScriptingPermissions permissions) {
+		return ScriptingEngine.executeScript(node, script, ScriptingEngine.scriptErrorHandler, System.out, null,
+		    permissions);
+	}
+
 	public static Object executeScript(NodeModel node, String script, PrintStream printStream) {
-		return ScriptingEngine.executeScript(node, script, printStream, null, false);
-    }
-	
-	public static Object executeScript(NodeModel node, String script, PrintStream printStream, final ScriptContext scriptContext, boolean restricted) {
-		return ScriptingEngine.executeScript(node, script, scriptErrorHandler, printStream, scriptContext, restricted);
-    }
+		return ScriptingEngine.executeScript(node, script, ScriptingEngine.scriptErrorHandler, printStream, null, null);
+	}
 
 	public static Object executeScript(final NodeModel node, final String script, final ScriptContext scriptContext,
-	                                   boolean restricted) {
-		return ScriptingEngine.executeScript(node, script, scriptErrorHandler, System.out, scriptContext, restricted);
+	                                   final ScriptingPermissions permissions) {
+		return ScriptingEngine.executeScript(node, script, scriptErrorHandler, System.out, scriptContext, permissions);
 	}
 
-	static Object executeScriptRecursive(final NodeModel node, final String script) {
+	static Object executeScriptRecursive(final NodeModel node, final String script,
+	                                     final ScriptingPermissions permissions) {
 		ModeController modeController = Controller.getCurrentModeController();
-		final NodeModel[] children = modeController.getMapController().childrenUnfolded(node).toArray(new NodeModel[]{});
-        for (final NodeModel child : children) {
-			executeScriptRecursive(child, script);
+		final NodeModel[] children = modeController.getMapController().childrenUnfolded(node)
+		    .toArray(new NodeModel[] {});
+		for (final NodeModel child : children) {
+			executeScriptRecursive(child, script, permissions);
 		}
-		return executeScript(node, script);
+		return executeScript(node, script, permissions);
 	}
 
 	static void performScriptOperationRecursive(final NodeModel node) {
@@ -272,10 +253,6 @@ public class ScriptingEngine {
 		return;
 	}
 
-	static void setNoUserPermissionRequired(final Boolean noUserPermissionRequired) {
-		ScriptingEngine.noUserPermissionRequired = noUserPermissionRequired;
-	}
-
 	/** allows to set the classpath for scripts. Due to security considerations it's not possible to set
 	 * this more than once. */
 	static void setClasspath(final List<String> classpath) {
@@ -284,5 +261,14 @@ public class ScriptingEngine {
 		ScriptingEngine.classpath = Collections.unmodifiableList(classpath);
 		if (!classpath.isEmpty())
 			LogUtils.info("extending script's classpath by " + classpath);
+    }
+
+	static List<String> getClasspath() {
+		return classpath;
+	}
+	
+	public static File getUserScriptDir() {
+        final String userDir = ResourceController.getResourceController().getFreeplaneUserDirectory();
+    	return new File(userDir, ScriptingConfiguration.USER_SCRIPTS_DIR);
     }
 }

@@ -26,6 +26,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -146,6 +147,7 @@ public class ChangeNodeLevelController {
 		}
 		if (directSibling != null) {
 			for (final NodeModel node : selectedNodes) {
+				((FreeNode)Controller.getCurrentModeController().getExtension(FreeNode.class)).undoableDeactivateHook(node);
 				mapController.moveNode(node, directSibling, directSibling.getChildCount());
 			}
 			Controller.getCurrentModeController().getMapController().selectMultipleNodes(selectedNode, selectedNodes);
@@ -184,6 +186,7 @@ public class ChangeNodeLevelController {
 			changeSide = false;
 		}
 		for (final NodeModel node : selectedNodes) {
+			((FreeNode)Controller.getCurrentModeController().getExtension(FreeNode.class)).undoableDeactivateHook(node);
 			mapController.moveNode(node, selectedParent, position, leftSide, changeSide);
 			if (!changeSide) {
 				position++;

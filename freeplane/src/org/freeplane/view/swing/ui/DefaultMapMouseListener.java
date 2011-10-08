@@ -22,16 +22,18 @@ package org.freeplane.view.swing.ui;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.ControllerPopupMenuListener;
-import org.freeplane.core.ui.IMapMouseReceiver;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.link.LinkController;
@@ -48,15 +50,11 @@ import org.freeplane.view.swing.map.MapView;
  * The MouseListener which belongs to MapView
  */
 public class DefaultMapMouseListener implements IMouseListener {
-// // 	final private Controller controller;
-	private final IMapMouseReceiver mReceiver;
 
-	public DefaultMapMouseListener(final IMapMouseReceiver mReceiver) {
-//		this.controller = controller;
-		this.mReceiver = mReceiver;
+	public DefaultMapMouseListener() {
 	}
 
-	private void handlePopup(final MouseEvent e) {
+	protected void handlePopup(final MouseEvent e) {
 		if (e.isPopupTrigger()) {
 			Component popup = null;
 			final Component popupForModel;
@@ -131,12 +129,6 @@ public class DefaultMapMouseListener implements IMouseListener {
 			selection.selectAsTheOnlyOneSelected(selection.getSelected());
 	}
 
-	public void mouseDragged(final MouseEvent e) {
-		if (mReceiver != null) {
-			mReceiver.mouseDragged(e);
-		}
-	}
-
 	public void mouseEntered(final MouseEvent e) {
 	}
 
@@ -150,17 +142,51 @@ public class DefaultMapMouseListener implements IMouseListener {
 		if (e.isPopupTrigger()) {
 			handlePopup(e);
 		}
-		else if (mReceiver != null) {
-			mReceiver.mousePressed(e);
+		else if (e.getButton() == MouseEvent.BUTTON1){
+			final MapView mapView = getMapView(e.getComponent());
+			if(mapView != null){
+				mapView.setMoveCursor(true);
+				originX = e.getX();
+				originY = e.getY();
+			}
 		}
 		e.consume();
 	}
 
 	public void mouseReleased(final MouseEvent e) {
-		if (mReceiver != null) {
-			mReceiver.mouseReleased(e);
-		}
+		final MapView mapView = getMapView(e.getComponent());
+		if(mapView != null)
+			mapView.setMoveCursor(false);
+		originX = -1;
+		originY = -1;
 		handlePopup(e);
 		e.consume();
+	}
+	// // 	final private Controller controller;
+	protected int originX = -1;
+	protected int originY = -1;
+
+	/**
+	 *
+	 */
+	public void mouseDragged(final MouseEvent e) {
+		final Rectangle r = new Rectangle(e.getX(), e.getY(), 1, 1);
+		final JComponent component = (JComponent) e.getComponent();
+		final MapView mapView = getMapView(component);
+		if(mapView == null)
+			return;
+		final boolean isEventPointVisible = component.getVisibleRect().contains(r);
+		if (!isEventPointVisible) {
+			component.scrollRectToVisible(r);
+		}
+		if (originX >= 0 && isEventPointVisible) {
+			mapView.scrollBy(originX - e.getX(), originY - e.getY());
+		}
+	}
+
+	private MapView getMapView(final Component component) {
+		if(component instanceof MapView)
+			return (MapView) component;
+		return (MapView) SwingUtilities.getAncestorOfClass(MapView.class, component);
 	}
 }

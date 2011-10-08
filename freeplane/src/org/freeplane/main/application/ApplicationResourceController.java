@@ -37,6 +37,7 @@ import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.features.filter.FilterController;
 
@@ -214,15 +215,17 @@ public class ApplicationResourceController extends ResourceController {
 
 	private Properties readUsersPreferences(final Properties defaultPreferences) {
 		final Properties auto = new Properties(defaultPreferences);
+		InputStream in = null;
 		try {
-			InputStream in = null;
 			final File autoPropertiesFile = getUserPreferencesFile();
 			in = new FileInputStream(autoPropertiesFile);
 			auto.load(in);
-			in.close();
 		}
 		catch (final Exception ex) {
 			System.err.println("User properties not found, new file created");
+		}
+		finally {
+			FileUtils.silentlyClose(in);
 		}
 		return auto;
 	}

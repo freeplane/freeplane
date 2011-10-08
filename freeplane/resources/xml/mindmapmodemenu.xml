@@ -42,6 +42,7 @@
 				<menu_action action="NewSiblingAction" accelerator="ENTER" />
 				<menu_action action="NewPreviousSiblingAction" accelerator="shift ENTER" />
 				<menu_action action="NewParentNode" accelerator="shift INSERT" />
+				<menu_action action="NewFreeNodeAction" />
 			</menu_submenu>
 			<menu_submenu name="menu_group" name_ref="menu_group">
 				<menu_action action="NewSummaryAction" accelerator="alt shift INSERT" />
@@ -68,9 +69,6 @@
 					<menu_action action="LatexEditLatexAction" plugin="org.freeplane.plugin.latex"/>
 					<menu_action action="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex"/>
 				</menu_submenu>
-				<menu_action action="FormatCopy" accelerator="alt shift C" />
-				<menu_action action="FormatPaste" accelerator="alt shift V" />
-				<menu_separator />
 				<menu_action action="JoinNodesAction" accelerator="control J" />
 				<menu_action action="SplitNode" />
 				<menu_separator />
@@ -100,7 +98,7 @@
 				<menu_separator />
 				<menu_action action="SetImageByFileChooserAction" accelerator="alt shift K" />
 			</menu_submenu>
-			<menu_submenu name="menu_details" name_ref="menu_details">
+			<menu_submenu name="menu_extensions" name_ref="menu_extensions">
 				<menu_action action="EditDetailsAction"/>
 				<menu_action action="EditDetailsInDialogAction"/>
 				<menu_action action="CopyStyleExtensionsAction" />
@@ -132,7 +130,7 @@
 			<menu_action action="UndoAction" accelerator="control Z" />
 			<menu_action action="RedoAction" accelerator="control Y" />
 			<menu_action action="CutAction" accelerator="control X" />
-			<menu_submenu name="menu_copy"name_ref="menu_copy">
+			<menu_submenu name="menu_copy" name_ref="menu_copy">
 				<menu_action action="CopyAction" accelerator="control C" />
 				<menu_action action="CopySingleAction" accelerator="control shift C" />
 				<menu_action action="CopyIDAction" />
@@ -147,6 +145,7 @@
 				<menu_action action="ChangeNodeLevelLeftsAction" accelerator="control LEFT" />
 				<menu_action action="ChangeNodeLevelRightsAction" accelerator="control RIGHT" />
 			</menu_submenu>			
+			<menu_action action="FreeNodeAction"/>
 			<menu_action action="ResetNodeLocationAction" />
 			<menu_separator />
 			<menu_category name="find">				
@@ -223,8 +222,7 @@
 				</menu_submenu>
 			</menu_submenu>
 		<menu_submenu name="format" name_ref="menu_format">
-			<menu_submenu name="menu_applyStyle" name_ref="menu_applyStyle" menu_key="main_menu_styles">
-			</menu_submenu>	
+			<menu_submenu name="menu_applyStyle" name_ref="menu_applyStyle" menu_key="main_menu_styles"/>
 				<menu_action action="AutomaticLayoutAction" />		
 			<menu_submenu name="menu_manageStyles" name_ref="menu_manageStyles">
 				<menu_action action="NewUserStyleAction" />				
@@ -235,6 +233,8 @@
 				<menu_action action="CopyMapStylesAction" />  
 				<menu_action action="EditStylesAction" />
 			</menu_submenu>		
+			<menu_action action="FormatCopy" accelerator="alt shift C" />
+			<menu_action action="FormatPaste" accelerator="alt shift V" />
 
 				<menu_separator />
 			<menu_action action="MapBackgroundColorAction" />	
@@ -289,7 +289,6 @@
 				<menu_separator />
 			<menu_action action="RemoveFormatAction"/>
 			</menu_submenu>
-			<menu_action action="UseRichFormattingAction" accelerator="alt shift R" />
 			<menu_action action="UsePlainTextAction" accelerator="alt shift P" />
 		</menu_submenu>
 		<menu_submenu name="navigate" name_ref="menu_navigate">
@@ -340,7 +339,6 @@
 			<menu_separator />
 			<menu_category name="FilterCondition">
 				<menu_action action="ApplyToVisibleAction" />
-				<menu_action action="UnfoldFilteredAncestorsAction" />
 				<menu_action action="ShowAncestorsAction" />
 				<menu_action action="ShowDescendantsAction" />
 			</menu_category>
@@ -377,6 +375,7 @@
 					<menu_action action="ExecuteScriptForSelectionAction" plugin="org.freeplane.plugin.script"/>
 					<menu_action action="ExecuteScriptForAllNodes" plugin="org.freeplane.plugin.script"/>					
 					<menu_action action="ScriptEditor" plugin="org.freeplane.plugin.script"/>					
+					<menu_action action="ManageAddOnsAction" plugin="org.freeplane.plugin.script"/>
 				</menu_category>
 				<menu_separator />
 				<menu_submenu name="formula" name_ref="formula.menuname" plugin="org.freeplane.plugin.formula">
@@ -395,7 +394,6 @@
 			<menu_separator />
 			<menu_category name="mindmaps" menu_key="main_menu_mindmaps"/>
 			<menu_separator />
-		<menu_category name="maps" menu_key="map_popup_mindmaps"/>
 		</menu_submenu>
 		<menu_submenu name="help" name_ref="help">
 			<menu_category name="update">
@@ -415,7 +413,8 @@
 			</menu_category>				
 			<menu_separator />
 			<menu_action action="GettingStartedAction"/>
-			<menu_action action="DocumentationAction" accelerator="F1" />		
+			<menu_action action="DocumentationAction" accelerator="F1" />	
+			<menu_action action="HotKeyInfoAction"/>
 			<menu_separator />
 		</menu_submenu>
 	</menu_category>
@@ -443,13 +442,17 @@
 		<menu_action action="EditLongAction" accelerator="alt ENTER" />
 		<menu_action action="EditDetailsInDialogAction"  />
 		<menu_action action="EditDetailsAction"/>
+		<menu_action action="DeleteDetailsAction"/>		
+		<menu_action action="SetShortenerStateAction" />
 		<menu_action action="EditNoteInDialogAction" />
 		<menu_action action="ExternalImageAddAction" />
 		<menu_action action="EditAttributesAction" accelerator="alt F9"/>
 			<menu_separator />
 		<menu_action action="NewSummaryAction" accelerator="alt shift INSERT" />
 		<menu_action action="SummaryNodeAction" accelerator = "alt shift S"/>
+		<menu_action action="FreeNodeAction"/>
 		<menu_action action="CloudAction" accelerator="control shift B" />
+		<menu_submenu name="menu_applyStyle" name_ref="menu_applyStyle" menu_key="node_popup_styles"/>
 		<menu_action action="AddConnectorAction" accelerator="control L" />						
 		<menu_submenu name="links" name_ref="menu_links">
 			<menu_action action="SetLinkByFileChooserAction" accelerator="control shift K" />
@@ -468,8 +471,9 @@
 		<menu_action action="CopyIDAction" />
 		<menu_action action="PasteAction" accelerator="control V" />
 		<menu_action action="SortNodes" />
-			<menu_separator />
-	</menu_category>
+		<menu_separator />
+		<menu_category name="scripting" plugin="org.freeplane.plugin.script" menu_key="node_popup_scripting"/>	
+		</menu_category>
 		<menu_action action="UndoAction" />
 		<menu_action action="RedoAction" />
 	<menu_category name="main_toolbar">

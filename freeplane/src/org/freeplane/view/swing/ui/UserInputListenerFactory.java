@@ -115,7 +115,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	public IMouseListener getMapMouseListener() {
 		if (mapMouseListener == null) {
-			mapMouseListener = new DefaultMapMouseListener(new DefaultMapMouseReceiver());
+			mapMouseListener = new DefaultMapMouseListener();
 		}
 		return mapMouseListener;
 	}
@@ -254,7 +254,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	public void updateMapList() {
 		updateModeMenu();
-		updateMapList("map_popup_mindmaps");
 		updateMapList("main_menu_mindmaps");
 	}
 

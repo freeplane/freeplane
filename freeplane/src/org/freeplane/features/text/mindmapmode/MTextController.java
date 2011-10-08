@@ -82,7 +82,9 @@ import org.freeplane.features.text.mindmapmode.IEditBaseCreator.EditedComponent;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 
+import com.lightdev.app.shtm.ActionBuilder;
 import com.lightdev.app.shtm.SHTMLPanel;
+import com.lightdev.app.shtm.SHTMLPanelImpl;
 import com.lightdev.app.shtm.TextResources;
 
 
@@ -112,7 +114,6 @@ public class MTextController extends TextController {
 	private void createActions() {
 		ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new EditAction());
-		modeController.addAction(new UseRichFormattingAction());
 		modeController.addAction(new UsePlainTextAction());
 		modeController.addAction(new JoinNodesAction());
 		modeController.addAction(new EditLongAction());
@@ -698,6 +699,13 @@ public class MTextController extends TextController {
     			return resourceString;
     		}
     	});
+    	SHTMLPanel.setActionBuilder(new ActionBuilder() {
+			
+			public void initActions(SHTMLPanel panel) {
+				panel.addAction("editLink", new SHTMLEditLinkAction((SHTMLPanelImpl) panel));
+				panel.addAction("setLinkByFileChooser", new SHTMLSetLinkByFileChooserAction((SHTMLPanelImpl) panel));
+			}
+		});
     	final SHTMLPanel shtmlPanel = SHTMLPanel.createSHTMLPanel();
     	shtmlPanel.setOpenHyperlinkHandler(new ActionListener(){
 

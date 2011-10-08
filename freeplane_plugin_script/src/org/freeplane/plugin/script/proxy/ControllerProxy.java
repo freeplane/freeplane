@@ -7,7 +7,6 @@ import groovy.lang.Closure;
 
 import java.io.File;
 import java.net.URL;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -221,4 +220,12 @@ class ControllerProxy implements Proxy.Controller {
 		}
 		throw new RuntimeException("can not create map inside transaction");
 	}
+
+    public float getZoom() {
+	    return getViewController().getZoom();
+    }
+    
+    public void setZoom(float ratio) {
+    	getViewController().setZoom(ratio);
+    }
 }

@@ -21,8 +21,6 @@ package org.freeplane.view.swing.features.time.mindmapmode;
 
 import java.util.Date;
 import java.util.Timer;
-import java.util.TimerTask;
-
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.SysUtils;
 import org.freeplane.features.icon.IconStore;
@@ -53,6 +51,7 @@ class ReminderExtension implements IExtension, IMapChangeListener {
 	private long remindUserAt = 0;
 	private Timer timer;
 	private String script;
+	private TimerBlinkTask task;
 
 	public ReminderExtension(final NodeModel node) {
 		this.node = node;
@@ -79,11 +78,12 @@ class ReminderExtension implements IExtension, IMapChangeListener {
     	this.script = script;
     }
 
-	public void scheduleTimer(final TimerTask task, final Date date) {
+	public void scheduleTimer(final TimerBlinkTask task, final Date date) {
 		if (timer == null) {
 			timer = SysUtils.createTimer(getClass().getSimpleName());
 		}
 		timer.schedule(task, date, BLINKING_PERIOD);
+		this.task = task;
 	}
 
 	public void deactivateTimer() {
@@ -92,10 +92,11 @@ class ReminderExtension implements IExtension, IMapChangeListener {
 		}
 		timer.cancel();
 		timer = null;
+		task = null;
 	}
 
 	private void displayStateIcon(final NodeModel parent, final ClockState state) {
-		if (!isAncestorNode(parent)) {
+		if (task != null || ! task.alreadyExecuted() || !isAncestorNode(parent)) {
 			return;
 		}
 		displayState(state, parent, true);

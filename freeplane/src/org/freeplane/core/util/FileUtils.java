@@ -2,12 +2,14 @@ package org.freeplane.core.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Properties;
@@ -20,21 +22,26 @@ public class FileUtils {
 		final String path = resource.getPath();
 		final int index = path.lastIndexOf('/');
 		final String fileName = index > -1 ? path.substring(index + 1) : path;
+		InputStream in = null;
+		OutputStream out = null;
 		try {
-			final InputStream in = resource.openStream();
-			final OutputStream out = new FileOutputStream(new File(destinationDirectory, fileName));
+			in = resource.openStream();
+			out = new FileOutputStream(new File(destinationDirectory, fileName));
 			FileUtils.copyStream(in, out);
 		}
 		catch (final Exception e) {
 			LogUtils.severe("File not found or could not be copied. " + "Was searching for " + path
 			        + " and should go to " + destinationDirectory.getAbsolutePath());
 		}
+		finally {
+			FileUtils.silentlyClose(in, out);
+		}
 	}
 
-	/**
-	 */
 	public static void copyFromResource(final String prefix, final String fileName, final File destinationDirectory) {
 		final String pathToResource = prefix + fileName;
+		InputStream in = null;
+		OutputStream out = null;
 		try {
 			final URL resource;
 			if (pathToResource.startsWith("file:")) {
@@ -47,24 +54,54 @@ public class FileUtils {
 				LogUtils.severe("Cannot find resource: " + pathToResource);
 				return;
 			}
-			final InputStream in = new BufferedInputStream(resource.openStream());
-			final OutputStream out = new FileOutputStream(new File(destinationDirectory, fileName));
+			in = new BufferedInputStream(resource.openStream());
+			out = new FileOutputStream(new File(destinationDirectory, fileName));
 			FileUtils.copyStream(in, out);
 		}
 		catch (final Exception e) {
 			LogUtils.severe("File not found or could not be copied. " + "Was searching for " + pathToResource
 			        + " and should go to " + destinationDirectory.getAbsolutePath());
 		}
+		finally {
+			FileUtils.silentlyClose(in, out);
+		}
 	}
 
+	/** the caller has to close the streams. */
 	public static void copyStream(final InputStream in, final OutputStream out) throws IOException {
 		final byte[] buf = new byte[1024];
 		int len;
 		while ((len = in.read(buf)) > 0) {
 			out.write(buf, 0, len);
 		}
-		in.close();
-		out.close();
+	}
+
+	public static void dumpStringToFile(final String string, final File outFile, String encoding) throws IOException {
+		FileOutputStream outStream = null;
+		OutputStreamWriter out = null;
+		try {
+			outStream = new FileOutputStream(outFile);
+			out = new OutputStreamWriter(outStream, encoding);
+			out.write(string);
+		}
+		finally {
+			try {
+				if (out != null)
+					out.close();
+			}
+			catch (Exception e) {
+				// no rescue
+				e.printStackTrace();
+			}
+			try {
+				if (outStream != null)
+					outStream.close();
+			}
+			catch (Exception e) {
+				// no rescue
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -79,11 +116,16 @@ public class FileUtils {
 
 	public static Properties loadProperties(final String classpathRessource) {
 		final Properties props = new Properties();
+		InputStream in = null;
 		try {
-			props.load(FileUtils.class.getResource(classpathRessource).openStream());
+			in = FileUtils.class.getResource(classpathRessource).openStream();
+			props.load(in);
 		}
 		catch (final IOException e) {
 			throw new RuntimeException(e);
+		}
+		finally {
+			FileUtils.silentlyClose(in);
 		}
 		return props;
 	}
@@ -216,4 +258,18 @@ public class FileUtils {
 			}
 		}
 	}
+
+	/** to be used in a finally block. This method is null-safe. */
+	public static void silentlyClose(Closeable... streams) {
+		for (Closeable stream : streams) {
+			if (stream != null) {
+				try {
+					stream.close();
+				}
+				catch (IOException e) {
+					LogUtils.severe(e);
+				}
+			}
+        }
+    }
 }

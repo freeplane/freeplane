@@ -28,7 +28,11 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Element;
+import javax.swing.text.html.HTML;
+import javax.swing.text.html.HTMLDocument;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.InputSource;
@@ -89,11 +93,23 @@ public class HtmlUtils {
 		return HtmlUtils.sInstance;
 	}
 
+	/** equivalent to htmlToPlain(text, strictHTMLOnly=true, removeNewLines=true)
+	 * @see #htmlToPlain(String, boolean, boolean) */
 	public static String htmlToPlain(final String text) {
-		return HtmlUtils.htmlToPlain(text, /* strictHTMLOnly= */true);
+		return HtmlUtils.htmlToPlain(text, /* strictHTMLOnly= */true, /* removeNewLines= */true);
 	}
-	
+
+	/** equivalent to htmlToPlain(text, strictHTMLOnly, removeNewLines=true)
+	 * @see #htmlToPlain(String, boolean, boolean) */
 	public static String htmlToPlain(final String text, final boolean strictHTMLOnly) {
+		return htmlToPlain(text, strictHTMLOnly, /* removeNewLines= */true);
+	}
+
+	/** removes html markup and entities, partly and where appropriate by replacing it by plaintext equivalents like 
+	 * &lt;li&gt; -> '*'.
+	 * @param strictHTMLOnly if true does nothing unless the text starts with &lt;html&gt;
+	 * @param removeNewLines set to false to keep all blank lines. */
+	public static String htmlToPlain(final String text, final boolean strictHTMLOnly, final boolean removeNewLines) {
 		if (strictHTMLOnly && !HtmlUtils.isHtmlNode(text)) {
 			return text;
 		}
@@ -123,7 +139,10 @@ public class HtmlUtils {
 		String intermediate = text;
 		int i = 0;
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll(">");
-		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll(" ");
+		if (removeNewLines)
+			intermediate = PATTERNS[i++].matcher(intermediate).replaceAll(" ");
+		else
+			i++;
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("\n");
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("\n");
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("\n");
@@ -135,7 +154,10 @@ public class HtmlUtils {
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("\n   * ");
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("");
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("");
-		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("");
+		if (removeNewLines)
+			intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("");
+		else
+			i++;
 		intermediate = intermediate.trim();
 		intermediate = HtmlUtils.unescapeHTMLUnicodeEntity(intermediate);
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("<");
@@ -340,20 +362,26 @@ public class HtmlUtils {
 		/*
 		 * Heuristic reserve for expansion : factor 1.2
 		 */
-		final StringBuilder result = new StringBuilder((int) (text.length() * 1.2));
+		StringBuilder result = null;
 		int intValue;
 		char myChar;
 		for (int i = 0; i < text.length(); ++i) {
 			myChar = text.charAt(i);
 			intValue = text.charAt(i);
 			if (intValue < 32 || intValue > 126) {
+				if(result == null){
+					 result = new StringBuilder((int) (text.length() * 1.2));
+					 result.append(text.subSequence(0, i));
+				}
 				result.append("&#x").append(Integer.toString(intValue, 16)).append(';');
 			}
-			else {
+			else if(result != null){
 				result.append(myChar);
 			}
 		}
-		return result.toString();
+		if(result != null)
+			return result.toString();
+		return text;
 	}
 
 	/**
@@ -659,5 +687,40 @@ public class HtmlUtils {
 		if (end == -1)
 			return "";
 		return text.substring(textBegin, end).trim();
+	}
+
+	/** Gets the string URL of an existing link, or null if none. */
+	public static String getURLOfExistingLink(HTMLDocument doc, int pos) {
+	    //setIgnoreActions(true);      
+	    final Element linkElement = HtmlUtils.getCurrentLinkElement(doc, pos);
+	    final boolean foundLink = (linkElement != null);
+	    if (!foundLink) {
+	        return null;
+	    }
+	    final AttributeSet elemAttrs = linkElement.getAttributes();
+	    final Object linkAttr = elemAttrs.getAttribute(HTML.Tag.A);
+	    final Object href = ((AttributeSet) linkAttr).getAttribute(HTML.Attribute.HREF);
+	    return href != null ? href.toString() : null;
+	}
+
+	public static Element getCurrentLinkElement(HTMLDocument doc, int pos) {
+	    Element element2 = null;
+	    Element element = doc.getCharacterElement(pos);
+	    Object linkAttribute = null; //elem.getAttributes().getAttribute(HTML.Tag.A);
+	    Object href = null;
+	    while (element != null && linkAttribute == null) {
+	        element2 = element;
+	        linkAttribute = element.getAttributes().getAttribute(HTML.Tag.A);
+	        if (linkAttribute != null) {
+	            href = ((AttributeSet) linkAttribute).getAttribute(HTML.Attribute.HREF);
+	        }
+	        element = element.getParentElement();
+	    }
+	    if (linkAttribute != null && href != null) {
+	        return element2;
+	    }
+	    else {
+	        return null;
+	    }
 	}
 }
