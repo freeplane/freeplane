@@ -21,9 +21,6 @@ package org.freeplane.features.attribute;
 
 import java.awt.Component;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
