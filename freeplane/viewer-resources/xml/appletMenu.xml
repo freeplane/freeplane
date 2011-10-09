@@ -134,7 +134,6 @@
 		<menu_action accelerator="control shift C" action="CopySingleAction"/>
 		</menu_category>
 		<menu_category name="main_toolbar">
-		<menu_category menu_key="main_toolbar_update" name="update"/>
 		<menu_category menu_key="main_toolbar_zoom" name="zoom">
 		</menu_category>
 		<menu_category name="open">
@@ -144,11 +143,18 @@
 		<menu_category name="paste">
 			<menu_action action="CopyAction"/>
 			</menu_category>
+		<menu_category name="update" menu_key="main_toolbar_update" />
+		<menu_category name="zoom"  menu_key="main_toolbar_zoom" />
 		<menu_category name="folding">
 			<menu_action action="UnfoldOneLevelAction"/>
 			<menu_action action="FoldOneLevelAction"/>
 			<menu_action action="UnfoldAllAction"/>
 			<menu_action action="FoldAllAction"/>
 		</menu_category>
-	</menu_category>
+		<menu_category name="find">				
+			<menu_action action="FindAction"/>
+			<menu_action action="FindNextAction"/>
+		</menu_category>
+		<menu_action action="EnterPassword" />
+		</menu_category>
 </menu_structure>
