@@ -6,8 +6,6 @@
 			<menu_action action="PrintPreviewAction"/>
 			<menu_action accelerator="control P" action="PrintAction"/>
 			<menu_action action="FilePropertiesAction"/>
-			<menu_action accelerator="control W" action="CloseAction"/>
-			<menu_action accelerator="control Q" action="QuitAction" menu_key="MB_QuitAction"/>
 		</menu_submenu>
 		<menu_submenu name="edit" name_ref="edit">
 			<menu_submenu name="menu_extensions" name_ref="menu_extensions">
@@ -142,7 +140,6 @@
 		<menu_category name="open">
 			<menu_action action="PrintAction"/>
 			<menu_action action="PrintDirectAction"/>
-			<menu_action action="CloseAction"/>
 		</menu_category>
 		<menu_category name="paste">
 			<menu_action action="CopyAction"/>
