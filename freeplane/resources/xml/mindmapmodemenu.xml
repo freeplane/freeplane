@@ -103,7 +103,6 @@
 				<menu_action action="EditDetailsInDialogAction"/>
 				<menu_action action="CopyStyleExtensionsAction" />
 				<menu_action action="DeleteDetailsAction"/>		
-				<menu_action action="SetShortenerStateAction" />
 				<menu_separator/>
 				<menu_action action="ExternalImageAddAction" />
 				<menu_action action="ExternalImageChangeAction" />
@@ -195,9 +194,9 @@
 					<menu_action action="HierarchicalIcons2Action" />
 				</menu_submenu>
 				<menu_separator />
+			<menu_action action="SetShortenerStateAction" />
+			<menu_action action="ToggleDetailsAction" accelerator="alt F2" />
 			<menu_submenu name="menu_hoverView" name_ref="menu_hoverView">
-				<menu_action action="ToggleDetailsAction" accelerator="alt F2" />
-				<menu_separator />
 				<menu_action action="SetBooleanPropertyAction.show_node_tooltips" />	
 				<menu_action action="SetBooleanPropertyAction.show_styles_in_tooltip" />
 				<menu_action action="CreationModificationPluginAction" />
