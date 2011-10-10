@@ -20,6 +20,7 @@ public class ScriptAddOnProperties extends AddOnProperties {
 		public String menuTitleKey;
 		public String menuLocation;
 		public ScriptingPermissions permissions;
+		public String keyboardShortcut;
 		public String scriptBody;
 
 		public String toString() {

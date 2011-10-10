@@ -18,12 +18,21 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import javax.swing.JMenuItem
 import javax.swing.JOptionPane
+import javax.swing.KeyStroke
+import javax.swing.tree.DefaultMutableTreeNode
 
 import org.apache.commons.lang.WordUtils
 import org.freeplane.core.resources.ResourceController
+import org.freeplane.core.ui.MenuBuilder
+import org.freeplane.core.ui.IndexedTree.Node
 import org.freeplane.core.util.FreeplaneVersion
+import org.freeplane.core.util.MenuUtils
+import org.freeplane.core.util.TextUtils
+import org.freeplane.features.mode.Controller
 import org.freeplane.main.addons.AddOnProperties
+import org.freeplane.plugin.script.ExecuteScriptAction
 import org.freeplane.plugin.script.ScriptingPermissions
 import org.freeplane.plugin.script.addons.ScriptAddOnProperties
 import org.freeplane.plugin.script.proxy.Proxy
@@ -70,9 +79,9 @@ def installationAssert(boolean check, String issue) {
 def parseProperties(Map childNodeMap) {
 	def property = 'properties'
 	Proxy.Node propertyNode = node.map.root
-	configMap[property] = propertyNode.attributes.map.inject([:]){ map,k,v ->
-		if (v)
-			map[k] = k.toString().startsWith('freeplaneVersion') ? parseFreeplaneVersion(k, v) : v
+	configMap[property] = propertyNode.attributes.map.inject([:]){ map, e ->
+		if (e.value)
+			map[e.key] = e.key.startsWith('freeplaneVersion') ? parseFreeplaneVersion(e.key, e.value) : e.value
 		return map
 	}
 	def mandatoryPropertyNames = [
@@ -125,7 +134,7 @@ def parseTranslations(Map childNodeMap) {
 
 	def translationsMap = propertyNode.children.inject([:]){ map, localeNode ->
 		def locale = localeNode.plainText
-		map[locale] = localeNode.attributes.map.inject([:]){ localeMap, Map.Entry e ->
+		map[locale] = localeNode.attributes.map.inject([:]){ localeMap, e ->
 			localeMap[expandVariables(e.key)] = e.value
 			return localeMap
 		}
@@ -148,8 +157,8 @@ def parsePreferencesXml(Map childNodeMap) {
 def parseDefaultProperties(Map childNodeMap) {
 	def property = 'default.properties'
 	Proxy.Node propertyNode = childNodeMap[property]
-	configMap[property] = propertyNode.attributes.map.inject([:]){ map,k,v ->
-		map[expandVariables(k)] = expandVariables(v)
+	configMap[property] = propertyNode.attributes.map.inject([:]){ map, e ->
+		map[expandVariables(e.key)] = expandVariables(e.value)
 		return map
 	}
 	println property + ': ' + configMap[property]
@@ -172,6 +181,8 @@ def parseScripts(Map childNodeMap) {
 				script[k] = expandVariables(v)
 		}
 		script.permissions = parsePermissions(scriptNode, script.name)
+		if (script.keyboardShortcut != null)
+			createKeyboardShortcut(script)
 		mapStructureAssert(script.name.endsWith('.groovy'), textUtils.format('addons.installer.groovy.script.name', script.name))
 		mapStructureAssert(script.menuTitleKey, textUtils.format('addons.installer.script.no.menutitle', script))
 		mapStructureAssert(script.menuLocation, textUtils.format('addons.installer.script.no.menulocation', script))
@@ -182,6 +193,63 @@ def parseScripts(Map childNodeMap) {
 	}
 	mapStructureAssert(configMap[property], textUtils.getText('addons.installer.no.scripts'))
 	println property + ': ' + configMap[property].dump()
+}
+
+void createKeyboardShortcut(ScriptAddOnProperties.Script script) {
+	// check key syntax
+	KeyStroke keyStroke = ui.getKeyStroke(script.keyboardShortcut)
+	mapStructureAssert(keyStroke, textUtils.format('addons.installer.invalid.keyboard.shortcut', script.keyboardShortcut))
+	String newShortcut = keyStrokeToString(keyStroke)
+	// check if key is used (see AccelerateableAction.newAccelerator())
+	MenuBuilder menuBuilder = Controller.currentModeController.userInputListenerFactory.menuBuilder
+	String menuItemKey = ExecuteScriptAction.makeMenuItemKey(script.menuTitleKey, script.executionMode)
+	String shortcutKey = makeAcceleratorKey(menuItemKey)
+	String oldShortcut = ResourceController.getResourceController().getProperty(shortcutKey);
+	if (oldShortcut && !oldShortcut.equals(newShortcut)
+			&& !askForRemoveShortcutViaDialog(script.name, oldShortcut, newShortcut)) {
+		// script had been installed before
+		return
+	}
+	else {
+		// it's a long way to the menu item title
+		DefaultMutableTreeNode menubarNode = menuBuilder.getMenuBar(menuBuilder.get("main_menu_scripting"));
+		assert menubarNode != null : "can't find menubar"
+		Node priorAssigned = MenuUtils.findAssignedMenuItemNodeRecursively(menubarNode, keyStroke);
+		if (priorAssigned != null) {
+			if (askForReplaceShortcutViaDialog(((JMenuItem) priorAssigned.getUserObject()).getText())) {
+				String priorShortcutKey = menuBuilder.getShortcutKey(priorAssigned.getKey().toString());
+				if (priorShortcutKey)
+					ResourceController.getResourceController().setProperty(priorShortcutKey, "")
+			}
+			else {
+				return
+			}
+		}
+	}
+	println "set keyboardShortcut $shortcutKey to $newShortcut"
+	ResourceController.getResourceController().setProperty(shortcutKey, newShortcut)
+}
+
+private static String makeAcceleratorKey(String menuItemKey) {
+	return 'acceleratorForMindMap/$' + menuItemKey + '$0';
+}
+
+private String keyStrokeToString(KeyStroke keyStroke) {
+	return keyStroke.toString().replaceAll("pressed |typed ", "").replace("ctrl", "control")
+}
+
+private boolean askForRemoveShortcutViaDialog(String scriptName, String oldShortcut, String newShortcut) {
+	int replace = JOptionPane.showConfirmDialog(ui.frame,
+		TextUtils.format("remove_shortcut_question", scriptName, oldShortcut, newShortcut),
+		TextUtils.format("remove_shortcut_title"), JOptionPane.YES_NO_OPTION);
+	return replace == JOptionPane.YES_OPTION;
+}
+
+private boolean askForReplaceShortcutViaDialog(String oldMenuItemTitle) {
+	int replace = JOptionPane.showConfirmDialog(ui.frame,
+		TextUtils.format("replace_shortcut_question", oldMenuItemTitle),
+		TextUtils.format("replace_shortcut_title"), JOptionPane.YES_NO_OPTION);
+	return replace == JOptionPane.YES_OPTION;
 }
 
 ScriptingPermissions parsePermissions(Proxy.Node propertyNode, String scriptName) {
