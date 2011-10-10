@@ -27,7 +27,6 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Enumeration;
 
 import javax.swing.JDialog;
 import javax.swing.JMenu;
@@ -45,6 +44,7 @@ import org.freeplane.core.ui.IndexedTree.Node;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.IKeyBindingManager;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.MenuUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 
@@ -58,49 +58,37 @@ public class AccelerateableAction implements IFreeplaneAction {
         private final Object key;
         private final JMenuItem editedItem;
 
-        private KeystrokeValidator(Component parentComponent, Object key, JMenuItem editedItem) {
-            this.parentComponent = parentComponent;
-            this.key = key;
-            this.editedItem = editedItem;
-        }
+		private KeystrokeValidator(Component parentComponent, Object key, JMenuItem editedItem) {
+			this.parentComponent = parentComponent;
+			this.key = key;
+			this.editedItem = editedItem;
+		}
 
-        private boolean isValid(final DefaultMutableTreeNode menubarNode, final KeyStroke keystroke) {
-        	final Enumeration<?> menuElements = menubarNode.children();
-        	while (menuElements.hasMoreElements()) {
-        		final Node menuItemNode = (Node) menuElements.nextElement();
-        		final Object userObject = menuItemNode.getUserObject();
-        		if (userObject instanceof JMenuItem) {
-        			final JMenuItem menuItem = (JMenuItem) userObject;
-        			if (keystroke.equals(menuItem.getAccelerator())) {
-        				if (editedItem.equals(menuItem)) {
-        					return true;
-        				}
-        				final int replace = JOptionPane.showConfirmDialog(
-        				    parentComponent, 
-        				    menuItem.getText(),
-        				    TextUtils.getText("remove_shortcut_question"), JOptionPane.YES_NO_OPTION);
-        				if (replace == JOptionPane.YES_OPTION) {
-        					menuBuilder.setAccelerator(menuItemNode, null);
-        					final String shortcutKey = menuBuilder.getShortcutKey(menuItemNode.getKey().toString());
-        					ResourceController.getResourceController().setProperty(shortcutKey, "");
-        					return true;
-        				}
-        				return false;
-        			}
-        		}
-        		if (!isValid(menuItemNode, keystroke)) {
-        			return false;
-        		}
-        	}
-        	return true;
-        }
+		private boolean checkForOverwriteShortcut(final DefaultMutableTreeNode menubarNode, final KeyStroke keystroke) {
+			final Node priorAssigned = MenuUtils.findAssignedMenuItemNodeRecursively(menubarNode, keystroke);
+			if (priorAssigned == null || editedItem.equals(priorAssigned.getUserObject())) {
+				return true;
+			}
+			return replaceOrCancel(priorAssigned, ((JMenuItem) priorAssigned.getUserObject()).getText());
+		}
 
-        public boolean isValid(final KeyStroke keystroke, final Character keyChar) {
+		private boolean replaceOrCancel(Node menuItemNode, String oldMenuItemTitle) {
+			if (askForReplaceShortcutViaDialog(oldMenuItemTitle, parentComponent)) {
+				menuBuilder.setAccelerator(menuItemNode, null);
+				final String shortcutKey = menuBuilder.getShortcutKey(menuItemNode.getKey().toString());
+				ResourceController.getResourceController().setProperty(shortcutKey, "");
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		public boolean isValid(final KeyStroke keystroke, final Character keyChar) {
         	if (keystroke == null) {
         		return true;
         	}
-        	final Object menubarKey = menuBuilder.getMenubar(menuBuilder.get(key));
-        	if (menubarKey == null) {
+        	final Node menuBarNode = menuBuilder.getMenuBar(menuBuilder.get(key));
+        	if (menuBarNode == null) {
         		return true;
         	}
         	if (keyChar != KeyEvent.CHAR_UNDEFINED
@@ -109,9 +97,8 @@ public class AccelerateableAction implements IFreeplaneAction {
         		FirstAction keyTypeAction = FirstAction.valueOf(keyTypeActionString);
         		return FirstAction.IGNORE.equals(keyTypeAction);
         	}
-        	final DefaultMutableTreeNode menubarNode = menuBuilder.get(menubarKey);
         	if ((keystroke.getModifiers() & (Event.ALT_MASK | Event.CTRL_MASK | Event.META_MASK)) == Event.ALT_MASK) {
-        		final JMenuBar menuBar = (JMenuBar) menubarNode.getUserObject();
+        		final JMenuBar menuBar = (JMenuBar) menuBarNode.getUserObject();
         		final int menuCount = menuBar.getMenuCount();
         		for (int i = 0; i < menuCount; i++) {
         			final JMenu menu = menuBar.getMenu(i);
@@ -123,20 +110,17 @@ public class AccelerateableAction implements IFreeplaneAction {
         			}
         		}
         	}
-        	if (!isValid(menubarNode, keystroke)) {
+        	if (!checkForOverwriteShortcut(menuBarNode, keystroke)) {
         		return false;
         	}
         	final KeyStroke derivedKS = FreeplaneMenuBar.derive(keystroke, keyChar);
         	if (derivedKS == keystroke) {
         		return true;
         	}
-        	return isValid(menubarNode, derivedKS);
+        	return checkForOverwriteShortcut(menuBarNode, derivedKS);
         }
     }
 
-    /**
-	 * 
-	 */
 	private final MenuBuilder menuBuilder;
 	final private AFreeplaneAction originalAction;
     private static JDialog setAcceleratorOnNextClickActionDialog;
@@ -212,11 +196,13 @@ public class AccelerateableAction implements IFreeplaneAction {
 		return originalAction.isSelected();
 	}
 
-	private void newAccelerator(final JMenuItem editedItem, final KeyStroke newAccelerator) {
+	public void newAccelerator(final JMenuItem editedItem, final KeyStroke newAccelerator) {
 		final Object key = menuBuilder.getKeyByUserObject(editedItem);
 		final String shortcutKey = menuBuilder.getShortcutKey(key.toString());
-        final String oldShortcut = ResourceController.getResourceController().getProperty(shortcutKey);
-		if(newAccelerator == null || ! new KeystrokeValidator(editedItem, key, editedItem).isValid(newAccelerator, newAccelerator.getKeyChar())){
+		final String oldShortcut = ResourceController.getResourceController().getProperty(shortcutKey);
+		if (newAccelerator == null
+		        || !new KeystrokeValidator(editedItem, key, editedItem).isValid(newAccelerator,
+		            newAccelerator.getKeyChar())) {
             final GrabKeyDialog grabKeyDialog = new GrabKeyDialog(oldShortcut);
 		    final IKeystrokeValidator validator = new KeystrokeValidator(grabKeyDialog, key, editedItem);
 		    grabKeyDialog.setValidator(validator);
@@ -228,24 +214,18 @@ public class AccelerateableAction implements IFreeplaneAction {
 		        ResourceController.getResourceController().setProperty(shortcutKey, shortcut);
 		    }
 		}
-		else{
-		    if(oldShortcut != null){
-                final int replace = JOptionPane.showConfirmDialog(
-                    editedItem, 
-                    oldShortcut,
-                    TextUtils.getText("remove_shortcut_question"), JOptionPane.YES_NO_OPTION);
-                if (replace != JOptionPane.YES_OPTION) {
-                    return;
-                }
-		    }
-            menuBuilder.setAccelerator((Node) menuBuilder.get(key), newAccelerator);
-            ResourceController.getResourceController().setProperty(shortcutKey, toString(newAccelerator));
-		}
 	}
 
     private static String toString(final KeyStroke newAccelerator) {
         return newAccelerator.toString().replaceFirst("pressed ", "");
     }
+
+	private static boolean askForReplaceShortcutViaDialog(String oldMenuItemTitle, Component parentComponent) {
+		final int replace = JOptionPane.showConfirmDialog(parentComponent,
+		    TextUtils.format("replace_shortcut_question", oldMenuItemTitle),
+		    TextUtils.format("replace_shortcut_title"), JOptionPane.YES_NO_OPTION);
+		return replace == JOptionPane.YES_OPTION;
+	}
 
 	public void putValue(final String key, final Object value) {
 		originalAction.putValue(key, value);
