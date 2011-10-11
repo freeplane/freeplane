@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: org.docear.plugin.bibtex
-Bundle-SymbolicName: org.docear.plugin.bibtex
+Bundle-SymbolicName: org.docear.plugin.bibtex;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.docear.plugin.bibtex.Activator
 Require-Bundle: org.freeplane.core;bundle-version="1.0.1",
