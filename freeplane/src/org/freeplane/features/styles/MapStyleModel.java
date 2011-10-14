@@ -234,15 +234,23 @@ public class MapStyleModel implements IExtension {
 
 	private MapViewLayout mapViewLayout = MapViewLayout.MAP;
 	private int maxNodeWidth = MapStyleModel.getDefaultMaxNodeWidth();
-
+	private int minNodeWidth = MapStyleModel.getDefaultMinNodeWidth();
+		
 	public int getMaxNodeWidth() {
 		return maxNodeWidth;
 	}
-
+	
+	public int getMinNodeWidth() {
+		return minNodeWidth;
+	}
 	public void setMaxNodeWidth(final int maxNodeWidth) {
 		this.maxNodeWidth = maxNodeWidth;
 	}
 
+	public void setMinNodeWidth(final int minNodeWidth) {
+		this.minNodeWidth = minNodeWidth;
+	}
+	
 	static int getDefaultMaxNodeWidth() {
 		try {
 			return Integer.parseInt(ResourceController.getResourceController().getProperty("max_node_width"));
@@ -252,7 +260,15 @@ public class MapStyleModel implements IExtension {
 			    "el__max_default_window_width")) * 2 / 3;
 		}
 	}
-
+	
+	static int getDefaultMinNodeWidth() {
+		try {
+			return Integer.parseInt(ResourceController.getResourceController().getProperty("min_node_width"));
+		}
+		catch (final NumberFormatException e) {
+			return 0;
+		}
+	}
 	void copyFrom(MapStyleModel source, boolean overwrite) {
 		if(overwrite && source.styleMap != null  || styleMap == null){
 			styleMap = source.styleMap;

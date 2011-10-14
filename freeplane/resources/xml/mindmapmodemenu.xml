@@ -69,7 +69,7 @@
 					<menu_action action="LatexEditLatexAction" plugin="org.freeplane.plugin.latex"/>
 					<menu_action action="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex"/>
 				</menu_submenu>
-				<menu_action action="JoinNodesAction" accelerator="control J" />
+				<menu_action action="JoinNodesAction" accelerator="control J" ></menu_action>
 				<menu_action action="SplitNode" />
 				<menu_separator />
 				<menu_category name="actions">
@@ -186,7 +186,8 @@
 					<menu_action action="SetBooleanPropertyAction.formula_dont_mark_formulas" />
 					<menu_category name="general">
 						<menu_action action="MaxNodeWidthAction" />
-						</menu_category>
+						<menu_action action="MinNodeWidthAction"/>
+					</menu_category>
 					<menu_category name="change">
 						<menu_action action="RevisionPluginAction" />
 						</menu_category>
