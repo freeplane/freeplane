@@ -18,6 +18,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import java.util.zip.ZipInputStream
+
 import javax.swing.JMenuItem
 import javax.swing.JOptionPane
 import javax.swing.KeyStroke
@@ -79,9 +81,9 @@ def installationAssert(boolean check, String issue) {
 def parseProperties(Map childNodeMap) {
 	def property = 'properties'
 	Proxy.Node propertyNode = node.map.root
-	configMap[property] = propertyNode.attributes.map.inject([:]){ map, e ->
-		if (e.value)
-			map[e.key] = e.key.startsWith('freeplaneVersion') ? parseFreeplaneVersion(e.key, e.value) : e.value
+	configMap[property] = propertyNode.attributes.map.inject([:]){ map, k, v ->
+		if (v)
+			map[k] = k.startsWith('freeplaneVersion') ? parseFreeplaneVersion(k, v) : v
 		return map
 	}
 	def mandatoryPropertyNames = [
@@ -134,8 +136,8 @@ def parseTranslations(Map childNodeMap) {
 
 	def translationsMap = propertyNode.children.inject([:]){ map, localeNode ->
 		def locale = localeNode.plainText
-		map[locale] = localeNode.attributes.map.inject([:]){ localeMap, e ->
-			localeMap[expandVariables(e.key)] = e.value
+		map[locale] = localeNode.attributes.map.inject([:]){ localeMap, k, v ->
+			localeMap[expandVariables(k)] = v
 			return localeMap
 		}
 		def key = ScriptAddOnProperties.getNameKey(configMap['properties']['name'])
@@ -157,22 +159,67 @@ def parsePreferencesXml(Map childNodeMap) {
 def parseDefaultProperties(Map childNodeMap) {
 	def property = 'default.properties'
 	Proxy.Node propertyNode = childNodeMap[property]
-	configMap[property] = propertyNode.attributes.map.inject([:]){ map, e ->
-		map[expandVariables(e.key)] = expandVariables(e.value)
+	configMap[property] = propertyNode.attributes.map.inject([:]){ map, k, v ->
+		map[expandVariables(k)] = expandVariables(v)
 		return map
 	}
 	println property + ': ' + configMap[property]
 }
 
+def parseZips(Map childNodeMap) {
+	def property = 'zips'
+	Proxy.Node propertyNode = childNodeMap[property]
+	configMap[property] = propertyNode.children.collect{ it.plainText }
+	File destDir = c.userDirectory
+	propertyNode.children.each{ zipNode -> 
+		try {
+			unpack(destDir, theOnlyChild(zipNode))
+		} catch (Exception e) {
+			e.printStackTrace()
+			installationAssert(false, e.message);
+		}
+	}
+	println property + ': ' + configMap[property].dump()
+}
+
+void unpack(File destDir, Proxy.Node node) {
+	byte[] zipData = node.binary
+	ZipInputStream result = new ZipInputStream(new ByteArrayInputStream(zipData))
+	result.withStream{
+		def entry
+		while(entry = result.nextEntry){
+			if (!entry.isDirectory()){
+				def destFile = new File(destDir, entry.name)
+				destFile.parentFile?.mkdirs()
+				def output = new FileOutputStream(destFile)
+				output.withStream{
+					int len = 0;
+					byte[] buffer = new byte[4096]
+					while ((len = result.read(buffer)) > 0){
+						output.write(buffer, 0, len);
+					}
+				}
+			}
+		}
+	}
+}
+
+/** ensures that parent has exactly one non-HTML child node. */
+Proxy.Node theOnlyChild(Proxy.Node parent) {
+	mapStructureAssert(parent.children.size() == 1,
+		textUtils.format('addons.installer.one.child.expected', parent.plainText))
+	def first = parent.children.first()
+	mapStructureAssert( ! htmlUtils.isHtmlNode(first.text), textUtils.getText('addons.installer.html.script'))
+	return first
+}
+
 def parseScripts(Map childNodeMap) {
 	def property = 'scripts'
 	Proxy.Node propertyNode = childNodeMap[property]
-	mapStructureAssert( ! propertyNode.isLeaf(), textUtils.getText('addons.installer.no.scripts'))
-
 	configMap[property] = propertyNode.children.inject([]){ scripts, scriptNode ->
 		def script = new ScriptAddOnProperties.Script()
 		script.name = expandVariables(scriptNode.plainText)
-		script.scriptBody = scriptNode.text
+		script.scriptBody = theOnlyChild(scriptNode).text
 		mapStructureAssert( ! htmlUtils.isHtmlNode(script.scriptBody), textUtils.getText('addons.installer.html.script'))
 		scriptNode.attributes.map.each { k,v ->
 			if (k == 'executionMode')
@@ -191,7 +238,7 @@ def parseScripts(Map childNodeMap) {
 		scripts << script
 		return scripts
 	}
-	mapStructureAssert(configMap[property], textUtils.getText('addons.installer.no.scripts'))
+//	mapStructureAssert(configMap[property], textUtils.getText('addons.installer.no.scripts'))
 	println property + ': ' + configMap[property].dump()
 }
 
@@ -330,6 +377,7 @@ AddOnProperties install() {
 		'preferences.xml',
 		'default.properties',
 		'scripts',
+		'zips',
 		'deinstall',
 	]
 	Map<String, Proxy.Node> childNodeMap = propertyNames.inject([:]) { map, key ->
@@ -348,6 +396,7 @@ AddOnProperties install() {
 	parsePreferencesXml(childNodeMap)
 	parseDefaultProperties(childNodeMap)
 	parseScripts(childNodeMap)
+	parseZips(childNodeMap)
 	parseDeinstallationRules(childNodeMap)
 	createScripts(configMap)
 
