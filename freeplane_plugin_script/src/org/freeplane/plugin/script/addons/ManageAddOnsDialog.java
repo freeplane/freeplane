@@ -96,8 +96,6 @@ public class ManageAddOnsDialog extends JDialog {
 				case 2:
 					return addOn.getDescription();
 				case 3:
-					return getText(addOn.getAddOnType().name());
-				case 4:
 					return "";
 				default:
 					throw new RuntimeException("unexpected column " + col);
@@ -155,6 +153,7 @@ public class ManageAddOnsDialog extends JDialog {
 		install.setEnabled(false);
 		install.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 		final JTextField urlField = new JTextField();
+		urlField.setToolTipText(getText("install.tooltip"));
 		urlField.getDocument().addDocumentListener(new DocumentListener() {
 			public void insertUpdate(DocumentEvent e) {
 				updateImpl(e);
@@ -260,7 +259,7 @@ public class ManageAddOnsDialog extends JDialog {
 
 	private AddOnTableModel createTableModel(final List<AddOnProperties> addOns) {
 		final String[] columnNames = new String[] { getText("name"), getText("version"), getText("description"),
-		        getText("type"), getText("actions") };
+		        getText("actions") };
 		return new AddOnTableModel(columnNames, addOns);
 	}
 
@@ -275,8 +274,7 @@ public class ManageAddOnsDialog extends JDialog {
 		columnModel.getColumn(1).setPreferredWidth(40);
 		// FIXME: set tooltip
 		columnModel.getColumn(2).setPreferredWidth(270);
-		columnModel.getColumn(3).setPreferredWidth(40);
-		columnModel.getColumn(4).setPreferredWidth(300);
+		columnModel.getColumn(3).setPreferredWidth(300);
 		JButton[] btns = new JButton[] { createButton(AddOnProperties.OP_CONFIGURE) //
 		        , createButton(AddOnProperties.OP_DEACTIVATE) //
 		        , createButton(AddOnProperties.OP_ACTIVATE) //
@@ -287,7 +285,7 @@ public class ManageAddOnsDialog extends JDialog {
 		        , createActivateAction(tableModel) //
 		        , createDeinstallAction(tableModel) //
 		};
-		new ButtonsInCellRenderer(table, btns, actions, 4);
+		new ButtonsInCellRenderer(table, btns, actions, 3);
 		return table;
 	}
 
