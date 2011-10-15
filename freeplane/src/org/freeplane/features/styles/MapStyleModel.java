@@ -24,6 +24,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -42,7 +43,9 @@ import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapReader;
+import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -119,7 +122,10 @@ public class MapStyleModel implements IExtension {
 		final Reader styleReader = new StringReader(styleMapStr);
 		NodeModel root;
         try {
-	        root = mapReader.createNodeTreeFromXml(styleMap, styleReader, Mode.FILE);
+        	Map<Object, Object> hints = new HashMap<Object, Object>();
+        	hints.put(Hint.MODE, Mode.FILE);
+        	hints.put(NodeBuilder.FOLDING_LOADED, Boolean.TRUE);
+			root = mapReader.createNodeTreeFromXml(styleMap, styleReader, hints);
 			styleMap.setRoot(root);
 			insertStyleMap(parentMap, styleMap);
 			if(styleNodes.get(DEFAULT_STYLE) != null

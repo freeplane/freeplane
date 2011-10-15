@@ -19,8 +19,8 @@
  */
 package org.freeplane.features.map;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementDOMHandler;
@@ -38,7 +38,7 @@ public class NodeBuilder implements IElementDOMHandler {
 		String iconName;
 	}
 
-	protected static final String FOLDING_LOADED = "folding_loaded";
+	public static final String FOLDING_LOADED = "folding_loaded";
 	public static final String RESOURCES_ALWAYS_FOLD_ALL_AFTER_LOAD = "always_fold_all_after_load";
 	public static final String RESOURCES_ALWAYS_SAVE_FOLDING = "always_save_folding";
 	public static final String RESOURCES_ALWAYS_UNFOLD_ALL_AFTER_LOAD = "always_unfold_all_after_load";
@@ -173,7 +173,7 @@ public class NodeBuilder implements IElementDOMHandler {
 				return nodeCount;
 			}
 
-			public void readingCompleted(final NodeModel topNode, final HashMap<String, String> newIds) {
+			public void readingCompleted(final NodeModel topNode, final Map<String, String> newIds) {
 				if (!Mode.FILE.equals(mapReader.getCurrentNodeTreeCreator().getHint(Hint.MODE))) {
 					return;
 				}

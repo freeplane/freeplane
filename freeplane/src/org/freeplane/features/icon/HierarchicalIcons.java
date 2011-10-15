@@ -20,7 +20,7 @@
  */
 package org.freeplane.features.icon;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeSet;
 
 
@@ -176,7 +176,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		setStyleRecursive(updatedNode);
 	}
 
-	public void readingCompleted(final NodeModel topNode, final HashMap<String, String> newIds) {
+	public void readingCompleted(final NodeModel topNode, final Map<String, String> newIds) {
 		if (!topNode.containsExtension(getClass()) && !topNode.getMap().getRootNode().containsExtension(getClass())) {
 			return;
 		}
