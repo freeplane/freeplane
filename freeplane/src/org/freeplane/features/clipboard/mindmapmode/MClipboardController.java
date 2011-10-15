@@ -22,6 +22,7 @@ package org.freeplane.features.clipboard.mindmapmode;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -35,6 +36,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import javax.swing.text.ElementIterator;
@@ -66,6 +69,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.n3.nanoxml.XMLException;
+import org.freeplane.view.swing.features.filepreview.ExternalResource;
 
 /**
  * @author Dimitry Polivaev
@@ -377,6 +381,45 @@ public class MClipboardController extends ClipboardController {
 		}
 	}
 
+    private class ImageFlavorHandler implements IDataFlavorHandler {
+    	final private BufferedImage image;
+
+        public ImageFlavorHandler(BufferedImage image) {
+	        super();
+	        this.image = image;
+        }
+
+        public DataFlavor getDataFlavor() {
+            return DataFlavor.imageFlavor;
+        }
+
+		public void paste(NodeModel target, boolean asSibling, boolean isLeft) {
+			final ModeController modeController = Controller.getCurrentModeController();
+			final MMapController mapController = (MMapController) modeController.getMapController();
+            File mindmapFile = target.getMap().getFile();
+            if(mindmapFile == null) {
+                UITools.errorMessage(TextUtils.getRawText("map_not_saved"));
+            }
+			final String mmFileName = mindmapFile.getName();
+			final String fileNameTemplate = mmFileName.substring(0, mmFileName.lastIndexOf('.')) + "_";
+			//file that we'll save to disk.
+            File file;
+            try {
+	            File tempFile = File.createTempFile(fileNameTemplate, ".jpg", mindmapFile.getParentFile());
+	            String imgfilepath=tempFile.getAbsolutePath();
+	            file = new File(imgfilepath);
+	            ImageIO.write(image, "jpg", file);
+				final NodeModel node = mapController.newNode(file.getName(), target.getMap());
+				final ExternalResource extension = new ExternalResource();
+				extension.setUri(file.toURI());
+				node.addExtension(extension);
+				mapController.insertNode(node, target, asSibling, isLeft, isLeft);
+            }
+            catch (IOException e) {
+	            e.printStackTrace();
+            }
+        }
+    }
 	private static final Pattern HEADER_REGEX = Pattern.compile("h(\\d)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern HREF_PATTERN = Pattern
 	    .compile("<html>\\s*<body>\\s*<a\\s+href=\"([^>]+)\">(.*)</a>\\s*</body>\\s*</html>");
@@ -494,6 +537,16 @@ public class MClipboardController extends ClipboardController {
 			try {
 				final String plainTextFromClipboard = t.getTransferData(DataFlavor.stringFlavor).toString();
 				return new StringFlavorHandler(plainTextFromClipboard);
+			}
+			catch (final UnsupportedFlavorException e) {
+			}
+			catch (final IOException e) {
+			}
+		}
+		if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
+			try {
+				BufferedImage image = (BufferedImage) t.getTransferData(DataFlavor.imageFlavor);
+				return new ImageFlavorHandler(image);
 			}
 			catch (final UnsupportedFlavorException e) {
 			}
