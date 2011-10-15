@@ -389,11 +389,7 @@ public class MClipboardController extends ClipboardController {
 	        this.image = image;
         }
 
-        public DataFlavor getDataFlavor() {
-            return DataFlavor.imageFlavor;
-        }
-
-		public void paste(NodeModel target, boolean asSibling, boolean isLeft) {
+        public void paste(NodeModel target, boolean asSibling, boolean isLeft) {
 			final ModeController modeController = Controller.getCurrentModeController();
 			final MMapController mapController = (MMapController) modeController.getMapController();
             File mindmapFile = target.getMap().getFile();
@@ -603,6 +599,16 @@ public class MClipboardController extends ClipboardController {
 			try {
 				final List<File> fileList = castToFileList(t.getTransferData(MindMapNodesSelection.fileListFlavor));
 				handlerList.add(new FileListFlavorHandler(fileList));
+			}
+			catch (final UnsupportedFlavorException e) {
+			}
+			catch (final IOException e) {
+			}
+		}
+		if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
+			try {
+				BufferedImage image = (BufferedImage) t.getTransferData(DataFlavor.imageFlavor);
+				handlerList.add(new ImageFlavorHandler(image));
 			}
 			catch (final UnsupportedFlavorException e) {
 			}
