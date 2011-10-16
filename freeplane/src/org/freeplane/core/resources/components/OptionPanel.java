@@ -48,7 +48,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.mindmapmode.MModeController;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.ButtonBarFactory;
@@ -162,10 +161,9 @@ public class OptionPanel {
 	}
 	
 	private boolean validate() {
-		MModeController modeController = (MModeController) Controller.getCurrentModeController();
 		final Properties properties = getOptionProperties();
 		final ValidationResult result = new ValidationResult();
-		for (IValidator validator : modeController.getOptionPanelBuilder().getOptionValidators()) {
+		for (IValidator validator : Controller.getCurrentController().getOptionValidators()) {
 			result.add(validator.validate(properties));
 		}
 		if (!result.isValid()) {
