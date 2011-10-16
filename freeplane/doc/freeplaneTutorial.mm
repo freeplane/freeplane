@@ -4,7 +4,7 @@
     <attribute_name VISIBLE="true" NAME="See also"/>
     <attribute_name VISIBLE="true" NAME="a2"/>
 </attribute_registry>
-<node LOCALIZED_STYLE_REF="default" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1316297581597" VGAP="0" BACKGROUND_COLOR="#00ff66">
+<node LOCALIZED_STYLE_REF="default" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1316297581597" VGAP="10" BACKGROUND_COLOR="#00ff66">
 <icon BUILTIN="bee"/>
 <richcontent TYPE="NODE">
 <html>
@@ -44,6 +44,10 @@
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.details"/>
 <stylenode LOCALIZED_TEXT="defaultstyle.note"/>
+<stylenode LOCALIZED_TEXT="defaultstyle.floating">
+<edge STYLE="hide_edge"/>
+<cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
+</stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right">
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000">
@@ -107,8 +111,8 @@
 </map_styles>
 </hook>
 <hook NAME="FirstGroupNode"/>
-<node TEXT="Introduction" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1316341192794" BACKGROUND_COLOR="#00cc33" NUMBERED="true" VSHIFT="90">
-<node TEXT="Goal" STYLE_REF="Consumer" ID="ID_1074607965" CREATED="1314422854653" MODIFIED="1316201000520" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#What_is_Mind_Mapping">
+<node TEXT="Introduction" STYLE_REF="Beginner" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1316341192794" BACKGROUND_COLOR="#00cc33" NUMBERED="true" VSHIFT="90">
+<node TEXT="Goal" STYLE_REF="Consumer" ID="ID_1074607965" CREATED="1314422854653" MODIFIED="1318717380851">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -116,15 +120,16 @@
   </head>
   <body>
     <p>
-      This mind map gives you an overview of&#160;&#160;the major structure and functionality of Freeplane. It is not meant to present best practices applying Freeplane or to be a tutorial. For a tutorial and best pracices, click the red arrow to go to the Wiki <i>Tutorial Freeplane.</i>&#160;If you want to know more about the details, visit the Documentation in&#160;&#160;menu <i>Help</i>&#160;of Freeplane.
+      This mind map gives you an overview of&#160;&#160;the major structure and functionality of Freeplane. It is not meant to present best practices applying Freeplane or to be a tutorial. Click <a href="freeplaneApplications.mm">here</a>&#160;for an overview of application areas.
     </p>
     <p>
-      
+      &#160;For a tutorial and best pracices, visit the <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane">Wiki Tutorial Freeplane</a><i>.</i>&#160;If you want to know more about the details, visit the Documentation in&#160;&#160;menu <i>Help</i>&#160;of Freeplane.
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="Reading guide" STYLE_REF="Consumer" ID="ID_195004053" CREATED="1316097186850" MODIFIED="1316959717505" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Meeting_support">
+<node TEXT="Reading guide" STYLE_REF="Consumer" ID="ID_195004053" CREATED="1316097186850" MODIFIED="1318625451389" COLOR="#ffffff">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -138,7 +143,7 @@
       
     </p>
     <p>
-      The chapters after the Introduction are worth reading because of the following reason. In Freeplane the same result can be reached in a number of ways. Using the Freeplane menu generally is not the fastest and most effcient way. The different chapters cover all of the functionality and show what is the most efficient way of doing using socalled context menus. You do not need to read the chapters in order, but can pick the things you are needing at the moment. To help you pick the information is color coded, with the following meaning:<br/>
+      The chapters after the Introduction are worth reading for the following reason. In Freeplane the same result can be reached in a number of ways. Using the Freeplane menu generally is not the fastest and most effcient way. The different chapters cover all of the functionality and show what is the most efficient way of doing using socalled context menus. You do not need to read the chapters in order, but can pick the things you are needing at the moment. To help you pick the information is color coded, with the following meaning:<br/>
     </p>
     <ol>
       <li>
@@ -152,16 +157,8 @@
       </li>
     </ol>
     <p>
-      <font color="#ff0000">Click the red arrow to go to the Internet. You will see two examples for respectively the beginning and advanced user. You can also view an introductory video animation for the beginning user.</font>
+      <font color="#ff0000">Click </font><a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Meeting_support"><font color="#0000ff">here</font></a><font color="#ff0000">&#160;to go to the Internet. You will see two examples for respectively the beginning and advanced user. You can also view an introductory video animation for the beginning user.</font>
     </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="NOTE">
-<html>
-  <head>
-    
-  </head>
-  <body>
   </body>
 </html></richcontent>
 </node>
@@ -1077,7 +1074,7 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Moving" STYLE_REF="Beginner" ID="ID_1560992291" CREATED="1314248654564" MODIFIED="1316151509453" NUMBERED="true">
+<node TEXT="Moving" STYLE_REF="Beginner" FOLDED="true" ID="ID_1560992291" CREATED="1314248654564" MODIFIED="1316151509453" NUMBERED="true">
 <node TEXT="Moving a connected node in space" STYLE_REF="Beginner" ID="ID_293115184" CREATED="1314249849956" MODIFIED="1317135700260" HGAP="40" VSHIFT="40">
 <richcontent TYPE="DETAILS">
 <html>
@@ -1205,7 +1202,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Making and moving a free positionable node" STYLE_REF="Advanced" ID="ID_128387683" CREATED="1317135703793" MODIFIED="1317755339840" VGAP="0" HGAP="40" VSHIFT="-20">
+<node TEXT="Making and moving a free floating node" STYLE_REF="Advanced" ID="ID_128387683" CREATED="1317135703793" MODIFIED="1318622580303" VGAP="0" HGAP="40" VSHIFT="-20">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -1219,13 +1216,13 @@
       
     </p>
     <p>
-      A new, free node can be generated by double-clicking a free place of the mind map. The newly generated free node will have the default properties <i>rectangular cloud</i>&#160;and <i>hidden edge</i>. These properties can be changed in the usual way to e.g. no-cloud and visible edge.
+      A new, free node can be generated by double-clicking a free place of the mind map. The newly generated free node will have the system&#160;&#160;style <i>Free floating node</i>, with properties <i>rectangular cloud</i>&#160;and <i>hidden edge</i>. These properties can be changed in the usual way to e.g. no-cloud and visible edge. It is invisibly connetcted to the root.
     </p>
     <p>
       
     </p>
     <p>
-      An existing node can be turned into a free node by selecting it and choosing &#160;<i>Edit-&gt;Free positioned node (set/reset).</i>&#160;In this case the properties of the node (edge, cloud)&#160;&#160;stay as they are. You can set the properties for cloud and hidden edge in the usual way . The freed node initially appears near the root node and can be moved from there to any desired position by dragging its (blue) oval handle. Moving a free positioned node onto another parent / sibling by usual drag and drop cancels its free positioned status.
+      An existing node can be turned into a free node by selecting it and choosing &#160;<i>Edit-&gt;Free positioned node (set/reset).</i>&#160;In this case the properties of the node (edge, cloud, folding)&#160;&#160;stay as they are. You can set the properties for cloud and hidden edge in the usual way . The freed node initially appears near the node it is invisibly connected to and can be moved from there to any desired position by dragging its (blue) oval handle. Moving a free floating node onto another parent / sibling by usual drag and drop cancels its free positioned status.
     </p>
     <p>
       
@@ -1236,12 +1233,9 @@
     <p>
       A free node made by clicking a free space of the mind map is connected to the root node, also if the connecting edge is invisible. This explains why a child node of this free node, if moved onto the upper half of its parent free node, shifts towards the root node.
     </p>
-    <p>
-      
-    </p>
   </body>
 </html></richcontent>
-<node TEXT="Free positionable node" ID="ID_1757242560" CREATED="1317754595087" MODIFIED="1317754786500" HGAP="310" VSHIFT="-1">
+<node TEXT="Free floating node" LOCALIZED_STYLE_REF="defaultstyle.floating" ID="ID_1757242560" CREATED="1317754595087" MODIFIED="1318622228756" HGAP="310" VSHIFT="-1">
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
@@ -1405,7 +1399,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Hyperlinking" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_114835202" CREATED="1314284617264" MODIFIED="1317748985721" NUMBERED="true" TEXT_SHORTENED="true">
+<node TEXT="Hyperlinking" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_114835202" CREATED="1314284617264" MODIFIED="1318617976123" NUMBERED="true" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -1413,26 +1407,79 @@
   </head>
   <body>
     <p>
-      A dynamic link (hyperlink) is an electronic connection from a source node to a destination object. The destination can be a directory, file, web page, application, e-mail etc. The connection is click-able. It appears as a red arrow (external hyperlink), a green arrow (internal hyperlink) or an underlined text (in-line link).
-    </p>
-    <p>
-      &#160;It is possible to have one so-called arrow-link or email link pro node core. Besides it is possible to have multiple in-line links. Besides Node details and Note can only have (multiple) in-line links.
+      A dynamic link (hyperlink) is an electronic connection from a source node to a destination object. The destination can be a directory, file, web page, application, e-mail etc. The connection is click-able. The link appears as an underlined text, or as a red or green arrow. The&#160;red arrow connects to an external address or an e-mail address. The green arrow connects to an internal address (other node). The underlined text can represent both. There can be multiple underlined hyperlinks in each node. There can only be one arrow-link or e-mail address pro node. The arrow-icon is shown in the Node core. Besides there can be hyperlinks in socalled attributes.
     </p>
   </body>
 </html></richcontent>
-<node TEXT="Red arrow in node core, external hyperlink  (drag and drop)" STYLE_REF="Beginner" ID="ID_640110372" CREATED="1286651969385" MODIFIED="1317747819758">
-<attribute_layout NAME_WIDTH="82" VALUE_WIDTH="161"/>
-<richcontent TYPE="DETAILS">
+<node STYLE_REF="Beginner" ID="ID_241324782" CREATED="1315336877701" MODIFIED="1318618936689">
+<richcontent TYPE="NODE">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      The easiest way to add a hyperlink or group of hyperlinks to external objects, is by drag and drop.
+      <a href="https://sourceforge.net/apps/phpbb/freeplane/viewforum.php?f=1">Underlined hyperlinks</a>
+    </p>
+  </body>
+</html></richcontent>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To define an underlined hyperlink, first open the text dialog for&#160;&#160;Node core, Node details or Note. Then type and select the piece of text to which the link applies. And finally select&#160;&#160;in the Edit menu of the dialog window <i>Add hyperlink (choose)...</i>&#160;or <i>Add or modify hyperlink (type)</i>. In the latter case you can&#160;&#160;type the address of the hyperlink or you can paste a copied address by pressing Ctr + V. Example link: <a href="https://sourceforge.net/apps/phpbb/freeplane/viewforum.php?f=1"><i><font color="#ff0000">This</font></i>&#160;link</a>&#160;brings you to the Freeplane Open Forum.
     </p>
     <p>
-      Dropping a copy of a directory, file, file or web address will generate a child node of the selected node with a hyperlink. The target address of the hyperlink is contained in the title. This text may be removed ar altered without changing the dynamics of the hyperlink itself.
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        To change the text of the hyperlink, simply retype it. This will not alter the hyperlink address.
+      </li>
+      <li>
+        To change the address of the hyperlink, select the whole underlined text and then choose again <i>Add hyperlink (choose)...</i>&#160;or <i>Add or modify hyperlink (type).</i>
+      </li>
+      <li>
+        There can be multiple underlined hyperlinks in one Node core, Node details or Note field.
+      </li>
+      <li>
+        If the text is unformatted, or is formatted with the properties panel, the links are blue. If the text is formatted with the menu's of the edit-dialog, it has the color and size set in this dialog.
+      </li>
+      <li>
+        To remove the address and the text of an underlined hyperlink, delete all underlined text of the hyperlink. To delete only the address, leaving the text:
+
+        <ul>
+          <li>
+            select the underlined text
+          </li>
+          <li>
+            Choose Edit &gt; Add or modify hyperlink (type)..
+          </li>
+          <li>
+            Delete the address in the dialog that opens.
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Red arrow-link (drag and drop)" STYLE_REF="Beginner" ID="ID_640110372" CREATED="1286651969385" MODIFIED="1318619003160" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane">
+<attribute_layout NAME_WIDTH="82" VALUE_WIDTH="161"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      An hyperlink to an address outside the map can be created by right-clicking a node and selecting <i>Link</i>. However, the easiest way to add a hyperlink or group of hyperlinks to external objects, is by drag and drop. Dropping a copy of a directory, file, file or web address will generate a child node of the selected node with a hyperlink. The target address of the hyperlink is contained in the title. This text may be removed ar changed without changing the dynamics of the hyperlink itself.
     </p>
     <p>
       
@@ -1446,29 +1493,9 @@
     <p>
       To edit the target address of the hyperlink, right-click the node containing the link and choose <i>Links &gt; Add or modify hyperlink (type)...</i>&#160;In the dialog that opens you can&#160;edit the address. With <i>Ctrl + V</i>&#160;a copied adress can be pasted in the entry field.
     </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Green arrow in node core, internal hyperlink between nodes" STYLE_REF="Beginner" ID="ID_1942100751" CREATED="1314360169447" MODIFIED="1317747772381">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
     <p>
-      A hyperlink from one node to another, which when clicked moves the focus to the other node, is called a local hyperlink. This link appears as a green arrow. It can be set by selecting two nodes, then right-clicking one of them while keeping <i>Ctrl</i>&#160;pressed, and then choosing menu <i>Links &gt; Local hyperlink. </i>
+      
     </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Remove arrow-link or e-mail link" STYLE_REF="Beginner" ID="ID_1464441556" CREATED="1310047903960" MODIFIED="1317746972770">
-<richcontent TYPE="DETAILS" HIDDEN="true">
-<html>
-  <head>
-    
-  </head>
-  <body>
     <p>
       To remove a hyperlink (arrow-link) or e-mail address, right-click the node and:
     </p>
@@ -1483,7 +1510,34 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Email link" STYLE_REF="Advanced" ID="ID_869144882" CREATED="1270892460675" MODIFIED="1316119948924" LINK="mailto:%20jokro@freeplane.nl">
+<node TEXT="Green arrow-link" STYLE_REF="Beginner" ID="ID_1942100751" CREATED="1314360169447" MODIFIED="1318619029010" LINK="#ID_86446891">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      A hyperlink from one node to another node (local hyperlink) can be created by selecting two nodes, then right-clicking one of them while keeping <i>Ctrl</i>&#160;pressed, and then choosing menu <i>Links &gt; Local hyperlink. </i>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      To remove a hyperlink (arrow-link) or e-mail address, right-click the node and:
+    </p>
+    <ul>
+      <li>
+        select <i>Add or modify hyperlink (type)... </i>or press<i>&#160;Ctrl + K; </i>and
+      </li>
+      <li>
+        delete the text in the text field ( the address)
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Email link" STYLE_REF="Advanced" ID="ID_869144882" CREATED="1270892460675" MODIFIED="1318619052886" LINK="mailto:%20jokro@freeplane.nl">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -1504,46 +1558,21 @@
         <i>mailto:emailaddress</i><br/>&#160;e.g. mailto:jokro@freeplane.nl
       </li>
     </ul>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="In-line hyperlinks in Node core, Node details or Note" STYLE_REF="Advanced" ID="ID_241324782" CREATED="1315336877701" MODIFIED="1317748310146">
-<richcontent TYPE="DETAILS" HIDDEN="true">
-<html>
-  <head>
-    
-  </head>
-  <body>
     <p>
-      It is possible to have multiple in-line links in Node core, Node details, or Note. First open the text dialog for&#160;&#160;Node core, Node details or Note. Then type and select the piece of text to which the link applies. And finally select&#160;&#160;in the Edit menu of the dialog window <i>Add hyperlink (choose)...</i>&#160;or <i>Add or modify hyperlink (type)</i>. In the latter case you can&#160;&#160;type the address of the hyperlink or you can paste a copied address by pressing Ctr + V. Example: Press <a href="https://sourceforge.net/apps/phpbb/freeplane/viewforum.php?f=1">Ctrl-click this link</a>&#160;to go to the Freeplane Open Forum.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      The hyperlink is not displayed by a green or red arrow, but by an underlining.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b>Note</b>
+      To remove a hyperlink (arrow-link) or e-mail address, right-click the node and:
     </p>
     <ul>
       <li>
-        Contrary to the arrow-link, you can have more than one link.
+        select <i>Add or modify hyperlink (type)... </i>or press<i>&#160;Ctrl + K; </i>and
       </li>
       <li>
-        You can retype the text of the hyperlink, without altering the hyperlink.
-      </li>
-      <li>
-        To change the address of the hyperlink, select the whole underlined text and then choose again <i>Add hyperlink (choose)...</i>&#160;or <i>Add or modify hyperlink (type).</i>
+        delete the text in the text field ( the address)
       </li>
     </ul>
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Hyperlink to menu item" STYLE_REF="Professional" ID="ID_350080162" CREATED="1314359739019" MODIFIED="1316151649463">
+<node TEXT="Hyperlink to menu item" STYLE_REF="Professional" ID="ID_350080162" CREATED="1314359739019" MODIFIED="1318619075256">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -1551,8 +1580,22 @@
   </head>
   <body>
     <p>
-      You can also connect the menu item to a node, so that clicking the node will activate the menu item. To connect a node directly to a menu item, right-click the node and choose <i>Link&#160;&#160;&gt; Add hyperlink to menu item...</i>
+      You can also connect the menu item to a node, so that clicking the node will activate the menu item. To connect a node directly to a menu item, right-click the node and choose <i>Link&#160;&#160;&gt; Add hyperlink to menu item... </i>
     </p>
+    <p>
+      
+    </p>
+    <p>
+      To remove a hyperlink (arrow-link) or e-mail address, right-click the node and:
+    </p>
+    <ul>
+      <li>
+        select <i>Add or modify hyperlink (type)... </i>or press<i>&#160;Ctrl + K; </i>and
+      </li>
+      <li>
+        delete the text in the text field ( the address)
+      </li>
+    </ul>
   </body>
 </html></richcontent>
 </node>
@@ -2085,7 +2128,7 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Notes of nodes" STYLE_REF="Advanced" FOLDED="true" POSITION="left" ID="ID_274601394" CREATED="1314208248182" MODIFIED="1316155713741" NUMBERED="true">
+<node TEXT="Notes of nodes" STYLE_REF="Advanced" FOLDED="true" POSITION="left" ID="ID_274601394" CREATED="1314208248182" MODIFIED="1318611967525" NUMBERED="true" VSHIFT="10">
 <node TEXT="Special kind of details" STYLE_REF="Advanced" ID="ID_144627544" CREATED="1316155598364" MODIFIED="1316496823916">
 <richcontent TYPE="DETAILS">
 <html>
@@ -2117,7 +2160,7 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Node extensions" STYLE_REF="Advanced" FOLDED="true" POSITION="left" ID="ID_143196514" CREATED="1314206563418" MODIFIED="1317221210311" NUMBERED="true" VSHIFT="10">
+<node TEXT="Node extensions" STYLE_REF="Advanced" FOLDED="true" POSITION="left" ID="ID_143196514" CREATED="1314206563418" MODIFIED="1318611994872" NUMBERED="true">
 <node TEXT="Edit text in node details" STYLE_REF="Advanced" ID="ID_898889730" CREATED="1314197390735" MODIFIED="1316876591745">
 <richcontent TYPE="DETAILS">
 <html>
@@ -2145,7 +2188,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Show text in tool tip (hover text)" STYLE_REF="Advanced" ID="ID_288274844" CREATED="1314206958207" MODIFIED="1317221657969">
+<node TEXT="Show text in tool tip (hover text)" STYLE_REF="Advanced" ID="ID_288274844" CREATED="1314206958207" MODIFIED="1318607821033">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -2159,7 +2202,7 @@
       
     </p>
     <p>
-      To prepare a node for hovering,&#160;right-click the node and choose<i>&#160; Show text in tool tip </i>to hide the node core text. To restore the non-hidden state, click choose<i>&#160;Show text in tool tip&#160;</i>again<i>. </i>
+      To prepare a node for hovering,&#160;right-click the node and choose<i>&#160; Minimize node </i>to hide all information except the first part of the node core text. To restore the non-hidden state, click choose<i>&#160;Minimize node&#160;</i>again<i>. </i>
     </p>
     <p>
       
@@ -2178,7 +2221,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Image in node details" STYLE_REF="Advanced" FOLDED="true" ID="ID_575269438" CREATED="1314215157545" MODIFIED="1316455832699">
+<node TEXT="Image in node details" STYLE_REF="Advanced" FOLDED="true" ID="ID_575269438" CREATED="1314215157545" MODIFIED="1318607963695">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -2202,7 +2245,7 @@
         You cannot move the position of the image within the node. There is more to learn about (other types of)&#160;&#160;images and about publishing and sharing mind maps with images in the Freeplane documentation.
       </li>
       <li>
-        A details image is hidden when by <i>Hide and set as hovertext.&#160;</i>An image which is hidden this way does not show when hovering!
+        A details image is hidden when by <i>Minimize node.&#160;</i>An image which is hidden this way does not show when hovering (in the tool tip)!
       </li>
     </ul>
   </body>
@@ -3603,8 +3646,35 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Best practices" STYLE_REF="Beginner" FOLDED="true" POSITION="left" ID="ID_722085722" CREATED="1314363768463" MODIFIED="1316341201514" BACKGROUND_COLOR="#00cc33" NUMBERED="true" VSHIFT="-10">
-<node TEXT="Click the arrow to go to the Wiki" STYLE_REF="BeginnerTopic" ID="ID_163805859" CREATED="1314422714136" MODIFIED="1316167494151" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#What_is_Mind_Mapping"/>
+<node TEXT="Best practices" STYLE_REF="Beginner" FOLDED="true" POSITION="left" ID="ID_722085722" CREATED="1314363768463" MODIFIED="1318621405078" BACKGROUND_COLOR="#00cc33" NUMBERED="true" VSHIFT="-10">
+<node STYLE_REF="BeginnerTopic" ID="ID_163805859" CREATED="1314422714136" MODIFIED="1318621208383">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Click <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Examples">here</a>&#160;to go to the Wiki
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Best practices" STYLE_REF="Beginner" FOLDED="true" ID="ID_623872163" CREATED="1314363768463" MODIFIED="1316341201514" BACKGROUND_COLOR="#00cc33" NUMBERED="true" VSHIFT="-10">
+<node STYLE_REF="BeginnerTopic" ID="ID_191006668" CREATED="1314422714136" MODIFIED="1318621208383">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Click <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Examples">here</a>&#160;to go to the Wiki
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
 </node>
 </node>
 </map>

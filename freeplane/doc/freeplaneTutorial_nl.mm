@@ -4,7 +4,7 @@
     <attribute_name VISIBLE="true" NAME="See also"/>
     <attribute_name VISIBLE="true" NAME="a2"/>
 </attribute_registry>
-<node STYLE_REF="Introduction" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1316703313972" VGAP="0" BACKGROUND_COLOR="#00ff99" STYLE="bubble">
+<node STYLE_REF="Introduction" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1316703313972" VGAP="10" BACKGROUND_COLOR="#00ff99" STYLE="bubble">
 <icon BUILTIN="bee"/>
 <richcontent TYPE="NODE">
 <html>
@@ -35,6 +35,10 @@
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.details"/>
 <stylenode LOCALIZED_TEXT="defaultstyle.note"/>
+<stylenode LOCALIZED_TEXT="defaultstyle.floating">
+<edge STYLE="hide_edge"/>
+<cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
+</stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right">
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000">
@@ -98,13 +102,8 @@
 </hook>
 <hook NAME="FirstGroupNode"/>
 <edge STYLE="bezier"/>
-<node TEXT="" POSITION="right" ID="ID_1040847136" CREATED="1317837524305" MODIFIED="1317837524352" HGAP="-176" VSHIFT="189">
-<edge STYLE="hide_edge"/>
-<hook NAME="FreeNode"/>
-<cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
-</node>
 <node TEXT="Inleiding" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1316342821057" BACKGROUND_COLOR="#00cc66" NUMBERED="true" VSHIFT="110">
-<node TEXT="Doel" STYLE_REF="Beginner" ID="ID_1309964220" CREATED="1314735478858" MODIFIED="1316345200426" LINK="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch">
+<node TEXT="Doel" STYLE_REF="Beginner" ID="ID_1309964220" CREATED="1314735478858" MODIFIED="1318619391797">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -112,10 +111,7 @@
   </head>
   <body>
     <p>
-      Deze mind map maakt geeft eenoverzicht van de mogelijkheden van Freeplane. De mindmap is niet bedoeld om te laten zien waarvoor je Freeplane allemaal kunt gebruiken. Als je hierover meer wilt weten klik dan op het rode pijltje om naar de Wiki van Freeplane te gaan. Wil je meer weten over de technische mogelijkeheden, raadpleeg dan via het menu <i>Help</i>&#160;van Freeplane de Freeplane documentatie.
-    </p>
-    <p>
-      
+      Deze mind map maakt geeft eenoverzicht van de mogelijkheden van Freeplane. De mindmap is niet bedoeld om te laten zien waarvoor je Freeplane allemaal kunt gebruiken. Als je hierover meer wilt weten klik dan <a href="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch"><b>hier</b></a><b>&#160;</b>&#160;&#160;om naar de Wiki van Freeplane te gaan. Wil je meer weten over de technische mogelijkeheden, raadpleeg dan via het menu <i>Help</i>&#160;van Freeplane de Freeplane documentatie.
     </p>
   </body>
 </html></richcontent>
@@ -1275,7 +1271,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Een vrije knoop maken en verplaatsen" STYLE_REF="Gevorderde" ID="ID_363670846" CREATED="1317136338338" MODIFIED="1317755178567" VGAP="0">
+<node TEXT="Een vrije knoop maken en verplaatsen" STYLE_REF="Gevorderde" ID="ID_363670846" CREATED="1317136338338" MODIFIED="1318623111896" VGAP="0">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -1283,13 +1279,19 @@
   </head>
   <body>
     <p>
-      Een vrije of vrij-beweegbare knoop is een knoop die kan worden verplaatst zonder dat dit de positie van de andere knopen beinvloedt. Een vrij beweegbare knoop is te herkennen aan een blauw gevuld ovaaltje in plaats van een rood open ovaaltje waaraan de knoop kan worden versleept.
+      Een vrije beweegbare knoop of vrije knoop is een knoop die kan worden verplaatst zonder dat dit de positie van de andere knopen beinvloedt. Een vrije knoop is te herkennen aan een blauw gevuld ovaaltje in plaats van een rood open ovaaltje waaraan de knoop kan worden versleept.
     </p>
     <p>
       
     </p>
     <p>
-      Een vrije knoop kan worden gemaakt door op een vrije plek van de mindmap te dubbelklikken. De nieuw gegenereerde knoop krijgt als standaard eigenschappen een wolk en een verborgen tak (lijn). Een bestaande knoop kan worden omgezet in een vrije knoop (en v.v.) door de knoop te selecteren en <i>Edit&#160;&#160;&gt; Vrij beweegbare knoop</i>&#160;te kiezen. In dit geval wordt niet automatisch een wolk toegevoegd of de tak verborgen.&#160;&#160;De knoop wordt op zijn ouder geplaatst en kan vandaar naar elke positie worden bewogen.
+      Een vrije knoop kan worden gemaakt door op een vrije plek van de mindmap te dubbelklikken. De nieuw gegenereerde knoop krijgt als standaard de systeemstijl <i>Vrije knoop</i>&#160;met als eigenschappen een wolk en een verborgen tak (lijn). De knoop is onzichtbaar verbonden met de stamknoop.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Een bestaande knoop kan worden omgezet in een vrije knoop (en v.v.) door de knoop te selecteren en <i>Edit&#160;&#160;&gt; Vrij beweegbare knoop</i>&#160;te kiezen. In dit geval wordt niet automatisch een wolk toegevoegd of de tak verborgen.&#160;&#160;De knoop wordt op zijn ouder geplaatst en kan vandaar naar elke positie worden bewogen. Als de ouder wordt dichtgevouwen, wordt de vrije knoop onzichtbaar.
     </p>
     <p>
       
@@ -1299,7 +1301,7 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="Vrije knoop" ID="ID_1957899877" CREATED="1317754935782" MODIFIED="1317755035187" HGAP="260" VSHIFT="-1">
+<node TEXT="Vrije knoop" LOCALIZED_STYLE_REF="defaultstyle.floating" ID="ID_1957899877" CREATED="1317754935782" MODIFIED="1318622778426" HGAP="260" VSHIFT="-1">
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
@@ -1452,7 +1454,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Koppelingen maken" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_114835202" CREATED="1314284617264" MODIFIED="1317748880078" NUMBERED="true" TEXT_SHORTENED="true">
+<node TEXT="Koppelingen maken" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_114835202" CREATED="1314284617264" MODIFIED="1318619748320" NUMBERED="true" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -1460,26 +1462,64 @@
   </head>
   <body>
     <p>
-      Een dynamische koppeling is een electronische verbinding van een bronknoop naar een bestemming. De bestemming kan een map, bestand, webpagina, applicatie, e-mail, enz. zijn. De koppeling is in de bronknoop zichtbaar als een <b>rood pijltje</b>&#160;(externe&#160;hyperlink) of <b>groen pijltje</b>&#160;(interne snelkoppeling), <b>e-mail pictogram</b>, of onderstreepte tekst&#160;&#160;(<b>inline-koppeling</b>) en is klikbaar. In de knoopkern kan &#233;&#233;n pijl- of e-mail-hyperlink voorkomen en meerdere in-line koppelingen. In Knoopdetails en knoopnotitie kunnen alleen in-line koppelingen voorkomen.
+      Een dynamische koppeling is een electronische verbinding van een bronknoop naar een bestemming. De bestemming kan een map, bestand, webpagina, applicatie, e-mail, enz. zijn. De koppeling is in de bronknoop zichtbaar als onderstreepte tekst, een <b>rood pijltje</b>&#160;(externe&#160;hyperlink) of <b>groen pijltje</b>&#160;(interne snelkoppeling), <b>e-mail pictogram</b>. Een knoop kan meerdere onderstreepte hyperlinks hebben en &#233;&#233;n pijl- of e-mail-hyperlink. Daarnaast kunnen knoopattributen meerdere hyperlinks (&#233;&#233;n per attribuut) bevatten.
     </p>
   </body>
 </html></richcontent>
-<node TEXT="Hyperlink (rood pijltje) door klikken en slepen" STYLE_REF="Beginner" ID="ID_640110372" CREATED="1286651969385" MODIFIED="1316294795038">
-<attribute_layout NAME_WIDTH="82" VALUE_WIDTH="161"/>
-<richcontent TYPE="DETAILS">
+<node STYLE_REF="Beginner" ID="ID_241324782" CREATED="1315336877701" MODIFIED="1318620808254">
+<richcontent TYPE="NODE">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      De eenvoudigste manier om een hyperlink te maken is als volgt: Klik op een een bestand, map, webadres of e-mail en sleep deze vervolgens naar een knoop (drag en drop). Als je de muis-toets loslaat dan wordt een kindknoop gemaakt met daarin de hyperlink naar de bestemming. In de knoop is het adres van de bestemming ook als tekst opgenomen. Deze tekst mag je weghalen of vervangen door een andere. Het pijltje blijft daarbij staan.
+      <a href="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch">Onderstreepte koppeling</a>
+    </p>
+  </body>
+</html></richcontent>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      In de knoopkern, knoopdetails en in een Notitie kun je een koppeling naar een interne of externe bestemming maken zolas je dit in bijvoorbeeld Word doet. Je opent de knoop in een venster, selecteert een tekstdeel en kiest in het menu van het bewerkingsvenster <i>Bewerken &gt; Kiezen koppeling</i>&#160;of <i>&#160;Bewerken.&gt; Koppeling typen of wijzigen.</i>&#160; In het venster dat opent kun je het adres van de koppeling typen of een gekopieerd adres te plakken door op <i>Ctrl + V </i>te drukken..
     </p>
     <p>
       
     </p>
     <p>
-      Je kunt ook meerdere bestemmingen tegelijk selecteren en slepen. Er worden dan meerdere kindknopen gevormd met in elke kindknoop &#233;&#233;n hyperlink.
+      <b>Opmerking</b>
+    </p>
+    <ul>
+      <li>
+        De tekst van de koppeling kan worden bewerkt zonder dat de link (het adres) verandert. Met de menus van het dialoogvenster kan de formattering (kleur, grootte) worden gewijzigd.
+      </li>
+      <li>
+        Het adres van de link kan worden bewerkt door de hele onderstreepte tekst te selecteren en dan <i>Bewerken.&gt; Koppeling typen of wijzigen </i>te kiezen.&#160;
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Pijl-hyperlink (rood pijltje)" STYLE_REF="Beginner" ID="ID_640110372" CREATED="1286651969385" MODIFIED="1318620496519" LINK="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch">
+<attribute_layout NAME_WIDTH="82" VALUE_WIDTH="161"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een pijl-hyperlink kan worden gemaakt door te rechtsklikken op een knoop en Link te kiezen. Het is echter makkelijker om een pijl-link als volgt te maken: Klik op een een bestand, map, webadres of e-mail en sleep deze vervolgens naar een knoop (drag en drop). Als je de muis-toets loslaat dan wordt een kindknoop gemaakt met daarin de hyperlink naar de bestemming. In de knoop is het adres van de bestemming ook als tekst opgenomen. Deze tekst mag je weghalen of vervangen door een andere. Het pijltje blijft daarbij staan.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Je kunt ook meerdere bestemmingen tegelijk selecteren en slepen. Er worden dan meerdere kindknopen gevormd met in elke kindknoop &#233;&#233;n pijl-hyperlink.
     </p>
     <p>
       
@@ -1487,29 +1527,9 @@
     <p>
       Om een bestemmingsadres te <b>wijzigen</b>, rechtsklik op de knoop met de koppeling en kies<i>&#160;Koppeling &gt; Typen of wijzigen koppeling</i>. Wijzig vervolgens het adres. Zo nodig kan met <i>Ctrl-V</i>&#160;kan een gekopieerd adres in het tekstveld worden geplakt.
     </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Snelkoppeling tussen twee knopen" STYLE_REF="Beginner" ID="ID_1942100751" CREATED="1314360169447" MODIFIED="1316294929785">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
     <p>
-      Een koppeling&#160;&#160;tussen twee knopen is als een groen pijltje zichtbaar in &#233;&#233;n van beide knopen, de bronknoop. Als op het pijltje wordt geklikt verschuift de focus naar de andere knoop. Deze koppeling kan worden ingesteld door met <i>Ctrl</i>&#160;ingedrukt eerst de bronknoop en dan de bestemmingsknoop te selecteren. Kies vervolgens, met beide knopen geselecteerd, menu <i>Knoopkenmerken &gt; Koppeling &gt; Snelkoppeling naar andere knoop</i>.
+      
     </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Koppeling (arrow, email) verwijderen" STYLE_REF="Beginner" ID="ID_1464441556" CREATED="1310047903960" MODIFIED="1316295007606">
-<richcontent TYPE="DETAILS" HIDDEN="true">
-<html>
-  <head>
-    
-  </head>
-  <body>
     <p>
       Om een koppeling te verwijderen:
     </p>
@@ -1524,7 +1544,34 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Email koppeling" STYLE_REF="Gevorderde" ID="ID_869144882" CREATED="1270892460675" MODIFIED="1316294963833" LINK="mailto:%20jokro@freeplane.nl">
+<node TEXT="Pijl-snelkoppeling (groen pijltje)" STYLE_REF="Beginner" ID="ID_1942100751" CREATED="1314360169447" MODIFIED="1318620505770" LINK="#ID_86446891">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een koppeling&#160;&#160;tussen twee knopen is als een groen pijltje zichtbaar in &#233;&#233;n van beide knopen, de bronknoop. Als op het pijltje wordt geklikt verschuift de focus naar de andere knoop. Deze koppeling kan worden ingesteld door met <i>Ctrl</i>&#160;ingedrukt eerst de bronknoop en dan de bestemmingsknoop te selecteren. Kies vervolgens, met beide knopen geselecteerd, menu <i>Knoopkenmerken &gt; Koppeling &gt; Snelkoppeling naar andere knoop</i>.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Om een koppeling te verwijderen:
+    </p>
+    <ul>
+      <li>
+        kies <i>Koppeling &gt; Koppeling typen of wijzigen... </i>of druk<i>&#160;Ctrl + K; en</i>
+      </li>
+      <li>
+        verwijder de tekst (het adres) in het tekstveld
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Email koppeling" STYLE_REF="Gevorderde" ID="ID_869144882" CREATED="1270892460675" MODIFIED="1318620534583" LINK="mailto:%20jokro@freeplane.nl">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -1554,6 +1601,20 @@
         <i>mailto:emailaddress </i>Voorbeeld:&#160; <i>mailto:jokro@freeplane.nl</i>
       </li>
     </ul>
+    <p>
+      
+    </p>
+    <p>
+      Om een koppeling te verwijderen:
+    </p>
+    <ul>
+      <li>
+        kies <i>Koppeling &gt; Koppeling typen of wijzigen... </i>of druk<i>&#160;Ctrl + K; en</i>
+      </li>
+      <li>
+        verwijder de tekst (het adres) in het tekstveld
+      </li>
+    </ul>
   </body>
 </html></richcontent>
 </node>
@@ -1571,43 +1632,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="In-line koppeling" STYLE_REF="Gevorderde" ID="ID_241324782" CREATED="1315336877701" MODIFIED="1317749266155">
-<richcontent TYPE="DETAILS" HIDDEN="true">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      In de knoopkern, knoopdetails en in een Notitie kun je een koppeling naar een interne of externe bestemming maken zolas je dit in bijvoorbeeld Word doet. Je opent de knoop in een venster, selecteert een tekstdeel en kiest in het menu van het bewerkingsvenster <i>Bewerken &gt; Kiezen koppeling</i>&#160;of <i>&#160;Bewerken.&gt; Koppeling typen of wijzigen.</i>&#160; In het venster dat opent kun je het adres van de koppeling typen of een gekopieerd adres te plakken door op <i>Ctrl + V </i>te drukken. Voorbeeld: <a href="http://www.kioo.nl/fp">deze link</a>&#160;gaat naar Internet.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      De koppeling wordt niet door een pijljte maar door een onderstreping aangegeven.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b>Opmerking</b>
-    </p>
-    <ul>
-      <li>
-        In tegenstelling tot de pijltje-koppeling kunnen per veld meerdere koppelingen worden gedefinieerd.
-      </li>
-      <li>
-        De tekst van de koppeling kan worden bewerkt zonder dat de link vernaderd.
-      </li>
-      <li>
-        Het adres van de link kan worden bewerkt door de hele onderstreepte tekst te selecteren en dan <i>Bewerken.&gt; Koppeling typen of wijzigen </i>te kiezen.&#160;
-      </li>
-    </ul>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Koppeling naar menu item" STYLE_REF="Professional" ID="ID_350080162" CREATED="1314359739019" MODIFIED="1316295033407">
+<node TEXT="Koppeling naar menu item" STYLE_REF="Professional" ID="ID_350080162" CREATED="1314359739019" MODIFIED="1318620555659">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -1618,8 +1643,19 @@
       Een bijzondere vorm van een sneltoets is een knoop die je kunt klikken om een specifiek menu item te kiezen. Kies <i>Knoopkenmerken &gt; Koppeling &gt; Snelkoppeling naar menutoegang</i>&#160;om deze link te definieren.
     </p>
     <p>
-      <i>.</i>
+      <i>. </i>
     </p>
+    <p>
+      Om een koppeling te verwijderen:
+    </p>
+    <ul>
+      <li>
+        kies <i>Koppeling &gt; Koppeling typen of wijzigen... </i>of druk<i>&#160;Ctrl + K; en</i>
+      </li>
+      <li>
+        verwijder de tekst (het adres) in het tekstveld
+      </li>
+    </ul>
   </body>
 </html></richcontent>
 </node>
@@ -3639,8 +3675,7 @@
       Spellingcontrole is standaard voor Engels ingesteld. Voor het Nederlands moet de woordenlijst worden opgehaald van Internet. Klik op het rode pijltje. Download het bestand dictionary_nl.ortho. En bewaar dit bestand in Extra &gt; Gebruikersdirectory &gt; Resources/Ortho. &#160;Raadpleeg verder de Handleiding Freeplane.
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node TEXT="Scientific suite (Docear)" STYLE_REF="Professional" ID="ID_170927482" CREATED="1316706324268" MODIFIED="1317222002886" LINK="http://docear.org/details.php">
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -3680,8 +3715,35 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Voorbeelden" STYLE_REF="Beginner" FOLDED="true" POSITION="left" ID="ID_722085722" CREATED="1314363768463" MODIFIED="1316342834130" BACKGROUND_COLOR="#00cc66" NUMBERED="true" HGAP="30" VSHIFT="-80">
-<node TEXT="Klik op het pijltje om naar de wiki met voorbeelden op Internet te gaan" ID="ID_1610683606" CREATED="1315075717144" MODIFIED="1315075752175" LINK="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch"/>
+<node TEXT="Voorbeelden" STYLE_REF="Beginner" FOLDED="true" POSITION="left" ID="ID_722085722" CREATED="1314363768463" MODIFIED="1318624874799" BACKGROUND_COLOR="#00cc66" NUMBERED="true" VSHIFT="-80">
+<node ID="ID_1610683606" CREATED="1315075717144" MODIFIED="1318620924766">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Klik <a href="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch"><b>hier</b></a>&#160;om naar de wiki met voorbeelden op Internet te gaan
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Voorbeelden" STYLE_REF="Beginner" FOLDED="true" ID="ID_1633743457" CREATED="1314363768463" MODIFIED="1316342834130" BACKGROUND_COLOR="#00cc66" NUMBERED="true" HGAP="30" VSHIFT="-80">
+<node ID="ID_1212233815" CREATED="1315075717144" MODIFIED="1318620924766">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Klik <a href="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch"><b>hier</b></a>&#160;om naar de wiki met voorbeelden op Internet te gaan
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
 </node>
 </node>
 </map>
