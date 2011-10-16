@@ -4,6 +4,8 @@
 Better support for hyperlinks in editor dialog 
 Links can be accessed from inline editor and tooltips
 Free positioned nodes
+Minimal node width
+Paste of images from clipboard
 
 ===============================
 1.2.8 alpha
