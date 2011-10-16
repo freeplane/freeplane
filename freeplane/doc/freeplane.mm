@@ -145,6 +145,10 @@
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.details"/>
 <stylenode LOCALIZED_TEXT="defaultstyle.note"/>
+<stylenode LOCALIZED_TEXT="defaultstyle.floating">
+<edge STYLE="hide_edge"/>
+<cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
+</stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" FOLDED="true" POSITION="right">
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000">
@@ -1475,8 +1479,7 @@
       On the Freeplane wiki separe support pages exist for different operating systems.
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <node TEXT="Freeplane&apos;s homepage" ID="ID_916980386" CREATED="1270892460631" MODIFIED="1271530957733" LINK="http://freeplane.sourceforge.net">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
@@ -1557,7 +1560,7 @@
 </node>
 <node TEXT="Portable Freeplane" ID="ID_252894978" CREATED="1317904658613" MODIFIED="1317904669815"/>
 </node>
-<node TEXT="Install" FOLDED="true" ID="Freeplane_Link_1822195277" CREATED="1270892460697" MODIFIED="1310903701338" TEXT_SHORTENED="true">
+<node TEXT="Install" ID="Freeplane_Link_1822195277" CREATED="1270892460697" MODIFIED="1310903701338" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -1694,6 +1697,59 @@
         Standardly only node properties are indexed, not content. The above procedure also adds the content to the filtering mechanism
       </li>
     </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Personalized system icons" ID="ID_1121692870" CREATED="1318534739168" MODIFIED="1318535378334">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      All system icons can be replaced by personalized items.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      In de freeplane directory,
+    </p>
+    <ul>
+      <li>
+        Open the freeplane system files and locate the files freeplaneeditar.jar and freeplaneviewe.jar.
+      </li>
+      <li>
+        rename these files into freeplaneeditar.zip and freeplaneviewe.zip
+      </li>
+      <li>
+        Extract both zip directories.
+      </li>
+      <li>
+        find in each extracted directory the image directory, here you find all icon files.
+      </li>
+      <li>
+        find the name of the icon you want to replace
+      </li>
+    </ul>
+    <p>
+      Now open in Freeplane menu Tools &gt; Open user directory
+    </p>
+    <ul>
+      <li>
+        make or open directory resources/images
+      </li>
+      <li>
+        save the new icon with the name you found above
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <p>
+      Resart Freeplane. The new system icon should be shown in stead of the old.
+    </p>
   </body>
 </html></richcontent>
 </node>
@@ -6379,8 +6435,7 @@
       A free node made by clicking a free space of the mind map is connected to the root node, also if the connecting edge is invisible. This explains why a child node of this free node, if moved onto the upper half of its parent free node, shifts towards the root node.
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node TEXT="Reset start position [Reset position]" ID="ID_1003048503" CREATED="1306060582988" MODIFIED="1317404357750" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -8923,8 +8978,7 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Hoover text (tool tip)" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1599182564" CREATED="1315733540501" MODIFIED="1315733592293">
-<node TEXT="Show details  [Toggle Details]" ID="ID_734978433" CREATED="1291155323140" MODIFIED="1315981211094" TEXT_SHORTENED="true">
+<node TEXT="Hide details  [Toggle Details]" ID="ID_734978433" CREATED="1291155323140" MODIFIED="1318607128532" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -8951,7 +9005,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Display hover text (tool tip) [Display Tool Tips for Nodes ]" FOLDED="true" ID="ID_152459666" CREATED="1310673142140" MODIFIED="1314889396380" TEXT_SHORTENED="true">
+<node TEXT="Tool tips" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1599182564" CREATED="1315733540501" MODIFIED="1318607345794">
+<node TEXT="Display tool tips" ID="ID_152459666" CREATED="1310673142140" MODIFIED="1318607339351" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
