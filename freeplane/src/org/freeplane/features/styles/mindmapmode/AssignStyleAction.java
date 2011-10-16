@@ -35,7 +35,7 @@ import org.freeplane.features.styles.StyleNamedObject;
  * @author Dimitry Polivaev
  * 28.09.2009
  */
-@SelectableAction(checkOnNodeChange = true)
+@SelectableAction(checkOnPopup = true)
 public class AssignStyleAction extends AMultipleNodeAction {
 	final private IStyle style;
 
