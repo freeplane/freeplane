@@ -23,9 +23,9 @@ import java.awt.Color;
 import java.awt.Point;
 import java.io.IOException;
 import java.net.URI;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
@@ -75,7 +75,7 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 	 * Completes the links within the getMap(). They are registered in the
 	 * registry.
 	 */
-	public void readingCompleted(final NodeModel topNode, final HashMap<String, String> newIds) {
+	public void readingCompleted(final NodeModel topNode, final Map<String, String> newIds) {
 		final Iterator<NodeLinkModel> iterator = arrowLinks.iterator();
 		while (iterator.hasNext()) {
 			final NodeLinkModel arrowLink = iterator.next();

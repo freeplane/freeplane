@@ -69,7 +69,7 @@ class RedoAction extends AFreeplaneAction implements INodeChangeListener{
 	}
 
 	public void reset() {
-		final MMapModel map = (MMapModel) Controller.getCurrentController().getMap();
+		final MapModel map = Controller.getCurrentController().getMap();
 		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
 		undoHandler.resetRedo();
 		setEnabled(false);

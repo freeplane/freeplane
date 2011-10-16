@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
+import javax.swing.plaf.LabelUI;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.View;
 import javax.swing.text.html.HTMLDocument;
@@ -147,6 +148,10 @@ public class ZoomableLabel extends JLabel {
 	public ZoomableLabel() {
 		setUI(ZoomableLabelUI.createUI(this));
 	}
+
+	@Override
+    public void updateUI() {
+    }
 
 	@Override
 	public FontMetrics getFontMetrics(final Font font) {

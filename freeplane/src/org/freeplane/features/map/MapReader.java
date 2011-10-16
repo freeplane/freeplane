@@ -22,6 +22,7 @@ package org.freeplane.features.map;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.ReadManager;
@@ -39,15 +40,19 @@ import org.freeplane.n3.nanoxml.XMLException;
 public class MapReader implements IElementDOMHandler {
 	public class NodeTreeCreator {
 		private MapModel createdMap;
-		private final HashMap<Object, Object> hints;
+		private final Map<Object, Object> hints;
 		private NodeModel mapChild = null;
-		private final HashMap<String, String> newIds;
+		private final Map<String, String> newIds;
 
 		public NodeTreeCreator() {
+			this(new HashMap<Object, Object>());
+		}
+
+		public NodeTreeCreator(Map<Object, Object> hints) {
 			super();
 			newIds = new HashMap<String, String>();
-			hints = new HashMap<Object, Object>();
-		}
+			this.hints = hints;
+        }
 
 		public NodeModel create(final Reader pReader) throws XMLException {
 			final NodeTreeCreator oldNodeTreeCreator = nodeTreeCreator;
@@ -103,6 +108,10 @@ public class MapReader implements IElementDOMHandler {
 			hints.put(key, value);
 		}
 
+		public void putHints(Map<? extends Object, ? extends Object> m) {
+	        hints.putAll(m);
+        }
+
 		NodeModel getMapChild() {
 			return mapChild;
 		}
@@ -133,13 +142,18 @@ public class MapReader implements IElementDOMHandler {
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 		return nodeTreeCreator.getCreatedMap();
 	}
-
+	
 	public NodeModel createNodeTreeFromXml(final MapModel map, final Reader pReader, final Mode mode)
+	        throws IOException, XMLException {
+		final Map<Object, Object> hints = new HashMap<Object, Object>(1);
+		hints.put(Hint.MODE, mode);
+		return createNodeTreeFromXml(map, pReader, hints);
+	}
+	public NodeModel createNodeTreeFromXml(final MapModel map, final Reader pReader, final Map<Object, Object> hints)
 	        throws IOException, XMLException {
 		final NodeTreeCreator oldNodeTreeCreator = nodeTreeCreator;
 		try {
-			nodeTreeCreator = new NodeTreeCreator();
-			nodeTreeCreator.setHint(Hint.MODE, mode);
+			nodeTreeCreator = new NodeTreeCreator(hints);
 			final NodeModel topNode = nodeTreeCreator.createNodeTreeFromXml(map, pReader);
 			return topNode;
 		}

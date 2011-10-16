@@ -139,8 +139,7 @@ class ScriptingRegistration {
 		final URL preferences = this.getClass().getResource("preferences.xml");
 		if (preferences == null)
 			throw new RuntimeException("cannot open preferences");
-		MModeController modeController = (MModeController) Controller.getCurrentModeController();
-		modeController.getOptionPanelBuilder().addValidator(new IValidator() {
+		Controller.getCurrentController().addOptionValidator(new IValidator() {
 			public ValidationResult validate(Properties properties) {
 				final ValidationResult result = new ValidationResult();
 				final String readAccessString = properties
@@ -160,6 +159,7 @@ class ScriptingRegistration {
 				return result;
 			}
 		});
+		final MModeController modeController = (MModeController) Controller.getCurrentModeController();
 		modeController.getOptionPanelBuilder().load(preferences);
 	}
 

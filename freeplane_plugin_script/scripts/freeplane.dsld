@@ -1,0 +1,28 @@
+(enclosingScript()).accept {
+    provider = 'Freeplane'
+
+    property name: 'c', type: 'org.freeplane.plugin.script.proxy.Proxy.Controller'
+    property name: 'node', type: 'org.freeplane.plugin.script.proxy.Proxy.Node'
+    property name: 'logger', type: 'org.freeplane.core.util.LogUtils'
+    property name: 'ui', type: 'org.freeplane.core.ui.components.UITools'
+    property name: 'htmlUtils', type: 'org.freeplane.core.util.HtmlUtils'
+    property name: 'textUtils', type: 'org.freeplane.core.util.TextUtils'
+    property name: 'config', type: 'org.freeplane.plugin.script.FreeplaneScriptBaseClass.ConfigProperties'
+
+    method name: 'N',
+        type: 'org.freeplane.plugin.script.proxy.Proxy.Node',
+        params: [id: 'java.lang.String'],
+        doc: 'returns the node with the given id or null if not available'
+    method name: 'T',
+        type: 'java.lang.String',
+        params: [id: 'java.lang.String'],
+        doc: 'returns the text of the node with the given id or null if the node is not available'
+    method name: 'V',
+        type: 'java.lang.Object',
+        params: [id: 'java.lang.String'],
+        doc: 'returns the value of the node with the given id or null if the node is not available'
+    method name: 'ifNull',
+        type: 'java.lang.Object',
+        params: [value: 'java.lang.String', valueIfNull: 'java.lang.Object'],
+        doc: 'returns valueIfNull if value is null and value otherwise'
+}

@@ -85,7 +85,8 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				public void endElement(Object parent, String tag, Object element, XMLElement dom) {
 					final NodeModel node = (NodeModel) parent;
 					final MapStyleModel mapStyleModel = MapStyleModel.getExtension(node);
-					loadConditionalStyles(mapStyleModel.getConditionalStyleModel(), dom);
+					if(mapStyleModel != null)
+						loadConditionalStyles(mapStyleModel.getConditionalStyleModel(), dom);
 				}
 				});
 

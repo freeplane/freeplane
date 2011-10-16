@@ -18,6 +18,7 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.clipboard.mindmapmode.MClipboardController;
+import org.freeplane.features.encrypt.Base64Coding;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.FormattedNumber;
@@ -297,6 +298,11 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	// NodeRO: R
+	public byte[] getBinary() {
+		return Base64Coding.decode64(getDelegate().getText().replaceAll("\\s", ""));
+	}
+
+	// NodeRO: R
 	public String getFormat() {
 		final NodeModel nodeModel = getDelegate();
 		final String format = TextController.getController().getNodeFormat(nodeModel);
@@ -432,6 +438,11 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	public void setDateTime(final Date date) {
 		final MTextController textController = (MTextController) TextController.getController();
 		textController.setNodeObject(getDelegate(), createDefaultFormattedDateTime(date));
+	}
+
+	// Node: R/W
+	public void setBinary(final byte[] data) {
+		setObject(Base64Coding.encode64(data).replaceAll("(.{74})", "$1\n"));
 	}
 
 	public void setFormat(final String format) {
