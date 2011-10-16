@@ -24,6 +24,7 @@ import java.awt.Frame;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.swing.JFrame;
@@ -33,6 +34,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
@@ -95,11 +97,14 @@ public class FreeplaneStarter {
 	private ApplicationViewController viewController;
 	/** allows to disable loadLastMap(s) if there already is a second instance running. */
 	private boolean dontLoadLastMaps;
+	final private boolean firstRun;
 	public static final String DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR = "resources";
 	public static final String ORG_FREEPLANE_GLOBALRESOURCEDIR = "org.freeplane.globalresourcedir";
 
 	public FreeplaneStarter() {
 		super();
+		final File userPreferencesFile = ApplicationResourceController.getUserPreferencesFile();
+		firstRun = !userPreferencesFile.exists();
 		new UserPropertiesUpdater().importOldProperties();
 		applicationResourceController = new ApplicationResourceController();
 	}
@@ -210,7 +215,12 @@ public class FreeplaneStarter {
 		if (!alwaysLoadLastMaps && !dontLoadLastMaps) {
 			applicationResourceController.getLastOpenedList().openMapsOnStart();
 		}
-		
+		if(firstRun && ! dontLoadLastMaps){
+			final File baseDir = new File(FreeplaneStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();
+			final String map = ResourceController.getResourceController().getProperty("first_start_map");
+			final File absolutFile = ConfigurationUtils.getLocalizedFile(baseDir, map, Locale.getDefault().getLanguage()); 
+			loadMaps(controller, new String[]{absolutFile.getAbsolutePath()});
+		}
 		if (null != controller.getMap()) {
 			return;
 		}

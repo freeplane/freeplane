@@ -12,7 +12,7 @@
     </p>
   </body>
 </html></richcontent>
-<hook NAME="MapStyle" max_node_width="600">
+<hook NAME="MapStyle" max_node_width="600" min_node_width="1">
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node">
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
@@ -78,13 +78,12 @@
   <body>
     <img src="freeplaneApplications.png"/>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <edge STYLE="hide_edge" COLOR="#ff00ff" WIDTH="3"/>
 <hook NAME="FreeNode"/>
 <cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
 </node>
-<node TEXT="Brainstorm" LOCALIZED_STYLE_REF="defaultstyle.floating" FOLDED="true" POSITION="right" ID="ID_747441325" CREATED="1317963460911" MODIFIED="1318527253116" HGAP="200" VSHIFT="-159">
+<node TEXT="Brainstorm" LOCALIZED_STYLE_REF="defaultstyle.floating" FOLDED="true" POSITION="right" ID="ID_747441325" CREATED="1317963460911" MODIFIED="1318790603145" HGAP="200" VSHIFT="-159">
 <icon BUILTIN="family"/>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -102,7 +101,7 @@
   </body>
 </html></richcontent>
 <edge COLOR="#ff0000" WIDTH="3"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="36" FONT_FAMILY="Script MT Bold" DESTINATION="ID_1380673058" MIDDLE_LABEL="Think it" STARTINCLINATION="250;0;" ENDINCLINATION="199;-51;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="36" FONT_FAMILY="Script MT Bold" DESTINATION="ID_1380673058" MIDDLE_LABEL="Think it" STARTINCLINATION="96;-107;" ENDINCLINATION="201;-215;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
 <node TEXT="central topic" ID="ID_1607807952" CREATED="1318450079927" MODIFIED="1318450164274">
 <edge STYLE="linear"/>
 <node TEXT="with" ID="ID_1232722180" CREATED="1318450103144" MODIFIED="1318450108729"/>
@@ -258,8 +257,7 @@
       <a href="freeplaneTutorial.mm#ID_1047570728">Remember</a>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="FreeNode"/>
 <edge COLOR="#00ffff" WIDTH="3"/>
 </node>
@@ -349,8 +347,7 @@
       <a href="http://www.kioo.nl/freeplane/CoreMeeting">Beginner</a>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node TEXT="Advanced" ID="ID_1404449457" CREATED="1317972719278" MODIFIED="1318589115142">
 <icon BUILTIN="ksmiletris"/>
