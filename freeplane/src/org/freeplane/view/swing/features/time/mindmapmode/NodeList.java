@@ -659,12 +659,18 @@ class NodeList {
 			final String text = nodeHolder.node.getText();
 			final String replaceResult;
 			final String literalReplacement = useRegexInReplace.isSelected() ? replacement : Matcher.quoteReplacement(replacement);
-			if (HtmlUtils.isHtmlNode(text)) {
-				replaceResult = NodeList.replace(p, text,literalReplacement);
-			}
-			else {
-				replaceResult = p.matcher(text).replaceAll(literalReplacement);
-			}
+			try {
+	            if (HtmlUtils.isHtmlNode(text)) {
+	            	replaceResult = NodeList.replace(p, text,literalReplacement);
+	            }
+	            else {
+	            	replaceResult = p.matcher(text).replaceAll(literalReplacement);
+	            }
+            }
+            catch (Exception e) {
+    			UITools.errorMessage(TextUtils.format("wrong_regexp", replacement, e.getMessage()));
+            	return;
+            }
 			if (!StringUtils.equals(text, replaceResult)) {
 				info.changeString(nodeHolder, replaceResult);
 			}

@@ -92,6 +92,7 @@
         <separator name="size_limits">        
             <number name="max_shortened_text_length"/>
             <number name="max_node_width"/>
+            <number name="min_node_width"/>
             <number name="toolTipManager.max_tooltip_width"/>
         </separator>
         <separator name="connectors">

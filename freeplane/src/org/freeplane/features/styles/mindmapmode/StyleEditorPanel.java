@@ -426,8 +426,6 @@ public class StyleEditorPanel extends JPanel {
 	private BooleanProperty mSetNodeShape;
 	private BooleanProperty mSetNodeFormat;
 	private BooleanProperty mSetStyle;
-	final private String[] sizes = new String[] { "2", "4", "6", "8", "10", "12", "14", "16", "18", "20", "22", "24",
-	        "30", "36", "48", "72" };
 	private final boolean addStyleBox;
 	private final MUIFactory uiFactory;
 	private final ModeController modeController;
@@ -584,8 +582,9 @@ public class StyleEditorPanel extends JPanel {
 	private void addFontSizeControl(final List<IPropertyControl> controls) {
 		mSetNodeFontSize = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetNodeFontSize);
-		final List<String> sizesVector = new ArrayList<String>(Arrays.asList(sizes));
+		final List<String> sizesVector = new ArrayList<String>(Arrays.asList(MUIFactory.FONT_SIZES));
 		mNodeFontSize = new ComboProperty(StyleEditorPanel.NODE_FONT_SIZE, sizesVector, sizesVector);
+		mNodeFontSize.setEditable(true);
 		controls.add(mNodeFontSize);
 		final FontSizeChangeListener listener = new FontSizeChangeListener(mSetNodeFontSize, mNodeFontSize);
 		mSetNodeFontSize.addPropertyChangeListener(listener);

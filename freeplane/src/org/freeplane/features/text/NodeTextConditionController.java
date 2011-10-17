@@ -162,14 +162,14 @@ class NodeTextConditionController implements IElementaryConditionController {
 	public static Object getItemForComparison(Object nodeItem, final NodeModel node) {
 		final Object result;
 		if(nodeItem.equals(TextController.FILTER_NODE)){
-			result = TextController.getController().getTransformedObject(node);
+			result = TextController.getController().getTransformedObjectNoThrow(node);
 		}
 		else if(nodeItem.equals(TextController.FILTER_PARENT)){
 			final NodeModel parentNode = node.getParentNode();
 			if(parentNode == null)
 				result = null;
 			else
-				result = TextController.getController().getTransformedObject(parentNode);
+				result = TextController.getController().getTransformedObjectNoThrow(parentNode);
 		}
 		else if(nodeItem.equals(TextController.FILTER_DETAILS)){
 			result = DetailTextModel.getDetailTextText(node);

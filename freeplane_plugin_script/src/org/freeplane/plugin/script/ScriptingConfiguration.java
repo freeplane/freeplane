@@ -26,6 +26,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -39,7 +42,12 @@ import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.main.addons.AddOnProperties;
+import org.freeplane.main.addons.AddOnProperties.AddOnType;
+import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
+import org.freeplane.plugin.script.addons.ScriptAddOnProperties;
+import org.freeplane.plugin.script.addons.ScriptAddOnProperties.Script;
 
 /**
  * scans for scripts to be registered via {@link ScriptingRegistration}.
@@ -52,6 +60,7 @@ class ScriptingConfiguration {
 		private final TreeMap<ExecutionMode, String> executionModeTitleKeyMap = new TreeMap<ExecutionMode, String>();
 		private boolean cacheContent = false;
 		private final String scriptName;
+		private ScriptingPermissions permissions;
 
 		ScriptMetaData(final String scriptName) {
 			this.scriptName = scriptName;
@@ -78,9 +87,9 @@ class ScriptingConfiguration {
 			executionModeLocationMap.clear();
 		}
 
-		public String getMenuLocation(ExecutionMode executionMode) {
+		public String getMenuLocation(final ExecutionMode executionMode, final String scriptsParentLocation) {
 			final String specialLocation = executionModeLocationMap.get(executionMode);
-			return specialLocation == null ? MENU_BAR_SCRIPTS_LOCATION + "/" + scriptName : specialLocation;
+			return specialLocation == null ? scriptsParentLocation + "/scripts" + "/" + scriptName : specialLocation;
 		}
 
 		public String getTitleKey(final ExecutionMode executionMode) {
@@ -99,10 +108,17 @@ class ScriptingConfiguration {
 		public String getScriptName() {
 			return scriptName;
 		}
+
+		public void setPermissions(ScriptingPermissions permissions) {
+			this.permissions = permissions;
+        }
+
+		public ScriptingPermissions getPermissions() {
+        	return permissions;
+        }
 	}
 
-	private static final String MENU_BAR_SCRIPTS_PARENT_LOCATION = "main_menu_scripting";
-	private static final String MENU_BAR_SCRIPTS_LOCATION = MENU_BAR_SCRIPTS_PARENT_LOCATION + "/scripts";
+	private static final String[] MENU_BAR_SCRIPTS_PARENT_LOCATIONS = {"main_menu_scripting", "node_popup_scripting"};
 	private static final String SCRIPT_REGEX = ".*\\.groovy$";
 	private static final String JAR_REGEX = ".*\\.jar$";
 	// or use property script_directories?
@@ -110,6 +126,7 @@ class ScriptingConfiguration {
 	private final TreeMap<String, String> nameScriptMap = new TreeMap<String, String>();
 	private final TreeMap<String, ScriptMetaData> nameScriptMetaDataMap = new TreeMap<String, ScriptMetaData>();
 	private ArrayList<String> classpath;
+	private File builtinScriptsDir;
 
 	ScriptingConfiguration() {
 		addPluginDefaults();
@@ -125,10 +142,27 @@ class ScriptingConfiguration {
 	}
 
 	private void initNameScriptMap() {
+		final Map<File, Script> addOnScriptMap = getAddOnScriptMap();
 		for (String dir : getScriptDirs()) {
-			addScripts(createFile(dir));
+			addScripts(createFile(dir), addOnScriptMap);
 		}
+		addScripts(getBuiltinScriptsDir(), addOnScriptMap);
 	}
+
+	public Map<File, ScriptAddOnProperties.Script> getAddOnScriptMap() {
+		List<AddOnProperties> installedAddOns = AddOnsController.getController().getInstalledAddOns();
+		Map<File, ScriptAddOnProperties.Script> result = new LinkedHashMap<File, ScriptAddOnProperties.Script>();
+		for (AddOnProperties addOnProperties : installedAddOns) {
+	        if (addOnProperties.getAddOnType() == AddOnType.SCRIPT) {
+	        	final ScriptAddOnProperties scriptAddOnProperties = (ScriptAddOnProperties) addOnProperties;
+	        	final List<Script> scripts = scriptAddOnProperties.getScripts();
+	        	for (Script script : scripts) {
+	        		result.put(script.file, script);
+                }
+	        }
+        }
+		return result;
+    }
 
 	private TreeSet<String> getScriptDirs() {
 		final ResourceController resourceController = ResourceController.getResourceController();
@@ -137,9 +171,16 @@ class ScriptingConfiguration {
 		if (dirsString != null) {
 			dirs.addAll(ConfigurationUtils.decodeListValue(dirsString, false));
 		}
-		final String rootDir = new File(resourceController.getResourceBaseDir()).getAbsoluteFile().getParent();
-		dirs.add(new File(rootDir, "scripts").getPath());
 		return dirs;
+	}
+
+	private File getBuiltinScriptsDir() {
+		if (builtinScriptsDir == null) {
+			final ResourceController resourceController = ResourceController.getResourceController();
+			final String rootDir = new File(resourceController.getResourceBaseDir()).getAbsoluteFile().getParent();
+			builtinScriptsDir = new File(rootDir, "scripts");
+		}
+		return builtinScriptsDir;
 	}
 
 	/**
@@ -155,10 +196,10 @@ class ScriptingConfiguration {
 	}
 
 	/** scans <code>dir</code> for script files matching a given rexgex. */
-	private void addScripts(final File dir) {
+	private void addScripts(final File dir, final Map<File, Script> addOnScriptMap) {
 		if (dir.isDirectory()) {
 			for (final File file : Arrays.asList(dir.listFiles(createFilenameFilter(SCRIPT_REGEX)))) {
-				addScript(file);
+				addScript(file, addOnScriptMap);
 			}
 		}
 		else {
@@ -175,15 +216,23 @@ class ScriptingConfiguration {
 		return filter;
 	}
 
-	private void addScript(final File file) {
-		String name = getScriptName(file);
+	private void addScript(final File file, final Map<File, Script> addOnScriptMap) {
+		final Script scriptConfig = addOnScriptMap.get(file);
+		final String scriptName = getScriptName(file, scriptConfig);
+		String name = scriptName;
+		// add suffix if the same script exists in multiple dirs
+		for (int i = 2; nameScriptMap.containsKey(name); ++i) {
+			name = scriptName + i;
+		}
 		try {
-			// add suffix if the same script exists in multiple dirs
-			for (int i = 2; nameScriptMap.containsKey(name); ++i) {
-				name = getScriptName(file) + i;
-			}
 			nameScriptMap.put(name, file.getAbsolutePath());
-			addMetaData(file, name);
+			final ScriptMetaData metaData = createMetaData(file, name, scriptConfig);
+			nameScriptMetaDataMap.put(name, metaData);
+			final File parentFile = file.getParentFile();
+			if (parentFile.equals(getBuiltinScriptsDir())) {
+				metaData.setPermissions(ScriptingPermissions.getPermissiveScriptingPermissions());
+//				metaData.setCacheContent(true);
+			}
 		}
 		catch (final IOException e) {
 			LogUtils.warn("problems with script " + file.getAbsolutePath(), e);
@@ -192,15 +241,14 @@ class ScriptingConfiguration {
 		}
 	}
 
-	private void addMetaData(final File file, final String name) throws IOException {
-		final String content = FileUtils.slurpFile(file);
-		final ScriptMetaData metaData = analyseScriptContent(content, name);
-		nameScriptMetaDataMap.put(name, metaData);
-		// TODO: read optionpanel stuff
+	private ScriptMetaData createMetaData(final File file, final String scriptName, final Script scriptConfig)
+	        throws IOException {
+		return scriptConfig == null ? analyseScriptContent(FileUtils.slurpFile(file), scriptName) //
+		        : createMetaData(scriptName, scriptConfig);
 	}
 
 	// not private to enable tests
-	ScriptMetaData analyseScriptContent(final String content, String scriptName) {
+	ScriptMetaData analyseScriptContent(final String content, final String scriptName) {
 		final ScriptMetaData metaData = new ScriptMetaData(scriptName);
 		if (ScriptingConfiguration.firstCharIsEquals(content)) {
 			// would make no sense
@@ -208,6 +256,15 @@ class ScriptingConfiguration {
 		}
 		setExecutionModes(content, metaData);
 		setCacheMode(content, metaData);
+		return metaData;
+	}
+	
+	private ScriptMetaData createMetaData(final String scriptName, final Script scriptConfig) {
+		final ScriptMetaData metaData = new ScriptMetaData(scriptName);
+		metaData.removeAllExecutionModes();
+		metaData.addExecutionMode(scriptConfig.executionMode, scriptConfig.menuLocation, scriptConfig.menuTitleKey);
+//		metaData.setCacheContent(true);
+		metaData.setPermissions(scriptConfig.permissions);
 		return metaData;
 	}
 
@@ -252,7 +309,9 @@ class ScriptingConfiguration {
 	}
 
 	/** some beautification: remove directory and suffix + make first letter uppercase. */
-	private String getScriptName(final File file) {
+	private String getScriptName(final File file, Script scriptConfig) {
+		if (scriptConfig != null)
+			return scriptConfig.menuTitleKey;
 		// TODO: we could add mnemonics handling here! (e.g. by reading '_' as '&')
 		String string = file.getName().replaceFirst("\\.[^.]+", "");
 		// fixup characters that might cause problems in menus
@@ -313,11 +372,11 @@ class ScriptingConfiguration {
 		}
 	}
 
-	public static String getScriptsParentLocation() {
-		return MENU_BAR_SCRIPTS_PARENT_LOCATION;
+	public static String[] getScriptsParentLocations() {
+		return MENU_BAR_SCRIPTS_PARENT_LOCATIONS;
 	}
 
-	public static String getScriptsLocation() {
-		return MENU_BAR_SCRIPTS_LOCATION;
+	public static String getScriptsLocation(String parentKey) {
+		return  parentKey + "/scripts";
 	}
 }

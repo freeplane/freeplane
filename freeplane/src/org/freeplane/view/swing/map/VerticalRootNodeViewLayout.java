@@ -19,10 +19,6 @@
  */
 package org.freeplane.view.swing.map;
 
-import javax.swing.JComponent;
-
-import org.freeplane.core.ui.components.UITools;
-
 /**
  * @author Dimitry Polivaev
  */
@@ -42,15 +38,5 @@ public class VerticalRootNodeViewLayout extends NodeViewLayoutAdapter {
 		calcLayout(true, layoutData);
 		calcLayout(false, layoutData);
 		placeChildren(layoutData);
-	}
-
-	public void layoutNodeMotionListenerView(final NodeMotionListenerView view) {
-		final NodeView movedView = view.getMovedView();
-		final JComponent content = movedView.getContent();
-		location.x = 0;
-		location.y = -LISTENER_VIEW_WIDTH;
-		UITools.convertPointToAncestor(content, location, view.getParent());
-		view.setLocation(location);
-		view.setSize(content.getWidth(), LISTENER_VIEW_WIDTH);
 	}
 }

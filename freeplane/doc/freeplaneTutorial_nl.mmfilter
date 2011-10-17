@@ -1,0 +1,14 @@
+<filter_conditions>
+	<disjunct_condition user_name="Beginner">
+        <style_equals_condition TEXT="Beginner"/>
+        <style_equals_condition TEXT="BeginnerOnderwerp"/>
+    </disjunct_condition>
+	<disjunct_condition user_name="Gevorderde">
+        <style_equals_condition TEXT="GevorderdeOnderwerp"/>
+        <style_equals_condition TEXT="Gevorderde"/>
+    </disjunct_condition>	
+    <disjunct_condition user_name="Professional">
+        <style_equals_condition TEXT="Professional"/>
+        <style_equals_condition TEXT="ProfessionalOnderwerp"/>
+    </disjunct_condition>
+</filter_conditions>

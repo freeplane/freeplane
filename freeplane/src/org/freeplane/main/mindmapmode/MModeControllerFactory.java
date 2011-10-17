@@ -19,8 +19,6 @@
  */
 package org.freeplane.main.mindmapmode;
 
-import java.awt.Component;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
@@ -30,13 +28,10 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.DelayedMouseListener;
 import org.freeplane.core.ui.IEditHandler;
-import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
 import org.freeplane.core.ui.components.FButtonBar;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
@@ -111,18 +106,16 @@ import org.freeplane.view.swing.features.filepreview.ViewerController;
 import org.freeplane.view.swing.features.nodehistory.NodeHistory;
 import org.freeplane.view.swing.features.progress.mindmapmode.ProgressFactory;
 import org.freeplane.view.swing.features.time.mindmapmode.ReminderHook;
-import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.ShowNotesInMapAction;
 import org.freeplane.view.swing.map.attribute.AttributePanelManager;
 import org.freeplane.view.swing.map.attribute.EditAttributesAction;
-import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 import org.freeplane.view.swing.ui.DefaultNodeKeyListener;
-import org.freeplane.view.swing.ui.DefaultNodeMouseMotionListener;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
-import org.freeplane.view.swing.ui.mindmapmode.MMouseMotionListener;
+import org.freeplane.view.swing.ui.mindmapmode.MMapMouseListener;
 import org.freeplane.view.swing.ui.mindmapmode.MNodeDragListener;
 import org.freeplane.view.swing.ui.mindmapmode.MNodeDropListener;
 import org.freeplane.view.swing.ui.mindmapmode.MNodeMotionListener;
+import org.freeplane.view.swing.ui.mindmapmode.MNodeMouseMotionListener;
 
 /**
  * @author Dimitry Polivaev 24.11.2008
@@ -199,38 +192,15 @@ public class MModeControllerFactory {
         else
             maxClickNumber = 1;
 		
-        final DelayedMouseListener nodeMouseMotionListener = new DelayedMouseListener( new DefaultNodeMouseMotionListener() {
-			public void mouseClicked(final MouseEvent e) {
-				if (wasFocused() && (e.getModifiers() & ~ (InputEvent.ALT_DOWN_MASK | InputEvent.ALT_MASK)) == InputEvent.BUTTON1_MASK) {
-					/* perform action only if one selected node. */
-					final MapController mapController = modeController.getMapController();
-					if (mapController.getSelectedNodes().size() != 1) {
-						return;
-					}
-					final MainView component = (MainView) e.getComponent();
-					if (component.isInFollowLinkRegion(e.getX())) {
-						LinkController.getController().loadURL(e);
-					}
-					else {
-						if (e.getClickCount() == 2 && !e.isControlDown() && !e.isShiftDown() && !e.isMetaDown()
-								&& !e.isPopupTrigger() && e.getButton() == MouseEvent.BUTTON1) {
-						    if(ResourceController.getResourceController().getBooleanProperty("start_editor_on_double_click")) {
-	                            final MTextController textController = (MTextController) MTextController.getController(modeController);
-	                            textController.getEventQueue().activate(e);
-							    textController.edit(FirstAction.EDIT_CURRENT, e.isAltDown());
-                            }
-							return;
-						}
-						final Component selectedComponent = controller.getViewController().getSelectedComponent();
-						final boolean isFocused = SwingUtilities.isDescendingFrom(e.getComponent(), selectedComponent);
-						if(isFocused){
-							mapController.toggleFolded(mapController.getSelectedNodes());
-						}
-					}
-					e.consume();
-				}
-			}
-		}, maxClickNumber, MouseEvent.BUTTON1);
+        final DelayedMouseListener nodeMouseMotionListener = new DelayedMouseListener( new MNodeMouseMotionListener(), maxClickNumber, MouseEvent.BUTTON1){
+        	public void mouseClicked(final MouseEvent e) {
+        		MNodeMouseMotionListener delegate = (MNodeMouseMotionListener)getDelegate();
+        		if(! delegate.wasFocused())
+        			delegate.mouseClicked(e);
+        		else
+        			super.mouseClicked(e);
+        	}
+        };
         userInputListenerFactory.setNodeMouseMotionListener(nodeMouseMotionListener);
         ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
             public void propertyChanged(String propertyName, String newValue, String oldValue) {
@@ -255,7 +225,8 @@ public class MModeControllerFactory {
 		EdgeController.install(new MEdgeController(modeController));
 		CloudController.install(new MCloudController(modeController));
 		NoteController.install(new MNoteController(modeController));
-		userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(new MMouseMotionListener()));
+		userInputListenerFactory.setMapMouseListener(new MMapMouseListener());
+//		userInputListenerFactory.setMapMouseListener(new DelayedMouseListener(new MMapMouseListener(), 2, 1));
 		final MTextController textController = new MTextController(modeController);
 		TextController.install(textController);
 		LinkController.install(new MLinkController());
@@ -314,7 +285,5 @@ public class MModeControllerFactory {
 		mapController.addNodeSelectionListener(uiFactory);
 		mapController.addMapChangeListener(uiFactory);
 		controller.getMapViewManager().addMapSelectionListener(uiFactory);
-		final MToolbarContributor menuContributor = new MToolbarContributor(uiFactory);
-		modeController.addMenuContributor(menuContributor);
 	}
 }

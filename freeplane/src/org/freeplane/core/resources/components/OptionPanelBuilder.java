@@ -27,9 +27,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.text.Collator;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
@@ -369,7 +367,6 @@ public class OptionPanelBuilder {
 	final private IPropertyControlCreator nextLineCreator;
 	final private ReadManager readManager;
 	final private IndexedTree tree;
-	private final List<IValidator> optionValidators = new ArrayList<IValidator>();
 
 	public OptionPanelBuilder() {
 		readManager = new ReadManager();
@@ -634,12 +631,4 @@ public class OptionPanelBuilder {
 			throw new RuntimeException(e);
 		}
 	}
-
-	public List<IValidator> getOptionValidators() {
-	    return optionValidators;
-    }
-
-	public void addValidator(IValidator validator) {
-		optionValidators.add(validator);
-    }
 }

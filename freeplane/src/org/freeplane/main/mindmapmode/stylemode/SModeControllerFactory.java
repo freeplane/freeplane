@@ -75,10 +75,9 @@ import org.freeplane.view.swing.map.MapViewController;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 import org.freeplane.view.swing.map.attribute.EditAttributesAction;
 import org.freeplane.view.swing.map.mindmapmode.MMapViewController;
-import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 import org.freeplane.view.swing.ui.DefaultNodeMouseMotionListener;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
-import org.freeplane.view.swing.ui.mindmapmode.MMouseMotionListener;
+import org.freeplane.view.swing.ui.mindmapmode.MMapMouseListener;
 
 /**
  * @author Dimitry Polivaev 24.11.2008
@@ -132,7 +131,7 @@ public class SModeControllerFactory {
 		FormatController.install(new FormatController());
 		ScannerController.install(new ScannerController());
 		modeController.addAction(new EditAttributesAction());
-		userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(new MMouseMotionListener()));
+		userInputListenerFactory.setMapMouseListener(new MMapMouseListener());
 		final JPopupMenu popupmenu = new JPopupMenu();
 		userInputListenerFactory.setNodePopupMenu(popupmenu);
 		final FreeplaneToolBar toolBar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);

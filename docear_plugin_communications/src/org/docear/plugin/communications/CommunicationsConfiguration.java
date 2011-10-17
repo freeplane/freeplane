@@ -58,7 +58,8 @@ public class CommunicationsConfiguration extends ALanguageController implements 
 		super();
 		
 		addPluginDefaults();
-		addPropertiesToOptionPanel();
+		addPropertiesToOptionPanel();		
+		
 		Controller.getCurrentController().getOptionPanelController().addButtonListener(this);
 		this.account = new DocearAccount();
 		AccountManager.registerAccount(account);

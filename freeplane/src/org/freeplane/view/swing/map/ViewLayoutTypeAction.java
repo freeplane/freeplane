@@ -19,6 +19,8 @@
  */
 package org.freeplane.view.swing.map;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -60,8 +62,19 @@ public class ViewLayoutTypeAction extends AFreeplaneAction {
 		final MapStyle mapStyle = (MapStyle) map.getModeController().getExtension(MapStyle.class);
 		mapStyle.setMapViewLayout(map.getModel(), map.getLayoutType());
 		map.anchorToSelected(map.getSelected(), 0.5f, 0.5f);
-		map.getRoot().updateAll();
+		final NodeView root = map.getRoot();
+		invalidate(root);
+		root.revalidate();
 	}
+
+	private void invalidate(final Component c) {
+		c.invalidate();
+		if(! (c instanceof Container))
+			return;
+		Container c2 = (Container) c;
+		for(int i = 0; i < c2.getComponentCount(); i++)
+			invalidate(c2.getComponent(i));
+    }
 
 	@Override
 	public void setSelected() {

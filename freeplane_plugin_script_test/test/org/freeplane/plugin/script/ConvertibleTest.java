@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.main.application.FreeplaneStarter;
 import org.freeplane.plugin.script.proxy.ConversionException;
@@ -35,8 +36,7 @@ public class ConvertibleTest {
 		// FIXME: we have to start Freeplane to create a Controller for script execution
 		System.setProperty("org.freeplane.nosplash", "true");
 		new FreeplaneStarter().createController();
-		// the package of this test is choosen in order to be allowed to access this method:
-		ScriptingEngine.setNoUserPermissionRequired(true);
+		ResourceController.getResourceController().setProperty(ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING, true);
 	}
 
 	@Test

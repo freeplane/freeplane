@@ -18,6 +18,7 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.clipboard.mindmapmode.MClipboardController;
+import org.freeplane.features.encrypt.Base64Coding;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.FormattedNumber;
@@ -25,6 +26,7 @@ import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
@@ -186,8 +188,8 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// NodeRO: R
 	public Convertible getDetails() {
-		return new ConvertibleText(getDelegate(), getScriptContext(),
-		    DetailTextModel.getDetailTextText(getDelegate()));
+		final String detailsText = DetailTextModel.getDetailTextText(getDelegate());
+		return (detailsText == null) ? null : new ConvertibleText(getDelegate(), getScriptContext(), detailsText);
 	}
 	
 	// NodeRO: R
@@ -296,6 +298,11 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	// NodeRO: R
+	public byte[] getBinary() {
+		return Base64Coding.decode64(getDelegate().getText().replaceAll("\\s", ""));
+	}
+
+	// NodeRO: R
 	public String getFormat() {
 		final NodeModel nodeModel = getDelegate();
 		final String format = TextController.getController().getNodeFormat(nodeModel);
@@ -366,6 +373,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
         final NodeModel parentNode = ((NodeProxy) parentNodeProxy).getDelegate();
         final NodeModel movedNode = getDelegate();
 		final MMapController mapController = (MMapController) getModeController().getMapController();
+		((FreeNode)Controller.getCurrentModeController().getExtension(FreeNode.class)).undoableDeactivateHook(movedNode);
 		mapController.moveNode(movedNode, parentNode, position, getDelegate().isLeft(), parentNode.isLeft() != movedNode.isLeft());
 	}
 
@@ -430,6 +438,11 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	public void setDateTime(final Date date) {
 		final MTextController textController = (MTextController) TextController.getController();
 		textController.setNodeObject(getDelegate(), createDefaultFormattedDateTime(date));
+	}
+
+	// Node: R/W
+	public void setBinary(final byte[] data) {
+		setObject(Base64Coding.encode64(data).replaceAll("(.{74})", "$1\n"));
 	}
 
 	public void setFormat(final String format) {

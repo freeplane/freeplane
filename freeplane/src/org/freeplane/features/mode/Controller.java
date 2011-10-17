@@ -21,9 +21,11 @@ package org.freeplane.features.mode;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,6 +33,7 @@ import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.OptionPanelController;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.components.IValidator;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
@@ -51,7 +54,8 @@ public class Controller extends AController {
 	private ModeController modeController4build;
 	final private Map<String, ModeController> modeControllers = new LinkedHashMap<String, ModeController>();
 	private ViewController viewController;
-	final private ResourceController resourceController;
+	private final ResourceController resourceController;
+	private final List<IValidator> optionValidators = new ArrayList<IValidator>();
 	final private OptionPanelController optionPanelController;
 
 	public Controller(ResourceController resourceController) {
@@ -59,7 +63,7 @@ public class Controller extends AController {
 		if(currentController == null){
 			currentController = this;
 		}
-		this.resourceController = resourceController;
+		this.resourceController = resourceController; 
 		this.optionPanelController = new OptionPanelController();
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		addAction(new MoveToRootAction());
@@ -210,6 +214,14 @@ public class Controller extends AController {
 	public ResourceController getResourceController() {
 	    return resourceController;
     }
+
+	public void addOptionValidator(IValidator validator) {
+		optionValidators.add(validator);
+    }
+	
+	public List<IValidator> getOptionValidators() {
+		return optionValidators;
+	}
 	
 	public OptionPanelController getOptionPanelController() {
 	    return optionPanelController;

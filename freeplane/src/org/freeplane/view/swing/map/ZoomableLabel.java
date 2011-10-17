@@ -5,11 +5,18 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
+import javax.swing.plaf.LabelUI;
+import javax.swing.plaf.basic.BasicHTML;
+import javax.swing.text.View;
+import javax.swing.text.html.HTMLDocument;
+
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
 
@@ -143,6 +150,10 @@ public class ZoomableLabel extends JLabel {
 	}
 
 	@Override
+    public void updateUI() {
+    }
+
+	@Override
 	public FontMetrics getFontMetrics(final Font font) {
 		if (!useFractionalMetrics()) {
 			return super.getFontMetrics(font);
@@ -168,6 +179,21 @@ public class ZoomableLabel extends JLabel {
 		fmg.setFont(getFont());
 		final FontMetrics fontMetrics = fmg.getFontMetrics();
 		return fontMetrics;
+	}
+	
+	public String getLink(Point p){
+		View view = (View)getClientProperty(BasicHTML.propertyKey);
+		if(view == null)
+			return null;
+		Rectangle textR = ((ZoomableLabelUI)getUI()).getTextR(this);
+		if(textR == null)
+			return null;
+		if(!textR.contains(p))
+			return null;
+		final int pos = view.viewToModel(p.x, p.y, textR);
+		final HTMLDocument document = (HTMLDocument) view.getDocument();
+		final String linkURL = HtmlUtils.getURLOfExistingLink(document, pos);
+		return linkURL;
 	}
 
 }

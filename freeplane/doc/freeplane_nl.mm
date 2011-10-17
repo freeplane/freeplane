@@ -1,1814 +1,3937 @@
 <map version="0.9.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1293570640542" COLOR="#993300">
+<attribute_registry SHOW_ATTRIBUTES="hide">
+    <attribute_name VISIBLE="true" NAME="See also"/>
+    <attribute_name VISIBLE="true" NAME="a2"/>
+</attribute_registry>
+<node TEXT="Documentation&#xa;Freeplane 1.2" STYLE_REF="MainMenu" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1315378335890" VGAP="4">
 <icon BUILTIN="bee"/>
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p style="text-align: center">
-      Freeplane
-    </p>
-    <p style="text-align: center">
-      <font size="2">- free mind mapping software -</font>
-    </p>
-  </body>
-</html></richcontent>
-<font NAME="Dialog" SIZE="18" BOLD="true"/>
-<hook NAME="MapStyle" zoom="1.1" max_node_width="600">
+<hook NAME="MapStyle" max_node_width="600">
+    <conditional_styles>
+        <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
+            <conjunct_condition user_name="V8">
+                <time_condition_modified_after DATE="1312651262739"/>
+                <time_condition_modified_before DATE="1312780189986"/>
+            </conjunct_condition>
+        </conditional_style>
+        <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
+            <conjunct_condition user_name="V9">
+                <time_condition_modified_after DATE="1312651262739"/>
+                <time_condition_modified_before DATE="1312780189986"/>
+            </conjunct_condition>
+        </conditional_style>
+        <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
+            <conjunct_condition user_name="V11">
+                <time_condition_modified_after DATE="1312780189986"/>
+                <time_condition_modified_before DATE="1312998423334"/>
+            </conjunct_condition>
+        </conditional_style>
+        <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
+            <conjunct_condition user_name="V12">
+                <time_condition_modified_after DATE="1312998423334"/>
+                <time_condition_modified_before DATE="1313607970077"/>
+            </conjunct_condition>
+        </conditional_style>
+        <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
+            <conjunct_condition user_name="V13: 1.2.8_05">
+                <time_condition_created_after DATE="1313607970077"/>
+                <time_condition_modified_before DATE="1313698612717"/>
+            </conjunct_condition>
+        </conditional_style>
+        <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
+            <conjunct_condition user_name="V13: 1.2.8_05">
+                <time_condition_created_after DATE="1313607970077"/>
+                <time_condition_modified_before DATE="1313698612717"/>
+            </conjunct_condition>
+        </conditional_style>
+        <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
+            <conjunct_condition user_name="V14">
+                <time_condition_modified_after DATE="1313826470055"/>
+                <time_condition_modified_before DATE="1314028103969"/>
+            </conjunct_condition>
+        </conditional_style>
+        <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
+            <conjunct_condition user_name="V16">
+                <time_condition_modified_after DATE="1314028103969"/>
+                <time_condition_modified_before DATE="1314509208580"/>
+            </conjunct_condition>
+        </conditional_style>
+        <conditional_style ACTIVE="false" LOCALIZED_STYLE_REF="default" LAST="false">
+            <time_condition_modified_after DATE="1314509734623"/>
+        </conditional_style>
+    </conditional_styles>
+    <properties show_notes_in_map="false"/>
 <map_styles>
-<stylenode LOCALIZED_TEXT="styles.root_node" FOLDED="false">
-<stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
-<stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="fork">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<stylenode LOCALIZED_TEXT="styles.root_node">
+<stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right">
+<stylenode TEXT="Definition">
+<font ITALIC="true"/>
+<edge STYLE="bezier" COLOR="#808080"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.ok">
-<icon BUILTIN="button_ok"/>
+<stylenode TEXT="Method">
+<edge COLOR="#33ffcc"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.needs_action">
+<stylenode TEXT="OptionalValue" COLOR="#cc3300">
+<edge COLOR="#33ffcc"/>
+</stylenode>
+<stylenode TEXT="Procedure" COLOR="#006666">
+<font BOLD="true"/>
+<edge COLOR="#808080"/>
+</stylenode>
+<stylenode TEXT="Exception">
 <icon BUILTIN="messagebox_warning"/>
+<edge STYLE="bezier" COLOR="#808080"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.floating_node">
-<cloud COLOR="#ffffff" SHAPE="ARC"/>
-<edge STYLE="hide_edge"/>
+<stylenode TEXT="Refine">
+<icon BUILTIN="xmag"/>
+<edge STYLE="bezier" COLOR="#808080"/>
+</stylenode>
+<stylenode TEXT="ToNote">
+<icon BUILTIN="yes"/>
+<edge STYLE="bezier" COLOR="#808080"/>
+</stylenode>
+<stylenode TEXT="Example">
+<icon BUILTIN="../AttributesView"/>
+<edge STYLE="bezier" COLOR="#808080"/>
+</stylenode>
+<stylenode TEXT="MainMenu" BACKGROUND_COLOR="#33ffcc" STYLE="bubble">
+<font BOLD="true"/>
+<edge STYLE="horizontal" COLOR="#33ffcc"/>
+</stylenode>
+<stylenode TEXT="SubMenu" BACKGROUND_COLOR="#33ffcc" STYLE="bubble">
+<edge COLOR="#33ffcc"/>
+</stylenode>
+<stylenode TEXT="MenuGroupLabel" COLOR="#000000" BACKGROUND_COLOR="#33ffcc" STYLE="bubble">
+<edge COLOR="#33ffcc" WIDTH="2"/>
+<attribute_layout NAME_WIDTH="78" VALUE_WIDTH="116"/>
+</stylenode>
+<stylenode TEXT="Title" COLOR="#ffffff" BACKGROUND_COLOR="#2ed2a9" STYLE="bubble">
+<font BOLD="true"/>
+<edge STYLE="horizontal"/>
+</stylenode>
+<stylenode TEXT="IsChecked" COLOR="#cc3300">
+<icon BUILTIN="button_ok"/>
+<edge COLOR="#33ffcc"/>
+</stylenode>
+<stylenode TEXT="UnChecked" COLOR="#cc3300">
+<icon BUILTIN="button_cancel"/>
+<edge COLOR="#33ffcc"/>
+</stylenode>
+<stylenode TEXT="Revision">
+<icon BUILTIN="info"/>
+</stylenode>
+<stylenode TEXT="UserGuide">
+<edge STYLE="horizontal"/>
+</stylenode>
+<stylenode TEXT="ProcedureStep">
+<edge STYLE="bezier"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.topic" COLOR="#18898b" STYLE="fork">
 <font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
-<edge STYLE="bezier" COLOR="#808080" WIDTH="thin"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.subtopic" COLOR="#cc3300" STYLE="fork">
 <font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
-<edge STYLE="bezier" COLOR="#808080" WIDTH="thin"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.subsubtopic" COLOR="#669900">
 <font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.connection" COLOR="#606060" STYLE="fork">
-<font NAME="Arial" SIZE="10" BOLD="false"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="styles.important" COLOR="#ff0000">
+<stylenode LOCALIZED_TEXT="styles.important">
 <icon BUILTIN="yes"/>
-<font NAME="Liberation Sans" SIZE="12"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="styles.question">
-<icon BUILTIN="help"/>
-<font NAME="Aharoni" SIZE="12"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="styles.key" COLOR="#996600">
-<icon BUILTIN="password"/>
-<font NAME="Liberation Sans" SIZE="12" BOLD="false"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="styles.idea">
-<icon BUILTIN="idea"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="styles.note" COLOR="#990000">
-<font NAME="Liberation Sans" SIZE="12"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="styles.date" COLOR="#0033ff">
-<icon BUILTIN="calendar"/>
-<font NAME="Liberation Sans" SIZE="12"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="styles.website" COLOR="#006633">
-<font NAME="Liberation Sans" SIZE="12"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="styles.list" COLOR="#cc6600">
-<icon BUILTIN="list"/>
-<font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="styles.quotation" COLOR="#338800" STYLE="fork">
-<font NAME="Liberation Sans" SIZE="12" BOLD="false" ITALIC="false"/>
-<edge STYLE="bezier" COLOR="#808080" WIDTH="thin"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="styles.definition" COLOR="#666600">
-<font NAME="Liberation Sans" SIZE="12" BOLD="false"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="styles.description" COLOR="#996600">
-<font NAME="Liberation Sans" SIZE="12" BOLD="false"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="styles.pending" COLOR="#b3b95c">
-<font NAME="Liberation Sans" SIZE="12"/>
 </stylenode>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right">
+<stylenode LOCALIZED_TEXT="styles.predefined" FOLDED="true" POSITION="right">
+<stylenode LOCALIZED_TEXT="default">
+<edge COLOR="#808080" WIDTH="thin"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="defaultstyle.details"/>
+<stylenode LOCALIZED_TEXT="defaultstyle.note"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.AutomaticLayout" FOLDED="true" POSITION="right">
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000">
 <font SIZE="20"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,1" COLOR="#0033ff">
 <font SIZE="18"/>
-<edge WIDTH="8"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,2" COLOR="#00b439">
-<font SIZE="16"/>
-<edge STYLE="bezier" WIDTH="thin"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,3" COLOR="#990000">
-<font SIZE="14"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,4" COLOR="#111111">
-<font SIZE="12"/>
-</stylenode>
-</stylenode>
-<stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right">
-<stylenode TEXT="Hoofdstuk" BACKGROUND_COLOR="#ffff00" STYLE="bubble" TYPE="org.freeplane.features.common.styles.StyleString">
-<icon BUILTIN="folder"/>
-<font BOLD="true"/>
-<edge STYLE="hide_edge"/>
-</stylenode>
-<stylenode TEXT="Onderwerp" COLOR="#006699" TYPE="org.freeplane.features.common.styles.StyleString">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-</stylenode>
-<stylenode TEXT="Inleiding" BACKGROUND_COLOR="#ffff00" STYLE="bubble" TYPE="org.freeplane.features.common.styles.StyleString"/>
-<stylenode TEXT="Functiegroep" COLOR="#407000" TYPE="org.freeplane.features.common.styles.StyleString">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-</stylenode>
-<stylenode TEXT="Functie" COLOR="#663300" TYPE="org.freeplane.features.common.styles.StyleString"/>
 </stylenode>
 </stylenode>
 </map_styles>
 </hook>
-<node POSITION="left" ID="ID_1405760079" CREATED="1286914216123" MODIFIED="1293375091120" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
-<icon BUILTIN="folder"/>
-<richcontent TYPE="NODE">
+<hook NAME="FirstGroupNode"/>
+<edge STYLE="hide_edge"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Hoe is Freeplane ingericht ?
+      <font size="3">This documentation is unlike a linear text. </font><br/><b>Hover</b>&#160;over nodes to reveal its content.<br/><b>Click</b>&#160;nodes to unfold.<br/>
+    </p>
+    <p>
+      
     </p>
   </body>
 </html></richcontent>
+<node TEXT="User guide" STYLE_REF="Title" POSITION="left" ID="ID_1405760079" CREATED="1286914216123" MODIFIED="1314858820369" HGAP="-35" VSHIFT="-91" TEXT_SHORTENED="true">
+<icon BUILTIN="gohome"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      This <i>User guide</i>&#160;contains basic information
+    </p>
+    <p>
+      &#160;to understanding and using Freeplane. If
+    </p>
+    <p>
+      node <i>Quick start</i>&#160;is displayed, continue
+    </p>
+    <p>
+      there. Otherwise click me to unfold.
+    </p>
+  </body>
+</html></richcontent>
+<edge STYLE="bezier"/>
+<node TEXT="Doel" STYLE_REF="UserGuide" ID="ID_910734357" CREATED="1314824090302" MODIFIED="1316338799683" TEXT_SHORTENED="true" HGAP="30" VSHIFT="-10">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The goal of this documentation is:
+    </p>
+    <ul>
+      <li>
+        to help the user know what are the possibilities and limitations of Freeplane;
+      </li>
+      <li>
+        to help the user know which procedures are necessary for a particular result;
+      </li>
+      <li>
+        to help the user know which methods are involved in these procedures and where these can be found.
+      </li>
+    </ul>
+    <p>
+      This documentation is not a tutorial.
+    </p>
+    <ul>
+      <li>
+        For a tutorial, visit the tutorial Freeplane contained in the Freeplane Help, <i>Getting started</i>.
+      </li>
+    </ul>
+    <p>
+      This documentation is not a course in mind mapping.
+    </p>
+    <ul>
+      <li>
+        To learn more about mind mapping, visit the wiki Tutorial Freeplane. Click the red arrow in <i>Overview</i>.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Overzicht" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1108028010" CREATED="1309552935597" MODIFIED="1316338806422" HGAP="27" VSHIFT="-7" TEXT_SHORTENED="true" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Click the red arrow for an introduction to mind mapping and a tutorial Freeplane on Internet.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      This documentation is unlike a classical linear presentation of information. It is set up as a source of information which can be used in a way wich is most appropriate for a particular user and situation.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      The right hand side of this mind map (node <i>Reference</i>) describes the Freeplane menu's and functionality. You could navigate the <i>Reference</i>&#160;&#160;to find your information by clicking and hovering nodes.&#160;&#160;This is easy, you are doing this right now. You can also use finding or filtering to get information. This is more powerful but supposes some experience.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      If you are prepared to use filtering, node <i>Chapter</i>&#160;contains a number of node collections which may help you to digest the huge amount of information of the <i>Reference</i>.&#160;You can go through the information displayed by each chapter in your own way and order. The chapters are numbered and organized from simple to more advanced.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Node <i>Install</i>&#160;describes loading and installing Freeplane and tuning it&#160;&#160;to your wishes. Node Macintosh describes how to use FP on a Macinitosh, because Macintosh uses a slightly different user interface. Node <i>This</i>&#160;<i>documentation</i>&#160;describes the principles and techniques underlying this mind map , it gives you an example of&#160;&#160;how to design and build a complex mind map like this one. It may also help you to still better find information.&#160;Node FAQ contains some&#160;&#160;frequently asked questions. More answers are to be found in the reference. It also contains some known bugs which may bother you.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Recognizing content" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1836270960" CREATED="1310900715782" MODIFIED="1313959373704" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1,2"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To help you orient in this documentation and find information<br/>more easily, different types of content are displayed by
+    </p>
+    <p>
+      different styles.&#160;Click me to see these styles.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Definition" STYLE_REF="Definition" ID="ID_228937336" CREATED="1309618770906" MODIFIED="1311402615666" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="1,2"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      All definitions can be regognised by this style.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Note
+    </p>
+    <ul>
+      <li>
+        It is possible to view a list of all definitions by filtering, see the example.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Method" STYLE_REF="Method" ID="ID_516439573" CREATED="1309618777965" MODIFIED="1311402615681" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="1,2"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      A method is a Freeplane action as in a menu item.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="OptionalValue" STYLE_REF="OptionalValue" FOLDED="true" ID="ID_1926379292" CREATED="1310845841441" MODIFIED="1311402754927" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="2"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      An optional value is a value that can be selected in a menu dialog.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="IsChecked" ID="ID_833160047" CREATED="1312143903870" MODIFIED="1312144371887">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+<node TEXT="UnChecked" ID="ID_1245047726" CREATED="1312143954266" MODIFIED="1312144371902">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+</node>
+<node TEXT="Procedure" STYLE_REF="Procedure" ID="ID_414428824" CREATED="1310838858321" MODIFIED="1311402583810" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="1"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      A procedure is a description of how methods can be used to realize a particular effect.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Exception" STYLE_REF="Exception" ID="ID_609263580" CREATED="1309891278322" MODIFIED="1311402754943" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="2"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      An exception is behaviour which may be unexpected.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="ToNote" STYLE_REF="ToNote" ID="ID_1172516925" CREATED="1309890992904" MODIFIED="1311402754943" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="2"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Information to note attracts attention to relevant related behaviour.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Refine" STYLE_REF="Refine" ID="ID_1719115146" CREATED="1309619037550" MODIFIED="1311402754958" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="2"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Information with this style gives more background or more details.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Example" STYLE_REF="Example" ID="ID_1648027177" CREATED="1309639156705" MODIFIED="1311402754958" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="2"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Information with this style describes an example.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Revision" STYLE_REF="Revision" ID="ID_901482560" CREATED="1312144029512" MODIFIED="1312144398734" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="2"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To indicate that a node has been modified.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        Example Conditional Map Styles.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="MainMenu" STYLE_REF="MainMenu" ID="ID_1534498435" CREATED="1309691442065" MODIFIED="1311402615697" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="1,2"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Information with this style represents a menu in the <i>Main toolbar.</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="MenuGroup" STYLE_REF="MenuGroupLabel" ID="ID_1191898047" CREATED="1310838790219" MODIFIED="1311486685783" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Information with this style summarizes a group of related methods.
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+</node>
+</node>
+<node TEXT="Basisbegrippen" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1480936832" CREATED="1309419658445" MODIFIED="1316338816734" TEXT_SHORTENED="true" HGAP="30">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Basically, a mind map consists of <b>nodes </b>
+    </p>
+    <p>
+      and <b>relations between nodes. </b>&#160;A node
+    </p>
+    <p>
+      has <b>features</b>&#160;and <b>properties</b>.
+    </p>
+    <p>
+      Click me to read more.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Nodes" FOLDED="true" ID="ID_1279930643" CREATED="1309419658459" MODIFIED="1313788412438" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      A&#160;<b>node</b>&#160;is the point in the map which carries the information.
+    </p>
+    <p>
+      It is the basic unit information and usually includes text and
+    </p>
+    <p>
+      images. The text you are currently reading has been entered
+    </p>
+    <p>
+      into this node.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1"/>
+<node TEXT="Root/Root node" ID="ID_1163921092" CREATED="1309419658455" MODIFIED="1311402583826" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The <b>root node</b>&#160;is the central node in the hierarchy from which all others flow.&#160;&#160;It.is the oval that is present by default at the centre of Freeplane workspace. It cannot be deleted, nor can there be more than one root.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1"/>
+</node>
+<node TEXT="Parent node" STYLE_REF="Definition" ID="ID_283022327" CREATED="1309419658464" MODIFIED="1311402583842" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Parent node</b>&#160;is the name of a node that precedes another node in the hierarchy.
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="1"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Child node" STYLE_REF="Definition" ID="ID_1209680113" CREATED="1309419658467" MODIFIED="1311402583857" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      A <b>child node </b>is a node that proceeds another node (its parent) in the hierarchy.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1"/>
+</node>
+<node TEXT="Sibling node" STYLE_REF="Definition" ID="ID_1669709193" CREATED="1309419658469" MODIFIED="1311402583857" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      A <b>sibling</b>&#160;is a node at the same hierarchical level as a particular other node.&#160;&#160;Thus if you insert a node, and then another one underneath, you have created a sibling.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1"/>
+</node>
+<node TEXT="Relations are relative" ID="ID_1402619445" CREATED="1309420875668" MODIFIED="1312965676970" TEXT_SHORTENED="true">
+<hook NAME="SummaryNode"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      These family terms can be extended to represent the respective relationship, such as grandparent, grandchild, uncle and so on. Note that the designated terms are relative, thus a node is a child to its parent and a parent to its child and so on.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1"/>
+</node>
+</node>
+<node TEXT="Relations" STYLE_REF="Definition" FOLDED="true" ID="ID_1688918449" CREATED="1309419658471" MODIFIED="1314024986687" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Freeplane can represent several kinds of relations. Edges are logical relations representing a hierarchy. Connectors are user defined conceptual relations. Other types of relations are summary nodes and clouds. These are described later.&#160;
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<node TEXT="Edge" STYLE_REF="Definition" FOLDED="true" ID="ID_682300475" CREATED="1309419658485" MODIFIED="1311402583873" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      An <b>edge</b>&#160;is the visual representation of the tree structure.&#160;&#160;It is the line you see underneath and between the nodes, This line can be hidden.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Characteristics of an egde are:
+    </p>
+    <ul>
+      <li>
+        <b>Edge color:</b>&#160;The color of the edge connecting nodes.
+      </li>
+      <li>
+        <b>Edge style:</b>&#160;The way an edge bends. If an edge is visible or hidden.
+      </li>
+      <li>
+        <b>Edge width:</b>&#160;The thickness of the edge.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1"/>
+<node TEXT="Branch" STYLE_REF="Definition" ID="ID_979063484" CREATED="1309513163069" MODIFIED="1310837396416" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      A <b>branch</b>&#160;isa group of nodes consisting of a node and all its descendents. A main branch is a branch which starts at the child of the root node.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>To branch</b>&#160;means to tear off the nodes of a branch and export it to another map.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Connector" STYLE_REF="Definition" ID="ID_1063899671" CREATED="1309419658487" MODIFIED="1310837410816" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      A <b>connector</b>&#160;is a graphical link that allows for connections outside of the main tree hierarchy. It is an arrow or line between two arbitrary nodes expressing an implicit, user defined meaning. This meaning may be made explicit with a label
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Cloud" STYLE_REF="Definition" ID="ID_1605059702" CREATED="1309509385523" MODIFIED="1310837422750" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      A <b>cloud</b>&#160;is a visual wrapper for a group of nodes which are part of a branch. The group is an attribute of a node and contains this node and all of its descendants.
+    </p>
+  </body>
+</html></richcontent>
+<font BOLD="false"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Summary Node" STYLE_REF="Definition" ID="ID_1358837812" CREATED="1309419658489" MODIFIED="1310837434310" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      A <b>summary node</b>&#160;is&#160;a graphical structure representing a user defined group of siblings. The first and last element of the group are indicated by the end point of an accollade. The central point of the group points to a node, the actual summary node, which contains information about the group.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Node features" ID="ID_1372334594" CREATED="1309631960680" MODIFIED="1311012855822" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Node features</b>&#160;are additional features that can be added to a basic node.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      &#160;Examples are notes, attributes, hyperlinks and images.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Node properties" ID="ID_395697976" CREATED="1309632189617" MODIFIED="1310196223417" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Node properties</b>&#160;are (mostly visible) aspects of nodes, relations and node features. Examples are the color and size of text.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also:</b>
+    </p>
+    <ul>
+      <li>
+        <i>Formatting</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Hoodstukken" STYLE_REF="UserGuide" FOLDED="true" ID="ID_919267416" CREATED="1311398738170" MODIFIED="1316338828184" TEXT_SHORTENED="true" HGAP="30">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Guide for learning the Freeplane menu&#180;s </b>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      To view the following chapters, apply&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<b>&#160; &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;filter rule&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; </b>
+    </p>
+    <ol>
+      <li>
+        <i>Chapter &gt; 1. My first mind map &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; </i>&#160; &#160;&#160;(Chapter,Contains,1)&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+      </li>
+      <li>
+        <i>Chapter &gt; 2. Handling nodes &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</i>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(Chapter,Contains,2)
+      </li>
+      <li>
+        <i>Chapter &gt;&#160;3. Main Node features &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; </i>(Chapter,Contains,3)
+      </li>
+      <li>
+        <i>Chapter &gt; 4. Format &amp; Style&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</i>&#160; &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(Chapter,Contains,4)
+      </li>
+      <li>
+        <i>Chapter &gt; 5. Date, Time &amp; Reminder&#160;&#160;&#160;&#160;</i>&#160;&#160; &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(Chapter,Contains,5)
+      </li>
+      <li>
+        <i>Chapter &gt; 6. Moving &amp; Publishing maps&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</i>(Chapter,Contains,6)
+      </li>
+      <li>
+        <i>Chapter &gt; 6. Scripts &amp; Formulas&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</i>(Chapter,Contains,7)
+      </li>
+      <li>
+        <i>Chapter &gt; 6. Security&#160;&amp; Preferences&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</i>(Chapter,Contains,8)
+      </li>
+    </ol>
+    <p>
+      &#160;&#160;&#160;&#160;&#160;&#160;&#160;When filtering, check <b>filer conditions</b>:
+    </p>
+    <ul>
+      <li>
+        Show ancestors: <b>OFF</b>
+      </li>
+      <li>
+        Show descendants: <b>OFF</b>
+      </li>
+      <li>
+        Applies to filtered node <b>OFF</b>
+      </li>
+      <li>
+        Unfold all descendants hidden after filtering: <b>ON</b>
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        Explanation of filtering in children of <i>1. My first mind map</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
+<node TEXT="Content" ID="ID_1750213503" CREATED="1311482029110" MODIFIED="1311482095324" HGAP="50" VSHIFT="-10">
 <font BOLD="true"/>
 <edge STYLE="hide_edge"/>
 </node>
-<node TEXT="Installeren" FOLDED="true" POSITION="left" ID="_Freeplane_Link_904501221" CREATED="1270892460638" MODIFIED="1293375091116" COLOR="#006699">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Freeplane&apos;s homepagina" STYLE_REF="Functiegroep" ID="ID_916980386" CREATED="1270892460631" MODIFIED="1293651591308" LINK="http://freeplane.sourceforge.net"/>
-<node TEXT="Lokatie configuratiebestanden gebruiker" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_715518355" CREATED="1293651205336" MODIFIED="1293651591318">
-<node TEXT="Inhoud configuratiebestanden" STYLE_REF="Inleiding" FOLDED="true" ID="ID_980047724" CREATED="1293651637981" MODIFIED="1293652092771">
-<node ID="ID_216039150" CREATED="1293652042620" MODIFIED="1293652042620">
-<richcontent TYPE="NODE">
+<node TEXT="My first mind map" FOLDED="true" ID="ID_829890234" CREATED="1310822521013" MODIFIED="1314075831024" TEXT_SHORTENED="true" NUMBERED="true">
+<attribute NAME="Chapter" VALUE="0"/>
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Scripts worden opgeslagen in map <i>scripts</i>.
+      Use filtering to show all nodes for getting started. For this, define and filter (Chapter,Contains,1):
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      1. &#160;In the first thee fields of the filter menu bar select/enter:
+    </p>
+    <ul>
+      <li>
+        <i>Chapter</i>&#160;&#160;&#160;&#160;(&#160;N.B. Type C to scroll to menu item starting with C)
+      </li>
+      <li>
+        <i>Contains</i>
+      </li>
+      <li>
+        <i>1</i>
+      </li>
+    </ul>
+    <p>
+      2. Check filter conditions:
+    </p>
+    <ul>
+      <li>
+        short cut icon <i>Unfold hidden nodes after filtering </i><b>ON</b>
+      </li>
+      <li>
+        short cut icon <i>Show ancestors </i><b>OFF</b>
+      </li>
+    </ul>
+    <p>
+      3. Press <i>Esc</i>&#160;followed by <i>Alt + Enter&#160;</i>to&#160;make visible all nodes
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      4. Select short cut icon <i>Quick filter</i>&#160;to make appear all nodes of Chapter 1
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      5 Move the cursor in turn over every node to make it show its content. Read the content.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      When finished:
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      6. Select short cut icon <i>No Filtering </i>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      
+    </p>
+    <p style="text-align: left">
+      <b>See the nodes to the left for the complete procedure and the icon-buttons that can be used.</b>
     </p>
   </body>
 </html></richcontent>
-</node>
-<node ID="ID_1854051049" CREATED="1293652042623" MODIFIED="1294169033095">
-<richcontent TYPE="NODE">
+<node TEXT="Define filter rule" FOLDED="true" ID="ID_1670868929" CREATED="1310821479686" MODIFIED="1311402544217">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="0"/>
+<node TEXT="Select: Chapter" STYLE_REF="ProcedureStep" ID="ID_1014969877" CREATED="1310820732631" MODIFIED="1313822510587" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="0"/>
+<hook NAME="FirstGroupNode"/>
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Een mindmap-stijl wordt opgeslagen in map <i>Templates als </i>.mm-bestand
+      <b>Note</b>
     </p>
+    <ul>
+      <li>
+        If you type C, the windows scrolls down to items beginning with C.
+      </li>
+    </ul>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_845524241" CREATED="1293652042626" MODIFIED="1294169172147">
-<richcontent TYPE="NODE">
+<node TEXT="Select: Contains" STYLE_REF="ProcedureStep" ID="ID_1048644932" CREATED="1310820745993" MODIFIED="1313822510603">
+<attribute NAME="Chapter" VALUE="0"/>
+</node>
+<node TEXT="Select/Enter: 1" STYLE_REF="ProcedureStep" ID="ID_48466550" CREATED="1310820789556" MODIFIED="1313822510603">
+<attribute NAME="Chapter" VALUE="0"/>
+</node>
+<node TEXT="Three entry fields in Toolbar" ID="ID_545396005" CREATED="1311317134192" MODIFIED="1311402544233">
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="0"/>
+</node>
+</node>
+<node TEXT="Do filter" STYLE_REF="Procedure" FOLDED="true" ID="ID_1044635142" CREATED="1313822942388" MODIFIED="1313822964806">
+<node TEXT="Press Quick Filter" STYLE_REF="ProcedureStep" ID="ID_1699746394" CREATED="1310820822433" MODIFIED="1313822887328">
+<icon BUILTIN="../apply_quick_filter"/>
+<attribute NAME="Chapter" VALUE="0"/>
+</node>
+<node TEXT="Show Ancestors: Off" STYLE_REF="ProcedureStep" ID="ID_1477283067" CREATED="1310819865458" MODIFIED="1313822887328">
+<icon BUILTIN="../show_ancestors"/>
+<hook NAME="FirstGroupNode"/>
+<attribute NAME="Chapter" VALUE="0"/>
+</node>
+</node>
+<node TEXT="Check default filter conditions" FOLDED="true" ID="ID_1618746225" CREATED="1311316685082" MODIFIED="1311485080494">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="0"/>
+<node TEXT="Show Descendants: Off" STYLE_REF="ProcedureStep" ID="ID_467302191" CREATED="1310819950485" MODIFIED="1313822545781">
+<icon BUILTIN="../show_descendants"/>
+<attribute NAME="Chapter" VALUE="0"/>
+</node>
+<node TEXT="Unfold all nodes hidden after filtering: On" STYLE_REF="ProcedureStep" ID="ID_178956245" CREATED="1310820023813" MODIFIED="1313822545797">
+<icon BUILTIN="../unfold_filtered_ancestors"/>
+<attribute NAME="Chapter" VALUE="0"/>
+</node>
+<node TEXT="Applies to filtered nodes: Off" STYLE_REF="ProcedureStep" ID="ID_588285753" CREATED="1310820191451" MODIFIED="1313822545781">
+<icon BUILTIN="../applies_to_filtered_nodes"/>
+<attribute NAME="Chapter" VALUE="0"/>
+</node>
+</node>
+<node TEXT="See icon-buttons in Toolbar" ID="ID_1962045856" CREATED="1310821392950" MODIFIED="1311402544233">
+<attribute NAME="Chapter" VALUE="0"/>
+<hook NAME="SummaryNode"/>
+</node>
+<node TEXT="To end filter 1. My first mind map" FOLDED="true" ID="ID_1678666271" CREATED="1310821779644" MODIFIED="1313823042462">
+<attribute NAME="Chapter" VALUE="1"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<edge STYLE="horizontal"/>
+<node TEXT="Press: Undo filter" STYLE_REF="ProcedureStep" ID="ID_1343052095" CREATED="1310822117674" MODIFIED="1313823060839">
+<icon BUILTIN="../remove_filtering"/>
+<attribute NAME="Chapter" VALUE="1"/>
+</node>
+<node TEXT="Select root node (press Esc)" STYLE_REF="ProcedureStep" ID="ID_1663841014" CREATED="1310821238510" MODIFIED="1313823060855">
+<hook NAME="FirstGroupNode"/>
+<attribute NAME="Chapter" VALUE="1"/>
+</node>
+<node TEXT="Press: Fold all descendants" STYLE_REF="ProcedureStep" ID="ID_1495450969" CREATED="1310821255419" MODIFIED="1313823060855">
+<icon BUILTIN="../fold_all"/>
+<attribute NAME="Chapter" VALUE="1"/>
+</node>
+<node TEXT="Fold all nodes" ID="ID_1931349122" CREATED="1310821426631" MODIFIED="1311402583951">
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="1"/>
+</node>
+</node>
+</node>
+<node TEXT="Handling nodes" ID="ID_1153833253" CREATED="1309552935597" MODIFIED="1311485855519" TEXT_SHORTENED="true" NUMBERED="true">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Een sneltoetsen-set worden opgeslagen in map <i>accelerators </i>als .properies bestand
+      Use filtering to show all nodes. For this, define and filter (Chapter,Contains,2):
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      1. &#160;In the first thee fields of the filter menu bar select/enter:
+    </p>
+    <ul>
+      <li>
+        <i>Chapter</i>
+      </li>
+      <li>
+        <i>Contains</i>
+      </li>
+      <li>
+        <i>2</i>
+      </li>
+    </ul>
+    <p>
+      2. See the procedure of Chapter <i>1. My first mind map</i>
     </p>
   </body>
 </html></richcontent>
+<attribute NAME="Chapter" VALUE="0"/>
 </node>
-<node TEXT="log bestanden" ID="ID_1014332204" CREATED="1293652122403" MODIFIED="1293652135312"/>
-<node TEXT="auto.properties" ID="ID_1767737172" CREATED="1293652217954" MODIFIED="1293652227310"/>
-<node TEXT="auto.mmfilter" ID="ID_218849517" CREATED="1293652229631" MODIFIED="1293652264671"/>
-</node>
-<node FOLDED="true" ID="ID_1197372668" CREATED="1295721215492" MODIFIED="1295721321884">
-<richcontent TYPE="NODE">
+<node TEXT="Node features" ID="ID_1790476268" CREATED="1311316250037" MODIFIED="1311486045059" TEXT_SHORTENED="true" NUMBERED="true">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Om de locatie van de&#160;&#160;configuratiebestanden te vinden:
+      To see the nodes of this chapter,&#160;&#160;filter (Chapter,Contains,3).
     </p>
     <p>
-      - <i>kies Help &gt; Over Freeplane</i>
+      
     </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>1. My first mind map</i>
+      </li>
+    </ul>
   </body>
 </html></richcontent>
-<font ITALIC="false"/>
-<node TEXT="Windows7" FOLDED="true" ID="ID_391274199" CREATED="1293651313131" MODIFIED="1293651324906">
-<node ID="ID_904494029" CREATED="1293651324911" MODIFIED="1293651459183">
-<icon BUILTIN="idea"/>
-<richcontent TYPE="NODE">
+<attribute NAME="Chapter" VALUE="0"/>
+</node>
+<node TEXT="Format &amp; Style" ID="ID_1115783310" CREATED="1311337025606" MODIFIED="1312922136677" TEXT_SHORTENED="true" NUMBERED="true">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Om de locatie te zien: <i>Verborgen bestanden tonen inschakelen</i>
+      To see the nodes of this chapter, filter (Chapter,Contains,4).
     </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>1. My first mind map</i>
+      </li>
+    </ul>
   </body>
 </html></richcontent>
+<attribute NAME="Chapter" VALUE="0"/>
 </node>
-<node ID="ID_1666753515" CREATED="1293651368958" MODIFIED="1293651368958">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    %user%\AppData\Roaming\Freeplane\1.2.x
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Mac en Linux" FOLDED="true" ID="ID_1030887563" CREATED="1293651511114" MODIFIED="1293651519041">
-<node ID="ID_1534398162" CREATED="1293651523912" MODIFIED="1293651523912">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    ~/.freeplane/1.2.x
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Portable Freeplane" FOLDED="true" ID="ID_262813593" CREATED="1294515697306" MODIFIED="1294515708944">
-<node TEXT="Driveletter e.g. E:/PortableApps/FreeplanePortable/Data/Freeplane/1.2.x" ID="ID_1634959071" CREATED="1294515727102" MODIFIED="1294515758435"/>
-</node>
-</node>
-</node>
-<node TEXT="Nederlandse spellingcontrole" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1547931043" CREATED="1291617322249" MODIFIED="1293651591317">
-<icon BUILTIN="pencil"/>
-<node TEXT="Deze moet apart worden geladen en geinstalleerd:" STYLE_REF="Inleiding" ID="ID_784840032" CREATED="1291617374112" MODIFIED="1293375091105"/>
-<node TEXT="Downlooad dictionary_nl.ortho: klik op rode pijl" ID="ID_1752568658" CREATED="1291758758798" MODIFIED="1293375091101" LINK="https://sourceforge.net/projects/freeplane/files/spell_check_dictionaries/dictionary_nl.ortho/download">
-<icon BUILTIN="full-1"/>
-</node>
-<node TEXT="Bewaar het bestand dictionary_nl.ortho in Freeplane/ortho" ID="ID_1606055060" CREATED="1291758795091" MODIFIED="1293375091098">
-<icon BUILTIN="full-2"/>
-</node>
-</node>
-<node TEXT="Pictogrammen toevoegen" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_993666367" CREATED="1291839224463" MODIFIED="1293651591315">
-<node TEXT="Om eigen pictogrammen aan de Pictogrammenbalk toe te voegen:&#xa;- plaats het pictogrambestand, bijvoorbeeld mijnpictogram.png, in de Freeplane gebruikersmap als %user%/appdata/freeplane/roaming/1.2.x/icons/mijnpictogram.png" ID="ID_537134358" CREATED="1270892460676" MODIFIED="1294415789301"/>
-<node TEXT="Locaties met pictogrammen op Internet" ID="ID_846418218" CREATED="1293543764927" MODIFIED="1293543800792" LINK="http://freemind.sourceforge.net/wiki/index.php/Icons"/>
-<node TEXT="Van een foto een pictogram maken" ID="ID_644281696" CREATED="1294330621441" MODIFIED="1294330648565" LINK="http://www.computeridee.nl/workshops.jsp?rubriek=1620361&amp;id=2143345"/>
-</node>
-<node TEXT="Installatie op Windows platform" STYLE_REF="Functiegroep" FOLDED="true" ID="_Freeplane_Link_139664576" CREATED="1270892460640" MODIFIED="1293651591314">
-<node TEXT="De volgende acties gebeuren meestal automatisch als je Freeplane download van Freeplane&apos;s homepagina" ID="ID_241920394" CREATED="1289029210967" MODIFIED="1293375091082" BACKGROUND_COLOR="#ffff00"/>
-<node TEXT="Download de Java Runtime Environment (at least J2RE1.5)" ID="ID_1620747952" CREATED="1270892460639" MODIFIED="1293375091078" LINK="http://java.sun.com/javase/downloads/index.jsp">
-<edge WIDTH="thin"/>
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Download Freeplane toepassing" ID="_Freeplane_Link_1612101865" CREATED="1270892460640" MODIFIED="1293375091075" LINK="http://freeplane.sourceforge.net">
-<edge WIDTH="thin"/>
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-</node>
-<node TEXT="Installatie op Linux platform" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_839470339" CREATED="1289029709910" MODIFIED="1293651591313">
-<node TEXT="Om Freeplane op Linux te installeren, download the Java Runtime Environment en de Freeplane applicatie. Installeer eerstl Java en pak dan Freeplane uit. Om Freeplane uit te voeren: kies freeplane.sh." ID="_Freeplane_Link_1380352758" CREATED="1270892460641" MODIFIED="1293375091066"/>
-</node>
-<node TEXT="Installatie op MAC platform" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1956173686" CREATED="1289029737710" MODIFIED="1293651591311">
-<node TEXT="To install Freeplane on Mac OS X first use the built in Software Update feature to ensure that you have all the latest available updates, especially Java. Software Update is located under the Apple logo menu in the top left-hand corner of the screen. &#xa;&#xa;Then download a Mac-specific version of Freeplane. The .dmg version is easiest to install, though a .zip version may also be available. When the download is complete, the file may be automatically mounted (or un-zipped) depending on your Web browser settings. Otherwise either double-click on the downloaded .dmg file to &quot;mount&quot; it, or double-click on the downloaded .zip file to un-zip it. &#xa;&#xa;Now you should see a Freeplane application icon, which you can drag to your Applications folder. Then you may optionally create an alias (shortcut) on the Desktop, and/or on the Dock. To run Freeplane, either double-click on its application icon (in the Applications folder) or on its Desktop shortcut, or click once on its icon in the Dock. The Freeplane Wiki has Macintosh page with more information." ID="_Freeplane_Link_1808511462" CREATED="1270892460641" MODIFIED="1293375091048"/>
-</node>
-</node>
-<node TEXT="Instellen" FOLDED="true" POSITION="left" ID="Freeplane_Link_1822195277" CREATED="1270892460697" MODIFIED="1293375091044" COLOR="#006699">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Automatische backup" FOLDED="true" ID="ID_1283343603" CREATED="1271096741387" MODIFIED="1293375091041" COLOR="#006699">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_1590067344" CREATED="1271096749626" MODIFIED="1293375091035">
-<richcontent TYPE="NODE">
+<node TEXT="Date, Time &amp; Reminder" ID="ID_13139289" CREATED="1311333932581" MODIFIED="1312922146068" TEXT_SHORTENED="true" NUMBERED="true">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Freeplane maakt een submap aan met de naam <i>.backup</i>&#160;in iedere map waarin mindmap bestanden worden bewaard. Oude mindmap versies worden hier bewaard, samen met automatisch bewaarde kopien van bewerkte mindmaps. Deze hebben de extensie &#160;<i>.autosave.</i>
+      To see the nodes of this chapter, filter (Chapter,Contains,5).
     </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>1. My first mind map</i>
+      </li>
+    </ul>
   </body>
 </html></richcontent>
+<attribute NAME="Chapter" VALUE="0"/>
 </node>
-<node TEXT="Standaard wordt elke minuut eeen .autosave back-up gemaakt en worden de laatse tien autosave bestanden bewaard voor het geval Freeplane onbedoeld eindigt, bijvoorbeeld doordat de computer wordt afgesloten." ID="ID_1073721425" CREATED="1271177847312" MODIFIED="1293375091030"/>
-<node ID="ID_206842943" CREATED="1271178201859" MODIFIED="1293375091023">
-<richcontent TYPE="NODE">
+<node TEXT="Moving &amp; Publishing maps" ID="ID_70860166" CREATED="1311343174255" MODIFIED="1312922155678" NUMBERED="true" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Om een automatisch bewaard bestand te herstellen moet je het hernoemen door de <i>.autosave</i>&#160;toevoeging en het versienummer te verwijderen. Bijvoorbeeld, om&#160;<i>mijnbestand.mm</i>&#160;te herstellen met het meest recente autosave bestand, hernoem of kopieer <i>.backup\mijnbestand.mm.10.autosave</i>&#160; naar <i>mijnbestand.mm</i>.
+      To see the nodes of this chapter, filter (Chapter,Contains,6).
     </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>1. My first mind map</i>
+      </li>
+    </ul>
   </body>
 </html></richcontent>
+<attribute NAME="Chapter" VALUE="0"/>
 </node>
-<node ID="ID_3064437" CREATED="1271178347062" MODIFIED="1293375091019" LINK="#ID_1327160915">
-<richcontent TYPE="NODE">
+<node TEXT="Scripts &amp; Formulas" ID="ID_1425593168" CREATED="1311343136286" MODIFIED="1312922163665" NUMBERED="true" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Het autosave gedrag en het aantal backup's kan worden ingesteld via:
+      To see the nodes of this chapter, filter (Chapter,Contains,7).
     </p>
     <p>
-      - Kies&#160; <i>Extra &gt; Instellingen &gt; Omgeving &gt; Automatisch opslaan in </i>Hoofdmenu
+      
     </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>1. My first mind map</i>
+      </li>
+    </ul>
   </body>
 </html></richcontent>
+<attribute NAME="Chapter" VALUE="0"/>
 </node>
-</node>
-<node TEXT="Sneltoetsen" FOLDED="true" ID="_Freeplane_Link_1091417446" CREATED="1270892460634" MODIFIED="1293375091016" COLOR="#006699" LINK="#ID_82273720">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_1818761339" CREATED="1286915483579" MODIFIED="1293375091012">
-<richcontent TYPE="NODE">
+<node TEXT="Security &amp; Preferences" ID="ID_1563209179" CREATED="1311337201372" MODIFIED="1312922171028" TEXT_SHORTENED="true" NUMBERED="true">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Om de referentiekaart voor de sneltoeten te tonen:
+      To see the nodes of this chapter, filter (Chapter,Contains,8).
     </p>
     <p>
-      - kies Help.
+      
     </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>1. My first mind map</i>
+      </li>
+    </ul>
   </body>
 </html></richcontent>
+<attribute NAME="Chapter" VALUE="0"/>
 </node>
-<node ID="ID_1823288862" CREATED="1270895079510" MODIFIED="1293375091008" LINK="#ID_764902206">
-<richcontent TYPE="NODE">
+<node TEXT="9.Finding &amp; Filtering" ID="ID_1111099001" CREATED="1313955285022" MODIFIED="1313955442084" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="9"/>
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Om een sneltoets toe te kennen aan een menu item:
+      To see the nodes of this chapter, filter (Chapter,Contains,9).
     </p>
     <p>
-      - kies &#160; <i>Extra &gt; Toewijzen sneltoets</i>&#160;in<i>&#160;</i>Hoofdmenu
+      
     </p>
     <p>
-      - kies menuoptie, bijvoorbeeld Stijlen<i>&#160;&gt; Knoopprofiel toepassen &gt; een profiel, bijvoorbeeld &quot;Te Doen&quot; </i>
+      <b>See also</b>
     </p>
-    <p>
-      - kies toets, toetscombinatie of F-toets
-    </p>
-    <p>
-      - kies<i>&#160;Stijlen &gt; Sneltoetsenset &gt; Bewaren set met sneltoetsen</i>
-    </p>
-    <p>
-      Kies een naam en bewaar. Er kunnen voor veschillende situaties verschillende sets worden bewaard.
-    </p>
+    <ul>
+      <li>
+        <i>1. My first mind map</i>
+      </li>
+    </ul>
   </body>
 </html></richcontent>
 </node>
-<node ID="ID_418449510" CREATED="1289732931429" MODIFIED="1293570007928">
-<richcontent TYPE="NODE">
+<node TEXT="Appendix" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1016814885" CREATED="1313758924679" MODIFIED="1313823254623">
+<node TEXT="Show all definitions" FOLDED="true" ID="ID_1066951352" CREATED="1310722013900" MODIFIED="1311486841550" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Om een eerder bewaarde set met sneltoetsen (ook: F-toetsen) te kiezen:
+      <b>Example </b>
     </p>
     <p>
-      - kies <i>Extra</i>&#160;<i>&gt; Sneltoetsenset &gt; </i>naam van de set
+      
     </p>
     <p>
-      Let OP bij gebruikerstijlen: Als een gebruikerstijl niet bestaat, dan wordt de eerder gedefininieerde sneltoetsfunctie NIET getoond. Zie <i>Bestand &gt; Nieuwe mindmap met stijl</i>&#160;om zowel gebruikerstijllen als F-toetsen te laden.
+      To show all and only all definitions:
     </p>
+    <ul>
+      <li>
+        set the 4 conditions as shown for the icon-buttons, in the Filter toolbar.; and
+      </li>
+      <li>
+        define in the Fiter toolbar filter (<i>Class, Contains, Definition);</i>&#160;and
+      </li>
+      <li>
+        press <i>icon-Quick filter</i>.
+      </li>
+    </ul>
   </body>
 </html></richcontent>
-</node>
-<node TEXT="Om eerder bewaarde sneltoetsen sets te verwijderen:" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_978833755" CREATED="1293376890432" MODIFIED="1293377391695">
-<node TEXT="Windows 7" FOLDED="true" ID="ID_1963902409" CREATED="1291991503311" MODIFIED="1293375090267">
-<node TEXT="Zorg dat eventuele verborgen bestanden worden getoond" FOLDED="true" ID="ID_401093391" CREATED="1291991456863" MODIFIED="1293375090263">
-<icon BUILTIN="full-1"/>
-<node TEXT="Ga naar Help en typ verborgen bestanden" ID="ID_1238556827" CREATED="1291991535892" MODIFIED="1293375090260"/>
-</node>
-<node TEXT="Ga naar" FOLDED="true" ID="ID_1673040188" CREATED="1291991562326" MODIFIED="1293375090256">
-<icon BUILTIN="full-2"/>
-<node FOLDED="true" ID="ID_1348543448" CREATED="1291991572506" MODIFIED="1293377376664">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p class="MsoNormal">
-      Gebruikers/<u>IkAlsGebruiker</u>/AppData/Roaming/Freeplane/<u>1.2.x</u>/accelerators
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Vul voor de onderstreepte tekstdelen jouw informatie in" ID="ID_1562673148" CREATED="1291991682408" MODIFIED="1293375090249"/>
-</node>
-</node>
-<node TEXT="Wis de sets" ID="ID_1258934739" CREATED="1291991760556" MODIFIED="1293377150018">
-<icon BUILTIN="full-3"/>
-</node>
-<node TEXT="Herhaal punt 1 om de systeembestanden weer te verbergen." ID="ID_1941628255" CREATED="1291991830031" MODIFIED="1293375090241">
-<icon BUILTIN="full-4"/>
-</node>
-</node>
-</node>
-<node TEXT="F-toetsen" FOLDED="true" ID="ID_435839537" CREATED="1289732578947" MODIFIED="1293375091000" COLOR="#006699">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_1370229846" CREATED="1289732294497" MODIFIED="1293375090996">
-<richcontent TYPE="NODE">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+<node TEXT="Check conditions" STYLE_REF="UserGuide" FOLDED="true" ID="ID_235662859" CREATED="1310913088700" MODIFIED="1313823790328" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      F-toetsen zijn ook sneltoetsen. Om functies toe te wijzen aan Functietoetsen:
-    </p>
-    <p>
-      - ken F1 t/m 12 toe als sneltoets (zie boven); en
-    </p>
-    <p>
-      - kies<i>&#160;Extra &gt; Sneltoetsenset &gt; Opslaan sneltoetsen</i>&#160;in Hoofdmenu
-    </p>
-    <p>
-      Voor verschillende situaties kan zo een eigen set met functietoetsen worden gemaakt.
+      Check if the icon-buttons shown to the left are all unpressed, or Press to unpress.
     </p>
   </body>
 </html></richcontent>
+<node TEXT="Show Ancestors: Off" STYLE_REF="ProcedureStep" ID="ID_173119044" CREATED="1310819865458" MODIFIED="1313823830794">
+<icon BUILTIN="../show_ancestors"/>
+<hook NAME="FirstGroupNode"/>
 </node>
-<node ID="ID_1385187695" CREATED="1289732931429" MODIFIED="1293375090992">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een eerder opgeslagen set met sneltoetsen (ook: F-toetsen) te kiezen:
-    </p>
-    <p>
-      - kies <i>Extra</i> <i>&gt; Sneltoetsenset &gt; </i>naam van de set
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Show Descendants: Off" STYLE_REF="ProcedureStep" ID="ID_685714769" CREATED="1310819950485" MODIFIED="1313823830794">
+<icon BUILTIN="../show_descendants"/>
+</node>
+<node TEXT="Unfold all nodes hidden after filtering: Off" STYLE_REF="ProcedureStep" ID="ID_1351621161" CREATED="1310820023813" MODIFIED="1313823830794">
+<icon BUILTIN="../unfold_filtered_ancestors"/>
+</node>
+<node TEXT="Applies to filtered nodes: Off" STYLE_REF="ProcedureStep" ID="ID_1625012504" CREATED="1310820191451" MODIFIED="1313823830794">
+<icon BUILTIN="../applies_to_filtered_nodes"/>
 </node>
 </node>
+<node TEXT="Unfold all nodes" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1616604166" CREATED="1310913172416" MODIFIED="1313823790343">
+<node TEXT="Select root node (press Esc)" ID="ID_385659674" CREATED="1310821238510" MODIFIED="1310821551509">
+<hook NAME="FirstGroupNode"/>
 </node>
-<node TEXT="Voorkeuren" STYLE_REF="Onderwerp" FOLDED="true" ID="ID_488698400" CREATED="1291389794807" MODIFIED="1293376799103">
-<node ID="ID_1974913930" CREATED="1286825354367" MODIFIED="1293375090984">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de voorkeuren van Freeplane&#160;&#160;in te stellen:
-    </p>
-    <p>
-      - Kies <i>Extra &gt; Instellingen</i>.
-    </p>
-    <p>
-      Bij MAC OS bevinden de instellingen zich in het Freeplane applicatiemenu.
-    </p>
-    <p>
-      Sommige instellingen treden pas in werking na het opnieuw opstarten van Freeplane.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Gebruikerstijlen" STYLE_REF="Onderwerp" ID="ID_789751845" CREATED="1291389830289" MODIFIED="1293376799103" LINK="#ID_643671716"/>
-<node TEXT="Mindmapstijlen" STYLE_REF="Onderwerp" ID="ID_1153159867" CREATED="1291550298859" MODIFIED="1293376799103" LINK="#ID_1778719162"/>
-<node TEXT="Taal wijzigen" FOLDED="true" ID="ID_172050805" CREATED="1271856103992" MODIFIED="1293375090973" COLOR="#006699">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Om de taal te veranderen:&#xa;- kies Extra &gt; Instellingren &gt; Omgeving&#xa;- kies een taal en herstart Freeplane" ID="ID_1132291765" CREATED="1291874606053" MODIFIED="1293375090968"/>
-</node>
-</node>
-<node TEXT="Overzicht sneltoetsen" STYLE_REF="Onderwerp" FOLDED="true" POSITION="left" ID="ID_537136607" CREATED="1291142331388" MODIFIED="1293375090964" BACKGROUND_COLOR="#ffffff">
-<node TEXT="Overzicht sneltoetsen" FOLDED="true" ID="ID_1478076706" CREATED="1291142331388" MODIFIED="1293375090960">
-<node ID="ID_1300166718" CREATED="1291142331529" MODIFIED="1293375090721">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    <style type="text/css">
-      <!--<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!
-        h3 { background-color: #B5C8DB; margin-bottom: 0px; margin-top: 0 }
-        h2 { background-color: #B5C8DB; margin-bottom: 0px; margin-top: 0 }
-        h1 { background-color: #B5C8DB; margin-bottom: 0px; margin-top: 0 }
-      -->
-    </style>
-    
-  </head>
-  <body>
-    <h2>
-      Overzicht sneltoetsen
-    </h2>
-    <h3>
-      Bestand
-    </h3>
-    <table cellspacing="0" cellpadding="0">
-      <tr>
-        <td>
-          Nieuwe mindmap&#160;
-        </td>
-        <td>
-          Ctrl+N
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Openen...&#160;
-        </td>
-        <td>
-          Ctrl+O
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Opslaan&#160;
-        </td>
-        <td>
-          Ctrl+S
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Opslaan als...&#160;
-        </td>
-        <td>
-          Ctrl+Shift+S
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Sluiten&#160;
-        </td>
-        <td>
-          Ctrl+W
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Exporteren volledige tak als nieuwe mindmap&#160;
-        </td>
-        <td>
-          Alt+Shift+A
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Afdrukken...&#160;
-        </td>
-        <td>
-          Ctrl+P
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Afsluiten&#160;
-        </td>
-        <td>
-          Ctrl+Q
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-    </table>
-    <h3>
-      Bewerken
-    </h3>
-    <table cellspacing="0" cellpadding="0">
-      <tr>
-        <td>
-          Ongedaan maken&#160;
-        </td>
-        <td>
-          Ctrl+Z
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Opnieuw&#160;
-        </td>
-        <td>
-          Ctrl+Y
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Selecteren van het zichtbare&#160;
-        </td>
-        <td>
-          Ctrl+A
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Selecteren zichtbare tak&#160;
-        </td>
-        <td>
-          Ctrl+Shift+A
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Knippen&#160;
-        </td>
-        <td>
-          Ctrl+X
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Kopi&#235;ren&#160;
-        </td>
-        <td>
-          Ctrl+C
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Kopi&#235;ren zonder zijtakken&#160;
-        </td>
-        <td>
-          Ctrl+Shift+C
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Plakken&#160;
-        </td>
-        <td>
-          Ctrl+V
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Bewerken eenvoudige tekstopmaak&#160;
-        </td>
-        <td>
-          F2
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Bewerken uitgebreide tekstopmaak&#160;
-        </td>
-        <td>
-          Alt+Enter
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Bewerken knoopdetails&#160;
-        </td>
-        <td>
-          Shift+F2
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Bewerken attributen&#160;
-        </td>
-        <td>
-          Alt+F9
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Bewerken knoop en notitie&#160;
-        </td>
-        <td>
-          Ctrl+Less
-        </td>
-        <td>
-          Wissel naar/van notitievenster
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Verwijderen knoop&#160;
-        </td>
-        <td>
-          Delete
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Zoeken...&#160;
-        </td>
-        <td>
-          Ctrl+F
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Volgende zoeken&#160;
-        </td>
-        <td>
-          Ctrl+G
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Zoeken en vervangen...&#160;
-        </td>
-        <td>
-          Ctrl+Shift+F
-        </td>
-        <td>
-          Tonen alle knopen als doorzoekbare lijst met filterkenmerken.
-        </td>
-      </tr>
-    </table>
-    <h3>
-      Beeld
-    </h3>
-    <table cellspacing="0" cellpadding="0">
-      <tr>
-        <td>
-          Wisselen details&#160;
-        </td>
-        <td>
-          Alt+F2
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Geselecteerde knoop centreren&#160;
-        </td>
-        <td>
-          Ctrl+Alt+C
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Inzoomen&#160;
-        </td>
-        <td>
-          Alt+Up
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Uitzoomen&#160;
-        </td>
-        <td>
-          Alt+Down
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Notitievenster&#160;
-        </td>
-        <td>
-          Ctrl+Greater
-        </td>
-        <td>
-          Laat het notitie venster verschijnen of verdwijnen
-        </td>
-      </tr>
-    </table>
-    <h3>
-      Invoegen
-    </h3>
-    <table cellspacing="0" cellpadding="0">
-      <tr>
-        <td>
-          Nieuwe kindknoop (niveau lager)&#160;
-        </td>
-        <td>
-          Insert
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Nieuwe knoop onder de huidige&#160;
-        </td>
-        <td>
-          Enter
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Nieuwe knoop boven de huidige&#160;
-        </td>
-        <td>
-          Shift+Enter
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Nieuwe ouderknoop (niveau hoger)&#160;
-        </td>
-        <td>
-          Shift+Insert
-        </td>
-        <td>
-          Alle geselecteerde knopen worden naar nieuwe ouderknoop verplaatst.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Afbeelding kiezen uit bestandenlijst of via hyperlink...&#160;
-        </td>
-        <td>
-          Alt+Shift+K
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Hyperlink kiezen uit bestandenlijst...&#160;
-        </td>
-        <td>
-          Ctrl+Shift+K
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Hyperlink intypen&#160;
-        </td>
-        <td>
-          Ctrl+K
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Verbindingslijn&#160;
-        </td>
-        <td>
-          Ctrl+L
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Snelkoppeling tussen knopen&#160;
-        </td>
-        <td>
-          Alt+Shift+L
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Wolk&#160;
-        </td>
-        <td>
-          Ctrl+Shift+B
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-    </table>
-    <h3>
-      Pictogram
-    </h3>
-    <table cellspacing="0" cellpadding="0">
-      <tr>
-        <td>
-          Kiezen pictogram...&#160;
-        </td>
-        <td>
-          Ctrl+F2
-        </td>
-        <td>
-          Hier kun je een pictogram kiezen..
-        </td>
-      </tr>
-    </table>
-    <h3>
-      Opmaken
-    </h3>
-    <table cellspacing="0" cellpadding="0">
-      <tr>
-        <td>
-          Kopi&#235;ren opmaak&#160;
-        </td>
-        <td>
-          Alt+Shift+C
-        </td>
-        <td>
-          Hiermee kopi&#235;er je alleen de opmaak van een knoop.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Plakken opmaak&#160;
-        </td>
-        <td>
-          Alt+Shift+V
-        </td>
-        <td>
-          Hiermee plak je de opmaak van een knoop.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Uitgebreide tekstopmaak&#160;
-        </td>
-        <td>
-          Alt+Shift+R
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Eenvoudige tekstopmaak&#160;
-        </td>
-        <td>
-          Alt+Shift+P
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Lettertype vergroten&#160;
-        </td>
-        <td>
-          Ctrl+Plus
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Lettertype verkleinen&#160;
-        </td>
-        <td>
-          Ctrl+Minus
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Vet (Bold)&#160;
-        </td>
-        <td>
-          Ctrl+B
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Schuin (Italic)&#160;
-        </td>
-        <td>
-          Ctrl+I
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Tekstkleur...&#160;
-        </td>
-        <td>
-          Alt+Shift+F
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Kleiner kleurcontrast&#160;
-        </td>
-        <td>
-          Alt+Shift+B
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Kleur tak&#160;
-        </td>
-        <td>
-          Alt+Shift+E
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-    </table>
-    <h3>
-      Navigeren
-    </h3>
-    <table cellspacing="0" cellpadding="0">
-      <tr>
-        <td>
-          Vorige mindmap&#160;
-        </td>
-        <td>
-          Alt+Shift+Left
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Volgende mindmap&#160;
-        </td>
-        <td>
-          Alt+Shift+Right
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Vorige knoop&#160;
-        </td>
-        <td>
-          Ctrl+Alt+Left
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Volgende knoop&#160;
-        </td>
-        <td>
-          Ctrl+Alt+Right
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Vorige knoop (dichtvouwen)&#160;
-        </td>
-        <td>
-          Ctrl+Alt+Shift+Left
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Volgende knoop (dichtvouwen)&#160;
-        </td>
-        <td>
-          Ctrl+Alt+Shift+Right
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Ga naar basisknoop&#160;
-        </td>
-        <td>
-          Escape
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Knoop naar boven&#160;
-        </td>
-        <td>
-          Ctrl+Up
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Knoop naar beneden&#160;
-        </td>
-        <td>
-          Ctrl+Down
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Naar beneden en ouderniveau&#160;
-        </td>
-        <td>
-          Ctrl+Left
-        </td>
-        <td>
-          Geselecteerde knopen links van de basisknoop verplaatsen naar boven en worden kindknopen van de knoop boven de huidige knoop. Knopen rechts van de basisknoop verplaatsen naar boven. Hierop is een uitzondering: knopen direct links of rechts van de basisknoop verplaatsen naar de andere zijde van de basisknoop.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Naar boven en kindniveau&#160;
-        </td>
-        <td>
-          Ctrl+Right
-        </td>
-        <td>
-          Geselecteerde knopen rechts van de basisknoop verplaatsen naar beneden en worden kindknopen van de knoop onder de huidge knoop. Knopen links van de basisknoop verplaatsen naar boven. Hierop is een uitzondering: knopen direct links of rechts van de basisknoop verplaatsen naar de andere zijde van de basisknoop.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Open/dichtvouwen&#160;
-        </td>
-        <td>
-          Space
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Kleinkinderen open/dichtvouwen&#160;
-        </td>
-        <td>
-          Ctrl+Space
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Alles openvouwen&#160;
-        </td>
-        <td>
-          Alt+End
-        </td>
-        <td>
-          Geselecteerde tak (afstammingslijn) openvouwen, zichtbaar maken.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Alles dichtvouwen&#160;
-        </td>
-        <td>
-          Alt+Home
-        </td>
-        <td>
-          Hele geselecteerde tak met kinderen dichtvouwen.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          E&#233;n niveau openvouwen&#160;
-        </td>
-        <td>
-          Alt+Page Down
-        </td>
-        <td>
-          E&#233;n niveau openvouwen.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          E&#233;n niveau dichtvouwen&#160;
-        </td>
-        <td>
-          Alt+Page Up
-        </td>
-        <td>
-          E&#233;n niveau dichtvouwen.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Achteruit&#160;
-        </td>
-        <td>
-          Alt+Left
-        </td>
-        <td>
-          Terug in de selectiehistorie
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Vooruit&#160;
-        </td>
-        <td>
-          Alt+Right
-        </td>
-        <td>
-          Vooruit in de selectiehistorie
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Open hyperlink&#160;
-        </td>
-        <td>
-          Ctrl+Enter
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-    </table>
-    <h3>
-      Extra
-    </h3>
-    <table cellspacing="0" cellpadding="0">
-      <tr>
-        <td>
-          Samenvoegen knopen&#160;
-        </td>
-        <td>
-          Ctrl+J
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Agenda...&#160;
-        </td>
-        <td>
-          Ctrl+T
-        </td>
-        <td>
-          Start de agendamodule.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Instellingen...&#160;
-        </td>
-        <td>
-          Ctrl+Comma
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-    </table>
-    <h3>
-      Mindmaps
-    </h3>
-    <table cellspacing="0" cellpadding="0">
-      <tr>
-        <td>
-          Mindmap bewerker&#160;
-        </td>
-        <td>
-          Alt+1
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Mindmap lezer&#160;
-        </td>
-        <td>
-          Alt+2
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Bestandsverkenner&#160;
-        </td>
-        <td>
-          Alt+3
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-    </table>
-    <h3>
-      Help
-    </h3>
-    <table cellspacing="0" cellpadding="0">
-      <tr>
-        <td>
-          Handleiding&#160;
-        </td>
-        <td>
-          F1
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Overzicht van menu's&#160;
-        </td>
-        <td>
-          Shift+F1
-        </td>
-      </tr>
-    </table>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Bestand" FOLDED="true" ID="ID_168606093" CREATED="1291142331529" MODIFIED="1293375090717">
-<node TEXT="Nieuwe mindmap: Ctrl+N" ID="ID_403244776" CREATED="1291142331529" MODIFIED="1293375090713">
-<icon BUILTIN="../filenew"/>
-</node>
-<node TEXT="Openen...: Ctrl+O" ID="ID_1595058258" CREATED="1291142331529" MODIFIED="1293375090709">
-<icon BUILTIN="../fileopen"/>
-</node>
-<node TEXT="Opslaan: Ctrl+S" ID="ID_411189427" CREATED="1291142331529" MODIFIED="1293375090705">
-<icon BUILTIN="../filesave"/>
-</node>
-<node TEXT="Opslaan als...: Ctrl+Shift+S" ID="ID_658323510" CREATED="1291142331529" MODIFIED="1293375090700">
-<icon BUILTIN="../filesaveas"/>
-</node>
-<node TEXT="Sluiten: Ctrl+W" ID="ID_1238248227" CREATED="1291142331529" MODIFIED="1293375090696">
-<icon BUILTIN="../close"/>
-</node>
-<node TEXT="Exporteren volledige tak als nieuwe mindmap: Alt+Shift+A" ID="ID_1031806256" CREATED="1291142331529" MODIFIED="1293375090692"/>
-<node TEXT="Afdrukken...: Ctrl+P" ID="ID_376633711" CREATED="1291142331529" MODIFIED="1293375090688">
-<icon BUILTIN="../fileprint"/>
-</node>
-<node TEXT="Afsluiten: Ctrl+Q" ID="ID_871935435" CREATED="1291142331529" MODIFIED="1293375090684">
-<icon BUILTIN="../quit"/>
-</node>
-</node>
-<node TEXT="Bewerken" FOLDED="true" ID="ID_1887946529" CREATED="1291142331529" MODIFIED="1293375090680">
-<node TEXT="Ongedaan maken: Ctrl+Z" ID="ID_1257854086" CREATED="1291142331529" MODIFIED="1293375090676">
-<icon BUILTIN="../undo"/>
-</node>
-<node TEXT="Opnieuw: Ctrl+Y" ID="ID_1110640182" CREATED="1291142331529" MODIFIED="1293375090672">
-<icon BUILTIN="../redo"/>
-</node>
-<node TEXT="Selecteren van het zichtbare: Ctrl+A" ID="ID_500117143" CREATED="1291142331529" MODIFIED="1293375090668"/>
-<node TEXT="Selecteren zichtbare tak: Ctrl+Shift+A" ID="ID_1518386849" CREATED="1291142331529" MODIFIED="1293375090664"/>
-<node TEXT="Knippen: Ctrl+X" ID="ID_1310281932" CREATED="1291142331529" MODIFIED="1293375090660">
-<icon BUILTIN="../editcut"/>
-</node>
-<node TEXT="Kopi&#xeb;ren: Ctrl+C" ID="ID_454815830" CREATED="1291142331529" MODIFIED="1293375090656">
-<icon BUILTIN="../editcopy"/>
-</node>
-<node TEXT="Kopi&#xeb;ren zonder zijtakken: Ctrl+Shift+C" ID="ID_508244016" CREATED="1291142331529" MODIFIED="1293375090652">
-<icon BUILTIN="../copy_single"/>
-</node>
-<node TEXT="Plakken: Ctrl+V" ID="ID_1824137482" CREATED="1291142331529" MODIFIED="1293375090648">
-<icon BUILTIN="../editpaste"/>
-</node>
-<node TEXT="Bewerken eenvoudige tekstopmaak: F2" ID="ID_179687812" CREATED="1291142331544" MODIFIED="1293375090644">
-<icon BUILTIN="../edit_node"/>
-</node>
-<node TEXT="Bewerken uitgebreide tekstopmaak: Alt+Enter" ID="ID_1979704309" CREATED="1291142331544" MODIFIED="1293375090640">
-<icon BUILTIN="../edit_long_node"/>
-</node>
-<node TEXT="Bewerken knoopdetails: Shift+F2" ID="ID_1066209627" CREATED="1291142331544" MODIFIED="1293375090636">
-<icon BUILTIN="../edit_details"/>
-</node>
-<node TEXT="Bewerken attributen: Alt+F9" ID="ID_217596949" CREATED="1291142331544" MODIFIED="1293375090632"/>
-<node TEXT="Bewerken knoop en notitie: Ctrl+Less" ID="ID_951662131" CREATED="1291142331544" MODIFIED="1293375090627"/>
-<node TEXT="Verwijderen knoop: Delete" ID="ID_1683222658" CREATED="1291142331544" MODIFIED="1293375090623">
-<icon BUILTIN="../editdelete"/>
-</node>
-<node TEXT="Zoeken...: Ctrl+F" ID="ID_71759514" CREATED="1291142331544" MODIFIED="1293375090619">
-<icon BUILTIN="../filefind"/>
-</node>
-<node TEXT="Volgende zoeken: Ctrl+G" ID="ID_1801168519" CREATED="1291142331544" MODIFIED="1293375090615"/>
-<node TEXT="Zoeken en vervangen...: Ctrl+Shift+F" ID="ID_1300274765" CREATED="1291142331544" MODIFIED="1293375090611"/>
-</node>
-<node TEXT="Beeld" FOLDED="true" ID="ID_335914329" CREATED="1291142331544" MODIFIED="1293375090608">
-<node TEXT="Wisselen details: Alt+F2" ID="ID_1225129244" CREATED="1291142331544" MODIFIED="1293375090604"/>
-<node TEXT="Geselecteerde knoop centreren: Ctrl+Alt+C" ID="ID_579669210" CREATED="1291142331544" MODIFIED="1293375090600">
-<icon BUILTIN="../CenterSelectedNodeAction"/>
-</node>
-<node TEXT="Inzoomen: Alt+Up" ID="ID_399838003" CREATED="1291142331544" MODIFIED="1293375090596">
-<icon BUILTIN="../ZoomIn24"/>
-</node>
-<node TEXT="Uitzoomen: Alt+Down" ID="ID_1720952753" CREATED="1291142331544" MODIFIED="1293375090593">
-<icon BUILTIN="../ZoomOut24"/>
-</node>
-<node TEXT="Notitievenster: Ctrl+Greater" ID="ID_766503808" CREATED="1291142331544" MODIFIED="1293375090589"/>
-</node>
-<node TEXT="Invoegen" FOLDED="true" ID="ID_995345273" CREATED="1291142331544" MODIFIED="1293375090585">
-<node TEXT="Nieuwe kindknoop (niveau lager): Insert" ID="ID_1156178034" CREATED="1291142331544" MODIFIED="1293375090582">
-<icon BUILTIN="../idea"/>
-</node>
-<node TEXT="Nieuwe knoop onder de huidige: Enter" ID="ID_1083837302" CREATED="1291142331544" MODIFIED="1293375090578"/>
-<node TEXT="Nieuwe knoop boven de huidige: Shift+Enter" ID="ID_413011634" CREATED="1291142331544" MODIFIED="1293375090574"/>
-<node TEXT="Nieuwe ouderknoop (niveau hoger): Shift+Insert" ID="ID_1803850651" CREATED="1291142331544" MODIFIED="1293375090570">
-<icon BUILTIN="../stock_text_indent"/>
-</node>
-<node TEXT="Afbeelding kiezen uit bestandenlijst of via hyperlink...: Alt+Shift+K" ID="ID_748382756" CREATED="1291142331544" MODIFIED="1293375090567"/>
-<node TEXT="Hyperlink kiezen uit bestandenlijst...: Ctrl+Shift+K" ID="ID_705430555" CREATED="1291142331544" MODIFIED="1293375090563"/>
-<node TEXT="Hyperlink intypen: Ctrl+K" ID="ID_719576482" CREATED="1291142331544" MODIFIED="1293375090559"/>
-<node TEXT="Verbindingslijn: Ctrl+L" ID="ID_1281393829" CREATED="1291142331544" MODIFIED="1293375090556">
-<icon BUILTIN="../designer"/>
-</node>
-<node TEXT="Snelkoppeling tussen knopen: Alt+Shift+L" ID="ID_44300481" CREATED="1291142331544" MODIFIED="1293375090552">
-<icon BUILTIN="../LinkLocal"/>
-</node>
-<node TEXT="Wolk: Ctrl+Shift+B" ID="ID_1673433925" CREATED="1291142331544" MODIFIED="1293375090548">
-<icon BUILTIN="../Cloud24"/>
-</node>
-</node>
-<node TEXT="Pictogram" FOLDED="true" ID="ID_629441893" CREATED="1291142331544" MODIFIED="1293375090545">
-<node TEXT="Kiezen pictogram...: Ctrl+F2" ID="ID_1590340381" CREATED="1291142331544" MODIFIED="1293375090541">
-<icon BUILTIN="../kalzium"/>
-</node>
-</node>
-<node TEXT="Opmaken" FOLDED="true" ID="ID_30612462" CREATED="1291142331544" MODIFIED="1293375090537">
-<node TEXT="Kopi&#xeb;ren opmaak: Alt+Shift+C" ID="ID_339315462" CREATED="1291142331544" MODIFIED="1293375090534">
-<icon BUILTIN="../colorpicker"/>
-</node>
-<node TEXT="Plakken opmaak: Alt+Shift+V" ID="ID_1197899124" CREATED="1291142331544" MODIFIED="1293375090530">
-<icon BUILTIN="../color_fill"/>
-</node>
-<node TEXT="Uitgebreide tekstopmaak: Alt+Shift+R" ID="ID_1859495035" CREATED="1291142331544" MODIFIED="1293375090526"/>
-<node TEXT="Eenvoudige tekstopmaak: Alt+Shift+P" ID="ID_355743727" CREATED="1291142331544" MODIFIED="1293375090522"/>
-<node TEXT="Lettertype vergroten: Ctrl+Plus" ID="ID_24962380" CREATED="1291142331544" MODIFIED="1293375090518"/>
-<node TEXT="Lettertype verkleinen: Ctrl+Minus" ID="ID_703612825" CREATED="1291142331544" MODIFIED="1293375090514"/>
-<node TEXT="Vet (Bold): Ctrl+B" ID="ID_70718865" CREATED="1291142331544" MODIFIED="1293375090510">
-<icon BUILTIN="../Bold16"/>
-</node>
-<node TEXT="Schuin (Italic): Ctrl+I" ID="ID_1922707861" CREATED="1291142331544" MODIFIED="1293375090507">
-<icon BUILTIN="../Italic16"/>
-</node>
-<node TEXT="Tekstkleur...: Alt+Shift+F" ID="ID_442249130" CREATED="1291142331544" MODIFIED="1293375090503"/>
-<node TEXT="Kleiner kleurcontrast: Alt+Shift+B" ID="ID_1922932106" CREATED="1291142331544" MODIFIED="1293375090499"/>
-<node TEXT="Kleur tak: Alt+Shift+E" ID="ID_465334557" CREATED="1291142331544" MODIFIED="1293375090495"/>
-</node>
-<node TEXT="Navigeren" FOLDED="true" ID="ID_643245669" CREATED="1291142331544" MODIFIED="1293375090491">
-<node TEXT="Vorige mindmap: Alt+Shift+Left" ID="ID_904245553" CREATED="1291142331544" MODIFIED="1293375090487">
-<icon BUILTIN="../MoveTo_PrevMM"/>
-</node>
-<node TEXT="Volgende mindmap: Alt+Shift+Right" ID="ID_1716231722" CREATED="1291142331544" MODIFIED="1293375090484">
-<icon BUILTIN="../MoveTo_NextMM"/>
-</node>
-<node TEXT="Vorige knoop: Ctrl+Alt+Left" ID="ID_1288983933" CREATED="1291142331544" MODIFIED="1293375090480"/>
-<node TEXT="Volgende knoop: Ctrl+Alt+Right" ID="ID_889142631" CREATED="1291142331544" MODIFIED="1293375090476"/>
-<node TEXT="Vorige knoop (dichtvouwen): Ctrl+Alt+Shift+Left" ID="ID_555928696" CREATED="1291142331544" MODIFIED="1293375090473"/>
-<node TEXT="Volgende knoop (dichtvouwen): Ctrl+Alt+Shift+Right" ID="ID_839406679" CREATED="1291142331544" MODIFIED="1293375090469"/>
-<node TEXT="Ga naar basisknoop: Escape" ID="ID_436917122" CREATED="1291142331544" MODIFIED="1293375090465"/>
-<node TEXT="Knoop naar boven: Ctrl+Up" ID="ID_1837857420" CREATED="1291142331544" MODIFIED="1293375090462"/>
-<node TEXT="Knoop naar beneden: Ctrl+Down" ID="ID_865419196" CREATED="1291142331544" MODIFIED="1293375090458"/>
-<node TEXT="Naar beneden en ouderniveau: Ctrl+Left" ID="ID_1197314417" CREATED="1291142331544" MODIFIED="1293375090454"/>
-<node TEXT="Naar boven en kindniveau: Ctrl+Right" ID="ID_833228892" CREATED="1291142331544" MODIFIED="1293375090449"/>
-<node TEXT="Open/dichtvouwen: Space" ID="ID_1716919996" CREATED="1291142331544" MODIFIED="1293375090445"/>
-<node TEXT="Kleinkinderen open/dichtvouwen: Ctrl+Space" ID="ID_122991977" CREATED="1291142331544" MODIFIED="1293375090442"/>
-<node TEXT="Alles openvouwen: Alt+End" ID="ID_672519349" CREATED="1291142331544" MODIFIED="1293375090438">
+<node TEXT="Press: Unfold all descendants" ID="ID_1954125202" CREATED="1310821255419" MODIFIED="1310821336463">
 <icon BUILTIN="../unfold_all"/>
 </node>
-<node TEXT="Alle afstammelingen dichtvouwen: Alt+Home" ID="ID_423149180" CREATED="1291142331544" MODIFIED="1293375090434">
+</node>
+<node TEXT="Define filter" STYLE_REF="UserGuide" FOLDED="true" ID="ID_989011629" CREATED="1313823175755" MODIFIED="1313823790328">
+<node TEXT="Select: Class" ID="ID_1042564393" CREATED="1310820732631" MODIFIED="1310821479686">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="Select: Contains" ID="ID_1553005293" CREATED="1310820745993" MODIFIED="1310820756976"/>
+<node TEXT="Select: Definition" ID="ID_695746856" CREATED="1310820789556" MODIFIED="1310820798012"/>
+<node TEXT="Press Quick Filter" ID="ID_1377895866" CREATED="1310820822433" MODIFIED="1310820854679">
+<icon BUILTIN="../apply_quick_filter"/>
+</node>
+</node>
+<node TEXT="To end" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1694191165" CREATED="1310821779644" MODIFIED="1313823790328">
+<node TEXT="Press: Undo filter" ID="ID_738883159" CREATED="1310822117674" MODIFIED="1310822194279">
+<icon BUILTIN="../remove_filtering"/>
+</node>
+<node TEXT="Select root node (press Esc)" STYLE_REF="ProcedureStep" ID="ID_352017968" CREATED="1310821238510" MODIFIED="1313823894052">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="Press: Fold all descendants" STYLE_REF="ProcedureStep" ID="ID_548666264" CREATED="1310821255419" MODIFIED="1313823894052">
 <icon BUILTIN="../fold_all"/>
 </node>
-<node TEXT="E&#xe9;n niveau openvouwen: Alt+Page Down" ID="ID_153924885" CREATED="1291142331544" MODIFIED="1293375090431">
-<icon BUILTIN="../unfold_one_level"/>
-</node>
-<node TEXT="E&#xe9;n niveau dichtvouwen: Alt+Page Up" ID="ID_1192213211" CREATED="1291142331544" MODIFIED="1293375090427">
-<icon BUILTIN="../fold_one_level"/>
-</node>
-<node TEXT="Achteruit: Alt+Left" ID="ID_1462556985" CREATED="1291142331544" MODIFIED="1293375090423">
-<icon BUILTIN="../MoveTo_PrevNode"/>
-</node>
-<node TEXT="Vooruit: Alt+Right" ID="ID_598633684" CREATED="1291142331544" MODIFIED="1293375090419">
-<icon BUILTIN="../MoveTo_NextNode"/>
-</node>
-<node TEXT="Open hyperlink: Ctrl+Enter" ID="ID_1614060197" CREATED="1291142331544" MODIFIED="1293375090416"/>
-</node>
-<node TEXT="Extra" FOLDED="true" ID="ID_1291505173" CREATED="1291142331544" MODIFIED="1293375090412">
-<node TEXT="Samenvoegen knopen: Ctrl+J" ID="ID_1959942963" CREATED="1291142331544" MODIFIED="1293375090408"/>
-<node TEXT="Agenda...: Ctrl+T" ID="ID_962157320" CREATED="1291142331544" MODIFIED="1293375090405"/>
-<node TEXT="Instellingen...: Ctrl+Comma" ID="ID_1092801638" CREATED="1291142331544" MODIFIED="1293375090401"/>
-</node>
-<node TEXT="Mindmaps" FOLDED="true" ID="ID_948997398" CREATED="1291142331544" MODIFIED="1293375090397">
-<node TEXT="Mindmap bewerker: Alt+1" ID="ID_1137447945" CREATED="1291142331544" MODIFIED="1293375090393"/>
-<node TEXT="Mindmap lezer: Alt+2" ID="ID_410530954" CREATED="1291142331544" MODIFIED="1293375090390"/>
-<node TEXT="Bestandsverkenner: Alt+3" ID="ID_677263" CREATED="1291142331544" MODIFIED="1293375090386"/>
-</node>
-<node TEXT="Help" FOLDED="true" ID="ID_1701208463" CREATED="1291142331544" MODIFIED="1293375090382">
-<node TEXT="Handleiding: F1" ID="ID_1445131076" CREATED="1291142331544" MODIFIED="1293375090379"/>
-<node TEXT="Overzicht van menu&apos;s: Shift+F1" ID="ID_279206246" CREATED="1291142331544" MODIFIED="1293375090375"/>
+<node TEXT="Fold all nodes" ID="ID_214673967" CREATED="1310821426631" MODIFIED="1310821850515">
+<hook NAME="SummaryNode"/>
 </node>
 </node>
-<node TEXT="Importeren en Exporteren" STYLE_REF="Onderwerp" FOLDED="true" POSITION="left" ID="ID_1619208320" CREATED="1291324841663" MODIFIED="1293375090371">
-<node TEXT="Exporteren" FOLDED="true" ID="ID_1017741956" CREATED="1289031043654" MODIFIED="1293375090367" COLOR="#006699" LINK="#ID_857930802">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_1138233100" CREATED="1270892460691" MODIFIED="1293375090362" LINK="#ID_857930802">
-<richcontent TYPE="NODE">
+</node>
+<node TEXT="Show all about filtering" FOLDED="true" ID="ID_1873380309" CREATED="1310134532663" MODIFIED="1311487014492" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Om een mindmap te exporteren:
+      <b>Example</b>
     </p>
     <p>
-      - kies&#160; <i>Bestand &gt; Exporteren </i>in<i>&#160;</i>Hoofdmenu
+      
+    </p>
+    <p>
+      To view all nodes concerning filtering, define and apply a filter in the following way:
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      1 Set the filter rule by selecting in the Filter Tool bar:
+    </p>
+    <ul>
+      <li>
+        <i>Node Text </i>(default value, or select from left drop down menu)
+      </li>
+      <li>
+        <i>Contains (default value, or </i>select from next drop down menu)
+      </li>
+      <li>
+        <i>filter</i>&#160;(type &quot;filter&quot; in third, edit window)
+      </li>
+    </ul>
+    <p>
+      &#160;2. Select <i>Esc</i>&#160;followed by <i>Alt + End</i>&#160;and press <i>Quick filter. </i>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Now all nodes are showing which are related to filtering. Also <i>No Filter</i>&#160;is unset.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      3. When you are finished reading the nodes
+    </p>
+    <ul>
+      <li>
+        select No filter to restore the unfilter condition
+      </li>
+      <li>
+        press <i>Esc</i>&#160;followed by <i>Fold all nodes</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+<node TEXT="Check conditions" STYLE_REF="UserGuide" FOLDED="true" ID="ID_25461383" CREATED="1310913088700" MODIFIED="1313823872649" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Check if the icon-buttons shown to the left are all unpressed, or Press to unpress.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Show Ancestors: Off" ID="ID_495695197" CREATED="1310819865458" MODIFIED="1310821392966">
+<icon BUILTIN="../show_ancestors"/>
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="Show Descendants: Off" ID="ID_878732630" CREATED="1310819950485" MODIFIED="1310819980625">
+<icon BUILTIN="../show_descendants"/>
+</node>
+<node TEXT="Unfold all nodes hidden after filtering: Off" ID="ID_1394638468" CREATED="1310820023813" MODIFIED="1310820087805">
+<icon BUILTIN="../unfold_filtered_ancestors"/>
+</node>
+<node TEXT="Applies to filtered nodes: Off" ID="ID_1342621920" CREATED="1310820191451" MODIFIED="1310820292758">
+<icon BUILTIN="../applies_to_filtered_nodes"/>
+</node>
+</node>
+<node TEXT="Unfold all nodes" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1859325076" CREATED="1310913172416" MODIFIED="1313823872649">
+<node TEXT="Select root node (press Esc)" ID="ID_956693368" CREATED="1310821238510" MODIFIED="1310821551509">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="Press: Unfold all descendants" ID="ID_205411813" CREATED="1310821255419" MODIFIED="1310821336463">
+<icon BUILTIN="../unfold_all"/>
+</node>
+</node>
+<node TEXT="Define filter rule" STYLE_REF="UserGuide" FOLDED="true" ID="ID_226284160" CREATED="1313823317390" MODIFIED="1313823872649">
+<node TEXT="Select: Node text" ID="ID_1734926057" CREATED="1310820732631" MODIFIED="1310821733866">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="Select: Contains" ID="ID_7376434" CREATED="1310820745993" MODIFIED="1310820756976"/>
+<node TEXT="Type: filter" ID="ID_1345958489" CREATED="1310820789556" MODIFIED="1310821753693"/>
+<node TEXT="Press Quick Filter" ID="ID_338438421" CREATED="1310820822433" MODIFIED="1310820854679">
+<icon BUILTIN="../apply_quick_filter"/>
+</node>
+</node>
+<node TEXT="To end" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1679478175" CREATED="1310821779644" MODIFIED="1313823872649">
+<node TEXT="Press: Undo filter" ID="ID_407446498" CREATED="1310822117674" MODIFIED="1310822194279">
+<icon BUILTIN="../remove_filtering"/>
+</node>
+<node TEXT="Select root node (press Esc)" ID="ID_647928992" CREATED="1310821238510" MODIFIED="1310821551509">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="Press: Fold all descendants" ID="ID_1201115927" CREATED="1310821255419" MODIFIED="1310822238084">
+<icon BUILTIN="../fold_all"/>
+</node>
+<node TEXT="Fold all nodes" ID="ID_426393770" CREATED="1310821426631" MODIFIED="1310821850515">
+<hook NAME="SummaryNode"/>
+</node>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Installeren" STYLE_REF="UserGuide" FOLDED="true" ID="ID_931855473" CREATED="1311401499171" MODIFIED="1316338836359" HGAP="31" VSHIFT="2">
+<node TEXT="Download" FOLDED="true" ID="_Freeplane_Link_904501221" CREATED="1270892460638" MODIFIED="1310243962938">
+<node TEXT="Freeplane&apos;s homepage" ID="ID_916980386" CREATED="1270892460631" MODIFIED="1271530957733" LINK="http://freeplane.sourceforge.net">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+<node TEXT="Windows platform" STYLE_REF="Functiegroep" FOLDED="true" ID="_Freeplane_Link_139664576" CREATED="1270892460640" MODIFIED="1310281568073" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span style="color: #000000; font-family: SansSerif, sans-serif"><font face="SansSerif, sans-serif" color="#000000">To install Freeplane on Microsoft Windows, install Java from Sun and install Freeplane using the Freeplane installer.</font></span>
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Download Java Runtime Environment (at least J2RE1.5)" ID="ID_1620747952" CREATED="1270892460639" MODIFIED="1310243329632" LINK="http://java.sun.com/javase/downloads/index.jsp" TEXT_SHORTENED="true">
+<icon BUILTIN="full-1"/>
+<edge WIDTH="thin"/>
+<font NAME="SansSerif" SIZE="12"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Most of the times this is done automatically when downloading Freeplane form the Freeplane home page.
     </p>
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Beveiligingsbeperkingen" FOLDED="true" ID="ID_1451936706" CREATED="1290615850894" MODIFIED="1293375090358">
-<node ID="ID_846237406" CREATED="1290615864738" MODIFIED="1293375090351">
-<richcontent TYPE="NODE">
+<node TEXT="Download Freeplane application" ID="_Freeplane_Link_1612101865" CREATED="1270892460640" MODIFIED="1310243335684" LINK="http://freeplane.sourceforge.net" TEXT_SHORTENED="true">
+<icon BUILTIN="full-2"/>
+<edge WIDTH="thin"/>
+<font NAME="SansSerif" SIZE="12"/>
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Als je een plaatje in een knoop wilt tonen welke wordt geladen van een andere website, dan kan dit alleen indien vooraf is vastgesteld dat de andere website is te vertrouwen. De andere website wordt alleen vertrouwd als hiervoor een beveiligingscertificaat is afgegeven. Dit geldt ook voor jouw website.
+      Most of the times this is done automatically when downloading Freeplane form the Freeplane home page.
     </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Install dictionaries for spell check" ID="ID_375945761" CREATED="1310243241880" MODIFIED="1310243496708">
+<icon BUILTIN="full-3"/>
+</node>
+</node>
+<node TEXT="Linux platform" STYLE_REF="Functiegroep" ID="ID_839470339" CREATED="1289029709910" MODIFIED="1310244076935" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">To install Freeplane on Linux, download the Java Runtime Environment and the Freeplane application itself. First install Java, then unpack Freeplane. To run Freeplane, execute freeplane.sh.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT=" MAC platform" STYLE_REF="Functiegroep" ID="ID_1956173686" CREATED="1289029737710" MODIFIED="1310244086061" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">To install Freeplane on Mac OS X first use the built in Software Update feature to ensure that you have all the latest available updates, especially Java. Software Update is located under the Apple logo menu in the top left-hand corner of the screen. Then download a Mac-specific version of Freeplane. The .dmg version is easiest to install, though a .zip version may also be available. When the download is complete, the file may be automatically mounted (or un-zipped) depending on your Web browser settings. Otherwise either double-click on the downloaded .dmg file to &quot;mount&quot; it, or double-click on the downloaded .zip file to un-zip it. Now you should see a Freeplane application icon, which you can drag to your Applications folder. Then you may optionally create an alias (short-cut) on the Desktop, and/or on the Dock. To run Freeplane, either double-click on its application icon (in the Applications folder) or on its Desktop short-cut, or click once on its icon in the Dock. The Freeplane Wiki has Macintosh page with more information.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Install" FOLDED="true" ID="Freeplane_Link_1822195277" CREATED="1270892460697" MODIFIED="1310903701338" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To set preferences
+    </p>
+    <ul>
+      <li>
+        &#160;select <i>Tools &gt; Preferences.</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<node TEXT="System language" ID="ID_172050805" CREATED="1271856103992" MODIFIED="1310282001239" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To change the language used in Freeplane menu's:
+    </p>
+    <ul>
+      <li>
+        select <i>Tools &gt; Preferences &gt; Environment &gt; Language;</i>
+      </li>
+      <li>
+        select your language
+      </li>
+      <li>
+        restart Freeplane
+      </li>
+    </ul>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        &quot;language&quot;Atomatic chooses the language of your operating system
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Dictionaries for spell check" ID="ID_1124028676" CREATED="1310243241880" MODIFIED="1310282095144" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Standard spell check is in English
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Automatic backup" ID="ID_595250711" CREATED="1271096741387" MODIFIED="1310281994968" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Freeplane creates a subfolder named .backup in each folder which contains edited maps. Old map versions are saved there, along with automatically-saved copies of edited maps. These copies are named with the file extension &quot;<i>.autosave</i>&quot;. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">By default, an automatic save happens every minute, and the last 10 autosave files are kept as protection against accidental termination of Freeplane, e.g. on computer shutdown. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">To restore an automatically-saved file, you must manually rename it to remove the &quot;.autosave&quot; extension and the preceding sequence number. By default, sequence numbers range from 1 to 10. For instance, to restore &quot;freeplane.mm&quot; from the most recent autosave file, rename (or copy) &quot;.backup\freeplane.mm.10.autosave&quot; to &quot;freeplane.mm&quot;. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Automatic save and backup can be adjusted to your needs via Tools &gt; Preferences &gt; Environment &gt; Automatic Save.</font>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Set MM indexing in Windows7" ID="ID_952466464" CREATED="1313349075257" MODIFIED="1313350719165" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To add the content of mind maps to the Windows 7 filtering mechanism:
+    </p>
+    <ul>
+      <li>
+        Go to Control Panel -&gt; indexing options; or type in Help&#160;&#160;&quot;&quot;indexing&quot;
+      </li>
+      <li>
+        Choose &quot;Advanced&quot;. This gives you a page with two tabs -- &quot;Index Settings&quot; and &quot;File Types&quot;
+      </li>
+      <li>
+        Choose the &quot;File Types&quot; tab
+      </li>
+      <li>
+        Scroll through the list of files there till you come to &quot;.mm&quot;
+      </li>
+      <li>
+        The filter description will say &quot;File Properties Filter&quot;
+      </li>
+      <li>
+        Click the second radio button beneath, which says &quot;Index Properties and File contents. The filter description should now change to &quot;Plain text filter&quot;
+      </li>
+      <li>
+        Choose OK to leave the dialog. The indexing will restart and when it is finished, the index is available.
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <p>
+      Note
+    </p>
+    <ul>
+      <li>
+        Standardly only node properties are indexed, not content. The above procedure also adds the content to the filtering mechanism
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Macintosh" STYLE_REF="UserGuide" ID="ID_480781217" CREATED="1270892460643" MODIFIED="1314857321113" TEXT_SHORTENED="true" HGAP="30" VSHIFT="9">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Freeplane recently added full support for Apple's Mac OS X operating system. Some of the documentation is still oriented toward PC users running Windows or Linux. Mac users will be able to follow along by keeping some differences in mind, listed below.</span></font>
+    </p>
+    <ul>
+      <li>
+        <span onclick="show_folder('1_1')" class="foldclosed" id="show1_1">+</span>&#160;<span onclick="hide_folder('1_1')" class="foldopened" id="hide1_1">-</span>&#160;<font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">Command key versus the Ctrl (control) key</span></font>
+
+        <ul id="fold1_1">
+          <li>
+            <p>
+              <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">When Freeplane runs under Mac OS X, you generally will use the Apple Command key rather than the &quot;control&quot; key, which is labelled Ctrl on a PC. The Command key is marked with a cloverleaf &#8984; symbol, and may also be captioned as &quot;command&quot; or &quot;cmd&quot;, or be marked with an Apple logo.</span></font>
+            </p>
+            <p>
+              <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">When you see the Ctrl key mentioned in Freeplane's documentation, in most cases you should use the Command key instead.</span></font>
+            </p>
+            <p>
+              <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">In a very few cases, even on your Mac, Freeplane actually requires using the &quot;control&quot; key rather than the Command key. In these cases, this document refers to the key explicitly as Control, for emphasis. In other cases, if the documentation refers to the Ctrl key, yet the Command key fails to work as a substitute on your Mac, try the &quot;control&quot; key instead.</span></font>
+            </p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <span onclick="show_folder('1_2')" class="foldclosed" id="show1_2">+</span>&#160;<span onclick="hide_folder('1_2')" class="foldopened" id="hide1_2">-</span>&#160;<font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">Mice, Right Clicks and Context Menus</span></font>
+
+        <ul id="fold1_2">
+          <li>
+            <p>
+              <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">Many Apple-branded mice and trackpads have only one click-able &quot;button.&quot; To bring up a context-sensitive menu (or &quot;context menu&quot;), Mac users can hold down the Control key while clicking the mouse (abbreviated as &quot;Control + click&quot;). Yes, use the Control key here, rather than the Command key, because this function is built into Mac OS X so Freeplane cannot change it. Apple makes Control + click equivalent to the &quot;right click&quot; which is available on mice with two buttons.</span></font>
+            </p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <span onclick="show_folder('1_3')" class="foldclosed" id="show1_3">+</span>&#160;<span onclick="hide_folder('1_3')" class="foldopened" id="hide1_3">-</span>&#160;<font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">Menu Differences</span></font>
+
+        <ul id="fold1_3">
+          <li>
+            <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">A few menu items are relocated in accordance with Mac OS X standards. These are listed below.</span></font>
+          </li>
+          <li>
+            <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">Help &gt; About is moved to the Freeplane application menu &gt; About Freeplane.</span></font>
+          </li>
+          <li>
+            <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">Tools &gt; Preferences is moved to the Freeplane application menu &gt; Preferences.</span></font>
+          </li>
+          <li>
+            <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">File &gt; Quit is moved to the Freeplane application menu &gt; Quit Freeplane.</span></font>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <span onclick="show_folder('1_4')" class="foldclosed" id="show1_4">+</span>&#160;<span onclick="hide_folder('1_4')" class="foldopened" id="hide1_4">-</span>&#160;<font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">Zooming</span></font>
+
+        <ul id="fold1_4">
+          <li>
+            <p>
+              <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">Mac OS X provides a means to zoom in on (magnify) part of the screen, by holding down the Control key while turning the mouse wheel forward. This facility is built into the Mac operating system, so the function is unavailable for Freeplane to use for control of its own Zoom function. So Mac users must use one of the alternate means which Freeplane provides to adjust its zoom level. </span></font>
+            </p>
+            <p>
+              <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">If you are unfamiliar with OS X's Control + mouse wheel function, be aware that some mouse functions become awkward to use, or even unusable, while zoomed in. To return the screen to normal, hold down the Conrol key and turn the mouse wheel backward to zoom back out all the way.</span></font>
+            </p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <span onclick="show_folder('1_5')" class="foldclosed" id="show1_5">+</span>&#160;<span onclick="hide_folder('1_5')" class="foldopened" id="hide1_5">-</span>&#160;<font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">Freeplane Wiki</span></font>
+
+        <ul id="fold1_5">
+          <li>
+            <a target="_blank" href="http://freeplane.sourceforge.net/wiki/index.php/Macintosh"><span class="l">~</span>&#160;<font color="#000000" face="SansSerif, sans-serif"><span style="font-family: SansSerif, sans-serif; color: #000000">Visit the Macintosh page on Freeplane's online Wiki to learn more about running Freeplane on a Mac.</span></font>&#160;</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Deze documentatie" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1263067716" CREATED="1311401568817" MODIFIED="1316338843238" HGAP="32" VSHIFT="4">
+<node FOLDED="true" ID="ID_518502200" CREATED="1309618730385" MODIFIED="1312922288130">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p style="text-align: centre">
+      Making This Documentation 1.2
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Use Design principles" FOLDED="true" ID="ID_1034693607" CREATED="1309694957628" MODIFIED="1310196223167" TEXT_SHORTENED="true">
+<node TEXT="Easy use" FOLDED="true" ID="ID_971999971" CREATED="1309695171606" MODIFIED="1310196223167" TEXT_SHORTENED="true">
+<node TEXT="Target group: educated laymen" FOLDED="true" ID="ID_650466721" CREATED="1309695100454" MODIFIED="1310196223151" TEXT_SHORTENED="true">
+<node TEXT="The visually limited" ID="ID_1067605334" CREATED="1309695629927" MODIFIED="1310196223151" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <ul>
+      <li>
+        High contrast
+      </li>
+      <li>
+        Limited use of color (grouping only)
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Scoped visibility" FOLDED="true" ID="ID_1491781564" CREATED="1309695214007" MODIFIED="1310196223136" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Task related
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Predefined Filters" ID="ID_1063131817" CREATED="1309695826409" MODIFIED="1310196223136" TEXT_SHORTENED="true"/>
+</node>
+<node TEXT="Standard content types" FOLDED="true" ID="ID_1568417876" CREATED="1309696476579" MODIFIED="1310196223136" TEXT_SHORTENED="true">
+<node TEXT="Reading guidance" ID="ID_754327054" CREATED="1309696324854" MODIFIED="1310196223120" TEXT_SHORTENED="true"/>
+<node TEXT="Definitions" ID="ID_1594805543" CREATED="1309696223219" MODIFIED="1310196223120" TEXT_SHORTENED="true"/>
+<node TEXT="Methods" ID="ID_1690427045" CREATED="1309696230263" MODIFIED="1310196223105" TEXT_SHORTENED="true"/>
+<node TEXT="Refine information" ID="ID_1224425563" CREATED="1309696253141" MODIFIED="1310196223105" TEXT_SHORTENED="true"/>
+<node TEXT="Exceptions" ID="ID_22860584" CREATED="1310836503572" MODIFIED="1310836515771"/>
+<node TEXT="Examples" ID="ID_1077186776" CREATED="1309696266689" MODIFIED="1310196223105" TEXT_SHORTENED="true"/>
+</node>
+<node TEXT="Standard use of node elements" FOLDED="true" ID="ID_1585389386" CREATED="1309696673647" MODIFIED="1310196223089" TEXT_SHORTENED="true">
+<node TEXT="core: title/name" ID="ID_1920924045" CREATED="1309696563043" MODIFIED="1315980974114" TEXT_SHORTENED="true"/>
+<node TEXT="details: what/how to" ID="ID_715096689" CREATED="1309696579165" MODIFIED="1310196223089" TEXT_SHORTENED="true"/>
+</node>
+<node TEXT="Standard Form" FOLDED="true" ID="ID_762818872" CREATED="1309696773167" MODIFIED="1310196223073" TEXT_SHORTENED="true">
+<node TEXT="Styles" ID="ID_1772043588" CREATED="1309695477062" MODIFIED="1310196223073" TEXT_SHORTENED="true"/>
+</node>
+<node TEXT="Easy handling" FOLDED="true" ID="ID_41805908" CREATED="1309696039857" MODIFIED="1310196223073" TEXT_SHORTENED="true">
+<node TEXT="Scripts" ID="ID_53029889" CREATED="1309696120205" MODIFIED="1310196223058" TEXT_SHORTENED="true"/>
+</node>
+</node>
+<node TEXT="Easy maintenance" FOLDED="true" ID="ID_684636398" CREATED="1309695019936" MODIFIED="1310196223058" TEXT_SHORTENED="true">
+<node TEXT="Follow structure of Main menu" ID="ID_96415895" CREATED="1309695540344" MODIFIED="1310196223058" TEXT_SHORTENED="true"/>
+<node TEXT="Define content  once, use many" ID="ID_599399448" CREATED="1309694968072" MODIFIED="1310196223042" TEXT_SHORTENED="true"/>
+<node TEXT="Use Conditional styles" ID="ID_1144923217" CREATED="1309695364859" MODIFIED="1310196223042" TEXT_SHORTENED="true"/>
+</node>
+</node>
+<node TEXT="Prepare empty mind map" FOLDED="true" ID="ID_548574769" CREATED="1309691330424" MODIFIED="1310196223042" TEXT_SHORTENED="true">
+<node TEXT="Automatic edge color off" ID="ID_1831289663" CREATED="1309618738099" MODIFIED="1310196223027" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <ul>
+      <li>
+        Deselect <i>View &gt; Properties panel &gt; Automatic edge color</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Attributes invisible" ID="ID_1915815091" CREATED="1309618929144" MODIFIED="1310196223027" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <ul>
+      <li>
+        Select<i>&#160;Attributes &gt; Hide all attributes</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Attribute icon off" ID="ID_1498387169" CREATED="1309618959853" MODIFIED="1310196223011" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <ul>
+      <li>
+        Deselect<i>&#160;Tools &gt; Show icons for attributes</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Define Category" FOLDED="true" ID="ID_507010795" CREATED="1310838169626" MODIFIED="1310838588667">
+<node TEXT="Content" FOLDED="true" ID="ID_862676309" CREATED="1310838629343" MODIFIED="1310838635553">
+<node TEXT="Definition" ID="ID_611433412" CREATED="1310838201903" MODIFIED="1310838488593" TEXT_SHORTENED="true"/>
+<node TEXT="Method" ID="ID_247256524" CREATED="1310838209149" MODIFIED="1310838488624" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Menu item
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Procedure" ID="ID_528236762" CREATED="1310838217269" MODIFIED="1310838488624" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Series of actions
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="OptionalValue" ID="ID_1278994490" CREATED="1310845769830" MODIFIED="1310848523586" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      A possible value of a method
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Exception" ID="ID_1086387726" CREATED="1310838298748" MODIFIED="1310838488624" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Special condition
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Refine" ID="ID_464752434" CREATED="1310838284084" MODIFIED="1310838488609" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      More detailed explanation
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Example" ID="ID_1007698430" CREATED="1310838291767" MODIFIED="1310838488609" TEXT_SHORTENED="true"/>
+<node TEXT="ToNote" ID="ID_961458845" CREATED="1310838313685" MODIFIED="1310838488609" TEXT_SHORTENED="true"/>
+</node>
+<node TEXT="Structure" FOLDED="true" ID="ID_1577905162" CREATED="1310838651581" MODIFIED="1310838659179">
+<node TEXT="Title" ID="ID_405338718" CREATED="1310838898171" MODIFIED="1310838904381"/>
+<node TEXT="MainMenu" ID="ID_65441144" CREATED="1310838664397" MODIFIED="1310838674382"/>
+<node TEXT="SubMenu" ID="ID_1383579659" CREATED="1310838678803" MODIFIED="1310838690769"/>
+<node TEXT="MainMenuGroupLabel" ID="ID_1034739022" CREATED="1310838719886" MODIFIED="1310838746641"/>
+</node>
+<node TEXT="Revision" ID="ID_1107739085" CREATED="1312101477551" MODIFIED="1312102431789"/>
+</node>
+<node TEXT="Define Chapter" FOLDED="true" ID="ID_362129212" CREATED="1309618782903" MODIFIED="1312101358874" TEXT_SHORTENED="true">
+<node TEXT="Goal" ID="ID_403391885" CREATED="1311327772687" MODIFIED="1311403771425" TEXT_SHORTENED="true">
+<icon BUILTIN="full-0"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      This filter shows the procedure how to set the filter rule and filter conditions for displaying only the nodes of Scope=GS1.
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="0"/>
+</node>
+<node TEXT="Chapter 1. My first mind map" ID="ID_1104918030" CREATED="1311259207123" MODIFIED="1312782904960" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Mastering Chapter 1 means you know:
+    </p>
+    <ul>
+      <li>
+        basic definitions of nodes and relations between nodes
+      </li>
+      <li>
+        how to (re)open and save your first map
+      </li>
+      <li>
+        how to create child nodes and sibling nodes
+      </li>
+      <li>
+        when to use two different ways of editing (in-line or dialog)
+      </li>
+      <li>
+        how to fold (hide) and unfold all descendants
+      </li>
+      <li>
+        the basic difference between menu's <i>Nodes</i>&#160;an <i>Node features</i>
+      </li>
+      <li>
+        the basic difference between menu's <i>Format</i>&#160;and and <i>Styles</i>.
+      </li>
+      <li>
+        the benefits are of filtering.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="1"/>
+<font BOLD="true"/>
+</node>
+<node TEXT="Chapter 2.Handling nodes" ID="ID_955352628" CREATED="1311258291175" MODIFIED="1312101390464" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="2"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      You mastered GS2&#160;when you are able to handle nodes more easily:
+    </p>
+    <ul>
+      <li>
+        Know the meaning of all menu/toolbars.
+      </li>
+      <li>
+        Know all about selecting nodes
+      </li>
+      <li>
+        Know how to move nodes
+      </li>
+      <li>
+        Know basic file operations
+      </li>
+      <li>
+        Know additional fold operations
+      </li>
+      <li>
+        Know to find last modified nodes
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<font BOLD="true"/>
+</node>
+<node TEXT="Chapter 3.Basic Node features" ID="ID_1361306471" CREATED="1311327937765" MODIFIED="1312101402429" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      You have mastered GS3 if you can handle Node Features:
+    </p>
+    <ul>
+      <li>
+        add and remove Icons
+      </li>
+      <li>
+        add, edit and hide Images
+      </li>
+      <li>
+        add, edit and hide Details
+      </li>
+      <li>
+        add, edit and hide Attributes
+      </li>
+      <li>
+        add, edit and hide Notes; and use the Note Panel
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="3"/>
+<font BOLD="true"/>
+</node>
+<node TEXT="Chapter 4.Format &amp; Style" ID="ID_1181215259" CREATED="1311342024084" MODIFIED="1312101416672">
+<attribute NAME="Chapter" VALUE="4"/>
+<font BOLD="true"/>
+</node>
+<node TEXT="Chapter  5.Date, Time &amp; Reminder" ID="ID_1315985597" CREATED="1311342048684" MODIFIED="1312101426641">
+<attribute NAME="Chapter" VALUE="5"/>
+<font BOLD="true"/>
+</node>
+<node TEXT="Chapter 6.Moving &amp; Publishing maps" ID="ID_1822943808" CREATED="1311342076904" MODIFIED="1312101437373">
+<attribute NAME="Chapter" VALUE="6"/>
+<font BOLD="true"/>
+</node>
+<node TEXT="Chapter 7.Scripts &amp; Formulas" ID="ID_1540834370" CREATED="1311404012843" MODIFIED="1312101446843">
+<attribute NAME="Chapter" VALUE="7"/>
+<font BOLD="true"/>
+</node>
+<node TEXT="Chapter 8.Security &amp; Preferences" ID="ID_390065587" CREATED="1311404075142" MODIFIED="1312101455922">
+<attribute NAME="Chapter" VALUE="8"/>
+<font BOLD="true"/>
+</node>
+</node>
+<node TEXT="Define Styles" FOLDED="true" ID="ID_1310961875" CREATED="1309618758309" MODIFIED="1310196223011" TEXT_SHORTENED="true">
+<node TEXT="Default" ID="ID_150604698" CREATED="1309639080400" MODIFIED="1310196222995" TEXT_SHORTENED="true"/>
+<node TEXT="Definition" STYLE_REF="Defenition" ID="ID_24518950" CREATED="1309618770906" MODIFIED="1310196222995" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Method" ID="ID_255587171" CREATED="1309618777965" MODIFIED="1310196222980" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="OptionalValue" STYLE_REF="OptionalValue" ID="ID_796900128" CREATED="1310845841441" MODIFIED="1310848600401">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Procedure" ID="ID_927469794" CREATED="1310838858321" MODIFIED="1310839528312" COLOR="#006666">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Exception" ID="ID_497865634" CREATED="1309891278322" MODIFIED="1310196222933" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+</hook>
+</node>
+<node TEXT="ToNote" ID="ID_21237962" CREATED="1309890992904" MODIFIED="1310196222933" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Refine" ID="ID_1208298554" CREATED="1309619037550" MODIFIED="1310196222980" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Example" STYLE_REF="Example" ID="ID_1230627708" CREATED="1311097198651" MODIFIED="1311097742921">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+</hook>
+</node>
+<node TEXT="MainMenu" ID="ID_349932844" CREATED="1309691442065" MODIFIED="1310196222964" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
+</hook>
+</node>
+<node TEXT="SubMenu" ID="ID_843480445" CREATED="1309802400475" MODIFIED="1310196222949" STYLE="bubble" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Title" STYLE_REF="Title" ID="ID_1964332650" CREATED="1286914216123" MODIFIED="1310242058632"/>
+<node TEXT="Revision" STYLE_REF="Revision" ID="ID_1824312381" CREATED="1312102440033" MODIFIED="1312102451750"/>
+</node>
+<node TEXT="Define Conditional styles" FOLDED="true" ID="ID_475303000" CREATED="1309618798837" MODIFIED="1310196222917" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <ul>
+      <li>
+        Define a conditional style for each Class type
+      </li>
+      <li>
+        Set an attribute Class for each node
+      </li>
+      <li>
+        Set an attribute Scope = GettingStarted for all nodes of the introduction
+      </li>
+      <li>
+        Define a groovy script for node Getting started
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<node TEXT="Attribute Class defines the style(s) to be applied" ID="ID_813678576" CREATED="1309694697522" MODIFIED="1310196222917" TEXT_SHORTENED="true"/>
+<node TEXT="Class value = list of Style names" ID="ID_864906280" CREATED="1309694751130" MODIFIED="1310196222902" TEXT_SHORTENED="true"/>
+</node>
+</node>
+<node TEXT="Translating This Documention" LOCALIZED_STYLE_REF="default" ID="ID_1796932858" CREATED="1311099007251" MODIFIED="1311931543787" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      In translating Freeplane the following points have to be noted:
+    </p>
+    <ul>
+      <li>
+        The look and feel depends on styles and conditional styles. The good functioning of the conditional styles presupposes the existence of the hidden attribute <i>Class</i>.
+      </li>
+      <li>
+        The predefined filtering options presuppose the existence of the hidden attributes <i>Chapter</i>&#160;and <i>Class</i>.
+      </li>
+      <li>
+        Formulas and Groovy scripts should stay in tact.
+      </li>
+      <li>
+        The English documentation is saved with a particular folding state.
+      </li>
+    </ul>
+    <p>
+      To make sure that in the translation process these components keep present and consistent:
+    </p>
+    <ul>
+      <li>
+        Make a copy of this English documentation and translate the text in the main node and in Details.
+      </li>
+      <li>
+        Do not translate the attributes. Or load the mind map in an editor like Note++ and use<i>&#160;find and replace</i>&#160;to translate all attribute values in the same way.
+      </li>
+      <li>
+        Set Save folding in Preferences, then Unfold all, Fold all, Unfold Chapter, Save map.
+      </li>
+    </ul>
+    <p>
+      The next problem is to keep your translation synchronized with modification of the English documentation. To know what has been changed:
+    </p>
+    <ul>
+      <li>
+        Find and read the procedure &quot;<b>Find last modified</b>&quot;, see<i>&#160;&#160;Filter &gt; Quick filter </i>or <i>Edit &gt; Find and replace.</i>.. This shows the modified nodes. It does not show the deleted nodes.
+      </li>
+    </ul>
+    <p>
+      To make the change, the most certain procedure is to:
+    </p>
+    <ul>
+      <li>
+        &#160;Copy and paste each modified node to your translated file and translate it (again). In this way you are sure the hidden structure is taken over too.
+      </li>
+    </ul>
+    <p>
+      An alternative is to check all components (basic text and optional icons, formula's, hyperlinks, Details, Attributes, Images, formulas <b>AND</b>&#160; Groovy scripts) and make the changes necessary.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        You could perform a spell check to the whole map by loading the documentation mm in a text editor like OpenOffice.
+      </li>
+      <li>
+        If you want to change colors, do this by editing the used style. See <i>Styles &gt; Edit styles.</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Version, revisions and credits" FOLDED="true" ID="_Freeplane_Link_784043927" CREATED="1270892460645" MODIFIED="1312145108660" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To see which nodes have been revised in a version:
+    </p>
+    <ul>
+      <li>
+        select <i>Styles &gt; Conditional Map Styles</i>
+      </li>
+      <li>
+        check the box before the revision you are interested in. (To undo, remove the check.)
+      </li>
+    </ul>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        The nodes revised are marked with a blue icon with &quot;i&quot;.
+      </li>
+      <li>
+        Find or filter for these nodes with <i>(Style,IsEqual, Revision)</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<node TEXT="Version Freeplane 1.2.8" ID="ID_605038742" CREATED="1289133018961" MODIFIED="1312922583938"/>
+<node TEXT="Documentation" FOLDED="true" ID="ID_136822724" CREATED="1286311222217" MODIFIED="1310284652022">
+<node TEXT="Jokro" FOLDED="true" ID="ID_1128010246" CREATED="1286311242349" MODIFIED="1293375084474" LINK="mailto:jokro@users.sourceforge.net?subject%20=%20handleiding">
+<node TEXT="Basic rewrite of Freeplane 1.3 to Freeplane 1.2" ID="ID_52670674" CREATED="1289731003743" MODIFIED="1310284343860"/>
+<node TEXT="Wiki and Tutorial Freeplane 1.2" ID="ID_1524499902" CREATED="1314907613560" MODIFIED="1314907697316" VSHIFT="-10"/>
+</node>
+<node TEXT="Date of last modification:" ID="ID_21798827" CREATED="1289730911791" MODIFIED="1310284256952"/>
+</node>
+<node TEXT="Software" FOLDED="true" ID="ID_1342635261" CREATED="1270892460645" MODIFIED="1310284708885">
+<node TEXT="Original Authors" FOLDED="true" ID="Freeplane_Link_415458128" CREATED="1270892460646" MODIFIED="1310284712036">
+<node TEXT="Joerg Mueller" ID="_Freeplane_Link_1896457660" CREATED="1270892460646" MODIFIED="1310284722098"/>
+<node TEXT="Daniel Polansky" ID="_Freeplane_Link_984984595" CREATED="1270892460647" MODIFIED="1310284722113" LINK="http://danpolansky.blogspot.com/"/>
+<node TEXT="Petr Novak" ID="_Freeplane_Link_459203293" CREATED="1270892460647" MODIFIED="1310284722098"/>
+<node TEXT="Christian Foltin" ID="_Freeplane_Link_875814410" CREATED="1270892460647" MODIFIED="1310284722098"/>
+<node TEXT="Dimitry Polivaev" ID="_Freeplane_Link_1415293905" CREATED="1270892460648" MODIFIED="1310284722098"/>
+<node TEXT="Graphical Design by Predrag Cuklin" ID="ID_1094825033" CREATED="1270892460648" MODIFIED="1310284722098"/>
+</node>
+<node TEXT="Current Team" FOLDED="true" ID="ID_1090487344" CREATED="1271097427203" MODIFIED="1310284734578">
+<node TEXT="Release 1.1.x" FOLDED="true" ID="ID_1795869028" CREATED="1271097443907" MODIFIED="1310284741099">
+<node TEXT="Dimitry Polivaev" ID="ID_809494025" CREATED="1271097633119" MODIFIED="1271097633119"/>
+<node TEXT="Volker Boerchers" ID="ID_548414191" CREATED="1271097633119" MODIFIED="1271097633119"/>
+<node TEXT="Eric L." ID="ID_306583030" CREATED="1271097633122" MODIFIED="1271097633122"/>
+<node TEXT="jayseye" ID="ID_502187025" CREATED="1271097633123" MODIFIED="1271097633123"/>
+<node TEXT="Predrag" ID="ID_320430724" CREATED="1271097633123" MODIFIED="1271097633123"/>
+<node TEXT="Ryan Wesley" ID="ID_288819242" CREATED="1271097633123" MODIFIED="1271097633123"/>
+</node>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="FAQ" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1040911735" CREATED="1312613811349" MODIFIED="1314857314481" TEXT_SHORTENED="true" HGAP="34" VSHIFT="7">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Frequently asked questions.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        Also find/filter for Details AND
+
+        <ul>
+          <li>
+            (Style, Contains, Exception) to look for exceptional cases
+          </li>
+          <li>
+            (Style, Contains, ToNote) to look for important information.
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<edge STYLE="horizontal"/>
+<node TEXT="Limitations and known bugs" FOLDED="true" ID="ID_1348021717" CREATED="1314027459750" MODIFIED="1314027482026">
+<node TEXT="Nodes with overlapping text" ID="ID_1348493491" CREATED="1314027785425" MODIFIED="1314027845976" LINK="https://sourceforge.net/apps/mantisbt/freeplane/view.php?id=1210"/>
+<node TEXT="Flash player" ID="ID_1294313915" CREATED="1314041896111" MODIFIED="1314041948698" LINK="https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4668966"/>
+</node>
+<node TEXT="Map / node not editable" ID="ID_398310650" CREATED="1312614404180" MODIFIED="1313759718098" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Use Maps &gt; Mind map editor in stead of Maps &gt; Mind map browser
+    </p>
+  </body>
+</html></richcontent>
+<edge STYLE="sharp_bezier"/>
+</node>
+<node TEXT="Menu&apos;s invisible" ID="ID_475459868" CREATED="1312913181290" MODIFIED="1313759718098" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      If the menu bars are invisible, click-right on a free background area and select Toolbars.
+    </p>
+  </body>
+</html></richcontent>
+<edge STYLE="sharp_bezier"/>
+</node>
+<node TEXT="Node does not unfold" ID="ID_582886738" CREATED="1312614555555" MODIFIED="1313759718098" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      If this happens after filtering:
+    </p>
+    <ul>
+      <li>
+        undo filtering
+      </li>
+      <li>
+        adapt filter settings to allow for descendants / hidden nodes
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<edge STYLE="sharp_bezier"/>
+</node>
+<node TEXT="Style not applied" ID="ID_834195855" CREATED="1312613817971" MODIFIED="1313759718098" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      In Properties Panel: remove all checks. These overrule style settings.
+    </p>
+  </body>
+</html></richcontent>
+<edge STYLE="sharp_bezier"/>
+</node>
+</node>
+</node>
+<node TEXT="Reference" STYLE_REF="Title" POSITION="right" ID="ID_332175012" CREATED="1286914216123" MODIFIED="1316338971767" HGAP="-31" VSHIFT="-85" TEXT_SHORTENED="true">
+<icon BUILTIN="wizard"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Freeplane has a main menu bar which gives access to most of its functionality. It has menu's with entries to methods (actions) and to dialog boxes or panels which are sets of related methods.&#160;&#160;To create oversight, related entries are connected with an accolade and group label. The items (nodes) below are the main menu's. This menu structure is taken as the framework for describing methods and dialog boxes. To enforce a particular result, methods are called upon in a particular order, a so-called a procedure. Essential procedures are described and connected to the actions they rely on. In this way they are easy to find. Methods and procedures have a different appearance (style), hence they are easily to be discriminated. In applying methods and procedures, there may be exceptions. In order to understand the procedures examples may be helpful. Exceptions, examples and other information to note are shown in the vicinity of the methods and procedures they apply to. They are discriminated by their different appearances (styles) and icons.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Click on the green arrow to see the different styles being applied for
+    </p>
+    <ul>
+      <li>
+        (sub)menu's
+      </li>
+      <li>
+        methods and optional values
+      </li>
+      <li>
+        procedures
+      </li>
+      <li>
+        exceptions
+      </li>
+      <li>
+        examples
+      </li>
+      <li>
+        to-note's
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<edge STYLE="bezier"/>
+<node TEXT="Bestand [File]" STYLE_REF="MainMenu" FOLDED="true" ID="ID_1242926404" CREATED="1310134532663" MODIFIED="1316339002124" TEXT_SHORTENED="true">
+<attribute_layout NAME_WIDTH="37" VALUE_WIDTH="77"/>
+<attribute NAME="Chapter" VALUE="1,2,6,8"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To handle mind maps.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="New map [New]" ID="ID_1310307853" CREATED="1310134532663" MODIFIED="1314559030968" TEXT_SHORTENED="true">
+<icon BUILTIN="../filenew"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Creates a new Freeplane map. This map resides only in memory until it is saved.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1"/>
+</node>
+<node TEXT="New map from template ..." ID="ID_1630948273" CREATED="1310134532663" MODIFIED="1314446980669" TEXT_SHORTENED="true">
+<icon BUILTIN="../new_map_"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens dialog to choose a map style from which a new map is created. <font face="SansSerif, sans-serif" color="#000000">This map resides only in memory until it is saved.</font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+<node TEXT="New protected (encrypted) map... [Create encrypted map...]" FOLDED="true" ID="ID_1015806590" CREATED="1310134532663" MODIFIED="1314559091995" TEXT_SHORTENED="true">
+<icon BUILTIN="../lock"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Prompts to enter a password required to open the map and creates a new map. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Toggle encrypted/decrypted</i>&#160;to protect a map after it has been created.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="8"/>
+<node TEXT="" ID="ID_43524792" CREATED="1310756995899" MODIFIED="1312915935500" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Standard this option is disabled. To enable it, check:
+    </p>
+    <ul>
+      <li>
+        <i>Tools &gt; Preferences &gt; Environment &gt; Files &gt; Experimental File Locking</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="8"/>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+</node>
+<node TEXT="New map" ID="ID_177723183" CREATED="1310835372274" MODIFIED="1312964613391">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1,2,8"/>
+</node>
+<node TEXT="Save map as..[Save as...]." ID="ID_449363060" CREATED="1310134532663" MODIFIED="1314559109139" TEXT_SHORTENED="true">
+<icon BUILTIN="../filesaveas"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Opens a dialog to save an existing map, which has previously been saved, using a new file name.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+<node TEXT="Save map [Save]" ID="ID_1253878525" CREATED="1310134532663" MODIFIED="1314559123788" TEXT_SHORTENED="true">
+<icon BUILTIN="../filesave"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Save a map that has alrerady been created. If you are saving the map for the first time, you will be presented with the Save dialog box. If the map has already been saved once, it is automatically overwritten with the most recent Save. </span></font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b><font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Note</span></font></b>
+    </p>
+    <ul>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">This is a controlled save, not an automatic save. (A controlled save is done manually, using any of: File &gt; Save, File &gt; Save As..., the Save or Save As icon on the toolbar, or Ctrl + S.) </span></font>
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <p>
+      <b><font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">See also</span></font></b>
+    </p>
+    <ul>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Automatic save.</span></font>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1,2"/>
+</node>
+<node TEXT="Save all open maps [Save all]" ID="ID_1423263542" CREATED="1310534781892" MODIFIED="1314559143569" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Saves all open maps. Same as Save, but is applied to all open maps.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Save map" FOLDED="true" ID="ID_1689022735" CREATED="1310835414628" MODIFIED="1312964634498">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1,2"/>
+<node TEXT="Save folding" ID="ID_1155653392" CREATED="1311925121696" MODIFIED="1312915952582" LINK="#ID_619771458" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        In preferences can be set if/how folding must be saved.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+</node>
+<node TEXT="Revert to last save [Revert]" ID="ID_1896010117" CREATED="1310534540786" MODIFIED="1314559171430" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Reverts the map to the last controlled save.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        A controlled save is done manually using any of: File &gt; Save, File &gt; Save As..., the Save or Save As icon on the toolbar, or Ctrl + S.
+      </li>
+      <li>
+        Automatic saves are ignored. <u>This is an unforgiving command</u>, and cannot be reversed with Edit &gt; Undo.
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        &#160;Edit &gt; Undo and &#160;Edit &gt; Redo for discreet changes to individual nodes.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Open saved map... [Open...]" ID="ID_1284635316" CREATED="1310134532663" MODIFIED="1314559222848" TEXT_SHORTENED="true">
+<icon BUILTIN="../fileopen"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Open a dialog to select and open a map that has already been saved.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1,2"/>
+</node>
+<node TEXT="Most recent maps [Most recent files]" ID="ID_655783347" CREATED="1310534990519" MODIFIED="1314559272862" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Opens a list of maps that you have opened recently.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+<node TEXT="Open map" FOLDED="true" ID="ID_565242033" CREATED="1310835477153" MODIFIED="1312964686462" LINK="#ID_950384750">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1,2"/>
+<node TEXT="Load settings" ID="ID_553299918" CREATED="1311925472829" MODIFIED="1312915971021" LINK="#ID_950384750">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+</hook>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+</node>
+<node TEXT="Export map  [Export]" FOLDED="true" ID="ID_1294197740" CREATED="1310134532663" MODIFIED="1314559289133" TEXT_SHORTENED="true">
+<icon BUILTIN="../export"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens a dialog to select a destination and type of export.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="6"/>
+<node TEXT="As HTML" STYLE_REF="OptionalValue" ID="ID_289318260" CREATED="1266417318562" MODIFIED="1312919285164" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span style="font-family: SansSerif, sans-serif; color: #000000"><font face="SansSerif, sans-serif" color="#000000">This exports the entire map as a HTML document. The map is exported &quot;as is&quot;; the HTML document appears just as the map appears in Freeplane. If a node is expanded, it appears expanded in the HTML document. If a node is collapsed at the time of export, it appears collapsed in the HTML document. The HTML document contains JavaScript that allows the collapsed nodes to be unfolded.</font></span>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Branch as HTML" STYLE_REF="OptionalValue" ID="ID_1222466772" CREATED="1266417322421" MODIFIED="1312919285179" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span style="font-family: SansSerif, sans-serif; color: #000000"><font face="SansSerif, sans-serif" color="#000000">Exports only the branch of the map defined by the node selected and all of its children. In all other respects it is identical to the &quot;As HTML&quot; export.</font></span>
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Open Office Writer Document (ODT)..." STYLE_REF="OptionalValue" ID="ID_413819995" CREATED="1266417526828" MODIFIED="1312919311325" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span style="font-family: SansSerif, sans-serif; color: #000000"><font face="SansSerif, sans-serif" color="#000000">Exports entire map as an Open Office Writer document.</font></span>
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Portable Network Graphics (PNG)..." STYLE_REF="OptionalValue" ID="ID_1426694137" CREATED="1266417536125" MODIFIED="1312919311559" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span style="font-family: SansSerif, sans-serif; color: #000000"><font face="SansSerif, sans-serif" color="#000000">Exports entire map in the PNG image format.</font></span>
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Compressed image (JPEG)..." STYLE_REF="OptionalValue" ID="ID_298130830" CREATED="1266417521765" MODIFIED="1312919311543" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span style="font-family: SansSerif, sans-serif; color: #000000"><font face="SansSerif, sans-serif" color="#000000">Exports entire map in the JPEG/JPG image format.</font></span>
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="As XHTML (Javascript version)..." STYLE_REF="OptionalValue" ID="ID_1590599513" CREATED="1266417345906" MODIFIED="1312919311528" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span style="font-family: SansSerif, sans-serif; color: #000000"><font face="SansSerif, sans-serif" color="#000000">Exports the entire map with full JavaScript functionality.</font></span>
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="As XHTML (click-able map image version HTML)..." STYLE_REF="OptionalValue" ID="ID_519681176" CREATED="1266417370281" MODIFIED="1312919311528" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span style="font-family: SansSerif, sans-serif; color: #000000"><font face="SansSerif, sans-serif" color="#000000">Exports the entire map. The map portion of the page will appear exactly as the map appears in Freeplane. If some nodes are collapsed and others expanded, that's how it will appear in the document. The detail part of the page will contain all of the nodes in outline format.</font></span>
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="As Java Applet (HTML)..." STYLE_REF="OptionalValue" FOLDED="true" ID="ID_376134497" CREATED="1266417395953" MODIFIED="1312919311512" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span style="font-family: SansSerif, sans-serif; color: #000000"><font face="SansSerif, sans-serif" color="#000000">Creates a version of the map embedded in an HTML file, suitable for publishing as a Web page. Appears very similar to the actual map: nodes expand and collapse the same as they do in the Freeplane program.</font></span>
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="6"/>
+<node TEXT="Publish on a website or share" ID="ID_126764093" CREATED="1309808574878" MODIFIED="1312916086753" TEXT_SHORTENED="true" LINK="#ID_1111281504">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="6"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">To publish or share a mind map without images, but with standard icons: </font>
+    </p>
+    <ul>
+      <li>
+        Fold the mind map as you want it to be when opening
+      </li>
+      <li>
+        Select <i>File &gt; Export</i>&#160;and choose <i>Java Applet</i>. One file and one directory will be created: <i>myFile.html </i>and <i>myFile.html_files</i>&#160; respectively.
+      </li>
+    </ul>
+    <p>
+      Now you can move the file <i>myFile.html</i>&#160;and the subdirectory <i>myFile.html_files</i>&#160; to the location (directory) where you want to it be it accessible. You may rename&#160; <i>myFile.html</i>&#160;&#160;to a name you want, e.g. <i>myName.mm</i>. &#160;The subdirectory should not be renamed. You van then open the mind map with<i>&#160;myName.mm. </i>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        Press on the <i>green arrow</i>&#160;for publishing/sharing images too.
+      </li>
+      <li>
+        <i>Tools &gt; Preferences &gt; Appearances&#160;&gt; Icons </i>to hide icons.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+</node>
+<node TEXT="As Flash (HTML)..." STYLE_REF="OptionalValue" ID="ID_1234525000" CREATED="1266417407640" MODIFIED="1312919311497" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span style="font-family: SansSerif, sans-serif; color: #000000"><font face="SansSerif, sans-serif" color="#000000">Exports a Flash map that appears very similar to the actual map. Nodes expand and collapse the same as they do in the Freeplane map.</font></span>
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Tasks from TASKS mode to TaskJuggler file (TJI)..." STYLE_REF="OptionalValue" ID="ID_1188629539" CREATED="1266417449093" MODIFIED="1312919311481" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span style="font-family: SansSerif, sans-serif; color: #000000"><font face="SansSerif, sans-serif" color="#000000">Exports to a file that can be loaded from TaskJuggler, an open source project management tool.</font></span>
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Resources from RESOURCES mode to TaskJuggler file (TJI)..." STYLE_REF="OptionalValue" ID="ID_1727885349" CREATED="1266417478265" MODIFIED="1312919311481" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span style="font-family: SansSerif, sans-serif; color: #000000"><font face="SansSerif, sans-serif" color="#000000">Exports to a file that can be loaded from TaskJuggler, an open source project management tool.</font></span>
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="As TWiki (TW)..." STYLE_REF="OptionalValue" ID="ID_1482055774" CREATED="1266417500265" MODIFIED="1312919311465" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span style="font-family: SansSerif, sans-serif; color: #000000"><font face="SansSerif, sans-serif" color="#000000">Exports the entire map to a TWiki formatted file.</font></span>
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Freeplane 1.1" STYLE_REF="OptionalValue" ID="ID_449157790" CREATED="1310762788434" MODIFIED="1312919311450" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="HTML document (HTM) (HTML)" STYLE_REF="OptionalValue" ID="ID_198819817" CREATED="1310762816708" MODIFIED="1312919311450" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="LaTeX document (TEX)" STYLE_REF="OptionalValue" ID="ID_1973701217" CREATED="1310762886823" MODIFIED="1312919311434" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="LaTeX book (TXT)" STYLE_REF="OptionalValue" ID="ID_308084692" CREATED="1310762930260" MODIFIED="1312919311434" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="MS Project 2003 (XML)" STYLE_REF="OptionalValue" ID="ID_1015672283" CREATED="1310762997021" MODIFIED="1312919311419" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Mediawiki (MWIKI)" STYLE_REF="OptionalValue" ID="ID_1345826529" CREATED="1310763063563" MODIFIED="1312919311419" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Oowriter file (OOWRITER)" STYLE_REF="OptionalValue" ID="ID_123526746" CREATED="1310763100184" MODIFIED="1312919311419" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Opml file (OPML)" STYLE_REF="OptionalValue" ID="ID_1024088291" CREATED="1310763140050" MODIFIED="1312919311403" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Plain text (TXT)" STYLE_REF="OptionalValue" ID="ID_581818306" CREATED="1310763169697" MODIFIED="1312919311403" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Word &gt;= 2003 (DOC, XML)" STYLE_REF="OptionalValue" ID="ID_786673808" CREATED="1310763197052" MODIFIED="1312919311356" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="XBEL" STYLE_REF="OptionalValue" ID="ID_1844163113" CREATED="1310763237495" MODIFIED="1312919311356" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="(XML, XLS)" STYLE_REF="OptionalValue" ID="ID_1650734011" CREATED="1310763267456" MODIFIED="1312919311356" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Portable Document Format (PDF)..." STYLE_REF="OptionalValue" ID="ID_603087610" CREATED="1266417575078" MODIFIED="1312919311341" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span style="font-family: SansSerif, sans-serif; color: #000000"><font face="SansSerif, sans-serif" color="#000000">Exports entire map in Adobe Acrobat PDF format.</font></span>
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Scalable Vector Graphics (SVG)" STYLE_REF="OptionalValue" ID="ID_1337380062" CREATED="1266417578453" MODIFIED="1312919311341" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span style="font-family: SansSerif, sans-serif; color: #000000"><font face="SansSerif, sans-serif" color="#000000">Exports entire map in Scalable Vector Graphics format.</font></span>
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="" FOLDED="true" ID="ID_783046977" CREATED="1310799890904" MODIFIED="1312916121556" TEXT_SHORTENED="true">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="6"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Images are not part of Freeplane, except system icons. Hence images are not exported automatically.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Node features &gt; Images </i>
+      </li>
+      <li>
+        <i>Tools &gt; Preferences &gt; Appearance &gt; Icons</i>
+      </li>
+      <li>
+        <i>Tools &gt; Preferences &gt; HTML</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<node TEXT="To other text editor" ID="ID_22164919" CREATED="1286653812825" MODIFIED="1311946353162" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      If a branch is copied to a regular text editor, its hierarchical structure appears a levels of indentation. Hyperlinks are shown between brackets. Examples of editors which can handle RTF are OpenOffice/Write, MSWord, Wordpad and Outlook.
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+</node>
+</node>
+<node TEXT=" Move branch to new map [Branch as new map]" ID="ID_995694574" CREATED="1310567044505" MODIFIED="1314559358303" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Saves selected node and descendants as new map. Selected node becomes root of new map with&#160;&#160;hyperlink to its original location. Selected node gets hyperlink to new map and descendants are deleted.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Import map [Import]" FOLDED="true" ID="ID_977906606" CREATED="1310134532663" MODIFIED="1314559388193" TEXT_SHORTENED="true">
+<icon BUILTIN="../import"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="6"/>
+<node TEXT="Branch" STYLE_REF="OptionalValue" ID="ID_148627051" CREATED="1266417591406" MODIFIED="1312919355286">
+<hook NAME="FirstGroupNode"/>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Linked Branch" STYLE_REF="OptionalValue" ID="ID_282345042" CREATED="1266417599062" MODIFIED="1312919355301">
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="(Linked Branch) Without Root" STYLE_REF="OptionalValue" ID="ID_1230060690" CREATED="1266417606156" MODIFIED="1312919355301">
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Explorer favourites..." STYLE_REF="OptionalValue" ID="ID_1416306563" CREATED="1266417657421" MODIFIED="1312919355286">
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Folder Structure..." STYLE_REF="OptionalValue" ID="ID_379387162" CREATED="1266417664671" MODIFIED="1312919355286">
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="MindManager X5 Map..." STYLE_REF="OptionalValue" ID="ID_1880120674" CREATED="1266417677171" MODIFIED="1312919355286">
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="See preferences" ID="ID_1138762077" CREATED="1310801095185" MODIFIED="1312916767834" TEXT_SHORTENED="true" LINK="#ID_1711300863">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="6"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Tools &gt; Preferences &gt; HTML</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+</node>
+<node TEXT="Import/Export map" ID="ID_1115722286" CREATED="1310835645851" MODIFIED="1312814205747">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Print set up [Page set up]" ID="ID_1629904320" CREATED="1310535299236" MODIFIED="1314559405649" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Presents a dialog box from which you can select formatting for printing a map.</span></font>
+    </p>
+    <ul>
+      <li>
+        <span onclick="show_folder('1_1')" class="foldclosed" id="show1_1">+</span>&#160;<span onclick="hide_folder('1_1')" class="foldopened" id="hide1_1">-</span>&#160;<font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Fit to one page</span></font>
+
+        <ul id="fold1_1">
+          <li>
+            <p>
+              <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">The entire map is condensed to one page. Depending on the size of the map, this may render the typeface too small to be readable.</span></font>
+            </p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <span onclick="show_folder('1_2')" class="foldclosed" id="show1_2">+</span>&#160;<span onclick="hide_folder('1_2')" class="foldopened" id="hide1_2">-</span>&#160;<font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Fit width to one page</span></font>
+
+        <ul id="fold1_2">
+          <li>
+            <p>
+              <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">The map is forced to fit the width of the page, but may take up multiple pages depending on the size of the map. Results may vary based on choosing Portrait or Landscape orientation for printing.</span></font>
+            </p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <span onclick="show_folder('1_3')" class="foldclosed" id="show1_3">+</span>&#160;<span onclick="hide_folder('1_3')" class="foldopened" id="hide1_3">-</span>&#160;<font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Fit height to one page</span></font>
+
+        <ul id="fold1_3">
+          <li>
+            <p>
+              <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">The map is forced to fit the height of the page, but may take up multiple pages depnding on the size of the map. Results may vary based on choosing Portrait or Landscape orientation for printing.</span></font>
+            </p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <span onclick="show_folder('1_4')" class="foldclosed" id="show1_4">+</span>&#160;<span onclick="hide_folder('1_4')" class="foldopened" id="hide1_4">-</span>&#160;<font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">User defined scale</span></font>
+
+        <ul id="fold1_4">
+          <li>
+            <p>
+              <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Allows access to Print Zoom Factor where a magnification factor of 0.0 to 2.0 may be entered. This applies to width and height proportionally.</span></font>
+            </p>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Print preview" ID="ID_1079934903" CREATED="1310134532663" MODIFIED="1311402754677" TEXT_SHORTENED="true">
+<icon BUILTIN="../print_preview"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Presents a view of how the printed map will appear based on the Page Setup settings. </span></font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b><font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">See also</span></font></b>
+    </p>
+    <ul>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Page Setup...</span></font>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+<node TEXT="Print map [Print]" ID="ID_111478060" CREATED="1310134532663" MODIFIED="1314559423886" TEXT_SHORTENED="true">
+<icon BUILTIN="../fileprint"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Opens the dialog box associated with the printer on which the map will print.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Print map" ID="ID_682857312" CREATED="1310835584902" MODIFIED="1312964310111">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2,6"/>
+</node>
+<node TEXT="Map statistics [Statistics]" ID="ID_688770977" CREATED="1310134532663" MODIFIED="1314559437816" TEXT_SHORTENED="true">
+<icon BUILTIN="../BranchStats"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Close current map [Close]" ID="ID_1018458898" CREATED="1310134532663" MODIFIED="1314559456568" TEXT_SHORTENED="true">
+<icon BUILTIN="../close"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Closes the map that has focus. If multiple maps are open, focus refers to the tab that you are currently editing.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+<node TEXT="Quit Freeplane  [Quit]" ID="ID_1770693982" CREATED="1310134532663" MODIFIED="1314559471060" TEXT_SHORTENED="true">
+<icon BUILTIN="../quit"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Close all open maps and exit Freeplane.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Bewerken [Edit]" FOLDED="true" ID="ID_1198850460" CREATED="1310134532663" MODIFIED="1316339017350" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To find frequently used edit functions.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Nieuwe knoop [New node]" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1557207269" CREATED="1309638877685" MODIFIED="1316339199543" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<node TEXT="New child node" ID="ID_1884846033" CREATED="1266249828031" MODIFIED="1314470700998" TEXT_SHORTENED="true">
+<icon BUILTIN="../idea"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Creates a new node as a child of&#160;&#160;the currently-selected node. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><b>Same effect: </b></font>
+    </p>
+    <ul>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000">press key <i>Ins</i></font>
+      </li>
+      <li>
+        press icon <i>Bulb</i>&#160;in <i>Toolbar</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="New sibling node" ID="ID_1215489649" CREATED="1266249835578" MODIFIED="1314470710779" TEXT_SHORTENED="true">
+<icon BUILTIN="../NewSiblingAction"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span style="color: #000000; font-family: SansSerif, sans-serif"><font face="SansSerif, sans-serif" color="#000000">Creates a new node below the currently selected node, at the same hierarchical level. </font></span>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <span style="color: #000000; font-family: SansSerif, sans-serif"><font face="SansSerif, sans-serif" color="#000000"><b>Same effect:</b> </font></span>
+    </p>
+    <ul>
+      <li>
+        <span style="color: #000000; font-family: SansSerif, sans-serif"><font face="SansSerif, sans-serif" color="#000000">press <i>Enter</i></font></span>
+      </li>
+      <li>
+        if in editing mode: press two times <i>Enter</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="New previous sibling node" ID="ID_819846743" CREATED="1266249852093" MODIFIED="1314470719375" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Creates a new node <b>above</b>&#160;the node that is currently selected, at the same hierarchical level.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Same effect:
+    </p>
+    <ul>
+      <li>
+        press <i>&lt;Shift&gt;+&lt;Enter&gt;</i>&#160;key combination.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="New parent node" ID="ID_1596972238" CREATED="1266249870703" MODIFIED="1314470828590" TEXT_SHORTENED="true">
+<icon BUILTIN="../stock_text_indent"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Creates a new node between the current node and its parent node. The new node is a child of the original parent node.</font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Same effect:
+    </p>
+    <ul>
+      <li>
+        press <i>&lt;Shift&gt; + &lt;Insert&gt;</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Knoopgroep [Node group]" STYLE_REF="SubMenu" FOLDED="true" ID="ID_479655918" CREATED="1313693054166" MODIFIED="1316339224518">
+<node TEXT="New Summary node (selected nodes) [New Summary node]" FOLDED="true" ID="ID_1126176775" CREATED="1304191328224" MODIFIED="1314562182486" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Creates a new <i>Summary node</i>&#160;which connects the range of selected siblings by an accolade.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        Technically the summary node is a sibling node, below the lowest node in the range.
+      </li>
+      <li>
+        The upper selected node is marked as the first node of the node group.
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Node features &gt; Begin node group</i>&#160;to in/decrease the range of included nodes.
+      </li>
+      <li>
+        <i>Node features &gt; Summary Node</i>&#160;to convert the Summary node to a sibbling node.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<hook NAME="FirstGroupNode"/>
+<node TEXT="" ID="ID_805111336" CREATED="1309875915466" MODIFIED="1310196224212" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        Technically the sum node is a sibling, below the group of siblings. See example.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="" ID="ID_1070404224" CREATED="1309876392685" MODIFIED="1310196224212" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Error</b>
+    </p>
+    <p>
+      Sometimes an <b>error message</b>&#160;appears that it is not possible to create a Summary node for a particular group. It may be that one of the nodes in the group has a check for <i>Node &gt; Begin node group</i>. If so, select <i>Node &gt; Begin node group </i>to uncheck and try again.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Summary node / accollade" FOLDED="true" ID="ID_1919219984" CREATED="1304192858754" MODIFIED="1313693288873" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Technically the summary node is a sibling of the node group, below the bottom node of the group.&#160;&#160;This position becomes apparent if you choose <i>Nodes &gt; Sum node</i>&#160;for a particular summary node<i>&#160; </i>Selecting <i>Nodes &gt; Summary node </i>again will restore its original position.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        Use the up/down keys to move siblings into or out of the node group.
+      </li>
+      <li>
+        Use drag an drop to move into or out of the node group.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="false" STYLE_REF="MenuGroupLabel" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
+</hook>
+<node TEXT="" FOLDED="true" ID="ID_1195560268" CREATED="1312919088666" MODIFIED="1312919118867">
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<node TEXT="1" ID="ID_1351236194" CREATED="1304192867654" MODIFIED="1310196224197" TEXT_SHORTENED="true">
+<edge WIDTH="thin"/>
+</node>
+<node TEXT="2" FOLDED="true" ID="ID_1855113133" CREATED="1304192871203" MODIFIED="1310196224197" TEXT_SHORTENED="true">
+<hook NAME="FirstGroupNode"/>
+<edge WIDTH="thin"/>
+<node TEXT="xx" ID="ID_1443415412" CREATED="1305386736429" MODIFIED="1310196224197" TEXT_SHORTENED="true"/>
+</node>
+<node TEXT="3" ID="ID_642318706" CREATED="1304192874252" MODIFIED="1310196224181" TEXT_SHORTENED="true">
+<edge WIDTH="thin"/>
+</node>
+<node TEXT="4 = sumary node" ID="ID_1072874332" CREATED="1304192876647" MODIFIED="1310196224181" TEXT_SHORTENED="true">
+<hook NAME="SummaryNode"/>
+<edge WIDTH="thin"/>
+</node>
+<node TEXT="5" ID="ID_24722596" CREATED="1304192881678" MODIFIED="1310196224165" TEXT_SHORTENED="true">
+<edge WIDTH="thin"/>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Summary node (begin of group) [Begin node group ]" FOLDED="true" ID="ID_428394610" CREATED="1305384767382" MODIFIED="1314562230800" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Shows if the selected node is marked as first node of a Summary node group. Toggles the selected node as first node of a Summary node group.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        The effect depends on three factors:
+
+        <ol>
+          <li>
+            the Summary node being active (See <i>Node &gt; Summary node</i>)
+          </li>
+          <li>
+            the selected node being in the range of the summary node and
+          </li>
+          <li>
+            the selected node not yet&#160;&#160;being marked as first node
+          </li>
+        </ol>
+        <p>
+          If all three conditions are true, the selected node will be marked&#160;as &#160;the (new) first node of the Summary node group and&#160;&#160;the upper&#160;&#160;range of the Summary node will be decreased to the selected node.&#160;
+        </p>
+      </li>
+      <li>
+        If the Summary node is not active, the selected node may still be marked as the first node of a previously active Summary node. In that case the mark will be removed. The effect of this becomes apparent at the moment the inactive Summary node is reactivated, see <i>Node &gt; Summary node</i>.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<node TEXT="Node group" ID="ID_1499184609" CREATED="1312552947980" MODIFIED="1312697277990" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      A <b>node group</b>&#160;is a group of neighboring siblings (same hierarchical level, same parent)&#160;&#160;which are within the range of a defined <i>Summary node</i>.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        The range can enclose all siblings, or a subset of neighbouring siblings.
+      </li>
+      <li>
+        &#160;The upper sibling in the range is called<b>&#160;first node</b>.
+      </li>
+      <li>
+        The range may be decreased by defining another node of the node group as is the<i>&#160;first node</i>. As a result the siblings above it will be excluded from the node group.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Summary node (set/reset) [Summary Node]" ID="ID_1343097813" CREATED="1305384807731" MODIFIED="1314562275096" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Converts the selected node into a (active) summary node or turns a Summary node back into a sibling node (inactive Summary node).
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        The range of a newly created Summary node group are all siblings above the selected node. There are two exceptions to this:
+      </li>
+    </ul>
+    <ol>
+      <li>
+        If one of the siblings is marked as First node of a Summary node group, the range starts with this node. This may happen if an existing Summary node has been deactivated.
+      </li>
+      <li>
+        At the same hierarchical level, the ranges of two Summary nodes cannot overlap. Hence the range of the newly created Summary node starts directly below the existing Summary node.
+      </li>
+    </ol>
+    <p>
+      See also
+    </p>
+    <ul>
+      <li>
+        <i>Node &gt; Summary node &gt; Begin node group</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="New cloud [Cloud]" ID="ID_649516172" CREATED="1310106596579" MODIFIED="1315727524927" TEXT_SHORTENED="true">
+<icon BUILTIN="../Cloud24"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Places a cloud around all of the selected nodes. </span></font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">This is useful for highlighting certain nodes. The cloud covers the node selected and all of its child nodes. Multiple clouds can be created at the same time by holding the Ctrl key (for selecting discreet nodes), or the Shift key for selecting all the nodes between the first node selected and the last. SEE ALSO: Format &gt; Cloud Color...</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+</node>
+</node>
+<node TEXT="Toevoegen verbindingslijn [Connect]" FOLDED="true" ID="ID_1803275985" CREATED="1266249966500" MODIFIED="1316339525864" TEXT_SHORTENED="true">
+<icon BUILTIN="../designer"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif">Creates a connector between two selected nodes. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      The connector can be formatted by opening its context window (right-click on the connector). <font color="#000000" face="SansSerif, sans-serif">&#160;A label can be attached at the binning, middle end the end of the connector. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b><font color="#000000" face="SansSerif, sans-serif">See also</font></b>
+    </p>
+    <ul>
+      <li>
+        <i>View &gt; Properties Panel</i>&#160;to edit properties
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        If more than two nodes are selected, several connectors are drawn at once, with the last selected node as the (common) destination.
+      </li>
+      <li>
+        By making a self-referenced nod it is possible to have a connector appear as a line connected to one node only.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<node TEXT="Connector" FOLDED="true" ID="ID_725880686" CREATED="1303722690480" MODIFIED="1312919195230" HGAP="50" TEXT_SHORTENED="true">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+</hook>
+<cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000099" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_725880686" MIDDLE_LABEL="line + label for self-referenced node" STARTINCLINATION="13;65;" ENDINCLINATION="13;65;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<node TEXT="node a" FOLDED="true" ID="ID_504660350" CREATED="1288535672221" MODIFIED="1310196224134" TEXT_SHORTENED="true">
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_580762900" SOURCE_LABEL="begin&#xa;label" TARGET_LABEL="end&#xa;label" MIDDLE_LABEL="middle&#xa;label" STARTINCLINATION="10;26;" ENDINCLINATION="-19;52;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
+<node TEXT="node b" FOLDED="true" ID="ID_519354024" CREATED="1288535688688" MODIFIED="1310196224119" TEXT_SHORTENED="true">
+<edge STYLE="bezier"/>
+<node TEXT="node c" ID="ID_580762900" CREATED="1288535699522" MODIFIED="1310196224119" TEXT_SHORTENED="true"/>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Koppeling [Link]" FOLDED="true" ID="ID_1430712985" CREATED="1303930954062" MODIFIED="1316339793494" TEXT_SHORTENED="true">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      A link can be:
+    </p>
+    <ul>
+      <li>
+        A click-able connection between two nodes.
+      </li>
+      <li>
+        A click-able connection between a node and an external object (website, directory, program,..)
+      </li>
+      <li>
+        A click-able connection between a node and a menu item
+      </li>
+      <li>
+        A click-able email address
+      </li>
+    </ul>
+    <p>
+      The easiest way to enter hyperlinks to external objects is by copy and paste resp. drag and drop. In that case the hyperlink will we pasted to a newly created child of the selected node. It is possible to drop more than one address at once.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+<node TEXT="Add hyperlink (choose)... [Hyperlink (File Chooser)...]" ID="ID_178833757" CREATED="1266249910406" MODIFIED="1314563464115" TEXT_SHORTENED="true">
+<icon BUILTIN="../SetLinkByFileChooserAction"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens a dialog to navigate to a directory or file. A hyperlink to the selected directory or file is put into the selected node. The hyperlink appears as a red arrow and can be clicked to open the file or directory.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      To remove the hyperlink:
+    </p>
+    <ul>
+      <li>
+        select <i>Hyperlink (Text Field)... </i>or press<i>&#160;Ctrl + K; </i>and
+      </li>
+      <li>
+        delete the text in the text field ( the address)
+      </li>
+    </ul>
     <p>
       &#160;
     </p>
   </body>
 </html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
 </node>
-<node ID="ID_1371783515" CREATED="1290617771134" MODIFIED="1293375090345">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Het gebruik van beveiligingscertificaten wordt om beveiligingsredenen afgeraden. Om deze reden is het niet mogelijk om bijvoorbeeld een plaatje van een andere website op te nemen <i><b>binnen</b></i>&#160;een knoop. Een hyperlink naar een plaatje dat in de browser wordt getoond is wel mogelijk.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Beperking paatjes in mindmap" FOLDED="true" ID="ID_1129596420" CREATED="1291548053248" MODIFIED="1293375090341">
-<node TEXT="Plaatjes worden niet automatisch mee geexporteerd.&#xa;Zorg dat plaatjes bij het maken van de mindmap in dezelfde map staan als waarin de mindmap (xx.mm)&#xa;staat en kopieer plaatjes na het exporteren handmatig naar de map waarin de freeplane viewer staat.&#xa;Bij java Apllets is dit: xx.html_files" ID="ID_1694121821" CREATED="1291548063474" MODIFIED="1293375090335" BACKGROUND_COLOR="#ffff00"/>
-</node>
-<node TEXT="HTML exporteren" FOLDED="true" ID="ID_503239149" CREATED="1290784686285" MODIFIED="1293375090331">
-<node ID="ID_1019767330" CREATED="1290784721550" MODIFIED="1293375090327">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Er kunnen extra opties worden ingesteld:
-    </p>
-    <p>
-      kies hoofdmenu: <i>Extra &gt;Instellingen . HTML</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="" ID="ID_1592535368" CREATED="1291991996389" MODIFIED="1293375090323"/>
-<node TEXT="Mindmapstijlen van de gebruiker (gebruikerstijlen) exporteren" FOLDED="true" ID="ID_1238487670" CREATED="1291991431723" MODIFIED="1293375090319">
-<node TEXT="Windows 7" FOLDED="true" ID="ID_15798233" CREATED="1291991503311" MODIFIED="1293375090315">
-<node TEXT="Zorg dat eventuele verborgen bestanden worden getoond" FOLDED="true" ID="ID_655936379" CREATED="1291991456863" MODIFIED="1293375090312">
-<icon BUILTIN="full-1"/>
-<node TEXT="Ga naar Help en typ verborgen bestanden" ID="ID_1606373834" CREATED="1291991535892" MODIFIED="1293375090308"/>
-</node>
-<node TEXT="Ga naar" FOLDED="true" ID="ID_308362141" CREATED="1291991562326" MODIFIED="1293375090304">
-<icon BUILTIN="full-2"/>
-<node FOLDED="true" ID="ID_217273528" CREATED="1291991572506" MODIFIED="1293375090301">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p class="MsoNormal">
-      Gebruikers/<u>IkAlsGebruiker</u>/AppData/Roaming/Freeplane/<u>1.2.x</u>/templates
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Vul voor de onderstreepte tekstdelen jouw informatie in" ID="ID_1307555669" CREATED="1291991682408" MODIFIED="1293375090297"/>
-</node>
-</node>
-<node TEXT="Kopieer je gebruikersjablonen in deze map naar je bestemming" ID="ID_1775557847" CREATED="1291991760556" MODIFIED="1293375090293">
-<icon BUILTIN="full-3"/>
-</node>
-<node TEXT="Herhaal punt 1 om de systeembestanden weer te verbergen." ID="ID_789000111" CREATED="1291991830031" MODIFIED="1293375090289">
-<icon BUILTIN="full-4"/>
-</node>
-</node>
-</node>
-</node>
-<node TEXT="Importeren" FOLDED="true" ID="ID_1155373089" CREATED="1271022654767" MODIFIED="1293375090286" COLOR="#006699" LINK="#ID_1330799923">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_141591900" CREATED="1270892460691" MODIFIED="1293375090282">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een mindmap te importeren:
-    </p>
-    <p>
-      - kies&#160; <i>Bestand &gt; Importeren</i>&#160;in Hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="HTML importeren" FOLDED="true" ID="ID_723828512" CREATED="1290784686285" MODIFIED="1293375090278">
-<node ID="ID_1427858042" CREATED="1290784721550" MODIFIED="1293375090275">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Er kunnen extra opties worden ingesteld:
-    </p>
-    <p>
-      kies hoofdmenu: <i>Extra &gt;Instellingen . HTML</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Mindmapstijlen van de gebruiker (gebruikerstijlen) importeren" FOLDED="true" ID="ID_946808026" CREATED="1291991431723" MODIFIED="1293375090271">
-<node TEXT="Windows 7" FOLDED="true" ID="ID_1690416482" CREATED="1291991503311" MODIFIED="1293375090267">
-<node TEXT="Zorg dat eventuele verborgen bestanden worden getoond" FOLDED="true" ID="ID_1634323858" CREATED="1291991456863" MODIFIED="1293375090263">
-<icon BUILTIN="full-1"/>
-<node TEXT="Ga naar Help en typ verborgen bestanden" ID="ID_1734471021" CREATED="1291991535892" MODIFIED="1293375090260"/>
-</node>
-<node TEXT="Ga naar" FOLDED="true" ID="ID_423446986" CREATED="1291991562326" MODIFIED="1293375090256">
-<icon BUILTIN="full-2"/>
-<node FOLDED="true" ID="ID_1342235562" CREATED="1291991572506" MODIFIED="1293375090252">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p class="MsoNormal">
-      Gebruikers/<u>IkAlsGebruiker</u>/AppData/Roaming/Freeplane/<u>1.2.x</u>/templates
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Vul voor de onderstreepte tekstdelen jouw informatie in" ID="ID_1942231620" CREATED="1291991682408" MODIFIED="1293375090249"/>
-</node>
-</node>
-<node TEXT="Kopieer je gebruikersjablonen naar deze map" ID="ID_1207780636" CREATED="1291991760556" MODIFIED="1293375090245">
-<icon BUILTIN="full-3"/>
-</node>
-<node TEXT="Herhaal punt 1 om de systeembestanden weer te verbergen." ID="ID_510878223" CREATED="1291991830031" MODIFIED="1293375090241">
-<icon BUILTIN="full-4"/>
-</node>
-</node>
-</node>
-</node>
-</node>
-<node TEXT="Wat is Freeplane ?" POSITION="right" ID="ID_1892332867" CREATED="1286913743738" MODIFIED="1305141075573" BACKGROUND_COLOR="#ffff00" STYLE="bubble" TEXT_SHORTENED="true">
-<icon BUILTIN="gohome"/>
-<font BOLD="true"/>
-<edge STYLE="hide_edge"/>
+<node TEXT="Add hyperlink (type)   [Hyperlink (Text Field)... ]" FOLDED="true" ID="ID_873690575" CREATED="1266249928203" MODIFIED="1314563514690" TEXT_SHORTENED="true">
+<icon BUILTIN="../SetLinkByTextFieldAction"/>
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -1816,2842 +3939,44 @@
   </head>
   <body>
     <p>
-      Met Freeplane kan een kaart worden gemaakt van je gedachten, een zogenaamde<b>&#160;mindmap</b>. De kaart lijkt op een boom waarbij de takken en de wortels zijn behangen met gedachten (<i><b>knopen</b></i>) in de vorm van woorden, plaatjes en multimedia.&#160;&#160;Freeplane is zeer geschikt om creatieve processen te ondersteunen waarbij waarbij gedachten worden ontwikkeld en geordend (brainstorm). Freeplane is ook zeer geschikt om dingen te helpen onthouden. Het is niet alleen mogelijk om snel takenlijstjes en notities te maken, maar ook om deze te koppelen aan een belaapd tijdstip (Agenda).&#160;&#160;Freeplane kan ook worden gebruikt om grote hoeveelheden informatie te structureren en alleen te tonen op het moment dat de gebruiker hier om vraagt (<i><b>open en dichtvouwen van knopen</b></i>). Deze handleiding is hiervan een voorbeeld.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Inleiding en leeswijzer" STYLE_REF="Onderwerp" FOLDED="true" POSITION="right" ID="ID_689355813" CREATED="1286912474338" MODIFIED="1305140950165" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p class="MsoNormal">
-      Bij Freeplane wordt elk onderwerp een <b>knoop</b>&#160;genoemd. Een knoop is een plaats waar informatie kan worden geraadpleegd of een functie kan worden uitgevoerd. Een knoop heeft op het beeldscherm een binnengebied en een buitengebied. In het binnengebied kunnen een <b>basistekst</b>, <b>pictogram</b>, <b>snelkoppeling</b>, <b>hyperlink</b>&#160;en een <b>afbeelding</b>&#160;(met vaste grootte) worden getoond. Het binnengebied kan verder zichtbaar worden worden gemaakt door deze te omlijnen. Het buitengebied bevindt zich onder het binnengebied. In het buitengebied kan een <b>bijlagetekst</b>, <b>notitietekst</b>, <b>attributenlijst</b>, en schaalbare <b>afbeelding</b>&#160;worden getoond. Deze informatiekan naar keuze worden <b>verborgen</b>&#160;en alleen&#160;&#160;getoond als de knoop is geselecteerd.
-    </p>
-    <p>
-      
-    </p>
-    <p class="MsoNormal">
-      De <b>basistekst</b>&#160;wordt meestal gebruikt als een soort titel en bevat dan niet meer dan enkele woorden, De basistekst kan ook worden gebruikt voor het opmakenen weergeven&#160;&#160;van formules (<b>LaTeX</b>). Het veld van de basistekst kan in plaats van tekst ook een formule bevatten. Deze begint, net als bij een <i>spreadsheet,</i>&#160;met &#8220;=&#8221; en wordt automatisch uitgerekend. En verder kan een tijdstip worden opgegeven waarop een signalering moet worden gegeven (<b>agendafunctie</b>).
-    </p>
-    <p class="MsoNormal">
-      
-    </p>
-    <p class="MsoNormal">
-      Aan/onder het gebied van de basistekst kunnen een bijlagetekst, notitietekst, attributen en een externe (schaalbare) afbeelding&#160;&#160;worden getoond. In de <b>bijlagetekst</b>&#160;&#160;kan bijvoorbeeld een toelichting op de basistekst worden opgenomen; deze tekst is dan ook meestal langer dan de basistekst. De <b>notitietekst</b>&#160;is van oorsprong bedoeld voor het presenteren van een document in een afzonderlijk, schermbreed venster, maar kan ook worden gebruikt als een tweede bijlageveld. Een <b>attribuut</b>&#160;bestaat uit een kenmerk met een waarde. &#160;Er kan worden ingesteld dat deze velden permanent zichtbaar zijn of alleen als de knoop is geslecteerd.
-    </p>
-    <p class="MsoNormal">
-      
-    </p>
-    <p class="MsoNormal">
-      Er is &#233;&#233;n <i>basisknoop</i>&#160;&#160;die de vorm heeft van een ovaal. &#160;Uit de basisknoop komen <b>takken</b>&#160;die een reeks van knopen verbinden die een ouder-kind relatie hebben. &#160;Daarnaast kunnen twee willekeurige knopen worden verbonden met een <b>verbindingslijn</b>&#160;&#160;(of pijl). Twee knopen kunnen digitaal worden verbonden met een <b>snelkoppeling</b>&#160;&#160;waarmee de focus van de ene naar de andere knoop kan worden verplaatst, of via een <b>hyperlink</b>&#160;met een programma of bestand op de computer of op internet.. Knopen binnen een tak kunnen visueel worden verbonden door een <b>wolk</b>. Ten slotte kunnen twee of meer knopen via een <b>accolade</b>&#160; samenkomen in een <b>aggregatieknoop.</b>
-    </p>
-    <p class="MsoNormal">
-      
-    </p>
-    <p class="MsoNormal">
-      De basiskenmerken van een knoop zijn toegankelijk via menu <i><b>Knoop</b></i>&#160; en de andere elementen via menu <i><b>Knoopkenmerken</b></i>.
-    </p>
-    <p class="MsoNormal">
-      
-    </p>
-    <p class="MsoNormal">
-      <u>Klik op deze knoop om deze open te vouwen en de leswijzer te zien.</u>
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Bekijk voorbeelden en instructievideo op Internet" ID="ID_208137441" CREATED="1289027071603" MODIFIED="1305140974189" LINK="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch" COLOR="#006699" TEXT_SHORTENED="true">
-<icon BUILTIN="full-1"/>
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Klik op het rode pijltje om naar Internet te gaan.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Bestudeer Basisvaardigheden &gt; Verborgen informatie tonen" ID="ID_87714339" CREATED="1304677239650" MODIFIED="1305211965706" COLOR="#006699" LINK="#ID_161962433" TEXT_SHORTENED="true">
-<icon BUILTIN="full-2"/>
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      KLik op het groene pijltje om door te schakelen naar de knoop met uitleg
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Bekijk welke menubalken er zijn" ID="ID_440776446" CREATED="1293391632365" MODIFIED="1305212004004" LINK="#ID_1527109093" COLOR="#006699" TEXT_SHORTENED="true">
-<icon BUILTIN="full-3"/>
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Klik op het groene pijltje om door te schakelen naar de menubalken
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Bekijk de mogelijkheden op internet" STYLE_REF="Onderwerp" FOLDED="true" ID="ID_1444754090" CREATED="1289121848352" MODIFIED="1305287791684" LINK="freeplane_functionality_nl.mm" TEXT_SHORTENED="true">
-<icon BUILTIN="full-4"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Klik op het rode pijltje om naar een mindmap internet door te schakelen;
-    </p>
-    <p>
-      of klik rechts op de tekst om een naar een plaatje op internet door te kunnen schakelen.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Basismogelijkheden (plaatje)" FOLDED="true" ID="ID_147712495" CREATED="1288549229612" MODIFIED="1305287832643" LINK="freeplane_functionality_nl.jpg" COLOR="#006699" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Klik op het rode pijltje om een plaatje op interent te tonen.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="(Klik op het rode pijltje om het plaatje respectievelijk de mindmap te openen.)" ID="ID_1295796813" CREATED="1291837423869" MODIFIED="1293375090218"/>
-</node>
-</node>
-<node TEXT="of op de eigen compurer na downloaden Freeplane" ID="ID_1214022344" CREATED="1305286649270" MODIFIED="1305287996574" LINK="freeplane_functionality_nl.mm" COLOR="#006699" TEXT_SHORTENED="true">
-<icon BUILTIN="full-4"/>
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Werkt alleen als Freeplane op de eigen computer staat.
-    </p>
-    <p>
-      Klik op het rode pijltje om naar een minmap met een overzicht van de mogelijkheden door te schakelen.
-    </p>
-    <p>
-      Om terug te gaan, kies de blauwe pijl-naar-links linksboven in het scherm (terugschakelen naar vorige mindmap).<br/>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Basisvaardigheden" FOLDED="true" POSITION="right" ID="ID_161962433" CREATED="1305211194893" MODIFIED="1305212075476" COLOR="#006699" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Deze vaardigheden moet iedere Freeplane auteur beheersen.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Tonen en verbergen van knopen" STYLE_REF="Onderwerp" FOLDED="true" ID="Freeplane_Link_423038022" CREATED="1270892460681" MODIFIED="1304693052843" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Knopen zijn soms zichtbaar en soms niet. Knopen kunnen worden verborgen door deze dicht te vouwen. Door dichtvouwen verborgen knopen kunnen zichtbaar worden gemaakt door deze open te vouwen. Andere manieren om verborgen knopen te vinden en tonen is door zoeken en filteren.
+      Opens a dialog to enter a hyperlink as text, or enter an e-mail address.
     </p>
     <p>
       
     </p>
     <p>
-      De inhoud van een knoop kan ook worden verborgen. Verborgren inhoud wordt in het algemeen zichtbaar als de de cursor zich in het binnengebied van de knoop bevindt.
+      <b>Note</b>
     </p>
-  </body>
-</html></richcontent>
-<node TEXT="Verborgen informatie tonen" ID="ID_1979515919" CREATED="1304677666170" MODIFIED="1304693112778" BACKGROUND_COLOR="#ffff00">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Informatie van een knoop, en zelfs de hele knoop, kan zijn verborgen.Een knoop met verborgen informatie is te herkennen aan de aanwezigheid van een klein cirkeltje. Een cirkeltje aan het uiteinde van de knoop duidt op een dichtgevouwen knoop, zie hieronder. Een cirkeltje aan de de kant van de basisknoop duidt op verborgen tekst, attributen of afbeeldingen. Om deze verborgen informatie te tonen: houd de muiscursor op de knoop en wacht even. Met de pijl-naar-beneden kan de verborgen tekst van de onderliggende knoop worden getoond.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Open/dichtvouwen" FOLDED="true" ID="Freeplane_Link_4727471" CREATED="1270892460688" MODIFIED="1304347659755" COLOR="#407000" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een knoop&#160;&#160;heet <b>opengevouwen</b>&#160;als alle verderliggende knopen in de knoopketen zichtbaar zijn. Een knoop heet <b>dichtgevouwen</b>&#160;als de verderliggende knopen zijn verborgen. Een dichtgevouwen knoop kan worden herkend aan een cirkeltje aan de kind-zijde van de knoop.&#160;Door&#160;&#160;met de linkermuisknop op een dichtgevouwen knoop te<b>&#160;klikken</b>&#160;kan deze worden opengevouwen, en door weer te klikken worden dichtgevouwen.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Alle knopen van de mindmap dichtvouwen" STYLE_REF="Functie" ID="ID_634654908" CREATED="1293302592306" MODIFIED="1304621079698" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om alle knopen van de mindmap dicht te vouwen:
-    </p>
-    <p>
-      - selecteer basisknoop (druk op Escape);
-    </p>
-    <p>
-      - voer <i>Alleen alle afstammelingen dichtvouwen uit,</i>&#160;zie onder
-    </p>
-  </body>
-</html></richcontent>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_671896061" MIDDLE_LABEL="Zie ook:" STARTINCLINATION="127;0;" ENDINCLINATION="127;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-</node>
-<node TEXT="Alle knopen  van de mindmap openvouwen" STYLE_REF="Functie" ID="ID_296679523" CREATED="1293302749632" MODIFIED="1304453114040" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om alle knopen van de mindmap open te vouwen:
-    </p>
-    <p>
-      - selecteer basisknoop (druk op Escape);
-    </p>
-    <p>
-      - voer <i>Alleen alle afstammelingen openvouwen uit,</i>&#160;zie onder
-    </p>
-  </body>
-</html></richcontent>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1181138636" STARTINCLINATION="126;0;" ENDINCLINATION="126;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-</node>
-<node TEXT="Alleen alle afstammelingen dichtvouwen" STYLE_REF="Functie" ID="ID_671896061" CREATED="1293298750240" MODIFIED="1304452617329" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om alle afstammelingen van een bepaalde&#160;&#160;knoop dicht te vouwen:
-    </p>
-    <p>
-      - selecteer de knoop; en
-    </p>
-    <p>
-      - klik in het Werkmenu op de cirkel met rode minteken; of
-    </p>
-    <p>
-      - kies <i>Navigeren &gt; Alle afstammelingen dichtvouwen </i>in Hoofdmenu<i>;</i>&#160;&#160;of
-    </p>
-    <p>
-      - druk op <i>Alt + Home.</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Alleen alle afstammelingen openvouwen" STYLE_REF="Functie" ID="ID_1181138636" CREATED="1293298782025" MODIFIED="1304452672947" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om alle afstammelingen van een bepaalde knoop open te vouwen:
-    </p>
-    <p>
-      - selecteer de knoop; en
-    </p>
-    <p>
-      - druk in het Werkmenu op de cirkel met rode plusteken; of
-    </p>
-    <p>
-      - kies <i>Navigeren &gt; Alle afstammelingen openvouwen </i>in Hoofdmenu <i>;</i>&#160;&#160;of
-    </p>
-    <p>
-      - druk op <i>Alt + End</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Alleen de huidige knoop dichtvouwen" STYLE_REF="Functie" ID="ID_1808885204" CREATED="1293376171038" MODIFIED="1304452719940" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de huidige, geselecteerde knoop dicht te vouwen:
-    </p>
-    <p>
-      - druk Spatie; of
-    </p>
-    <p>
-      - dubbelklik
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Alleen de huidige knoop openvouwen" STYLE_REF="Functie" ID="ID_1374729498" CREATED="1293376281763" MODIFIED="1304452763566" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de geslecteerde, dichtgevouwen knoop open te vouwen:
-    </p>
-    <p>
-      - druk Spatie; of
-    </p>
-    <p>
-      - dubbelklik.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="E&#xe9;n niveau dichtvouwen" ID="ID_421492942" CREATED="1266255658609" MODIFIED="1304452814132" COLOR="#663300" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een geselecteerde knoop &#233;&#233;n niveau verder dicht te vouwen (knoop die het verse weg ligt eerst):
-    </p>
-    <p>
-      - kies <i>E&#233;n niveau dichtvouwen</i>&#160;in Hoofdmenu &gt; Navigeren; of in werkbalk (tak met rode min).
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="E&#xe9;n niveau openvouwen" ID="ID_1925783631" CREATED="1266255658609" MODIFIED="1304452859019" COLOR="#663300" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een geselecteerde knoop &#233;&#233;n niveau verder open te vouwen (kindknoop eerst):
-    </p>
-    <p>
-      - kies <i>E&#233;n niveau openvouwen</i>&#160;in Hoofdmenu &gt; Navigeren; of in werkbalk (tak met rode plus).
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Filteren" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_65781048" CREATED="1293304154415" MODIFIED="1304452085823" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Filteren is het alleen tonen van knopen die aan een door de gebruiker gedefinieerd <b>filtercriterium </b>of<b>&#160;filterregel </b>voldoen. Het filtercriterium bestaat uit: (1) een knoopelement; (2) een operator; (3) een in te vullen inhoud; en (4) al dan niet hoofdlettergevoelig zijn van tekst. Filtercriteria kunnen worden gecombineerd met EN, OF en NIET-operatoren tot&#160;&#160;filterregels. Een set van filterregels kan worden bewaard om op een later moment te worden geladen.&#160;&#160;
-    </p>
-    <p>
-      Bij het filteren kunnen kunnen <b>filteropties</b>&#160;worden opgegeven die het filterresutaal beinvloeden. Het filteren kan op alle knopen worden uitgevoerd of alleen de knopen van een bepaalde tak; de knopen die niet worden gefilterd blijven dan gewoon zichtbaar. Het filteren kan worden beperkt tot de zichtbare (= opengevouwen) knopen of ook de dichtgevouwen knopen omvatten. Bij het filteren kunnen behalve de gefilterde knopen, ook de voorouder en/of niet-dichtgevouwen afstammelingen worden getoond. Daarnaast is het mogelijk alleen geselecteerde knopen te tonen, of alle gefilterde knopen te selecteren. Het filter kan worden ingesteld met de werkbalk Filtermenu (Snelfilteren en Eenvoudig filteren) of met Filterbeheer (Uitgebreid filteren).
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Filtercriterium" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_872666616" CREATED="1293290180283" MODIFIED="1304622384186" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Het filtercriterium bestaat uit: (1) een knoopelement; (2) een operator; (3) een in te vullen inhoud; en (4) al dan niet hoofdlettergevoelig zijn van tekst. Filtercriteria kunnen worden gecombineerd met EN, OF en NIET-operatoren tot&#160;&#160;filterregels. Een set van filterregels kan worden bewaard om op een later moment te worden geladen.&#160;&#160;
-    </p>
-  </body>
-</html></richcontent>
-<node STYLE_REF="Inleiding" ID="ID_1238665231" CREATED="1293296710587" MODIFIED="1303933671795">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      De invoervelden/menu's van het&#160;&#160;filtercriterium bevinden zich in de werkbalk <i>Filtermenu</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Knoopelement" STYLE_REF="Functie" ID="ID_1908186538" CREATED="1293290197826" MODIFIED="1304622530933" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Afrolmenu met de volgende opties: Tekst, Tekst van ouder, bijlage, Pictogram, Hyperlink, Label bij verbindingslijn, Verbindingslijn, Gebruikte knoopstijlen, Gebruikte attributen), Tijdstip; (2) een functie (Bevat, Is gelijk aan, Is niet gelijk aan, &gt;, &gt;=, &lt;=, &lt;, Komt overeen met reguliere expressie.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Om knopen te filteren op basis van een datum/tijdstip in de tekst, moet dit gegeven vooraan in de basistekststaan. Met de operatoren groter/kleiner kan het tekstfilter ingesteld worden.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Operator" STYLE_REF="Functie" ID="ID_270970377" CREATED="1293290306690" MODIFIED="1304622587788" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Afrolmenu met de volgende opties: Bevat, Is gelijk aan, Is niet gelijk aan, &gt;, &gt;=, &lt;=, &lt;, Komt overeen met reguliere expressie.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Inhoud" STYLE_REF="Functie" ID="ID_585933081" CREATED="1293290381266" MODIFIED="1304622697220" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Door de gebruiker in te typen en te zoeken tekst. Bijvoorbeeld: &quot;mijn tekst&quot;.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Hoofdlettergevoeligheid" STYLE_REF="Functie" ID="ID_547288320" CREATED="1293290431045" MODIFIED="1304622803867" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een vinkje betekent dat bij het zoeken en filteren de hoodletters in <i>Inhoud</i>&#160; moeten worden gevonden in de basistekst om te passen op het filter..
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Filteroptie" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_764003297" CREATED="1293292370667" MODIFIED="1304622946804" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Wijze waarop gefilterd moet worden en het resultaat moet worden getoond.
-    </p>
-    <p>
-      De knoppen voor de filteropties bevinden zich in de werkbalk <i>Filtermenu</i>. Ga met de cursor over de knoppen om uit te vinden welke knop welke functie heeft.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Ook dichtgevouwen knopen filteren" STYLE_REF="Functiegroep" ID="ID_181415449" CREATED="1293292523376" MODIFIED="1304623019278" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Bij AAN worden de afstammelingen van alle dichtgevouwen knopen gefilterd en bij UIT worden deze niet gefilterd. Het resultaat is dat dichtgevouwen knopen die voldoen aan de filterregel bij AAN wel worden getoond en bij UIT niet.&#160;&#160;Dichtgevouwen knopen die niet aan de filterregel voldoen blijven in beide gevallen verborgen. Advies: Kies AAN om alle knopen te filteren.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Ook voorouders tonen" STYLE_REF="Functie" ID="ID_1424494235" CREATED="1293292551713" MODIFIED="1304623100382" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font color="#000000" face="SansSerif, sans-serif"><span style="font-family: SansSerif, sans-serif; color: #000000">Bij AAN worden de voorouders van de knopen die aan de filterregel voldoen getoond en bij UIT verborgen.</span></font>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Ook afstammelingen tonen" STYLE_REF="Functie" ID="ID_868875952" CREATED="1293294347970" MODIFIED="1304623161478" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Bij AAN worden de afstammelingen van de knopen die aan de filterregel&#160;&#160;voldoen getoond, tenzij deze zijn dichtgevouwen. Dichtgevouwen afstammelingen kunnen door openvouwen zichtbaar worden gemaakt. Bij UIT blijven ook de dichtgevouwen afstammelingen die aan de filterregel voldoen verborgen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Verder filteren (verfijnen)" STYLE_REF="Functiegroep" ID="ID_411556738" CREATED="1293293516544" MODIFIED="1304623205148" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Bij AAN wordt de volgende filteractie beperkt tot de knopen die zichtbaar zijn als gevolg van een voorgaande filteractie en bij UIT wordt bij de volgend filteractie de oorspronkelijke set opnieuw gefilterd.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Snelfilteren" STYLE_REF="Functiegroep" ID="ID_279743978" CREATED="1293278507351" MODIFIED="1304623253868" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Werkbalk Filtermenu bevat een lijst met eerder gebruikte filters. (Minimaal staat in deze lijst de optie Geen filter.) Om een eerder gebruikt filter opnieuw toe te passen:
-    </p>
-    <p>
-      - kies het filter uit de lijst;
-    </p>
-    <p>
-      - kies <i>Filteren mindmap</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Eenvoudig filteren" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1533407833" CREATED="1292963800009" MODIFIED="1293375086290">
-<node STYLE_REF="Functie" ID="ID_216901559" CREATED="1292961191029" MODIFIED="1304624272030" TEXT_SHORTENED="true" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Voorbereiding: nieuw <b>filtercriterium</b>&#160;instellen
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      De volgende acies worden utgevoerd in werkbalk <i>Filtermenu: </i>
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      - Kies in lijst met knoopelementen het element waarin moet worden gezocht, bijvoorbeeld basistekst.
-    </p>
-    <p>
-      - Kies in lijst met functies hoe moet worden gezocht, bijvoorbeeld Bevat.
-    </p>
-    <p>
-      - Typ in het inhoudveld wat moet worden gezocht, bijvoorbeeld &quot;mijntekst&quot;.
-    </p>
-    <p>
-      - Bij tekst: geef aan of naar gelijke hoofd- en kleine letters moet worden gezocht (vink hoofdlettergevoelig).
-    </p>
-    <p>
-      
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Filteren alle knopen" STYLE_REF="Functie" ID="ID_662451931" CREATED="1292969020605" MODIFIED="1304623725753" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om zichtbare &#233;n verborgen (dichtgevouwen) knopen van de mindmap die aan het filterriterium voldoen, te tonen en alle andere knopen van de mindmap te verbergen:
-    </p>
-    <p>
-      - controleer of <i>Ook dichtgevouwen knopen filteren</i>&#160;<b>AAN</b>&#160; staat, of klik hierop om AAN te zetten;
-    </p>
-    <p>
-      - controleer of alle andere opties <b>UIT</b>&#160;staan of klik hierop om UIT te zetten;
-    </p>
-    <p>
-      - kies <i>Filteren mindmap </i>in&#160;werkbalk<i>&#160;Filtermenu </i>
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b>Opties:</b>
-    </p>
-    <p>
-      Om na het filteren ook de <b>voorouders</b>&#160;te tonen:
-    </p>
-    <p>
-      - klik op <i>Ook voorouders tonen</i>&#160;om AAN te zettten
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Om na het filteren ook <b>niet-dichtgevouwen</b>&#160;<b>afstammelingen</b>&#160; te tonen:
-    </p>
-    <p>
-      - klik op <i>Ook afstammelingnen tonen</i>&#160;om AAN te zetten
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Om na het filteren <b>dichtgevouwen afstammelingen</b>&#160;zichtbaar te maken:
-    </p>
-    <p>
-      - klik op de ouderknoop om deze open te vouwen
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Om het filterresultaat bij de volgende filteractie te <b>verfijnen</b>&#160;door toepassen van een aanvullend filtercriterium:
-    </p>
-    <p>
-      - controleer of <i>Verder filteren (verfijnen)</i>&#160;<b>AAN</b>&#160;staat of klik hierop om AAN te zetten;
-    </p>
-    <p>
-      - filter nogmaals met de nieuwe filterregel.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Filteren van alleen zichtbare knopen" STYLE_REF="Functie" ID="ID_1684977502" CREATED="1292965823481" MODIFIED="1304623577083" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om alleen alle zichtbare (=opengevouwen) knopen van de mindmap die aan het filterriterium voldoen, te tonen en alle andere knopen van de mindmap te verbergen:
-    </p>
-    <p>
-      - controleer of <i>Ook dichtgevouwen knopen filteren</i>&#160;<b>UIT</b>&#160; staat, of klik hierop om UIT uit te zetten; en
-    </p>
-    <p>
-      - kies <i>Filteren mindmap </i>in werkbalk <i>Filtermenu </i>
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b>Opties </b>
-    </p>
-    <p>
-      <b>- </b>als bij <i>Filteren alle knopen </i>
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b>N.B. </b>Een bijeffect is dat de gaten van de verborgen knopen worden ingevuld door de wel zichtbare knopen naar de basisknoop en naar elkaar toe te schuiven (comprimeren mindmap).
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Alle passende knopen selecteren" STYLE_REF="Functie" ID="ID_1782202171" CREATED="1293224944798" MODIFIED="1304623623951" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om alle knopen van de mindmap die aan het filtercriterium voldoen&#160;&#160;te tonen en selecteren:
-    </p>
-    <p>
-      - selecteer de basisknoop;
-    </p>
-    <p>
-      - kies <i>Passende knopen selecteren&#160;</i>in werkbalk <i>Filtermenu </i>
-    </p>
-    <p>
-      N.B.1 Er worden dus GEEN knopen verborgen.
-    </p>
-    <p>
-      N.B.2 Ook de voorouders van de geselecteerde knopen die door dichtvouwen zijn verborgen, worden getoond.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Alleen passende knopen van een tak selecteren" STYLE_REF="Functie" ID="ID_285781274" CREATED="1292969134486" MODIFIED="1304623698492" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om alle afstammelingen van de geselecteerde knoop die aan het filtercriterium voldoen&#160;&#160;te tonen en selecteren:
-    </p>
-    <p>
-      - selecteer de knoop aan het begin van de tak;
-    </p>
-    <p>
-      - kies <i>Passende knopen selecteren&#160;</i>in werkbalk <i>Filtermenu </i>
-    </p>
-    <p>
-      N.B.1. Er worden dus GEEN knopen verborgen.
-    </p>
-    <p>
-      N.B.2. Ook de voorouders van de geselecteerde knopen die door dichtvouwen zijn verborgen, worden getoond.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Niet-geselecteerde knopen verbergen" STYLE_REF="Functie" ID="ID_565867147" CREATED="1292966622437" MODIFIED="1304623887063" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om alle knopen die zijn geselecteerd te tonen en alle andere knopen te verbergen:
-    </p>
-    <p>
-      - kies <i>Niet-geselecteerde&#160;knopen verbergen</i>&#160;in werkbalk<i>&#160; Filtermenu </i>
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b>Opties:</b>
-    </p>
-    <p>
-      - als bij <i>Filteren alle knopen</i>
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      N.B. Als filtercriterium wordt &quot;het geselecteerd zijn&quot; toegepast. De andere aspecten van het filtercriterium spelen geen rol.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Filteren be&#xeb;indigen" STYLE_REF="Functie" ID="ID_1769663408" CREATED="1293224291921" MODIFIED="1304623947341" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de door het filteren verborgen knopen weer te tonen:
-    </p>
-    <p>
-      -&#160;&#160;klik op <i>Ongedaan maken filteren</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Uitgebreid filteren" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1316906664" CREATED="1293272539288" MODIFIED="1304624744244" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Het is mogelijk filters te defini&#235;ren voor hergebruiik op een later moment (zie Snelfilteren). Hierbij kunnen ook samengestelde filterrregels met EN, OF en NIET worden gedefinieerd. Een filterregel kan een naam hebben, welke (dan) voor de filterregel zelf, in de lijst met filterregels wordt getoond. Ook kunnen sets met filterregels worden opgeslagen en geladen voor gebruik op een later moment.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Filtercriterium instellen" STYLE_REF="Functie" ID="ID_168833629" CREATED="1292961191029" MODIFIED="1304624678204" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font color="#000000" face="SansSerif, sans-serif"><span style="font-family: SansSerif, sans-serif; color: #000000">De volgende acies worden utgevoerd in de velden van het venster voor Filterbeheer:</span></font>
-    </p>
-    <p>
-      - Kies in lijst met knoopelementen het element waarin moet worden gezocht, bijvoorbeeld basistekst.
-    </p>
-    <p>
-      - Kies in lijst met functies hoe moet worden gezocht, bijvoorbeeld Bevat.
-    </p>
-    <p>
-      - Typ in het inhoudveld wat moet worden gezocht, bijvoorbeeld &quot;mijntekst&quot;.
-    </p>
-    <p>
-      - Bij tekst: geef aan of naar gelijke hoofd- en kleine letters moet worden gezocht (vink hoofdlettergevoelig).
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_1244421726" CREATED="1293272618005" MODIFIED="1304624811246" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      knop <b>Toevoegen</b>
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font color="#000000" face="SansSerif, sans-serif"><span style="font-family: SansSerif, sans-serif; color: #000000">Voegt het nieuw gedefineerde filtercriterium toe aan de lijst met filters</span></font>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_43957433" CREATED="1293272739202" MODIFIED="1304624861670" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Knop <b>NIET</b>
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Maakt een nieuwe regel welke de negatie is van de geselecteerde regel en voegt deze toe aan de lijst filters.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_492840584" CREATED="1293272892114" MODIFIED="1304624906681" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Knop <b>EN</b>
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Combineert twee of meer geselecteerde regels tot een nieuwe, samengestelde regel met EN-operator.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_1920854663" CREATED="1293272892114" MODIFIED="1304624953273" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Knop <b>OF</b>
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font color="#000000" face="SansSerif, sans-serif"><span style="font-family: SansSerif, sans-serif; color: #000000">Combineert twee of meer geselecteerde regels tot een nieuwe, samengestelde regel met OF-operator.</span></font>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_1012129215" CREATED="1293273070889" MODIFIED="1304624999749" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Knop <b>Splitsen</b>
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Splitst een samengestelde geselecteerde filterregel in de samenstellende delen en neemt deze op in de lijst filters.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_1488192106" CREATED="1293273601142" MODIFIED="1304625067669" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Knop <b>Wissen</b>
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Verwijdert een geselecteerde filterregel uit de lijst met filters.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_561505093" CREATED="1293653204068" MODIFIED="1304625214258" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Knop <b>Naam toekennen</b>
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font color="#000000" face="SansSerif, sans-serif"><span style="font-family: SansSerif, sans-serif; color: #000000">Voegt een naam toe aan de filterregel. Deze verschijnt als &quot;naam:&quot; voor de filterregel.</span></font>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_184493975" CREATED="1293274342892" MODIFIED="1304625261571" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Knop <b>OK</b>
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Accepteert de bewerkte filterlijst, zodat deze ook na het afsluiten van Freeplane kan worden gebruikt en automatisch wordt geladen bij het opnieuw openen van Freeplane.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_341532897" CREATED="1293274347861" MODIFIED="1304625322724" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Knop <b>Toepassen</b>
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Voert de geselecteerde filterregel uit
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_1623915430" CREATED="1293274355248" MODIFIED="1304625365207" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Knop <b>Annuleren</b>
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Wist alle wijzigingen aan de filterlijst.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_1661878297" CREATED="1293274362587" MODIFIED="1304625414177" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Knop <b>Opslaan</b>
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opslaan van de huidige filterlijst. De te kiezen bestandsnaam krijgt extensie .mmfilter.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_133713096" CREATED="1293274369085" MODIFIED="1304625475304" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Knop <b>Laden</b>
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Laden van een lijst met filters die eerder is opgeslagen. De bestandsnaam van de te laden filterlijst heeft extensie .mmfilter.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Filters" ID="ID_1325495832" CREATED="1293274406111" MODIFIED="1304625522901" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Lijst met gedefinieerde filters. Deze lijstwordt ook in de werkbal Filtermenu getoond. (Door in deze lijst een filter&#160;&#160;te kiezen en op <i>Filtreren mindmap</i>&#160;te kiezen, wordt het filter uitgevoerd.)
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-</node>
-<node TEXT="Zoeken" STYLE_REF="Functiegroep" ID="ID_751081177" CREATED="1293117624284" MODIFIED="1293375086058" LINK="#ID_1316598579"/>
-</node>
-<node TEXT="Selecteren en  vasthouden van knopen" FOLDED="true" ID="ID_1804240683" CREATED="1289508690978" MODIFIED="1304485419350" COLOR="#006699" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Knopen worden standaard geselecteerd door de muiscursor op de knoop te plaatsen (na een korte vertraging). Dit kan worden gewijzigd via <i>Extra &gt; Standaardinstellingen &gt; Gedrag &gt; Selectiemethode</i>. Aanwezige selectiemethoden zijn <i>Onmiddelijk</i>, <i>Vertraagd</i>&#160;of <i>Door te klikken</i>.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Als je met de muis van een geselecteerde knoop naar een menu beweegt, kan het zijn dat je een andere knoop passeert. In dat geval&#160;&#160;verschuift de focus naar deze knoop. Het is mogelijk om dit te voork&#243;men.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Selecteren van een knoop" ID="ID_478502424" CREATED="1291295264936" MODIFIED="1304450992003" COLOR="#407000" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een knoop te selecteren:
-    </p>
-    <p>
-      - beweeg de muiscursor over de knoop: de knoop krijgt een kader als deze geselecteerd is.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Geselecteerde knoop vasthouden" ID="ID_624522517" CREATED="1289508830388" MODIFIED="1304447528690" COLOR="#407000" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om te zorgen dat een knoop geselecteerd blijft als de cursor over andere knopen wordt bewogen:
-    </p>
-    <p>
-      - Houd <i>Shift </i>of<i>&#160;Ctrl </i>ingedrukt bij het verplaatsen van de muiscursor.
-    </p>
-    <p>
-      N.B. Als meerdere knopen zijn geselecteerd dan blijven deze geselecteerd als de cursor wort verplaatst.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Meerdere, willekeurige knopen selecteren" ID="ID_1014350045" CREATED="1304450572306" MODIFIED="1304451020611" TEXT_SHORTENED="true" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om meerdere knopen te selecteren, houd <i>Ctrl </i>ingedrukt terwijl je achtereenvolgens op de te selecteren knopen klikt met de linker muisknop.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Opeenvolgende knopen selecteren" ID="ID_1500816688" CREATED="1304450697046" MODIFIED="1304450915103" TEXT_SHORTENED="true" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een serie opeenvolgende knopen te selecteren:
-    </p>
-    <p>
-      - houd<i>&#160;Shift</i>&#160;&#160;ingedrukt terwijl je op de eerste en laatste knoop klikt met de linker muisknop; of bij het indrukken van de pijltoetsen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Deel van knoopketen selecteren" ID="Freeplane_Link_653540280" CREATED="1270892460681" MODIFIED="1304450854513" COLOR="#407000" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een complete knoopketen of deel van een keten te selecteren:
-    </p>
-    <p>
-      -&#160;klik op een knoop en druk op <i>Ctrl + Shift + A</i>&#160;;of&#160;
-    </p>
-    <p>
-      - druk op <i>Alt Gr;</i>&#160;of houd <i>Shift</i>&#160;ingedrukt en druk op de pijltoetsen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Alle knopen selecteren" STYLE_REF="Functiegroep" ID="ID_462898547" CREATED="1292959443217" MODIFIED="1304447661979" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om alle knopen van de mindmap te selecteren:
-    </p>
-    <p>
-      - druk op <i>Ctrl + A</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Gefilterde knopen selecteren" STYLE_REF="Functiegroep" ID="ID_69271813" CREATED="1293109981132" MODIFIED="1304447802022" LINK="#ID_285781274" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Klik op het groene pijlje om door te schakelen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="De selectie ongedaan maken" STYLE_REF="Functiegroep" ID="ID_1241773800" CREATED="1292959485462" MODIFIED="1304447731712" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een selectie ongedaan te maken:
-    </p>
-    <p>
-      - klik op de achtergrond van de mindmap of op een andere, knoop.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Navigeren tussen knopen" FOLDED="true" ID="ID_1233270983" CREATED="1272091279810" MODIFIED="1304144299876" COLOR="#006699">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Verschuiven van de mindmap (scrollen)" FOLDED="true" ID="Freeplane_Link_467411537" CREATED="1270892460689" MODIFIED="1293375086014" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12"/>
-<node ID="ID_1291243282" CREATED="1270892460689" MODIFIED="1304625718170" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Willekeurig schuiven<br/>
-    </p>
-  </body>
-</html></richcontent>
-<edge WIDTH="thin"/>
-<font NAME="SansSerif" SIZE="12"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de mindmap te verschuiven (scrollen):
-    </p>
-    <p>
-      - klik met de linker muisknop op de achtergrond en beweeg de muis met de muisknop ingedrukt.<br/>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Verticaal schuiven" ID="ID_1842381103" CREATED="1286528674732" MODIFIED="1304625768861" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om alleen vertikaal te verschuiven:
-    </p>
-    <p>
-      - rol het muiswieltje; of
-    </p>
-    <p>
-      - verschuif de schuifbalk aan de rechterzijde van het scherm.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Horizontaal schuiven" ID="ID_1426998549" CREATED="1286528674732" MODIFIED="1304625822907" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om alleen horizontaal te verschuiven:
-    </p>
-    <p>
-      - rol het muiswieltje met <i>Shift</i>&#160;&#160;ingedrukt (of op sommige computers het appel-teken); of
-    </p>
-    <p>
-      - verschuif de de schuifbalk onderin het scherm.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Navigeren in de mindmap" FOLDED="true" ID="_Freeplane_Link_1540212684" CREATED="1270892460687" MODIFIED="1293375085999" COLOR="#407000">
-<node TEXT="Cursor verplaatsen met pijltoetsen" ID="ID_990469408" CREATED="1270892460687" MODIFIED="1304625918337" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de cursor op, neer, naar links of rechts te verplaatsen:
-    </p>
-    <p>
-      - gebruik de pijltoetsen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Naar bovenste knoop" ID="ID_991946266" CREATED="1270892460687" MODIFIED="1304625966971" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om naar de bovenste knoop (zelfde niveau) te verplaatsen:
-    </p>
-    <p>
-      - druk op <i>PgUp</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Naar onderste knoop" ID="ID_697637157" CREATED="1270892460688" MODIFIED="1304626017778" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om naar de onderste knoop (zelfde niveau) te verplaatsen:
-    </p>
-    <p>
-      - druk op <i>PgDn</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Naar de basisknoop" ID="ID_897038230" CREATED="1270892460688" MODIFIED="1304626075144" TEXT_SHORTENED="true">
-<font ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om naar de basisknoop te verplaatsen:
-    </p>
-    <p>
-      - druk op <i>Escape</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Naar eerdere knoop" ID="ID_380593497" CREATED="1271026015708" MODIFIED="1304626198330" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om naar een knoop te navigeren die je eerder hebt bezocht:
-    </p>
-    <p>
-      - kies <i>Navigeren &#160;&gt; Vorige knoop</i>&#160;in Hoofdmenu; of
-    </p>
-    <p>
-      <i>-</i>&#160;kies pictogram<i>&#160;blauwe Pijl-naar-links</i>&#160;in Werkmenu<i>; of </i>
-    </p>
-    <p>
-      <i>- </i>druk op <i>Alt + Pijllinks</i>.
-    </p>
-    <p>
-      <br/>
-      
-    </p>
-    <p>
-      Om weer terug te gaan kies:
-    </p>
-    <p>
-      -&#160;kies&#160; <i>Navigeren &#160;&gt; Volgende knoop</i>&#160;in Hoofdmenu; of
-    </p>
-    <p>
-      - kies pictogram blauwe <i>Pijl-naar-rechts</i>&#160;in Werkmenu; of
-    </p>
-    <p>
-      - druk op <i>Alt + Pijlrechts</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Zoeken" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1316598579" CREATED="1292960748869" MODIFIED="1305291534131" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      In een mindmap kunnen knopen &#233;&#233;n voor &#233;&#233;n worden gezocht en gepresenteerd die bepaalde inhoud bevatten. Er kan selectief worden gezocht op de aanwezigheid van bepaalde: tekst, pictogram, datum van maken/wijziging, positie,&#160;&#160;prioriteit, label&#160;&#160;verbindingslijn, hyperlink, bijlage notitie en attribuut. Informatie wordt eerst gezocht in de knopen dichter bij de basisknoop (breedte eerst).
-    </p>
-  </body>
-</html>
-</richcontent>
-<node TEXT="Voorbereiding" STYLE_REF="Functie" ID="ID_88594706" CREATED="1292961191029" MODIFIED="1304664955224" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      De volgende functies gebeuren alle in balk Filtermenu:
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      - <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Kies in lijst met knoopelementen het elemen waarin moet worden gezocht, bijvoorbeeld basistekst. </span></font>
-    </p>
-    <p>
-      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">- Kies in lijst met functies hoe moet worden gezocht, bijvoorbeeld &quot;Bevat&quot;. </span></font>
-    </p>
-    <p>
-      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">- Type in het inhoudveld wat moet worden gezocht, bijvoorbeeld &quot;mijntekst&quot; </span></font>
-    </p>
-    <p>
-      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">- Bij tekst: geef aan of naar gelijke hoofd- en kleine letters moet worden gezocht (vink hoofdlettergevoelig).</span></font>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Volgende zoeken" STYLE_REF="Functie" ID="ID_681050466" CREATED="1292961548689" MODIFIED="1304665007055" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Klik op de blauwe pijl-naar-rechts.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Vorige zoeken" STYLE_REF="Functie" ID="ID_1226469886" CREATED="1292961630294" MODIFIED="1304665054690" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Klik op de blauwe pijl-naar-links.</span></font>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Alle knopen in selectie vinden" STYLE_REF="Functie" ID="ID_187418532" CREATED="1293117695568" MODIFIED="1304665103120" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om in een mindmap in alle knopen alle items met een bepaalde inhoud te vervangen:
-    </p>
-    <p>
-      - kies&#160; <i>Bewerken &gt; Zoeken en vervangen </i>in Hoofdmenu.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Alle knopen &#xe9;&#xe9;n voor een bezoeken" ID="ID_1006152714" CREATED="1271176654062" MODIFIED="1304626390422" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om alle knopen &#233;&#233;n voor een te bezoeken, kies:
-    </p>
-    <p>
-      - <i>Navigeren &gt; Volgende knoop</i>&#160;in Hoofdmenu; of
-    </p>
-    <p>
-      <i>- Ctrl + Alt + Pijlrechts;</i>&#160;
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      En de andere kant op:
-    </p>
-    <p>
-      - <i>Navigeren &gt; Vorige knoop</i>&#160;in Hoofdmenu; of
-    </p>
-    <p>
-      - <i>Ctrl + Alt + Pijllinks</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Na bekijken dichtvouwen" ID="ID_261764750" CREATED="1271177016593" MODIFIED="1304626347350" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een knoop na bekijken dicht te vouwen:
-    </p>
-    <p>
-      - kies <i>Navigeren &gt; Volgende knoop (dichtvouwen) </i>in Hoofdmenu<i>;</i>&#160;of
-    </p>
-    <p>
-      - druk op<i>&#160;Ctrl + Shift +Pijlrechts;</i>&#160;of
-    </p>
-    <p>
-      - kies <i>Navigeren &gt; Vorige knoop (dichtvouwen)</i>&#160;in Hoofdmenu; of
-    </p>
-    <p>
-      - druk <i>Ctrl + Alt + Shift + Pijllinks</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Overschakelen naar andere mindmap" FOLDED="true" ID="Freeplane_Link_516331171" CREATED="1270892460688" MODIFIED="1293375085967" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Naar laatstgeopende mindmaps" ID="ID_771867461" CREATED="1272092801195" MODIFIED="1304626478699" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om heen en weer te schakelen tussen de twee laatst geopende mindmaps:
-    </p>
-    <p>
-      - druk op <i>Ctrl + 1</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Wisselen tussen mindmaps" ID="ID_233995891" CREATED="1271000255265" MODIFIED="1304626531764" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om te wisselen tussen opeenvolgend geopende mappen:
-    </p>
-    <p>
-      - klik in Hoofdmenu in het blauwe cirkeltje met pijllinks of pijlrechts; of
-    </p>
-    <p>
-      - kies <i>Navigeren &gt; Vorige map</i>&#160;in Hoofdmenu; of
-    </p>
-    <p>
-      - druk <i>Shif + Alt + Pijllinks;</i>&#160;of
-    </p>
-    <p>
-      - kies <i>Navigeren &gt; Volgende map</i>&#160;in Hoofdmenu; of
-    </p>
-    <p>
-      -&#160;druk <i>Shift + Alt + Pijlrechts</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Naar willekeurige open mindmap" ID="ID_213892338" CREATED="1270892460689" MODIFIED="1304626595547" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om naar een willekeurige, eerder geopende mindmap te gaan:
-    </p>
-    <p>
-      - kies <i>Mindmap</i>&#160;in Hoofdmenu&#160;en kies uit de lijst van open mindmaps de bestandsnaam; of
-    </p>
-    <p>
-      - klik met de rechter muisknop op de achtergrond en kies de naam van de mindmap&#160;&#160;in het Contextmenu; of
-    </p>
-    <p>
-      - kies de naam in de menubalk voor mindmaps die onder aan het scherm staat..
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Navigeren tussen knopen met verborgen tekst" ID="ID_390018350" CREATED="1304485524408" MODIFIED="1304693178301" TEXT_SHORTENED="true" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Als een verborgen tekst van bijvoorbeeld een bijlage wordt getoond, kan de knoop onder de huidige knoop worden geselecteerd met de pijl-naar-beneden toets.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-</node>
-<node TEXT="Functies en menu&apos;s" FOLDED="true" POSITION="right" ID="ID_777714483" CREATED="1286740573662" MODIFIED="1304692732551" COLOR="#006699" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een menu is een lijst functies waaruit je kunt kiezen. Het <i>Hoofdmenu</i>&#160;bevat alle functies van Freeplane.
-    </p>
-    <p>
-      Een aantal andere menubalken bevatten selecties uit het hoofdmenu die vaak worden gebruikt. Je kunt kiezen of deze menubalken continu zichbaar moeten zijn of niet. Daarnaast zijn er <i>Context menu's</i>&#160;die alleen zichtbaar zijn als een een bepaald object is geselecteerd zoals en knoop of lijn. Deze contextmenus bevatten alleen functies&#160;&#160;die die van toepassing zijn op het betreffendet object.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Waar bevinden zich de menubalken en hoe heten ze ?" ID="ID_1527109093" CREATED="1287139381881" MODIFIED="1293375089833" LINK="freeplane_menuposition_nl.jpg"/>
-<node TEXT="Menubalken tonen/verbergen" STYLE_REF="Onderwerp" FOLDED="true" ID="ID_1945244112" CREATED="1286909981056" MODIFIED="1304521217009" TEXT_SHORTENED="true">
-<font ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een menu welke niet nodig is kan worden verborgen.
-    </p>
-    <p>
-      Als alle menus verborgen zijn, dan zijn deze alleen zichtbaar te maken met het contextmenu van de mindmap.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="E&#xe9;n menu tonen/verbergen" ID="ID_287883226" CREATED="1286910057037" MODIFIED="1304521389919" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om &#233;&#233;n bepaalde menu te tonen of verbergen:
-    </p>
-    <p>
-      <i>-</i>&#160;Kies in Hoofdmenu: <i>Beeld </i>&#160;en klik&#160;op het menu dat je wilt tonen of verbergen
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Alle menus tonen/verbergen" ID="ID_1603697516" CREATED="1304521272922" MODIFIED="1304521324078" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om alle menu's te tonen/ te verbergen:
-    </p>
-    <p>
-      - Klik rechter muisknop op een vrije plek op de achtergrond en kies <i>Volledig scherm; </i>of
-    </p>
-    <p>
-      <i>-</i>&#160;Kies in het Hoofdmenu: <i>Beeld &gt; Volledig scherm</i>&#160;...
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Welke menu&apos;s hebben welke functies ?" STYLE_REF="Onderwerp" FOLDED="true" ID="ID_602915987" CREATED="1286909912487" MODIFIED="1304521075583">
-<font ITALIC="false"/>
-<node TEXT="Hoofdmenu" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1676223674" CREATED="1286741018708" MODIFIED="1304490080519" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Het hoofdmenu bevat een overzicht van bijna alle functies.
-    </p>
-    <p>
-      In het menu is ook zichtbaar of er voor een functie een sneltoetscombinatie beschikbaar is.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Bestand" FOLDED="true" ID="ID_726273295" CREATED="1266240579156" MODIFIED="1293375089822" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node FOLDED="true" ID="ID_368992923" CREATED="1266240728734" MODIFIED="1293375089818" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Nieuwe mindmap
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_1224589686" CREATED="1266243689843" MODIFIED="1293375089812" COLOR="#000000" STYLE="fork">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Maakt een nieuwe mindmap met een standaard mindmapstijl. Dit is standaard <i>standard.mm</i>. Bij <i>Extra &gt; Instellingen &gt; Omgeving</i>&#160; kan hiervoor een andere naam worden opgegeven. De standaardstijl wordt eerst gezocht in de template map met gebruikerstijlen en daarna in de map met standaardstijlen resources/templates.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Nieuwe mindmap met stijl..." FOLDED="true" ID="ID_357248450" CREATED="1291144697798" MODIFIED="1293375089808" COLOR="#663300">
-<node TEXT="Maakt een nieuwe mindmap volgens een te kiezen mindmapstijl en met alleen een hoofdknoop. Deze mindmap blijft alleen behouden als deze wordt bewaard." ID="ID_1932235624" CREATED="1291144740504" MODIFIED="1293375089803"/>
-</node>
-<node TEXT="Openen..." FOLDED="true" ID="ID_698004518" CREATED="1266240707437" MODIFIED="1293375089800" COLOR="#663300">
-<node TEXT="Opent een dialooggvenster waarin een opgeslagen mindmap kan worden gekozen welke vervolgens wordt geopend" ID="ID_1263580030" CREATED="1266243738562" MODIFIED="1293375089795" COLOR="#000000"/>
-</node>
-<node FOLDED="true" ID="ID_1692895250" CREATED="1266240710515" MODIFIED="1293375089791" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opslaan
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_324068736" CREATED="1266243759625" MODIFIED="1293375089785" COLOR="#000000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Bewaart een mindmap die eerder werd gemaakt. De eerste keer dat een mindmap wordt bewaard verschijnt&#160;&#160;het Bewaar-dialoog-venster. De tweede en volgende keer dat de mindmap wordt bewaard, wordt het eerder bewaarde bestand overschreven. Dit heet &quot;gecontroleerd opslaan&quot;. ZIE OOK: &quot;automatisch opslaan&quot;.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_818986161" CREATED="1266240712359" MODIFIED="1293375089782" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opslaan als...
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_20106150" CREATED="1266243892937" MODIFIED="1293375089778" COLOR="#000000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Bewaart een mindmap die eerder werd bewaard, onder een andere naam.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_36822681" CREATED="1266240760812" MODIFIED="1293375089741" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Alles opslaan
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_845551262" CREATED="1266244077296" MODIFIED="1293375089737" COLOR="#000000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Bewaart alle open mindmaps.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Teruggaan naar opgeslagen versie" FOLDED="true" ID="ID_1689665561" CREATED="1266240740062" MODIFIED="1293375089774" COLOR="#663300">
-<node ID="ID_1182324893" CREATED="1266240906265" MODIFIED="1293375089767" COLOR="#000000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Herstelt de hele mindmap naar de situatie waarin deze het laatste (gecontroleerd) werd bewaard. Deze handeling kan niet ongedaan worden gemaakt.
-    </p>
-    <p>
-      ZIE OOK: <i>Bewerken &gt; Ongedaan</i>&#160;maken voor het ongedaan maken van een handeling voor &#233;&#233;n knoop.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Beveiligen mindmap..." FOLDED="true" ID="ID_1741781785" CREATED="1266240744406" MODIFIED="1293375089763" COLOR="#663300">
-<node ID="ID_1633357902" CREATED="1266259023031" MODIFIED="1293375089744">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Zorgt dat de mindmap alleen kan worden bewerkt als het juiste wachtwoord is ingegeven.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_1638327663" CREATED="1266240764406" MODIFIED="1293375089733" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Sluiten
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_308572074" CREATED="1266244106734" MODIFIED="1293375089729" COLOR="#000000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      &#160;Sluit de mindmap die de focus heeft.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Bestandseigenschappen" ID="ID_1258957076" CREATED="1296241429294" MODIFIED="1303928653354" COLOR="#663300"/>
-<node FOLDED="true" ID="ID_1675582059" CREATED="1266240766296" MODIFIED="1293375089726" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Onlangs geopend
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_393827214" CREATED="1266242255656" MODIFIED="1293375089722" COLOR="#000000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p style="text-align: left">
-      Toont een lijst van recent geopende mindmaps.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_936852113" CREATED="1266244333312" MODIFIED="1293375089718" COLOR="#993300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Exporteren tak als nieuwe mindmap
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_1562773355" CREATED="1266418102265" MODIFIED="1293375089709">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Er gebeuren de volgende dingen:
-    </p>
-    <ol>
+    <ul>
       <li>
-        Er wordt een nieuwe mindmap gemaakt van de geselekteerde knoop en alle kindknopen en er wordt een <i>Opslaan-dialoogvenster</i>&#160;geopend waarin de naam kan worden geselekteerd of getypt waarin het bestand wordt bewaard.
+        It is easier top use copy &amp; paste.
       </li>
       <li>
-        De hoofdknoop van de nieuwe mindmap bevat een snelkoppeling naar de mindmap van waaruit de export is uitgevoerd.
+        Use it for adding hyperlink to the root node.
       </li>
-      <li>
-        De knoop (en kindknopen) die is geexporteerd is vervangen door een knoop (zonder kindknopen) met dezelfde naam en met een snelkoppeling naar de nieuwgemaakte mindmap.
-      </li>
-    </ol>
-    <p>
-      De export kan ongedaan worden gemaakt met <i>Bewerken &gt; Ongedaan maken.</i>
-    </p>
+    </ul>
   </body>
 </html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_857930802" CREATED="1266240790156" MODIFIED="1293375089706" COLOR="#663300">
-<richcontent TYPE="NODE">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+<node TEXT="Copy and paste" STYLE_REF="ToNote" ID="ID_248385809" CREATED="1314783614192" MODIFIED="1314783750665" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Exporteren
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Bewaart een deel van de mindmap in een ander formaat:" STYLE_REF="Inleiding" ID="ID_1448156069" CREATED="1288474219559" MODIFIED="1293375089702">
-<font BOLD="true"/>
-</node>
-<node TEXT="HTML (hele mindmap)" STYLE_REF="Functie" FOLDED="true" ID="ID_289318260" CREATED="1266417318562" MODIFIED="1293375089698">
-<node ID="ID_812910917" CREATED="1266418546296" MODIFIED="1293375089693">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Exporteert de hele mindmap als HTML document in de weergave zoals deze was op het moment van exporteren. Javascript in de code zorgt er voor dat takken worden in/uitgevouwen.
+      Use Ctrl-C and Ctrl-V to copy and paste in the text field.
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
-<node TEXT="HTML (volledige tak)" STYLE_REF="Functie" FOLDED="true" ID="ID_1222466772" CREATED="1266417322421" MODIFIED="1293375089689">
-<node TEXT="Exporteert de geselecteerde knoop en zijn afstammelingen." ID="ID_1759009184" CREATED="1266418858968" MODIFIED="1293375089685"/>
-</node>
-<node TEXT="ODT, Open Document Text" STYLE_REF="Functie" FOLDED="true" ID="ID_413819995" CREATED="1266417526828" MODIFIED="1293375089681">
-<node ID="ID_1396964674" CREATED="1266421400031" MODIFIED="1293375089678">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Exporteert hele mindmap naar OpendOffice writer formaat.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="PNG, Portable Network Graphic" STYLE_REF="Functie" FOLDED="true" ID="ID_1426694137" CREATED="1266417536125" MODIFIED="1293375089674">
-<node ID="ID_1332772771" CREATED="1266421400031" MODIFIED="1293375089670">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Exporteert hele mindmap naar plaatje in PNG formaat.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="JPEG, gecomprimeerd beeld" STYLE_REF="Functie" FOLDED="true" ID="ID_298130830" CREATED="1266417521765" MODIFIED="1293375089666">
-<node ID="ID_1657686281" CREATED="1266421400031" MODIFIED="1293375089663">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Exporteert hele mindmap naar plaatje in JPEG formaat.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="XHTML, Javascript" STYLE_REF="Functie" FOLDED="true" ID="ID_1590599513" CREATED="1266417345906" MODIFIED="1293375089659">
-<node ID="ID_1114671207" CREATED="1266419109828" MODIFIED="1293375089655">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Exporteert de hele mindmap met volledige JavaScript functionaliteit.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="XHTML, klikbare map" STYLE_REF="Functie" FOLDED="true" ID="ID_519681176" CREATED="1266417370281" MODIFIED="1293375089652">
-<node ID="ID_859520849" CREATED="1266419406468" MODIFIED="1293375089648">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Exporteert de hele map en in de vorm op het moment van exporteren, in outline vorm.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Java Applet." STYLE_REF="Functie" FOLDED="true" ID="ID_376134497" CREATED="1266417395953" MODIFIED="1293375089644">
-<node ID="ID_1820041047" CREATED="1266419727421" MODIFIED="1293375089640">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Maakt een mindmap ingebed in een HTML bestand welke kan worden opgenomen in een web pagina.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Flash" STYLE_REF="Functie" FOLDED="true" ID="ID_1234525000" CREATED="1266417407640" MODIFIED="1293375089637">
-<node ID="ID_535511253" CREATED="1266419808109" MODIFIED="1293375089633">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Exporteert naar een Flash bestand dat zich gedraagt als een mindmap.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="TJI, Taak TaskJuggler" STYLE_REF="Functie" FOLDED="true" ID="ID_1188629539" CREATED="1266417449093" MODIFIED="1293375089629">
-<node ID="ID_836642390" CREATED="1266420985281" MODIFIED="1293375089624">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Exporteert taken uit knoop TASKS naar een bestand dat kan worden geopend door TaskJuggler, een open source project management tool.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="TJI Bronnen TaskJuggler" STYLE_REF="Functie" FOLDED="true" ID="ID_1727885349" CREATED="1266417478265" MODIFIED="1293375089620">
-<node ID="ID_408943757" CREATED="1266420985281" MODIFIED="1293375089615">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Exporteert resources uit knoop RESOURCES naar een bestand dat kan worden geopend door TaskJuggler, een open source project management tool.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="TWiki" STYLE_REF="Functie" FOLDED="true" ID="ID_1482055774" CREATED="1266417500265" MODIFIED="1293375089611">
-<node ID="ID_1752906742" CREATED="1266421237015" MODIFIED="1293375089607">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Exporteert hele mindmap naar TWiki formaat.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Freeplane 1.1" STYLE_REF="Functie" FOLDED="true" ID="ID_400855730" CREATED="1291149849258" MODIFIED="1293375089603">
-<node TEXT="Exporteert naar een ouder mindmap formaat" ID="ID_1860654768" CREATED="1291149869392" MODIFIED="1293375089600"/>
-</node>
-<node TEXT="HTML" STYLE_REF="Functie" FOLDED="true" ID="ID_394870310" CREATED="1291150566670" MODIFIED="1293375089596">
-<node TEXT=".htm, .html" ID="ID_1698689415" CREATED="1291150575134" MODIFIED="1293375089593"/>
-</node>
-<node TEXT="latex" STYLE_REF="Functie" FOLDED="true" ID="ID_601016440" CREATED="1291150827814" MODIFIED="1293375089589">
-<node TEXT=".tex" ID="ID_1888528403" CREATED="1291150841184" MODIFIED="1293375089585"/>
-</node>
-<node TEXT="latex" STYLE_REF="Functie" FOLDED="true" ID="ID_181276417" CREATED="1291150833657" MODIFIED="1293375089581">
-<node TEXT=".txt" ID="ID_1203167887" CREATED="1291150871471" MODIFIED="1293375089577"/>
-</node>
-<node TEXT="MSProject v.a. 2003" STYLE_REF="Functie" ID="ID_1826512808" CREATED="1291150942961" MODIFIED="1293375089574"/>
-<node TEXT="Mediawiki" STYLE_REF="Functie" ID="ID_29611523" CREATED="1291150998411" MODIFIED="1293375089570"/>
-<node TEXT="oowriter" STYLE_REF="Functie" ID="ID_564936554" CREATED="1291151075296" MODIFIED="1293375089566"/>
-<node TEXT="opml" STYLE_REF="Functie" ID="ID_1105385128" CREATED="1291151082214" MODIFIED="1293375089563"/>
-<node TEXT="TXT, Text" STYLE_REF="Functie" ID="ID_1329875977" CREATED="1291151136931" MODIFIED="1293375089559"/>
-<node TEXT="MSWord v.a. 2003" STYLE_REF="Functie" ID="ID_1295860986" CREATED="1291151192896" MODIFIED="1293375089555"/>
-<node TEXT="XBEL" STYLE_REF="Functie" ID="ID_1565338345" CREATED="1291151441925" MODIFIED="1293375089552"/>
-<node TEXT="Excel v.a. 2003" STYLE_REF="Functie" ID="ID_687855377" CREATED="1291151447502" MODIFIED="1293375089548"/>
-<node STYLE_REF="Functie" FOLDED="true" ID="ID_582284796" CREATED="1266417516140" MODIFIED="1293375089544">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Met gebruik van&#160;&#160;XSLT...
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_941718371" CREATED="1266421346171" MODIFIED="1293375089539">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Verandert de hele mindmap naar een ander formaat met behulp van een XSLT script. Freeplane bevat verschillende scripts, of een eigen script kan worden gekozen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="PDF, Portable Document Format" STYLE_REF="Functie" FOLDED="true" ID="ID_603087610" CREATED="1266417575078" MODIFIED="1293375089535">
-<node ID="ID_933700649" CREATED="1266421400031" MODIFIED="1293375089531">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Exporteert hele mindmap naar plaatje in PDF formaat.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="SVG, Scalable Vector Graphics" STYLE_REF="Functie" FOLDED="true" ID="ID_1337380062" CREATED="1266417578453" MODIFIED="1293375089527">
-<node ID="ID_1966739643" CREATED="1266421400031" MODIFIED="1293375089522">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Exporteert hele mindmap naar plaatje in Scalable Vector Graphics formaat.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-</node>
-<node TEXT="Importeren" FOLDED="true" ID="ID_1330799923" CREATED="1266240793484" MODIFIED="1293375089518" COLOR="#663300">
-<node TEXT="Importeren volledige tak" STYLE_REF="Functie" ID="ID_148627051" CREATED="1266417591406" MODIFIED="1293375089515"/>
-<node TEXT="Importeren gekoppelde tak" STYLE_REF="Functie" ID="ID_282345042" CREATED="1266417599062" MODIFIED="1293375089511"/>
-<node TEXT="Importeren gekoppelde tak zonder basisknoop" STYLE_REF="Functie" ID="ID_1230060690" CREATED="1266417606156" MODIFIED="1293375089507"/>
-<node TEXT="Importeren Explorer-favorieten..." STYLE_REF="Functie" FOLDED="true" ID="ID_1416306563" CREATED="1266417657421" MODIFIED="1293375089504">
-<node ID="ID_905236318" CREATED="1289030770398" MODIFIED="1293375089500">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Open een venster waarin je de naam kunt opgeven waarin de favorieten staan, meestal <i>Favorites</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Importeren mappennstructuur..." STYLE_REF="Functie" ID="ID_379387162" CREATED="1266417664671" MODIFIED="1293375089496"/>
-<node TEXT="MindManager X5 Map..." STYLE_REF="Functie" FOLDED="true" ID="ID_1880120674" CREATED="1266417677171" MODIFIED="1293375089492">
-<node TEXT="Zonder afbeeldingen, pictorammen, notities" ID="ID_1521028791" CREATED="1289571895986" MODIFIED="1293375089488"/>
-</node>
-</node>
-<node TEXT="Paginainstellingen..." FOLDED="true" ID="ID_1523958734" CREATED="1266240796750" MODIFIED="1293375089485" COLOR="#663300">
-<node FOLDED="true" ID="ID_1308065378" CREATED="1266589198351" MODIFIED="1293375089481">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Toont dialoogvenster waarin je de opmaak voor het printen van een mindmap kunt opgeven.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Op &#xe9;&#xe9;n pagina laten passen" FOLDED="true" ID="ID_1082297284" CREATED="1266589266101" MODIFIED="1293375089477">
-<node TEXT="The entire map is condensed to one page. Depending on the size of the map, this may render the typeface too small to be readable." ID="ID_1227191221" CREATED="1266589345054" MODIFIED="1293375089472"/>
-</node>
-<node TEXT="De breedte laten passen" FOLDED="true" ID="ID_391643877" CREATED="1266589271773" MODIFIED="1293375089469">
-<node TEXT="The map is forced to fit the width of the page, but may take up multiple pages depending on the size of the map. Results may vary based on choosing Portrait or Landscape orientation for printing." ID="ID_229263259" CREATED="1266589371038" MODIFIED="1293375089464"/>
-</node>
-<node TEXT="De hoogte laten passen" FOLDED="true" ID="ID_856275779" CREATED="1266589276632" MODIFIED="1293375089460">
-<node TEXT="The map is forced to fit the height of the page, but may take up multiple pages depnding on the size of the map. Results may vary based on choosing Portrait or Landscape orientation for printing." ID="ID_1459808702" CREATED="1266589452820" MODIFIED="1293375089456"/>
-</node>
-<node TEXT="Door gebruiker gedefinieerde schaal" FOLDED="true" ID="ID_596311317" CREATED="1266589282757" MODIFIED="1293375089452">
-<node TEXT="Allows access to Print Zoom Factor where a magnification factor of 0.0 to 2.0 may be entered. This applies to width and height proportionally." ID="ID_1412137783" CREATED="1266589576273" MODIFIED="1293375089448"/>
-</node>
-</node>
-</node>
-<node TEXT="Afdrukken..." FOLDED="true" ID="ID_886137869" CREATED="1266240808359" MODIFIED="1293375089444" COLOR="#663300">
-<node ID="ID_1728241471" CREATED="1266589832304" MODIFIED="1293375089440">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent een dialoogvenster voor de printer waarop de mindmap wordt geprint.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Afdrukvoorbeeld..." FOLDED="true" ID="ID_1525496577" CREATED="1266240810218" MODIFIED="1293375089436" COLOR="#663300">
-<node ID="ID_668692516" CREATED="1266589877804" MODIFIED="1293375089431">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Toont een beeld van hoe de afgedrukte mindmap er uit zal zien gegeven de paginainstelling. ZIE OOK: <i>Paginainstelling...</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Afsluiten" FOLDED="true" ID="ID_1178244373" CREATED="1266240815812" MODIFIED="1293375089427" COLOR="#663300">
-<node TEXT="Sluit alle open mindmaps en verlaat Freeplane." ID="ID_1940308908" CREATED="1266589936070" MODIFIED="1293375089422"/>
-</node>
-</node>
-<node TEXT="Bewerken" FOLDED="true" ID="ID_1125565961" CREATED="1266240582250" MODIFIED="1293375089418" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Ongedaan maken" FOLDED="true" ID="ID_397188011" CREATED="1266244578015" MODIFIED="1293375089414" COLOR="#663300">
-<node ID="ID_115741308" CREATED="1266590364632" MODIFIED="1293375089407">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Herstelt eerdere veranderingen. Het aantal veranderacties dat Freeplane bewaart en kan hersellen, kan worden ingesteld:
-    </p>
-    <p>
-      - kies <i>Extra &gt; Instellingen &gt;Gedrag &gt; Ongedaan maken.</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Opnieuw" FOLDED="true" ID="ID_1785757061" CREATED="1266244580515" MODIFIED="1293375089403" COLOR="#663300">
-<node ID="ID_1969474606" CREATED="1266590551429" MODIFIED="1293375089399">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Herstelt het ongedaan maken. Alleen de laatste herstelaktie kan opnieuw worden gedaan.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Selecteren van het zichtare" FOLDED="true" ID="ID_1753527006" CREATED="1266244598296" MODIFIED="1293375089395" COLOR="#663300">
-<node TEXT="Selekteert alle knopen die zichbaar zijn op de mindmap  (niet ingevouwen knopen)." ID="ID_236802992" CREATED="1266590817413" MODIFIED="1293375089391"/>
-</node>
-<node TEXT="Selecteren zichtbare tak" FOLDED="true" ID="ID_989256344" CREATED="1266244616625" MODIFIED="1303928815674" COLOR="#663300">
-<node TEXT="Selekteer alle zichtbare (niet-ingevouwen) knopen van de geselekteerde knoop." ID="ID_108766240" CREATED="1266590829788" MODIFIED="1293375089383"/>
-</node>
-<node TEXT="Knippen" FOLDED="true" ID="ID_1547909248" CREATED="1266590937117" MODIFIED="1293375089379" COLOR="#663300">
-<node TEXT="Knip de geselekteerde knoop en zijn kinderen." ID="ID_1572752848" CREATED="1266591004710" MODIFIED="1293375089375"/>
-</node>
-<node TEXT="Kopi&#xeb;ren" FOLDED="true" ID="ID_332933439" CREATED="1266590939085" MODIFIED="1294258544637" COLOR="#663300">
-<node TEXT="Kopieert de geselecteerde knoop en zijn takken (kinderen)." ID="ID_1573135167" CREATED="1266590985179" MODIFIED="1293375089367"/>
-</node>
-<node FOLDED="true" ID="ID_1364929345" CREATED="1266244631343" MODIFIED="1293375089363" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Kopi&#235;ren zonder zijtakken
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Kopieert de geselecteerde knoop zonder eventuele zijtakken (kinderen)." ID="ID_650015020" CREATED="1266590952929" MODIFIED="1293375089360"/>
-</node>
-<node FOLDED="true" ID="ID_1869214768" CREATED="1271858743646" MODIFIED="1293375089356" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Kopi&#235;ren Knoop-ID
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_632336245" CREATED="1271858753032" MODIFIED="1293375089350">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Voegt de interne knoop ID van de geselecteerde knoop toe aan het Clipboard. Deze functie is overbodig geworden&#160;&#160;door de functie Invoegen &gt; Snelkoppeling tussn knopen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_467014784" CREATED="1266244638171" MODIFIED="1293375089347" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Plakken
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_1342653637" CREATED="1266259465359" MODIFIED="1293375089341">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Plakt gekopieerde tekst. Als de geselecteerde knoop zich in bewerkingsmodus bevindt, dan wordt de tekst toegevoegd aan de tekst in het venster. Als geselecteerde knoop zich niet in bewerkingsmodus bevindt, dan wordt een kindknoop toegevoegd met de tekst.&#160;
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_1620549706" CREATED="1266244640640" MODIFIED="1293375089337" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Plakken als...
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_1103428080" CREATED="1266259396750" MODIFIED="1293375089331">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Plakt gekopieerde tekst nadat een dialoogvenster is geopend met als plakopties:<i>&#160;Knoophi&#235;rarchie</i>, <i>HTML als knoop hi&#235;rarchie</i>, <i>HTML als enkele knoop</i>, of <i>Platte tekst als knoophi&#235;rarchie</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_747315143" CREATED="1266247041171" MODIFIED="1293375089269" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Zoeken...
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_950373222" CREATED="1266591234523" MODIFIED="1293375089265">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent het dialoogvenster voor zoeken. ZIE OOK: <i>Zoek Volgende</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_1438958017" CREATED="1266247047984" MODIFIED="1293375089261" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Volgende zoeken
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_965661386" CREATED="1266591249913" MODIFIED="1293375089257">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Zoekt de volgende instantie van de tekst die in het zoekveld is ingegeven. ZIE OK: <i>Zoeken...</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Zoeken en vervangen in alle mindmaps." FOLDED="true" ID="ID_100634645" CREATED="1266247064718" MODIFIED="1293375089243" COLOR="#663300">
-<node ID="ID_264652060" CREATED="1266591545695" MODIFIED="1293375089237">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Zelfde als<i>&#160;Zoeken en vervangen</i>... maar toegepast op alle open Mindamaps. ZIE OOK: <i>Zoeken en vervangen...</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_766990235" CREATED="1266247058828" MODIFIED="1293375089253" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Zoeken en vervangen...
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_1764212651" CREATED="1266591330538" MODIFIED="1293375089247">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent een dialoogvenster met een lijst van alle knopen in de mindmap. Als in het zoekveld een zoekterm wordt ingevoerd dan toont de lijst alleen de knopen die de zoekterm bevatten. Als het zoekwoord dat in het<i>&#160;zoekveld</i>&#160;is ingevuld voorkomt, dan kan dit worden vervangen door het woord dat in het <i>vervangveld&#160;</i>is ingevuld, of kan worden verdergezocht naar het volgende voorkomen van dit woord. ZIE OOK: <i>Zoek en vervang in alle Mindmaps.</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Rest" FOLDED="true" ID="ID_1019603825" CREATED="1303928856474" MODIFIED="1303928863651">
-<node TEXT="Bewerken tekstextenties" FOLDED="true" ID="ID_1069007155" CREATED="1298574156892" MODIFIED="1298581236801" COLOR="#663300">
-<node TEXT="Bewerken LaTeX..." ID="ID_1637294677" CREATED="1298574227302" MODIFIED="1298574297768" COLOR="#663300">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-</node>
-</node>
-<node TEXT="Verwijderen tekstextenties" ID="ID_602736920" CREATED="1298574611663" MODIFIED="1298581337671" COLOR="#663300"/>
-</node>
-</node>
-<node FOLDED="true" ID="ID_389115947" CREATED="1266240584812" MODIFIED="1293375089234" COLOR="#407000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Beeld
-    </p>
-  </body>
-</html></richcontent>
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Werkbalken" FOLDED="true" ID="ID_1963983857" CREATED="1303929006438" MODIFIED="1303929017499">
-<node TEXT="Tonen hoofdmenu" FOLDED="true" ID="ID_926021846" CREATED="1266247097703" MODIFIED="1293375089230" COLOR="#663300">
-<node ID="ID_641371847" CREATED="1266591746476" MODIFIED="1293375089226">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Wisselt tussen wel/niet tonen van hoofdmenu.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Tonen werkmenu" FOLDED="true" ID="ID_1777795790" CREATED="1288423137527" MODIFIED="1293375089222" COLOR="#663300">
-<node TEXT="Wisslet tussen wel/niet tonen Werkmenu." ID="ID_973346128" CREATED="1290716943164" MODIFIED="1293375089219"/>
-</node>
-<node TEXT="Tonen filtermenu" FOLDED="true" ID="ID_850553052" CREATED="1288423176425" MODIFIED="1293375089215" COLOR="#663300">
-<node TEXT="Wisselt tussen wel/niet tonen Filtermenu." ID="ID_1243815639" CREATED="1290716970424" MODIFIED="1293375089212"/>
-</node>
-<node TEXT="Tonen functietoetsen" FOLDED="true" ID="ID_664958295" CREATED="1266247102156" MODIFIED="1293375089208" COLOR="#663300">
-<node ID="ID_646554422" CREATED="1266591755992" MODIFIED="1293375089204">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Wisselt tussen wel/niet tonen Functietoetsen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Tonen pictogrammenbalk" FOLDED="true" ID="ID_1263742214" CREATED="1266247112156" MODIFIED="1293375089201" COLOR="#663300">
-<node ID="ID_106976439" CREATED="1266593121570" MODIFIED="1293375089197">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Wisselt tussen wel/niet tonen menu met pictogrammen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-</node>
-<node TEXT="Tonen volledig scherm" FOLDED="true" ID="ID_1560330236" CREATED="1266247120765" MODIFIED="1293375089193" COLOR="#663300">
-<node ID="ID_1467881326" CREATED="1266247143359" MODIFIED="1293375089187" COLOR="#000000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Verbergt ALLE menubalken (behalve de filterbalk). De enige manier om de balken weer te tonen is om met de rechter muisknop op een vrij punt van het scherm te klikken en opnieuw <i>Volledig Scherm</i>&#160;&#160;te kiezen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Tonen opmaakpaneel" FOLDED="true" ID="ID_1783882978" CREATED="1291154608643" MODIFIED="1293375089184" COLOR="#663300">
-<node TEXT="Toont/verbergt een venster waarin alle vormelementen van een knoop worden getoond en in &#xe9;&#xe9;n keer kunnen worden bewerkt." ID="ID_1802564803" CREATED="1291154670380" MODIFIED="1293375089179"/>
-</node>
-<node TEXT="Displaystatus ?" ID="ID_183960920" CREATED="1303929119304" MODIFIED="1303929131239"/>
-<node TEXT="Verbergen bijlage, attributen en notitie" FOLDED="true" ID="ID_787093188" CREATED="1291155413971" MODIFIED="1293375089175" COLOR="#663300">
-<node TEXT="Voor zover deze bestaan worden bijlage, attributen en notitie van/bij de geselecteerde knoop verborgen.&#xa;Tevens wordt de tekst van de basisknoop beperkt to een of enkele woorden. Verborgen teksten worden zichtbaar door de cursor boven de knoop te plaatsen en/of op het &quot;verticale&quot; driehoekje te kilkken waarmee bijlage en notitie kunnen woren open/dichtgeklapt." ID="ID_1977628080" CREATED="1291664153292" MODIFIED="1293375089171"/>
-</node>
-<node TEXT="Tonen bijlage" FOLDED="true" ID="ID_734978433" CREATED="1291155323140" MODIFIED="1298472141071" COLOR="#663300">
-<node TEXT="Wisselt tussen opnen/sluiten van het bijlagevenster onder een knoop. Alternatief: klik op het verticale pijltje in de knoop." ID="ID_1006458466" CREATED="1291616743871" MODIFIED="1293375089162"/>
-</node>
-<node TEXT="Tonen rechthoekig selectiekader" FOLDED="true" ID="ID_1851007191" CREATED="1266247206859" MODIFIED="1303929165512" COLOR="#663300">
-<node ID="ID_683878435" CREATED="1266593143132" MODIFIED="1293375089152">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Wisselt tussen het wel/niet markeren van de gelecteerde knoop met een <i>Rechthoekig selectiekader,</i>&#160;een rechthoek met afgeronde hoeken rond het tekstvenster. Bij niet-<i>Rechthoekig selectiekader</i>&#160;&#160;heeft de geselecteerde knoop een grijze achtergrondkleur. ZIE OOK: <i>Extra &gt; Instellingen &gt; Voorkomen &gt; Selectiekleuren.</i>
-    </p>
-  </body>
-</html></richcontent>
-<font ITALIC="false"/>
-</node>
-</node>
-<node TEXT="Tonen overzichtsweergave" FOLDED="true" ID="ID_519734292" CREATED="1266247214640" MODIFIED="1303929181970" COLOR="#663300">
-<node ID="ID_1390220676" CREATED="1266593482726" MODIFIED="1293375089142">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Wisselt de verschijningsvorm van de mindmap tussen lijstvorm, en mindmapvorm. De afstand tussen de knopen kan worden bepaald in <i>Instellingen</i>. Bij de lijstvorm kan soms meer informatie worden getoond dan bij de mindmapvorm.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Maximum knoopbreedte instellen" FOLDED="true" ID="ID_826769128" CREATED="1288558613969" MODIFIED="1293375089139" COLOR="#663300">
-<node TEXT="De knoopbreedte wordt opgegeven in pixels. Standaard is 600 pixels. De opgegeven waarde geldt voor alle knopen. Handmatig kan de knoopbreedte worden beperkt door  tekstregels met &lt;Enter&gt; en &lt;Shift&gt;+&lt;Enter&gt; in te korten." ID="ID_1980804186" CREATED="1290717780134" MODIFIED="1293375089134"/>
-</node>
-<node TEXT="Geselecteerde knoop centreren" FOLDED="true" ID="ID_1011127671" CREATED="1266249670203" MODIFIED="1293375089131" COLOR="#663300">
-<node TEXT="Plaats de geselekteerde knop midden op het scherm." ID="ID_29730008" CREATED="1266593526070" MODIFIED="1293375089127"/>
-<node TEXT="Stel maximum breedte van een knoop in" FOLDED="true" ID="ID_1050573960" CREATED="1266247228437" MODIFIED="1293375089123" COLOR="#663300">
-<node ID="ID_1703616593" CREATED="1266247266625" MODIFIED="1293375089117" COLOR="#000000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Bepaal voor alle knopen de maximum breedte van de knopen in pixels.Standaard is 600 pixels. Om voor &#233;&#233;n knoop de grootte te beperken, gebruik<i>&#160;Shift + Enter</i>&#160;om voor iedre regel de lijnlengte te beperken<i>.</i><br/>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-</node>
-<node TEXT="Inzoomen" FOLDED="true" ID="ID_252844632" CREATED="1266249677718" MODIFIED="1293375089113" COLOR="#663300">
-<node ID="ID_1948649905" CREATED="1266593563226" MODIFIED="1293375089110">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Maakt de letters en de afstanden tussen de knopen groter; er past minder op het scherm
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Uitzoomen" FOLDED="true" ID="ID_282663652" CREATED="1266249681343" MODIFIED="1293375089106" COLOR="#663300">
-<node ID="ID_426386698" CREATED="1266593563226" MODIFIED="1293375089102">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Maakt de letters en de afstand tussen knopen kleiner; er past meer op het scherm.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Maak passend op de pagina" FOLDED="true" ID="ID_1360497080" CREATED="1266249692203" MODIFIED="1303929210175" COLOR="#663300">
-<node ID="ID_313804071" CREATED="1266593683835" MODIFIED="1293375089095">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Pas de letters en de afstand tussen knopen zo aan dat de hele mindmap op het scherm past.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Tonen notitiehulpvenster" FOLDED="true" ID="ID_1073686439" CREATED="1266249699921" MODIFIED="1303929239971" COLOR="#663300">
-<node ID="ID_716526560" CREATED="1266593745976" MODIFIED="1293375089087">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Wisselt tussen wel/niet tonen Notitievenster.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Positie notitiehulpvenster" FOLDED="true" ID="ID_1996327153" CREATED="1266249705546" MODIFIED="1293375089084" COLOR="#663300">
-<node ID="ID_1805488178" CREATED="1266593827585" MODIFIED="1293375089080">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Bepaalt de positie van het Notitievenster. Opties zijn: Boven, Links, Rechts en Onder.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Tonen notities bij knopen" FOLDED="true" ID="ID_389897702" CREATED="1291155591515" MODIFIED="1293375089076" COLOR="#663300">
-<node TEXT="Wisselt tussen wel/niet tonen van een aanwezige notitie bij de knoop waar deze bij hoort. Zie ook: Notitiehulpvenster." ID="ID_561965363" CREATED="1292657156974" MODIFIED="1293375089071"/>
-</node>
-<node TEXT="Tonen attributen" FOLDED="true" ID="ID_353026241" CREATED="1266249735046" MODIFIED="1303929264291" COLOR="#663300">
-<node ID="ID_1065342219" CREATED="1266593893960" MODIFIED="1293375089059">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Bepaalt hoe de attributen van een&#160;&#160;knoop worden getoond. Opties zijn:<i>Toon alle attributen, Verberg geselekteerde attributren</i>&#160;en <i>Verberg alle attributen.&#160;</i>ZIE OOK:&#160;<i>Extra &gt; Attributen beheren</i>, <i>Bewerken &gt; Bewerk Attributen</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Tonen tooltips voor knopen" ID="ID_1080042379" CREATED="1303929283533" MODIFIED="1303929296186"/>
-<node TEXT="Markeer formules niet met een rand" ID="ID_1847984972" CREATED="1303929296863" MODIFIED="1303929325568"/>
-</node>
-<node TEXT="Knoop" FOLDED="true" ID="ID_1435472587" CREATED="1303928254072" MODIFIED="1305290058020" TEXT_SHORTENED="true">
+<node TEXT="Convert link from within text [Activate hyperlink in text]" ID="ID_1049705529" CREATED="1266247483750" MODIFIED="1315727614596" TEXT_SHORTENED="true">
+<icon BUILTIN="../ExtractLinkFromTextAction"/>
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -4659,197 +3984,113 @@
   </head>
   <body>
     <p>
-      Een knoop is een plaats waar informatie kan worden geraadpleegd. Een knoop heeft op het beeldscherm een binnengebied en een buitengebied. In het binnengebied kunnen een <b>basistekst</b>, <b>pictogram</b>, <b>snelkoppeling</b>, <b>hyperlink</b>&#160;en een <b>afbeelding</b>&#160;(met vaste grootte) worden getoond. Het binnengebied kan verder zichtbaar worden worden gemaakt door deze te omlijnen. Het buitengebied bevindt zich onder het binnengebied. In het buitengebied kan een <b>bijlagetekst</b>, <b>notitietekst</b>, <b>attributenlijst</b>, en schaalbare <b>afbeelding</b>&#160;worden getoond. Deze informatiekan naar keuze worden <b>verborgen</b>&#160;en alleen&#160;&#160;getoond als de knoop is geselecteerd.
+      Converts a text address (URL as http://www.google.com/) in the basic text of the selected node to a click-able hyperlink.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+</node>
+<node TEXT="Add local hyperlink" ID="ID_271903009" CREATED="1266251024562" MODIFIED="1314563618992" TEXT_SHORTENED="true">
+<icon BUILTIN="../LinkLocal"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Creates a link between two nodes in the current map. The two nodes must be selected before this command is invoked: The first selected node is the target of the link, which is added to the second node, and represented there as a small green arrow. </span></font>
+    </p>
+    <p>
+      
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+</node>
+<node TEXT="Add hyperlink to menu item [Hyperlink (Menu entry)... ]" FOLDED="true" ID="ID_1477740287" CREATED="1291192827927" MODIFIED="1315727642567" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens a dialog to choose a menu option to which a hyperlink will be added in the selected node.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+<node TEXT="Example start script" ID="ID_1605161172" CREATED="1312826014105" MODIFIED="1312919887785" LINK="#ID_840644558" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Press red arrow to see an example in which this link is used to start a script.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+</hook>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+</node>
+<node TEXT="" STYLE_REF="Aggregatie als Toelichting" ID="ID_557988874" CREATED="1305558188109" MODIFIED="1312919875648" TEXT_SHORTENED="true">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<node TEXT="Hyperlink" ID="Freeplane_Link_203858515" CREATED="1270892460675" MODIFIED="1311402835642" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      A hyperlink is an electronic connection from a source node to a destination object. The destination can be a directory, file, web page, application, e-mail etc. The connection is click-able and appears as a red arrow (external hyperlink) or green arrow (internal hyperlink).
     </p>
     <p>
       
     </p>
     <p>
-      Een nieuwe mindmap opent met &#233;&#233;n knoop, de <b>basisknoop</b>. Hieraan kunnen via <b>takken</b>&#160;kindknopen worden gekoppeld. Aan kindknopen kunnen kleinkindknopen worden gekoppeld, enz. Takken geven een hierarchische, ouder-kind relatie.aan. Een knoop kan daarnaast door een <b>verbindingslijn</b>&#160;&#160;met een willekeurige andere knoop worden verbonden. Via een accolade kan een selectie van knopen worden verbonden met een <b>aggregatieknoop</b>. Knopen kunnen visueel worden verbonden binnen een <b>wolk</b>. Een koop kan een taartpunt (%shijf) tonen en kan worden voorzien van een automatische nummering.
+      A hyperlink can be contained in
     </p>
-  </body>
-</html>
-</richcontent>
-<node FOLDED="true" ID="ID_1509185966" CREATED="1266249870703" MODIFIED="1293375089019" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
+    <ul>
+      <li>
+        the basic node text and
+      </li>
+      <li>
+        attribute values.
+      </li>
+    </ul>
     <p>
-      Nieuwe ouderknoop (niveau hoger)
+      A hyperlink can be added by drag and drop or menu selection.
     </p>
   </body>
 </html></richcontent>
-<node ID="ID_1420919206" CREATED="1266257910906" MODIFIED="1293375089015">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Maakt een nieuwe knoop tussen de huidige knoop en zijn ouderknoop.
-    </p>
-  </body>
-</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
 </node>
-</node>
-<node FOLDED="true" ID="ID_942355748" CREATED="1266249828031" MODIFIED="1293375089051" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Nieuwe kindknoop (niveau lager)
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_1856786037" CREATED="1266257552140" MODIFIED="1293375089045">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Maakt een nieuwe knoop naast de geselekteerde knoop (een kindknoop). Het indrukken van de <i>Ins</i>&#160;toets heeft hetzelfde effect.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Nieuwe knoop onder de huidige" FOLDED="true" ID="ID_1544212529" CREATED="1266249835578" MODIFIED="1293375089041" COLOR="#663300">
-<node ID="ID_21068791" CREATED="1266257617421" MODIFIED="1293375089035">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Maakt een nieuwe knoop onder de knoop die is geselecteerd (op hetzelfde hi&#235;rarchische &#160;nivo).&#160;&#160;De <i>Enter</i>&#160;&#160;toets heeft hetzelfde effect.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Nieuwe knoop boven huidige" FOLDED="true" ID="ID_852536639" CREATED="1266249852093" MODIFIED="1293375089029" COLOR="#663300">
-<node ID="ID_1221171970" CREATED="1266257617421" MODIFIED="1293375089023">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Maakt een nieuwe knoop boven de knoop die geselecteerd is (op hetzelfde hi&#235;rarchische nivo). De toetscombinatie&#160;&#160;<i>Shift + Enter</i>&#160;&#160;heeft hetzelfde effect.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Nieuwe summary knoop" ID="ID_322077643" CREATED="1303929629986" MODIFIED="1303929647568"/>
-<node TEXT="Verwijderen knoop" FOLDED="true" ID="ID_1954594298" CREATED="1266247035265" MODIFIED="1293375089276" COLOR="#663300">
-<node ID="ID_1394618550" CREATED="1266591179132" MODIFIED="1293375089272">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Verwijdert de knoop en zijn kinderen. ZIE OOK: <i>Ongedaan maken</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Samenvoegen knopen" FOLDED="true" ID="ID_1720469761" CREATED="1266247462656" MODIFIED="1293375088268" COLOR="#663300">
-<node ID="ID_351515654" CREATED="1267747213492" MODIFIED="1293375088264">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Voegt twee knopen samen, maar alleen als beide geen kindknopen hebben.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Knoop splitsen" FOLDED="true" ID="ID_1796564424" CREATED="1266247473250" MODIFIED="1293375088260" COLOR="#663300" BACKGROUND_COLOR="#ffffff">
-<node ID="ID_1642976344" CREATED="1266248295484" MODIFIED="1293375088254" COLOR="#000000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Verdeelt de tekst van een knoop over twee knopen op het punt waar een nieuwe regel begint welke is gemaakt met <i>Shift + Enter</i>&#160;(bij Eenvoudige tekstompaak)&#160;of &lt;Enter&gt; bij Uitgebreide tekstopmaak. Bij HTML-knopen kan de opdracht herhaaldelijk voor elk genest niveau worden toegepast. Het contextmenu voor uitgebreide tekstopmaak bevat een knop Splitsen. Hiermee wordt het punt waar de cursor staat gebruikt om te splitsen.<br/>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Snelbewerken basistekst" FOLDED="true" ID="ID_1162372089" CREATED="1266247401765" MODIFIED="1298476773512" COLOR="#663300">
-<node ID="ID_500343761" CREATED="1266259247359" MODIFIED="1293375089321">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Brengt de geselekteerde knoop in bewerkingsmodus voor <i>Eenvoudige opmaak</i>. In <i>Eenvoudige opmaak </i>hebben alle letters dezelfde opmaak.&#160;&#160;Als de knoop de laatste knoop is van een tak, dan brengt ook het klikken met de linker muisknop de knoop in bewerkingsmodus. Bij andere knopen zorgt linksklikken voor het open/dichtvouwen van de knoop.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Bewerken basistekst" FOLDED="true" ID="ID_1542197841" CREATED="1266244681296" MODIFIED="1298574155090" COLOR="#663300">
-<node ID="ID_669267737" CREATED="1266248543843" MODIFIED="1293375089310" COLOR="#000000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent een dialoogvenster met uitgebreide bewerkingsmogelijkheden, waarbij alle letters een andere opmaak kunnen hebben. Nadat een knoop een keer als<i>&#160;Bewerken Uitgebreide opmaak</i>&#160;is geopend, opent het altijd op deze wijze, tenzij <i>Opmaak &gt; Gebruiken Eenvoudigre opmaak</i>&#160;(die alle eerdere bewerkingen verwijdert) wordt gekozen. ZIE OOK: <i>Bewerken knoop.</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Uitgebreide tekstopmaak (RTF)" FOLDED="true" ID="ID_601879583" CREATED="1266251602796" MODIFIED="1303930085967" COLOR="#663300">
-<node TEXT="Stelt alle geselecteerde knopen in op Uitgebreide tekstopmaak (Rich Text Format)." ID="ID_1427224313" CREATED="1266256310578" MODIFIED="1293375088886"/>
-</node>
-<node TEXT="Platte tekstopmaak" FOLDED="true" ID="ID_421682408" CREATED="1266251609187" MODIFIED="1293375088881" COLOR="#663300">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_1473717210" CREATED="1266256336093" MODIFIED="1293375088863">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Alleen voor geautomatisseerde verwerking; bedoeld voor systemen die geen HTML kennen. Maakt van alle tekst in geselecteerde knopen &quot;platte tekst&quot; zonder HTML code. Dit maakt het effect van <i>Opmaak &gt; Uitgebreide tekstopmaak (RTF)..</i>. ongedaan.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-</node>
-<node TEXT="Knoopkenmerk" FOLDED="true" ID="ID_1929697075" CREATED="1303928282470" MODIFIED="1304432729415">
-<node TEXT="Notitie" FOLDED="true" ID="ID_1365598976" CREATED="1303930145801" MODIFIED="1304442669079" TEXT_SHORTENED="true">
+<node TEXT="Hyperlink(s) by drag and drop" ID="ID_640110372" CREATED="1286651969385" MODIFIED="1311402835673" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -4857,12 +4098,64 @@
   </head>
   <body>
     <p>
-      Onder de bijlagetekst kan een tweede externe tekst worden getoond. Deze tekst kan naar keuze in een separaat, schermbreed venster worden getoond. Hierdoor is de notitietekst geschikt om bijvoorbeeld refertes te bevatten. De notitietekst wordt ook gebruikt in het venster waarin de activiteiten van de Agenda worden getoond.
+      The easiest way to add a hyperlink or group of hyperlinks to external objects is by drag and drop.
+    </p>
+    <p>
+      Dropping a copy of a directory, file, file address or webaddress will generate a child node of the selected node which contains a hyperlink to the address of it.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Dropping a group of hyperlinks will genareate a group of child nodes, each containing one of the hyperlinks.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      The text of the respective nodes will initially be the address of the hyperlink. This text may be removed, edited or replaced. This will not change the hyperlink itself (red arrow). To edit the hyperlink itself, select <i>Node features &gt; Links &gt; Hyperlink (Text Field)...</i>&#160;and edit the address.
     </p>
   </body>
 </html></richcontent>
-<node TEXT="Bewerken notitie" ID="ID_924676619" CREATED="1266255695750" MODIFIED="1304441466520" COLOR="#663300" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<attribute_layout NAME_WIDTH="82" VALUE_WIDTH="161"/>
+<attribute NAME="Chapter" VALUE="3"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Email link" ID="ID_869144882" CREATED="1270892460675" MODIFIED="1311402835688" LINK="mailto:%20jokro@freeplane.nl" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The simplest way to make an e-mail link is to copy and paste its address into a selected node. This will generate a<b>&#160;child node</b>&#160;of the selected node with the link. The text of the child node will consist of the e-mail address. You may replace this by e.g. only the name.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      If you want to add the e-mail link to a particular node (and not to its newly generated child), select <i>Node features &gt; Links &gt; Hyperlink (Text Field)...</i>&#160;and enter:
+    </p>
+    <ul>
+      <li>
+        <i>mailto:emailaddress</i>, e.g. mailto:jokro@freeplane.nl
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+</node>
+<node TEXT="Remove hyperlink or e-mail" ID="ID_1464441556" CREATED="1310047903960" MODIFIED="1311402835688" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -4870,48 +4163,34 @@
   </head>
   <body>
     <p>
-      Wisselt de focus tussen mindmap en en Notitievenster.
+      To remove a hyperlink or e-mail address:
     </p>
-    <p>
-      Als een knoop wordt bewerkt dan wordt dit bewerkingsvenster gesloten.
-    </p>
-    <p>
-      Het notitievenster wordt geopend indien dit nog niet open was.Het omgekeerde gebeurt niet: als de focus van het Notitievenster naar de mindmap gaat: dan blijft het notitievenster open.
-    </p>
-    <p>
-      Om het notietivenster te openen en te sluiten: zie <i>BEELD &gt; Notitievenster.</i>
-    </p>
+    <ul>
+      <li>
+        select <i>Hyperlink (Text Field)... </i>or press<i>&#160;Ctrl + K; </i>and
+      </li>
+      <li>
+        delete the text in the text field ( the address)
+      </li>
+    </ul>
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Verwijderen notitie" ID="ID_142539324" CREATED="1266247870640" MODIFIED="1304441905264" COLOR="#663300" BACKGROUND_COLOR="#ffffff" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Toont dialoogvenster voor het verwijderen van de notities van de geselecteerde knopen.
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Hyperlinks relative" ID="ID_1942965129" CREATED="1311925599759" MODIFIED="1311925653580" LINK="#ID_1309284534">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Bewerken notitiehulpvenster" ID="ID_221910481" CREATED="1298574467254" MODIFIED="1304442408784" COLOR="#663300" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Opent een schermbreed hulpvenster waarin de notitietekst wordt getoond en kan worden bewerkt. Dit venster blijft open staan als een andere knoop wordt geselecteerd. Om het venster te sluiten, kies: <i>Beeld &gt; Notitievenster</i>.</span></font>
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Hyperlink in attribute" ID="ID_457929879" CREATED="1312540477537" MODIFIED="1312544796065">
+<attribute_layout NAME_WIDTH="48" VALUE_WIDTH="48"/>
+<attribute NAME="See also" VALUE="#ID_278329781"/>
+<attribute NAME="See also" VALUE="#ID_1279811672"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+</hook>
 </node>
-</node>
-<node TEXT="Bijlage" FOLDED="true" ID="ID_1543644666" CREATED="1303930434451" MODIFIED="1304442826136" TEXT_SHORTENED="true">
+<node TEXT="Link to a node in another map" STYLE_REF="Procedure" ID="ID_199586221" CREATED="1314782923948" MODIFIED="1314783802712" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting:_Example_scripts#Insert_Link_to_a_node_in_another_map" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -4919,11 +4198,63 @@
   </head>
   <body>
     <p>
-      Onder de basistekst kan, in het buitengebied van de knoop een toelichtende tekst&#160;&#160;worden getoond. De gebruiker kan deze tekst oprollen/uitrollen..&#160;&#160;Er kan worden ingesteld dat de bijlagetekst alleen wordt getoond als de knoop is geselecteerd.
+      For the following procedure there exists a script. Clik the hyperlink for this.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      To link a source node SN in a map SM to a target node TN in map TM:
+    </p>
+    <p>
+      1. <strong><u>First, link the source node SN to to the target map TM</u></strong>. For this, go to SN in SM, and execute: Node Features ---&gt; Add hyperlin (choose) ... [here you choose thus the target map TM] - This can also be done with the context menu (right mouse click, etc.) - You can also make this link from the value field of an attribute of the source node SN. For this, you have to create the attribute with the option Edit Attribute (not Add Attribute, because this option, unfortunately, does not allow to make the link in the value field). Then select (or simply hover on) the value field of the attribute. Right click and, in the context menu, select Add hyperlink (choose) ... etc.
+    </p>
+    <p>
+      2. <strong><u>Second, get the identifier of the target node TN</u></strong>. For this, go to TN in TM, and - through Edit (main menu or context menu) click Copy Node ID. You get thus TN's ID in the clipboard.
+    </p>
+    <p>
+      3. <strong><u>Third, add the node identifier of TN to the link made in the first step</u></strong>&#160;(in other words, convert the link to a map into a link to a node). For this, go back to SN (in SM), and execute (through main or context menu): Node features ---&gt; Links ---&gt; Add or modify hyperlink (type). In the pop up menu Input that appears, write (without space) immediately after the .mm the symbol # and paste (without space) the TN's ID that you copied in step 2. Exm.: ...../mytargetmap.mm#ID_123456 Procede similarly in case the hyperlink is in the value field of an attribute.
     </p>
   </body>
 </html></richcontent>
-<node TEXT="Bewerken bijlage" ID="ID_1807308711" CREATED="1291153533418" MODIFIED="1304442945648" COLOR="#663300" TEXT_SHORTENED="true">
+</node>
+<node TEXT="Ctrl-Link" STYLE_REF="ToNote" ID="ID_241324782" CREATED="1315336877701" MODIFIED="1315378098899" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      In Title Content and Note you can define a link to an internal or external goal. First open the text dialog for&#160;&#160;Title, Content or Node. Then type and select the piece of text to which the link applies. And finally select&#160; <i>Hyperlink</i>&#160;from the dialog&#180;s <i>Edit</i>&#160; menu. You can then type the address of the hyperlink. Or you can paste a copied address by pressing Ctr + V.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      The hyperlink is not displayed by a green or red arrow, but by an underlining. If you are still in the editor you can press this hyperlink while keeping Ctrl pressed. This wil open the goal.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        Contrary to the arrow-link, you can have more than one link.
+      </li>
+      <li>
+        This functionality is not developed fully yet. It is not working when the edit window is closed.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Verwijderen knoop [Remove node]" ID="ID_1954594298" CREATED="1266247035265" MODIFIED="1316339829920" TEXT_SHORTENED="true">
+<icon BUILTIN="../editdelete"/>
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -4931,12 +4262,31 @@
   </head>
   <body>
     <p>
-      Opent venster voor het invoeren en opmaken van tekst die onder een knoop getoond wordt als <i>Beeld &gt; Tonen bijlage</i>&#160;is geselecteerd.
+      <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">Deletes the node and all of its children. </span></font>
     </p>
+    <p>
+      
+    </p>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000"><b>See also</b> </span></font>
+    </p>
+    <ul>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">Undo</span></font>
+      </li>
+    </ul>
   </body>
 </html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Verwijderen bijlage" STYLE_REF="Functie" ID="ID_949038869" CREATED="1291201354423" MODIFIED="1304443046808" BACKGROUND_COLOR="#ffffff" TEXT_SHORTENED="true">
+<node TEXT="Node" STYLE_REF="MenuGroupLabel" ID="ID_1306487115" CREATED="1315727827575" MODIFIED="1315727962173">
+<hook NAME="SummaryNode"/>
+</node>
+<node TEXT="Knoopkern [Node core]" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1154882439" CREATED="1315728115638" MODIFIED="1316339848781">
+<node TEXT="Edit core in-line [Edit node ]" ID="ID_1162372089" CREATED="1266247401765" MODIFIED="1315980743280" TEXT_SHORTENED="true">
+<icon BUILTIN="../edit_node"/>
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -4944,13 +4294,68 @@
   </head>
   <body>
     <p>
-      Verwijdert een aanwezige bijlage uit de geselecteerde knoop.
+      <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">Puts a node in Edit Mode. </span></font>Opens an inline editor for fast entering and modifying text. Standard modus when making a new node (<i>Ins</i>) or when double-clicking on the node.
     </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Context menu</b>. To open the context menu, right-click on the text which is being edited. This menu contains:
+    </p>
+    <ul>
+      <li>
+        <b>Cut</b>
+      </li>
+      <li>
+        <b>Copy</b>
+      </li>
+      <li>
+        <b>Paste</b>
+      </li>
+      <li>
+        <b>Spelling</b>: turn spelling check on/of
+      </li>
+      <li>
+        <b>Languages</b>: choose language for spelling checker
+      </li>
+      <li>
+        <b>Format</b>: bold: italic etc.
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>&#160;Node&gt; Edit node in separate Dialog</i>
+      </li>
+      <li>
+        ... for installing your own language
+      </li>
+    </ul>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">&#160;If a node is the last child node, left clicking the node will place it in Edit Mode. Otherwise, a left click will toggle the visibility (folding) of the child nodes</span></font>
+      </li>
+      <li>
+        The text to be shown cannot start with &quot;=&quot;. If it starts with it, it is interpreted as a formula.
+      </li>
+      <li>
+        To insert special symbols such as &#169; , copy and paste it from your favourite text editor.
+      </li>
+    </ul>
   </body>
 </html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1"/>
 </node>
-</node>
-<node TEXT="Attribuut" FOLDED="true" ID="ID_147715298" CREATED="1303930553284" MODIFIED="1304538131765" TEXT_SHORTENED="true">
+<node TEXT="Edit core in dialog [Edit node in separate Dialog]" ID="ID_1542197841" CREATED="1266244681296" MODIFIED="1315980763857" TEXT_SHORTENED="true">
+<icon BUILTIN="../edit_long_node"/>
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -4958,275 +4363,59 @@
   </head>
   <body>
     <p>
-      Een attribuut is een paar van twee naast elkaar gelegen velden. Het linker veld is bedoeld voor de naam van het attribuut en de rechter voor de waarde van het attribuut.&#160;&#160;Een knoop kan onder elkaar meerdere attributen tonen (attributenlijst).
+      Open basic node text in a separate dialog for advanced editing&#177;
+    </p>
+    <ul>
+      <li>
+        Including Alignment and Bulleted/Numbered lists.&#160;
+      </li>
+      <li>
+        Splitting nodes.
+      </li>
+      <li>
+        Editing HTML-code.
+      </li>
+    </ul>
+    <p>
+      <b>Context menu</b>. To open the context menu, click-right in the text area of the dialog.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Node &gt; Edit node </i>for the context menu
+      </li>
+      <li>
+        <i>Languages </i>in the context menu
+      </li>
+    </ul>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        The text to be shown cannot start with &quot;=&quot;. If it starts with it, it is interpreted as a formula.
+      </li>
+      <li>
+        To insert special symbols such as &#169; , copy and paste it from your favourite text editor.
+      </li>
+    </ul>
+    <p>
+      
     </p>
   </body>
 </html></richcontent>
-<node TEXT="Bewerken attribuut" FOLDED="true" ID="ID_984784283" CREATED="1266244687437" MODIFIED="1298476843366" COLOR="#663300">
-<node ID="ID_328241656" CREATED="1266246408843" MODIFIED="1293375089290" COLOR="#000000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent een tabelachtige structuur onder de knoop met een regel met twee kolommen. Er kunnen meer regels worden toegevoegd met de TAB-toets. Alle cellen kunnen worden bewerkt. De <i>pijl-naar-beneden</i>&#160;toont de extra toegevoegde regels. Attributen kunnen allen worden verwijderd met<i>&#160; Toekennen Attributen</i>. OPMERKING: Er zijn meer en betere mogelijkehden door met<i>&#160;Extra &gt; Attributen beheren</i>&#160;attributen te maken en vervolgens waarden te geven met <i>Extra &gt;Bewerken&#160;Attributen.</i>
-    </p>
-  </body>
-</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1"/>
 </node>
-</node>
-<node TEXT="Verwijder eerste attribuut" ID="ID_869406084" CREATED="1303930754909" MODIFIED="1303930766033"/>
-<node TEXT="Verwijder laatste attribuut" ID="ID_412020595" CREATED="1303930767148" MODIFIED="1303930780019"/>
-<node TEXT="Verwijder alle attributen" ID="ID_8268990" CREATED="1303930781149" MODIFIED="1303930791836"/>
-<node TEXT="Kopi&#xeb;ren attributen" STYLE_REF="Functie" FOLDED="true" ID="ID_602133149" CREATED="1294258521065" MODIFIED="1294258649212">
-<node TEXT="Kopieert de attributen van de geselecteerde knoop." ID="ID_1342405727" CREATED="1294258592879" MODIFIED="1294258614579"/>
-</node>
-<node TEXT="Plakken attributen" STYLE_REF="Functie" FOLDED="true" ID="ID_1806982803" CREATED="1294258579299" MODIFIED="1294258651715">
-<node TEXT="Plakt eerder gekopieerde attributen in de geselecteerde knoop." ID="ID_1640472538" CREATED="1294258617410" MODIFIED="1294258643432"/>
-</node>
-<node TEXT="Attribuutwaarden beheren" FOLDED="true" ID="ID_639830064" CREATED="1266247880359" MODIFIED="1303930926965" COLOR="#663300">
-<node ID="ID_1867411346" CREATED="1267746434945" MODIFIED="1293375088183">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Toont dialoogvenster voor het bewerken van attributen en attribuutwaarden van geselecteerde knopen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_1707643609" CREATED="1266247875750" MODIFIED="1293375088193" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Attributen beheren...
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_125791885" CREATED="1267746411055" MODIFIED="1293375088190">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Toont het dialoogvenster voor het toevoegen en het beheren van alle gedefinieerde attribbuten.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-</node>
-<node TEXT="Koppeling" FOLDED="true" ID="ID_1430712985" CREATED="1303930954062" MODIFIED="1304537934952" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een verbindingslijn of interactieve verbinding tussen twee knopen, of tussen een knoop en een extern object.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Hyperlink kiezen uit bestandenlijst" FOLDED="true" ID="ID_178833757" CREATED="1266249910406" MODIFIED="1293375089000" COLOR="#663300">
-<node ID="ID_63859182" CREATED="1266594047023" MODIFIED="1293375088992">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent een dialoogvenster om naar het bestand te navigeren waarvan een snelkoppeling in de knoop wordt geplaatst. Het bestand kan ook een toepassing zijn die automtisch moet worden gestart. OPMERKING: Om de snelkoppeling te verwijderen:
-    </p>
-    <p>
-      - kies <i>Invoegen &gt; Snelkoppeling (Tekst veld)...</i>&#160;; of
-    </p>
-    <p>
-      - druk <i>Ctrl + K,</i>&#160;en wis de tekst in het dialoogvenster.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_873690575" CREATED="1266249928203" MODIFIED="1293375088989" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Hyperlink typen
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_1417646603" CREATED="1266594083085" MODIFIED="1293375088981">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent een dialoogvenster om handmatig het adres van een snelkoppeling in te voeren. Alleen nog van belang voor het toevoegen van een snelkoppeling naar
-    </p>
-    <p>
-      een internet adres in de hoofdknoop. OPMERKING: Om de snelkoppeling te verwijderen:
-    </p>
-    <p>
-      - kies <i>Invoegen &gt; Hyperlink intypen..</i>.;
-    </p>
-    <p>
-      - of druk <i>Ctrl + K</i>
-    </p>
-    <p>
-      en wis de tekst in het dialoogvenster dat wordt geopend.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Hyperlink uit tekstadres" FOLDED="true" ID="ID_1049705529" CREATED="1266247483750" MODIFIED="1293375088251" COLOR="#663300">
-<node ID="ID_178007559" CREATED="1271845283423" MODIFIED="1293375088246">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Maakt een snelkoppeling van een knoop die een URL bevat zoals http://www.google.com/
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Verbindingslijn(en)" FOLDED="true" ID="ID_646708313" CREATED="1266249966500" MODIFIED="1303931620460" COLOR="#663300">
-<node ID="ID_1624469639" CREATED="1266594128851" MODIFIED="1293375088971">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Maakt een verbindingslijn tussen twee of meer knopen die daarvoor&#160;&#160;zijn geselecteerd. Om knopen tegelijkertijd te selecteren: houd <i>Ctrl i</i>ngedrukt en klik met de linker muisknop op de te selecteren knopen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_271903009" CREATED="1266251024562" MODIFIED="1293375088967" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Snelkoppeling tussen knopen
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_1285047908" CREATED="1266251035078" MODIFIED="1293375088960" COLOR="#000000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Maakt een snelkoppeling tussen twee geselecteerde knopen van de mindmap. Houd <i>Ctrl&#160;</i>ingedrukt en klik met de linker muisknop eerst op de knoop waar de snelkoppeling moet komen, vervolgens op de knoop waarheen de snelkoppeling moet verwijzen en kies daarna de functie<i>&#160;Invoegen &gt;</i>&#160; <i>Snelkoppeling tussen knopen</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Snelkoppeling naar menutoegang" FOLDED="true" ID="ID_1477740287" CREATED="1291192827927" MODIFIED="1293375088957" COLOR="#663300">
-<node TEXT="Opent dialoogvenster om een snelkoppeling naar een van de menuopties van Freeplane te kiezen. Klikken op de ingevoegde snelkoppeling opent de gekozen menuoptie." ID="ID_1873606819" CREATED="1291193131435" MODIFIED="1293375088952"/>
-</node>
-</node>
-<node FOLDED="true" ID="ID_68469558" CREATED="1266240681421" MODIFIED="1293375088924" COLOR="#407000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Pictogram
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="LaTeX formula" FOLDED="true" ID="ID_1750517188" CREATED="1303931890027" MODIFIED="1311406091422" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_1105036662" CREATED="1266594258148" MODIFIED="1293375088919">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent een keuzemenu met pictogrammen die aan de geselecteerde knoop kunnen worden toegevoegd. Het eerste pictogram (kruisje) kan niet worden toegevoegd, maar zorgt dat een eerder togevoegd pictogram wordt verwijderd. Het is mogelijk eigen pictogrammen aan het menu toe te voegen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Afbeelding" FOLDED="true" ID="ID_1620391394" CREATED="1303931708607" MODIFIED="1303931717375">
-<node TEXT="Voeg interne afbeelding toe of converteer hyperlink..." ID="ID_1277752024" CREATED="1266249875046" MODIFIED="1304578123493" COLOR="#663300">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Voeg een afbeelding toe van type: bitmap, giff, jpg, jpeg, or png.
-    </p>
-    <p>
-      Als de knoop nog geen afbeelding bevat dan kan deze met de V<i>erkenner</i>&#160; worden gezocht en gekozen.
-    </p>
-    <p>
-      Als de knoop al een snelkoppeling naar een afbeelding bevat dan wordt deze gebruikt om automatisch de afbeelding te kiezen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Voeg externe, schaalbare afbeelding toe." FOLDED="true" ID="ID_334408230" CREATED="1266250647515" MODIFIED="1304540988298" COLOR="#663300">
-<node ID="ID_984131568" CREATED="1266257490828" MODIFIED="1293375088935">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Voegt een afbeelding in waarvan de grootte kan worden ingesteld.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Wijzig grootte externe afbeelding" ID="ID_276232981" CREATED="1303931774914" MODIFIED="1304541020615"/>
-<node TEXT="Verwijder externe afbeelding" ID="ID_1348672374" CREATED="1303931789305" MODIFIED="1304541028774"/>
-</node>
-<node TEXT="%Schijf" FOLDED="true" ID="ID_1053622072" CREATED="1303931822760" MODIFIED="1304537776463" TEXT_SHORTENED="true">
-<icon BUILTIN="0%"/>
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -5234,73 +4423,16 @@
   </head>
   <body>
     <p>
-      Schijf die in stappen van 10% of 25% kan worden gevuld.
-    </p>
-    <p>
-      Standaard wordt de schijf als pictogram getoond.
-    </p>
-    <p>
-      Additioneel kan een grote schijf alsexterne&#160;&#160;afbeelding worden getoond.
-    </p>
-    <p>
-      De grote schijf is niet zichtbaar als afbeeldingen zijn verborgen; de kleine schijf
-    </p>
-    <p>
-      (pictogram) blijft wel zichtbaar.
+      LaTeX is a method to define the layout of scientific formulas..
     </p>
   </body>
 </html></richcontent>
-<node TEXT="Schijf met meer vulling" ID="ID_1352152467" CREATED="1304432750435" MODIFIED="1304433430176">
-<icon BUILTIN="25%"/>
-</node>
-<node TEXT="Schijf met minder vulling" ID="ID_1503763375" CREATED="1304432902357" MODIFIED="1304433412735"/>
-<node TEXT="Grote schijf + 10%" FOLDED="true" ID="ID_931502203" CREATED="1304432912176" MODIFIED="1304434197268">
-<icon BUILTIN="0%"/>
-<hook URI="../../../../../Desktop/fp124_06/freeplane_bin-1.2.5_06/freeplane-1.2.5_06/resources/templates/Progress_tenth_01.svg" SIZE="1.0" NAME="ExternalObject"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Rechtsklikken om % te vergroten.
-    </p>
-    <p>
-      Ctrl + rechtsklikken om % te verkleien
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Rechtsklikken om % te vergroten&#xa;Ctrl +rechtslklikken om % te verkleinen" ID="ID_1983790710" CREATED="1304434082077" MODIFIED="1304434160873"/>
-</node>
-<node TEXT="Grote schijf + 25%" FOLDED="true" ID="ID_193609803" CREATED="1304432932074" MODIFIED="1304433525508">
-<icon BUILTIN="25%"/>
-<hook URI="../../../../../Desktop/fp124_06/freeplane_bin-1.2.5_06/freeplane-1.2.5_06/resources/templates/Progress_quarter_01.svg" SIZE="1.0" NAME="ExternalObject"/>
-<node TEXT="Rechtsklikken om % te vergroten&#xa;Ctrl +rechtslklikken om % te verkleinen" ID="ID_475124683" CREATED="1304434082077" MODIFIED="1304434160873"/>
-</node>
-<node TEXT="Verwijder schijf" ID="ID_1336453593" CREATED="1304432977103" MODIFIED="1304432984873"/>
-</node>
-<node TEXT="Wolk" FOLDED="true" ID="ID_829509235" CREATED="1303931852579" MODIFIED="1304538113583">
-<node TEXT="Wolk" FOLDED="true" ID="ID_1259373322" CREATED="1266250644843" MODIFIED="1293375088948" COLOR="#663300">
-<node ID="ID_471274727" CREATED="1266257029468" MODIFIED="1293375088943">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Plaatst een wolk rond de afstammelingen van een wolk. Er kunnen tegelijkertijd verschillende wolken worden geplaatst door verschillende knopen te selecteren. ZIE OOK: <i>Opmaken &gt; Kleur wolk..</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-</node>
-<node TEXT="LaTeX" FOLDED="true" ID="ID_1750517188" CREATED="1303931890027" MODIFIED="1303931900558">
-<node TEXT="Toevoegen LaTeX" FOLDED="true" ID="ID_816429133" CREATED="1266250651984" MODIFIED="1303931965431" COLOR="#663300">
-<node ID="ID_1356853070" CREATED="1266258023468" MODIFIED="1293375088928">
-<richcontent TYPE="NODE">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3,7"/>
+<node TEXT="Add LaTeX formula..." ID="ID_816429133" CREATED="1266250651984" MODIFIED="1311406091422" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
@@ -5309,931 +4441,73 @@
     <p>
       Opent het bewerkingsvenster&#160;&#160;voor de LaTeX opmaak.
     </p>
+    <p>
+      
+    </p>
   </body>
 </html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3,7"/>
+</node>
+<node TEXT="Edit LaTeX formula..." ID="ID_1933244848" CREATED="1305483582106" MODIFIED="1311406091437" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3,7"/>
+</node>
+<node TEXT="Remove LaTeX formula" ID="ID_1339380039" CREATED="1303931933356" MODIFIED="1311406091437" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3,7"/>
+</node>
+<node TEXT="See Internet" ID="ID_1974921327" CREATED="1310061549760" MODIFIED="1312920045876" LINK="http://freeplane.sourceforge.net/wiki/index.php/File:Freeplane_LaTex.mm" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3,7"/>
+<hook NAME="SummaryNode"/>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
-<node TEXT="Verwijderen LaTeX" ID="ID_1339380039" CREATED="1303931933356" MODIFIED="1303931950049"/>
-</node>
-<node TEXT="Beveiliging" FOLDED="true" ID="ID_83654353" CREATED="1303931982176" MODIFIED="1303931989821">
-<node FOLDED="true" ID="ID_1020968664" CREATED="1266247815921" MODIFIED="1293375088234" COLOR="#663300">
-<richcontent TYPE="NODE">
+<node TEXT="Copy format" ID="ID_165229421" CREATED="1310134532663" MODIFIED="1315728436024" TEXT_SHORTENED="true">
+<icon BUILTIN="../colorpicker"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Beveiligen
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Copies the formatting of a node, but not the content of the node. SEE ALSO: Paste Format.</span></font>
     </p>
   </body>
 </html></richcontent>
-<node ID="ID_648523041" CREATED="1267721007546" MODIFIED="1293375088229">
-<richcontent TYPE="NODE">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Paste format" ID="ID_85344174" CREATED="1310134532663" MODIFIED="1315728444548" TEXT_SHORTENED="true">
+<icon BUILTIN="../color_fill"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Opent een dialoogvenster voor het invoeren van wachtwoord waarmee de mindmap wordt beveiligd tegen wijzigen. .
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Pastes the formatting of a node, but not the contents of the node. SEE ALSO: Copy Format.</span></font>
     </p>
   </body>
 </html></richcontent>
-</node>
-</node>
-<node TEXT="Verwijderen beveiliging" ID="ID_136268743" CREATED="1303932060947" MODIFIED="1303932075643"/>
-</node>
-<node TEXT="Agenda" FOLDED="true" ID="ID_1959496513" CREATED="1303932101749" MODIFIED="1303932107178">
-<node FOLDED="true" ID="ID_1104707017" CREATED="1267746559867" MODIFIED="1293375088172" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Agenda...
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_516339910" CREATED="1267746640914" MODIFIED="1293375088166">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Toont een dialoogvenster voor het instellen of veranderen van een datum (tekst) of een herinneringsmoment (activiteit) aan de geselecteerde knopen. Op het moment dat de activiteit moet worden uitgevoerd &#160;knippert een klokje in de betreffende knoop en verschijnt een rood uitroepteken in de basisknoop.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Alle activiteiten (herinnering + notitie)..." FOLDED="true" ID="ID_1106133151" CREATED="1266247905093" MODIFIED="1296158400935" COLOR="#663300" BACKGROUND_COLOR="#ffffff">
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1106133151" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<node ID="ID_216580381" CREATED="1267746718758" MODIFIED="1298472026220">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Toont een dialoogvenster met een lijst van activiteiten en de knopen waaraan deze zijn gekoppeld; bijbehorende basisteksten, pictogrammen, notities; en creatie- en wijzigingsdata; en opties voor<i>&#160;Zoeken</i>&#160;en<i>&#160; vervangen</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Verwijderen herinnering" ID="ID_148977369" CREATED="1303932208426" MODIFIED="1303932217459"/>
-</node>
-</node>
-<node TEXT="Opmaken" FOLDED="true" ID="ID_258919699" CREATED="1266240683718" MODIFIED="1293375088915" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node FOLDED="true" ID="ID_223209377" CREATED="1266591034273" MODIFIED="1293375088911" COLOR="#663300" BACKGROUND_COLOR="#ffffff">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Kopi<i>&#235;</i>ren opmaak
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_732148408" CREATED="1266591050398" MODIFIED="1293375088908">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Kopieer de opmaak van een knoop, maar niet zijn inhoud. ZIE OOK: <i>Plakken opmaak</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Plakken opmaak" FOLDED="true" ID="ID_1331499253" CREATED="1266244658656" MODIFIED="1293375088904" COLOR="#663300" BACKGROUND_COLOR="#ffffff">
-<node ID="ID_1504553276" CREATED="1266591096710" MODIFIED="1293375088900">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Plakt de gekopieerde opmaak van een knoop. ZIE OOK: <i>Kopi&#235;ren opmaak</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Verwijderen opmaak" FOLDED="true" ID="ID_640761139" CREATED="1291193542440" MODIFIED="1293375088897" COLOR="#663300" BACKGROUND_COLOR="#ffffff">
-<node TEXT="Herstelt de opmaak van een knoop naar de standaard knoopstijl." ID="ID_264164507" CREATED="1292055652256" MODIFIED="1293375088893"/>
-</node>
-<node TEXT="Knoop zonder omlijning" FOLDED="true" ID="ID_401265529" CREATED="1266251650156" MODIFIED="1293375088850" COLOR="#663300">
-<node ID="ID_1545808926" CREATED="1266252984468" MODIFIED="1293375088844" COLOR="#000000" BACKGROUND_COLOR="#ffffff">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Onder de tekst van de knoop komt een lijn; de knoop is niet omgeven door een lijn. Dit is de standaardinstelling.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Knoop met omlijning" FOLDED="true" ID="ID_1235732708" CREATED="1266251659609" MODIFIED="1293375088841" COLOR="#663300" STYLE="bubble">
-<node ID="ID_1746343131" CREATED="1266253113000" MODIFIED="1293375088835" STYLE="bubble">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      De tekst van de knoop wordt omgeven door een lijn met afgeronde hoeken. Het alternatief is <i>Knoop zonder&#160;omlijning</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_349364472" CREATED="1266251662328" MODIFIED="1293375088831" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Lettertype vergroten
-    </p>
-  </body>
-</html></richcontent>
-<font NAME="SansSerif" SIZE="14" BOLD="false" ITALIC="false"/>
-<node ID="ID_1596314551" CREATED="1266256222968" MODIFIED="1293375088828">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Vergroot de letters van alle geselekteerde knopen.
-    </p>
-  </body>
-</html></richcontent>
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-</node>
-</node>
-<node TEXT="Lettertype verkleinen" FOLDED="true" ID="ID_533544086" CREATED="1266251685593" MODIFIED="1293375088824" COLOR="#663300">
-<font SIZE="10"/>
-<node ID="ID_1046607828" CREATED="1266256236671" MODIFIED="1293375088820">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Verkleint de letters van alle geselekteerde knopen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_25890496" CREATED="1266251692562" MODIFIED="1293375088816" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Vet (Bold)
-    </p>
-  </body>
-</html></richcontent>
-<font NAME="SansSerif" SIZE="12" BOLD="true" ITALIC="false"/>
-<node ID="ID_572526624" CREATED="1266256474046" MODIFIED="1293375088813">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Verandert de opmaak naar <b>vet</b>&#160;(Bold) in alle geselecteerde knopen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Schuin (Italic)" FOLDED="true" ID="ID_408787243" CREATED="1266251689531" MODIFIED="1293375088809" COLOR="#663300">
-<font ITALIC="true"/>
-<node ID="ID_905229027" CREATED="1266256426906" MODIFIED="1293375088805">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Verandert de opmaak naar<i>&#160;schuin</i>&#160;&#160;(Italic) in alle geselecteerde knopen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Tekstkleur" FOLDED="true" ID="ID_1085935601" CREATED="1266251694000" MODIFIED="1293375088802" COLOR="#ff3366">
-<node ID="ID_1924836019" CREATED="1266256489250" MODIFIED="1293375088798">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent een dialoogvenster om de <font color="#ff0000">kleur</font>&#160;van de tekst van alle geslecteerde knopen in te stellen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Kleiner kleurcontrast" FOLDED="true" ID="ID_1238551182" CREATED="1266251704359" MODIFIED="1293375088794" COLOR="#663300">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_1263022475" CREATED="1266252392500" MODIFIED="1293375088789">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Verkleint het kleurcontrast van de tekst ten opzichte van de kleur van de achtergrond. Kan ongedaan worden gemaakt met:&#160;<i>Opmaak &gt; Kleur achtergrond</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Knoopachtergrondkleur" FOLDED="true" ID="ID_1529197837" CREATED="1266252194281" MODIFIED="1295722843018" COLOR="#663300" BACKGROUND_COLOR="#33ff33">
-<node ID="ID_633092543" CREATED="1266253205187" MODIFIED="1293375088781" COLOR="#000000" BACKGROUND_COLOR="#ffffff">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent dialoogvenster om de achtergrondkleur van de geselecteerde knopen in te stellen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_1564352042" CREATED="1266252207296" MODIFIED="1293375088778" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Achtergrondkleur mindmap
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_1460771363" CREATED="1266256525625" MODIFIED="1293375088774">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent een dialoogvenster om de achtergrondkleur van de&#160;&#160;mindmap in te stellen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Automatisch opmaken per niveau" FOLDED="true" ID="ID_851009309" CREATED="1266252261500" MODIFIED="1293375088753" COLOR="#663300">
-<node ID="ID_155722164" CREATED="1266256825546" MODIFIED="1293375088746">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Past op alle knopen de opmaak toe die is vastgelegd in <i>Extra &gt; Instellingen &gt; Automatische opmaak</i>. Standaard worden knopen op verschillende niveaus in een andere opmaak getoond.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Knipperende knoop" FOLDED="true" ID="ID_854971495" CREATED="1266252279859" MODIFIED="1293375088742" COLOR="#663300" BACKGROUND_COLOR="#ffffff">
-<edge COLOR="#000000"/>
-<node ID="ID_1341886364" CREATED="1266256965484" MODIFIED="1293375088738">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      De geselekteerde knopen veranderen cyclisch van kleur.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Kleur wolk" FOLDED="true" ID="ID_1092192366" CREATED="1266252268093" MODIFIED="1293375088734" COLOR="#663300">
-<node ID="ID_1354889569" CREATED="1266256994781" MODIFIED="1293375088730">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent een dialoogvenster voor het instellen van de kleur van de wolk. ZIE OOK: <i>Invoegen &gt; Wolk</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Vorm wolk" FOLDED="true" ID="ID_759607649" CREATED="1291193913924" MODIFIED="1293375088726">
-<node TEXT="Boog, Ster, Rechthoek, Afgeronde rechthoek" ID="ID_273403865" CREATED="1291193920391" MODIFIED="1293375088722"/>
-</node>
-<node TEXT="Kleur tak" FOLDED="true" ID="ID_865389195" CREATED="1266252317187" MODIFIED="1293375088718" COLOR="#663300">
-<node ID="ID_1796449076" CREATED="1266258080484" MODIFIED="1293375088712">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent een dialoogvenster waarmee van de geselecteerde knopen de kleur van de omlijning, de lijn tussen ouder- en kind knopen en de verbindingslijnen kan worden ingesteld.
-    </p>
-  </body>
-</html></richcontent>
-<edge COLOR="#000000"/>
-</node>
-</node>
-<node TEXT="Vorm tak" FOLDED="true" ID="ID_1001249442" CREATED="1266252322375" MODIFIED="1293375088708" COLOR="#663300">
-<node FOLDED="true" ID="ID_897913345" CREATED="1266258236562" MODIFIED="1293375088702">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent een dialoogvenster waarmee de opmaak van de zichtbare lijnen tussen de geslecteerde ouderknoop en de kindknopen, en van de verbindingslijnen (connectors) kan worden ingesteld. De moelijkheden zijn:
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Als ouder (hierarchisch boven)" ID="ID_534873855" CREATED="1266258280359" MODIFIED="1293375088699"/>
-<node TEXT="Rechte lijn" ID="ID_1731539871" CREATED="1266258287515" MODIFIED="1293375088695">
-<edge STYLE="linear"/>
-</node>
-<node TEXT="Bocht (Bezier)" ID="ID_1809115433" CREATED="1266258308640" MODIFIED="1293375088692">
-<edge STYLE="bezier"/>
-</node>
-<node TEXT="Taps toelopende lijn" ID="ID_906760855" CREATED="1266258320796" MODIFIED="1293375088688">
-<edge STYLE="sharp_linear"/>
-</node>
-<node TEXT="Taps toelopende bocht" ID="ID_1317144761" CREATED="1266258324437" MODIFIED="1293375088685">
-<edge STYLE="sharp_bezier"/>
-</node>
-<node TEXT="Rechthoekige lijn" ID="ID_1469406971" CREATED="1266258329171" MODIFIED="1293375088681">
-<edge STYLE="horizontal"/>
-</node>
-<node TEXT="Verborgen lijn" ID="ID_882144216" CREATED="1266258333546" MODIFIED="1293375088677">
-<edge STYLE="hide_edge"/>
-</node>
-</node>
-</node>
-<node TEXT="Dikte tak" FOLDED="true" ID="ID_1718207662" CREATED="1266252326750" MODIFIED="1293375088674" COLOR="#663300">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node FOLDED="true" ID="ID_88846752" CREATED="1266258537921" MODIFIED="1293375088668">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent dialoogvenster waarin de dikte van de zichtbare lijnen kan worden gekozen. De verschillen tussen &quot;Dun&quot;en &quot;1&quot;zijn bij lagere zoom-percentages niet zichtbaar. Voorbeelden zijn:
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Als ouder (hierarchisch boven)" ID="ID_786119116" CREATED="1266258451078" MODIFIED="1293375088665"/>
-<node TEXT="Dun" ID="ID_387404117" CREATED="1266258454593" MODIFIED="1293375088661">
-<edge WIDTH="thin"/>
-</node>
-<node TEXT="1" ID="ID_391576492" CREATED="1266258457078" MODIFIED="1293375088658">
-<edge WIDTH="1"/>
-</node>
-<node TEXT="2" ID="ID_1166577302" CREATED="1266258458328" MODIFIED="1293375088654">
-<edge WIDTH="2"/>
-</node>
-<node TEXT="4" ID="ID_1407970355" CREATED="1266258459062" MODIFIED="1293375088650">
-<edge WIDTH="4"/>
-</node>
-<node TEXT="8" ID="ID_1069567579" CREATED="1266258459750" MODIFIED="1293375088647">
-<edge WIDTH="8"/>
-</node>
-</node>
-</node>
-<node TEXT="Automatische takkleur" FOLDED="true" ID="ID_1587417548" CREATED="1291194199529" MODIFIED="1293375088643" COLOR="#663300">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Wisselt tussen wel/niet automatische takkleur. Bij automatische takkleur krijgt elke nieuwe tak die begint in de basisknoop een andere kleur." ID="ID_551944676" CREATED="1291583011182" MODIFIED="1293375088639"/>
-</node>
-<node TEXT="REST" FOLDED="true" ID="ID_1751086488" CREATED="1303932362078" MODIFIED="1303932371221">
-<node FOLDED="true" ID="ID_426658457" CREATED="1271859579978" MODIFIED="1293375088859" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Standaard opmaakpatronen
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_936686419" CREATED="1271859598157" MODIFIED="1293375088853">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent een dialoogvenster met standaard profofielen en past het gekozen profiel toe op alle geselekteerde knopen. ZIE OOK: <i>Opmaken &gt; Algemene knoopstijl...</i>
-    </p>
-  </body>
-</html></richcontent>
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-</node>
-</node>
-<node TEXT="Herstellen oorspronkelijke knoopposities" FOLDED="true" ID="ID_286609105" CREATED="1266252216156" MODIFIED="1293375088770" COLOR="#663300">
-<node ID="ID_828714332" CREATED="1266252583531" MODIFIED="1293375088764">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Maakt de verplaatsingen van de geselecteerde knopen ongedaan en brengt de posities van deze knopen terug naar de relatieve posities op het moment dat de knopen werden gemaakt. Om alle knopen in een mindmap te selecteren: kies <i>Esc</i>&#160;en vervolgens<i>&#160;Ctrl + A.</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_1164550160" CREATED="1266252231218" MODIFIED="1293375088761" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Pictogrammenhi&#235;rarchie
-    </p>
-  </body>
-</html></richcontent>
-<edge COLOR="#000000"/>
-<node ID="ID_1107658218" CREATED="1266256776328" MODIFIED="1293375088757">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Toont alle pictogrammen in de volgorde waarin deze werden toegepast in de ouder-knoop.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-</node>
-</node>
-<node TEXT="Stijlen" FOLDED="true" ID="ID_1778719162" CREATED="1291143603918" MODIFIED="1293375088635" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Bewerken knoopstijlen" STYLE_REF="Functie" FOLDED="true" ID="ID_1277682010" CREATED="1291196100290" MODIFIED="1293375088631">
-<node TEXT="Bewerken van stijlen voor knoopprofielen, automatisch-opmaken en door de gebruiker gedefineerde profielen." ID="ID_76121142" CREATED="1291199488912" MODIFIED="1293375088627"/>
-<node TEXT="Om een knoopstijl toe te passen:&#xa;- bewaar Default stijl als gebruikerstijl&#xa;- pas de gebruikerstijl aan" ID="ID_57918459" CREATED="1291550105793" MODIFIED="1293375088622"/>
-</node>
-<node TEXT="Tot standaard knoopstijl maken" STYLE_REF="Functie" FOLDED="true" ID="ID_1559299046" CREATED="1291196112325" MODIFIED="1293375088619">
-<node TEXT="De standaard knoopstijl wizigen in die van de geselecteerde knoop." ID="ID_34506463" CREATED="1291200984656" MODIFIED="1293375088615"/>
-</node>
-<node TEXT="Selectie opslaan als gebruikerstijl" STYLE_REF="Functie" FOLDED="true" ID="ID_643671716" CREATED="1291389456052" MODIFIED="1293375088612">
-<node TEXT="Vraagt om een naam waaronder de knoopstijl wordt opgeslagen." ID="ID_213996497" CREATED="1291389545635" MODIFIED="1293375088608"/>
-<node TEXT="Alternatief: zie Bewerken knoopstijlen" ID="ID_1448207265" CREATED="1291550072776" MODIFIED="1293375088604"/>
-</node>
-<node TEXT="Beheren conditionele knoopstijlen" STYLE_REF="Functie" FOLDED="true" ID="ID_1169167186" CREATED="1291196254933" MODIFIED="1293375088601">
-<node TEXT="Opent een dialoogvesnter waarin condities kunnen worden aangegeven voor het automatisch toepassen van een bepaalde opmaakstijl." ID="ID_687509993" CREATED="1291196273443" MODIFIED="1293375088596"/>
-</node>
-<node TEXT="Mindmapstijl toepassen..." STYLE_REF="Functie" FOLDED="true" ID="ID_13843990" CREATED="1291196992351" MODIFIED="1293375088593">
-<node TEXT="Opent een dialoogvenster met een lijst met stijlen waaruit de gebruiker kan kiezen. De stijlen zijn mindmaps en Freeplane neemt de stijl over van de gekozen mindmap (en niet de inhoud)." ID="ID_529633081" CREATED="1291200611277" MODIFIED="1293375088588"/>
-</node>
-<node TEXT="Knoopprofiel toepassen" STYLE_REF="Functie" FOLDED="true" ID="ID_512501370" CREATED="1291199304490" MODIFIED="1293375088585">
-<node TEXT="Opent een lijst met profielen waaruit een keuze gemaakt kan worden. Past het gekozen profiel toe op de geselecteerde knoop/knopen." ID="ID_1448933286" CREATED="1291200774757" MODIFIED="1293375088580"/>
-</node>
-<node TEXT="Knoopniveaustijl toepassen" STYLE_REF="Functie" FOLDED="true" ID="ID_1679194345" CREATED="1291199318553" MODIFIED="1293375088577">
-<node TEXT="Opent een lijst met 5 profielen voor automatisch opmaken. Past het gekozen profiel toe op de geselecteerde knoop/knopen, ongeacht het werkelijke niveau van de knoop." ID="ID_1651751206" CREATED="1291200854247" MODIFIED="1293375088572"/>
-</node>
-<node TEXT="Gebruikerstijl toepassen" STYLE_REF="Functie" ID="ID_948529232" CREATED="1291550475365" MODIFIED="1293375088568"/>
-<node TEXT="Toevoegen attributen ??" ID="ID_866847643" CREATED="1303932601297" MODIFIED="1303932613887"/>
-</node>
-<node TEXT="Navigeren" FOLDED="true" ID="ID_1496009393" CREATED="1266240686343" MODIFIED="1293375088564" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Vorige mindmap" FOLDED="true" ID="ID_1708693409" CREATED="1266254847750" MODIFIED="1293375088559" COLOR="#663300">
-<node ID="ID_1442859212" CREATED="1266594677648" MODIFIED="1293375088553">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Gaat naar de vorige geopende mindmap in de&#160; <i>Mindmaps </i>lijst. Alleen beschikbaar als er meerdere mindmaps open zijn.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Volgende mindmap" FOLDED="true" ID="ID_1601137374" CREATED="1266254852921" MODIFIED="1293375088549" COLOR="#663300">
-<node ID="ID_190812218" CREATED="1266594677648" MODIFIED="1293375088543">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Gaat naar de volgende geopende mindmap in de&#160; <i>Mindmaps </i>lijst. Alleen beschikbaar als er meerdere mindmaps open zijn.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Vorige knoop" FOLDED="true" ID="ID_1475108136" CREATED="1266254856656" MODIFIED="1293375088539" COLOR="#663300">
-<node ID="ID_1069329857" CREATED="1266594370054" MODIFIED="1293375088535">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Gaat naar de vorige knoop in de knopenhi&#235;rarchie . Als dezedichtgevouwen is zal deze openvouwen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Volgende knoop" FOLDED="true" ID="ID_1750156469" CREATED="1266254860000" MODIFIED="1293375088531" COLOR="#663300">
-<edge COLOR="#000000"/>
-<node ID="ID_1994424519" CREATED="1266594370054" MODIFIED="1293375088527">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Gaat naar de volgende knoop in de knopenhi&#235;rarchie. Als deze is dichtgevouwen, dan zal deze openvouwen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Vorige knoop (dichtvouwen)" FOLDED="true" ID="ID_867615111" CREATED="1266254870125" MODIFIED="1293375088523" COLOR="#663300">
-<node ID="ID_1691844142" CREATED="1266594444804" MODIFIED="1293375088519">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Vouw de huidige knoop dicht en ga na de vorige knoop in de knopenhi&#235;rarchie.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Volgende knoop (dichtvouwen)" FOLDED="true" ID="ID_1966136057" CREATED="1266254879203" MODIFIED="1293375088515" COLOR="#663300">
-<node ID="ID_1217132172" CREATED="1266594444804" MODIFIED="1293375088512">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Vouw de huidige knoop dicht en ga naar de volgende knoop in de knopenhi&#235;rarchie.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Ga naar de basisknoop" FOLDED="true" ID="ID_676908603" CREATED="1266254974890" MODIFIED="1293375088508" COLOR="#663300">
-<node ID="ID_1096406777" CREATED="1266594487054" MODIFIED="1293375088504">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Ga naar de basisknoop (de hi&#235;rarchische (voor)ouder van alle knopen).
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Knoop naar boven" FOLDED="true" ID="ID_762470638" CREATED="1266254979687" MODIFIED="1293375088501" COLOR="#663300">
-<node ID="ID_1295933857" CREATED="1266594564148" MODIFIED="1293375088495">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Verplaats de knoop naar boven (blijf op hetzelfde hi&#235;rarchische niveau, sibling). Als de knoop bovenaan staat, wordt deze de onderste knoop.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Knoop naar beneden" FOLDED="true" ID="ID_11735236" CREATED="1266254982500" MODIFIED="1293375088491" COLOR="#663300">
-<node ID="ID_1431021782" CREATED="1266594564148" MODIFIED="1293375088485">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Verplaats de knoop naar beneden (blijf op hetzelfde hi&#235;rarchische e niveau). Als de knoop onderaan staat, wordt deze de bovenste knoop.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Naar beneden en ouderniveau" FOLDED="true" ID="ID_823857358" CREATED="1266254985015" MODIFIED="1293375088482" COLOR="#663300">
-<node ID="ID_1275307924" CREATED="1266594908117" MODIFIED="1293375088478">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Verplaatst de geselecteerde knoop naar beneden en onder zijn ouderknoop.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_1592093755" CREATED="1266254987453" MODIFIED="1293375088473" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Naar boven en kindniveau
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_373929962" CREATED="1266594908117" MODIFIED="1293375088468">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Verplaatst de geselecteerde knoop naar boven en maakt het een (de laatste) kindknoop van de bovenliggende knoop.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_314736991" CREATED="1266255000484" MODIFIED="1293375088464" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Open/dichtvouwen
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_1553739720" CREATED="1266255549796" MODIFIED="1293375088459">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Wisselt tussen open/dichtvouwen van de geselecteerde knoop, waardoor kindknopen wel/niet worden getoond.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Kleinkinderen open/dichtvouwen" FOLDED="true" ID="ID_417644786" CREATED="1266255005000" MODIFIED="1293375088455" COLOR="#663300">
-<node FOLDED="true" ID="ID_483252597" CREATED="1266255132218" MODIFIED="1293375088449">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Wissel tussen open/dichtvouwen, maar sla &#233;&#233;n knoop over (dus vanaf kleinkind van de gesekteerde knoop).&#160;&#160;Voorwaarde is dat de huidige knoop is opengevouwen (zijn kindknoop is zichtbaar. VOORBEELD: als de opdracht op de huidige knoop (die je nu leest) wordt toegepast dan worden de vier kindknopen Kind1 t/m Kind4 zichtbaar/onzichtbaar. Alternatief: druk<i>&#160;Ctrl + Spatie</i>.
-    </p>
-  </body>
-</html></richcontent>
-<node FOLDED="true" ID="ID_729348251" CREATED="1266255283453" MODIFIED="1293375088445">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Deze knoop moet
-    </p>
-    <p>
-      zichtbaar zijn
-    </p>
-    <p>
-      en blijft zichtbaar
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Kind 1" ID="ID_618703155" CREATED="1266255293578" MODIFIED="1293375088442"/>
-<node TEXT="Kind 2" ID="ID_1508991419" CREATED="1266255296578" MODIFIED="1293375088438"/>
-<node TEXT="Kind 3" ID="ID_1454932156" CREATED="1266255299109" MODIFIED="1293375088435"/>
-<node TEXT="Kind 4" ID="ID_841397211" CREATED="1266255301171" MODIFIED="1293375088431"/>
-</node>
-<node TEXT="cb" ID="ID_284045242" CREATED="1287949516917" MODIFIED="1293375088427"/>
-</node>
-</node>
-<node TEXT="Alles openvouwen" FOLDED="true" ID="ID_1287299930" CREATED="1266255631187" MODIFIED="1293375088423" COLOR="#663300">
-<node ID="ID_1180187073" CREATED="1266595128398" MODIFIED="1293375088419">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Maakt hele tak, alle afstammelingen van de geselecteerde knoop, zichtbaar.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Alle afstammelingen dichtvouwen" FOLDED="true" ID="ID_1514391242" CREATED="1266255638828" MODIFIED="1293375088415" COLOR="#663300">
-<node ID="ID_319155936" CREATED="1266595128398" MODIFIED="1293375088411">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Verbergt alle afstammelingen (kinderen, kleinkinderen,...) van de gelelecteerde knoop.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_1272301062" CREATED="1266255654484" MODIFIED="1293375088407" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      E&#233;n niveau openvouwen
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_204983116" CREATED="1266595392726" MODIFIED="1293375088403">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Vouwt steeds &#233;&#233;n niveau verder open: vouwt eerst de kinderen open, daarna de kleinkinderen, enz.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="E&#xe9;n niveau dichtvouwen" FOLDED="true" ID="ID_1989510421" CREATED="1266255658609" MODIFIED="1293375088399" COLOR="#663300">
-<node ID="ID_1276059456" CREATED="1266595392726" MODIFIED="1293375088395">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Vouwt steeds &#233;&#233;n niveau verder dicht, te beginnen met de laatste knopen in de afstammingslijn.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Achteruit" FOLDED="true" ID="ID_901980899" CREATED="1266255672875" MODIFIED="1293375088391" COLOR="#663300">
-<node ID="ID_1939848982" CREATED="1266595776601" MODIFIED="1293375088385">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Ga naar de knoop die in de selectiehistorie een stap eerder was geselecteerd. Als de opdracht wordt herhaald wordt steeds een stap verder terug in de historie gegaan.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_450587391" CREATED="1266255675078" MODIFIED="1293375088382" COLOR="#663300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Vooruit
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_104491292" CREATED="1266595804382" MODIFIED="1293375088378">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Maak een stap van<i>&#160;Achteruit</i>&#160;ongedaan.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Openen hyperlink" FOLDED="true" ID="ID_1990490856" CREATED="1266255678906" MODIFIED="1293375088374" COLOR="#663300">
-<node ID="ID_942157628" CREATED="1266595981992" MODIFIED="1293375088368">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Als de knoop een snelkoppeling heeft: open de snelkoppeling. ZIE OOK:<i>&#160; Invoegen &gt; Hyperlink kiezen uit bestandenlijst...</i>; <i>Invoegen &gt; Hyperlink intypen...</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-</node>
-<node TEXT="Filteren" FOLDED="true" ID="ID_1254354349" CREATED="1266240693156" MODIFIED="1305291895143" COLOR="#407000" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Join nodes" ID="ID_1720469761" CREATED="1266247462656" MODIFIED="1309687496955" TEXT_SHORTENED="true">
+<icon BUILTIN="../JoinNodesAction"/>
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -6241,809 +4515,16 @@
   </head>
   <body>
     <p>
-      Toont de geselecteerde knopen en verbergt alle andere knopen van de mindmap. Als <i>Ook&#160;voorouders tonen</i>&#160;en/of <i>Ook afstammelingen tonen</i>&#160;&#160;AAN staan, worden voorouders en /of afstammelingen ook getoond. ZIE OOK: <i>Filteren &gt; Ook dichtgevouwen knopen filteren</i>; <i>Filteren &gt; Ook voorouders tonen</i>, <i>Filteren &gt; Ook afstammelingen tonen</i>. Eenmaal geslecteerd kan deze toestand alleen ongedaan worden gemaakt door <i>Filteren &gt; Ongedaan maken filteren</i>&#160;te kiezen.
-    </p>
-  </body>
-</html>
-</richcontent>
-<node TEXT="Ongedaan maken" FOLDED="true" ID="ID_1234931801" CREATED="1266256117500" MODIFIED="1293375088361" COLOR="#663300">
-<node ID="ID_124761199" CREATED="1271842248323" MODIFIED="1293375088357">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Maakt laatste fiter-commando ongedaan.
+      <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">Joins two nodes (the basic text only) into one. Only works on nodes that do not have children.</span></font>
     </p>
   </body>
 </html></richcontent>
-</node>
-</node>
-<node TEXT="Opnieuw" FOLDED="true" ID="ID_1823387217" CREATED="1266256119421" MODIFIED="1293375088354" COLOR="#663300">
-<node ID="ID_763772102" CREATED="1271842291009" MODIFIED="1293375088350">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Past het commando dat met <i>Ongedaan maken</i>&#160;ongedaan werd gemaakt, opnieuw toe.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Opnieuw filteren (bijwerken)" FOLDED="true" ID="ID_1384621055" CREATED="1266256121328" MODIFIED="1293375088347" COLOR="#663300">
-<node TEXT="Filter nogmaals omdat de mindmap is veranderd." ID="ID_1195289875" CREATED="1271842416632" MODIFIED="1293375088343"/>
-</node>
-<node TEXT="Ongedaan maken filteren" FOLDED="true" ID="ID_1248752843" CREATED="1266256040984" MODIFIED="1293375088340" COLOR="#663300">
-<node TEXT="Herstel de situatie van voor het filteren." ID="ID_624431078" CREATED="1271842985356" MODIFIED="1293375088336"/>
-</node>
-<node TEXT="Niet-geselecteerde knopen verbergen" ID="ID_1213542242" CREATED="1266256047593" MODIFIED="1293375088332" COLOR="#663300"/>
-<node TEXT="Verder filteren (verfijnen)" FOLDED="true" ID="ID_535692954" CREATED="1266256076109" MODIFIED="1293375088321" COLOR="#663300">
-<node TEXT="Het resultaat van een filtering nogmaals filteren met een additioneel filtercriterium." ID="ID_1215495803" CREATED="1271842416632" MODIFIED="1293375088318"/>
-</node>
-<node TEXT="Ook dichtgevouwen knopen filteren" FOLDED="true" ID="ID_977827122" CREATED="1266256027875" MODIFIED="1293375088314" COLOR="#663300">
-<node ID="ID_412260049" CREATED="1292881838291" MODIFIED="1293375088308">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Schakelt tussen&#160;AAN en UIT en dit heeft (alleen) effect op het resultaat van <i>Filteren mindmap</i>. Bij AAN worden dichtgevouwen takken van te filteren knopen tijdens het filteren (virtueel) opengevouwen zodat deze ook worden gefiltered. Dit effect kan ongedaan worden gemaakt met&#160;Filter &gt; Ongedaan maken. ZIE OOK:&#160;Navigeren &gt; Open/dichtvouwen;&#160;Navigeren &gt; Alle afstammelingen dichtvouwen;&#160;Navigeren &gt; E&#233;n niveau open/dichtvouwen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Ook voorouders tonen" FOLDED="true" ID="ID_1600437428" CREATED="1266256089484" MODIFIED="1293375088304" COLOR="#663300">
-<node ID="ID_636855311" CREATED="1271843381481" MODIFIED="1293375088298">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Wisslelt tussen AAN en UIT. Bij AAN toont <i>Niet</i>-<i>&#160;geselecteerde knopen verbergen</i>&#160;wel (ook) de voorouders van het filterresulaat.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Ook afstammelingen tonen" FOLDED="true" ID="ID_442105904" CREATED="1266256099078" MODIFIED="1293375088295" COLOR="#663300">
-<node ID="ID_1383238552" CREATED="1271843456017" MODIFIED="1293375088289">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Wisslet tussen AAN en uit. Bij AAN toont <i>&#160;Niet-geselecteerde knopen verbergen wel (</i>ook) de afstammelingen van het filterresultaat
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Vorige zoeken" STYLE_REF="Functie" ID="ID_1821436195" CREATED="1291789940739" MODIFIED="1293375086848">
-<richcontent TYPE="NOTE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Mist in hoofdmenu Edit.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Volgende zoeken" STYLE_REF="Functie" ID="ID_1077748166" CREATED="1291789947611" MODIFIED="1293375086844" LINK="#ID_1438958017"/>
-<node TEXT="Passende knopen selecteren" STYLE_REF="Functie" FOLDED="true" ID="ID_1469284491" CREATED="1291789963156" MODIFIED="1293375086840">
-<richcontent TYPE="NOTE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Niet in hoofdmeneu
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Deze functie heeft alleen effect op de knoop die de focus heeft en al zijn zichtbare en verborgen afstammelingen: (1) tonen en (2) selecteren van alle afstammelingen die aan het het filtercriterium voldoen, (3) tonen van verborgen knopen in de keten  tussen de basisknoop en de buitenste geselecteerde knoop. Verborgen kindknopen van de buitenste geselecteerde knoop van elke tak blijven verborgen (dichtgevouwen) en alle andere knopen blijven zichtbaar." ID="ID_1532324933" CREATED="1292622581568" MODIFIED="1293375086835"/>
-</node>
-<node TEXT="Filteren mindmap" STYLE_REF="Functie" FOLDED="true" ID="ID_1620220937" CREATED="1291790046452" MODIFIED="1293375086831">
-<richcontent TYPE="NOTE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Niet in hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Deze functie omvat: (1) het verbergen van alle zichtbare knopen van de mindmap die niet aan het filtercriterium voldoen en (2) naar elkaar schuiven van de knopen die na het filteren zichtbaar blijven. Knopen buiten het filtergebied blijven zichtbaar. Er kunnen verschillende opties voor het filteren worden ingesteld." LOCALIZED_STYLE_REF="default" ID="ID_829574154" CREATED="1292622675691" MODIFIED="1293375086827"/>
-</node>
-<node TEXT="Tonen filtermenu" FOLDED="true" ID="ID_319707937" CREATED="1266256024515" MODIFIED="1303932733508" COLOR="#663300">
-<node TEXT="Toont of verbergt Filtermenu." ID="ID_101445395" CREATED="1267719720078" MODIFIED="1293375088282">
-<font ITALIC="true"/>
-</node>
-</node>
-<node TEXT="Filterbeheer" FOLDED="true" ID="ID_1642550374" CREATED="1266256115234" MODIFIED="1293375088279" COLOR="#663300">
-<node ID="ID_1081902137" CREATED="1271843484591" MODIFIED="1293375088275">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent dialoogvenster voor het maken van filters.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-</node>
-<node TEXT="Extra" FOLDED="true" ID="ID_1833899525" CREATED="1266240695203" MODIFIED="1293375088271" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Alfabetisch sorteren kinderen" FOLDED="true" ID="ID_1942706169" CREATED="1266247810468" MODIFIED="1293375088243" COLOR="#663300">
-<node TEXT="Sorteert de kinderen van een geselecteerde knoop in aflopende alfanumerieke volgorde. De knoophi&#xeb;rarchie&#xa0;blijft behouden." ID="ID_541025067" CREATED="1267720959687" MODIFIED="1293375088238"/>
-</node>
-<node TEXT="Wijzigen achtergrondkleur voor revisies" FOLDED="true" ID="ID_974319465" CREATED="1266247833890" MODIFIED="1293375088226" COLOR="#663300" BACKGROUND_COLOR="#ffffff">
-<node TEXT="Wisselt tussen wel/niet herkenbaar maken van revisies in de huidige mindmap door toepassing van een andere knoopachtergrondkleur. De revisies van alle geselecteerde knopen kunnen naar de standaardkleur worden hersteld met Opmaken &gt; Knoopachtergrondkleur...." ID="ID_1510254995" CREATED="1267721443828" MODIFIED="1295722969557" BACKGROUND_COLOR="#ffffff"/>
-<node ID="ID_614525123" CREATED="1304677454424" MODIFIED="1304677454424">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om revisies wel/niet bij te houden:<br/>- kies <i>Extra &gt; Tonen revisies </i>in Hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Tonen wanneer gewijzigd" FOLDED="true" ID="ID_208481180" CREATED="1266247851640" MODIFIED="1293375088217" COLOR="#663300" BACKGROUND_COLOR="#ffffff">
-<node ID="ID_198955102" CREATED="1267746222164" MODIFIED="1293375088211">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Wisselt wel/niet tonen van de laatste datum waarop de knoop werd gemaakt of bewerkt. Deze datum wordt getoond als de muiscursor zich boven een knoop bevindt.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Groovy scripts bewerken" FOLDED="true" ID="ID_894921324" CREATED="1266247915812" MODIFIED="1293375088153" COLOR="#663300">
-<node ID="ID_698944548" CREATED="1271847596010" MODIFIED="1293375088148">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Toont een dialoogvenster voor het definieren van Groovy scripts die aan knopen van de huidige mindmap worden gekoppeld.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Uitvoeren alle scripts" FOLDED="true" ID="ID_1362957476" CREATED="1266248076859" MODIFIED="1293375088144" COLOR="#663300">
-<node ID="ID_747840904" CREATED="1271847981150" MODIFIED="1293375088138">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Voert alle Groovy scripts&#160;&#160;uit die voor deze mindmap zijn gedefinieerd. ZIE OOK: <i>Extra &gt; Groovy scripts bewerken...</i>
-    </p>
-  </body>
-</html></richcontent>
-<font ITALIC="false"/>
-</node>
-</node>
-<node TEXT="Uitvoeren scripts geselecteerde knopen" FOLDED="true" ID="ID_1890181858" CREATED="1267746871633" MODIFIED="1293375088135" COLOR="#663300">
-<node ID="ID_1521634244" CREATED="1271848092252" MODIFIED="1293375088131">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Voert alle Groovy scripts uit die zijn gekoppeld aan de geslecteerde knopen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Groovy scripts" FOLDED="true" ID="ID_1243016078" CREATED="1266248103671" MODIFIED="1293375088127" COLOR="#663300">
-<node ID="ID_1073251906" CREATED="1271848210203" MODIFIED="1293375088124">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Toont een hi&#235;rarchisch &#160;menu van taken (Groovy scripts) die zijn toegevoegd aan de lijst gebruikerstaken.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Formules" STYLE_REF="Functie" FOLDED="true" ID="ID_394104724" CREATED="1291201976731" MODIFIED="1293375087164" BACKGROUND_COLOR="#ffffff">
-<node TEXT="Formules zijn voor gevorderde gebruikers. Voor het gebruik van formules, ga naar Internet." ID="ID_941770870" CREATED="1291754737435" MODIFIED="1293375087160" LINK="http://freeplane.sourceforge.net/wiki/index.php/Formula" BACKGROUND_COLOR="#ffff33" STYLE="bubble"/>
-<node TEXT="Alles uitrekenen" STYLE_REF="Functie" ID="ID_1812283108" CREATED="1291201995803" MODIFIED="1293375087156"/>
-</node>
-<node TEXT="Instellingen..." FOLDED="true" ID="ID_1201108812" CREATED="1266242708796" MODIFIED="1293375088120" COLOR="#663300">
-<node TEXT="Omgeving" FOLDED="true" ID="ID_538478024" CREATED="1266242716593" MODIFIED="1293375088117" COLOR="#000000">
-<node TEXT="Taal" FOLDED="true" ID="ID_677173220" CREATED="1290768049679" MODIFIED="1293375088113">
-<node TEXT="Opent menu waarin de taal kan worden gekozen waarin het programma opent." ID="ID_696564054" CREATED="1290768140362" MODIFIED="1293375088110"/>
-</node>
-<node TEXT="Bestanden" FOLDED="true" ID="ID_1770394460" CREATED="1290768275981" MODIFIED="1293375088106">
-<node TEXT="Lengte van de lijst van recent geopende bestanden" FOLDED="true" ID="ID_1648526070" CREATED="1290768292719" MODIFIED="1293375088103">
-<node TEXT="Standaard: 25." ID="ID_731122567" CREATED="1290768820445" MODIFIED="1293375088099"/>
-</node>
-<node TEXT="Automatisch laatste mindmap openen" FOLDED="true" ID="ID_458678793" CREATED="1290768346454" MODIFIED="1293375088095">
-<node TEXT="Vinkje: openen. Geen vinkje: niet openen.. Standaard: geen vinkje." ID="ID_344803327" CREATED="1290768834445" MODIFIED="1293375088092"/>
-</node>
-<node TEXT="Open bij opstarten alle laatstgeopende mindmaps opnieuw" FOLDED="true" ID="ID_1077940750" CREATED="1290768367397" MODIFIED="1293375088088">
-<node TEXT="Vinkje: openen. Geen vinkje: niet openen. Standaard: vinkje." ID="ID_1390025445" CREATED="1290768863501" MODIFIED="1293375088085"/>
-</node>
-<node TEXT="Openen laatste en nieuwe mindmapbestanden" FOLDED="true" ID="ID_1968611250" CREATED="1290768405530" MODIFIED="1293375088081">
-<node TEXT="Vinkje: openen. Geen vinkje: niet openen. Standaard: geen vinkje." ID="ID_645721312" CREATED="1290768905254" MODIFIED="1293375088078"/>
-</node>
-<node TEXT="Experimenteel: bestanden beveiligen" FOLDED="true" ID="ID_1261305502" CREATED="1290768424602" MODIFIED="1293375088074">
-<node TEXT="Vinkje: beveiligen. Geen vinkje: niet beveiligen. Stanfdaard: geen vinkje." ID="ID_1326826238" CREATED="1290768971266" MODIFIED="1293375088071"/>
-</node>
-<node TEXT="Bestand met opmaakpatronen" FOLDED="true" ID="ID_1189404544" CREATED="1290768448790" MODIFIED="1293375088067">
-<node TEXT="Voorgedefinieerde patronen voor OK, opmerking, enz. Standaard: patterns.xml" ID="ID_1222053331" CREATED="1290768554176" MODIFIED="1293375088064"/>
-</node>
-</node>
-<node TEXT="Automatisch opslaan" FOLDED="true" ID="ID_1327160915" CREATED="1266242724046" MODIFIED="1293375088060" COLOR="#000000" STYLE="fork">
-<node TEXT="Tijdsinterval voor automatisch opslaan" FOLDED="true" ID="ID_1364666052" CREATED="1266242737562" MODIFIED="1293375088056" COLOR="#000000">
-<node TEXT="De tijd tussen twee momenten waarop automatisch wordt bewaard in millisekonden (60,000 = 60,000/1000 = 60 seconden)" ID="ID_823484360" CREATED="1266242860203" MODIFIED="1293375088052" COLOR="#000000"/>
-</node>
-<node TEXT="Verwijderen reservekopie bij afsluiten" FOLDED="true" ID="ID_600463401" CREATED="1266242763234" MODIFIED="1293375088048" COLOR="#000000">
-<node TEXT="Vinkje: verwijderen. Geen vinkje: niet verwijderen. Standaard: vinkje." ID="ID_120395556" CREATED="1266242982140" MODIFIED="1293375088045" COLOR="#000000"/>
-</node>
-<node TEXT="Aantal verschillende reservebestanden bij automatisch opslaan" FOLDED="true" ID="ID_1986233531" CREATED="1266242796906" MODIFIED="1293375088041" COLOR="#000000">
-<node ID="ID_523538549" CREATED="1266243026968" MODIFIED="1293375088034" COLOR="#000000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Het aantal permanent bewaarde backup bestanden. Het bestandsformaat is mindmapnaam.mm.[backup file number].autosave.
-    </p>
-    <p>
-      <i>These files are saved in a folder named &quot;.backup&quot; which is created as a subfolder in the folder in which the Freeplane map was created and first saved. If the number of different files is 5, then automatic saves 1 through 5 will be created. The first file is named &quot;[mapname].mm.1.autosave&quot;. The second is named, &quot;&quot;[mapname].mm.2.autosave&quot;, and so on until &quot;&quot;[mapname].mm.5.autosave&quot; is written. Thereafter, &quot;&quot;[mapname].mm.5.autosave&quot; will be overwritten. Autosave files can be opened directly by navigating to the &quot;.backup&quot; folder, setting the file filter to &quot;all files&quot;, then selecting the autosave file you wish. Automatic save files are deleted when the Freeplane file is closed. SEE ALSO: Number of backup files.</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Aantal permanent bewaarde back-up bestanden" FOLDED="true" ID="ID_1158161825" CREATED="1266242811093" MODIFIED="1293375088030" COLOR="#000000">
-<node ID="ID_1570674785" CREATED="1266243358984" MODIFIED="1293375088024" COLOR="#000000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Aantal back-up bestanden dat wordt bewaard. Verschil met reservebestanden: worden blijven bewaard, ook als<i>&#160;Verwijderen reservekopie</i>&#160;is ingesteld. Als het aantal back-up bestanden is intesteld op 10 en het aantal automatisch bewaarde reservebestanden op 3, dan zijn de drie back up bestanden gelijk aan de eerste 3 reservebestanden (!).
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Opslaan..." FOLDED="true" ID="ID_677444812" CREATED="1290769494280" MODIFIED="1293375088020">
-<node FOLDED="true" ID="ID_1846418478" CREATED="1290769505489" MODIFIED="1293375088017">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Bewaar de situatie van open/dichtvouwen.
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_583648983" CREATED="1290769678065" MODIFIED="1293375088013">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opties: Atijd, Nooit, Als de mindmap is veranderd. Standaard: nooit.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Opslaan (alleen) gebruikt knoop-ID&apos;s" FOLDED="true" ID="ID_749147752" CREATED="1290769688991" MODIFIED="1293375088009">
-<node TEXT="Vinkje: opslaan. Geen vinkje: niet opslaan. Standaard: vinkje." ID="ID_857647638" CREATED="1290769714443" MODIFIED="1293375088006"/>
-</node>
-<node TEXT="Opslaan bewerkingstijdstippen" FOLDED="true" ID="ID_833305012" CREATED="1290769749348" MODIFIED="1293375088002">
-<node TEXT="Vinkje: opslaan. Geen vinkje: niet opslaan. Standaard: opslaan." ID="ID_987691125" CREATED="1290769767422" MODIFIED="1293375087984"/>
-</node>
-</node>
-<node TEXT="Laden" FOLDED="true" ID="ID_1735990765" CREATED="1290769816429" MODIFIED="1293375087980">
-<node TEXT="Bij openen" FOLDED="true" ID="ID_830791077" CREATED="1290769826733" MODIFIED="1293375087976">
-<node TEXT="Opties: Alles dichtvouwen. Uit mindmap overnemen om alles open/dicht te vouwen. Uit mindmap overnemen of alles openvouwen. Alles openvouwen. Standaard: optie 2." ID="ID_490502258" CREATED="1290769840281" MODIFIED="1293375087971"/>
-</node>
-<node TEXT="Dichtvouwen alle knopen vanaf niveau" FOLDED="true" ID="ID_1779972542" CREATED="1290770043338" MODIFIED="1293375087967">
-<node TEXT="Standaar:1" ID="ID_685738573" CREATED="1290770065076" MODIFIED="1293375087963"/>
-</node>
-<node TEXT="Karakterset" FOLDED="true" ID="ID_1404890680" CREATED="1290770099653" MODIFIED="1293375087960">
-<node TEXT="Standaard: Standaard." ID="ID_52002812" CREATED="1290770108694" MODIFIED="1293375087956"/>
-</node>
-</node>
-<node TEXT="Hyperlinktypes" FOLDED="true" ID="ID_485518784" CREATED="1290770143114" MODIFIED="1293375087952">
-<node TEXT="Hyperlinks" FOLDED="true" ID="ID_596883612" CREATED="1290770151313" MODIFIED="1293375087947">
-<node TEXT="Opties: Relatief, Absoluut. Standaard: Relatief." ID="ID_507386144" CREATED="1290770184174" MODIFIED="1293375087944"/>
-</node>
-</node>
-<node TEXT="Nieuwe programmaonderdelen (updates)" FOLDED="true" ID="ID_39799513" CREATED="1290770226847" MODIFIED="1293375087940">
-<node TEXT="Bij de start controleren of er nieuwe programmaonderdelen zijn" FOLDED="true" ID="ID_1059882831" CREATED="1290770254218" MODIFIED="1293375087936">
-<node TEXT="Vinkje: ja. Geen vinkje: nee. Standaard: vinkje." ID="ID_975255640" CREATED="1290770276113" MODIFIED="1293375087933"/>
-</node>
-</node>
-<node TEXT="Automatische foutmelding" FOLDED="true" ID="ID_308409512" CREATED="1290770324481" MODIFIED="1293375087929">
-<node TEXT="Opties: Altijd verzenden. Nooit verzenden. Tonen dialoog voor foutmelding." ID="ID_688147463" CREATED="1290770367935" MODIFIED="1293375087926"/>
-</node>
-</node>
-</node>
-<node TEXT="Instellingen" FOLDED="true" ID="ID_206532123" CREATED="1271848758798" MODIFIED="1293375087922">
-<node TEXT="Standaard stijlen" FOLDED="true" ID="ID_1577253237" CREATED="1290770841792" MODIFIED="1293375087918">
-<node TEXT="Standaard knoopstijl" FOLDED="true" ID="ID_403569936" CREATED="1271850100480" MODIFIED="1293375087915">
-<node TEXT="Opties: Als ouderknoop. Geen omlijning. Omlijning. Gecombineerd. ??" ID="ID_616760945" CREATED="1290770908124" MODIFIED="1293375087911"/>
-</node>
-<node TEXT="Standaardstijl voor basisknoop" FOLDED="true" ID="ID_877301922" CREATED="1290770869100" MODIFIED="1293375087907">
-<node TEXT="Opties: Geen omlijning. Omlijning. Gecombineerd. ??" ID="ID_1442180718" CREATED="1290770908124" MODIFIED="1293375087904"/>
-</node>
-</node>
-<node TEXT="Standaardkleuren" FOLDED="true" ID="ID_646613700" CREATED="1290771296291" MODIFIED="1293375087900">
-<node TEXT="Standaard knoopachtergrondkleur" FOLDED="true" ID="ID_128477044" CREATED="1290771377934" MODIFIED="1295722887143">
-<node TEXT="Standaard: zwart #000000" ID="ID_97289634" CREATED="1290773833636" MODIFIED="1293375087893"/>
-</node>
-<node TEXT="Standaard takkleur" FOLDED="true" ID="ID_613301395" CREATED="1290771393247" MODIFIED="1293375087890">
-<node TEXT="Standaard donkergrijs #808080" ID="ID_278668130" CREATED="1290773880942" MODIFIED="1293375087886"/>
-</node>
-<node TEXT="Standaard kleur van een hyperlink" FOLDED="true" ID="ID_1798626941" CREATED="1290771427933" MODIFIED="1293375087883">
-<node TEXT="Standaard middengrijs #b0b0b0" ID="ID_694054110" CREATED="1290773906534" MODIFIED="1293375087879"/>
-</node>
-<node TEXT="Standaard achtergrondkleur" FOLDED="true" ID="ID_1444387826" CREATED="1290771449109" MODIFIED="1293375087876">
-<node TEXT="Standaard: wit #ffffff" ID="ID_1139030562" CREATED="1290773940348" MODIFIED="1293375087872"/>
-</node>
-<node TEXT="Revisiekleur" FOLDED="true" ID="ID_1101630164" CREATED="1290773982305" MODIFIED="1293375087869">
-<node TEXT="Standaard: geel #ffff00" ID="ID_488085323" CREATED="1290773995182" MODIFIED="1293375087865"/>
-</node>
-<node TEXT="Witte achtergrond bij het printen" FOLDED="true" ID="ID_724868938" CREATED="1290771463173" MODIFIED="1293375087862">
-<node TEXT="Vinkje: ja. Geen vinkje: nee. Standaard: vinkje." ID="ID_852150027" CREATED="1290774031226" MODIFIED="1293375087858"/>
-</node>
-<node TEXT="Standaard wolkkleur" FOLDED="true" ID="ID_397809563" CREATED="1290771489468" MODIFIED="1293375087855">
-<node TEXT="Vast: #f0f0f0" ID="ID_793122827" CREATED="1290774072480" MODIFIED="1293375087851"/>
-</node>
-</node>
-<node TEXT="Standaard lettertype" FOLDED="true" ID="ID_1269205581" CREATED="1290774110255" MODIFIED="1293375087847">
-<node TEXT="Naam lettertype" ID="ID_925048664" CREATED="1290775849126" MODIFIED="1293375087844"/>
-<node TEXT="Lettergrootte" ID="ID_259568339" CREATED="1290775804143" MODIFIED="1293375087840"/>
-<node TEXT="Standaard lettertype stijl [FOUT]" ID="ID_489117270" CREATED="1290775869843" MODIFIED="1293375087836"/>
-<node TEXT="Gebruik standaar lettertype ook voor notities" FOLDED="true" ID="ID_1155567610" CREATED="1290775899302" MODIFIED="1293375087833">
-<node TEXT="Vinkje: ja. Geen vinkje: nee. Standaard: vinkje." ID="ID_414649724" CREATED="1290776123032" MODIFIED="1293375087829"/>
-</node>
-<node TEXT="Verwijderen bovenmarge voor notities" FOLDED="true" ID="ID_611734697" CREATED="1290776159123" MODIFIED="1293375087826">
-<node TEXT="Vinkje ja. Geen vinkje: nee. Standaard: vinkje." ID="ID_1351496506" CREATED="1290776174044" MODIFIED="1293375087822"/>
-</node>
-<node TEXT="Maximum knoopbreedte" FOLDED="true" ID="ID_1238954141" CREATED="1290776203864" MODIFIED="1293375087818">
-<node TEXT="Standaard 600 pixels." ID="ID_640351571" CREATED="1290776342313" MODIFIED="1293375087815"/>
-</node>
-<node TEXT="Breedte tooltip" FOLDED="true" ID="ID_340891349" CREATED="1290776215898" MODIFIED="1293375087811">
-<node TEXT="Standaard 600 pixels." ID="ID_165388380" CREATED="1290776361400" MODIFIED="1293375087808"/>
-</node>
-<node TEXT="Andere standaardinstllingen" FOLDED="true" ID="ID_1883418662" CREATED="1290776423075" MODIFIED="1293375087804">
-<node TEXT="Standaard takvorm" FOLDED="true" ID="ID_1790254486" CREATED="1290776432849" MODIFIED="1293375087801">
-<node TEXT="Standaard: Bocht" ID="ID_1153143065" CREATED="1290776459594" MODIFIED="1293375087797"/>
-</node>
-</node>
-</node>
-</node>
-<node TEXT="Voorkomen" FOLDED="true" ID="ID_60377438" CREATED="1271848928362" MODIFIED="1293375087793">
-<node TEXT="Kenmerken gebruiksomgeving" FOLDED="true" ID="ID_262076953" CREATED="1271850131569" MODIFIED="1293375087790">
-<node TEXT="Gebruiksomgeving" FOLDED="true" ID="ID_570450021" CREATED="1290777087160" MODIFIED="1293375087786">
-<node TEXT="Standaard: Standaard" ID="ID_493115478" CREATED="1290777095967" MODIFIED="1293375087783"/>
-</node>
-</node>
-<node TEXT="Selectiekleuren" FOLDED="true" ID="ID_1520881637" CREATED="1290777324669" MODIFIED="1293375087779">
-<node TEXT="Tonen geselecteerde knopen met een omlijning" FOLDED="true" ID="ID_225168778" CREATED="1290777339529" MODIFIED="1293375087776">
-<node TEXT="Vinkje: ja. Geen vinkje: nee. Standaard: vinkje." ID="ID_519213717" CREATED="1290777389863" MODIFIED="1293375087772"/>
-</node>
-<node TEXT="Kleur knoopomlijning geselecteerde knoop" FOLDED="true" ID="ID_866701813" CREATED="1290777434939" MODIFIED="1293375087769">
-<node TEXT="Standaard: blauw #002080" ID="ID_983667183" CREATED="1290777485483" MODIFIED="1293375087765"/>
-</node>
-<node TEXT="Standaardkleur geselecteerde knoop" FOLDED="true" ID="ID_667575542" CREATED="1290777458393" MODIFIED="1293375087762">
-<node TEXT="lichtblauw" FOLDED="true" ID="ID_1013341385" CREATED="1290777507238" MODIFIED="1293375087758">
-<node TEXT="Standaard: #d2d2d2" ID="ID_741630734" CREATED="1290777518680" MODIFIED="1293375087755"/>
-</node>
-</node>
-</node>
-<node TEXT="Opmaak basisknoop" FOLDED="true" ID="ID_1240684864" CREATED="1290777561181" MODIFIED="1293375087751">
-<node TEXT="Alle takken (afstammingslijnen) beginnen bij de basisknoop" FOLDED="true" ID="ID_1075943261" CREATED="1290777570425" MODIFIED="1293375087748">
-<node TEXT="Vinkje ja. Geen vinkje: nee. Standaard: geen vinkje." ID="ID_379832087" CREATED="1290777613286" MODIFIED="1293375087743"/>
-</node>
-</node>
-<node TEXT="Verzachten" FOLDED="true" ID="ID_89915671" CREATED="1290777651170" MODIFIED="1293375087740">
-<node TEXT="Verzachten" FOLDED="true" ID="ID_1643026141" CREATED="1290777698430" MODIFIED="1293375087735">
-<node TEXT="Standaard: Afstamminglijnen verzachten" ID="ID_957088879" CREATED="1290777707737" MODIFIED="1293375087731"/>
-</node>
-</node>
-<node TEXT="Verbindingslijnen" FOLDED="true" ID="ID_173210183" CREATED="1290777750675" MODIFIED="1293375087728">
-<node TEXT="Naam lettertype" ID="ID_1660306379" CREATED="1290777873144" MODIFIED="1293375087724"/>
-<node TEXT="Grootte lettertype" ID="ID_768811884" CREATED="1290777883275" MODIFIED="1293375087720"/>
-<node TEXT="Knopen verbergen verbindingslijnen" ID="ID_1832434757" CREATED="1290777946681" MODIFIED="1293375087716"/>
-</node>
-<node TEXT="Bewerken uitgebreide tekstopmaak" FOLDED="true" ID="ID_598930842" CREATED="1290777987421" MODIFIED="1293375087712">
-<node TEXT="Knoppen aan de bovenkant" FOLDED="true" ID="ID_1011768524" CREATED="1290777998709" MODIFIED="1293375087708">
-<node TEXT="Vinkje ja. Geen vinkje: nee. Standaard: geen vinkje." ID="ID_533475070" CREATED="1290778173944" MODIFIED="1293375087704"/>
-</node>
-<node TEXT="Positie venster onder knoop" FOLDED="true" ID="ID_1597303900" CREATED="1290778013536" MODIFIED="1293375087701">
-<node TEXT="Vinkje: ja. Geen vinkje: nee. Standaard: vinkje." ID="ID_81183664" CREATED="1290778207631" MODIFIED="1293375087697"/>
-</node>
-<node TEXT="Minimumhoogte standaardvenster" FOLDED="true" ID="ID_1672823526" CREATED="1290778036616" MODIFIED="1293375087693">
-<node TEXT="Standaard: 150 pixels." ID="ID_1550511198" CREATED="1290778236765" MODIFIED="1293375087689"/>
-</node>
-<node TEXT="Maximumhoogte standaardvenster" FOLDED="true" ID="ID_1021911400" CREATED="1290778056295" MODIFIED="1293375087685">
-<node TEXT="Standaard: 600 pixels" ID="ID_1430521388" CREATED="1290778256475" MODIFIED="1293375087682"/>
-</node>
-<node TEXT="Minimum breedte standaardvenster" FOLDED="true" ID="ID_607349190" CREATED="1290778097003" MODIFIED="1293375087678">
-<node TEXT="Standaard: 400 pixels" ID="ID_1459427958" CREATED="1290778284517" MODIFIED="1293375087675"/>
-</node>
-<node TEXT="Maximumbreedte standaardvenster" FOLDED="true" ID="ID_176104166" CREATED="1290778112596" MODIFIED="1293375087671">
-<node TEXT="Standaard 900 pixels" ID="ID_73171824" CREATED="1290778301341" MODIFIED="1293375087668"/>
-</node>
-<node TEXT="Entertoets dient standaard als bevestiging" FOLDED="true" ID="ID_74273921" CREATED="1290778134429" MODIFIED="1293375087664">
-<node TEXT="Vinkje ja. Standaard: vinkje." ID="ID_69520160" CREATED="1290778149116" MODIFIED="1293375087661"/>
-</node>
-</node>
-<node TEXT="Overzichtweergave" FOLDED="true" ID="ID_1576615031" CREATED="1290778331347" MODIFIED="1293375087657">
-<node TEXT="Verticale afstand" FOLDED="true" ID="ID_1621835698" CREATED="1290778339422" MODIFIED="1293375087653">
-<node TEXT="5" ID="ID_53365629" CREATED="1290778356403" MODIFIED="1293375087650"/>
-</node>
-<node TEXT="Horizontale afstand" FOLDED="true" ID="ID_184127884" CREATED="1290778364912" MODIFIED="1293375087646">
-<node TEXT="15" ID="ID_381910331" CREATED="1290778374343" MODIFIED="1293375087642"/>
-</node>
-</node>
-<node TEXT="Pictogrammen" FOLDED="true" ID="ID_960074583" CREATED="1290778382820" MODIFIED="1293375087638">
-<node TEXT="Gestructureerde weergave pictogrammenmenu" FOLDED="true" ID="ID_58227947" CREATED="1290778391456" MODIFIED="1293375087634">
-<node TEXT="Vinkje ja. Standaard: geen vinkje." ID="ID_1714703853" CREATED="1290778411015" MODIFIED="1293375087630"/>
-</node>
-<node TEXT="Verbergen pictogrsam notitievenster" FOLDED="true" ID="ID_26283312" CREATED="1290778440162" MODIFIED="1293375087626">
-<node TEXT="Vinkje: ja. Standaard: geen vinkje." ID="ID_299678105" CREATED="1290778453805" MODIFIED="1293375087622"/>
-</node>
-<node TEXT="Tonen pictogram voor attributen" FOLDED="true" ID="ID_262098445" CREATED="1290778479163" MODIFIED="1293375087618">
-<node TEXT="Vinkje: ja. Standaard: vinkje." ID="ID_797132580" CREATED="1290778492915" MODIFIED="1293375087615"/>
-</node>
-</node>
-</node>
-<node TEXT="Sneltoetsen" FOLDED="true" ID="ID_1844718916" CREATED="1290778576694" MODIFIED="1293375087611">
-<node TEXT="Commando&apos;s voor het programma" FOLDED="true" ID="ID_909728342" CREATED="1290778583769" MODIFIED="1293375087607">
-<node TEXT="Gebruik Extra &gt; toewijzen sneltoets." ID="ID_252661915" CREATED="1290778618721" MODIFIED="1293375087603"/>
-</node>
-<node TEXT="Pictogrammen" ID="ID_398312029" CREATED="1290778660818" MODIFIED="1293375087599"/>
-</node>
-<node TEXT="Gedrag" FOLDED="true" ID="ID_1011521668" CREATED="1290778678094" MODIFIED="1293375087595">
-<node TEXT="Gedrag" FOLDED="true" ID="ID_376712479" CREATED="1290778706136" MODIFIED="1293375087592">
-<node TEXT="Nieuwe takken maken" FOLDED="true" ID="ID_1058770421" CREATED="1290778710761" MODIFIED="1293375087588">
-<node TEXT="Opties: Eerste. Laatste. Standaard: Laatste." ID="ID_756712468" CREATED="1290778721689" MODIFIED="1293375087584"/>
-</node>
-<node TEXT="Klik en sleep" FOLDED="true" ID="ID_514961203" CREATED="1290778755096" MODIFIED="1293375087580">
-<node TEXT="Vinkje: ja. Standaard: vinkje." ID="ID_510819303" CREATED="1290778764776" MODIFIED="1293375087576"/>
-</node>
-<node TEXT="Openvouwen bij plakken." FOLDED="true" ID="ID_798090632" CREATED="1290778792801" MODIFIED="1293375087572">
-<node TEXT="Vinkje: ja. Standaard: geen vinkje." ID="ID_830475225" CREATED="1290778802950" MODIFIED="1293375087569"/>
-</node>
-<node TEXT="Met de cursor verschuiven van mindmap uitschakelen" FOLDED="true" ID="ID_1246822653" CREATED="1290778828214" MODIFIED="1293375087565">
-<node TEXT="Vinkje: ja. Standaard: Geen vinkje." ID="ID_1826088520" CREATED="1290778869577" MODIFIED="1293375087561"/>
-</node>
-<node TEXT="Blaknopen dichtvouwen inschakelen" FOLDED="true" ID="ID_1584639817" CREATED="1290778906495" MODIFIED="1293375087557">
-<node TEXT="Vinkje: ja. Standaard: geen vinkje." ID="ID_1442484642" CREATED="1290778922976" MODIFIED="1293375087552"/>
-</node>
-<node TEXT="Breedte van het pictogram voor dichtvouwen" FOLDED="true" ID="ID_1697515589" CREATED="1290778948115" MODIFIED="1293375087549">
-<node TEXT="Standaard: 6" ID="ID_470863724" CREATED="1290778973583" MODIFIED="1293375087545"/>
-</node>
-<node TEXT="Tonen knoop-ID" FOLDED="true" ID="ID_1876870239" CREATED="1290778986383" MODIFIED="1293375087542">
-<node TEXT="Vinkje: ja. Standaard: geen vinkje." ID="ID_1477328588" CREATED="1290778994237" MODIFIED="1293375087538"/>
-</node>
-<node TEXT="Verplaats notitiecursor naar het eind" FOLDED="true" ID="ID_869730459" CREATED="1290779023900" MODIFIED="1293375087535">
-<node TEXT="Vinkje: ja. Standaard: vinkje." ID="ID_621117598" CREATED="1290779036560" MODIFIED="1293375087531"/>
-</node>
-</node>
-<node TEXT="Typen" FOLDED="true" ID="ID_1138762313" CREATED="1290779082916" MODIFIED="1293375087527">
-<node TEXT="Direct kunnen bewerken van (typen in) de knoop uitschakelen" FOLDED="true" ID="ID_1019472301" CREATED="1290779095341" MODIFIED="1293375087524">
-<node TEXT="Vinkje: ja. Standaard: geen vinkje." ID="ID_1121226362" CREATED="1290779160041" MODIFIED="1293375087520"/>
-</node>
-<node TEXT="Typen voegt nieuwe knoop toe" FOLDED="true" ID="ID_1432670942" CREATED="1290779128903" MODIFIED="1293375087517">
-<node TEXT="Vinkje: ja. Standaard: geen vinkje." ID="ID_1670171916" CREATED="1290779141268" MODIFIED="1293375087513"/>
-</node>
-</node>
-<node TEXT="Gintegreerd knoopbewerkingsvenster" FOLDED="true" ID="ID_774184328" CREATED="1290779229110" MODIFIED="1293375087510">
-<node TEXT="Standaardbevestiging met Enter" FOLDED="true" ID="ID_1295059936" CREATED="1290779249758" MODIFIED="1293375087506">
-<node TEXT="Vinkje: ja. Standaard: vinkje." ID="ID_1913961439" CREATED="1290779262215" MODIFIED="1293375087503"/>
-</node>
-</node>
-<node TEXT="Bevestigen" FOLDED="true" ID="ID_404295727" CREATED="1290779291597" MODIFIED="1293375087499">
-<node TEXT="Gebruik opmaak voor alle knopen" FOLDED="true" ID="ID_553176052" CREATED="1290779300762" MODIFIED="1293375087496">
-<node TEXT="Opties: Ja, Nee, Vraag. Standaard: Ja" ID="ID_984541244" CREATED="1290779311144" MODIFIED="1293375087492"/>
-</node>
-<node TEXT="Knopen verwijderen zonder bevestiging" FOLDED="true" ID="ID_373380193" CREATED="1290779373131" MODIFIED="1293375087489">
-<node TEXT="Vinkje: ja. Standaard: vinkje." ID="ID_1190723773" CREATED="1290779384761" MODIFIED="1293375087485"/>
-</node>
-<node TEXT="Notities verwijderen zonder bevestiging" FOLDED="true" ID="ID_542904159" CREATED="1290779373131" MODIFIED="1293375087482">
-<node TEXT="Vinkje: ja. Standaard: vinkje." ID="ID_145777357" CREATED="1290779384761" MODIFIED="1293375087478"/>
-</node>
-</node>
-<node TEXT="Selectiemethode" FOLDED="true" ID="ID_395371672" CREATED="1290779521580" MODIFIED="1293375087475">
-<node TEXT="Selectiemethode" FOLDED="true" ID="ID_852206479" CREATED="1290779527906" MODIFIED="1293375087471">
-<node TEXT="Opties: Onmiddelijk. Vertraagd. Door te klikken. Standaard: Door te klikken" ID="ID_1303069957" CREATED="1290779537321" MODIFIED="1293375087468"/>
-</node>
-<node TEXT="Tijd voor vertraagde selectie" FOLDED="true" ID="ID_175476716" CREATED="1290779656605" MODIFIED="1293375087464">
-<node TEXT="Standaard 200" ID="ID_1459436006" CREATED="1290779668564" MODIFIED="1293375087460"/>
-</node>
-<node TEXT="Centreren geselecteerde knopen" FOLDED="true" ID="ID_303904886" CREATED="1290779682767" MODIFIED="1293375087457">
-<node TEXT="Vinkje: ja. Standaard: geen vinkje." ID="ID_224905062" CREATED="1290779695084" MODIFIED="1293375087453"/>
-</node>
-</node>
-<node TEXT="Muiswiel" FOLDED="true" ID="ID_11690218" CREATED="1290779717805" MODIFIED="1293375087450">
-<node TEXT="Snelheid" FOLDED="true" ID="ID_127513256" CREATED="1290779723195" MODIFIED="1293375087446">
-<node TEXT="Standaard: 80" ID="ID_38486734" CREATED="1290779732189" MODIFIED="1293375087443"/>
-</node>
-</node>
-<node TEXT="Schuifbalk" FOLDED="true" ID="ID_1409807758" CREATED="1290779747078" MODIFIED="1293375087439">
-<node TEXT="Snelheid" FOLDED="true" ID="ID_1019184624" CREATED="1290779755058" MODIFIED="1293375087435">
-<node TEXT="Standaard: 20" ID="ID_878421460" CREATED="1290779761493" MODIFIED="1293375087432"/>
-</node>
-</node>
-<node TEXT="Opties voor spellingcontrole" FOLDED="true" ID="ID_1441558655" CREATED="1290779777927" MODIFIED="1293375087428">
-<node TEXT="Hoofdlettergevoelig" FOLDED="true" ID="ID_801644096" CREATED="1290779788965" MODIFIED="1293375087425">
-<node TEXT="Vinkje: ja. Standaard: vinkje" ID="ID_1520905094" CREATED="1290779802857" MODIFIED="1293375087421"/>
-</node>
-<node TEXT="Negeer alle hoofdletterwoorden" FOLDED="true" ID="ID_1957386780" CREATED="1290779847511" MODIFIED="1293375087417">
-<node TEXT="Vinkje: ja. Standaard: geen vinkje" ID="ID_370825948" CREATED="1290779857898" MODIFIED="1293375087414"/>
-</node>
-<node TEXT="Negeer hoofdletter aan begin van een woord" FOLDED="true" ID="ID_1980803397" CREATED="1290779876719" MODIFIED="1293375087410">
-<node TEXT="Vinkje: ja. Standaard: geen vinkje" ID="ID_640425110" CREATED="1290779887663" MODIFIED="1293375087407"/>
-</node>
-<node TEXT="Negeer woorden met een getal" FOLDED="true" ID="ID_724633553" CREATED="1290779913035" MODIFIED="1293375087403">
-<node TEXT="Vinkje: ja. Standaard: vinkje." ID="ID_840354582" CREATED="1290779924590" MODIFIED="1293375087400"/>
-</node>
-<node TEXT="Maximaal aantal suggesties in dialoogvenster. Standaard: 15" ID="ID_96242930" CREATED="1290779956811" MODIFIED="1293375087396"/>
-<node TEXT="Maximaal aantal suggesties in het menu" FOLDED="true" ID="ID_804402993" CREATED="1290779998534" MODIFIED="1293375087393">
-<node TEXT="Standaard: 15" ID="ID_962637456" CREATED="1290780014205" MODIFIED="1293375087389"/>
-</node>
-</node>
-<node TEXT="Tijdsintervallen voor tooltips" FOLDED="true" ID="ID_1997794453" CREATED="1290780035039" MODIFIED="1293375087386">
-<node TEXT="Tonen tooltips voor knopen" FOLDED="true" ID="ID_150373985" CREATED="1290780048884" MODIFIED="1293375087382">
-<node TEXT="Vinkje: ja. Standaard: vinkje." ID="ID_316496769" CREATED="1290780064882" MODIFIED="1293375087379"/>
-</node>
-<node TEXT="Beginvertraging,ms" FOLDED="true" ID="ID_903757942" CREATED="1290780092533" MODIFIED="1293375087375">
-<node TEXT="Standaard: 750" ID="ID_170837055" CREATED="1290780107033" MODIFIED="1293375087372"/>
-</node>
-<node TEXT="Vertraging voor het laten verdwijnen, ms" FOLDED="true" ID="ID_1311811836" CREATED="1290780118038" MODIFIED="1293375087368">
-<node TEXT="4.000" ID="ID_186094542" CREATED="1290780136006" MODIFIED="1293375087365"/>
-</node>
-<node TEXT="Vertraging in het opnieuw laten zien, ms" FOLDED="true" ID="ID_244780561" CREATED="1290780148638" MODIFIED="1293375087361">
-<node TEXT="500" ID="ID_1725556294" CREATED="1290780171734" MODIFIED="1293375087358"/>
-</node>
-</node>
-<node TEXT="Bewerkingsinstellingen" FOLDED="true" ID="ID_1041359144" CREATED="1290780187091" MODIFIED="1293375087354">
-<node TEXT="Extra diktestap" FOLDED="true" ID="ID_831324240" CREATED="1290780194245" MODIFIED="1293375087351">
-<node TEXT="Standaard: 80" ID="ID_757490856" CREATED="1290780202880" MODIFIED="1293375087347"/>
-</node>
-</node>
-<node TEXT="Ongedaan maken" FOLDED="true" ID="ID_993738180" CREATED="1290780218643" MODIFIED="1293375087344">
-<node TEXT="Aantal stappen" FOLDED="true" ID="ID_279904052" CREATED="1290780228573" MODIFIED="1293375087340">
-<node TEXT="Standaard: 100" ID="ID_1148806970" CREATED="1290780235433" MODIFIED="1293375087337"/>
-</node>
-</node>
-</node>
-<node TEXT="HTML" FOLDED="true" ID="ID_1167906438" CREATED="1290780274019" MODIFIED="1293375087333">
-<node TEXT="Browser" FOLDED="true" ID="ID_1583511654" CREATED="1290780278645" MODIFIED="1293375087330">
-<node TEXT="Standaard browsercommando Windows NT" ID="ID_1525195373" CREATED="1290782683163" MODIFIED="1293375087326"/>
-<node TEXT="Standaard browsercommando voor Windows 9x" ID="ID_1181319984" CREATED="1290782707896" MODIFIED="1293375087323"/>
-<node TEXT="Standaard browsercommando andere besturingssystemen" ID="ID_1105295151" CREATED="1290782736311" MODIFIED="1293375087319"/>
-<node TEXT="Standaard browsercommando Mac OS" ID="ID_41485411" CREATED="1290782801278" MODIFIED="1293375087316"/>
-</node>
-<node TEXT="HTML exporteren" FOLDED="true" ID="ID_780878199" CREATED="1290782826714" MODIFIED="1293375087312">
-<node TEXT="HTML-export met dichtvouwen" FOLDED="true" ID="ID_1858904622" CREATED="1290782840092" MODIFIED="1293375087309">
-<node TEXT="Standaard: alleen wat nu zichtbaar is." ID="ID_1527206850" CREATED="1290782907616" MODIFIED="1293375087305"/>
-</node>
-<node TEXT="Exporteren pictogrsammen in HTML" FOLDED="true" ID="ID_1519996240" CREATED="1290782856277" MODIFIED="1293375087302">
-<node TEXT="Vinkje: ja. Standaard: geen vinkje." ID="ID_945058278" CREATED="1290782870933" MODIFIED="1293375087298"/>
-</node>
-</node>
-<node TEXT="HTML importeren" FOLDED="true" ID="ID_525035249" CREATED="1290782927311" MODIFIED="1293375087295">
-<node TEXT="Importeren HYML als knoopstructtuur" FOLDED="true" ID="ID_523671653" CREATED="1290782935993" MODIFIED="1293375087291">
-<node TEXT="Vinkje:ja. Standaard: vinkje." ID="ID_1526059247" CREATED="1290782960961" MODIFIED="1293375087288"/>
-</node>
-</node>
-</node>
-<node TEXT="Automatische opmaakprofielen" FOLDED="true" ID="ID_1065646243" CREATED="1290782995022" MODIFIED="1293375087284">
-<node TEXT="Opmaak  knopen op verschillende niveaus" ID="ID_1163331714" CREATED="1290783006528" MODIFIED="1293375087281"/>
-</node>
-<node TEXT="Scripting" FOLDED="true" ID="ID_38917285" CREATED="1290783363668" MODIFIED="1293375087277">
-<node TEXT="Moeten scripts worden uitgevoerd zonder bevestiging ?" FOLDED="true" ID="ID_1519043962" CREATED="1290783373395" MODIFIED="1293375087273">
-<node TEXT="Vinkje: ja. Standaard: geen vinkje." ID="ID_142900489" CREATED="1290783398707" MODIFIED="1293375087270"/>
-</node>
-<node TEXT="Sta bestandsacties niet toe" FOLDED="true" ID="ID_292821122" CREATED="1290783422551" MODIFIED="1293375087267">
-<node TEXT="Vinkje: ja. Geen vinkje: nee. Standaard: geen vinkje." ID="ID_1917503946" CREATED="1290783398707" MODIFIED="1293375087263"/>
-</node>
-<node TEXT="Netwerkacties toestaan" FOLDED="true" ID="ID_1116899403" CREATED="1290783461730" MODIFIED="1293375087260">
-<node TEXT="Vinkje: ja. Standaard: geen vinkje.Geen vinkje:nee." ID="ID_487045316" CREATED="1290783398707" MODIFIED="1293375087256"/>
-</node>
-<node TEXT="Toestaan om andere applicaties uit te voeren" FOLDED="true" ID="ID_667100441" CREATED="1290783487104" MODIFIED="1293375087252">
-<node TEXT="Vinkje: ja. Geen vinkje: nee. Standaard: geen vinkje." ID="ID_628397029" CREATED="1290783398707" MODIFIED="1293375087249"/>
-</node>
-<node TEXT="Vertrouw ondertekende scripts" FOLDED="true" ID="ID_386015730" CREATED="1290783583301" MODIFIED="1293640683654">
-<node TEXT="Vinkje: ja. Geen vinkje: nee. Standaard: vinkje." ID="ID_593123015" CREATED="1290783607739" MODIFIED="1293375087242"/>
-</node>
-<node TEXT="Optionele gebruikssleutel voor ondertekekening" ID="ID_1865799956" CREATED="1290783644952" MODIFIED="1293375087238"/>
-<node TEXT="Zoekpad voor scripts" FOLDED="true" ID="ID_429736679" CREATED="1290783668392" MODIFIED="1293375087235">
-<node TEXT="Standaard: scripts" ID="ID_1606869925" CREATED="1290783686933" MODIFIED="1293375087231"/>
-</node>
-</node>
-<node TEXT="Sneltoetsen" FOLDED="true" ID="ID_425625959" CREATED="1271849091114" MODIFIED="1293375087227">
-<node TEXT="Opent dialoogvenster voor het definieren van sneltoetscombinaties" ID="ID_220335614" CREATED="1271850151778" MODIFIED="1293375087224"/>
-</node>
-<node TEXT="Gedrag" FOLDED="true" ID="ID_1481657882" CREATED="1271849242668" MODIFIED="1293375087220">
-<node TEXT="Opent dialoogvenster voor het instellen van het gebruikerinterface. Voorbeeld: automatisch openen van bewerkingsvenster." ID="ID_824199087" CREATED="1271850174796" MODIFIED="1293375087216"/>
-</node>
-<node TEXT="HTML" FOLDED="true" ID="ID_1504883948" CREATED="1271849323057" MODIFIED="1293375087212">
-<node ID="ID_1821205087" CREATED="1271850201936" MODIFIED="1293375087207">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent een dialoogvenster voor het instellen van de besturing van de Webbrowser (afhankelijk van besturingssysteem) en opties voor im/export van HTML.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Automatische opmaak" FOLDED="true" ID="ID_286751031" CREATED="1271849461470" MODIFIED="1293375087203">
-<node ID="ID_121820857" CREATED="1271850244861" MODIFIED="1293375087198">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent dialoogvenster voor het instellen van de instellingen voor automatische opmaak. ZIE OOK: <i>Opmaak &gt; Automatische opmaak.</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Script" FOLDED="true" ID="ID_1230371189" CREATED="1271849716419" MODIFIED="1293375087194">
-<node TEXT="Opent dialoogvenster voor het bepalen van standaardeigenschappen van scripts." ID="ID_1811405351" CREATED="1271850273874" MODIFIED="1293375087191"/>
-</node>
-</node>
-<node TEXT="Toewijzen sneltoets" FOLDED="true" ID="ID_764902206" CREATED="1271849865669" MODIFIED="1293375087188" COLOR="#663300">
-<node ID="ID_1956990609" CREATED="1271849885027" MODIFIED="1293375087184" LINK="#_Freeplane_Link_1091417446">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Instellen sneltoetscombinatie.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Sneltoetsenset" FOLDED="true" ID="ID_701336954" CREATED="1266248138750" MODIFIED="1293375087180" COLOR="#663300">
-<node TEXT="Bewaart alle gedefinieerde sneltoetscombinaties  in een bestand bestandsnaam.patterns in de subdirectory accelerators in de map freeplane. Hiermee kunnen deze gedeeld worden tussen mindmaps." ID="ID_1399527431" CREATED="1271853577561" MODIFIED="1293569614556"/>
-<node TEXT="Set met sneltoetsen" ID="ID_1598709203" CREATED="1291201458109" MODIFIED="1293375087172"/>
-<node TEXT="Opslaan set met sneltoetsen" ID="ID_944401423" CREATED="1291201465277" MODIFIED="1293375087168"/>
-</node>
-<node TEXT="Openen gebruikersdirectory" ID="ID_4259182" CREATED="1303933344973" MODIFIED="1303933357049"/>
-</node>
-<node TEXT="Mindmaps" FOLDED="true" ID="ID_539574104" CREATED="1266240697187" MODIFIED="1293375087153" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Mindmap bewerkingsvenster" FOLDED="true" ID="ID_186835536" CREATED="1266256150921" MODIFIED="1293375087149" COLOR="#663300">
-<node TEXT="Het venster waarin mindmaps kunnen worden gemaakt en gewijzigd." ID="ID_1644920951" CREATED="1267720608578" MODIFIED="1293375087145"/>
-</node>
-<node TEXT="Mindmap lezer" FOLDED="true" ID="ID_279798661" CREATED="1266256155296" MODIFIED="1293375087141" COLOR="#663300">
-<node TEXT="Opent een mindmap in alleen-lezen modus. Te gebruiken met een geexporteerd Japa applet of een andere mindmap die niet mag worden gewijzigd of aangevuld." ID="ID_1882001495" CREATED="1271854355433" MODIFIED="1293375087136"/>
-</node>
-<node TEXT="Bestandsverkenner" FOLDED="true" ID="ID_1843939382" CREATED="1266256175390" MODIFIED="1293375087132" COLOR="#663300">
-<node TEXT="Bevat dezelfde informatie als de Windowsbestandsverkenner, in de vorm van een mindmap. Vooral bedoeld als voorbeeld voor ontwikkelaars dat ook andere bronnen dan mindmaps kunnen worden ontsloten." ID="ID_1642131000" CREATED="1267720624750" MODIFIED="1293375087128"/>
-</node>
-<node TEXT="Lijst met open mindmaps" FOLDED="true" ID="ID_1708713798" CREATED="1266256190359" MODIFIED="1293375087124" COLOR="#663300">
-<node TEXT="Lijst met alle mindmaps die op dit moment zijn geopend. Door op een naam te klikken gaat de focus naar deze map." ID="ID_599811416" CREATED="1267720737078" MODIFIED="1293375087119"/>
-</node>
-</node>
-<node TEXT="Help" FOLDED="true" ID="ID_1022410641" CREATED="1266240698937" MODIFIED="1293375087115" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Handleiding" FOLDED="true" ID="ID_604224444" CREATED="1271855545007" MODIFIED="1293375087111" COLOR="#663300">
-<node TEXT="Opent het belangrijkste helpbestand in alleen-lezen modus." ID="ID_71306706" CREATED="1271855552670" MODIFIED="1293375087108"/>
-</node>
-<node TEXT="Overzicht van menu&apos;s" FOLDED="true" ID="ID_927207434" CREATED="1272474644405" MODIFIED="1293375087104" COLOR="#663300">
-<node TEXT="Opens dit Menu overzicht in alleen-lezen modus." ID="ID_384986588" CREATED="1272474651792" MODIFIED="1293375087100"/>
-</node>
-<node TEXT="Overzicht van sneltoetsen" FOLDED="true" ID="ID_82273720" CREATED="1271855625345" MODIFIED="1293375087096" COLOR="#663300">
-<node TEXT="Opent een Adobe Acrobat-format .PDF bestand met een a overzicht van de sneltoetsen." ID="ID_1837024531" CREATED="1271855631331" MODIFIED="1293375087092"/>
-</node>
-<node TEXT="Thuispagina op Internet van Freeplane" FOLDED="true" ID="ID_797729331" CREATED="1271855734459" MODIFIED="1293375087089" COLOR="#663300">
-<node TEXT="Opent een Web browser venster voor de hoofdpagina van de Freeplane web site." ID="ID_1068424163" CREATED="1271855759592" MODIFIED="1293375087086"/>
-</node>
-<node TEXT="Melden van een fout" FOLDED="true" ID="ID_1404935411" CREATED="1271855833848" MODIFIED="1303933468059" COLOR="#663300">
-<node ID="ID_135222820" CREATED="1271855844369" MODIFIED="1293375087078">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent een web browser venster voor Mantis Bug tracker.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Vragen om een nieuwe functie" FOLDED="true" ID="ID_800979042" CREATED="1271855982412" MODIFIED="1293375087074" COLOR="#663300">
-<node TEXT="Opent een website met Freeplane&apos;s Feature Request pagina in de Mantis Tracker." ID="ID_391597193" CREATED="1271855989889" MODIFIED="1293375087071"/>
-</node>
-<node TEXT="Hulp vragen" FOLDED="true" ID="ID_1043826397" CREATED="1271856103992" MODIFIED="1293375087067" COLOR="#663300">
-<node TEXT="Opens a Web browser window to Freeplane&apos;s Open Discussion Forum. A confirmation dialog alerts you to the fact that this function requires that you log in to SourceForge.net where you can easily create a free account. After logging in, you may check for information related to your question by using the Search function, located under the Forums menu heading. If you then want to ask your own question, scroll down toward the bottom of the page to find the Add a Topic heading, type a short title in the line labeled &quot;Enter topic title&quot;, then enter your message in the larger text box below." ID="ID_1149460141" CREATED="1271856114238" MODIFIED="1293375087062"/>
-<node TEXT="Om te weten wat de Engelse termen zijn voor Nederlandstalige menuitems:&#xa;- kies Extra &gt; Instellingren &gt; Omgeving&#xa;- kies als taal: Engels en herstart Freeplane&#xa;Het mernu is nu in het Engels. Volg dezelfde procedure om terug te wisselen naar het Nederlands; kies hierbij als taal: default." ID="ID_912368195" CREATED="1291874606053" MODIFIED="1293375087057"/>
-</node>
-<node TEXT="Licentie" FOLDED="true" ID="ID_1881309718" CREATED="1271857117445" MODIFIED="1293375087053" COLOR="#663300">
-<node TEXT="Opens a window displaying a short summary of Freeplane&apos;s copyright and licensing information, including information about where to find full copies of the GNU General Public License." ID="ID_1830436655" CREATED="1271857123250" MODIFIED="1293375087049"/>
-</node>
-<node TEXT="Over freeplane" FOLDED="true" ID="ID_1959296182" CREATED="1272489323245" MODIFIED="1303933524250" COLOR="#663300">
-<node TEXT="Opens a dialog with copyright, version, and technical information." ID="ID_585968650" CREATED="1272489332743" MODIFIED="1293375087042"/>
-</node>
-<node TEXT="Controleren op nieuwe onderdelen" FOLDED="true" ID="ID_1051551158" CREATED="1271862920378" MODIFIED="1303933506185" COLOR="#663300">
-<node TEXT="Manually check whether a newer version of Freeplane has been released. This check will be done automatically if the corresponding checkbox is enabled at the bottom of the dialog which opens." ID="ID_1365637235" CREATED="1271862957486" MODIFIED="1293375087034"/>
-</node>
-<node TEXT="API voor scripts" ID="ID_1515623567" CREATED="1303933416063" MODIFIED="1303933436765"/>
-</node>
-</node>
-<node TEXT="Werkmenu" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1060899431" CREATED="1286909230469" MODIFIED="1304490224944" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Split nodes" ID="ID_1796564424" CREATED="1266247473250" MODIFIED="1309687782261" TEXT_SHORTENED="true">
+<icon BUILTIN="../split_node"/>
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -7051,530 +4532,97 @@
   </head>
   <body>
     <p>
-      Het werkmenu bevat de meestgebruikte functies.
+      <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">Splits and distributes the basic text of a node over two nodes. Split inserts a new node for the splitted text. The split will take place at line breaks. </span></font>
     </p>
     <p>
-      De functies zelf zijn weergegeven door pictogrammen.
+      
+    </p>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">The Split Node command may be used on any plain node which contains one or more line breaks, which can be inserted using Shift Enter. Split Node also works on any Rich Formatted (Long or HTML) node which contains multiple paragraphs. In either case the node gets split at the line and/or paragraph breaks. For HTML nodes you can apply the split repeatedly if there are nested elements. A plain node may be split at any point by first converting it using Format &gt; Use Rich Formatting. Then click on the node to open the Edit Long Node window. In that window, place the cursor where you want to split the node, then click the &quot;Split&quot; button at the bottom of the dialog. The part of the node to the right of the cursor will appear below the node from which it was split.</span></font><br/>
     </p>
   </body>
 </html></richcontent>
-<node TEXT="Vorige mindmmap" STYLE_REF="Functie" ID="ID_753208116" CREATED="1291223662970" MODIFIED="1293375087027"/>
-<node TEXT="Volgende mindmap" STYLE_REF="Functie" ID="ID_946653022" CREATED="1291223695387" MODIFIED="1293375087024"/>
-<node TEXT=" Zoomfactor %" STYLE_REF="Functie" ID="ID_888819112" CREATED="1291223711993" MODIFIED="1293375087020"/>
-<node TEXT="Niieuwe mindmap" STYLE_REF="Functie" ID="ID_654315276" CREATED="1291223729083" MODIFIED="1293375087017"/>
-<node TEXT="Openen mindmap" STYLE_REF="Functie" ID="ID_1384903218" CREATED="1291223746048" MODIFIED="1293375087013"/>
-<node TEXT="Opslaan" STYLE_REF="Functie" ID="ID_499488327" CREATED="1291223757865" MODIFIED="1293375087010"/>
-<node TEXT="Opslaan als" STYLE_REF="Functie" ID="ID_1733915541" CREATED="1291223764034" MODIFIED="1293375087006"/>
-<node TEXT="Ongedaan maken" STYLE_REF="Functie" ID="ID_1614433385" CREATED="1291223783620" MODIFIED="1293375087003"/>
-<node TEXT="Opnieuw" STYLE_REF="Functie" ID="ID_488395046" CREATED="1291223791849" MODIFIED="1293375086999"/>
-<node TEXT="Knippen" STYLE_REF="Functie" ID="ID_1508979289" CREATED="1291223806552" MODIFIED="1293375086996"/>
-<node TEXT="Kopieren" STYLE_REF="Functie" ID="ID_1339463086" CREATED="1291223817387" MODIFIED="1293375086993"/>
-<node TEXT="Plakken" STYLE_REF="Functie" ID="ID_1255875224" CREATED="1291223823229" MODIFIED="1293375086989"/>
-<node TEXT="Nieuwe kindknoop" STYLE_REF="Functie" ID="ID_1370778111" CREATED="1291223830584" MODIFIED="1293375086986"/>
-<node TEXT="Vet" STYLE_REF="Functie" ID="ID_174297785" CREATED="1291223843571" MODIFIED="1293375086982"/>
-<node TEXT="Schuin" STYLE_REF="Functie" ID="ID_339245704" CREATED="1291223847666" MODIFIED="1293375086979"/>
-<node TEXT="Naam lettertype" STYLE_REF="Functie" ID="ID_716140490" CREATED="1291223864397" MODIFIED="1293375086976"/>
-<node TEXT="Lettergrootte" STYLE_REF="Functie" ID="ID_640511775" CREATED="1291223874607" MODIFIED="1293375086972"/>
-<node TEXT="Standaard stijlen" STYLE_REF="Functie" ID="ID_981807880" CREATED="1291223631855" MODIFIED="1293375086969"/>
-<node TEXT="Wolk" STYLE_REF="Functie" ID="ID_316649132" CREATED="1291227666798" MODIFIED="1293375086965"/>
-<node TEXT="Kleur wolk" STYLE_REF="Functie" ID="ID_1906294622" CREATED="1291227672609" MODIFIED="1293375086962"/>
-<node TEXT="Attributen beheren" STYLE_REF="Functie" ID="ID_1872125579" CREATED="1291227711586" MODIFIED="1293375086958"/>
-<node TEXT="Terug in selectiehistorie" STYLE_REF="Functie" ID="ID_546598139" CREATED="1291227734792" MODIFIED="1293375086955"/>
-<node TEXT="Vooruit in selectiehistorie" STYLE_REF="Functie" ID="ID_1401330150" CREATED="1291227749479" MODIFIED="1293375086951"/>
-<node TEXT="Geselecteerde tak openvouwen" STYLE_REF="Functie" ID="ID_1212937404" CREATED="1291227772902" MODIFIED="1293375086947"/>
-<node TEXT="Hele geselecteerde tak dichtvouwen" STYLE_REF="Functie" ID="ID_1035407931" CREATED="1291227991155" MODIFIED="1293375086944"/>
-<node TEXT="E&#xe9;n niveau openvouwen" STYLE_REF="Functie" ID="ID_962927730" CREATED="1291228057665" MODIFIED="1293375086940"/>
-<node TEXT="E&#xe9;n niveau dichtvouwen" STYLE_REF="Functie" ID="ID_594928853" CREATED="1291228086252" MODIFIED="1293375086937"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Filtermenu" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_306841975" CREATED="1286909239353" MODIFIED="1304490439210" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="Icon by category" ID="ID_80370661" CREATED="1305728952563" MODIFIED="1315728740200" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE=""/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Het filtermenu bevat de meestgebruikte filterfuncties.
-    </p>
-    <p>
-      Deze functies zijn weergegeven door pictogrammen, afrolmenus en invulvelden.
-    </p>
-    <p>
-      LET OP: In het Hoofdmenu bevindt zich ook een submenu voor filteren.
+      Select node through one of the submenus with icons
     </p>
   </body>
 </html></richcontent>
-<node TEXT="Ongedaan maken" STYLE_REF="Functie" ID="ID_313636143" CREATED="1291789481685" MODIFIED="1293375086929" LINK="#ID_1234931801"/>
-<node TEXT="Opnieuw" STYLE_REF="Functie" ID="ID_561952384" CREATED="1291789488494" MODIFIED="1293375086925" LINK="#ID_1823387217"/>
-<node TEXT="Ook voorouders tonen" STYLE_REF="Functie" ID="ID_142054512" CREATED="1291789504305" MODIFIED="1293375086909" LINK="#ID_1600437428"/>
-<node TEXT="Ook afstammelingen tonen" STYLE_REF="Functie" ID="ID_1146908498" CREATED="1292620529655" MODIFIED="1293375086906" LINK="#ID_442105904"/>
-<node TEXT="Verder filteren (verfijnen)" STYLE_REF="Functie" ID="ID_347632737" CREATED="1291789517994" MODIFIED="1293375086902" LINK="#ID_535692954"/>
-<node TEXT="Ook dichtgevouwen knopen filteren" STYLE_REF="Functie" ID="ID_58930715" CREATED="1291789607522" MODIFIED="1293375086899" LINK="#ID_977827122"/>
-<node TEXT="Filteropties" STYLE_REF="Functie" ID="ID_738173422" CREATED="1291789567843" MODIFIED="1293375086895"/>
-<node TEXT="Opnieuw filteren (bijwerken)" STYLE_REF="Functie" ID="ID_1908400921" CREATED="1291789632677" MODIFIED="1293375086892" LINK="#ID_1823387217"/>
-<node TEXT="Niet-geselecteerde knopen verbergen" STYLE_REF="Functie" ID="ID_1980024389" CREATED="1291789661405" MODIFIED="1293375086888" LINK="#ID_1213542242"/>
-<node TEXT="Ongedaan maken filteren" STYLE_REF="Functie" ID="ID_1291115911" CREATED="1291789674501" MODIFIED="1293375086884" LINK="#ID_1248752843"/>
-<node TEXT="Filterbeheer" STYLE_REF="Functie" ID="ID_1263327296" CREATED="1291789686848" MODIFIED="1293375086880" LINK="#ID_1642550374"/>
-<node TEXT="Filteronderdeel (Tekst)" STYLE_REF="Functie" FOLDED="true" ID="ID_347030826" CREATED="1291789702082" MODIFIED="1298476866223">
-<node TEXT="Het onderdeel van de knoop waarop gefilterd wordt: Tekst (standaard) , Tekst van ouderknoop, Pictogram, of een gebruikt attribuut" ID="ID_1309406902" CREATED="1292623150807" MODIFIED="1298476939907"/>
+<hook NAME="FirstGroupNode"/>
 </node>
-<node TEXT="Filteroperator (bevat)" STYLE_REF="Functie" FOLDED="true" ID="ID_384668739" CREATED="1291789851117" MODIFIED="1293375086869">
-<node TEXT="Mogelijke operatoren zijn: Bevat, Is gelijk aan, Is niet gelijk aan,&gt;, &gt;=, &lt;=,&lt;, Is gelijk aan expressie" ID="ID_179269976" CREATED="1292624017084" MODIFIED="1293375086865"/>
-</node>
-<node TEXT="Fiterinhoud (leeg)" STYLE_REF="Functie" FOLDED="true" ID="ID_1640605945" CREATED="1291789899258" MODIFIED="1293375086862">
-<node TEXT="De inhoud van het filteronderdeel, de waarde waarop wordt gefilterd (filtercriterium)." ID="ID_337744942" CREATED="1292624232419" MODIFIED="1293375086858"/>
-</node>
-<node TEXT="Hoodlettergevoelig (niet)" STYLE_REF="Functie" FOLDED="true" ID="ID_624006528" CREATED="1291789920217" MODIFIED="1293375086855">
-<node TEXT="Geeft aan of bij het filteren een hoofdletter als dezelfde letter wordt opgevat als een kleine letter." ID="ID_4195852" CREATED="1292624301816" MODIFIED="1293375086851"/>
-</node>
-<node TEXT="Vorige zoeken" STYLE_REF="Functie" ID="ID_511849259" CREATED="1291789940739" MODIFIED="1293375086848">
-<richcontent TYPE="NOTE">
+<node TEXT="Icon from table" FOLDED="true" ID="ID_1962266219" CREATED="1309725076165" MODIFIED="1315728680608" TEXT_SHORTENED="true">
+<icon BUILTIN="../designer"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Mist in hoofdmenu Edit.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Volgende zoeken" STYLE_REF="Functie" ID="ID_1022127218" CREATED="1291789947611" MODIFIED="1293375086844" LINK="#ID_1438958017"/>
-<node TEXT="Passende knopen selecteren" STYLE_REF="Functie" FOLDED="true" ID="ID_1407131071" CREATED="1291789963156" MODIFIED="1293375086840">
-<richcontent TYPE="NOTE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Niet in hoofdmeneu
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Deze functie heeft alleen effect op de knoop die de focus heeft en al zijn zichtbare en verborgen afstammelingen: (1) tonen en (2) selecteren van alle afstammelingen die aan het het filtercriterium voldoen, (3) tonen van verborgen knopen in de keten  tussen de basisknoop en de buitenste geselecteerde knoop. Verborgen kindknopen van de buitenste geselecteerde knoop van elke tak blijven verborgen (dichtgevouwen) en alle andere knopen blijven zichtbaar." ID="ID_1120777347" CREATED="1292622581568" MODIFIED="1293375086835"/>
-</node>
-<node TEXT="Filteren mindmap" STYLE_REF="Functie" FOLDED="true" ID="ID_1446016858" CREATED="1291790046452" MODIFIED="1293375086831">
-<richcontent TYPE="NOTE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Niet in hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Deze functie omvat: (1) het verbergen van alle zichtbare knopen van de mindmap die niet aan het filtercriterium voldoen en (2) naar elkaar schuiven van de knopen die na het filteren zichtbaar blijven. Knopen buiten het filtergebied blijven zichtbaar. Er kunnen verschillende opties voor het filteren worden ingesteld." LOCALIZED_STYLE_REF="default" ID="ID_129680725" CREATED="1292622675691" MODIFIED="1293375086827"/>
-</node>
-</node>
-<node TEXT="Functietoetsen" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1106639419" CREATED="1286909260593" MODIFIED="1304490703865" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Functietoetsen zijn de toetsen op het toetsenbord welke genummerd zijn van F1 - F12.
+      Opens a table from which an icon can be chosen by clicking it.
     </p>
     <p>
-      Aan elke toets kan men zelf een functie koppelen.
+      
     </p>
     <p>
-      Het is mogelijk verschillende sets van functietoetsen te hebben.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="F1" STYLE_REF="Functie" FOLDED="true" ID="ID_415054360" CREATED="1291790098408" MODIFIED="1293375086820">
-<node TEXT="Handleiding" ID="ID_1814168617" CREATED="1291790105531" MODIFIED="1293375086816"/>
-</node>
-<node TEXT="F2 Tekst bewerken binnen knoop" STYLE_REF="Functie" ID="ID_563462404" CREATED="1291790113993" MODIFIED="1293375086813"/>
-<node TEXT="F3 - F12" STYLE_REF="Functie" FOLDED="true" ID="ID_1660230290" CREATED="1291790167555" MODIFIED="1293375086809">
-<node TEXT="zelf instellen" ID="ID_1023564928" CREATED="1291790175380" MODIFIED="1293375086806"/>
-</node>
-</node>
-<node TEXT="Pictogrammen" STYLE_REF="Functiegroep" ID="ID_68755539" CREATED="1286909275233" MODIFIED="1304490840006" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Alle standaard pictogrammenvan Freeplane.
-    </p>
-    <p>
-      Een pictogram is een miniplaatje.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Open Mindmapsmenu" STYLE_REF="Functiegroep" ID="ID_1867988170" CREATED="1286909294242" MODIFIED="1304490916720" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Lijst van open mindmaps. Door op de naam van een mindmap te kikken krijgt deze de focus en wordt deze getoond.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Context menu&apos;s" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1307368830" CREATED="1286741065695" MODIFIED="1304491086222" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een contextmenu bevat alle functies voor &#233;&#233;n bepaald, geselecteerd object. Het contextmenu opent door rechtsklikken op het te selecteren object.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Hoofdvenster" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1188943196" CREATED="1289156407471" MODIFIED="1304491310776" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Het hoofdvenster van Freeplane is de achtergrond waarop de knopen en knoopkenmerken worden getoond.
-    </p>
-    <p>
-      Het contextmenu opent door op een lege plek te rechtslklikken.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Lijst open mindmaps" STYLE_REF="Functie" ID="ID_593848002" CREATED="1289156463989" MODIFIED="1293375086777"/>
-<node TEXT="Tonen hoofdmenu" STYLE_REF="Functie" ID="ID_282169046" CREATED="1289156481952" MODIFIED="1293375086773"/>
-<node TEXT="Tonen werkmenu" STYLE_REF="Functie" ID="ID_1890239068" CREATED="1286909230469" MODIFIED="1293375086770"/>
-<node TEXT="Tonen filtermenu" STYLE_REF="Functie" ID="ID_625835471" CREATED="1286909239353" MODIFIED="1293375086766"/>
-<node TEXT="Tonen functietoetsen" STYLE_REF="Functie" ID="ID_547570617" CREATED="1286909260593" MODIFIED="1293375086762"/>
-<node TEXT="Tonen pictogrammenbalk" STYLE_REF="Functie" ID="ID_1263221388" CREATED="1286909275233" MODIFIED="1293375086758"/>
-<node TEXT="Tonen volledig scherm" STYLE_REF="Functie" ID="ID_1112994504" CREATED="1291788366914" MODIFIED="1293375086754"/>
-<node TEXT="Tonen notitiehulpvenster" STYLE_REF="Functie" ID="ID_1993086900" CREATED="1291788377858" MODIFIED="1293375086751"/>
-<node TEXT="Tonen opmaakpaneel" STYLE_REF="Functie" ID="ID_1855760029" CREATED="1291788412794" MODIFIED="1293375086747"/>
-</node>
-<node TEXT="Knoop" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_346564760" CREATED="1286909339568" MODIFIED="1304519812125" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Het contextmenu van een knoop kan worden geopend door rechtsklikken op het binnengebied van de knoop. Dit is het gebied dat is omlijnd als de knoop is geselecteerd.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Snelbewerken basistekst" STYLE_REF="Functie" ID="ID_1544856363" CREATED="1286909379278" MODIFIED="1298476966587"/>
-<node TEXT="Bewerken basistekst" STYLE_REF="Functie" ID="ID_1683399005" CREATED="1286909390595" MODIFIED="1298476980103"/>
-<node TEXT="Bewerken bijlage" STYLE_REF="Functie" ID="ID_422688336" CREATED="1291788504265" MODIFIED="1298472141087"/>
-<node TEXT="Verbergen bijlage, attributen, notites" STYLE_REF="Functie" ID="ID_1268111084" CREATED="1291788515926" MODIFIED="1293375086730"/>
-<node TEXT="Tonen bijlage" STYLE_REF="Functie" ID="ID_218637558" CREATED="1291788559224" MODIFIED="1298472141087"/>
-<node TEXT="Verwijderen bijlage" STYLE_REF="Functie" ID="ID_259463251" CREATED="1291788591773" MODIFIED="1298472141087"/>
-<node TEXT="Bewerken knoopattributen" STYLE_REF="Functie" ID="ID_17658022" CREATED="1289156667203" MODIFIED="1293375086720"/>
-<node TEXT="Knippen" STYLE_REF="Functie" ID="ID_1789837162" CREATED="1289156695478" MODIFIED="1293375086716"/>
-<node STYLE_REF="Functie" ID="ID_1048158519" CREATED="1289156714861" MODIFIED="1293375086713">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p class="MsoNormal">
-      Kopi&#235;ren
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node STYLE_REF="Functie" ID="ID_354170678" CREATED="1289156721889" MODIFIED="1293375086709">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p class="MsoNormal">
-      Kopi&#235;ren&#160;zonder zijtakken
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node STYLE_REF="Functie" ID="ID_1393902504" CREATED="1289156880439" MODIFIED="1293375086705">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Kopi&#235;ren knoop ID
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Plakken" STYLE_REF="Functie" ID="ID_680397245" CREATED="1289156969438" MODIFIED="1293375086702"/>
-<node TEXT="Nieuwe kindknoop" STYLE_REF="Functie" ID="ID_985048621" CREATED="1289156975670" MODIFIED="1293375086698"/>
-<node TEXT="Nieuwe knoop onder" STYLE_REF="Functie" ID="ID_790620096" CREATED="1289157025691" MODIFIED="1293375086695"/>
-<node TEXT="Nieuwe knoop boven" STYLE_REF="Functie" ID="ID_251384236" CREATED="1291788728890" MODIFIED="1293375086691"/>
-<node TEXT="Verwijderen knoop" STYLE_REF="Functie" ID="ID_594542224" CREATED="1289157055877" MODIFIED="1293375086688"/>
-<node TEXT="Knoop naar boven" STYLE_REF="Functie" ID="ID_1266875477" CREATED="1289157066259" MODIFIED="1293375086684"/>
-<node TEXT="Knoop naar beneden" STYLE_REF="Functie" ID="ID_951133799" CREATED="1289157073583" MODIFIED="1293375086681"/>
-<node TEXT="Open/dichtvouwen" STYLE_REF="Functie" ID="ID_1371737510" CREATED="1289157094963" MODIFIED="1293375086678"/>
-<node TEXT="Pictogram" STYLE_REF="Functie" ID="ID_1912552384" CREATED="1289157107295" MODIFIED="1293375086674"/>
-<node TEXT="Stijlen" STYLE_REF="Functie" ID="ID_32153133" CREATED="1289157126210" MODIFIED="1293375086670"/>
-<node TEXT="Opmaken" STYLE_REF="Functie" ID="ID_614518066" CREATED="1291788807927" MODIFIED="1293375086666"/>
-<node TEXT="Invoegen" STYLE_REF="Functie" ID="ID_789835792" CREATED="1289157153732" MODIFIED="1293375086663"/>
-</node>
-<node TEXT="Bewerkingsvenster binnen knoop" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_422572742" CREATED="1289156217033" MODIFIED="1304520052266" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Het contextvenster van de basistekst kan worden geopend door rechtsklikken op tekst die wordt bewerkt in het binnengebied van een knoop
-    </p>
-  </body>
-</html></richcontent>
-<node STYLE_REF="Functie" ID="ID_1323499908" CREATED="1289157213463" MODIFIED="1293375086656">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Kopi&#235;ren
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Knippen" STYLE_REF="Functie" ID="ID_1139663809" CREATED="1291788937361" MODIFIED="1293375086653"/>
-<node TEXT="Plakken" STYLE_REF="Functie" ID="ID_102956131" CREATED="1291788898399" MODIFIED="1293375086649"/>
-<node TEXT="Spelling" STYLE_REF="Functie" ID="ID_613628744" CREATED="1289157237316" MODIFIED="1293375086646"/>
-<node TEXT="Talen" STYLE_REF="Functie" FOLDED="true" ID="ID_123433633" CREATED="1289157244656" MODIFIED="1293375086642">
-<node TEXT="Taal voor de spellingsccontrole" ID="ID_1097913029" CREATED="1289157538201" MODIFIED="1293375086639"/>
-</node>
-<node TEXT="Opmaken" STYLE_REF="Functie" ID="ID_65465707" CREATED="1291788891543" MODIFIED="1293375086635"/>
-</node>
-<node TEXT="Bewerkingsvenster attribuut" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1189738066" CREATED="1296496490530" MODIFIED="1304520289674" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Het contextmenu van een attribuut wordt zichtbaar door rechtsklikken op een te bewerken attribuut.
-    </p>
-    <p>
-      Als het attribuut standaard is verborgen, opent het contextmenu niet, ook als is het attribuut zichtbaar.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="De breedte van een attribuut of attribuutwaarde kan worden gewijzigd door de oplichtende rand net boven de (lijst) attributen of attribuutwaarden met de muiscursor ingedrukt te verschuiven." STYLE_REF="Inleiding" ID="ID_801624390" CREATED="1296496503610" MODIFIED="1296497083073"/>
-<node TEXT="Door met de rechtermuisknop op een attribuut te klikken wordt een contextmenu zichtbaar., met daarin" ID="ID_1156051900" CREATED="1296496613301" MODIFIED="1296496638683"/>
-<node TEXT="Optimale breedte" ID="ID_1125208660" CREATED="1296496705824" MODIFIED="1296496715279"/>
-<node TEXT="Nieuw attribuut" ID="ID_671940123" CREATED="1296496727672" MODIFIED="1296496737236"/>
-<node TEXT="Wissen attribuut" ID="ID_414351862" CREATED="1296496738491" MODIFIED="1296497043800"/>
-</node>
-<node TEXT="Hulpvenster knoop, bijlage, notitie" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1089029453" CREATED="1289159066674" MODIFIED="1304520871460" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Het contextmenu voor een bijlage en notiie wordt getoond door <i>Knoopkenmerk &gt; bijlage / notitie</i>&#160;in Hoofdmenu te kiezen. Ditzelfde venster opent voor een basistekst door <i>Knoop &gt; bewerken basistekst</i>&#160;te kiezen in <i>Hoofdmenu</i>.
-    </p>
-    <p>
-      Voor notiie is er een tweede hulpvenster met een contextmenu. Dit opent door <i>Knoopkenmerken &gt; notitie &gt; Notitiehulpvenster</i>&#160;te kiezen.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Ongedaan maken" STYLE_REF="Functie" ID="ID_869841842" CREATED="1289159170180" MODIFIED="1293375086629"/>
-<node TEXT="Opnieuw" STYLE_REF="Functie" ID="ID_1610609818" CREATED="1289159177036" MODIFIED="1293375086625"/>
-<node TEXT="Knippen" STYLE_REF="Functie" ID="ID_1490237077" CREATED="1289159183221" MODIFIED="1293375086622"/>
-<node STYLE_REF="Functie" ID="ID_688409663" CREATED="1289156714861" MODIFIED="1293375086618">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p class="MsoNormal">
-      Kopi&#235;ren
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Plakken" STYLE_REF="Functie" ID="ID_715337456" CREATED="1289159276806" MODIFIED="1293375086615"/>
-<node TEXT="Spelling" STYLE_REF="Functie" ID="ID_363177634" CREATED="1289159423563" MODIFIED="1293375086611"/>
-<node TEXT="Talen" STYLE_REF="Functie" ID="ID_503984989" CREATED="1289159397371" MODIFIED="1293375086608"/>
-</node>
-<node TEXT="Verbindingslijn/label" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_345865940" CREATED="1288800323033" MODIFIED="1304520947615" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Het contextmenu voor een verbindingslijn opent door te rechtsklikken op de verbindingslijn.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Ga naar:" STYLE_REF="Functie" ID="ID_1298425598" CREATED="1289157810423" MODIFIED="1293375086601"/>
-<node TEXT="Verwijder verbindingslijn" STYLE_REF="Functie" ID="ID_1675187374" CREATED="1289157817590" MODIFIED="1293375086597"/>
-<node TEXT="Kleur verbindingslijn" STYLE_REF="Functie" ID="ID_785650868" CREATED="1289157906144" MODIFIED="1293375086594"/>
-<node TEXT="Simuleer tak" STYLE_REF="Functie" ID="ID_86048314" CREATED="1289157916089" MODIFIED="1293375086590"/>
-<node TEXT="Bewerken label beginzijde" STYLE_REF="Functie" ID="ID_349096829" CREATED="1289157963708" MODIFIED="1293375086587"/>
-<node TEXT="Bewerken label eindzijde" STYLE_REF="Functie" ID="ID_1340385435" CREATED="1289157974651" MODIFIED="1293375086584"/>
-<node TEXT="Bewerken label in het midden" STYLE_REF="Functie" ID="ID_334850168" CREATED="1289157984081" MODIFIED="1293375086580"/>
-<node TEXT="Verbindingslijnen" FOLDED="true" ID="ID_1102960088" CREATED="1298403732872" MODIFIED="1298403751998">
-<node TEXT="Pijlvorm verbindingslijn" FOLDED="true" ID="ID_1670679707" CREATED="1298403369416" MODIFIED="1298404234234">
-<node TEXT="Geen pijl" STYLE_REF="Functie" ID="ID_228757308" CREATED="1289157997240" MODIFIED="1293375086577"/>
-<node TEXT="Pijl vooruit" STYLE_REF="Functie" ID="ID_641549126" CREATED="1289158067276" MODIFIED="1293375086573"/>
-<node TEXT="Pijl terug" STYLE_REF="Functie" ID="ID_419344950" CREATED="1289158074647" MODIFIED="1293375086570"/>
-<node TEXT="Pijl tweezijdig" STYLE_REF="Functie" ID="ID_1356424534" CREATED="1289158081706" MODIFIED="1293375086566"/>
-</node>
-<node TEXT="Lijnvorm verbindingslijn" ID="ID_1182694739" CREATED="1298403401164" MODIFIED="1298404406909"/>
-<node TEXT="Bochtvorm verbindinslijn" FOLDED="true" ID="ID_485077892" CREATED="1298403585981" MODIFIED="1298404326077">
-<node TEXT="Bocht" ID="ID_127460701" CREATED="1298403608038" MODIFIED="1298403652760"/>
-<node TEXT="Lijn" ID="ID_1383910929" CREATED="1298403653496" MODIFIED="1298403656812"/>
-<node TEXT="Rechthoekige lijn" ID="ID_1986861766" CREATED="1298403657457" MODIFIED="1298403665419"/>
-<node TEXT="Als tak" ID="ID_451006869" CREATED="1298403666590" MODIFIED="1298403678164"/>
-</node>
-</node>
-</node>
-</node>
-</node>
-<node TEXT="Opties selecteren" FOLDED="true" ID="ID_1473860848" CREATED="1289509916695" MODIFIED="1304348561101" COLOR="#006699" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Functies zijn toegankelijk via het Hoofmenu, de andere menubalken en de Contextmenu's. Het is een persoonlijke keuze welk menu je gebruikt.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Menubalk tonen" LOCALIZED_STYLE_REF="styles.topic" ID="ID_840811150" CREATED="1289566310292" MODIFIED="1304489803104" LINK="#ID_1945244112" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een <b>menubalk</b>&#160;te tonen:
-    </p>
-    <p>
-      - standaard worden de meeste menubalken getoond;
-    </p>
-    <p>
-      - je kunt zelf menubalken tonen of verbergen: klik het groene pijltje voor meer informatie
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Functie in menubalk kiezen" LOCALIZED_STYLE_REF="styles.topic" ID="ID_45610373" CREATED="1289510231935" MODIFIED="1304489814991" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een functie uit een menubalk&#160;&#160;te kiezen (<b>linksklikken</b>):
-    </p>
-    <p>
-      - klik met de linker muisknop op het betreffende menu en klik op de functie.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Functie in Contextmenu kiezen" LOCALIZED_STYLE_REF="styles.topic" ID="ID_232123733" CREATED="1289510317571" MODIFIED="1304489824086" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een <b>Contextmenu</b>&#160;te openen (<b>rechtsklikken</b>) en hieruit te kiezen:
-    </p>
-    <p>
-      - klik met de rechter muisknop op het object waar je iets mee wilt doen; en
-    </p>
-    <p>
-      - klik met de linker muisknop in het menu dat opent; en
-    </p>
-    <p>
-      - klik met de linker muisknop op een getoonde functie.
-    </p>
-    <p>
-      Let op waar je rechtsklikt, er zijn verschillende contextmenu's: voor de omlijning van een object, binnen de omlijning en voor de inhoud. Het contextmenu om binnen een knoop tekst op te maken, verschijnt alleen als tenminste &#233;&#233;n karakter van de basistekst is geselecteerd.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-</node>
-<node POSITION="right" ID="ID_51218940" CREATED="1286913595764" MODIFIED="1293376823611" BACKGROUND_COLOR="#ffff00" STYLE="bubble" VSHIFT="30">
-<icon BUILTIN="wizard"/>
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Wat kan ik met Freeplane doen ?
-    </p>
-  </body>
-</html></richcontent>
-<font BOLD="true"/>
-<edge STYLE="hide_edge"/>
-</node>
-<node TEXT="Maken en Bewerken" STYLE_REF="Onderwerp" FOLDED="true" POSITION="right" ID="ID_393070580" CREATED="1272091239258" MODIFIED="1305212126160" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Submenu <i><b>Knoop</b></i>&#160;in Hoofdmenu bevat funties die betrekking hebben op:
+      Note
     </p>
     <ul>
       <li>
-        &#160;de basistekst van een knoop
-      </li>
-      <li>
-        aggregatierelatie tussen knopen (accolade).&#160;
+        This table also contains system icons.
       </li>
     </ul>
+  </body>
+</html></richcontent>
+<node TEXT="" ID="ID_1761101081" CREATED="1310844234592" MODIFIED="1310844323451" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
     <p>
-      Submenu <i><b>Knoopkenmerken</b></i>&#160;bevat functies die betrekking hebben op alle andere functies van een knoop en relaties tussen knopen. .
+      Contrary to the other icons lists, this table also contains system icons.
     </p>
   </body>
 </html></richcontent>
-<node TEXT="Knoop  maken/verwijderen" FOLDED="true" ID="_Freeplane_Link_1709752669" CREATED="1270892460670" MODIFIED="1305290758108" COLOR="#407000" TEXT_SHORTENED="true">
+</node>
+</node>
+<node TEXT="" STYLE_REF="Aggregatie als Toelichting" FOLDED="true" ID="ID_892520547" CREATED="1305729001930" MODIFIED="1312919741496" TEXT_SHORTENED="true">
+<hook NAME="SummaryNode"/>
+<attribute_layout NAME_WIDTH="82" VALUE_WIDTH="211"/>
+<attribute NAME="Chapter" VALUE="3"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+</hook>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<node TEXT="Icon" ID="ID_845839827" CREATED="1309802783787" MODIFIED="1311402835392" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -7582,1243 +4630,93 @@
   </head>
   <body>
     <p>
-      Een knoop is een plaats waar informatie kan worden geraadpleegd. Een knoop heeft op het beeldscherm een binnengebied en een buitengebied. In het binnengebied kunnen een <b>basistekst</b>, <b>pictogram</b>, <b>snelkoppeling</b>, <b>hyperlink</b>&#160;en een <b>afbeelding</b>&#160;(met vaste grootte) worden getoond. Het binnengebied kan verder zichtbaar worden worden gemaakt door deze te omlijnen. Het buitengebied bevindt zich onder het binnengebied. In het buitengebied kan een <b>bijlagetekst</b>, <b>notitietekst</b>, <b>attributenlijst</b>, en schaalbare <b>afbeelding</b>&#160;worden getoond. Deze informatiekan naar keuze worden <b>verborgen</b>&#160;en alleen&#160;&#160;getoond als de knoop is geselecteerd.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Een nieuwe mindmap opent met &#233;&#233;n knoop, de <b>basisknoop</b>. Hieraan kunnen via <b>takken</b>&#160;kindknopen worden gekoppeld. Aan kindknopen kunnen kleinkindknopen worden gekoppeld, enz. Takken geven een hierarchische, ouder-kind relatie.aan. Een knoop kan daarnaast door een <b>verbindingslijn</b>&#160;&#160;met een willekeurige andere knoop worden verbonden. Via een accolade kan een selectie van knopen worden verbonden met een <b>aggregatieknoop</b>. Knopen kunnen visueel worden verbonden binnen een <b>wolk</b>. Een koop kan een taartpunt (%shijf) tonen en kan worden voorzien van een automatische nummering.
-    </p>
-  </body>
-</html>
-</richcontent>
-<richcontent TYPE="NOTE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Engels: Node
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Voorbeeld knoop 1" STYLE_REF="Functie" FOLDED="true" ID="ID_932505136" CREATED="1291753245064" MODIFIED="1304585268609" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
-<node ID="ID_1160972403" CREATED="1288646162992" MODIFIED="1293375090183">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>Basistekst</b>
-    </p>
-  </body>
-</html></richcontent>
-<font ITALIC="false"/>
-<richcontent TYPE="NOTE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Notitietekst
-    </p>
-  </body>
-</html></richcontent>
-<attribute NAME="a1" VALUE="waarde1"/>
-<attribute NAME="a2" VALUE="waarde2"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Tekst van bijlage
+      An icon is a mini image.
     </p>
   </body>
 </html></richcontent>
 </node>
-</node>
-<node TEXT="Voorbeel knoop 2" FOLDED="true" ID="ID_1187773932" CREATED="1292788187298" MODIFIED="1304585392996" TEXT_SHORTENED="true" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Idem Met bijlage, attributen en notitie verborgen.
-    </p>
-    <p>
-      Beweeg over <i>Basistekst</i>&#160;om de verborgen inhoud te zien.
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_1843996536" CREATED="1288646162992" MODIFIED="1293375090174" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>Basistekst</b>
-    </p>
-  </body>
-</html></richcontent>
-<font ITALIC="false"/>
-<richcontent TYPE="NOTE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Notitietekst
-    </p>
-  </body>
-</html></richcontent>
-<attribute NAME="a1" VALUE="waarde1"/>
-<attribute NAME="a2" VALUE="waarde2"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Tekst van bijlage
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Nieuwe kindknoop naast geselecteerde knoop" ID="ID_847485935" CREATED="1270892460670" MODIFIED="1304687457415" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om naast de geselecteerde knoop een (kind)knoop te maken:
-    </p>
-    <p>
-      - druk <i>Ins(ert)</i>&#160;&#160;&#160;(op MAC OS, druk op TAB); of
-    </p>
-    <p>
-      - kies pictogram <i>lampje</i>&#160;in Werkmenu.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Nieuwe kindknoop naast knoop-in-bewerking" ID="ID_719677235" CREATED="1270892460671" MODIFIED="1304687467679" TEXT_SHORTENED="true">
-<icon BUILTIN="idea"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om tijdens het bewerken van een knoop een kindknoop te maken:
-    </p>
-    <p>
-      - druk op <i>Ins; </i>of
-    </p>
-    <p>
-      - druk op pictogram <i>Lampje</i>&#160;in Werkmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Nieuwe knoop onder geselecteerde knoop" ID="ID_1715555696" CREATED="1270892460671" MODIFIED="1304687425965" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om onder de geselecteerde knoop een nieuwe knoop (zelfde niveau) te maken:
-    </p>
-    <p>
-      - druk op <i>Enter</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Nieuwe knoop boven geselecteerde knoop" ID="ID_291613396" CREATED="1270892460671" MODIFIED="1304687405373" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om boven de geselecteerde knoop een nieuwe knoop (zelfde niveau) te maken:
-    </p>
-    <p>
-      - druk op <i>Shift + Enter.</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Verwijderen geselecteerde knoop" ID="ID_1638437345" CREATED="1270892460671" MODIFIED="1304687516195" TEXT_SHORTENED="true" NUMBERED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een geselecteerde knoop te verwijderen:
-    </p>
-    <p>
-      - druk <i>Del(ete); </i>of
-    </p>
-    <p>
-      - kies&#160; <i>Verwijderen knoop </i>in Hoofdmenu &gt; Knoop of in Contextmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Knippen geselecteerde knoop" ID="ID_1718916776" CREATED="1270892460671" MODIFIED="1304687585756" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een geselecteerde knoop te knippen (verwijderen) om deze later te kunnen plakken:<br/>- klik in het Werkmenu op het pictogram van een schaar; of<br/>- klik met de rechter muisknop&#160;(bij MAC kies Ctr +klik) en kies in het Contextmenu <i>Knippen</i>; of<br/>- druk <i>Ctrl + X; </i>of
-    </p>
-    <p>
-      - kies <i>Bewerken &gt; Knippen </i>in Hoofdmenu of in Contextmenu <i>.</i>
-    </p>
-  </body>
-</html></richcontent>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1718916776" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-</node>
-</node>
-<node TEXT="Basistekst" FOLDED="true" ID="Freeplane_Link_1700974092" CREATED="1270892460671" MODIFIED="1304577467423" COLOR="#407000" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een knoop heeft een binnengebied waarin een tekst kan worden getoond. Er zijn twee manieren om deze basistekst van een knoop te bewerken:
-    </p>
-    <ol>
-      <li>
-        <b>binnen de knoop </b>(snelbewerken). De bewerkingsmenu's bevinden zich op twee plaatsen. De eerste plaats is in de het werkmenu bovenin het scherm. Dit werkmenu kan worden geopend door in het Hoofdmenu <i>Beeld &gt; Werkbalken &gt; Werkmenu</i>&#160;te kiezen. De tweede plaats is het Contextmenu dat opent wanneer met de rechter muisknop op de knooptekts wordt geklikt.
-      </li>
-      <li>
-        <b>in een hulpvenster. </b>Dit venster heeft eigen knoppen voor Bewerken, Opmaak, Tabel en Help.Dit venster opent door <i>Bewerken basisteks</i>t in Hoofdmenu&gt;Knoop of in Contextmenu te kiezen.
-      </li>
-    </ol>
-    <p>
-      Standaard kiest Freeplane voor het bewerken van tekst binnen de knoop. ( Let op, hiernaast kan tekst in een bijlagevenster, het attribuutvenster, of het notitievenster worden ingevoerd. )
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="NOTE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Engels: Short node, Long node
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Let op: een basistekst kan niet beginnen met het karaker &quot;=&quot;, zie formules." ID="ID_1591953472" CREATED="1296498256369" MODIFIED="1298472026251" BACKGROUND_COLOR="#ffffff" STYLE="bubble">
-<icon BUILTIN="messagebox_warning"/>
-</node>
-<node TEXT="Selecteren knoop" STYLE_REF="Onderwerp" FOLDED="true" ID="ID_1086730254" CREATED="1286650861195" MODIFIED="1293375085908">
-<node TEXT="Om een knoop te kunnen bewerken moet deze eerst worden geselecteerd." ID="ID_271126985" CREATED="1286649877330" MODIFIED="1293375085904" LINK="#ID_1804240683"/>
-</node>
-<node TEXT="Tekst bewerken binnen knoop" STYLE_REF="Onderwerp" FOLDED="true" ID="ID_1916991834" CREATED="1286650397903" MODIFIED="1304584124249" BACKGROUND_COLOR="#ffffff" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Snelbewerken basistekst
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Dit is de snelste manier om tektst aan een knoop toe te voegen. Voor meer uitgebreide mogelijkheden: kies <i>Knoop &gt; Bewerken basistekst&#160;</i>in Hoofdmenu of in Contextmenu
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Snelbewerken" ID="ID_473657585" CREATED="1270892460671" MODIFIED="1304583778646" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om tekst binnen een geselecteerd knoopvenster te bewerken (snelbewerken):
-    </p>
-    <p>
-      - dubbelklik op de knoop zodat de invoercursor zichtbaar wordt; of
-    </p>
-    <p>
-      - druk <i>F2</i>; of &#160;<i>Home</i>&#160;of <i>End</i>; of
-    </p>
-    <p>
-      - kies <i>Bewerken basistekst </i>in Hoofdmenu&gt;Knoop of in het Contextmenu.<br/>
-    </p>
-    <p>
-      en:
-    </p>
-    <p>
-      - klik zonodig op de plaats waar de volgende letter moet komen (verplaats de invoercursor); en
-    </p>
-    <p>
-      - type de tekst;
-    </p>
-  </body>
-</html></richcontent>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_473657585" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-</node>
-<node TEXT="Eindigen bewerking" ID="_Freeplane_Link_1445647544" CREATED="1270892460672" MODIFIED="1304688020310" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Enter eindigt het bewerkingsproces binnen de knoop
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_673531040" CREATED="1270892460671" MODIFIED="1304583929015" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">Alle tekst vervangen.</span></font>
-    </p>
-  </body>
-</html>
-<!--<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<!<! ^ Position is not set to relative / absolute here because of Mozilla --></richcontent>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om alle tekst van de geselecteerde knoop te verwijderen:
-    </p>
-    <p>
-      - selecteer de knoop en begin met typen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Bewerken beeindigen" ID="ID_1373800660" CREATED="1291205543183" MODIFIED="1304583992881" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om het bewerken te eindigen:
-    </p>
-    <p>
-      - druk Enter; of
-    </p>
-    <p>
-      - klik met de muisknop buiten de knoop.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Contextmenu" ID="ID_863139933" CREATED="1291203166414" MODIFIED="1304583846350" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een woord <b>op te maken</b>, te <b>kopi&#235;ren</b>&#160;of te <b>plakken</b>, of de <b>spelling</b>&#160;te controleren:
-    </p>
-    <p>
-      - selecteer het woord ; en
-    </p>
-    <p>
-      - klik met de rechter muisknop; en
-    </p>
-    <p>
-      - kies de gewenste opte in het Contextmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_1491068549" CREATED="1291205875143" MODIFIED="1304079517287" BACKGROUND_COLOR="#ffff33">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Mocht het bewerken niet lukken, schakel dan over naar <i>Bewerken basistekst</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Tekst bewerken in hulpvenster" STYLE_REF="Onderwerp" FOLDED="true" ID="ID_1775583940" CREATED="1286650453228" MODIFIED="1293375085865">
-<node TEXT="Kiezen hulpvenster" ID="ID_1386037184" CREATED="1270892460672" MODIFIED="1304584437958" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om te zorgen dat Freeplane dit venster kiest, selecteer een knoop en
-    </p>
-    <p>
-      - kies <i>Bewerken ibasistekst </i>in <i>Hoofdmenu &gt; Knoop</i>&#160;of <i>Contextmenu</i>; of
-    </p>
-    <p>
-      - druk <i>Alt + Enter </i>( <font color="#ff0000">ALLEEN als de knoop geslecteerd is, NIET als de invoercursor zichtbaar is</font>&#160;)
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Knooptekst verdelen over twee knopen" ID="ID_328110224" CREATED="1270892460672" MODIFIED="1304584531776" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een tekst in een knoop op te delen en op te nemen in twee knopen:
-    </p>
-    <p>
-      - kies <i>Bewerken basistekst</i>&#160;in <i>Hoofdmenu &gt; Knoop</i>&#160;of <i>Contextmenu</i>;
-    </p>
-    <p>
-      - selecteer de tekst die bij de te splitsen knoop moet blijven en
-    </p>
-    <p>
-      - druk in&#160;&#160;het hulpvenster op de knop<i>&#160;Splitsen</i>; of
-    </p>
-    <p>
-      - druk <i>Alt + S</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Kopieren naar klembord" ID="ID_471748709" CREATED="1270892460672" MODIFIED="1304584597983" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een deel van de tekst in het hulpvenster naar het klembord te kopi&#235;ren, om deze later te kunnen plakken:
-    </p>
-    <p>
-      - selecteer de te kopi&#235;ren tekst en in de&#160;menubalk&#160;van het hulpvenster:
-    </p>
-    <p>
-      - kies <i>Bewerken &gt; kopi&#235;ren</i>; of
-    </p>
-    <p>
-      - kies het betreffende pictogram
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Symbolen toevoegen" ID="ID_128741512" CREATED="1270892460672" MODIFIED="1304584672021" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een een speciaal symbool zoals &#169; in te voegen, type het in uw favoriete tekstverwerker zoals Word, kopieer het symbool en plak het in het&#160;&#160;hulpvenster.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_1608665009" CREATED="1270996862392" MODIFIED="1293375085844" LINK="#Freeplane_Link_1318678369">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Bewerkingen kunnen ongedaan worden gemaakt, klik op de pijl.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Spellingscontrole" STYLE_REF="Onderwerp" FOLDED="true" ID="ID_1122067470" CREATED="1271096284570" MODIFIED="1304584770800" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de spellingscontrole aan of uit te zetten:
-    </p>
-    <p>
-      - klik met de rechtermuisknop op een woord en kies<i>&#160;Talen</i>.
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_1341966636" CREATED="1271096394315" MODIFIED="1293375085833" LINK="http://sourceforge.net/projects/freeplane/files/spell_check_dictionaries">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Er zijn voor verschillende talen woordenlijsten op de Freeplane web site.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="LaTeX formules" ID="ID_602806058" CREATED="1305035770863" MODIFIED="1305035797165"/>
-<node TEXT="Pictogram" ID="ID_1595604721" CREATED="1304144754818" MODIFIED="1304584859483" LINK="#Freeplane_Link_1044397139" COLOR="#407000" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Linksklik op het groene pijltje om door te schakelen
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Basistekst met automatisch nummer" ID="ID_655745757" CREATED="1299179094034" MODIFIED="1305290882181" TEXT_SHORTENED="true" COLOR="#407000" NUMBERED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een knoop automatisch van een nummer te voorzien:
-    </p>
-    <p>
-      - kies <i>Beeld&gt;Opmaakpaneel;</i>
-    </p>
-    <p>
-      - Selecteer <i>Aanpassen</i>&#160;en <i>Knoopnummering </i>
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Als een gekleurde rand om de tekst verschijnt:
-    </p>
-    <p>
-      - Kies <i>Beeld &gt; Markeer formules niet met een rand</i>&#160;in Hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Basistekst met formule (LaTeX)" ID="ID_634112367" CREATED="1304580226668" MODIFIED="1305291147115" COLOR="#407000"/>
-<node TEXT="Bijlagetekst" FOLDED="true" ID="ID_1237483271" CREATED="1291616540782" MODIFIED="1304577518950" COLOR="#407000" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Onder de basistekst kan, in het buitengebied van de knoop een toelichtende tekst&#160;&#160;worden getoond. De gebruiker kan deze tekst oprollen/uitrollen..&#160;&#160;Er kan worden ingesteld dat de bijlagetekst alleen wordt getoond als de knoop is geselecteerd.
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="NOTE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Engels: Details
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Bewerken bijlage" ID="ID_1890676101" CREATED="1291756829074" MODIFIED="1304688649904" LINK="menuitem:_/menu_bar/node%20features/details/EditDetailsAction" TEXT_SHORTENED="true">
-<icon BUILTIN="../edit_details"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Als bij basistekst met hulpvenster (zie boven);
-    </p>
-    <p>
-      - kies <i>Knoopkenmerken &gt; Bijlagetekst &gt; Beweken bijlage&#160;</i>in <i>Hoofdmenu&#160;</i>of <i>Contextmenu</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Verwijderen bijlage" ID="ID_345051640" CREATED="1291757478884" MODIFIED="1304688221949" LINK="menuitem:_/menu_bar/node%20features/details/DeleteDetailsAction" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een bijlage te verwijderen:
-    </p>
-    <p>
-      - kies <i>Knoopkenmerken &gt; Bijlagetekst &gt; Verwijderen bijlage&#160;</i>in<i>&#160;Hoofdmenu </i>of<i>&#160;Contextmenu</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Verbergen bijlage" ID="ID_1571587553" CREATED="1304688684699" MODIFIED="1304688857379" TEXT_SHORTENED="true" LINK="menuitem:_/menu_bar/view/general/SetShortenerStateAction">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een bijlage te verbergen, kies:
-    </p>
-    <p>
-      -&#160; <i>Beeld&#160;&#160;&gt;Verbergen bijlage, attributen, notitie</i>&#160; in Hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Tonen verborgen bijlage" ID="ID_889276821" CREATED="1304688891207" MODIFIED="1304689106441" TEXT_SHORTENED="true" LINK="menuitem:_/menu_bar/view/general/SetShortenerStateAction">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een verborgen bijlage te tonen:
-    </p>
-    <p>
-      - plaats de cursor op de knoop met de bijlage; of
-    </p>
-    <p>
-      - kies <i>Beeld &gt; Verbergen bijlage, notitie attributen</i>&#160;in Hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Notitietekst" FOLDED="true" ID="ID_307063579" CREATED="1291616540782" MODIFIED="1304577543770" COLOR="#407000" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Onder de bijlagetekst kan een tweede externe tekst worden getoond. Deze tekst kan naar keuze in een separaat, schermbreed venster worden getoond. Hierdoor is de notitietekst geschikt om bijvoorbeeld refertes te bevatten. De notitietekst wordt ook gebruikt in het venster waarin de activiteiten van de Agenda worden getoond.
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="NOTE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Engels: Note
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_1702667012" CREATED="1291757028480" MODIFIED="1298472255607" STYLE="bubble">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een notitie kan in een afzonderlijk hulpvenster worden getoond of bij de knoop, zie:
-    </p>
-    <p>
-      - <i>Beeld &gt; Tonen notities bij knopen</i> in Hoofdmenu;
-    </p>
-    <p>
-      - <i>Beeld &gt; Tonen notitiehulpvenster</i> in Hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_1408896252" CREATED="1291756829074" MODIFIED="1304085014922">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Als bij basistekst met hulpvenster;
-    </p>
-    <p>
-      - kies <i>Bewerken bijlage</i>&#160;in <i>Hoofdmenu &gt; Knoopkenmerken&#160;</i>of&#160; <i>Contextmenu</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_958969692" CREATED="1291757560652" MODIFIED="1304084988933">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een notitie te verwijderen:
-    </p>
-    <p>
-      - kies <i>Verwijderen notitie</i>&#160;in <i>Hoofdmenu &gt; Knoopkenmerken</i>&#160; of <i>Contextmenu</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Attributen" FOLDED="true" ID="ID_540307688" CREATED="1270896851973" MODIFIED="1304279067698" COLOR="#407000" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een attribuut is een paar van twee naast elkaar gelegen velden. Het linker veld is bedoeld voor de naam van het attribuut en de rechter voor de waarde van het attribuut.&#160;&#160;Een knoop kan onder elkaar meerdere attributen tonen (attributenlijst).
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT=" Voorbeeld van attributen" ID="ID_50207363" CREATED="1270893318566" MODIFIED="1304279150535" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<attribute_layout NAME_WIDTH="33" VALUE_WIDTH="33"/>
-<attribute NAME="jan" VALUE="10"/>
-<attribute NAME="piet" VALUE="20"/>
-</node>
-<node STYLE_REF="Inleiding" ID="ID_260165980" CREATED="1296496503610" MODIFIED="1304106842498">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      De breedte van een attribuut of attribuutwaarde kan worden gewijzigd door de oplichtende rand net boven de (lijst) attributen of attribuutwaarden met de muiscursor ingedrukt te verschuiven.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Om de optimale breedte in te stellen:
-    </p>
-    <p>
-      - klik met de rechter muisknop op een attribuut;
-    </p>
-    <p>
-      - kies <i>Optimale breedte </i>in het contextmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Attributen die zijn gebruikt binnen een mindmap komen terug als keuzeopties bij andere knopen.&#xa;Attribuutwaarden kunnen worde gebruikt om knopen wel/niet te tonen, zie Filteren." STYLE_REF="Inleiding" ID="ID_1827145511" CREATED="1289570137569" MODIFIED="1296497457107"/>
-<node ID="ID_541565942" CREATED="1270896865255" MODIFIED="1304107947686">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een attribuut toe te voegen aan een knoop die nog geen attributen heeft, of die niet zichtbaar zijn::
-    </p>
-    <p>
-      - kies <i>Knoopkenmerken &gt; Nieuw/Bewerken&#160;attribuut </i>in <i>Hoofdmenu </i>&#160;of &#160;in Contextmenu (rechtsklik knoop); of
-    </p>
-    <p>
-      <i>- </i>druk<i>&#160;Alt + F9. </i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_855365799" CREATED="1296497665858" MODIFIED="1298402478990">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een nieuw attribuut toe te voegen aan een bestaande lijst:
-    </p>
-    <p>
-      - klik met de rechtermuisknop op een attibuut;
-    </p>
-    <p>
-      - kies <i>Nieuw attribuut</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_238666736" CREATED="1296497665858" MODIFIED="1304108085372">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een bestaand attribuut te wissen:
-    </p>
-    <p>
-      - klik met de rechtermuisknop op het attibuut;
-    </p>
-    <p>
-      - kies W<i>issen attribuut</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Om een hyperlink als attribuutwaarde toe te voegen:&#xa;- sleep de hyperlink in het veld van de attribuutwaarde" ID="ID_722555431" CREATED="1298928752603" MODIFIED="1298928813970"/>
-<node ID="ID_1213222306" CREATED="1270896956119" MODIFIED="1293375085753">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om tegelijkertijd meerdere attributen van meerdere knopen te bewerken:
-    </p>
-    <p>
-      - kies<i>&#160;Extra &gt; Attribuutwaarden beheren</i>&#160;in Hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_686245498" CREATED="1291757348243" MODIFIED="1304108135510">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om attributen te verwijderen:
-    </p>
-    <p>
-      - kies <i>Knoopkenmerken&#160;&gt; Attribuutwaarden beheren</i>;
-    </p>
-    <p>
-      - kies alle waarden wissen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Zie ook" ID="ID_1612379315" CREATED="1296498105485" MODIFIED="1296498141725"/>
-</node>
-<node TEXT="Afbeelding" FOLDED="true" ID="Freeplane_Link_271176250" CREATED="1270892460699" MODIFIED="1304580104230" COLOR="#407000" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een afbeelding is een plaatje met formaat<b>&#160;png, jpeg, gif, </b>of<b>&#160;svg. </b>. Een plaatje kan in het binnegebied van de knoop (interne afbeelding) worden getoond of in het buitengebied, onder de knoop (extern plaatje). Alleen een extern plaatje is schaalbaar.
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="NOTE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Engels: Image
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_1044142128" CREATED="1286741509257" MODIFIED="1304579930966" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      De getoonde plaatjes worden <u>niet</u>&#160;opgenomen in het mindmap bestand. Bij het kopi&#235;ren en verplaatsen van een mindmap bestand moeten de plaatjes dus ook meegekopieerd worden om te zorgen dat de mindmap goed werkt. Hetzelfde geldt voor het exporteren van een mindmap: de plaatjes worden niet automatisch meege&#235;xporteerd.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Externe, schaalbare afbeelding onder basistekst" FOLDED="true" ID="ID_1248928522" CREATED="1286806901272" MODIFIED="1304578317416">
-<node TEXT="Plak externe afbeelding" ID="ID_1089926428" CREATED="1298574864898" MODIFIED="1304579014316" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om onder een knoop een schaalbaar, extern plaatje toe te voegen:
-    </p>
-    <p>
-      - klik links op (de lokatie van) het plaatje; en
-    </p>
-    <p>
-      - sleep het plaatje naar een knoop, tot het bovenste grijze selectieveld oplicht;
-    </p>
-    <p>
-      - laat de linker muisknop los.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Plak externe afbeelding en voeg kindknoop toe" ID="ID_225789255" CREATED="1299178169909" MODIFIED="1304579030338" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een nieuwe kindknoop met het schaalbaar, extern plaatje toe te voegen:
-    </p>
-    <p>
-      - klik links op de lokatie van het plaatje;
-    </p>
-    <p>
-      - sleep naar een knoop, naar het grijze selectieveld aan de kindkant;
-    </p>
-    <p>
-      - laat de linker muisknop los.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Externe afbeelding invoegen (alternatief)" FOLDED="true" ID="ID_692449557" CREATED="1271527733841" MODIFIED="1304579045267" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Alternatief: om onder een knoop een extern, schaalbaar plaatje te tonen, waarbij de knoop ook tekst kan bevatten:
-    </p>
-    <p>
-      - kies&#160; <i>Knoopkenmerken &gt;&#160;Afbeelding &gt;Toevoegen externe, </i>s<i>chaalbare afbeelding</i>&#160;in Hoofdmenu of Contextmenu (rechtsklik knoop); en
-    </p>
-    <p>
-      - zoek en selecteer het plaatje;
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Om het plaatje in grootte te verstellen:" ID="ID_895929042" CREATED="1286742816233" MODIFIED="1293375085390"/>
-</node>
-<node TEXT=" Grootte externe afbeelding wijzigen" ID="ID_1548126810" CREATED="1298575057637" MODIFIED="1304578987765" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de <b>grootte</b>&#160;van het schaalbare plaatje aan te passen:
-    </p>
-    <p>
-      - beweeg de linker muisknop over een hoekpunt van het plaatje totdat de cursor verandert in een diagonaal lijntje; en
-    </p>
-    <p>
-      - klik en sleep naar het juiste formaat.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Vaste interne afbeelding in plaats van basistekst" ID="ID_95494296" CREATED="1286806940607" MODIFIED="1304580007713" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om binnen een knoop een plaatje (geen svg !) met vaste grootte in te voegen:
-    </p>
-    <p>
-      - kies <i>Knoopkenmerken &gt; Afbeelding &gt;Toevoegen interne afbeelding of converteren hyperlink </i>in<i>&#160;</i>Hoofdmenu of Contextmenu&#160;(rechtsklik knoop);&#160;of
-    </p>
-    <p>
-      - druk <i>Alt + Shift + K</i>.
-    </p>
-    <p>
-      N.B. Het plaatje wordt getoond in oorpronkelijke grootte. Pas deze grootte zo nodig aan in een tekenprogramma.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Hyperlink naar afbeelding" ID="ID_1609288412" CREATED="1286807289790" MODIFIED="1304579348633" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een hyperlink naar een afbeelding in te voegen:
-    </p>
-    <p>
-      - kopieer het adres van het afbeelding;
-    </p>
-    <p>
-      - plak het adres &quot;op&quot; de knoop: er wordt automatisch een kindknoop aangemaakt met de hyperlink.
-    </p>
-    <p>
-      Dit werkt ook met meerdere geselecteerde bestanden tegelijk.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Converteren snelkoppeling naar afbeelding" ID="ID_1576666245" CREATED="1286807975568" MODIFIED="1304579848559" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een hyperlink naar een afbeelding te vervangen door de afbeelding zelf:
-    </p>
-    <p>
-      - kies <i>Knoopkenmerken&#160;&gt; Afbeelding &gt;&#160;Toevoegen interne afbeelding of converteren hyperlink </i>in<i>&#160;</i>Hoofdmenu of Contextmenu (rechtsklik op knoop);&#160;of
-    </p>
-    <p>
-      - druk <i>Alt + Shift + K</i>.
-    </p>
-    <p>
-      Werkt ook met meerdere geselecteerde knopen/links tegelijk.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b>N.B.</b>&#160;De procedure werkt om veiligheidsredenen <b><i>niet</i></b>&#160;als de snelkoppeling naar een bestand op Internet verwijst
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Afbeelding via HTML-code" ID="ID_1100890918" CREATED="1286808673817" MODIFIED="1304579766784" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">In een hulpvenster kan met HTML-code een plaatje worden opgenomen</span></font>
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b>Voorbeeld</b>: &#160;&#160;
-    </p>
-    <p>
-      &lt;html&gt;&lt;img src=&quot;linked/Apple.png&quot;&gt; &#160;&#160;&lt;html&gt;&lt;img src=&quot;file://C:/Users/My Documents/Mind Maps/Linked/Apple.png&quot;&gt; De relatieve link op de eerste regel verwijst naar een afbeeldingsbestand in een submap (subdirectory) binnen (onder) de map waarin de mindmap staat.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Pictogram" STYLE_REF="Onderwerp" FOLDED="true" ID="Freeplane_Link_1044397139" CREATED="1270892460676" MODIFIED="1304580069224" TEXT_SHORTENED="true" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een pictogram is een miniafbeelding welke aan het binnengebied van een knoop kan worden gekoppeld.
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="NOTE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Engels: Icon
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT=" Voorbeelden van pictogrammen." ID="ID_1983709741" CREATED="1270892460676" MODIFIED="1304279791423" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
+<node TEXT=" Examples of icons" ID="ID_835126969" CREATED="1270892460676" MODIFIED="1311402835392" TEXT_SHORTENED="true">
 <icon BUILTIN="help"/>
 <icon BUILTIN="yes"/>
 <icon BUILTIN="messagebox_warning"/>
 <icon BUILTIN="button_ok"/>
+<attribute NAME="Chapter" VALUE="3"/>
 </node>
-<node TEXT="Pictogram vinden" ID="ID_1869499817" CREATED="1286699808207" MODIFIED="1304755625099" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="Add user defined icon" ID="ID_105231801" CREATED="1305728960278" MODIFIED="1311402835392" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      De beschikbare pictogrammen staan in de Pictogrammenbalk. Als deze niet zichtbaar is:
-    </p>
-    <p>
-      - kies <i>Beeld &gt; Pictogrammenbalk </i>in Hoofdmenu<i>&#160;</i>
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <i>De pictogrammen zijn ook als volgt te vinden en te kiezen: </i>
-    </p>
-    <p>
-      - kies&#160; <i>Pictogram</i>&#160;in Hoofdmenu &gt; Knoopkenmerken<i>;&#160;</i>of
-    </p>
-    <p>
-      - kies <i>&#160;Pictogrammen</i>&#160;in het Contextmenu<i>&#160;</i>; of
-    </p>
-    <p>
-      - druk op <i>Ctrl + F2.</i>
+      To add ones own icon to the list of selectable icons, put the file myicon.png to in sub directory <i>icons</i>&#160;of the user directory which opens by selecting <i>Tools &gt; Open user directory</i>.
     </p>
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Pictogram toevoegen" ID="ID_1126175660" CREATED="1270892460676" MODIFIED="1304755541720" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="Remove all icons" ID="ID_1438443252" CREATED="1305728891917" MODIFIED="1311402835376" TEXT_SHORTENED="true">
+<icon BUILTIN="../icon_trash"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Om een pictogram aan een knoop toe te voegen:
-    </p>
-    <p>
-      - selecteer de knoop waarin het pictogram moet komen (houd daarna <i>Ctrl</i>&#160; ingedrukt om te zorgen dat knoop geselekteerd blijft);
-    </p>
-    <p>
-      - kies <i>Pictogram</i>&#160;in Hoofdmenu &gt; Knoop;
+      Remove all icons from selected node
     </p>
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Pictogram verwijderen" ID="ID_1703076068" CREATED="1270892460676" MODIFIED="1304755526038" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="Remove last icon" ID="ID_424983852" CREATED="1305728879991" MODIFIED="1311402835376" TEXT_SHORTENED="true">
+<icon BUILTIN="../remove_last_icon"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Om een pictogram te verwijderen:
-    </p>
-    <p>
-      - selecteer de knoop waarin het pictogram moet komen (houd daarna <i>Ctrl</i>&#160; ingedrukt om te zorgen dat knoop geselecteerd blijft);
-    </p>
-    <p>
-      - kies <i>Pictogram</i>&#160;in Hoofdmenu &gt; Knoop of ga naar de Pictogrammenbalk;
-    </p>
-    <p>
-      -&#160;kies eerste of tweede pictogram met het rode kruisje (verwijderen pictogram);
+      Removes last icon in selected node
     </p>
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Alle pictogrammen verwijderen" ID="ID_1240276527" CREATED="1270892460676" MODIFIED="1304755504595" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="Remove first icon" ID="ID_1452556696" CREATED="1305728866037" MODIFIED="1311402835361" TEXT_SHORTENED="true">
+<icon BUILTIN="../remove_first_icon"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Om alle pictogrammen te verwijderen: - kies in de Pictogrammenbalk de vuilnisbak.</span></font>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Pictogrammen in hierarchie tonen" ID="ID_26845444" CREATED="1271096826323" MODIFIED="1304755614063" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om alle knopen met pictogrammen hi&#235;rarchisch te tonen:
-    </p>
-    <p>
-      - kies Knoopkenmerken<i>&#160;&gt; Pictogrammen hi&#235;rarchie </i>in Hoofdmenu .
+      Remove firstly added icon in the selected node.
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
-<node TEXT="%Schijf" ID="ID_1909632510" CREATED="1305290139731" MODIFIED="1305290944242" LINK="#ID_1053622072" TEXT_SHORTENED="true" COLOR="#407000">
+<node TEXT="Progress" FOLDED="true" ID="ID_1053622072" CREATED="1303931822760" MODIFIED="1314563397955" TEXT_SHORTENED="true">
 <icon BUILTIN="25%"/>
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -8826,2550 +4724,141 @@
   </head>
   <body>
     <p>
-      Schijf die in stappen van 10% of 25% kan worden gevuld.
-    </p>
-    <p>
-      Standaard wordt de schijf als pictogram getoond.
-    </p>
-    <p>
-      Additioneel kan een grote schijf alsexterne&#160;&#160;afbeelding worden getoond.
-    </p>
-    <p>
-      De grote schijf is niet zichtbaar als afbeeldingen zijn verborgen; de kleine schijf
-    </p>
-    <p>
-      (pictogram) blijft wel zichtbaar.
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
-<node TEXT="Hyperlink" FOLDED="true" ID="Freeplane_Link_203858515" CREATED="1270892460675" MODIFIED="1304755765490" COLOR="#407000" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een hyperlink is een electronische koppeling van een bronknoop naar&#160;&#160;naar een webpagina,naar een bestand of naar een applicatie zoals een tekstverwerker. De koppeling is te herkennen aan een<b>&#160;rood pijltje</b>. Door op het rode pijltje te klikken wordt de hyperlink geactiveerd.
+      Progress is an indicator in which a percentage can be visualized in steps of 10% or 25%.
     </p>
     <p>
       
     </p>
     <p>
-      Een hyperlink kan worden ingevoegd in de basistektst van een knoop en in een attribuut(waarde). Zie Hoofdmenu onder <i>Knoopkenmerken &gt; Koppelingen</i>&#160; voor verschillende mogelijkheden om een&#160;hyperlink&#160;in de basistekst toe te voegen. Het contextmenu van attribuutwaarde bevat&#160;&#160;een beperkte set van deze mogelijkheden. Makkelijker is het echter om een hyperlink toe aan een knoop of aan een attribuutwaarde door slepen en laten vallen, of kopieren en plakken, . Hierbij kan ook automatisch een kindknoop worden aangemaakt.
+      Note
     </p>
+    <ul>
+      <li>
+        The standard is to present the indicator as an icon. This icon cannot be hidden.
+      </li>
+      <li>
+        Additionally an image of the indicator can be shown. This image can be hidden, see images.
+      </li>
+    </ul>
   </body>
 </html></richcontent>
-<richcontent TYPE="NOTE">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+<node TEXT="Progress Up" ID="ID_1352152467" CREATED="1304432750435" MODIFIED="1310844546671" TEXT_SHORTENED="true">
+<icon BUILTIN="50%"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Engels: External hyperlink
+      Adds progress indicator in selected node resp. moves it up in steps of 25% until 100% and OK.
     </p>
   </body>
 </html></richcontent>
-<node TEXT="In basistekst" FOLDED="true" ID="ID_25234663" CREATED="1299179592723" MODIFIED="1299179602600">
-<node TEXT="Hyperlink naar bestand via plakken" ID="ID_1756497395" CREATED="1270892460683" MODIFIED="1304755829331" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Progress Down" ID="ID_1503763375" CREATED="1304432902357" MODIFIED="1310844546687" TEXT_SHORTENED="true">
+<icon BUILTIN="25%"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Om een hyperlink naar een bestand te maken:
-    </p>
-    <p>
-      - sleep het bestand naar de knoop.
+      Decreases progress indicator in selected node in steps of 25% and as a last step removes it.
     </p>
   </body>
 </html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Hyperlinks naar meer bestanden via plakken" ID="ID_640110372" CREATED="1286651969385" MODIFIED="1304755838801" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="Extended progress 10%" ID="ID_931502203" CREATED="1304432912176" MODIFIED="1310844546687">
+<icon BUILTIN="25%"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Om in &#233;&#233;n keer een lijst van hyperlinks&#160;&#160;naar een aantal bestanden te maken:
+      Adds a progress indication with extended size that is:
     </p>
-    <p>
-      - ga bijvoorbeeld naar Verkenner en selecteer en kopieer de groep bestanden;
-    </p>
-    <p>
-      - ga naar de mindmap en selekteer een knoop;
-    </p>
-    <p>
-      - kies <i>Bewerken &gt; Plakken </i>in Hoofdmenu of Contextmenu; of klik op het pictogram voor Plakken.
-    </p>
-    <p>
-      Elke hyperlink komt in een aparte knoop.
-    </p>
+    <ul>
+      <li>
+        increased 10 %<i>&#160;</i>on<i>&#160;double Click</i>
+      </li>
+      <li>
+        decreased 10% o<i>n Ctrl + double Click</i>
+      </li>
+    </ul>
   </body>
 </html></richcontent>
-</node>
-<node TEXT="Hyperlink naar bestand via bestandenlijst" ID="ID_898557755" CREATED="1286656418750" MODIFIED="1304755940215" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een koppeling naar een bestand in te voegen:
-    </p>
-    <p>
-      - selecteer de knoop;
-    </p>
-    <p>
-      - kies <i>Knoopkenmerken &gt; Koppeling&#160;&gt; Hyperlink kiezen uit bestandenlijst </i>&#160;in Hoofdmenu; of
-    </p>
-    <p>
-      druk <i>Ctrl + Shift + K.</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_439188785" CREATED="1286655618819" MODIFIED="1304627144017" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Hyperlink typen
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een hyperlink in een knoop op te nemen door het adres te typen:
-    </p>
-    <p>
-      - selecteer de knoop;
-    </p>
-    <p>
-      - kies<i>&#160;Knoopkenmerken &gt; Koppeling&#160;&#160;&gt; Hyperlink typen</i>; of druk op <i>Ctrl + K</i>; en
-    </p>
-    <p>
-      - type de hyperlink
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_463015053" CREATED="1286655769765" MODIFIED="1304627185428" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Hyperlink verwijderen
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een hyperlink te verwijderen zonder de knoop te verwijderen:
-    </p>
-    <p>
-      - selecteer de knoop met snelkoppeling;
-    </p>
-    <p>
-      - kies <i>Knoopkenmerken &gt; Koppeling &gt; Hyperlink intypen</i>... in Hoofdmenu of het Contextmenu; of
-    </p>
-    <p>
-      - druk op Ctrl + K
-    </p>
-    <p>
-      en wis de tekst in het dialoogvenster dat opent.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_1332466654" CREATED="1286655879246" MODIFIED="1304112213462" LINK="#ID_609655514">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Koppeling naar e-mail
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="In attribuutwaarde" ID="ID_1953507040" CREATED="1299179628141" MODIFIED="1304627256806" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      als in basistekst, alleen via het Contextmenu van attribuutwaarde.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Snelkoppeling" FOLDED="true" ID="ID_342404639" CREATED="1289551103373" MODIFIED="1304627410778" COLOR="#407000" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Elektronische koppeling tussen twee knopen (bronknoop en bestemming)&#160;welke is te herkennen aan een <b>groen pijltje</b>&#160;in de bronknoop.&#160;Door op het pijltje te klikken verschuift de focus (selectie) naar de bestemmingsknoop.
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="NOTE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Engels: Internal hyperlink
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Snelkoppeling maken of wizigen" ID="ID_1561159352" CREATED="1289551169759" MODIFIED="1304627471182" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een snelkoppeling tussen twee knopen te maken, of te veranderen:
-    </p>
-    <p>
-      - selecteer de knoop waar de snelkoppeling moet komen;
-    </p>
-    <p>
-      - houd<i>&#160;Shift </i>ingedrukt en selecteer de knoop waarheen de snelkoppeling moet leiden;
-    </p>
-    <p>
-      - kies<i>&#160;Knoopkenmerk &gt; Snelkoppeling tussen knopen</i>&#160;in Hoofdmenu of het Contextmenu.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Snelkoppeling verwijderen" ID="ID_953613682" CREATED="1289550333175" MODIFIED="1304627384304" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een snekoppeling te verwijderen zonder de knoop te verwijderen:
-    </p>
-    <p>
-      - selecteer knoop met snelkoppeling;
-    </p>
-    <p>
-      - kies Knoopkenmerk <i>&gt; Hyperlink intypen</i>... in Hoofdmenu of Contextmenu; of
-    </p>
-    <p>
-      - druk op Ctrl + K
-    </p>
-    <p>
-      en wis de tekst in het dialoogvenster dat opent.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="E-mail koppeling" FOLDED="true" ID="ID_609655514" CREATED="1289567011406" MODIFIED="1304280089485" COLOR="#407000" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een knoop met een e-mail adres. Door op de e-mail te klikken opent het e-mail bewerkingsvenster
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="E-mail koppeling maken" ID="ID_250029024" CREATED="1298319410882" MODIFIED="1304627620308" BACKGROUND_COLOR="#ffffff" STYLE="fork" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      De eenvoudigste manier om een e-mail toe te voegen is om het e-mail adres te kopieren en te plakken op een knoop. Er wordt dan een kindknoop aangemaakt met (1) het e-mail adres als hyperlink en (2) als basistekst het e-mailadres. De basistekst kan worden vervangen door een naam, bijvoorbeeld Jan Jansen. Dit laat de hyperlink ongewijzigd.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Email koppeling maken 2" ID="ID_869144882" CREATED="1270892460675" MODIFIED="1304627722018" LINK="mailto:%20jokro@freeplane.nl" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een andere manier om een e-mail adres in een knoop op te nemen:
-    </p>
-    <p>
-      - selecteer de knoop;
-    </p>
-    <p>
-      - kies<i>&#160;Knoopkenmerken &gt; Koppeling&#160;&#160;&gt; Hyperlink typen </i>in<i>&#160; Hoofdmenu</i>; of druk op <i>Ctrl + K</i>; en
-    </p>
-    <p>
-      - type mailto:
-    </p>
-    <p>
-      - type het adres
-    </p>
-    <p>
-      Voorbeeld: mailto:jokro@freeplane.nl
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Onderwerp toevoegen" ID="ID_1116507628" CREATED="1270892460676" MODIFIED="1304627773580" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om aan een email een onderwerp toe te voegen, pas het adres aan, bijvoorbeeld:
-    </p>
-    <p>
-      - mailto:jokro@freeplane.nl?subject=laatste telefoongesprek.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="E-mail koppeling verwijderen" ID="ID_1490575192" CREATED="1304756950201" MODIFIED="1304757135915" LINK="#ID_463015053" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      E-mail wordt verwijderd door de tekst van de hyperlink leeg te maken.Zie Hyperlinkd verwijderen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Tak" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_893133723" CREATED="1288986009569" MODIFIED="1304580134058" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een lijn tussen ouderknoop en kindknoop. Standaard is deze lijn zichtbaar. De kleur, dikte en vorm van deze lijn kunnen worden ingesteld<i>.</i>&#160;Een tak kan&#160;ook onzichtbaar worden gemaakt.&#160;&#160;Opeenvolgende takken vormen een <b>afstammingsketen</b>&#160; welke eindigt bij de <b>bladknoop</b>.
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="NOTE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Engels: Edge, branch
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Voorbeeld afstammingsketen" FOLDED="true" ID="ID_532956169" CREATED="1288536353356" MODIFIED="1304281219636" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
-<node ID="ID_341122380" CREATED="1288536207761" MODIFIED="1293375090079" STYLE="bubble">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      boven a
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="knoop a" FOLDED="true" ID="ID_1034869985" CREATED="1288535672221" MODIFIED="1293375090075" STYLE="bubble">
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_864779162" SOURCE_LABEL="ouder (=label)" TARGET_LABEL="kleinkind" MIDDLE_LABEL="verbindingslijn" STARTINCLINATION="-11;64;" ENDINCLINATION="11;87;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
-<node TEXT="knoop b" FOLDED="true" ID="ID_1639474035" CREATED="1288535688688" MODIFIED="1293375090070">
-<edge STYLE="bezier"/>
-<node TEXT="knoop c" ID="ID_864779162" CREATED="1288535699522" MODIFIED="1293375090066"/>
-</node>
-</node>
-<node TEXT="onder a" ID="ID_565180204" CREATED="1288536218798" MODIFIED="1304280871725" STYLE="bubble" HGAP="30" VSHIFT="70"/>
-</node>
-<node TEXT="Voorbeeld tavormk" FOLDED="true" ID="ID_456434312" CREATED="1288536745875" MODIFIED="1304281241398" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
-<node TEXT="Rechte lijn" ID="ID_848359347" CREATED="1288538234095" MODIFIED="1293375090112">
-<edge STYLE="linear" WIDTH="4"/>
-</node>
-<node TEXT="Bocht" ID="ID_186410127" CREATED="1288538240451" MODIFIED="1293375090108">
-<edge STYLE="bezier" WIDTH="4"/>
-</node>
-<node TEXT="Taps toelopend recht" ID="ID_372463562" CREATED="1288538242377" MODIFIED="1293375090104">
-<edge STYLE="sharp_linear" WIDTH="4"/>
-</node>
-<node TEXT="Taps toelopend bocht" ID="ID_1929460798" CREATED="1288538470332" MODIFIED="1293375090101">
-<edge STYLE="sharp_bezier" WIDTH="4"/>
-</node>
-<node TEXT="Verborgen tak" ID="ID_17917727" CREATED="1288538507390" MODIFIED="1293375090097" BACKGROUND_COLOR="#00ffff">
-<edge STYLE="hide_edge" WIDTH="4"/>
-</node>
-</node>
-<node TEXT="Opmaken tak" STYLE_REF="Inleiding" ID="ID_1467645659" CREATED="1288986019188" MODIFIED="1304280607944" LINK="#ID_1797063061" BACKGROUND_COLOR="#ffffff" STYLE="fork"/>
-</node>
-<node TEXT="Accolade (Aggregatieknoop)" FOLDED="true" ID="ID_439385370" CREATED="1304194464418" MODIFIED="1305290991843" TEXT_SHORTENED="true" COLOR="#407000">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een aggregatieknoop is een bijzondere knoop die (ook) een aggregatierelatie heeft met een of meer bovenliggende knopen. De aggregatierelatie wordt weergegeven door een accolade.
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="NOTE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Engels: Summary node
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Voorbeeld aggregatieknoop" FOLDED="true" ID="ID_1315814940" CREATED="1304192858754" MODIFIED="1304279406149" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
-<node TEXT="1" ID="ID_1040690623" CREATED="1304192867654" MODIFIED="1304192869901"/>
-<node TEXT="2" ID="ID_667693508" CREATED="1304192871203" MODIFIED="1304192946154">
 <hook NAME="FirstGroupNode"/>
+<hook URI="freeplaneresource:/images/svg/Progress_tenth_02.svg" SIZE="1.0" NAME="ExternalObject"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
 </node>
-<node TEXT="3" ID="ID_1271934555" CREATED="1304192874252" MODIFIED="1304192875439"/>
-<node TEXT="4 = aggregatie" ID="ID_850025269" CREATED="1304192876647" MODIFIED="1304193805922">
-<hook NAME="SummaryNode"/>
-</node>
-<node TEXT="5" ID="ID_970363027" CREATED="1304192881678" MODIFIED="1304192885953"/>
-</node>
-<node TEXT="Nieuwe aggregatieknoop" ID="ID_176322009" CREATED="1304191328224" MODIFIED="1304687680308" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="Extended progress 25%" ID="ID_1330662491" CREATED="1310803008021" MODIFIED="1310844546687" TEXT_SHORTENED="true">
+<icon BUILTIN="25%"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Om een lijst knopen via een accolade te verbinden met een aggreatieknoop:
-    </p>
-    <p>
-      - selecteer de lijst;
-    </p>
-    <p>
-      - kies <i>Knoop &gt; Nieuwe aggregatieknoop</i>&#160;in Hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Promoveren tot aggregatieknoop" ID="ID_582288245" CREATED="1304194036793" MODIFIED="1304687747076" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een knoop in een lijst te promoveren tot aggregatieknoop:
-    </p>
-    <p>
-      - selecteer de knoop die aggregatieknoop moet worden;
-    </p>
-    <p>
-      - kies <i>Knoop &gt; Aggregatieknoop</i>&#160;in hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Verlagen bovenste punt van accolade" ID="ID_1931859695" CREATED="1304194162034" MODIFIED="1304687835512" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de bovenste van door een accolade verbonden knopen aan te geven:
-    </p>
-    <p>
-      - selecteer de bovenste knoop;
-    </p>
-    <p>
-      - kies <i>Knoop &gt; Bovenste geaggregeerde knoop </i>in Hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Verbindingslijn &amp; label" FOLDED="true" ID="_Freeplane_Link_1996597932" CREATED="1270892460679" MODIFIED="1305291064432" COLOR="#407000" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een lijn tussen twee willekeurige knopen. Op drie plaatsen van deze lijn (begin, midden en eind) kan een tekstlabel worden geplaatst. De tekst in het label kan meerdere regels (Shift-Return) omvatten.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Maken verbinding" STYLE_REF="Functie" FOLDED="true" ID="ID_1468846146" CREATED="1286733104547" MODIFIED="1293375085333">
-<node TEXT="Verbinding tussen 2 knopen" ID="ID_1564001222" CREATED="1270892460679" MODIFIED="1304627884040" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een verbindingslijn tussen twee knopen te maken:
-    </p>
-    <p>
-      - selecteer de knoop waar de verbinding begint;
-    </p>
-    <p>
-      - houd<i>&#160;Ctrl</i>&#160;ingedrukt en selecteer de knoop waar de verbinding eindigt;
-    </p>
-    <p>
-      - kies <i>Knoopkenmerken&#160;&gt;&#160;Verbindingslijn</i>&#160;in Hoofdmenu; of
-    </p>
-    <p>
-      - druk op <i>Ctrl + L</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Verbinding tussen meer dan 2 knopen" FOLDED="true" ID="ID_1349903691" CREATED="1291294657798" MODIFIED="1304627940386" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een verbinding van x knopen naar &#233;&#233;n bestemmingsknoop te maken:
-    </p>
-    <p>
-      - selecteer de knopen waar de verbindingslijnen moeten beginnen;
-    </p>
-    <p>
-      - selecteer als laatste de knoop waar de verbindingslijn moet eindigen;
-    </p>
-    <p>
-      - kies<i>&#160;Knoopkenmerken &gt; Verbindiingslijn</i>&#160;in Hoofdmenu.
-    </p>
-  </body>
-</html></richcontent>
-<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1349903691" STARTINCLINATION="40;0;" ENDINCLINATION="40;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<node TEXT="a" ID="ID_1467915029" CREATED="1291294549785" MODIFIED="1293375085323">
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_260381550" STARTINCLINATION="27;0;" ENDINCLINATION="27;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-</node>
-<node TEXT="b" ID="ID_260381550" CREATED="1291294553894" MODIFIED="1293375085320"/>
-<node TEXT="c" ID="ID_1644821908" CREATED="1291294558364" MODIFIED="1293375085316">
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_260381550" STARTINCLINATION="28;0;" ENDINCLINATION="28;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-</node>
-</node>
-</node>
-<node TEXT="Verwijderen verbindingslijn" STYLE_REF="Functie" ID="ID_1819154867" CREATED="1286733944185" MODIFIED="1304757301570" TEXT_SHORTENED="true"/>
-<node STYLE_REF="Functie" ID="ID_602285602" CREATED="1286735857458" MODIFIED="1304662229556" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Positie van de verbinding
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de loop van een verbinding te veranderen:
-    </p>
-    <p>
-      - klik en sleep de lijn.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Kleur van de verbinding" STYLE_REF="Functie" ID="ID_436722393" CREATED="1286733165707" MODIFIED="1304662279499" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de kleur van de verbinding in te stellen:
-    </p>
-    <p>
-      - kies<i>&#160;Kleur verbindingslijn </i>in Contextmenu (rechtsklik op lijn);
-    </p>
-    <p>
-      (Bij MAC OS; druk op&#160;Control + klik.)
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node STYLE_REF="Functie" ID="_Freeplane_Link_1484370636" CREATED="1270892460679" MODIFIED="1304662337180" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Vorm van de verbinding
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de vorm van de verbindigslijn in te stellen (wel/geen pijlen):
-    </p>
-    <p>
-      - kies <i>Geen pijl enz</i>. in Contexmenu (rechtsklik verbindingslijn)
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Tekstlabel bij de verbinding" STYLE_REF="Functie" ID="ID_264054779" CREATED="1286733965690" MODIFIED="1304662393114" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een tekstlabel aan een lijn te koppelen:
-    </p>
-    <p>
-      - open Contextmenu (rechtsklik verbindingslijn);
-    </p>
-    <p>
-      - vul voor &#233;&#233;n of meer van de labelvelden een tekst in
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node STYLE_REF="Functie" ID="_Freeplane_Link_266716332" CREATED="1270892460679" MODIFIED="1304662439501" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Spring naar de andere knoop
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om naar de verbonden (andere) knoop te navigeren:
-    </p>
-    <p>
-      - open Contextmenu (rechtsklik verbindingslijn);
-    </p>
-    <p>
-      - kies <i>Ga naar.... </i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Label bij knoop" FOLDED="true" ID="ID_1229947356" CREATED="1304199030454" MODIFIED="1304280295413" TEXT_SHORTENED="true" COLOR="#407000">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een verbindingslijn met een label die naar de knoop zelf verwijst
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Voorbeeld" ID="ID_431740704" CREATED="1303722690480" MODIFIED="1304199424140">
-<hook NAME="SummaryNode"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000099" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_431740704" MIDDLE_LABEL="label bij knoop kan worden gemaakt met verbindingslijn naar zelf met&#xa;Knoopkenmerken &gt; Koppelingen &gt; Toevoegen verbindingslijn" STARTINCLINATION="259;110;" ENDINCLINATION="259;110;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-</node>
-</node>
-<node TEXT="Wolk" FOLDED="true" ID="ID_1258921068" CREATED="1270892460674" MODIFIED="1304282143782" COLOR="#407000" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een wolk omgeeft &#233;&#233;n of meer knopen.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Een wolk heeft een kleur.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Een wolk heeft een vorm:
+      Adds a progress indicator with extended size that is:
     </p>
     <ul>
       <li>
-        Boog
+        increased 25 %<i>&#160;on double Click</i>
       </li>
       <li>
-        Ster
-      </li>
-      <li>
-        Rechthoek
-      </li>
-      <li>
-        Afgeronde rechthoek
+        decreased 25% o<i>n Ctrl + double Click</i>
       </li>
     </ul>
   </body>
 </html></richcontent>
-<node TEXT="Voorbeeld wolk" FOLDED="true" ID="ID_431170062" CREATED="1291306069080" MODIFIED="1304282157229" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
-<node TEXT="Een wolk kan (een deel van) een tak laten oplichten." FOLDED="true" ID="ID_1363137597" CREATED="1286824340950" MODIFIED="1293375084836" STYLE="bubble">
-<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
-<node TEXT="Voorbeeld" ID="ID_1687490176" CREATED="1286824692699" MODIFIED="1293375084832">
-<cloud COLOR="#33ff00" SHAPE="ARC"/>
+<hook URI="freeplaneresource:/images/svg/Progress_quarter_01.svg" SIZE="1.0" NAME="ExternalObject"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
 </node>
-</node>
-<node TEXT="boog" ID="ID_1001592395" CREATED="1291306087730" MODIFIED="1293375090046">
+<node TEXT="" ID="ID_1791031466" CREATED="1310017200205" MODIFIED="1312919856289" TEXT_SHORTENED="true">
+<attribute_layout NAME_WIDTH="90" VALUE_WIDTH="192"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The big indicator is an .svg image. This will not appear in a Java Applet.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="SummaryNode"/>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
-<node TEXT="ster" ID="ID_1324767567" CREATED="1291306077388" MODIFIED="1293375090042">
-<cloud COLOR="#f0f0f0" SHAPE="STAR"/>
+<node TEXT="Delete progress" ID="ID_1336453593" CREATED="1304432977103" MODIFIED="1310844546687" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
 </node>
-<node TEXT="rechthoek" ID="ID_1613407236" CREATED="1291306083573" MODIFIED="1293375090038">
-<cloud COLOR="#f0f0f0" SHAPE="RECT"/>
 </node>
-<node TEXT="afgeronde rechthoek" ID="ID_1218166459" CREATED="1291306090717" MODIFIED="1293375090034">
-<cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
-</node>
-</node>
-<node TEXT="Wolk toevoegen en verwijderen" ID="ID_1660741432" CREATED="1286824447576" MODIFIED="1304662593465" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een wolk toe te voegen of een geselecteerde wolk te verwijderen:
-    </p>
-    <p>
-      - selekteer een knoop;
-    </p>
-    <p>
-      - kies Knoopkenmerk <i>&gt; Wolken &gt; Wolk</i>&#160;in<i>&#160;</i>Hoofdmenu of in Contextmenu; of
-    </p>
-    <p>
-      - druk <i>Ctrl + Shift + B.</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_1746325958" CREATED="1291294193050" MODIFIED="1304662903573" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Zwevende wolk (verborgen tak) toevoegen</span></font>
-    </p>
-  </body>
-</html>
-<!--<!<!<!<!<!<!<!<!<!<!<!<!<!<! ^ Position is not set to relative / absolute here because of Mozilla --></richcontent>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een zwevende wolk (verborgen tak) toe te voegen:
-    </p>
-    <p>
-      - kies het rolmenu voor knoopstijl in werkmenu;
-    </p>
-    <p>
-      - kies zwevende knoop.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Kleur wolk wijzigen" ID="ID_1425868860" CREATED="1286824575013" MODIFIED="1304662743103" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de kleur van een wolk te wijzigen:
-    </p>
-    <p>
-      - kies Opmaken<i>&#160;&gt; Kleur wolk </i>in<i>&#160;</i>Hoofdmenu of Contextmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Vorm wolk wijzigen" ID="ID_1442380813" CREATED="1286824575013" MODIFIED="1304662827054" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de vorm van een wolk te wijzigen:
-    </p>
-    <p>
-      - kies Opmaken<i>&#160;&gt; Vorm wolk </i>in<i>&#160;</i>Hoofdmenu of Contextmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Groovy script" FOLDED="true" ID="ID_1603082351" CREATED="1291754914764" MODIFIED="1304663210096" COLOR="#407000" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Er zijn interne en externe scripts.<b>&#160;</b>Externe scripts zijn geen onderdeel van de mindmap. Ze kunnen worden toegepast nadat is aangegeven waar deze zich bevinden. Locale scripts zijn onderdeel van een knoop en dus van de mindmap.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Voor gevorderde gebruikers" ID="ID_84273607" CREATED="1291754964115" MODIFIED="1304663190533" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting" BACKGROUND_COLOR="#ffff33" STYLE="bubble" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Script zijn bedoeld voor gevorderde gebruikes.Ga naar Internet voor informatie over scripts.
-    </p>
-    <p>
-      Belangrijk: knopen waarop scripts betrekking hebben dienen in FP 1.1.x verplicht en in FP 1.2.x bij voorkeur platte tekst te bevatten en geen HTML.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Groovy scripts maken en bewerken" ID="ID_972686609" CREATED="1291755375049" MODIFIED="1304662966550" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om Groovy scripts te maken en te bewerken:
-    </p>
-    <p>
-      - Kies <i>Extra &gt; Groovy scripts bewerken</i>&#160;in Hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Groovy scripts uitvoeren" ID="ID_486136910" CREATED="1291755108015" MODIFIED="1304663012118" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om Groovy scripts uit te voeren:
-    </p>
-    <p>
-      - kies <i>Extra &gt; Uitvoeren alle scripts</i>&#160;in Hoofdmenu; of
-    </p>
-    <p>
-      - kies <i>Extra &gt; Uitvoeren scripts in geselecteerde knopen</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Verslepen en verplaatsen knoop of tak" FOLDED="true" ID="Freeplane_Link_1024903226" CREATED="1270892460682" MODIFIED="1304663291310" COLOR="#407000" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een knoop heeft&#160;&#160;drie punten die belangrijk zijn bij het verplaatsen en invoegen van andere knopen. Het gaat om:
-    </p>
-    <ol>
-      <li>
-        het punt om een naastliggende (kind)knoop vast te maken. Dit punt bevindt zich bij de basisknoop aan meerdere zijden. Het punt bevindt zich bij elke andere knoop aan de linker &#243;f rechterzijde: en wel aan <u>de kant tegenover de ouderknoop. </u>Het punt zelf is niet te zien, maar als de cursor zich bovenop dit punt bevindt verandert de kleur van de knoop.
-      </li>
-      <li>
-        het punt om een knoop boven of onder de geselecteerde knoop tussen te voegen. Dit punt ligt in de <u>bovenste helft </u>van de knoop. Het punt zelf is niet te zien, maar als de cursor zich op dit punt bevind verandert de kleur van de bovenste helft van de knoop.&#160;
-      </li>
-      <li>
-        het punt waaraan de knoop kan worden &quot;vastgepakt&quot; om de knoop naar een nieuwe positie te verslepen, waarbij de takken en verbindingslijnen zich automaitsch aanpassen. Dit punt bevindt zich aan de linker &#243;f rechterzijde en wel de kant die is verbonden met de ouderknoop. Het punt is normaal niet zichtbaar, maar als de cursor zich op dit punt bevindt verschijnt een<u>&#160;ovaaltje</u>.
-      </li>
-    </ol>
-    <p>
-      Belangrijk is ook dat bij het verplaatsen van een knoop de kindknopen meeverplaatsen.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Verschuiven over het scherm" ID="ID_926620656" CREATED="1270892460682" MODIFIED="1304663423512" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een knoop op het scherm te <b>versplaatsen</b>&#160;met<b>&#160;klik&#160;(ingedrukt houden) en sleep</b>:
-    </p>
-    <p>
-      - selecteer de knoop door de linker muisknop in te drukken,
-    </p>
-    <p>
-      - terwijl de muisknop ingedrukt blijft, versleep de knoop naar de gewenste positie en
-    </p>
-    <p>
-      - laat de muisknop los op de nieuwe positie.<br/><br/>
-    </p>
-    <p>
-      Of doe hetzelfde met alleen het toetsenbord:
-    </p>
-    <p>
-      - houdt<i>&#160;Ctrl</i>&#160;ingedrukt en gebruik de pijltoetsen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Andere positie" ID="ID_1311351928" CREATED="1270892460682" MODIFIED="1304663465148" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een knoop los te maken van zijn ouderknoop en aan als kindknoop aan een andere knoop vast te maken:
-    </p>
-    <p>
-      -<i>&#160;klik (houd ingedrukt) de linker muisknop en sleep</i>&#160;de knoop naar de buitenkant van de knoop waaraan de versleepte knoop moet worden vastgemaakt: de buitenkant&#160;&#160;van de knoop verandert van kleur.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_716707755" CREATED="1270892460683" MODIFIED="1304663529577" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Invoegen boven een andere knoop<br/>
-    </p>
-  </body>
-</html></richcontent>
-<font NAME="SansSerif" SIZE="12"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een knoop los te maken van zijn ouderknoop en boven een andere knoop te plaatsen:<br/>- klik en sleep de te verplaatsen knoop naar de bovenzijde van de knoop waar deze moet komen (de bovenzijde verandert van kleur).<br/>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Naar andere kant van basisknoop" ID="ID_1618514623" CREATED="1286569798417" MODIFIED="1304663603380" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een knoop los te maken van de linker kant van de hoofdknoop en vast te maken aan de rechterkant:
-    </p>
-    <p>
-      - klik en sleep de knoop naar de rechterkant van de hoofdknoop.
-    </p>
-    <p>
-      Het omgekeerde, verplaatsen van rechts naar links, kan bij een hoofdknoop ook.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Meer knopen tegelijkertijd verplaatsen" ID="ID_356858969" CREATED="1270892460683" MODIFIED="1304663656015" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Als je meerdere knopen tegelijk wilt verplaatsen en/of kopieren:
-    </p>
-    <p>
-      - selecteer alle knopen met&#160;&#160;<i>Shift</i>&#160;ingedrukt,
-    </p>
-    <p>
-      - klik en sleep .
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Kopie van knoop verplaatsen" ID="_Freeplane_Link_1994214827" CREATED="1270892460683" MODIFIED="1304663712814" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een kopie van een knoop op de bovenbeschreven wijzen te (ver)plaatsen:
-    </p>
-    <p>
-      - houd <i>Ctrl</i>&#160;ingedrukt tijdens het slepen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Ruimtelijke orientatie wijzigen" ID="_Freeplane_Link_97763226" CREATED="1270892460688" MODIFIED="1304663808848" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een knoop naar een willekeurige plaats op het scherm te bewegen, waarbij de takken tussen de knopen in stand blijven en zich automatisch aanpassen:
-    </p>
-    <p>
-      - beweeg de muiscursor over de kant van de knoop (links of rechts) die is verbonden met de ouderknoop totdat een <u>ovaal</u>&#160;&#160;zichtbaar wordt;
-    </p>
-    <p>
-      - <i>klik&#160;en sleep</i>&#160;de knoop met deze ovaal naar de gewenste andere plaats op het scherm.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Knopen van andere mindmap toevoegen" ID="ID_694691711" CREATED="1270892460683" MODIFIED="1304663936534" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een bestaande mindmap te bewerken:
-    </p>
-    <p>
-      - <i>klik&#160;en sleep</i>&#160;het bestand boven de achtergrond van Freeplane en laat het bestand vallen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Kopi&#xeb;ren en plakken" FOLDED="true" ID="Freeplane_Link_958781924" CREATED="1270892460683" MODIFIED="1293375085697" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Knoop(keten) kopieren" ID="ID_889978608" CREATED="1270892460684" MODIFIED="1304664003225" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een knoop (en knoopketen) te kopi&#235;ren:
-    </p>
-    <p>
-      - selecteer de knoop (er verschijnt een kader om de knoop);
-    </p>
-    <p>
-      -&#160;&#160;kies <i>Bewerken &gt; Kopi</i>&#235;<i>ren </i>in Hoofdmenu of
-    </p>
-    <p>
-      -&#160; <i>Kopi</i>&#235;<i>ren in het</i>&#160;Contextmenu<i>&#160;</i>
-    </p>
-    <p>
-      <i>of </i>
-    </p>
-    <p>
-      Om de kindknopen niet mee te kopi&#235;ren:
-    </p>
-    <p>
-      -&#160;kies <i>Bewerken &gt; Kopieer zonder zijtakken </i>in Hoofdmenu<i>&#160;</i>of-Contextmen<i>;</i>&#160;of
-    </p>
-    <p>
-      <i>- </i>druk<i>&#160;Ctrl + Shift + C</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Knopen plakken" ID="ID_932066814" CREATED="1286649503405" MODIFIED="1304664060321" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een gekopieerde knoop te plakken:
-    </p>
-    <p>
-      - selecteer de knoop waaraan de knoop moet worden vastgemaakt;
-    </p>
-    <p>
-      - kies <i>Bewerken &gt; Plakken </i>in Hoofdmenu of Contextmenu;of
-    </p>
-    <p>
-      - kies het pictogram voor Plakken.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Plakken tekst als kindknoop" ID="ID_277512717" CREATED="1286646785709" MODIFIED="1304664152252" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om in &#233;&#233;n handeling een nieuwe knoop te maken en te vullen met een gekopieerde tekstregel:
-    </p>
-    <p>
-      - ga naar het bestand met de tekst en selecteer en kopieer de tekst;
-    </p>
-    <p>
-      - ga naar de mindmap en selecteer de knoop waaronder de nieuwe knoop als kindknoop moet komen;
-    </p>
-    <p>
-      - plak de knoop: kies&#160; <i>Bewerken &gt; Plakken</i>&#160;in Hoofdmenu; of
-    </p>
-    <p>
-      - kies <i>Plakken</i>&#160;in het Contextmenu; of kies het pictogram voor Plakken.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Meer tekstregels, meer kindknopen" FOLDED="true" ID="ID_997163480" CREATED="1270892460684" MODIFIED="1304664288346" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Let op: als de gekopieerde tekst regels bevat&#160;die beginnen met spaties, dan wordt niet &#233;&#233;n nieuwe knoop maar een keten van knopen gemaakt.&#160;&#160;De regels met beginspaties worden opgenomen in de knoop met een diepte die overeenkomt met het aantal beginspaties.
-    </p>
-  </body>
-</html></richcontent>
-<node FOLDED="true" ID="ID_794791780" CREATED="1270892460684" MODIFIED="1293375085676" COLOR="#996600">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Boom<br/>&#160;&#160;&#160;&#160;&#160;Eik<br/>&#160;&#160;&#160;&#160;&#160;Beuk<br/>&#160;&#160;&#160;&#160;&#160;
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="wordt" FOLDED="true" ID="ID_1133286475" CREATED="1270892460684" MODIFIED="1293375085673">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Boom" FOLDED="true" ID="ID_824598946" CREATED="1270892460684" MODIFIED="1293375085670" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Eik" ID="ID_1550275731" CREATED="1270892460684" MODIFIED="1293375085666" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node TEXT="Beuk" ID="ID_1598562794" CREATED="1270892460684" MODIFIED="1293375085663" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-</node>
-</node>
-</node>
-</node>
-<node TEXT="Bestanden plakken als hyperlinks." ID="ID_513393084" CREATED="1270892460686" MODIFIED="1304664395534" LINK="#ID_1756497395" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een gekopieerde lijst met bestanden wordt geplakt als een set knopen met hyperlinks
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="HTML" FOLDED="true" ID="ID_129646169" CREATED="1286653681301" MODIFIED="1304664454034" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Als de gekopieerde tekst HTML-code bevat, dan kan deze als enkele knoop of als hi&#235;rarchie worden geplakt:
-    </p>
-    <p>
-      - kies in Hoofdmenu <i>Bewerken &gt; Plakken als..</i>.
-    </p>
-  </body>
-</html></richcontent>
-<node FOLDED="true" ID="ID_637512189" CREATED="1270892460685" MODIFIED="1293375085649">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Voorbeeld:
-    </p>
-  </body>
-</html></richcontent>
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Single node" FOLDED="true" ID="ID_1806025194" CREATED="1270894542238" MODIFIED="1293375085646">
-<node ID="ID_669110345" CREATED="1270894698475" MODIFIED="1293375085634">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p align="center">
-      <i><b><font size="4">Boost your brain with Freeplane</font></b></i><font size="4"> </font>
-    </p>
-    <p>
-      <br/>
-      <br/>
-      
-    </p>
-    <p align="center">
-      <a href="http://sourceforge.net/projects/freeplane/"><b><font size="4">Download Freeplane now!</font></b></a><font size="4"> </font>
-    </p>
-    <h1 class="western">
-      What is Freeplane?
-    </h1>
-    <p>
-      Freeplane is a powerful and free mind mapping application. It is a redesigned version of the well known <a href="http://freemind.sourceforge.net/">FreeMind</a>, and is created by one of FreeMind's key developers. The software is written in Java, and supports any platform capable of running current versions of Java, including:
-    </p>
-    <ul>
-      <li>
-        <p style="margin-bottom: 0in">
-          Microsoft Windows
-        </p>
-      </li>
-      <li>
-        <p style="margin-bottom: 0in">
-          Mac OS X
-        </p>
-      </li>
-      <li>
-        <p style="margin-bottom: 0in">
-          Linux / BSD / Solaris
-        </p>
-      </li>
-      <li>
-        <p>
-          <a href="http://freeplane.sourceforge.net/wiki/index.php/Portable_Freeplane">Portable Freeplane</a> for Windows (runs from a USB drive)
-        </p>
-      </li>
-    </ul>
-    <p>
-      <br/>
-      <br/>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Structured hierarchy" FOLDED="true" ID="ID_541043985" CREATED="1270894548254" MODIFIED="1293375085630">
-<node ID="ID_232672532" CREATED="1270894712253" MODIFIED="1293375085627">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p align="center">
-      <i><b><font size="4">Boost your brain with Freeplane</font></b></i><font size="4"> </font>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_149083422" CREATED="1270894712256" MODIFIED="1293375085623" LINK="http://sourceforge.net/projects/freeplane/">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p align="center">
-      <a href="http://sourceforge.net/projects/freeplane/"><b><font size="4">Download Freeplane now!</font></b></a><font size="4"> </font>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node FOLDED="true" ID="ID_1571069768" CREATED="1270894712263" MODIFIED="1293375085619">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <h1 class="western">
-      What is Freeplane?
-    </h1>
-  </body>
-</html></richcontent>
-<node FOLDED="true" ID="ID_1003296305" CREATED="1270894712271" MODIFIED="1293375085612" LINK="http://freemind.sourceforge.net/">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Freeplane is a powerful and free mind mapping application. It is a redesigned version of the well known <a href="http://freemind.sourceforge.net/">FreeMind</a>, and is created by one of FreeMind's key developers. The software is written in Java, and supports any platform capable of running current versions of Java, including:
-    </p>
-  </body>
-</html></richcontent>
-<node ID="ID_1528122430" CREATED="1270894712274" MODIFIED="1293375085608">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <ul>
-      <li>
-        <p style="margin-bottom: 0in">
-          Microsoft Windows
-        </p>
-      </li>
-    </ul>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_624982390" CREATED="1270894712277" MODIFIED="1293375085603">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <ul>
-      <li>
-        <p style="margin-bottom: 0in">
-          Mac OS X
-        </p>
-      </li>
-    </ul>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_767338979" CREATED="1270894712280" MODIFIED="1293375085599">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <ul>
-      <li>
-        <p style="margin-bottom: 0in">
-          Linux / BSD / Solaris
-        </p>
-      </li>
-    </ul>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_972361679" CREATED="1270894712283" MODIFIED="1293375085594" LINK="http://freeplane.sourceforge.net/wiki/index.php/Portable_Freeplane">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <ul>
-      <li>
-        <p>
-          <a href="http://freeplane.sourceforge.net/wiki/index.php/Portable_Freeplane">Portable Freeplane</a> for Windows (runs from a USB drive)
-        </p>
-      </li>
-    </ul>
-  </body>
-</html></richcontent>
-</node>
-</node>
-</node>
-</node>
-</node>
-</node>
-<node FOLDED="true" ID="ID_22164919" CREATED="1286653812825" MODIFIED="1304664601181" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Naar andere tekstverwerker
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Als een knoop wordt gekopieerd en in een gewone tekstverwerker wordt geplakt, wordt de structuur van de onderliggende tak getoond door inspringen. Hyperlinks worden tussen haken getoond.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Bewerkers die RTF-formaat aankunnen zijn o.a. Microsoft Word, Wordpad en Outlook. Bij plakken in deze bewerkers worden ook teksttype en kleur overgenomen.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Voorbeeld" FOLDED="true" ID="ID_318113193" CREATED="1270892460686" MODIFIED="1304664626180">
-<node TEXT="Boom" FOLDED="true" ID="ID_251141855" CREATED="1270892460686" MODIFIED="1293375085577" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Eik" ID="ID_1467889610" CREATED="1270892460686" MODIFIED="1293375085574" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node FOLDED="true" ID="ID_930301051" CREATED="1270892460686" MODIFIED="1293375085570" COLOR="#996600">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Berk
-    </p>
-  </body>
-</html></richcontent>
-<font NAME="SansSerif" SIZE="12"/>
-<node FOLDED="true" ID="ID_239368773" CREATED="1270892460686" MODIFIED="1293375085567">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      wordt geplakt als
-    </p>
-  </body>
-</html></richcontent>
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Boom&#xa;     Eik&#xa;     Berk&#xa;     Google &lt;http://www.google.com/&gt;" ID="ID_1775330013" CREATED="1270892460687" MODIFIED="1293375085562" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-</node>
-</node>
-<node TEXT="Google" ID="ID_279968597" CREATED="1270892460687" MODIFIED="1293375085559" COLOR="#996600" LINK="http://www.google.com/">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-</node>
-</node>
-</node>
-</node>
-<node TEXT="Zoeken en vervangen" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_56056417" CREATED="1292960041119" MODIFIED="1304664688924" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      In een mindmap kunnen knopen &#233;&#233;n voor &#233;&#233;n worden gezocht en gepresenteerd die bepaalde inhoud bevatten. Er kan selectief worden gezocht op de aanwezigheid van bepaalde: tekst, pictogram, datum van maken/wijziging, positie,&#160;&#160;prioriteit, label&#160;&#160;verbindingslijn, hyperlink, bijlage notitie en attribuut. Informatie wordt eerst gezocht in de knopen dichter bij de basisknoop (breedte eerst).
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="In huidige mindmap" ID="ID_1761633870" CREATED="1271096970387" MODIFIED="1304665170957" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om in een mindmap in alle knopen alle items met een bepaalde inhoud te vervangen:
-    </p>
-    <p>
-      - kies&#160; <i>Bewerken &gt; Zoeken en vervangen </i>in Hoofdmenu.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="In alle open mindmaps" ID="ID_733411071" CREATED="1286531946884" MODIFIED="1304665233045" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om <b>in alle geopende mindmaps</b>&#160;in alle knopen alle items met een bepaalde inhoud te <b>vervangen</b>:
-    </p>
-    <p>
-      - kies <i>Bewerken &gt; Zoek en vervang in alle mappen </i>in Hoofdmenu <i>.</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Formule bewerken en uitvoeren" FOLDED="true" ID="ID_146041488" CREATED="1291211215610" MODIFIED="1293375085223" COLOR="#407000">
-<node TEXT="In Freeplane kunnen op dezelfde wijze als in een Spread Sheet (Excel) formules worden gebruikt om de inhoud van een knoop te bepalen." STYLE_REF="Inleiding" ID="ID_285394677" CREATED="1293572145243" MODIFIED="1293572284394"/>
-<node TEXT="Eenvoudige formules" STYLE_REF="Functie" ID="ID_613530429" CREATED="1293571575892" MODIFIED="1304665286600" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een eenvoudige formule is een basistekst welke begint met &quot;=&quot; en wordt gevolgd door een reguliere expressie zoals 3 + 5. De knoop toont het resultaat van de expressie (dus 8). De&#160;&#160;formule-knoop is te herkennen door een afwijkende kleur en omlijning.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Geavanceerde formules" STYLE_REF="Functie" FOLDED="true" ID="ID_1328271894" CREATED="1293572050808" MODIFIED="1293572110123">
-<node TEXT="Voor gevorderde gebruikers." ID="ID_1097547484" CREATED="1291754737435" MODIFIED="1304665457381" LINK="http://freeplane.sourceforge.net/wiki/index.php/Formula" BACKGROUND_COLOR="#ffff33" STYLE="bubble"/>
-<node TEXT="Bewerken groovy scripts" ID="ID_309231718" CREATED="1291755375049" MODIFIED="1304665378242" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om formules te bewerken:
-    </p>
-    <p>
-      - Kies <i>Extra &gt; Groovy scripts bewerken</i>&#160;in Hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Uitvoeren formules" ID="ID_343120912" CREATED="1291211225228" MODIFIED="1304665429457" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om formules uit te voeren:
-    </p>
-    <p>
-      - kies <i>Extra &gt; Formules</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-</node>
-<node FOLDED="true" ID="Freeplane_Link_1318678369" CREATED="1270892460689" MODIFIED="1293375085210" COLOR="#407000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Ongedaan maken
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Ongedaan maken" STYLE_REF="Functie" ID="ID_352318332" CREATED="1286809973310" MODIFIED="1304665503292" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      - kies <i>Bewerken &gt; Ongedaan maken </i>in Hoofdmenu; of
-    </p>
-    <p>
-      - kies het groene pijlpictogram in het Werkmenu;<br/>- druk <i>Ctrl + Z.</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Opnieuw" STYLE_REF="Functie" ID="ID_515694331" CREATED="1286810089297" MODIFIED="1304665550100" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      - kies <i>Bewerken &gt; Opnieuw in Hoofdmenu;</i>&#160;of
-    </p>
-    <p>
-      - kies het groene pijlpictogram in Werkmenu; of<br/>- druk <i>Ctrl + Y.</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Instelling aantal stappen" STYLE_REF="Functie" ID="ID_1608555123" CREATED="1286810198247" MODIFIED="1304665609271" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om het aantal te onthouden stappen in te stellen:
-    </p>
-    <p>
-      - kies <i>Extra &gt; Instellingen &gt; Gedrag </i>in Hoofdmenu.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Revisies bijhouden." ID="ID_1121958455" CREATED="1289050969069" MODIFIED="1304665706748" LINK="#ID_974319465" TEXT_SHORTENED="true" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om revisies wel/niet bij te houden:<br/>- kies <i>Extra &gt; Tonen revisies </i>in Hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Verwijderen" FOLDED="true" POSITION="right" ID="ID_254258847" CREATED="1289512457366" MODIFIED="1305212118828" COLOR="#006699" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      De meeste objecten kunnen worden verwijderd via een functie Verwijderen in het menu waar het object ook wordt gemaakt. Er zijn echter uitzonderingen. Deze staan hiernaast.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Verwijderen tak" STYLE_REF="Functiegroep" ID="ID_250032053" CREATED="1289512538073" MODIFIED="1304756614865" TEXT_SHORTENED="true" LINK="#ID_992635233">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een tak kan worden verborgen, niet verwijderd.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Verwijderen verbindingslijn" STYLE_REF="Functiegroep" ID="ID_968110846" CREATED="1289512482802" MODIFIED="1304757301578" TEXT_SHORTENED="true" LINK="#ID_1819154867"/>
-<node STYLE_REF="Functiegroep" FOLDED="true" ID="ID_911362943" CREATED="1289550040761" MODIFIED="1293375085135">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Verwijderen hyperlink/snelkoppeling/e-mail
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Verwijder knoop met snelkoppeling/hyperlink; of" ID="ID_891865392" CREATED="1289550057726" MODIFIED="1293375085132" LINK="#_Freeplane_Link_1709752669"/>
-<node TEXT="Verwijder snelkoppeling uit knoop" ID="ID_702605338" CREATED="1289550069730" MODIFIED="1293375085128" LINK="#ID_953613682"/>
-<node TEXT="Verwijderen hyperlink uit knoop" ID="ID_1977112147" CREATED="1289550069730" MODIFIED="1304756908422" LINK="#ID_463015053"/>
-<node TEXT="Verwijder e-mail uit knoop" ID="ID_1533011367" CREATED="1289550069730" MODIFIED="1304757366368" LINK="#ID_463015053"/>
-</node>
-<node TEXT="Verwijderen pictogram" STYLE_REF="Functiegroep" ID="ID_843447223" CREATED="1289558800144" MODIFIED="1293375085118" LINK="#ID_1703076068"/>
-</node>
-<node TEXT="Opmaken" FOLDED="true" POSITION="right" ID="ID_326068339" CREATED="1272091260034" MODIFIED="1305212139030" COLOR="#006699" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      De onderdelen van een mindmap kunnen worden vormgegeven met stijlen of functies die een bepaald opmaakkenmerk, zoals lettergrootte bepaalt. De kenmerken van een knoop staan bij elkaar in het zogenaamde <i>Opmaakpaneel. </i>De knoopkenmerken kunnen in het Opmaakpaneel worden gewijzigd of via de functies van <i>Hoofdmenu &gt; Opmaken</i>, of de gelijknamige submenu's van het contextmenu van een knoop.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Openen/sluiten opmaakpaneel" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1648295199" CREATED="1293305636300" MODIFIED="1305137523280">
-<node TEXT="Opmaakpaneel openen (AAN)" ID="ID_1101082023" CREATED="1293305834414" MODIFIED="1304757762107" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om het opmaakpaneel te openen:
-    </p>
-    <p>
-      - kies <i>Beeld &gt; Tonen opmaakpaneel</i>&#160;om dit AAN te zetten.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Opmaakpaneel sluiten (UIT)" ID="ID_134699622" CREATED="1293305834414" MODIFIED="1304757762103" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een geopend opmaakpaneel te sluiten:
-    </p>
-    <p>
-      - kies <i>Beeld &gt; Tonen opmaakpaneel</i>&#160;om dit UIT te zetten.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Wijzigen knoopkenmerk" ID="ID_1140547739" CREATED="1293305969634" MODIFIED="1304757762097" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een knoopkenmerk te wijzigen:
-    </p>
-    <p>
-      - Open het opmaakpaneel
-    </p>
-    <p>
-      - Wijzig het betreffende knoopkenmerk
-    </p>
-    <p>
-      - Druk op OK
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Knoopstijlen" FOLDED="true" ID="ID_108677312" CREATED="1291228908372" MODIFIED="1304346435722" COLOR="#407000" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Knopen en takken kunnen worden vormgegeven met stijlen. Een <b>stijl</b>&#160;&#160;is een samenstelling van een lettertype-opmaak (naam, kleur, vet, enz.), takopmaak en wolkopmaak. De volgende stijltypen worden onderscheiden:
-    </p>
-    <p>
-      - de <b>standaard knoopstijl </b>waar Freeplane mee opstart;
-    </p>
-    <p>
-      - <b>knoopprofielen</b>&#160;die bedoeld zijn om bepaalde typen mededelingen mee weer te geven (OK, Te doen, enz.);
-    </p>
-    <p>
-      - <b>knoopniveaustijlen</b>&#160;voor knopen op verschillende afstanden (niveaus's) van de basisknoop en die automatisch kunnen worden toegepast;
-    </p>
-    <p>
-      - <b>gebruikerstijlen</b>, knoopstijlen&#160;welke door de gebruiker zijn gemaakt.
-    </p>
-    <p>
-      Het is mogelijk condities aan te geven waarin een knoop automatisch een bepaalde stijl krijgt. Condities zijn de aanwezigeid van beppaalde basistekst, pictogrammen, knoopniveau of attribuutwaarden. Stijlen kunnen ook per geval worden gekozen in het afrolmenu in het Werkmenu (standaard knoopstijl) of via het menu <i>Stijlen</i>&#160;in Hoofdmenu. De stijlen zelf kunnen door de gebruiker worden aangepast en worden bewaard in een mindmapstijl. Deze mindmapstijl kan vervolgens in andere mindmaps worden toegepast.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Voorbeeld stijl" LOCALIZED_STYLE_REF="AutomaticLayout.level,1" ID="ID_1379615942" CREATED="1291305410190" MODIFIED="1304346622353"/>
-<node TEXT="Stijl gebruiken." ID="ID_1826856110" CREATED="1291229828687" MODIFIED="1305123928005" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een knoop een eerder gedefinieerde stijl te geven:
-    </p>
-    <p>
-      - selecteer de knoop waarop de stijl moet worden toegepast;
-    </p>
-    <p>
-      - kies in het afrolmenu van de Werkbalk de stijl die moet worden toegepast (standaard: Standaardstijl)
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Knoopprofielen" STYLE_REF="Functie" FOLDED="true" ID="ID_984874398" CREATED="1289568127033" MODIFIED="1293375085072" BACKGROUND_COLOR="#ffffff">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<edge COLOR="#ffffff"/>
-<node TEXT="Er zijn kant en klare stijlen (knoopprofielen) voor veelgebruikte dingen." ID="ID_447365403" CREATED="1289568136870" MODIFIED="1293375085069" BACKGROUND_COLOR="#ffff33" STYLE="bubble"/>
-<node TEXT="Knoopprofiel kiezen" ID="ID_1264184673" CREATED="1289568543350" MODIFIED="1305124001388" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een knoopprofiel te kiezen:
-    </p>
-    <p>
-      - kies een van de functietoetsen F3 t/m F11 in de F-toetsen; of
-    </p>
-    <p>
-      - kies <i>Stijlen &gt; Knoopprofiel toepassen...</i>&#160;in Hoofdemenu; en
-    </p>
-    <p>
-      - kies een knoopprofiel uit de lijst.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Idee" ID="ID_242116972" CREATED="1289568227108" MODIFIED="1293375085062">
-<icon BUILTIN="idea"/>
-</node>
-<node TEXT="Sleutel" ID="ID_1835035093" CREATED="1289568269157" MODIFIED="1293375085059" COLOR="#996600">
-<icon BUILTIN="password"/>
-<font NAME="Liberation Sans" SIZE="12" BOLD="false"/>
-</node>
-<node TEXT="Vraag" ID="ID_561165799" CREATED="1289568285264" MODIFIED="1293375085055">
-<icon BUILTIN="help"/>
-<font NAME="Aharoni" SIZE="12"/>
-</node>
-<node TEXT="Belangrijk" ID="ID_328012967" CREATED="1289568300809" MODIFIED="1293375085052" COLOR="#ff0000">
-<icon BUILTIN="yes"/>
-<font NAME="Liberation Sans" SIZE="12"/>
-</node>
-<node TEXT="Topic" ID="ID_1891366156" CREATED="1289568367179" MODIFIED="1293375085049" COLOR="#18898b" STYLE="fork">
-<font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
-<edge STYLE="bezier" COLOR="#808080" WIDTH="thin"/>
-</node>
-<node TEXT="Subtopic" ID="ID_1292231008" CREATED="1289568376282" MODIFIED="1293375085046" COLOR="#cc3300" STYLE="fork">
-<font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
-<edge STYLE="bezier" COLOR="#808080" WIDTH="thin"/>
-</node>
-<node TEXT="Subsubtopic" ID="ID_1977864625" CREATED="1289568387693" MODIFIED="1293375085042" COLOR="#669900">
-<font NAME="Liberation Sans" SIZE="12" BOLD="true"/>
-</node>
-<node TEXT="Datum" ID="ID_153878010" CREATED="1289568405937" MODIFIED="1293375085039" COLOR="#0033ff">
-<icon BUILTIN="calendar"/>
-<font NAME="Liberation Sans" SIZE="12"/>
-</node>
-<node TEXT="enz." ID="ID_924408462" CREATED="1291212760168" MODIFIED="1293375085035"/>
-<node TEXT="Knoopprofiel wijzigen" ID="ID_799438674" CREATED="1289568672526" MODIFIED="1305124083669" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een knoopprofiel te wijzigen:<br/>- kies <i>Stijlen &gt;&#160;&#160;Bewerken knoopstijlen... </i>&#160;in Hoofdmenu
-    </p>
-    <p>
-      - selecteer een knoopprofiel; en
-    </p>
-    <p>
-      - wijzig de knoopkenmerken in het paneel aan de rechter zijde.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Knoopniveaustijl" STYLE_REF="Functie" ID="ID_1974356445" CREATED="1291232398959" MODIFIED="1305124353122" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een knoop de stijl van een bepaald knoopniveau te geven (ongeacht of de knoop zich op dit niveau bevindt):
-    </p>
-    <p>
-      - kies <i>Stijlen &gt; Knoopniveaustijl toepassen </i>in hoofdmenu;
-    </p>
-    <p>
-      - kies het knoopniveastijl
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Gebruikerstijl" STYLE_REF="Functie" ID="ID_1663989636" CREATED="1291232445822" MODIFIED="1305124222954" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een gebruikerstijl te maken:
-    </p>
-    <p>
-      - kies Stijlen &gt; Bewerken knoopstijlen;
-    </p>
-    <p>
-      - selecteer de standaard knoopstijl;
-    </p>
-    <p>
-      - rechtsklik en kies <i>Selectie opslaan als gebruikerstijl </i>en sla op;
-    </p>
-    <p>
-      - wijzig de kenmerken van de stijl in het opmaakpaneel (als laatste !)
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Mindmapstijl" STYLE_REF="Functie" ID="ID_557499043" CREATED="1291232483145" MODIFIED="1305124292896" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een opgeslagen mindmapstijl toe te passen:
-    </p>
-    <p>
-      - kies <i>Stijlen &gt; Mindmapstijl toepassen</i>&#160;in Hoofdmenu.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Automatische toepassing" STYLE_REF="Functie" FOLDED="true" ID="ID_939802336" CREATED="1291232513559" MODIFIED="1293375085001">
-<node TEXT="Knoopniveau toepassen" ID="ID_1834241067" CREATED="1291232554777" MODIFIED="1305124431957" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een knoop van een bepaald <b>knoopniveau</b>&#160;automtisch de knoopniveaustijl te geven:
-    </p>
-    <p>
-      - kies <i>Opmaken &gt; Automatisch opmaken per niveau</i>&#160;in Hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Knoopniveau filter instellen" ID="ID_1399290454" CREATED="1291231689260" MODIFIED="1305124490567" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een <b>conditie</b>&#160;in te stellen waarin een bepaalde knoopstijl automtisch moet worden toegepast:
-    </p>
-    <p>
-      - kies <i>Stijlen &gt; Beheren conditionele knoopstijlen </i>
-    </p>
-    <p>
-      <i>- </i>kies Nieuw en stel een filter in
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-</node>
-<node TEXT="Mindmapstijlen" FOLDED="true" ID="ID_749365763" CREATED="1291308300619" MODIFIED="1305124622824" COLOR="#407000" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      De functie <i>Nieuwe mindmap</i>&#160;maakt gebruik van de mindmap <i>standaard.mm</i>. Als er een door de gebruiker gedefinieerde stijl is met deze naam dan wordt deze gebruikt. Anders wordt het bestand standard.mm in de standaard mindmapstijl gebruikt. Het is mogelijk bij Extra &gt; Instellingen op te geven dat een andere bestandsnaam wordt gebruikt.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Gebruik stijl van andere mindmap" ID="ID_110966814" CREATED="1291308311806" MODIFIED="1305124576039" LINK="#ID_1224589686" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om nieuwe mindmap te maken met als basis de knopen en stijlen van een andere mindmap:
-    </p>
-    <p>
-      - kies <i>Bestand &gt; Nieuwe mindmap met stijl..</i>. in Hoofdmenu; of
-    </p>
-    <p>
-      - kies <i>Stijlen &gt; Mindmapstijl toepassen</i>&#160;in Hoofdmenu.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Als mindmapstijl bewaren" ID="ID_9675934" CREATED="1291308853188" MODIFIED="1305124694435" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een mindmap op te slaan als mindmapstijl:
-    </p>
-    <p>
-      - kies <i>Bestand &gt; Opslaan als...</i>&#160;in Hoofdmenu<br/>
-    </p>
-    <p>
-      - kies in het dialoogvenster in plaats van Mindmaps:&#160; <i>Door de gebruiker gedefinieerde mindmapstijlen; </i>of kies <i>Standaard mindmapstijlen;</i>
-    </p>
-    <p>
-      - vul een naam in voor de mapstijl;
-    </p>
-    <p>
-      - klik OK.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_710714991" CREATED="1271095870732" MODIFIED="1305123704948" COLOR="#407000" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Weergavevormen
-    </p>
-  </body>
-</html></richcontent>
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Mindmaps kunnen op twee manieren worden weergegeven:
-    </p>
-    <ol>
-      <li>
-        met takken dia radiaal uit de basisknoop komen (standaard weergave); of
-      </li>
-      <li>
-        als lijst&#160;&#160;(overzichweergave). Deze weergave is soms handig bij het afdrukken van grote mindmaps.
-      </li>
-    </ol>
-  </body>
-</html></richcontent>
-<node TEXT="Standaardweergave" ID="ID_517407555" CREATED="1286817888235" MODIFIED="1305123749557" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om als mindmap weer te geven:
-    </p>
-    <p>
-      - kies<i>&#160;Beeld &gt; Overzichtsweergave</i>&#160;in Hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Overzichtweergave" ID="ID_4662169" CREATED="1286817916447" MODIFIED="1305123797425" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om in overzichtweergave weer te geven, bijvoorbeeld om af te drukken:
-    </p>
-    <p>
-      - kies <i>Beeld &gt; Overzichtsweergave </i>in&#160;Hoofdmenu
-    </p>
-    <p>
-      
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Opmaken basistekst en tekstachtergrond" FOLDED="true" ID="Freeplane_Link_1660149394" CREATED="1270892460672" MODIFIED="1298472026282" COLOR="#407000">
-<node TEXT="De volgende functies hebben effect op de hele knoop." ID="ID_1545556259" CREATED="1291293335158" MODIFIED="1293375084939" BACKGROUND_COLOR="#ffff00" STYLE="bubble"/>
-<node TEXT="Vet" ID="ID_1614710012" CREATED="1286818269341" MODIFIED="1305124746118" TEXT_SHORTENED="true">
-<font BOLD="true"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de hele tekst van een knoop <b>vet</b>&#160;te maken:
-    </p>
-    <p>
-      - kies <i>&#160;pictogram </i><b>B </b>in Werkmenu; of
-    </p>
-    <p>
-      - kies<b><i>&#160;</i></b><i>Opmaken &gt; Vet </i>in Hoofdmenu;&#160;of
-    </p>
-    <p>
-      - druk <i>Ctrl + B</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Schuin" ID="ID_867716564" CREATED="1286818546255" MODIFIED="1305124787295" TEXT_SHORTENED="true">
-<font ITALIC="true"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de hele tekst van een knoop <i>schuin</i>&#160;te maken:
-    </p>
-    <p>
-      - kies&#160;<i>&#160;</i>pictogram<i>&#160;I&#160; </i>in<i>&#160;</i>Werkmenu; of
-    </p>
-    <p>
-      - kies<b><i>&#160;</i></b><i>Opmaken &gt; Schuin </i>in Hoofdmenu; of
-    </p>
-    <p>
-      - druk <i>Ctrl + I</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_1170461045" CREATED="1286818837903" MODIFIED="1305124823362" COLOR="#0000cc" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Kleur tekst
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de hele tekst van een knoop een kleur te geven:
-    </p>
-    <p align="left">
-      - kies <i>Opmaken &gt; Tekstkleur </i>in Hoofdmenu;&#160;of
-    </p>
-    <p align="left">
-      - druk <i>Alt + Shift + F</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Achtergrond kleur" ID="ID_1170435264" CREATED="1286819032661" MODIFIED="1305124898986" BACKGROUND_COLOR="#00ffff" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de hele achtergrond van een knoop een kleur te geven:
-    </p>
-    <p>
-      - kies <i>Opmaken&#160;&gt;&#160;Knoopachtergrondkleur</i>&#160;in<i>&#160;</i>Hoofdmenu
-    </p>
-    <p>
-      
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Tekstgrootte" FOLDED="true" ID="ID_553031568" CREATED="1286819274921" MODIFIED="1293375084909">
-<font SIZE="14"/>
-<node TEXT="Groter maken" ID="ID_444952912" CREATED="1286819285210" MODIFIED="1305125014918" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om alle tekst van een knoop groter te maken:
-    </p>
-    <p>
-      - Kies <i>Opmaken &gt; Letterttype vergroten</i>&#160;in Hoofdmenu; of
-    </p>
-    <p>
-      - Kies Opmaken &gt; <i>Letterttype vergroten in het Contextmenu</i>; of
-    </p>
-    <p>
-      - Druk <i>Ctrl + Plus</i>.&#160;&#160;(Niet &quot;+&quot; op numeriek toetsenbord)
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Kleiner maken" ID="ID_1435829653" CREATED="1286819285210" MODIFIED="1305125055415" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de hele tekst van een knoop kleiner te maken:
-    </p>
-    <p>
-      - kies in Hoofdmenu <i>Opmaak &gt; Letterttype verkleinen</i>; of
-    </p>
-    <p>
-      - klik rechter muisknop en kies in het Contextmenu <i>Opmaak &gt; Letterttype verkleinen.</i>
-    </p>
-    <p>
-      - druk <i>Ctrl + Min</i>. (Niet - op numeriek toetsenbord)
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Lettertype" ID="ID_1041069286" CREATED="1286820089718" MODIFIED="1305125099345" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om voor de hele knoop het lettertype in te stellen:
-    </p>
-    <p>
-      - kies in Werkmenu het lettertype (standaarD SansSerif).
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Knipperen" ID="ID_1835168454" CREATED="1288548004325" MODIFIED="1305125135935" TEXT_SHORTENED="true">
-<hook NAME="accessories/plugins/BlinkingNodeHook.properties"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een knoop te laten kipperen:
-    </p>
-    <p>
-      - kies <i>Opmaken &gt; Knipperende knoop </i>&#160;Hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Opmaakpaneel openen/sluiten" ID="ID_1792015488" CREATED="1291214538930" MODIFIED="1305125204926" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      De opmaak van tekst kan ook worden aangepast in het <b>Opmaakpaneel</b>:
-    </p>
-    <p>
-      - kies <i>Beeld &gt; Opmaakpaneel</i>&#160;in Hoofdmenu om het opmaakpaneel te openen;
-    </p>
-    <p>
-      - Stel de gewenste kenmerken in;
-    </p>
-    <p>
-      - kies <i>Beeld &gt; Opmaakpaneel</i>&#160;in Hoofdmenu om het opmaakpaneel te sluiten.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_1727100859" CREATED="1298927998881" MODIFIED="1305125218436" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om automatisch een (volg)<b>nummer</b>&#160;aan een knoop toe te voegen:
-    </p>
-    <p>
-      - kies <i>Beeld&gt;Opmaakpaneel</i>
-    </p>
-    <p>
-      - zet vinkje voor knoopnummer
-    </p>
-  </body>
-</html></richcontent>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Knopen worden genummerd van boven naar bendeden. Aleen knopen waarvoor het vinkje is gezet worden (door)genummerd.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Datum/tijdweergave" FOLDED="true" ID="ID_1879997236" CREATED="1299178585510" MODIFIED="1305125331341" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Datums en tijden kun het beste volgens ISO-standaard worden toegevoegd. Vervolgens kan in het opmaakpaneel worden gekozen welke weergavevorm men wenst. De ISO-standaard is:
-    </p>
-    <p>
-      YYYY-MM-DD HH:MM:SS
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="ISO datum/tijd" ID="ID_915638625" CREATED="1299178946412" MODIFIED="1305125386042" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een ISO datum of tijd van een knoop op andere wijze te tonen:
-    </p>
-    <p>
-      - kies Beeld&gt;Opmaakpaneel;
-    </p>
-    <p>
-      - kies een optie uit het menu Template/formaat
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Automatische knoopnummering" ID="ID_1580279117" CREATED="1299179094034" MODIFIED="1305277293005" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een knoop automatisch van een nummer te voorzien:
-    </p>
-    <p>
-      - kies <i>Beeld&gt;Opmaakpaneel;</i>
-    </p>
-    <p>
-      - Selecteer <i>Aanpassen</i>&#160;en <i>Knoopnummering </i>
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Als een gekleurde rand om de tekst verschijnt:
-    </p>
-    <p>
-      - Kies <i>Beeld &gt; Markeer formules niet met een rand</i>&#160;in Hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Kopi&#xeb;ren en plakken opmaak" FOLDED="true" ID="ID_1156809838" CREATED="1286820246498" MODIFIED="1298558239850" COLOR="#407000" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      In de huidige versie wordt niet alle opmaak gekopieerd. Alleen teksttype, tekstgrootte, tekstkleur en achtergrondkleur.
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Kopieren opmaak knoop" ID="ID_1575812829" CREATED="1286820264151" MODIFIED="1305125548337" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om alle opmaakinstellingen van een knoop te kopi&#235;ren:
-    </p>
-    <p>
-      - Selecteer knoop;
-    </p>
-    <p>
-      - Kies <i>Opmaken &gt; Kopi&#235;ren opmaak</i>&#160;in Hoofdmenu; of
-    </p>
-    <p>
-      - Druk <i>Alt + Shift + C.</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Plakken opmaak knoop" ID="ID_1138394530" CREATED="1286820495623" MODIFIED="1305125555123" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de gekopieerde opmaakinstellingen te plakken:
-    </p>
-    <p>
-      - Selecteer knoop;
-    </p>
-    <p>
-      - Kies<i>&#160;Opmaken &gt; Plakken opmaak </i>&#160;in Hoofdmenu; of
-    </p>
-    <p>
-      - druk<i>&#160;Alt + Shift + V</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="ID_1797063061" CREATED="1270896049950" MODIFIED="1298558814789" COLOR="#407000" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opmaken tak
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Image by choice or link  [Image (File chooser or link)]" ID="ID_1277752024" CREATED="1266249875046" MODIFIED="1315728980938" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
@@ -11378,376 +4867,673 @@
   </head>
   <body>
     <p>
-      Een tak hoort bij een kindknoop.
+      Attach a fixed&#160;&#160;image to the inner area of the selected node, within the bubble area and replacing the basic node text. If the node already contains a hyperlink to an image, the image will replace the hyperlink. Otherwise the file chooser can be used to select an image file.
     </p>
     <p>
       
     </p>
     <p>
-      Een tak (lijn) heeft:
+      
+    </p>
+    <p>
+      <b>See also</b>
     </p>
     <ul>
       <li>
-        een kleur;
+        <i>View &gt; Shortened node content</i>&#160;to hide/unhide the image
+      </li>
+    </ul>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        The image is shown in its original size. To decrease this size, use a paint program.
       </li>
       <li>
-        een dikte;
+        The basic node text is not showing.
       </li>
       <li>
-        een vorm.
+        The extended node editor allows to add an image as HTML code. Example: <i>&lt;html&gt;&lt;img src=&quot;linked/Apple.png&quot;&gt; &#160;&#160;&lt;html&gt;&lt;img src=&quot;file://C:/Users/My Documents/Mind Maps/Linked/Apple.png&quot;&gt;</i>&#160;The relative link points to an image file in a subdirectory of the directory in which the min map is kept..
       </li>
     </ul>
   </body>
 </html></richcontent>
-<node TEXT="Voorbeeld" ID="ID_1321164102" CREATED="1286822280963" MODIFIED="1293375084864"/>
-<node TEXT="Vorm tak instellen" ID="ID_171466211" CREATED="1270896067862" MODIFIED="1305135534615" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+</node>
+</node>
+<node TEXT="Knoopuitbreiding {Node extensions]" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1400990107" CREATED="1315728991618" MODIFIED="1316951054553">
+<node TEXT="Edit details in-line   [Edit node details]" ID="ID_1807308711" CREATED="1291153533418" MODIFIED="1315980814822" TEXT_SHORTENED="true">
+<icon BUILTIN="../edit_details"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Om de vorm van een tak in te stellen:
-    </p>
-    <p>
-      - selecteer de knoop;
-    </p>
-    <p>
-      - kies<i>&#160;&#160;Opmaken &gt; Vorm tak </i>in Hoofdmenu; of
-    </p>
-    <p>
-      - kies <i>Vorm tak</i>&#160;in Contextmenu (rechtsklik tak); en
-    </p>
-    <p>
-      - kies de gewenste vorm
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Dikte tak instellen" ID="ID_1315374239" CREATED="1270896067862" MODIFIED="1305135590853" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de dikte van een tak in te stellen:
-    </p>
-    <p>
-      - selecteer de knoop;
-    </p>
-    <p>
-      - kies<i>&#160;&#160;Opmaken &gt; Dikte tak </i>in Hoofdmenu; of
-    </p>
-    <p>
-      - kies Dikte<i>&#160;tak</i>&#160;in Contextmenu (rechtsklik tak); en
-    </p>
-    <p>
-      - kies de gewenste dikte
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Kleur tak instellen" ID="ID_591679600" CREATED="1270896067862" MODIFIED="1305135640804" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de kleur van een tak in te stellen:
-    </p>
-    <p>
-      - selecteer de knoop;
-    </p>
-    <p>
-      - kies<i>&#160;&#160;Opmaken &gt; Kleur tak </i>in Hoofdmenu; of
-    </p>
-    <p>
-      - kies Kleur<i>&#160;tak</i>&#160;in Contextmenu (rechtsklik tak); en
-    </p>
-    <p>
-      - kies de gewenste kleur
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Automatische takkleur" ID="ID_317775893" CREATED="1270896067862" MODIFIED="1305135702830" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om elke tak automatisch een andere kleur te geven:
-    </p>
-    <p>
-      - kies<i>&#160;&#160;Opmaken &gt; Automatische takkleur </i>in Hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Tak onzichtbaar maken" ID="ID_992635233" CREATED="1270896067862" MODIFIED="1305135790533" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een tak onzichtbaar te maken:
-    </p>
-    <p>
-      - selecteer de knoop;
-    </p>
-    <p>
-      - kies<i>&#160;&#160;Opmaken &gt; Vorm tak &gt;Tak verbergen </i>in Hoofdmenu of in Contextmenu (rechtsklik tak)
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Opmaakpaneel gebruiken" ID="ID_1402493775" CREATED="1291214538930" MODIFIED="1305135865601" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een tak kan ook worden aangepast in het <b>Opmaakpaneel</b>:
-    </p>
-    <p>
-      - kies <i>Beeld &gt; Opmaakpaneel</i>&#160;in Hoofdmenu om het opmaakpaneel te openen;
-    </p>
-    <p>
-      - Stel onder<i>&#160;Takken</i>&#160;de kenmerken <i>Dikte tak, Vorm tak</i>&#160;en <i>Kleur tak</i>&#160;in;
-    </p>
-    <p>
-      - kies <i>Beeld &gt; Opmaakpaneel</i>&#160;in Hoofdmenu om het opmaakpaneel te sluiten.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT=" Formule (LaTeX) in knoop" FOLDED="true" ID="ID_1060978136" CREATED="1271097112611" MODIFIED="1305136100449" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Wat is LaTeX: http://nl.wikipedia.org/wiki/LaTeX" ID="ID_1360051966" CREATED="1289512261049" MODIFIED="1293375084811" LINK="http://nl.wikipedia.org/wiki/LaTeX"/>
-<node TEXT="Voorbeeld" ID="ID_651820837" CREATED="1271097206186" MODIFIED="1293375084804" STYLE="bubble">
-<hook EQUATION="\begin{array}{l}&#xa;\mbox{I}^\fgcolor{ff0000}{\heartsuit}\mbox{\JLaTeXMath}\\&#xa;\mbox{I}^\fgcolor{ff0000}{\heartsuit}\mbox{\JLaTeXMath}\\&#xa;\end{array}" NAME="plugins/latex/LatexNodeHook.properties"/>
-</node>
-<node TEXT="Invoegen LaTex" ID="ID_1984504101" CREATED="1286809212166" MODIFIED="1305136278547" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om LaTex in te voegen:
-    </p>
-    <p>
-      - kies&#160; <i>Knoopkenmerken&#160;&gt; Latex &gt; Invoegen </i>in<i>&#160;</i>Hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Bewerken of verwijderen LaTex" ID="ID_925344572" CREATED="1286809241237" MODIFIED="1305136245600" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om LaTex te bewerken:
-    </p>
-    <p>
-      - klik <i>&#160;Knoopkenmerken &gt; LaTex &gt; Bewerken in </i>Hoofdmenu of Contextmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Opdelen mindmap" ID="ID_199519747" CREATED="1289569084498" MODIFIED="1305137156351" COLOR="#407000" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Als een mindmap te groot wordt, kan deze over twee mindmaps worden verdeeld met hyperlinks tussen de mindmaps om eenvoudig heen en weer te kunnen navigeren.
+      Opens in line editor for editing Details. This editor is similar to the inline editor for basic node text. The text can be hidden, unless selected.
     </p>
     <p>
       
     </p>
     <p>
-      Om een mindmap op te delen over twee gekoppelde mindmaps:
+      <b>See also</b>
     </p>
-    <p>
-      - selecteer de knoop wiens (klein)kinderen je in een aparte mindmap wilt onderbrengen;
-    </p>
-    <p>
-      - kies Bestand &gt; Exporteren &gt; Exporteren tak als nieuwe mindmap&#160;in Hoofdmenu.
-    </p>
-    <p>
-      - Geef de naam op waaronder de nieuwe mindmap bewaard moet worden.
-    </p>
-    <p>
-      In de geselecteerde knoop wordt een hyperlink naar de geexporteerde mindmap opgenomen en v.v.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Eigen opmaakstijlen toevoegen" ID="ID_1378240582" CREATED="1291550224112" MODIFIED="1298558655387" LINK="#Freeplane_Link_1822195277" COLOR="#407000" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-</node>
-<node TEXT="Verticaal uitlijnen knopen" STYLE_REF="Functiegroep" FOLDED="true" ID="ID_1190380971" CREATED="1293375159094" MODIFIED="1304196597918">
-<icon BUILTIN="help"/>
-<node TEXT="Selecteer de knopen waar het om gaat" FOLDED="true" ID="ID_825486860" CREATED="1293375176562" MODIFIED="1293375213982">
-<node TEXT="Om alle knopen te selecteren" FOLDED="true" ID="ID_1905899006" CREATED="1293375292830" MODIFIED="1293375306253">
-<node TEXT="selectteer basisknoop (Escape)" ID="ID_1938787598" CREATED="1293375306259" MODIFIED="1293375333191"/>
-<node TEXT="- kies Alle zichbare knopen selecteren (Ctrl + A)" ID="ID_159741742" CREATED="1293375333957" MODIFIED="1293375383327"/>
-</node>
-</node>
-<node TEXT="Kies Opmaken &gt; Reset position" ID="ID_1103922080" CREATED="1293375214845" MODIFIED="1293375290412"/>
-</node>
-<node FOLDED="true" ID="Freeplane_Link_913137192" CREATED="1270892460689" MODIFIED="1293375086051" COLOR="#407000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Groter en kleiner maken van de mindmap (zoomen)
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="Beeld groter maken" ID="ID_1270232158" CREATED="1272007214049" MODIFIED="1305137259171" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om het beeld <b>groter</b>&#160;te maken:
-    </p>
-    <p>
-      - kies <i>Beeld &gt; Inzoomen </i>in Hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Beeld kleiner maken" ID="ID_173079242" CREATED="1286529528486" MODIFIED="1305137314832" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om het beeld <b>kleiner</b>&#160;te maken:
-    </p>
-    <p>
-      - kies <i>Beeld&#160;&gt; Uitzoomen</i>&#160;in de Hoofdmenu .
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Tot percentage vergroten/verkleinen" ID="ID_1128495236" CREATED="1286529777751" MODIFIED="1305137449882" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om het beeld tot een bepaald <b>percentage</b>&#160;te vergroten of verkleinen:<br/>- kies <i>percentage</i>&#160;&#160;in Werkmenu.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Op sommige systemen kan worden in- of uitgezoomd door op <i>Ctrl</i>&#160;te drukken en het muiswiel te draaien.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Groter/kleiner maken van de afstand tussen knopen" ID="ID_349466726" CREATED="1289511031130" MODIFIED="1305137493070" COLOR="#407000" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om de afstand tussen alle knopen te vergroten/verkleinen:
-    </p>
-    <p>
-      - beweeg de cursor over de ouderzijde van de knoop tot een ovaaltje verschijnt; en
-    </p>
-    <p>
-      - druk op <i>Ctrl +</i>&#160;klik en sleep tot de juiste afstand is bereikt.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node TEXT="Kalender/Agenda" FOLDED="true" POSITION="right" ID="ID_1857793378" CREATED="1289027425406" MODIFIED="1305212343438" COLOR="#006699" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een agenda is een venster waarin een datum, tijdstip en activiteit kan worden gekozen. De datum verschijnt als tekst in de knoop. Er kan worden ingesteld dat op het tijdstip een activiteit (herinnering) moet gebeuren. Er wordt getoond dat de activiteit is ingesteld doordat een pictogram van een klokje in de knoop en in de basisknoop verschijnt. Op het tijdstip van de activiteit&#160;&#160;knippert het klokje en verschijnt een rood uitroepteken in de basisknoop. De activiteit zelf kan worden beschreven in de tekst van de knoop of in een notitie bij de knoop.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Er zijn twee plaatsen waar agendafuncties beschikbaar zijn:
-    </p>
-    <ol>
+    <ul>
       <li>
-        Beeld &gt; Opmaakpaneel&gt; Agenda en attributen
+        <i>Node &gt; Edit node</i>
       </li>
       <li>
-        Knoopkenmerken &gt; Agenda&#160;&#160;(geen attributen)
+        <i>View &gt; Toggle Details </i>
       </li>
-    </ol>
+      <li>
+        <i>Node &gt; Shortened node content</i>
+      </li>
+    </ul>
   </body>
 </html></richcontent>
-<node TEXT="Voorbeeld" FOLDED="true" ID="ID_685561323" CREATED="1289047813775" MODIFIED="1304346826222" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
-<node TEXT="knoop met Agenda" ID="ID_517678813" CREATED="1288542096079" MODIFIED="1293375089915">
-<hook NAME="plugins/TimeManagementReminder.xml">
-    <Parameters REMINDUSERAT="2077460580480"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+</node>
+<node TEXT=" Edit details in dialog  [ Edit node details in separate Dialog]" ID="ID_742575187" CREATED="1309980895003" MODIFIED="1315980850951" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens editor for node details in a separate dialog. Similar to the dialog for basic node text.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        Node &gt; Edit node in separate dialog
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Text from style  [Insert style related content]" ID="ID_1403178597" CREATED="1311948532074" MODIFIED="1315731249074" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To copy into the selected node the&#160;&#160;<i>Details</i>&#160;and <i>Attributes</i>&#160; of the styles connected to the node.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        Applies if <i>Details</i>&#160;or <i>Attributes</i>&#160;in the style have been changed, or if the node has not been connected to the style at a birth.
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>New style from selectio</i>n
+      </li>
+      <li>
+        <i>Node features &gt; Attributes &gt; Copy from style</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Set as hover text (tool tip) [shortened node content  ]" ID="ID_787093188" CREATED="1291155413971" MODIFIED="1314891445690" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Toggles visibility of the content of all nodes (if the cursor is not over the node). The effect is:
+    </p>
+    <ul>
+      <li>
+        Basic node text is limited in length;
+      </li>
+      <li>
+        Node features are hidden (Details, Attributes, Notes)
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>View &gt; Display Tool Tips for notes</i>&#160;to make the hidden context visible when the cursor is hovering over the node.
+      </li>
+      <li>
+        <i>View &gt; Show notes in map </i>
+      </li>
+      <li>
+        <i>View &gt; Attributes </i>
+      </li>
+      <li>
+        <i>View &gt; Shortened node content</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Remove text  [Remove node details]" ID="ID_949038869" CREATED="1291201354423" MODIFIED="1315731463030" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Removes the details text from the selected node.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+</node>
+<node TEXT="Details text" STYLE_REF="MenuGroupLabel" ID="ID_1543644666" CREATED="1303930434451" MODIFIED="1315981045016" TEXT_SHORTENED="true">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Content text (details)</b>&#160;is an optional text field directly under the basic node text, outside the node area (bubble area). It is the text you are currently reading.&#160;&#160;It is generally used to extend and describe in detail the basic node text of Title.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Content can be hidden in two ways:
+    </p>
+    <ul>
+      <li>
+        press the triangle to roll up the text; press again to roll down again
+      </li>
+      <li>
+        right-click and select<i>&#160;Set hover text (tool tip)</i>.
+      </li>
+    </ul>
+    <p>
+      Hidden content is shown when the cursor is above the node.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>View &gt; Hover text (tool tip)</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+<hook NAME="SummaryNode"/>
+</node>
+<node TEXT="Add image..." FOLDED="true" ID="ID_334408230" CREATED="1266250647515" MODIFIED="1315731589195" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Add sizeable image to the selected node, below the basic node text, outside the bubble area.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note </b>
+    </p>
+    <ul>
+      <li>
+        Alternatively,&#160;add image with <b>drag and drop </b>or add a hyperlink to the image with&#160;<b>copy and&#160;paste. </b>Note the difference:
+
+        <ul>
+          <li>
+            <b>Copy &amp; Paste</b>
+
+            <ul>
+              <li>
+                Pasting at the upper part of a node adds a hyperlink to a newly created sibling
+              </li>
+              <li>
+                Pasting at the outer side of a node adds a child node with a hyperlink.
+              </li>
+            </ul>
+          </li>
+          <li>
+            <b>Drag &amp; drop</b>
+
+            <ul>
+              <li>
+                Dropping at the upper part of the node adds an external, scalable image in the selected node.
+              </li>
+              <li>
+                Dropping at the outer side of the node adds an external, scalable image in a newly created child node.
+              </li>
+              <li>
+                Dropping only works if the mind map has been saved.
+              </li>
+              <li>
+                For security reasons dragging and dropping is not possible for internet images.
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>View &gt; Shortened node content.</i>&#160;It hides/unhides the image.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+<hook NAME="FirstGroupNode"/>
+<node TEXT="" FOLDED="true" ID="ID_1294427474" CREATED="1312919801516" MODIFIED="1312919821532">
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<node TEXT="" ID="ID_1592683562" CREATED="1311880649184" MODIFIED="1311880910313" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        Drag and drop images only works if the min map has been saved before.
+      </li>
+      <li>
+        Drag and drop from the Internet is, because of security reasons, not possible. Dropping hyperlinks is. .
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Drag &amp; drop image, copy &amp; paste link" ID="ID_7896368" CREATED="1311883050086" MODIFIED="1311930535976" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To&#160;add an image <b>drag and drop</b>&#160;(not from Internet):
+    </p>
+    <ul>
+      <li>
+        Dropping at the upper part of the node adds an external, scalable image in the selected node.
+      </li>
+      <li>
+        Dropping at the outer side of the node adds an external, scalable image in a newly created child node.
+      </li>
+      <li>
+        Dropping only works if the mind map has been saved.
+      </li>
+      <li>
+        For security reasons dragging and dropping is not possible for internet images. Hence, first drag and drop on your desktop, hence drag and drop on the mind map.
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <p>
+      To add a hyperlink, <b>copy and paste </b>(also from Internet);
+    </p>
+    <ul>
+      <li>
+        Pasting at the upper part of a node adds a hyperlink to a newly created sibling
+      </li>
+      <li>
+        Pasting at the outer side of a node adds a child node with a hyperlink.
+      </li>
+    </ul>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        Images are not part of the mind map. If the image source in your computer is removed, the image will no longer display.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Change image..." ID="ID_276232981" CREATED="1303931774914" MODIFIED="1315731597385" TEXT_SHORTENED="true">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Shows the handle of the external image of the selected node by which the size of the image can be changed.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+</node>
+<node TEXT="Remove image" ID="ID_1348672374" CREATED="1303931789305" MODIFIED="1315731604155" TEXT_SHORTENED="true">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Remove the external images from the selected node.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Image" FOLDED="true" ID="ID_1620391394" CREATED="1303931708607" MODIFIED="1315731736077" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      An image in Freeplane is a picture with format<b>&#160;png, jpeg, gif, </b>or<b>&#160;svg</b>&#160;. An image can be attached to the internal area of a node (inside the bubble) or to the external area (outside the bubble).
+    </p>
+    <ul>
+      <li>
+        The image in the internal area is fixed in size. It is shown in its actual size. To make it smaller, use a paint program.
+      </li>
+      <li>
+        The image in the external area is sizeable. To resize it, move the cursor over one of the corners until the resize handle appears and drag it to its new size.
+      </li>
+    </ul>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        Images are NOT included in the mind map .mm. As a result, when moving a mind map images are not automatically moved with the mind map and get disconnected.
+      </li>
+      <li>
+        .<b>svg</b>&#160;images can NOT be published on internet, e.g. with Java Applet.
+      </li>
+    </ul>
+    <p>
+      <b>Best practice</b>
+    </p>
+    <ul>
+      <li>
+        Make a directory in which both images and the .mm file are kept. Add images to the mind map from this directory. When this directory is displaced as a whole to a different position, the images keep appearing in the mind map. When publishing the mind map, an additional action is necessary, see below.
+      </li>
+      <li>
+        Use the example script to include images in Details and Notes. See scripts.
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        &#160;<i>Pubishing mind maps</i>&#160;with images on Internet.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+<hook NAME="SummaryNode"/>
+<node TEXT="Publish images" ID="ID_1111281504" CREATED="1309808574878" MODIFIED="1315731685868" TEXT_SHORTENED="true">
+<attribute_layout NAME_WIDTH="82" VALUE_WIDTH="264"/>
+<attribute NAME="Chapter" VALUE="3,6"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">To publish a mind map with images: </font>
+    </p>
+    <ul>
+      <li>
+        Make sure the images are in the same directory as the mind map
+      </li>
+      <li>
+        Fold the mind map as you want it to be when opening
+      </li>
+      <li>
+        Select <i>File &gt; Export</i>&#160;and choose <i>Java Applet</i>. One file and one directory will be created: <i>myFile.html </i>and <i>myFile.html_files</i>&#160; respectively.
+      </li>
+      <li>
+        Copy the images to <i>myFyle.html_files</i>
+      </li>
+    </ul>
+    <p>
+      Now you can move the file <i>myFile.html</i>&#160;and the subdirectory <i>myFile.html_files</i>&#160; to the location (directory) where you want to it be it accessible. Call <i>myFile.html</i>&#160; to open the mind map. If publishing on internet, you may rename myFile.html in e.g. index.html. The subdirectory should not be renamed.
+    </p>
+  </body>
+</html></richcontent>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+</node>
+<node TEXT="Edit attribute in-line" ID="ID_639830064" CREATED="1266247880359" MODIFIED="1315731980592" TEXT_SHORTENED="true">
+<icon BUILTIN="../EditAttributesAction"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens dialog to edit names and values of attributes of selected nodes.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Edit &gt; Copy attributes </i>
+      </li>
+      <li>
+        <i>Edit &gt; Paste attributes</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+</node>
+<node TEXT="Attribute in dialog" FOLDED="true" ID="ID_984784283" CREATED="1266244687437" MODIFIED="1315732181372" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens a table structure below the basic node text with two columns in which a name and value can be entered or selected.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        Right-click on the columns to open a context menu.
+      </li>
+      <li>
+        The width of the columns can be changed by dragging the bar above the columns.
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Edit &gt; Copy attributes </i>
+      </li>
+      <li>
+        <i>Edit &gt; Paste attributes</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+<node TEXT="" FOLDED="true" ID="ID_560316882" CREATED="1312919556690" MODIFIED="1312919576923">
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<node TEXT="" ID="ID_110645225" CREATED="1310841527098" MODIFIED="1311404452959" TEXT_SHORTENED="true">
+<attribute_layout NAME_WIDTH="90" VALUE_WIDTH="163"/>
+<attribute NAME="Chapter" VALUE="3"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      It is possible to add the same attribute and value at once to all selected nodes.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Copy and paste attributes" ID="ID_1118988780" CREATED="1311226498788" MODIFIED="1311404930655" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="0"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See&#160;also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Edit &gt; Copy attributes </i>
+      </li>
+      <li>
+        <i>Edit &gt; Paste attributes</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Show/hide attribute-icon" ID="ID_395016262" CREATED="1311926417042" MODIFIED="1311926469162" LINK="#ID_1228898153">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="Datum toevoegen" ID="ID_77223280" CREATED="1288907062597" MODIFIED="1305052060155" TEXT_SHORTENED="true">
+</node>
+<node TEXT="Find &amp; replace attributes..." ID="ID_260530468" CREATED="1310842038396" MODIFIED="1314781375632" TEXT_SHORTENED="true">
+<icon BUILTIN="../showAttributes"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -11755,15 +5541,75 @@
   </head>
   <body>
     <p>
-      Om een datum toe te voegen aan een knoop:
-    </p>
-    <p>
-      - kies <i>Datum toevoegen aan geselecteerde knopen</i>
+      Opens a dialog to manage all attributes of all nodes.
     </p>
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Herinnering toevoegen" ID="ID_1475604224" CREATED="1296157994148" MODIFIED="1305052128543" TEXT_SHORTENED="true">
+<node TEXT="Copy attributes" ID="ID_1688307508" CREATED="1310193998671" MODIFIED="1315732143846" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Copies attributes from the selected node.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Node features &gt; Attributes</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+</node>
+<node TEXT="Paste attributes" ID="ID_1986438286" CREATED="1310194008929" MODIFIED="1315732270003" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Pastes attributes in the selected node that before have been copied form another node.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Copy attributes </i>
+      </li>
+      <li>
+        <i>Node features &gt; Attributes</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+</node>
+<node TEXT="Attributes from style" ID="ID_1359819434" CREATED="1310841915000" MODIFIED="1315732298941" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -11771,18 +5617,49 @@
   </head>
   <body>
     <p>
-      Om een signalering (herinnering) toe te voegen:
+      Copies (imports) attributes from the style of a selected node to the node.
     </p>
     <p>
-      - kies optie 1 of 2; en
+      
     </p>
     <p>
-      - kies <i>Toevoegen herinnering</i>
+      Note
     </p>
+    <ul>
+      <li>
+        Has effect only if the node is connected to a style.
+      </li>
+      <li>
+        Has effect only if the style has one or more attributes.
+      </li>
+      <li>
+        When a node is connected to a style, attributes are not automatically connected.
+      </li>
+      <li>
+        Example: Has been used for the current node. The node was first given Style Method and next attribute Class=Method was imported.
+      </li>
+    </ul>
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Herinnering verwijderen" ID="ID_26533930" CREATED="1289570843304" MODIFIED="1305052196481" TEXT_SHORTENED="true">
+<node TEXT="Remove attribute" STYLE_REF="SubMenu" FOLDED="true" ID="ID_187455075" CREATED="1315732300852" MODIFIED="1315732324486">
+<node TEXT="Remove first attribute" ID="ID_869406084" CREATED="1303930754909" MODIFIED="1315731851868" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Remove all attributes" FOLDED="true" ID="ID_8268990" CREATED="1303930781149" MODIFIED="1310842754478" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<node TEXT="Remove last attribute" ID="ID_412020595" CREATED="1303930767148" MODIFIED="1310842749408" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+</node>
+</node>
+<node TEXT="(Un)hide attribute  [Attribute manager]" STYLE_REF="Method" FOLDED="true" ID="ID_900795535" CREATED="1311921084341" MODIFIED="1315732358307" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -11790,18 +5667,30 @@
   </head>
   <body>
     <p>
-      Om een actieve signalering te be&#235;indigen:
+      To hide an attribute, check its name in the list.
     </p>
     <p>
-      - kies optie 1 of 2;
+      To hide only a restricted set of values of an attribute, check and define the set.
     </p>
     <p>
-      - kies <i>Verwijderen activiteit</i>.
+      
     </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        Node &gt; Shortened node content
+      </li>
+    </ul>
   </body>
 </html></richcontent>
-</node>
-<node TEXT="Alle herinneringen (notities) bekijken" ID="ID_1114399870" CREATED="1288907062597" MODIFIED="1305052279708" TEXT_SHORTENED="true">
+<node TEXT="" FOLDED="true" ID="ID_402800324" CREATED="1312919683339" MODIFIED="1312919703167">
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<node TEXT="" ID="ID_796383862" CREATED="1311921423470" MODIFIED="1311921537007" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+</hook>
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -11809,15 +5698,124 @@
   </head>
   <body>
     <p>
-      Om alle herinneringen en bijbehorende notitites te bekijken:
+      <b>Note</b>
     </p>
-    <p>
-      -<i>&#160;</i>kies<i>&#160;Knoopkenmerken &gt; Agenda &gt; Activiteiten (herrinering + notitie)</i>
-    </p>
+    <ul>
+      <li>
+        Attributes are visible in the Tool Tip, independent of their setting in the Attribute manager.
+      </li>
+    </ul>
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Attribuut toevoegren" ID="ID_1271295824" CREATED="1296158896914" MODIFIED="1305052332404" TEXT_SHORTENED="true">
+<node TEXT="Hide attribute a1, show attribute a2" ID="ID_475109570" CREATED="1288646162992" MODIFIED="1312615263072">
+<font ITALIC="false"/>
+<richcontent TYPE="NOTE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      text in field notes
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="a1" VALUE="value 1"/>
+<attribute NAME="a2" VALUE="value 2"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      This node contains 2 attributes, a1 and a2 (may be more)
+    </p>
+    <p>
+      Open <i>Attribute manager</i>&#160;to see that attribute a2 is checked visible and a1 is not, hence is hidden.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note </b>
+    </p>
+    <ul>
+      <li>
+        &#160;a2 keeps visible in the <i>Tool Tip</i>&#160;(if you hover with the cursor above the node).
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node ID="ID_510422017" CREATED="1288646162992" MODIFIED="1315981129708" TEXT_SHORTENED="true">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Show/Hide attribute&#160;&#160;&quot;hover text<i>&quot;&#160; </i>set
+    </p>
+  </body>
+</html></richcontent>
+<font ITALIC="false"/>
+<richcontent TYPE="NOTE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      text in field notes
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="a1" VALUE="value 1"/>
+<attribute NAME="a2" VALUE="value 2"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      This node contains 2 attributes, a1 and a2 AND<i>&#160;Node &gt; Shortened node content </i>is ON.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Result: text of Details is hidden, and checked attributes stay visible.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note </b>
+    </p>
+    <ul>
+      <li>
+        Open <i>Attribute manager </i>to see that attribute a2 is checked visible and a1 is not, hence is hidden.
+      </li>
+      <li>
+        a2 keeps visible in the Tool Tip (if you hover with the cursor above the node).
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Attributes" ID="ID_147715298" CREATED="1303930553284" MODIFIED="1315731833413" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -11825,20 +5823,39 @@
   </head>
   <body>
     <p>
-      Om een attribuut toe te voegen:
+      An <b>attribute</b>&#160;is an entity with a name and a value, meaning name = value. Attributes are shown in a table with two columns, which appears in the external area of the node,&#160;&#160;under Details.
     </p>
     <p>
-      - kies <i>Knoopkenmerken &gt; attributen&#160;&gt;&#160;Bewerken attribuut</i>&#160;in het hoofdmenu
+      
     </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>View &gt;Properties Panel &gt;Calendar and Attributes&#160;&#160;(</i>changes one node at a time)
+      </li>
+      <li>
+        <i>View &gt;Shortened node content</i>&#160;to show/hide attributes
+      </li>
+      <li>
+        <i>View &gt; Attribute &gt; Show all attributes/Show selected attributes/Hide attributes</i>
+      </li>
+      <li>
+        <i>Node features &gt; Attribute manager</i>&#160;to check which nodes are selected.
+      </li>
+    </ul>
   </body>
 </html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+<hook NAME="SummaryNode"/>
 </node>
 </node>
-<node TEXT="Printen en publiceren" FOLDED="true" POSITION="right" ID="ID_467939642" CREATED="1288473008474" MODIFIED="1293375084731" COLOR="#006699">
+<node TEXT="Knoopnotitie [Note]" FOLDED="true" ID="ID_1365598976" CREATED="1303930145801" MODIFIED="1316339908942" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Afdrukken" FOLDED="true" ID="Freeplane_Link_1528828442" CREATED="1270892460697" MODIFIED="1305212519468" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Vanuit Freeplane" STYLE_REF="Functie" ID="ID_1231722792" CREATED="1286827044720" MODIFIED="1305035887169" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -11846,41 +5863,60 @@
   </head>
   <body>
     <p>
-      Om een mindmap op &#233;&#233;n pagina, of&#160;&#160;verdeeld over meerdere pagina's af te drukken:
-    </p>
-    <p>
-      - kies<i>&#160;Bestand &gt; Paginainstelling </i>in Hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node TEXT="Via andere programma&apos;s" STYLE_REF="Functie" ID="ID_1332421765" CREATED="1286827062871" MODIFIED="1305035927526" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Er zijn vele afdrukmogelijkheden:
+      A <b>note</b>&#160;is a special text field preceded with a note <b>icon. </b>A note&#160;can appear in different ways:
     </p>
     <ol>
       <li>
-        Je kunt de mindpap kopieren en in MSWord of Openoffice plakken en van daaruit afdrukken. Alvorens af te drukken kun je de stijl aanpassen aan je persoonlijke wensen.
+        In the external area of the node, below Attributes. Here it can be used as an alternative to Details.
       </li>
       <li>
-        Als je de mindmap naar HTML exporteert kun je deze vervolgens openen in je webbrowser en van daaruit afdrukken.
+        In a separate, independent window. Here one can present complete, screen wide documents. See: View
       </li>
       <li>
-        Als je de mindmap met koppen exporteert naar HTML kun je deze kopi&#235;ren en in MSWord of OpenOrffice plakken en van daaruit afdrukken.
+        In the dialog of the Time managert (Agenda). Here it is used to name an activity or task.
       </li>
     </ol>
+    <p>
+      <b>See also </b>
+    </p>
+    <ul>
+      <li>
+        <i>View &gt; Show notes in map</i>
+      </li>
+      <li>
+        <i>View &gt; Toggle Note panel</i>
+      </li>
+      <li>
+        <i>Tools &gt; Preferences</i>&#160;to set that the note icon should not be shown
+      </li>
+    </ul>
   </body>
 </html></richcontent>
-</node>
-</node>
-<node TEXT="Mindmap voor een computer waarop geen Freeplane is geinstalleerd" STYLE_REF="Functie" FOLDED="true" ID="ID_1648912117" CREATED="1290683497381" MODIFIED="1305042518084" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+<node TEXT="Edit note" ID="ID_924676619" CREATED="1266255695750" MODIFIED="1311402835283" TEXT_SHORTENED="true">
+<icon BUILTIN="../EditNoteInDialogAction"/>
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens a dialog for editing the note field of the selected note.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+</node>
+<node TEXT="Remove note" ID="ID_142539324" CREATED="1266247870640" MODIFIED="1311402835283" TEXT_SHORTENED="true">
+<icon BUILTIN="../RemoveNoteAction"/>
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -11888,79 +5924,16 @@
   </head>
   <body>
     <p>
-      <span style="color: #000000; font-family: SansSerif, sans-serif"><font face="SansSerif, sans-serif" color="#000000">- Zorg er voor dat de mindmap en de plaatjes die de mindmap gebruikt in &#233;&#233;n map staan. </font></span>
-    </p>
-    <p>
-      <span style="color: #000000; font-family: SansSerif, sans-serif"><font face="SansSerif, sans-serif" color="#000000">- Vouw de mindmap open/dicht, zoals je hem wilt laten starten. </font></span>
-    </p>
-    <p>
-      <span style="color: #000000; font-family: SansSerif, sans-serif"><font face="SansSerif, sans-serif" color="#000000">- Kies&#160;&#160;Bestand &gt; Exporteren &gt; Als Java Applet in Hoofdmenu. </font></span>
-    </p>
-    <p>
-      <span style="color: #000000; font-family: SansSerif, sans-serif"><font face="SansSerif, sans-serif" color="#000000">- Als je plaatjes gebruikt, kopieer deze dan ook in mijnMindmap.html_files </font></span>
-    </p>
-    <p>
-      <span style="color: #000000; font-family: SansSerif, sans-serif"><font face="SansSerif, sans-serif" color="#000000">- Bij het exporteren wordt een bestand (mijnMindmap.html&#160;) en een map (mijnMindmap.html_files)&#160;gemaakt. Beide moeten naar dezelfde map op de andere computer worden gekopieerd. Je kunt de mindmap (Java applet) op de andere computer openen door mijnMindmap.html&#160;&#160;te openen.</font></span>
+      Opens a dialog to remove the note field of the selected nodes.
     </p>
   </body>
 </html></richcontent>
-<node TEXT="Zorg er voor dat de mindmap en de plaatjes die de mindmap gebruikt in &#xe9;&#xe9;n map staan." ID="ID_1979562616" CREATED="1290683938037" MODIFIED="1293375084705"/>
-<node TEXT="Vouw de mindmap open/dicht, zoals je hem wilt laten starten" ID="ID_784869898" CREATED="1290684612071" MODIFIED="1293375084702"/>
-<node ID="ID_1060354988" CREATED="1270892460644" MODIFIED="1305041004018" COLOR="#000000" STYLE="bubble">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      - kies&#160; <i>Bestand &gt; Exporteren &gt; Als Java Applet </i>in Hoofdmenu
-    </p>
-  </body>
-</html></richcontent>
-<font NAME="Dialog" SIZE="12"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
 </node>
-<node ID="ID_1126350803" CREATED="1290683845327" MODIFIED="1305041050413">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Als je plaatjes gebruikt, kopieer deze dan ook in <i>mijnMindmap.html_files</i>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_1181810459" CREATED="1290683181726" MODIFIED="1305041109084">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Bij het exporteren wordt een bestand (<i>mijnMindmap.html</i>&#160;)<br/>en een map (<i>mijnMindmap.html_files)</i>&#160;gemaakt.<br/>Beide moeten naar dezelfde map op de andere computer worden gekopieerd.<br/>Je kunt de mindmap (Java applet) op de andere computer openen door <i>mijnMindmap.html</i>&#160;&#160;te openen.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-</node>
-<node FOLDED="true" ID="_Freeplane_Link_1525986009" CREATED="1270892460644" MODIFIED="1293375084688" COLOR="#407000">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Mindmap op je website
-    </p>
-  </body>
-</html></richcontent>
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Uitgebreid (Java Applet)" STYLE_REF="Functie" FOLDED="true" ID="ID_384746026" CREATED="1286892051688" MODIFIED="1305051801053" TEXT_SHORTENED="true">
+<node TEXT="Edit in note panel" FOLDED="true" ID="ID_221910481" CREATED="1298574467254" MODIFIED="1311402835283" COLOR="#663300" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -11968,131 +5941,305 @@
   </head>
   <body>
     <p>
-      Binnen dit bestand is het niet mogelijk om de mindmap te bewerken.
+      <b><font color="#000000" face="SansSerif, sans-serif">See also</font></b>
     </p>
+    <ul>
+      <li>
+        <font color="#000000" face="SansSerif, sans-serif">View &gt; Note Panel </font>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<attribute_layout NAME_WIDTH="82" VALUE_WIDTH="165"/>
+<attribute NAME="Chapter" VALUE="3"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+<node TEXT="Note" ID="ID_875633710" CREATED="1310843490041" MODIFIED="1311402835283" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
     <p>
-      Mogelijkheden zijn:
+      A <b>note</b>&#160;is a special text field, generally preceded with a note <b>icon.</b>
     </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Hide note-icons" ID="ID_830303915" CREATED="1311926324089" MODIFIED="1312919765910" LINK="#ID_635307234">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+</hook>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+</node>
+</node>
+<node TEXT="Main components" STYLE_REF="MenuGroupLabel" ID="ID_1143096620" CREATED="1315732457858" MODIFIED="1315732504909">
+<hook NAME="SummaryNode"/>
+</node>
+<node TEXT="Undo edit [Undo]" ID="ID_1899055023" CREATED="1310134532663" MODIFIED="1314559496644" TEXT_SHORTENED="true">
+<icon BUILTIN="../undo"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
     <p>
-      - open/dichtvouwen;
-    </p>
-    <p>
-      - zoeken/filteren (klik rechter muisknop);
-    </p>
-    <p>
-      - verplaatsen mindmap
-    </p>
-    <p>
-      
-    </p>
-    <p style="text-align: left">
-      Niet: LaTEX en svg beelden.
-    </p>
-    <p style="text-align: left">
-      
-    </p>
-    <p>
-      Om een bestand te maken voor gebruik op een website:
-    </p>
-    <p>
-      - Zorg er voor dal de mindmap en de plaatjes die je in de mindmap gebruikt in &#233;&#233;n map staan
-    </p>
-    <p>
-      - Vouw de mindmap open/dicht, zoals je hem wilt laten starten
-    </p>
-    <p>
-      - kies&#160;&#160;Bestand &gt; Exporteren &gt; Als Java Applet in Hoofdmenu
+      <font color="#000000" face="SansSerif, sans-serif">Reverse previous changes or edits. </font>
     </p>
     <p>
       
     </p>
     <p>
-      Als je plaatjes gebruikt, kopieer deze dan ook in mijnMindmap.html_files
+      <font color="#000000" face="SansSerif, sans-serif"><b>Note</b> </font>
     </p>
+    <ul>
+      <li>
+        <font color="#000000" face="SansSerif, sans-serif">The number of Undo actions stored by FreePlane is determined in Preferences. </font>
+      </li>
+    </ul>
     <p>
-      Als je plaatjes gebruikt, kopieer deze dan ook in mijnMindmap.html_files
+      <font color="#000000" face="SansSerif, sans-serif"><b>See aslo</b> </font>
     </p>
-    <p>
-      Bij het exporteren wordt een bestand (mijnMindmap.html&#160;) en een map (mijnMindmap.html_files)&#160;gemaakt. Beide moeten naar je website worden gecopieerd. Je kunt de Java applet openen door mijnMindmap.html&#160;&#160;aan te roepen.
-    </p>
+    <ul>
+      <li>
+        <font color="#000000" face="SansSerif, sans-serif"><i>Tools &gt;Preferences &gt; Behavior &gt; Undo</i>.</font>
+      </li>
+    </ul>
   </body>
 </html></richcontent>
-<node TEXT="Veiligheidscertificaat" ID="ID_1535106692" CREATED="1290683077344" MODIFIED="1305051383978" LINK="#ID_1451936706" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Redo edit [Redo]" ID="ID_807893197" CREATED="1310134532663" MODIFIED="1314559509888" TEXT_SHORTENED="true">
+<icon BUILTIN="../redo"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      In sommige gevallen moet een veilgheidscertificaat worden geregeld,
-    </p>
-    <p>
-      klik op het pijltje.
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Reverses an Undo. It is limited to the most recent Undo.</span></font>
     </p>
   </body>
 </html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
 </node>
-</node>
-<node TEXT="Beperkt (Flash)" STYLE_REF="Functie" ID="ID_1464065756" CREATED="1286892070758" MODIFIED="1305051818400" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="Select all visible nodes [Select all visible]" ID="ID_166465072" CREATED="1310134532663" MODIFIED="1314559531136" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Binnen dit bestand is het niet mogelijk om de mindmap te bewerken.
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Selects all nodes visible on the map.</span></font>
     </p>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Select visible branch" ID="ID_1140223878" CREATED="1310134532663" MODIFIED="1311226360018" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
     <p>
-      Alleen kleine bestanden. Beperkt navigeren.
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Selects all the currently-visible (unfolded) children of the node which is already selected.</span></font>
     </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Select" ID="ID_222729198" CREATED="1310835972305" MODIFIED="1310886250857">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Cut" ID="ID_353410114" CREATED="1310134532663" MODIFIED="1314559544053" TEXT_SHORTENED="true">
+<icon BUILTIN="../editcut"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
     <p>
-      Niet: LaTEX en svg beelden.
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Cuts the node currently selected and all of its children.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Copy" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1000565263" CREATED="1315733224858" MODIFIED="1315733253109">
+<node TEXT="Copy" ID="ID_1274800359" CREATED="1310134532663" MODIFIED="1314559562383" TEXT_SHORTENED="true">
+<icon BUILTIN="../editcopy"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Copies the node selected and all of its children.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Copy node (single) [Copy single node]" ID="ID_1302326175" CREATED="1310134532663" MODIFIED="1314559620368" TEXT_SHORTENED="true">
+<icon BUILTIN="../copy_single"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Copies only the node selected, even if it has children.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Copy node ID" ID="ID_1433358397" CREATED="1310193968260" MODIFIED="1314559657262" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Gets the internal Node ID of the currently selected node and stores it in the system Clipboard. This advanced feature has, for most purposes, been replaced by the menu command Insert &gt; Add Local Hyperlink.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Paste" ID="ID_1705754282" CREATED="1310134532663" MODIFIED="1314469475538" TEXT_SHORTENED="true">
+<icon BUILTIN="../editpaste"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Pastes copied text. If the selected node is in edit mode, the text will be added to the contents of the node. If the selected node is not in edit mode, the text will be added as a child node.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Paste as..." ID="ID_1160623822" CREATED="1310885419000" MODIFIED="1314469580370">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Cut, copy and paste" ID="ID_758366226" CREATED="1310835917635" MODIFIED="1312814994718">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+</node>
+<node TEXT="Move and sort" STYLE_REF="Aggregatie als Toelichting" FOLDED="true" ID="ID_999302270" CREATED="1306060121800" MODIFIED="1315732930158" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+<node TEXT="Move node (Sibling down) [Node Down]" ID="ID_694884995" CREATED="1306059969763" MODIFIED="1314562510376" TEXT_SHORTENED="true">
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif">Changes the position of the node by moving it down through the sibling hierarchy. If already at the bottom, the node is moved to the top. </font>
     </p>
     <p>
       
     </p>
     <p>
-      Om een bestand te maken voor gebruik op een website:
+      <b><font color="#000000" face="SansSerif, sans-serif">Hot key</font></b>
     </p>
-    <p>
-      - kies&#160;&#160;Bestand &gt; Export &gt; Als Flash...in Hoofdmenu
-    </p>
+    <ul>
+      <li>
+        <i>Ctrl + Down</i>
+      </li>
+    </ul>
   </body>
 </html></richcontent>
 </node>
-</node>
-<node TEXT="Bijdragen aan Wiki en gallerij" ID="ID_408405171" CREATED="1289027071603" MODIFIED="1293375084648" LINK="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch" COLOR="#407000">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-</node>
-</node>
-<node TEXT="Bijzondere functies" STYLE_REF="Onderwerp" FOLDED="true" POSITION="right" ID="ID_1355067173" CREATED="1293112206415" MODIFIED="1305212152353">
-<node TEXT="Formules uitvoeren" FOLDED="true" ID="ID_1414134990" CREATED="1291211215610" MODIFIED="1305052546717" COLOR="#407000" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="Move node (Sibling up) [Node Up]" ID="ID_33657896" CREATED="1306059989034" MODIFIED="1314562567191" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Een wiskundige formule die aan een knoop is gekoppeld en die kan worden uitgevoerd.
+      <font color="#000000" face="SansSerif, sans-serif">Changes the position of the node by moving it up through the sibling hierarchy. If already at the top, the node is moved to the bottom. </font>
     </p>
     <p>
       
     </p>
     <p>
-      Om formules uit te voeren:
+      <b><font color="#000000" face="SansSerif, sans-serif">Hot key</font></b>
     </p>
-    <p>
-      - kies <i>Extra &gt; Formules</i>
-    </p>
+    <ul>
+      <li>
+        <i>Ctrl + Up</i>
+      </li>
+    </ul>
   </body>
 </html></richcontent>
-<node TEXT="Zie Internet." ID="ID_1161094229" CREATED="1291754737435" MODIFIED="1305052573541" LINK="http://freeplane.sourceforge.net/wiki/index.php/Formula" BACKGROUND_COLOR="#ffff33" STYLE="bubble"/>
 </node>
-<node TEXT="Groovy scripts uitvoeren" FOLDED="true" ID="ID_1611654192" CREATED="1291754914764" MODIFIED="1305052613539" COLOR="#407000" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Sort children" ID="ID_1942706169" CREATED="1266247810468" MODIFIED="1311402755364" TEXT_SHORTENED="true">
+<icon BUILTIN="../SortNodes"/>
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -12100,107 +6247,4456 @@
   </head>
   <body>
     <p>
-      Om Groovy scripts uit te voeren:
-    </p>
-    <p>
-      - kies <i>Extra &gt; Uitvoeren alle scripts</i>&#160;in Hoofdmenu; of
-    </p>
-    <p>
-      - kies <i>Extra &gt; Uitvoeren scripts in geselecteerde knopen</i>
+      <span style="color: #000000; font-family: SansSerif, sans-serif"><font color="#000000" face="SansSerif, sans-serif">Sorts all children of the selected node recursively, in descending alphanumeric order. The node hierarchy is preserved</font></span>
     </p>
   </body>
 </html></richcontent>
-<node TEXT="Zie Internet" ID="ID_155830016" CREATED="1291754964115" MODIFIED="1305052657075" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting" BACKGROUND_COLOR="#ffff33" STYLE="bubble"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="Beveiligen knoop" FOLDED="true" ID="ID_1883292588" CREATED="1289052221017" MODIFIED="1305052697775" COLOR="#407000" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
+<node TEXT="Move node (Parents sibling) [Node Left]" ID="ID_1330098607" CREATED="1306059994859" MODIFIED="1314562619077" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Een knoop die beveiligd is kan alleen worden uitgevouwen nadat een wachtwoord is ingevoerd. Deze functionaliteit is experimenteel.
+      <font color="#000000" face="SansSerif, sans-serif">Changes the position of the node by making it a sibling of its parent. It is placed below the parent to which it was originally a child. </font>
     </p>
     <p>
       
     </p>
     <p>
-      Om een knoop te beveiligen:
+      
     </p>
     <p>
-      - kies <i>Extra &gt; Beveiligen </i>in<i>&#160;</i>Hoofdmenu
+      <b><font color="#000000" face="SansSerif, sans-serif">Hot key</font></b>
     </p>
+    <ul>
+      <li>
+        <i>Ctrl + Left</i>
+      </li>
+    </ul>
   </body>
 </html></richcontent>
-<node TEXT="Voorbeeld" ENCRYPTED_CONTENT="t/NS/HPSppU= VbQIDGWIdFE=" ID="ID_36040841" CREATED="1288542236861" MODIFIED="1304347226753" BACKGROUND_COLOR="#ffff00" STYLE="bubble"/>
-<node TEXT="Mindmap" ID="ID_1880151658" CREATED="1289052364576" MODIFIED="1293375089853" LINK="#ID_1594926210"/>
 </node>
-</node>
-<node FOLDED="true" POSITION="left" ID="ID_1594926210" CREATED="1270892460703" MODIFIED="1293375084645" COLOR="#006699">
-<richcontent TYPE="NODE">
+<node TEXT="Move node (Siblings child) [Node right]" ID="ID_1588077274" CREATED="1306060092075" MODIFIED="1314562683832" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Beveiligen mindmap tegen beschrijven
+      <font color="#000000" face="SansSerif, sans-serif">Changes the position of the node by making it a child of the node directly above it. If there are other child nodes it becomes the sibling of those children, and is placed last among them. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b><font color="#000000" face="SansSerif, sans-serif">Hot key</font></b>
+    </p>
+    <ul>
+      <li>
+        <i>Ctrl + Right</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Reset start position [Reset position]" ID="ID_1003048503" CREATED="1306060582988" MODIFIED="1315733033453" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">Returns the node to the position it had when it was first created. If you have moved nodes around and want to reformat your map, this command will do so. <i>Esc</i>&#160;followed by<i>&#160;Ctrl + A</i>&#160;will select all the nodes in a map.</span></font>
     </p>
   </body>
 </html></richcontent>
+</node>
+<node TEXT="Find..." ID="ID_412879235" CREATED="1310134532663" MODIFIED="1314077793686" TEXT_SHORTENED="true">
+<icon BUILTIN="../filefind"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Opens the Find dialog box. </span></font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif"><b>See also</b> </span></font>
+    </p>
+    <ul>
+      <li>
+        <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif"><i>Find Next.</i></span></font>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="9"/>
+</node>
+<node TEXT="Find next" ID="ID_409531459" CREATED="1310134532663" MODIFIED="1314559739287" TEXT_SHORTENED="true">
+<icon BUILTIN="../find_next"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Searches for the next instance of the string entered in the Find dialog box. (A string is any combination of letters and numbers.) </span></font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif"><b>See also</b> </span></font>
+    </p>
+    <ul>
+      <li>
+        <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Find...</span></font>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="9"/>
+</node>
+<node TEXT="Find and Replace..." FOLDED="true" ID="ID_1230019641" CREATED="1310134532663" MODIFIED="1314077819926" TEXT_SHORTENED="true">
+<icon BUILTIN="../NodeListAction"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Opens a dialog box that lists all of the nodes in a map. When matches are found for the string entered in the Find field, you have the option to apply the value of the Replace field or skip to the next instance of the Find string. </span></font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif"><b>See also</b> </span></font>
+    </p>
+    <ul>
+      <li>
+        <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Find and Replace in all Maps.</span></font>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="9"/>
+<node TEXT="Find last modified nodes" ID="ID_1272430146" CREATED="1311098601253" MODIFIED="1314078206993" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To find the list of nodes last modified, click on top of the table Modified to sort the rows top down or bottom up. Next you can see which nodes have been last modified.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        To go the the node, double click on the line the node is in.
+      </li>
+    </ul>
+    <p>
+      <b>See also </b>
+    </p>
+    <ul>
+      <li>
+        Quick filter for a filtterrule to see al nodes modified after a date.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<attribute NAME="Chapter" VALUE="9"/>
+</node>
+</node>
+<node TEXT="Find and replace in all maps" ID="ID_4891503" CREATED="1310194040136" MODIFIED="1314077851360" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Same as Find and Replace... but applied to all open maps. </span></font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif"><b>See also</b> </span></font>
+    </p>
+    <ul>
+      <li>
+        <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Find and Replace...</span></font>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="9"/>
+</node>
+<node TEXT="Find and replace" ID="ID_1229770899" CREATED="1310835859572" MODIFIED="1314077779194">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="9"/>
+</node>
+</node>
+<node TEXT="Beeld [View]" STYLE_REF="MainMenu" FOLDED="true" ID="ID_389115947" CREATED="1266240584812" MODIFIED="1316339033044" TEXT_SHORTENED="true">
+<attribute_layout VALUE_WIDTH="216"/>
+<attribute NAME="Chapter" VALUE="1,2,3,4,5"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To change the way the mind map appears to you.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Toolbars" FOLDED="true" ID="ID_1963983857" CREATED="1303929006438" MODIFIED="1311947052465" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Methods are accessible through the main menu-bar as menu-items, the Toolbar and Filter toolbar as icon-buttons, as short-cut keys (F-keys and key combinations) and as context menu's which are connected to objects such as nodes and connectors. It is your own choice which of these possibilities you want to use.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      A menu-bar which is not needed, can be hidden to save screen space. If all bars are hidden, right-click on the screen to display the context menu with which cou can make them visible again.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+<node TEXT="menu-bar [Main menu-bar]" FOLDED="true" ID="ID_926021846" CREATED="1266247097703" MODIFIED="1311402754771" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif">Toggles the main toolbar on and off. This is the bar with the menu's for File, Edit, View, Nodes, etc. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b><font color="#000000" face="SansSerif, sans-serif">Note</font></b>
+    </p>
+    <ul>
+      <li>
+        Many menu items show short cut keys/combinations which can be used in stead of pressing the menu items.
+      </li>
+      <li>
+        The icons shown with the menu items are generally available as icon-buttons (short cuts) in toolbars.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+<node TEXT="Main menu-bar" ID="ID_1325292461" CREATED="1311183309593" MODIFIED="1311402615603" TEXT_SHORTENED="true">
+<attribute_layout VALUE_WIDTH="175"/>
+<attribute NAME="Chapter" VALUE="1,2"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">The<b>&#160;main menu-bar</b>&#160;is the bar with the main textual menu's of Freeplane at the top of the screen. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><b>Note</b> </font>
+    </p>
+    <ul>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000">Many of the menu's display <b>icons</b>&#160;which at other places represent<b>&#160;icon-buttons</b>&#160;that can be pressed and then have the same effect as selecting the textual menu's. </font>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000">The menu-items also may display <b>short cuts</b>&#160;(special keys or combinations of keys) that can be pressed to activate the menu-items. </font>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Toolbar [Main toolbar]" FOLDED="true" ID="ID_1777795790" CREATED="1288423137527" MODIFIED="1311402754787" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Toggles visibility of toolbar on and off.
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        This map contains the most used items of the Main menu-bar as icon-buttons for easy access.
+      </li>
+      <li>
+        Move the cursor over the icon buttons to see their function. The icons are also shown in the Main menu bar.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+<node TEXT="Main toolbar" ID="ID_1091232727" CREATED="1311319747381" MODIFIED="1311402583514" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The <b>main toolbar</b>&#160;is the bar with icon-buttons for most used map handling, e.g.Previous map, Following map, etc.
+    </p>
+    <p>
+      
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Filter toolbar" FOLDED="true" ID="ID_850553052" CREATED="1288423176425" MODIFIED="1311402754787" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Toggles the visibility of the toolbar with filter methods.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Filter</i>&#160;&#160;in the main menu.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+<node TEXT="Filter toolbar" ID="ID_793475442" CREATED="1311319982419" MODIFIED="1311402583514" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The <b>filter toolbar</b>&#160;is the bar containing entry fields for filter rules and&#160;&#160;icon-buttons for most used filter methods like Undo, Redo, etc.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="F-keys" ID="ID_664958295" CREATED="1266247102156" MODIFIED="1311402754802" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif">Toggles the Function Key (F-Key) toolbar on and off. This is the bar with F1, F2, F3, etc. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b><font color="#000000" face="SansSerif, sans-serif">Note</font></b>
+    </p>
+    <ul>
+      <li>
+        <font color="#000000" face="SansSerif, sans-serif">F-keys on the keyboard are also active if the F-bar is hidden.</font>
+      </li>
+      <li>
+        F-keys must be defined before they can be used, see below.
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <p>
+      <b><font color="#000000" face="SansSerif, sans-serif">See also</font></b>
+    </p>
+    <ul>
+      <li>
+        <font color="#000000" face="SansSerif, sans-serif">Tools &gt; Short cuts</font>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+<node TEXT="Secondary Tool bar [Icons toolbar]" ID="ID_1263742214" CREATED="1266247112156" MODIFIED="1311402754802" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif">Toggles the visibility of the Secondary Toolbar [Icon bar] on and off. This is the bar containing all kinds of icons the user can add to a node and located vertically at the left of the screen (most of the time).</font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b><font color="#000000" face="SansSerif, sans-serif">See also</font></b>
+    </p>
+    <ul>
+      <li>
+        <font color="#000000" face="SansSerif, sans-serif">Node features &gt; Icons</font>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+<node TEXT="Context menu&apos;s" FOLDED="true" ID="ID_832730564" CREATED="1310672464952" MODIFIED="1315733959299" TEXT_SHORTENED="true">
+<attribute_layout NAME_WIDTH="82" VALUE_WIDTH="228"/>
+<attribute NAME="Chapter" VALUE="1,2,3,4,5"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      &#160;Context menus are powerful alternative to using menu-bars.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        To open a context menu, right-click on the object you want to display its context menu.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="SummaryNode"/>
+<node TEXT="Context menu" ID="ID_497182548" CREATED="1310890907946" MODIFIED="1310891033981" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      A <b>context menu</b>&#160;is a menu associated with a particular object which only contains menu items most relevant for this object. A context menu is opened by right-clicking the object.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Properties panel" FOLDED="true" ID="ID_1783882978" CREATED="1291154608643" MODIFIED="1314476854103" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Toggles the visibility of the properties panel.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3,4,5"/>
+<node TEXT="Properties panel" ID="ID_125269399" CREATED="1310714224145" MODIFIED="1311402583530" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1"/>
+<font BOLD="false"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The<b>&#160;properties panel </b>is a dialog to change the basic properties of a node. Properties are distinguihed in format-properties and properties of Calendar &amp; attributes.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Format properties" FOLDED="true" ID="ID_786320758" CREATED="1293305969634" MODIFIED="1311405889214" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To change a property of a selected node in the Properties Panel:
+    </p>
+    <ul>
+      <li>
+        check change box; and
+      </li>
+      <li>
+        select or edit the changed property
+      </li>
+    </ul>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        The change takes effect immediately. There is no need to press an OK button or leave the panel.
+      </li>
+      <li>
+        It is possible to select a different node without leaving the Properties Panel
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="5"/>
+<node TEXT="Level styles" STYLE_REF="UnChecked" ID="ID_1391835038" CREATED="1313557908459" MODIFIED="1314771729149" LINK="#ID_1362134553">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="Automatic edge color" STYLE_REF="UnChecked" ID="ID_502377582" CREATED="1313557989945" MODIFIED="1313559702675" LINK="#ID_1587417548"/>
+<node TEXT="Style" ID="ID_1437890426" CREATED="1313558038564" MODIFIED="1313558689891" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To see a list of predefined system and user defined styles
+    </p>
+    <ul>
+      <li>
+        click
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Styles &gt; New style from selection</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Node conditional styles applied to node" ID="ID_1460333381" CREATED="1313558316690" MODIFIED="1313559193279" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To add or modify,
+    </p>
+    <ul>
+      <li>
+        click
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        Styles &gt; Manage conditional styles for map
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Map conditional styles applied to node" ID="ID_1573811748" CREATED="1313558341206" MODIFIED="1313559218395" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To add or modify,
+    </p>
+    <ul>
+      <li>
+        click
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Styles &gt; Manage Conditional map styles</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Node style" STYLE_REF="MenuGroupLabel" ID="ID_1821920845" CREATED="1313558795581" MODIFIED="1313559035703" TEXT_SHORTENED="true">
+<hook NAME="SummaryNode"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        Styles
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Node shape" ID="ID_1006574881" CREATED="1310714589873" MODIFIED="1311405449340" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Node shape</b>&#160;is: the appearance of the node: without surrounding box (Fork), with surrounding box (Bubble), as parent or combined.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Node Font" FOLDED="true" ID="ID_724156158" CREATED="1310714589873" MODIFIED="1311405449387" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Node Font</b>&#160;is&#160;the Font family, size, bold and italic.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Set standard font size" ID="ID_627969850" CREATED="1311926183029" MODIFIED="1312917150316" LINK="#ID_728681381">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+</hook>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+</node>
+<node TEXT="Node color" ID="ID_242110669" CREATED="1310714589873" MODIFIED="1311405449450" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Node color is the color of Text or Background.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        For hiding an edge, see elsewhere.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Edge color" ID="ID_211700099" CREATED="1310714589889" MODIFIED="1311405449496" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Edge color</b>&#160;is&#160;the color of the edge connecting nodes.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Edge style" ID="ID_1060644831" CREATED="1310714589889" MODIFIED="1311405449543" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Edge style</b>&#160;is the&#160;way an edge bends.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Edge width" ID="ID_1392877020" CREATED="1310714589889" MODIFIED="1311405449590" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Edge width </b>is the thickness of the edge.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Cloud color" FOLDED="true" ID="ID_58140909" CREATED="1310714589889" MODIFIED="1311405449637" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Cloud color</b>&#160;is the<b>&#160;</b>background color of cloud.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Set standard cloud color" ID="ID_1130479055" CREATED="1311925883476" MODIFIED="1312917150316" LINK="#ID_749503390">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+</hook>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+</node>
+<node TEXT="Cloud Shape" ID="ID_840961117" CREATED="1310714589889" MODIFIED="1311405449684" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Cloud Shape</b>&#160;is its the form of the cloud, e.g.&#160;Star, Rectangle or Round rectangle form.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Automatic properties" FOLDED="true" ID="ID_799508278" CREATED="1310714589889" MODIFIED="1311405449699" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To set or unset one of the automatically applied methods:
+    </p>
+    <ul>
+      <li>
+        check box before the method
+      </li>
+    </ul>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        The change takes effect immediately. There is no need to press an OK button or leave the panel.
+      </li>
+      <li>
+        It is possible to select a different node without leaving the Properties Panel
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<node TEXT="Level styles" ID="ID_523604667" CREATED="1310714589889" MODIFIED="1314771756543" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Automatic Layout</b>&#160;is the state when Freeplane automatically gives all nodes on a particualr hierarchical level a unique, predefined appearance. This automated appearance can be changed in Menu Styles.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Automatic edge color" ID="ID_1945706598" CREATED="1310714589889" MODIFIED="1311405449730" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Automatic edge color</b>&#160;is the state when Freeplane&#160;automatically selects a different edge color each time a new node is made.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Node text Template/Format" FOLDED="true" ID="ID_225849752" CREATED="1311415106808" MODIFIED="1311415388841" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To use standard number formats or date formats in node text, check the box and select (and edit) the format.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note </b>
+    </p>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        Attribute data formatting
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<node TEXT="Date/time formatting" ID="ID_530315899" CREATED="1311337763292" MODIFIED="1311621855746" TEXT_SHORTENED="true" LINK="#ID_1277533848">
+<attribute NAME="Chapter" VALUE="4,5"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To have entered date-times converted to internally standardized structures and displayed in the format of the template, select or type a template.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note&#160;</b>
+    </p>
+    <ul>
+      <li>
+        <p>
+          In case of an attribute value, the template applies to the selected attribute value.
+        </p>
+      </li>
+      <li>
+        With internally standardized formats dates and times can be applied independent of their presentation format (template) in comparisons and find and filter operations.
+      </li>
+      <li>
+        With internally standardized formats it is possible to change the presentation of dates and times Internally standardized date-time&#160;without changing comparison or find operations (&quot;is equal&quot;, etc.).
+      </li>
+      <li>
+        Rule 1. If date is entered from calendar panel or dialog, it is recognised as a date.
+      </li>
+      <li>
+        Rule 2. If entered text has format yyyy-MM-dd or yyyy-MM-dd hh:mm it is converted to a date.
+      </li>
+      <li>
+        Rule 3. If entered text has format currently selected in the calendar panel / dialog it is converted to a date.
+      </li>
+      <li>
+        Rule 4. If neither of the above rules applies, entered text is treated as a text. It means that interpretation of text can depend on selection in the calendar panel.
+      </li>
+      <li>
+        Formats available in the calendar panel can be edited in the formatting panel, but they can not be deleted and they are changed only upon program restart. They are saved as formats.xml in freeplane user configuration dir.
+      </li>
+      <li>
+        Rules 2 and 3 are applied to * node text after is is edited, * attribute value after is is edited and * find / filter condition values with comparison operators &quot;is equal&quot;, &quot;is not equal&quot;, &quot;&lt;&quot;, &quot;&lt;=&quot;, &quot;&gt;&quot;, &quot;&gt;=&quot;
+      </li>
+      <li>
+        The <i>Templates</i>&#160;drop down menu contain the formats defined in file <i>formats.xml</i>. This file can be edited with a text formatter.
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <p>
+          If<i>&#160;Tools &gt; Preferences &gt; Behaviour &gt; Search &gt; Recognize input of number and date-time</i>
+        </p>
+        <p>
+          <i>&#160;</i>is&#160;checked AND node text / attribute value is a string, the search engine tries to convert it to a date/number.
+        </p>
+      </li>
+      <li>
+        <i>Tools &gt; Open User Directory</i>, subdirectory<i>&#160;XML</i>&#160;for <i>formats.xml</i>.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Number formatting" ID="ID_1358687242" CREATED="1311338038657" MODIFIED="1311621724347" TEXT_SHORTENED="true" LINK="#ID_1277533848">
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To format a number according to a preselected template, select the template from the drop down menu.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        The <i>Templates</i>&#160;drop down menu contain the formats defined in file <i>formats.xml</i>. This file can be edited with a text formatter.
+      </li>
+      <li>
+        In attribute values: to have the number-template NOT applied, start with a non-number character like &quot;. This character may be removed later.
+      </li>
+      <li>
+        <p>
+          If<i>&#160;Tools &gt; Preferences &gt; Behaviour &gt; Search &gt; Recognize input of number and date-time</i>
+        </p>
+        <p>
+          <i>&#160;</i>is&#160;checked AND node text / attribute value is a string, the search engine tries to convert it to a date/number.
+        </p>
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Tools &gt; Open User Directory</i>, subdirectory<i>&#160;XML</i>&#160;for <i>formats.xml</i>.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="" FOLDED="true" ID="ID_1625443252" CREATED="1311432799325" MODIFIED="1312917175010" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <h4>
+      Date and Time Patterns
+    </h4>
+    <p>
+      Date and time formats are specified by <em>date and time pattern</em>&#160; strings. Within date and time pattern strings, unquoted letters from <code>'A'</code>&#160; to <code>'Z'</code>&#160;and from <code>'a'</code>&#160;to <code>'z'</code>&#160;are interpreted as pattern letters representing the components of a date or time string. Text can be quoted using single quotes (<code>'</code>) to avoid interpretation. <code>&quot;''&quot;</code>&#160; represents a single quote. All other characters are not interpreted; they're simply copied into the output string during formatting or matched against the input string during parsing.
+    </p>
+    <p>
+      The following pattern letters are defined (all other characters from <code>'A'</code>&#160; to <code>'Z'</code>&#160;and from <code>'a'</code>&#160;to <code>'z'</code>&#160;are reserved):
+    </p>
+    <blockquote>
+      <table cellspacing="3" summary="Chart shows pattern letters, date/time component, presentation, and examples." border="0" cellpadding="0">
+        <tr bgcolor="#ccccff">
+          <th align="left">
+            Letter
+          </th>
+          <th align="left">
+            Date or Time Component
+          </th>
+          <th align="left">
+            Presentation
+          </th>
+          <th align="left">
+            Examples
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <code>G</code>
+          </td>
+          <td>
+            Era designator
+          </td>
+          <td>
+            <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#text">Text</a>
+          </td>
+          <td>
+            <code>AD</code>
+          </td>
+        </tr>
+        <tr bgcolor="#eeeeff">
+          <td>
+            <code>y</code>
+          </td>
+          <td>
+            Year
+          </td>
+          <td>
+            <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#year">Year</a>
+          </td>
+          <td>
+            <code>1996</code>; <code>96</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>M</code>
+          </td>
+          <td>
+            Month in year
+          </td>
+          <td>
+            <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#month">Month</a>
+          </td>
+          <td>
+            <code>July</code>; <code>Jul</code>; <code>07</code>
+          </td>
+        </tr>
+        <tr bgcolor="#eeeeff">
+          <td>
+            <code>w</code>
+          </td>
+          <td>
+            Week in year
+          </td>
+          <td>
+            <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#number">Number</a>
+          </td>
+          <td>
+            <code>27</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>W</code>
+          </td>
+          <td>
+            Week in month
+          </td>
+          <td>
+            <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#number">Number</a>
+          </td>
+          <td>
+            <code>2</code>
+          </td>
+        </tr>
+        <tr bgcolor="#eeeeff">
+          <td>
+            <code>D</code>
+          </td>
+          <td>
+            Day in year
+          </td>
+          <td>
+            <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#number">Number</a>
+          </td>
+          <td>
+            <code>189</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>d</code>
+          </td>
+          <td>
+            Day in month
+          </td>
+          <td>
+            <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#number">Number</a>
+          </td>
+          <td>
+            <code>10</code>
+          </td>
+        </tr>
+        <tr bgcolor="#eeeeff">
+          <td>
+            <code>F</code>
+          </td>
+          <td>
+            Day of week in month
+          </td>
+          <td>
+            <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#number">Number</a>
+          </td>
+          <td>
+            <code>2</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>E</code>
+          </td>
+          <td>
+            Day in week
+          </td>
+          <td>
+            <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#text">Text</a>
+          </td>
+          <td>
+            <code>Tuesday</code>; <code>Tue</code>
+          </td>
+        </tr>
+        <tr bgcolor="#eeeeff">
+          <td>
+            <code>a</code>
+          </td>
+          <td>
+            Am/pm marker
+          </td>
+          <td>
+            <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#text">Text</a>
+          </td>
+          <td>
+            <code>PM</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>H</code>
+          </td>
+          <td>
+            Hour in day (0-23)
+          </td>
+          <td>
+            <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#number">Number</a>
+          </td>
+          <td>
+            <code>0</code>
+          </td>
+        </tr>
+        <tr bgcolor="#eeeeff">
+          <td>
+            <code>k</code>
+          </td>
+          <td>
+            Hour in day (1-24)
+          </td>
+          <td>
+            <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#number">Number</a>
+          </td>
+          <td>
+            <code>24</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>K</code>
+          </td>
+          <td>
+            Hour in am/pm (0-11)
+          </td>
+          <td>
+            <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#number">Number</a>
+          </td>
+          <td>
+            <code>0</code>
+          </td>
+        </tr>
+        <tr bgcolor="#eeeeff">
+          <td>
+            <code>h</code>
+          </td>
+          <td>
+            Hour in am/pm (1-12)
+          </td>
+          <td>
+            <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#number">Number</a>
+          </td>
+          <td>
+            <code>12</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>m</code>
+          </td>
+          <td>
+            Minute in hour
+          </td>
+          <td>
+            <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#number">Number</a>
+          </td>
+          <td>
+            <code>30</code>
+          </td>
+        </tr>
+        <tr bgcolor="#eeeeff">
+          <td>
+            <code>s</code>
+          </td>
+          <td>
+            Second in minute
+          </td>
+          <td>
+            <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#number">Number</a>
+          </td>
+          <td>
+            <code>55</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>S</code>
+          </td>
+          <td>
+            Millisecond
+          </td>
+          <td>
+            <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#number">Number</a>
+          </td>
+          <td>
+            <code>978</code>
+          </td>
+        </tr>
+        <tr bgcolor="#eeeeff">
+          <td>
+            <code>z</code>
+          </td>
+          <td>
+            Time zone
+          </td>
+          <td>
+            <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#timezone">General time zone</a>
+          </td>
+          <td>
+            <code>Pacific Standard Time</code>; <code>PST</code>; <code>GMT-08:00</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>Z</code>
+          </td>
+          <td>
+            Time zone
+          </td>
+          <td>
+            <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#rfc822timezone">RFC 822 time zone</a>
+          </td>
+          <td>
+            <code>-0800</code>
+          </td>
+        </tr>
+      </table>
+    </blockquote>
+    Pattern letters are usually repeated, as their number determines the exact presentation:
+
+    <ul>
+      <li>
+        <strong><a name="text">Text:</a></strong>&#160;For formatting, if the number of pattern letters is 4 or more, the full form is used; otherwise a short or abbreviated form is used if available. For parsing, both forms are accepted, independent of the number of pattern letters.
+      </li>
+      <li>
+        <strong><a name="number">Number:</a></strong>&#160;For formatting, the number of pattern letters is the minimum number of digits, and shorter numbers are zero-padded to this amount. For parsing, the number of pattern letters is ignored unless it's needed to separate two adjacent fields.
+      </li>
+      <li>
+        <strong><a name="year">Year:</a></strong>&#160;For formatting, if the number of pattern letters is 2, the year is truncated to 2 digits; otherwise it is interpreted as a <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#number">number</a>.
+
+        <p>
+          For parsing, if the number of pattern letters is more than 2, the year is interpreted literally, regardless of the number of digits. So using the pattern &quot;MM/dd/yyyy&quot;, &quot;01/11/12&quot; parses to Jan 11, 12 A.D.
+        </p>
+        <p>
+          For parsing with the abbreviated year pattern (&quot;y&quot; or &quot;yy&quot;),
+ <code>SimpleDateFormat</code>&#160; must interpret the abbreviated year relative to some century. It does this by adjusting dates to be within 80 years before and 20 years after the time the <code>SimpleDateFormat</code>&#160;instance is created. For example, using a pattern of &quot;MM/dd/yy&quot; and a <code>SimpleDateFormat</code>&#160; instance created on Jan 1, 1997, the string &quot;01/11/12&quot; would be interpreted as Jan 11, 2012 while the string &quot;05/04/64&quot; would be interpreted as May 4, 1964. During parsing, only strings consisting of exactly two digits, as defined by <code><a href="http://download.oracle.com/javase/1.5.0/docs/api/java/lang/Character.html#isDigit%28char%29">Character.isDigit(char)</a></code>, will be parsed into the default century. Any other numeric string, such as a one digit string, a thee or more digit string, or a two digit string that isn't all digits (for example, &quot;-1&quot;), is interpreted literally. So &quot;01/02/3&quot; or &quot;01/02/003&quot; are parsed, using the same pattern, as Jan 2, 3 AD. Likewise, &quot;01/02/-3&quot; is parsed as Jan 2, 4 BC.
+        </p>
+      </li>
+      <li>
+        <strong><a name="month">Month:</a></strong>&#160;If the number of pattern letters is 3 or more, the month is interpreted as <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#text">text</a>; otherwise, it is interpreted as a <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#number">number</a>.
+      </li>
+      <li>
+        <strong><a name="timezone">General time zone:</a></strong>&#160;Time zones are interpreted as <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#text">text</a>&#160; if they have names. For time zones representing a GMT offset value, the following syntax is used:
+
+        <pre>     <i><a name="GMTOffsetTimeZone">GMTOffsetTimeZone:</a></i>
+             <code>GMT</code> <i>Sign</i> <i>Hours</i> <code>:</code> <i>Minutes</i>
+     <i>Sign:</i> one of
+             <code>+ -</code>
+     <i>Hours:</i>
+             <i>Digit</i>
+             <i>Digit</i> <i>Digit</i>
+     <i>Minutes:</i>
+             <i>Digit</i> <i>Digit</i>
+     <i>Digit:</i> one of
+             <code>0 1 2 3 4 5 6 7 8 9</code></pre>
+        <i>Hours</i>&#160;must be between 0 and 23, and <i>Minutes</i>&#160;must be between 00 and 59. The format is locale independent and digits must be taken from the Basic Latin block of the Unicode standard.
+
+        <p>
+          For parsing, <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#rfc822timezone">RFC 822 time zones</a>&#160;are also accepted.
+        </p>
+      </li>
+      <li>
+        <strong><a name="rfc822timezone">RFC 822 time zone:</a></strong>&#160;For formatting, the RFC 822 4-digit time zone format is used:
+
+        <pre>     <i>RFC822TimeZone:</i>
+             <i>Sign</i> <i>TwoDigitHours</i> <i>Minutes</i>
+     <i>TwoDigitHours:</i>
+             <i>Digit Digit</i></pre>
+        <i>TwoDigitHours</i>&#160;must be between 00 and 23. Other definitions are as for <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#timezone">general time zones</a>.
+
+        <p>
+          For parsing, <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html#timezone">general time zones</a>&#160;are also accepted.
+        </p>
+      </li>
+    </ul>
+    <code>SimpleDateFormat</code>&#160;also supports <em>localized date and time pattern</em>&#160; strings. In these strings, the pattern letters described above may be replaced with other, locale dependent, pattern letters. <code>SimpleDateFormat</code>&#160; does not deal with the localization of text other than the pattern letters; that's up to the client of the class.
+  </body>
+</html></richcontent>
+<hook NAME="SummaryNode"/>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<node TEXT="" FOLDED="true" ID="ID_424923563" CREATED="1311432086263" MODIFIED="1311621906789" LINK="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <blockquote>
+      <table cellspacing="3" summary="Examples of date and time patterns interpreted in the U.S. locale" border="0" cellpadding="0">
+        <tr bgcolor="#ccccff">
+          <td>
+            
+          </td>
+        </tr>
+      </table>
+    </blockquote>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
+</hook>
+<node TEXT="" ID="ID_161379435" CREATED="1311432447147" MODIFIED="1311432935054" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <h4>
+      Examples
+    </h4>
+    The following examples show how date and time patterns are interpreted in the U.S. locale. The given date and time are 2001-07-04 12:08:56 local time in the U.S. Pacific Time time zone.
+
+    <blockquote>
+      <table cellspacing="3" summary="Examples of date and time patterns interpreted in the U.S. locale" border="0" cellpadding="0">
+        <tr bgcolor="#ccccff">
+          <th align="left">
+            Date and Time Pattern
+          </th>
+          <th align="left">
+            Result
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <code>&quot;yyyy.MM.dd G 'at' HH:mm:ss z&quot;</code>
+          </td>
+          <td>
+            <code>2001.07.04 AD at 12:08:56 PDT</code>
+          </td>
+        </tr>
+        <tr bgcolor="#eeeeff">
+          <td>
+            <code>&quot;EEE, MMM d, ''yy&quot;</code>
+          </td>
+          <td>
+            <code>Wed, Jul 4, '01</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>&quot;h:mm a&quot;</code>
+          </td>
+          <td>
+            <code>12:08 PM</code>
+          </td>
+        </tr>
+        <tr bgcolor="#eeeeff">
+          <td>
+            <code>&quot;hh 'o''clock' a, zzzz&quot;</code>
+          </td>
+          <td>
+            <code>12 o'clock PM, Pacific Daylight Time</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>&quot;K:mm a, z&quot;</code>
+          </td>
+          <td>
+            <code>0:08 PM, PDT</code>
+          </td>
+        </tr>
+        <tr bgcolor="#eeeeff">
+          <td>
+            <code>&quot;yyyyy.MMMMM.dd GGG hh:mm aaa&quot;</code>
+          </td>
+          <td>
+            <code>02001.July.04 AD 12:08 PM</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>&quot;EEE, d MMM yyyy HH:mm:ss Z&quot;</code>
+          </td>
+          <td>
+            <code>Wed, 4 Jul 2001 12:08:56 -0700</code>
+          </td>
+        </tr>
+        <tr bgcolor="#eeeeff">
+          <td>
+            <code>&quot;yyMMddHHmmssZ&quot;</code>
+          </td>
+          <td>
+            <code>010704120856-0700</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>&quot;yyyy-MM-dd'T'HH:mm:ss.SSSZ&quot;</code>
+          </td>
+          <td>
+            <code>2001-07-04T12:08:56.235-0700</code>
+          </td>
+        </tr>
+      </table>
+    </blockquote>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="" ID="ID_317387284" CREATED="1311620492485" MODIFIED="1311620649255" LINK="http://download.oracle.com/javase/1.5.0/docs/api/java/util/Formatter.html">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
+</hook>
+</node>
+</node>
+</node>
+<node TEXT="Reset style" ID="ID_25667795" CREATED="1310720110705" MODIFIED="1311405449746" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      When a property is checked, its change overrides the value set by Style. To return to the value of the style, uncheck Change.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Not included" FOLDED="true" ID="ID_1971371205" CREATED="1310714589905" MODIFIED="1311405449746" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Not all properties can be set in Properties Panel.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        Format
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<node TEXT="Blinking node" ID="ID_1863972932" CREATED="1310714589905" MODIFIED="1310716556350" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Blinking node</b>&#160;is a&#160;node which cycles through a number of colors.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Blend color" ID="ID_661366038" CREATED="1310714589905" MODIFIED="1310716556350">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Map background" ID="ID_657472078" CREATED="1310714589905" MODIFIED="1310716556335" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Map background</b>&#160;is the&#160;color of background.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Hidden edge" ID="ID_1015777202" CREATED="1310714589905" MODIFIED="1310716556335" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Hidden edge</b>&#160;is an edge style when the&#160;edge is invisible.
+    </p>
+    <p>
+      &#160;
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Calendar and Attributes" FOLDED="true" ID="ID_1981388225" CREATED="1310720605287" MODIFIED="1311487283381">
+<icon BUILTIN="../AttributesView"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="5"/>
+<node TEXT="Calendar" FOLDED="true" ID="ID_22413267" CREATED="1310720744003" MODIFIED="1311412001798" TEXT_SHORTENED="true" FORMAT="#0.####">
+<icon BUILTIN="icon_not_found"/>
+<icon BUILTIN="../TimeManagementAction"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="5"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See also&#160;</b>
+    </p>
+    <ul>
+      <li>
+        <i>Node features &gt; Time management</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<node TEXT="year-month-day" ID="ID_144760412" CREATED="1310720753106" MODIFIED="1311405889261">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="5"/>
+</node>
+<node TEXT="hours-minutes" ID="ID_143054900" CREATED="1312570564893" MODIFIED="1312570588997"/>
+<node TEXT="Reset Calendar" ID="ID_435441461" CREATED="1310720775437" MODIFIED="1312922773400" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="5"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Set the calendar to the current time and date.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Insert Date in Selection [date text in node]" ID="ID_63295810" CREATED="1310720786116" MODIFIED="1312570693602" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="5"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To add a date text according to standard date format
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Edit Script... [Execute script]" FOLDED="true" ID="ID_252404367" CREATED="1312535206255" MODIFIED="1312535543833" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="5"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens dialog to enter a script which will be executed at the time of the reminder, if the mind map is open at this time.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        Edit script
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<node TEXT="Reminder triggers script" ID="ID_121096889" CREATED="1312569727978" MODIFIED="1312917319233" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="5"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      This example contains a script that will add the ok-icon to the present node.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Do</b>
+    </p>
+    <ul>
+      <li>
+        Open Edit script, see it contains:
+
+        <pre class="code">node.<span class="me1">getIcons</span><span class="br0">()</span>.<span class="me1">addIcon</span><span class="br0">(</span><span class="st0">&quot;button_ok&quot;</span><span class="br0">)</span></pre>
+      </li>
+      <li>
+        Add a reminder to the node at 2 minutes from now.
+      </li>
+      <li>
+        Keep the mindmap in memory (do nothing to close it).
+      </li>
+      <li>
+        Wait 2 minutes.
+      </li>
+      <li>
+        See the reminder going active: clock is flashing; see ok-button added.
+      </li>
+      <li>
+        remove the ok-button if you want to try again.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+</hook>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+</node>
+<node TEXT="Remind me at this date" ID="ID_721277173" CREATED="1310720824358" MODIFIED="1312571253753" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="5"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To set a reminder at the date and time set.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <p>
+      The reminder wil also trigger the script, if defined AND the mindmap is open. It is not necessary that the map is visible.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        Edit script... [Execute script]
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Remove reminder" FOLDED="true" ID="ID_1320064607" CREATED="1310720836910" MODIFIED="1311405889292">
+<icon BUILTIN="../ReminderHookAction"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="5"/>
+<node TEXT="" ID="ID_1442797370" CREATED="1312569522171" MODIFIED="1312917331432" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        Also removes script
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Remind me at this date</i>&#160;to change date/time without deleting the script
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+</hook>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+</node>
+</node>
+<node TEXT="Attributes" FOLDED="true" ID="ID_1738195082" CREATED="1310720848133" MODIFIED="1311412804759" TEXT_SHORTENED="true">
+<icon BUILTIN="../showAttributes"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3,4"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Node features &gt; Attributes</i>
+      </li>
+      <li>
+        <i>View &gt; Attributes</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<node TEXT="New attribute" ID="ID_682004984" CREATED="1310720854444" MODIFIED="1311402834908">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+</node>
+<node TEXT="Optimal width" ID="ID_19755775" CREATED="1310720862656" MODIFIED="1311402834940">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3"/>
+</node>
+<node TEXT="Attribute data formatting" STYLE_REF="Method" ID="ID_539941097" CREATED="1311410715399" MODIFIED="1312919429417" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="3,4"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To format the attribute value, select and modify on of the format templates.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      See also
+    </p>
+    <ul>
+      <li>
+        <i>Tools &gt; Preferences</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Table of attributes" ID="ID_110950554" CREATED="1310720873662" MODIFIED="1311414481419" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3,4"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      An <b>attribute</b>&#160;has a name and value/data, meaning name=value.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      The list of attributes consists of two columns. The left column can contain the attribute's&#160;&#160;name and the right column its value.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        The attribute's value can be automatically formatted, see Preferences.
+      </li>
+      <li>
+        To prevent automatic data formatting incidentally, type as a first character a non-number. The entered text will be treated as text, also if the first character is deleted afterwards. Examples:
+
+        <ul>
+          <li>
+            When you enter 1,2,,3 this will transform in 123 (except if you defined the template to be #,#,#)&#160;
+          </li>
+          <li>
+            When you enter &quot;1,2,3 and next remove &quot;, you will keep 1,2,3&#160;
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Attribute data formatting</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="" ID="ID_1128827136" CREATED="1310841040542" MODIFIED="1312966271019" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3,4"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      It is possible to add or edit the attribute of one node at the time.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Node features &gt; Attributes</i>&#160;to add the same attribute at once to a group of selected nodes.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="SummaryNode"/>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+</node>
+</node>
+<node TEXT="Assign Properties Panel to F-key" STYLE_REF="ToNote" ID="ID_1019704667" CREATED="1313557428181" MODIFIED="1313557698545" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        The properties panel is one of the most used menu's. It makes sense therefore to assign it a hot key.
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Tools &gt; hot keys</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Zoom in" ID="ID_1817335801" CREATED="1310134532663" MODIFIED="1314888682936" TEXT_SHORTENED="true">
+<icon BUILTIN="../ZoomIn24"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Makes the font size and the distance between nodes larger; fits less of the map on the screen.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Zoom out" ID="ID_1176192683" CREATED="1310134532663" MODIFIED="1314558375002" TEXT_SHORTENED="true">
+<icon BUILTIN="../ZoomOut24"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Makes the font size and the distance between nodes smaller; fits more of the map on the screen.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Zoom to fit page" ID="ID_1360497080" CREATED="1266249692203" MODIFIED="1310721457900" TEXT_SHORTENED="true">
+<icon BUILTIN="../FitToPage"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Adjusts the font size and distance between nodes to fit the entire map on the screen. If many nodes are visible (unfolded), the font may be rendered too small to be readable.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Center selected node" FOLDED="true" ID="ID_1435118166" CREATED="1310134532663" MODIFIED="1311402755021" TEXT_SHORTENED="true">
+<icon BUILTIN="../CenterSelectedNodeAction"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Brings the selected node to the centre of the screen, moving the surrounding nodes with it.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Short cut</b>
+    </p>
+    <ul>
+      <li>
+        <i>Ctrl + Alt + C</i>
+      </li>
+      <li>
+        icon-button
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+<node TEXT="Scroll/move map" ID="ID_1548435797" CREATED="1311407287938" MODIFIED="1312915841416" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="12"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To move the whole map, click in an empty part of the screen and drag the map, ore use the scrollbars at the sides of the screen.
+    </p>
+  </body>
+</html></richcontent>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+</node>
+<node TEXT="Outline view" ID="ID_519734292" CREATED="1266247214640" MODIFIED="1310721911393" TEXT_SHORTENED="true">
+<icon BUILTIN="../outline_view"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif">Toggles the display of the map between default (radial view) or list (outline view). </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note </b>
+    </p>
+    <ul>
+      <li>
+        <p>
+          <font color="#000000" face="SansSerif, sans-serif">Node spacing may be fine-tuned using Preferences. </font>
+        </p>
+      </li>
+      <li>
+        <p>
+          <font color="#000000" face="SansSerif, sans-serif">Some aspects of visual appearance are simplified while in Outline view, and more information may be visible on-screen at one time than in the normal Mind Map view. </font>This view may be handy in printing a large maps.
+        </p>
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Full screen mode" FOLDED="true" ID="ID_1526004925" CREATED="1310672109364" MODIFIED="1314888524183" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Hide or show all menu/tool bars. </font>
+    </p>
+    <p>
+      
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<node TEXT="" ID="ID_1272735653" CREATED="1310716776303" MODIFIED="1310716821153" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Once in full screen mode, the only way to change back to normal screen mode is to right click on the screen and UNCHECK Full Screen mode.</font>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Display status line" ID="ID_183960920" CREATED="1303929119304" MODIFIED="1314558391133" TEXT_SHORTENED="true">
+<icon BUILTIN="icon_not_found"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Toggles the visibility of a status line at the bottom of the window.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Node core" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1969683729" CREATED="1315733476260" MODIFIED="1316207040623">
+<node TEXT="Rectangular selection" ID="ID_1851007191" CREATED="1266247206859" MODIFIED="1310721457822" TEXT_SHORTENED="true">
+<icon BUILTIN="../ShowSelectionAsRectangleAction"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Toggles the appearance of selecting a node. When in Rectangular selection mode, the selected node has a solid line around it, with rounded corners. When not in Rectangular mode, the selected node has a grey background color. </span></font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif"><b>See also</b> </span></font>
+    </p>
+    <ul>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif"><i>Tools &gt; Preferences &gt; Appearance &gt; Selection Colors.</i></span></font>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Don&apos;t mark formula&apos;s with a border" ID="ID_1847984972" CREATED="1303929296863" MODIFIED="1314448220153" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Toggle between not marking or marking the visibility of formula's by a rectangular, colored surrounding. defaultt is a surrounding.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Set maximum node width" ID="ID_826769128" CREATED="1288558613969" MODIFIED="1310723748053" TEXT_SHORTENED="true">
+<icon BUILTIN="../max_node_width"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif">Opens dialog to changes the visible width of all nodes in the map, measured in pixels. &#160;Default is 600.&#160; </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><b>Note </b></font>
+    </p>
+    <ul>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000">To control the width of a particular node, make shorter lines, use <i>Enter</i>&#160;or <i>Shift + Enter.</i></font>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Change revisions background color" FOLDED="true" ID="ID_974319465" CREATED="1266247833890" MODIFIED="1314470318158" BACKGROUND_COLOR="#ffffff" TEXT_SHORTENED="true">
+<icon BUILTIN="../RevisionPluginAction"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Toggles between visibility marking of revisions.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        Standard the revision is marked by making background color = yellow.
+      </li>
+      <li>
+        To undo the marking: select the marked node and uncheck the Change box in the Properties Panel.
+      </li>
+    </ul>
+    <p>
+      <b>See also:</b>
+    </p>
+    <ul>
+      <li>
+        <p>
+          <i>View &gt; Show modification times</i>
+        </p>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<node TEXT="Set default revision color" ID="ID_1766752356" CREATED="1311925728592" MODIFIED="1312917516963" LINK="#ID_665414546" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To remove a revision, for each node uncheck the checkbox for background color.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        This way of showing/hiding revisions is outdated.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+<node TEXT="Alternatives for marking revisions" ID="ID_961541761" CREATED="1312527817946" MODIFIED="1312917516994" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="1"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To display a revision:
+    </p>
+    <ul>
+      <li>
+        find/filter by revision date
+
+        <ul>
+          <li>
+            Revisions after a date or whin a period of time can be found and filtered
+          </li>
+          <li>
+            Pro's: revisions are kept automatically; filter rule can be defined once
+          </li>
+          <li>
+            Con's: the revision date is set to the latest revision. It is not possible to know the history of revisions..
+          </li>
+        </ul>
+      </li>
+      <li>
+        find/filter by user defined attribute <i>Revision</i>&#160;= <i>nr/date</i>
+
+        <ul>
+          <li>
+            Pro's: History of revision dates pro node (not content) is kept.
+          </li>
+          <li>
+            Con's: to be (un)set manually pro node or selected group of nodes.
+          </li>
+        </ul>
+      </li>
+      <li>
+        use conditional map styles to show a style <i>Revision</i>
+
+        <ul>
+          <li>
+            To be used with revision dates or revision attributes
+          </li>
+          <li>
+            Pro's: see above. Filter rules are kept an managed at map level, in Conditional map styles list.
+          </li>
+          <li>
+            Con's: see above.
+          </li>
+        </ul>
+      </li>
+      <li>
+        (Un)set a discriminating background color pro node
+
+        <ul>
+          <li>
+            Pro's: Simple
+          </li>
+          <li>
+            Con's: Restricted style option. Fully manual.
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+</node>
+<node TEXT="Icons" STYLE_REF="SubMenu" FOLDED="true" ID="ID_655678719" CREATED="1315733776982" MODIFIED="1316207175762">
+<hook NAME="FirstGroupNode"/>
+<node TEXT="Show icons hierarchically" ID="ID_1929367560" CREATED="1310672205671" MODIFIED="1310726026460" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Toggles that the icons present in descendants of a node, are replicated in the node.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Show intersections of icons" ID="ID_664401378" CREATED="1310672261152" MODIFIED="1310726026460">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Icons view" ID="ID_382172833" CREATED="1310672383972" MODIFIED="1310728259721" TEXT_SHORTENED="true">
+<hook NAME="SummaryNode"/>
+<attribute_layout VALUE_WIDTH="160"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Tools &gt; Preferences &gt; Appearances &gt; Icons</i>&#160;to standardly:
+
+        <ul>
+          <li>
+            Show icons for attributes
+          </li>
+          <li>
+            Not show icons for notes
+          </li>
+          <li>
+            Structured icons tool bar
+          </li>
+        </ul>
+        <p>
+          
+        </p>
+      </li>
+    </ul>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        With Java Applet the following are always showing
+
+        <ul>
+          <li>
+            Icons for attributes (bug)
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Hoover text (tool tip)" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1599182564" CREATED="1315733540501" MODIFIED="1315733592293">
+<node TEXT="Show details  [Toggle Details]" ID="ID_734978433" CREATED="1291155323140" MODIFIED="1315981211094" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Toggles the visibility of the Details field under the basic node text.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        Alternative: Click the triangle button below the node
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Display hover text (tool tip) [Display Tool Tips for Nodes ]" FOLDED="true" ID="ID_152459666" CREATED="1310673142140" MODIFIED="1314889396380" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Toggles the visibility of Tool Tips.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>View &gt; Show notes in map </i>
+      </li>
+      <li>
+        View &gt; Attributes
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<node TEXT="Tool Tips" ID="ID_1399586746" CREATED="1310718250232" MODIFIED="1311402583545" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Tool Tip is a window that opens when the mouse cursor is over a node and &#160;View &gt; Display Tootips is set. You are reading the current text in a Tool Tip window.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        The window shows otherwise hidden content, see <i>Node &gt; Shortened node content</i>.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1"/>
+</node>
+<node TEXT="Set width tool tip" ID="ID_383683750" CREATED="1311926079888" MODIFIED="1311926122758" LINK="#ID_215853027"/>
+</node>
+<node TEXT="Display node styles in hover text (tool tip) [Display Node styles in Tool Tip ]" ID="ID_499630441" CREATED="1312541024559" MODIFIED="1314558633541" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Toggles visibility of the list of styles which apply to the selected node.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        Display Tool tips for Nodes
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT=" Display modification times [Show modification times]" ID="ID_208481180" CREATED="1266247851640" MODIFIED="1314558683898" TEXT_SHORTENED="true">
+<icon BUILTIN="../kword"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Toggles visibility of modification times when the cursor hovers over the node.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        Date/time of last creation/modification
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Attributes" STYLE_REF="SubMenu" FOLDED="true" ID="ID_353026241" CREATED="1266249735046" MODIFIED="1315733646581" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Toggles the visibility of attributes as set by&#160;<i>Node features &gt; Attribute manger. </i>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Options are:
+    </p>
+    <ul>
+      <li>
+        Show Selected attributes
+      </li>
+      <li>
+        Show all attributes
+      </li>
+      <li>
+        Hide All attributes
+      </li>
+    </ul>
+    <p>
+      See also
+    </p>
+    <ul>
+      <li>
+        <p>
+          &#160;<i>Node features &gt; Attribute manger </i>
+        </p>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<hook NAME="FirstGroupNode"/>
+<node TEXT="Show selected attributes" ID="ID_1402645350" CREATED="1314448290221" MODIFIED="1314448307739"/>
+<node TEXT="Show All attributes" ID="ID_906654506" CREATED="1314448308870" MODIFIED="1314448324377"/>
+<node TEXT="Hide all attributes" ID="ID_1832714818" CREATED="1314448325024" MODIFIED="1314448335430"/>
+</node>
+<node TEXT="Show/hide icon-attributes" ID="ID_94712823" CREATED="1310727590558" MODIFIED="1311923396872" TEXT_SHORTENED="true">
+<hook NAME="SummaryNode"/>
+<attribute_layout VALUE_WIDTH="228"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Tools &gt; Preferences &gt; Appearances &gt; Icons</i>&#160;to standardly Show icons for attributes
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Notes" STYLE_REF="SubMenu" FOLDED="true" ID="ID_838550014" CREATED="1315733725196" MODIFIED="1315733763620">
+<node TEXT="Display note panel [Note panel]" FOLDED="true" ID="ID_1073686439" CREATED="1266249699921" MODIFIED="1314558919677" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif">Toggles the Note panel visible or hidden. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        Note position
+      </li>
+      <li>
+        Show notes in map
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<hook NAME="FirstGroupNode"/>
+<node TEXT="Note panel" ID="ID_1985668082" CREATED="1310725021296" MODIFIED="1310725159902" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Note panel</b>&#160;is a window which is independently placed of the selected node, in which the Note content of the selected node is shown and can be edited.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT=" Note panel position [Note position]" ID="ID_1996327153" CREATED="1266249705546" MODIFIED="1314558983824" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif">Determines the placement of the Note panel. Options are Top, Left, Right, and Bottom.</font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Display notes in map" ID="ID_389897702" CREATED="1291155591515" MODIFIED="1314906699834" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Toggles the visibility of a node's note text below its basic node text.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>View &gt; Shortened node content</i>
+      </li>
+      <li>
+        <i>Note panel</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Notes view" ID="ID_1709371267" CREATED="1306012919034" MODIFIED="1310727306434" TEXT_SHORTENED="true">
+<hook NAME="SummaryNode"/>
+<attribute_layout VALUE_WIDTH="215"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Tools &gt; Preferences &gt; Appearances &gt; Icons</i>&#160;to standardly NOT show icons for notes
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Opmaken [Format]" FOLDED="true" ID="ID_258919699" CREATED="1266240683718" MODIFIED="1316339048254" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To change the appearance of a node. Select <i>View &gt; Properties Panel</i>&#160;to display most of the properties that can be changed. Check the property you want to change and enter a new value to change it. Select <i>View &gt; Properties Panel</i>&#160;again to close the panel. Alternatively properties can be changed through menu <i>Format</i>. For example, to change the text colour of the node, choose <i>Format &gt; Change node color</i>&#160;or press <i>Alt+Shift+F</i>.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Properties that can be changed in the <i>Properties panel</i>&#160;are:
+    </p>
+    <ul>
+      <li>
+        <b>Node shape:</b>&#160;The appearance of the node: without surrounding box (Fork), with surrounding box (Bubble), as parent or combined.
+      </li>
+    </ul>
+    <ul>
+      <li>
+        <b>Node Font:</b>&#160;the Font family, size, bold and italic.
+      </li>
+      <li>
+        <b>Node colors:</b>&#160;The color of Text or Background. For hiding an edge, see below.
+      </li>
+    </ul>
+    <ul>
+      <li>
+        <b>Edge color:</b>&#160;The color of the edge connecting nodes.
+      </li>
+      <li>
+        <b>Edge style:</b>&#160;The way an edge bends.
+      </li>
+      <li>
+        <b>Edge width:</b>&#160;The thickness of the edge.
+      </li>
+    </ul>
+    <ul>
+      <li>
+        <b>Cloud color:</b>&#160;background color of cloud.
+      </li>
+      <li>
+        <b>Cloud Shape:</b>&#160;Star, Rectangle or Round rectangle form.
+      </li>
+    </ul>
+    <p>
+      You can also have properties automatically set. Check in <i>Properties Panel</i>:
+    </p>
+    <ul>
+      <li>
+        <b>Automatic Layout:</b>&#160;automatically gives all nodes on a particualr hierarchical level a unique appearance. This automated appearance can be changed in Menu Styles.
+      </li>
+      <li>
+        <b>Automatic edge color:</b>&#160;automatically selects a different edge color each time a new node is made.
+      </li>
+    </ul>
+    <p>
+      In addition you can set also the following properties in <i>Menu Format</i>:
+    </p>
+    <ul>
+      <li>
+        <b>Blinking node:</b>&#160;node which cycles through a number of colors.
+      </li>
+      <li>
+        <b>Blend color</b>
+      </li>
+      <li>
+        <b>Map background:</b>&#160;color of background.
+      </li>
+      <li>
+        <b>Edge styles &gt; Hide edge:</b>&#160;Makes edge invisible.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<node TEXT="Apply style" FOLDED="true" ID="ID_512501370" CREATED="1291199304490" MODIFIED="1315735285080" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Opens a list of node styles. The selected style will be appied to the selected node(s). </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Note </font>
+    </p>
+    <ul>
+      <li>
+        You can only apply one style at a time. Use conditional styles to apply multiple styles.
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also </b>
+    </p>
+    <ul>
+      <li>
+        <i>Styles &gt; User defined styles</i>
+      </li>
+      <li>
+        <i>View &gt; Properties panel&#160;: Styles, Conditional Node styles, Conditional map styles</i>
+      </li>
+      <li>
+        <i>Styles &gt; Manage Conditional Node Styles</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<hook NAME="FirstGroupNode"/>
+<node TEXT="Default" ID="ID_1111398038" CREATED="1310066467081" MODIFIED="1310848304117" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Details" ID="ID_1577454061" CREATED="1310066475584" MODIFIED="1310848304133" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Note" ID="ID_985652023" CREATED="1310066511975" MODIFIED="1310848304133" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Hierarchical Level styles" STYLE_REF="Method" ID="ID_1923695111" CREATED="1311948335133" MODIFIED="1312920119258"/>
+<node TEXT="User defined styles" ID="ID_948529232" CREATED="1291550475365" MODIFIED="1311405450074" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Opens a list of user defined node styles. The selected style will be appied to the selected node(s). </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also </b>
+    </p>
+    <ul>
+      <li>
+        <i>Styles &gt; New style from selection</i>
+      </li>
+      <li>
+        <i>Styles &gt; Edit style</i>
+      </li>
+      <li>
+        <i>Styles &gt; predefined styles</i>
+      </li>
+      <li>
+        <i>View &gt; Properties panel&#160;</i>
+      </li>
+      <li>
+        <i>Styles &gt; Manage Conditional Styles</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+</node>
+</node>
+<node TEXT="Apply  level styles  [Level style]" FOLDED="true" ID="ID_1362134553" CREATED="1310063210078" MODIFIED="1314906927181" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Use or don't use level styles. The nodes automatically get the predefined styles related to their node level.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Styles &gt; Level style</i>&#160;submenu
+      </li>
+      <li>
+        <i>View &gt; Properties Panel</i>&#160;check box for <i>Level style</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<node TEXT="Format of the root node" ID="ID_1512017078" CREATED="1310066376934" MODIFIED="1310849026063" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="1. Level Node Format" ID="ID_912205112" CREATED="1310066388858" MODIFIED="1310849082192" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="2. Level Node Format" ID="ID_1521677657" CREATED="1310066388858" MODIFIED="1310849082208" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="3. Level Node Format" ID="ID_1792037977" CREATED="1310066388858" MODIFIED="1310849082208" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="4. Level Node Format" ID="ID_33761254" CREATED="1310066388858" MODIFIED="1310849082192" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="5. Level Node Format" ID="ID_730037876" CREATED="1310066388858" MODIFIED="1310849082192" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Manage styles" STYLE_REF="SubMenu" FOLDED="true" ID="ID_699990019" CREATED="1315734178011" MODIFIED="1315734321797" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Styles (classes) are a means to quickly&#160;&#160;apply or change a group of visual properties or content&#160;&#160;for all related nodes at once. Styles (classes) can be used to find, select or filter nodes which are associated with a particular type of content or structure.&#160;&#160;You can attach one or more styles to a node by selecting the style name(s) from a list. With filter rules you can automatically decide if a particular style should be applied to a particular node or not.. There is a predefined set of styles for 5 different hierarchical node levels which can be applied right away.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Example</b>. The <i>Freeplane Documentation</i>&#160;you are reading, contains visually discriminating styles for classes of information indicating respectively methods, exceptions, examples etc. Each node is attached to all the styles (classes) it belongs to. As a result&#160;&#160;you can see form the appearance of the node which type of information it contains. Also you can display only nodes containing one particular type of information, by filtering for for style (class) <i>Definition</i>. For example you can display only (all) definitions.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        If a defined style has Attributes or Details, these are copied to the node being attached to the style, but only if the node has been newly created, or if the method for this is applied.
+      </li>
+      <li>
+        Single styles are available through a drop-down menu in the Toolbar.
+      </li>
+      <li>
+        It is possible to assign styles to the F-keys such that they can be easily applied.
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Node features &gt; Attributes &gt; Copy from style</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<node TEXT="New style from selection" FOLDED="true" ID="ID_643671716" CREATED="1291389456052" MODIFIED="1311960465723" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens a dialog to enter the name under which the selected node will be saved as a user style.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        In the style are copied:
+
+        <ul>
+          <li>
+            icons
+          </li>
+          <li>
+            Basic node text format
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>&#160;Styles &gt; Edit style</i>&#160;to add/change a style
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<node TEXT="Style Details and Attributes" ID="ID_1105873514" CREATED="1311959895499" MODIFIED="1312920137354" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        <i>Details</i>&#160;and <i>Attributes</i>&#160;can be added to a Style ONLY in the edit styles panel
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Style &gt; Edit styles&gt; Edit&#160;&#160;t</i>o add Details and Attributes
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+</node>
+<node TEXT="Redefine style" STYLE_REF="Functie" ID="ID_1559299046" CREATED="1291196112325" MODIFIED="1311405450120" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Change the standard node style to the one of the selected node.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+</node>
+<node TEXT="Manage conditional styles for map" FOLDED="true" ID="ID_1169167186" CREATED="1291196254933" MODIFIED="1314563971989" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif">Opens a dialog to define the rules for automatically applying a particular style for each node. </font>A particular node may trigger different rules at once. In that case the different styles will be applied to the same&#160;&#160;node.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      If the conditions of the rule are true, the style is applied to the node. Multiple rules may fire at once, hence a node can display multiple styles. The list of rules is evaluated from top rule to bottom rule. If a rule triggers and <i>Stop</i>&#160;is set for that rule, the rules below will not be evaluated and not fire. &#160;The style rule itself is similar to a filter rule.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Do</b>
+    </p>
+    <ul>
+      <li>
+        In the conditional styles window select <i>New</i>&#160;. A rule is added.
+      </li>
+      <li>
+        Double-click on the last, new row to open the <i>Filter composer</i>.
+      </li>
+      <li>
+        Select or define and select a new rule, see <i>Filter Composer</i>. (One rule is highlighted !
+      </li>
+      <li>
+        Click OK).
+      </li>
+      <li>
+        Click on <i>Default</i>&#160;and select the style you want from the drop down menu of syles.
+      </li>
+      <li>
+        Click OK.
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        Filter composer
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<node TEXT="Table of style rules." STYLE_REF="Method" FOLDED="true" ID="ID_1058697460" CREATED="1312551108410" MODIFIED="1312920188678">
+<node TEXT="Empty" ID="ID_805739790" CREATED="1312551143432" MODIFIED="1312557189580" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Initially the table is empty.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="New" STYLE_REF="Method" ID="ID_322783972" CREATED="1312550032317" MODIFIED="1312920188741" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Press to add a new rule.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Edit" STYLE_REF="Method" ID="ID_338804554" CREATED="1312550065693" MODIFIED="1312920188725" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To edit the selected rule.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Delete" STYLE_REF="Method" ID="ID_44463838" CREATED="1312550073844" MODIFIED="1312920188725" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To remove the selected rule(s).
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Up" STYLE_REF="Method" ID="ID_1131478979" CREATED="1312550078001" MODIFIED="1312920188710" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Move the selected rule one place up. Hence it will be evaluated earlier.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Down" STYLE_REF="Method" ID="ID_198508283" CREATED="1312550083485" MODIFIED="1312920188694" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To move the position of the selected rule one place down. Hence it will be evaluated later.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Active" ID="ID_1882394254" CREATED="1312550251133" MODIFIED="1312557158473" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      If is Checked, the rule behind it will be evaluated. Otherwise not.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Condition" STYLE_REF="Method" FOLDED="true" ID="ID_1073372746" CREATED="1312550256444" MODIFIED="1312920212921" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The condition, set with a filter rule, when the rule will fire. If the rule fires, the style will be applied. Otherwise the style will not be applied.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Always" ID="ID_894528691" CREATED="1312550827305" MODIFIED="1312557178956" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Default filter rule: it will fire any time.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Style" STYLE_REF="Method" FOLDED="true" ID="ID_1230882400" CREATED="1312550264190" MODIFIED="1312920212936">
+<node TEXT="Default" ID="ID_1640996661" CREATED="1312550406517" MODIFIED="1312557178956" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The style <i>Default</i>.&#160;Double-click to open a drop down list of possible styles.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Stop" ID="ID_496187218" CREATED="1312550090044" MODIFIED="1312557210952" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      If is checked and this rule fires, the rules below this rule are not evaluated.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="" FOLDED="true" ID="ID_1129555835" CREATED="1312920269658" MODIFIED="1312920329937">
+<hook NAME="SummaryNode"/>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<node TEXT="Revision" ID="ID_1791624318" CREATED="1312115683651" MODIFIED="1312144957668" TEXT_SHORTENED="true" LINK="#_Freeplane_Link_784043927">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      This map contains conditional map styles for displaying revisions of this map.
+    </p>
+    <p>
+      Click the green arrow to read more.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="" ID="ID_362867811" CREATED="1310102673082" MODIFIED="1311405450136" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Only works with newly created mind maps (= Freeplane 1.2, not 1.3) or if the mapstyle is copied from a Freeplane 1.2 map with copy mapstyle.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Templates" ID="ID_1796388799" CREATED="1310103103356" MODIFIED="1312920269658" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <pre wrap="">The same nodes on the style map are used as templates and as styles.
+They are used as styles either if style is explicitly assigned by user or if
+style condition is met .  Only formatting including colors, shapes clouds and
+icons are relevant for styles and conditional styles. All these features have
+in common that they can not be edited, they can be only attached or removed,
+and style basically means that they are virtually attached to relevant nodes.
+
+Actually style conditions build a chain so that many styles are applied to the
+same node if many conditions are satisfied.
+For instance if you have conditional styles 
+
+Node text contains &quot;Important&quot; =&gt; styleOne,
+Node text contains &quot;error&quot; =&gt; styleTwo,
+
+the both styles are applied to node with the both words in the node text, and
+all formatting features not addressed by styleOne but addressed by styleTwo
+are applied to the node. For instance if styleOne means bold text and styleTwo
+means red background, the node becomes bold on the red background.
+
+Other node features like attributes or details are editable. Therefore they
+are interpreted as a part of template. It is possible to include other features
+like notes or even child nodes in the future. The templates are applied
+as follows:
+ 
+There are many ways to insert new nodes: before, after, as a child, as a parent,
+as summary node. After the new node is inserted you can apply a template for
+it just assigning the corresponding style. In this case its content is copied
+into the new created node.
+
+And if you want to copy the template elements later you can do it using only
+one action (which currently copies only the attributes but it could be improved
+to copy the details and everything else too). Assign this action to a short
+cut and you can do it by hitting only one hot key.  I can change this action
+so that it works with the conditional styles too so that the first or even all
+elements from the styles activated by conditions are copied.</pre>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+</node>
+</node>
+</node>
+<node TEXT="Manage conditional styles for node" FOLDED="true" ID="ID_1036704793" CREATED="1311948482849" MODIFIED="1314563993455" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens a dialog to define and connect multiple style rules to the selected node.&#160;If the conditions of the rule are true, the style is applied to the node. Multiple rules may fire at once, hence a node can display multiple styles.
+    </p>
+    <p>
+      The list of rules is evaluated from top rule to bottom rule. If a rule triggers and <i>Stop</i>&#160;is set for that rule, the rules below will not be evaluated and not fire. &#160;The style rule itself is similar to a filter rule.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Do</b>
+    </p>
+    <ul>
+      <li>
+        In the conditional styles window select <i>New</i>&#160;
+      </li>
+      <li>
+        Double-click on the last, new row to open the <i>Filter composer</i>.
+      </li>
+      <li>
+        Select or define and select a new rule, see <i>Filter Composer</i>. (One rule is highlighted !
+      </li>
+      <li>
+        Click OK).
+      </li>
+      <li>
+        Click on <i>Default</i>&#160;and select the style you want from the drop down menu of syles.
+      </li>
+      <li>
+        Click OK.
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        Filter composer
+      </li>
+      <li>
+        <i>Styles &gt; Edit styles</i>. In the panel that opens it is possible do define node styles too.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="4"/>
+<node TEXT="Table of style rules." STYLE_REF="Method" FOLDED="true" ID="ID_278157696" CREATED="1312551108410" MODIFIED="1312920588616">
+<hook NAME="FirstGroupNode"/>
+<node TEXT="Empty" ID="ID_1858267405" CREATED="1312551143432" MODIFIED="1312557189580" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Initially the table is empty.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="New" STYLE_REF="Method" ID="ID_1731631753" CREATED="1312550032317" MODIFIED="1312920588679" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Press to add a new rule.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Edit" STYLE_REF="Method" ID="ID_1266620968" CREATED="1312550065693" MODIFIED="1312920588663" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To edit the selected rule.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Delete" STYLE_REF="Method" ID="ID_1025560603" CREATED="1312550073844" MODIFIED="1312920588647" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To remove the selected rule(s).
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Up" STYLE_REF="Method" ID="ID_1559495569" CREATED="1312550078001" MODIFIED="1312920588647" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Move the selected rule one place up. Hence it will be evaluated earlier.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Down" STYLE_REF="Method" ID="ID_128011628" CREATED="1312550083485" MODIFIED="1312920588632" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To move the position of the selected rule one place down. Hence it will be evaluated later.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Active" ID="ID_1788623449" CREATED="1312550251133" MODIFIED="1312557158473" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      If is Checked, the rule behind it will be evaluated. Otherwise not.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Condition" STYLE_REF="Method" FOLDED="true" ID="ID_1272337891" CREATED="1312550256444" MODIFIED="1312920604326" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The condition, set with a filter rule, when the rule will fire. If the rule fires, the style will be applied. Otherwise the style will not be applied.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Always" ID="ID_386830428" CREATED="1312550827305" MODIFIED="1312557178956" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Default filter rule: it will fire any time.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Style" STYLE_REF="Method" FOLDED="true" ID="ID_654077801" CREATED="1312550264190" MODIFIED="1312920604326">
+<node TEXT="Default" ID="ID_563202841" CREATED="1312550406517" MODIFIED="1312557178956" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The style <i>Default</i>.&#160;Double-click to open a drop down list of possible styles.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Stop" ID="ID_293594044" CREATED="1312550090044" MODIFIED="1312557210952" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      If is checked and this rule fires, the rules below this rule are not evaluated.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="" FOLDED="true" ID="ID_8484574" CREATED="1312920515374" MODIFIED="1312920554249">
+<hook NAME="SummaryNode"/>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<node TEXT="Conditional node style" ID="ID_589037277" CREATED="1312530388253" MODIFIED="1312531097782" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      This node you are reading is made using Conditional Node styles. The styles applied are shown at the top of the Tool Tip.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Open the window Styles &gt; Manage Conditional Node Styles to see the two rules, one for applying style Example and one for style ToNote. Both rules are of type: always apply this style. This is the most simple use of conditional node styles: to apply more than one style to the same node at once.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+</hook>
+</node>
+</node>
+</node>
+<node TEXT="Copy map style from..." ID="ID_13843990" CREATED="1291196992351" MODIFIED="1311405450183" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens a dialog for choosing a map style. These styles are in fact mind maps.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        <i>File &gt; New map</i>&#160;uses the style <i>standard.mm</i>. You can define a user map as standard.mm by naming it that way and putting it in the directory that opens by selecting <i>Tools &gt; Open user directory &gt; templates. </i>
+      </li>
+      <li>
+        <i>In Tools &gt; Preferences</i>&#160;can be defined that the standard mind map should have a different name.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+</node>
+<node TEXT="Edit styles" STYLE_REF="Functie" ID="ID_1277682010" CREATED="1291196100290" MODIFIED="1311405450183" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens a dialog to edit all styles, add and remove styles.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      To define a new user style in this mode:
+    </p>
+    <ul>
+      <li>
+        Select the standard node style
+      </li>
+      <li>
+        Click-right and select <i>Save selection as user style</i>
+      </li>
+      <li>
+        Save it under a new name
+      </li>
+      <li>
+        Modify the newly created, saved style with <i>View &gt; Properties Panel</i>
+      </li>
+      <li>
+        Leave the dialog; it has no OK button.
+      </li>
+      <li>
+        When ask to save, press OK.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+</node>
+<node TEXT="More" STYLE_REF="Aggregatie als Toelichting" FOLDED="true" ID="ID_1132402390" CREATED="1305876789039" MODIFIED="1312920625495" TEXT_SHORTENED="true">
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="4"/>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<node TEXT="Style (and Node template)" ID="ID_1305038685" CREATED="1310847063806" MODIFIED="1311405450198" TEXT_SHORTENED="true">
+<attribute_layout NAME_WIDTH="82" VALUE_WIDTH="156"/>
+<attribute NAME="Chapter" VALUE="4"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      A <b>style</b>&#160;for a node is a set of node properties and a basic content structure that can be applied to the node by calling the name of the style.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Node template" ID="ID_1252291426" CREATED="1310925308234" MODIFIED="1311959880220" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        If a style has Attributes or Details, Details these are copied to the node being attached to the style, but ONLY if the node has been newly created.
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Node features &gt; Attributes &gt; Copy attributes from style</i>&#160;to copy the content later
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Example style" ID="ID_1379615942" CREATED="1291305410190" MODIFIED="1311405450230" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+</node>
+<node TEXT="System location" ID="ID_825090436" CREATED="1310065922176" MODIFIED="1311405450230" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Styles are stored in the configuration file &quot;patterns.xml&quot; (note&#160;: this file name can be customized by the user under <i>Tools &gt; Preferences &gt; Environment</i>).
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Wiki" ID="ID_422433135" CREATED="1310926117459" MODIFIED="1311405450230" LINK="http://freeplane.sourceforge.net/wiki/index.php/Node_styles">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+</node>
+</node>
+</node>
+<node TEXT="Styles" STYLE_REF="MenuGroupLabel" ID="ID_177552803" CREATED="1315735285080" MODIFIED="1315735303691">
+<hook NAME="SummaryNode"/>
+</node>
+<node TEXT="Map Background" FOLDED="true" ID="ID_1564352042" CREATED="1266252207296" MODIFIED="1311405450557" TEXT_SHORTENED="true">
+<icon BUILTIN="../MapBackgroundColorAction"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Sets the background color of the entire map using a color chooser dialog.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<node TEXT="" ID="ID_307696782" CREATED="1310109164393" MODIFIED="1310196222387" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      This option is not available in <i>View &gt; Properties Panel</i>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Add cloud or change style  [Cloud ]" ID="ID_759607649" CREATED="1291193913924" MODIFIED="1315734515861" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="Cloud color" ID="ID_1092192366" CREATED="1266252268093" MODIFIED="1310882979628" TEXT_SHORTENED="true">
+<icon BUILTIN="../Colors24"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Changes the color of the cloud. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        &#160;<i>Format&#160;&gt; Cloud</i>.
+      </li>
+      <li>
+        <i>Properties Panel &gt; Cloud</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Cloud properties" STYLE_REF="Aggregatie als Toelichting" ID="ID_1759348470" CREATED="1305837722596" MODIFIED="1312966331141" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="4"/>
+</node>
+<node TEXT="Edge styles" FOLDED="true" ID="ID_1001249442" CREATED="1266252322375" MODIFIED="1310882979659" TEXT_SHORTENED="true">
+<hook NAME="FirstGroupNode"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Opens dialog to select an edge style. Options are:</span></font>
+    </p>
+    <ul>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">As Parent</span></font>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Linear</span></font>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Bezier</span></font>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Sharp Linear</span></font>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Sharp Bezier</span></font>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Horizontal</span></font>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Hide Edge</span></font>
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>View &gt; Properties Panel</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<node TEXT="" FOLDED="true" ID="ID_831160653" CREATED="1288536745875" MODIFIED="1312920791838" STYLE="bubble" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+</hook>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<node TEXT="As parent" ID="ID_196205281" CREATED="1310115852702" MODIFIED="1310196222340" TEXT_SHORTENED="true"/>
+<node TEXT="Linear" ID="ID_479844675" CREATED="1288538234095" MODIFIED="1310196222325" HGAP="30" TEXT_SHORTENED="true">
+<edge STYLE="linear" WIDTH="4"/>
+</node>
+<node TEXT="Bezier curve" ID="ID_622749170" CREATED="1288538240451" MODIFIED="1310196222325" HGAP="40" TEXT_SHORTENED="true">
+<edge STYLE="bezier" WIDTH="4"/>
+</node>
+<node TEXT="Sharp Linear" ID="ID_1385668433" CREATED="1288538242377" MODIFIED="1310196222309" HGAP="40" TEXT_SHORTENED="true">
+<edge STYLE="sharp_linear" WIDTH="4"/>
+</node>
+<node TEXT="Sharp Bezier" ID="ID_925061428" CREATED="1288538470332" MODIFIED="1310196222309" HGAP="40" TEXT_SHORTENED="true">
+<edge STYLE="sharp_bezier" WIDTH="4"/>
+</node>
+<node TEXT="Horizontal" ID="ID_1255718418" CREATED="1310115825254" MODIFIED="1310196222309" TEXT_SHORTENED="true">
+<edge STYLE="horizontal"/>
+</node>
+<node TEXT="Hide Edge" ID="ID_846030610" CREATED="1288538507390" MODIFIED="1310196222293" BACKGROUND_COLOR="#00ffff" HGAP="50" TEXT_SHORTENED="true">
+<edge STYLE="hide_edge" WIDTH="4"/>
+</node>
+</node>
+</node>
+<node TEXT="Edge Width" ID="ID_1718207662" CREATED="1266252326750" MODIFIED="1310882979643" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Een hele mindmap kan worden beschermd tegen overschrijven door een andere gebruiker. Deze functie is experimenteel." ID="ID_47605586" CREATED="1286826107047" MODIFIED="1293375084640" STYLE="bubble"/>
-<node ID="ID_1792715924" CREATED="1270892460703" MODIFIED="1293375084637">
-<richcontent TYPE="NODE">
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Om te voorkomen dat een mindmap wordt veranderd:
+      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Opens dialog to select the style to be applied to the selected node(s). </span></font>
     </p>
     <p>
-      - kies<i>&#160;Bestand &gt; Beveiligen mindmap </i>Hoofdmenu
+      
     </p>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Options are: </span></font>
+    </p>
+    <ul>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Parent</span></font>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Thin</span></font>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">1</span></font>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">2</span></font>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">4</span></font>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">8</span></font>
+      </li>
+    </ul>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">The difference between &quot;Thin&quot; and &quot;1&quot; may not be apparent at lower zoom percentages.</span></font>
+      </li>
+    </ul>
   </body>
 </html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
 </node>
-</node>
-<node STYLE_REF="Onderwerp" FOLDED="true" POSITION="left" ID="_Freeplane_Link_353522063" CREATED="1270892460641" MODIFIED="1293375084633" LINK="#ID_1843939382">
-<richcontent TYPE="NODE">
+<node TEXT="Edge color" ID="ID_865389195" CREATED="1266252317187" MODIFIED="1310882979628" TEXT_SHORTENED="true">
+<edge COLOR="#ff0000"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      MS Verkenner als mindmap
+      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Sets the color of the fork (or bubble) of the selected node(s) using a color chooser dialog. Also sets the color of the connectors between parent and child nodes.</span></font>
     </p>
   </body>
 </html></richcontent>
-<node TEXT="This File mode is mainly a demonstration of browsing data from sources other than a mind map. It is also possible for software developers to write other &quot;modes&quot; using additional data sources." STYLE_REF="Inleiding" ID="_Freeplane_Link_279880616" CREATED="1270892460643" MODIFIED="1293375084629"/>
-<node TEXT="To browse files on your computer, switch to File mode in pull-down menu using Maps &gt; File Explorer." ID="ID_580394018" CREATED="1270892460642" MODIFIED="1293375084626"/>
-<node TEXT="You browse the file tree as if it was a mind map." ID="ID_752002115" CREATED="1270892460642" MODIFIED="1293375084623"/>
-<node TEXT="To open another File Explorer tab with the selected node at its center, use View &gt; Center Selected Node or, in the node context menu use Center." ID="ID_9876074" CREATED="1270892460642" MODIFIED="1293375084619"/>
-<node TEXT="To view, edit or execute a file, follow the link of its node." ID="ID_355560243" CREATED="1270892460643" MODIFIED="1293375084616"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
 </node>
-<node FOLDED="true" POSITION="left" ID="_Freeplane_Link_1530607683" CREATED="1270892460643" MODIFIED="1293375084612" COLOR="#006699">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Macintosh
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="Automatic edge color" ID="ID_1587417548" CREATED="1291194199529" MODIFIED="1313559766526" TEXT_SHORTENED="true">
+<icon BUILTIN="../AutomaticEdgeColorHookAction"/>
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node STYLE_REF="Inleiding" FOLDED="true" ID="ID_752234886" CREATED="1270892460643" MODIFIED="1293375084607">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">See Forma<i>&#160;&gt; Automatic edge color</i></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Edge properties" STYLE_REF="Aggregatie als Toelichting" ID="ID_881523974" CREATED="1305835940519" MODIFIED="1311946117727" TEXT_SHORTENED="true">
+<hook NAME="SummaryNode"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      An edge is a lineage between parent and child. The flow of the edge can be altered by clicking on it and drawing it to a different location. Technically an edge belongs to the child and edge properties like color can be changed in the child node. See <i>View &gt; Properties panel. </i>An edge can be hidden, see Egde style.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Node core" STYLE_REF="SubMenu" FOLDED="true" ID="ID_39827582" CREATED="1315734560228" MODIFIED="1316159037710">
+<node TEXT="Bold" ID="ID_25890496" CREATED="1266251692562" MODIFIED="1310882979846" TEXT_SHORTENED="true">
+<icon BUILTIN="../Bold16"/>
+<font NAME="SansSerif" SIZE="12" BOLD="true" ITALIC="false"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Changes font to Bold in whole basic node and Details.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        Icon for Bold
+      </li>
+      <li>
+        Exception
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Italic" ID="ID_408787243" CREATED="1266251689531" MODIFIED="1310882979815" TEXT_SHORTENED="true">
+<icon BUILTIN="../Italic16"/>
+<font ITALIC="true"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Changes font to Italic in whole basic node and Details.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        Icon for Italic
+      </li>
+      <li>
+        Exception
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Larger font" ID="ID_349364472" CREATED="1266251662328" MODIFIED="1311405450323" TEXT_SHORTENED="true">
+<icon BUILTIN="../IncreaseNodeFontAction"/>
+<font NAME="SansSerif" SIZE="14" BOLD="false" ITALIC="false"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Increases font&#160;&#160;size in whole basic node and Details.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        Font size in menu bar
+      </li>
+      <li>
+        Exception
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+</node>
+<node TEXT="Smaller font" ID="ID_533544086" CREATED="1266251685593" MODIFIED="1311405450386" TEXT_SHORTENED="true">
+<icon BUILTIN="../DecreaseNodeFontAction"/>
+<font SIZE="10"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Decreases font&#160;&#160;size in whole basic node and Details.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        Font size in menu bar
+      </li>
+      <li>
+        Exception
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+</node>
+<node ID="ID_863447007" CREATED="1310105197652" MODIFIED="1311405450432" TEXT_SHORTENED="true">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -12208,147 +10704,4609 @@
   </head>
   <body>
     <p>
-      Volledige ondersteuning Apple's Mac OS X operating system.&#160;&#160;Houdt rekening met de volgende verschillen in gebruik:
+      Font <b>whole</b>&#160;basic node text
     </p>
   </body>
 </html></richcontent>
-<node FOLDED="true" ID="ID_274373799" CREATED="1272034412047" MODIFIED="1293375084604">
-<richcontent TYPE="NODE">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Command toets versus Ctrl (control) toets
+      These actions effect the whole basic node text. and overrule WYSIWYG formatting in the edit windows and in the context menu of the inline editor. The action initially affects Details, but can be refined/undone by formatting in the edit dialog.
     </p>
+    <p>
+      
+    </p>
+    <p>
+      It was originally meant for easy, fast formatting. However, the formatting with the inline editor context menu makes these functions more or less obsolete.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      To undo, select <i>Format &gt; Remove Format</i>.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Edit &gt; Copy format </i>
+      </li>
+      <li>
+        <i>Edit &gt; Paste forma</i>t
+      </li>
+    </ul>
   </body>
 </html></richcontent>
-<node ID="ID_395674676" CREATED="1272029514331" MODIFIED="1293375084601">
-<richcontent TYPE="NODE">
+</node>
+<node TEXT="Node color" ID="ID_1085935601" CREATED="1266251694000" MODIFIED="1310882979737" COLOR="#ff3366" TEXT_SHORTENED="true">
+<icon BUILTIN="../NodeColorAction"/>
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Waarin de documentatie staat Ctrl, gebruik: Apple Command toets. met &#8984; symbool of Apple logo.
+      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Sets the foreground color of the selected node(s) using a color chooser dialog. The color is applied to all text in the node.</span></font><font color="#333333">.</font>
     </p>
   </body>
 </html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Waar in de documentatie staat Control, gebruik de Control toets." ID="ID_421074454" CREATED="1286892745646" MODIFIED="1293375084597"/>
-</node>
-<node FOLDED="true" ID="ID_1326732850" CREATED="1272034661406" MODIFIED="1293375084594">
-<richcontent TYPE="NODE">
+<node TEXT="Blinking node" FOLDED="true" ID="ID_854971495" CREATED="1266252279859" MODIFIED="1311405450479" COLOR="#663300" BACKGROUND_COLOR="#ffffff" TEXT_SHORTENED="true">
+<icon BUILTIN="../xeyes"/>
+<edge COLOR="#000000"/>
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Alternatief voor <i>Klik rechter muisknop</i>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Cause the node to blink. The node cycles through different colors while blinking.</span></font>
     </p>
   </body>
 </html></richcontent>
-<node TEXT="Waar in de documentatie staat klik met rechter muisknop, gebruik Control + klik." ID="ID_1675507954" CREATED="1286892900141" MODIFIED="1293375084591"/>
-</node>
-<node FOLDED="true" ID="ID_1110596300" CREATED="1272475775170" MODIFIED="1293375084588">
-<richcontent TYPE="NODE">
+<hook NAME="accessories/plugins/BlinkingNodeHook.properties"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<node TEXT="" ID="ID_1509903999" CREATED="1310113382439" MODIFIED="1310196222449" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Menu verschillen
-    </p>
-  </body>
-</html></richcontent>
-<node TEXT="A few menu items are relocated in accordance with Mac OS X standards. These are listed below." ID="ID_1853446063" CREATED="1272475795702" MODIFIED="1293375084585"/>
-<node TEXT="Help &gt; About is moved to the Freeplane application menu &gt; About Freeplane." ID="ID_1154800735" CREATED="1272475988527" MODIFIED="1293375084581"/>
-<node TEXT="Tools &gt; Preferences is moved to the Freeplane application menu &gt; Preferences." ID="ID_1860427078" CREATED="1272490956135" MODIFIED="1293375084578"/>
-<node TEXT="File &gt; Quit is moved to the Freeplane application menu &gt; Quit Freeplane." ID="ID_1745832189" CREATED="1272491194401" MODIFIED="1293375084575"/>
-</node>
-<node TEXT="Zooming" FOLDED="true" ID="ID_590901264" CREATED="1272034779740" MODIFIED="1293375084572">
-<node TEXT="Mac OS X provides a means to zoom in on (magnify) part of the screen, by holding down the Control key while turning the mouse wheel forward. This facility is built into the Mac operating system, so the function is unavailable for Freeplane to use for control of its own Zoom function. So Mac users must use one of the alternate means which Freeplane provides to adjust its zoom level. " ID="ID_1955741602" CREATED="1272031370038" MODIFIED="1293375084568"/>
-<node TEXT="If you are unfamiliar with OS X&apos;s Control + mouse wheel function, be aware that some mouse functions become awkward to use, or even unusable, while zoomed in. To return the screen to normal, hold down the Conrol key and turn the mouse wheel backward to zoom back out all the way." ID="ID_842528755" CREATED="1272034875909" MODIFIED="1293375084563"/>
-</node>
-<node TEXT="Freeplane Wiki" FOLDED="true" ID="ID_1142057644" CREATED="1272034993198" MODIFIED="1293375084560">
-<node ID="ID_275313424" CREATED="1272035005736" MODIFIED="1293375084557" LINK="http://freeplane.sourceforge.net/wiki/index.php/Macintosh">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Bezoek de&#160;&#160;Macintosh pagina op Freeplane's online Wiki.
+      This property is not available in <i>View &gt; Properties Panel</i>
     </p>
   </body>
 </html></richcontent>
 </node>
 </node>
-</node>
-</node>
-<node TEXT="Versie en bijdragen" FOLDED="true" POSITION="left" ID="_Freeplane_Link_784043927" CREATED="1270892460645" MODIFIED="1293375084554" COLOR="#006699">
+<node TEXT="Blend color" FOLDED="true" ID="ID_1238551182" CREATED="1266251704359" MODIFIED="1310882979690" COLOR="#663300" TEXT_SHORTENED="true">
+<icon BUILTIN="../NodeColorBlendAction"/>
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Handleiding" STYLE_REF="Functie" FOLDED="true" ID="ID_577923166" CREATED="1289155126738" MODIFIED="1293375084496">
-<node TEXT="Versie Freeplane 1.2.5" ID="ID_605038742" CREATED="1289133018961" MODIFIED="1304196974763"/>
-<node TEXT="Datum laatste wijziging in handleiding: 2011-05-01" ID="ID_21798827" CREATED="1289730911791" MODIFIED="1304196988697"/>
-<node TEXT="NL vertaling en bewerking" FOLDED="true" ID="ID_136822724" CREATED="1286311222217" MODIFIED="1293375084480">
-<node TEXT="Jokro" FOLDED="true" ID="ID_1128010246" CREATED="1286311242349" MODIFIED="1293375084474" LINK="mailto:jokro@users.sourceforge.net?subject%20=%20handleiding">
-<node TEXT="Eerste versie: 2010-11-14" ID="ID_52670674" CREATED="1289731003743" MODIFIED="1293375084468"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Changes the foreground color of the selected node(s) to be closer to its background color. May be applied multiple times. Can be reset by choosing Format &gt; Node Color... &gt; Use default.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<node TEXT="" ID="ID_1316784379" CREATED="1310113382439" MODIFIED="1310196222449" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      This property is not available in <i>View &gt; Properties Panel</i>
+    </p>
+  </body>
+</html></richcontent>
 </node>
 </node>
-</node>
-<node TEXT="Vertaalprincipes" STYLE_REF="Functie" FOLDED="true" ID="ID_1080640968" CREATED="1293389355035" MODIFIED="1293390502588">
-<node ID="ID_459018132" CREATED="1293389417753" MODIFIED="1293389417753">
+<node ID="ID_1370207590" CREATED="1310105407161" MODIFIED="1311405450526" TEXT_SHORTENED="true">
 <richcontent TYPE="NODE">
 <html>
   <head>
     
   </head>
   <body>
-    1. Gebruik de metafoor van een afstammingshierarchie (ouder-kind relaties)<br/>2. Gebruik onderstaande voorkeurstermen<br/>3. Gebruik in menu's onvoltooide tijd en geen directieve vorm (dus <i>Bewaren</i> en niet <i>Bewaar</i>)<br/>4. Ga uit van gebruik door een leek<br/>5. Sluit aan bij populaire programma's als MSWord.
+    <p>
+      Color <b>whole</b>&#160;basic node text
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      These actions effect the whole basic node text. and overrule WYSIWYG formatting in the edit windows and in the context menu of the inline editor.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      It was meant for easy, fast formatting. However, the formatting with the inline editor context menu makes these functions more or less obsolete.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      To undo, select <i>Format &gt; Remove Format</i>.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Edit &gt; Copy format </i>
+      </li>
+      <li>
+        <i>Edit &gt; Paste forma</i>t
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Node Background Color..." ID="ID_1529197837" CREATED="1266252194281" MODIFIED="1310882979675" COLOR="#663300" BACKGROUND_COLOR="#ffcc00" TEXT_SHORTENED="true">
+<icon BUILTIN="../NodeBackgroundColorAction"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif">Sets the background color of the selected node(s) using a color chooser dialog. Formatting will apply to the entire node. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Edit &gt; Copy format </i>
+      </li>
+      <li>
+        <i>Edit &gt; Paste forma</i>t
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Background color" ID="ID_608903890" CREATED="1310105995582" MODIFIED="1311405450588" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<hook NAME="SummaryNode"/>
+</node>
+<node TEXT="Bubble" ID="ID_1235732708" CREATED="1266251659609" MODIFIED="1310882979565" STYLE="bubble" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Surround the inner area of the node with a round-cornered Bubble. The Bubble format has been applied to this node. The alternative is Fork format.</font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Format &gt;</i>&#160;<i>Fork.</i>
+      </li>
+      <li>
+        <i>View &gt; Properties Panel &gt; Bubble/Fork </i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Fork" ID="ID_401265529" CREATED="1266251650156" MODIFIED="1310882979862" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Undo set Bubble and show a horizontal line below the node's content. This is the default format, and it is used for this node and for most of the other nodes in this document. The alternative is Bubble format.</span></font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Format &gt; Bubble</i>
+      </li>
+      <li>
+        <i>View &gt; Properites Panel &gt; Fork / Bubble</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Bubble central node area" ID="ID_5209411" CREATED="1310105269631" MODIFIED="1314887901617" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>View &gt; Properties Panel</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="SummaryNode"/>
+</node>
+<node TEXT="Remove Format" ID="ID_640761139" CREATED="1291193542440" MODIFIED="1311405450604" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Restores format to standar style
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See alo</b>
+    </p>
+    <ul>
+      <li>
+        Work bar <i>Default</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+</node>
+</node>
+<node TEXT="Use plain text" ID="ID_421682408" CREATED="1266251609187" MODIFIED="1309688143323" TEXT_SHORTENED="true">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">For the selected nodes, all subsequent editing takes place inline. This reverses the effect of &quot;Use Rich Formatting...&quot;</span></font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">?? Converts the basic text of the selected nodes in plain text to be used in systems which cannot handle RTF.</span></font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">Inverse of <i>Use richt text formating</i></span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Use richt formatting (RTF)" ID="ID_601879583" CREATED="1266251602796" MODIFIED="1309688323379" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">For the selected node(s), this causes subsequent editing to take place in the Rich Text dialog.</span></font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      ?? Converts text in selected nodes to Rich text format (Rich Text Format, HTML).
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Inverse of <i>Use plain text.</i>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Navigeren [Navigate]" STYLE_REF="MainMenu" FOLDED="true" ID="ID_1224083972" CREATED="1310134532663" MODIFIED="1316339063136" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="1,2,6"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To move between maps and nodes and to fold nodes.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Previous map" ID="ID_1925064048" CREATED="1310134532663" MODIFIED="1314564157661" TEXT_SHORTENED="true">
+<icon BUILTIN="../MoveTo_PrevMM"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Moves to the previous map listed under the Maps menu. This only works if multiple maps are open.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2.6"/>
+</node>
+<node TEXT="Next map" ID="ID_1576684136" CREATED="1310134532663" MODIFIED="1314564142466" TEXT_SHORTENED="true">
+<icon BUILTIN="../MoveTo_NextMM"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Moves to the next map listed under the Maps menu. This only works if multiple maps are open.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2.6"/>
+</node>
+<node TEXT="Move to map" ID="ID_913517126" CREATED="1310828960234" MODIFIED="1311402807608">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2.6"/>
+</node>
+<node TEXT="(Un)fold" ID="ID_1370299836" CREATED="1310134532663" MODIFIED="1315734783394" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Toggles the nodes that are children of the selected node between being visible/hidden. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b><font face="SansSerif, sans-serif" color="#000000">Short cut </font></b>
+    </p>
+    <ul>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000">Space</font>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+<node TEXT="(Un)fold children" ID="ID_383325209" CREATED="1310134532663" MODIFIED="1314564131765" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">This command toggles folding and unfolding nodes that are one child level removed from the node that is selected. As an example, below this node (that you are reading) is &quot;(Un)fold Children 2&quot;, and below &quot;Unfold Children 2&quot; are four nodes, &quot;Child 1&quot;, Child 2&quot;, Child 3&quot;, Child 4&quot;. From this node, using the &quot;Toggle Folded&quot; command, the node &quot;(Un)fold Children 2&quot; will toggle visible/hidden. Using the &quot;(Un)fold Children&quot; command, the nodes that are children of &quot;(Un)fold Children 2&quot; will toggle visible/hidden.</span></font>
+    </p>
+    <ul>
+      <li>
+        <span onclick="show_folder('1_1')" class="foldclosed" id="show1_1">+</span>&#160;<span onclick="hide_folder('1_1')" class="foldopened" id="hide1_1">-</span>&#160;<font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">(Un)fold Children 2</span></font>
+
+        <ul id="fold1_1">
+          <li>
+            <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Child 1</span></font>
+          </li>
+          <li>
+            <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Child 2</span></font>
+          </li>
+          <li>
+            <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Child 3</span></font>
+          </li>
+          <li>
+            <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Child 4</span></font>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+<node TEXT="Unfold one Level" ID="ID_321295556" CREATED="1310134532663" MODIFIED="1314564126944" TEXT_SHORTENED="true">
+<icon BUILTIN="../unfold_one_level"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Progressively unfolds the descendants of the selected node. Clicking once unfolds the children, clicking again unfolds the grandchildren, etc.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+<node TEXT="Fold one Level" ID="ID_831251421" CREATED="1310134532679" MODIFIED="1314564166241" TEXT_SHORTENED="true">
+<icon BUILTIN="../fold_one_level"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Progressively folds the descendants of the selected node, starting at the deepest level in the hierarchy. If four levels exist, clicking once folds the great grandchildren, clicking again folds the grandchildren, clicking again folds the children, etc.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+<node TEXT="Unfold all" ID="ID_933325044" CREATED="1310134532679" MODIFIED="1314564170250" TEXT_SHORTENED="true">
+<icon BUILTIN="../unfold_all"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Unfolds (makes visible) all nodes that are descendants of the selected node, including all children, grandchildren, etc. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Hot key</b>
+    </p>
+    <ul>
+      <li>
+        press <i>Space; or</i>
+      </li>
+      <li>
+        single click on the node; or
+      </li>
+      <li>
+        click icon-button in <i>Toolbar</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1"/>
+</node>
+<node TEXT="Fold all" ID="ID_657829947" CREATED="1310134532679" MODIFIED="1314564178393" TEXT_SHORTENED="true">
+<icon BUILTIN="../fold_all"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Folds (hides) all nodes that are descendants of the selected node, including all children, grandchildren, etc. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Hot key</b>
+    </p>
+    <ul>
+      <li>
+        press <i>Space; or</i>
+      </li>
+      <li>
+        single click on the node; or
+      </li>
+      <li>
+        click icon-button in Toolbar
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1"/>
+</node>
+<node TEXT="Folding node(s)" ID="ID_101814873" CREATED="1310828754782" MODIFIED="1312964029404" TEXT_SHORTENED="true">
+<hook NAME="SummaryNode"/>
+<attribute_layout VALUE_WIDTH="202"/>
+<attribute NAME="Chapter" VALUE="1,2"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Folding</b>&#160;is hiding the descendants of a node. A small circle appears as an indicator of hidden descendants. Unfolding is making the descendants reappear.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Goto root  [Move to root ]" ID="ID_1564476202" CREATED="1310134532679" MODIFIED="1315734837791" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif">Moves the selection focus to the root node (the parent of all other nodes). </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Short cut </b>
+    </p>
+    <ul>
+      <li>
+        press <i>Esc; or</i>
+      </li>
+      <li>
+        single click root
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<attribute_layout VALUE_WIDTH="156"/>
+<attribute NAME="Chapter" VALUE="1"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Goto node with ID...  [Go to node with ID.. ]" ID="ID_343872144" CREATED="1310191716143" MODIFIED="1315734849491" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens a dialog to enter the ID of a node and moves the selection focus to this node.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+<node TEXT="Goto previous node  [Previous node]" ID="ID_482454762" CREATED="1310134532679" MODIFIED="1315734858976" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Moves the selection focus to the previous node in the map's hierarchy. If the previous node is currently hidden, the map will be unfolded to display the node. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b><font face="SansSerif, sans-serif" color="#000000">Short cut</font></b>
+    </p>
+    <ul>
+      <li>
+        <i>Ctrl + Alt + Left Arrow</i>.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+<node TEXT="Goto next node  [Next node]" ID="ID_43445328" CREATED="1310134532679" MODIFIED="1315734869896" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Moves the selection focus to the next node in the map's hierarchy. If the next node is currently hidden, the map will be unfolded to display the node. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Short cut</b>
+    </p>
+    <ul>
+      <li>
+        <i>Ctrl + Alt + Right Arrow</i>&#160;
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+<node TEXT="Goto previous node (fold)  [Previous node (fold)]" ID="ID_303327981" CREATED="1310134532679" MODIFIED="1315734878773" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Moves the selection focus to the previous node in the map's hierarchy and, if possible, hide the current node by folding.</font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+<node TEXT="Goto next node (fold) [Select next node (fold)]" ID="ID_230717042" CREATED="1310134532679" MODIFIED="1315734889115" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Move the selection focus to the next node in the map's hierarchy and, if possible, hide the current node by folding.</font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+<node TEXT="Go backward" ID="ID_449527632" CREATED="1310134532679" MODIFIED="1315734927071" TEXT_SHORTENED="true">
+<icon BUILTIN="../MoveTo_PrevNode"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Moves the selection focus to the node that was selected prior to the node that is currently selected. Each time this is used, the selection will continue to move through the history of previously-selected nodes.</font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+<node TEXT="Go forward" ID="ID_602013651" CREATED="1310134532679" MODIFIED="1315734940218" TEXT_SHORTENED="true">
+<icon BUILTIN="../MoveTo_NextNode"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Retraces the nodes selected by using the Back command.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+<node TEXT="Selecting nodes" FOLDED="true" ID="ID_1414672331" CREATED="1310828830380" MODIFIED="1312965326328">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1,2"/>
+<hook NAME="SummaryNode"/>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<node TEXT="Selecting nodes" FOLDED="true" ID="ID_1403801753" CREATED="1309423158240" MODIFIED="1311402615759" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To <b>select a node </b>is to bring it into focus and to <b>un-select a node </b>is to remove the focus. The node in focus is can be acted upon by menu functions.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      The currently selected node is highlighted by either a selection rectangle or a shaded node. The rectangle is the default. This can be changed in <i>View &gt; Rectangular selection</i>.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      To <b>un-select</b>&#160;a selected node(s), click outside the node, in an empty place of the background; or
+    </p>
+    <p>
+      click on an other node, which wil be selected next.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      The node under the cursor is automatically selected. To <b>keep this selection</b>&#160;when moving around the mouse cursor, keep <i>Shift</i>&#160;&#160;pressed. If you dislike this behaviour, you can turn automatic selection off in menu <i>Tools &gt; Preferences</i>.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Alternative ways of selecting a node or group of nodes are by pressing a special key or key combination.
+    </p>
+  </body>
+</html></richcontent>
+<attribute_layout NAME_WIDTH="82" VALUE_WIDTH="156"/>
+<attribute NAME="Chapter" VALUE="1,2"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<node TEXT="" ID="ID_17827125" CREATED="1311313093106" MODIFIED="1311402615775" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1,2"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To keep a selection when moving the cursor around, keep <i>Shift</i>&#160;pressed.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        Tools &gt; Preferences to disable automatic selection
+      </li>
+    </ul>
   </body>
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Afwijkende vertaaltermen" STYLE_REF="Functie" FOLDED="true" ID="ID_1947006714" CREATED="1293387710766" MODIFIED="1293390508384">
-<node TEXT="Bubble = Knoop met omlijning" ID="ID_1164197966" CREATED="1293388429531" MODIFIED="1293388648832"/>
-<node TEXT="Connector = Verbindingslijn" ID="ID_1614578027" CREATED="1293388284673" MODIFIED="1293388300914"/>
-<node TEXT="Edit Long node = Bewerken in hulpvenster" ID="ID_1657410725" CREATED="1293387901037" MODIFIED="1293388557241"/>
-<node TEXT="Edge style = Vorm tak" ID="ID_1267765483" CREATED="1293389118434" MODIFIED="1293389130995"/>
-<node TEXT="Edge width = Dikte tak" ID="ID_1146133222" CREATED="1293389160117" MODIFIED="1293389175367"/>
-<node TEXT="Edit node = Bewerken basistekst" ID="ID_1470159663" CREATED="1293387999722" MODIFIED="1298472026282"/>
-<node TEXT="Edit node details = Bewerken bijlage" ID="ID_1058861806" CREATED="1293388158370" MODIFIED="1293388541235"/>
-<node TEXT="Encrypted = Beveiligd" ID="ID_311285770" CREATED="1293388762982" MODIFIED="1293388775443"/>
-<node TEXT="External hyperlink = Hyperlink" ID="ID_135688108" CREATED="1293388373173" MODIFIED="1293388428282"/>
-<node TEXT="Fold = Dichtvouwen (Invouwen)" ID="ID_145451952" CREATED="1293388685867" MODIFIED="1293388710436"/>
-<node TEXT="Follow hyperlink = Open hyperlink" ID="ID_708731480" CREATED="1293389272408" MODIFIED="1293389287938"/>
-<node TEXT="Fork = geen omlijning ??" ID="ID_648103379" CREATED="1293390015025" MODIFIED="1293390042949"/>
-<node TEXT="Hot key = Sneltoets" ID="ID_1271275444" CREATED="1293390253034" MODIFIED="1293390268057"/>
-<node TEXT="Icon = Pictogram" ID="ID_1648329913" CREATED="1293388649953" MODIFIED="1293388660950"/>
-<node TEXT="Internal hyperlinkd = Snelkoppeling" ID="ID_1547885962" CREATED="1293388341991" MODIFIED="1293388367060"/>
-<node TEXT="Node background color = Knoopachtergrondkleur" ID="ID_1534434940" CREATED="1293389220392" MODIFIED="1295722927547"/>
-<node TEXT="Node color = Tekstkleur" ID="ID_1747286254" CREATED="1293389197961" MODIFIED="1293389211672"/>
-<node TEXT="Note = Notitie" ID="ID_618428882" CREATED="1293388819640" MODIFIED="1293388828900"/>
-<node TEXT="Note Edit Switch = Bewerken notitie" ID="ID_811757943" CREATED="1293388223084" MODIFIED="1293388591160"/>
-<node TEXT="Preferences = Instellingen" ID="ID_1669908048" CREATED="1293390213246" MODIFIED="1293390229970"/>
-<node TEXT="Print = Afdrukken" ID="ID_535968337" CREATED="1293389316979" MODIFIED="1293389329295"/>
-<node TEXT="Reminder = Activiteit" ID="ID_1091234534" CREATED="1293389077713" MODIFIED="1293389089918"/>
-<node TEXT="Root node = Basisknoop" ID="ID_129024327" CREATED="1293387728605" MODIFIED="1293387900281"/>
-<node TEXT="Secondary toolbar = Pictogrammenmenu" ID="ID_184505804" CREATED="1293389656755" MODIFIED="1293389680420"/>
-<node TEXT="Sibling node = onder/bovenliggende knoop" ID="ID_73232297" CREATED="1293389872541" MODIFIED="1293389893446"/>
-<node TEXT="View &gt; Shortened node content =" ID="ID_1968856439" CREATED="1293389738677" MODIFIED="1293389769239"/>
-<node TEXT="Show notes in map =" ID="ID_1859980472" CREATED="1293389804798" MODIFIED="1293389817887"/>
-<node TEXT="Time manager, calendar = Agenda" ID="ID_296372566" CREATED="1293388870725" MODIFIED="1293388966538"/>
-<node TEXT="Tools = Extra" ID="ID_1991303309" CREATED="1293390302462" MODIFIED="1293390313649"/>
-<node TEXT="Topic = Ondewerp" ID="ID_470870487" CREATED="1293388791925" MODIFIED="1293388802148"/>
-<node TEXT="Unfold = Openvouwen (uitvouwen)" ID="ID_691267364" CREATED="1293388711531" MODIFIED="1293388731372"/>
+<node TEXT="Select First/last  sibling" STYLE_REF="Method" ID="ID_1705866199" CREATED="1309546732183" MODIFIED="1311402755270" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To select the first&#160;&#160;or last sibling of the currently selected node &#160;press <i>PgUp </i>respectively<i>&#160;PgDown. </i>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Navigate</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="Discussie over verbeteringen en aanvullingen" STYLE_REF="Functie" ID="ID_1707161101" CREATED="1289132888338" MODIFIED="1293390519670" LINK="http://freeplane.sourceforge.net/wiki/index.php/Translation_nl"/>
+<node TEXT="Select All Descendants" STYLE_REF="Method" FOLDED="true" ID="ID_228451346" CREATED="1309424361071" MODIFIED="1311402755286" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To select all descendants of a selected node:
+    </p>
+    <ul>
+      <li>
+        press <i>Alt + End </i>to&#160;&#160;unfold all hidden descendants
+      </li>
+      <li>
+        press <i>Als + Shift + A </i>to select all visible descendants
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Navigate</i>
+      </li>
+      <li>
+        icon-buttons in the <i>Toolbar</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+<node TEXT=" Icon-button to show all descendants" ID="ID_1807802504" CREATED="1310803337034" MODIFIED="1311053879745">
+<icon BUILTIN="../unfold_all"/>
+</node>
+<node TEXT="Icon-button to hide all descendants" ID="ID_70318547" CREATED="1310803411047" MODIFIED="1311053889011">
+<icon BUILTIN="../fold_all"/>
+</node>
+</node>
+<node TEXT="Select All nodes" STYLE_REF="Method" FOLDED="true" ID="ID_1432526079" CREATED="1309424361078" MODIFIED="1311402755301" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To select all nodes of a mind map:
+    </p>
+    <ul>
+      <li>
+        press <i>Esc</i>&#160;to select the root node
+      </li>
+      <li>
+        press <i>Alt + End </i>to&#160;&#160;unfold all hidden descendants
+      </li>
+      <li>
+        press <i>Als + Shift + A </i>to select all visible descendants
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Navigate</i>
+      </li>
+      <li>
+        icon-buttons in the <i>Toolbar</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+<node TEXT=" Icon-button to show all descendants" ID="ID_919487043" CREATED="1310803337034" MODIFIED="1311053879745">
+<icon BUILTIN="../unfold_all"/>
+</node>
+<node TEXT="Icon-button to hide all descendants" ID="ID_389342260" CREATED="1310803411047" MODIFIED="1311053889011">
+<icon BUILTIN="../fold_all"/>
+</node>
+</node>
+<node TEXT="Select All filtered nodes" STYLE_REF="Method" ID="ID_1432270723" CREATED="1309424361092" MODIFIED="1311402755301" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To select all filtered nodes, see
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+<node TEXT="Select Group of siblings" STYLE_REF="Method" ID="ID_1664441735" CREATED="1309424361085" MODIFIED="1311402755317" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To select a group of siblings, click&#160;&#160;the first and last node while keeping <i>Shift</i>&#160;pressed.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+<node TEXT="Select Arbitrary nodes" STYLE_REF="Method" ID="ID_1374755186" CREATED="1309424361089" MODIFIED="1311402755333" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To select two or more arbitrary nodes, keep <i>Ctrl</i>&#160;pressed while clicking the nodes.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+<node TEXT="Select Using arrow keys" STYLE_REF="Method" ID="ID_81219304" CREATED="1309546028707" MODIFIED="1311402755333" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Use the arrow keys to move the selection focus from one node to another node. The focus moves in the direction of the arrows.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also:</b>
+    </p>
+    <ul>
+      <li>
+        Main menu <i>Nodes</i>&#160;
+      </li>
+      <li>
+        Main menu <i>Navigate</i>.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+<node TEXT="With Hidden Text in Tool Tip" ID="ID_390018350" CREATED="1304485524408" MODIFIED="1311402755348" TEXT_SHORTENED="true" COLOR="#407000">
+<font NAME="SansSerif" SIZE="12"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Hidden text shown in a Tool Tip may hide a sibling under the current node. To move to the node below and show its tool tip, use the down arrow key.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      To finish the appearance of the Too Tip, move the cursor up,&#160;&#160;above the node.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+</node>
+<node TEXT="Follow Link" ID="ID_1084969591" CREATED="1310134532679" MODIFIED="1311184745576" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">If the node is hyperlinked, this command will execute the link. </span></font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif"><b>See also</b> </span></font>
+    </p>
+    <ul>
+      <li>
+        <i>Node features &gt; Hyperlink(Text Field)..</i>.
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Filteren [Filter]" STYLE_REF="MainMenu" FOLDED="true" ID="ID_1254354349" CREATED="1266240693156" MODIFIED="1316339081029" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif">To display only a subset of nodes. Build and use filters with the Filter Toolbar or the Filter Menu. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif">Method<b>&#160;Quick filter</b>&#160;does the major filtering (other options are available).</font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>&#160;Filter rules</b>&#160;are build from thee elements:
+    </p>
+    <ul>
+      <li>
+        <i>Node <b>component</b></i>&#160;(Node Text, Details, Icon, etc.)
+      </li>
+      <li>
+        <b><i>Type of rule: </i></b>&#160;component <i>exists, contains, =</i>, &gt; etc.
+      </li>
+      <li>
+        <b><i>Value</i></b>&#160;of component
+      </li>
+      <li>
+        If value is text, relevancy of <b><i>case</i></b>
+      </li>
+    </ul>
+    <p>
+      <b>Filter options</b>&#160;to set <b>before</b>&#160;applying <i>Quick filter </i>are:
+    </p>
+    <ul>
+      <li>
+        Apply to selected nodes only
+      </li>
+      <li>
+        Apply to already filtered nodes (refine)
+      </li>
+    </ul>
+    <p>
+      <b>Filter option</b>s that can be set&#160;&#160;<b>before or after</b>&#160; applying <i>Quick filter</i>&#160;are:
+    </p>
+    <ul>
+      <li>
+        Unfold hidden nodes
+      </li>
+      <li>
+        Show Ancestors
+      </li>
+      <li>
+        Show Descendants
+      </li>
+      <li>
+        Select all matching
+      </li>
+    </ul>
+    <p>
+      To return to the condition before filtering
+    </p>
+    <ul>
+      <li>
+        Unselect <i>No Filter</i>
+      </li>
+    </ul>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        Nodes hidden before the filter was applied, keep hidden.
+      </li>
+      <li>
+        All nodes left visible move towards each other along the their edges.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="9"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
+</hook>
+<node TEXT="Undo filter" ID="ID_619416419" CREATED="1310134532663" MODIFIED="1314077900094" TEXT_SHORTENED="true">
+<icon BUILTIN="../undo_filter"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Reverses the effect of the previously-used filtering command.</font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="9"/>
+</node>
+<node TEXT="Redo filter" ID="ID_1724296233" CREATED="1310134532663" MODIFIED="1314077912668" TEXT_SHORTENED="true">
+<icon BUILTIN="../redo_filter"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Re-applies the previously-used filtering command, after Filter &gt; Undo has been used.</font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="9"/>
+</node>
+<node TEXT="Reapply filter" ID="ID_1748016122" CREATED="1310134532663" MODIFIED="1314077930031" TEXT_SHORTENED="true">
+<icon BUILTIN="../reapply_filter"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Updates the effect of filtering after changes have been made to the map.</font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="9"/>
+</node>
+<node TEXT="Quick filter" FOLDED="true" ID="ID_1552136796" CREATED="1310134532663" MODIFIED="1313955597436" TEXT_SHORTENED="true">
+<icon BUILTIN="../apply_quick_filter"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Hides all visible nodes which do not fit the filter rules and options. Icon keeps unset..
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>No Filter</i>&#160;to finish filtering.
+      </li>
+      <li>
+        Tool Tip menu Filter (hover the cursor over menu Filter to see its hidden text !)
+      </li>
+    </ul>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        Nodes hidden before the filter was applied, keep hidden.
+      </li>
+      <li>
+        All nodes left visible move towards each other along the their edges.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="9"/>
+<node TEXT="Find last modified nodes" ID="ID_1539236846" CREATED="1311098601253" MODIFIED="1314077884276" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="2,9"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To filter for all nodes modified after a certain date, ser a filterrrule (Date filter<i>, Modified after, date, xxx)</i>&#160;and <i>Quick filter</i>&#160;for all modified nodes.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Find and replace all nodes...</i>&#160;for an alternative way.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Filter selected nodes" ID="ID_402507556" CREATED="1310134532663" MODIFIED="1314077950435" TEXT_SHORTENED="true">
+<icon BUILTIN="../filter_selected_nodes"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Display only the currently-selected node(s) and, optionally, their ancestors and/or descendants. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b><font color="#000000" face="SansSerif, sans-serif">See also</font></b><font color="#000000" face="SansSerif, sans-serif">&#160;</font>
+    </p>
+    <ul>
+      <li>
+        <i><font color="#000000" face="SansSerif, sans-serif">Filter &gt; Show Ancestors</font> </i>
+      </li>
+      <li>
+        <i><font color="#000000" face="SansSerif, sans-serif">Filter &gt; Show Descendants</font></i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute_layout NAME_WIDTH="68" VALUE_WIDTH="68"/>
+<attribute NAME="Chapter" VALUE="9"/>
+</node>
+<node TEXT="Select all matching nodes" ID="ID_164487469" CREATED="1310134532663" MODIFIED="1314907052777" TEXT_SHORTENED="true">
+<icon BUILTIN="../select_all_found_nodes"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Filter and select all matching descendants (visible and invisible) of the node in focus and show and select also the nodes in between.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="9"/>
+</node>
+<node TEXT="No filtering [No filtering (remove)]" ID="ID_1978139715" CREATED="1310134532663" MODIFIED="1314475726484" TEXT_SHORTENED="true">
+<icon BUILTIN="../remove_filtering"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Removes the effect of any filters which were applied; this is the default. Un-sets icon.</font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="9"/>
+</node>
+<node TEXT="Compose filter [Edit filtering]" FOLDED="true" ID="ID_1142884544" CREATED="1310134532663" MODIFIED="1314907116363" TEXT_SHORTENED="true">
+<icon BUILTIN="../edit_filtering_condition"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Opens the Filter Composer dialog to create and edit filter rules / manage filters. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">The first row contains three entries to define a filter rule, filled with (Node text, Contains, empty filed). and a check box for indicating if the Case of letters is relevant (<i>Match case</i>). The box below these editable fields contains the list of predefined rules. Initially it is empty. Two or more of these rules can be combined to form a more complex rule with AND and OR operators using the buttons to the right. A rule can be named with buttond Set Name. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b><font face="SansSerif, sans-serif" color="#000000">Do</font></b>
+    </p>
+    <ol>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000">select or enter the conditions of the filter rule, e.g. (Node text, Contains, filter); Match Case unchecked.</font>
+      </li>
+      <li>
+        press <i>Add </i>to add it to the list of rules.
+      </li>
+      <li>
+        repeat for all rules you need.
+      </li>
+      <li>
+        press OK
+      </li>
+    </ol>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        To combine two or more rules with AND or OR operators, select the rules and press AND resp. OR
+      </li>
+      <li>
+        To connect a rule to a label, select the rule and press<i>&#160;Set Name</i>.
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Styles &gt; Conditional Map styles</i>&#160;for example use of <i>Filter Composer </i>
+      </li>
+      <li>
+        <i>Styles &gt; Conditional Node styles</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="9"/>
+<node TEXT="First filter entry field" STYLE_REF="Method" FOLDED="true" ID="ID_1625917093" CREATED="1312123492440" MODIFIED="1314078031259">
+<attribute NAME="Chapter" VALUE="9"/>
+<node TEXT="Node Text (default)" ID="ID_440014122" CREATED="1312123267776" MODIFIED="1312123719962">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Parent Text" ID="ID_58128801" CREATED="1312123283057" MODIFIED="1312123720196">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Details" ID="ID_1976565775" CREATED="1312123289164" MODIFIED="1312123720181">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Icon" ID="ID_265220662" CREATED="1312123306722" MODIFIED="1312123720150">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Hyperlink" ID="ID_1229040721" CREATED="1312123310770" MODIFIED="1312123720118">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Connector label" ID="ID_725547789" CREATED="1312123356611" MODIFIED="1312123720103">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Connector" ID="ID_1614932096" CREATED="1312123365245" MODIFIED="1312123720087">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Date filter" ID="ID_1276079599" CREATED="1312123370370" MODIFIED="1312123720072">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Priority" ID="ID_30298697" CREATED="1312123376602" MODIFIED="1312123720056">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Node" ID="ID_863184223" CREATED="1312123395954" MODIFIED="1312123720040">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Style" ID="ID_1110522569" CREATED="1312123399644" MODIFIED="1312123720025">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Node level" ID="ID_1102698985" CREATED="1312123420696" MODIFIED="1312123720009">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Reminder" ID="ID_988583509" CREATED="1312123426101" MODIFIED="1312123720009">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Script filter" ID="ID_1339780088" CREATED="1312123431320" MODIFIED="1312123719994">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="and user defined styles..." ID="ID_1524254052" CREATED="1312123439299" MODIFIED="1312123719994">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Second filter entry field" STYLE_REF="Method" FOLDED="true" ID="ID_387521533" CREATED="1312123543788" MODIFIED="1314078043256">
+<attribute NAME="Chapter" VALUE="9"/>
+<node TEXT="Contains (default)" ID="ID_1227202337" CREATED="1312123550505" MODIFIED="1312123823391">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Is equal to" ID="ID_39134629" CREATED="1312123556784" MODIFIED="1312123823453">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Is not equal to" ID="ID_1364103252" CREATED="1312123568866" MODIFIED="1312123823437">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="&gt;" ID="ID_877198724" CREATED="1312123576922" MODIFIED="1312123823437">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="&gt;=" ID="ID_1015544739" CREATED="1312123587882" MODIFIED="1312123823422">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="&lt;=" ID="ID_1164055784" CREATED="1312123591711" MODIFIED="1312123823406">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="&gt;" ID="ID_1681290681" CREATED="1312123597631" MODIFIED="1312123823406">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Matches regexpr" ID="ID_91821609" CREATED="1312123615252" MODIFIED="1312123823406">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Third filter entry field" STYLE_REF="Method" FOLDED="true" ID="ID_871096693" CREATED="1312123628941" MODIFIED="1314078054644">
+<attribute NAME="Chapter" VALUE="9"/>
+<node TEXT="empty text field (default)" STYLE_REF="OptionalValue" ID="ID_1473584730" CREATED="1312123652068" MODIFIED="1312920883566"/>
+</node>
+<node TEXT="Check box" STYLE_REF="Method" FOLDED="true" ID="ID_191687274" CREATED="1312123857125" MODIFIED="1314078066515">
+<attribute NAME="Chapter" VALUE="9"/>
+<node TEXT="Match case" ID="ID_939695594" CREATED="1312123867351" MODIFIED="1312123893606">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Table with List of filters" STYLE_REF="Method" ID="ID_1260531487" CREATED="1312142902004" MODIFIED="1314078079619">
+<attribute NAME="Chapter" VALUE="9"/>
+</node>
+<node TEXT="Buttons of Filter composer" STYLE_REF="Method" FOLDED="true" ID="ID_1027349840" CREATED="1312142569809" MODIFIED="1314078099275">
+<attribute NAME="Chapter" VALUE="9"/>
+<node TEXT="Add" STYLE_REF="Method" ID="ID_1309133157" CREATED="1312142576136" MODIFIED="1312920971020"/>
+<node TEXT="And" STYLE_REF="Method" ID="ID_1757300074" CREATED="1312142621789" MODIFIED="1312920971067"/>
+<node TEXT="Or" STYLE_REF="Method" ID="ID_1457390872" CREATED="1312142626695" MODIFIED="1312920971067"/>
+<node TEXT="Split" STYLE_REF="Method" ID="ID_473058214" CREATED="1312142630728" MODIFIED="1312920971051" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To split a filter rule which was composed with AND and OR.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Delete" STYLE_REF="Method" ID="ID_1607587118" CREATED="1312142647630" MODIFIED="1312920971051"/>
+<node TEXT="Set Name" STYLE_REF="Method" ID="ID_1779620539" CREATED="1312142655048" MODIFIED="1312920971051"/>
+<node TEXT="Right" STYLE_REF="Method" ID="ID_208287444" CREATED="1312142731636" MODIFIED="1312920971035">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+</node>
+<node TEXT="OK" STYLE_REF="Method" ID="ID_1874975203" CREATED="1312142849292" MODIFIED="1312920971035"/>
+<node TEXT="Apply" STYLE_REF="Method" ID="ID_1375530764" CREATED="1312142661031" MODIFIED="1312920971035"/>
+<node TEXT="Cancel" STYLE_REF="Method" ID="ID_23661885" CREATED="1312142699056" MODIFIED="1312920971035"/>
+<node TEXT="Save" STYLE_REF="Method" ID="ID_1878373607" CREATED="1312142707706" MODIFIED="1312920971035"/>
+<node TEXT="Load" STYLE_REF="Method" ID="ID_1746410510" CREATED="1312142713221" MODIFIED="1312920971020"/>
+<node TEXT="Bottom" ID="ID_1789678903" CREATED="1312142752033" MODIFIED="1312143004256">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+</node>
+</node>
+</node>
+<node TEXT="Filter actions" FOLDED="true" ID="ID_214063901" CREATED="1310496676053" MODIFIED="1313955660773">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="9"/>
+<node TEXT="Filter Example" ID="ID_662270274" CREATED="1312144688348" MODIFIED="1312964442165" LINK="#_Freeplane_Link_784043927" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Click green arrow to move to an example.
+    </p>
+  </body>
+</html></richcontent>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<attribute NAME="Chapter" VALUE="2"/>
+</node>
+</node>
+<node TEXT="Applies to filtered nodes (refine)" ID="ID_1768599003" CREATED="1310134532663" MODIFIED="1314078111178" TEXT_SHORTENED="true">
+<icon BUILTIN="../applies_to_filtered_nodes"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Toggle Apply to filtered (visible) nodes, i.e. add an additional filter condition, to further narrow the results.</font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="9"/>
+</node>
+<node TEXT="Unfold hidden nodes" ID="ID_865947666" CREATED="1310134532663" MODIFIED="1314078123299" TEXT_SHORTENED="true">
+<icon BUILTIN="../unfold_filtered_ancestors"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Expand all nodes in a map that match the filter. This is not a toggle switch: once the nodes are expanded, they can only be collapsed using other commands (such as Filter &gt; Undo, which may be used immediately after this command). </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b><font color="#000000" face="SansSerif, sans-serif">See also</font></b><font color="#000000" face="SansSerif, sans-serif">&#160;</font>
+    </p>
+    <ul>
+      <li>
+        <font color="#000000" face="SansSerif, sans-serif">Navigate &gt; Toggle Folded</font>
+      </li>
+      <li>
+        <font color="#000000" face="SansSerif, sans-serif">Navigate &gt; Fold All</font>
+      </li>
+      <li>
+        <font color="#000000" face="SansSerif, sans-serif">Navigate &gt; Fold One Level.</font>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="9"/>
+</node>
+<node TEXT="Show ancestors" ID="ID_1384592614" CREATED="1310134532663" MODIFIED="1313955633644" TEXT_SHORTENED="true">
+<icon BUILTIN="../show_ancestors"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Toggles Display all ancestor nodes of nodes which match the filter when filtering is in effect (Applies to Filtered Nodes is set) </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b><font color="#000000" face="SansSerif, sans-serif">Note</font></b><font color="#000000" face="SansSerif, sans-serif">&#160;</font>
+    </p>
+    <ul>
+      <li>
+        <font color="#000000" face="SansSerif, sans-serif">Can be set before or after <i>Quick filter</i></font>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="9"/>
+</node>
+<node TEXT="Show descendants" ID="ID_347749612" CREATED="1310134532663" MODIFIED="1313955647559" TEXT_SHORTENED="true">
+<icon BUILTIN="../show_descendants"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Togles Display all descendant nodes of nodes which match the filter when filtering is in effect (Applies to Filtered Nodes is set)</font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b><font color="#000000" face="SansSerif, sans-serif">Note</font></b><font color="#000000" face="SansSerif, sans-serif">&#160;</font>
+    </p>
+    <ul>
+      <li>
+        <font color="#000000" face="SansSerif, sans-serif">Can be set before or after <i>Quick filter</i>&#160;has been issued.</font>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="9"/>
+</node>
+<node TEXT="Filter conditions / states" ID="ID_1103140596" CREATED="1310496750715" MODIFIED="1313955674984">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="9"/>
+</node>
+<node TEXT="Find previous" ID="ID_132872030" CREATED="1310134532663" MODIFIED="1314078151067" TEXT_SHORTENED="true">
+<icon BUILTIN="../find_previous"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Find text or other criteria in the selected node. The searching direction is opposite to Find Next. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b><font color="#000000" face="SansSerif, sans-serif">Note</font></b>
+    </p>
+    <ul>
+      <li>
+        The found node is selected.
+      </li>
+      <li>
+        If the found node is folded, it is unfolded.
+      </li>
+      <li>
+        If the found node is outside the screen, the mind map is shifted to bring it in the visible are of the screen.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="9"/>
+</node>
+<node TEXT="Find next" ID="ID_1528431308" CREATED="1310134532663" MODIFIED="1314078164390" TEXT_SHORTENED="true">
+<icon BUILTIN="../find_next"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Find text or other criteria in the selected node and all its descendant nodes. And if not found, search further in other branches. This is called depth first search.</font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b><font color="#000000" face="SansSerif, sans-serif">Note</font></b>
+    </p>
+    <ul>
+      <li>
+        The found node is selected.
+      </li>
+      <li>
+        If the found node is folded, it is unfolded.
+      </li>
+      <li>
+        If the found node is outside the screen, the mind map is shirgted to bring it in the visible are of the screen.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="9"/>
+</node>
+<node TEXT="Finding / searching" ID="ID_721920269" CREATED="1310496838340" MODIFIED="1313955685514">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="9"/>
+</node>
+</node>
+<node TEXT="Extra [Tools]" STYLE_REF="MainMenu" FOLDED="true" ID="ID_1833899525" CREATED="1266240695203" MODIFIED="1316339097222" TEXT_SHORTENED="true">
+<attribute_layout NAME_WIDTH="37" VALUE_WIDTH="77"/>
+<attribute NAME="Chapter" VALUE="3,6,7,8"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To fit your Freeplane to your wishes and advanced features.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Time management" FOLDED="true" ID="ID_1959496513" CREATED="1303932101749" MODIFIED="1311405889292" TEXT_SHORTENED="true">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The Time manager allows you to set dates, times (reminders) and tasks (reminder texts) in selected nodes. The date appears as basic node text. A clock icon signals that a reminder is set.&#160;&#160;This icon appears in the note and its predecessors, except nodes which are within a Sum node group. A flasing clock icon signals that a reminder time has been reached.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      There are two locations where these functions can be set of edited.
+    </p>
+    <ul>
+      <li>
+        <i>Node features &gt; Time management </i>
+      </li>
+      <li>
+        <i>View &gt; Properties panel &gt; Calendar and Attribute</i>s
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="5"/>
+<node TEXT="Manage time  [Show Calendar...]" FOLDED="true" ID="ID_1104707017" CREATED="1267746559867" MODIFIED="1314563702545" TEXT_SHORTENED="true">
+<icon BUILTIN="../TimeManagementAction"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens a dialog to set ar change a date (text) or a reminder which has been attached to the selected node. The node and its predecessors show a clock icon. This icon flases at the reminder time. Also a red exclamation mark flashes in the root node.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        <i>View &gt; Properties Panel &gt; Calendar &amp; Attributes</i>&#160;for an alternative dialog
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="5"/>
+<node TEXT="Set year, month and day" STYLE_REF="Method" ID="ID_629838545" CREATED="1310058100675" MODIFIED="1314563773401" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="5"/>
+</node>
+<node TEXT="Insert date in selection" STYLE_REF="Method" ID="ID_77223280" CREATED="1288907062597" MODIFIED="1314563783026" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="5"/>
+</node>
+<node TEXT="Remind me at this date" STYLE_REF="Method" ID="ID_1905175036" CREATED="1310058020709" MODIFIED="1314563800654" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="5"/>
+</node>
+<node TEXT="Remove reminder (time)" STYLE_REF="Method" ID="ID_1600844387" CREATED="1310058040514" MODIFIED="1314563806005" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="5"/>
+</node>
+</node>
+<node TEXT="Manage tasks  [Show Time Scheduler List...]" ID="ID_1106133151" CREATED="1266247905093" MODIFIED="1314563746085" BACKGROUND_COLOR="#ffffff" TEXT_SHORTENED="true">
+<icon BUILTIN="../TimeListAction"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif">Opens a window which displays the reminders of all nodes. For each reminder are displayed: </font>
+    </p>
+    <ul>
+      <li>
+        date
+      </li>
+      <li>
+        basic node text
+      </li>
+      <li>
+        icons
+      </li>
+      <li>
+        time created
+      </li>
+      <li>
+        time last modified
+      </li>
+      <li>
+        notes
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif">The entries can be searched, and changed with search and replace. </font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="5"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1106133151" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+</node>
+<node TEXT="Remove reminder" ID="ID_148977369" CREATED="1303932208426" MODIFIED="1311405889339" TEXT_SHORTENED="true">
+<icon BUILTIN="../ReminderHookAction"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="5"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Remove the reminder of the selected node. For alternatives:
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Show Calendar..</i>.
+      </li>
+      <li>
+        <i>View Properties Panel &gt; Calendar &amp; Attribute</i>s
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="" ID="ID_517678813" CREATED="1288542096079" MODIFIED="1312919951425" TEXT_SHORTENED="true">
+<hook NAME="plugins/TimeManagementReminder.xml">
+    <Parameters REMINDUSERAT="2077460580480"/>
+</hook>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="5"/>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+</node>
+<node TEXT="Password protection" FOLDED="true" ID="ID_83654353" CREATED="1303931982176" MODIFIED="1314906861318" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Encryption</b>&#160;is a method to protect (only) the descendants of a node from viewing and editing. unless the right encryption key has been entered.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        The algorithm used is &quot;PBEWithMD5AndDES&quot; of javax.crypto.Cipher&quot;
+      </li>
+      <li>
+        Use a sentence or long key with capitals, non capitals and special characters to be more safe.
+      </li>
+      <li>
+        The information in the source file is unreadable too.
+      </li>
+      <li>
+        Example use: safety lock for private information.<br/>
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Maps &gt; Map browser</i>&#160;to protect a mind map from editing, but keep it readable
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="8"/>
+<node TEXT="(Un)set protection (encryption) [Toggle encrypted / decrypted]" FOLDED="true" ID="ID_1020968664" CREATED="1266247815921" MODIFIED="1314563873023" TEXT_SHORTENED="true">
+<icon BUILTIN="../lock"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Opens a dialog&#160;&#160;to add and use&#160;&#160;a password to protect the descendants of the selected node form being displayed and edited. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><b>Note</b>&#160;</font>
+    </p>
+    <ul>
+      <li>
+        <font color="#000000" face="SansSerif, sans-serif">To protect a map, select an protect the root node.</font>
+      </li>
+      <li>
+        <font color="#000000" face="SansSerif, sans-serif">The selected node itself is not protected, its information keeps being displayed and editable.</font>
+      </li>
+      <li>
+        Multiple layer protection is possible: protect a child of a protected parent with a different password.
+      </li>
+      <li>
+        Closing the map will automatically protect the node (toggle <i>Encrypted</i>).
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Node feutures &gt; Link &gt; Hyperlink (Menu Entry)</i>&#160;to make the lock clickable.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="8"/>
+<node TEXT="" FOLDED="true" ID="ID_1494824963" CREATED="1312920011445" MODIFIED="1312920034379">
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<node TEXT="" ENCRYPTED_CONTENT="/xWFGOIZ0dg= gT0iwj5Mr9ZIUJGRpaqO8Htqqrsf2WP03ZNL+++X2kTszPq0YnO2ZeUGmygvV6OwMQ0CXGau4qbnLlt5ODSMosrdy5dZ6ZqDB4hELxsH/uvBkCIhukwfQA7ExofI6u2MbKWGXK/WWJ5cB+65yJVcWqjeLTsDYwNc4stftw3OcVG4ui/40qfkmCCuSemvAOV2sNjrxV5qyDnwzJWVCS0VtwHzUeDKlKRPNz08FmIdhXWpX3YtWYhIn7CLC9rzh9OI" ID="ID_866287848" CREATED="1312574380161" MODIFIED="1312781542844" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Example</b>
+    </p>
+    <p>
+      This node is protected: my children are visible only after entering a password.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Do</b>
+    </p>
+    <ul>
+      <li>
+        Select <i>Toggle Encrypted </i>and enter password <i>freeplane </i>
+      </li>
+      <li>
+        See that I have two child nodes.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+<node TEXT="Encryption" ID="ID_1331695196" CREATED="1312694750646" MODIFIED="1312781542844" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Toggle encryption does not function when published (Java Applet)
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+</node>
+</node>
+<node TEXT="Remove protection (encryption) [Remove encryption]" ID="ID_136268743" CREATED="1303932060947" MODIFIED="1314563925002" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens a dialog to enter a password and remove the protection from the selected node. Next time it is not necessary to enter a password to display the descendants of the node.
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+</node>
+<node TEXT="Assign short cut" ID="ID_764902206" CREATED="1271849865669" MODIFIED="1311405939493" TEXT_SHORTENED="true">
+<icon BUILTIN="../SetAcceleratorOnNextClickAction"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif">Allows assigning a hotkey combination to most menu commands, or reassigning the current hotkeys. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Opens a dialog to:
+    </p>
+    <ol>
+      <li>
+        select by navigating the menu item to connect to
+      </li>
+      <li>
+        enter the key, key combination, or F-key
+      </li>
+    </ol>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Tools &gt; Hot Key Presets &gt; Save presets</i>
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        Different sets can be saved for different uses
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+<node TEXT="Hot Key Presets" FOLDED="true" ID="ID_701336954" CREATED="1266248138750" MODIFIED="1311405939509">
+<icon BUILTIN="../acceleratorPresets"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="8"/>
+<node TEXT="Select hot key set" ID="ID_418449510" CREATED="1289732931429" MODIFIED="1312921190263" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens a list of previously saved hot key sets to choose from.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        If there is no user defined set, none is shown.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="8"/>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+<node TEXT="Save hot key set" ID="ID_918316602" CREATED="1266248179781" MODIFIED="1311405939540" COLOR="#000000" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif">Oprens a dialog to save all the currently-defined hot key short-cuts to a dedicated file, which may be used to share the keystroke sets among multiple computers.The dialog prompts for the name of the file, which is automatically given the &quot;.properties&quot; extension. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b><font color="#000000" face="SansSerif, sans-serif">Note</font></b>
+    </p>
+    <ul>
+      <li>
+        <font color="#000000" face="SansSerif, sans-serif">The file is created in the &quot;accelerators&quot; subdirectory of the User Directory.</font>
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        Tools &gt; Open User Directory
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+<node TEXT="Remove hot key set" STYLE_REF="Functiegroep" ID="ID_978833755" CREATED="1293376890432" MODIFIED="1312921175833" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Select <i>Tools &gt; Open User directory</i>&#160;and delete the set name in directory <i>accelerators</i>.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="8"/>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+</node>
+<node TEXT="Short cuts" FOLDED="true" ID="ID_1175856403" CREATED="1310739595312" MODIFIED="1311405939556">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="8"/>
+<node TEXT="" FOLDED="true" ID="ID_1466182220" CREATED="1312921094954" MODIFIED="1312921114922">
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<node TEXT="Short cut or hot key" ID="ID_812201013" CREATED="1310823944773" MODIFIED="1311405939571" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="8"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      A <b>hot key</b>&#160;is a special key or key combination which can be used to trigger a menu item without having to navigate to the menu item.
+    </p>
+    <p>
+      
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="F-keys" ID="ID_435839537" CREATED="1289732578947" MODIFIED="1311405939571" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      F-keys (F1 - F-12) are hot keys. See above for assigning, selecting and deleting.
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+<node TEXT="Reference card for special system keys" ID="ID_1818761339" CREATED="1286915483579" MODIFIED="1311405939587" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See</b>
+    </p>
+    <ul>
+      <li>
+        <i>Help &gt; Key Reference</i>
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+  </body>
+</html></richcontent>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+<node TEXT="Unassigned F-keys" STYLE_REF="ToNote" FOLDED="true" ID="ID_572257004" CREATED="1313323930393" MODIFIED="1313324020030" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <pre wrap=""> Unassigned F-Key are passed through if the focused component is a JTextComponent.  (1.2.8_05</pre>
+  </body>
+</html></richcontent>
+<node ID="ID_1243435937" CREATED="1313324062197" MODIFIED="1313324062197" LINK="https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4652076">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <pre wrap=""><a href="https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4652076" class="moz-txt-link-freetext">https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4652076</a></pre>
+  </body>
+</html></richcontent>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Execute selected node scripts" ID="ID_894921324" CREATED="1266247915812" MODIFIED="1311405964531" TEXT_SHORTENED="true">
+<icon BUILTIN="../ExecuteScriptForSelectionAction"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span style="color: #000000; font-family: SansSerif, sans-serif"><font color="#000000" face="SansSerif, sans-serif">Runs all scripts which are attached to the currently selected node(s).</font></span>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="7"/>
+</node>
+<node TEXT="Execute all scripts" ID="ID_1362957476" CREATED="1266248076859" MODIFIED="1311405964547" TEXT_SHORTENED="true">
+<icon BUILTIN="../ExecuteScriptForAllNodes"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span style="color: #000000; font-family: SansSerif, sans-serif"><font color="#000000" face="SansSerif, sans-serif">Runs all the scripts which are local to the current map, having been created using the Script Editor.</font></span>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="7"/>
+</node>
+<node TEXT="Edit script... [Script editor .]." ID="ID_1785517002" CREATED="1310737755450" MODIFIED="1314907189902">
+<icon BUILTIN="../ScriptEditor"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span style="color: #000000; font-family: SansSerif, sans-serif"><font color="#000000" face="SansSerif, sans-serif">Displays a window for creating scripts which become attached to individual nodes, and are saved local to the current map file.</font></span>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="7"/>
+</node>
+<node TEXT="Available scripts [Scripts]" ID="ID_1890181858" CREATED="1267746871633" MODIFIED="1314907221289" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span style="color: #000000; font-family: SansSerif, sans-serif"><font color="#000000" face="SansSerif, sans-serif">Displays a hierarchical menu of Groovy scripts which have been added to the user's scripts directory.</font></span>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="7"/>
+</node>
+<node TEXT="Formulas..." STYLE_REF="Functie" FOLDED="true" ID="ID_394104724" CREATED="1291201976731" MODIFIED="1311405964578" BACKGROUND_COLOR="#ffffff">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      In Freeplane there are 3 types of formulas:
+    </p>
+    <ul>
+      <li>
+        a formula in a text, written in LaTeX
+      </li>
+      <li>
+        a simple formula as in a Spread Sheet (Excel) which is executed at once. This type of formula is written in the basic node text and starts with &quot;=&quot;, followed by a regular expression like 3 + 5. The node calculates and shows the result (8) in stead of the formula. This type of node can be recognized by a colored border.
+      </li>
+      <li>
+        an advanced formula defined in Groovy script language.
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>View &gt; Don't mark formulas with a border</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="7"/>
+<node TEXT="Evaluate all" STYLE_REF="Functie" ID="ID_1812283108" CREATED="1291201995803" MODIFIED="1310883758950">
+<icon BUILTIN="../formula"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Scripts and formulas" FOLDED="true" ID="ID_1686912429" CREATED="1310739619133" MODIFIED="1312912059088" TEXT_SHORTENED="true" LINK="#ID_1528894906">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="7"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Note
+    </p>
+    <ul>
+      <li>
+        To use scripts, preferences must be activated.
+      </li>
+      <li>
+        Scrips do not work in published mindmaps (Java Applets)
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        Click the green arrow to see the preferences.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<node TEXT="" FOLDED="true" ID="ID_1643451776" CREATED="1312921132339" MODIFIED="1312921156208">
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<node TEXT="Wiki Formulas" ID="ID_1130453106" CREATED="1310826300439" MODIFIED="1311405964594" LINK="http://freeplane.sourceforge.net/wiki/index.php/Formulas">
+<attribute NAME="Chapter" VALUE="7"/>
+</node>
+<node TEXT="Wiki Groovy scripts" ID="ID_1846416316" CREATED="1310826176176" MODIFIED="1311405964594" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting">
+<attribute NAME="Chapter" VALUE="7"/>
+</node>
+<node TEXT="Wiki Example scripts" ID="ID_1734570187" CREATED="1312707186361" MODIFIED="1312707225956" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting:_Example_scripts"/>
+<node TEXT="Example script to Load image in Details" ID="ID_840644558" CREATED="1312703533603" MODIFIED="1312826164583" LINK="menuitem:_$ExecuteScriptForSelectionAction$0" TEXT_SHORTENED="true">
+<icon BUILTIN="../ExecuteScriptForSelectionAction"/>
+<attribute NAME="script1" VALUE="// @ExecutionModes({ON_SINGLE_NODE})&#xd;&#xa;import groovy.swing.SwingBuilder&#xd;&#xa;import java.awt.FlowLayout as FL&#xd;&#xa;import javax.swing.BoxLayout as BXL&#xd;&#xa;import javax.swing.ImageIcon&#xd;&#xa;import javax.swing.JFileChooser&#xd;&#xa;import javax.swing.JTextField&#xd;&#xa;import org.freeplane.core.resources.ResourceController&#xd;&#xa;&#xd;&#xa;def ImageIcon getIcon(String path) {&#xd;&#xa;    new ImageIcon(ResourceController.getResourceController().getResource(path))&#xd;&#xa;}&#xd;&#xa;&#xd;&#xa;def builder = new SwingBuilder()&#xd;&#xa;def dial = builder.dialog(title:&apos;Insert Image&apos;, id:&apos;insertImage&apos;, modal:true,&#xd;&#xa;               locationRelativeTo:ui.frame, owner:ui.frame, pack:true, show:true) {&#xd;&#xa;    panel() {&#xd;&#xa;        JTextField urlField&#xd;&#xa;        boxLayout(axis:BXL.Y_AXIS)&#xd;&#xa;        panel(alignmentX:0f) {&#xd;&#xa;            flowLayout(alignment:FL.LEFT)&#xd;&#xa;            label(&apos;URL&apos;)&#xd;&#xa;            urlField = textField(id:&apos;url&apos;, columns:30)&#xd;&#xa;            button(action:action(closure:{&#xd;&#xa;                def chooser = fileChooser(fileSelectionMode:JFileChooser.FILES_ONLY)&#xd;&#xa;                if (chooser.showOpenDialog() == JFileChooser.APPROVE_OPTION)&#xd;&#xa;                    urlField.text = chooser.selectedFile.toURL()&#xd;&#xa;                }), icon:getIcon(&quot;/images/fileopen.png&quot;))&#xd;&#xa;        }&#xd;&#xa;        panel(alignmentX:0f) {&#xd;&#xa;            flowLayout(alignment:FL.LEFT)&#xd;&#xa;            label(&apos;Width:&apos;)&#xd;&#xa;            textField(id:&apos;width&apos;, columns:3)&#xd;&#xa;            glue()&#xd;&#xa;            label(&apos;Height:&apos;)&#xd;&#xa;            textField(id:&apos;height&apos;, columns:3)&#xd;&#xa;        }&#xd;&#xa;        panel(alignmentX:0f) {&#xd;&#xa;            flowLayout(alignment:FL.LEFT)&#xd;&#xa;            label(&apos;Target:&apos;)&#xd;&#xa;            buttonGroup().with { group -&gt;  &#xd;&#xa;                radioButton(id:&apos;text&apos;, text:&apos;Node Text&apos;, selected:true, buttonGroup:group)  &#xd;&#xa;                radioButton(id:&apos;details&apos;, text:&apos;Node Details&apos;, buttonGroup:group)  &#xd;&#xa;            }  &#xd;&#xa;        }&#xd;&#xa;        panel(alignmentX:0f) {&#xd;&#xa;            flowLayout(alignment:FL.RIGHT)&#xd;&#xa;            button(action:action(name:&apos;OK&apos;, defaultButton:true, mnemonic:&apos;O&apos;,&#xd;&#xa;                                 enabled:bind(source:urlField, sourceProperty:&apos;text&apos;,&#xd;&#xa;                                              converter:{ it ? true : false }),&#xd;&#xa;                                 closure:{variables.ok = true; dispose()}))&#xd;&#xa;            button(action:action(name:&apos;Cancel&apos;, mnemonic:&apos;C&apos;, closure:{dispose()}))&#xd;&#xa;        }&#xd;&#xa;    }&#xd;&#xa;}&#xd;&#xa;&#xd;&#xa;def String insertTag(String text, String htmlTag) {&#xd;&#xa;    if (text == null)&#xd;&#xa;        text = &quot;&quot;&#xd;&#xa;    if ( ! text.startsWith(&quot;&lt;html&gt;&quot;))&#xd;&#xa;        text = &quot;&lt;html&gt;&lt;head/&gt;&lt;body&gt;${text}&lt;/body&gt;&lt;/html&gt;&quot;&#xd;&#xa;    return text.replace(&quot;&lt;/body&gt;&quot;, htmlTag + &quot;&lt;/body&gt;&quot;)&#xd;&#xa;}&#xd;&#xa;&#xd;&#xa;def String imageTag(url, width, height) {&#xd;&#xa;    def attribs = [ &quot;src=&apos;${url}&apos;&quot; ]&#xd;&#xa;    if (width)&#xd;&#xa;        attribs &lt;&lt; &quot;width=&apos;${width}&apos;&quot;&#xd;&#xa;    if (height)&#xd;&#xa;        attribs &lt;&lt; &quot;height=&apos;${height}&apos;&quot;&#xd;&#xa;    &quot;&lt;img ${attribs.join(&apos; &apos;)} /&gt;&quot;&#xd;&#xa;}&#xd;&#xa;&#xd;&#xa;def vars = builder.variables&#xd;&#xa;if (vars.ok) {&#xd;&#xa;    def imageTag = imageTag(vars.url.text, vars.width.text, vars.height.text)&#xd;&#xa;    if (vars.details.selected)&#xd;&#xa;        node.details = insertTag(node.detailsText, imageTag)&#xd;&#xa;    else&#xd;&#xa;        node.text = insertTag(node.text, imageTag)&#xd;&#xa;}&#xd;&#xa;&#xd;&#xa;"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To load an image in&#160;&#160;Details you can execute the script defined in this node.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Do </b>
+    </p>
+    <ul>
+      <li>
+        Copy this node to your mind map
+      </li>
+      <li>
+        Make sure to have put in <i>Tools &gt; Preferences &gt;Plugins</i>&#160;a check before:
+
+        <ul>
+          <li>
+            run scrips
+          </li>
+          <li>
+            allow read files
+          </li>
+          <li>
+            allow write file
+          </li>
+        </ul>
+      </li>
+      <li>
+        Click on the copied node to open the dialog which will insert the image.
+      </li>
+    </ul>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        <p>
+          You can also copy the script contained in this node to your node.
+        </p>
+      </li>
+      <li>
+        The original script can be found in the wiki with&#160;&#160;example scripts.
+      </li>
+      <li>
+        The current node contains a link to <i>Tools &gt; Execute node scrips</i>&#160;&#160;which activates the script
+      </li>
+      <li>
+        The example has one draw back: the script must be in the node where the image is needed. See the example below for a solution which is more generic.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Generic use of same script" ID="ID_776458088" CREATED="1312823815065" MODIFIED="1312825892220" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To make available the example script to insert an image to Details from any node, you should install it in directory scrips.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Do</b>
+    </p>
+    <ul>
+      <li>
+        <i>Tools &gt; Open User directory</i>
+      </li>
+      <li>
+        Define or open the submenu <i>scripts</i>
+      </li>
+      <li>
+        Download the script from the wiki with script examples
+
+        <ul>
+          <li>
+            <font size="3">Goto wiki with example scrips</font>
+          </li>
+          <li>
+            <font size="3">Find file: <i>Inserts an inline image into node text or details</i></font>
+          </li>
+          <li>
+            Press download script, choose save; <i>InsertInlineImage.groovy</i>&#160;is downloaded
+          </li>
+          <li>
+            Copy this file to the directory scrips
+          </li>
+        </ul>
+      </li>
+      <li>
+        If you close and restart Freeplane (!) the saved file will become visible in <i>Tools &gt;Scripts</i>
+      </li>
+    </ul>
+    <p>
+      Now you can select a node and start the script with:
+    </p>
+    <ul>
+      <li>
+        <i>Tools &gt; Script &gt; InsertInlineImage</i>&#160;(or the name you used to save the script)
+      </li>
+    </ul>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        Make sure to have put in <i>Tools &gt; Preferences &gt;Plugins</i>&#160;a check before:
+
+        <ul>
+          <li>
+            run scrips
+          </li>
+          <li>
+            allow read files
+          </li>
+          <li>
+            allow write file
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Execute external command" ID="ID_1044042899" CREATED="1313260327763" MODIFIED="1313260463827" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <code>To execute an external command, save the script: </code>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <code>// @ExecutionModes(on_single_node) </code>
+    </p>
+    <p>
+      <code>&#160;'C:\path\to\my\command'.execute() </code>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b><code>Note</code></b>
+    </p>
+    <p>
+      <code>You can bind the command to a hotkey.</code>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Open user directory" FOLDED="true" ID="ID_4259182" CREATED="1303933344973" MODIFIED="1314907243581">
+<icon BUILTIN="../OpenUserDirAction"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="6,8"/>
+<node TEXT="log files" ID="ID_338415854" CREATED="1310759742065" MODIFIED="1311353618620">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="directory-.backup" FOLDED="true" ID="ID_692458643" CREATED="1310759556908" MODIFIED="1310883473236" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      automatic backups
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<node TEXT="" ID="ID_1708394985" CREATED="1310825788339" MODIFIED="1312921208187">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      If you lost your map, look here.
+    </p>
+  </body>
+</html></richcontent>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+</node>
+<node TEXT="directory-templates" ID="ID_366822599" CREATED="1310759536089" MODIFIED="1311405837797" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Contains all styles, .mm format.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        default.mm is the system file used with New map.
+      </li>
+      <li>
+        You can exchange styles with other users here.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="directory-scripts" ID="ID_1775013886" CREATED="1310759542634" MODIFIED="1310883473236" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      user defined scripts
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="directory-icons" ID="ID_7040911" CREATED="1310759549880" MODIFIED="1311405837797" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Contains user defined icons.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Note
+    </p>
+    <ul>
+      <li>
+        You can put your own icons here, or exchange icons with other users.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="directory-xml" ID="ID_912917878" CREATED="1310885156896" MODIFIED="1310885260200" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Optional, to be added by the user.
+    </p>
+    <p>
+      Used to store user defined menu structure.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="directory-accelerators" ID="ID_390138300" CREATED="1310825223726" MODIFIED="1311406257921" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Contains hot key sets.
+    </p>
+    <p>
+      These can be exchanged between users.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="6,8"/>
+</node>
+<node TEXT="Import/export" ID="ID_877249660" CREATED="1310825608361" MODIFIED="1312921263364" TEXT_SHORTENED="true">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="6,8"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      You can exchange icons, styles, short key sets with other users here.
+    </p>
+  </body>
+</html></richcontent>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+</node>
+<node TEXT="Preferences ..." FOLDED="true" ID="ID_827606855" CREATED="1310134532679" MODIFIED="1312967785134" TEXT_SHORTENED="true">
+<icon BUILTIN="../PropertyAction"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The present node is used in Finding and Filtering only. Descriptions are lacking.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1,3,4,6,7,8"/>
+<node TEXT="Environment" FOLDED="true" ID="ID_1029291913" CREATED="1310756725581" MODIFIED="1311405939587">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="8"/>
+<node TEXT="Open files in a running instance" FOLDED="true" ID="ID_637030087" CREATED="1310756756821" MODIFIED="1311924479311">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<node TEXT="" ID="ID_390598009" CREATED="1311706805194" MODIFIED="1311708348283">
+<attribute_layout NAME_WIDTH="33" VALUE_WIDTH="137"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Avoid a second instance in any case" ID="ID_646231690" CREATED="1310756773801" MODIFIED="1311924479295">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Single Program Instance" ID="ID_1182954985" CREATED="1310756739294" MODIFIED="1311483332938">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+</node>
+<node TEXT="Language" STYLE_REF="Method" FOLDED="true" ID="ID_922308916" CREATED="1310756795196" MODIFIED="1312921288917">
+<node TEXT="Automatic" ID="ID_1563480497" CREATED="1311708441781" MODIFIED="1311708471843">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Last Opened List Length" STYLE_REF="Method" FOLDED="true" ID="ID_980964669" CREATED="1310756813075" MODIFIED="1312921288933">
+<node TEXT="25" ID="ID_707557773" CREATED="1311708478168" MODIFIED="1311708512364">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Automatically open last map" ID="ID_196332959" CREATED="1310756835047" MODIFIED="1311924479295">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Load all last maps" ID="ID_1374498842" CREATED="1310756850593" MODIFIED="1311924592723">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Load last and new maps" ID="ID_1415496133" CREATED="1310756870115" MODIFIED="1311924479280">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Experimental File Locking" ID="ID_323193765" CREATED="1310756884507" MODIFIED="1311924479280">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Standard Template File" STYLE_REF="Method" FOLDED="true" ID="ID_1036795471" CREATED="1310756905403" MODIFIED="1312921304221">
+<node TEXT="standard.mm" ID="ID_706234894" CREATED="1310756919873" MODIFIED="1311482969704">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Files" STYLE_REF="Method" ID="ID_1889550390" CREATED="1310756806514" MODIFIED="1312921304252">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+</node>
+<node TEXT="Time For Automatic Save" STYLE_REF="Method" FOLDED="true" ID="ID_1187275639" CREATED="1310757398287" MODIFIED="1312921304236">
+<node TEXT="60,000" ID="ID_1936163905" CREATED="1311710082273" MODIFIED="1311710111930">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Use single directory for backup files" ID="ID_1591228143" CREATED="1310757416031" MODIFIED="1311924479264">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Use single directory for backup files" ID="ID_99034104" CREATED="1311710239748" MODIFIED="1311924479264">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Backup directory if above is selected" STYLE_REF="Method" ID="ID_76108740" CREATED="1310757444914" MODIFIED="1312921337698"/>
+<node TEXT="Delete Automatic Saves At Exit" ID="ID_1981866727" CREATED="1310757462254" MODIFIED="1311924567521">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="NumberOf Different Files For Automatic SAve" STYLE_REF="Method" FOLDED="true" ID="ID_1665531613" CREATED="1310757485006" MODIFIED="1312921337683">
+<node TEXT="10" ID="ID_205157037" CREATED="1311710082273" MODIFIED="1311710711041">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Number of kept backup files" STYLE_REF="Method" FOLDED="true" ID="ID_862892627" CREATED="1310757520629" MODIFIED="1312921337683">
+<node TEXT="2" ID="ID_1142741407" CREATED="1311710082273" MODIFIED="1311710744909">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Automatic Save" ID="ID_650602318" CREATED="1310757388200" MODIFIED="1311483332953">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+</node>
+<node TEXT="Save folding" STYLE_REF="Method" FOLDED="true" ID="ID_886253731" CREATED="1310757551768" MODIFIED="1312921337667" TEXT_SHORTENED="true">
+<node TEXT="Never" ID="ID_689273752" CREATED="1311710082273" MODIFIED="1311710858729">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Always" ID="ID_702281311" CREATED="1311710082273" MODIFIED="1311710837513">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="If map is changed" ID="ID_1299958092" CREATED="1311710082273" MODIFIED="1311710921269">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Save modification times" STYLE_REF="Method" ID="ID_1062887553" CREATED="1310757564052" MODIFIED="1312921337667"/>
+<node TEXT="Save" ID="ID_619771458" CREATED="1310757542352" MODIFIED="1311925029243">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+</node>
+<node TEXT="On Load" STYLE_REF="Method" FOLDED="true" ID="ID_6779259" CREATED="1310757608637" MODIFIED="1312921337667">
+<node TEXT="Load from map or fold all" ID="ID_1843878856" CREATED="1311710082273" MODIFIED="1311711108181">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Load from map or unfold all" ID="ID_204010386" CREATED="1311710082273" MODIFIED="1311711145403">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Unfold all" ID="ID_98026410" CREATED="1311710082273" MODIFIED="1311711162984">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Maximum number of displayed nodes" STYLE_REF="Method" FOLDED="true" ID="ID_1905038356" CREATED="1310757621062" MODIFIED="1312921337652">
+<node TEXT="20" ID="ID_1759313322" CREATED="1311710082273" MODIFIED="1311711208708">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Charset" STYLE_REF="Method" FOLDED="true" ID="ID_884107518" CREATED="1310757640710" MODIFIED="1312921365061">
+<node TEXT="Default" ID="ID_198865739" CREATED="1311710082273" MODIFIED="1311711259423">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="..." ID="ID_1437522671" CREATED="1311710082273" MODIFIED="1311711289305">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Load" ID="ID_950384750" CREATED="1310757604557" MODIFIED="1311483332953">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+</node>
+<node TEXT="Links" STYLE_REF="Method" FOLDED="true" ID="ID_82833119" CREATED="1311711318523" MODIFIED="1312921365045">
+<node TEXT="Relative" ID="ID_1185657954" CREATED="1311710082273" MODIFIED="1311711344919">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Absolute" ID="ID_252889669" CREATED="1311710082273" MODIFIED="1311711401321">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Hyperlink Types" ID="ID_1309284534" CREATED="1310757657738" MODIFIED="1311711469041">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+</node>
+<node TEXT="Check for updates on program start" ID="ID_348083728" CREATED="1311483101532" MODIFIED="1311924533693">
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Program Updates" ID="ID_1155437887" CREATED="1310757670366" MODIFIED="1311483332953">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+</node>
+<node TEXT="Policy" STYLE_REF="Method" FOLDED="true" ID="ID_938224301" CREATED="1311483188239" MODIFIED="1312921365045">
+<node TEXT="Show report dialog" ID="ID_1017882911" CREATED="1311483193598" MODIFIED="1311483296605">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Always send" ID="ID_920549965" CREATED="1311483233541" MODIFIED="1311483296621">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Never send" ID="ID_1237652835" CREATED="1311483239570" MODIFIED="1311483296621">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Automatic bug report" ID="ID_849413397" CREATED="1310757685958" MODIFIED="1311483332953">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+</node>
+</node>
+<node TEXT="Appearance" FOLDED="true" ID="ID_186670407" CREATED="1266242716593" MODIFIED="1312967080497" COLOR="#000000">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="8"/>
+<node TEXT="Look and feel" STYLE_REF="Method" FOLDED="true" ID="ID_702879709" CREATED="1311711679398" MODIFIED="1312921365030">
+<node TEXT="Default" ID="ID_1366474327" CREATED="1311483239570" MODIFIED="1311711744124">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Nimbus" ID="ID_801561072" CREATED="1311483239570" MODIFIED="1311711781509">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Metal" ID="ID_1239129408" CREATED="1311483239570" MODIFIED="1311711797047">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="CDE/Motiv" ID="ID_1852646607" CREATED="1311483239570" MODIFIED="1311711894313">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Windows" ID="ID_1713648658" CREATED="1311483239570" MODIFIED="1311711847950">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Windows classic" ID="ID_850989941" CREATED="1311483239570" MODIFIED="1311711865422">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Use Tabs" ID="ID_678230606" CREATED="1310755710026" MODIFIED="1311924298928">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Use default font for notes too" ID="ID_1971832225" CREATED="1310755787737" MODIFIED="1311924298928">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Remove top margin for notes" ID="ID_136257105" CREATED="1310755814000" MODIFIED="1311924298912">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Look and feel" ID="ID_1413754050" CREATED="1271849999714" MODIFIED="1312967116985">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+<node TEXT="Display node ID" ID="ID_1626584260" CREATED="1310755845061" MODIFIED="1311924437893">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Status line" ID="ID_781487286" CREATED="1310755835707" MODIFIED="1312967168762">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+<node TEXT="Revision Color" STYLE_REF="Method" FOLDED="true" ID="ID_665414546" CREATED="1310755901626" MODIFIED="1312921407477">
+<node TEXT="Yellow background" ID="ID_17029124" CREATED="1311483239570" MODIFIED="1311712048831">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="White background for printing" ID="ID_1915067515" CREATED="1310755911352" MODIFIED="1311924298897">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Standard Cloud Color" STYLE_REF="Method" FOLDED="true" ID="ID_749503390" CREATED="1310755933481" MODIFIED="1312921407462">
+<node TEXT="#f0f0f0" ID="ID_327342349" CREATED="1311483239570" MODIFIED="1311712152088">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Default Colors" ID="ID_415228347" CREATED="1310755860823" MODIFIED="1312967181382">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+<node TEXT="Display Selected Nodes in Bubbles" ID="ID_1439588791" CREATED="1310755963730" MODIFIED="1311924298897">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Selected Node Bubble Color" STYLE_REF="Method" FOLDED="true" ID="ID_224972929" CREATED="1310755988837" MODIFIED="1312921407462" LINK="#ID_922308916">
+<node TEXT="#002080" ID="ID_1345958852" CREATED="1311483239570" MODIFIED="1311712219371">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Standard Selected Node Color" STYLE_REF="Method" FOLDED="true" ID="ID_465580103" CREATED="1310756005584" MODIFIED="1312921407446">
+<node TEXT="#d2d2d2" ID="ID_1819028753" CREATED="1311483239570" MODIFIED="1311712256499">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Selection Colors" ID="ID_1053593738" CREATED="1310755953441" MODIFIED="1312967195906">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+<node TEXT="Edges start from one point at root node" STYLE_REF="Method" ID="ID_1368491675" CREATED="1310756047331" MODIFIED="1312921407431"/>
+<node TEXT="Root node appearance" ID="ID_329983622" CREATED="1310756026277" MODIFIED="1312967207216">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+<node TEXT="Antialias" STYLE_REF="Method" FOLDED="true" ID="ID_1542458909" CREATED="1310756074170" MODIFIED="1312921407415">
+<node TEXT="Antialias Edges" ID="ID_1654348959" CREATED="1311483457645" MODIFIED="1311483550591">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="Antialias all" ID="ID_627671109" CREATED="1311483468403" MODIFIED="1311483542121">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="No Antialias" ID="ID_1212369653" CREATED="1311483477473" MODIFIED="1311483542121">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Antialias" ID="ID_1408904285" CREATED="1311483550591" MODIFIED="1312967220398">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+</node>
+<node TEXT="Max shortened node length" STYLE_REF="Method" FOLDED="true" ID="ID_1747043647" CREATED="1310756107165" MODIFIED="1312921407399">
+<hook NAME="FirstGroupNode"/>
+<node TEXT="100" ID="ID_602426240" CREATED="1311483477473" MODIFIED="1311712335560">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Max Node Width" STYLE_REF="Method" FOLDED="true" ID="ID_1131898915" CREATED="1310756120854" MODIFIED="1312921407399">
+<node TEXT="600" ID="ID_1544215822" CREATED="1311483477473" MODIFIED="1311712370598">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="ToolTip Width" STYLE_REF="Method" FOLDED="true" ID="ID_215853027" CREATED="1310756134699" MODIFIED="1312921407384">
+<attribute NAME="Chapter" VALUE="1"/>
+<node TEXT="600" ID="ID_1670353099" CREATED="1311483477473" MODIFIED="1311712383312">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Size Limits" ID="ID_1349141635" CREATED="1310756096393" MODIFIED="1312967235186">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="1,8"/>
+</node>
+<node TEXT="Standard Link Color" STYLE_REF="Method" FOLDED="true" ID="ID_1272643299" CREATED="1310756199330" MODIFIED="1312921407368">
+<node TEXT="#000000" ID="ID_1523516109" CREATED="1311483477473" MODIFIED="1311712415276">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Opacity" STYLE_REF="Method" FOLDED="true" ID="ID_1391515369" CREATED="1310756211084" MODIFIED="1312921407368">
+<node TEXT="80" ID="ID_1305662372" CREATED="1311483477473" MODIFIED="1311712432186">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Connector shapes" STYLE_REF="Method" FOLDED="true" ID="ID_266926804" CREATED="1310756227987" MODIFIED="1312921407353">
+<node TEXT="Curve" ID="ID_53878188" CREATED="1311483477473" MODIFIED="1311712481904">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Line" ID="ID_210394121" CREATED="1311483477473" MODIFIED="1311712497878">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Linear path" ID="ID_972235482" CREATED="1311483477473" MODIFIED="1311712514570">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Simulate edge" ID="ID_441814953" CREATED="1311483477473" MODIFIED="1311712554015">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Width [Connector width]" STYLE_REF="Method" FOLDED="true" ID="ID_1481643722" CREATED="1310756243034" MODIFIED="1312921444559">
+<node TEXT="2" ID="ID_22643760" CREATED="1311483477473" MODIFIED="1311712592563">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Font Family [Connector Font Family]" STYLE_REF="Method" FOLDED="true" ID="ID_1221903920" CREATED="1310756269499" MODIFIED="1312921444559">
+<node TEXT="SansSerif" ID="ID_1484575894" CREATED="1311483477473" MODIFIED="1311712626867">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Font Size [Connector Font Size]" STYLE_REF="Method" FOLDED="true" ID="ID_728681381" CREATED="1310756305651" MODIFIED="1312921444543">
+<node TEXT="12" ID="ID_589330080" CREATED="1311483477473" MODIFIED="1311712644152">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Connectors" ID="ID_1984458992" CREATED="1310756191506" MODIFIED="1312967247916">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+<node TEXT="Buttons at the top" ID="ID_1376964587" CREATED="1310756385375" MODIFIED="1311924369526">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Position Window Below Node" ID="ID_1576279776" CREATED="1310756348428" MODIFIED="1311924298881">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Min Default Window Height" STYLE_REF="Method" FOLDED="true" ID="ID_1734781250" CREATED="1310756407465" MODIFIED="1312921444543">
+<node TEXT="150" ID="ID_1551290999" CREATED="1311483477473" MODIFIED="1311712739718">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Max Default Window Height" STYLE_REF="Method" FOLDED="true" ID="ID_720944351" CREATED="1310756426130" MODIFIED="1312921444543">
+<node TEXT="600" ID="ID_1973666685" CREATED="1311483477473" MODIFIED="1311712754904">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Min Default Window Width" STYLE_REF="Method" FOLDED="true" ID="ID_741939779" CREATED="1310756407465" MODIFIED="1312921444527">
+<node TEXT="400" ID="ID_164780892" CREATED="1311483477473" MODIFIED="1311712766690">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Max Default Window Width" STYLE_REF="Method" FOLDED="true" ID="ID_848971421" CREATED="1310756426130" MODIFIED="1312921444527">
+<node TEXT="900" ID="ID_1286106720" CREATED="1311483477473" MODIFIED="1311712779037">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Edit Long Node Window" ID="ID_991611253" CREATED="1310756332632" MODIFIED="1312967260583">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+<node TEXT="vertical distance" STYLE_REF="Method" FOLDED="true" ID="ID_1935836042" CREATED="1310756536143" MODIFIED="1312921444527">
+<node TEXT="5" ID="ID_1567487763" CREATED="1311483477473" MODIFIED="1311712789029">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="horizontal distance" STYLE_REF="Method" FOLDED="true" ID="ID_1853135324" CREATED="1310756547226" MODIFIED="1312921444512">
+<node TEXT="15" ID="ID_1756020932" CREATED="1311483477473" MODIFIED="1311712804013">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Outline view" ID="ID_1466344690" CREATED="1310756525838" MODIFIED="1312967270848">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+<node TEXT="Structured icon toolbar" ID="ID_23497406" CREATED="1310756571579" MODIFIED="1311924402668">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Don&apos;t show the note icons" ID="ID_635307234" CREATED="1310756586125" MODIFIED="1311924298881">
+<attribute NAME="Chapter" VALUE="3"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Show/Hide Icon For Attributes" FOLDED="true" ID="ID_1228898153" CREATED="1310756602810" MODIFIED="1311924185648">
+<attribute NAME="Chapter" VALUE="3"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<node TEXT="" ID="ID_1610400762" CREATED="1311923205552" MODIFIED="1311923312554" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        In <i>Java Applet</i>&#160;attribute icons are displayed, whatever the setting.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node TEXT="Icons" ID="ID_1409698218" CREATED="1310756566609" MODIFIED="1312967282517">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<attribute_layout NAME_WIDTH="46" VALUE_WIDTH="46"/>
+<attribute NAME="Chapter" VALUE="3,8"/>
+<hook NAME="SummaryNode"/>
+</node>
+</node>
+<node TEXT="Keystrokes" FOLDED="true" ID="ID_190794373" CREATED="1271849091114" MODIFIED="1312967306541">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="8"/>
+<node TEXT="Controls hotkey short-cuts for various predefined icons." STYLE_REF="Method" ID="ID_699416889" CREATED="1271850151778" MODIFIED="1312921444512"/>
+</node>
+<node TEXT="Behaviour" FOLDED="true" ID="ID_1251832106" CREATED="1271849242668" MODIFIED="1312967409408" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Provides control over various aspects of the user interface.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="8"/>
+<node TEXT="Place new branches" STYLE_REF="Method" FOLDED="true" ID="ID_1206588336" CREATED="1310757864314" MODIFIED="1312921444496">
+<node TEXT="Last" ID="ID_1088081628" CREATED="1311829566642" MODIFIED="1311829638285">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="First" ID="ID_460059219" CREATED="1311829583482" MODIFIED="1311829638285">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Drag and drop" ID="ID_937187121" CREATED="1310757901793" MODIFIED="1311829691218">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Unfold node on paste" ID="ID_688415851" CREATED="1310757872183" MODIFIED="1311829789799">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Disable Cursor Move Paper" STYLE_REF="Method" ID="ID_673199843" CREATED="1310757926214" MODIFIED="1312921475415"/>
+<node TEXT="Folding Symbol Width" STYLE_REF="Method" FOLDED="true" ID="ID_162608451" CREATED="1310757944645" MODIFIED="1312921475384">
+<node TEXT="6" ID="ID_917162640" CREATED="1311829819524" MODIFIED="1311829867799">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Grid gap size" STYLE_REF="Method" FOLDED="true" ID="ID_1904922870" CREATED="1310757958974" MODIFIED="1312921475369">
+<node TEXT="10" ID="ID_230800785" CREATED="1311829828003" MODIFIED="1311829867815">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Move note cursor to the end" ID="ID_16484668" CREATED="1310757979449" MODIFIED="1311829925504">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="On Key Type" STYLE_REF="Method" FOLDED="true" ID="ID_870410939" CREATED="1310757895934" MODIFIED="1312921475353">
+<node TEXT="Overwrite content" ID="ID_906283996" CREATED="1311829944995" MODIFIED="1311830017793">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Do nothing" ID="ID_238703082" CREATED="1311829953520" MODIFIED="1311830017809">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Add sibling node" ID="ID_1320405878" CREATED="1311829975665" MODIFIED="1311830017793">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Add child node" ID="ID_1310255165" CREATED="1311829984253" MODIFIED="1311830017793">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Behaviour" ID="ID_171435040" CREATED="1310757843354" MODIFIED="1312967339613">
+<attribute_layout NAME_WIDTH="73" VALUE_WIDTH="103"/>
+<attribute NAME="Chapter" VALUE="8"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+</node>
+<node TEXT="Recognize input of number and date-time" FOLDED="true" ID="ID_1904729163" CREATED="1310758053597" MODIFIED="1311830112220">
+<attribute NAME="Chapter" VALUE="4"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<node TEXT="Check box" ID="ID_1209834896" CREATED="1311430948225" MODIFIED="1311431214666">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+</node>
+</node>
+<node TEXT="Standard number format" STYLE_REF="Method" FOLDED="true" ID="ID_1543011178" CREATED="1310758092136" MODIFIED="1312921475337">
+<attribute NAME="Chapter" VALUE="4"/>
+<node TEXT="#0.####" ID="ID_599272734" CREATED="1311430882736" MODIFIED="1311431228035">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+</node>
+</node>
+<node TEXT="Standard date format" STYLE_REF="Method" FOLDED="true" ID="ID_1356962423" CREATED="1310758109725" MODIFIED="1312921475322">
+<attribute NAME="Chapter" VALUE="4"/>
+<node TEXT="SHORT" ID="ID_1799574764" CREATED="1311430899060" MODIFIED="1311431243666">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+</node>
+</node>
+<node TEXT="Standard date-time format" STYLE_REF="Method" FOLDED="true" ID="ID_1291135490" CREATED="1310758124522" MODIFIED="1312921475306">
+<attribute NAME="Chapter" VALUE="4"/>
+<node TEXT="SHORT,SHORT" ID="ID_1489062870" CREATED="1311430911643" MODIFIED="1311431257269">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+</node>
+</node>
+<node TEXT="Locale for formats" STYLE_REF="Method" FOLDED="true" ID="ID_415722182" CREATED="1310758158959" MODIFIED="1312921475291">
+<attribute NAME="Chapter" VALUE="4"/>
+<node TEXT="Automatic (List with languages)" ID="ID_1141766183" CREATED="1311430933973" MODIFIED="1311431271793">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+</node>
+</node>
+<node TEXT="Data formatting and parsing" ID="ID_1277533848" CREATED="1310758029673" MODIFIED="1312967350034" TEXT_SHORTENED="true">
+<attribute_layout NAME_WIDTH="46" VALUE_WIDTH="149"/>
+<attribute NAME="Chapter" VALUE="4,8"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Properties panel . Calendar &amp; Attributes .&gt; Date/time and number formatting</i>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="SummaryNode"/>
+</node>
+<node TEXT="Display inline editor for all new nodes" ID="ID_1855645772" CREATED="1310758187367" MODIFIED="1311830174901">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Double click to edit" ID="ID_983797623" CREATED="1310758210931" MODIFIED="1311830174964">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Layout map during editing" ID="ID_1344543432" CREATED="1310758229220" MODIFIED="1311926557786">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Enter Confirms By Default" ID="ID_410727117" CREATED="1310758243815" MODIFIED="1311830174917">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="In-line node editor" ID="ID_411278174" CREATED="1310758175346" MODIFIED="1312967364636">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+<node TEXT="Use rich text for pasted nodes" STYLE_REF="Method" FOLDED="true" ID="ID_95105756" CREATED="1310758275032" MODIFIED="1312921475275">
+<node TEXT="Ask" ID="ID_1722707084" CREATED="1311830230522" MODIFIED="1311830274983">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Yes" ID="ID_1038355271" CREATED="1311830236224" MODIFIED="1311830274968">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="No" ID="ID_1904863532" CREATED="1311830240475" MODIFIED="1311830274968">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Delete nodes without confirmation" ID="ID_815571706" CREATED="1310758292152" MODIFIED="1311830340176">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Cut nodes without confirmations" ID="ID_32888474" CREATED="1310758330411" MODIFIED="1311830340238">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Remove Notes without Question?" ID="ID_420987413" CREATED="1310758343023" MODIFIED="1311830340223">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Confirmations" ID="ID_1796859910" CREATED="1310758266552" MODIFIED="1312967378301">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+<node TEXT="Compare as numbers" ID="ID_1349176298" CREATED="1310758381166" MODIFIED="1311830340207">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Search" ID="ID_692764704" CREATED="1310758369224" MODIFIED="1312967396538">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+<node TEXT="Selection Method" STYLE_REF="Method" FOLDED="true" ID="ID_1935087614" CREATED="1310758403896" MODIFIED="1312921505414">
+<node TEXT="Delayed" ID="ID_844433841" CREATED="1311830373100" MODIFIED="1311830428293">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Direct" ID="ID_1150077727" CREATED="1311830379081" MODIFIED="1311830428293">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="By click" ID="ID_942709712" CREATED="1311830385486" MODIFIED="1311830428293">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Time For Delayed Selection" STYLE_REF="Method" FOLDED="true" ID="ID_326872031" CREATED="1310758414699" MODIFIED="1312921505414">
+<node TEXT="200" ID="ID_1264808816" CREATED="1311830585298" MODIFIED="1311830634720">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Center selected nodes" ID="ID_266453260" CREATED="1310758432162" MODIFIED="1311830679149">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Selection Method" ID="ID_459809249" CREATED="1310758392609" MODIFIED="1312967425164">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+<node TEXT="Speed [Speed Mouse wheel]" STYLE_REF="Method" FOLDED="true" ID="ID_1877269542" CREATED="1310758457856" MODIFIED="1312921505399">
+<node TEXT="80" ID="ID_324161648" CREATED="1311830697922" MODIFIED="1311830742157">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Mouse wheel" ID="ID_897961065" CREATED="1310758446257" MODIFIED="1312967436692">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+<node TEXT="Speed [Speed Scrollbar]" STYLE_REF="Method" FOLDED="true" ID="ID_337671733" CREATED="1310758473472" MODIFIED="1312921505383">
+<node TEXT="20" ID="ID_1492439142" CREATED="1311830705918" MODIFIED="1311830742157">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Scrollbar" ID="ID_1429616466" CREATED="1310758465133" MODIFIED="1312967448454">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+<node TEXT="Case sensitive" ID="ID_1576000342" CREATED="1310758490757" MODIFIED="1311830800642">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Ignore all upper case words" ID="ID_60040035" CREATED="1310758500919" MODIFIED="1311830800642">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Ignore capital letters at word begin" ID="ID_1838570041" CREATED="1310758524296" MODIFIED="1311830831967">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Ignore words with numbers" ID="ID_1573148106" CREATED="1310758546066" MODIFIED="1311830800626">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Maximum count of suggestions in the dialog" STYLE_REF="Method" FOLDED="true" ID="ID_854267681" CREATED="1310758559973" MODIFIED="1312921505383">
+<node TEXT="15" ID="ID_1785386989" CREATED="1311830855375" MODIFIED="1311830894648">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Maximum count of suggestions in the menu" STYLE_REF="Method" FOLDED="true" ID="ID_975657338" CREATED="1310758588794" MODIFIED="1312921505383">
+<node TEXT="15" ID="ID_223576174" CREATED="1311830863962" MODIFIED="1311830894663">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Spell checker options" ID="ID_1152047272" CREATED="1310758481013" MODIFIED="1312967460295">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+<node TEXT="Display Tool Tips for Nodes" ID="ID_544704953" CREATED="1310758646858" MODIFIED="1311830949170">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Initial delay,ms" STYLE_REF="Method" FOLDED="true" ID="ID_1443483058" CREATED="1310758666943" MODIFIED="1312921505367">
+<node TEXT="750" ID="ID_970116987" CREATED="1311830976493" MODIFIED="1311831070109">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Dismiss delay, ms" STYLE_REF="Method" FOLDED="true" ID="ID_108531934" CREATED="1310758676622" MODIFIED="1312921505367">
+<node TEXT="4,000" ID="ID_578810629" CREATED="1311830995018" MODIFIED="1311831070109">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="ReshowDelay, ms" STYLE_REF="Method" FOLDED="true" ID="ID_865138030" CREATED="1310758685896" MODIFIED="1312921505367">
+<node TEXT="500" ID="ID_1312285366" CREATED="1311831002732" MODIFIED="1311831070109">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Tooltip times" ID="ID_1779710506" CREATED="1310758612654" MODIFIED="1312967472775">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+<node TEXT="Extra width step" STYLE_REF="Method" FOLDED="true" ID="ID_1698327273" CREATED="1310758707535" MODIFIED="1312921505367">
+<node TEXT="80" ID="ID_980366954" CREATED="1311831029088" MODIFIED="1311831070125">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Editor settings" ID="ID_433167342" CREATED="1310758697339" MODIFIED="1312967490122">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+<node TEXT="Undo levels" STYLE_REF="Method" FOLDED="true" ID="ID_1377721651" CREATED="1310758724476" MODIFIED="1312921505352">
+<node TEXT="100" ID="ID_933957391" CREATED="1311831038549" MODIFIED="1311831070125">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Undo" ID="ID_1615979770" CREATED="1310758720396" MODIFIED="1312967504178">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+</node>
+<node TEXT="HTML" FOLDED="true" ID="ID_857967913" CREATED="1271849323057" MODIFIED="1312967527734" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Controls interaction with a Web browser, plus options for HTML Import and Export.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="6,8"/>
+<node TEXT="Default Browser Command Windows NT" STYLE_REF="Method" FOLDED="true" ID="ID_285818766" CREATED="1310758826172" MODIFIED="1312921544695">
+<node TEXT="cmd.exe/c start&quot;&quot; &quot;{0}&quot;" ID="ID_1405736836" CREATED="1311831132641" MODIFIED="1311831254064">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Default Browser Command Windows 9x" STYLE_REF="Method" FOLDED="true" ID="ID_1767258052" CREATED="1310758851561" MODIFIED="1312921544711">
+<node TEXT="command.com /c start &quot;{0}&quot;" ID="ID_1915045103" CREATED="1311831164051" MODIFIED="1311831254049">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Default Browser Command Other OS" STYLE_REF="Method" FOLDED="true" ID="ID_1677430296" CREATED="1310758874485" MODIFIED="1312921544695">
+<node TEXT="xdg-open {0}" ID="ID_155698917" CREATED="1311831197693" MODIFIED="1311831254049">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Default Browser Command MAC" STYLE_REF="Method" FOLDED="true" ID="ID_487716764" CREATED="1310758897815" MODIFIED="1312921544695">
+<node TEXT="open {0}" ID="ID_1454396895" CREATED="1311831216218" MODIFIED="1311831254064">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Browser" ID="ID_592493497" CREATED="1310758924498" MODIFIED="1312967518889">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="8"/>
+</node>
+<node TEXT="Html Export Folding" STYLE_REF="Method" FOLDED="true" ID="ID_326052798" CREATED="1310758955934" MODIFIED="1312921544680">
+<attribute NAME="Chapter" VALUE="6"/>
+<node TEXT="No Folding" ID="ID_734831498" CREATED="1311831296620" MODIFIED="1312813942871">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Fold Currently Folded" ID="ID_1029122886" CREATED="1311831265428" MODIFIED="1312813942871">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Fold all" ID="ID_1140314813" CREATED="1311831304101" MODIFIED="1312813942871">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Based on Headings" ID="ID_1492749382" CREATED="1311831322876" MODIFIED="1312813942871">
+<icon BUILTIN="pencil"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+</node>
+<node TEXT="Export Icons In Html" ID="ID_700548117" CREATED="1310758971244" MODIFIED="1311831423052">
+<attribute NAME="Chapter" VALUE="6"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="HTML Export" ID="ID_842620377" CREATED="1310758942104" MODIFIED="1312967540744">
+<attribute NAME="Chapter" VALUE="6,8"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+</node>
+<node TEXT="Import HTML as node structure" ID="ID_1711300863" CREATED="1310759009575" MODIFIED="1312813688731">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="HTML Import" ID="ID_1620307568" CREATED="1310758992624" MODIFIED="1312967548279">
+<attribute NAME="Chapter" VALUE="6,8"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+</node>
+</node>
+<node TEXT="Plugins" FOLDED="true" ID="ID_740727461" CREATED="1310759053262" MODIFIED="1312781878338">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="7,8"/>
+<node TEXT="Disable formula plugin" ID="ID_713879634" CREATED="1310759073402" MODIFIED="1311831580448">
+<attribute NAME="Chapter" VALUE="7"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Disable formula evaluation cache" ID="ID_1486266663" CREATED="1310759087090" MODIFIED="1311831580433">
+<attribute NAME="Chapter" VALUE="7"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Don&apos;t mak formulas with a border" ID="ID_1293139407" CREATED="1310759105693" MODIFIED="1311831613474">
+<attribute NAME="Chapter" VALUE="7"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Formulas" ID="ID_169365773" CREATED="1310759060166" MODIFIED="1312967556360">
+<attribute NAME="Chapter" VALUE="7,8"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+</node>
+<node TEXT="Script execution enabled" ID="ID_1977472596" CREATED="1310759163843" MODIFIED="1312782103462">
+<attribute NAME="Chapter" VALUE="7"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Permit File/Read Operations" ID="ID_881249705" CREATED="1310759181789" MODIFIED="1312782111075">
+<attribute NAME="Chapter" VALUE="7"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Permit File/Write operations" ID="ID_905270948" CREATED="1310759202748" MODIFIED="1312782119281">
+<attribute NAME="Chapter" VALUE="7"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Permit Network Operations" ID="ID_1355620121" CREATED="1310759224097" MODIFIED="1312782130575">
+<attribute NAME="Chapter" VALUE="7"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Permit to Execute other Applications" ID="ID_1365136531" CREATED="1310759242325" MODIFIED="1312782138328">
+<attribute NAME="Chapter" VALUE="7"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Trust signed scripts" STYLE_REF="IsChecked" ID="ID_1412203400" CREATED="1310759263674" MODIFIED="1312966483156">
+<attribute NAME="Chapter" VALUE="7"/>
+</node>
+<node TEXT="Optional User Key Alias for Signing" STYLE_REF="Method" ID="ID_1319215468" CREATED="1310759282714" MODIFIED="1312921573976">
+<attribute NAME="Chapter" VALUE="7"/>
+</node>
+<node TEXT="Script search path" STYLE_REF="Method" FOLDED="true" ID="ID_1885113964" CREATED="1310759307198" MODIFIED="1312921573961">
+<attribute NAME="Chapter" VALUE="7"/>
+<node TEXT="scripts" ID="ID_1078878417" CREATED="1311831645227" MODIFIED="1312782089313">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="7"/>
+</node>
+</node>
+<node TEXT="Script classpath" STYLE_REF="Method" ID="ID_1018193900" CREATED="1310759327486" MODIFIED="1312921573961">
+<attribute NAME="Chapter" VALUE="7"/>
+</node>
+<node TEXT="Scripting" ID="ID_1528894906" CREATED="1310759127432" MODIFIED="1312781721246">
+<attribute NAME="Chapter" VALUE="7,8"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Mindmaps [Maps]" FOLDED="true" ID="ID_1279811672" CREATED="1310134532679" MODIFIED="1316339113945" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="6"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To select and handle mind maps.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Mind map editor" ID="ID_327363055" CREATED="1310134532679" MODIFIED="1311405837828" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">The mode in which mind maps are created and edited.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="Map browser" ID="ID_524078813" CREATED="1310134532679" MODIFIED="1310883817139" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">This is a read-only mode for browsing maps rather than editing them. It is has two main uses: First, when using Export &gt; As Java Applet..., the applet opens the map only for reading, because editing maps is not supported via the Web. Second, Freeplane's Help file, when accessed via Help &gt; Documentation or F1, is opened in read-only mode in order to preserve its contents while users learn various Freeplane features. Otherwise this Map Browser mode is generally unused.</span></font>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="File explorer" ID="ID_1982200889" CREATED="1310134532679" MODIFIED="1311405837859" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="6"/>
+</node>
+<node TEXT="List with open maps" ID="ID_1685127239" CREATED="1310198658417" MODIFIED="1310883817139">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Publish mind map on web page" FOLDED="true" ID="ID_1615767068" CREATED="1310241684255" MODIFIED="1312921628748" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="6"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">To publish or share a mind map: </font>
+    </p>
+    <ul>
+      <li>
+        Fold the mind map as you want it to be when opening
+      </li>
+      <li>
+        Select <i>File &gt; Export</i>&#160;and choose <i>Java Applet</i>.
+      </li>
+      <li>
+        One file and one directory will be created: <i>myFile.html </i>and <i>myFile.html_files</i>&#160; respectively.
+      </li>
+    </ul>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        You can move the file <i>myFile.html</i>&#160;and the subdirectory <i>myFile.html_files</i>&#160;&#160;to the location (directory) where you want to it be it accessible. Call <i>myFile.html</i>&#160;&#160;to open the mind map.
+      </li>
+      <li>
+        If publishing on internet, you may rename myFile.html in e.g. index.html. The subdirectory should NOT be renamed.
+      </li>
+    </ul>
+    <p>
+      <b>Note also</b>
+    </p>
+    <ul>
+      <li>
+        <p>
+          <font face="SansSerif, sans-serif" color="#000000">In the Freeplane applet, you can only use the Browse mode; you cannot edit remote maps. Click a node to toggle folding or to follow a link. Drag the background to move the map. To search the map, use the node context menu.</font>
+        </p>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000">Small maps can also use Export as Flash which also offers limited browsing functionality.</font>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000">LaTeX and SVG images are not displayed in the Freeplane Applet nor in the Flash browser.</font>
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        Embed a mind map on a web page or wiki
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="SummaryNode"/>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<node TEXT="Embed mind map on wiki" ID="ID_590309579" CREATED="1310926331342" MODIFIED="1310927934949" LINK="http://freeplane.sourceforge.net/wiki/index.php/Embedding_mind_maps" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To embed a mind map in a web site or wiki, see Inernet
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Help" FOLDED="true" ID="ID_278329781" CREATED="1310134532679" MODIFIED="1312571971561" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Methods to help you to solve problems in using Freeplane.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Check for updates" ID="ID_1783314150" CREATED="1310198902331" MODIFIED="1310199751621" TEXT_SHORTENED="true">
+<icon BUILTIN="../update"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Manually check whether a newer version of Freeplane has been released. This check will be done automatically if the corresponding checkbox is enabled at the bottom of the dialog which opens.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Freeplane&apos;s home page" ID="ID_797729331" CREATED="1271855734459" MODIFIED="1310883865062" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens a web browser containing the home page of the Freeplane web site.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Ask for help" FOLDED="true" ID="ID_1043826397" CREATED="1271856103992" MODIFIED="1311402584107" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens a Web browser window to Freeplane's Open Discussion Forum. A confirmation dialog alerts you to the fact that this function requires that you log in to SourceForge.net where you can easily create a free account. After logging in, you may check for information related to your question by using the Search function, located under the Forums menu heading. If you then want to ask your own question, scroll down toward the bottom of the page to find the Add a Topic heading, type a short title in the line labelled &quot;Enter topic title&quot;, then enter your message in the larger text box below.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1"/>
+<node TEXT="Troubleshooting" ID="ID_389902247" CREATED="1310925961805" MODIFIED="1310925972645" LINK="http://freeplane.sourceforge.net/wiki/index.php/Troubleshooting"/>
+</node>
+<node TEXT="Report a bug" ID="ID_1404935411" CREATED="1271855833848" MODIFIED="1310883875436" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens een web browser containing the page of Mantis Bug tracker. You can report a bug here.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Request a feature" ID="ID_800979042" CREATED="1271855982412" MODIFIED="1310883879804" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens een web browser containing Freeplane's Feature Request page in Mantis Tracker. You can leave your request here.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Licence" ID="ID_1881309718" CREATED="1271857117445" MODIFIED="1310883885233" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens a window displaying a short summary of Freeplane's copyright and licensing information, including information about where to find full copies of the GNU General Public License.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="About" ID="ID_1959296182" CREATED="1272489323245" MODIFIED="1311402584122" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens a dialog with copyright, version, and technical information.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1"/>
+</node>
+<node TEXT="Getting started" ID="ID_1373709444" CREATED="1310134532679" MODIFIED="1314907414714" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens overview of menu's in read-only modus.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Documentation" ID="ID_604224444" CREATED="1271855545007" MODIFIED="1311402584122" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens the main help file in read-only modus.
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1"/>
+</node>
+<node TEXT="Scripting API" ID="ID_1515623567" CREATED="1303933416063" MODIFIED="1310883900178">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+</node>
 </node>
 </node>
 </map>

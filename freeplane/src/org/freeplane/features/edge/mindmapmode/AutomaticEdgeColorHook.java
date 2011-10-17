@@ -32,6 +32,8 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;
+import org.freeplane.features.styles.LogicalStyleModel;
+import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -47,6 +49,8 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 			if(!isActive(child)){
 				return;
 			}
+			if(MapStyleModel.FLOATING_STYLE.equals(LogicalStyleModel.getStyle(child)))
+				return;
 			if(parent.isRoot()){
 				final EdgeModel edgeModel = EdgeModel.createEdgeModel(child);
 				if(null == edgeModel.getColor()){

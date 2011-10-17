@@ -298,6 +298,10 @@ public interface Proxy {
 		 * @see Node#findAllDepthFirst() for subtrees
 		 * @since 1.2 */
 		List<Node> findAllDepthFirst();
+
+		/** returns the current zoom factor. A value of 1 means 100%.
+		 * @since 1.2 */
+		float getZoom();
 	}
 
 	/** Access to global state: <code>c</code> - read-write. */
@@ -361,6 +365,10 @@ public interface Proxy {
 		/** opens a new map for url in the foreground if it isn't opened already.
 		 * @since 1.2 */
 		Map newMap(URL url);
+
+		/** a value of 1 means 100%.
+		 * @since 1.2 */
+		void setZoom(final float ratio);
 	}
 
 	/** Edge to parent node: <code>node.style.edge</code> - read-only. */
@@ -810,9 +818,16 @@ public interface Proxy {
 		Convertible getTo();
 
 		/** an alias for {@link #getTo()}.
-		 * @throws ExecuteScriptException
+		 * @throws ExecuteScriptException on formula evaluation errors
 		 * @since 1.2 */
 		Convertible getValue();
+
+		/** Returns a <a href="http://www.freesoft.org/CIE/RFC/1521/7.htm">BASE64</a> encoded node text
+		 * (see {@link Node#setBinary(byte[])}) as a binary object. Errors are signaled by a null return value.
+		 * Whitespace characters are ignored.<br>
+		 * Note that this method is not able to catch all encoding errors!
+		 * @since 1.2 */
+		byte[] getBinary();
 
 		/** returns true if p is a parent, or grandparent, ... of this node, or if it <em>is equal<em>
 		 * to this node; returns false otherwise. */
@@ -1026,7 +1041,12 @@ public interface Proxy {
 		 * @see #setObject(Object)
 		 * @since 1.2 */
 		void setDateTime(Date date);
-		
+
+		/** Converts data to a <a href="http://www.freesoft.org/CIE/RFC/1521/7.htm">BASE64</a> encoded string and
+		 * sets it as this node's text. Long lines are folded to a length a bit less than 80.
+		 * @since 1.2 */
+		void setBinary(byte[] data);
+
 		/** sets the format string of the formatter. It has to be appropriate for the data type of the contained object,
 		 * otherwise the format is simply ignored. For instance use "dd.MM.yyyy" for dates but not for numbers:
 		 * <pre>

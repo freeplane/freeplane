@@ -113,10 +113,10 @@ public class WindowConfigurationStorage {
 			try {
 				final XMLElement storage = (XMLElement) parser.parse();
 				if (storage != null) {
-					x = Integer.parseInt(storage.getAttribute("x", null));
-					y = Integer.parseInt(storage.getAttribute("y", null));
-					width = Integer.parseInt(storage.getAttribute("width", null));
-					height = Integer.parseInt(storage.getAttribute("height", null));
+					x = Integer.parseInt(storage.getAttribute("x", "-1"));
+					y = Integer.parseInt(storage.getAttribute("y", "-1"));
+					width = Integer.parseInt(storage.getAttribute("width", "-1"));
+					height = Integer.parseInt(storage.getAttribute("height", "-1"));
 					UITools.setBounds(dialog, x, y, width, height);
 					return storage;
 				}

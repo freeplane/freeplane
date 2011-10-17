@@ -90,12 +90,15 @@ public class OutlineLayout extends NodeViewLayoutAdapter {
 	}
 
 	@Override
-	protected void setUp(final Container c) {
-		super.setUp(c);
+	protected boolean setUp(final Container c) {
+		if (! super.setUp(c)){
+			return false;
+		}
 		final int vgap = ResourceController.getResourceController().getIntProperty("outline_vgap", 0);
 		final int hgap = ResourceController.getResourceController().getIntProperty("outline_hgap", 0);
 		setVGap(getView().getMap().getZoomed(vgap));
 		hGap = getView().getMap().getZoomed(hgap);
+		return true;
 	}
 
 	public void layoutNodeMotionListenerView(final NodeMotionListenerView view) {

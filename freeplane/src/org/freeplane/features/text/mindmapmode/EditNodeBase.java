@@ -287,10 +287,11 @@ abstract public class EditNodeBase {
 	}
 
 	protected void redispatchKeyEvents(final JTextComponent textComponent, final KeyEvent firstKeyEvent) {
+		final EventBuffer keyEventDispatcher = MTextController.getController().getEventQueue();
 		if (textComponent.hasFocus()) {
+			keyEventDispatcher.deactivate();
 			return;
 		}
-		final EventBuffer keyEventDispatcher = MTextController.getController().getEventQueue();
 		keyEventDispatcher.activate();
 		keyEventDispatcher.setTextComponent(textComponent);
 		if (firstKeyEvent == null) {

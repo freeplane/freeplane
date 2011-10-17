@@ -287,7 +287,7 @@ public class MenuBuilder extends UIBuilder {
 					}
 					String menuKey = attributes.getAttribute("menu_key", null);
 					if(menuKey == null)
-					    menuKey = getMenuKey(menuPath.parentKey, theAction);
+					    menuKey = getMenuKey(menuPath.parentKey, theAction.getKey());
 					menuPath.setKey(menuKey);
 					String accelerator = attributes.getAttribute("accelerator", null);
 					if (accelerator != null) {
@@ -533,20 +533,20 @@ public class MenuBuilder extends UIBuilder {
 	 * @return returns the new JMenuItem.
 	 */
 	public void addAction(final String category, final AFreeplaneAction action, final int position) {
-		final String menuKey = getMenuKey(category, action);
+		final String menuKey = getMenuKey(category, action.getKey());
 		addAction(category, menuKey, action, position);
 	}
 
-    protected String getMenuKey(final String category, final AFreeplaneAction action) {
-        final String actionKey = "$" + action.getKey() + '$';
-		for(int i = 0; i < 1000; i++){
+    public String getMenuKey(final String category, String actionKey) {
+		actionKey = "$" + actionKey + '$';
+		for (int i = 0; i < 1000; i++) {
 			final String key = actionKey + i;
-			if (null == get(key)){
-			    return key;
+			if (null == get(key)) {
+				return key;
 			}
 		}
 		return category + '/' + actionKey;
-    }
+	}
 
 	public void addAction(final String category, final String key, final AFreeplaneAction action, final int position) {
 		assert action != null;
@@ -642,7 +642,7 @@ public class MenuBuilder extends UIBuilder {
 		final String shortcutKey = getShortcutKey(key);
 		final String keyStrokeString = ResourceController.getResourceController().getProperty(shortcutKey);
 		final Node element = (Node) addElement(relativeKey, item, key, position);
-		if (null == getMenubar(element)) {
+		if (null == getMenuBar(element)) {
 			return;
 		}
 		if (keyStrokeString != null && !keyStrokeString.equals("")) {
@@ -788,7 +788,7 @@ public class MenuBuilder extends UIBuilder {
 	}
 
 	IFreeplaneAction decorateAction(final String category, final AFreeplaneAction action) {
-		if (null == getMenubar(get(category)) || Controller.getCurrentController().getViewController().isApplet()) {
+		if (null == getMenuBar(get(category)) || Controller.getCurrentController().getViewController().isApplet()) {
 			return action;
 		}
 		return decorateAction(action);
@@ -810,16 +810,16 @@ public class MenuBuilder extends UIBuilder {
 		return super.getChildComponent(parentComponent, index);
 	}
 
-	Object getMenubar(DefaultMutableTreeNode element) {
-		while (element != null) {
+	public Node getMenuBar(DefaultMutableTreeNode element) {
+	    while (element != null) {
 			final Object userObject = element.getUserObject();
 			if (userObject instanceof JMenuBar) {
-				return ((Node) element).getKey();
+				return (Node) element;
 			}
 			element = (DefaultMutableTreeNode) element.getParent();
 		} 
 		return null;
-	}
+    }
 
 	private Node getMenuItemForKeystroke(final KeyStroke keyStroke) {
 		return accelerators.get(keyStroke);

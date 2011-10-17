@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.filter;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -35,9 +36,12 @@ import javax.swing.ButtonModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListDataEvent;
@@ -152,8 +156,30 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		applyToVisibleNodeOnly = new JToggleButton.ToggleButtonModel();
 		applyToVisibleNodeOnly.setSelected(false);
 		controller.getMapViewManager().addMapSelectionListener(this);
-		final AFreeplaneAction showFilterToolbar = new ToggleToolbarAction("ShowFilterToolbarAction",
-		    "/filter_toolbar");
+		@SuppressWarnings("serial")
+        final AFreeplaneAction showFilterToolbar = new ToggleToolbarAction("ShowFilterToolbarAction",
+		    "/filter_toolbar"){
+
+			@Override
+			protected void setVisible(final JComponent toolBar, final boolean visible) {
+				quickEditor.addAncestorListener(new AncestorListener() {
+					public void ancestorAdded(final AncestorEvent event) {
+						quickEditor.focusInputField();
+						quickEditor.removeAncestorListener(this);
+					}
+					public void ancestorMoved(final AncestorEvent event) {
+					}
+					public void ancestorRemoved(final AncestorEvent event) {
+						final Component selectedComponent = Controller.getCurrentController().getViewController().getSelectedComponent();
+						if(selectedComponent != null)
+							selectedComponent.requestFocusInWindow();
+						quickEditor.removeAncestorListener(this);
+					}
+				});
+				super.setVisible(toolBar, visible);
+			}
+
+		};
 		quickEditor = new FilterConditionEditor(this, 0, true);
 		quickEditor.setBorder(BorderFactory.createEtchedBorder());
 		controller.addAction(showFilterToolbar);

@@ -38,7 +38,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.core.ui.AMouseListener;
 import org.freeplane.core.ui.DelayedMouseListener;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
@@ -50,9 +49,9 @@ import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.TextController;
-import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
-import org.freeplane.view.swing.ui.DefaultMapMouseReceiver;
+import org.freeplane.view.swing.ui.DetailsViewMouseListener;
+import org.freeplane.view.swing.ui.LinkNavigatorMouseListener;
 
 class NodeViewFactory {
 	private static class ContentPane extends JComponent {
@@ -174,21 +173,19 @@ class NodeViewFactory {
 					shape = node.getMainView().getShape();
 		}
 
-		if (shape == null || shape.equals(NodeStyleModel.STYLE_FORK)) {
-			if (model.isRoot())
-				view = new RootMainView(NodeStyleModel.STYLE_FORK);
-			else
-				view = new ForkMainView();
-		}
-		else if (shape.equals(NodeStyleModel.STYLE_BUBBLE)) {
+		if (shape.equals(NodeStyleModel.STYLE_BUBBLE)) {
 			if (model.isRoot())
 				view = new RootMainView(NodeStyleModel.STYLE_BUBBLE);
 			else
 				view =  new BubbleMainView();
 		}
 		else {
-			System.err.println("Tried to create a NodeView of unknown Style " + String.valueOf(shape));
-			view = new ForkMainView();
+			if (shape != null && ! shape.equals(NodeStyleModel.STYLE_FORK))
+				System.err.println("Tried to create a NodeView of unknown Style " + String.valueOf(shape));
+			if (model.isRoot())
+				view = new RootMainView(NodeStyleModel.STYLE_FORK);
+			else
+				view = new ForkMainView();
 		}
 		NodeTooltipManager toolTipManager = NodeTooltipManager.getSharedInstance(modeController);
 		toolTipManager.registerComponent(view);
@@ -203,8 +200,7 @@ class NodeViewFactory {
 		model.addViewer(newView);
 		newView.setLayout(SelectableLayout.getInstance());
 		newView.setMainView(newMainView(newView));
-		if(newView.isShortened())
-			updateNoteViewer(newView);
+		updateNoteViewer(newView);
         newView.update();
         fireNodeViewCreated(newView); 
 		return newView;
@@ -212,9 +208,13 @@ class NodeViewFactory {
 
 	private static Map<Color, Icon> coloredNoteIcons  = new HashMap<Color, Icon>();
 	private Icon coloredIcon = createColoredIcon();
+	private static final DelayedMouseListener DETAILS_MOUSE_LISTENER = new DelayedMouseListener(new DetailsViewMouseListener(), 2, MouseEvent.BUTTON1);
+	private static final LinkNavigatorMouseListener LINK_MOUSE_LISTENER = new LinkNavigatorMouseListener();
 	
 	public ZoomableLabel createNoteViewer() {
 		final ZoomableLabel label = new ZoomableLabel();
+		label.addMouseListener(LINK_MOUSE_LISTENER);
+		label.addMouseMotionListener(LINK_MOUSE_LISTENER);
 		label.setIcon(coloredIcon);
 		label.setVerticalTextPosition(JLabel.TOP);
 		return label;
@@ -339,35 +339,10 @@ class NodeViewFactory {
 
 	private DetailsView createDetailView() {
 	    DetailsView detailContent =  new DetailsView();
-	    final DefaultMapMouseReceiver mouseReceiver = new DefaultMapMouseReceiver();
-	    final DefaultMapMouseListener mouseListener = new DefaultMapMouseListener(mouseReceiver);
+	    final DefaultMapMouseListener mouseListener = new DefaultMapMouseListener();
 	    detailContent.addMouseMotionListener(mouseListener);
-	    detailContent.addMouseListener(new DelayedMouseListener(new AMouseListener() {
-	    
-	    	@Override
-	        public void mousePressed(MouseEvent e) {
-	    		mouseReceiver.mousePressed(e);
-	        }
-	    
-	    	@Override
-	        public void mouseReleased(MouseEvent e) {
-	    		mouseReceiver.mouseReleased(e);
-	        }
-	    
-	    	@Override
-	        public void mouseClicked(MouseEvent e) {
-	    		final NodeView nodeView = (NodeView)SwingUtilities.getAncestorOfClass(NodeView.class, e.getComponent());
-	    		final NodeModel model = nodeView.getModel();
-	    		TextController controller = TextController.getController();
-	    		final ZoomableLabel component = (ZoomableLabel) e.getComponent();
-	    		if(e.getX() < component.getIconWidth())
-	    			controller.setDetailsHidden(model, ! DetailTextModel.getDetailText(model).isHidden());
-	    		else if(controller instanceof MTextController && e.getClickCount() == 2){
-	    			((MTextController) controller).editDetails(model, e, e.isAltDown());
-	    		}
-	        }
-	    	
-	    }, 2, MouseEvent.BUTTON1));
+	    detailContent.addMouseMotionListener(DETAILS_MOUSE_LISTENER);
+	    detailContent.addMouseListener(DETAILS_MOUSE_LISTENER);
 	    return detailContent;
     }
 

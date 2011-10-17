@@ -60,6 +60,7 @@ import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.main.addons.AddOnProperties;
 import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.plugin.script.ScriptingEngine;
+import org.freeplane.plugin.script.ScriptingPermissions;
 import org.freeplane.plugin.script.addons.ManageAddOnsDialog.AddOnTableModel;
 
 @SuppressWarnings("serial")
@@ -95,8 +96,6 @@ public class ManageAddOnsDialog extends JDialog {
 				case 2:
 					return addOn.getDescription();
 				case 3:
-					return getText(addOn.getAddOnType().name());
-				case 4:
 					return "";
 				default:
 					throw new RuntimeException("unexpected column " + col);
@@ -154,18 +153,16 @@ public class ManageAddOnsDialog extends JDialog {
 		install.setEnabled(false);
 		install.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 		final JTextField urlField = new JTextField();
+		urlField.setToolTipText(getText("install.tooltip"));
 		urlField.getDocument().addDocumentListener(new DocumentListener() {
-			@Override
 			public void insertUpdate(DocumentEvent e) {
 				updateImpl(e);
 			}
 
-			@Override
 			public void removeUpdate(DocumentEvent e) {
 				updateImpl(e);
 			}
 
-			@Override
 			public void changedUpdate(DocumentEvent e) {
 				updateImpl(e);
 			}
@@ -206,37 +203,39 @@ public class ManageAddOnsDialog extends JDialog {
 						localUrl = downloadUrl(sourceUrl);
 						LogUtils.info("downloaded " + sourceUrl + " to " + localUrl);
 					}
-					// FIXME: i18n
-					setStatusInfo("Installing add-on...");
+					setStatusInfo(getText("status.installing"));
 					Controller.getCurrentModeController().getMapController().newMap(localUrl, false);
 					final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 					final String key = mapViewManager.checkIfFileIsAlreadyOpened(localUrl);
 					// make the map the current map even if it was already opened
-					// FIXME: i18n
 					if (key == null || !mapViewManager.tryToChangeToMapView(key))
-						throw new RuntimeException("Map " + urlField.getText() + " does not seem to be opened");
+						throw new RuntimeException(getText("map.not.opened", urlField.getText()));
 					final MapModel newMap = mapViewManager.getModel();
-					// FIXME: hardcoded, wrong path!
-					final File scriptDir = new File(ResourceController.getResourceController()
-					    .getFreeplaneUserDirectory(), "scripts");
-					final File installScript = new File(scriptDir, "installScriptAddOn.groovy");
 					AddOnProperties addOn = (AddOnProperties) ScriptingEngine.executeScript(newMap.getRootNode(),
-					    FileUtils.slurpFile(installScript));
+					    getInstallScriptSource(), ScriptingPermissions.getPermissiveScriptingPermissions());
 					if (addOn != null) {
 						addOn.setSourceUrl(sourceUrl);
-						// FIXME: i18n
-						setStatusInfo("Successfully nstalled " + addOn.getName());
+						setStatusInfo(getText("status.success", addOn.getName()));
 					}
 					Controller.getCurrentController().getMapViewManager().close(true);
 					//					restartTransaction(oldMap, newMap);
 				}
 				catch (Exception ex) {
-					UITools.errorMessage("Error on installation: " + ex);
+					UITools.errorMessage(getText("error", ex.toString()));
 				}
 				finally {
 					Controller.getCurrentController().getViewController().setWaitingCursor(false);
 				}
 			}
+
+			private String getInstallScriptSource() throws IOException {
+				// FIXME: hardcoded, wrong path!
+				final File scriptDir = new File(ResourceController.getResourceController()
+				    .getFreeplaneUserDirectory(), "scripts");
+				// FIXME: bundled!
+				final File installScript = new File(scriptDir, "installScriptAddOn.groovy");
+	            return FileUtils.slurpFile(installScript);
+            }
 
 			private URL toURL(String urlText) throws MalformedURLException {
 				try {
@@ -260,22 +259,22 @@ public class ManageAddOnsDialog extends JDialog {
 
 	private AddOnTableModel createTableModel(final List<AddOnProperties> addOns) {
 		final String[] columnNames = new String[] { getText("name"), getText("version"), getText("description"),
-		        getText("type"), getText("actions") };
+		        getText("actions") };
 		return new AddOnTableModel(columnNames, addOns);
 	}
 
 	private JTable createTable(final AddOnTableModel tableModel) {
 		final JTable table = new JTable(tableModel);
-		table.setAutoCreateRowSorter(true);
+//FIXME: Java 6
+//		table.setAutoCreateRowSorter(true);
 		table.setRowHeight(36);
 		table.setBackground(Color.white);
 		final TableColumnModel columnModel = table.getColumnModel();
 		columnModel.getColumn(0).setPreferredWidth(150);
 		columnModel.getColumn(1).setPreferredWidth(40);
-		// FIXME: shorten, set tooltip
+		// FIXME: set tooltip
 		columnModel.getColumn(2).setPreferredWidth(270);
-		columnModel.getColumn(3).setPreferredWidth(40);
-		columnModel.getColumn(4).setPreferredWidth(300);
+		columnModel.getColumn(3).setPreferredWidth(300);
 		JButton[] btns = new JButton[] { createButton(AddOnProperties.OP_CONFIGURE) //
 		        , createButton(AddOnProperties.OP_DEACTIVATE) //
 		        , createButton(AddOnProperties.OP_ACTIVATE) //
@@ -286,18 +285,17 @@ public class ManageAddOnsDialog extends JDialog {
 		        , createActivateAction(tableModel) //
 		        , createDeinstallAction(tableModel) //
 		};
-		new ButtonsInCellRenderer(table, btns, actions, 4);
+		new ButtonsInCellRenderer(table, btns, actions, 3);
 		return table;
 	}
 
 	private AbstractAction createConfigureAction(final AddOnTableModel tableModel) {
 		return new AbstractAction() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);
 				if (!addOn.supportsOperation(AddOnProperties.OP_CONFIGURE)) {
-					UITools.errorMessage("Cannot configure " + addOn.getTranslatedName());
+					UITools.errorMessage(getText("cannot.configure", addOn.getTranslatedName()));
 				}
 				else {
 					OptionPanelBuilder optionPanelBuilder = new OptionPanelBuilder();
@@ -310,18 +308,16 @@ public class ManageAddOnsDialog extends JDialog {
 
 	private AbstractAction createDeactivateAction(final AddOnTableModel tableModel) {
 		return new AbstractAction() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);
 				if (!addOn.supportsOperation(AddOnProperties.OP_DEACTIVATE)) {
-					UITools.errorMessage("Cannot deactivate: " + addOn.getTranslatedName() + " is not active");
+					UITools.errorMessage(getText("cannot.deactivate", addOn.getTranslatedName()));
 				}
 				else {
 					addOn.setActive(false);
 					saveAddOn(addOn);
-					UITools.informationMessage(addOn.getTranslatedName()
-					        + " will be deactivated after a restart");
+					UITools.informationMessage(getText("deactivation.success", addOn.getTranslatedName()));
 				}
 			}
 		};
@@ -329,19 +325,16 @@ public class ManageAddOnsDialog extends JDialog {
 
 	private AbstractAction createActivateAction(final AddOnTableModel tableModel) {
 		return new AbstractAction() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);
 				if (!addOn.supportsOperation(AddOnProperties.OP_ACTIVATE)) {
-					UITools.errorMessage("Cannot activate: " + addOn.getTranslatedName()
-					        + " is already active");
+					UITools.errorMessage(getText("cannot.activate", addOn.getTranslatedName()));
 				}
 				else {
 					addOn.setActive(true);
 					saveAddOn(addOn);
-					UITools.informationMessage(addOn.getTranslatedName()
-					        + " will be activated after a restart");
+					UITools.informationMessage(getText("activation.success", addOn.getTranslatedName()));
 				}
 			}
 		};
@@ -349,17 +342,15 @@ public class ManageAddOnsDialog extends JDialog {
 
 	private AbstractAction createDeinstallAction(final AddOnTableModel tableModel) {
 		return new AbstractAction() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);
 				if (!addOn.supportsOperation(AddOnProperties.OP_DEINSTALL)) {
-					UITools.errorMessage("Cannot deinstall " + addOn.getTranslatedName());
+					UITools.errorMessage(getText("cannot.deinstall", addOn.getTranslatedName()));
 				}
 				else {
 					AddOnsController.getController().deInstall(addOn);
-					UITools.informationMessage(addOn.getTranslatedName()
-					        + " will be deinstalled after a restart");
+					UITools.informationMessage(getText("deinstallation.success", addOn.getTranslatedName()));
 				}
 			}
 		};
@@ -372,7 +363,7 @@ public class ManageAddOnsDialog extends JDialog {
 	}
 
 	private URL downloadUrl(final URL url) throws IOException {
-		setStatusInfo("Downloading file...");
+		setStatusInfo(getText("status.downloading"));
 		BufferedInputStream in = null;
 		BufferedOutputStream out = null;
 		try {
@@ -419,7 +410,7 @@ public class ManageAddOnsDialog extends JDialog {
 	}
 
 	private void setStatusInfo(final String message) {
-		Controller.getCurrentController().getViewController().out("Installed " + message + "...");
+		Controller.getCurrentController().getViewController().out(message);
 	}
 
 	private void saveAddOn(final AddOnProperties addOn) {
@@ -438,6 +429,10 @@ public class ManageAddOnsDialog extends JDialog {
 	private static String getText(String key) {
 		return TextUtils.getText(getResourceKey(key));
 	}
+
+	private String getText(String key, Object... parameters) {
+		return TextUtils.format(getResourceKey(key), parameters);
+    }
 }
 
 /**
@@ -488,17 +483,17 @@ class ButtonsInCellRenderer extends AbstractCellEditor implements TableCellRende
 		}
 	}
 
-	@Override
 	public Object getCellEditorValue() {
 		return editorValue;
 	}
 
-	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 	                                               int row, int column) {
 		final ManageAddOnsDialog.AddOnTableModel model = (AddOnTableModel) table.getModel();
 		for (JButton btn : buttons) {
-			final AddOnProperties addOn = model.getAddOnAt(table.convertRowIndexToModel(row));
+//FIXME: Java 6
+//			final AddOnProperties addOn = model.getAddOnAt(table.convertRowIndexToModel(row));
+			final AddOnProperties addOn = model.getAddOnAt(row);
 			btn.setVisible(addOn.supportsOperation(btn.getName()));
 			if (isSelected) {
 				btn.setForeground(table.getSelectionForeground());
@@ -520,15 +515,15 @@ class ButtonsInCellRenderer extends AbstractCellEditor implements TableCellRende
 		return panel;
 	}
 
-	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 		this.editorValue = value;
 		return panel;
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
-		int row = table.convertRowIndexToModel(table.getEditingRow());
+//FIXME: Java 6
+//		int row = table.convertRowIndexToModel(table.getEditingRow());
+		int row = table.getEditingRow();
 		fireEditingStopped();
 		ActionEvent event = new ActionEvent(table, ActionEvent.ACTION_PERFORMED, "" + row);
 		for (int i = 0; i < buttons.length; i++) {
@@ -543,28 +538,23 @@ class ButtonsInCellRenderer extends AbstractCellEditor implements TableCellRende
 	 *  the mouse to another cell before releasing it, the editor is still
 	 *  active. Make sure editing is stopped when the mouse is released.
 	 */
-	@Override
 	public void mousePressed(MouseEvent e) {
 		if (table.isEditing() && table.getCellEditor() == this)
 			isButtonColumnEditor = true;
 	}
 
-	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (isButtonColumnEditor && table.isEditing())
 			table.getCellEditor().stopCellEditing();
 		isButtonColumnEditor = false;
 	}
 
-	@Override
 	public void mouseClicked(MouseEvent e) {
 	}
 
-	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
 
-	@Override
 	public void mouseExited(MouseEvent e) {
 	}
 }

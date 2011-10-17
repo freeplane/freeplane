@@ -19,12 +19,14 @@
  */
 package org.freeplane.view.swing.ui.mindmapmode;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Collection;
 
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -32,8 +34,12 @@ import javax.swing.JScrollPane;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Compat;
+import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.SummaryNode;
+import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationController;
@@ -117,7 +123,7 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 				    .getModel(node).getVGap(), LocationModel.HGAP, 0);
 				return;
 			}
-			if (e.getModifiersEx() == InputEvent.CTRL_DOWN_MASK) {
+			if (Compat.isCtrlEvent(e)) {
 				final NodeView nodeV = getNodeView(e);
 				final NodeModel node = nodeV.getModel();
 				locationController.moveNodePosition(node, LocationModel.VGAP,
@@ -126,6 +132,7 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 			}
 		}
 	}
+
 
 	/** Invoked when a mouse button is pressed on a component and then dragged. */
 	public void mouseDragged(final MouseEvent e) {
@@ -142,7 +149,7 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 			else {
 				ModeController c = Controller.getCurrentController().getModeController();
 				final Point dragNextPoint = point;
-				if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == 0) {
+				if (! Compat.isCtrlEvent(e)) {
 					final NodeModel node = nodeV.getModel();
 					final LocationModel locationModel = LocationModel.createLocationModel(node);
 					locationModel.setShiftY(getNodeShiftY(dragNextPoint, node, dragStartingPoint));
@@ -215,16 +222,66 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 		final Point point = e.getPoint();
 		UITools.convertPointToAncestor(nodeV, point, JScrollPane.class);
 		final NodeModel node = nodeV.getModel();
+		final ModeController modeController = nodeV.getMap().getModeController();
 		final NodeModel parentNode = nodeV.getModel().getParentNode();
 		final int parentVGap = LocationModel.getModel(parentNode).getVGap();
-		final int hgap = LocationModel.getModel(node).getHGap();
+		int hgap = LocationModel.getModel(node).getHGap();
 		final int shiftY = LocationModel.getModel(node).getShiftY();
+		int newIndex = -1;
+		boolean isLeft = nodeV.isLeft();
+		if(FreeNode.isFreeNode(node)){
+			newIndex = calculateNewNodeIndex(nodeV, isLeft);
+		}
 		resetPositions(node);
-		final Controller controller = Controller.getCurrentController();
+		final Controller controller = modeController.getController();
 		MLocationController locationController = (MLocationController) LocationController.getController(controller.getModeController());
 		locationController.moveNodePosition(node, parentVGap, hgap, shiftY);
+		if(newIndex != -1){
+			MMapController mapController = (MMapController) modeController.getMapController();
+			final Collection<NodeModel> selecteds = mapController.getSelectedNodes();
+			final NodeModel[] array = selecteds.toArray(new NodeModel[selecteds.size()]);
+			mapController.moveNode(node, node.getParentNode(),  newIndex, isLeft, false);
+			controller.getSelection().replaceSelection(array);
+		}
+			
 		stopDrag();
 	}
+
+	public int getRefX(final NodeView node) {
+	    return node.getContent().getX() + node.getContent().getWidth()/2;
+    }
+
+	private int calculateNewNodeIndex(final NodeView nodeV, final boolean left) {
+		final NodeModel node = nodeV.getModel();
+		if(SummaryNode.isSummaryNode(node))
+			return -1;
+		final int nodeY = getRefY(nodeV);
+		final NodeView parent = nodeV.getParentView();
+		int newIndex = 0;
+		int wrondSideCount = 0;
+		for(int i = 0; i < parent.getComponentCount(); i++){
+			final Component component = parent.getComponent(i);
+			if(!(component instanceof NodeView))
+				continue;
+			NodeView sibling = (NodeView)component;
+			if(sibling.isLeft() == left 
+					&& ! SummaryNode.isSummaryNode(sibling.getModel())
+				&& getRefY(sibling) > nodeY)
+				return newIndex - wrondSideCount;
+			else
+				if(sibling != nodeV){
+					newIndex++;
+					if(sibling.isLeft() != left)
+						wrondSideCount++;
+					else
+						wrondSideCount = 0;
+				}
+		}
+		return newIndex - wrondSideCount;
+    }
+	private int getRefY(NodeView sibling) {
+	    return sibling.getY() + sibling.getContent().getY();
+    }
 
 	/**
 	 */

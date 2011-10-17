@@ -25,6 +25,7 @@ import java.io.Writer;
 import java.util.Collection;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.link.NodeLinks;
@@ -229,7 +230,7 @@ class MindMapHTMLWriter {
 		}
 		final TextController textController = TextController.getController();
 		final Object userObject = model.getUserObject();
-		final String text = textController.getTransformedText(userObject, model, userObject);
+		final String text = textController.getTransformedTextNoThrow(userObject, model, userObject);
 		final boolean hasHtml = text.startsWith("<html>");
 		final boolean heading = basedOnHeadings && !hasHtml && mapController.hasChildren(model) && depth <= 6;
 		if (!treatAsParagraph && !basedOnHeadings) {
@@ -433,7 +434,7 @@ class MindMapHTMLWriter {
 			fileout.write(output);
 		}
 		else {
-			fileout.write(string);
+			fileout.write(HtmlUtils.unicodeToHTMLUnicodeEntity(string));
 		}
     }
 	private void writeStyle() throws IOException {

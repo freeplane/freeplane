@@ -328,7 +328,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	public URI getLinkByFileChooser(final MapModel map) {
-		FileFilter fileFilter = getFileFilter();
 		JFileChooser chooser = null;
         final File file = map.getFile();
         if (file == null && LinkController.getLinkType() == LinkController.LINK_RELATIVE_TO_MINDMAP) {
@@ -342,9 +341,9 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
         else {
         	chooser = new JFileChooser();
         }
-        chooser.addChoosableFileFilter(fileFilter);
         chooser.setAcceptAllFileFilterUsed(true);
         chooser.setFileFilter(chooser.getAcceptAllFileFilter());
+        chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES); 
         final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController()
             .getContentPane());
         if (returnVal != JFileChooser.APPROVE_OPTION) {
