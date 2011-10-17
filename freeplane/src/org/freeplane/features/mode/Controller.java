@@ -31,6 +31,7 @@ import java.util.Set;
 
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.OptionPanelController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IValidator;
 import org.freeplane.core.util.LogUtils;
@@ -55,6 +56,7 @@ public class Controller extends AController {
 	private ViewController viewController;
 	private final ResourceController resourceController;
 	private final List<IValidator> optionValidators = new ArrayList<IValidator>();
+	final private OptionPanelController optionPanelController;
 
 	public Controller(ResourceController resourceController) {
 		super();
@@ -62,6 +64,7 @@ public class Controller extends AController {
 			currentController = this;
 		}
 		this.resourceController = resourceController; 
+		this.optionPanelController = new OptionPanelController();
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		addAction(new MoveToRootAction());
 		addAction(new CenterSelectedNodeAction());
@@ -219,4 +222,8 @@ public class Controller extends AController {
 	public List<IValidator> getOptionValidators() {
 		return optionValidators;
 	}
+	
+	public OptionPanelController getOptionPanelController() {
+	    return optionPanelController;
+    }
 }

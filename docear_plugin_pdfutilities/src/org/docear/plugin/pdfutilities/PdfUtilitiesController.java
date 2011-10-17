@@ -406,7 +406,7 @@ public class PdfUtilitiesController extends ALanguageController{
 		MModeController modeController = (MModeController) Controller.getCurrentModeController();
 
 		modeController.getOptionPanelBuilder().load(preferences);
-		modeController.getOptionPanelBuilder().addValidator(new IValidator(){
+		Controller.getCurrentController().addOptionValidator(new IValidator(){
 
 			public ValidationResult validate(Properties properties) {
 				ValidationResult result = new ValidationResult();
