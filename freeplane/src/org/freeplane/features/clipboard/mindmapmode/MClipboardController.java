@@ -37,6 +37,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
@@ -46,6 +47,7 @@ import javax.swing.text.html.HTMLEditorKit;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.core.util.HtmlUtils;
@@ -401,13 +403,34 @@ public class MClipboardController extends ClipboardController {
 			//file that we'll save to disk.
             File file;
             try {
-	            File tempFile = File.createTempFile(fileNameTemplate, ".jpg", mindmapFile.getParentFile());
-	            String imgfilepath=tempFile.getAbsolutePath();
+	            final File dir = mindmapFile.getParentFile();
+				file = File.createTempFile(fileNameTemplate, ".jpg", dir);
+	            String imgfilepath=file.getAbsolutePath();
 	            file = new File(imgfilepath);
+	            final JFileChooser fileChooser = new JFileChooser(file);		
+	            final ExampleFileFilter filter = new ExampleFileFilter();
+	    		filter.addExtension("jpg");
+	    		fileChooser.setAcceptAllFileFilterUsed(false);
+	    		fileChooser.setFileFilter(filter);
+	    		fileChooser.setSelectedFile(file);
+	    		int returnVal = fileChooser.showSaveDialog(UITools.getFrame());
+	    		if (returnVal != JFileChooser.APPROVE_OPTION) {
+	    			return;
+	    		}
+	    		file = fileChooser.getSelectedFile();
+	    		final URI uri;
+	    		final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
+	    			    "relative");
+	    		if (useRelativeUri) {
+	    			uri = LinkController.toRelativeURI(mindmapFile, file);
+	    		}
+	    		else{
+	    			uri = file.toURI();
+	    		}
 	            ImageIO.write(image, "jpg", file);
 				final NodeModel node = mapController.newNode(file.getName(), target.getMap());
 				final ExternalResource extension = new ExternalResource();
-				extension.setUri(file.toURI());
+				extension.setUri(uri);
 				node.addExtension(extension);
 				mapController.insertNode(node, target, asSibling, isLeft, isLeft);
             }
