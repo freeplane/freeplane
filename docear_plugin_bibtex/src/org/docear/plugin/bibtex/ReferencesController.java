@@ -52,6 +52,23 @@ public class ReferencesController extends ALanguageController{
 		this.addPropertiesToOptionPanel();
 		this.addPluginDefaults();
 		this.addMenuEntries();
+		this.initJabref();
+	}
+
+	private void initJabref() {
+		
+		/*final ClassLoader classLoader =  getClass().getClassLoader();
+
+		     Thread thread = new Thread() {
+		       public void run() {
+		         Thread.currentThread().setContextClassLoader(classLoader);
+		         JabrefWrapper wrapper = new JabrefWrapper(new String[]{ "-s" });   
+		       }
+		     };
+
+		     thread.start();
+		
+		*/
 	}
 
 	private void addPluginDefaults() {
