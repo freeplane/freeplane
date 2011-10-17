@@ -52,7 +52,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	private static final String WEB_FREEPLANE_LOCATION = "webFreeplaneLocation";
 
 	public static final String DOCUMENT_REPOSITORY_PATH = LocationDialog.DOCUMENT_REPOSITORY_PATH_PROPERTY;
-	public static final String LIBRARY_PATH = "library"; 
+	public static final String LIBRARY_PATH = "@@library_mindmaps@@"; 
 	public static final String BIBTEX_PATH = LocationDialog.BIBTEX_PATH_PROPERTY; 
 
 	public CoreConfiguration(ModeController modeController) {		

@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.docear.plugin.core.CoreConfiguration;
+import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.features.AnnotationController;
@@ -292,14 +294,23 @@ public class NodeUtils {
 		return (URI)attributeModel.getValue(attributeModel.getAttributePosition(TextUtils.getText(PdfUtilitiesController.MON_INCOMING_FOLDER)));
 	}
 	
-	public static URI getMindmapDirFromMonitoringNode(NodeModel node) {
+	public static List<URI> getMindmapDirFromMonitoringNode(NodeModel node) {
 		if(!NodeUtils.isMonitoringNode(node)) return null;
 		NodeAttributeTableModel attributeModel = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
 		if(attributeModel == null || !attributeModel.getAttributeKeyList().contains(TextUtils.getText(PdfUtilitiesController.MON_MINDMAP_FOLDER))){
 			return null;
 		}
 		
-		return (URI)attributeModel.getValue(attributeModel.getAttributePosition(TextUtils.getText(PdfUtilitiesController.MON_MINDMAP_FOLDER)));
+		Object value = attributeModel.getValue(attributeModel.getAttributePosition(TextUtils.getText(PdfUtilitiesController.MON_MINDMAP_FOLDER)));
+		
+		if(value.toString().equals(CoreConfiguration.LIBRARY_PATH)){
+			return DocearController.getController().getLibrary().getMindmaps();
+		}
+		else{
+			List<URI> uriList = new ArrayList<URI>();
+			uriList.add((URI)value);
+			return uriList;
+		}		
 	}
 
 	public static void removeMonitoringEntries(NodeModel selected) {
@@ -342,6 +353,19 @@ public class NodeUtils {
 		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
 		if(attributes != null){
 			AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), TextUtils.getText(PdfUtilitiesController.MON_MINDMAP_FOLDER), mindmapDir); //$NON-NLS-1$
+			AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
+    		attributeView.setOptimalColumnWidths();
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean addMindmapDir(NodeModel target, String value){
+		if(target == null || value == null) return false;
+		
+		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
+		if(attributes != null){
+			AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), TextUtils.getText(PdfUtilitiesController.MON_MINDMAP_FOLDER), value); //$NON-NLS-1$
 			AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
     		attributeView.setOptimalColumnWidths();
 			return true;

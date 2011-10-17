@@ -119,15 +119,25 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
 					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Searching monitored files ...");
 					URI pdfDir = NodeUtils.getPdfDirFromMonitoringNode(target);
-					URI mindmapDir = NodeUtils.getMindmapDirFromMonitoringNode(target);
+					List<URI> uriList = NodeUtils.getMindmapDirFromMonitoringNode(target);
 					URI monDir = Tools.getAbsoluteUri(pdfDir);
-					URI mapDir = Tools.getAbsoluteUri(mindmapDir);
+					
 					if(monDir == null || Tools.getFilefromUri(Tools.getAbsoluteUri(monDir)) == null || !Tools.getFilefromUri(Tools.getAbsoluteUri(monDir)).exists()){
 						UITools.informationMessage("Monitoring directory does not exist.");
 						continue;
 					}
-					if(mapDir == null || Tools.getFilefromUri(Tools.getAbsoluteUri(mapDir)) == null || !Tools.getFilefromUri(Tools.getAbsoluteUri(mapDir)).exists()){
-						UITools.informationMessage("Mindmap directory does not exist.");
+					List<URI> mindmaps = new ArrayList<URI>();
+					for(URI uri : uriList){
+						URI mapDir = Tools.getAbsoluteUri(uri);
+						if(mapDir == null || Tools.getFilefromUri(Tools.getAbsoluteUri(mapDir)) == null || !Tools.getFilefromUri(Tools.getAbsoluteUri(mapDir)).exists()){							
+							continue;
+						}
+						else{
+							mindmaps.add(uri);
+						}
+					}
+					if(mindmaps.size() <= 0){
+						UITools.informationMessage("No mindmaps to monitor found.");
 						continue;
 					}
 					Thread.sleep(1L);
@@ -153,7 +163,15 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					Thread.sleep(1L);
 					if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
 					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Searching monitored mindmaps ...");
-					Collection<URI> mindmapFiles = Tools.getFilteredFileList(mapDir, new CustomFileFilter(".*[.][mM][mM]"), true);				
+					Collection<URI> mindmapFiles = new ArrayList<URI>();
+					for(URI uri : mindmaps){
+						if(Tools.getFilefromUri(uri).isDirectory()){
+							mindmapFiles.addAll(Tools.getFilteredFileList(uri, new CustomFileFilter(".*[.][mM][mM]"), true));
+						}
+						else{
+							mindmapFiles.add(uri);
+						}
+					}
 					if(!mindmapFiles.contains(target.getMap().getFile().toURI())){
 						mindmapFiles.add(target.getMap().getFile().toURI());
 					}
