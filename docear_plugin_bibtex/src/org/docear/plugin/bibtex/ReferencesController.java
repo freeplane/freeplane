@@ -59,7 +59,7 @@ public class ReferencesController extends ALanguageController{
 
 	private void initJabref() {
 		
-		/*final ClassLoader classLoader =  getClass().getClassLoader();
+		final ClassLoader classLoader =  getClass().getClassLoader();
 
 		     Thread thread = new Thread() {
 		       public void run() {
@@ -70,7 +70,7 @@ public class ReferencesController extends ALanguageController{
 
 		     thread.start();
 		
-		*/
+		
 	}
 
 	private void addPluginDefaults() {
