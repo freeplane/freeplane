@@ -782,7 +782,6 @@ public class MapController extends SelectionController {
 		for (final NodeModel node : selecteds) {
 			Controller.getCurrentController().getSelection().makeTheSelected(node);
 		}
-		Controller.getCurrentController().getViewController().obtainFocusForSelected();
 	}
 
 	public void setSaved(final MapModel mapModel, final boolean saved) {

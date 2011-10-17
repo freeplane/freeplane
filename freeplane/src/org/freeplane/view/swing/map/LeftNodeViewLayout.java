@@ -19,10 +19,6 @@
  */
 package org.freeplane.view.swing.map;
 
-import javax.swing.JComponent;
-
-import org.freeplane.core.ui.components.UITools;
-
 /**
  * @author Dimitry Polivaev
  */
@@ -43,14 +39,4 @@ public class LeftNodeViewLayout extends NodeViewLayoutAdapter {
 		placeChildren(layoutData);
 	}
 
-
-	public void layoutNodeMotionListenerView(final NodeMotionListenerView view) {
-		final NodeView movedView = view.getMovedView();
-		final JComponent content = movedView.getContent();
-		location.x = content.getWidth();
-		location.y = 0;
-		UITools.convertPointToAncestor(content, location, view.getParent());
-		view.setLocation(location);
-		view.setSize(LISTENER_VIEW_WIDTH, content.getHeight());
-	}
 }

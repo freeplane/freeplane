@@ -26,9 +26,13 @@ import java.awt.Point;
 
 import javax.swing.JComponent;
 
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodelocation.LocationModel;
+import org.freeplane.features.styles.MapStyle;
+import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.view.swing.map.cloud.CloudView;
 
 abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
@@ -115,9 +119,10 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     abstract protected void layout();
 
     public void layoutContainer(final Container c) {
-        setUp(c);
-        layout();
-        shutDown();
+        if(setUp(c)){
+        	layout();
+        }
+    	shutDown();
     }
 
     /*
@@ -149,8 +154,11 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     public void removeLayoutComponent(final Component arg0) {
     }
 
-    protected void setUp(final Container c) {
+    protected boolean setUp(final Container c) {
         final NodeView localView = (NodeView) c;
+        JComponent content = localView.getContent();
+        if(content == null)
+        	return false;
         final int localChildCount = localView.getComponentCount() - 1;
         for (int i = 0; i < localChildCount; i++) {
             final Component component = localView.getComponent(i);
@@ -161,11 +169,11 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                 component.validate();
             }
         }
+        this.content = content;
         view = localView;
         model = localView.getModel();
         childCount = localChildCount;
-        content = localView.getContent();
-        if (getModel().isVisible()) {
+         if (getModel().isVisible()) {
             setVGap(getView().getVGap());
         }
         else {
@@ -175,13 +183,15 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 		if (view.isContentVisible()) {
 	        Dimension contentPreferredSize;
             contentPreferredSize = getContent().getPreferredSize();
-            contentWidth = contentPreferredSize.width;
+            final MapStyleModel mapStyleModel = MapStyleModel.getExtension(Controller.getCurrentController().getMap());
+            contentWidth = Math.max(view.getZoomed(mapStyleModel.getMinNodeWidth()),contentPreferredSize.width);
             contentHeight = contentPreferredSize.height;
         }
         else {
         	contentHeight = 0;
         	contentWidth = 0;
         }
+		return true;
     }
 
     protected void shutDown() {
@@ -280,7 +290,6 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 			data.summary[i] = ! isItem;
 			if(isItem && isFreeNode){
 				data.ly[i] = childShiftY - childContentShift - getSpaceAround();
-				childHGap -= child.getZoomed(LocationModel.HGAP);
             }
             else if(isItem){
                 if (childShiftY < 0 || visibleChildCounter == 0) {
@@ -375,7 +384,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             if(level > 0)
                 baseX = summaryBaseX[level - 1];
             else{
-                if(child.isLeft()){
+                if(child.isLeft() != (isItem && isFreeNode)){
                     baseX = 0;
                 }
                 else{
@@ -471,7 +480,8 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             	if(! data.free[i])
             		heigthWithoutOverlap = Math.max(heigthWithoutOverlap, y + child.getHeight() - child.getBottomOverlap());
             }
-			child.setLocation(contentX + data.lx[i], y);
+			final int x = contentX + data.lx[i];
+			child.setLocation(x, y);
             width = Math.max(width, child.getX() + child.getWidth());
             height = Math.max(height, y + child.getHeight());
         }
@@ -480,4 +490,14 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
         view.setTopOverlap(topOverlap);
         view.setBottomOverlap(height - heigthWithoutOverlap);
     }
+
+	public void layoutNodeMotionListenerView(final NodeMotionListenerView view) {
+		final NodeView movedView = view.getMovedView();
+		final JComponent content = movedView.getContent();
+		location.x = -LISTENER_VIEW_WIDTH;
+		location.y = 0;
+		UITools.convertPointToAncestor(content, location, view.getParent());
+		view.setLocation(location);
+		view.setSize(LISTENER_VIEW_WIDTH, content.getHeight());
+	}
 }

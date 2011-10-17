@@ -23,6 +23,7 @@ import java.util.Comparator;
 import java.util.Vector;
 
 import org.freeplane.core.ui.AMultipleNodeAction;
+import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
@@ -68,6 +69,7 @@ public class SortNodes extends AMultipleNodeAction {
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		int i = 0;
 		for (final NodeModel child : sortVector) {
+			((FreeNode)Controller.getCurrentModeController().getExtension(FreeNode.class)).undoableDeactivateHook(child);
 			mapController.moveNode(child, node, i++);
 		}
 	}

@@ -25,7 +25,6 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -45,7 +44,6 @@ import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IValidator;
-import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.HtmlUtils;
@@ -126,16 +124,8 @@ public class FormatController implements IExtension {
 	}
 	
 	public static void install(final FormatController formatController) {
-		final Controller controller = Controller.getCurrentController();
-		controller.addExtension(FormatController.class, formatController);
-		try {
-			final Method getOptionPanelBuilder = controller.getClass().getMethod("getOptionPanelBuilder");
-			final Object optionPanelBuilder = getOptionPanelBuilder.invoke(controller);
-			((OptionPanelBuilder) optionPanelBuilder).addValidator(formatController.createValidator());
-		}
-		catch (Exception e) {
-			// no matter: only register option validators if OptionPanelBuilder is available
-		}
+		Controller.getCurrentController().addExtension(FormatController.class, formatController);
+		Controller.getCurrentController().addOptionValidator(formatController.createValidator());
 	}
 
 	private static Locale getFormatLocaleFromResources() {

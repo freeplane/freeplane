@@ -1,0 +1,14 @@
+<filter_conditions>
+	<disjunct_condition user_name="Beginner">
+        <style_equals_condition TEXT="Beginner"/>
+        <style_equals_condition TEXT="BeginnerTopic"/>
+    </disjunct_condition>
+	<disjunct_condition user_name="Advanced">
+        <style_equals_condition TEXT="AdvancedTopic"/>
+        <style_equals_condition TEXT="Advanced"/>
+    </disjunct_condition>	
+    <disjunct_condition user_name="Professional">
+        <style_equals_condition TEXT="Professional"/>
+        <style_equals_condition TEXT="ProfessionalTopic"/>
+    </disjunct_condition>
+</filter_conditions>

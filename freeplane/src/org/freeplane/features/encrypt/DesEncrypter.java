@@ -32,6 +32,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IEncrypter;
 
 /**
@@ -108,6 +109,8 @@ public class DesEncrypter implements IEncrypter {
 				newSalt[i] = (byte) (Math.random() * 256l - 128l);
 			}
 			init(newSalt);
+			if(ecipher == null)
+				return null;
 			final byte[] enc = ecipher.doFinal(utf8);
 			return DesEncrypter.toBase64(newSalt) + DesEncrypter.SALT_PRESENT_INDICATOR + DesEncrypter.toBase64(enc);
 		}
@@ -141,14 +144,19 @@ public class DesEncrypter implements IEncrypter {
 				dcipher.init(Cipher.DECRYPT_MODE, key, paramSpec);
 			}
 			catch (final java.security.InvalidAlgorithmParameterException e) {
+				LogUtils.severe(e);
 			}
 			catch (final java.security.spec.InvalidKeySpecException e) {
+				LogUtils.severe(e);
 			}
 			catch (final javax.crypto.NoSuchPaddingException e) {
+				LogUtils.severe(e);
 			}
 			catch (final java.security.NoSuchAlgorithmException e) {
+				LogUtils.severe(e);
 			}
 			catch (final java.security.InvalidKeyException e) {
+				LogUtils.severe(e);
 			}
 		}
 	}

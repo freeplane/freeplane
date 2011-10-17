@@ -284,14 +284,16 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			}
 			htmlEditorPanel.setCurrentDocumentContent(content);
 			final KeyEvent firstKeyEvent = MTextController.getController().getEventQueue().getFirstEvent();
-			if (firstKeyEvent != null) {
-				final JTextComponent currentPane = htmlEditorPanel.getEditorPane();
-				if (currentPane == htmlEditorPanel.getMostRecentFocusOwner()) {
-					redispatchKeyEvents(currentPane, firstKeyEvent);
+			final JTextComponent currentPane = htmlEditorPanel.getEditorPane();
+			if (currentPane == htmlEditorPanel.getMostRecentFocusOwner()) {
+				redispatchKeyEvents(currentPane, firstKeyEvent);
+				if (firstKeyEvent == null) {
+					editorPane.setCaretPosition(htmlEditorPanel.getDocument().getLength());
 				}
 			}
-			else {
-				editorPane.setCaretPosition(htmlEditorPanel.getDocument().getLength());
+			else{
+				final EventBuffer keyEventDispatcher = MTextController.getController().getEventQueue();
+				keyEventDispatcher.deactivate();
 			}
 			htmlEditorPanel.getMostRecentFocusOwner().requestFocus();
 			htmlEditorWindow.show();

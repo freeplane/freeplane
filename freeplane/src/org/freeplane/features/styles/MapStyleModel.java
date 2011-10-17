@@ -22,18 +22,30 @@ package org.freeplane.features.styles;
 import java.awt.Color;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.event.ListDataListener;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.features.cloud.CloudModel;
+import org.freeplane.features.cloud.CloudModel.Shape;
+import org.freeplane.features.edge.EdgeModel;
+import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapReader;
+import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -46,9 +58,11 @@ public class MapStyleModel implements IExtension {
     public static final IStyle DEFAULT_STYLE = new StyleNamedObject("default");
     public static final IStyle DETAILS_STYLE = new StyleNamedObject("defaultstyle.details");
     public static final IStyle NOTE_STYLE = new StyleNamedObject("defaultstyle.note");
+    public static final IStyle FLOATING_STYLE = new StyleNamedObject("defaultstyle.floating");
 	private Map<IStyle, NodeModel> styleNodes;
 	private MapModel styleMap;
 	private ConditionalStyleModel conditionalStyleModel;
+	final private DefaultComboBoxModel stylesComboBoxModel; 
 	final private Map<String, String> properties;
 
 	Map<String, String> getProperties() {
@@ -73,6 +87,7 @@ public class MapStyleModel implements IExtension {
 		conditionalStyleModel = new ConditionalStyleModel();
 		styleNodes = new LinkedHashMap<IStyle, NodeModel>();
 		properties = new LinkedHashMap<String, String>();
+		stylesComboBoxModel = new DefaultComboBoxModel();
 	}
 
 	public ConditionalStyleModel getConditionalStyleModel() {
@@ -88,12 +103,14 @@ public class MapStyleModel implements IExtension {
 		styleMap.putExtension(IUndoHandler.class, map.getExtension(IUndoHandler.class));
 		final MapStyleModel defaultStyleModel = new MapStyleModel();
 		defaultStyleModel.styleNodes = styleNodes;
+		initStylesComboBoxModel();
 		rootNode.putExtension(defaultStyleModel);
 	}
 	
 	public void refreshStyles() {
 		final NodeModel rootNode = styleMap.getRootNode();
 		styleNodes.clear();
+		stylesComboBoxModel.removeAllElements();
 		createNodeStyleMap(rootNode);
     }
 
@@ -105,12 +122,16 @@ public class MapStyleModel implements IExtension {
 		final Reader styleReader = new StringReader(styleMapStr);
 		NodeModel root;
         try {
-	        root = mapReader.createNodeTreeFromXml(styleMap, styleReader, Mode.FILE);
+        	Map<Object, Object> hints = new HashMap<Object, Object>();
+        	hints.put(Hint.MODE, Mode.FILE);
+        	hints.put(NodeBuilder.FOLDING_LOADED, Boolean.TRUE);
+			root = mapReader.createNodeTreeFromXml(styleMap, styleReader, hints);
 			styleMap.setRoot(root);
 			insertStyleMap(parentMap, styleMap);
 			if(styleNodes.get(DEFAULT_STYLE) != null
 			        && styleNodes.get(DETAILS_STYLE) != null
-			        && styleNodes.get(NOTE_STYLE) != null)
+			        && styleNodes.get(NOTE_STYLE) != null
+			        && styleNodes.get(FLOATING_STYLE) != null)
 			    return;
 			final NodeModel predefinedStyleParentNode = getPredefinedStyleParentNode(styleMap);
             if(styleNodes.get(DEFAULT_STYLE) == null){
@@ -126,6 +147,13 @@ public class MapStyleModel implements IExtension {
             if(styleNodes.get(NOTE_STYLE) == null){
                 final NodeModel newNode = new NodeModel(NOTE_STYLE, styleMap);
                 predefinedStyleParentNode.insert(newNode, 2);
+                addStyleNode(newNode);
+            }
+            if(styleNodes.get(FLOATING_STYLE) == null){
+                final NodeModel newNode = new NodeModel(FLOATING_STYLE, styleMap);
+                EdgeModel.createEdgeModel(newNode).setStyle(EdgeStyle.EDGESTYLE_HIDDEN);
+                CloudModel.createModel(newNode).setShape(Shape.ROUND_RECT);
+                predefinedStyleParentNode.insert(newNode, 3);
                 addStyleNode(newNode);
             }
         }
@@ -149,12 +177,21 @@ public class MapStyleModel implements IExtension {
 
 	public void addStyleNode(final NodeModel node) {
 		final IStyle userObject = (IStyle) node.getUserObject();
-		styleNodes.put(userObject, node);
+		if(null == styleNodes.put(userObject, node))
+			stylesComboBoxModel.addElement(userObject);
 	}
+
+	private void initStylesComboBoxModel() {
+		stylesComboBoxModel.removeAllElements();
+		for(IStyle s : getStyles())
+			stylesComboBoxModel.addElement(s);
+
+    }
 
 	public void removeStyleNode(final NodeModel node) {
 		final Object userObject = node.getUserObject();
-		styleNodes.remove(userObject);
+		if(null != styleNodes.remove(userObject))
+			stylesComboBoxModel.removeElement(userObject);
 	}
 
     public NodeModel getStyleNodeSafe(final IStyle style) {
@@ -203,15 +240,23 @@ public class MapStyleModel implements IExtension {
 
 	private MapViewLayout mapViewLayout = MapViewLayout.MAP;
 	private int maxNodeWidth = MapStyleModel.getDefaultMaxNodeWidth();
-
+	private int minNodeWidth = MapStyleModel.getDefaultMinNodeWidth();
+		
 	public int getMaxNodeWidth() {
 		return maxNodeWidth;
 	}
-
+	
+	public int getMinNodeWidth() {
+		return minNodeWidth;
+	}
 	public void setMaxNodeWidth(final int maxNodeWidth) {
 		this.maxNodeWidth = maxNodeWidth;
 	}
 
+	public void setMinNodeWidth(final int minNodeWidth) {
+		this.minNodeWidth = minNodeWidth;
+	}
+	
 	static int getDefaultMaxNodeWidth() {
 		try {
 			return Integer.parseInt(ResourceController.getResourceController().getProperty("max_node_width"));
@@ -221,11 +266,20 @@ public class MapStyleModel implements IExtension {
 			    "el__max_default_window_width")) * 2 / 3;
 		}
 	}
-
+	
+	static int getDefaultMinNodeWidth() {
+		try {
+			return Integer.parseInt(ResourceController.getResourceController().getProperty("min_node_width"));
+		}
+		catch (final NumberFormatException e) {
+			return 0;
+		}
+	}
 	void copyFrom(MapStyleModel source, boolean overwrite) {
 		if(overwrite && source.styleMap != null  || styleMap == null){
 			styleMap = source.styleMap;
 			styleNodes = source.styleNodes;
+			initStylesComboBoxModel();
 			conditionalStyleModel = source.conditionalStyleModel;
 		}
 		if(overwrite && source.backgroundColor != null|| backgroundColor == null){
@@ -281,5 +335,10 @@ public class MapStyleModel implements IExtension {
             }
         }
         throw new NoSuchElementException();
+    }
+
+	ArrayList<ListDataListener> listeners = new ArrayList<ListDataListener>();
+	ComboBoxModel getStylesAsComboBoxModel() {
+		return stylesComboBoxModel;
     }
 }

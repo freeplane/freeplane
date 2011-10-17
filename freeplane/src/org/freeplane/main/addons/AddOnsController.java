@@ -8,9 +8,11 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.FileUtils;
@@ -99,11 +101,25 @@ public class AddOnsController {
 			languages.add(resourceController.getDefaultLanguageCode());
 			for (String language : languages) {
 				final Map<String, String> resources = addOn.getTranslations().get(language);
-				if (resources != null)
+				if (resources != null) {
+					resourceController.addLanguageResources(language, addOptionPanelPrefix(resources, addOn.getName()));
 					resourceController.addLanguageResources(language, resources);
+				}
             }
 		}
 	}
+
+	/** if the add-on is configurable it's a burden for the add-on-writer that the keys in the configuration are
+	 * prepended by "OptionPanel.". This code relieves the developer from taking care of that. */
+	private Map<String, String> addOptionPanelPrefix(final Map<String, String> resources, final String addOnName) {
+		final HashMap<String, String> result = new HashMap<String, String>(resources.size());
+		for (Entry<String, String> entry : resources.entrySet()) {
+	        result.put("OptionPanel." + entry.getKey(), entry.getValue());
+        }
+		final String nameKey = "addons." + addOnName;
+		result.put("OptionPanel.separator." + nameKey, resources.get(nameKey));
+	    return result;
+    }
 
 	public File getAddOnsDir() {
 		// in applets the userDir will be null

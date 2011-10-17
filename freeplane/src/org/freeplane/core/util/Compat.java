@@ -1,5 +1,7 @@
 package org.freeplane.core.util;
 
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -185,5 +187,27 @@ public class Compat {
 			uriString = uriString + '#' + fragment;
 		return uriString;
 	}
+
+	static public boolean isPlainEvent(final MouseEvent e) {
+        final int modifiers = e.getModifiersEx() & 
+        		(InputEvent.CTRL_DOWN_MASK 
+        				| InputEvent.META_DOWN_MASK
+        				| InputEvent.SHIFT_DOWN_MASK
+        				| InputEvent.ALT_DOWN_MASK
+        				);
+        return modifiers == 0;
+    }
+
+	static public boolean isCtrlEvent(final MouseEvent e) {
+        final int modifiers = e.getModifiersEx() & 
+        		(InputEvent.CTRL_DOWN_MASK 
+        				| InputEvent.META_DOWN_MASK
+        				| InputEvent.SHIFT_DOWN_MASK
+        				| InputEvent.ALT_DOWN_MASK
+        				);
+		if (isMacOsX())
+        	return modifiers == InputEvent.META_DOWN_MASK;
+        return modifiers == InputEvent.CTRL_DOWN_MASK;
+    }
 
 }

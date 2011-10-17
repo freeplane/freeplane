@@ -51,9 +51,12 @@ public class ResourceBundles extends ResourceBundle {
 	private final MultipleValueMap<String, URL> externalResources;
 	private String lang;
 	private Map<String, String> languageResources;
+	final private boolean isUserDefined;
 
 	ResourceBundles(final ResourceController controller) {
 		this.controller = controller;
+		final URL systemResource = getSystemResourceUrl(DEFAULT_LANGUAGE);
+		isUserDefined = systemResource.getProtocol().equalsIgnoreCase("file");
 		externalResources = new MultipleValueMap<String, URL>();
 		try {
 			loadLocalLanguageResources();
@@ -114,11 +117,9 @@ public class ResourceBundles extends ResourceBundle {
 	 * @throws IOException
 	 */
 	private Map<String, String> getLanguageResources(final String lang) throws IOException {
-		String resourceName = "/translations/Resources" + "_" + lang + ".properties";
-		final URL systemResource = ResourceController.getResourceController().getResource(
-		    resourceName);
+		final URL systemResource = getSystemResourceUrl(lang);
 		if (systemResource == null) {
-			System.out.println("core resource " + resourceName + " not found");
+			// no double logging: System.out.println("core resource " + resourceName + " not found");
 			return null;
 		}
 		final Map<String, String> resources = getLanguageResources(systemResource);
@@ -128,6 +129,12 @@ public class ResourceBundles extends ResourceBundle {
 		}
 		return resources;
 	}
+
+	protected URL getSystemResourceUrl(final String lang) {
+	    String resourceName = "/translations/Resources" + "_" + lang + ".properties";
+		final URL systemResource = ResourceController.getResourceController().getResource(resourceName);
+	    return systemResource;
+    }
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
     private Map<String, String> getLanguageResources(final URL systemResource) throws IOException {
@@ -146,7 +153,10 @@ public class ResourceBundles extends ResourceBundle {
 	public String getResourceString(final String key) {
 		final String resourceString = getResourceString(key, key);
 		if (resourceString == key) {
-			System.err.println("missing key " + key);
+			if(isUserDefined)
+				System.out.println("missing key " + key);
+			else
+				System.err.println("missing key " + key);
 			return '[' + key + ']';
 		}
 		return resourceString;
@@ -187,13 +197,14 @@ public class ResourceBundles extends ResourceBundle {
 				lang = Locale.getDefault().getLanguage() + "_" + country;
 				languageResources = getLanguageResources(lang);
 				if (languageResources != null) {
+					LogUtils.info("language resources for " + lang + " found");
 					return;
 				}
-				LogUtils.info("language resources for " + lang + " not found");
 			}
 			lang = Locale.getDefault().getLanguage();
 			languageResources = getLanguageResources(lang);
 			if (languageResources != null) {
+				LogUtils.info("language resources for " + lang + " found");
 				return;
 			}
 			LogUtils.info("language resources for " + lang + " not found");

@@ -27,7 +27,7 @@ import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
-@SelectableAction(checkOnNodeChange=true)
+@SelectableAction(checkOnPopup=true)
 class ToggleDetailsAction extends AMultipleNodeAction {
 	/**
 	 * 
@@ -41,27 +41,16 @@ class ToggleDetailsAction extends AMultipleNodeAction {
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		isHidden = !isHidden();
+		setSelected();
+		if(! isEnabled())
+			return;
+		isHidden = !isHidden;
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
 		selection.keepNodePosition(selection.getSelected(), 0.5f, 0.5f);
 		super.actionPerformed(e);
 	}
 	
-    private boolean isHidden() {
-        final DetailTextModel detailText = getDetailText();
-        return detailText != null ? detailText.isHidden() : isHidden;
-    }
-
-    private DetailTextModel getDetailText() {
-        final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
-		if(node == null){
-			return null;
-		}
-		final DetailTextModel detailText = DetailTextModel.getDetailText(node);
-        return detailText;
-    }
-
-	@Override
+ 	@Override
     protected void actionPerformed(ActionEvent e, NodeModel node) {
 		final DetailTextModel detailText = DetailTextModel.getDetailText(node);
 		if(detailText == null){
@@ -74,16 +63,19 @@ class ToggleDetailsAction extends AMultipleNodeAction {
     @Override
     public void setSelected() {
         setEnabled();
-        setSelected(!isHidden());
+        setSelected(isHidden);
     }
     
     @Override
     public void setEnabled() {
         boolean foundDetails = false;
+        isHidden = false;
         final Collection<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
         for (final NodeModel node : nodes) {
-            if (node != null && DetailTextModel.getDetailText(node) != null) {
+            final DetailTextModel detailText = DetailTextModel.getDetailText(node);
+			if (detailText != null) {
                 foundDetails = true;
+                isHidden = detailText.isHidden();
                 break;
             }
         }

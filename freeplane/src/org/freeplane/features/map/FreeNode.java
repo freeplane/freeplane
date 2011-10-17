@@ -20,8 +20,13 @@
 package org.freeplane.features.map;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.features.map.mindmapmode.MMapController;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;
+import org.freeplane.features.nodelocation.LocationController;
+import org.freeplane.features.nodelocation.LocationModel;
+import org.freeplane.features.nodelocation.mindmapmode.MLocationController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -41,6 +46,21 @@ public class FreeNode extends PersistentNodeHook implements IExtension{
 		return this;
 	}
 	
+	@Override
+	public void undoableToggleHook(NodeModel node, IExtension extension) {
+		if(node.isRoot())
+				return;
+		final NodeModel[] selecteds = getSelectedNodes();
+		((MLocationController)LocationController.getController()).moveNodePosition(node, 0, LocationModel.HGAP, -1);
+		super.undoableToggleHook(node, extension);
+		if(isFreeNode(node)){
+			MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+			mapController.moveNode(node, 0);
+		}
+		Controller.getCurrentController().getSelection().replaceSelection(selecteds);
+	}
+
+
 	static public boolean isFreeNode(final NodeModel nodeModel) {
 		return nodeModel.containsExtension(FreeNode.class);
 	}

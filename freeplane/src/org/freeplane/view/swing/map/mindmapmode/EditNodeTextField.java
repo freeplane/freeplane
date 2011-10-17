@@ -24,8 +24,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Insets;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -92,6 +92,7 @@ import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.ZoomableLabel;
+import org.freeplane.view.swing.map.ZoomableLabelUI;
 
 import com.lightdev.app.shtm.SHTMLWriter;
 
@@ -101,7 +102,12 @@ import com.lightdev.app.shtm.SHTMLWriter;
  */
 public class EditNodeTextField extends EditNodeBase {
     private class MyNavigationFilter extends NavigationFilter {
-        /* (non-Javadoc)
+    	private final JEditorPane textfield;
+        public MyNavigationFilter(JEditorPane textfield) {
+	        this.textfield = textfield;
+        }
+
+		/* (non-Javadoc)
          * @see javax.swing.text.NavigationFilter#moveDot(javax.swing.text.NavigationFilter.FilterBypass, int, javax.swing.text.Position.Bias)
          */
         public void moveDot(final FilterBypass fb, int dot, final Bias bias) {
@@ -116,16 +122,16 @@ public class EditNodeTextField extends EditNodeBase {
             dot = getValidPosition(dot);
             super.setDot(fb, dot, bias);
         }
-    }
 
-    private int getValidPosition(int position) {
-        final HTMLDocument doc = (HTMLDocument) textfield.getDocument();
-        if (doc.getDefaultRootElement().getElementCount() > 1) {
-            final int startPos = doc.getDefaultRootElement().getElement(1).getStartOffset();
-            final int validPosition = Math.max(position, startPos);
-            return validPosition;
+        private int getValidPosition(int position) {
+        	final HTMLDocument doc = (HTMLDocument) textfield.getDocument();
+        	if (doc.getDefaultRootElement().getElementCount() > 1) {
+        		final int startPos = doc.getDefaultRootElement().getElement(1).getStartOffset();
+        		final int validPosition = Math.max(position, startPos);
+        		return validPosition;
+        	}
+        	return position;
         }
-        return position;
     }
     
 	private int extraWidth;
@@ -205,8 +211,7 @@ public class EditNodeTextField extends EditNodeBase {
 		}
 		textfield.setSize(preferredSize);
 		if(layoutMapOnTextChange)
-			parent.setPreferredSize(new Dimension(preferredSize.width + horizontalSpace + iconWidth, preferredSize.height
-				+ verticalSpace));
+			parent.setPreferredSize(new Dimension(preferredSize.width + horizontalSpace , preferredSize.height + verticalSpace));
 		textfield.revalidate();
 		final NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, parent);
 		final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, nodeView);
@@ -420,7 +425,7 @@ public class EditNodeTextField extends EditNodeBase {
 			final ModeController modeController = Controller.getCurrentModeController();
 			final MTextController textController = (MTextController) TextController.getController(modeController);
 			textfield = textController.createEditorPane(MTextController.NODE_TEXT);
-			textfield.setNavigationFilter(new MyNavigationFilter());
+			textfield.setNavigationFilter(new MyNavigationFilter(textfield));
 		}
 	}
 
@@ -457,9 +462,6 @@ public class EditNodeTextField extends EditNodeBase {
 	private NodeView nodeView;
 	private Font font;
 	private float zoom;
-	private int iconWidth;
-	private int horizontalSpace;
-	private int verticalSpace;
 	private final PasteAction pasteAction;
 	private final BoldAction boldAction;
 	private final ItalicAction italicAction;
@@ -470,6 +472,8 @@ public class EditNodeTextField extends EditNodeBase {
 	private final ForegroundAction blackAction;
 	private StyledTextAction defaultColorAction;
 	private StyledTextAction removeFormattingAction;
+	private int horizontalSpace;
+	private int verticalSpace;
 
 	@Override
     protected JPopupMenu createPopupMenu(Component component) {
@@ -588,6 +592,8 @@ public class EditNodeTextField extends EditNodeBase {
 		textfield.addMouseListener(textFieldListener);
 		SpellCheckerController.getController().enableAutoSpell(textfield, true);
 		mapView.scrollNodeToVisible(nodeView);
+		if(! parent.isValid())
+			parent.setSize(parent.getPreferredSize());
 		final int nodeWidth = parent.getWidth();
 		final int nodeHeight = parent.getHeight();
 		final Dimension textFieldSize;
@@ -603,32 +609,13 @@ public class EditNodeTextField extends EditNodeBase {
 			setLineWrap();
 			textFieldSize.height = textfield.getPreferredSize().height;
 		}
-		horizontalSpace = nodeWidth - textFieldSize.width;
-		verticalSpace = nodeHeight - textFieldSize.height;
-		iconWidth = parent.getIconWidth();
-		if (iconWidth != 0) {
-			iconWidth += mapView.getZoomed(parent.getIconTextGap());
-			horizontalSpace -= iconWidth;
-		}
-		if (horizontalSpace < 0) {
-			horizontalSpace = 0;
-		}
-		if (verticalSpace < 0) {
-			verticalSpace = 0;
-		}
 		textfield.setSize(textFieldSize.width, textFieldSize.height);
-		parent.setPreferredSize(new Dimension(textFieldSize.width + iconWidth + horizontalSpace, textFieldSize.height
-	        + verticalSpace));
+		final Rectangle textR = ((ZoomableLabelUI)parent.getUI()).getTextR(parent);
+		horizontalSpace = Math.max(nodeWidth - textR.width, textR.x);
+		verticalSpace = Math.max(nodeHeight - textR.height, textR.y);
+		parent.setPreferredSize(new Dimension(horizontalSpace + textFieldSize.width, verticalSpace + textFieldSize.height));
 
-		final int x;
-		if(nodeView.isRoot() && parent instanceof MainView) 
-		    x= (horizontalSpace + 1) / 2;
-		else{
-		    final Insets insets = parent.getInsets();
-		    x = mapView.getZoomed(insets.left);
-		}
-		final int y = (verticalSpace + 1) / 2;
-		final Point location = new Point(x + iconWidth, y);
+		final Point location = new Point(textR.x, textR.y);
 		if(! layoutMapOnTextChange)
 			UITools.convertPointToAncestor(parent, location, mapView);
 		textfield.setBounds(location.x, location.y, textFieldSize.width, textFieldSize.height);
@@ -641,19 +628,16 @@ public class EditNodeTextField extends EditNodeBase {
 			mapView.add(textfield, 0);
 		final EventBuffer eventQueue = MTextController.getController().getEventQueue();
 		KeyEvent firstEvent = eventQueue.getFirstEvent();
-		if (firstEvent != null) {
-			redispatchKeyEvents(textfield, firstEvent);
-		}
-		else {
+		redispatchKeyEvents(textfield, firstEvent);
+		if (firstEvent == null) {
 			MouseEvent currentEvent = eventQueue.getMouseEvent();
-			eventQueue.setTextComponent(textfield);
 			int pos = document.getLength();
 			if(currentEvent != null){
 				MouseEvent mouseEvent = (MouseEvent) currentEvent;
 				if(mouseEvent.getComponent().equals(parent)){
 					final Point point = mouseEvent.getPoint();
-					point.x -= x + iconWidth;
-					point.y -= y;
+					point.x -= textR.x;
+					point.y -= textR.y;
 					pos = textfield.viewToModel(point);
 				}
 			}

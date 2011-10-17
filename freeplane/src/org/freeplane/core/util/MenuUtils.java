@@ -230,4 +230,24 @@ public class MenuUtils {
 		final String keyText = KeyEvent.getKeyText(keyStroke.getKeyCode());
 		return keyModifiersText.length() == 0 ? keyText : keyModifiersText + "+" + keyText;
 	}
+
+	public static Node findAssignedMenuItemNodeRecursively(final DefaultMutableTreeNode menubarNode,
+	                                                       final KeyStroke keystroke) {
+		final Enumeration<?> children = menubarNode.children();
+		while (children.hasMoreElements()) {
+			final Node child = (Node) children.nextElement();
+			final Object childUserObject = child.getUserObject();
+			if (childUserObject instanceof JMenuItem) {
+				final JMenuItem childMenuItem = (JMenuItem) childUserObject;
+				if (keystroke.equals(childMenuItem.getAccelerator())) {
+					return child;
+				}
+			}
+			// recurse
+			final Node assignedMenuItemNode = findAssignedMenuItemNodeRecursively(child, keystroke);
+			if (assignedMenuItemNode != null)
+				return assignedMenuItemNode;
+		}
+		return null;
+	}
 }

@@ -20,6 +20,7 @@
 package org.freeplane.features.map.mindmapmode;
 
 import java.awt.Component;
+import java.awt.Point;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
@@ -33,12 +34,14 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.EncryptionModel;
+import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
@@ -47,8 +50,11 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.nodelocation.mindmapmode.MLocationController;
+import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.MapViewLayout;
+import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.ViewController;
@@ -166,18 +172,27 @@ public class MMapController extends MapController {
 	}
 
 	public NodeModel addNewNode(final NodeModel parent, final int index, final boolean newNodeIsLeft) {
-		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
-		if (!mapController.isWriteable(parent)) {
-			final String message = TextUtils.getText("node_is_write_protected");
-			UITools.errorMessage(message);
+		if (!isWriteable(parent)) {
+			UITools.errorMessage(TextUtils.getText("node_is_write_protected"));
 			return null;
 		}
-		final MapModel map = parent.getMap();
-		final NodeModel newNode = Controller.getCurrentModeController().getMapController().newNode("", map);
+		final NodeModel newNode = newNode("", parent.getMap());
+		if(addNewNode(newNode, parent, index, newNodeIsLeft))
+			return newNode;
+		else
+			return null;
+	}
+
+	public boolean addNewNode(final NodeModel newNode, final NodeModel parent, final int index, final boolean newNodeIsLeft) {
+		if (!isWriteable(parent)) {
+			UITools.errorMessage(TextUtils.getText("node_is_write_protected"));
+			return false;
+		}
+	    final MapModel map = parent.getMap();
 		newNode.setLeft(newNodeIsLeft);
 		final IActor actor = new IActor() {
 			public void act() {
-				(Controller.getCurrentModeController().getMapController()).insertNodeIntoWithoutUndo(newNode, parent, index);
+				insertNodeIntoWithoutUndo(newNode, parent, index);
 			}
 
 			public String getDescription() {
@@ -185,12 +200,12 @@ public class MMapController extends MapController {
 			}
 
 			public void undo() {
-				mapController.deleteWithoutUndo(newNode);
+				deleteWithoutUndo(newNode);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, map);
-		return newNode;
-	}
+		return true;
+    }
 
 	/**
 	 * Return false if user has canceled.
@@ -228,6 +243,7 @@ public class MMapController extends MapController {
 		modeController.addAction(new NewPreviousSiblingAction());
 		modeController.addAction(new NewChildAction());
 		modeController.addAction(new NewSummaryAction());
+		modeController.addAction(new NewFreeNodeAction());
 		modeController.addAction(new DeleteAction());
 		modeController.addAction(new NodeUpAction());
 		modeController.addAction(new NodeDownAction());
@@ -327,6 +343,10 @@ public class MMapController extends MapController {
 		return ((MFileManager) UrlManager.getController()).loadTree(map, file);
 	}
 
+	public void moveNode(NodeModel node, int i) {
+		   moveNode(node, node.getParentNode(), i);
+	}
+	
 	public void moveNode(final NodeModel child, final NodeModel newParent, final int childCount) {
 		moveNode(child, newParent, childCount, false, false);
 	}
@@ -353,6 +373,7 @@ public class MMapController extends MapController {
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, newParent.getMap());
+		
 	}
 
 	public void moveNodeAsChild(final NodeModel node, final NodeModel selectedParent, final boolean isLeft,
@@ -361,6 +382,13 @@ public class MMapController extends MapController {
 		if (node.getParent() == selectedParent) {
 			position--;
 		}
+		FreeNode r = ((FreeNode)Controller.getCurrentModeController().getExtension(FreeNode.class));
+		final IExtension extension = node.getExtension(FreeNode.class);
+        if (extension != null) {
+        	r.undoableToggleHook(node, extension);
+        	if (MapStyleModel.FLOATING_STYLE.equals(LogicalStyleModel.getStyle(node)))
+        		((MLogicalStyleController)MLogicalStyleController.getController(getMModeController())).setStyle(node, null);
+        }
 		moveNode(node, selectedParent, position, isLeft, changeSide);
 	}
 
@@ -374,6 +402,7 @@ public class MMapController extends MapController {
             if(oldIndex < newIndex)
                 newIndex--;
 	    }
+		((FreeNode)Controller.getCurrentModeController().getExtension(FreeNode.class)).undoableDeactivateHook(node);
         moveNode(node, newParent, newIndex, isLeft, changeSide);
 	}
 
@@ -430,7 +459,6 @@ public class MMapController extends MapController {
                 final NodeModel node = sortedChildren.get(position.intValue());
                 selection.makeTheSelected(node);
             }
-            Controller.getCurrentController().getViewController().obtainFocusForSelected();
         }
     }
     private int moveNodeTo(final NodeModel child, final int direction) {
@@ -523,5 +551,52 @@ public class MMapController extends MapController {
 		if (setTitle) {
 			Controller.getCurrentModeController().getController().getViewController().setTitle();
 		}
+	}
+
+	public NodeModel addFreeNode(Point pt, boolean newNodeIsLeft) {
+		final ModeController modeController = Controller.getCurrentModeController();
+		final TextController textController = TextController.getController();
+		if (textController instanceof MTextController) {
+			((MTextController) textController).stopEditing();
+		}
+		final NodeModel target = getRootNode();
+		if (textController instanceof MTextController) {
+			modeController.startTransaction();
+			try {
+				((MTextController) TextController.getController()).stopEditing();
+			}
+			finally {
+				modeController.commit();
+			}
+		}
+		final NodeModel targetNode = target;
+		final boolean parentFolded = isFolded(targetNode);
+		if (parentFolded) {
+			setFolded(targetNode, false);
+		}
+		if (!isWriteable(target)) {
+			UITools.errorMessage(TextUtils.getText("node_is_write_protected"));
+			return null;
+		}
+		final NodeModel newNode = newNode("", target.getMap());
+		LogicalStyleModel.createExtension(newNode).setStyle(MapStyleModel.FLOATING_STYLE);
+		newNode.addExtension(modeController.getExtension(FreeNode.class));
+		if(! addNewNode(newNode, target, -1, newNodeIsLeft))
+			return null;
+		((MLocationController)MLocationController.getController(modeController)).moveNodePosition(newNode, -1, pt.x, pt.y);
+		final Component component = Controller.getCurrentController().getViewController().getComponent(newNode);
+		if (component == null)
+			return newNode;
+		component.addFocusListener(new FocusListener() {
+			public void focusLost(FocusEvent e) {
+			}
+
+			public void focusGained(FocusEvent e) {
+				e.getComponent().removeFocusListener(this);
+				((MTextController) textController).edit(newNode, targetNode, true, false, false);
+			}
+		});
+		select(newNode);
+		return newNode;
 	}
 }

@@ -141,6 +141,8 @@ public class HtmlUtils {
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll(">");
 		if (removeNewLines)
 			intermediate = PATTERNS[i++].matcher(intermediate).replaceAll(" ");
+		else
+			i++;
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("\n");
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("\n");
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("\n");
@@ -154,6 +156,8 @@ public class HtmlUtils {
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("");
 		if (removeNewLines)
 			intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("");
+		else
+			i++;
 		intermediate = intermediate.trim();
 		intermediate = HtmlUtils.unescapeHTMLUnicodeEntity(intermediate);
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("<");
@@ -358,20 +362,26 @@ public class HtmlUtils {
 		/*
 		 * Heuristic reserve for expansion : factor 1.2
 		 */
-		final StringBuilder result = new StringBuilder((int) (text.length() * 1.2));
+		StringBuilder result = null;
 		int intValue;
 		char myChar;
 		for (int i = 0; i < text.length(); ++i) {
 			myChar = text.charAt(i);
 			intValue = text.charAt(i);
 			if (intValue < 32 || intValue > 126) {
+				if(result == null){
+					 result = new StringBuilder((int) (text.length() * 1.2));
+					 result.append(text.subSequence(0, i));
+				}
 				result.append("&#x").append(Integer.toString(intValue, 16)).append(';');
 			}
-			else {
+			else if(result != null){
 				result.append(myChar);
 			}
 		}
-		return result.toString();
+		if(result != null)
+			return result.toString();
+		return text;
 	}
 
 	/**
@@ -679,9 +689,7 @@ public class HtmlUtils {
 		return text.substring(textBegin, end).trim();
 	}
 
-	/** Gets the string URL of an existing link, or null if none. 
-	 * @param doc 
-	 * @param i */
+	/** Gets the string URL of an existing link, or null if none. */
 	public static String getURLOfExistingLink(HTMLDocument doc, int pos) {
 	    //setIgnoreActions(true);      
 	    final Element linkElement = HtmlUtils.getCurrentLinkElement(doc, pos);

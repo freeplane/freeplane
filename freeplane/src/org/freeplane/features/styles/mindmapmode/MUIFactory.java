@@ -48,7 +48,6 @@ import org.freeplane.features.styles.MapStyleModel;
 
 public class MUIFactory implements INodeSelectionListener, INodeChangeListener, IMapChangeListener,
         IMapSelectionListener {
-	private static final String[] sizes = { "8", "10", "12", "14", "16", "18", "20", "24", "28" };
 // 	final private Controller controller;
 	private boolean ignoreChangeEvent = false;
 	final private DefaultComboBoxModel fonts, size, styles;
@@ -58,8 +57,10 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
     	return styles;
     }
 
+	final static public String[] FONT_SIZES = new String[] { "2", "4", "6", "8", "10", "12", "14", "16", "18", "20", "22", "24",
+	        "30", "36", "48", "72" };
 	public MUIFactory() {
-		size = new DefaultComboBoxModel(MUIFactory.sizes);
+		size = new DefaultComboBoxModel(MUIFactory.FONT_SIZES);
 		styles = new DefaultComboBoxModel();
 		final ModeController modeController = Controller.getCurrentModeController();
 		final MNodeStyleController styleController = (MNodeStyleController) modeController

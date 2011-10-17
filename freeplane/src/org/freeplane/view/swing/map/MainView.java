@@ -21,16 +21,18 @@ package org.freeplane.view.swing.map;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.Collection;
 import java.util.Map.Entry;
 
@@ -73,7 +75,7 @@ public abstract class MainView extends ZoomableLabel {
     public static boolean USE_COMMON_OUT_POINT_FOR_ROOT_NODE = ResourceController.getResourceController().getBooleanProperty(USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING);
 
 	static Dimension maximumSize = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
-	static Dimension minimumSize = new Dimension(0, 0);
+	static Dimension minimumSize = new Dimension(0,0);
 	/**
 	 * 
 	 */
@@ -162,7 +164,10 @@ public abstract class MainView extends ZoomableLabel {
 	public boolean isInFollowLinkRegion(final double xCoord) {
 		final NodeView nodeView = getNodeView();
 		final NodeModel model = nodeView.getModel();
-		return NodeLinks.getValidLink(model) != null && isInVerticalRegion(xCoord, 1. / 4);
+		if (NodeLinks.getValidLink(model) == null)
+			return false;
+		Rectangle iconR = ((ZoomableLabelUI)getUI()).getIconR(this);
+		return xCoord >= iconR.x && xCoord < iconR.x + iconR.width;
 	}
 
 	/**
@@ -293,18 +298,6 @@ public abstract class MainView extends ZoomableLabel {
 		setDraggedOver((dropAsSibling(p.getX())) ? NodeView.DRAGGED_OVER_SIBLING : NodeView.DRAGGED_OVER_SON);
 	}
 
-	/**
-	 * @return true if a link is to be displayed and the curser is the hand now.
-	 */
-	public boolean updateCursor(final double xCoord) {
-		final boolean followLink = isInFollowLinkRegion(xCoord);
-		final int requiredCursor = followLink ? Cursor.HAND_CURSOR : Cursor.DEFAULT_CURSOR;
-		if (getCursor().getType() != requiredCursor) {
-			setCursor(requiredCursor != Cursor.DEFAULT_CURSOR ? new Cursor(requiredCursor) : null);
-		}
-		return followLink;
-	}
-
 	public void updateFont(final NodeView node) {
 		final Font font = NodeStyleController.getController(node.getMap().getModeController()).getFont(node.getModel());
 		setFont(font);
@@ -402,8 +395,19 @@ public abstract class MainView extends ZoomableLabel {
 
 	@Override
     public JToolTip createToolTip() {
-        JToolTip tip = new NodeTooltip();
+		NodeTooltip tip = new NodeTooltip();
         tip.setComponent(this);
+		final URL url = getMap().getModel().getURL();
+		if (url != null) {
+			tip.setBase(url);
+		}
+		else {
+			try {
+	            tip.setBase(new URL("file: "));
+            }
+            catch (MalformedURLException e) {
+            }
+		}
         return tip;
     }
 

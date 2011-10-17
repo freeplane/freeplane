@@ -69,6 +69,8 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 
 	@Override
 	public String getValue() {
+		if(mComboBox.getSelectedIndex() == -1)
+			return mComboBox.getSelectedItem().toString();
 		return possibleValues.get(mComboBox.getSelectedIndex());
 	}
 
@@ -89,7 +91,10 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 		if (possibleValues.contains(value)) {
 			mComboBox.setSelectedIndex(possibleValues.indexOf(value));
 		}
-		else {
+		else if(mComboBox.isEditable()){
+			mComboBox.setSelectedItem(value);
+		}
+		else{
 			LogUtils.severe("Can't set the value:" + value + " into the combo box " + getName() + "/" + getLabel());
 			if (mComboBox.getModel().getSize() > 0) {
 				mComboBox.setSelectedIndex(0);
@@ -119,4 +124,14 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
     protected Component[] getComponents() {
 	    return mComboBox.getComponents();
     }
+
+	public void setEditable(boolean aFlag) {
+	    mComboBox.setEditable(aFlag);
+    }
+
+	public boolean isEditable() {
+	    return mComboBox.isEditable();
+    }
+	
+	
 }

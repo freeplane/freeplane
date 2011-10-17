@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.ConditionalStyleModel;
@@ -53,7 +54,7 @@ public class ManageMapConditionalStylesAction extends AManageConditionalStylesAc
 		Component pane = createConditionalStylePane(map, conditionalStyleModel);
 		Controller.getCurrentModeController().startTransaction();
 		try{
-			final int confirmed = JOptionPane.showConfirmDialog(controller.getViewController().getMapView(), pane, "", JOptionPane.OK_CANCEL_OPTION);
+			final int confirmed = JOptionPane.showConfirmDialog(controller.getViewController().getMapView(), pane, TextUtils.getText(TextUtils.removeMnemonic("ManageConditionalStylesAction.text")), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 			if(JOptionPane.OK_OPTION == confirmed){
 				LogicalStyleController.getController().refreshMap(map);
 				Controller.getCurrentModeController().commit();
@@ -69,6 +70,7 @@ public class ManageMapConditionalStylesAction extends AManageConditionalStylesAc
 		}
 	}
 
+	@Override
 	public ConditionalStyleModel getConditionalStyleModel() {
 		final Controller controller = Controller.getCurrentController();
 		final MapModel map = controller.getMap();

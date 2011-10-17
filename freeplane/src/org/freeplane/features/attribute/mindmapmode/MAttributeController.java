@@ -252,7 +252,8 @@ public class MAttributeController extends AttributeController {
 		}
 
 		public void act() {
-			element.addValue(newValue);
+			if (newValue != null)
+				element.addValue(newValue);
 		}
 
 		public String getDescription() {
@@ -260,7 +261,8 @@ public class MAttributeController extends AttributeController {
 		}
 
 		public void undo() {
-			element.removeValue(newValue);
+			if (newValue != null)
+				element.removeValue(newValue);
 		}
 	}
 

@@ -48,6 +48,8 @@ public class ScriptingPermissions {
         , RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION //
         , RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED //
 	};
+	private static ScriptingPermissions formulaPermissions;
+	private static ScriptingPermissions permissiveScriptingPermissions;
 
 	public ScriptingPermissions() {
 		// by default nothing is allowed
@@ -93,17 +95,43 @@ public class ScriptingPermissions {
 		boolean execPerm = get(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION);
 		return new ScriptingSecurityManager(readPerm, writePerm, networkPerm, execPerm);
 	}
-
-	ScriptingSecurityManager getRestrictedScriptingSecurityManager() {
-		return new ScriptingSecurityManager(false, false, false, false);
+	
+	/** this method is called only if the formula plugin is active and so formula evaluation is allowed. */
+	static ScriptingPermissions getFormulaPermissions() {
+		if (formulaPermissions == null) {
+			formulaPermissions = new ScriptingPermissions();
+			formulaPermissions.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING, true);
+			// the classpath is set by the user - this forces us to loose the permissions a bit (if the user permits it)
+			if (ScriptingEngine.getClasspath() != null) {
+				formulaPermissions.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION, ResourceController
+				    .getResourceController().getBooleanProperty(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION));
+			}
+		}
+		return formulaPermissions;
 	}
 
 	ScriptingSecurityManager getPermissiveScriptingSecurityManager() {
 		return new ScriptingSecurityManager(true, true, true, true);
 	}
+	
+	public static ScriptingPermissions getPermissiveScriptingPermissions() {
+		if (permissiveScriptingPermissions == null) {
+			permissiveScriptingPermissions = new ScriptingPermissions();
+			permissiveScriptingPermissions.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING, true);
+			permissiveScriptingPermissions.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION, true);
+			permissiveScriptingPermissions.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_WRITE_RESTRICTION, true);
+			permissiveScriptingPermissions.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION, true);
+			permissiveScriptingPermissions.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION, true);
+		}
+		return permissiveScriptingPermissions;
+	}
 
 	boolean isExecuteSignedScriptsWithoutRestriction() {
 		return get(RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED);
+	}
+	
+	public boolean executeScriptsWithoutAsking() {
+		return get(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING);
 	}
 
 	public static List<String> getPermissionNames() {

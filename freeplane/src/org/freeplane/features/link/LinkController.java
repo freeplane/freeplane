@@ -308,9 +308,13 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 	}
 
+	public void loadURL(final NodeModel node, final MouseEvent e) {
+		loadURL(node, new ActionEvent(e.getSource(), e.getID(), null));
+	}
+
 	public void loadURL(final MouseEvent e) {
 		ModeController modeController = Controller.getCurrentModeController();
-		loadURL(modeController.getMapController().getSelectedNode(), new ActionEvent(e.getSource(), e.getID(), null));
+		loadURL(modeController.getMapController().getSelectedNode(), e);
 	}
 
 	void loadURL(final NodeModel selectedNode, final ActionEvent e) {
@@ -324,8 +328,9 @@ public class LinkController extends SelectionController implements IExtension {
 				}
 				final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 				final DefaultMutableTreeNode treeNode = menuBuilder.get(LinkController.parseMenuItemLink(link));
-				if (!treeNode.isLeaf() || !(treeNode.getUserObject() instanceof JMenuItem)) {
-					throw new RuntimeException("node " + treeNode + " should have been an executable action");
+				if (treeNode == null || !treeNode.isLeaf() || !(treeNode.getUserObject() instanceof JMenuItem)) {
+					LogUtils.warn("node " + link + " should have been an executable action");
+					return;
 				}
 				final JMenuItem menuItem = (JMenuItem) treeNode.getUserObject();
 				final Action action = menuItem.getAction();
