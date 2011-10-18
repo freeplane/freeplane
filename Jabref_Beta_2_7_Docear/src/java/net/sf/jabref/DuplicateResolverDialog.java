@@ -252,7 +252,7 @@ public boolean isBlocking() {
 
   public static int resolveDuplicateInImport(JabRefFrame frame, BibtexEntry existing,
                                            BibtexEntry imported) {
-    DuplicateResolverDialog drd = new DuplicateResolverDialog(frame, existing, imported,
+    DuplicateResolverDialog drd = new DuplicateResolverDialog(frame.getFrame(), existing, imported,
                                                               IMPORT_CHECK);
     drd.setVisible(true); // drd.show(); -> deprecated since 1.5
     return drd.getSelected();

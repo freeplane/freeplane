@@ -108,7 +108,7 @@ public class TextInputDialog
   public TextInputDialog( JabRefFrame frame, BasePanel panel, String title, boolean modal,
                           BibtexEntry bibEntry )
   {
-    super( frame, title, modal ) ;
+    super( frame.getFrame(), title, modal ) ;
 
     warnPanel = new IntegrityMessagePanel(panel);
     inputChanged = true ;  // for a first validCheck
@@ -628,7 +628,7 @@ public class TextInputDialog
       try
       {
         String chosen = null ;
-        chosen = FileDialogs.getNewFile( _frame, null, null,
+        chosen = FileDialogs.getNewFile( _frame.getFrame(), null, null,
                                      ".txt",
                                      JFileChooser.OPEN_DIALOG, false ) ;
         if ( chosen != null )

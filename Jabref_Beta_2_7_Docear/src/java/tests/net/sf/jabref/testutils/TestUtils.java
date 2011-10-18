@@ -40,7 +40,7 @@ public class TestUtils {
 	public static void closeJabRef() {
 		JabRef jabref = JabRef.singleton;
 		if (jabref != null) {
-			jabref.jrf.dispose();
+			jabref.jrf.getFrame().dispose();
 		}
 	}
 

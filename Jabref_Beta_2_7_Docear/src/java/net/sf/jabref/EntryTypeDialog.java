@@ -65,7 +65,7 @@ public class EntryTypeDialog extends JDialog implements ActionListener {
 	}
 
     public EntryTypeDialog(JabRefFrame baseFrame_) {
-	super(baseFrame_, true); // Set modal on.
+	super(baseFrame_.getFrame(), true); // Set modal on.
 
 
 	setTitle(Globals.lang("Select entry type"));

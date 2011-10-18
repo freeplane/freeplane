@@ -104,7 +104,7 @@ public class FromAuxDialog
   public FromAuxDialog( JabRefFrame frame, String title, boolean modal,
                         JTabbedPane viewedDBs )
   {
-    super( frame, title, modal ) ;
+    super( frame.getFrame(), title, modal ) ;
 
     parentTabbedPane = viewedDBs ;
 
@@ -415,7 +415,7 @@ public class FromAuxDialog
     public void actionPerformed( ActionEvent e )
     {
       String chosen = null ;
-      chosen = FileDialogs.getNewFile( _frame,
+      chosen = FileDialogs.getNewFile( _frame.getFrame(),
               new File( comp.getText() ),
                                    ".aux",
                                    JFileChooser.OPEN_DIALOG, false ) ;

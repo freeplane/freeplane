@@ -82,7 +82,7 @@ class CustomExportDialog extends JDialog {
 
 
     public CustomExportDialog(JabRefFrame parent_) {
-    super(parent_, Globals.lang("Edit custom export"), true);
+    super(parent_.getFrame(), Globals.lang("Edit custom export"), true);
     parent = parent_;
     ActionListener okListener = new ActionListener() {
         public void actionPerformed(ActionEvent e) {
@@ -122,7 +122,7 @@ class CustomExportDialog extends JDialog {
         browse.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             File directory = new File(Globals.prefs.get("exportWorkingDirectory"));
-            String chosenStr = FileDialogs.getNewFile(parent, directory, ".layout",
+            String chosenStr = FileDialogs.getNewFile(parent.getFrame(), directory, ".layout",
                                              JFileChooser.OPEN_DIALOG, false);
             if (chosenStr == null) return;
             File chosen = new File(chosenStr);

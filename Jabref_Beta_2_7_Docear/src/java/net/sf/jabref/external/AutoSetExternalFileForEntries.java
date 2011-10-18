@@ -50,7 +50,7 @@ public class AutoSetExternalFileForEntries extends AbstractWorker {
 
         // Ask about rules for the operation:
         if (optDiag == null)
-            optDiag = new OptionsDialog(panel.frame(), fieldName);
+            optDiag = new OptionsDialog(panel.frame().getFrame(), fieldName);
         Util.placeDialog(optDiag, panel.frame());
         optDiag.setVisible(true);
         if (optDiag.canceled()) {
@@ -142,7 +142,7 @@ public class AutoSetExternalFileForEntries extends AbstractWorker {
                         switch (answer) {
                             case 1:
                                 // Assign new file.
-                                AttachFileDialog afd = new AttachFileDialog(panel.frame(),
+                                AttachFileDialog afd = new AttachFileDialog(panel.frame().getFrame(),
                                         panel.metaData(), sel[i], fieldName);
                                 Util.placeDialog(afd, panel.frame());
                                 afd.setVisible(true);

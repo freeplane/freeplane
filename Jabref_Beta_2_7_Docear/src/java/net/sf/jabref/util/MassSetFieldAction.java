@@ -40,7 +40,7 @@ public class MassSetFieldAction extends MnemonicAwareAction {
     }
 
     private void createDialog() {
-        diag = new JDialog(frame, Globals.lang("Set/clear/rename fields"), true);
+        diag = new JDialog(frame.getFrame(), Globals.lang("Set/clear/rename fields"), true);
 
         field = new JTextField();
         text = new JTextField();

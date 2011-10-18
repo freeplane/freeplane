@@ -58,7 +58,7 @@ public class DbImportAction extends AbstractWorker {
 
         dbs = new DBStrings();
         dbs.initialize();
-        DBConnectDialog dbd = new DBConnectDialog(frame, dbs);
+        DBConnectDialog dbd = new DBConnectDialog(frame.getFrame(), dbs);
         dbs = dbd.getDBStrings();
                 //panel.metaData().getDBStrings();
 
@@ -71,7 +71,7 @@ public class DbImportAction extends AbstractWorker {
             }
 
             // show connection dialog
-            dbd = new DBConnectDialog(frame, dbs);
+            dbd = new DBConnectDialog(frame.getFrame(), dbs);
             Util.placeDialog(dbd, frame);
             dbd.setVisible(true);
 

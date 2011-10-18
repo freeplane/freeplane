@@ -74,7 +74,7 @@ class ReplaceStringDialog extends JDialog {
     GridBagConstraints con = new GridBagConstraints();
 
     public ReplaceStringDialog(JabRefFrame parent_) {
-        super(parent_, Globals.lang("Replace string"), true);
+        super(parent_.getFrame(), Globals.lang("Replace string"), true);
         parent = parent_;
 
         bg.add(allFi);

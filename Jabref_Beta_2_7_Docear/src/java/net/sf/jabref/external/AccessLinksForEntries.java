@@ -184,7 +184,7 @@ public class AccessLinksForEntries {
 
             final JProgressBar prog = new JProgressBar();
             prog.setIndeterminate(true);
-            final JDialog diag = new JDialog(panel.frame(), false);
+            final JDialog diag = new JDialog(panel.frame().getFrame(), false);
             diag.getContentPane().add(prog, BorderLayout.CENTER);
             diag.pack();
             diag.setLocationRelativeTo(panel.frame());

@@ -84,7 +84,7 @@ public class StringDialog extends JDialog {
 
     public StringDialog(JabRefFrame frame, BasePanel panel,
 			BibtexDatabase base, JabRefPreferences prefs) {
-	super(frame);
+	super(frame.getFrame());
 	this.frame = frame;
 	this.panel = panel;
 	this.base = base;

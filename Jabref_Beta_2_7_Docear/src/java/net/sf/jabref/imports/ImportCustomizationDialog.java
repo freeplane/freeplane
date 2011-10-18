@@ -110,16 +110,16 @@ public class ImportCustomizationDialog extends JDialog {
    * @throws HeadlessException
    */
   public ImportCustomizationDialog(JabRefFrame frame_) throws HeadlessException {
-    super(frame_, Globals.lang("Manage custom imports"), false);
+    super(frame_.getFrame(), Globals.lang("Manage custom imports"), false);
     this.importCustomizationDialog = this;
     frame = frame_;
 
     addFromFolderButton.addActionListener(new ActionListener() {
      public void actionPerformed(ActionEvent e) {
        CustomImportList.Importer importer = prefs.customImports.new Importer();
-       importer.setBasePath( FileDialogs.getNewDir(frame, new File(prefs.get("workingDirectory")), "",
+       importer.setBasePath( FileDialogs.getNewDir(frame.getFrame(), new File(prefs.get("workingDirectory")), "",
            Globals.lang("Select Classpath of New Importer"), JFileChooser.CUSTOM_DIALOG, false) );
-       String chosenFileStr = FileDialogs.getNewFile(frame, importer.getBasePath(), ".class",
+       String chosenFileStr = FileDialogs.getNewFile(frame.getFrame(), importer.getBasePath(), ".class",
            Globals.lang("Select new ImportFormat Subclass"), JFileChooser.CUSTOM_DIALOG, false);
        if (chosenFileStr != null) {
          try {
@@ -145,7 +145,7 @@ public class ImportCustomizationDialog extends JDialog {
 
     addFromJarButton.addActionListener(new ActionListener() {
      public void actionPerformed(ActionEvent e) {
-       String basePath = FileDialogs.getNewFile(frame, new File(prefs.get("workingDirectory")), ".zip,.jar",
+       String basePath = FileDialogs.getNewFile(frame.getFrame(), new File(prefs.get("workingDirectory")), ".zip,.jar",
            Globals.lang("Select a Zip-archive"), JFileChooser.CUSTOM_DIALOG, false);
        ZipFile zipFile = null;
        if (basePath != null) {

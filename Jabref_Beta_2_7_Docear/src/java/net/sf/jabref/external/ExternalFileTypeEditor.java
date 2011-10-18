@@ -338,7 +338,7 @@ public class ExternalFileTypeEditor extends JDialog {
         public void actionPerformed(ActionEvent e) {
             if (editor == null) {
                 if (frame != null)
-                    editor = new ExternalFileTypeEditor(frame);
+                    editor = new ExternalFileTypeEditor(frame.getFrame());
                 else
                     editor = new ExternalFileTypeEditor(dialog);
             }

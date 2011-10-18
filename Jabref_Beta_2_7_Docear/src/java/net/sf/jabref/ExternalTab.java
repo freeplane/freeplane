@@ -78,7 +78,7 @@ public class ExternalTab extends JPanel implements PrefsTab {
 		JLabel lab = new JLabel(Globals.lang("Main file directory") + ":");
 		builder.append(lab);
 		builder.append(fileDir);
-		browse = new BrowseAction(_frame, fileDir, true);
+		browse = new BrowseAction(_frame.getFrame(), fileDir, true);
 		builder.append(new JButton(browse));
 		builder.nextLine();
 
@@ -115,7 +115,7 @@ public class ExternalTab extends JPanel implements PrefsTab {
 		lab = new JLabel(Globals.lang("Main PDF directory") + ":");
 		builder.append(lab);
 		builder.append(pdfDir);
-		browse = new BrowseAction(_frame, pdfDir, true);
+		browse = new BrowseAction(_frame.getFrame(), pdfDir, true);
 		builder.append(new JButton(browse));
 		builder.nextLine();
 
@@ -124,7 +124,7 @@ public class ExternalTab extends JPanel implements PrefsTab {
 		lab = new JLabel(Globals.lang("Main PS directory") + ":");
 		builder.append(lab);
 		builder.append(psDir);
-		browse = new BrowseAction(_frame, psDir, true);
+		browse = new BrowseAction(_frame.getFrame(), psDir, true);
 		builder.append(new JButton(browse));
 		builder.nextLine();
 		builder.appendSeparator(Globals.lang("External programs"));

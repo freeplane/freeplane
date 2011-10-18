@@ -50,7 +50,7 @@ public class ManagePluginsDialog {
     
     public ManagePluginsDialog(JabRefFrame frame) {
         this.frame = frame;
-        diag = new JDialog(frame, Globals.lang("Plugin manager"), false);
+        diag = new JDialog(frame.getFrame(), Globals.lang("Plugin manager"), false);
         help.addActionListener(new HelpAction(Globals.helpDiag, GUIGlobals.pluginHelp, "Help"));
         JPanel pan = new JPanel();
         pan.setLayout(new BorderLayout());
@@ -191,7 +191,7 @@ public class ManagePluginsDialog {
     }
     
     public void installPlugin() {
-        String filename = FileDialogs.getNewFile(frame, new File(System.getProperty("user.home")),
+        String filename = FileDialogs.getNewFile(frame.getFrame(), new File(System.getProperty("user.home")),
             ".jar", JFileChooser.OPEN_DIALOG, false);
         if (filename == null)
             return;

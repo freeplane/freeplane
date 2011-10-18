@@ -109,7 +109,7 @@ public class ChangeScanner extends Thread {
         if (changes.getChildCount() > 0) {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    ChangeDisplayDialog dial = new ChangeDisplayDialog(frame, panel, inTemp, changes);
+                    ChangeDisplayDialog dial = new ChangeDisplayDialog(frame.getFrame(), panel, inTemp, changes);
                     Util.placeDialog(dial, frame);
                     dial.setVisible(true); // dial.show(); -> deprecated since 1.5
                     fup.scanResultsResolved(dial.isOkPressed());

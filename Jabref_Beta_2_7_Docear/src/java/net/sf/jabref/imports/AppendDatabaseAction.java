@@ -52,7 +52,7 @@ public class AppendDatabaseAction extends BaseAction {
         Util.placeDialog(md, panel);
         md.setVisible(true);
         if (md.isOkPressed()) {
-            String[] chosen = FileDialogs.getMultipleFiles(frame, new File(Globals.prefs.get("workingDirectory")),
+            String[] chosen = FileDialogs.getMultipleFiles(frame.getFrame(), new File(Globals.prefs.get("workingDirectory")),
                     null, false);
           //String chosenFile = Globals.getNewFile(frame, new File(Globals.prefs.get("workingDirectory")),
           //                                       null, JFileChooser.OPEN_DIALOG, false);

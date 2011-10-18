@@ -50,7 +50,7 @@ public class ContentSelectorDialog extends JDialog {
     JabRefFrame frame;
 
     public ContentSelectorDialog(JabRefFrame frame, boolean modal, MetaData metaData) {
-	super(frame, Globals.lang("Setup selectors"), modal);
+	super(frame.getFrame(), Globals.lang("Setup selectors"), modal);
 	this.metaData = metaData;
 	this.frame = frame;
 	help = new JButton(Globals.lang("Help"));

@@ -146,7 +146,7 @@ class GroupDialog extends JDialog {
          */
         public GroupDialog(JabRefFrame jabrefFrame, BasePanel basePanel,
                         AbstractGroup editedGroup) {
-                super(jabrefFrame, Globals.lang("Edit group"), true);
+                super(jabrefFrame.getFrame(), Globals.lang("Edit group"), true);
                 m_basePanel = basePanel;
                 m_parent = jabrefFrame;
                 m_editedGroup = editedGroup;
