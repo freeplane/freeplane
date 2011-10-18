@@ -388,19 +388,20 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
       new NewEntryAction("other")
   };
 
-  public JabRefFrame() {
-    init();
-    updateEnabledState();
+  public JabRefFrame(JFrame parent, boolean isTopLevel) {
+	  this.frame = parent;
+	  if(isTopLevel) {
+		  frame.setContentPane(this); 
+	  }
+	  init();
+	  updateEnabledState();
   }
   
   public JFrame getFrame() {
 		return frame;
   }
-
-
+ 
   private void init() {
-
-	    frame.setContentPane(this);
         macOSXRegistration();
 
         UIManager.put("FileChooser.readOnly", Globals.prefs.getBoolean("filechooserDisableRename"));
@@ -809,10 +810,10 @@ public JabRefPreferences prefs() {
               PushToApplicationButton.applications);
     fillMenu();
     createToolBar();
-    frame.getContentPane().setLayout(gbl);
+    this.setLayout(gbl);
       contentPane.setDividerSize(2);
       contentPane.setBorder(null);
-    //getContentPane().setBackground(GUIGlobals.lightGray);
+    //this.setBackground(GUIGlobals.lightGray);
     con.fill = GridBagConstraints.HORIZONTAL;
     con.anchor = GridBagConstraints.WEST;
     con.weightx = 1;
@@ -820,27 +821,27 @@ public JabRefPreferences prefs() {
     con.gridwidth = GridBagConstraints.REMAINDER;
 
     //gbl.setConstraints(mb, con);
-    //getContentPane().add(mb);
+    //this.add(mb);
     frame.setJMenuBar(mb);
     con.anchor = GridBagConstraints.NORTH;
     //con.gridwidth = 1;//GridBagConstraints.REMAINDER;;
     gbl.setConstraints(tlb, con);
-    frame.getContentPane().add(tlb);
+    this.add(tlb);
 
     Component lim = Box.createGlue();
     gbl.setConstraints(lim, con);
-    //getContentPane().add(lim);
+    //this.add(lim);
     /*
       JPanel empt = new JPanel();
       empt.setBackground(GUIGlobals.lightGray);
       gbl.setConstraints(empt, con);
-           getContentPane().add(empt);
+           this.add(empt);
 
       con.insets = new Insets(1,0,1,1);
       con.anchor = GridBagConstraints.EAST;
       con.weightx = 0;
       gbl.setConstraints(searchManager, con);
-      getContentPane().add(searchManager);*/
+      this).add(searchManager);*/
     con.gridwidth = GridBagConstraints.REMAINDER;
     con.weightx = 1;
     con.weighty = 0;
@@ -849,12 +850,12 @@ public JabRefPreferences prefs() {
     con.insets = new Insets(0, 0, 0, 0);
     lim = Box.createGlue();
     gbl.setConstraints(lim, con);
-    frame.getContentPane().add(lim);
+    this.add(lim);
     //tabbedPane.setVisible(false);
     //tabbedPane.setForeground(GUIGlobals.lightGray);
     con.weighty = 1;
     gbl.setConstraints(contentPane, con);
-    frame.getContentPane().add(contentPane);
+    this.add(contentPane);
     contentPane.setRightComponent(tabbedPane);
     contentPane.setLeftComponent(sidePaneManager.getPanel());
     sidePaneManager.updateView();
@@ -881,7 +882,7 @@ public JabRefPreferences prefs() {
     statusLabel.setForeground(GUIGlobals.entryEditorLabelColor.darker());
     con.insets = new Insets(0, 0, 0, 0);
     gbl.setConstraints(status, con);
-    frame.getContentPane().add(status);
+    this.add(status);
 
 
       // Drag and drop for tabbedPane:

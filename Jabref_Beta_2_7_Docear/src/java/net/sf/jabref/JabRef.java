@@ -73,6 +73,7 @@ public class JabRef {
 
     StringOption importFile, exportFile, exportPrefs, importPrefs, auxImExport, importToOpenBase, fetcherEngine;
     BooleanOption helpO, disableGui, blank, loadSess, showVersion, disableSplash;
+	private JFrame parent;
 
     public static final int MAX_DIALOG_WARNINGS = 10;
 
@@ -81,7 +82,22 @@ public class JabRef {
     }
 
     protected JabRef(String[] args) {
+    	this.parent = new JFrame();
+		init(args);
+		openWindow(processArguments(args, true), false);
+	}
+    
+    public JabRef(JFrame parent) {
+    	this.parent = parent;
+    	String[] args = new String[]{ "-s" };
+    	init(args);
+    	openWindow(processArguments(args, true), true);
+	}
 
+	/**
+	 * @param args
+	 */
+	private void init(String[] args) {
 		singleton = this;
 
 		// The following two lines signal that the system proxy settings should
@@ -167,9 +183,9 @@ public class JabRef {
 		 * System.runFinalizersOnExit(true);
 		 * 
 		 */
-		
-		openWindow(processArguments(args, true));
 	}
+    
+    
 
     private void setupOptions() {
 
@@ -522,7 +538,7 @@ public class JabRef {
         return new ParserResult(result);
     }
 
-	public void openWindow(Vector<ParserResult> loaded) {
+	public void openWindow(Vector<ParserResult> loaded, boolean quiteStart) {
         if (!graphicFailure && !disableGui.isInvoked()) {
             // Call the method performCompatibilityUpdate(), which does any
             // necessary changes for users with a preference set from an older
@@ -541,11 +557,12 @@ public class JabRef {
             // of the screen, where Mac users expect it to be.
             System.setProperty("apple.laf.useScreenMenuBar", "true");
 
+            
             // Set antialiasing on everywhere. This only works in JRE >= 1.5.
             // Or... it doesn't work, period.
             //System.setProperty("swing.aatext", "true");
             // If we are not on Mac, deal with font sizes and LookAndFeels:
-            if (!Globals.ON_MAC) {
+            if (!Globals.ON_MAC && !quiteStart) {
                 int fontSizes = Globals.prefs.getInt("menuFontSize");
                 boolean overrideDefaultFonts = Globals.prefs.getBoolean("overrideDefaultFonts");
                 String defaultLookAndFeel;
@@ -713,8 +730,12 @@ public class JabRef {
                     Globals.prefs.getInt("fontSize"));
 
             //Util.pr(": Initializing frame");
-            jrf = new JabRefFrame();
-
+            
+            if(quiteStart) {
+            	jrf = new JabRefFrame(this.parent, false);
+            } else {
+            	jrf = new JabRefFrame(this.parent, true);
+            }
             // Add all loaded databases to the frame:
             
 	        boolean first = true;
@@ -758,20 +779,23 @@ public class JabRef {
             // Start auto save timer:
             if (Globals.prefs.getBoolean("autoSave"))
                 Globals.startAutoSaveManager(jrf);
-
-            // If we are set to remember the window location, we also remember the maximised
-            // state. This needs to be set after the window has been made visible, so we
-            // do it here:
-            if (Globals.prefs.getBoolean("windowMaximised")) {
-                jrf.getFrame().setExtendedState(JFrame.MAXIMIZED_BOTH);
+            
+            if(!quiteStart) {
+	            // If we are set to remember the window location, we also remember the maximised
+	            // state. This needs to be set after the window has been made visible, so we
+	            // do it here:
+	            if (Globals.prefs.getBoolean("windowMaximised")) {
+	                jrf.getFrame().setExtendedState(JFrame.MAXIMIZED_BOTH);
+	            }
+	
+	           
+	            jrf.getFrame().setVisible(true);
+	
+	            if (Globals.prefs.getBoolean("windowMaximised")) {
+	                jrf.getFrame().setExtendedState(JFrame.MAXIMIZED_BOTH);
+	            }
             }
-
-            //jrf.getFrame().setVisible(true);
-
-            if (Globals.prefs.getBoolean("windowMaximised")) {
-                jrf.getFrame().setExtendedState(JFrame.MAXIMIZED_BOTH);
-            }
-
+            
             // TEST TEST TEST TEST TEST TEST
             startSidePanePlugins(jrf);
 

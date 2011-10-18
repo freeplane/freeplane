@@ -1,8 +1,14 @@
 package org.docear.plugin.bibtex;
 
+import java.awt.Component;
 import java.net.URL;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JMenu;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 
 import org.docear.plugin.bibtex.actions.AddExistingReferenceAction;
 import org.docear.plugin.bibtex.actions.AddNewReferenceAction;
@@ -10,10 +16,12 @@ import org.docear.plugin.bibtex.actions.UpdateReferencesAllOpenMapsAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesCurrentMapAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesInLibrary;
 import org.docear.plugin.core.ALanguageController;
+import org.freeplane.core.resources.OptionPanelController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.UITools;
 
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -56,6 +64,19 @@ public class ReferencesController extends ALanguageController{
 		this.addMenuEntries();
 		this.initJabref();
 	}
+	
+	private void createOptionPanel(JPanel comp) {
+		try {
+			final Box panel = new Box(BoxLayout.Y_AXIS);
+			System.out.println("OPTIONPANE: "+modeController);
+			final JTabbedPane tabs = (JTabbedPane) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
+			
+			tabs.add(TextUtils.getText("jabref"), comp);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	private void initJabref() {
 		
@@ -64,7 +85,8 @@ public class ReferencesController extends ALanguageController{
 		     Thread thread = new Thread() {
 		       public void run() {
 		         Thread.currentThread().setContextClassLoader(classLoader);
-		         JabrefWrapper wrapper = new JabrefWrapper(new String[]{ "-s" });   
+		         JabrefWrapper wrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame());
+		         createOptionPanel(wrapper.getJabrefFrame());
 		       }
 		     };
 

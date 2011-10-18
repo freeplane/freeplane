@@ -23,7 +23,9 @@ public abstract class ALanguageController {
 		}
 		
 		System.out.println("DEBUG res: "+res);
-		
+		if (res == null) {
+			return;
+		}
 		File f = new File(res.getPath());
 		if (!f.exists()) {
 			lang = DEFAULT_LANGUAGE;
