@@ -15,7 +15,6 @@ public class UpdateReferencesInLibrary extends AFreeplaneAction{
 		super(key);		
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		

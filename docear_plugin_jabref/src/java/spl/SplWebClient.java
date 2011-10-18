@@ -30,7 +30,7 @@ public class SplWebClient {
         CLIENT.setConnectTimeout(1000);
         CLIENT.setReadTimeout(70000);
     }
-    private static WebResource WEBRESOURCE = CLIENT.resource( "http://api.mr-dlib.org/rest/" );
+    private static WebResource WEBRESOURCE = CLIENT.resource( "http://api.mr-dlib.org" );
     private static WebResource INTERNETRESOURCE = CLIENT.resource( "http://www.google.com" );
     //private static WebResource WEBRESOURCE = CLIENT.resource( "http://localhost:8080/rest/" );
 
@@ -51,10 +51,10 @@ public class SplWebClient {
             }
             if(isMetaDataServiceAvailable() == false){
                 return  WebServiceStatus.UNAVAILABLE;
-            }
-            byte[] data = Tools.zip(file);
+            }            
             FormDataMultiPart formDataMultiPart = new FormDataMultiPart();            
-            formDataMultiPart.field("gzippedpdf", data,  MediaType.APPLICATION_OCTET_STREAM_TYPE);
+            formDataMultiPart.field("file", file,  MediaType.APPLICATION_OCTET_STREAM_TYPE);
+            formDataMultiPart.field("source", "jabref",  MediaType.TEXT_PLAIN_TYPE);
             ClientResponse response = WEBRESOURCE.path("service/metadata").type(MediaType.MULTIPART_FORM_DATA_TYPE).post(ClientResponse.class, formDataMultiPart);
             if(response.getClientResponseStatus() == ClientResponse.Status.OK && response.hasEntity()){
                 String entity = response.getEntity(String.class);

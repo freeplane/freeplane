@@ -42,7 +42,6 @@ public class UpdateReferencesCurrentMapAction extends AFreeplaneAction {
 		super(key);		
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		new SaveAll().actionPerformed(null);
 				
@@ -167,7 +166,7 @@ public class UpdateReferencesCurrentMapAction extends AFreeplaneAction {
 				fireStatusUpdate(SwingWorkerDialog.DETAILS_LOG_TEXT, null, "Updating References for node: " + node.getText());
 				final String prefix = "bibtex_";
 				SwingUtilities.invokeAndWait(new Runnable() {					
-					@Override
+					
 					public void run() {
 						Tools.setAttributeValue(node, prefix + "key", entry.getCiteKey());
 						Tools.setAttributeValue(node, prefix + "type", entry.getType().getName());
@@ -179,7 +178,7 @@ public class UpdateReferencesCurrentMapAction extends AFreeplaneAction {
 					if(temp.length() <= 0) continue;
 					final String value = parseSpecialChars(temp);
 					SwingUtilities.invokeAndWait(new Runnable() {						
-						@Override
+						
 						public void run() {
 							Tools.setAttributeValue(node, prefix + field, value);
 						}
@@ -190,7 +189,7 @@ public class UpdateReferencesCurrentMapAction extends AFreeplaneAction {
 					String temp = attributeKey.replace(prefix, "");
 					if(!entry.getAllFields().contains(temp) || entry.getField(temp).length() <= 0){
 						SwingUtilities.invokeAndWait(new Runnable() {						
-							@Override
+							
 							public void run() {
 								Tools.removeAttributeValue(node, attributeKey);
 							}
@@ -286,10 +285,10 @@ public class UpdateReferencesCurrentMapAction extends AFreeplaneAction {
 	
 	public static String parseSpecialChars(String s){
         if(s == null) return s;
-        s = s.replaceAll("\\\\\"[{]([a-zA-Z])[}]",  "$1" + "\u0308"); // replace ̈
+        s = s.replaceAll("\\\\\"[{]([a-zA-Z])[}]",  "$1" + "\u0308"); // replace Ìˆ
         s = s.replaceAll("\\\\`[{]([a-zA-Z])[}]",  "$1" + "\u0300"); // replace `
-        s = s.replaceAll("\\\\´[{]([a-zA-Z])[}]",  "$1" + "\u0301"); // replace ´
-        s = s.replaceAll("\\\\'[{]([a-zA-Z])[}]",  "$1" + "\u0301"); // replace ´
+        s = s.replaceAll("\\\\Â´[{]([a-zA-Z])[}]",  "$1" + "\u0301"); // replace Â´
+        s = s.replaceAll("\\\\'[{]([a-zA-Z])[}]",  "$1" + "\u0301"); // replace Â´
         s = s.replaceAll("\\\\\\^[{]([a-zA-Z])[}]",  "$1" + "\u0302"); // replace ^
         s = s.replaceAll("\\\\~[{]([a-zA-Z])[}]",  "$1" + "\u0303"); // replace ~
         s = s.replaceAll("\\\\=[{]([a-zA-Z])[}]",  "$1" + "\u0304"); // replace - above
@@ -303,37 +302,37 @@ public class UpdateReferencesCurrentMapAction extends AFreeplaneAction {
         s = s.replaceAll("\\\\b[{]([a-zA-Z])[}]",  "$1" + "\u0331"); // replace - below
 
         if(s.contains("\\ss")){
-            s = s.replace("\\ss", "ß");
+            s = s.replace("\\ss", "ÃŸ");
         }
         if(s.contains("\\AE")){
-            s = s.replace("\\AE", "Æ");
+            s = s.replace("\\AE", "Ã†");
         }
         if(s.contains("\\ae")){
-            s = s.replace("\\ae", "æ");
+            s = s.replace("\\ae", "Ã¦");
         }
         if(s.contains("\\OE")){
-            s = s.replace("\\OE", "Œ");
+            s = s.replace("\\OE", "Å’");
         }
         if(s.contains("\\oe")){
-            s = s.replace("\\oe", "œ");
+            s = s.replace("\\oe", "Å“");
         }
         if(s.contains("\\O")){
-            s = s.replace("\\O", "Ø");
+            s = s.replace("\\O", "Ã˜");
         }
         if(s.contains("\\o")){
-            s = s.replace("\\o", "ø");
+            s = s.replace("\\o", "Ã¸");
         }
         if(s.contains("\\L")){
-            s = s.replace("\\L", "Ł");
+            s = s.replace("\\L", "Å�");
         }
         if(s.contains("\\l")){
-            s = s.replace("\\l", "ł");
+            s = s.replace("\\l", "Å‚");
         }
         if(s.contains("\\AA")){
-            s = s.replace("\\AA", "Å");
+            s = s.replace("\\AA", "Ã…");
         }
         if(s.contains("\\aa")){
-            s = s.replace("\\aa", "å");
+            s = s.replace("\\aa", "Ã¥");
         }
         return s;
     }

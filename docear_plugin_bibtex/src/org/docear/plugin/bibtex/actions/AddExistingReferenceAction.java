@@ -15,7 +15,7 @@ public class AddExistingReferenceAction extends AFreeplaneAction {
 		super(key);		
 	}
 
-	@Override
+	
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 
