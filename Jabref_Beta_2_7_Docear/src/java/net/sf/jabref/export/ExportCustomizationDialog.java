@@ -41,7 +41,7 @@ public class ExportCustomizationDialog extends JDialog {
 
   public ExportCustomizationDialog(JabRefFrame frame_) throws HeadlessException {
 
-    super(frame_, Globals.lang("Manage custom exports"), false);
+    super(frame_.getFrame(), Globals.lang("Manage custom exports"), false);
     frame = frame_;
     addExport.addActionListener(new ActionListener() {
      public void actionPerformed(ActionEvent e) {

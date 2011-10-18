@@ -763,13 +763,13 @@ public class JabRef {
             // state. This needs to be set after the window has been made visible, so we
             // do it here:
             if (Globals.prefs.getBoolean("windowMaximised")) {
-                jrf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                jrf.getFrame().setExtendedState(JFrame.MAXIMIZED_BOTH);
             }
 
             jrf.setVisible(true);
 
             if (Globals.prefs.getBoolean("windowMaximised")) {
-                jrf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                jrf.getFrame().setExtendedState(JFrame.MAXIMIZED_BOTH);
             }
 
             // TEST TEST TEST TEST TEST TEST

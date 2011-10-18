@@ -90,9 +90,11 @@ import com.jgoodies.uif_lite.component.UIFSplitPane;
 /**
  * The main window of the application.
  */
-public class JabRefFrame extends JFrame implements OutputPrinter {
+public class JabRefFrame extends JPanel implements OutputPrinter {
 
-    UIFSplitPane contentPane = new UIFSplitPane();
+	JFrame frame = new JFrame();
+    
+	UIFSplitPane contentPane = new UIFSplitPane();
 
     JabRefPreferences prefs = Globals.prefs; 
     PrefsDialog3 prefsDialog = null;
@@ -321,7 +323,7 @@ public class JabRefFrame extends JFrame implements OutputPrinter {
     databaseProperties = new DatabasePropertiesAction(),
     upgradeExternalLinks = new GeneralAction("upgradeLinks", "Upgrade external links",
             Globals.lang("Upgrade external PDF/PS links to use the '%0' field.", GUIGlobals.FILE_FIELD)),
-      errorConsole = Globals.errorConsole.getAction(this),
+      errorConsole = Globals.errorConsole.getAction(frame),
     test = new GeneralAction("test", "Test"),
 
     dbConnect = new GeneralAction("dbConnect", "Connect to external SQL database",
@@ -390,21 +392,27 @@ public class JabRefFrame extends JFrame implements OutputPrinter {
     init();
     updateEnabledState();
   }
+  
+  public JFrame getFrame() {
+		return frame;
+  }
+
 
   private void init() {
 
+	    frame.setContentPane(this);
         macOSXRegistration();
 
         UIManager.put("FileChooser.readOnly", Globals.prefs.getBoolean("filechooserDisableRename"));
       
         MyGlassPane glassPane = new MyGlassPane();
-        setGlassPane(glassPane);
+        frame.setGlassPane(glassPane);
         // glassPane.setVisible(true);
 
-        setTitle(GUIGlobals.frameTitle);
-        setIconImage(GUIGlobals.getImage("jabrefIcon").getImage());
-        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
+        frame.setTitle(GUIGlobals.frameTitle);
+        frame.setIconImage(GUIGlobals.getImage("jabrefIcon").getImage());
+        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 (new CloseAction()).actionPerformed(null);
             }
@@ -498,14 +506,14 @@ public class JabRefFrame extends JFrame implements OutputPrinter {
         // Set window title:
         BasePanel bp = basePanel();
         if (bp == null) {
-            setTitle(GUIGlobals.frameTitle);
+        	frame.setTitle(GUIGlobals.frameTitle);
             return;
         }
         String star = bp.baseChanged ? "*" : "";
         if (bp.getFile() != null) {
-            setTitle(GUIGlobals.frameTitle+" - "+bp.getFile().getPath()+star);
+        	frame.setTitle(GUIGlobals.frameTitle+" - "+bp.getFile().getPath()+star);
         } else {
-            setTitle(GUIGlobals.frameTitle+" - "+Globals.lang("untitled")+star);
+        	frame.setTitle(GUIGlobals.frameTitle+" - "+Globals.lang("untitled")+star);
         }
     }
 
@@ -564,7 +572,7 @@ AboutAction aboutAction = new AboutAction();
   // General info dialog.  The OSXAdapter calls this method when "About OSXAdapter"
   // is selected from the application menu.
   public void about() {
-    JDialog about = new JDialog(JabRefFrame.this, Globals.lang("About JabRef"),
+    JDialog about = new JDialog(frame, Globals.lang("About JabRef"),
                                 true);
     JEditorPane jp = new JEditorPane();
     JScrollPane sp = new JScrollPane
@@ -691,14 +699,14 @@ public JabRefPreferences prefs() {
       }
 
 
-      dispose();
+      frame.dispose();
 
       prefs.putInt("posX", JabRefFrame.this.getLocation().x);
       prefs.putInt("posY", JabRefFrame.this.getLocation().y);
       prefs.putInt("sizeX", JabRefFrame.this.getSize().width);
       prefs.putInt("sizeY", JabRefFrame.this.getSize().height);
 //      prefs.putBoolean("windowMaximised", (getExtendedState()&MAXIMIZED_BOTH)>0);
-      prefs.putBoolean("windowMaximised", (getExtendedState() == Frame.MAXIMIZED_BOTH));
+      prefs.putBoolean("windowMaximised", (frame.getExtendedState() == Frame.MAXIMIZED_BOTH));
       
       prefs.putBoolean("searchPanelVisible", sidePaneManager.isComponentVisible("search"));
       // Store divider location for side pane:
@@ -801,7 +809,7 @@ public JabRefPreferences prefs() {
               PushToApplicationButton.applications);
     fillMenu();
     createToolBar();
-    getContentPane().setLayout(gbl);
+    frame.getContentPane().setLayout(gbl);
       contentPane.setDividerSize(2);
       contentPane.setBorder(null);
     //getContentPane().setBackground(GUIGlobals.lightGray);
@@ -813,11 +821,11 @@ public JabRefPreferences prefs() {
 
     //gbl.setConstraints(mb, con);
     //getContentPane().add(mb);
-    setJMenuBar(mb);
+    frame.setJMenuBar(mb);
     con.anchor = GridBagConstraints.NORTH;
     //con.gridwidth = 1;//GridBagConstraints.REMAINDER;;
     gbl.setConstraints(tlb, con);
-    getContentPane().add(tlb);
+    frame.getContentPane().add(tlb);
 
     Component lim = Box.createGlue();
     gbl.setConstraints(lim, con);
@@ -841,12 +849,12 @@ public JabRefPreferences prefs() {
     con.insets = new Insets(0, 0, 0, 0);
     lim = Box.createGlue();
     gbl.setConstraints(lim, con);
-    getContentPane().add(lim);
+    frame.getContentPane().add(lim);
     //tabbedPane.setVisible(false);
     //tabbedPane.setForeground(GUIGlobals.lightGray);
     con.weighty = 1;
     gbl.setConstraints(contentPane, con);
-    getContentPane().add(contentPane);
+    frame.getContentPane().add(contentPane);
     contentPane.setRightComponent(tabbedPane);
     contentPane.setLeftComponent(sidePaneManager.getPanel());
     sidePaneManager.updateView();
@@ -873,7 +881,7 @@ public JabRefPreferences prefs() {
     statusLabel.setForeground(GUIGlobals.entryEditorLabelColor.darker());
     con.insets = new Insets(0, 0, 0, 0);
     gbl.setConstraints(status, con);
-    getContentPane().add(status);
+    frame.getContentPane().add(status);
 
 
       // Drag and drop for tabbedPane:
@@ -2109,7 +2117,7 @@ class FetchCiteSeerAction
                 if (DuplicateCheck.isDuplicate(entry, existingEntry
                 )) {
                     DuplicateResolverDialog drd = new DuplicateResolverDialog
-                        (JabRefFrame.this, existingEntry, entry, DuplicateResolverDialog.IMPORT_CHECK);
+                        (frame, existingEntry, entry, DuplicateResolverDialog.IMPORT_CHECK);
                     drd.setVisible(true);
                     int res = drd.getSelected();
                     if (res == DuplicateResolverDialog.KEEP_LOWER)   {
@@ -2218,7 +2226,7 @@ class FetchCiteSeerAction
      * This method shows a wait cursor and blocks all input to the JFrame's contents.
      */
     public void block() {
-        getGlassPane().setVisible(true);
+    	frame.getGlassPane().setVisible(true);
     }
 
     /**
@@ -2226,7 +2234,7 @@ class FetchCiteSeerAction
      * There are no adverse effects of calling this method redundantly.
      */
     public void unblock() {
-        getGlassPane().setVisible(false);
+    	frame.getGlassPane().setVisible(false);
     }
 
     /** Set the visibility of the progress bar in the right end of the
@@ -2512,7 +2520,7 @@ class SaveSessionAction
 
         public void actionPerformed(ActionEvent e) {
             if (propertiesDialog == null)
-                propertiesDialog = new DatabasePropertiesDialog(JabRefFrame.this);
+                propertiesDialog = new DatabasePropertiesDialog(frame);
             propertiesDialog.setPanel(basePanel());
             Util.placeDialog(propertiesDialog, JabRefFrame.this);
             propertiesDialog.setVisible(true);

@@ -36,7 +36,7 @@ public class MergeDialog extends JDialog {
     }
 
     public MergeDialog(JabRefFrame frame, String title, boolean modal) {
-    super(frame, title, modal);
+    super(frame.getFrame(), title, modal);
     try {
       jbInit(frame);
       pack();

@@ -54,7 +54,7 @@ public class PreambleEditor extends JDialog {
     public PreambleEditor(JabRefFrame baseFrame,
                           BasePanel panel, BibtexDatabase base,
                           JabRefPreferences prefs) {
-        super(baseFrame);
+        super(baseFrame.getFrame());
         this.baseFrame = baseFrame;
         this.panel = panel;
         this.base = base;

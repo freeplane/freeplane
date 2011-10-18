@@ -64,7 +64,7 @@ public class PrefsDialog3 extends JDialog {
 	JabRefFrame frame;
 
 	public PrefsDialog3(JabRefFrame parent) {
-		super(parent, Globals.lang("JabRef preferences"), false);
+		super(parent.getFrame(), Globals.lang("JabRef preferences"), false);
 		final JabRefPreferences prefs = JabRefPreferences.getInstance();
 		frame = parent;
 
@@ -167,7 +167,7 @@ public class PrefsDialog3 extends JDialog {
 		importPrefs.setToolTipText(Globals.lang("Import preferences from file"));
 		exportPrefs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String filename = FileDialogs.getNewFile(frame, new File(System
+				String filename = FileDialogs.getNewFile(frame.getFrame(), new File(System
 					.getProperty("user.home")), ".xml", JFileChooser.SAVE_DIALOG, false);
 				if (filename == null)
 					return;
@@ -193,7 +193,7 @@ public class PrefsDialog3 extends JDialog {
 
 		importPrefs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String filename = FileDialogs.getNewFile(frame, new File(System
+				String filename = FileDialogs.getNewFile(frame.getFrame(), new File(System
 					.getProperty("user.home")), ".xml", JFileChooser.OPEN_DIALOG, false);
 				if (filename == null)
 					return;

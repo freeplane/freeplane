@@ -906,7 +906,7 @@ public static boolean openExternalFileUnknown(JabRefFrame frame, BibtexEntry ent
     else if (answer == JOptionPane.YES_OPTION) {
         // User wants to define the new file type. Show the dialog:
         ExternalFileType newType = new ExternalFileType(fileType.getName(), "", "", "", "new");
-        ExternalFileTypeEntryEditor editor = new ExternalFileTypeEntryEditor(frame, newType);
+        ExternalFileTypeEntryEditor editor = new ExternalFileTypeEntryEditor(frame.getFrame(), newType);
         editor.setVisible(true);
         if (editor.okPressed()) {
             // Get the old list of types, add this one, and update the list in prefs:

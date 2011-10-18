@@ -40,7 +40,7 @@ public class ExpandEndnoteFilters extends MnemonicAwareAction implements Worker 
     
     public void actionPerformed(ActionEvent e) {
         
-        String filename = FileDialogs.getNewFile(frame, new File(System.getProperty("user.home")), ".zip",
+        String filename = FileDialogs.getNewFile(frame.getFrame(), new File(System.getProperty("user.home")), ".zip",
                 JFileChooser.SAVE_DIALOG, false); 
         
         if (filename == null)
