@@ -55,7 +55,7 @@ public class IntegrityWizard extends JDialog implements ActionListener {
 
   public IntegrityWizard( JabRefFrame frame, BasePanel basePanel)
   {
-    super( frame, "dialog", false ) ;  // no modal
+    super( frame.getFrame(), "dialog", false ) ;  // no modal
 
     this.basePanel = basePanel;
     dbase = basePanel.database();

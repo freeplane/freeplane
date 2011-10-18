@@ -87,7 +87,7 @@ public class ImportMenuItem extends JMenuItem implements ActionListener {
         boolean fileOk = false;
 
         public void init() {
-            filenames = FileDialogs.getMultipleFiles(frame,
+            filenames = FileDialogs.getMultipleFiles(frame.getFrame(),
                     new File(Globals.prefs.get("workingDirectory")),
                     (importer != null ? importer.getExtensions() : null), true);
 

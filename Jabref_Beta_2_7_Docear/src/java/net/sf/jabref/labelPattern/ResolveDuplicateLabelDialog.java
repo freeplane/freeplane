@@ -40,7 +40,7 @@ public class ResolveDuplicateLabelDialog {
 
     public ResolveDuplicateLabelDialog(BasePanel panel, String key,
                                        List<BibtexEntry> entries) {
-        diag = new JDialog(panel.frame(), Globals.lang("Duplicate BibTeX key"), true);
+        diag = new JDialog(panel.frame().getFrame(), Globals.lang("Duplicate BibTeX key"), true);
 
         DefaultFormBuilder b = new DefaultFormBuilder(new FormLayout(
                 "left:pref, 4dlu, fill:pref", ""));

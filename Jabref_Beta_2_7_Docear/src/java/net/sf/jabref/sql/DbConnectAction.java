@@ -44,7 +44,7 @@ public class DbConnectAction extends BaseAction {
         }
 
         // show connection dialog
-        DBConnectDialog dbd = new DBConnectDialog(panel.frame(), dbs);
+        DBConnectDialog dbd = new DBConnectDialog(panel.frame().getFrame(), dbs);
         Util.placeDialog(dbd, panel);
         dbd.setVisible(true);
 

@@ -64,7 +64,7 @@ public class CiteSeerUndoHandler extends DefaultHandler {
                         + fieldName + " field?", JOptionPane.QUESTION_MESSAGE,
                 JOptionPane.DEFAULT_OPTION, null, possibilities, "No");
 
-        final JDialog dialog = new JDialog(panel.frame(), "Overwrite Value",
+        final JDialog dialog = new JDialog(panel.frame().getFrame(), "Overwrite Value",
                 true);
         dialog.setContentPane(optionPane);
         dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);

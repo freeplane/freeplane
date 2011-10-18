@@ -63,7 +63,7 @@ public class PluginInstaller {
         int result;
         switch (status) {
             case NO_VERSIONS_INSTALLED:
-                result = copyPlugin(frame, file, fileName);
+                result = copyPlugin(frame.getFrame(), file, fileName);
                 if (result == SUCCESS)
                     JOptionPane.showMessageDialog(frame, Globals.lang("Plugin installed successfully. You must restart JabRef to load the new plugin."),
                             Globals.lang("Plugin installer"), JOptionPane.INFORMATION_MESSAGE);
@@ -87,7 +87,7 @@ public class PluginInstaller {
                         Globals.lang("Plugin installer"), JOptionPane.INFORMATION_MESSAGE);
                 break;
             case OLDER_VERSION_INSTALLED:
-                result = copyPlugin(frame, file, fileName);
+                result = copyPlugin(frame.getFrame(), file, fileName);
                 if (result == SUCCESS) {
                     int answer = JOptionPane.showConfirmDialog(frame,
                             Globals.lang("One or more older versions of this plugin is installed. Delete old versions?"),
@@ -126,7 +126,7 @@ public class PluginInstaller {
                 int answer = JOptionPane.showConfirmDialog(frame, lab,
                         Globals.lang("Plugin installer"), JOptionPane.YES_NO_OPTION);
                 if (answer == JOptionPane.YES_OPTION) {
-                    result = copyPlugin(frame, file, fileName);
+                    result = copyPlugin(frame.getFrame(), file, fileName);
                     if (result == SUCCESS)
                         JOptionPane.showMessageDialog(frame, Globals.lang("Plugin installed successfully. You must restart JabRef to load the new plugin."),
                                 Globals.lang("Plugin installer"), JOptionPane.INFORMATION_MESSAGE);
