@@ -37,7 +37,7 @@ public class EntryCustomizationDialog2 extends JDialog implements ListSelectionL
 
     /** Creates a new instance of EntryCustomizationDialog2 */
     public EntryCustomizationDialog2(JabRefFrame frame) {
-        super(frame, Globals.lang("Customize entry types"), false);
+        super(frame.getFrame(), Globals.lang("Customize entry types"), false);
 
         this.frame = frame;
         initGui();

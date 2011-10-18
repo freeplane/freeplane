@@ -86,7 +86,7 @@ class AutoGroupDialog extends JDialog implements CaretListener {
     public AutoGroupDialog(JabRefFrame jabrefFrame, BasePanel basePanel,
             GroupSelector groupSelector, GroupTreeNode groupsRoot,
             String defaultField, String defaultRemove, String defaultDeliminator) {
-        super(jabrefFrame, Globals.lang("Automatically create groups"), true);
+        super(jabrefFrame.getFrame(), Globals.lang("Automatically create groups"), true);
         frame = jabrefFrame;
         gs = groupSelector;
         panel = basePanel;

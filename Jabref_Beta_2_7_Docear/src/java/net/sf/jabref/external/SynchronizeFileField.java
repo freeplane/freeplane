@@ -51,7 +51,7 @@ public class SynchronizeFileField extends AbstractWorker {
 
         // Ask about rules for the operation:
         if (optDiag == null)
-            optDiag = new SynchronizeFileField.OptionsDialog(panel.frame(), panel.metaData(), fieldName);
+            optDiag = new SynchronizeFileField.OptionsDialog(panel.frame().getFrame(), panel.metaData(), fieldName);
         Util.placeDialog(optDiag, panel.frame());
         optDiag.setVisible(true);
         if (optDiag.canceled()) {
@@ -213,7 +213,7 @@ public class SynchronizeFileField extends AbstractWorker {
                             else if (answer == JOptionPane.YES_OPTION) {
                                 // User wants to define the new file type. Show the dialog:
                                 ExternalFileType newType = new ExternalFileType(flEntry.getType().getName(), "", "", "", "new");
-                                ExternalFileTypeEntryEditor editor = new ExternalFileTypeEntryEditor(panel.frame(), newType);
+                                ExternalFileTypeEntryEditor editor = new ExternalFileTypeEntryEditor(panel.frame().getFrame(), newType);
                                 editor.setVisible(true);
                                 if (editor.okPressed()) {
                                     // Get the old list of types, add this one, and update the list in prefs:

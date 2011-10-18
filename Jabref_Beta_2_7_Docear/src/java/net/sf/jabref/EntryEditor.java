@@ -444,7 +444,7 @@ public class EntryEditor extends JPanel implements VetoableChangeListener {
             JPanel controls = new JPanel();
             controls.setLayout(new BorderLayout());
             if (panel.metaData.getData(Globals.SELECTOR_META_PREFIX + ed.getFieldName()) != null) {
-                FieldContentSelector ws = new FieldContentSelector(frame, panel, frame, ed,
+                FieldContentSelector ws = new FieldContentSelector(frame, panel, frame.getFrame(), ed,
                     panel.metaData, storeFieldAction, false, ", ");
                 contentSelectors.add(ws);
                 controls.add(ws, BorderLayout.NORTH);
@@ -453,7 +453,7 @@ public class EntryEditor extends JPanel implements VetoableChangeListener {
                 BorderLayout.SOUTH);
             return controls;
         } else if (panel.metaData.getData(Globals.SELECTOR_META_PREFIX + ed.getFieldName()) != null) {
-            FieldContentSelector ws = new FieldContentSelector(frame, panel, frame, ed,
+            FieldContentSelector ws = new FieldContentSelector(frame, panel, frame.getFrame(), ed,
                 panel.metaData, storeFieldAction, false,
                 ((ed.getFieldName().equals("author") || ed.getFieldName().equals("editor")) ? " and " : ", "));
             contentSelectors.add(ws);
@@ -471,7 +471,7 @@ public class EntryEditor extends JPanel implements VetoableChangeListener {
                     if (dir.equals(""))
                         dir = prefs.get(fieldName + Globals.FILETYPE_PREFS_EXT, "");
 
-                    String chosenFile = FileDialogs.getNewFile(frame, new File(dir), "." + fieldName,
+                    String chosenFile = FileDialogs.getNewFile(frame.getFrame(), new File(dir), "." + fieldName,
                         JFileChooser.OPEN_DIALOG, false);
 
                     if (chosenFile != null) {
@@ -1554,7 +1554,7 @@ public class EntryEditor extends JPanel implements VetoableChangeListener {
         }
 
         public void actionPerformed(ActionEvent event) {
-            JDialog diag = new JDialog(frame, true);
+            JDialog diag = new JDialog(frame.getFrame(), true);
             final FileListTableModel tableModel = new FileListTableModel();
             tableModel.setContent(entry.getField(GUIGlobals.FILE_FIELD));
             FileListEditor.autoSetLinks(entry, tableModel, panel.metaData(), new ActionListener() {

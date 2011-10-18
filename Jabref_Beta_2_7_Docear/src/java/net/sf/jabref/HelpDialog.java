@@ -55,7 +55,7 @@ public class HelpDialog extends JDialog implements HyperlinkListener {
 
 	// Initializes, but does not show the help dialog.
 	public HelpDialog(JabRefFrame bf) {
-		super(bf, Globals.lang("JabRef help"), false);
+		super(bf.getFrame(), Globals.lang("JabRef help"), false);
 		frame = bf;
 		content = new HelpContent(bf.prefs);
 		content.addHyperlinkListener(this);

@@ -91,7 +91,7 @@ public class MoveFileAction extends AbstractAction {
                     }
                     chosenFile = sb.toString();
                 } else {
-                    chosenFile = FileDialogs.getNewFile(frame, file, extension, JFileChooser.SAVE_DIALOG, false);
+                    chosenFile = FileDialogs.getNewFile(frame.getFrame(), file, extension, JFileChooser.SAVE_DIALOG, false);
                 }
                 if (chosenFile == null) {
                     return; // cancelled

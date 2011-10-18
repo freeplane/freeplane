@@ -91,7 +91,7 @@ public class FileListEntryEditor {
                 ("left:pref, 4dlu, fill:150dlu, 4dlu, fill:pref, 4dlu, fill:pref", ""));
         builder.append(Globals.lang("Link"));
         builder.append(link);
-        final BrowseListener browse = new BrowseListener(frame, link);
+        final BrowseListener browse = new BrowseListener(frame.getFrame(), link);
         final JButton browseBut = new JButton(Globals.lang("Browse"));
         browseBut.addActionListener(browse);
         builder.append(browseBut);
@@ -158,7 +158,7 @@ public class FileListEntryEditor {
         });
 
 
-        diag = new JDialog(frame, Globals.lang("Edit file link"), true);
+        diag = new JDialog(frame.getFrame(), Globals.lang("Edit file link"), true);
         diag.getContentPane().add(builder.getPanel(), BorderLayout.CENTER);
         diag.getContentPane().add(bb.getPanel(), BorderLayout.SOUTH);
         diag.pack();

@@ -80,7 +80,7 @@ public class WriteXMPAction extends AbstractWorker {
 		errors = entriesChanged = skipped = 0;
 
 		if (optDiag == null) {
-			optDiag = new OptionsDialog(panel.frame());
+			optDiag = new OptionsDialog(panel.frame().getFrame());
 		}
 		optDiag.open();
 

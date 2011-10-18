@@ -309,7 +309,7 @@ public class FileListEditor extends JTable implements FieldEditor,
     private void autoSetLinks() {
         auto.setEnabled(false);
         BibtexEntry entry = entryEditor.getEntry();
-        JDialog diag = new JDialog(frame, true);
+        JDialog diag = new JDialog(frame.getFrame(), true);
         autoSetLinks(entry, tableModel, metaData, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 auto.setEnabled(true);

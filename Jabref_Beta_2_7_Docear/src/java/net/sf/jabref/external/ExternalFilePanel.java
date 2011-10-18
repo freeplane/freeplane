@@ -213,7 +213,7 @@ public class ExternalFilePanel extends JPanel {
 				dir = Globals.prefs.get(fieldName + Globals.FILETYPE_PREFS_EXT, "");
 		}
 
-		String chosenFile = FileDialogs.getNewFile(frame, new File(dir), "." + fieldName,
+		String chosenFile = FileDialogs.getNewFile(frame.getFrame(), new File(dir), "." + fieldName,
 			JFileChooser.OPEN_DIALOG, false);
 
 		if (chosenFile != null) {

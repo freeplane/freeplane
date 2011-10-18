@@ -219,7 +219,7 @@ class SearcherThread extends Thread {
             return reply;
         }
         public void update() {
-            diag = new DuplicateResolverDialog(frame, one, two, dialogType);
+            diag = new DuplicateResolverDialog(frame.getFrame(), one, two, dialogType);
             diag.setVisible(true);
             diag.dispose();
             reply = diag.getSelected();

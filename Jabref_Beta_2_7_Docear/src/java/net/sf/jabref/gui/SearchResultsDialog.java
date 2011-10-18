@@ -73,7 +73,7 @@ public class SearchResultsDialog {
     }
 
     private void init(String title) {
-        diag = new JDialog(frame, title, false);
+        diag = new JDialog(frame.getFrame(), title, false);
 
         int activePreview = Globals.prefs.getInt("activePreview");
         preview = new PreviewPanel(null, new MetaData(),

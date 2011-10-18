@@ -398,7 +398,7 @@ public class BasePanel extends JPanel implements ClipboardOwner, FileUpdateListe
         actions.put("saveSelectedAs", new BaseAction () {
                 public void action() throws Throwable {
 
-                  String chosenFile = FileDialogs.getNewFile(frame, new File(Globals.prefs.get("workingDirectory")), ".bib",
+                  String chosenFile = FileDialogs.getNewFile(frame.getFrame(), new File(Globals.prefs.get("workingDirectory")), ".bib",
                                                          JFileChooser.SAVE_DIALOG, false);
                   if (chosenFile != null) {
                     File expFile = new File(chosenFile);
@@ -704,7 +704,7 @@ public class BasePanel extends JPanel implements ClipboardOwner, FileUpdateListe
                     }
 
                     // show connection dialog
-                    DBConnectDialog dbd = new DBConnectDialog(frame(), dbs);
+                    DBConnectDialog dbd = new DBConnectDialog(frame().getFrame(), dbs);
                     Util.placeDialog(dbd, BasePanel.this );
                     dbd.setVisible(true);
 
@@ -1454,7 +1454,7 @@ public class BasePanel extends JPanel implements ClipboardOwner, FileUpdateListe
               actions.put("manageSelectors", new BaseAction() {
                       public void action() {
                           ContentSelectorDialog2 csd = new ContentSelectorDialog2
-                              (frame, frame, BasePanel.this, false, metaData, null);
+                              (frame.getFrame(), frame, BasePanel.this, false, metaData, null);
                           Util.placeDialog(csd, frame);
                           csd.setVisible(true);
                       }

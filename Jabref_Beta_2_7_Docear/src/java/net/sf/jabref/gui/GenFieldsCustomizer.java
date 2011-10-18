@@ -42,7 +42,7 @@ public class GenFieldsCustomizer extends JDialog {
   HelpAction help;
 
   public GenFieldsCustomizer(JabRefFrame frame/*, EntryCustomizationDialog diag*/) {
-    super(frame, Globals.lang("Set general fields"), false);
+    super(frame.getFrame(), Globals.lang("Set general fields"), false);
     parent = frame;
     //this.diag = diag;
     help = new HelpAction(parent.helpDiag, GUIGlobals.generalFieldsHelp,

@@ -71,7 +71,7 @@ class EntryCustomizationDialog extends JDialog implements ItemListener
 	// templateName will be used to put on the dialog frame
 	// create 10 default entries
 	// return an array
-	super(parent,Globals.lang("Customize entry types"), false);
+	super(parent.getFrame(),Globals.lang("Customize entry types"), false);
 	this.parent = parent;
 	help = new HelpAction(parent.helpDiag, GUIGlobals.customEntriesHelp,
 			      "Help", GUIGlobals.getIconUrl("helpSmall"));
@@ -301,7 +301,7 @@ class EntryCustomizationDialog extends JDialog implements ItemListener
 	exportTypes.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 		    String filename = FileDialogs.getNewFile
-			(parent, new File(System.getProperty("user.home")),
+			(parent.getFrame(), new File(System.getProperty("user.home")),
 			 ".txt", JFileChooser.SAVE_DIALOG, false);
 		    if (filename == null) 
 			return;
@@ -336,7 +336,7 @@ class EntryCustomizationDialog extends JDialog implements ItemListener
 	importTypes.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 		    String filename = FileDialogs.getNewFile
-			(parent, new File(System.getProperty("user.home")),
+			(parent.getFrame(), new File(System.getProperty("user.home")),
 			 ".txt", JFileChooser.OPEN_DIALOG, false);
 		    if (filename == null) 
 			return;
