@@ -1,10 +1,14 @@
 package org.docear.plugin.bibtex;
 
+import java.io.File;
+import java.net.URI;
 import java.net.URL;
 
 import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+
+import net.sf.jabref.imports.ParserResult;
 
 import org.docear.plugin.bibtex.actions.AddExistingReferenceAction;
 import org.docear.plugin.bibtex.actions.AddNewReferenceAction;
@@ -25,6 +29,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.controller.IWorkspaceListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 
@@ -87,8 +92,9 @@ public class ReferencesController extends ALanguageController implements IDocear
 			Thread thread = new Thread() {
 				public void run() {
 					Thread.currentThread().setContextClassLoader(classLoader);
-					JabrefWrapper wrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame());
-					DocearController.getController().getLibrary().getBibtexDatabase();
+					URI uri = DocearController.getController().getLibrary().getBibtexDatabase();
+					JabrefWrapper wrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame(), new File(WorkspaceUtils.absoluteURI(uri)));					
+					
 					createOptionPanel(wrapper.getJabrefFrame());
 				}
 			};
@@ -159,20 +165,11 @@ public class ReferencesController extends ALanguageController implements IDocear
 		System.out.println("JabrefWrapper DocearEvent: "+ event);
 	}
 
-
-	/* (non-Javadoc)
-	 * @see org.freeplane.plugin.workspace.controller.IWorkspaceListener#workspaceChanged(org.freeplane.plugin.workspace.controller.WorkspaceEvent)
-	 */
-	@Override
 	public void workspaceChanged(WorkspaceEvent event) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see org.freeplane.plugin.workspace.controller.IWorkspaceListener#workspaceInitialize(org.freeplane.plugin.workspace.controller.WorkspaceEvent)
-	 */
-	@Override
 	public void workspaceInitialize(WorkspaceEvent event) {
 		// TODO Auto-generated method stub
 		

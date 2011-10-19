@@ -4,11 +4,14 @@
  */
 package org.docear.plugin.core.workspace.node;
 
+import java.net.URI;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.docear.plugin.core.DocearController;
+import org.docear.plugin.core.IBibtexDatabase;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
@@ -17,7 +20,7 @@ import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 /**
  * 
  */
-public class LinkTypeReferencesNode extends LinkTypeFileNode /*LinkNode*/ {	
+public class LinkTypeReferencesNode extends LinkTypeFileNode /*LinkNode*/ implements IBibtexDatabase {	
 	private static final Icon DEFAULT_ICON = new ImageIcon(LinkTypeReferencesNode.class.getResource("/images/text-x-bibtex.png"));	
 	
 	/***********************************************************************************
@@ -49,9 +52,14 @@ public class LinkTypeReferencesNode extends LinkTypeFileNode /*LinkNode*/ {
 			super.handleEvent(event);
 		}
 	}
+
+	
 	
 	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
+	public URI getUri() {
+		return this.getLinkPath();
+	}
 }

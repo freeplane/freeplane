@@ -36,7 +36,7 @@ public class FolderTypeLibraryNode extends FolderNode implements IDocearEventLis
 	
 	
 	private final Vector<URI> mindmapIndex = new Vector<URI>();
-	private final Vector<URI> referencesIndex = new Vector<URI>();
+	private final Vector<IBibtexDatabase> referencesIndex = new Vector<IBibtexDatabase>();
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -76,10 +76,9 @@ public class FolderTypeLibraryNode extends FolderNode implements IDocearEventLis
 		}
 		if(event.getType() == DocearEventType.LIBRARY_NEW_REFERENCES_INDEXING_REQUEST) {
 			if(event.getEventObject() instanceof IBibtexDatabase) {
-				URI uri = ((IBibtexDatabase) event.getEventObject()).getUri();
-				if(!referencesIndex.contains(uri)) {
-					LogUtils.info("DOCEAR: adding new reference database to library: "+ uri);
-					referencesIndex.add(uri);
+				if(!referencesIndex.contains((IBibtexDatabase) event.getEventObject())) {
+					LogUtils.info("DOCEAR: adding new reference database to library: "+ event.getEventObject());
+					referencesIndex.add((IBibtexDatabase) event.getEventObject());
 				}
 			}			
 		}
@@ -108,6 +107,9 @@ public class FolderTypeLibraryNode extends FolderNode implements IDocearEventLis
 
 	public URI getBibtexDatabase() {
 		URI uri = null;
+		if(referencesIndex.size() > 0) {
+			return referencesIndex.get(0).getUri();
+		}
 		return uri;
 	}
 

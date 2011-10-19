@@ -93,6 +93,17 @@ public class JabRef {
     	init(args);
     	openWindow(processArguments(args, true), true);
 	}
+    
+    public JabRef(JFrame parent, String[] args) {
+    	this.parent = parent;
+    	String[] argArray = new String[args.length+1];
+    	argArray[0] = "-s";
+    	for(int i=0; i < args.length; i++) {
+    		argArray[i+1] = args[i];
+    	}
+    	init(argArray);
+    	openWindow(processArguments(argArray, true), true);
+	}
 
 	/**
 	 * @param args
