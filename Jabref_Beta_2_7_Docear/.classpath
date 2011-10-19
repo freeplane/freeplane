@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/java"/>
+	<classpathentry excluding="java/|extensions/|osx/osxadapter/|txt/|windows/nsis/|osx/|windows/" kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.6.0_26"/>
+	<classpathentry kind="lib" path="lib/plugin/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/plugin/jpf-boot.jar"/>
+	<classpathentry kind="lib" path="lib/plugin/jpf.jar"/>
+	<classpathentry kind="lib" path="lib/plugin/JPFCodeGenerator-rt.jar"/>
+	<classpathentry kind="lib" path="lib/spl/jersey/jersey-client-1.1.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/spl/jersey/jersey-core-1.1.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/spl/jersey/jersey-multipart-1.1.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/spl/jersey/jsr311-api-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/spl/jersey/mimepull-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/spl/sciplore/sciplore-serialization-api.jar"/>
+	<classpathentry kind="lib" path="lib/spl/sciplore/xstream-1.4.1.jar"/>
+	<classpathentry kind="lib" path="lib/spl/bindings.jar"/>
+	<classpathentry kind="lib" path="lib/antlr-3.0b5.jar"/>
+	<classpathentry kind="lib" path="lib/antlr.jar"/>
+	<classpathentry kind="lib" path="lib/forms-1.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/glazedlists-1.7.0_java15.jar"/>
+	<classpathentry kind="lib" path="lib/JempBox-0.2.0.jar"/>
+	<classpathentry kind="lib" path="lib/junit.jar"/>
+	<classpathentry kind="lib" path="lib/looks-2.3.1.jar"/>
+	<classpathentry kind="lib" path="lib/microba.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.0.7-bin.jar"/>
+	<classpathentry kind="lib" path="lib/PDFBox-0.7.3-dev-reduced.jar"/>
+	<classpathentry kind="lib" path="lib/spin.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
