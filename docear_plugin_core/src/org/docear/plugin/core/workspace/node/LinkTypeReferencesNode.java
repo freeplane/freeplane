@@ -8,6 +8,9 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import org.docear.plugin.core.DocearController;
+import org.docear.plugin.core.event.DocearEvent;
+import org.docear.plugin.core.event.DocearEventType;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 
@@ -23,7 +26,8 @@ public class LinkTypeReferencesNode extends LinkTypeFileNode /*LinkNode*/ {
 
 	public LinkTypeReferencesNode(String type) {
 		super(type);
-		// TODO Auto-generated constructor stub
+		DocearEvent event = new DocearEvent(this, DocearEventType.LIBRARY_NEW_REFERENCES_INDEXING_REQUEST, this);
+		DocearController.getController().dispatchDocearEvent(event);
 	}
 	
 	/***********************************************************************************

@@ -13,4 +13,5 @@ import java.util.List;
 public interface IDocearLibrary {
 	public List<URI> getMindmaps();
 	public URI getLibraryPath();
+	public URI getBibtexDatabase();
 }

@@ -2,12 +2,10 @@ package org.docear.plugin.bibtex;
 
 import javax.swing.JFrame;
 
-import org.freeplane.features.mode.Controller;
-
 import net.sf.jabref.JabRef;
 import net.sf.jabref.JabRefFrame;
 
-public class JabrefWrapper extends JabRef {
+public class JabrefWrapper extends JabRef  {
 
 	protected JabrefWrapper(String[] arg0) {
 		super(arg0);		
@@ -21,5 +19,4 @@ public class JabrefWrapper extends JabRef {
 		
 		return this.jrf;
 	}
-
 }

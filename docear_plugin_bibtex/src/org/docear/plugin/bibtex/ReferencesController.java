@@ -1,13 +1,9 @@
 package org.docear.plugin.bibtex;
 
-import java.awt.Component;
 import java.net.URL;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
 import org.docear.plugin.bibtex.actions.AddExistingReferenceAction;
@@ -16,30 +12,31 @@ import org.docear.plugin.bibtex.actions.UpdateReferencesAllOpenMapsAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesCurrentMapAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesInLibrary;
 import org.docear.plugin.core.ALanguageController;
-import org.freeplane.core.resources.OptionPanelController;
+import org.docear.plugin.core.DocearController;
+import org.docear.plugin.core.event.DocearEvent;
+import org.docear.plugin.core.event.IDocearEventListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.ui.components.UITools;
-
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.controller.IWorkspaceListener;
+import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 
+public class ReferencesController extends ALanguageController implements IDocearEventListener, IWorkspaceListener {
 
-public class ReferencesController extends ALanguageController{
-	
-	
 	public static final String MENU_BAR = "/menu_bar"; //$NON-NLS-1$
 	public static final String NODE_POPUP_MENU = "/node_popup"; //$NON-NLS-1$
 	public static final String NODE_FEATURES_MENU = "/node_features"; //$NON-NLS-1$
 	public static final String STYLES_MENU = "/styles"; //$NON-NLS-1$
 	public static final String REFERENCE_MANAGEMENT_MENU = "/reference_management";
 	public static final String UPDATE_REFERENCES_MENU = "/update_references";
-	
+
 	public static final String REFERENCE_MANAGEMENT_MENU_LANG_KEY = "menu_reference_management";
 	public static final String UPDATE_REFERENCES_MENU_LANG_KEY = "menu_update_references";
 	private static final String ADD_NEW_REFERENCE_LANG_KEY = "menu_add_new_reference";
@@ -47,30 +44,34 @@ public class ReferencesController extends ALanguageController{
 	private static final String UPDATE_REFERENCES_IN_LIBRARY_LANG_KEY = "menu_update_references_in_library";
 	private static final String UPDATE_REFERENCES_ALL_OPEN_MAPS_LANG_KEY = "menu_update_references_all_open_maps";
 	private static final String UPDATE_REFERENCES_CURRENT_MAP_LANG_KEY = "menu_update_references_current_map";
-	
+
 	private ModeController modeController;
-	private AFreeplaneAction UpdateReferencesCurrentMap = new UpdateReferencesCurrentMapAction(UPDATE_REFERENCES_CURRENT_MAP_LANG_KEY);
-	private AFreeplaneAction UpdateReferencesAllOpenMaps = new UpdateReferencesAllOpenMapsAction(UPDATE_REFERENCES_ALL_OPEN_MAPS_LANG_KEY);
+	private AFreeplaneAction UpdateReferencesCurrentMap = new UpdateReferencesCurrentMapAction(
+			UPDATE_REFERENCES_CURRENT_MAP_LANG_KEY);
+	private AFreeplaneAction UpdateReferencesAllOpenMaps = new UpdateReferencesAllOpenMapsAction(
+			UPDATE_REFERENCES_ALL_OPEN_MAPS_LANG_KEY);
 	private AFreeplaneAction UpdateReferencesInLibrary = new UpdateReferencesInLibrary(UPDATE_REFERENCES_IN_LIBRARY_LANG_KEY);
 	private AFreeplaneAction AddExistingReference = new AddExistingReferenceAction(ADD_EXISTING_REFERENCES_LANG_KEY);
 	private AFreeplaneAction AddNewReference = new AddNewReferenceAction(ADD_NEW_REFERENCE_LANG_KEY);
+	private boolean isRunning = false;
 
-	public ReferencesController(ModeController modeController) {		
+	public ReferencesController(ModeController modeController) {
 		this.modeController = modeController;
 		LogUtils.info("starting DocearReferencesController(ModeController)"); //$NON-NLS-1$
-		
+
 		this.addPropertiesToOptionPanel();
 		this.addPluginDefaults();
 		this.addMenuEntries();
+		DocearController.getController().addDocearEventListener(this);
+		WorkspaceController.getController().addWorkspaceListener(this);
 		this.initJabref();
 	}
-	
+
 	private void createOptionPanel(JPanel comp) {
 		try {
-			final Box panel = new Box(BoxLayout.Y_AXIS);
-			System.out.println("OPTIONPANE: "+modeController);
-			final JTabbedPane tabs = (JTabbedPane) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
-			
+			System.out.println("JabrefPane: " + modeController);
+			final JTabbedPane tabs = (JTabbedPane) modeController.getUserInputListenerFactory().getToolBar("/format")
+					.getComponent(1);
 			tabs.add(TextUtils.getText("jabref"), comp);
 		}
 		catch (Exception e) {
@@ -79,20 +80,21 @@ public class ReferencesController extends ALanguageController{
 	}
 
 	private void initJabref() {
-		
-		final ClassLoader classLoader =  getClass().getClassLoader();
-
-		     Thread thread = new Thread() {
-		       public void run() {
-		         Thread.currentThread().setContextClassLoader(classLoader);
-		         JabrefWrapper wrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame());
-		         createOptionPanel(wrapper.getJabrefFrame());
-		       }
-		     };
-
-		     thread.start();
-		
-		
+		if(WorkspaceController.getController().isInitialized() && !isRunning) {
+			
+			final ClassLoader classLoader = getClass().getClassLoader();
+			isRunning  = true;
+			Thread thread = new Thread() {
+				public void run() {
+					Thread.currentThread().setContextClassLoader(classLoader);
+					JabrefWrapper wrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame());
+					DocearController.getController().getLibrary().getBibtexDatabase();
+					createOptionPanel(wrapper.getJabrefFrame());
+				}
+			};
+	
+			thread.start();
+		}
 	}
 
 	private void addPluginDefaults() {
@@ -106,42 +108,79 @@ public class ReferencesController extends ALanguageController{
 		final URL preferences = this.getClass().getResource("preferences.xml");
 		if (preferences == null)
 			throw new RuntimeException("cannot open docear.bibtex plugin preferences"); //$NON-NLS-1$
-		
-		((MModeController)modeController).getOptionPanelBuilder().load(preferences);		
+
+		((MModeController) modeController).getOptionPanelBuilder().load(preferences);
 	}
-	
-private void addMenuEntries() {
-		
+
+	private void addMenuEntries() {
+
 		this.modeController.addMenuContributor(new IMenuContributor() {
 
-			public void updateMenus(ModeController modeController, MenuBuilder builder) {				
+			public void updateMenus(ModeController modeController, MenuBuilder builder) {
 
-				builder.addMenuItem(MENU_BAR + STYLES_MENU, new JMenu(TextUtils.getText(REFERENCE_MANAGEMENT_MENU_LANG_KEY)), MENU_BAR
-						+ REFERENCE_MANAGEMENT_MENU, MenuBuilder.AFTER);				
-				
+				builder.addMenuItem(MENU_BAR + STYLES_MENU, new JMenu(TextUtils.getText(REFERENCE_MANAGEMENT_MENU_LANG_KEY)),
+						MENU_BAR + REFERENCE_MANAGEMENT_MENU, MenuBuilder.AFTER);
+
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, AddNewReference, MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, AddExistingReference, MenuBuilder.AS_CHILD);
-								
+
 				builder.addMenuItem(MENU_BAR + REFERENCE_MANAGEMENT_MENU,
-						new JMenu(TextUtils.getText(UPDATE_REFERENCES_MENU_LANG_KEY)), MENU_BAR + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU,
+						new JMenu(TextUtils.getText(UPDATE_REFERENCES_MENU_LANG_KEY)), MENU_BAR + REFERENCE_MANAGEMENT_MENU
+								+ UPDATE_REFERENCES_MENU, MenuBuilder.AS_CHILD);
+				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU, UpdateReferencesCurrentMap,
 						MenuBuilder.AS_CHILD);
-				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU, UpdateReferencesCurrentMap, MenuBuilder.AS_CHILD);
-				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU, UpdateReferencesAllOpenMaps, MenuBuilder.AS_CHILD);
-				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU, UpdateReferencesInLibrary, MenuBuilder.AS_CHILD);
-				
+				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU, UpdateReferencesAllOpenMaps,
+						MenuBuilder.AS_CHILD);
+				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU, UpdateReferencesInLibrary,
+						MenuBuilder.AS_CHILD);
+
 				builder.addMenuItem(NODE_POPUP_MENU + NODE_FEATURES_MENU,
-						new JMenu(TextUtils.getText(REFERENCE_MANAGEMENT_MENU_LANG_KEY)), NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU,
-						MenuBuilder.BEFORE);
+						new JMenu(TextUtils.getText(REFERENCE_MANAGEMENT_MENU_LANG_KEY)), NODE_POPUP_MENU
+								+ REFERENCE_MANAGEMENT_MENU, MenuBuilder.BEFORE);
 				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU, AddNewReference, MenuBuilder.AS_CHILD);
-				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU, AddExistingReference, MenuBuilder.AS_CHILD);				
-				builder.addMenuItem(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU, new JMenu(TextUtils.getText(UPDATE_REFERENCES_MENU_LANG_KEY)), NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU,
-						MenuBuilder.AS_CHILD);
-				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU, UpdateReferencesCurrentMap, MenuBuilder.AS_CHILD);
-				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU, UpdateReferencesAllOpenMaps, MenuBuilder.AS_CHILD);
-				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU, UpdateReferencesInLibrary, MenuBuilder.AS_CHILD);
-										
+				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU, AddExistingReference, MenuBuilder.AS_CHILD);
+				builder.addMenuItem(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU,
+						new JMenu(TextUtils.getText(UPDATE_REFERENCES_MENU_LANG_KEY)), NODE_POPUP_MENU
+								+ REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU, MenuBuilder.AS_CHILD);
+				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU,
+						UpdateReferencesCurrentMap, MenuBuilder.AS_CHILD);
+				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU,
+						UpdateReferencesAllOpenMaps, MenuBuilder.AS_CHILD);
+				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU,
+						UpdateReferencesInLibrary, MenuBuilder.AS_CHILD);
+
 			}
 		});
+	}
+	
+	
+
+	public void handleEvent(DocearEvent event) {
+		System.out.println("JabrefWrapper DocearEvent: "+ event);
+	}
+
+
+	/* (non-Javadoc)
+	 * @see org.freeplane.plugin.workspace.controller.IWorkspaceListener#workspaceChanged(org.freeplane.plugin.workspace.controller.WorkspaceEvent)
+	 */
+	@Override
+	public void workspaceChanged(WorkspaceEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see org.freeplane.plugin.workspace.controller.IWorkspaceListener#workspaceInitialize(org.freeplane.plugin.workspace.controller.WorkspaceEvent)
+	 */
+	@Override
+	public void workspaceInitialize(WorkspaceEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void workspaceFinalize(WorkspaceEvent event) {
+		System.out.println("Jabref -> WS ist ready");
+		initJabref();
 	}
 
 }

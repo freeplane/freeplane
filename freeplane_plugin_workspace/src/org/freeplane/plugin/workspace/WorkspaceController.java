@@ -103,9 +103,9 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 			}
 		}
 		initializeConfiguration();
-		dispatchWorkspaceEvent(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_EVENT_TYPE_FINALIZE, this));
-		initializeView();
 		isInitialized = true;
+		dispatchWorkspaceEvent(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_EVENT_TYPE_FINALIZE, this));
+		initializeView();		
 	}
 
 	public static WorkspaceController getController() {

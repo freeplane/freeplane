@@ -14,6 +14,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import org.docear.plugin.core.IBibtexDatabase;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.IDocearLibrary;
 import org.docear.plugin.core.event.DocearEvent;
@@ -35,6 +36,7 @@ public class FolderTypeLibraryNode extends FolderNode implements IDocearEventLis
 	
 	
 	private final Vector<URI> mindmapIndex = new Vector<URI>();
+	private final Vector<URI> referencesIndex = new Vector<URI>();
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -72,6 +74,15 @@ public class FolderTypeLibraryNode extends FolderNode implements IDocearEventLis
 				}
 			}			
 		}
+		if(event.getType() == DocearEventType.LIBRARY_NEW_REFERENCES_INDEXING_REQUEST) {
+			if(event.getEventObject() instanceof IBibtexDatabase) {
+				URI uri = ((IBibtexDatabase) event.getEventObject()).getUri();
+				if(!referencesIndex.contains(uri)) {
+					LogUtils.info("DOCEAR: adding new reference database to library: "+ uri);
+					referencesIndex.add(uri);
+				}
+			}			
+		}
 		else if(event.getType() == DocearEventType.LIBRARY_EMPTY_MINDMAP_INDEX_REQUEST) {
 			mindmapIndex.removeAllElements();			
 		}
@@ -93,6 +104,11 @@ public class FolderTypeLibraryNode extends FolderNode implements IDocearEventLis
 		Matcher mainMatcher = PATTERN.matcher(DEFAULT_LIBRARY_PATH);
 		String ret = mainMatcher.replaceAll("." + WorkspaceController.getController().getPreferences().getWorkspaceProfile());
 		return WorkspaceUtils.absoluteURI(URI.create(ret));		
+	}
+
+	public URI getBibtexDatabase() {
+		URI uri = null;
+		return uri;
 	}
 
 	
