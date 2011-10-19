@@ -538,7 +538,7 @@ public class JabRef {
         return new ParserResult(result);
     }
 
-	public void openWindow(Vector<ParserResult> loaded, boolean quiteStart) {
+	public void openWindow(Vector<ParserResult> loaded, boolean quietStart) {
         if (!graphicFailure && !disableGui.isInvoked()) {
             // Call the method performCompatibilityUpdate(), which does any
             // necessary changes for users with a preference set from an older
@@ -562,7 +562,7 @@ public class JabRef {
             // Or... it doesn't work, period.
             //System.setProperty("swing.aatext", "true");
             // If we are not on Mac, deal with font sizes and LookAndFeels:
-            if (!Globals.ON_MAC && !quiteStart) {
+            if (!Globals.ON_MAC && !quietStart) {
                 int fontSizes = Globals.prefs.getInt("menuFontSize");
                 boolean overrideDefaultFonts = Globals.prefs.getBoolean("overrideDefaultFonts");
                 String defaultLookAndFeel;
@@ -731,7 +731,7 @@ public class JabRef {
 
             //Util.pr(": Initializing frame");
             
-            if(quiteStart) {
+            if(quietStart) {
             	jrf = new JabRefFrame(this.parent, false);
             } else {
             	jrf = new JabRefFrame(this.parent, true);
@@ -780,7 +780,7 @@ public class JabRef {
             if (Globals.prefs.getBoolean("autoSave"))
                 Globals.startAutoSaveManager(jrf);
             
-            if(!quiteStart) {
+            if(!quietStart) {
 	            // If we are set to remember the window location, we also remember the maximised
 	            // state. This needs to be set after the window has been made visible, so we
 	            // do it here:

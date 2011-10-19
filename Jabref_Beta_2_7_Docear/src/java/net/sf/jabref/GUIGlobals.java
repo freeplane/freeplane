@@ -268,7 +268,7 @@ public class GUIGlobals {
 	/**
 	 * Read either the default icon theme, or a custom one. If loading of the custom theme
 	 * fails, try to fall back on the default theme.
-	 */
+	 */    
 	public static void setUpIconTheme() {
 		String defaultPrefix = "/images/crystal_16/", prefix = defaultPrefix;
 

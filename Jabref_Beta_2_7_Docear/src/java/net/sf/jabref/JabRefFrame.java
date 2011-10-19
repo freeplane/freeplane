@@ -91,6 +91,8 @@ import com.jgoodies.uif_lite.component.UIFSplitPane;
  * The main window of the application.
  */
 public class JabRefFrame extends JPanel implements OutputPrinter {
+	
+	private boolean isTopLevel = true;
 
 	JFrame frame = new JFrame();
     
@@ -389,6 +391,7 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
   };
 
   public JabRefFrame(JFrame parent, boolean isTopLevel) {
+	  this.isTopLevel = isTopLevel;
 	  this.frame = parent;
 	  if(isTopLevel) {
 		  frame.setContentPane(this); 
@@ -410,8 +413,11 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
         frame.setGlassPane(glassPane);
         // glassPane.setVisible(true);
 
+        
         frame.setTitle(GUIGlobals.frameTitle);
-        frame.setIconImage(GUIGlobals.getImage("jabrefIcon").getImage());
+        if (this.isTopLevel) {
+        	frame.setIconImage(GUIGlobals.getImage("jabrefIcon").getImage());
+        }
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
