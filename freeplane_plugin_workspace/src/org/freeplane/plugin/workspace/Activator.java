@@ -13,6 +13,8 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
 import org.osgi.service.url.URLConstants;
 import org.osgi.service.url.URLStreamHandlerService;
 
@@ -22,7 +24,7 @@ public class Activator implements BundleActivator {
 	 * (non-Javadoc)
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
-	public void start(BundleContext context) throws Exception {		
+	public void start(final BundleContext context) throws Exception {		
 		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
 		props.put("mode", new String[] { MModeController.MODENAME });
 		registerClasspathUrlHandler(context);		
@@ -31,6 +33,7 @@ public class Activator implements BundleActivator {
 				public void installExtension(ModeController modeController) {
 			    	registerLinkTypeOption();
 				    WorkspaceController.getController().initialStart();
+				    startPluginServices(context, modeController);
 			    }
 		    }, props);
 	}
@@ -74,6 +77,24 @@ public class Activator implements BundleActivator {
 	public void stop(BundleContext context) throws Exception {		
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	protected void startPluginServices(BundleContext context, ModeController modeController) {
+		try {
+			final ServiceReference[] dependends = context.getServiceReferences(WorkspaceDependentPlugin.class.getName(),
+					"(dependsOn="+ WorkspaceDependentPlugin.DEPENDS_ON +")");
+			if (dependends != null) {
+				for (int i = 0; i < dependends.length; i++) {
+					final ServiceReference serviceReference = dependends[i];
+					final WorkspaceDependentPlugin service = (WorkspaceDependentPlugin) context.getService(serviceReference);
+					service.startPlugin(context, modeController);
+					context.ungetService(serviceReference);
+				}
+			}
+		}
+		catch (final InvalidSyntaxException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	private class OptionPanelExtender implements IPropertyControlCreator {
 		private final IPropertyControlCreator creator;

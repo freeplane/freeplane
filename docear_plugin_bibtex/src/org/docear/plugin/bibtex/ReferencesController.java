@@ -8,8 +8,6 @@ import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import net.sf.jabref.imports.ParserResult;
-
 import org.docear.plugin.bibtex.actions.AddExistingReferenceAction;
 import org.docear.plugin.bibtex.actions.AddNewReferenceAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesAllOpenMapsAction;

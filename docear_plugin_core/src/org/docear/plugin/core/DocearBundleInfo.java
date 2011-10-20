@@ -7,15 +7,18 @@ package org.docear.plugin.core;
 import java.util.Dictionary;
 import java.util.Vector;
 
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Version;
 
 /**
  * 
  */
 public class DocearBundleInfo {
 	private final String bundleName;
-	private final String bundleVersion;
+	private final Version bundleVersion;
 	private final DocearBundleInfo[] requiredBundles;
+	private final Bundle bundle;
 	
 	
 
@@ -24,16 +27,17 @@ public class DocearBundleInfo {
 	 **********************************************************************************/
 
 	public DocearBundleInfo(BundleContext context) {
-		Dictionary<String, String> manifest = context.getBundle().getHeaders();
- 		bundleName = extractBundleName(manifest);
- 		bundleVersion = extractBundleVersion(manifest);
-		requiredBundles = extractRequiredBundles(manifest);
+ 		bundleName = context.getBundle().getSymbolicName();
+ 		bundleVersion = context.getBundle().getVersion();
+		requiredBundles = extractRequiredBundles(context.getBundle().getHeaders());
+		bundle = context.getBundle();
 	}
 	
-	private DocearBundleInfo(final String bundleName, final String bundleVersion) {
+	private DocearBundleInfo(final String bundleName, final Version bundleVersion) {
 		this.bundleName = bundleName;
  		this.bundleVersion = bundleVersion;
 		requiredBundles = new DocearBundleInfo[]{};
+		bundle = null;
 	}
 	
 	
@@ -41,14 +45,6 @@ public class DocearBundleInfo {
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
-
-	private String extractBundleName(Dictionary<String, String> manifest) {
-		return manifest.get("Bundle-Name");
-	}
-	
-	private String extractBundleVersion(Dictionary<String, String> manifest) {
-		return manifest.get("Bundle-Version");
-	}
 	
 	private DocearBundleInfo[] extractRequiredBundles(Dictionary<String, String> manifest) {
 		Vector<DocearBundleInfo> requires = new Vector<DocearBundleInfo>();
@@ -57,7 +53,7 @@ public class DocearBundleInfo {
 			String name = token[0].substring(token[0].indexOf("=")+1);
 			String version = token[1].substring(token[1].indexOf("=")+2);
 			version = version.substring(0, version.length()-1);
-			requires.add(new DocearBundleInfo(name, version));
+			requires.add(new DocearBundleInfo(name, new Version(version)));
 		}
  		return requires.toArray(new DocearBundleInfo[]{});
 	}
@@ -75,14 +71,18 @@ public class DocearBundleInfo {
 
 
 
-	public String getBundleVersion() {
+	public Version getBundleVersion() {
 		return bundleVersion;
 	}
-
-	public boolean equals(Object o) {
+	
+	public Bundle getBundle() {
+		return bundle;
+	}
+	
+	public boolean isCompatible(Object o) {
 		if(o instanceof DocearBundleInfo) {
 			if(((DocearBundleInfo) o).getBundleName().equals(this.getBundleName()) &&
-			((DocearBundleInfo) o).getBundleVersion().equals(this.getBundleVersion())) {
+			((DocearBundleInfo) o).getBundleVersion().compareTo(this.getBundleVersion()) >= 0) {
 				return true;
 			}			
 		}

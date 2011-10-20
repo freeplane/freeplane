@@ -53,9 +53,9 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 
 	public static final String DOCUMENT_REPOSITORY_PATH = LocationDialog.DOCUMENT_REPOSITORY_PATH_PROPERTY;
 	public static final String LIBRARY_PATH = "@@library_mindmaps@@"; 
-	public static final String BIBTEX_PATH = LocationDialog.BIBTEX_PATH_PROPERTY; 
+	public static final String BIBTEX_PATH = LocationDialog.BIBTEX_PATH_PROPERTY;
 
-	public CoreConfiguration(ModeController modeController) {		
+	public CoreConfiguration(ModeController modeController) {
 		addPropertyChangeListener();
 		addPreferencesToOptionsPanel();
 		
@@ -70,8 +70,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 				
 		LogUtils.info("org.docear.plugin.core.CoreConfiguration() initializing...");
 		init(modeController);
-	}
-	
+	}	
 
 	private void showLocationDialogIfNeeded() {
 		if (WorkspaceController.getController().getPreferences().getWorkspaceLocation() == null) {
@@ -221,7 +220,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	public void workspaceFinalize(WorkspaceEvent event) {
 		System.out.println("DOCEAR CORE: workspaceFinalize(WorkspaceEvent):"+ event);
 		//TODO: DOCEAR change behaviour?
-		showLocationDialogIfNeeded();
+		showLocationDialogIfNeeded();		
 	}
 
 }
