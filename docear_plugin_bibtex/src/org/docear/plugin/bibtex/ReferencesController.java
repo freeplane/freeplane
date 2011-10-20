@@ -93,8 +93,13 @@ public class ReferencesController extends ALanguageController implements IDocear
 				public void run() {
 					Thread.currentThread().setContextClassLoader(classLoader);
 					URI uri = DocearController.getController().getLibrary().getBibtexDatabase();
-					JabrefWrapper wrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame(), new File(WorkspaceUtils.absoluteURI(uri)));					
-					
+					JabrefWrapper wrapper;
+					if (uri != null) {
+						wrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame(), new File(WorkspaceUtils.absoluteURI(uri)));						
+					}
+					else {
+						wrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame());
+					}
 					createOptionPanel(wrapper.getJabrefFrame());
 				}
 			};
