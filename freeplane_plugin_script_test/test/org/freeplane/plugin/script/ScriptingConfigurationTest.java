@@ -44,11 +44,11 @@ public class ScriptingConfigurationTest {
 		final String scriptsParentLocation = ScriptingConfiguration.getScriptsParentLocations()[0];
 		assertEquals("menu location for ON_SELECTED_NODE should be default",
 		    ScriptingConfiguration.getScriptsLocation(scriptsParentLocation) + "/" + scriptName,
-		    metaData.getMenuLocation(ExecutionMode.ON_SELECTED_NODE, scriptsParentLocation));
+		    metaData.getMenuLocation(ExecutionMode.ON_SELECTED_NODE));
 		assertTrue("ON_SELECTED_NODE_RECURSIVELY was set",
 		    metaData.getExecutionModes().contains(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY));
 		assertEquals("menu location for ON_SELECTED_NODE_RECURSIVELY was set explicitely", "/menu_bar/help",
-		    metaData.getMenuLocation(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY, scriptsParentLocation));
+		    metaData.getMenuLocation(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY));
 		assertTrue("CacheScriptContent was set to true", metaData.cacheContent());
 	}
 
@@ -65,12 +65,12 @@ public class ScriptingConfigurationTest {
 		assertEquals("expected only modes set in the script", 2, metaData.getExecutionModes().size());
 		assertTrue("ON_SELECTED_NODE was set", metaData.getExecutionModes().contains(ExecutionMode.ON_SELECTED_NODE));
 		assertEquals("wrong menu location", "/menu_bar/help",
-		    metaData.getMenuLocation(ExecutionMode.ON_SELECTED_NODE, scriptsParentLocation));
+		    metaData.getMenuLocation(ExecutionMode.ON_SELECTED_NODE));
 		assertEquals("wrong title key", "icon_button_ok", metaData.getTitleKey(ExecutionMode.ON_SELECTED_NODE));
 		assertTrue("ON_SELECTED_NODE_RECURSIVELY was set",
 		    metaData.getExecutionModes().contains(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY));
 		assertEquals("wrong menu location", "/menu_bar/help",
-		    metaData.getMenuLocation(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY, scriptsParentLocation));
+		    metaData.getMenuLocation(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY));
 		assertEquals("wrong title key", "Test_Script", metaData.getTitleKey(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY));
 	}
 

@@ -87,9 +87,8 @@ class ScriptingConfiguration {
 			executionModeLocationMap.clear();
 		}
 
-		public String getMenuLocation(final ExecutionMode executionMode, final String scriptsParentLocation) {
-			final String specialLocation = executionModeLocationMap.get(executionMode);
-			return specialLocation == null ? scriptsParentLocation + "/scripts" + "/" + scriptName : specialLocation;
+		protected String getMenuLocation(final ExecutionMode executionMode) {
+			return executionModeLocationMap.get(executionMode);
 		}
 
 		public String getTitleKey(final ExecutionMode executionMode) {

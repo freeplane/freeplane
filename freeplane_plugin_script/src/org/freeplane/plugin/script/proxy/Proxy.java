@@ -1125,6 +1125,8 @@ public interface Proxy {
 		 * </pre>
 		 */
 		void setAttributes(java.util.Map<String, Object> attributes);
+
+		void setLeft(boolean isLeft);
 	}
 
 	/** Node's style: <code>node.style</code> - read-only. */

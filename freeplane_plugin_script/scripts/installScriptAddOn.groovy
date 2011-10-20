@@ -18,6 +18,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import java.io.File;
 import java.util.zip.ZipInputStream
 
 import javax.swing.JMenuItem
@@ -35,6 +36,7 @@ import org.freeplane.core.util.TextUtils
 import org.freeplane.features.mode.Controller
 import org.freeplane.main.addons.AddOnProperties
 import org.freeplane.plugin.script.ExecuteScriptAction
+import org.freeplane.plugin.script.ScriptingEngine;
 import org.freeplane.plugin.script.ScriptingPermissions
 import org.freeplane.plugin.script.addons.ScriptAddOnProperties
 import org.freeplane.plugin.script.proxy.Proxy
@@ -219,6 +221,7 @@ def parseScripts(Map childNodeMap) {
 	configMap[property] = propertyNode.children.inject([]){ scripts, scriptNode ->
 		def script = new ScriptAddOnProperties.Script()
 		script.name = expandVariables(scriptNode.plainText)
+		script.file = new File(ScriptingEngine.getUserScriptDir(), script.name)
 		script.scriptBody = theOnlyChild(scriptNode).text
 		mapStructureAssert( ! htmlUtils.isHtmlNode(script.scriptBody), textUtils.getText('addons.installer.html.script'))
 		scriptNode.attributes.map.each { k,v ->
@@ -228,7 +231,7 @@ def parseScripts(Map childNodeMap) {
 				script[k] = expandVariables(v)
 		}
 		script.permissions = parsePermissions(scriptNode, script.name)
-		if (script.keyboardShortcut != null)
+		if (script.keyboardShortcut)
 			createKeyboardShortcut(script)
 		mapStructureAssert(script.name.endsWith('.groovy'), textUtils.format('addons.installer.groovy.script.name', script.name))
 		mapStructureAssert(script.menuTitleKey, textUtils.format('addons.installer.script.no.menutitle', script))
@@ -352,7 +355,7 @@ def addOnDir() {
 }
 
 def createScripts(Map configMap) {
-	List<ScriptAddOnProperties.Script> scripts = configMap['script']
+	List<ScriptAddOnProperties.Script> scripts = configMap['scripts']
 	scripts.each { script -> 
 		File file = script.file
 		try {

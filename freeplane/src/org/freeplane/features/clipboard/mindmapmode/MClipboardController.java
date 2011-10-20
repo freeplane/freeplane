@@ -61,10 +61,10 @@ import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapReader;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.MapReader.NodeTreeCreator;
 import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -445,10 +445,6 @@ public class MClipboardController extends ClipboardController {
 	    .compile("<html>\\s*<body>\\s*<a\\s+href=\"([^>]+)\">(.*)</a>\\s*</body>\\s*</html>");
 	private static final String RESOURCE_UNFOLD_ON_PASTE = "unfold_on_paste";
 	public static final String RESOURCES_CUT_NODES_WITHOUT_QUESTION = "cut_nodes_without_question";
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	public static String firstLetterCapitalized(final String text) {
 		if (text == null || text.length() == 0) {
