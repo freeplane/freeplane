@@ -78,7 +78,7 @@ public class DoAutomaticSave extends TimerTask {
 					/* Now, it is dirty, we save it. */
 					try {
 						final ModeController currentModeController = Controller.getCurrentModeController();
-						if(currentModeController instanceof MModeController)
+						if(!(currentModeController instanceof MModeController))
 							return;
 						MModeController modeController = ((MModeController) currentModeController);
 						final File pathToStore;

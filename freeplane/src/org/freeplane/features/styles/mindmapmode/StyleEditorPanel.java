@@ -172,7 +172,11 @@ public class StyleEditorPanel extends JPanel {
 			final MNodeStyleController styleController = (MNodeStyleController) Controller
 			.getCurrentModeController().getExtension(
 					NodeStyleController.class);
-			styleController.setFontSize(node, enabled ? Integer.valueOf(mNodeFontSize.getValue()) : null);
+			try {
+	            styleController.setFontSize(node, enabled ? Integer.valueOf(mNodeFontSize.getValue()) : null);
+            }
+            catch (NumberFormatException e) {
+            }
 		}
 	}
 

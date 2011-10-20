@@ -397,6 +397,7 @@ public class MClipboardController extends ClipboardController {
             File mindmapFile = target.getMap().getFile();
             if(mindmapFile == null) {
                 UITools.errorMessage(TextUtils.getRawText("map_not_saved"));
+                return;
             }
 			final String mmFileName = mindmapFile.getName();
 			final String fileNameTemplate = mmFileName.substring(0, mmFileName.lastIndexOf('.')) + "_";
