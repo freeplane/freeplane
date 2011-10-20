@@ -1,12 +1,10 @@
 package org.docear.plugin.bibtex;
 
 import java.io.File;
-import java.io.ObjectInputStream.GetField;
 import java.util.HashMap;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 import net.sf.jabref.BasePanel;
 import net.sf.jabref.BibtexDatabase;

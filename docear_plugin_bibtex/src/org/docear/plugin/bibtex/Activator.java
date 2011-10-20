@@ -3,6 +3,7 @@ package org.docear.plugin.bibtex;
 import java.util.Hashtable;
 
 
+import org.docear.plugin.core.DocearBundleInfo;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
@@ -17,6 +18,7 @@ public class Activator implements BundleActivator {
 	 */
 	public void start(BundleContext context) throws Exception {
 		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
+		final DocearBundleInfo info = new DocearBundleInfo(context);
 		props.put("mode", new String[] { MModeController.MODENAME }); //$NON-NLS-1$
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {

@@ -37,12 +37,16 @@ public class DocearController implements IDocearEventListener, IFreeplanePropert
 	public static DocearController getController() {
 		return docearController;
 	}
-	
+		
 	public void addDocearEventListener(IDocearEventListener listener) {
 		if(this.docearListeners.contains(listener)) {
 			return;
 		}
 		this.docearListeners.add(listener);
+	}
+	
+	public void registerPlugin(DocearBundleInfo bundleInfo, IDocearPlugin plugin) {
+		
 	}
 	
 	public void removeDocearEventListener(IDocearEventListener listener) {

@@ -25,6 +25,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.attribute.AttributeView;
+import org.osgi.framework.BundleContext;
 
 public class Tools {
 	
@@ -270,7 +271,6 @@ public class Tools {
 			return attributes.getAttributeKeyList();
 		}
 		return new ArrayList<String>();
-	}
-		
+	}		
 
 }
