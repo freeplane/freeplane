@@ -412,10 +412,9 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
         MyGlassPane glassPane = new MyGlassPane();
         frame.setGlassPane(glassPane);
         // glassPane.setVisible(true);
-
-        
-        frame.setTitle(GUIGlobals.frameTitle);
+                
         if (this.isTopLevel) {
+        	frame.setTitle(GUIGlobals.frameTitle);
         	frame.setIconImage(GUIGlobals.getImage("jabrefIcon").getImage());
         }
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -512,14 +511,14 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
     public void setWindowTitle() {
         // Set window title:
         BasePanel bp = basePanel();
-        if (bp == null) {
+        if (bp == null && this.isTopLevel) {
         	frame.setTitle(GUIGlobals.frameTitle);
             return;
         }
         String star = bp.baseChanged ? "*" : "";
-        if (bp.getFile() != null) {
+        if (bp.getFile() != null  && this.isTopLevel) {
         	frame.setTitle(GUIGlobals.frameTitle+" - "+bp.getFile().getPath()+star);
-        } else {
+        } else if (this.isTopLevel) {
         	frame.setTitle(GUIGlobals.frameTitle+" - "+Globals.lang("untitled")+star);
         }
     }
