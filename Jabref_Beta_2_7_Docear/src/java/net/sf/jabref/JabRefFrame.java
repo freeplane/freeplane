@@ -827,7 +827,9 @@ public JabRefPreferences prefs() {
 
     //gbl.setConstraints(mb, con);
     //this.add(mb);
-    frame.setJMenuBar(mb);
+    if (this.isTopLevel) {
+        frame.setJMenuBar(mb);
+    }
     con.anchor = GridBagConstraints.NORTH;
     //con.gridwidth = 1;//GridBagConstraints.REMAINDER;;
     gbl.setConstraints(tlb, con);
