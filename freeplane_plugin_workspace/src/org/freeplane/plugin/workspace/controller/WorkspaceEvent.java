@@ -12,8 +12,6 @@ import java.util.EventObject;
 public class WorkspaceEvent extends EventObject {
 
 	public static final int WORKSPACE_EVENT_TYPE_CHANGE = 1;
-	public static final int WORKSPACE_EVENT_TYPE_INITIALIZE = 2;
-	public static final int WORKSPACE_EVENT_TYPE_FINALIZE = 4;
 	
 	private static final long serialVersionUID = 1L;
 	

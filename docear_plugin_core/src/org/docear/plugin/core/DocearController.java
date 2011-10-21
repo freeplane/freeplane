@@ -37,7 +37,7 @@ public class DocearController implements IDocearEventListener, IFreeplanePropert
 	public static DocearController getController() {
 		return docearController;
 	}
-	
+		
 	public void addDocearEventListener(IDocearEventListener listener) {
 		if(this.docearListeners.contains(listener)) {
 			return;
@@ -73,8 +73,7 @@ public class DocearController implements IDocearEventListener, IFreeplanePropert
 		if(event.getType() == DocearEventType.NEW_LIBRARY && event.getSource() instanceof IDocearLibrary) {
 			this.currentLibrary = (IDocearLibrary) event.getSource();
 			LogUtils.info("DOCEAR: new DocearLibrary set");
-		}
-		
+		}	
 	}
 
 	public void propertyChanged(String propertyName, String newValue, String oldValue) {

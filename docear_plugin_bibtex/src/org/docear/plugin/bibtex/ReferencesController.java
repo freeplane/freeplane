@@ -8,8 +8,6 @@ import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import net.sf.jabref.imports.ParserResult;
-
 import org.docear.plugin.bibtex.actions.AddExistingReferenceAction;
 import org.docear.plugin.bibtex.actions.AddNewReferenceAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesAllOpenMapsAction;
@@ -174,15 +172,4 @@ public class ReferencesController extends ALanguageController implements IDocear
 		// TODO Auto-generated method stub
 		
 	}
-
-	public void workspaceInitialize(WorkspaceEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void workspaceFinalize(WorkspaceEvent event) {
-		System.out.println("Jabref -> WS ist ready");
-		initJabref();
-	}
-
 }
