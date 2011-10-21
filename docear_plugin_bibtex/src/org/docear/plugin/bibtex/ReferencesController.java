@@ -38,7 +38,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 	public static final String MENU_BAR = "/menu_bar"; //$NON-NLS-1$
 	public static final String NODE_POPUP_MENU = "/node_popup"; //$NON-NLS-1$
 	public static final String NODE_FEATURES_MENU = "/node_features"; //$NON-NLS-1$
-	public static final String STYLES_MENU = "/styles"; //$NON-NLS-1$
+	public static final String TOOLS_MENU = "/extras"; //$NON-NLS-1$
 	public static final String REFERENCE_MANAGEMENT_MENU = "/reference_management";
 	public static final String UPDATE_REFERENCES_MENU = "/update_references";
 
@@ -129,8 +129,8 @@ public class ReferencesController extends ALanguageController implements IDocear
 
 			public void updateMenus(ModeController modeController, MenuBuilder builder) {
 
-				builder.addMenuItem(MENU_BAR + STYLES_MENU, new JMenu(TextUtils.getText(REFERENCE_MANAGEMENT_MENU_LANG_KEY)),
-						MENU_BAR + REFERENCE_MANAGEMENT_MENU, MenuBuilder.AFTER);
+				builder.addMenuItem(MENU_BAR + TOOLS_MENU, new JMenu(TextUtils.getText(REFERENCE_MANAGEMENT_MENU_LANG_KEY)),
+						MENU_BAR + REFERENCE_MANAGEMENT_MENU, MenuBuilder.BEFORE);
 
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, AddNewReference, MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, AddExistingReference, MenuBuilder.AS_CHILD);

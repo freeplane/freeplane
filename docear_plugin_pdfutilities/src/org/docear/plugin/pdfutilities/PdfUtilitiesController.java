@@ -88,7 +88,7 @@ public class PdfUtilitiesController extends ALanguageController{
 	public static final String MENU_BAR = "/menu_bar"; //$NON-NLS-1$
 	public static final String NODE_POPUP_MENU = "/node_popup"; //$NON-NLS-1$
 	public static final String NODE_FEATURES_MENU = "/node_features"; //$NON-NLS-1$
-	public static final String STYLES_MENU = "/styles"; //$NON-NLS-1$
+	public static final String TOOLS_MENU = "/extras"; //$NON-NLS-1$
 	public static final String PDF_MANAGEMENT_MENU = "/pdf_management"; //$NON-NLS-1$
 	public static final String MONITORING_MENU = "/monitoring"; //$NON-NLS-1$
 	public static final String AUTO_IMPORT_LANG_KEY = "menu_auto_import_annotations"; //$NON-NLS-1$
@@ -161,8 +161,8 @@ public class PdfUtilitiesController extends ALanguageController{
 			public void updateMenus(ModeController modeController, MenuBuilder builder) {
 				ResourceController resourceController = ResourceController.getResourceController();
 
-				builder.addMenuItem(MENU_BAR + STYLES_MENU, new JMenu(TextUtils.getText(PDF_MANAGEMENT_MENU_LANG_KEY)), MENU_BAR
-						+ PDF_MANAGEMENT_MENU, MenuBuilder.AFTER);				
+				builder.addMenuItem(MENU_BAR + TOOLS_MENU, new JMenu(TextUtils.getText(PDF_MANAGEMENT_MENU_LANG_KEY)), MENU_BAR
+						+ PDF_MANAGEMENT_MENU, MenuBuilder.BEFORE);				
 				
 				builder.addRadioItem(MENU_BAR + PDF_MANAGEMENT_MENU, new RadioButtonAction(AUTO_IMPORT_LANG_KEY,
 						AUTO_IMPORT_ANNOTATIONS_KEY), resourceController.getBooleanProperty(AUTO_IMPORT_ANNOTATIONS_KEY));				
