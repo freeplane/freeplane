@@ -415,14 +415,14 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
                 
         if (this.isTopLevel) {
         	frame.setTitle(GUIGlobals.frameTitle);
-        	frame.setIconImage(GUIGlobals.getImage("jabrefIcon").getImage());
+        	frame.setIconImage(GUIGlobals.getImage("jabrefIcon").getImage());        
+	        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+	        frame.addWindowListener(new WindowAdapter() {
+	            public void windowClosing(WindowEvent e) {
+	                (new CloseAction()).actionPerformed(null);
+	            }
+	        });
         }
-        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        frame.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                (new CloseAction()).actionPerformed(null);
-            }
-        });
 
         initLabelMaker();
 
@@ -432,50 +432,51 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
         
         initActions();
 
-      
-      setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds());
-      if ( !prefs.getBoolean("windowMaximised") ) {
-         
-        int sizeX = prefs.getInt("sizeX");
-        int sizeY = prefs.getInt("sizeY");
-        int posX = prefs.getInt("posX");
-        int posY = prefs.getInt("posY");
-
-        //
-        // Fix for [ 1738920 ] Windows Position in Multi-Monitor environment
-        //
-        // Do not put a window outside the screen if the preference values are wrong.
-        //
-        // Useful reference: http://www.exampledepot.com/egs/java.awt/screen_ScreenSize.html?l=rel
-        // googled on forums.java.sun.com graphicsenvironment second screen java
-        //
-        if (GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length == 1){
-
-            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-
-            int height = (int) dim.getHeight();
-            int width = (int) dim.getWidth();
-
-            if (posX + sizeX > width) {
-                if (sizeX <= width) {
-                    posX = width - sizeX;
-                } else {
-                    posX = prefs.getIntDefault("posX");
-                    sizeX = prefs.getIntDefault("sizeX");
-                }
-            }
-
-            if (posY + sizeY > height) {
-                if (sizeY <= height) {
-                    posY = height - sizeY;
-                } else {
-                    posY = prefs.getIntDefault("posY");
-                    sizeY = prefs.getIntDefault("sizeY");
-                }
-            }
+	    if (this.isTopLevel) {
+	      setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds());
+	      if ( !prefs.getBoolean("windowMaximised") ) {
+	         
+	        int sizeX = prefs.getInt("sizeX");
+	        int sizeY = prefs.getInt("sizeY");
+	        int posX = prefs.getInt("posX");
+	        int posY = prefs.getInt("posY");
+	
+	        //
+	        // Fix for [ 1738920 ] Windows Position in Multi-Monitor environment
+	        //
+	        // Do not put a window outside the screen if the preference values are wrong.
+	        //
+	        // Useful reference: http://www.exampledepot.com/egs/java.awt/screen_ScreenSize.html?l=rel
+	        // googled on forums.java.sun.com graphicsenvironment second screen java
+	        //
+	        if (GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length == 1){
+	
+	            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+	
+	            int height = (int) dim.getHeight();
+	            int width = (int) dim.getWidth();
+	
+	            if (posX + sizeX > width) {
+	                if (sizeX <= width) {
+	                    posX = width - sizeX;
+	                } else {
+	                    posX = prefs.getIntDefault("posX");
+	                    sizeX = prefs.getIntDefault("sizeX");
+	                }
+	            }
+	
+	            if (posY + sizeY > height) {
+	                if (sizeY <= height) {
+	                    posY = height - sizeY;
+	                } else {
+	                    posY = prefs.getIntDefault("posY");
+	                    sizeY = prefs.getIntDefault("sizeY");
+	                }
+	            }
+	        }
+	        frame.setBounds(posX, posY, sizeX, sizeY);
+	      }
         }
-        frame.setBounds(posX, posY, sizeX, sizeY);
-      }
 
         tabbedPane.setBorder(null);
         tabbedPane.setForeground(GUIGlobals.inActiveTabbed);
