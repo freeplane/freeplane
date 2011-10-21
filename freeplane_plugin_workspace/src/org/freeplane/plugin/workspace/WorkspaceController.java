@@ -93,7 +93,6 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 	}
 	
 	public void initialStart() {
-		dispatchWorkspaceEvent(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_EVENT_TYPE_INITIALIZE, this));
 		if (getPreferences().getWorkspaceLocation() == null) {
 			WorkspaceChooserDialog dialog = new WorkspaceChooserDialog();
 			dialog.setVisible(true);
@@ -103,9 +102,8 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 			}
 		}
 		initializeConfiguration();
+		initializeView();
 		isInitialized = true;
-		dispatchWorkspaceEvent(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_EVENT_TYPE_FINALIZE, this));
-		initializeView();		
 	}
 
 	public static WorkspaceController getController() {
@@ -383,24 +381,12 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 
 	private void dispatchWorkspaceEvent(WorkspaceEvent event) {
 		switch (event.getType()) {
-		case (1): {
-			for (IWorkspaceListener listener : workspaceListener) {
-				listener.workspaceChanged(event);
+			case (1): {
+				for (IWorkspaceListener listener : workspaceListener) {
+					listener.workspaceChanged(event);
+				}
+				break;
 			}
-			break;
-		}
-		case (2): {
-			for (IWorkspaceListener listener : workspaceListener) {
-				listener.workspaceInitialize(event);
-			}
-			break;
-		}
-		case (4): {
-			for (IWorkspaceListener listener : workspaceListener) {
-				listener.workspaceFinalize(event);
-			}
-			break;
-		}
 
 		}
 	}

@@ -208,19 +208,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 
 	public void workspaceChanged(WorkspaceEvent event) {
 		// TODO Auto-generated method stub
-		System.out.println("DOCEAR CORE: workspaceChanged(WorkspaceEvent):"+ event);		
+		System.out.println("DOCEAR CORE: workspaceChanged(WorkspaceEvent):"+ event);
+		showLocationDialogIfNeeded();
 	}
-
-	public void workspaceInitialize(WorkspaceEvent event) {
-		// TODO Auto-generated method stub
-		System.out.println("DOCEAR CORE: workspaceInitialize(WorkspaceEvent):"+ event);
-		
-	}
-
-	public void workspaceFinalize(WorkspaceEvent event) {
-		System.out.println("DOCEAR CORE: workspaceFinalize(WorkspaceEvent):"+ event);
-		//TODO: DOCEAR change behaviour?
-		showLocationDialogIfNeeded();		
-	}
-
 }

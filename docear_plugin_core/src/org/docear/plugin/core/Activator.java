@@ -7,17 +7,6 @@ import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 
 public class Activator extends WorkspaceDependentPlugin {
-
-//	public void start(final BundleContext context) throws Exception {
-//		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
-//		props.put("mode", new String[] { MModeController.MODENAME });
-//		context.registerService(IModeControllerExtensionProvider.class.getName(), new IModeControllerExtensionProvider() {
-//			public void installExtension(ModeController modeController) {
-//				new CoreConfiguration(modeController);
-//				//startPluginServices(context, modeController);
-//			}
-//		}, props);
-//	}
 	
 	public void startPlugin(BundleContext context, ModeController modeController) {
 		new CoreConfiguration(modeController);

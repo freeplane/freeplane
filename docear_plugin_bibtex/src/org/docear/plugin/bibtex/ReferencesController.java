@@ -172,15 +172,4 @@ public class ReferencesController extends ALanguageController implements IDocear
 		// TODO Auto-generated method stub
 		
 	}
-
-	public void workspaceInitialize(WorkspaceEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void workspaceFinalize(WorkspaceEvent event) {
-		System.out.println("Jabref -> WS ist ready");
-		initJabref();
-	}
-
 }
