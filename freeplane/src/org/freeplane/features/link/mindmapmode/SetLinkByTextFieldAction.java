@@ -52,9 +52,11 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 			final URI link = NodeLinks.getValidLink(selectedNode);
 		    linkAsString = Compat.smbUri2unc(link);
 		}
+		if(linkAsString == null || "".equals(linkAsString))
+			linkAsString = "http://";
 		final String inputValue = UITools.showInputDialog(
 		    Controller.getCurrentController().getSelection().getSelected(), TextUtils.getText("edit_link_manually"), linkAsString);
-		if (inputValue != null) {
+		if (inputValue != null && ! inputValue.matches("\\w+://")) {
 			final MLinkController linkController = (MLinkController) MLinkController.getController();
 			if (inputValue.equals("")) {
 				linkController.setLink(selectedNode, (URI) null, false);
