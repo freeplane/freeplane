@@ -20,7 +20,7 @@
     </p>
   </body>
 </html></richcontent>
-<hook NAME="MapStyle" max_node_width="600">
+<hook NAME="MapStyle" max_node_width="600" min_node_width="1">
     <conditional_styles>
         <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
             <time_condition_modified_after DATE="1315131197170"/>
@@ -103,7 +103,7 @@
 <hook NAME="FirstGroupNode"/>
 <edge STYLE="bezier"/>
 <node TEXT="Inleiding" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1316342821057" BACKGROUND_COLOR="#00cc66" NUMBERED="true" VSHIFT="110">
-<node TEXT="Doel" STYLE_REF="Beginner" ID="ID_1309964220" CREATED="1314735478858" MODIFIED="1318619391797">
+<node TEXT="Doel" STYLE_REF="Beginner" ID="ID_1309964220" CREATED="1314735478858" MODIFIED="1319312782309">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -111,10 +111,17 @@
   </head>
   <body>
     <p>
-      Deze mind map maakt geeft eenoverzicht van de mogelijkheden van Freeplane. De mindmap is niet bedoeld om te laten zien waarvoor je Freeplane allemaal kunt gebruiken. Als je hierover meer wilt weten klik dan <a href="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch"><b>hier</b></a><b>&#160;</b>&#160;&#160;om naar de Wiki van Freeplane te gaan. Wil je meer weten over de technische mogelijkeheden, raadpleeg dan via het menu <i>Help</i>&#160;van Freeplane de Freeplane documentatie.
+      Freeplane heeft tot doel het denken, delen en gebruiken van infrormatie te vergemakkelijken. Freeplane ondersteunt het maken en gebruiken van&#160; <a href="http://www.informationtamers.com/WikIT/index.php?title=Information_map_types">informatiekaarten</a>, in het volgende aangeduid als mindmaps. &#160;De <b><a href="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch">wiki</a></b>&#160;bevat concrete voorbeelden van&#160; <a href="freeplaneApplications.mm">toepassingsgebieden.</a>&#160;
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Het doel van deze handleiding is om je snel op weg te helpen met de meest gebruikte mogelijkheden. Voor meer informatie, of meer details, ga naar de documentatie in menu <a href="freeplane.mm">Help &gt; Documentatie</a>.
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="Leeswijzer" STYLE_REF="Beginner" ID="ID_110608784" CREATED="1316010609737" MODIFIED="1316343113230">
 <richcontent TYPE="DETAILS">
@@ -295,7 +302,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Zweef over deze tekst voor familierelaties" STYLE_REF="Beginner" ID="ID_1733030008" CREATED="1316266082250" MODIFIED="1316291870714" TEXT_SHORTENED="true" VSHIFT="40">
+<node TEXT="Zweef over deze tekst voor familierelaties" STYLE_REF="Beginner" ID="ID_1733030008" CREATED="1316266082250" MODIFIED="1318969944066" TEXT_SHORTENED="true" VSHIFT="40">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -312,7 +319,13 @@
       Een knoop dichter bij de stam is (groot)<b>ouder</b>&#160;&#160;van een (klein) <b>kind</b>&#160;welke verder weg ligt. Kinderen
     </p>
     <p>
-      van dezelfde ouder zijn (broers en) <b>zussen</b>
+      van dezelfde ouder zijn (broers en) <b>zussen. </b>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Knopen worden standaard in hun bewegingsruimte beperkt door hun familierelaties. Een uitzondering op deze regel vormt de<b>&#160;vrije knoop</b>. Deze knoop kan onafhankelijk van alle andere knopen worden verplaatst.
     </p>
   </body>
 </html></richcontent>
@@ -486,7 +499,7 @@
 </node>
 </node>
 <node TEXT="Basis mindmap" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_1337127972" CREATED="1314109409850" MODIFIED="1316291983197" NUMBERED="true">
-<node TEXT="Bewerken knooptitel (snel)" STYLE_REF="Beginner" ID="ID_268413071" CREATED="1314125550476" MODIFIED="1316724684405">
+<node TEXT="Bewerken knooptitel (snel)" STYLE_REF="Beginner" FOLDED="true" ID="ID_268413071" CREATED="1314125550476" MODIFIED="1316724684405">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -746,40 +759,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Toevoegen plaatje of pictogram aan knoopkern" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_475633626" CREATED="1314281837074" MODIFIED="1316330654795" HGAP="30">
-<node TEXT="Een plaatje in een knoop" STYLE_REF="Introduction" ID="ID_575269438" CREATED="1314215157545" MODIFIED="1315128287177">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Er zijn verschillende manieren waarop met afbeeldingen kan worden gewerkt. Een makkelijke manier is om een plaatje in een knoop te slepen. Als je het plaatje op de bovenzijde van de knoop &quot;laat vallen&quot; (de bovenzijde licht op), komt het plaatje in de knoop zelf. Als je het plaatje op de kindzijde laat vallen (de kindzijde van de knoop licht op), wordt een kindknoop gemaakt en komt het plaatje in de kindknoop.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b>Opmerking</b>
-    </p>
-    <ul>
-      <li>
-        De beschreven werkwijze maakt een extern plaatje. Dit is een plaatje buiten de knooptitel. De grootte van dit plaatje kan worden gewijzigd door een van de hoekpunten te slepen.
-      </li>
-      <li>
-        Het is ook mogelijk een plaatje in de knooptitel te maken (intern plaatje). De grootte hiervan kan niet worden gewijzigd. Raadpleeg de handleiding voor meer mogelijkheden.
-      </li>
-      <li>
-        Slepen is niet hetzelfde als knippen en plakken, zie de knoop hieronder.
-      </li>
-      <li>
-        De bron van het plaatje moet zich op je computer bevinden. Sleep het plaatje zonodig eerst van Internet naar je computer.<br/>
-      </li>
-    </ul>
-  </body>
-</html></richcontent>
-</node>
+<node TEXT="Toevoegen plaatje of pictogram aan knoopkern" STYLE_REF="Gevorderde" ID="ID_475633626" CREATED="1314281837074" MODIFIED="1316330654795" HGAP="30">
 <node TEXT="Pictogram (icoontje)" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_331137637" CREATED="1314214040000" MODIFIED="1316329918843">
 <icon BUILTIN="bookmark"/>
 <icon BUILTIN="messagebox_warning"/>
@@ -863,7 +843,7 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Afbeelding met vaste grootte" STYLE_REF="Gevorderde" ID="ID_828859020" CREATED="1316330066497" MODIFIED="1316330559128">
+<node TEXT="Afbeelding (knoopkern)" STYLE_REF="Gevorderde" ID="ID_828859020" CREATED="1316330066497" MODIFIED="1318967105060">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -876,9 +856,15 @@
     <p>
       
     </p>
+    <p>
+      <b>Opmerking</b>
+    </p>
     <ul>
       <li>
         Om de grootte van het plaatje te veranderen: laadt het plaatje in een tekenprogramma en bewaar het met minder pixels.
+      </li>
+      <li>
+        Zie <i>Knoopuitbreiding</i>&#160;voor schaapbare afbeeldingen.
       </li>
     </ul>
   </body>
@@ -2271,7 +2257,46 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Schaalbaar plaatje in knoopdetails" STYLE_REF="Gevorderde" ID="ID_1572435893" CREATED="1314215157545" MODIFIED="1316455932211">
+<node TEXT="Schaalbaar plaatje (knoopuitbreiding)" STYLE_REF="Gevorderde" ID="ID_1572435893" CREATED="1314215157545" MODIFIED="1318966595189">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Plaatjes zijn geen onderdeel van een
+    </p>
+    <p>
+      mindmap, maar kunnen wel binnen een
+    </p>
+    <p>
+      mindmap worden getoond. Het maakt
+    </p>
+    <p>
+      daarbij uit waar zich het plaatje&#160;&#160;bevindt
+    </p>
+    <p>
+      en welke methode wordt gebruikt: klikken
+    </p>
+    <p>
+      en slepen of kopieren en plakken. Merk op
+    </p>
+    <p>
+      dat de eigenschappen van een plaatje in
+    </p>
+    <p>
+      de knoopkern anders zijn dan de hier
+    </p>
+    <p>
+      beschreven plaatjes (knoop-
+    </p>
+    <p>
+      uitbrreiding).<br/>
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Locale afbeelding" STYLE_REF="Gevorderde" ID="ID_1456181199" CREATED="1318965130884" MODIFIED="1318966874203">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -2279,7 +2304,7 @@
   </head>
   <body>
     <p>
-      Er zijn verschillende manieren waarop met afbeeldingen kan worden gewerkt. Een makkelijke manier is om een plaatje in een knoop te slepen. Als je het plaatje op de bovenzijde van de knoop &quot;laat vallen&quot; (de bovenzijde licht op), komt het plaatje in de knoop zelf. Als je het plaatje op de kindzijde laat vallen (de kindzijde van de knoop licht op), wordt een kindknoop gemaakt en komt het plaatje in de kindknoop.
+      Er zijn verschillende manieren waarop met afbeeldingen kan worden gewerkt. Een makkelijke manier is om een plaatje in een knoop te slepen. Als je het plaatje op de bovenzijde van de knoop &quot;laat vallen&quot; (de bovenzijde licht op), komt het plaatje in de knoop zelf. Als je het plaatje op de kindzijde laat vallen (de kindzijde van de knoop licht op), wordt een kindknoop gemaakt en komt het plaatje in de kindknoop. De grootte van he tplaatje kan worden veranderd door de hoek rechtsonder te slepen.
     </p>
     <p>
       
@@ -2289,23 +2314,41 @@
     </p>
     <ul>
       <li>
-        De beschreven werkwijze maakt een extern plaatje. Dit is een plaatje buiten de knooptitel. De grootte van dit plaatje kan worden gewijzigd door de knoop te selecteren en dan de hoekpunt rechtsonder te slepen.
-      </li>
-      <li>
-        Het is ook mogelijk een plaatje in de knooptitel te maken (intern plaatje). De grootte hiervan kan niet worden gewijzigd. Raadpleeg de handleiding voor meer mogelijkheden.
-      </li>
-      <li>
-        Slepen is niet hetzelfde als knippen en plakken, zie de knoop hieronder.
-      </li>
-      <li>
-        De bron van het plaatje moet zich op je computer bevinden. Sleep het plaatje zonodig eerst van Internet naar je computer.<br/>
+        Het plaatje wordt wel getoond als onderdeel van de mindmap maar is dit niet. Elke keer als je de mindmap opent wordt het plaatje van zijn oorspronkelijke locatie ingelezen. Als je dit bestand verplaatst of de naam wijzigt, wordt het plaatje niet meer in de mindmap getoond.&#160;
       </li>
       <li>
         Een afbeelding die is verborgen met Instellen zweeftekst (tooltip) blijft bij zweven verborgen.<br/>
       </li>
+      <li>
+        Een alternatieve manier om een plaatje toe te voeten is door een knoop te rechtsklikken of menu <i>Edit &gt; Knoopuitbreiding</i>&#160;en vervolgens <i>Toevoegen afbeelding</i>&#160;te kiezen.<br/>
+      </li>
     </ul>
   </body>
 </html></richcontent>
+</node>
+<node TEXT="" ID="ID_1340827226" CREATED="1318966639826" MODIFIED="1318966639826"/>
+<node TEXT="Afbeeling van Internet, PrintScreen" STYLE_REF="Gevorderde" ID="ID_261430529" CREATED="1318965149423" MODIFIED="1318966511526">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een plaatje van een externe bron zoals Internet kan worden toegevoegd via kopieren en plakken.Op dezelfde wijze kan een schermafbeelding, gemaakt met PrintScreen, worden toegevoegd door plakken te kiezen. In beide gevallen wordt het plaatje in een automatisch gemaakte kindknoop toegevoegd. De grootte van het plaatje kan worden veranderd door de hoek rechtsonder te slepen.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Opmerking</b>
+    </p>
+    <p>
+      De geplakte afbeelding is geen onderdeel van de mindmap zelf. De afbeelding automatisch als bestand toegevoegd aan de map (direcory) waarin zich de mindmap bevindt. De naam van dit bestand wordt daarbij opgenomen in de knoopkern.
+    </p>
+  </body>
+</html></richcontent>
+</node>
 <node TEXT="In-line afbeelding" STYLE_REF="Professional" ID="ID_1040294564" CREATED="1314282819174" MODIFIED="1316330761499">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>

@@ -20,18 +20,12 @@
     </p>
   </body>
 </html></richcontent>
-<hook NAME="MapStyle" max_node_width="600">
+<hook NAME="MapStyle" max_node_width="600" min_node_width="1">
     <conditional_styles>
         <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
-            <conjunct_condition user_name="V4">
-                <time_condition_modified_before DATE="1314731996193"/>
-                <time_condition_modified_after DATE="1314559196193"/>
-            </conjunct_condition>
-        </conditional_style>
-        <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
-            <conjunct_condition user_name="V4">
-                <time_condition_modified_before DATE="1314731996193"/>
-                <time_condition_modified_after DATE="1314559196193"/>
+            <conjunct_condition user_name="1.2.9_05">
+                <time_condition_modified_after DATE="1318794562631"/>
+                <time_condition_modified_before DATE="1319399362631"/>
             </conjunct_condition>
         </conditional_style>
     </conditional_styles>
@@ -111,8 +105,8 @@
 </map_styles>
 </hook>
 <hook NAME="FirstGroupNode"/>
-<node TEXT="Introduction" STYLE_REF="Beginner" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1316341192794" BACKGROUND_COLOR="#00cc33" NUMBERED="true" VSHIFT="90">
-<node TEXT="Goal" STYLE_REF="Consumer" ID="ID_1074607965" CREATED="1314422854653" MODIFIED="1318717380851">
+<node TEXT="Introduction" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1316341192794" BACKGROUND_COLOR="#00cc33" NUMBERED="true" VSHIFT="90">
+<node TEXT="Goal" STYLE_REF="Consumer" ID="ID_1074607965" CREATED="1314422854653" MODIFIED="1319313896777">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -120,10 +114,13 @@
   </head>
   <body>
     <p>
-      This mind map gives you an overview of&#160;&#160;the major structure and functionality of Freeplane. It is not meant to present best practices applying Freeplane or to be a tutorial. Click <a href="freeplaneApplications.mm">here</a>&#160;for an overview of application areas.
+      Freeplane is meant to facilitate thinking, sharing information and getting things done at work, in school and at home. The software supports creating <a href="http://www.informationtamers.com/WikIT/index.php?title=Information_map_types">information maps</a>&#160;in the following called mind maps, and using&#160;these maps. The&#160;<a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane">Wiki Tutorial Freeplane</a>&#160;contains conrete examples of&#160; <a href="freeplaneApplications.mm">application areas.</a>&#160;
     </p>
     <p>
-      &#160;For a tutorial and best pracices, visit the <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane">Wiki Tutorial Freeplane</a><i>.</i>&#160;If you want to know more about the details, visit the Documentation in&#160;&#160;menu <i>Help</i>&#160;of Freeplane.
+      
+    </p>
+    <p>
+      The goal of this <i>Quick reference</i>&#160;is to give you a quick start with the most used functions of Freeplane. For more and more detailed information, see the documentation at <a href="freeplane.mm">Help &gt; Documentation</a>.
     </p>
   </body>
 </html>
@@ -162,8 +159,8 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="What is a mind map" STYLE_REF="Consumer" FOLDED="true" ID="ID_448981847" CREATED="1314122243021" MODIFIED="1316185051856" VSHIFT="-10">
-<node TEXT="Basic terms" STYLE_REF="Consumer" ID="ID_1368882439" CREATED="1316154547031" MODIFIED="1316155147055" HGAP="40">
+<node TEXT="What is a mind map" STYLE_REF="Consumer" ID="ID_448981847" CREATED="1314122243021" MODIFIED="1316185051856" VSHIFT="-10">
+<node TEXT="Basic terms" STYLE_REF="Consumer" ID="ID_1368882439" CREATED="1316154547031" MODIFIED="1319313508913" HGAP="40">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -201,7 +198,8 @@
       node called <b>root</b>.
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="Node core" STYLE_REF="Consumer" ID="ID_1370298116" CREATED="1315860175003" MODIFIED="1316265508693" HGAP="40" VSHIFT="10">
 <richcontent TYPE="DETAILS">
@@ -265,7 +263,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Hover this text for family relations" STYLE_REF="Consumer" FOLDED="true" ID="ID_1971514033" CREATED="1314122290117" MODIFIED="1316155317735" HGAP="50" VSHIFT="10" TEXT_SHORTENED="true">
+<node TEXT="Hover this text for family relations" STYLE_REF="Consumer" FOLDED="true" ID="ID_1971514033" CREATED="1314122290117" MODIFIED="1318969543847" HGAP="50" VSHIFT="10" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -286,6 +284,18 @@
     </p>
     <p>
       Nodes which ar at the same level, but not mutually connected, are called&#160; <b>siblings</b>.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      As a rule a node's position is rescricted by its position in the family tree. The exception
+    </p>
+    <p>
+      to this rule is the so-called<b>&#160;free node</b>&#160;&#160;which can be positioned independently of all other
+    </p>
+    <p>
+      nodes.
     </p>
   </body>
 </html></richcontent>
@@ -732,7 +742,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Add image or icon to node core" STYLE_REF="Advanced" FOLDED="true" ID="ID_1396625176" CREATED="1316156616264" MODIFIED="1316157452831">
+<node TEXT="Add image or icon to node core" STYLE_REF="Advanced" ID="ID_1396625176" CREATED="1316156616264" MODIFIED="1316157452831">
 <node TEXT="Icons and progress" STYLE_REF="Advanced" FOLDED="true" ID="ID_1452170690" CREATED="1316329546431" MODIFIED="1316329611437">
 <icon BUILTIN="bookmark"/>
 <icon BUILTIN="idea"/>
@@ -855,27 +865,38 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Fixed size image" STYLE_REF="Advanced" ID="ID_806240384" CREATED="1315581148847" MODIFIED="1316330667384">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Image (node core)" STYLE_REF="Advanced" ID="ID_806240384" CREATED="1315581148847" MODIFIED="1318964478101">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Each node core can contain one image which has a fixed &quot;real size&quot;.&#160;&#160;If you want to change the size, you will have to do this in a drawing program. No additional text can be put into node core if an image is present in node core.
+      Each node core can contain one image which has a fixed &quot;real size&quot;.&#160;&#160;To change the size you could use a drawing program.
     </p>
     <p>
       
     </p>
     <p>
-      To add an image, right-click the node and select Edit<i>&#160;&gt; Node core &gt; Image by choice or link</i>. This same menu can be used to convert the textual hyperlink address of an image to the image itself.
+      To add an image, select the node and choose menu Edit<i>&#160;&gt; Node core &gt; Image by choice or link</i>. This same menu can be used to convert the textual hyperlink address of an image to the image itself.
     </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Node extensions</i>&#160;for adding a scalable image.
+      </li>
+    </ul>
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Link to image (red arrow)" STYLE_REF="Advanced" ID="ID_1955041924" CREATED="1314282007169" MODIFIED="1316156766929">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Link to image (red arrow)" STYLE_REF="Advanced" ID="ID_1955041924" CREATED="1314282007169" MODIFIED="1318964522093">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
@@ -1411,7 +1432,7 @@
     </p>
   </body>
 </html></richcontent>
-<node STYLE_REF="Beginner" ID="ID_241324782" CREATED="1315336877701" MODIFIED="1318618936689">
+<node STYLE_REF="Beginner" ID="ID_241324782" CREATED="1315336877701" MODIFIED="1318798608326">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -1430,7 +1451,7 @@
   </head>
   <body>
     <p>
-      To define an underlined hyperlink, first open the text dialog for&#160;&#160;Node core, Node details or Note. Then type and select the piece of text to which the link applies. And finally select&#160;&#160;in the Edit menu of the dialog window <i>Add hyperlink (choose)...</i>&#160;or <i>Add or modify hyperlink (type)</i>. In the latter case you can&#160;&#160;type the address of the hyperlink or you can paste a copied address by pressing Ctr + V. Example link: <a href="https://sourceforge.net/apps/phpbb/freeplane/viewforum.php?f=1"><i><font color="#ff0000">This</font></i>&#160;link</a>&#160;brings you to the Freeplane Open Forum.
+      To define an underlined hyperlink, first open the text dialog for&#160;&#160;Node core, Node details or Note. Then type and select the piece of text to which the link applies. And finally select&#160;&#160;in the Edit menu of the dialog window <i>Add hyperlink (choose)...</i>&#160;or <i>Add or modify hyperlink (type)</i>. In the latter case you can&#160;&#160;type the address of the hyperlink or you can paste a copied address by pressing Ctr + V. Example link: <i><a href="https://sourceforge.net/apps/phpbb/freeplane/viewforum.php?f=1"><font color="#ff0000">This</font></a></i><a href="https://sourceforge.net/apps/phpbb/freeplane/viewforum.php?f=1">&#160;link</a>&#160;brings you to the Freeplane Open Forum.
     </p>
     <p>
       
@@ -1456,7 +1477,7 @@
 
         <ul>
           <li>
-            select the underlined text
+            put the cursor inside the underlined text (do not select the text)
           </li>
           <li>
             Choose Edit &gt; Add or modify hyperlink (type)..
@@ -2089,8 +2110,8 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Publish on the internet" STYLE_REF="Professional" ID="ID_1417348323" CREATED="1314352836706" MODIFIED="1316122041566">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Publish on the internet" STYLE_REF="Professional" ID="ID_1417348323" CREATED="1314352836706" MODIFIED="1319308541203">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
@@ -2105,14 +2126,17 @@
     <p>
       <b>Note</b>
     </p>
-    <p>
-      See the Freeplane documentation for more options.
-    </p>
-    <p>
-      It is possible to set in <i>Tools &gt; Preferences</i>&#160;that the folding state must be saved, such that the map opens each time with the same folding.
-    </p>
+    <ul>
+      <li>
+        See the Freeplane documentation for more options. See <a href="http://freeplane.sourceforge.net/wiki/index.php/Embedding_mind_maps">this page</a>&#160;to publish a map on the Freeplane wiki.
+      </li>
+      <li>
+        It is possible to set in <i>Tools &gt; Preferences</i>&#160;that the folding state must be saved, such that the map opens each time with the same folding.
+      </li>
+    </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="Interchange with a text editor" STYLE_REF="Professional" ID="ID_118482" CREATED="1314353836801" MODIFIED="1316122048523">
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -2221,7 +2245,40 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Image in node details" STYLE_REF="Advanced" FOLDED="true" ID="ID_575269438" CREATED="1314215157545" MODIFIED="1318607963695">
+<node TEXT="Image (node extension)" STYLE_REF="Advanced" ID="ID_575269438" CREATED="1314215157545" MODIFIED="1318964075652">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Images are not part of a Freeplane map
+    </p>
+    <p>
+      but can be displayed in a Freeplane map.
+    </p>
+    <p>
+      It makes a difference if the image source
+    </p>
+    <p>
+      is stored on your computer or not. and
+    </p>
+    <p>
+      which method you use: drag &amp; drop or
+    </p>
+    <p>
+      copy &amp; paste. Note that the image in
+    </p>
+    <p>
+      <i>Node core</i>&#160;differs from the image
+    </p>
+    <p>
+      desribed here (node extension).
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="Local image" STYLE_REF="Advanced" ID="ID_1322185425" CREATED="1318936419394" MODIFIED="1319313646474">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -2229,7 +2286,57 @@
   </head>
   <body>
     <p>
-      It can be necessary or nice to include images into a mind map. The easiest way is by dragging an image and dropping it onto a node. It is important that the image source is on your computer for this. If the image is on the Internet, first move the image from the Internet to your computer. Once the image appears in the node, you can select the node and then change the size of the image by dragging one its lower right corner.
+      To add an image to a particular node, drag and drop the image on the upper part of the node. If you drop it on the child side of the node, the image is added to an automatically created new child. In both cases the image can be resized by dragging its lower-right corner.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Alternatives for adding an image are:
+    </p>
+    <ul>
+      <li>
+        Right-click a node and select <i>Add image..</i>.; or
+      </li>
+      <li>
+        Select <i>Edit &gt; Node features &gt; Add image..</i>
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        Even if the image is displayed in a node, it is not part of the mind map. Every time the mind map opens, the image is read from its original location. As a result, if you move or rename the source image, it is no longer visible in the map.
+      </li>
+      <li>
+        The image is hidden when View &gt; <i>Minimize node</i>&#160;is set<i>&#160;</i>An image which is hidden this way does not show when hovering (in the tool tip)!
+      </li>
+      <li>
+        You cannot move the position of the image within the node. There is more to learn about (other types of)&#160;&#160;images and about publishing and sharing mind maps with images in the Freeplane documentation.
+      </li>
+      <li>
+        If you use copy and paste in stead of drag and drop, not the image but a hyperlink to the image is added - to the node core.
+      </li>
+      <li>
+        The image is a node featture and is displayed below the node core. The node core itself can also have an image. This image cannot be resized.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Image from Internet, print screen" STYLE_REF="Advanced" ID="ID_594983153" CREATED="1318936453549" MODIFIED="1318963619515">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      An image from an external source like Internet can be added by copy and paste. Likewise, an image of the screen made with PrintScreen, can be added by pasting it. In both cases the image is added to a newly created child node of the node selected when you pressed paste.&#160;The pasted image can be resized by dragging its lower-right corner.
     </p>
     <p>
       
@@ -2239,17 +2346,12 @@
     </p>
     <ul>
       <li>
-        If you drop the image at the child side of the node the image will appear in a child node.&#160;&#160;If you drop it on the upper half of the node it will appear in the node itself.
-      </li>
-      <li>
-        You cannot move the position of the image within the node. There is more to learn about (other types of)&#160;&#160;images and about publishing and sharing mind maps with images in the Freeplane documentation.
-      </li>
-      <li>
-        A details image is hidden when by <i>Minimize node.&#160;</i>An image which is hidden this way does not show when hovering (in the tool tip)!
+        The pasted image is not part of the mindmap itself. The image file is saved in the directory of the mindmap. The name of this file is shown above the image, in the node core.
       </li>
     </ul>
   </body>
 </html></richcontent>
+</node>
 <node TEXT="In-line image" STYLE_REF="Professional" ID="ID_1242295211" CREATED="1314282819174" MODIFIED="1316121219047">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
@@ -2407,7 +2509,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Manage time..." STYLE_REF="ProfessionalTopic" FOLDED="true" ID="ID_1104707017" CREATED="1267746559867" MODIFIED="1316165401684">
+<node TEXT="Manage time..." STYLE_REF="ProfessionalTopic" ID="ID_1104707017" CREATED="1267746559867" MODIFIED="1316165401684">
 <icon BUILTIN="../TimeManagementAction"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
@@ -3553,7 +3655,7 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Using and writing scripts" STYLE_REF="Professional" ID="ID_519455593" CREATED="1316158310467" MODIFIED="1316199648793" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting">
+<node TEXT="Using and writing scripts" STYLE_REF="Professional" ID="ID_519455593" CREATED="1316158310467" MODIFIED="1319313774333" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -3567,10 +3669,11 @@
       
     </p>
     <p>
-      There is a base of predefined scrips which are published on the Freeplane wiki. In this way you need not be a programmer to use scripts. Read more in the Freeplane documentation or press the red arrow and visit the wiki page.
+      There is a base of predefined scrips which are published on the Freeplane wiki. In this way you need not be a programmer to use scripts. Read more in the Freeplane documentation,&#160;&#160;visit the the wiki on add-ons and the <a href="http://freeplane.sourceforge.net/wiki/index.php/Scripting">wiki add-on scrips</a>&#160;.
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="Indexing .mm in Windows7" STYLE_REF="Professional" ID="ID_952466464" CREATED="1313349075257" MODIFIED="1316185086894">
 <richcontent TYPE="DETAILS" HIDDEN="true">
