@@ -183,7 +183,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 	        Dimension contentPreferredSize;
             contentPreferredSize = getContent().getPreferredSize();
             final MapStyleModel mapStyleModel = MapStyleModel.getExtension(Controller.getCurrentController().getMap());
-            contentWidth = Math.max(view.getZoomed(mapStyleModel.getMinNodeWidth()+ 8),contentPreferredSize.width);
+            contentWidth = Math.max(view.getZoomed(mapStyleModel.getMinNodeWidth()),contentPreferredSize.width);
             contentHeight = contentPreferredSize.height;
         }
         else {
