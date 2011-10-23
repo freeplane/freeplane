@@ -171,6 +171,10 @@ public abstract class ResourceController {
 		return "";
 	}
 
+	public String getInstallationBaseDir() {
+		return "";
+    }
+
 	/** Returns the ResourceBundle with the current language */
 	public ResourceBundle getResources() {
 		if (resources == null) {

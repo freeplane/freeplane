@@ -178,6 +178,11 @@ public class ApplicationResourceController extends ResourceController {
 		return FreeplaneStarter.getResourceBaseDir();
 	}
 
+	@Override
+	public String getInstallationBaseDir() {
+		return new File(getResourceBaseDir()).getAbsoluteFile().getParent();
+    }
+
 	public static File getUserPreferencesFile() {
 		final String freeplaneDirectory = Compat.getFreeplaneUserDirectory();
 		final File userPropertiesFolder = new File(freeplaneDirectory);
