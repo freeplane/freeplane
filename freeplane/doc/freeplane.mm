@@ -6,58 +6,13 @@
 </attribute_registry>
 <node TEXT="Documentation&#xa;Freeplane 1.2" STYLE_REF="MainMenu" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1315378335890" VGAP="4">
 <icon BUILTIN="bee"/>
-<hook NAME="MapStyle" max_node_width="600">
+<hook NAME="MapStyle" max_node_width="600" min_node_width="1">
     <conditional_styles>
         <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
-            <conjunct_condition user_name="V8">
-                <time_condition_modified_after DATE="1312651262739"/>
-                <time_condition_modified_before DATE="1312780189986"/>
+            <conjunct_condition user_name="1.2.9_05">
+                <time_condition_modified_after DATE="1318794562631"/>
+                <time_condition_modified_before DATE="1319399362631"/>
             </conjunct_condition>
-        </conditional_style>
-        <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
-            <conjunct_condition user_name="V9">
-                <time_condition_modified_after DATE="1312651262739"/>
-                <time_condition_modified_before DATE="1312780189986"/>
-            </conjunct_condition>
-        </conditional_style>
-        <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
-            <conjunct_condition user_name="V11">
-                <time_condition_modified_after DATE="1312780189986"/>
-                <time_condition_modified_before DATE="1312998423334"/>
-            </conjunct_condition>
-        </conditional_style>
-        <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
-            <conjunct_condition user_name="V12">
-                <time_condition_modified_after DATE="1312998423334"/>
-                <time_condition_modified_before DATE="1313607970077"/>
-            </conjunct_condition>
-        </conditional_style>
-        <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
-            <conjunct_condition user_name="V13: 1.2.8_05">
-                <time_condition_created_after DATE="1313607970077"/>
-                <time_condition_modified_before DATE="1313698612717"/>
-            </conjunct_condition>
-        </conditional_style>
-        <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
-            <conjunct_condition user_name="V13: 1.2.8_05">
-                <time_condition_created_after DATE="1313607970077"/>
-                <time_condition_modified_before DATE="1313698612717"/>
-            </conjunct_condition>
-        </conditional_style>
-        <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
-            <conjunct_condition user_name="V14">
-                <time_condition_modified_after DATE="1313826470055"/>
-                <time_condition_modified_before DATE="1314028103969"/>
-            </conjunct_condition>
-        </conditional_style>
-        <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
-            <conjunct_condition user_name="V16">
-                <time_condition_modified_after DATE="1314028103969"/>
-                <time_condition_modified_before DATE="1314509208580"/>
-            </conjunct_condition>
-        </conditional_style>
-        <conditional_style ACTIVE="false" LOCALIZED_STYLE_REF="default" LAST="false">
-            <time_condition_modified_after DATE="1314509734623"/>
         </conditional_style>
     </conditional_styles>
     <properties show_notes_in_map="false"/>
@@ -139,7 +94,7 @@
 <icon BUILTIN="yes"/>
 </stylenode>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.predefined" FOLDED="true" POSITION="right">
+<stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
 <stylenode LOCALIZED_TEXT="default">
 <edge COLOR="#808080" WIDTH="thin"/>
 </stylenode>
@@ -150,7 +105,7 @@
 <cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
 </stylenode>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.AutomaticLayout" FOLDED="true" POSITION="right">
+<stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right">
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000">
 <font SIZE="20"/>
 </stylenode>
@@ -240,15 +195,26 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Overview" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1108028010" CREATED="1309552935597" MODIFIED="1316340511345" HGAP="27" VSHIFT="-7" TEXT_SHORTENED="true" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node STYLE_REF="UserGuide" FOLDED="true" ID="ID_1108028010" CREATED="1309552935597" MODIFIED="1319034779813" HGAP="27" VSHIFT="-7" TEXT_SHORTENED="true" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane">
+<richcontent TYPE="NODE">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      This documentation is additional to the <i>Quick reference</i>&#160;of Freeplane, see Freeplane's main menu <i>&#160;Help &gt; Getting started</i>. Click the red arrow for an introduction to mind mapping and a tutorial Freeplane on Internet.
+      <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane">Overview</a>
+    </p>
+  </body>
+</html></richcontent>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      This documentation is additional to the<a href="freeplaneTutorial.mm">&#160;Quick reference&#160;</a>of Freeplane, see Freeplane's main menu <i>&#160;Help &gt; Getting started</i>. Click the red arrow for an introduction to mind mapping and a tutorial Freeplane on Internet.
     </p>
     <p>
       
@@ -3930,7 +3896,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Link" FOLDED="true" ID="ID_1430712985" CREATED="1303930954062" MODIFIED="1315727881614" TEXT_SHORTENED="true">
+<node TEXT="Link" ID="ID_1430712985" CREATED="1303930954062" MODIFIED="1319036436700" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <richcontent TYPE="DETAILS">
 <html>
@@ -3956,7 +3922,25 @@
       </li>
     </ul>
     <p>
-      The easiest way to enter hyperlinks to external objects is by copy and paste resp. drag and drop. In that case the hyperlink will we pasted to a newly created child of the selected node. It is possible to drop more than one address at once.
+      
+    </p>
+    <p>
+      Each node core can have exactly one arrow-link and/or multiple underlined links. Node details only can have (multiple) underlined links. Underlined links are created in the edit text dialog (in menu Edit). The arrow-links are created with the items of the current menu.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Drag and drop of an image which exists as a file on your computer results in a scalable image. If the image is dropped on the upper part of the node the image is added to this node. If it is dropped at the child side of the node a new child is made with the image. If a copied image is pasted, then a hyperlink is pasted in its child node.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      The easiest way to enter a hyperlink to an external object is by drag and drop. The
+    </p>
+    <p>
+      &#160;In that case the hyperlink will we pasted to a newly created child of the selected node. It is possible to drop more than one address at once.
     </p>
   </body>
 </html></richcontent>
@@ -5736,7 +5720,7 @@
 </node>
 </node>
 </node>
-<node TEXT="(Un)hide attribute  [Attribute manager]" STYLE_REF="Method" FOLDED="true" ID="ID_900795535" CREATED="1311921084341" MODIFIED="1315732358307" TEXT_SHORTENED="true">
+<node TEXT="Attribute manager" STYLE_REF="Method" ID="ID_900795535" CREATED="1311921084341" MODIFIED="1318967473636" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -8682,7 +8666,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Node core" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1969683729" CREATED="1315733476260" MODIFIED="1316207040623">
+<node TEXT="Node core" STYLE_REF="SubMenu" ID="ID_1969683729" CREATED="1315733476260" MODIFIED="1316207040623">
 <node TEXT="Rectangular selection" ID="ID_1851007191" CREATED="1266247206859" MODIFIED="1310721457822" TEXT_SHORTENED="true">
 <icon BUILTIN="../ShowSelectionAsRectangleAction"/>
 <richcontent TYPE="DETAILS">
@@ -8727,7 +8711,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Set maximum node width" ID="ID_826769128" CREATED="1288558613969" MODIFIED="1310723748053" TEXT_SHORTENED="true">
+<node TEXT="Set maximum node width" ID="ID_826769128" CREATED="1288558613969" MODIFIED="1318968910283" TEXT_SHORTENED="true">
 <icon BUILTIN="../max_node_width"/>
 <richcontent TYPE="DETAILS">
 <html>
@@ -8736,17 +8720,17 @@
   </head>
   <body>
     <p>
-      <font color="#000000" face="SansSerif, sans-serif">Opens dialog to changes the visible width of all nodes in the map, measured in pixels. &#160;Default is 600.&#160; </font>
+      <font color="#000000" face="SansSerif, sans-serif">Opens dialog to changes the visibl, maximum width of all nodes in the map, measured in pixels. &#160;Default is 600.&#160; </font>
     </p>
     <p>
       
     </p>
     <p>
-      <font face="SansSerif, sans-serif" color="#000000"><b>Note </b></font>
+      <font color="#000000" face="SansSerif, sans-serif"><b>Note </b></font>
     </p>
     <ul>
       <li>
-        <font face="SansSerif, sans-serif" color="#000000">To control the width of a particular node, make shorter lines, use <i>Enter</i>&#160;or <i>Shift + Enter.</i></font>
+        <font color="#000000" face="SansSerif, sans-serif">To control the width of a particular node, make shorter lines, use <i>Enter</i>&#160;or <i>Shift + Enter.</i></font>
       </li>
     </ul>
   </body>
@@ -8754,6 +8738,25 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+</node>
+<node TEXT="Set minimum node width" ID="ID_1836236046" CREATED="1318968674114" MODIFIED="1318968845044" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif">Opens dialog to changes the minimum visible width of all nodes in the map, measured in pixels. &#160;Default is 600.&#160;&#160;This is used to keep branches lined up</font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      
+    </p>
+  </body>
+</html></richcontent>
 </node>
 <node TEXT="Change revisions background color" FOLDED="true" ID="ID_974319465" CREATED="1266247833890" MODIFIED="1314470318158" BACKGROUND_COLOR="#ffffff" TEXT_SHORTENED="true">
 <icon BUILTIN="../RevisionPluginAction"/>
@@ -8977,6 +8980,34 @@
   </body>
 </html></richcontent>
 </node>
+</node>
+<node TEXT="Minimize node" ID="ID_180063018" CREATED="1319034903387" MODIFIED="1319035575687" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Press to (un)hide node features like node details, image, hyperlink (underlined). Also the node core is shortened and formatting is removed.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      The hidden text and hyperlinks are shown when hovering with the cursor above the node core (tool tip). Images are not shown when hovering.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <p>
+      If you need a hyperlink in the node core, use the <a href="#ID_1430712985">arrow-link</a>.
+    </p>
+  </body>
+</html></richcontent>
 </node>
 <node TEXT="Hide details  [Toggle Details]" ID="ID_734978433" CREATED="1291155323140" MODIFIED="1318607128532" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS">
@@ -13371,6 +13402,19 @@ elements from the styles activated by conditions are copied.</pre>
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="7"/>
+</node>
+<node TEXT="Add-ons" ID="ID_100406395" CREATED="1319034423088" MODIFIED="1319045515157">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Freeplane is extensible via add-ons, packages that can be downloaded from a central locations and that provide some non-standard functionality. See<a href="http://freeplane.sourceforge.net/wiki/index.php/Add-ons">&#160;wiki</a>.
+    </p>
+  </body>
+</html></richcontent>
 </node>
 <node TEXT="Available scripts [Scripts]" ID="ID_1890181858" CREATED="1267746871633" MODIFIED="1314907221289" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS">
