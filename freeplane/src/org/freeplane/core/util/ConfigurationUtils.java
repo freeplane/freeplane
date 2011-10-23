@@ -22,4 +22,24 @@ public class ConfigurationUtils {
 		return StringUtils.join(list.toArray(), requireTwo ? CONFIG_LIST_VALUE_SEPARATOR_STRICT
 		        : CONFIG_LIST_VALUE_SEPARATOR_ONE_OR_MORE);
 	}
+
+	public static File getLocalizedFile(final File baseDir, final String document, final String languageCode) {
+        final File file;
+    	final int extPosition = document.lastIndexOf('.');
+    	if (extPosition != -1) {
+    		final String map = document.substring(0, extPosition) + "_" + languageCode
+    		        + document.substring(extPosition);
+    		final File localFile = new File(baseDir, map);
+    		if (localFile.canRead()) {
+    			file = localFile;
+    		}
+    		else {
+    			file = new File(baseDir, document);
+    		}
+    	}
+    	else {
+    		file = new File(baseDir, document);
+    	}
+        return file;
+    }
 }

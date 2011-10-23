@@ -20,10 +20,10 @@
 package org.freeplane.core.io;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 
 import org.freeplane.features.map.NodeModel;
 
@@ -76,7 +76,7 @@ public class ReadManager {
 		return elementHandlers;
 	}
 
-	public void readingCompleted(final NodeModel topNode, final HashMap<String, String> newIds) {
+	public void readingCompleted(final NodeModel topNode, final Map<String, String> newIds) {
 		final Iterator<IReadCompletionListener> iterator = readCompletionListeners.iterator();
 		while (iterator.hasNext()) {
 			iterator.next().readingCompleted(topNode, newIds);

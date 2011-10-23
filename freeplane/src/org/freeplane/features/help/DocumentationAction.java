@@ -26,6 +26,7 @@ import java.net.URL;
 import javax.swing.SwingUtilities;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.browsemode.BModeController;
@@ -42,23 +43,8 @@ class DocumentationAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		final File baseDir = new File(resourceController.getResourceBaseDir()).getAbsoluteFile().getParentFile();
-		final File file;
-		final int extPosition = document.lastIndexOf('.');
-		if (extPosition != -1) {
-			final String languageCode = resourceController.getLanguageCode();
-			final String map = document.substring(0, extPosition) + "_" + languageCode
-			        + document.substring(extPosition);
-			final File localFile = new File(baseDir, map);
-			if (localFile.canRead()) {
-				file = localFile;
-			}
-			else {
-				file = new File(baseDir, document);
-			}
-		}
-		else {
-			file = new File(baseDir, document);
-		}
+		final String languageCode = resourceController.getLanguageCode();
+		final File file = ConfigurationUtils.getLocalizedFile(baseDir, document, languageCode);
 		try {
 			final URL endUrl = file.toURL();
 			SwingUtilities.invokeLater(new Runnable() {

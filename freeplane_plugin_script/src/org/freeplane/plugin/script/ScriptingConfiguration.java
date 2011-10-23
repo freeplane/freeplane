@@ -41,7 +41,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.main.addons.AddOnProperties;
 import org.freeplane.main.addons.AddOnProperties.AddOnType;
@@ -232,7 +231,7 @@ class ScriptingConfiguration {
 			final File parentFile = file.getParentFile();
 			if (parentFile.equals(getBuiltinScriptsDir())) {
 				metaData.setPermissions(ScriptingPermissions.getPermissiveScriptingPermissions());
-				metaData.setCacheContent(true);
+//				metaData.setCacheContent(true);
 			}
 		}
 		catch (final IOException e) {
@@ -264,7 +263,7 @@ class ScriptingConfiguration {
 		final ScriptMetaData metaData = new ScriptMetaData(scriptName);
 		metaData.removeAllExecutionModes();
 		metaData.addExecutionMode(scriptConfig.executionMode, scriptConfig.menuLocation, scriptConfig.menuTitleKey);
-		metaData.setCacheContent(true);
+//		metaData.setCacheContent(true);
 		metaData.setPermissions(scriptConfig.permissions);
 		return metaData;
 	}
@@ -312,7 +311,7 @@ class ScriptingConfiguration {
 	/** some beautification: remove directory and suffix + make first letter uppercase. */
 	private String getScriptName(final File file, Script scriptConfig) {
 		if (scriptConfig != null)
-			return TextUtils.getText(scriptConfig.menuTitleKey);
+			return scriptConfig.menuTitleKey;
 		// TODO: we could add mnemonics handling here! (e.g. by reading '_' as '&')
 		String string = file.getName().replaceFirst("\\.[^.]+", "");
 		// fixup characters that might cause problems in menus

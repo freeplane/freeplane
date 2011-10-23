@@ -24,6 +24,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -42,7 +43,9 @@ import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapReader;
+import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -119,7 +122,10 @@ public class MapStyleModel implements IExtension {
 		final Reader styleReader = new StringReader(styleMapStr);
 		NodeModel root;
         try {
-	        root = mapReader.createNodeTreeFromXml(styleMap, styleReader, Mode.FILE);
+        	Map<Object, Object> hints = new HashMap<Object, Object>();
+        	hints.put(Hint.MODE, Mode.FILE);
+        	hints.put(NodeBuilder.FOLDING_LOADED, Boolean.TRUE);
+			root = mapReader.createNodeTreeFromXml(styleMap, styleReader, hints);
 			styleMap.setRoot(root);
 			insertStyleMap(parentMap, styleMap);
 			if(styleNodes.get(DEFAULT_STYLE) != null
@@ -234,15 +240,23 @@ public class MapStyleModel implements IExtension {
 
 	private MapViewLayout mapViewLayout = MapViewLayout.MAP;
 	private int maxNodeWidth = MapStyleModel.getDefaultMaxNodeWidth();
-
+	private int minNodeWidth = MapStyleModel.getDefaultMinNodeWidth();
+		
 	public int getMaxNodeWidth() {
 		return maxNodeWidth;
 	}
-
+	
+	public int getMinNodeWidth() {
+		return minNodeWidth;
+	}
 	public void setMaxNodeWidth(final int maxNodeWidth) {
 		this.maxNodeWidth = maxNodeWidth;
 	}
 
+	public void setMinNodeWidth(final int minNodeWidth) {
+		this.minNodeWidth = minNodeWidth;
+	}
+	
 	static int getDefaultMaxNodeWidth() {
 		try {
 			return Integer.parseInt(ResourceController.getResourceController().getProperty("max_node_width"));
@@ -252,7 +266,15 @@ public class MapStyleModel implements IExtension {
 			    "el__max_default_window_width")) * 2 / 3;
 		}
 	}
-
+	
+	static int getDefaultMinNodeWidth() {
+		try {
+			return Integer.parseInt(ResourceController.getResourceController().getProperty("min_node_width"));
+		}
+		catch (final NumberFormatException e) {
+			return 0;
+		}
+	}
 	void copyFrom(MapStyleModel source, boolean overwrite) {
 		if(overwrite && source.styleMap != null  || styleMap == null){
 			styleMap = source.styleMap;

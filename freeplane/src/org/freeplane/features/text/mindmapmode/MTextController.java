@@ -354,7 +354,13 @@ public class MTextController extends TextController {
 			}
 
 			public void ok(final String newText) {
-				setDetailsHtmlText(nodeModel, newText);
+				if(HtmlUtils.htmlToPlain(newText).equals(""))
+					if (isNewNode) 
+						((MModeController) Controller.getCurrentModeController()).undo();
+					else
+						setDetailsHtmlText(nodeModel, null);
+				else
+					setDetailsHtmlText(nodeModel, newText);
 				stop();
 			}
 
@@ -372,9 +378,12 @@ public class MTextController extends TextController {
 
 
 	private void setDetailsHtmlText(final NodeModel node, final String newText) {
+		if(newText != null){
 		final String body = HTML_HEAD.matcher(newText).replaceFirst("");
-		final MTextController textController = (MTextController) MTextController.getController();
-        textController.setDetails(node, body.replaceFirst("\\s+$", ""));
+        setDetails(node, body.replaceFirst("\\s+$", ""));
+		}
+		else
+			setDetails(node, null);
 	}
 
 	public void setDetails(final NodeModel node, final String newText) {
@@ -383,6 +392,7 @@ public class MTextController extends TextController {
 			return;
 		}
 		final IActor actor = new IActor() {
+			boolean hidden = false;
 			public void act() {
 				setText(newText);
 			}
@@ -396,17 +406,14 @@ public class MTextController extends TextController {
 				if (containsDetails) {
 					final DetailTextModel details = DetailTextModel.createDetailText(node);
 					details.setHtml(text);
+					details.setHidden(hidden);
 					node.addExtension(details);
 				}
 				else {
 					final DetailTextModel details = (DetailTextModel) node.getExtension(DetailTextModel.class);
 					if (null != details ) {
-						if(details.isHidden()){
-							details.setHtml(null);
-						}
-						else{
-							node.removeExtension(DetailTextModel.class);
-						}
+						hidden = details.isHidden();
+						node.removeExtension(DetailTextModel.class);
 					}
 				}
 				Controller.getCurrentModeController().getMapController().nodeChanged(node, DetailTextModel.class, oldText, text);

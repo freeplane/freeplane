@@ -139,8 +139,7 @@ class ScriptingRegistration {
 		final URL preferences = this.getClass().getResource("preferences.xml");
 		if (preferences == null)
 			throw new RuntimeException("cannot open preferences");
-		MModeController modeController = (MModeController) Controller.getCurrentModeController();
-		modeController.getOptionPanelBuilder().addValidator(new IValidator() {
+		Controller.getCurrentController().addOptionValidator(new IValidator() {
 			public ValidationResult validate(Properties properties) {
 				final ValidationResult result = new ValidationResult();
 				final String readAccessString = properties
@@ -160,6 +159,7 @@ class ScriptingRegistration {
 				return result;
 			}
 		});
+		final MModeController modeController = (MModeController) Controller.getCurrentModeController();
 		modeController.getOptionPanelBuilder().load(preferences);
 	}
 
@@ -263,10 +263,11 @@ class ScriptingRegistration {
 						addSubMenu(menuBuilder, scriptsLocation, location, scriptName);
 						registeredLocations.add(location);
 					}
-					final String scriptLocation = location + "/" + scriptName;
+					final String titleKey = metaData.getTitleKey(executionMode);
+					final String scriptLocation = location + "/" + scriptName + "/" + titleKey;
 					if (!registeredLocations.contains(scriptLocation)) {
-						addMenuItem(menuBuilder, location, entry, executionMode, metaData.cacheContent(),
-						    metaData.getTitleKey(executionMode), metaData.getPermissions());
+						addMenuItem(menuBuilder, location, entry, executionMode, metaData.cacheContent(), titleKey,
+						    metaData.getPermissions());
 						registeredLocations.add(scriptLocation);
 					}
 				}

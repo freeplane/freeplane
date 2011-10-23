@@ -12,6 +12,7 @@ import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptingEngine;
 import org.freeplane.plugin.script.ScriptingPermissions;
 
+/** For all add-ons that are installed via installScriptAddon.groovy - themes and script collections. */
 public class ScriptAddOnProperties extends AddOnProperties {
 	public static class Script {
 		public String name;
@@ -20,6 +21,7 @@ public class ScriptAddOnProperties extends AddOnProperties {
 		public String menuTitleKey;
 		public String menuLocation;
 		public ScriptingPermissions permissions;
+		public String keyboardShortcut;
 		public String scriptBody;
 
 		public String toString() {
@@ -41,8 +43,8 @@ public class ScriptAddOnProperties extends AddOnProperties {
 	}
 
 	private void validate() {
-		if (scripts == null || scripts.isEmpty())
-			throw new RuntimeException(this + ": on parsing add-on XML file: no scripts defined");
+		if (scripts == null)
+			throw new RuntimeException(this + ": on parsing add-on XML file: scripts may not be null");
 		for (Script script : scripts) {
 			if (script.name == null)
 				throw new RuntimeException(this + ": on parsing add-on XML file: no name");
@@ -125,4 +127,11 @@ public class ScriptAddOnProperties extends AddOnProperties {
 		}
 		parent.addChild(xmlElement);
 	}
+
+	@Override
+    public boolean supportsOperation(String opName) {
+		if (opName.equals(OP_DEACTIVATE))
+			return isActive() && !scripts.isEmpty();
+	    return super.supportsOperation(opName);
+    }
 }

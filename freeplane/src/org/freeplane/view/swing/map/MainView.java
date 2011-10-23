@@ -75,7 +75,7 @@ public abstract class MainView extends ZoomableLabel {
     public static boolean USE_COMMON_OUT_POINT_FOR_ROOT_NODE = ResourceController.getResourceController().getBooleanProperty(USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING);
 
 	static Dimension maximumSize = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
-	static Dimension minimumSize = new Dimension(0, 0);
+	static Dimension minimumSize = new Dimension(0,0);
 	/**
 	 * 
 	 */

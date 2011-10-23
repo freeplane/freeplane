@@ -71,11 +71,11 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 		}
 		zoom = ((AttributeTable) table).getZoom();
 	    final IAttributeTableModel attributeTableModel = (IAttributeTableModel) table.getModel();
-		final String originalText = value.toString();
+		final String originalText = value == null ? null : value.toString();
 		String text = originalText;
 		borderColor = null;
 		Icon icon;
-		if (column == 1) {
+		if (column == 1 && value != null) {
 			try {
 				// evaluate values only
 				final TextController textController = TextController.getController();

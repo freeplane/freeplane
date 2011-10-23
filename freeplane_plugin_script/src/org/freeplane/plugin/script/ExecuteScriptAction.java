@@ -67,7 +67,7 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 		this.permissions = permissions;
 	}
 
-	private static String makeMenuItemKey(final String scriptName, final ExecutionMode mode) {
+	public static String makeMenuItemKey(final String scriptName, final ExecutionMode mode) {
 		return scriptName + "_" + mode.toString().toLowerCase();
 	}
 
