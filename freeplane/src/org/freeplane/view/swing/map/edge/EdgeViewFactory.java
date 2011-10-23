@@ -33,10 +33,12 @@ public class EdgeViewFactory {
 	final private static EdgeViewFactory instance = new EdgeViewFactory();
 
 	public EdgeView getEdge(final NodeView source, final NodeView target, Component paintedComponent) {
+		final EdgeStyle edgeStyle = target.getEdgeStyle();
 		if (source.getMap().getLayoutType() == MapViewLayout.OUTLINE) {
+			if(edgeStyle.equals(EdgeStyle.EDGESTYLE_HIDDEN))
+				return new HiddenOutlineEdgeView(source, target, paintedComponent);
 			return new OutlineEdgeView(source, target, paintedComponent);
 		}
-		final EdgeStyle edgeStyle = target.getEdgeStyle();
 		if (edgeStyle.equals(EdgeStyle.EDGESTYLE_LINEAR)) {
 			return new LinearEdgeView(source, target, paintedComponent);
 		}
