@@ -62,8 +62,8 @@ class ImportLinkedBranchAction extends AFreeplaneAction {
 			    .getText("import_linked_branch_no_link"));
 			return;
 		}
+		final URI uri = NodeLinks.getLink(selected);
 		try {
-			final URI uri = NodeLinks.getLink(selected);
 			final File file = uri.isAbsolute() && !uri.isOpaque() ? new File(uri) : new File(new URL(map.getURL(), uri
 			    .getPath()).getFile());
 			final NodeModel node = ((MMapController) modeController.getMapController()).loadTree(map, file);
@@ -72,7 +72,12 @@ class ImportLinkedBranchAction extends AFreeplaneAction {
 			((MLinkController) LinkController.getController()).setLink(node, (URI) null, false);
 		}
 		catch (final MalformedURLException ex) {
-			UITools.errorMessage(TextUtils.format("invalid_url_msg", map.getFile()));
+			UITools.errorMessage(TextUtils.format("invalid_url_msg", uri.toString()));
+			LogUtils.warn(ex);
+			return;
+		}
+		catch (final IllegalArgumentException ex) {
+			UITools.errorMessage(TextUtils.format("invalid_file_msg", uri.toString()));
 			LogUtils.warn(ex);
 			return;
 		}
