@@ -426,6 +426,6 @@ try {
 	return addOn
 } catch (Exception e) {
 	JOptionPane.showMessageDialog(ui.frame, e.message, dialogTitle, JOptionPane.ERROR_MESSAGE)
-	logger.severe("installation failure", e)
+	logger.warn("installation failure", e)
 	return null
 }
