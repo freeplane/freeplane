@@ -176,9 +176,8 @@ class ScriptingConfiguration {
 
 	private File getBuiltinScriptsDir() {
 		if (builtinScriptsDir == null) {
-			final ResourceController resourceController = ResourceController.getResourceController();
-			final String rootDir = new File(resourceController.getResourceBaseDir()).getAbsoluteFile().getParent();
-			builtinScriptsDir = new File(rootDir, "scripts");
+			final String installationBase = ResourceController.getResourceController().getInstallationBaseDir();
+			builtinScriptsDir = new File(installationBase, "scripts");
 		}
 		return builtinScriptsDir;
 	}
