@@ -1,4 +1,4 @@
-/* @ExecutionModes({on_single_node="main_menu_scripting[addons.installer.title]"})
+/* @ExecutionModes({on_single_node="main_menu_scripting/scripts[addons.installer.title]"})
  * 
  *  Freeplane - mind map editor
  *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
@@ -45,6 +45,8 @@ import org.freeplane.plugin.script.proxy.Proxy
 // == script bindings (globals) ==
 //
 dialogTitle = textUtils.getText('addons.installer.title')
+installationbase = c.userDirectory
+
 // parse result
 configMap = [:]
 
@@ -172,7 +174,7 @@ def parseZips(Map childNodeMap) {
 	def property = 'zips'
 	Proxy.Node propertyNode = childNodeMap[property]
 	configMap[property] = propertyNode.children.collect{ it.plainText }
-	File destDir = c.userDirectory
+	File destDir = installationbase
 	propertyNode.children.each{ zipNode -> 
 		try {
 			unpack(destDir, theOnlyChild(zipNode))
@@ -343,13 +345,13 @@ def handlePermissions(Map configMap) {
 }
 
 def scriptDir() {
-	File dir = new File(c.userDirectory, 'scripts')
+	File dir = new File(installationbase, 'scripts')
 	installationAssert(dir.exists(), null)
 	return dir
 }
 
 def addOnDir() {
-	File dir = new File(c.userDirectory, 'addons')
+	File dir = new File(installationbase, 'addons')
 	installationAssert(dir.exists(), null)
 	return dir
 }
@@ -370,7 +372,7 @@ def createScripts(Map configMap) {
 def expandVariables(String string) {
 	Map variableMap = configMap['properties']
 	// expands strings like "${name}.groovy"
-	string.replaceAll(/\$\{([^}]+)\}/, { match, key -> variableMap[key] ? variableMap[key] : '${' + key + '}'})
+	string.replaceAll(/\$\{([^}]+)\}/, { match, key -> variableMap[key] ? variableMap[key] : match })
 }
 
 AddOnProperties install() {

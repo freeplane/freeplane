@@ -23,6 +23,8 @@ public class ScriptAddOnProperties extends AddOnProperties {
 		public ScriptingPermissions permissions;
 		public String keyboardShortcut;
 		public String scriptBody;
+		// transient - copy of AddOnProperties.active
+		public boolean active = true;
 
 		public String toString() {
 			return name + "(" + executionMode + "/" + menuTitleKey + "/" + menuLocation + "" + ")";

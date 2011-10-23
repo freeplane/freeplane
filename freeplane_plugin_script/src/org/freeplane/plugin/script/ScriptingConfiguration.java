@@ -156,6 +156,7 @@ class ScriptingConfiguration {
 	        	final ScriptAddOnProperties scriptAddOnProperties = (ScriptAddOnProperties) addOnProperties;
 	        	final List<Script> scripts = scriptAddOnProperties.getScripts();
 	        	for (Script script : scripts) {
+	        		script.active = addOnProperties.isActive();
 	        		result.put(script.file, script);
                 }
 	        }
@@ -217,6 +218,10 @@ class ScriptingConfiguration {
 
 	private void addScript(final File file, final Map<File, Script> addOnScriptMap) {
 		final Script scriptConfig = addOnScriptMap.get(file);
+		if (scriptConfig != null && !scriptConfig.active) {
+			LogUtils.info("skipping deactivated " + scriptConfig);
+			return;
+		}
 		final String scriptName = getScriptName(file, scriptConfig);
 		String name = scriptName;
 		// add suffix if the same script exists in multiple dirs
