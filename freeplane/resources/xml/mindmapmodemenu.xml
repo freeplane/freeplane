@@ -363,6 +363,7 @@
 			<menu_separator />
 			<menu_category name="first">
 				<menu_category name="options">					
+					<menu_action action="ManageAddOnsAction" plugin="org.freeplane.plugin.script"/>
 					<menu_action action="SetAcceleratorOnNextClickAction" />
 					<menu_submenu name="acceleratorPresets" name_ref="acceleratorPresets">
 						<menu_category name="new" menu_key="main_menu_new_accelerator_presets"/>
@@ -375,7 +376,6 @@
 					<menu_action action="ExecuteScriptForSelectionAction" plugin="org.freeplane.plugin.script"/>
 					<menu_action action="ExecuteScriptForAllNodes" plugin="org.freeplane.plugin.script"/>					
 					<menu_action action="ScriptEditor" plugin="org.freeplane.plugin.script"/>					
-					<menu_action action="ManageAddOnsAction" plugin="org.freeplane.plugin.script"/>
 				</menu_category>
 				<menu_separator />
 				<menu_submenu name="formula" name_ref="formula.menuname" plugin="org.freeplane.plugin.formula">
