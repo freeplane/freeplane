@@ -64,11 +64,6 @@
 			<menu_submenu name="menu_title" name_ref="menu_title">
 				<menu_action action="EditAction" accelerator="F2" />
 				<menu_action action="EditLongAction" accelerator="alt ENTER" />
-				<menu_submenu name="latex_formula" name_ref="menu_latex_formula">
-					<menu_action action="LatexInsertLatexAction" plugin="org.freeplane.plugin.latex"/>
-					<menu_action action="LatexEditLatexAction" plugin="org.freeplane.plugin.latex"/>
-					<menu_action action="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex"/>
-				</menu_submenu>
 				<menu_action action="JoinNodesAction" accelerator="control J" ></menu_action>
 				<menu_action action="SplitNode" />
 				<menu_separator />
@@ -120,6 +115,10 @@
 					<menu_action action="attributes_RemoveAllAttributesAction"/>
 				</menu_submenu>
 				<menu_action action="ShowAttributeDialogAction" />
+				<menu_separator/>
+				<menu_action action="LatexInsertLatexAction" plugin="org.freeplane.plugin.latex"/>
+				<menu_action action="LatexEditLatexAction" plugin="org.freeplane.plugin.latex"/>
+				<menu_action action="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex"/>
 			</menu_submenu>			
 			<menu_submenu name="notes" name_ref="menu_notes">
 				<menu_action action="EditNoteInDialogAction" />
