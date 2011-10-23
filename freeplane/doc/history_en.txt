@@ -6,6 +6,7 @@ Links can be accessed from inline editor and tooltips
 Free positioned nodes
 Minimal node width
 Paste of images from clipboard
+Add-on support
 
 ===============================
 1.2.8 alpha
