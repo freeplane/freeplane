@@ -413,7 +413,7 @@ public class MClipboardController extends ClipboardController {
 	    		final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
 	    			    "relative");
 	    		if (useRelativeUri) {
-	    			uri = LinkController.toRelativeURI(mindmapFile, file);
+	    			uri = LinkController.toRelativeURI(mindmapFile, file, LinkController.LINK_RELATIVE_TO_MINDMAP);
 	    		}
 	    		else{
 	    			uri = file.toURI();
