@@ -390,6 +390,13 @@ public class NodeUtils {
 		}
 		return false;	
 	}
+		
+	public static void removeAttribute(NodeModel target, String attributeKey) {
+		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
+		if(attributes != null && attributes.getAttributeKeyList().contains(TextUtils.getText(attributeKey))) {
+			AttributeController.getController().performRemoveAttribute(TextUtils.getText(attributeKey));
+		}
+	}
 
 	public static Object getAttributeValue(NodeModel target, String attributeKey) {
 		if(target == null || attributeKey == null) return null;

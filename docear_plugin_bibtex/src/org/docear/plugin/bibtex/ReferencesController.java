@@ -8,6 +8,9 @@ import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import net.sf.jabref.BasePanel;
+import net.sf.jabref.export.DocearSaveDatabaseAction;
+
 import org.docear.plugin.bibtex.actions.AddExistingReferenceAction;
 import org.docear.plugin.bibtex.actions.AddNewReferenceAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesAllOpenMapsAction;
@@ -74,7 +77,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 		this.initJabref();
 	}
 
-	public static ReferencesController getReferencesController() {
+	public static ReferencesController getController() {
 		return referencesController;
 	}
 
@@ -112,6 +115,9 @@ public class ReferencesController extends ALanguageController implements IDocear
 						jabrefWrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame());
 					}
 					createOptionPanel(jabrefWrapper.getJabrefFrame());
+					
+					((DocearSaveDatabaseAction) ((BasePanel) jabrefWrapper.getJabrefFrame().getTabbedPane()
+							.getSelectedComponent()).getSaveAction()).addActionListener(AddNewReference);
 				}
 			};
 	

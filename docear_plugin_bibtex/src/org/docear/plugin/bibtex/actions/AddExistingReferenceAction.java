@@ -20,6 +20,42 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
 public class AddExistingReferenceAction extends AFreeplaneAction {
+	
+	private class SelectItem implements Comparable {
+		private final String name;
+		private final String value;
+		private final String orderString;
+		
+		public SelectItem(String name, String value, String orderString) {
+			this.name = name;
+			this.value = value;
+			this.orderString = orderString;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public String getValue() {
+			return value;
+		}
+		
+		protected String getOrderString() {
+			return orderString;
+		}
+		
+		public String toString() {
+			return this.name;
+		}
+
+		@Override
+		public int compareTo(Object o) {
+			if (o instanceof SelectItem) {
+				return this.orderString.compareTo(((SelectItem) o).getOrderString());						
+			}
+			return 1;
+		}
+	}
 
 	/**
 	 * 
@@ -33,25 +69,19 @@ public class AddExistingReferenceAction extends AFreeplaneAction {
 	public void actionPerformed(ActionEvent arg0) {
 		BibtexDatabase db = ReferencesController.getController().getJabrefWrapper().getDatabase();
 
-		TreeSet<String> bibtexKeys = new TreeSet<String>();
+		TreeSet<SelectItem> bibtexKeys = new TreeSet<SelectItem>();
 
 		for (String s : db.getKeySet()) {
 			BibtexEntry entry = db.getEntryById(s);
-			bibtexKeys.add(entry.getCiteKey());
+			bibtexKeys.add(new SelectItem("["+entry.getCiteKey()+"]   "+entry.getAuthorTitleYear(50), entry.getId(), entry.getCiteKey()));
 		}
-		String key = (String) JOptionPane.showInputDialog(Controller.getCurrentController().getViewController().getContentPane(),
+		SelectItem item = (SelectItem) JOptionPane.showInputDialog(Controller.getCurrentController().getViewController().getContentPane(),
 				null, TextUtils.getText("add_reference"), JOptionPane.QUESTION_MESSAGE, null,
 				bibtexKeys.toArray(), bibtexKeys.first());
 
 		try {	
-			BibtexEntry entry = db.getEntryByKey(key);
-			
-			NodeModel currentNode = Controller.getCurrentModeController().getMapController().getSelectedNode();			
-			NodeUtils.setAttributeValue(currentNode, "bibtex_key", key);
-			NodeUtils.setAttributeValue(currentNode, "jabref_author", entry.getField("author"));
-			NodeUtils.setAttributeValue(currentNode, "jabref_title", entry.getField("title"));
-			NodeUtils.setAttributeValue(currentNode, "jabref_year", entry.getField("year"));
-			NodeUtils.setAttributeValue(currentNode, "jabref_journal", entry.getField("journal"));			
+			BibtexEntry entry = db.getEntryById(item.getValue());
+			ReferenceUtils.addReferenceToNode(entry);			
 		}
 		catch (NullPointerException e) {
 			JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(),

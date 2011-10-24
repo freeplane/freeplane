@@ -72,6 +72,7 @@ import net.sf.jabref.autocompleter.AutoCompleterFactory;
 import net.sf.jabref.collab.ChangeScanner;
 import net.sf.jabref.collab.FileUpdateListener;
 import net.sf.jabref.collab.FileUpdatePanel;
+import net.sf.jabref.export.DocearSaveDatabaseAction;
 import net.sf.jabref.export.ExportToClipboardAction;
 import net.sf.jabref.export.FileActions;
 import net.sf.jabref.export.SaveDatabaseAction;
@@ -332,7 +333,7 @@ public class BasePanel extends JPanel implements ClipboardOwner, FileUpdateListe
     }
 
     private void setupActions() {
-        saveAction = new SaveDatabaseAction(this);
+        saveAction = new DocearSaveDatabaseAction(this);
         
         actions.put("undo", undoAction);
         actions.put("redo", redoAction);
@@ -2851,6 +2852,14 @@ public class BasePanel extends JPanel implements ClipboardOwner, FileUpdateListe
         frame.back.setEnabled(previousEntries.size() > 0);
         frame.forward.setEnabled(nextEntries.size() > 0);
     }
+
+	public SaveDatabaseAction getSaveAction() {
+		return saveAction;
+	}
+
+	public MainTable getMainTable() {
+		return mainTable;
+	}
 
 
 }
