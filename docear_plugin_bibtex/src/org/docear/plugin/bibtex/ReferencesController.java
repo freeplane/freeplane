@@ -32,6 +32,9 @@ import org.freeplane.plugin.workspace.controller.IWorkspaceListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 
 public class ReferencesController extends ALanguageController implements IDocearEventListener, IWorkspaceListener {
+	
+	private static ReferencesController referencesController = null;
+	private JabrefWrapper jabrefWrapper;
 
 	public static final String MENU_BAR = "/menu_bar"; //$NON-NLS-1$
 	public static final String NODE_POPUP_MENU = "/node_popup"; //$NON-NLS-1$
@@ -59,6 +62,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 	private boolean isRunning = false;
 
 	public ReferencesController(ModeController modeController) {
+		setReferencesController(this);
 		this.modeController = modeController;
 		LogUtils.info("starting DocearReferencesController(ModeController)"); //$NON-NLS-1$
 
@@ -68,6 +72,14 @@ public class ReferencesController extends ALanguageController implements IDocear
 		DocearController.getController().addDocearEventListener(this);
 		WorkspaceController.getController().addWorkspaceListener(this);
 		this.initJabref();
+	}
+
+	public static ReferencesController getReferencesController() {
+		return referencesController;
+	}
+
+	public static void setReferencesController(ReferencesController referencesController) {
+		ReferencesController.referencesController = referencesController;
 	}
 
 	private void createOptionPanel(JPanel comp) {
@@ -88,22 +100,31 @@ public class ReferencesController extends ALanguageController implements IDocear
 			final ClassLoader classLoader = getClass().getClassLoader();
 			isRunning  = true;
 			Thread thread = new Thread() {
+				
 				public void run() {
 					Thread.currentThread().setContextClassLoader(classLoader);
 					URI uri = DocearController.getController().getLibrary().getBibtexDatabase();
-					JabrefWrapper wrapper;
+					
 					if (uri != null) {
-						wrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame(), new File(WorkspaceUtils.absoluteURI(uri)));						
+						jabrefWrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame(), new File(WorkspaceUtils.absoluteURI(uri)));						
 					}
 					else {
-						wrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame());
+						jabrefWrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame());
 					}
-					createOptionPanel(wrapper.getJabrefFrame());
+					createOptionPanel(jabrefWrapper.getJabrefFrame());
 				}
 			};
 	
 			thread.start();
 		}
+	}
+	
+	public JabrefWrapper getJabrefWrapper() {
+		return jabrefWrapper;
+	}
+
+	public void setJabrefWrapper(JabrefWrapper jabrefWrapper) {
+		this.jabrefWrapper = jabrefWrapper;
 	}
 
 	private void addPluginDefaults() {

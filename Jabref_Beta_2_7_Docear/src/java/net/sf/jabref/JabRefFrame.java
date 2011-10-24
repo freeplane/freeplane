@@ -93,9 +93,10 @@ import com.jgoodies.uif_lite.component.UIFSplitPane;
 public class JabRefFrame extends JPanel implements OutputPrinter {
 	
 	private boolean isTopLevel = true;
+	private static BasePanel basePanel;	
 
 	JFrame frame = new JFrame();
-    
+	    
 	UIFSplitPane contentPane = new UIFSplitPane();
 
     JabRefPreferences prefs = Globals.prefs; 
@@ -400,7 +401,15 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 	  updateEnabledState();
   }
   
-  public JFrame getFrame() {
+  public static BasePanel getBasePanel() {
+	return basePanel;
+}
+
+public static void setBasePanel(BasePanel basePanel) {
+	JabRefFrame.basePanel = basePanel;
+}
+
+public JFrame getFrame() {
 		return frame;
   }
  
@@ -1604,13 +1613,15 @@ public JabRefPreferences prefs() {
   }
 
   public BasePanel addTab(BibtexDatabase db, File file, HashMap<String, String> meta, String encoding, boolean raisePanel) {
-      BasePanel bp = new BasePanel(JabRefFrame.this, db, file, meta, encoding);
+      BasePanel bp = new BasePanel(JabRefFrame.this, db, file, meta, encoding);      
       addTab(bp, file, raisePanel);
+      this.setBasePanel(bp);
       return bp;
   }
 
     public BasePanel addTab(BibtexDatabase db, File file, MetaData meta, String encoding, boolean raisePanel) {
         BasePanel bp = new BasePanel(JabRefFrame.this, db, file, meta, encoding);
+        
         addTab(bp, file, raisePanel);
         return bp;
     }
@@ -1945,7 +1956,7 @@ class FetchCiteSeerAction
           BasePanel bp = new BasePanel( JabRefFrame.this,
                                         dialog.getGenerateDB(),   // database
                                         null,                     // file
-                                        (HashMap<String,String>)null, Globals.prefs.get("defaultEncoding"));                     // meta data
+                                        (HashMap<String,String>)null, Globals.prefs.get("defaultEncoding"));                     // meta data          
           tabbedPane.add( Globals.lang( GUIGlobals.untitledTitle ), bp ) ;
           tabbedPane.setSelectedComponent( bp ) ;
           output( Globals.lang( "New database created." ) ) ;
@@ -2091,6 +2102,7 @@ class FetchCiteSeerAction
       // Metadata are only put in bibtex files, so we will not find it
       // in imported files. Instead we pass an empty HashMap.
       BasePanel bp = new BasePanel(JabRefFrame.this, database, null, meta, Globals.prefs.get("defaultEncoding"));
+      this.setBasePanel(bp);
       /*
             if (prefs.getBoolean("autoComplete")) {
             db.setCompleters(autoCompleters);

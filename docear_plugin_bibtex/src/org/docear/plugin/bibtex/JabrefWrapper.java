@@ -17,6 +17,8 @@ import net.sf.jabref.imports.OpenDatabaseAction;
 import net.sf.jabref.imports.ParserResult;
 
 public class JabrefWrapper extends JabRef  {
+	
+	private BibtexDatabase database = null;
 
 	protected JabrefWrapper(String[] arg0) {
 		super(arg0);		
@@ -44,6 +46,7 @@ public class JabrefWrapper extends JabRef  {
 	public BasePanel addNewDatabase(ParserResult pr, File file, boolean raisePanel) {
 		String fileName = file.getPath();
 		BibtexDatabase db = pr.getDatabase();
+		this.setDatabase(db);
 		HashMap<String, String> meta = pr.getMetaData();
 		
 		BasePanel bp = new BasePanel(getJabrefFrame(), db, file, meta, pr.getEncoding());
@@ -132,5 +135,13 @@ public class JabrefWrapper extends JabRef  {
             
         }
     }
+
+	public BibtexDatabase getDatabase() {
+		return database;
+	}
+
+	public void setDatabase(BibtexDatabase database) {
+		this.database = database;
+	}
 	
 }

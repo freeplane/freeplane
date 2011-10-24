@@ -380,7 +380,7 @@ public class NodeUtils {
 		if(attributes != null){
 			if(attributes.getAttributeKeyList().contains(TextUtils.getText(attributeKey))){
 				//attributes.getAttribute(attributes.getAttributePosition(TextUtils.getText(attributeKey))).setValue(value);
-				AttributeController.getController().performSetValueAt(attributes, value, attributes.getAttributePosition(attributeKey), 1);
+				AttributeController.getController().performSetValueAt(attributes, value, attributes.getAttributePosition(TextUtils.getText(attributeKey)), 1);
 				return true;
 			}
 			else{
