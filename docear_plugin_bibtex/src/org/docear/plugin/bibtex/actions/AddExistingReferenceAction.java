@@ -31,7 +31,7 @@ public class AddExistingReferenceAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
-		BibtexDatabase db = ReferencesController.getReferencesController().getJabrefWrapper().getDatabase();
+		BibtexDatabase db = ReferencesController.getController().getJabrefWrapper().getDatabase();
 
 		TreeSet<String> bibtexKeys = new TreeSet<String>();
 
@@ -43,13 +43,15 @@ public class AddExistingReferenceAction extends AFreeplaneAction {
 				null, TextUtils.getText("add_reference"), JOptionPane.QUESTION_MESSAGE, null,
 				bibtexKeys.toArray(), bibtexKeys.first());
 
-		try {		
+		try {	
+			BibtexEntry entry = db.getEntryByKey(key);
+			
 			NodeModel currentNode = Controller.getCurrentModeController().getMapController().getSelectedNode();			
 			NodeUtils.setAttributeValue(currentNode, "bibtex_key", key);
-			NodeUtils.setAttributeValue(currentNode, "jabref_author", db.getEntryByKey(key).getField("author"));
-			NodeUtils.setAttributeValue(currentNode, "jabref_title", db.getEntryByKey(key).getField("title"));
-			NodeUtils.setAttributeValue(currentNode, "jabref_year", db.getEntryByKey(key).getField("year"));
-			NodeUtils.setAttributeValue(currentNode, "jabref_journal", db.getEntryByKey(key).getField("journal"));			
+			NodeUtils.setAttributeValue(currentNode, "jabref_author", entry.getField("author"));
+			NodeUtils.setAttributeValue(currentNode, "jabref_title", entry.getField("title"));
+			NodeUtils.setAttributeValue(currentNode, "jabref_year", entry.getField("year"));
+			NodeUtils.setAttributeValue(currentNode, "jabref_journal", entry.getField("journal"));			
 		}
 		catch (NullPointerException e) {
 			JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(),
