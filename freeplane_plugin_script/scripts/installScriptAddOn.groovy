@@ -1,4 +1,4 @@
-/* @ExecutionModes({on_single_node="main_menu_scripting[addons.installer.title]"})
+/* @ExecutionModes({on_single_node="main_menu_scripting/scripts[addons.installer.title]"})
  * 
  *  Freeplane - mind map editor
  *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
@@ -18,6 +18,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import java.io.File;
 import java.util.zip.ZipInputStream
 
 import javax.swing.JMenuItem
@@ -35,6 +36,7 @@ import org.freeplane.core.util.TextUtils
 import org.freeplane.features.mode.Controller
 import org.freeplane.main.addons.AddOnProperties
 import org.freeplane.plugin.script.ExecuteScriptAction
+import org.freeplane.plugin.script.ScriptingEngine;
 import org.freeplane.plugin.script.ScriptingPermissions
 import org.freeplane.plugin.script.addons.ScriptAddOnProperties
 import org.freeplane.plugin.script.proxy.Proxy
@@ -43,6 +45,8 @@ import org.freeplane.plugin.script.proxy.Proxy
 // == script bindings (globals) ==
 //
 dialogTitle = textUtils.getText('addons.installer.title')
+installationbase = c.userDirectory
+
 // parse result
 configMap = [:]
 
@@ -170,7 +174,7 @@ def parseZips(Map childNodeMap) {
 	def property = 'zips'
 	Proxy.Node propertyNode = childNodeMap[property]
 	configMap[property] = propertyNode.children.collect{ it.plainText }
-	File destDir = c.userDirectory
+	File destDir = installationbase
 	propertyNode.children.each{ zipNode -> 
 		try {
 			unpack(destDir, theOnlyChild(zipNode))
@@ -219,6 +223,7 @@ def parseScripts(Map childNodeMap) {
 	configMap[property] = propertyNode.children.inject([]){ scripts, scriptNode ->
 		def script = new ScriptAddOnProperties.Script()
 		script.name = expandVariables(scriptNode.plainText)
+		script.file = new File(ScriptingEngine.getUserScriptDir(), script.name)
 		script.scriptBody = theOnlyChild(scriptNode).text
 		mapStructureAssert( ! htmlUtils.isHtmlNode(script.scriptBody), textUtils.getText('addons.installer.html.script'))
 		scriptNode.attributes.map.each { k,v ->
@@ -228,7 +233,7 @@ def parseScripts(Map childNodeMap) {
 				script[k] = expandVariables(v)
 		}
 		script.permissions = parsePermissions(scriptNode, script.name)
-		if (script.keyboardShortcut != null)
+		if (script.keyboardShortcut)
 			createKeyboardShortcut(script)
 		mapStructureAssert(script.name.endsWith('.groovy'), textUtils.format('addons.installer.groovy.script.name', script.name))
 		mapStructureAssert(script.menuTitleKey, textUtils.format('addons.installer.script.no.menutitle', script))
@@ -340,19 +345,19 @@ def handlePermissions(Map configMap) {
 }
 
 def scriptDir() {
-	File dir = new File(c.userDirectory, 'scripts')
+	File dir = new File(installationbase, 'scripts')
 	installationAssert(dir.exists(), null)
 	return dir
 }
 
 def addOnDir() {
-	File dir = new File(c.userDirectory, 'addons')
+	File dir = new File(installationbase, 'addons')
 	installationAssert(dir.exists(), null)
 	return dir
 }
 
 def createScripts(Map configMap) {
-	List<ScriptAddOnProperties.Script> scripts = configMap['script']
+	List<ScriptAddOnProperties.Script> scripts = configMap['scripts']
 	scripts.each { script -> 
 		File file = script.file
 		try {
@@ -367,7 +372,7 @@ def createScripts(Map configMap) {
 def expandVariables(String string) {
 	Map variableMap = configMap['properties']
 	// expands strings like "${name}.groovy"
-	string.replaceAll(/\$\{([^}]+)\}/, { match, key -> variableMap[key] ? variableMap[key] : '${' + key + '}'})
+	string.replaceAll(/\$\{([^}]+)\}/, { match, key -> variableMap[key] ? variableMap[key] : match })
 }
 
 AddOnProperties install() {
@@ -421,6 +426,6 @@ try {
 	return addOn
 } catch (Exception e) {
 	JOptionPane.showMessageDialog(ui.frame, e.message, dialogTitle, JOptionPane.ERROR_MESSAGE)
-	logger.severe("installation failure", e)
+	logger.warn("installation failure", e)
 	return null
 }

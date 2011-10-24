@@ -139,6 +139,25 @@ public class AddOnsController {
     }
 
 	public void deInstall(AddOnProperties addOn) {
-		LogUtils.severe("FIXME: implement deinstall");
-    }
+		LogUtils.info("deinstalling " + addOn);
+		for (String[] rule : addOn.getDeinstallationRules()) {
+			if (rule[0].equals("delete")) {
+				final File file = new File(expandVariables(rule));
+				if (!file.exists()) {
+					LogUtils.warn("file " + expandVariables(rule) + " should be deleted but does not exist");
+				}
+				else {
+					if (file.delete())
+						LogUtils.info("deleted " + expandVariables(rule));
+					else
+						LogUtils.warn("could not delete file " + expandVariables(rule));
+				}
+			}
+		}
+	}
+
+	private String expandVariables(String[] rule) {
+		return rule[1].replace("${installationbase}", ResourceController.getResourceController()
+		    .getFreeplaneUserDirectory());
+	}
 }

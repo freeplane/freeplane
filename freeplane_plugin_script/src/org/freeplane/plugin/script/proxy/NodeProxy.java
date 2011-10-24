@@ -450,7 +450,11 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		    .getExtension(NodeStyleController.class);
 		styleController.setNodeFormat(getDelegate(), format);
 	}
-
+	
+	public void setLeft(final boolean isLeft) {
+		getDelegate().setLeft(isLeft);
+	}
+	
 	private FormattedDate createDefaultFormattedDate(final Date date) {
 	    return FormattedDate.createDefaultFormattedDate(date.getTime(), IFormattedObject.TYPE_DATE);
     }

@@ -184,9 +184,14 @@ public class FormatController implements IExtension {
 
 	private void loadFormats() throws Exception {
 		BufferedInputStream inputStream = null;
+		final File configXml = new File(pathToFile);
+		if (!configXml.exists()) {
+			LogUtils.info(pathToFile + " does not exist yet");
+			return;
+		}
 		try {
 			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
-			inputStream = new BufferedInputStream(new FileInputStream(pathToFile));
+			inputStream = new BufferedInputStream(new FileInputStream(configXml));
 			final IXMLReader reader = new StdXMLReader(inputStream);
 			parser.setReader(reader);
 			final XMLElement loader = (XMLElement) parser.parse();
@@ -198,7 +203,7 @@ public class FormatController implements IExtension {
 				final String locale = elem.getAttribute("locale", null);
 				final String content = elem.getContent();
 				if (StringUtils.isEmpty(type) || StringUtils.isEmpty(style) || StringUtils.isEmpty(content)) {
-					throw new RuntimeException("wrong format in " + pathToFile
+					throw new RuntimeException("wrong format in " + configXml
 					        + ": none of the following must be empty: type=" + type + ", style=" + style
 					        + ", element content=" + content);
 				}
@@ -215,14 +220,14 @@ public class FormatController implements IExtension {
 						stringFormats.add(format);
 					}
 					else {
-						throw new RuntimeException("unknown type in " + pathToFile + ": type=" + type + ", style="
+						throw new RuntimeException("unknown type in " + configXml + ": type=" + type + ", style="
 						        + style + ", element content=" + content);
 					}
 				}
 			}
 		}
 		catch (final IOException e) {
-			LogUtils.warn("error parsing " + pathToFile, e);
+			LogUtils.warn("error parsing " + configXml, e);
 		}
 		finally {
 			FileUtils.silentlyClose(inputStream);

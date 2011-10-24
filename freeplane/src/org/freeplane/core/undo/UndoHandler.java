@@ -266,6 +266,11 @@ public class UndoHandler implements IUndoHandler {
 		finally {
 			isUndoActionRunning = false;
 		}
+		if (transactionList.isEmpty()) {
+			// FIXME: got here if exceptions occur after opening a map via the scripting API. Fix the basic error instead.
+			LogUtils.warn("transactionList is empty on UndoHandler.rollback()");
+			return;
+		}
 		actorList = transactionList.removeLast();
 		actorIterator = transactionIteratorList.removeLast();
 		fireStateChanged();
