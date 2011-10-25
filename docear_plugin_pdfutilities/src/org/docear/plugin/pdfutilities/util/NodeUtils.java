@@ -42,13 +42,6 @@ import org.freeplane.view.swing.map.attribute.AttributeView;
 
 public class NodeUtils {
 	
-	private final MMapController currentMapController;
-	
-	public NodeUtils(){
-		this.currentMapController = (MMapController) Controller.getCurrentModeController().getMapController();
-		
-	}
-	
 	public static boolean isMapCurrentlyOpened(MapModel map){
 		Map<String, MapModel> maps = Controller.getCurrentController().getMapViewManager().getMaps();
 		for(Entry<String, MapModel> entry : maps.entrySet()){
@@ -74,11 +67,11 @@ public class NodeUtils {
 		return true;
 	}
 	
-	public Map<AnnotationID, Collection<AnnotationNodeModel>> getOldAnnotationsFromMaps(Collection<URI> mindmaps){
+	public static Map<AnnotationID, Collection<AnnotationNodeModel>> getOldAnnotationsFromMaps(Collection<URI> mindmaps){
 		Map<AnnotationID, Collection<AnnotationNodeModel>> result = new HashMap<AnnotationID, Collection<AnnotationNodeModel>>();
-		for(MapModel map : this.getMapsFromUris(mindmaps)){
+		for(MapModel map : getMapsFromUris(mindmaps)){
 			
-			Map<AnnotationID, Collection<AnnotationNodeModel>> temp = this.getOldAnnotationsFrom(map.getRootNode());
+			Map<AnnotationID, Collection<AnnotationNodeModel>> temp = getOldAnnotationsFrom(map.getRootNode());
 			for(AnnotationID id : temp.keySet()){
 				if(!result.containsKey(id)){
 					result.put(id, new ArrayList<AnnotationNodeModel>());				
@@ -89,15 +82,15 @@ public class NodeUtils {
 		return result;
 	}
 	
-	public Map<AnnotationID, Collection<AnnotationNodeModel>> getOldAnnotationsFromMap(URI mindmap){
-		MapModel map = this.getMapFromUri(mindmap);
+	public static Map<AnnotationID, Collection<AnnotationNodeModel>> getOldAnnotationsFromMap(URI mindmap){
+		MapModel map = getMapFromUri(mindmap);
 		if(map != null){
-			return this.getOldAnnotationsFrom(map.getRootNode());
+			return getOldAnnotationsFrom(map.getRootNode());
 		}
 		return new HashMap<AnnotationID, Collection<AnnotationNodeModel>>();
 	}
 	
-	public List<MapModel> getMapsFromUris(Collection<URI> mindmaps){
+	public static List<MapModel> getMapsFromUris(Collection<URI> mindmaps){
 		List<MapModel> maps = new ArrayList<MapModel>();
 		for(URI uri : mindmaps){
 			MapModel map = getMapFromUri(uri);
@@ -109,7 +102,7 @@ public class NodeUtils {
 	}
 	
 	
-	public MapModel getMapFromUri(URI uri) {
+	public static MapModel getMapFromUri(URI uri) {
 		Map<String, MapModel> maps = Controller.getCurrentController().getMapViewManager().getMaps();
 		for(Entry<String, MapModel> entry : maps.entrySet()){
 			if(entry.getValue().getFile().toURI().equals(uri)){
@@ -133,11 +126,11 @@ public class NodeUtils {
 		return null;
 	}
 
-	public Map<AnnotationID, Collection<AnnotationNodeModel>> getOldAnnotationsFromCurrentMap(){
-		return getOldAnnotationsFrom(this.currentMapController.getRootNode());
+	public static Map<AnnotationID, Collection<AnnotationNodeModel>> getOldAnnotationsFromCurrentMap(){
+		return getOldAnnotationsFrom(((MMapController) Controller.getCurrentModeController().getMapController()).getRootNode());
 	}
 	
-	private Map<AnnotationID, Collection<AnnotationNodeModel>> getOldAnnotationsFrom(NodeModel parent){
+	private static Map<AnnotationID, Collection<AnnotationNodeModel>> getOldAnnotationsFrom(NodeModel parent){
 		Map<AnnotationID, Collection<AnnotationNodeModel>> result = new HashMap<AnnotationID, Collection<AnnotationNodeModel>>();
 		try {
 			Thread.sleep(1L);
@@ -166,27 +159,27 @@ public class NodeUtils {
 		return result;
 	}
 	
-	public NodeModel insertChildNodesFromPdf(URI pdfFile, List<AnnotationModel> annotations, boolean isLeft, NodeModel target){
-		NodeModel node = this.insertChildNodeFrom(pdfFile, isLeft, target, AnnotationType.PDF_FILE);
-		this.insertChildNodesFrom(annotations, isLeft, node);
+	public static NodeModel insertChildNodesFromPdf(URI pdfFile, List<AnnotationModel> annotations, boolean isLeft, NodeModel target){
+		NodeModel node = insertChildNodeFrom(pdfFile, isLeft, target, AnnotationType.PDF_FILE);
+		insertChildNodesFrom(annotations, isLeft, node);
 		return node;
 	}
 	
-	public List<NodeModel> insertChildNodesFrom(List<AnnotationModel> annotations, boolean isLeft, NodeModel target){
+	public static List<NodeModel> insertChildNodesFrom(List<AnnotationModel> annotations, boolean isLeft, NodeModel target){
 		List<NodeModel> nodes = new ArrayList<NodeModel>();
 		
 		for(AnnotationModel annotation : annotations){
-			NodeModel node = this.insertChildNodeFrom(annotation.getUri(), annotation, isLeft, target);
-			this.insertChildNodesFrom(annotation.getChildren(), isLeft, node);
+			NodeModel node = insertChildNodeFrom(annotation.getUri(), annotation, isLeft, target);
+			insertChildNodesFrom(annotation.getChildren(), isLeft, node);
 			nodes.add(node);
 		}
 		
 		return nodes;
 	}
 	
-	public NodeModel insertChildNodeFrom(URI file, boolean isLeft, NodeModel target, AnnotationType type){
-		final NodeModel node = this.currentMapController.newNode(Tools.getFilefromUri(file).getName(), target.getMap());
-		this.setLinkFrom(file, node);
+	public static NodeModel insertChildNodeFrom(URI file, boolean isLeft, NodeModel target, AnnotationType type){
+		final NodeModel node = ((MMapController) Controller.getCurrentModeController().getMapController()).newNode(Tools.getFilefromUri(file).getName(), target.getMap());
+		setLinkFrom(file, node);
 		
 		if(type != null){
 			IAnnotation model = new AnnotationModel();
@@ -194,26 +187,25 @@ public class NodeUtils {
 			AnnotationController.setModel(node, model);
 		}
 		
-		return this.insertChildNodeFrom(node, isLeft, target);
+		return insertChildNodeFrom(node, isLeft, target);
 	}
 	
-	public NodeModel insertChildNodeFrom(URI file, IAnnotation annotation, boolean isLeft, NodeModel target){		
-		final NodeModel node = this.currentMapController.newNode(annotation.getTitle(), target.getMap());
-		this.setLinkFrom(file, node);
+	public static NodeModel insertChildNodeFrom(URI file, IAnnotation annotation, boolean isLeft, NodeModel target){		
+		final NodeModel node = ((MMapController) Controller.getCurrentModeController().getMapController()).newNode(annotation.getTitle(), target.getMap());
+		setLinkFrom(file, node);
 		AnnotationController.setModel(node, annotation);
 		
 		return insertChildNodeFrom(node, isLeft, target);
 	}
 	
-	public NodeModel setLinkFrom(URI file, NodeModel node){		
+	public static NodeModel setLinkFrom(URI file, NodeModel node){		
 		((MLinkController) LinkController.getController()).setLinkTypeDependantLink(node, file);
 		
 		return node;
 	}
 	
-	public NodeModel insertChildNodeFrom(NodeModel node, boolean isLeft, NodeModel target){
-		
-		this.currentMapController.insertNode(node, target, false, isLeft, isLeft);
+	public static NodeModel insertChildNodeFrom(NodeModel node, boolean isLeft, NodeModel target) {		
+		((MMapController) Controller.getCurrentModeController().getMapController()).insertNode(node, target, false, isLeft, isLeft);
 		
 		return node;
 	}
@@ -223,7 +215,7 @@ public class NodeUtils {
         return new PdfFileFilter().accept(link);
     }
 	
-	public List<NodeModel> insertNewChildNodesFrom(URI pdfFile, Collection<AnnotationModel> annotations, boolean isLeft, NodeModel target){
+	public static List<NodeModel> insertNewChildNodesFrom(URI pdfFile, Collection<AnnotationModel> annotations, boolean isLeft, NodeModel target){
 		AnnotationModel root = new AnnotationModel(new AnnotationID(Tools.getAbsoluteUri(pdfFile), 0), AnnotationType.PDF_FILE);
 		root.setTitle(Tools.getFilefromUri(Tools.getAbsoluteUri(pdfFile)).getName());
 		root.getChildren().addAll(annotations);
@@ -232,7 +224,7 @@ public class NodeUtils {
 		return insertNewChildNodesFrom(newList, isLeft, target, target);
 	}
 
-	public List<NodeModel> insertNewChildNodesFrom(Collection<AnnotationModel> annotations, boolean isLeft, NodeModel target, NodeModel rootTarget) {
+	public static List<NodeModel> insertNewChildNodesFrom(Collection<AnnotationModel> annotations, boolean isLeft, NodeModel target, NodeModel rootTarget) {
 		List<NodeModel> nodes = new ArrayList<NodeModel>();
 		
 		for(AnnotationModel annotation : annotations){			
@@ -240,12 +232,12 @@ public class NodeUtils {
 				NodeModel equalChild = targetHasEqualChild(rootTarget, annotation);
 				
 				if(equalChild == null){
-					NodeModel node = this.insertChildNodeFrom(annotation.getUri(), annotation, isLeft, target);
-					this.insertNewChildNodesFrom(annotation.getChildren(), isLeft, node, rootTarget);
+					NodeModel node = insertChildNodeFrom(annotation.getUri(), annotation, isLeft, target);
+					insertNewChildNodesFrom(annotation.getChildren(), isLeft, node, rootTarget);
 					nodes.add(node);
 				}
 				else{
-					this.insertNewChildNodesFrom(annotation.getChildren(), isLeft, equalChild, rootTarget);
+					insertNewChildNodesFrom(annotation.getChildren(), isLeft, equalChild, rootTarget);
 					nodes.add(equalChild);
 				}
 				
@@ -255,13 +247,13 @@ public class NodeUtils {
 		return nodes;
 	}
 	
-	public NodeModel targetHasEqualChild(NodeModel target, IAnnotation annotation){
+	public static NodeModel targetHasEqualChild(NodeModel target, IAnnotation annotation){
 		if(annotation == null)	return null;
 		
 		for(NodeModel child : target.getChildren()){
 			IAnnotation oldAnnotation = AnnotationController.getAnnotationNodeModel(child);
-			NodeModel equalChild = this.targetHasEqualChild(child, annotation);
-			if(equalChild != null){
+			NodeModel equalChild = targetHasEqualChild(child, annotation);
+			if(equalChild != null) {
 				return equalChild;
 			}
 			if(oldAnnotation == null || oldAnnotation.getAnnotationType() != annotation.getAnnotationType()){
