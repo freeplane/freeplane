@@ -50,8 +50,8 @@ public class AddExistingReferenceAction extends AFreeplaneAction {
 
 		@Override
 		public int compareTo(Object o) {
-			if (o instanceof SelectItem) {
-				return this.orderString.compareTo(((SelectItem) o).getOrderString());						
+			if (o instanceof SelectItem) {				
+				return this.orderString.toLowerCase().compareTo(((SelectItem) o).getOrderString().toLowerCase());						
 			}
 			return 1;
 		}
@@ -71,22 +71,24 @@ public class AddExistingReferenceAction extends AFreeplaneAction {
 
 		TreeSet<SelectItem> bibtexKeys = new TreeSet<SelectItem>();
 
-		for (String s : db.getKeySet()) {
+		for (String s : db.getKeySet()) {			
 			BibtexEntry entry = db.getEntryById(s);
+			System.out.println(s+": "+entry.getCiteKey());
 			bibtexKeys.add(new SelectItem("["+entry.getCiteKey()+"]   "+entry.getAuthorTitleYear(50), entry.getId(), entry.getCiteKey()));
-		}
+		}		
 		SelectItem item = (SelectItem) JOptionPane.showInputDialog(Controller.getCurrentController().getViewController().getContentPane(),
 				null, TextUtils.getText("add_reference"), JOptionPane.QUESTION_MESSAGE, null,
 				bibtexKeys.toArray(), bibtexKeys.first());
-
-		try {	
-			BibtexEntry entry = db.getEntryById(item.getValue());
-			ReferenceUtils.addReferenceToNode(entry);			
-		}
-		catch (NullPointerException e) {
-			JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(),
-					TextUtils.getText("bibtex_key_not_found_title"), TextUtils.getText("bibtex_key_not_found"),
-					JOptionPane.ERROR_MESSAGE);
+		if (item != null) {
+			try {	
+				BibtexEntry entry = db.getEntryById(item.getValue());
+				ReferenceUtils.addReferenceToNode(entry);			
+			}
+			catch (NullPointerException e) {
+				JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(),
+						TextUtils.getText("bibtex_key_not_found_title"), TextUtils.getText("bibtex_key_not_found"),
+						JOptionPane.ERROR_MESSAGE);
+			}
 		}
 
 	}

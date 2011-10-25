@@ -40,10 +40,10 @@ public class AddNewReferenceAction extends AFreeplaneAction {
 			if (entryList.size()>0) {
 				BibtexEntry entry = entryList.get(0);
 			
-				if (entry.getField("docear_add_to_node") == null) {
+				if (entry.getField("docear_add_to_node") == null) {					 
 					return;
 				}
-				
+				entry.setField("docear_add_to_node", null);				
 				ReferenceUtils.addReferenceToNode(entry);
 			}
 			return;
