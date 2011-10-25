@@ -73,7 +73,7 @@ final class NoteManager implements INodeSelectionListener {
 		boolean editorContentEmpty = true;
 		String documentText = noteViewerComponent.getDocumentText();
 		documentText = HEAD.matcher(documentText).replaceFirst("");
-		editorContentEmpty = HtmlUtils.htmlToPlain(documentText).equals("");
+		editorContentEmpty = HtmlUtils.isEmpty(documentText);
 		Controller.getCurrentModeController().getMapController().removeNodeSelectionListener(this);
 		if (noteViewerComponent.needsSaving()) {
 			try {

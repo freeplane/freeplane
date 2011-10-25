@@ -354,7 +354,7 @@ public class MTextController extends TextController {
 			}
 
 			public void ok(final String newText) {
-				if(HtmlUtils.htmlToPlain(newText).equals(""))
+				if(HtmlUtils.isEmpty(newText))
 					if (isNewNode) 
 						((MModeController) Controller.getCurrentModeController()).undo();
 					else
