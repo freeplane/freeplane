@@ -30,17 +30,17 @@ public class ReferenceUtils {
 			NodeUtils.setLinkFrom(new File(path).toURI(), currentNode);
 		}
 		else {
-			path = entry.getField("url");
-
-			System.out.println("debug url: " + path);
-			URI link;
-			try {
-				link = LinkController.createURI(path.trim());
-				final MLinkController linkController = (MLinkController) MLinkController.getController();
-				linkController.setLink(currentNode, link, LinkController.LINK_ABSOLUTE);
-			}
-			catch (URISyntaxException e) {				
-				e.printStackTrace();
+			path = entry.getField("url");			
+			if (path != null) {
+				URI link;			
+				try {
+					link = LinkController.createURI(path.trim());
+					final MLinkController linkController = (MLinkController) MLinkController.getController();
+					linkController.setLink(currentNode, link, LinkController.LINK_ABSOLUTE);
+				}
+				catch (URISyntaxException e) {				
+					e.printStackTrace();
+				}
 			}
 		}
 
