@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import net.sf.jabref.BibtexEntry;
+import net.sf.jabref.BibtexFields;
 import net.sf.jabref.Globals;
 import net.sf.jabref.labelPattern.LabelPatternUtil;
 
@@ -21,7 +22,7 @@ public class ReferenceUtils {
 		
 		
 		if (entry.getField("bibtexkey")==null) {
-			LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), ReferencesController.getController().getJabrefWrapper().getDatabase(), entry);
+			LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), ReferencesController.getController().getJabrefWrapper().getDatabase(), entry);						
 		}
 		
 		//renewAttribute(currentNode, "jabref_id", entry.getId());

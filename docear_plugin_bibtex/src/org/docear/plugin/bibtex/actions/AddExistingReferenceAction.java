@@ -51,7 +51,16 @@ public class AddExistingReferenceAction extends AFreeplaneAction {
 		@Override
 		public int compareTo(Object o) {
 			if (o instanceof SelectItem) {				
-				return this.orderString.toLowerCase().compareTo(((SelectItem) o).getOrderString().toLowerCase());						
+				String otherOrderString = ((SelectItem) o).getOrderString();
+				
+				if (otherOrderString == null) {
+					return -1;
+				}
+				if (this.orderString == null) {
+					return 1;
+				}
+				
+				return this.orderString.toLowerCase().compareTo(otherOrderString.toLowerCase());						
 			}
 			return 1;
 		}
@@ -72,16 +81,15 @@ public class AddExistingReferenceAction extends AFreeplaneAction {
 		TreeSet<SelectItem> bibtexKeys = new TreeSet<SelectItem>();
 
 		for (String s : db.getKeySet()) {			
-			BibtexEntry entry = db.getEntryById(s);
-			System.out.println(s+": "+entry.getCiteKey());
-			bibtexKeys.add(new SelectItem("["+entry.getCiteKey()+"]   "+entry.getAuthorTitleYear(50), entry.getId(), entry.getCiteKey()));
+			BibtexEntry entry = db.getEntryById(s);			
+			bibtexKeys.add(new SelectItem("["+entry.getCiteKey()+"]   "+entry.getAuthorTitleYear(50), entry.getCiteKey(), entry.getCiteKey()));
 		}		
 		SelectItem item = (SelectItem) JOptionPane.showInputDialog(Controller.getCurrentController().getViewController().getContentPane(),
 				null, TextUtils.getText("add_reference"), JOptionPane.QUESTION_MESSAGE, null,
 				bibtexKeys.toArray(), bibtexKeys.first());
 		if (item != null) {
 			try {	
-				BibtexEntry entry = db.getEntryById(item.getValue());
+				BibtexEntry entry = db.getEntryByKey(item.getValue());
 				ReferenceUtils.addReferenceToNode(entry);			
 			}
 			catch (NullPointerException e) {

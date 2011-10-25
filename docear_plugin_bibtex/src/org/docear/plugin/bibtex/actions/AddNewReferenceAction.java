@@ -33,18 +33,13 @@ public class AddNewReferenceAction extends AFreeplaneAction {
 		BasePanel basePanel = ((BasePanel) ReferencesController.getController().getJabrefWrapper().getJabrefFrame().getTabbedPane()
 				.getSelectedComponent());
 		
-		if(e.getActionCommand().equals(DocearSaveDatabaseAction.JABREF_DATABASE_SAVE_SUCCESS)) {
-			BibtexDatabase db = ReferencesController.getController().getJabrefWrapper().getDatabase();
-			
-			EventList<BibtexEntry> entryList = basePanel.getMainTable().getSelected();			
-			if (entryList.size()>0) {
-				BibtexEntry entry = entryList.get(0);
-			
-				if (entry.getField("docear_add_to_node") == null) {					 
-					return;
-				}
-				entry.setField("docear_add_to_node", null);				
+		if(e.getActionCommand().equals(DocearSaveDatabaseAction.JABREF_DATABASE_SAVE_SUCCESS)) {			
+			try {
+				BibtexEntry entry = (BibtexEntry) e.getSource();
 				ReferenceUtils.addReferenceToNode(entry);
+			}
+			catch(Exception ex) {
+				ex.printStackTrace();
 			}
 			return;
 		}
