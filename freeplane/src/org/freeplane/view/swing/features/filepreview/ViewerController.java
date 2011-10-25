@@ -631,12 +631,15 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 			try {
 				final String text = t.getTransferData(DataFlavor.stringFlavor).toString();
-				if (!text.startsWith("file://")) {
-					return false;
+				final File file;
+				if (text.startsWith("file://")) {
+					final URI uri = new URI(new URL(text).toString());
+					final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
+					file = Compat.urlToFile(url);
 				}
-				final URI uri = new URI(new URL(text).toString());
-				final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
-				final File file = Compat.urlToFile(url);
+				else{
+					file = new File(text);
+				}
 				return paste(file, targetNode, dropAsSibling, isLeft);
 			}
 			catch (final Exception e) {
