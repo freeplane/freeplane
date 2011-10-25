@@ -31,9 +31,11 @@ public class AttributeListener implements TableModelListener {
 				key = (String) table.getAttribute(
 						table.getAttributePosition(jabRefAttributes.getKeyAttribute()))
 						.getValue();
-				System.out.println("debug changed for [" + key + "]: " + attribute.getName() + " <--> " + attribute.getValue());
 				
-				updateBibtexEntry(key, attribute);
+				if (key != null) {
+					System.out.println("debug changed for [" + key + "]: " + attribute.getName() + " <--> " + attribute.getValue());
+					updateBibtexEntry(key, attribute);
+				}
 			}
 
 		}
@@ -42,10 +44,11 @@ public class AttributeListener implements TableModelListener {
 	private void updateBibtexEntry(String key, Attribute attribute) {
 		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase(); 
 		BibtexEntry entry = database.getEntryByKey(key);
-		
-		entry.setField(ReferencesController.getController().getJabRefAttributes().getValueAttributes().get(attribute.getName()), attribute.getValue().toString());
-		System.out.println("database: "+database.getEntryByKey("Langer2011").getField("year"));
-		ReferencesController.getController().getJabrefWrapper().updateDatabase(database);
+		if (entry != null) {
+			entry.setField(ReferencesController.getController().getJabRefAttributes().getValueAttributes().get(attribute.getName()), attribute.getValue().toString());
+			System.out.println("database: "+database.getEntryByKey("Langer2011").getField("year"));
+			ReferencesController.getController().getJabrefWrapper().updateDatabase(database);
+		}
 	}
 	
 	
