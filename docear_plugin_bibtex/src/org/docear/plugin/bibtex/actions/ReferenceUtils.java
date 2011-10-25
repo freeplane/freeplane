@@ -25,7 +25,6 @@ public class ReferenceUtils {
 			LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), ReferencesController.getController().getJabrefWrapper().getDatabase(), entry);						
 		}
 		
-		//renewAttribute(currentNode, "jabref_id", entry.getId());
 		renewAttribute(currentNode, "bibtex_key", entry.getField("bibtexkey"));
 		renewAttribute(currentNode, "jabref_author", entry.getField("author"));
 		renewAttribute(currentNode, "jabref_title", entry.getField("title"));
