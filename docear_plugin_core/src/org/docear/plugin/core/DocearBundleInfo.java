@@ -28,7 +28,7 @@ public class DocearBundleInfo {
 
 	public DocearBundleInfo(BundleContext context) {
  		bundleName = context.getBundle().getSymbolicName();
- 		bundleVersion = context.getBundle().getVersion();
+ 		bundleVersion = new Version("1.0.0");//context.getBundle().getVersion();
 		requiredBundles = extractRequiredBundles(context.getBundle().getHeaders());
 		bundle = context.getBundle();
 	}

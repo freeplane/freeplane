@@ -759,7 +759,9 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 
 		setProgressBarVisible(false);
 
-		pushExternalButton = new PushToApplicationButton(this, PushToApplicationButton.applications);
+		if (this.isTopLevel) {
+			pushExternalButton = new PushToApplicationButton(this, PushToApplicationButton.applications);			
+		}
 		fillMenu();
 		createToolBar();
 		this.setLayout(gbl);
@@ -1205,7 +1207,9 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 		tools.addSeparator();
 		tools.add(manageSelectors);
 
-		tools.add(pushExternalButton.getMenuAction());
+		if (this.isTopLevel) {
+			tools.add(pushExternalButton.getMenuAction());
+		}
 		tools.add(writeXmpAction);
 
 		tools.addSeparator();
@@ -1383,9 +1387,8 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 		// tlb.addAction(emacsPushAction);
 		// tlb.addAction(lyxPushAction);
 		// tlb.addAction(winEdtPushAction);
-		tlb.add(pushExternalButton.getComponent());
-
 		if (this.isTopLevel) {
+			tlb.add(pushExternalButton.getComponent());		
 			tlb.addAction(openFile);
 		}
 		// tlb.addAction(openPdf);
