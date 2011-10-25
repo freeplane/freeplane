@@ -365,18 +365,26 @@ public class NodeUtils {
 		return false;
 	}
 	
-	public static boolean setAttributeValue(NodeModel target, String attributeKey, Object value){
+	public static boolean setAttributeValue(NodeModel target, String attributeKey, Object value) {
+		return setAttributeValue(target, attributeKey, value, true);
+	}
+	
+	public static boolean setAttributeValue(NodeModel target, String attributeKey, Object value, boolean translateKey){
 		if(target == null || attributeKey == null || value == null) return false;
+		
+		if (translateKey) {
+			attributeKey = TextUtils.getText(attributeKey);
+		}
 		
 		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
 		if(attributes != null){
-			if(attributes.getAttributeKeyList().contains(TextUtils.getText(attributeKey))){
-				//attributes.getAttribute(attributes.getAttributePosition(TextUtils.getText(attributeKey))).setValue(value);
-				AttributeController.getController().performSetValueAt(attributes, value, attributes.getAttributePosition(TextUtils.getText(attributeKey)), 1);
+			if(attributes.getAttributeKeyList().contains(attributeKey)){
+				//attributes.getAttribute(attributes.getAttributePosition(attributeKey)).setValue(value);
+				AttributeController.getController().performSetValueAt(attributes, value, attributes.getAttributePosition(attributeKey), 1);
 				return true;
 			}
 			else{
-				AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), TextUtils.getText(attributeKey), value); 
+				AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), attributeKey, value); 
 				return true;
 			}
 		}

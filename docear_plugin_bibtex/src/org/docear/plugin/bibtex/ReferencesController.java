@@ -20,6 +20,8 @@ import org.docear.plugin.core.ALanguageController;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.IDocearEventListener;
+import org.docear.plugin.listeners.AttributeListener;
+import org.docear.plugin.listeners.NodeSelectionListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
@@ -38,6 +40,10 @@ public class ReferencesController extends ALanguageController implements IDocear
 	
 	private static ReferencesController referencesController = null;
 	private JabrefWrapper jabrefWrapper;
+	
+	private JabRefAttributes jabRefAttributes;
+	
+	private final AttributeListener attributeListener = new AttributeListener();
 
 	public static final String MENU_BAR = "/menu_bar"; //$NON-NLS-1$
 	public static final String NODE_POPUP_MENU = "/node_popup"; //$NON-NLS-1$
@@ -97,8 +103,12 @@ public class ReferencesController extends ALanguageController implements IDocear
 		}
 	}
 
-	private void initJabref() {
+	private void initJabref() {		
 		if(WorkspaceController.getController().isInitialized() && !isRunning) {
+			this.jabRefAttributes = new JabRefAttributes();
+			
+			NodeSelectionListener nodeSelectionListener = new NodeSelectionListener();
+			nodeSelectionListener.init();
 			
 			final ClassLoader classLoader = getClass().getClassLoader();
 			isRunning  = true;
@@ -125,6 +135,14 @@ public class ReferencesController extends ALanguageController implements IDocear
 		}
 	}
 	
+	public JabRefAttributes getJabRefAttributes() {
+		return jabRefAttributes;
+	}
+
+	public void setJabRefAttributes(JabRefAttributes jabRefAttributes) {
+		this.jabRefAttributes = jabRefAttributes;
+	}
+
 	public JabrefWrapper getJabrefWrapper() {
 		return jabrefWrapper;
 	}
@@ -198,5 +216,9 @@ public class ReferencesController extends ALanguageController implements IDocear
 	public void workspaceChanged(WorkspaceEvent event) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public AttributeListener getAttributeListener() {
+		return attributeListener;
 	}
 }

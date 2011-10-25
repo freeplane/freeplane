@@ -40,7 +40,10 @@ public class JabrefWrapper extends JabRef  {
 
 	
 	private BibtexDatabase database = null;
-
+	private ParserResult parserResult = null;
+	private File file;
+	private HashMap<String, String> meta = null;
+	
 	protected JabrefWrapper(String[] arg0) {
 		super(arg0);		
 	}
@@ -65,12 +68,13 @@ public class JabrefWrapper extends JabRef  {
 	}
 	
 	public BasePanel addNewDatabase(ParserResult pr, File file, boolean raisePanel) {
-		String fileName = file.getPath();
-		BibtexDatabase db = pr.getDatabase();
-		this.setDatabase(db);
-		HashMap<String, String> meta = pr.getMetaData();
+		this.file = file;
+		String fileName = file.getPath();		
+		this.setParserResult(pr);
+		this.setDatabase(pr.getDatabase());
+		this.setMeta(pr.getMetaData());	
 		
-		BasePanel bp = new BasePanel(getJabrefFrame(), db, file, meta, pr.getEncoding());
+		BasePanel bp = new BasePanel(getJabrefFrame(), database, file, meta, pr.getEncoding());
 	
 		// file is set to null inside the EventDispatcherThread
 		//SwingUtilities.invokeLater(new OpenItSwingHelper(bp, file, raisePanel));
@@ -79,9 +83,15 @@ public class JabrefWrapper extends JabRef  {
 		
 		System.out.println(Globals.lang("Opened database") + " '" + fileName +
 		"' " + Globals.lang("with") + " " +
-		db.getEntryCount() + " " + Globals.lang("entries") + ".");
+		database.getEntryCount() + " " + Globals.lang("entries") + ".");
 		
 		return bp;
+	}
+	
+	public void updateDatabase(BibtexDatabase database) {
+		this.setDatabase(database);
+		BasePanel basePanel = new BasePanel(getJabrefFrame(), database, this.getFile(), this.getMeta(), this.parserResult.getEncoding());
+		JabRefFrame.setBasePanel(basePanel);		
 	}
 	
 	public void openIt(File file, boolean raisePanel) {
@@ -120,12 +130,9 @@ public class JabrefWrapper extends JabRef  {
 
                 }
                 ParserResult pr;
-                String errorMessage = null;
                 try {
                     pr = OpenDatabaseAction.loadDatabase(fileToLoad, encoding);
                 } catch (Exception ex) {
-                    //ex.printStackTrace();
-                    errorMessage = ex.getMessage();
                     pr = null;
                 }
                 if ((pr == null) || (pr == ParserResult.INVALID_FORMAT)) {
@@ -179,6 +186,30 @@ public class JabrefWrapper extends JabRef  {
 
 	public void setDatabase(BibtexDatabase database) {
 		this.database = database;
+	}
+
+	public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
+	}
+
+	public ParserResult getParserResult() {
+		return parserResult;
+	}
+
+	public void setParserResult(ParserResult parserResult) {
+		this.parserResult = parserResult;
+	}
+
+	public HashMap<String, String> getMeta() {
+		return meta;
+	}
+
+	public void setMeta(HashMap<String, String> meta) {
+		this.meta = meta;
 	}
 	
 }

@@ -12,6 +12,7 @@ import net.sf.jabref.BibtexEntryType;
 import net.sf.jabref.EntryTypeDialog;
 import net.sf.jabref.export.DocearSaveDatabaseAction;
 
+import org.docear.plugin.bibtex.JabRefAttributes;
 import org.docear.plugin.bibtex.ReferencesController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.mode.Controller;
@@ -36,7 +37,7 @@ public class AddNewReferenceAction extends AFreeplaneAction {
 		if(e.getActionCommand().equals(DocearSaveDatabaseAction.JABREF_DATABASE_SAVE_SUCCESS)) {			
 			try {
 				BibtexEntry entry = (BibtexEntry) e.getSource();
-				ReferenceUtils.addReferenceToNode(entry);
+				ReferencesController.getController().getJabRefAttributes().addReferenceToNode(entry);
 			}
 			catch(Exception ex) {
 				ex.printStackTrace();

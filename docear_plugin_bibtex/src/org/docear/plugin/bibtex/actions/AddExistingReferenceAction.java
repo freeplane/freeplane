@@ -12,6 +12,7 @@ import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.bst.BibtexTextPrefix;
 import net.sf.jabref.journals.JournalAbbreviations;
 
+import org.docear.plugin.bibtex.JabRefAttributes;
 import org.docear.plugin.bibtex.ReferencesController;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -75,7 +76,7 @@ public class AddExistingReferenceAction extends AFreeplaneAction {
 		super(key);
 	}
 
-	public void actionPerformed(ActionEvent arg0) {
+	public void actionPerformed(ActionEvent arg0) {		
 		BibtexDatabase db = ReferencesController.getController().getJabrefWrapper().getDatabase();
 
 		TreeSet<SelectItem> bibtexKeys = new TreeSet<SelectItem>();
@@ -90,7 +91,7 @@ public class AddExistingReferenceAction extends AFreeplaneAction {
 		if (item != null) {
 			try {	
 				BibtexEntry entry = db.getEntryByKey(item.getValue());
-				ReferenceUtils.addReferenceToNode(entry);			
+				ReferencesController.getController().getJabRefAttributes().addReferenceToNode(entry);			
 			}
 			catch (NullPointerException e) {
 				JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(),
