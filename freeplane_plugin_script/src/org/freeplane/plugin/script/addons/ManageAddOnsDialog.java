@@ -3,6 +3,7 @@ package org.freeplane.plugin.script.addons;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -21,6 +22,7 @@ import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -30,6 +32,7 @@ import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -51,6 +54,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.FreeplaneIconUtils;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
@@ -71,7 +75,7 @@ public class ManageAddOnsDialog extends JDialog {
 
 		private AddOnTableModel(String[] columnNames, List<AddOnProperties> addOns) {
 			this.columnNames = columnNames;
-			this.addOns = addOns;
+			this.addOns = new ArrayList<AddOnProperties>(addOns);
 		}
 
 		public String getColumnName(int col) {
@@ -90,12 +94,10 @@ public class ManageAddOnsDialog extends JDialog {
 			AddOnProperties addOn = addOns.get(row);
 			switch (col) {
 				case 0:
-					return addOn.getTranslatedName();
+					return addOn.getTranslatedName() + " " + addOn.getVersion().replaceAll("^v", "");
 				case 1:
-					return addOn.getVersion();
+					return HtmlUtils.htmlToPlain(addOn.getDescription());
 				case 2:
-					return addOn.getDescription();
-				case 3:
 					return "";
 				default:
 					throw new RuntimeException("unexpected column " + col);
@@ -112,6 +114,10 @@ public class ManageAddOnsDialog extends JDialog {
 
 		public AddOnProperties getAddOnAt(int row) {
 			return addOns.get(row);
+		}
+		
+		public void addAddOn(final AddOnProperties addOn) {
+			addOns.add(addOn);
 		}
 	}
 
@@ -137,16 +143,17 @@ public class ManageAddOnsDialog extends JDialog {
 
 	private void createPane(final List<AddOnProperties> addOns) {
 		getContentPane().setLayout(new BorderLayout());
-		final JTable jTable = createTable(createTableModel(addOns));
+		final AddOnTableModel tableModel = createTableModel(addOns);
+		final JTable jTable = createTable(tableModel);
 		JScrollPane scrollPane = new JScrollPane(jTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 		    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		add(scrollPane, BorderLayout.CENTER);
-		add(createInstaller(), BorderLayout.SOUTH);
+		add(createInstaller(tableModel), BorderLayout.SOUTH);
 		UITools.focusOn(jTable);
 		pack();
 	}
 
-	private Box createInstaller() {
+	private Box createInstaller(final AddOnTableModel tableModel) {
 		final Box installer = Box.createHorizontalBox();
 		final JButton install = new JButton();
 		MenuBuilder.setLabelAndMnemonic(install, getText("install"));
@@ -175,6 +182,7 @@ public class ManageAddOnsDialog extends JDialog {
 			public void keyPressed(KeyEvent e) {
 				int key = e.getKeyCode();
 				if (key == KeyEvent.VK_ENTER) {
+					install.requestFocusInWindow();
 					install.doClick();
 				}
 			}
@@ -216,9 +224,12 @@ public class ManageAddOnsDialog extends JDialog {
 					if (addOn != null) {
 						addOn.setSourceUrl(sourceUrl);
 						setStatusInfo(getText("status.success", addOn.getName()));
+						AddOnsController.getController().registerInstalledAddOn(addOn);
+						tableModel.addOns.add(addOn);
+						urlField.setText("");
+						getContentPane().repaint();
 					}
 					Controller.getCurrentController().getMapViewManager().close(true);
-					//					restartTransaction(oldMap, newMap);
 				}
 				catch (Exception ex) {
 					UITools.errorMessage(getText("error", ex.toString()));
@@ -258,8 +269,7 @@ public class ManageAddOnsDialog extends JDialog {
 	}
 
 	private AddOnTableModel createTableModel(final List<AddOnProperties> addOns) {
-		final String[] columnNames = new String[] { getText("name"), getText("version"), getText("description"),
-		        getText("actions") };
+		final String[] columnNames = new String[] { getText("name"), getText("description"), getText("actions") };
 		return new AddOnTableModel(columnNames, addOns);
 	}
 
@@ -270,11 +280,10 @@ public class ManageAddOnsDialog extends JDialog {
 		table.setRowHeight(36);
 		table.setBackground(Color.white);
 		final TableColumnModel columnModel = table.getColumnModel();
-		columnModel.getColumn(0).setPreferredWidth(150);
-		columnModel.getColumn(1).setPreferredWidth(40);
+		columnModel.getColumn(0).setPreferredWidth(120);
 		// FIXME: set tooltip
-		columnModel.getColumn(2).setPreferredWidth(270);
-		columnModel.getColumn(3).setPreferredWidth(300);
+		columnModel.getColumn(1).setPreferredWidth(320);
+		columnModel.getColumn(2).setMinWidth(300);
 		JButton[] btns = new JButton[] { createButton(AddOnProperties.OP_CONFIGURE) //
 		        , createButton(AddOnProperties.OP_DEACTIVATE) //
 		        , createButton(AddOnProperties.OP_ACTIVATE) //
@@ -285,7 +294,9 @@ public class ManageAddOnsDialog extends JDialog {
 		        , createActivateAction(tableModel) //
 		        , createDeinstallAction(tableModel) //
 		};
-		new ButtonsInCellRenderer(table, btns, actions, 3);
+		new ButtonsInCellRenderer(table, btns, actions, 2);
+		table.setPreferredSize(new Dimension(800, 200));
+		table.setFocusable(false);
 		return table;
 	}
 
@@ -349,8 +360,15 @@ public class ManageAddOnsDialog extends JDialog {
 					UITools.errorMessage(getText("cannot.deinstall", addOn.getTranslatedName()));
 				}
 				else {
-					AddOnsController.getController().deInstall(addOn);
-					UITools.informationMessage(getText("deinstallation.success", addOn.getTranslatedName()));
+					int result = UITools.showConfirmDialog(null,
+					    getText("really.deinstall", TextUtils.getText(addOn.getNameKey())), getText("deinstall"),
+					    JOptionPane.OK_CANCEL_OPTION);
+					if (result == JOptionPane.OK_OPTION) {
+						AddOnsController.getController().deInstall(addOn);
+						tableModel.addOns.remove(addOn);
+						getContentPane().repaint();
+						UITools.informationMessage(getText("deinstallation.success", addOn.getTranslatedName()));
+					}
 				}
 			}
 		};
