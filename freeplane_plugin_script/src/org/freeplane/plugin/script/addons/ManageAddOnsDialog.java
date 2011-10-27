@@ -306,12 +306,12 @@ public class ManageAddOnsDialog extends JDialog {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);
 				if (!addOn.supportsOperation(AddOnProperties.OP_CONFIGURE)) {
-					UITools.errorMessage(getText("cannot.configure", addOn.getTranslatedName()));
+					JOptionPane.showMessageDialog(ManageAddOnsDialog.this, getText("cannot.configure", addOn.getTranslatedName()), "Freeplane", JOptionPane.ERROR_MESSAGE);
 				}
 				else {
 					OptionPanelBuilder optionPanelBuilder = new OptionPanelBuilder();
 					optionPanelBuilder.load(new StringReader(addOn.getPreferencesXml()));
-					MModeController.createPropertyAction(optionPanelBuilder).actionPerformed(null);
+					MModeController.createPropertyAction(optionPanelBuilder).actionPerformed(e);
 				}
 			}
 		};
@@ -323,12 +323,12 @@ public class ManageAddOnsDialog extends JDialog {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);
 				if (!addOn.supportsOperation(AddOnProperties.OP_DEACTIVATE)) {
-					UITools.errorMessage(getText("cannot.deactivate", addOn.getTranslatedName()));
+					JOptionPane.showMessageDialog(ManageAddOnsDialog.this, getText("cannot.deactivate", addOn.getTranslatedName()), "Freeplane", JOptionPane.ERROR_MESSAGE);
 				}
 				else {
 					addOn.setActive(false);
 					saveAddOn(addOn);
-					UITools.informationMessage(getText("deactivation.success", addOn.getTranslatedName()));
+					JOptionPane.showMessageDialog(ManageAddOnsDialog.this, getText("deactivation.success", addOn.getTranslatedName()), "Freeplane", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		};
@@ -340,12 +340,12 @@ public class ManageAddOnsDialog extends JDialog {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);
 				if (!addOn.supportsOperation(AddOnProperties.OP_ACTIVATE)) {
-					UITools.errorMessage(getText("cannot.activate", addOn.getTranslatedName()));
+					JOptionPane.showMessageDialog(ManageAddOnsDialog.this, getText("cannot.activate", addOn.getTranslatedName()), "Freeplane", JOptionPane.ERROR_MESSAGE);
 				}
 				else {
 					addOn.setActive(true);
 					saveAddOn(addOn);
-					UITools.informationMessage(getText("activation.success", addOn.getTranslatedName()));
+					JOptionPane.showMessageDialog(ManageAddOnsDialog.this, getText("activation.success", addOn.getTranslatedName()), "Freeplane", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		};
@@ -360,7 +360,7 @@ public class ManageAddOnsDialog extends JDialog {
 					UITools.errorMessage(getText("cannot.deinstall", addOn.getTranslatedName()));
 				}
 				else {
-					int result = UITools.showConfirmDialog(null,
+					int result = JOptionPane.showConfirmDialog(ManageAddOnsDialog.this,
 					    getText("really.deinstall", TextUtils.getText(addOn.getNameKey())), getText("deinstall"),
 					    JOptionPane.OK_CANCEL_OPTION);
 					if (result == JOptionPane.OK_OPTION) {

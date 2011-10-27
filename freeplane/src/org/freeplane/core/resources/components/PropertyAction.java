@@ -19,6 +19,10 @@
  */
 package org.freeplane.core.resources.components;
 
+import java.awt.Component;
+import java.awt.Dialog;
+import java.awt.Frame;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -28,6 +32,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -56,8 +61,25 @@ public class PropertyAction extends AFreeplaneAction {
 		this.controls = controls;
 	}
 
-	public void actionPerformed(final ActionEvent arg0) {
-		final JDialog dialog = new JDialog(UITools.getFrame(), true /* modal */);
+	public void actionPerformed(final ActionEvent e) {
+		final JDialog dialog;
+		if(e == null){
+			dialog= new JDialog(UITools.getFrame(), true /* modal */);
+		}
+		else{
+			final Object source = e.getSource();
+			if(source instanceof Component){
+				final Window window = SwingUtilities.getWindowAncestor((Component) source);
+				if(window instanceof Frame){
+					dialog= new JDialog((Frame)window, true /* modal */);
+				}
+				else {
+					dialog= new JDialog((Dialog)window, true /* modal */);
+				}
+			}
+			else
+				dialog= new JDialog(UITools.getFrame(), true /* modal */);
+		}
 		dialog.setResizable(true);
 		dialog.setUndecorated(false);
 		final OptionPanel options = new OptionPanel(dialog, new IOptionPanelFeedback() {
