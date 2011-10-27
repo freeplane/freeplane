@@ -15,6 +15,9 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComponent;
@@ -23,7 +26,9 @@ import javax.swing.TransferHandler;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
+import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.io.StringOutputStream;
 import org.freeplane.plugin.workspace.view.WorkspaceNodeRenderer;
 /**
  * 
@@ -38,7 +43,8 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 	private static final Insets DEFAULT_INSETS = new Insets(20, 20, 20, 20);
 
 	private JTree tree;
-	private IWorkspaceDragnDropController controller;
+	private final IWorkspaceDragnDropController controller;
+	private final IDropTargetDispatcher dispatcher;
 
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -46,7 +52,8 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 
 	public WorkspaceTransferHandler(JTree tree, IWorkspaceDragnDropController controller, int action, boolean drawIcon) {
 		this.controller = controller;
-
+		this.dispatcher = new DefaultWorkspaceDroptTargetDispatcher();
+		
 		this.tree = tree;
 		this.tree.setTransferHandler(this);
 		this.tree.setDragEnabled(true);
@@ -74,18 +81,30 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 		}
 	}
 
-	public Transferable createTransferable(JComponent comp) {
-		System.out.println("createTransferable for " + comp);
+	public Transferable createTransferable(JComponent comp) {		
+		StringOutputStream writer = new StringOutputStream();
+		List<IndexedTree.Node> objectList = new ArrayList<IndexedTree.Node>();
 		if (comp instanceof JTree) {
 			JTree t = (JTree) comp;
+			//FIXME: prepare for multiple node selection
 			for (TreePath p : t.getSelectionPaths()) {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) p.getLastPathComponent();
 				if (node.getUserObject() instanceof IWorkspaceTransferableCreator) {
 					return ((IWorkspaceTransferableCreator)node.getUserObject()).getTransferable();
 				}
+				try {
+					ObjectOutputStream oos = new ObjectOutputStream(writer);
+					oos.writeObject(node);
+					objectList.add((IndexedTree.Node) node);
+				}
+				catch (IOException e) {
+				}
 			}
-		}
-		return new WorkspaceTransferable(WorkspaceTransferable.WORKSPACE_SERIALIZED_FLAVOR, "");
+		}	
+		
+		WorkspaceTransferable transferable = new WorkspaceTransferable(WorkspaceTransferable.WORKSPACE_SERIALIZED_FLAVOR, writer.getString());
+		transferable.addData(WorkspaceTransferable.WORKSPACE_NODE_FLAVOR, objectList);
+		return transferable;
 
 	}
 
@@ -124,6 +143,11 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 		if(WorkspaceController.getController().getWorkspaceViewTree().getPathForLocation(event.getLocation().x, event.getLocation().y) == null) {
 			return;
 		}
+		// new method to handle drop events
+		if(this.dispatcher.dispatchDropEvent(event)) {
+			return;
+		}
+		//FIXME: remove/comment out the following code if new drop handling works, maybe leave some fall back routines
 		System.out.println("drop: " + event.getSource());
 		if(controller.canPerformAction(event)) {
 			if(controller.executeDrop(event)) {

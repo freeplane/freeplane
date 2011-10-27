@@ -3,6 +3,7 @@ package org.freeplane.plugin.workspace.config.node;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.freeplane.n3.nanoxml.XMLElement;
+import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 
 
@@ -13,6 +14,7 @@ public abstract class AWorkspaceNode {
 	private int currentMode;
 	private final String type;
 	private boolean system = false;
+	private String key;
 	
 	public AWorkspaceNode(final String type) {
 		this.type = type;
@@ -30,6 +32,13 @@ public abstract class AWorkspaceNode {
 	public final String getId() {
 		return Integer.toHexString(getName() == null ? "".hashCode() : getName().hashCode()).toUpperCase();
 		//return Integer.toHexString(super.toString().hashCode()).toUpperCase();
+	}
+	
+	public final String getKey() {
+		if(key == null) {
+			key = WorkspaceController.getController().getIndexTree().getKeyByUserObject(this).toString();
+		}
+		return key;
 	}
 	
 	
@@ -68,6 +77,8 @@ public abstract class AWorkspaceNode {
 	
 	abstract public String getTagName();
 	
+	//abstract public Object clone();
+	
 	abstract public void initializePopup();
 	
 	public void setMandatoryAttributes(XMLElement data) {
@@ -75,14 +86,5 @@ public abstract class AWorkspaceNode {
 		if (system.equals("true")) {
 			setSystem(true);
 		}
-	}
-	
-
-	/**
-	 * @param renderer
-	 * @param node
-	 */
-	
-
-	
+	}	
 }

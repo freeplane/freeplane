@@ -17,7 +17,6 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import org.apache.commons.io.monitor.FileAlterationListener;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
-import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.node.FolderNode;
@@ -41,14 +40,7 @@ public class FolderTypeProjectsNode extends FolderNode implements IWorkspaceNode
 	
 	public FolderTypeProjectsNode(String type) {
 		super(type);
-		monitor = new FileAlterationMonitor(10000);
-		try {
-			monitor.start();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		// TODO Auto-generated constructor stub
+		monitor = new FileAlterationMonitor(10000);		
 	}
 	
 	/***********************************************************************************
@@ -67,18 +59,20 @@ public class FolderTypeProjectsNode extends FolderNode implements IWorkspaceNode
 	}
 	
 	public void enableMonitoring(boolean enable) {
-		this.doMonitoring = enable;
-		try {		
-			if(enable) {
-				monitor.start();
-				
+		if(enable != this.doMonitoring) {
+			this.doMonitoring = enable;
+			try {		
+				if(enable) {
+					monitor.start();
+					
+				}
+				else {
+					monitor.stop();
+				}
+			} 
+			catch (Exception e) {
+				e.printStackTrace();
 			}
-			else {
-				monitor.stop();
-			}
-		} 
-		catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 	
@@ -107,28 +101,7 @@ public class FolderTypeProjectsNode extends FolderNode implements IWorkspaceNode
 		}
 		
 	}
-	
-	private void rescanFolder() {
-		IndexedTree indexTree = WorkspaceController.getController().getIndexTree();
-		String key = (String) indexTree.getKeyByUserObject(this);
-		if(key == null) {
-			//FIXME: DOCEAR> remove this node from "Controller.getCurrentController().getResourceController().removePropertyChangeListener(this);" !!!ConcurrentModificationException
-			return;
-		}
-		final DefaultMutableTreeNode node = indexTree.get(key);
-		try {
-			File file = WorkspaceUtils.resolveURI(getPathURI());
-			if (file != null) {
-				WorkspaceController.getController().getIndexTree().removeChildElements(key);
-				WorkspaceController.getController().getFilesystemReader().scanFilesystem(key, file);
-				WorkspaceController.getController().getViewModel().reload(node);
-			}			
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
+		
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
@@ -151,7 +124,7 @@ public class FolderTypeProjectsNode extends FolderNode implements IWorkspaceNode
 	 */
 	public void onStart(FileAlterationObserver observer) {
 		// TODO Auto-generated method stub
-		//System.out.println("onStart: " + observer);
+		//System.out.println("checking " + observer.getDirectory());
 	}
 
 	/**
@@ -159,7 +132,8 @@ public class FolderTypeProjectsNode extends FolderNode implements IWorkspaceNode
 	 */
 	public void onDirectoryCreate(File directory) {
 		// TODO Auto-generated method stub
-		System.out.println("onDirectoryCreate: " + directory);		
+		System.out.println("onDirectoryCreate: " + directory);
+		refresh();
 	}
 
 	/**
@@ -167,7 +141,8 @@ public class FolderTypeProjectsNode extends FolderNode implements IWorkspaceNode
 	 */
 	public void onDirectoryChange(File directory) {
 		// TODO Auto-generated method stub
-		System.out.println("onDirectoryChange: " + directory);	
+		System.out.println("onDirectoryChange: " + directory);
+		refresh();
 	}
 
 	/**
@@ -175,7 +150,8 @@ public class FolderTypeProjectsNode extends FolderNode implements IWorkspaceNode
 	 */
 	public void onDirectoryDelete(File directory) {
 		// TODO Auto-generated method stub
-		System.out.println("onDirectoryDelete: " + directory);	
+		System.out.println("onDirectoryDelete: " + directory);
+		refresh();
 	}
 
 	/**
@@ -184,7 +160,7 @@ public class FolderTypeProjectsNode extends FolderNode implements IWorkspaceNode
 	public void onFileCreate(File file) {
 		// TODO Auto-generated method stub
 		System.out.println("onFileCreate: " + file);
-		rescanFolder();
+		refresh();
 	}
 
 	/**
@@ -192,7 +168,8 @@ public class FolderTypeProjectsNode extends FolderNode implements IWorkspaceNode
 	 */
 	public void onFileChange(File file) {
 		// TODO Auto-generated method stub
-		System.out.println("onFileChange: " + file);	
+		System.out.println("onFileChange: " + file);
+		refresh();
 	}
 
 	/**
@@ -200,7 +177,8 @@ public class FolderTypeProjectsNode extends FolderNode implements IWorkspaceNode
 	 */
 	public void onFileDelete(File file) {
 		// TODO Auto-generated method stub
-		System.out.println("onFileDelete: " + file);	
+		System.out.println("onFileDelete: " + file);
+		refresh();
 	}
 
 	/**
@@ -208,6 +186,28 @@ public class FolderTypeProjectsNode extends FolderNode implements IWorkspaceNode
 	 */
 	public void onStop(FileAlterationObserver observer) {
 		// TODO Auto-generated method stub
-		//System.out.println("onStop: " + observer);	
+		//System.out.println("onStop: " + observer.getDirectory());	
 	}
+
+	
+	public void refresh() {
+		if(getKey() == null) {
+			//FIXME: DOCEAR> remove this node from "Controller.getCurrentController().getResourceController().removePropertyChangeListener(this);" !!!ConcurrentModificationException
+			return;
+		}
+		final DefaultMutableTreeNode node = WorkspaceController.getController().getIndexTree().get(getKey());
+		try {
+			File file = WorkspaceUtils.resolveURI(getPathURI());
+			if (file != null) {
+				WorkspaceController.getController().getIndexTree().removeChildElements(getKey());
+				WorkspaceController.getController().getFilesystemReader().scanFilesystem(getKey(), file);
+				WorkspaceController.getController().getViewModel().reload(node);
+			}			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	
 }
