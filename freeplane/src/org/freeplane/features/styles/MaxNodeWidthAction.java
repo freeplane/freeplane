@@ -9,7 +9,6 @@ import javax.swing.SpinnerNumberModel;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 
@@ -33,14 +32,6 @@ public class MaxNodeWidthAction extends AFreeplaneAction {
 		}
 		final MapStyle mapStyle = (MapStyle) Controller.getCurrentModeController().getExtension(MapStyle.class);
 		final Integer newWidth = (Integer) spinner.getValue();
-		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(Controller.getCurrentController().getMap());
-		if (newWidth < mapStyleModel.getMinNodeWidth()){
-			final String minWidthError = TextUtils.getRawText("MaxNodeWidthInvalid.text");
-			final String message =minWidthError.replaceFirst("\\{0\\}", Integer.toString( mapStyleModel.getMinNodeWidth()));
-			JOptionPane.showMessageDialog(null, message, TextUtils.getRawText("error"), JOptionPane.WARNING_MESSAGE);
-		}
-		else {
-			mapStyle.setMaxNodeWidth(map, newWidth);
-		}
+		mapStyle.setMaxNodeWidth(map, newWidth);
 	}
 }

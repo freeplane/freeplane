@@ -153,9 +153,14 @@ public class ScannerController implements IExtension {
 	}
 
 	void loadScanners() throws Exception {
+		final File configXml = new File(pathToFile);
+		if (!configXml.exists()) {
+			LogUtils.info(pathToFile + " does not exist yet");
+			return;
+		}
 		try {
 			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
-			final IXMLReader reader = new StdXMLReader(new BufferedInputStream(new FileInputStream(pathToFile)));
+			final IXMLReader reader = new StdXMLReader(new BufferedInputStream(new FileInputStream(configXml)));
 			parser.setReader(reader);
 			final XMLElement loader = (XMLElement) parser.parse();
 			final Vector<XMLElement> scannerElements = loader.getChildren();
@@ -166,16 +171,16 @@ public class ScannerController implements IExtension {
 			for (Scanner scanner : scanners) {
 				if (scanner.isDefault()) {
 					if (haveDefault)
-						LogUtils.warn(pathToFile + ": multiple scanners are marked as default - fix that!");
+						LogUtils.warn(configXml + ": multiple scanners are marked as default - fix that!");
 					else
 						haveDefault = true;
 				}
 			}
 			if (!haveDefault)
-				LogUtils.warn(pathToFile + ": no scanner is marked as default - fix that!");
+				LogUtils.warn(configXml + ": no scanner is marked as default - fix that!");
 		}
 		catch (final IOException e) {
-			LogUtils.warn("error parsing " + pathToFile, e);
+			LogUtils.warn("error parsing " + configXml, e);
 		}
 	}
 

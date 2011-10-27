@@ -31,7 +31,6 @@ import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodelocation.LocationModel;
-import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.view.swing.map.cloud.CloudView;
 

@@ -29,7 +29,7 @@ public class AddOnProperties {
 	public static final String OP_DEINSTALL = "deinstall";
 
 	private final AddOnType addOnType;
-	private boolean active;
+	private boolean active = true;
 	private String name;
 	private String version;
 	private FreeplaneVersion freeplaneVersionFrom;

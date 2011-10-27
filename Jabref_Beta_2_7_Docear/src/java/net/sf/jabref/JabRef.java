@@ -874,15 +874,21 @@ public class JabRef {
      */
     private void startSidePanePlugins(JabRefFrame jrf) {
 
-        JabRefPlugin jabrefPlugin = JabRefPlugin.getInstance(PluginCore.getManager());
-        List<_JabRefPlugin.SidePanePluginExtension> plugins = jabrefPlugin.getSidePanePluginExtensions();
-        for (_JabRefPlugin.SidePanePluginExtension extension : plugins) {
-            SidePanePlugin plugin = extension.getSidePanePlugin();
-            plugin.init(jrf, jrf.sidePaneManager);
-            SidePaneComponent comp = plugin.getSidePaneComponent();
-            jrf.sidePaneManager.register(comp.getName(), comp);
-            jrf.addPluginMenuItem(plugin.getMenuItem());
-        }
+    	try {
+	        JabRefPlugin jabrefPlugin = JabRefPlugin.getInstance(PluginCore.getManager());
+	        
+	        List<_JabRefPlugin.SidePanePluginExtension> plugins = jabrefPlugin.getSidePanePluginExtensions();
+	        for (_JabRefPlugin.SidePanePluginExtension extension : plugins) {
+	            SidePanePlugin plugin = extension.getSidePanePlugin();
+	            plugin.init(jrf, jrf.sidePaneManager);
+	            SidePaneComponent comp = plugin.getSidePaneComponent();
+	            jrf.sidePaneManager.register(comp.getName(), comp);
+	            jrf.addPluginMenuItem(plugin.getMenuItem());
+	        }
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
     }
 
     public static ParserResult openBibFile(String name, boolean ignoreAutosave) {

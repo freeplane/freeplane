@@ -1186,6 +1186,10 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	private void repaintEdge(final NodeView target) {
+		if (target.getMap().getLayoutType() == MapViewLayout.OUTLINE){
+			target.getVisibleParentView().repaint();
+			return;
+		}
 		final Point relativeLocation = getRelativeLocation(target);
         final MainView targetMainView = target.getMainView();
         relativeLocation.x += targetMainView.getWidth()/2;

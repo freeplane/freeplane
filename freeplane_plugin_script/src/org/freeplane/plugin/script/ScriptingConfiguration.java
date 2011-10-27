@@ -87,9 +87,8 @@ class ScriptingConfiguration {
 			executionModeLocationMap.clear();
 		}
 
-		public String getMenuLocation(final ExecutionMode executionMode, final String scriptsParentLocation) {
-			final String specialLocation = executionModeLocationMap.get(executionMode);
-			return specialLocation == null ? scriptsParentLocation + "/scripts" + "/" + scriptName : specialLocation;
+		protected String getMenuLocation(final ExecutionMode executionMode) {
+			return executionModeLocationMap.get(executionMode);
 		}
 
 		public String getTitleKey(final ExecutionMode executionMode) {
@@ -157,6 +156,7 @@ class ScriptingConfiguration {
 	        	final ScriptAddOnProperties scriptAddOnProperties = (ScriptAddOnProperties) addOnProperties;
 	        	final List<Script> scripts = scriptAddOnProperties.getScripts();
 	        	for (Script script : scripts) {
+	        		script.active = addOnProperties.isActive();
 	        		result.put(script.file, script);
                 }
 	        }
@@ -176,9 +176,8 @@ class ScriptingConfiguration {
 
 	private File getBuiltinScriptsDir() {
 		if (builtinScriptsDir == null) {
-			final ResourceController resourceController = ResourceController.getResourceController();
-			final String rootDir = new File(resourceController.getResourceBaseDir()).getAbsoluteFile().getParent();
-			builtinScriptsDir = new File(rootDir, "scripts");
+			final String installationBase = ResourceController.getResourceController().getInstallationBaseDir();
+			builtinScriptsDir = new File(installationBase, "scripts");
 		}
 		return builtinScriptsDir;
 	}
@@ -218,6 +217,10 @@ class ScriptingConfiguration {
 
 	private void addScript(final File file, final Map<File, Script> addOnScriptMap) {
 		final Script scriptConfig = addOnScriptMap.get(file);
+		if (scriptConfig != null && !scriptConfig.active) {
+			LogUtils.info("skipping deactivated " + scriptConfig);
+			return;
+		}
 		final String scriptName = getScriptName(file, scriptConfig);
 		String name = scriptName;
 		// add suffix if the same script exists in multiple dirs

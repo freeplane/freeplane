@@ -72,7 +72,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 		if (listeners == null) {
 			listeners = new HashSet<TableModelListener>();
 		}
-		listeners.add(listener);
+		listeners.add(listener);		
 	}
 
 	private void allocateAttributes(final int size) {

@@ -42,14 +42,14 @@ public class SHTMLEditLinkAction extends AFreeplaneAction implements SHTMLAction
             	linkAsString = href.toString();
             }
             else
-            	linkAsString = "";
+            	linkAsString = "http://";
         }
         else {
-            linkAsString = "";
+            linkAsString = "http://";
         }
 		final String inputValue = UITools.showInputDialog(
 		    Controller.getCurrentController().getSelection().getSelected(), TextUtils.getText("edit_link_manually"), linkAsString);
-		if (inputValue != null) {
+		if (inputValue != null && ! inputValue.matches("\\w+://")) {
 			SHTMLEditorPane editor = panel.getSHTMLEditorPane();
 			if (inputValue.equals("")) {
 				editor.setLink(null, null, null);

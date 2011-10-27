@@ -64,11 +64,6 @@
 			<menu_submenu name="menu_title" name_ref="menu_title">
 				<menu_action action="EditAction" accelerator="F2" />
 				<menu_action action="EditLongAction" accelerator="alt ENTER" />
-				<menu_submenu name="latex_formula" name_ref="menu_latex_formula">
-					<menu_action action="LatexInsertLatexAction" plugin="org.freeplane.plugin.latex"/>
-					<menu_action action="LatexEditLatexAction" plugin="org.freeplane.plugin.latex"/>
-					<menu_action action="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex"/>
-				</menu_submenu>
 				<menu_action action="JoinNodesAction" accelerator="control J" ></menu_action>
 				<menu_action action="SplitNode" />
 				<menu_separator />
@@ -120,6 +115,10 @@
 					<menu_action action="attributes_RemoveAllAttributesAction"/>
 				</menu_submenu>
 				<menu_action action="ShowAttributeDialogAction" />
+				<menu_separator/>
+				<menu_action action="LatexInsertLatexAction" plugin="org.freeplane.plugin.latex"/>
+				<menu_action action="LatexEditLatexAction" plugin="org.freeplane.plugin.latex"/>
+				<menu_action action="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex"/>
 			</menu_submenu>			
 			<menu_submenu name="notes" name_ref="menu_notes">
 				<menu_action action="EditNoteInDialogAction" />
@@ -133,6 +132,7 @@
 				<menu_action action="CopyAction" accelerator="control C" />
 				<menu_action action="CopySingleAction" accelerator="control shift C" />
 				<menu_action action="CopyIDAction" />
+				<menu_action action="CopyNodeURIAction" />
 			</menu_submenu>
 				<menu_action action="PasteAction" accelerator="control V" />
 				<menu_action action="SelectedPasteAction" />
@@ -363,6 +363,7 @@
 			<menu_separator />
 			<menu_category name="first">
 				<menu_category name="options">					
+					<menu_action action="ManageAddOnsAction" plugin="org.freeplane.plugin.script"/>
 					<menu_action action="SetAcceleratorOnNextClickAction" />
 					<menu_submenu name="acceleratorPresets" name_ref="acceleratorPresets">
 						<menu_category name="new" menu_key="main_menu_new_accelerator_presets"/>
@@ -375,7 +376,6 @@
 					<menu_action action="ExecuteScriptForSelectionAction" plugin="org.freeplane.plugin.script"/>
 					<menu_action action="ExecuteScriptForAllNodes" plugin="org.freeplane.plugin.script"/>					
 					<menu_action action="ScriptEditor" plugin="org.freeplane.plugin.script"/>					
-					<menu_action action="ManageAddOnsAction" plugin="org.freeplane.plugin.script"/>
 				</menu_category>
 				<menu_separator />
 				<menu_submenu name="formula" name_ref="formula.menuname" plugin="org.freeplane.plugin.formula">
@@ -470,6 +470,7 @@
 		<menu_action action="CopyAction" accelerator="control C" />
 		<menu_action action="CopySingleAction" accelerator="control shift C" />
 		<menu_action action="CopyIDAction" />
+		<menu_action action="CopyNodeURIAction" />
 		<menu_action action="PasteAction" accelerator="control V" />
 		<menu_action action="SortNodes" />
 		<menu_action action="UndoAction" />

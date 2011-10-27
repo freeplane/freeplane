@@ -62,16 +62,14 @@ public class DocearPasteAction extends AFreeplaneAction {
 	            	boolean importAnnotations = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.AUTO_IMPORT_ANNOTATIONS_KEY);
 	                if(pdfFileFilter.accept(file) && importAnnotations){
 	                	PdfAnnotationImporter importer = new PdfAnnotationImporter();
-	                    List<AnnotationModel> annotations = importer.importAnnotations(file.toURI());
-	                    NodeUtils nodeUtils = new NodeUtils();	                    
-	                    nodeUtils.insertChildNodesFromPdf(file.toURI(), annotations, parent.isNewChildLeft(), parent);
+	                    List<AnnotationModel> annotations = importer.importAnnotations(file.toURI());	                                     
+	                    NodeUtils.insertChildNodesFromPdf(file.toURI(), annotations, parent.isNewChildLeft(), parent);
 	                }
 	                else{	                	
 	        			ModeController modeController = Controller.getCurrentModeController();
 	        			ViewerController viewerController = ((ViewerController)modeController.getExtension(ViewerController.class));
 	        			if(!viewerController.paste(file, parent, parent.isNewChildLeft())){
-	        				NodeUtils nodeUtils = new NodeUtils();
-	        				nodeUtils.insertChildNodeFrom(file.toURI(), parent.isNewChildLeft(), parent, null);
+	        				NodeUtils.insertChildNodeFrom(file.toURI(), parent.isNewChildLeft(), parent, null);
 	        			}
 	                }
 	            }

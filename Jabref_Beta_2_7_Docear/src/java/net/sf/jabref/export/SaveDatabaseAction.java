@@ -20,7 +20,7 @@ import java.util.Vector;
  * Callers can query whether the operation was cancelled, or whether it was successful.
  */
 public class SaveDatabaseAction extends AbstractWorker {
-    private BasePanel panel;
+    protected BasePanel panel;
     private JabRefFrame frame;
     private boolean success = false, cancelled = false, fileLockedError = false;
 

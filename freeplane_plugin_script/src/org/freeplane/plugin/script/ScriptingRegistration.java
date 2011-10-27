@@ -258,16 +258,32 @@ class ScriptingRegistration {
 				// in the worst case three actions will cache a script - should not matter that much since it's unlikely
 				// that one script is used in multiple modes by the same user
 				for (final ExecutionMode executionMode : metaData.getExecutionModes()) {
-					final String location = metaData.getMenuLocation(executionMode, scriptsParentLocation);
-					if (!registeredLocations.contains(location)) {
-						addSubMenu(menuBuilder, scriptsLocation, location, scriptName);
-						registeredLocations.add(location);
+					final String titleKey;
+					final String scriptLocation;
+					String location = metaData.getMenuLocation(executionMode);
+					// FIXME: reduce code duplication (VB)
+					if (location == null) {
+						location = scriptsLocation + "/" + scriptName;
+						if (!registeredLocations.contains(location)) {
+							final String parentMenuTitle = pimpMenuTitle(metaData.getScriptName());
+							addSubMenu(menuBuilder, parentLocation(location), location, parentMenuTitle);
+							registeredLocations.add(location);
+						}
+						titleKey = metaData.getTitleKey(executionMode);
+						scriptLocation = location + "/" + titleKey;
 					}
-					final String titleKey = metaData.getTitleKey(executionMode);
-					final String scriptLocation = location + "/" + scriptName + "/" + titleKey;
+					else {
+						if (!registeredLocations.contains(location)) {
+							final String parentMenuTitle = location;
+							addSubMenu(menuBuilder, parentLocation(location), location,
+							    TextUtils.getText(parentMenuTitle, parentMenuTitle));
+							registeredLocations.add(location);
+						}
+						titleKey = metaData.getTitleKey(executionMode);
+						scriptLocation = location + "/" + titleKey;
+					}
 					if (!registeredLocations.contains(scriptLocation)) {
-						addMenuItem(menuBuilder, location, entry, executionMode, metaData.cacheContent(), titleKey,
-						    metaData.getPermissions());
+						addMenuItem(menuBuilder, location, entry, executionMode, titleKey, metaData);
 						registeredLocations.add(scriptLocation);
 					}
 				}
@@ -275,30 +291,33 @@ class ScriptingRegistration {
 		}
 	}
 
-	private void addSubMenu(final MenuBuilder menuBuilder, final String scriptsParentLocation,
-	                        final String scriptsLocation, final String name) {
-		if (menuBuilder.get(scriptsLocation) != null) {
-//			System.err.println("hi, location " + scriptsLocation + " already registered");
-			return;
+	private String parentLocation(String location) {
+	    return location.replaceFirst("/[^/]*$", "");
+    }
+
+	private void addSubMenu(final MenuBuilder menuBuilder, final String parentLocation, final String location,
+	                        String menuTitle) {
+		if (menuBuilder.get(location) == null) {
+			final JMenu menuItem = new JMenu();
+			MenuBuilder.setLabelAndMnemonic(menuItem, menuTitle);
+			menuBuilder.addMenuItem(parentLocation, menuItem, location, MenuBuilder.AS_CHILD);
 		}
-		final JMenu menuItem = new JMenu();
-		MenuBuilder.setLabelAndMnemonic(menuItem, pimpScriptName(name));
-		menuBuilder.addMenuItem(scriptsParentLocation, menuItem, scriptsLocation, MenuBuilder.AS_CHILD);
-	}
-	
-	private String pimpScriptName(final String scriptName) {
-		// convert CamelCase to Camel Case
-		return scriptName.replaceAll("([a-z])([A-Z])", "$1 $2");
 	}
 
 	private void addMenuItem(final MenuBuilder menuBuilder, final String location, final Entry<String, String> entry,
-	                         final ExecutionMode executionMode, final boolean cacheContent, final String titleKey,
-	                         final ScriptingPermissions permissions) {
+	                         final ExecutionMode executionMode, final String titleKey, ScriptMetaData metaData) {
 		final String scriptName = entry.getKey();
 		final String translation = TextUtils.getText(titleKey, titleKey.replace('_', ' '));
 		final String menuName = translation.contains("{0}") ? MessageFormat.format(translation,
-		    pimpScriptName(scriptName)) : translation;
+		    pimpMenuTitle(scriptName)) : translation;
 		menuBuilder.addAction(location, new ExecuteScriptAction(scriptName, menuName, entry.getValue(), executionMode,
-		    cacheContent, permissions), MenuBuilder.AS_CHILD);
+		    metaData.cacheContent(), metaData.getPermissions()), MenuBuilder.AS_CHILD);
+	}
+
+	/** menuTitle may either be a scriptName or a translation key. */
+	private String pimpMenuTitle(final String menuTitle) {
+		final String translation = TextUtils.getText(menuTitle, null);
+		// convert CamelCase to Camel Case
+		return translation != null ? translation : menuTitle.replaceAll("([a-z])([A-Z])", "$1 $2");
 	}
 }

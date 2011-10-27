@@ -229,13 +229,13 @@ public class ManageAddOnsDialog extends JDialog {
 			}
 
 			private String getInstallScriptSource() throws IOException {
-				// FIXME: hardcoded, wrong path!
-				final File scriptDir = new File(ResourceController.getResourceController()
-				    .getFreeplaneUserDirectory(), "scripts");
-				// FIXME: bundled!
+				final ResourceController resourceController = ResourceController.getResourceController();
+				final File scriptDir = new File(resourceController.getInstallationBaseDir(), "scripts");
 				final File installScript = new File(scriptDir, "installScriptAddOn.groovy");
-	            return FileUtils.slurpFile(installScript);
-            }
+				if (!installScript.exists())
+					throw new RuntimeException("internal error: installer not found");
+				return FileUtils.slurpFile(installScript);
+			}
 
 			private URL toURL(String urlText) throws MalformedURLException {
 				try {
