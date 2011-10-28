@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,6 +29,7 @@ import javax.swing.AbstractAction;
 import javax.swing.AbstractCellEditor;
 import javax.swing.Action;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -70,16 +71,10 @@ import org.freeplane.plugin.script.addons.ManageAddOnsDialog.AddOnTableModel;
 @SuppressWarnings("serial")
 public class ManageAddOnsDialog extends JDialog {
 	public final static class AddOnTableModel extends AbstractTableModel {
-		private final String[] columnNames;
 		private final List<AddOnProperties> addOns;
 
-		private AddOnTableModel(String[] columnNames, List<AddOnProperties> addOns) {
-			this.columnNames = columnNames;
+		private AddOnTableModel(List<AddOnProperties> addOns) {
 			this.addOns = new ArrayList<AddOnProperties>(addOns);
-		}
-
-		public String getColumnName(int col) {
-			return columnNames[col];
 		}
 
 		public int getRowCount() {
@@ -87,25 +82,35 @@ public class ManageAddOnsDialog extends JDialog {
 		}
 
 		public int getColumnCount() {
-			return columnNames.length;
+			return 2;
 		}
 
 		public Object getValueAt(int row, int col) {
 			AddOnProperties addOn = addOns.get(row);
 			switch (col) {
 				case 0:
-					return addOn.getTranslatedName() + " " + addOn.getVersion().replaceAll("^v", "");
+					return "<html><body><b><font size='+1'>" + addOn.getTranslatedName() + " "
+					        + addOn.getVersion().replaceAll("^v", "") + "</font></b><br>"
+					        + getDescription(addOn) + "</body></html>";
 				case 1:
-					return HtmlUtils.htmlToPlain(addOn.getDescription());
-				case 2:
 					return "";
 				default:
 					throw new RuntimeException("unexpected column " + col);
 			}
 		}
 
+		private String getDescription(AddOnProperties addOn) {
+	        return HtmlUtils.toXMLEscapedText(shorten(HtmlUtils.htmlToPlain(addOn.getDescription()), 120));
+        }
+
+		private String shorten(String string, int maxLength) {
+			if (string.length() <= 3 || string.length() <= maxLength)
+				return string;
+			return string.substring(0, maxLength - 3) + "...";
+		}
+
 		public boolean isCellEditable(int row, int column) {
-			return true;
+			return column == 1;
 		}
 
 		public void setValueAt(Object aValue, int row, int column) {
@@ -150,7 +155,13 @@ public class ManageAddOnsDialog extends JDialog {
 		add(scrollPane, BorderLayout.CENTER);
 		add(createInstaller(tableModel), BorderLayout.SOUTH);
 		UITools.focusOn(jTable);
+		setPreferredSize(getPreferredSizeForWindow());
 		pack();
+	}
+
+	private Dimension getPreferredSizeForWindow() {
+		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		return new Dimension((int) screenSize.getWidth() * 3 / 4, (int) screenSize.getHeight() * 2 / 3);
 	}
 
 	private Box createInstaller(final AddOnTableModel tableModel) {
@@ -269,21 +280,19 @@ public class ManageAddOnsDialog extends JDialog {
 	}
 
 	private AddOnTableModel createTableModel(final List<AddOnProperties> addOns) {
-		final String[] columnNames = new String[] { getText("name"), getText("description"), getText("actions") };
-		return new AddOnTableModel(columnNames, addOns);
+		return new AddOnTableModel(addOns);
 	}
 
 	private JTable createTable(final AddOnTableModel tableModel) {
 		final JTable table = new JTable(tableModel);
+		table.setTableHeader(null);
 //FIXME: Java 6
 //		table.setAutoCreateRowSorter(true);
-		table.setRowHeight(36);
+		table.setRowHeight(62);
 		table.setBackground(Color.white);
 		final TableColumnModel columnModel = table.getColumnModel();
-		columnModel.getColumn(0).setPreferredWidth(120);
-		// FIXME: set tooltip
-		columnModel.getColumn(1).setPreferredWidth(320);
-		columnModel.getColumn(2).setMinWidth(300);
+		columnModel.getColumn(0).setPreferredWidth(750);
+		columnModel.getColumn(1).setMinWidth(250);
 		JButton[] btns = new JButton[] { createButton(AddOnProperties.OP_CONFIGURE) //
 		        , createButton(AddOnProperties.OP_DEACTIVATE) //
 		        , createButton(AddOnProperties.OP_ACTIVATE) //
@@ -294,8 +303,7 @@ public class ManageAddOnsDialog extends JDialog {
 		        , createActivateAction(tableModel) //
 		        , createDeinstallAction(tableModel) //
 		};
-		new ButtonsInCellRenderer(table, btns, actions, 2);
-		table.setPreferredSize(new Dimension(800, 200));
+		new ButtonsInCellRenderer(table, btns, actions, 1);
 		table.setFocusable(false);
 		return table;
 	}
@@ -485,13 +493,17 @@ class ButtonsInCellRenderer extends AbstractCellEditor implements TableCellRende
 		columnModel.getColumn(column).setCellRenderer(this);
 		columnModel.getColumn(column).setCellEditor(this);
 		table.addMouseListener(this);
-		panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+//		panel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+		panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		panel.add(Box.createHorizontalGlue());
 		if (buttons.length > 0)
 			panel.add(buttons[0]);
 		for (int i = 1; i < buttons.length; i++) {
 			panel.add(Box.createHorizontalStrut(BUTTON_SPACER));
 			panel.add(buttons[i]);
 		}
+		panel.add(Box.createHorizontalStrut(BUTTON_SPACER));
 	}
 
 	private void setFocusBorder(Border focusBorder) {
@@ -512,6 +524,7 @@ class ButtonsInCellRenderer extends AbstractCellEditor implements TableCellRende
 //FIXME: Java 6
 //			final AddOnProperties addOn = model.getAddOnAt(table.convertRowIndexToModel(row));
 			final AddOnProperties addOn = model.getAddOnAt(row);
+			btn.setEnabled(addOn.supportsOperation(btn.getName()));
 			btn.setVisible(addOn.supportsOperation(btn.getName()));
 			if (isSelected) {
 				btn.setForeground(table.getSelectionForeground());
