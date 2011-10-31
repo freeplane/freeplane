@@ -31,11 +31,13 @@ public class AddOnProperties {
 	private final AddOnType addOnType;
 	private boolean active = true;
 	private String name;
+	private String author;
 	private String version;
 	private FreeplaneVersion freeplaneVersionFrom;
 	private FreeplaneVersion freeplaneVersionTo;
 	private URL sourceUrl;
 	private String description;
+	private String license;
 	private Map<String, Map<String, String>> translations;
 	private String preferencesXml;
 	private Map<String, String> defaultProperties;
@@ -148,6 +150,14 @@ public class AddOnProperties {
 		this.name = name;
 	}
 
+	public String getAuthor() {
+    	return author;
+    }
+
+	public void setAuthor(String author) {
+    	this.author = author;
+    }
+
 	public boolean isActive() {
 		return active;
 	}
@@ -195,6 +205,14 @@ public class AddOnProperties {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public String getLicense() {
+    	return license;
+    }
+
+	public void setLicense(String license) {
+    	this.license = license;
+    }
 
 	public Map<String, Map<String, String>> getTranslations() {
 		return translations;
