@@ -12,16 +12,11 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,8 +55,9 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.ui.IMapViewManager;
+import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.main.addons.AddOnProperties;
 import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.plugin.script.ScriptingEngine;
@@ -212,24 +208,16 @@ public class ManageAddOnsDialog extends JDialog {
 		});
 		install.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				final Controller controller = Controller.getCurrentController();
 				try {
 					LogUtils.info("installing add-on from " + urlField.getText());
-					Controller.getCurrentController().getViewController().setWaitingCursor(true);
-					//					final MapModel oldMap = Controller.getCurrentController().getMap();
+					controller.getViewController().setWaitingCursor(true);
 					final URL sourceUrl = toURL(urlField.getText());
-					URL localUrl = sourceUrl;
-					if (!sourceUrl.getProtocol().equals("file")) {
-						localUrl = downloadUrl(sourceUrl);
-						LogUtils.info("downloaded " + sourceUrl + " to " + localUrl);
-					}
 					setStatusInfo(getText("status.installing"));
-					Controller.getCurrentModeController().getMapController().newMap(localUrl, false);
-					final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-					final String key = mapViewManager.checkIfFileIsAlreadyOpened(localUrl);
-					// make the map the current map even if it was already opened
-					if (key == null || !mapViewManager.tryToChangeToMapView(key))
-						throw new RuntimeException(getText("map.not.opened", urlField.getText()));
-					final MapModel newMap = mapViewManager.getModel();
+					final ModeController modeController = controller.getModeController(MModeController.MODENAME);
+					final MFileManager fileManager = (MFileManager) MFileManager.getController(modeController);
+					MapModel newMap = modeController.getMapController().newMap(null);
+					fileManager.loadImpl(sourceUrl, newMap);
 					AddOnProperties addOn = (AddOnProperties) ScriptingEngine.executeScript(newMap.getRootNode(),
 					    getInstallScriptSource(), ScriptingPermissions.getPermissiveScriptingPermissions());
 					if (addOn != null) {
@@ -240,13 +228,12 @@ public class ManageAddOnsDialog extends JDialog {
 						urlField.setText("");
 						getContentPane().repaint();
 					}
-					Controller.getCurrentController().getMapViewManager().close(true);
 				}
 				catch (Exception ex) {
 					UITools.errorMessage(getText("error", ex.toString()));
 				}
 				finally {
-					Controller.getCurrentController().getViewController().setWaitingCursor(false);
+					controller.getViewController().setWaitingCursor(false);
 				}
 			}
 
@@ -388,53 +375,6 @@ public class ManageAddOnsDialog extends JDialog {
 		return button;
 	}
 
-	private URL downloadUrl(final URL url) throws IOException {
-		setStatusInfo(getText("status.downloading"));
-		BufferedInputStream in = null;
-		BufferedOutputStream out = null;
-		try {
-			LogUtils.info("downloading " + url);
-			final File tempFile = createTempFile(url);
-			final URLConnection connection = url.openConnection();
-			final InputStream inputStream = connection.getInputStream();
-			in = new BufferedInputStream(inputStream);
-			final FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
-			out = new BufferedOutputStream(fileOutputStream);
-			int i;
-			while ((i = in.read()) != -1) {
-				out.write(i);
-			}
-			out.flush();
-			return tempFile.toURI().toURL();
-		}
-		catch (IOException e) {
-			LogUtils.severe("can't download " + url, e);
-			throw e;
-		}
-		finally {
-			try {
-				setStatusInfo(null);
-				// I'm too lazy for another try/catch block
-				if (in != null)
-					in.close();
-				if (out != null)
-					out.close();
-			}
-			catch (Exception e) {
-				LogUtils.severe("cannot close streams", e);
-			}
-		}
-	}
-
-	private File createTempFile(final URL url) throws IOException {
-		final String fileName = url.getPath().replaceFirst(".*[\\\\/]", "");
-		int index = fileName.lastIndexOf('.');
-		if (index == -1)
-			return File.createTempFile(fileName, ".mm");
-		else
-			return File.createTempFile(fileName.substring(0, index), ".mm");
-	}
-
 	private void setStatusInfo(final String message) {
 		Controller.getCurrentController().getViewController().out(message);
 	}
@@ -524,8 +464,6 @@ class ButtonsInCellRenderer extends AbstractCellEditor implements TableCellRende
 //FIXME: Java 6
 //			final AddOnProperties addOn = model.getAddOnAt(table.convertRowIndexToModel(row));
 			final AddOnProperties addOn = model.getAddOnAt(row);
-			btn.setEnabled(addOn.supportsOperation(btn.getName()));
-			btn.setVisible(addOn.supportsOperation(btn.getName()));
 			if (isSelected) {
 				btn.setForeground(table.getSelectionForeground());
 				btn.setBackground(table.getSelectionBackground());
@@ -542,6 +480,8 @@ class ButtonsInCellRenderer extends AbstractCellEditor implements TableCellRende
 			else {
 				btn.setBorder(border);
 			}
+			btn.setEnabled(addOn.supportsOperation(btn.getName()));
+			btn.setVisible(addOn.supportsOperation(btn.getName()));
 		}
 		return panel;
 	}
