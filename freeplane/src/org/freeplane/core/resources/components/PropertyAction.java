@@ -62,24 +62,21 @@ public class PropertyAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final JDialog dialog;
-		if(e == null){
-			dialog= new JDialog(UITools.getFrame(), true /* modal */);
-		}
-		else{
+		JDialog dialog = null;
+		if(e != null){
 			final Object source = e.getSource();
 			if(source instanceof Component){
 				final Window window = SwingUtilities.getWindowAncestor((Component) source);
-				if(window instanceof Frame){
-					dialog= new JDialog((Frame)window, true /* modal */);
-				}
-				else {
+				if(window instanceof Dialog){
 					dialog= new JDialog((Dialog)window, true /* modal */);
 				}
+				else if(window instanceof Frame){
+					dialog= new JDialog((Frame)window, true /* modal */);
+				}
 			}
-			else
-				dialog= new JDialog(UITools.getFrame(), true /* modal */);
 		}
+		if(dialog == null)
+			dialog= new JDialog(UITools.getFrame(), true /* modal */);
 		dialog.setResizable(true);
 		dialog.setUndecorated(false);
 		final OptionPanel options = new OptionPanel(dialog, new IOptionPanelFeedback() {
