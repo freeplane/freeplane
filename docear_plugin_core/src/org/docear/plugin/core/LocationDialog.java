@@ -39,14 +39,11 @@ public class LocationDialog extends JDialog {
 	private JTextField bibtexLocation;
 	private JTextField literatureLocation;
 	
-	private final static String DOCUMENT_REPOSITORY_INIT_PATH = "workspace:/document_repository";
-	public final static String DOCUMENT_REPOSITORY_PATH_PROPERTY = "document_repository_path";
+	private final static String DOCUMENT_REPOSITORY_INIT_PATH = "workspace:/document_repository";	
 	//TODO: DOCEAR: profile name
 	private static String BIBTEX_PATH_INIT;
-	public final static String BIBTEX_PATH_PROPERTY = "docear_bibtex_path";
-	
 	private static String PROJECTS_PATH_INIT;
-	public final static String PROJECTS_PATH_PROPERTY = "docear_projects_path";
+	
 	
 	
 	private File workspaceLocation;
@@ -58,9 +55,9 @@ public class LocationDialog extends JDialog {
 		ResourceController resCtrl = ResourceController.getResourceController();
 		
 		boolean variablesSet = true;
-		variablesSet = variablesSet && (resCtrl.getProperty(DOCUMENT_REPOSITORY_PATH_PROPERTY, "").length()>0);
-		variablesSet = variablesSet && (resCtrl.getProperty(BIBTEX_PATH_PROPERTY, "").length()>0);
-		variablesSet = variablesSet && (resCtrl.getProperty(PROJECTS_PATH_PROPERTY, "").length()>0);
+		variablesSet = variablesSet && (resCtrl.getProperty(WorkspaceController.DOCUMENT_REPOSITORY_PATH_PROPERTY, "").length()>0);
+		variablesSet = variablesSet && (resCtrl.getProperty(WorkspaceController.BIBTEX_PATH_PROPERTY, "").length()>0);
+		variablesSet = variablesSet && (resCtrl.getProperty(WorkspaceController.PROJECTS_PATH_PROPERTY, "").length()>0);
 		
 		System.out.println("DOCEAR: allVariablesSet: "+variablesSet);
 		
@@ -284,28 +281,28 @@ public class LocationDialog extends JDialog {
 	}
 		
 	private String getLiteratureLocation() {				
-		return getPropertyLocation(DOCUMENT_REPOSITORY_PATH_PROPERTY, DOCUMENT_REPOSITORY_INIT_PATH);
+		return getPropertyLocation(WorkspaceController.DOCUMENT_REPOSITORY_PATH_PROPERTY, DOCUMENT_REPOSITORY_INIT_PATH);
 		
 	}
 	
 	private void setLiteratureLocation(String location) {
-		ResourceController.getResourceController().setProperty(DOCUMENT_REPOSITORY_PATH_PROPERTY, location);
+		ResourceController.getResourceController().setProperty(WorkspaceController.DOCUMENT_REPOSITORY_PATH_PROPERTY, location);
 	}
 	
 	private String getBibtexLocation() {
-		return getPropertyLocation(BIBTEX_PATH_PROPERTY, BIBTEX_PATH_INIT);
+		return getPropertyLocation(WorkspaceController.BIBTEX_PATH_PROPERTY, BIBTEX_PATH_INIT);
 	}
 	
 	private void setBibtexLocation(String location) {
-		ResourceController.getResourceController().setProperty(BIBTEX_PATH_PROPERTY, location);
+		ResourceController.getResourceController().setProperty(WorkspaceController.BIBTEX_PATH_PROPERTY, location);
 	}
 	
 	private String getProjectsLocation() {
-		return getPropertyLocation(PROJECTS_PATH_PROPERTY, PROJECTS_PATH_INIT);
+		return getPropertyLocation(WorkspaceController.PROJECTS_PATH_PROPERTY, PROJECTS_PATH_INIT);
 	}
 	
 	private void setProjectsLocation(String location) {
-		ResourceController.getResourceController().setProperty(PROJECTS_PATH_PROPERTY, location);
+		ResourceController.getResourceController().setProperty(WorkspaceController.PROJECTS_PATH_PROPERTY, location);
 	}
 
 

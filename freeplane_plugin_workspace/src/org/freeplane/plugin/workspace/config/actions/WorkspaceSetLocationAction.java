@@ -8,6 +8,7 @@ import javax.swing.JFileChooser;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceChooserDialog;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspacePreferences;
@@ -25,7 +26,16 @@ public class WorkspaceSetLocationAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		System.out.println("WorkspaceSetLocationAction: " + e.getActionCommand() + " : " + e.getID());
+		//resetVariables();
 		showLocationSwitcherDialog();		
+	}
+
+	private void resetVariables() {
+		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
+		resCtrl.setProperty(WorkspaceController.DOCUMENT_REPOSITORY_PATH_PROPERTY, "");
+		resCtrl.setProperty(WorkspaceController.BIBTEX_PATH_PROPERTY, "");
+		resCtrl.setProperty(WorkspaceController.PROJECTS_PATH_PROPERTY, "");
+		
 	}
 
 	private void showLocationSwitcherDialog() {
