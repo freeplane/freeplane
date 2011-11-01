@@ -157,7 +157,7 @@ public class ManageAddOnsDialog extends JDialog {
 
 	private Dimension getPreferredSizeForWindow() {
 		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		return new Dimension((int) screenSize.getWidth() * 3 / 4, (int) screenSize.getHeight() * 2 / 3);
+		return new Dimension((int) screenSize.getWidth() * 4 / 5, (int) screenSize.getHeight() * 2 / 3);
 	}
 
 	private Box createInstaller(final AddOnTableModel tableModel) {
@@ -277,22 +277,36 @@ public class ManageAddOnsDialog extends JDialog {
 //		table.setAutoCreateRowSorter(true);
 		table.setRowHeight(62);
 		table.setBackground(Color.white);
+		table.setShowVerticalLines(false);
 		final TableColumnModel columnModel = table.getColumnModel();
-		columnModel.getColumn(0).setPreferredWidth(750);
-		columnModel.getColumn(1).setMinWidth(250);
-		JButton[] btns = new JButton[] { createButton(AddOnProperties.OP_CONFIGURE) //
+		JButton[] buttons = new JButton[] { createButton(AddOnProperties.OP_CONFIGURE) //
 		        , createButton(AddOnProperties.OP_DEACTIVATE) //
 		        , createButton(AddOnProperties.OP_ACTIVATE) //
 		        , createButton(AddOnProperties.OP_DEINSTALL) //
 		};
+		columnModel.getColumn(0).setPreferredWidth(10000);
+		columnModel.getColumn(1).setMinWidth(getPreferredWidth(buttons));
+		columnModel.getColumn(1).setPreferredWidth(getPreferredWidth(buttons));
 		Action[] actions = new Action[] { createConfigureAction(tableModel) //
 		        , createDeactivateAction(tableModel) //
 		        , createActivateAction(tableModel) //
 		        , createDeinstallAction(tableModel) //
 		};
-		new ButtonsInCellRenderer(table, btns, actions, 1);
+		new ButtonsInCellRenderer(table, buttons, actions, 1);
 		table.setFocusable(false);
 		return table;
+	}
+
+	private int getPreferredWidth(JButton[] buttons) {
+		double maxButtonWidth = 0;
+		for (JButton button : buttons) {
+			final Dimension size = button.getPreferredSize();
+			if (size.getWidth() > maxButtonWidth)
+				maxButtonWidth = size.getWidth();
+		}
+		// activate/deactivate exclude each other -> -1
+		int spacer = ButtonsInCellRenderer.BUTTON_SPACER;
+		return (int) ((buttons.length - 1) * (maxButtonWidth + spacer)) + spacer;
 	}
 
 	private AbstractAction createConfigureAction(final AddOnTableModel tableModel) {
@@ -300,6 +314,7 @@ public class ManageAddOnsDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);
+//debug:    	LogUtils.info("configure, " + row + ", " + addOn.getName());
 				if (!addOn.supportsOperation(AddOnProperties.OP_CONFIGURE)) {
 					JOptionPane.showMessageDialog(ManageAddOnsDialog.this, getText("cannot.configure", addOn.getTranslatedName()), "Freeplane", JOptionPane.ERROR_MESSAGE);
 				}
@@ -317,6 +332,7 @@ public class ManageAddOnsDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);
+//debug:    	LogUtils.info("deactivate, " + row + ", " + addOn.getName());
 				if (!addOn.supportsOperation(AddOnProperties.OP_DEACTIVATE)) {
 					JOptionPane.showMessageDialog(ManageAddOnsDialog.this, getText("cannot.deactivate", addOn.getTranslatedName()), "Freeplane", JOptionPane.ERROR_MESSAGE);
 				}
@@ -334,6 +350,7 @@ public class ManageAddOnsDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);
+//debug:    	LogUtils.info("activate, " + row + ", " + addOn.getName());
 				if (!addOn.supportsOperation(AddOnProperties.OP_ACTIVATE)) {
 					JOptionPane.showMessageDialog(ManageAddOnsDialog.this, getText("cannot.activate", addOn.getTranslatedName()), "Freeplane", JOptionPane.ERROR_MESSAGE);
 				}
@@ -351,6 +368,7 @@ public class ManageAddOnsDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);
+//debug:    	LogUtils.info("deinstall, " + row + ", " + addOn.getName());
 				if (!addOn.supportsOperation(AddOnProperties.OP_DEINSTALL)) {
 					UITools.errorMessage(getText("cannot.deinstall", addOn.getTranslatedName()));
 				}
@@ -409,7 +427,7 @@ public class ManageAddOnsDialog extends JDialog {
 @SuppressWarnings("serial")
 class ButtonsInCellRenderer extends AbstractCellEditor implements TableCellRenderer, TableCellEditor, ActionListener,
         MouseListener {
-	private static final int BUTTON_SPACER = 4;
+	static final int BUTTON_SPACER = 4;
 	private final JTable table;
 	private final Border border;
 	private Border fborder;
@@ -460,10 +478,12 @@ class ButtonsInCellRenderer extends AbstractCellEditor implements TableCellRende
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 	                                               int row, int column) {
 		final ManageAddOnsDialog.AddOnTableModel model = (AddOnTableModel) table.getModel();
-		for (JButton btn : buttons) {
 //FIXME: Java 6
 //			final AddOnProperties addOn = model.getAddOnAt(table.convertRowIndexToModel(row));
-			final AddOnProperties addOn = model.getAddOnAt(row);
+		final AddOnProperties addOn = model.getAddOnAt(row);
+		for (JButton btn : buttons) {
+			final boolean supportsOperation = addOn.supportsOperation(btn.getName());
+			btn.setVisible(supportsOperation);
 			if (isSelected) {
 				btn.setForeground(table.getSelectionForeground());
 				btn.setBackground(table.getSelectionBackground());
@@ -480,8 +500,7 @@ class ButtonsInCellRenderer extends AbstractCellEditor implements TableCellRende
 			else {
 				btn.setBorder(border);
 			}
-			btn.setEnabled(addOn.supportsOperation(btn.getName()));
-			btn.setVisible(addOn.supportsOperation(btn.getName()));
+//debug:    LogUtils.info("getTableCellRendererComponent, " + row + ", " + addOn.getName() + ", " + btn.getName() + " enabled=" + supportsOperation);
 		}
 		return panel;
 	}
@@ -496,10 +515,13 @@ class ButtonsInCellRenderer extends AbstractCellEditor implements TableCellRende
 //		int row = table.convertRowIndexToModel(table.getEditingRow());
 		int row = table.getEditingRow();
 		fireEditingStopped();
+//debug:    LogUtils.info("actionPerformed, " + row + ", " + e.getSource());
 		ActionEvent event = new ActionEvent(table, ActionEvent.ACTION_PERFORMED, "" + row);
 		for (int i = 0; i < buttons.length; i++) {
 			if (e.getSource().equals(buttons[i])) {
+//debug:    	LogUtils.info("actionPerformed, " + row + ", " + e.getSource() + ", hit " + buttons[i]);
 				actions[i].actionPerformed(event);
+				break;
 			}
 		}
 	}
