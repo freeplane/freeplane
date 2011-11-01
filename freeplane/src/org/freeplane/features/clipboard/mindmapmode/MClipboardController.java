@@ -393,7 +393,8 @@ public class MClipboardController extends ClipboardController {
 	}
 
     private class ImageFlavorHandler implements IDataFlavorHandler {
-    	final private BufferedImage image;
+    	private static final String IMAGE_FORMAT = "png";
+		final private BufferedImage image;
 
         public ImageFlavorHandler(BufferedImage image) {
 	        super();
@@ -414,12 +415,12 @@ public class MClipboardController extends ClipboardController {
             File file;
             try {
 	            final File dir = mindmapFile.getParentFile();
-				file = File.createTempFile(fileNameTemplate, ".jpg", dir);
+				file = File.createTempFile(fileNameTemplate, "."+IMAGE_FORMAT, dir);
 	            String imgfilepath=file.getAbsolutePath();
 	            file = new File(imgfilepath);
 	            final JFileChooser fileChooser = new JFileChooser(file);		
 	            final ExampleFileFilter filter = new ExampleFileFilter();
-	    		filter.addExtension("jpg");
+	    		filter.addExtension(IMAGE_FORMAT);
 	    		fileChooser.setAcceptAllFileFilterUsed(false);
 	    		fileChooser.setFileFilter(filter);
 	    		fileChooser.setSelectedFile(file);
@@ -437,7 +438,7 @@ public class MClipboardController extends ClipboardController {
 	    		else{
 	    			uri = file.toURI();
 	    		}
-	            ImageIO.write(image, "jpg", file);
+	            ImageIO.write(image, IMAGE_FORMAT, file);
 				final NodeModel node = mapController.newNode(file.getName(), target.getMap());
 				final ExternalResource extension = new ExternalResource();
 				extension.setUri(uri);
