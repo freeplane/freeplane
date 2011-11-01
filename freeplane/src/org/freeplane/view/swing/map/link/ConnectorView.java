@@ -345,9 +345,12 @@ public class ConnectorView extends AConnectorView{
     }
 
 	private void paintCurve(final Graphics2D g, Point startPoint, Point startPoint2, Point endPoint2, Point endPoint) {
+		final boolean selfLink = getSource() == getTarget();
 		final boolean isLine = ConnectorModel.Shape.LINE.equals(connectorModel.getShape());
 		if (startPoint != null && endPoint != null) {
-			if(isLine)
+			if(selfLink)
+				arrowLinkCurve = createLine(startPoint, startPoint2);
+			else if(isLine)
 				arrowLinkCurve = createLine(startPoint, endPoint);
 			else if (ConnectorModel.Shape.LINEAR_PATH.equals(connectorModel.getShape()))
 				arrowLinkCurve = createLinearPath(startPoint, startPoint2, endPoint2, endPoint);
@@ -360,13 +363,15 @@ public class ConnectorView extends AConnectorView{
 			g.draw(arrowLinkCurve);
 		}
 		if (isSourceVisible() && !connectorModel.getStartArrow().equals(ArrowType.NONE)) {
-			if(isLine && endPoint != null)
+			if(! selfLink && isLine && endPoint != null)
 				paintArrow(g, startPoint, endPoint);
 			else
 				paintArrow(g, startPoint, startPoint2);
 		}
 		if (isTargetVisible() && !connectorModel.getEndArrow().equals(ArrowType.NONE)) {
-			if(isLine && startPoint != null)
+			if (selfLink)
+				paintArrow(g, startPoint2, startPoint);
+			else if(isLine && startPoint != null)
 				paintArrow(g, endPoint, startPoint);
 			else
 			paintArrow(g, endPoint, endPoint2);
