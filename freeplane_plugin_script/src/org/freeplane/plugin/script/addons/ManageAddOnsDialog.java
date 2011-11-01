@@ -216,7 +216,7 @@ public class ManageAddOnsDialog extends JDialog {
 					setStatusInfo(getText("status.installing"));
 					final ModeController modeController = controller.getModeController(MModeController.MODENAME);
 					final MFileManager fileManager = (MFileManager) MFileManager.getController(modeController);
-					MapModel newMap = modeController.getMapController().newMap(null);
+					MapModel newMap = modeController.getMapController().newModel(null);
 					fileManager.loadImpl(sourceUrl, newMap);
 					AddOnProperties addOn = (AddOnProperties) ScriptingEngine.executeScript(newMap.getRootNode(),
 					    getInstallScriptSource(), ScriptingPermissions.getPermissiveScriptingPermissions());
@@ -477,13 +477,10 @@ class ButtonsInCellRenderer extends AbstractCellEditor implements TableCellRende
 
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 	                                               int row, int column) {
-		final ManageAddOnsDialog.AddOnTableModel model = (AddOnTableModel) table.getModel();
 //FIXME: Java 6
 //			final AddOnProperties addOn = model.getAddOnAt(table.convertRowIndexToModel(row));
-		final AddOnProperties addOn = model.getAddOnAt(row);
+		setButtonsVisible(table, row);
 		for (JButton btn : buttons) {
-			final boolean supportsOperation = addOn.supportsOperation(btn.getName());
-			btn.setVisible(supportsOperation);
 			if (isSelected) {
 				btn.setForeground(table.getSelectionForeground());
 				btn.setBackground(table.getSelectionBackground());
@@ -505,8 +502,18 @@ class ButtonsInCellRenderer extends AbstractCellEditor implements TableCellRende
 		return panel;
 	}
 
+	protected void setButtonsVisible(JTable table, int row) {
+		final ManageAddOnsDialog.AddOnTableModel model = (AddOnTableModel) table.getModel();
+	    final AddOnProperties addOn = model.getAddOnAt(row);
+		for (JButton btn : buttons) {
+			final boolean supportsOperation = addOn.supportsOperation(btn.getName());
+			btn.setVisible(supportsOperation);
+		}
+    }
+
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 		this.editorValue = value;
+		setButtonsVisible(table, row);
 		return panel;
 	}
 
