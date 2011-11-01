@@ -19,10 +19,12 @@
  */
 package org.freeplane.features.map.filemode;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
 import javax.swing.Action;
+import javax.swing.JFileChooser;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
@@ -37,17 +39,17 @@ public class OpenPathAction extends AFreeplaneAction {
 
 	public OpenPathAction() {
 		super("OpenPathAction");
-		putValue(Action.NAME, TextUtils.getText("OpenAction.text"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final String inputValue = UITools.showInputDialog(Controller.getCurrentController()
-				.getSelection().getSelected(), TextUtils.getText("open"), "");
-		if (inputValue != null) {
-			final File newCenter = new File(inputValue);
+		final JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		final int result = fileChooser.showOpenDialog((Component) e.getSource());
+		if(result == JFileChooser.APPROVE_OPTION){
+			final File newCenter = fileChooser.getSelectedFile();
 			if (newCenter.exists()) {
 				((FMapController) Controller.getCurrentModeController().getMapController())
-						.newMap(newCenter);
+				.newMap(newCenter);
 			}
 		}
 	}

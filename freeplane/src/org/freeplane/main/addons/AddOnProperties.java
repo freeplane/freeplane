@@ -31,11 +31,13 @@ public class AddOnProperties {
 	private final AddOnType addOnType;
 	private boolean active = true;
 	private String name;
+	private String author;
 	private String version;
 	private FreeplaneVersion freeplaneVersionFrom;
 	private FreeplaneVersion freeplaneVersionTo;
 	private URL sourceUrl;
 	private String description;
+	private String license;
 	private Map<String, Map<String, String>> translations;
 	private String preferencesXml;
 	private Map<String, String> defaultProperties;
@@ -46,20 +48,22 @@ public class AddOnProperties {
 		this.addOnType = addOnType;
 	}
 
-	public AddOnProperties(AddOnType addOnType, XMLElement addOnelement) {
+	public AddOnProperties(AddOnType addOnType, XMLElement addOnElement) {
 		this(addOnType);
-		this.setName(addOnelement.getAttribute("name", null));
-		this.setVersion(addOnelement.getAttribute("version", null));
-		this.setFreeplaneVersionFrom(FreeplaneVersion.getVersion(addOnelement.getAttribute("freeplaneVersionFrom",
+		this.setName(addOnElement.getAttribute("name", null));
+		this.setVersion(addOnElement.getAttribute("version", null));
+		this.setFreeplaneVersionFrom(FreeplaneVersion.getVersion(addOnElement.getAttribute("freeplaneVersionFrom",
 		    null)));
-		this.setFreeplaneVersionTo(FreeplaneVersion.getVersion(addOnelement.getAttribute("freeplaneVersionTo", null)));
-		this.setSourceUrl(parseSourceUrl(addOnelement.getAttribute("source.url", null)));
-		this.setActive(Boolean.parseBoolean(addOnelement.getAttribute("active", "true")));
-		this.setDescription(getContentOfFirstElement(addOnelement.getChildrenNamed("description")));
-		this.setTranslations(parseTranslations(addOnelement.getChildrenNamed("translations")));
-		this.setPreferencesXml(getContentOfFirstElement(addOnelement.getChildrenNamed("preferences.xml")));
-		this.setDefaultProperties(parseAttributesToProperties(addOnelement.getChildrenNamed("default.properties")));
-		this.setDeinstallationRules(parseDeinstallationRules(addOnelement.getChildrenNamed("deinstall")));
+		this.setFreeplaneVersionTo(FreeplaneVersion.getVersion(addOnElement.getAttribute("freeplaneVersionTo", null)));
+		this.setSourceUrl(parseSourceUrl(addOnElement.getAttribute("source.url", null)));
+		this.setActive(Boolean.parseBoolean(addOnElement.getAttribute("active", "true")));
+		this.setDescription(getContentOfFirstElement(addOnElement.getChildrenNamed("description")));
+		this.setLicense(getContentOfFirstElement(addOnElement.getChildrenNamed("license")));
+		this.setAuthor(addOnElement.getAttribute("author", null));
+		this.setTranslations(parseTranslations(addOnElement.getChildrenNamed("translations")));
+		this.setPreferencesXml(getContentOfFirstElement(addOnElement.getChildrenNamed("preferences.xml")));
+		this.setDefaultProperties(parseAttributesToProperties(addOnElement.getChildrenNamed("default.properties")));
+		this.setDeinstallationRules(parseDeinstallationRules(addOnElement.getChildrenNamed("deinstall")));
 		validate();
 	}
 
@@ -148,6 +152,14 @@ public class AddOnProperties {
 		this.name = name;
 	}
 
+	public String getAuthor() {
+    	return author;
+    }
+
+	public void setAuthor(String author) {
+    	this.author = author;
+    }
+
 	public boolean isActive() {
 		return active;
 	}
@@ -195,6 +207,14 @@ public class AddOnProperties {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public String getLicense() {
+    	return license;
+    }
+
+	public void setLicense(String license) {
+    	this.license = license;
+    }
 
 	public Map<String, Map<String, String>> getTranslations() {
 		return translations;
@@ -302,17 +322,18 @@ public class AddOnProperties {
 		if (sourceUrl != null)
 			addonElement.setAttribute("source.url", sourceUrl.toString());
 		addonElement.setAttribute("active", Boolean.toString(active));
-		addDescriptionAsChild(addonElement);
+		addAsChildWithContent(addonElement, "description", description);
+		addAsChildWithContent(addonElement, "license", license);
+		addAsChildWithContent(addonElement, "preferences.xml", preferencesXml);
 		addTranslationsAsChild(addonElement);
-		addPreferencesXmlAsChild(addonElement);
 		addDefaultPropertiesAsChild(addonElement);
 		addDeinstallationRulesAsChild(addonElement);
 		return addonElement;
 	}
 
-	private void addDescriptionAsChild(XMLElement parent) {
-		final XMLElement xmlElement = new XMLElement("description");
-		xmlElement.setContent(description);
+	private void addAsChildWithContent(XMLElement parent, String name, String content) {
+		final XMLElement xmlElement = new XMLElement(name);
+		xmlElement.setContent(content);
 		parent.addChild(xmlElement);
 	}
 
@@ -330,12 +351,6 @@ public class AddOnProperties {
 			translationsElement.addChild(localeElement);
 		}
 		parent.addChild(translationsElement);
-	}
-
-	private void addPreferencesXmlAsChild(XMLElement parent) {
-		final XMLElement xmlElement = new XMLElement("preferences.xml");
-		xmlElement.setContent(preferencesXml);
-		parent.addChild(xmlElement);
 	}
 
 	private void addDefaultPropertiesAsChild(XMLElement parent) {

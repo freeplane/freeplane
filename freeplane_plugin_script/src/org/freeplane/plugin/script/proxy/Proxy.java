@@ -114,6 +114,10 @@ public interface Proxy {
 
 		/** the number of attributes. It is <code>size() == getAttributeNames().size()</code>. */
 		int size();
+		
+		/** returns <code>getAttributeNames().isEmpty()</code>.
+         * @since 1.2 */
+		boolean isEmpty();
 	}
 
 	/** Node's attribute table: <code>node.attributes</code> - read-write.

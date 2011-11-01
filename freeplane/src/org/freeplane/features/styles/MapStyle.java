@@ -333,6 +333,8 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
 	private void moveStyle(final MapModel sourceMap, final MapModel targetMap, boolean overwrite) {
 	    final MapStyleModel source = (MapStyleModel) sourceMap.getRootNode().removeExtension(MapStyleModel.class);
+	    if(source == null)
+	    	return;
 		final IExtension undoHandler = targetMap.getExtension(IUndoHandler.class);
 		source.getStyleMap().putExtension(IUndoHandler.class, undoHandler);
 		final NodeModel targetRoot = targetMap.getRootNode();

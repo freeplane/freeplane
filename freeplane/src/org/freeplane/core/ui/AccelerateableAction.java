@@ -214,6 +214,19 @@ public class AccelerateableAction implements IFreeplaneAction {
 		        ResourceController.getResourceController().setProperty(shortcutKey, shortcut);
 		    }
 		}
+		else{
+		    if(oldShortcut != null){
+                final int replace = JOptionPane.showConfirmDialog(
+                    editedItem, 
+                    oldShortcut,
+                    TextUtils.getText("remove_shortcut_question"), JOptionPane.YES_NO_OPTION);
+                if (replace != JOptionPane.YES_OPTION) {
+                    return;
+                }
+		    }
+            menuBuilder.setAccelerator((Node) menuBuilder.get(key), newAccelerator);
+            ResourceController.getResourceController().setProperty(shortcutKey, toString(newAccelerator));
+		}
 	}
 
     private static String toString(final KeyStroke newAccelerator) {

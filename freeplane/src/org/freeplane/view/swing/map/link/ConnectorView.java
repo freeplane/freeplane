@@ -54,6 +54,9 @@ public class ConnectorView extends AConnectorView{
 	private static final int LABEL_SHIFT = 4;
 	private static final double PRECISION = 2;
 	private Shape arrowLinkCurve;
+	private Rectangle sourceTextRectangle;
+	private Rectangle middleTextRectangle;
+	private Rectangle targetTextRectangle;
 	final private Color textColor;
 	final private Color color;
 	final private BasicStroke stroke;
@@ -106,9 +109,9 @@ public class ConnectorView extends AConnectorView{
 		return new CollisionDetector().detectCollision(p, arrowLinkCurve);
 	}
 
-	private void drawEndPointText(final Graphics2D g, final String text, final Point endPoint, final Point controlPoint) {
+	private Rectangle drawEndPointText(final Graphics2D g, final String text, final Point endPoint, final Point controlPoint) {
 		if (text == null || text.equals("")) {
-			return;
+			return null;
 		}
 		final TextPainter textPainter = new TextPainter(g, text);
 		final int textWidth = textPainter.getTextWidth();
@@ -128,17 +131,21 @@ public class ConnectorView extends AConnectorView{
 			y = endPoint.y - textHeight - LABEL_SHIFT;
 		}
 		textPainter.draw(x, y, textColor, bgColor);
+		return new Rectangle(x, y, textWidth, textHeight);
 	}
 	
-	private void drawMiddleLabel(final Graphics2D g, final String text) {
+	private Rectangle drawMiddleLabel(final Graphics2D g, final String text) {
 		if (text == null || text.equals("")) {
-			return;
+			return null;
 		}
 		final TextPainter textPainter = new TextPainter(g, text);
 		final Point centerPoint = getCenterPoint();
-		final int x = centerPoint.x - textPainter.getTextWidth() / 2;
-		int y = centerPoint.y - textPainter.getTextHeight()/2;
+		final int textWidth = textPainter.getTextWidth();
+		final int x = centerPoint.x - textWidth / 2;
+		final int textHeight = textPainter.getTextHeight();
+		int y = centerPoint.y - textHeight/2;
 		textPainter.draw(x, y, textColor, bgColor);
+		return new Rectangle(x, y, textWidth, textHeight);
 	}
 
 	Shape getArrowLinkCurve() {
@@ -147,13 +154,6 @@ public class ConnectorView extends AConnectorView{
 
 	NodeLinkModel getArrowLinkModel() {
 		return connectorModel;
-	}
-
-	Rectangle getBounds() {
-		if (arrowLinkCurve == null) {
-			return new Rectangle();
-		}
-		return arrowLinkCurve.getBounds();
 	}
 
 	Point getCenterPoint() {
@@ -345,9 +345,12 @@ public class ConnectorView extends AConnectorView{
     }
 
 	private void paintCurve(final Graphics2D g, Point startPoint, Point startPoint2, Point endPoint2, Point endPoint) {
+		final boolean selfLink = getSource() == getTarget();
 		final boolean isLine = ConnectorModel.Shape.LINE.equals(connectorModel.getShape());
 		if (startPoint != null && endPoint != null) {
-			if(isLine)
+			if(selfLink)
+				arrowLinkCurve = createLine(startPoint, startPoint2);
+			else if(isLine)
 				arrowLinkCurve = createLine(startPoint, endPoint);
 			else if (ConnectorModel.Shape.LINEAR_PATH.equals(connectorModel.getShape()))
 				arrowLinkCurve = createLinearPath(startPoint, startPoint2, endPoint2, endPoint);
@@ -360,13 +363,15 @@ public class ConnectorView extends AConnectorView{
 			g.draw(arrowLinkCurve);
 		}
 		if (isSourceVisible() && !connectorModel.getStartArrow().equals(ArrowType.NONE)) {
-			if(isLine && endPoint != null)
+			if(! selfLink && isLine && endPoint != null)
 				paintArrow(g, startPoint, endPoint);
 			else
 				paintArrow(g, startPoint, startPoint2);
 		}
 		if (isTargetVisible() && !connectorModel.getEndArrow().equals(ArrowType.NONE)) {
-			if(isLine && startPoint != null)
+			if (selfLink)
+				paintArrow(g, startPoint2, startPoint);
+			else if(isLine && startPoint != null)
 				paintArrow(g, endPoint, startPoint);
 			else
 			paintArrow(g, endPoint, endPoint2);
@@ -410,19 +415,19 @@ public class ConnectorView extends AConnectorView{
         g.setFont(linksFont);
 
 		if (startPoint != null) {
-			drawEndPointText(g, sourceLabel, startPoint, startPoint2);
+			sourceTextRectangle = drawEndPointText(g, sourceLabel, startPoint, startPoint2);
 			if (endPoint == null) {
-				drawEndPointText(g, middleLabel, startPoint2, startPoint);
+				middleTextRectangle = drawEndPointText(g, middleLabel, startPoint2, startPoint);
 			}
 		}
 		if (endPoint != null) {
-			drawEndPointText(g, targetLabel, endPoint, endPoint2);
+			targetTextRectangle = drawEndPointText(g, targetLabel, endPoint, endPoint2);
 			if (startPoint == null) {
-				drawEndPointText(g, middleLabel, endPoint2, endPoint);
+				middleTextRectangle = drawEndPointText(g, middleLabel, endPoint2, endPoint);
 			}
 		}
 		if (startPoint != null && endPoint != null) {
-			drawMiddleLabel(g, middleLabel);
+			middleTextRectangle = drawMiddleLabel(g, middleLabel);
 		}
 		g.setFont(oldFont);
     }
@@ -454,5 +459,14 @@ public class ConnectorView extends AConnectorView{
 			final Rectangle arrowViewBounds = PathBBox.getBBox(arrowLinkCurve).getBounds();
 			innerBounds.add(arrowViewBounds);
 		}
+		increaseBounds(innerBounds, sourceTextRectangle);
+		increaseBounds(innerBounds, middleTextRectangle);
+		increaseBounds(innerBounds, targetTextRectangle);
 	}
+
+	private void increaseBounds(Rectangle innerBounds, Rectangle rect) {
+	    if (rect != null)
+	    	innerBounds.add(rect);
+	    
+    }
 }

@@ -50,6 +50,7 @@ import javax.swing.event.ListDataListener;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.components.UITools;
@@ -80,6 +81,33 @@ import org.freeplane.n3.nanoxml.XMLWriter;
  * @author Dimitry Polivaev
  */
 public class FilterController implements IMapSelectionListener, IExtension {
+	@SuppressWarnings("serial")
+    @SelectableAction(checkOnPopup = true)
+	private class ToggleFilterToolbarAction extends ToggleToolbarAction {
+	    private ToggleFilterToolbarAction(String actionName, String toolbarName) {
+		    super(actionName, toolbarName);
+	    }
+
+	    @Override
+	    protected void setVisible(final JComponent toolBar, final boolean visible) {
+	    	quickEditor.addAncestorListener(new AncestorListener() {
+	    		public void ancestorAdded(final AncestorEvent event) {
+	    			quickEditor.focusInputField();
+	    			quickEditor.removeAncestorListener(this);
+	    		}
+	    		public void ancestorMoved(final AncestorEvent event) {
+	    		}
+	    		public void ancestorRemoved(final AncestorEvent event) {
+	    			final Component selectedComponent = Controller.getCurrentController().getViewController().getSelectedComponent();
+	    			if(selectedComponent != null)
+	    				selectedComponent.requestFocusInWindow();
+	    			quickEditor.removeAncestorListener(this);
+	    		}
+	    	});
+	    	super.setVisible(toolBar, visible);
+	    }
+    }
+
 	private class FilterChangeListener implements ListDataListener, ChangeListener {
 		/**
 		 * 
@@ -156,32 +184,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		applyToVisibleNodeOnly = new JToggleButton.ToggleButtonModel();
 		applyToVisibleNodeOnly.setSelected(false);
 		controller.getMapViewManager().addMapSelectionListener(this);
-		@SuppressWarnings("serial")
-        final AFreeplaneAction showFilterToolbar = new ToggleToolbarAction("ShowFilterToolbarAction",
-		    "/filter_toolbar"){
-
-			@Override
-			protected void setVisible(final JComponent toolBar, final boolean visible) {
-				quickEditor.addAncestorListener(new AncestorListener() {
-					public void ancestorAdded(final AncestorEvent event) {
-						quickEditor.focusInputField();
-						quickEditor.removeAncestorListener(this);
-					}
-					public void ancestorMoved(final AncestorEvent event) {
-					}
-					public void ancestorRemoved(final AncestorEvent event) {
-						final Component selectedComponent = Controller.getCurrentController().getViewController().getSelectedComponent();
-						if(selectedComponent != null)
-							selectedComponent.requestFocusInWindow();
-						quickEditor.removeAncestorListener(this);
-					}
-				});
-				super.setVisible(toolBar, visible);
-			}
-
-		};
+        final AFreeplaneAction showFilterToolbar = new ToggleFilterToolbarAction("ShowFilterToolbarAction", "/filter_toolbar");
 		quickEditor = new FilterConditionEditor(this, 0, true);
-		quickEditor.setBorder(BorderFactory.createEtchedBorder());
 		controller.addAction(showFilterToolbar);
 		controller.addAction(new ApplyNoFilteringAction(this));
 		controller.addAction(new ApplySelectedViewConditionAction(this));
@@ -305,17 +309,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		final JToggleButton applyToVisibleBox = new JAutoToggleButton(controller.getAction("ApplyToVisibleAction"),
 		    applyToVisibleNodeOnly);
 		final JButton btnEdit = new JButton(controller.getAction("EditFilterAction"));
-		activeFilterConditionComboBox = new JComboBox(getFilterConditions()) {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public Dimension getMaximumSize() {
-				return getPreferredSize();
-			}
-		};
+		activeFilterConditionComboBox = new JComboBox(getFilterConditions());
 		final JButton applyBtn = new JButton(controller.getAction("ReapplyFilterAction"));
 		final JButton filterSelectedBtn = new JButton(controller.getAction("ApplySelectedViewConditionAction"));
 		final JButton noFilteringBtn = new JButton(controller.getAction("ApplyNoFilteringAction"));
