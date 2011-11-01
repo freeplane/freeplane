@@ -121,6 +121,7 @@ public class FilterConditionEditor extends JComponent {
 		super();
 		setLayout(new GridBagLayout());
 		final GridBagConstraints gridBagConstraints = new GridBagConstraints();
+		gridBagConstraints.fill = GridBagConstraints.BOTH;
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 0;
 		gridBagConstraints.anchor = GridBagConstraints.NORTH;
