@@ -65,11 +65,11 @@
 <edge STYLE="horizontal"/>
 </stylenode>
 <stylenode TEXT="IsChecked" COLOR="#cc3300">
-<icon BUILTIN="button_ok"/>
+<icon BUILTIN="checked"/>
 <edge COLOR="#33ffcc"/>
 </stylenode>
 <stylenode TEXT="UnChecked" COLOR="#cc3300">
-<icon BUILTIN="button_cancel"/>
+<icon BUILTIN="unchecked"/>
 <edge COLOR="#33ffcc"/>
 </stylenode>
 <stylenode TEXT="Revision">
@@ -132,6 +132,32 @@
     </p>
   </body>
 </html></richcontent>
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_1615599589" CREATED="1320006069966" MODIFIED="1320178482426" HGAP="26" VSHIFT="-141">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <a href="freeplaneFunctions.mm"><font size="4"><b>Quick Index</b></font></a>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="FreeNode"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Click the link to open a mind map with the main functions of Freeplane. Hover the text to reveal hidden links to the descriptions of the functions you see in this <i>Quick reference</i>&#160;and in <i>Help &gt; Documentation.</i>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
 <node TEXT="User guide" STYLE_REF="Title" POSITION="left" ID="ID_1405760079" CREATED="1286914216123" MODIFIED="1314858820369" HGAP="-35" VSHIFT="-91" TEXT_SHORTENED="true">
 <icon BUILTIN="gohome"/>
 <richcontent TYPE="DETAILS">
@@ -1526,7 +1552,7 @@
 </node>
 <node TEXT="Portable Freeplane" ID="ID_252894978" CREATED="1317904658613" MODIFIED="1317904669815"/>
 </node>
-<node TEXT="Install" ID="Freeplane_Link_1822195277" CREATED="1270892460697" MODIFIED="1310903701338" TEXT_SHORTENED="true">
+<node TEXT="Install" FOLDED="true" ID="Freeplane_Link_1822195277" CREATED="1270892460697" MODIFIED="1310903701338" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -1575,7 +1601,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Spell check dictionaries" STYLE_REF="Professional" ID="ID_141336344" CREATED="1271096394315" MODIFIED="1317837958205" LINK="http://sourceforge.net/projects/freeplane/files/spell_check_dictionaries">
+<node TEXT="Spell check dictionaries" STYLE_REF="Professional" FOLDED="true" ID="ID_141336344" CREATED="1271096394315" MODIFIED="1317837958205" LINK="http://sourceforge.net/projects/freeplane/files/spell_check_dictionaries">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -1587,6 +1613,19 @@
     </p>
   </body>
 </html></richcontent>
+<node TEXT="Add-on" ID="ID_622849479" CREATED="1319486393257" MODIFIED="1319486932024" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Particular preferences of Freeplane are installable and kept in the Freeplane user directory (see Tools-&gt;Open user directory). An add-on is a package of some or all of these features, which can be installed at once.<a href="http://freeplane.sourceforge.net/wiki/index.php/Add-ons">Read more...</a>
+    </p>
+  </body>
+</html></richcontent>
+</node>
 </node>
 <node TEXT="Automatic backup" ID="ID_595250711" CREATED="1271096741387" MODIFIED="1310281994968" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -2478,6 +2517,19 @@
   </body>
 </html></richcontent>
 <edge STYLE="sharp_bezier"/>
+</node>
+<node ID="ID_1194109651" CREATED="1319320353184" MODIFIED="1319320467175">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <a href="https://sourceforge.net/apps/phpbb/freeplane/viewtopic.php?f=1&amp;t=77">issue with node width</a>
+    </p>
+  </body>
+</html></richcontent>
 </node>
 </node>
 </node>
@@ -3896,7 +3948,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Link" ID="ID_1430712985" CREATED="1303930954062" MODIFIED="1319036436700" TEXT_SHORTENED="true">
+<node TEXT="Link" FOLDED="true" ID="ID_1430712985" CREATED="1303930954062" MODIFIED="1319036436700" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <richcontent TYPE="DETAILS">
 <html>
@@ -4102,7 +4154,7 @@
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
-<node TEXT="" STYLE_REF="Aggregatie als Toelichting" ID="ID_557988874" CREATED="1305558188109" MODIFIED="1312919875648" TEXT_SHORTENED="true">
+<node TEXT="" STYLE_REF="Aggregatie als Toelichting" FOLDED="true" ID="ID_557988874" CREATED="1305558188109" MODIFIED="1312919875648" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
@@ -4346,7 +4398,7 @@
 <hook NAME="SummaryNode"/>
 </node>
 <node TEXT="Node core" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1154882439" CREATED="1315728115638" MODIFIED="1316158994981">
-<node TEXT="Edit core in-line [Edit node ]" ID="ID_1162372089" CREATED="1266247401765" MODIFIED="1315980743280" TEXT_SHORTENED="true">
+<node TEXT="Edit core in-line [Edit node ]" ID="ID_1162372089" CREATED="1266247401765" MODIFIED="1319991157525" TEXT_SHORTENED="true">
 <icon BUILTIN="../edit_node"/>
 <richcontent TYPE="DETAILS">
 <html>
@@ -4355,7 +4407,7 @@
   </head>
   <body>
     <p>
-      <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">Puts a node in Edit Mode. </span></font>Opens an inline editor for fast entering and modifying text. Standard modus when making a new node (<i>Ins</i>) or when double-clicking on the node.
+      <font face="SansSerif, sans-serif" color="#000000">Puts a node in Edit Mode. </font>Opens an inline editor for fast entering and modifying text. Standard modus when making a new node (<i>Ins</i>) or when double-clicking on the node.
     </p>
     <p>
       
@@ -4399,10 +4451,10 @@
     </p>
     <ul>
       <li>
-        <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">&#160;If a node is the last child node, left clicking the node will place it in Edit Mode. Otherwise, a left click will toggle the visibility (folding) of the child nodes</span></font>
+        <font face="SansSerif, sans-serif" color="#000000">&#160;If a node is the last child node, left clicking the node will place it in Edit Mode. Otherwise, a left click will toggle the visibility (folding) of the child nodes</font>
       </li>
       <li>
-        The text to be shown cannot start with &quot;=&quot;. If it starts with it, it is interpreted as a formula.
+        The text to be shown cannot start with &quot;=&quot;. If it starts with it, it is interpreted as a formula which will be executed and the result shown. (Exception: not in Java Applet)
       </li>
       <li>
         To insert special symbols such as &#169; , copy and paste it from your favourite text editor.
@@ -4474,64 +4526,6 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="1"/>
-</node>
-<node TEXT="LaTeX formula" FOLDED="true" ID="ID_1750517188" CREATED="1303931890027" MODIFIED="1311406091422" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      LaTeX is a method to define the layout of scientific formulas..
-    </p>
-  </body>
-</html></richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
-</hook>
-<attribute NAME="Chapter" VALUE="3,7"/>
-<node TEXT="Add LaTeX formula..." ID="ID_816429133" CREATED="1266250651984" MODIFIED="1311406091422" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Opent het bewerkingsvenster&#160;&#160;voor de LaTeX opmaak.
-    </p>
-    <p>
-      
-    </p>
-  </body>
-</html></richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
-</hook>
-<attribute NAME="Chapter" VALUE="3,7"/>
-</node>
-<node TEXT="Edit LaTeX formula..." ID="ID_1933244848" CREATED="1305483582106" MODIFIED="1311406091437" TEXT_SHORTENED="true">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
-</hook>
-<attribute NAME="Chapter" VALUE="3,7"/>
-</node>
-<node TEXT="Remove LaTeX formula" ID="ID_1339380039" CREATED="1303931933356" MODIFIED="1311406091437" TEXT_SHORTENED="true">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
-</hook>
-<attribute NAME="Chapter" VALUE="3,7"/>
-</node>
-<node TEXT="See Internet" ID="ID_1974921327" CREATED="1310061549760" MODIFIED="1312920045876" LINK="http://freeplane.sourceforge.net/wiki/index.php/File:Freeplane_LaTex.mm" TEXT_SHORTENED="true">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
-</hook>
-<attribute NAME="Chapter" VALUE="3,7"/>
-<hook NAME="SummaryNode"/>
-<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
-</node>
 </node>
 <node TEXT="Copy format" ID="ID_165229421" CREATED="1310134532663" MODIFIED="1315728436024" TEXT_SHORTENED="true">
 <icon BUILTIN="../colorpicker"/>
@@ -4966,7 +4960,7 @@
 <attribute NAME="Chapter" VALUE="3"/>
 </node>
 </node>
-<node TEXT="Node extensions" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1400990107" CREATED="1315728991618" MODIFIED="1316876395980">
+<node TEXT="Node extensions" STYLE_REF="SubMenu" ID="ID_1400990107" CREATED="1315728991618" MODIFIED="1316876395980">
 <node TEXT="Edit details in-line   [Edit node details]" ID="ID_1807308711" CREATED="1291153533418" MODIFIED="1315980814822" TEXT_SHORTENED="true">
 <icon BUILTIN="../edit_details"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -5720,7 +5714,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Attribute manager" STYLE_REF="Method" ID="ID_900795535" CREATED="1311921084341" MODIFIED="1318967473636" TEXT_SHORTENED="true">
+<node TEXT="Attribute manager" STYLE_REF="Method" FOLDED="true" ID="ID_900795535" CREATED="1311921084341" MODIFIED="1318967473636" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -5913,6 +5907,64 @@
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
 <hook NAME="SummaryNode"/>
+</node>
+<node TEXT="LaTeX formula" FOLDED="true" ID="ID_1750517188" CREATED="1303931890027" MODIFIED="1311406091422" TEXT_SHORTENED="true">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      LaTeX is a method to define the layout of scientific formulas..
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3,7"/>
+<node TEXT="Add LaTeX formula..." ID="ID_816429133" CREATED="1266250651984" MODIFIED="1311406091422" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opent het bewerkingsvenster&#160;&#160;voor de LaTeX opmaak.
+    </p>
+    <p>
+      
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3,7"/>
+</node>
+<node TEXT="Edit LaTeX formula..." ID="ID_1933244848" CREATED="1305483582106" MODIFIED="1311406091437" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3,7"/>
+</node>
+<node TEXT="Remove LaTeX formula" ID="ID_1339380039" CREATED="1303931933356" MODIFIED="1311406091437" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3,7"/>
+</node>
+<node TEXT="See Internet" ID="ID_1974921327" CREATED="1310061549760" MODIFIED="1312920045876" LINK="http://freeplane.sourceforge.net/wiki/index.php/File:Freeplane_LaTex.mm" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3,7"/>
+<hook NAME="SummaryNode"/>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
 </node>
 </node>
 <node TEXT="Note" FOLDED="true" ID="ID_1365598976" CREATED="1303930145801" MODIFIED="1315732441401" TEXT_SHORTENED="true">
@@ -7160,7 +7212,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Edge color" ID="ID_211700099" CREATED="1310714589889" MODIFIED="1311405449496" TEXT_SHORTENED="true">
+<node TEXT="Edge color" ID="ID_211700099" CREATED="1310714589889" MODIFIED="1319987449448" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
@@ -7176,6 +7228,7 @@
     </p>
   </body>
 </html></richcontent>
+<hook NAME="FirstGroupNode"/>
 </node>
 <node TEXT="Edge style" ID="ID_1060644831" CREATED="1310714589889" MODIFIED="1311405449543" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -7210,6 +7263,9 @@
     </p>
   </body>
 </html></richcontent>
+</node>
+<node TEXT="Edge properties" STYLE_REF="MenuGroupLabel" ID="ID_1536352077" CREATED="1319987449416" MODIFIED="1319987513205">
+<hook NAME="SummaryNode"/>
 </node>
 <node TEXT="Cloud color" FOLDED="true" ID="ID_58140909" CREATED="1310714589889" MODIFIED="1311405449637" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -8666,7 +8722,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Node core" STYLE_REF="SubMenu" ID="ID_1969683729" CREATED="1315733476260" MODIFIED="1316207040623">
+<node TEXT="Node core" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1969683729" CREATED="1315733476260" MODIFIED="1316207040623">
 <node TEXT="Rectangular selection" ID="ID_1851007191" CREATED="1266247206859" MODIFIED="1310721457822" TEXT_SHORTENED="true">
 <icon BUILTIN="../ShowSelectionAsRectangleAction"/>
 <richcontent TYPE="DETAILS">
@@ -8712,7 +8768,7 @@
 </html></richcontent>
 </node>
 <node TEXT="Set maximum node width" ID="ID_826769128" CREATED="1288558613969" MODIFIED="1318968910283" TEXT_SHORTENED="true">
-<icon BUILTIN="../max_node_width"/>
+<icon BUILTIN="icon_not_found"/>
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -9036,8 +9092,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Tool tips" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1599182564" CREATED="1315733540501" MODIFIED="1318607345794">
-<node TEXT="Display tool tips" ID="ID_152459666" CREATED="1310673142140" MODIFIED="1318607339351" TEXT_SHORTENED="true">
+<node TEXT="Tool tips" STYLE_REF="SubMenu" ID="ID_1599182564" CREATED="1315733540501" MODIFIED="1318607345794">
+<node TEXT="Display tool tips" FOLDED="true" ID="ID_152459666" CREATED="1310673142140" MODIFIED="1318607339351" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -9483,6 +9539,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
+<node TEXT="Floating node" STYLE_REF="OptionalValue" ID="ID_114978489" CREATED="1319831491288" MODIFIED="1319831554780"/>
 <node TEXT="Hierarchical Level styles" STYLE_REF="Method" ID="ID_1923695111" CREATED="1311948335133" MODIFIED="1312920119258"/>
 <node TEXT="User defined styles" ID="ID_948529232" CREATED="1291550475365" MODIFIED="1311405450074" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS">
@@ -13205,25 +13262,25 @@ elements from the styles activated by conditions are copied.</pre>
 <attribute NAME="Chapter" VALUE="8"/>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
-<node TEXT="Save hot key set" ID="ID_918316602" CREATED="1266248179781" MODIFIED="1311405939540" COLOR="#000000" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Save hot key set" ID="ID_918316602" CREATED="1266248179781" MODIFIED="1319567914879" COLOR="#000000" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      <font color="#000000" face="SansSerif, sans-serif">Oprens a dialog to save all the currently-defined hot key short-cuts to a dedicated file, which may be used to share the keystroke sets among multiple computers.The dialog prompts for the name of the file, which is automatically given the &quot;.properties&quot; extension. </font>
+      <font face="SansSerif, sans-serif" color="#000000">Opens a dialog to save all the currently-defined hot key short-cuts to a dedicated file, which may be used to share the keystroke sets among multiple computers.The dialog prompts for the name of the file, which is automatically given the &quot;.properties&quot; extension. </font>
     </p>
     <p>
       
     </p>
     <p>
-      <b><font color="#000000" face="SansSerif, sans-serif">Note</font></b>
+      <font face="SansSerif, sans-serif" color="#000000"><b>Note</b></font>
     </p>
     <ul>
       <li>
-        <font color="#000000" face="SansSerif, sans-serif">The file is created in the &quot;accelerators&quot; subdirectory of the User Directory.</font>
+        <font face="SansSerif, sans-serif" color="#000000">The file is created in the &quot;accelerators&quot; subdirectory of the User Directory.</font>
       </li>
     </ul>
     <p>
