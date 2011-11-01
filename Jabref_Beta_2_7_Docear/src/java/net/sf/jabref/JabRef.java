@@ -84,14 +84,14 @@ public class JabRef {
     protected JabRef(String[] args) {
     	this.parent = new JFrame();
 		init(args);
-		openWindow(processArguments(args, true), false);
+		openWindow(processArguments(args, true), true);
 	}
     
     public JabRef(JFrame parent) {
     	this.parent = parent;
     	String[] args = new String[]{ "-s" };
     	init(args);
-    	openWindow(processArguments(args, true), true);
+    	openWindow(processArguments(args, true), false);
 	}
     
     public JabRef(JFrame parent, String[] args) {
@@ -102,7 +102,7 @@ public class JabRef {
     		argArray[i+1] = args[i];
     	}
     	init(argArray);
-    	openWindow(processArguments(argArray, true), true);
+    	openWindow(processArguments(argArray, true), false);
 	}
 
 	/**
@@ -549,7 +549,7 @@ public class JabRef {
         return new ParserResult(result);
     }
 
-	public void openWindow(Vector<ParserResult> loaded, boolean quietStart) {
+	public void openWindow(Vector<ParserResult> loaded, boolean isTopLevel) {
         if (!graphicFailure && !disableGui.isInvoked()) {
             // Call the method performCompatibilityUpdate(), which does any
             // necessary changes for users with a preference set from an older
@@ -573,7 +573,7 @@ public class JabRef {
             // Or... it doesn't work, period.
             //System.setProperty("swing.aatext", "true");
             // If we are not on Mac, deal with font sizes and LookAndFeels:
-            if (!Globals.ON_MAC && !quietStart) {
+            if (!Globals.ON_MAC && isTopLevel) {
                 int fontSizes = Globals.prefs.getInt("menuFontSize");
                 boolean overrideDefaultFonts = Globals.prefs.getBoolean("overrideDefaultFonts");
                 String defaultLookAndFeel;
@@ -705,7 +705,7 @@ public class JabRef {
 
 
             // If the option is enabled, open the last edited databases, if any.
-            if (!blank.isInvoked() && Globals.prefs.getBoolean("openLastEdited") && (Globals.prefs.get("lastEdited") != null)) {
+            if (isTopLevel && !blank.isInvoked() && Globals.prefs.getBoolean("openLastEdited") && (Globals.prefs.get("lastEdited") != null)) {
                 // How to handle errors in the databases to open?
                 String[] names = Globals.prefs.getStringArray("lastEdited");
                 lastEdLoop: 
@@ -742,7 +742,7 @@ public class JabRef {
 
             //Util.pr(": Initializing frame");
             
-            if(quietStart) {
+            if(!isTopLevel) {
             	jrf = new JabRefFrame(this.parent, false);
             } else {
             	jrf = new JabRefFrame(this.parent, true);
@@ -791,7 +791,7 @@ public class JabRef {
             if (Globals.prefs.getBoolean("autoSave"))
                 Globals.startAutoSaveManager(jrf);
             
-            if(!quietStart) {
+            if(isTopLevel) {
 	            // If we are set to remember the window location, we also remember the maximised
 	            // state. This needs to be set after the window has been made visible, so we
 	            // do it here:
