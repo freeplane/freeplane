@@ -212,11 +212,11 @@ public class OptionPanelBuilder {
 	}
 	
 	private class PathOptionCreator extends PropertyCreator {
-		private IPropertyControlCreator createPathPropertyCreator(final String name, final boolean isDir,
-		                                                          final String[] suffixes) {
+		private IPropertyControlCreator createPathPropertyCreator(final String name, final boolean isDir, 
+																  final boolean showHidden, final String[] suffixes) {
 			return new IPropertyControlCreator() {
 				public IPropertyControl createControl() {
-					return new PathProperty(name, isDir, suffixes);
+					return new PathProperty(name, isDir, showHidden, suffixes);
 				}
 			};
 		}
@@ -224,8 +224,9 @@ public class OptionPanelBuilder {
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
 			final boolean isDir = Boolean.parseBoolean(data.getAttribute("dir", "false"));
+			final boolean showHidden = Boolean.parseBoolean(data.getAttribute("showhidden", "false"));
 			final String[] suffixes = parseCSV(data.getAttribute("suffixes", null));
-			return createPathPropertyCreator(name, isDir, suffixes);
+			return createPathPropertyCreator(name, isDir, showHidden, suffixes);
 		}
 
 		// Parses CSV, strips whitespace, returns null if empty

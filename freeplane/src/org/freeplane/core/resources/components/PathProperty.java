@@ -66,15 +66,17 @@ public class PathProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	final private boolean isDir;
-	final private String[] suffixes;
+	final private boolean showHidden;
+	final private String[] suffixes;	
 	private String path;
 	private JTextField filenameField;
 	private JButton selectButton;
 	private JLabel nameLabel;
 
-	public PathProperty(final String name, final boolean isDir, final String[] suffixes) {
+	public PathProperty(final String name, final boolean isDir, final boolean showHidden, final String[] suffixes) {
 		super(name);
 		this.isDir = isDir;
+		this.showHidden = showHidden;
 		this.suffixes = suffixes;
 	}
 
@@ -84,6 +86,9 @@ public class PathProperty extends PropertyBean implements IPropertyControl {
 			fileChooser.setSelectedFile(new File(path));
 		}
 		FileFilter filter = null;
+		if (showHidden) {
+			fileChooser.setFileHidingEnabled(!showHidden);
+		}
 		if (isDir) {
 		    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		}
