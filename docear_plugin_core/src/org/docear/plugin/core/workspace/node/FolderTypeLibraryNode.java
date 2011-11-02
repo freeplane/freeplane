@@ -40,6 +40,7 @@ import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 import org.freeplane.plugin.workspace.config.node.FolderNode;
+import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
 import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
 import org.freeplane.plugin.workspace.config.node.VirtualFolderNode;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
@@ -289,6 +290,7 @@ public class FolderTypeLibraryNode extends FolderNode implements IDocearEventLis
 
 	public void nodeCreated(NodeCreatedEvent event) {
 		//TODO: propagate other filetypes
+		System.out.println("");
 		if(event.getTargetKey().toString().startsWith(getKey().toString())) {
 			DefaultMutableTreeNode node = WorkspaceController.getController().getIndexTree().get(event.getNewKey().toString());
 			if(node.getUserObject() instanceof MindMapFileNode) {
@@ -297,6 +299,14 @@ public class FolderTypeLibraryNode extends FolderNode implements IDocearEventLis
 					LogUtils.info("DOCEAR: adding new mindmap to library: "+ uri);
 					mindmapIndex.add(uri);
 				}
+			} 
+			else
+			if(node.getUserObject() instanceof LinkTypeFileNode) {
+				URI uri = WorkspaceUtils.absoluteURI(((LinkTypeFileNode)node.getUserObject()).getLinkPath());
+				if(!mindmapIndex.contains(uri)) {
+					LogUtils.info("DOCEAR: adding new mindmap to library: "+ uri);
+					mindmapIndex.add(uri);
+				}				
 			}
 		}
 	}

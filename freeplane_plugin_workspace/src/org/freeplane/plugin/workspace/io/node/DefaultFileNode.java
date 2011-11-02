@@ -297,11 +297,4 @@ public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEve
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see org.freeplane.plugin.workspace.config.node.AWorkspaceNode#clone()
-	 */
-	@Override
-	public Object clone() {
-		return null;
-	}
 }

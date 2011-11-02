@@ -110,7 +110,7 @@ public class FilesystemReader {
 		return path;
 	}
 	
-	private void informNodeCreatedListeners(NodeCreatedEvent event) {
+	public void informNodeCreatedListeners(NodeCreatedEvent event) {
 		Iterator<INodeCreatedListener> iterator = this.createdListeners.iterator();
 		while(iterator.hasNext()) {
 			iterator.next().nodeCreated(event);

@@ -5,9 +5,11 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
+import org.freeplane.plugin.workspace.model.WorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.WorkspaceTreePath;
 
 
-public abstract class AWorkspaceNode {
+public abstract class AWorkspaceNode extends WorkspaceTreeNode {
 	final public static int WSNODE_DEFAULT_MODE = 0;
 	
 	private String name;
@@ -17,6 +19,7 @@ public abstract class AWorkspaceNode {
 	private String key;
 	
 	public AWorkspaceNode(final String type) {
+		super(new WorkspaceTreePath());
 		this.type = type;
 		this.currentMode = WSNODE_DEFAULT_MODE;
 	}
@@ -27,6 +30,7 @@ public abstract class AWorkspaceNode {
 	
 	public void setName(String name) {
 		this.name = name;
+		this.getTreePath().setName(getId());
 	}
 	
 	public final String getId() {
@@ -35,6 +39,7 @@ public abstract class AWorkspaceNode {
 	}
 	
 	public final String getKey() {
+		//return super.getKey();
 		if(key == null) {
 			key = WorkspaceController.getController().getIndexTree().getKeyByUserObject(this).toString();
 		}
