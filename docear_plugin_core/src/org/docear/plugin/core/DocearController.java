@@ -16,6 +16,9 @@ import org.freeplane.core.util.LogUtils;
  * 
  */
 public class DocearController implements IDocearEventListener, IFreeplanePropertyListener {
+	public final static String DOCUMENT_REPOSITORY_PATH_PROPERTY = "document_repository_path";
+	public final static String PROJECTS_PATH_PROPERTY = "docear_projects_path";
+	public final static String BIBTEX_PATH_PROPERTY = "docear_bibtex_path";
 	
 	private final Vector<IDocearEventListener> docearListeners = new Vector<IDocearEventListener>();		
 	private final static DocearController docearController = new DocearController();
