@@ -105,6 +105,32 @@
 </map_styles>
 </hook>
 <hook NAME="FirstGroupNode"/>
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_232622736" CREATED="1320005728532" MODIFIED="1320178419418" HGAP="56" VSHIFT="-107" TEXT_SHORTENED="true">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <a href="freeplaneFunctions.mm"><font size="4"><b>Index</b></font></a>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="FreeNode"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Click the link to open a mind map with the main functions of Freeplane. Hover the text to reveal hidden links to the descriptions of the functions you see in this <i>Quick reference</i>&#160;and in <i>Help &gt; Documentation.</i>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
 <node TEXT="Introduction" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1316341192794" BACKGROUND_COLOR="#00cc33" NUMBERED="true" VSHIFT="90">
 <node TEXT="Goal" STYLE_REF="Consumer" ID="ID_1074607965" CREATED="1314422854653" MODIFIED="1319313896777">
 <richcontent TYPE="DETAILS">
@@ -123,8 +149,7 @@
       The goal of this <i>Quick reference</i>&#160;is to give you a quick start with the most used functions of Freeplane. For more and more detailed information, see the documentation at <a href="freeplane.mm">Help &gt; Documentation</a>.
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node TEXT="Reading guide" STYLE_REF="Consumer" ID="ID_195004053" CREATED="1316097186850" MODIFIED="1318625451389" COLOR="#ffffff">
 <richcontent TYPE="DETAILS">
@@ -198,8 +223,7 @@
       node called <b>root</b>.
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node TEXT="Node core" STYLE_REF="Consumer" ID="ID_1370298116" CREATED="1315860175003" MODIFIED="1316265508693" HGAP="40" VSHIFT="10">
 <richcontent TYPE="DETAILS">
@@ -460,7 +484,7 @@
 </node>
 </node>
 <node TEXT="Basic map" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_1337127972" CREATED="1314109409850" MODIFIED="1316184801639" NUMBERED="true">
-<node STYLE_REF="Beginner" ID="ID_268413071" CREATED="1314125550476" MODIFIED="1316724445771">
+<node STYLE_REF="Beginner" FOLDED="true" ID="ID_268413071" CREATED="1314125550476" MODIFIED="1316724445771">
 <richcontent TYPE="NODE">
 <html>
   <head>
@@ -1000,28 +1024,6 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Write scientific formula&apos;s (LaTeX) in node core" STYLE_REF="Professional" ID="ID_616494746" CREATED="1314361765668" MODIFIED="1316152999825">
-<richcontent TYPE="DETAILS" HIDDEN="true">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      If you want to display a scientific formula in a node, this is possible. Use <i>Edit &gt; Title &gt; LaTeX </i>to do so.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b>Note</b>
-    </p>
-    <p>
-      Read more in the Freeplane documentation.
-    </p>
-  </body>
-</html></richcontent>
-</node>
 <node TEXT="Perform calculations" STYLE_REF="Professional" ID="ID_448338872" CREATED="1316197624394" MODIFIED="1317663191485" LINK="http://freeplane.sourceforge.net/wiki/index.php/Formula">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
@@ -1095,7 +1097,7 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Moving" STYLE_REF="Beginner" FOLDED="true" ID="ID_1560992291" CREATED="1314248654564" MODIFIED="1316151509453" NUMBERED="true">
+<node TEXT="Moving" STYLE_REF="Beginner" ID="ID_1560992291" CREATED="1314248654564" MODIFIED="1316151509453" NUMBERED="true">
 <node TEXT="Moving a connected node in space" STYLE_REF="Beginner" ID="ID_293115184" CREATED="1314249849956" MODIFIED="1317135700260" HGAP="40" VSHIFT="40">
 <richcontent TYPE="DETAILS">
 <html>
@@ -1293,7 +1295,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Connectors" STYLE_REF="Beginner" ID="ID_1073407528" CREATED="1314129123086" MODIFIED="1317048931497">
+<node TEXT="Connectors" STYLE_REF="Beginner" ID="ID_1073407528" CREATED="1314129123086" MODIFIED="1319990117501">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -1301,7 +1303,7 @@
   </head>
   <body>
     <p>
-      It is possible to connect any two nodes with a line called <b>connector</b>: &#160;right-click a node and drag to the node you want to connect with.
+      It is possible to connect any two nodes with a line called (bilateral) <b>connector</b>: &#160;right-click a node and drag to the node you want to connect with.
     </p>
     <p>
       
@@ -1323,7 +1325,7 @@
         After entering a lable, press enter.
       </li>
       <li>
-        To get a connector without begin, right-click the node and drag onto itself.
+        To get a connector without begin,&#160;&#160;a <b>unilateral</b>&#160; connector, right-click the node and drag onto itself.
       </li>
     </ul>
   </body>
@@ -1638,7 +1640,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
 </hook>
-<node TEXT="Properties" STYLE_REF="Advanced" FOLDED="true" ID="ID_873516196" CREATED="1314162578896" MODIFIED="1316155509654" NUMBERED="true">
+<node TEXT="Properties" STYLE_REF="Advanced" ID="ID_873516196" CREATED="1314162578896" MODIFIED="1316155509654" NUMBERED="true">
 <node TEXT="Properties panel" STYLE_REF="Advanced" ID="ID_1812601804" CREATED="1314162700896" MODIFIED="1316295689489">
 <richcontent TYPE="DETAILS">
 <html>
@@ -2135,8 +2137,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node TEXT="Interchange with a text editor" STYLE_REF="Professional" ID="ID_118482" CREATED="1314353836801" MODIFIED="1316122048523">
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -2369,7 +2370,7 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Attributes in node details" STYLE_REF="Professional" FOLDED="true" ID="ID_1324773677" CREATED="1314208168037" MODIFIED="1316153622539">
+<node TEXT="Attributes in node extensions" STYLE_REF="Professional" FOLDED="true" ID="ID_1324773677" CREATED="1314208168037" MODIFIED="1319988895492">
 <node TEXT="What is an attribute ?" STYLE_REF="Professional" ID="ID_1657366174" CREATED="1314209542018" MODIFIED="1316330986522">
 <attribute_layout NAME_WIDTH="34" VALUE_WIDTH="92"/>
 <attribute NAME="Name" VALUE="John"/>
@@ -2449,7 +2450,7 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Hyperlink (arrow) in attribute" STYLE_REF="Professional" ID="ID_457929879" CREATED="1312540477537" MODIFIED="1317748093345">
+<node TEXT="Hyperlink (arrow) in attribute" STYLE_REF="Professional" ID="ID_457929879" CREATED="1312540477537" MODIFIED="1320001916263">
 <attribute_layout NAME_WIDTH="48" VALUE_WIDTH="101"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
@@ -2459,6 +2460,28 @@
   <body>
     <p>
       It will be described below that hyperlinks can be added to attribute values through the context menu of the attribute value.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Scientific formula (LaTeX)" STYLE_REF="Professional" ID="ID_616494746" CREATED="1314361765668" MODIFIED="1319989355300">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      If you want to display a scientific formula in a node, this is possible. Use <i>Edit &gt; Title &gt; LaTeX </i>to do so.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <p>
+      Read more in the Freeplane documentation.
     </p>
   </body>
 </html></richcontent>
@@ -3672,8 +3695,7 @@
       There is a base of predefined scrips which are published on the Freeplane wiki. In this way you need not be a programmer to use scripts. Read more in the Freeplane documentation,&#160;&#160;visit the the wiki on add-ons and the <a href="http://freeplane.sourceforge.net/wiki/index.php/Scripting">wiki add-on scrips</a>&#160;.
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node TEXT="Indexing .mm in Windows7" STYLE_REF="Professional" ID="ID_952466464" CREATED="1313349075257" MODIFIED="1316185086894">
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -3735,7 +3757,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Standard short cuts" STYLE_REF="Professional" ID="ID_64846119" CREATED="1316185102923" MODIFIED="1316185436592">
+<node TEXT="Standard short cuts" STYLE_REF="Professional" ID="ID_64846119" CREATED="1316185102923" MODIFIED="1319568659198">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -3743,11 +3765,12 @@
   </head>
   <body>
     <p>
-      Freeplane has standard short cuts for most actions which can help speed up processing of your mind map. These short cuts are visible after the menu items when you open the menu's in the main menu bar. There is also an automatically generated overview. See the not-numbered node below this quick reference.
+      Freeplane has standard short cuts for most actions which can help speed up processing of your mind map. These short cuts are visible after the menu items when you open the menu's in the main menu bar. There is also an automatically generated overview in menu Help. It is also possible to define your own short cut sets, for example for F-keys. See <i>Help &gt; Documentation</i>.
     </p>
   </body>
 </html></richcontent>
 </node>
+<node TEXT="Add-ons" ID="ID_1156954596" CREATED="1319993853694" MODIFIED="1319993861698"/>
 </node>
 <node TEXT="Best practices" STYLE_REF="Beginner" FOLDED="true" POSITION="left" ID="ID_722085722" CREATED="1314363768463" MODIFIED="1318621405078" BACKGROUND_COLOR="#00cc33" NUMBERED="true" VSHIFT="-10">
 <node STYLE_REF="BeginnerTopic" ID="ID_163805859" CREATED="1314422714136" MODIFIED="1318621208383">
