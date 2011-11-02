@@ -48,6 +48,16 @@ public class TransferableEntrySelection implements Transferable {
             df2 = DataFlavor.getTextPlainUnicodeFlavor();
         } catch (ClassNotFoundException e) {
             // never happens
+        	// but if it does:
+        	final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+			try {				
+				Thread.currentThread().setContextClassLoader(TransferableEntrySelection.class.getClassLoader());
+				df1 = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType
+						+ ";class=net.sf.jabref.groups.TransferableEntrySelection");
+				df2 = DataFlavor.getTextPlainUnicodeFlavor();
+			} catch (ClassNotFoundException e1) {				
+			}
+			Thread.currentThread().setContextClassLoader(contextClassLoader);
         }
         flavorInternal = df1;
         flavorExternal = df2;

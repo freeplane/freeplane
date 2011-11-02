@@ -391,19 +391,11 @@ public class NodeUtils {
 		return false;	
 	}
 		
-	public static void removeAttribute(NodeModel target, String attributeKey, boolean translate) {
-		if (translate) {
-			attributeKey = TextUtils.getText(attributeKey);
-		}
-		
-		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
-		if(attributes != null && attributes.getAttributeKeyList().contains(attributeKey)) {
-			AttributeController.getController().performRemoveAttribute(attributeKey);
-		}
-	}
-	
 	public static void removeAttribute(NodeModel target, String attributeKey) {
-		removeAttribute(target, attributeKey, true);
+		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
+		if(attributes != null && attributes.getAttributeKeyList().contains(TextUtils.getText(attributeKey))) {
+			AttributeController.getController().performRemoveAttribute(TextUtils.getText(attributeKey));
+		}
 	}
 
 	public static Object getAttributeValue(NodeModel target, String attributeKey) {

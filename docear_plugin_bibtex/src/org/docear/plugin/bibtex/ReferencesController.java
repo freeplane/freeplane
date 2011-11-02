@@ -1,5 +1,7 @@
 package org.docear.plugin.bibtex;
 
+import java.awt.Container;
+import java.awt.dnd.DropTarget;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
@@ -16,25 +18,31 @@ import org.docear.plugin.bibtex.actions.AddNewReferenceAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesAllOpenMapsAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesCurrentMapAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesInLibrary;
+import org.docear.plugin.bibtex.listeners.AttributeListener;
+import org.docear.plugin.bibtex.listeners.BibtexNodeDropListener;
+import org.docear.plugin.bibtex.listeners.NodeSelectionListener;
 import org.docear.plugin.core.ALanguageController;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.IDocearEventListener;
-import org.docear.plugin.listeners.AttributeListener;
-import org.docear.plugin.listeners.NodeSelectionListener;
+import org.docear.plugin.pdfutilities.listener.DocearNodeDropListener;
+import org.docear.plugin.pdfutilities.listener.DocearNodeMouseMotionListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
+import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.ui.INodeViewLifeCycleListener;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.controller.IWorkspaceListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
+import org.freeplane.view.swing.map.NodeView;
 
 public class ReferencesController extends ALanguageController implements IDocearEventListener, IWorkspaceListener {
 	
@@ -77,10 +85,28 @@ public class ReferencesController extends ALanguageController implements IDocear
 
 		this.addPropertiesToOptionPanel();
 		this.addPluginDefaults();
+		this.registerListeners();
 		this.addMenuEntries();
 		DocearController.getController().addDocearEventListener(this);
 		WorkspaceController.getController().addWorkspaceListener(this);
 		this.initJabref();
+	}
+
+	private void registerListeners() {
+		this.modeController.addINodeViewLifeCycleListener(new INodeViewLifeCycleListener() {
+
+			public void onViewCreated(Container nodeView) {
+				NodeView node = (NodeView) nodeView;
+				final DropTarget dropTarget = new DropTarget(node.getMainView(), new BibtexNodeDropListener());
+				dropTarget.setActive(true);				
+			}
+
+			public void onViewRemoved(Container nodeView) {
+				// TODO Auto-generated method stub
+			}
+
+		});
+		
 	}
 
 	public static ReferencesController getController() {
@@ -188,9 +214,9 @@ public class ReferencesController extends ALanguageController implements IDocear
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU, UpdateReferencesInLibrary,
 						MenuBuilder.AS_CHILD);
 
-				builder.addMenuItem(NODE_POPUP_MENU + NODE_FEATURES_MENU,
+				builder.addMenuItem(NODE_POPUP_MENU /*+ NODE_FEATURES_MENU*/,
 						new JMenu(TextUtils.getText(REFERENCE_MANAGEMENT_MENU_LANG_KEY)), NODE_POPUP_MENU
-								+ REFERENCE_MANAGEMENT_MENU, MenuBuilder.BEFORE);
+								+ REFERENCE_MANAGEMENT_MENU, MenuBuilder.AS_CHILD);
 				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU, AddNewReference, MenuBuilder.AS_CHILD);
 				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU, AddExistingReference, MenuBuilder.AS_CHILD);
 				builder.addMenuItem(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU,

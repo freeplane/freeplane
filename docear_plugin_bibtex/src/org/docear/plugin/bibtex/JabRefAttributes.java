@@ -42,19 +42,23 @@ public class JabRefAttributes {
 	public HashMap<String, String> getValueAttributes() {
 		return valueAttributes;
 	}
-
+	
 	public void addReferenceToNode(BibtexEntry entry) {
-		NodeModel currentNode = Controller.getCurrentModeController().getMapController().getSelectedNode();
-		
+		NodeModel target = Controller.getCurrentModeController().getMapController().getSelectedNode();
+		addReferenceToNode(entry, target);
+	}
+
+	public void addReferenceToNode(BibtexEntry entry, NodeModel target) {
+				
 		
 		if (entry.getCiteKey()==null) {
 			LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), ReferencesController.getController().getJabrefWrapper().getDatabase(), entry);						
 		}
 		
-		renewAttribute(currentNode, keyAttribute, entry.getCiteKey());
+		renewAttribute(target, keyAttribute, entry.getCiteKey());
 		
 		for (Entry<String, String> e : this.valueAttributes.entrySet()) {
-			renewAttribute(currentNode, e.getKey(), entry.getField(e.getValue()));
+			renewAttribute(target, e.getKey(), entry.getField(e.getValue()));
 		}
 		
 		String path = entry.getField("file");
@@ -62,7 +66,7 @@ public class JabRefAttributes {
 		
 		
 		if (path != null) {
-			NodeUtils.setLinkFrom(new File(path).toURI(), currentNode);
+			NodeUtils.setLinkFrom(new File(path).toURI(), target);
 		}
 		else {
 			path = entry.getField("url");			
@@ -71,7 +75,7 @@ public class JabRefAttributes {
 				try {
 					link = LinkController.createURI(path.trim());
 					final MLinkController linkController = (MLinkController) MLinkController.getController();
-					linkController.setLink(currentNode, link, LinkController.LINK_ABSOLUTE);
+					linkController.setLink(target, link, LinkController.LINK_ABSOLUTE);
 				}
 				catch (URISyntaxException e) {				
 					e.printStackTrace();
@@ -82,7 +86,7 @@ public class JabRefAttributes {
 	}
 
 	private static void renewAttribute(NodeModel node, String key, String value) {
-		NodeUtils.removeAttribute(node, key, false);
+		NodeUtils.removeAttribute(node, key);
 		NodeUtils.setAttributeValue(node, key, value, false);
 	}
 }

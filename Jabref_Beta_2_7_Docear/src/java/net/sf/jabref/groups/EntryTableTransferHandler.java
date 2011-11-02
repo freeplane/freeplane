@@ -231,8 +231,8 @@ public class EntryTableTransferHandler extends TransferHandler {
 		// accept this if any input flavor matches any of our supported flavors
 		for (int i = 0; i < transferFlavors.length; i++) {
 			DataFlavor inflav = transferFlavors[i];
-			if (inflav.match(urlFlavor) || inflav.match(stringFlavor)
-				|| inflav.match(DataFlavor.javaFileListFlavor))
+			if (inflav != null && (inflav.match(urlFlavor) || inflav.match(stringFlavor)
+				|| inflav.match(DataFlavor.javaFileListFlavor)))
 				return true;
 		}
 

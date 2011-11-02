@@ -159,5 +159,13 @@ public class DocearNodeDropListener extends MNodeDropListener {
 		 super.drop(dtde);
 	}
 	
+	/*public boolean isDragAcceptable(final DropTargetDragEvent ev) {
+		if(ev.isDataFlavorSupported(TransferableEntrySelection.flavorInternal)){
+			return true;
+		}
+		return super.isDragAcceptable(ev);
+		
+	}*/
+	
 
 }
