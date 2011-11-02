@@ -89,6 +89,13 @@ public class DocearBundleInfo {
 		return false;
 	}
 	
+	public boolean equals(Object object) {
+		if(object instanceof DocearBundleInfo) {
+			return ((DocearBundleInfo) object).getBundleName().equals(this.getBundleName());
+		}
+		return super.equals(object);
+	}
+	
 	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
