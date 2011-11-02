@@ -3,7 +3,7 @@
 	<tabbed_pane>
 		<tab name="reference_management">
 			<separator name="default_bibtex">
-			    <path name = "docear_bibtex_path" suffixes = "bib"/> 
+			    <path name = "docear_bibtex_path" suffixes = "bib" showhidden = "true"/> 
 				<combo name = "docear_bibtex_source">
                     <choice value="docear_bibtex_source.jabref"/>
                     <choice value="docear_bibtex_source.mendeley"/>

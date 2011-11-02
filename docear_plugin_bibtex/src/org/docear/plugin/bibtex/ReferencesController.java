@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import net.sf.jabref.BasePanel;
+import net.sf.jabref.BibtexDatabase;
 import net.sf.jabref.export.DocearSaveDatabaseAction;
 
 import org.docear.plugin.bibtex.actions.AddExistingReferenceAction;
@@ -22,6 +23,7 @@ import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.IDocearEventListener;
 import org.docear.plugin.listeners.AttributeListener;
 import org.docear.plugin.listeners.NodeSelectionListener;
+import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
@@ -36,7 +38,7 @@ import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.controller.IWorkspaceListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 
-public class ReferencesController extends ALanguageController implements IDocearEventListener, IWorkspaceListener {
+public class ReferencesController extends ALanguageController implements IDocearEventListener, IWorkspaceListener, IFreeplanePropertyListener {
 	
 	private static ReferencesController referencesController = null;
 	private JabrefWrapper jabrefWrapper;
@@ -80,6 +82,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 		this.addMenuEntries();
 		DocearController.getController().addDocearEventListener(this);
 		WorkspaceController.getController().addWorkspaceListener(this);
+		Controller.getCurrentController().getResourceController().addPropertyChangeListener(this);
 		this.initJabref();
 	}
 
@@ -220,5 +223,18 @@ public class ReferencesController extends ALanguageController implements IDocear
 
 	public AttributeListener getAttributeListener() {
 		return attributeListener;
+	}
+	
+	@Override
+	public void propertyChanged(String propertyName, String newValue, String oldValue) {
+		System.out.println("debug property changed: "+propertyName+": "+newValue+" / "+oldValue);
+		if (propertyName.equals("docear_bibtex_path")) {
+			System.out.println("new File: "+newValue);
+			File file = new File(newValue);
+			if (file!=null && file.exists()) {
+				ReferencesController.getController().getJabrefWrapper().getJabrefFrame().closeCurrentTab();
+				ReferencesController.getController().getJabrefWrapper().openIt(file, true);
+			}
+		}
 	}
 }

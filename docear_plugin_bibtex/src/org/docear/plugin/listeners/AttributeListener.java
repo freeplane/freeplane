@@ -45,8 +45,7 @@ public class AttributeListener implements TableModelListener {
 		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase(); 
 		BibtexEntry entry = database.getEntryByKey(key);
 		if (entry != null) {
-			entry.setField(ReferencesController.getController().getJabRefAttributes().getValueAttributes().get(attribute.getName()), attribute.getValue().toString());
-			System.out.println("database: "+database.getEntryByKey("Langer2011").getField("year"));
+			entry.setField(ReferencesController.getController().getJabRefAttributes().getValueAttributes().get(attribute.getName()), attribute.getValue().toString());			
 			ReferencesController.getController().getJabrefWrapper().updateDatabase(database);
 		}
 	}

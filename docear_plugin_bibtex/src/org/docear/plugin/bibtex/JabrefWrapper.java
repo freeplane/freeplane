@@ -46,10 +46,12 @@ public class JabrefWrapper extends JabRef  {
 	
 	protected JabrefWrapper(String[] arg0) {
 		super(arg0);		
+
 	}
 	
 	public JabrefWrapper(JFrame frame) {
 		super(frame);
+
 	}
 	
 	/**
@@ -60,6 +62,7 @@ public class JabrefWrapper extends JabRef  {
 		//super(frame, new String[]{"true", "-i", "\""+file.toString()+"\""});
 		super(frame);		
 		openIt(file, true);
+
 	}
 
 	public JabRefFrame getJabrefFrame(){
@@ -79,7 +82,7 @@ public class JabrefWrapper extends JabRef  {
 		// file is set to null inside the EventDispatcherThread
 		//SwingUtilities.invokeLater(new OpenItSwingHelper(bp, file, raisePanel));
 		
-		getJabrefFrame().addTab(bp, file, raisePanel);
+		getJabrefFrame().addTab(bp, file, raisePanel);		
 		
 		System.out.println(Globals.lang("Opened database") + " '" + fileName +
 		"' " + Globals.lang("with") + " " +
@@ -88,15 +91,14 @@ public class JabrefWrapper extends JabRef  {
 		return bp;
 	}
 	
-	public void updateDatabase(BibtexDatabase database) {
+	public BasePanel updateDatabase(BibtexDatabase database) {
 		this.setDatabase(database);
-		BasePanel basePanel = new BasePanel(getJabrefFrame(), database, this.getFile(), this.getMeta(), this.parserResult.getEncoding());
-		getJabrefFrame().closeCurrentTab();
-		getJabrefFrame().closeCurrentTab();
+		BasePanel basePanel = new BasePanel(getJabrefFrame(), database, this.getFile(), this.getMeta(), this.parserResult.getEncoding());		
 		getJabrefFrame().getTabbedPane().setSelectedComponent(basePanel);
-//		JabRefFrame.setBasePanel(basePanel);		
+		
+		return basePanel;		
 	}
-	
+		
 	public void openIt(File file, boolean raisePanel) {
         if ((file != null) && (file.exists())) {
             File fileToLoad = file;
@@ -129,7 +131,6 @@ public class JabrefWrapper extends JabRef  {
                             Globals.lang("Error"), JOptionPane.ERROR_MESSAGE);
                         return;
                     }
-
 
                 }
                 ParserResult pr;

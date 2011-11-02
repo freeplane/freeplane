@@ -1653,7 +1653,9 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 			if (tabbedPane.getTabCount() > 0) {
 				markActiveBasePanel();
 			}
-			setWindowTitle();
+			if (isTopLevel) {
+				setWindowTitle();
+			}
 			updateEnabledState(); // Man, this is what I call a bug that this is
 									// not called.
 			output(Globals.lang("Closed database") + ".");
