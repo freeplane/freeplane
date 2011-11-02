@@ -723,4 +723,9 @@ public class HtmlUtils {
 	        return null;
 	    }
 	}
+
+	public static boolean isEmpty(String newText) {
+		return ! (newText.contains("<img") || newText.contains("<table")) 
+				&& htmlToPlain(newText).equals("");
+    }
 }

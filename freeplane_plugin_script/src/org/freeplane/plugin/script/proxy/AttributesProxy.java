@@ -237,6 +237,10 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		}
 		return nodeAttributeTableModel.getRowCount();
 	}
+	
+	public boolean isEmpty() {
+		return size() == 0;
+	}
 
 	private MAttributeController getAttributeController() {
 		return (MAttributeController) AttributeController.getController();

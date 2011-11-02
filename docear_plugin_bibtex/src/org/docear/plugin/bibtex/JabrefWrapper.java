@@ -58,7 +58,7 @@ public class JabrefWrapper extends JabRef  {
 	 */
 	public JabrefWrapper(JFrame frame, File file) {
 		//super(frame, new String[]{"true", "-i", "\""+file.toString()+"\""});
-		super(frame);
+		super(frame);		
 		openIt(file, true);
 	}
 
@@ -91,7 +91,10 @@ public class JabrefWrapper extends JabRef  {
 	public void updateDatabase(BibtexDatabase database) {
 		this.setDatabase(database);
 		BasePanel basePanel = new BasePanel(getJabrefFrame(), database, this.getFile(), this.getMeta(), this.parserResult.getEncoding());
-		JabRefFrame.setBasePanel(basePanel);		
+		getJabrefFrame().closeCurrentTab();
+		getJabrefFrame().closeCurrentTab();
+		getJabrefFrame().getTabbedPane().setSelectedComponent(basePanel);
+//		JabRefFrame.setBasePanel(basePanel);		
 	}
 	
 	public void openIt(File file, boolean raisePanel) {

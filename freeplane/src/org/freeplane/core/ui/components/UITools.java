@@ -321,15 +321,20 @@ public class UITools {
 		    TextUtils.getText("error"), JOptionPane.ERROR_MESSAGE);
 	}
 	
-public static int showConfirmDialog( final NodeModel node, final Object message,
-            final String title, final int optionType,final int messageType) {
-final Controller controller = Controller.getCurrentController();
-final ViewController viewController = controller.getViewController();
-viewController.scrollNodeToVisible(node);
-final Component parentComponent = viewController.getComponent(node);
-
-return JOptionPane.showConfirmDialog(parentComponent, message, title, optionType, messageType);
-}
+	public static int showConfirmDialog(final NodeModel node, final Object message, final String title,
+	                                    final int optionType, final int messageType) {
+		final Controller controller = Controller.getCurrentController();
+		final ViewController viewController = controller.getViewController();
+		final Component parentComponent;
+		if (node == null) {
+			parentComponent = getFrame();
+		}
+		else {
+			viewController.scrollNodeToVisible(node);
+			parentComponent = viewController.getComponent(node);
+		}
+		return JOptionPane.showConfirmDialog(parentComponent, message, title, optionType, messageType);
+	}
 
 	public static int showConfirmDialog( final NodeModel node, final Object message,
 	                                    final String title, final int optionType) {

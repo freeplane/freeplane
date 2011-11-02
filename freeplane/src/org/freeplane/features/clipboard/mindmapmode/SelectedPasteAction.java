@@ -20,6 +20,7 @@
 package org.freeplane.features.clipboard.mindmapmode;
 
 import java.awt.Component;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
@@ -60,7 +61,8 @@ class SelectedPasteAction extends AFreeplaneAction {
 			return;
 		}
 		final NodeModel parent = Controller.getCurrentController().getSelection().getSelected();
-		clipboardController.paste(selectedHandler, parent, false, parent.isNewChildLeft());
+		final Transferable clipboardContents = clipboardController.getClipboardContents();
+		clipboardController.paste(clipboardContents, selectedHandler, parent, false, parent.isNewChildLeft());
 		selectedHandler = null;
 	}
 

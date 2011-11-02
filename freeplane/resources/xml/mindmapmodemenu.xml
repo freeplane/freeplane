@@ -74,12 +74,6 @@
 				<menu_separator />
 				<menu_category name="icons_list" menu_key="main_menu_icons">
 				</menu_category>
-				<menu_separator />
-				<menu_category name="remove icons" >
-					<menu_action action="RemoveIcon_0_Action" />
-					<menu_action action="RemoveIconAction" />
-					<menu_action action="RemoveAllIconsAction" />					
-				</menu_category>
 				</menu_submenu>
 				<menu_submenu name="progress" name_ref="menu_progress">
 					<menu_action action="IconProgressIconUpAction" accelerator="alt LESS" />
@@ -89,6 +83,11 @@
 					<menu_action action="IconProgressExtended25Action" />
 					<menu_separator/>
 					<menu_action action="IconProgressRemoveAction" />
+				</menu_submenu>
+				<menu_submenu name="menu_remove_icons" >
+					<menu_action action="RemoveIcon_0_Action" />
+					<menu_action action="RemoveIconAction" />
+					<menu_action action="RemoveAllIconsAction" />					
 				</menu_submenu>
 				<menu_separator />
 				<menu_action action="SetImageByFileChooserAction" accelerator="alt shift K" />

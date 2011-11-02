@@ -93,6 +93,7 @@ def parseProperties(Map childNodeMap) {
 	def mandatoryPropertyNames = [
 		'name',
 		'version',
+		'author',
 		'freeplaneVersionFrom'
 		// optional: 'freeplaneVersionTo'
 	]
@@ -128,8 +129,14 @@ def parseFreeplaneVersion(String propertyName, String versionString) {
 def parseDescription(Map childNodeMap) {
 	def property = 'description'
 	Proxy.Node propertyNode = childNodeMap[property]
-	mapStructureAssert(propertyNode.children.size() == 1, textUtils.getText('addons.installer.description'))
-	configMap[property] = propertyNode.children[0].text
+	configMap[property] = theOnlyChild(propertyNode).text
+	println property + ': ' + configMap[property]
+}
+
+def parseLicence(Map childNodeMap) {
+	def property = 'license'
+	Proxy.Node propertyNode = childNodeMap[property]
+	configMap[property] = theOnlyChild(propertyNode).text
 	println property + ': ' + configMap[property]
 }
 
@@ -177,7 +184,7 @@ def parseZips(Map childNodeMap) {
 	File destDir = installationbase
 	propertyNode.children.each{ zipNode -> 
 		try {
-			unpack(destDir, theOnlyChild(zipNode))
+			unpack(destDir, ensureNoHtml(theOnlyChild(zipNode)))
 		} catch (Exception e) {
 			e.printStackTrace()
 			installationAssert(false, e.message);
@@ -211,8 +218,12 @@ void unpack(File destDir, Proxy.Node node) {
 /** ensures that parent has exactly one non-HTML child node. */
 Proxy.Node theOnlyChild(Proxy.Node parent) {
 	mapStructureAssert(parent.children.size() == 1,
-		textUtils.format('addons.installer.one.child.expected', parent.plainText))
-	def first = parent.children.first()
+		textUtils.format('addons.installer.one.child.expected', parent.plainText, parent.children.size()))
+	return parent.children.first()
+}
+
+/** ensures that parent has exactly one non-HTML child node. */
+Proxy.Node ensureNoHtml(Proxy.Node first) {
 	mapStructureAssert( ! htmlUtils.isHtmlNode(first.text), textUtils.getText('addons.installer.html.script'))
 	return first
 }
@@ -224,7 +235,7 @@ def parseScripts(Map childNodeMap) {
 		def script = new ScriptAddOnProperties.Script()
 		script.name = expandVariables(scriptNode.plainText)
 		script.file = new File(ScriptingEngine.getUserScriptDir(), script.name)
-		script.scriptBody = theOnlyChild(scriptNode).text
+		script.scriptBody = ensureNoHtml(theOnlyChild(scriptNode)).text
 		mapStructureAssert( ! htmlUtils.isHtmlNode(script.scriptBody), textUtils.getText('addons.installer.html.script'))
 		scriptNode.attributes.map.each { k,v ->
 			if (k == 'executionMode')
@@ -378,6 +389,7 @@ def expandVariables(String string) {
 AddOnProperties install() {
 	def propertyNames = [
 		'description',
+		'license',
 		'translations',
 		'preferences.xml',
 		'default.properties',
@@ -386,7 +398,7 @@ AddOnProperties install() {
 		'deinstall',
 	]
 	Map<String, Proxy.Node> childNodeMap = propertyNames.inject([:]) { map, key ->
-		map[key] = c.find{ it.plainText == key }[0]
+		map[key] = node.find{ it.plainText == key }[0]
 		return map
 	}
 	def Map<String, Proxy.Node> missingChildNodes = childNodeMap.findAll{ k,v->
@@ -397,6 +409,7 @@ AddOnProperties install() {
 	parseProperties(childNodeMap)
 	checkFreeplaneVersion(configMap)
 	parseDescription(childNodeMap)
+	parseLicence(childNodeMap)
 	parseTranslations(childNodeMap)
 	parsePreferencesXml(childNodeMap)
 	parseDefaultProperties(childNodeMap)
@@ -406,8 +419,14 @@ AddOnProperties install() {
 	createScripts(configMap)
 
 	def addOn = new ScriptAddOnProperties(configMap['properties']['name'])
-	configMap['properties'].each { k,v -> addOn[k] = v	}
+	configMap['properties'].each { k,v ->
+		if (addOn.hasProperty(k))
+			addOn[k] = v
+		else
+			logger.warn("add-on has no property $k (hopefully that's not bad)")
+	}
 	addOn.description = configMap['description']
+	addOn.license = configMap['license']
 	addOn.translations = configMap['translations']
 	addOn.preferencesXml = configMap['preferences.xml']
 	addOn.defaultProperties = configMap['default.properties']

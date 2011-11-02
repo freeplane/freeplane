@@ -31,6 +31,7 @@ import org.freeplane.core.resources.ResourceController;
  * @author Dimitry Polivaev
  */
 class AppletResourceController extends ResourceController {
+	private static final String APPLET_PROPERTIES = "/special_applet.properties";
 	private Properties userProps;
 
 	public AppletResourceController(final FreeplaneApplet freeplaneApplet) {
@@ -38,6 +39,8 @@ class AppletResourceController extends ResourceController {
 		final URL defaultPropsURL = getResource(ResourceController.FREEPLANE_PROPERTIES);
 		userProps = new Properties();
 		loadProperties(userProps, defaultPropsURL);
+		final URL appletPropsURL = getResource(APPLET_PROPERTIES);
+		loadProperties(userProps, appletPropsURL);
 		final Enumeration<?> allKeys = userProps.propertyNames();
 		while (allKeys.hasMoreElements()) {
 			final String key = (String) allKeys.nextElement();

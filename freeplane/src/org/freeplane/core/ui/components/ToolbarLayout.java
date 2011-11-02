@@ -14,6 +14,8 @@ class ToolbarLayout implements LayoutManager {
 	}
 
 	public void layoutContainer(final Container container) {
+		if(! container.isVisible())
+			return;
 		final int maxWidth = container.getParent().getWidth();
 		int heigth = 0;
 		int blockWidth = 0;

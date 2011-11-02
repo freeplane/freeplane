@@ -154,6 +154,7 @@ public class AddOnsController {
 				}
 			}
 		}
+		installedAddOns.remove(addOn);
 	}
 
 	private String expandVariables(String[] rule) {
