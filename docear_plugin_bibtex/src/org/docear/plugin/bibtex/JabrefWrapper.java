@@ -38,9 +38,10 @@ public class JabrefWrapper extends JabRef  {
         postOpenActions.add(new HandleDuplicateWarnings());
     }
 
-	
+	private BasePanel basePanel = null;
 	private BibtexDatabase database = null;
 	private ParserResult parserResult = null;
+	private String encoding = null;
 	private File file;
 	private HashMap<String, String> meta = null;
 	
@@ -75,9 +76,11 @@ public class JabrefWrapper extends JabRef  {
 		String fileName = file.getPath();		
 		this.setParserResult(pr);
 		this.setDatabase(pr.getDatabase());
-		this.setMeta(pr.getMetaData());	
+		this.setMeta(pr.getMetaData());
+		this.setEncoding(pr.getEncoding());
 		
 		BasePanel bp = new BasePanel(getJabrefFrame(), database, file, meta, pr.getEncoding());
+		this.basePanel = bp;
 	
 		// file is set to null inside the EventDispatcherThread
 		//SwingUtilities.invokeLater(new OpenItSwingHelper(bp, file, raisePanel));
@@ -91,10 +94,33 @@ public class JabrefWrapper extends JabRef  {
 		return bp;
 	}
 	
-	public BasePanel updateDatabase(BibtexDatabase database) {
+	public BasePanel addNewDatabase(BibtexDatabase database, boolean raisePanel) {		
 		this.setDatabase(database);
-		BasePanel basePanel = new BasePanel(getJabrefFrame(), database, this.getFile(), this.getMeta(), this.parserResult.getEncoding());		
-		getJabrefFrame().getTabbedPane().setSelectedComponent(basePanel);
+		
+		BasePanel bp = new BasePanel(getJabrefFrame(), database, file, meta, encoding);
+		this.basePanel = bp;
+	
+		// file is set to null inside the EventDispatcherThread
+		//SwingUtilities.invokeLater(new OpenItSwingHelper(bp, file, raisePanel));
+		
+		getJabrefFrame().addTab(bp, file, raisePanel);		
+		
+		System.out.println(Globals.lang("updated database") + Globals.lang("with") + " " +
+		database.getEntryCount() + " " + Globals.lang("entries") + ".");
+		
+		return bp;
+	}
+	
+	public BasePanel updateDatabase(BibtexDatabase database) {
+		//FIXME: basePanel is new --> not existent --> java.lang.IllegalArgumentException: component not found in tabbed pane
+//		getJabrefFrame().getTabbedPane().setSelectedComponent(basePanel);
+//		this.setDatabase(database);
+//		BasePanel basePanel = new BasePanel(getJabrefFrame(), database, this.getFile(), this.getMeta(), this.getEncoding());
+//		this.basePanel = basePanel;
+		
+		
+		this.getJabrefFrame().closeCurrentTab();
+		addNewDatabase(database, true);
 		
 		return basePanel;		
 	}
@@ -214,6 +240,22 @@ public class JabrefWrapper extends JabRef  {
 
 	public void setMeta(HashMap<String, String> meta) {
 		this.meta = meta;
+	}
+
+	public BasePanel getBasePanel() {
+		return basePanel;
+	}
+
+	public void setBasePanel(BasePanel basePanel) {
+		this.basePanel = basePanel;
+	}
+
+	public String getEncoding() {
+		return encoding;
+	}
+
+	public void setEncoding(String encoding) {
+		this.encoding = encoding;
 	}
 	
 }

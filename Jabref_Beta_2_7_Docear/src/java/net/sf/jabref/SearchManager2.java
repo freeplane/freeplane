@@ -45,7 +45,7 @@ import net.sf.jabref.search.SearchExpressionParser;
 import net.sf.jabref.search.SearchMatcher;
 import net.sf.jabref.gui.SearchResultsDialog;
 
-class SearchManager2 extends SidePaneComponent
+public class SearchManager2 extends SidePaneComponent
     implements ActionListener, KeyListener, ItemListener, CaretListener, ErrorMessageDisplay {
 
     private JabRefFrame frame;
