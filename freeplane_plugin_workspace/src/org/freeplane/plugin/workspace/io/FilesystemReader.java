@@ -6,15 +6,21 @@ package org.freeplane.plugin.workspace.io;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import org.freeplane.core.io.ListHashTable;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
+import org.freeplane.plugin.workspace.io.NodeCreatedEvent.NodeCreatedType;
 import org.freeplane.plugin.workspace.io.creator.IFileTypeHandler;
 
 public class FilesystemReader {
 
 	private final FileReadManager typeManager;
+	private final HashSet<INodeCreatedListener> createdListeners = new HashSet<INodeCreatedListener>();
 	private boolean filtering = true;
 
 	public FilesystemReader(final FileReadManager typeManager) {
@@ -40,6 +46,21 @@ public class FilesystemReader {
 			}
 		}
 	}	
+	
+	public void addNodeCreatedListener(INodeCreatedListener listener) {
+		if(listener == null || createdListeners.contains(listener)) {
+			return;
+		}
+		
+		createdListeners.add(listener);
+	}
+	
+	public void removeNodeCreatedListener(INodeCreatedListener listener) {
+		if(listener == null) {
+			return;
+		}
+		createdListeners.remove(listener);
+	}
 	
 	private ListHashTable<String, IFileTypeHandler> getFileTypeHandlers() {
 		return typeManager.getFileTypeHandlers();
@@ -69,16 +90,31 @@ public class FilesystemReader {
 	}
 
 	private Object createFileNode(final Object path, String fileExtension, final File file) {
+		Object parent = path;
+		if(parent instanceof AWorkspaceNode) {
+			parent = WorkspaceController.getController().getIndexTree().getKeyByUserObject(path);
+		}
 		List<IFileTypeHandler> handlers = getFileTypeHandlers().list(fileExtension);
 		if (handlers == null) {
 			fileExtension = FileReadManager.DEFAULT_HANDLE;
 			handlers = getFileTypeHandlers().list(fileExtension);
 		}
-		if (handlers != null && handlers.size() == 1) {
+		if (handlers != null && handlers.size() == 1) { //FIXME: what if there is more than one handler for a single type?
 			IFileTypeHandler nodeCreator = handlers.get(0);
-			return nodeCreator.createFileNode(path, fileExtension, file);
+			Object newPath = nodeCreator.createFileNode(parent, fileExtension, file);
+			NodeCreatedEvent event = new NodeCreatedEvent(parent, newPath, 
+					(fileExtension.equals(FileReadManager.FOLDER_HANDLE) ? NodeCreatedType.NODE_TYPE_FOLDER : NodeCreatedType.NODE_TYPE_FILE));
+			informNodeCreatedListeners(event);
+			return newPath;
 		}
 		return path;
+	}
+	
+	public void informNodeCreatedListeners(NodeCreatedEvent event) {
+		Iterator<INodeCreatedListener> iterator = this.createdListeners.iterator();
+		while(iterator.hasNext()) {
+			iterator.next().nodeCreated(event);
+		}
 	}
 	
 	

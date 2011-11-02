@@ -28,6 +28,8 @@ import org.freeplane.plugin.workspace.config.node.LinkNode;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
 import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
 import org.freeplane.plugin.workspace.config.node.VirtualFolderNode;
+import org.freeplane.plugin.workspace.io.NodeCreatedEvent;
+import org.freeplane.plugin.workspace.io.NodeCreatedEvent.NodeCreatedType;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 
 /**
@@ -200,7 +202,8 @@ public class WorkspaceUtils {
 		IndexedTree tree = WorkspaceController.getController().getIndexTree();
 		Object key = tree.getKeyByUserObject(targetNode.getUserObject());
 		tree.addElement(key, node, key + "/" + node.getId(), IndexedTree.AS_CHILD);
-
+		NodeCreatedEvent event = new NodeCreatedEvent(key.toString(), key + "/" + node.getId(), ((node instanceof FolderNode) ? NodeCreatedType.NODE_TYPE_FILE : NodeCreatedType.NODE_TYPE_FOLDER));
+		WorkspaceController.getController().getFilesystemReader().informNodeCreatedListeners(event);
 		WorkspaceController.getController().getViewModel().reload(targetNode);
 
 		saveCurrentConfiguration();
