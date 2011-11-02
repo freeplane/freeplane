@@ -87,7 +87,7 @@ public class PdfUtilitiesController extends ALanguageController{
 	
 	public static final String MENU_BAR = "/menu_bar"; //$NON-NLS-1$
 	public static final String NODE_POPUP_MENU = "/node_popup"; //$NON-NLS-1$
-	public static final String NODE_FEATURES_MENU = "/node_features"; //$NON-NLS-1$
+	public static final String NODE_FEATURES_MENU = "/links"; //$NON-NLS-1$
 	public static final String TOOLS_MENU = "/extras"; //$NON-NLS-1$
 	public static final String PDF_MANAGEMENT_MENU = "/pdf_management"; //$NON-NLS-1$
 	public static final String MONITORING_MENU = "/monitoring"; //$NON-NLS-1$
@@ -178,9 +178,9 @@ public class PdfUtilitiesController extends ALanguageController{
 				builder.addAction(MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU, updateMonitoringFolderAction, MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU, deleteMonitoringFolderAction, MenuBuilder.AS_CHILD);
 				
-				builder.addMenuItem(NODE_POPUP_MENU + NODE_FEATURES_MENU,
+				builder.addMenuItem(NODE_POPUP_MENU /*+ NODE_FEATURES_MENU*/,
 						new JMenu(TextUtils.getText(MONITORING_MENU_LANG_KEY)), NODE_POPUP_MENU + MONITORING_MENU,
-						MenuBuilder.BEFORE);
+						MenuBuilder.AS_CHILD);
 				builder.addAction(NODE_POPUP_MENU + MONITORING_MENU, addMonitoringFolderAction, MenuBuilder.AS_CHILD);
 				builder.addAction(NODE_POPUP_MENU + MONITORING_MENU, updateMonitoringFolderAction, MenuBuilder.AS_CHILD);
 				builder.addAction(NODE_POPUP_MENU + MONITORING_MENU, deleteMonitoringFolderAction, MenuBuilder.AS_CHILD);
@@ -253,8 +253,8 @@ public class PdfUtilitiesController extends ALanguageController{
 				
 				JDocearInvisibleMenu pdfManagementPopupMenu = new JDocearInvisibleMenu(TextUtils.getText(PDF_MANAGEMENT_MENU_LANG_KEY));
 				
-				builder.addMenuItem(NODE_POPUP_MENU + NODE_FEATURES_MENU, pdfManagementPopupMenu, NODE_POPUP_MENU + PDF_MANAGEMENT_MENU,
-						MenuBuilder.BEFORE);
+				builder.addMenuItem(NODE_POPUP_MENU/* + NODE_FEATURES_MENU*/, pdfManagementPopupMenu, NODE_POPUP_MENU + PDF_MANAGEMENT_MENU,
+						MenuBuilder.AS_CHILD);
 				builder.addSeparator(NODE_POPUP_MENU + DELETE_ACTION, MenuBuilder.AFTER);
 				builder.addAction(NODE_POPUP_MENU + PDF_MANAGEMENT_MENU, importAllAnnotationsAction, MenuBuilder.AS_CHILD);
 				builder.addAction(NODE_POPUP_MENU + PDF_MANAGEMENT_MENU, importNewAnnotationsAction, MenuBuilder.AS_CHILD);	

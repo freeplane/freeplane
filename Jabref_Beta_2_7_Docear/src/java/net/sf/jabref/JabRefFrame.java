@@ -91,12 +91,12 @@ import com.jgoodies.uif_lite.component.UIFSplitPane;
  * The main window of the application.
  */
 public class JabRefFrame extends JPanel implements OutputPrinter {
-
+	
 	private boolean isTopLevel = true;
 	private static BasePanel basePanel;
 
 	JFrame frame = new JFrame();
-
+    
 	UIFSplitPane contentPane = new UIFSplitPane();
 
 	JabRefPreferences prefs = Globals.prefs;

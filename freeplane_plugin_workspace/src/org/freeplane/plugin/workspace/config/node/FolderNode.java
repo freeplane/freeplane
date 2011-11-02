@@ -9,13 +9,13 @@ package org.freeplane.plugin.workspace.config.node;
  * 
  */
 public class FolderNode extends AWorkspaceNode {
+	final public static String FOLDER_TYPE_PHYSICAL = "physical";
+	final public static String FOLDER_TYPE_VIRTUAL = "virtual";
+	
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
-	 **********************************************************************************/
-
-	final public static String FOLDER_TYPE_PHYSICAL = "physical";
-	final public static String FOLDER_TYPE_VIRTUAL = "virtual";
+	 **********************************************************************************/	
 
 	/**
 	 * @param type
@@ -28,6 +28,9 @@ public class FolderNode extends AWorkspaceNode {
 	 * METHODS
 	 **********************************************************************************/
 
+	public void refresh() {
+		//do nothing for now
+	}
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/

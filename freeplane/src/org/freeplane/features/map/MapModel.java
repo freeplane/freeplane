@@ -131,6 +131,11 @@ public class MapModel {
 	 * Change this to always return null if your model doesn't support files.
 	 */
 	public File getFile() {
+		if(url != null){
+			System.out.println(url.getProtocol().equals("file"));
+			File test = new File(url.getFile());
+			System.out.println(test);
+		}
 		return url != null  && url.getProtocol().equals("file") ? new File(url.getFile()) : null;
 	}
 

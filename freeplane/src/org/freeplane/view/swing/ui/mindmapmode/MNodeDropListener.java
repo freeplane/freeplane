@@ -199,7 +199,7 @@ public class MNodeDropListener implements DropTargetListener {
 	public void dropActionChanged(final DropTargetDragEvent e) {
 	}
 
-	private boolean isDragAcceptable(final DropTargetDragEvent ev) {
+	public boolean isDragAcceptable(final DropTargetDragEvent ev) {
 		if (ev.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 			return true;
 		}

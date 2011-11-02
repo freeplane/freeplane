@@ -105,4 +105,12 @@ public class PhysicalFolderNode extends FolderNode implements IWorkspaceNodeEven
 		return this.getClass().getSimpleName() + "[id=" + this.getId() + ";name=" + this.getName() + ";path="
 				+ this.getFolderPath() + "]";
 	}
+
+	public void refresh() {	
+		if(getKey() == null) {
+			return;
+		}
+		refresh(WorkspaceController.getController().getIndexTree().get(getKey()));
+		
+	}
 }

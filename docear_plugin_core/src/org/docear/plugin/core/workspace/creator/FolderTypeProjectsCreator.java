@@ -7,8 +7,12 @@ package org.docear.plugin.core.workspace.creator;
 import java.io.File;
 import java.net.URI;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+
 import org.docear.plugin.core.workspace.node.FolderTypeProjectsNode;
+import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.n3.nanoxml.XMLElement;
+import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.creator.AWorkspaceNodeCreator;
 import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
@@ -47,15 +51,28 @@ public class FolderTypeProjectsCreator extends AWorkspaceNodeCreator {
 		}
 		node.setPathURI(uri);
 		
-		
-		boolean monitor = Boolean.parseBoolean(data.getAttribute("monitor", "false"));
-		node.enableMonitoring(monitor);
-		
 		File file = WorkspaceUtils.resolveURI(node.getPathURI());
 		if (!file.exists()) {
 			file.mkdirs();			
-		}	
+		}
+		boolean monitor = Boolean.parseBoolean(data.getAttribute("monitor", "false"));
+		node.enableMonitoring(monitor);
 		
 		return node;
+	}
+	
+	public void endElement(final Object parent, final String tag, final Object userObject, final XMLElement lastBuiltElement) {
+		final IndexedTree tree = WorkspaceController.getController().getIndexTree();
+		super.endElement(parent, tag, userObject, lastBuiltElement);
+		final Path path = (Path) userObject;
+		if (path.path == null) {
+			return;
+		}
+		final DefaultMutableTreeNode treeNode = tree.get(path.path);
+		if (treeNode.getChildCount() == 0) {
+			FolderTypeProjectsNode node = (FolderTypeProjectsNode) treeNode.getUserObject();
+			WorkspaceController.getController().getFilesystemReader()
+					.scanFilesystem(node, WorkspaceUtils.resolveURI(node.getPathURI()));
+		}
 	}
 }

@@ -6,7 +6,6 @@ package org.docear.plugin.core.workspace.node;
 
 import java.io.File;
 import java.net.URI;
-import java.net.URL;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;

@@ -272,6 +272,8 @@
                 <attribute name="Class-Path" value="." />
 			</manifest>
 		</jar>
+		
+		<copy file="${build.lib}/${build.jar}" todir="${build.dir}/../../docear_plugin_bibtex/lib"/>		  
 
 	</target>
 
