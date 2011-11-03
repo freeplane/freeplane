@@ -12,7 +12,9 @@ import javax.swing.JTabbedPane;
 
 import net.sf.jabref.BasePanel;
 import net.sf.jabref.BibtexDatabase;
+import net.sf.jabref.JabRefFrame;
 import net.sf.jabref.export.DocearSaveDatabaseAction;
+import net.sf.jabref.export.SaveDatabaseAction;
 
 import org.docear.plugin.bibtex.actions.AddExistingReferenceAction;
 import org.docear.plugin.bibtex.actions.AddNewReferenceAction;
@@ -94,6 +96,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 		DocearController.getController().addDocearEventListener(this);
 		WorkspaceController.getController().addWorkspaceListener(this);
 		Controller.getCurrentController().getResourceController().addPropertyChangeListener(this);
+		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(this);
 		this.initJabref();
 	}
 
@@ -268,25 +271,31 @@ public class ReferencesController extends ALanguageController implements IDocear
 
 	@Override
 	public void onCreate(MapModel map) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void onRemove(MapModel map) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void onSavedAs(MapModel map) {
-		// TODO Auto-generated method stub
-		
+		ReferencesController.getController().getJabrefWrapper().getJabrefFrame();
+		try {
+			ReferencesController.getController().getJabrefWrapper().getJabrefFrame().basePanel().runCommand("save");
+		}
+		catch (Throwable ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	@Override
 	public void onSaved(MapModel map) {
-		// TODO Auto-generated method stub
-		
+		ReferencesController.getController().getJabrefWrapper().getJabrefFrame();
+		try {
+			ReferencesController.getController().getJabrefWrapper().getJabrefFrame().basePanel().runCommand("save");
+		}
+		catch (Throwable ex) {
+			ex.printStackTrace();
+		}
 	}
 }
