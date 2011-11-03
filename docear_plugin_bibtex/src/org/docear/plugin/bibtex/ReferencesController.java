@@ -283,4 +283,10 @@ public class ReferencesController extends ALanguageController implements IDocear
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void onSaved(MapModel map) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -660,6 +660,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		final URL urlAfter = map.getURL();
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		mapController.fireMapChanged(new MapChangeEvent(this, map, UrlManager.MAP_URL, urlBefore, urlAfter));
+		mapController.fireMapSaved(map);
 		mapController.setSaved(map, true);
 		return true;
 	}

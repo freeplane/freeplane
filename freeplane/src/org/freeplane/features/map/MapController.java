@@ -385,6 +385,13 @@ public class MapController extends SelectionController {
 			next.onSavedAs(map);
 		}
 	}
+	
+	public void fireMapSaved(final MapModel map) {
+		final IMapLifeCycleListener[] list = mapLifeCycleListeners.toArray(new IMapLifeCycleListener[]{});
+		for (final IMapLifeCycleListener next : list) {
+			next.onSaved(map);
+		}
+	}
 
 	protected void fireMapRemoved(final MapModel map) {
 		final IMapLifeCycleListener[] list = mapLifeCycleListeners.toArray(new IMapLifeCycleListener[]{});
