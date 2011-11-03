@@ -525,4 +525,8 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	public void onSavedAs(MapModel map) {
 		
 	}
+
+	public void onSaved(MapModel map) {
+		
+	}
 }

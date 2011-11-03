@@ -93,6 +93,9 @@ public class NodeTooltipManager implements IExtension{
 
 			public void onSavedAs(MapModel map) {
 			}
+
+			public void onSaved(MapModel map) {
+			}
 			
 		};
 		MapController mapController = modeController.getMapController();
