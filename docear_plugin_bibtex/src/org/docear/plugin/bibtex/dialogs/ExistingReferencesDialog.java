@@ -15,6 +15,7 @@ import javax.swing.border.EmptyBorder;
 import net.sf.jabref.BasePanel;
 import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.SearchManager2;
+import net.sf.jabref.SidePaneManager;
 
 import org.docear.plugin.bibtex.JabrefWrapper;
 import org.docear.plugin.bibtex.ReferencesController;
@@ -49,7 +50,7 @@ public class ExistingReferencesDialog extends JDialog {
 		this.setComponentOrientation(frame.getComponentOrientation());
 		this.setModal(true);
 
-		setBounds(100, 100, 900, 500);
+		setBounds(100, 100, 1000, 500);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -58,8 +59,15 @@ public class ExistingReferencesDialog extends JDialog {
 			this.basePanel = new BasePanel(jabRefWrapper.getJabrefFrame(), jabRefWrapper.getDatabase(), jabRefWrapper.getFile(),
 					jabRefWrapper.getMeta(), jabRefWrapper.getEncoding());
 			contentPanel.setLayout(new BorderLayout(0, 0));
-			JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new SearchManager2(jabRefWrapper.getJabrefFrame(),
-					jabRefWrapper.getJabrefFrame().sidePaneManager), basePanel);
+			
+			SidePaneManager sidePaneManager = new SidePaneManager(jabRefWrapper.getJabrefFrame());			
+			SearchManager2 searchManager = new SearchManager2(jabRefWrapper.getJabrefFrame(), jabRefWrapper.getJabrefFrame().sidePaneManager);
+			searchManager.setActiveBasePanel(this.basePanel);
+			sidePaneManager.register("search", searchManager);			
+			
+			sidePaneManager.show("search");
+			
+			JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, searchManager, this.basePanel);
 			contentPanel.add(splitPane);
 		}
 		{

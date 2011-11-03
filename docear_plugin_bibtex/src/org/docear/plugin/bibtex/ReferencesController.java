@@ -36,6 +36,8 @@ import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.IMapLifeCycleListener;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -46,7 +48,7 @@ import org.freeplane.plugin.workspace.controller.IWorkspaceListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 import org.freeplane.view.swing.map.NodeView;
 
-public class ReferencesController extends ALanguageController implements IDocearEventListener, IWorkspaceListener, IFreeplanePropertyListener {
+public class ReferencesController extends ALanguageController implements IDocearEventListener, IWorkspaceListener, IFreeplanePropertyListener, IMapLifeCycleListener {
 	
 	private static ReferencesController referencesController = null;
 	private JabrefWrapper jabrefWrapper;
@@ -262,5 +264,23 @@ public class ReferencesController extends ALanguageController implements IDocear
 				ReferencesController.getController().getJabrefWrapper().openIt(file, true);
 			}
 		}
+	}
+
+	@Override
+	public void onCreate(MapModel map) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRemove(MapModel map) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onSavedAs(MapModel map) {
+		// TODO Auto-generated method stub
+		
 	}
 }
