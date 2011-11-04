@@ -49,8 +49,6 @@ public class JabRefAttributes {
 	}
 
 	public void addReferenceToNode(BibtexEntry entry, NodeModel target) {
-				
-		
 		if (entry.getCiteKey()==null) {
 			LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), ReferencesController.getController().getJabrefWrapper().getDatabase(), entry);						
 		}

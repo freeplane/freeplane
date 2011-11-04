@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URI;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -20,6 +21,11 @@ import net.sf.jabref.SidePaneManager;
 import org.docear.plugin.bibtex.JabrefWrapper;
 import org.docear.plugin.bibtex.ReferencesController;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.link.NodeLinks;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+
+import spl.PdfImporter;
 
 public class ExistingReferencesDialog extends JDialog {
 
@@ -40,6 +46,20 @@ public class ExistingReferencesDialog extends JDialog {
 	private void onOkButton() {
 		BibtexEntry entry = this.basePanel.getSelectedEntries()[0];
 		if (entry != null) {
+			NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
+			URI link = NodeLinks.getLink(node);
+			JabrefWrapper jabrefWrapper = ReferencesController.getController().getJabrefWrapper();
+
+			if (link != null && link.getPath().toLowerCase().endsWith(".pdf")) {
+				BasePanel basePanel = ReferencesController.getController().getJabrefWrapper().getJabrefFrame().basePanel();
+				int position = basePanel.getMainTable().findEntry(entry);
+				basePanel.selectSingleEntry(position);
+				
+				final String[] newfileNames = new PdfImporter(jabrefWrapper.getJabrefFrame(), jabrefWrapper.getJabrefFrame()
+						.basePanel(), basePanel.getMainTable(), position).importPdfFiles(new String[] { link.getPath() }, Controller.getCurrentController()
+						.getViewController().getFrame(), false);			
+			}
+			
 			ReferencesController.getController().getJabRefAttributes().addReferenceToNode(entry);
 		}
 		this.dispose();
