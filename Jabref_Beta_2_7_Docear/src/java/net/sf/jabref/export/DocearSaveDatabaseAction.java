@@ -23,16 +23,21 @@ public class DocearSaveDatabaseAction extends SaveDatabaseAction {
 
 	public void run() {
 		BibtexEntry entryForMindmapNode = null;
+		String nodeId = null;
 		for (BibtexEntry entry : this.panel.getDatabase().getEntries()) {
-			String nodeId = entry.getField("docear_add_to_node");
+			nodeId = entry.getField("docear_add_to_node");
 			if (nodeId != null) {
 				entryForMindmapNode = entry;				
 				if (entry.getCiteKey() == null) {
 					LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), this.panel.getDatabase(), entry);
 				}
+				break;
 			}
 		}		
 
+		entryForMindmapNode.setField("docear_add_to_node", null);
+		
+		//save Database
 		super.run();
 		
 		if (entryForMindmapNode != null) {
@@ -47,11 +52,18 @@ public class DocearSaveDatabaseAction extends SaveDatabaseAction {
 			else {
 				return;
 			}
-			for (ActionListener listener : actionListeners) {
-				listener.actionPerformed(event);
-			}
 			
+			//addNodeID to entry for AddNewReferenceAction 
+			entryForMindmapNode.setField("docear_add_to_node", nodeId);			
+			for (ActionListener listener : actionListeners) {
+				//addNodeID to entry for AddNewReferenceAction 
+				entryForMindmapNode.setField("docear_add_to_node", nodeId);
+				listener.actionPerformed(event);
+				//addNodeID to entry for AddNewReferenceAction 
+			}
+			//delete nodeID from entry to prevent new insert after restart
 			entryForMindmapNode.setField("docear_add_to_node", null);
+			
 		}
 		
 		

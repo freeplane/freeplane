@@ -52,10 +52,12 @@ public class PdfImporter {
     }
 
     public String[] importPdfFiles(String[] fileNames){
-    	return importPdfFiles(fileNames, null);
+    	return importPdfFiles(fileNames, null, null);
     }
     
-    public String[] importPdfFiles(String[] fileNames, Container parent){
+  //FIXME: DOCEAR: no own frame when integrated into docear
+    //DOCEAR: newEntry==null means both should be shown (before changes for docear)
+    public String[] importPdfFiles(String[] fileNames, Container parent, Boolean newEntry){
         List<String> files = new ArrayList<String>(Arrays.asList(fileNames));
         List<String> noPdfFiles = new ArrayList<String>();
         PdfFileFilter pdfFilter = new PdfFileFilter();
@@ -66,7 +68,7 @@ public class PdfImporter {
         }
         files.removeAll(noPdfFiles);
         if (parent != null) {
-        	importPdfFiles(files, parent);
+        	importPdfFiles(files, parent, newEntry);
         }
         else {
         	importPdfFiles(files);
@@ -76,17 +78,15 @@ public class PdfImporter {
         return noPdfFilesArray;
     }
     
-    
-    //FIXME: no own frame when integrated into docear
     private boolean importPdfFiles(List<String> fileNames){
-    	return importPdfFiles(fileNames, null);
+    	return importPdfFiles(fileNames, null, null);
     }
 
-    private boolean importPdfFiles(List<String> fileNames, Container parent){
+    private boolean importPdfFiles(List<String> fileNames, Container parent, Boolean newEntry){
         if(panel == null) return false;
         for(String fileName : fileNames){
             List<BibtexEntry> xmpEntriesInFile = readXmpEntries(fileName);
-            ImportDialog importDialog = new ImportDialog(dropRow, fileName);
+            ImportDialog importDialog = new ImportDialog(dropRow, fileName, newEntry);
             if(!hasXmpEntries(xmpEntriesInFile)){
                 importDialog.getRadioButtonXmp().setEnabled(false);
             }            

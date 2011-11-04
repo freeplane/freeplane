@@ -35,53 +35,53 @@ public class AddNewReferenceAction extends AFreeplaneAction {
 
 	public void actionPerformed(ActionEvent e) {
 		BibtexEntry entry = null;
-		if(e.getActionCommand().equals(DocearSaveDatabaseAction.JABREF_DATABASE_SAVE_SUCCESS)) {			
+		if (e.getActionCommand().equals(DocearSaveDatabaseAction.JABREF_DATABASE_SAVE_SUCCESS)) {
 			try {
 				entry = (BibtexEntry) e.getSource();
-				String nodeID = entry.getField("docear_add_to_node");				
+				String nodeID = entry.getField("docear_add_to_node");
 				if (nodeID != null) {
 					NodeModel node = Controller.getCurrentModeController().getMapController().getNodeFromID(nodeID);
 					ReferencesController.getController().getJabRefAttributes().addReferenceToNode(entry, node);
 				}
 			}
-			catch(Exception ex) {
+			catch (Exception ex) {
 				ex.printStackTrace();
 			}
 			return;
 		}
-		else if(e.getActionCommand().equals(DocearSaveDatabaseAction.JABREF_DATABASE_SAVE_FAILED)) {
+		else if (e.getActionCommand().equals(DocearSaveDatabaseAction.JABREF_DATABASE_SAVE_FAILED)) {
 			return;
 		}
 		else {
-		
+
 			System.out.println("debug actionPerformed");
 			NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
 			URI link = NodeLinks.getLink(node);
 			JabrefWrapper jabrefWrapper = ReferencesController.getController().getJabrefWrapper();
-			
-			
+
 			if (link != null && link.getPath().toLowerCase().endsWith(".pdf")) {
-				final String[] newfileNames = new PdfImporter(jabrefWrapper.getJabrefFrame(), 
-						jabrefWrapper.getJabrefFrame().basePanel(), null, 0).importPdfFiles(new String[] {link.getPath()}, Controller.getCurrentController().getViewController().getFrame());
+				final String[] newfileNames = new PdfImporter(jabrefWrapper.getJabrefFrame(), jabrefWrapper.getJabrefFrame()
+						.basePanel(), null, 0).importPdfFiles(new String[] { link.getPath() }, Controller.getCurrentController()
+						.getViewController().getFrame(), true);
 				BibtexEntry[] entries = jabrefWrapper.getJabrefFrame().basePanel().getSelectedEntries();
-				
-				if (entries.length>0) {
+
+				if (entries.length > 0) {
 					entry = entries[0];
 				}
-			}		
-			else {			
+			}
+			else {
 				BasePanel basePanel = jabrefWrapper.getJabrefFrame().basePanel();
-				
+
 				EntryTypeDialog dialog = new EntryTypeDialog(jabrefWrapper.getJabrefFrame());
 				dialog.setVisible(true);
-		
+
 				BibtexEntryType bet = dialog.getChoice();
 				if (bet == null) {
 					return;
 				}
-				String thisType = bet.getName();		
-				
-				entry = basePanel.newEntry(BibtexEntryType.getType(thisType));			
+				String thisType = bet.getName();
+
+				entry = basePanel.newEntry(BibtexEntryType.getType(thisType));
 			}
 			showJabRefTab();
 			if (entry != null) {
