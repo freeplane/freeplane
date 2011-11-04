@@ -20,7 +20,7 @@ public class Activator extends WorkspaceDependentPlugin {
 	
 	protected void startPluginServices(BundleContext context, ModeController modeController) {
 		try {
-			final ServiceReference<?>[] dependends = context.getServiceReferences(DocearPlugin.class.getName(),
+			final ServiceReference[] dependends = context.getServiceReferences(DocearPlugin.class.getName(),
 					"(dependsOn="+DocearPlugin.DEPENDS_ON+")");
 			if (dependends != null) {
 				List<DocearPlugin> services = sortOnDependencies(dependends, context);
@@ -35,11 +35,11 @@ public class Activator extends WorkspaceDependentPlugin {
 		}
 	}
 
-	private List<DocearPlugin> sortOnDependencies(ServiceReference<?>[] dependends, BundleContext context) {
+	private List<DocearPlugin> sortOnDependencies(ServiceReference[] dependends, BundleContext context) {
 		ArrayList<DocearPlugin> list = new ArrayList<DocearPlugin>();
 		HashMap<String, DocearPlugin> requiredFor = new HashMap<String, DocearPlugin>();
 		
-		for(ServiceReference<?> serviceReference : dependends) {
+		for(ServiceReference serviceReference : dependends) {
 			final DocearPlugin service = (DocearPlugin) context.getService(serviceReference); 
 			for(DocearBundleInfo info : service.getBundleInfo().getRequiredBundles()) {
 				if(info.getBundleName().startsWith("org.docear") && !info.getBundleName().equals("org.docear.plugin.core") && !inList(info, list)) {

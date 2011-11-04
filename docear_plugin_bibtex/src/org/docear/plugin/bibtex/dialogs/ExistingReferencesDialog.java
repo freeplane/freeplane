@@ -9,6 +9,7 @@ import java.net.URI;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.border.EmptyBorder;
@@ -50,17 +51,28 @@ public class ExistingReferencesDialog extends JDialog {
 			URI link = NodeLinks.getLink(node);
 			JabrefWrapper jabrefWrapper = ReferencesController.getController().getJabrefWrapper();
 
-			if (link != null && link.getPath().toLowerCase().endsWith(".pdf")) {
-				BasePanel basePanel = ReferencesController.getController().getJabrefWrapper().getJabrefFrame().basePanel();
-				int position = basePanel.getMainTable().findEntry(entry);
-				basePanel.selectSingleEntry(position);
-				
-				final String[] newfileNames = new PdfImporter(jabrefWrapper.getJabrefFrame(), jabrefWrapper.getJabrefFrame()
-						.basePanel(), basePanel.getMainTable(), position).importPdfFiles(new String[] { link.getPath() }, Controller.getCurrentController()
-						.getViewController().getFrame(), false);			
+			int yesorno = JOptionPane.YES_OPTION;
+			if (link != null) {
+				if (link.getPath().toLowerCase().endsWith(".pdf")) {
+					BasePanel basePanel = ReferencesController.getController().getJabrefWrapper().getJabrefFrame().basePanel();
+					int position = basePanel.getMainTable().findEntry(entry);
+					basePanel.selectSingleEntry(position);
+					
+					final String[] newfileNames = new PdfImporter(jabrefWrapper.getJabrefFrame(), jabrefWrapper.getJabrefFrame()
+							.basePanel(), basePanel.getMainTable(), position).importPdfFiles(new String[] { link.getPath() }, Controller.getCurrentController()
+							.getViewController().getFrame(), false);
+				}
+				else {
+					if (entry.getField("file") != null || entry.getField("url") != null) {
+						yesorno = JOptionPane.showConfirmDialog(Controller.getCurrentController().getViewController().getContentPane(),
+								TextUtils.getText("overwrite_existing_file_link"), TextUtils.getText("overwrite_existing_file_link_title"),
+								JOptionPane.YES_NO_OPTION);
+					}
+				}
 			}
-			
-			ReferencesController.getController().getJabRefAttributes().addReferenceToNode(entry);
+			if (yesorno == JOptionPane.YES_OPTION) {
+				ReferencesController.getController().getJabRefAttributes().addReferenceToNode(entry);
+			}
 		}
 		this.dispose();
 	}
