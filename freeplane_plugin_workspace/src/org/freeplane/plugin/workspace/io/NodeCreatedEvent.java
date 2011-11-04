@@ -4,46 +4,41 @@
  */
 package org.freeplane.plugin.workspace.io;
 
+import org.freeplane.plugin.workspace.config.node.AFolderNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+
 
 public class NodeCreatedEvent {
 	public enum NodeCreatedType {
 		NODE_TYPE_FOLDER, NODE_TYPE_FILE
 	}
-	private final Object sourceKey;
-	private final Object newKey;
-	private final NodeCreatedType type;
+	private final AWorkspaceTreeNode node;
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
-	public NodeCreatedEvent(Object targetKey, Object newKey, NodeCreatedType type) {
-		assert(targetKey != null);
-		assert(newKey != null);
-		assert (type != null);
-		
-		this.sourceKey = targetKey;
-		this.newKey = newKey;
-		this.type = type;
+	public NodeCreatedEvent(AWorkspaceTreeNode createdNode) {
+		assert(createdNode != null);
+		this.node = createdNode;
 	}
 
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
-	
-	public Object getTargetKey() {
-		return sourceKey;
-	}
 
-	public Object getNewKey() {
-		return newKey;
+	public AWorkspaceTreeNode getCreatedNode() {
+		return node;
 	}
 	
 	public NodeCreatedType getType() {
-		return type;
+		if(node instanceof AFolderNode) {
+			return NodeCreatedType.NODE_TYPE_FOLDER;
+		}
+		return NodeCreatedType.NODE_TYPE_FILE;
 	}
 
 	public String toString() {
-		return this.getClass().getSimpleName()+"[target="+getTargetKey()+";new="+getNewKey()+"]";
+		return this.getClass().getSimpleName()+"[createdNode="+getCreatedNode()+";type="+getType()+"]";
 	}
 	
 	

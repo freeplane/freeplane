@@ -6,9 +6,8 @@ package org.freeplane.plugin.workspace.dnd;
 
 import java.awt.dnd.DropTargetDropEvent;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 /**
  * 
@@ -25,13 +24,13 @@ public class DefaultWorkspaceDroptTargetDispatcher implements IDropTargetDispatc
 	 **********************************************************************************/
 	
 	private IDropAcceptor getDropAcceptor(final DropTargetDropEvent event) {
-		DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) WorkspaceController.getController().getWorkspaceViewTree()
+		AWorkspaceTreeNode targetNode = (AWorkspaceTreeNode) WorkspaceController.getController().getWorkspaceViewTree()
 				.getPathForLocation(event.getLocation().x, event.getLocation().y).getLastPathComponent();
-		while(targetNode != null && targetNode.getUserObject() instanceof IDropAcceptor) {
-			if(((IDropAcceptor)targetNode.getUserObject()).acceptDrop(event.getCurrentDataFlavors())) {
-				return (IDropAcceptor)targetNode.getUserObject();
+		while(targetNode != null && targetNode instanceof IDropAcceptor) {
+			if(((IDropAcceptor)targetNode).acceptDrop(event.getCurrentDataFlavors())) {
+				return (IDropAcceptor)targetNode;
 			}
-			targetNode = (DefaultMutableTreeNode) targetNode.getParent();
+			targetNode = targetNode.getParent();
 			
 		}
 		return null;

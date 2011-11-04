@@ -7,40 +7,34 @@ package org.docear.plugin.core.workspace.node;
 import java.awt.Component;
 import java.io.File;
 import java.net.URI;
-import java.util.Iterator;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.apache.commons.io.monitor.FileAlterationListener;
-import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.config.node.FolderNode;
+import org.freeplane.plugin.workspace.config.node.AFolderNode;
 import org.freeplane.plugin.workspace.config.node.VirtualFolderNode;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
-/**
- * 
- */
-public class FolderTypeProjectsNode extends FolderNode implements IWorkspaceNodeEventListener, FileAlterationListener {
+
+public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNodeEventListener, FileAlterationListener {
 	private static final Icon DEFAULT_ICON = new ImageIcon(FolderTypeLibraryNode.class.getResource("/images/project-open-2.png"));
 	private boolean doMonitoring = false;
 	private URI pathURI = null;
-	private final FileAlterationMonitor monitor;
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 	
 	public FolderTypeProjectsNode(String type) {
-		super(type);
-		monitor = new FileAlterationMonitor(10000);		
+		super(type);	
 	}
 	
 	/***********************************************************************************
@@ -48,9 +42,14 @@ public class FolderTypeProjectsNode extends FolderNode implements IWorkspaceNode
 	 **********************************************************************************/
 
 	public void setPathURI(URI uri) {
-		this.pathURI = uri;
-		File file = WorkspaceUtils.resolveURI(uri);
-		setObserver(file);
+		if(isMonitoring()) {
+			enableMonitoring(false);
+			this.pathURI = uri;
+			enableMonitoring(true);
+		} 
+		else {
+			this.pathURI = uri;
+		}		
 	}
 	
 	@ExportAsAttribute("path")
@@ -59,15 +58,18 @@ public class FolderTypeProjectsNode extends FolderNode implements IWorkspaceNode
 	}
 	
 	public void enableMonitoring(boolean enable) {
+		File file = WorkspaceUtils.resolveURI(getPathURI());
 		if(enable != this.doMonitoring) {
 			this.doMonitoring = enable;
+			if(file == null) {
+				return;
+			}
 			try {		
-				if(enable) {
-					monitor.start();
-					
+				if(enable) {					
+					WorkspaceController.getController().getFileSystemAlterationMonitor().addFileSystemListener(file, this);
 				}
 				else {
-					monitor.stop();
+					WorkspaceController.getController().getFileSystemAlterationMonitor().removeFileSystemListener(file, this);
 				}
 			} 
 			catch (Exception e) {
@@ -88,18 +90,11 @@ public class FolderTypeProjectsNode extends FolderNode implements IWorkspaceNode
 		return true;
 	}
 	
-	private void setObserver(File directory) {
-		Iterator<FileAlterationObserver> observers = monitor.getObservers().iterator();
-		while(observers.hasNext()) {
-			observers.next();
-			observers.remove();
-		}
-		if(directory.exists() && directory.isDirectory()) {
-			FileAlterationObserver observer = new FileAlterationObserver(directory);
-			observer.addListener(this);
-			monitor.addObserver(observer);
-		}
-		
+
+	protected AWorkspaceTreeNode clone(FolderTypeProjectsNode node) {
+		node.setPathURI(getPathURI());
+		node.enableMonitoring(isMonitoring());
+		return super.clone(node);
 	}
 		
 	/***********************************************************************************
@@ -111,7 +106,7 @@ public class FolderTypeProjectsNode extends FolderNode implements IWorkspaceNode
 	 */
 	public void handleEvent(WorkspaceNodeEvent event) {
 		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {			
-			Component component = (Component) event.getSource();
+			Component component = (Component) event.getBaggage();
 
 			WorkspaceController.getController().getPopups()
 					.showPopup(VirtualFolderNode.POPUP_KEY, component, event.getX(), event.getY());
@@ -191,22 +186,22 @@ public class FolderTypeProjectsNode extends FolderNode implements IWorkspaceNode
 
 	
 	public void refresh() {
-		if(getKey() == null) {
-			//FIXME: DOCEAR> remove this node from "Controller.getCurrentController().getResourceController().removePropertyChangeListener(this);" !!!ConcurrentModificationException
-			return;
-		}
-		final DefaultMutableTreeNode node = WorkspaceController.getController().getIndexTree().get(getKey());
 		try {
 			File file = WorkspaceUtils.resolveURI(getPathURI());
 			if (file != null) {
-				WorkspaceController.getController().getIndexTree().removeChildElements(getKey());
-				WorkspaceController.getController().getFilesystemReader().scanFilesystem(getKey(), file);
-				WorkspaceController.getController().getViewModel().reload(node);
+				WorkspaceUtils.getModel().removeAllElements(this);
+				WorkspaceController.getController().getFilesystemReader().scanFileSystem(this, file);
+				WorkspaceUtils.getModel().reload(this);
 			}			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public AWorkspaceTreeNode clone() {
+		FolderTypeProjectsNode node = new FolderTypeProjectsNode(getType());
+		return clone(node);
 	}
 
 	

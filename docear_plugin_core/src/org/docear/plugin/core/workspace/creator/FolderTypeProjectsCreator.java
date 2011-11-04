@@ -7,15 +7,12 @@ package org.docear.plugin.core.workspace.creator;
 import java.io.File;
 import java.net.URI;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import org.docear.plugin.core.workspace.node.FolderTypeProjectsNode;
-import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.creator.AWorkspaceNodeCreator;
-import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public class FolderTypeProjectsCreator extends AWorkspaceNodeCreator {
 	public static final String FOLDER_TYPE_PROJECTS = "projects";
@@ -31,7 +28,7 @@ public class FolderTypeProjectsCreator extends AWorkspaceNodeCreator {
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
-	public AWorkspaceNode getNode(XMLElement data) {
+	public AWorkspaceTreeNode getNode(XMLElement data) {
 		String type = data.getAttribute("type", FOLDER_TYPE_PROJECTS);
 		FolderTypeProjectsNode node = new FolderTypeProjectsNode(type);
 		//TODO: add missing attribute handling
@@ -61,18 +58,17 @@ public class FolderTypeProjectsCreator extends AWorkspaceNodeCreator {
 		return node;
 	}
 	
-	public void endElement(final Object parent, final String tag, final Object userObject, final XMLElement lastBuiltElement) {
-		final IndexedTree tree = WorkspaceController.getController().getIndexTree();
-		super.endElement(parent, tag, userObject, lastBuiltElement);
-		final Path path = (Path) userObject;
-		if (path.path == null) {
+	public void endElement(final Object parent, final String tag, final Object node, final XMLElement lastBuiltElement) {
+		super.endElement(parent, tag, node, lastBuiltElement);
+		if (node == null) {
 			return;
 		}
-		final DefaultMutableTreeNode treeNode = tree.get(path.path);
-		if (treeNode.getChildCount() == 0) {
-			FolderTypeProjectsNode node = (FolderTypeProjectsNode) treeNode.getUserObject();
-			WorkspaceController.getController().getFilesystemReader()
-					.scanFilesystem(node, WorkspaceUtils.resolveURI(node.getPathURI()));
+		if (node instanceof FolderTypeProjectsNode && ((FolderTypeProjectsNode) node).getChildCount() == 0) {
+			WorkspaceController
+					.getController()
+					.getFilesystemReader()
+					.scanFileSystem((AWorkspaceTreeNode) node,
+							WorkspaceUtils.resolveURI(((FolderTypeProjectsNode) node).getPathURI()));
 		}
 	}
 }

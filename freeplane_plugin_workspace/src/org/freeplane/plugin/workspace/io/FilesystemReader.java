@@ -12,10 +12,8 @@ import java.util.List;
 
 import org.freeplane.core.io.ListHashTable;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
-import org.freeplane.plugin.workspace.io.NodeCreatedEvent.NodeCreatedType;
 import org.freeplane.plugin.workspace.io.creator.IFileTypeHandler;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public class FilesystemReader {
 
@@ -35,14 +33,14 @@ public class FilesystemReader {
 		this.filtering = filtering;
 	}
 
-	public void scanFilesystem(final Object object, final File file) {
+	public void scanFileSystem(final AWorkspaceTreeNode node, final File file) {
 
 		if (file != null && file.exists()) {
 			if (file.isDirectory()) {
-				iterateFolder(object, file);
+				iterateFolder(node, file);
 			}
 			else {
-				createFileNode(object, file);
+				createFileNode(node, file);
 			}
 		}
 	}	
@@ -66,34 +64,27 @@ public class FilesystemReader {
 		return typeManager.getFileTypeHandlers();
 	}
 
-	private void iterateFolder(Object object, File folder) {
+	private void iterateFolder(AWorkspaceTreeNode parent, File folder) {
 		for (File file : folder.listFiles(new FolderFilter())) {
-			Object path = createFileNode(object, FileReadManager.FOLDER_HANDLE, file);
-			iterateFolder(path, file);
+			AWorkspaceTreeNode newParent = createFileNode(parent, FileReadManager.FOLDER_HANDLE, file);
+			iterateFolder(newParent, file);
 
 		}
 		for (File file : folder.listFiles(new NoFolderFilter())) {
-			createFileNode(object, file);
+			createFileNode(parent, file);
 		}
 	}
 
-	private Object createFileNode(final Object path, final File file) {
+	private AWorkspaceTreeNode createFileNode(final AWorkspaceTreeNode parent, final File file) {
 		String fileExtension = FileReadManager.DEFAULT_HANDLE;
 		int dot = file.getPath().lastIndexOf('.');
 		if (-1 != dot) {
 			fileExtension = file.getPath().substring(dot);
-			// LogUtils.info("Filetype: " + new
-			// MimetypesFileTypeMap().getContentType(file) + " " +
-			// file.getPath().substring(dot));
 		}
-		return createFileNode(path, fileExtension, file);
+		return createFileNode(parent, fileExtension, file);
 	}
 
-	private Object createFileNode(final Object path, String fileExtension, final File file) {
-		Object parent = path;
-		if(parent instanceof AWorkspaceNode) {
-			parent = WorkspaceController.getController().getIndexTree().getKeyByUserObject(path);
-		}
+	private AWorkspaceTreeNode createFileNode(final AWorkspaceTreeNode parent, String fileExtension, final File file) {
 		List<IFileTypeHandler> handlers = getFileTypeHandlers().list(fileExtension);
 		if (handlers == null) {
 			fileExtension = FileReadManager.DEFAULT_HANDLE;
@@ -101,13 +92,12 @@ public class FilesystemReader {
 		}
 		if (handlers != null && handlers.size() == 1) { //FIXME: what if there is more than one handler for a single type?
 			IFileTypeHandler nodeCreator = handlers.get(0);
-			Object newPath = nodeCreator.createFileNode(parent, fileExtension, file);
-			NodeCreatedEvent event = new NodeCreatedEvent(parent, newPath, 
-					(fileExtension.equals(FileReadManager.FOLDER_HANDLE) ? NodeCreatedType.NODE_TYPE_FOLDER : NodeCreatedType.NODE_TYPE_FILE));
+			AWorkspaceTreeNode newParent = nodeCreator.createFileNode(parent, fileExtension, file);
+			NodeCreatedEvent event = new NodeCreatedEvent(newParent);
 			informNodeCreatedListeners(event);
-			return newPath;
+			return newParent;
 		}
-		return path;
+		return parent;
 	}
 	
 	public void informNodeCreatedListeners(NodeCreatedEvent event) {

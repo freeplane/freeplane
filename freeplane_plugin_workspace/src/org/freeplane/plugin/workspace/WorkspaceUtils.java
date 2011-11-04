@@ -14,23 +14,20 @@ import java.net.URISyntaxException;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
-import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
-import org.freeplane.plugin.workspace.config.node.FolderNode;
-import org.freeplane.plugin.workspace.config.node.LinkNode;
+import org.freeplane.plugin.workspace.config.node.AFolderNode;
+import org.freeplane.plugin.workspace.config.node.ALinkNode;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
 import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
 import org.freeplane.plugin.workspace.config.node.VirtualFolderNode;
 import org.freeplane.plugin.workspace.io.NodeCreatedEvent;
-import org.freeplane.plugin.workspace.io.NodeCreatedEvent.NodeCreatedType;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.WorkspaceIndexedTreeModel;
 
 /**
  * 
@@ -86,13 +83,13 @@ public class WorkspaceUtils {
 		}
 	}
 
-	public static void createPhysicalFolderNode(final File path, final DefaultMutableTreeNode parent) {
+	public static void createPhysicalFolderNode(final File path, final AWorkspaceTreeNode parent) {
 		if (!path.isDirectory()) {
 			LogUtils.warn("the given path is no folder.");
 			return;
 		}
 
-		PhysicalFolderNode node = new PhysicalFolderNode(FolderNode.FOLDER_TYPE_PHYSICAL);
+		PhysicalFolderNode node = new PhysicalFolderNode(AFolderNode.FOLDER_TYPE_PHYSICAL);
 		String name = path.getName();
 
 		node.setName(name == null ? "folder" : name);
@@ -105,13 +102,13 @@ public class WorkspaceUtils {
 		addAndSave(findAllowedTargetNode(parent), node);
 	}
 
-	public static void createLinkTypeFileNode(final File path, final DefaultMutableTreeNode parent) {
+	public static void createLinkTypeFileNode(final File path, final AWorkspaceTreeNode parent) {
 		if (!path.isFile()) {
 			LogUtils.warn("the given path is no file.");
 			return;
 		}
 
-		LinkTypeFileNode node = new LinkTypeFileNode(LinkNode.LINK_TYPE_FILE);
+		LinkTypeFileNode node = new LinkTypeFileNode(ALinkNode.LINK_TYPE_FILE);
 		String name = path.getName();
 
 		node.setName(name == null ? "fileLink" : name);
@@ -125,15 +122,15 @@ public class WorkspaceUtils {
 		addAndSave(findAllowedTargetNode(parent), node);
 	}
 
-	public static void createVirtualFolderNode(String folderName, final DefaultMutableTreeNode parent) {
+	public static void createVirtualFolderNode(String folderName, final AWorkspaceTreeNode parent) {
 		if (folderName == null || folderName.trim().length() <= 0) {
 			return;
 		}
 
-		DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) (parent == null ? WorkspaceController.getController()
-				.getViewModel().getRoot() : parent);
+		AWorkspaceTreeNode targetNode = (AWorkspaceTreeNode) (parent == null ? WorkspaceController.getController()
+				.getWorkspaceModel().getRoot() : parent);
 
-		VirtualFolderNode node = new VirtualFolderNode(FolderNode.FOLDER_TYPE_VIRTUAL);
+		VirtualFolderNode node = new VirtualFolderNode(AFolderNode.FOLDER_TYPE_VIRTUAL);
 		node.setName(folderName);
 
 		addAndSave(targetNode, node);
@@ -168,7 +165,7 @@ public class WorkspaceUtils {
 				return null;
 			}
 			else {
-				URI test = urlConnection.getURL().toURI();
+				//URI test = urlConnection.getURL().toURI();
 				return urlConnection.getURL().toURI();
 			}
 		}
@@ -198,25 +195,30 @@ public class WorkspaceUtils {
 	 * @param targetNode
 	 * @param node
 	 */
-	private static void addAndSave(DefaultMutableTreeNode targetNode, AWorkspaceNode node) {
-		IndexedTree tree = WorkspaceController.getController().getIndexTree();
-		Object key = tree.getKeyByUserObject(targetNode.getUserObject());
-		tree.addElement(key, node, key + "/" + node.getId(), IndexedTree.AS_CHILD);
-		NodeCreatedEvent event = new NodeCreatedEvent(key.toString(), key + "/" + node.getId(), ((node instanceof FolderNode) ? NodeCreatedType.NODE_TYPE_FILE : NodeCreatedType.NODE_TYPE_FOLDER));
+	private static void addAndSave(AWorkspaceTreeNode targetNode, AWorkspaceTreeNode node) {
+		WorkspaceUtils.getModel().addNodeTo(node, targetNode);
+		NodeCreatedEvent event = new NodeCreatedEvent(node);
 		WorkspaceController.getController().getFilesystemReader().informNodeCreatedListeners(event);
-		WorkspaceController.getController().getViewModel().reload(targetNode);
+		WorkspaceUtils.getModel().reload(targetNode);
 
 		saveCurrentConfiguration();
 	}
 
-	public static DefaultMutableTreeNode findAllowedTargetNode(final DefaultMutableTreeNode node) {
-		DefaultMutableTreeNode targetNode = node;
+	public static AWorkspaceTreeNode findAllowedTargetNode(final AWorkspaceTreeNode node) {
+		AWorkspaceTreeNode targetNode = node;
 		// DOCEAR: drops are not allowed on physical nodes, for the moment
-		while (targetNode.getUserObject() instanceof DefaultFileNode || targetNode.getUserObject() instanceof PhysicalFolderNode
-				|| targetNode.getUserObject() instanceof LinkNode) {
-			targetNode = (DefaultMutableTreeNode) targetNode.getParent();
+		while (targetNode instanceof DefaultFileNode || targetNode instanceof PhysicalFolderNode
+				|| targetNode instanceof ALinkNode) {
+			targetNode = (AWorkspaceTreeNode) targetNode.getParent();
 		}
 		return targetNode;
+	}
+
+	/**
+	 * @return
+	 */
+	public static WorkspaceIndexedTreeModel getModel() {
+		return WorkspaceController.getController().getWorkspaceModel();
 	}
 
 }

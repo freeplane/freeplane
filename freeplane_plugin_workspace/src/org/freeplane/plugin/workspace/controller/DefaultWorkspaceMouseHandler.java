@@ -9,10 +9,10 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.view.WorkspaceNodeRenderer;
 
 /**
@@ -41,9 +41,9 @@ public class DefaultWorkspaceMouseHandler implements MouseListener, MouseMotionL
 		WorkspaceController.getController().getWorkspaceViewTree().addSelectionPath(path);
 		if (path != null) {
 			
-			DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+			AWorkspaceTreeNode node = (AWorkspaceTreeNode) path.getLastPathComponent();
 
-			if (node.getUserObject() instanceof IWorkspaceNodeEventListener) {
+			if (node instanceof IWorkspaceNodeEventListener) {
 				int eventType = 0;
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					eventType += WorkspaceNodeEvent.MOUSE_LEFT;
@@ -57,8 +57,8 @@ public class DefaultWorkspaceMouseHandler implements MouseListener, MouseMotionL
 				else {
 					eventType += WorkspaceNodeEvent.MOUSE_CLICK;
 				}
-				((IWorkspaceNodeEventListener) node.getUserObject()).handleEvent(new WorkspaceNodeEvent(e.getComponent(),
-						eventType, e.getX(), e.getY()));
+				((IWorkspaceNodeEventListener) node).handleEvent(new WorkspaceNodeEvent(node,
+						eventType, e.getX(), e.getY(), e.getComponent()));
 			}
 
 		}

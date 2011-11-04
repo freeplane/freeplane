@@ -10,12 +10,10 @@ import java.util.Stack;
 import javax.swing.JTree;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreePath;
 
-import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.WorkspaceIndexedTreeModel;
 
 /**
  * 
@@ -40,23 +38,22 @@ public class DefaultWorkspaceExpansionStateHandler extends AWorkspaceExpansionSt
 	 * {@inheritDoc}
 	 */
 	public void restoreExpansionState() {
-		lock();
-		IndexedTree index = WorkspaceController.getController().getIndexTree();
-		DefaultTreeModel model = WorkspaceController.getController().getViewModel();
+		lock();		
+		WorkspaceIndexedTreeModel model = WorkspaceController.getController().getWorkspaceModel();
 		JTree view = WorkspaceController.getController().getWorkspaceViewTree();
 		Iterator<String> iterator = getSet().iterator(); 
 		while(iterator.hasNext()) {
 			String key = iterator.next();
-			if(index.contains(key)) {			
-				view.expandPath(new TreePath(model.getPathToRoot(index.get(key))));
+			if(model.containsNode(key)) {			
+				view.expandPath(model.getNode(key).getTreePath());
 			} else {
 				iterator.remove();
 			}
 		}
 		while(!collapseStack.isEmpty()) {
 			String key = collapseStack.pop();
-			if(index.contains(key)) {			
-				view.collapsePath(new TreePath(model.getPathToRoot(index.get(key))));
+			if(model.containsNode(key)) {			
+				view.collapsePath(model.getNode(key).getTreePath());
 			}
 		}
 		unlock();
@@ -88,9 +85,9 @@ public class DefaultWorkspaceExpansionStateHandler extends AWorkspaceExpansionSt
 	 * {@inheritDoc}
 	 */
 	public void treeExpanded(TreeExpansionEvent event) {		
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) event.getPath().getLastPathComponent();
+		AWorkspaceTreeNode node = (AWorkspaceTreeNode) event.getPath().getLastPathComponent();
 		if(node != null) {
-			String key = (String) WorkspaceController.getController().getIndexTree().getKeyByUserObject(node.getUserObject());
+			String key = node.getKey();
 			if(key != null) {
 				if(locked() && !getSet().contains(key)){
 					collapseStack.push(key);
@@ -106,9 +103,9 @@ public class DefaultWorkspaceExpansionStateHandler extends AWorkspaceExpansionSt
 	 */
 	public void treeCollapsed(TreeExpansionEvent event) {
 		if(locked()) return;
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) event.getPath().getLastPathComponent();
+		AWorkspaceTreeNode node = (AWorkspaceTreeNode) event.getPath().getLastPathComponent();
 		if(node != null) {
-			String key = (String) WorkspaceController.getController().getIndexTree().getKeyByUserObject(node.getUserObject());
+			String key = node.getKey();
 			if(key != null && getSet().contains(key)) {
 				removePathKey(key);
 			}

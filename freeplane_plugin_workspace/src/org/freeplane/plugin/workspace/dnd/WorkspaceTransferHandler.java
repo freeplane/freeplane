@@ -23,12 +23,11 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JTree;
 import javax.swing.TransferHandler;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.io.StringOutputStream;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.view.WorkspaceNodeRenderer;
 /**
  * 
@@ -83,19 +82,19 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 
 	public Transferable createTransferable(JComponent comp) {		
 		StringOutputStream writer = new StringOutputStream();
-		List<IndexedTree.Node> objectList = new ArrayList<IndexedTree.Node>();
+		List<AWorkspaceTreeNode> objectList = new ArrayList<AWorkspaceTreeNode>();
 		if (comp instanceof JTree) {
 			JTree t = (JTree) comp;
 			//FIXME: prepare for multiple node selection
 			for (TreePath p : t.getSelectionPaths()) {
-				DefaultMutableTreeNode node = (DefaultMutableTreeNode) p.getLastPathComponent();
-				if (node.getUserObject() instanceof IWorkspaceTransferableCreator) {
-					return ((IWorkspaceTransferableCreator)node.getUserObject()).getTransferable();
+				AWorkspaceTreeNode node = (AWorkspaceTreeNode) p.getLastPathComponent();
+				if (node instanceof IWorkspaceTransferableCreator) {
+					return ((IWorkspaceTransferableCreator)node).getTransferable();
 				}
 				try {
 					ObjectOutputStream oos = new ObjectOutputStream(writer);
 					oos.writeObject(node);
-					objectList.add((IndexedTree.Node) node);
+					objectList.add(node);
 				}
 				catch (IOException e) {
 				}

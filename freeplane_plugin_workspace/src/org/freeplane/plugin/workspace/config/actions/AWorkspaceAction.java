@@ -5,10 +5,10 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Icon;
 import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.view.WorkspacePopupMenu;
 
 public abstract class AWorkspaceAction extends AFreeplaneAction {
@@ -26,7 +26,7 @@ public abstract class AWorkspaceAction extends AFreeplaneAction {
 		super(key);
 	}
 	
-	protected DefaultMutableTreeNode getNodeFromActionEvent(ActionEvent e) {
+	protected AWorkspaceTreeNode getNodeFromActionEvent(ActionEvent e) {
 		WorkspacePopupMenu pop = (WorkspacePopupMenu)((Component) e.getSource()).getParent();
 		int x = pop.getInvokerLocation().x;
 		int y = pop.getInvokerLocation().y;
@@ -35,7 +35,7 @@ public abstract class AWorkspaceAction extends AFreeplaneAction {
 		if(path == null) {
 			return null;
 		}
-		return (DefaultMutableTreeNode)path.getLastPathComponent();
+		return (AWorkspaceTreeNode) path.getLastPathComponent();
 	}
 	
 	protected Component getComponentFromActionEvent(ActionEvent e) {

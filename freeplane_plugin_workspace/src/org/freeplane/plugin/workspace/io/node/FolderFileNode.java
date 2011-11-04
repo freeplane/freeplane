@@ -9,11 +9,11 @@ import java.util.Enumeration;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 /**
  * 
@@ -58,22 +58,25 @@ public class FolderFileNode extends DefaultFileNode {
 		return true;
 	}
 	
+	public AWorkspaceTreeNode clone() {
+		FolderFileNode node = new FolderFileNode(getName(), getFile());
+		return clone(node);
+	}
+	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
-	@Override
 	public void handleEvent(WorkspaceNodeEvent event) {	
 		System.out.println("FolderFileNode: "+ event);
 		if(event.getType() == WorkspaceNodeEvent.WSNODE_CHANGED) {
 			if(rename(event.getBaggage().toString())) {
 				setName(event.getBaggage().toString());
-				if(event.getSource() instanceof DefaultMutableTreeNode) {
-					Enumeration<?> childs = ((DefaultMutableTreeNode)event.getSource()).children();
+				if(event.getSource() instanceof AWorkspaceTreeNode) {
+					Enumeration<AWorkspaceTreeNode> childs = ((AWorkspaceTreeNode)event.getSource()).children();
 					while(childs.hasMoreElements()) {
-						DefaultMutableTreeNode node = ((DefaultMutableTreeNode) childs.nextElement());
-						if(node.getUserObject() instanceof DefaultFileNode) {
-							((DefaultFileNode)node.getUserObject()).relocateFile(getFile());
-							
+						AWorkspaceTreeNode node = ((AWorkspaceTreeNode) childs.nextElement());
+						if(node instanceof DefaultFileNode) {
+							((DefaultFileNode)node).relocateFile(getFile());							
 						}
 					}
 				}

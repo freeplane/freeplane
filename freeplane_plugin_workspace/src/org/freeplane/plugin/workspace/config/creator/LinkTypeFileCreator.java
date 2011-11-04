@@ -4,8 +4,8 @@ import java.net.URI;
 
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public class LinkTypeFileCreator extends AWorkspaceNodeCreator {
 
@@ -13,7 +13,7 @@ public class LinkTypeFileCreator extends AWorkspaceNodeCreator {
 	}
 
 	@Override
-	public AWorkspaceNode getNode(XMLElement data) {
+	public AWorkspaceTreeNode getNode(XMLElement data) {
 		String type = data.getAttribute("type", "file");
 		LinkTypeFileNode node = new LinkTypeFileNode(type);
 		

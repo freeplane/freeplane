@@ -14,14 +14,13 @@ import java.net.URI;
 import java.net.URL;
 import java.util.List;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import org.freeplane.core.util.Compat;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.dnd.IWorkspaceDragnDropController;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 /**
  * 
@@ -57,13 +56,13 @@ public class DefaultWorkspaceDropHandler implements IWorkspaceDragnDropControlle
 					if(item instanceof File) {
 						File file = (File)item;
 						final Point location = event.getLocation();
-						DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) WorkspaceController.getController().getWorkspaceViewTree().getPathForLocation(location.x, location.y).getLastPathComponent();
-						if(targetNode.getUserObject() instanceof DefaultFileNode) {
+						AWorkspaceTreeNode targetNode = (AWorkspaceTreeNode) WorkspaceController.getController().getWorkspaceViewTree().getPathForLocation(location.x, location.y).getLastPathComponent();
+						if(targetNode instanceof DefaultFileNode) {
 							do {
-								targetNode = (DefaultMutableTreeNode) targetNode.getParent();
-							} while(targetNode.getUserObject() instanceof DefaultFileNode);
+								targetNode = targetNode.getParent();
+							} while(targetNode instanceof DefaultFileNode);
 						} 
-						System.out.println("Drop Item ("+file.toString()+") on "+targetNode.getUserObject()+" at "+location);
+						System.out.println("Drop Item ("+file.toString()+") on "+targetNode+" at "+location);
 						if(file.isDirectory()) {
 							WorkspaceUtils.createPhysicalFolderNode(file, targetNode);
 						}
@@ -87,13 +86,13 @@ public class DefaultWorkspaceDropHandler implements IWorkspaceDragnDropControlle
 				final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
 				final File file = Compat.urlToFile(url);
 				final Point location = event.getLocation();
-				DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) WorkspaceController.getController().getWorkspaceViewTree().getPathForLocation(location.x, location.y).getLastPathComponent();
-				if(targetNode.getUserObject() instanceof DefaultFileNode) {
+				AWorkspaceTreeNode targetNode = (AWorkspaceTreeNode) WorkspaceController.getController().getWorkspaceViewTree().getPathForLocation(location.x, location.y).getLastPathComponent();
+				if(targetNode instanceof DefaultFileNode) {
 					do {
-						targetNode = (DefaultMutableTreeNode) targetNode.getParent();
-					} while(targetNode.getUserObject() instanceof DefaultFileNode);
+						targetNode = targetNode.getParent();
+					} while(targetNode instanceof DefaultFileNode);
 				} 
-				System.out.println("Drop Item ("+file.toString()+") on "+targetNode.getUserObject()+" at "+location);
+				System.out.println("Drop Item ("+file.toString()+") on "+targetNode+" at "+location);
 				if(file.isDirectory()) {
 					WorkspaceUtils.createPhysicalFolderNode(file, targetNode);
 				}

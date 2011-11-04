@@ -1,17 +1,10 @@
 package org.freeplane.plugin.workspace.config.actions;
 
 import java.awt.event.ActionEvent;
-import java.io.File;
 
-import javax.swing.JFileChooser;
-
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceChooserDialog;
 import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.WorkspacePreferences;
 
 public class WorkspaceSetLocationAction extends AFreeplaneAction {
 

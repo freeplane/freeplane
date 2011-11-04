@@ -6,8 +6,8 @@ package org.freeplane.plugin.workspace.io.creator;
 
 import java.io.File;
 
-import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 import org.freeplane.plugin.workspace.io.node.FolderFileNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 /**
  * 
@@ -32,7 +32,7 @@ public class FolderFileNodeCreator extends AFileNodeCreator {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	
-	public AWorkspaceNode getNode(String name, File file, String fileExtension) {
+	public AWorkspaceTreeNode getNode(String name, File file, String fileExtension) {
 		FolderFileNode node = new FolderFileNode(file.getName(), file);
 		node.setFileExtension(fileExtension);
 		return node;

@@ -11,8 +11,9 @@ import org.freeplane.plugin.workspace.config.IConfigurationInfo;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
-public class WorkspaceRoot extends AWorkspaceNode implements IConfigurationInfo, IWorkspaceNodeEventListener {
+public class WorkspaceRoot extends AWorkspaceTreeNode implements IConfigurationInfo, IWorkspaceNodeEventListener {
 	private static Icon DEFAULT_ICON = new ImageIcon(PhysicalFolderNode.class.getResource("/images/16x16/preferences-desktop-filetype-association.png"));
 	
 	private String version=WorkspaceController.WORKSPACE_VERSION;
@@ -30,8 +31,7 @@ public class WorkspaceRoot extends AWorkspaceNode implements IConfigurationInfo,
 	public void handleEvent(WorkspaceNodeEvent event) {
 		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {
 			WorkspaceController.getController().getPopups()
-					.showWorkspacePopup((Component) event.getSource(), event.getX(), event.getY());
-
+					.showWorkspacePopup((Component) event.getBaggage(), event.getX(), event.getY());
 		}
 	}
 
@@ -60,7 +60,17 @@ public class WorkspaceRoot extends AWorkspaceNode implements IConfigurationInfo,
 		return true;
 	}
 
-	@Override
 	public void initializePopup() {	
+	}
+	
+	protected AWorkspaceTreeNode clone(WorkspaceRoot node) {		
+		node.setMeta((String) getMeta());
+		node.setVersion(getVersion());
+		return super.clone(node);
+	}
+	
+	public AWorkspaceTreeNode clone() {
+		WorkspaceRoot node = new WorkspaceRoot();
+		return clone(node);
 	}
 }

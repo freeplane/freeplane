@@ -22,7 +22,7 @@ import org.docear.plugin.core.workspace.node.LinkTypeReferencesNode;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.creator.AWorkspaceNodeCreator;
-import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 /**
  * 
@@ -75,7 +75,7 @@ public class LinkTypeReferencesCreator extends AWorkspaceNodeCreator {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	
-	public AWorkspaceNode getNode(XMLElement data) {
+	public AWorkspaceTreeNode getNode(XMLElement data) {
 		String type = data.getAttribute("type", LINK_TYPE_REFERENCES);
 		LinkTypeReferencesNode node = new LinkTypeReferencesNode(type);
 		//TODO: add missing attribute handling

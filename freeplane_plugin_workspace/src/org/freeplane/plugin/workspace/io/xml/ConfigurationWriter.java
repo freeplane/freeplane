@@ -7,8 +7,6 @@ package org.freeplane.plugin.workspace.io.xml;
 import java.io.IOException;
 import java.io.Writer;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.ITreeWriter;
@@ -17,7 +15,7 @@ import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 /**
  * StringWriter writer = new StringWriter();
@@ -45,19 +43,19 @@ public class ConfigurationWriter implements IElementWriter, IAttributeWriter {
 	public void writeConfigurationAsXml(final Writer fileout) throws IOException {
 		final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager, fileout);
 		xmlWriter.setHint(Hint.MODE, MapWriter.Mode.FILE);
-		writeNode(xmlWriter, (DefaultMutableTreeNode) WorkspaceController.getController().getViewModel().getRoot());
+		writeNode(xmlWriter, (AWorkspaceTreeNode) WorkspaceController.getController().getWorkspaceModel().getRoot());
 		xmlWriter.flush();
 		fileout.close();
 	}
 
-	private void writeNode(final ITreeWriter xmlWriter, final DefaultMutableTreeNode node) throws IOException {
-		final String nodeTag = ((AWorkspaceNode)node.getUserObject()).getTagName();
+	private void writeNode(final ITreeWriter xmlWriter, final AWorkspaceTreeNode node) throws IOException {
+		final String nodeTag = node.getTagName();
 		if(nodeTag == null) return;
 
 		xmlWriter.addElement(node, nodeTag);
 	}
 
-	public void writeNodeAsXml(final Writer writer, final DefaultMutableTreeNode node) throws IOException {
+	public void writeNodeAsXml(final Writer writer, final AWorkspaceTreeNode node) throws IOException {
 		final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager, writer);
 		writeNode(xmlWriter, node);
 		xmlWriter.flush();
@@ -72,7 +70,6 @@ public class ConfigurationWriter implements IElementWriter, IAttributeWriter {
 	}
 
 	public void writeContent(ITreeWriter writer, Object element, String tag) throws IOException {
-		final DefaultMutableTreeNode node = (DefaultMutableTreeNode) element;
-		writeNode(writer, node);
+		writeNode(writer, (AWorkspaceTreeNode) element);
 	}
 }

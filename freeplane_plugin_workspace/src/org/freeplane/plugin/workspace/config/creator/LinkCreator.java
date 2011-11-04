@@ -7,7 +7,7 @@ package org.freeplane.plugin.workspace.config.creator;
 import java.util.Hashtable;
 
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 /**
  * 
@@ -44,7 +44,7 @@ public class LinkCreator extends AWorkspaceNodeCreator {
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
-	public AWorkspaceNode getNode(XMLElement data) {
+	public AWorkspaceTreeNode getNode(XMLElement data) {
 		String type = data.getAttribute("type", null);
 		if(type == null || !creatorTable.containsKey(type)) {
 			return null;

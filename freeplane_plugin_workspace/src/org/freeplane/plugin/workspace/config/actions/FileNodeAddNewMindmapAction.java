@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 
 import javax.swing.JOptionPane;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -12,6 +11,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public class FileNodeAddNewMindmapAction extends AWorkspaceAction {
 
@@ -30,9 +30,9 @@ public class FileNodeAddNewMindmapAction extends AWorkspaceAction {
 				JOptionPane.YES_NO_OPTION);
 		
 		if (fileName != null && fileName.length()>0) {
-			DefaultMutableTreeNode node = this.getNodeFromActionEvent(e);
-			if (node.getUserObject() instanceof DefaultFileNode) {
-				File file = ((DefaultFileNode) node.getUserObject()).getFile();
+			AWorkspaceTreeNode node = this.getNodeFromActionEvent(e);
+			if (node instanceof DefaultFileNode) {
+				File file = ((DefaultFileNode) node).getFile();
 				if (file.exists()) {
 					JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(),
                             TextUtils.getText("error_file_exists"), TextUtils.getText("error_file_exists_title"),

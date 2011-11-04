@@ -9,8 +9,7 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: org.osgi.framework;version="1.3.0"
 Require-Bundle: org.freeplane.core;bundle-version="1.0.1",
  org.freeplane.plugin.workspace;bundle-version="1.0.0"
-Export-Package: org.apache.commons.io,
- org.docear.plugin.core;
+Export-Package: org.docear.plugin.core;
   uses:="org.freeplane.core.resources,
    javax.swing,
    org.freeplane.features.mode,
@@ -23,5 +22,4 @@ Export-Package: org.apache.commons.io,
  org.docear.plugin.core.workspace.node,
  org.jdesktop.swingworker
 Bundle-ClassPath: lib/plugin.jar,
- lib/swingworker-backport.jar,
- lib/commons-io-2.0.1.jar
+ lib/swingworker-backport.jar

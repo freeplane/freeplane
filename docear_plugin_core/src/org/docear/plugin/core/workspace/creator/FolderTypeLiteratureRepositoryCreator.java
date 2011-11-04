@@ -7,16 +7,13 @@ package org.docear.plugin.core.workspace.creator;
 import java.io.File;
 import java.net.URI;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import org.docear.plugin.core.workspace.node.FolderTypeLiteratureRepositoryNode;
-import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.creator.AWorkspaceNodeCreator;
-import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 /**
  * 
@@ -24,7 +21,7 @@ import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 public class FolderTypeLiteratureRepositoryCreator extends AWorkspaceNodeCreator {
 
 	public static final String FOLDER_TYPE_LITERATUREREPOSITORY = "literature_repository";
-	
+
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
@@ -33,16 +30,14 @@ public class FolderTypeLiteratureRepositoryCreator extends AWorkspaceNodeCreator
 	 * METHODS
 	 **********************************************************************************/
 
-	
-
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
-	
-	public AWorkspaceNode getNode(XMLElement data) {
+
+	public AWorkspaceTreeNode getNode(XMLElement data) {
 		String type = data.getAttribute("type", FOLDER_TYPE_LITERATUREREPOSITORY);
 		FolderTypeLiteratureRepositoryNode node = new FolderTypeLiteratureRepositoryNode(type);
-		//TODO: add missing attribute handling
+		// TODO: add missing attribute handling
 		String path = data.getAttribute("path", null);
 		if (path == null) {
 			return null;
@@ -50,33 +45,32 @@ public class FolderTypeLiteratureRepositoryCreator extends AWorkspaceNodeCreator
 		node.setFolderPath(URI.create(path));
 
 		File file = WorkspaceUtils.resolveURI(node.getFolderPath());
-		
-		if(file != null) {
+
+		if (file != null) {
 			if (!file.exists()) {
 				if (file.mkdirs()) {
 					LogUtils.info("New Filesystem Folder Created: " + file.getAbsolutePath());
 				}
-			}			
+			}
 			node.setName(file.getName());
-		} 
+		}
 		else {
 			node.setName("no folder selected!");
 		}
 		return node;
 	}
-	
-	public void endElement(final Object parent, final String tag, final Object userObject, final XMLElement lastBuiltElement) {
-		final IndexedTree tree = WorkspaceController.getController().getIndexTree();
-		super.endElement(parent, tag, userObject, lastBuiltElement);
-		final Path path = (Path) userObject;
-		if (path.path == null) {
+
+	public void endElement(final Object parent, final String tag, final Object node, final XMLElement lastBuiltElement) {
+		super.endElement(parent, tag, node, lastBuiltElement);
+		if (node == null) {
 			return;
 		}
-		final DefaultMutableTreeNode treeNode = tree.get(path.path);
-		if (treeNode.getChildCount() == 0) {
-			FolderTypeLiteratureRepositoryNode node = (FolderTypeLiteratureRepositoryNode) treeNode.getUserObject();
-			WorkspaceController.getController().getFilesystemReader()
-					.scanFilesystem(node, WorkspaceUtils.resolveURI(node.getFolderPath()));
+		if (node instanceof FolderTypeLiteratureRepositoryNode && ((FolderTypeLiteratureRepositoryNode) node).getChildCount() == 0) {
+			WorkspaceController
+					.getController()
+					.getFilesystemReader()
+					.scanFileSystem((AWorkspaceTreeNode) node,
+							WorkspaceUtils.resolveURI(((FolderTypeLiteratureRepositoryNode) node).getFolderPath()));
 		}
 
 	}
