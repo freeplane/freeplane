@@ -1,5 +1,6 @@
 package spl;
 
+import java.awt.Container;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -51,6 +52,10 @@ public class PdfImporter {
     }
 
     public String[] importPdfFiles(String[] fileNames){
+    	return importPdfFiles(fileNames, null);
+    }
+    
+    public String[] importPdfFiles(String[] fileNames, Container parent){
         List<String> files = new ArrayList<String>(Arrays.asList(fileNames));
         List<String> noPdfFiles = new ArrayList<String>();
         PdfFileFilter pdfFilter = new PdfFileFilter();
@@ -60,21 +65,37 @@ public class PdfImporter {
             }
         }
         files.removeAll(noPdfFiles);
-        importPdfFiles(files);
+        if (parent != null) {
+        	importPdfFiles(files, parent);
+        }
+        else {
+        	importPdfFiles(files);
+        }
         String[] noPdfFilesArray = new String[noPdfFiles.size()];
         noPdfFiles.toArray(noPdfFilesArray);
         return noPdfFilesArray;
     }
-
+    
+    
+    //FIXME: no own frame when integrated into docear
     private boolean importPdfFiles(List<String> fileNames){
+    	return importPdfFiles(fileNames, null);
+    }
+
+    private boolean importPdfFiles(List<String> fileNames, Container parent){
         if(panel == null) return false;
         for(String fileName : fileNames){
             List<BibtexEntry> xmpEntriesInFile = readXmpEntries(fileName);
             ImportDialog importDialog = new ImportDialog(dropRow, fileName);
             if(!hasXmpEntries(xmpEntriesInFile)){
                 importDialog.getRadioButtonXmp().setEnabled(false);
+            }            
+            if (parent != null) {
+            	Tools.centerRelativeToWindow(importDialog, parent);
             }
-            Tools.centerRelativeToWindow(importDialog, frame);
+            else {
+            	Tools.centerRelativeToWindow(importDialog, frame);
+            }
             importDialog.showDialog();
             if(importDialog.getResult() == JOptionPane.OK_OPTION){
                 if(importDialog.getRadioButtonXmp().isSelected()){
@@ -86,7 +107,13 @@ public class PdfImporter {
                 }
                 else if(importDialog.getRadioButtonMrDlib().isSelected()){                    
                     MetaDataListDialog metaDataListDialog = new MetaDataListDialog(fileName, true);
-                    Tools.centerRelativeToWindow(metaDataListDialog, frame);
+                    if (parent != null) {
+                    	Tools.centerRelativeToWindow(metaDataListDialog, parent);
+                    }
+                    else {
+                    	Tools.centerRelativeToWindow(metaDataListDialog, frame);
+                    }
+                    
                     metaDataListDialog.showDialog();
                     Document document = metaDataListDialog.getXmlDocuments();
                     if(document != null /*&& documents.getDocuments() != null && documents.getDocuments().size() > 0*/ && metaDataListDialog.getResult() == JOptionPane.OK_OPTION){
@@ -134,8 +161,13 @@ public class PdfImporter {
                     createNewBlankEntry(fileName);
                 }
                 else if(importDialog.getRadioButtonUpdateEmptyFields().isSelected()){
-                    MetaDataListDialog metaDataListDialog = new MetaDataListDialog(fileName, false);                   
-                    Tools.centerRelativeToWindow(metaDataListDialog, frame);
+                    MetaDataListDialog metaDataListDialog = new MetaDataListDialog(fileName, false); 
+                    if (parent != null) {
+                    	Tools.centerRelativeToWindow(metaDataListDialog, parent);
+                    }
+                    else {
+                    	Tools.centerRelativeToWindow(metaDataListDialog, frame);
+                    }
                     metaDataListDialog.showDialog();
                     Document document = metaDataListDialog.getXmlDocuments();
                     if(document != null /*&& document.getDocuments() != null && document.getDocuments().size() > 0*/ && metaDataListDialog.getResult() == JOptionPane.OK_OPTION){

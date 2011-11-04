@@ -96,8 +96,8 @@ public class ReferencesController extends ALanguageController implements IDocear
 		DocearController.getController().addDocearEventListener(this);
 		WorkspaceController.getController().addWorkspaceListener(this);
 		Controller.getCurrentController().getResourceController().addPropertyChangeListener(this);
-		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(this);
-		this.initJabref();
+		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(this);		
+		this.initJabref();		
 	}
 
 	private void registerListeners() {
@@ -286,6 +286,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 		catch (Throwable ex) {
 			ex.printStackTrace();
 		}
+		
 	}
 
 	@Override

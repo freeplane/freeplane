@@ -24,20 +24,22 @@ public class DocearSaveDatabaseAction extends SaveDatabaseAction {
 	public void run() {
 		BibtexEntry entryForMindmapNode = null;
 		for (BibtexEntry entry : this.panel.getDatabase().getEntries()) {
-			if (entry.getField("docear_add_to_node") != null) {
-				entry.setField("docear_add_to_node", null);
-				entryForMindmapNode = entry;
+			String nodeId = entry.getField("docear_add_to_node");
+			if (nodeId != null) {
+				entryForMindmapNode = entry;				
 				if (entry.getCiteKey() == null) {
 					LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), this.panel.getDatabase(), entry);
 				}
 			}
-		}
-		super.run();
+		}		
 
+		super.run();
+		
 		if (entryForMindmapNode != null) {
 			ActionEvent event;
-			if (this.isSuccess()) {
+			if (this.isSuccess()) {				
 				event = new ActionEvent(entryForMindmapNode, 0, JABREF_DATABASE_SAVE_SUCCESS);
+				System.out.println("entry for mindmap node: "+entryForMindmapNode.getField("docear_add_to_node"));				
 			}
 			else if (!this.isCancelled()) {
 				event = new ActionEvent(entryForMindmapNode, 0, JABREF_DATABASE_SAVE_FAILED);
@@ -48,7 +50,11 @@ public class DocearSaveDatabaseAction extends SaveDatabaseAction {
 			for (ActionListener listener : actionListeners) {
 				listener.actionPerformed(event);
 			}
+			
+			entryForMindmapNode.setField("docear_add_to_node", null);
 		}
+		
+		
 	}
 
 	public void addActionListener(ActionListener actionListener) {
