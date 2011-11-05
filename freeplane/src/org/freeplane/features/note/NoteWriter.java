@@ -62,7 +62,7 @@ class NoteWriter implements IExtensionElementWriter, IAttributeWriter {
         		htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, "UNKNOWN");
         	}
         	final String content = note1.getXml().replace('\0', ' ');
-        	writer.addElement(content, htmlElement);
+        	writer.addElement('\n' + content + '\n', htmlElement);
         }
 		return;
 	}
