@@ -118,8 +118,9 @@ public class TreeXmlWriter implements ITreeWriter {
 
 	@SuppressWarnings("unchecked")
     public void addElement(final Object userObject, final XMLElement element) throws IOException {
+		final boolean isString = userObject instanceof String;
 		if (elementStarted == false && xmlElement != null) {
-			xmlwriter.write(xmlElement, true, 0, true, false);
+			xmlwriter.write(xmlElement, ! isString, 0, true, false);
 		}
 		final String name = element.getName();
 		xmlElement = element;
@@ -134,8 +135,8 @@ public class TreeXmlWriter implements ITreeWriter {
 				addExtensionAttributes(userObject, (List<IExtension>) userObject);
 			}
 		}
-		if (userObject != null && userObject.getClass().equals(String.class)) {
-			addElementContent(userObject.toString());
+		if (isString) {
+			addElementContent((String)userObject);
 		}
 		else {
 			final Iterator<IElementWriter> iterator = getNodeWriters().iterator(name);

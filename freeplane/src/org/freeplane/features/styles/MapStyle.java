@@ -156,6 +156,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			}
 			final MapWriter mapWriter = Controller.getCurrentModeController().getMapController().getMapWriter();
 			final StringWriter sw = new StringWriter();
+			sw.append(el);
 			sw.append("<map_styles>");
 			sw.append(el);
 			final NodeModel rootNode = styleMap.getRootNode();

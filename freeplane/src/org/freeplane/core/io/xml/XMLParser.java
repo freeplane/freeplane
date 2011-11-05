@@ -115,7 +115,7 @@ class XMLParser extends StdXMLParser implements IXMLParser {
 				}
 				waitingBuf.append(ch);
 			}
-			builder.setElementContent(waitingBuf.toString().trim());
+			builder.setElementContent(waitingBuf.toString());
 			return;
 		}
 		super.processElementContent(defaultNamespace, namespaces, fullName, name, prefix);
