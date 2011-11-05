@@ -91,6 +91,7 @@ class XMLParser extends StdXMLParser implements IXMLParser {
 						}
 						inComment = true;
 						waitingBuf.append("<!--");
+						continue;
 					}
 					else {
 						level++;
