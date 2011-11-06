@@ -27,7 +27,7 @@
   <xsl:output method="xml" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" 
     doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
  
-<!-- fc, 20.10.2004: The following parameter is set by freeplane. -->
+<!-- fc, 20.10.2004: The following parameters are set by freeplane. -->
 <xsl:param name="destination_dir">./</xsl:param>
 <xsl:param name="area_code"></xsl:param>
 <xsl:param name="folding_type">html_export_no_folding</xsl:param>
@@ -38,6 +38,7 @@
 		html_export_based_on_headings: this means, that approx. five levels are given, more deeper nodes are folded.
 		As of the time being, this parameter is not used.
 		-->
+<xsl:param name="propertyList"/>
 <!--
     
     -->
@@ -66,6 +67,10 @@ html { height:100% }
                 <xsl:attribute name="name">browsemode_initial_map</xsl:attribute>
                 <xsl:attribute name="value">./<xsl:value-of select="$destination_dir"/>map.mm</xsl:attribute>
             </xsl:element>
+            <xsl:call-template name="appletParameters">
+                <xsl:with-param name="propertyList" select="$propertyList"/>
+            </xsl:call-template>
+             
             <param name="selection_method" value="selection_method_direct"/>
         </xsl:element>
    		</body>
@@ -91,7 +96,32 @@ html { height:100% }
 		</xsl:choose>
 	</xsl:template>
 
-	
+    <xsl:template name="appletParameters">
+       <xsl:param name="propertyList"/>
+       <xsl:if test="$propertyList">
+            <xsl:variable name="property" select="substring-before($propertyList, '$$$')"/>
+            <xsl:variable name="name" select="substring-before($property, '=')"/>
+            <xsl:variable name="value" select="substring-after($property, '=')"/>
+            <xsl:call-template name="appletParam">
+                <xsl:with-param name="name" select="$name"/>
+                <xsl:with-param name="value" select="$value"/>
+            </xsl:call-template>
+            <xsl:variable name="otherProperties" select="substring-after($propertyList, '$$$')"/>
+            <xsl:call-template name="appletParameters">
+                <xsl:with-param name="propertyList" select="$otherProperties"/>
+            </xsl:call-template>
+       </xsl:if>
+    </xsl:template>
+	<xsl:template name="appletParam">
+       <xsl:param name="name"/>
+       <xsl:param name="value"/>
+            <xsl:if test="$value">
+                <xsl:element name="param">
+                    <xsl:attribute name="name"><xsl:value-of select="$name"/></xsl:attribute>
+                    <xsl:attribute name="value"><xsl:value-of select="$value"/></xsl:attribute>
+                </xsl:element>
+            </xsl:if>
+	</xsl:template>
 	<xsl:template match="text()|@*"  mode="strip-tags">
 		  <xsl:value-of select="string(.)"/>
 	</xsl:template>
