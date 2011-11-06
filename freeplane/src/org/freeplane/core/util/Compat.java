@@ -30,15 +30,13 @@ public class Compat {
 
 	private static OS os = null;
 	public static final Set<String> executableExtensions = new HashSet<String>(Arrays.asList(new String[] { "exe",
-	        "com", "vbs", "bat", "lnk" }));
+	        "com", "vbs", "bat", "lnk", "cmd" }));
 
-	public static boolean isExecutable(final String linkText) {
+	public static boolean isWindowsExecutable(final String linkText) {
 		if (linkText == null) {
 			return false;
 		}
-		final String osNameStart = System.getProperty("os.name").substring(0, 3);
-		return osNameStart.equals("Win")
-		        && executableExtensions.contains(FileUtils.getExtension(linkText.toLowerCase()));
+		return isWindowsOS() && executableExtensions.contains(FileUtils.getExtension(linkText));
 	}
 
 	public static URL fileToUrl(final File pFile) throws MalformedURLException {

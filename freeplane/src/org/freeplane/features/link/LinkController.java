@@ -553,8 +553,7 @@ public class LinkController extends SelectionController implements IExtension {
     }
 
 	private static final String MENUITEM_ICON = "icons/button.png";
-	private static final String EXECUTABLE_ICON = ResourceController.getResourceController().getProperty(
-	    "executable_icon");
+	private static final String EXECUTABLE_ICON = ResourceController.getResourceController().getProperty("executable_icon");
 	private static final IconStore ICON_STORE = IconStoreFactory.create();
 	public static Icon getLinkIcon(final URI link, final NodeModel model) {
 		if (link == null) 
@@ -573,9 +572,6 @@ public class LinkController extends SelectionController implements IExtension {
 	    else if (linkText.startsWith("mailto:")) {
 	    	iconPath = MAIL_ICON;
 	    }
-	    else if (Compat.executableExtensions.contains(link)) {
-	    	iconPath = EXECUTABLE_ICON;
-	    }
 	    else if (isMenuItemLink(link)) {
 	    	// nodes with menu item link contain the image from the menu if available
 	    	if (model == null || model.getIcons().isEmpty())
@@ -583,8 +579,8 @@ public class LinkController extends SelectionController implements IExtension {
 	    	else
 	    		iconPath = null;
 	    }
-	    else if (Compat.isExecutable(linkText)) {
-	    	iconPath = "Executable.png";
+	    else if (Compat.isWindowsExecutable(linkText)) {
+	    	iconPath = EXECUTABLE_ICON;
 	    }
 	    else{
 	    	iconPath = LinkController.LINK_ICON;
