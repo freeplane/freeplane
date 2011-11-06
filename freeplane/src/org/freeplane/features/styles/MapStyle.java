@@ -196,7 +196,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
 		private void loadMapStyleProperties(MapStyleModel model, XMLElement xml) {
 			final Vector<XMLElement> propertyXml = xml.getChildrenNamed("properties");
-			if(propertyXml.size() >= 1){
+			if(propertyXml != null && propertyXml.size() >= 1){
 				final Map<String, String> properties = model.getProperties();
 				final Properties attributes = propertyXml.get(0).getAttributes();
 				for(Entry<Object, Object> attribute:attributes.entrySet()){
