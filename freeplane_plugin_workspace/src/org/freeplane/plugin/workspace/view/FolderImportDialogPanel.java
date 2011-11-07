@@ -23,7 +23,6 @@ import javax.swing.JSeparator;
 import javax.swing.UIManager;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -95,6 +94,8 @@ public class FolderImportDialogPanel extends JPanel implements ActionListener, I
 		list.setVisibleRowCount(3);
 		list.setEnabled(false);
 		list.setCellRenderer(new DefaultListCellRenderer() {
+			private static final long serialVersionUID = 1L;
+
 			public Component getListCellRendererComponent( JList list,
 				Object value,
 			        int index,
@@ -133,15 +134,9 @@ public class FolderImportDialogPanel extends JPanel implements ActionListener, I
 					}
 					return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			    }
-			 	private Border getNoFocusBorder() {
-			        if (System.getSecurityManager() != null) {
-			            return new EmptyBorder(1, 1, 1, 1);
-			        } else {
-			            return noFocusBorder;
-			        }
-			    }
 		});
 		list.setModel(new AbstractListModel() {
+			private static final long serialVersionUID = 1L;
 			JLabel[] values = new JLabel[] {new JLabel("test1"),new JLabel("test1"),new JLabel("test1"),new JLabel("test1"),new JLabel("test end")};
 			public int getSize() {
 				return values.length;
