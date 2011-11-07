@@ -82,6 +82,10 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 
 		public void onSavedAs(MapModel map) {
 		}
+
+		public void onSaved(MapModel map) {			
+		}
+			
 	}
 
 	public AutomaticEdgeColorHook() {

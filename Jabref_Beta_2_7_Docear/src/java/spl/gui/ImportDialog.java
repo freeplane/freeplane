@@ -33,8 +33,12 @@ public class ImportDialog extends JDialog {
     private int result;
     private int dropRow;
     private String fileName;
-
+    
     public ImportDialog(int dropRow, String fileName) {
+    	this(dropRow, fileName, null);
+    }
+        
+    public ImportDialog(int dropRow, String fileName, Boolean newEntry) {
         this.dropRow = dropRow;
         contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout());
@@ -71,16 +75,20 @@ public class ImportDialog extends JDialog {
         labelMrDlib2.setForeground(new Color(-16776961));
         buttonOK = new JButton(Globals.lang("Ok"));
         buttonCancel = new JButton(Globals.lang("Cancel"));
-        DefaultFormBuilder b = new DefaultFormBuilder(new FormLayout("left:pref, 4dlu, left:pref:grow",""));
-        b.appendSeparator(Globals.lang("Create New Entry"));
-        b.append(radioButtonNoMeta, 3);
-        b.append(radioButtonXmp, 3);
-        b.append(radioButtonMrDlib);
-        b.append(labelMrDlib1);
-        b.appendSeparator(Globals.lang("Update_Existing_Entry"));
-        b.append(radioButtononlyAttachPDF, 3);
-        b.append(radioButtonUpdateEmptyFields);
-        b.append(labelMrDlib2);
+        DefaultFormBuilder b = new DefaultFormBuilder(new FormLayout("left:pref, 4dlu, left:pref:grow",""));                
+        if (newEntry == null || newEntry) {
+        	b.appendSeparator(Globals.lang("Create New Entry"));
+        	b.append(radioButtonNoMeta, 3);
+            b.append(radioButtonXmp, 3);
+            b.append(radioButtonMrDlib);
+            b.append(labelMrDlib1);            
+        }
+        if (newEntry == null || !newEntry) {
+        	b.appendSeparator(Globals.lang("Update_Existing_Entry"));
+        	b.append(radioButtononlyAttachPDF, 3);
+        	b.append(radioButtonUpdateEmptyFields);
+        	b.append(labelMrDlib2);
+        }
         b.getPanel().setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         ButtonBarBuilder bb = new ButtonBarBuilder();
         bb.addGlue();

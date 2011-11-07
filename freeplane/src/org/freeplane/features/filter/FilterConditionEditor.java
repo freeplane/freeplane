@@ -24,6 +24,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.lang.ref.WeakReference;
@@ -36,6 +37,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.ListCellRenderer;
+import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.text.JTextComponent;
 
@@ -178,6 +180,14 @@ public class FilterConditionEditor extends JComponent {
 			}
 			return;
 		}
+	}
+	
+	public boolean isInputFieldFocused(){
+		if (values.isFocusOwner()) 
+			return true;
+		if (values.isPopupVisible() || values.getEditor().getEditorComponent().isFocusOwner())
+			return true;
+		return false;
 	}
 
 	public ASelectableCondition getCondition() {

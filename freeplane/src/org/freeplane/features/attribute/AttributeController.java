@@ -80,6 +80,9 @@ public class AttributeController implements IExtension {
 
 			public void onSavedAs(MapModel map) {				
 			}
+
+			public void onSaved(MapModel map) {				
+			}
 		});
 		registerTooltipProvider();
 	}

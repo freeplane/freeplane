@@ -20,11 +20,17 @@
 package org.freeplane.features.print;
 
 import java.awt.print.PageFormat;
+import java.awt.print.Paper;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParsePosition;
+import java.util.Locale;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MapView;
@@ -87,6 +93,35 @@ public class PrintController implements IExtension {
 	PageFormat getPageFormat() {
 		if (pageFormat == null) {
 			pageFormat = printerJob.defaultPage();
+			String pageSettings = ResourceController.getResourceController().getProperty("pageSettings", null);
+			if(pageSettings == null){
+				return pageFormat;
+			}
+			ParsePosition pos = new ParsePosition(0);
+			NumberFormat parser = DecimalFormat.getInstance(Locale.US);
+			Number pageFormatX = parser.parse(pageSettings, pos);
+			if(pos.getErrorIndex() != -1 || pageFormatX == null)
+				return pageFormat;
+			pos.setIndex(pos.getIndex()+1);
+			Number pageFormatY = parser.parse(pageSettings, pos);
+			if(pos.getErrorIndex() != -1|| pageFormatY == null)
+				return pageFormat;
+			pos.setIndex(pos.getIndex()+1);
+			Number pageFormatWidth = parser.parse(pageSettings, pos);
+			if(pos.getErrorIndex() != -1 || pageFormatWidth == null)
+				return pageFormat;
+			pos.setIndex(pos.getIndex()+1);
+			Number pageFormatHeight = parser.parse(pageSettings, pos);
+			if(pos.getErrorIndex() != -1 || pageFormatHeight == null)
+				return pageFormat;
+			pos.setIndex(pos.getIndex()+1);
+			Number pageFormatOrientation = parser.parse(pageSettings, pos);
+			if(pos.getErrorIndex() != -1 || pageFormatOrientation == null)
+				return pageFormat;
+			Paper paper = (Paper) pageFormat.getPaper().clone();
+			paper.setImageableArea(pageFormatX.doubleValue(), pageFormatY.doubleValue(), pageFormatWidth.doubleValue(), pageFormatHeight.doubleValue());
+			pageFormat.setOrientation(pageFormatOrientation.intValue());
+			pageFormat.setPaper(paper);
 		}
 		return pageFormat;
 	}
@@ -100,7 +135,16 @@ public class PrintController implements IExtension {
 	}
 
 	public void pageDialog() {
-		this.pageFormat = getPrinterJob().pageDialog(getPageFormat());	    
+		this.pageFormat = getPrinterJob().pageDialog(getPageFormat());	   
+		Paper paper = pageFormat.getPaper();
+		StringBuilder sb = new StringBuilder();
+		NumberFormat format = DecimalFormat.getInstance(Locale.US);
+		double pageFormatX = paper.getImageableX(); sb.append(format.format(pageFormatX));sb.append(' ');
+		double pageFormatY = paper.getImageableY(); sb.append(format.format(pageFormatY));sb.append(' ');
+		double pageFormatWidth = paper.getImageableWidth(); sb.append(format.format(pageFormatWidth));sb.append(' ');
+		double pageFormatHeight = paper.getImageableHeight(); sb.append(format.format(pageFormatHeight));sb.append(' ');
+		int pageFormatOrientation = pageFormat.getOrientation(); sb.append(format.format(pageFormatOrientation));
+		ResourceController.getResourceController().setProperty("pageSettings", sb.toString());
     }
 
 	public boolean printDialog() {

@@ -5,9 +5,11 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URI;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.border.EmptyBorder;
@@ -15,10 +17,16 @@ import javax.swing.border.EmptyBorder;
 import net.sf.jabref.BasePanel;
 import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.SearchManager2;
+import net.sf.jabref.SidePaneManager;
 
 import org.docear.plugin.bibtex.JabrefWrapper;
 import org.docear.plugin.bibtex.ReferencesController;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.link.NodeLinks;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+
+import spl.PdfImporter;
 
 public class ExistingReferencesDialog extends JDialog {
 
@@ -39,7 +47,32 @@ public class ExistingReferencesDialog extends JDialog {
 	private void onOkButton() {
 		BibtexEntry entry = this.basePanel.getSelectedEntries()[0];
 		if (entry != null) {
-			ReferencesController.getController().getJabRefAttributes().addReferenceToNode(entry);
+			NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
+			URI link = NodeLinks.getLink(node);
+			JabrefWrapper jabrefWrapper = ReferencesController.getController().getJabrefWrapper();
+
+			int yesorno = JOptionPane.YES_OPTION;
+			if (link != null) {
+				if (link.getPath().toLowerCase().endsWith(".pdf")) {
+					BasePanel basePanel = ReferencesController.getController().getJabrefWrapper().getJabrefFrame().basePanel();
+					int position = basePanel.getMainTable().findEntry(entry);
+					basePanel.selectSingleEntry(position);
+					
+					final String[] newfileNames = new PdfImporter(jabrefWrapper.getJabrefFrame(), jabrefWrapper.getJabrefFrame()
+							.basePanel(), basePanel.getMainTable(), position).importPdfFiles(new String[] { link.getPath() }, Controller.getCurrentController()
+							.getViewController().getFrame(), false);
+				}
+				else {
+					if (entry.getField("file") != null || entry.getField("url") != null) {
+						yesorno = JOptionPane.showConfirmDialog(Controller.getCurrentController().getViewController().getContentPane(),
+								TextUtils.getText("overwrite_existing_file_link"), TextUtils.getText("overwrite_existing_file_link_title"),
+								JOptionPane.YES_NO_OPTION);
+					}
+				}
+			}
+			if (yesorno == JOptionPane.YES_OPTION) {
+				ReferencesController.getController().getJabRefAttributes().addReferenceToNode(entry);
+			}
 		}
 		this.dispose();
 	}
@@ -49,7 +82,7 @@ public class ExistingReferencesDialog extends JDialog {
 		this.setComponentOrientation(frame.getComponentOrientation());
 		this.setModal(true);
 
-		setBounds(100, 100, 900, 500);
+		setBounds(100, 100, 1000, 500);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -58,8 +91,15 @@ public class ExistingReferencesDialog extends JDialog {
 			this.basePanel = new BasePanel(jabRefWrapper.getJabrefFrame(), jabRefWrapper.getDatabase(), jabRefWrapper.getFile(),
 					jabRefWrapper.getMeta(), jabRefWrapper.getEncoding());
 			contentPanel.setLayout(new BorderLayout(0, 0));
-			JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new SearchManager2(jabRefWrapper.getJabrefFrame(),
-					jabRefWrapper.getJabrefFrame().sidePaneManager), basePanel);
+			
+			SidePaneManager sidePaneManager = new SidePaneManager(jabRefWrapper.getJabrefFrame());			
+			SearchManager2 searchManager = new SearchManager2(jabRefWrapper.getJabrefFrame(), jabRefWrapper.getJabrefFrame().sidePaneManager);
+			searchManager.setActiveBasePanel(this.basePanel);
+			sidePaneManager.register("search", searchManager);			
+			
+			sidePaneManager.show("search");
+			
+			JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, searchManager, this.basePanel);
 			contentPanel.add(splitPane);
 		}
 		{

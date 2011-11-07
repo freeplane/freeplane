@@ -366,9 +366,15 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 		return this.fileTypeManager;
 	}
 
-	private void dispatchWorkspaceEvent(WorkspaceEvent event) {
+	public void dispatchWorkspaceEvent(WorkspaceEvent event) {
 		switch (event.getType()) {
-			case (1): {
+			case (WorkspaceEvent.WORKSPACE_EVENT_TYPE_CHANGE): {
+				for (IWorkspaceListener listener : workspaceListener) {
+					listener.workspaceChanged(event);
+				}
+				break;
+			}
+			case (WorkspaceEvent.WORKSPACE_EVENT_TYPE_TOOLBAR_EVENT): {
 				for (IWorkspaceListener listener : workspaceListener) {
 					listener.workspaceChanged(event);
 				}
@@ -408,17 +414,19 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 	}
 
 	public void onCreate(MapModel map) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void onRemove(MapModel map) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void onSavedAs(MapModel map) {
 		refreshWorkspace();
+	}
+
+	public void onSaved(MapModel map) {
+		
 	}
 
 }

@@ -21,6 +21,9 @@ package org.freeplane.features.filter;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -89,6 +92,14 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	    }
 
 	    @Override
+		public void actionPerformed(ActionEvent event) {
+	    	if(isVisible() && ! quickEditor.isInputFieldFocused() && (EventQueue.getCurrentEvent() instanceof KeyEvent))
+	    		quickEditor.focusInputField();
+	    	else
+	    		super.actionPerformed(event);
+		}
+
+		@Override
 	    protected void setVisible(final JComponent toolBar, final boolean visible) {
 	    	quickEditor.addAncestorListener(new AncestorListener() {
 	    		public void ancestorAdded(final AncestorEvent event) {

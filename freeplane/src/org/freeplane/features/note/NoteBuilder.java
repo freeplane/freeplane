@@ -50,7 +50,7 @@ class NoteBuilder implements IElementContentHandler {
 	public void endElement(final Object parent, final String tag, final Object node, final XMLElement attributes,
 	                       final String content) {
 		if (tag.equals("richcontent")) {
-			final String xmlText = content;
+			final String xmlText = content.trim();
 			final Object typeAttribute = attributes.getAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, null);
 			if (NodeTextBuilder.XML_NODE_XHTML_TYPE_NOTE.equals(typeAttribute)) {
 				final NoteModel note = new NoteModel();

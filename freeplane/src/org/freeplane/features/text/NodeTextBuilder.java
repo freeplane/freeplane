@@ -68,7 +68,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 	public void endElement(final Object parent, final String tag, final Object obj, final XMLElement attributes,
 	                       final String content) {
 		assert tag.equals("richcontent");
-		final String xmlText = content;
+		final String xmlText = content.trim();
 		final Object typeAttribute = attributes.getAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, null);
 		final NodeModel nodeModel = (NodeModel) obj;
 		if (NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE.equals(typeAttribute)) {
@@ -201,7 +201,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			else
 				xmlText = node.getXmlText();
 			final String content = xmlText.replace('\0', ' ');
-			writer.addElement(content, htmlElement);
+			writer.addElement('\n' + content + '\n', htmlElement);
 		}
 	}
 	/*
@@ -219,7 +219,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 				htmlElement.setAttribute("HIDDEN", "true");
 			}
 			final String content = model.getXml().replace('\0', ' ');
-			writer.addElement(content, htmlElement);
+			writer.addElement('\n' + content + '\n', htmlElement);
 		}
 		return;
 	}

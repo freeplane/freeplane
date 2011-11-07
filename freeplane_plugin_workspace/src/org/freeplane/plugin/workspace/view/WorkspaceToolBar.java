@@ -16,6 +16,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 
+import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
+
 /**
  * 
  */
@@ -28,11 +31,11 @@ public class WorkspaceToolBar extends JToolBar {
 		setRollover(true);
 		
 		JButton button = add(new AbstractAction("New", new ImageIcon(WorkspaceToolBar.class.getResource("/images/16x16/document-new-6.png"))) {
-		
 			private static final long serialVersionUID = 1L;
-
 			public void actionPerformed(ActionEvent e) {
 				System.out.println(e);
+				WorkspaceEvent event = new WorkspaceEvent(WorkspaceEvent.WORKSPACE_EVENT_TYPE_TOOLBAR_EVENT, e);
+				WorkspaceController.getController().dispatchWorkspaceEvent(event);
 			}
 		});
 		configureComponent(button);
@@ -41,6 +44,8 @@ public class WorkspaceToolBar extends JToolBar {
 			private static final long serialVersionUID = 1L;
 			public void actionPerformed(ActionEvent e) {
 				System.out.println(e);
+				WorkspaceEvent event = new WorkspaceEvent(WorkspaceEvent.WORKSPACE_EVENT_TYPE_TOOLBAR_EVENT, e);
+				WorkspaceController.getController().dispatchWorkspaceEvent(event);
 			}
 		});
 		configureComponent(button);

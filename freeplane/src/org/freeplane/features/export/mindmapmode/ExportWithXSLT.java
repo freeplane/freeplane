@@ -253,7 +253,8 @@ public class ExportWithXSLT extends AExportEngine {
 		final Mode mode = Mode.valueOf(getProperty("mode", Mode.EXPORT.name()));
 		final String map = getMapXml(mode);
 		final StringReader reader = new StringReader(map);
-		final URL xsltUrl = ResourceController.getResourceController().getResource(xsltFileName);
+		ResourceController resourceController = ResourceController.getResourceController();
+		final URL xsltUrl = resourceController.getResource(xsltFileName);
 		if (xsltUrl == null) {
 			LogUtils.severe("Can't find " + xsltFileName + " as resource.");
 			throw new IllegalArgumentException("Can't find " + xsltFileName + " as resource.");
@@ -266,8 +267,21 @@ public class ExportWithXSLT extends AExportEngine {
 			final Transformer trans = transFact.newTransformer(xsltSource);
 			trans.setParameter("destination_dir", saveFile.getName() + "_files/");
 			trans.setParameter("area_code", areaCode);
-			trans.setParameter("folding_type", ResourceController.getResourceController().getProperty(
-			    "html_export_folding"));
+			trans.setParameter("folding_type", resourceController.getProperty(
+			"html_export_folding"));
+			String[] parameters = getProperty("set_properties", "").split(",\\s*");
+			StringBuilder sb = new StringBuilder();
+			for(String p : parameters){
+				String value = resourceController.getProperty(p, null);
+				if(value != null && ! value.equals(resourceController.getDefaultProperty(p))){
+					sb.append(p);
+					sb.append('=');
+					sb.append(value);
+					sb.append("$$$");
+				}
+					
+			}
+			trans.setParameter("propertyList", sb.toString());
 			trans.transform(new StreamSource(reader), result);
 		}
 		catch (final Exception e) {

@@ -37,7 +37,8 @@
             file_prefix="$org.freeplane.core.dir.lib"
             copy_map="true"
             copymode="FILE"
-            load_file="true" />
+            load_file="true" 
+            set_properties="don_t_show_note_icons,show_icon_for_attributes"/>
     </action>
     <action
         name="accessories/plugins/ExportWithXSLT_Flash"
