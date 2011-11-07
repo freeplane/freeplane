@@ -51,9 +51,9 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	private static final String WEB_DOCEAR_LOCATION = "webDocearLocation";
 	private static final String WEB_FREEPLANE_LOCATION = "webFreeplaneLocation";
 
-	public static final String DOCUMENT_REPOSITORY_PATH = WorkspaceController.DOCUMENT_REPOSITORY_PATH_PROPERTY;
+	public static final String DOCUMENT_REPOSITORY_PATH = DocearController.DOCUMENT_REPOSITORY_PATH_PROPERTY;
 	public static final String LIBRARY_PATH = "@@library_mindmaps@@"; 
-	public static final String BIBTEX_PATH = WorkspaceController.BIBTEX_PATH_PROPERTY;
+	public static final String BIBTEX_PATH = DocearController.BIBTEX_PATH_PROPERTY;
 
 	public CoreConfiguration(ModeController modeController) {
 		addPropertyChangeListener();

@@ -41,10 +41,12 @@ public class AddMonitoringFolderAction extends AbstractMonitoringAction {
 		if(Controller.getCurrentController().getMap().getFile() == null){
 			int result = UITools.showConfirmDialog(selected, "You have to save the map first.", "Save Map", JOptionPane.OK_CANCEL_OPTION);
 			if(result == JOptionPane.OK_OPTION){
-				final boolean savingNotCancelled = ((MFileManager) UrlManager.getController()).save(Controller.getCurrentController().getMap());
+				SaveAsAction saveAction = new SaveAsAction();
+				saveAction.actionPerformed(null);
+				/*final boolean savingNotCancelled = ((MFileManager) UrlManager.getController()).save(Controller.getCurrentController().getMap());
 					if (!savingNotCancelled) {
 						return;
-					}
+					}*/
 			}
 			else{
 				return;

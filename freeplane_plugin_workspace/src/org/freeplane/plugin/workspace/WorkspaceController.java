@@ -47,11 +47,7 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 	public static final String WORKSPACE_RESOURCE_URL_PROTOCOL = "workspace";
 	public static final String PROPERTY_RESOURCE_URL_PROTOCOL = "property";
 	public static final String WORKSPACE_VERSION = "1.0";
-	
-	public final static String DOCUMENT_REPOSITORY_PATH_PROPERTY = "document_repository_path";
-	public final static String PROJECTS_PATH_PROPERTY = "docear_projects_path";
-	public final static String BIBTEX_PATH_PROPERTY = "docear_bibtex_path";
-
+		
 	private static final WorkspaceController workspaceController = new WorkspaceController();
 	private static final WorkspaceConfiguration configuration = new WorkspaceConfiguration();
 
