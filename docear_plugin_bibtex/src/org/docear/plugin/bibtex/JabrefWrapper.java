@@ -112,7 +112,6 @@ public class JabrefWrapper extends JabRef  {
 	}
 	
 	public BasePanel updateDatabase(BibtexDatabase database) {
-		//FIXME: basePanel is new --> not existent --> java.lang.IllegalArgumentException: component not found in tabbed pane
 		getJabrefFrame().getTabbedPane().setSelectedComponent(basePanel);
 		this.setDatabase(database);
 		return basePanel;
