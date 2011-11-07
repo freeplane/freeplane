@@ -8,6 +8,7 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,6 +94,8 @@ public class ManageAddOnsDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private AddOnTableModel tableModel;
+	private AddOnInstallerPanel addOnInstallerPanel;
+	private JTabbedPane tabbedPane;
 
 	public ManageAddOnsDialog(final List<AddOnProperties> addOns) {
 		super(UITools.getFrame(), TextUtils.getText("ManageAddOnsAction.text"), true);
@@ -105,12 +108,12 @@ public class ManageAddOnsDialog extends JDialog {
 				}
 			}
 		}
-		JTabbedPane tabbedPane = new JTabbedPane();
+		tabbedPane = new JTabbedPane();
 		tabbedPane.setPreferredSize(getPreferredSizeForWindow());
 		final JPanel managementPanel = createManagementPanel(addOns);
 		tabbedPane.addTab(getText("tab.manage"), null, managementPanel, getText("tab.manage.tooltip"));
-		tabbedPane.addTab(getText("tab.install"), null, new AddOnInstallerPanel(tableModel, managementPanel), getText("tab.install.tooltip"));
-//		tabbedPane.addTab(getText("tab.install"), null, createInstallPanel(tableModel), getText("tab.install.tooltip"));
+		addOnInstallerPanel = new AddOnInstallerPanel(tableModel, managementPanel);
+		tabbedPane.addTab(getText("tab.install"), null, addOnInstallerPanel, getText("tab.install.tooltip"));
 		getContentPane().add(tabbedPane);
 		pack();
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -276,4 +279,10 @@ public class ManageAddOnsDialog extends JDialog {
 		else
 			return TextUtils.format(getResourceKey(key), parameters);
 	}
+
+	public void install(final URL url) {
+		tabbedPane.setSelectedComponent(addOnInstallerPanel);
+		addOnInstallerPanel.getUrlField().setText(url.toString());
+		addOnInstallerPanel.getInstallButton().doClick();
+    }
 }
