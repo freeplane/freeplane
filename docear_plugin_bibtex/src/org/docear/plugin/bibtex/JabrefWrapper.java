@@ -9,6 +9,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.core.resources.ResourceController;
+
 import net.sf.jabref.BasePanel;
 import net.sf.jabref.BibtexDatabase;
 import net.sf.jabref.Globals;
@@ -135,7 +137,8 @@ public class JabrefWrapper extends JabRef  {
                 String fileName = file.getPath();
                 Globals.prefs.put("workingDirectory", file.getPath());
                 // Should this be done _after_ we know it was successfully opened?
-                String encoding = Globals.prefs.get("defaultEncoding");
+                ResourceController resourceController = ResourceController.getResourceController();
+                String encoding = resourceController.getProperty("docear_bibtex_encoding", Globals.prefs.get("defaultEncoding"));
 
                 if (Util.hasLockFile(file)) {
                     long modTime = Util.getLockFileTimeStamp(file);
@@ -160,8 +163,9 @@ public class JabrefWrapper extends JabRef  {
 
                 }
                 ParserResult pr;
-                try {
-                    pr = OpenDatabaseAction.loadDatabase(fileToLoad, encoding);
+                try {                	
+                	String source = resourceController.getProperty("docear_bibtex_source", "Jabref");
+                    pr = OpenDatabaseAction.loadDataBase(fileToLoad, encoding, source);               
                 } catch (Exception ex) {
                     pr = null;
                 }
