@@ -421,17 +421,19 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 	}
 
 	public void onCreate(MapModel map) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void onRemove(MapModel map) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void onSavedAs(MapModel map) {
 		refreshWorkspace();
+	}
+
+	public void onSaved(MapModel map) {
+		
 	}
 
 }

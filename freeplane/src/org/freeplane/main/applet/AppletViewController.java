@@ -111,10 +111,11 @@ class AppletViewController extends ViewController {
 		if (initialMapName != null && initialMapName.startsWith(".")) {
 			/* new handling for relative urls. fc, 29.10.2003. */
 			try {
-				final URL documentBaseUrl = new URL(applet.getDocumentBase(), initialMapName);
-				initialMapName = documentBaseUrl.toString();
+				URI uri = applet.getDocumentBase().toURI().resolve(new URI(null, null, initialMapName, null));
+				URL documentBase = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
+				initialMapName = documentBase.toString();
 			}
-			catch (final java.net.MalformedURLException e) {
+			catch (final Exception e) {
 				UITools.errorMessage(TextUtils.getText("url_load_error") + " " + initialMapName);
 				System.err.println(e);
 				return;

@@ -156,6 +156,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			}
 			final MapWriter mapWriter = Controller.getCurrentModeController().getMapController().getMapWriter();
 			final StringWriter sw = new StringWriter();
+			sw.append(el);
 			sw.append("<map_styles>");
 			sw.append(el);
 			final NodeModel rootNode = styleMap.getRootNode();
@@ -195,7 +196,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
 		private void loadMapStyleProperties(MapStyleModel model, XMLElement xml) {
 			final Vector<XMLElement> propertyXml = xml.getChildrenNamed("properties");
-			if(propertyXml.size() >= 1){
+			if(propertyXml != null && propertyXml.size() >= 1){
 				final Map<String, String> properties = model.getProperties();
 				final Properties attributes = propertyXml.get(0).getAttributes();
 				for(Entry<Object, Object> attribute:attributes.entrySet()){
@@ -523,6 +524,10 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
     }
 
 	public void onSavedAs(MapModel map) {
+		
+	}
+
+	public void onSaved(MapModel map) {
 		
 	}
 }

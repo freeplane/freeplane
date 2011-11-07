@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,12 +15,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.swing.JOptionPane;
+
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.url.UrlManager;
 import org.freeplane.main.addons.AddOnProperties.AddOnType;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
@@ -160,5 +166,25 @@ public class AddOnsController {
 	private String expandVariables(String[] rule) {
 		return rule[1].replace("${installationbase}", ResourceController.getResourceController()
 		    .getFreeplaneUserDirectory());
+	}
+
+	/** returns true if the url is an add-on package and the user decided to install it. */
+	public boolean installIfAppropriate(final URL url) {
+		if (url.getFile().endsWith(UrlManager.FREEPLANE_ADD_ON_FILE_EXTENSION)) {
+			AddOnInstaller installer = (AddOnInstaller) Controller.getCurrentModeController().getExtension(
+			    AddOnInstaller.class);
+			if (installer == null) {
+				LogUtils.warn("no AddOnInstaller registered. Cannot install " + url);
+				return false;
+			}
+			final int selection = UITools.showConfirmDialog(Controller.getCurrentController().getSelection()
+			    .getSelected(), TextUtils.format("newmap.install.addon.question", url.getPath()),
+			    TextUtils.getText("newmap.install.addon.title"), JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+			if (selection == JOptionPane.OK_OPTION) {
+				installer.install(url);
+				return true;
+			}
+		}
+		return false;
 	}
 }

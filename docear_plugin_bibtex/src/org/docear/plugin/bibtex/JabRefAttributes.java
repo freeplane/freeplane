@@ -53,18 +53,17 @@ public class JabRefAttributes {
 	}
 
 	public void addReferenceToNode(BibtexEntry entry, NodeModel target) {
-				
-		
 		if (entry.getCiteKey()==null) {
 			LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), ReferencesController.getController().getJabrefWrapper().getDatabase(), entry);						
-		}
+		}		
 		
-		renewAttribute(target, keyAttribute, entry.getCiteKey());
+		NodeUtils.removeAttributes(target);
 		
 		for (Entry<String, String> e : this.valueAttributes.entrySet()) {
-			renewAttribute(target, e.getKey(), entry.getField(e.getValue()));
+			NodeUtils.setAttributeValue(target, e.getKey(), entry.getField(e.getValue()), false);
 		}
 		
+
 		String files = entry.getField("file");
 		System.out.println("debug path: "+files);
 		
@@ -77,7 +76,8 @@ public class JabRefAttributes {
             		NodeUtils.setLinkFrom(uri, target);
             		break;
             	}
-            }			
+            }		
+		
 		}
 		else {
 			String url = entry.getField("url");			
@@ -95,6 +95,7 @@ public class JabRefAttributes {
 		}
 
 	}
+
 
 	private URI parsePath(BibtexEntry entry, String path) {
 		ResourceController resourceController = ResourceController.getResourceController();
@@ -221,10 +222,6 @@ public class JabRefAttributes {
             s = s.replace("\\aa", "Ã¥");
         }
         return s;
-    }
+    }	
 
-	private static void renewAttribute(NodeModel node, String key, String value) {
-		NodeUtils.removeAttribute(node, key);
-		NodeUtils.setAttributeValue(node, key, value, false);
-	}
 }

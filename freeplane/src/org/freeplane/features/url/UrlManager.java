@@ -77,6 +77,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
 public class UrlManager implements IExtension {
 	public static final String FREEPLANE_FILE_EXTENSION_WITHOUT_DOT = "mm";
 	public static final String FREEPLANE_FILE_EXTENSION = "." + FREEPLANE_FILE_EXTENSION_WITHOUT_DOT;
+	public static final String FREEPLANE_ADD_ON_FILE_EXTENSION = ".addon." + FREEPLANE_FILE_EXTENSION_WITHOUT_DOT;
 	private static File lastCurrentDir = null;
 	public static final String MAP_URL = "map_url";
 

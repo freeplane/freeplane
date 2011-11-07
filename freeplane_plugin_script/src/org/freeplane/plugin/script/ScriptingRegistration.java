@@ -52,6 +52,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.script.IScriptEditorStarter;
 import org.freeplane.features.script.IScriptStarter;
+import org.freeplane.main.addons.AddOnInstaller;
 import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
@@ -64,6 +65,7 @@ import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
 import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
 import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
 import org.freeplane.plugin.script.addons.ManageAddOnsAction;
+import org.freeplane.plugin.script.addons.ManageAddOnsDialog;
 import org.freeplane.plugin.script.addons.ScriptAddOnProperties;
 import org.freeplane.plugin.script.filter.ScriptConditionController;
 
@@ -194,7 +196,16 @@ class ScriptingRegistration {
 		modeController.addAction(new ScriptEditor());
 		modeController.addAction(new ExecuteScriptForAllNodes());
 		modeController.addAction(new ExecuteScriptForSelectionAction());
-		modeController.addAction( new ManageAddOnsAction());
+		final ManageAddOnsAction manageAddOnsAction = new ManageAddOnsAction();
+		modeController.addAction(manageAddOnsAction);
+		modeController.addExtension(AddOnInstaller.class, new AddOnInstaller() {
+			public void install(final URL url) {
+				manageAddOnsAction.actionPerformed(null);
+				final ManageAddOnsDialog dialog = manageAddOnsAction.getDialog();
+				//FIXME: method does not exist --> boercher
+				//dialog.install(url);
+            }
+		});
 		final ScriptingConfiguration configuration = new ScriptingConfiguration();
 		ScriptingEngine.setClasspath(configuration.getClasspath());
 		modeController.addMenuContributor(new IMenuContributor() {

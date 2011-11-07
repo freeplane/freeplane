@@ -32,17 +32,15 @@ public class ProgressIcons {
 	 */
 	public static void updateProgressIcons(final NodeModel node, final boolean up) {
 		final ProgressUtilities progUtil = new ProgressUtilities();
-		final MIconController Mic = (MIconController) IconController.getController();
-		String ActiveIcon = null;
+		final MIconController iconController = (MIconController) IconController.getController();
+		String activeIcon = null;
 		final List<MindIcon> icons = node.getIcons();
-		int iconPos = 0;
 		//get active progress icon and remove it
 		if (progUtil.hasProgressIcons(node)) {
 			for (int i = 0; i < icons.size(); i++) {
 				for (int j = 0; j < iconNames.length; j++) {
 					if (icons.get(i).getName().equals(iconNames[j])) {
-						ActiveIcon = iconNames[j];
-						iconPos = i;
+						activeIcon = iconNames[j];
 						break;
 					}
 				}
@@ -50,34 +48,34 @@ public class ProgressIcons {
 			ProgressIcons.removeProgressIcons(node);
 		}
 		// set initial progress icon always 0%
-		if (ActiveIcon == null) {
+		if (activeIcon == null) {
 			ProgressIcons.removeProgressIcons(node);
-			Mic.addIcon(node, progressIcons[0], 0);
+			iconController.addIcon(node, progressIcons[0], 0);
 		}
 		else {
-			final int iActiveIcon = Integer.parseInt(ActiveIcon.substring(0, ActiveIcon.length() - 1));
+			final int iActiveIcon = Integer.parseInt(activeIcon.substring(0, activeIcon.length() - 1));
 			//progress is increased
 			if (up) {
 				switch (iActiveIcon) {
 					case 0:
-						Mic.addIcon(node, progressIcons[1], 0);
+						iconController.addIcon(node, progressIcons[1], 0);
 						break;
 					case 25:
-						Mic.addIcon(node, progressIcons[2], 0);
+						iconController.addIcon(node, progressIcons[2], 0);
 						break;
 					case 50:
-						Mic.addIcon(node, progressIcons[3], 0);
+						iconController.addIcon(node, progressIcons[3], 0);
 						break;
 					case 75:
-						Mic.addIcon(node, progressIcons[4], 0);
+						iconController.addIcon(node, progressIcons[4], 0);
 						if (!progUtil.hasOKIcon(node)) {
-							Mic.addIcon(node, OKIcon, 0);
+							iconController.addIcon(node, OKIcon, 0);
 						}
 						break;
 					//at 100% draw an extra OK-icon
 					case 100:
-						Mic.addIcon(node, progressIcons[4], 0);
-						Mic.addIcon(node, OKIcon, 0);
+						iconController.addIcon(node, progressIcons[4], 0);
+						iconController.addIcon(node, OKIcon, 0);
 						break;
 					default:
 						break;
@@ -86,22 +84,19 @@ public class ProgressIcons {
 			//progress is decreased
 			else {
 				switch (iActiveIcon) {
-					case 0:
-						// remove icon if 0% and decrease
-						Mic.removeIcon(node, iconPos);
-						break;
 					case 25:
-						Mic.addIcon(node, progressIcons[0], 0);
+						iconController.addIcon(node, progressIcons[0], 0);
 						break;
 					case 50:
-						Mic.addIcon(node, progressIcons[1], 0);
+						iconController.addIcon(node, progressIcons[1], 0);
 						break;
 					case 75:
-						Mic.addIcon(node, progressIcons[2], 0);
+						iconController.addIcon(node, progressIcons[2], 0);
 						break;
 					case 100:
-						Mic.addIcon(node, progressIcons[3], 0);
+						iconController.addIcon(node, progressIcons[3], 0);
 						break;
+					case 0:
 					default:
 						break;
 				}
@@ -119,7 +114,7 @@ public class ProgressIcons {
 	 */
 	public static void updateExtendedProgressIcons(final NodeModel node, final String sFile) {
 		if (sFile.matches(EXTENDED_PROGRESS_ICON_IDENTIFIER)) {
-			final MIconController Mic = (MIconController) IconController.getController();
+			final MIconController iconController = (MIconController) IconController.getController();
 			ProgressIcons.removeProgressIcons(node);
 			//add the right progress icon
 			if (sFile.matches(".*_quarter_.*")) {
@@ -127,23 +122,23 @@ public class ProgressIcons {
 				    sFile.lastIndexOf("_") + 3));
 				switch (fileNum) {
 					case 0:
-						Mic.addIcon(node, progressIcons[0], 0);
+						iconController.addIcon(node, progressIcons[0], 0);
 						break;
 					case 1:
-						Mic.addIcon(node, progressIcons[1], 0);
+						iconController.addIcon(node, progressIcons[1], 0);
 						break;
 					case 2:
-						Mic.addIcon(node, progressIcons[2], 0);
+						iconController.addIcon(node, progressIcons[2], 0);
 						break;
 					case 3:
-						Mic.addIcon(node, progressIcons[3], 0);
+						iconController.addIcon(node, progressIcons[3], 0);
 						break;
 					case 4:
-						Mic.addIcon(node, progressIcons[4], 0);
-						Mic.addIcon(node, OKIcon, 0);
+						iconController.addIcon(node, progressIcons[4], 0);
+						iconController.addIcon(node, OKIcon, 0);
 						break;
 					default:
-						Mic.addIcon(node, progressIcons[0], 0);
+						iconController.addIcon(node, progressIcons[0], 0);
 						break;
 				}
 			}
@@ -153,28 +148,28 @@ public class ProgressIcons {
 				switch (fileNum) {
 					case 0:
 					case 1:
-						Mic.addIcon(node, progressIcons[0], 0);
+						iconController.addIcon(node, progressIcons[0], 0);
 						break;
 					case 2:
 					case 3:
-						Mic.addIcon(node, progressIcons[1], 0);
+						iconController.addIcon(node, progressIcons[1], 0);
 						break;
 					case 4:
 					case 5:
 					case 6:
-						Mic.addIcon(node, progressIcons[2], 0);
+						iconController.addIcon(node, progressIcons[2], 0);
 						break;
 					case 7:
 					case 8:
 					case 9:
-						Mic.addIcon(node, progressIcons[3], 0);
+						iconController.addIcon(node, progressIcons[3], 0);
 						break;
 					case 10:
-						Mic.addIcon(node, progressIcons[4], 0);
-						Mic.addIcon(node, OKIcon, 0);
+						iconController.addIcon(node, progressIcons[4], 0);
+						iconController.addIcon(node, OKIcon, 0);
 						break;
 					default:
-						Mic.addIcon(node, progressIcons[0], 0);
+						iconController.addIcon(node, progressIcons[0], 0);
 						break;
 				}
 			}
@@ -189,14 +184,15 @@ public class ProgressIcons {
 	public static void removeProgressIcons(final NodeModel node) {
 		final ProgressUtilities progUtil = new ProgressUtilities();
 		if (progUtil.hasProgressIcons(node) || progUtil.hasOKIcon(node)) {
-			final MIconController Mic = (MIconController) IconController.getController();
-			final String[] iconNames = new String[] { "0%", "25%", "50%", "75%", "100%", "button_ok" };
+			final MIconController iconController = (MIconController) IconController.getController();
+			final String[] progressIconNames = new String[] { "0%", "25%", "50%", "75%", "100%", "button_ok" };
 			final List<MindIcon> icons = node.getIcons();
 			//	remove progress icons
 			for (int i = 0; i < icons.size(); i++) {
-				for (int j = 0; j < iconNames.length; j++) {
-					if (icons.get(i).getName().equals(iconNames[j])) {
-						Mic.removeIcon(node, i);
+				String iconName = icons.get(i).getName();
+				for (int j = 0; j < progressIconNames.length; j++) {
+					if (iconName.equals(progressIconNames[j])) {
+						iconController.removeIcon(node, i);
 						i--;
 						break;
 					}

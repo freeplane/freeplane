@@ -12,7 +12,9 @@ import javax.swing.JTabbedPane;
 
 import net.sf.jabref.BasePanel;
 import net.sf.jabref.BibtexDatabase;
+import net.sf.jabref.JabRefFrame;
 import net.sf.jabref.export.DocearSaveDatabaseAction;
+import net.sf.jabref.export.SaveDatabaseAction;
 
 import org.docear.plugin.bibtex.actions.AddExistingReferenceAction;
 import org.docear.plugin.bibtex.actions.AddNewReferenceAction;
@@ -36,6 +38,8 @@ import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.IMapLifeCycleListener;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -46,7 +50,7 @@ import org.freeplane.plugin.workspace.controller.IWorkspaceListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 import org.freeplane.view.swing.map.NodeView;
 
-public class ReferencesController extends ALanguageController implements IDocearEventListener, IWorkspaceListener, IFreeplanePropertyListener {
+public class ReferencesController extends ALanguageController implements IDocearEventListener, IWorkspaceListener, IFreeplanePropertyListener, IMapLifeCycleListener {
 	
 	private static ReferencesController referencesController = null;
 	private JabrefWrapper jabrefWrapper;
@@ -92,7 +96,8 @@ public class ReferencesController extends ALanguageController implements IDocear
 		DocearController.getController().addDocearEventListener(this);
 		WorkspaceController.getController().addWorkspaceListener(this);
 		Controller.getCurrentController().getResourceController().addPropertyChangeListener(this);
-		this.initJabref();
+		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(this);		
+		this.initJabref();		
 	}
 
 	private void registerListeners() {
@@ -261,6 +266,37 @@ public class ReferencesController extends ALanguageController implements IDocear
 				ReferencesController.getController().getJabrefWrapper().getJabrefFrame().closeCurrentTab();
 				ReferencesController.getController().getJabrefWrapper().openIt(file, true);
 			}
+		}
+	}
+
+	@Override
+	public void onCreate(MapModel map) {
+	}
+
+	@Override
+	public void onRemove(MapModel map) {
+	}
+
+	@Override
+	public void onSavedAs(MapModel map) {
+		ReferencesController.getController().getJabrefWrapper().getJabrefFrame();
+		try {
+			ReferencesController.getController().getJabrefWrapper().getJabrefFrame().basePanel().runCommand("save");
+		}
+		catch (Throwable ex) {
+			ex.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public void onSaved(MapModel map) {
+		ReferencesController.getController().getJabrefWrapper().getJabrefFrame();
+		try {
+			ReferencesController.getController().getJabrefWrapper().getJabrefFrame().basePanel().runCommand("save");
+		}
+		catch (Throwable ex) {
+			ex.printStackTrace();
 		}
 	}
 }

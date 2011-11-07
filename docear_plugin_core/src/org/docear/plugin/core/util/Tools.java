@@ -33,12 +33,14 @@ public class Tools {
 	
 	public static File getFilefromUri(URI uri){		
 		if(uri == null) return null;
+		if(!uri.getScheme().equals("file")) return null;
+		
 		try {
 			return new File(uri.normalize());
 		} 
 		catch (IllegalArgumentException e) {
 			//return new File(getAbsoluteUri(uri, map));
-			LogUtils.severe("(getFilefromUri) Uri has to be absolute: " + uri);
+			e.printStackTrace();
 			return null;
 		}
 	}

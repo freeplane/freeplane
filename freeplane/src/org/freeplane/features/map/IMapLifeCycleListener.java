@@ -29,4 +29,6 @@ public interface IMapLifeCycleListener {
 	public void onRemove(MapModel map);
 	
 	public void onSavedAs(MapModel map);
+	
+	public void onSaved(MapModel map);
 }

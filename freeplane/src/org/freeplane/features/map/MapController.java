@@ -34,6 +34,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.swing.Action;
 
 import org.freeplane.core.io.IAttributeHandler;
@@ -47,13 +48,14 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel.NodeChangeType;
+import org.freeplane.features.mode.AController.IActionOnChange;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.SelectionController;
-import org.freeplane.features.mode.AController.IActionOnChange;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
@@ -385,6 +387,13 @@ public class MapController extends SelectionController {
 			next.onSavedAs(map);
 		}
 	}
+	
+	public void fireMapSaved(final MapModel map) {
+		final IMapLifeCycleListener[] list = mapLifeCycleListeners.toArray(new IMapLifeCycleListener[]{});
+		for (final IMapLifeCycleListener next : list) {
+			next.onSaved(map);
+		}
+	}
 
 	protected void fireMapRemoved(final MapModel map) {
 		final IMapLifeCycleListener[] list = mapLifeCycleListeners.toArray(new IMapLifeCycleListener[]{});
@@ -588,8 +597,8 @@ public class MapController extends SelectionController {
 	 * @returns false if the map was already opened and true if it is newly created. 
 	 * @param untitled
 	 */
-	public boolean newMap(final URL url, boolean untitled) throws FileNotFoundException, XMLParseException, IOException,
-	        URISyntaxException {
+	public boolean newMap(final URL url, boolean untitled) throws FileNotFoundException, XMLParseException,
+	        IOException, URISyntaxException {
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		/*
 		 * this can lead to confusion if the user handles multiple maps
@@ -597,8 +606,7 @@ public class MapController extends SelectionController {
 		 * check whether or not the file is already opened.
 		 * VB: this comment seems to be out-of-date since the url is checked.
 		 */
-		if(! untitled)
-		{
+		if (!untitled) {
 			final String mapExtensionKey = mapViewManager.checkIfFileIsAlreadyOpened(url);
 			if (mapExtensionKey != null) {
 				mapViewManager.tryToChangeToMapView(mapExtensionKey);
@@ -606,11 +614,12 @@ public class MapController extends SelectionController {
 			}
 		}
 		try {
+			if (AddOnsController.getController().installIfAppropriate(url))
+				return false;
 			Controller.getCurrentController().getViewController().setWaitingCursor(true);
 			final MapModel newModel = newModel(null);
 			UrlManager.getController().load(url, newModel);
-			if(untitled)
-			{
+			if (untitled) {
 				newModel.setURL(null);
 			}
 			fireMapCreated(newModel);

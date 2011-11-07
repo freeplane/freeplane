@@ -912,6 +912,9 @@ public class StyleEditorPanel extends JPanel {
 
 			public void onSavedAs(MapModel map) {
 			}
+
+			public void onSaved(MapModel map) {
+			}
 			
 		});
 		final IMapViewManager mapViewManager = controller.getMapViewManager();

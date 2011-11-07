@@ -1,23 +1,26 @@
 package org.docear.plugin.bibtex.actions;
 
 import java.awt.event.ActionEvent;
+import java.net.URI;
 
 import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
 
 import net.sf.jabref.BasePanel;
-import net.sf.jabref.BibtexDatabase;
 import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.BibtexEntryType;
 import net.sf.jabref.EntryTypeDialog;
 import net.sf.jabref.export.DocearSaveDatabaseAction;
 
-import org.docear.plugin.bibtex.JabRefAttributes;
+import org.docear.plugin.bibtex.JabrefWrapper;
 import org.docear.plugin.bibtex.ReferencesController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.link.NodeLinks;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
-import ca.odell.glazedlists.EventList;
+import spl.PdfImporter;
+import spl.gui.ImportDialog;
 
 public class AddNewReferenceAction extends AFreeplaneAction {
 
@@ -31,35 +34,60 @@ public class AddNewReferenceAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		BasePanel basePanel = ((BasePanel) ReferencesController.getController().getJabrefWrapper().getJabrefFrame().getTabbedPane()
-				.getSelectedComponent());
-		
-		if(e.getActionCommand().equals(DocearSaveDatabaseAction.JABREF_DATABASE_SAVE_SUCCESS)) {			
+		BibtexEntry entry = null;
+		if (e.getActionCommand().equals(DocearSaveDatabaseAction.JABREF_DATABASE_SAVE_SUCCESS)) {
 			try {
-				BibtexEntry entry = (BibtexEntry) e.getSource();
-				ReferencesController.getController().getJabRefAttributes().addReferenceToNode(entry);
+				entry = (BibtexEntry) e.getSource();
+				String nodeID = entry.getField("docear_add_to_node");
+				if (nodeID != null) {
+					NodeModel node = Controller.getCurrentModeController().getMapController().getNodeFromID(nodeID);
+					ReferencesController.getController().getJabRefAttributes().addReferenceToNode(entry, node);
+				}
 			}
-			catch(Exception ex) {
+			catch (Exception ex) {
 				ex.printStackTrace();
 			}
 			return;
 		}
-		if(e.getActionCommand().equals(DocearSaveDatabaseAction.JABREF_DATABASE_SAVE_FAILED)) {
+		else if (e.getActionCommand().equals(DocearSaveDatabaseAction.JABREF_DATABASE_SAVE_FAILED)) {
 			return;
 		}
-		EntryTypeDialog dialog = new EntryTypeDialog(ReferencesController.getController().getJabrefWrapper().getJabrefFrame());
-		dialog.setVisible(true);
+		else {
 
-		BibtexEntryType bet = dialog.getChoice();
-		if (bet == null) {
-			return;
+			System.out.println("debug actionPerformed");
+			NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
+			URI link = NodeLinks.getLink(node);
+			JabrefWrapper jabrefWrapper = ReferencesController.getController().getJabrefWrapper();
+
+			if (link != null && link.getPath().toLowerCase().endsWith(".pdf")) {
+				final String[] newfileNames = new PdfImporter(jabrefWrapper.getJabrefFrame(), jabrefWrapper.getJabrefFrame()
+						.basePanel(), null, 0).importPdfFiles(new String[] { link.getPath() }, Controller.getCurrentController()
+						.getViewController().getFrame(), true);
+				BibtexEntry[] entries = jabrefWrapper.getJabrefFrame().basePanel().getSelectedEntries();
+
+				if (entries.length > 0) {
+					entry = entries[0];
+				}
+			}
+			else {
+				BasePanel basePanel = jabrefWrapper.getJabrefFrame().basePanel();
+
+				EntryTypeDialog dialog = new EntryTypeDialog(jabrefWrapper.getJabrefFrame());
+				dialog.setVisible(true);
+
+				BibtexEntryType bet = dialog.getChoice();
+				if (bet == null) {
+					return;
+				}
+				String thisType = bet.getName();
+
+				entry = basePanel.newEntry(BibtexEntryType.getType(thisType));
+			}
+			showJabRefTab();
+			if (entry != null) {
+				entry.setField("docear_add_to_node", node.getID());
+			}
 		}
-		String thisType = bet.getName();
-
-		showJabRefTab();
-		
-		BibtexEntry entry = basePanel.newEntry(BibtexEntryType.getType(thisType));
-		entry.setField("docear_add_to_node", "true");
 
 	}
 
