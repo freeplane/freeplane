@@ -11,10 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import net.sf.jabref.BasePanel;
-import net.sf.jabref.BibtexDatabase;
-import net.sf.jabref.JabRefFrame;
 import net.sf.jabref.export.DocearSaveDatabaseAction;
-import net.sf.jabref.export.SaveDatabaseAction;
 
 import org.docear.plugin.bibtex.actions.AddExistingReferenceAction;
 import org.docear.plugin.bibtex.actions.AddNewReferenceAction;
@@ -23,18 +20,16 @@ import org.docear.plugin.bibtex.actions.UpdateReferencesCurrentMapAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesInLibrary;
 import org.docear.plugin.bibtex.listeners.AttributeListener;
 import org.docear.plugin.bibtex.listeners.BibtexNodeDropListener;
+import org.docear.plugin.bibtex.listeners.JabRefChangeListener;
 import org.docear.plugin.bibtex.listeners.NodeSelectionListener;
 import org.docear.plugin.core.ALanguageController;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.IDocearEventListener;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
-import org.docear.plugin.pdfutilities.listener.DocearNodeDropListener;
-import org.docear.plugin.pdfutilities.listener.DocearNodeMouseMotionListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
-import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -51,6 +46,7 @@ import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 import org.freeplane.view.swing.map.NodeView;
 
 public class ReferencesController extends ALanguageController implements IDocearEventListener, IWorkspaceListener, IFreeplanePropertyListener, IMapLifeCycleListener {
+	private final static JabRefChangeListener jabRefChangeListener = new JabRefChangeListener();
 	
 	private static ReferencesController referencesController = null;
 	private JabrefWrapper jabrefWrapper;
@@ -116,6 +112,8 @@ public class ReferencesController extends ALanguageController implements IDocear
 		});
 		
 	}
+	
+	
 
 	public static ReferencesController getController() {
 		return referencesController;
@@ -298,5 +296,9 @@ public class ReferencesController extends ALanguageController implements IDocear
 		catch (Throwable ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	public static JabRefChangeListener getJabRefChangeListener() {
+		return jabRefChangeListener;
 	}
 }

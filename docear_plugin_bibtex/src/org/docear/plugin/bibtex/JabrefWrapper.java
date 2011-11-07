@@ -208,6 +208,7 @@ public class JabrefWrapper extends JabRef  {
 
 	public void setDatabase(BibtexDatabase database) {
 		this.database = database;
+		this.database.addDatabaseChangeListener(ReferencesController.getJabRefChangeListener());
 	}
 
 	public File getFile() {

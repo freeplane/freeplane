@@ -12,6 +12,8 @@ import net.sf.jabref.labelPattern.LabelPatternUtil;
 
 import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.attribute.Attribute;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
@@ -28,7 +30,7 @@ public class JabRefAttributes {
 	}
 	
 	public void registerAttributes() {
-		this.keyAttribute = "bibtex_key";
+		this.keyAttribute = TextUtils.getText("bibtex_key");
 		
 		this.valueAttributes.put(TextUtils.getText("jabref_author"), "author");
 		this.valueAttributes.put(TextUtils.getText("jabref_title"), "title");
@@ -44,12 +46,26 @@ public class JabRefAttributes {
 		return valueAttributes;
 	}
 	
-	public void addReferenceToNode(BibtexEntry entry) {
+	
+	public boolean isReferencing(BibtexEntry entry, NodeModel node) {
+		boolean found = false;
+		
+		NodeAttributeTableModel attributeTable = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
+		for (Attribute attribute : attributeTable.getAttributes()) {
+			if (attribute.getName().equals(this.keyAttribute) && attribute.getValue().equals(entry.getCiteKey())) {
+				found = true;
+			}
+		}
+		
+		return found;
+	}
+	
+	public void setReferenceToNode(BibtexEntry entry) {
 		NodeModel target = Controller.getCurrentModeController().getMapController().getSelectedNode();
-		addReferenceToNode(entry, target);
+		setReferenceToNode(entry, target);
 	}
 
-	public void addReferenceToNode(BibtexEntry entry, NodeModel target) {
+	public void setReferenceToNode(BibtexEntry entry, NodeModel target) {
 		if (entry.getCiteKey()==null) {
 			LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), ReferencesController.getController().getJabrefWrapper().getDatabase(), entry);						
 		}		
@@ -60,7 +76,7 @@ public class JabRefAttributes {
 			NodeUtils.setAttributeValue(target, e.getKey(), entry.getField(e.getValue()), false);
 		}
 		
-		NodeUtils.setAttributeValue(target, keyAttribute, entry.getCiteKey());
+		NodeUtils.setAttributeValue(target, keyAttribute, entry.getCiteKey(), false);
 		
 		String path = entry.getField("file");
 		

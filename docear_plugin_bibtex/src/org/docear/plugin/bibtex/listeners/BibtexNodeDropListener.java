@@ -41,7 +41,7 @@ public class BibtexNodeDropListener extends DocearNodeDropListener {
 	            dtde.acceptDrop(dtde.getDropAction());
 	            TransferableEntrySelection selection = (TransferableEntrySelection)transferable.getTransferData(TransferableEntrySelection.flavorInternal);
 	            for(BibtexEntry entry : selection.selectedEntries){
-	            	ReferencesController.getController().getJabRefAttributes().addReferenceToNode(entry, targetNode);
+	            	ReferencesController.getController().getJabRefAttributes().setReferenceToNode(entry, targetNode);
 	            	break;
 	            }
 	            dtde.dropComplete(true);

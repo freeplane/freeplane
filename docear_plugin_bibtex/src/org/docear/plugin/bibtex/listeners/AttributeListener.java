@@ -15,7 +15,7 @@ import org.freeplane.features.attribute.NodeAttributeTableModel;
 public class AttributeListener implements TableModelListener {
 
 	@Override
-	public void tableChanged(TableModelEvent e) {
+	public void tableChanged(TableModelEvent e) {		
 		System.out.println("debug tableChanged: column: " + e.getColumn() + " firstRow:" + e.getFirstRow() + " lastRow:"
 				+ e.getLastRow() + " type: " + e.getType());
 
@@ -28,7 +28,7 @@ public class AttributeListener implements TableModelListener {
 
 			String key = null;
 			if (jabRefAttributes.getValueAttributes().containsKey(attribute.getName())) {				
-				int pos = table.getAttributePosition(TextUtils.getText(jabRefAttributes.getKeyAttribute()));				
+				int pos = table.getAttributePosition(jabRefAttributes.getKeyAttribute());				
 				key = (String) table.getValue(pos);
 				
 				if (key != null) {
