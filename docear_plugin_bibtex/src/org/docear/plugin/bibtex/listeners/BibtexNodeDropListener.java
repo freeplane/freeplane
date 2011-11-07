@@ -1,11 +1,8 @@
 package org.docear.plugin.bibtex.listeners;
 
-import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
-import java.io.File;
-import java.util.List;
 
 import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.groups.TransferableEntrySelection;
@@ -14,7 +11,6 @@ import org.docear.plugin.bibtex.ReferencesController;
 import org.docear.plugin.pdfutilities.listener.DocearNodeDropListener;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -28,8 +24,7 @@ public class BibtexNodeDropListener extends DocearNodeDropListener {
 		LogUtils.info("BibtexNodeDropListener Drop activated....");
 		final MainView mainView = (MainView) dtde.getDropTargetContext().getComponent();
 		final NodeView targetNodeView = mainView.getNodeView();
-		final NodeModel targetNode = targetNodeView.getModel();
-		//final Controller controller = Controller.getCurrentController();
+		final NodeModel targetNode = targetNodeView.getModel();		
 		
 		try{
 						

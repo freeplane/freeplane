@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,6 +17,7 @@ import javax.swing.SwingUtilities;
 
 import net.sf.jabref.BasePanel;
 import net.sf.jabref.BibtexDatabase;
+import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.GUIGlobals;
 import net.sf.jabref.Globals;
 import net.sf.jabref.JabRefFrame;
@@ -306,6 +309,88 @@ public class OpenDatabaseAction extends MnemonicAwareAction {
 
         return bp;
     }
+    
+    public static ParserResult loadDataBase(File fileToOpen, String encoding, String source) throws IOException{
+    	if(encoding != null && encoding.contains(".")){
+    		encoding = encoding.substring(encoding.indexOf(".") + 1);
+    	}
+    	ParserResult pr = loadDatabase(fileToOpen, encoding);
+    	if(source != null && source.length() > 0 && source.equalsIgnoreCase("docear_bibtex_source.mendeley")){
+    		for(BibtexEntry entry : pr.getDatabase().getEntries()){
+    			for(String field : entry.getAllFields()){
+    				String value = entry.getField(field);
+    				value = parseSpecialChars(value);
+    				value = removeMendeleyBackSlash(value);    				
+    				entry.setField(field, value);
+    			}
+    		}
+    	}
+    	return pr;
+    }
+    
+    private static String removeMendeleyBackSlash(String path) {
+        path = path.replace("$backslash$", "\\");       
+        path = path.replace("/", "\\\\");
+        return path;
+    }
+	
+	public static String parseSpecialChars(String s){
+		if(s == null) return s;		
+        s = s.replaceAll("\\\\\"[{]([a-zA-Z])[}]",  "$1" + "\u0308"); // replace äöü
+        s = s.replaceAll("\\\\`[{]([a-zA-Z])[}]",  "$1" + "\u0300"); // replace `
+        s = s.replaceAll("\\\\´[{]([a-zA-Z])[}]",  "$1" + "\u0301"); // replace Ã‚Â´
+        s = s.replaceAll("\\\\'[{]([a-zA-Z])[}]",  "$1" + "\u0301"); // replace Ã‚Â´
+        s = s.replaceAll("\\\\\\^[{]([a-zA-Z])[}]",  "$1" + "\u0302"); // replace ^
+        s = s.replaceAll("\\\\~[{]([a-zA-Z])[}]",  "$1" + "\u0303"); // replace ~
+        s = s.replaceAll("\\\\=[{]([a-zA-Z])[}]",  "$1" + "\u0304"); // replace - above
+        s = s.replaceAll("\\\\\\.[{]([a-zA-Z])[}]",  "$1" + "\u0307"); // replace . above
+        s = s.replaceAll("\\\\u[{]([a-zA-Z])[}]",  "$1" + "\u030c"); // replace v above
+        s = s.replaceAll("\\\\v[{]([a-zA-Z])[}]",  "$1" + "\u0306"); // replace combining breve
+        s = s.replaceAll("\\\\H[{]([a-zA-Z])[}]",  "$1" + "\u030b"); // replace double acute accent
+        s = s.replaceAll("\\\\t[{]([a-zA-Z])([a-zA-Z])[}]",  "$1" + "\u0361" + "$2"); // replace double inverted breve
+        s = s.replaceAll("\\\\c[{]([a-zA-Z])[}]",  "$1" + "\u0355"); // replace right arrowhead below
+        s = s.replaceAll("\\\\d[{]([a-zA-Z])[}]",  "$1" + "\u0323"); // replace . below
+        s = s.replaceAll("\\\\b[{]([a-zA-Z])[}]",  "$1" + "\u0331"); // replace - below
+
+        if(s.contains("\\ss")){
+            s = s.replace("\\ss", "\u00df");
+        }
+        if(s.contains("\\AE")){
+            s = s.replace("\\AE", "\u00c6");
+        }
+        if(s.contains("\\ae")){
+            s = s.replace("\\ae", "\u00e6");
+        }
+        if(s.contains("\\OE")){
+            s = s.replace("\\OE", "\u0152");
+        }
+        if(s.contains("\\oe")){
+            s = s.replace("\\oe", "\u0153");
+        }
+        if(s.contains("\\O")){
+            s = s.replace("\\O", "\u00d8");
+        }
+        if(s.contains("\\o")){
+            s = s.replace("\\o", "\u00f8");
+        }
+        if(s.contains("\\L")){
+            s = s.replace("\\L", "\u0141");
+        }
+        if(s.contains("\\l")){
+            s = s.replace("\\l", "\u0142");
+        }
+        if(s.contains("\\AA")){
+            s = s.replace("\\AA", "\u00c5");
+        }
+        if(s.contains("\\aa")){
+            s = s.replace("\\aa", "\u00e5");
+        }
+        if(s.contains("\\")){
+            s = s.replace("\\", "");
+        }   
+        s = Normalizer.normalize(s, Normalizer.Form.NFKC);
+        return s;
+    }	
 
     public static ParserResult loadDatabase(File fileToOpen, String encoding)
             throws IOException {
@@ -353,9 +438,11 @@ public class OpenDatabaseAction extends MnemonicAwareAction {
 
         ParserResult pr = bp.parse();
         pr.setEncoding(encoding);
-        pr.setFile(fileToOpen);
+        pr.setFile(fileToOpen);        
         return pr;
     }
+    
+    
 
     private static String checkForEncoding(Reader reader) {
         String suppliedEncoding = null;

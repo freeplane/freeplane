@@ -300,7 +300,7 @@ public class NodeUtils {
 		}
 		else{
 			List<URI> uriList = new ArrayList<URI>();
-			uriList.add((URI)value);
+			uriList.add(Tools.getAbsoluteUri((URI)value));
 			return uriList;
 		}		
 	}

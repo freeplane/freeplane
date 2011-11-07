@@ -278,7 +278,7 @@ public class UpdateReferencesCurrentMapAction extends AFreeplaneAction {
 	}
 
 	private static String removeMendeleyBackSlash(String path) {
-        path = path.replace("$\\backslash$", "\\");       
+        path = path.replace("$backslash$", "\\");       
         //path = path.replace('/', '\\');
         return path;
     }
@@ -302,37 +302,37 @@ public class UpdateReferencesCurrentMapAction extends AFreeplaneAction {
         s = s.replaceAll("\\\\b[{]([a-zA-Z])[}]",  "$1" + "\u0331"); // replace - below
 
         if(s.contains("\\ss")){
-            s = s.replace("\\ss", "ÃŸ");
+            s = s.replace("\\ss", "\u00df");
         }
         if(s.contains("\\AE")){
-            s = s.replace("\\AE", "Ã†");
+            s = s.replace("\\AE", "\u00c6");
         }
         if(s.contains("\\ae")){
-            s = s.replace("\\ae", "Ã¦");
+            s = s.replace("\\ae", "\u00e6");
         }
         if(s.contains("\\OE")){
-            s = s.replace("\\OE", "Å’");
+            s = s.replace("\\OE", "\u0152");
         }
         if(s.contains("\\oe")){
-            s = s.replace("\\oe", "Å“");
+            s = s.replace("\\oe", "\u0153");
         }
         if(s.contains("\\O")){
-            s = s.replace("\\O", "Ã˜");
+            s = s.replace("\\O", "\u00d8");
         }
         if(s.contains("\\o")){
-            s = s.replace("\\o", "Ã¸");
+            s = s.replace("\\o", "\u00f8");
         }
         if(s.contains("\\L")){
-            s = s.replace("\\L", "Å�");
+            s = s.replace("\\L", "\u0141");
         }
         if(s.contains("\\l")){
-            s = s.replace("\\l", "Å‚");
+            s = s.replace("\\l", "\u0142");
         }
         if(s.contains("\\AA")){
-            s = s.replace("\\AA", "Ã…");
+            s = s.replace("\\AA", "\u00c5");
         }
         if(s.contains("\\aa")){
-            s = s.replace("\\aa", "Ã¥");
+            s = s.replace("\\aa", "\u00e5");
         }
         return s;
     }
