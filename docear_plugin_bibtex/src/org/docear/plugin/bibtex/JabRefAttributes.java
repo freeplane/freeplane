@@ -67,6 +67,7 @@ public class JabRefAttributes {
 		
 		NodeLinks nodeLinks = NodeLinks.getLinkExtension(target);
 		if (nodeLinks != null) {
+			System.out.println("debug remove hyperlink");
 			nodeLinks.setHyperLink(null);
 		}
 		if (path != null) {			
