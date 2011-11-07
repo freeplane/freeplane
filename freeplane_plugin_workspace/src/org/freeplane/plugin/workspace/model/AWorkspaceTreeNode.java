@@ -20,19 +20,7 @@ public abstract class AWorkspaceTreeNode implements Cloneable, TreeNode, Destruc
 	private static final long serialVersionUID = 1L;
 
 	public final static int WSNODE_DEFAULT_MODE = 0;
-	
-	/**
-     * An enumeration that is always empty. This is used when an enumeration
-     * of a leaf node's children is requested.
-     */
-    static public final Enumeration<TreeNode> EMPTY_ENUMERATION
-	= new Enumeration<TreeNode>() {
-	    public boolean hasMoreElements() { return false; }
-	    public TreeNode nextElement() {
-		throw new NoSuchElementException("No more elements");
-	    }
-    };
-	
+		
 	// needed for TreeNode interface
 	private AWorkspaceTreeNode parent = null;
 	private ArrayList<AWorkspaceTreeNode> children = new ArrayList<AWorkspaceTreeNode>(); 

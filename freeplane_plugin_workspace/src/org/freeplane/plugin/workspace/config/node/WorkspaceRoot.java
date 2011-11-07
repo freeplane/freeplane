@@ -14,6 +14,8 @@ import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public class WorkspaceRoot extends AWorkspaceTreeNode implements IConfigurationInfo, IWorkspaceNodeEventListener {
+	
+	private static final long serialVersionUID = 1L;
 	private static Icon DEFAULT_ICON = new ImageIcon(PhysicalFolderNode.class.getResource("/images/16x16/preferences-desktop-filetype-association.png"));
 	
 	private String version=WorkspaceController.WORKSPACE_VERSION;

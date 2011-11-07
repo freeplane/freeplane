@@ -13,6 +13,8 @@ import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public class VirtualFolderNode extends AFolderNode implements IWorkspaceNodeEventListener {
+	
+	private static final long serialVersionUID = 1L;
 	private static final Icon DEFAULT_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/object-group-2.png"));
 	
 	public final static String POPUP_KEY = "/workspace_groupnode_popup";

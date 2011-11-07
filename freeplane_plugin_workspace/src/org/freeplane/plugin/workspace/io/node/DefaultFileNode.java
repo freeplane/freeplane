@@ -44,6 +44,8 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 	private static final Icon DOCEAR_ICON = new ImageIcon(ResourceController.class.getResource("/images/docear16.png"));
 	private static final Icon FREEPLANE_ICON = new ImageIcon(ResourceController.class.getResource("/images/Freeplane_frame_icon.png"));
 	
+	private static final long serialVersionUID = 1L;
+	
 	
 	
 	private File file;

@@ -7,6 +7,8 @@ import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public class ImageFileNode extends DefaultFileNode {
 	
+	private static final long serialVersionUID = 1L;
+	
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/

@@ -25,6 +25,8 @@ import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeEventListener, IWorkspaceTransferableCreator {
+	
+	private static final long serialVersionUID = 1L;
 	private final String POPUP_KEY="/filesystem_link";
 	private URI linkPath;
 	

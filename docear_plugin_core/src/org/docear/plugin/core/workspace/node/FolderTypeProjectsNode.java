@@ -25,6 +25,8 @@ import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 
 public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNodeEventListener, FileAlterationListener {
+
+	private static final long serialVersionUID = 1L;
 	private static final Icon DEFAULT_ICON = new ImageIcon(FolderTypeLibraryNode.class.getResource("/images/project-open-2.png"));
 	private boolean doMonitoring = false;
 	private URI pathURI = null;

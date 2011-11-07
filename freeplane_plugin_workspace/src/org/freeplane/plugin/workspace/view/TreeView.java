@@ -38,6 +38,9 @@ public class TreeView extends JPanel {
 		m_tree.setEditable(true);		
 		
 		this.add(new JScrollPane(m_tree), BorderLayout.CENTER);
+		
+		WorkspaceToolBar workspaceToolBar = new WorkspaceToolBar();
+		add(workspaceToolBar, BorderLayout.NORTH);
 	}
 	
 	public JTree getTreeView() {

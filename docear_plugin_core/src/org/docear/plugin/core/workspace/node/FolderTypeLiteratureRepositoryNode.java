@@ -20,6 +20,8 @@ import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
  */
 public class FolderTypeLiteratureRepositoryNode extends PhysicalFolderNode implements IFreeplanePropertyListener /* FolderNode */{
 
+	private static final long serialVersionUID = 1L;
+
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/

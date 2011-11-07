@@ -47,6 +47,8 @@ import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventListener, IDocearLibrary, IWorkspaceNodeEventListener, IDropAcceptor, INodeCreatedListener {
 	private static final Icon DEFAULT_ICON = new ImageIcon(FolderTypeLibraryNode.class.getResource("/images/folder-database.png"));
+
+	private static final long serialVersionUID = 1L;
 	
 	private final static String PLACEHOLDER_PROFILENAME = "@@PROFILENAME@@";
 	private static final String DEFAULT_LIBRARY_PATH = "workspace:/"+PLACEHOLDER_PROFILENAME+"/Library";

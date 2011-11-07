@@ -22,6 +22,8 @@ public class FolderFileNode extends DefaultFileNode {
 	private static final Icon FOLDER_OPEN_ICON = new ImageIcon(DefaultFileNode.class.getResource("/images/16x16/folder-orange_open.png"));
 	private static final Icon FOLDER_CLOSED_ICON = new ImageIcon(DefaultFileNode.class.getResource("/images/16x16/folder-orange.png"));
 	
+	private static final long serialVersionUID = 1L;
+	
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS

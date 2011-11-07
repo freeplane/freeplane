@@ -22,7 +22,9 @@ import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
  * 
  */
 public class LinkTypeReferencesNode extends LinkTypeFileNode /*LinkNode*/ implements IBibtexDatabase {	
-	private static final Icon DEFAULT_ICON = new ImageIcon(LinkTypeReferencesNode.class.getResource("/images/text-x-bibtex.png"));	
+	private static final Icon DEFAULT_ICON = new ImageIcon(LinkTypeReferencesNode.class.getResource("/images/text-x-bibtex.png"));
+
+	private static final long serialVersionUID = 1L;	
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS

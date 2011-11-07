@@ -31,6 +31,8 @@ import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
  */
 public class LinkTypeMyPublicationsNode extends ALinkNode implements IWorkspaceNodeEventListener {
 	private static final Icon DEFAULT_ICON = new ImageIcon(ResourceController.class.getResource("/images/docear16.png"));
+
+	private static final long serialVersionUID = 1L;
 	
 	private URI linkPath;
 	

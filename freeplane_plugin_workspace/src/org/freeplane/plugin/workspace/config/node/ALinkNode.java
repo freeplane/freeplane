@@ -10,6 +10,8 @@ import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
  * 
  */
 public abstract class ALinkNode extends AWorkspaceTreeNode {
+	
+	private static final long serialVersionUID = 1L;
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
