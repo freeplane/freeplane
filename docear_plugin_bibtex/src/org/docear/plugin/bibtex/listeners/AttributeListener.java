@@ -3,13 +3,12 @@ package org.docear.plugin.bibtex.listeners;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
-import net.sf.jabref.BasePanel;
 import net.sf.jabref.BibtexDatabase;
 import net.sf.jabref.BibtexEntry;
-import net.sf.jabref.JabRefFrame;
 
 import org.docear.plugin.bibtex.JabRefAttributes;
 import org.docear.plugin.bibtex.ReferencesController;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 
@@ -25,12 +24,12 @@ public class AttributeListener implements TableModelListener {
 			JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
 			NodeAttributeTableModel table = (NodeAttributeTableModel) e.getSource();
 			Attribute attribute = table.getAttribute(e.getFirstRow());
+			
 
 			String key = null;
-			if (jabRefAttributes.getValueAttributes().containsKey(attribute.getName())) {
-				key = (String) table.getAttribute(
-						table.getAttributePosition(jabRefAttributes.getKeyAttribute()))
-						.getValue();
+			if (jabRefAttributes.getValueAttributes().containsKey(attribute.getName())) {				
+				int pos = table.getAttributePosition(TextUtils.getText(jabRefAttributes.getKeyAttribute()));				
+				key = (String) table.getValue(pos);
 				
 				if (key != null) {
 					System.out.println("debug changed for [" + key + "]: " + attribute.getName() + " <--> " + attribute.getValue());
