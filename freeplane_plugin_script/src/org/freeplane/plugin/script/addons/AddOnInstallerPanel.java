@@ -54,6 +54,8 @@ import com.jgoodies.forms.layout.RowSpec;
 public class AddOnInstallerPanel extends JPanel {
 
 	private JPanel managementPanel;
+	private JButton installButton;
+	private JTextField urlField;
 
 	public AddOnInstallerPanel(AddOnTableModel tableModel, JPanel managementPanel) {
 		this.managementPanel = managementPanel;
@@ -81,8 +83,8 @@ public class AddOnInstallerPanel extends JPanel {
 		// Install from known location
 		//
 		add(DefaultComponentFactory.getInstance().createSeparator(getTitleText("install.from.known.location")), "1, 7");
-		final JButton installButton = createInstallButton();
-		final JTextField urlField = createUrlField(installButton);
+		installButton = createInstallButton();
+		urlField = createUrlField(installButton);
 		final JButton selectFile = createFileChooser(urlField);
 		installButton.addActionListener(createInstallActionListener(tableModel, urlField));
 		final Box box = Box.createHorizontalBox();
@@ -265,4 +267,12 @@ public class AddOnInstallerPanel extends JPanel {
 		});
 		return urlField;
 	}
+	
+	JButton getInstallButton() {
+    	return installButton;
+    }
+
+	JTextField getUrlField() {
+    	return urlField;
+    }
 }
