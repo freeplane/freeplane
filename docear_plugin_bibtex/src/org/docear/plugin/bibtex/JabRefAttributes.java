@@ -1,13 +1,19 @@
 package org.docear.plugin.bibtex;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import javax.ws.rs.core.UriBuilder;
+
 import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.Globals;
+import net.sf.jabref.Util;
+import net.sf.jabref.gui.FileListEntry;
+import net.sf.jabref.gui.FileListTableModel;
 import net.sf.jabref.labelPattern.LabelPatternUtil;
 
 import org.docear.plugin.core.CoreConfiguration;
@@ -20,6 +26,8 @@ import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
+
+import com.thoughtworks.xstream.converters.basic.URIConverter;
 
 public class JabRefAttributes {
 
@@ -62,13 +70,13 @@ public class JabRefAttributes {
 		for (Entry<String, String> e : this.valueAttributes.entrySet()) {
 			NodeUtils.setAttributeValue(target, e.getKey(), entry.getField(e.getValue()), false);
 		}
-		
+       
 
 		String files = entry.getField("file");
 		System.out.println("debug path: "+files);
 		
 		
-		if (files != null && files.length() > 0) {
+		if (files != null && files.length() > 0) {			
 			String[] paths = files.split("(?<!\\\\);"); // taken from splmm, could not test it
             for(String path : paths){
             	URI uri = parsePath(entry, path);
@@ -97,54 +105,33 @@ public class JabRefAttributes {
 	}
 
 
-	private URI parsePath(BibtexEntry entry, String path) {
-		ResourceController resourceController = ResourceController.getResourceController();
-		String source = resourceController.getProperty("docear_bibtex_source", "Jabref");
-		path = removeMendeleyBackSlash(path);
+	private URI parsePath(BibtexEntry entry, String path) {		
 		path = extractPath(path);
 		if(path == null){
 			LogUtils.warn("Could not extract path from: "+ entry.getCiteKey());
 			return null; 
-		}
-		if(source.equalsIgnoreCase("docear_bibtex_source.mendeley")){
-			path = parseSpecialChars(path); // Mendeley uses escaping constructs for specials characters
-			path = removeEscapingCharacter(path); 
+		}		
+		path = removeEscapingCharacter(path);
+		if(isAbsolutePath(path)){
 			if(new File(path).exists()){
 				return new File(path).toURI();
 			}
 		}
-		if(source.equalsIgnoreCase("docear_bibtex_source.jabref")){
-			path = removeEscapingCharacter(path);
-			if(isAbsolutePath(path)){
-				if(new File(path).exists()){
-					return new File(path).toURI();
-				}
-			}
-			else{
-				try {
-					URI uri = new URI("property:/" + CoreConfiguration.BIBTEX_PATH);
-					URI absUri = WorkspaceUtils.absoluteURI(uri);
-					URI pdfUri = absUri.resolve(path);
-					if(new File(pdfUri.normalize()) != null && new File(pdfUri.normalize()).exists()){
-						return pdfUri;
-					}
-				} catch (URISyntaxException e) {
-					LogUtils.warn(e);
-					return null;
-				}
-			}
-		}
-		if(source.equalsIgnoreCase("docear_bibtex_source.zotero")){
+		else{
 			try {
-				URI uri = new URI("property:/" + CoreConfiguration.BIBTEX_PATH).resolve(path);
-				if(new File(uri.normalize()) != null && new File(uri.normalize()).exists()){
-					return uri;
+				URI uri = new URI("property:/" + CoreConfiguration.BIBTEX_PATH);
+				URI absUri = WorkspaceUtils.absoluteURI(uri);
+				
+				System.out.println(UriBuilder.fromPath(path).build());
+				URI pdfUri = absUri.resolve(UriBuilder.fromPath(path).build());
+				if(new File(pdfUri.normalize()) != null && new File(pdfUri.normalize()).exists()){
+					return pdfUri;
 				}
 			} catch (URISyntaxException e) {
 				LogUtils.warn(e);
 				return null;
 			}
-		}
+		}		
 		return null;
 	}
 	
@@ -189,37 +176,37 @@ public class JabRefAttributes {
         s = s.replaceAll("\\\\b[{]([a-zA-Z])[}]",  "$1" + "\u0331"); // replace - below
 
         if(s.contains("\\ss")){
-            s = s.replace("\\ss", "ÃŸ");
+            s = s.replace("\\ss", "\u00df");
         }
         if(s.contains("\\AE")){
-            s = s.replace("\\AE", "Ã†");
+            s = s.replace("\\AE", "\u00c6");
         }
         if(s.contains("\\ae")){
-            s = s.replace("\\ae", "Ã¦");
+            s = s.replace("\\ae", "\u00e6");
         }
         if(s.contains("\\OE")){
-            s = s.replace("\\OE", "Å’");
+            s = s.replace("\\OE", "\u0152");
         }
         if(s.contains("\\oe")){
-            s = s.replace("\\oe", "Å“");
+            s = s.replace("\\oe", "\u0153");
         }
         if(s.contains("\\O")){
-            s = s.replace("\\O", "Ã˜");
+            s = s.replace("\\O", "\u00d8");
         }
         if(s.contains("\\o")){
-            s = s.replace("\\o", "Ã¸");
+            s = s.replace("\\o", "\u00f8");
         }
         if(s.contains("\\L")){
-            s = s.replace("\\L", "Å�");
+            s = s.replace("\\L", "\u0141");
         }
         if(s.contains("\\l")){
-            s = s.replace("\\l", "Å‚");
+            s = s.replace("\\l", "\u0142");
         }
         if(s.contains("\\AA")){
-            s = s.replace("\\AA", "Ã…");
+            s = s.replace("\\AA", "\u00c5");
         }
         if(s.contains("\\aa")){
-            s = s.replace("\\aa", "Ã¥");
+            s = s.replace("\\aa", "\u00e5");
         }
         return s;
     }	
