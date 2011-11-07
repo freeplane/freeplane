@@ -610,45 +610,41 @@ public class LinkController extends SelectionController implements IExtension {
 	private static final IconStore ICON_STORE = IconStoreFactory.create();
 
 	public static Icon getLinkIcon(final URI link, final NodeModel model) {
-		if (link == null)
+		if (link == null) 
 			return null;
-		final String linkText = link.toString();
-		final String iconPath;
-		if (linkText.startsWith("#")) {
-			final String id = linkText.substring(1);
-			if (model == null || model.getMap().getNodeForID(id) == null) {
-				iconPath = null;
-			}
-			else {
-				iconPath = LINK_LOCAL_ICON;
-			}
-		}
-		else if (linkText.startsWith("mailto:")) {
-			iconPath = MAIL_ICON;
-		}
-		else if (Compat.executableExtensions.contains(link)) {
-			iconPath = EXECUTABLE_ICON;
-		}
-		else if (isMenuItemLink(link)) {
-			// nodes with menu item link contain the image from the menu if
-			// available
-			if (model == null || model.getIcons().isEmpty())
-				iconPath = MENUITEM_ICON;
-			else
-				iconPath = null;
-		}
-		else if (Compat.isExecutable(linkText)) {
-			iconPath = "Executable.png";
-		}
-		else {
-			iconPath = LinkController.LINK_ICON;
-		}
-		if (iconPath == null)
-			return null;
-		final UIIcon uiIcon = ICON_STORE.getUIIcon(iconPath);
-		if (uiIcon == null)
-			return null;
-		return uiIcon.getIcon();
+	    final String linkText = link.toString();
+	    final String iconPath;
+	    if (linkText.startsWith("#")) {
+	    	final String id = linkText.substring(1);
+	    	if (model == null || model.getMap().getNodeForID(id) == null) {
+	    		iconPath = null;
+	    	}
+	    	else{
+	    		iconPath = LINK_LOCAL_ICON;
+	    	}
+	    }
+	    else if (linkText.startsWith("mailto:")) {
+	    	iconPath = MAIL_ICON;
+	    }
+	    else if (isMenuItemLink(link)) {
+	    	// nodes with menu item link contain the image from the menu if available
+	    	if (model == null || model.getIcons().isEmpty())
+	    		iconPath = MENUITEM_ICON;
+	    	else
+	    		iconPath = null;
+	    }
+	    else if (Compat.isWindowsExecutable(linkText)) {
+	    	iconPath = EXECUTABLE_ICON;
+	    }
+	    else{
+	    	iconPath = LinkController.LINK_ICON;
+	    }
+	    if(iconPath == null)
+	    	return null;
+	    final UIIcon uiIcon = ICON_STORE.getUIIcon(iconPath);
+	    if(uiIcon == null)
+	    	return null;
+	    return uiIcon.getIcon();
 	}
 
 }

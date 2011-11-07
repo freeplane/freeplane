@@ -18,4 +18,8 @@ public class ManageAddOnsAction extends AFreeplaneAction {
 			dialog = new ManageAddOnsDialog(AddOnsController.getController().getInstalledAddOns());
 		dialog.setVisible(true);
 	}
+
+	public ManageAddOnsDialog getDialog() {
+    	return dialog;
+    }
 }

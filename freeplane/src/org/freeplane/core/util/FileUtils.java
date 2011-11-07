@@ -181,8 +181,15 @@ public class FileUtils {
 		if (s == null) {
 			return null;
 		}
-		final int i = s.lastIndexOf('.');
-		return (i > 0 && i < s.length() - 1) ? s.substring(i + 1).toLowerCase().trim() : "";
+		for(int i = s.length() - 1; i >= 0; i--){
+			final char c = s.charAt(i);
+			if(c == File.separatorChar || c == '/' )
+				return "";
+			if(c == '.'){
+				return s.substring(i+1).trim().toLowerCase();
+			}
+		}
+		return "";
 	}
 
 	public static boolean isAbsolutePath(final String path) {

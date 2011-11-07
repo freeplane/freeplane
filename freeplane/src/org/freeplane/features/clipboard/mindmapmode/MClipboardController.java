@@ -49,6 +49,7 @@ import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -407,7 +408,7 @@ public class MClipboardController extends ClipboardController {
 	            final File dir = mindmapFile.getParentFile();
 				file = File.createTempFile(fileNameTemplate, "."+IMAGE_FORMAT, dir);
 	            String imgfilepath=file.getAbsolutePath();
-	            file = new File(imgfilepath);
+	            File tempFile = file = new File(imgfilepath);
 	            final JFileChooser fileChooser = new JFileChooser(file);		
 	            final ExampleFileFilter filter = new ExampleFileFilter();
 	    		filter.addExtension(IMAGE_FORMAT);
@@ -416,9 +417,17 @@ public class MClipboardController extends ClipboardController {
 	    		fileChooser.setSelectedFile(file);
 	    		int returnVal = fileChooser.showSaveDialog(UITools.getFrame());
 	    		if (returnVal != JFileChooser.APPROVE_OPTION) {
+	    			tempFile.delete();
 	    			return;
 	    		}
 	    		file = fileChooser.getSelectedFile();
+	    		if(tempFile.exists() && ! file.getAbsoluteFile().equals(tempFile)){
+	    			tempFile.delete();
+	    		}
+	    		if(file.isDirectory())
+	    			return;
+	    		if(! FileUtils.getExtension(file.getName()).equals(IMAGE_FORMAT))
+	    			file = new File(file.getPath() + '.' + IMAGE_FORMAT);
 	    		final URI uri;
 	    		final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
 	    			    "relative");
