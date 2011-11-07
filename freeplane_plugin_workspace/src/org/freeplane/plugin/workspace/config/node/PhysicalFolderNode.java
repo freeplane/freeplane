@@ -6,7 +6,6 @@ import java.net.URI;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.freeplane.plugin.workspace.WorkspaceController;
@@ -15,12 +14,15 @@ import org.freeplane.plugin.workspace.config.PopupMenus;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
-public class PhysicalFolderNode extends FolderNode implements IWorkspaceNodeEventListener {
+public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeEventListener {
+	
+	private static final long serialVersionUID = 1L;
 	private static Icon FOLDER_OPEN_ICON = new ImageIcon(PhysicalFolderNode.class.getResource("/images/16x16/folder-orange_open.png"));
 	private static final Icon FOLDER_CLOSED_ICON = new ImageIcon(PhysicalFolderNode.class.getResource("/images/16x16/folder-orange.png"));
 		
-	private String folderPathProperty;
+//	private String folderPathProperty;
 	private URI folderPath;
 	
 	
@@ -31,14 +33,14 @@ public class PhysicalFolderNode extends FolderNode implements IWorkspaceNodeEven
 		super(id);
 	}
 
-	@ExportAsAttribute("pathProperty")
-	public String getFolderPathProperty() {
-		return folderPathProperty;
-	}
-
-	public void setFolderPathProperty(String pathProperty) {
-		this.folderPathProperty = pathProperty;
-	}
+//	@ExportAsAttribute("pathProperty")
+//	public String getFolderPathProperty() {
+//		return folderPathProperty;
+//	}
+//
+//	public void setFolderPathProperty(String pathProperty) {
+//		this.folderPathProperty = pathProperty;
+//	}
 
 	@ExportAsAttribute("path")
 	public URI getFolderPath() {
@@ -49,24 +51,22 @@ public class PhysicalFolderNode extends FolderNode implements IWorkspaceNodeEven
 		this.folderPath = folderPath;
 	}
 
-	public static void refresh(DefaultMutableTreeNode treeNode) {
+	public static void refresh(AWorkspaceTreeNode node) {
 		// if folder path is not correctly set
-		if(treeNode.getUserObject() instanceof PhysicalFolderNode) {
-			PhysicalFolderNode node = (PhysicalFolderNode) treeNode.getUserObject();
-			if (node.getFolderPath() == null) {
+		if(node instanceof PhysicalFolderNode) {
+			if (((PhysicalFolderNode) node).getFolderPath() == null) {
 				return;
 			}
 	
 			File folder;
 			WorkspaceController controller = WorkspaceController.getController();
 			try {
-				folder = WorkspaceUtils.resolveURI(node.getFolderPath());
+				folder = WorkspaceUtils.resolveURI(((PhysicalFolderNode)node).getFolderPath());
 				if (folder.isDirectory()) {
-					treeNode.removeAllChildren();
-					controller.getFilesystemReader().scanFilesystem(node, folder);
-					if(controller.getViewModel() != null) {
-						controller.getViewModel().reload(treeNode);
-					}
+					node.removeAllChildren();
+					controller.getFilesystemReader().scanFileSystem(node, folder);
+					controller.getWorkspaceModel().reload(node);
+					
 				}
 	
 			}
@@ -86,7 +86,7 @@ public class PhysicalFolderNode extends FolderNode implements IWorkspaceNodeEven
 
 	public void handleEvent(WorkspaceNodeEvent event) {
 		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {			
-			Component component = (Component) event.getSource();
+			Component component = (Component) event.getBaggage();
 
 			WorkspaceController.getController().getPopups()
 					.showPopup(POPUP_KEY, component, event.getX(), event.getY());
@@ -110,7 +110,18 @@ public class PhysicalFolderNode extends FolderNode implements IWorkspaceNodeEven
 		if(getKey() == null) {
 			return;
 		}
-		refresh(WorkspaceController.getController().getIndexTree().get(getKey()));
+		refresh(this);
 		
+	}
+	
+	protected AWorkspaceTreeNode clone(PhysicalFolderNode node) {		
+		node.setFolderPath(getFolderPath());		
+		return super.clone(node);
+	}
+
+	
+	public AWorkspaceTreeNode clone() {
+		PhysicalFolderNode node = new PhysicalFolderNode(getType());
+		return clone(node);
 	}
 }

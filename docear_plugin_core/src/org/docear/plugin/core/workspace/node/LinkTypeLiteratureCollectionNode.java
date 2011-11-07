@@ -20,16 +20,19 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.config.node.LinkNode;
+import org.freeplane.plugin.workspace.config.node.ALinkNode;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 /**
  * 
  */
-public class LinkTypeLiteratureCollectionNode extends LinkNode implements IWorkspaceNodeEventListener {
+public class LinkTypeLiteratureCollectionNode extends ALinkNode implements IWorkspaceNodeEventListener {
 	private static final Icon DEFAULT_ICON = new ImageIcon(ResourceController.class.getResource("/images/docear16.png"));
+
+	private static final long serialVersionUID = 1L;
 	
 	private URI linkPath;
 	
@@ -90,6 +93,11 @@ public class LinkTypeLiteratureCollectionNode extends LinkNode implements IWorks
 		return folder.mkdirs();
 	}
 	
+	protected AWorkspaceTreeNode clone(LinkTypeLiteratureCollectionNode node) {
+		node.setLinkPath(getLinkPath());
+		return super.clone(node);
+	}
+	
 	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
@@ -114,5 +122,10 @@ public class LinkTypeLiteratureCollectionNode extends LinkNode implements IWorks
 				LogUtils.warn("could not open document (" + getLinkPath() + ")", e);
 			}
 		}
+	}
+
+	public AWorkspaceTreeNode clone() {
+		LinkTypeLiteratureCollectionNode node = new LinkTypeLiteratureCollectionNode(getType());
+		return clone(node);
 	}
 }

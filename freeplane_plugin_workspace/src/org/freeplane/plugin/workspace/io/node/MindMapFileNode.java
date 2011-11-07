@@ -11,11 +11,14 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 /**
  * 
  */
 public class MindMapFileNode extends DefaultFileNode {
+	
+	private static final long serialVersionUID = 1L;
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -31,6 +34,11 @@ public class MindMapFileNode extends DefaultFileNode {
 	 * METHODS
 	 **********************************************************************************/
 
+	public AWorkspaceTreeNode clone() {
+		MindMapFileNode node = new MindMapFileNode(getName(), getFile());
+		return clone(node);
+	}
+	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/

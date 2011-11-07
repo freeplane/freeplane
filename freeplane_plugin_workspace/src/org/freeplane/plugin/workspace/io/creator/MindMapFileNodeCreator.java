@@ -6,8 +6,8 @@ package org.freeplane.plugin.workspace.io.creator;
 
 import java.io.File;
 
-import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 import org.freeplane.plugin.workspace.io.node.MindMapFileNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 /**
  * 
@@ -33,7 +33,7 @@ public class MindMapFileNodeCreator extends AFileNodeCreator {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	
-	public AWorkspaceNode getNode(String name, File file, String fileExtension) {
+	public AWorkspaceTreeNode getNode(String name, File file, String fileExtension) {
 		MindMapFileNode node = new MindMapFileNode(name, file);
 		node.setFileExtension(fileExtension);
 		return node;

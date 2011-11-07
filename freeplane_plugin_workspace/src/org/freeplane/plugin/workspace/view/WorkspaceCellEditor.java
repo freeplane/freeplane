@@ -9,12 +9,11 @@ import java.awt.event.MouseEvent;
 import java.util.EventObject;
 
 import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellEditor;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
-import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 /**
  * 
@@ -37,14 +36,14 @@ public class WorkspaceCellEditor extends DefaultTreeCellEditor {
 	 * METHODS
 	 **********************************************************************************/
 
-	public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf,
+	public Component getTreeCellEditorComponent(JTree tree, Object node, boolean isSelected, boolean expanded, boolean leaf,
 			int row) {
-		if (value instanceof DefaultMutableTreeNode && ((DefaultMutableTreeNode) value).getUserObject() instanceof AWorkspaceNode)
+		if (node instanceof AWorkspaceTreeNode)
 			return super.getTreeCellEditorComponent(tree,
-					((AWorkspaceNode) ((DefaultMutableTreeNode) value).getUserObject()).getName(), isSelected, expanded, leaf,
+					((AWorkspaceTreeNode) node).getName(), isSelected, expanded, leaf,
 					row);
 		else
-			return super.getTreeCellEditorComponent(tree, value, isSelected, expanded, leaf, row);
+			return super.getTreeCellEditorComponent(tree, node, isSelected, expanded, leaf, row);
 
 	}
 
@@ -54,12 +53,10 @@ public class WorkspaceCellEditor extends DefaultTreeCellEditor {
 			if (event instanceof MouseEvent) {
 				TreePath path = tree.getPathForLocation(((MouseEvent) event).getX(), ((MouseEvent) event).getY());
 				if (path != null) {
-					DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-					if(treeNode.getUserObject() instanceof AWorkspaceNode) {
-						if(!((AWorkspaceNode)treeNode.getUserObject()).isEditable()) {
-							return false;
-						}
-					}
+					AWorkspaceTreeNode treeNode = (AWorkspaceTreeNode) path.getLastPathComponent();
+					if(!treeNode.isEditable()) {
+						return false;
+					}					
 				}
 			}
 		}

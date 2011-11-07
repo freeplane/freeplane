@@ -3,8 +3,11 @@ package org.freeplane.plugin.workspace.io.node;
 import java.io.File;
 
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public class ImageFileNode extends DefaultFileNode {
+	
+	private static final long serialVersionUID = 1L;
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -17,7 +20,10 @@ public class ImageFileNode extends DefaultFileNode {
 	 * METHODS
 	 **********************************************************************************/
 
-
+	public AWorkspaceTreeNode clone() {
+		ImageFileNode node = new ImageFileNode(getName(), getFile());
+		return clone(node);
+	}
 
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES

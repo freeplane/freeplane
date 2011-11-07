@@ -1,69 +1,44 @@
 package org.freeplane.plugin.workspace.config.creator;
 
 import org.freeplane.core.io.IElementDOMHandler;
-import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
+import org.freeplane.plugin.workspace.config.node.WorkspaceRoot;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public abstract class AWorkspaceNodeCreator implements IElementDOMHandler {
 	
-	abstract public AWorkspaceNode getNode(final XMLElement data);
+	abstract public AWorkspaceTreeNode getNode(final XMLElement data);
 	
 			
 	public AWorkspaceNodeCreator() {
 	}
 	
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
-		final IndexedTree tree = WorkspaceController.getController().getIndexTree();
 		if (attributes == null) {
 			return null;
 		}		
 		
-		AWorkspaceNode node = getNode(attributes);		
-		
+		AWorkspaceTreeNode node = getNode(attributes);		
 		if (node == null) { 
 			return null;
 		}
-		String id = node.getId();
+		node.setParent((AWorkspaceTreeNode) parent);
 		node.setMandatoryAttributes(attributes);
 		node.initializePopup();
-		System.out.println("create element: "+node.isSystem());
-
-		final Path path = new Path(parent == null ? null : parent.toString());
-		path.setName(id);
-		if (!tree.contains(path.path)) {
-			tree.addElement(path.parentPath == null ? tree : path.parentPath, node, path.path, IndexedTree.AS_CHILD);
+			
+		if (!WorkspaceUtils.getModel().containsNode(node.getKey())) {
+			if(node instanceof WorkspaceRoot) {
+				WorkspaceUtils.getModel().setRoot(node);
+			} 
+			else {
+				WorkspaceUtils.getModel().addNodeTo(node, (AWorkspaceTreeNode) parent);
+			}
+			
 		}
-		return path;
+		return node;
 	}
 
 	public void endElement(final Object parent, final String tag, final Object userObject, final XMLElement lastBuiltElement) {
-	}
-		
-	
-	protected static class Path {
-		static Path emptyPath() {
-			final Path Path = new Path(null);
-			Path.path = null;
-			return Path;
-		}
-
-		String parentPath;
-		public String path;
-
-		Path(final String path) {
-			parentPath = path;
-		}
-
-		void setName(final String name) {
-			path = parentPath == null ? name : parentPath + '/' + name;
-		}
-
-		@Override
-		public String toString() {
-			return path;
-		}
-	};
-	
+	}	
 }

@@ -5,7 +5,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.freeplane.core.resources.ResourceController;
 import org.osgi.service.url.AbstractURLStreamHandlerService;
 
 public class WorkspaceUrlHandler extends AbstractURLStreamHandlerService {

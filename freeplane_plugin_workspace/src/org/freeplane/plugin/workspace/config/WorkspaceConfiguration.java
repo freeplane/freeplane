@@ -37,6 +37,7 @@ import org.freeplane.plugin.workspace.config.creator.LinkTypeFileCreator;
 import org.freeplane.plugin.workspace.config.creator.WorkspaceRootCreator;
 import org.freeplane.plugin.workspace.io.xml.ConfigurationWriter;
 import org.freeplane.plugin.workspace.io.xml.WorkspaceNodeWriter;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public class WorkspaceConfiguration {
 	final private ReadManager readManager;
@@ -102,8 +103,7 @@ public class WorkspaceConfiguration {
 			}
 		}
 
-		WorkspaceController.getController().getIndexTree()
-				.removeChildElements(WorkspaceController.getController().getIndexTree());
+		WorkspaceController.getController().getWorkspaceModel().removeAllElements((AWorkspaceTreeNode) WorkspaceController.getController().getWorkspaceModel().getRoot());
 		this.load(configFile.toURI().toURL());
 
 		return true;

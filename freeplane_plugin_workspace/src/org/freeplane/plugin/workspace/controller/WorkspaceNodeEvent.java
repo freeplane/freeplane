@@ -1,5 +1,7 @@
 package org.freeplane.plugin.workspace.controller;
 
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+
 
 public class WorkspaceNodeEvent {
 	public static final int MOUSE_CLICK = 1;
@@ -16,21 +18,21 @@ public class WorkspaceNodeEvent {
 	
 	public static final int WSNODE_OPEN_DOCUMENT = MOUSE_LEFT_DBLCLICK;
 		
-	final private Object source;
+	final private AWorkspaceTreeNode source;
 	final private int eventType;
 	final private int x;
 	final private int y;
 	final private Object baggage;
 	
-	public WorkspaceNodeEvent(Object source, int eventType, int x, int y) {		
+	public WorkspaceNodeEvent(AWorkspaceTreeNode source, int eventType, int x, int y) {		
 		this(source, eventType, x, y, null);
 	}
 	
-	public WorkspaceNodeEvent(Object source, int eventType, Object baggage) {		
+	public WorkspaceNodeEvent(AWorkspaceTreeNode source, int eventType, Object baggage) {		
 		this(source, eventType, 0, 0, baggage);
 	}
 	
-	public WorkspaceNodeEvent(Object source, int eventType, int x, int y, Object baggage) {		
+	public WorkspaceNodeEvent(AWorkspaceTreeNode source, int eventType, int x, int y, Object baggage) {		
 		this.x = x;
 		this.y = y;
 		this.source = source;
@@ -38,7 +40,7 @@ public class WorkspaceNodeEvent {
 		this.baggage = baggage;
 	}
 	
-	public Object getSource() {
+	public AWorkspaceTreeNode getSource() {
 		return source;
 	}
 

@@ -7,14 +7,12 @@ package org.freeplane.plugin.workspace.io.xml;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 /**
  * 
@@ -45,8 +43,7 @@ public class WorkspaceNodeWriter implements IElementWriter, IAttributeWriter {
 	 * core.io.ITreeWriter, java.lang.Object, java.lang.String)
 	 */
 	public void writeAttributes(ITreeWriter writer, Object userObject, String tag) {		
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) userObject;
-		AWorkspaceNode wsNode = (AWorkspaceNode) node.getUserObject();
+		AWorkspaceTreeNode wsNode = (AWorkspaceTreeNode) userObject;
 		if(wsNode.getType() != null) writer.addAttribute("type", wsNode.getType());
 		if(wsNode.getName() != null) writer.addAttribute("name", wsNode.getName());
 		
@@ -82,14 +79,13 @@ public class WorkspaceNodeWriter implements IElementWriter, IAttributeWriter {
 	}
 
 	public void writeContent(ITreeWriter writer, Object element, String tag) throws IOException {
-		final DefaultMutableTreeNode node = (DefaultMutableTreeNode) element;
+		final AWorkspaceTreeNode node = (AWorkspaceTreeNode) element;
 		for (int i=0; i < node.getChildCount(); i++) {
-			DefaultMutableTreeNode child = (DefaultMutableTreeNode) node.getChildAt(i);
-			if(child.getUserObject() instanceof AWorkspaceNode) {
-				AWorkspaceNode wsNode = (AWorkspaceNode) child.getUserObject();
-				if(wsNode.getTagName() == null) continue;
-				writer.addElement(child, wsNode.getTagName());
-			}
+			AWorkspaceTreeNode child = node.getChildAt(i);			
+			if(child == null || child.getTagName() == null) {
+				continue;
+			}			
+			writer.addElement(child, child.getTagName());			
 		}
 	}
 	

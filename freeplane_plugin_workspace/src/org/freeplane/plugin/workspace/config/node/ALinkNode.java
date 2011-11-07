@@ -4,10 +4,14 @@
  */
 package org.freeplane.plugin.workspace.config.node;
 
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+
 /**
  * 
  */
-public class LinkNode extends AWorkspaceNode {
+public abstract class ALinkNode extends AWorkspaceTreeNode {
+	
+	private static final long serialVersionUID = 1L;
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
@@ -17,7 +21,7 @@ public class LinkNode extends AWorkspaceNode {
 	/**
 	 * @param type
 	 */
-	public LinkNode(String type) {
+	public ALinkNode(String type) {
 		super(type);
 	}
 

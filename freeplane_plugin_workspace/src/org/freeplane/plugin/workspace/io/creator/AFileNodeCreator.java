@@ -7,14 +7,11 @@ package org.freeplane.plugin.workspace.io.creator;
 import java.io.File;
 import java.util.Vector;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
-import org.freeplane.core.ui.IndexedTree;
-import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public abstract class AFileNodeCreator implements IFileTypeHandler {
-	abstract public AWorkspaceNode getNode(String name, File file, String extension);
+	abstract public AWorkspaceTreeNode getNode(String name, File file, String extension);
 	private final Vector<Object> typeList = new Vector<Object>();
 	
 	/***********************************************************************************
@@ -55,33 +52,18 @@ public abstract class AFileNodeCreator implements IFileTypeHandler {
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
-	public Object createFileNode(Object object, String fileExtension,final File file) {
-		Object parent = object;
-		final IndexedTree tree = WorkspaceController.getController().getIndexTree();
-		if(object instanceof AWorkspaceNode) {
-			parent = tree.getKeyByUserObject(object);
+	public AWorkspaceTreeNode createFileNode(AWorkspaceTreeNode parent, String fileExtension, final File file) {				
+		String fileExt = fileExtension;
+		int dot = file.getPath().lastIndexOf('.');
+		if(-1 != dot) {
+			fileExt = file.getPath().substring(dot);
+		}		
+		final AWorkspaceTreeNode node = getNode(file.getName(), file, fileExt);
+		if (node != null) {
+			WorkspaceUtils.getModel().addNodeTo(node, parent);
+			return node;
 		}
-		final Path path = new Path(parent == null ? null : parent.toString());		
-		path.setName(file.getName());		
-		if (!tree.contains(path.path)) {
-			final DefaultMutableTreeNode treeNode =	tree.addElement(path.parentPath == null ? tree : path.parentPath, this, path.path, IndexedTree.AS_CHILD);			
-			if (treeNode.getUserObject() == this) {
-				int dot = file.getPath().lastIndexOf('.');
-				String fileExt = fileExtension;
-				if(-1 != dot) {
-					fileExt = file.getPath().substring(dot);
-				}
-				final AWorkspaceNode node = getNode(file.getName(), file, fileExt);
-				if(node != null) 
-					treeNode.setUserObject(node);
-				else 
-					tree.removeElement(path.path);
-			}
-		} 
-		else {
-			
-		}
-		return path;		
+		return parent;		
 	}
 	
 

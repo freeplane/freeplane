@@ -7,7 +7,7 @@ package org.docear.plugin.core.workspace.creator;
 import org.docear.plugin.core.workspace.node.FolderTypeLibraryNode;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.config.creator.AWorkspaceNodeCreator;
-import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 /**
  * 
@@ -26,7 +26,7 @@ public class FolderTypeLibraryCreator extends AWorkspaceNodeCreator {
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
-	public AWorkspaceNode getNode(XMLElement data) {
+	public AWorkspaceTreeNode getNode(XMLElement data) {
 		String type = data.getAttribute("type", FOLDER_TYPE_LIBRARY);
 		FolderTypeLibraryNode node = new FolderTypeLibraryNode(type);
 		//TODO: add missing attribute handling

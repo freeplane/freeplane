@@ -6,8 +6,8 @@ package org.freeplane.plugin.workspace.io.creator;
 
 import java.io.File;
 
-import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 import org.freeplane.plugin.workspace.io.node.ImageFileNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 /**
  * 
@@ -35,7 +35,7 @@ public class ImageFileNodeCreator extends AFileNodeCreator {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	
-	public AWorkspaceNode getNode(String name, File file, String fileExtension) {
+	public AWorkspaceTreeNode getNode(String name, File file, String fileExtension) {
 		ImageFileNode node = new ImageFileNode(name, file);
 		node.setFileExtension(fileExtension);
 		return node;

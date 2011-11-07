@@ -13,12 +13,9 @@ import java.util.Vector;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.MapModel;
@@ -39,8 +36,10 @@ import org.freeplane.plugin.workspace.controller.IWorkspaceListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferHandler;
 import org.freeplane.plugin.workspace.io.FileReadManager;
+import org.freeplane.plugin.workspace.io.FileSystemAlterationMonitor;
 import org.freeplane.plugin.workspace.io.FilesystemReader;
 import org.freeplane.plugin.workspace.io.creator.AFileNodeCreator;
+import org.freeplane.plugin.workspace.model.WorkspaceIndexedTreeModel;
 import org.freeplane.plugin.workspace.view.TreeView;
 
 public class WorkspaceController implements IFreeplanePropertyListener, IMapLifeCycleListener {
@@ -50,6 +49,7 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 		
 	private static final WorkspaceController workspaceController = new WorkspaceController();
 	private static final WorkspaceConfiguration configuration = new WorkspaceConfiguration();
+	private static final FileSystemAlterationMonitor monitor = new FileSystemAlterationMonitor(5000);
 
 	private PopupMenus popups;
 	private final FilesystemReader fsReader;
@@ -64,7 +64,8 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 	private FileReadManager fileTypeManager;
 
 	private WorkspaceTransferHandler transferHandler;
-	private IndexedTree tree;
+	private WorkspaceIndexedTreeModel model = new WorkspaceIndexedTreeModel();
+	//private IndexedTree tree;
 
 	String workspaceLocation;
 	private boolean isInitialized = false;
@@ -118,8 +119,8 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 		return configuration;
 	}
 
-	public DefaultMutableTreeNode getWorkspaceRoot() {
-		return getIndexTree().getRoot();
+	public FileSystemAlterationMonitor getFileSystemAlterationMonitor() {
+		return monitor;
 	}
 
 	public JTree getWorkspaceViewTree() {
@@ -138,10 +139,6 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 			setWorkspaceWidth(-1);
 			getContentPane().revalidate();
 		}
-	}
-
-	public DefaultTreeModel getViewModel() {
-		return getWorkspaceView().getTreeModel();
 	}
 
 	public FilesystemReader getFilesystemReader() {
@@ -177,21 +174,21 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 
 	public void reloadWorkspace() {
 		initTree();
-		initializeConfiguration();
+		initializeConfiguration();		
 		reloadView();
 		getExpansionStateHandler().restoreExpansionState();
 	}
 
 	public void refreshWorkspace() {
-		initTree();
-		getConfiguration().reload();
-		getWorkspaceView().getTreeModel().setRoot(getIndexTree().getRoot().getChildAt(0));
-		getWorkspaceView().getTreeModel().reload();
+		getWorkspaceModel().reload();
 		getExpansionStateHandler().restoreExpansionState();
 	}
-
-	public IndexedTree getIndexTree() {
-		return tree;
+	
+	public WorkspaceIndexedTreeModel getWorkspaceModel() {
+		if(model == null) {
+			model = new WorkspaceIndexedTreeModel();
+		}
+		return model;
 	}
 
 	public WorkspacePreferences getPreferences() {
@@ -212,8 +209,9 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 
 	private void initTree() {
 		getPopups().initialize();
-		this.tree = new IndexedTree(null);
-		this.tree.addElement(this.tree, new WorkspaceRoot(), "root", IndexedTree.AS_CHILD);
+		getWorkspaceModel().resetIndex();
+		getWorkspaceModel().setRoot(new WorkspaceRoot());
+		
 	}
 
 	private void initializeConfiguration() {
@@ -234,23 +232,12 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 			showWorkspace(false);
 			getPreferences().setNewWorkspaceLocation(null);
 		}
-
-		// if (!getConfiguration().isConfigValid()) {
-		// WorkspaceChooserDialog locationDialog = new WorkspaceChooserDialog();
-		// locationDialog.setVisible(true);
-		// }
-		//
-		// if (!getConfiguration().isConfigValid()) {
-		// showWorkspace(false);
-		// return;
-		// }
-		//
-		//
 	}
 
 	private TreeView getWorkspaceView() {
 		if (this.view == null) {
-			this.view = new TreeView(getWorkspaceRoot());
+			this.view = new TreeView();
+			this.view.getTreeView().setModel(getWorkspaceModel());
 			this.view.addComponentListener(new DefaultWorkspaceComponentHandler(this.view));
 			DefaultWorkspaceMouseHandler mouseHandler = new DefaultWorkspaceMouseHandler();
 			this.view.getTreeView().addMouseListener(mouseHandler);
@@ -379,9 +366,15 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 		return this.fileTypeManager;
 	}
 
-	private void dispatchWorkspaceEvent(WorkspaceEvent event) {
+	public void dispatchWorkspaceEvent(WorkspaceEvent event) {
 		switch (event.getType()) {
-			case (1): {
+			case (WorkspaceEvent.WORKSPACE_EVENT_TYPE_CHANGE): {
+				for (IWorkspaceListener listener : workspaceListener) {
+					listener.workspaceChanged(event);
+				}
+				break;
+			}
+			case (WorkspaceEvent.WORKSPACE_EVENT_TYPE_TOOLBAR_EVENT): {
 				for (IWorkspaceListener listener : workspaceListener) {
 					listener.workspaceChanged(event);
 				}

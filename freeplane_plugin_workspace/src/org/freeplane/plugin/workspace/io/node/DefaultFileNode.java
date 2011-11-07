@@ -25,24 +25,26 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.config.node.AWorkspaceNode;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.dnd.IWorkspaceTransferableCreator;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 /**
  * 
  */
-public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEventListener, IWorkspaceTransferableCreator {
-	private static final Icon FOLDER_OPEN_ICON = new ImageIcon(AWorkspaceNode.class.getResource("/images/16x16/folder-orange_open.png"));
-	private static final Icon FOLDER_CLOSED_ICON = new ImageIcon(AWorkspaceNode.class.getResource("/images/16x16/folder-orange.png"));
-	private static final Icon ACROBAT_ICON = new ImageIcon(AWorkspaceNode.class.getResource("/images/16x16/acrobat.png"));
-	private static final Icon GRAPHICS_ICON = new ImageIcon(AWorkspaceNode.class.getResource("/images/16x16/image-x-generic.png"));
-	private static final Icon DEFAULT_ICON = new ImageIcon(AWorkspaceNode.class.getResource("/images/16x16/text-x-preview.png"));
-	private static final Icon WEB_ICON = new ImageIcon(AWorkspaceNode.class.getResource("/images/16x16/text-html-2.png"));
+public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNodeEventListener, IWorkspaceTransferableCreator {
+	private static final Icon FOLDER_OPEN_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/folder-orange_open.png"));
+	private static final Icon FOLDER_CLOSED_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/folder-orange.png"));
+	private static final Icon ACROBAT_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/acrobat.png"));
+	private static final Icon GRAPHICS_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/image-x-generic.png"));
+	private static final Icon DEFAULT_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/text-x-preview.png"));
+	private static final Icon WEB_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/text-html-2.png"));
 	private static final Icon DOCEAR_ICON = new ImageIcon(ResourceController.class.getResource("/images/docear16.png"));
 	private static final Icon FREEPLANE_ICON = new ImageIcon(ResourceController.class.getResource("/images/Freeplane_frame_icon.png"));
+	
+	private static final long serialVersionUID = 1L;
 	
 	
 	
@@ -216,6 +218,11 @@ public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEve
 		return true;
 	}
 	
+	protected AWorkspaceTreeNode clone(DefaultFileNode node) {
+		node.setFileExtension(getFileExtension());
+		return super.clone(node);
+	}
+	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
@@ -266,7 +273,7 @@ public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEve
 		}
 		else if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {
             WorkspaceController.getController().getPopups()
-                    .showPhysicalNodePopup((Component) event.getSource(), event.getX(), event.getY());
+                    .showPhysicalNodePopup((Component) event.getBaggage(), event.getX(), event.getY());
         }
 	}
 	
@@ -295,6 +302,11 @@ public class DefaultFileNode extends AWorkspaceNode implements IWorkspaceNodeEve
 	public void initializePopup() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public AWorkspaceTreeNode clone() {
+		DefaultFileNode node = new DefaultFileNode(getName(), getFile(),getFileExtension());
+		return clone(node);
 	}
 
 }

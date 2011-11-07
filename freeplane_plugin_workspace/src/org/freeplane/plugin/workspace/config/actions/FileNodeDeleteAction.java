@@ -3,16 +3,12 @@ package org.freeplane.plugin.workspace.config.actions;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 
-import org.freeplane.core.ui.components.JFreeplaneMenuItem;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
-import org.freeplane.plugin.workspace.view.WorkspacePopupMenu;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public class FileNodeDeleteAction extends AWorkspaceAction {
 
@@ -39,15 +35,15 @@ public class FileNodeDeleteAction extends AWorkspaceAction {
 	}
 
 	private void deleteFile(final ActionEvent e) {
-		DefaultMutableTreeNode node = this.getNodeFromActionEvent(e);
-		if (node.getUserObject() instanceof DefaultFileNode) {
-			((DefaultFileNode) node.getUserObject()).delete();
+		AWorkspaceTreeNode node = this.getNodeFromActionEvent(e);
+		if (node instanceof DefaultFileNode) {
+			((DefaultFileNode) node).delete();
 		}
 
-		WorkspacePopupMenu menu = (WorkspacePopupMenu) ((JFreeplaneMenuItem) e.getSource()).getParent();
-		JTree tree = (JTree) menu.getInvoker();
-		DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
-		treeModel.removeNodeFromParent(node);
+//		WorkspacePopupMenu menu = (WorkspacePopupMenu) ((JFreeplaneMenuItem) e.getSource()).getParent();
+//		JTree tree = (JTree) menu.getInvoker();
+//		DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
+		WorkspaceUtils.getModel().removeNodeFromParent(node);
 	}
 
 }

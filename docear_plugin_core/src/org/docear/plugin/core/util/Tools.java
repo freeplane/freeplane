@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
-
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeController;
@@ -25,7 +24,6 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.attribute.AttributeView;
-import org.osgi.framework.BundleContext;
 
 public class Tools {
 	
