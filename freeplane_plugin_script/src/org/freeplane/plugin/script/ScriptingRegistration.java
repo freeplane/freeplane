@@ -202,7 +202,8 @@ class ScriptingRegistration {
 			public void install(final URL url) {
 				manageAddOnsAction.actionPerformed(null);
 				final ManageAddOnsDialog dialog = manageAddOnsAction.getDialog();
-				dialog.install(url);
+				//FIXME: method does not exist --> boercher
+				//dialog.install(url);
             }
 		});
 		final ScriptingConfiguration configuration = new ScriptingConfiguration();
