@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
@@ -291,8 +293,23 @@ public class ManageAddOnsDialog extends JDialog {
 	}
 
 	public void install(final URL url) {
-		tabbedPane.setSelectedComponent(addOnInstallerPanel);
-		addOnInstallerPanel.getUrlField().setText(url.toString());
-		addOnInstallerPanel.getInstallButton().doClick();
+		if(addOnInstallerPanel.isShowing()){
+			addOnInstallerPanel.getUrlField().setText(url.toString());
+			tabbedPane.paintImmediately(0, 0, tabbedPane.getWidth(), tabbedPane.getHeight());
+			addOnInstallerPanel.getInstallButton().doClick();
+		}
+		else{
+			addOnInstallerPanel.addHierarchyListener(new HierarchyListener() {
+				public void hierarchyChanged(HierarchyEvent e) {
+					if(addOnInstallerPanel.isShowing()){
+						addOnInstallerPanel.removeHierarchyListener(this);
+						install(url);
+					}
+				}
+			});
+			tabbedPane.setSelectedComponent(addOnInstallerPanel);
+			if(! isVisible())
+				setVisible(true);
+		}
     }
 }
