@@ -18,7 +18,7 @@ import org.docear.plugin.bibtex.actions.AddNewReferenceAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesAllOpenMapsAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesCurrentMapAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesInLibrary;
-import org.docear.plugin.bibtex.listeners.AttributeListener;
+import org.docear.plugin.bibtex.listeners.NodeAttributeListener;
 import org.docear.plugin.bibtex.listeners.BibtexNodeDropListener;
 import org.docear.plugin.bibtex.listeners.JabRefChangeListener;
 import org.docear.plugin.bibtex.listeners.NodeSelectionListener;
@@ -53,7 +53,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 	
 	private JabRefAttributes jabRefAttributes;
 	
-	private final AttributeListener attributeListener = new AttributeListener();
+	private final NodeAttributeListener attributeListener = new NodeAttributeListener();
 
 	public static final String MENU_BAR = "/menu_bar"; //$NON-NLS-1$
 	public static final String NODE_POPUP_MENU = "/node_popup"; //$NON-NLS-1$
@@ -250,7 +250,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 		
 	}
 
-	public AttributeListener getAttributeListener() {
+	public NodeAttributeListener getAttributeListener() {
 		return attributeListener;
 	}
 	

@@ -17,6 +17,7 @@ import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.Attribute;
+import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
@@ -69,13 +70,22 @@ public class JabRefAttributes {
 		NodeModel target = Controller.getCurrentModeController().getMapController().getSelectedNode();
 		setReferenceToNode(entry, target);
 	}
+	
+	public void removeReferenceFromNode(BibtexEntry entry, NodeModel target) {
+		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
+		for (String attributeKey : attributes.getAttributeKeyList()) {
+			if (this.valueAttributes.containsKey(attributeKey) || this.keyAttribute.equals(attributeKey)) {
+				AttributeController.getController().performRemoveAttribute(attributeKey);
+			}
+		}
+	}
 
 	public void setReferenceToNode(BibtexEntry entry, NodeModel target) {
 		if (entry.getCiteKey()==null) {
 			LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), ReferencesController.getController().getJabrefWrapper().getDatabase(), entry);						
 		}		
 		
-		NodeUtils.removeAttributes(target);
+		removeReferenceFromNode(entry, target);
 		
 		for (Entry<String, String> e : this.valueAttributes.entrySet()) {
 			NodeUtils.setAttributeValue(target, e.getKey(), entry.getField(e.getValue()), false);

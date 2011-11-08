@@ -51,9 +51,7 @@ public class AddNewReferenceAction extends AFreeplaneAction{
 		else if (e.getActionCommand().equals(DocearSaveDatabaseAction.JABREF_DATABASE_SAVE_FAILED)) {
 			return;
 		}
-		else {
-
-			System.out.println("debug actionPerformed");
+		else {			
 			NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
 			URI link = NodeLinks.getLink(node);
 			JabrefWrapper jabrefWrapper = ReferencesController.getController().getJabrefWrapper();
