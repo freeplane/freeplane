@@ -88,7 +88,17 @@ public class ManageAddOnsDialog extends JDialog {
 		}
 		
 		public void addAddOn(final AddOnProperties addOn) {
+			final int row = addOns.size();
 			addOns.add(addOn);
+			fireTableRowsInserted(row, row);
+		}
+
+		public void removeAddOn(final AddOnProperties addOn) {
+			final int row = addOns.indexOf(addOn);
+			if(row == -1)
+				return;
+			addOns.remove(row);
+			fireTableRowsDeleted(row, row);
 		}
 	}
 
@@ -241,7 +251,7 @@ public class ManageAddOnsDialog extends JDialog {
 					    JOptionPane.OK_CANCEL_OPTION);
 					if (result == JOptionPane.OK_OPTION) {
 						AddOnsController.getController().deInstall(addOn);
-						tableModel.addOns.remove(addOn);
+						tableModel.removeAddOn(addOn);
 						getContentPane().repaint();
 						UITools.informationMessage(getText("deinstallation.success", addOn.getTranslatedName()));
 					}
