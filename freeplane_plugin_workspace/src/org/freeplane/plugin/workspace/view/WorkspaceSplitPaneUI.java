@@ -4,7 +4,10 @@
  */
 package org.freeplane.plugin.workspace.view;
 
-import javax.swing.plaf.SplitPaneUI;
+import java.awt.Component;
+import java.awt.Graphics;
+
+import javax.swing.JSplitPane;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
@@ -16,13 +19,7 @@ public class WorkspaceSplitPaneUI extends BasicSplitPaneUI {
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 
-	private final SplitPaneUI wrappedUI;
-
-	/**
-	 * @param ui
-	 */
-	public WorkspaceSplitPaneUI(SplitPaneUI ui) {
-		wrappedUI = ui;
+	public WorkspaceSplitPaneUI() {
 	}
 
 	/***********************************************************************************
@@ -32,11 +29,24 @@ public class WorkspaceSplitPaneUI extends BasicSplitPaneUI {
 	public BasicSplitPaneDivider createDefaultDivider() {
         return new WorkspaceSplitDivider(this);
     }
+	
+	/**
+     * Messaged after the JSplitPane the receiver is providing the look
+     * and feel for paints its children.
+     */
+    public void finishedPaintingChildren(JSplitPane jc, Graphics g) {
+    	for(Component c : jc.getComponents()) {
+    		if(c instanceof WorkspaceSplitDivider) {
+    			if(((WorkspaceSplitDivider) c).isMouseOver()) {
+    				((WorkspaceSplitDivider) c).paintSpecial(g);
+    			}
+    		}
+    	}
+        super.finishedPaintingChildren(jc, g);
+    }
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 
-	public SplitPaneUI getWrappedUI() {
-		return wrappedUI;
-	}
+	
 }

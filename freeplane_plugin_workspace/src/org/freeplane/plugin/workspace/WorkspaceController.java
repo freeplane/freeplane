@@ -271,8 +271,8 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 			this.WSContentPane = new JPanel(new BorderLayout());
 			this.WSContentPane.setMinimumSize(new Dimension(0, 0));
 			final JSplitPane splitPane = new JSplitPane();
-			//replaceDivider(splitPane);
-			splitPane.setUI(new WorkspaceSplitPaneUI(splitPane.getUI()));
+			splitPane.setDividerSize(7);
+			splitPane.setUI(new WorkspaceSplitPaneUI());
 			splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);			
 			splitPane.setAutoscrolls(true);
 			splitPane.setLeftComponent(getWorkspaceView());
@@ -281,15 +281,14 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 		}
 		return this.WSContentPane;
 	}
-
-	private final int dividerSize = 6; 
+ 
 	private void setWorkspaceWidth(int width) {
 		JSplitPane splitPane = (JSplitPane) (getWSContentPane().getComponent(0));
 		getWorkspaceView().setVisible(width > 0);
 		getWorkspaceView().setSize(width, 0);
 		splitPane.setDividerLocation(width + 1);
 		if(!Controller.getCurrentController().getResourceController().getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY)) {
-			splitPane.setDividerSize((width > 0 ? dividerSize : 0));
+			splitPane.setDividerSize((width > 0 ? 4 : 0));
 			splitPane.setEnabled(width > 0);
 		}
 	}
