@@ -18,10 +18,12 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.AttributeController;
+import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
@@ -74,8 +76,8 @@ public class JabRefAttributes {
 	public void removeReferenceFromNode(BibtexEntry entry, NodeModel target) {
 		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
 		for (String attributeKey : attributes.getAttributeKeyList()) {
-			if (this.valueAttributes.containsKey(attributeKey) || this.keyAttribute.equals(attributeKey)) {
-				AttributeController.getController().performRemoveAttribute(attributeKey);
+			if (this.valueAttributes.containsKey(attributeKey) || this.keyAttribute.equals(attributeKey)) {				
+				AttributeController.getController().performRemoveRow(attributes, attributes.getAttributePosition(attributeKey));
 			}
 		}
 	}

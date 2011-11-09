@@ -47,6 +47,9 @@ public class JabRefChangeListener implements DatabaseChangeListener {
 		SwingWorker<Void, Void> thread = new SwingWorker<Void, Void>() {
 			@Override
 			protected Void doInBackground() throws Exception {
+				if (entry.getCiteKey().isEmpty()) {
+					return null;
+				}
 				JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
 
 				if (jabRefAttributes.isReferencing(entry, node)) {
