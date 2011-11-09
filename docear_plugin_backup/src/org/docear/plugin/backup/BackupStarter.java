@@ -43,7 +43,7 @@ public class BackupStarter implements IMapChangeListener, INodeChangeListener {
 			if (!controller.getResourceController().getProperty("docear_save_backup").equals("true")) {
 				return;
 			}
-			//this.backupRunner.backup();
+			this.backupRunner.backup();
 
 			System.out.println("docear_save_backup="
 					+ Controller.getCurrentModeController().getController().getResourceController()
@@ -58,31 +58,24 @@ public class BackupStarter implements IMapChangeListener, INodeChangeListener {
 
 	public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
 		this.backupRunner.setMapChanged(true);
-		LogUtils.info("Docear: onNodeDeletedEvent");
 	}
 
 	public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
 		this.backupRunner.setMapChanged(true);
-		LogUtils.info("Docear: onNodeInsertedEvent");
 	}
 
 	public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
 		this.backupRunner.setMapChanged(true);
-		LogUtils.info("Docear: onNodeMovedEvent");
 	}
 
 	public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-		LogUtils.info("Docear: onPreNodeMovedEvent");
 	}
 
 	public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
-		LogUtils.info("Docear: onPreNodeDeleteEvent");
 	}
 	
 	public void nodeChanged(NodeChangeEvent event) {		
-		LogUtils.info("Docear: nodeChangedEvent");
 		if (event.getOldValue() != null) {			
-			System.out.println("FISH: event: "+event);
 			this.backupRunner.setMapChanged(true);
 		}
 	}

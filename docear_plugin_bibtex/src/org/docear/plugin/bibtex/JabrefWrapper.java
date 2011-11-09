@@ -114,17 +114,9 @@ public class JabrefWrapper extends JabRef  {
 	}
 	
 	public BasePanel updateDatabase(BibtexDatabase database) {
-		//FIXME: basePanel is new --> not existent --> java.lang.IllegalArgumentException: component not found in tabbed pane
-//		getJabrefFrame().getTabbedPane().setSelectedComponent(basePanel);
-//		this.setDatabase(database);
-//		BasePanel basePanel = new BasePanel(getJabrefFrame(), database, this.getFile(), this.getMeta(), this.getEncoding());
-//		this.basePanel = basePanel;
-		
-		
-		this.getJabrefFrame().closeCurrentTab();
-		addNewDatabase(database, true);
-		
-		return basePanel;		
+		getJabrefFrame().getTabbedPane().setSelectedComponent(basePanel);
+		this.setDatabase(database);
+		return basePanel;
 	}
 		
 	public void openIt(File file, boolean raisePanel) {
@@ -220,6 +212,7 @@ public class JabrefWrapper extends JabRef  {
 
 	public void setDatabase(BibtexDatabase database) {
 		this.database = database;
+		this.database.addDatabaseChangeListener(ReferencesController.getJabRefChangeListener());
 	}
 
 	public File getFile() {

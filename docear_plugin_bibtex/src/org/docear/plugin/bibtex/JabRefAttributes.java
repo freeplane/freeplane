@@ -1,7 +1,6 @@
 package org.docear.plugin.bibtex;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -11,23 +10,21 @@ import javax.ws.rs.core.UriBuilder;
 
 import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.Globals;
-import net.sf.jabref.Util;
-import net.sf.jabref.gui.FileListEntry;
-import net.sf.jabref.gui.FileListTableModel;
 import net.sf.jabref.labelPattern.LabelPatternUtil;
 
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.attribute.Attribute;
+import org.freeplane.features.attribute.AttributeController;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-
-import com.thoughtworks.xstream.converters.basic.URIConverter;
 
 public class JabRefAttributes {
 
@@ -39,7 +36,7 @@ public class JabRefAttributes {
 	}
 	
 	public void registerAttributes() {
-		this.keyAttribute = "bibtex_key";
+		this.keyAttribute = TextUtils.getText("bibtex_key");
 		
 		this.valueAttributes.put(TextUtils.getText("jabref_author"), "author");
 		this.valueAttributes.put(TextUtils.getText("jabref_title"), "title");
@@ -55,22 +52,52 @@ public class JabRefAttributes {
 		return valueAttributes;
 	}
 	
-	public void addReferenceToNode(BibtexEntry entry) {
+	
+	public boolean isReferencing(BibtexEntry entry, NodeModel node) {
+		boolean found = false;
+		
+		NodeAttributeTableModel attributeTable = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
+		for (Attribute attribute : attributeTable.getAttributes()) {
+			if (attribute.getName().equals(this.keyAttribute) && attribute.getValue().equals(entry.getCiteKey())) {
+				found = true;
+			}
+		}
+		
+		return found;
+	}
+	
+	public void setReferenceToNode(BibtexEntry entry) {
 		NodeModel target = Controller.getCurrentModeController().getMapController().getSelectedNode();
-		addReferenceToNode(entry, target);
+		setReferenceToNode(entry, target);
+	}
+	
+	public void removeReferenceFromNode(BibtexEntry entry, NodeModel target) {
+		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
+		for (String attributeKey : attributes.getAttributeKeyList()) {
+			if (this.valueAttributes.containsKey(attributeKey) || this.keyAttribute.equals(attributeKey)) {
+				AttributeController.getController().performRemoveAttribute(attributeKey);
+			}
+		}
 	}
 
-	public void addReferenceToNode(BibtexEntry entry, NodeModel target) {
+	public void setReferenceToNode(BibtexEntry entry, NodeModel target) {
 		if (entry.getCiteKey()==null) {
 			LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), ReferencesController.getController().getJabrefWrapper().getDatabase(), entry);						
 		}		
 		
-		NodeUtils.removeAttributes(target);
+		removeReferenceFromNode(entry, target);
 		
 		for (Entry<String, String> e : this.valueAttributes.entrySet()) {
 			NodeUtils.setAttributeValue(target, e.getKey(), entry.getField(e.getValue()), false);
 		}
-       
+
+		NodeUtils.setAttributeValue(target, keyAttribute, entry.getCiteKey(), false);
+		
+		NodeLinks nodeLinks = NodeLinks.getLinkExtension(target);
+		if (nodeLinks != null) {
+			System.out.println("debug remove hyperlink");
+			nodeLinks.setHyperLink(null);
+		}
 
 		String files = entry.getField("file");
 		System.out.println("debug path: "+files);
@@ -85,7 +112,6 @@ public class JabRefAttributes {
             		break;
             	}
             }		
-		
 		}
 		else {
 			String url = entry.getField("url");			
@@ -150,65 +176,5 @@ public class JabRefAttributes {
 		}
 		return null;
 	}
-
-	private static String removeMendeleyBackSlash(String path) {
-        path = path.replace("$\\backslash$", "\\");       
-        //path = path.replace('/', '\\');
-        return path;
-    }
-	
-	public static String parseSpecialChars(String s){
-        if(s == null) return s;
-        s = s.replaceAll("\\\\\"[{]([a-zA-Z])[}]",  "$1" + "\u0308"); // replace Ìˆ
-        s = s.replaceAll("\\\\`[{]([a-zA-Z])[}]",  "$1" + "\u0300"); // replace `
-        s = s.replaceAll("\\\\Â´[{]([a-zA-Z])[}]",  "$1" + "\u0301"); // replace Â´
-        s = s.replaceAll("\\\\'[{]([a-zA-Z])[}]",  "$1" + "\u0301"); // replace Â´
-        s = s.replaceAll("\\\\\\^[{]([a-zA-Z])[}]",  "$1" + "\u0302"); // replace ^
-        s = s.replaceAll("\\\\~[{]([a-zA-Z])[}]",  "$1" + "\u0303"); // replace ~
-        s = s.replaceAll("\\\\=[{]([a-zA-Z])[}]",  "$1" + "\u0304"); // replace - above
-        s = s.replaceAll("\\\\\\.[{]([a-zA-Z])[}]",  "$1" + "\u0307"); // replace . above
-        s = s.replaceAll("\\\\u[{]([a-zA-Z])[}]",  "$1" + "\u030c"); // replace v above
-        s = s.replaceAll("\\\\v[{]([a-zA-Z])[}]",  "$1" + "\u0306"); // replace combining breve
-        s = s.replaceAll("\\\\H[{]([a-zA-Z])[}]",  "$1" + "\u030b"); // replace double acute accent
-        s = s.replaceAll("\\\\t[{]([a-zA-Z])([a-zA-Z])[}]",  "$1" + "\u0361" + "$2"); // replace double inverted breve
-        s = s.replaceAll("\\\\c[{]([a-zA-Z])[}]",  "$1" + "\u0355"); // replace right arrowhead below
-        s = s.replaceAll("\\\\d[{]([a-zA-Z])[}]",  "$1" + "\u0323"); // replace . below
-        s = s.replaceAll("\\\\b[{]([a-zA-Z])[}]",  "$1" + "\u0331"); // replace - below
-
-        if(s.contains("\\ss")){
-            s = s.replace("\\ss", "\u00df");
-        }
-        if(s.contains("\\AE")){
-            s = s.replace("\\AE", "\u00c6");
-        }
-        if(s.contains("\\ae")){
-            s = s.replace("\\ae", "\u00e6");
-        }
-        if(s.contains("\\OE")){
-            s = s.replace("\\OE", "\u0152");
-        }
-        if(s.contains("\\oe")){
-            s = s.replace("\\oe", "\u0153");
-        }
-        if(s.contains("\\O")){
-            s = s.replace("\\O", "\u00d8");
-        }
-        if(s.contains("\\o")){
-            s = s.replace("\\o", "\u00f8");
-        }
-        if(s.contains("\\L")){
-            s = s.replace("\\L", "\u0141");
-        }
-        if(s.contains("\\l")){
-            s = s.replace("\\l", "\u0142");
-        }
-        if(s.contains("\\AA")){
-            s = s.replace("\\AA", "\u00c5");
-        }
-        if(s.contains("\\aa")){
-            s = s.replace("\\aa", "\u00e5");
-        }
-        return s;
-    }	
 
 }
