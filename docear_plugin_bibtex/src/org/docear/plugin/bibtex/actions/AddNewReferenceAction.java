@@ -20,9 +20,8 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
 import spl.PdfImporter;
-import spl.gui.ImportDialog;
 
-public class AddNewReferenceAction extends AFreeplaneAction {
+public class AddNewReferenceAction extends AFreeplaneAction{
 
 	/**
 	 * 
@@ -41,7 +40,7 @@ public class AddNewReferenceAction extends AFreeplaneAction {
 				String nodeID = entry.getField("docear_add_to_node");
 				if (nodeID != null) {
 					NodeModel node = Controller.getCurrentModeController().getMapController().getNodeFromID(nodeID);
-					ReferencesController.getController().getJabRefAttributes().addReferenceToNode(entry, node);
+					ReferencesController.getController().getJabRefAttributes().setReferenceToNode(entry, node);
 				}
 			}
 			catch (Exception ex) {
@@ -52,15 +51,13 @@ public class AddNewReferenceAction extends AFreeplaneAction {
 		else if (e.getActionCommand().equals(DocearSaveDatabaseAction.JABREF_DATABASE_SAVE_FAILED)) {
 			return;
 		}
-		else {
-
-			System.out.println("debug actionPerformed");
+		else {			
 			NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
 			URI link = NodeLinks.getLink(node);
 			JabrefWrapper jabrefWrapper = ReferencesController.getController().getJabrefWrapper();
 
 			if (link != null && link.getPath().toLowerCase().endsWith(".pdf")) {
-				final String[] newfileNames = new PdfImporter(jabrefWrapper.getJabrefFrame(), jabrefWrapper.getJabrefFrame()
+				new PdfImporter(jabrefWrapper.getJabrefFrame(), jabrefWrapper.getJabrefFrame()
 						.basePanel(), null, 0).importPdfFiles(new String[] { link.getPath() }, Controller.getCurrentController()
 						.getViewController().getFrame(), true);
 				BibtexEntry[] entries = jabrefWrapper.getJabrefFrame().basePanel().getSelectedEntries();
@@ -86,7 +83,7 @@ public class AddNewReferenceAction extends AFreeplaneAction {
 			showJabRefTab();
 			if (entry != null) {
 				entry.setField("docear_add_to_node", node.getID());
-			}
+			}			
 		}
 
 	}

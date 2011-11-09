@@ -4,6 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import net.sf.jabref.BasePanel;
 import net.sf.jabref.BibtexEntry;
@@ -20,50 +23,41 @@ public class DocearSaveDatabaseAction extends SaveDatabaseAction {
 	public DocearSaveDatabaseAction(BasePanel panel) {
 		super(panel);
 	}
+	
+	public void callListeners(Map<String, BibtexEntry> entryNodeTuples, boolean success) {
+		ActionEvent event;
+		for (Entry<String, BibtexEntry> tuple : entryNodeTuples.entrySet()) {
+			//addNodeID to entry for AddNewReferenceAction (deleted before saving the database
+			tuple.getValue().setField("docear_add_to_node", tuple.getKey());
+			event = new ActionEvent(tuple.getValue(), 0, success ? JABREF_DATABASE_SAVE_SUCCESS : JABREF_DATABASE_SAVE_FAILED);									
+			for (ActionListener listener : actionListeners) {
+				listener.actionPerformed(event);
+			}
+			//delete nodeID before continuing --> same state as saved database and bibtex key would not be added again on next run
+			tuple.getValue().setField("docear_add_to_node", null);
+		}
+	}
 
 	public void run() {
-		BibtexEntry entryForMindmapNode = null;
+		TreeMap<String, BibtexEntry> entryNodeTuples = new TreeMap<String, BibtexEntry>();
+		
 		String nodeId = null;
 		for (BibtexEntry entry : this.panel.getDatabase().getEntries()) {
 			nodeId = entry.getField("docear_add_to_node");
-			if (nodeId != null) {
-				entryForMindmapNode = entry;				
+			if (nodeId != null) {						
 				if (entry.getCiteKey() == null) {
 					LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), this.panel.getDatabase(), entry);
 				}
-				break;
+				entry.setField("docear_add_to_node", null);
+				entryNodeTuples.put(nodeId, entry);				
 			}
 		}		
-
-		entryForMindmapNode.setField("docear_add_to_node", null);
 		
 		//save Database
 		super.run();
 		
-		if (entryForMindmapNode != null) {
-			ActionEvent event;
-			if (this.isSuccess()) {				
-				event = new ActionEvent(entryForMindmapNode, 0, JABREF_DATABASE_SAVE_SUCCESS);
-				System.out.println("entry for mindmap node: "+entryForMindmapNode.getField("docear_add_to_node"));				
-			}
-			else if (!this.isCancelled()) {
-				event = new ActionEvent(entryForMindmapNode, 0, JABREF_DATABASE_SAVE_FAILED);
-			}
-			else {
-				return;
-			}
-			
-			//addNodeID to entry for AddNewReferenceAction 
-			entryForMindmapNode.setField("docear_add_to_node", nodeId);			
-			for (ActionListener listener : actionListeners) {
-				//addNodeID to entry for AddNewReferenceAction 
-				entryForMindmapNode.setField("docear_add_to_node", nodeId);
-				listener.actionPerformed(event);
-				//addNodeID to entry for AddNewReferenceAction 
-			}
-			//delete nodeID from entry to prevent new insert after restart
-			entryForMindmapNode.setField("docear_add_to_node", null);
-			
+		if (entryNodeTuples.size()>0) {
+			callListeners(entryNodeTuples, isSuccess());
 		}
 		
 		

@@ -1,7 +1,6 @@
 package org.docear.plugin.bibtex;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -11,23 +10,21 @@ import javax.ws.rs.core.UriBuilder;
 
 import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.Globals;
-import net.sf.jabref.Util;
-import net.sf.jabref.gui.FileListEntry;
-import net.sf.jabref.gui.FileListTableModel;
 import net.sf.jabref.labelPattern.LabelPatternUtil;
 
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.attribute.Attribute;
+import org.freeplane.features.attribute.AttributeController;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-
-import com.thoughtworks.xstream.converters.basic.URIConverter;
 
 public class JabRefAttributes {
 
@@ -39,7 +36,7 @@ public class JabRefAttributes {
 	}
 	
 	public void registerAttributes() {
-		this.keyAttribute = "bibtex_key";
+		this.keyAttribute = TextUtils.getText("bibtex_key");
 		
 		this.valueAttributes.put(TextUtils.getText("jabref_author"), "author");
 		this.valueAttributes.put(TextUtils.getText("jabref_title"), "title");
@@ -55,22 +52,52 @@ public class JabRefAttributes {
 		return valueAttributes;
 	}
 	
-	public void addReferenceToNode(BibtexEntry entry) {
+	
+	public boolean isReferencing(BibtexEntry entry, NodeModel node) {
+		boolean found = false;
+		
+		NodeAttributeTableModel attributeTable = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
+		for (Attribute attribute : attributeTable.getAttributes()) {
+			if (attribute.getName().equals(this.keyAttribute) && attribute.getValue().equals(entry.getCiteKey())) {
+				found = true;
+			}
+		}
+		
+		return found;
+	}
+	
+	public void setReferenceToNode(BibtexEntry entry) {
 		NodeModel target = Controller.getCurrentModeController().getMapController().getSelectedNode();
-		addReferenceToNode(entry, target);
+		setReferenceToNode(entry, target);
+	}
+	
+	public void removeReferenceFromNode(BibtexEntry entry, NodeModel target) {
+		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
+		for (String attributeKey : attributes.getAttributeKeyList()) {
+			if (this.valueAttributes.containsKey(attributeKey) || this.keyAttribute.equals(attributeKey)) {
+				AttributeController.getController().performRemoveAttribute(attributeKey);
+			}
+		}
 	}
 
-	public void addReferenceToNode(BibtexEntry entry, NodeModel target) {
+	public void setReferenceToNode(BibtexEntry entry, NodeModel target) {
 		if (entry.getCiteKey()==null) {
 			LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), ReferencesController.getController().getJabrefWrapper().getDatabase(), entry);						
 		}		
 		
-		NodeUtils.removeAttributes(target);
+		removeReferenceFromNode(entry, target);
 		
 		for (Entry<String, String> e : this.valueAttributes.entrySet()) {
 			NodeUtils.setAttributeValue(target, e.getKey(), entry.getField(e.getValue()), false);
 		}
-       
+
+		NodeUtils.setAttributeValue(target, keyAttribute, entry.getCiteKey(), false);
+		
+		NodeLinks nodeLinks = NodeLinks.getLinkExtension(target);
+		if (nodeLinks != null) {
+			System.out.println("debug remove hyperlink");
+			nodeLinks.setHyperLink(null);
+		}
 
 		String files = entry.getField("file");
 		System.out.println("debug path: "+files);
@@ -85,7 +112,6 @@ public class JabRefAttributes {
             		break;
             	}
             }		
-		
 		}
 		else {
 			String url = entry.getField("url");			

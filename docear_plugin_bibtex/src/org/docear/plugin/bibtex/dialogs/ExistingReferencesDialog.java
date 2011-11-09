@@ -71,7 +71,7 @@ public class ExistingReferencesDialog extends JDialog {
 				}
 			}
 			if (yesorno == JOptionPane.YES_OPTION) {
-				ReferencesController.getController().getJabRefAttributes().addReferenceToNode(entry);
+				ReferencesController.getController().getJabRefAttributes().setReferenceToNode(entry);
 			}
 		}
 		this.dispose();
