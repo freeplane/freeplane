@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import net.sf.jabref.BasePanel;
-import net.sf.jabref.export.DocearReferenceUpdateController;
+import net.sf.jabref.JabRefPreferences;
 import net.sf.jabref.export.DocearSaveDatabaseAction;
 
 import org.docear.plugin.bibtex.actions.AddExistingReferenceAction;
@@ -83,6 +83,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 
 	public ReferencesController(ModeController modeController) {
 		setReferencesController(this);
+		setPreferencesForDocear();
 		this.modeController = modeController;
 		LogUtils.info("starting DocearReferencesController(ModeController)"); //$NON-NLS-1$
 
@@ -96,6 +97,13 @@ public class ReferencesController extends ALanguageController implements IDocear
 		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(this);		
 		this.initJabref();		
 	}
+	
+
+	private void setPreferencesForDocear() {
+		JabRefPreferences.getInstance().put("groupAutoShow", "false");
+		JabRefPreferences.getInstance().put("searchPanelVisible", "false");
+	}
+	
 
 	private void registerListeners() {
 		this.modeController.addINodeViewLifeCycleListener(new INodeViewLifeCycleListener() {
