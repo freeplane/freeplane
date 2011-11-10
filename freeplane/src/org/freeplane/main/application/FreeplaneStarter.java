@@ -218,7 +218,8 @@ public class FreeplaneStarter {
 		if(firstRun && ! dontLoadLastMaps){
 			final File baseDir = new File(FreeplaneStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();
 			final String map = ResourceController.getResourceController().getProperty("first_start_map");
-			final File absolutFile = ConfigurationUtils.getLocalizedFile(baseDir, map, Locale.getDefault().getLanguage()); 
+			final File absolutFile = ConfigurationUtils.getLocalizedFile(baseDir, map, Locale.getDefault().getLanguage());
+			System.out.println("debug absolut file: "+absolutFile.getAbsolutePath());
 			loadMaps(controller, new String[]{absolutFile.getAbsolutePath()});
 		}
 		if (null != controller.getMap()) {
