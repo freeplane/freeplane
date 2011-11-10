@@ -39,6 +39,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 
@@ -67,6 +68,7 @@ class ImportLinkedBranchAction extends AFreeplaneAction {
 			final File file = uri.isAbsolute() && !uri.isOpaque() ? new File(uri) : new File(new URL(map.getURL(), uri
 			    .getPath()).getFile());
 			final NodeModel node = ((MMapController) modeController.getMapController()).loadTree(map, file);
+			PersistentNodeHook.removeMapExtensions(node);
 			((MMapController) modeController.getMapController()).insertNode(node, selected);
 			((MLinkController) LinkController.getController()).setLink(selected, (URI) null, false);
 			((MLinkController) LinkController.getController()).setLink(node, (URI) null, false);
