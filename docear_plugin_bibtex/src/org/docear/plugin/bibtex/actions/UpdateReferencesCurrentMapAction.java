@@ -1,30 +1,19 @@
 package org.docear.plugin.bibtex.actions;
 
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CancellationException;
 
 import javax.swing.SwingUtilities;
 
 import net.sf.jabref.BibtexDatabase;
 import net.sf.jabref.BibtexEntry;
-import net.sf.jabref.imports.OpenDatabaseAction;
-import net.sf.jabref.imports.ParserResult;
 
 import org.docear.plugin.bibtex.JabRefAttributes;
 import org.docear.plugin.bibtex.ReferencesController;
-import org.docear.plugin.core.CoreConfiguration;
-import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.ui.SwingWorkerDialog;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
@@ -64,7 +53,7 @@ public class UpdateReferencesCurrentMapAction extends AFreeplaneAction {
 					
 	}
 	
-	public static SwingWorker<Void, Void> getReferenceUpdateThread(final List<MapModel> maps){
+	public static SwingWorker<Void, Void> getReferenceUpdateThread(final List<? extends MapModel> maps){
 		
 		return new SwingWorker<Void, Void>(){
 			private BibtexDatabase database;
@@ -85,11 +74,13 @@ public class UpdateReferencesCurrentMapAction extends AFreeplaneAction {
 				if(canceled()) return null;
 				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Computing total node count...");
 				setTotalNodeCount(maps);
+				System.out.println("debug maps count: "+maps.size());
 				if(canceled()) return null;				
 				fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
 				fireProgressUpdate(100 * count / totalNodeCount);
 				
 				for(MapModel map : maps){
+					System.out.println("debug title: "+map.getTitle());
 					fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, "Updating References against "+ map.getTitle() +" in progress....");
 					
 					updateBibtexEntries(map.getRootNode());
@@ -134,7 +125,7 @@ public class UpdateReferencesCurrentMapAction extends AFreeplaneAction {
 				   );	
 			}
 			
-			private void setTotalNodeCount(List<MapModel> maps) {
+			private void setTotalNodeCount(List<? extends MapModel> maps) {
 				for(MapModel map : maps){
 					getTotalNodeCount(map.getRootNode());
 				}					
