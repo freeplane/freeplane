@@ -320,7 +320,10 @@ public class OpenDatabaseAction extends MnemonicAwareAction {
     			for(String field : entry.getAllFields()){
     				String value = entry.getField(field);
     				value = parseSpecialChars(value);
-    				value = removeMendeleyBackSlash(value);    				
+    				value = removeMendeleyBackSlash(value);
+    				if(field.equalsIgnoreCase("file") && !System.getProperty("os.name").startsWith("Win") && !value.startsWith(":/")){
+    					value = value.replaceFirst(":", ":/");
+    				}
     				entry.setField(field, value);
     			}
     		}
@@ -329,16 +332,17 @@ public class OpenDatabaseAction extends MnemonicAwareAction {
     }
     
     private static String removeMendeleyBackSlash(String path) {
-        path = path.replace("$backslash$", "\\");       
-        path = path.replace("/", "\\\\");
+        path = path.replace("$backslash$", "\\");
+        if(System.getProperty("os.name").startsWith("Win")){
+        	path = path.replace("/", "\\\\");
+        }        
         return path;
     }
 	
 	public static String parseSpecialChars(String s){
 		if(s == null) return s;		
-        s = s.replaceAll("\\\\\"[{]([a-zA-Z])[}]",  "$1" + "\u0308"); // replace äöü
-        s = s.replaceAll("\\\\`[{]([a-zA-Z])[}]",  "$1" + "\u0300"); // replace `
-        s = s.replaceAll("\\\\´[{]([a-zA-Z])[}]",  "$1" + "\u0301"); // replace Ã‚Â´
+        s = s.replaceAll("\\\\\"[{]([a-zA-Z])[}]",  "$1" + "\u0308"); // replace Ã¤Ã¼Ã¶
+        s = s.replaceAll("\\\\`[{]([a-zA-Z])[}]",  "$1" + "\u0300"); // replace `        
         s = s.replaceAll("\\\\'[{]([a-zA-Z])[}]",  "$1" + "\u0301"); // replace Ã‚Â´
         s = s.replaceAll("\\\\\\^[{]([a-zA-Z])[}]",  "$1" + "\u0302"); // replace ^
         s = s.replaceAll("\\\\~[{]([a-zA-Z])[}]",  "$1" + "\u0303"); // replace ~
