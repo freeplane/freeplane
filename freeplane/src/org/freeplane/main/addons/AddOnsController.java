@@ -177,8 +177,8 @@ public class AddOnsController {
 				LogUtils.warn("no AddOnInstaller registered. Cannot install " + url);
 				return false;
 			}
-			final int selection = UITools.showConfirmDialog(Controller.getCurrentController().getSelection()
-			    .getSelected(), TextUtils.format("newmap.install.addon.question", url.getPath()),
+			final int selection = UITools.showConfirmDialog(null,
+				TextUtils.format("newmap.install.addon.question", new File(url.getFile()).getName()),
 			    TextUtils.getText("newmap.install.addon.title"), JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
 			if (selection == JOptionPane.OK_OPTION) {
 				installer.install(url);

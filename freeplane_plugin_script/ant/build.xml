@@ -35,7 +35,7 @@
 		</jar>
 	</target>
 
-	<target name="dist" depends="build, prepare-nodehighlighter, api">
+	<target name="dist" depends="build, prepare-nodehighlighter">
 		<jar jarfile="lib/plugin.jar">
 			<fileset dir="build"/>
 			<fileset dir="src">
@@ -78,7 +78,7 @@
 				</fileset>
 			</sourcefiles>
 		</javadoc>
-		<zip destfile="dist/api.zip" basedir="dist/doc/api" />
+		<zip destfile="dist/script-api.zip" basedir="dist/doc/api" />
 	</target>
 
 	<target name="osgi_dist_as_jar" depends="dist">
