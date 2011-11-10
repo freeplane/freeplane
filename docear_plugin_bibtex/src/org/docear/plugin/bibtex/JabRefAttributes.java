@@ -54,18 +54,22 @@ public class JabRefAttributes {
 		return valueAttributes;
 	}
 	
-	
-	public boolean isReferencing(BibtexEntry entry, NodeModel node) {
-		boolean found = false;
-		
+	public String getBibtexKey(NodeModel node) {		
 		NodeAttributeTableModel attributeTable = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
 		for (Attribute attribute : attributeTable.getAttributes()) {
-			if (attribute.getName().equals(this.keyAttribute) && attribute.getValue().equals(entry.getCiteKey())) {
-				found = true;
+			if (attribute.getName().equals(this.keyAttribute)) {
+				return (String) attribute.getValue();
 			}
 		}
 		
-		return found;
+		return null;
+	}
+	
+	public boolean isReferencing(BibtexEntry entry, NodeModel node) {
+		if (getBibtexKey(node).equals(entry.getCiteKey())) {
+			return true;
+		}				
+		return false;
 	}
 	
 	public void setReferenceToNode(BibtexEntry entry) {
