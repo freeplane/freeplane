@@ -7,22 +7,17 @@ import javax.swing.JTree;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.plugin.workspace.WorkspaceController;
 
-public class WorkspaceCollapseAction extends AFreeplaneAction {
+public class WorkspaceCollapseAction extends AWorkspaceAction {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public WorkspaceCollapseAction() {
-		super("WorkspaceCollapseAction");
+		super("workspace.action.all.collapse");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		System.out.println("WorkspaceCollapseAction: "+e.getActionCommand()+" : "+e.getID());
 		JTree workspaceTree = WorkspaceController.getController().getWorkspaceViewTree();
 		collapseAll(workspaceTree);
 	}

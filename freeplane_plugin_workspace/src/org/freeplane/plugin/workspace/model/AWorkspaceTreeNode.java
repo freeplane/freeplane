@@ -1,5 +1,7 @@
 package org.freeplane.plugin.workspace.model;
 
+import java.awt.Component;
+import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -51,6 +53,8 @@ public abstract class AWorkspaceTreeNode implements Cloneable, TreeNode, Destruc
 	abstract public String getTagName();
 	
 	abstract public void initializePopup();
+	
+	abstract protected WorkspacePopupMenu getPopupMenu();
 	
 	
 	public void setParent(AWorkspaceTreeNode node) {
@@ -116,7 +120,7 @@ public abstract class AWorkspaceTreeNode implements Cloneable, TreeNode, Destruc
 	}
 	
 	public boolean isEditable() {
-		return true;
+		return false;
 	}
 	
 	public boolean setIcons(DefaultTreeCellRenderer renderer) {
@@ -162,6 +166,17 @@ public abstract class AWorkspaceTreeNode implements Cloneable, TreeNode, Destruc
 	
 	public String toString() {
 		return this.getClass().getSimpleName()+"[type="+this.getType()+";name="+this.getName()+"]";
+	}
+		
+	public void showPopup(Component component, int x, int y) {		
+		final WorkspacePopupMenu popupMenu = getPopupMenu();
+		if(popupMenu == null) {
+			return;
+		}
+		popupMenu.setInvokerLocation(new Point(x, y));
+		if (popupMenu != null) {
+			popupMenu.show(component, x, y);
+		}
 	}
 	
 	/***********************************************************************************

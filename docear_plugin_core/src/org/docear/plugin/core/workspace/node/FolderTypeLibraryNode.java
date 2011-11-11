@@ -44,6 +44,7 @@ import org.freeplane.plugin.workspace.io.INodeCreatedListener;
 import org.freeplane.plugin.workspace.io.NodeCreatedEvent;
 import org.freeplane.plugin.workspace.io.node.MindMapFileNode;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 
 public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventListener, IDocearLibrary, IWorkspaceNodeEventListener, IDropAcceptor, INodeCreatedListener {
 	private static final Icon DEFAULT_ICON = new ImageIcon(FolderTypeLibraryNode.class.getResource("/images/folder-database.png"));
@@ -296,6 +297,10 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 				}				
 			}
 		}
+	}
+	
+	protected WorkspacePopupMenu getPopupMenu() {
+		return null;
 	}
 	
 }

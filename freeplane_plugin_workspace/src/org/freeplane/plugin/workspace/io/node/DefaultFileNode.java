@@ -24,12 +24,13 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.dnd.IWorkspaceTransferableCreator;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
+import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 
 /**
  * 
@@ -46,6 +47,7 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 	
 	private static final long serialVersionUID = 1L;
 	
+	private static WorkspacePopupMenu popupMenu = null;
 	
 	
 	private File file;
@@ -272,8 +274,7 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 			}
 		}
 		else if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {
-            WorkspaceController.getController().getPopups()
-                    .showPhysicalNodePopup((Component) event.getBaggage(), event.getX(), event.getY());
+            showPopup((Component) event.getBaggage(), event.getX(), event.getY());
         }
 	}
 	
@@ -300,13 +301,33 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 	}
 
 	public void initializePopup() {
-		// TODO Auto-generated method stub
-		
+		if (popupMenu == null) {			
+			popupMenu = new WorkspacePopupMenu();
+			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
+					"FileNodeAddNewMindmapAction",
+					WorkspacePopupMenuBuilder.SEPARATOR, 
+					"FileNodePasteAction",
+					"FileNodeCopyAction",
+					"FileNodeCutAction",
+					//"FileNodeDeleteAction",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"FileNodeRenameAction",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.refresh",
+					"workspace.action.node.delete"
+			});
+		}
 	}
 
 	public AWorkspaceTreeNode clone() {
 		DefaultFileNode node = new DefaultFileNode(getName(), getFile(),getFileExtension());
 		return clone(node);
 	}
-
+	
+	protected WorkspacePopupMenu getPopupMenu() {
+		if (popupMenu == null) {
+			initializePopup();
+		}
+		return popupMenu;
+	}
 }

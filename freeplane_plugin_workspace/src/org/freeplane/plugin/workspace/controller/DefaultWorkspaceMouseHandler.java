@@ -12,6 +12,7 @@ import javax.swing.JTree;
 import javax.swing.tree.TreePath;
 
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.view.WorkspaceNodeRenderer;
 
@@ -64,8 +65,8 @@ public class DefaultWorkspaceMouseHandler implements MouseListener, MouseMotionL
 		}
 		else {
 			if (e.getButton() == MouseEvent.BUTTON3) {
-				WorkspaceController.getController().getPopups().showWorkspacePopup(e.getComponent(), e.getX(), e.getY());
-				
+				//WorkspaceController.getController().getPopups().showWorkspacePopup(e.getComponent(), e.getX(), e.getY());
+				((AWorkspaceTreeNode) WorkspaceUtils.getModel().getRoot()).showPopup(e.getComponent(), e.getX(), e.getY());
 			}
 		}
 	}

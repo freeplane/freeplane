@@ -8,39 +8,38 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.config.PopupMenus;
+import org.freeplane.plugin.workspace.config.actions.FileNodeAddNewMindmapAction;
+import org.freeplane.plugin.workspace.config.actions.FileNodeCopyAction;
+import org.freeplane.plugin.workspace.config.actions.FileNodeCutAction;
+import org.freeplane.plugin.workspace.config.actions.FileNodeDeleteAction;
+import org.freeplane.plugin.workspace.config.actions.FileNodePasteAction;
+import org.freeplane.plugin.workspace.config.actions.FileNodeRenameAction;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
+import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 
 public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeEventListener {
 	
 	private static final long serialVersionUID = 1L;
 	private static Icon FOLDER_OPEN_ICON = new ImageIcon(PhysicalFolderNode.class.getResource("/images/16x16/folder-orange_open.png"));
 	private static final Icon FOLDER_CLOSED_ICON = new ImageIcon(PhysicalFolderNode.class.getResource("/images/16x16/folder-orange.png"));
-		
-//	private String folderPathProperty;
+	
+	private static WorkspacePopupMenu popupMenu = null;
+	
 	private URI folderPath;
 	
 	
 
-	private static String POPUP_KEY = "/filesystem_folder";
-
 	public PhysicalFolderNode(String id) {
 		super(id);
 	}
-
-//	@ExportAsAttribute("pathProperty")
-//	public String getFolderPathProperty() {
-//		return folderPathProperty;
-//	}
-//
-//	public void setFolderPathProperty(String pathProperty) {
-//		this.folderPathProperty = pathProperty;
-//	}
 
 	@ExportAsAttribute("path")
 	public URI getFolderPath() {
@@ -77,20 +76,35 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeEve
 	}
 
 	public void initializePopup() {
-		PopupMenus popupMenu = WorkspaceController.getController().getPopups();
-		if (!isSystem()) {			
-			popupMenu.registerPopupMenuNodeDefault(POPUP_KEY);
+		if (popupMenu == null) {
+			ModeController modeController = Controller.getCurrentModeController();
+			modeController.addAction(new FileNodeAddNewMindmapAction());
+			modeController.addAction(new FileNodeCutAction());
+			modeController.addAction(new FileNodeRenameAction());
+			modeController.addAction(new FileNodeDeleteAction());
+			modeController.addAction(new FileNodeCopyAction());
+			modeController.addAction(new FileNodePasteAction());
+			
+			popupMenu = new WorkspacePopupMenu();
+			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
+					"FileNodeAddNewMindmapAction",
+					WorkspacePopupMenuBuilder.SEPARATOR, 
+					"FileNodePasteAction",
+					"FileNodeCopyAction",
+					"FileNodeCutAction",
+					//"FileNodeDeleteAction",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"FileNodeRenameAction",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.refresh",
+					"workspace.action.node.delete"
+			});
 		}
-		popupMenu.buildPopupMenu(POPUP_KEY);
 	}
 
 	public void handleEvent(WorkspaceNodeEvent event) {
-		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {			
-			Component component = (Component) event.getBaggage();
-
-			WorkspaceController.getController().getPopups()
-					.showPopup(POPUP_KEY, component, event.getX(), event.getY());
-
+		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {
+			showPopup( (Component) event.getBaggage(), event.getX(), event.getY());
 		}
 	}
 	
@@ -118,7 +132,13 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeEve
 		node.setFolderPath(getFolderPath());		
 		return super.clone(node);
 	}
-
+	
+	protected WorkspacePopupMenu getPopupMenu() {
+		if (popupMenu == null) {
+			initializePopup();
+		}
+		return popupMenu;
+	}
 	
 	public AWorkspaceTreeNode clone() {
 		PhysicalFolderNode node = new PhysicalFolderNode(getType());

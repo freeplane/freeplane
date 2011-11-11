@@ -11,7 +11,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
-import org.freeplane.plugin.workspace.view.WorkspacePopupMenu;
+import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 
 public class FileNodeRenameAction extends AWorkspaceAction {
 
