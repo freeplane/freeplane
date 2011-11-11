@@ -66,7 +66,9 @@ public class JabRefAttributes {
 	}
 	
 	public boolean isReferencing(BibtexEntry entry, NodeModel node) {
-		if (getBibtexKey(node).equals(entry.getCiteKey())) {
+		String nodeKey = getBibtexKey(node);
+		String entryKey = entry.getCiteKey();
+		if (nodeKey != null && entryKey != null && nodeKey.equals(entryKey)) {
 			return true;
 		}				
 		return false;

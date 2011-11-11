@@ -1,7 +1,7 @@
 package net.sf.jabref.export;
 
 public class DocearReferenceUpdateController {
-	private static boolean locked;
+	private static boolean locked = false;
 
 	public static boolean isLocked() {
 		return locked;
