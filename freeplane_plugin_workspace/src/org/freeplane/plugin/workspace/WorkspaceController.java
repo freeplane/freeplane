@@ -25,7 +25,6 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
-import org.freeplane.plugin.workspace.config.PopupMenus;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.config.node.WorkspaceRoot;
 import org.freeplane.plugin.workspace.controller.AWorkspaceExpansionStateHandler;
@@ -54,7 +53,6 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 	private static final WorkspaceConfiguration configuration = new WorkspaceConfiguration();
 	private static final FileSystemAlterationMonitor monitor = new FileSystemAlterationMonitor(5000);
 
-	private PopupMenus popups;
 	private final FilesystemReader fsReader;
 	private final Vector<IWorkspaceListener> workspaceListener = new Vector<IWorkspaceListener>();
 
@@ -68,8 +66,7 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 
 	private WorkspaceTransferHandler transferHandler;
 	private WorkspaceIndexedTreeModel model = new WorkspaceIndexedTreeModel();
-	//private IndexedTree tree;
-
+	
 	String workspaceLocation;
 	private boolean isInitialized = false;
 	private DefaultWorkspaceExpansionStateHandler expansionStateHandler;
@@ -152,13 +149,6 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 		getConfiguration().saveConfiguration(writer);
 	}
 
-	public PopupMenus getPopups() {
-		if (popups == null) {
-			popups = new PopupMenus();
-		}
-		return popups;
-	}
-
 	public WorkspaceTransferHandler getTransferHandler() {
 		return transferHandler;
 	}
@@ -211,7 +201,6 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 	}
 
 	private void initTree() {
-		getPopups().initialize();
 		getWorkspaceModel().resetIndex();
 		getWorkspaceModel().setRoot(new WorkspaceRoot());
 		
@@ -287,10 +276,10 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 		getWorkspaceView().setVisible(width > 0);
 		getWorkspaceView().setSize(width, 0);
 		splitPane.setDividerLocation(width + 1);
-		if(!Controller.getCurrentController().getResourceController().getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY)) {
-			splitPane.setDividerSize((width > 0 ? 4 : 0));
+//		if(!Controller.getCurrentController().getResourceController().getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY)) {
+			splitPane.setDividerSize((width > 0 ? 7 : 0));
 			splitPane.setEnabled(width > 0);
-		}
+//		}
 	}
 
 	private void resetWorkspaceView() {
@@ -389,6 +378,7 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 
 		}
 	}
+	
 
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES

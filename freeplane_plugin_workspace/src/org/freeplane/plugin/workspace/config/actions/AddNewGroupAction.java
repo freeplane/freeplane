@@ -17,11 +17,11 @@ public class AddNewGroupAction extends AWorkspaceAction {
 	private static final long serialVersionUID = 1L;
 
 	public AddNewGroupAction() {
-		super("AddNewGroupAction");
+		super("workspace.action.node.group.new");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		System.out.println("AddNewGroupAction: " + e.getActionCommand() + " : " + e.getID());
+		System.out.println("workspace.action.node.group.new: " + e.getActionCommand() + " : " + e.getID());
 		
 		String groupName = JOptionPane.showInputDialog(Controller.getCurrentController().getViewController().getContentPane(),
 				TextUtils.getText("enter_group_name"));

@@ -4,10 +4,9 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JTree;
 
-import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.plugin.workspace.WorkspaceController;
 
-public class WorkspaceExpandAction extends AFreeplaneAction {
+public class WorkspaceExpandAction extends AWorkspaceAction {
 
 	/**
 	 * 
@@ -15,11 +14,10 @@ public class WorkspaceExpandAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public WorkspaceExpandAction() {
-		super("WorkspaceExpandAction");
+		super("workspace.action.all.expand");
 	}
 	
 	public void actionPerformed(final ActionEvent e) {
-		System.out.println("WorkspaceExpandAction: "+e.getActionCommand()+" : "+e.getID());
         JTree workspaceTree = WorkspaceController.getController().getWorkspaceViewTree();
         for (int i = 1; i < workspaceTree.getRowCount(); i++) {
                  workspaceTree.expandRow(i);

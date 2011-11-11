@@ -2,9 +2,7 @@ package org.freeplane.plugin.workspace.config.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.ui.AFreeplaneAction;
-
-public class FileNodeCopyAction extends AFreeplaneAction {
+public class FileNodeCopyAction extends AWorkspaceAction {
 
 	/**
 	 * 

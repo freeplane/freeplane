@@ -1,4 +1,4 @@
-package org.freeplane.plugin.workspace.view;
+package org.freeplane.plugin.workspace.model;
 
 import java.awt.Point;
 

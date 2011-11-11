@@ -25,6 +25,7 @@ import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 
 /**
  * 
@@ -127,5 +128,9 @@ public class LinkTypeLiteratureCollectionNode extends ALinkNode implements IWork
 	public AWorkspaceTreeNode clone() {
 		LinkTypeLiteratureCollectionNode node = new LinkTypeLiteratureCollectionNode(getType());
 		return clone(node);
+	}
+	
+	protected WorkspacePopupMenu getPopupMenu() {
+		return null;
 	}
 }

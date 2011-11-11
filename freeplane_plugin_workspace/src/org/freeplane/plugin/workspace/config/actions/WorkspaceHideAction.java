@@ -3,12 +3,12 @@ package org.freeplane.plugin.workspace.config.actions;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspacePreferences;
 
-
-public class WorkspaceHideAction extends AFreeplaneAction {
+@SelectableAction(checkOnPropertyChange=WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY)
+public class WorkspaceHideAction extends AWorkspaceAction {
 
 	/**
 	 * 
@@ -16,58 +16,15 @@ public class WorkspaceHideAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public WorkspaceHideAction() {
-		super("WorkspaceHideAction");
+		super("workspace.action.hide");
+		setSelected(ResourceController.getResourceController().getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		System.out.println("WorkspaceHideAction: " + e.getActionCommand() + " : " + e.getID());
-		ResourceController.getResourceController().setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, false);
-		WorkspaceController.getController().reloadWorkspace();
-
-		//TODO: UPDATE MENU!!!
-//		MyPropertyBean bean = new MyPropertyBean(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY);
-//		bean.firePropertyChanged();
+		WorkspaceController.getController().showWorkspace(!this.isSelected());
 	}
-	
-//	private class MyPropertyBean extends PropertyBean {
-//
-//		public MyPropertyBean(String name) {
-//			super(name);			
-//			// TODO Auto-generated constructor stub
-//		}
-//		
-//		private void firePropertyChanged() {
-//			firePropertyChange(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, true, false);
-//			firePropertyChangeEvent();
-//		}
-//
-//		public void layout(DefaultFormBuilder builder) {
-//			// TODO Auto-generated method stub
-//			
-//		}
-//
-//		public void setEnabled(boolean pEnabled) {
-//			// TODO Auto-generated method stub
-//			
-//		}
-//
-//		@Override
-//		public String getValue() {
-//			// TODO Auto-generated method stub
-//			return null;
-//		}
-//
-//		@Override
-//		public void setValue(String value) {
-//			// TODO Auto-generated method stub
-//			
-//		}
-//
-//		@Override
-//		protected Component[] getComponents() {
-//			// TODO Auto-generated method stub
-//			return null;
-//		}
-//		
-//	}
+
+	public void setSelected() {
+		setSelected(ResourceController.getResourceController().getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY));
+	}
 }
