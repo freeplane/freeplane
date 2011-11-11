@@ -14,12 +14,12 @@ public class ManageAddOnsAction extends AFreeplaneAction {
     }
 
 	public void actionPerformed(ActionEvent e) {
-		if (dialog == null)
-			dialog = new ManageAddOnsDialog(AddOnsController.getController().getInstalledAddOns());
-		dialog.setVisible(true);
+		getDialog().setVisible(true);
 	}
 
 	public ManageAddOnsDialog getDialog() {
+		if (dialog == null)
+			dialog = new ManageAddOnsDialog(AddOnsController.getController().getInstalledAddOns());
     	return dialog;
     }
 }

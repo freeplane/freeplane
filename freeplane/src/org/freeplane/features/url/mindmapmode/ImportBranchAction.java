@@ -25,11 +25,13 @@ import java.net.URL;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.features.url.UrlManager;
 
 class ImportBranchAction extends AFreeplaneAction {
@@ -60,6 +62,7 @@ class ImportBranchAction extends AFreeplaneAction {
 				final NodeModel node = ((MMapController) Controller.getCurrentModeController().getMapController()).loadTree(map, chooser
 				    .getSelectedFile());
 				map.setURL(url);
+				PersistentNodeHook.removeMapExtensions(node);
 				((MMapController) Controller.getCurrentModeController().getMapController()).insertNode(node, parent);
 			}
 			catch (final Exception ex) {

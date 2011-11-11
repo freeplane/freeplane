@@ -402,4 +402,13 @@ public abstract class PersistentNodeHook {
 		    .nodeChanged(node, getExtensionClass(), before, after);
 		return extension;
 	}
+
+	public static void removeMapExtensions(NodeModel node) {
+		final IExtension[] extensionArray = node.getExtensions().values().toArray(new IExtension[]{});
+		for(IExtension extension : extensionArray){
+			if(PersistentNodeHook.isMapExtension(extension.getClass())){
+				node.removeExtension(extension);
+			}
+		}
+    }
 }

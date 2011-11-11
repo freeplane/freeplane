@@ -200,7 +200,6 @@ class ScriptingRegistration {
 		modeController.addAction(manageAddOnsAction);
 		modeController.addExtension(AddOnInstaller.class, new AddOnInstaller() {
 			public void install(final URL url) {
-				manageAddOnsAction.actionPerformed(null);
 				final ManageAddOnsDialog dialog = manageAddOnsAction.getDialog();
 				//FIXME: method does not exist --> boercher
 				//dialog.install(url);

@@ -58,14 +58,12 @@ def terminate(String message) {
 	throw new Exception(textUtils.getText('addons.installer.canceled') + ': ' + message)
 }
 
-def letConfirmOrTerminate(String question) {
+def confirm(String question) {
 	final int selection = JOptionPane.showConfirmDialog(ui.frame, question, dialogTitle, JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-	if (selection != JOptionPane.OK_OPTION)
-		throw new Exception(textUtils.getText('addons.installer.canceled'))
-	return true
+	return selection == JOptionPane.OK_OPTION
 }
 
-def yesNoOrTerminate(String question) {
+boolean yesNoOrTerminate(String question) {
 	final int selection = JOptionPane.showConfirmDialog(ui.frame, question, dialogTitle, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 	if (selection != JOptionPane.OK_OPTION)
 		throw new Exception(textUtils.getText('addons.installer.canceled'))
@@ -90,6 +88,7 @@ def parseProperties(Map childNodeMap) {
 			map[k] = k.startsWith('freeplaneVersion') ? parseFreeplaneVersion(k, v) : v
 		return map
 	}
+	configMap[property]['title'] = propertyNode.plainText
 	def mandatoryPropertyNames = [
 		'name',
 		'version',
@@ -180,21 +179,23 @@ def parseDefaultProperties(Map childNodeMap) {
 def parseZips(Map childNodeMap) {
 	def property = 'zips'
 	Proxy.Node propertyNode = childNodeMap[property]
-	configMap[property] = propertyNode.children.collect{ it.plainText }
+	configMap[property] = propertyNode.children.collect{ ensureNoHtml(theOnlyChild(it)).binary }
+	println property + ': ' + configMap[property].dump()
+}
+
+def installZips() {
 	File destDir = installationbase
-	propertyNode.children.each{ zipNode -> 
+	configMap['zips'].each{ zipData ->
 		try {
-			unpack(destDir, ensureNoHtml(theOnlyChild(zipNode)))
+			unpack(destDir, zipData)
 		} catch (Exception e) {
 			e.printStackTrace()
 			installationAssert(false, e.message);
 		}
 	}
-	println property + ': ' + configMap[property].dump()
 }
 
-void unpack(File destDir, Proxy.Node node) {
-	byte[] zipData = node.binary
+void unpack(File destDir, byte[] zipData) {
 	ZipInputStream result = new ZipInputStream(new ByteArrayInputStream(zipData))
 	result.withStream{
 		def entry
@@ -244,8 +245,6 @@ def parseScripts(Map childNodeMap) {
 				script[k] = expandVariables(v)
 		}
 		script.permissions = parsePermissions(scriptNode, script.name)
-		if (script.keyboardShortcut)
-			createKeyboardShortcut(script)
 		mapStructureAssert(script.name.endsWith('.groovy'), textUtils.format('addons.installer.groovy.script.name', script.name))
 		mapStructureAssert(script.menuTitleKey, textUtils.format('addons.installer.script.no.menutitle', script))
 		mapStructureAssert(script.menuLocation, textUtils.format('addons.installer.script.no.menulocation', script))
@@ -341,7 +340,7 @@ def parseDeinstallationRules(Map childNodeMap) {
 	println property + ': ' + configMap[property]
 }
 
-def handlePermissions(Map configMap) {
+def handlePermissions() {
 	def permissionMap = configMap['permissions']
     def nonStandardPermissions = permissionMap.keySet().findAll{
 		config.getProperty(it, 'false') == 'false' && permissionMap[it] == true
@@ -367,7 +366,7 @@ def addOnDir() {
 	return dir
 }
 
-def createScripts(Map configMap) {
+def createScripts() {
 	List<ScriptAddOnProperties.Script> scripts = configMap['scripts']
 	scripts.each { script -> 
 		File file = script.file
@@ -377,6 +376,8 @@ def createScripts(Map configMap) {
 		catch (Exception e) {
 			terminate(e.message)
 		}
+		if (script.keyboardShortcut)
+			createKeyboardShortcut(script)
 	}
 }
 
@@ -386,7 +387,7 @@ def expandVariables(String string) {
 	string.replaceAll(/\$\{([^}]+)\}/, { match, key -> variableMap[key] ? variableMap[key] : match })
 }
 
-AddOnProperties install() {
+AddOnProperties parse() {
 	def propertyNames = [
 		'description',
 		'license',
@@ -416,7 +417,6 @@ AddOnProperties install() {
 	parseScripts(childNodeMap)
 	parseZips(childNodeMap)
 	parseDeinstallationRules(childNodeMap)
-	createScripts(configMap)
 
 	def addOn = new ScriptAddOnProperties(configMap['properties']['name'])
 	configMap['properties'].each { k,v ->
@@ -432,17 +432,41 @@ AddOnProperties install() {
 	addOn.defaultProperties = configMap['default.properties']
 	addOn.deinstallationRules = configMap['deinstall']
 	addOn.scripts = configMap['scripts']
-	new File(addOnDir(), expandVariables('${name}.script.xml')).text = addOn.toXmlString()
 
 	return addOn
 }
 
+boolean confirmInstall() {
+	// 1. unsecure
+	if (!confirm(textUtils.format('addons.installer.confirm.install', expandVariables('${title}, ${version}'), configMap['description'].replaceAll("</?(html|body)>", "")).replace("[translate me]", "")))
+		return false
+	// 2. license
+	def license = configMap['license'].replaceAll("</?(html|body)>", "")
+	def question = textUtils.format('addons.installer.confirm.licence', license).replace("[translate me]", "").replace("\n", "<p>")
+	if (configMap['license'] && !confirm(question))
+		return false
+    // really bother the user with such details?
+	// 3. permissions
+	//	handlePermissions()
+	return true
+}
+
+def install(AddOnProperties addOn) {
+	createScripts()
+	installZips()
+	new File(addOnDir(), expandVariables('${name}.script.xml')).text = addOn.toXmlString()
+}
+
 // == main ==
 try {
-	def addOn = install()
-	JOptionPane.showMessageDialog(ui.frame, textUtils.getText('addons.installer.success'),
-		dialogTitle, JOptionPane.INFORMATION_MESSAGE)
-	return addOn
+	def addOn = parse()
+	if (confirmInstall()) {
+		install(addOn)
+		JOptionPane.showMessageDialog(ui.frame, textUtils.getText('addons.installer.success'),
+			dialogTitle, JOptionPane.INFORMATION_MESSAGE)
+		return addOn
+	}
+	return null
 } catch (Exception e) {
 	JOptionPane.showMessageDialog(ui.frame, e.message, dialogTitle, JOptionPane.ERROR_MESSAGE)
 	logger.warn("installation failure", e)

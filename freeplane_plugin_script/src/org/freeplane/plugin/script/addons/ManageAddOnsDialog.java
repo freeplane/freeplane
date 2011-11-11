@@ -6,8 +6,11 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,12 +90,24 @@ public class ManageAddOnsDialog extends JDialog {
 		}
 		
 		public void addAddOn(final AddOnProperties addOn) {
+			final int row = addOns.size();
 			addOns.add(addOn);
+			fireTableRowsInserted(row, row);
+		}
+
+		public void removeAddOn(final AddOnProperties addOn) {
+			final int row = addOns.indexOf(addOn);
+			if(row == -1)
+				return;
+			addOns.remove(row);
+			fireTableRowsDeleted(row, row);
 		}
 	}
 
 	private static final long serialVersionUID = 1L;
 	private AddOnTableModel tableModel;
+	private AddOnInstallerPanel addOnInstallerPanel;
+	private JTabbedPane tabbedPane;
 
 	public ManageAddOnsDialog(final List<AddOnProperties> addOns) {
 		super(UITools.getFrame(), TextUtils.getText("ManageAddOnsAction.text"), true);
@@ -105,12 +120,12 @@ public class ManageAddOnsDialog extends JDialog {
 				}
 			}
 		}
-		JTabbedPane tabbedPane = new JTabbedPane();
+		tabbedPane = new JTabbedPane();
 		tabbedPane.setPreferredSize(getPreferredSizeForWindow());
 		final JPanel managementPanel = createManagementPanel(addOns);
 		tabbedPane.addTab(getText("tab.manage"), null, managementPanel, getText("tab.manage.tooltip"));
-		tabbedPane.addTab(getText("tab.install"), null, new AddOnInstallerPanel(tableModel, managementPanel), getText("tab.install.tooltip"));
-//		tabbedPane.addTab(getText("tab.install"), null, createInstallPanel(tableModel), getText("tab.install.tooltip"));
+		addOnInstallerPanel = new AddOnInstallerPanel(tableModel, managementPanel);
+		tabbedPane.addTab(getText("tab.install"), null, addOnInstallerPanel, getText("tab.install.tooltip"));
 		getContentPane().add(tabbedPane);
 		pack();
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -238,7 +253,7 @@ public class ManageAddOnsDialog extends JDialog {
 					    JOptionPane.OK_CANCEL_OPTION);
 					if (result == JOptionPane.OK_OPTION) {
 						AddOnsController.getController().deInstall(addOn);
-						tableModel.addOns.remove(addOn);
+						tableModel.removeAddOn(addOn);
 						getContentPane().repaint();
 						UITools.informationMessage(getText("deinstallation.success", addOn.getTranslatedName()));
 					}
@@ -276,4 +291,25 @@ public class ManageAddOnsDialog extends JDialog {
 		else
 			return TextUtils.format(getResourceKey(key), parameters);
 	}
+
+	public void install(final URL url) {
+		if(addOnInstallerPanel.isShowing()){
+			addOnInstallerPanel.getUrlField().setText(url.toString());
+			tabbedPane.paintImmediately(0, 0, tabbedPane.getWidth(), tabbedPane.getHeight());
+			addOnInstallerPanel.getInstallButton().doClick();
+		}
+		else{
+			addOnInstallerPanel.addHierarchyListener(new HierarchyListener() {
+				public void hierarchyChanged(HierarchyEvent e) {
+					if(addOnInstallerPanel.isShowing()){
+						addOnInstallerPanel.removeHierarchyListener(this);
+						install(url);
+					}
+				}
+			});
+			tabbedPane.setSelectedComponent(addOnInstallerPanel);
+			if(! isVisible())
+				setVisible(true);
+		}
+    }
 }
