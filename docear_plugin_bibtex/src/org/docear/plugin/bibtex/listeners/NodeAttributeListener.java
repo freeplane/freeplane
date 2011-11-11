@@ -19,10 +19,10 @@ public class NodeAttributeListener implements TableModelListener {
 
 	@Override
 	public void tableChanged(TableModelEvent e) {		
-		if (DocearReferenceUpdateController.isLocked()) {		
-			return;
-		}		
-		DocearReferenceUpdateController.lock();
+//		if (DocearReferenceUpdateController.isLocked()) {		
+//			return;
+//		}		
+//		DocearReferenceUpdateController.lock();
 		
 //		System.out.println("debug tableChanged: column: " + e.getColumn() + " firstRow:" + e.getFirstRow() + " lastRow:"
 //				+ e.getLastRow() + " type: " + e.getType());
@@ -53,7 +53,7 @@ public class NodeAttributeListener implements TableModelListener {
 			}
 		}
 				
-		DocearReferenceUpdateController.unlock();
+//		DocearReferenceUpdateController.unlock();
 	}
 
 	private void updateBibtexEntry(String key, Attribute attribute) {
