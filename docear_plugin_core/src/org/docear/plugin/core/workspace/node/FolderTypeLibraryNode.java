@@ -4,6 +4,7 @@
  */
 package org.docear.plugin.core.workspace.node;
 
+import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -30,8 +31,12 @@ import org.docear.plugin.core.IDocearLibrary;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
+import org.docear.plugin.core.workspace.actions.AddNewNodeAction;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.node.AFolderNode;
@@ -45,6 +50,7 @@ import org.freeplane.plugin.workspace.io.NodeCreatedEvent;
 import org.freeplane.plugin.workspace.io.node.MindMapFileNode;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
+import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 
 public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventListener, IDocearLibrary, IWorkspaceNodeEventListener, IDropAcceptor, INodeCreatedListener {
 	private static final Icon DEFAULT_ICON = new ImageIcon(FolderTypeLibraryNode.class.getResource("/images/folder-database.png"));
@@ -58,6 +64,8 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 	
 	private final Vector<URI> mindmapIndex = new Vector<URI>();
 	private final Vector<IBibtexDatabase> referencesIndex = new Vector<IBibtexDatabase>();
+
+	private static WorkspacePopupMenu popupMenu = null;
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -74,6 +82,22 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
+	
+	public void initializePopup() {
+		if (popupMenu  == null) {
+			ModeController modeController = Controller.getCurrentModeController();
+			modeController.addAction(new AddNewNodeAction());
+			
+			popupMenu = new WorkspacePopupMenu();
+			
+			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
+					WorkspacePopupMenuBuilder.createSubMenu(TextUtils.getRawText("workspace.action.new")),
+					"workspace.action.node.new",
+					WorkspacePopupMenuBuilder.endSubMenu()
+					
+			});
+		}
+	}
 	
 	public boolean setIcons(DefaultTreeCellRenderer renderer) {
 		renderer.setOpenIcon(DEFAULT_ICON);
@@ -230,7 +254,10 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 	 * {@inheritDoc}
 	 */
 	public void handleEvent(WorkspaceNodeEvent event) {
-		//TODO: DOCEAR do nothing atm 
+		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {
+			showPopup( (Component) event.getBaggage(), event.getX(), event.getY());
+		}
+		
 	}
 	public List<URI> getMindmaps() {
 		return mindmapIndex;
@@ -300,7 +327,11 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 	}
 	
 	protected WorkspacePopupMenu getPopupMenu() {
-		return null;
+		if (popupMenu == null) {
+			initializePopup();
+		}
+		
+		return popupMenu;
 	}
 	
 }

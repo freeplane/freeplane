@@ -1,11 +1,13 @@
 package org.freeplane.plugin.workspace.config.actions;
 
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.net.URL;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JPopupMenu;
 import javax.swing.JTree;
 import javax.swing.tree.TreePath;
 
@@ -55,7 +57,10 @@ public abstract class AWorkspaceAction extends AFreeplaneAction {
 	}
 	
 	protected AWorkspaceTreeNode getNodeFromActionEvent(ActionEvent e) {
-		WorkspacePopupMenu pop = (WorkspacePopupMenu)((Component) e.getSource()).getParent();
+		WorkspacePopupMenu pop = getRootPopupMenu((Component) e.getSource());
+		if(pop == null) {
+			return null;
+		}
 		int x = pop.getInvokerLocation().x;
 		int y = pop.getInvokerLocation().y;
 		JTree tree = (JTree)pop.getInvoker();
@@ -64,6 +69,20 @@ public abstract class AWorkspaceAction extends AFreeplaneAction {
 			return null;
 		}
 		return (AWorkspaceTreeNode) path.getLastPathComponent();
+	}
+	
+	private WorkspacePopupMenu getRootPopupMenu(Component component) {
+		Component parent = component;
+		while(!(parent instanceof WorkspacePopupMenu) && parent != null) {
+			if(parent.getParent() == null && parent instanceof JPopupMenu) {
+				parent = getRootPopupMenu(((JPopupMenu) parent).getInvoker());
+				break;
+			} 
+			else  {
+				parent = parent.getParent();
+			}
+		}
+		return (WorkspacePopupMenu) parent;
 	}
 	
 	protected Component getComponentFromActionEvent(ActionEvent e) {
