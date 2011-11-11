@@ -3,6 +3,7 @@ package org.docear.plugin.bibtex.listeners;
 import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.DatabaseChangeEvent;
 import net.sf.jabref.DatabaseChangeListener;
+import net.sf.jabref.export.DocearReferenceUpdateController;
 
 import org.docear.plugin.bibtex.JabRefAttributes;
 import org.docear.plugin.bibtex.ReferencesController;
@@ -12,15 +13,12 @@ import org.jdesktop.swingworker.SwingWorker;
 
 public class JabRefChangeListener implements DatabaseChangeListener {
 
-	private static boolean locked = false;
-
 	@Override
 	public void databaseChanged(DatabaseChangeEvent e) {
-		if (locked) {
+		if (DocearReferenceUpdateController.isLocked()) {		
 			return;
-		}
-
-		locked = true;
+		}		
+		DocearReferenceUpdateController.lock();
 
 		BibtexEntry entry = e.getEntry();
 		NodeModel root = Controller.getCurrentModeController().getMapController().getRootNode();
@@ -30,7 +28,6 @@ public class JabRefChangeListener implements DatabaseChangeListener {
 			deleteNodeAttributes(root, entry);
 		}
 		else if (e.getType() == DatabaseChangeEvent.CHANGED_ENTRY) {
-			System.out.println("debug changed: " + e.getEntry().getCiteKey());
 			updateNodeAttributes(root, entry);
 		}
 		else if (e.getType() == DatabaseChangeEvent.CHANGING_ENTRY) {
@@ -40,13 +37,16 @@ public class JabRefChangeListener implements DatabaseChangeListener {
 			System.out.println("debug added: " + e.getEntry().getCiteKey());
 		}
 
-		locked = false;
+		DocearReferenceUpdateController.unlock();
 	}
 
 	public void updateNodeAttributes(final NodeModel node, final BibtexEntry entry) {
 		SwingWorker<Void, Void> thread = new SwingWorker<Void, Void>() {
 			@Override
 			protected Void doInBackground() throws Exception {
+				if (entry.getCiteKey().isEmpty()) {
+					return null;
+				}
 				JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
 
 				if (jabRefAttributes.isReferencing(entry, node)) {

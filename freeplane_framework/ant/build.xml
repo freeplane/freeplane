@@ -130,6 +130,15 @@
 	    </antcall>
 	</target>
 	
+	<target name="build_script_api" unless="skip_script">
+		<antcall target="makePlugin" inheritall="false">
+			<param name="anttarget" value="api"/>
+			<param name="targetdir" value="plugins"/>
+			<param name="plugindir" value="freeplane_plugin_script"/>
+			<param name="pluginname" value="org.freeplane.plugin.script"/>
+	    </antcall>
+	</target>
+	
 	<target name="build_formula" unless="skip_formula">
 		<antcall target="makePlugin" inheritall="false">
 			<param name="anttarget" value="dist"/>
@@ -233,7 +242,6 @@
         <mkdir dir="${build.doc}" />
         <copy todir="${build.doc}">
             <fileset dir="${workspace}/freeplane/dist/doc" />
-            <fileset dir="${workspace}/freeplane_plugin_script/dist/doc" />
         </copy>
         <mkdir dir="${build.scripts}" />
         <copy todir="${build.scripts}">
@@ -242,6 +250,13 @@
 
 	</target>
 
+	<target name="javadoc" depends="build_script_api">
+        <mkdir dir="${build.doc}" />
+        <copy todir="${build.doc}">
+            <fileset dir="${workspace}/freeplane_plugin_script/dist/doc" />
+        </copy>
+	</target>
+	
 	<target name="mkdistdir">
         <mkdir dir="${build}" />
         <mkdir dir="${dist}" />
@@ -493,14 +508,14 @@
 		</exec>
 	</target>
 
-	<target name="dist" depends="bzr_version_info, binzip, srczip, installer, portableinstaller, zip4mac, dmg4mac">
+	<target name="dist" depends="bzr_version_info, binzip, srczip, installer, portableinstaller, zip4mac, dmg4mac, javadoc">
 		<copy file="${workspace}/freeplane/doc/history_en.txt"
 			todir="${dist}" />
 		<copy file="${build}/bzrinfo.txt"
 			tofile="${dist}/bzrinfo-${ver}.txt"
 			failonerror="false"/>
-		<copy file="${workspace}/freeplane_plugin_script/dist/api.zip"
-			tofile="${dist}/api-${ver}.zip"
+		<copy file="${workspace}/freeplane_plugin_script/dist/script-api.zip"
+			tofile="${dist}/script-api-${ver}.zip"
 			failonerror="false"/>
 	</target>
 

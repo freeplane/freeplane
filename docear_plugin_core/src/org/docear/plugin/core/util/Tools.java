@@ -257,7 +257,7 @@ public class Tools {
 		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
 		if(attributes != null){
 			if(attributes.getAttributeKeyList().contains(TextUtils.getText(attributeKey))){
-				AttributeController.getController().performRemoveAttribute(attributeKey);
+				AttributeController.getController().performRemoveRow(attributes, attributes.getAttributePosition(attributeKey));
 				AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
 	    		attributeView.setOptimalColumnWidths();		
 			}

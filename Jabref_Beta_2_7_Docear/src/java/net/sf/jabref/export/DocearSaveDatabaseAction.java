@@ -29,7 +29,7 @@ public class DocearSaveDatabaseAction extends SaveDatabaseAction {
 		for (Entry<String, BibtexEntry> tuple : entryNodeTuples.entrySet()) {
 			//addNodeID to entry for AddNewReferenceAction (deleted before saving the database
 			tuple.getValue().setField("docear_add_to_node", tuple.getKey());
-			event = new ActionEvent(tuple.getValue(), 0, success ? JABREF_DATABASE_SAVE_SUCCESS : JABREF_DATABASE_SAVE_FAILED);									
+			event = new ActionEvent(tuple.getValue(), 0, success ? JABREF_DATABASE_SAVE_SUCCESS : JABREF_DATABASE_SAVE_FAILED);			
 			for (ActionListener listener : actionListeners) {
 				listener.actionPerformed(event);
 			}
@@ -38,7 +38,8 @@ public class DocearSaveDatabaseAction extends SaveDatabaseAction {
 		}
 	}
 
-	public void run() {
+	public void run() {		
+		DocearReferenceUpdateController.lock();
 		TreeMap<String, BibtexEntry> entryNodeTuples = new TreeMap<String, BibtexEntry>();
 		
 		String nodeId = null;
@@ -58,9 +59,8 @@ public class DocearSaveDatabaseAction extends SaveDatabaseAction {
 		
 		if (entryNodeTuples.size()>0) {
 			callListeners(entryNodeTuples, isSuccess());
-		}
-		
-		
+		}		
+		DocearReferenceUpdateController.unlock();
 	}
 
 	public void addActionListener(ActionListener actionListener) {

@@ -36,11 +36,12 @@ public class Compat {
 	public static final Set<String> executableExtensions = new HashSet<String>(Arrays.asList(new String[] { "exe",
 	        "com", "vbs", "bat", "lnk", "cmd" }));
 
-	public static boolean isWindowsExecutable(final String linkText) {
-		if (linkText == null) {
+	public static boolean isWindowsExecutable(final URI link) {
+		if (link == null 
+				|| !"file".equalsIgnoreCase(link.getScheme())) {
 			return false;
 		}
-		return isWindowsOS() && executableExtensions.contains(FileUtils.getExtension(linkText));
+		return isWindowsOS() && executableExtensions.contains(FileUtils.getExtension(link.toString()));
 	}
 
 	public static URL fileToUrl(final File pFile) throws MalformedURLException {

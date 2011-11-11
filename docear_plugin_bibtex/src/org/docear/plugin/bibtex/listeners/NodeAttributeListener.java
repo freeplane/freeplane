@@ -5,13 +5,13 @@ import javax.swing.event.TableModelListener;
 
 import net.sf.jabref.BibtexDatabase;
 import net.sf.jabref.BibtexEntry;
+import net.sf.jabref.export.DocearReferenceUpdateController;
 
 import org.docear.plugin.bibtex.JabRefAttributes;
 import org.docear.plugin.bibtex.ReferencesController;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
-
-import org.freeplane.core.util.LogUtils;
 
 public class NodeAttributeListener implements TableModelListener {
 	
@@ -19,10 +19,11 @@ public class NodeAttributeListener implements TableModelListener {
 
 	@Override
 	public void tableChanged(TableModelEvent e) {		
-		if (locked) {
+		if (DocearReferenceUpdateController.isLocked()) {		
 			return;
-		}
-		locked = true;
+		}		
+		DocearReferenceUpdateController.lock();
+		
 //		System.out.println("debug tableChanged: column: " + e.getColumn() + " firstRow:" + e.getFirstRow() + " lastRow:"
 //				+ e.getLastRow() + " type: " + e.getType());
 
@@ -51,8 +52,8 @@ public class NodeAttributeListener implements TableModelListener {
 				}
 			}
 		}
-		
-		locked = false;
+				
+		DocearReferenceUpdateController.unlock();
 	}
 
 	private void updateBibtexEntry(String key, Attribute attribute) {

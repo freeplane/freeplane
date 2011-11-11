@@ -160,8 +160,6 @@ public class AddOnInstallerPanel extends JPanel {
 						AddOnsController.getController().registerInstalledAddOn(addOn);
 						tableModel.addAddOn(addOn);
 						urlField.setText("");
-						// FIXME: not sufficient?!
-						managementPanel.repaint();
 						((JTabbedPane)getParent()).setSelectedComponent(managementPanel);
 						selectLastAddOn(managementPanel);
 					}
