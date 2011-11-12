@@ -25,7 +25,6 @@ import java.net.URL;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
-import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
