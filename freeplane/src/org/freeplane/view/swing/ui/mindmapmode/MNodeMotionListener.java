@@ -27,6 +27,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -227,39 +228,68 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 		final int parentVGap = LocationModel.getModel(parentNode).getVGap();
 		int hgap = LocationModel.getModel(node).getHGap();
 		final int shiftY = LocationModel.getModel(node).getShiftY();
-		int newIndex = -1;
-		boolean isLeft = nodeV.isLeft();
-		if(FreeNode.isFreeNode(node)){
-			newIndex = calculateNewNodeIndex(nodeV, isLeft);
-		}
+		adjustNodeIndices(nodeV);
 		resetPositions(node);
 		final Controller controller = modeController.getController();
 		MLocationController locationController = (MLocationController) LocationController.getController(controller.getModeController());
 		locationController.moveNodePosition(node, parentVGap, hgap, shiftY);
-		if(newIndex != -1){
-			MMapController mapController = (MMapController) modeController.getMapController();
-			final Collection<NodeModel> selecteds = mapController.getSelectedNodes();
-			final NodeModel[] array = selecteds.toArray(new NodeModel[selecteds.size()]);
-			mapController.moveNode(node, node.getParentNode(),  newIndex, isLeft, false);
-			controller.getSelection().replaceSelection(array);
-		}
 			
 		stopDrag();
 	}
+
+	private void adjustNodeIndices(final NodeView nodeV) {
+		NodeModel[] selectedsBackup = null; 
+		final NodeModel node = nodeV.getModel();
+		if(FreeNode.isFreeNode(node)){
+			selectedsBackup = adjustNodeIndexBackupSelection(nodeV, selectedsBackup);
+		}
+		else{
+			final MapView map = nodeV.getMap();
+			final NodeModel[] siblingNodes = node.getParentNode().getChildren().toArray(new NodeModel[]{});
+			for(NodeModel sibling : siblingNodes){
+				if(FreeNode.isFreeNode(sibling)){
+					final NodeView siblingV = map.getNodeView(sibling);
+					selectedsBackup = adjustNodeIndexBackupSelection(siblingV, selectedsBackup);
+				}
+			}
+		}
+		if(selectedsBackup != null){
+			final ModeController modeController = nodeV.getMap().getModeController();
+			final Controller controller = modeController.getController();
+			controller.getSelection().replaceSelection(selectedsBackup);
+		}
+    }
+
+	private NodeModel[] adjustNodeIndexBackupSelection(final NodeView nodeV, NodeModel[] selectedsBackup) {
+		final NodeModel node = nodeV.getModel();
+	    boolean isLeft = nodeV.isLeft();
+	    final int newIndex = calculateNewNodeIndex(nodeV, isLeft, 0, node.getParentNode().getChildCount());
+	    if(newIndex != -1){
+	    	final ModeController modeController = nodeV.getMap().getModeController();
+	    	MMapController mapController = (MMapController) modeController.getMapController();
+	    	if(selectedsBackup == null){
+		    	final Collection<NodeModel> selecteds = mapController.getSelectedNodes();
+	    		selectedsBackup = selecteds.toArray(new NodeModel[selecteds.size()]);
+	    	}
+	    	mapController.moveNode(node, node.getParentNode(),  newIndex, isLeft, false);
+	    }
+	    return selectedsBackup;
+    }
 
 	public int getRefX(final NodeView node) {
 	    return node.getContent().getX() + node.getContent().getWidth()/2;
     }
 
-	private int calculateNewNodeIndex(final NodeView nodeV, final boolean left) {
+	private int calculateNewNodeIndex(final NodeView nodeV, final boolean left, final int start, final int end) {
 		final NodeModel node = nodeV.getModel();
 		if(SummaryNode.isSummaryNode(node))
 			return -1;
 		final int nodeY = getRefY(nodeV);
 		final NodeView parent = nodeV.getParentView();
 		int newIndex = 0;
+		int oldIndex = -1;
 		int wrondSideCount = 0;
-		for(int i = 0; i < parent.getComponentCount(); i++){
+		for(int i = start; i < end; i++){
 			final Component component = parent.getComponent(i);
 			if(!(component instanceof NodeView))
 				continue;
@@ -267,8 +297,8 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 			if(sibling.isLeft() == left 
 					&& ! SummaryNode.isSummaryNode(sibling.getModel())
 				&& getRefY(sibling) > nodeY)
-				return newIndex - wrondSideCount;
-			else
+				break;
+			else{
 				if(sibling != nodeV){
 					newIndex++;
 					if(sibling.isLeft() != left)
@@ -276,8 +306,15 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 					else
 						wrondSideCount = 0;
 				}
+				else{
+					oldIndex = i;
+				}
+			}
 		}
-		return newIndex - wrondSideCount;
+		final int result = newIndex - wrondSideCount;
+		if(result == oldIndex)
+			return -1;
+		return result;
     }
 	private int getRefY(NodeView sibling) {
 	    return sibling.getY() + sibling.getContent().getY();
