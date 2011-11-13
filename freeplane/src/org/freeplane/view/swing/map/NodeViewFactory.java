@@ -152,27 +152,14 @@ class NodeViewFactory {
 		return new ContentPane();
 	}
 
-	MainView newMainView(NodeView node) {
+	MainView newMainView(final NodeView node) {
+		String shape = shape(node);
+		final MainView oldView = node.getMainView();
+		if(oldView != null && oldView.getShape().equals(shape))
+			return oldView;
 		final ModeController modeController = node.getMap().getModeController();
 		final NodeModel model = node.getModel();
-		MainView view;
-		String shape = NodeStyleController.getController(modeController).getShape(model);
-		if (shape.equals(NodeStyleModel.SHAPE_COMBINED)) {
-			if (Controller.getCurrentModeController().getMapController().isFolded(model)) {
-				shape= NodeStyleModel.STYLE_BUBBLE;
-			}
-			else {
-				shape = NodeStyleModel.STYLE_FORK;
-			}
-		}
-		else while(shape.equals(NodeStyleModel.SHAPE_AS_PARENT)){
-				node = node.getParentView();
-				if (node == null)
-					shape = NodeStyleModel.STYLE_FORK;
-				else
-					shape = node.getMainView().getShape();
-		}
-
+		final MainView view;
 		if (shape.equals(NodeStyleModel.STYLE_BUBBLE)) {
 			if (model.isRoot())
 				view = new RootMainView(NodeStyleModel.STYLE_BUBBLE);
@@ -190,6 +177,28 @@ class NodeViewFactory {
 		NodeTooltipManager toolTipManager = NodeTooltipManager.getSharedInstance(modeController);
 		toolTipManager.registerComponent(view);
 		return view;
+	}
+
+	private String shape(NodeView node) {
+		final ModeController modeController = node.getMap().getModeController();
+		final NodeModel model = node.getModel();
+		String shape = NodeStyleController.getController(modeController).getShape(model);
+		if (shape.equals(NodeStyleModel.SHAPE_COMBINED)) {
+			if (Controller.getCurrentModeController().getMapController().isFolded(model)) {
+				shape= NodeStyleModel.STYLE_BUBBLE;
+			}
+			else {
+				shape = NodeStyleModel.STYLE_FORK;
+			}
+		}
+		else while(shape.equals(NodeStyleModel.SHAPE_AS_PARENT)){
+			node = node.getParentView();
+			if (node == null)
+				shape = NodeStyleModel.STYLE_FORK;
+			else
+				shape = node.getMainView().getShape();
+		}
+		return shape;
 	}
 
 	/**
