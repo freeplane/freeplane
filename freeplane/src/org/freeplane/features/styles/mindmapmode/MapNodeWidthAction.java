@@ -1,4 +1,4 @@
-package org.freeplane.features.styles;
+package org.freeplane.features.styles.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
@@ -9,29 +9,32 @@ import javax.swing.SpinnerNumberModel;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.styles.MapStyle;
+import org.freeplane.features.styles.MapStyleModel;
 
-public class MaxNodeWidthAction extends AFreeplaneAction {
+class MapNodeWidthAction extends AFreeplaneAction {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public MaxNodeWidthAction() {
-		super("MaxNodeWidthAction");
+	public MapNodeWidthAction() {
+		super("MapNodeWidthAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final MapModel map = Controller.getCurrentController().getMap();
+		final int minNodeWidth = MapStyleModel.getExtension(map).getMinNodeWidth();
 		final int maxNodeWidth = MapStyleModel.getExtension(map).getMaxNodeWidth();
-		final JSpinner spinner = new JSpinner(new SpinnerNumberModel(maxNodeWidth, 1, Integer.MAX_VALUE, 1));
-		if (JOptionPane.CANCEL_OPTION == JOptionPane.showConfirmDialog(UITools.getFrame(), spinner,
-		    (String) getValue(Action.NAME), JOptionPane.OK_CANCEL_OPTION)) {
-			return;
-		}
 		final MapStyle mapStyle = (MapStyle) Controller.getCurrentModeController().getExtension(MapStyle.class);
-		final Integer newWidth = (Integer) spinner.getValue();
-		mapStyle.setMaxNodeWidth(map, newWidth);
+		final NodeSizeDialog nodeSizeDialog = new NodeSizeDialog();
+		nodeSizeDialog.setTitle(TextUtils.getText("MapNodeWidthAction.text"));
+		if(nodeSizeDialog.showDialog(minNodeWidth, maxNodeWidth)){
+			mapStyle.setMinNodeWidth(map, nodeSizeDialog.getMinWidth());
+			mapStyle.setMaxNodeWidth(map, nodeSizeDialog.getMaxTextWidth());
+		}
 	}
 }

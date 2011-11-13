@@ -184,8 +184,7 @@
 					<menu_action action="ShowSelectionAsRectangleAction" />					
 					<menu_action action="SetBooleanPropertyAction.formula_dont_mark_formulas" />
 					<menu_category name="general">
-						<menu_action action="MaxNodeWidthAction" />
-						<menu_action action="MinNodeWidthAction"/>
+						<menu_action action="MapNodeWidthAction" />
 					</menu_category>
 					<menu_category name="change">
 						<menu_action action="RevisionPluginAction" />

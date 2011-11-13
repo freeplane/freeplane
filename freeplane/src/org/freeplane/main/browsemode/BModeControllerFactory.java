@@ -84,7 +84,7 @@ public class BModeControllerFactory {
 		LocationController.install(new LocationController());
 		SummaryNode.install();
 		FreeNode.install();
-		new MapStyle(true);
+		MapStyle.install(true);
 		final BToolbarContributor toolbarContributor = new BToolbarContributor();
 		modeController.addMenuContributor(toolbarContributor);
 		controller.getMapViewManager().addMapViewChangeListener(toolbarContributor);

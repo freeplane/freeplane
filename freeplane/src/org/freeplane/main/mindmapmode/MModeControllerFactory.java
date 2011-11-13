@@ -83,6 +83,7 @@ import org.freeplane.features.styles.AutomaticLayout;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
+import org.freeplane.features.styles.mindmapmode.MMapStyle;
 import org.freeplane.features.styles.mindmapmode.MUIFactory;
 import org.freeplane.features.styles.mindmapmode.ShowFormatPanelAction;
 import org.freeplane.features.styles.mindmapmode.StyleEditorPanel;
@@ -249,7 +250,7 @@ public class MModeControllerFactory {
 		modeController.addAction(new EditAttributesAction());
 		SpellCheckerController.install(modeController);
 		ExportController.install(new ExportController("/xml/ExportWithXSLT.xml"));
-		new MapStyle(true);
+		MMapStyle.install(true);
 		final JPopupMenu popupmenu = new JPopupMenu();
 		userInputListenerFactory.setNodePopupMenu(popupmenu);
 		final FreeplaneToolBar toolbar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);

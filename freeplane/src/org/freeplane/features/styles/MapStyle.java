@@ -70,7 +70,11 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	public static final String MAX_NODE_WIDTH = "max_node_width";
 	public static final String MIN_NODE_WIDTH = "min_node_width";
 	
-	public MapStyle( final boolean persistent) {
+	public static void install(boolean persistent){
+		new MapStyle(persistent);
+	}
+	
+	protected MapStyle( final boolean persistent) {
 		super();
 		ModeController modeController = Controller.getCurrentModeController();
 		if (persistent) {
@@ -141,8 +145,6 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		modeController.getMapController().addMapLifeCycleListener(this);
 		final MapController mapController = modeController.getMapController();
 		mapController.addMapLifeCycleListener(this);
-		modeController.addAction(new MaxNodeWidthAction());
-		modeController.addAction(new MinNodeWidthAction());
 	}
 
 	protected class XmlWriter implements IExtensionElementWriter {
