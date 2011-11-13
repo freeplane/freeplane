@@ -45,7 +45,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;
-import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.ui.INodeViewLifeCycleListener;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
@@ -583,7 +583,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 		JComponent viewer = null;
 		try {
-			viewer = factory.createViewer(model, absoluteUri, MapStyleModel.getExtension(map).getMaxNodeWidth());
+			viewer = factory.createViewer(model, absoluteUri, NodeStyleController.getDefaultMaxTextWidth());
 		}
 		catch (final Exception e) {
 			final String info = HtmlUtils.combineTextWithExceptionInfo(uri.toString(), e);

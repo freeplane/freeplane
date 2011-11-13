@@ -67,6 +67,8 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.MTextController;
@@ -438,9 +440,12 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			validate();
 		}
 		final Dimension dimension = super.getPreferredSize();
-		MapView map = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
-		if(map != null){
-			dimension.width = Math.min(map.getZoomed(map.getMaxNodeWidth()), dimension.width);
+		NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(MapView.class, this);
+		if(nodeView != null){
+			final MapView map = nodeView.getMap();
+			final ModeController modeController = map.getModeController();
+			final NodeStyleController nsc = NodeStyleController.getController(modeController);
+			dimension.width = Math.min(map.getZoomed(nsc.getMaxTextWidth(nodeView.getModel())), dimension.width);
 			dimension.height = Math.min(map.getZoomed(AttributeTable.MAX_HEIGTH) - getTableHeaderHeight(), dimension.height);
 		}
 		else{

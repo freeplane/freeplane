@@ -66,9 +66,6 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	private static final String NODE_CONDITIONAL_STYLES = "NodeConditionalStyles";
 	public static final String RESOURCES_BACKGROUND_COLOR = "standardbackgroundcolor";
 	public static final String MAP_STYLES = "MAP_STYLES";
-
-	public static final String MAX_NODE_WIDTH = "max_node_width";
-	public static final String MIN_NODE_WIDTH = "min_node_width";
 	
 	public static void install(boolean persistent){
 		new MapStyle(persistent);
@@ -402,8 +399,6 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		if (!layout.equals(MapViewLayout.MAP)) {
 			element.setAttribute("layout", layout.toString());
 		}
-		element.setAttribute("max_node_width", Integer.toString(mapStyleModel.getMaxNodeWidth()));
-		element.setAttribute("min_node_width", Integer.toString(mapStyleModel.getMinNodeWidth()));
 		saveConditionalStyles(mapStyleModel.getConditionalStyleModel(), element, true);
 		saveProperties(mapStyleModel.getProperties(), element);
 	}
@@ -428,31 +423,6 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		Controller.getCurrentModeController().getMapController().setSaved(map, false);
 	}
 
-	public void setMaxNodeWidth(final MapModel map, final int width) {
-		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map);
-		final int oldMaxNodeWidth = mapStyleModel.getMaxNodeWidth();
-		if (width == oldMaxNodeWidth) {
-			return;
-		}
-		mapStyleModel.setMaxNodeWidth(width);
-		Controller.getCurrentModeController().getMapController()
-		    .fireMapChanged(
-		        new MapChangeEvent(MapStyle.this, Controller.getCurrentController().getMap(), MapStyle.MAX_NODE_WIDTH, oldMaxNodeWidth,
-		            width));
-	}
-
-	public void setMinNodeWidth(final MapModel map, final int width) {
-		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map);
-		final int oldMinNodeWidth = mapStyleModel.getMinNodeWidth();
-		if (width == oldMinNodeWidth) {
-			return;
-		}
-		mapStyleModel.setMinNodeWidth(width);
-		Controller.getCurrentModeController().getMapController()
-		    .fireMapChanged(
-		        new MapChangeEvent(MapStyle.this, Controller.getCurrentController().getMap(), MapStyle.MIN_NODE_WIDTH, oldMinNodeWidth,
-		            width));
-	}
 	
 	public void setMapViewLayout(final MapModel map, final MapViewLayout layout) {
 		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map);
