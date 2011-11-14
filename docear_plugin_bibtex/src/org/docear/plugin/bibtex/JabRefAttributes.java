@@ -156,7 +156,7 @@ public class JabRefAttributes {
 				URI uri = new URI("property:/" + CoreConfiguration.BIBTEX_PATH);
 				URI absUri = WorkspaceUtils.absoluteURI(uri);
 				
-				System.out.println(UriBuilder.fromPath(path).build());
+				System.out.println("debug parsePath: "+UriBuilder.fromPath(path).build());
 				URI pdfUri = absUri.resolve(UriBuilder.fromPath(path).build());
 				if(new File(pdfUri.normalize()) != null && new File(pdfUri.normalize()).exists()){
 					return pdfUri;

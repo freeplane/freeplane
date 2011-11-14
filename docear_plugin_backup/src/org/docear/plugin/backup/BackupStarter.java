@@ -52,7 +52,7 @@ public class BackupStarter implements IMapChangeListener, INodeChangeListener {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(sw.toString());
+		System.out.println("debug mapChanged:"+ sw.toString());
 	}
 
 

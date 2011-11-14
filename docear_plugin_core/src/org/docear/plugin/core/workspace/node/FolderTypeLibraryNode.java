@@ -162,7 +162,7 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 			throws UnsupportedFlavorException, IOException, URISyntaxException, MalformedURLException {
 		event.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
 		String list = (String) transferable.getTransferData(WorkspaceTransferable.WORKSPACE_URI_LIST_FLAVOR);
-		System.out.println(list);
+		System.out.println("debug handleUriList: "+ list);
 		//FIXME: allow multiple files 
 		if (!list.startsWith("file://")) {
 			return false;
