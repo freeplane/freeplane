@@ -37,10 +37,12 @@ public class AddOnsController {
 	private static final String ADDONS_DIR = "addons";
 	private static AddOnsController addOnsController;
 	private List<AddOnProperties> installedAddOns = new ArrayList<AddOnProperties>();
+	private boolean autoInstall;
 
 	public AddOnsController() {
 		createAddOnsDirIfNecessary();
 		registerPlugins();
+		autoInstall = true;
 	}
 
 	private void createAddOnsDirIfNecessary() {
@@ -170,6 +172,8 @@ public class AddOnsController {
 
 	/** returns true if the url is an add-on package and the user decided to install it. */
 	public boolean installIfAppropriate(final URL url) {
+		if(! autoInstall)
+			return false;
 		if (url.getFile().endsWith(UrlManager.FREEPLANE_ADD_ON_FILE_EXTENSION)) {
 			AddOnInstaller installer = (AddOnInstaller) Controller.getCurrentModeController().getExtension(
 			    AddOnInstaller.class);
@@ -187,4 +191,13 @@ public class AddOnsController {
 		}
 		return false;
 	}
+
+	public void setAutoInstallEnabled(boolean autoInstall) {
+	   this.autoInstall = autoInstall;
+	    
+    }
+
+	public boolean isAutoInstallEnabled() {
+    	return autoInstall;
+    }
 }
