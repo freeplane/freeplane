@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.docear.plugin.core.DocearController;
-import org.docear.plugin.pdfutilities.ui.SwingWorkerDialog;
+import org.docear.plugin.core.ui.SwingWorkerDialog;
+
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
