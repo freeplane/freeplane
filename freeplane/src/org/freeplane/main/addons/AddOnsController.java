@@ -181,6 +181,7 @@ public class AddOnsController {
 				LogUtils.warn("no AddOnInstaller registered. Cannot install " + url);
 				return false;
 			}
+			UITools.backOtherWindows();
 			final int selection = UITools.showConfirmDialog(null,
 				TextUtils.format("newmap.install.addon.question", new File(url.getFile()).getName()),
 			    TextUtils.getText("newmap.install.addon.title"), JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
