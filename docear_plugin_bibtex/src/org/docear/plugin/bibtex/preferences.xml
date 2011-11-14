@@ -37,6 +37,7 @@
                     <choice value="docear_bibtex_encoding.ISO8859_13"/>
                     <choice value="docear_bibtex_encoding.ISO8859_15"/>
                 </combo>
+                <menu_action action="JabrefPropertyAction" />
 			</separator>
 		</tab>
 	</tabbed_pane>
