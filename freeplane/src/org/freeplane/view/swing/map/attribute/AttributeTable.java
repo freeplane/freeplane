@@ -440,7 +440,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			validate();
 		}
 		final Dimension dimension = super.getPreferredSize();
-		NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(MapView.class, this);
+		NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, this);
 		if(nodeView != null){
 			final MapView map = nodeView.getMap();
 			final ModeController modeController = map.getModeController();
