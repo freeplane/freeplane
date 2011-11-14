@@ -37,6 +37,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.note.mindmapmode.MNoteController;
@@ -136,6 +137,10 @@ public class UserPropertiesUpdater {
 		nodeStyleModel.setShape(nodeStyleController.getShape(styleNode));
 
 		styleNode.addExtension(nodeStyleModel);
+		
+		final NodeSizeModel nodeSizeModel = new NodeSizeModel();
+		nodeSizeModel.setMaxTextWidth(nodeStyleController.getMaxTextWidth(styleNode));
+		nodeSizeModel.setMinNodeWidth(nodeStyleController.getMinWidth(styleNode));
 		
 		final EdgeModel standardEdgeModel = EdgeModel.getModel(styleNode);
 		if(standardEdgeModel != null){

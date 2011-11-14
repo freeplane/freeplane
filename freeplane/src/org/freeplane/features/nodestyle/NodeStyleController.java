@@ -407,21 +407,13 @@ public class NodeStyleController implements IExtension {
     }
 
 	public static int getDefaultMinNodeWidth() {
-    	try {
-    		return Integer.parseInt(ResourceController.getResourceController().getProperty("min_node_width"));
-    	}
-    	catch (final NumberFormatException e) {
-    		return 0;
-    	}
+    		return ResourceController.getResourceController().getIntProperty("min_node_width", 1);
     }
 
 	public static int getDefaultMaxTextWidth() {
-    	try {
-    		return Integer.parseInt(ResourceController.getResourceController().getProperty("max_node_width"));
-    	}
-    	catch (final NumberFormatException e) {
-    		return Integer.parseInt(ResourceController.getResourceController().getProperty(
-    		    "el__max_default_window_width")) * 2 / 3;
-    	}
+    		final int w = ResourceController.getResourceController().getIntProperty("max_node_width", -1);
+			if(w != -1)
+				return w;
+    		return ResourceController.getResourceController().getIntProperty("el__max_default_window_width", 600) * 2 / 3;
     }
 }
