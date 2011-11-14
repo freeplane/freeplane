@@ -1384,8 +1384,8 @@ public class NodeView extends JComponent implements INodeView {
 			}
 		}
 		updateShortener(getModel(), textShortened);
-		mainView.updateText(getModel());
 		mainView.updateIcons(this);
+		mainView.updateText(getModel());
 		updateCloud();
 		modelBackgroundColor = NodeStyleController.getController(getMap().getModeController()).getBackgroundColor(model);
 		revalidate();
