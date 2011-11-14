@@ -224,8 +224,9 @@ public class NodeModel implements MutableTreeNode {
 		return Collections.unmodifiableList(childrenList);
 	}
 
-	public IExtension getExtension(final Class<? extends IExtension> clazz) {
-		return extensionContainer.getExtension(clazz);
+	@SuppressWarnings("unchecked")
+    public <T extends IExtension> T getExtension(final Class<T> clazz) {
+		return (T) extensionContainer.getExtension(clazz);
 	}
 
 	public Map<Class<? extends IExtension>, IExtension> getExtensions() {

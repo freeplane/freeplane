@@ -35,7 +35,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.ListDataListener;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.cloud.CloudModel.Shape;
@@ -49,6 +48,8 @@ import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeSizeModel;
+import org.freeplane.features.nodestyle.NodeStyleController;
 
 /**
  * @author Dimitry Polivaev
@@ -128,17 +129,17 @@ public class MapStyleModel implements IExtension {
 			root = mapReader.createNodeTreeFromXml(styleMap, styleReader, hints);
 			styleMap.setRoot(root);
 			insertStyleMap(parentMap, styleMap);
-			if(styleNodes.get(DEFAULT_STYLE) != null
-			        && styleNodes.get(DETAILS_STYLE) != null
-			        && styleNodes.get(NOTE_STYLE) != null
-			        && styleNodes.get(FLOATING_STYLE) != null)
-			    return;
 			final NodeModel predefinedStyleParentNode = getPredefinedStyleParentNode(styleMap);
             if(styleNodes.get(DEFAULT_STYLE) == null){
                 final NodeModel newNode = new NodeModel(DEFAULT_STYLE, styleMap);
                 predefinedStyleParentNode.insert(newNode, 0);
                 addStyleNode(newNode);
             }
+            NodeModel defaultStyleModel = styleNodes.get(DEFAULT_STYLE);
+            if(maxNodeWidth != NodeSizeModel.NOT_SET && NodeSizeModel.NOT_SET == NodeSizeModel.getNodeMaxTextWidth(defaultStyleModel))
+            	NodeSizeModel.setNodeMaxTextWidth(defaultStyleModel, maxNodeWidth);
+            if(minNodeWidth != NodeSizeModel.NOT_SET && NodeSizeModel.NOT_SET == NodeSizeModel.getMinNodeWidth(defaultStyleModel))
+            	NodeSizeModel.setNodeMinWidth(defaultStyleModel, minNodeWidth);
             if(styleNodes.get(DETAILS_STYLE) == null){
                 final NodeModel newNode = new NodeModel(DETAILS_STYLE, styleMap);
                 predefinedStyleParentNode.insert(newNode, 1);
@@ -239,42 +240,16 @@ public class MapStyleModel implements IExtension {
 	}
 
 	private MapViewLayout mapViewLayout = MapViewLayout.MAP;
-	private int maxNodeWidth = MapStyleModel.getDefaultMaxNodeWidth();
-	private int minNodeWidth = MapStyleModel.getDefaultMinNodeWidth();
-		
-	public int getMaxNodeWidth() {
-		return maxNodeWidth;
-	}
-	
-	public int getMinNodeWidth() {
-		return minNodeWidth;
-	}
+	private int maxNodeWidth = NodeSizeModel.NOT_SET;
+	private int minNodeWidth = NodeSizeModel.NOT_SET;
 	public void setMaxNodeWidth(final int maxNodeWidth) {
 		this.maxNodeWidth = maxNodeWidth;
 	}
 
 	public void setMinNodeWidth(final int minNodeWidth) {
 		this.minNodeWidth = minNodeWidth;
-	}
+	}  
 	
-	static int getDefaultMaxNodeWidth() {
-		try {
-			return Integer.parseInt(ResourceController.getResourceController().getProperty("max_node_width"));
-		}
-		catch (final NumberFormatException e) {
-			return Integer.parseInt(ResourceController.getResourceController().getProperty(
-			    "el__max_default_window_width")) * 2 / 3;
-		}
-	}
-	
-	static int getDefaultMinNodeWidth() {
-		try {
-			return Integer.parseInt(ResourceController.getResourceController().getProperty("min_node_width"));
-		}
-		catch (final NumberFormatException e) {
-			return 0;
-		}
-	}
 	void copyFrom(MapStyleModel source, boolean overwrite) {
 		if(overwrite && source.styleMap != null  || styleMap == null){
 			styleMap = source.styleMap;
@@ -284,9 +259,6 @@ public class MapStyleModel implements IExtension {
 		}
 		if(overwrite && source.backgroundColor != null|| backgroundColor == null){
 			backgroundColor = source.backgroundColor;
-		}
-		if(overwrite){
-			maxNodeWidth = source.maxNodeWidth;
 		}
     }
 	

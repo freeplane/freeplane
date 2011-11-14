@@ -62,6 +62,7 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.features.time.TimeController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.main.browsemode.BModeControllerFactory;
 import org.freeplane.main.filemode.FModeControllerFactory;
 import org.freeplane.main.mindmapmode.MModeControllerFactory;
@@ -213,7 +214,10 @@ public class FreeplaneStarter {
 			return;
 		}
 		if (!alwaysLoadLastMaps && !dontLoadLastMaps) {
+			final AddOnsController addonsController = AddOnsController.getController();
+			addonsController.setAutoInstallEnabled(false);
 			applicationResourceController.getLastOpenedList().openMapsOnStart();
+			addonsController.setAutoInstallEnabled(true);
 		}
 		if(firstRun && ! dontLoadLastMaps){
 			final File baseDir = new File(FreeplaneStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();

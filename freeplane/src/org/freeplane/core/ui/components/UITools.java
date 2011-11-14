@@ -30,6 +30,7 @@ import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -481,5 +482,17 @@ public class UITools {
     	else{
     		c.setBorder(titledBorder);
     	}
+    }
+
+	public static void backOtherWindows() {
+	    Window owner = getFrame();
+		if(owner != null){
+        	final Window[] ownedWindows = owner.getOwnedWindows();
+        	for(Window w : ownedWindows){
+        		if(w.isVisible()){
+        			w.toBack();
+        		}
+        	}
+        }
     }
 }

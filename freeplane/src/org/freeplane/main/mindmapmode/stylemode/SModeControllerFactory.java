@@ -142,7 +142,7 @@ public class SModeControllerFactory {
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController()
 		    .getStatusBar());
 		modeController.addAction(new ToggleToolbarAction("ToggleLeftToolbarAction", "/icon_toolbar"));
-		new MapStyle(false);
+		MapStyle.install(false);
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
 		final SModeController modeController = this.modeController;

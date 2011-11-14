@@ -20,7 +20,6 @@
 package org.freeplane.features.filter;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -34,7 +33,6 @@ import java.io.Writer;
 import java.security.AccessControlException;
 import java.util.Vector;
 
-import javax.swing.BorderFactory;
 import javax.swing.ButtonModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
