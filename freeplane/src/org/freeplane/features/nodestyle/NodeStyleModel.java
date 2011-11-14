@@ -36,7 +36,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	public static final String STYLE_FORK = "fork";
 
 	public static NodeStyleModel createNodeStyleModel(final NodeModel node) {
-		NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
 		if (styleModel == null) {
 			styleModel = new NodeStyleModel();
 			node.addExtension(styleModel);
@@ -50,47 +50,47 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	}
 
 	public static Color getColor(final NodeModel node) {
-		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
 		return styleModel == null ? null : styleModel.getColor();
 	}
 
 	public static String getFontFamilyName(final NodeModel node) {
-		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
 		return styleModel == null ? null : styleModel.getFontFamilyName();
 	}
 
 	public static Integer getFontSize(final NodeModel node) {
-		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
 		return styleModel == null ? null : styleModel.getFontSize();
 	}
 
 	public static NodeStyleModel getModel(final NodeModel node) {
-		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
 		return styleModel;
 	}
 
 	public static Boolean getNodeNumbering(NodeModel node) {
-		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
 		return styleModel == null ? null : styleModel.getNodeNumbering();
     }
 
 	public static String getNodeFormat(final NodeModel node) {
-		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
 		return styleModel == null ? null : styleModel.getNodeFormat();
 	}
 
 	public static String getShape(final NodeModel node) {
-		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
 		return styleModel == null ? null : styleModel.getShape();
 	}
 
 	public static Boolean isBold(final NodeModel node) {
-		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
 		return styleModel == null ? null : styleModel.isBold();
 	}
 
 	public static Boolean isItalic(final NodeModel node) {
-		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
 		return styleModel == null ? null : styleModel.isItalic();
 	}
 

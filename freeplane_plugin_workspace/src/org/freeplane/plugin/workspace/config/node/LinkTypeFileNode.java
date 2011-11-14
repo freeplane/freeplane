@@ -14,20 +14,19 @@ import java.util.Vector;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.config.PopupMenus;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.dnd.IWorkspaceTransferableCreator;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 
 public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeEventListener, IWorkspaceTransferableCreator {
 	
 	private static final long serialVersionUID = 1L;
-	private final String POPUP_KEY="/filesystem_link";
+//	private final String POPUP_KEY="/filesystem_link";
 	private URI linkPath;
 	
 	
@@ -36,11 +35,11 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeEventLi
 	}
 	
 	public void initializePopup() {
-		PopupMenus popupMenu = WorkspaceController.getController().getPopups();		
-		if (!isSystem()) {
-			popupMenu.registerPopupMenuNodeDefault(POPUP_KEY);			
-		}
-		popupMenu.buildPopupMenu(POPUP_KEY);
+//		PopupMenus popupMenu = WorkspaceController.getController().getPopups();		
+//		if (!isSystem()) {
+//			popupMenu.registerPopupMenuNodeDefault(POPUP_KEY);			
+//		}
+//		popupMenu.buildPopupMenu(POPUP_KEY);
 		
 	}
 	
@@ -81,12 +80,8 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeEventLi
 				}
 			}
 		}
-		else if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {			
-			Component component = (Component) event.getBaggage();
-
-			WorkspaceController.getController().getPopups()
-					.showPopup(POPUP_KEY, component, event.getX(), event.getY());
-
+		else if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {
+			showPopup((Component) event.getBaggage(), event.getX(), event.getY());
 		}
 	}
 
@@ -117,5 +112,9 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeEventLi
 	public AWorkspaceTreeNode clone() {
 		LinkTypeFileNode node = new LinkTypeFileNode(getType());
 		return clone(node);
+	}
+	
+	protected WorkspacePopupMenu getPopupMenu() {
+		return null;
 	}
 }

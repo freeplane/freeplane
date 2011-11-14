@@ -29,6 +29,7 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.LogicalStyleKeys;
@@ -46,11 +47,15 @@ public class MNodeStyleController extends NodeStyleController {
 		}
 
 		public void copy(final NodeModel from, final NodeModel to) {
-			final NodeStyleModel fromStyle = (NodeStyleModel) from.getExtension(NodeStyleModel.class);
-			if (fromStyle == null) {
-				return;
+			final NodeStyleModel fromStyle = from.getExtension(NodeStyleModel.class);
+			if (fromStyle != null) {
+				fromStyle.copyTo(NodeStyleModel.createNodeStyleModel(to));
 			}
-			fromStyle.copyTo(NodeStyleModel.createNodeStyleModel(to));
+			final NodeSizeModel fromSize = from.getExtension(NodeSizeModel.class);
+			if (fromSize != null) {
+				fromSize.copyTo(NodeSizeModel.createNodeSizeModel(to));
+			}
+			
 		}
 
 		public void remove(final Object key, final NodeModel from) {
@@ -58,9 +63,35 @@ public class MNodeStyleController extends NodeStyleController {
 				return;
 			}
 			from.removeExtension(NodeStyleModel.class);
+			from.removeExtension(NodeSizeModel.class);
 		}
 
 		public void remove(final Object key, final NodeModel from, final NodeModel which) {
+			removeStyleData(key, from, which);
+			removeSizeData(key, from, which);
+		}
+
+		private void removeSizeData(Object key, NodeModel from, NodeModel which) {
+			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
+				return;
+			}
+			final NodeSizeModel whichData = which.getExtension(NodeSizeModel.class);
+			if (whichData == null) {
+				return;
+			}
+			final NodeSizeModel fromData = from.getExtension(NodeSizeModel.class);
+			if (fromData == null) {
+				return;
+			}
+			if (NodeSizeModel.NOT_SET != whichData.getMaxTextWidth()) {
+				fromData.setMaxTextWidth(NodeSizeModel.NOT_SET);
+			}
+			if (NodeSizeModel.NOT_SET != whichData.getMinNodeWidth()) {
+				fromData.setMinNodeWidth(NodeSizeModel.NOT_SET);
+			}
+        }
+
+		private void removeStyleData(Object key, NodeModel from, NodeModel which) {
 			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
 				return;
 			}
@@ -99,7 +130,7 @@ public class MNodeStyleController extends NodeStyleController {
 			if (null != whichStyle.getNodeNumbering()) {
 				fromStyle.setNodeNumbering(null);
 			}
-		}
+        }
 	}
 
 	public MNodeStyleController(final ModeController modeController) {
@@ -133,10 +164,16 @@ public class MNodeStyleController extends NodeStyleController {
 		modeController.addAction(new NodeBackgroundColorAction());
 		modeController.addAction(new NodeShapeAction(NodeStyleModel.STYLE_FORK));
 		modeController.addAction(new NodeShapeAction(NodeStyleModel.STYLE_BUBBLE));
+		modeController.addAction(new NodeWidthAction());
 	}
 
 	public void copyStyle(final NodeModel source, final NodeModel target) {
-		final NodeStyleModel sourceStyleModel = NodeStyleModel.getModel(source);
+		copyStyleModel(source, target);
+		copySizeModel(source, target);
+	}
+
+	protected void copyStyleModel(final NodeModel source, final NodeModel target) {
+	    final NodeStyleModel sourceStyleModel = NodeStyleModel.getModel(source);
 		if (sourceStyleModel != null) {
 			setColor(target, sourceStyleModel.getColor());
 			setBackgroundColor(target, sourceStyleModel.getBackgroundColor());
@@ -148,7 +185,14 @@ public class MNodeStyleController extends NodeStyleController {
 			setNodeFormat(target, sourceStyleModel.getNodeFormat());
 			setNodeNumbering(target, sourceStyleModel.getNodeNumbering());
 		}
-	}
+    }
+	protected void copySizeModel(final NodeModel source, final NodeModel target) {
+	    final NodeSizeModel sourceSizeModel = NodeSizeModel.getModel(source);
+		if (sourceSizeModel != null) {
+			setMaxTextWidth(target, sourceSizeModel.getMaxTextWidth());
+			setMinNodeWidth(target, sourceSizeModel.getMinNodeWidth());
+		}
+    }
 
 	private NodeStyleModel createOwnStyleModel(final NodeModel node) {
 		{
@@ -173,6 +217,31 @@ public class MNodeStyleController extends NodeStyleController {
 		};
 		modeController.execute(actor, node.getMap());
 		return NodeStyleModel.getModel(node);
+	}
+
+	private NodeSizeModel createOwnSizeModel(final NodeModel node) {
+		{
+			final NodeSizeModel sizeModel = NodeSizeModel.getModel(node);
+			if (sizeModel != null) {
+				return sizeModel;
+			}
+		}
+		final ModeController modeController = Controller.getCurrentModeController();
+		final IActor actor = new IActor() {
+			public void act() {
+				node.addExtension(new NodeSizeModel());
+			}
+
+			public String getDescription() {
+				return null;
+			}
+
+			public void undo() {
+				node.removeExtension(NodeSizeModel.class);
+			}
+		};
+		modeController.execute(actor, node.getMap());
+		return NodeSizeModel.getModel(node);
 	}
 
 	/**
@@ -446,4 +515,50 @@ public class MNodeStyleController extends NodeStyleController {
 		};
 		modeController.execute(actor, node.getMap());
 	}
+	public void setMinNodeWidth(final NodeModel node, final int minNodeWidth) {
+	    final NodeSizeModel sizeModel = createOwnSizeModel(node);
+		final int oldValue = NodeSizeModel.getMinNodeWidth(node);
+		final IActor actor = new IActor() {
+			public void act() {
+				sizeModel.setMinNodeWidth(minNodeWidth);
+				final MapController mapController = getModeController().getMapController();
+				mapController.nodeChanged(node);
+			}
+
+			public String getDescription() {
+				return "setMinNodeWidth";
+			}
+
+			public void undo() {
+				sizeModel.setMinNodeWidth(oldValue);
+				final MapController mapController = getModeController().getMapController();
+				mapController.nodeChanged(node);
+			}
+		};
+		getModeController().execute(actor, node.getMap());
+    }
+
+	public void setMaxTextWidth(final NodeModel node, final int maxTextWidth) {
+	    final NodeSizeModel sizeModel = createOwnSizeModel(node);
+		final int oldValue = NodeSizeModel.getNodeMaxTextWidth(node);
+		final IActor actor = new IActor() {
+			public void act() {
+				sizeModel.setMaxTextWidth(maxTextWidth);
+				final MapController mapController = getModeController().getMapController();
+				mapController.nodeChanged(node);
+			}
+
+			public String getDescription() {
+				return "setMaxTextWidth";
+			}
+
+			public void undo() {
+				sizeModel.setMaxTextWidth(oldValue);
+				final MapController mapController = getModeController().getMapController();
+				mapController.nodeChanged(node);
+			}
+		};
+		getModeController().execute(actor, node.getMap());
+    }
+
 }

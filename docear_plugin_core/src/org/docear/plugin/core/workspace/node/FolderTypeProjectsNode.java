@@ -17,11 +17,11 @@ import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.node.AFolderNode;
-import org.freeplane.plugin.workspace.config.node.VirtualFolderNode;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 
 
 public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNodeEventListener, FileAlterationListener {
@@ -107,12 +107,8 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 	 * {@inheritDoc}
 	 */
 	public void handleEvent(WorkspaceNodeEvent event) {
-		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {			
-			Component component = (Component) event.getBaggage();
-
-			WorkspaceController.getController().getPopups()
-					.showPopup(VirtualFolderNode.POPUP_KEY, component, event.getX(), event.getY());
-
+		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {
+			showPopup((Component) event.getBaggage(), event.getX(), event.getY());
 		}
 	}
 
@@ -204,6 +200,10 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 	public AWorkspaceTreeNode clone() {
 		FolderTypeProjectsNode node = new FolderTypeProjectsNode(getType());
 		return clone(node);
+	}
+	
+	protected WorkspacePopupMenu getPopupMenu() {
+		return null;
 	}
 
 	

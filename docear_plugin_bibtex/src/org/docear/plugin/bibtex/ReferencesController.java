@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import net.sf.jabref.BasePanel;
+import net.sf.jabref.JabRefPreferences;
 import net.sf.jabref.export.DocearSaveDatabaseAction;
 
 import org.docear.plugin.bibtex.actions.AddExistingReferenceAction;
@@ -18,9 +19,9 @@ import org.docear.plugin.bibtex.actions.AddNewReferenceAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesAllOpenMapsAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesCurrentMapAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesInLibrary;
-import org.docear.plugin.bibtex.listeners.NodeAttributeListener;
 import org.docear.plugin.bibtex.listeners.BibtexNodeDropListener;
 import org.docear.plugin.bibtex.listeners.JabRefChangeListener;
+import org.docear.plugin.bibtex.listeners.NodeAttributeListener;
 import org.docear.plugin.bibtex.listeners.NodeSelectionListener;
 import org.docear.plugin.core.ALanguageController;
 import org.docear.plugin.core.DocearController;
@@ -46,7 +47,7 @@ import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 import org.freeplane.view.swing.map.NodeView;
 
 public class ReferencesController extends ALanguageController implements IDocearEventListener, IWorkspaceListener, IFreeplanePropertyListener, IMapLifeCycleListener {
-	private final static JabRefChangeListener jabRefChangeListener = new JabRefChangeListener();
+	private final static JabRefChangeListener jabRefChangeListener = new JabRefChangeListener();	
 	
 	private static ReferencesController referencesController = null;
 	private JabrefWrapper jabrefWrapper;
@@ -82,6 +83,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 
 	public ReferencesController(ModeController modeController) {
 		setReferencesController(this);
+		setPreferencesForDocear();
 		this.modeController = modeController;
 		LogUtils.info("starting DocearReferencesController(ModeController)"); //$NON-NLS-1$
 
@@ -95,6 +97,13 @@ public class ReferencesController extends ALanguageController implements IDocear
 		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(this);		
 		this.initJabref();		
 	}
+	
+
+	private void setPreferencesForDocear() {
+		JabRefPreferences.getInstance().put("groupAutoShow", "false");
+		JabRefPreferences.getInstance().put("searchPanelVisible", "false");
+	}
+	
 
 	private void registerListeners() {
 		this.modeController.addINodeViewLifeCycleListener(new INodeViewLifeCycleListener() {
@@ -301,4 +310,5 @@ public class ReferencesController extends ALanguageController implements IDocear
 	public static JabRefChangeListener getJabRefChangeListener() {
 		return jabRefChangeListener;
 	}
+
 }

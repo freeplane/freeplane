@@ -17,6 +17,7 @@ public class ExtensionContainer {
 	}
 
 	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
+		assert(clazz.isAssignableFrom(extension.getClass()));
 		final IExtension oldExtension = getExtensions().put(clazz, extension);
 		if (oldExtension != null && !oldExtension.equals(extension)) {
 			getExtensions().put(clazz, oldExtension);
@@ -29,7 +30,7 @@ public class ExtensionContainer {
 	}
 
 	public IExtension putExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
-		final IExtension oldExtension = getExtensions().put(clazz, extension);
+        final IExtension oldExtension = getExtensions().put(clazz, extension);
 		return oldExtension;
 	}
 
@@ -45,16 +46,18 @@ public class ExtensionContainer {
 		return getExtensions().values().iterator();
 	}
 
-	public IExtension getExtension(final Class<? extends IExtension> clazz) {
-		return getExtensions().get(clazz);
+	@SuppressWarnings("unchecked")
+    public <T extends IExtension> T getExtension(final Class<T> clazz) {
+		return (T) getExtensions().get(clazz);
 	}
 
 	public Map<Class<? extends IExtension>, IExtension> getExtensions() {
 		return extensions;
 	}
 
-	public IExtension removeExtension(final Class<? extends IExtension> clazz) {
-		return getExtensions().remove(clazz);
+	@SuppressWarnings("unchecked")
+    public <T extends IExtension> T removeExtension(final Class<T> clazz) {
+		return (T) getExtensions().remove(clazz);
 	}
 
 	public boolean removeExtension(final IExtension extension) {

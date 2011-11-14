@@ -903,7 +903,7 @@ public class NodeView extends JComponent implements INodeView {
 			for (int i = firstChangedIndex; i < components.length; i++) {
 				if (components[i] instanceof NodeView) {
 					final NodeView view = (NodeView) components[i];
-					view.update();
+					view.getMainView().updateText(view.getModel());
 					view.numberingChanged(0);
 				}
 			}

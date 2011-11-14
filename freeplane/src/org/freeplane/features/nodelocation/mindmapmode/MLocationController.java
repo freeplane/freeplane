@@ -39,7 +39,7 @@ public class MLocationController extends LocationController {
 		private final int parentVGap;
 		private final int shiftY;
 
-		private ChangeNodePositionActor(final NodeModel node, final int gap, final int shiftY, final int parentVGap) {
+		private ChangeNodePositionActor(final NodeModel node, final int parentVGap, final int gap, final int shiftY) {
 			this.node = node;
 			this.gap = gap;
 			this.shiftY = shiftY;
@@ -84,7 +84,7 @@ public class MLocationController extends LocationController {
 	}
 
 	public void moveNodePosition(final NodeModel node, final int parentVGap, final int hGap, final int shiftY) {
-		final IActor actor = new ChangeNodePositionActor(node, hGap, shiftY, parentVGap);
+		final IActor actor = new ChangeNodePositionActor(node, parentVGap, hGap, shiftY);
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 }

@@ -16,6 +16,7 @@ import net.sf.jabref.BibtexDatabase;
 import net.sf.jabref.Globals;
 import net.sf.jabref.JabRef;
 import net.sf.jabref.JabRefFrame;
+import net.sf.jabref.JabRefPreferences;
 import net.sf.jabref.Util;
 import net.sf.jabref.export.SaveSession;
 import net.sf.jabref.external.FileLinksUpgradeWarning;
@@ -67,7 +68,7 @@ public class JabrefWrapper extends JabRef  {
 		openIt(file, true);
 
 	}
-
+	
 	public JabRefFrame getJabrefFrame(){
 		
 		return this.jrf;

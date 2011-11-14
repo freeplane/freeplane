@@ -249,7 +249,7 @@ public class MModeControllerFactory {
 		modeController.addAction(new EditAttributesAction());
 		SpellCheckerController.install(modeController);
 		ExportController.install(new ExportController("/xml/ExportWithXSLT.xml"));
-		new MapStyle(true);
+		MapStyle.install(true);
 		final JPopupMenu popupmenu = new JPopupMenu();
 		userInputListenerFactory.setNodePopupMenu(popupmenu);
 		final FreeplaneToolBar toolbar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);

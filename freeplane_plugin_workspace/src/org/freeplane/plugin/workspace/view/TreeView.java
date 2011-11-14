@@ -54,4 +54,5 @@ public class TreeView extends JPanel {
 	public void addTreeComponentListener(ComponentListener l) {
 		this.m_tree.addComponentListener(l);
 	}
+	
 }

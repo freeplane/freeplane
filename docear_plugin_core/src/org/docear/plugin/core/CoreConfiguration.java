@@ -1,6 +1,7 @@
 package org.docear.plugin.core;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Enumeration;
 
@@ -26,6 +27,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.controller.IWorkspaceListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
@@ -191,7 +193,11 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		controller.addAction(action);
 	}
 
-	private void addPluginDefaults() {
+	private void addPluginDefaults() {		
+		ResourceController resController = Controller.getCurrentController().getResourceController();
+		if (resController.getProperty("ApplicationName").equals("Docear")) {
+			resController.setProperty("first_start_map", "/doc/docear-welcome.mm");
+		}
 		final URL defaults = this.getClass().getResource(ResourceController.PLUGIN_DEFAULTS_RESOURCE);
 		if (defaults == null)
 			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);

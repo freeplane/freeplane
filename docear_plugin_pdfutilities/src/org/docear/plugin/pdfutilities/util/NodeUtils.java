@@ -394,14 +394,14 @@ public class NodeUtils {
 	public static void removeAttribute(NodeModel target, String attributeKey) {
 		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
 		if(attributes != null && attributes.getAttributeKeyList().contains(TextUtils.getText(attributeKey))) {
-			AttributeController.getController().performRemoveAttribute(TextUtils.getText(attributeKey));
+			AttributeController.getController().performRemoveRow(attributes, attributes.getAttributePosition(TextUtils.getText(attributeKey)));
 		}
 	}
 	
 	public static void removeAttributes(NodeModel target) {
 		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
 		for (String attributeKey : attributes.getAttributeKeyList()) {		
-			AttributeController.getController().performRemoveAttribute(attributeKey);
+			AttributeController.getController().performRemoveRow(attributes, attributes.getAttributePosition(attributeKey));
 		}
 	}
 

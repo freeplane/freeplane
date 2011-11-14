@@ -595,7 +595,7 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 	// is selected from the application menu, Cmd-Q is pressed, or "Quit" is
 	// selected from the Dock.
 	public void quit() {
-		// Ask here if the user really wants to close, if the base
+		// Ask here if the user really wants to g, if the base
 		// has not been saved since last save.
 		boolean close = true;
 		Vector<String> filenames = new Vector<String>();

@@ -341,7 +341,11 @@ public class OpenDatabaseAction extends MnemonicAwareAction {
 	
 	public static String parseSpecialChars(String s){
 		if(s == null) return s;		
+<<<<<<< TREE
         s = s.replaceAll("\\\\\"[{]([a-zA-Z])[}]",  "$1" + "\u0308"); // replace äöü
+=======
+        s = s.replaceAll("\\\\\"[{]([a-zA-Z])[}]",  "$1" + "\u0308"); // replace Ã¤Ã¼Ã¶
+>>>>>>> MERGE-SOURCE
         s = s.replaceAll("\\\\`[{]([a-zA-Z])[}]",  "$1" + "\u0300"); // replace `        
         s = s.replaceAll("\\\\'[{]([a-zA-Z])[}]",  "$1" + "\u0301"); // replace Ã‚Â´
         s = s.replaceAll("\\\\\\^[{]([a-zA-Z])[}]",  "$1" + "\u0302"); // replace ^

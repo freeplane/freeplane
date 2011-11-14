@@ -5,14 +5,15 @@ import java.io.File;
 import java.net.URI;
 import java.net.URL;
 
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
+import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
@@ -99,12 +100,8 @@ public class WorkspacePreferences {
 	private void addMenuEntries() {
 
 		this.modeController.addMenuContributor(new IMenuContributor() {
-			ResourceController resourceController = Controller.getCurrentController().getResourceController();
-
 			public void updateMenus(ModeController modeController, MenuBuilder builder) {
-				builder.addCheckboxItem(MENU_BAR + VIEW_MENU,
-						new CheckBoxAction(SHOW_WORKSPACE_TEXT, SHOW_WORKSPACE_PROPERTY_KEY),
-						resourceController.getBooleanProperty(SHOW_WORKSPACE_PROPERTY_KEY));
+				builder.addAction(MENU_BAR + VIEW_MENU,	new CheckBoxAction(SHOW_WORKSPACE_TEXT), IndexedTree.AS_CHILD);
 			}
 		});
 	}
@@ -133,21 +130,17 @@ public class WorkspacePreferences {
 		}
 	}
 
+	@SelectableAction(checkOnPropertyChange=SHOW_WORKSPACE_PROPERTY_KEY, checkOnPopup = true)
 	private class CheckBoxAction extends AFreeplaneAction {
 
 		private static final long serialVersionUID = 1256514415353330887L;
-		private String propertyKey;
 
-		public CheckBoxAction(String key, String propertyKey) {
+		public CheckBoxAction(String key) {
 			super(key);
-			this.propertyKey = propertyKey;
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			boolean checked = ((JCheckBoxMenuItem) e.getSource()).isSelected();
-			Controller.getCurrentController().getResourceController().setProperty(this.propertyKey, checked);
-
-			if (checked) {
+			if (!isSelected()) {
 				String currentLocation = getWorkspaceLocation();
 				if (currentLocation == null || currentLocation.length()==0) {
 					WorkspaceChooserDialog locationDialog = new WorkspaceChooserDialog();
@@ -158,6 +151,10 @@ public class WorkspacePreferences {
 			else {
 				WorkspaceController.getController().showWorkspace(false);
 			}
+		}
+		
+		public void setSelected() {
+			setSelected(ResourceController.getResourceController().getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY));
 		}
 	}
 

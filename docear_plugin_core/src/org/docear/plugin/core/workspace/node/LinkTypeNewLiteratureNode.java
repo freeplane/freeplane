@@ -25,6 +25,7 @@ import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 
 /**
  * 
@@ -58,6 +59,10 @@ public class LinkTypeNewLiteratureNode extends ALinkNode implements IWorkspaceNo
 	
 	public void setLinkPath(URI linkPath) {
 		this.linkPath = linkPath;
+		if(this.linkPath != null) {
+			DocearEvent event = new DocearEvent(this, DocearEventType.LIBRARY_NEW_MINDMAP_INDEXING_REQUEST, getLinkPath());
+			DocearController.getController().dispatchDocearEvent(event);
+		}
 	}
 	
 	public boolean setIcons(DefaultTreeCellRenderer renderer) {
@@ -127,5 +132,9 @@ public class LinkTypeNewLiteratureNode extends ALinkNode implements IWorkspaceNo
 	public AWorkspaceTreeNode clone() {
 		LinkTypeNewLiteratureNode node = new LinkTypeNewLiteratureNode(getType());
 		return clone(node);
+	}
+	
+	protected WorkspacePopupMenu getPopupMenu() {
+		return null;
 	}
 }

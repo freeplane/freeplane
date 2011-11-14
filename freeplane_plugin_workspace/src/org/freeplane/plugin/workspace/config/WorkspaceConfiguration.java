@@ -81,26 +81,17 @@ public class WorkspaceConfiguration {
 
 		File configFile = new File(workspaceLocation + File.separator + "." + profileName + File.separator + CONFIG_FILE_NAME);
 		if (!configFile.exists()) {
-			int yesorno = JOptionPane.OK_OPTION;
-			yesorno = JOptionPane.showConfirmDialog(Controller.getCurrentController().getViewController().getContentPane(),
-					TextUtils.getText("confirm_create_workspace_text") + workspaceLocation,
-					TextUtils.getText("confirm_create_workspace_title"), JOptionPane.OK_CANCEL_OPTION);
-			if (yesorno == JOptionPane.OK_OPTION) {
-				// CREATE NEW WORKSPACE
-				File profileFolder = new File(workspaceLocation + File.separator + "." + profileName);
-				if (!profileFolder.exists() || !profileFolder.isDirectory()) {
-					if (!profileFolder.mkdirs()) {
-						JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(),
-								TextUtils.getText("error_create_workspace_folder") + " " + workspaceLocation,
-								TextUtils.getText("error_create_workspace_folder_title"), JOptionPane.ERROR_MESSAGE);
-						return false;
-					}
+			// CREATE NEW WORKSPACE
+			File profileFolder = new File(workspaceLocation + File.separator + "." + profileName);
+			if (!profileFolder.exists() || !profileFolder.isDirectory()) {
+				if (!profileFolder.mkdirs()) {
+					JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(),
+							TextUtils.getText("error_create_workspace_folder") + " " + workspaceLocation,
+							TextUtils.getText("error_create_workspace_folder_title"), JOptionPane.ERROR_MESSAGE);
+					return false;
 				}
-				copyDefaultConfigTo(configFile);
 			}
-			else {
-				return false;
-			}
+			copyDefaultConfigTo(configFile);
 		}
 
 		WorkspaceController.getController().getWorkspaceModel().removeAllElements((AWorkspaceTreeNode) WorkspaceController.getController().getWorkspaceModel().getRoot());

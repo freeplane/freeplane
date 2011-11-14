@@ -633,7 +633,7 @@ public class LinkController extends SelectionController implements IExtension {
 	    	else
 	    		iconPath = null;
 	    }
-	    else if (Compat.isWindowsExecutable(linkText)) {
+	    else if (Compat.isWindowsExecutable(link)) {
 	    	iconPath = EXECUTABLE_ICON;
 	    }
 	    else{
