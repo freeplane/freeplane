@@ -54,7 +54,7 @@ public abstract class AWorkspaceTreeNode implements Cloneable, TreeNode, Destruc
 	
 	abstract public void initializePopup();
 	
-	abstract protected WorkspacePopupMenu getPopupMenu();
+	public abstract WorkspacePopupMenu getPopupMenu();
 	
 	
 	public void setParent(AWorkspaceTreeNode node) {

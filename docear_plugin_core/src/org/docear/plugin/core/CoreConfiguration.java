@@ -1,7 +1,6 @@
 package org.docear.plugin.core;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Enumeration;
 
@@ -31,6 +30,7 @@ import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.controller.IWorkspaceListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public class CoreConfiguration extends ALanguageController implements IFreeplanePropertyListener, IWorkspaceListener {
 
@@ -208,13 +208,20 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		}
 		
 	}
+	
+	private void modifyContextMenus() {
+		AWorkspaceTreeNode root =  (AWorkspaceTreeNode) WorkspaceUtils.getModel().getRoot();
+		root.getPopupMenu();
+	}
 
 	public void propertyChanged(String propertyName, String newValue, String oldValue) {
 	}
 
 	public void workspaceChanged(WorkspaceEvent event) {
-		// TODO Auto-generated method stub
 		System.out.println("DOCEAR CORE: workspaceChanged(WorkspaceEvent):"+ event);
 		showLocationDialogIfNeeded();
+		if(event.getType() == WorkspaceEvent.WORKSPACE_EVENT_TYPE_CHANGE) {
+			modifyContextMenus();
+		}
 	}
 }

@@ -176,7 +176,7 @@ public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 	int inset = 2;
 	private void drawCollapseLabel(Graphics g) {
 		Dimension size = g.getClipBounds().getSize();
-		int half_length = (g.getClipBounds().height-(inset*2))/2;
+		int half_length = (g.getClipBounds().height-(inset*6))/2;
 		int center_y = size.height / 2;
 
 		g.setColor(getBackground());
@@ -194,7 +194,7 @@ public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 	
 	private void drawExpandLabel(Graphics g) {
 		Dimension size = g.getClipBounds().getSize();
-		int half_length = (g.getClipBounds().height-inset)/2;
+		int half_length = (g.getClipBounds().height-(inset*6))/2;
 		int center_y = size.height / 2;
 		
 		g.setColor(getBackground());
