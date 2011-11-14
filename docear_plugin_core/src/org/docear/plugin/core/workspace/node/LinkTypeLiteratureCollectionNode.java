@@ -130,7 +130,7 @@ public class LinkTypeLiteratureCollectionNode extends ALinkNode implements IWork
 		return clone(node);
 	}
 	
-	protected WorkspacePopupMenu getPopupMenu() {
+	public WorkspacePopupMenu getContextMenu() {
 		return null;
 	}
 }

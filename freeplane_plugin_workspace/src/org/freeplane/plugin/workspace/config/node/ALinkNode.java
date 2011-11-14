@@ -4,6 +4,8 @@
  */
 package org.freeplane.plugin.workspace.config.node;
 
+import java.net.URI;
+
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 /**
@@ -29,6 +31,7 @@ public abstract class ALinkNode extends AWorkspaceTreeNode {
 	 * METHODS
 	 **********************************************************************************/
 
+	public abstract URI getLinkPath();
 	
 
 	/***********************************************************************************

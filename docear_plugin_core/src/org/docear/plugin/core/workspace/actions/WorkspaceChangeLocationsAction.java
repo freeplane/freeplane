@@ -1,35 +1,39 @@
 /**
  * author: Marcel Genzmehr
- * 11.11.2011
+ * 14.11.2011
  */
-package org.freeplane.plugin.workspace.config.actions;
+package org.docear.plugin.core.workspace.actions;
 
 import java.awt.event.ActionEvent;
+
+import org.docear.plugin.core.LocationDialog;
+import org.freeplane.plugin.workspace.config.actions.AWorkspaceAction;
 
 /**
  * 
  */
-public class AddNewLinkAction extends AWorkspaceAction {
+public class WorkspaceChangeLocationsAction extends AWorkspaceAction {
 
-	private static final long serialVersionUID = -2738773226743524919L;
-
+	private static final long serialVersionUID = 1544504104584534059L;
+	
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
-	public AddNewLinkAction() {
-		super("workspace.action.node.new.link");
+	
+	public WorkspaceChangeLocationsAction() {
+		super("workspace.action.docear.locations.change");
 	}
-
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
+	
 
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
+		LocationDialog dialog = new LocationDialog(); 
+    	dialog.setVisible(true);
 	}
 }

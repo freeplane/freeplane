@@ -54,7 +54,7 @@ public abstract class AWorkspaceTreeNode implements Cloneable, TreeNode, Destruc
 	
 	abstract public void initializePopup();
 	
-	public abstract WorkspacePopupMenu getPopupMenu();
+	public abstract WorkspacePopupMenu getContextMenu();
 	
 	
 	public void setParent(AWorkspaceTreeNode node) {
@@ -98,7 +98,7 @@ public abstract class AWorkspaceTreeNode implements Cloneable, TreeNode, Destruc
 		this.name = name;
 	}
 	
-	public final String getId() {
+	public String getId() {
 		return Integer.toHexString(getName() == null ? "".hashCode() : getName().hashCode()).toUpperCase();
 		//return Integer.toHexString(super.toString().hashCode()).toUpperCase();
 	}
@@ -169,7 +169,7 @@ public abstract class AWorkspaceTreeNode implements Cloneable, TreeNode, Destruc
 	}
 		
 	public void showPopup(Component component, int x, int y) {		
-		final WorkspacePopupMenu popupMenu = getPopupMenu();
+		final WorkspacePopupMenu popupMenu = getContextMenu();
 		if(popupMenu == null) {
 			return;
 		}

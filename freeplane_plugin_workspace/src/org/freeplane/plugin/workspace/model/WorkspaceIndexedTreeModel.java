@@ -4,8 +4,14 @@
  */
 package org.freeplane.plugin.workspace.model;
 
+import java.io.File;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 import javax.swing.event.EventListenerList;
 import javax.swing.event.TreeModelEvent;
@@ -17,10 +23,13 @@ import javax.swing.tree.TreePath;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.node.AFolderNode;
+import org.freeplane.plugin.workspace.config.node.ALinkNode;
 import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
 import org.freeplane.plugin.workspace.config.node.VirtualFolderNode;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
+import org.freeplane.plugin.workspace.io.node.FolderFileNode;
 
 public class WorkspaceIndexedTreeModel implements TreeModel {
 
@@ -372,6 +381,31 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 	 */
 	public void resetIndex() {
 		this.hashStringKeyIndex.clear();		
+	}
+	
+	public List<URI> getAllNodesFiltered(String filter) {
+		HashSet<URI> set = new HashSet<URI>();
+		for(AWorkspaceTreeNode node : hashStringKeyIndex.values()) {
+			if(node instanceof AFolderNode || node instanceof FolderFileNode) {
+				continue;
+			}
+			
+			if(node instanceof DefaultFileNode) {
+				File file = ((DefaultFileNode) node).getFile();
+				if(file.getName().endsWith(filter)) {
+					set.add(file.toURI());
+				}
+			} 
+			else 
+			if(node instanceof ALinkNode) {
+				URI uri = ((ALinkNode) node).getLinkPath();
+				if(uri.getPath().endsWith(filter)) {
+					set.add(WorkspaceUtils.absoluteURI(uri));
+				}
+			}			
+		}
+		
+		return Arrays.asList(set.toArray(new URI[]{}));
 	}
 	
 	

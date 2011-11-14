@@ -29,6 +29,9 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeEventLi
 //	private final String POPUP_KEY="/filesystem_link";
 	private URI linkPath;
 	
+	public LinkTypeFileNode() {
+		super(ALinkNode.LINK_TYPE_FILE);	
+	}
 	
 	public LinkTypeFileNode(String type) {
 		super(type);	
@@ -114,7 +117,7 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeEventLi
 		return clone(node);
 	}
 	
-	protected WorkspacePopupMenu getPopupMenu() {
+	public WorkspacePopupMenu getContextMenu() {
 		return null;
 	}
 }

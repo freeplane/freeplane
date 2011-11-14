@@ -10,7 +10,8 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.config.IConfigurationInfo;
-import org.freeplane.plugin.workspace.config.actions.AddNewGroupAction;
+import org.freeplane.plugin.workspace.config.actions.NodeNewGroupAction;
+import org.freeplane.plugin.workspace.config.actions.NodeNewLinkAction;
 import org.freeplane.plugin.workspace.config.actions.WorkspaceCollapseAction;
 import org.freeplane.plugin.workspace.config.actions.WorkspaceDeleteNodeAction;
 import org.freeplane.plugin.workspace.config.actions.WorkspaceExpandAction;
@@ -82,16 +83,15 @@ public class WorkspaceRoot extends AWorkspaceTreeNode implements IConfigurationI
 			modeController.addAction(new WorkspaceRefreshAction());
 			modeController.addAction(new WorkspaceHideAction());
 			modeController.addAction(new WorkspaceDeleteNodeAction());
-			modeController.addAction(new AddNewGroupAction());
+			modeController.addAction(new NodeNewGroupAction());
+			modeController.addAction(new NodeNewLinkAction());
 			
 			popupMenu = new WorkspacePopupMenu();
 			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {"workspace.action.location.change",
 					"workspace.action.hide",
 					WorkspacePopupMenuBuilder.SEPARATOR, 
 					"workspace.action.all.expand",
-					"workspace.action.all.collapse", 
-					WorkspacePopupMenuBuilder.SEPARATOR,
-					"workspace.action.node.group.new",					 
+					"workspace.action.all.collapse",					 
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.refresh"					
 			});
@@ -109,7 +109,7 @@ public class WorkspaceRoot extends AWorkspaceTreeNode implements IConfigurationI
 		return clone(node);
 	}
 
-	protected WorkspacePopupMenu getPopupMenu() {
+	public WorkspacePopupMenu getContextMenu() {
 		if (popupMenu == null) {
 			initializePopup();
 		}

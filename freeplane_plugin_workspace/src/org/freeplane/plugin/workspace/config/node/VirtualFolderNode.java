@@ -52,7 +52,7 @@ public class VirtualFolderNode extends AFolderNode implements IWorkspaceNodeEven
 		return clone(node);
 	}
 	
-	protected WorkspacePopupMenu getPopupMenu() {
+	public WorkspacePopupMenu getContextMenu() {
 		return null;
 	}
 }

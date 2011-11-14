@@ -9,14 +9,14 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 
-public class AddNewGroupAction extends AWorkspaceAction {
+public class NodeNewGroupAction extends AWorkspaceAction {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public AddNewGroupAction() {
+	public NodeNewGroupAction() {
 		super("workspace.action.node.group.new");
 	}
 

@@ -21,7 +21,6 @@ public class WorkspacePopupMenuBuilder {
 	public static final String SEPARATOR = "-----";
 	
 	public WorkspacePopupMenuBuilder() {
-
 	}
 
 	public static void addAction(final JComponent popupMenu, AFreeplaneAction action) {
@@ -36,6 +35,44 @@ public class WorkspacePopupMenuBuilder {
 			item = new JFreeplaneMenuItem(action);
 		}
 		popupMenu.add(item);
+		return;
+	}
+	
+	public static void insertAction(final WorkspacePopupMenu popupMenu, AFreeplaneAction action, int index) {
+		assert action != null;
+		assert popupMenu != null;
+		
+		final JMenuItem item;
+		if (action.getClass().getAnnotation(SelectableAction.class) != null) {
+			item = new JAutoCheckBoxMenuItem(action);
+		}
+		else {
+			item = new JFreeplaneMenuItem(action);
+		}
+		popupMenu.add(item, index);
+		addListeners(popupMenu, action);
+		return;
+	}
+	
+	public static void insertAction(final WorkspacePopupMenu popupMenu, String actionKey, int index) {
+		assert actionKey != null;
+		assert popupMenu != null;
+		
+		AFreeplaneAction action = Controller.getCurrentModeController().getAction(actionKey);
+		
+		if(action == null) {
+			return;
+		}
+		
+		final JMenuItem item;
+		if (action.getClass().getAnnotation(SelectableAction.class) != null) {
+			item = new JAutoCheckBoxMenuItem(action);
+		}
+		else {
+			item = new JFreeplaneMenuItem(action);
+		}
+		popupMenu.add(item, index);
+		addListeners(popupMenu, action);
 		return;
 	}
 	
