@@ -31,7 +31,7 @@ public class BackupStarter implements IMapChangeListener, INodeChangeListener {
 		final URL defaults = this.getClass().getResource(ResourceController.PLUGIN_DEFAULTS_RESOURCE);
 		if (defaults == null)
 			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
-		Controller.getCurrentController().getResourceController().addDefaults(defaults);
+		Controller.getCurrentController().getResourceController().addDefaults(defaults);		
 	}
 
 	public void mapChanged(MapChangeEvent event) {

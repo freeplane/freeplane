@@ -14,11 +14,11 @@ public class NodeSelectionListener implements INodeSelectionListener {
 		Controller.getCurrentModeController().getMapController().addNodeSelectionListener(this);		
 	}
 	
-	@Override
+	
 	public void onDeselect(NodeModel node) {		
 	}
 
-	@Override
+
 	public void onSelect(NodeModel node) {
 		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(Controller.getCurrentModeController().getMapController().getSelectedNode());
 		attributes.addTableModelListener(ReferencesController.getController().getAttributeListener());

@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.Properties;
 
 import org.docear.plugin.core.actions.DocearLicenseAction;
 import org.docear.plugin.core.actions.DocearOpenUrlAction;
@@ -202,6 +203,11 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		if (defaults == null)
 			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
 		Controller.getCurrentController().getResourceController().addDefaults(defaults);
+		if (resController.getProperty("ApplicationName").equals("Docear")) {
+			Controller.getCurrentController().getResourceController().setDefaultProperty("selection_method", "selection_method_by_click");
+			Controller.getCurrentController().getResourceController().setDefaultProperty("links", "relative_to_workspace");
+			Controller.getCurrentController().getResourceController().setDefaultProperty("save_folding", "always_save_folding");
+		}
 		if(DocearController.getController().getLibrary() != null && DocearController.getController().getLibrary().getLibraryPath() != null){
 			URI uri = DocearController.getController().getLibrary().getLibraryPath();
 			Controller.getCurrentController().getResourceController().setProperty(LIBRARY_PATH, uri.getPath());
