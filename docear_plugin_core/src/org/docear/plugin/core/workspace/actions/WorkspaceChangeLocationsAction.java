@@ -1,50 +1,39 @@
 /**
  * author: Marcel Genzmehr
- * 16.08.2011
+ * 14.11.2011
  */
-package org.freeplane.plugin.workspace.config.node;
+package org.docear.plugin.core.workspace.actions;
 
-import java.net.URI;
+import java.awt.event.ActionEvent;
 
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.docear.plugin.core.LocationDialog;
+import org.freeplane.plugin.workspace.config.actions.AWorkspaceAction;
 
 /**
  * 
  */
-public abstract class ALinkNode extends AWorkspaceTreeNode {
+public class WorkspaceChangeLocationsAction extends AWorkspaceAction {
+
+	private static final long serialVersionUID = 1544504104584534059L;
 	
-	private static final long serialVersionUID = 1L;
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 	
-	public static final String LINK_TYPE_FILE = "file";
-
-	/**
-	 * @param type
-	 */
-	public ALinkNode(String type) {
-		super(type);
+	public WorkspaceChangeLocationsAction() {
+		super("workspace.action.docear.locations.change");
 	}
-
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
-
-	public abstract URI getLinkPath();
 	
 
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
-	
-	public final String getTagName() {
-		return "link";
-	}
 
-	@Override
-	public void initializePopup() {
-		// TODO Auto-generated method stub
-		
+	public void actionPerformed(ActionEvent e) {
+		LocationDialog dialog = new LocationDialog(); 
+    	dialog.setVisible(true);
 	}
 }

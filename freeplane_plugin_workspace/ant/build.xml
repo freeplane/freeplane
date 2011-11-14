@@ -1,13 +1,13 @@
 <project name="freeplane_workspace" default="dist" basedir="..">
 	<property name="workspace" location=".." />
 	<property name="src" value="src" />
-	<property name="resources" value="resources" />
+	<property name="resources" value="resources" />	
 	<property name="root" value="."/>
 	<property name="osgimanifest" value="${root}/META-INF/MANIFEST.MF" />	
 	<property file="${workspace}/freeplane_framework/ant/ant.properties" />
 	<property file="${workspace}/freeplane/ant/ant.properties" />
 	<property file="ant/ant.properties" />
-	<property name="external.jars" value="" />
+	<property name="external.jars" value="${commons-io.jar}" />
 	<property name="build" value="${root}/build" />
 	<property name="build" value="${root}/build" />
 	<property name="dist" value="${root}/dist" />

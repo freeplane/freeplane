@@ -133,7 +133,7 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeEve
 		return super.clone(node);
 	}
 	
-	protected WorkspacePopupMenu getPopupMenu() {
+	public WorkspacePopupMenu getContextMenu() {
 		if (popupMenu == null) {
 			initializePopup();
 		}

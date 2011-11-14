@@ -324,7 +324,7 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 		return clone(node);
 	}
 	
-	protected WorkspacePopupMenu getPopupMenu() {
+	public WorkspacePopupMenu getContextMenu() {
 		if (popupMenu == null) {
 			initializePopup();
 		}

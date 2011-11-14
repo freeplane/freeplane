@@ -202,7 +202,7 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 		return clone(node);
 	}
 	
-	protected WorkspacePopupMenu getPopupMenu() {
+	public WorkspacePopupMenu getContextMenu() {
 		return null;
 	}
 

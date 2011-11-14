@@ -31,12 +31,9 @@ import org.docear.plugin.core.IDocearLibrary;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
-import org.docear.plugin.core.workspace.actions.AddNewNodeAction;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.node.AFolderNode;
@@ -85,14 +82,14 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 	
 	public void initializePopup() {
 		if (popupMenu  == null) {
-			ModeController modeController = Controller.getCurrentModeController();
-			modeController.addAction(new AddNewNodeAction());
-			
+//			ModeController modeController = Controller.getCurrentModeController();
+						
 			popupMenu = new WorkspacePopupMenu();
 			
 			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
-					WorkspacePopupMenuBuilder.createSubMenu(TextUtils.getRawText("workspace.action.new")),
-					"workspace.action.node.new",
+					WorkspacePopupMenuBuilder.createSubMenu(
+					TextUtils.getRawText("workspace.action.new.label")),
+					"workspace.action.node.new.link",
 					WorkspacePopupMenuBuilder.endSubMenu()
 					
 			});
@@ -326,7 +323,7 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 		}
 	}
 	
-	protected WorkspacePopupMenu getPopupMenu() {
+	public WorkspacePopupMenu getContextMenu() {
 		if (popupMenu == null) {
 			initializePopup();
 		}

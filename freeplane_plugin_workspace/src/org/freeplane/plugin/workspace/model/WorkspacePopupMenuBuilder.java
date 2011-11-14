@@ -5,7 +5,6 @@ import java.util.Stack;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import javax.swing.JTree;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -22,23 +21,7 @@ public class WorkspacePopupMenuBuilder {
 	public static final String SEPARATOR = "-----";
 	
 	public WorkspacePopupMenuBuilder() {
-
 	}
-
-//	private void registerWorkspaceActions() {
-//		ModeController modeController = Controller.getCurrentModeController();		
-//		
-//		modeController.addAction(new FileNodeAddNewMindmapAction());
-//		modeController.addAction(new FileNodeCutAction());
-//		modeController.addAction(new FileNodeRenameAction());
-//		modeController.addAction(new FileNodeDeleteAction());
-//		modeController.addAction(new FileNodeCopyAction());
-//		modeController.addAction(new FileNodePasteAction());
-//		
-//		modeController.addAction(new AddNewFilesystemFolderAction());
-//		modeController.addAction(new AddExistingFilesystemFolderAction());
-//		modeController.addAction(new RemoveNodeFromWorkspaceAction());
-//	}
 
 	public static void addAction(final JComponent popupMenu, AFreeplaneAction action) {
 		assert action != null;
@@ -51,9 +34,45 @@ public class WorkspacePopupMenuBuilder {
 		else {
 			item = new JFreeplaneMenuItem(action);
 		}
-		//addMenuItem(category, item, key, position);
 		popupMenu.add(item);
-		//addListeners(popupMenu, action);
+		return;
+	}
+	
+	public static void insertAction(final WorkspacePopupMenu popupMenu, AFreeplaneAction action, int index) {
+		assert action != null;
+		assert popupMenu != null;
+		
+		final JMenuItem item;
+		if (action.getClass().getAnnotation(SelectableAction.class) != null) {
+			item = new JAutoCheckBoxMenuItem(action);
+		}
+		else {
+			item = new JFreeplaneMenuItem(action);
+		}
+		popupMenu.add(item, index);
+		addListeners(popupMenu, action);
+		return;
+	}
+	
+	public static void insertAction(final WorkspacePopupMenu popupMenu, String actionKey, int index) {
+		assert actionKey != null;
+		assert popupMenu != null;
+		
+		AFreeplaneAction action = Controller.getCurrentModeController().getAction(actionKey);
+		
+		if(action == null) {
+			return;
+		}
+		
+		final JMenuItem item;
+		if (action.getClass().getAnnotation(SelectableAction.class) != null) {
+			item = new JAutoCheckBoxMenuItem(action);
+		}
+		else {
+			item = new JFreeplaneMenuItem(action);
+		}
+		popupMenu.add(item, index);
+		addListeners(popupMenu, action);
 		return;
 	}
 	
@@ -62,7 +81,6 @@ public class WorkspacePopupMenuBuilder {
 		assert keys != null;
 		
 		Stack<JMenu> subMenuStack = new Stack<JMenu>();
-//		subMenuStack.push(popupMenu);
 		
 		for(String key : keys) {
 			if(key == null) {

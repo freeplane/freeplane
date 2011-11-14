@@ -131,7 +131,7 @@ public class LinkTypeMyPublicationsNode extends ALinkNode implements IWorkspaceN
 		return clone(node);
 	}
 	
-	protected WorkspacePopupMenu getPopupMenu() {
+	public WorkspacePopupMenu getContextMenu() {
 		return null;
 	}
 }

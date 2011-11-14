@@ -1,15 +1,16 @@
 package org.docear.plugin.core;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.Properties;
 
 import org.docear.plugin.core.actions.DocearLicenseAction;
 import org.docear.plugin.core.actions.DocearOpenUrlAction;
 import org.docear.plugin.core.actions.SaveAction;
 import org.docear.plugin.core.actions.SaveAsAction;
 import org.docear.plugin.core.features.DocearMapModelController;
+import org.docear.plugin.core.workspace.actions.WorkspaceChangeLocationsAction;
 import org.docear.plugin.core.workspace.creator.FolderTypeLibraryCreator;
 import org.docear.plugin.core.workspace.creator.FolderTypeLiteratureRepositoryCreator;
 import org.docear.plugin.core.workspace.creator.FolderTypeProjectsCreator;
@@ -31,6 +32,8 @@ import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.controller.IWorkspaceListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 
 public class CoreConfiguration extends ALanguageController implements IFreeplanePropertyListener, IWorkspaceListener {
 
@@ -108,6 +111,9 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		addPluginDefaults();
 		replaceFreeplaneStringsAndActions();
 		DocearMapModelController.install(new DocearMapModelController(modeController));
+		// set up context menu for workspace
+		modeController.addAction(new WorkspaceChangeLocationsAction());
+		modifyContextMenus();
 	}
 	
 	private void prepareWorkspace() {
@@ -202,19 +208,31 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		if (defaults == null)
 			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
 		Controller.getCurrentController().getResourceController().addDefaults(defaults);
+		if (resController.getProperty("ApplicationName").equals("Docear")) {
+			Controller.getCurrentController().getResourceController().setDefaultProperty("selection_method", "selection_method_by_click");
+			Controller.getCurrentController().getResourceController().setDefaultProperty("links", "relative_to_workspace");
+			Controller.getCurrentController().getResourceController().setDefaultProperty("save_folding", "always_save_folding");
+		}
 		if(DocearController.getController().getLibrary() != null && DocearController.getController().getLibrary().getLibraryPath() != null){
 			URI uri = DocearController.getController().getLibrary().getLibraryPath();
 			Controller.getCurrentController().getResourceController().setProperty(LIBRARY_PATH, uri.getPath());
 		}
 		
 	}
+	
+	private void modifyContextMenus() {
+		AWorkspaceTreeNode root =  (AWorkspaceTreeNode) WorkspaceUtils.getModel().getRoot();
+		WorkspacePopupMenuBuilder.insertAction(root.getContextMenu(), "workspace.action.docear.locations.change", 1);
+	}
 
 	public void propertyChanged(String propertyName, String newValue, String oldValue) {
 	}
 
 	public void workspaceChanged(WorkspaceEvent event) {
-		// TODO Auto-generated method stub
 		System.out.println("DOCEAR CORE: workspaceChanged(WorkspaceEvent):"+ event);
 		showLocationDialogIfNeeded();
+		if(event.getType() == WorkspaceEvent.WORKSPACE_EVENT_TYPE_CHANGE) {
+			modifyContextMenus();
+		}
 	}
 }

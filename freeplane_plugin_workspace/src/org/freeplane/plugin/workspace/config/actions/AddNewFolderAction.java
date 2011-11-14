@@ -1,50 +1,37 @@
 /**
  * author: Marcel Genzmehr
- * 16.08.2011
+ * 11.11.2011
  */
-package org.freeplane.plugin.workspace.config.node;
+package org.freeplane.plugin.workspace.config.actions;
 
-import java.net.URI;
-
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import java.awt.event.ActionEvent;
 
 /**
  * 
  */
-public abstract class ALinkNode extends AWorkspaceTreeNode {
+public class AddNewFolderAction extends AWorkspaceAction {
+
+	private static final long serialVersionUID = 6126361617680877866L;
+
 	
-	private static final long serialVersionUID = 1L;
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
-	
-	public static final String LINK_TYPE_FILE = "file";
 
-	/**
-	 * @param type
-	 */
-	public ALinkNode(String type) {
-		super(type);
+	public AddNewFolderAction() {
+		super("workspace.action.node.new.folder");
 	}
 
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
 
-	public abstract URI getLinkPath();
-	
-
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	
-	public final String getTagName() {
-		return "link";
-	}
-
-	@Override
-	public void initializePopup() {
+	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

@@ -18,6 +18,7 @@ public class Activator extends WorkspaceDependentPlugin {
 		startPluginServices(context, modeController);
 	}
 	
+	@SuppressWarnings("rawtypes")
 	protected void startPluginServices(BundleContext context, ModeController modeController) {
 		try {
 			final ServiceReference[] dependends = context.getServiceReferences(DocearPlugin.class.getName(),
@@ -35,6 +36,7 @@ public class Activator extends WorkspaceDependentPlugin {
 		}
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private List<DocearPlugin> sortOnDependencies(ServiceReference[] dependends, BundleContext context) {
 		ArrayList<DocearPlugin> list = new ArrayList<DocearPlugin>();
 		HashMap<String, DocearPlugin> requiredFor = new HashMap<String, DocearPlugin>();

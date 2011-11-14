@@ -270,7 +270,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 		return attributeListener;
 	}
 	
-	@Override
+	
 	public void propertyChanged(String propertyName, String newValue, String oldValue) {
 		System.out.println("debug property changed: "+propertyName+": "+newValue+" / "+oldValue);
 		if (propertyName.equals("docear_bibtex_path")) {
@@ -283,15 +283,15 @@ public class ReferencesController extends ALanguageController implements IDocear
 		}
 	}
 
-	@Override
+	
 	public void onCreate(MapModel map) {
 	}
 
-	@Override
+
 	public void onRemove(MapModel map) {
 	}
 
-	@Override
+	
 	public void onSavedAs(MapModel map) {
 		ReferencesController.getController().getJabrefWrapper().getJabrefFrame();
 		try {
@@ -303,7 +303,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 		
 	}
 
-	@Override
+	
 	public void onSaved(MapModel map) {
 		ReferencesController.getController().getJabrefWrapper().getJabrefFrame();
 		try {

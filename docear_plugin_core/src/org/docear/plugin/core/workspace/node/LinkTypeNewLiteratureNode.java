@@ -134,7 +134,7 @@ public class LinkTypeNewLiteratureNode extends ALinkNode implements IWorkspaceNo
 		return clone(node);
 	}
 	
-	protected WorkspacePopupMenu getPopupMenu() {
+	public WorkspacePopupMenu getContextMenu() {
 		return null;
 	}
 }
