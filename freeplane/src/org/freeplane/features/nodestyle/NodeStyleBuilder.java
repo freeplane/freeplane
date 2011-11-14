@@ -142,6 +142,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "NUMBERED", nodenumberingHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "NUMBERED", nodenumberingHandler);
+		
 		final IAttributeHandler formatHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
@@ -155,6 +156,25 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			reader.addAttributeHandler(NodeBuilder.XML_NODE, "TEMPLATE", formatHandler);
 			reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "TEMPLATE", formatHandler);
 		}
+		
+		final IAttributeHandler nodeMaxTextWidthHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeSizeModel.setNodeMaxTextWidth(node, Integer.valueOf(value));
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "MAX_TEXT_WIDTH", nodeMaxTextWidthHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "MAX_TEXT_WIDTH", nodeMaxTextWidthHandler);
+		
+		final IAttributeHandler nodeMinWidthHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeSizeModel.setNodeMinWidth(node, Integer.valueOf(value));
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "MIN_WIDTH", nodeMinWidthHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "MIN_WIDTH", nodeMinWidthHandler);
+		
 	}
 
 	/**
@@ -177,7 +197,8 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			return;
 		}
 		final NodeModel node = (NodeModel) userObject;
-		writeAttributes(writer, node, null, true);
+		writeAttributes(writer, node, (NodeStyleModel)null, true);
+		writeAttributes(writer, node, (NodeSizeModel)null, true);
 	}
 
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final IExtension extension) {
@@ -185,8 +206,11 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		if (forceFormatting) {
 			return;
 		}
-		final NodeStyleModel style = (NodeStyleModel) extension;
-		writeAttributes(writer, null, style, false);
+		if(extension instanceof NodeStyleModel){
+			final NodeStyleModel style = (NodeStyleModel) extension;
+			writeAttributes(writer, null, style, false);
+			return;
+		}
 	}
 
 	private void writeAttributes(final ITreeWriter writer, final NodeModel node, final NodeStyleModel style,
@@ -213,6 +237,18 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		}
 	}
 
+	private void writeAttributes(final ITreeWriter writer, final NodeModel node, final NodeSizeModel size,
+	                             final boolean forceFormatting) {
+		final int maxTextWidth = forceFormatting ? nsc.getMaxTextWidth(node) : size.getMaxTextWidth();
+		if (maxTextWidth != NodeSizeModel.NOT_SET) {
+			writer.addAttribute("MAX_TEXT_WIDTH", Integer.toString(maxTextWidth));
+		}
+		
+		final int minTextWidth = forceFormatting ? nsc.getMinWidth(node) : size.getMinNodeWidth();
+		if (minTextWidth != NodeSizeModel.NOT_SET) {
+			writer.addAttribute("MIN_WIDTH", Integer.toString(minTextWidth));
+		}
+	}
 	public void writeContent(final ITreeWriter writer, final Object userObject, final String tag) throws IOException {
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 		if (!forceFormatting) {

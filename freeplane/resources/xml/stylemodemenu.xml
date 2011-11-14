@@ -62,7 +62,8 @@
 				<menu_action action="ViewLayoutTypeAction.OUTLINE"/>
 				</menu_category>
 				<menu_submenu name="menu_nodeView" name_ref="menu_nodeView">
-					<menu_action action="ShowSelectionAsRectangleAction"/>					
+					<menu_action action="ShowSelectionAsRectangleAction"/>	
+					<menu_action action="NodeWidthAction" />				
 					</menu_submenu>
 				<menu_submenu name="menu_hoverView" name_ref="menu_hoverView">
 				<menu_action accelerator="alt F2" action="ToggleDetailsAction"/>

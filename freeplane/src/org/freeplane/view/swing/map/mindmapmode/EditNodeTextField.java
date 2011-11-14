@@ -80,6 +80,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.TextController;
@@ -581,7 +582,8 @@ public class EditNodeTextField extends EditNodeBase {
 		styleSheet.addRule(ruleBuilder.toString());
 		textfield.setText(text);
 		final MapView mapView = (MapView) viewController.getMapView();
-		maxWidth = MapStyleModel.getExtension(mapView.getModel()).getMaxNodeWidth();
+		final NodeStyleController nsc = NodeStyleController.getController(modeController);
+		maxWidth = nsc.getMaxTextWidth(node);
 		maxWidth = mapView.getZoomed(maxWidth) + 1;
 		extraWidth = ResourceController.getResourceController().getIntProperty("editor_extra_width", 80);
 		extraWidth = mapView.getZoomed(extraWidth);

@@ -23,7 +23,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -180,14 +179,7 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 
 	public NewerFileRevisionsFoundDialog(final File file, final File[] revisions) {
 		super(UITools.getFrame(), TextUtils.getText(NewerFileRevisionsFoundDialog.key("title")), true);
-		if(getOwner() != null){
-			final Window[] ownedWindows = getOwner().getOwnedWindows();
-			for(Window w : ownedWindows){
-				if(w.isVisible()){
-					w.toBack();
-				}
-			}
-		}
+		UITools.backOtherWindows();
 		this.file = file;
 		setBackground(Color.white);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

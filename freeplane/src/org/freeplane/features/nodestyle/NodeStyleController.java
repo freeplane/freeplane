@@ -60,13 +60,13 @@ public class NodeStyleController implements IExtension {
 	final private ExclusivePropertyChain<Color, NodeModel> backgroundColorHandlers;
 // // //	final private Controller controller;
 	final private CombinedPropertyChain<Font, NodeModel> fontHandlers;
-// 	final private ModeController modeController;
+ 	final private ModeController modeController;
 	final private ExclusivePropertyChain<String, NodeModel> shapeHandlers;
 	final private ExclusivePropertyChain<Color, NodeModel> textColorHandlers;
 	public static final String NODE_NUMBERING = "NodeNumbering";
 
 	public NodeStyleController(final ModeController modeController) {
-//		this.modeController = modeController;
+		this.modeController = modeController;
 //		controller = modeController.getController();
 		fontHandlers = new CombinedPropertyChain<Font, NodeModel>(true);
 		textColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
@@ -172,6 +172,46 @@ public class NodeStyleController implements IExtension {
 		return null;
 	}
 
+	private int getStyleMaxTextWidth(final MapModel map, final Collection<IStyle> styleKeys) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		for(IStyle styleKey : styleKeys){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final NodeSizeModel sizeModel = NodeSizeModel.getModel(styleNode);
+			if (sizeModel == null) {
+				continue;
+			}
+			final int maxTextWidth = sizeModel.getMaxTextWidth();
+			if (maxTextWidth == NodeSizeModel.NOT_SET) {
+				continue;
+			}
+			return maxTextWidth;
+		}
+		return getDefaultMaxTextWidth();
+	}
+	
+	private int getStyleMinWidth(final MapModel map, final Collection<IStyle> styleKeys) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		for(IStyle styleKey : styleKeys){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final NodeSizeModel sizeModel = NodeSizeModel.getModel(styleNode);
+			if (sizeModel == null) {
+				continue;
+			}
+			final int minWidth = sizeModel.getMinNodeWidth();
+			if (minWidth == NodeSizeModel.NOT_SET) {
+				continue;
+			}
+			return minWidth;
+		}
+		return getDefaultMinNodeWidth();
+	}
+	
 	public static Font getDefaultFont() {
 		final int fontSize = NodeStyleController.getDefaultFontSize();
 		final int fontStyle = NodeStyleController.getDefaultFontStyle();
@@ -345,4 +385,43 @@ public class NodeStyleController implements IExtension {
 		final NodeStyleModel style = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
 		return style == null ? null : style.getNodeFormat();
 	}
+
+	public int getMaxTextWidth(NodeModel node) {
+		final MapModel map = node.getMap();
+		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
+		final Collection<IStyle> style = styleController.getStyles(node);
+		final int maxTextWidth = getStyleMaxTextWidth(map, style);
+		return maxTextWidth;
+    }
+
+	public int getMinWidth(NodeModel node) {
+		final MapModel map = node.getMap();
+		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
+		final Collection<IStyle> style = styleController.getStyles(node);
+		final int maxTextWidth = getStyleMinWidth(map, style);
+		return maxTextWidth;
+    }
+
+	public ModeController getModeController() {
+	    return modeController;
+    }
+
+	public static int getDefaultMinNodeWidth() {
+    	try {
+    		return Integer.parseInt(ResourceController.getResourceController().getProperty("min_node_width"));
+    	}
+    	catch (final NumberFormatException e) {
+    		return 0;
+    	}
+    }
+
+	public static int getDefaultMaxTextWidth() {
+    	try {
+    		return Integer.parseInt(ResourceController.getResourceController().getProperty("max_node_width"));
+    	}
+    	catch (final NumberFormatException e) {
+    		return Integer.parseInt(ResourceController.getResourceController().getProperty(
+    		    "el__max_default_window_width")) * 2 / 3;
+    	}
+    }
 }

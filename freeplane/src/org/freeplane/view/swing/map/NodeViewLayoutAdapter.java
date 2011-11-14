@@ -29,9 +29,9 @@ import javax.swing.JComponent;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
-import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.view.swing.map.cloud.CloudView;
 
 abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
@@ -182,8 +182,11 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 		if (view.isContentVisible()) {
 	        Dimension contentPreferredSize;
             contentPreferredSize = getContent().getPreferredSize();
-            final MapStyleModel mapStyleModel = MapStyleModel.getExtension(Controller.getCurrentController().getMap());
-            contentWidth = Math.max(view.getZoomed(mapStyleModel.getMinNodeWidth()),contentPreferredSize.width);
+            final MapView mapView = view.getMap();
+			final ModeController modeController = mapView.getModeController();
+			final NodeStyleController nsc = NodeStyleController.getController(modeController);
+			int minNodeWidth = nsc.getMinWidth(view.getModel());
+            contentWidth = Math.max(view.getZoomed(minNodeWidth),contentPreferredSize.width);
             contentHeight = contentPreferredSize.height;
         }
         else {

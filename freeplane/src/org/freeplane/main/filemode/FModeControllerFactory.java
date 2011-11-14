@@ -70,7 +70,7 @@ public class FModeControllerFactory {
 		ClipboardController.install(new ClipboardController());
 		LocationController.install(new LocationController());
 		LogicalStyleController.install(new LogicalStyleController(modeController));
-		new MapStyle(true);
+		MapStyle.install(true);
 		NodeStyleController.getController().addShapeGetter(new Integer(0),
 		    new IPropertyHandler<String, NodeModel>() {
 			    public String getProperty(final NodeModel node, final String currentValue) {
