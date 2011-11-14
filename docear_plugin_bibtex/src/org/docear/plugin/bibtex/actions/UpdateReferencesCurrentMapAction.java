@@ -20,8 +20,8 @@ import net.sf.jabref.imports.OpenDatabaseAction;
 import net.sf.jabref.imports.ParserResult;
 
 import org.docear.plugin.core.CoreConfiguration;
+import org.docear.plugin.core.ui.SwingWorkerDialog;
 import org.docear.plugin.core.util.Tools;
-import org.docear.plugin.pdfutilities.ui.SwingWorkerDialog;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.LogUtils;

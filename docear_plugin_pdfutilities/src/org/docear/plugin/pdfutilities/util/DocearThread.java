@@ -4,7 +4,7 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.event.SwingPropertyChangeSupport;
 
-import org.docear.plugin.pdfutilities.ui.SwingWorkerDialog;
+import org.docear.plugin.core.ui.SwingWorkerDialog;
 import org.freeplane.core.util.LogUtils;
 
 
