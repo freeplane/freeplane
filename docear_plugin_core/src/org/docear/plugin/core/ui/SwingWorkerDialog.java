@@ -1,4 +1,4 @@
-package org.docear.plugin.pdfutilities.ui;
+package org.docear.plugin.core.ui;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -9,7 +9,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -25,8 +24,6 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.text.BadLocationException;
 
-import org.docear.plugin.pdfutilities.features.AnnotationModel;
-
 import org.jdesktop.swingworker.SwingWorker;
 
 import com.jgoodies.forms.factories.FormFactory;
@@ -41,8 +38,7 @@ public class SwingWorkerDialog extends JDialog implements PropertyChangeListener
 	public static final String SET_PROGRESS_BAR_DETERMINATE = "setProgressBardeterminate";
 	public static final String SET_PROGRESS_BAR_INDETERMINATE = "setProgressBarIndeterminate";
 	public static final String IS_DONE = "isDone";
-	public static final String IS_CANCELED = "isCanceled";
-	public static final String NEW_NODES = "newNodes";
+	public static final String IS_CANCELED = "isCanceled";	
 	public static final String NEW_FILE = "newFile";
 	public static final String PROGRESS = "progress";
 	public static final String PROGRESS_BAR_TEXT = "progress_bar_text";
@@ -262,20 +258,7 @@ public class SwingWorkerDialog extends JDialog implements PropertyChangeListener
 			lblWorkingOn.setText("Checking " + evt.getNewValue());
 			//textArea.append("\n-----------------------------------------\n");
 			//textArea.append("Importing " + evt.getNewValue() +"\n\n");
-		}
-		if(evt.getPropertyName().equals(NEW_NODES)){
-			@SuppressWarnings("unchecked")
-			Collection<AnnotationModel> annotations = (Collection<AnnotationModel>)evt.getNewValue();
-			for(AnnotationModel annotation : annotations){
-				if(detailsLog.getLineCount() > 250){
-					try {
-						detailsLog.replaceRange("", detailsLog.getLineStartOffset(0), detailsLog.getLineStartOffset(1)-1);
-					} catch (BadLocationException e) {			
-					}
-				}
-				detailsLog.append("Imported " + annotation.getTitle() +"\n");
-			}			
-		}
+		}		
 		if(evt.getPropertyName().equals(IS_DONE)){
 			this.progressBar.setIndeterminate(false);
 			this.progressBar.setValue(100);
@@ -296,6 +279,12 @@ public class SwingWorkerDialog extends JDialog implements PropertyChangeListener
 			lblWorkingOn.setText("" + evt.getNewValue());
 		}
 		if(evt.getPropertyName().equals(DETAILS_LOG_TEXT)){
+			if(detailsLog.getLineCount() > 250){
+				try {
+					detailsLog.replaceRange("", detailsLog.getLineStartOffset(0), detailsLog.getLineStartOffset(1)-1);
+				} catch (BadLocationException e) {			
+				}
+			}
 			detailsLog.append("" + evt.getNewValue() +"\n");
 		}
 		if(evt.getPropertyName().equals(IS_CANCELED)){

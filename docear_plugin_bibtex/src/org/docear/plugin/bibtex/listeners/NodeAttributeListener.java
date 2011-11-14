@@ -17,7 +17,7 @@ public class NodeAttributeListener implements TableModelListener {
 	
 	private static boolean locked = false;
 
-	@Override
+
 	public void tableChanged(TableModelEvent e) {		
 //		if (DocearReferenceUpdateController.isLocked()) {		
 //			return;

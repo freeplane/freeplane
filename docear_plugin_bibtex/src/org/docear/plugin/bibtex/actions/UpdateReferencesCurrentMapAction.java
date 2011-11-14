@@ -13,7 +13,7 @@ import net.sf.jabref.BibtexEntry;
 
 import org.docear.plugin.bibtex.JabRefAttributes;
 import org.docear.plugin.bibtex.ReferencesController;
-import org.docear.plugin.pdfutilities.ui.SwingWorkerDialog;
+import org.docear.plugin.core.ui.SwingWorkerDialog;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;

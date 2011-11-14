@@ -32,10 +32,15 @@ import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import org.freeplane.core.extension.IExtension;
@@ -48,6 +53,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.text.TextController;
+import org.freeplane.features.url.UrlManager;
 
 /**
  * @author Dimitry Polivaev
@@ -91,7 +97,7 @@ public class ClipboardController implements IExtension {
 			final String forNodesFlavor = createForNodesFlavor(selectedNodes, copyInvisible);
 			final String plainText = getAsPlainText(selectedNodes);
 			return new MindMapNodesSelection(forNodesFlavor, plainText, getAsRTF(selectedNodes),
-			    getAsHTML(selectedNodes), null, null);
+			    getAsHTML(selectedNodes), null, getAsFileList(selectedNodes));
 		}
 		catch (final UnsupportedFlavorException ex) {
 			LogUtils.severe(ex);
@@ -100,6 +106,42 @@ public class ClipboardController implements IExtension {
 			LogUtils.severe(ex);
 		}
 		return null;
+	}
+
+	private List<?> getAsFileList(Collection<NodeModel> selectedNodes) {		
+		List<File> fileList = new ArrayList<File>();
+		for(NodeModel node : selectedNodes){
+			URI uri = NodeLinks.getValidLink(node);
+			if(uri == null) continue;			
+			try{
+				// uri with scheme is always "absolute" ( so are workspace relative links)
+				if(!uri.isAbsolute()){
+					final UrlManager urlManager = (UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class);					
+					if(node.getMap() == null || urlManager == null) continue;
+					if(uri.getScheme() == null ||uri.getScheme().equals(""))
+					uri = urlManager.getAbsoluteUri(node.getMap(), uri);				
+				}
+				if(uri.getScheme().equals("file")){
+					fileList.add(new File(uri));
+				}
+				else{
+					fileList.add(new File(uri.toURL().openConnection().getURL().toURI()));
+				}				
+			} 
+			catch(IllegalArgumentException e){
+				continue;
+			} 
+			catch (MalformedURLException e) {
+				continue;
+			}
+			catch (URISyntaxException e) {
+				continue;
+			}
+			catch (IOException e) {
+				continue;
+			}
+		}
+		return fileList;
 	}
 
 	public Transferable copy(final IMapSelection selection) {

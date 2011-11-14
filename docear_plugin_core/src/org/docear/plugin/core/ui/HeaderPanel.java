@@ -1,4 +1,4 @@
-package org.docear.plugin.pdfutilities.ui;
+package org.docear.plugin.core.ui;
 
 import java.awt.Color;
 import java.awt.Font;

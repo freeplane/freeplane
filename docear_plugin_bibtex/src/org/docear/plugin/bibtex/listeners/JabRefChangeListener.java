@@ -13,7 +13,7 @@ import org.jdesktop.swingworker.SwingWorker;
 
 public class JabRefChangeListener implements DatabaseChangeListener {
 
-	@Override
+
 	public void databaseChanged(DatabaseChangeEvent e) {
 		if (DocearReferenceUpdateController.isLocked()) {		
 			return;
@@ -42,9 +42,9 @@ public class JabRefChangeListener implements DatabaseChangeListener {
 
 	public void updateNodeAttributes(final NodeModel node, final BibtexEntry entry) {
 		SwingWorker<Void, Void> thread = new SwingWorker<Void, Void>() {
-			@Override
+			
 			protected Void doInBackground() throws Exception {
-				if (entry.getCiteKey().isEmpty()) {
+				if (entry.getCiteKey().length() <= 0) {
 					return null;
 				}
 				JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
@@ -66,7 +66,7 @@ public class JabRefChangeListener implements DatabaseChangeListener {
 
 	public void deleteNodeAttributes(final NodeModel node, final BibtexEntry entry) {
 		SwingWorker<Void, Void> thread = new SwingWorker<Void, Void>() {
-			@Override
+			
 			protected Void doInBackground() throws Exception {
 				JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
 
