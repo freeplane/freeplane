@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.docear.plugin.core.features.DocearMapModelController;
+import org.docear.plugin.core.ui.SwingWorkerDialog;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.features.AnnotationController;
@@ -25,7 +26,6 @@ import org.docear.plugin.pdfutilities.features.AnnotationNodeModel;
 import org.docear.plugin.pdfutilities.features.IAnnotation;
 import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
-import org.docear.plugin.pdfutilities.ui.SwingWorkerDialog;
 import org.docear.plugin.pdfutilities.ui.conflict.ImportConflictDialog;
 import org.docear.plugin.pdfutilities.util.CustomFileFilter;
 import org.docear.plugin.pdfutilities.util.CustomFileListFilter;
@@ -179,7 +179,8 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					Thread.sleep(1L);
 					if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
 					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Loading monitored mindmaps ...");
-					List<MapModel> maps = new NodeUtils().getMapsFromUris(mindmapFiles);
+					new NodeUtils();
+					List<MapModel> maps = NodeUtils.getMapsFromUris(mindmapFiles);
 					
 					Thread.sleep(1L);
 					if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
@@ -237,9 +238,11 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 							if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
 							SwingUtilities.invokeAndWait(
 							        new Runnable() {
-							            public void run(){
-							            	new NodeUtils().insertNewChildNodesFrom(uri, finalAnnotations, target.isLeft(), target);										
-							            	firePropertyChange(SwingWorkerDialog.NEW_NODES, null, getInsertedNodes(finalAnnotations));										
+							            public void run(){							            	
+											NodeUtils.insertNewChildNodesFrom(uri, finalAnnotations, target.isLeft(), target);
+											for(AnnotationModel annotation : getInsertedNodes(finalAnnotations)){
+												firePropertyChange(SwingWorkerDialog.DETAILS_LOG_TEXT, null, "Imported " + annotation.getTitle() +"\n");												
+											}							            											
 							            }
 							        }
 							   );						

@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,15 +24,19 @@ import net.sf.jabref.MnemonicAwareAction;
 import net.sf.jabref.Util;
 import net.sf.jabref.export.AutoSaveManager;
 import net.sf.jabref.export.SaveSession;
-import net.sf.jabref.gui.FileDialogs;
 import net.sf.jabref.external.FileLinksUpgradeWarning;
+import net.sf.jabref.gui.FileDialogs;
 import net.sf.jabref.label.HandleDuplicateWarnings;
 
 // The action concerned with opening an existing database.
 
 public class OpenDatabaseAction extends MnemonicAwareAction {
 
-    boolean showDialog;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	boolean showDialog;
     private JabRefFrame frame;
 
     // List of actions that may need to be called after opening the file. Such as
@@ -340,8 +343,8 @@ public class OpenDatabaseAction extends MnemonicAwareAction {
     }
 	
 	public static String parseSpecialChars(String s){
-		if(s == null) return s;		
-        s = s.replaceAll("\\\\\"[{]([a-zA-Z])[}]",  "$1" + "\u0308"); // replace Ã¤Ã¼Ã¶
+		if(s == null) return s;
+		s = s.replaceAll("\\\\\"[{]([a-zA-Z])[}]",  "$1" + "\u0308"); // replace äöü
         s = s.replaceAll("\\\\`[{]([a-zA-Z])[}]",  "$1" + "\u0300"); // replace `        
         s = s.replaceAll("\\\\'[{]([a-zA-Z])[}]",  "$1" + "\u0301"); // replace Ã‚Â´
         s = s.replaceAll("\\\\\\^[{]([a-zA-Z])[}]",  "$1" + "\u0302"); // replace ^

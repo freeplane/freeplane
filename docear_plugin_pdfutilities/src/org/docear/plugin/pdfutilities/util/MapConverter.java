@@ -14,13 +14,13 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.SwingUtilities;
 
 import org.docear.plugin.core.features.DocearMapModelController;
+import org.docear.plugin.core.ui.SwingWorkerDialog;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.features.AnnotationController;
 import org.docear.plugin.pdfutilities.features.AnnotationID;
 import org.docear.plugin.pdfutilities.features.AnnotationModel;
 import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
-import org.docear.plugin.pdfutilities.ui.SwingWorkerDialog;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;

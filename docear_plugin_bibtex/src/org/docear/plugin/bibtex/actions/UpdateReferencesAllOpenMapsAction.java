@@ -1,15 +1,12 @@
 package org.docear.plugin.bibtex.actions;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
-import org.docear.plugin.pdfutilities.ui.SwingWorkerDialog;
+import org.docear.plugin.bibtex.ReferenceUpdater;
+import org.docear.plugin.core.mindmap.MindmapUpdateController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.map.MapModel;
-import org.freeplane.features.mode.Controller;
-import org.jdesktop.swingworker.SwingWorker;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.url.mindmapmode.SaveAll;
 
 public class UpdateReferencesAllOpenMapsAction extends AFreeplaneAction {
 
@@ -24,19 +21,11 @@ public class UpdateReferencesAllOpenMapsAction extends AFreeplaneAction {
 
 	
 	public void actionPerformed(ActionEvent e) {
-		List<MapModel> maps = new ArrayList<MapModel>();
-		Map<String, MapModel> openMaps = Controller.getCurrentController().getMapViewManager().getMaps();
-		for (String name : openMaps.keySet()) {
-			maps.add(openMaps.get(name));			
-		}
+		new SaveAll().actionPerformed(null);
 		
-		SwingWorker<Void, Void> thread = UpdateReferencesCurrentMapAction.getReferenceUpdateThread(maps);		
-		
-		SwingWorkerDialog workerDialog = new SwingWorkerDialog(Controller.getCurrentController().getViewController().getJFrame());
-		workerDialog.setHeadlineText("Reference Update");
-		workerDialog.setSubHeadlineText("Updating References in progress....");
-		workerDialog.showDialog(thread);
-		workerDialog = null;
+		MindmapUpdateController mindmapUpdateController = new MindmapUpdateController();
+		mindmapUpdateController.addMindmapUpdater(new ReferenceUpdater(TextUtils.getText("update_references_open_mindmaps")));
+		mindmapUpdateController.updateOpenMindmaps();
 	}
 
 }
