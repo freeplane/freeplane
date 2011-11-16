@@ -89,7 +89,7 @@ public class SwingWorkerDialog extends JDialog implements PropertyChangeListener
 
 	private void init() {	
 		setResizable(false);				
-		setMinimumSize(new Dimension(640, 480));		
+		setMinimumSize(new Dimension(640, 480));
 		
 		
 		this.addWindowListener(new WindowListener() {
@@ -200,15 +200,14 @@ public class SwingWorkerDialog extends JDialog implements PropertyChangeListener
 					buttonPanel.add(detailsButton, "1, 2");
 				}
 				{
-					okButton = new JButton("Ok");
-					okButton.setEnabled(false);
-					okButton.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							onCancel();
-						}
-					});
-					buttonPanel.add(okButton, "3, 2");
 				}
+				okButton = new JButton("Ok");
+				okButton.setEnabled(false);
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						onCancel();
+					}
+				});
 				{
 					cancelButton = new JButton("Cancel");
 					cancelButton.addActionListener(new ActionListener() {
@@ -216,8 +215,9 @@ public class SwingWorkerDialog extends JDialog implements PropertyChangeListener
 							onCancel();
 						}
 					});
-					buttonPanel.add(cancelButton, "5, 2");
+					buttonPanel.add(cancelButton, "3, 2");
 				}
+				buttonPanel.add(okButton, "5, 2");
 			}
 		}
 	}

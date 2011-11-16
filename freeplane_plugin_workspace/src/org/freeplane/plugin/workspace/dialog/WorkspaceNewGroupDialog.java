@@ -4,6 +4,7 @@
  */
 package org.freeplane.plugin.workspace.dialog;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -39,12 +40,14 @@ public class WorkspaceNewGroupDialog extends JDialog {
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 	public WorkspaceNewGroupDialog(String title, final AWorkspaceTreeNode targetNode) {
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setResizable(false);
 		assert(targetNode != null);
 		setLocationRelativeTo(UITools.getFrame());
 		setTitle(title);
 		setModal(true);
-		setSize(320, 120);
-		setResizable(false);
+//		setSize(324, 147);
+		setMinimumSize(new Dimension(320, 160));
 		getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
 				FormFactory.DEFAULT_COLSPEC,
@@ -59,7 +62,7 @@ public class WorkspaceNewGroupDialog extends JDialog {
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("4dlu:grow"),
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,}));
 		
@@ -114,7 +117,6 @@ public class WorkspaceNewGroupDialog extends JDialog {
 				}
 			}
 		});
-		panel.add(btnOk, "2, 2");
 		
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {			
@@ -122,7 +124,8 @@ public class WorkspaceNewGroupDialog extends JDialog {
 				dispose();
 			}
 		});
-		panel.add(btnCancel, "4, 2");
+		panel.add(btnCancel, "2, 2");
+		panel.add(btnOk, "4, 2");
 	}
 	/***********************************************************************************
 	 * METHODS
