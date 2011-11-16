@@ -304,14 +304,11 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 		if (popupMenu == null) {			
 			popupMenu = new WorkspacePopupMenu();
 			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
-					"FileNodeAddNewMindmapAction",
-					WorkspacePopupMenuBuilder.SEPARATOR, 
-					"FileNodePasteAction",
-					"FileNodeCopyAction",
-					"FileNodeCutAction",
-					//"FileNodeDeleteAction",
+					"workspace.action.node.paste",
+					"workspace.action.node.copy",
+					"workspace.action.node.cut",
 					WorkspacePopupMenuBuilder.SEPARATOR,
-					"FileNodeRenameAction",
+					"workspace.action.node.rename",
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.refresh",
 					"workspace.action.node.delete"

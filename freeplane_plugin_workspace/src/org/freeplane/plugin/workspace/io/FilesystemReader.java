@@ -6,8 +6,6 @@ package org.freeplane.plugin.workspace.io;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 import org.freeplane.core.io.ListHashTable;
@@ -18,7 +16,6 @@ import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 public class FilesystemReader {
 
 	private final FileReadManager typeManager;
-	private final HashSet<INodeCreatedListener> createdListeners = new HashSet<INodeCreatedListener>();
 	private boolean filtering = true;
 
 	public FilesystemReader(final FileReadManager typeManager) {
@@ -44,21 +41,6 @@ public class FilesystemReader {
 			}
 		}
 	}	
-	
-	public void addNodeCreatedListener(INodeCreatedListener listener) {
-		if(listener == null || createdListeners.contains(listener)) {
-			return;
-		}
-		
-		createdListeners.add(listener);
-	}
-	
-	public void removeNodeCreatedListener(INodeCreatedListener listener) {
-		if(listener == null) {
-			return;
-		}
-		createdListeners.remove(listener);
-	}
 	
 	private ListHashTable<String, IFileTypeHandler> getFileTypeHandlers() {
 		return typeManager.getFileTypeHandlers();
@@ -93,21 +75,10 @@ public class FilesystemReader {
 		if (handlers != null && handlers.size() == 1) { //FIXME: what if there is more than one handler for a single type?
 			IFileTypeHandler nodeCreator = handlers.get(0);
 			AWorkspaceTreeNode newParent = nodeCreator.createFileNode(parent, fileExtension, file);
-			NodeCreatedEvent event = new NodeCreatedEvent(newParent);
-			informNodeCreatedListeners(event);
 			return newParent;
 		}
 		return parent;
-	}
-	
-	public void informNodeCreatedListeners(NodeCreatedEvent event) {
-		Iterator<INodeCreatedListener> iterator = this.createdListeners.iterator();
-		while(iterator.hasNext()) {
-			iterator.next().nodeCreated(event);
-		}
-	}
-	
-	
+	}	
 	
 	
 	/***********************************************************************************

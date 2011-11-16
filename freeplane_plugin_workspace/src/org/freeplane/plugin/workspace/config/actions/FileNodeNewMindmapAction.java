@@ -13,15 +13,15 @@ import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
-public class FileNodeAddNewMindmapAction extends AWorkspaceAction {
+public class FileNodeNewMindmapAction extends AWorkspaceAction {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public FileNodeAddNewMindmapAction() {
-		super("FileNodeAddNewMindmapAction");
+	public FileNodeNewMindmapAction() {
+		super("workspace.action.file.new.mindmap");
 	}
 	
 	public void actionPerformed(final ActionEvent e) {		

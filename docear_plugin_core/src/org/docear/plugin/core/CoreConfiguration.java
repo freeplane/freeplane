@@ -3,7 +3,6 @@ package org.docear.plugin.core;
 import java.net.URI;
 import java.net.URL;
 import java.util.Enumeration;
-import java.util.Properties;
 
 import org.docear.plugin.core.actions.DocearLicenseAction;
 import org.docear.plugin.core.actions.DocearOpenUrlAction;
@@ -222,7 +221,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	
 	private void modifyContextMenus() {
 		AWorkspaceTreeNode root =  (AWorkspaceTreeNode) WorkspaceUtils.getModel().getRoot();
-		WorkspacePopupMenuBuilder.insertAction(root.getContextMenu(), "workspace.action.docear.locations.change", 1);
+		WorkspacePopupMenuBuilder.insertAction(root.getContextMenu(), "workspace.action.docear.locations.change", 3);
 	}
 
 	public void propertyChanged(String propertyName, String newValue, String oldValue) {

@@ -24,7 +24,6 @@ import org.freeplane.plugin.workspace.config.node.ALinkNode;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
 import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
 import org.freeplane.plugin.workspace.config.node.VirtualFolderNode;
-import org.freeplane.plugin.workspace.io.NodeCreatedEvent;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.model.WorkspaceIndexedTreeModel;
@@ -59,12 +58,6 @@ public class WorkspaceUtils {
 			e.printStackTrace();
 			return;
 		}
-		
-		// String temp =
-		// WorkspaceController.getController().getWorkspaceLocation() +
-		// File.separator + "workspace_temp.xml";
-		
-		//String config = WorkspaceController.getController().getWorkspaceLocation() + File.separator + "workspace.xml";
 
 		try {
 			WorkspaceController.getController().saveConfigurationAsXML(new FileWriter(temp));
@@ -75,7 +68,7 @@ public class WorkspaceUtils {
 			to.transferFrom(from, 0, from.size());
 			to.close();
 			from.close();
-			
+
 			temp.delete();
 		}
 		catch (IOException e1) {
@@ -83,23 +76,24 @@ public class WorkspaceUtils {
 		}
 	}
 
-	public static void createPhysicalFolderNode(final File path, final AWorkspaceTreeNode parent) {
+	public static PhysicalFolderNode createPhysicalFolderNode(final File path, final AWorkspaceTreeNode parent) {
 		if (!path.isDirectory()) {
 			LogUtils.warn("the given path is no folder.");
-			return;
+			return null;
 		}
 
 		PhysicalFolderNode node = new PhysicalFolderNode(AFolderNode.FOLDER_TYPE_PHYSICAL);
 		String name = path.getName();
 
-		node.setName(name == null ? "folder" : name);
+		node.setName(name == null ? "directory" : name);
 
 		if (path != null) {
-			node.setFolderPath(MLinkController.toLinkTypeDependantURI(getWorkspaceBaseFile(), path,
+			node.setPath(MLinkController.toLinkTypeDependantURI(getWorkspaceBaseFile(), path,
 					LinkController.LINK_RELATIVE_TO_WORKSPACE));
 		}
 
 		addAndSave(findAllowedTargetNode(parent), node);
+		return node;
 	}
 
 	public static void createLinkTypeFileNode(final File path, final AWorkspaceTreeNode parent) {
@@ -142,6 +136,18 @@ public class WorkspaceUtils {
 		return ret;
 	}
 
+	public static URI getProfileBaseURI() {
+		URI base = getWorkspaceBaseFile().toURI();
+		try {
+			return new URI(base.getScheme(), base.getUserInfo(), base.getHost(), base.getPort(), base.getPath() + "/."
+					+ WorkspaceController.getController().getPreferences().getWorkspaceProfile(), base.getQuery(),
+					base.getFragment());
+		}
+		catch (URISyntaxException e) {
+		}
+		return null;
+	}
+
 	public static File getWorkspaceBaseFile() {
 		String location = ResourceController.getResourceController().getProperty("workspace_location");
 		if (location == null || location.length() == 0) {
@@ -150,11 +156,15 @@ public class WorkspaceUtils {
 		return new File(location);
 	}
 
+	public static File getProfileBaseFile() {
+		return new File(getProfileBaseURI());
+	}
+
 	public static String stripIllegalChars(String string) {
 		if (string == null) {
 			return null;
 		}
-		
+
 		return string.replaceAll("[^a-zA-Z0-9äöüÄÖÜ]+", "");
 	}
 
@@ -165,7 +175,7 @@ public class WorkspaceUtils {
 				return null;
 			}
 			else {
-				//URI test = urlConnection.getURL().toURI();
+				// URI test = urlConnection.getURL().toURI();
 				return urlConnection.getURL().toURI();
 			}
 		}
@@ -179,6 +189,17 @@ public class WorkspaceUtils {
 
 	}
 
+	public static URI workspaceRelativeURI(final URI uri) {
+		URI relativeURI = getWorkspaceBaseURI().relativize(uri);
+		try {
+			return new URI("workspace", relativeURI.getUserInfo(), relativeURI.getHost(), relativeURI.getPort(), "/"
+					+ relativeURI.getPath(), relativeURI.getQuery(), relativeURI.getFragment());
+		}
+		catch (Exception ex) {
+		}
+		return null;
+	}
+
 	public static File resolveURI(final URI uri) {
 		URI absoluteUri = absoluteURI(uri);
 		if (absoluteUri == null) {
@@ -186,21 +207,18 @@ public class WorkspaceUtils {
 		}
 		return new File(absoluteUri);
 	}
-	
+
 	public static URI getURI(final File f) {
 		return f.toURI();
 	}
-	
+
 	/**
 	 * @param targetNode
 	 * @param node
 	 */
 	private static void addAndSave(AWorkspaceTreeNode targetNode, AWorkspaceTreeNode node) {
 		WorkspaceUtils.getModel().addNodeTo(node, targetNode);
-		NodeCreatedEvent event = new NodeCreatedEvent(node);
-		WorkspaceController.getController().getFilesystemReader().informNodeCreatedListeners(event);
 		WorkspaceUtils.getModel().reload(targetNode);
-
 		saveCurrentConfiguration();
 	}
 

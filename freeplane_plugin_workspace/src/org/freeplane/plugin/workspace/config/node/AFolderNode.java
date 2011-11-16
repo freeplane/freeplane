@@ -4,6 +4,8 @@
  */
 package org.freeplane.plugin.workspace.config.node;
 
+import java.net.URI;
+
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 
@@ -31,10 +33,9 @@ public abstract class AFolderNode extends AWorkspaceTreeNode {
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
-
-	public void refresh() {
-		//do nothing for now
-	}
+	
+	public abstract URI getPath();
+	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/

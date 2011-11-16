@@ -6,18 +6,24 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.config.IConfigurationInfo;
-import org.freeplane.plugin.workspace.config.actions.NodeNewGroupAction;
+import org.freeplane.plugin.workspace.config.actions.NodeCopyAction;
+import org.freeplane.plugin.workspace.config.actions.NodeCutAction;
+import org.freeplane.plugin.workspace.config.actions.NodeNewDirectoryLinkAction;
+import org.freeplane.plugin.workspace.config.actions.NodeNewFolderAction;
 import org.freeplane.plugin.workspace.config.actions.NodeNewLinkAction;
+import org.freeplane.plugin.workspace.config.actions.NodePasteAction;
+import org.freeplane.plugin.workspace.config.actions.NodeRenameAction;
+import org.freeplane.plugin.workspace.config.actions.WorkspaceChangeLocationAction;
 import org.freeplane.plugin.workspace.config.actions.WorkspaceCollapseAction;
 import org.freeplane.plugin.workspace.config.actions.WorkspaceDeleteNodeAction;
 import org.freeplane.plugin.workspace.config.actions.WorkspaceExpandAction;
 import org.freeplane.plugin.workspace.config.actions.WorkspaceHideAction;
-import org.freeplane.plugin.workspace.config.actions.WorkspaceRefreshAction;
-import org.freeplane.plugin.workspace.config.actions.WorkspaceChangeLocationAction;
+import org.freeplane.plugin.workspace.config.actions.NodeRefreshAction;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
@@ -80,14 +86,27 @@ public class WorkspaceRoot extends AWorkspaceTreeNode implements IConfigurationI
 			modeController.addAction(new WorkspaceExpandAction());
 			modeController.addAction(new WorkspaceCollapseAction());
 			modeController.addAction(new WorkspaceChangeLocationAction());
-			modeController.addAction(new WorkspaceRefreshAction());
+			modeController.addAction(new NodeRefreshAction());
 			modeController.addAction(new WorkspaceHideAction());
 			modeController.addAction(new WorkspaceDeleteNodeAction());
-			modeController.addAction(new NodeNewGroupAction());
+			modeController.addAction(new NodeNewFolderAction());
 			modeController.addAction(new NodeNewLinkAction());
+			modeController.addAction(new NodeNewDirectoryLinkAction());
+			
+			modeController.addAction(new NodeCutAction());
+			modeController.addAction(new NodeRenameAction());
+			modeController.addAction(new NodeCopyAction());
+			modeController.addAction(new NodePasteAction());
 			
 			popupMenu = new WorkspacePopupMenu();
-			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {"workspace.action.location.change",
+			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
+					WorkspacePopupMenuBuilder.createSubMenu(TextUtils.getRawText("workspace.action.new.label")),
+					"workspace.action.node.new.folder",
+					"workspace.action.node.new.link",
+					"workspace.action.node.new.directory",
+					WorkspacePopupMenuBuilder.endSubMenu(),
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.location.change",
 					"workspace.action.hide",
 					WorkspacePopupMenuBuilder.SEPARATOR, 
 					"workspace.action.all.expand",
@@ -114,5 +133,9 @@ public class WorkspaceRoot extends AWorkspaceTreeNode implements IConfigurationI
 			initializePopup();
 		}
 		return popupMenu;
+	}
+	
+	public void refresh() {
+		WorkspaceController.getController().refreshWorkspace();
 	}
 }

@@ -12,8 +12,13 @@ import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
+import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 
 /**
  * 
@@ -24,6 +29,7 @@ public class FolderFileNode extends DefaultFileNode {
 	
 	private static final long serialVersionUID = 1L;
 	
+	private static WorkspacePopupMenu popupMenu = null;
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -65,6 +71,53 @@ public class FolderFileNode extends DefaultFileNode {
 		return clone(node);
 	}
 	
+	public void refresh() {
+		try {
+			if (getFile().isDirectory()) {
+				WorkspaceUtils.getModel().removeAllElements(this);
+				WorkspaceController.getController().getFilesystemReader().scanFileSystem(this, getFile());
+				WorkspaceUtils.getModel().reload(this);
+				WorkspaceController.getController().getExpansionStateHandler().restoreExpansionStates();				
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}		
+	}
+	
+	public void initializePopup() {
+		if (popupMenu == null) {
+					
+			if (popupMenu == null) {			
+				popupMenu = new WorkspacePopupMenu();
+				WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
+						WorkspacePopupMenuBuilder.createSubMenu(TextUtils.getRawText("workspace.action.new.label")),
+						"workspace.action.file.new.directory",
+						"workspace.action.file.new.mindmap",
+						WorkspacePopupMenuBuilder.SEPARATOR,
+						"workspace.action.file.new.file",
+						WorkspacePopupMenuBuilder.endSubMenu(),
+						WorkspacePopupMenuBuilder.SEPARATOR, 
+						"workspace.action.node.paste",
+						"workspace.action.node.copy",
+						"workspace.action.node.cut",
+						WorkspacePopupMenuBuilder.SEPARATOR,
+						"workspace.action.node.rename",
+						WorkspacePopupMenuBuilder.SEPARATOR,
+						"workspace.action.node.refresh",
+						"workspace.action.node.delete"		
+				});
+			}
+		}
+	}
+	
+	public WorkspacePopupMenu getContextMenu() {
+		if (popupMenu == null) {
+			initializePopup();
+		}
+		return popupMenu;
+	}
+	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
@@ -87,8 +140,14 @@ public class FolderFileNode extends DefaultFileNode {
 				LogUtils.warn("Could not rename File("+getName()+") to File("+event.getBaggage()+")");
 			}
 			
-		} else {
+		} 
+		else if(event.getType() == WorkspaceNodeEvent.WSNODE_OPEN_DOCUMENT) {
+			//do nth
+		}
+		else {
 			super.handleEvent(event);
 		}
 	}
+	
+	
 }

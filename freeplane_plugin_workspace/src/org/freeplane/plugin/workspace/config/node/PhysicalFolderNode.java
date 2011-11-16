@@ -8,16 +8,14 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.config.actions.FileNodeAddNewMindmapAction;
-import org.freeplane.plugin.workspace.config.actions.FileNodeCopyAction;
-import org.freeplane.plugin.workspace.config.actions.FileNodeCutAction;
-import org.freeplane.plugin.workspace.config.actions.FileNodeDeleteAction;
-import org.freeplane.plugin.workspace.config.actions.FileNodePasteAction;
-import org.freeplane.plugin.workspace.config.actions.FileNodeRenameAction;
+import org.freeplane.plugin.workspace.config.actions.FileNodeNewDirectoryAction;
+import org.freeplane.plugin.workspace.config.actions.FileNodeNewFileAction;
+import org.freeplane.plugin.workspace.config.actions.FileNodeNewMindmapAction;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
@@ -35,70 +33,50 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeEve
 	
 	private URI folderPath;
 	
-	
+	public PhysicalFolderNode() {
+		this(AFolderNode.FOLDER_TYPE_PHYSICAL);
+	}
 
 	public PhysicalFolderNode(String id) {
 		super(id);
 	}
 
 	@ExportAsAttribute("path")
-	public URI getFolderPath() {
+	public URI getPath() {
 		return folderPath;
 	}
 
-	public void setFolderPath(URI folderPath) {
+	public void setPath(URI folderPath) {
 		this.folderPath = folderPath;
-	}
-
-	public static void refresh(AWorkspaceTreeNode node) {
-		// if folder path is not correctly set
-		if(node instanceof PhysicalFolderNode) {
-			if (((PhysicalFolderNode) node).getFolderPath() == null) {
-				return;
-			}
-	
-			File folder;
-			WorkspaceController controller = WorkspaceController.getController();
-			try {
-				folder = WorkspaceUtils.resolveURI(((PhysicalFolderNode)node).getFolderPath());
-				if (folder.isDirectory()) {
-					node.removeAllChildren();
-					controller.getFilesystemReader().scanFileSystem(node, folder);
-					controller.getWorkspaceModel().reload(node);
-					
-				}
-	
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	public void initializePopup() {
 		if (popupMenu == null) {
 			ModeController modeController = Controller.getCurrentModeController();
-			modeController.addAction(new FileNodeAddNewMindmapAction());
-			modeController.addAction(new FileNodeCutAction());
-			modeController.addAction(new FileNodeRenameAction());
-			modeController.addAction(new FileNodeDeleteAction());
-			modeController.addAction(new FileNodeCopyAction());
-			modeController.addAction(new FileNodePasteAction());
+			modeController.addAction(new FileNodeNewDirectoryAction());
+			modeController.addAction(new FileNodeNewMindmapAction());
+			modeController.addAction(new FileNodeNewFileAction());
 			
-			popupMenu = new WorkspacePopupMenu();
-			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
-					"FileNodeAddNewMindmapAction",
-					WorkspacePopupMenuBuilder.SEPARATOR, 
-					"FileNodePasteAction",
-					"FileNodeCopyAction",
-					"FileNodeCutAction",
-					//"FileNodeDeleteAction",
-					WorkspacePopupMenuBuilder.SEPARATOR,
-					"FileNodeRenameAction",
-					WorkspacePopupMenuBuilder.SEPARATOR,
-					"workspace.action.node.refresh",
-					"workspace.action.node.delete"
-			});
+			if (popupMenu == null) {			
+				popupMenu = new WorkspacePopupMenu();
+				WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
+						WorkspacePopupMenuBuilder.createSubMenu(TextUtils.getRawText("workspace.action.new.label")),
+						"workspace.action.file.new.directory",
+						"workspace.action.file.new.mindmap",
+						WorkspacePopupMenuBuilder.SEPARATOR,
+						"workspace.action.file.new.file",
+						WorkspacePopupMenuBuilder.endSubMenu(),
+						WorkspacePopupMenuBuilder.SEPARATOR, 
+						"workspace.action.node.paste",
+						"workspace.action.node.copy",
+						"workspace.action.node.cut",
+						WorkspacePopupMenuBuilder.SEPARATOR,
+						"workspace.action.node.rename",
+						WorkspacePopupMenuBuilder.SEPARATOR,
+						"workspace.action.node.refresh",
+						"workspace.action.node.delete"		
+				});
+			}
 		}
 	}
 
@@ -117,19 +95,27 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeEve
 
 	public String toString() {
 		return this.getClass().getSimpleName() + "[id=" + this.getId() + ";name=" + this.getName() + ";path="
-				+ this.getFolderPath() + "]";
+				+ this.getPath() + "]";
 	}
 
-	public void refresh() {	
-		if(getKey() == null) {
-			return;
+	public void refresh() {
+		File folder;
+		try {
+			folder = WorkspaceUtils.resolveURI(getPath());
+			if (folder.isDirectory()) {
+				WorkspaceUtils.getModel().removeAllElements(this);
+				WorkspaceController.getController().getFilesystemReader().scanFileSystem(this, folder);
+				WorkspaceUtils.getModel().reload(this);
+				WorkspaceController.getController().getExpansionStateHandler().restoreExpansionStates();				
+			}
 		}
-		refresh(this);
-		
+		catch (Exception e) {
+			e.printStackTrace();
+		}		
 	}
 	
 	protected AWorkspaceTreeNode clone(PhysicalFolderNode node) {		
-		node.setFolderPath(getFolderPath());		
+		node.setPath(getPath());		
 		return super.clone(node);
 	}
 	

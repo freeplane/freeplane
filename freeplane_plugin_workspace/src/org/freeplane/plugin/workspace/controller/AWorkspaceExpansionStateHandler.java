@@ -53,7 +53,7 @@ public abstract class AWorkspaceExpansionStateHandler {
 	/**
 	 * try to expand all tree nodes that were previously expanded
 	 */
-	public abstract void restoreExpansionState();
+	public abstract void restoreExpansionStates();
 	public abstract void reset();
 
 }

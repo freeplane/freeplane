@@ -22,12 +22,15 @@ import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
+import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 
 public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeEventListener, IWorkspaceTransferableCreator {
 	
 	private static final long serialVersionUID = 1L;
-//	private final String POPUP_KEY="/filesystem_link";
+
 	private URI linkPath;
+	
+	private static WorkspacePopupMenu popupMenu = null;
 	
 	public LinkTypeFileNode() {
 		super(ALinkNode.LINK_TYPE_FILE);	
@@ -38,12 +41,19 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeEventLi
 	}
 	
 	public void initializePopup() {
-//		PopupMenus popupMenu = WorkspaceController.getController().getPopups();		
-//		if (!isSystem()) {
-//			popupMenu.registerPopupMenuNodeDefault(POPUP_KEY);			
-//		}
-//		popupMenu.buildPopupMenu(POPUP_KEY);
-		
+		if (popupMenu == null) {			
+			popupMenu = new WorkspacePopupMenu();
+			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
+					WorkspacePopupMenuBuilder.SEPARATOR, 
+					"workspace.action.node.paste",
+					"workspace.action.node.copy",
+					"workspace.action.node.cut",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.rename",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.delete"
+			});
+		}
 	}
 	
 	@ExportAsAttribute("path")
@@ -118,6 +128,9 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeEventLi
 	}
 	
 	public WorkspacePopupMenu getContextMenu() {
-		return null;
+		if (popupMenu == null) {
+			initializePopup();
+		}
+		return popupMenu;
 	}
 }

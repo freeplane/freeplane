@@ -6,7 +6,6 @@ package org.freeplane.plugin.workspace.model;
 
 import java.io.File;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -326,6 +325,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 		}
 		targetNode.addChildNode(node);
 		this.hashStringKeyIndex.put(node.getKey(), node);
+		nodesWereInserted(targetNode, new int[]{targetNode.getChildCount()-1});
 		return true;
 	}
 	
@@ -336,8 +336,10 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 			child = children.nextElement();
 			this.hashStringKeyIndex.remove(child.getKey());
 			child.disassociateReferences();
+			fireTreeNodesRemoved(this, node.getTreePath(), null, new Object[] {child});
 		}
 		node.removeAllChildren();
+		
 	}
 	
 	/**
@@ -345,9 +347,10 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 	 */
 	public void removeNodeFromParent(AWorkspaceTreeNode node) {
 		this.hashStringKeyIndex.remove(node.getKey());
-		node.getParent().removeChildNode(node);
+		AWorkspaceTreeNode parent = node.getParent();
+		parent.removeChildNode(node);
 		node.disassociateReferences();
-		
+		fireTreeNodesRemoved(this, parent.getTreePath(), null, new Object[] {node});
 	}
 	
 	/**
@@ -403,8 +406,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 					set.add(WorkspaceUtils.absoluteURI(uri));
 				}
 			}			
-		}
-		
+		}		
 		return Arrays.asList(set.toArray(new URI[]{}));
 	}
 	
@@ -429,7 +431,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 		if(node instanceof PhysicalFolderNode) {
 			PhysicalFolderNode phyNode = (PhysicalFolderNode) node;
 			WorkspaceController.getController().getFilesystemReader()
-					.scanFileSystem(phyNode, WorkspaceUtils.resolveURI(phyNode.getFolderPath()));			
+					.scanFileSystem(phyNode, WorkspaceUtils.resolveURI(phyNode.getPath()));			
 		} 
 		else 
 		if(node instanceof AFolderNode) {

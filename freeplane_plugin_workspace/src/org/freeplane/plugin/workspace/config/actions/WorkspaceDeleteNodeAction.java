@@ -6,12 +6,15 @@ package org.freeplane.plugin.workspace.config.actions;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.JOptionPane;
+
 import org.freeplane.core.ui.EnabledAction;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
-/**
- * 
- */
 @EnabledAction(checkOnNodeChange = true, checkOnPopup = true)
 public class WorkspaceDeleteNodeAction extends AWorkspaceAction {
 
@@ -24,6 +27,7 @@ public class WorkspaceDeleteNodeAction extends AWorkspaceAction {
 	public WorkspaceDeleteNodeAction() {
 		super("workspace.action.node.delete");
 	}
+	
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
@@ -42,7 +46,11 @@ public class WorkspaceDeleteNodeAction extends AWorkspaceAction {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
+		int option = JOptionPane.showConfirmDialog(UITools.getFrame(), TextUtils.getRawText("workspace.action.node.delete.confirm.text", "Do you really want to remove ") + getNodeFromActionEvent(e).getName());
+		if(option == JOptionPane.YES_OPTION) {
+			WorkspaceUtils.getModel().removeNodeFromParent(getNodeFromActionEvent(e));
+			WorkspaceUtils.saveCurrentConfiguration();
+			WorkspaceController.getController().refreshWorkspace();
+		}
 	}
 }

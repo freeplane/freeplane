@@ -42,9 +42,9 @@ public class FolderTypeLiteratureRepositoryCreator extends AWorkspaceNodeCreator
 		if (path == null) {
 			return null;
 		}
-		node.setFolderPath(URI.create(path));
+		node.setPath(URI.create(path));
 
-		File file = WorkspaceUtils.resolveURI(node.getFolderPath());
+		File file = WorkspaceUtils.resolveURI(node.getPath());
 
 		if (file != null) {
 			if (!file.exists()) {
@@ -70,7 +70,7 @@ public class FolderTypeLiteratureRepositoryCreator extends AWorkspaceNodeCreator
 					.getController()
 					.getFilesystemReader()
 					.scanFileSystem((AWorkspaceTreeNode) node,
-							WorkspaceUtils.resolveURI(((FolderTypeLiteratureRepositoryNode) node).getFolderPath()));
+							WorkspaceUtils.resolveURI(((FolderTypeLiteratureRepositoryNode) node).getPath()));
 		}
 
 	}

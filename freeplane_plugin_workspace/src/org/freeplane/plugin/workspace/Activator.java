@@ -51,8 +51,7 @@ public class Activator implements BundleActivator {
 	private void registerLinkTypeOption() {
 		IndexedTree.Node node = (IndexedTree.Node) MModeController.getMModeController().getOptionPanelBuilder().getRoot();
 		IndexedTree.Node found = getNodeForPath("Environment/hyperlink_types/links", node);
-		found.setUserObject(new OptionPanelExtender((IPropertyControlCreator) found.getUserObject()));		
-		System.out.println(found);
+		found.setUserObject(new OptionPanelExtender((IPropertyControlCreator) found.getUserObject()));
 	}
 	
 	private IndexedTree.Node getNodeForPath(String path, IndexedTree.Node node) {

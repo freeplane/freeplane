@@ -4,7 +4,6 @@
  */
 package org.docear.plugin.core.workspace.creator;
 
-import java.io.File;
 import java.net.URI;
 
 import org.docear.plugin.core.workspace.node.FolderTypeProjectsNode;
@@ -31,29 +30,29 @@ public class FolderTypeProjectsCreator extends AWorkspaceNodeCreator {
 	public AWorkspaceTreeNode getNode(XMLElement data) {
 		String type = data.getAttribute("type", FOLDER_TYPE_PROJECTS);
 		FolderTypeProjectsNode node = new FolderTypeProjectsNode(type);
-		//TODO: add missing attribute handling
 
 		String name = data.getAttribute("name", null);
 		if(name == null) {
 			return null;
 		}
 		node.setName(name);
-		String path = data.getAttribute("path", "workspace:/projects");
+		
+		boolean monitor = Boolean.parseBoolean(data.getAttribute("monitor", "false"));
+		node.enableMonitoring(monitor);
+		
+		String path = data.getAttribute("path", null);
+		if(path == null || path.trim().length() == 0) {
+			return node;
+		}
+		
 		URI uri;
 		try{
 			uri = URI.create(path);
 		}
 		catch (Exception e) {
-			uri = URI.create("workspace:/projects");
+			return node;
 		}
-		node.setPathURI(uri);
-		
-		File file = WorkspaceUtils.resolveURI(node.getPathURI());
-		if (!file.exists()) {
-			file.mkdirs();			
-		}
-		boolean monitor = Boolean.parseBoolean(data.getAttribute("monitor", "false"));
-		node.enableMonitoring(monitor);
+		node.setPath(uri);
 		
 		return node;
 	}
@@ -68,7 +67,7 @@ public class FolderTypeProjectsCreator extends AWorkspaceNodeCreator {
 					.getController()
 					.getFilesystemReader()
 					.scanFileSystem((AWorkspaceTreeNode) node,
-							WorkspaceUtils.resolveURI(((FolderTypeProjectsNode) node).getPathURI()));
+							WorkspaceUtils.resolveURI(((FolderTypeProjectsNode) node).getPath()));
 		}
 	}
 }
