@@ -1,18 +1,12 @@
 package org.docear.plugin.bibtex.actions;
 
 import java.awt.event.ActionEvent;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.docear.plugin.core.DocearController;
-import org.docear.plugin.core.ui.SwingWorkerDialog;
-
+import org.docear.plugin.bibtex.ReferenceUpdater;
+import org.docear.plugin.core.mindmap.MindmapUpdateController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.map.MapModel;
-import org.freeplane.features.mode.Controller;
-import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.jdesktop.swingworker.SwingWorker;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.url.mindmapmode.SaveAll;
 
 public class UpdateReferencesInLibrary extends AFreeplaneAction{
 
@@ -26,29 +20,11 @@ public class UpdateReferencesInLibrary extends AFreeplaneAction{
 	}
 
 	public void actionPerformed(ActionEvent e) {		
-		List<MapModel> maps = new ArrayList<MapModel>();
-		List<URI> uris = DocearController.getController().getLibrary().getMindmaps();
+		new SaveAll().actionPerformed(null);
 		
-		for (URI uri : uris) {
-			System.out.println("uri: "+uri);
-			try {
-				Controller.getCurrentModeController().getMapController().newMap(WorkspaceUtils.resolveURI(uri).toURI().toURL(), false);
-			}
-			catch (Exception ex) {
-				ex.printStackTrace();
-			}
-			
-			maps.add(Controller.getCurrentController().getMap());			
-		}
-		
-		
-		SwingWorker<Void, Void> thread = UpdateReferencesCurrentMapAction.getReferenceUpdateThread(maps);		
-		
-		SwingWorkerDialog workerDialog = new SwingWorkerDialog(Controller.getCurrentController().getViewController().getJFrame());
-		workerDialog.setHeadlineText("Reference Update");
-		workerDialog.setSubHeadlineText("Updating References in progress....");
-		workerDialog.showDialog(thread);
-		workerDialog = null;			
+		MindmapUpdateController mindmapUpdateController = new MindmapUpdateController();
+		mindmapUpdateController.addMindmapUpdater(new ReferenceUpdater(TextUtils.getText("update_references_library_mindmaps")));
+		mindmapUpdateController.updateRegisteredMindmapsInWorkspace();			
 		
 	}
 

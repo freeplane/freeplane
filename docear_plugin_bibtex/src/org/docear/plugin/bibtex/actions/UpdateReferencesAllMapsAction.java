@@ -8,14 +8,14 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.url.mindmapmode.SaveAll;
 
-public class UpdateReferencesAllOpenMapsAction extends AFreeplaneAction {
+public class UpdateReferencesAllMapsAction extends AFreeplaneAction {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public UpdateReferencesAllOpenMapsAction(String key) {
+	public UpdateReferencesAllMapsAction(String key) {
 		super(key);		
 	}
 
@@ -24,8 +24,8 @@ public class UpdateReferencesAllOpenMapsAction extends AFreeplaneAction {
 		new SaveAll().actionPerformed(null);
 		
 		MindmapUpdateController mindmapUpdateController = new MindmapUpdateController();
-		mindmapUpdateController.addMindmapUpdater(new ReferenceUpdater(TextUtils.getText("update_references_open_mindmaps")));
-		mindmapUpdateController.updateOpenMindmaps();
+		mindmapUpdateController.addMindmapUpdater(new ReferenceUpdater(TextUtils.getText("update_references_all_mindmaps")));
+		mindmapUpdateController.updateAllMindmapsInWorkspace();
 	}
 
 }
