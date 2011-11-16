@@ -17,6 +17,7 @@ import net.sf.jabref.export.DocearSaveDatabaseAction;
 import org.docear.plugin.bibtex.actions.AddExistingReferenceAction;
 import org.docear.plugin.bibtex.actions.AddNewReferenceAction;
 import org.docear.plugin.bibtex.actions.ShowJabrefPreferencesAction;
+import org.docear.plugin.bibtex.actions.UpdateReferencesAllMapsAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesAllOpenMapsAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesCurrentMapAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesInLibrary;
@@ -69,6 +70,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 	private static final String ADD_NEW_REFERENCE_LANG_KEY = "menu_add_new_reference";
 	private static final String ADD_EXISTING_REFERENCES_LANG_KEY = "menu_add_existing_references";
 	private static final String UPDATE_REFERENCES_IN_LIBRARY_LANG_KEY = "menu_update_references_in_library";
+	private static final String UPDATE_REFERENCES_ALL_MAPS_LANG_KEY = "menu_update_references_all_maps";
 	private static final String UPDATE_REFERENCES_ALL_OPEN_MAPS_LANG_KEY = "menu_update_references_all_open_maps";
 	private static final String UPDATE_REFERENCES_CURRENT_MAP_LANG_KEY = "menu_update_references_current_map";
 
@@ -78,6 +80,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 	private AFreeplaneAction UpdateReferencesAllOpenMaps = new UpdateReferencesAllOpenMapsAction(
 			UPDATE_REFERENCES_ALL_OPEN_MAPS_LANG_KEY);
 	private AFreeplaneAction UpdateReferencesInLibrary = new UpdateReferencesInLibrary(UPDATE_REFERENCES_IN_LIBRARY_LANG_KEY);
+	private AFreeplaneAction UpdateReferencesAllMaps = new UpdateReferencesAllMapsAction(UPDATE_REFERENCES_ALL_MAPS_LANG_KEY);
 	private AFreeplaneAction AddExistingReference = new AddExistingReferenceAction(ADD_EXISTING_REFERENCES_LANG_KEY);
 	private AFreeplaneAction AddNewReference = new AddNewReferenceAction(ADD_NEW_REFERENCE_LANG_KEY);
 	
@@ -247,6 +250,8 @@ public class ReferencesController extends ALanguageController implements IDocear
 						UpdateReferencesAllOpenMaps, MenuBuilder.AS_CHILD);
 				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU,
 						UpdateReferencesInLibrary, MenuBuilder.AS_CHILD);
+				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU,
+						UpdateReferencesAllMaps, MenuBuilder.AS_CHILD);
 				
 				
 				builder.addAction(MENU_BAR + TOOLS_MENU, ShowJabrefPreferences, MenuBuilder.AS_CHILD);

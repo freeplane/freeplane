@@ -45,7 +45,7 @@ public class MMapModel extends MapModel {
 	 * The current version and all other version that don't need XML update for
 	 * sure.
 	 */
-	MMapModel( final NodeModel root) {
+	public MMapModel( final NodeModel root) {
 		super(root);
 		addExtension(IUndoHandler.class, new UndoHandler());
 		setReadOnly(false);

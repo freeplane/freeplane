@@ -56,6 +56,10 @@ public class JabRefAttributes {
 	
 	public String getBibtexKey(NodeModel node) {		
 		NodeAttributeTableModel attributeTable = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
+		if (attributeTable == null) {
+			return null;
+		}
+		
 		for (Attribute attribute : attributeTable.getAttributes()) {
 			if (attribute.getName().equals(this.keyAttribute)) {
 				return (String) attribute.getValue();

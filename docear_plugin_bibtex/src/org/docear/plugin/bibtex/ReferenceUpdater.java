@@ -20,7 +20,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
 		DocearReferenceUpdateController.lock();
 		
 		JabRefAttributes jabrefAttributes = ReferencesController.getController().getJabRefAttributes();
-		String bibtexKey = jabrefAttributes.getBibtexKey(node);
+		String bibtexKey = jabrefAttributes.getBibtexKey(node);		
 		
 		if (bibtexKey != null) {
 			BibtexEntry entry = ReferencesController.getController().getJabrefWrapper().getDatabase().getEntryByKey(bibtexKey);

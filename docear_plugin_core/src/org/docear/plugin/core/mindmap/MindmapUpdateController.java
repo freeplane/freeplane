@@ -1,7 +1,9 @@
 package org.docear.plugin.core.mindmap;
 
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -9,13 +11,15 @@ import java.util.Map;
 import javax.swing.SwingUtilities;
 
 import org.docear.plugin.core.DocearController;
-import org.docear.plugin.core.actions.SaveAction;
 import org.docear.plugin.core.ui.SwingWorkerDialog;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.url.mindmapmode.SaveAll;
+import org.freeplane.features.url.UrlManager;
+import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.jdesktop.swingworker.SwingWorker;
 
@@ -30,32 +34,13 @@ public class MindmapUpdateController {
 		return this.updaters;
 	}
 	
-	public void updateAllMindmapsInWorkspace() {
-		//TODO: getAllMindmaps from Workspace
-		List<URI> maps = null;
-		
-		if (maps!=null && maps.size()>0) {
-			
-		}
-
+	public void updateAllMindmapsInWorkspace() {	
+		List<URI> uris = WorkspaceUtils.getModel().getAllNodesFiltered(".mm");
+		updateMindmaps(uris);
 	}
 	
 	public void updateRegisteredMindmapsInWorkspace() {
-		//List<MapModel> maps = new ArrayList<MapModel>();
-		List<URI> uris = DocearController.getController().getLibrary().getMindmaps();
-		
-//		for (URI uri : uris) {
-//			try {
-//				Controller.getCurrentModeController().getMapController().newMap(WorkspaceUtils.resolveURI(uri).toURI().toURL(), false);
-//			}
-//			catch (Exception ex) {
-//				ex.printStackTrace();
-//			}
-//			
-//			maps.add(Controller.getCurrentController().getMap());			
-//		}
-		
-		//updateMindmaps(maps);
+		List<URI> uris = DocearController.getController().getLibrary().getMindmaps();		
 		updateMindmaps(uris);
 	}
 	
@@ -76,7 +61,7 @@ public class MindmapUpdateController {
 		updateMindmaps(maps);
 	}
 	
-	private void updateMindmaps(List<?> maps) {
+	private void updateMindmaps(List<?> maps) {		
 		SwingWorker<Void, Void> thread = getUpdateThread(maps);		
 		
 		SwingWorkerDialog workerDialog = new SwingWorkerDialog(Controller.getCurrentController().getViewController().getJFrame());
@@ -120,21 +105,17 @@ public class MindmapUpdateController {
 					if(canceled()) return null;
 					MapModel map = null;
 					for(Object o : maps) {						
-						if (isUri) {
-							Controller.getCurrentModeController().getMapController().newMap(WorkspaceUtils.resolveURI((URI) o).toURI().toURL(), false);
-							map = Controller.getCurrentController().getMap();							
+						if (isUri) {							
+							map = getMapModel((URI) o);							
 						}
 						else {
 							map = (MapModel) o;
 						}
-						System.out.println("debug working on "+map.getTitle());
 						fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_against_p1")+map.getTitle()+TextUtils.getText("updating_against_p2"));
 						updateNodes(map.getRootNode(), updater);
-						if (isUri) {
-							if (!map.isSaved()) {
-								new SaveAction().actionPerformed(null);
-							}
-							Controller.getCurrentController().close(false);
+						if (isUri) {							
+							saveMap(map);
+							map.destroy();
 							count++;
 							fireProgressUpdate(100 * count / totalCount);
 						}
@@ -155,6 +136,7 @@ public class MindmapUpdateController {
 			}
 			
 			private void updateNodes(NodeModel parent, AMindmapUpdater mindmapupdater) throws InterruptedException, InvocationTargetException {
+				System.out.println("debug updateNodes: "+parent.getText());
 				mindmapupdater.updateNode(parent);
 				
 				for(NodeModel child : parent.getChildren()) {
@@ -210,6 +192,46 @@ public class MindmapUpdateController {
 				for(NodeModel child : node.getChildren()){
 					computeTotalNodeCount(child);
 				}					
+			}
+			
+			private MapModel getMapModel(URI uri) {
+				MapModel map = null;
+				
+				URL url;
+				String mapExtensionKey;
+				try {
+					url = WorkspaceUtils.absoluteURI(uri).toURL();
+					mapExtensionKey = Controller.getCurrentController().getMapViewManager().checkIfFileIsAlreadyOpened(url);					
+				}
+				catch (MalformedURLException ex) {
+					ex.printStackTrace();
+					return null;
+				};
+											
+				if (mapExtensionKey != null) {
+					map = Controller.getCurrentController().getViewController().getMapViewManager().getMaps()
+							.get(mapExtensionKey);
+					if (map!=null) {
+						return map;
+					}
+				}
+				
+				map = new MMapModel(null);
+				AttributeRegistry.createRegistry(map);
+				try {
+					UrlManager.getController().load(url, map);
+				}
+				catch (Exception e) {			
+					e.printStackTrace();
+				}
+				
+				return map;
+			
+			}
+			
+			private void saveMap(MapModel map) {				
+				map.setSaved(false);
+				((MFileManager) UrlManager.getController()).save(map, false);				
 			}
 		};
 	}
