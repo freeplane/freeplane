@@ -69,22 +69,27 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 	}
 	
 	public void enableMonitoring(boolean enable) {
-		File file = WorkspaceUtils.resolveURI(getPath());
-		if(enable != this.doMonitoring) {
+		if(getPath() == null) {
 			this.doMonitoring = enable;
-			if(file == null) {
-				return;
-			}
-			try {		
-				if(enable) {					
-					WorkspaceController.getController().getFileSystemAlterationMonitor().addFileSystemListener(file, this);
+		} 
+		else {
+			File file = WorkspaceUtils.resolveURI(getPath());
+			if(enable != this.doMonitoring) {
+				this.doMonitoring = enable;
+				if(file == null) {
+					return;
 				}
-				else {
-					WorkspaceController.getController().getFileSystemAlterationMonitor().removeFileSystemListener(file, this);
+				try {		
+					if(enable) {					
+						WorkspaceController.getController().getFileSystemAlterationMonitor().addFileSystemListener(file, this);
+					}
+					else {
+						WorkspaceController.getController().getFileSystemAlterationMonitor().removeFileSystemListener(file, this);
+					}
+				} 
+				catch (Exception e) {
+					e.printStackTrace();
 				}
-			} 
-			catch (Exception e) {
-				e.printStackTrace();
 			}
 		}
 	}
