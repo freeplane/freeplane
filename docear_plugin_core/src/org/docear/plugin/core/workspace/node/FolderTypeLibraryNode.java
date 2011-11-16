@@ -274,7 +274,7 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 	}
 
 	public boolean acceptDrop(DataFlavor[] flavors) {
-		// TODO Auto-generated method stub
+		// FIXME: accept only supported flavors
 		return true;
 	}
 

@@ -12,7 +12,9 @@ import javax.swing.JFileChooser;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
+import org.freeplane.plugin.workspace.config.node.AFolderNode;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 /**
  * 
@@ -36,23 +38,26 @@ public class NodeNewLinkAction extends AWorkspaceAction {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 
-	public void actionPerformed(ActionEvent e) {		
-		JFileChooser chooser = new JFileChooser(WorkspaceUtils.getWorkspaceBaseFile());
-		chooser.setMultiSelectionEnabled(false);
-		int response = chooser.showOpenDialog(UITools.getFrame());
-		if(response == JFileChooser.APPROVE_OPTION) {
-			File file = chooser.getSelectedFile();
-			if(file != null) {
-				LinkTypeFileNode node = new LinkTypeFileNode();
-				node.setName(file.getName());
-				URI path = WorkspaceUtils.workspaceRelativeURI(chooser.getSelectedFile().toURI());
-				if (path == null) {
-					return;
-				}	
-				node.setLinkPath(path);
-				WorkspaceUtils.getModel().addNodeTo(node, getNodeFromActionEvent(e));
-				WorkspaceUtils.saveCurrentConfiguration();
-				getNodeFromActionEvent(e).refresh();
+	public void actionPerformed(ActionEvent e) {
+		AWorkspaceTreeNode targetNode = getNodeFromActionEvent(e);
+		if(targetNode instanceof AFolderNode) {
+			JFileChooser chooser = new JFileChooser(WorkspaceUtils.resolveURI(((AFolderNode) targetNode).getPath() == null ? WorkspaceUtils.getProfileBaseURI() : ((AFolderNode) targetNode).getPath()));
+			chooser.setMultiSelectionEnabled(false);
+			int response = chooser.showOpenDialog(UITools.getFrame());
+			if(response == JFileChooser.APPROVE_OPTION) {
+				File file = chooser.getSelectedFile();
+				if(file != null) {
+					LinkTypeFileNode node = new LinkTypeFileNode();
+					node.setName(file.getName());
+					URI path = WorkspaceUtils.workspaceRelativeURI(chooser.getSelectedFile().toURI());
+					if (path == null) {
+						return;
+					}	
+					node.setLinkPath(path);
+					WorkspaceUtils.getModel().addNodeTo(node, getNodeFromActionEvent(e));
+					WorkspaceUtils.saveCurrentConfiguration();
+					getNodeFromActionEvent(e).refresh();
+				}
 			}
 		}
 		

@@ -68,7 +68,7 @@ public class WorkspaceUtils {
 			to.transferFrom(from, 0, from.size());
 			to.close();
 			from.close();
-			
+
 			temp.delete();
 		}
 		catch (IOException e1) {
@@ -136,6 +136,18 @@ public class WorkspaceUtils {
 		return ret;
 	}
 
+	public static URI getProfileBaseURI() {
+		URI base = getWorkspaceBaseFile().toURI();
+		try {
+			return new URI(base.getScheme(), base.getUserInfo(), base.getHost(), base.getPort(), base.getPath() + "/."
+					+ WorkspaceController.getController().getPreferences().getWorkspaceProfile(), base.getQuery(),
+					base.getFragment());
+		}
+		catch (URISyntaxException e) {
+		}
+		return null;
+	}
+
 	public static File getWorkspaceBaseFile() {
 		String location = ResourceController.getResourceController().getProperty("workspace_location");
 		if (location == null || location.length() == 0) {
@@ -144,11 +156,15 @@ public class WorkspaceUtils {
 		return new File(location);
 	}
 
+	public static File getProfileBaseFile() {
+		return new File(getProfileBaseURI());
+	}
+
 	public static String stripIllegalChars(String string) {
 		if (string == null) {
 			return null;
 		}
-		
+
 		return string.replaceAll("[^a-zA-Z0-9äöüÄÖÜ]+", "");
 	}
 
@@ -159,7 +175,7 @@ public class WorkspaceUtils {
 				return null;
 			}
 			else {
-				//URI test = urlConnection.getURL().toURI();
+				// URI test = urlConnection.getURL().toURI();
 				return urlConnection.getURL().toURI();
 			}
 		}
@@ -172,12 +188,13 @@ public class WorkspaceUtils {
 		return uri;
 
 	}
-	
+
 	public static URI workspaceRelativeURI(final URI uri) {
 		URI relativeURI = getWorkspaceBaseURI().relativize(uri);
 		try {
-			return new URI("workspace", relativeURI.getUserInfo(), relativeURI.getHost(), relativeURI.getPort(), "/"+relativeURI.getPath(), relativeURI.getQuery(), relativeURI.getFragment());
-		} 
+			return new URI("workspace", relativeURI.getUserInfo(), relativeURI.getHost(), relativeURI.getPort(), "/"
+					+ relativeURI.getPath(), relativeURI.getQuery(), relativeURI.getFragment());
+		}
 		catch (Exception ex) {
 		}
 		return null;
@@ -190,11 +207,11 @@ public class WorkspaceUtils {
 		}
 		return new File(absoluteUri);
 	}
-	
+
 	public static URI getURI(final File f) {
 		return f.toURI();
 	}
-	
+
 	/**
 	 * @param targetNode
 	 * @param node

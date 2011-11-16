@@ -47,11 +47,20 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 		if(isMonitoring()) {
 			enableMonitoring(false);
 			this.pathURI = uri;
+			createIfNeeded(getPath());
 			enableMonitoring(true);
 		} 
 		else {
 			this.pathURI = uri;
+			createIfNeeded(getPath());
 		}		
+	}
+	
+	private void createIfNeeded(URI uri) {
+		File file = WorkspaceUtils.resolveURI(uri);
+		if (file != null && !file.exists()) {
+			file.mkdirs();			
+		}
 	}
 	
 	@ExportAsAttribute("path")

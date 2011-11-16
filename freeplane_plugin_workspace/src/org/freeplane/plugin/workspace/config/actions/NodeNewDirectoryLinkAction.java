@@ -26,7 +26,7 @@ public class NodeNewDirectoryLinkAction extends AWorkspaceAction {
 		if(targetNode instanceof AFolderNode) {
 			JFileChooser fileChooser = new JFileChooser();		
 			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			File file = WorkspaceUtils.resolveURI(((AFolderNode) targetNode).getPath() == null ? WorkspaceUtils.getWorkspaceBaseURI() : ((AFolderNode) targetNode).getPath());
+			File file = WorkspaceUtils.resolveURI(((AFolderNode) targetNode).getPath() == null ? WorkspaceUtils.getProfileBaseURI() : ((AFolderNode) targetNode).getPath());
 			if(file == null) {
 				return;
 			}
