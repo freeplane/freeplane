@@ -43,7 +43,7 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 	 * METHODS
 	 **********************************************************************************/
 
-	public void setPathURI(URI uri) {
+	public void setPath(URI uri) {
 		if(isMonitoring()) {
 			enableMonitoring(false);
 			this.pathURI = uri;
@@ -55,12 +55,12 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 	}
 	
 	@ExportAsAttribute("path")
-	public URI getPathURI() {
+	public URI getPath() {
 		return this.pathURI;		
 	}
 	
 	public void enableMonitoring(boolean enable) {
-		File file = WorkspaceUtils.resolveURI(getPathURI());
+		File file = WorkspaceUtils.resolveURI(getPath());
 		if(enable != this.doMonitoring) {
 			this.doMonitoring = enable;
 			if(file == null) {
@@ -94,7 +94,7 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 	
 
 	protected AWorkspaceTreeNode clone(FolderTypeProjectsNode node) {
-		node.setPathURI(getPathURI());
+		node.setPath(getPath());
 		node.enableMonitoring(isMonitoring());
 		return super.clone(node);
 	}
@@ -185,7 +185,7 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 	
 	public void refresh() {
 		try {
-			File file = WorkspaceUtils.resolveURI(getPathURI());
+			File file = WorkspaceUtils.resolveURI(getPath());
 			if (file != null) {
 				WorkspaceUtils.getModel().removeAllElements(this);
 				WorkspaceController.getController().getFilesystemReader().scanFileSystem(this, file);

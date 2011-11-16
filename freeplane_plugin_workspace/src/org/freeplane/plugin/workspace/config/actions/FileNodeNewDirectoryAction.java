@@ -1,6 +1,6 @@
 /**
  * author: Marcel Genzmehr
- * 11.11.2011
+ * 15.11.2011
  */
 package org.freeplane.plugin.workspace.config.actions;
 
@@ -9,22 +9,24 @@ import java.awt.event.ActionEvent;
 /**
  * 
  */
-public class AddNewFolderAction extends AWorkspaceAction {
+public class FileNodeNewDirectoryAction extends AWorkspaceAction {
 
-	private static final long serialVersionUID = 6126361617680877866L;
+	private static final long serialVersionUID = 1L;
 
-	
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
-
-	public AddNewFolderAction() {
-		super("workspace.action.node.new.folder");
+	
+	public FileNodeNewDirectoryAction() {
+		super("workspace.action.file.new.directory");
 	}
 
+	
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
+	
+	
 
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES

@@ -82,16 +82,17 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 	
 	public void initializePopup() {
 		if (popupMenu  == null) {
-//			ModeController modeController = Controller.getCurrentModeController();
-						
+
 			popupMenu = new WorkspacePopupMenu();
 			
-			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
-					WorkspacePopupMenuBuilder.createSubMenu(
-					TextUtils.getRawText("workspace.action.new.label")),
+			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {WorkspacePopupMenuBuilder.createSubMenu(TextUtils.getRawText("workspace.action.new.label")),
+					"workspace.action.node.new.folder",
 					"workspace.action.node.new.link",
-					WorkspacePopupMenuBuilder.endSubMenu()
-					
+					"workspace.action.node.new.directory",
+					WorkspacePopupMenuBuilder.endSubMenu(),
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.refresh",
+					"workspace.action.node.delete"
 			});
 		}
 	}
@@ -329,6 +330,11 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 		}
 		
 		return popupMenu;
+	}
+
+	public URI getPath() {
+		// this is a virtual folder, no path is needed
+		return null;
 	}
 	
 }

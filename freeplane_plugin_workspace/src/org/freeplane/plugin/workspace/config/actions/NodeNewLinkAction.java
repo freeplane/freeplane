@@ -5,10 +5,15 @@
 package org.freeplane.plugin.workspace.config.actions;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.net.URI;
-import java.util.List;
 
+import javax.swing.JFileChooser;
+
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
+import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
 
 /**
  * 
@@ -32,25 +37,24 @@ public class NodeNewLinkAction extends AWorkspaceAction {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 
-	public void actionPerformed(ActionEvent e) {
-		List<URI> mindmaps = WorkspaceUtils.getModel().getAllNodesFiltered(".mm");
-		for(URI uri : mindmaps) {
-			System.out.println(uri);
+	public void actionPerformed(ActionEvent e) {		
+		JFileChooser chooser = new JFileChooser(WorkspaceUtils.getWorkspaceBaseFile());
+		chooser.setMultiSelectionEnabled(false);
+		int response = chooser.showOpenDialog(UITools.getFrame());
+		if(response == JFileChooser.APPROVE_OPTION) {
+			File file = chooser.getSelectedFile();
+			if(file != null) {
+				LinkTypeFileNode node = new LinkTypeFileNode();
+				node.setName(file.getName());
+				URI path = WorkspaceUtils.workspaceRelativeURI(chooser.getSelectedFile().toURI());
+				if (path == null) {
+					return;
+				}	
+				node.setLinkPath(path);
+				WorkspaceUtils.getModel().addNodeTo(node, getNodeFromActionEvent(e));
+				WorkspaceUtils.saveCurrentConfiguration();
+			}
 		}
-//		JFileChooser chooser = new JFileChooser(WorkspaceUtils.getWorkspaceBaseFile());
-//		chooser.setMultiSelectionEnabled(false);
-//		chooser.setVisible(true);
-//		URI path = chooser.getSelectedFile().toURI().relativize(WorkspaceUtils.getWorkspaceBaseURI());
-//		if (path == null) {
-//			return;
-//		}	
-//		node.setLinkPath(path); 		
-//		String name = WorkspaceUtils.resolveURI(node.getLinkPath()).getName();
-//		node.setName(name);
-//		
-//		WorkspaceUtils.getModel().addNodeTo(node, getNodeFromActionEvent(e));
-//		WorkspaceUtils.getModel().reload(getNodeFromActionEvent(e));
-//		WorkspaceUtils.saveCurrentConfiguration();
-
+		WorkspaceController.getController().refreshWorkspace();
 	}
 }

@@ -88,7 +88,12 @@ public class WorkspacePopupMenuBuilder {
 			}
 			else
 			if(key.equals(SEPARATOR)) {
-				popupMenu.addSeparator();
+				if(subMenuStack.size() == 0) {
+					popupMenu.addSeparator();					
+				} 
+				else {
+					subMenuStack.peek().addSeparator();
+				}
 			} 
 			else if(key.startsWith("beginSubMenu")) {
 				String popupName = key.substring("beginSubMenu".length());

@@ -59,12 +59,6 @@ public class WorkspaceUtils {
 			e.printStackTrace();
 			return;
 		}
-		
-		// String temp =
-		// WorkspaceController.getController().getWorkspaceLocation() +
-		// File.separator + "workspace_temp.xml";
-		
-		//String config = WorkspaceController.getController().getWorkspaceLocation() + File.separator + "workspace.xml";
 
 		try {
 			WorkspaceController.getController().saveConfigurationAsXML(new FileWriter(temp));
@@ -83,23 +77,24 @@ public class WorkspaceUtils {
 		}
 	}
 
-	public static void createPhysicalFolderNode(final File path, final AWorkspaceTreeNode parent) {
+	public static PhysicalFolderNode createPhysicalFolderNode(final File path, final AWorkspaceTreeNode parent) {
 		if (!path.isDirectory()) {
 			LogUtils.warn("the given path is no folder.");
-			return;
+			return null;
 		}
 
 		PhysicalFolderNode node = new PhysicalFolderNode(AFolderNode.FOLDER_TYPE_PHYSICAL);
 		String name = path.getName();
 
-		node.setName(name == null ? "folder" : name);
+		node.setName(name == null ? "directory" : name);
 
 		if (path != null) {
-			node.setFolderPath(MLinkController.toLinkTypeDependantURI(getWorkspaceBaseFile(), path,
+			node.setPath(MLinkController.toLinkTypeDependantURI(getWorkspaceBaseFile(), path,
 					LinkController.LINK_RELATIVE_TO_WORKSPACE));
 		}
 
 		addAndSave(findAllowedTargetNode(parent), node);
+		return node;
 	}
 
 	public static void createLinkTypeFileNode(final File path, final AWorkspaceTreeNode parent) {
@@ -177,6 +172,16 @@ public class WorkspaceUtils {
 		}
 		return uri;
 
+	}
+	
+	public static URI workspaceRelativeURI(final URI uri) {
+		URI relativeURI = getWorkspaceBaseURI().relativize(uri);
+		try {
+			return new URI("workspace", relativeURI.getUserInfo(), relativeURI.getHost(), relativeURI.getPort(), "/"+relativeURI.getPath(), relativeURI.getQuery(), relativeURI.getFragment());
+		} 
+		catch (Exception ex) {
+		}
+		return null;
 	}
 
 	public static File resolveURI(final URI uri) {

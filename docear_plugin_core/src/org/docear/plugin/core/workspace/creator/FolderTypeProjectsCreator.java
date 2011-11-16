@@ -46,9 +46,9 @@ public class FolderTypeProjectsCreator extends AWorkspaceNodeCreator {
 		catch (Exception e) {
 			uri = URI.create("workspace:/projects");
 		}
-		node.setPathURI(uri);
+		node.setPath(uri);
 		
-		File file = WorkspaceUtils.resolveURI(node.getPathURI());
+		File file = WorkspaceUtils.resolveURI(node.getPath());
 		if (!file.exists()) {
 			file.mkdirs();			
 		}
@@ -68,7 +68,7 @@ public class FolderTypeProjectsCreator extends AWorkspaceNodeCreator {
 					.getController()
 					.getFilesystemReader()
 					.scanFileSystem((AWorkspaceTreeNode) node,
-							WorkspaceUtils.resolveURI(((FolderTypeProjectsNode) node).getPathURI()));
+							WorkspaceUtils.resolveURI(((FolderTypeProjectsNode) node).getPath()));
 		}
 	}
 }

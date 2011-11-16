@@ -25,9 +25,9 @@ public class FolderTypePhysicalCreator extends AWorkspaceNodeCreator {
 		if (path == null) {
 			return null;
 		}
-		node.setFolderPath(URI.create(path));
+		node.setPath(URI.create(path));
 
-		File file = WorkspaceUtils.resolveURI(node.getFolderPath());
+		File file = WorkspaceUtils.resolveURI(node.getPath());
 		if (file == null) {
 			return null;
 		}
@@ -54,7 +54,7 @@ public class FolderTypePhysicalCreator extends AWorkspaceNodeCreator {
 				.getController()
 				.getFilesystemReader()
 				.scanFileSystem((AWorkspaceTreeNode) currentNode,
-						WorkspaceUtils.resolveURI(((PhysicalFolderNode) currentNode).getFolderPath()));
+						WorkspaceUtils.resolveURI(((PhysicalFolderNode) currentNode).getPath()));
 
 	}
 

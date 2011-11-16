@@ -6,7 +6,6 @@ package org.freeplane.plugin.workspace.model;
 
 import java.io.File;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -403,8 +402,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 					set.add(WorkspaceUtils.absoluteURI(uri));
 				}
 			}			
-		}
-		
+		}		
 		return Arrays.asList(set.toArray(new URI[]{}));
 	}
 	
@@ -429,7 +427,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 		if(node instanceof PhysicalFolderNode) {
 			PhysicalFolderNode phyNode = (PhysicalFolderNode) node;
 			WorkspaceController.getController().getFilesystemReader()
-					.scanFileSystem(phyNode, WorkspaceUtils.resolveURI(phyNode.getFolderPath()));			
+					.scanFileSystem(phyNode, WorkspaceUtils.resolveURI(phyNode.getPath()));			
 		} 
 		else 
 		if(node instanceof AFolderNode) {

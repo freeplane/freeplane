@@ -14,7 +14,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import org.freeplane.plugin.workspace.view.DialogCallback;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
+import org.freeplane.plugin.workspace.config.node.VirtualFolderNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -34,11 +38,13 @@ public class WorkspaceNewGroupDialog extends JDialog {
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
-	public WorkspaceNewGroupDialog(String title, final DialogCallback callback) {
-		assert(callback != null);
-		
+	public WorkspaceNewGroupDialog(String title, final AWorkspaceTreeNode targetNode) {
+		assert(targetNode != null);
+		setLocationRelativeTo(UITools.getFrame());
 		setTitle(title);
 		setModal(true);
+		setSize(320, 120);
+		setResizable(false);
 		getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
 				FormFactory.DEFAULT_COLSPEC,
@@ -55,8 +61,7 @@ public class WorkspaceNewGroupDialog extends JDialog {
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,}));
+				FormFactory.RELATED_GAP_ROWSPEC,}));
 		
 		JLabel lblPath = new JLabel("Path:");
 		lblPath.setEnabled(false);
@@ -76,15 +81,15 @@ public class WorkspaceNewGroupDialog extends JDialog {
 		
 		JLabel lblName = new JLabel("Name:");
 		lblName.setHorizontalAlignment(SwingConstants.RIGHT);
-		getContentPane().add(lblName, "2, 6, right, default");
+		getContentPane().add(lblName, "2, 4, right, default");
 		
 		txtGroupname = new JTextField();
 		txtGroupname.setText("GroupName");
-		getContentPane().add(txtGroupname, "4, 6, 3, 1, fill, default");
+		getContentPane().add(txtGroupname, "4, 4, 3, 1, fill, default");
 		txtGroupname.setColumns(10);
 		
 		JPanel panel = new JPanel();
-		getContentPane().add(panel, "2, 8, 5, 1, fill, fill");
+		getContentPane().add(panel, "2, 6, 5, 1, fill, fill");
 		panel.setLayout(new FormLayout(new ColumnSpec[] {
 				ColumnSpec.decode("4dlu:grow"),
 				ColumnSpec.decode("50dlu"),
@@ -96,8 +101,17 @@ public class WorkspaceNewGroupDialog extends JDialog {
 		
 		JButton btnOk = new JButton("OK");
 		btnOk.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {		
-				callback.callback(e);
+			public void actionPerformed(ActionEvent e) {
+				try {
+					VirtualFolderNode node = new VirtualFolderNode();
+					node.setName(txtGroupname.getText());
+					WorkspaceUtils.getModel().addNodeTo(node, targetNode);
+					WorkspaceUtils.saveCurrentConfiguration();
+					WorkspaceController.getController().refreshWorkspace();
+				} 
+				finally {
+					dispose();
+				}
 			}
 		});
 		panel.add(btnOk, "2, 2");

@@ -151,6 +151,9 @@ public abstract class AWorkspaceTreeNode implements Cloneable, TreeNode, Destruc
 		children.remove(node);		
 	}
 	
+	public void refresh() {
+	}
+	
 	protected AWorkspaceTreeNode clone(AWorkspaceTreeNode node) {		
 		node.allowChildren(this.getAllowsChildren());
 		node.setMode(getMode());
