@@ -77,7 +77,7 @@ public class FolderFileNode extends DefaultFileNode {
 				WorkspaceUtils.getModel().removeAllElements(this);
 				WorkspaceController.getController().getFilesystemReader().scanFileSystem(this, getFile());
 				WorkspaceUtils.getModel().reload(this);
-				WorkspaceController.getController().getExpansionStateHandler().restoreExpansionState();				
+				WorkspaceController.getController().getExpansionStateHandler().restoreExpansionStates();				
 			}
 		}
 		catch (Exception e) {
@@ -140,7 +140,11 @@ public class FolderFileNode extends DefaultFileNode {
 				LogUtils.warn("Could not rename File("+getName()+") to File("+event.getBaggage()+")");
 			}
 			
-		} else {
+		} 
+		else if(event.getType() == WorkspaceNodeEvent.WSNODE_OPEN_DOCUMENT) {
+			//do nth
+		}
+		else {
 			super.handleEvent(event);
 		}
 	}

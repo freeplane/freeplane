@@ -11,7 +11,6 @@ import java.net.URI;
 import javax.swing.JFileChooser;
 
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
 
@@ -53,8 +52,9 @@ public class NodeNewLinkAction extends AWorkspaceAction {
 				node.setLinkPath(path);
 				WorkspaceUtils.getModel().addNodeTo(node, getNodeFromActionEvent(e));
 				WorkspaceUtils.saveCurrentConfiguration();
+				getNodeFromActionEvent(e).refresh();
 			}
 		}
-		WorkspaceController.getController().refreshWorkspace();
+		
 	}
 }

@@ -24,7 +24,6 @@ import org.freeplane.plugin.workspace.config.node.ALinkNode;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
 import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
 import org.freeplane.plugin.workspace.config.node.VirtualFolderNode;
-import org.freeplane.plugin.workspace.io.NodeCreatedEvent;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.model.WorkspaceIndexedTreeModel;
@@ -202,10 +201,7 @@ public class WorkspaceUtils {
 	 */
 	private static void addAndSave(AWorkspaceTreeNode targetNode, AWorkspaceTreeNode node) {
 		WorkspaceUtils.getModel().addNodeTo(node, targetNode);
-		NodeCreatedEvent event = new NodeCreatedEvent(node);
-		WorkspaceController.getController().getFilesystemReader().informNodeCreatedListeners(event);
 		WorkspaceUtils.getModel().reload(targetNode);
-
 		saveCurrentConfiguration();
 	}
 

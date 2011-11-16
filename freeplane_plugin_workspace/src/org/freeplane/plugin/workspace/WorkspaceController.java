@@ -169,12 +169,12 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 		initTree();
 		initializeConfiguration();		
 		reloadView();
-		getExpansionStateHandler().restoreExpansionState();
+		getExpansionStateHandler().restoreExpansionStates();
 	}
 
 	public void refreshWorkspace() {
 		getWorkspaceModel().reload();
-		getExpansionStateHandler().restoreExpansionState();
+		getExpansionStateHandler().restoreExpansionStates();
 	}
 	
 	public WorkspaceIndexedTreeModel getWorkspaceModel() {

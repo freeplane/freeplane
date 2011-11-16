@@ -46,7 +46,7 @@ public class WorkspaceDeleteNodeAction extends AWorkspaceAction {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	public void actionPerformed(ActionEvent e) {
-		int option = JOptionPane.showConfirmDialog(UITools.getFrame(), TextUtils.getRawText("workspace.action.node.delete.confirm.text", "Do you really want to delete: ") + getNodeFromActionEvent(e).getName());
+		int option = JOptionPane.showConfirmDialog(UITools.getFrame(), TextUtils.getRawText("workspace.action.node.delete.confirm.text", "Do you really want to remove ") + getNodeFromActionEvent(e).getName());
 		if(option == JOptionPane.YES_OPTION) {
 			WorkspaceUtils.getModel().removeNodeFromParent(getNodeFromActionEvent(e));
 			WorkspaceUtils.saveCurrentConfiguration();

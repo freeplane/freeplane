@@ -325,6 +325,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 		}
 		targetNode.addChildNode(node);
 		this.hashStringKeyIndex.put(node.getKey(), node);
+		nodesWereInserted(targetNode, new int[]{targetNode.getChildCount()-1});
 		return true;
 	}
 	
@@ -335,8 +336,10 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 			child = children.nextElement();
 			this.hashStringKeyIndex.remove(child.getKey());
 			child.disassociateReferences();
+			fireTreeNodesRemoved(this, node.getTreePath(), null, new Object[] {child});
 		}
 		node.removeAllChildren();
+		
 	}
 	
 	/**
@@ -344,9 +347,10 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 	 */
 	public void removeNodeFromParent(AWorkspaceTreeNode node) {
 		this.hashStringKeyIndex.remove(node.getKey());
-		node.getParent().removeChildNode(node);
+		AWorkspaceTreeNode parent = node.getParent();
+		parent.removeChildNode(node);
 		node.disassociateReferences();
-		
+		fireTreeNodesRemoved(this, parent.getTreePath(), null, new Object[] {node});
 	}
 	
 	/**

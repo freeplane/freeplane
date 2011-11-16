@@ -37,7 +37,7 @@ public class DefaultWorkspaceExpansionStateHandler extends AWorkspaceExpansionSt
 	/** 
 	 * {@inheritDoc}
 	 */
-	public void restoreExpansionState() {
+	public void restoreExpansionStates() {
 		lock();		
 		WorkspaceIndexedTreeModel model = WorkspaceController.getController().getWorkspaceModel();
 		JTree view = WorkspaceController.getController().getWorkspaceViewTree();

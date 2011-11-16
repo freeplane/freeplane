@@ -106,7 +106,7 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeEve
 				WorkspaceUtils.getModel().removeAllElements(this);
 				WorkspaceController.getController().getFilesystemReader().scanFileSystem(this, folder);
 				WorkspaceUtils.getModel().reload(this);
-				WorkspaceController.getController().getExpansionStateHandler().restoreExpansionState();				
+				WorkspaceController.getController().getExpansionStateHandler().restoreExpansionStates();				
 			}
 		}
 		catch (Exception e) {

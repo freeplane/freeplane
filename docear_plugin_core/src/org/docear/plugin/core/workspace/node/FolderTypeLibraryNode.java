@@ -23,6 +23,8 @@ import java.util.regex.Pattern;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.docear.plugin.core.DocearController;
@@ -42,14 +44,12 @@ import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.dnd.IDropAcceptor;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
-import org.freeplane.plugin.workspace.io.INodeCreatedListener;
-import org.freeplane.plugin.workspace.io.NodeCreatedEvent;
 import org.freeplane.plugin.workspace.io.node.MindMapFileNode;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 
-public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventListener, IDocearLibrary, IWorkspaceNodeEventListener, IDropAcceptor, INodeCreatedListener {
+public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventListener, IDocearLibrary, IWorkspaceNodeEventListener, IDropAcceptor, TreeModelListener {
 	private static final Icon DEFAULT_ICON = new ImageIcon(FolderTypeLibraryNode.class.getResource("/images/folder-database.png"));
 
 	private static final long serialVersionUID = 1L;
@@ -73,7 +73,8 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 		DocearController.getController().addDocearEventListener(this);
 		DocearEvent event = new DocearEvent(this, DocearEventType.NEW_LIBRARY);
 		DocearController.getController().dispatchDocearEvent(event);
-		WorkspaceController.getController().getFilesystemReader().addNodeCreatedListener(this);
+		//WorkspaceController.getController().getFilesystemReader().addNodeCreatedListener(this);
+		WorkspaceUtils.getModel().addTreeModelListener(this);
 	}	
 	
 	/***********************************************************************************
@@ -232,8 +233,8 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 					addMindmapToIndex(uri);
 				}
 			}			
-		}
-		if(event.getType() == DocearEventType.LIBRARY_NEW_REFERENCES_INDEXING_REQUEST) {
+		} 
+		else if(event.getType() == DocearEventType.LIBRARY_NEW_REFERENCES_INDEXING_REQUEST) {
 			if(event.getEventObject() instanceof IBibtexDatabase) {
 				if(!referencesIndex.contains((IBibtexDatabase) event.getEventObject())) {
 					LogUtils.info("DOCEAR: adding new reference database to library: "+ event.getEventObject());
@@ -247,16 +248,13 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 		
 	}
 	
-	
-	/**
-	 * {@inheritDoc}
-	 */
 	public void handleEvent(WorkspaceNodeEvent event) {
 		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {
 			showPopup( (Component) event.getBaggage(), event.getX(), event.getY());
 		}
 		
 	}
+	
 	public List<URI> getMindmaps() {
 		return mindmapIndex;
 	}
@@ -300,28 +298,6 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 			return false;
 		}
 		return false;
-	}	
-	
-
-	public void nodeCreated(NodeCreatedEvent event) {
-		//TODO: propagate other filetypes
-		if(event.getCreatedNode().getKey().startsWith(this.getKey())) {
-			if(event.getCreatedNode() instanceof MindMapFileNode) {
-				URI uri = ((MindMapFileNode)event.getCreatedNode()).getFile().toURI();
-				if(!mindmapIndex.contains(uri)) {
-					LogUtils.info("DOCEAR: adding new mindmap to library: "+ uri);
-					mindmapIndex.add(uri);
-				}
-			} 
-			else
-			if(event.getCreatedNode() instanceof LinkTypeFileNode) {
-				URI uri = WorkspaceUtils.absoluteURI(((LinkTypeFileNode)event.getCreatedNode()).getLinkPath());
-				if(!mindmapIndex.contains(uri)) {
-					LogUtils.info("DOCEAR: adding new mindmap to library: "+ uri);
-					mindmapIndex.add(uri);
-				}				
-			}
-		}
 	}
 	
 	public WorkspacePopupMenu getContextMenu() {
@@ -335,6 +311,65 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 	public URI getPath() {
 		// this is a virtual folder, no path is needed
 		return null;
+	}
+
+	public void treeNodesChanged(TreeModelEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void treeNodesInserted(TreeModelEvent event) {
+		if(this.getTreePath().isDescendant(event.getTreePath())) {
+			for(Object newNode : event.getChildren()) {
+				if(newNode instanceof MindMapFileNode) {
+					URI uri = ((MindMapFileNode)newNode).getFile().toURI();
+					if(!mindmapIndex.contains(uri)) {
+						LogUtils.info("DOCEAR: adding new mindmap to library: "+ uri);
+						mindmapIndex.add(uri);
+					}
+				} 
+				else
+				if(newNode instanceof LinkTypeFileNode) {
+					URI uri = WorkspaceUtils.absoluteURI(((LinkTypeFileNode)newNode).getLinkPath());
+					if((new File(uri)).getName().endsWith(".mm") && !mindmapIndex.contains(uri)) {
+						LogUtils.info("DOCEAR: adding new mindmap to library: "+ uri);
+						mindmapIndex.add(uri);	
+					}
+				}
+			}
+		}
+	}
+
+	public void treeNodesRemoved(TreeModelEvent event) {
+		//TODO: propagate other filetypes
+		if(this.getTreePath().isDescendant(event.getTreePath())) {
+			for(Object newNode : event.getChildren()) {
+				if(newNode instanceof MindMapFileNode) {
+					URI uri = ((MindMapFileNode)newNode).getFile().toURI();
+					if(mindmapIndex.contains(uri)) {
+						LogUtils.info("DOCEAR: mindmap removed from library: "+ uri);
+						mindmapIndex.remove(uri);
+					}
+				} 
+				else
+				if(newNode instanceof LinkTypeFileNode) {
+					URI uri = WorkspaceUtils.absoluteURI(((LinkTypeFileNode)newNode).getLinkPath());
+					if((new File(uri)).getName().endsWith(".mm") && mindmapIndex.contains(uri)) {
+						LogUtils.info("DOCEAR: mindmap removed from library: "+ uri);
+						mindmapIndex.remove(uri);	
+					}
+				}
+			}
+		}
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see javax.swing.event.TreeModelListener#treeStructureChanged(javax.swing.event.TreeModelEvent)
+	 */
+	public void treeStructureChanged(TreeModelEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
