@@ -14,5 +14,5 @@ public abstract class AMindmapUpdater {
 		return title;
 	}
 
-	public abstract void updateNode(NodeModel node);
+	public abstract boolean updateNode(NodeModel node);
 }

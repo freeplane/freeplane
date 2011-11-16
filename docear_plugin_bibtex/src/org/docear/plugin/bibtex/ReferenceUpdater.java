@@ -13,9 +13,11 @@ public class ReferenceUpdater extends AMindmapUpdater {
 	}
 
 	@Override
-	public void updateNode(NodeModel node) {
+	public boolean updateNode(NodeModel node) {
+		boolean changes = false;
+		
 		if (DocearReferenceUpdateController.isLocked()) {
-			return;
+			return false;
 		}		
 		DocearReferenceUpdateController.lock();
 		
@@ -26,11 +28,12 @@ public class ReferenceUpdater extends AMindmapUpdater {
 			BibtexEntry entry = ReferencesController.getController().getJabrefWrapper().getDatabase().getEntryByKey(bibtexKey);
 			
 			if (entry != null) {
-				jabrefAttributes.setReferenceToNode(entry, node);
+				changes = jabrefAttributes.updateReferenceToNode(entry, node);				
 			}
 		}
 		
 		DocearReferenceUpdateController.unlock();
+		return changes;
 	}
 
 }

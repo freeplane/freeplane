@@ -55,13 +55,17 @@ public class JabRefAttributes {
 	}
 	
 	public String getBibtexKey(NodeModel node) {		
+		return getAttributeValue(node, this.keyAttribute);
+	}
+	
+	public String getAttributeValue(NodeModel node, String attributeName) {
 		NodeAttributeTableModel attributeTable = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
 		if (attributeTable == null) {
 			return null;
 		}
 		
 		for (Attribute attribute : attributeTable.getAttributes()) {
-			if (attribute.getName().equals(this.keyAttribute)) {
+			if (attribute.getName().equals(attributeName)) {
 				return (String) attribute.getValue();
 			}
 		}
@@ -84,28 +88,71 @@ public class JabRefAttributes {
 	}
 	
 	public void removeReferenceFromNode(BibtexEntry entry, NodeModel target) {
-		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
-		for (String attributeKey : attributes.getAttributeKeyList()) {
+		NodeAttributeTableModel attributeTable = AttributeController.getController().createAttributeTableModel(target);
+		
+		if (attributeTable == null) {
+			return;
+		}
+		
+		for (String attributeKey : attributeTable.getAttributeKeyList()) {
 			if (this.valueAttributes.containsKey(attributeKey) || this.keyAttribute.equals(attributeKey)) {				
-				AttributeController.getController().performRemoveRow(attributes, attributes.getAttributePosition(attributeKey));
+				AttributeController.getController().performRemoveRow(attributeTable, attributeTable.getAttributePosition(attributeKey));
 			}
 		}
 	}
-
-	public void setReferenceToNode(BibtexEntry entry, NodeModel target) {
+	
+	public boolean updateReferenceToNode(BibtexEntry entry, NodeModel node) {
+		boolean changes = false;
+		
+		NodeAttributeTableModel attributeTable = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
+		if (attributeTable == null) {
+			return false;
+		}
+		
+		for (Entry<String, String> valueAttribute : this.valueAttributes.entrySet()) {
+			String nodeAttributeName = valueAttribute.getKey();
+			String jabrefAttributeName = valueAttribute.getValue();
+			
+			String nodeValue = getAttributeValue(node, nodeAttributeName);
+			String jabrefValue = entry.getField(jabrefAttributeName);
+			
+			if (nodeValue == null) {
+				if (jabrefValue != null) {
+					AttributeController.getController().performInsertRow(attributeTable, 0, nodeAttributeName, jabrefValue);
+					changes = true;
+				}
+			}
+			else {
+				if (jabrefValue == null) {
+					AttributeController.getController().performRemoveRow(attributeTable, attributeTable.getAttributePosition(nodeAttributeName));
+					changes = true;
+				}
+				else {
+					if (!nodeValue.equals(jabrefValue)) {
+						AttributeController.getController().performReplaceAttributeValue(nodeAttributeName, nodeValue, jabrefValue);						
+						changes = true;
+					}
+				}
+			}
+		}
+				
+		return changes;
+	}
+	
+	public void setReferenceToNode(BibtexEntry entry, NodeModel node) {
 		if (entry.getCiteKey()==null) {
 			LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), ReferencesController.getController().getJabrefWrapper().getDatabase(), entry);						
 		}		
 		
-		removeReferenceFromNode(entry, target);
+		removeReferenceFromNode(entry, node);
 		
 		for (Entry<String, String> e : this.valueAttributes.entrySet()) {
-			NodeUtils.setAttributeValue(target, e.getKey(), entry.getField(e.getValue()), false);
+			NodeUtils.setAttributeValue(node, e.getKey(), entry.getField(e.getValue()), false);
 		}
 
-		NodeUtils.setAttributeValue(target, keyAttribute, entry.getCiteKey(), false);
+		NodeUtils.setAttributeValue(node, keyAttribute, entry.getCiteKey(), false);
 		
-		NodeLinks nodeLinks = NodeLinks.getLinkExtension(target);
+		NodeLinks nodeLinks = NodeLinks.getLinkExtension(node);
 		if (nodeLinks != null) {
 			System.out.println("debug remove hyperlink");
 			nodeLinks.setHyperLink(null);
@@ -120,7 +167,7 @@ public class JabRefAttributes {
             for(String path : paths){
             	URI uri = parsePath(entry, path);
             	if(uri != null){
-            		NodeUtils.setLinkFrom(uri, target);
+            		NodeUtils.setLinkFrom(uri, node);
             		break;
             	}
             }		
@@ -132,7 +179,7 @@ public class JabRefAttributes {
 				try {
 					link = LinkController.createURI(url.trim());
 					final MLinkController linkController = (MLinkController) MLinkController.getController();
-					linkController.setLink(target, link, LinkController.LINK_ABSOLUTE);
+					linkController.setLink(node, link, LinkController.LINK_ABSOLUTE);
 				}
 				catch (URISyntaxException e) {				
 					e.printStackTrace();

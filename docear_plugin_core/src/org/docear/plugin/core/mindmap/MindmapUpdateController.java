@@ -78,6 +78,7 @@ public class MindmapUpdateController {
 			private int count = 0;
 			
 			private boolean isUri = false;
+			private boolean mapHasChanged = false;
 
 			@Override
 			protected Void doInBackground() throws Exception {
@@ -104,7 +105,8 @@ public class MindmapUpdateController {
 					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, updater.getTitle());
 					if(canceled()) return null;
 					MapModel map = null;
-					for(Object o : maps) {						
+					for(Object o : maps) {
+						mapHasChanged = false;
 						if (isUri) {							
 							map = getMapModel((URI) o);							
 						}
@@ -135,9 +137,10 @@ public class MindmapUpdateController {
 				
 			}
 			
-			private void updateNodes(NodeModel parent, AMindmapUpdater mindmapupdater) throws InterruptedException, InvocationTargetException {
-				System.out.println("debug updateNodes: "+parent.getText());
-				mindmapupdater.updateNode(parent);
+			private void updateNodes(NodeModel parent, AMindmapUpdater mindmapupdater) throws InterruptedException, InvocationTargetException {				
+				if (mindmapupdater.updateNode(parent)) {
+					this.mapHasChanged = true;
+				}
 				
 				for(NodeModel child : parent.getChildren()) {
 					updateNodes(child, mindmapupdater);
@@ -203,8 +206,8 @@ public class MindmapUpdateController {
 					url = WorkspaceUtils.absoluteURI(uri).toURL();
 					mapExtensionKey = Controller.getCurrentController().getMapViewManager().checkIfFileIsAlreadyOpened(url);					
 				}
-				catch (MalformedURLException ex) {
-					ex.printStackTrace();
+				catch (MalformedURLException e) {
+					e.printStackTrace();
 					return null;
 				};
 											
@@ -229,7 +232,11 @@ public class MindmapUpdateController {
 			
 			}
 			
-			private void saveMap(MapModel map) {				
+			private void saveMap(MapModel map) {
+				if (!this.mapHasChanged) {
+					System.out.println("saving map: "+map.getRootNode().getText());
+					return;
+				}
 				map.setSaved(false);
 				((MFileManager) UrlManager.getController()).save(map, false);				
 			}

@@ -50,7 +50,7 @@ public class JabRefChangeListener implements DatabaseChangeListener {
 				JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
 
 				if (jabRefAttributes.isReferencing(entry, node)) {
-					jabRefAttributes.setReferenceToNode(entry, node);
+					jabRefAttributes.updateReferenceToNode(entry, node);
 				}
 
 				for (NodeModel child : node.getChildren()) {
