@@ -51,11 +51,11 @@ import com.jgoodies.forms.layout.RowSpec;
 @SuppressWarnings("serial")
 public class AddOnInstallerPanel extends JPanel {
 
-	private JPanel managementPanel;
+	private JComponent managementPanel;
 	private JButton installButton;
 	private JTextField urlField;
 
-	public AddOnInstallerPanel(AddOnTableModel tableModel, JPanel managementPanel) {
+	public AddOnInstallerPanel(AddOnTableModel tableModel, JComponent managementPanel) {
 		this.managementPanel = managementPanel;
 		setLayout(new FormLayout(new ColumnSpec[] {
 				ColumnSpec.decode("default:grow"),},
@@ -177,7 +177,7 @@ public class AddOnInstallerPanel extends JPanel {
 		};
 	}
 
-	private void selectLastAddOn(JPanel managementPanel) {
+	private void selectLastAddOn(JComponent managementPanel) {
 		try {
 			JTable table = findJTable(managementPanel);
 			final int row = table.getModel().getRowCount() - 1;
