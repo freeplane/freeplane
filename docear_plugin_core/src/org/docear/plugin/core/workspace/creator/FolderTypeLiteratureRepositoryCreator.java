@@ -68,7 +68,7 @@ public class FolderTypeLiteratureRepositoryCreator extends AWorkspaceNodeCreator
 		if (node instanceof FolderTypeLiteratureRepositoryNode && ((FolderTypeLiteratureRepositoryNode) node).getChildCount() == 0) {
 			WorkspaceController
 					.getController()
-					.getFilesystemReader()
+					.getFilesystemMgr()
 					.scanFileSystem((AWorkspaceTreeNode) node,
 							WorkspaceUtils.resolveURI(((FolderTypeLiteratureRepositoryNode) node).getPath()));
 		}

@@ -27,7 +27,7 @@ public class WorkspaceTransferable implements Transferable {
 		try {
 			WORKSPACE_DROP_ACTION_FLAVOR = new DataFlavor("text/drop-action; class=java.lang.String");
 			WORKSPACE_NODE_FLAVOR = new DataFlavor("application/x-java-jvm-local-objectref; class=java.util.List");
-			WORKSPACE_FILE_LIST_FLAVOR = DataFlavor.javaFileListFlavor;
+			WORKSPACE_FILE_LIST_FLAVOR = new DataFlavor("application/x-java-file-list; class=java.util.List");
 			WORKSPACE_FREEPLANE_NODE_FLAVOR = new DataFlavor("text/freeplane-nodes; class=java.lang.String");
 			WORKSPACE_SERIALIZED_FLAVOR = new DataFlavor("application/x-java-serialized-object; class=java.lang.String");
 			WORKSPACE_URI_LIST_FLAVOR = new DataFlavor("text/uri-list; class=java.lang.String");

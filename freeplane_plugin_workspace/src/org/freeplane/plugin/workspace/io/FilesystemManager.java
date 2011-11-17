@@ -6,6 +6,7 @@ package org.freeplane.plugin.workspace.io;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 import java.util.List;
 
 import org.freeplane.core.io.ListHashTable;
@@ -13,12 +14,12 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.plugin.workspace.io.creator.IFileTypeHandler;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
-public class FilesystemReader {
+public class FilesystemManager {
 
 	private final FileReadManager typeManager;
 	private boolean filtering = true;
 
-	public FilesystemReader(final FileReadManager typeManager) {
+	public FilesystemManager(final FileReadManager typeManager) {
 		this.typeManager = typeManager;
 	}
 
@@ -40,7 +41,19 @@ public class FilesystemReader {
 				createFileNode(node, file);
 			}
 		}
-	}	
+	}
+	
+	/**
+	 * @param directoryName
+	 * @param parentDir
+	 * @throws IOException 
+	 */
+	public void createDirectory(String directoryName, File parentDir) throws IOException {
+		File newDir = new File(parentDir, directoryName);
+		if(!newDir.mkdirs()) {
+			throw new IOException("could not create directory: "+newDir.getPath());
+		}		
+	}
 	
 	private ListHashTable<String, IFileTypeHandler> getFileTypeHandlers() {
 		return typeManager.getFileTypeHandlers();
@@ -111,6 +124,5 @@ public class FilesystemReader {
 			}
 			return false;
 		}
-	}
-	
+	}	
 }

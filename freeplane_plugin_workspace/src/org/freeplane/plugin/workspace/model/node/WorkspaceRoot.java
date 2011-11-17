@@ -13,6 +13,7 @@ import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.config.IConfigurationInfo;
 import org.freeplane.plugin.workspace.config.actions.NodeCopyAction;
 import org.freeplane.plugin.workspace.config.actions.NodeCutAction;
+import org.freeplane.plugin.workspace.config.actions.NodeEnableMonitoringAction;
 import org.freeplane.plugin.workspace.config.actions.NodeNewDirectoryLinkAction;
 import org.freeplane.plugin.workspace.config.actions.NodeNewFolderAction;
 import org.freeplane.plugin.workspace.config.actions.NodeNewLinkAction;
@@ -92,6 +93,7 @@ public class WorkspaceRoot extends AWorkspaceTreeNode implements IConfigurationI
 			modeController.addAction(new NodeNewFolderAction());
 			modeController.addAction(new NodeNewLinkAction());
 			modeController.addAction(new NodeNewDirectoryLinkAction());
+			modeController.addAction(new NodeEnableMonitoringAction());
 			
 			modeController.addAction(new NodeCutAction());
 			modeController.addAction(new NodeRenameAction());

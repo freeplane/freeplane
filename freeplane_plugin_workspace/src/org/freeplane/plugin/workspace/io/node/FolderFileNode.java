@@ -75,7 +75,7 @@ public class FolderFileNode extends DefaultFileNode {
 		try {
 			if (getFile().isDirectory()) {
 				WorkspaceUtils.getModel().removeAllElements(this);
-				WorkspaceController.getController().getFilesystemReader().scanFileSystem(this, getFile());
+				WorkspaceController.getController().getFilesystemMgr().scanFileSystem(this, getFile());
 				WorkspaceUtils.getModel().reload(this);
 				WorkspaceController.getController().getExpansionStateHandler().restoreExpansionStates();				
 			}

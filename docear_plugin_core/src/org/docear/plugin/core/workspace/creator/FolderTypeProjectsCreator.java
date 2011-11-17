@@ -65,7 +65,7 @@ public class FolderTypeProjectsCreator extends AWorkspaceNodeCreator {
 		if (node instanceof FolderTypeProjectsNode && ((FolderTypeProjectsNode) node).getChildCount() == 0) {
 			WorkspaceController
 					.getController()
-					.getFilesystemReader()
+					.getFilesystemMgr()
 					.scanFileSystem((AWorkspaceTreeNode) node,
 							WorkspaceUtils.resolveURI(((FolderTypeProjectsNode) node).getPath()));
 		}

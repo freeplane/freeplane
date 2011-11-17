@@ -58,7 +58,7 @@ public class FolderTypeLiteratureRepositoryNode extends PhysicalFolderNode imple
 					setName(file.getName());
 				}
 				WorkspaceUtils.getModel().removeAllElements(this);
-				WorkspaceController.getController().getFilesystemReader().scanFileSystem(this, file);
+				WorkspaceController.getController().getFilesystemMgr().scanFileSystem(this, file);
 				WorkspaceUtils.getModel().reload(this);
 			}
 			catch (Exception e) {
