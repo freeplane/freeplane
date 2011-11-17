@@ -8,6 +8,7 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
 
 public class WorkspaceCollapseAction extends AWorkspaceAction {
 

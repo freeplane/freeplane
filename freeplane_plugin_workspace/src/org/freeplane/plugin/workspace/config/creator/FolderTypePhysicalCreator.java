@@ -7,9 +7,10 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.config.node.AFolderNode;
 import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.creator.AWorkspaceNodeCreator;
+import org.freeplane.plugin.workspace.model.node.AFolderNode;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 public class FolderTypePhysicalCreator extends AWorkspaceNodeCreator {
 

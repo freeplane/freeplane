@@ -5,7 +5,8 @@ import java.net.URI;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.creator.AWorkspaceNodeCreator;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 public class LinkTypeFileCreator extends AWorkspaceNodeCreator {
 

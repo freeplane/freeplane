@@ -6,8 +6,8 @@ package org.docear.plugin.core.workspace.creator;
 
 import org.docear.plugin.core.workspace.node.FolderTypeLibraryNode;
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.plugin.workspace.config.creator.AWorkspaceNodeCreator;
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.creator.AWorkspaceNodeCreator;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 /**
  * 

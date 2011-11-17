@@ -26,7 +26,6 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
-import org.freeplane.plugin.workspace.config.node.WorkspaceRoot;
 import org.freeplane.plugin.workspace.controller.AWorkspaceExpansionStateHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceComponentHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceDropHandler;
@@ -41,6 +40,7 @@ import org.freeplane.plugin.workspace.io.FileSystemAlterationMonitor;
 import org.freeplane.plugin.workspace.io.FilesystemReader;
 import org.freeplane.plugin.workspace.io.creator.AFileNodeCreator;
 import org.freeplane.plugin.workspace.model.WorkspaceIndexedTreeModel;
+import org.freeplane.plugin.workspace.model.node.WorkspaceRoot;
 import org.freeplane.plugin.workspace.view.TreeView;
 import org.freeplane.plugin.workspace.view.WorkspaceSplitPaneUI;
 

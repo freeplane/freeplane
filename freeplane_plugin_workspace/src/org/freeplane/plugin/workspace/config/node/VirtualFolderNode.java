@@ -10,9 +10,10 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
+import org.freeplane.plugin.workspace.model.node.AFolderNode;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 public class VirtualFolderNode extends AFolderNode implements IWorkspaceNodeEventListener {
 	

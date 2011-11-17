@@ -20,9 +20,10 @@ import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.dnd.IWorkspaceTransferableCreator;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
+import org.freeplane.plugin.workspace.model.node.ALinkNode;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeEventListener, IWorkspaceTransferableCreator {
 	

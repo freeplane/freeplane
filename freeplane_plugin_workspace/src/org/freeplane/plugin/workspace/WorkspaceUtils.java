@@ -19,14 +19,14 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
-import org.freeplane.plugin.workspace.config.node.AFolderNode;
-import org.freeplane.plugin.workspace.config.node.ALinkNode;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
 import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
 import org.freeplane.plugin.workspace.config.node.VirtualFolderNode;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.model.WorkspaceIndexedTreeModel;
+import org.freeplane.plugin.workspace.model.node.AFolderNode;
+import org.freeplane.plugin.workspace.model.node.ALinkNode;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 /**
  * 

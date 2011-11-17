@@ -2,7 +2,8 @@ package org.freeplane.plugin.workspace.config.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 public class NodeRefreshAction extends AWorkspaceAction {
 

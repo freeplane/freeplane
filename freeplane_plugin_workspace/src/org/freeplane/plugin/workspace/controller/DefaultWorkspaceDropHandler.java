@@ -20,7 +20,7 @@ import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.dnd.IWorkspaceDragnDropController;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 /**
  * 

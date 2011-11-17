@@ -3,7 +3,7 @@ package org.freeplane.plugin.workspace.controller;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 
 //Make sure expansion is threaded and updating the tree model

@@ -1,9 +1,10 @@
 package org.freeplane.plugin.workspace.config.creator;
 
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.plugin.workspace.config.node.AFolderNode;
 import org.freeplane.plugin.workspace.config.node.VirtualFolderNode;
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.creator.AWorkspaceNodeCreator;
+import org.freeplane.plugin.workspace.model.node.AFolderNode;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 public class FolderTypeVirtualCreator extends AWorkspaceNodeCreator {
 

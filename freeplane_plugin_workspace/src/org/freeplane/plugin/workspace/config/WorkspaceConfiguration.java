@@ -28,16 +28,16 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.config.creator.AWorkspaceNodeCreator;
-import org.freeplane.plugin.workspace.config.creator.FolderCreator;
 import org.freeplane.plugin.workspace.config.creator.FolderTypePhysicalCreator;
 import org.freeplane.plugin.workspace.config.creator.FolderTypeVirtualCreator;
-import org.freeplane.plugin.workspace.config.creator.LinkCreator;
 import org.freeplane.plugin.workspace.config.creator.LinkTypeFileCreator;
 import org.freeplane.plugin.workspace.config.creator.WorkspaceRootCreator;
 import org.freeplane.plugin.workspace.io.xml.ConfigurationWriter;
 import org.freeplane.plugin.workspace.io.xml.WorkspaceNodeWriter;
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.creator.AWorkspaceNodeCreator;
+import org.freeplane.plugin.workspace.model.creator.FolderCreator;
+import org.freeplane.plugin.workspace.model.creator.LinkCreator;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 public class WorkspaceConfiguration {
 	final private ReadManager readManager;

@@ -9,9 +9,10 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.config.node.AFolderNode;
 import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
+import org.freeplane.plugin.workspace.model.node.AFolderNode;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 public class NodeNewDirectoryLinkAction extends AWorkspaceAction {
 

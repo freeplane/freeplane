@@ -3,8 +3,9 @@ package org.freeplane.plugin.workspace.config.creator;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
-import org.freeplane.plugin.workspace.config.node.WorkspaceRoot;
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.creator.AWorkspaceNodeCreator;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.node.WorkspaceRoot;
 
 public class WorkspaceRootCreator extends AWorkspaceNodeCreator {
 	private final WorkspaceConfiguration configuration;

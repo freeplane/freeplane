@@ -3,7 +3,7 @@ package org.freeplane.plugin.workspace.controller;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 public class NodeSelectionListener implements TreeSelectionListener {
 	

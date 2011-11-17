@@ -9,7 +9,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JTree;
 
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 /**
  * 

@@ -3,7 +3,8 @@ package org.freeplane.plugin.workspace.config.actions;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.EnabledAction;
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 @EnabledAction(checkOnNodeChange = true, checkOnPopup = true)
 public class NodeCopyAction extends AWorkspaceAction {

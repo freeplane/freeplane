@@ -1,6 +1,6 @@
 package org.freeplane.plugin.workspace.controller;
 
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 
 public class WorkspaceNodeEvent {

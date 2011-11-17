@@ -31,6 +31,7 @@ Export-Package: org.apache.commons.io.monitor,
  org.freeplane.plugin.workspace.io.annotation,
  org.freeplane.plugin.workspace.io.creator;uses:="org.freeplane.plugin.workspace.config.node",
  org.freeplane.plugin.workspace.io.node;uses:="org.freeplane.plugin.workspace.config.node,org.freeplane.plugin.workspace.controller,org.freeplane.plugin.workspace.dnd",
- org.freeplane.plugin.workspace.model
+ org.freeplane.plugin.workspace.model,
+ org.freeplane.plugin.workspace.model.node
 Bundle-ClassPath: lib/plugin.jar,
  lib/commons-io-2.0.1.jar

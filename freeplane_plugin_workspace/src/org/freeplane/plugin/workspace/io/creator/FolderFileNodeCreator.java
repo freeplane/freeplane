@@ -7,7 +7,7 @@ package org.freeplane.plugin.workspace.io.creator;
 import java.io.File;
 
 import org.freeplane.plugin.workspace.io.node.FolderFileNode;
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 /**
  * 

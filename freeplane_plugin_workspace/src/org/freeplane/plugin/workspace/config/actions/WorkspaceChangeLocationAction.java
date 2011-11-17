@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.plugin.workspace.WorkspaceChooserDialog;
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
 
 public class WorkspaceChangeLocationAction extends AWorkspaceAction {
 

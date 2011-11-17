@@ -15,7 +15,7 @@ import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 /**
  * StringWriter writer = new StringWriter();

@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTree;
 
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
 
 public class WorkspaceExpandAction extends AWorkspaceAction {
 

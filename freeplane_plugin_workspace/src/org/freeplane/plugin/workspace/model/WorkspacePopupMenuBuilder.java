@@ -14,7 +14,8 @@ import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JFreeplaneMenuItem;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.plugin.workspace.config.actions.AWorkspaceAction;
+import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 public class WorkspacePopupMenuBuilder {
 

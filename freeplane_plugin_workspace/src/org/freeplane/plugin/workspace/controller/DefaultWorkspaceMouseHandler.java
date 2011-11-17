@@ -13,7 +13,7 @@ import javax.swing.tree.TreePath;
 
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.view.WorkspaceNodeRenderer;
 
 /**

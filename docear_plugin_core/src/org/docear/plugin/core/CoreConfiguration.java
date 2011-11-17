@@ -31,8 +31,8 @@ import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.controller.IWorkspaceListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 public class CoreConfiguration extends ALanguageController implements IFreeplanePropertyListener, IWorkspaceListener {
 

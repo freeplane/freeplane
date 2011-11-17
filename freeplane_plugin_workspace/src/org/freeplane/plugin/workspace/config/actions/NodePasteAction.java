@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
+import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
 
 @EnabledAction(checkOnNodeChange = true, checkOnPopup = true)
 public class NodePasteAction extends AWorkspaceAction {

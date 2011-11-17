@@ -6,6 +6,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspacePreferences;
+import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
 
 @SelectableAction(checkOnPropertyChange=WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY)
 public class WorkspaceHideAction extends AWorkspaceAction {

@@ -13,15 +13,16 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.config.actions.FileNodeNewDirectoryAction;
-import org.freeplane.plugin.workspace.config.actions.FileNodeNewFileAction;
-import org.freeplane.plugin.workspace.config.actions.FileNodeNewMindmapAction;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.io.action.FileNodeNewDirectoryAction;
+import org.freeplane.plugin.workspace.io.action.FileNodeNewFileAction;
+import org.freeplane.plugin.workspace.io.action.FileNodeNewMindmapAction;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
+import org.freeplane.plugin.workspace.model.node.AFolderNode;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeEventListener {
 	

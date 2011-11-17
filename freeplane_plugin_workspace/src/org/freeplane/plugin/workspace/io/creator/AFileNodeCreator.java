@@ -8,7 +8,7 @@ import java.io.File;
 import java.util.Vector;
 
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 public abstract class AFileNodeCreator implements IFileTypeHandler {
 	abstract public AWorkspaceTreeNode getNode(String name, File file, String extension);
