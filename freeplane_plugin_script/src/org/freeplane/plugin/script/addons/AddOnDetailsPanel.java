@@ -97,7 +97,6 @@ public class AddOnDetailsPanel extends JPanel {
 			text.append(warning.replaceAll("</?(html|body)>", ""));
 		}
 		text.append("</body></html>");
-		LogUtils.info("hi, description=" + text + ".");
 		return new JLabel(text.toString());
 	}
 
