@@ -32,9 +32,14 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.net.URI;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -55,7 +60,9 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.url.UrlManager;
 
 /**
  * Utilities for accessing the GUI, creating dialogs etc.: In scripts available as "global variable" <code>ui</code>.
@@ -155,6 +162,7 @@ public class UITools {
 		return frames.length >= 1 ? frames[0] : null;
 	}
 
+	/** returns a KeyStroke if possible and null otherwise. */
 	public static KeyStroke getKeyStroke(final String keyStrokeDescription) {
 		if (keyStrokeDescription == null) {
 			return null;
@@ -167,6 +175,21 @@ public class UITools {
 		final String modifiedDescription = keyStrokeDescription.substring(0, lastSpacePos) + "typed "
 		        + keyStrokeDescription.substring(lastSpacePos);
 		return KeyStroke.getKeyStroke(modifiedDescription);
+	}
+
+	/** formats a KeyStroke in a ledgible way, e.g. Control+V. Null is converted to "".
+	 * Taken from MotifGraphicsUtils.paintMenuItem(). */
+	public static String keyStrokeToString(KeyStroke keyStroke) {
+		String acceleratorText = "";
+		if (keyStroke != null) {
+		    int modifiers = keyStroke.getModifiers();
+		    if (modifiers > 0) {
+			acceleratorText = KeyEvent.getKeyModifiersText(modifiers);
+			acceleratorText += "+";
+		    }
+		    acceleratorText += KeyEvent.getKeyText(keyStroke.getKeyCode());
+		}
+		return acceleratorText;
 	}
 
 	static public void informationMessage(final String message) {
@@ -492,5 +515,21 @@ public class UITools {
         		}
         	}
         }
+    }
+
+	public static JButton createHtmlLinkStyleButton(final URI uri, final String title) {
+        final JButton button = new JButton("<html><a href='" + uri + "'>" + title);
+    	button.setBorderPainted(false);
+    	button.setOpaque(false);
+    	button.setBackground(Color.lightGray);
+    	button.setFocusable(false);
+    	button.addActionListener(new ActionListener() {
+    		public void actionPerformed(ActionEvent e) {
+    			final ModeController modeController = Controller.getCurrentModeController();
+    			final UrlManager urlManager = (UrlManager) modeController.getExtension(UrlManager.class);
+    			urlManager.loadURL(uri);
+    		}
+    	});
+    	return button;
     }
 }

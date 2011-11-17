@@ -1,6 +1,5 @@
 package org.freeplane.plugin.script.addons;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -36,7 +35,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.main.addons.AddOnProperties;
 import org.freeplane.main.addons.AddOnsController;
@@ -99,35 +97,22 @@ public class AddOnInstallerPanel extends JPanel {
 		return ManageAddOnsDialog.getText(key, parameters);
 	}
 
-	private String getTitleText(final String key) {
+	private static String getTitleText(final String key) {
 		final String titleStyle = "<html><b><font size='+1'>";
 	    return titleStyle + getText(key);
     }
 
 	private JButton createVisitAddOnPageButton() {
-		final URI addOnsUri;
-		final String addOnsUriString = TextUtils.removeTranslateComment(TextUtils.getText("addons.site"));
 		try {
+			final String addOnsUriString = TextUtils.removeTranslateComment(TextUtils.getText("addons.site"));
 			// parse the URI on creation of the dialog to test the URI syntax early
-			addOnsUri = new URI(addOnsUriString);
+			final URI addOnsUri = new URI(addOnsUriString);
+			return UITools.createHtmlLinkStyleButton(addOnsUri, getText("visit.addon.page"));
 		}
 		catch (URISyntaxException ex) {
 			// bad translation?
 			throw new RuntimeException(ex);
 		}
-		final JButton button = new JButton("<html><a href='" + addOnsUriString + "'>" + getText("visit.addon.page"));
-		button.setBorderPainted(false);
-		button.setOpaque(false);
-		button.setBackground(Color.lightGray);
-		button.setFocusable(false);
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				final ModeController modeController = Controller.getCurrentModeController();
-				final UrlManager urlManager = (UrlManager) modeController.getExtension(UrlManager.class);
-				urlManager.loadURL(addOnsUri);
-			}
-		});
-		return button;
 	}
 
 	private JButton createInstallButton() {
@@ -146,16 +131,16 @@ public class AddOnInstallerPanel extends JPanel {
 				try {
 					LogUtils.info("installing add-on from " + urlField.getText());
 					controller.getViewController().setWaitingCursor(true);
-					final URL sourceUrl = toURL(urlField.getText());
+					final URL homepage = toURL(urlField.getText());
 					ManageAddOnsDialog.setStatusInfo(getText("status.installing"));
 					final ModeController modeController = controller.getModeController(MModeController.MODENAME);
 					final MFileManager fileManager = (MFileManager) MFileManager.getController(modeController);
 					MapModel newMap = modeController.getMapController().newModel(null);
-					fileManager.loadImpl(sourceUrl, newMap);
+					fileManager.loadImpl(homepage, newMap);
 					AddOnProperties addOn = (AddOnProperties) ScriptingEngine.executeScript(newMap.getRootNode(),
 					    getInstallScriptSource(), ScriptingPermissions.getPermissiveScriptingPermissions());
 					if (addOn != null) {
-						addOn.setSourceUrl(sourceUrl);
+						addOn.setHomepage(homepage);
 						ManageAddOnsDialog.setStatusInfo(getText("status.success", addOn.getName()));
 						AddOnsController.getController().registerInstalledAddOn(addOn);
 						tableModel.addAddOn(addOn);

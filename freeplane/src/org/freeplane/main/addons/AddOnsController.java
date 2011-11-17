@@ -103,23 +103,27 @@ public class AddOnsController {
 				((MModeController)modeController).getOptionPanelBuilder().load(new StringReader(addOn.getPreferencesXml()));
 			}
 		}
-		if (addOn.getTranslations() != null) {
-			HashSet<String> languages = new HashSet<String>();
-			languages.add(resourceController.getLanguageCode());
-			languages.add(resourceController.getDefaultLanguageCode());
-			for (String language : languages) {
-				final Map<String, String> resources = addOn.getTranslations().get(language);
-				if (resources != null) {
-					resourceController.addLanguageResources(language, addOptionPanelPrefix(resources, addOn.getName()));
-					resourceController.addLanguageResources(language, resources);
-				}
-            }
-		}
+		if (addOn.getTranslations() != null)
+			registerAddOnResources(addOn, resourceController);
 	}
+
+	/** make the translations of this add-on known system-wide. */
+	public static void registerAddOnResources(final AddOnProperties addOn, final ResourceController resourceController) {
+	    HashSet<String> languages = new HashSet<String>();
+	    languages.add(resourceController.getLanguageCode());
+	    languages.add(resourceController.getDefaultLanguageCode());
+	    for (String language : languages) {
+	    	final Map<String, String> resources = addOn.getTranslations().get(language);
+	    	if (resources != null) {
+	    		resourceController.addLanguageResources(language, addOptionPanelPrefix(resources, addOn.getName()));
+	    		resourceController.addLanguageResources(language, resources);
+	    	}
+	    }
+    }
 
 	/** if the add-on is configurable it's a burden for the add-on-writer that the keys in the configuration are
 	 * prepended by "OptionPanel.". This code relieves the developer from taking care of that. */
-	private Map<String, String> addOptionPanelPrefix(final Map<String, String> resources, final String addOnName) {
+	private static Map<String, String> addOptionPanelPrefix(final Map<String, String> resources, final String addOnName) {
 		final HashMap<String, String> result = new HashMap<String, String>(resources.size());
 		for (Entry<String, String> entry : resources.entrySet()) {
 	        result.put("OptionPanel." + entry.getKey(), entry.getValue());
