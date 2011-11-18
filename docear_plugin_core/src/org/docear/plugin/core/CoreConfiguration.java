@@ -3,6 +3,7 @@ package org.docear.plugin.core;
 import java.net.URI;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.regex.Matcher;
 
 import org.docear.plugin.core.actions.DocearLicenseAction;
 import org.docear.plugin.core.actions.DocearOpenUrlAction;
@@ -17,6 +18,7 @@ import org.docear.plugin.core.workspace.creator.LinkTypeLiteratureCollectionCrea
 import org.docear.plugin.core.workspace.creator.LinkTypeMyPublicationsCreator;
 import org.docear.plugin.core.workspace.creator.LinkTypeNewLiteratureCreator;
 import org.docear.plugin.core.workspace.creator.LinkTypeReferencesCreator;
+import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
@@ -58,14 +60,18 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	public static final String DOCUMENT_REPOSITORY_PATH = DocearController.DOCUMENT_REPOSITORY_PATH_PROPERTY;
 	public static final String LIBRARY_PATH = "@@library_mindmaps@@"; 
 	public static final String BIBTEX_PATH = DocearController.BIBTEX_PATH_PROPERTY;
-
+		
+	public static final NodeAttributeObserver projectPathObserver = new NodeAttributeObserver();
+	public static final NodeAttributeObserver referencePathObserver = new NodeAttributeObserver();
+	public static final NodeAttributeObserver repositoryPathObserver = new NodeAttributeObserver();
+	
 	public CoreConfiguration(ModeController modeController) {
 		addPropertyChangeListener();
 		addPreferencesToOptionsPanel();
 		
 		try {
 			if (WorkspaceController.getController().isInitialized()) {
-				showLocationDialogIfNeeded();
+				//showLocationDialogIfNeeded();
 			}
 		}
 		catch(Exception e) {
@@ -76,18 +82,18 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		init(modeController);
 	}	
 
-	private void showLocationDialogIfNeeded() {
-		if (WorkspaceController.getController().getPreferences().getWorkspaceLocation() == null) {
-			return;
-		}
-		
-		String workspaceInfo = (String)WorkspaceController.getController().getConfiguration().getConfigurationInfo().getMeta();
-		
-		if (!workspaceInfo.toLowerCase().contains("docear") || !LocationDialog.allVariablesSet()) {
-			LocationDialog dialog = new LocationDialog(); 
-	    	dialog.setVisible(true);
-		}
-	}
+//	private void showLocationDialogIfNeeded() {
+//		if (WorkspaceController.getController().getPreferences().getWorkspaceLocation() == null) {
+//			return;
+//		}
+//		
+//		String workspaceInfo = (String)WorkspaceController.getController().getConfiguration().getConfigurationInfo().getMeta();
+//		
+//		if (!workspaceInfo.toLowerCase().contains("docear") || !LocationDialog.allVariablesSet()) {
+//			LocationDialog dialog = new LocationDialog(); 
+//	    	dialog.setVisible(true);
+//		}
+//	}
 
 	private void addPropertyChangeListener() {
 		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
@@ -212,9 +218,11 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 			Controller.getCurrentController().getResourceController().setDefaultProperty("links", "relative_to_workspace");
 			Controller.getCurrentController().getResourceController().setDefaultProperty("save_folding", "always_save_folding");
 		}
-		if(DocearController.getController().getLibrary() != null && DocearController.getController().getLibrary().getLibraryPath() != null){
+		if(DocearController.getController().getLibrary() != null){
 			URI uri = DocearController.getController().getLibrary().getLibraryPath();
-			Controller.getCurrentController().getResourceController().setProperty(LIBRARY_PATH, uri.getPath());
+			if (uri!=null && uri.getPath().length()>0) {
+				Controller.getCurrentController().getResourceController().setProperty(LIBRARY_PATH, uri.getPath());
+			}
 		}
 		
 	}
@@ -229,9 +237,13 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 
 	public void workspaceChanged(WorkspaceEvent event) {
 		System.out.println("DOCEAR CORE: workspaceChanged(WorkspaceEvent):"+ event);
-		showLocationDialogIfNeeded();
+		CoreConfiguration.projectPathObserver.setValue(null);
+		CoreConfiguration.referencePathObserver.setValue(null);
+		CoreConfiguration.repositoryPathObserver.setValue(null);
+		//showLocationDialogIfNeeded();
 		if(event.getType() == WorkspaceEvent.WORKSPACE_EVENT_TYPE_CHANGE) {
 			modifyContextMenus();
 		}
 	}
+	
 }
