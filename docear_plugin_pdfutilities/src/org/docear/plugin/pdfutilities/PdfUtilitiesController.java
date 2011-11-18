@@ -31,6 +31,7 @@ import org.docear.plugin.pdfutilities.actions.ImportAllAnnotationsAction;
 import org.docear.plugin.pdfutilities.actions.ImportAllChildAnnotationsAction;
 import org.docear.plugin.pdfutilities.actions.ImportNewAnnotationsAction;
 import org.docear.plugin.pdfutilities.actions.ImportNewChildAnnotationsAction;
+import org.docear.plugin.pdfutilities.actions.MonitoringFlattenSubfoldersAction;
 import org.docear.plugin.pdfutilities.actions.MonitoringGroupRadioButtonAction;
 import org.docear.plugin.pdfutilities.actions.RadioButtonAction;
 import org.docear.plugin.pdfutilities.actions.UpdateMonitoringFolderAction;
@@ -71,6 +72,7 @@ public class PdfUtilitiesController extends ALanguageController{
 	public static final String SUBFOLDERS_MENU = "/subfolders";
 	public static final String MON_SUBDIRS = "mon_subdirs";
 	public static final String MON_AUTO = "mon_auto";
+	public static final String MON_FLATTEN_DIRS = "mon_flatten_dirs";
 	public static final String MON_MINDMAP_FOLDER = "mon_mindmap_folder";
 	public static final String MON_INCOMING_FOLDER = "mon_incoming_folder";
 	public static final String SETTINGS_MENU = "/Settings";
@@ -102,6 +104,7 @@ public class PdfUtilitiesController extends ALanguageController{
 	public static final String UPDATE_MONITORING_FOLDER_LANG_KEY = "menu_import_update_monitoring_folder"; //$NON-NLS-1$
 	public static final String DELETE_MONITORING_FOLDER_LANG_KEY = "menu_import_delete_monitoring_folder"; //$NON-NLS-1$
 	private static final String EDIT_MONITORING_FOLDER_LANG_KEY = "menu_import_edit_monitoring_folder"; //$NON-NLS-1$
+	private static final String TOGGLE_FOLDER_VIEW_LANG_KEY = "menu_import_folder_view"; //$NON-NLS-1$
 
 	private ModeController modecontroller;
 	private ImportAllAnnotationsAction importAllAnnotationsAction;
@@ -112,6 +115,7 @@ public class PdfUtilitiesController extends ALanguageController{
 	private DeleteMonitoringFolderAction deleteMonitoringFolderAction;
 	private ImportAllChildAnnotationsAction importAllChildAnnotationsAction;
 	private ImportNewChildAnnotationsAction importNewChildAnnotationsAction;
+	private MonitoringFlattenSubfoldersAction monitoringFlattenSubfoldersAction;
 
 	public PdfUtilitiesController(ModeController modeController) {
 		super();
@@ -148,7 +152,8 @@ public class PdfUtilitiesController extends ALanguageController{
 		this.modecontroller.getMapController().addListenerForAction(deleteMonitoringFolderAction);
 		this.editMonitoringFolderAction = new EditMonitoringFolderAction(EDIT_MONITORING_FOLDER_LANG_KEY);
 		this.modecontroller.getMapController().addListenerForAction(editMonitoringFolderAction);
-
+		this.monitoringFlattenSubfoldersAction = new MonitoringFlattenSubfoldersAction(TOGGLE_FOLDER_VIEW_LANG_KEY);
+		this.modecontroller.getMapController().addListenerForAction(monitoringFlattenSubfoldersAction);
 		
 		this.modecontroller.removeAction("PasteAction");
 		this.modecontroller.addAction(new DocearPasteAction());
@@ -217,6 +222,10 @@ public class PdfUtilitiesController extends ALanguageController{
 				autoOffAction.addGroupItem(autoOnAction);
 				autoDefaultAction.addGroupItem(autoOffAction);
 				autoDefaultAction.addGroupItem(autoOnAction);
+				
+				builder.addRadioItem(MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU, monitoringFlattenSubfoldersAction, false);
+				builder.addRadioItem(NODE_POPUP_MENU + MONITORING_MENU, monitoringFlattenSubfoldersAction, false);
+				monitoringFlattenSubfoldersAction.initView(builder);
 				
 				builder.addRadioItem(NODE_POPUP_MENU + MONITORING_MENU + SETTINGS_MENU + AUTOUPDATE_MENU, autoOnAction, false);
 				builder.addRadioItem(MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU + SETTINGS_MENU + AUTOUPDATE_MENU, autoOnAction, false);

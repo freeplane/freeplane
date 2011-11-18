@@ -1,7 +1,11 @@
 package org.docear.plugin.pdfutilities.listener;
 
+import java.util.Map.Entry;
+
 import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.features.DocearMapModelExtension;
+import org.docear.plugin.core.features.DocearNodeModelExtension;
+import org.docear.plugin.core.features.DocearNodeModelExtensionController;
 import org.docear.plugin.pdfutilities.features.AnnotationController;
 import org.docear.plugin.pdfutilities.features.IAnnotation;
 import org.freeplane.features.map.INodeSelectionListener;
@@ -12,6 +16,8 @@ public class DocearNodeSelectionListener implements INodeSelectionListener {
 
 	public void onDeselect(NodeModel node) {
 		Controller.getCurrentController().getViewController().removeStatus("Annotation Info");
+		Controller.getCurrentController().getViewController().removeStatus("Map Version");
+		Controller.getCurrentController().getViewController().removeStatus("Docear Extension Info");
 	}
 
 	public void onSelect(NodeModel node) {	
@@ -51,6 +57,32 @@ public class DocearNodeSelectionListener implements INodeSelectionListener {
 			}
 			
 			Controller.getCurrentController().getViewController().addStatusInfo("Annotation Info", builder.toString());
+		}
+		
+		DocearNodeModelExtension extension = DocearNodeModelExtensionController.getModel(node);
+		if(extension != null){
+			StringBuilder builder = new StringBuilder();
+			
+			for(Entry<String, Object> entry : extension.getAllEntries()){
+				if(builder.length() < 1){
+					builder.append(entry.getKey());
+				}
+				else{
+					builder.append(" " + entry.getKey());
+				}
+				if(entry.getValue() != null){
+					if(entry.getValue() instanceof String){
+						if(((String)entry.getValue()).length() > 0){
+							builder.append(": " + entry.getValue());
+						}
+					}
+					else{
+						builder.append(": " + entry.getValue());
+					}
+				}
+			}
+			
+			Controller.getCurrentController().getViewController().addStatusInfo("Docear Extension Info", builder.toString());
 		}
 	}
 

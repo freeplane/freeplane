@@ -9,6 +9,7 @@ import org.docear.plugin.core.actions.DocearOpenUrlAction;
 import org.docear.plugin.core.actions.SaveAction;
 import org.docear.plugin.core.actions.SaveAsAction;
 import org.docear.plugin.core.features.DocearMapModelController;
+import org.docear.plugin.core.features.DocearNodeModelExtensionController;
 import org.docear.plugin.core.workspace.actions.WorkspaceChangeLocationsAction;
 import org.docear.plugin.core.workspace.creator.FolderTypeLibraryCreator;
 import org.docear.plugin.core.workspace.creator.FolderTypeLiteratureRepositoryCreator;
@@ -17,6 +18,7 @@ import org.docear.plugin.core.workspace.creator.LinkTypeLiteratureCollectionCrea
 import org.docear.plugin.core.workspace.creator.LinkTypeMyPublicationsCreator;
 import org.docear.plugin.core.workspace.creator.LinkTypeNewLiteratureCreator;
 import org.docear.plugin.core.workspace.creator.LinkTypeReferencesCreator;
+
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
@@ -113,6 +115,11 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		// set up context menu for workspace
 		modeController.addAction(new WorkspaceChangeLocationsAction());
 		modifyContextMenus();
+		registerController(modeController);
+	}
+	
+	private void registerController(ModeController modeController) {
+		DocearNodeModelExtensionController.install(new DocearNodeModelExtensionController(modeController));		
 	}
 	
 	private void prepareWorkspace() {

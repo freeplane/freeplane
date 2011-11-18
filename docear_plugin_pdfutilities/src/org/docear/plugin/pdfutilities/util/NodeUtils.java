@@ -30,13 +30,16 @@ import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.attribute.AttributeView;
 
 
@@ -381,6 +384,9 @@ public class NodeUtils {
 			if(attributes.getAttributeKeyList().contains(attributeKey)){
 				//attributes.getAttribute(attributes.getAttributePosition(attributeKey)).setValue(value);
 				AttributeController.getController().performSetValueAt(attributes, value, attributes.getAttributePosition(attributeKey), 1);
+				for(INodeView view : target.getViewers()){
+					view.nodeChanged(new NodeChangeEvent(target, NodeModel.UNKNOWN_PROPERTY, null, null));
+				}				
 				return true;
 			}
 			else{
