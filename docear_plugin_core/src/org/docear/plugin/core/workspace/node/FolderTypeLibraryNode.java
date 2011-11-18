@@ -262,7 +262,7 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 	public URI getLibraryPath() {		
 		Matcher mainMatcher = PATTERN.matcher(DEFAULT_LIBRARY_PATH);
 		String ret = mainMatcher.replaceAll("." + WorkspaceController.getController().getPreferences().getWorkspaceProfile());
-		return WorkspaceUtils.absoluteURI(URI.create(ret));		
+		return WorkspaceUtils.absoluteURI(URI.create(ret));
 	}
 
 	public URI getBibtexDatabase() {
@@ -329,7 +329,7 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 					}
 				} 
 				else
-				if(newNode instanceof LinkTypeFileNode) {
+				if(newNode instanceof LinkTypeFileNode && ((LinkTypeFileNode)newNode).getLinkPath() != null) {
 					URI uri = WorkspaceUtils.absoluteURI(((LinkTypeFileNode)newNode).getLinkPath());
 					if((new File(uri)).getName().endsWith(".mm") && !mindmapIndex.contains(uri)) {
 						LogUtils.info("DOCEAR: adding new mindmap to library: "+ uri);

@@ -4,8 +4,10 @@
  */
 package org.docear.plugin.core.workspace.creator;
 
-import java.net.URI;
+import java.io.File;
 
+import org.docear.plugin.core.CoreConfiguration;
+import org.docear.plugin.core.LocationDialog;
 import org.docear.plugin.core.workspace.node.FolderTypeProjectsNode;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.WorkspaceController;
@@ -31,10 +33,10 @@ public class FolderTypeProjectsCreator extends AWorkspaceNodeCreator {
 		String type = data.getAttribute("type", FOLDER_TYPE_PROJECTS);
 		FolderTypeProjectsNode node = new FolderTypeProjectsNode(type);
 
-		String name = data.getAttribute("name", null);
+		String name = data.getAttribute("name", null);		
 		if(name == null) {
 			return null;
-		}
+		}		
 		node.setName(name);
 		
 		boolean monitor = Boolean.parseBoolean(data.getAttribute("monitor", "false"));
@@ -42,18 +44,17 @@ public class FolderTypeProjectsCreator extends AWorkspaceNodeCreator {
 		
 		String path = data.getAttribute("path", null);
 		if(path == null || path.trim().length() == 0) {
-			return node;
+			path = (String) CoreConfiguration.projectPathObserver.getValue();
+			if (path==null) {
+				LocationDialog dialog = new LocationDialog(); 
+		    	dialog.setVisible(true);
+			}
+			if (path == null) {
+				return node;
+			}
 		}
 		
-		URI uri;
-		try{
-			uri = URI.create(path);
-		}
-		catch (Exception e) {
-			return node;
-		}
-		node.setPath(uri);
-		
+		node.setPath((new File(path)).toURI());
 		return node;
 	}
 	
@@ -62,7 +63,7 @@ public class FolderTypeProjectsCreator extends AWorkspaceNodeCreator {
 		if (node == null) {
 			return;
 		}
-		if (node instanceof FolderTypeProjectsNode && ((FolderTypeProjectsNode) node).getChildCount() == 0) {
+		if (node instanceof FolderTypeProjectsNode && ((FolderTypeProjectsNode) node).getChildCount() == 0 && ((FolderTypeProjectsNode) node).getPath() != null) {
 			WorkspaceController
 					.getController()
 					.getFilesystemMgr()
