@@ -44,7 +44,7 @@ public class AddOnDetailsPanel extends JPanel {
 		add(author, "1, 4");
 		final Box box = Box.createHorizontalBox();
 		box.add(new JLabel(getText("homepage")));
-		box.add(createAddOnSourceLinkButton(addOn));
+		box.add(createAddOnHomepageButton(addOn));
 		add(box, "1, 6, left, default");
 		JComponent details = createDetails(addOn);
 		add(details, "1, 7");
@@ -60,18 +60,19 @@ public class AddOnDetailsPanel extends JPanel {
 	}
 
 	private JLabel createAuthorLabel(final AddOnProperties addOn) {
-		return new JLabel("<html><body><b><font size='-1'>" + getText("authored.by", addOn.getAuthor())
-		        + "</font></b></body></html>");
+		final String text = addOn.getAuthor() == null ? "" : "<html><body><b><font size='-1'>"
+		        + getText("authored.by", addOn.getAuthor()) + "</font></b></body></html>";
+		return new JLabel(text);
 	}
 
-	private JComponent createAddOnSourceLinkButton(final AddOnProperties addOn) {
+	private JComponent createAddOnHomepageButton(final AddOnProperties addOn) {
 		// parse the URI on creation of the dialog to test the URI syntax early
 		try {
 			return UITools.createHtmlLinkStyleButton(addOn.getHomepage().toURI(), addOn.getHomepage().toString());
 		}
 		catch (Exception e) {
 			LogUtils.warn("add-on " + addOn + " has no valid homepage: " + e);
-			return new JPanel();
+			return new JLabel("-");
 		}
 	}
 
@@ -93,7 +94,7 @@ public class AddOnDetailsPanel extends JPanel {
 			}
 		}
 		if (warning != null) {
-			text.append("<p>");
+			text.append("<p><p>");
 			text.append(warning.replaceAll("</?(html|body)>", ""));
 		}
 		text.append("</body></html>");
