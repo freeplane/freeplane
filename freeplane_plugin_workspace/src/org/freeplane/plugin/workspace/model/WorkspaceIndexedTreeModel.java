@@ -431,7 +431,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 		else 
 		if(node instanceof PhysicalFolderNode) {
 			PhysicalFolderNode phyNode = (PhysicalFolderNode) node;
-			WorkspaceController.getController().getFilesystemReader()
+			WorkspaceController.getController().getFilesystemMgr()
 					.scanFileSystem(phyNode, WorkspaceUtils.resolveURI(phyNode.getPath()));			
 		} 
 		else 

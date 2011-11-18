@@ -189,8 +189,9 @@ public class WorkspaceUtils {
 
 	}
 
-	public static URI workspaceRelativeURI(final URI uri) {
+	public static URI workspaceRelativeURI(URI uri) {
 		URI relativeURI = getWorkspaceBaseURI().relativize(uri);
+		System.out.println(getWorkspaceBaseURI());
 		try {
 			return new URI("workspace", relativeURI.getUserInfo(), relativeURI.getHost(), relativeURI.getPort(), "/"
 					+ relativeURI.getPath(), relativeURI.getQuery(), relativeURI.getFragment());

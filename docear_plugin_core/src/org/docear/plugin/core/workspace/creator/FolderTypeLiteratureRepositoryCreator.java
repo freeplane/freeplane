@@ -7,8 +7,12 @@ package org.docear.plugin.core.workspace.creator;
 import java.io.File;
 import java.net.URI;
 
+import org.docear.plugin.core.CoreConfiguration;
+import org.docear.plugin.core.DocearController;
+import org.docear.plugin.core.LocationDialog;
 import org.docear.plugin.core.workspace.node.FolderTypeLiteratureRepositoryNode;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
@@ -39,36 +43,32 @@ public class FolderTypeLiteratureRepositoryCreator extends AWorkspaceNodeCreator
 		FolderTypeLiteratureRepositoryNode node = new FolderTypeLiteratureRepositoryNode(type);
 		// TODO: add missing attribute handling
 		String path = data.getAttribute("path", null);
-		if (path == null) {
-			return null;
+		
+		if (path == null || path.length()==0) {
+			path = (String) CoreConfiguration.repositoryPathObserver.getValue();
+			if (path==null) {
+				LocationDialog dialog = new LocationDialog(); 
+		    	dialog.setVisible(true);
+			}
+			if (path == null) {
+				return node;
+			}
 		}
+		
 		node.setPath(URI.create(path));
 
-		File file = WorkspaceUtils.resolveURI(node.getPath());
-
-		if (file != null) {
-			if (!file.exists()) {
-				if (file.mkdirs()) {
-					LogUtils.info("New Filesystem Folder Created: " + file.getAbsolutePath());
-				}
-			}
-			node.setName(file.getName());
-		}
-		else {
-			node.setName("no folder selected!");
-		}
 		return node;
 	}
 
 	public void endElement(final Object parent, final String tag, final Object node, final XMLElement lastBuiltElement) {
 		super.endElement(parent, tag, node, lastBuiltElement);
-		if (node == null) {
+		if (node == null || ((FolderTypeLiteratureRepositoryNode) node).getPath() == null) {
 			return;
 		}
 		if (node instanceof FolderTypeLiteratureRepositoryNode && ((FolderTypeLiteratureRepositoryNode) node).getChildCount() == 0) {
 			WorkspaceController
 					.getController()
-					.getFilesystemReader()
+					.getFilesystemMgr()
 					.scanFileSystem((AWorkspaceTreeNode) node,
 							WorkspaceUtils.resolveURI(((FolderTypeLiteratureRepositoryNode) node).getPath()));
 		}

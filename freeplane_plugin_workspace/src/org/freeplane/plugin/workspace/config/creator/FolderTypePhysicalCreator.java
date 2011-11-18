@@ -3,7 +3,6 @@ package org.freeplane.plugin.workspace.config.creator;
 import java.io.File;
 import java.net.URI;
 
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
@@ -33,12 +32,9 @@ public class FolderTypePhysicalCreator extends AWorkspaceNodeCreator {
 			return null;
 		}
 
-		if (!file.exists()) {
-			if (file.mkdirs()) {
-				LogUtils.info("New Filesystem Folder Created: " + file.getAbsolutePath());
-			}
-		}
-
+		boolean monitor = Boolean.parseBoolean(data.getAttribute("monitor", "false"));
+		node.enableMonitoring(monitor);
+		
 		String name = data.getAttribute("name", file.getName());
 		node.setName(name);
 
@@ -53,7 +49,7 @@ public class FolderTypePhysicalCreator extends AWorkspaceNodeCreator {
 
 		WorkspaceController
 				.getController()
-				.getFilesystemReader()
+				.getFilesystemMgr()
 				.scanFileSystem((AWorkspaceTreeNode) currentNode,
 						WorkspaceUtils.resolveURI(((PhysicalFolderNode) currentNode).getPath()));
 

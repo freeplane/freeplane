@@ -52,12 +52,10 @@ public class LocationDialog extends JDialog {
 	 */
 	
 	public static boolean allVariablesSet() {
-		ResourceController resCtrl = ResourceController.getResourceController();
-		
-		boolean variablesSet = true;
-		variablesSet = variablesSet && (resCtrl.getProperty(DocearController.DOCUMENT_REPOSITORY_PATH_PROPERTY, "").length()>0);
-		variablesSet = variablesSet && (resCtrl.getProperty(DocearController.BIBTEX_PATH_PROPERTY, "").length()>0);
-		variablesSet = variablesSet && (resCtrl.getProperty(DocearController.PROJECTS_PATH_PROPERTY, "").length()>0);
+		boolean variablesSet = true;		
+		variablesSet = variablesSet && CoreConfiguration.repositoryPathObserver.getValue() != null;
+		variablesSet = variablesSet && CoreConfiguration.referencePathObserver.getValue() != null;
+		variablesSet = variablesSet && CoreConfiguration.projectPathObserver.getValue() != null;
 		
 		System.out.println("DOCEAR: allVariablesSet: "+variablesSet);
 		
@@ -280,13 +278,16 @@ public class LocationDialog extends JDialog {
 		}	
 	}
 		
-	private String getLiteratureLocation() {				
+	private String getLiteratureLocation() {	
+		String location = (String) CoreConfiguration.repositoryPathObserver.getValue();
+//		if (location == null) {
+//			location = CoreConfiguration.
+//		}
 		return getPropertyLocation(DocearController.DOCUMENT_REPOSITORY_PATH_PROPERTY, DOCUMENT_REPOSITORY_INIT_PATH);
-		
 	}
 	
 	private void setLiteratureLocation(String location) {
-		ResourceController.getResourceController().setProperty(DocearController.DOCUMENT_REPOSITORY_PATH_PROPERTY, location);
+		CoreConfiguration.repositoryPathObserver.setValue(location);
 	}
 	
 	private String getBibtexLocation() {
@@ -294,7 +295,7 @@ public class LocationDialog extends JDialog {
 	}
 	
 	private void setBibtexLocation(String location) {
-		ResourceController.getResourceController().setProperty(DocearController.BIBTEX_PATH_PROPERTY, location);
+		CoreConfiguration.referencePathObserver.setValue(location);
 	}
 	
 	private String getProjectsLocation() {
@@ -302,7 +303,7 @@ public class LocationDialog extends JDialog {
 	}
 	
 	private void setProjectsLocation(String location) {
-		ResourceController.getResourceController().setProperty(DocearController.PROJECTS_PATH_PROPERTY, location);
+		CoreConfiguration.projectPathObserver.setValue(location);
 	}
 
 

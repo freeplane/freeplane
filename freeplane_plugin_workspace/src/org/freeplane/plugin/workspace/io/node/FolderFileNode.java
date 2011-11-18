@@ -75,7 +75,7 @@ public class FolderFileNode extends DefaultFileNode {
 		try {
 			if (getFile().isDirectory()) {
 				WorkspaceUtils.getModel().removeAllElements(this);
-				WorkspaceController.getController().getFilesystemReader().scanFileSystem(this, getFile());
+				WorkspaceController.getController().getFilesystemMgr().scanFileSystem(this, getFile());
 				WorkspaceUtils.getModel().reload(this);
 				WorkspaceController.getController().getExpansionStateHandler().restoreExpansionStates();				
 			}
@@ -94,8 +94,8 @@ public class FolderFileNode extends DefaultFileNode {
 						WorkspacePopupMenuBuilder.createSubMenu(TextUtils.getRawText("workspace.action.new.label")),
 						"workspace.action.file.new.directory",
 						"workspace.action.file.new.mindmap",
-						WorkspacePopupMenuBuilder.SEPARATOR,
-						"workspace.action.file.new.file",
+						//WorkspacePopupMenuBuilder.SEPARATOR,
+						//"workspace.action.file.new.file",
 						WorkspacePopupMenuBuilder.endSubMenu(),
 						WorkspacePopupMenuBuilder.SEPARATOR, 
 						"workspace.action.node.paste",

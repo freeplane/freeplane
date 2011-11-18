@@ -3,48 +3,51 @@ package org.freeplane.plugin.workspace.io.action;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
+import javax.swing.Icon;
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.mindmapmode.MFileManager;
-import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
+import org.freeplane.plugin.workspace.io.node.FolderFileNode;
 import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 public class FileNodeNewMindmapAction extends AWorkspaceAction {
-
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
+	
+	private static final Icon icon;
+	
+	static {
+		icon = (ResourceController.getResourceController().getProperty("ApplicationName", "Docear").equals("Docear") ? DefaultFileNode.DOCEAR_ICON : DefaultFileNode.FREEPLANE_ICON);
+	}
 
 	public FileNodeNewMindmapAction() {
-		super("workspace.action.file.new.mindmap");
+		super("workspace.action.file.new.mindmap", TextUtils.getRawText("workspace.action.file.new.mindmap.label"), icon);
 	}
 	
-	public void actionPerformed(final ActionEvent e) {		
-		String fileName = JOptionPane.showInputDialog(Controller.getCurrentController().getViewController().getContentPane(),
+	public void actionPerformed(final ActionEvent e) {	
+		AWorkspaceTreeNode targetNode = this.getNodeFromActionEvent(e);
+		if(targetNode instanceof FolderFileNode ) {
+			String fileName = JOptionPane.showInputDialog(Controller.getCurrentController().getViewController().getContentPane(),
 				TextUtils.getText("add_new_mindmap"), TextUtils.getText("add_new_mindmap_title"),
-				JOptionPane.YES_NO_OPTION);
+				JOptionPane.OK_CANCEL_OPTION);
 		
-		if (fileName != null && fileName.length()>0) {
-			AWorkspaceTreeNode node = this.getNodeFromActionEvent(e);
-			if (node instanceof DefaultFileNode) {
-				File file = ((DefaultFileNode) node).getFile();
-				if (file.exists()) {
-					JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(),
-                            TextUtils.getText("error_file_exists"), TextUtils.getText("error_file_exists_title"),
-                            JOptionPane.ERROR_MESSAGE);
-				}
-				if (!file.isDirectory()) {
-					file = file.getParentFile();
-				}
-				if (createNewMindmap(new File(file.getPath()+File.separator+fileName))) {
-					WorkspaceController.getController().reloadWorkspace();
-				}
+			if (fileName != null && fileName.length()>0) {				
+					File file = new File(((FolderFileNode) targetNode).getFile(), fileName);
+					if (file.exists()) {
+						JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(),
+	                            TextUtils.getText("error_file_exists"), TextUtils.getText("error_file_exists_title"),
+	                            JOptionPane.ERROR_MESSAGE);
+					} 
+					else if (createNewMindmap(file)) {
+						targetNode.refresh();
+					}
+				
 			}
 		}
     }

@@ -101,8 +101,8 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 			}
 		}	
 		
-		WorkspaceTransferable transferable = new WorkspaceTransferable(WorkspaceTransferable.WORKSPACE_SERIALIZED_FLAVOR, writer.getString());
-		transferable.addData(WorkspaceTransferable.WORKSPACE_NODE_FLAVOR, objectList);
+		WorkspaceTransferable transferable = new WorkspaceTransferable(WorkspaceTransferable.WORKSPACE_NODE_FLAVOR, objectList);
+		//transferable.addData(WorkspaceTransferable.WORKSPACE_SERIALIZED_FLAVOR, writer.getString());
 		return transferable;
 
 	}

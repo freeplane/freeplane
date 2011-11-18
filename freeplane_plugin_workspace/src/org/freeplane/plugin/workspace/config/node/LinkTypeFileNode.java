@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -27,7 +28,7 @@ import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeEventListener, IWorkspaceTransferableCreator {
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;	
 
 	private URI linkPath;
 	
@@ -63,7 +64,7 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeEventLi
 	}
 	
 	public void setLinkPath(URI linkPath) {
-		this.linkPath = linkPath;
+		this.linkPath = linkPath;		
 	}	
 
 	public void handleEvent(WorkspaceNodeEvent event) {
@@ -107,6 +108,9 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeEventLi
 			List<File> fileList = new Vector<File>();
 			fileList.add(new File(uri));
 			transferable.addData(WorkspaceTransferable.WORKSPACE_FILE_LIST_FLAVOR, fileList);
+			List<AWorkspaceTreeNode> objectList = new ArrayList<AWorkspaceTreeNode>();
+			objectList.add(this);
+			transferable.addData(WorkspaceTransferable.WORKSPACE_NODE_FLAVOR, objectList);
 		}
 		catch (URISyntaxException e) {
 			e.printStackTrace();

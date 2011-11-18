@@ -48,14 +48,14 @@ public class FileSystemAlterationMonitor {
 	}
 	
 	public final void removeFileSystemListener(File file, FileAlterationListener listener) {
-		Iterator<FileAlterationObserver> observers = monitor.getObservers().iterator();
+		Iterator<FileAlterationObserver> observers = monitor.getObservers().iterator();			
 		while(observers.hasNext()) {
 			FileAlterationObserver observer = observers.next();
 			if(observer.getDirectory().getPath().equals(file.getPath())) {
 				Iterator<FileAlterationListener> listeners = observer.getListeners().iterator();
 				while(listeners.hasNext()) {
 					if(listeners.next().equals(listener)) {
-						listeners.remove();
+						observer.removeListener(listener);
 					}
 				}
 			}

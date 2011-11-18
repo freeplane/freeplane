@@ -8,6 +8,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import org.apache.commons.io.monitor.FileAlterationListener;
+import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -24,7 +26,7 @@ import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.node.AFolderNode;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
-public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeEventListener {
+public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeEventListener, FileAlterationListener {
 	
 	private static final long serialVersionUID = 1L;
 	private static Icon FOLDER_OPEN_ICON = new ImageIcon(PhysicalFolderNode.class.getResource("/images/16x16/folder-orange_open.png"));
@@ -33,6 +35,8 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeEve
 	private static WorkspacePopupMenu popupMenu = null;
 	
 	private URI folderPath;
+	private boolean doMonitoring = false;
+	private boolean first;
 	
 	public PhysicalFolderNode() {
 		this(AFolderNode.FOLDER_TYPE_PHYSICAL);
@@ -47,8 +51,24 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeEve
 		return folderPath;
 	}
 
-	public void setPath(URI folderPath) {
-		this.folderPath = folderPath;
+	public void setPath(URI uri) {
+		if(isMonitoring()) {
+			enableMonitoring(false);
+			this.folderPath = uri;
+			createIfNeeded(getPath());
+			enableMonitoring(true);
+		} 
+		else {
+			this.folderPath = uri;
+			createIfNeeded(getPath());
+		}		
+	}
+	
+	private void createIfNeeded(URI uri) {
+		File file = WorkspaceUtils.resolveURI(uri);
+		if (file != null && !file.exists()) {
+			file.mkdirs();			
+		}
 	}
 
 	public void initializePopup() {
@@ -64,10 +84,12 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeEve
 						WorkspacePopupMenuBuilder.createSubMenu(TextUtils.getRawText("workspace.action.new.label")),
 						"workspace.action.file.new.directory",
 						"workspace.action.file.new.mindmap",
-						WorkspacePopupMenuBuilder.SEPARATOR,
-						"workspace.action.file.new.file",
+						//WorkspacePopupMenuBuilder.SEPARATOR,
+						//"workspace.action.file.new.file",
 						WorkspacePopupMenuBuilder.endSubMenu(),
-						WorkspacePopupMenuBuilder.SEPARATOR, 
+						WorkspacePopupMenuBuilder.SEPARATOR,
+						"workspace.action.node.enable.monitoring",
+						WorkspacePopupMenuBuilder.SEPARATOR,						
 						"workspace.action.node.paste",
 						"workspace.action.node.copy",
 						"workspace.action.node.cut",
@@ -79,6 +101,38 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeEve
 				});
 			}
 		}
+	}
+	
+	public void enableMonitoring(boolean enable) {
+		if(getPath() == null) {
+			this.doMonitoring = enable;
+		} 
+		else {
+			File file = WorkspaceUtils.resolveURI(getPath());
+			if(enable != this.doMonitoring) {
+				this.doMonitoring = enable;
+				first = true;
+				if(file == null) {
+					return;
+				}
+				try {		
+					if(enable) {					
+						WorkspaceController.getController().getFileSystemAlterationMonitor().addFileSystemListener(file, this);
+					}
+					else {
+						WorkspaceController.getController().getFileSystemAlterationMonitor().removeFileSystemListener(file, this);
+					}
+				} 
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	@ExportAsAttribute("monitor")
+	public boolean isMonitoring() {
+		return this.doMonitoring;
 	}
 
 	public void handleEvent(WorkspaceNodeEvent event) {
@@ -105,7 +159,7 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeEve
 			folder = WorkspaceUtils.resolveURI(getPath());
 			if (folder.isDirectory()) {
 				WorkspaceUtils.getModel().removeAllElements(this);
-				WorkspaceController.getController().getFilesystemReader().scanFileSystem(this, folder);
+				WorkspaceController.getController().getFilesystemMgr().scanFileSystem(this, folder);
 				WorkspaceUtils.getModel().reload(this);
 				WorkspaceController.getController().getExpansionStateHandler().restoreExpansionStates();				
 			}
@@ -118,6 +172,61 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeEve
 	protected AWorkspaceTreeNode clone(PhysicalFolderNode node) {		
 		node.setPath(getPath());		
 		return super.clone(node);
+	}
+	
+	/***********************************************************************************
+	 * REQUIRED METHODS FOR INTERFACES
+	 **********************************************************************************/
+
+	public void onStart(FileAlterationObserver observer) {
+		if(first ) return;
+		// called when the observer starts a check cycle. do nth so far. 
+	}
+
+	public void onDirectoryCreate(File directory) {
+		if(first) return;
+		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node insertion.
+		System.out.println("onDirectoryCreate: " + directory);
+		refresh();
+	}
+
+	public void onDirectoryChange(File directory) {
+		if(first) return;
+		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node change.
+		System.out.println("onDirectoryChange: " + directory);
+		refresh();
+	}
+
+	public void onDirectoryDelete(File directory) {
+		if(first) return;
+		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node remove.
+		System.out.println("onDirectoryDelete: " + directory);
+		refresh();
+	}
+
+	public void onFileCreate(File file) {
+		if(first) return;
+		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node insertion.
+		System.out.println("onFileCreate: " + file);
+		refresh();
+	}
+
+	public void onFileChange(File file) {
+		if(first) return;
+		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node change.
+		System.out.println("onFileChange: " + file);
+		refresh();
+	}
+
+	public void onFileDelete(File file) {
+		if(first) return;
+		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node remove.
+		System.out.println("onFileDelete: " + file);
+		refresh();
+	}
+
+	public void onStop(FileAlterationObserver observer) {
+		first = false;
 	}
 	
 	public WorkspacePopupMenu getContextMenu() {

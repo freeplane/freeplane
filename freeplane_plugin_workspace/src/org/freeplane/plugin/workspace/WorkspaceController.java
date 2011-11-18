@@ -37,7 +37,7 @@ import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferHandler;
 import org.freeplane.plugin.workspace.io.FileReadManager;
 import org.freeplane.plugin.workspace.io.FileSystemAlterationMonitor;
-import org.freeplane.plugin.workspace.io.FilesystemReader;
+import org.freeplane.plugin.workspace.io.FilesystemManager;
 import org.freeplane.plugin.workspace.io.creator.AFileNodeCreator;
 import org.freeplane.plugin.workspace.model.WorkspaceIndexedTreeModel;
 import org.freeplane.plugin.workspace.model.node.WorkspaceRoot;
@@ -53,7 +53,7 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 	private static final WorkspaceConfiguration configuration = new WorkspaceConfiguration();
 	private static final FileSystemAlterationMonitor monitor = new FileSystemAlterationMonitor(5000);
 
-	private final FilesystemReader fsReader;
+	private final FilesystemManager fsReader;
 	private final Vector<IWorkspaceListener> workspaceListener = new Vector<IWorkspaceListener>();
 
 	private TreeView view;
@@ -83,7 +83,7 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 
 		// this.popups = new PopupMenus();
 
-		this.fsReader = new FilesystemReader(getFileTypeManager());
+		this.fsReader = new FilesystemManager(getFileTypeManager());
 	}
 	
 	/***********************************************************************************
@@ -141,7 +141,7 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 		}
 	}
 
-	public FilesystemReader getFilesystemReader() {
+	public FilesystemManager getFilesystemMgr() {
 		return this.fsReader;
 	}
 
