@@ -42,8 +42,8 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 	private static final Icon GRAPHICS_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/image-x-generic.png"));
 	private static final Icon DEFAULT_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/text-x-preview.png"));
 	private static final Icon WEB_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/text-html-2.png"));
-	private static final Icon DOCEAR_ICON = new ImageIcon(ResourceController.class.getResource("/images/docear16.png"));
-	private static final Icon FREEPLANE_ICON = new ImageIcon(ResourceController.class.getResource("/images/Freeplane_frame_icon.png"));
+	public static final Icon DOCEAR_ICON = new ImageIcon(ResourceController.class.getResource("/images/docear16.png"));
+	public static final Icon FREEPLANE_ICON = new ImageIcon(ResourceController.class.getResource("/images/Freeplane_frame_icon.png"));
 	
 	private static final long serialVersionUID = 1L;
 	

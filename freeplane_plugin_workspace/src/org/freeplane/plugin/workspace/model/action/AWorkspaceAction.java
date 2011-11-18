@@ -14,6 +14,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
@@ -44,14 +45,29 @@ public abstract class AWorkspaceAction extends AFreeplaneAction {
 	private void setIcon() {
 		final String iconResource = ResourceController.getResourceController().getProperty(getIconKey(), null);
 		if (iconResource != null) {
-			final URL url = this.getClass().getResource(iconResource);
-			if (url == null) {
-				LogUtils.severe("can not load icon '" + iconResource + "'");
-			}
-			else {
+			// look in this package
+			URL url = this.getClass().getResource(iconResource);
+			if (url != null) {
 				final ImageIcon icon = new ImageIcon(url);
 				putValue(SMALL_ICON, icon);
+				return;
 			}
+			//  look in workspace package
+			url = WorkspaceController.class.getResource(iconResource);
+			if (url != null) {
+				final ImageIcon icon = new ImageIcon(url);
+				putValue(SMALL_ICON, icon);
+				return;
+			}
+			// look in freeplane package
+			url = ResourceController.class.getResource(iconResource);
+			if (url != null) {
+				final ImageIcon icon = new ImageIcon(url);
+				putValue(SMALL_ICON, icon);
+				return;
+			}
+			
+			LogUtils.severe("can not load icon '" + iconResource + "'");
 		}
 	}
 	
