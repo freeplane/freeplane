@@ -63,12 +63,20 @@ public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 			                  Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR) :
 			                  Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));   
 				}
+				if(expanded) {
+					e.getComponent().setCursor((orientation == JSplitPane.HORIZONTAL_SPLIT) ?
+			                  Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR) :
+			                  Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));
+				}
 				repaintLabelArea();
 			}
 
 			public void mouseEntered(MouseEvent e) {
 				if(e.getComponent() == getHotSpot()) {
 					getHotSpot().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				}
+				if(!expanded) {
+					e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				}
 				repaintLabelArea();
 			}
@@ -119,14 +127,15 @@ public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 	public void paint(Graphics g) {
 		super.paint(g);
 		int center_y = getHeight()/2;
-		getHotSpot().setBounds(0, center_y-15, getDividerSize(), 30);
 		if (getLocation().x <= 1) {
 			expanded = false;
-			splitPane.setEnabled(false);			
+			splitPane.setEnabled(false);
+			getHotSpot().setBounds(0, center_y-15, getDividerSize(), 30);
 		}
 		else {
 			expanded = true;
 			splitPane.setEnabled(true);
+			getHotSpot().setBounds(0, 0, getDividerSize(), 24);
 		}
 		getHotSpot().paint(g.create(getHotSpot().getLocation().x, getHotSpot().getLocation().y, getHotSpot().getWidth(), getHotSpot().getHeight()));
 	}
@@ -176,7 +185,7 @@ public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 	int inset = 2;
 	private void drawCollapseLabel(Graphics g) {
 		Dimension size = g.getClipBounds().getSize();
-		int half_length = (g.getClipBounds().height-(inset*6))/2;
+		int half_length = Math.round(g.getClipBounds().height*0.2f);
 		int center_y = size.height / 2;
 
 		g.setColor(getBackground());
