@@ -265,7 +265,7 @@ void createKeyboardShortcut(ScriptAddOnProperties.Script script) {
 		// it's a long way to the menu item title
 		DefaultMutableTreeNode menubarNode = menuBuilder.getMenuBar(menuBuilder.get("main_menu_scripting"));
 		assert menubarNode != null : "can't find menubar"
-		Node priorAssigned = MenuUtils.findAssignedMenuItemNodeRecursively(menubarNode, keyStroke);
+		def priorAssigned = MenuUtils.findAssignedMenuItemNodeRecursively(menubarNode, keyStroke);
 		if (priorAssigned != null) {
 			if (askForReplaceShortcutViaDialog(((JMenuItem) priorAssigned.getUserObject()).getText())) {
 				String priorShortcutKey = menuBuilder.getShortcutKey(priorAssigned.getKey().toString());
