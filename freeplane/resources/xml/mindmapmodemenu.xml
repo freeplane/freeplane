@@ -231,7 +231,7 @@
 
 				<menu_separator />
 			<menu_action action="MapBackgroundColorAction" />	
-			<menu_submenu name="menu_titleFormat" name_ref="menu_titleFormat">	
+			<menu_submenu name="menu_coreFormat" name_ref="menu_coreFormat">	
 				<menu_action action="BoldAction" accelerator="control B" />
 				<menu_action action="ItalicAction" accelerator="control I" />
 				<menu_action action="IncreaseNodeFontAction" accelerator="control PLUS" />

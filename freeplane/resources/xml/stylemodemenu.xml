@@ -85,7 +85,7 @@
 			</menu_submenu>		
 			<menu_action accelerator="alt shift C" action="FormatCopy"/>
 			<menu_action accelerator="alt shift V" action="FormatPaste"/>
-			<menu_submenu name="menu_titleFormat" name_ref="menu_titleFormat">	
+			<menu_submenu name="menu_coreFormat" name_ref="menu_coreFormat">	
 				<menu_action accelerator="control B" action="BoldAction"/>
 				<menu_action accelerator="control I" action="ItalicAction"/>
 				<menu_action accelerator="control PLUS" action="IncreaseNodeFontAction"/>
