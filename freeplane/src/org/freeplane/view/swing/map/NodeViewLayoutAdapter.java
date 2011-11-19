@@ -188,7 +188,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 			int minNodeWidth = nsc.getMinWidth(view.getModel());
             contentWidth = Math.max(view.getZoomed(minNodeWidth),contentPreferredSize.width);
 			int maxNodeWidth = nsc.getMaxWidth(view.getModel());
-            contentWidth = Math.min(view.getZoomed(maxNodeWidth),contentPreferredSize.width);
+            contentWidth = Math.min(view.getZoomed(maxNodeWidth),contentWidth);
            contentHeight = contentPreferredSize.height;
         }
         else {
