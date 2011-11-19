@@ -334,7 +334,7 @@ public class EditNodeTextField extends EditNodeBase {
 		}
 
 		public void mouseClicked(final MouseEvent ev) {
-			if ((ev.getModifiers() & MouseEvent.CTRL_MASK) != 0) {
+			if (textfield != null && (ev.getModifiers() & MouseEvent.CTRL_MASK) != 0) {
 				final String linkURL = HtmlUtils.getURLOfExistingLink((HTMLDocument) textfield.getDocument(), textfield.viewToModel(ev.getPoint()));
 				if (linkURL != null) {
 					try {
