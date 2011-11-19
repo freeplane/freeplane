@@ -236,8 +236,8 @@ public class StyleEditorPanel extends JPanel {
 		}
 	}
 
-	private class MaxTextWidthChangeListener extends ChangeListener {
-		public MaxTextWidthChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+	private class MaxNodeWidthChangeListener extends ChangeListener {
+		public MaxNodeWidthChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -245,7 +245,7 @@ public class StyleEditorPanel extends JPanel {
 		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MNodeStyleController styleController = (MNodeStyleController) Controller
 			.getCurrentModeController().getExtension(NodeStyleController.class);
-			styleController.setMaxTextWidth(node, enabled ? Integer.parseInt(mMaxTextWidth.getValue()): NodeSizeModel.NOT_SET);
+			styleController.setMaxNodeWidth(node, enabled ? Integer.parseInt(mMaxNodeWidth.getValue()): NodeSizeModel.NOT_SET);
 		}
 	}
 
@@ -444,7 +444,7 @@ public class StyleEditorPanel extends JPanel {
 	private BooleanProperty mNodeNumbering;
 	private ComboProperty mNodeShape;
 	private EditableComboProperty mNodeFormat;
-	private NumberProperty mMaxTextWidth;
+	private NumberProperty mMaxNodeWidth;
 	private NumberProperty mMinNodeWidth;
 
 	
@@ -462,7 +462,7 @@ public class StyleEditorPanel extends JPanel {
 	private BooleanProperty mSetNodeShape;
 	private BooleanProperty mSetNodeFormat;
 	private BooleanProperty mSetStyle;
-	private BooleanProperty mSetMaxTextWidth;
+	private BooleanProperty mSetMaxNodeWidth;
 	private BooleanProperty mSetMinNodeWidth;
 	
 	
@@ -586,15 +586,15 @@ public class StyleEditorPanel extends JPanel {
 		mEdgeWidth.fireOnMouseClick();
 	}
 
-	private void addMaxTextWidthControl(final List<IPropertyControl> controls) {
-		mSetMaxTextWidth = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
-		controls.add(mSetMaxTextWidth);
-		mMaxTextWidth = new NumberProperty(StyleEditorPanel.MAX_TEXT_WIDTH, 1, Integer.MAX_VALUE, 1);
-		controls.add(mMaxTextWidth);
-		final MaxTextWidthChangeListener listener = new MaxTextWidthChangeListener(mSetMaxTextWidth, mMaxTextWidth);
-		mSetMaxTextWidth.addPropertyChangeListener(listener);
-		mMaxTextWidth.addPropertyChangeListener(listener);
-		mMaxTextWidth.fireOnMouseClick();
+	private void addMaxNodeWidthControl(final List<IPropertyControl> controls) {
+		mSetMaxNodeWidth = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
+		controls.add(mSetMaxNodeWidth);
+		mMaxNodeWidth = new NumberProperty(StyleEditorPanel.MAX_TEXT_WIDTH, 1, Integer.MAX_VALUE, 1);
+		controls.add(mMaxNodeWidth);
+		final MaxNodeWidthChangeListener listener = new MaxNodeWidthChangeListener(mSetMaxNodeWidth, mMaxNodeWidth);
+		mSetMaxNodeWidth.addPropertyChangeListener(listener);
+		mMaxNodeWidth.addPropertyChangeListener(listener);
+		mMaxNodeWidth.fireOnMouseClick();
 	}
 
 	private void addMinNodeWidthControl(final List<IPropertyControl> controls) {
@@ -677,7 +677,7 @@ public class StyleEditorPanel extends JPanel {
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeShape"));
 		addNodeShapeControl(controls);
 		addMinNodeWidthControl(controls);
-		addMaxTextWidthControl(controls);
+		addMaxNodeWidthControl(controls);
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeFont"));
 		addFontNameControl(controls);
@@ -833,10 +833,10 @@ public class StyleEditorPanel extends JPanel {
 			}
 			final NodeSizeModel nodeSizeModel = NodeSizeModel.getModel(node);
 			{
-				final int width = nodeSizeModel != null ? nodeSizeModel.getMaxTextWidth() : NodeSizeModel.NOT_SET;
-				final int viewWidth = styleController.getMaxTextWidth(node);
-				mSetMaxTextWidth.setValue(width != NodeSizeModel.NOT_SET);
-				mMaxTextWidth.setValue(Integer.toString(viewWidth));
+				final int width = nodeSizeModel != null ? nodeSizeModel.getMaxNodeWidth() : NodeSizeModel.NOT_SET;
+				final int viewWidth = styleController.getMaxWidth(node);
+				mSetMaxNodeWidth.setValue(width != NodeSizeModel.NOT_SET);
+				mMaxNodeWidth.setValue(Integer.toString(viewWidth));
 			}
 			{
 				final int width = nodeSizeModel != null ? nodeSizeModel.getMinNodeWidth() : NodeSizeModel.NOT_SET;

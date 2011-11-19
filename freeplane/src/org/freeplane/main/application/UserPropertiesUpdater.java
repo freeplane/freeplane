@@ -139,7 +139,7 @@ public class UserPropertiesUpdater {
 		styleNode.addExtension(nodeStyleModel);
 		
 		final NodeSizeModel nodeSizeModel = new NodeSizeModel();
-		nodeSizeModel.setMaxTextWidth(nodeStyleController.getMaxTextWidth(styleNode));
+		nodeSizeModel.setMaxNodeWidth(nodeStyleController.getMaxWidth(styleNode));
 		nodeSizeModel.setMinNodeWidth(nodeStyleController.getMinWidth(styleNode));
 		
 		final EdgeModel standardEdgeModel = EdgeModel.getModel(styleNode);

@@ -45,10 +45,10 @@ public class NodeSizeModel implements IExtension {
 	private int minNodeWidth = NOT_SET;
 	private int maxTextWidth = NOT_SET;
 	
-	public int getMaxTextWidth() {
+	public int getMaxNodeWidth() {
     	return maxTextWidth;
     }
-	public void setMaxTextWidth(int maxTextWidth) {
+	public void setMaxNodeWidth(int maxTextWidth) {
     	this.maxTextWidth = maxTextWidth;
     }
 	public int getMinNodeWidth() {
@@ -58,16 +58,16 @@ public class NodeSizeModel implements IExtension {
     	this.minNodeWidth = minNodeWidth;
     }
 	
-	public static void setNodeMaxTextWidth(NodeModel node, int maxTextWidth) {
-		createNodeSizeModel(node).setMaxTextWidth(maxTextWidth);
+	public static void setNodeMaxNodeWidth(NodeModel node, int maxTextWidth) {
+		createNodeSizeModel(node).setMaxNodeWidth(maxTextWidth);
     }
 	public static void setNodeMinWidth(NodeModel node, int minNodeWidth) {
 		createNodeSizeModel(node).setMinNodeWidth(minNodeWidth);
     }
 	
-	public static int getNodeMaxTextWidth(NodeModel node) {
+	public static int getNodeMaxNodeWidth(NodeModel node) {
 		final NodeSizeModel extension = node.getExtension(NodeSizeModel.class);
-		return extension != null ? extension.getMaxTextWidth() : NOT_SET;
+		return extension != null ? extension.getMaxNodeWidth() : NOT_SET;
     }
 	public static int getMinNodeWidth(NodeModel node) {
 		final NodeSizeModel extension = node.getExtension(NodeSizeModel.class);
@@ -76,7 +76,7 @@ public class NodeSizeModel implements IExtension {
 
 	public void copyTo(NodeSizeModel to) {
 	    if(maxTextWidth != NOT_SET)
-	    	to.setMaxTextWidth(maxTextWidth);
+	    	to.setMaxNodeWidth(maxTextWidth);
 	    if(minNodeWidth != NOT_SET)
 	    	to.setMinNodeWidth(minNodeWidth);
     }

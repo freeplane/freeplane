@@ -178,7 +178,7 @@ class NodeSizeDialog extends JDialog {
 		return (Integer) spinnerMinimumNodeWidth.getValue();
 	}
 	
-	int getMaxTextWidth(){
+	int getMaxNodeWidth(){
 		return (Integer) spinnerMaximumNodeTextWidth.getValue();
 	}
 	

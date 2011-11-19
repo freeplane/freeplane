@@ -25,12 +25,12 @@ class NodeWidthAction extends AMultipleNodeAction {
 		final NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
 		nsc = (MNodeStyleController) NodeStyleController.getController();
 		minNodeWidth = nsc.getMinWidth(selected);
-		maxNodeWidth = nsc.getMaxTextWidth(selected);
+		maxNodeWidth = nsc.getMaxWidth(selected);
 		final NodeSizeDialog nodeSizeDialog = new NodeSizeDialog();
 		nodeSizeDialog.setTitle(TextUtils.getText("NodeWidthAction.text"));
 		if(nodeSizeDialog.showDialog(minNodeWidth, maxNodeWidth)){
 			minNodeWidth = nodeSizeDialog.getMinWidth();
-			maxNodeWidth = nodeSizeDialog.getMaxTextWidth();
+			maxNodeWidth = nodeSizeDialog.getMaxNodeWidth();
 			super.actionPerformed(e);
 		}
 		nsc = null;
@@ -38,7 +38,7 @@ class NodeWidthAction extends AMultipleNodeAction {
 
 	@Override
     protected void actionPerformed(ActionEvent e, NodeModel node) {
-		nsc.setMaxTextWidth(node, maxNodeWidth);
+		nsc.setMaxNodeWidth(node, maxNodeWidth);
 		nsc.setMinNodeWidth(node, minNodeWidth);
     }
 }

@@ -583,7 +583,7 @@ public class EditNodeTextField extends EditNodeBase {
 		textfield.setText(text);
 		final MapView mapView = (MapView) viewController.getMapView();
 		final NodeStyleController nsc = NodeStyleController.getController(modeController);
-		maxWidth = nsc.getMaxTextWidth(node);
+		maxWidth = nsc.getMaxWidth(node);
 		maxWidth = mapView.getZoomed(maxWidth) + 1;
 		extraWidth = ResourceController.getResourceController().getIntProperty("editor_extra_width", 80);
 		extraWidth = mapView.getZoomed(extraWidth);
