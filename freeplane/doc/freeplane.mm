@@ -4,7 +4,7 @@
     <attribute_name VISIBLE="true" NAME="See also"/>
     <attribute_name VISIBLE="true" NAME="a2"/>
 </attribute_registry>
-<node TEXT="Documentation&#xa;Freeplane 1.2" STYLE_REF="MainMenu" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1315378335890" VGAP="4">
+<node TEXT="Documentation&#xa;Freeplane 1.2" STYLE_REF="MainMenu" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1315378335890" VGAP="0">
 <icon BUILTIN="bee"/>
 <hook NAME="MapStyle" max_node_width="600" min_node_width="1">
     <conditional_styles>
@@ -132,19 +132,18 @@
     </p>
   </body>
 </html></richcontent>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_1615599589" CREATED="1320006069966" MODIFIED="1320178482426" HGAP="26" VSHIFT="-141">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_232622736" CREATED="1320005728532" MODIFIED="1321129758238" VSHIFT="-141" STYLE="fork" TEXT_SHORTENED="true" LINK="freeplaneFunctions.mm">
 <richcontent TYPE="NODE">
 <html>
   <head>
     
   </head>
   <body>
-    <p>
-      <a href="freeplaneFunctions.mm"><font size="4"><b>Quick Index</b></font></a>
+    <p style="text-align: center">
+      <font size="3"><a href="freeplaneFunctions.mm"><b>Functions</b></a></font>
     </p>
   </body>
 </html></richcontent>
-<hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -152,11 +151,57 @@
   </head>
   <body>
     <p>
-      Click the link to open a mind map with the main functions of Freeplane. Hover the text to reveal hidden links to the descriptions of the functions you see in this <i>Quick reference</i>&#160;and in <i>Help &gt; Documentation.</i>
+      Click the link to open a mind map with the main functions of Freeplane. Hover the text to reveal hidden links to the descriptions of the functions you see in this <i>Quick reference</i>&#160;and in <i>Help &gt; Documentation. </i>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note </b>
+    </p>
+    <ul>
+      <li>
+        To return from the index map to this map: select <i>Navigate &gt;Go to previous map </i>(icon in tool bar)
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="FreeNode"/>
+<node ID="ID_766584529" CREATED="1320005728532" MODIFIED="1321129742731" HGAP="-80" VSHIFT="29" STYLE="fork" TEXT_SHORTENED="true" LINK="freeplaneApplications.mm">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p style="text-align: center">
+      <font size="3"><a href="freeplaneFunctions.mm"><b>Applications</b></a></font>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Click the link to open a mind map with the main applications of Freeplane. An Internet connection is needed to follow the links in the index.<i>&#160;</i>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note </b>
+    </p>
+    <ul>
+      <li>
+        To return from the index map to this map: select <i>Navigate &gt;Go to previous map </i>(icon in tool bar)
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+</node>
 </node>
 <node TEXT="User guide" STYLE_REF="Title" POSITION="left" ID="ID_1405760079" CREATED="1286914216123" MODIFIED="1314858820369" HGAP="-35" VSHIFT="-91" TEXT_SHORTENED="true">
 <icon BUILTIN="gohome"/>
@@ -1460,7 +1505,7 @@
 </node>
 </node>
 <node TEXT="Install" STYLE_REF="UserGuide" FOLDED="true" ID="ID_931855473" CREATED="1311401499171" MODIFIED="1314857307386" HGAP="31" VSHIFT="2">
-<node TEXT="Download" FOLDED="true" ID="_Freeplane_Link_904501221" CREATED="1270892460638" MODIFIED="1317904760841" TEXT_SHORTENED="true">
+<node TEXT="Download" ID="_Freeplane_Link_904501221" CREATED="1270892460638" MODIFIED="1317904760841" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -1475,7 +1520,7 @@
 <node TEXT="Freeplane&apos;s homepage" ID="ID_916980386" CREATED="1270892460631" MODIFIED="1271530957733" LINK="http://freeplane.sourceforge.net">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node TEXT="Windows platform" STYLE_REF="Functiegroep" FOLDED="true" ID="_Freeplane_Link_139664576" CREATED="1270892460640" MODIFIED="1310281568073" TEXT_SHORTENED="true">
+<node TEXT="Windows platform" STYLE_REF="Functiegroep" FOLDED="true" ID="_Freeplane_Link_139664576" CREATED="1270892460640" MODIFIED="1321132866236" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -1487,6 +1532,7 @@
     </p>
   </body>
 </html></richcontent>
+<hook NAME="FirstGroupNode"/>
 <node TEXT="Download Java Runtime Environment (at least J2RE1.5)" ID="ID_1620747952" CREATED="1270892460639" MODIFIED="1310243329632" LINK="http://java.sun.com/javase/downloads/index.jsp" TEXT_SHORTENED="true">
 <icon BUILTIN="full-1"/>
 <edge WIDTH="thin"/>
@@ -1551,8 +1597,23 @@
 </html></richcontent>
 </node>
 <node TEXT="Portable Freeplane" ID="ID_252894978" CREATED="1317904658613" MODIFIED="1317904669815"/>
+<node ID="ID_797098004" CREATED="1321132866220" MODIFIED="1321132971986">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Wiki <a href="http://freeplane.sourceforge.net/wiki/index.php/Support">Download help</a>
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="SummaryNode"/>
 </node>
-<node TEXT="Install" FOLDED="true" ID="Freeplane_Link_1822195277" CREATED="1270892460697" MODIFIED="1310903701338" TEXT_SHORTENED="true">
+</node>
+<node TEXT="Install" ID="Freeplane_Link_1822195277" CREATED="1270892460697" MODIFIED="1310903701338" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -2527,6 +2588,35 @@
   <body>
     <p>
       <a href="https://sourceforge.net/apps/phpbb/freeplane/viewtopic.php?f=1&amp;t=77">issue with node width</a>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT=" image access  denied (Java applet)" ID="ID_44291998" CREATED="1320257585948" MODIFIED="1320257765526">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      This error occurs if the path name contains a directory with space, such as in &quot;Drop box&quot;.&#160;&#160;
+    </p>
+    <p>
+      Solution: Replace the space by an underscore.
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Free floating &amp; free positionable node" ID="ID_279153431" CREATED="1321130587153" MODIFIED="1321130672048">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      See <a href="http://freeplane.sourceforge.net/wiki/index.php/Mind_map_gallery#Free_positioned_versus_floating_nodes.">forum</a>&#160;for limitatons.
     </p>
   </body>
 </html></richcontent>
@@ -4960,7 +5050,7 @@
 <attribute NAME="Chapter" VALUE="3"/>
 </node>
 </node>
-<node TEXT="Node extensions" STYLE_REF="SubMenu" ID="ID_1400990107" CREATED="1315728991618" MODIFIED="1316876395980">
+<node TEXT="Node extensions" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1400990107" CREATED="1315728991618" MODIFIED="1316876395980">
 <node TEXT="Edit details in-line   [Edit node details]" ID="ID_1807308711" CREATED="1291153533418" MODIFIED="1315980814822" TEXT_SHORTENED="true">
 <icon BUILTIN="../edit_details"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -6432,7 +6522,7 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Free positioned node (set/reset)" ID="ID_572207726" CREATED="1317404199533" MODIFIED="1317903835197">
+<node TEXT="Free positioned node (set/reset)" FOLDED="true" ID="ID_572207726" CREATED="1317404199533" MODIFIED="1317903835197">
 <attribute NAME="Chapter" VALUE="2"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
@@ -6472,6 +6562,25 @@
     </p>
   </body>
 </html></richcontent>
+<node TEXT="Limitation" STYLE_REF="ToNote" ID="ID_294060265" CREATED="1321125091078" MODIFIED="1321125210592" TEXT_SHORTENED="true">
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      1. The floating nodes with hidden edges are intended for adding meta information to maps like legends, titles, summaries, authors etc. If such informations relates to a whole map, such nodes should have a root node as their parent so that are always visible and their position does not depend on anything else. Sometimes such information is relevant only for a part of a map. In this case a floating node with hidden edge can be attached to a non root node. For understanding of the context (which I find important) its parent edge is usually displayed as a dashed line if a node is selected unless its color was set to the map background color.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      2. The free nodes do not require that you hide their edges. The second use case for them is a better use of map space. The automatic layout algorithm does not allow any map branches to overlap. If you want to create more compact maps you can convert some nodes to free nodes. This way they can be placed flexible. And their logical position relative to other sibling nodes now depends on their coordinates. You can see it too if you change to outline view which always reflect logical node positions.
+    </p>
+  </body>
+</html></richcontent>
+</node>
 </node>
 <node TEXT="Reset start position [Reset position]" ID="ID_1003048503" CREATED="1306060582988" MODIFIED="1317404357750" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -9092,7 +9201,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Tool tips" STYLE_REF="SubMenu" ID="ID_1599182564" CREATED="1315733540501" MODIFIED="1318607345794">
+<node TEXT="Tool tips" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1599182564" CREATED="1315733540501" MODIFIED="1318607345794">
 <node TEXT="Display tool tips" FOLDED="true" ID="ID_152459666" CREATED="1310673142140" MODIFIED="1318607339351" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>

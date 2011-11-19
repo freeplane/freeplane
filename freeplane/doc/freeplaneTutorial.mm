@@ -105,18 +105,19 @@
 </map_styles>
 </hook>
 <hook NAME="FirstGroupNode"/>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_232622736" CREATED="1320005728532" MODIFIED="1320178419418" HGAP="56" VSHIFT="-107" TEXT_SHORTENED="true">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_232622736" CREATED="1320005728532" MODIFIED="1321129013785" HGAP="16" VSHIFT="-107" LINK="freeplaneFunctions.mm" TEXT_SHORTENED="true">
 <richcontent TYPE="NODE">
 <html>
   <head>
     
   </head>
   <body>
-    <p>
-      <a href="freeplaneFunctions.mm"><font size="4"><b>Index</b></font></a>
+    <p style="text-align: center">
+      <font size="3"><a href="freeplaneFunctions.mm"><b>Functions index</b></a></font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
@@ -125,11 +126,21 @@
   </head>
   <body>
     <p>
-      Click the link to open a mind map with the main functions of Freeplane. Hover the text to reveal hidden links to the descriptions of the functions you see in this <i>Quick reference</i>&#160;and in <i>Help &gt; Documentation.</i>
+      Click the link to open a mind map with the main functions of Freeplane. Hover the text to reveal hidden links to the descriptions of the functions you see in this <i>Quick reference</i>&#160;and in <i>Help &gt; Documentation. </i>
     </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note </b>
+    </p>
+    <ul>
+      <li>
+        To return from the index map to this map: select <i>Navigate &gt;Go to previous map </i>(icon in tool bar)
+      </li>
+    </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node TEXT="Introduction" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1316341192794" BACKGROUND_COLOR="#00cc33" NUMBERED="true" VSHIFT="90">
 <node TEXT="Goal" STYLE_REF="Consumer" ID="ID_1074607965" CREATED="1314422854653" MODIFIED="1319313896777">
@@ -766,8 +777,8 @@
 </hook>
 </node>
 </node>
-<node TEXT="Add image or icon to node core" STYLE_REF="Advanced" ID="ID_1396625176" CREATED="1316156616264" MODIFIED="1316157452831">
-<node TEXT="Icons and progress" STYLE_REF="Advanced" FOLDED="true" ID="ID_1452170690" CREATED="1316329546431" MODIFIED="1316329611437">
+<node TEXT="Add image or icon to node core" STYLE_REF="Advanced" FOLDED="true" ID="ID_1396625176" CREATED="1316156616264" MODIFIED="1316157452831">
+<node TEXT="Icons and progress" STYLE_REF="Advanced" ID="ID_1452170690" CREATED="1316329546431" MODIFIED="1316329611437">
 <icon BUILTIN="bookmark"/>
 <icon BUILTIN="idea"/>
 <icon BUILTIN="button_ok"/>
@@ -843,7 +854,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Large progress" ID="ID_1080017148" CREATED="1314283905093" MODIFIED="1316329812607">
+<node TEXT="Large progress" ID="ID_1080017148" CREATED="1314283905093" MODIFIED="1320182584885">
 <icon BUILTIN="0%"/>
 <hook URI="freeplaneresource:/images/svg/Progress_tenth_01.svg" SIZE="1.0" NAME="ExternalObject"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -863,7 +874,10 @@
     </p>
     <ul>
       <li>
-        Two images are displayed. The smaller one is a pictogram which is being displayed in the node core. The larger picture is displayed in node details
+        Two images are displayed. The smaller one is a pictogram which is being displayed in the node core. The larger picture is displayed in node details.
+      </li>
+      <li>
+        <b>IMPORTANT</b>. The larger image (svg file) cannot be displayed in Java Applet !
       </li>
     </ul>
   </body>
@@ -1258,7 +1272,7 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="Free floating node" LOCALIZED_STYLE_REF="defaultstyle.floating" ID="ID_1757242560" CREATED="1317754595087" MODIFIED="1318622228756" HGAP="310" VSHIFT="-1">
+<node TEXT="Free floating node" LOCALIZED_STYLE_REF="defaultstyle.floating" ID="ID_1757242560" CREATED="1317754595087" MODIFIED="1321124916242" HGAP="310" VSHIFT="-1">
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
@@ -1277,6 +1291,27 @@
     </p>
   </body>
 </html></richcontent>
+<richcontent TYPE="NOTE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Limitations</b>
+    </p>
+    <p>
+      The floating nodes with hidden edges are intended for adding meta information to maps like legends, titles, summaries, authors etc. If such informations relates to a whole map, such nodes should have a root node as their parent so that are always visible and their position does not depend on anything else. Sometimes such information is relevant only for a part of a map. In this case a floating node with hidden edge can be attached to a non root node. For understanding of the context (which I find important) its parent edge is usually displayed as a dashed line if a node is selected unless its color was set to the map background color.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      The free nodes do not require that you hide their edges. The second use case for them is a better use of map space. The automatic layout algorithm does not allow any map branches to overlap. If you want to create more compact maps you can convert some nodes to free nodes. This way they can be placed flexible. And their logical position relative to other sibling nodes now depends on their coordinates. You can see it too if you change to outline view which always reflect logical node positions.
+    </p>
+  </body>
+</html>
+</richcontent>
 </node>
 </node>
 </node>
@@ -2152,6 +2187,44 @@
   </body>
 </html></richcontent>
 </node>
+</node>
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_766584529" CREATED="1320005728532" MODIFIED="1321129080272" HGAP="10" VSHIFT="179" LINK="freeplaneApplications.mm" TEXT_SHORTENED="true">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p style="text-align: center">
+      <a href="freeplaneApplications.mm">Applications index</a>
+    </p>
+  </body>
+</html>
+</richcontent>
+<richcontent TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Click the link to open a mind map with the main applications of Freeplane. An Internet connection is needed to follow the links in the index.<i>&#160;</i>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note </b>
+    </p>
+    <ul>
+      <li>
+        To return from the index map to this map: select <i>Navigate &gt;Go to previous map </i>(icon in tool bar)
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<hook NAME="FreeNode"/>
 </node>
 <node TEXT="Notes of nodes" STYLE_REF="Advanced" FOLDED="true" POSITION="left" ID="ID_274601394" CREATED="1314208248182" MODIFIED="1318611967525" NUMBERED="true" VSHIFT="10">
 <node TEXT="Special kind of details" STYLE_REF="Advanced" ID="ID_144627544" CREATED="1316155598364" MODIFIED="1316496823916">
@@ -3770,9 +3843,9 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Add-ons" ID="ID_1156954596" CREATED="1319993853694" MODIFIED="1319993861698"/>
+<node TEXT="Add-ons" ID="ID_1156954596" CREATED="1319993853694" MODIFIED="1321036633105" LINK="http://freeplane.sourceforge.net/wiki/index.php/Add-ons_%28install%29"/>
 </node>
-<node TEXT="Best practices" STYLE_REF="Beginner" FOLDED="true" POSITION="left" ID="ID_722085722" CREATED="1314363768463" MODIFIED="1318621405078" BACKGROUND_COLOR="#00cc33" NUMBERED="true" VSHIFT="-10">
+<node TEXT="Best practices" STYLE_REF="Beginner" FOLDED="true" POSITION="left" ID="ID_722085722" CREATED="1314363768463" MODIFIED="1321091754888" BACKGROUND_COLOR="#00cc33" NUMBERED="true" VSHIFT="-10">
 <node STYLE_REF="BeginnerTopic" ID="ID_163805859" CREATED="1314422714136" MODIFIED="1318621208383">
 <richcontent TYPE="NODE">
 <html>

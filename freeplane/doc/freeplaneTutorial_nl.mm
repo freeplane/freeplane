@@ -102,8 +102,45 @@
 </hook>
 <hook NAME="FirstGroupNode"/>
 <edge STYLE="bezier"/>
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_232622736" CREATED="1320005728532" MODIFIED="1321129481002" HGAP="0" VSHIFT="-111" LINK="freeplaneFunctions_nl.mm" TEXT_SHORTENED="true" STYLE="fork">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p style="text-align: center">
+      <a href="freeplaneFunctions_nl.mm">Functie index</a>
+    </p>
+  </body>
+</html>
+</richcontent>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Klik op de koppeling om een mindmap te openen met de belangrijkste functies van Freeplane. Beweeg met de muiscursor over de teksten bij de functies om de koppeling naar de beschrijving van deze functie te laten verschijnen, in de handleiding en in de documentatie.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Opmerking </b>
+    </p>
+    <ul>
+      <li>
+        &#160;Om uit de handleding terug te keren, kies&#160; <i>Navigeren .&gt; Ga naar vorige mind map</i>&#160;of klik op dit pictogram in de werkbalk.
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="FreeNode"/>
+</node>
 <node TEXT="Inleiding" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1316342821057" BACKGROUND_COLOR="#00cc66" NUMBERED="true" VSHIFT="110">
-<node TEXT="Doel" STYLE_REF="Beginner" ID="ID_1309964220" CREATED="1314735478858" MODIFIED="1319312782309">
+<node TEXT="Doel" STYLE_REF="Beginner" ID="ID_1309964220" CREATED="1314735478858" MODIFIED="1321044266474">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -111,7 +148,7 @@
   </head>
   <body>
     <p>
-      Freeplane heeft tot doel het denken, delen en gebruiken van infrormatie te vergemakkelijken. Freeplane ondersteunt het maken en gebruiken van&#160; <a href="http://www.informationtamers.com/WikIT/index.php?title=Information_map_types">informatiekaarten</a>, in het volgende aangeduid als mindmaps. &#160;De <b><a href="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch">wiki</a></b>&#160;bevat concrete voorbeelden van&#160; <a href="freeplaneApplications.mm">toepassingsgebieden.</a>&#160;
+      Freeplane heeft tot doel het denken, delen en gebruiken van infrormatie te vergemakkelijken. Freeplane ondersteunt het maken en gebruiken van&#160; <a href="http://www.informationtamers.com/WikIT/index.php?title=Information_map_types">informatiekaarten</a>, in het volgende aangeduid als mindmaps. &#160;De <a href="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch"><b>wiki</b></a>&#160;bevat concrete voorbeelden van&#160; <a href="freeplaneApplications_nl.mm">toepassingsgebieden.</a>&#160;De knoop <a href="freeplaneFunctions.mm">functieindex</a>&#160; bevat een visueel overzicht van alle functies en hyperlinks naa beschrijvingen van deze functies..
     </p>
     <p>
       
@@ -120,8 +157,7 @@
       Het doel van deze handleiding is om je snel op weg te helpen met de meest gebruikte mogelijkheden. Voor meer informatie, of meer details, ga naar de documentatie in menu <a href="freeplane.mm">Help &gt; Documentatie</a>.
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node TEXT="Leeswijzer" STYLE_REF="Beginner" ID="ID_110608784" CREATED="1316010609737" MODIFIED="1316343113230">
 <richcontent TYPE="DETAILS">
@@ -302,7 +338,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Zweef over deze tekst voor familierelaties" STYLE_REF="Beginner" ID="ID_1733030008" CREATED="1316266082250" MODIFIED="1318969944066" TEXT_SHORTENED="true" VSHIFT="40">
+<node TEXT="Zweef over deze tekst voor familierelaties" STYLE_REF="Beginner" FOLDED="true" ID="ID_1733030008" CREATED="1316266082250" MODIFIED="1318969944066" TEXT_SHORTENED="true" VSHIFT="40">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -329,7 +365,7 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="(relative) parent" ID="ID_687495618" CREATED="1314131160308" MODIFIED="1314365178476">
+<node TEXT="(relative) parent" FOLDED="true" ID="ID_687495618" CREATED="1314131160308" MODIFIED="1314365178476">
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1105307139" MIDDLE_LABEL="descendancy" STARTINCLINATION="25;-45;" ENDINCLINATION="-36;-44;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <node TEXT="child" ID="ID_1105307139" CREATED="1314131174886" MODIFIED="1314131181330"/>
 </node>
@@ -499,7 +535,7 @@
 </node>
 </node>
 <node TEXT="Basis mindmap" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_1337127972" CREATED="1314109409850" MODIFIED="1316291983197" NUMBERED="true">
-<node TEXT="Bewerken knooptitel (snel)" STYLE_REF="Beginner" FOLDED="true" ID="ID_268413071" CREATED="1314125550476" MODIFIED="1316724684405">
+<node TEXT="Bewerken knoopkern (snel)" STYLE_REF="Beginner" FOLDED="true" ID="ID_268413071" CREATED="1314125550476" MODIFIED="1321029952743">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -667,7 +703,7 @@
 <node TEXT="2 x &lt;Enter&gt; Nieuwe zus-knoop" ID="ID_1173879612" CREATED="1316702765996" MODIFIED="1316724094292"/>
 <node TEXT="Rechtsklik: contextmenu" ID="ID_807808681" CREATED="1316723959021" MODIFIED="1316723979820"/>
 </node>
-<node TEXT="Bewerken knooptitel in venster" STYLE_REF="Beginner" ID="ID_1279324490" CREATED="1314126040831" MODIFIED="1316291974770">
+<node TEXT="Bewerken knoopkern in venster" STYLE_REF="Beginner" FOLDED="true" ID="ID_1279324490" CREATED="1314126040831" MODIFIED="1321030146948">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -759,7 +795,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Toevoegen plaatje of pictogram aan knoopkern" STYLE_REF="Gevorderde" ID="ID_475633626" CREATED="1314281837074" MODIFIED="1316330654795" HGAP="30">
+<node TEXT="Toevoegen plaatje of pictogram aan knoopkern" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_475633626" CREATED="1314281837074" MODIFIED="1316330654795" HGAP="30">
 <node TEXT="Pictogram (icoontje)" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_331137637" CREATED="1314214040000" MODIFIED="1316329918843">
 <icon BUILTIN="bookmark"/>
 <icon BUILTIN="messagebox_warning"/>
@@ -1134,7 +1170,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Verplaatsen in de hierarchie" STYLE_REF="Beginner" ID="ID_125921821" CREATED="1314250124540" MODIFIED="1316293202612" HGAP="70" VSHIFT="-10">
+<node TEXT="Verplaatsen in de hierarchie" STYLE_REF="Beginner" FOLDED="true" ID="ID_125921821" CREATED="1314250124540" MODIFIED="1316293202612" HGAP="70" VSHIFT="-10">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -1257,7 +1293,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Een vrije knoop maken en verplaatsen" STYLE_REF="Gevorderde" ID="ID_363670846" CREATED="1317136338338" MODIFIED="1318623111896" VGAP="0">
+<node TEXT="Een vrije knoop maken en verplaatsen" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_363670846" CREATED="1317136338338" MODIFIED="1318623111896" VGAP="0">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -1324,7 +1360,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Verbindingslijnen" STYLE_REF="Beginner" ID="ID_1073407528" CREATED="1314129123086" MODIFIED="1317049317847" VSHIFT="-10">
+<node TEXT="Verbindingslijnen" STYLE_REF="Beginner" FOLDED="true" ID="ID_1073407528" CREATED="1314129123086" MODIFIED="1317049317847" VSHIFT="-10">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -1359,9 +1395,9 @@
     </ul>
   </body>
 </html></richcontent>
-<node TEXT="a" STYLE_REF="BeginnerOnderwerp" ID="ID_1328399304" CREATED="1314130936565" MODIFIED="1316294034701">
+<node TEXT="a" STYLE_REF="BeginnerOnderwerp" FOLDED="true" ID="ID_1328399304" CREATED="1314130936565" MODIFIED="1316294034701">
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_581303769" MIDDLE_LABEL="label" STARTINCLINATION="9;-23;" ENDINCLINATION="-28;-89;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<node TEXT="b" STYLE_REF="BeginnerOnderwerp" ID="ID_273400211" CREATED="1314130940427" MODIFIED="1317049106061">
+<node TEXT="b" STYLE_REF="BeginnerOnderwerp" FOLDED="true" ID="ID_273400211" CREATED="1314130940427" MODIFIED="1317049106061">
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_273400211" MIDDLE_LABEL="lijn of pijl&#xa;zonder begin-&#xa;knoop" STARTINCLINATION="76;68;" ENDINCLINATION="76;68;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <node TEXT="c" STYLE_REF="BeginnerOnderwerp" ID="ID_581303769" CREATED="1314130942275" MODIFIED="1316294034706"/>
 </node>
@@ -1414,12 +1450,12 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="wolk a" STYLE_REF="GevorderdeOnderwerp" ID="ID_1742435994" CREATED="1314130827910" MODIFIED="1316294131909" HGAP="30">
+<node TEXT="wolk a" STYLE_REF="GevorderdeOnderwerp" FOLDED="true" ID="ID_1742435994" CREATED="1314130827910" MODIFIED="1316294131909" HGAP="30">
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <node TEXT="b" ID="ID_1270291744" CREATED="1314130833239" MODIFIED="1314130836016"/>
 <node TEXT="c" ID="ID_1022872809" CREATED="1314130837348" MODIFIED="1314130840017"/>
 </node>
-<node TEXT="wolk b" STYLE_REF="GevorderdeOnderwerp" ID="ID_539843005" CREATED="1314208596772" MODIFIED="1316294131916" HGAP="30" VSHIFT="-9">
+<node TEXT="wolk b" STYLE_REF="GevorderdeOnderwerp" FOLDED="true" ID="ID_539843005" CREATED="1314208596772" MODIFIED="1316294131916" HGAP="30" VSHIFT="-9">
 <cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
 <node TEXT="e" ID="ID_249943796" CREATED="1314208605486" MODIFIED="1314208607670"/>
 <node TEXT="f" ID="ID_1428582117" CREATED="1314208608472" MODIFIED="1314208611937"/>
@@ -1706,7 +1742,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Een eigenschap instellen" STYLE_REF="Gevorderde" ID="ID_1707940964" CREATED="1314163244315" MODIFIED="1316295714032">
+<node TEXT="Een eigenschap instellen" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_1707940964" CREATED="1314163244315" MODIFIED="1316295714032">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -1806,7 +1842,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Werkmenu" STYLE_REF="Gevorderde" ID="ID_1235607524" CREATED="1314167879005" MODIFIED="1316296235884">
+<node TEXT="Werkmenu" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_1235607524" CREATED="1314167879005" MODIFIED="1316296235884">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -1871,7 +1907,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Stijlen" STYLE_REF="Gevorderde" ID="ID_1724703419" CREATED="1316295248623" MODIFIED="1316296375091" NUMBERED="true" TEXT_SHORTENED="true">
+<node TEXT="Stijlen" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_1724703419" CREATED="1316295248623" MODIFIED="1316296375091" NUMBERED="true" TEXT_SHORTENED="true">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -2196,7 +2232,7 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Knoopuitbreiding" STYLE_REF="Gevorderde" FOLDED="true" POSITION="left" ID="ID_143196514" CREATED="1314206563418" MODIFIED="1317221135321" NUMBERED="true" VSHIFT="80">
+<node TEXT="Knoopuitbreiding" STYLE_REF="Gevorderde" FOLDED="true" POSITION="left" ID="ID_143196514" CREATED="1314206563418" MODIFIED="1321039586039" NUMBERED="true" VSHIFT="80">
 <node TEXT="Tekst bewerken in knoopdetails" STYLE_REF="Gevorderde" ID="ID_898889730" CREATED="1314197390735" MODIFIED="1317221965087">
 <richcontent TYPE="DETAILS">
 <html>
@@ -2224,8 +2260,8 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Instellen als zweeftekst (tooltip)" STYLE_REF="Gevorderde" ID="ID_288274844" CREATED="1314206958207" MODIFIED="1316455599276">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Minimaliseren knoop (zweeftekst)" STYLE_REF="Gevorderde" ID="ID_288274844" CREATED="1314206958207" MODIFIED="1319726587358">
+<richcontent TYPE="DETAILS">
 <html>
   <head>
     
@@ -2238,7 +2274,7 @@
       
     </p>
     <p>
-      Om een knoop zoals deze te maken, maak eerst een knoop met knoopinhoud. Rechtsklik op de knoop en kies<i>&#160;Instellen als zweeftekst (tooltip)</i>. Om de tekst weer permanent te zien, kies nogmaals <i>Knoop &gt; Instellen als zweeftekst (tooltip)</i>.
+      Om een knoop zoals deze te maken, maak eerst een knoop met knoopinhoud. Rechtsklik op de knoop en kies<i>&#160;Minimaliseren knoop</i>. Om de tekst weer permanent te zien, kies nogmaals <i>Knoop &gt; Minimaliseren knoop</i>.
     </p>
     <p>
       
@@ -2248,7 +2284,7 @@
     </p>
     <ul>
       <li>
-        De keuze van <i>Knoop &gt; Instellen als zweeftekst (tooltip)</i>&#160;leidt er ook toe dat de lengte van de knoopinhoud wordt beperkt en dat andere kenmerken zoals plaatjes en attributen worden verborgen.
+        De keuze van <i>Knoop &gt; Minimaliseren knoop)</i>&#160;leidt er ook toe dat de lengte van de knoopinhoud wordt beperkt en dat andere kenmerken zoals plaatjes en attributen worden verborgen.
       </li>
       <li>
         Zie hieronder <i>Afbeelding</i>&#160;voor afwijkend gedrag van een afbeelding in node details.
@@ -2257,7 +2293,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Schaalbaar plaatje (knoopuitbreiding)" STYLE_REF="Gevorderde" ID="ID_1572435893" CREATED="1314215157545" MODIFIED="1318966595189">
+<node TEXT="Schaalbaar plaatje (knoopuitbreiding)" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_1572435893" CREATED="1314215157545" MODIFIED="1318966595189">
 <richcontent TYPE="DETAILS">
 <html>
   <head>
@@ -2366,7 +2402,7 @@
 </html></richcontent>
 </node>
 </node>
-<node TEXT="Attributen in knoopdetails" STYLE_REF="Professional" FOLDED="true" ID="ID_1324773677" CREATED="1314208168037" MODIFIED="1316330959237" HGAP="30" VSHIFT="-4">
+<node TEXT="Attributen in knoopuitbreiding" STYLE_REF="Professional" FOLDED="true" ID="ID_1324773677" CREATED="1314208168037" MODIFIED="1321038132930" HGAP="30" VSHIFT="-4">
 <node TEXT="Wat is een attribuut ?" STYLE_REF="Professional" ID="ID_1657366174" CREATED="1314209542018" MODIFIED="1316331070013">
 <attribute_layout NAME_WIDTH="34" VALUE_WIDTH="92"/>
 <attribute NAME="Naam" VALUE="John"/>
@@ -2517,7 +2553,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Managen tijd..." STYLE_REF="ProfessionalOnderwerp" ID="ID_1104707017" CREATED="1267746559867" MODIFIED="1316331448501">
+<node TEXT="Managen tijd..." STYLE_REF="ProfessionalOnderwerp" FOLDED="true" ID="ID_1104707017" CREATED="1267746559867" MODIFIED="1316331448501">
 <icon BUILTIN="../TimeManagementAction"/>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
@@ -2647,7 +2683,7 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="Snelfilter" ID="ID_1189166757" CREATED="1310134532663" MODIFIED="1315063745483" TEXT_SHORTENED="true">
+<node TEXT="Snelfilter" FOLDED="true" ID="ID_1189166757" CREATED="1310134532663" MODIFIED="1315063745483" TEXT_SHORTENED="true">
 <icon BUILTIN="../apply_quick_filter"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
@@ -3646,7 +3682,9 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="Plugins" STYLE_REF="Professional" ID="ID_1546138946" CREATED="1314729857046" MODIFIED="1316334010737">
+<node TEXT="Add-ons" STYLE_REF="Professional" ID="ID_1156954596" CREATED="1319993853694" MODIFIED="1321036693319" LINK="http://freeplane.sourceforge.net/wiki/index.php/Add-ons_%28install%29"/>
+</node>
+<node TEXT="Gebruiken en schrijven van een script" STYLE_REF="Professional" ID="ID_519455593" CREATED="1316158310467" MODIFIED="1319640671289" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting">
 <richcontent TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -3654,11 +3692,16 @@
   </head>
   <body>
     <p>
-      Instellingen voor scripts en formules
+      Freeplane heeft een mogelijkheid om zelf ontbrekende functies toe te voegen met de scripttaal Groovy. Er is een verzameling kant en klare scripts die je kunt gebruiken zonder dat je hoeft te kunnen programmeren.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Read more in the Freeplane documentation,&#160;&#160;visit the the wiki on add-ons and the <a href="http://freeplane.sourceforge.net/wiki/index.php/Scripting">wiki add-on scrips</a>&#160;.
     </p>
   </body>
 </html></richcontent>
-</node>
 </node>
 <node TEXT="Indexeren .mm in Windows7" STYLE_REF="Professional" ID="ID_952466464" CREATED="1313349075257" MODIFIED="1316334030658" VSHIFT="20">
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -3757,8 +3800,21 @@
   </body>
 </html></richcontent>
 </node>
+<node TEXT="Sneltoetsen" STYLE_REF="Professional" ID="ID_186620665" CREATED="1319568754941" MODIFIED="1319640321831">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Freeplane maakt gebruik van toetcombinaties om snel bepaalde menu's the kunnen benaderen, zie <i>Help &gt; Overzicht van sneltoetsen.</i>&#160;&#160;Het is ook mogelijk je eigen sneltoetsenset te definieren,&#160;&#160;welke ook is mee te nemen naar een andere computer, zie de documentatie.
+    </p>
+  </body>
+</html></richcontent>
 </node>
-<node TEXT="Voorbeelden" STYLE_REF="Beginner" FOLDED="true" POSITION="left" ID="ID_722085722" CREATED="1314363768463" MODIFIED="1318624874799" BACKGROUND_COLOR="#00cc66" NUMBERED="true" VSHIFT="-80">
+</node>
+<node TEXT="Voorbeelden" STYLE_REF="Beginner" FOLDED="true" POSITION="left" ID="ID_722085722" CREATED="1314363768463" MODIFIED="1321090867615" BACKGROUND_COLOR="#00cc66" NUMBERED="true" VSHIFT="-80">
 <node ID="ID_1610683606" CREATED="1315075717144" MODIFIED="1318620924766">
 <richcontent TYPE="NODE">
 <html>
@@ -3787,6 +3843,74 @@
 </html></richcontent>
 </node>
 </node>
+<node TEXT="Voorbeelden" STYLE_REF="Beginner" FOLDED="true" ID="ID_1031640671" CREATED="1314363768463" MODIFIED="1318624874799" BACKGROUND_COLOR="#00cc66" NUMBERED="true" VSHIFT="-80">
+<node ID="ID_1672913228" CREATED="1315075717144" MODIFIED="1318620924766">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Klik <a href="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch"><b>hier</b></a>&#160;om naar de wiki met voorbeelden op Internet te gaan
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node TEXT="Voorbeelden" STYLE_REF="Beginner" FOLDED="true" ID="ID_1970015749" CREATED="1314363768463" MODIFIED="1316342834130" BACKGROUND_COLOR="#00cc66" NUMBERED="true" HGAP="30" VSHIFT="-80">
+<node ID="ID_187642437" CREATED="1315075717144" MODIFIED="1318620924766">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Klik <a href="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch"><b>hier</b></a>&#160;om naar de wiki met voorbeelden op Internet te gaan
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+</node>
+</node>
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_1215635278" CREATED="1320005728532" MODIFIED="1321129494152" HGAP="10" VSHIFT="169" LINK="freeplaneFunctions_nl.mm" TEXT_SHORTENED="true" STYLE="fork">
+<richcontent TYPE="NODE">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p style="text-align: center">
+      <a href="freeplaneFunctions_nl.mm">Toepassingen</a>
+    </p>
+  </body>
+</html>
+</richcontent>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Klik op de koppeling om een mindmap te openen met de belangrijkste toepassingen van Freeplane. Hiervoor is verbinding met Internet noodzakelijk.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Opmerking </b>
+    </p>
+    <ul>
+      <li>
+        &#160;Om uit de index terug te keren, kies&#160; <i>Navigeren .&gt; Ga naar vorige mind map</i>&#160;of klik op dit pictogram in de werkbalk.
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<hook NAME="FreeNode"/>
 </node>
 </node>
 </map>
