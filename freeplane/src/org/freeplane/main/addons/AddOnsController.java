@@ -205,4 +205,13 @@ public class AddOnsController {
 	public boolean isAutoInstallEnabled() {
     	return autoInstall;
     }
+	
+	public AddOnProperties getInstalledAddOn(final String name) {
+		// Performance consideration: list is small -> iteration over list is OK.
+		for (AddOnProperties addOn : installedAddOns) {
+	        if (addOn.getName().equals(name))
+	        	return addOn;
+        }
+		return null;
+	}
 }

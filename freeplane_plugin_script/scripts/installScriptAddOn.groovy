@@ -425,17 +425,20 @@ AddOnProperties parse() {
 	return addOn
 }
 
-boolean confirmInstall(ScriptAddOnProperties addOn) {
+boolean confirmInstall(ScriptAddOnProperties addOn, ScriptAddOnProperties installedAddOn) {
 	def screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	def dialogPrefSize = new Dimension((int) screenSize.getWidth() * 3 / 5, (int) screenSize.getHeight() * 1 / 2);
 	def warning = textUtils.removeTranslateComment(textUtils.getText('addons.installer.warning'))
 	def addOnDetailsPanel = new AddOnDetailsPanel(addOn, warning)
 	addOnDetailsPanel.maxWidth = 600
+	def installButtonText = installedAddOn ? textUtils.format('addons.installer.update', installedAddOn.version)
+		: textUtils.getText('addons.installer.install')
+
 	def s = new SwingBuilder()
 	s.setVariable('myDialog-properties',[:])
 	def vars = s.variables
 	def dial = s.dialog(title:dialogTitle, id:'myDialog', modal:true,
-						locationRelativeTo:ui.frame, owner:ui.frame, pack:true, preferredSize:dialogPrefSize, show:true) {
+						locationRelativeTo:ui.frame, owner:ui.frame, pack:true, preferredSize:dialogPrefSize) {
 		scrollPane() {
 			panel() {
 				boxLayout(axis:BoxLayout.Y_AXIS)
@@ -443,19 +446,24 @@ boolean confirmInstall(ScriptAddOnProperties addOn) {
 				panel(alignmentX:0f) {
 					flowLayout(alignment:FlowLayout.RIGHT)
 					button(action: action(name: textUtils.getText('cancel'), mnemonic: 'C', closure: {dispose()}))
-					button(action: action(name: textUtils.getText('addons.installer.install'),
-						mnemonic: 'I', closure: {vars.ok = true; dispose()}))
+					defaultButton = button(id:'defBtn', action: action(name: installButtonText,
+						mnemonic: 'I', defaultButton:true, selected:true, closure: {vars.ok = true; dispose()}))
 				}
 			}
 		}
 	}
+	defaultButton.requestFocusInWindow()
+    ui.addEscapeActionToDialog(dial)
+    dial.visible = true
 	if (!vars.ok)
 		return false
-	
 	// 2. license
-	def license = configMap['license'].replaceAll("</?(html|body)>", "")
+	boolean licenseUnchanged = addOn.license && installedAddOn?.license && addOn.license.equals(installedAddOn.license)
+	def license = addOn.license.replaceAll("</?(html|body)>", "")
 	def question = textUtils.removeTranslateComment(textUtils.format('addons.installer.confirm.licence', license)).replace("\n", "<p>")
-	if (configMap['license'] && !confirm(question))
+	if (licenseUnchanged)
+		c.statusInfo = textUtils.getText('addons.installer.licence.unchanged')
+	if (addOn.license && !licenseUnchanged && !confirm(question))
 		return false
     // really bother the user with such details?
 	// 3. permissions
@@ -473,10 +481,19 @@ def install(AddOnProperties addOn) {
 try {
 	def addOn = parse()
 	AddOnsController.registerAddOnResources(addOn, ResourceController.resourceController)
-	if (confirmInstall(addOn)) {
+	def installedAddOn = AddOnsController.getController().getInstalledAddOn(addOn.name)
+	def isUpdate = installedAddOn != null
+	if (confirmInstall(addOn, installedAddOn)) {
+		def message
+		if (isUpdate) {
+			AddOnsController.getController().deInstall(installedAddOn)
+			message = textUtils.format('addons.installer.success.update', installedAddOn.version, addOn.version)
+		}
+		else {
+			message = textUtils.getText('addons.installer.success')
+		}
 		install(addOn)
-		JOptionPane.showMessageDialog(ui.frame, textUtils.getText('addons.installer.success'),
-			dialogTitle, JOptionPane.INFORMATION_MESSAGE)
+		JOptionPane.showMessageDialog(ui.frame, message, dialogTitle, JOptionPane.INFORMATION_MESSAGE)
 		return addOn
 	}
 	return null
