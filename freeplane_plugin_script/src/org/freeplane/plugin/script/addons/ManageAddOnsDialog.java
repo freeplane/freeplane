@@ -1,11 +1,14 @@
 package org.freeplane.plugin.script.addons;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.io.IOException;
@@ -31,6 +34,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumnModel;
 
 import org.freeplane.core.resources.components.OptionPanelBuilder;
+import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
@@ -118,7 +122,23 @@ public class ManageAddOnsDialog extends JDialog {
 		tabbedPane.addTab(getText("tab.manage"), null, managementPanel, getText("tab.manage.tooltip"));
 		addOnInstallerPanel = new AddOnInstallerPanel(tableModel, managementPanel);
 		tabbedPane.addTab(getText("tab.install"), null, addOnInstallerPanel, getText("tab.install.tooltip"));
-		getContentPane().add(tabbedPane);
+		getContentPane().add(tabbedPane, BorderLayout.CENTER);
+		{
+			JPanel buttonPane = new JPanel();
+			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			getContentPane().add(buttonPane, BorderLayout.SOUTH);
+			{
+				JButton closeButton = new JButton();
+				MenuBuilder.setLabelAndMnemonic(closeButton, TextUtils.getRawText("close_btn"));
+				closeButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						setVisible(false);
+					}
+				});
+				buttonPane.add(closeButton);
+			}
+		}
+		
 		pack();
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		UITools.addEscapeActionToDialog(this);
