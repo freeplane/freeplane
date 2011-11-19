@@ -33,6 +33,8 @@ import javax.swing.JSpinner;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;
 import javax.swing.Action;
@@ -52,7 +54,7 @@ class NodeSizeDialog extends JDialog {
 	private static final String ACTION_OK = "OK";
 	private final JPanel contentPanel = new JPanel();
 	private JSpinner spinnerMinimumNodeWidth;
-	private JSpinner spinnerMaximumNodeTextWidth;
+	private JSpinner spinnerMaximumNodeWidth;
 	private final Action closeAction = new CloseAction();
 	public boolean result;
 
@@ -90,7 +92,6 @@ class NodeSizeDialog extends JDialog {
 		{
 			JPanel panel = new JPanel();
 			panel.setBorder(new TitledBorder(null, TextUtils.getText("MinNodeWidth.text"), TitledBorder.LEADING, TitledBorder.TOP, null, new Color(59, 59, 59)));
-			panel.setToolTipText(TextUtils.getText("MinNodeWidth.tooltip"));
 			GridBagConstraints gbc_panel = new GridBagConstraints();
 			gbc_panel.fill = GridBagConstraints.BOTH;
 			gbc_panel.insets = new Insets(0, 0, 5, 0);
@@ -116,7 +117,6 @@ class NodeSizeDialog extends JDialog {
 		{
 			JPanel panel = new JPanel();
 			panel.setBorder(new TitledBorder(null, TextUtils.getText("MaxNodeWidth.text"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			panel.setToolTipText(TextUtils.getText("MaxNodeWidth.tooltip"));
 			GridBagConstraints gbc_panel = new GridBagConstraints();
 			gbc_panel.fill = GridBagConstraints.BOTH;
 			gbc_panel.gridx = 0;
@@ -129,13 +129,13 @@ class NodeSizeDialog extends JDialog {
 			gbl_panel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 			panel.setLayout(gbl_panel);
 			{
-				spinnerMaximumNodeTextWidth = new JSpinner();
-				spinnerMaximumNodeTextWidth.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
+				spinnerMaximumNodeWidth = new JSpinner();
+				spinnerMaximumNodeWidth.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
 				GridBagConstraints gbc_spinner = new GridBagConstraints();
 				gbc_spinner.fill = GridBagConstraints.HORIZONTAL;
 				gbc_spinner.gridx = 0;
 				gbc_spinner.gridy = 0;
-				panel.add(spinnerMaximumNodeTextWidth, gbc_spinner);
+				panel.add(spinnerMaximumNodeWidth, gbc_spinner);
 			}
 		}
 		{
@@ -156,6 +156,22 @@ class NodeSizeDialog extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+		
+		spinnerMaximumNodeWidth.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				final Integer value = (Integer)spinnerMaximumNodeWidth.getValue();
+				if((Integer)spinnerMinimumNodeWidth.getValue() > value)
+					spinnerMinimumNodeWidth.setValue(value);
+			}
+		});
+		
+		spinnerMinimumNodeWidth.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				final Integer value = (Integer)spinnerMinimumNodeWidth.getValue();
+				if((Integer)spinnerMaximumNodeWidth.getValue() < value)
+					spinnerMaximumNodeWidth.setValue(value);
+			}
+		});
 	}
 	@SuppressWarnings("serial")
     private class CloseAction extends AbstractAction {
@@ -169,7 +185,7 @@ class NodeSizeDialog extends JDialog {
 	
 	public boolean showDialog(int minNodeWidth, int maxNodeTextWidth){
 		spinnerMinimumNodeWidth.setValue(minNodeWidth);
-		spinnerMaximumNodeTextWidth.setValue(maxNodeTextWidth);
+		spinnerMaximumNodeWidth.setValue(maxNodeTextWidth);
 		setVisible(true);
 		return result;
 	}
@@ -179,7 +195,7 @@ class NodeSizeDialog extends JDialog {
 	}
 	
 	int getMaxNodeWidth(){
-		return (Integer) spinnerMaximumNodeTextWidth.getValue();
+		return (Integer) spinnerMaximumNodeWidth.getValue();
 	}
 	
 }

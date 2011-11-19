@@ -536,14 +536,18 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 		};
 		getModeController().execute(actor, node.getMap());
+		final int maxWidth = getMaxWidth(node);
+		if(maxWidth < minNodeWidth){
+			setMaxNodeWidth(node, minNodeWidth);
+		}
     }
 
-	public void setMaxNodeWidth(final NodeModel node, final int maxTextWidth) {
+	public void setMaxNodeWidth(final NodeModel node, final int maxNodeWidth) {
 	    final NodeSizeModel sizeModel = createOwnSizeModel(node);
 		final int oldValue = NodeSizeModel.getNodeMaxNodeWidth(node);
 		final IActor actor = new IActor() {
 			public void act() {
-				sizeModel.setMaxNodeWidth(maxTextWidth);
+				sizeModel.setMaxNodeWidth(maxNodeWidth);
 				final MapController mapController = getModeController().getMapController();
 				mapController.nodeChanged(node);
 			}
@@ -559,6 +563,10 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 		};
 		getModeController().execute(actor, node.getMap());
+		final int minNodeWidth = getMinWidth(node);
+		if(maxNodeWidth < minNodeWidth){
+			setMinNodeWidth(node, maxNodeWidth);
+		}
     }
 
 }

@@ -373,13 +373,15 @@ public class StyleEditorPanel extends JPanel {
 				enabled = true;
 				mSet.setValue(true);
 			}
-			final Collection<NodeModel> nodes = Controller.getCurrentController().getSelection().getSelection();
+			final IMapSelection selection = Controller.getCurrentController().getSelection();
+			final Collection<NodeModel> nodes = selection.getSelection();
 			if (enabled )
 				internalChange = true;
 			for (final NodeModel node : nodes) {
 				applyValue(enabled, node, evt);
 			}
 			internalChange = false;
+			setStyle(selection.getSelected());
 		}
 	}
 
