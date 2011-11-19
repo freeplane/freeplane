@@ -1,7 +1,7 @@
 ===============================
 1.2.10 alpha
 ===============================
-Minimal node width and maximal node text width as node / style property
+Minimal node width and maximal node width as node / style property
 Add-on support
 ===============================
 1.2.9 alpha
