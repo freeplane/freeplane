@@ -92,8 +92,13 @@ class NodeViewFactory {
 						component.setBounds(0, y, width, preferredCompSize.height);
 					}
 					else {
-						final int x = (int) (component.getAlignmentX() * (width - preferredCompSize.width));
-						component.setBounds(x, y, preferredCompSize.width, preferredCompSize.height);
+						if(width > preferredCompSize.width){
+							final int x = (int) (component.getAlignmentX() * (width - preferredCompSize.width));
+							component.setBounds(x, y, preferredCompSize.width, preferredCompSize.height);
+						}
+						else{
+							component.setBounds(0, y, width, preferredCompSize.height);
+						}
 					}
 					y += preferredCompSize.height;
 					if (component instanceof ForkMainView){
