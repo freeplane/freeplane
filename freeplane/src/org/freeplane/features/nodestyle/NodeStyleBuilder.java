@@ -163,8 +163,8 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 				NodeSizeModel.setNodeMaxNodeWidth(node, Integer.valueOf(value));
 			}
 		};
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, "MAX_TEXT_WIDTH", nodeMaxNodeWidthHandler);
-		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "MAX_TEXT_WIDTH", nodeMaxNodeWidthHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "MAX_WIDTH", nodeMaxNodeWidthHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "MAX_WIDTH", nodeMaxNodeWidthHandler);
 		
 		final IAttributeHandler nodeMinWidthHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
@@ -186,6 +186,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		writer.addElementWriter(NodeBuilder.XML_NODE, this);
 		writer.addExtensionElementWriter(NodeStyleModel.class, this);
 		writer.addExtensionAttributeWriter(NodeStyleModel.class, this);
+		writer.addExtensionAttributeWriter(NodeSizeModel.class, this);
 	}
 
 	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {
@@ -211,6 +212,12 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			writeAttributes(writer, null, style, false);
 			return;
 		}
+		if(extension instanceof NodeSizeModel){
+			final NodeSizeModel size = (NodeSizeModel) extension;
+			writeAttributes(writer, null, size, false);
+			return;
+		}
+		
 	}
 
 	private void writeAttributes(final ITreeWriter writer, final NodeModel node, final NodeStyleModel style,
@@ -241,7 +248,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 	                             final boolean forceFormatting) {
 		final int maxTextWidth = forceFormatting ? nsc.getMaxWidth(node) : size.getMaxNodeWidth();
 		if (maxTextWidth != NodeSizeModel.NOT_SET) {
-			writer.addAttribute("MAX_TEXT_WIDTH", Integer.toString(maxTextWidth));
+			writer.addAttribute("MAX_WIDTH", Integer.toString(maxTextWidth));
 		}
 		
 		final int minTextWidth = forceFormatting ? nsc.getMinWidth(node) : size.getMinNodeWidth();
