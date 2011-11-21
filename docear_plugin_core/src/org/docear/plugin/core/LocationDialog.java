@@ -140,7 +140,7 @@ public class LocationDialog extends JDialog {
 		this.workspaceLocation = new File(workspaceController.getPreferences().getWorkspaceLocation());
 		
 		BIBTEX_PATH_INIT = "workspace:/."+workspaceController.getPreferences().getWorkspaceProfile()+"/bibtex.bib";
-		PROJECTS_PATH_INIT = "workspace:/."+workspaceController.getPreferences().getWorkspaceProfile()+"/projects";
+		PROJECTS_PATH_INIT = "workspace:/projects";
 		
 		this.setModal(true);
 		setTitle(TextUtils.getText("docear_initialization"));

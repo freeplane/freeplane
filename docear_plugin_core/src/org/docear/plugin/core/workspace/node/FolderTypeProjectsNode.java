@@ -219,7 +219,7 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 			String path = (String) ((NodeAttributeObserver) e.getSource()).getValue();
 			URI uri;
 			try{
-				uri = new File(path).toURI();
+				uri = WorkspaceUtils.getWorkspaceRelativeURI(new File(path));
 			}
 			catch (Exception ex) {
 				return;

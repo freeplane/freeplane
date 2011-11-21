@@ -50,7 +50,7 @@ public class NodeNewLinkAction extends AWorkspaceAction {
 				if(file != null) {
 					LinkTypeFileNode node = new LinkTypeFileNode();
 					node.setName(file.getName());
-					URI path = WorkspaceUtils.workspaceRelativeURI(chooser.getSelectedFile().toURI());
+					URI path = WorkspaceUtils.getWorkspaceRelativeURI(chooser.getSelectedFile());
 					if (path == null) {
 						return;
 					}	

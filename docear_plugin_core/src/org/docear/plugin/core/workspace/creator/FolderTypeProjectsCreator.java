@@ -54,7 +54,7 @@ public class FolderTypeProjectsCreator extends AWorkspaceNodeCreator {
 			}
 		}
 		
-		node.setPath((new File(path)).toURI());
+		node.setPath(WorkspaceUtils.getWorkspaceRelativeURI(new File(path)));
 		return node;
 	}
 	

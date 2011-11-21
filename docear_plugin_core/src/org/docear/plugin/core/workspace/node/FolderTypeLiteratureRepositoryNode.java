@@ -13,8 +13,6 @@ import javax.swing.event.ChangeListener;
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.mode.Controller;
-import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
@@ -87,9 +85,8 @@ public class FolderTypeLiteratureRepositoryNode extends PhysicalFolderNode imple
 		if(!locked && e.getSource() instanceof NodeAttributeObserver) {
 			String path = (String) ((NodeAttributeObserver) e.getSource()).getValue();
 			URI uri;
-			try{
-				
-				uri = (new File(path)).toURI();				
+			try{				
+				uri = WorkspaceUtils.getWorkspaceRelativeURI(new File(path));				
 				createPathIfNeeded(uri);				
 			}
 			catch (Exception ex) {

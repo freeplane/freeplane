@@ -162,7 +162,7 @@ public class LinkTypeReferencesNode extends LinkTypeFileNode /*LinkNode*/ implem
 			String path = (String) ((NodeAttributeObserver) e.getSource()).getValue();
 			URI uri;
 			try{
-				uri = (new File(path)).toURI();
+				uri = WorkspaceUtils.getWorkspaceRelativeURI(new File(path));
 			}
 			catch (Exception ex) {
 				return;
