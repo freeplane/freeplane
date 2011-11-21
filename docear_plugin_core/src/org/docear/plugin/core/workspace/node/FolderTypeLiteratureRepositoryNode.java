@@ -50,7 +50,7 @@ public class FolderTypeLiteratureRepositoryNode extends PhysicalFolderNode imple
 	public void setPath(URI folderPath) {
 		super.setPath(folderPath);
 		locked = true;
-		CoreConfiguration.repositoryPathObserver.setValue(WorkspaceUtils.resolveURI(folderPath).getPath());
+		CoreConfiguration.repositoryPathObserver.setUri(folderPath);
 		createPathIfNeeded(folderPath);
 		locked = false;	
 	}
@@ -61,7 +61,7 @@ public class FolderTypeLiteratureRepositoryNode extends PhysicalFolderNode imple
 		if (file != null) {
 			if (!file.exists()) {
 				if (file.mkdirs()) {
-					LogUtils.info("New Filesystem Folder Created: " + file.getAbsolutePath());
+					LogUtils.info("New Literature Folder Created: " + file.getAbsolutePath());
 				}
 			}
 			this.setName(file.getName());
@@ -82,11 +82,9 @@ public class FolderTypeLiteratureRepositoryNode extends PhysicalFolderNode imple
 	}
 
 	public void stateChanged(ChangeEvent e) {		
-		if(!locked && e.getSource() instanceof NodeAttributeObserver) {
-			String path = (String) ((NodeAttributeObserver) e.getSource()).getValue();
-			URI uri;
-			try{				
-				uri = WorkspaceUtils.getWorkspaceRelativeURI(new File(path));				
+		if(!locked && e.getSource() instanceof NodeAttributeObserver) {			
+			URI uri = ((NodeAttributeObserver) e.getSource()).getUri();
+			try{		
 				createPathIfNeeded(uri);				
 			}
 			catch (Exception ex) {

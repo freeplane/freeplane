@@ -41,7 +41,7 @@ public class FolderTypeLiteratureRepositoryCreator extends AWorkspaceNodeCreator
 		String path = data.getAttribute("path", null);
 		
 		if (path == null || path.length()==0) {
-			path = (String) CoreConfiguration.repositoryPathObserver.getValue();
+			path = WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()).getPath();
 			if (path==null) {
 				LocationDialog dialog = new LocationDialog(); 
 		    	dialog.setVisible(true);

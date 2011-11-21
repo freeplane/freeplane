@@ -44,7 +44,7 @@ public class FolderTypeProjectsCreator extends AWorkspaceNodeCreator {
 		
 		String path = data.getAttribute("path", null);
 		if(path == null || path.trim().length() == 0) {
-			path = (String) CoreConfiguration.projectPathObserver.getValue();
+			path = WorkspaceUtils.resolveURI(CoreConfiguration.projectPathObserver.getUri()).getPath();
 			if (path==null) {
 				LocationDialog dialog = new LocationDialog(); 
 		    	dialog.setVisible(true);

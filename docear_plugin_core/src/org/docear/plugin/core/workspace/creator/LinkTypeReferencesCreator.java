@@ -51,7 +51,7 @@ public class LinkTypeReferencesCreator extends AWorkspaceNodeCreator {
 		
 		String path = data.getAttribute("path", null);
 		if(path == null || path.trim().length() == 0) {
-			path = (String) CoreConfiguration.referencePathObserver.getValue();
+			path = WorkspaceUtils.resolveURI(CoreConfiguration.referencePathObserver.getUri()).getPath();
 			if (path==null) {
 				LocationDialog dialog = new LocationDialog(); 
 		    	dialog.setVisible(true);				

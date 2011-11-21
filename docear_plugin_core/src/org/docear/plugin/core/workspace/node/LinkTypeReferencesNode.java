@@ -89,7 +89,7 @@ public class LinkTypeReferencesNode extends LinkTypeFileNode /*LinkNode*/ implem
 	public void setLinkPath(URI uri) {
 		super.setLinkPath(uri);
 		locked = true;
-		CoreConfiguration.referencePathObserver.setValue(WorkspaceUtils.resolveURI(uri).getPath());
+		CoreConfiguration.referencePathObserver.setUri(uri);
 		createIfNeeded(uri);
 		locked = false;
 	}
@@ -158,15 +158,8 @@ public class LinkTypeReferencesNode extends LinkTypeFileNode /*LinkNode*/ implem
 	}
 
 	public void stateChanged(ChangeEvent e) {
-		if(!locked && e.getSource() instanceof NodeAttributeObserver) {
-			String path = (String) ((NodeAttributeObserver) e.getSource()).getValue();
-			URI uri;
-			try{
-				uri = WorkspaceUtils.getWorkspaceRelativeURI(new File(path));
-			}
-			catch (Exception ex) {
-				return;
-			}
+		if(!locked && e.getSource() instanceof NodeAttributeObserver) {			
+			URI uri = ((NodeAttributeObserver) e.getSource()).getUri();			
 			this.setLinkPath(uri);
 		}
 	}
