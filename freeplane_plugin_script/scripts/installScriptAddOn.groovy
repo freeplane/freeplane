@@ -1,26 +1,11 @@
-/* @ExecutionModes({on_single_node="main_menu_scripting/scripts[addons.installer.title]"})
- * 
- *  Freeplane - mind map editor
- *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
- *
- *  This file author is Volker Boerchers
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-import java.io.File;
+import groovy.swing.SwingBuilder
+
+import java.awt.Dimension
+import java.awt.FlowLayout
+import java.awt.Toolkit
 import java.util.zip.ZipInputStream
 
+import javax.swing.BoxLayout
 import javax.swing.JMenuItem
 import javax.swing.JOptionPane
 import javax.swing.KeyStroke
@@ -29,15 +14,16 @@ import javax.swing.tree.DefaultMutableTreeNode
 import org.apache.commons.lang.WordUtils
 import org.freeplane.core.resources.ResourceController
 import org.freeplane.core.ui.MenuBuilder
-import org.freeplane.core.ui.IndexedTree.Node
 import org.freeplane.core.util.FreeplaneVersion
 import org.freeplane.core.util.MenuUtils
 import org.freeplane.core.util.TextUtils
 import org.freeplane.features.mode.Controller
 import org.freeplane.main.addons.AddOnProperties
+import org.freeplane.main.addons.AddOnsController
 import org.freeplane.plugin.script.ExecuteScriptAction
-import org.freeplane.plugin.script.ScriptingEngine;
+import org.freeplane.plugin.script.ScriptingEngine
 import org.freeplane.plugin.script.ScriptingPermissions
+import org.freeplane.plugin.script.addons.AddOnDetailsPanel
 import org.freeplane.plugin.script.addons.ScriptAddOnProperties
 import org.freeplane.plugin.script.proxy.Proxy
 
@@ -46,6 +32,7 @@ import org.freeplane.plugin.script.proxy.Proxy
 //
 dialogTitle = textUtils.getText('addons.installer.title')
 installationbase = c.userDirectory
+addonsUrl = "http://freeplane.sourceforge.net/addons"
 
 // parse result
 configMap = [:]
@@ -100,6 +87,8 @@ def parseProperties(Map childNodeMap) {
 		! configMap[property][it]
 	}
 	mapStructureAssert( ! missingProperties, textUtils.format('addons.installer.missing.properties', missingProperties))
+	configMap[property]['homepage'] = propertyNode.link.text ?
+		propertyNode.link.uri.toURL() : new URL(expandVariables(addonsUrl + '/${name}'))
 	println property + ': ' + configMap[property]
 }
 
@@ -276,7 +265,7 @@ void createKeyboardShortcut(ScriptAddOnProperties.Script script) {
 		// it's a long way to the menu item title
 		DefaultMutableTreeNode menubarNode = menuBuilder.getMenuBar(menuBuilder.get("main_menu_scripting"));
 		assert menubarNode != null : "can't find menubar"
-		Node priorAssigned = MenuUtils.findAssignedMenuItemNodeRecursively(menubarNode, keyStroke);
+		def priorAssigned = MenuUtils.findAssignedMenuItemNodeRecursively(menubarNode, keyStroke);
 		if (priorAssigned != null) {
 			if (askForReplaceShortcutViaDialog(((JMenuItem) priorAssigned.getUserObject()).getText())) {
 				String priorShortcutKey = menuBuilder.getShortcutKey(priorAssigned.getKey().toString());
@@ -399,7 +388,7 @@ AddOnProperties parse() {
 		'deinstall',
 	]
 	Map<String, Proxy.Node> childNodeMap = propertyNames.inject([:]) { map, key ->
-		map[key] = node.find{ it.plainText == key }[0]
+		map[key] = node.map.root.find{ it.plainText == key }[0]
 		return map
 	}
 	def Map<String, Proxy.Node> missingChildNodes = childNodeMap.findAll{ k,v->
@@ -422,7 +411,7 @@ AddOnProperties parse() {
 	configMap['properties'].each { k,v ->
 		if (addOn.hasProperty(k))
 			addOn[k] = v
-		else
+		else if (k != "title")
 			logger.warn("add-on has no property $k (hopefully that's not bad)")
 	}
 	addOn.description = configMap['description']
@@ -436,14 +425,45 @@ AddOnProperties parse() {
 	return addOn
 }
 
-boolean confirmInstall() {
-	// 1. unsecure
-	if (!confirm(textUtils.format('addons.installer.confirm.install', expandVariables('${title}, ${version}'), configMap['description'].replaceAll("</?(html|body)>", "")).replace("[translate me]", "")))
+boolean confirmInstall(ScriptAddOnProperties addOn, ScriptAddOnProperties installedAddOn) {
+	def screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	def dialogPrefSize = new Dimension((int) screenSize.getWidth() * 3 / 5, (int) screenSize.getHeight() * 1 / 2);
+	def warning = textUtils.removeTranslateComment(textUtils.getText('addons.installer.warning'))
+	def addOnDetailsPanel = new AddOnDetailsPanel(addOn, warning)
+	addOnDetailsPanel.maxWidth = 600
+	def installButtonText = installedAddOn ? textUtils.format('addons.installer.update', installedAddOn.version)
+		: textUtils.getText('addons.installer.install')
+
+	def s = new SwingBuilder()
+	s.setVariable('myDialog-properties',[:])
+	def vars = s.variables
+	def dial = s.dialog(title:dialogTitle, id:'myDialog', modal:true,
+						locationRelativeTo:ui.frame, owner:ui.frame, pack:true, preferredSize:dialogPrefSize) {
+		scrollPane() {
+			panel() {
+				boxLayout(axis:BoxLayout.Y_AXIS)
+				widget(addOnDetailsPanel)
+				panel(alignmentX:0f) {
+					flowLayout(alignment:FlowLayout.RIGHT)
+					button(action: action(name: textUtils.getText('cancel'), mnemonic: 'C', closure: {dispose()}))
+					defaultButton = button(id:'defBtn', action: action(name: installButtonText,
+						mnemonic: 'I', defaultButton:true, selected:true, closure: {vars.ok = true; dispose()}))
+				}
+			}
+		}
+	}
+	defaultButton.requestFocusInWindow()
+    ui.addEscapeActionToDialog(dial)
+    dial.visible = true
+	if (!vars.ok)
 		return false
 	// 2. license
-	def license = configMap['license'].replaceAll("</?(html|body)>", "")
-	def question = textUtils.format('addons.installer.confirm.licence', license).replace("[translate me]", "").replace("\n", "<p>")
-	if (configMap['license'] && !confirm(question))
+	boolean licenseUnchanged = addOn.license && installedAddOn?.license && addOn.license.equals(installedAddOn.license)
+	def license = addOn.license.replaceAll("</?(html|body)>", "")
+	def question = textUtils.removeTranslateComment(textUtils.format('addons.installer.confirm.licence', license)).replace("\n", "<p>")
+	if (licenseUnchanged)
+		c.statusInfo = textUtils.getText('addons.installer.licence.unchanged')
+	if (addOn.license && !licenseUnchanged && !confirm(question))
 		return false
     // really bother the user with such details?
 	// 3. permissions
@@ -460,10 +480,20 @@ def install(AddOnProperties addOn) {
 // == main ==
 try {
 	def addOn = parse()
-	if (confirmInstall()) {
+	AddOnsController.registerAddOnResources(addOn, ResourceController.resourceController)
+	def installedAddOn = AddOnsController.getController().getInstalledAddOn(addOn.name)
+	def isUpdate = installedAddOn != null
+	if (confirmInstall(addOn, installedAddOn)) {
+		def message
+		if (isUpdate) {
+			AddOnsController.getController().deInstall(installedAddOn)
+			message = textUtils.format('addons.installer.success.update', installedAddOn.version, addOn.version)
+		}
+		else {
+			message = textUtils.getText('addons.installer.success')
+		}
 		install(addOn)
-		JOptionPane.showMessageDialog(ui.frame, textUtils.getText('addons.installer.success'),
-			dialogTitle, JOptionPane.INFORMATION_MESSAGE)
+		JOptionPane.showMessageDialog(ui.frame, message, dialogTitle, JOptionPane.INFORMATION_MESSAGE)
 		return addOn
 	}
 	return null

@@ -284,9 +284,7 @@ class ScriptingRegistration {
 					}
 					else {
 						if (!registeredLocations.contains(location)) {
-							final String parentMenuTitle = location;
-							addSubMenu(menuBuilder, parentLocation(location), location,
-							    TextUtils.getText(parentMenuTitle, parentMenuTitle));
+							addSubMenu(menuBuilder, parentLocation(location), location, getMenuTitle(location));
 							registeredLocations.add(location);
 						}
 						titleKey = metaData.getTitleKey(executionMode);
@@ -300,6 +298,13 @@ class ScriptingRegistration {
 			}
 		}
 	}
+
+	// location might be something like /menu_bar/edit/editGoodies
+	private String getMenuTitle(final String location) {
+	    int index = location.lastIndexOf('/');
+	    final String lastKey = location.substring(index + 1);
+	    return TextUtils.getText(lastKey, TextUtils.getText("addons." + lastKey, lastKey));
+    }
 
 	private String parentLocation(String location) {
 	    return location.replaceFirst("/[^/]*$", "");

@@ -83,8 +83,8 @@ public class MNodeStyleController extends NodeStyleController {
 			if (fromData == null) {
 				return;
 			}
-			if (NodeSizeModel.NOT_SET != whichData.getMaxTextWidth()) {
-				fromData.setMaxTextWidth(NodeSizeModel.NOT_SET);
+			if (NodeSizeModel.NOT_SET != whichData.getMaxNodeWidth()) {
+				fromData.setMaxNodeWidth(NodeSizeModel.NOT_SET);
 			}
 			if (NodeSizeModel.NOT_SET != whichData.getMinNodeWidth()) {
 				fromData.setMinNodeWidth(NodeSizeModel.NOT_SET);
@@ -189,7 +189,7 @@ public class MNodeStyleController extends NodeStyleController {
 	protected void copySizeModel(final NodeModel source, final NodeModel target) {
 	    final NodeSizeModel sourceSizeModel = NodeSizeModel.getModel(source);
 		if (sourceSizeModel != null) {
-			setMaxTextWidth(target, sourceSizeModel.getMaxTextWidth());
+			setMaxNodeWidth(target, sourceSizeModel.getMaxNodeWidth());
 			setMinNodeWidth(target, sourceSizeModel.getMinNodeWidth());
 		}
     }
@@ -536,29 +536,37 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 		};
 		getModeController().execute(actor, node.getMap());
+		final int maxWidth = getMaxWidth(node);
+		if(maxWidth < minNodeWidth){
+			setMaxNodeWidth(node, minNodeWidth);
+		}
     }
 
-	public void setMaxTextWidth(final NodeModel node, final int maxTextWidth) {
+	public void setMaxNodeWidth(final NodeModel node, final int maxNodeWidth) {
 	    final NodeSizeModel sizeModel = createOwnSizeModel(node);
-		final int oldValue = NodeSizeModel.getNodeMaxTextWidth(node);
+		final int oldValue = NodeSizeModel.getNodeMaxNodeWidth(node);
 		final IActor actor = new IActor() {
 			public void act() {
-				sizeModel.setMaxTextWidth(maxTextWidth);
+				sizeModel.setMaxNodeWidth(maxNodeWidth);
 				final MapController mapController = getModeController().getMapController();
 				mapController.nodeChanged(node);
 			}
 
 			public String getDescription() {
-				return "setMaxTextWidth";
+				return "setMaxNodeWidth";
 			}
 
 			public void undo() {
-				sizeModel.setMaxTextWidth(oldValue);
+				sizeModel.setMaxNodeWidth(oldValue);
 				final MapController mapController = getModeController().getMapController();
 				mapController.nodeChanged(node);
 			}
 		};
 		getModeController().execute(actor, node.getMap());
+		final int minNodeWidth = getMinWidth(node);
+		if(maxNodeWidth < minNodeWidth){
+			setMinNodeWidth(node, maxNodeWidth);
+		}
     }
 
 }

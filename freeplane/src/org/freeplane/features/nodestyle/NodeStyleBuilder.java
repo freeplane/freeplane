@@ -157,14 +157,14 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "TEMPLATE", formatHandler);
 		}
 		
-		final IAttributeHandler nodeMaxTextWidthHandler = new IAttributeHandler() {
+		final IAttributeHandler nodeMaxNodeWidthHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				NodeSizeModel.setNodeMaxTextWidth(node, Integer.valueOf(value));
+				NodeSizeModel.setNodeMaxNodeWidth(node, Integer.valueOf(value));
 			}
 		};
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, "MAX_TEXT_WIDTH", nodeMaxTextWidthHandler);
-		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "MAX_TEXT_WIDTH", nodeMaxTextWidthHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "MAX_TEXT_WIDTH", nodeMaxNodeWidthHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "MAX_TEXT_WIDTH", nodeMaxNodeWidthHandler);
 		
 		final IAttributeHandler nodeMinWidthHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
@@ -239,7 +239,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 
 	private void writeAttributes(final ITreeWriter writer, final NodeModel node, final NodeSizeModel size,
 	                             final boolean forceFormatting) {
-		final int maxTextWidth = forceFormatting ? nsc.getMaxTextWidth(node) : size.getMaxTextWidth();
+		final int maxTextWidth = forceFormatting ? nsc.getMaxWidth(node) : size.getMaxNodeWidth();
 		if (maxTextWidth != NodeSizeModel.NOT_SET) {
 			writer.addAttribute("MAX_TEXT_WIDTH", Integer.toString(maxTextWidth));
 		}

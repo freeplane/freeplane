@@ -400,7 +400,9 @@ public class MClipboardController extends ClipboardController {
                 return;
             }
 			final String mmFileName = mindmapFile.getName();
-			final String fileNameTemplate = mmFileName.substring(0, mmFileName.lastIndexOf('.')) + "_";
+			String fileNameTemplate = mmFileName.substring(0, mmFileName.lastIndexOf('.')) + "_";
+			while (fileNameTemplate.length() < 3)
+				fileNameTemplate = fileNameTemplate + '_';
 			//file that we'll save to disk.
             File file;
             try {

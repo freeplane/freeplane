@@ -35,7 +35,7 @@ public class AddOnProperties {
 	private String version;
 	private FreeplaneVersion freeplaneVersionFrom;
 	private FreeplaneVersion freeplaneVersionTo;
-	private URL sourceUrl;
+	private URL homepage;
 	private String description;
 	private String license;
 	private Map<String, Map<String, String>> translations;
@@ -55,7 +55,7 @@ public class AddOnProperties {
 		this.setFreeplaneVersionFrom(FreeplaneVersion.getVersion(addOnElement.getAttribute("freeplaneVersionFrom",
 		    null)));
 		this.setFreeplaneVersionTo(FreeplaneVersion.getVersion(addOnElement.getAttribute("freeplaneVersionTo", null)));
-		this.setSourceUrl(parseSourceUrl(addOnElement.getAttribute("source.url", null)));
+		this.setHomepage(parseHomepage(addOnElement.getAttribute("homepage", null)));
 		this.setActive(Boolean.parseBoolean(addOnElement.getAttribute("active", "true")));
 		this.setDescription(getContentOfFirstElement(addOnElement.getChildrenNamed("description")));
 		this.setLicense(getContentOfFirstElement(addOnElement.getChildrenNamed("license")));
@@ -67,9 +67,9 @@ public class AddOnProperties {
 		validate();
 	}
 
-	private URL parseSourceUrl(String sourceUrl) {
+	private URL parseHomepage(String homepage) {
 		try {
-			return new URL(sourceUrl);
+			return new URL(homepage);
 		}
 		catch (Exception e) {
 			return null;
@@ -192,12 +192,12 @@ public class AddOnProperties {
 		this.freeplaneVersionTo = freeplaneVersionTo;
 	}
 
-	public URL getSourceUrl() {
-		return sourceUrl;
+	public URL getHomepage() {
+		return homepage;
 	}
 
-	public void setSourceUrl(URL sourceUrl) {
-		this.sourceUrl = sourceUrl;
+	public void setHomepage(URL homepage) {
+		this.homepage = homepage;
 	}
 
 	public String getDescription() {
@@ -319,8 +319,10 @@ public class AddOnProperties {
 		addonElement.setAttribute("freeplaneVersionFrom", freeplaneVersionFrom.toString());
 		if (freeplaneVersionTo != null)
 			addonElement.setAttribute("freeplaneVersionTo", freeplaneVersionTo.toString());
-		if (sourceUrl != null)
-			addonElement.setAttribute("source.url", sourceUrl.toString());
+		if (homepage != null)
+			addonElement.setAttribute("homepage", homepage.toString());
+		if (author != null)
+			addonElement.setAttribute("author", author);
 		addonElement.setAttribute("active", Boolean.toString(active));
 		addAsChildWithContent(addonElement, "description", description);
 		addAsChildWithContent(addonElement, "license", license);

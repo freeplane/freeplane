@@ -136,8 +136,8 @@ public class MapStyleModel implements IExtension {
                 addStyleNode(newNode);
             }
             NodeModel defaultStyleModel = styleNodes.get(DEFAULT_STYLE);
-            if(maxNodeWidth != NodeSizeModel.NOT_SET && NodeSizeModel.NOT_SET == NodeSizeModel.getNodeMaxTextWidth(defaultStyleModel))
-            	NodeSizeModel.setNodeMaxTextWidth(defaultStyleModel, maxNodeWidth);
+            if(maxNodeWidth != NodeSizeModel.NOT_SET && NodeSizeModel.NOT_SET == NodeSizeModel.getNodeMaxNodeWidth(defaultStyleModel))
+            	NodeSizeModel.setNodeMaxNodeWidth(defaultStyleModel, maxNodeWidth);
             if(minNodeWidth != NodeSizeModel.NOT_SET && NodeSizeModel.NOT_SET == NodeSizeModel.getMinNodeWidth(defaultStyleModel))
             	NodeSizeModel.setNodeMinWidth(defaultStyleModel, minNodeWidth);
             if(styleNodes.get(DETAILS_STYLE) == null){
