@@ -4,7 +4,7 @@
  */
 package org.docear.plugin.core.workspace.creator;
 
-import java.net.URI;
+import java.io.File;
 
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.LocationDialog;
@@ -51,7 +51,7 @@ public class FolderTypeLiteratureRepositoryCreator extends AWorkspaceNodeCreator
 			}
 		}
 		
-		node.setPath(URI.create(path));
+		node.setPath(WorkspaceUtils.getWorkspaceRelativeURI(new File(path)));
 
 		return node;
 	}

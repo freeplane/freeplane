@@ -189,7 +189,7 @@ public class WorkspaceUtils {
 
 	}
 
-	public static URI workspaceRelativeURI(URI uri) {
+	public static URI getWorkspaceRelativeURI(URI uri) {
 		URI relativeURI = getWorkspaceBaseURI().relativize(uri);
 		System.out.println(getWorkspaceBaseURI());
 		try {
@@ -199,6 +199,10 @@ public class WorkspaceUtils {
 		catch (Exception ex) {
 		}
 		return null;
+	}
+	
+	public static URI getWorkspaceRelativeURI(File file) {
+		return LinkController.toRelativeURI(null, file, LinkController.LINK_RELATIVE_TO_WORKSPACE);
 	}
 
 	public static File resolveURI(final URI uri) {
