@@ -73,7 +73,9 @@ public class Activator implements BundleActivator {
 	 * (non-Javadoc)
 	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
-	public void stop(BundleContext context) throws Exception {		
+	public void stop(BundleContext context) throws Exception {
+		System.out.println("DOCEAR: save config ...");
+		WorkspaceUtils.saveCurrentConfiguration();
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })

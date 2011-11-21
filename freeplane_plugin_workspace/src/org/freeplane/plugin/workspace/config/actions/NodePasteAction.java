@@ -4,10 +4,11 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.EnabledAction;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
 import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
 
-@EnabledAction(checkOnNodeChange = true, checkOnPopup = true)
+@EnabledAction(checkOnPopup = true)
 public class NodePasteAction extends AWorkspaceAction {
 
 	private static final long serialVersionUID = 1L;
@@ -16,16 +17,22 @@ public class NodePasteAction extends AWorkspaceAction {
 		super("workspace.action.node.paste");
 	}
 	
-	public void setEnabled() { 
-		if(Toolkit.getDefaultToolkit().getSystemClipboard().isDataFlavorAvailable(WorkspaceTransferable.WORKSPACE_FILE_LIST_FLAVOR) 
-				|| Toolkit.getDefaultToolkit().getSystemClipboard().isDataFlavorAvailable(WorkspaceTransferable.WORKSPACE_URI_LIST_FLAVOR)
-				|| Toolkit.getDefaultToolkit().getSystemClipboard().isDataFlavorAvailable(WorkspaceTransferable.WORKSPACE_NODE_FLAVOR)
-				|| Toolkit.getDefaultToolkit().getSystemClipboard().isDataFlavorAvailable(WorkspaceTransferable.WORKSPACE_FREEPLANE_NODE_FLAVOR)
-		) {
-			setEnabled(true);			
+	public void setEnabled() {
+		try {
+			if(Toolkit.getDefaultToolkit().getSystemClipboard().isDataFlavorAvailable(WorkspaceTransferable.WORKSPACE_FILE_LIST_FLAVOR) 
+					|| Toolkit.getDefaultToolkit().getSystemClipboard().isDataFlavorAvailable(WorkspaceTransferable.WORKSPACE_URI_LIST_FLAVOR)
+					|| Toolkit.getDefaultToolkit().getSystemClipboard().isDataFlavorAvailable(WorkspaceTransferable.WORKSPACE_NODE_FLAVOR)
+					|| Toolkit.getDefaultToolkit().getSystemClipboard().isDataFlavorAvailable(WorkspaceTransferable.WORKSPACE_FREEPLANE_NODE_FLAVOR)
+			) {
+				setEnabled(true);			
+			} 
+			else {
+				setEnabled(false);
+			}
 		} 
-		else {
-			setEnabled(false);
+		catch (Exception ex) {
+			// if the system clipboard has a problem
+			LogUtils.warn(ex.getLocalizedMessage());
 		}
 		//FIXME: this function is not available yet
 		setEnabled(false);

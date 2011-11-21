@@ -16,7 +16,7 @@ import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
-@EnabledAction(checkOnNodeChange = true, checkOnPopup = true)
+@EnabledAction(checkOnPopup = true)
 public class WorkspaceDeleteNodeAction extends AWorkspaceAction {
 
 	private static final long serialVersionUID = -8965412338727545850L;
