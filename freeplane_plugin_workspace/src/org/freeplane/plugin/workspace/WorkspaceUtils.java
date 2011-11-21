@@ -188,18 +188,6 @@ public class WorkspaceUtils {
 		return uri;
 
 	}
-
-	public static URI getWorkspaceRelativeURI(URI uri) {
-		URI relativeURI = getWorkspaceBaseURI().relativize(uri);
-		System.out.println(getWorkspaceBaseURI());
-		try {
-			return new URI("workspace", relativeURI.getUserInfo(), relativeURI.getHost(), relativeURI.getPort(), "/"
-					+ relativeURI.getPath(), relativeURI.getQuery(), relativeURI.getFragment());
-		}
-		catch (Exception ex) {
-		}
-		return null;
-	}
 	
 	public static URI getWorkspaceRelativeURI(File file) {
 		return LinkController.toRelativeURI(null, file, LinkController.LINK_RELATIVE_TO_WORKSPACE);
