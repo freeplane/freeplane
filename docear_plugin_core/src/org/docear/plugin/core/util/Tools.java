@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -271,6 +273,17 @@ public class Tools {
 			return attributes.getAttributeKeyList();
 		}
 		return new ArrayList<String>();
-	}		
+	}	
+	
+	public static String getStackTraceAsString(Exception exception){ 
+		StringWriter sw = new StringWriter(); 
+		PrintWriter pw = new PrintWriter(sw); 
+		pw.print(" [ "); 
+		pw.print(exception.getClass().getName()); 
+		pw.print(" ] "); 
+		pw.print(exception.getMessage()); 
+		exception.printStackTrace(pw); 
+		return sw.toString(); 
+	}
 
 }

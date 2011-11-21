@@ -96,6 +96,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 		} catch (InterruptedException e) {
 			LogUtils.info("InterruptedException during monitoring update.");
 		} catch (ExecutionException e) {
+			System.out.println(Tools.getStackTraceAsString(e));
 			LogUtils.info("ExecutionException during monitoring update.");
 		}
 					
