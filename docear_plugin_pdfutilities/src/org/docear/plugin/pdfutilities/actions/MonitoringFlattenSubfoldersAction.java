@@ -3,7 +3,9 @@ package org.docear.plugin.pdfutilities.actions;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Stack;
@@ -34,6 +36,8 @@ public class MonitoringFlattenSubfoldersAction extends DocearAction {
 		NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
 		Object value = NodeUtils.getAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS);
 		if(value == null || (Integer)value == 0){
+			flattenMonitorNodes(selected, selected.getChildren());
+			removePathNodes(selected);
 			NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 1);			
 		}
 		else{
@@ -65,7 +69,40 @@ public class MonitoringFlattenSubfoldersAction extends DocearAction {
 			NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 0);			
 		}		
 	}
+
+	private void removePathNodes(NodeModel selected) {
+		List<NodeModel> pathNodes = new ArrayList<NodeModel>();
+		for(NodeModel node : selected.getChildren()){
+			if(DocearNodeModelExtensionController.containsKey(node, DocearExtensionKey.MONITOR_PATH)){
+				pathNodes.add(node);
+			}
+		}
+		for(NodeModel node : pathNodes){
+			node.removeFromParent();
+		}
+	}
 	
+	private void flattenMonitorNodes(NodeModel rootTarget, List<NodeModel> children) {
+		List<NodeModel> pathNodes = new ArrayList<NodeModel>();
+		List<NodeModel> monitorNodes = new ArrayList<NodeModel>();
+		for(NodeModel node : children){
+			if(DocearNodeModelExtensionController.containsKey(node, DocearExtensionKey.MONITOR_PATH)){
+				pathNodes.add(node);
+			}
+			else{
+				monitorNodes.add(node);
+			}
+		}
+		for(NodeModel node : monitorNodes){
+			if(node.getParentNode() != rootTarget){
+				((MMapController) Controller.getCurrentModeController().getMapController()).moveNode(node, rootTarget, rootTarget.getChildCount());
+			}
+		}
+		for(NodeModel node : pathNodes){
+			flattenMonitorNodes(rootTarget, node.getChildren());
+		}
+	}
+
 	private void pasteNodeIntoPath(NodeModel node, NodeModel target, Stack<File> pathStack) {		
 		if(pathStack.isEmpty()){			
 			((MMapController) Controller.getCurrentModeController().getMapController()).moveNode(node, target, target.getChildCount());
@@ -84,7 +121,7 @@ public class MonitoringFlattenSubfoldersAction extends DocearAction {
 		}
 		else{
 			pathNode = ((MMapController) Controller.getCurrentModeController().getMapController()).newNode(parent.getName(), target.getMap());
-			DocearNodeModelExtensionController.setEntry(pathNode, DocearExtensionKey.MONITOR_PATH.toString(), null);			
+			DocearNodeModelExtensionController.setEntry(pathNode, DocearExtensionKey.MONITOR_PATH, null);			
 			NodeUtils.insertChildNodeFrom(pathNode, target.isLeft(), target);
 			pasteNodeIntoPath(node, pathNode, pathStack);
 		}
