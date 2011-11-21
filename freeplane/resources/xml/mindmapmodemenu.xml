@@ -183,7 +183,6 @@
 				<menu_submenu name="menu_nodeView" name_ref="menu_nodeView">
 					<menu_action action="ShowSelectionAsRectangleAction" />					
 					<menu_action action="SetBooleanPropertyAction.formula_dont_mark_formulas" />
-					<menu_action action="NodeWidthAction" />
 					<menu_action action="RevisionPluginAction" />
 					<menu_action action="HierarchicalIconsAction" />
 					<menu_action action="HierarchicalIcons2Action" />
@@ -232,6 +231,24 @@
 
 				<menu_separator />
 			<menu_action action="MapBackgroundColorAction" />	
+			<menu_submenu name="menu_coreFormat" name_ref="menu_coreFormat">	
+				<menu_action action="BoldAction" accelerator="control B" />
+				<menu_action action="ItalicAction" accelerator="control I" />
+				<menu_action action="IncreaseNodeFontAction" accelerator="control PLUS" />
+				<menu_action action="DecreaseNodeFontAction" accelerator="control MINUS" />
+				<menu_separator />
+				<menu_action action="NodeColorAction" accelerator="alt shift F" />
+				<menu_action action="BlinkingNodeHookAction" />
+				<menu_action action="NodeColorBlendAction"/>
+				<menu_separator />
+				<menu_action action="NodeBackgroundColorAction" />
+				<menu_separator />
+				<menu_action action="NodeShapeAction.fork" />
+				<menu_action action="NodeShapeAction.bubble" />
+				<menu_separator />
+				<menu_action action="RemoveFormatAction"/>
+				<menu_action action="UsePlainTextAction" accelerator="alt shift P" />
+			</menu_submenu>
 			<menu_category name="CloudProperties">	
 				<menu_submenu name="shapes" name_ref="format_menu_cloud_shapes">
 					<menu_radio_action action="CloudShapeAction.ARC" />
@@ -264,26 +281,7 @@
 				<menu_action action="AutomaticEdgeColorHookAction" />
 			</menu_category>
 			<menu_separator />
-			<menu_submenu name="menu_titleFormat" name_ref="menu_titleFormat">	
-				<menu_action action="BoldAction" accelerator="control B" />
-				<menu_action action="ItalicAction" accelerator="control I" />
-				<menu_action action="IncreaseNodeFontAction" accelerator="control PLUS" />
-				<menu_action action="DecreaseNodeFontAction" accelerator="control MINUS" />
-				<menu_separator />
-				<menu_action action="NodeColorAction" accelerator="alt shift F" />
-				<menu_action action="BlinkingNodeHookAction" />
-				<menu_action action="NodeColorBlendAction"/>
-				<menu_separator />
-				<menu_action action="NodeBackgroundColorAction" />
-				<menu_separator />
-				<menu_category name="Bubble">
-					<menu_action action="NodeShapeAction.fork" />
-					<menu_action action="NodeShapeAction.bubble" />
-				</menu_category>
-				<menu_separator />
-			<menu_action action="RemoveFormatAction"/>
-			</menu_submenu>
-			<menu_action action="UsePlainTextAction" accelerator="alt shift P" />
+			<menu_action action="NodeWidthAction" />
 		</menu_submenu>
 		<menu_submenu name="navigate" name_ref="menu_navigate">
 			<menu_category name="navigate">

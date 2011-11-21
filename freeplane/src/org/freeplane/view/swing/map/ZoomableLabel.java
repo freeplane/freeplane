@@ -82,18 +82,14 @@ public class ZoomableLabel extends JLabel {
 		final boolean isHtml = nodeText.startsWith("<html>");
 		boolean widthMustBeRestricted = false;
 		boolean isLong = false;
-		int iconWidth = getIconWidth();
-		if (iconWidth != 0) {
-			iconWidth += map.getZoomed(getIconTextGap());
-		}
 		final ModeController modeController = map.getModeController();
 		final NodeStyleController nsc = NodeStyleController.getController(modeController);
-		int maxNodeWidth = nsc.getMaxTextWidth(node.getModel());
+		final int maxNodeWidth = nsc.getMaxWidth(node.getModel());
 		if (!isHtml) {
 			final String[] lines = nodeText.split("\n");
 			for (int line = 0; line < lines.length; line++) {
 				setText(lines[line]);
-				widthMustBeRestricted = getPreferredSize().width > map.getZoomed(maxNodeWidth) + iconWidth;
+				widthMustBeRestricted = getPreferredSize().width > map.getZoomed(maxNodeWidth);
 				if (widthMustBeRestricted) {
 					break;
 				}
@@ -114,16 +110,6 @@ public class ZoomableLabel extends JLabel {
 					nodeText = nodeText.replaceFirst("(?ims)<html>", "<html><head>" + htmlLongNodeHead + "</head>");
 				}
 			}
-			if (nodeText.length() < 30000) {
-				setText(nodeText);
-				widthMustBeRestricted = getPreferredSize().width > map.getZoomed(maxNodeWidth) + iconWidth;
-			}
-			else {
-				widthMustBeRestricted = true;
-			}
-			if (widthMustBeRestricted) {
-				nodeText = nodeText.replaceFirst("(?i)<body>", "<body width=\"" + maxNodeWidth + "\">");
-			}
 			setText(nodeText);
 		}
 		else if (nodeText.startsWith("<table>")) {
@@ -140,9 +126,6 @@ public class ZoomableLabel extends JLabel {
 		}
 		else if (isLong) {
 			String text = HtmlUtils.plainToHTML(nodeText);
-			if (widthMustBeRestricted) {
-				text = text.replaceFirst("(?i)<body>", "<body width=\"" + maxNodeWidth + "\">");
-			}
 			setText(text);
 		}
 		else {

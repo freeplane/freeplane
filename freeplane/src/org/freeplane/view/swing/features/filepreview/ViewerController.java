@@ -582,7 +582,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 		JComponent viewer = null;
 		try {
-			viewer = factory.createViewer(model, absoluteUri, NodeStyleController.getDefaultMaxTextWidth());
+			viewer = factory.createViewer(model, absoluteUri, NodeStyleController.getDefaultMaxNodeWidth());
 		}
 		catch (final Exception e) {
 			final String info = HtmlUtils.combineTextWithExceptionInfo(uri.toString(), e);

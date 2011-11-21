@@ -332,17 +332,17 @@ class NodeViewFactory {
 			nodeView.addContent(detailContent, NodeView.DETAIL_VIEWER_POSITION);
 		}
 		if (detailText.isHidden()) {
-			detailContent.updateText("");
-			detailContent.setBackground(null);
 			detailContent.setIcon(new ArrowIcon(nodeView, true));
+			detailContent.setBackground(null);
+			detailContent.updateText("");
 		}
 		else {
+			detailContent.setIcon(new ArrowIcon(nodeView, false));
 			detailContent.updateText(detailText.getHtml());
 			final MapView map = nodeView.getMap();
 			detailContent.setFont(map.getDetailFont());
 			detailContent.setForeground(map.getDetailForeground());
 			detailContent.setBackground(nodeView.getDetailBackground());
-			detailContent.setIcon(new ArrowIcon(nodeView, false));
 		}
 	}
 

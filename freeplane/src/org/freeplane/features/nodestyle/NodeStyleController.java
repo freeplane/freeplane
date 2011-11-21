@@ -172,7 +172,7 @@ public class NodeStyleController implements IExtension {
 		return null;
 	}
 
-	private int getStyleMaxTextWidth(final MapModel map, final Collection<IStyle> styleKeys) {
+	private int getStyleMaxNodeWidth(final MapModel map, final Collection<IStyle> styleKeys) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		for(IStyle styleKey : styleKeys){
 			final NodeModel styleNode = model.getStyleNode(styleKey);
@@ -183,13 +183,13 @@ public class NodeStyleController implements IExtension {
 			if (sizeModel == null) {
 				continue;
 			}
-			final int maxTextWidth = sizeModel.getMaxTextWidth();
+			final int maxTextWidth = sizeModel.getMaxNodeWidth();
 			if (maxTextWidth == NodeSizeModel.NOT_SET) {
 				continue;
 			}
 			return maxTextWidth;
 		}
-		return getDefaultMaxTextWidth();
+		return getDefaultMaxNodeWidth();
 	}
 	
 	private int getStyleMinWidth(final MapModel map, final Collection<IStyle> styleKeys) {
@@ -386,11 +386,11 @@ public class NodeStyleController implements IExtension {
 		return style == null ? null : style.getNodeFormat();
 	}
 
-	public int getMaxTextWidth(NodeModel node) {
+	public int getMaxWidth(NodeModel node) {
 		final MapModel map = node.getMap();
 		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
 		final Collection<IStyle> style = styleController.getStyles(node);
-		final int maxTextWidth = getStyleMaxTextWidth(map, style);
+		final int maxTextWidth = getStyleMaxNodeWidth(map, style);
 		return maxTextWidth;
     }
 
@@ -407,21 +407,13 @@ public class NodeStyleController implements IExtension {
     }
 
 	public static int getDefaultMinNodeWidth() {
-    	try {
-    		return Integer.parseInt(ResourceController.getResourceController().getProperty("min_node_width"));
-    	}
-    	catch (final NumberFormatException e) {
-    		return 0;
-    	}
+    		return ResourceController.getResourceController().getIntProperty("min_node_width", 1);
     }
 
-	public static int getDefaultMaxTextWidth() {
-    	try {
-    		return Integer.parseInt(ResourceController.getResourceController().getProperty("max_node_width"));
-    	}
-    	catch (final NumberFormatException e) {
-    		return Integer.parseInt(ResourceController.getResourceController().getProperty(
-    		    "el__max_default_window_width")) * 2 / 3;
-    	}
+	public static int getDefaultMaxNodeWidth() {
+    		final int w = ResourceController.getResourceController().getIntProperty("max_node_width", -1);
+			if(w != -1)
+				return w;
+    		return ResourceController.getResourceController().getIntProperty("el__max_default_window_width", 600) * 2 / 3;
     }
 }
