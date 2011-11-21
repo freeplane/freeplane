@@ -121,6 +121,13 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 
 	public void mouseClicked(final MouseEvent e) {
 		ModeController mc = Controller.getCurrentController().getModeController();
+		if(Compat.isMacOsX()){
+			final JPopupMenu popupmenu = mc.getUserInputListenerFactory().getNodePopupMenu();
+			if(popupmenu.isShowing()){
+				return;
+			}
+		}
+
 		final MainView component = (MainView) e.getComponent();
 		if(e.getButton() == 1){
 			if(Compat.isPlainEvent(e)){

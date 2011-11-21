@@ -3,9 +3,12 @@ package org.freeplane.plugin.script.addons;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.io.IOException;
@@ -17,6 +20,7 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -24,12 +28,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.WindowConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumnModel;
 
 import org.freeplane.core.resources.components.OptionPanelBuilder;
+import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -38,6 +44,8 @@ import org.freeplane.main.addons.AddOnsController;
 
 @SuppressWarnings("serial")
 public class ManageAddOnsDialog extends JDialog {
+	private static final AddonRenderer ADDON_RENDERER = new AddonRenderer();
+
 	public final static class AddOnTableModel extends AbstractTableModel {
 		private final List<AddOnProperties> addOns;
 
@@ -57,24 +65,12 @@ public class ManageAddOnsDialog extends JDialog {
 			AddOnProperties addOn = addOns.get(row);
 			switch (col) {
 				case 0:
-					return "<html><body><b><font size='+1'>" + addOn.getTranslatedName() + " "
-					        + addOn.getVersion().replaceAll("^v", "") + "</font></b><br>"
-					        + getDescription(addOn) + "</body></html>";
+					return addOn;
 				case 1:
 					return "";
 				default:
 					throw new RuntimeException("unexpected column " + col);
 			}
-		}
-
-		private String getDescription(AddOnProperties addOn) {
-	        return HtmlUtils.toXMLEscapedText(shorten(HtmlUtils.htmlToPlain(addOn.getDescription()), 120));
-        }
-
-		private String shorten(String string, int maxLength) {
-			if (string.length() <= 3 || string.length() <= maxLength)
-				return string;
-			return string.substring(0, maxLength - 3) + "...";
 		}
 
 		public boolean isCellEditable(int row, int column) {
@@ -122,25 +118,62 @@ public class ManageAddOnsDialog extends JDialog {
 		}
 		tabbedPane = new JTabbedPane();
 		tabbedPane.setPreferredSize(getPreferredSizeForWindow());
-		final JPanel managementPanel = createManagementPanel(addOns);
+		final JComponent managementPanel = createManagementPanel(addOns);
 		tabbedPane.addTab(getText("tab.manage"), null, managementPanel, getText("tab.manage.tooltip"));
 		addOnInstallerPanel = new AddOnInstallerPanel(tableModel, managementPanel);
 		tabbedPane.addTab(getText("tab.install"), null, addOnInstallerPanel, getText("tab.install.tooltip"));
-		getContentPane().add(tabbedPane);
+		getContentPane().add(tabbedPane, BorderLayout.CENTER);
+		{
+			JPanel buttonPane = new JPanel();
+			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			getContentPane().add(buttonPane, BorderLayout.SOUTH);
+			{
+				JButton closeButton = new JButton();
+				MenuBuilder.setLabelAndMnemonic(closeButton, TextUtils.getRawText("close_btn"));
+				closeButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						setVisible(false);
+					}
+				});
+				buttonPane.add(closeButton);
+			}
+		}
+		
 		pack();
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		UITools.addEscapeActionToDialog(this);
 	}
 
-	private JPanel createManagementPanel(final List<AddOnProperties> addOns) {
-		final JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout());
+	private JComponent createManagementPanel(final List<AddOnProperties> addOns) {
+		final JComponent panel = new JPanel();
+		panel.setLayout(new GridLayout(2,1));
 		tableModel = new AddOnTableModel(addOns);
 		final JTable jTable = createTable(tableModel);
-		JScrollPane scrollPane = new JScrollPane(jTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		JScrollPane tableScrollPane = new JScrollPane(jTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 		    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		panel.add(scrollPane, BorderLayout.CENTER);
-		panel.setBackground(Color.white);
+		tableScrollPane.getViewport().setBackground(Color.white);
+		
+		final JPanel emptyPanel = new JPanel();
+		emptyPanel.setOpaque(false);
+		final JScrollPane descriptionScrollPane = new JScrollPane(emptyPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		descriptionScrollPane.getViewport().setBackground(Color.white);
+		jTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				if(jTable.getSelectedRowCount() != 1){
+					descriptionScrollPane.setViewportView(emptyPanel);
+				}
+				else{
+					final int row = jTable.getSelectedRow();
+					final AddOnProperties addon = (AddOnProperties) tableModel.getValueAt(row, 0);
+					final AddOnDetailsPanel detailsPanel = new AddOnDetailsPanel(addon);
+					detailsPanel.setOpaque(false);
+					descriptionScrollPane.setViewportView(detailsPanel);
+				}
+			}
+		});
+		
+		panel.add(tableScrollPane);
+		panel.add(descriptionScrollPane);
 		return panel;
 	}
 
@@ -171,6 +204,7 @@ public class ManageAddOnsDialog extends JDialog {
 		        , createActivateAction(tableModel) //
 		        , createDeinstallAction(tableModel) //
 		};
+		table.getColumnModel().getColumn(0).setCellRenderer(ADDON_RENDERER);
 		new ButtonsInCellRenderer(table, buttons, actions, 1);
 		table.setFocusable(false);
 		return table;
