@@ -203,18 +203,13 @@ public class JabRefAttributes {
 			}
 		}
 		else{
-			try {
-				URI uri = new URI("property:/" + CoreConfiguration.BIBTEX_PATH);
-				URI absUri = WorkspaceUtils.absoluteURI(uri);
-				
-				System.out.println("debug parsePath: "+UriBuilder.fromPath(path).build());
-				URI pdfUri = absUri.resolve(UriBuilder.fromPath(path).build());
-				if(new File(pdfUri.normalize()) != null && new File(pdfUri.normalize()).exists()){
-					return pdfUri;
-				}
-			} catch (URISyntaxException e) {
-				LogUtils.warn(e);
-				return null;
+			URI uri = new File((String) CoreConfiguration.referencePathObserver.getValue()).toURI();
+			URI absUri = WorkspaceUtils.absoluteURI(uri);
+			
+			System.out.println("debug parsePath: "+UriBuilder.fromPath(path).build());
+			URI pdfUri = absUri.resolve(UriBuilder.fromPath(path).build());
+			if(new File(pdfUri.normalize()) != null && new File(pdfUri.normalize()).exists()){
+				return pdfUri;
 			}
 		}		
 		return null;

@@ -7,8 +7,6 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Properties;
@@ -376,15 +374,10 @@ public class PdfUtilitiesController extends ALanguageController{
 			public void handleEvent(DocearEvent event) {
 				if(event.getType().equals(DocearEventType.NEW_LITERATURE_MAP)){
 					MapModel map = (MapModel)event.getEventObject();
-					try {
-						NodeUtils.addMonitoringDir(map.getRootNode(), new URI("property:/" + CoreConfiguration.DOCUMENT_REPOSITORY_PATH));
-						NodeUtils.addMindmapDir(map.getRootNode(), CoreConfiguration.LIBRARY_PATH);
-						NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_AUTO, 2);
-		        		NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_SUBDIRS, 2);						
-					} catch (URISyntaxException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					NodeUtils.addMonitoringDir(map.getRootNode(), new File((String)CoreConfiguration.repositoryPathObserver.getValue()).toURI());
+					NodeUtils.addMindmapDir(map.getRootNode(), CoreConfiguration.LIBRARY_PATH);
+					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_AUTO, 2);
+					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_SUBDIRS, 2);
 				}
 				
 			}

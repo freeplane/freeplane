@@ -4,15 +4,11 @@
  */
 package org.docear.plugin.core.workspace.creator;
 
-import java.io.File;
 import java.net.URI;
 
 import org.docear.plugin.core.CoreConfiguration;
-import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.LocationDialog;
 import org.docear.plugin.core.workspace.node.FolderTypeLiteratureRepositoryNode;
-import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
