@@ -304,7 +304,7 @@ public class LocationDialog extends JDialog {
 
 	private String getPropertyLocation(NodeAttributeObserver nao, String init) {
 		String location = (String) nao.getValue();		
-		if (location.length() > 0) {
+		if (location != null) {
 			return location;
 		}
 		
