@@ -8,9 +8,11 @@ import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.IPropertyControlCreator;
 import org.freeplane.core.ui.IndexedTree;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
+import org.freeplane.plugin.workspace.view.WorkspaceInformingQuitAction;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
@@ -32,12 +34,20 @@ public class Activator implements BundleActivator {
 		    new IModeControllerExtensionProvider() {
 				public void installExtension(ModeController modeController) {
 			    	registerLinkTypeOption();
+			    	changeQuitAction();
 				    WorkspaceController.getController().initialStart();
 				    startPluginServices(context, modeController);
 			    }
 		    }, props);
 	}
 	
+	protected final void changeQuitAction() {
+		WorkspaceInformingQuitAction quitAction = new WorkspaceInformingQuitAction();
+		Controller.getCurrentController().removeAction(quitAction.getKey());
+		Controller.getCurrentController().addAction(quitAction);
+		
+	}
+
 	private void registerClasspathUrlHandler(final BundleContext context) {
 		Hashtable<String, String[]> properties = new Hashtable<String, String[]>();
         properties.put(URLConstants.URL_HANDLER_PROTOCOL, new String[] { WorkspaceController.WORKSPACE_RESOURCE_URL_PROTOCOL });
