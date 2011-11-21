@@ -1,6 +1,5 @@
 package org.docear.plugin.core;
 
-import java.net.URI;
 import java.net.URL;
 import java.util.Enumeration;
 
@@ -57,9 +56,9 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	private static final String WEB_DOCEAR_LOCATION = "webDocearLocation";
 	private static final String WEB_FREEPLANE_LOCATION = "webFreeplaneLocation";
 
-	public static final String DOCUMENT_REPOSITORY_PATH = DocearController.DOCUMENT_REPOSITORY_PATH_PROPERTY;
+//	public static final String DOCUMENT_REPOSITORY_PATH = DocearController.DOCUMENT_REPOSITORY_PATH_PROPERTY;
 	public static final String LIBRARY_PATH = "@@library_mindmaps@@"; 
-	public static final String BIBTEX_PATH = DocearController.BIBTEX_PATH_PROPERTY;
+//	public static final String BIBTEX_PATH = DocearController.BIBTEX_PATH_PROPERTY;
 		
 	public static final NodeAttributeObserver projectPathObserver = new NodeAttributeObserver();
 	public static final NodeAttributeObserver referencePathObserver = new NodeAttributeObserver();
@@ -223,12 +222,14 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 			Controller.getCurrentController().getResourceController().setDefaultProperty("links", "relative_to_workspace");
 			Controller.getCurrentController().getResourceController().setDefaultProperty("save_folding", "always_save_folding");
 		}
-		if(DocearController.getController().getLibrary() != null){
-			URI uri = DocearController.getController().getLibrary().getLibraryPath();
-			if (uri!=null && uri.getPath().length()>0) {
-				Controller.getCurrentController().getResourceController().setProperty(LIBRARY_PATH, uri.getPath());
-			}
-		}
+		//FIXME: DOCEAR: does it work without the property?
+//		if(DocearController.getController().getLibrary() != null){
+//			URI uri = DocearController.getController().getLibrary().getLibraryPath();
+			
+//			if (uri!=null && uri.getPath().length()>0) {
+//				Controller.getCurrentController().getResourceController().setProperty(LIBRARY_PATH, uri.getPath());
+//			}
+//		}
 		
 	}
 	

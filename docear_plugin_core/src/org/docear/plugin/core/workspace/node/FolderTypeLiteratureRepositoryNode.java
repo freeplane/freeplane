@@ -12,7 +12,6 @@ import javax.swing.event.ChangeListener;
 
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
-import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceController;
@@ -23,7 +22,7 @@ import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 /**
  * 
  */
-public class FolderTypeLiteratureRepositoryNode extends PhysicalFolderNode implements IFreeplanePropertyListener, ChangeListener /* FolderNode */{
+public class FolderTypeLiteratureRepositoryNode extends PhysicalFolderNode implements ChangeListener /* FolderNode */{
 
 	private static final long serialVersionUID = 1L;
 	private boolean locked;
@@ -33,8 +32,7 @@ public class FolderTypeLiteratureRepositoryNode extends PhysicalFolderNode imple
 	 **********************************************************************************/
 
 	public FolderTypeLiteratureRepositoryNode(String type) {
-		super(type);
-		Controller.getCurrentController().getResourceController().addPropertyChangeListener(this);
+		super(type);		
 		CoreConfiguration.repositoryPathObserver.addChangeListener(this);
 	}
 
@@ -80,40 +78,25 @@ public class FolderTypeLiteratureRepositoryNode extends PhysicalFolderNode imple
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
-
+	//TODO: replace by new method
 	public void propertyChanged(String propertyName, final String newValue, String oldValue) {
-		if (propertyName.equals(CoreConfiguration.DOCUMENT_REPOSITORY_PATH) && newValue != null && newValue.trim().length() > 0) {
-			try {
-				File file = new File(newValue);
-				if (file != null) {
-					if (!file.exists()) {
-						if (file.mkdirs()) {
-							LogUtils.info("New Filesystem Folder Created: " + file.getAbsolutePath());
-						}
-					}
-					setName(file.getName());
-				}
-				WorkspaceUtils.getModel().removeAllElements(this);
-				WorkspaceController.getController().getFilesystemMgr().scanFileSystem(this, file);
-				WorkspaceUtils.getModel().reload(this);
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+		
 	}
 
-	public void stateChanged(ChangeEvent e) {
+	public void stateChanged(ChangeEvent e) {		
 		if(!locked && e.getSource() instanceof NodeAttributeObserver) {
 			String path = (String) ((NodeAttributeObserver) e.getSource()).getValue();
 			URI uri;
 			try{
-				uri = (new File(path)).toURI();
+				
+				uri = (new File(path)).toURI();				
+				createPathIfNeeded(uri);				
 			}
 			catch (Exception ex) {
 				return;
 			}
 			this.setPath(uri);
+			this.refresh();
 		}
 	}
 }

@@ -1,7 +1,6 @@
 package org.docear.plugin.core.features;
 
 import java.io.IOException;
-import java.util.AbstractMap;
 import java.util.Map.Entry;
 
 import org.freeplane.core.extension.IExtension;
@@ -91,9 +90,9 @@ public class DocearNodeModelExtensionXmlBuilder implements IElementDOMHandler, I
 		}
 		if (parent instanceof DocearNodeModelExtension) {
 			final DocearNodeModelExtension docearNodeModel = (DocearNodeModelExtension) parent;
-			if (userObject instanceof AbstractMap.SimpleEntry<?, ?>) {
+			if (userObject instanceof Entry<?, ?>) {
 				@SuppressWarnings("unchecked")
-				final AbstractMap.SimpleEntry<String, Object> entry = (AbstractMap.SimpleEntry<String, Object>) userObject;
+				final Entry<String, Object> entry = (Entry<String, Object>) userObject;
 				docearNodeModel.putEntry(entry);				
 			}
 		}

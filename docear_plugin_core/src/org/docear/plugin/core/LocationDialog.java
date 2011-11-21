@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import org.freeplane.core.resources.ResourceController;
+import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.url.UrlManager;
@@ -278,12 +278,8 @@ public class LocationDialog extends JDialog {
 		}	
 	}
 		
-	private String getLiteratureLocation() {	
-		String location = (String) CoreConfiguration.repositoryPathObserver.getValue();
-//		if (location == null) {
-//			location = CoreConfiguration.
-//		}
-		return getPropertyLocation(DocearController.DOCUMENT_REPOSITORY_PATH_PROPERTY, DOCUMENT_REPOSITORY_INIT_PATH);
+	private String getLiteratureLocation() {		
+		return getPropertyLocation(CoreConfiguration.repositoryPathObserver, DOCUMENT_REPOSITORY_INIT_PATH);
 	}
 	
 	private void setLiteratureLocation(String location) {
@@ -291,15 +287,14 @@ public class LocationDialog extends JDialog {
 	}
 	
 	private String getBibtexLocation() {
-		return getPropertyLocation(DocearController.BIBTEX_PATH_PROPERTY, BIBTEX_PATH_INIT);
+		return getPropertyLocation(CoreConfiguration.referencePathObserver, BIBTEX_PATH_INIT);
 	}
 	
 	private void setBibtexLocation(String location) {
 		CoreConfiguration.referencePathObserver.setValue(location);
-	}
-	
+ 	}
 	private String getProjectsLocation() {
-		return getPropertyLocation(DocearController.PROJECTS_PATH_PROPERTY, PROJECTS_PATH_INIT);
+		return getPropertyLocation(CoreConfiguration.projectPathObserver, PROJECTS_PATH_INIT);
 	}
 	
 	private void setProjectsLocation(String location) {
@@ -307,9 +302,9 @@ public class LocationDialog extends JDialog {
 	}
 
 
-	private String getPropertyLocation(String property, String init) {
-		String location = ResourceController.getResourceController().getProperty(property, "");		
-		if (location.length() > 0) {
+	private String getPropertyLocation(NodeAttributeObserver nao, String init) {
+		String location = (String) nao.getValue();		
+		if (location != null) {
 			return location;
 		}
 		
