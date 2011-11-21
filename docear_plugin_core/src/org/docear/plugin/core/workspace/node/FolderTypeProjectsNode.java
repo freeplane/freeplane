@@ -17,13 +17,19 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import org.apache.commons.io.monitor.FileAlterationListener;
 import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.docear.plugin.core.CoreConfiguration;
+import org.docear.plugin.core.workspace.actions.DocearProjectEnableMonitoringAction;
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.io.action.FileNodeNewDirectoryAction;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
+import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.node.AFolderNode;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
@@ -35,6 +41,7 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 	private boolean doMonitoring = false;
 	private URI pathURI = null;
 	private boolean locked = false;
+	private WorkspacePopupMenu popupMenu = null;
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -201,7 +208,10 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 	}
 	
 	public WorkspacePopupMenu getContextMenu() {
-		return null;
+		if (popupMenu == null) {
+			initializePopup();
+		}
+		return popupMenu;
 	}
 
 	public void stateChanged(ChangeEvent e) {
@@ -219,5 +229,32 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 		
 	}
 
-	
+	public void initializePopup() {
+		if (popupMenu == null) {
+			ModeController modeController = Controller.getCurrentModeController();
+			modeController.addAction(new DocearProjectEnableMonitoringAction());
+			
+			popupMenu = new WorkspacePopupMenu();
+			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
+					WorkspacePopupMenuBuilder.createSubMenu(TextUtils.getRawText("workspace.action.new.label")),
+					"workspace.action.file.new.directory",
+					"workspace.action.file.new.mindmap",
+					//WorkspacePopupMenuBuilder.SEPARATOR,
+					//"workspace.action.file.new.file",
+					WorkspacePopupMenuBuilder.endSubMenu(),
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.docear.project.enable.monitoring",
+					WorkspacePopupMenuBuilder.SEPARATOR,						
+					"workspace.action.node.paste",
+					"workspace.action.node.copy",
+					"workspace.action.node.cut",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.rename",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.refresh",
+					"workspace.action.node.delete"		
+			});
+		}
+		
+	}	
 }
