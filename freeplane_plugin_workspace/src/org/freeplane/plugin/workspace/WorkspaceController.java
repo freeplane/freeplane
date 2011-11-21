@@ -214,6 +214,7 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 		}
 
 		resetWorkspaceView();
+		dispatchWorkspaceEvent(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_EVENT_TYPE_RELOAD, getConfiguration()));
 
 		if (getConfiguration().reload()) {
 			showWorkspace(true);

@@ -55,8 +55,10 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 		if(isMonitoring()) {
 			enableMonitoring(false);
 			this.pathURI = uri;
-			createIfNeeded(getPath());
-			enableMonitoring(true);
+			if (uri != null) {
+				createIfNeeded(getPath());
+				enableMonitoring(true);
+			}
 		} 
 		else {
 			this.pathURI = uri;

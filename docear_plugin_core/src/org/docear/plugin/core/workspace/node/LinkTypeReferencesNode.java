@@ -90,7 +90,9 @@ public class LinkTypeReferencesNode extends LinkTypeFileNode /*LinkNode*/ implem
 		super.setLinkPath(uri);
 		locked = true;
 		CoreConfiguration.referencePathObserver.setUri(uri);
-		createIfNeeded(uri);
+		if (uri != null) {
+			createIfNeeded(uri);
+		}		
 		locked = false;
 	}
 	
