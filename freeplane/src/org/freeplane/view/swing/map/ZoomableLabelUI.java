@@ -90,6 +90,7 @@ public class ZoomableLabelUI extends BasicLabelUI {
 	                          final Rectangle viewR, final Rectangle iconR, final Rectangle textR) {
 		final ZoomableLabel zLabel = (ZoomableLabel) label;
 		View v = null;
+		Number preferredWidth = null;
 		if (isPainting) {
 			final Insets insets = zLabel.getInsets();
 			final int width = zLabel.getWidth();
@@ -106,17 +107,20 @@ public class ZoomableLabelUI extends BasicLabelUI {
 			if(viewR.width < 0)
 				viewR.width = 0;
 			v = (View) label.getClientProperty(BasicHTML.propertyKey);
+			preferredWidth = (Number) label.getClientProperty("preferredWidth");
 		    if (v != null) {
 		    	int textWidth = viewR.width;
 				if(icon != null)
 		    		textWidth -= icon.getIconWidth() + label.getIconTextGap();
-				v.setSize(textWidth, 1);
+				if(preferredWidth.intValue() > textWidth){
+					v.setSize(textWidth, 1);
+					super.layoutCL(zLabel, zLabel.getFontMetrics(), text, icon, viewR, iconR, textR);
+					v.setSize(textR.width, textR.height);
+					return text;
+				}
 		    }
 		}
 		super.layoutCL(zLabel, zLabel.getFontMetrics(), text, icon, viewR, iconR, textR);
-		if (v != null) {
-			v.setSize(textR.width, textR.height);
-		}
 		return text;
 	}
 
@@ -162,6 +166,14 @@ public class ZoomableLabelUI extends BasicLabelUI {
 		GlyphPainterMetricResetter.resetPainter();
 	    try {
 	        super.propertyChange(e);
+	    	String name = e.getPropertyName();
+	    	if (name == "text" || "font" == name || "foreground" == name) {
+	    	    JLabel lbl = ((JLabel) e.getSource());
+	    	    View v = (View) lbl.getClientProperty(BasicHTML.propertyKey);
+			    if (v != null) {
+			    	lbl.putClientProperty("preferredWidth", v.getPreferredSpan(View.X_AXIS));
+			    }
+	    	}
         }
         catch (Exception e1) {
 	        e1.printStackTrace();
