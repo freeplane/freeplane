@@ -29,6 +29,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
@@ -83,19 +84,6 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		init(modeController);
 	}	
 
-//	private void showLocationDialogIfNeeded() {
-//		if (WorkspaceController.getController().getPreferences().getWorkspaceLocation() == null) {
-//			return;
-//		}
-//		
-//		String workspaceInfo = (String)WorkspaceController.getController().getConfiguration().getConfigurationInfo().getMeta();
-//		
-//		if (!workspaceInfo.toLowerCase().contains("docear") || !LocationDialog.allVariablesSet()) {
-//			LocationDialog dialog = new LocationDialog(); 
-//	    	dialog.setVisible(true);
-//		}
-//	}
-
 	private void addPropertyChangeListener() {
 		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
 		resCtrl.addPropertyChangeListener(this);
@@ -127,6 +115,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		modifyContextMenus();
 		
 		registerController(modeController);
+		UrlManager.getController().setLastCurrentDir(WorkspaceUtils.resolveURI(CoreConfiguration.projectPathObserver.getUri()));
 	}
 	
 	private void registerController(ModeController modeController) {
