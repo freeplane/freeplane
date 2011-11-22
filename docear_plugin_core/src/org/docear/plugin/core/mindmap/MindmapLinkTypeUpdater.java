@@ -1,5 +1,6 @@
 package org.docear.plugin.core.mindmap;
 
+import java.io.File;
 import java.net.URI;
 
 import org.freeplane.features.link.LinkController;
@@ -22,6 +23,9 @@ public class MindmapLinkTypeUpdater extends AMindmapUpdater {
 		}
 		
 		URI uri = links.getHyperLink();
+		if (uri.getScheme() == null) {
+			uri = (new File(uri.getPath()).toURI());
+		}
 		links.setHyperLink(LinkController.toLinkTypeDependantURI(node.getMap().getFile(), WorkspaceUtils.resolveURI(uri)));
 				
 		return true;

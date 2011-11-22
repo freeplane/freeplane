@@ -22,6 +22,7 @@ import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
@@ -60,14 +61,16 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 		if(isMonitoring()) {
 			enableMonitoring(false);
 			this.pathURI = uri;
-			createIfNeeded(getPath());
-			enableMonitoring(true);
+			if (uri != null) {
+				createIfNeeded(getPath());
+				enableMonitoring(true);
+			}
 		} 
 		else {
 			this.pathURI = uri;
 			createIfNeeded(getPath());
 		}		
-		CoreConfiguration.projectPathObserver.setValue(WorkspaceUtils.resolveURI(uri).getPath());
+		CoreConfiguration.projectPathObserver.setUri(uri);
 		locked = false;
 	}
 	
@@ -241,18 +244,36 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 		}
 		return popupMenu;
 	}
+	
+	private void createPathIfNeeded(URI uri) {
+		File file = WorkspaceUtils.resolveURI(uri);
+
+		if (file != null) {
+			if (!file.exists()) {
+				if (file.mkdirs()) {
+					LogUtils.info("New Projects Folder Created: " + file.getAbsolutePath());
+				}
+			}
+			this.setName(file.getName());
+		}
+		else {
+			this.setName("no folder selected!");
+		}
+
+		
+	}
 
 	public void stateChanged(ChangeEvent e) {
-		if(!locked && e.getSource() instanceof NodeAttributeObserver) {
-			String path = (String) ((NodeAttributeObserver) e.getSource()).getValue();
-			URI uri;
-			try{
-				uri = WorkspaceUtils.getWorkspaceRelativeURI(new File(path));
+		if(!locked && e.getSource() instanceof NodeAttributeObserver) {			
+			URI uri = ((NodeAttributeObserver) e.getSource()).getUri();
+			try{		
+				createPathIfNeeded(uri);				
 			}
 			catch (Exception ex) {
 				return;
 			}
 			this.setPath(uri);
+			this.refresh();
 		}
 		
 	}

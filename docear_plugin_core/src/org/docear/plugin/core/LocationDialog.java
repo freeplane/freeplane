@@ -5,7 +5,8 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -20,6 +21,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -39,8 +41,7 @@ public class LocationDialog extends JDialog {
 	private JTextField bibtexLocation;
 	private JTextField literatureLocation;
 	
-	private final static String DOCUMENT_REPOSITORY_INIT_PATH = "workspace:/document_repository";	
-	//TODO: DOCEAR: profile name
+	private final static String DOCUMENT_REPOSITORY_INIT_PATH = "workspace:/document_repository";
 	private static String BIBTEX_PATH_INIT;
 	private static String PROJECTS_PATH_INIT;
 	
@@ -53,9 +54,9 @@ public class LocationDialog extends JDialog {
 	
 	public static boolean allVariablesSet() {
 		boolean variablesSet = true;		
-		variablesSet = variablesSet && CoreConfiguration.repositoryPathObserver.getValue() != null;
-		variablesSet = variablesSet && CoreConfiguration.referencePathObserver.getValue() != null;
-		variablesSet = variablesSet && CoreConfiguration.projectPathObserver.getValue() != null;
+		variablesSet = variablesSet && CoreConfiguration.repositoryPathObserver.getUri() != null;
+		variablesSet = variablesSet && CoreConfiguration.referencePathObserver.getUri() != null;
+		variablesSet = variablesSet && CoreConfiguration.projectPathObserver.getUri() != null;
 		
 		System.out.println("DOCEAR: allVariablesSet: "+variablesSet);
 		
@@ -198,7 +199,7 @@ public class LocationDialog extends JDialog {
 				{					
 					literatureLocation = new JTextField();
 					literatureLocation.setColumns(30);
-					literatureLocation.setText(getLiteratureLocation());
+					literatureLocation.setText(WorkspaceUtils.resolveURI(getLiteratureLocation()).getAbsolutePath());
 					mainPanel.add(literatureLocation, "2, 4, fill, center");
 				}
 				{
@@ -216,8 +217,8 @@ public class LocationDialog extends JDialog {
 				}
 				{
 					bibtexLocation = new JTextField();
-					bibtexLocation.setColumns(30);
-					bibtexLocation.setText(getBibtexLocation());
+					bibtexLocation.setColumns(30);					
+					bibtexLocation.setText(WorkspaceUtils.resolveURI(getBibtexLocation()).getAbsolutePath());
 					mainPanel.add(bibtexLocation, "2, 8, fill, center");
 				}
 				{
@@ -236,7 +237,7 @@ public class LocationDialog extends JDialog {
 				{
 					projectsLocation = new JTextField();
 					projectsLocation.setColumns(30);
-					projectsLocation.setText(getProjectsLocation());
+					projectsLocation.setText(WorkspaceUtils.resolveURI(getProjectsLocation()).getAbsolutePath());
 					mainPanel.add(projectsLocation, "2, 12, fill, center");
 				}
 				{
@@ -278,45 +279,46 @@ public class LocationDialog extends JDialog {
 		}	
 	}
 		
-	private String getLiteratureLocation() {		
+	private URI getLiteratureLocation() {		
 		return getPropertyLocation(CoreConfiguration.repositoryPathObserver, DOCUMENT_REPOSITORY_INIT_PATH);
 	}
 	
 	private void setLiteratureLocation(String location) {
-		CoreConfiguration.repositoryPathObserver.setValue(location);
+		URI uri = WorkspaceUtils.getWorkspaceRelativeURI(new File(location));
+		CoreConfiguration.repositoryPathObserver.setUri(uri);
 	}
 	
-	private String getBibtexLocation() {
+	private URI getBibtexLocation() {
 		return getPropertyLocation(CoreConfiguration.referencePathObserver, BIBTEX_PATH_INIT);
 	}
 	
 	private void setBibtexLocation(String location) {
-		CoreConfiguration.referencePathObserver.setValue(location);
+		URI uri = WorkspaceUtils.getWorkspaceRelativeURI(new File(location));
+		CoreConfiguration.referencePathObserver.setUri(uri);
  	}
-	private String getProjectsLocation() {
+	private URI getProjectsLocation() {
 		return getPropertyLocation(CoreConfiguration.projectPathObserver, PROJECTS_PATH_INIT);
 	}
 	
 	private void setProjectsLocation(String location) {
-		CoreConfiguration.projectPathObserver.setValue(location);
+		URI uri = WorkspaceUtils.getWorkspaceRelativeURI(new File(location));
+		CoreConfiguration.projectPathObserver.setUri(uri);
 	}
 
 
-	private String getPropertyLocation(NodeAttributeObserver nao, String init) {
-		String location = (String) nao.getValue();		
-		if (location != null) {
-			return location;
+	private URI getPropertyLocation(NodeAttributeObserver nodeAttributeObserver, String init) {
+		URI uri = nodeAttributeObserver.getUri();		
+		if (uri == null) {
+			try {
+				uri = new URI(init);
+			}
+			catch (URISyntaxException e) {			
+				e.printStackTrace();
+			}
 		}
 		
-		try {
-			File f = new File(new URL(init).openConnection().getURL().toURI());
-			return f.getPath();
-		}
-		catch (Exception e) {					
-			e.printStackTrace();
-		}
+		return uri;
 		
-		return "";
 	}
 
 }

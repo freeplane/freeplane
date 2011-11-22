@@ -4,14 +4,12 @@
  */
 package org.docear.plugin.core.workspace.creator;
 
-import java.io.File;
 import java.net.URI;
 
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.LocationDialog;
 import org.docear.plugin.core.workspace.node.LinkTypeReferencesNode;
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.model.creator.AWorkspaceNodeCreator;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
@@ -51,25 +49,18 @@ public class LinkTypeReferencesCreator extends AWorkspaceNodeCreator {
 		
 		String path = data.getAttribute("path", null);
 		if(path == null || path.trim().length() == 0) {
-			path = (String) CoreConfiguration.referencePathObserver.getValue();
-			if (path==null) {
+			URI uri = CoreConfiguration.referencePathObserver.getUri();
+			if (uri == null) {
 				LocationDialog dialog = new LocationDialog(); 
-		    	dialog.setVisible(true);				
+		    	dialog.setVisible(true);		    	
 			}
-			if (path == null) {
-				return node;
+			else {
+				node.setLinkPath(uri);
 			}
-		}
-				
-		URI uri;
-		try{
-			uri = WorkspaceUtils.getWorkspaceRelativeURI(new File(path));
-		}
-		catch (Exception e) {
 			return node;
 		}
 		
-		node.setLinkPath(uri);
+		node.setLinkPath(URI.create(path));
 			
 		
 		return node;

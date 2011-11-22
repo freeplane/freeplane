@@ -204,7 +204,7 @@ public class MindmapUpdateController {
 				URL url;
 				String mapExtensionKey;
 				try {
-					url = WorkspaceUtils.absoluteURI(uri).toURL();
+					url = WorkspaceUtils.resolveURI(uri).toURL();
 					mapExtensionKey = Controller.getCurrentController().getMapViewManager().checkIfFileIsAlreadyOpened(url);					
 				}
 				catch (MalformedURLException e) {

@@ -13,8 +13,10 @@ public class WorkspaceEvent extends EventObject {
 
 	public static final int WORKSPACE_EVENT_TYPE_CHANGE = 1;
 	public static final int WORKSPACE_EVENT_TYPE_TOOLBAR_EVENT = 2;
+	public static final int WORKSPACE_EVENT_TYPE_RELOAD = 3;
 	
 	private static final long serialVersionUID = 1L;
+	
 	
 	private final int type;
 	/***********************************************************************************
