@@ -164,9 +164,9 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             if (component instanceof NodeView) {
                 ((NodeView) component).validateTree();
             }
-            else {
-                component.validate();
-            }
+//            else {
+//                component.validate();
+//            }
         }
         this.content = content;
         view = localView;
@@ -180,17 +180,28 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
         }
         spaceAround = view.getSpaceAround();
 		if (view.isContentVisible()) {
-	        Dimension contentPreferredSize;
-            contentPreferredSize = getContent().getPreferredSize();
             final MapView mapView = view.getMap();
 			final ModeController modeController = mapView.getModeController();
 			final NodeStyleController nsc = NodeStyleController.getController(modeController);
 			int minNodeWidth = nsc.getMinWidth(view.getModel());
-            contentWidth = Math.max(view.getZoomed(minNodeWidth),contentPreferredSize.width);
 			int maxNodeWidth = nsc.getMaxWidth(view.getModel());
-            contentWidth = Math.min(view.getZoomed(maxNodeWidth),contentWidth);
-           contentHeight = contentPreferredSize.height;
-        }
+	        Dimension contentPreferredSize;
+	        if (content instanceof ZoomableLabel){
+	        	contentPreferredSize=  ((ZoomableLabel)content).getPreferredSize(maxNodeWidth);
+			}
+			else{
+				contentPreferredSize=  content.getPreferredSize();
+			}
+            contentPreferredSize = content.getPreferredSize();
+            if(content.equals(view.getMainView()) && ! content.isPreferredSizeSet()){
+            	contentWidth = Math.max(view.getZoomed(minNodeWidth),contentPreferredSize.width);
+            	contentWidth = Math.min(view.getZoomed(maxNodeWidth),contentWidth);
+            }
+            else{
+            	contentWidth = contentPreferredSize.width;
+            }
+            contentHeight = contentPreferredSize.height;
+		}
         else {
         	contentHeight = 0;
         	contentWidth = 0;

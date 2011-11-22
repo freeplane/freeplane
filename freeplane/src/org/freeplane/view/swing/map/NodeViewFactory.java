@@ -82,12 +82,25 @@ class NodeViewFactory {
 		public void layoutContainer(final Container parent) {
 			final int componentCount = parent.getComponentCount();
 			final int width = parent.getWidth();
+			NodeView view = (NodeView) parent.getParent();
+			final MapView map = view.getMap();
+			final NodeStyleController ncs = NodeStyleController.getController(map.getModeController());
+			final int maxWidth = ncs.getMaxWidth(view.getModel());
 			int y = 0;
 			for (int i = 0; i < componentCount; i++) {
 				final Component component = parent.getComponent(i);
 				if (component.isVisible()) {
 					component.validate();
-					final Dimension preferredCompSize = width == 0 ? new Dimension() : component.getPreferredSize();
+					final Dimension preferredCompSize;
+					if( width == 0) 
+						preferredCompSize = new Dimension();
+					else if (component instanceof ZoomableLabel){
+						preferredCompSize=  ((ZoomableLabel)component).getPreferredSize(maxWidth);
+					}
+					else{
+						preferredCompSize=  component.getPreferredSize();
+					}
+					
 					if (component instanceof MainView) {
 						component.setBounds(0, y, width, preferredCompSize.height);
 					}
@@ -116,13 +129,22 @@ class NodeViewFactory {
 		}
 
 		public Dimension preferredLayoutSize(final Container parent) {
+			NodeView view = (NodeView) parent.getParent();
+			final MapView map = view.getMap();
+			final NodeStyleController ncs = NodeStyleController.getController(map.getModeController());
+			final int width = ncs.getMaxWidth(view.getModel());
 			final Dimension prefSize = new Dimension(0, 0);
 			final int componentCount = parent.getComponentCount();
 			for (int i = 0; i < componentCount; i++) {
 				final Component component = parent.getComponent(i);
 				if (component.isVisible()) {
 					component.validate();
-					final Dimension preferredCompSize = component.getPreferredSize();
+					final Dimension preferredCompSize;
+					if(component instanceof ZoomableLabel)
+						preferredCompSize = ((ZoomableLabel)component).getPreferredSize(width);
+					else
+						preferredCompSize = component.getPreferredSize();
+					
 					prefSize.height += preferredCompSize.height;
 					prefSize.width = Math.max(prefSize.width, preferredCompSize.width);
 					if (component instanceof ForkMainView){

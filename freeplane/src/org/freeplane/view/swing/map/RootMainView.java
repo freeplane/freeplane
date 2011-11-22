@@ -72,8 +72,8 @@ class RootMainView extends MainView {
 	 * @see freeplane.view.mindmapview.NodeView.MainView#getPreferredSize()
 	 */
 	@Override
-	public Dimension getPreferredSize() {
-		final Dimension prefSize = super.getPreferredSize();
+	public Dimension getPreferredSize(int width) {
+		final Dimension prefSize = super.getPreferredSize(width);
 		if (isPreferredSizeSet()) {
 			return prefSize;
 		}
