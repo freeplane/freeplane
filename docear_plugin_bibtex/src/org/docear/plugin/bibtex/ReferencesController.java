@@ -16,6 +16,7 @@ import net.sf.jabref.export.DocearSaveDatabaseAction;
 
 import org.docear.plugin.bibtex.actions.AddExistingReferenceAction;
 import org.docear.plugin.bibtex.actions.AddNewReferenceAction;
+import org.docear.plugin.bibtex.actions.RemoveReferenceAction;
 import org.docear.plugin.bibtex.actions.ShowJabrefPreferencesAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesAllMapsAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesAllOpenMapsAction;
@@ -69,6 +70,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 	public static final String UPDATE_REFERENCES_MENU_LANG_KEY = "menu_update_references";
 	private static final String ADD_NEW_REFERENCE_LANG_KEY = "menu_add_new_reference";
 	private static final String ADD_EXISTING_REFERENCES_LANG_KEY = "menu_add_existing_references";
+	private static final String REMOVE_REFERENCE_LANG_KEY = "menu_remove_references";
 	private static final String UPDATE_REFERENCES_IN_LIBRARY_LANG_KEY = "menu_update_references_in_library";
 	private static final String UPDATE_REFERENCES_ALL_MAPS_LANG_KEY = "menu_update_references_all_maps";
 	private static final String UPDATE_REFERENCES_ALL_OPEN_MAPS_LANG_KEY = "menu_update_references_all_open_maps";
@@ -82,6 +84,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 	private AFreeplaneAction UpdateReferencesInLibrary = new UpdateReferencesInLibrary(UPDATE_REFERENCES_IN_LIBRARY_LANG_KEY);
 	private AFreeplaneAction UpdateReferencesAllMaps = new UpdateReferencesAllMapsAction(UPDATE_REFERENCES_ALL_MAPS_LANG_KEY);
 	private AFreeplaneAction AddExistingReference = new AddExistingReferenceAction(ADD_EXISTING_REFERENCES_LANG_KEY);
+	private AFreeplaneAction RemoveReference = new RemoveReferenceAction(REMOVE_REFERENCE_LANG_KEY);
 	private AFreeplaneAction AddNewReference = new AddNewReferenceAction(ADD_NEW_REFERENCE_LANG_KEY);
 	
 	private AFreeplaneAction ShowJabrefPreferences = new ShowJabrefPreferencesAction("show_jabref_preferences");
@@ -225,6 +228,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, AddNewReference, MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, AddExistingReference, MenuBuilder.AS_CHILD);
+				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, RemoveReference, MenuBuilder.AS_CHILD);
 
 				builder.addMenuItem(MENU_BAR + REFERENCE_MANAGEMENT_MENU,
 						new JMenu(TextUtils.getText(UPDATE_REFERENCES_MENU_LANG_KEY)), MENU_BAR + REFERENCE_MANAGEMENT_MENU
@@ -243,6 +247,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 								+ REFERENCE_MANAGEMENT_MENU, MenuBuilder.AS_CHILD);
 				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU, AddNewReference, MenuBuilder.AS_CHILD);
 				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU, AddExistingReference, MenuBuilder.AS_CHILD);
+				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU, RemoveReference, MenuBuilder.AS_CHILD);
 				builder.addMenuItem(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU,
 						new JMenu(TextUtils.getText(UPDATE_REFERENCES_MENU_LANG_KEY)), NODE_POPUP_MENU
 								+ REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU, MenuBuilder.AS_CHILD);
