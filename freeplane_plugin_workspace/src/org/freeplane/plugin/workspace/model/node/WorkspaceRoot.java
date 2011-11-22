@@ -1,6 +1,8 @@
 package org.freeplane.plugin.workspace.model.node;
 
 import java.awt.Component;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.dnd.DropTargetDropEvent;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -28,11 +30,12 @@ import org.freeplane.plugin.workspace.config.actions.NodeRefreshAction;
 import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.dnd.IDropAcceptor;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 
-public class WorkspaceRoot extends AWorkspaceTreeNode implements IConfigurationInfo, IWorkspaceNodeEventListener {
+public class WorkspaceRoot extends AWorkspaceTreeNode implements IConfigurationInfo, IWorkspaceNodeEventListener, IDropAcceptor {
 
 	private static final long serialVersionUID = 1L;
 	private static Icon DEFAULT_ICON = new ImageIcon(
@@ -143,5 +146,21 @@ public class WorkspaceRoot extends AWorkspaceTreeNode implements IConfigurationI
 	
 	public void refresh() {
 		WorkspaceController.getController().refreshWorkspace();
+	}
+
+	/* (non-Javadoc)
+	 * @see org.freeplane.plugin.workspace.dnd.IDropAcceptor#acceptDrop(java.awt.datatransfer.DataFlavor[])
+	 */
+	public boolean acceptDrop(DataFlavor[] flavors) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.freeplane.plugin.workspace.dnd.IDropAcceptor#processDrop(java.awt.dnd.DropTargetDropEvent)
+	 */
+	public boolean processDrop(DropTargetDropEvent event) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

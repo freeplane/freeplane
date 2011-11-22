@@ -28,6 +28,7 @@ import javax.swing.tree.TreePath;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.io.StringOutputStream;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.node.WorkspaceRoot;
 import org.freeplane.plugin.workspace.view.WorkspaceNodeRenderer;
 /**
  * 
@@ -114,7 +115,18 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 	}
 
 	public int getSourceActions(JComponent comp) {
-		return COPY_OR_MOVE;
+		if(comp == WorkspaceController.getController().getWorkspaceViewTree()) {
+			TreePath selectionPath = WorkspaceController.getController().getWorkspaceViewTree().getSelectionPath();
+			if(selectionPath != null) {
+				if(selectionPath.getLastPathComponent() instanceof WorkspaceRoot) {
+					return NONE;
+				} 
+				if(selectionPath.getLastPathComponent() instanceof AWorkspaceTreeNode && ((AWorkspaceTreeNode) selectionPath.getLastPathComponent()).isSystem()) {
+					return COPY;
+				}
+			}
+		}
+		return comp.getDropTarget().getDefaultActions();
 	}
 
 	public void exportToClipboard(JComponent comp, Clipboard clip, int action) throws IllegalStateException {
@@ -125,6 +137,7 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 	// Causes the Swing drag support to be initiated.
 	public void exportAsDrag(JComponent comp, java.awt.event.InputEvent e, int action) {
 		System.out.println("exportAsDrag");
+		
 		super.exportAsDrag(comp, e, action);
 	}
 
@@ -150,60 +163,20 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 		//FIXME: remove/comment out the following code if new drop handling works, maybe leave some fall back routines
 		System.out.println("drop: " + event.getSource());
 		if(controller.canPerformAction(event)) {
-			if(controller.executeDrop(event)) {
-				return;
-			}
+//			if(controller.executeDrop(event)) {
+//				return;
+//			}
 		}
-		try {
-			Transferable transferable = event.getTransferable();
-			if (transferable.isDataFlavorSupported(WorkspaceTransferable.WORKSPACE_FILE_LIST_FLAVOR)) {
-				event.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-				List<?> files = (List<?>) transferable.getTransferData(WorkspaceTransferable.WORKSPACE_FILE_LIST_FLAVOR);
-				for (Object item : files) {
-					System.out.println(item.toString());
-				}
-				
-				event.getDropTargetContext().dropComplete(true);
-			}
-			else if (transferable.isDataFlavorSupported(WorkspaceTransferable.WORKSPACE_NODE_FLAVOR)) {
-				event.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-				List<?> path = (List<?>) transferable.getTransferData(WorkspaceTransferable.WORKSPACE_NODE_FLAVOR);
-				for (Object item : path) {
-					System.out.println(item.toString());
-				}
-				event.getDropTargetContext().dropComplete(true);
-
-			}
-			else if (transferable.isDataFlavorSupported(WorkspaceTransferable.WORKSPACE_FREEPLANE_NODE_FLAVOR)) {
-				event.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-				Object object = transferable.getTransferData(WorkspaceTransferable.WORKSPACE_FREEPLANE_NODE_FLAVOR);
-				System.out.println(object.toString());
-				event.getDropTargetContext().dropComplete(true);
-
-			}
-			else if (transferable.isDataFlavorSupported(WorkspaceTransferable.WORKSPACE_SERIALIZED_FLAVOR)) {
-				event.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-				Object object = transferable.getTransferData(WorkspaceTransferable.WORKSPACE_SERIALIZED_FLAVOR);
-				System.out.println(object.toString());
-				event.getDropTargetContext().dropComplete(true);
-
-			}
-			else {
-				event.rejectDrop();
-			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			event.rejectDrop();
-		}
+		
+		event.rejectDrop();
 	}
 
 	public final void dragEnter(DropTargetDragEvent dtde) {
-		// System.out.println("dragEnter: " + dtde);
+		System.out.println("dragEnter: " + dtde);
 	}
 
 	public final void dragExit(DropTargetEvent dte) {
-		 System.out.println("dragExit: " + dte);
+		System.out.println("dragExit: " + dte);
 	}
 
 	private TreePath lastPathLocation = null;
