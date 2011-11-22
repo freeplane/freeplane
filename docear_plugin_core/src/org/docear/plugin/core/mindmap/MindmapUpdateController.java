@@ -1,5 +1,6 @@
 package org.docear.plugin.core.mindmap;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -203,7 +204,7 @@ public class MindmapUpdateController {
 				URL url;
 				String mapExtensionKey;
 				try {
-					url = WorkspaceUtils.absoluteURI(uri).toURL();
+					url = WorkspaceUtils.resolveURI(uri).toURL();
 					mapExtensionKey = Controller.getCurrentController().getMapViewManager().checkIfFileIsAlreadyOpened(url);					
 				}
 				catch (MalformedURLException e) {
@@ -222,7 +223,10 @@ public class MindmapUpdateController {
 				map = new MMapModel(null);
 				AttributeRegistry.createRegistry(map);
 				try {
-					UrlManager.getController().load(url, map);
+					File f = WorkspaceUtils.resolveURI(uri);
+					if (f.exists()) {
+						UrlManager.getController().load(url, map);
+					}
 				}
 				catch (Exception e) {			
 					e.printStackTrace();

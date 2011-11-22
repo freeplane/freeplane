@@ -4,6 +4,7 @@
  */
 package org.docear.plugin.core.workspace.creator;
 
+import java.io.File;
 import java.net.URI;
 
 import org.docear.plugin.core.CoreConfiguration;
@@ -41,14 +42,16 @@ public class FolderTypeLiteratureRepositoryCreator extends AWorkspaceNodeCreator
 		String path = data.getAttribute("path", null);
 		
 		if (path == null || path.length()==0) {
-			path = (String) CoreConfiguration.repositoryPathObserver.getValue();
-			if (path==null) {
+			URI uri = CoreConfiguration.repositoryPathObserver.getUri();
+			
+			if (uri == null) {
 				LocationDialog dialog = new LocationDialog(); 
-		    	dialog.setVisible(true);
+		    	dialog.setVisible(true);		    	
 			}
-			if (path == null) {
-				return node;
+			else {
+				node.setPath(uri);
 			}
+			return node;
 		}
 		
 		node.setPath(URI.create(path));

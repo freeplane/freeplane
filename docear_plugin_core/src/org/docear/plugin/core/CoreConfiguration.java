@@ -242,13 +242,18 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	}
 
 	public void workspaceChanged(WorkspaceEvent event) {
-		System.out.println("DOCEAR CORE: workspaceChanged(WorkspaceEvent):"+ event);
-		CoreConfiguration.projectPathObserver.setValue(null);
-		CoreConfiguration.referencePathObserver.setValue(null);
-		CoreConfiguration.repositoryPathObserver.setValue(null);
-		//showLocationDialogIfNeeded();
 		if(event.getType() == WorkspaceEvent.WORKSPACE_EVENT_TYPE_CHANGE) {
-			modifyContextMenus();
+			System.out.println("DOCEAR CORE: workspaceChanged(WorkspaceEvent):"+ event);
+
+			//showLocationDialogIfNeeded();
+			if(event.getType() == WorkspaceEvent.WORKSPACE_EVENT_TYPE_CHANGE) {
+				modifyContextMenus();
+			}
+		}
+		if(event.getType() == WorkspaceEvent.WORKSPACE_EVENT_TYPE_RELOAD) {
+			CoreConfiguration.projectPathObserver.setUri(null);
+			CoreConfiguration.referencePathObserver.setUri(null);
+			CoreConfiguration.repositoryPathObserver.setUri(null);
 		}
 	}
 	

@@ -18,12 +18,10 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.AttributeController;
-import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
@@ -203,7 +201,7 @@ public class JabRefAttributes {
 			}
 		}
 		else{
-			URI uri = new File((String) CoreConfiguration.referencePathObserver.getValue()).toURI();
+			URI uri = CoreConfiguration.referencePathObserver.getUri();
 			URI absUri = WorkspaceUtils.absoluteURI(uri);
 			
 			System.out.println("debug parsePath: "+UriBuilder.fromPath(path).build());
