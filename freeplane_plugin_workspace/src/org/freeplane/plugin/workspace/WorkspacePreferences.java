@@ -109,7 +109,7 @@ public class WorkspacePreferences {
 	public String getWorkspaceLocation() {
 		return Controller.getCurrentController().getResourceController().getProperty(WorkspacePreferences.WORKSPACE_LOCATION);
 	}
-
+	
 	public void setNewWorkspaceLocation(URI newWorkspaceLocation) {
 		if (newWorkspaceLocation == null) {
 			ResourceController.getResourceController().getProperties().remove(WORKSPACE_LOCATION);

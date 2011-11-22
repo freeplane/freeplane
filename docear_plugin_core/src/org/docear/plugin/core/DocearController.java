@@ -15,6 +15,8 @@ import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.url.UrlManager;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 
 /**
  * 
@@ -27,7 +29,7 @@ public class DocearController implements IDocearEventListener, IFreeplanePropert
 	private final Vector<IDocearEventListener> docearListeners = new Vector<IDocearEventListener>();		
 	private final static DocearController docearController = new DocearController();
 	
-	private IDocearLibrary currentLibrary = null;
+	private IDocearLibrary currentLibrary = null;	
 	
 	
 	/***********************************************************************************
