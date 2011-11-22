@@ -20,7 +20,7 @@ import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 /**
  * 
  */
-public class FolderTypeLiteratureRepositoryNode extends PhysicalFolderNode implements ChangeListener /* FolderNode */{
+public class FolderTypeLiteratureRepositoryNode extends PhysicalFolderNode implements ChangeListener {
 
 	private static final long serialVersionUID = 1L;
 	private boolean locked;

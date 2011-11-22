@@ -26,7 +26,6 @@ import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
-import org.freeplane.plugin.workspace.io.action.FileNodeNewDirectoryAction;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
@@ -206,28 +205,6 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 		FolderTypeProjectsNode node = new FolderTypeProjectsNode(getType());
 		return clone(node);
 	}
-	
-	public WorkspacePopupMenu getContextMenu() {
-		if (popupMenu == null) {
-			initializePopup();
-		}
-		return popupMenu;
-	}
-
-	public void stateChanged(ChangeEvent e) {
-		if(!locked && e.getSource() instanceof NodeAttributeObserver) {
-			String path = (String) ((NodeAttributeObserver) e.getSource()).getValue();
-			URI uri;
-			try{
-				uri = WorkspaceUtils.getWorkspaceRelativeURI(new File(path));
-			}
-			catch (Exception ex) {
-				return;
-			}
-			this.setPath(uri);
-		}
-		
-	}
 
 	public void initializePopup() {
 		if (popupMenu == null) {
@@ -257,4 +234,26 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 		}
 		
 	}	
+	
+	public WorkspacePopupMenu getContextMenu() {
+		if (popupMenu == null) {
+			initializePopup();
+		}
+		return popupMenu;
+	}
+
+	public void stateChanged(ChangeEvent e) {
+		if(!locked && e.getSource() instanceof NodeAttributeObserver) {
+			String path = (String) ((NodeAttributeObserver) e.getSource()).getValue();
+			URI uri;
+			try{
+				uri = WorkspaceUtils.getWorkspaceRelativeURI(new File(path));
+			}
+			catch (Exception ex) {
+				return;
+			}
+			this.setPath(uri);
+		}
+		
+	}
 }
