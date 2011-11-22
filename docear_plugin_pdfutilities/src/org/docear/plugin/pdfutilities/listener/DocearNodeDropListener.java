@@ -52,9 +52,13 @@ public class DocearNodeDropListener extends MNodeDropListener {
 		try{
 			final DataFlavor fileListFlavor = new DataFlavor("application/x-java-file-list; class=java.util.List");
 			final DataFlavor uriListFlavor = new DataFlavor("text/uri-list; class=java.lang.String");
-			
-			
-			if (!dtde.isLocalTransfer() && (!dtde.isDataFlavorSupported(MindMapNodesSelection.mindMapNodesFlavor)) && (dtde.isDataFlavorSupported(fileListFlavor) || (dtde.isDataFlavorSupported(uriListFlavor)))) {
+			//TODO: DOCEAR - why restrict to !dtde.isLocalTransfer only?
+			if(dtde.isDataFlavorSupported(MindMapNodesSelection.mindMapNodesFlavor) ) {
+				super.drop(dtde);
+				return;
+			}
+			// do not combine with the previous condition unless you what you are doing! 
+			if (dtde.isDataFlavorSupported(fileListFlavor) || (dtde.isDataFlavorSupported(uriListFlavor))) {
 	            				
 	            
 	            final Transferable transferable = dtde.getTransferable();

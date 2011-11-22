@@ -19,10 +19,10 @@ import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.workspace.actions.DocearProjectEnableMonitoringAction;
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
@@ -41,7 +41,8 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 	private boolean doMonitoring = false;
 	private URI pathURI = null;
 	private boolean locked = false;
-	private WorkspacePopupMenu popupMenu = null;
+	private static WorkspacePopupMenu popupMenu = null;
+	private boolean first = true;
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -63,6 +64,7 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 			this.pathURI = uri;
 			if (uri != null) {
 				createIfNeeded(getPath());
+				first  = true;
 				enableMonitoring(true);
 			}
 		} 
@@ -151,41 +153,54 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 	public void onDirectoryCreate(File directory) {
 		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node insertion.
 		System.out.println("onDirectoryCreate: " + directory);
-		refresh();
+		if(!first) {
+			refresh();
+		}
 	}
 
 	public void onDirectoryChange(File directory) {
 		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node change.
 		System.out.println("onDirectoryChange: " + directory);
-		refresh();
+		if(!first) {
+			refresh();
+		}
 	}
 
 	public void onDirectoryDelete(File directory) {
 		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node remove.
 		System.out.println("onDirectoryDelete: " + directory);
-		refresh();
+		if(!first) {
+			refresh();
+		}
 	}
 
 	public void onFileCreate(File file) {
 		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node insertion.
 		System.out.println("onFileCreate: " + file);
-		refresh();
+		if(!first) {
+			refresh();
+		}
 	}
 
 	public void onFileChange(File file) {
 		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node change.
 		System.out.println("onFileChange: " + file);
-		refresh();
+		if(!first) {
+			refresh();
+		}
 	}
 
 	public void onFileDelete(File file) {
 		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node remove.
 		System.out.println("onFileDelete: " + file);
-		refresh();
+		if(!first) {
+			refresh();
+		}
 	}
 
 	public void onStop(FileAlterationObserver observer) {
 		// called when the observer ends a check cycle. do nth so far.
+		first = false;
 	}
 
 	
@@ -223,6 +238,7 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 					//"workspace.action.file.new.file",
 					WorkspacePopupMenuBuilder.endSubMenu(),
 					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.docear.uri.change",					
 					"workspace.action.docear.project.enable.monitoring",
 					WorkspacePopupMenuBuilder.SEPARATOR,						
 					"workspace.action.node.paste",
@@ -231,8 +247,7 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.rename",
 					WorkspacePopupMenuBuilder.SEPARATOR,
-					"workspace.action.node.refresh",
-					"workspace.action.node.delete"		
+					"workspace.action.node.refresh"	
 			});
 		}
 		

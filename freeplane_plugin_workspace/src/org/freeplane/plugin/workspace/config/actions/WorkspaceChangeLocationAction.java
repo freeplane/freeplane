@@ -22,28 +22,7 @@ public class WorkspaceChangeLocationAction extends AWorkspaceAction {
 		showLocationSwitcherDialog();		
 	}
 	
-	private void showLocationSwitcherDialog() {
-//		JFileChooser fileChooser = new JFileChooser();		
-//		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-//		ResourceController resourceController = ResourceController.getResourceController();
-//		String currentLocation = resourceController.getProperty(WorkspacePreferences.WORKSPACE_LOCATION);
-//		
-//		if (currentLocation != null) {
-//			File file = new File(currentLocation);
-//			if (file.exists()) {
-//				fileChooser.setSelectedFile(file);
-//			}
-//		}
-//
-//		int retVal = fileChooser.showOpenDialog(UITools.getFrame());
-//		if (retVal == JFileChooser.APPROVE_OPTION) {			
-//			File selectedfile = fileChooser.getSelectedFile();
-//			WorkspaceController.getController().setWorkspaceLocation(selectedfile.getPath());
-//		}
-//		WorkspaceController workspaceController = WorkspaceController.getController();
-//		workspaceController.getConfiguration().setConfigValid(false);
-//		workspaceController.reloadWorkspace();
-		
+	private void showLocationSwitcherDialog() {		
 		WorkspaceChooserDialog locationDialog = new WorkspaceChooserDialog();
 		locationDialog.setVisible(true);
 		

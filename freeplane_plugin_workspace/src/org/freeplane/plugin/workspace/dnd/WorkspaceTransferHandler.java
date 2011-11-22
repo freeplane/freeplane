@@ -80,7 +80,8 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 		}
 	}
 
-	public Transferable createTransferable(JComponent comp) {		
+	public Transferable createTransferable(JComponent comp) {
+		System.out.println("createTransferable");
 		StringOutputStream writer = new StringOutputStream();
 		List<AWorkspaceTreeNode> objectList = new ArrayList<AWorkspaceTreeNode>();
 		if (comp instanceof JTree) {

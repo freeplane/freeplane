@@ -4,6 +4,7 @@
  */
 package org.docear.plugin.core.workspace.node;
 
+import java.awt.Component;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -33,18 +34,21 @@ import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
+import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 /**
  * 
  */
-public class LinkTypeReferencesNode extends LinkTypeFileNode /*LinkNode*/ implements IBibtexDatabase, ChangeListener {
+public class LinkTypeReferencesNode extends LinkTypeFileNode implements IBibtexDatabase, ChangeListener {
 	private static final String DEFAULT_REFERENCE_TEMPLATE = "/conf/reference_db.bib";
 	private static final Icon DEFAULT_ICON = new ImageIcon(LinkTypeReferencesNode.class.getResource("/images/text-x-bibtex.png"));
 
 	private static final long serialVersionUID = 1L;
 
 	private boolean locked = false;	
+	private WorkspacePopupMenu popupMenu = null;
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -70,7 +74,7 @@ public class LinkTypeReferencesNode extends LinkTypeFileNode /*LinkNode*/ implem
 	
 	public void handleEvent(WorkspaceNodeEvent event) {
 		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {			
-			//TODO: DOCEAR implement popup handling if needed
+			showPopup((Component) event.getBaggage(), event.getX(), event.getY());
 		} 
 		else {
 			super.handleEvent(event);
@@ -94,6 +98,36 @@ public class LinkTypeReferencesNode extends LinkTypeFileNode /*LinkNode*/ implem
 			createIfNeeded(uri);
 		}		
 		locked = false;
+	}
+	
+	public void initializePopup() {
+		if (popupMenu == null) {
+						
+			popupMenu = new WorkspacePopupMenu();
+			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
+					"workspace.action.docear.uri.change",					
+					WorkspacePopupMenuBuilder.SEPARATOR,						
+					"workspace.action.node.paste",
+					"workspace.action.node.copy",
+					"workspace.action.node.cut",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.rename",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.refresh"	
+			});
+		}
+		
+	}	
+	
+	public WorkspacePopupMenu getContextMenu() {
+		if (popupMenu == null) {
+			initializePopup();
+		}
+		return popupMenu;
+	}
+	
+	public void refresh() {
+		//maybe do sth
 	}
 	
 	private void createIfNeeded(URI uri) {

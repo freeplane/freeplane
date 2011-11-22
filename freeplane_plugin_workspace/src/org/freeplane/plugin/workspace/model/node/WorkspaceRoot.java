@@ -73,6 +73,10 @@ public class WorkspaceRoot extends AWorkspaceTreeNode implements IConfigurationI
 	public Object getMeta() {
 		return this.meta;
 	}
+	
+	public boolean isSystem() {
+		return super.isSystem();
+	}
 
 	public boolean setIcons(DefaultTreeCellRenderer renderer) {
 		renderer.setOpenIcon(DEFAULT_ICON);

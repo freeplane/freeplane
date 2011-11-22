@@ -9,6 +9,8 @@ import org.docear.plugin.core.actions.SaveAction;
 import org.docear.plugin.core.actions.SaveAsAction;
 import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.features.DocearNodeModelExtensionController;
+import org.docear.plugin.core.workspace.actions.DocearChangeLibraryPathAction;
+import org.docear.plugin.core.workspace.actions.DocearRenameAction;
 import org.docear.plugin.core.workspace.actions.WorkspaceChangeLocationsAction;
 import org.docear.plugin.core.workspace.creator.FolderTypeLibraryCreator;
 import org.docear.plugin.core.workspace.creator.FolderTypeLiteratureRepositoryCreator;
@@ -111,13 +113,19 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	}
 
 	private void init(ModeController modeController) {
+		// set up context menu for workspace
+		modeController.addAction(new WorkspaceChangeLocationsAction());
+		modeController.addAction(new DocearChangeLibraryPathAction());
+		modeController.addAction(new DocearRenameAction());
+		
 		prepareWorkspace();
 		addPluginDefaults();
 		replaceFreeplaneStringsAndActions();
 		DocearMapModelController.install(new DocearMapModelController(modeController));
-		// set up context menu for workspace
-		modeController.addAction(new WorkspaceChangeLocationsAction());
+		
+				
 		modifyContextMenus();
+		
 		registerController(modeController);
 	}
 	
@@ -233,7 +241,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		
 	}
 	
-	private void modifyContextMenus() {
+	private void modifyContextMenus() {		
 		AWorkspaceTreeNode root =  (AWorkspaceTreeNode) WorkspaceUtils.getModel().getRoot();
 		WorkspacePopupMenuBuilder.insertAction(root.getContextMenu(), "workspace.action.docear.locations.change", 3);
 	}
