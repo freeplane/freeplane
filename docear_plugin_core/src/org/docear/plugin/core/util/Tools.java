@@ -24,6 +24,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.attribute.AttributeView;
 
@@ -33,10 +34,9 @@ public class Tools {
 	
 	public static File getFilefromUri(URI uri){		
 		if(uri == null) return null;
-		if(!uri.getScheme().equals("file")) return null;
 		
 		try {
-			return new File(uri.normalize());
+			return WorkspaceUtils.resolveURI(uri.normalize());
 		} 
 		catch (IllegalArgumentException e) {
 			//return new File(getAbsoluteUri(uri, map));
