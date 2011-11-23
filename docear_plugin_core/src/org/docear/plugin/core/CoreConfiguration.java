@@ -9,6 +9,8 @@ import org.docear.plugin.core.actions.SaveAction;
 import org.docear.plugin.core.actions.SaveAsAction;
 import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.features.DocearNodeModelExtensionController;
+import org.docear.plugin.core.workspace.actions.DocearChangeLibraryPathAction;
+import org.docear.plugin.core.workspace.actions.DocearRenameAction;
 import org.docear.plugin.core.workspace.actions.WorkspaceChangeLocationsAction;
 import org.docear.plugin.core.workspace.creator.FolderTypeLibraryCreator;
 import org.docear.plugin.core.workspace.creator.FolderTypeLiteratureRepositoryCreator;
@@ -27,6 +29,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
@@ -81,19 +84,6 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		init(modeController);
 	}	
 
-//	private void showLocationDialogIfNeeded() {
-//		if (WorkspaceController.getController().getPreferences().getWorkspaceLocation() == null) {
-//			return;
-//		}
-//		
-//		String workspaceInfo = (String)WorkspaceController.getController().getConfiguration().getConfigurationInfo().getMeta();
-//		
-//		if (!workspaceInfo.toLowerCase().contains("docear") || !LocationDialog.allVariablesSet()) {
-//			LocationDialog dialog = new LocationDialog(); 
-//	    	dialog.setVisible(true);
-//		}
-//	}
-
 	private void addPropertyChangeListener() {
 		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
 		resCtrl.addPropertyChangeListener(this);
@@ -111,14 +101,21 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	}
 
 	private void init(ModeController modeController) {
+		// set up context menu for workspace
+		modeController.addAction(new WorkspaceChangeLocationsAction());
+		modeController.addAction(new DocearChangeLibraryPathAction());
+		modeController.addAction(new DocearRenameAction());
+		
 		prepareWorkspace();
 		addPluginDefaults();
 		replaceFreeplaneStringsAndActions();
 		DocearMapModelController.install(new DocearMapModelController(modeController));
-		// set up context menu for workspace
-		modeController.addAction(new WorkspaceChangeLocationsAction());
+		
+				
 		modifyContextMenus();
+		
 		registerController(modeController);
+		UrlManager.getController().setLastCurrentDir(WorkspaceUtils.resolveURI(CoreConfiguration.projectPathObserver.getUri()));
 	}
 	
 	private void registerController(ModeController modeController) {
@@ -233,7 +230,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		
 	}
 	
-	private void modifyContextMenus() {
+	private void modifyContextMenus() {		
 		AWorkspaceTreeNode root =  (AWorkspaceTreeNode) WorkspaceUtils.getModel().getRoot();
 		WorkspacePopupMenuBuilder.insertAction(root.getContextMenu(), "workspace.action.docear.locations.change", 3);
 	}

@@ -13,17 +13,21 @@ import javax.swing.event.ChangeListener;
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
+import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
+import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 /**
  * 
  */
-public class FolderTypeLiteratureRepositoryNode extends PhysicalFolderNode implements ChangeListener /* FolderNode */{
+public class FolderTypeLiteratureRepositoryNode extends PhysicalFolderNode implements ChangeListener {
 
 	private static final long serialVersionUID = 1L;
 	private boolean locked;
+	private WorkspacePopupMenu popupMenu = null;
 
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -73,6 +77,40 @@ public class FolderTypeLiteratureRepositoryNode extends PhysicalFolderNode imple
 		}
 
 		
+	}
+	
+	public void initializePopup() {
+		if (popupMenu == null) {
+			
+			popupMenu = new WorkspacePopupMenu();
+			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
+					WorkspacePopupMenuBuilder.createSubMenu(TextUtils.getRawText("workspace.action.new.label")),
+					"workspace.action.file.new.directory",
+					"workspace.action.file.new.mindmap",
+					//WorkspacePopupMenuBuilder.SEPARATOR,
+					//"workspace.action.file.new.file",
+					WorkspacePopupMenuBuilder.endSubMenu(),
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.docear.uri.change",					
+					"workspace.action.docear.enable.monitoring",
+					WorkspacePopupMenuBuilder.SEPARATOR,						
+					"workspace.action.node.paste",
+					"workspace.action.node.copy",
+					"workspace.action.node.cut",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.rename",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.refresh"	
+			});
+		}
+		
+	}	
+	
+	public WorkspacePopupMenu getContextMenu() {
+		if (popupMenu == null) {
+			initializePopup();
+		}
+		return popupMenu;
 	}
 
 	/***********************************************************************************

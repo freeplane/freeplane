@@ -43,9 +43,4 @@ public abstract class AFolderNode extends AWorkspaceTreeNode {
 	public final String getTagName() {
 		return "folder";
 	}
-
-	@Override
-	public void initializePopup() {
-		
-	}
 }

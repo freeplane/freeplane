@@ -127,15 +127,16 @@ public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 	public void paint(Graphics g) {
 		super.paint(g);
 		int center_y = getHeight()/2;
+		getHotSpot().setBounds(0, center_y-15, getDividerSize(), 30);
 		if (getLocation().x <= 1) {
 			expanded = false;
 			splitPane.setEnabled(false);
-			getHotSpot().setBounds(0, center_y-15, getDividerSize(), 30);
+			
 		}
 		else {
 			expanded = true;
 			splitPane.setEnabled(true);
-			getHotSpot().setBounds(0, 0, getDividerSize(), 24);
+			//getHotSpot().setBounds(0, 0, getDividerSize(), 24);
 		}
 		getHotSpot().paint(g.create(getHotSpot().getLocation().x, getHotSpot().getLocation().y, getHotSpot().getWidth(), getHotSpot().getHeight()));
 	}

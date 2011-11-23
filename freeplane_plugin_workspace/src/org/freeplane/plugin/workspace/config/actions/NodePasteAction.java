@@ -5,8 +5,10 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.plugin.workspace.dnd.IDropAcceptor;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
 import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 @EnabledAction(checkOnPopup = true)
 public class NodePasteAction extends AWorkspaceAction {
@@ -36,6 +38,14 @@ public class NodePasteAction extends AWorkspaceAction {
 		}
 		//FIXME: this function is not available yet
 		setEnabled(false);
+	}
+	
+	public void setEnabledFor(AWorkspaceTreeNode node) {
+		if(!(node instanceof IDropAcceptor)) {
+			setEnabled(false);
+			return;
+		}
+		super.setEnabledFor(node);
 	}
 	
 	public void actionPerformed(final ActionEvent e) {

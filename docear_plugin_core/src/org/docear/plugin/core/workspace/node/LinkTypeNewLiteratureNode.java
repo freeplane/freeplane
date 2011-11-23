@@ -4,6 +4,7 @@
  */
 package org.docear.plugin.core.workspace.node;
 
+import java.awt.Component;
 import java.io.File;
 import java.net.URI;
 
@@ -14,6 +15,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
+import org.docear.plugin.core.workspace.IDocearMindmap;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
@@ -24,18 +26,20 @@ import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
+import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.node.ALinkNode;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 /**
  * 
  */
-public class LinkTypeNewLiteratureNode extends ALinkNode implements IWorkspaceNodeEventListener {
+public class LinkTypeNewLiteratureNode extends ALinkNode implements IWorkspaceNodeEventListener, IDocearMindmap {
 	private static final Icon DEFAULT_ICON = new ImageIcon(ResourceController.class.getResource("/images/docear16.png"));
 
 	private static final long serialVersionUID = 1L;
 	
 	private URI linkPath;
+	private WorkspacePopupMenu popupMenu = null;
 	
 	
 	/***********************************************************************************
@@ -44,7 +48,6 @@ public class LinkTypeNewLiteratureNode extends ALinkNode implements IWorkspaceNo
 
 	public LinkTypeNewLiteratureNode(String type) {
 		super(type);
-		// TODO Auto-generated constructor stub
 	}
 
 
@@ -70,6 +73,21 @@ public class LinkTypeNewLiteratureNode extends ALinkNode implements IWorkspaceNo
 		renderer.setClosedIcon(DEFAULT_ICON);
 		renderer.setLeafIcon(DEFAULT_ICON);
 		return true;
+	}
+	
+	public void initializePopup() {
+		if (popupMenu == null) {
+						
+			popupMenu  = new WorkspacePopupMenu();
+			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
+					"workspace.action.node.paste",
+					"workspace.action.node.copy",
+					"workspace.action.node.cut",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.docear.node.rename"
+			});
+		}
+		
 	}
 	
 	private boolean createNewMindmap(final File f) {
@@ -127,14 +145,29 @@ public class LinkTypeNewLiteratureNode extends ALinkNode implements IWorkspaceNo
 				LogUtils.warn("could not open document (" + getLinkPath() + ")", e);
 			}
 		}
+		else if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {			
+				showPopup((Component) event.getBaggage(), event.getX(), event.getY());
+		}
+		else {
+			// do nth for now
+		}
 	}
 
 	public AWorkspaceTreeNode clone() {
 		LinkTypeNewLiteratureNode node = new LinkTypeNewLiteratureNode(getType());
 		return clone(node);
-	}
+	}	
 	
 	public WorkspacePopupMenu getContextMenu() {
-		return null;
+		if (popupMenu == null) {
+			initializePopup();
+		}
+		return popupMenu;
+	}
+ 
+	public boolean changeNameTo(String newName) {
+		// simple set the node name
+		this.setName(newName);
+		return true;
 	}
 }

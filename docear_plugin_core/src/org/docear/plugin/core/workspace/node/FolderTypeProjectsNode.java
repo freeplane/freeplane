@@ -17,14 +17,19 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import org.apache.commons.io.monitor.FileAlterationListener;
 import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.docear.plugin.core.CoreConfiguration;
+import org.docear.plugin.core.workspace.actions.DocearProjectEnableMonitoringAction;
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
+import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.node.AFolderNode;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
@@ -36,6 +41,8 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 	private boolean doMonitoring = false;
 	private URI pathURI = null;
 	private boolean locked = false;
+	private static WorkspacePopupMenu popupMenu = null;
+	private boolean first = true;
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -57,6 +64,7 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 			this.pathURI = uri;
 			if (uri != null) {
 				createIfNeeded(getPath());
+				first  = true;
 				enableMonitoring(true);
 			}
 		} 
@@ -145,41 +153,54 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 	public void onDirectoryCreate(File directory) {
 		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node insertion.
 		System.out.println("onDirectoryCreate: " + directory);
-		refresh();
+		if(!first) {
+			refresh();
+		}
 	}
 
 	public void onDirectoryChange(File directory) {
 		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node change.
 		System.out.println("onDirectoryChange: " + directory);
-		refresh();
+		if(!first) {
+			refresh();
+		}
 	}
 
 	public void onDirectoryDelete(File directory) {
 		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node remove.
 		System.out.println("onDirectoryDelete: " + directory);
-		refresh();
+		if(!first) {
+			refresh();
+		}
 	}
 
 	public void onFileCreate(File file) {
 		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node insertion.
 		System.out.println("onFileCreate: " + file);
-		refresh();
+		if(!first) {
+			refresh();
+		}
 	}
 
 	public void onFileChange(File file) {
 		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node change.
 		System.out.println("onFileChange: " + file);
-		refresh();
+		if(!first) {
+			refresh();
+		}
 	}
 
 	public void onFileDelete(File file) {
 		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node remove.
 		System.out.println("onFileDelete: " + file);
-		refresh();
+		if(!first) {
+			refresh();
+		}
 	}
 
 	public void onStop(FileAlterationObserver observer) {
 		// called when the observer ends a check cycle. do nth so far.
+		first = false;
 	}
 
 	
@@ -202,9 +223,41 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 		FolderTypeProjectsNode node = new FolderTypeProjectsNode(getType());
 		return clone(node);
 	}
+
+	public void initializePopup() {
+		if (popupMenu == null) {
+			ModeController modeController = Controller.getCurrentModeController();
+			modeController.addAction(new DocearProjectEnableMonitoringAction());
+			
+			popupMenu = new WorkspacePopupMenu();
+			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
+					WorkspacePopupMenuBuilder.createSubMenu(TextUtils.getRawText("workspace.action.new.label")),
+					"workspace.action.file.new.directory",
+					"workspace.action.file.new.mindmap",
+					//WorkspacePopupMenuBuilder.SEPARATOR,
+					//"workspace.action.file.new.file",
+					WorkspacePopupMenuBuilder.endSubMenu(),
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.docear.uri.change",					
+					"workspace.action.docear.project.enable.monitoring",
+					WorkspacePopupMenuBuilder.SEPARATOR,						
+					"workspace.action.node.paste",
+					"workspace.action.node.copy",
+					"workspace.action.node.cut",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.rename",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.refresh"	
+			});
+		}
+		
+	}	
 	
 	public WorkspacePopupMenu getContextMenu() {
-		return null;
+		if (popupMenu == null) {
+			initializePopup();
+		}
+		return popupMenu;
 	}
 	
 	private void createPathIfNeeded(URI uri) {
@@ -239,6 +292,4 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 		}
 		
 	}
-
-	
 }

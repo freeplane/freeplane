@@ -85,8 +85,8 @@ public class JabRefAttributes {
 		setReferenceToNode(entry, target);
 	}
 	
-	public void removeReferenceFromNode(BibtexEntry entry, NodeModel target) {
-		NodeAttributeTableModel attributeTable = AttributeController.getController().createAttributeTableModel(target);
+	public void removeReferenceFromNode(NodeModel node) {
+		NodeAttributeTableModel attributeTable = AttributeController.getController().createAttributeTableModel(node);
 		
 		if (attributeTable == null) {
 			return;
@@ -95,7 +95,12 @@ public class JabRefAttributes {
 		for (String attributeKey : attributeTable.getAttributeKeyList()) {
 			if (this.valueAttributes.containsKey(attributeKey) || this.keyAttribute.equals(attributeKey)) {				
 				AttributeController.getController().performRemoveRow(attributeTable, attributeTable.getAttributePosition(attributeKey));
-			}
+			}			
+		}
+		
+		NodeLinks nodeLinks = NodeLinks.getLinkExtension(node);
+		if (nodeLinks != null) {
+			nodeLinks.setHyperLink(null);
 		}
 	}
 	
@@ -133,16 +138,48 @@ public class JabRefAttributes {
 				}
 			}
 		}
-				
-		return changes;
+		
+		String url = entry.getField("file");
+		if (url == null) {
+			url = entry.getField("url");
+		}
+		
+		NodeLinks nodeLinks = NodeLinks.getLinkExtension(node);		
+		if (url == null) {
+			if (nodeLinks.getHyperLink() == null) {
+				return changes;
+			}
+		}
+		else {
+			if (nodeLinks.getHyperLink() != null && nodeLinks.getHyperLink().getPath().equals(url)) {
+				return changes;
+			}
+		}
+		
+		if (url == null) {
+			nodeLinks.setHyperLink(null);
+			return true;
+		}
+		
+		URI uri;
+		try {
+			uri = LinkController.createURI(url.trim());
+		}
+		catch (URISyntaxException e) {			
+			e.printStackTrace();
+			return changes;
+		}
+		((MLinkController) MLinkController.getController()).setLinkTypeDependantLink(node, uri);		
+		return true;
 	}
+	
 	
 	public void setReferenceToNode(BibtexEntry entry, NodeModel node) {
 		if (entry.getCiteKey()==null) {
 			LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), ReferencesController.getController().getJabrefWrapper().getDatabase(), entry);						
 		}		
 		
-		removeReferenceFromNode(entry, node);
+		removeReferenceFromNode(node);
 		
 		for (Entry<String, String> e : this.valueAttributes.entrySet()) {
 			NodeUtils.setAttributeValue(node, e.getKey(), entry.getField(e.getValue()), false);
@@ -150,15 +187,7 @@ public class JabRefAttributes {
 
 		NodeUtils.setAttributeValue(node, keyAttribute, entry.getCiteKey(), false);
 		
-		NodeLinks nodeLinks = NodeLinks.getLinkExtension(node);
-		if (nodeLinks != null) {
-			System.out.println("debug remove hyperlink");
-			nodeLinks.setHyperLink(null);
-		}
-
 		String files = entry.getField("file");
-		System.out.println("debug path: "+files);
-		
 		
 		if (files != null && files.length() > 0) {			
 			String[] paths = files.split("(?<!\\\\);"); // taken from splmm, could not test it
@@ -177,7 +206,7 @@ public class JabRefAttributes {
 				try {
 					link = LinkController.createURI(url.trim());
 					final MLinkController linkController = (MLinkController) MLinkController.getController();
-					linkController.setLink(node, link, LinkController.LINK_ABSOLUTE);
+					linkController.setLinkTypeDependantLink(node, link);
 				}
 				catch (URISyntaxException e) {				
 					e.printStackTrace();

@@ -40,7 +40,7 @@ public class JabRefChangeListener implements DatabaseChangeListener {
 		DocearReferenceUpdateController.unlock();
 	}
 
-	public void updateNodeAttributes(final NodeModel node, final BibtexEntry entry) {
+	private void updateNodeAttributes(final NodeModel node, final BibtexEntry entry) {
 		SwingWorker<Void, Void> thread = new SwingWorker<Void, Void>() {
 			
 			protected Void doInBackground() throws Exception {
@@ -71,7 +71,7 @@ public class JabRefChangeListener implements DatabaseChangeListener {
 				JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
 
 				if (jabRefAttributes.isReferencing(entry, node)) {
-					jabRefAttributes.removeReferenceFromNode(entry, node);
+					jabRefAttributes.removeReferenceFromNode(node);
 				}
 
 				for (NodeModel child : node.getChildren()) {

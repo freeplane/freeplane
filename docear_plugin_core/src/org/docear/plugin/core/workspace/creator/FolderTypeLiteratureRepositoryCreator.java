@@ -4,7 +4,6 @@
  */
 package org.docear.plugin.core.workspace.creator;
 
-import java.io.File;
 import java.net.URI;
 
 import org.docear.plugin.core.CoreConfiguration;

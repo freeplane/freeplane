@@ -3,6 +3,7 @@ package org.freeplane.plugin.workspace.config.actions;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.EnabledAction;
+import org.freeplane.plugin.workspace.dnd.IWorkspaceTransferableCreator;
 import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
@@ -16,7 +17,7 @@ public class NodeCutAction extends AWorkspaceAction {
 	}
 		
 	public void setEnabledFor(AWorkspaceTreeNode node) {
-		if(node.isSystem()) {
+		if(node.isSystem() || !(node instanceof IWorkspaceTransferableCreator)) {
 			setEnabled(false);
 		}
 		else{

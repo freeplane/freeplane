@@ -64,6 +64,9 @@ public class WorkspaceNodeWriter implements IElementWriter, IAttributeWriter {
 		Object value;
 		try {
 			value = m.invoke(object, args);
+			if(value instanceof Boolean && ((Boolean) value).booleanValue() == false) {
+				return;
+			}
 			if(value != null) {
 				String attrName = m.getAnnotation(ExportAsAttribute.class).value();
 				if(attrName.trim().length()==0) throw new IllegalArgumentException("value for annotation 'ExportAsAttribute' must not be empty!");
