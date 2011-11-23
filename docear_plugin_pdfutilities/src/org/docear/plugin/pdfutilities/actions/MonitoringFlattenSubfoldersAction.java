@@ -36,6 +36,7 @@ public class MonitoringFlattenSubfoldersAction extends DocearAction {
 		NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
 		Object value = NodeUtils.getAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS);
 		if(value == null || (Integer)value == 0){
+			//SwingWorker<Map<AnnotationID, Collection<IAnnotation>>, AnnotationModel[]> thread = getMonitoringThread(targets);
 			flattenMonitorNodes(selected, selected.getChildren());
 			removePathNodes(selected);
 			NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 1);			
@@ -69,6 +70,8 @@ public class MonitoringFlattenSubfoldersAction extends DocearAction {
 			NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 0);			
 		}		
 	}
+	
+		
 
 	private void removePathNodes(NodeModel selected) {
 		List<NodeModel> pathNodes = new ArrayList<NodeModel>();
