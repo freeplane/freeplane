@@ -2,18 +2,28 @@ package org.docear.plugin.pdfutilities.actions;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Stack;
 
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
+
 import org.docear.plugin.core.features.DocearNodeModelExtension.DocearExtensionKey;
 import org.docear.plugin.core.features.DocearNodeModelExtensionController;
+import org.docear.plugin.core.ui.SwingWorkerDialog;
+import org.docear.plugin.core.ui.SwingWorkerDialogLite;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
+import org.docear.plugin.pdfutilities.features.AnnotationID;
+import org.docear.plugin.pdfutilities.features.AnnotationModel;
+import org.docear.plugin.pdfutilities.features.IAnnotation;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.map.NodeModel;
@@ -36,56 +46,125 @@ public class MonitoringFlattenSubfoldersAction extends DocearAction {
 		NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
 		Object value = NodeUtils.getAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS);
 		if(value == null || (Integer)value == 0){
-			//SwingWorker<Map<AnnotationID, Collection<IAnnotation>>, AnnotationModel[]> thread = getMonitoringThread(targets);
-			flattenMonitorNodes(selected, selected.getChildren());
-			removePathNodes(selected);
-			NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 1);			
+			
+			Controller.getCurrentController().getViewController().scrollNodeToVisible(selected);
+			SwingWorker<Void, Void> thread = getFlattenThread(selected);
+			SwingWorkerDialogLite dialog = new SwingWorkerDialogLite(Controller.getCurrentController().getViewController().getFrame());
+			dialog.setHeadlineText("Flatten subfolders...");
+			dialog.showDialog(thread);
+			NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 1);	
+			Controller.getCurrentController().getViewController().scrollNodeToVisible(selected);
 		}
-		else{
-			URI pdfDirURI = NodeUtils.getPdfDirFromMonitoringNode(selected);
-			pdfDirURI = Tools.getAbsoluteUri(pdfDirURI);
-			if(pdfDirURI == null || Tools.getFilefromUri(pdfDirURI) == null || !Tools.getFilefromUri(pdfDirURI).exists() || !Tools.getFilefromUri(pdfDirURI).isDirectory()){
-				return;
-			}
-			File pdfDirFile = Tools.getFilefromUri(pdfDirURI);
-			Map<NodeModel, Stack<File>> result = new HashMap<NodeModel, Stack<File>>();
-			for(NodeModel node : selected.getChildren()){
-				URI uri = Tools.getAbsoluteUri(node);
-				if(uri == null || !Tools.getFilefromUri(uri).exists() || !Tools.getFilefromUri(uri).isFile() || !Tools.getFilefromUri(uri).getAbsolutePath().startsWith(pdfDirFile.getAbsolutePath())){
-					continue;
-				}
-				Stack<File> folderStack = new Stack<File>();
-				File parent = Tools.getFilefromUri(uri).getParentFile();
-				while(parent != null && !parent.equals(pdfDirFile)){
-					folderStack.push(parent);
-					parent = parent.getParentFile();
-				}
-				if(!folderStack.isEmpty()){
-					result.put(node, folderStack);
-				}					
-			}
-			for(Entry<NodeModel, Stack<File>> entry : result.entrySet()){
-				pasteNodeIntoPath(entry.getKey(), selected, entry.getValue());				
-			}
-			NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 0);			
+		else{			
+			Controller.getCurrentController().getViewController().scrollNodeToVisible(selected);
+			SwingWorker<Void, Void> thread = getUnFlattenThread(selected);
+			SwingWorkerDialogLite dialog = new SwingWorkerDialogLite(Controller.getCurrentController().getViewController().getFrame());
+			dialog.setHeadlineText("Creating subfolder nodes...");
+			dialog.showDialog(thread);
+			NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 0);
+			Controller.getCurrentController().getViewController().scrollNodeToVisible(selected);
 		}		
 	}
 	
 		
 
-	private void removePathNodes(NodeModel selected) {
+	private SwingWorker<Void, Void> getFlattenThread(final NodeModel selected) {
+		return new SwingWorker<Void, Void>(){
+
+			@Override
+			protected Void doInBackground() throws Exception {
+				fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);				
+				flattenMonitorNodes(selected, selected.getChildren());				
+				removePathNodes(selected);				
+				return null;
+			}
+			
+			@Override
+		    protected void done() {			
+				if(this.isCancelled() || Thread.currentThread().isInterrupted()){					
+					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, "Flatten subfolders canceled.");
+				}
+				else{
+					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, "Flatten subfolders complete.");
+				}
+				
+			}			
+		};		
+	}
+	
+	private SwingWorker<Void, Void> getUnFlattenThread(final NodeModel selected) {
+		return new SwingWorker<Void, Void>(){
+
+			@Override
+			protected Void doInBackground() throws Exception {
+				fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);				
+				Map<NodeModel, Stack<File>> result = new HashMap<NodeModel, Stack<File>>();
+				for(NodeModel node : selected.getChildren()){					
+					URI uri = Tools.getAbsoluteUri(node);
+					if(uri == null || !Tools.getFilefromUri(uri).exists() || !Tools.getFilefromUri(uri).isFile()){
+						continue;
+					}
+					Stack<File> folderStack = NodeUtils.getFolderStructureStack(selected, uri);				
+					if(!folderStack.isEmpty()){
+						result.put(node, folderStack);
+					}					
+				}
+				for(final Entry<NodeModel, Stack<File>> entry : result.entrySet()){	
+					SwingUtilities.invokeAndWait(
+					        new Runnable() {
+					            public void run(){
+					            	NodeModel target = NodeUtils.createFolderStructurePath(selected, entry.getValue());
+									((MMapController) Controller.getCurrentModeController().getMapController()).moveNode(entry.getKey(), target, target.getChildCount());															
+					            }
+					        }
+					   );
+					
+				}
+				return null;
+			}
+			
+			@Override
+		    protected void done() {			
+				if(this.isCancelled() || Thread.currentThread().isInterrupted()){					
+					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, "Creating subfolder nodes canceled.");
+				}
+				else{
+					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, "Creating subfolder nodes complete.");
+				}
+				
+			}			
+		};		
+	}
+	
+	private void fireStatusUpdate(final String propertyName, final Object oldValue, final Object newValue) throws InterruptedException, InvocationTargetException{				
+		SwingUtilities.invokeAndWait(
+		        new Runnable() {
+		            public void run(){
+		            	firePropertyChange(propertyName, oldValue, newValue);										
+		            }
+		        }
+		   );	
+	}
+
+	private void removePathNodes(NodeModel selected) throws InterruptedException, InvocationTargetException {
 		List<NodeModel> pathNodes = new ArrayList<NodeModel>();
 		for(NodeModel node : selected.getChildren()){
 			if(DocearNodeModelExtensionController.containsKey(node, DocearExtensionKey.MONITOR_PATH)){
 				pathNodes.add(node);
 			}
 		}
-		for(NodeModel node : pathNodes){
-			node.removeFromParent();
+		for(final NodeModel node : pathNodes){
+			SwingUtilities.invokeAndWait(
+				new Runnable() {
+		            public void run(){							            	
+						node.removeFromParent();						            											
+		            }
+		        }        
+			);	
 		}
 	}
 	
-	private void flattenMonitorNodes(NodeModel rootTarget, List<NodeModel> children) {
+	private void flattenMonitorNodes(final NodeModel rootTarget, List<NodeModel> children) throws InterruptedException, InvocationTargetException {
 		List<NodeModel> pathNodes = new ArrayList<NodeModel>();
 		List<NodeModel> monitorNodes = new ArrayList<NodeModel>();
 		for(NodeModel node : children){
@@ -96,41 +175,22 @@ public class MonitoringFlattenSubfoldersAction extends DocearAction {
 				monitorNodes.add(node);
 			}
 		}
-		for(NodeModel node : monitorNodes){
+		for(final NodeModel node : monitorNodes){
 			if(node.getParentNode() != rootTarget){
-				((MMapController) Controller.getCurrentModeController().getMapController()).moveNode(node, rootTarget, rootTarget.getChildCount());
+				SwingUtilities.invokeAndWait(
+						new Runnable() {
+				            public void run(){							            	
+				            	((MMapController) Controller.getCurrentModeController().getMapController()).moveNode(node, rootTarget, rootTarget.getChildCount());	            											
+				            }
+				        }        
+					);
+				
 			}
 		}
 		for(NodeModel node : pathNodes){
 			flattenMonitorNodes(rootTarget, node.getChildren());
 		}
-	}
-
-	private void pasteNodeIntoPath(NodeModel node, NodeModel target, Stack<File> pathStack) {		
-		if(pathStack.isEmpty()){			
-			((MMapController) Controller.getCurrentModeController().getMapController()).moveNode(node, target, target.getChildCount());
-			return;
-		}
-		File parent = pathStack.pop();
-		NodeModel pathNode = null;
-		for(NodeModel child : target.getChildren()){
-			if(child.getText().equals(parent.getName())){
-				pathNode = child;
-				break;
-			}
-		}
-		if(pathNode != null){
-			pasteNodeIntoPath(node, pathNode, pathStack);
-		}
-		else{
-			pathNode = ((MMapController) Controller.getCurrentModeController().getMapController()).newNode(parent.getName(), target.getMap());
-			DocearNodeModelExtensionController.setEntry(pathNode, DocearExtensionKey.MONITOR_PATH, null);			
-			NodeUtils.insertChildNodeFrom(pathNode, target.isLeft(), target);
-			pasteNodeIntoPath(node, pathNode, pathStack);
-		}
-			
-			
-	}
+	}	
 
 	@Override
 	public void setEnabled(){

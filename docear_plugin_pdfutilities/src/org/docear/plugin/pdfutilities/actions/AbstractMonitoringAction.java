@@ -120,6 +120,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
 					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Searching monitored files ...");
 					URI pdfDir = NodeUtils.getPdfDirFromMonitoringNode(target);
+					
 					List<URI> uriList = NodeUtils.getMindmapDirFromMonitoringNode(target);
 					URI monDir = Tools.getAbsoluteUri(pdfDir);
 					
@@ -159,6 +160,19 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 							monSubdirs = ResourceController.getResourceController().getBooleanProperty("docear_subdir_monitoring");
 							break;
 					}
+					boolean tempFlattenSubdirs = false;
+					value = (Integer)NodeUtils.getAttributeValue(target, PdfUtilitiesController.MON_FLATTEN_DIRS);
+					switch(value){
+						
+						case 0:
+							tempFlattenSubdirs = false;
+							break;
+							
+						case 1:
+							tempFlattenSubdirs = true;
+							break;						
+					}
+					final boolean flattenSubdirs = tempFlattenSubdirs;
 					Collection<URI> monitorFiles = Tools.getFilteredFileList(monDir, new CustomFileListFilter(ResourceController.getResourceController().getProperty("docear_files_to_import")), monSubdirs);
 					
 					Thread.sleep(1L);
@@ -240,7 +254,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 							SwingUtilities.invokeAndWait(
 							        new Runnable() {
 							            public void run(){							            	
-											NodeUtils.insertNewChildNodesFrom(uri, finalAnnotations, target.isLeft(), target);
+											NodeUtils.insertNewChildNodesFrom(uri, finalAnnotations, target.isLeft(), flattenSubdirs,  target);
 											for(AnnotationModel annotation : getInsertedNodes(finalAnnotations)){
 												firePropertyChange(SwingWorkerDialog.DETAILS_LOG_TEXT, null, "Imported " + annotation.getTitle() +"\n");												
 											}							            											

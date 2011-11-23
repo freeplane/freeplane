@@ -53,11 +53,10 @@ public class SwingWorkerDialogLite extends JDialog implements PropertyChangeList
 	 * Create the dialog.
 	 */
 	private void init() {
-		setUndecorated(true);
 		setResizable(false);
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 450, 65);
+		setBounds(100, 100, 450, 83);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -78,6 +77,7 @@ public class SwingWorkerDialogLite extends JDialog implements PropertyChangeList
 			buttonPane.setLayout(new BorderLayout(5, 5));
 			{
 				progressBar = new JProgressBar();
+				progressBar.setIndeterminate(true);
 				buttonPane.add(progressBar);
 			}
 		}
