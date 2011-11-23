@@ -378,6 +378,7 @@ public class PdfUtilitiesController extends ALanguageController{
 					NodeUtils.addMindmapDir(map.getRootNode(), CoreConfiguration.LIBRARY_PATH);
 					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_AUTO, 2);
 					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_SUBDIRS, 2);
+					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_FLATTEN_DIRS, 0);
 				}
 				
 			}

@@ -1,8 +1,9 @@
 <map version="0.9.0" software_name="SciPlore_MindMapping" software_version="0.14" private="1" mapID="88c560da-0c67-49c7-870a-fa7c1b63bc38">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node TEXT="SciPlore MindMapping Overview" ID="ID_998226029" CREATED="1290692899377" MODIFIED="1300140081566" COLOR="#ffffff" BACKGROUND_COLOR="#009900" BOOKMARKS_UPDATED="0">
+<node TEXT="SciPlore MindMapping Overview" FOLDED="false" ID="ID_998226029" CREATED="1290692899377" MODIFIED="1300140081566" COLOR="#ffffff" BACKGROUND_COLOR="#009900" BOOKMARKS_UPDATED="0">
 <font NAME="SansSerif" SIZE="14" BOLD="true"/>
-<hook NAME="MapStyle" max_node_width="600" min_node_width="1">
+<hook NAME="MapStyle">
+
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node">
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
@@ -72,8 +73,8 @@
 </node>
 <node TEXT="Referencing" ID="ID_466106858" CREATED="1300136183140" MODIFIED="1300139854235">
 <node TEXT="If you want to reference SciPlore MindMapping &#xa;in your paper, please reference this work:" ID="ID_838899987" CREATED="1300135130356" MODIFIED="1300140263353">
-<node TEXT="&apos;SciPlore MindMapping&apos; &#x2013; A Tool for Creating &#xa;Mind Maps Combined with PDF and &#xa;Reference Management." ID="ID_1722824273" CREATED="1290693613650" MODIFIED="1300140258307" LINK="http://www.sciplore.org/publications/2009-SciPlore_MindMapping_--_in_brief--preprint.pdf" BOOKMARKS_UPDATED="0">
-<richcontent TYPE="NOTE">
+<node TEXT="&apos;SciPlore MindMapping&apos; &#x2013; A Tool for Creating &#xa;Mind Maps Combined with PDF and &#xa;Reference Management." ID="ID_1722824273" CREATED="1290693613650" MODIFIED="1300140258307" LINK="http://www.sciplore.org/publications/2009-SciPlore_MindMapping_--_in_brief--preprint.pdf" BOOKMARKS_UPDATED="0"><richcontent TYPE="NOTE">
+
 <html>
   <head>
     
@@ -92,7 +93,8 @@
       Management.&#160;&#160;D-Lib Magazine, 15(11), November 2009. doi:10.1045/november2009-inbrief. URL: http://www.dlib.org/dlib/november09/11inbrief.html.
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 </node>
@@ -101,7 +103,7 @@
 <font NAME="SansSerif" SIZE="14"/>
 <edge STYLE="bezier"/>
 <node TEXT="SciPlore MindMapping is a mind mapping software focusing on the &#xa;special needs of researchers and students" ID="ID_1891597353" CREATED="1290694017632" MODIFIED="1300139854235" BOOKMARKS_UPDATED="0"/>
-<node TEXT="It combines" ID="ID_1648700431" CREATED="1290694040744" MODIFIED="1300139854266" BOOKMARKS_UPDATED="0">
+<node TEXT="It combines" FOLDED="true" ID="ID_1648700431" CREATED="1290694040744" MODIFIED="1300139854266" BOOKMARKS_UPDATED="0">
 <node TEXT="Mind Mapping" ID="ID_675419869" CREATED="1290694050656" MODIFIED="1300139854266" BOOKMARKS_UPDATED="0"/>
 <node TEXT="Reference Management" ID="ID_180060233" CREATED="1290694053176" MODIFIED="1300139854266" BOOKMARKS_UPDATED="0"/>
 <node TEXT="PDF Management" ID="ID_899318875" CREATED="1290694058000" MODIFIED="1300139854266" BOOKMARKS_UPDATED="0">
@@ -109,7 +111,7 @@
 <node TEXT="The content of PDFs" ID="ID_1596921224" CREATED="1290694066056" MODIFIED="1300139854266" BOOKMARKS_UPDATED="0"/>
 </node>
 </node>
-<node TEXT="Therefore, it is well suited for" ID="ID_396087117" CREATED="1290694083383" MODIFIED="1301245421860" BOOKMARKS_UPDATED="0">
+<node TEXT="Therefore, it is well suited for" FOLDED="true" ID="ID_396087117" CREATED="1290694083383" MODIFIED="1301245421860" BOOKMARKS_UPDATED="0">
 <node TEXT="Literature Management" ID="ID_800808164" CREATED="1290694101152" MODIFIED="1290694105042" BOOKMARKS_UPDATED="0">
 <node TEXT="see the examples (select this node and click on the green arrow)" ID="ID_290756049" CREATED="1300136087315" MODIFIED="1300136158977" LINK="#ID_704202390"/>
 </node>
@@ -124,12 +126,12 @@
 </node>
 </node>
 </node>
-<node TEXT="Need more information?" ID="ID_1668368004" CREATED="1290694153784" MODIFIED="1300140232957" BOOKMARKS_UPDATED="0">
+<node TEXT="Need more information?" FOLDED="true" ID="ID_1668368004" CREATED="1290694153784" MODIFIED="1300140232957" BOOKMARKS_UPDATED="0">
 <node TEXT="SciPlore Mind Mapping Homepage" ID="ID_650806802" CREATED="1290692931117" MODIFIED="1290693538697" LINK="http://www.sciplore.org/software/sciplore_mindmapping/" BOOKMARKS_UPDATED="0"/>
 <node TEXT="Video Tutorial (on Youtube)" ID="ID_788876883" CREATED="1290693945533" MODIFIED="1290693955184" LINK="http://www.youtube.com/watch?v=jRHqLktIMWw&amp;hd=1" BOOKMARKS_UPDATED="0"/>
 </node>
 </node>
-<node TEXT="Examples" POSITION="left" ID="ID_1857864887" CREATED="1300135058987" MODIFIED="1300140107922" BACKGROUND_COLOR="#99ff99" STYLE="fork">
+<node TEXT="Examples" FOLDED="true" POSITION="left" ID="ID_1857864887" CREATED="1300135058987" MODIFIED="1300140107922" BACKGROUND_COLOR="#99ff99" STYLE="fork">
 <font NAME="SansSerif" SIZE="14"/>
 <edge STYLE="bezier"/>
 <node TEXT="Literature Management" ID="ID_704202390" CREATED="1300135076349" MODIFIED="1301245477388">
@@ -273,8 +275,8 @@
 </node>
 </node>
 <node TEXT="Research Paper Recommender" ID="Freemind_Link_1342033421" CREATED="1248481516796" MODIFIED="1300139854281" BOOKMARKS_UPDATED="0">
-<node ID="ID_1026062763" CREATED="1300138035648" MODIFIED="1300138114000" COLOR="#ff0033">
-<richcontent TYPE="NODE">
+<node ID="ID_1026062763" CREATED="1300138035648" MODIFIED="1300138114000" COLOR="#ff0033"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -284,9 +286,10 @@
       Note
     </p>
   </body>
-</html></richcontent>
-<node ID="ID_906972227" CREATED="1300138047457" MODIFIED="1300138114016" COLOR="#ff0033">
-<richcontent TYPE="NODE">
+</html>
+</richcontent>
+<node ID="ID_906972227" CREATED="1300138047457" MODIFIED="1300138114016" COLOR="#ff0033"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -296,10 +299,11 @@
       Originally, PDFs were linked for each entry
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node ID="ID_1044569638" CREATED="1300137978895" MODIFIED="1300138114000" COLOR="#ff0033">
-<richcontent TYPE="NODE">
+<node ID="ID_1044569638" CREATED="1300137978895" MODIFIED="1300138114000" COLOR="#ff0033"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -309,10 +313,11 @@
       Due to copyright reasons, we have not included the PDFs here
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node ID="ID_134927085" CREATED="1300138138905" MODIFIED="1300138231047" COLOR="#ff0000">
-<richcontent TYPE="NODE">
+<node ID="ID_134927085" CREATED="1300138138905" MODIFIED="1300138231047" COLOR="#ff0000"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -322,10 +327,11 @@
       Just imagine that each red arrow would directly point to the PDF and the corresponding page
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node ID="ID_622974651" CREATED="1300138181243" MODIFIED="1300138215517" COLOR="#ff0000" LINK="#ID_262295495">
-<richcontent TYPE="NODE">
+<node ID="ID_622974651" CREATED="1300138181243" MODIFIED="1300138215517" COLOR="#ff0000" LINK="#ID_262295495"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -335,7 +341,8 @@
       Check &quot;Academic Search Engine Optimization&quot; for a working example
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 <node TEXT="Pre-Paper Recommender Times / History" ID="ID_1331638684" CREATED="1297723033801" MODIFIED="1300138378607">
@@ -747,8 +754,8 @@
 <node TEXT="exact formula for paper recommender (paper&apos;s aggregated rating)" ID="ID_1090310518" CREATED="1289475998394" MODIFIED="1297726255789" LINK="file:/C:/_Dissertation/Literature/A%20Multidimensional%20Paper%20Recommender%20-%20Experiments%20and%20Evaluations.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="5" object_number="231" generation_number="0"/>
 </node>
-<node TEXT="what to rate on a paper" ID="ID_987739757" CREATED="1297820839085" MODIFIED="1298336292523">
-<richcontent TYPE="NOTE">
+<node TEXT="what to rate on a paper" ID="ID_987739757" CREATED="1297820839085" MODIFIED="1298336292523"><richcontent TYPE="NOTE">
+
 <html>
   <head>
     
@@ -758,7 +765,8 @@
       nobody adresses the question weather to rate the entire paper or only paragraphs / chapters
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="single rating" ID="ID_460612214" CREATED="1297821006075" MODIFIED="1297821009462"/>
 <node TEXT="multiple-rating" ID="ID_203177648" CREATED="1297821010077" MODIFIED="1299873231290">
 <node TEXT="three dimensions of a paper" ID="ID_1855301661" CREATED="1289475998871" MODIFIED="1299873231290" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommendation%20Mechanism%20for%20the%20Research%20Support%20System%20Papits.pdf" BOOKMARKS_UPDATED="1299366127750">
@@ -873,8 +881,8 @@
 <node TEXT="The most well known algorithm is &#xd;&#xa;User-based collaborative filtering (a.k.a. User-User CF, or &#xd;&#xa;Resnick&#x2019;s algorithm), a  k-nearest neighbor recommendation &#xd;&#xa;algorithm [10, 26]" ID="ID_890719555" CREATED="1297991285376" MODIFIED="1297991285376" LINK="file:/C:/_Dissertation/Literature/Don&apos;t%20look%20stupid%20--%20avoiding%20pitfalls%20when%20recommending%20research%20papers.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
 <pdf_annotation type="BOOKMARK" page="3" object_number="210" generation_number="0"/>
 </node>
-<node TEXT="Collaborative Filtering, original Paper" ID="ID_1873616644" CREATED="1297991258991" MODIFIED="1298336934068" LINK="file:/C:/_Dissertation/Literature/GroupLens%20--%20an%20open%20architecture%20for%20collaborative%20filtering%20of%20netnews.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
-<richcontent TYPE="NOTE">
+<node TEXT="Collaborative Filtering, original Paper" ID="ID_1873616644" CREATED="1297991258991" MODIFIED="1298336934068" LINK="file:/C:/_Dissertation/Literature/GroupLens%20--%20an%20open%20architecture%20for%20collaborative%20filtering%20of%20netnews.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark"><richcontent TYPE="NOTE">
+
 <html>
   <head>
     
@@ -884,7 +892,8 @@
       uses a k nearest neighbour algorithm for which again various distance metrics exist
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <pdf_annotation type="BOOKMARK" page="1" object_number="121" generation_number="0"/>
 </node>
 <node TEXT="algorithms" ID="ID_523193805" CREATED="1298336765159" MODIFIED="1299873231290">
@@ -938,8 +947,8 @@
 </node>
 </node>
 </node>
-<node TEXT="how relevant is a user`s opinion/rating" ID="ID_871004099" CREATED="1298335786311" MODIFIED="1299873231290">
-<richcontent TYPE="NOTE">
+<node TEXT="how relevant is a user`s opinion/rating" ID="ID_871004099" CREATED="1298335786311" MODIFIED="1299873231290"><richcontent TYPE="NOTE">
+
 <html>
   <head>
     
@@ -949,7 +958,8 @@
       this applies also to citations etc. (how relevant is a citation? a journal, a vote, the fact that someone read a paper, ...)
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="&apos;Recommender&apos;s Rank&apos; applied to paper recommender" ID="ID_1623093707" CREATED="1289476010839" MODIFIED="1289476010839" LINK="file:/C:/_Dissertation/Literature/Modeling%20user&apos;s%20opinion%20relevance%20to%20recommending%20research%20papers.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="1" object_number="110" generation_number="0"/>
 </node>
@@ -1188,8 +1198,8 @@
 </node>
 </node>
 <node TEXT="Web Usage Logs" ID="ID_1203292400" CREATED="1297813751688" MODIFIED="1299873231305">
-<node TEXT="paper recommender based on web usage logs of digital library" ID="ID_1508102602" CREATED="1289476000373" MODIFIED="1297813779739" LINK="file:/C:/_Dissertation/Literature/A%20prototype%20WWW%20literature%20recommendation%20system%20for%20digital%20libraries.pdf" BOOKMARKS_UPDATED="1299366127750">
-<richcontent TYPE="NOTE">
+<node TEXT="paper recommender based on web usage logs of digital library" ID="ID_1508102602" CREATED="1289476000373" MODIFIED="1297813779739" LINK="file:/C:/_Dissertation/Literature/A%20prototype%20WWW%20literature%20recommendation%20system%20for%20digital%20libraries.pdf" BOOKMARKS_UPDATED="1299366127750"><richcontent TYPE="NOTE">
+
 <html>
   <head>
     
@@ -1199,7 +1209,8 @@
       sure, this was item based and not collaborative filtering?
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="recommender based on arxiv log access files" ID="ID_322354105" CREATED="1297972933978" MODIFIED="1297972933978" LINK="file:/C:/_Dissertation/Literature/Recommending%20Related%20Papers%20Based%20on%20Digital%20Library%20Access%20Records.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
 <pdf_annotation type="BOOKMARK" page="1" object_number="116" generation_number="0"/>
@@ -1719,8 +1730,8 @@
 </node>
 </node>
 <node TEXT="Mind Mapping" ID="ID_491527849" CREATED="1300136459183" MODIFIED="1300139854281">
-<node ID="ID_610731384" CREATED="1300138035648" MODIFIED="1300138114000" COLOR="#ff0033">
-<richcontent TYPE="NODE">
+<node ID="ID_610731384" CREATED="1300138035648" MODIFIED="1300138114000" COLOR="#ff0033"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1730,9 +1741,10 @@
       Note
     </p>
   </body>
-</html></richcontent>
-<node ID="ID_1514117474" CREATED="1300138047457" MODIFIED="1300138114016" COLOR="#ff0033">
-<richcontent TYPE="NODE">
+</html>
+</richcontent>
+<node ID="ID_1514117474" CREATED="1300138047457" MODIFIED="1300138114016" COLOR="#ff0033"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1742,10 +1754,11 @@
       Originally, PDFs were linked for each entry
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node ID="ID_1141038964" CREATED="1300137978895" MODIFIED="1300138114000" COLOR="#ff0033">
-<richcontent TYPE="NODE">
+<node ID="ID_1141038964" CREATED="1300137978895" MODIFIED="1300138114000" COLOR="#ff0033"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1755,10 +1768,11 @@
       Due to copyright reasons, we have not included the PDFs here
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node ID="ID_1614328431" CREATED="1300138138905" MODIFIED="1300138231047" COLOR="#ff0000">
-<richcontent TYPE="NODE">
+<node ID="ID_1614328431" CREATED="1300138138905" MODIFIED="1300138231047" COLOR="#ff0000"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1768,10 +1782,11 @@
       Just imagine that each red arrow would directly point to the PDF and the corresponding page
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node ID="ID_849418185" CREATED="1300138181243" MODIFIED="1300138215517" COLOR="#ff0000" LINK="#ID_262295495">
-<richcontent TYPE="NODE">
+<node ID="ID_849418185" CREATED="1300138181243" MODIFIED="1300138215517" COLOR="#ff0000" LINK="#ID_262295495"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1781,7 +1796,8 @@
       Check &quot;Academic Search Engine Optimization&quot; for a working example
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 <node TEXT="Definition &amp; Basic idea" ID="ID_826264882" CREATED="1282737480531" MODIFIED="1300137884680" BOOKMARKS_UPDATED="0">
@@ -1935,8 +1951,8 @@
 </node>
 </node>
 <node TEXT="Cognitive Maps" ID="ID_1916398261" CREATED="1268949158550" MODIFIED="1268949160969" BOOKMARKS_UPDATED="0"/>
-<node TEXT="Topic Maps" ID="ID_1983125678" CREATED="1268949163129" MODIFIED="1268949175477" BOOKMARKS_UPDATED="0">
-<richcontent TYPE="NOTE">
+<node TEXT="Topic Maps" ID="ID_1983125678" CREATED="1268949163129" MODIFIED="1268949175477" BOOKMARKS_UPDATED="0"><richcontent TYPE="NOTE">
+
 <html>
   <head>
     
@@ -1946,7 +1962,8 @@
       not really a synonym but very similar
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="Knowledge Maps" ID="ID_498824911" CREATED="1269023973332" MODIFIED="1300137862403" BOOKMARKS_UPDATED="0">
 <node TEXT="knowledge maps were &quot;invented&quot; by o&apos;donnell et al 2002" ID="ID_154813710" CREATED="1269023930097" MODIFIED="1269023930097" LINK="file:/C:/_Dissertation/Literature/Learning%20with%20concept%20and%20knowledge%20maps%20--%20A%20Meta%20Analysis.PDF" BOOKMARKS_UPDATED="1299366127750">
@@ -2522,8 +2539,8 @@
 <pdf_annotation type="BOOKMARK" page="2" object_number="286" generation_number="0"/>
 </node>
 </node>
-<node TEXT="List from XMind" ID="ID_1419870737" CREATED="1259737478706" MODIFIED="1262925174114" BOOKMARKS_UPDATED="0">
-<richcontent TYPE="NOTE">
+<node TEXT="List from XMind" ID="ID_1419870737" CREATED="1259737478706" MODIFIED="1262925174114" BOOKMARKS_UPDATED="0"><richcontent TYPE="NOTE">
+
 <html>
   <head>
     
@@ -2666,7 +2683,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="Excotic Ideas" ID="ID_1825002051" CREATED="1268948681680" MODIFIED="1299097640949" BOOKMARKS_UPDATED="0">
 <node TEXT="mind maps can be used to represent steps of calculation for a pure untyped lambda calculator" ID="ID_1124428735" CREATED="1260921125564" MODIFIED="1260921125564" LINK="file:/C:/_Dissertation/Literature/A%20Visual%20Lambda-Calculator%20Using%20Typed%20Mind-Maps.pdf" BOOKMARKS_UPDATED="1299366127750">
@@ -3131,8 +3149,8 @@
 <pdf_annotation type="BOOKMARK" page="2" object_number="55" generation_number="0"/>
 </node>
 </node>
-<node ID="ID_1312665567" CREATED="1282737430259" MODIFIED="1299873231383" BOOKMARKS_UPDATED="0">
-<richcontent TYPE="NODE">
+<node ID="ID_1312665567" CREATED="1282737430259" MODIFIED="1299873231383" BOOKMARKS_UPDATED="0"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -3145,9 +3163,10 @@
       Mind Maps
     </p>
   </body>
-</html></richcontent>
-<node ID="ID_1371761769" CREATED="1282738015105" MODIFIED="1299099162194" BOOKMARKS_UPDATED="0">
-<richcontent TYPE="NODE">
+</html>
+</richcontent>
+<node ID="ID_1371761769" CREATED="1282738015105" MODIFIED="1299099162194" BOOKMARKS_UPDATED="0"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -3160,7 +3179,8 @@
       Education
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="Studies" ID="ID_755331734" CREATED="1268948071321" MODIFIED="1299873231383" BOOKMARKS_UPDATED="0">
 <node TEXT="41% of good students liked mind maps" ID="Freemind_Link_66546292" CREATED="1248664322390" MODIFIED="1299465662010" LINK="file:/C:/_Dissertation/Literature/mindmapping%20--%20its%20effects%20on%20student%20achievement%20in%20high%20school%20biology.PDF" BOOKMARKS_UPDATED="1299366127750">
 <attribute_layout NAME_WIDTH="111" VALUE_WIDTH="350"/>
@@ -3178,8 +3198,8 @@
 <attribute NAME="splmm_refyear" VALUE="2005"/>
 <pdf_annotation type="BOOKMARK" page="63" object_number="707" generation_number="0"/>
 </node>
-<node ID="Freemind_Link_730665097" CREATED="1248664322390" MODIFIED="1299465662010" LINK="file:/C:/_Dissertation/Literature/mindmapping%20--%20its%20effects%20on%20student%20achievement%20in%20high%20school%20biology.PDF" BOOKMARKS_UPDATED="1299366127750">
-<richcontent TYPE="NODE">
+<node ID="Freemind_Link_730665097" CREATED="1248664322390" MODIFIED="1299465662010" LINK="file:/C:/_Dissertation/Literature/mindmapping%20--%20its%20effects%20on%20student%20achievement%20in%20high%20school%20biology.PDF" BOOKMARKS_UPDATED="1299366127750"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -3195,15 +3215,16 @@
       ideas in science
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute_layout NAME_WIDTH="111" VALUE_WIDTH="350"/>
 <attribute NAME="splmm_refkey" VALUE="Cunningham05"/>
 <attribute NAME="splmm_refTitle" VALUE="Mindmapping: Its Effects on Student Achievement in High School Biology"/>
 <attribute NAME="splmm_refauthors" VALUE="Glennis Edge Cunningham"/>
 <attribute NAME="splmm_refyear" VALUE="2005"/>
 </node>
-<node ID="Freemind_Link_759002774" CREATED="1248664322390" MODIFIED="1299465662010" LINK="file:/C:/_Dissertation/Literature/mindmapping%20--%20its%20effects%20on%20student%20achievement%20in%20high%20school%20biology.PDF" BOOKMARKS_UPDATED="1299366127750">
-<richcontent TYPE="NODE">
+<node ID="Freemind_Link_759002774" CREATED="1248664322390" MODIFIED="1299465662010" LINK="file:/C:/_Dissertation/Literature/mindmapping%20--%20its%20effects%20on%20student%20achievement%20in%20high%20school%20biology.PDF" BOOKMARKS_UPDATED="1299366127750"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -3216,15 +3237,16 @@
       not perform better
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute_layout NAME_WIDTH="111" VALUE_WIDTH="350"/>
 <attribute NAME="splmm_refkey" VALUE="Cunningham05"/>
 <attribute NAME="splmm_refTitle" VALUE="Mindmapping: Its Effects on Student Achievement in High School Biology"/>
 <attribute NAME="splmm_refauthors" VALUE="Glennis Edge Cunningham"/>
 <attribute NAME="splmm_refyear" VALUE="2005"/>
 </node>
-<node ID="ID_213621655" CREATED="1248664324390" MODIFIED="1283702278195" LINK="file:/C:/_Dissertation/Literature/The%20efficacy%20of%20the%20%60mind%20map&apos;%20study%20technique.pdf" BOOKMARKS_UPDATED="1268668930373">
-<richcontent TYPE="NODE">
+<node ID="ID_213621655" CREATED="1248664324390" MODIFIED="1283702278195" LINK="file:/C:/_Dissertation/Literature/The%20efficacy%20of%20the%20%60mind%20map&apos;%20study%20technique.pdf" BOOKMARKS_UPDATED="1268668930373"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -3237,7 +3259,8 @@
       recal rate of facts in written documents
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="study about effectiveness" ID="ID_908724746" CREATED="1268948888849" MODIFIED="1299873231383" LINK="file:/C:/_Dissertation/Literature/An%20investigation%20into%20the%20concept%20of%20mind%20mapping%20and%20the%20use%20of%20mind%20mapping%20software%20to%20support%20and%20improve%20student%20academic%20performance.pdf" BOOKMARKS_UPDATED="1299366127750">
 <attribute_layout NAME_WIDTH="111" VALUE_WIDTH="350"/>
@@ -3327,8 +3350,8 @@
 <pdf_annotation type="BOOKMARK" page="1" object_number="91" generation_number="0"/>
 </node>
 </node>
-<node ID="ID_483017482" CREATED="1260921125689" MODIFIED="1283702281368" LINK="file:/C:/_Dissertation/Literature/Applications%20of%20the%20Mind%20Map%20Learning%20Technique%20in%20Chiropractic%20Education%20--%20A%20Pilot%20Study%20and%20Literature.pdf" BOOKMARKS_UPDATED="1299366127750">
-<richcontent TYPE="NODE">
+<node ID="ID_483017482" CREATED="1260921125689" MODIFIED="1283702281368" LINK="file:/C:/_Dissertation/Literature/Applications%20of%20the%20Mind%20Map%20Learning%20Technique%20in%20Chiropractic%20Education%20--%20A%20Pilot%20Study%20and%20Literature.pdf" BOOKMARKS_UPDATED="1299366127750"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -3341,7 +3364,8 @@
       mapping in chiropractic education
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="14 participants" ID="ID_253626096" CREATED="1260921125689" MODIFIED="1260921125689" LINK="file:/C:/_Dissertation/Literature/Applications%20of%20the%20Mind%20Map%20Learning%20Technique%20in%20Chiropractic%20Education%20--%20A%20Pilot%20Study%20and%20Literature.pdf" BOOKMARKS_UPDATED="1299366127750"/>
 <node TEXT="10 of 14 think mind mapping was good" ID="ID_1930395330" CREATED="1260921125689" MODIFIED="1260921125689" LINK="file:/C:/_Dissertation/Literature/Applications%20of%20the%20Mind%20Map%20Learning%20Technique%20in%20Chiropractic%20Education%20--%20A%20Pilot%20Study%20and%20Literature.pdf" BOOKMARKS_UPDATED="1299366127750"/>
 <node TEXT="figure of various learning approaches" ID="ID_331863436" CREATED="1269025275397" MODIFIED="1269025275397" LINK="file:/C:/_Dissertation/Literature/Applications%20of%20the%20Mind%20Map%20Learning%20Technique%20in%20Chiropractic%20Education%20--%20A%20Pilot%20Study%20and%20Literature.pdf" BOOKMARKS_UPDATED="1299366127750"/>
@@ -3378,8 +3402,8 @@
 </node>
 </node>
 </node>
-<node ID="ID_569335468" CREATED="1269022686474" MODIFIED="1299873231383" BOOKMARKS_UPDATED="0">
-<richcontent TYPE="NODE">
+<node ID="ID_569335468" CREATED="1269022686474" MODIFIED="1299873231383" BOOKMARKS_UPDATED="0"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -3392,7 +3416,8 @@
       of Mind Maps
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="paper about creating mind maps from full text streams" ID="ID_446864031" CREATED="1260983541032" MODIFIED="1299873231383" LINK="file:/C:/_Dissertation/Literature/Assembling%20Actor-based%20Mind-Maps%20from%20Text%20Stream.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="1" object_number="203" generation_number="0"/>
 <node TEXT="an example" ID="ID_1186566634" CREATED="1260983541032" MODIFIED="1260983541032" LINK="file:/C:/_Dissertation/Literature/Assembling%20Actor-based%20Mind-Maps%20from%20Text%20Stream.pdf" BOOKMARKS_UPDATED="1299366127750">
@@ -4035,7 +4060,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Help" POSITION="left" ID="ID_1887196363" CREATED="1290692945847" MODIFIED="1300140222863" BACKGROUND_COLOR="#99ff99" STYLE="fork" BOOKMARKS_UPDATED="0">
+<node TEXT="Help" FOLDED="true" POSITION="left" ID="ID_1887196363" CREATED="1290692945847" MODIFIED="1300140222863" BACKGROUND_COLOR="#99ff99" STYLE="fork" BOOKMARKS_UPDATED="0">
 <font NAME="SansSerif" SIZE="14"/>
 <edge STYLE="bezier"/>
 <node TEXT="FreeMind remark" ID="ID_666059433" CREATED="1300135608014" MODIFIED="1301245494564">
@@ -4046,8 +4071,8 @@
 <node TEXT="FreeMind Contact details" ID="ID_37894914" CREATED="1300135699286" MODIFIED="1300135704997">
 <node TEXT="FreeMind User Guide (PDF, 65 pages)" ID="ID_246929066" CREATED="1290693249838" MODIFIED="1290693331939" LINK="http://freemind.sourceforge.net/FreeMind%20User%20Guide%20by%20Shailaja%20Kumar%20" BOOKMARKS_UPDATED="0"/>
 <node TEXT="Frequently Asked Questions (FAQ)" ID="ID_977122359" CREATED="1290693391425" MODIFIED="1290693401339" LINK="http://freemind.sourceforge.net/wiki/index.php/Asked_questions" BOOKMARKS_UPDATED="0"/>
-<node TEXT="Forums" ID="ID_305792710" CREATED="1290693499219" MODIFIED="1290693531242" LINK="http://sourceforge.net/projects/freemind/forums" BOOKMARKS_UPDATED="0">
-<richcontent TYPE="NOTE">
+<node TEXT="Forums" ID="ID_305792710" CREATED="1290693499219" MODIFIED="1290693531242" LINK="http://sourceforge.net/projects/freemind/forums" BOOKMARKS_UPDATED="0"><richcontent TYPE="NOTE">
+
 <html>
   <head>
     
@@ -4057,12 +4082,13 @@
       Post here for all questions not adressing SciPlore MindMappings special features (PDF Management, Reference Management, ...)
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 </node>
-<node TEXT="SciPlore MindMapping" ID="ID_540718750" CREATED="1290693339496" MODIFIED="1300140138194" BOOKMARKS_UPDATED="0">
-<richcontent TYPE="NOTE">
+<node TEXT="SciPlore MindMapping" ID="ID_540718750" CREATED="1290693339496" MODIFIED="1300140138194" BOOKMARKS_UPDATED="0"><richcontent TYPE="NOTE">
+
 <html>
   <head>
     
@@ -4072,7 +4098,8 @@
       Help regarding the special features of SciPlore MindMapping
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <font NAME="SansSerif" SIZE="12" BOLD="true"/>
 <node TEXT="SciPlore MindMapping Manual" ID="ID_1075599780" CREATED="1290692951326" MODIFIED="1290693338198" LINK="http://www.sciplore.org/software/sciplore_mindmapping/manual/en/" BOOKMARKS_UPDATED="0"/>
 <node TEXT="Frequently Asked Questions (FAQ)" ID="ID_1344205502" CREATED="1290693415605" MODIFIED="1290693421682" LINK="http://www.sciplore.org/software/sciplore_mindmapping/manual/en/#faq" BOOKMARKS_UPDATED="0"/>

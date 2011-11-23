@@ -1,5 +1,6 @@
 package org.docear.plugin.pdfutilities.util;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -10,10 +11,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 import java.util.Map.Entry;
 
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.DocearController;
+import org.docear.plugin.core.features.DocearNodeModelExtensionController;
+import org.docear.plugin.core.features.DocearNodeModelExtension.DocearExtensionKey;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.features.AnnotationController;
@@ -217,13 +221,59 @@ public class NodeUtils {
         return new PdfFileFilter().accept(link);
     }
 	
-	public static List<NodeModel> insertNewChildNodesFrom(URI pdfFile, Collection<AnnotationModel> annotations, boolean isLeft, NodeModel target){
+	public static List<NodeModel> insertNewChildNodesFrom(URI pdfFile, Collection<AnnotationModel> annotations, boolean isLeft, boolean flattenSubfolder, NodeModel target){
 		AnnotationModel root = new AnnotationModel(new AnnotationID(Tools.getAbsoluteUri(pdfFile), 0), AnnotationType.PDF_FILE);
 		root.setTitle(Tools.getFilefromUri(Tools.getAbsoluteUri(pdfFile)).getName());
 		root.getChildren().addAll(annotations);
 		Collection<AnnotationModel> newList = new ArrayList<AnnotationModel>();
 		newList.add(root);
+		if(!flattenSubfolder){		
+			Stack<File> folderStack = NodeUtils.getFolderStructureStack(target, pdfFile);
+			target = createFolderStructurePath(target, folderStack);
+		}
 		return insertNewChildNodesFrom(newList, isLeft, target, target);
+	}
+	
+	public static NodeModel createFolderStructurePath(NodeModel target, Stack<File> pathStack) {		
+		if(pathStack.isEmpty()){			
+			return target;
+		}
+		File parent = pathStack.pop();
+		NodeModel pathNode = null;
+		for(NodeModel child : target.getChildren()){
+			if(child.getText().equals(parent.getName()) && DocearNodeModelExtensionController.containsKey(child, DocearExtensionKey.MONITOR_PATH)){
+				pathNode = child;
+				break;
+			}
+		}
+		if(pathNode != null){
+			return createFolderStructurePath(pathNode, pathStack);
+		}
+		else{
+			pathNode = ((MMapController) Controller.getCurrentModeController().getMapController()).newNode(parent.getName(), target.getMap());
+			DocearNodeModelExtensionController.setEntry(pathNode, DocearExtensionKey.MONITOR_PATH, null);			
+			NodeUtils.insertChildNodeFrom(pathNode, target.isLeft(), target);
+			return createFolderStructurePath(pathNode, pathStack);
+		}			
+	}
+	
+	public static Stack<File> getFolderStructureStack(NodeModel monitoringNode, URI pdfFile){
+		Stack<File> folderStack = new Stack<File>();
+		URI pdfDirURI = NodeUtils.getPdfDirFromMonitoringNode(monitoringNode);
+		pdfDirURI = Tools.getAbsoluteUri(pdfDirURI);
+		if(pdfDirURI == null || Tools.getFilefromUri(pdfDirURI) == null || !Tools.getFilefromUri(pdfDirURI).exists() || !Tools.getFilefromUri(pdfDirURI).isDirectory()){
+			return folderStack;
+		}
+		File pdfDirFile = Tools.getFilefromUri(pdfDirURI);		
+		File parent = Tools.getFilefromUri(pdfFile).getParentFile();
+		while(parent != null && !parent.equals(pdfDirFile)){
+			folderStack.push(parent);
+			parent = parent.getParentFile();
+			if(parent == null){
+				folderStack.clear();
+			}
+		}
+		return folderStack;
 	}
 
 	public static List<NodeModel> insertNewChildNodesFrom(Collection<AnnotationModel> annotations, boolean isLeft, NodeModel target, NodeModel rootTarget) {

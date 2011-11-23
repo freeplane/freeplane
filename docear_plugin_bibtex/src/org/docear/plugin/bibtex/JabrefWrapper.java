@@ -9,14 +9,11 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.core.resources.ResourceController;
-
 import net.sf.jabref.BasePanel;
 import net.sf.jabref.BibtexDatabase;
 import net.sf.jabref.Globals;
 import net.sf.jabref.JabRef;
 import net.sf.jabref.JabRefFrame;
-import net.sf.jabref.JabRefPreferences;
 import net.sf.jabref.Util;
 import net.sf.jabref.export.SaveSession;
 import net.sf.jabref.external.FileLinksUpgradeWarning;
@@ -25,6 +22,8 @@ import net.sf.jabref.imports.OpenDatabaseAction;
 import net.sf.jabref.imports.ParserResult;
 import net.sf.jabref.imports.PostOpenAction;
 import net.sf.jabref.label.HandleDuplicateWarnings;
+
+import org.freeplane.core.resources.ResourceController;
 
 public class JabrefWrapper extends JabRef  {
 	
@@ -118,6 +117,11 @@ public class JabrefWrapper extends JabRef  {
 		getJabrefFrame().getTabbedPane().setSelectedComponent(basePanel);
 		this.setDatabase(database);
 		return basePanel;
+	}
+	
+	public void replaceDatabase(File file, boolean raisePanel) {
+		getJabrefFrame().closeCurrentTab();
+		openIt(file, raisePanel);
 	}
 		
 	public void openIt(File file, boolean raisePanel) {

@@ -26,11 +26,12 @@ import org.docear.plugin.bibtex.listeners.BibtexNodeDropListener;
 import org.docear.plugin.bibtex.listeners.JabRefChangeListener;
 import org.docear.plugin.bibtex.listeners.NodeAttributeListener;
 import org.docear.plugin.bibtex.listeners.NodeSelectionListener;
+import org.docear.plugin.bibtex.listeners.ReferencePathListener;
 import org.docear.plugin.core.ALanguageController;
+import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.IDocearEventListener;
-import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
@@ -49,7 +50,7 @@ import org.freeplane.plugin.workspace.controller.IWorkspaceListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 import org.freeplane.view.swing.map.NodeView;
 
-public class ReferencesController extends ALanguageController implements IDocearEventListener, IWorkspaceListener, IFreeplanePropertyListener, IMapLifeCycleListener {
+public class ReferencesController extends ALanguageController implements IDocearEventListener, IWorkspaceListener, IMapLifeCycleListener {
 	private final static JabRefChangeListener jabRefChangeListener = new JabRefChangeListener();	
 	
 	private static ReferencesController referencesController = null;
@@ -102,8 +103,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 		this.registerListeners();
 		this.addMenuEntries();
 		DocearController.getController().addDocearEventListener(this);
-		WorkspaceController.getController().addWorkspaceListener(this);
-		Controller.getCurrentController().getResourceController().addPropertyChangeListener(this);
+		WorkspaceController.getController().addWorkspaceListener(this);		
 		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(this);		
 		this.initJabref();		
 	}
@@ -116,6 +116,8 @@ public class ReferencesController extends ALanguageController implements IDocear
 	
 
 	private void registerListeners() {
+		CoreConfiguration.referencePathObserver.addChangeListener(new ReferencePathListener());
+		
 		this.modeController.addINodeViewLifeCycleListener(new INodeViewLifeCycleListener() {
 
 			public void onViewCreated(Container nodeView) {
@@ -282,19 +284,6 @@ public class ReferencesController extends ALanguageController implements IDocear
 		return attributeListener;
 	}
 	
-	
-	public void propertyChanged(String propertyName, String newValue, String oldValue) {
-		System.out.println("debug property changed: "+propertyName+": "+newValue+" / "+oldValue);
-		if (propertyName.equals("docear_bibtex_path")) {
-			System.out.println("new File: "+newValue);
-			File file = new File(newValue);
-			if (file!=null && file.exists()) {
-				ReferencesController.getController().getJabrefWrapper().getJabrefFrame().closeCurrentTab();
-				ReferencesController.getController().getJabrefWrapper().openIt(file, true);
-			}
-		}
-	}
-
 	
 	public void onCreate(MapModel map) {
 	}

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -22,6 +24,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.attribute.AttributeView;
 
@@ -31,10 +34,9 @@ public class Tools {
 	
 	public static File getFilefromUri(URI uri){		
 		if(uri == null) return null;
-		if(!uri.getScheme().equals("file")) return null;
 		
 		try {
-			return new File(uri.normalize());
+			return WorkspaceUtils.resolveURI(uri.normalize());
 		} 
 		catch (IllegalArgumentException e) {
 			//return new File(getAbsoluteUri(uri, map));
@@ -271,6 +273,17 @@ public class Tools {
 			return attributes.getAttributeKeyList();
 		}
 		return new ArrayList<String>();
-	}		
+	}	
+	
+	public static String getStackTraceAsString(Exception exception){ 
+		StringWriter sw = new StringWriter(); 
+		PrintWriter pw = new PrintWriter(sw); 
+		pw.print(" [ "); 
+		pw.print(exception.getClass().getName()); 
+		pw.print(" ] "); 
+		pw.print(exception.getMessage()); 
+		exception.printStackTrace(pw); 
+		return sw.toString(); 
+	}
 
 }

@@ -63,6 +63,7 @@ public class AddMonitoringFolderAction extends AbstractMonitoringAction {
         		NodeUtils.addMindmapDir(selected, mindmapDir);
         		NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_AUTO, 2);
         		NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_SUBDIRS, 2);
+        		NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 0);
         		List<NodeModel> list = new ArrayList<NodeModel>();
         		list.add(Controller.getCurrentController().getSelection().getSelected());	
         		AddMonitoringFolderAction.updateNodesAgainstMonitoringDir(list, true);

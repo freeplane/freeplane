@@ -1,5 +1,6 @@
 package org.docear.plugin.core.features;
 
+import org.docear.plugin.core.features.DocearNodeModelExtension.DocearExtensionKey;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -43,6 +44,19 @@ public class DocearNodeModelExtensionController implements IExtension{
 			node.removeExtension(DocearNodeModelExtension.class);
 		}
 	}
+	
+	public static boolean containsKey(NodeModel node, DocearExtensionKey key){
+		DocearNodeModelExtension extension = getModel(node);
+		if(extension != null){
+			return extension.containsKey(key.toString());
+		}		
+		return false;
+	}
+	
+	public static DocearNodeModelExtension setEntry(NodeModel node, DocearExtensionKey key, Object value){
+		return setEntry(node, key.toString(), value);
+	}
+	
 	public static DocearNodeModelExtension setEntry(NodeModel node, String key, Object value){
 		DocearNodeModelExtension extension = getModel(node);
 		if(extension == null){
