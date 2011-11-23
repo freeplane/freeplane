@@ -8,12 +8,14 @@ import javax.swing.JMenuItem;
 import javax.swing.JTree;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
+import javax.swing.tree.TreePath;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JFreeplaneMenuItem;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
@@ -164,8 +166,13 @@ public class WorkspacePopupMenuBuilder {
 				public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
 					if(action instanceof AWorkspaceAction && e.getSource() instanceof WorkspacePopupMenu) {
 						WorkspacePopupMenu menu = ((WorkspacePopupMenu)e.getSource());
-						AWorkspaceTreeNode node = (AWorkspaceTreeNode) ((JTree)menu.getInvoker()).getPathForLocation(menu.getInvokerLocation().x, menu.getInvokerLocation().y).getLastPathComponent();
-						((AWorkspaceAction) action).setEnabledFor(node);
+						TreePath path = ((JTree)menu.getInvoker()).getPathForLocation(menu.getInvokerLocation().x, menu.getInvokerLocation().y);
+						if(path != null) {
+							AWorkspaceTreeNode node = (AWorkspaceTreeNode) path.getLastPathComponent();
+							((AWorkspaceAction) action).setEnabledFor(node);
+						} else {
+							((AWorkspaceAction) action).setEnabledFor((AWorkspaceTreeNode) WorkspaceUtils.getModel().getRoot());
+						}
 					}
 					else {
 						action.setEnabled();
