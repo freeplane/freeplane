@@ -2,7 +2,7 @@
  * author: Marcel Genzmehr
  * 22.11.2011
  */
-package org.docear.plugin.core.ui.dialogs;
+package org.docear.plugin.core.ui;
 
 import java.io.File;
 import java.net.URI;
@@ -34,7 +34,7 @@ public class LocationDialogPanel extends JPanel {
 	public LocationDialogPanel(URI oldLocation, final boolean directoryOnly) {
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),
+				ColumnSpec.decode("max(150dlu;default):grow"),
 				FormFactory.RELATED_GAP_COLSPEC,
 				FormFactory.DEFAULT_COLSPEC,},
 			new RowSpec[] {

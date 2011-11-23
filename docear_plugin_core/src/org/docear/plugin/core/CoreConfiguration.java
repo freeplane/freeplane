@@ -1,5 +1,6 @@
 package org.docear.plugin.core;
 
+import java.net.URI;
 import java.net.URL;
 import java.util.Enumeration;
 
@@ -115,7 +116,10 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		modifyContextMenus();
 		
 		registerController(modeController);
-		UrlManager.getController().setLastCurrentDir(WorkspaceUtils.resolveURI(CoreConfiguration.projectPathObserver.getUri()));
+		URI uri = CoreConfiguration.projectPathObserver.getUri();
+		if (uri != null) {
+			UrlManager.getController().setLastCurrentDir(WorkspaceUtils.resolveURI(CoreConfiguration.projectPathObserver.getUri()));
+		}
 	}
 	
 	private void registerController(ModeController modeController) {

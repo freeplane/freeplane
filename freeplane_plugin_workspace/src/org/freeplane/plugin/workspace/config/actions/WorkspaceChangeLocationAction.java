@@ -2,8 +2,8 @@ package org.freeplane.plugin.workspace.config.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.plugin.workspace.WorkspaceChooserDialog;
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
 
 public class WorkspaceChangeLocationAction extends AWorkspaceAction {
@@ -23,8 +23,7 @@ public class WorkspaceChangeLocationAction extends AWorkspaceAction {
 	}
 	
 	private void showLocationSwitcherDialog() {		
-		WorkspaceChooserDialog locationDialog = new WorkspaceChooserDialog();
-		locationDialog.setVisible(true);
+		WorkspaceUtils.showWorkspaceChooserDialog();
 		
 		WorkspaceController workspaceController = WorkspaceController.getController();
 		workspaceController.reloadWorkspace();

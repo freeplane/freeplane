@@ -1,7 +1,5 @@
-package org.freeplane.plugin.workspace;
+package org.freeplane.plugin.workspace.dialog;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -13,35 +11,43 @@ import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.MutableComboBoxModel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListDataListener;
 
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.WorkspacePreferences;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
-public class WorkspaceChooserDialog extends JDialog {
+public class WorkspaceChooserDialogPanel extends JPanel {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	private final JPanel contentPanel = new JPanel();
+	private static final long serialVersionUID = 1L;	
 	private JTextField location;
-
-	private JPanel mainPanel = new JPanel();
+	
 	private JComboBox profileComboBox;
 	private JButton btnCreateNew;
 
+	
+	public String getLocationPath() {
+		return location.getText();
+	}
+
+	public String getProfileName() {
+		return ((ProfileListObject) profileComboBox.getSelectedItem()).getName();
+	}
+	
 	/**
 	 * Create the dialog.
 	 */
@@ -52,25 +58,6 @@ public class WorkspaceChooserDialog extends JDialog {
 		if (profileName != null && profileName.length() > 0) {
 			workspaceChange(this.location.getText(), profileName);
 		}
-	}
-
-	private void onCancelButton() {
-		this.dispose();
-	}
-
-	private void onOkButton() {
-		ProfileListObject item = (ProfileListObject) profileComboBox.getSelectedItem();
-		String profileName = item.getName();
-
-		if (location.getText().length() == 0 || profileName.length() == 0) {
-			return;
-		}
-
-		File f = new File(this.location.getText());
-		WorkspaceController.getController().getPreferences().setNewWorkspaceLocation(WorkspaceUtils.getURI(f));
-		WorkspaceController.getController().getPreferences().setWorkspaceProfile(profileName);
-
-		this.dispose();
 	}
 
 	private void onShowButton() {
@@ -91,31 +78,14 @@ public class WorkspaceChooserDialog extends JDialog {
 		}
 	}
 
-	public WorkspaceChooserDialog() {
-		this.setModal(true);
-		setTitle(TextUtils.getText("no_location_set"));
-		setBounds(100, 100, 484, 200);
-		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		{
-			contentPanel.setLayout(new FormLayout(new ColumnSpec[] { FormFactory.RELATED_GAP_COLSPEC,
-					ColumnSpec.decode("114px:grow"), FormFactory.LABEL_COMPONENT_GAP_COLSPEC, ColumnSpec.decode("106px"),
-					FormFactory.RELATED_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC, FormFactory.RELATED_GAP_COLSPEC,
-					FormFactory.DEFAULT_COLSPEC, FormFactory.RELATED_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC,
-					FormFactory.RELATED_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC, }, new RowSpec[] {
-					FormFactory.UNRELATED_GAP_ROWSPEC, RowSpec.decode("25px"), FormFactory.RELATED_GAP_ROWSPEC,
-					RowSpec.decode("default:grow"), }));
-		}
-		{
-			mainPanel = new JPanel();
-			contentPanel.add(mainPanel, "1, 1, 12, 4, fill, fill");
-			mainPanel.setLayout(new FormLayout(new ColumnSpec[] { FormFactory.RELATED_GAP_COLSPEC,
+	public WorkspaceChooserDialogPanel() {	
+		{	
+			this.setLayout(new FormLayout(new ColumnSpec[] { FormFactory.RELATED_GAP_COLSPEC,
 					ColumnSpec.decode("default:grow"), FormFactory.RELATED_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC, },
 					new RowSpec[] { FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
 							FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, }));
 			location = new JTextField();
-			mainPanel.add(location, "2, 2, fill, fill");
+			this.add(location, "2, 2, fill, fill");
 
 			String currentLocation = WorkspaceController.getController().getPreferences().getWorkspaceLocation();
 			if (currentLocation != null && currentLocation.length() > 0) {
@@ -124,11 +94,11 @@ public class WorkspaceChooserDialog extends JDialog {
 			location.setColumns(30);
 			{
 				JButton btnBrowse = new JButton(TextUtils.getText("browse"));
-				mainPanel.add(btnBrowse, "4, 2");
+				this.add(btnBrowse, "4, 2");
 
 				{
 					profileComboBox = new JComboBox();
-					mainPanel.add(profileComboBox, "2, 4, fill, default");
+					this.add(profileComboBox, "2, 4, fill, default");
 					profileComboBox.setModel(new WorkspaceProfileListModel());					
 					
 				}
@@ -139,18 +109,18 @@ public class WorkspaceChooserDialog extends JDialog {
 							onCreateNewProfile();
 						}
 					});
-					mainPanel.add(btnCreateNew, "4, 4");
+					this.add(btnCreateNew, "4, 4");
 				}
 				if (currentLocation != null && currentLocation.length() > 0) {
 					workspaceChange(this.location.getText());
 				}
 				if (location.getText().trim().length() == 0) {
-					this.profileComboBox.setVisible(false);
-					this.btnCreateNew.setVisible(false);
+					this.profileComboBox.setEnabled(false);
+					this.btnCreateNew.setEnabled(false);
 				}
 				else {
-					this.profileComboBox.setVisible(true);
-					this.btnCreateNew.setVisible(true);
+					this.profileComboBox.setEnabled(true);
+					this.btnCreateNew.setEnabled(true);
 				}
 
 				btnBrowse.addActionListener(new ActionListener() {
@@ -160,42 +130,16 @@ public class WorkspaceChooserDialog extends JDialog {
 				});
 			}
 		}
-		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			{
-				JButton cancelButton = new JButton(TextUtils.getText("cancel"));
-				cancelButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						onCancelButton();
-					}
-				});
-				cancelButton.setActionCommand("cancel");
-				buttonPane.add(cancelButton);
-			}
-			{
-				JButton okButton = new JButton(TextUtils.getText("ok"));
-				okButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						onOkButton();
-					}
-				});
-				okButton.setActionCommand("ok");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
-			}
-		}
+		
 	}
 
 	public void addDirectoryOption(String text, JButton button) {
 		JTextField position = new JTextField();
 		position.setText(text);
 		position.setColumns(30);
-		mainPanel.add(position, "2, 4, fill, fill");
+		this.add(position, "2, 4, fill, fill");
 
-		// JButton btnPdf = new JButton("PDF");
-		mainPanel.add(button, "4, 4, fill, fill");
+		this.add(button, "4, 4, fill, fill");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				onShowButton();
@@ -211,9 +155,8 @@ public class WorkspaceChooserDialog extends JDialog {
 	private void workspaceChange(final String newPath, final String newProfileName) {
 		if (newPath != null && newPath.trim().length() > 0) {
 			((WorkspaceProfileListModel) profileComboBox.getModel()).reload(newPath, newProfileName);
-			this.btnCreateNew.setVisible(true);
-			this.profileComboBox.setVisible(true);
-			this.profileComboBox.repaint();
+			this.btnCreateNew.setEnabled(true);
+			this.profileComboBox.setEnabled(true);
 		}
 	}
 
@@ -254,7 +197,7 @@ public class WorkspaceChooserDialog extends JDialog {
 		}
 
 		public void reload(String path, String newProfileName) {
-			itemList = new Vector<WorkspaceChooserDialog.ProfileListObject>();
+			itemList = new Vector<WorkspaceChooserDialogPanel.ProfileListObject>();
 			itemList.add(new ProfileListObject(WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT, "<"
 					+ WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT + "> profile"));
 			selectedObject = itemList.elementAt(0);

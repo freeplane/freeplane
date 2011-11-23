@@ -9,7 +9,7 @@ import java.net.URI;
 
 import javax.swing.JOptionPane;
 
-import org.docear.plugin.core.ui.dialogs.LocationDialogPanel;
+import org.docear.plugin.core.ui.LocationDialogPanel;
 import org.docear.plugin.core.workspace.node.FolderTypeLiteratureRepositoryNode;
 import org.docear.plugin.core.workspace.node.FolderTypeProjectsNode;
 import org.docear.plugin.core.workspace.node.LinkTypeReferencesNode;
