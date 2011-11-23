@@ -109,8 +109,8 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			
 			Map<AnnotationID, Collection<IAnnotation>> conflicts = new HashMap<AnnotationID, Collection<IAnnotation>>();
 			private int totalNodeCount;
-			private int totalNodeProgressCount = 0;
-			private int totalMonitorNodeCount = 1;
+			private int totalNodeProgressCount;
+			private int totalMonitorNodeCount;
 			private int monitorNodeProgressCount;
 			private boolean deleteWidowedLinks = true;
 			private boolean askDeleteWidowedLinks = true;
@@ -121,7 +121,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 				for(final NodeModel target : targets){
 					totalNodeCount = 0;
 					totalNodeProgressCount = 0;
-					totalNodeProgressCount = 0;
+					monitorNodeProgressCount = 0;
 					totalMonitorNodeCount = 1;
 					fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, "Updating against "+ target.getText() +" in progress....");
 					fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
