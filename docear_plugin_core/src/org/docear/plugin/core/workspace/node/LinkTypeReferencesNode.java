@@ -92,12 +92,15 @@ public class LinkTypeReferencesNode extends LinkTypeFileNode implements IBibtexD
 	
 	public void setLinkPath(URI uri) {
 		super.setLinkPath(uri);
-		locked = true;
-		CoreConfiguration.referencePathObserver.setUri(uri);
+		if(!locked) {
+			locked = true;
+			CoreConfiguration.referencePathObserver.setUri(uri);
+			locked = false;
+		}
 		if (uri != null) {
 			createIfNeeded(uri);
 		}		
-		locked = false;
+		
 	}
 	
 	public void initializePopup() {
@@ -194,9 +197,11 @@ public class LinkTypeReferencesNode extends LinkTypeFileNode implements IBibtexD
 	}
 
 	public void stateChanged(ChangeEvent e) {
-		if(!locked && e.getSource() instanceof NodeAttributeObserver) {			
+		if(!locked && e.getSource() instanceof NodeAttributeObserver) {
+			locked = true;
 			URI uri = ((NodeAttributeObserver) e.getSource()).getUri();			
 			this.setLinkPath(uri);
+			locked = false;
 		}
 	}
 }

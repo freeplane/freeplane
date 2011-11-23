@@ -37,7 +37,7 @@ public class NodeAttributeObserver {
 	private void fireValueChanged() {
 		ChangeEvent event = new ChangeEvent(this);
 		for(ChangeListener listener : listeners) {
-			listener.stateChanged(event);
+ 			listener.stateChanged(event);
 		}
 		
 	}
