@@ -9,7 +9,13 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: org.osgi.framework;version="1.3.0",
  org.osgi.service.url;version="1.0.0"
 Require-Bundle: org.freeplane.core;bundle-version="1.0.1"
-Export-Package: org.apache.commons.io.monitor,
+Export-Package: org.apache.commons.io,
+ org.apache.commons.io.comparator,
+ org.apache.commons.io.filefilter,
+ org.apache.commons.io.input,
+ org.apache.commons.io.monitor,
+ org.apache.commons.io.output,
+ org.docear.lang,
  org.freeplane.plugin.workspace;
   uses:="javax.swing.tree,
    org.osgi.service.url,

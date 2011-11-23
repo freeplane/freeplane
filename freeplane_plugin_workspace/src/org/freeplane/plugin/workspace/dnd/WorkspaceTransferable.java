@@ -48,22 +48,20 @@ public class WorkspaceTransferable implements Transferable {
 		addData(flavor, data);
 	}
 
-	/**
-	 * 
-	 */
 	public WorkspaceTransferable() {
 	}
 
-	public boolean addData(DataFlavor flavor, Object data) {
-		dataMap.put(flavor, data);
-		return true;
-	}
+	
 	
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
 	
-	// Returns an object which represents the data to be transferred.
+	public boolean addData(DataFlavor flavor, Object data) {
+		dataMap.put(flavor, data);
+		return true;
+	}	
+	
 	public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
 		if(dataMap.containsKey(flavor)) {
 			return dataMap.get(flavor);
@@ -72,7 +70,6 @@ public class WorkspaceTransferable implements Transferable {
 	}
 
 	public DataFlavor[] getTransferDataFlavors() {
-		System.out.println("getTransferDataFlavors");
 		DataFlavor[] flavors = new DataFlavor[dataMap.size()];
 		int i = 0;
 		for(Enumeration<DataFlavor> e = dataMap.keys(); e.hasMoreElements(); i++) {
@@ -84,7 +81,6 @@ public class WorkspaceTransferable implements Transferable {
 	// Returns whether or not the specified data flavor is supported for
 	// this object.
 	public boolean isDataFlavorSupported(DataFlavor flavor) {
-		System.out.println("isDataFlavorSupported: " + flavor);
 		if(dataMap.containsKey(flavor)) {
 			return true;
 		}

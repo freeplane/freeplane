@@ -1,6 +1,9 @@
 package org.freeplane.plugin.workspace.config.actions;
 
 import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.EnabledAction;
@@ -36,8 +39,6 @@ public class NodePasteAction extends AWorkspaceAction {
 			// if the system clipboard has a problem
 			LogUtils.warn(ex.getLocalizedMessage());
 		}
-		//FIXME: this function is not available yet
-		setEnabled(false);
 	}
 	
 	public void setEnabledFor(AWorkspaceTreeNode node) {
@@ -49,7 +50,15 @@ public class NodePasteAction extends AWorkspaceAction {
 	}
 	
 	public void actionPerformed(final ActionEvent e) {
-        //TODO: IMPLEMENTATION
+        AWorkspaceTreeNode targetNode = getNodeFromActionEvent(e);
+        if(targetNode instanceof IDropAcceptor) {
+        	Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
+        	Transferable transf = clip.getContents(null);
+        	if(transf == null) {
+        		return;
+        	}
+        	((IDropAcceptor) targetNode).processDrop(transf, DnDConstants.ACTION_COPY);
+        }
     }
 
 

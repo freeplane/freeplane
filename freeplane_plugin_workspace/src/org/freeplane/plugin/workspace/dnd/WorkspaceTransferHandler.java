@@ -52,7 +52,7 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 
 	public WorkspaceTransferHandler(JTree tree, IWorkspaceDragnDropController controller, int action, boolean drawIcon) {
 		this.controller = controller;
-		this.dispatcher = new DefaultWorkspaceDroptTargetDispatcher();
+		this.dispatcher = new DefaultWorkspaceDropTargetDispatcher();
 		
 		this.tree = tree;
 		this.tree.setTransferHandler(this);
@@ -86,19 +86,21 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 		StringOutputStream writer = new StringOutputStream();
 		List<AWorkspaceTreeNode> objectList = new ArrayList<AWorkspaceTreeNode>();
 		if (comp instanceof JTree) {
-			JTree t = (JTree) comp;
-			//FIXME: prepare for multiple node selection
+			JTree t = (JTree) comp;			
 			for (TreePath p : t.getSelectionPaths()) {
 				AWorkspaceTreeNode node = (AWorkspaceTreeNode) p.getLastPathComponent();
 				if (node instanceof IWorkspaceTransferableCreator) {
+					//FIXME: prepare for multiple node selection
 					return ((IWorkspaceTransferableCreator)node).getTransferable();
-				}
-				try {
-					ObjectOutputStream oos = new ObjectOutputStream(writer);
-					oos.writeObject(node);
-					objectList.add(node);
-				}
-				catch (IOException e) {
+				} 
+				else {
+					try {
+						ObjectOutputStream oos = new ObjectOutputStream(writer);
+						oos.writeObject(node);
+						objectList.add(node);
+					}
+					catch (IOException e) {
+					}
 				}
 			}
 		}	
@@ -109,9 +111,21 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 
 	}
 
-	public boolean importData(JComponent comp, Transferable t) {
+	public boolean importData(JComponent comp, Transferable transf) {
 		System.out.println("importData: " + comp);
-		return super.importData(comp, t);
+		if (comp instanceof JTree) {
+			JTree t = (JTree) comp;			
+			for (TreePath p : t.getSelectionPaths()) {
+				AWorkspaceTreeNode targetNode = (AWorkspaceTreeNode) p.getLastPathComponent();
+				if (targetNode instanceof IDropAcceptor) {
+					if(transf == null) {
+		        		return false;
+		        	}
+		        	return ((IDropAcceptor) targetNode).processDrop(transf, DnDConstants.ACTION_COPY);
+				}
+			}
+		}		
+		return false;
 	}
 
 	public int getSourceActions(JComponent comp) {

@@ -2,11 +2,11 @@ package org.freeplane.plugin.workspace.config.node;
 
 
 import java.awt.Component;
+import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DropTargetDropEvent;
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -111,14 +111,12 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeEventLi
 			List<AWorkspaceTreeNode> objectList = new ArrayList<AWorkspaceTreeNode>();
 			objectList.add(this);
 			transferable.addData(WorkspaceTransferable.WORKSPACE_NODE_FLAVOR, objectList);
+			return transferable;
 		}
-		catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		return transferable;
+		catch (Exception e) {
+			LogUtils.warn(e);
+		}		
+		return null;
 	}
 	
 	protected AWorkspaceTreeNode clone(LinkTypeFileNode node) {		
@@ -137,5 +135,14 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeEventLi
 			initializePopup();
 		}
 		return popupMenu;
+	}
+	
+	public boolean acceptDrop(DataFlavor[] flavors) {
+		return false;
+	}
+
+	public boolean processDrop(DropTargetDropEvent event) {
+		event.rejectDrop();
+		return true;
 	}
 }

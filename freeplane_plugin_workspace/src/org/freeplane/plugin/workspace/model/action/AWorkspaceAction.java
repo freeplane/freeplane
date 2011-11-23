@@ -86,7 +86,7 @@ public abstract class AWorkspaceAction extends AFreeplaneAction {
 		return (AWorkspaceTreeNode) path.getLastPathComponent();
 	}
 	
-	private WorkspacePopupMenu getRootPopupMenu(Component component) {
+	public WorkspacePopupMenu getRootPopupMenu(Component component) {
 		Component parent = component;
 		while(!(parent instanceof WorkspacePopupMenu) && parent != null) {
 			if(parent.getParent() == null && parent instanceof JPopupMenu) {
@@ -101,7 +101,7 @@ public abstract class AWorkspaceAction extends AFreeplaneAction {
 	}
 	
 	protected Component getComponentFromActionEvent(ActionEvent e) {
-		WorkspacePopupMenu pop = (WorkspacePopupMenu)((Component) e.getSource()).getParent();		
+		WorkspacePopupMenu pop = getRootPopupMenu((Component) e.getSource()); //(WorkspacePopupMenu)((Component) e.getSource()).getParent();		
 		JTree tree = (JTree)pop.getInvoker();
 		return tree.getComponentAt(pop.getInvokerLocation());
 	}

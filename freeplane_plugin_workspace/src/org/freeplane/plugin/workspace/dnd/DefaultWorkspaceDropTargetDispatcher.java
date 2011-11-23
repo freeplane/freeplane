@@ -12,7 +12,7 @@ import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 /**
  * 
  */
-public class DefaultWorkspaceDroptTargetDispatcher implements IDropTargetDispatcher {
+public class DefaultWorkspaceDropTargetDispatcher implements IDropTargetDispatcher {
 
 	
 	/***********************************************************************************
@@ -30,8 +30,7 @@ public class DefaultWorkspaceDroptTargetDispatcher implements IDropTargetDispatc
 			if(((IDropAcceptor)targetNode).acceptDrop(event.getCurrentDataFlavors())) {
 				return (IDropAcceptor)targetNode;
 			}
-			targetNode = targetNode.getParent();
-			
+			targetNode = targetNode.getParent();			
 		}
 		return null;
 	}

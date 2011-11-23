@@ -245,11 +245,6 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	public void workspaceChanged(WorkspaceEvent event) {
 		if(event.getType() == WorkspaceEvent.WORKSPACE_EVENT_TYPE_CHANGE) {
 			System.out.println("DOCEAR CORE: workspaceChanged(WorkspaceEvent):"+ event);
-
-			//showLocationDialogIfNeeded();
-			if(event.getType() == WorkspaceEvent.WORKSPACE_EVENT_TYPE_CHANGE) {
-				modifyContextMenus();
-			}
 		}
 		if(event.getType() == WorkspaceEvent.WORKSPACE_EVENT_TYPE_RELOAD) {
 			CoreConfiguration.projectPathObserver.setUri(null);

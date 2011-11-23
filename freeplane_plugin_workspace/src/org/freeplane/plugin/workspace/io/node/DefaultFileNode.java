@@ -1,7 +1,9 @@
 package org.freeplane.plugin.workspace.io.node;
 
 import java.awt.Component;
+import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DropTargetDropEvent;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -20,12 +22,15 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.dnd.IDropAcceptor;
 import org.freeplane.plugin.workspace.dnd.IWorkspaceTransferableCreator;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
@@ -35,7 +40,7 @@ import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 /**
  * 
  */
-public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNodeEventListener, IWorkspaceTransferableCreator {
+public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNodeEventListener, IWorkspaceTransferableCreator, IDropAcceptor {
 	private static final Icon FOLDER_OPEN_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/folder-orange_open.png"));
 	private static final Icon FOLDER_CLOSED_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/folder-orange.png"));
 	private static final Icon ACROBAT_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/acrobat.png"));
@@ -81,7 +86,7 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 	}
 	
 	public String getFileExtension() {
-		return fileExtension;
+		return this.fileExtension;
 	}
 
 	public void setFileExtension(String fileExtension) {
@@ -92,6 +97,7 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 		File newFile = new File(getFile().getParentFile() + File.separator + name);
 		if(getFile().renameTo(newFile)) {
 			this.file = newFile;
+			this.fileExtension = FilenameUtils.getExtension(getFile().getPath());
 			return true;
 		}
 		return false;
@@ -102,9 +108,10 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 	}
 	
 	public void relocateFile(final File parentFolder) {
-		File newFile = new File(parentFolder.getPath() + File.separator + getName());
+		File newFile = new File(parentFolder, getName());
 		if(newFile.exists()) {
 			this.file = newFile;
+			this.fileExtension = FilenameUtils.getExtension(getFile().getPath());
 		}
 	}
 	
@@ -129,9 +136,9 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 		}
 	}
 	
-	private void copyFileTo(File file, File parentFolder) throws IOException {
+	protected void copyFileTo(File file, File parentFolder) throws IOException {
 		if(parentFolder.isDirectory()) {				
-			File target = new File(parentFolder.getAbsolutePath()+File.separator+file.getName());
+			File target = new File(parentFolder,file.getName());
 			if(file.isDirectory()) {
 				if(target.mkdir()) {
 					for(File child : file.listFiles()) {
@@ -160,21 +167,42 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 	 * @param file
 	 * @throws IOException 
 	 */
-	public void copyHere(File file) throws IOException {
-		if(getFile().isDirectory()) {
-			copyFileTo(file, getFile());
+	public void copyTo(File destFile) throws IOException {
+		assert(destFile != null);
+		
+		if(destFile.isDirectory()) {
+			if(getFile().isDirectory()) {
+				FileUtils.copyDirectoryToDirectory(getFile(), destFile);
+			}
+			else {
+				FileUtils.copyFileToDirectory(getFile(), destFile);
+			}
+			//copyFileTo(getFile(), getFile());
 		} 
 		else {
-			copyFileTo(file, getFile().getParentFile());
+			copyTo(destFile.getParentFile());
 		}
 		
 	
 		
 	}
 	
-	public void moveHere(File file) throws IOException {
-		copyHere(file);
-		if(!file.delete()) throw new IOException("Could not delete File "+ file);
+	public void moveTo(File destFile) throws IOException {
+		assert(destFile != null);
+		if(destFile.isDirectory()) {
+			if(getFile().isDirectory()) {
+				FileUtils.moveDirectoryToDirectory(getFile(), destFile, true);
+			}
+			else {
+				FileUtils.moveFileToDirectory(getFile(), destFile, true);
+			}
+			//copyFileTo(getFile(), getFile());
+		} 
+		else {
+			copyTo(destFile.getParentFile());
+		}
+//		copyTo(file);
+//		if(!file.delete()) throw new IOException("Could not delete File "+ file);
 	}
 	
 	public boolean isEditable() {
@@ -224,7 +252,7 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 		node.setFileExtension(getFileExtension());
 		return super.clone(node);
 	}
-	
+		
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
@@ -280,6 +308,18 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 	
 	public final String getTagName() {
 		return null;
+	}
+	
+	public boolean acceptDrop(DataFlavor[] flavors) {
+		return false;
+	}
+
+	public boolean processDrop(DropTargetDropEvent event) {
+		return false;
+	}
+	
+	public boolean processDrop(Transferable transferable, int dropAction) {
+		return false;
 	}
 	
 	public Transferable getTransferable() {
