@@ -36,6 +36,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -108,7 +109,11 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			
 			Map<AnnotationID, Collection<IAnnotation>> conflicts = new HashMap<AnnotationID, Collection<IAnnotation>>();
 			private int totalNodeCount;
-			private int totalNodeProgressCount;
+			private int totalNodeProgressCount = 0;
+			private int totalMonitorNodeCount = 1;
+			private int monitorNodeProgressCount;
+			private boolean deleteWidowedLinks = true;
+			private boolean askDeleteWidowedLinks = true;
 			
 			
 			@Override
@@ -116,6 +121,8 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 				for(final NodeModel target : targets){
 					totalNodeCount = 0;
 					totalNodeProgressCount = 0;
+					totalNodeProgressCount = 0;
+					totalMonitorNodeCount = 1;
 					fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, "Updating against "+ target.getText() +" in progress....");
 					fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
 					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Searching monitored files ...");
@@ -220,6 +227,12 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 							fireStatusUpdate(SwingWorkerDialog.IS_CANCELED, null, "Monitoring canceled.");
 						}
 					}
+					Thread.sleep(1L);
+					if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
+					fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
+					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Searching for widowed links...");
+					totalMonitorNodeCount = getTotalChildCount(target);
+					deleteWidowedLinkNodes(target);
 					
 					Thread.sleep(1L);
 					if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
@@ -290,6 +303,59 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 				
 			}
 			
+			private void deleteWidowedLinkNodes(NodeModel parent) throws COSRuntimeException, IOException, COSLoadException, InterruptedException, InvocationTargetException{
+				ArrayList<NodeModel> children = new ArrayList<NodeModel>();
+				ArrayList<NodeModel> widowedLinks = new ArrayList<NodeModel>();
+				for(NodeModel child : parent.getChildren()){
+					Thread.sleep(1L);
+					if(this.isCancelled() || Thread.currentThread().isInterrupted()) return;
+					monitorNodeProgressCount++;
+					fireProgressUpdate(100 * monitorNodeProgressCount / totalMonitorNodeCount);
+					fireStatusUpdate(SwingWorkerDialog.REPAINT, null, null);
+					AnnotationNodeModel annotation = AnnotationController.getAnnotationNodeModel(child);
+					if(annotation != null){
+						if(Tools.getAbsoluteUri(child) != null && Tools.getFilefromUri(Tools.getAbsoluteUri(child)) != null){
+							if(!Tools.getFilefromUri(Tools.getAbsoluteUri(child)).exists()){
+								widowedLinks.add(child);
+								break;
+							}
+							if(annotation.getAnnotationType() != null && annotation.getAnnotationType() != AnnotationType.PDF_FILE){
+								AnnotationModel annoation = new PdfAnnotationImporter().searchAnnotation(Tools.getAbsoluteUri(child), child);
+								if(annoation == null){
+									widowedLinks.add(child);
+									break;
+								}
+							}
+						}
+					}
+					children.add(child);
+				}
+				for(final NodeModel widowedLink : widowedLinks){
+					SwingUtilities.invokeAndWait(
+					        new Runnable() {
+					            public void run(){							            	
+					            	if(askDeleteWidowedLinks){
+					            		int result = UITools.showConfirmDialog(widowedLink, "Delete nodes with widowed links ?", "Delete nodes with widowed links ?", JOptionPane.YES_NO_OPTION);
+					            		if(result == JOptionPane.YES_OPTION){
+					            			deleteWidowedLinks = true;
+					            		}
+					            		else{
+					            			deleteWidowedLinks = false;
+					            		}
+					            		askDeleteWidowedLinks = false;
+					            	}
+					            	if(deleteWidowedLinks){
+					            		widowedLink.removeFromParent();
+					            	}
+					            }
+					        }
+					   );
+				}
+				for(NodeModel child : children){
+					deleteWidowedLinkNodes(child);
+				}
+			}
+			
 			private Collection<AnnotationModel> getInsertedNodes(Collection<AnnotationModel> annotations){
 				Collection<AnnotationModel> result = new ArrayList<AnnotationModel>();
 				for(AnnotationModel annotation : annotations){
@@ -322,6 +388,14 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 				SwingUtilities.invokeAndWait(
 				        new Runnable() {
 				            public void run(){
+				            	if(progress < 0){
+				            		setProgress(0);
+				            		return;
+				            	}
+				            	if(progress > 100){
+				            		setProgress(100);
+				            		return;
+				            	}
 				            	setProgress(progress);						
 				            }
 				        }
@@ -391,6 +465,14 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 				for(NodeModel child : node.getChildren()){
 					getTotalNodeCount(child);
 				}					
+			}
+			
+			private int getTotalChildCount(NodeModel node){
+				int result = node.getChildCount();
+				for(NodeModel child : node.getChildren()){
+					result += getTotalChildCount(child);
+				}
+				return result;
 			}
 			
 			private String getMessage(List<MapModel> mapsToConvert){
