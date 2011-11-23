@@ -14,14 +14,19 @@ import java.net.URISyntaxException;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 
+import javax.swing.JOptionPane;
+
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
 import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
 import org.freeplane.plugin.workspace.config.node.VirtualFolderNode;
+import org.freeplane.plugin.workspace.dialog.WorkspaceChooserDialogPanel;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.model.WorkspaceIndexedTreeModel;
 import org.freeplane.plugin.workspace.model.node.AFolderNode;
@@ -40,6 +45,23 @@ public class WorkspaceUtils {
 	 * METHODS
 	 **********************************************************************************/
 
+	public static void showWorkspaceChooserDialog() {
+		WorkspaceChooserDialogPanel dialog = new WorkspaceChooserDialogPanel();
+		
+		JOptionPane.showMessageDialog(UITools.getFrame(), dialog, TextUtils.getRawText("no_location_set"), JOptionPane.PLAIN_MESSAGE);
+	
+		String location = dialog.getLocationPath();
+		String profileName = dialog.getProfileName();
+	
+		if (location.length() == 0 || profileName.length() == 0) {
+			return;
+		}
+	
+		File f = new File(location);
+		WorkspaceController.getController().getPreferences().setNewWorkspaceLocation(WorkspaceUtils.getURI(f));
+		WorkspaceController.getController().getPreferences().setWorkspaceProfile(profileName);
+	}
+	
 	public static void saveCurrentConfiguration() {
 		String profileName = ResourceController.getResourceController().getProperty(WorkspacePreferences.WORKSPACE_PROFILE, null);
 
