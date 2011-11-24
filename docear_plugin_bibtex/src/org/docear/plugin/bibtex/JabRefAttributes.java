@@ -66,7 +66,7 @@ public class JabRefAttributes {
 		
 		for (Attribute attribute : attributeTable.getAttributes()) {
 			if (attribute.getName().equals(attributeName)) {
-				return (String) attribute.getValue();
+				return attribute.getValue().toString();
 			}
 		}
 		
