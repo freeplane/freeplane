@@ -101,7 +101,7 @@ public class MonitoringFlattenSubfoldersAction extends DocearAction {
 				Map<NodeModel, Stack<File>> result = new HashMap<NodeModel, Stack<File>>();
 				for(NodeModel node : selected.getChildren()){					
 					URI uri = Tools.getAbsoluteUri(node);
-					if(uri == null || !Tools.getFilefromUri(uri).exists() || !Tools.getFilefromUri(uri).isFile()){
+					if(uri == null || Tools.getFilefromUri(uri) == null || !Tools.getFilefromUri(uri).exists() || !Tools.getFilefromUri(uri).isFile()){
 						continue;
 					}
 					Stack<File> folderStack = NodeUtils.getFolderStructureStack(selected, uri);				

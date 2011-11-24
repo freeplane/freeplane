@@ -1,14 +1,24 @@
 package org.docear.plugin.pdfutilities.pdf;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.channels.FileLock;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.apache.commons.io.input.AutoCloseInputStream;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.features.AnnotationController;
@@ -47,6 +57,10 @@ import de.intarsys.pdf.pd.PDPage;
 import de.intarsys.pdf.pd.PDTextAnnotation;
 import de.intarsys.pdf.pd.PDTextMarkupAnnotation;
 import de.intarsys.tools.locator.FileLocator;
+import de.intarsys.tools.locator.ILocator;
+import de.intarsys.tools.locator.LocatorFactory;
+import de.intarsys.tools.randomaccess.IRandomAccess;
+import de.intarsys.tools.randomaccess.RandomAccessFile;
 
 public class PdfAnnotationImporter {
 	
@@ -79,6 +93,7 @@ public class PdfAnnotationImporter {
 		if(document == null){
 			return annotations;
 		}
+		
 		try{
 			annotations.addAll(this.importAnnotations(document));					
 			annotations.addAll(this.importBookmarks(document.getOutline()));
@@ -87,8 +102,9 @@ public class PdfAnnotationImporter {
 			PDOutlineItem outline = (PDOutlineItem)PDOutline.META.createFromCos(document.getCatalog().cosGetOutline());
 			annotations.addAll(this.importBookmarks(outline));			
 		} finally {
-			if(document != null)
-			document.close();
+			if(document != null){				
+				document.close();				
+			}
 		}
         
 		return annotations;
@@ -126,18 +142,20 @@ public class PdfAnnotationImporter {
 				document.save();			
 			}
 			if(document != null)
-			document.close();
+			document.close();			
 		}
         
 		return ret;
 	}
 
 	public PDDocument getPDDocument(URI uri) throws IOException,	COSLoadException, COSRuntimeException {
-		if(uri == null || !Tools.exists(uri, this.map) || !new PdfFileFilter().accept(uri)){
+		if(uri == null || Tools.getFilefromUri(Tools.getAbsoluteUri(uri, this.map)) == null || !Tools.exists(uri, this.map) || !new PdfFileFilter().accept(uri)){
 			return null;
 		}
+		File file = Tools.getFilefromUri(Tools.getAbsoluteUri(uri, this.map));
 		
-		FileLocator locator = new FileLocator(Tools.getFilefromUri(Tools.getAbsoluteUri(uri, this.map)));
+		FileLocator locator = new FileLocator(file);
+		
 		PDDocument document = PDDocument.createFromLocator(locator);
 		return document;
 	}

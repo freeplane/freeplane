@@ -36,11 +36,10 @@ public class Tools {
 		if(uri == null) return null;
 		
 		try {
-			return WorkspaceUtils.resolveURI(uri.normalize());
+			return WorkspaceUtils.resolveURI(uri.normalize());			
 		} 
-		catch (IllegalArgumentException e) {
-			//return new File(getAbsoluteUri(uri, map));
-			e.printStackTrace();
+		catch (IllegalArgumentException e) {			
+			LogUtils.warn(e);
 			return null;
 		}
 	}
@@ -160,6 +159,7 @@ public class Tools {
 		
 		final File file = Tools.getFilefromUri(absoluteFile);
 		File dir = Tools.getFilefromUri(absoluteDir);
+		if(file == null || dir == null) return false;
 		File[] matchingFiles = dir.listFiles(new FilenameFilter() {
 			
 			public boolean accept(File dir, String name) {				

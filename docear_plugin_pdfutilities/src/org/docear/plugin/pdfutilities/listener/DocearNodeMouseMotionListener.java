@@ -131,11 +131,12 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 
 	private String getExecCommand(String readerPath, URI uriToFile, int page) {
 		PdfReaderFileFilter readerFilter = new PdfReaderFileFilter();
-		if(readerFilter.isAdobe(new File(readerPath))){
-			return readerPath + " /A page=" + page + " " + Tools.getFilefromUri(Tools.getAbsoluteUri(uriToFile, Controller.getCurrentController().getMap())).getAbsolutePath();
+		File file = Tools.getFilefromUri(Tools.getAbsoluteUri(uriToFile, Controller.getCurrentController().getMap()));
+		if(readerFilter.isAdobe(new File(readerPath)) && file != null){
+			return readerPath + " /A page=" + page + " " + file.getAbsolutePath();
 		}
-		if(readerFilter.isFoxit(new File(readerPath))){
-			return readerPath + " \"" + Tools.getFilefromUri(Tools.getAbsoluteUri(uriToFile, Controller.getCurrentController().getMap())).getAbsolutePath() + "\" /A page=" + page;
+		if(readerFilter.isFoxit(new File(readerPath)) && file != null){
+			return readerPath + " \"" + file.getAbsolutePath() + "\" /A page=" + page;
 		}
 		return null;
 	}

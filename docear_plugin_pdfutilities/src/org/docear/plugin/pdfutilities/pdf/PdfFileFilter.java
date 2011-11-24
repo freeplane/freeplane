@@ -18,7 +18,7 @@ public class PdfFileFilter implements FileFilter{
     }
 	
 	public boolean accept(URI uri){		
-		if(uri == null || !Tools.exists(uri)){
+		if(uri == null || Tools.getFilefromUri(uri) == null || !Tools.exists(uri)){
 			return false;
 		}
 		else{

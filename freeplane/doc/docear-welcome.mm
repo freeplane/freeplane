@@ -1,4 +1,4 @@
-<map version="0.9.0" software_name="SciPlore_MindMapping" software_version="0.14" private="1" mapID="88c560da-0c67-49c7-870a-fa7c1b63bc38">
+<map version="0.9.0" docear_map_version="1.0" software_name="SciPlore_MindMapping" software_version="0.14" private="1" mapID="88c560da-0c67-49c7-870a-fa7c1b63bc38">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <node TEXT="SciPlore MindMapping Overview" FOLDED="false" ID="ID_998226029" CREATED="1290692899377" MODIFIED="1300140081566" COLOR="#ffffff" BACKGROUND_COLOR="#009900" BOOKMARKS_UPDATED="0">
 <font NAME="SansSerif" SIZE="14" BOLD="true"/>
@@ -172,7 +172,9 @@
 <pdf_annotation type="BOOKMARK" page="1" object_number="129" generation_number="0"/>
 </node>
 <node TEXT="ASEO in practice" ID="ID_851301203" CREATED="1300136609057" MODIFIED="1300139549222">
-<node TEXT="SAGE is aware that title, abstract and keywords are essential so people find articles via google" ID="ID_961006065" CREATED="1270505080276" MODIFIED="1270505080276" LINK="file:/C:/_Dissertation/Literature/LIS_Manuscript_Guidelines.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="SAGE is aware that title, abstract and keywords are essential so people find articles via google" ID="ID_961006065" CREATED="1270505080276" MODIFIED="1270505080276" LINK="file:/C:/_Dissertation/Literature/LIS_Manuscript_Guidelines.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="4" object_number="718" generation_number="0"/>
+</node>
 <node TEXT="google (scholar) referes 60% of visitors to SAGE Online plattform" ID="ID_1400169207" CREATED="1270505887903" MODIFIED="1300136494900" LINK="file:/C:/_Dissertation/Literature/SAGE%20offers%20kind%20of%20ASEO%20tips%20for%20authors.pdf" BOOKMARKS_UPDATED="1299366127750">
 <attribute_layout NAME_WIDTH="111" VALUE_WIDTH="294"/>
 <attribute NAME="splmm_refkey" VALUE="SAGE"/>
@@ -347,7 +349,9 @@
 </node>
 <node TEXT="Pre-Paper Recommender Times / History" ID="ID_1331638684" CREATED="1297723033801" MODIFIED="1300138378607">
 <node TEXT="The Reviewer Assignment Problem" ID="ID_84836859" CREATED="1297723060447" MODIFIED="1300138373273">
-<node TEXT="paper about assigning papers to reviewers" ID="ID_1373881356" CREATED="1289476000049" MODIFIED="1289476000049" LINK="file:/C:/_Dissertation/Literature/A%20Personalized%20Paper%20Recommendation%20Approach%20Based%20on%20Web%20Paper%20Mining%20and%20Reviewer&apos;s%20Interest%20Modeling.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="paper about assigning papers to reviewers" ID="ID_1373881356" CREATED="1289476000049" MODIFIED="1289476000049" LINK="file:/C:/_Dissertation/Literature/A%20Personalized%20Paper%20Recommendation%20Approach%20Based%20on%20Web%20Paper%20Mining%20and%20Reviewer&apos;s%20Interest%20Modeling.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="78" generation_number="0"/>
+</node>
 <node TEXT="good literature survey on the &quot;Reviewer Assignment Problem&quot; (which is basically the same as a paper recommender) [todo:read]" ID="ID_949390344" CREATED="1289476001002" MODIFIED="1289476001002" LINK="file:/C:/_Dissertation/Literature/A%20Survey%20on%20Reviewer%20Assignment%20Problem.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="1" object_number="129" generation_number="0"/>
 </node>
@@ -379,11 +383,19 @@
 <attribute NAME="splmm_refauthors" VALUE="Kurt D. Bollacker Steve Lawrence"/>
 <pdf_annotation type="BOOKMARK" page="3" object_number="198" generation_number="0"/>
 </node>
-<node TEXT="Paper introducing CiteSeer inclusing paper recommender" ID="ID_396171539" CREATED="1289476004586" MODIFIED="1289476004586" LINK="file:/C:/_Dissertation/Literature/CiteSeer%20--%20an%20autonous%20Web%20agent%20for%20automatic%20retrieval%20and%20identification%20of%20interesting%20publications.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="idea of recommending research papers to CiteSeer users" ID="ID_581288355" CREATED="1297728714766" MODIFIED="1297728714766" LINK="file:/C:/_Dissertation/Literature/Collaborative%20Filtering%20by%20Personality%20Diagnosis.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark"/>
-<node TEXT="Introduction of CiteSeer Plus" ID="ID_1883808480" CREATED="1289476017417" MODIFIED="1289476017417" LINK="file:/C:/_Dissertation/Literature/Towards%20next%20generation%20citeseer%20--%20A%20flexible%20architecture%20for%20digital%20library%20deployment.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="Paper introducing CiteSeer inclusing paper recommender" ID="ID_396171539" CREATED="1289476004586" MODIFIED="1289476004586" LINK="file:/C:/_Dissertation/Literature/CiteSeer%20--%20an%20autonous%20Web%20agent%20for%20automatic%20retrieval%20and%20identification%20of%20interesting%20publications.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="222" generation_number="0"/>
+</node>
+<node TEXT="idea of recommending research papers to CiteSeer users" ID="ID_581288355" CREATED="1297728714766" MODIFIED="1297728714766" LINK="file:/C:/_Dissertation/Literature/Collaborative%20Filtering%20by%20Personality%20Diagnosis.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
+<pdf_annotation type="BOOKMARK" page="7" object_number="234" generation_number="0"/>
+</node>
+<node TEXT="Introduction of CiteSeer Plus" ID="ID_1883808480" CREATED="1289476017417" MODIFIED="1289476017417" LINK="file:/C:/_Dissertation/Literature/Towards%20next%20generation%20citeseer%20--%20A%20flexible%20architecture%20for%20digital%20library%20deployment.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="240" generation_number="0"/>
+</node>
 <node TEXT="Based on CiteSeer" ID="ID_1817588333" CREATED="1297728979342" MODIFIED="1299873231274">
-<node TEXT="paper recommender based on authored documents (citesser)" ID="ID_1976421029" CREATED="1289902415526" MODIFIED="1289902415526" LINK="file:/C:/_Dissertation/Literature/Concept-based%20document%20recommendations%20for%20citeseer%20authors.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="paper recommender based on authored documents (citesser)" ID="ID_1976421029" CREATED="1289902415526" MODIFIED="1289902415526" LINK="file:/C:/_Dissertation/Literature/Concept-based%20document%20recommendations%20for%20citeseer%20authors.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="86" generation_number="0"/>
+</node>
 <node TEXT="user profile creation based on visited documents (acm classification, corpus: citeseer)" ID="ID_397721867" CREATED="1289476006166" MODIFIED="1289476006166" LINK="file:/C:/_Dissertation/Literature/Conceptual%20Recommender%20System%20for%20CiteSeer%20x.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="2" object_number="128" generation_number="0"/>
 </node>
@@ -401,9 +413,16 @@
 <pdf_annotation type="PDF_FILE" object_number="0"/>
 </node>
 <node TEXT="paper recommender based on social tags (semantic concept similarity computation)" ID="ID_161430233" CREATED="1289475999859" MODIFIED="1299873231274" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommender%20for%20Scientific%20Literatures%20Based%20on%20Semantic%20Concept%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750">
-<node TEXT="uses citeUlike" ID="ID_1420101473" CREATED="1289475999861" MODIFIED="1289475999861" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommender%20for%20Scientific%20Literatures%20Based%20on%20Semantic%20Concept%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="uses a hybrid approach" ID="ID_181899120" CREATED="1289475999861" MODIFIED="1289475999861" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommender%20for%20Scientific%20Literatures%20Based%20on%20Semantic%20Concept%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="nice formulas of a paper recommender" ID="ID_1938572474" CREATED="1289475999861" MODIFIED="1289475999861" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommender%20for%20Scientific%20Literatures%20Based%20on%20Semantic%20Concept%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<pdf_annotation type="BOOKMARK" page="1" object_number="102" generation_number="0"/>
+<node TEXT="uses citeUlike" ID="ID_1420101473" CREATED="1289475999861" MODIFIED="1289475999861" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommender%20for%20Scientific%20Literatures%20Based%20on%20Semantic%20Concept%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="105" generation_number="0"/>
+</node>
+<node TEXT="uses a hybrid approach" ID="ID_181899120" CREATED="1289475999861" MODIFIED="1289475999861" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommender%20for%20Scientific%20Literatures%20Based%20on%20Semantic%20Concept%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="111" generation_number="0"/>
+</node>
+<node TEXT="nice formulas of a paper recommender" ID="ID_1938572474" CREATED="1289475999861" MODIFIED="1289475999861" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommender%20for%20Scientific%20Literatures%20Based%20on%20Semantic%20Concept%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="2" object_number="119" generation_number="0"/>
+</node>
 </node>
 <node TEXT="related work on paper recommender based on citeulike" ID="ID_1614891618" CREATED="1289475997313" MODIFIED="1289475997313" LINK="file:/C:/_Dissertation/Literature/A%20Framework%20for%20Tag-Based%20Research%20Paper%20Recommender%20System%20--%20An%20IR%20Approach.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="2" object_number="143" generation_number="0"/>
@@ -416,6 +435,7 @@
 <attribute NAME="splmm_refauthors" VALUE="Bogers, T. and van den Bosch, A."/>
 <attribute NAME="splmm_refyear" VALUE="2008"/>
 <attribute NAME="splmm_publishedin" VALUE="Proceedings of the 2008 ACM conference on Recommender systems"/>
+<pdf_annotation type="BOOKMARK" page="1" object_number="300" generation_number="0"/>
 </node>
 </node>
 <node TEXT="Scienstein" ID="ID_952274088" CREATED="1298330808154" MODIFIED="1299873231274">
@@ -472,6 +492,7 @@
 <attribute NAME="splmm_refauthors" VALUE="Gori, M. and Pucci, A."/>
 <attribute NAME="splmm_refyear" VALUE="2006"/>
 <attribute NAME="splmm_publishedin" VALUE="Proceedings of the 2006 IEEE/WIC/ACM International Conference on Web Intelligence"/>
+<pdf_annotation type="PDF_FILE" object_number="0"/>
 </node>
 <node TEXT="Chinese Book Recommender" ID="ID_517531762" CREATED="1298332364126" MODIFIED="1299873231274">
 <node TEXT="generic, graph based paper recommender" ID="ID_529080933" CREATED="1289475997559" MODIFIED="1299873231274" LINK="file:/C:/_Dissertation/Literature/A%20graph-based%20recommender%20system%20for%20digital%20library.pdf" BOOKMARKS_UPDATED="1299366127750">
@@ -496,8 +517,12 @@
 </node>
 </node>
 <node TEXT="Paptis" ID="ID_1215469089" CREATED="1297726359979" MODIFIED="1299873231274">
-<node TEXT="Papits: Recommender, Paper Sharing, Retrieving, Classifying, ..." ID="ID_1741616699" CREATED="1289475998870" MODIFIED="1289475998870" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommendation%20Mechanism%20for%20the%20Research%20Support%20System%20Papits.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="Papits uses paper viewing history to construct user model" ID="ID_374708867" CREATED="1289475998870" MODIFIED="1289475998870" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommendation%20Mechanism%20for%20the%20Research%20Support%20System%20Papits.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="Papits: Recommender, Paper Sharing, Retrieving, Classifying, ..." ID="ID_1741616699" CREATED="1289475998870" MODIFIED="1289475998870" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommendation%20Mechanism%20for%20the%20Research%20Support%20System%20Papits.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="242" generation_number="0"/>
+</node>
+<node TEXT="Papits uses paper viewing history to construct user model" ID="ID_374708867" CREATED="1289475998870" MODIFIED="1289475998870" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommendation%20Mechanism%20for%20the%20Research%20Support%20System%20Papits.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="251" generation_number="0"/>
+</node>
 </node>
 <node TEXT="Papyres" ID="ID_1800867979" CREATED="1298331608563" MODIFIED="1299873231274">
 <node TEXT="Papyres: a Research Paper Management System" ID="ID_1866250575" CREATED="1289476012873" MODIFIED="1289476012873" LINK="file:/C:/_Dissertation/Literature/Papyres%20--%20a%20Research%20Paper%20Management%20System.pdf" BOOKMARKS_UPDATED="1299366127750">
@@ -513,7 +538,9 @@
 </node>
 </node>
 <node TEXT="W-RECMAS" ID="ID_930905065" CREATED="1298331617391" MODIFIED="1299873231274">
-<node TEXT="idea of academic paper recommendations (W-RECMAS)" ID="ID_926673974" CREATED="1297728876259" MODIFIED="1297728876259" LINK="file:/C:/_Dissertation/Literature/Combining%20Data%20Mining%20Technique%20and%20Users&apos;%20Relevance%20Opinion%20to%20Build%20an%20Efficient%20Recommender%20System.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark"/>
+<node TEXT="idea of academic paper recommendations (W-RECMAS)" ID="ID_926673974" CREATED="1297728876259" MODIFIED="1297728876259" LINK="file:/C:/_Dissertation/Literature/Combining%20Data%20Mining%20Technique%20and%20Users&apos;%20Relevance%20Opinion%20to%20Build%20an%20Efficient%20Recommender%20System.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
+<pdf_annotation type="BOOKMARK" page="2" object_number="89" generation_number="0"/>
+</node>
 </node>
 <node TEXT="MyPythia" ID="ID_1355922402" CREATED="1298331789289" MODIFIED="1299873231274">
 <node TEXT="MyPYTHIA: recommender for scientific software and services " ID="ID_1917686918" CREATED="1289476011420" MODIFIED="1297814393608" LINK="file:/C:/_Dissertation/Literature/MyPYTHIA%20-%20A%20Recommendation%20Portal%20for%20Scientific%20Software%20and%20Services.pdf" BOOKMARKS_UPDATED="1299366127750">
@@ -521,14 +548,21 @@
 </node>
 </node>
 <node TEXT="OntoRecommender" ID="ID_413324101" CREATED="1298331773830" MODIFIED="1299873231274">
-<node TEXT="OntoRecommender: Ontology based Web Recommender for Scholars (horrible english)" ID="ID_410084177" CREATED="1297814957656" MODIFIED="1297814957656" LINK="file:/C:/_Dissertation/Literature/Ontology-Supported%20Web%20Recommender%20for%20Scholar%20Information.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark"/>
+<node TEXT="OntoRecommender: Ontology based Web Recommender for Scholars (horrible english)" ID="ID_410084177" CREATED="1297814957656" MODIFIED="1297814957656" LINK="file:/C:/_Dissertation/Literature/Ontology-Supported%20Web%20Recommender%20for%20Scholar%20Information.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
+<pdf_annotation type="BOOKMARK" page="1" object_number="72" generation_number="0"/>
+</node>
 </node>
 <node TEXT="QuickStep" ID="ID_1958431868" CREATED="1298331780538" MODIFIED="1299873231274">
-<node TEXT="&quot;quckistep&quot;: recommender system based on usage mining /ontologies " ID="ID_415021716" CREATED="1297814740841" MODIFIED="1297814740841" LINK="file:/C:/_Dissertation/Literature/Ontological%20user%20profiling%20in%20recommender%20systems.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark"/>
+<node TEXT="&quot;quckistep&quot;: recommender system based on usage mining /ontologies " ID="ID_415021716" CREATED="1297814740841" MODIFIED="1297814740841" LINK="file:/C:/_Dissertation/Literature/Ontological%20user%20profiling%20in%20recommender%20systems.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
+<pdf_annotation type="BOOKMARK" page="7" object_number="256" generation_number="0"/>
+</node>
 </node>
 <node TEXT="Minerva" ID="ID_1455834551" CREATED="1298332765359" MODIFIED="1299873231274">
 <node TEXT="(boring) thesis about p2p paper recommender (Minerva)" ID="ID_575957321" CREATED="1289476016063" MODIFIED="1299873231274" LINK="file:/C:/_Dissertation/Literature/Structured%20Peer-to-Peer%20Search%20to%20build%20a%20bibliographic%20paper%20recommendation%20system.pdf" BOOKMARKS_UPDATED="1299366127750">
-<node TEXT="mixture of search and recommendation (user can specify keyword and recommendation relevance)" ID="ID_1715048134" CREATED="1289476016063" MODIFIED="1289476016063" LINK="file:/C:/_Dissertation/Literature/Structured%20Peer-to-Peer%20Search%20to%20build%20a%20bibliographic%20paper%20recommendation%20system.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<pdf_annotation type="BOOKMARK" page="1" object_number="560" generation_number="0"/>
+<node TEXT="mixture of search and recommendation (user can specify keyword and recommendation relevance)" ID="ID_1715048134" CREATED="1289476016063" MODIFIED="1289476016063" LINK="file:/C:/_Dissertation/Literature/Structured%20Peer-to-Peer%20Search%20to%20build%20a%20bibliographic%20paper%20recommendation%20system.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="24" object_number="554" generation_number="0"/>
+</node>
 </node>
 </node>
 <node TEXT="Arxiv" ID="ID_1169349330" CREATED="1298330737018" MODIFIED="1299873231274">
@@ -566,27 +600,39 @@
 <node TEXT="SpecRec isn&apos;t developled any more since 2007" ID="ID_1756106304" CREATED="1289902046833" MODIFIED="1289902046833" LINK="file:/C:/_Dissertation/Literature/claudia%20he&#xdf;%20&#xfc;ber%20sprec.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="1" object_number="36" generation_number="0"/>
 </node>
-<node TEXT="phd thesis about SPRec, a multi-layer paper recommender" ID="ID_725951017" CREATED="1289476017983" MODIFIED="1289476017983" LINK="file:/C:/_Dissertation/Literature/Trust%20Based%20Recommendations%20in%20Multi%20Layer%20Networks.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="phd thesis about SPRec, a multi-layer paper recommender" ID="ID_725951017" CREATED="1289476017983" MODIFIED="1289476017983" LINK="file:/C:/_Dissertation/Literature/Trust%20Based%20Recommendations%20in%20Multi%20Layer%20Networks.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="163" object_number="4112" generation_number="0"/>
+</node>
 </node>
 </node>
 <node TEXT="Comparisons" ID="ID_992742351" CREATED="1297727000267" MODIFIED="1299873231274">
-<node TEXT="overview of features of paper recommender" ID="ID_1360361831" CREATED="1289476000779" MODIFIED="1289476000779" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="overview of features of paper recommender" ID="ID_1360361831" CREATED="1289476000779" MODIFIED="1289476000779" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="8" object_number="833" generation_number="0"/>
+</node>
 </node>
 </node>
 <node TEXT="Definitions" ID="ID_348058442" CREATED="1297728000254" MODIFIED="1300138425184">
-<node TEXT="formal definition of recengine&#xd;" ID="ID_50964632" CREATED="1289476002713" MODIFIED="1289476002713" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="recommendations as multiple criteria decicion aiding&#xd;" ID="ID_7821799" CREATED="1289476002714" MODIFIED="1289476002714" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="formal definition of recengine&#xd;" ID="ID_50964632" CREATED="1289476002713" MODIFIED="1289476002713" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="2" object_number="455" generation_number="0"/>
+</node>
+<node TEXT="recommendations as multiple criteria decicion aiding&#xd;" ID="ID_7821799" CREATED="1289476002714" MODIFIED="1289476002714" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="3" object_number="484" generation_number="0"/>
+</node>
 <node TEXT="a recommendation is a multi-criteria decision making problem" ID="ID_1599393239" CREATED="1289476011083" MODIFIED="1289476011083" LINK="file:/C:/_Dissertation/Literature/Multi-criteria%20recommender%20systems.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="1" object_number="216" generation_number="0"/>
 </node>
 </node>
 <node TEXT="Goal" ID="ID_435972975" CREATED="1297728017021" MODIFIED="1300138428023">
 <node TEXT="reduce information overload" ID="ID_997924538" CREATED="1298332888503" MODIFIED="1299873231274">
-<node TEXT="goal of recengine: reduce information overload&#xd;" ID="ID_370407321" CREATED="1289476002713" MODIFIED="1289476002713" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="goal of recengine: reduce information overload&#xd;" ID="ID_370407321" CREATED="1289476002713" MODIFIED="1289476002713" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="446" generation_number="0"/>
+</node>
 <node TEXT="recommender reduce information overload" ID="ID_15219778" CREATED="1289476013768" MODIFIED="1289476013768" LINK="file:/C:/_Dissertation/Literature/Recommender%20Systems%20Research%20-%20A%20Connection-Centric%20Survey.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="1" object_number="246" generation_number="0"/>
 </node>
-<node TEXT="recengine shall aid users to find relevant information&#xd;" ID="ID_572410066" CREATED="1297728876259" MODIFIED="1297728876259" LINK="file:/C:/_Dissertation/Literature/Combining%20Data%20Mining%20Technique%20and%20Users&apos;%20Relevance%20Opinion%20to%20Build%20an%20Efficient%20Recommender%20System.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark"/>
+<node TEXT="recengine shall aid users to find relevant information&#xd;" ID="ID_572410066" CREATED="1297728876259" MODIFIED="1297728876259" LINK="file:/C:/_Dissertation/Literature/Combining%20Data%20Mining%20Technique%20and%20Users&apos;%20Relevance%20Opinion%20to%20Build%20an%20Efficient%20Recommender%20System.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
+<pdf_annotation type="BOOKMARK" page="3" object_number="97" generation_number="0"/>
+</node>
 </node>
 <node TEXT="be more productive" ID="ID_825423053" CREATED="1298332899247" MODIFIED="1299873231274">
 <node TEXT="recommenders are to help be more productive" ID="ID_431108641" CREATED="1297981492381" MODIFIED="1297981492381" LINK="file:/C:/_Dissertation/Literature/Don&apos;t%20look%20stupid%20--%20avoiding%20pitfalls%20when%20recommending%20research%20papers.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
@@ -668,7 +714,9 @@
 </node>
 </node>
 </node>
-<node TEXT="collaborative  filltering outperforms content-  based approaches for generating introductory reading lists" ID="ID_1022836889" CREATED="1289476003265" MODIFIED="1297728423059" LINK="file:/C:/_Dissertation/Literature/Automatically%20building%20research%20reading%20lists.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="collaborative  filltering outperforms content-  based approaches for generating introductory reading lists" ID="ID_1022836889" CREATED="1289476003265" MODIFIED="1297728423059" LINK="file:/C:/_Dissertation/Literature/Automatically%20building%20research%20reading%20lists.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="154" generation_number="0"/>
+</node>
 <node TEXT="on citeulike user-based filtering performs best" ID="ID_1621897878" CREATED="1298059750846" MODIFIED="1299465661941" LINK="file:/C:/_Dissertation/Literature/Recommending%20scientific%20articles%20using%20citeulike.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
 <attribute_layout NAME_WIDTH="120" VALUE_WIDTH="350"/>
 <attribute NAME="splmm_refkey" VALUE="Bogers08"/>
@@ -691,19 +739,27 @@
 </node>
 </node>
 <node TEXT="Paper Viewing History" ID="ID_815431108" CREATED="1297726385501" MODIFIED="1299873231290">
-<node TEXT="Papits uses paper viewing history to construct user model" ID="ID_690516051" CREATED="1289475998870" MODIFIED="1289475998870" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommendation%20Mechanism%20for%20the%20Research%20Support%20System%20Papits.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="Papits uses paper viewing history to construct user model" ID="ID_690516051" CREATED="1289475998870" MODIFIED="1289475998870" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommendation%20Mechanism%20for%20the%20Research%20Support%20System%20Papits.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="251" generation_number="0"/>
+</node>
 <node TEXT="user profile creation based on visited documents (acm classification, corpus: citeseer)" ID="ID_1949827861" CREATED="1289476006166" MODIFIED="1289476006166" LINK="file:/C:/_Dissertation/Literature/Conceptual%20Recommender%20System%20for%20CiteSeer%20x.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="2" object_number="128" generation_number="0"/>
 </node>
 </node>
 <node TEXT="Website history" ID="ID_959008544" CREATED="1297814815564" MODIFIED="1299873231290">
-<node TEXT="&quot;quckistep&quot;: recommender system based on usage mining /ontologies " ID="ID_644540776" CREATED="1297814740841" MODIFIED="1297814740841" LINK="file:/C:/_Dissertation/Literature/Ontological%20user%20profiling%20in%20recommender%20systems.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark"/>
+<node TEXT="&quot;quckistep&quot;: recommender system based on usage mining /ontologies " ID="ID_644540776" CREATED="1297814740841" MODIFIED="1297814740841" LINK="file:/C:/_Dissertation/Literature/Ontological%20user%20profiling%20in%20recommender%20systems.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
+<pdf_annotation type="BOOKMARK" page="7" object_number="256" generation_number="0"/>
+</node>
 </node>
 <node TEXT="Scale Free Network" ID="ID_1021065690" CREATED="1297726467869" MODIFIED="1299873231290">
-<node TEXT="scale-free network (2nd)" ID="ID_1728069547" CREATED="1289475998872" MODIFIED="1289475998872" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommendation%20Mechanism%20for%20the%20Research%20Support%20System%20Papits.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="scale-free network (2nd)" ID="ID_1728069547" CREATED="1289475998872" MODIFIED="1289475998872" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommendation%20Mechanism%20for%20the%20Research%20Support%20System%20Papits.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="2" object_number="278" generation_number="0"/>
+</node>
 </node>
 <node TEXT="Text of Read Documents" ID="ID_988250052" CREATED="1297726482455" MODIFIED="1299873231290">
-<node TEXT="Papits uses text of read documents to create a user model" ID="ID_33969179" CREATED="1289475998873" MODIFIED="1289475998873" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommendation%20Mechanism%20for%20the%20Research%20Support%20System%20Papits.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="Papits uses text of read documents to create a user model" ID="ID_33969179" CREATED="1289475998873" MODIFIED="1289475998873" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommendation%20Mechanism%20for%20the%20Research%20Support%20System%20Papits.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="2" object_number="288" generation_number="0"/>
+</node>
 </node>
 <node TEXT="Query and Browing habits" ID="ID_1518801746" CREATED="1297726865124" MODIFIED="1299873231290">
 <node TEXT="SCuBA - Paper Recommender based on recent queries and browsing habits" ID="ID_1460652491" CREATED="1289476000580" MODIFIED="1289476000580" LINK="file:/C:/_Dissertation/Literature/A%20subspace%20clustering%20framework%20for%20research%20group%20collaboration.pdf" BOOKMARKS_UPDATED="1299366127750">
@@ -712,10 +768,19 @@
 </node>
 <node TEXT="Various actions" ID="ID_1261493522" CREATED="1297728780130" MODIFIED="1299873231290">
 <node TEXT="user action that could be taken for build a user profile&#xd;" ID="ID_529105324" CREATED="1297728714766" MODIFIED="1299873231290" LINK="file:/C:/_Dissertation/Literature/Collaborative%20Filtering%20by%20Personality%20Diagnosis.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
-<node TEXT="add document to profile&#xd;" ID="ID_180864033" CREATED="1297728714766" MODIFIED="1297728714766" LINK="file:/C:/_Dissertation/Literature/Collaborative%20Filtering%20by%20Personality%20Diagnosis.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark"/>
-<node TEXT="view doc details&#xd;" ID="ID_1259467542" CREATED="1297728714766" MODIFIED="1297728714766" LINK="file:/C:/_Dissertation/Literature/Collaborative%20Filtering%20by%20Personality%20Diagnosis.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark"/>
-<node TEXT="download document&#xd;" ID="ID_1777020050" CREATED="1297728714766" MODIFIED="1297728714766" LINK="file:/C:/_Dissertation/Literature/Collaborative%20Filtering%20by%20Personality%20Diagnosis.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark"/>
-<node TEXT="view bibliography&#xd;" ID="ID_312454677" CREATED="1297728714766" MODIFIED="1297728714766" LINK="file:/C:/_Dissertation/Literature/Collaborative%20Filtering%20by%20Personality%20Diagnosis.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark"/>
+<pdf_annotation type="BOOKMARK" page="6" object_number="217" generation_number="0"/>
+<node TEXT="add document to profile&#xd;" ID="ID_180864033" CREATED="1297728714766" MODIFIED="1297728714766" LINK="file:/C:/_Dissertation/Literature/Collaborative%20Filtering%20by%20Personality%20Diagnosis.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
+<pdf_annotation type="BOOKMARK" page="6" object_number="219" generation_number="0"/>
+</node>
+<node TEXT="view doc details&#xd;" ID="ID_1259467542" CREATED="1297728714766" MODIFIED="1297728714766" LINK="file:/C:/_Dissertation/Literature/Collaborative%20Filtering%20by%20Personality%20Diagnosis.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
+<pdf_annotation type="BOOKMARK" page="6" object_number="221" generation_number="0"/>
+</node>
+<node TEXT="download document&#xd;" ID="ID_1777020050" CREATED="1297728714766" MODIFIED="1297728714766" LINK="file:/C:/_Dissertation/Literature/Collaborative%20Filtering%20by%20Personality%20Diagnosis.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
+<pdf_annotation type="BOOKMARK" page="6" object_number="223" generation_number="0"/>
+</node>
+<node TEXT="view bibliography&#xd;" ID="ID_312454677" CREATED="1297728714766" MODIFIED="1297728714766" LINK="file:/C:/_Dissertation/Literature/Collaborative%20Filtering%20by%20Personality%20Diagnosis.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
+<pdf_annotation type="BOOKMARK" page="6" object_number="225" generation_number="0"/>
+</node>
 </node>
 </node>
 <node TEXT="model user based on" ID="ID_955101230" CREATED="1289476015284" MODIFIED="1299873231290" LINK="file:/C:/_Dissertation/Literature/Scholarly%20paper%20recommendation%20via%20user&apos;s%20recent%20research%20interests.pdf" BOOKMARKS_UPDATED="1299366127750">
@@ -770,9 +835,16 @@
 <node TEXT="single rating" ID="ID_460612214" CREATED="1297821006075" MODIFIED="1297821009462"/>
 <node TEXT="multiple-rating" ID="ID_203177648" CREATED="1297821010077" MODIFIED="1299873231290">
 <node TEXT="three dimensions of a paper" ID="ID_1855301661" CREATED="1289475998871" MODIFIED="1299873231290" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommendation%20Mechanism%20for%20the%20Research%20Support%20System%20Papits.pdf" BOOKMARKS_UPDATED="1299366127750">
-<node TEXT="importance" ID="ID_331719168" CREATED="1289475998872" MODIFIED="1289475998872" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommendation%20Mechanism%20for%20the%20Research%20Support%20System%20Papits.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="novelty" ID="ID_1511038720" CREATED="1289475998872" MODIFIED="1289475998872" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommendation%20Mechanism%20for%20the%20Research%20Support%20System%20Papits.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="interestingness (relevance to user?)" ID="ID_1559164504" CREATED="1289475998872" MODIFIED="1289475998872" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommendation%20Mechanism%20for%20the%20Research%20Support%20System%20Papits.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<pdf_annotation type="BOOKMARK" page="1" object_number="254" generation_number="0"/>
+<node TEXT="importance" ID="ID_331719168" CREATED="1289475998872" MODIFIED="1289475998872" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommendation%20Mechanism%20for%20the%20Research%20Support%20System%20Papits.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="257" generation_number="0"/>
+</node>
+<node TEXT="novelty" ID="ID_1511038720" CREATED="1289475998872" MODIFIED="1289475998872" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommendation%20Mechanism%20for%20the%20Research%20Support%20System%20Papits.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="269" generation_number="0"/>
+</node>
+<node TEXT="interestingness (relevance to user?)" ID="ID_1559164504" CREATED="1289475998872" MODIFIED="1289475998872" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommendation%20Mechanism%20for%20the%20Research%20Support%20System%20Papits.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="272" generation_number="0"/>
+</node>
 </node>
 <node TEXT="questions to evaluate a paper" ID="ID_1369232731" CREATED="1289475998392" MODIFIED="1299873231290" LINK="file:/C:/_Dissertation/Literature/A%20Multidimensional%20Paper%20Recommender%20-%20Experiments%20and%20Evaluations.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="1" object_number="183" generation_number="0"/>
@@ -826,13 +898,28 @@
 </node>
 </node>
 <node TEXT="how to evaluate a publication&#xd;" ID="ID_611745036" CREATED="1289476002715" MODIFIED="1299873231290" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750">
-<node TEXT="publication year (age)&#xd;" ID="ID_332751899" CREATED="1289476002718" MODIFIED="1289476002718" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="keyword relevance&#xd;" ID="ID_1302758536" CREATED="1289476002718" MODIFIED="1289476002718" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="impact of journal&#xd;" ID="ID_1784911562" CREATED="1289476002718" MODIFIED="1289476002718" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="citation index of paper&#xd;" ID="ID_1393923480" CREATED="1289476002718" MODIFIED="1289476002718" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="author(s)&#xd;" ID="ID_400114865" CREATED="1289476002719" MODIFIED="1289476002719" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="acknowledgements&#xd;" ID="ID_784825296" CREATED="1289476002719" MODIFIED="1289476002719" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="affiliation&#xd;" ID="ID_825994125" CREATED="1289476002719" MODIFIED="1289476002719" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<pdf_annotation type="BOOKMARK" page="7" object_number="695" generation_number="0"/>
+<node TEXT="publication year (age)&#xd;" ID="ID_332751899" CREATED="1289476002718" MODIFIED="1289476002718" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="7" object_number="697" generation_number="0"/>
+</node>
+<node TEXT="keyword relevance&#xd;" ID="ID_1302758536" CREATED="1289476002718" MODIFIED="1289476002718" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="7" object_number="699" generation_number="0"/>
+</node>
+<node TEXT="impact of journal&#xd;" ID="ID_1784911562" CREATED="1289476002718" MODIFIED="1289476002718" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="8" object_number="701" generation_number="0"/>
+</node>
+<node TEXT="citation index of paper&#xd;" ID="ID_1393923480" CREATED="1289476002718" MODIFIED="1289476002718" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="8" object_number="703" generation_number="0"/>
+</node>
+<node TEXT="author(s)&#xd;" ID="ID_400114865" CREATED="1289476002719" MODIFIED="1289476002719" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="8" object_number="705" generation_number="0"/>
+</node>
+<node TEXT="acknowledgements&#xd;" ID="ID_784825296" CREATED="1289476002719" MODIFIED="1289476002719" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="8" object_number="707" generation_number="0"/>
+</node>
+<node TEXT="affiliation&#xd;" ID="ID_825994125" CREATED="1289476002719" MODIFIED="1289476002719" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="8" object_number="709" generation_number="0"/>
+</node>
 </node>
 </node>
 <node TEXT="discussion" ID="ID_1012432764" CREATED="1297821015560" MODIFIED="1299873231290">
@@ -845,7 +932,9 @@
 <pdf_annotation type="BOOKMARK" page="8" object_number="1549" generation_number="0"/>
 </node>
 </node>
-<node TEXT="critique on techlens approach: only boolean rating" ID="ID_1878244126" CREATED="1289476014192" MODIFIED="1289476014192" LINK="file:/C:/_Dissertation/Literature/Recommending%20Journal%20Articles%20with%20PageRank%20Ratings.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="critique on techlens approach: only boolean rating" ID="ID_1878244126" CREATED="1289476014192" MODIFIED="1289476014192" LINK="file:/C:/_Dissertation/Literature/Recommending%20Journal%20Articles%20with%20PageRank%20Ratings.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="92" generation_number="0"/>
+</node>
 </node>
 </node>
 <node TEXT="Algorithms / Approaches" ID="ID_649731543" CREATED="1298335379079" MODIFIED="1299873231290">
@@ -927,7 +1016,9 @@
 <node TEXT="Probablistic Latent Semantic Indexing (PLSI)" ID="ID_1558592387" CREATED="1297991285376" MODIFIED="1297991285376" LINK="file:/C:/_Dissertation/Literature/Don&apos;t%20look%20stupid%20--%20avoiding%20pitfalls%20when%20recommending%20research%20papers.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
 <pdf_annotation type="BOOKMARK" page="3" object_number="192" generation_number="0"/>
 </node>
-<node TEXT="&quot;personality diagnosis&quot; as method to classify users" ID="ID_647685348" CREATED="1297728714766" MODIFIED="1297728714766" LINK="file:/C:/_Dissertation/Literature/Collaborative%20Filtering%20by%20Personality%20Diagnosis.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark"/>
+<node TEXT="&quot;personality diagnosis&quot; as method to classify users" ID="ID_647685348" CREATED="1297728714766" MODIFIED="1297728714766" LINK="file:/C:/_Dissertation/Literature/Collaborative%20Filtering%20by%20Personality%20Diagnosis.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
+<pdf_annotation type="BOOKMARK" page="1" object_number="241" generation_number="0"/>
+</node>
 </node>
 <node TEXT="item-item" ID="ID_1970314619" CREATED="1298335573622" MODIFIED="1298335578618"/>
 <node TEXT="citation based" ID="ID_1724969731" CREATED="1298335745783" MODIFIED="1299873231290">
@@ -977,8 +1068,12 @@
 <pdf_annotation type="BOOKMARK" page="1" object_number="301" generation_number="0"/>
 </node>
 <node TEXT="good description of item-user CF" ID="ID_32106032" CREATED="1297974972470" MODIFIED="1297974972470" LINK="file:/C:/_Dissertation/Literature/PocketLens%20--%20Toward%20a%20personal%20recommender%20system.PDF" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark"/>
-<node TEXT="descent overview of CF techniques in general" ID="ID_1959891378" CREATED="1297974972470" MODIFIED="1297974972470" LINK="file:/C:/_Dissertation/Literature/PocketLens%20--%20Toward%20a%20personal%20recommender%20system.PDF" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark"/>
-<node TEXT="supposed to be one of the first &quot;content boosed CF&quot; papers (the first?), a type of CF algorithm" ID="ID_1033730254" CREATED="1297991285066" MODIFIED="1297991285066" LINK="file:/C:/_Dissertation/Literature/Combining%20Collaborative%20Filtering%20with%20Personal%20Agents%20for%20Better%20Recommendations.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark"/>
+<node TEXT="descent overview of CF techniques in general" ID="ID_1959891378" CREATED="1297974972470" MODIFIED="1297974972470" LINK="file:/C:/_Dissertation/Literature/PocketLens%20--%20Toward%20a%20personal%20recommender%20system.PDF" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
+<pdf_annotation type="BOOKMARK" page="7" object_number="280" generation_number="0"/>
+</node>
+<node TEXT="supposed to be one of the first &quot;content boosed CF&quot; papers (the first?), a type of CF algorithm" ID="ID_1033730254" CREATED="1297991285066" MODIFIED="1297991285066" LINK="file:/C:/_Dissertation/Literature/Combining%20Collaborative%20Filtering%20with%20Personal%20Agents%20for%20Better%20Recommendations.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
+<pdf_annotation type="BOOKMARK" page="1" object_number="52" generation_number="0"/>
+</node>
 <node TEXT="also supposed to be one of the first &quot;content boosed CF&quot; papers" ID="ID_122832614" CREATED="1297991258988" MODIFIED="1297991258988" LINK="file:/C:/_Dissertation/Literature/Content-boosted%20collaborative%20filtering%20for%20improved%20recommendations.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
 <pdf_annotation type="BOOKMARK" page="1" object_number="168" generation_number="0"/>
 </node>
@@ -1132,11 +1227,15 @@
 <node TEXT="Item Based" ID="ID_785952909" CREATED="1297813660742" MODIFIED="1299873231305">
 <node TEXT="Algorithms / Approaches" ID="ID_1306218359" CREATED="1298335356599" MODIFIED="1298335402302"/>
 <node TEXT="Content Based" ID="ID_1688422286" CREATED="1297813696012" MODIFIED="1299873231305">
-<node TEXT="Typically, content based approaches use cosine similarity applied to tf-idf vector rep-  resentations of the abstracts for comparing research papers" ID="ID_56166545" CREATED="1289476010589" MODIFIED="1289476010589" LINK="file:/C:/_Dissertation/Literature/Metadata%20Impact%20on%20Research%20Paper%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="Typically, content based approaches use cosine similarity applied to tf-idf vector rep-  resentations of the abstracts for comparing research papers" ID="ID_56166545" CREATED="1289476010589" MODIFIED="1289476010589" LINK="file:/C:/_Dissertation/Literature/Metadata%20Impact%20on%20Research%20Paper%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="155" generation_number="0"/>
+</node>
 <node TEXT="Similarity measures (Text)" ID="ID_552871336" CREATED="1297819310153" MODIFIED="1299873231305">
 <node TEXT="TF-IDF" ID="ID_386486775" CREATED="1297819333715" MODIFIED="1299873231290">
 <node TEXT="systems using it" ID="ID_949508387" CREATED="1297819368668" MODIFIED="1299873231290">
-<node TEXT="tf-idf" ID="ID_798569044" CREATED="1289476010592" MODIFIED="1289476010592" LINK="file:/C:/_Dissertation/Literature/Metadata%20Impact%20on%20Research%20Paper%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="tf-idf" ID="ID_798569044" CREATED="1289476010592" MODIFIED="1289476010592" LINK="file:/C:/_Dissertation/Literature/Metadata%20Impact%20on%20Research%20Paper%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="2" object_number="203" generation_number="0"/>
+</node>
 </node>
 <node TEXT="tfidf is good way for item (text) description" ID="ID_622790662" CREATED="1298593310389" MODIFIED="1298593310389" LINK="file:/C:/_Dissertation/Literature/Content-based%20recommendation%20systems.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
 <pdf_annotation type="BOOKMARK" page="3" object_number="245" generation_number="0"/>
@@ -1147,22 +1246,30 @@
 </node>
 <node TEXT="Cosine Similarity" ID="ID_109888716" CREATED="1297819405928" MODIFIED="1299873231290">
 <node TEXT="mentioned in" ID="ID_715320002" CREATED="1297819433494" MODIFIED="1299873231290">
-<node TEXT="cosine similarity" ID="ID_814540700" CREATED="1289476010591" MODIFIED="1289476010591" LINK="file:/C:/_Dissertation/Literature/Metadata%20Impact%20on%20Research%20Paper%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="cosine similarity" ID="ID_814540700" CREATED="1289476010591" MODIFIED="1289476010591" LINK="file:/C:/_Dissertation/Literature/Metadata%20Impact%20on%20Research%20Paper%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="2" object_number="173" generation_number="0"/>
+</node>
 </node>
 </node>
 <node TEXT="Generalized Jaccard" ID="ID_1339703921" CREATED="1297819412878" MODIFIED="1299873231305">
 <node TEXT="mentioned in" ID="ID_177178145" CREATED="1297819433494" MODIFIED="1299873231290">
-<node TEXT="generalized Jaccard" ID="ID_1301627183" CREATED="1289476010591" MODIFIED="1289476010591" LINK="file:/C:/_Dissertation/Literature/Metadata%20Impact%20on%20Research%20Paper%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="generalized Jaccard" ID="ID_1301627183" CREATED="1289476010591" MODIFIED="1289476010591" LINK="file:/C:/_Dissertation/Literature/Metadata%20Impact%20on%20Research%20Paper%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="2" object_number="176" generation_number="0"/>
+</node>
 </node>
 </node>
 <node TEXT="Extended Jaccard" ID="ID_937292482" CREATED="1297819422354" MODIFIED="1299873231305">
 <node TEXT="mentioned in" ID="ID_101140701" CREATED="1297819433494" MODIFIED="1299873231305">
-<node TEXT="extended jaccard" ID="ID_1850537498" CREATED="1289476010591" MODIFIED="1289476010591" LINK="file:/C:/_Dissertation/Literature/Metadata%20Impact%20on%20Research%20Paper%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="extended jaccard" ID="ID_1850537498" CREATED="1289476010591" MODIFIED="1289476010591" LINK="file:/C:/_Dissertation/Literature/Metadata%20Impact%20on%20Research%20Paper%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="2" object_number="191" generation_number="0"/>
+</node>
 </node>
 </node>
 <node TEXT="Dice" ID="ID_1377380006" CREATED="1297819428307" MODIFIED="1299873231305">
 <node TEXT="mentioned in" ID="ID_482903366" CREATED="1297819433494" MODIFIED="1299873231305">
-<node TEXT="dice" ID="ID_940537014" CREATED="1289476010592" MODIFIED="1289476010592" LINK="file:/C:/_Dissertation/Literature/Metadata%20Impact%20on%20Research%20Paper%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="dice" ID="ID_940537014" CREATED="1289476010592" MODIFIED="1289476010592" LINK="file:/C:/_Dissertation/Literature/Metadata%20Impact%20on%20Research%20Paper%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="2" object_number="194" generation_number="0"/>
+</node>
 </node>
 </node>
 <node TEXT="text classification" ID="ID_1848392600" CREATED="1298593310390" MODIFIED="1299873231305" LINK="file:/C:/_Dissertation/Literature/Content-based%20recommendation%20systems.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
@@ -1190,7 +1297,9 @@
 </node>
 <node TEXT="Citation Based" ID="ID_570292380" CREATED="1298335462983" MODIFIED="1298335466077"/>
 <node TEXT="Metadata based" ID="ID_303787370" CREATED="1297813705302" MODIFIED="1299873231305">
-<node TEXT="first paper about using metadata for paper recommendations" ID="ID_1722348840" CREATED="1289476010589" MODIFIED="1289476010589" LINK="file:/C:/_Dissertation/Literature/Metadata%20Impact%20on%20Research%20Paper%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="first paper about using metadata for paper recommendations" ID="ID_1722348840" CREATED="1289476010589" MODIFIED="1289476010589" LINK="file:/C:/_Dissertation/Literature/Metadata%20Impact%20on%20Research%20Paper%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="161" generation_number="0"/>
+</node>
 </node>
 <node TEXT="Critizism" ID="ID_1881613298" CREATED="1297813737407" MODIFIED="1299873231305">
 <node TEXT="in 2002: ciriticism that only document content is used in digital libraries for recommendations (and no usage data although available)" ID="ID_1797305921" CREATED="1289475997553" MODIFIED="1297723657188" LINK="file:/C:/_Dissertation/Literature/A%20graph-based%20recommender%20system%20for%20digital%20library.pdf" BOOKMARKS_UPDATED="1299366127750">
@@ -1211,6 +1320,7 @@
   </body>
 </html>
 </richcontent>
+<pdf_annotation type="BOOKMARK" page="1" object_number="559" generation_number="0"/>
 </node>
 <node TEXT="recommender based on arxiv log access files" ID="ID_322354105" CREATED="1297972933978" MODIFIED="1297972933978" LINK="file:/C:/_Dissertation/Literature/Recommending%20Related%20Papers%20Based%20on%20Digital%20Library%20Access%20Records.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
 <pdf_annotation type="BOOKMARK" page="1" object_number="116" generation_number="0"/>
@@ -1228,7 +1338,9 @@
 <pdf_annotation type="BOOKMARK" page="4" object_number="380" generation_number="0"/>
 </node>
 </node>
-<node TEXT="overview and comparison of different item-based algorithms" ID="ID_314414100" CREATED="1297991258993" MODIFIED="1297991258993" LINK="file:/C:/_Dissertation/Literature/Item-based%20collaborative%20filtering%20recommendation%20algorithms.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark"/>
+<node TEXT="overview and comparison of different item-based algorithms" ID="ID_314414100" CREATED="1297991258993" MODIFIED="1297991258993" LINK="file:/C:/_Dissertation/Literature/Item-based%20collaborative%20filtering%20recommendation%20algorithms.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
+<pdf_annotation type="BOOKMARK" page="1" object_number="604" generation_number="0"/>
+</node>
 <node TEXT="for item representation it must be distinguished between structured and unstructured data (and semi-structured)" ID="ID_1377895685" CREATED="1298593310389" MODIFIED="1298593310389" LINK="file:/C:/_Dissertation/Literature/Content-based%20recommendation%20systems.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
 <pdf_annotation type="BOOKMARK" page="2" object_number="225" generation_number="0"/>
 </node>
@@ -1237,17 +1349,23 @@
 <node TEXT="paper combining traditional and social approaches for paper recommendations" ID="ID_130043493" CREATED="1289476007422" MODIFIED="1289476007422" LINK="file:/C:/_Dissertation/Literature/Digging%20Friendship%20-%20Paper%20Recommendation%20in%20Social%20Network.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="1" object_number="88" generation_number="0"/>
 </node>
-<node TEXT="paper recommender based on social network of user (trust) in addition to other measures" ID="ID_114733820" CREATED="1297817396874" MODIFIED="1297817396874" LINK="file:/C:/_Dissertation/Literature/Trust-enhanced%20visibility%20for%20personalized%20document%20recommendations.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark"/>
+<node TEXT="paper recommender based on social network of user (trust) in addition to other measures" ID="ID_114733820" CREATED="1297817396874" MODIFIED="1297817396874" LINK="file:/C:/_Dissertation/Literature/Trust-enhanced%20visibility%20for%20personalized%20document%20recommendations.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
+<pdf_annotation type="BOOKMARK" page="1" object_number="116" generation_number="0"/>
+</node>
 </node>
 <node TEXT="Hybrid" ID="ID_1429321549" CREATED="1297817436248" MODIFIED="1299873231305">
 <node TEXT="Algorithms / Approaches" ID="ID_1853375193" CREATED="1298335343975" MODIFIED="1298335421188"/>
 </node>
-<node TEXT="two approaches: collaborative and content based filtering &#xd;" ID="ID_1652927784" CREATED="1297728876259" MODIFIED="1297728876259" LINK="file:/C:/_Dissertation/Literature/Combining%20Data%20Mining%20Technique%20and%20Users&apos;%20Relevance%20Opinion%20to%20Build%20an%20Efficient%20Recommender%20System.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark"/>
+<node TEXT="two approaches: collaborative and content based filtering &#xd;" ID="ID_1652927784" CREATED="1297728876259" MODIFIED="1297728876259" LINK="file:/C:/_Dissertation/Literature/Combining%20Data%20Mining%20Technique%20and%20Users&apos;%20Relevance%20Opinion%20to%20Build%20an%20Efficient%20Recommender%20System.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
+<pdf_annotation type="BOOKMARK" page="3" object_number="104" generation_number="0"/>
+</node>
 <node TEXT="pros&amp;cons" ID="ID_1494390384" CREATED="1297729068853" MODIFIED="1299873231305">
 <node TEXT="pros and cons of CF and content based filtering (CBF)" ID="ID_1375807469" CREATED="1289476007421" MODIFIED="1289476007421" LINK="file:/C:/_Dissertation/Literature/Digging%20Friendship%20-%20Paper%20Recommendation%20in%20Social%20Network.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="2" object_number="81" generation_number="0"/>
 </node>
-<node TEXT="collaborative filtering is not suitable for recommending research papers!&#xd;" ID="ID_1977060655" CREATED="1289476008853" MODIFIED="1289476008853" LINK="file:/C:/_Dissertation/Literature/Evaluating%20Collaborative%20Filtering%20Recommender%20Systems.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="collaborative filtering is not suitable for recommending research papers!&#xd;" ID="ID_1977060655" CREATED="1289476008853" MODIFIED="1289476008853" LINK="file:/C:/_Dissertation/Literature/Evaluating%20Collaborative%20Filtering%20Recommender%20Systems.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="2" object_number="225" generation_number="0"/>
+</node>
 </node>
 <node TEXT="master thesis about paper recommendations via access data on arxiv.org" ID="ID_193955110" CREATED="1289476018809" MODIFIED="1289476018809" LINK="file:/C:/_Dissertation/Literature/Using%20Access%20Data%20for%20Paper%20Recommendations%20on%20arxiv.org.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="1" object_number="698" generation_number="0"/>
@@ -1300,16 +1418,31 @@
 </node>
 </node>
 <node TEXT="approaches" ID="ID_73317177" CREATED="1289476000777" MODIFIED="1299873231305" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750">
-<node TEXT="CF" ID="ID_461255064" CREATED="1289476000779" MODIFIED="1289476000779" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="CBF" ID="ID_612891239" CREATED="1289476000779" MODIFIED="1289476000779" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="CF+CBF" ID="ID_549237674" CREATED="1289476000779" MODIFIED="1289476000779" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="Citation Analysis" ID="ID_122359701" CREATED="1289476000779" MODIFIED="1289476000779" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="Social Trust Networks" ID="ID_588447201" CREATED="1289476000779" MODIFIED="1289476000779" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="Context" ID="ID_380877758" CREATED="1289476000779" MODIFIED="1289476000779" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<pdf_annotation type="BOOKMARK" page="6" object_number="812" generation_number="0"/>
+<node TEXT="CF" ID="ID_461255064" CREATED="1289476000779" MODIFIED="1289476000779" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="6" object_number="815" generation_number="0"/>
+</node>
+<node TEXT="CBF" ID="ID_612891239" CREATED="1289476000779" MODIFIED="1289476000779" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="6" object_number="818" generation_number="0"/>
+</node>
+<node TEXT="CF+CBF" ID="ID_549237674" CREATED="1289476000779" MODIFIED="1289476000779" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="6" object_number="821" generation_number="0"/>
+</node>
+<node TEXT="Citation Analysis" ID="ID_122359701" CREATED="1289476000779" MODIFIED="1289476000779" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="6" object_number="824" generation_number="0"/>
+</node>
+<node TEXT="Social Trust Networks" ID="ID_588447201" CREATED="1289476000779" MODIFIED="1289476000779" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="6" object_number="827" generation_number="0"/>
+</node>
+<node TEXT="Context" ID="ID_380877758" CREATED="1289476000779" MODIFIED="1289476000779" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="6" object_number="830" generation_number="0"/>
+</node>
 </node>
 </node>
 <node TEXT="3" ID="ID_1676538129" CREATED="1297728085772" MODIFIED="1299873231305">
-<node TEXT="three categories: content, collaborative, hybrid&#xd;" ID="ID_1390383503" CREATED="1289476002713" MODIFIED="1289476002713" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="three categories: content, collaborative, hybrid&#xd;" ID="ID_1390383503" CREATED="1289476002713" MODIFIED="1289476002713" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="4" object_number="467" generation_number="0"/>
+</node>
 </node>
 <node TEXT="Types of Hybrids" ID="ID_245332723" CREATED="1297724833912" MODIFIED="1299873231305">
 <node TEXT="cascade (2nd)" ID="ID_845078383" CREATED="1289475997965" MODIFIED="1289475997965" LINK="file:/C:/_Dissertation/Literature/A%20Multi-criteria%20Collaborative%20Filtering%20Approach%20for%20Research%20Paper%20Recommendation%20in%20Papyres.pdf" BOOKMARKS_UPDATED="1299366127750">
@@ -1337,7 +1470,9 @@
 <pdf_annotation type="BOOKMARK" page="5" object_number="258" generation_number="0"/>
 </node>
 </node>
-<node TEXT="Collaborative Filtering is most used approach for RecEngines&#xd;" ID="ID_635148907" CREATED="1289476002713" MODIFIED="1289476002713" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="Collaborative Filtering is most used approach for RecEngines&#xd;" ID="ID_635148907" CREATED="1289476002713" MODIFIED="1289476002713" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="4" object_number="567" generation_number="0"/>
+</node>
 <node TEXT="7 approaches for classic recommendations" ID="ID_204040871" CREATED="1289476007422" MODIFIED="1299873231305" LINK="file:/C:/_Dissertation/Literature/Digging%20Friendship%20-%20Paper%20Recommendation%20in%20Social%20Network.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="2" object_number="97" generation_number="0"/>
 <node TEXT="Collaborative Filtering (CF)" ID="ID_1629565443" CREATED="1289476007425" MODIFIED="1299873231305" LINK="file:/C:/_Dissertation/Literature/Digging%20Friendship%20-%20Paper%20Recommendation%20in%20Social%20Network.pdf" BOOKMARKS_UPDATED="1299366127750">
@@ -1378,9 +1513,16 @@
 </node>
 </node>
 <node TEXT="criterias for paper recommender could be" ID="ID_435663804" CREATED="1289476010346" MODIFIED="1299873231305" LINK="file:/C:/_Dissertation/Literature/Mendeley%20-%20A%20Last.fm%20for%20research.pdf" BOOKMARKS_UPDATED="1299366127750">
-<node TEXT="personal research paper library" ID="ID_1955115468" CREATED="1289476010346" MODIFIED="1289476010346" LINK="file:/C:/_Dissertation/Literature/Mendeley%20-%20A%20Last.fm%20for%20research.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="relationships between researchers writing papers in different disciplines" ID="ID_770481592" CREATED="1289476010346" MODIFIED="1289476010346" LINK="file:/C:/_Dissertation/Literature/Mendeley%20-%20A%20Last.fm%20for%20research.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="reading behaviour" ID="ID_29190938" CREATED="1289476010347" MODIFIED="1289476010347" LINK="file:/C:/_Dissertation/Literature/Mendeley%20-%20A%20Last.fm%20for%20research.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<pdf_annotation type="BOOKMARK" page="1" object_number="43" generation_number="0"/>
+<node TEXT="personal research paper library" ID="ID_1955115468" CREATED="1289476010346" MODIFIED="1289476010346" LINK="file:/C:/_Dissertation/Literature/Mendeley%20-%20A%20Last.fm%20for%20research.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="46" generation_number="0"/>
+</node>
+<node TEXT="relationships between researchers writing papers in different disciplines" ID="ID_770481592" CREATED="1289476010346" MODIFIED="1289476010346" LINK="file:/C:/_Dissertation/Literature/Mendeley%20-%20A%20Last.fm%20for%20research.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="55" generation_number="0"/>
+</node>
+<node TEXT="reading behaviour" ID="ID_29190938" CREATED="1289476010347" MODIFIED="1289476010347" LINK="file:/C:/_Dissertation/Literature/Mendeley%20-%20A%20Last.fm%20for%20research.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="58" generation_number="0"/>
+</node>
 </node>
 <node TEXT="alternative view point to CF vs. content based: connection oriented (user centric)" ID="ID_1785214336" CREATED="1289476013768" MODIFIED="1289476013768" LINK="file:/C:/_Dissertation/Literature/Recommender%20Systems%20Research%20-%20A%20Connection-Centric%20Survey.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="1" object_number="255" generation_number="0"/>
@@ -1451,7 +1593,9 @@
 </node>
 </node>
 </node>
-<node TEXT="input = several papers and output =  weight&#xd;" ID="ID_1919479393" CREATED="1289476002714" MODIFIED="1289476002714" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="input = several papers and output =  weight&#xd;" ID="ID_1919479393" CREATED="1289476002714" MODIFIED="1289476002714" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="12" object_number="721" generation_number="0"/>
+</node>
 <node TEXT="recommenders are to help be more productive" ID="ID_401249205" CREATED="1297981492381" MODIFIED="1297981492381" LINK="file:/C:/_Dissertation/Literature/Don&apos;t%20look%20stupid%20--%20avoiding%20pitfalls%20when%20recommending%20research%20papers.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
 <pdf_annotation type="BOOKMARK" page="1" object_number="153" generation_number="0"/>
 </node>
@@ -1524,7 +1668,9 @@
 </node>
 </node>
 </node>
-<node TEXT="two problems of recengines: new users and over-specialization&#xd;" ID="ID_1606521324" CREATED="1289476005585" MODIFIED="1289476005585" LINK="file:/C:/_Dissertation/Literature/Combining%20Data%20Mining%20Technique%20and%20Users&apos;%20Relevance%20Opinion%20to%20Build%20an%20Efficient%20Recommender%20System.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="two problems of recengines: new users and over-specialization&#xd;" ID="ID_1606521324" CREATED="1289476005585" MODIFIED="1289476005585" LINK="file:/C:/_Dissertation/Literature/Combining%20Data%20Mining%20Technique%20and%20Users&apos;%20Relevance%20Opinion%20to%20Build%20an%20Efficient%20Recommender%20System.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="2" object_number="81" generation_number="0"/>
+</node>
 <node TEXT="problem of classic search: short queries without contextual information" ID="ID_306355143" CREATED="1289476006166" MODIFIED="1289476006166" LINK="file:/C:/_Dissertation/Literature/Conceptual%20Recommender%20System%20for%20CiteSeer%20x.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="1" object_number="116" generation_number="0"/>
 </node>
@@ -1571,12 +1717,25 @@
 <pdf_annotation type="BOOKMARK" page="1" object_number="288" generation_number="0"/>
 </node>
 <node TEXT="considerations for paper recommender" ID="ID_186315748" CREATED="1289476000775" MODIFIED="1299873231321" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750">
-<node TEXT="data" ID="ID_767914421" CREATED="1289476000777" MODIFIED="1289476000777" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="algorithm" ID="ID_817241050" CREATED="1289476000777" MODIFIED="1289476000777" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="personalization" ID="ID_538442622" CREATED="1289476000777" MODIFIED="1289476000777" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="presentation" ID="ID_269465518" CREATED="1289476000777" MODIFIED="1289476000777" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="performance" ID="ID_63864980" CREATED="1289476000777" MODIFIED="1289476000777" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="evaluation" ID="ID_216236973" CREATED="1289476000777" MODIFIED="1289476000777" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<pdf_annotation type="BOOKMARK" page="4" object_number="788" generation_number="0"/>
+<node TEXT="data" ID="ID_767914421" CREATED="1289476000777" MODIFIED="1289476000777" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="4" object_number="791" generation_number="0"/>
+</node>
+<node TEXT="algorithm" ID="ID_817241050" CREATED="1289476000777" MODIFIED="1289476000777" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="4" object_number="794" generation_number="0"/>
+</node>
+<node TEXT="personalization" ID="ID_538442622" CREATED="1289476000777" MODIFIED="1289476000777" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="4" object_number="797" generation_number="0"/>
+</node>
+<node TEXT="presentation" ID="ID_269465518" CREATED="1289476000777" MODIFIED="1289476000777" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="4" object_number="800" generation_number="0"/>
+</node>
+<node TEXT="performance" ID="ID_63864980" CREATED="1289476000777" MODIFIED="1289476000777" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="4" object_number="803" generation_number="0"/>
+</node>
+<node TEXT="evaluation" ID="ID_216236973" CREATED="1289476000777" MODIFIED="1289476000777" LINK="file:/C:/_Dissertation/Literature/A%20survey%20of%20recommender%20systems%20for%20scientific%20papers.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="4" object_number="806" generation_number="0"/>
+</node>
 </node>
 </node>
 <node TEXT="Evaluations" ID="Freemind_Link_1900820429" CREATED="1248482242218" MODIFIED="1300138527615" BOOKMARKS_UPDATED="0">
@@ -1606,10 +1765,19 @@
 <attribute NAME="splmm_publishedin" VALUE="Proceedings of the 4th ACM/IEEE-CS joint conference on Digital libraries"/>
 </node>
 <node TEXT="evaluation of paper recommender" ID="ID_1996811293" CREATED="1289475999861" MODIFIED="1299873231321" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommender%20for%20Scientific%20Literatures%20Based%20on%20Semantic%20Concept%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750">
-<node TEXT="220,723 papers citeulike" ID="ID_477588718" CREATED="1289475999863" MODIFIED="1289475999863" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommender%20for%20Scientific%20Literatures%20Based%20on%20Semantic%20Concept%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="6800 users" ID="ID_1060684455" CREATED="1289475999863" MODIFIED="1289475999863" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommender%20for%20Scientific%20Literatures%20Based%20on%20Semantic%20Concept%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="70796 tags" ID="ID_232132831" CREATED="1289475999863" MODIFIED="1289475999863" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommender%20for%20Scientific%20Literatures%20Based%20on%20Semantic%20Concept%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="90%/10% for learning/testing" ID="ID_1944617463" CREATED="1289475999863" MODIFIED="1289475999863" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommender%20for%20Scientific%20Literatures%20Based%20on%20Semantic%20Concept%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<pdf_annotation type="BOOKMARK" page="3" object_number="122" generation_number="0"/>
+<node TEXT="220,723 papers citeulike" ID="ID_477588718" CREATED="1289475999863" MODIFIED="1289475999863" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommender%20for%20Scientific%20Literatures%20Based%20on%20Semantic%20Concept%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="3" object_number="125" generation_number="0"/>
+</node>
+<node TEXT="6800 users" ID="ID_1060684455" CREATED="1289475999863" MODIFIED="1289475999863" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommender%20for%20Scientific%20Literatures%20Based%20on%20Semantic%20Concept%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="3" object_number="128" generation_number="0"/>
+</node>
+<node TEXT="70796 tags" ID="ID_232132831" CREATED="1289475999863" MODIFIED="1289475999863" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommender%20for%20Scientific%20Literatures%20Based%20on%20Semantic%20Concept%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="3" object_number="131" generation_number="0"/>
+</node>
+<node TEXT="90%/10% for learning/testing" ID="ID_1944617463" CREATED="1289475999863" MODIFIED="1289475999863" LINK="file:/C:/_Dissertation/Literature/A%20Paper%20Recommender%20for%20Scientific%20Literatures%20Based%20on%20Semantic%20Concept%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="3" object_number="134" generation_number="0"/>
+</node>
 </node>
 <node TEXT="recommender evaluation method: leave one out (2nd)" ID="ID_706102107" CREATED="1289476007430" MODIFIED="1289476007430" LINK="file:/C:/_Dissertation/Literature/Digging%20Friendship%20-%20Paper%20Recommendation%20in%20Social%20Network.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="5" object_number="181" generation_number="0"/>
@@ -1627,10 +1795,17 @@
 <pdf_annotation type="BOOKMARK" page="1" object_number="149" generation_number="0"/>
 </node>
 <node TEXT="metadata cannot beat abstract analysis for paper similarity (but still is effective)" ID="ID_486161579" CREATED="1289476010592" MODIFIED="1299873231321" LINK="file:/C:/_Dissertation/Literature/Metadata%20Impact%20on%20Research%20Paper%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750">
-<node TEXT="probably a combination would be best" ID="ID_392770250" CREATED="1289476010593" MODIFIED="1289476010593" LINK="file:/C:/_Dissertation/Literature/Metadata%20Impact%20on%20Research%20Paper%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<pdf_annotation type="BOOKMARK" page="3" object_number="219" generation_number="0"/>
+<node TEXT="probably a combination would be best" ID="ID_392770250" CREATED="1289476010593" MODIFIED="1289476010593" LINK="file:/C:/_Dissertation/Literature/Metadata%20Impact%20on%20Research%20Paper%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="3" object_number="222" generation_number="0"/>
 </node>
-<node TEXT="citations were used for evaluation of paper recommender" ID="ID_1007878490" CREATED="1289476010593" MODIFIED="1289476010593" LINK="file:/C:/_Dissertation/Literature/Metadata%20Impact%20on%20Research%20Paper%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="study: pagerank is worse than boolean and random rankings for paper recommendations" ID="ID_139405508" CREATED="1289476014192" MODIFIED="1289476014192" LINK="file:/C:/_Dissertation/Literature/Recommending%20Journal%20Articles%20with%20PageRank%20Ratings.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+</node>
+<node TEXT="citations were used for evaluation of paper recommender" ID="ID_1007878490" CREATED="1289476010593" MODIFIED="1289476010593" LINK="file:/C:/_Dissertation/Literature/Metadata%20Impact%20on%20Research%20Paper%20Similarity.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="2" object_number="231" generation_number="0"/>
+</node>
+<node TEXT="study: pagerank is worse than boolean and random rankings for paper recommendations" ID="ID_139405508" CREATED="1289476014192" MODIFIED="1289476014192" LINK="file:/C:/_Dissertation/Literature/Recommending%20Journal%20Articles%20with%20PageRank%20Ratings.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="3" object_number="98" generation_number="0"/>
+</node>
 <node TEXT="study: pagerank score is no substitute for user ratings" ID="ID_521824748" CREATED="1289476016615" MODIFIED="1289476016615" LINK="file:/C:/_Dissertation/Literature/The%20Effect%20of%20PageRank%20on%20the%20Collaborative%20Filtering%20Recommendation%20of%20Journal%20Articles.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="1" object_number="65" generation_number="0"/>
 </node>
@@ -1658,6 +1833,7 @@
 <attribute NAME="splmm_refauthors" VALUE="Lu, W. and Janssen, J. and Milios, E. and Japkowicz, N. and Zhang, Y."/>
 <attribute NAME="splmm_refyear" VALUE="2007"/>
 <attribute NAME="splmm_publishedin" VALUE="Knowledge and Information Systems"/>
+<pdf_annotation type="BOOKMARK" page="1" object_number="697" generation_number="0"/>
 <node TEXT="Comparisonoflink-withtext-basedsimilaritymeasures" ID="ID_1233897607" CREATED="1268668905325" MODIFIED="1299465661998" LINK="file:/C:/_Dissertation/Literature/Node%20similarity%20in%20the%20citation%20graph.pdf" BOOKMARKS_UPDATED="1299366127750">
 <attribute_layout NAME_WIDTH="120" VALUE_WIDTH="350"/>
 <attribute NAME="splmm_refkey" VALUE="Lu07"/>
@@ -1665,6 +1841,7 @@
 <attribute NAME="splmm_refauthors" VALUE="Lu, W. and Janssen, J. and Milios, E. and Japkowicz, N. and Zhang, Y."/>
 <attribute NAME="splmm_refyear" VALUE="2007"/>
 <attribute NAME="splmm_publishedin" VALUE="Knowledge and Information Systems"/>
+<pdf_annotation type="BOOKMARK" page="17" object_number="771" generation_number="0"/>
 </node>
 </node>
 <node TEXT="original paper for using co-citation analysis for measuring relationship between two papers" ID="Freemind_Link_1373521531" CREATED="1248481201250" MODIFIED="1299465661998" LINK="file:/C:/_Dissertation/Literature/Co-citation%20in%20the%20Scientific%20Literature.pdf" BOOKMARKS_UPDATED="1299366127750">
@@ -1678,11 +1855,15 @@
 <node TEXT="introduction of metric &quot;ItemNovelity&quot; for recommenders" ID="ID_811203781" CREATED="1289476003559" MODIFIED="1289476003559" LINK="file:/C:/_Dissertation/Literature/Avoiding%20monotony%20--%20improving%20the%20diversity%20of%20recommendation%20lists.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="1" object_number="237" generation_number="0"/>
 </node>
-<node TEXT="Recommenders Rank: Metric of Competence/Relevance of Scientists&#xd;" ID="ID_1268593194" CREATED="1297728876259" MODIFIED="1297728876259" LINK="file:/C:/_Dissertation/Literature/Combining%20Data%20Mining%20Technique%20and%20Users&apos;%20Relevance%20Opinion%20to%20Build%20an%20Efficient%20Recommender%20System.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark"/>
+<node TEXT="Recommenders Rank: Metric of Competence/Relevance of Scientists&#xd;" ID="ID_1268593194" CREATED="1297728876259" MODIFIED="1297728876259" LINK="file:/C:/_Dissertation/Literature/Combining%20Data%20Mining%20Technique%20and%20Users&apos;%20Relevance%20Opinion%20to%20Build%20an%20Efficient%20Recommender%20System.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
+<pdf_annotation type="BOOKMARK" page="6" object_number="112" generation_number="0"/>
+</node>
 <node TEXT="Hit Percentage measures performance of &quot;Leave one out&quot;" ID="ID_1838466868" CREATED="1289476007430" MODIFIED="1289476007430" LINK="file:/C:/_Dissertation/Literature/Digging%20Friendship%20-%20Paper%20Recommendation%20in%20Social%20Network.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="5" object_number="193" generation_number="0"/>
 </node>
-<node TEXT="many metrics for measuring collaborative filtering success &#xd;" ID="ID_1221523307" CREATED="1289476008853" MODIFIED="1289476008853" LINK="file:/C:/_Dissertation/Literature/Evaluating%20Collaborative%20Filtering%20Recommender%20Systems.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="many metrics for measuring collaborative filtering success &#xd;" ID="ID_1221523307" CREATED="1289476008853" MODIFIED="1289476008853" LINK="file:/C:/_Dissertation/Literature/Evaluating%20Collaborative%20Filtering%20Recommender%20Systems.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="235" generation_number="0"/>
+</node>
 <node TEXT="link (citation) measures for recommendations" ID="ID_141490163" CREATED="1289476009112" MODIFIED="1299873231321" LINK="file:/C:/_Dissertation/Literature/Evaluation%20of%20kernel-based%20link%20analysis%20measures%20on%20research%20paper%20recommendation.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="1" object_number="107" generation_number="0"/>
 <node TEXT="Kandola et al (2nd)" ID="ID_1243277506" CREATED="1289476009113" MODIFIED="1289476009113" LINK="file:/C:/_Dissertation/Literature/Evaluation%20of%20kernel-based%20link%20analysis%20measures%20on%20research%20paper%20recommendation.pdf" BOOKMARKS_UPDATED="1299366127750">
@@ -1709,9 +1890,15 @@
 <node TEXT="84% of researchers often are only interested in certain parts of a paper not the entire paper (2nd)" ID="ID_110594605" CREATED="1289475997964" MODIFIED="1289475997964" LINK="file:/C:/_Dissertation/Literature/A%20Multi-criteria%20Collaborative%20Filtering%20Approach%20for%20Research%20Paper%20Recommendation%20in%20Papyres.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="3" object_number="1441" generation_number="0"/>
 </node>
-<node TEXT="recengines are like recommending by word-to-mouth&#xd;" ID="ID_333049316" CREATED="1289476002712" MODIFIED="1289476002712" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="most time consuming activity is searching related work&#xd;" ID="ID_1391260415" CREATED="1289476002715" MODIFIED="1289476002715" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="amount of scientific articles doubled in the last 20 years&#xd;" ID="ID_156193746" CREATED="1289476002715" MODIFIED="1289476002715" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="recengines are like recommending by word-to-mouth&#xd;" ID="ID_333049316" CREATED="1289476002712" MODIFIED="1289476002712" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="435" generation_number="0"/>
+</node>
+<node TEXT="most time consuming activity is searching related work&#xd;" ID="ID_1391260415" CREATED="1289476002715" MODIFIED="1289476002715" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="5" object_number="581" generation_number="0"/>
+</node>
+<node TEXT="amount of scientific articles doubled in the last 20 years&#xd;" ID="ID_156193746" CREATED="1289476002715" MODIFIED="1289476002715" LINK="file:/C:/_Dissertation/Literature/A%20System%20based%20on%20Multiple%20Criteria%20Analysis%20for%20Scientific%20Paper%20Recommendation.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="5" object_number="593" generation_number="0"/>
+</node>
 <node TEXT="summary table of CF algs: user based, bayes, PLSI" ID="ID_12690052" CREATED="1297991285376" MODIFIED="1297991285376" LINK="file:/C:/_Dissertation/Literature/Don&apos;t%20look%20stupid%20--%20avoiding%20pitfalls%20when%20recommending%20research%20papers.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
 <pdf_annotation type="BOOKMARK" page="3" object_number="201" generation_number="0"/>
 </node>
@@ -1887,7 +2074,9 @@
 <node TEXT="mind maps are easier to understand than concept maps" ID="ID_1099702992" CREATED="1265241301191" MODIFIED="1265241301191" LINK="file:/C:/_Dissertation/Literature/Empowering%20PowerPoints&#x2014;Using%20Mind%20Maps%20in%20Construction%20Education.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="342" object_number="2463" generation_number="0"/>
 </node>
-<node TEXT="concept mapping is more complex (difficult) than mindmapping" ID="ID_1339764890" CREATED="1265331055751" MODIFIED="1265331055751" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="concept mapping is more complex (difficult) than mindmapping" ID="ID_1339764890" CREATED="1265331055751" MODIFIED="1265331055751" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="11" object_number="510" generation_number="0"/>
+</node>
 </node>
 <node TEXT="Definition" ID="ID_1463738859" CREATED="1269023619726" MODIFIED="1299873231368" BOOKMARKS_UPDATED="0">
 <node TEXT="Definition: &#x8d;Concept mapping is a technique for representing knowledge in graphs. &#xd;&#xa;Knowledge graphs are networks of concepts. Networks consist of nodes (points/vertices) and &#xd;&#xa;links (arcs/edges). Nodes represent concepts and links represent the relations " ID="ID_327758115" CREATED="1265241301191" MODIFIED="1265241301191" LINK="file:/C:/_Dissertation/Literature/Empowering%20PowerPoints&#x2014;Using%20Mind%20Maps%20in%20Construction%20Education.pdf" BOOKMARKS_UPDATED="1299366127750"/>
@@ -1913,8 +2102,12 @@
 <node TEXT="concept maps might help with grounded theory" ID="ID_1085366098" CREATED="1265241301531" MODIFIED="1265241301531" LINK="file:/C:/_Dissertation/Literature/Framing%20Experience%20--%20Concept%20Maps,%20Mind%20Maps,%20and%20Data%20Collection%20in%20Qualtative%20Research.PDF" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="5" object_number="125" generation_number="0"/>
 </node>
-<node TEXT="concept maps were introduced by novak" ID="ID_1344985844" CREATED="1265331055751" MODIFIED="1265331055751" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="rules for making concept maps" ID="ID_1836480209" CREATED="1265331055751" MODIFIED="1265331055751" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="concept maps were introduced by novak" ID="ID_1344985844" CREATED="1265331055751" MODIFIED="1265331055751" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="7" object_number="492" generation_number="0"/>
+</node>
+<node TEXT="rules for making concept maps" ID="ID_1836480209" CREATED="1265331055751" MODIFIED="1265331055751" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="8" object_number="501" generation_number="0"/>
+</node>
 <node TEXT="excellent paper about concept mapping" ID="ID_1860670039" CREATED="1269023930097" MODIFIED="1269023930097" LINK="file:/C:/_Dissertation/Literature/Learning%20with%20concept%20and%20knowledge%20maps%20--%20A%20Meta%20Analysis.PDF" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="1" object_number="373" generation_number="0"/>
 </node>
@@ -1992,6 +2185,7 @@
 <attribute NAME="splmm_refauthors" VALUE="Anthony J. Mento and Patrick Martinelli and Raymond M. Jones"/>
 <attribute NAME="splmm_refyear" VALUE="1999"/>
 <attribute NAME="splmm_publishedin" VALUE="The Journal of Management Development"/>
+<pdf_annotation type="BOOKMARK" page="1" object_number="125" generation_number="0"/>
 </node>
 <node TEXT="good overview of literature about mind maps in the classroom" ID="Freemind_Link_308591912" CREATED="1248664322390" MODIFIED="1299465662007" LINK="file:/C:/_Dissertation/Literature/mindmapping%20--%20its%20effects%20on%20student%20achievement%20in%20high%20school%20biology.PDF" BOOKMARKS_UPDATED="1299366127750">
 <attribute_layout NAME_WIDTH="111" VALUE_WIDTH="350"/>
@@ -2001,7 +2195,9 @@
 <attribute NAME="splmm_refyear" VALUE="2005"/>
 <pdf_annotation type="BOOKMARK" page="57" object_number="722" generation_number="0"/>
 </node>
-<node TEXT="example: students have to create a mind map as assignment" ID="ID_1268588139" CREATED="1249008841718" MODIFIED="1268865954546" LINK="file:/C:/_Dissertation/Literature/mind%20map%20as%20an%20assignment.PDF" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="example: students have to create a mind map as assignment" ID="ID_1268588139" CREATED="1249008841718" MODIFIED="1268865954546" LINK="file:/C:/_Dissertation/Literature/mind%20map%20as%20an%20assignment.PDF" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="2" object_number="268" generation_number="0"/>
+</node>
 <node TEXT="mind maps and concept maps are efficient tools to improve mathematics achievement" ID="Freemind_Link_820719887" CREATED="1248664309406" MODIFIED="1299465662008" LINK="file:/C:/_Dissertation/Literature/Graphical%20Knowledge%20Display%20&#x2013;%20Mind%20Mapping%20and%20Concept%20Mapping%20as%20Efficient%20Tools%20in%20Mathematics%20Education.PDF" BOOKMARKS_UPDATED="1299366127750">
 <attribute_layout NAME_WIDTH="120" VALUE_WIDTH="350"/>
 <attribute NAME="splmm_refkey" VALUE="Brinkmann03"/>
@@ -2009,6 +2205,7 @@
 <attribute NAME="splmm_refauthors" VALUE="Astrid Brinkmann"/>
 <attribute NAME="splmm_refyear" VALUE="2003"/>
 <attribute NAME="splmm_publishedin" VALUE="Mathematics Education Review"/>
+<pdf_annotation type="BOOKMARK" page="1" object_number="459" generation_number="0"/>
 </node>
 </node>
 <node TEXT="mind maps can be used for many purposes" ID="ID_1882434346" CREATED="1299096846072" MODIFIED="1299873231368">
@@ -2491,9 +2688,15 @@
 <node TEXT="a professor uses novamind for drafting academic papers" ID="ID_1368942512" CREATED="1285501101367" MODIFIED="1285501101367" LINK="file:/C:/_Dissertation/Literature/Using%20NovaMind%20to%20Brainstor....pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="1" object_number="18" generation_number="0"/>
 </node>
-<node TEXT="blog article about writing an article with mindmanager" ID="ID_1624654879" CREATED="1268668938593" MODIFIED="1268668938593" LINK="file:/C:/_Dissertation/Literature/Using%20MindManager%20to%20Write.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="MindManager has a brief introduction how to write a research article or blog with mind maps" ID="ID_1908902078" CREATED="1265237411584" MODIFIED="1265237411584" LINK="file:/C:/_Dissertation/Literature/using%20mindmanager%20to%20write%20academic%20articles.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="idea that mind maps can be used for creating research papers" ID="ID_1195296856" CREATED="1248664326234" MODIFIED="1268865949289" LINK="file:/C:/_Dissertation/Literature/Brain%20Friendly%20Techniques%20--%20Mind%20Mapping.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="blog article about writing an article with mindmanager" ID="ID_1624654879" CREATED="1268668938593" MODIFIED="1268668938593" LINK="file:/C:/_Dissertation/Literature/Using%20MindManager%20to%20Write.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="27" generation_number="0"/>
+</node>
+<node TEXT="MindManager has a brief introduction how to write a research article or blog with mind maps" ID="ID_1908902078" CREATED="1265237411584" MODIFIED="1265237411584" LINK="file:/C:/_Dissertation/Literature/using%20mindmanager%20to%20write%20academic%20articles.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="2" object_number="40" generation_number="0"/>
+</node>
+<node TEXT="idea that mind maps can be used for creating research papers" ID="ID_1195296856" CREATED="1248664326234" MODIFIED="1268865949289" LINK="file:/C:/_Dissertation/Literature/Brain%20Friendly%20Techniques%20--%20Mind%20Mapping.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="33" generation_number="0"/>
+</node>
 </node>
 </node>
 <node TEXT="misc" ID="ID_619862763" CREATED="1299097312716" MODIFIED="1299097642345">
@@ -2696,7 +2899,9 @@
 <node TEXT="use mind maps to develop teacher education program" ID="ID_34944863" CREATED="1260983540938" MODIFIED="1260983540938" LINK="file:/C:/_Dissertation/Literature/drawing%20the%20circle%20--%20collaborative%20mind%20mapping%20as%20a%20process%20for%20developing%20a%20constructivist%20teacher%20preparation%20program.PDF" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="1" object_number="71" generation_number="0"/>
 </node>
-<node TEXT="new typ of mind map with fuzzy logic?" ID="ID_1042680107" CREATED="1265241301433" MODIFIED="1265241301433" LINK="file:/C:/_Dissertation/Literature/FCMs-mind%20maps%20with%20brains.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="new typ of mind map with fuzzy logic?" ID="ID_1042680107" CREATED="1265241301433" MODIFIED="1265241301433" LINK="file:/C:/_Dissertation/Literature/FCMs-mind%20maps%20with%20brains.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="51" generation_number="0"/>
+</node>
 </node>
 <node TEXT="purpose of mindmapping" ID="ID_1403885529" CREATED="1260921126376" MODIFIED="1299873231368" LINK="file:/C:/_Dissertation/Literature/a%20comparative%20survey%20on%20mind%20mapping%20tools.PDF" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="55" object_number="11985" generation_number="0"/>
@@ -2756,12 +2961,25 @@
 </node>
 </node>
 <node TEXT="mind maps can:" ID="ID_1182332792" CREATED="1265331055751" MODIFIED="1299873231368" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750">
-<node TEXT=" be used as a memory aid" ID="ID_1952559279" CREATED="1265331055751" MODIFIED="1265331055751" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="be of help to repetition and summary" ID="ID_1031597584" CREATED="1265331055751" MODIFIED="1265331055751" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="summarise the ideas of several students" ID="ID_1818507083" CREATED="1265331055751" MODIFIED="1265331055751" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="help meaningfully connect new information with given &#xd;&#xa;knowledge" ID="ID_828220537" CREATED="1265331055751" MODIFIED="1265331055751" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="be used for introducing new concepts" ID="ID_88871180" CREATED="1265331055751" MODIFIED="1265331055751" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="foster creativity" ID="ID_1133091919" CREATED="1265331055751" MODIFIED="1265331055751" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<pdf_annotation type="BOOKMARK" page="5" object_number="456" generation_number="0"/>
+<node TEXT=" be used as a memory aid" ID="ID_1952559279" CREATED="1265331055751" MODIFIED="1265331055751" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="5" object_number="465" generation_number="0"/>
+</node>
+<node TEXT="be of help to repetition and summary" ID="ID_1031597584" CREATED="1265331055751" MODIFIED="1265331055751" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="5" object_number="468" generation_number="0"/>
+</node>
+<node TEXT="summarise the ideas of several students" ID="ID_1818507083" CREATED="1265331055751" MODIFIED="1265331055751" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="5" object_number="471" generation_number="0"/>
+</node>
+<node TEXT="help meaningfully connect new information with given &#xd;&#xa;knowledge" ID="ID_828220537" CREATED="1265331055751" MODIFIED="1265331055751" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="5" object_number="474" generation_number="0"/>
+</node>
+<node TEXT="be used for introducing new concepts" ID="ID_88871180" CREATED="1265331055751" MODIFIED="1265331055751" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="5" object_number="477" generation_number="0"/>
+</node>
+<node TEXT="foster creativity" ID="ID_1133091919" CREATED="1265331055751" MODIFIED="1265331055751" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="6" object_number="483" generation_number="0"/>
+</node>
 </node>
 <node TEXT="idea to use mind maps for knowledge managment in companies" ID="ID_1232569805" CREATED="1270509489832" MODIFIED="1270509489832" LINK="file:/C:/_Dissertation/Literature/mindjetblog-mindmaps%20fuer%20wissensmanagement.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="1" object_number="18" generation_number="0"/>
@@ -2799,8 +3017,12 @@
 <node TEXT="visualize human information exchange" ID="ID_767927364" CREATED="1260921126376" MODIFIED="1260921126376" LINK="file:/C:/_Dissertation/Literature/a%20comparative%20survey%20on%20mind%20mapping%20tools.PDF" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="57" object_number="12084" generation_number="0"/>
 </node>
-<node TEXT="help to organise information" ID="ID_1083403033" CREATED="1265331055751" MODIFIED="1265331055751" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="Mind maps let cognitive structures of students become visible." ID="ID_797788269" CREATED="1265331055751" MODIFIED="1265331055751" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="help to organise information" ID="ID_1083403033" CREATED="1265331055751" MODIFIED="1265331055751" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="5" object_number="462" generation_number="0"/>
+</node>
+<node TEXT="Mind maps let cognitive structures of students become visible." ID="ID_797788269" CREATED="1265331055751" MODIFIED="1265331055751" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="5" object_number="480" generation_number="0"/>
+</node>
 <node TEXT="Benefits of mindmapping" ID="ID_542420166" CREATED="1271962472364" MODIFIED="1299873231368" LINK="file:/C:/_Dissertation/Literature/MMS_Survey_Results_2010.pdf" BOOKMARKS_UPDATED="1299366127750">
 <attribute_layout NAME_WIDTH="120" VALUE_WIDTH="205"/>
 <attribute NAME="splmm_refkey" VALUE="Frey2010"/>
@@ -3093,17 +3315,36 @@
 </node>
 <node TEXT="Examples" ID="ID_709014790" CREATED="1282737462263" MODIFIED="1282737463808" BOOKMARKS_UPDATED="0"/>
 <node TEXT="Usage of Mind Maps (Statistics)" ID="ID_839986741" CREATED="1282737435446" MODIFIED="1300137924748" BOOKMARKS_UPDATED="0">
-<node TEXT="mindjet sold 150,000 licences in 2009" ID="ID_1456201739" CREATED="1265237411786" MODIFIED="1265237411786" LINK="file:/C:/_Dissertation/Literature/mind%20manager%20verkauft%20150000%20lizenzen%20in%202009.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="mindjet has 4700 followers on twitter and 2200 facebook fans (in 2009)" ID="ID_1154647033" CREATED="1265237411786" MODIFIED="1265237411786" LINK="file:/C:/_Dissertation/Literature/mind%20manager%20verkauft%20150000%20lizenzen%20in%202009.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="mindjet had 308,000 blog visitors in 2009" ID="ID_144229752" CREATED="1265237411786" MODIFIED="1265237411786" LINK="file:/C:/_Dissertation/Literature/mind%20manager%20verkauft%20150000%20lizenzen%20in%202009.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="mindmanager is used by more than 1.5 million users" ID="ID_1096825586" CREATED="1265237411786" MODIFIED="1265237411786" LINK="file:/C:/_Dissertation/Literature/mind%20manager%20verkauft%20150000%20lizenzen%20in%202009.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="mindmanager is used in 48 of Business Week&apos;s 50 &quot;World&apos;s Most Innovative Companies&quot;" ID="ID_576476825" CREATED="1265237411787" MODIFIED="1265237411787" LINK="file:/C:/_Dissertation/Literature/mind%20manager%20verkauft%20150000%20lizenzen%20in%202009.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="mindjet sold 150,000 licences in 2009" ID="ID_1456201739" CREATED="1265237411786" MODIFIED="1265237411786" LINK="file:/C:/_Dissertation/Literature/mind%20manager%20verkauft%20150000%20lizenzen%20in%202009.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="52" generation_number="0"/>
+</node>
+<node TEXT="mindjet has 4700 followers on twitter and 2200 facebook fans (in 2009)" ID="ID_1154647033" CREATED="1265237411786" MODIFIED="1265237411786" LINK="file:/C:/_Dissertation/Literature/mind%20manager%20verkauft%20150000%20lizenzen%20in%202009.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="2" object_number="60" generation_number="0"/>
+</node>
+<node TEXT="mindjet had 308,000 blog visitors in 2009" ID="ID_144229752" CREATED="1265237411786" MODIFIED="1265237411786" LINK="file:/C:/_Dissertation/Literature/mind%20manager%20verkauft%20150000%20lizenzen%20in%202009.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="2" object_number="66" generation_number="0"/>
+</node>
+<node TEXT="mindmanager is used by more than 1.5 million users" ID="ID_1096825586" CREATED="1265237411786" MODIFIED="1265237411786" LINK="file:/C:/_Dissertation/Literature/mind%20manager%20verkauft%20150000%20lizenzen%20in%202009.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="3" object_number="89" generation_number="0"/>
+</node>
+<node TEXT="mindmanager is used in 48 of Business Week&apos;s 50 &quot;World&apos;s Most Innovative Companies&quot;" ID="ID_576476825" CREATED="1265237411787" MODIFIED="1265237411787" LINK="file:/C:/_Dissertation/Literature/mind%20manager%20verkauft%20150000%20lizenzen%20in%202009.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="3" object_number="92" generation_number="0"/>
+</node>
 <node TEXT="Surveys show that mind mapping can increase productivity up to 25% of" ID="ID_1976680579" CREATED="1265237411787" MODIFIED="1269023380422" LINK="file:/C:/_Dissertation/Literature/mind%20manager%20verkauft%20150000%20lizenzen%20in%202009.pdf" BOOKMARKS_UPDATED="1299366127750"/>
 <node TEXT="companies using mind maps" ID="ID_917805400" CREATED="1265237411787" MODIFIED="1299873231368" LINK="file:/C:/_Dissertation/Literature/mind%20manager%20verkauft%20150000%20lizenzen%20in%202009.pdf" BOOKMARKS_UPDATED="1299366127750">
-<node TEXT="IBM" ID="ID_1925649251" CREATED="1265237411787" MODIFIED="1265237411787" LINK="file:/C:/_Dissertation/Literature/mind%20manager%20verkauft%20150000%20lizenzen%20in%202009.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="Citibank" ID="ID_91585327" CREATED="1265237411787" MODIFIED="1265237411787" LINK="file:/C:/_Dissertation/Literature/mind%20manager%20verkauft%20150000%20lizenzen%20in%202009.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="Lockheed Martin" ID="ID_865855559" CREATED="1265237411787" MODIFIED="1265237411787" LINK="file:/C:/_Dissertation/Literature/mind%20manager%20verkauft%20150000%20lizenzen%20in%202009.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="Motorola" ID="ID_581827648" CREATED="1265237411787" MODIFIED="1265237411787" LINK="file:/C:/_Dissertation/Literature/mind%20manager%20verkauft%20150000%20lizenzen%20in%202009.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<pdf_annotation type="BOOKMARK" page="2" object_number="69" generation_number="0"/>
+<node TEXT="IBM" ID="ID_1925649251" CREATED="1265237411787" MODIFIED="1265237411787" LINK="file:/C:/_Dissertation/Literature/mind%20manager%20verkauft%20150000%20lizenzen%20in%202009.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="2" object_number="72" generation_number="0"/>
+</node>
+<node TEXT="Citibank" ID="ID_91585327" CREATED="1265237411787" MODIFIED="1265237411787" LINK="file:/C:/_Dissertation/Literature/mind%20manager%20verkauft%20150000%20lizenzen%20in%202009.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="2" object_number="75" generation_number="0"/>
+</node>
+<node TEXT="Lockheed Martin" ID="ID_865855559" CREATED="1265237411787" MODIFIED="1265237411787" LINK="file:/C:/_Dissertation/Literature/mind%20manager%20verkauft%20150000%20lizenzen%20in%202009.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="2" object_number="78" generation_number="0"/>
+</node>
+<node TEXT="Motorola" ID="ID_581827648" CREATED="1265237411787" MODIFIED="1265237411787" LINK="file:/C:/_Dissertation/Literature/mind%20manager%20verkauft%20150000%20lizenzen%20in%202009.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="2" object_number="81" generation_number="0"/>
+</node>
 </node>
 <node TEXT="nice statistik how the number of publications about concept maps has increased" ID="ID_418525569" CREATED="1269023930097" MODIFIED="1269023930097" LINK="file:/C:/_Dissertation/Literature/Learning%20with%20concept%20and%20knowledge%20maps%20--%20A%20Meta%20Analysis.PDF" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="3" object_number="301" generation_number="0"/>
@@ -3123,11 +3364,21 @@
 <node TEXT="300 mind maps from mindjet (11.1.2011)" ID="ID_724108640" CREATED="1297715987230" MODIFIED="1297715987230" LINK="file:/C:/_Dissertation/Literature/View%20Maps%20_%20Maps%20For%20That!.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
 <pdf_annotation type="BOOKMARK" page="1" object_number="97" generation_number="0"/>
 </node>
-<node TEXT="xmind has 28237 mind maps (11.1.11)" ID="ID_949394048" CREATED="1297715987233" MODIFIED="1297715987233" LINK="file:/C:/_Dissertation/Literature/XMind%20-%20Mind%20Mapping%20and%20Storming.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark"/>
-<node TEXT="xmind is downloaded 150.000 times a month" ID="ID_1892766716" CREATED="1297715987235" MODIFIED="1297715987235" LINK="file:/C:/_Dissertation/Literature/xmind%20email%20user%20stats.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark"/>
-<node TEXT="xmind has 500000 registered users" ID="ID_334328993" CREATED="1297715987235" MODIFIED="1297715987235" LINK="file:/C:/_Dissertation/Literature/xmind%20email%20user%20stats.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark"/>
-<node TEXT="xmind does not know how much percent of users share mind maps" ID="ID_1156858020" CREATED="1297715987235" MODIFIED="1297715987235" LINK="file:/C:/_Dissertation/Literature/xmind%20email%20user%20stats.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark"/>
-<node TEXT="xmind has 50,000 mind maps in their DB (including private maps)" ID="ID_986216678" CREATED="1297715987238" MODIFIED="1297715987238" LINK="file:/C:/_Dissertation/Literature/xmind%20more%20details.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark"/>
+<node TEXT="xmind has 28237 mind maps (11.1.11)" ID="ID_949394048" CREATED="1297715987233" MODIFIED="1297715987233" LINK="file:/C:/_Dissertation/Literature/XMind%20-%20Mind%20Mapping%20and%20Storming.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
+<pdf_annotation type="BOOKMARK" page="1" object_number="149" generation_number="0"/>
+</node>
+<node TEXT="xmind is downloaded 150.000 times a month" ID="ID_1892766716" CREATED="1297715987235" MODIFIED="1297715987235" LINK="file:/C:/_Dissertation/Literature/xmind%20email%20user%20stats.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
+<pdf_annotation type="BOOKMARK" page="1" object_number="27" generation_number="0"/>
+</node>
+<node TEXT="xmind has 500000 registered users" ID="ID_334328993" CREATED="1297715987235" MODIFIED="1297715987235" LINK="file:/C:/_Dissertation/Literature/xmind%20email%20user%20stats.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
+<pdf_annotation type="BOOKMARK" page="1" object_number="30" generation_number="0"/>
+</node>
+<node TEXT="xmind does not know how much percent of users share mind maps" ID="ID_1156858020" CREATED="1297715987235" MODIFIED="1297715987235" LINK="file:/C:/_Dissertation/Literature/xmind%20email%20user%20stats.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
+<pdf_annotation type="BOOKMARK" page="1" object_number="33" generation_number="0"/>
+</node>
+<node TEXT="xmind has 50,000 mind maps in their DB (including private maps)" ID="ID_986216678" CREATED="1297715987238" MODIFIED="1297715987238" LINK="file:/C:/_Dissertation/Literature/xmind%20more%20details.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
+<pdf_annotation type="BOOKMARK" page="1" object_number="30" generation_number="0"/>
+</node>
 <node TEXT="20,577 users are uploading maps to Xmind" ID="ID_289565162" CREATED="1297715987240" MODIFIED="1297715987240" LINK="file:/C:/_Dissertation/Literature/xmind%20user%20uploading%20mind%20maps.pdf" BOOKMARKS_UPDATED="1299366127750" LINK_TYPE="bookmark">
 <pdf_annotation type="BOOKMARK" page="1" object_number="26" generation_number="0"/>
 </node>
@@ -3366,10 +3617,18 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="14 participants" ID="ID_253626096" CREATED="1260921125689" MODIFIED="1260921125689" LINK="file:/C:/_Dissertation/Literature/Applications%20of%20the%20Mind%20Map%20Learning%20Technique%20in%20Chiropractic%20Education%20--%20A%20Pilot%20Study%20and%20Literature.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="10 of 14 think mind mapping was good" ID="ID_1930395330" CREATED="1260921125689" MODIFIED="1260921125689" LINK="file:/C:/_Dissertation/Literature/Applications%20of%20the%20Mind%20Map%20Learning%20Technique%20in%20Chiropractic%20Education%20--%20A%20Pilot%20Study%20and%20Literature.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="figure of various learning approaches" ID="ID_331863436" CREATED="1269025275397" MODIFIED="1269025275397" LINK="file:/C:/_Dissertation/Literature/Applications%20of%20the%20Mind%20Map%20Learning%20Technique%20in%20Chiropractic%20Education%20--%20A%20Pilot%20Study%20and%20Literature.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="guidelines for creating mind maps" ID="ID_346498639" CREATED="1269025275397" MODIFIED="1269025275397" LINK="file:/C:/_Dissertation/Literature/Applications%20of%20the%20Mind%20Map%20Learning%20Technique%20in%20Chiropractic%20Education%20--%20A%20Pilot%20Study%20and%20Literature.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="14 participants" ID="ID_253626096" CREATED="1260921125689" MODIFIED="1260921125689" LINK="file:/C:/_Dissertation/Literature/Applications%20of%20the%20Mind%20Map%20Learning%20Technique%20in%20Chiropractic%20Education%20--%20A%20Pilot%20Study%20and%20Literature.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="73" generation_number="0"/>
+</node>
+<node TEXT="10 of 14 think mind mapping was good" ID="ID_1930395330" CREATED="1260921125689" MODIFIED="1260921125689" LINK="file:/C:/_Dissertation/Literature/Applications%20of%20the%20Mind%20Map%20Learning%20Technique%20in%20Chiropractic%20Education%20--%20A%20Pilot%20Study%20and%20Literature.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="76" generation_number="0"/>
+</node>
+<node TEXT="figure of various learning approaches" ID="ID_331863436" CREATED="1269025275397" MODIFIED="1269025275397" LINK="file:/C:/_Dissertation/Literature/Applications%20of%20the%20Mind%20Map%20Learning%20Technique%20in%20Chiropractic%20Education%20--%20A%20Pilot%20Study%20and%20Literature.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="79" generation_number="0"/>
+</node>
+<node TEXT="guidelines for creating mind maps" ID="ID_346498639" CREATED="1269025275397" MODIFIED="1269025275397" LINK="file:/C:/_Dissertation/Literature/Applications%20of%20the%20Mind%20Map%20Learning%20Technique%20in%20Chiropractic%20Education%20--%20A%20Pilot%20Study%20and%20Literature.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="4" object_number="85" generation_number="0"/>
+</node>
 </node>
 <node TEXT="meta study about concept mapping" ID="ID_425778448" CREATED="1269023930113" MODIFIED="1283702193331" LINK="file:/C:/_Dissertation/Literature/Learning%20with%20concept%20and%20knowledge%20maps%20--%20A%20Meta%20Analysis.PDF" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="14" object_number="406" generation_number="0"/>
@@ -3386,10 +3645,17 @@
 </node>
 <node TEXT="misc" ID="ID_123267165" CREATED="1283702146230" MODIFIED="1299873231383" BOOKMARKS_UPDATED="0">
 <node TEXT="Mind maps provide an effective study &#xd;&#xa;technique when applied to written material" ID="ID_1566705180" CREATED="1268859682381" MODIFIED="1268859682381" LINK="file:/C:/_Dissertation/Literature/The%20efficacy%20of%20the%20&apos;mind%20map&apos;%20study%20technique.PDF" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="study about effectiveness of mind mapping (in arabic)" ID="ID_686417890" CREATED="1265237411628" MODIFIED="1265237411628" LINK="file:/C:/_Dissertation/Literature/Effects%20of%20Mind%20Mapping%20Teaching%20on%20English%20Achievement.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="list of studies that show: mind mapping increases learning" ID="ID_1502456049" CREATED="1265241301408" MODIFIED="1265241301408" LINK="file:/C:/_Dissertation/Literature/ENHANCING%20FRESHMAN%20STUDENTS&#x2019;WRITING%20SKILLS%20WITH%20A%20MIND-MAPPING%20SOFTWARE.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="study about effectiveness of mind mapping (in arabic)" ID="ID_686417890" CREATED="1265237411628" MODIFIED="1265237411628" LINK="file:/C:/_Dissertation/Literature/Effects%20of%20Mind%20Mapping%20Teaching%20on%20English%20Achievement.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="128" generation_number="0"/>
+</node>
+<node TEXT="list of studies that show: mind mapping increases learning" ID="ID_1502456049" CREATED="1265241301408" MODIFIED="1265241301408" LINK="file:/C:/_Dissertation/Literature/ENHANCING%20FRESHMAN%20STUDENTS&#x2019;WRITING%20SKILLS%20WITH%20A%20MIND-MAPPING%20SOFTWARE.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="7" object_number="295" generation_number="0"/>
+</node>
 <node TEXT="mind maps can be confusing" ID="ID_1105049528" CREATED="1265331055751" MODIFIED="1299873231383" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750">
-<node TEXT="as they are individual graphical representations" ID="ID_463940915" CREATED="1265331055751" MODIFIED="1265331055751" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<pdf_annotation type="BOOKMARK" page="7" object_number="486" generation_number="0"/>
+<node TEXT="as they are individual graphical representations" ID="ID_463940915" CREATED="1265331055751" MODIFIED="1265331055751" LINK="file:/C:/_Dissertation/Literature/Graphical%20knowledge%20display--Mind%20mapping%20and%20concept%20mapping%20as%20efficient%20tools%20in%20mathematics%20education.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="7" object_number="489" generation_number="0"/>
+</node>
 </node>
 <node TEXT="many people think: software tools are good for managing large and compley concept maps" ID="ID_1328621785" CREATED="1269023930097" MODIFIED="1269023930097" LINK="file:/C:/_Dissertation/Literature/Learning%20with%20concept%20and%20knowledge%20maps%20--%20A%20Meta%20Analysis.PDF" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="4" object_number="340" generation_number="0"/>
@@ -3424,7 +3690,9 @@
 <pdf_annotation type="BOOKMARK" page="7" object_number="209" generation_number="0"/>
 </node>
 </node>
-<node TEXT="paper: create mind maps automatically that show the main story of a text" ID="ID_1139656351" CREATED="1265241301499" MODIFIED="1265241301499" LINK="file:/C:/_Dissertation/Literature/Figuring%20out%20Actors%20in%20Text%20Streams%20--%20Using%20Collocations%20to%20establish%20Incremental%20Mind-maps.PDF" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="paper: create mind maps automatically that show the main story of a text" ID="ID_1139656351" CREATED="1265241301499" MODIFIED="1265241301499" LINK="file:/C:/_Dissertation/Literature/Figuring%20out%20Actors%20in%20Text%20Streams%20--%20Using%20Collocations%20to%20establish%20Incremental%20Mind-maps.PDF" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="1" object_number="193" generation_number="0"/>
+</node>
 </node>
 <node TEXT="Enhancing Careers" ID="ID_1062873145" CREATED="1268948061142" MODIFIED="1299873231383" BOOKMARKS_UPDATED="0">
 <node TEXT="paper about how mind maps can be used to achieve a better career" ID="Freemind_Link_350664316" CREATED="1248664318375" MODIFIED="1299465662011" LINK="file:/C:/_Dissertation/Literature/mind%20mapping%20your%20way%20to%20a%20better%20career.pdf" BOOKMARKS_UPDATED="1299366127750">
@@ -3463,41 +3731,57 @@
 </node>
 </node>
 <node TEXT="Guidelines for creating mind maps" ID="ID_819376528" CREATED="1268948950663" MODIFIED="1300137966198" BOOKMARKS_UPDATED="0">
-<node TEXT="guidelines for creating mind maps" ID="ID_764860411" CREATED="1260921125689" MODIFIED="1260921125689" LINK="file:/C:/_Dissertation/Literature/Applications%20of%20the%20Mind%20Map%20Learning%20Technique%20in%20Chiropractic%20Education%20--%20A%20Pilot%20Study%20and%20Literature.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="guidelines for creating mind maps" ID="ID_764860411" CREATED="1260921125689" MODIFIED="1260921125689" LINK="file:/C:/_Dissertation/Literature/Applications%20of%20the%20Mind%20Map%20Learning%20Technique%20in%20Chiropractic%20Education%20--%20A%20Pilot%20Study%20and%20Literature.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="4" object_number="85" generation_number="0"/>
+</node>
 <node TEXT="rules for creating mind maps" ID="ID_1193950180" CREATED="1260921126376" MODIFIED="1260921126376" LINK="file:/C:/_Dissertation/Literature/a%20comparative%20survey%20on%20mind%20mapping%20tools.PDF" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="BOOKMARK" page="56" object_number="12081" generation_number="0"/>
 </node>
 </node>
 </node>
 <node TEXT="todo" ID="ID_1042146847" CREATED="1268858299519" MODIFIED="1300137950738" BOOKMARKS_UPDATED="0">
-<node TEXT="Mind-Mapping for Quality.pdf" ID="ID_66445352" CREATED="1268182694023" MODIFIED="1268182694023" LINK="file:/C:/_Dissertation/Literature/Mind-Mapping%20for%20Quality.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="Mind-Mapping for Quality.pdf" ID="ID_66445352" CREATED="1268182694023" MODIFIED="1268182694023" LINK="file:/C:/_Dissertation/Literature/Mind-Mapping%20for%20Quality.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="PDF_FILE" object_number="0"/>
+</node>
 <node TEXT="Patient education in rheumatoid arthritis -- the effectiveness of the ARC booklet and the mind map.PDF" ID="ID_1932522442" CREATED="1268182694038" MODIFIED="1268182694038" LINK="file:/C:/_Dissertation/Literature/Patient%20education%20in%20rheumatoid%20arthritis%20--%20the%20effectiveness%20of%20the%20ARC%20booklet%20and%20the%20mind%20map.PDF" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="PDF_FILE" object_number="0"/>
 </node>
-<node TEXT="TEACHING LITERATURE THROUGH MIND MAPS.pdf" ID="ID_131460689" CREATED="1268182694038" MODIFIED="1268182694038" LINK="file:/C:/_Dissertation/Literature/TEACHING%20LITERATURE%20THROUGH%20MIND%20MAPS.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="TEACHING LITERATURE THROUGH MIND MAPS.pdf" ID="ID_131460689" CREATED="1268182694038" MODIFIED="1268182694038" LINK="file:/C:/_Dissertation/Literature/TEACHING%20LITERATURE%20THROUGH%20MIND%20MAPS.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="PDF_FILE" object_number="0"/>
+</node>
 <node TEXT="The Effects Of Mind Mapping Strategies On The Development Of Writing Skills Of Selected Form Three Students.PDF" ID="ID_68413573" CREATED="1268182694070" MODIFIED="1268182694070" LINK="file:/C:/_Dissertation/Literature/The%20Effects%20Of%20Mind%20Mapping%20Strategies%20On%20The%20Development%20Of%20Writing%20Skills%20Of%20Selected%20Form%20Three%20Students.PDF" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="PDF_FILE" object_number="0"/>
 </node>
-<node TEXT="Handling Hypermedia Complexity -- Fractal Hyperscapes and Mind Mapping.pdf" ID="ID_1156570153" CREATED="1268182694085" MODIFIED="1268182694085" LINK="file:/C:/_Dissertation/Literature/Handling%20Hypermedia%20Complexity%20--%20Fractal%20Hyperscapes%20and%20Mind%20Mapping.pdf" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="How To Utilize the Mindmaps To Facilitate Problem-finding Attitude of the Engineering Students In a Creative Mechanical Design Course.pdf" ID="ID_520930254" CREATED="1268182694085" MODIFIED="1268182694085" LINK="file:/C:/_Dissertation/Literature/How%20To%20Utilize%20the%20Mindmaps%20To%20Facilitate%20Problem-finding%20Attitude%20of%20the%20Engineering%20Students%20In%20a%20Creative%20Mechanical%20Design%20Course.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="Handling Hypermedia Complexity -- Fractal Hyperscapes and Mind Mapping.pdf" ID="ID_1156570153" CREATED="1268182694085" MODIFIED="1268182694085" LINK="file:/C:/_Dissertation/Literature/Handling%20Hypermedia%20Complexity%20--%20Fractal%20Hyperscapes%20and%20Mind%20Mapping.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="PDF_FILE" object_number="0"/>
+</node>
+<node TEXT="How To Utilize the Mindmaps To Facilitate Problem-finding Attitude of the Engineering Students In a Creative Mechanical Design Course.pdf" ID="ID_520930254" CREATED="1268182694085" MODIFIED="1268182694085" LINK="file:/C:/_Dissertation/Literature/How%20To%20Utilize%20the%20Mindmaps%20To%20Facilitate%20Problem-finding%20Attitude%20of%20the%20Engineering%20Students%20In%20a%20Creative%20Mechanical%20Design%20Course.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="PDF_FILE" object_number="0"/>
+</node>
 <node TEXT="Math and Mind Mapping -- Origami Construction.PDF" ID="ID_448179722" CREATED="1268182694085" MODIFIED="1268182694085" LINK="file:/C:/_Dissertation/Literature/Math%20and%20Mind%20Mapping%20--%20Origami%20Construction.PDF" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="PDF_FILE" object_number="0"/>
 </node>
 <node TEXT="Mind Mapping -- Discovering the Rhetoric of the Right Brain.PDF" ID="ID_832125048" CREATED="1268182694085" MODIFIED="1269025060327" LINK="file:/C:/_Dissertation/Literature/Mind%20Mapping%20--%20Discovering%20the%20Rhetoric%20of%20the%20Right%20Brain.PDF" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="PDF_FILE" object_number="0"/>
 </node>
-<node TEXT="Mind Mapping for Career Success.pdf" ID="ID_626888051" CREATED="1268182694085" MODIFIED="1268182694085" LINK="file:/C:/_Dissertation/Literature/Mind%20Mapping%20for%20Career%20Success.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="Mind Mapping for Career Success.pdf" ID="ID_626888051" CREATED="1268182694085" MODIFIED="1268182694085" LINK="file:/C:/_Dissertation/Literature/Mind%20Mapping%20for%20Career%20Success.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="PDF_FILE" object_number="0"/>
+</node>
 <node TEXT="Mind Mapping for Fostering Self-Regulated Resource-Based Learning in Science Classes.pdf" ID="ID_292675228" CREATED="1268182694085" MODIFIED="1268182694085" LINK="file:/C:/_Dissertation/Literature/Mind%20Mapping%20for%20Fostering%20Self-Regulated%20Resource-Based%20Learning%20in%20Science%20Classes.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="PDF_FILE" object_number="0"/>
 </node>
-<node TEXT="Mind maps chart the way to business efficiency.PDF" ID="ID_187713933" CREATED="1268182694085" MODIFIED="1268182694085" LINK="file:/C:/_Dissertation/Literature/Mind%20maps%20chart%20the%20way%20to%20business%20efficiency.PDF" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="Mind maps chart the way to business efficiency.PDF" ID="ID_187713933" CREATED="1268182694085" MODIFIED="1268182694085" LINK="file:/C:/_Dissertation/Literature/Mind%20maps%20chart%20the%20way%20to%20business%20efficiency.PDF" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="PDF_FILE" object_number="0"/>
+</node>
 <node TEXT="Mind maps and causal models -- using graphical representations of field research data.PDF" ID="ID_655453313" CREATED="1268182710325" MODIFIED="1268182710325" LINK="file:/C:/_Dissertation/Literature/Mind%20maps%20and%20causal%20models%20--%20using%20graphical%20representations%20of%20field%20research%20data.PDF" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="PDF_FILE" object_number="0"/>
 </node>
 <node TEXT="Mind maps as active learning tools.pdf" ID="ID_1685849543" CREATED="1268182710325" MODIFIED="1268182710325" LINK="file:/C:/_Dissertation/Literature/Mind%20maps%20as%20active%20learning%20tools.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="PDF_FILE" object_number="0"/>
 </node>
-<node TEXT="Mind maps as classroom exercises.pdf" ID="ID_461539081" CREATED="1268182710325" MODIFIED="1268182710325" LINK="file:/C:/_Dissertation/Literature/Mind%20maps%20as%20classroom%20exercises.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="Mind maps as classroom exercises.pdf" ID="ID_461539081" CREATED="1268182710325" MODIFIED="1268182710325" LINK="file:/C:/_Dissertation/Literature/Mind%20maps%20as%20classroom%20exercises.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="PDF_FILE" object_number="0"/>
+</node>
 <node TEXT="MindMapX.PDF" ID="ID_1772311610" CREATED="1268182710325" MODIFIED="1268182710325" LINK="file:/C:/_Dissertation/Literature/MindMapX.PDF" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="PDF_FILE" object_number="0"/>
 </node>
@@ -3513,7 +3797,9 @@
 <node TEXT="Using Mind Maps in University Teaching.PDF" ID="ID_744032008" CREATED="1268182710356" MODIFIED="1268182710356" LINK="file:/C:/_Dissertation/Literature/Using%20Mind%20Maps%20in%20University%20Teaching.PDF" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="PDF_FILE" object_number="0"/>
 </node>
-<node TEXT="VISUALISATION, MIND MAPS, RELAXATION, CONFIDENCE AND THE OUTSIDE SCHOOL TUTOR -- A CASE STUDY.pdf" ID="ID_613149946" CREATED="1268182710356" MODIFIED="1268182710356" LINK="file:/C:/_Dissertation/Literature/VISUALISATION,%20MIND%20MAPS,%20RELAXATION,%20CONFIDENCE%20AND%20THE%20OUTSIDE%20SCHOOL%20TUTOR%20--%20A%20CASE%20STUDY.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="VISUALISATION, MIND MAPS, RELAXATION, CONFIDENCE AND THE OUTSIDE SCHOOL TUTOR -- A CASE STUDY.pdf" ID="ID_613149946" CREATED="1268182710356" MODIFIED="1268182710356" LINK="file:/C:/_Dissertation/Literature/VISUALISATION,%20MIND%20MAPS,%20RELAXATION,%20CONFIDENCE%20AND%20THE%20OUTSIDE%20SCHOOL%20TUTOR%20--%20A%20CASE%20STUDY.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="PDF_FILE" object_number="0"/>
+</node>
 <node TEXT="Method of mind mapping utilizing meta-cognitive learning - patent.PDF" ID="ID_453052683" CREATED="1268182710356" MODIFIED="1268182710356" LINK="file:/C:/_Dissertation/Literature/Method%20of%20mind%20mapping%20utilizing%20meta-cognitive%20learning%20-%20patent.PDF" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="PDF_FILE" object_number="0"/>
 </node>
@@ -3536,9 +3822,15 @@
 <node TEXT="Transition to the next generation of e-learning -- using mind mapping and accessible web pages as part of a university&#x2019;s academic staff training.pdf" ID="ID_427658565" CREATED="1268182825898" MODIFIED="1268182825898" LINK="file:/C:/_Dissertation/Literature/Transition%20to%20the%20next%20generation%20of%20e-learning%20--%20using%20mind%20mapping%20and%20accessible%20web%20pages%20as%20part%20of%20a%20university&#x2019;s%20academic%20staff%20training.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="PDF_FILE" object_number="0"/>
 </node>
-<node TEXT="Intelligent mind-mapping.PDF" ID="ID_165230666" CREATED="1268182825898" MODIFIED="1268182825898" LINK="file:/C:/_Dissertation/Literature/Intelligent%20mind-mapping.PDF" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="Joining Mind Mapping and Care Planning to Enhance Student Critical Thinking and Achieve Holistic Nursing Care.PDF" ID="ID_1322941794" CREATED="1268182825898" MODIFIED="1268182825898" LINK="file:/C:/_Dissertation/Literature/Joining%20Mind%20Mapping%20and%20Care%20Planning%20to%20Enhance%20Student%20Critical%20Thinking%20and%20Achieve%20Holistic%20Nursing%20Care.PDF" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="Method for creating and tracking external system data via a mind map.PDF" ID="ID_848767636" CREATED="1268182825898" MODIFIED="1268182825898" LINK="file:/C:/_Dissertation/Literature/Method%20for%20creating%20and%20tracking%20external%20system%20data%20via%20a%20mind%20map.PDF" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="Intelligent mind-mapping.PDF" ID="ID_165230666" CREATED="1268182825898" MODIFIED="1268182825898" LINK="file:/C:/_Dissertation/Literature/Intelligent%20mind-mapping.PDF" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="PDF_FILE" object_number="0"/>
+</node>
+<node TEXT="Joining Mind Mapping and Care Planning to Enhance Student Critical Thinking and Achieve Holistic Nursing Care.PDF" ID="ID_1322941794" CREATED="1268182825898" MODIFIED="1268182825898" LINK="file:/C:/_Dissertation/Literature/Joining%20Mind%20Mapping%20and%20Care%20Planning%20to%20Enhance%20Student%20Critical%20Thinking%20and%20Achieve%20Holistic%20Nursing%20Care.PDF" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="PDF_FILE" object_number="0"/>
+</node>
+<node TEXT="Method for creating and tracking external system data via a mind map.PDF" ID="ID_848767636" CREATED="1268182825898" MODIFIED="1268182825898" LINK="file:/C:/_Dissertation/Literature/Method%20for%20creating%20and%20tracking%20external%20system%20data%20via%20a%20mind%20map.PDF" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="PDF_FILE" object_number="0"/>
+</node>
 <node TEXT="Mind map learning approach in e-learning environment using SCORM standards.pdf" ID="ID_1095555604" CREATED="1268182825898" MODIFIED="1268182825898" LINK="file:/C:/_Dissertation/Literature/Mind%20map%20learning%20approach%20in%20e-learning%20environment%20using%20SCORM%20standards.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="PDF_FILE" object_number="0"/>
 </node>
@@ -3587,7 +3879,9 @@
 <node TEXT="Mind tools for enhancing thinking and learning skills.PDF" ID="ID_646410085" CREATED="1268182825898" MODIFIED="1268182825898" LINK="file:/C:/_Dissertation/Literature/Mind%20tools%20for%20enhancing%20thinking%20and%20learning%20skills.PDF" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="PDF_FILE" object_number="0"/>
 </node>
-<node TEXT="Mutual adaptation to mind mapping in human-agent interaction.pdf" ID="ID_1669776429" CREATED="1268182825898" MODIFIED="1269477771523" LINK="file:/C:/_Dissertation/Literature/Mutual%20adaptation%20to%20mind%20mapping%20in%20human-agent%20interaction.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="Mutual adaptation to mind mapping in human-agent interaction.pdf" ID="ID_1669776429" CREATED="1268182825898" MODIFIED="1269477771523" LINK="file:/C:/_Dissertation/Literature/Mutual%20adaptation%20to%20mind%20mapping%20in%20human-agent%20interaction.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="PDF_FILE" object_number="0"/>
+</node>
 <node TEXT="Scribbles -- An Exploratory Study of Sketch Based Support.PDF" ID="ID_732994433" CREATED="1268182825913" MODIFIED="1268182825913" LINK="file:/C:/_Dissertation/Literature/Scribbles%20--%20An%20Exploratory%20Study%20of%20Sketch%20Based%20Support.PDF" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="PDF_FILE" object_number="0"/>
 </node>
@@ -3600,7 +3894,9 @@
 <node TEXT="The Using ofMind Map in Concept Design.PDF" ID="ID_1389231985" CREATED="1268182849181" MODIFIED="1268182849181" LINK="file:/C:/_Dissertation/Literature/The%20Using%20ofMind%20Map%20in%20Concept%20Design.PDF" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="PDF_FILE" object_number="0"/>
 </node>
-<node TEXT="Visualising legal information -- mind maps and e-government.PDF" ID="ID_1633009118" CREATED="1268182849181" MODIFIED="1268182849181" LINK="file:/C:/_Dissertation/Literature/Visualising%20legal%20information%20--%20mind%20maps%20and%20e-government.PDF" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="Visualising legal information -- mind maps and e-government.PDF" ID="ID_1633009118" CREATED="1268182849181" MODIFIED="1268182849181" LINK="file:/C:/_Dissertation/Literature/Visualising%20legal%20information%20--%20mind%20maps%20and%20e-government.PDF" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="PDF_FILE" object_number="0"/>
+</node>
 <node TEXT="Mind mapping -- an instructional strategy for learning seventh-grade life science.pdf" ID="ID_204334557" CREATED="1268182849196" MODIFIED="1268182849196" LINK="file:/C:/_Dissertation/Literature/Mind%20mapping%20--%20an%20instructional%20strategy%20for%20learning%20seventh-grade%20life%20science.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="PDF_FILE" object_number="0"/>
 </node>
@@ -3610,7 +3906,9 @@
 <node TEXT="MIND MAPS&#x2013;A CREATIVE THINKING TOOL IN INFORMATION TECHNOLOGY.pdf" ID="ID_1864808151" CREATED="1268182849196" MODIFIED="1268182849196" LINK="file:/C:/_Dissertation/Literature/MIND%20MAPS&#x2013;A%20CREATIVE%20THINKING%20TOOL%20IN%20INFORMATION%20TECHNOLOGY.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="PDF_FILE" object_number="0"/>
 </node>
-<node TEXT="Mind-Map.pdf" ID="ID_258275866" CREATED="1268182849196" MODIFIED="1268182849196" LINK="file:/C:/_Dissertation/Literature/Mind-Map.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="Mind-Map.pdf" ID="ID_258275866" CREATED="1268182849196" MODIFIED="1268182849196" LINK="file:/C:/_Dissertation/Literature/Mind-Map.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="PDF_FILE" object_number="0"/>
+</node>
 <node TEXT="The role of hypermedia mindmaps in the learning process of individuals.PDF" ID="ID_39911389" CREATED="1268182886691" MODIFIED="1268182886691" LINK="file:/C:/_Dissertation/Literature/The%20role%20of%20hypermedia%20mindmaps%20in%20the%20learning%20process%20of%20individuals.PDF" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="PDF_FILE" object_number="0"/>
 </node>
@@ -3620,8 +3918,12 @@
 <node TEXT="Use of Premade Mind Maps to Enhance Simulation Learning.pdf" ID="ID_141470928" CREATED="1268182886691" MODIFIED="1268182886691" LINK="file:/C:/_Dissertation/Literature/Use%20of%20Premade%20Mind%20Maps%20to%20Enhance%20Simulation%20Learning.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="PDF_FILE" object_number="0"/>
 </node>
-<node TEXT="Using Mind Maps To Teach Social Problems Analysis.PDF" ID="ID_1510447052" CREATED="1268182886691" MODIFIED="1268182886691" LINK="file:/C:/_Dissertation/Literature/Using%20Mind%20Maps%20To%20Teach%20Social%20Problems%20Analysis.PDF" BOOKMARKS_UPDATED="1299366127750"/>
-<node TEXT="Mind Map Plug-in for Eclipse.pdf" ID="ID_1019328152" CREATED="1268182886691" MODIFIED="1268182886691" LINK="file:/C:/_Dissertation/Literature/Mind%20Map%20Plug-in%20for%20Eclipse.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="Using Mind Maps To Teach Social Problems Analysis.PDF" ID="ID_1510447052" CREATED="1268182886691" MODIFIED="1268182886691" LINK="file:/C:/_Dissertation/Literature/Using%20Mind%20Maps%20To%20Teach%20Social%20Problems%20Analysis.PDF" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="PDF_FILE" object_number="0"/>
+</node>
+<node TEXT="Mind Map Plug-in for Eclipse.pdf" ID="ID_1019328152" CREATED="1268182886691" MODIFIED="1268182886691" LINK="file:/C:/_Dissertation/Literature/Mind%20Map%20Plug-in%20for%20Eclipse.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="PDF_FILE" object_number="0"/>
+</node>
 <node TEXT="Mind mapping for an educational environment.pdf" ID="ID_955577851" CREATED="1268182886691" MODIFIED="1268182886691" LINK="file:/C:/_Dissertation/Literature/Mind%20mapping%20for%20an%20educational%20environment.pdf" BOOKMARKS_UPDATED="1299366127750">
 <pdf_annotation type="PDF_FILE" object_number="0"/>
 </node>
@@ -3998,7 +4300,9 @@
 </node>
 </node>
 <node TEXT="In practice, academic search engine optimization is sometimes applied by publishers" ID="ID_1225174350" CREATED="1300136609057" MODIFIED="1300139399235">
-<node TEXT="SAGE is aware that title, abstract and keywords are essential so people find articles via google" ID="ID_1720711113" CREATED="1270505080276" MODIFIED="1270505080276" LINK="file:/C:/_Dissertation/Literature/LIS_Manuscript_Guidelines.pdf" BOOKMARKS_UPDATED="1299366127750"/>
+<node TEXT="SAGE is aware that title, abstract and keywords are essential so people find articles via google" ID="ID_1720711113" CREATED="1270505080276" MODIFIED="1270505080276" LINK="file:/C:/_Dissertation/Literature/LIS_Manuscript_Guidelines.pdf" BOOKMARKS_UPDATED="1299366127750">
+<pdf_annotation type="BOOKMARK" page="4" object_number="718" generation_number="0"/>
+</node>
 <node TEXT="google (scholar) referes 60% of visitors to SAGE Online plattform" ID="ID_1789666372" CREATED="1270505887903" MODIFIED="1300136494900" LINK="file:/C:/_Dissertation/Literature/SAGE%20offers%20kind%20of%20ASEO%20tips%20for%20authors.pdf" BOOKMARKS_UPDATED="1299366127750">
 <attribute_layout NAME_WIDTH="111" VALUE_WIDTH="294"/>
 <attribute NAME="splmm_refkey" VALUE="SAGE"/>
