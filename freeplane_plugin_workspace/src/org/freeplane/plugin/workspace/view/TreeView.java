@@ -39,8 +39,9 @@ public class TreeView extends JPanel {
 		
 		this.add(new JScrollPane(m_tree), BorderLayout.CENTER);
 		
-		WorkspaceToolBar workspaceToolBar = new WorkspaceToolBar();
-		add(workspaceToolBar, BorderLayout.NORTH);
+		// TODO: DOCEAR - choose actions to use in Toolbar
+//		WorkspaceToolBar workspaceToolBar = new WorkspaceToolBar();
+//		add(workspaceToolBar, BorderLayout.NORTH);
 	}
 	
 	public JTree getTreeView() {

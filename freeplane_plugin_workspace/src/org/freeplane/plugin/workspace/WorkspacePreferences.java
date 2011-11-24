@@ -19,7 +19,6 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.plugin.workspace.dialog.WorkspaceChooserDialogPanel;
 
 public class WorkspacePreferences {
 
