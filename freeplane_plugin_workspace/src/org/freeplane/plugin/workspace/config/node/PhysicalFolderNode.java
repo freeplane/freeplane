@@ -20,8 +20,6 @@ import org.apache.commons.io.monitor.FileAlterationListener;
 import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
@@ -29,9 +27,7 @@ import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.dnd.IDropAcceptor;
 import org.freeplane.plugin.workspace.dnd.IWorkspaceTransferableCreator;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
-import org.freeplane.plugin.workspace.io.action.FileNodeNewDirectoryAction;
-import org.freeplane.plugin.workspace.io.action.FileNodeNewFileAction;
-import org.freeplane.plugin.workspace.io.action.FileNodeNewMindmapAction;
+import org.freeplane.plugin.workspace.io.IFileSystemRepresentation;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
@@ -39,7 +35,11 @@ import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.node.AFolderNode;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
-public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeEventListener, FileAlterationListener, IWorkspaceTransferableCreator, IDropAcceptor {
+public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeEventListener
+																, FileAlterationListener
+																, IWorkspaceTransferableCreator
+																, IDropAcceptor
+																, IFileSystemRepresentation {
 	
 	private static final long serialVersionUID = 1L;
 	private static Icon FOLDER_OPEN_ICON = new ImageIcon(PhysicalFolderNode.class.getResource("/images/16x16/folder-orange_open.png"));
@@ -85,11 +85,7 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeEve
 	}
 
 	public void initializePopup() {
-		if (popupMenu == null) {
-			ModeController modeController = Controller.getCurrentModeController();
-			modeController.addAction(new FileNodeNewDirectoryAction());
-			modeController.addAction(new FileNodeNewMindmapAction());
-			modeController.addAction(new FileNodeNewFileAction());
+		if (popupMenu == null) {			
 			
 			if (popupMenu == null) {			
 				popupMenu = new WorkspacePopupMenu();
@@ -406,5 +402,9 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeEve
 			LogUtils.warn(e);
 		}		
 		return null;
+	}
+
+	public File getFile() {
+		return WorkspaceUtils.resolveURI(this.getPath());
 	}
 }

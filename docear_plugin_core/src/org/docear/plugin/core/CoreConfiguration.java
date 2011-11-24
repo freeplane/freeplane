@@ -2,6 +2,7 @@ package org.docear.plugin.core;
 
 import java.net.URI;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.Enumeration;
 
 import org.docear.plugin.core.actions.DocearLicenseAction;
@@ -27,6 +28,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -159,6 +161,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	}
 
 	private void replaceActions() {
+		
 		ResourceController resourceController = ResourceController.getResourceController();
 
 		resourceController.setProperty(WEB_FREEPLANE_LOCATION, resourceController.getProperty(WEB_DOCEAR_LOCATION));
@@ -198,8 +201,20 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 				}
 			}
 		}
-
-		bundles.putResourceString(ABOUT_TEXT, "Docear About Text.\nDocear Version: 1.0 Alpha \nFreeplane Version: ");
+		String programmer = resourceController.getProperty("docear_programmer");
+		String copyright = resourceController.getProperty("docear_copyright");
+		String version	= resourceController.getProperty("docear_version");
+		
+		String aboutText = TextUtils.getRawText("docear_about");
+		MessageFormat formatter;
+        try {
+            formatter = new MessageFormat(aboutText);
+            aboutText = formatter.format(new Object[]{ version, copyright, programmer});
+        }
+        catch (IllegalArgumentException e) {
+            LogUtils.severe("wrong format " + aboutText + " for property " + "docear_about", e);
+        }		
+		bundles.putResourceString(ABOUT_TEXT, aboutText);
 	}
 
 	private void replaceAction(String actionKey, AFreeplaneAction action) {

@@ -1,8 +1,10 @@
 package org.docear.plugin.bibtex;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -139,8 +141,10 @@ public class JabRefAttributes {
 			}
 		}
 		
+		boolean isFile = true;
 		String url = entry.getField("file");
 		if (url == null) {
+			isFile = false;
 			url = entry.getField("url");
 		}
 		
@@ -162,12 +166,17 @@ public class JabRefAttributes {
 		}
 		
 		URI uri;
-		try {
-			uri = LinkController.createURI(url.trim());
+		if (isFile) {
+			uri = new File(url.trim()).toURI();
 		}
-		catch (URISyntaxException e) {			
-			e.printStackTrace();
-			return changes;
+		else {
+			try {
+				uri = new URL(url.trim()).toURI();
+			}			
+			catch (Exception e) {				
+				e.printStackTrace();
+				return changes;
+			}
 		}
 		((MLinkController) MLinkController.getController()).setLinkTypeDependantLink(node, uri);		
 		return true;

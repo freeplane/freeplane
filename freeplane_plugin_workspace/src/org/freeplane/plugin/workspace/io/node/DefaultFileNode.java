@@ -33,6 +33,7 @@ import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.dnd.IDropAcceptor;
 import org.freeplane.plugin.workspace.dnd.IWorkspaceTransferableCreator;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
+import org.freeplane.plugin.workspace.io.IFileSystemRepresentation;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
@@ -40,7 +41,7 @@ import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 /**
  * 
  */
-public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNodeEventListener, IWorkspaceTransferableCreator, IDropAcceptor {
+public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNodeEventListener, IWorkspaceTransferableCreator, IDropAcceptor, IFileSystemRepresentation {
 	private static final Icon FOLDER_OPEN_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/folder-orange_open.png"));
 	private static final Icon FOLDER_CLOSED_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/folder-orange.png"));
 	private static final Icon ACROBAT_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/acrobat.png"));
@@ -80,10 +81,6 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
-	
-	public File getFile() {
-		return this.file;
-	}
 	
 	public String getFileExtension() {
 		return this.fileExtension;
@@ -256,6 +253,10 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
+	
+	public File getFile() {
+		return this.file;
+	}
 	
 	public void handleEvent(WorkspaceNodeEvent event) {	
 		if(event.getType() == WorkspaceNodeEvent.WSNODE_CHANGED) {
