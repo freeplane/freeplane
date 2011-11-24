@@ -29,9 +29,6 @@ import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.dnd.IDropAcceptor;
 import org.freeplane.plugin.workspace.dnd.IWorkspaceTransferableCreator;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
-import org.freeplane.plugin.workspace.io.action.FileNodeNewDirectoryAction;
-import org.freeplane.plugin.workspace.io.action.FileNodeNewFileAction;
-import org.freeplane.plugin.workspace.io.action.FileNodeNewMindmapAction;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
@@ -85,11 +82,7 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeEve
 	}
 
 	public void initializePopup() {
-		if (popupMenu == null) {
-			ModeController modeController = Controller.getCurrentModeController();
-			modeController.addAction(new FileNodeNewDirectoryAction());
-			modeController.addAction(new FileNodeNewMindmapAction());
-			modeController.addAction(new FileNodeNewFileAction());
+		if (popupMenu == null) {			
 			
 			if (popupMenu == null) {			
 				popupMenu = new WorkspacePopupMenu();
