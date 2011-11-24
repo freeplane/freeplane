@@ -123,17 +123,20 @@ public class JabRefAttributes {
 			
 			if (nodeValue == null) {
 				if (jabrefValue != null) {
+					System.out.println("debug insert attribute "+nodeAttributeName+" : "+jabrefValue);
 					AttributeController.getController().performInsertRow(attributeTable, 0, nodeAttributeName, jabrefValue);
 					changes = true;
 				}
 			}
 			else {
 				if (jabrefValue == null) {
+					System.out.println("debug remove attribute "+nodeAttributeName);
 					AttributeController.getController().performRemoveRow(attributeTable, attributeTable.getAttributePosition(nodeAttributeName));
 					changes = true;
 				}
 				else {
 					if (!nodeValue.equals(jabrefValue)) {
+						System.out.println("debug replace attribute "+nodeAttributeName+" : "+nodeValue+" --> "+jabrefValue);
 						AttributeController.getController().performReplaceAttributeValue(nodeAttributeName, nodeValue, jabrefValue);						
 						changes = true;
 					}
@@ -155,7 +158,7 @@ public class JabRefAttributes {
 			}
 		}
 		else {
-			if (nodeLinks.getHyperLink() != null && nodeLinks.getHyperLink().getPath().equals(url)) {
+			if (nodeLinks != null && nodeLinks.getHyperLink() != null && nodeLinks.getHyperLink().getPath().equals(url)) {
 				return changes;
 			}
 		}
