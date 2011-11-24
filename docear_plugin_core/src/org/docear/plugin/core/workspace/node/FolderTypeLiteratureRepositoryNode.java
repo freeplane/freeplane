@@ -16,6 +16,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
+import org.freeplane.plugin.workspace.io.IFileSystemRepresentation;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
@@ -23,7 +24,7 @@ import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 /**
  * 
  */
-public class FolderTypeLiteratureRepositoryNode extends PhysicalFolderNode implements ChangeListener {
+public class FolderTypeLiteratureRepositoryNode extends PhysicalFolderNode implements ChangeListener, IFileSystemRepresentation {
 
 	private static final long serialVersionUID = 1L;
 	private boolean locked;
@@ -133,5 +134,9 @@ public class FolderTypeLiteratureRepositoryNode extends PhysicalFolderNode imple
 			this.setPath(uri);
 			this.refresh();
 		}
+	}
+	
+	public File getFile() {
+		return WorkspaceUtils.resolveURI(this.getPath());
 	}
 }

@@ -41,6 +41,9 @@ import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
 import org.freeplane.plugin.workspace.dnd.IDropAcceptor;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
+import org.freeplane.plugin.workspace.io.action.FileNodeNewDirectoryAction;
+import org.freeplane.plugin.workspace.io.action.FileNodeNewFileAction;
+import org.freeplane.plugin.workspace.io.action.FileNodeNewMindmapAction;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
@@ -117,6 +120,10 @@ public class WorkspaceRoot extends AWorkspaceTreeNode implements IConfigurationI
 			modeController.addAction(new NodeRenameAction());
 			modeController.addAction(new NodeCopyAction());
 			modeController.addAction(new NodePasteAction());
+			
+			modeController.addAction(new FileNodeNewDirectoryAction());
+			modeController.addAction(new FileNodeNewMindmapAction());
+			modeController.addAction(new FileNodeNewFileAction());
 			
 			popupMenu = new WorkspacePopupMenu();
 			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {

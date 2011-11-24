@@ -5,7 +5,6 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +12,6 @@ import java.util.Map.Entry;
 import java.util.Stack;
 
 import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
 
 import org.docear.plugin.core.features.DocearNodeModelExtension.DocearExtensionKey;
 import org.docear.plugin.core.features.DocearNodeModelExtensionController;
@@ -21,14 +19,12 @@ import org.docear.plugin.core.ui.SwingWorkerDialog;
 import org.docear.plugin.core.ui.SwingWorkerDialogLite;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
-import org.docear.plugin.pdfutilities.features.AnnotationID;
-import org.docear.plugin.pdfutilities.features.AnnotationModel;
-import org.docear.plugin.pdfutilities.features.IAnnotation;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
+import org.jdesktop.swingworker.SwingWorker;
 
 @EnabledAction( checkOnNodeChange = true )
 public class MonitoringFlattenSubfoldersAction extends DocearAction {

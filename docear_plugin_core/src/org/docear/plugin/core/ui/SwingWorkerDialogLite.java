@@ -11,8 +11,9 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
+
+import org.jdesktop.swingworker.SwingWorker;
 
 public class SwingWorkerDialogLite extends JDialog implements PropertyChangeListener {
 

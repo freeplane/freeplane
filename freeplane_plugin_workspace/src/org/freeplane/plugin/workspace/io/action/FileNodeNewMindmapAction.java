@@ -11,6 +11,8 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
+import org.freeplane.plugin.workspace.io.IFileSystemRepresentation;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.io.node.FolderFileNode;
 import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
@@ -32,32 +34,35 @@ public class FileNodeNewMindmapAction extends AWorkspaceAction {
 	
 	public void actionPerformed(final ActionEvent e) {	
 		AWorkspaceTreeNode targetNode = this.getNodeFromActionEvent(e);
-		if(targetNode instanceof FolderFileNode ) {
+		if(targetNode instanceof IFileSystemRepresentation ) {
 			String fileName = JOptionPane.showInputDialog(Controller.getCurrentController().getViewController().getContentPane(),
 				TextUtils.getText("add_new_mindmap"), TextUtils.getText("add_new_mindmap_title"),
 				JOptionPane.OK_CANCEL_OPTION);
 		
-			if (fileName != null && fileName.length()>0) {				
-					File file = new File(((FolderFileNode) targetNode).getFile(), fileName);
-					if (file.exists()) {
-						JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(),
-	                            TextUtils.getText("error_file_exists"), TextUtils.getText("error_file_exists_title"),
-	                            JOptionPane.ERROR_MESSAGE);
-					} 
-					else if (createNewMindmap(file)) {
-						targetNode.refresh();
-					}
-				
+			if (fileName != null && fileName.length()>0) {
+				if (!fileName.endsWith(".mm")) {
+					fileName += ".mm";
+				}
+				File file = new File(((IFileSystemRepresentation) targetNode).getFile(), fileName);
+				if (file.exists()) {
+					JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(),
+                            TextUtils.getText("error_file_exists"), TextUtils.getText("error_file_exists_title"),
+                            JOptionPane.ERROR_MESSAGE);
+				} 
+				else if (createNewMindmap(file)) {
+					targetNode.refresh();
+				}
+			
 			}
 		}
     }
 	
 	private boolean createNewMindmap(final File f) {
 		MFileManager mFileManager = MFileManager.getController(Controller.getCurrentModeController());
-		mFileManager.newMap();
-		
+		mFileManager.newMap();		
 		mFileManager.save(Controller.getCurrentController().getMap(), f);
-		Controller.getCurrentController().close(false);
+		Controller.getCurrentController().getMap().getRootNode().setText(f.getName());
+		//Controller.getCurrentController().close(false);
 
 		LogUtils.info("New Mindmap Created: " + f.getAbsolutePath());
 		return true;
