@@ -158,7 +158,7 @@ public class TextController implements IExtension {
 		return text.toString();
 	}
 
-	public boolean getIsShortened(NodeModel node){
+	public boolean isMinimized(NodeModel node){
 		final ShortenedTextModel shortened = ShortenedTextModel.getShortenedTextModel(node);
 		return shortened != null;
 	}
@@ -166,18 +166,23 @@ public class TextController implements IExtension {
 	// FIXME: This should be getPlainTransformedText() since getText() does not transform too
 	/** returns transformed text converted to plain text. */
 	public String getPlainTextContent(NodeModel nodeModel) {
-		final Object userObject = nodeModel.getUserObject();
+		final String text = getTransformedTextNoThrow(nodeModel);
+		return HtmlUtils.htmlToPlain(text);    
+	}
+
+	public String getTransformedTextNoThrow(NodeModel nodeModel) {
+	    final Object userObject = nodeModel.getUserObject();
 		final Object input;
 		if(userObject instanceof String &&  HtmlUtils.isHtmlNode((String) userObject))
 			input = HtmlUtils.htmlToPlain((String) userObject);
 		else
 			input = userObject;
 		final String text = getTransformedTextNoThrow(input, nodeModel, userObject);
-		return HtmlUtils.htmlToPlain(text);    
-	}
+	    return text;
+    }
 
 	public String getShortText(NodeModel nodeModel) {
-		String adaptedText = TextController.getController().getPlainTextContent(nodeModel);
+		String adaptedText = getPlainTextContent(nodeModel);
 		if (adaptedText.length() > 40) {
 			adaptedText = adaptedText.substring(0, 40) + " ...";
 		}
@@ -253,7 +258,7 @@ public class TextController implements IExtension {
 		});
 	}
 
-	public void setIsShortened(NodeModel node, boolean shortened) {
+	public void setIsMinimized(NodeModel node, boolean shortened) {
 		boolean oldState = ShortenedTextModel.getShortenedTextModel(node) != null;
 		if(oldState == shortened){
 			return;
@@ -268,7 +273,7 @@ public class TextController implements IExtension {
 	}
 
 	public void toggleShortened(NodeModel node) {
-		setIsShortened(node, ! getIsShortened(node)); 
+		setIsMinimized(node, ! isMinimized(node)); 
     }
 
 	public String getNodeFormat(NodeModel node) {

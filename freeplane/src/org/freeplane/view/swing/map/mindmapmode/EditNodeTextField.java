@@ -655,7 +655,7 @@ public class EditNodeTextField extends EditNodeBase {
 			textfield.setCaretPosition(pos);
 		}
 		document.addDocumentListener(documentListener);
-		if(textController.getIsShortened(node)){
+		if(textController.isMinimized(node)){
 			layout();
 		}
 		textfield.repaint();

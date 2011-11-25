@@ -179,7 +179,7 @@ public class AttributeController implements IExtension {
 				final AttributeRegistry registry = AttributeRegistry.getRegistry(node.getMap());
 				final TextController textController = TextController.getController(modeController);
 				if (registry.getAttributeViewType().equals(AttributeTableLayoutModel.SHOW_ALL)
-						&& ! textController.getIsShortened(node)) {
+						&& ! textController.isMinimized(node)) {
 					return null;
 				}
 				final StringBuilder tooltip = new StringBuilder();

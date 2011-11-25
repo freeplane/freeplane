@@ -119,7 +119,7 @@ public class NoteController implements IExtension {
 	private void registerNoteTooltip(ModeController modeController) {
 		modeController.addToolTipProvider(NODE_TOOLTIP, new ITooltipProvider() {
 			public String getTooltip(ModeController modeController, NodeModel node, Component view) {
-				if(showNotesInMap(node.getMap()) && ! TextController.getController(modeController).getIsShortened(node)){
+				if(showNotesInMap(node.getMap()) && ! TextController.getController(modeController).isMinimized(node)){
 					return null;
 				}
 				final String noteText = NoteModel.getNoteText(node);
