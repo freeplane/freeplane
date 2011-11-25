@@ -278,6 +278,11 @@ public class MTextController extends TextController {
 	}
 
 	public void setNodeObject(final NodeModel node, final Object newObject) {
+		if(newObject == null){
+			setNodeObject(node, "");
+			return;
+		}
+			
 		final Object oldText = node.getUserObject();
 		if (oldText.equals(newObject)) {
 			return;
@@ -455,7 +460,7 @@ public class MTextController extends TextController {
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
-	public void setIsShortened(final NodeModel node, final boolean state) {
+	public void setIsMinimized(final NodeModel node, final boolean state) {
 		ShortenedTextModel details = (ShortenedTextModel) node.getExtension(ShortenedTextModel.class);
 		if (details == null && state == false || details != null && state == true) {
 			return;
