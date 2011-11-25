@@ -62,11 +62,6 @@ public class NoteController implements IExtension {
 		return (NoteController) modeController.getExtension(NoteController.class);
     }
 	
-	public static void install() {
-		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(6,
-		    new NoteConditionController());
-	}
-
 	public static void install( final NoteController noteController) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(NoteController.class, noteController);

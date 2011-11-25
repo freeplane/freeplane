@@ -69,10 +69,18 @@ public class NodeTextCompareCondition extends CompareConditionAdapter {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		final Object item = NodeTextConditionController.getItemForComparison(nodeItem, node);
-		return item != null && checkText(item);
+		final Object content[] = NodeTextConditionController.getItemsForComparison(nodeItem, node);
+		return content != null && checkText(content);
 	}
 
+	private boolean checkText(Object content[]) {
+		for(Object o : content){
+			if(o != null && checkText(o.toString()))
+				return true;
+		}
+		return false;
+	}
+	
 	private boolean checkText(final Object plainTextContent) {
 		try {
 			compareTo(plainTextContent);

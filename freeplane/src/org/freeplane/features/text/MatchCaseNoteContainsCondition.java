@@ -17,13 +17,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.note;
+package org.freeplane.features.text;
 
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.note.NoteModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class MatchCaseNoteContainsCondition extends ASelectableCondition {
@@ -55,7 +56,7 @@ public class MatchCaseNoteContainsCondition extends ASelectableCondition {
 	}
 
 	protected String createDescription(final boolean matchCase) {
-		final String nodeCondition = TextUtils.getText(NoteConditionController.FILTER_NOTE);
+		final String nodeCondition = TextUtils.getText(TextController.FILTER_NOTE);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
 		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, matchCase);
 	}

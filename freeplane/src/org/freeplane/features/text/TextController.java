@@ -52,6 +52,8 @@ import org.freeplane.features.styles.MapStyleModel;
  */
 public class TextController implements IExtension {
 	public static final String FILTER_NODE = "filter_node";
+	public static final String FILTER_ANYTEXT = "filter_any_text";
+	public static final String FILTER_NOTE = "filter_note";
 	public static final String FILTER_PARENT = "filter_parent";
 	public static final String FILTER_DETAILS = "filter_details";
 	private static final Integer NODE_TOOLTIP = 1;

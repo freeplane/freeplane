@@ -47,12 +47,20 @@ public class NodeContainsCondition extends ASelectableCondition {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		final Object content = NodeTextConditionController.getItemForComparison(nodeItem, node);
-		return content != null && checkText(content.toString());
+		final Object content[] = NodeTextConditionController.getItemsForComparison(nodeItem, node);
+		return checkText(content);
 	}
 
-	private boolean checkText(final String plainTextContent) {
-		return plainTextContent != null && plainTextContent.toLowerCase().indexOf(valueLowerCase) > -1;
+	private boolean checkText(Object content[]) {
+		for(Object o : content){
+			if(checkText(o))
+				return true;
+		}
+		return false;
+	}
+	
+	private boolean checkText(final Object o) {
+		return o != null && o.toString().toLowerCase().indexOf(valueLowerCase) > -1;
 	}
 
 	@Override
