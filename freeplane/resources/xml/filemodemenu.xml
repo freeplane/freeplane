@@ -35,10 +35,7 @@
 				</menu_category>
 				<menu_submenu name="menu_nodeView" name_ref="menu_nodeView">
 					<menu_action action="ShowSelectionAsRectangleAction"/>					
-					<menu_category name="general">
-						<menu_action action="MaxNodeWidthAction"/>
-						</menu_category>
-					</menu_submenu>
+				</menu_submenu>
 				</menu_submenu>
 		<menu_submenu name="navigate" name_ref="menu_navigate">
 			<menu_category name="navigate">
