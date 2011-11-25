@@ -54,7 +54,8 @@ public class BackupRunner {
 						try {
 							System.out.println("TEST");
 							this.wait(60000 * auto_backup_minutes);
-							if (isMapChanged()) {
+							Account account = config.getAccount();
+							if (config.isBackup() && isMapChanged() && account.hasUsername() && account.hasPassword() && account.hasConnectionString()) {
 								setMapChanged(false);
 								System.out.println("change map");
 								Filetransfer.copyMindmapToServer(config);
@@ -69,14 +70,12 @@ public class BackupRunner {
 		};
 		Thread.currentThread().setContextClassLoader(contextClassLoader);
 		
-		
 		runner.execute();
-
 	}
 
 	public void backup() {
 		Account account = config.getAccount();
-		if (!account.hasUsername() || !account.hasPassword() || !account.hasConnectionString()) {
+		if (config.isBackup() && !account.hasUsername() || !account.hasPassword() || !account.hasConnectionString()) {
 			JOptionPane.showMessageDialog(null, TextUtils.getText("account_credentials_not_found"), "error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
