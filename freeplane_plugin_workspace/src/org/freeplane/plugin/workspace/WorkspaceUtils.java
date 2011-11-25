@@ -220,7 +220,10 @@ public class WorkspaceUtils {
 		if (absoluteUri == null) {
 			return null;
 		}
-		return new File(absoluteUri);
+		if(absoluteUri.getScheme().equalsIgnoreCase("file")){
+			return new File(absoluteUri);
+		}
+		return null;
 	}
 
 	public static URI getURI(final File f) {

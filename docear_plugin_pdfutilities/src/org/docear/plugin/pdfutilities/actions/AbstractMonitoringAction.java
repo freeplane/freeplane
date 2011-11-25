@@ -187,7 +187,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Searching monitored mindmaps ...");
 					Collection<URI> mindmapFiles = new ArrayList<URI>();
 					for(URI uri : mindmaps){
-						if(Tools.getFilefromUri(uri).isDirectory()){
+						if(Tools.getFilefromUri(uri) != null && Tools.getFilefromUri(uri).isDirectory()){
 							mindmapFiles.addAll(Tools.getFilteredFileList(uri, new CustomFileFilter(".*[.][mM][mM]"), true));
 						}
 						else{
@@ -251,29 +251,31 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					for(final URI uri : monitorFiles){
 						try{
 							if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
-							fireStatusUpdate(SwingWorkerDialog.NEW_FILE, null, Tools.getFilefromUri(uri).getName());
-							PdfAnnotationImporter importer = new PdfAnnotationImporter();
-							Collection<AnnotationModel> annotations = importer.importAnnotations(uri);
-							AnnotationModel root = new AnnotationModel(new AnnotationID(Tools.getAbsoluteUri(uri), 0), AnnotationType.PDF_FILE);
-							root.setTitle(Tools.getFilefromUri(Tools.getAbsoluteUri(uri)).getName());
-							root.getChildren().addAll(annotations);
-							annotations = new ArrayList<AnnotationModel>();
-							annotations.add(root);
-							annotations = AnnotationController.markNewAnnotations(annotations, oldAnnotations);							
-							AnnotationController.addConflictedAnnotations(AnnotationController.getConflictedAnnotations(annotations, oldAnnotations), conflicts);
-							
-							final Collection<AnnotationModel> finalAnnotations = annotations;
-							if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
-							SwingUtilities.invokeAndWait(
-							        new Runnable() {
-							            public void run(){							            	
-											NodeUtils.insertNewChildNodesFrom(uri, finalAnnotations, target.isLeft(), flattenSubdirs,  target);
-											for(AnnotationModel annotation : getInsertedNodes(finalAnnotations)){
-												firePropertyChange(SwingWorkerDialog.DETAILS_LOG_TEXT, null, "Imported " + annotation.getTitle() +"\n");												
-											}							            											
-							            }
-							        }
-							   );						
+							if(Tools.getFilefromUri(Tools.getAbsoluteUri(uri)) != null){ 
+								fireStatusUpdate(SwingWorkerDialog.NEW_FILE, null, Tools.getFilefromUri(uri).getName());
+								PdfAnnotationImporter importer = new PdfAnnotationImporter();
+								Collection<AnnotationModel> annotations = importer.importAnnotations(uri);
+								AnnotationModel root = new AnnotationModel(new AnnotationID(Tools.getAbsoluteUri(uri), 0), AnnotationType.PDF_FILE);
+								root.setTitle(Tools.getFilefromUri(Tools.getAbsoluteUri(uri)).getName());
+								root.getChildren().addAll(annotations);
+								annotations = new ArrayList<AnnotationModel>();
+								annotations.add(root);
+								annotations = AnnotationController.markNewAnnotations(annotations, oldAnnotations);							
+								AnnotationController.addConflictedAnnotations(AnnotationController.getConflictedAnnotations(annotations, oldAnnotations), conflicts);
+								
+								final Collection<AnnotationModel> finalAnnotations = annotations;
+								if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
+								SwingUtilities.invokeAndWait(
+								        new Runnable() {
+								            public void run(){							            	
+												NodeUtils.insertNewChildNodesFrom(uri, finalAnnotations, target.isLeft(), flattenSubdirs,  target);
+												for(AnnotationModel annotation : getInsertedNodes(finalAnnotations)){
+													firePropertyChange(SwingWorkerDialog.DETAILS_LOG_TEXT, null, "Imported " + annotation.getTitle() +"\n");												
+												}							            											
+								            }
+								        }
+								   );
+							}
 							count++;
 							fireProgressUpdate(100 * count / monitorFiles.size());
 						} catch(IOException e){
