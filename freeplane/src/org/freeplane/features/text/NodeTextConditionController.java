@@ -125,11 +125,11 @@ class NodeTextConditionController implements IElementaryConditionController {
 
 	public ListModel getFilteredProperties() {
 		final DefaultListModel list = new DefaultListModel();
+		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_ANYTEXT));
 		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_NODE));
-		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_PARENT));
 		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_DETAILS));
 		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_NOTE));
-		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_ANYTEXT));
+		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_PARENT));
 		return list;
 	}
 

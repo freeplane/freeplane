@@ -107,14 +107,15 @@ class AttributeConditionController implements IElementaryConditionController {
 
 	public ComboBoxModel getConditionsForProperty(final Object selectedItem) {
 		return new DefaultComboBoxModel(new NamedObject[] {
+		        TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS),
+		        TextUtils.createTranslatedString(ConditionFactory.FILTER_REGEXP),
 		        TextUtils.createTranslatedString(ConditionFactory.FILTER_EXIST),
 		        TextUtils.createTranslatedString(ConditionFactory.FILTER_DOES_NOT_EXIST),
 		        TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
 		        TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
 		        NamedObject.literal(ConditionFactory.FILTER_GT), NamedObject.literal(ConditionFactory.FILTER_GE),
-		        NamedObject.literal(ConditionFactory.FILTER_LE), NamedObject.literal(ConditionFactory.FILTER_LT),
-		        TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS),
-		        TextUtils.createTranslatedString(ConditionFactory.FILTER_REGEXP)});
+		        NamedObject.literal(ConditionFactory.FILTER_LE), NamedObject.literal(ConditionFactory.FILTER_LT)
+		});
 	}
 
 	public ListModel getFilteredProperties() {
