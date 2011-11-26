@@ -245,9 +245,12 @@ public class ScriptingEngine {
 		}
 		for (int row = 0; row < attributes.getRowCount(); ++row) {
 			final String attrKey = (String) attributes.getName(row);
-			final String script = (String) attributes.getValue(row);
-			if (attrKey.startsWith(ScriptingEngine.SCRIPT_PREFIX)) {
-				executeScript(node, script);
+			final Object value = attributes.getValue(row);
+			if(value instanceof String){
+				final String script = (String) value;
+				if (attrKey.startsWith(ScriptingEngine.SCRIPT_PREFIX)) {
+					executeScript(node, script);
+				}
 			}
 		}
 		return;
