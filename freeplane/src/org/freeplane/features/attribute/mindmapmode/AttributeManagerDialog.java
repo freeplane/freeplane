@@ -50,6 +50,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.IListModel;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.map.IMapSelectionListener;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -273,7 +274,12 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		final int iSize = Integer.parseInt(size.toString());
 		model.getAttributeController().performSetFontSize(model, iSize);
 		model.applyChanges();
-		((MModeController) Controller.getCurrentModeController()).delayedCommit();
+		final MModeController modeController = (MModeController) Controller.getCurrentModeController();
+		modeController.delayedCommit();
+		final MapController mapController = modeController.getMapController();
+		final MapModel map = Controller.getCurrentController().getMap();
+		assert(AttributeRegistry.getRegistry(map) == model);
+		mapController.setSaved(map, false);
 	}
 
 	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
