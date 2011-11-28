@@ -8,7 +8,6 @@ import javax.swing.JOptionPane;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.docear.plugin.core.ALanguageController;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
@@ -31,11 +30,13 @@ public class CommunicationsConfiguration extends ALanguageController implements 
 	public static final String USER_TYPE = "userType";
 	public static final String ANONYMOUS_USER_TYPE = "3";
 	public static final String FILENAME = "filename";
+	
+	public static final String SAVE_BACKUP_PROPERTY = "docear_save_backup";
 		
 	public static final int READ_TIMEOUT = 10000;
 	public static final int CONNECTION_TIMEOUT = 70000;
 
-	private boolean backup = false;
+//	private boolean backup = false;
 	private boolean allowInformationRetrieval = false;
 	private boolean allowRecommendations = false;
 	private boolean allowUsageMining = false;
@@ -83,12 +84,12 @@ public class CommunicationsConfiguration extends ALanguageController implements 
 		return account;
 	}
 
-	public void setBackup(boolean backup) {
-		this.backup = backup;
-	}
-
+//	public void setBackup(boolean backup) {
+//		this.backup = backup;
+//	}
+//
 	public boolean isBackup() {
-		return backup;
+		return Controller.getCurrentController().getResourceController().getBooleanProperty(SAVE_BACKUP_PROPERTY);
 	}
 
 	public void setAccount(DocearAccount account) {
@@ -120,7 +121,7 @@ public class CommunicationsConfiguration extends ALanguageController implements 
 	}
 
 	public boolean isDocearAccountNeeded() {
-		return this.isBackup();
+		return isBackup();
 	}
 
 	private void addPropertiesToOptionPanel() {
