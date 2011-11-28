@@ -1,6 +1,7 @@
 package org.docear.plugin.bibtex;
 
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.dnd.DropTarget;
 import java.io.File;
 import java.net.URI;
@@ -149,6 +150,8 @@ public class ReferencesController extends ALanguageController implements IDocear
 			System.out.println("JabrefPane: " + modeController);
 			final JTabbedPane tabs = (JTabbedPane) modeController.getUserInputListenerFactory().getToolBar("/format")
 					.getComponent(1);
+			Dimension fixSize =  new Dimension(tabs.getComponent(0).getWidth(), 32000);
+			comp.setPreferredSize(fixSize);
 			tabs.add(TextUtils.getText("jabref"), comp);
 		}
 		catch (Exception e) {

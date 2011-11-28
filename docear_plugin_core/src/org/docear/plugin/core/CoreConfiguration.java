@@ -237,6 +237,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 			Controller.getCurrentController().getResourceController().setDefaultProperty("selection_method", "selection_method_by_click");
 			Controller.getCurrentController().getResourceController().setDefaultProperty("links", "relative_to_workspace");
 			Controller.getCurrentController().getResourceController().setDefaultProperty("save_folding", "always_save_folding");
+			Controller.getCurrentController().getResourceController().setDefaultProperty("leftToolbarVisible", "false");
 		}
 		//FIXME: DOCEAR: does it work without the property?
 //		if(DocearController.getController().getLibrary() != null){

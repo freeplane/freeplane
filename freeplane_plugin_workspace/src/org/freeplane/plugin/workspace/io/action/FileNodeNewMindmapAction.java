@@ -11,10 +11,8 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.mindmapmode.MFileManager;
-import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
 import org.freeplane.plugin.workspace.io.IFileSystemRepresentation;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
-import org.freeplane.plugin.workspace.io.node.FolderFileNode;
 import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
