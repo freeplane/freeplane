@@ -2,7 +2,6 @@ package org.docear.plugin.bibtex;
 
 import java.io.File;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -21,7 +20,6 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
-import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.NodeModel;
@@ -146,6 +144,9 @@ public class JabRefAttributes {
 		
 		boolean isFile = true;
 		String url = entry.getField("file");
+		if (url!=null) {
+			url = WorkspaceUtils.resolveURI(parsePath(entry, url.toString())).getPath();
+		}
 		if (url == null) {
 			isFile = false;
 			url = entry.getField("url");
@@ -182,7 +183,7 @@ public class JabRefAttributes {
 				e.printStackTrace();
 				return changes;
 			}
-		}
+		}		
 		((MLinkController) MLinkController.getController()).setLinkTypeDependantLink(node, uri);		
 		return true;
 	}
@@ -213,30 +214,29 @@ public class JabRefAttributes {
 		}
 	}
 
-//	private URI parsePath(BibtexEntry entry, String path) {		
-//		path = extractPath(path);
-//		if(path == null){
-//			LogUtils.warn("Could not extract path from: "+ entry.getCiteKey());
-//			return null; 
-//		}		
-//		path = removeEscapingCharacter(path);
-//		if(isAbsolutePath(path)){
-//			if(new File(path).exists()){
-//				return new File(path).toURI();
-//			}
-//		}
-//		else{
-//			URI uri = CoreConfiguration.referencePathObserver.getUri();
-//			URI absUri = WorkspaceUtils.absoluteURI(uri);
-//			
-//			System.out.println("debug parsePath: "+UriBuilder.fromPath(path).build());
-//			URI pdfUri = absUri.resolve(UriBuilder.fromPath(path).build());
-//			if(new File(pdfUri.normalize()) != null && new File(pdfUri.normalize()).exists()){
-//				return pdfUri;
-//			}
-//		}		
-//		return null;
-//	}
+	private URI parsePath(BibtexEntry entry, String path) {		
+		path = extractPath(path);
+		if(path == null){
+			LogUtils.warn("Could not extract path from: "+ entry.getCiteKey());
+			return null; 
+		}		
+		path = removeEscapingCharacter(path);
+		if(isAbsolutePath(path)&& (new File(path)).exists()){
+				return new File(path).toURI();
+		}
+		else{
+			URI uri = CoreConfiguration.referencePathObserver.getUri();
+			URI absUri = WorkspaceUtils.absoluteURI(uri);
+			
+			System.out.println("debug parsePath: "+UriBuilder.fromPath(path).build());
+			URI pdfUri = absUri.resolve(UriBuilder.fromPath(path).build());
+			File file = new File(pdfUri);
+			if(file.exists()){
+				return pdfUri;
+			}
+		}		
+		return null;
+	}
 	
 	private static boolean isAbsolutePath(String path) {
 		return path.matches("^/.*") || path.matches("^[a-zA-Z]:.*");		
