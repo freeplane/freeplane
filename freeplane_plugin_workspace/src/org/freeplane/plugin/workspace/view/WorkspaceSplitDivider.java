@@ -48,6 +48,7 @@ public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 			lastLocation = new Point(200,0);						
 		}
 
+		setBorder(null);
 		MouseListener listener = new MouseListener() {
 			public void mouseReleased(MouseEvent e) {
 			}
@@ -128,6 +129,9 @@ public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 		super.paint(g);
 		int center_y = getHeight()/2;
 		getHotSpot().setBounds(0, center_y-15, getDividerSize(), 30);
+		
+		g.setColor(getBackground());
+		g.fillRect(0, 0, getWidth(), getHeight());
 		if (getLocation().x <= 1) {
 			expanded = false;
 			splitPane.setEnabled(false);
