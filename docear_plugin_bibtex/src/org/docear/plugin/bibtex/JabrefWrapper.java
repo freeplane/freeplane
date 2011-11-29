@@ -96,29 +96,23 @@ public class JabrefWrapper extends JabRef  {
 		return bp;
 	}
 	
-	public BasePanel addNewDatabase(BibtexDatabase database, boolean raisePanel) {		
-		this.setDatabase(database);
+//	public BasePanel addNewDatabase(BibtexDatabase database, boolean raisePanel) {		
+//		this.setDatabase(database);
+//		
+//		BasePanel bp = new BasePanel(getJabrefFrame(), database, file, meta, encoding);
+//		this.basePanel = bp;
+//	
+//		// file is set to null inside the EventDispatcherThread
+//		//SwingUtilities.invokeLater(new OpenItSwingHelper(bp, file, raisePanel));
+//		
+//		getJabrefFrame().addTab(bp, file, raisePanel);		
+//		
+//		System.out.println(Globals.lang("updated database") + Globals.lang("with") + " " +
+//		database.getEntryCount() + " " + Globals.lang("entries") + ".");
+//		
+//		return bp;
+//	}
 		
-		BasePanel bp = new BasePanel(getJabrefFrame(), database, file, meta, encoding);
-		this.basePanel = bp;
-	
-		// file is set to null inside the EventDispatcherThread
-		//SwingUtilities.invokeLater(new OpenItSwingHelper(bp, file, raisePanel));
-		
-		getJabrefFrame().addTab(bp, file, raisePanel);		
-		
-		System.out.println(Globals.lang("updated database") + Globals.lang("with") + " " +
-		database.getEntryCount() + " " + Globals.lang("entries") + ".");
-		
-		return bp;
-	}
-	
-	public BasePanel updateDatabase(BibtexDatabase database) {
-		getJabrefFrame().getTabbedPane().setSelectedComponent(basePanel);
-		this.setDatabase(database);
-		return basePanel;
-	}
-	
 	public void replaceDatabase(File file, boolean raisePanel) {
 		getJabrefFrame().closeCurrentTab();
 		openIt(file, raisePanel);

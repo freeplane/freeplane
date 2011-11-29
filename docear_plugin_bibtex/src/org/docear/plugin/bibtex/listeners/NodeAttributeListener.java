@@ -62,7 +62,7 @@ public class NodeAttributeListener implements TableModelListener {
 		BibtexEntry entry = database.getEntryByKey(key);
 		if (entry != null) {
 			entry.setField(ReferencesController.getController().getJabRefAttributes().getValueAttributes().get(attribute.getName()), attribute.getValue().toString());			
-			ReferencesController.getController().getJabrefWrapper().updateDatabase(database);
+			//ReferencesController.getController().getJabrefWrapper().updateDatabase(database);
 		}
 	}
 	
