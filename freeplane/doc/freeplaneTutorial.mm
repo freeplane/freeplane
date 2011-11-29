@@ -22,7 +22,7 @@
   </body>
 </html>
 </richcontent>
-<hook NAME="MapStyle" max_node_width="600" min_node_width="1">
+<hook NAME="MapStyle">
     <conditional_styles>
         <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
             <conjunct_condition user_name="1.2.9_05">
@@ -91,7 +91,7 @@
 <edge STYLE="bezier" COLOR="#808080"/>
 </stylenode>
 <stylenode TEXT="Revision">
-<icon BUILTIN="info"/>
+<icon BUILTIN="revision"/>
 </stylenode>
 <stylenode TEXT="BeginnerTopic"/>
 <stylenode TEXT="ConsumerTopic"/>
@@ -154,7 +154,7 @@
 </richcontent>
 </node>
 <node TEXT="Introduction" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1316341192794" BACKGROUND_COLOR="#00cc33" NUMBERED="true" VSHIFT="90">
-<node TEXT="Goal" STYLE_REF="Consumer" ID="ID_1074607965" CREATED="1314422854653" MODIFIED="1321625103205"><richcontent TYPE="DETAILS">
+<node TEXT="Goal" STYLE_REF="Consumer" ID="ID_1074607965" CREATED="1314422854653" MODIFIED="1321908095772"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -162,7 +162,7 @@
   </head>
   <body>
     <p>
-      Freeplane is meant to facilitate thinking, sharing information and getting things done at work, in school and at home. The software supports creating, sharing and using <a href="WhatIsMindMapping.mm">mind maps</a>, which are a kind of&#160;<a href="http://www.informationtamers.com/WikIT/index.php?title=Information_map_types">information maps</a>. The&#160;<a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane">Wiki Tutorial Freeplane</a>&#160;contains conrete examples of&#160; <a href="freeplaneApplications.mm">application areas.</a>&#160;
+      Freeplane is meant to facilitate thinking, sharing information and getting things done at work, in school and at home. The software supports creating, sharing and using <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#What_is_mind_mapping">mind maps</a>, which are a kind of&#160;<a href="http://www.informationtamers.com/WikIT/index.php?title=Information_map_types">information maps</a>. The&#160;<a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane">Wiki Tutorial Freeplane</a>&#160;contains conrete examples of&#160; <a href="freeplaneApplications.mm">application areas.</a>&#160;
     </p>
     <p>
       
@@ -208,7 +208,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="What is a mind map" STYLE_REF="Consumer" ID="ID_448981847" CREATED="1314122243021" MODIFIED="1316185051856" VSHIFT="-10">
+<node TEXT="What is a mind map" STYLE_REF="Consumer" FOLDED="true" ID="ID_448981847" CREATED="1314122243021" MODIFIED="1316185051856" VSHIFT="-10">
 <node TEXT="Basic terms" STYLE_REF="Consumer" ID="ID_1368882439" CREATED="1316154547031" MODIFIED="1319313508913" HGAP="40"><richcontent TYPE="DETAILS">
 
 <html>
@@ -831,7 +831,36 @@
 </hook>
 </node>
 </node>
-<node TEXT="Add image or icon to node core" STYLE_REF="Advanced" FOLDED="true" ID="ID_1396625176" CREATED="1316156616264" MODIFIED="1316157452831">
+<node TEXT="Set node width" STYLE_REF="Advanced" ID="ID_1709254927" CREATED="1321975856238" MODIFIED="1321976106852"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      If you want to line up nodes, or simply want a different or frixed width:
+    </p>
+    <ul>
+      <li>
+        Format &gt; Set node width limits; or see
+      </li>
+      <li>
+        Properties panel
+      </li>
+    </ul>
+    <p>
+      <b>Note</b>
+    </p>
+    <p>
+      The node you are reading now has minimum = maximum = 300 pixels
+    </p>
+  </body>
+</html>
+
+</richcontent>
+</node>
+<node TEXT="Add image or icon to node core" STYLE_REF="Advanced" ID="ID_1396625176" CREATED="1316156616264" MODIFIED="1316157452831">
 <node TEXT="Icons and progress" STYLE_REF="Advanced" ID="ID_1452170690" CREATED="1316329546431" MODIFIED="1316329611437">
 <icon BUILTIN="bookmark"/>
 <icon BUILTIN="idea"/>
@@ -3755,7 +3784,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 </node>
 <node TEXT="View" STYLE_REF="Professional" ID="ID_1173853188" CREATED="1315687352137" MODIFIED="1316333949538"><richcontent TYPE="DETAILS" HIDDEN="true">

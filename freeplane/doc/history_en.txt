@@ -1,4 +1,8 @@
 ===============================
+1.2.11 beta
+===============================
+First beta
+===============================
 1.2.10 alpha
 ===============================
 Minimal node width and maximal node width as node / style property

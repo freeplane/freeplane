@@ -24,6 +24,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -41,6 +42,8 @@ import java.io.Writer;
 import java.net.URI;
 import javax.swing.Action;
 import javax.swing.ActionMap;
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.InputMap;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
@@ -584,7 +587,12 @@ public class EditNodeTextField extends EditNodeBase {
 		final MapView mapView = (MapView) viewController.getMapView();
 		final NodeStyleController nsc = NodeStyleController.getController(modeController);
 		maxWidth = nsc.getMaxWidth(node);
-		maxWidth = mapView.getZoomed(maxWidth) + 1;
+		final Icon icon = parent.getIcon();
+		if(icon != null){
+			maxWidth -= icon.getIconWidth();
+			maxWidth -= parent.getIconTextGap();
+		}
+		maxWidth = mapView.getZoomed(maxWidth);
 		extraWidth = ResourceController.getResourceController().getIntProperty("editor_extra_width", 80);
 		extraWidth = mapView.getZoomed(extraWidth);
 		final TextFieldListener textFieldListener = new TextFieldListener();
@@ -615,9 +623,10 @@ public class EditNodeTextField extends EditNodeBase {
 		final Rectangle textR = ((ZoomableLabelUI)parent.getUI()).getTextR(parent);
 		horizontalSpace = Math.max(nodeWidth - textR.width, textR.x);
 		verticalSpace = Math.max(nodeHeight - textR.height, textR.y);
-		parent.setPreferredSize(new Dimension(horizontalSpace + textFieldSize.width, verticalSpace + textFieldSize.height));
+		final Dimension newParentSize = new Dimension(horizontalSpace + textFieldSize.width, verticalSpace + textFieldSize.height);
+		parent.setPreferredSize(newParentSize);
 
-		final Point location = new Point(textR.x, textR.y);
+		final Point location = new Point(textR.x - 2, textR.y);
 		if(! layoutMapOnTextChange)
 			UITools.convertPointToAncestor(parent, location, mapView);
 		textfield.setBounds(location.x, location.y, textFieldSize.width, textFieldSize.height);
@@ -646,7 +655,7 @@ public class EditNodeTextField extends EditNodeBase {
 			textfield.setCaretPosition(pos);
 		}
 		document.addDocumentListener(documentListener);
-		if(textController.getIsShortened(node)){
+		if(textController.isMinimized(node)){
 			layout();
 		}
 		textfield.repaint();

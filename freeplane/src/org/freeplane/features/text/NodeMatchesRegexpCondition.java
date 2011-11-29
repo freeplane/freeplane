@@ -58,11 +58,19 @@ public class NodeMatchesRegexpCondition extends ASelectableCondition {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		final Object content = NodeTextConditionController.getItemForComparison(nodeItem, node);
-		return content != null && checkText(content.toString());
+		final Object content[] = NodeTextConditionController.getItemsForComparison(nodeItem, node);
+		return content != null && checkText(content);
 	}
 
-	boolean checkText(final String text) {
+	private boolean checkText(Object content[]) {
+		for(Object o : content){
+			if(o != null && checkText(o.toString()))
+				return true;
+		}
+		return false;
+	}
+	
+	private boolean checkText(final String text) {
 		return searchPattern.matcher(text).find();
 	}
 

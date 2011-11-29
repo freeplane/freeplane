@@ -248,7 +248,8 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// NodeRO: R
 	public Convertible getNote() {
-		return new ConvertibleNoteText(getDelegate(), getScriptContext());
+		final String noteText = NoteModel.getNoteText(getDelegate());
+		return (noteText == null) ? null : new ConvertibleNoteText(getDelegate(), getScriptContext());
 	}
 
 	// NodeRO: R
@@ -287,6 +288,32 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	// NodeRO: R
 	public String getText() {
 		return getDelegate().getText();
+	}
+	
+	// NodeRO: R
+	public String getTransformedText() {
+		final TextController textController = TextController.getController();
+		return textController.getTransformedTextNoThrow(getDelegate());
+	}
+	
+	// NodeRO: R
+	public String getShortText() {
+		final TextController textController = TextController.getController();
+		return textController.getShortText(getDelegate());
+	}
+	
+	// NodeRO: R
+	public String getDisplayedText(){
+		if(isMinimized())
+			return getShortText();
+		else
+			return getTransformedText();
+	}
+	
+	// NodeRO: R
+	public boolean isMinimized(){
+		final TextController textController = TextController.getController();
+		return textController.isMinimized(getDelegate());
 	}
 	
 	// NodeRO: R
@@ -389,6 +416,12 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	public void setFolded(final boolean folded) {
 		final MMapController mapController = (MMapController) getModeController().getMapController();
 		mapController.setFolded(getDelegate(), folded);
+	}
+	
+	// Node: R/W
+	public void setMinimized(boolean shortened){
+		final MTextController textController = (MTextController) TextController.getController();
+		textController.setIsMinimized(getDelegate(), shortened);
 	}
 
 	// Node: R/W

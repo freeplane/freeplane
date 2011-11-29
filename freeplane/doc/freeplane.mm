@@ -6,7 +6,7 @@
 </attribute_registry>
 <node TEXT="Documentation&#xa;Freeplane 1.2" STYLE_REF="MainMenu" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1315378335890" VGAP="0">
 <icon BUILTIN="bee"/>
-<hook NAME="MapStyle" max_node_width="600" min_node_width="1">
+<hook NAME="MapStyle">
     <conditional_styles>
         <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
             <conjunct_condition user_name="1.2.9_05">
@@ -74,7 +74,7 @@
 <edge COLOR="#33ffcc"/>
 </stylenode>
 <stylenode TEXT="Revision">
-<icon BUILTIN="info"/>
+<icon BUILTIN="revision"/>
 </stylenode>
 <stylenode TEXT="UserGuide">
 <edge STYLE="horizontal"/>
@@ -2636,7 +2636,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 <node TEXT="Limitations and known bugs" FOLDED="true" ID="ID_1348021717" CREATED="1314027459750" MODIFIED="1314027482026">
@@ -2750,6 +2749,30 @@
     </p>
   </body>
 </html>
+</richcontent>
+</node>
+<node TEXT="Change default font of Edit dialog (Simply HTML)" ID="ID_256904484" CREATED="1321996257631" MODIFIED="1321996457708"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Change the font size of system style Default. This will overrule the font number shown in the dialog - until you press the font number.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See</b>
+    </p>
+    <p>
+      Format &gt; Manage styles &gt; Edit styles
+    </p>
+  </body>
+</html>
+
 </richcontent>
 </node>
 </node>
@@ -6381,7 +6404,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Note" FOLDED="true" ID="ID_1365598976" CREATED="1303930145801" MODIFIED="1315732441401" TEXT_SHORTENED="true">
+<node TEXT="Note" ID="ID_1365598976" CREATED="1303930145801" MODIFIED="1315732441401" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <richcontent TYPE="DETAILS">
 
@@ -7543,7 +7566,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="5"/>
-<node TEXT="Level styles" STYLE_REF="UnChecked" ID="ID_1391835038" CREATED="1313557908459" MODIFIED="1314771729149" LINK="#ID_1362134553">
+<node TEXT="Apply level styles" STYLE_REF="UnChecked" ID="ID_1391835038" CREATED="1313557908459" MODIFIED="1321889459030" LINK="#ID_1362134553">
 <hook NAME="FirstGroupNode"/>
 </node>
 <node TEXT="Automatic edge color" STYLE_REF="UnChecked" ID="ID_502377582" CREATED="1313557989945" MODIFIED="1313559702675" LINK="#ID_1587417548"/>
@@ -7652,7 +7675,21 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Node shape" ID="ID_1006574881" CREATED="1310714589873" MODIFIED="1311405449340" TEXT_SHORTENED="true">
+<node TEXT="Text" ID="ID_158955063" CREATED="1321889497304" MODIFIED="1321889644374">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="Background" ID="ID_631849825" CREATED="1321889528980" MODIFIED="1321889538934"/>
+<node TEXT="Color of whole core" STYLE_REF="MenuGroupLabel" ID="ID_1325673734" CREATED="1321889644374" MODIFIED="1321889740408">
+<hook NAME="SummaryNode"/>
+</node>
+<node TEXT="Template / Format" ID="ID_835341746" CREATED="1321889597815" MODIFIED="1321889693561">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="Node numbering" ID="ID_716321598" CREATED="1321889611457" MODIFIED="1321889629632"/>
+<node TEXT="Core text" STYLE_REF="MenuGroupLabel" ID="ID_1056392580" CREATED="1321889693546" MODIFIED="1321889750689">
+<hook NAME="SummaryNode"/>
+</node>
+<node TEXT="Node style" ID="ID_1006574881" CREATED="1310714589873" MODIFIED="1321889018010" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
@@ -7670,6 +7707,85 @@
   </body>
 </html>
 </richcontent>
+<hook NAME="FirstGroupNode"/>
+<node TEXT="Fork" STYLE_REF="OptionalValue" ID="ID_1016917341" CREATED="1321889816700" MODIFIED="1321890015717" STYLE="as_parent">
+<attribute NAME="Chapter" VALUE="4"/>
+</node>
+<node TEXT="Bubble" STYLE_REF="OptionalValue" ID="ID_559452645" CREATED="1321889858407" MODIFIED="1321890033782">
+<attribute NAME="Chapter" VALUE="4"/>
+</node>
+<node TEXT="Combined" STYLE_REF="OptionalValue" ID="ID_347035916" CREATED="1321889869209" MODIFIED="1321890115963" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Changes to bubble if folded
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="As parent" STYLE_REF="OptionalValue" ID="ID_324797442" CREATED="1321889877812" MODIFIED="1321890069818">
+<attribute NAME="Chapter" VALUE="4"/>
+</node>
+</node>
+<node TEXT="Min node width" ID="ID_1182377159" CREATED="1321888900299" MODIFIED="1321976459304" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Minimum node width in pixels.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        View &gt; Properties panel
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Max node width" ID="ID_1506239651" CREATED="1321888911727" MODIFIED="1321976454296" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Maximum width of the node in pixels.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        View &gt; Properties panel
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Node shape" STYLE_REF="MenuGroupLabel" ID="ID_1665588957" CREATED="1321889018010" MODIFIED="1321889063968">
+<hook NAME="SummaryNode"/>
 </node>
 <node TEXT="Node Font" FOLDED="true" ID="ID_724156158" CREATED="1310714589873" MODIFIED="1311405449387" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -9895,8 +10011,8 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Notes" STYLE_REF="SubMenu" FOLDED="true" ID="ID_838550014" CREATED="1315733725196" MODIFIED="1315733763620">
-<node TEXT="Display note panel [Note panel]" FOLDED="true" ID="ID_1073686439" CREATED="1266249699921" MODIFIED="1314558919677" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Notes" STYLE_REF="SubMenu" ID="ID_838550014" CREATED="1315733725196" MODIFIED="1315733763620">
+<node TEXT="Display note panel [Note panel]" ID="ID_1073686439" CREATED="1266249699921" MODIFIED="1314558919677" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -11201,7 +11317,7 @@ elements from the styles activated by conditions are copied.</pre>
 <node TEXT="Styles" STYLE_REF="MenuGroupLabel" ID="ID_177552803" CREATED="1315735285080" MODIFIED="1315735303691">
 <hook NAME="SummaryNode"/>
 </node>
-<node TEXT="Map Background" FOLDED="true" ID="ID_1564352042" CREATED="1266252207296" MODIFIED="1311405450557" TEXT_SHORTENED="true">
+<node TEXT="Map Background" ID="ID_1564352042" CREATED="1266252207296" MODIFIED="1311405450557" TEXT_SHORTENED="true">
 <icon BUILTIN="../MapBackgroundColorAction"/>
 <richcontent TYPE="DETAILS">
 
@@ -11239,238 +11355,6 @@ elements from the styles activated by conditions are copied.</pre>
 </html>
 </richcontent>
 </node>
-</node>
-<node TEXT="Add cloud or change style  [Cloud ]" ID="ID_759607649" CREATED="1291193913924" MODIFIED="1315734515861" TEXT_SHORTENED="true">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
-</hook>
-<hook NAME="FirstGroupNode"/>
-</node>
-<node TEXT="Cloud color" ID="ID_1092192366" CREATED="1266252268093" MODIFIED="1310882979628" TEXT_SHORTENED="true">
-<icon BUILTIN="../Colors24"/>
-<richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font face="SansSerif, sans-serif" color="#000000">Changes the color of the cloud. </font>
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b>See also</b>
-    </p>
-    <ul>
-      <li>
-        &#160;<i>Format&#160;&gt; Cloud</i>.
-      </li>
-      <li>
-        <i>Properties Panel &gt; Cloud</i>
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Cloud properties" STYLE_REF="Aggregatie als Toelichting" ID="ID_1759348470" CREATED="1305837722596" MODIFIED="1312966331141" TEXT_SHORTENED="true">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
-</hook>
-<hook NAME="SummaryNode"/>
-<attribute NAME="Chapter" VALUE="4"/>
-</node>
-<node TEXT="Edge styles" FOLDED="true" ID="ID_1001249442" CREATED="1266252322375" MODIFIED="1310882979659" TEXT_SHORTENED="true">
-<hook NAME="FirstGroupNode"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Opens dialog to select an edge style. Options are:</span></font>
-    </p>
-    <ul>
-      <li>
-        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">As Parent</span></font>
-      </li>
-      <li>
-        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Linear</span></font>
-      </li>
-      <li>
-        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Bezier</span></font>
-      </li>
-      <li>
-        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Sharp Linear</span></font>
-      </li>
-      <li>
-        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Sharp Bezier</span></font>
-      </li>
-      <li>
-        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Horizontal</span></font>
-      </li>
-      <li>
-        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Hide Edge</span></font>
-      </li>
-    </ul>
-    <p>
-      <b>See also</b>
-    </p>
-    <ul>
-      <li>
-        <i>View &gt; Properties Panel</i>
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
-</hook>
-<node TEXT="" FOLDED="true" ID="ID_831160653" CREATED="1288536745875" MODIFIED="1312920791838" STYLE="bubble" TEXT_SHORTENED="true">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
-</hook>
-<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
-<node TEXT="As parent" ID="ID_196205281" CREATED="1310115852702" MODIFIED="1310196222340" TEXT_SHORTENED="true"/>
-<node TEXT="Linear" ID="ID_479844675" CREATED="1288538234095" MODIFIED="1310196222325" HGAP="30" TEXT_SHORTENED="true">
-<edge STYLE="linear" WIDTH="4"/>
-</node>
-<node TEXT="Bezier curve" ID="ID_622749170" CREATED="1288538240451" MODIFIED="1310196222325" HGAP="40" TEXT_SHORTENED="true">
-<edge STYLE="bezier" WIDTH="4"/>
-</node>
-<node TEXT="Sharp Linear" ID="ID_1385668433" CREATED="1288538242377" MODIFIED="1310196222309" HGAP="40" TEXT_SHORTENED="true">
-<edge STYLE="sharp_linear" WIDTH="4"/>
-</node>
-<node TEXT="Sharp Bezier" ID="ID_925061428" CREATED="1288538470332" MODIFIED="1310196222309" HGAP="40" TEXT_SHORTENED="true">
-<edge STYLE="sharp_bezier" WIDTH="4"/>
-</node>
-<node TEXT="Horizontal" ID="ID_1255718418" CREATED="1310115825254" MODIFIED="1310196222309" TEXT_SHORTENED="true">
-<edge STYLE="horizontal"/>
-</node>
-<node TEXT="Hide Edge" ID="ID_846030610" CREATED="1288538507390" MODIFIED="1310196222293" BACKGROUND_COLOR="#00ffff" HGAP="50" TEXT_SHORTENED="true">
-<edge STYLE="hide_edge" WIDTH="4"/>
-</node>
-</node>
-</node>
-<node TEXT="Edge Width" ID="ID_1718207662" CREATED="1266252326750" MODIFIED="1310882979643" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Opens dialog to select the style to be applied to the selected node(s). </span></font>
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Options are: </span></font>
-    </p>
-    <ul>
-      <li>
-        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Parent</span></font>
-      </li>
-      <li>
-        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Thin</span></font>
-      </li>
-      <li>
-        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">1</span></font>
-      </li>
-      <li>
-        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">2</span></font>
-      </li>
-      <li>
-        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">4</span></font>
-      </li>
-      <li>
-        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">8</span></font>
-      </li>
-    </ul>
-    <p>
-      <b>Note</b>
-    </p>
-    <ul>
-      <li>
-        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">The difference between &quot;Thin&quot; and &quot;1&quot; may not be apparent at lower zoom percentages.</span></font>
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Edge color" ID="ID_865389195" CREATED="1266252317187" MODIFIED="1310882979628" TEXT_SHORTENED="true">
-<edge COLOR="#ff0000"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Sets the color of the fork (or bubble) of the selected node(s) using a color chooser dialog. Also sets the color of the connectors between parent and child nodes.</span></font>
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Automatic edge color" ID="ID_1587417548" CREATED="1291194199529" MODIFIED="1313559766526" TEXT_SHORTENED="true">
-<icon BUILTIN="../AutomaticEdgeColorHookAction"/>
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font face="SansSerif, sans-serif" color="#000000">See Forma<i>&#160;&gt; Automatic edge color</i></font>
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Edge properties" STYLE_REF="Aggregatie als Toelichting" ID="ID_881523974" CREATED="1305835940519" MODIFIED="1311946117727" TEXT_SHORTENED="true">
-<hook NAME="SummaryNode"/>
-<richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      An edge is a lineage between parent and child. The flow of the edge can be altered by clicking on it and drawing it to a different location. Technically an edge belongs to the child and edge properties like color can be changed in the child node. See <i>View &gt; Properties panel. </i>An edge can be hidden, see Egde style.
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
-</hook>
 </node>
 <node TEXT="Node core" STYLE_REF="SubMenu" FOLDED="true" ID="ID_39827582" CREATED="1315734560228" MODIFIED="1316159037710">
 <node TEXT="Bold" ID="ID_25890496" CREATED="1266251692562" MODIFIED="1310882979846" TEXT_SHORTENED="true">
@@ -11994,8 +11878,14 @@ elements from the styles activated by conditions are copied.</pre>
 <attribute NAME="Chapter" VALUE="4"/>
 </node>
 </node>
-<node TEXT="Use plain text" ID="ID_421682408" CREATED="1266251609187" MODIFIED="1309688143323" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<node TEXT="Add cloud or change style  [Cloud ]" ID="ID_759607649" CREATED="1291193913924" MODIFIED="1315734515861" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="Cloud color" ID="ID_1092192366" CREATED="1266252268093" MODIFIED="1310882979628" TEXT_SHORTENED="true">
+<icon BUILTIN="../Colors24"/>
 <richcontent TYPE="DETAILS">
 
 <html>
@@ -12004,19 +11894,175 @@ elements from the styles activated by conditions are copied.</pre>
   </head>
   <body>
     <p>
-      <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">For the selected nodes, all subsequent editing takes place inline. This reverses the effect of &quot;Use Rich Formatting...&quot;</span></font>
+      <font face="SansSerif, sans-serif" color="#000000">Changes the color of the cloud. </font>
     </p>
     <p>
       
     </p>
     <p>
-      <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">?? Converts the basic text of the selected nodes in plain text to be used in systems which cannot handle RTF.</span></font>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        &#160;<i>Format&#160;&gt; Cloud</i>.
+      </li>
+      <li>
+        <i>Properties Panel &gt; Cloud</i>
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Cloud properties" STYLE_REF="Aggregatie als Toelichting" ID="ID_1759348470" CREATED="1305837722596" MODIFIED="1312966331141" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+<attribute NAME="Chapter" VALUE="4"/>
+</node>
+<node TEXT="Edge styles" FOLDED="true" ID="ID_1001249442" CREATED="1266252322375" MODIFIED="1310882979659" TEXT_SHORTENED="true">
+<hook NAME="FirstGroupNode"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Opens dialog to select an edge style. Options are:</span></font>
+    </p>
+    <ul>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">As Parent</span></font>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Linear</span></font>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Bezier</span></font>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Sharp Linear</span></font>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Sharp Bezier</span></font>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Horizontal</span></font>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Hide Edge</span></font>
+      </li>
+    </ul>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>View &gt; Properties Panel</i>
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<node TEXT="" FOLDED="true" ID="ID_831160653" CREATED="1288536745875" MODIFIED="1312920791838" STYLE="bubble" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+</hook>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<node TEXT="As parent" ID="ID_196205281" CREATED="1310115852702" MODIFIED="1310196222340" TEXT_SHORTENED="true"/>
+<node TEXT="Linear" ID="ID_479844675" CREATED="1288538234095" MODIFIED="1310196222325" HGAP="30" TEXT_SHORTENED="true">
+<edge STYLE="linear" WIDTH="4"/>
+</node>
+<node TEXT="Bezier curve" ID="ID_622749170" CREATED="1288538240451" MODIFIED="1310196222325" HGAP="40" TEXT_SHORTENED="true">
+<edge STYLE="bezier" WIDTH="4"/>
+</node>
+<node TEXT="Sharp Linear" ID="ID_1385668433" CREATED="1288538242377" MODIFIED="1310196222309" HGAP="40" TEXT_SHORTENED="true">
+<edge STYLE="sharp_linear" WIDTH="4"/>
+</node>
+<node TEXT="Sharp Bezier" ID="ID_925061428" CREATED="1288538470332" MODIFIED="1310196222309" HGAP="40" TEXT_SHORTENED="true">
+<edge STYLE="sharp_bezier" WIDTH="4"/>
+</node>
+<node TEXT="Horizontal" ID="ID_1255718418" CREATED="1310115825254" MODIFIED="1310196222309" TEXT_SHORTENED="true">
+<edge STYLE="horizontal"/>
+</node>
+<node TEXT="Hide Edge" ID="ID_846030610" CREATED="1288538507390" MODIFIED="1310196222293" BACKGROUND_COLOR="#00ffff" HGAP="50" TEXT_SHORTENED="true">
+<edge STYLE="hide_edge" WIDTH="4"/>
+</node>
+</node>
+</node>
+<node TEXT="Edge Width" ID="ID_1718207662" CREATED="1266252326750" MODIFIED="1310882979643" TEXT_SHORTENED="true">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Opens dialog to select the style to be applied to the selected node(s). </span></font>
     </p>
     <p>
       
     </p>
     <p>
-      <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">Inverse of <i>Use richt text formating</i></span></font>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Options are: </span></font>
+    </p>
+    <ul>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Parent</span></font>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Thin</span></font>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">1</span></font>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">2</span></font>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">4</span></font>
+      </li>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">8</span></font>
+      </li>
+    </ul>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">The difference between &quot;Thin&quot; and &quot;1&quot; may not be apparent at lower zoom percentages.</span></font>
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Edge color" ID="ID_865389195" CREATED="1266252317187" MODIFIED="1310882979628" TEXT_SHORTENED="true">
+<edge COLOR="#ff0000"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Sets the color of the fork (or bubble) of the selected node(s) using a color chooser dialog. Also sets the color of the connectors between parent and child nodes.</span></font>
     </p>
   </body>
 </html>
@@ -12025,7 +12071,10 @@ elements from the styles activated by conditions are copied.</pre>
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Use richt formatting (RTF)" ID="ID_601879583" CREATED="1266251602796" MODIFIED="1309688323379" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Automatic edge color" ID="ID_1587417548" CREATED="1291194199529" MODIFIED="1313559766526" TEXT_SHORTENED="true">
+<icon BUILTIN="../AutomaticEdgeColorHookAction"/>
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -12033,20 +12082,58 @@ elements from the styles activated by conditions are copied.</pre>
   </head>
   <body>
     <p>
-      <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">For the selected node(s), this causes subsequent editing to take place in the Rich Text dialog.</span></font>
+      <font face="SansSerif, sans-serif" color="#000000">See Forma<i>&#160;&gt; Automatic edge color</i></font>
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Edge properties" STYLE_REF="Aggregatie als Toelichting" ID="ID_881523974" CREATED="1305835940519" MODIFIED="1311946117727" TEXT_SHORTENED="true">
+<hook NAME="SummaryNode"/>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      An edge is a lineage between parent and child. The flow of the edge can be altered by clicking on it and drawing it to a different location. Technically an edge belongs to the child and edge properties like color can be changed in the child node. See <i>View &gt; Properties panel. </i>An edge can be hidden, see Egde style.
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Set node width limits" ID="ID_601879583" CREATED="1266251602796" MODIFIED="1321890707664" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Change the width of the node
     </p>
     <p>
       
     </p>
     <p>
-      ?? Converts text in selected nodes to Rich text format (Rich Text Format, HTML).
+      <b><font color="#000000" face="SansSerif, sans-serif">See also </font></b>
     </p>
-    <p>
-      
-    </p>
-    <p>
-      Inverse of <i>Use plain text.</i>
-    </p>
+    <ul>
+      <li>
+        View &gt; Properties panel &gt; Min node width
+      </li>
+      <li>
+        View &gt; Properties panel &gt; Max node width
+      </li>
+    </ul>
   </body>
 </html>
 </richcontent>

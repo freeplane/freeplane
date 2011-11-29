@@ -59,7 +59,7 @@ class SetShortenerStateAction extends AMultipleNodeAction {
 	@Override
     protected void actionPerformed(ActionEvent e, NodeModel node) {
 		TextController controller = TextController.getController();
-		controller.setIsShortened(node, setShortened);
+		controller.setIsMinimized(node, setShortened);
     }
 
 	@Override

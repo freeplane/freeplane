@@ -46,14 +46,22 @@ public class MatchCaseNodeContainsCondition extends ASelectableCondition {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		final Object content = NodeTextConditionController.getItemForComparison(nodeItem, node);
-		return content != null && checkText(content.toString());
+		final Object content[] = NodeTextConditionController.getItemsForComparison(nodeItem, node);
+		return checkText(content);
 	}
 
-	private boolean checkText(final String plainTextContent) {
-		return plainTextContent.contains(value);
+	private boolean checkText(Object content[]) {
+		for(Object o : content){
+			if(checkText(o))
+				return true;
+		}
+		return false;
 	}
 
+	private boolean checkText(final Object o) {
+		return o != null && o.toString().contains(value);
+	}
+	
 	@Override
 	protected String createDescription() {
 		final String nodeCondition = TextUtils.getText(nodeItem);
