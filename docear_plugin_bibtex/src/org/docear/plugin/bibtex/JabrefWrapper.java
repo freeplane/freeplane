@@ -82,7 +82,7 @@ public class JabrefWrapper extends JabRef  {
 		this.setEncoding(pr.getEncoding());
 		
 		BasePanel bp = new BasePanel(getJabrefFrame(), database, file, meta, pr.getEncoding());
-		this.basePanel = bp;
+//		this.basePanel = bp;
 	
 		// file is set to null inside the EventDispatcherThread
 		//SwingUtilities.invokeLater(new OpenItSwingHelper(bp, file, raisePanel));

@@ -3,9 +3,9 @@ package org.docear.plugin.bibtex.listeners;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import net.sf.jabref.BasePanel;
 import net.sf.jabref.BibtexDatabase;
 import net.sf.jabref.BibtexEntry;
-import net.sf.jabref.export.DocearReferenceUpdateController;
 
 import org.docear.plugin.bibtex.JabRefAttributes;
 import org.docear.plugin.bibtex.ReferencesController;
@@ -57,6 +57,7 @@ public class NodeAttributeListener implements TableModelListener {
 	}
 
 	private void updateBibtexEntry(String key, Attribute attribute) {
+		((BasePanel) ReferencesController.getController().getJabrefWrapper().getJabrefFrame().getTabbedPane().getSelectedComponent()).getDatabase();
 		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase(); 
 		BibtexEntry entry = database.getEntryByKey(key);
 		if (entry != null) {
