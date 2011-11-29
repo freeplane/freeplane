@@ -1,7 +1,6 @@
 package org.docear.plugin.bibtex;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -138,7 +137,6 @@ public class JabRefAttributes {
 					if (!nodeValue.equals(jabrefValue)) {
 						System.out.println("debug replace attribute "+nodeAttributeName+" : "+nodeValue+" --> "+jabrefValue);
 						AttributeController.getController().performSetValueAt(attributeTable, jabrefValue, attributeTable.getAttributePosition(nodeAttributeName), 1);
-						//AttributeController.getController().performReplaceAttributeValue(nodeAttributeName, nodeValue, jabrefValue);						
 						changes = true;
 					}
 				}
