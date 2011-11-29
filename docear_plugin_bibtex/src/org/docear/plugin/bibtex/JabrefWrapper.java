@@ -40,8 +40,7 @@ public class JabrefWrapper extends JabRef  {
         postOpenActions.add(new HandleDuplicateWarnings());
     }
 
-	private BasePanel basePanel = null;
-	private BibtexDatabase database = null;
+	
 	private ParserResult parserResult = null;
 	private String encoding = null;
 	private File file;
@@ -73,16 +72,19 @@ public class JabrefWrapper extends JabRef  {
 		return this.jrf;
 	}
 	
+	public BibtexDatabase getDatabase() {
+		return ((BasePanel) getJabrefFrame().getTabbedPane().getSelectedComponent()).getDatabase();
+	}
+	
 	public BasePanel addNewDatabase(ParserResult pr, File file, boolean raisePanel) {
 		this.file = file;
 		String fileName = file.getPath();		
-		this.setParserResult(pr);
-		this.setDatabase(pr.getDatabase());
+		BibtexDatabase database = pr.getDatabase();
+		database.addDatabaseChangeListener(ReferencesController.getJabRefChangeListener());
 		this.setMeta(pr.getMetaData());
 		this.setEncoding(pr.getEncoding());
 		
 		BasePanel bp = new BasePanel(getJabrefFrame(), database, file, meta, pr.getEncoding());
-		this.basePanel = bp;
 	
 		// file is set to null inside the EventDispatcherThread
 		//SwingUtilities.invokeLater(new OpenItSwingHelper(bp, file, raisePanel));
@@ -187,16 +189,6 @@ public class JabrefWrapper extends JabRef  {
         }
     }
 
-
-	public BibtexDatabase getDatabase() {
-		return database;
-	}
-
-	public void setDatabase(BibtexDatabase database) {
-		this.database = database;
-		this.database.addDatabaseChangeListener(ReferencesController.getJabRefChangeListener());
-	}
-
 	public File getFile() {
 		return file;
 	}
@@ -219,14 +211,6 @@ public class JabrefWrapper extends JabRef  {
 
 	public void setMeta(HashMap<String, String> meta) {
 		this.meta = meta;
-	}
-
-	public BasePanel getBasePanel() {
-		return basePanel;
-	}
-
-	public void setBasePanel(BasePanel basePanel) {
-		this.basePanel = basePanel;
 	}
 
 	public String getEncoding() {

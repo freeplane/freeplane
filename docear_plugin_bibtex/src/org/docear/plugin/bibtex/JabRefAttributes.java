@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import javax.ws.rs.core.UriBuilder;
 
+import net.sf.jabref.BibtexDatabase;
 import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.Globals;
 import net.sf.jabref.labelPattern.LabelPatternUtil;
@@ -187,7 +188,8 @@ public class JabRefAttributes {
 	
 	public void setReferenceToNode(BibtexEntry entry, NodeModel node) {
 		if (entry.getCiteKey()==null) {
-			LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), ReferencesController.getController().getJabrefWrapper().getDatabase(), entry);						
+			BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
+			LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), database, entry);						
 		}		
 		
 		removeReferenceFromNode(node);
