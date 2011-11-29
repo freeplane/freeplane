@@ -5,7 +5,6 @@ import javax.swing.event.TableModelListener;
 
 import net.sf.jabref.BibtexDatabase;
 import net.sf.jabref.BibtexEntry;
-import net.sf.jabref.export.DocearReferenceUpdateController;
 
 import org.docear.plugin.bibtex.JabRefAttributes;
 import org.docear.plugin.bibtex.ReferencesController;
@@ -15,17 +14,8 @@ import org.freeplane.features.attribute.NodeAttributeTableModel;
 
 public class NodeAttributeListener implements TableModelListener {
 	
-	private static boolean locked = false;
-
-
-	public void tableChanged(TableModelEvent e) {		
-//		if (DocearReferenceUpdateController.isLocked()) {		
-//			return;
-//		}		
-//		DocearReferenceUpdateController.lock();
-		
-//		System.out.println("debug tableChanged: column: " + e.getColumn() + " firstRow:" + e.getFirstRow() + " lastRow:"
-//				+ e.getLastRow() + " type: " + e.getType());
+	public void tableChanged(TableModelEvent e) {
+		// do not use locking mechanism --> changes made to jabref should change all associated entries in mindmapo nodes as well
 
 		// if changes only happened one row and one column
 		if (e.getFirstRow() == e.getLastRow() && e.getColumn() > 0) {
@@ -52,16 +42,15 @@ public class NodeAttributeListener implements TableModelListener {
 				}
 			}
 		}
-				
-//		DocearReferenceUpdateController.unlock();
 	}
 
 	private void updateBibtexEntry(String key, Attribute attribute) {
-		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase(); 
+		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
+		
 		BibtexEntry entry = database.getEntryByKey(key);
 		if (entry != null) {
+			//updating the entry updates it in the database object which is used to rendere jabrefs entry table --> no need to update the jabref view
 			entry.setField(ReferencesController.getController().getJabRefAttributes().getValueAttributes().get(attribute.getName()), attribute.getValue().toString());			
-			ReferencesController.getController().getJabrefWrapper().updateDatabase(database);
 		}
 	}
 	

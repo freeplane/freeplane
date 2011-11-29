@@ -27,9 +27,9 @@ public class Activator extends DocearPlugin implements BundleActivator {
 
 
 	public void startPlugin(BundleContext context, ModeController modeController) {
-		new BackupConfiguration();
-	    new BackupStarter();
-	    new BackupPreferences();		
+//		new BackupConfiguration();
+//	    new BackupStarter();
+//	    new BackupPreferences();		
 	}
 
 }
