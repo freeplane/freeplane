@@ -234,15 +234,17 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Searching for widowed links...");
 					totalMonitorNodeCount = getTotalChildCount(target);
 					deleteWidowedLinkNodes(target);
-					for(final NodeModel node : deletableNodes){
+					
 						SwingUtilities.invokeAndWait(
 						        new Runnable() {
-						            public void run(){							            	
-										node.removeFromParent();				            											
+						            public void run(){
+						            	for(NodeModel node : deletableNodes){
+						            		node.removeFromParent();	
+						            	}
 						            }
 						        }
 						   );
-					}
+					
 					
 					Thread.sleep(1L);
 					if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
