@@ -142,10 +142,17 @@ public class JabRefAttributes {
 			}
 		}
 		
+		//FIXME: DOCEAR: need some rework3
 		boolean isFile = true;
 		String url = entry.getField("file");
 		if (url!=null) {
-			url = WorkspaceUtils.resolveURI(parsePath(entry, url.toString())).getPath();
+			URI uri = parsePath(entry, url.toString());
+			if (uri!=null) {
+				url = WorkspaceUtils.resolveURI(uri).getPath();
+			}
+			else {
+				url = null;
+			}
 		}
 		if (url == null) {
 			isFile = false;

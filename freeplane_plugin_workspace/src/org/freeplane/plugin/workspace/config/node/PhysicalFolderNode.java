@@ -352,11 +352,11 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeEve
 			} 
 			else if(transferable.isDataFlavorSupported(WorkspaceTransferable.WORKSPACE_URI_LIST_FLAVOR)) {
 				ArrayList<URI> uriList = new ArrayList<URI>();
-				String uriString = (String) transferable.getTransferData(WorkspaceTransferable.WORKSPACE_FILE_LIST_FLAVOR);
+				String uriString = (String) transferable.getTransferData(WorkspaceTransferable.WORKSPACE_URI_LIST_FLAVOR);
 				if (!uriString.startsWith("file://")) {
 					return false;
 				}
-				String[] uriArray = uriString.split(";");
+				String[] uriArray = uriString.split("\r\n");
 				for(String singleUri : uriArray) {
 					try {
 						uriList.add(URI.create(singleUri));
