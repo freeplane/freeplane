@@ -42,19 +42,19 @@ public class ZoomableLabel extends JLabel {
 		return (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, this);
 	}
 
-	@Override
-	public Dimension getPreferredSize() {
-		final Dimension preferredSize = super.getPreferredSize();
+
+	final public Dimension getPreferredSize() {
+		return getPreferredSize(Integer.MAX_VALUE);
+	}
+	
+	public Dimension getPreferredSize(int maximumWidth) {
 		if (isPreferredSizeSet()) {
+			Dimension preferredSize = super.getPreferredSize();
 			return preferredSize;
 		}
-		final float zoom = getZoom();
-		final int d = 2 * (int) (Math.floor(zoom));
-		preferredSize.width += d;
-		preferredSize.height += d;
-		return preferredSize;
+		return ((ZoomableLabelUI)getUI()).getPreferredSize(this, maximumWidth);
 	}
-
+	
 	protected float getZoom() {
 		final float zoom = getMap().getZoom();
 		return zoom;

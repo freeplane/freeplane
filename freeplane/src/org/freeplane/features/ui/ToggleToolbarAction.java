@@ -48,6 +48,7 @@ public class ToggleToolbarAction extends AFreeplaneAction {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		final JComponent toolBar = getToolbar();
 		final String propertyName = Controller.getCurrentController().getViewController().completeVisiblePropertyKey(toolBar);
+        System.out.println("debug docear propertyName: "+propertyName); 
 		final boolean wasVisible = resourceController.getBooleanProperty(propertyName);
 		final boolean visible = !wasVisible;
 		resourceController.setProperty(propertyName, visible);

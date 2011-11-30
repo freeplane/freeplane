@@ -345,7 +345,7 @@ public abstract class MainView extends ZoomableLabel {
 			return;
 		final ModeController modeController = nodeView.getMap().getModeController();
 		final TextController textController = TextController.getController(modeController);
-		isShortened = textController.getIsShortened(nodeModel);
+		isShortened = textController.isMinimized(nodeModel);
 		Object content = nodeModel.getUserObject();
 		String text;
 		try {

@@ -211,7 +211,9 @@ public class VirtualFolderNode extends AFolderNode implements IWorkspaceNodeEven
 	private void processFileListDrop(List<File> files, int dropAction) {
 		try {		
 			for(File srcFile : files) {
-				WorkspaceUtils.getModel().addNodeTo(createFSNodeLinks(srcFile), this);		
+				AWorkspaceTreeNode node = createFSNodeLinks(srcFile);
+				WorkspaceUtils.getModel().addNodeTo(node, this);
+				node.refresh();
 			}
 			WorkspaceUtils.saveCurrentConfiguration();
 		}
@@ -228,7 +230,9 @@ public class VirtualFolderNode extends AFolderNode implements IWorkspaceNodeEven
 				if(srcFile == null || !srcFile.exists()) {
 					continue;
 				}
-				WorkspaceUtils.getModel().addNodeTo(createFSNodeLinks(srcFile), this);
+				AWorkspaceTreeNode node = createFSNodeLinks(srcFile);
+				WorkspaceUtils.getModel().addNodeTo(node, this);
+				node.refresh();
 			};
 			WorkspaceUtils.saveCurrentConfiguration();
 		}
@@ -251,5 +255,9 @@ public class VirtualFolderNode extends AFolderNode implements IWorkspaceNodeEven
 			LogUtils.warn(e);
 		}		
 		return null;
+	}
+	
+	public void refresh() {
+		WorkspaceUtils.getModel().reload(this);
 	}
 }

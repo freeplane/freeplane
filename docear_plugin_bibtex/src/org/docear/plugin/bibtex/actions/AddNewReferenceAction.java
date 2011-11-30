@@ -18,6 +18,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 
 import spl.PdfImporter;
 
@@ -54,11 +55,12 @@ public class AddNewReferenceAction extends AFreeplaneAction{
 		else {			
 			NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
 			URI link = NodeLinks.getLink(node);
+			String path = WorkspaceUtils.resolveURI(link).getAbsolutePath();
 			JabrefWrapper jabrefWrapper = ReferencesController.getController().getJabrefWrapper();
 
 			if (link != null && link.getPath().toLowerCase().endsWith(".pdf")) {
 				new PdfImporter(jabrefWrapper.getJabrefFrame(), jabrefWrapper.getJabrefFrame()
-						.basePanel(), null, 0).importPdfFiles(new String[] { link.getPath() }, Controller.getCurrentController()
+						.basePanel(), null, 0).importPdfFiles(new String[] { path }, Controller.getCurrentController()
 						.getViewController().getFrame(), true);
 				BibtexEntry[] entries = jabrefWrapper.getJabrefFrame().basePanel().getSelectedEntries();
 

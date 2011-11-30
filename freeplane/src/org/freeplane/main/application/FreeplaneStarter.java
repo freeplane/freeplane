@@ -141,7 +141,6 @@ public class FreeplaneStarter {
 			FormatController.install(new FormatController());
 			ModelessAttributeController.install();
 			TextController.install();
-			NoteController.install();
 			TimeController.install();
 			LinkController.install();
 			IconController.install();

@@ -49,9 +49,9 @@ public class DocearSaveDatabaseAction extends SaveDatabaseAction {
 				if (entry.getCiteKey() == null) {
 					LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), this.panel.getDatabase(), entry);
 				}
-				entry.setField("docear_add_to_node", null);
 				entryNodeTuples.put(nodeId, entry);				
 			}
+			entry.setField("docear_add_to_node", null);
 		}		
 		
 		//save Database

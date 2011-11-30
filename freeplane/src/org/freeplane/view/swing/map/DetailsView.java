@@ -36,13 +36,13 @@ final class DetailsView extends ZoomableLabel {
 
 
 	@Override
-    public Dimension getPreferredSize() {
+    public Dimension getPreferredSize(int width) {
 		final NodeView nodeView = getNodeView();
 		if(nodeView == null){
-			return super.getPreferredSize();
+			return super.getPreferredSize(width);
 		}
-    	int mainW = nodeView.getMainView().getPreferredSize().width;
-    	final Dimension ownPrefSize = new Dimension(super.getPreferredSize());
+    	int mainW = nodeView.getMainView().getPreferredSize(width).width;
+    	final Dimension ownPrefSize = new Dimension(super.getPreferredSize(width));
     	if(ownPrefSize.width < mainW){
     		ownPrefSize.width = mainW;
     	}

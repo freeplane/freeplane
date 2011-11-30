@@ -1,15 +1,14 @@
 package org.docear.plugin.bibtex;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
 import javax.ws.rs.core.UriBuilder;
 
+import net.sf.jabref.BibtexDatabase;
 import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.Globals;
 import net.sf.jabref.labelPattern.LabelPatternUtil;
@@ -21,7 +20,6 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
-import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.NodeModel;
@@ -66,7 +64,7 @@ public class JabRefAttributes {
 		
 		for (Attribute attribute : attributeTable.getAttributes()) {
 			if (attribute.getName().equals(attributeName)) {
-				return (String) attribute.getValue();
+				return attribute.getValue().toString();
 			}
 		}
 		
@@ -123,18 +121,21 @@ public class JabRefAttributes {
 			
 			if (nodeValue == null) {
 				if (jabrefValue != null) {
+					System.out.println("debug insert attribute "+nodeAttributeName+" : "+jabrefValue);
 					AttributeController.getController().performInsertRow(attributeTable, 0, nodeAttributeName, jabrefValue);
 					changes = true;
 				}
 			}
 			else {
 				if (jabrefValue == null) {
+					System.out.println("debug remove attribute "+nodeAttributeName);
 					AttributeController.getController().performRemoveRow(attributeTable, attributeTable.getAttributePosition(nodeAttributeName));
 					changes = true;
 				}
 				else {
 					if (!nodeValue.equals(jabrefValue)) {
-						AttributeController.getController().performReplaceAttributeValue(nodeAttributeName, nodeValue, jabrefValue);						
+						System.out.println("debug replace attribute "+nodeAttributeName+" : "+nodeValue+" --> "+jabrefValue);
+						AttributeController.getController().performSetValueAt(attributeTable, jabrefValue, attributeTable.getAttributePosition(nodeAttributeName), 1);
 						changes = true;
 					}
 				}
@@ -143,6 +144,9 @@ public class JabRefAttributes {
 		
 		boolean isFile = true;
 		String url = entry.getField("file");
+		if (url!=null) {
+			url = WorkspaceUtils.resolveURI(parsePath(entry, url.toString())).getPath();
+		}
 		if (url == null) {
 			isFile = false;
 			url = entry.getField("url");
@@ -150,19 +154,21 @@ public class JabRefAttributes {
 		
 		NodeLinks nodeLinks = NodeLinks.getLinkExtension(node);		
 		if (url == null) {
-			if (nodeLinks.getHyperLink() == null) {
+			if (nodeLinks == null || nodeLinks.getHyperLink() == null) {
 				return changes;
 			}
 		}
 		else {
-			if (nodeLinks.getHyperLink() != null && nodeLinks.getHyperLink().getPath().equals(url)) {
+			if (nodeLinks != null && nodeLinks.getHyperLink() != null && nodeLinks.getHyperLink().getPath().equals(url)) {
 				return changes;
 			}
 		}
 		
 		if (url == null) {
-			nodeLinks.setHyperLink(null);
-			return true;
+			if (nodeLinks != null) {
+				nodeLinks.setHyperLink(null);
+				return true;
+			}
 		}
 		
 		URI uri;
@@ -177,7 +183,7 @@ public class JabRefAttributes {
 				e.printStackTrace();
 				return changes;
 			}
-		}
+		}		
 		((MLinkController) MLinkController.getController()).setLinkTypeDependantLink(node, uri);		
 		return true;
 	}
@@ -185,46 +191,28 @@ public class JabRefAttributes {
 	
 	public void setReferenceToNode(BibtexEntry entry, NodeModel node) {
 		if (entry.getCiteKey()==null) {
-			LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), ReferencesController.getController().getJabrefWrapper().getDatabase(), entry);						
+			BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
+			LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), database, entry);						
 		}		
 		
-		removeReferenceFromNode(node);
-		
-		for (Entry<String, String> e : this.valueAttributes.entrySet()) {
-			NodeUtils.setAttributeValue(node, e.getKey(), entry.getField(e.getValue()), false);
-		}
-
+		removeReferenceKeyFromNode(node);				
 		NodeUtils.setAttributeValue(node, keyAttribute, entry.getCiteKey(), false);
 		
-		String files = entry.getField("file");
-		
-		if (files != null && files.length() > 0) {			
-			String[] paths = files.split("(?<!\\\\);"); // taken from splmm, could not test it
-            for(String path : paths){
-            	URI uri = parsePath(entry, path);
-            	if(uri != null){
-            		NodeUtils.setLinkFrom(uri, node);
-            		break;
-            	}
-            }		
-		}
-		else {
-			String url = entry.getField("url");			
-			if (url != null && url.length() > 0) {
-				URI link;			
-				try {
-					link = LinkController.createURI(url.trim());
-					final MLinkController linkController = (MLinkController) MLinkController.getController();
-					linkController.setLinkTypeDependantLink(node, link);
-				}
-				catch (URISyntaxException e) {				
-					e.printStackTrace();
-				}
-			}
-		}
-
+		updateReferenceToNode(entry, node);
 	}
 
+
+	private void removeReferenceKeyFromNode(NodeModel node) {		
+		NodeAttributeTableModel attributeTable = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
+		if (attributeTable == null) {
+			return;
+		}
+		
+		int pos = attributeTable.getAttributePosition(this.keyAttribute);
+		if (pos >= 0) {
+			AttributeController.getController().performRemoveRow(attributeTable, pos);
+		}
+	}
 
 	private URI parsePath(BibtexEntry entry, String path) {		
 		path = extractPath(path);
@@ -233,10 +221,8 @@ public class JabRefAttributes {
 			return null; 
 		}		
 		path = removeEscapingCharacter(path);
-		if(isAbsolutePath(path)){
-			if(new File(path).exists()){
+		if(isAbsolutePath(path)&& (new File(path)).exists()){
 				return new File(path).toURI();
-			}
 		}
 		else{
 			URI uri = CoreConfiguration.referencePathObserver.getUri();
@@ -244,7 +230,8 @@ public class JabRefAttributes {
 			
 			System.out.println("debug parsePath: "+UriBuilder.fromPath(path).build());
 			URI pdfUri = absUri.resolve(UriBuilder.fromPath(path).build());
-			if(new File(pdfUri.normalize()) != null && new File(pdfUri.normalize()).exists()){
+			File file = new File(pdfUri);
+			if(file.exists()){
 				return pdfUri;
 			}
 		}		

@@ -36,7 +36,9 @@ import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
 import org.freeplane.core.ui.components.FButtonBar;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JResizer;
+import org.freeplane.core.ui.components.OneTouchCollapseResizer;
 import org.freeplane.core.ui.components.JResizer.Direction;
+import org.freeplane.core.ui.components.OneTouchCollapseResizer.CollapseDirection;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeController;
@@ -261,7 +263,9 @@ public class MModeControllerFactory {
 		    .getStatusBar());
 		final JTabbedPane tabs = new JTabbedPane();
 		Box resisableTabs = Box.createHorizontalBox();
-		resisableTabs.add(new JResizer(Direction.RIGHT));
+		//FIXME: DOCEAR - new OneTouchCollapseResizer
+		resisableTabs.add(new OneTouchCollapseResizer(Direction.RIGHT, CollapseDirection.COLLAPSE_RIGHT));
+		//resisableTabs.add(new JResizer(Direction.RIGHT));
 		resisableTabs.add(tabs);
 		resisableTabs.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "styleScrollPaneVisible");
 		modeController.getUserInputListenerFactory().addToolBar("/format", ViewController.RIGHT, resisableTabs);
@@ -285,5 +289,7 @@ public class MModeControllerFactory {
 		mapController.addNodeSelectionListener(uiFactory);
 		mapController.addMapChangeListener(uiFactory);
 		controller.getMapViewManager().addMapSelectionListener(uiFactory);
+		final MToolbarContributor menuContributor = new MToolbarContributor(uiFactory);
+		modeController.addMenuContributor(menuContributor);
 	}
 }

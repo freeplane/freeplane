@@ -19,6 +19,7 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -33,6 +34,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumnModel;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
@@ -119,9 +121,11 @@ public class ManageAddOnsDialog extends JDialog {
 		tabbedPane = new JTabbedPane();
 		tabbedPane.setPreferredSize(getPreferredSizeForWindow());
 		final JComponent managementPanel = createManagementPanel(addOns);
-		tabbedPane.addTab(getText("tab.manage"), null, managementPanel, getText("tab.manage.tooltip"));
+		tabbedPane.addTab(getText("tab.manage"), createIcon("/images/manage_addons.png"), managementPanel,
+		    getText("tab.manage.tooltip"));
 		addOnInstallerPanel = new AddOnInstallerPanel(tableModel, managementPanel);
-		tabbedPane.addTab(getText("tab.install"), null, addOnInstallerPanel, getText("tab.install.tooltip"));
+		tabbedPane.addTab(getText("tab.install"), createIcon("/images/install_addons.png"), addOnInstallerPanel,
+		    getText("tab.install.tooltip"));
 		getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		{
 			JPanel buttonPane = new JPanel();
@@ -138,10 +142,13 @@ public class ManageAddOnsDialog extends JDialog {
 				buttonPane.add(closeButton);
 			}
 		}
-		
 		pack();
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		UITools.addEscapeActionToDialog(this);
+	}
+
+	private ImageIcon createIcon(String resource) {
+		return new ImageIcon(ResourceController.getResourceController().getResource(resource));
 	}
 
 	private JComponent createManagementPanel(final List<AddOnProperties> addOns) {

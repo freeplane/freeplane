@@ -38,6 +38,7 @@ import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -59,7 +60,9 @@ class NodeTextConditionController implements IElementaryConditionController {
 		final NamedObject namedObject = (NamedObject) selectedItem;
 		return namedObject.objectEquals(TextController.FILTER_NODE)
 		|| namedObject.objectEquals(TextController.FILTER_PARENT)
-		|| namedObject.objectEquals(TextController.FILTER_DETAILS);
+		|| namedObject.objectEquals(TextController.FILTER_DETAILS)
+		|| namedObject.objectEquals(TextController.FILTER_NOTE)
+		|| namedObject.objectEquals(TextController.FILTER_ANYTEXT);
 	}
 
 	public boolean canSelectValues(final Object selectedItem, final NamedObject simpleCond) {
@@ -122,9 +125,11 @@ class NodeTextConditionController implements IElementaryConditionController {
 
 	public ListModel getFilteredProperties() {
 		final DefaultListModel list = new DefaultListModel();
+		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_ANYTEXT));
 		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_NODE));
-		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_PARENT));
 		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_DETAILS));
+		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_NOTE));
+		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_PARENT));
 		return list;
 	}
 
@@ -156,10 +161,27 @@ class NodeTextConditionController implements IElementaryConditionController {
 		if (element.getName().equalsIgnoreCase(NodeMatchesRegexpCondition.NAME)) {
 			return NodeMatchesRegexpCondition.load(element);
 		}
+		if (element.getName().equalsIgnoreCase(NoteContainsCondition.NAME)) {
+			return NoteContainsCondition.load(element);
+		}
+		if (element.getName().equalsIgnoreCase(MatchCaseNoteContainsCondition.NAME)) {
+			return MatchCaseNoteContainsCondition.load(element);
+		}
 		return null;
 	}
 
-	public static Object getItemForComparison(Object nodeItem, final NodeModel node) {
+	public static Object[] getItemsForComparison(Object nodeItem, final NodeModel node) {
+		if (nodeItem.equals(TextController.FILTER_ANYTEXT)) {
+			return new Object[] { 
+					getItemForComparison(TextController.FILTER_NODE, node), 
+					getItemForComparison(TextController.FILTER_DETAILS, node),
+			        getItemForComparison(TextController.FILTER_NOTE, node) };
+		}
+		else
+			return new Object[] { getItemForComparison(nodeItem, node) };
+	}
+	
+	private static Object getItemForComparison(Object nodeItem, final NodeModel node) {
 		final Object result;
 		if(nodeItem.equals(TextController.FILTER_NODE)){
 			result = TextController.getController().getTransformedObjectNoThrow(node);
@@ -173,6 +195,9 @@ class NodeTextConditionController implements IElementaryConditionController {
 		}
 		else if(nodeItem.equals(TextController.FILTER_DETAILS)){
 			result = DetailTextModel.getDetailTextText(node);
+		}
+		else if(nodeItem.equals(TextController.FILTER_NOTE)){
+			result = NoteModel.getNoteText(node);
 		}
 		else
 			result = null;

@@ -398,8 +398,8 @@ public class NodeStyleController implements IExtension {
 		final MapModel map = node.getMap();
 		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
 		final Collection<IStyle> style = styleController.getStyles(node);
-		final int maxTextWidth = getStyleMinWidth(map, style);
-		return maxTextWidth;
+		final int minWidth = getStyleMinWidth(map, style);
+		return minWidth;
     }
 
 	public ModeController getModeController() {

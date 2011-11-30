@@ -1,6 +1,7 @@
 package org.freeplane.view.swing.map;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -15,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.plaf.basic.BasicLabelUI;
+import javax.swing.text.View;
 
 /*
  *  Freeplane - mind map editor
@@ -47,6 +49,21 @@ public class ZoomableLabelUI extends BasicLabelUI {
 	private Rectangle textR = new Rectangle();
 	private Rectangle viewR = new Rectangle();
 
+	private int maximumWidth = Integer.MAX_VALUE;
+
+
+	public Dimension getPreferredSize(final ZoomableLabel c, int maximumWidth) {
+		try{
+			this.maximumWidth = maximumWidth;
+			final Dimension preferredSize = getPreferredSize(c);
+			return preferredSize;
+		}
+		finally{
+			this.maximumWidth = Integer.MAX_VALUE;
+		}
+		
+	}
+	
 	@Override
 	public Dimension getPreferredSize(final JComponent c) {
 		final Dimension preferredSize = super.getPreferredSize(c);
@@ -72,6 +89,8 @@ public class ZoomableLabelUI extends BasicLabelUI {
 	protected String layoutCL(final JLabel label, final FontMetrics fontMetrics, final String text, final Icon icon,
 	                          final Rectangle viewR, final Rectangle iconR, final Rectangle textR) {
 		final ZoomableLabel zLabel = (ZoomableLabel) label;
+		View v = null;
+		Number preferredWidth = null;
 		if (isPainting) {
 			final Insets insets = zLabel.getInsets();
 			final int width = zLabel.getWidth();
@@ -81,6 +100,25 @@ public class ZoomableLabelUI extends BasicLabelUI {
 			viewR.y = insets.top;
 			viewR.width = (int)(width  / zoom) - (insets.left + insets.right);
 			viewR.height = (int)(height / zoom) - (insets.top + insets.bottom);
+		}
+		else if(maximumWidth != Integer.MAX_VALUE){
+			final Insets insets = label.getInsets();
+			viewR.width = maximumWidth - insets.left - insets.right;
+			if(viewR.width < 0)
+				viewR.width = 0;
+			v = (View) label.getClientProperty(BasicHTML.propertyKey);
+			preferredWidth = (Number) label.getClientProperty("preferredWidth");
+		    if (v != null) {
+		    	int textWidth = viewR.width;
+				if(icon != null)
+		    		textWidth -= icon.getIconWidth() + label.getIconTextGap();
+				if(preferredWidth.intValue() > textWidth){
+					v.setSize(textWidth, 1);
+					super.layoutCL(zLabel, zLabel.getFontMetrics(), text, icon, viewR, iconR, textR);
+					v.setSize(textR.width, textR.height);
+					return text;
+				}
+		    }
 		}
 		super.layoutCL(zLabel, zLabel.getFontMetrics(), text, icon, viewR, iconR, textR);
 		return text;
@@ -128,6 +166,14 @@ public class ZoomableLabelUI extends BasicLabelUI {
 		GlyphPainterMetricResetter.resetPainter();
 	    try {
 	        super.propertyChange(e);
+	    	String name = e.getPropertyName();
+	    	if (name == "text" || "font" == name || "foreground" == name) {
+	    	    JLabel lbl = ((JLabel) e.getSource());
+	    	    View v = (View) lbl.getClientProperty(BasicHTML.propertyKey);
+			    if (v != null) {
+			    	lbl.putClientProperty("preferredWidth", v.getPreferredSpan(View.X_AXIS));
+			    }
+	    	}
         }
         catch (Exception e1) {
 	        e1.printStackTrace();

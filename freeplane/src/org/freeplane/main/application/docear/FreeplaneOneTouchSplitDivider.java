@@ -2,7 +2,7 @@
  * author: Marcel Genzmehr
  * 07.11.2011
  */
-package org.freeplane.plugin.workspace.view;
+package org.freeplane.main.application.docear;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -18,37 +18,42 @@ import javax.swing.JSplitPane;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
-import org.freeplane.features.mode.Controller;
-import org.freeplane.plugin.workspace.WorkspacePreferences;
-
 /**
  * 
  */
-public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
-	private static final long serialVersionUID = 3680863351623884961L;
+public class FreeplaneOneTouchSplitDivider extends BasicSplitPaneDivider {
+	private static final long serialVersionUID = -7634197376851132336L;
+	
+	// FIXME: DOCEAR - impl top/bottom collapse in next version
+//	public static final int COLLAPSE_TOP = 0x1;
+//	public static final int COLLAPSE_BOTTOM = 0x2;
+	public static final int COLLAPSE_LEFT = 0x4;
+	public static final int COLLAPSE_RIGHT = 0x8;
+	
 	private Point lastLocation;
 	protected boolean expanded;
 	protected boolean isMouseOver = false;
 	private JPanel hotspot;
+	private int collapseDirection;
+	private int inset = 2;
+
+	
 
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 	/**
 	 * @param ui
+	 * @param collapseDirection 
 	 */
-	public WorkspaceSplitDivider(BasicSplitPaneUI ui) {
+	public FreeplaneOneTouchSplitDivider(BasicSplitPaneUI ui, final int collapseDirection) {
 		super(ui);
-		expanded = Controller.getCurrentController().getResourceController()
-				.getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY);
-		lastLocation = new Point(Controller.getCurrentController().getResourceController()
-				.getIntProperty(WorkspacePreferences.WORKSPACE_WIDTH_PROPERTY_KEY, 200), 0);
+		this.collapseDirection = collapseDirection;
 		
 		if(lastLocation == null || lastLocation.x <= 1) {
-			lastLocation = new Point(200,0);						
+			lastLocation = 	new Point(splitPane.getDividerLocation(), 0);					
 		}
 
-		setBorder(null);
 		MouseListener listener = new MouseListener() {
 			public void mouseReleased(MouseEvent e) {
 			}
@@ -85,30 +90,55 @@ public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 			public void mouseClicked(MouseEvent e) {
 				if(e.getComponent() == getHotSpot()) {
 					if (expanded) {
-							lastLocation = getLocation();
-							splitPane.getLeftComponent().setVisible(false);
-							splitPane.getLeftComponent().setSize(0, 0);
-							dragDividerTo(0);
-							finishDraggingTo(0);
+							if(collapseDirection == COLLAPSE_LEFT) {
+								lastLocation = getLocation();
+								splitPane.getLeftComponent().setVisible(false);
+								splitPane.getLeftComponent().setSize(0, 0);
+								dragDividerTo(0);
+								finishDraggingTo(0);
+							} 
+							else if(collapseDirection == COLLAPSE_RIGHT) {
+								lastLocation = getLocation();
+								splitPane.getRightComponent().setVisible(false);
+								splitPane.getRightComponent().setSize(0, 0);
+								dragDividerTo(splitPane.getWidth());
+								finishDraggingTo(splitPane.getWidth());
+							}
 							splitPane.setEnabled(false);
 							getHotSpot().setEnabled(true);
 							expanded = false;
 					}
 					else {
-						splitPane.getLeftComponent().setVisible(true);
-						splitPane.getLeftComponent().setSize(lastLocation.x, 0);
-						dragDividerTo(lastLocation.x);
-						finishDraggingTo(lastLocation.x);
+						if(collapseDirection == COLLAPSE_LEFT) {
+							splitPane.getLeftComponent().setVisible(true);
+							splitPane.getLeftComponent().setSize(lastLocation.x, 0);
+							dragDividerTo(lastLocation.x);
+							finishDraggingTo(lastLocation.x);
+						} 
+						else if(collapseDirection == COLLAPSE_RIGHT) {
+							splitPane.getRightComponent().setVisible(true);
+							splitPane.getRightComponent().setSize(lastLocation.x, 0);
+							dragDividerTo(lastLocation.x);
+							finishDraggingTo(lastLocation.x);
+						}
 						splitPane.setEnabled(true);						
 						expanded = true;
 					}
 				} 
 				else {
 					if (!expanded) {
-						splitPane.getLeftComponent().setVisible(true);
-						splitPane.getLeftComponent().setSize(lastLocation.x, 0);
-						dragDividerTo(lastLocation.x);
-						finishDraggingTo(lastLocation.x);
+						if(collapseDirection == COLLAPSE_LEFT) {
+							splitPane.getLeftComponent().setVisible(true);
+							splitPane.getLeftComponent().setSize(lastLocation.x, 0);
+							dragDividerTo(lastLocation.x);
+							finishDraggingTo(lastLocation.x);
+						} 
+						else if(collapseDirection == COLLAPSE_RIGHT) {
+							splitPane.getRightComponent().setVisible(true);
+							splitPane.getRightComponent().setSize(lastLocation.x, 0);
+							dragDividerTo(lastLocation.x);
+							finishDraggingTo(lastLocation.x);
+						}
 						splitPane.setEnabled(true);
 						expanded = true;
 					}
@@ -129,9 +159,6 @@ public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 		super.paint(g);
 		int center_y = getHeight()/2;
 		getHotSpot().setBounds(0, center_y-15, getDividerSize(), 30);
-		
-		g.setColor(getBackground());
-		g.fillRect(0, 0, getWidth(), getHeight());
 		if (getLocation().x <= 1) {
 			expanded = false;
 			splitPane.setEnabled(false);
@@ -187,7 +214,6 @@ public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 		return false; //isMouseOver;
 	}
 	
-	int inset = 2;
 	private void drawCollapseLabel(Graphics g) {
 		Dimension size = g.getClipBounds().getSize();
 		int half_length = Math.round(g.getClipBounds().height*0.2f);
@@ -197,14 +223,15 @@ public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 		g.fillRect(0, 0, size.width, size.height-0);
 		
 		//g.setColor();
-		
-		g.setColor(Color.DARK_GRAY);
-		g.drawLine(inset, center_y, size.width - inset, center_y - half_length);
-		g.setColor(Color.GRAY);
-		g.drawLine( size.width - inset, center_y + half_length, inset, center_y);
-		g.setColor(Color.GRAY);
-		g.drawLine( size.width - inset, center_y - half_length, size.width - inset, center_y + half_length);
+		if(this.collapseDirection == COLLAPSE_LEFT) {
+			arrowLeft(g, size, half_length, center_y);
+		} 
+		else if(this.collapseDirection == COLLAPSE_RIGHT) {
+			arrowRight(g, half_length, center_y);
+		}
 	}
+
+	
 	
 	private void drawExpandLabel(Graphics g) {
 		Dimension size = g.getClipBounds().getSize();
@@ -214,6 +241,36 @@ public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 		g.setColor(getBackground());
 		g.fillRect(0, 0, size.width, size.height-0);
 		
+		if(this.collapseDirection == COLLAPSE_LEFT) {			
+			arrowRight(g, half_length, center_y);
+		} 
+		else if(this.collapseDirection == COLLAPSE_RIGHT) {
+			arrowLeft(g, size, half_length, center_y);
+		}
+	}
+	
+	
+	/**
+	 * @param g
+	 * @param size
+	 * @param half_length
+	 * @param center_y
+	 */
+	private void arrowLeft(Graphics g, Dimension size, int half_length, int center_y) {
+		g.setColor(Color.DARK_GRAY);
+		g.drawLine(inset, center_y, size.width - inset, center_y - half_length);
+		g.setColor(Color.GRAY);
+		g.drawLine( size.width - inset, center_y + half_length, inset, center_y);
+		g.setColor(Color.GRAY);
+		g.drawLine( size.width - inset, center_y - half_length, size.width - inset, center_y + half_length);
+	}
+
+	/**
+	 * @param g
+	 * @param half_length
+	 * @param center_y
+	 */
+	private void arrowRight(Graphics g, int half_length, int center_y) {
 		g.setColor( Color.DARK_GRAY);
 		g.drawLine( inset, center_y + half_length, inset, center_y - half_length);
 		g.setColor(Color.GRAY);

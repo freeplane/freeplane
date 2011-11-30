@@ -21,7 +21,16 @@ public class JabRefChangeListener implements DatabaseChangeListener {
 		DocearReferenceUpdateController.lock();
 
 		BibtexEntry entry = e.getEntry();
-		NodeModel root = Controller.getCurrentModeController().getMapController().getRootNode();
+		
+		NodeModel root;
+		
+		try {
+			root = Controller.getCurrentModeController().getMapController().getRootNode();
+		}
+		catch(NullPointerException ex) {
+			//no database open
+			return;
+		}
 
 		if (e.getType() == DatabaseChangeEvent.REMOVED_ENTRY) {
 			System.out.println("debug removed: " + e.getEntry().getCiteKey());

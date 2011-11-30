@@ -138,7 +138,10 @@ public class MindmapUpdateController {
 				
 			}
 			
-			private void updateNodes(NodeModel parent, AMindmapUpdater mindmapupdater) throws InterruptedException, InvocationTargetException {				
+			private void updateNodes(NodeModel parent, AMindmapUpdater mindmapupdater) throws InterruptedException, InvocationTargetException {	
+				if (parent == null) {
+					return;
+				}
 				if (mindmapupdater.updateNode(parent)) {
 					this.mapHasChanged = true;
 				}
@@ -237,10 +240,10 @@ public class MindmapUpdateController {
 			}
 			
 			private void saveMap(MapModel map) {
-				if (!this.mapHasChanged) {
-					System.out.println("saving map: "+map.getRootNode().getText());
+				if (!this.mapHasChanged) {					
 					return;
 				}
+				System.out.println("saving map ");
 				map.setSaved(false);
 				((MFileManager) UrlManager.getController()).save(map, false);				
 			}

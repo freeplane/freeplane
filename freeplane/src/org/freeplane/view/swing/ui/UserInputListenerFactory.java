@@ -36,6 +36,7 @@ import java.util.Set;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JToolBar;
@@ -48,6 +49,8 @@ import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
@@ -295,7 +298,20 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		mapsPopupMenu.setName(TextUtils.getText("mindmaps"));
 		final URL menuStructure = ResourceController.getResourceController().getResource(menuStructureResource);
 		if (menuStructure != null) {
+			final boolean isUserDefined = menuStructure.getProtocol().equalsIgnoreCase("file");
+			try{
 			menuBuilder.processMenuCategory(menuStructure, plugins);
+			}
+			catch (RuntimeException e){
+				if(isUserDefined){
+					LogUtils.warn(e);
+					String myMessage = TextUtils.format("menu_error", menuStructure.getPath(), e.getMessage());
+					UITools.backOtherWindows();
+					JOptionPane.showMessageDialog(UITools.getFrame(), myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
+					System.exit(-1);
+				}
+				throw e;
+			}
 		}
 		final ViewController viewController = Controller.getCurrentController().getViewController();
 		viewController.updateMenus(menuBuilder);

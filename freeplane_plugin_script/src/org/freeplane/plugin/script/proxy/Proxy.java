@@ -790,10 +790,16 @@ public interface Proxy {
 		 * @deprecated since 1.2 - use getPlainText() or getTo().getPlain() instead. */
 		String getPlainTextContent();
 
-		/** The raw text of this node. Use {@link #getPlainText()} to remove HTML.
+		/** The visible text of this node. Use {@link #getPlainText()} to remove HTML.
+		 * @since 1.2 */
+		String getDisplayedText();
+		String getTransformedText();
+		
+		String getShortText();
+
+		/** The html text of this node. Use {@link #getPlainText()} to remove HTML.
 		 * @since 1.2 */
 		String getText();
-		
 		/** The object that's displayed as the node text - normally the raw text of this node (then this method is
 		 * equivalent to {@link #getText()}).
 		 * But in case of typed content (for numbers, dates and calendars) {@link #getObject()} returns
@@ -846,7 +852,9 @@ public interface Proxy {
 		boolean isRoot();
 
 		boolean isVisible();
-
+		
+		boolean isMinimized();
+		
 		/** Starting from this node, recursively searches for nodes for which
 		 * <code>condition.checkNode(node)</code> returns true.
 		 * @deprecated since 1.2 use {@link #find(Closure)} instead. */
@@ -934,6 +942,8 @@ public interface Proxy {
 		void setHideDetails(boolean hide);
 
 		void setFolded(boolean folded);
+		
+		void setMinimized(boolean shortened);
 
 		/**
 		 * Set the note text:

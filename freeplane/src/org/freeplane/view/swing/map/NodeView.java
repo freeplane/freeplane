@@ -1394,7 +1394,7 @@ public class NodeView extends JComponent implements INodeView {
 	public boolean isShortened() {
 	    final ModeController modeController = getMap().getModeController();
 		final TextController textController = TextController.getController(modeController);
-		final boolean textShortened = textController.getIsShortened(getModel());
+		final boolean textShortened = textController.isMinimized(getModel());
 	    return textShortened;
     }
 

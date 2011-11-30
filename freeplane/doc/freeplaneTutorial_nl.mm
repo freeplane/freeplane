@@ -22,7 +22,7 @@
   </body>
 </html>
 </richcontent>
-<hook NAME="MapStyle" max_node_width="600" min_node_width="1">
+<hook NAME="MapStyle">
     <conditional_styles>
         <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
             <time_condition_modified_after DATE="1315131197170"/>
@@ -66,7 +66,7 @@
 <edge STYLE="bezier" COLOR="#808080"/>
 </stylenode>
 <stylenode TEXT="Revision">
-<icon BUILTIN="info"/>
+<icon BUILTIN="revision"/>
 </stylenode>
 <stylenode TEXT="Beginner" BACKGROUND_COLOR="#33ffcc" STYLE="bubble">
 <font BOLD="true"/>
@@ -145,7 +145,7 @@
 <hook NAME="FreeNode"/>
 </node>
 <node TEXT="Inleiding" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1316342821057" BACKGROUND_COLOR="#00cc66" NUMBERED="true" VSHIFT="110">
-<node TEXT="Doel" STYLE_REF="Beginner" ID="ID_1309964220" CREATED="1314735478858" MODIFIED="1321643529969"><richcontent TYPE="DETAILS">
+<node TEXT="Doel" STYLE_REF="Beginner" ID="ID_1309964220" CREATED="1314735478858" MODIFIED="1321909041374"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -153,7 +153,7 @@
   </head>
   <body>
     <p>
-      Freeplane heeft tot doel het denken, delen en gebruiken van infrormatie te vergemakkelijken. Freeplane ondersteunt het maken, delen en gebruiken van <a href="WhatIsMindMapping_nl.mm">mindmaps</a>, een soort van&#160; <a href="http://www.informationtamers.com/WikIT/index.php?title=Information_map_types">informatiekaarten</a>. &#160;De <b><a href="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch">wiki</a></b>&#160;bevat concrete voorbeelden van&#160; <a href="freeplaneApplications_nl.mm">toepassingsgebieden.</a>&#160;De knoop <a href="freeplaneFunctions.mm">functieindex</a>&#160; bevat een visueel overzicht van alle functies en hyperlinks naa beschrijvingen van deze functies..
+      Freeplane heeft tot doel het denken, delen en gebruiken van infrormatie te vergemakkelijken. Freeplane ondersteunt het maken, delen en gebruiken van <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane_nl#Wat_is_mindmappen">mindmaps</a>, een soort van&#160; <a href="http://www.informationtamers.com/WikIT/index.php?title=Information_map_types">informatiekaarten</a>. &#160;De <a href="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch"><b>wiki</b></a>&#160;bevat concrete voorbeelden van&#160; <a href="freeplaneApplications_nl.mm">toepassingsgebieden.</a>&#160;De knoop <a href="freeplaneFunctions.mm">functieindex</a>&#160; bevat een visueel overzicht van alle functies en hyperlinks naar beschrijvingen van deze functies..
     </p>
     <p>
       
@@ -840,6 +840,35 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
+</node>
+<node TEXT="Instellen knoopbreedte" STYLE_REF="Gevorderde" ID="ID_374213598" CREATED="1321975262072" MODIFIED="1321975690901"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om knopen uit te lijnen kun je een vaste minum en/of maximum knoopbreedte in te stellen. Zie
+    </p>
+    <ul>
+      <li>
+        Opmaakpaneel; of
+      </li>
+      <li>
+        Opmaken &gt; Instellen grenzen knoopbreedte
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <p>
+      N.B. In de knoop die je nu leest is de minimum = maximum knoopbreedte 300 pixels.
+    </p>
+  </body>
+</html>
+
+</richcontent>
 </node>
 <node TEXT="Toevoegen plaatje of pictogram aan knoopkern" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_475633626" CREATED="1314281837074" MODIFIED="1316330654795" HGAP="30">
 <node TEXT="Pictogram (icoontje)" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_331137637" CREATED="1314214040000" MODIFIED="1316329918843">

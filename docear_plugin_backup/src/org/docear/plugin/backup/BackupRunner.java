@@ -1,5 +1,7 @@
 package org.docear.plugin.backup;
 
+import java.util.Map.Entry;
+
 import javax.swing.JOptionPane;
 
 import org.docear.plugin.communications.CommunicationsConfiguration;
@@ -7,7 +9,10 @@ import org.docear.plugin.communications.Filetransfer;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.url.UrlManager;
+import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.accountmanager.Account;
 import org.jdesktop.swingworker.SwingWorker;
 
@@ -52,12 +57,14 @@ public class BackupRunner {
 				while (true) {
 					synchronized (this) {
 						try {
-							System.out.println("TEST");
 							this.wait(60000 * auto_backup_minutes);
-							if (isMapChanged()) {
-								setMapChanged(false);
-								System.out.println("change map");
-								Filetransfer.copyMindmapToServer(config);
+							Account account = config.getAccount();
+							if (config.isBackup() && isMapChanged() && account.hasUsername() && account.hasPassword() && account.hasConnectionString()) {
+								for (Entry<String, MapModel> entry : Controller.getCurrentController().getMapViewManager().getMaps().entrySet()) {
+									save(entry.getValue());
+									//save event automatically triggers backup
+									//backup(entry.getValue());
+								}
 							}
 						}
 						catch (InterruptedException e) {
@@ -69,14 +76,20 @@ public class BackupRunner {
 		};
 		Thread.currentThread().setContextClassLoader(contextClassLoader);
 		
-		
 		runner.execute();
-
+	}
+	
+	public void save(final MapModel map) {
+		((MFileManager) UrlManager.getController()).save(map, false);
+	}
+	
+	public void backup() {
+		backup(Controller.getCurrentController().getMap());
 	}
 
-	public void backup() {
+	public void backup(final MapModel map) {
 		Account account = config.getAccount();
-		if (!account.hasUsername() || !account.hasPassword() || !account.hasConnectionString()) {
+		if (config.isBackup() && !account.hasUsername() || !account.hasPassword() || !account.hasConnectionString()) {
 			JOptionPane.showMessageDialog(null, TextUtils.getText("account_credentials_not_found"), "error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
@@ -84,8 +97,8 @@ public class BackupRunner {
 		try {
 			SwingWorker<Void, Void> runner = new SwingWorker<Void, Void>() {
 				public Void doInBackground() {
-					setMapChanged(false);
-					Filetransfer.copyMindmapToServer(config);
+					System.out.println("debug: backup mindmap");
+					Filetransfer.copyMindmapToServer(config, map);
 					return null;
 				}
 			};

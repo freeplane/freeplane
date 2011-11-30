@@ -6,6 +6,7 @@ import java.io.StringWriter;
 import javax.ws.rs.core.MediaType;
 
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -17,14 +18,19 @@ import com.sun.jersey.multipart.FormDataMultiPart;
 
 public class Filetransfer {
 	private final static String MINDMAP_ID = "mindmapId";
-
+	
 	public static synchronized void copyMindmapToServer(CommunicationsConfiguration config) {
+		MapModel map = Controller.getCurrentController().getMap();
+		copyMindmapToServer(config, map);
+	}
+
+	public static synchronized void copyMindmapToServer(CommunicationsConfiguration config, MapModel map) {
 		System.out.println("insert or update 1");
 		ModeController modeController = Controller.getCurrentModeController();
 		Controller controller = Controller.getCurrentController();
 		StringWriter sw = new StringWriter();
 		try {
-			modeController.getMapController().getFilteredXml(controller.getMap(), sw, Mode.EXPORT, true);
+			modeController.getMapController().getFilteredXml(map, sw, Mode.EXPORT, true);
 		}
 		catch (IOException e1) {
 			e1.printStackTrace();
