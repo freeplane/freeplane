@@ -41,24 +41,25 @@ public class MonitoringFlattenSubfoldersAction extends DocearAction {
 	public void actionPerformed(ActionEvent arg0) {
 		NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
 		Object value = NodeUtils.getAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS);
-		if(value == null || (Integer)value == 0){
-			
-			Controller.getCurrentController().getViewController().scrollNodeToVisible(selected);
+		if(value == null || (Integer)value == 0){			
+			boolean isFolded = selected.isFolded();
+			selected.setFolded(true);
 			SwingWorker<Void, Void> thread = getFlattenThread(selected);
 			SwingWorkerDialogLite dialog = new SwingWorkerDialogLite(Controller.getCurrentController().getViewController().getFrame());
 			dialog.setHeadlineText("Flatten subfolders...");
 			dialog.showDialog(thread);
-			NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 1);	
-			Controller.getCurrentController().getViewController().scrollNodeToVisible(selected);
+			NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 1);				
+			selected.setFolded(isFolded);
 		}
 		else{			
-			Controller.getCurrentController().getViewController().scrollNodeToVisible(selected);
+			boolean isFolded = selected.isFolded();
+			selected.setFolded(true);
 			SwingWorker<Void, Void> thread = getUnFlattenThread(selected);
 			SwingWorkerDialogLite dialog = new SwingWorkerDialogLite(Controller.getCurrentController().getViewController().getFrame());
 			dialog.setHeadlineText("Creating subfolder nodes...");
 			dialog.showDialog(thread);
 			NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 0);
-			Controller.getCurrentController().getViewController().scrollNodeToVisible(selected);
+			selected.setFolded(isFolded);			
 		}		
 	}
 	
@@ -108,7 +109,7 @@ public class MonitoringFlattenSubfoldersAction extends DocearAction {
 				for(final Entry<NodeModel, Stack<File>> entry : result.entrySet()){	
 					SwingUtilities.invokeAndWait(
 					        new Runnable() {
-					            public void run(){
+					            public void run(){					            	
 					            	NodeModel target = NodeUtils.createFolderStructurePath(selected, entry.getValue());
 									((MMapController) Controller.getCurrentModeController().getMapController()).moveNode(entry.getKey(), target, target.getChildCount());															
 					            }
