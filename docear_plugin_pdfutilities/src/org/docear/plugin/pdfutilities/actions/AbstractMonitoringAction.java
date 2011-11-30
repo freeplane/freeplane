@@ -142,7 +142,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 							continue;
 						}
 						else{
-							mindmaps.add(uri);
+							mindmaps.add(mapDir);
 						}
 					}
 					if(mindmaps.size() <= 0){
@@ -200,8 +200,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					
 					Thread.sleep(1L);
 					if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
-					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Loading monitored mindmaps ...");
-					new NodeUtils();
+					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Loading monitored mindmaps ...");					
 					List<MapModel> maps = NodeUtils.getMapsFromUris(mindmapFiles);
 					
 					Thread.sleep(1L);

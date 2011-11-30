@@ -111,7 +111,7 @@ public class NodeUtils {
 	public static MapModel getMapFromUri(URI uri) {
 		Map<String, MapModel> maps = Controller.getCurrentController().getMapViewManager().getMaps();
 		for(Entry<String, MapModel> entry : maps.entrySet()){
-			if(entry.getValue().getFile().toURI().equals(uri)){
+			if(entry.getValue().getFile() != null && entry.getValue().getFile().toURI().equals(uri)){
 				return entry.getValue();
 			}
 		}
