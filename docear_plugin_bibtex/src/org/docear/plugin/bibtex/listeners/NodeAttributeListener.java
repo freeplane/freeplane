@@ -49,6 +49,7 @@ public class NodeAttributeListener implements TableModelListener {
 		
 		BibtexEntry entry = database.getEntryByKey(key);
 		if (entry != null) {
+			ReferencesController.getController().getJabrefWrapper().getBasePanel().markBaseChanged();
 			//updating the entry updates it in the database object which is used to rendere jabrefs entry table --> no need to update the jabref view
 			entry.setField(ReferencesController.getController().getJabRefAttributes().getValueAttributes().get(attribute.getName()), attribute.getValue().toString());			
 		}

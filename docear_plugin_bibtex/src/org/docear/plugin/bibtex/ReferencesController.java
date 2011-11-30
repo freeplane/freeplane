@@ -299,7 +299,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 	public void onSavedAs(MapModel map) {
 		ReferencesController.getController().getJabrefWrapper().getJabrefFrame();
 		try {
-			ReferencesController.getController().getJabrefWrapper().getJabrefFrame().basePanel().runCommand("save");
+			saveJabrefDatabase();
 		}
 		catch (Throwable ex) {
 			ex.printStackTrace();
@@ -311,11 +311,17 @@ public class ReferencesController extends ALanguageController implements IDocear
 	public void onSaved(MapModel map) {
 		ReferencesController.getController().getJabrefWrapper().getJabrefFrame();
 		try {
-			ReferencesController.getController().getJabrefWrapper().getJabrefFrame().basePanel().runCommand("save");
+			saveJabrefDatabase();
 		}
 		catch (Throwable ex) {
 			ex.printStackTrace();
 		}
+	}
+	
+	private void saveJabrefDatabase() {
+		BasePanel basePanel = ReferencesController.getController().getJabrefWrapper().getBasePanel();
+		basePanel.runCommand("save");
+		
 	}
 
 	public static JabRefChangeListener getJabRefChangeListener() {
