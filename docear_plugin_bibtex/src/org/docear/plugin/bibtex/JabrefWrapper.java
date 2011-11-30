@@ -72,8 +72,12 @@ public class JabrefWrapper extends JabRef  {
 		return this.jrf;
 	}
 	
+	public BasePanel getBasePanel() {
+		return (BasePanel) getJabrefFrame().getTabbedPane().getSelectedComponent();
+	}
+	
 	public BibtexDatabase getDatabase() {
-		return ((BasePanel) getJabrefFrame().getTabbedPane().getSelectedComponent()).getDatabase();
+		return getBasePanel().getDatabase();
 	}
 	
 	public BasePanel addNewDatabase(ParserResult pr, File file, boolean raisePanel) {
