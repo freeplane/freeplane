@@ -196,7 +196,10 @@ public class NodeUtils {
 		return insertChildNodeFrom(node, isLeft, target);
 	}
 	
-	public static NodeModel insertChildNodeFrom(URI file, IAnnotation annotation, boolean isLeft, NodeModel target){		
+	public static NodeModel insertChildNodeFrom(URI file, IAnnotation annotation, boolean isLeft, NodeModel target){	
+		if(annotation.getTitle() != null && annotation.getTitle().length() > 1 && annotation.getTitle().charAt(0) == '='){
+			annotation.setTitle(" " + annotation.getTitle());
+		}
 		final NodeModel node = ((MMapController) Controller.getCurrentModeController().getMapController()).newNode(annotation.getTitle(), target.getMap());
 		setLinkFrom(file, node);
 		AnnotationController.setModel(node, annotation);

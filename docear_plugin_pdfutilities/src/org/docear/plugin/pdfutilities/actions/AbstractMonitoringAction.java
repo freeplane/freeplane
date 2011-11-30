@@ -108,6 +108,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 		return new SwingWorker<Map<AnnotationID, Collection<IAnnotation>>, AnnotationModel[]>(){
 			
 			Map<AnnotationID, Collection<IAnnotation>> conflicts = new HashMap<AnnotationID, Collection<IAnnotation>>();
+			List<NodeModel> deletableNodes = new ArrayList<NodeModel>();
 			private int totalNodeCount;
 			private int totalNodeProgressCount;
 			private int totalMonitorNodeCount;
@@ -123,6 +124,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					totalNodeProgressCount = 0;
 					monitorNodeProgressCount = 0;
 					totalMonitorNodeCount = 1;
+					deletableNodes.clear();
 					fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, "Updating against "+ target.getText() +" in progress....");
 					fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
 					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Searching monitored files ...");
@@ -232,6 +234,15 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Searching for widowed links...");
 					totalMonitorNodeCount = getTotalChildCount(target);
 					deleteWidowedLinkNodes(target);
+					for(final NodeModel node : deletableNodes){
+						SwingUtilities.invokeAndWait(
+						        new Runnable() {
+						            public void run(){							            	
+										node.removeFromParent();				            											
+						            }
+						        }
+						   );
+					}
 					
 					Thread.sleep(1L);
 					if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
@@ -346,7 +357,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					            		askDeleteWidowedLinks = false;
 					            	}
 					            	if(deleteWidowedLinks){
-					            		widowedLink.removeFromParent();
+					            		deletableNodes.add(widowedLink);					            		
 					            	}
 					            }
 					        }
