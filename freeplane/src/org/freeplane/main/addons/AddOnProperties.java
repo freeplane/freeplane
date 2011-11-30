@@ -382,4 +382,8 @@ public class AddOnProperties {
 		return "AddOnProperties(addOnType=" + addOnType + ", active=" + active + ", name=" + name + ", version="
 		        + version + ")";
 	}
+
+	public boolean isTheme() {
+	    return name != null && name.toLowerCase().endsWith("theme");
+    }
 }
