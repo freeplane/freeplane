@@ -13,7 +13,6 @@ import javax.swing.tree.TreePath;
 
 import org.docear.lang.Destructable;
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
@@ -156,7 +155,7 @@ public abstract class AWorkspaceTreeNode implements Cloneable, TreeNode, Destruc
 	
 	public void refresh() {
 		//override in child class, if needed
-		WorkspaceController.getController().refreshWorkspace();
+		WorkspaceUtils.getModel().reload(this);
 	}
 	
 	protected AWorkspaceTreeNode clone(AWorkspaceTreeNode node) {		

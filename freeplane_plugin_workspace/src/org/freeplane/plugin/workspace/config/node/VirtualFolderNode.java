@@ -256,4 +256,8 @@ public class VirtualFolderNode extends AFolderNode implements IWorkspaceNodeEven
 		}		
 		return null;
 	}
+	
+	public void refresh() {
+		WorkspaceUtils.getModel().reload(this);
+	}
 }
