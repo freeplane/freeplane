@@ -59,8 +59,7 @@ public class AddNewReferenceAction extends AFreeplaneAction{
 			JabrefWrapper jabrefWrapper = ReferencesController.getController().getJabrefWrapper();
 
 			if (link != null && link.getPath().toLowerCase().endsWith(".pdf")) {
-				new PdfImporter(jabrefWrapper.getJabrefFrame(), jabrefWrapper.getJabrefFrame()
-						.basePanel(), null, 0).importPdfFiles(new String[] { path }, Controller.getCurrentController()
+				new PdfImporter(jabrefWrapper.getJabrefFrame(), jabrefWrapper.getBasePanel(), null, 0).importPdfFiles(new String[] { path }, Controller.getCurrentController()
 						.getViewController().getFrame(), true);
 				BibtexEntry[] entries = jabrefWrapper.getJabrefFrame().basePanel().getSelectedEntries();
 
@@ -69,7 +68,7 @@ public class AddNewReferenceAction extends AFreeplaneAction{
 				}
 			}
 			else {
-				BasePanel basePanel = jabrefWrapper.getJabrefFrame().basePanel();
+				BasePanel basePanel = jabrefWrapper.getBasePanel();
 
 				EntryTypeDialog dialog = new EntryTypeDialog(jabrefWrapper.getJabrefFrame());
 				dialog.setVisible(true);

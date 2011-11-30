@@ -72,7 +72,7 @@ public class JabrefWrapper extends JabRef  {
 		return this.jrf;
 	}
 	
-	public BasePanel getBasePanel() {
+	public BasePanel getBasePanel() {		
 		return (BasePanel) getJabrefFrame().getTabbedPane().getSelectedComponent();
 	}
 	

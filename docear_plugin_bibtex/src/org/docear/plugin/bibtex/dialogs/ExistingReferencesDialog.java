@@ -16,6 +16,7 @@ import javax.swing.border.EmptyBorder;
 
 import net.sf.jabref.BasePanel;
 import net.sf.jabref.BibtexEntry;
+import net.sf.jabref.Globals;
 import net.sf.jabref.SearchManager2;
 import net.sf.jabref.SidePaneManager;
 
@@ -54,7 +55,7 @@ public class ExistingReferencesDialog extends JDialog {
 			int yesorno = JOptionPane.YES_OPTION;
 			if (link != null) {
 				if (link.getPath().toLowerCase().endsWith(".pdf")) {
-					BasePanel basePanel = ReferencesController.getController().getJabrefWrapper().getJabrefFrame().basePanel();
+					BasePanel basePanel = ReferencesController.getController().getJabrefWrapper().getBasePanel();
 					int position = basePanel.getMainTable().findEntry(entry);
 					basePanel.selectSingleEntry(position);
 					
@@ -90,6 +91,7 @@ public class ExistingReferencesDialog extends JDialog {
 			JabrefWrapper jabRefWrapper = ReferencesController.getController().getJabrefWrapper();
 			this.basePanel = new BasePanel(jabRefWrapper.getJabrefFrame(), jabRefWrapper.getDatabase(), jabRefWrapper.getFile(),
 					jabRefWrapper.getMeta(), jabRefWrapper.getEncoding());
+			Globals.fileUpdateMonitor.removeUpdateListener(this.basePanel.getFileMonitorHandle());
 			contentPanel.setLayout(new BorderLayout(0, 0));
 			
 			SidePaneManager sidePaneManager = new SidePaneManager(jabRefWrapper.getJabrefFrame());			
