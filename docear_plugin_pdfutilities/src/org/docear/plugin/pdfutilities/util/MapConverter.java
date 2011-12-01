@@ -8,25 +8,24 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingUtilities;
 
 import org.docear.plugin.core.features.DocearMapModelController;
+import org.docear.plugin.core.mindmap.MindmapUpdateController;
 import org.docear.plugin.core.ui.SwingWorkerDialog;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.features.AnnotationController;
 import org.docear.plugin.pdfutilities.features.AnnotationID;
 import org.docear.plugin.pdfutilities.features.AnnotationModel;
+import org.docear.plugin.pdfutilities.features.AnnotationModelUpdater;
 import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
-import org.freeplane.features.url.mindmapmode.SaveAll;
+import org.freeplane.features.url.UrlManager;
+import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.jdesktop.swingworker.SwingWorker;
 
 import de.intarsys.pdf.cos.COSRuntimeException;
@@ -36,8 +35,18 @@ public class MapConverter {
 	
 	public static boolean convert(final List<MapModel> maps){
 		if(maps == null || maps.size() <= 0) return false;
-				
-		try {			
+		MindmapUpdateController mindmapUpdateController = new MindmapUpdateController();
+		mindmapUpdateController.addMindmapUpdater(new AnnotationModelUpdater("Converting Mindmaps...."));
+		if(mindmapUpdateController.updateMindmapsInList(maps)){
+			for(MapModel map : maps){				
+				DocearMapModelController.setModelWithCurrentVersion(map);				
+				map.setSaved(false);
+				map.setReadOnly(false);
+				((MFileManager) UrlManager.getController()).save(map, false);
+			}			
+			return true;
+		}
+		/*try {			
 			SwingWorker<Void, Void> thread = MapConverter.getConverterThread(maps);		
 			SwingWorkerDialog workerDialog = new SwingWorkerDialog(Controller.getCurrentController().getViewController().getJFrame());
 			workerDialog.setHeadlineText("Mindmap Converter");
@@ -62,7 +71,7 @@ public class MapConverter {
 			LogUtils.info("InterruptedException during update of maps.");
 		} catch (ExecutionException e) {
 			LogUtils.info("ExecutionException during update of maps.");
-		}
+		}*/
 		return false;
 	}
 	

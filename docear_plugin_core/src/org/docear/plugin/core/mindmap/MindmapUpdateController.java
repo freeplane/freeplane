@@ -35,34 +35,38 @@ public class MindmapUpdateController {
 		return this.updaters;
 	}
 	
-	public void updateAllMindmapsInWorkspace() {	
+	public boolean updateAllMindmapsInWorkspace() {	
 		List<URI> uris = WorkspaceUtils.getModel().getAllNodesFiltered(".mm");
-		updateMindmaps(uris);
+		return updateMindmaps(uris);
 	}
 	
-	public void updateRegisteredMindmapsInWorkspace() {
+	public boolean updateRegisteredMindmapsInWorkspace() {
 		List<URI> uris = DocearController.getController().getLibrary().getMindmaps();		
-		updateMindmaps(uris);
+		return updateMindmaps(uris);
 	}
 	
-	public void updateOpenMindmaps() {
+	public boolean updateOpenMindmaps() {
 		List<MapModel> maps = new ArrayList<MapModel>();
 		Map<String, MapModel> openMaps = Controller.getCurrentController().getMapViewManager().getMaps();
 		for (String name : openMaps.keySet()) {
 			maps.add(openMaps.get(name));			
 		}
 		
-		updateMindmaps(maps);
+		return updateMindmaps(maps);
 	}
 	
-	public void updateCurrentMindmap() {
+	public boolean updateCurrentMindmap() {
 		List<MapModel> maps = new ArrayList<MapModel>();
 		maps.add(Controller.getCurrentController().getMap());
 		
-		updateMindmaps(maps);
+		return updateMindmaps(maps);
 	}
 	
-	private void updateMindmaps(List<?> maps) {		
+	public boolean updateMindmapsInList(List<MapModel> maps) {	
+		return updateMindmaps(maps);
+	}
+	
+	private boolean updateMindmaps(List<?> maps) {		
 		SwingWorker<Void, Void> thread = getUpdateThread(maps);		
 		
 		SwingWorkerDialog workerDialog = new SwingWorkerDialog(Controller.getCurrentController().getViewController().getJFrame());
@@ -70,6 +74,8 @@ public class MindmapUpdateController {
 		workerDialog.setSubHeadlineText(TextUtils.getText("updating_mindmaps_subheadline"));
 		workerDialog.showDialog(thread);
 		workerDialog = null;
+		
+		return !thread.isCancelled();
 	}
 	
 	public SwingWorker<Void, Void> getUpdateThread(final List<?> maps){
@@ -114,7 +120,7 @@ public class MindmapUpdateController {
 						else {
 							map = (MapModel) o;
 						}
-						fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_against_p1")+map.getTitle()+TextUtils.getText("updating_against_p2"));
+						fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_against_p1")+getMapTitle(map)+TextUtils.getText("updating_against_p2"));
 						updateNodes(map.getRootNode(), updater);
 						if (isUri) {							
 							saveMap(map);
@@ -125,6 +131,17 @@ public class MindmapUpdateController {
 					}			
 				}
 				return null;
+			}
+
+			private String getMapTitle(MapModel map) {
+				String mapTitle = "";
+				if(map.getFile() != null){
+					mapTitle = map.getFile().getName();
+				}
+				else{
+					mapTitle = map.getTitle();
+				}
+				return mapTitle;
 			}
 			
 			@Override
@@ -145,16 +162,14 @@ public class MindmapUpdateController {
 				if (mindmapupdater.updateNode(parent)) {
 					this.mapHasChanged = true;
 				}
-				
+				if (!isUri) {
+					count++;
+					fireProgressUpdate(100 * count / totalCount);
+					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, mindmapupdater.getTitle() + "           Updating node: " + count + " / " + totalCount);
+				}
 				for(NodeModel child : parent.getChildren()) {
 					updateNodes(child, mindmapupdater);
-					if(canceled()) return;		
-					
-					if (!isUri) {
-						count++;
-						fireProgressUpdate(100 * count / totalCount);
-					}
-
+					if(canceled()) return;
 				}
 			}
 
