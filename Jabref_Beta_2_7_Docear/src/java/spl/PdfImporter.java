@@ -43,6 +43,12 @@ public class PdfImporter {
     private BasePanel panel;
     private MainTable entryTable;
     private int dropRow;
+    
+    private BibtexEntry newEntry;
+    
+    public BibtexEntry getNewEntry() {
+    	return newEntry;
+    }
 
     public PdfImporter(JabRefFrame frame, BasePanel panel, MainTable entryTable, int dropRow) {
         this.frame = frame;
@@ -204,6 +210,7 @@ public class PdfImporter {
 
     private void createNewBlankEntry(String fileName) {
         BibtexEntry newEntry = createNewEntry();
+        this.newEntry = newEntry;
         if(newEntry != null){
             DroppedFileHandler dfh = new DroppedFileHandler(frame, panel);
             dfh.linkPdfToEntry(fileName, entryTable, newEntry);
