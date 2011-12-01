@@ -31,7 +31,6 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
@@ -72,7 +71,6 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	
 	public CoreConfiguration(ModeController modeController) {
 		addPropertyChangeListener();
-		addPreferencesToOptionsPanel();
 		
 		try {
 			if (WorkspaceController.getController().isInitialized()) {
@@ -92,17 +90,6 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		resCtrl.addPropertyChangeListener(this);
 	}
 	
-
-	private void addPreferencesToOptionsPanel() {
-		final URL preferences = this.getClass().getResource("preferences.xml");
-		if (preferences == null)
-			throw new RuntimeException("cannot open preferences");
-		MModeController modeController = (MModeController) Controller.getCurrentModeController();
-
-		modeController.getOptionPanelBuilder().load(preferences);
-
-	}
-
 	private void init(ModeController modeController) {
 		// set up context menu for workspace
 		modeController.addAction(new WorkspaceChangeLocationsAction());

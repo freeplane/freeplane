@@ -18,7 +18,6 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.mode.mindmapmode.MModeController;
 
 public class WorkspacePreferences {
 
@@ -45,8 +44,7 @@ public class WorkspacePreferences {
 		this.modeController = Controller.getCurrentModeController();
 		addLanguageResources();
 		addMenuEntries();
-		addDefaultPreferences();
-		addPreferencesToOptionsPanel();
+		addDefaultPreferences();	
 	}
 	
 	public String getWorkspaceProfile() {
@@ -85,16 +83,6 @@ public class WorkspacePreferences {
 				
 		resBundle.addResources(resBundle.getLanguageCode(), res);
 		
-	}
-
-	private void addPreferencesToOptionsPanel() {
-		final URL preferences = this.getClass().getResource("preferences.xml");
-		if (preferences == null)
-			throw new RuntimeException("cannot open preferences");
-		MModeController modeController = (MModeController) Controller.getCurrentModeController();
-
-		modeController.getOptionPanelBuilder().load(preferences);
-
 	}
 
 	private void addMenuEntries() {

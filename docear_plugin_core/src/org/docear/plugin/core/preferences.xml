@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<preferences_structure>
-	<tabbed_pane>
-		<tab name="workspace">			
-				<path name="document_repository_path" dir="true" />
-		</tab>
-	</tabbed_pane>
-</preferences_structure>
