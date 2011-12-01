@@ -153,6 +153,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 			Dimension fixSize =  new Dimension(tabs.getComponent(0).getWidth(), 32000);
 			comp.setPreferredSize(fixSize);
 			tabs.add(TextUtils.getText("jabref"), comp);
+			tabs.setSelectedComponent(comp);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
