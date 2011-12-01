@@ -197,8 +197,10 @@ public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 		g.fillRect(0, 0, size.width, size.height-0);
 		
 		//g.setColor();
-		
+		int[] x = new int[]{inset, size.width - inset, size.width - inset};
+		int[] y = new int[]{center_y, center_y-half_length, center_y + half_length};
 		g.setColor(Color.DARK_GRAY);
+		g.fillPolygon(x, y, 3);
 		g.drawLine(inset, center_y, size.width - inset, center_y - half_length);
 		g.setColor(Color.GRAY);
 		g.drawLine( size.width - inset, center_y + half_length, inset, center_y);
@@ -214,7 +216,11 @@ public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 		g.setColor(getBackground());
 		g.fillRect(0, 0, size.width, size.height-0);
 		
+		int[] x = new int[]{inset, inset, size.width - inset};
+		int[] y = new int[]{center_y+half_length, center_y-half_length, center_y};
+		
 		g.setColor( Color.DARK_GRAY);
+		g.fillPolygon(x,y,3);
 		g.drawLine( inset, center_y + half_length, inset, center_y - half_length);
 		g.setColor(Color.GRAY);
 		g.drawLine( inset, center_y - half_length, getSize().width - inset, center_y);

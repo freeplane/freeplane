@@ -17,6 +17,7 @@ import net.sf.jabref.export.DocearSaveDatabaseAction;
 
 import org.docear.plugin.bibtex.actions.AddExistingReferenceAction;
 import org.docear.plugin.bibtex.actions.AddNewReferenceAction;
+import org.docear.plugin.bibtex.actions.CopyBibtexToClipboard;
 import org.docear.plugin.bibtex.actions.RemoveReferenceAction;
 import org.docear.plugin.bibtex.actions.ShowJabrefPreferencesAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesAllMapsAction;
@@ -77,6 +78,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 	private static final String UPDATE_REFERENCES_ALL_MAPS_LANG_KEY = "menu_update_references_all_maps";
 	private static final String UPDATE_REFERENCES_ALL_OPEN_MAPS_LANG_KEY = "menu_update_references_all_open_maps";
 	private static final String UPDATE_REFERENCES_CURRENT_MAP_LANG_KEY = "menu_update_references_current_map";
+	private static final String COPY_BIBTEX_LANG_KEY = "menu_copy_bibtex";
 
 	private ModeController modeController;
 	private AFreeplaneAction UpdateReferencesCurrentMap = new UpdateReferencesCurrentMapAction(
@@ -88,6 +90,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 	private AFreeplaneAction AddExistingReference = new AddExistingReferenceAction(ADD_EXISTING_REFERENCES_LANG_KEY);
 	private AFreeplaneAction RemoveReference = new RemoveReferenceAction(REMOVE_REFERENCE_LANG_KEY);
 	private AFreeplaneAction AddNewReference = new AddNewReferenceAction(ADD_NEW_REFERENCE_LANG_KEY);
+	private AFreeplaneAction CopyBibtex = new CopyBibtexToClipboard(COPY_BIBTEX_LANG_KEY);
 	
 	private AFreeplaneAction ShowJabrefPreferences = new ShowJabrefPreferencesAction("show_jabref_preferences");
 	
@@ -232,6 +235,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 				builder.addMenuItem(MENU_BAR + TOOLS_MENU, new JMenu(TextUtils.getText(REFERENCE_MANAGEMENT_MENU_LANG_KEY)),
 						MENU_BAR + REFERENCE_MANAGEMENT_MENU, MenuBuilder.BEFORE);
 
+				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, CopyBibtex,	MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, AddNewReference, MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, AddExistingReference, MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, RemoveReference, MenuBuilder.AS_CHILD);
@@ -247,10 +251,12 @@ public class ReferencesController extends ALanguageController implements IDocear
 						MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU, UpdateReferencesAllMaps,
 						MenuBuilder.AS_CHILD);
-
+				
+				
 				builder.addMenuItem(NODE_POPUP_MENU /*+ NODE_FEATURES_MENU*/,
 						new JMenu(TextUtils.getText(REFERENCE_MANAGEMENT_MENU_LANG_KEY)), NODE_POPUP_MENU
 								+ REFERENCE_MANAGEMENT_MENU, MenuBuilder.AS_CHILD);
+				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU, CopyBibtex, MenuBuilder.AS_CHILD);
 				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU, AddNewReference, MenuBuilder.AS_CHILD);
 				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU, AddExistingReference, MenuBuilder.AS_CHILD);
 				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU, RemoveReference, MenuBuilder.AS_CHILD);

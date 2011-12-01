@@ -255,6 +255,10 @@ public class OneTouchCollapseResizer extends JResizer {
 	 * @param center_y
 	 */
 	private void arrowLeft(Graphics g, Dimension size, int half_length, int center_y) {
+		int[] x = new int[]{inset, size.width - inset, size.width - inset};
+		int[] y = new int[]{center_y, center_y-half_length, center_y + half_length};
+		g.setColor(Color.DARK_GRAY);
+		g.fillPolygon(x, y, 3);
 		g.setColor(Color.DARK_GRAY);
 		g.drawLine(inset, center_y, size.width - inset, center_y - half_length);
 		g.setColor(Color.GRAY);
@@ -269,6 +273,11 @@ public class OneTouchCollapseResizer extends JResizer {
 	 * @param center_y
 	 */
 	private void arrowRight(Graphics g, int half_length, int center_y) {
+		int[] x = new int[]{inset, inset, getSize().width - inset};
+		int[] y = new int[]{center_y+half_length, center_y-half_length, center_y};
+		
+		g.setColor( Color.DARK_GRAY);
+		g.fillPolygon(x,y,3);
 		g.setColor( Color.DARK_GRAY);
 		g.drawLine( inset, center_y + half_length, inset, center_y - half_length);
 		g.setColor(Color.GRAY);
