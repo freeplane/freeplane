@@ -27,6 +27,7 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
+import javax.swing.JLabel;
 
 public class WorkspaceChooserDialogPanel extends JPanel {
 
@@ -38,6 +39,8 @@ public class WorkspaceChooserDialogPanel extends JPanel {
 	
 	private JComboBox profileComboBox;
 	private JButton btnCreateNew;
+	private JLabel label;
+	private JLabel label_1;
 
 	
 	public String getLocationPath() {
@@ -80,12 +83,30 @@ public class WorkspaceChooserDialogPanel extends JPanel {
 
 	public WorkspaceChooserDialogPanel() {	
 		{	
-			this.setLayout(new FormLayout(new ColumnSpec[] { FormFactory.RELATED_GAP_COLSPEC,
-					ColumnSpec.decode("default:grow"), FormFactory.RELATED_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC, },
-					new RowSpec[] { FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
-							FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, }));
+			this.setLayout(new FormLayout(new ColumnSpec[] {
+					FormFactory.RELATED_GAP_COLSPEC,
+					ColumnSpec.decode("default:grow"),
+					FormFactory.RELATED_GAP_COLSPEC,
+					FormFactory.DEFAULT_COLSPEC,},
+				new RowSpec[] {
+					FormFactory.RELATED_GAP_ROWSPEC,
+					RowSpec.decode("bottom:default"),
+					FormFactory.RELATED_GAP_ROWSPEC,
+					RowSpec.decode("top:20dlu"),
+					FormFactory.RELATED_GAP_ROWSPEC,
+					FormFactory.DEFAULT_ROWSPEC,
+					FormFactory.RELATED_GAP_ROWSPEC,
+					FormFactory.DEFAULT_ROWSPEC,}));
+			{
+				label = new JLabel(TextUtils.getText("workspace_chooser_help"));
+				add(label, "2, 2, 3, 1, default, top");
+			}
+			{
+				label_1 = new JLabel(TextUtils.getText("workspace_chooser_help_2"));;
+				add(label_1, "2, 4");
+			}
 			location = new JTextField();
-			this.add(location, "2, 2, fill, fill");
+			this.add(location, "2, 6, fill, fill");
 
 			String currentLocation = WorkspaceController.getController().getPreferences().getWorkspaceLocation();
 			if (currentLocation != null && currentLocation.length() > 0) {
@@ -94,11 +115,11 @@ public class WorkspaceChooserDialogPanel extends JPanel {
 			location.setColumns(30);
 			{
 				JButton btnBrowse = new JButton(TextUtils.getText("browse"));
-				this.add(btnBrowse, "4, 2");
+				this.add(btnBrowse, "4, 6");
 
 				{
 					profileComboBox = new JComboBox();
-					this.add(profileComboBox, "2, 4, fill, default");
+					this.add(profileComboBox, "2, 8, fill, default");
 					profileComboBox.setModel(new WorkspaceProfileListModel());					
 					
 				}
@@ -109,7 +130,7 @@ public class WorkspaceChooserDialogPanel extends JPanel {
 							onCreateNewProfile();
 						}
 					});
-					this.add(btnCreateNew, "4, 4");
+					this.add(btnCreateNew, "4, 8");
 				}
 				if (currentLocation != null && currentLocation.length() > 0) {
 					workspaceChange(this.location.getText());

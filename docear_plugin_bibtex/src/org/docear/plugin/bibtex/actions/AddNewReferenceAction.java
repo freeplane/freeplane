@@ -60,14 +60,11 @@ public class AddNewReferenceAction extends AFreeplaneAction{
 
 			if (link != null && link.getPath().toLowerCase().endsWith(".pdf")) {
 				String path = WorkspaceUtils.resolveURI(link).getAbsolutePath();
-				new PdfImporter(jabrefWrapper.getJabrefFrame(), jabrefWrapper.getJabrefFrame()
-						.basePanel(), null, 0).importPdfFiles(new String[] { path }, Controller.getCurrentController()
+				PdfImporter pdfImporter = new PdfImporter(jabrefWrapper.getJabrefFrame(), jabrefWrapper.getJabrefFrame()
+						.basePanel(), null, 0);
+				pdfImporter.importPdfFiles(new String[] { path }, Controller.getCurrentController()
 						.getViewController().getFrame(), true);
-				BibtexEntry[] entries = jabrefWrapper.getJabrefFrame().basePanel().getSelectedEntries();
-
-				if (entries.length > 0) {
-					entry = entries[0];
-				}
+				entry = pdfImporter.getNewEntry();
 			}
 			else {
 				BasePanel basePanel = jabrefWrapper.getBasePanel();

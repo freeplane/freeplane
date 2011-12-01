@@ -54,7 +54,7 @@ public class WorkspaceUtils {
 		String profileName = dialog.getProfileName();
 	
 		if (location.length() == 0 || profileName.length() == 0) {
-			return;
+			location = ".";
 		}
 	
 		File f = new File(location);
