@@ -1,5 +1,6 @@
 package org.docear.plugin.bibtex;
 
+import java.awt.Component;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,10 +24,13 @@ import net.sf.jabref.imports.ParserResult;
 import net.sf.jabref.imports.PostOpenAction;
 import net.sf.jabref.label.HandleDuplicateWarnings;
 
+import org.docear.plugin.bibtex.listeners.MapViewListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.IMapViewChangeListener;
 
-public class JabrefWrapper extends JabRef  {
-	
+public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
+		
 	private static ArrayList<PostOpenAction> postOpenActions =
             new ArrayList<PostOpenAction>();
 
@@ -40,7 +44,7 @@ public class JabrefWrapper extends JabRef  {
         postOpenActions.add(new HandleDuplicateWarnings());
     }
 
-	
+    private static final MapViewListener mapViewListener = new MapViewListener();
 	private ParserResult parserResult = null;
 	private String encoding = null;
 	private File file;
@@ -62,7 +66,8 @@ public class JabrefWrapper extends JabRef  {
 	 */
 	public JabrefWrapper(JFrame frame, File file) {
 		//super(frame, new String[]{"true", "-i", "\""+file.toString()+"\""});
-		super(frame);		
+		super(frame);
+		registerListeners();
 		openIt(file, true);
 
 	}
@@ -70,6 +75,11 @@ public class JabrefWrapper extends JabRef  {
 	public JabRefFrame getJabrefFrame(){
 		
 		return this.jrf;
+	}
+	
+	private void registerListeners() {	
+		Controller.getCurrentController().getMapViewManager().addMapViewChangeListener(this);
+		Controller.getCurrentModeController().getMapController().addNodeSelectionListener(mapViewListener);
 	}
 	
 	public BasePanel getBasePanel() {		
@@ -224,5 +234,25 @@ public class JabrefWrapper extends JabRef  {
 	public void setEncoding(String encoding) {
 		this.encoding = encoding;
 	}
+
+	@Override
+	public void afterViewChange(Component oldView, Component newView) {
+	}
+
+	@Override
+	public void afterViewClose(Component oldView) {
+		oldView.removeMouseListener(mapViewListener);
+	}
+
+	@Override
+	public void afterViewCreated(Component mapView) {
+		System.out.println("debug add mapviewlistener");
+		mapView.addMouseListener(mapViewListener);
+	}
+
+	@Override
+	public void beforeViewChange(Component oldView, Component newView) {
+	}
+	
 	
 }

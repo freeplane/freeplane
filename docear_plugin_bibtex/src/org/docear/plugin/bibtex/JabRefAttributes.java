@@ -209,7 +209,7 @@ public class JabRefAttributes {
 	}
 
 
-	private void removeReferenceKeyFromNode(NodeModel node) {		
+	private void removeReferenceKeyFromNode(NodeModel node) {
 		NodeAttributeTableModel attributeTable = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
 		if (attributeTable == null) {
 			return;

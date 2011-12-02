@@ -13,7 +13,6 @@ import javax.swing.JTabbedPane;
 
 import net.sf.jabref.BasePanel;
 import net.sf.jabref.JabRefPreferences;
-import net.sf.jabref.export.DocearSaveDatabaseAction;
 
 import org.docear.plugin.bibtex.actions.AddExistingReferenceAction;
 import org.docear.plugin.bibtex.actions.AddNewReferenceAction;
@@ -55,6 +54,12 @@ import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 import org.freeplane.view.swing.map.NodeView;
 
 public class ReferencesController extends ALanguageController implements IDocearEventListener, IWorkspaceListener, IMapLifeCycleListener {
+
+	//mapModel with reference which is currently changed
+	private MapModel inChange = null;
+	//MapModel with reference which is currently added
+	private MapModel inAdd = null;
+	
 	private final static JabRefChangeListener jabRefChangeListener = new JabRefChangeListener();	
 	
 	private static ReferencesController referencesController = null;
@@ -98,7 +103,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 	
 	private boolean isRunning = false;
 
-	public ReferencesController(ModeController modeController) {
+	public ReferencesController(ModeController modeController) {		
 		setReferencesController(this);
 		setPreferencesForDocear();
 		this.modeController = modeController;
@@ -187,10 +192,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 					else {
 						jabrefWrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame());
 					}
-					createOptionPanel(jabrefWrapper.getJabrefFrame());
-					
-					((DocearSaveDatabaseAction) ((BasePanel) jabrefWrapper.getJabrefFrame().getTabbedPane()
-							.getSelectedComponent()).getSaveAction()).addActionListener(AddNewReference);
+					createOptionPanel(jabrefWrapper.getJabrefFrame());					
 				}
 			};
 	
@@ -336,6 +338,26 @@ public class ReferencesController extends ALanguageController implements IDocear
 
 	public static JabRefChangeListener getJabRefChangeListener() {
 		return jabRefChangeListener;
+	}
+
+
+	public MapModel getInChange() {
+		return inChange;
+	}
+
+
+	public void setInChange(MapModel inChange) {
+		this.inChange = inChange;
+	}
+
+
+	public MapModel getInAdd() {
+		return inAdd;
+	}
+
+
+	public void setInAdd(MapModel inAdd) {
+		this.inAdd = inAdd;
 	}
 
 }
