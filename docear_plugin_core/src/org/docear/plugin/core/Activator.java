@@ -18,14 +18,13 @@ import org.osgi.framework.ServiceReference;
 public class Activator extends WorkspaceDependentPlugin {
 	
 	public void startPlugin(BundleContext context, ModeController modeController) {
-		loadAndStoreVersion();
 		new CoreConfiguration(modeController);
+		loadAndStoreVersion();
 		startPluginServices(context, modeController);
 	}
 	
 	@SuppressWarnings("rawtypes")
-	protected void startPluginServices(BundleContext context, ModeController modeController) {
-		
+	protected void startPluginServices(BundleContext context, ModeController modeController) {		
 		try {
 			final ServiceReference[] dependends = context.getServiceReferences(DocearPlugin.class.getName(),
 					"(dependsOn="+DocearPlugin.DEPENDS_ON+")");
@@ -106,6 +105,7 @@ public class Activator extends WorkspaceDependentPlugin {
 	}
 	
 	private void loadAndStoreVersion() {
+		//FIXME: has to be called before the splash is showing
 		final Properties versionProperties = new Properties();
 		InputStream in = null;
 		try {
