@@ -333,7 +333,7 @@ public class BasePanel extends JPanel implements ClipboardOwner, FileUpdateListe
     }
 
     private void setupActions() {
-        saveAction = new DocearSaveDatabaseAction(this);
+        saveAction = new SaveDatabaseAction(this);
         
         actions.put("undo", undoAction);
         actions.put("redo", redoAction);

@@ -11,8 +11,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.jdesktop.swingworker.SwingWorker;
 
-public class JabRefChangeListener implements DatabaseChangeListener {
-
+public class JabRefChangeListener implements DatabaseChangeListener {	
 
 	public void databaseChanged(DatabaseChangeEvent e) {
 		if (DocearReferenceUpdateController.isLocked()) {		
@@ -37,12 +36,14 @@ public class JabRefChangeListener implements DatabaseChangeListener {
 			deleteNodeAttributes(root, entry);
 		}
 		else if (e.getType() == DatabaseChangeEvent.CHANGED_ENTRY) {
+			ReferencesController.getController().setInChange(Controller.getCurrentController().getMap());
 			updateNodeAttributes(root, entry);
 		}
 		else if (e.getType() == DatabaseChangeEvent.CHANGING_ENTRY) {
 			System.out.println("debug changing: " + e.getEntry().getCiteKey());
 		}
 		else if (e.getType() == DatabaseChangeEvent.ADDED_ENTRY) {
+			ReferencesController.getController().setInAdd(Controller.getCurrentController().getMap());
 			System.out.println("debug added: " + e.getEntry().getCiteKey());
 		}
 
