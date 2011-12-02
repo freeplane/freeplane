@@ -104,6 +104,13 @@ public class JabRefAttributes {
 		}
 	}
 	
+	public void updateReferenceOnPdf(URI uri, NodeModel node) {
+		BibtexEntry entry = findBibtexEntryForPDF(uri);
+		if (entry != null) {
+			setReferenceToNode(entry, node);
+		}
+	}
+	
 	public boolean updateReferenceToNode(BibtexEntry entry, NodeModel node) {
 		boolean changes = false;
 		
@@ -142,7 +149,12 @@ public class JabRefAttributes {
 			}
 		}
 		
-		//FIXME: DOCEAR: need some rework3
+		NodeLinks nodeLinks = NodeLinks.getLinkExtension(node);
+		if (nodeLinks != null && nodeLinks.getHyperLink() != null) {
+			return changes;
+		}
+		
+		//FIXME: DOCEAR: need some rework
 		boolean isFile = true;
 		String url = entry.getField("file");
 		if (url!=null) {
@@ -159,7 +171,7 @@ public class JabRefAttributes {
 			url = entry.getField("url");
 		}
 		
-		NodeLinks nodeLinks = NodeLinks.getLinkExtension(node);		
+		
 		if (url == null) {
 			if (nodeLinks == null || nodeLinks.getHyperLink() == null) {
 				return changes;
@@ -228,7 +240,12 @@ public class JabRefAttributes {
 		for (BibtexEntry entry : database.getEntries()) {			
 			String jabrefFile = entry.getField("file");
 			if (jabrefFile != null) {
-				jabrefFile = WorkspaceUtils.resolveURI(parsePath(entry, jabrefFile)).getAbsolutePath();
+				try {
+					jabrefFile = WorkspaceUtils.resolveURI(parsePath(entry, jabrefFile)).getAbsolutePath();
+				}
+				catch(Exception e) {
+					continue;
+				}
 				if (nodePath.equals(jabrefFile)) {
 					return entry;
 				}

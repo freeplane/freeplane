@@ -4,6 +4,7 @@ import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.export.DocearReferenceUpdateController;
 
 import org.docear.plugin.core.mindmap.AMindmapUpdater;
+import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.NodeModel;
 
 public class ReferenceUpdater extends AMindmapUpdater {
@@ -31,6 +32,13 @@ public class ReferenceUpdater extends AMindmapUpdater {
 				changes = jabrefAttributes.updateReferenceToNode(entry, node);				
 			}
 		}
+		else {
+			NodeLinks nodeLinks = NodeLinks.getLinkExtension(node);
+			if (nodeLinks != null && nodeLinks.getHyperLink() != null) {
+				ReferencesController.getController().getJabRefAttributes().updateReferenceOnPdf(nodeLinks.getHyperLink(), node);
+			}
+		}
+		
 		
 		DocearReferenceUpdateController.unlock();
 		return changes;
