@@ -1,10 +1,14 @@
 package org.docear.plugin.core;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceDependentPlugin;
 import org.osgi.framework.BundleContext;
@@ -14,12 +18,14 @@ import org.osgi.framework.ServiceReference;
 public class Activator extends WorkspaceDependentPlugin {
 	
 	public void startPlugin(BundleContext context, ModeController modeController) {
+		loadAndStoreVersion();
 		new CoreConfiguration(modeController);
 		startPluginServices(context, modeController);
 	}
 	
 	@SuppressWarnings("rawtypes")
 	protected void startPluginServices(BundleContext context, ModeController modeController) {
+		
 		try {
 			final ServiceReference[] dependends = context.getServiceReferences(DocearPlugin.class.getName(),
 					"(dependsOn="+DocearPlugin.DEPENDS_ON+")");
@@ -97,6 +103,25 @@ public class Activator extends WorkspaceDependentPlugin {
 	}
 
 	public void stop(BundleContext context) throws Exception {
+	}
+	
+	private void loadAndStoreVersion() {
+		final Properties versionProperties = new Properties();
+		InputStream in = null;
+		try {
+			in = CoreConfiguration.class.getResource("/version.properties").openStream();
+			versionProperties.load(in);
+		}
+		catch (final IOException e) {
+			
+		}
+		final String versionNumber = versionProperties.getProperty("docear_version");
+		final String versionStatus = versionProperties.getProperty("docear_version_status");
+		final String versionStatusNumber = versionProperties.getProperty("docear_version_status_number");
+		final String versionBuild = versionProperties.getProperty("docear_version_build");
+		ResourceController.getResourceController().setProperty("docear_version", versionNumber);
+		ResourceController.getResourceController().setProperty("docear_status", versionStatus+" "+versionStatusNumber+" build"+versionBuild);
+		
 	}
 
 	

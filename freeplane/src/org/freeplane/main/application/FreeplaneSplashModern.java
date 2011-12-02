@@ -54,12 +54,28 @@ public class FreeplaneSplashModern extends JWindow {
 	private Font versionTextFont = null;
 	private final String description = "Free mind mapping and knowledge management software";
 	private final String copyright = "\u00a9 2000-2010";
-
+	private final FreeplaneVersion version = FreeplaneVersion.getVersion();	
+	private String freeplaneNumber = version.numberToString();
+	private String status = version.getType().toUpperCase();
+	
+	
 	public FreeplaneSplashModern(final JFrame frame) {
 		super(frame);
 		String splashImageName = "";
 		try {
 			splashImageName = ResourceController.getResourceController().getProperty("ApplicationName")+"_splash.png";
+			String appName = ResourceController.getResourceController().getProperty("ApplicationName");
+			if(appName != null && !"freeplane".equals(appName.toLowerCase())) {
+				freeplaneNumber = ResourceController.getResourceController().getProperty(appName.toLowerCase()+"_version");
+				status = ResourceController.getResourceController().getProperty(appName.toLowerCase()+"_version_status");
+				if(freeplaneNumber == null) {
+					freeplaneNumber = "";
+					status = "";
+				}
+				if(status == null) {
+					status = "";
+				}
+			}
 		}
 		catch (final Exception e) {
 			splashImageName="Freeplane_splash.png";
@@ -104,13 +120,8 @@ public class FreeplaneSplashModern extends JWindow {
 		final Graphics2D g2 = (Graphics2D) g;
 		splashImage.paintIcon(this, g2, 0, 0);
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		final FreeplaneVersion version = FreeplaneVersion.getVersion();
-		final String freeplaneNumber = version.numberToString();
-		final String status = version.getType().toUpperCase();
 		{
 			g2.setColor(Color.WHITE);
-			final int xCoordinate = 260;
-			final int yCoordinate = 212;
 			createVersionTextFont();
 			final float versionFontSize;
 			if(! status.equals(""))
@@ -118,6 +129,8 @@ public class FreeplaneSplashModern extends JWindow {
 			else
 				versionFontSize = 24;
 			g2.setFont(versionTextFont.deriveFont(versionFontSize));
+			final int xCoordinate = getWidth() - new Integer(g2.getFontMetrics().stringWidth(copyright)) - 10;
+			final int yCoordinate = 212;			
 			g2.drawString(freeplaneNumber + " " + status, xCoordinate, yCoordinate);
 		}
 		g2.setFont(versionTextFont.deriveFont(10f));

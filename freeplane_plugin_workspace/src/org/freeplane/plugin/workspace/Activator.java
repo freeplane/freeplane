@@ -9,7 +9,6 @@ import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.IPropertyControlCreator;
 import org.freeplane.core.ui.FreeplaneActionCascade;
 import org.freeplane.core.ui.IndexedTree;
-import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
@@ -43,8 +42,7 @@ public class Activator implements BundleActivator {
 	}
 	
 	protected final void changeQuitAction() {
-		WorkspaceInformingQuitAction quitAction = new WorkspaceInformingQuitAction();
-		FreeplaneActionCascade.addAction(quitAction);
+		FreeplaneActionCascade.addAction(new WorkspaceInformingQuitAction());
 	}
 
 	private void registerClasspathUrlHandler(final BundleContext context) {
