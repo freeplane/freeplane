@@ -64,6 +64,7 @@ public class FreeplaneSplashModern extends JWindow {
 		String splashImageName = "";
 		try {
 			splashImageName = ResourceController.getResourceController().getProperty("ApplicationName")+"_splash.png";
+			//FIXME: synch with plugin/app start
 			String appName = ResourceController.getResourceController().getProperty("ApplicationName");
 			if(appName != null && !"freeplane".equals(appName.toLowerCase())) {
 				freeplaneNumber = ResourceController.getResourceController().getProperty(appName.toLowerCase()+"_version");
