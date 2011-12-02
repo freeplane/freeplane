@@ -39,6 +39,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
+import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
@@ -117,10 +118,10 @@ public class NodeUtils {
 		}
 		try {
 			final UrlManager urlManager = (UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class);			
-			MapModel map = new MapModel(null);			
+			MapModel map = new MMapModel(null);			
 			AttributeRegistry.createRegistry(map);
 			URL url = Tools.getFilefromUri(uri).toURL();
-			urlManager.loadImpl(url, map);
+			urlManager.loadImpl(url, map);			
 			return map;
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -378,6 +379,10 @@ public class NodeUtils {
 		
 		if(attributeModel.getAttributeKeyList().contains(TextUtils.getText(PdfUtilitiesController.MON_SUBDIRS))){
 			AttributeController.getController(Controller.getCurrentModeController()).performRemoveRow(attributeModel, attributeModel.getAttributePosition(TextUtils.getText(PdfUtilitiesController.MON_SUBDIRS)));			
+		}
+		
+		if(attributeModel.getAttributeKeyList().contains(TextUtils.getText(PdfUtilitiesController.MON_FLATTEN_DIRS))){
+			AttributeController.getController(Controller.getCurrentModeController()).performRemoveRow(attributeModel, attributeModel.getAttributePosition(TextUtils.getText(PdfUtilitiesController.MON_FLATTEN_DIRS)));			
 		}
 	}
 	

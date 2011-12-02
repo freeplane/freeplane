@@ -40,6 +40,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.mindmapmode.SaveAll;
 import org.jdesktop.swingworker.SwingWorker;
@@ -97,8 +98,14 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 		} catch (InterruptedException e) {
 			LogUtils.info("InterruptedException during monitoring update.");
 		} catch (ExecutionException e) {
-			System.out.println(Tools.getStackTraceAsString(e));
-			LogUtils.info("ExecutionException during monitoring update.");
+			LogUtils.warn(e);
+			LogUtils.warn("ExecutionException during monitoring update.");
+			LogUtils.warn(e.getCause());
+		} catch (Exception e){
+			LogUtils.warn(e);
+			LogUtils.warn("====================================");
+			LogUtils.warn(e.getCause());
+			
 		}
 					
 	}
@@ -291,11 +298,11 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 							count++;
 							fireProgressUpdate(100 * count / monitorFiles.size());
 						} catch(IOException e){
-							LogUtils.severe("IOexception during update file: "+ uri);
+							LogUtils.info("IOexception during update file: "+ uri);
 						} catch(COSRuntimeException e){
-							LogUtils.severe("COSRuntimeException during update file: "+ uri);
+							LogUtils.info("COSRuntimeException during update file: "+ uri);
 						} catch(COSLoadException e){
-							LogUtils.severe("COSLoadException during update file: "+ uri);
+							LogUtils.info("COSLoadException during update file: "+ uri);
 						}
 					}
 					for(MapModel map : maps){

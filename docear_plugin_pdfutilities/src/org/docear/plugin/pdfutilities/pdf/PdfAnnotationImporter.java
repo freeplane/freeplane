@@ -11,6 +11,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.channels.FileLock;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -67,6 +68,7 @@ public class PdfAnnotationImporter {
 	private URI currentFile;
 	private MapModel map;
 	private boolean importAll = false;
+	private boolean setPDObject = false;
 	
 	public PdfAnnotationImporter(){
 		if(Controller.getCurrentController() != null && Controller.getCurrentController().getMap() != null){
@@ -103,11 +105,20 @@ public class PdfAnnotationImporter {
 			annotations.addAll(this.importBookmarks(outline));			
 		} finally {
 			if(document != null){				
-				document.close();				
+				document.close();
+				document = null;
 			}
 		}
         
 		return annotations;
+	}
+	
+	public AnnotationModel importPdf(URI uri) throws IOException, COSLoadException, COSRuntimeException{
+		Collection<AnnotationModel> importedAnnotations = importAnnotations(uri);
+		AnnotationModel root = new AnnotationModel(new AnnotationID(Tools.getAbsoluteUri(uri), 0), AnnotationType.PDF_FILE);
+		root.setTitle(Tools.getFilefromUri(Tools.getAbsoluteUri(uri)).getName());
+		root.getChildren().addAll(importedAnnotations);	
+		return root;
 	}
 	
 	public boolean renameAnnotation(IAnnotation annotation, String newTitle) throws COSRuntimeException, IOException, COSLoadException{
@@ -120,6 +131,7 @@ public class PdfAnnotationImporter {
 		}
 		try{
 			this.setImportAll(true);
+			this.setPDObject(true);
 			annotations.addAll(this.importAnnotations(document));					
 			annotations.addAll(this.importBookmarks(document.getOutline()));
 			
@@ -128,6 +140,7 @@ public class PdfAnnotationImporter {
 			annotations.addAll(this.importBookmarks(outline));			
 		} finally {
 			this.setImportAll(true);
+			this.setPDObject(false);
 			AnnotationModel result = this.searchAnnotation(annotations, annotation);
 			if(result != null){
 				PDObject pdObject = result.getPDObject();
@@ -139,7 +152,7 @@ public class PdfAnnotationImporter {
 					((PDAnnotation)pdObject).setContents(newTitle);
 					ret = true;
 				}
-				document.save();			
+				document.save();		
 			}
 			if(document != null)
 			document.close();			
@@ -147,6 +160,15 @@ public class PdfAnnotationImporter {
         
 		return ret;
 	}
+
+	private void setPDObject(boolean b) {
+		setPDObject = b;		
+	}
+	
+	private boolean setPDObject() {
+		return setPDObject;		
+	}
+
 
 	public PDDocument getPDDocument(URI uri) throws IOException,	COSLoadException, COSRuntimeException {
 		if(uri == null || Tools.getFilefromUri(Tools.getAbsoluteUri(uri, this.map)) == null || !Tools.exists(uri, this.map) || !new PdfFileFilter().accept(uri)){
@@ -172,7 +194,9 @@ public class PdfAnnotationImporter {
 		for(PDOutlineItem child : children){
 			Integer objectNumber = child.cosGetObject().getIndirectObject().getObjectNumber();
 			AnnotationModel annotation = new AnnotationModel(new AnnotationID(this.currentFile, objectNumber));
-			annotation.setPDObject(child);
+			if(this.setPDObject()){
+				annotation.setPDObject(child);
+        	}
 			annotation.setTitle(child.getTitle());			
 			annotation.setAnnotationType(getAnnotationType(child));			
 			annotation.setGenerationNumber(child.cosGetObject().getIndirectObject().getGenerationNumber());
@@ -261,7 +285,9 @@ public class PdfAnnotationImporter {
             	Integer objectNumber = annotation.cosGetObject().getIndirectObject().getObjectNumber();
     			AnnotationModel pdfAnnotation = new AnnotationModel(new AnnotationID(this.currentFile, objectNumber));            	
             	pdfAnnotation.setTitle(annotation.getContents()); 
-            	pdfAnnotation.setPDObject(annotation);
+            	if(this.setPDObject()){
+            		pdfAnnotation.setPDObject(annotation);
+            	}
             	pdfAnnotation.setAnnotationType(AnnotationType.COMMENT);            	
             	pdfAnnotation.setGenerationNumber(annotation.cosGetObject().getIndirectObject().getGenerationNumber());
             	pdfAnnotation.setPage(this.getAnnotationDestination(annotation));
@@ -277,7 +303,9 @@ public class PdfAnnotationImporter {
             		String test = ((PDMarkupAnnotation)annotation).getRichContent();
             		System.out.println(test);
             	}  */ 
-            	pdfAnnotation.setPDObject(annotation);            	
+            	if(this.setPDObject()){
+            		pdfAnnotation.setPDObject(annotation);
+            	}
             	pdfAnnotation.setAnnotationType(AnnotationType.HIGHLIGHTED_TEXT);             	
             	pdfAnnotation.setGenerationNumber(annotation.cosGetObject().getIndirectObject().getGenerationNumber());
             	pdfAnnotation.setPage(this.getAnnotationDestination(annotation));
