@@ -41,7 +41,7 @@ public class LocationDialog extends JDialog {
 	private JTextField bibtexLocation;
 	private JTextField literatureLocation;
 	
-	private final static String DOCUMENT_REPOSITORY_INIT_PATH = "workspace:/document_repository";
+	private final static String DOCUMENT_REPOSITORY_INIT_PATH = "workspace:/literature_repository";
 	private static String BIBTEX_PATH_INIT;
 	private static String PROJECTS_PATH_INIT;
 	
@@ -140,7 +140,7 @@ public class LocationDialog extends JDialog {
 		WorkspaceController workspaceController = WorkspaceController.getController();
 		this.workspaceLocation = new File(workspaceController.getPreferences().getWorkspaceLocation());
 		
-		BIBTEX_PATH_INIT = "workspace:/."+workspaceController.getPreferences().getWorkspaceProfile()+"/bibtex.bib";
+		BIBTEX_PATH_INIT = "workspace:/."+workspaceController.getPreferences().getWorkspaceProfile()+"/docear.bib";
 		PROJECTS_PATH_INIT = "workspace:/projects";
 		
 		this.setModal(true);

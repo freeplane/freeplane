@@ -103,6 +103,10 @@ public class LinkTypeReferencesNode extends LinkTypeFileNode implements IBibtexD
 		
 	}
 	
+	public void setName(String name) {
+		super.setName("References");
+	}
+	
 	public void initializePopup() {
 		if (popupMenu == null) {
 						

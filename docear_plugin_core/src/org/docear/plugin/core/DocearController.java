@@ -11,10 +11,14 @@ import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
 import org.docear.plugin.core.mindmap.MindmapLinkTypeUpdater;
 import org.docear.plugin.core.mindmap.MindmapUpdateController;
+import org.docear.plugin.core.workspace.node.FolderTypeLibraryNode;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 /**
  * 
@@ -80,6 +84,12 @@ public class DocearController implements IDocearEventListener, IFreeplanePropert
 	public void handleEvent(DocearEvent event) {
 		if(event.getType() == DocearEventType.NEW_LIBRARY && event.getSource() instanceof IDocearLibrary) {
 			this.currentLibrary = (IDocearLibrary) event.getSource();
+//			if(this.currentLibrary != null && this.currentLibrary instanceof FolderTypeLibraryNode) {
+//				WorkspaceController.getController().getWorkspaceViewTree().expandPath(((FolderTypeLibraryNode) this.currentLibrary).getTreePath());
+//				WorkspaceController.getController().getExpansionStateHandler().addPathKey(((AWorkspaceTreeNode) WorkspaceUtils.getModel().getRoot()).getTreePath().toString());
+//				WorkspaceController.getController().getExpansionStateHandler().addPathKey(((FolderTypeLibraryNode) this.currentLibrary).getTreePath().toString());
+//				WorkspaceController.getController().refreshWorkspace();
+//			}
 			LogUtils.info("DOCEAR: new DocearLibrary set");
 		}	
 	}
