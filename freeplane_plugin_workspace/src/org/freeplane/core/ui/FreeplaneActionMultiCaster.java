@@ -1,35 +1,55 @@
 /**
  * author: Marcel Genzmehr
- * 21.11.2011
+ * 02.12.2011
  */
-package org.freeplane.plugin.workspace.view;
+package org.freeplane.core.ui;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.mode.QuitAction;
-import org.freeplane.plugin.workspace.WorkspaceUtils;
+import org.freeplane.core.ui.AFreeplaneAction;
 
-
-public class WorkspaceInformingQuitAction extends QuitAction {
+/**
+ * 
+ */
+public class FreeplaneActionMultiCaster extends AFreeplaneAction {
 
 	private static final long serialVersionUID = 1L;
+	
+	private final AFreeplaneAction a;
+	private final AFreeplaneAction b;
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
-
+	
+	public FreeplaneActionMultiCaster(AFreeplaneAction a, AFreeplaneAction b) {
+		super(b.getKey());
+		
+		if(a != null) {
+			assert(b.getKey().equals(a.getKey()));
+		}
+		
+		this.a = a;
+		this.b = b;
+	}
+	
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
+	
+	public AFreeplaneAction getA() {
+		return a;
+	}
 
+	public AFreeplaneAction getB() {
+		return b;
+	}
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	
-	public void actionPerformed(ActionEvent e) {
-		LogUtils.info("saving workspace configuration ...");
-		WorkspaceUtils.saveCurrentConfiguration();
-		//super.actionPerformed(e);
+	public void actionPerformed(ActionEvent e) {		
+		if(b != null) b.actionPerformed(e);
+		if(a != null) a.actionPerformed(e);
 	}
 }

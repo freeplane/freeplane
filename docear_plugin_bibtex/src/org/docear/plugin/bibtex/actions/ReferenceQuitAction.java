@@ -1,20 +1,20 @@
 /**
  * author: Marcel Genzmehr
- * 21.11.2011
+ * 02.12.2011
  */
-package org.freeplane.plugin.workspace.view;
+package org.docear.plugin.bibtex.actions;
 
 import java.awt.event.ActionEvent;
 
+import org.docear.plugin.bibtex.ReferencesController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.QuitAction;
-import org.freeplane.plugin.workspace.WorkspaceUtils;
 
-
-public class WorkspaceInformingQuitAction extends QuitAction {
-
+/**
+ * 
+ */
+public class ReferenceQuitAction extends QuitAction {
 	private static final long serialVersionUID = 1L;
-	
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
@@ -26,10 +26,8 @@ public class WorkspaceInformingQuitAction extends QuitAction {
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
-	
 	public void actionPerformed(ActionEvent e) {
-		LogUtils.info("saving workspace configuration ...");
-		WorkspaceUtils.saveCurrentConfiguration();
-		//super.actionPerformed(e);
+		LogUtils.info("saving all references ...");
+		ReferencesController.getController().getJabrefWrapper().getBasePanel().runCommand("save");
 	}
 }

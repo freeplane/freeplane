@@ -18,6 +18,7 @@ import net.sf.jabref.export.DocearSaveDatabaseAction;
 import org.docear.plugin.bibtex.actions.AddExistingReferenceAction;
 import org.docear.plugin.bibtex.actions.AddNewReferenceAction;
 import org.docear.plugin.bibtex.actions.CopyBibtexToClipboard;
+import org.docear.plugin.bibtex.actions.ReferenceQuitAction;
 import org.docear.plugin.bibtex.actions.RemoveReferenceAction;
 import org.docear.plugin.bibtex.actions.ShowJabrefPreferencesAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesAllMapsAction;
@@ -36,6 +37,7 @@ import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.IDocearEventListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.FreeplaneActionCascade;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
@@ -108,7 +110,8 @@ public class ReferencesController extends ALanguageController implements IDocear
 		this.addMenuEntries();
 		DocearController.getController().addDocearEventListener(this);
 		WorkspaceController.getController().addWorkspaceListener(this);		
-		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(this);		
+		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(this);	
+		FreeplaneActionCascade.addAction(new ReferenceQuitAction());
 		this.initJabref();		
 	}
 	

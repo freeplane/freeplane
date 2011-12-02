@@ -7,6 +7,7 @@ import java.util.List;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.IPropertyControlCreator;
+import org.freeplane.core.ui.FreeplaneActionCascade;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -43,9 +44,7 @@ public class Activator implements BundleActivator {
 	
 	protected final void changeQuitAction() {
 		WorkspaceInformingQuitAction quitAction = new WorkspaceInformingQuitAction();
-		Controller.getCurrentController().removeAction(quitAction.getKey());
-		Controller.getCurrentController().addAction(quitAction);
-		
+		FreeplaneActionCascade.addAction(quitAction);
 	}
 
 	private void registerClasspathUrlHandler(final BundleContext context) {

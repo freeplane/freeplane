@@ -16,6 +16,7 @@ Export-Package: org.apache.commons.io,
  org.apache.commons.io.monitor,
  org.apache.commons.io.output,
  org.docear.lang,
+ org.freeplane.core.ui,
  org.freeplane.plugin.workspace;
   uses:="javax.swing.tree,
    org.osgi.service.url,

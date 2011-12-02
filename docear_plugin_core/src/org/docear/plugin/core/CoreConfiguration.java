@@ -7,6 +7,7 @@ import java.util.Enumeration;
 
 import org.docear.plugin.core.actions.DocearLicenseAction;
 import org.docear.plugin.core.actions.DocearOpenUrlAction;
+import org.docear.plugin.core.actions.DocearQuitAction;
 import org.docear.plugin.core.actions.SaveAction;
 import org.docear.plugin.core.actions.SaveAsAction;
 import org.docear.plugin.core.features.DocearMapModelController;
@@ -26,6 +27,7 @@ import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.FreeplaneActionCascade;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -227,6 +229,8 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 			Controller.getCurrentController().getResourceController().setDefaultProperty("leftToolbarVisible", "false");			
 			Controller.getCurrentController().getResourceController().setDefaultProperty("styleScrollPaneVisible", "true");
 		}
+		
+		FreeplaneActionCascade.addAction(new DocearQuitAction());
 		//FIXME: DOCEAR: does it work without the property?
 //		if(DocearController.getController().getLibrary() != null){
 //			URI uri = DocearController.getController().getLibrary().getLibraryPath();
