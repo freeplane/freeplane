@@ -33,7 +33,7 @@ import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 /**
  * 
  */
-public class LinkTypeLiteratureCollectionNode extends ALinkNode implements IWorkspaceNodeEventListener, IDocearMindmap {
+public class LinkTypeLiteratureAnnotationsNode extends ALinkNode implements IWorkspaceNodeEventListener, IDocearMindmap {
 	private static final Icon DEFAULT_ICON = new ImageIcon(ResourceController.class.getResource("/images/docear16.png"));
 
 	private static final long serialVersionUID = 1L;
@@ -44,7 +44,7 @@ public class LinkTypeLiteratureCollectionNode extends ALinkNode implements IWork
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
-	public LinkTypeLiteratureCollectionNode(String type) {
+	public LinkTypeLiteratureAnnotationsNode(String type) {
 		super(type);
 		// TODO Auto-generated constructor stub
 	}
@@ -113,7 +113,7 @@ public class LinkTypeLiteratureCollectionNode extends ALinkNode implements IWork
 		return folder.mkdirs();
 	}
 	
-	protected AWorkspaceTreeNode clone(LinkTypeLiteratureCollectionNode node) {
+	protected AWorkspaceTreeNode clone(LinkTypeLiteratureAnnotationsNode node) {
 		node.setLinkPath(getLinkPath());
 		return super.clone(node);
 	}
@@ -151,7 +151,7 @@ public class LinkTypeLiteratureCollectionNode extends ALinkNode implements IWork
 	}
 
 	public AWorkspaceTreeNode clone() {
-		LinkTypeLiteratureCollectionNode node = new LinkTypeLiteratureCollectionNode(getType());
+		LinkTypeLiteratureAnnotationsNode node = new LinkTypeLiteratureAnnotationsNode(getType());
 		return clone(node);
 	}
 	

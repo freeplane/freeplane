@@ -1,12 +1,12 @@
 /**
  * author: Marcel Genzmehr
- * 19.08.2011
+ * 18.08.2011
  */
 package org.docear.plugin.core.workspace.creator;
 
 import java.net.URI;
 
-import org.docear.plugin.core.workspace.node.LinkTypeNewLiteratureNode;
+import org.docear.plugin.core.workspace.node.LinkTypeLiteratureAnnotationsNode;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.model.creator.AWorkspaceNodeCreator;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
@@ -14,9 +14,9 @@ import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 /**
  * 
  */
-public class LinkTypeNewLiteratureCreator extends AWorkspaceNodeCreator {
-	public static final String LINK_TYPE_NEWLITERATURE = "new_literature";
-		
+public class LinkTypeLiteratureAnnotationsCreator extends AWorkspaceNodeCreator {
+	public static final String LINK_TYPE_LITERATUREANNOTATIONS = "literature_annotations";
+	
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
@@ -25,13 +25,15 @@ public class LinkTypeNewLiteratureCreator extends AWorkspaceNodeCreator {
 	 * METHODS
 	 **********************************************************************************/
 
+	
+
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	
 	public AWorkspaceTreeNode getNode(XMLElement data) {
-		String type = data.getAttribute("type", LINK_TYPE_NEWLITERATURE);
-		LinkTypeNewLiteratureNode node = new LinkTypeNewLiteratureNode(type);
+		String type = data.getAttribute("type", LINK_TYPE_LITERATUREANNOTATIONS);
+		LinkTypeLiteratureAnnotationsNode node = new LinkTypeLiteratureAnnotationsNode(type);
 		//TODO: add missing attribute handling
 		String path = data.getAttribute("path", null);
 		String name = data.getAttribute("name", null);
@@ -42,4 +44,5 @@ public class LinkTypeNewLiteratureCreator extends AWorkspaceNodeCreator {
 		node.setName(name);
 		return node;
 	}
+	
 }

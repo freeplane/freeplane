@@ -1,12 +1,13 @@
 <workspace name="My Workspace" version="1.0" meta="docear">
 	<folder name="Library" type="library" system="true">
-        <link type="new_literature" name="New Literature and Annotations" path="workspace:/@@PROFILENAME@@/Library/NewPapersandAnnotations.mm" window="new" system="true" />
-        <link type="literature_collection" name="Literature, Annotations, and Ideas" path="workspace:/@@PROFILENAME@@/Library/PapersAnnotationsAndIdeas.mm" system="true" />
+        <link type="incoming" name="Incoming" path="workspace:/@@PROFILENAME@@/Library/NewPapersandAnnotations.mm" window="new" system="true" />
+        <link type="literature_annotations" name="Literature &amp; Annotations" path="workspace:/@@PROFILENAME@@/Library/PapersAnnotationsAndIdeas.mm" system="true" />
         <link type="my_publications" name="My Publications" path="workspace:/@@PROFILENAME@@/Library/MyPublications.mm" system="true" />
-        <link type="references" path="" system="true" />
+        
     </folder>
     <folder type="literature_repository" path="" system="true" />
     <folder type="projects" name="Projects" path="" monitor="true" system="true"/>
+    <link type="references" path="" system="true" />
     
     <folder type="virtual" name="Miscellaneous" >        
     </folder>

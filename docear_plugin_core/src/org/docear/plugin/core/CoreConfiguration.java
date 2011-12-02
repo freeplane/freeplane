@@ -18,9 +18,9 @@ import org.docear.plugin.core.workspace.actions.WorkspaceChangeLocationsAction;
 import org.docear.plugin.core.workspace.creator.FolderTypeLibraryCreator;
 import org.docear.plugin.core.workspace.creator.FolderTypeLiteratureRepositoryCreator;
 import org.docear.plugin.core.workspace.creator.FolderTypeProjectsCreator;
-import org.docear.plugin.core.workspace.creator.LinkTypeLiteratureCollectionCreator;
+import org.docear.plugin.core.workspace.creator.LinkTypeLiteratureAnnotationsCreator;
 import org.docear.plugin.core.workspace.creator.LinkTypeMyPublicationsCreator;
-import org.docear.plugin.core.workspace.creator.LinkTypeNewLiteratureCreator;
+import org.docear.plugin.core.workspace.creator.LinkTypeIncomingCreator;
 import org.docear.plugin.core.workspace.creator.LinkTypeReferencesCreator;
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
@@ -124,8 +124,8 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_FOLDER, FolderTypeProjectsCreator.FOLDER_TYPE_PROJECTS, new FolderTypeProjectsCreator());
 		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, LinkTypeMyPublicationsCreator.LINK_TYPE_MYPUBLICATIONS , new LinkTypeMyPublicationsCreator());
 		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, LinkTypeReferencesCreator.LINK_TYPE_REFERENCES , new LinkTypeReferencesCreator());
-		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, LinkTypeLiteratureCollectionCreator.LINK_TYPE_LITERATURECOLLECTION , new LinkTypeLiteratureCollectionCreator());
-		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, LinkTypeNewLiteratureCreator.LINK_TYPE_NEWLITERATURE , new LinkTypeNewLiteratureCreator());
+		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, LinkTypeLiteratureAnnotationsCreator.LINK_TYPE_LITERATUREANNOTATIONS , new LinkTypeLiteratureAnnotationsCreator());
+		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, LinkTypeIncomingCreator.LINK_TYPE_INCOMING , new LinkTypeIncomingCreator());
 		controller.addWorkspaceListener(this);
 		controller.reloadWorkspace();
 	}
@@ -193,12 +193,13 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		String programmer = resourceController.getProperty("docear_programmer");
 		String copyright = resourceController.getProperty("docear_copyright");
 		String version	= resourceController.getProperty("docear_version");
+		String status	= resourceController.getProperty("docear_version_status");
 		
 		String aboutText = TextUtils.getRawText("docear_about");
 		MessageFormat formatter;
         try {
             formatter = new MessageFormat(aboutText);
-            aboutText = formatter.format(new Object[]{ version, copyright, programmer});
+            aboutText = formatter.format(new Object[]{ version+" "+status, copyright, programmer});
         }
         catch (IllegalArgumentException e) {
             LogUtils.severe("wrong format " + aboutText + " for property " + "docear_about", e);

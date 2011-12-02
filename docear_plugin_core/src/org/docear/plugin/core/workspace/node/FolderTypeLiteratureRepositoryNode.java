@@ -52,6 +52,10 @@ public class FolderTypeLiteratureRepositoryNode extends PhysicalFolderNode imple
 		CoreConfiguration.repositoryPathObserver.removeChangeListener(this);
 	}
 	
+	public void setName(String name) {
+		super.setName("Literature Repository");
+	}
+	
 	public void setPath(URI uri) {
 		super.setPath(uri);
 		locked = true;		

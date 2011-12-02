@@ -34,7 +34,7 @@ public abstract class AWorkspaceExpansionStateHandler {
 		return expandedSet;
 	}
 	
-	protected void addPathKey(String pathKey) {
+	public void addPathKey(String pathKey) {
 		getSet().add(pathKey);
 	}
 	
