@@ -6,12 +6,16 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DropTargetDropEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import org.docear.plugin.core.DocearController;
+import org.docear.plugin.core.event.DocearEvent;
+import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.ui.SwingWorkerDialog;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
@@ -110,10 +114,13 @@ public class DocearNodeDropListener extends MNodeDropListener {
 		            		SwingUtilities.invokeAndWait(
 							        new Runnable() {
 							            public void run(){
-							            	NodeUtils.insertChildNodesFromPdf(file.toURI(), annotations, isLeft, targetNode);	            
+							            	URI uri = file.toURI();
+							            	NodeModel newNode = NodeUtils.insertChildNodesFromPdf(uri, annotations, isLeft, targetNode);	            
 							            	for(AnnotationModel annotation : getInsertedNodes(annotations)){
 												firePropertyChange(SwingWorkerDialog.DETAILS_LOG_TEXT, null, "Imported " + annotation.getTitle() +"\n");												
-											}											
+											}	
+							            	DocearEvent event = new DocearEvent(newNode, DocearEventType.MINDMAP_ADD_PDF_TO_NODE, uri);
+							            	DocearController.getController().dispatchDocearEvent(event);
 							            }
 							        }
 							   );						

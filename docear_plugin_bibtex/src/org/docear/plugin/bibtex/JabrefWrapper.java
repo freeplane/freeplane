@@ -25,6 +25,8 @@ import net.sf.jabref.imports.PostOpenAction;
 import net.sf.jabref.label.HandleDuplicateWarnings;
 
 import org.docear.plugin.bibtex.listeners.MapViewListener;
+import org.docear.plugin.bibtex.listeners.PdfAddedListener;
+import org.docear.plugin.core.DocearController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewChangeListener;
@@ -45,6 +47,7 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
     }
 
     private static final MapViewListener mapViewListener = new MapViewListener();
+    private static final PdfAddedListener pdfAddedLister = new PdfAddedListener();
 	private ParserResult parserResult = null;
 	private String encoding = null;
 	private File file;
@@ -80,6 +83,7 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 	private void registerListeners() {	
 		Controller.getCurrentController().getMapViewManager().addMapViewChangeListener(this);
 		Controller.getCurrentModeController().getMapController().addNodeSelectionListener(mapViewListener);
+		DocearController.getController().addDocearEventListener(pdfAddedLister);
 	}
 	
 	public BasePanel getBasePanel() {		
@@ -240,14 +244,30 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 	}
 
 	@Override
-	public void afterViewClose(Component oldView) {
-		oldView.removeMouseListener(mapViewListener);
+	public void afterViewClose(final Component oldView) {
+		System.out.println("debug close mapviewlistener");
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				oldView.removeMouseListener(mapViewListener);
+				
+			}
+		});
 	}
 
 	@Override
-	public void afterViewCreated(Component mapView) {
+	public void afterViewCreated(final Component mapView) {
 		System.out.println("debug add mapviewlistener");
-		mapView.addMouseListener(mapViewListener);
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				mapView.addMouseListener(mapViewListener);
+				
+			}
+		});
+		
 	}
 
 	@Override
