@@ -220,6 +220,24 @@ public class JabRefAttributes {
 			AttributeController.getController().performRemoveRow(attributeTable, pos);
 		}
 	}
+	
+	public BibtexEntry findBibtexEntryForPDF(URI uri) {
+		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
+		String nodePath = WorkspaceUtils.resolveURI(uri).getAbsolutePath();
+		
+		for (BibtexEntry entry : database.getEntries()) {			
+			String jabrefFile = entry.getField("file");
+			if (jabrefFile != null) {
+				jabrefFile = WorkspaceUtils.resolveURI(parsePath(entry, jabrefFile)).getAbsolutePath();
+				if (nodePath.equals(jabrefFile)) {
+					return entry;
+				}
+			}
+		}
+		
+		return null;
+		
+	}
 
 	private URI parsePath(BibtexEntry entry, String path) {		
 		path = extractPath(path);
