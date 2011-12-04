@@ -212,6 +212,8 @@ public class MModeControllerFactory {
                 }
             }
         });
+		final JPopupMenu popupmenu = new JPopupMenu();
+		userInputListenerFactory.setNodePopupMenu(popupmenu);
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
@@ -250,8 +252,6 @@ public class MModeControllerFactory {
 		SpellCheckerController.install(modeController);
 		ExportController.install(new ExportController("/xml/ExportWithXSLT.xml"));
 		MapStyle.install(true);
-		final JPopupMenu popupmenu = new JPopupMenu();
-		userInputListenerFactory.setNodePopupMenu(popupmenu);
 		final FreeplaneToolBar toolbar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);
 		toolbar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "toolbarVisible");
 		userInputListenerFactory.addToolBar("/main_toolbar", ViewController.TOP, toolbar);

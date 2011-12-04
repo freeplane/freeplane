@@ -32,6 +32,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,12 +50,15 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
@@ -174,9 +179,63 @@ public class LinkController extends SelectionController implements IExtension {
 	private void createActions() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new FollowLinkAction());
+		modeController.addMenuContributor(new LinkMenuContributor("menu_navigate", "menu_goto_links"));
+		modeController.addMenuContributor(new LinkMenuContributor("popup_navigate", "popup_goto_links"));
 	}
 
-    @SuppressWarnings("serial")
+    private class LinkMenuContributor implements IMenuContributor {
+    	final String key;
+        final String menuKey;
+	    public LinkMenuContributor(String menuKey, String key) {
+	        super();
+	        this.menuKey = menuKey;
+	        this.key = key;
+        }
+		public void updateMenus(final ModeController modeController, final MenuBuilder builder) {
+			if(builder.contains(key)) {
+	            builder.addPopupMenuListener(menuKey, new PopupMenuListener(
+	            		) {
+	            		public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+	            			final NodeModel node = modeController.getController().getSelection().getSelected();
+	            			Set<LinkModel> links = new LinkedHashSet<LinkModel>( NodeLinks.getLinks(node));
+	            			links.addAll(getLinksTo(node));
+	            			if(links.isEmpty())
+	            				return;
+	            			builder.addSeparator(key, MenuBuilder.AS_CHILD);
+	            			for(LinkModel link : links){
+	            				final String targetID = link.getTargetID();
+	            				final NodeModel target;
+	            				if(node.getID().equals(targetID)){
+	            					if(link instanceof ConnectorModel){
+	            						ConnectorModel cm = (ConnectorModel) link;
+	            						target = cm.getSource();
+	            						if(node.equals(target))
+	            							continue;
+	            					}
+	            					else
+	            						continue;
+	            				}
+	            				else
+	            					target = node.getMap().getNodeForID(targetID);
+	            				final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this, target);
+	            				if(!(link instanceof ConnectorModel)){
+	            					gotoLinkNodeAction.putValue(Action.SMALL_ICON, ICON_STORE.getUIIcon(LINK_LOCAL_ICON).getIcon());
+	            				}
+	            				builder.addAction(key, gotoLinkNodeAction, MenuBuilder.AS_CHILD);
+	            			}
+	            		}
+	            		
+	            		public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+	            			builder.removeChildElements(key);
+	            		}
+	            		
+	            		public void popupMenuCanceled(PopupMenuEvent e) {
+	            		}
+	            	});
+            }
+	    }
+    }
+	@SuppressWarnings("serial")
     public static final class ClosePopupAction extends AbstractAction {
         final private String reason;
     
