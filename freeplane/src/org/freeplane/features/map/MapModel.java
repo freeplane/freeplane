@@ -20,6 +20,7 @@
 package org.freeplane.features.map;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -30,6 +31,7 @@ import java.util.Random;
 
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
@@ -131,7 +133,12 @@ public class MapModel {
 	 * Change this to always return null if your model doesn't support files.
 	 */
 	public File getFile() {
-		return url != null  && url.getProtocol().equals("file") ? new File(url.getFile()) : null;
+		try {
+	        return url != null  && url.getProtocol().equals("file") ? Compat.urlToFile(url) : null;
+        }
+        catch (URISyntaxException e) {
+        	return null;
+        }
 	}
 
 	public Filter getFilter() {
