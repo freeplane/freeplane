@@ -132,16 +132,18 @@ public class AddOnInstallerPanel extends JPanel {
 				try {
 					LogUtils.info("installing add-on from " + urlField.getText());
 					controller.getViewController().setWaitingCursor(true);
-					final URL homepage = toURL(urlField.getText());
+					final URL url = toURL(urlField.getText());
 					setStatusInfo(getText("status.installing"));
 					final ModeController modeController = controller.getModeController(MModeController.MODENAME);
 					final MFileManager fileManager = (MFileManager) MFileManager.getController(modeController);
 					MapModel newMap = modeController.getMapController().newModel(null);
-					fileManager.loadImpl(homepage, newMap);
+					if (!fileManager.loadImpl(url, newMap)) {
+					    LogUtils.warn("can not load " + url);
+					    return;
+					}
 					AddOnProperties addOn = (AddOnProperties) ScriptingEngine.executeScript(newMap.getRootNode(),
 					    getInstallScriptSource(), ScriptingPermissions.getPermissiveScriptingPermissions());
 					if (addOn != null) {
-						addOn.setHomepage(homepage);
 						setStatusInfo(getText("status.success", addOn.getName()));
 						AddOnsController.getController().registerInstalledAddOn(addOn);
 						final ManageAddOnsPanel managementPanel = addOn.isTheme() ? manageThemesPanel

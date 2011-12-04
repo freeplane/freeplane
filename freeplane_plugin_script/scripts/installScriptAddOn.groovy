@@ -172,6 +172,18 @@ def parseZips(Map childNodeMap) {
 	println property + ': ' + configMap[property].dump()
 }
 
+def parseImages(Map childNodeMap) {
+    def property = 'images'
+    Proxy.Node propertyNode = childNodeMap[property]
+    if (!propertyNode)
+        return
+    configMap[property] = propertyNode.children.inject([:]){ map, child ->
+        map[child.plainText] = ensureNoHtml(theOnlyChild(child)).binary
+        return map
+    }
+    println property + ': ' + configMap[property].dump()
+}
+
 def installZips() {
 	File destDir = installationbase
 	configMap['zips'].each{ zipData ->
@@ -182,6 +194,19 @@ def installZips() {
 			installationAssert(false, e.message);
 		}
 	}
+}
+
+def installImages() {
+    File destDir = new File(installationbase, 'resources/images')
+    // FIXME: create directory!
+    configMap['images'].each{ filename, imageData ->
+        try {
+            new File(destDir, expandVariables(filename)).bytes = imageData
+        } catch (Exception e) {
+            e.printStackTrace()
+            installationAssert(false, e.message);
+        }
+    }
 }
 
 void unpack(File destDir, byte[] zipData) {
@@ -386,6 +411,7 @@ AddOnProperties parse() {
 		'scripts',
 		'zips',
 		'deinstall',
+		'images',
 	]
 	Map<String, Proxy.Node> childNodeMap = propertyNames.inject([:]) { map, key ->
 		map[key] = node.map.root.find{ it.plainText == key }[0]
@@ -394,6 +420,8 @@ AddOnProperties parse() {
 	def Map<String, Proxy.Node> missingChildNodes = childNodeMap.findAll{ k,v->
 		v == null
 	}
+    // note: images came after the first beta
+    missingChildNodes.remove('images')
 	mapStructureAssert( ! missingChildNodes, textUtils.format('addons.installer.missing.child.nodes', missingChildNodes.keySet()))
 
 	parseProperties(childNodeMap)
@@ -405,6 +433,7 @@ AddOnProperties parse() {
 	parseDefaultProperties(childNodeMap)
 	parseScripts(childNodeMap)
 	parseZips(childNodeMap)
+	parseImages(childNodeMap)
 	parseDeinstallationRules(childNodeMap)
 
 	def addOn = new ScriptAddOnProperties(configMap['properties']['name'])
@@ -420,6 +449,7 @@ AddOnProperties parse() {
 	addOn.preferencesXml = configMap['preferences.xml']
 	addOn.defaultProperties = configMap['default.properties']
 	addOn.deinstallationRules = configMap['deinstall']
+    addOn.images = configMap['images'] ? configMap['images'].keySet() : []
 	addOn.scripts = configMap['scripts']
 
 	return addOn
@@ -474,6 +504,7 @@ boolean confirmInstall(ScriptAddOnProperties addOn, ScriptAddOnProperties instal
 def install(AddOnProperties addOn) {
 	createScripts()
 	installZips()
+	installImages()
 	new File(addOnDir(), expandVariables('${name}.script.xml')).text = addOn.toXmlString()
 }
 

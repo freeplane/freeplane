@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -42,6 +43,7 @@ public class AddOnProperties {
 	private String preferencesXml;
 	private Map<String, String> defaultProperties;
 	private List<String[/*action, file*/]> deinstallationRules;
+	private List<String> images;
 	private File addOnPropertiesFile;
 
 	public AddOnProperties(AddOnType addOnType) {
@@ -63,11 +65,12 @@ public class AddOnProperties {
 		this.setTranslations(parseTranslations(addOnElement.getChildrenNamed("translations")));
 		this.setPreferencesXml(getContentOfFirstElement(addOnElement.getChildrenNamed("preferences.xml")));
 		this.setDefaultProperties(parseAttributesToProperties(addOnElement.getChildrenNamed("default.properties")));
+		this.setImages(parseImages(addOnElement.getChildrenNamed("images")));
 		this.setDeinstallationRules(parseDeinstallationRules(addOnElement.getChildrenNamed("deinstall")));
 		validate();
 	}
 
-	private URL parseHomepage(String homepage) {
+    private URL parseHomepage(String homepage) {
 		try {
 			return new URL(homepage);
 		}
@@ -109,6 +112,16 @@ public class AddOnProperties {
 		}
 		return result;
 	}
+
+    private List<String> parseImages(Vector<XMLElement> xmlElements) {
+        final List<String> result = new ArrayList<String>();
+        if (xmlElements != null && !xmlElements.isEmpty()) {
+            for (XMLElement xmlElement : xmlElements.get(0).getChildren()) {
+                result.add(xmlElement.getAttribute("name", null));
+            }
+        }
+        return result;
+    }
 
 	private List<String[]> parseDeinstallationRules(Vector<XMLElement> xmlElements) {
 		final List<String[]> result = new ArrayList<String[]>();
@@ -247,8 +260,16 @@ public class AddOnProperties {
 	public void setDeinstallationRules(List<String[]> rules) {
 		this.deinstallationRules = rules;
 	}
-	
-	/** the persistence location of this AddOnProperties object. */
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(Collection<String> images) {
+        this.images = new ArrayList<String>(images);
+    }
+
+    /** the persistence location of this AddOnProperties object. */
 	public File getAddOnPropertiesFile() {
 		return addOnPropertiesFile;
 	}
@@ -329,6 +350,7 @@ public class AddOnProperties {
 		addAsChildWithContent(addonElement, "preferences.xml", preferencesXml);
 		addTranslationsAsChild(addonElement);
 		addDefaultPropertiesAsChild(addonElement);
+		addImagesAsChild(addonElement);
 		addDeinstallationRulesAsChild(addonElement);
 		return addonElement;
 	}
@@ -363,14 +385,26 @@ public class AddOnProperties {
 		parent.addChild(xmlElement);
 	}
 
+    private void addImagesAsChild(XMLElement parent) {
+        final XMLElement xmlElement = new XMLElement("images");
+        if (images != null) {
+            for (String image : images) {
+                final XMLElement imageElement = new XMLElement("image");
+                imageElement.setAttribute("name", image);
+                xmlElement.addChild(imageElement);
+            }
+        }
+        parent.addChild(xmlElement);
+    }
+
 	private void addDeinstallationRulesAsChild(XMLElement parent) {
-		final XMLElement xmlElement = new XMLElement("deinstall");
-		for (String[] rule : deinstallationRules) {
-			final XMLElement ruleElement = new XMLElement(rule[0]);
-			ruleElement.setContent(rule[1]);
-			xmlElement.addChild(ruleElement);
-		}
-		parent.addChild(xmlElement);
+	    final XMLElement xmlElement = new XMLElement("deinstall");
+	    for (String[] rule : deinstallationRules) {
+	        final XMLElement ruleElement = new XMLElement(rule[0]);
+	        ruleElement.setContent(rule[1]);
+	        xmlElement.addChild(ruleElement);
+	    }
+	    parent.addChild(xmlElement);
 	}
 
 	private boolean empty(String string) {

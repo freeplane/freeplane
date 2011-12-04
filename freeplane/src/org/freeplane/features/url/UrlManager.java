@@ -266,7 +266,9 @@ public class UrlManager implements IExtension {
 		loadImpl(url, map);
 	}
 
-	public void loadImpl(final URL url, final MapModel map) {
+	/** returns true only if loading was successful. Displays an error dialog on an error loading the map.
+	 * This and other errors are logged to the logfile. */
+	public boolean loadImpl(final URL url, final MapModel map) {
 	    setURL(map, url);
 		InputStreamReader urlStreamReader = null;
 		try {
@@ -275,7 +277,7 @@ public class UrlManager implements IExtension {
 		catch (final Exception ex) {
 			UITools.errorMessage(TextUtils.format("url_open_error", url.toString()));
 			LogUtils.warn(ex.getMessage());
-			return;
+			return false;
 		}
 		try {
 			final ModeController modeController = Controller.getCurrentModeController();
@@ -287,9 +289,11 @@ public class UrlManager implements IExtension {
 			else {
 				throw new IOException();
 			}
+            return true;
 		}
 		catch (final Exception ex) {
 			LogUtils.severe(ex);
+            return false;
 		}
 		finally {
 			FileUtils.silentlyClose(urlStreamReader);

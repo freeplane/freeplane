@@ -7,10 +7,12 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -25,6 +27,7 @@ import javax.swing.table.TableColumnModel;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.icon.IconNotFound;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.main.addons.AddOnProperties;
 import org.freeplane.main.addons.AddOnsController;
@@ -33,6 +36,7 @@ import org.freeplane.main.addons.AddOnsController;
 public class ManageAddOnsPanel extends JPanel {
 	public final static class AddOnTableModel extends AbstractTableModel {
 		private final List<AddOnProperties> addOns;
+        private HashMap<AddOnProperties, ImageIcon> icons = new HashMap<AddOnProperties, ImageIcon>();
 
 		private AddOnTableModel(List<AddOnProperties> addOns) {
 			this.addOns = new ArrayList<AddOnProperties>(addOns);
@@ -43,23 +47,42 @@ public class ManageAddOnsPanel extends JPanel {
 		}
 
 		public int getColumnCount() {
-			return 2;
+			return buttonsColumn + 1;
 		}
 
 		public Object getValueAt(int row, int col) {
 			AddOnProperties addOn = addOns.get(row);
 			switch (col) {
-				case 0:
-					return addOn;
-				case 1:
+				case iconColumn:
+					return createIcon(addOn);
+				case textColumn:
+				    return addOn;
+				case buttonsColumn:
 					return "";
 				default:
 					throw new RuntimeException("unexpected column " + col);
 			}
 		}
 
+		private ImageIcon createIcon(final AddOnProperties addOn) {
+		    ImageIcon icon = icons.get(addOn);
+	        if (icon != null)
+	            return icon;
+	        icon = IconNotFound.createIconOrReturnNotFoundIcon(addOn.getName() + "-icon.png");
+	        icons.put(addOn, icon);
+	        return icon;
+	    }
+
+        public Class<?> getColumnClass(int col) {
+		    if (col == 0) {
+		        return ImageIcon.class;
+		    } else {
+		        return String.class;
+		    }
+		}
+
 		public boolean isCellEditable(int row, int column) {
-			return column == 1;
+			return column == textColumn;
 		}
 
 		public void setValueAt(Object aValue, int row, int column) {
@@ -87,6 +110,9 @@ public class ManageAddOnsPanel extends JPanel {
 
 	private static final AddonRenderer ADDON_RENDERER = new AddonRenderer();
 	private AddOnTableModel tableModel;
+    private final static int iconColumn = 0;
+    private final static int textColumn = 1;
+    private final static int buttonsColumn = 2;
 
 	public ManageAddOnsPanel(List<AddOnProperties> addOns) {
 	    super();
@@ -109,7 +135,7 @@ public class ManageAddOnsPanel extends JPanel {
 				}
 				else{
 					final int row = jTable.getSelectedRow();
-					final AddOnProperties addon = (AddOnProperties) tableModel.getValueAt(row, 0);
+					final AddOnProperties addon = (AddOnProperties) tableModel.getValueAt(row, textColumn);
 					final AddOnDetailsPanel detailsPanel = new AddOnDetailsPanel(addon);
 					detailsPanel.setOpaque(false);
 					descriptionScrollPane.setViewportView(detailsPanel);
@@ -126,7 +152,8 @@ public class ManageAddOnsPanel extends JPanel {
 		table.setTableHeader(null);
 //FIXME: Java 6
 //		table.setAutoCreateRowSorter(true);
-		table.setRowHeight(62);
+		final int rowHeight = 62;
+        table.setRowHeight(rowHeight);
 		table.setBackground(Color.white);
 		table.setShowVerticalLines(false);
 		final TableColumnModel columnModel = table.getColumnModel();
@@ -135,16 +162,18 @@ public class ManageAddOnsPanel extends JPanel {
 		        , createButton(AddOnProperties.OP_ACTIVATE) //
 		        , createButton(AddOnProperties.OP_DEINSTALL) //
 		};
-		columnModel.getColumn(0).setPreferredWidth(10000);
-		columnModel.getColumn(1).setMinWidth(getPreferredWidth(buttons));
-		columnModel.getColumn(1).setPreferredWidth(getPreferredWidth(buttons));
+		columnModel.getColumn(iconColumn).setMinWidth(rowHeight);
+		columnModel.getColumn(iconColumn).setPreferredWidth(rowHeight);
+		columnModel.getColumn(textColumn).setPreferredWidth(10000);
+		columnModel.getColumn(buttonsColumn).setMinWidth(getPreferredWidth(buttons));
+		columnModel.getColumn(buttonsColumn).setPreferredWidth(getPreferredWidth(buttons));
 		Action[] actions = new Action[] { createConfigureAction(tableModel) //
 		        , createDeactivateAction(tableModel) //
 		        , createActivateAction(tableModel) //
 		        , createDeinstallAction(tableModel) //
 		};
-		table.getColumnModel().getColumn(0).setCellRenderer(ADDON_RENDERER);
-		new ButtonsInCellRenderer(table, buttons, actions, 1);
+		table.getColumnModel().getColumn(textColumn).setCellRenderer(ADDON_RENDERER);
+		new ButtonsInCellRenderer(table, buttons, actions, buttonsColumn);
 		table.setFocusable(false);
 		return table;
 	}
