@@ -87,7 +87,7 @@ public class FileOpener implements DropTargetListener {
 				final List<File> list = (List<File>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
 				for (final File file : list) {
 					String fileName = file.getName();
-					if (!fileName.substring(fileName.length() - 3).equalsIgnoreCase(".mm")) {
+					if (file.isDirectory() || !fileName.substring(fileName.length() - 3).equalsIgnoreCase(".mm")) {
 						continue;
 					}
 					modeController.getMapController().newMap(Compat.fileToUrl(file), false);
@@ -104,6 +104,9 @@ public class FileOpener implements DropTargetListener {
 					try {
 						final URI uri = new URI(urlString);
 						final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
+						final File file = Compat.urlToFile(url);
+						if(! file.exists() || file.isDirectory())
+							continue;
 						modeController.getMapController().newMap(url, false);
 					}
 					catch (final Exception e) {

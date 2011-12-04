@@ -94,13 +94,14 @@ public class Compat {
 	 * slightly differently.
 	 */
 	private static String urlGetFile(final URL url) {
+		String fileName = url.toString().replaceFirst("^file:", "");
 		final String osNameStart = System.getProperty("os.name").substring(0, 3);
 		if (osNameStart.equals("Win") && url.getProtocol().equals("file")) {
-			final String fileName = url.toString().replaceFirst("^file:", "").replace('/', '\\');
+			fileName = fileName.replace('/', File.separatorChar);
 			return (fileName.indexOf(':') >= 0) ? fileName.replaceFirst("^\\\\*", "") : fileName;
 		}
 		else {
-			return url.getFile();
+			return fileName;
 		}
 	}
 
