@@ -30,6 +30,7 @@ import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.browsemode.BModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 
 class DocumentationAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
@@ -51,8 +52,9 @@ class DocumentationAction extends AFreeplaneAction {
 				public void run() {
 					try {
 						if (endUrl.getFile().endsWith(".mm")) {
-							 Controller.getCurrentController().selectMode(BModeController.MODENAME);
+							 Controller.getCurrentController().selectMode(MModeController.MODENAME);
 							 Controller.getCurrentModeController().getMapController().newMap(endUrl, false);
+							 Controller.getCurrentController().getMap().setReadOnly(true);
 						}
 						else {
 							Controller.getCurrentController().getViewController().openDocument(endUrl);
