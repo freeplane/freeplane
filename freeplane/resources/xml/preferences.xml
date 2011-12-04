@@ -107,6 +107,7 @@
             <number name="connector_width" text="edit_width_label" min="1" max="32" />
         	<font name="label_font_family"/>
         	<number name="label_font_size" min="4" max="216"/>
+        	<boolean name="paint_connectors_behind"/>
         </separator>
          
        <separator name="edit_long_node_window">        
