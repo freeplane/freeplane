@@ -216,7 +216,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					if(this.isCancelled() || Thread.currentThread().isInterrupted()) return conflicts;
 					List<MapModel> mapsToUpdate = new ArrayList<MapModel>();
 					for(MapModel map : maps){
-						if(DocearMapModelController.getModel(map) == null){
+						if(DocearMapModelController.getModel(map) == null){							
 							mapsToUpdate.add(map);
 						}
 					}
