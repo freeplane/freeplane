@@ -110,10 +110,12 @@ public class AnnotationController implements IExtension{
 		if(annotation != null && file != null && annotation.getAnnotationType().equals(AnnotationType.PDF_FILE)){
 			return new AnnotationNodeModel(node, new AnnotationID(Tools.getAbsoluteUri(node), 0), AnnotationType.PDF_FILE); 
 		}		
-		if(annotation == null && file != null && file.getName().equals(node.getText())){
+		if(annotation == null && file != null && file.getName().equals(node.getText()) && NodeUtils.isPdfLinkedNode(node)){
 			return new AnnotationNodeModel(node, new AnnotationID(Tools.getAbsoluteUri(node), 0), AnnotationType.PDF_FILE); 
 		}
-		
+		if(annotation == null && file != null && file.getName().equals(node.getText()) && !NodeUtils.isPdfLinkedNode(node)){
+			return new AnnotationNodeModel(node, new AnnotationID(Tools.getAbsoluteUri(node), 0), AnnotationType.FILE); 
+		}
 		return null;
 	}
 
@@ -155,7 +157,7 @@ public class AnnotationController implements IExtension{
 		return null;
 	}
 	
-	private static void addConflictedAnnotation(IAnnotation annotation, Map<AnnotationID, Collection<IAnnotation>> result){
+	public static void addConflictedAnnotation(IAnnotation annotation, Map<AnnotationID, Collection<IAnnotation>> result){
 		if(result.containsKey(annotation.getAnnotationID())){
 			boolean add = true;
 			for(IAnnotation conflict: result.get(annotation.getAnnotationID())){

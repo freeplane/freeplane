@@ -23,6 +23,8 @@ public class AnnotationModel implements IAnnotation{
 	
 	private boolean isConflicted;
 	private List<AnnotationModel> children = new ArrayList<AnnotationModel>();
+	private AnnotationModel parent;
+	private boolean isInserted;
 	
 	public AnnotationModel(){}; //needed for serialization
 	
@@ -164,6 +166,22 @@ public class AnnotationModel implements IAnnotation{
 
 	public void setPDObject(PDObject annotationObject) {
 		this.annotationObject = annotationObject;
+	}
+
+	public AnnotationModel getParent() {
+		return parent;
+	}
+
+	public void setParent(AnnotationModel parent) {
+		this.parent = parent;
+	}
+
+	public boolean isInserted() {
+		return isInserted;
+	}
+
+	public void setInserted(boolean isInserted) {
+		this.isInserted = isInserted;
 	}	
 	
 	
