@@ -201,8 +201,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					if(canceled()) return false;
 					count++;
 					fireProgressUpdate(100 * count / nodeIndex.keySet().size());
-					if(importedFiles.containsKey(id)) continue;
-					//if(importedOtherFiles.containsKey(id)) continue;
+					if(importedFiles.containsKey(id)) continue;					
 					for(NodeModel node : nodeIndex.get(id)){
 						AnnotationNodeModel annotation = AnnotationController.getAnnotationNodeModel(node);
 						if(annotation == null) continue;
@@ -311,8 +310,12 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 						for(final NodeModel node : widowedLinkedNode){
 							SwingUtilities.invokeAndWait(
 							        new Runnable() {
-							            public void run(){								            	
-							            	node.removeFromParent();
+							            public void run(){
+							            	try{
+							            		node.removeFromParent();
+							            	} catch(Exception e){
+							            		LogUtils.warn(e);
+							            	}
 							            }
 							        }
 								);
@@ -505,28 +508,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					} catch(COSLoadException e){
 						LogUtils.info("COSLoadException during update file: "+ uri);
 					}
-				}
-				
-				//fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
-				//fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Loading files linked in monitored mindmaps...");
-				/*for(URI uri : otherFilesLinkedInMindMap){
-					if(canceled()) return false;
-					try{
-						fireProgressUpdate(100 * (otherFilesLinkedInMindMap.indexOf(uri) + monitorFiles.size())  / (monitorFiles.size() + otherFilesLinkedInMindMap.size()));
-						fireStatusUpdate(SwingWorkerDialog.NEW_FILE, null, Tools.getFilefromUri(uri).getName());
-						if(new PdfFileFilter().accept(uri)){
-							AnnotationModel pdf = new PdfAnnotationImporter().importPdf(uri);							
-							addAnnotationsToNodeLinkedFiles(pdf, target);							
-						}						
-					} catch(IOException e){
-						LogUtils.info("IOexception during update file: "+ uri);
-					} catch(COSRuntimeException e){
-						LogUtils.info("COSRuntimeException during update file: "+ uri);
-					} catch(COSLoadException e){
-						LogUtils.info("COSLoadException during update file: "+ uri);
-					}
-				}*/
-				
+				}			
 				return true;
 			}
 
@@ -540,19 +522,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					child.setParent(annotation);
 					addAnnotationsToImportedFiles(child, target);
 				}				
-			}
-			
-			/*private void addAnnotationsToNodeLinkedFiles(AnnotationModel annotation, NodeModel target) throws InterruptedException {
-				if(canceled()) return;
-				AnnotationID id = annotation.getAnnotationID();
-				if(!importedOtherFiles.containsKey(id)){
-					importedOtherFiles.put(id, annotation);
-				}				
-				for(AnnotationModel child : annotation.getChildren()){
-					child.setParent(annotation);
-					addAnnotationsToNodeLinkedFiles(child, target);
-				}				
-			}*/
+			}			
 
 			private boolean buildNodeIndex(NodeModel target) throws InterruptedException, InvocationTargetException {
 				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Building node index ...");
@@ -570,12 +540,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 				File file = Tools.getFilefromUri(Tools.getAbsoluteUri(node));
 				if(file != null && !file.exists()){
 					widowedLinkedNode.add(node);
-				}
-				/*else{
-					if(NodeUtils.isPdfLinkedNode(node) && !monitorFiles.contains(Tools.getAbsoluteUri(node))){
-						otherFilesLinkedInMindMap.add(Tools.getAbsoluteUri(node));
-					}
-				}*/
+				}				
 				AnnotationNodeModel annotation = AnnotationController.getAnnotationNodeModel(node);				
 				if(annotation != null && annotation.getAnnotationID() != null){
 					AnnotationID id = annotation.getAnnotationID();

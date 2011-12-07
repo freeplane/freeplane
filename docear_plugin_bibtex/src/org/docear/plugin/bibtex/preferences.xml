@@ -7,6 +7,7 @@
                     <choice value="docear_bibtex_source.jabref"/>
                     <choice value="docear_bibtex_source.mendeley"/>
                     <choice value="docear_bibtex_source.zotero"/>
+                    <choice value="docear_bibtex_source.other"/>
                 </combo>
                 <combo name = "docear_bibtex_encoding">
                     <choice value="docear_bibtex_encoding.ISO8859_1"/>

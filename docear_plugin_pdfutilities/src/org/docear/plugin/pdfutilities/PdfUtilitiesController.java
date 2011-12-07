@@ -175,11 +175,11 @@ public class PdfUtilitiesController extends ALanguageController{
 				builder.addAction(MENU_BAR + PDF_MANAGEMENT_MENU, importNewChildAnnotationsAction, MenuBuilder.AS_CHILD);
 				
 				builder.addMenuItem(MENU_BAR + PDF_MANAGEMENT_MENU,
-						new JMenu(TextUtils.getText(MONITORING_MENU_LANG_KEY)), MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU,
-						MenuBuilder.AS_CHILD);
-				builder.addAction(MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU, addMonitoringFolderAction, MenuBuilder.AS_CHILD);
-				builder.addAction(MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU, updateMonitoringFolderAction, MenuBuilder.AS_CHILD);
-				builder.addAction(MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU, deleteMonitoringFolderAction, MenuBuilder.AS_CHILD);
+						new JMenu(TextUtils.getText(MONITORING_MENU_LANG_KEY)), MENU_BAR + MONITORING_MENU,
+						MenuBuilder.AFTER);
+				builder.addAction(MENU_BAR + MONITORING_MENU, addMonitoringFolderAction, MenuBuilder.AS_CHILD);
+				builder.addAction(MENU_BAR + MONITORING_MENU, updateMonitoringFolderAction, MenuBuilder.AS_CHILD);
+				builder.addAction(MENU_BAR + MONITORING_MENU, deleteMonitoringFolderAction, MenuBuilder.AS_CHILD);
 				
 				builder.addMenuItem(NODE_POPUP_MENU /*+ NODE_FEATURES_MENU*/,
 						new JMenu(TextUtils.getText(MONITORING_MENU_LANG_KEY)), NODE_POPUP_MENU + MONITORING_MENU,
@@ -195,17 +195,17 @@ public class PdfUtilitiesController extends ALanguageController{
 				
 				builder.addMenuItem(NODE_POPUP_MENU + MONITORING_MENU, settingsMenu1, NODE_POPUP_MENU + MONITORING_MENU + SETTINGS_MENU,
 						MenuBuilder.AS_CHILD);
-				builder.addMenuItem(MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU, settingsMenu2, MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU + SETTINGS_MENU, MenuBuilder.AS_CHILD);
+				builder.addMenuItem(MENU_BAR + MONITORING_MENU, settingsMenu2, MENU_BAR + MONITORING_MENU + SETTINGS_MENU, MenuBuilder.AS_CHILD);
 				
 				builder.addAction(NODE_POPUP_MENU + MONITORING_MENU + SETTINGS_MENU, editMonitoringFolderAction, MenuBuilder.AS_CHILD);
-				builder.addAction(MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU + SETTINGS_MENU, editMonitoringFolderAction, MenuBuilder.AS_CHILD);
+				builder.addAction(MENU_BAR +  MONITORING_MENU + SETTINGS_MENU, editMonitoringFolderAction, MenuBuilder.AS_CHILD);
 				
-				builder.addMenuItem(MENU_BAR + PDF_MANAGEMENT_MENU +  MONITORING_MENU + SETTINGS_MENU, new JMenu("Autoupdate on opening mind map"), MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU + SETTINGS_MENU + AUTOUPDATE_MENU,
+				builder.addMenuItem(MENU_BAR + MONITORING_MENU + SETTINGS_MENU, new JMenu("Autoupdate on opening mind map"), MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU + SETTINGS_MENU + AUTOUPDATE_MENU,
 						MenuBuilder.AS_CHILD);
 				builder.addMenuItem(NODE_POPUP_MENU + MONITORING_MENU + SETTINGS_MENU, new JMenu("Autoupdate on opening mind map"), NODE_POPUP_MENU + MONITORING_MENU + SETTINGS_MENU + AUTOUPDATE_MENU,
 						MenuBuilder.AS_CHILD);
 				
-				builder.addMenuItem(MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU + SETTINGS_MENU, new JMenu("Read sub-folders"), MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU + SETTINGS_MENU + SUBFOLDERS_MENU,
+				builder.addMenuItem(MENU_BAR +  MONITORING_MENU + SETTINGS_MENU, new JMenu("Read sub-folders"), MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU + SETTINGS_MENU + SUBFOLDERS_MENU,
 						MenuBuilder.AS_CHILD);
 				builder.addMenuItem(NODE_POPUP_MENU + MONITORING_MENU + SETTINGS_MENU, new JMenu("Read sub-folders"), NODE_POPUP_MENU + MONITORING_MENU + SETTINGS_MENU + SUBFOLDERS_MENU,
 						MenuBuilder.AS_CHILD);
@@ -221,16 +221,16 @@ public class PdfUtilitiesController extends ALanguageController{
 				autoDefaultAction.addGroupItem(autoOffAction);
 				autoDefaultAction.addGroupItem(autoOnAction);
 				
-				builder.addRadioItem(MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU, monitoringFlattenSubfoldersAction, false);
+				builder.addRadioItem(MENU_BAR + MONITORING_MENU, monitoringFlattenSubfoldersAction, false);
 				builder.addRadioItem(NODE_POPUP_MENU + MONITORING_MENU, monitoringFlattenSubfoldersAction, false);
 				monitoringFlattenSubfoldersAction.initView(builder);
 				
 				builder.addRadioItem(NODE_POPUP_MENU + MONITORING_MENU + SETTINGS_MENU + AUTOUPDATE_MENU, autoOnAction, false);
-				builder.addRadioItem(MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU + SETTINGS_MENU + AUTOUPDATE_MENU, autoOnAction, false);
+				builder.addRadioItem(MENU_BAR + MONITORING_MENU + SETTINGS_MENU + AUTOUPDATE_MENU, autoOnAction, false);
 				builder.addRadioItem(NODE_POPUP_MENU + MONITORING_MENU + SETTINGS_MENU + AUTOUPDATE_MENU, autoOffAction, false);
-				builder.addRadioItem(MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU + SETTINGS_MENU + AUTOUPDATE_MENU, autoOffAction, false);
+				builder.addRadioItem(MENU_BAR + MONITORING_MENU + SETTINGS_MENU + AUTOUPDATE_MENU, autoOffAction, false);
 				builder.addRadioItem(NODE_POPUP_MENU + MONITORING_MENU + SETTINGS_MENU + AUTOUPDATE_MENU, autoDefaultAction, false);
-				builder.addRadioItem(MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU + SETTINGS_MENU + AUTOUPDATE_MENU, autoDefaultAction, false);
+				builder.addRadioItem(MENU_BAR + MONITORING_MENU + SETTINGS_MENU + AUTOUPDATE_MENU, autoDefaultAction, false);
 				
 				autoOnAction.initView(builder);
 				autoOffAction.initView(builder);
@@ -250,15 +250,15 @@ public class PdfUtilitiesController extends ALanguageController{
 				builder.addRadioItem(NODE_POPUP_MENU + MONITORING_MENU + SETTINGS_MENU + SUBFOLDERS_MENU, subdirsOnAction, false);
 				builder.addRadioItem(NODE_POPUP_MENU + MONITORING_MENU + SETTINGS_MENU + SUBFOLDERS_MENU, subdirsOffAction, false);
 				builder.addRadioItem(NODE_POPUP_MENU + MONITORING_MENU + SETTINGS_MENU + SUBFOLDERS_MENU, subdirsDefaultAction, false);
-				builder.addRadioItem(MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU + SETTINGS_MENU + SUBFOLDERS_MENU, subdirsOnAction, false);
-				builder.addRadioItem(MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU + SETTINGS_MENU + SUBFOLDERS_MENU, subdirsOffAction, false);
-				builder.addRadioItem(MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU + SETTINGS_MENU + SUBFOLDERS_MENU, subdirsDefaultAction, false);
+				builder.addRadioItem(MENU_BAR + MONITORING_MENU + SETTINGS_MENU + SUBFOLDERS_MENU, subdirsOnAction, false);
+				builder.addRadioItem(MENU_BAR + MONITORING_MENU + SETTINGS_MENU + SUBFOLDERS_MENU, subdirsOffAction, false);
+				builder.addRadioItem(MENU_BAR +  MONITORING_MENU + SETTINGS_MENU + SUBFOLDERS_MENU, subdirsDefaultAction, false);
 				
 				subdirsOnAction.initView(builder);
 				subdirsOffAction.initView(builder);
 				subdirsDefaultAction.initView(builder);
 				
-				JDocearInvisibleMenu pdfManagementPopupMenu = new JDocearInvisibleMenu(TextUtils.getText(PDF_MANAGEMENT_MENU_LANG_KEY));
+				JDocearInvisibleMenu pdfManagementPopupMenu = new JDocearInvisibleMenu(TextUtils.getText(PDF_MANAGEMENT_MENU_LANG_KEY), false, true);
 				
 				builder.addMenuItem(NODE_POPUP_MENU/* + NODE_FEATURES_MENU*/, pdfManagementPopupMenu, NODE_POPUP_MENU + PDF_MANAGEMENT_MENU,
 						MenuBuilder.AS_CHILD);

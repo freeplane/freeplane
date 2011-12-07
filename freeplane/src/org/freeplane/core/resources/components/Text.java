@@ -46,8 +46,13 @@ public class Text implements IPropertyControl {
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		builder.append(new JLabel(TextUtils.getOptionalText(getLabel())), builder.getColumnCount()
-		        - builder.getColumn() + 1);
+		int columnSpan = builder.getColumnCount() - builder.getColumn() + 1;
+		if(columnSpan < 1){
+			builder.append(new JLabel(TextUtils.getOptionalText(getLabel())));
+		}
+		else{
+			builder.append(new JLabel(TextUtils.getOptionalText(getLabel())), columnSpan);		
+		}		
 		builder.nextLine();
 	}
 

@@ -32,19 +32,30 @@ public abstract class ImportAnnotationsAction extends DocearAction {
 				for(AnnotationType enableType : this.getEnableTypes()){
 					if(model.getAnnotationType().equals(enableType)){
 						this.setEnabled(true);
+						this.setVisible(true);
 						break;
 					}
 					else{
 						this.setEnabled(false);
+						this.setVisible(false);
 					}
 				}
 				
 			}
 			else{
-				this.setEnabled(false);
+				for(AnnotationType enableType : this.getEnableTypes()){
+					if(enableType.equals(AnnotationType.PDF_FILE)){
+						this.setEnabled(false);
+						this.setVisible(true);
+						break;
+					}
+					else{
+						this.setEnabled(false);
+						this.setVisible(false);
+					}
+				}				
 			}
-		}
-		this.setVisible(this.isEnabled());
+		}		
 	}
 
 	public List<AnnotationType> getEnableTypes() {
