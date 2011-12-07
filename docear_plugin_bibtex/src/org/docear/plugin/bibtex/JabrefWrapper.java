@@ -70,7 +70,7 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 	public JabrefWrapper(JFrame frame, File file) {
 		//super(frame, new String[]{"true", "-i", "\""+file.toString()+"\""});
 		super(frame);
-		registerListeners();
+		registerListeners();				
 		openIt(file, true);
 
 	}
@@ -80,9 +80,15 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 		return this.jrf;
 	}
 	
-	private void registerListeners() {	
+	private void registerListeners() {
 		Controller.getCurrentController().getMapViewManager().addMapViewChangeListener(this);
-		Controller.getCurrentModeController().getMapController().addNodeSelectionListener(mapViewListener);
+		SwingUtilities.invokeLater(new  Runnable() {
+			public void run() {
+				synchronized (Controller.getCurrentModeController().getMapController()) {
+		Controller.getCurrentModeController().getMapController().addNodeSelectionListener(mapViewListener);	
+				}
+			}
+		});
 		DocearController.getController().addDocearEventListener(pdfAddedLister);
 	}
 	
@@ -246,28 +252,13 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 
 	public void afterViewClose(final Component oldView) {
 		System.out.println("debug close mapviewlistener");
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			
-			public void run() {
-				oldView.removeMouseListener(mapViewListener);
-				
-			}
-		});
+		oldView.removeMouseListener(mapViewListener);
 	}
 
 
 	public void afterViewCreated(final Component mapView) {
 		System.out.println("debug add mapviewlistener");
-		SwingUtilities.invokeLater(new Runnable() {
-			
-
-			public void run() {
-				mapView.addMouseListener(mapViewListener);
-				
-			}
-		});
-		
+		mapView.addMouseListener(mapViewListener);		
 	}
 
 
