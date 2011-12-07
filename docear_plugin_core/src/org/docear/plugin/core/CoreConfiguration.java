@@ -19,9 +19,9 @@ import org.docear.plugin.core.workspace.actions.WorkspaceChangeLocationsAction;
 import org.docear.plugin.core.workspace.creator.FolderTypeLibraryCreator;
 import org.docear.plugin.core.workspace.creator.FolderTypeLiteratureRepositoryCreator;
 import org.docear.plugin.core.workspace.creator.FolderTypeProjectsCreator;
+import org.docear.plugin.core.workspace.creator.LinkTypeIncomingCreator;
 import org.docear.plugin.core.workspace.creator.LinkTypeLiteratureAnnotationsCreator;
 import org.docear.plugin.core.workspace.creator.LinkTypeMyPublicationsCreator;
-import org.docear.plugin.core.workspace.creator.LinkTypeIncomingCreator;
 import org.docear.plugin.core.workspace.creator.LinkTypeReferencesCreator;
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
@@ -38,12 +38,10 @@ import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
-import org.freeplane.plugin.workspace.controller.IWorkspaceListener;
-import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
-public class CoreConfiguration extends ALanguageController implements IFreeplanePropertyListener, IWorkspaceListener {
+public class CoreConfiguration extends ALanguageController implements IFreeplanePropertyListener {
 
 	private static final String ABOUT_TEXT = "about_text";
 	private static final String DOCEAR = "Docear";
@@ -131,7 +129,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, LinkTypeReferencesCreator.LINK_TYPE_REFERENCES , new LinkTypeReferencesCreator());
 		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, LinkTypeLiteratureAnnotationsCreator.LINK_TYPE_LITERATUREANNOTATIONS , new LinkTypeLiteratureAnnotationsCreator());
 		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, LinkTypeIncomingCreator.LINK_TYPE_INCOMING , new LinkTypeIncomingCreator());
-		controller.addWorkspaceListener(this);
+		
 		controller.reloadWorkspace();
 	}
 
@@ -254,17 +252,6 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	}
 
 	public void propertyChanged(String propertyName, String newValue, String oldValue) {
-	}
-
-	public void workspaceChanged(WorkspaceEvent event) {
-		if(event.getType() == WorkspaceEvent.WORKSPACE_EVENT_TYPE_CHANGE) {
-			System.out.println("DOCEAR CORE: workspaceChanged(WorkspaceEvent):"+ event);
-		}
-		if(event.getType() == WorkspaceEvent.WORKSPACE_EVENT_TYPE_RELOAD) {
-			CoreConfiguration.projectPathObserver.setUri(null);
-			CoreConfiguration.referencePathObserver.setUri(null);
-			CoreConfiguration.repositoryPathObserver.setUri(null);
-		}
-	}
+	}	
 	
 }

@@ -219,7 +219,7 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 		if (getConfiguration().reload()) {
 			showWorkspace(true);
 			UrlManager.getController().setLastCurrentDir(new File(preferences.getWorkspaceLocation()));
-			dispatchWorkspaceEvent(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_EVENT_TYPE_CHANGE, getConfiguration()));
+			dispatchWorkspaceEvent(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_EVENT_TYPE_CHANGED, getConfiguration()));
 		}
 		else {
 			showWorkspace(false);
@@ -364,7 +364,7 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 
 	private void dispatchWorkspaceEvent(WorkspaceEvent event) {
 		switch (event.getType()) {
-			case (WorkspaceEvent.WORKSPACE_EVENT_TYPE_CHANGE): {
+			case (WorkspaceEvent.WORKSPACE_EVENT_TYPE_CHANGED): {
 				for (IWorkspaceListener listener : workspaceListener) {
 					listener.workspaceChanged(event);
 				}

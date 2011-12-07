@@ -5,6 +5,7 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,8 +14,10 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,11 +26,15 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.main.application.FreeplaneStarter;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.creator.FolderTypePhysicalCreator;
 import org.freeplane.plugin.workspace.config.creator.FolderTypeVirtualCreator;
 import org.freeplane.plugin.workspace.config.creator.LinkTypeFileCreator;
@@ -94,7 +101,8 @@ public class WorkspaceConfiguration {
 			copyDefaultConfigTo(configFile);
 		}
 
-		WorkspaceController.getController().getWorkspaceModel().removeAllElements((AWorkspaceTreeNode) WorkspaceController.getController().getWorkspaceModel().getRoot());
+		WorkspaceController.getController().getWorkspaceModel()
+				.removeAllElements((AWorkspaceTreeNode) WorkspaceController.getController().getWorkspaceModel().getRoot());
 		this.load(configFile.toURI().toURL());
 
 		return true;
@@ -105,6 +113,20 @@ public class WorkspaceConfiguration {
 		String xml;
 		if (appName.equalsIgnoreCase("docear")) {
 			xml = getSubstitutedWorkspaceXml(DEFAULT_CONFIG_FILE_NAME_DOCEAR);
+
+			final File baseDir = new File(FreeplaneStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();
+			final String map = ResourceController.getResourceController().getProperty("first_start_map");
+			final File docearWelcome = ConfigurationUtils.getLocalizedFile(baseDir, map, Locale.getDefault().getLanguage());
+			
+			File destination = null;
+			try {
+				destination = WorkspaceUtils.resolveURI(new URI("workspace:/docear_welcome.mm"));
+			}
+			catch (URISyntaxException e) {
+				e.printStackTrace();
+			}
+			
+			copyFile(docearWelcome, destination);
 		}
 		else {
 			xml = getSubstitutedWorkspaceXml(DEFAULT_CONFIG_FILE_NAME);
@@ -112,6 +134,26 @@ public class WorkspaceConfiguration {
 		DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(config)));
 		out.write(xml.getBytes());
 		out.close();
+	}
+
+	private void copyFile(File from, File to) throws IOException {
+		if (from == null || to == null) {
+			return;
+		}
+		
+		FileInputStream fin = new FileInputStream(from);
+		FileOutputStream fout = new FileOutputStream(to);
+
+		byte[] b = new byte[1024];
+		int noOfBytes = 0;
+
+		while ((noOfBytes = fin.read(b)) != -1) {
+			fout.write(b, 0, noOfBytes);
+		}
+		
+		fin.close();
+		fout.close();
+
 	}
 
 	private void initReadManager() {
@@ -182,7 +224,7 @@ public class WorkspaceConfiguration {
 
 	public boolean reload() {
 		try {
-			return initializeConfig();			
+			return initializeConfig();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
