@@ -43,9 +43,6 @@ public class NodeAttributeObserver {
 	
 	public void reset() {
 		this.uri = null;
-		for (ChangeListener listener : this.listeners) {
-			this.listeners.remove(listener);
-		}
 	}
 	
 	
