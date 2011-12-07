@@ -363,20 +363,8 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 	}
 
 	private void dispatchWorkspaceEvent(WorkspaceEvent event) {
-		switch (event.getType()) {
-			case (WorkspaceEvent.WORKSPACE_EVENT_TYPE_CHANGED): {
-				for (IWorkspaceListener listener : workspaceListener) {
-					listener.workspaceChanged(event);
-				}
-				break;
-			}
-			case (WorkspaceEvent.WORKSPACE_EVENT_TYPE_TOOLBAR_EVENT): {
-				for (IWorkspaceListener listener : workspaceListener) {
-					listener.workspaceChanged(event);
-				}
-				break;
-			}
-
+		for (IWorkspaceListener listener : workspaceListener) {
+			listener.workspaceChanged(event);
 		}
 	}
 	

@@ -19,6 +19,7 @@ public class WorkspaceChangeLocationAction extends AWorkspaceAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		System.out.println("WorkspaceSetLocationAction: " + e.getActionCommand() + " : " + e.getID());
+        WorkspaceUtils.saveCurrentConfiguration();
 		showLocationSwitcherDialog();		
 	}
 	
