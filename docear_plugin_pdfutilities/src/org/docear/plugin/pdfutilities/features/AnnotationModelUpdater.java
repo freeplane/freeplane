@@ -30,14 +30,9 @@ public class AnnotationModelUpdater extends AMindmapUpdater {
 		boolean changed = false;
 		if(NodeUtils.isPdfLinkedNode(node) && AnnotationController.getModel(node, false) == null){
 			try {
-				if(!importedPdfs.containsKey(Tools.getAbsoluteUri(node))){
-					/*if(importedPdfs.size() >= 1000){
-						importedPdfs.clear();
-					}*/
+				if(!importedPdfs.containsKey(Tools.getAbsoluteUri(node))){					
 					AnnotationModel pdf = new PdfAnnotationImporter().importPdf(Tools.getAbsoluteUri(node));
-					importedPdfs.put(Tools.getAbsoluteUri(node), this.getPlainAnnotationList(pdf));
-					
-					LogUtils.info("PDFs in Map: " + importedPdfs.size());
+					importedPdfs.put(Tools.getAbsoluteUri(node), this.getPlainAnnotationList(pdf));					
 				}			
 				for(AnnotationModel annotation : importedPdfs.get(Tools.getAbsoluteUri(node))){
 					if(annotation.getTitle().equals(node.getText())){

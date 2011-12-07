@@ -255,7 +255,7 @@ public class SwingWorkerDialog extends JDialog implements PropertyChangeListener
 			progressBar.setValue((Integer)evt.getNewValue());
 		}
 		if(evt.getPropertyName().equals(NEW_FILE)){
-			lblWorkingOn.setText("Checking " + evt.getNewValue());
+			lblWorkingOn.setText("Loading " + evt.getNewValue());
 			//textArea.append("\n-----------------------------------------\n");
 			//textArea.append("Importing " + evt.getNewValue() +"\n\n");
 		}		

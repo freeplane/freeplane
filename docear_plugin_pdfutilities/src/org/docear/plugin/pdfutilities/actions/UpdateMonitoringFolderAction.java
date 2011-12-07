@@ -9,7 +9,7 @@ import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
-@EnabledAction( checkOnNodeChange = true )
+@EnabledAction( checkOnPopup = true )
 public class UpdateMonitoringFolderAction extends AbstractMonitoringAction{
 
 	/**

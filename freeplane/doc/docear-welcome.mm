@@ -1,4 +1,4 @@
-<map version="0.9.0" docear_map_version="1.0" software_name="SciPlore_MindMapping" software_version="0.14" private="1" mapID="88c560da-0c67-49c7-870a-fa7c1b63bc38">
+<map version="0.9.0" dialect="docear 1.0" software_name="SciPlore_MindMapping" software_version="0.14" private="1" mapID="88c560da-0c67-49c7-870a-fa7c1b63bc38">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <node TEXT="SciPlore MindMapping Overview" FOLDED="false" ID="ID_998226029" CREATED="1290692899377" MODIFIED="1300140081566" COLOR="#ffffff" BACKGROUND_COLOR="#009900" BOOKMARKS_UPDATED="0">
 <font NAME="SansSerif" SIZE="14" BOLD="true"/>

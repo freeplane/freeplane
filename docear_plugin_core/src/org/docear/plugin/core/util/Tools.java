@@ -183,8 +183,8 @@ public class Tools {
 		return false;
 	}
 
-	public static Collection<URI> getFilteredFileList(URI absoluteURI, FileFilter fileFilter, boolean readSubDirectories) {
-		Collection<URI> result = new ArrayList<URI>();
+	public static List<URI> getFilteredFileList(URI absoluteURI, FileFilter fileFilter, boolean readSubDirectories) {
+		List<URI> result = new ArrayList<URI>();
 		Collection<File> tempResult = new ArrayList<File>();
 		if(!absoluteURI.isAbsolute()) return result;
 		

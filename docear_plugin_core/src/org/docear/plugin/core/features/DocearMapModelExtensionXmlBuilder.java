@@ -14,7 +14,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class DocearMapModelExtensionXmlBuilder implements IElementDOMHandler, IExtensionAttributeWriter {
 	
 	private static final String DOCEAR_MAP_EXTENSION_XML_TAG = "map";
-	private static final String DOCEAR_MAP_EXTENSION_VERSION_XML_TAG = "docear_map_version";
+	private static final String DOCEAR_MAP_EXTENSION_VERSION_XML_TAG = "dialect";
 	
 	public void registerBy(final ReadManager reader, final WriteManager writer) {
 		reader.addElementHandler(DOCEAR_MAP_EXTENSION_XML_TAG, this);
@@ -28,6 +28,7 @@ public class DocearMapModelExtensionXmlBuilder implements IElementDOMHandler, IE
 			public void setAttribute(Object node, String value) {
 				final MapModel mapModel = (MapModel) node;
 				final DocearMapModelExtension docearMapModel = new DocearMapModelExtension();
+				value = value.replace("docear ", "");
 				docearMapModel.setVersion(value);
 				DocearMapModelController.setModel(mapModel, docearMapModel);
 			}
@@ -66,7 +67,7 @@ public class DocearMapModelExtensionXmlBuilder implements IElementDOMHandler, IE
 		}
 		final String version = modelExtension.getVersion();
 		if (version != null && version.length() > 0) {
-			writer.addAttribute(DOCEAR_MAP_EXTENSION_VERSION_XML_TAG, version);			
+			writer.addAttribute(DOCEAR_MAP_EXTENSION_VERSION_XML_TAG, "docear " + version);			
 		}		
 	}
 

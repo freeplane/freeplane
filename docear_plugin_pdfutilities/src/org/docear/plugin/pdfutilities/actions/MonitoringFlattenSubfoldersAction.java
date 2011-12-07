@@ -26,7 +26,7 @@ import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.jdesktop.swingworker.SwingWorker;
 
-@EnabledAction( checkOnNodeChange = true )
+@EnabledAction( checkOnPopup = true )
 public class MonitoringFlattenSubfoldersAction extends DocearAction {
 
 	/**

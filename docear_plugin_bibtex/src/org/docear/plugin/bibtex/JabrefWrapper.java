@@ -239,16 +239,16 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 		this.encoding = encoding;
 	}
 
-	@Override
+
 	public void afterViewChange(Component oldView, Component newView) {
 	}
 
-	@Override
+
 	public void afterViewClose(final Component oldView) {
 		System.out.println("debug close mapviewlistener");
 		SwingUtilities.invokeLater(new Runnable() {
 			
-			@Override
+			
 			public void run() {
 				oldView.removeMouseListener(mapViewListener);
 				
@@ -256,12 +256,12 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 		});
 	}
 
-	@Override
+
 	public void afterViewCreated(final Component mapView) {
 		System.out.println("debug add mapviewlistener");
 		SwingUtilities.invokeLater(new Runnable() {
 			
-			@Override
+
 			public void run() {
 				mapView.addMouseListener(mapViewListener);
 				
@@ -270,7 +270,7 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 		
 	}
 
-	@Override
+
 	public void beforeViewChange(Component oldView, Component newView) {
 	}
 	

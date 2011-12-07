@@ -57,32 +57,29 @@ public class MapViewListener implements MouseListener, INodeSelectionListener {
 		DocearReferenceUpdateController.unlock();
 	}
 	
-	@Override
 	public void mouseClicked(MouseEvent e) {
 		handleEvent();
 	}
 
-	@Override
 	public void mousePressed(MouseEvent e) {
 	}
 
-	@Override
+
 	public void mouseReleased(MouseEvent e) {
 	}
 
-	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
 
-	@Override
+
 	public void mouseExited(MouseEvent e) {
 	}
 
-	@Override
+
 	public void onDeselect(NodeModel node) {
 	}
 
-	@Override
+
 	public void onSelect(NodeModel node) {
 		handleEvent();
 	}

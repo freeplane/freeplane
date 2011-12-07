@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.actions.SaveAsAction;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
@@ -18,7 +19,7 @@ import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
-@EnabledAction( checkOnNodeChange = true )
+@EnabledAction( checkOnPopup = true )
 public class AddMonitoringFolderAction extends AbstractMonitoringAction {
 
 	/**
@@ -54,20 +55,20 @@ public class AddMonitoringFolderAction extends AbstractMonitoringAction {
 		int result = fileChooser.showOpenDialog(Controller.getCurrentController().getViewController().getJFrame());
         if(result == JFileChooser.APPROVE_OPTION){
         	URI pdfDir = MLinkController.toLinkTypeDependantURI(Controller.getCurrentController().getMap().getFile(), fileChooser.getSelectedFile());
-        	fileChooser.setDialogTitle(TextUtils.getText("AddMonitoringFolderAction_dialog_title_mindmaps")); //$NON-NLS-1$
-        	result = fileChooser.showOpenDialog(Controller.getCurrentController().getViewController().getJFrame());
-        	if(result == JFileChooser.APPROVE_OPTION){
-        		URI mindmapDir = MLinkController.toLinkTypeDependantURI(Controller.getCurrentController().getMap().getFile(), fileChooser.getSelectedFile());
+        	//fileChooser.setDialogTitle(TextUtils.getText("AddMonitoringFolderAction_dialog_title_mindmaps")); //$NON-NLS-1$
+        	//result = fileChooser.showOpenDialog(Controller.getCurrentController().getViewController().getJFrame());
+        	//if(result == JFileChooser.APPROVE_OPTION){
+        		//URI mindmapDir = MLinkController.toLinkTypeDependantURI(Controller.getCurrentController().getMap().getFile(), fileChooser.getSelectedFile());
         		
         		NodeUtils.addMonitoringDir(selected, pdfDir);
-        		NodeUtils.addMindmapDir(selected, mindmapDir);
+        		NodeUtils.addMindmapDir(selected, CoreConfiguration.LIBRARY_PATH);
         		NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_AUTO, 2);
         		NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_SUBDIRS, 2);
         		NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 0);
         		List<NodeModel> list = new ArrayList<NodeModel>();
         		list.add(Controller.getCurrentController().getSelection().getSelected());	
         		AddMonitoringFolderAction.updateNodesAgainstMonitoringDir(list, true);
-        	}   		
+        	//}   		
         }	
 		
 	}	

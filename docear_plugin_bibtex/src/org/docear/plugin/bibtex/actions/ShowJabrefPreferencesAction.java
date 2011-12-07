@@ -18,7 +18,7 @@ public class ShowJabrefPreferencesAction extends AFreeplaneAction{
 	private static final long serialVersionUID = 1L;
 
 	public ShowJabrefPreferencesAction(String key) {
-		super(key);
+		super(key);		
 //		final String iconResource = ResourceController.getResourceController().getProperty(, null);
 //		if (iconResource != null) {
 //			final URL url = ResourceController.getResourceController().getResource(iconResource);

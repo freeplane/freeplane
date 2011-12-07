@@ -7,7 +7,7 @@ import org.freeplane.core.extension.IExtension;
 public interface IAnnotation extends IExtension{
 	
 	public enum AnnotationType{
-		BOOKMARK, COMMENT, HIGHLIGHTED_TEXT, BOOKMARK_WITHOUT_DESTINATION, BOOKMARK_WITH_URI, PDF_FILE
+		BOOKMARK, COMMENT, HIGHLIGHTED_TEXT, BOOKMARK_WITHOUT_DESTINATION, BOOKMARK_WITH_URI, PDF_FILE, FILE
 	};
 	
 	public AnnotationID getAnnotationID();
