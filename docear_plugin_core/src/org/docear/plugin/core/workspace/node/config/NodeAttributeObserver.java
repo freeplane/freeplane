@@ -38,8 +38,14 @@ public class NodeAttributeObserver {
 		ChangeEvent event = new ChangeEvent(this);
 		for(ChangeListener listener : listeners) {
  			listener.stateChanged(event);
+		}		
+	}
+	
+	public void reset() {
+		this.uri = null;
+		for (ChangeListener listener : this.listeners) {
+			this.listeners.remove(listener);
 		}
-		
 	}
 	
 	

@@ -12,6 +12,7 @@ import org.docear.plugin.core.actions.SaveAction;
 import org.docear.plugin.core.actions.SaveAsAction;
 import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.features.DocearNodeModelExtensionController;
+import org.docear.plugin.core.listeners.WorkspaceChangeListener;
 import org.docear.plugin.core.workspace.actions.DocearChangeLibraryPathAction;
 import org.docear.plugin.core.workspace.actions.DocearRenameAction;
 import org.docear.plugin.core.workspace.actions.WorkspaceChangeLocationsAction;
@@ -66,6 +67,8 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 //	public static final String DOCUMENT_REPOSITORY_PATH = DocearController.DOCUMENT_REPOSITORY_PATH_PROPERTY;
 	public static final String LIBRARY_PATH = "@@library_mindmaps@@"; 
 //	public static final String BIBTEX_PATH = DocearController.BIBTEX_PATH_PROPERTY;
+	
+	private static final WorkspaceChangeListener WORKSPACE_CHANGE_LISTENER = new WorkspaceChangeListener();
 		
 	public static final NodeAttributeObserver projectPathObserver = new NodeAttributeObserver();
 	public static final NodeAttributeObserver referencePathObserver = new NodeAttributeObserver();
@@ -94,6 +97,8 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	
 	private void init(ModeController modeController) {
 		// set up context menu for workspace
+		WorkspaceController.getController().addWorkspaceListener(WORKSPACE_CHANGE_LISTENER);
+		
 		modeController.addAction(new WorkspaceChangeLocationsAction());
 		modeController.addAction(new DocearChangeLibraryPathAction());
 		modeController.addAction(new DocearRenameAction());
