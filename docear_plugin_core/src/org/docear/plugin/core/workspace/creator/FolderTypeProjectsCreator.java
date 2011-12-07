@@ -46,7 +46,7 @@ public class FolderTypeProjectsCreator extends AWorkspaceNodeCreator {
 		if(path == null || path.trim().length() == 0) {
 			URI uri = CoreConfiguration.projectPathObserver.getUri();
 			if (uri == null) {
-				LocationDialog dialog = new LocationDialog(); 
+				LocationDialog dialog = new LocationDialog(true); 
 		    	dialog.setVisible(true);		    	
 			}
 			else {

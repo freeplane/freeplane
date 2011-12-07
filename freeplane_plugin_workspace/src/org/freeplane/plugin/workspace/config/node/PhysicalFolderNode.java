@@ -266,54 +266,48 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeEve
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 
+	private boolean fsChanges = false;
 	public void onStart(FileAlterationObserver observer) {
+		fsChanges = false;
 		if(first ) return;
 		// called when the observer starts a check cycle. do nth so far. 
 	}
 
 	public void onDirectoryCreate(File directory) {
 		if(first) return;
-		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node insertion.
-		System.out.println("onDirectoryCreate: " + directory);
-		refresh();
+		fsChanges = true;
 	}
 
 	public void onDirectoryChange(File directory) {
 		if(first) return;
-		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node change.
-		System.out.println("onDirectoryChange: " + directory);
-		refresh();
+		fsChanges = true;
 	}
 
 	public void onDirectoryDelete(File directory) {
 		if(first) return;
-		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node remove.
-		System.out.println("onDirectoryDelete: " + directory);
-		refresh();
+		fsChanges = true;
 	}
 
 	public void onFileCreate(File file) {
 		if(first) return;
-		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node insertion.
-		System.out.println("onFileCreate: " + file);
-		refresh();
+		fsChanges = true;
 	}
 
 	public void onFileChange(File file) {
 		if(first) return;
-		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node change.
-		System.out.println("onFileChange: " + file);
-		refresh();
+		fsChanges = true;
 	}
 
 	public void onFileDelete(File file) {
 		if(first) return;
-		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node remove.
-		System.out.println("onFileDelete: " + file);
-		refresh();
+		fsChanges = true;	
 	}
 
 	public void onStop(FileAlterationObserver observer) {
+		if(!first && fsChanges) {
+			fsChanges=false;
+			refresh();
+		}
 		first = false;
 	}
 	
