@@ -13,7 +13,6 @@ import org.freeplane.features.map.NodeModel;
 
 public class PdfAddedListener implements IDocearEventListener {
 
-	@Override
 	public void handleEvent(DocearEvent event) {
 		
 		if (event.getType() != DocearEventType.MINDMAP_ADD_PDF_TO_NODE) {

@@ -237,60 +237,48 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 		}
 	}
 
+	private boolean fsChanges = false;
 	public void onStart(FileAlterationObserver observer) {
+		fsChanges = false;
+		if(first ) return;
 		// called when the observer starts a check cycle. do nth so far. 
 	}
 
 	public void onDirectoryCreate(File directory) {
-		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node insertion.
-		System.out.println("onDirectoryCreate: " + directory);
-		if(!first) {
-			refresh();
-		}
+		if(first) return;
+		fsChanges = true;
 	}
 
 	public void onDirectoryChange(File directory) {
-		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node change.
-		System.out.println("onDirectoryChange: " + directory);
-		if(!first) {
-			refresh();
-		}
+		if(first) return;
+		fsChanges = true;
 	}
 
 	public void onDirectoryDelete(File directory) {
-		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node remove.
-		System.out.println("onDirectoryDelete: " + directory);
-		if(!first) {
-			refresh();
-		}
+		if(first) return;
+		fsChanges = true;
 	}
 
 	public void onFileCreate(File file) {
-		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node insertion.
-		System.out.println("onFileCreate: " + file);
-		if(!first) {
-			refresh();
-		}
+		if(first) return;
+		fsChanges = true;
 	}
 
 	public void onFileChange(File file) {
-		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node change.
-		System.out.println("onFileChange: " + file);
-		if(!first) {
-			refresh();
-		}
+		if(first) return;
+		fsChanges = true;
 	}
 
 	public void onFileDelete(File file) {
-		// FIXME: don't do refresh, because it always scans the complete directory. instead, implement single node remove.
-		System.out.println("onFileDelete: " + file);
-		if(!first) {
-			refresh();
-		}
+		if(first) return;
+		fsChanges = true;	
 	}
 
 	public void onStop(FileAlterationObserver observer) {
-		// called when the observer ends a check cycle. do nth so far.
+		if(!first && fsChanges) {
+			fsChanges=false;
+			refresh();
+		}
 		first = false;
 	}
 

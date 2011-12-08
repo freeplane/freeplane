@@ -51,7 +51,7 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 		
 	private static final WorkspaceController workspaceController = new WorkspaceController();
 	private static final WorkspaceConfiguration configuration = new WorkspaceConfiguration();
-	private static final FileSystemAlterationMonitor monitor = new FileSystemAlterationMonitor(5000);
+	private static final FileSystemAlterationMonitor monitor = new FileSystemAlterationMonitor(30000);
 
 	private final FilesystemManager fsReader;
 	private final Vector<IWorkspaceListener> workspaceListener = new Vector<IWorkspaceListener>();

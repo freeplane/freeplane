@@ -8,7 +8,7 @@
 				<boolean name="docear_import_highlighted_text" />
 			</separator>
 			<separator name="annotations_edit">
-			    <!--text name="edit_annotations_info"/--> 
+			    <text name="edit_annotations_info"/> 
 			    <boolean name="docear_edit_bookmarks" />                
                 <boolean name="docear_edit_comment" /> 
 			</separator>

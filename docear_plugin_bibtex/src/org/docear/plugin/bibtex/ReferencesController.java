@@ -3,6 +3,8 @@ package org.docear.plugin.bibtex;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.dnd.DropTarget;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
@@ -37,9 +39,11 @@ import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.IDocearEventListener;
 import org.docear.plugin.pdfutilities.util.MapConverter;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.FreeplaneActionCascade;
 import org.freeplane.core.ui.IMenuContributor;
+import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -55,7 +59,7 @@ import org.freeplane.plugin.workspace.controller.IWorkspaceListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 import org.freeplane.view.swing.map.NodeView;
 
-public class ReferencesController extends ALanguageController implements IDocearEventListener, IWorkspaceListener, IMapLifeCycleListener {
+public class ReferencesController extends ALanguageController implements IDocearEventListener, IWorkspaceListener, IMapLifeCycleListener, ActionListener {
 
 	//mapModel with reference which is currently changed
 	private MapModel inChange = null;
@@ -236,6 +240,10 @@ public class ReferencesController extends ALanguageController implements IDocear
 			throw new RuntimeException("cannot open docear.bibtex plugin preferences"); //$NON-NLS-1$
 
 		((MModeController) modeController).getOptionPanelBuilder().load(preferences);
+		/*Controller.getCurrentController().getOptionPanelController().addButtonListener(this);
+		OptionPanelBuilder builder = ((MModeController) Controller.getCurrentModeController()).getOptionPanelBuilder();
+		builder.addSeparator("reference_management", "OptionPanel.docear_bibtex_preferences", IndexedTree.AS_CHILD);
+		builder.addActionProperty("reference_management/OptionPanel.docear_bibtex_preferences" , "OptionPanel.docear_jabref_preferences", ShowJabrefPreferences.getKey(), IndexedTree.AS_CHILD);*/
 	}
 
 	private void addMenuEntries() {
@@ -365,6 +373,14 @@ public class ReferencesController extends ALanguageController implements IDocear
 
 	public void setInAdd(MapModel inAdd) {
 		this.inAdd = inAdd;
+	}
+
+
+
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals(ShowJabrefPreferences.getKey())) {
+			ShowJabrefPreferences.actionPerformed(e);
+		}		
 	}
 
 }

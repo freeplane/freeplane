@@ -51,7 +51,7 @@ public class LinkTypeReferencesCreator extends AWorkspaceNodeCreator {
 		if(path == null || path.trim().length() == 0) {
 			URI uri = CoreConfiguration.referencePathObserver.getUri();
 			if (uri == null) {
-				LocationDialog dialog = new LocationDialog(); 
+				LocationDialog dialog = new LocationDialog(true); 
 		    	dialog.setVisible(true);		    	
 			}
 			else {

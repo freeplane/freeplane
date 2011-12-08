@@ -4,6 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="resources"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-io-2.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-io-2.0.1.jar" sourcepath="C:/Users/mag/Downloads/commons-io-2.0.1-src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

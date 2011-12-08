@@ -262,7 +262,7 @@ public class NodeUtils {
 	}
 	
 	public static Stack<File> getFolderStructureStack(NodeModel monitoringNode, URI pdfFile){
-		Stack<File> folderStack = new Stack<File>();
+		Stack<File> folderStack = new Stack<File>();		
 		URI pdfDirURI = NodeUtils.getPdfDirFromMonitoringNode(monitoringNode);
 		pdfDirURI = Tools.getAbsoluteUri(pdfDirURI);
 		if(pdfDirURI == null || Tools.getFilefromUri(pdfDirURI) == null || !Tools.getFilefromUri(pdfDirURI).exists() || !Tools.getFilefromUri(pdfDirURI).isDirectory()){
@@ -343,10 +343,11 @@ public class NodeUtils {
 	}
 	
 	public static List<URI> getMindmapDirFromMonitoringNode(NodeModel node) {
-		if(!NodeUtils.isMonitoringNode(node)) return null;
+		List<URI> result = new ArrayList<URI>();
+		if(!NodeUtils.isMonitoringNode(node)) return result;
 		NodeAttributeTableModel attributeModel = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
 		if(attributeModel == null || !attributeModel.getAttributeKeyList().contains(TextUtils.getText(PdfUtilitiesController.MON_MINDMAP_FOLDER))){
-			return null;
+			return result;
 		}
 		
 		Object value = attributeModel.getValue(attributeModel.getAttributePosition(TextUtils.getText(PdfUtilitiesController.MON_MINDMAP_FOLDER)));
@@ -354,10 +355,9 @@ public class NodeUtils {
 		if(value.toString().equals(CoreConfiguration.LIBRARY_PATH)){
 			return DocearController.getController().getLibrary().getMindmaps();
 		}
-		else{
-			List<URI> uriList = new ArrayList<URI>();
-			uriList.add(Tools.getAbsoluteUri((URI)value));
-			return uriList;
+		else{			
+			result.add(Tools.getAbsoluteUri((URI)value));
+			return result;
 		}		
 	}
 

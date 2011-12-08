@@ -94,6 +94,8 @@ class NodeHolder {
 	}
 
 	boolean isIdentical(final NodeView pNode) {
+		// BUGFIX: from Docear to avoid possible nullpointer
+		if(pNode == null || pNode.getModel() == null) return false;
 		final String id = pNode.getModel().createID();
 		final MapView mapView = pNode.getMap();
 		return mapView == mMapView.get() && id.equals(mNodeId);

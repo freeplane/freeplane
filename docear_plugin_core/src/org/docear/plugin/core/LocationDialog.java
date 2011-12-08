@@ -4,17 +4,19 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
 
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
 import org.freeplane.core.ui.components.UITools;
@@ -41,13 +43,17 @@ public class LocationDialog extends JDialog {
 	private JTextField bibtexLocation;
 	private JTextField literatureLocation;
 	
-	private final static String DOCUMENT_REPOSITORY_INIT_PATH = "workspace:/literature_repository";
+	private final static String LITERATURE_REPOSITORY_INIT_PATH = "workspace:/literature_repository";
 	private static String BIBTEX_PATH_INIT;
 	private static String PROJECTS_PATH_INIT;
 	
 	
 	
 	private File workspaceLocation;
+	private JButton btnBrowseLiterature;
+	private JButton btnBrowseBibtex;
+	private JButton btnBrowseProjects;
+	private JCheckBox chckbxUseDefaults;
 	/**
 	 * Create the dialog.
 	 */
@@ -125,20 +131,62 @@ public class LocationDialog extends JDialog {
 	}
 	
 	private void onOkButton() {
-		
-		setLiteratureLocation(literatureLocation.getText());
-		setBibtexLocation(bibtexLocation.getText());
-		setProjectsLocation(projectsLocation.getText());
+		if(chckbxUseDefaults.isSelected()) {
+			setLiteratureLocation(WorkspaceUtils.resolveURI(URI.create(LITERATURE_REPOSITORY_INIT_PATH)).getPath());
+			setBibtexLocation(WorkspaceUtils.resolveURI(URI.create(BIBTEX_PATH_INIT)).getPath());
+			setProjectsLocation(WorkspaceUtils.resolveURI(URI.create(PROJECTS_PATH_INIT)).getPath());
+		}
+		else {
+			setLiteratureLocation(literatureLocation.getText());
+			setBibtexLocation(bibtexLocation.getText());
+			setProjectsLocation(projectsLocation.getText());
+		}
 		WorkspaceController.getController().refreshWorkspace();
 		//TODO: DOCEAR: create Docear-Workspace
 		
 		this.dispose();
 	}
 	
-	
 	public LocationDialog() {
+		this(false);
+	}
+	
+	public LocationDialog(boolean useDefaults) {
 		WorkspaceController workspaceController = WorkspaceController.getController();
 		this.workspaceLocation = new File(workspaceController.getPreferences().getWorkspaceLocation());
+		this.addWindowListener(new WindowListener() {
+			
+			public void windowOpened(WindowEvent e) {				
+			}
+			
+			public void windowIconified(WindowEvent e) {				
+			}
+			
+			public void windowDeiconified(WindowEvent e) {
+			}
+			
+			public void windowDeactivated(WindowEvent e) {
+			}
+			
+			public void windowClosing(WindowEvent e) {
+				if(chckbxUseDefaults.isSelected()) {
+					setLiteratureLocation(WorkspaceUtils.resolveURI(URI.create(LITERATURE_REPOSITORY_INIT_PATH)).getPath());
+					setBibtexLocation(WorkspaceUtils.resolveURI(URI.create(BIBTEX_PATH_INIT)).getPath());
+					setProjectsLocation(WorkspaceUtils.resolveURI(URI.create(PROJECTS_PATH_INIT)).getPath());
+				}
+				else {
+					setLiteratureLocation(literatureLocation.getText());
+					setBibtexLocation(bibtexLocation.getText());
+					setProjectsLocation(projectsLocation.getText());
+				}		
+			}
+			
+			public void windowClosed(WindowEvent e) {
+			}
+			
+			public void windowActivated(WindowEvent e) {
+			}
+		});
 		
 		BIBTEX_PATH_INIT = "workspace:/."+workspaceController.getPreferences().getWorkspaceProfile()+"/docear.bib";
 		PROJECTS_PATH_INIT = "workspace:/projects";
@@ -147,7 +195,17 @@ public class LocationDialog extends JDialog {
 		setTitle(TextUtils.getText("docear_initialization"));
 		setBounds(100, 100, 516, 282);
 		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		//final JCheckboxBorder border = new JCheckboxBorder(null, "Enable", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0));
+//		border.setCheckboxAction(new AbstractAction("Enable") {
+//			
+//			private static final long serialVersionUID = 1L;
+//
+//			public void actionPerformed(ActionEvent e) {
+//				System.out.println(e);
+//				
+//			}
+//		});
+		//contentPanel.setBorder(border);
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		{			
 			contentPanel.setLayout(new FormLayout(new ColumnSpec[] {
@@ -180,6 +238,8 @@ public class LocationDialog extends JDialog {
 				new RowSpec[] {
 					RowSpec.decode("fill:4dlu"),
 					FormFactory.DEFAULT_ROWSPEC,
+					FormFactory.RELATED_GAP_ROWSPEC,
+					FormFactory.DEFAULT_ROWSPEC,
 					RowSpec.decode("fill:2dlu"),
 					FormFactory.DEFAULT_ROWSPEC,
 					FormFactory.LINE_GAP_ROWSPEC,
@@ -191,63 +251,83 @@ public class LocationDialog extends JDialog {
 					FormFactory.NARROW_LINE_GAP_ROWSPEC,
 					FormFactory.DEFAULT_ROWSPEC,}));
 			
+			
 			{
 				JLabel lblLiteraturelocation = new JLabel(TextUtils.getText("literature_location"));
-				mainPanel.add(lblLiteraturelocation, "2, 2, fill, fill");
+				mainPanel.add(lblLiteraturelocation, "2, 4, fill, fill");
 			}
 			{
 				{					
 					literatureLocation = new JTextField();
 					literatureLocation.setColumns(30);
 					literatureLocation.setText(WorkspaceUtils.resolveURI(getLiteratureLocation()).getAbsolutePath());
-					mainPanel.add(literatureLocation, "2, 4, fill, center");
+					mainPanel.add(literatureLocation, "2, 6, fill, center");
 				}
 				{
-					JButton btnBrowseLiterature = new JButton(TextUtils.getText("browse"));
+					btnBrowseLiterature = new JButton(TextUtils.getText("browse"));
 					btnBrowseLiterature.addActionListener(new ActionListener() {						
 						public void actionPerformed(ActionEvent e) {
 							browseLiterature();
 						}						
 					});
-					mainPanel.add(btnBrowseLiterature, "4, 4, right, center");
+					mainPanel.add(btnBrowseLiterature, "4, 6, right, center");
 				}
 				{
 					JLabel lblBibtexFile = new JLabel(TextUtils.getText("bibtex_location"));
-					mainPanel.add(lblBibtexFile, "2, 6, fill, fill");
+					mainPanel.add(lblBibtexFile, "2, 8, fill, fill");
 				}
 				{
 					bibtexLocation = new JTextField();
 					bibtexLocation.setColumns(30);					
 					bibtexLocation.setText(WorkspaceUtils.resolveURI(getBibtexLocation()).getAbsolutePath());
-					mainPanel.add(bibtexLocation, "2, 8, fill, center");
+					mainPanel.add(bibtexLocation, "2, 10, fill, center");
 				}
 				{
-					JButton btnBrowseBibtex = new JButton(TextUtils.getText("browse"));
+					btnBrowseBibtex = new JButton(TextUtils.getText("browse"));
 					btnBrowseBibtex.addActionListener(new ActionListener() {						
 						public void actionPerformed(ActionEvent e) {
 							browseBibtex();
 						}						
 					});
-					mainPanel.add(btnBrowseBibtex, "4, 8, right, center");
+					mainPanel.add(btnBrowseBibtex, "4, 10, right, center");
 				}
 				{
 					JLabel lblProjectsLocation = new JLabel(TextUtils.getText("projects_location"));
-					mainPanel.add(lblProjectsLocation, "2, 10, fill, fill");
+					mainPanel.add(lblProjectsLocation, "2, 12, fill, fill");
 				}
 				{
 					projectsLocation = new JTextField();
 					projectsLocation.setColumns(30);
 					projectsLocation.setText(WorkspaceUtils.resolveURI(getProjectsLocation()).getAbsolutePath());
-					mainPanel.add(projectsLocation, "2, 12, fill, center");
+					mainPanel.add(projectsLocation, "2, 14, fill, center");
 				}
 				{
-					JButton btnBrowseProjects = new JButton(TextUtils.getText("browse"));
+					btnBrowseProjects = new JButton(TextUtils.getText("browse"));
 					btnBrowseProjects.addActionListener(new ActionListener() {						
 						public void actionPerformed(ActionEvent e) {
 							browseProjects();
 						}						
 					});
-					mainPanel.add(btnBrowseProjects, "4, 12, right, center");
+					mainPanel.add(btnBrowseProjects, "4, 14, right, center");
+				}
+			}
+			{
+				chckbxUseDefaults = new JCheckBox(TextUtils.getText("library_path_use_defaults"), useDefaults);
+				chckbxUseDefaults.addActionListener(new ActionListener() {
+					
+					public void actionPerformed(ActionEvent e) {
+						if(chckbxUseDefaults.isSelected()) {
+							setPathsEnabled(false);
+						} 
+						else {
+							setPathsEnabled(true);
+						}
+						
+					}
+				});
+				mainPanel.add(chckbxUseDefaults, "2, 2");
+				if(useDefaults) {
+					setPathsEnabled(false);
 				}
 			}
 		}
@@ -262,25 +342,34 @@ public class LocationDialog extends JDialog {
 						onOkButton();
 					}
 				});
-				{
-					JButton cancelButton = new JButton(TextUtils.getText("cancel"));
-					cancelButton.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							onCancelButton();
-						}
-					});
-					cancelButton.setActionCommand("cancel");
-					buttonPane.add(cancelButton);
-				}
+//				{
+//					JButton cancelButton = new JButton(TextUtils.getText("cancel"));
+//					cancelButton.addActionListener(new ActionListener() {
+//						public void actionPerformed(ActionEvent e) {
+//							onCancelButton();
+//						}
+//					});
+//					cancelButton.setActionCommand("cancel");
+//					buttonPane.add(cancelButton);
+//				}
 				okButton.setActionCommand("ok");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 		}	
 	}
+	
+	private void setPathsEnabled(boolean b) {
+		literatureLocation.setEnabled(b);
+		bibtexLocation.setEnabled(b);
+		projectsLocation.setEnabled(b);
+		btnBrowseBibtex.setEnabled(b);
+		btnBrowseLiterature.setEnabled(b);
+		btnBrowseProjects.setEnabled(b);
+	}
 		
 	private URI getLiteratureLocation() {		
-		return getPropertyLocation(CoreConfiguration.repositoryPathObserver, DOCUMENT_REPOSITORY_INIT_PATH);
+		return getPropertyLocation(CoreConfiguration.repositoryPathObserver, LITERATURE_REPOSITORY_INIT_PATH);
 	}
 	
 	private void setLiteratureLocation(String location) {

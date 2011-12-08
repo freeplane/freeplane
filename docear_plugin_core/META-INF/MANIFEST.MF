@@ -20,6 +20,7 @@ Export-Package: org.docear.plugin.core;
  org.docear.plugin.core.listeners,
  org.docear.plugin.core.mindmap,
  org.docear.plugin.core.ui,
+ org.docear.plugin.core.ui.components,
  org.docear.plugin.core.util,
  org.docear.plugin.core.workspace.node,
  org.docear.plugin.core.workspace.node.config,

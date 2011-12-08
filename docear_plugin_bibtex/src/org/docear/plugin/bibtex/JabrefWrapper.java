@@ -70,7 +70,7 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 	public JabrefWrapper(JFrame frame, File file) {
 		//super(frame, new String[]{"true", "-i", "\""+file.toString()+"\""});
 		super(frame);
-		registerListeners();
+		registerListeners();				
 		openIt(file, true);
 
 	}
@@ -80,9 +80,15 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 		return this.jrf;
 	}
 	
-	private void registerListeners() {	
+	private void registerListeners() {
 		Controller.getCurrentController().getMapViewManager().addMapViewChangeListener(this);
-		Controller.getCurrentModeController().getMapController().addNodeSelectionListener(mapViewListener);
+		SwingUtilities.invokeLater(new  Runnable() {
+			public void run() {
+				synchronized (Controller.getCurrentModeController().getMapController()) {
+		Controller.getCurrentModeController().getMapController().addNodeSelectionListener(mapViewListener);	
+				}
+			}
+		});
 		DocearController.getController().addDocearEventListener(pdfAddedLister);
 	}
 	
@@ -239,38 +245,23 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 		this.encoding = encoding;
 	}
 
-	@Override
+
 	public void afterViewChange(Component oldView, Component newView) {
 	}
 
-	@Override
+
 	public void afterViewClose(final Component oldView) {
 		System.out.println("debug close mapviewlistener");
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
-				oldView.removeMouseListener(mapViewListener);
-				
-			}
-		});
+		oldView.removeMouseListener(mapViewListener);
 	}
 
-	@Override
+
 	public void afterViewCreated(final Component mapView) {
 		System.out.println("debug add mapviewlistener");
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
-				mapView.addMouseListener(mapViewListener);
-				
-			}
-		});
-		
+		mapView.addMouseListener(mapViewListener);		
 	}
 
-	@Override
+
 	public void beforeViewChange(Component oldView, Component newView) {
 	}
 	
