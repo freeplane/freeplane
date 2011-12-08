@@ -17,6 +17,7 @@ Export-Package: org.docear.plugin.core;
  org.docear.plugin.core.actions;uses:="org.freeplane.core.ui",
  org.docear.plugin.core.event,
  org.docear.plugin.core.features,
+ org.docear.plugin.core.listeners,
  org.docear.plugin.core.mindmap,
  org.docear.plugin.core.ui,
  org.docear.plugin.core.util,

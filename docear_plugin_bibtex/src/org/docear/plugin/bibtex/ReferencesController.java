@@ -29,11 +29,13 @@ import org.docear.plugin.bibtex.listeners.JabRefChangeListener;
 import org.docear.plugin.bibtex.listeners.NodeAttributeListener;
 import org.docear.plugin.bibtex.listeners.NodeSelectionListener;
 import org.docear.plugin.bibtex.listeners.ReferencePathListener;
+import org.docear.plugin.bibtex.listeners.SplmmMapsConvertedListener;
 import org.docear.plugin.core.ALanguageController;
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.IDocearEventListener;
+import org.docear.plugin.pdfutilities.util.MapConverter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.FreeplaneActionCascade;
@@ -62,12 +64,15 @@ public class ReferencesController extends ALanguageController implements IDocear
 	
 	private final static JabRefChangeListener jabRefChangeListener = new JabRefChangeListener();	
 	
-	private static ReferencesController referencesController = null;
+	private static ReferencesController referencesController = null;	
+	
 	private JabrefWrapper jabrefWrapper;
 	
 	private JabRefAttributes jabRefAttributes;
+	private SplmmAttributes splmmAttributes;
 	
 	private final NodeAttributeListener attributeListener = new NodeAttributeListener();
+	private final SplmmMapsConvertedListener splmmMapsConvertedListener = new SplmmMapsConvertedListener();
 
 	public static final String MENU_BAR = "/menu_bar"; //$NON-NLS-1$
 	public static final String NODE_POPUP_MENU = "/node_popup"; //$NON-NLS-1$
@@ -128,6 +133,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 	
 
 	private void registerListeners() {
+		MapConverter.addMapsConvertedListener(splmmMapsConvertedListener);
 		CoreConfiguration.referencePathObserver.addChangeListener(new ReferencePathListener());
 		
 		this.modeController.addINodeViewLifeCycleListener(new INodeViewLifeCycleListener() {
@@ -174,6 +180,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 	private void initJabref() {		
 		if(WorkspaceController.getController().isInitialized() && !isRunning) {
 			this.jabRefAttributes = new JabRefAttributes();
+			this.splmmAttributes = new SplmmAttributes();
 			
 			NodeSelectionListener nodeSelectionListener = new NodeSelectionListener();
 			nodeSelectionListener.init();
@@ -203,9 +210,9 @@ public class ReferencesController extends ALanguageController implements IDocear
 	public JabRefAttributes getJabRefAttributes() {
 		return jabRefAttributes;
 	}
-
-	public void setJabRefAttributes(JabRefAttributes jabRefAttributes) {
-		this.jabRefAttributes = jabRefAttributes;
+	
+	public SplmmAttributes getSplmmAttributes() {
+		return splmmAttributes;
 	}
 
 	public JabrefWrapper getJabrefWrapper() {
