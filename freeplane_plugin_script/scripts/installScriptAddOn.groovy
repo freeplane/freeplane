@@ -52,9 +52,9 @@ def confirm(String question) {
 
 boolean yesNoOrTerminate(String question) {
 	final int selection = JOptionPane.showConfirmDialog(ui.frame, question, dialogTitle, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-	if (selection != JOptionPane.OK_OPTION)
+	if (selection != JOptionPane.YES_OPTION)
 		throw new Exception(textUtils.getText('addons.installer.canceled'))
-	return selection == JOptionPane.OK_OPTION
+	return selection == JOptionPane.YES_OPTION
 }
 
 def mapStructureAssert(check, String issue) {
