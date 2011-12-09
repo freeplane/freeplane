@@ -79,8 +79,8 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 				if(annotation.getAnnotationType() == AnnotationType.BOOKMARK ||
 						annotation.getAnnotationType() == AnnotationType.COMMENT ||
 						annotation.getAnnotationType() == AnnotationType.HIGHLIGHTED_TEXT){
-					if(annotation.getPage() != null){
-						command = getExecCommand(readerPath, uri, annotation.getPage());						
+					if(annotation.getPage() != null) {
+						command = getExecCommand(readerPath, uri, annotation);						
 					}
 					if(annotation.getPage() == null){
 						//TODO: DOCEAR Error Message for User ??
@@ -137,6 +137,27 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 		}
 		if(readerFilter.isFoxit(new File(readerPath)) && file != null){
 			return readerPath + " \"" + file.getAbsolutePath() + "\" /A page=" + page;
+		}
+		if(readerFilter.isPdfXChange(new File(readerPath)) && file != null){
+			return readerPath + " /A \"page=" + page+"\" \"" + file.getAbsolutePath() + "\"";
+		}
+		return null;
+	}
+	
+	private String getExecCommand(String readerPath, URI uriToFile, IAnnotation annotation) {
+		PdfReaderFileFilter readerFilter = new PdfReaderFileFilter();
+		File file = Tools.getFilefromUri(Tools.getAbsoluteUri(uriToFile, Controller.getCurrentController().getMap()));
+		if(readerFilter.isAdobe(new File(readerPath)) && file != null){
+			return readerPath + " /A page=" + annotation.getPage() + " " + file.getAbsolutePath();
+		}
+		if(readerFilter.isFoxit(new File(readerPath)) && file != null){
+			return readerPath + " \"" + file.getAbsolutePath() + "\" /A page=" + annotation.getPage();
+		}
+		if(readerFilter.isPdfXChange(new File(readerPath)) && file != null){
+			return readerPath + " /A \""
+					+"page=" + annotation.getPage()
+					+"&nameddest="+ annotation.getTitle()
+					+"\" \"" + file.getAbsolutePath() + "\"";
 		}
 		return null;
 	}
