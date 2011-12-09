@@ -2,14 +2,19 @@ package org.freeplane.plugin.script.proxy;
 
 import groovy.lang.Closure;
 
+import java.awt.Color;
 import java.io.File;
 import java.util.Map.Entry;
 
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.styles.MapStyle;
+import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Map;
@@ -56,6 +61,27 @@ public class MapProxy extends AbstractProxy<MapModel> implements Map {
 	public boolean isSaved() {
 		return getDelegate().isSaved();
 	}
+
+    // MapRO: R
+    public Color getBackgroundColor() {
+        // see MapBackgroundColorAction
+        final MapStyle mapStyle = (MapStyle) Controller.getCurrentModeController().getExtension(MapStyle.class);
+        final MapStyleModel model = (MapStyleModel) mapStyle.getMapHook();
+        if (model != null) {
+            return model.getBackgroundColor();
+        }
+        else {
+            final String colorPropertyString = ResourceController.getResourceController().getProperty(
+                MapStyle.RESOURCES_BACKGROUND_COLOR);
+            final Color defaultBgColor = ColorUtils.stringToColor(colorPropertyString);
+            return defaultBgColor;
+        }
+    }
+
+    // MapRO: R
+    public String getBackgroundColorCode() {
+        return ColorUtils.colorToString(getBackgroundColor());
+    }
 
 	// Map: R/W
 	public boolean close(boolean force, boolean allowInteraction) {
@@ -104,6 +130,18 @@ public class MapProxy extends AbstractProxy<MapModel> implements Map {
 	public void setSaved(final boolean isSaved) {
 		Controller.getCurrentModeController().getMapController().setSaved(getDelegate(), isSaved);
 	}
+
+    // Map: R/W
+    public void setBackgroundColor(Color color) {
+        final MapStyle mapStyle = (MapStyle) Controller.getCurrentModeController().getExtension(MapStyle.class);
+        final MapStyleModel model = (MapStyleModel) mapStyle.getMapHook();
+        mapStyle.setBackgroundColor(model, color);
+    }
+
+    // Map: R/W
+    public void setBackgroundColorCode(String rgbString) {
+        setBackgroundColor(ColorUtils.stringToColor(rgbString));
+    }
 
 	// Map: R/W
 	public void setFilter(final Closure<Boolean> closure) {
