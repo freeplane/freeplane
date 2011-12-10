@@ -29,43 +29,43 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.browsemode.BModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 
-class DocumentationAction extends AFreeplaneAction {
+class OnlineDocumentationAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
-	private final String document;
+	private final URL url;
 
-	DocumentationAction( final String actionName, final String document) {
+	OnlineDocumentationAction( final String actionName, final String urlProperty) {
 		super(actionName);
-		this.document = document;
+		URL url = null;
+		try {
+	        url = new URL(ResourceController.getResourceController().getProperty(urlProperty));
+        }
+        catch (MalformedURLException e) {
+	        e.printStackTrace();
+        }
+		this.url = url;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final ResourceController resourceController = ResourceController.getResourceController();
-		final File baseDir = new File(resourceController.getResourceBaseDir()).getAbsoluteFile().getParentFile();
-		final String languageCode = resourceController.getLanguageCode();
-		final File file = ConfigurationUtils.getLocalizedFile(baseDir, document, languageCode);
-		try {
-			final URL endUrl = file.toURL();
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					try {
-						if (endUrl.getFile().endsWith(".mm")) {
-							 Controller.getCurrentController().selectMode(MModeController.MODENAME);
-							 Controller.getCurrentModeController().getMapController().newReadOnlyMap(endUrl);
-						}
-						else {
-							Controller.getCurrentController().getViewController().openDocument(endUrl);
-						}
+		if(url == null)
+			return;
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					if (url.getFile().endsWith(".mm")) {
+						Controller.getCurrentController().selectMode(MModeController.MODENAME);
+						Controller.getCurrentModeController().getMapController().newReadOnlyMap(url);
 					}
-					catch (final Exception e1) {
-						LogUtils.severe(e1);
+					else {
+						Controller.getCurrentController().getViewController().openDocument(url);
 					}
 				}
-			});
-		}
-		catch (final MalformedURLException e1) {
-			LogUtils.warn(e1);
-		}
+				catch (final Exception e1) {
+					LogUtils.severe(e1);
+				}
+			}
+		});
 	}
 }

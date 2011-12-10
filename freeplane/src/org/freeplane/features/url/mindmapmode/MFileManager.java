@@ -362,50 +362,47 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	public void load(final URL url, final MapModel map) throws FileNotFoundException, IOException, XMLParseException,
 	        URISyntaxException {
 		final File file = Compat.urlToFile(url);
+		if(file == null)
+			super.load(url, map);
 		File alternativeFile = null;
 		if (!file.exists()) {
 			throw new FileNotFoundException(TextUtils.format("file_not_found", file.getPath()));
 		}
 		if (!file.canWrite()) {
-			((MMapModel) map).setReadOnly(true);
+			map.setReadOnly(true);
 		}
-		else {
-			final File[] revisions = findNewerFileRevisions(file, MFileManager.backupDir(file));
-			if (revisions.length > 0) {
-				final NewerFileRevisionsFoundDialog newerFileRevisionsFoundDialog = new NewerFileRevisionsFoundDialog(
-				    file, revisions);
-				if (newerFileRevisionsFoundDialog.confirmContinue()) {
-					// "touch" the file to avoid questions about the same auto safe files again
-					boolean success = file.setLastModified(System.currentTimeMillis());
-					if (!success)
-						LogUtils.warn("Unable to set the last modification time for " + file);
-				}
-				else {
-					throw new SkipException(file);
-				}
-				final File selectedFile = newerFileRevisionsFoundDialog.getSelectedFile();
-				if (selectedFile != null && !file.equals(selectedFile)) {
-					LogUtils.info("opening " + selectedFile + " instead of " + file);
-					alternativeFile = selectedFile;
-				}
+		final File[] revisions = findNewerFileRevisions(file, MFileManager.backupDir(file));
+		if (revisions.length > 0) {
+			final NewerFileRevisionsFoundDialog newerFileRevisionsFoundDialog = new NewerFileRevisionsFoundDialog(
+				file, revisions);
+			if (newerFileRevisionsFoundDialog.confirmContinue()) {
+				// "touch" the file to avoid questions about the same auto safe files again
+				boolean success = file.setLastModified(System.currentTimeMillis());
+				if (!success)
+					LogUtils.warn("Unable to set the last modification time for " + file);
 			}
-			try {
-				final String lockingUser = tryToLock(map, file);
-				if (lockingUser != null) {
-					UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(),
-					    TextUtils.format("map_locked_by_open", file.getName(), lockingUser));
-					((MMapModel) map).setReadOnly(true);
-				}
-				else {
-					((MMapModel) map).setReadOnly(false);
-				}
+			else {
+				throw new SkipException(file);
 			}
-			catch (final Exception e) {
-				LogUtils.severe(e);
+			final File selectedFile = newerFileRevisionsFoundDialog.getSelectedFile();
+			if (selectedFile != null && !file.equals(selectedFile)) {
+				LogUtils.info("opening " + selectedFile + " instead of " + file);
+				alternativeFile = selectedFile;
+			}
+		}
+		try {
+			final String lockingUser = tryToLock(map, file);
+			if (lockingUser != null) {
 				UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(),
-				    TextUtils.format("locking_failed_by_open", file.getName()));
-				((MMapModel) map).setReadOnly(true);
+					TextUtils.format("map_locked_by_open", file.getName(), lockingUser));
+				map.setReadOnly(true);
 			}
+		}
+		catch (final Exception e) {
+			LogUtils.severe(e);
+			UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(),
+				TextUtils.format("locking_failed_by_open", file.getName()));
+			map.setReadOnly(true);
 		}
 		NodeModel root = null;
 		if (alternativeFile == null) {
@@ -511,7 +508,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			final File theFile = selectedFiles[i];
 			try {
 				setLastCurrentDir(theFile.getParentFile());
-				Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(theFile), false);
+				Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(theFile));
 			}
 			catch (final Exception ex) {
 				handleLoadingException(ex);
@@ -580,7 +577,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			file = startFile;
 		}
 		try {
-			Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(file), true);
+			Controller.getCurrentModeController().getMapController().newUntitledMap(Compat.fileToUrl(file));
 			final Controller controller = Controller.getCurrentController();
 			final MapModel map = controller.getMap();
 			final Object rootText = map.getRootNode().getUserObject();
@@ -634,6 +631,9 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	 * Return the success of saving
 	 */
 	public boolean save(final MapModel map, final File file) {
+		if(file == null){
+			return saveAs(map);
+		}
 		try {
 			if (null == map.getExtension(BackupFlag.class)) {
 				map.addExtension(new BackupFlag());
@@ -656,6 +656,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		if (!saved) {
 			return false;
 		}
+		map.setReadOnly(false);
 		final URL urlAfter = map.getURL();
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		mapController.fireMapChanged(new MapChangeEvent(this, map, UrlManager.MAP_URL, urlBefore, urlAfter));
@@ -668,7 +669,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	 */
 	public boolean saveAs(final MapModel map) {
 		final JFileChooser chooser = getFileChooser(true);
-		if (getMapsParentFile() == null) {
+		if (getMapsParentFile(map) == null) {
 			chooser.setSelectedFile(new File(getFileNameProposal(map)
 			        + org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION));
 		}
@@ -791,9 +792,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		if (lockingUserOfOldLock != null) {
 			UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(),
 			    TextUtils.format("locking_old_lock_removed", file.getName(), lockingUserOfOldLock));
-		}
-		if (lockingUser == null) {
-			((MMapModel) map).setReadOnly(false);
 		}
 		return lockingUser;
 	}

@@ -52,7 +52,7 @@ public class MapModel {
 	final private IconRegistry iconRegistry;
 	final private List<IMapChangeListener> listeners;
 	final private Map<String, NodeModel> nodes;
-	private boolean readOnly = true;
+	private boolean readOnly = false;
 	private NodeModel root;
 	private URL url;
 

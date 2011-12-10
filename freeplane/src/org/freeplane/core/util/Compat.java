@@ -94,6 +94,8 @@ public class Compat {
 	 * slightly differently.
 	 */
 	private static String urlGetFile(final URL url) {
+		if( !url.getProtocol().equals("file"))
+			return null;
 		String fileName = url.toString().replaceFirst("^file:", "");
 		final String osNameStart = System.getProperty("os.name").substring(0, 3);
 		if (osNameStart.equals("Win") && url.getProtocol().equals("file")) {

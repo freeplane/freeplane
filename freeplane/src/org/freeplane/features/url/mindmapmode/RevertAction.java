@@ -25,6 +25,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.URL;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -35,6 +36,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 
 /**
@@ -48,72 +50,6 @@ import org.freeplane.features.mode.Controller;
  * @author foltin
  */
 class RevertAction extends AFreeplaneAction {
-	private static class RevertActionInstance {
-// // 		final private Controller controller;
-		private String filePrefix;
-		private String localFileName;
-		private String map;
-
-		public RevertActionInstance() {
-			super();
-//			this.controller = controller;
-		}
-
-		public void act() {
-			Controller controller =Controller.getCurrentController();
-			final MapController mapController = controller.getModeController().getMapController();
-			try {
-				controller.close(true);
-				if (this.getLocalFileName() != null) {
-					mapController.newMap(Compat.fileToUrl(new File(this.getLocalFileName())), false);
-				}
-				else {
-					String filePrefix = TextUtils.getText("freeplane_reverted");
-					if (this.getFilePrefix() != null) {
-						filePrefix = this.getFilePrefix();
-					}
-					final File tempFile = File.createTempFile(filePrefix,
-					    org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION, new File(
-					        ResourceController.getResourceController().getFreeplaneUserDirectory()));
-					final FileWriter fw = new FileWriter(tempFile);
-					fw.write(this.getMap());
-					fw.close();
-					mapController.newMap(Compat.fileToUrl(tempFile), false);
-				}
-			}
-			catch (final SkipException e) {
-				LogUtils.warn(e);
-			}
-			catch (final Exception e) {
-				LogUtils.severe(e);
-			}
-		}
-
-		public String getFilePrefix() {
-			return filePrefix;
-		}
-
-		public String getLocalFileName() {
-			return localFileName;
-		}
-
-		public String getMap() {
-			return map;
-		}
-
-		public void setFilePrefix(final String filePrefix) {
-			this.filePrefix = filePrefix;
-		}
-
-		public void setLocalFileName(final String localFileName) {
-			this.localFileName = localFileName;
-		}
-
-		public void setMap(final String map) {
-			this.map = map;
-		}
-	}
-
 	/**
 	 * 
 	 */
@@ -130,59 +66,26 @@ class RevertAction extends AFreeplaneAction {
 	 * @see
 	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
-	public void actionPerformed(final ActionEvent arg0) {
-		try {
-			final File file = Controller.getCurrentController().getMap().getFile();
-			if (file == null) {
-				UITools.errorMessage(TextUtils.getText("map_not_saved"));
-				return;
-			}
-			final RevertActionInstance doAction = createRevertXmlAction(file);
-			doAction.act();
+	public void actionPerformed(final ActionEvent ev) {
+		Controller controller =Controller.getCurrentController();
+		final MapModel map = controller.getMap();
+		final URL url = map.getURL();
+		if(url == null){
+			UITools.errorMessage(TextUtils.getText("map_not_saved"));
+			return;
 		}
-		catch (final IOException e) {
+		final boolean readOnly = map.isReadOnly();
+		final MMapController mapController = (MMapController) controller.getModeController().getMapController();
+		try {
+			controller.close(true);
+			if(readOnly)
+				mapController.newReadOnlyMap(url);
+			else
+				mapController.newMap(url);
+		}
+		catch (final Exception e) {
 			LogUtils.severe(e);
 		}
 	}
 
-	public RevertActionInstance createRevertXmlAction(final File file) throws IOException {
-		final String fileName = file.getAbsolutePath();
-		final FileReader f = new FileReader(file);
-		final StringBuilder buffer = new StringBuilder();
-		for (int c; (c = f.read()) != -1;) {
-			buffer.append((char) c);
-		}
-		f.close();
-		return createRevertXmlAction(buffer.toString(), fileName, null);
-	}
-
-	public RevertActionInstance createRevertXmlAction(final MapModel map, final String fileName, final String filePrefix)
-	        throws IOException {
-		final StringWriter writer = new StringWriter();
-		Controller.getCurrentModeController().getMapController().getMapWriter().writeMapAsXml(map, writer, Mode.FILE, true, false);
-		return createRevertXmlAction(writer.getBuffer().toString(), fileName, filePrefix);
-	}
-
-	/**
-	 * @param filePrefix
-	 *            is used to generate the name of the reverted map in case that
-	 *            fileName is null.
-	 */
-	public RevertActionInstance createRevertXmlAction(final String xmlPackedFile, final String fileName,
-	                                                  final String filePrefix) {
-		final RevertActionInstance revertXmlAction = new RevertActionInstance();
-		revertXmlAction.setLocalFileName(fileName);
-		revertXmlAction.setMap(xmlPackedFile);
-		revertXmlAction.setFilePrefix(filePrefix);
-		return revertXmlAction;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.controller.actions.ActorXml#getDoActionClass()
-	 */
-	public void openXmlInsteadOfMap(final String xmlFileContent) {
-		final RevertActionInstance doAction = createRevertXmlAction(xmlFileContent, null, null);
-		doAction.act();
-	}
 }

@@ -90,7 +90,7 @@ public class FileOpener implements DropTargetListener {
 					if (file.isDirectory() || !fileName.substring(fileName.length() - 3).equalsIgnoreCase(".mm")) {
 						continue;
 					}
-					modeController.getMapController().newMap(Compat.fileToUrl(file), false);
+					modeController.getMapController().newMap(Compat.fileToUrl(file));
 				}
 			}
 			if (transferable.isDataFlavorSupported(DataFlavor.stringFlavor)) {
@@ -107,7 +107,7 @@ public class FileOpener implements DropTargetListener {
 						final File file = Compat.urlToFile(url);
 						if(! file.exists() || file.isDirectory())
 							continue;
-						modeController.getMapController().newMap(url, false);
+						modeController.getMapController().newMap(url);
 					}
 					catch (final Exception e) {
 						e.printStackTrace();

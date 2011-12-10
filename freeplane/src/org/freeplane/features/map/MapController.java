@@ -579,11 +579,21 @@ public class MapController extends SelectionController {
 		return node.isFolded();
 	}
 
+	public boolean newMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
+		return newMap(url, false, false);
+	}
+
+	public boolean newUntitledMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
+		return newMap(url, true, false);
+	}
+
+	public boolean newReadOnlyMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
+		return newMap(url, false, true);
+	}
 	/** creates a new MapView for the url unless it is already opened.
 	 * @returns false if the map was already opened and true if it is newly created. 
-	 * @param untitled
 	 */
-	public boolean newMap(final URL url, boolean untitled) throws FileNotFoundException, XMLParseException,
+	private boolean newMap(final URL url, boolean untitled, boolean readOnly) throws FileNotFoundException, XMLParseException,
 	        IOException, URISyntaxException {
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		/*
@@ -608,10 +618,10 @@ public class MapController extends SelectionController {
 			if (untitled) {
 				newModel.setURL(null);
 			}
+			if(readOnly)
+				newModel.setReadOnly(true);
 			fireMapCreated(newModel);
 			newMapView(newModel);
-			// FIXME: removed to be able to set state in MFileManager
-			//			setSaved(newModel, true);
 			return true;
 		}
 		finally {

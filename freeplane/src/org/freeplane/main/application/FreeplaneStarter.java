@@ -273,7 +273,7 @@ public class FreeplaneStarter {
 						controller.selectMode(MModeController.MODENAME);
 					}
 					final MModeController modeController = (MModeController) controller.getModeController();
-					modeController.getMapController().newMap(Compat.fileToUrl(new File(fileArgument)), false);
+					modeController.getMapController().newMap(Compat.fileToUrl(new File(fileArgument)));
 					fileLoaded = true;
 				}
 				catch (final Exception ex) {

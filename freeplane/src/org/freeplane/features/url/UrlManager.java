@@ -185,7 +185,7 @@ public class UrlManager implements IExtension {
 	 */
 	@SuppressWarnings("serial")
     public JFileChooser getFileChooser(final FileFilter filter, boolean useDirectorySelector) {
-		final File parentFile = getMapsParentFile();
+		final File parentFile = getMapsParentFile(Controller.getCurrentController().getMap());
 		if (parentFile != null && getLastCurrentDir() == null) {
 			setLastCurrentDir(parentFile);
 		}
@@ -232,8 +232,7 @@ public class UrlManager implements IExtension {
 		return lastCurrentDir;
 	}
 
-	protected File getMapsParentFile() {
-		final MapModel map = Controller.getCurrentController().getMap();
+	protected File getMapsParentFile(final MapModel map) {
 		if ((map != null) && (map.getFile() != null) && (map.getFile().getParentFile() != null)) {
 			return map.getFile().getParentFile();
 		}
@@ -264,6 +263,7 @@ public class UrlManager implements IExtension {
 	public void load(final URL url, final MapModel map) throws FileNotFoundException, IOException, XMLParseException,
 	        URISyntaxException {
 		loadImpl(url, map);
+		map.setReadOnly(true);
 	}
 
 	public void loadImpl(final URL url, final MapModel map) {
@@ -322,7 +322,7 @@ public class UrlManager implements IExtension {
 				        && extension.equals(UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 					final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
 					final ModeController modeController = Controller.getCurrentModeController();
-					modeController.getMapController().newMap(url, false);
+					modeController.getMapController().newMap(url);
 					final String ref = uri.getFragment();
 					if (ref != null) {
 						final ModeController newModeController = Controller.getCurrentModeController();

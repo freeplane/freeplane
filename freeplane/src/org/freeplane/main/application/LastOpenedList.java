@@ -206,7 +206,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 				if (PORTABLE_APP && fileName.startsWith(":") && USER_DRIVE.endsWith(":")) {
 					fileName = USER_DRIVE + fileName.substring(1);
 				}
-				Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(new File(fileName)), false);
+				Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(new File(fileName)));
 			}
 		}
 	}
