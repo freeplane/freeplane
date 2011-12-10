@@ -191,7 +191,7 @@ class ControllerProxy implements Proxy.Controller {
 	public Map newMap(URL url) {
 		try {
 			final MapModel oldMap = Controller.getCurrentController().getMap();
-			Controller.getCurrentModeController().getMapController().newMap(url, false);
+			Controller.getCurrentModeController().getMapController().newMap(url);
 			final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 			final String key = mapViewManager.checkIfFileIsAlreadyOpened(url);
 			// make the map the current map even if it was already opened
