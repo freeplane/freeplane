@@ -406,8 +406,9 @@
 				<menu_action action="AboutAction" menu_key="MB_AboutAction"/>	
 			</menu_category>				
 			<menu_separator />
-			<menu_action action="GettingStartedAction"/>
-			<menu_action action="DocumentationAction" accelerator="F1" />	
+			<menu_action action="GettingStartedAction" accelerator="F1" />
+			<menu_action action="DocumentationAction" />	
+			<menu_action action="OnlineReference" />	
 			<menu_action action="HotKeyInfoAction"/>
 			<menu_separator />
 		</menu_submenu>

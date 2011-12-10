@@ -54,7 +54,7 @@ class OnlineDocumentationAction extends AFreeplaneAction {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					if (url.getFile().endsWith(".mm")) {
+					if (url.getPath().endsWith(".mm")) {
 						Controller.getCurrentController().selectMode(MModeController.MODENAME);
 						Controller.getCurrentModeController().getMapController().newDocumentationMap(url);
 					}

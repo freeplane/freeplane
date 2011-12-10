@@ -364,8 +364,10 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	public void load(final URL url, final MapModel map, boolean restoreFromHistory) throws FileNotFoundException, IOException, XMLParseException,
 	        URISyntaxException {
 		final File file = Compat.urlToFile(url);
-		if(file == null)
+		if(file == null){
 			super.load(url, map, restoreFromHistory);
+			return;
+		}
 		if (!file.exists()) {
         	throw new FileNotFoundException(TextUtils.format("file_not_found", file.getPath()));
         }
@@ -476,7 +478,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	@Override
 	public void loadURL(final URI relative) {
 		final MapModel map = Controller.getCurrentController().getMap();
-		if (map == null || map.getFile() == null) {
+		if (map == null || map.getURL() == null) {
 			if (!relative.toString().startsWith("#") && !relative.isAbsolute() || relative.isOpaque()) {
 				Controller.getCurrentController().getViewController().out("You must save the current map first!");
 				final boolean result = ((MFileManager) UrlManager.getController()).save(map);

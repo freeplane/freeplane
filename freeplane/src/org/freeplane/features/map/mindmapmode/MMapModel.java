@@ -20,6 +20,8 @@
 package org.freeplane.features.map.mindmapmode;
 
 import java.awt.EventQueue;
+import java.io.File;
+import java.net.URL;
 import java.util.Timer;
 
 import org.freeplane.core.resources.ResourceController;
@@ -83,8 +85,13 @@ public class MMapModel extends MapModel {
 
 	@Override
 	public String getTitle() {
-		if (getURL() != null) {
-			return getFile().getName();
+		final URL url = getURL();
+		if (url != null) {
+			final File file = getFile();
+			if(file != null)
+				return file.getName();
+			else
+				return url.toString();
 		}
 		if (titleNumber == 0) {
 			titleNumber = MMapModel.unnamedMapsNumber++;

@@ -108,7 +108,11 @@ public class Compat {
 	}
 
 	public static File urlToFile(final URL pUrl) throws URISyntaxException {
-		return new File(Compat.urlGetFile(pUrl));
+		final String path = Compat.urlGetFile(pUrl);
+		if(path != null)
+			return new File(path);
+		else
+			return null;
 	}
 
 	public static void macAppChanges() {
