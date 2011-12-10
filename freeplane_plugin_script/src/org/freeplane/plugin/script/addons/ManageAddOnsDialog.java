@@ -109,7 +109,7 @@ public class ManageAddOnsDialog extends JDialog {
 
 	public ManageAddOnsDialog(final List<AddOnProperties> addOns) {
 		super(UITools.getFrame(), TextUtils.getText("ManageAddOnsAction.text"), true);
-		// stolen from NewerFileRevisionsFoundDialog - no idea if actually needed
+		// stolen from FileRevisionsDialog - no idea if actually needed
 		if (getOwner() != null) {
 			final Window[] ownedWindows = getOwner().getOwnedWindows();
 			for (Window w : ownedWindows) {
