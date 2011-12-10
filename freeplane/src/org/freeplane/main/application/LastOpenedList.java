@@ -48,6 +48,7 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.DocuMapAttribute;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
@@ -150,6 +151,9 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 		if (map == null) {
 			return null;
 		}
+		//ignore documentation maps loaded using documentation actions
+		if(map.containsExtension(DocuMapAttribute.class))
+			return null;
 		final ModeController modeController = Controller.getCurrentModeController();
 		if (!modeController.getModeName().equals(MModeController.MODENAME)) {
 			return null;
@@ -287,6 +291,9 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	}
 
 	private void updateList(final MapModel map, final String restoreString) {
+		//ignore documentation maps loaded using documentation actions
+		if(map.containsExtension(DocuMapAttribute.class))
+			return;
 		if (restoreString != null) {
 			if (lastOpenedList.contains(restoreString)) {
 				lastOpenedList.remove(restoreString);

@@ -56,7 +56,7 @@ class OnlineDocumentationAction extends AFreeplaneAction {
 				try {
 					if (url.getFile().endsWith(".mm")) {
 						Controller.getCurrentController().selectMode(MModeController.MODENAME);
-						Controller.getCurrentModeController().getMapController().newReadOnlyMap(url);
+						Controller.getCurrentModeController().getMapController().newDocumentationMap(url);
 					}
 					else {
 						Controller.getCurrentController().getViewController().openDocument(url);

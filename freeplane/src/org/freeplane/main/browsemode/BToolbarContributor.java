@@ -50,7 +50,7 @@ class BToolbarContributor implements IMenuContributor, IMapViewChangeListener {
 					return;
 				}
 				try {
-					Controller.getCurrentModeController().getMapController().newReadOnlyMap(new URL(urlText));
+					Controller.getCurrentModeController().getMapController().newDocumentationMap(new URL(urlText));
 				}
 				catch (final Exception e1) {
 					LogUtils.warn(e1);

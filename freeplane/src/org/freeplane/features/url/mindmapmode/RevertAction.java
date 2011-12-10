@@ -33,6 +33,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.DocuMapAttribute;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter.Mode;
@@ -74,12 +75,12 @@ class RevertAction extends AFreeplaneAction {
 			UITools.errorMessage(TextUtils.getText("map_not_saved"));
 			return;
 		}
-		final boolean readOnly = map.isReadOnly();
+		final boolean documentationMap = map.containsExtension(DocuMapAttribute.class);
 		final MMapController mapController = (MMapController) controller.getModeController().getMapController();
 		try {
 			controller.close(true);
-			if(readOnly)
-				mapController.newReadOnlyMap(url);
+			if(documentationMap)
+				mapController.newDocumentationMap(url);
 			else
 				mapController.newMap(url);
 		}

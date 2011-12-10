@@ -92,6 +92,10 @@ public class MapModel {
 		return extensionContainer.putExtension(extension);
 	}
 
+	public boolean containsExtension(Class<? extends IExtension> clazz) {
+	    return extensionContainer.containsExtension(clazz);
+    }
+
 	public void addMapChangeListener(final IMapChangeListener listener) {
 		listeners.add(listener);
 	}
