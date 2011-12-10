@@ -124,7 +124,7 @@
         </separator>
        <separator name="icon_properties">        
             <boolean name="structured_icon_toolbar"/>
-            <boolean name="don_t_show_note_icons" />
+            <boolean name="show_note_icons" />
             <boolean name="show_icon_for_attributes" />
         </separator>
     </tab>

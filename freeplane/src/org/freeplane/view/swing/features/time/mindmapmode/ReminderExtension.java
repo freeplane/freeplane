@@ -36,11 +36,6 @@ import org.freeplane.features.mode.Controller;
  */
 class ReminderExtension implements IExtension, IMapChangeListener {
 	static final int BLINKING_PERIOD = 1000;
-	private static final IconStore STORE = IconStoreFactory.create();
-	private static UIIcon bellIcon;
-	private static UIIcon clockIcon;
-	private static UIIcon flagIcon;
-	final private String STATE_TOOLTIP = ReminderExtension.class.getName() + "_STATE_";
 	/**
 	 */
 	public static ReminderExtension getExtension(final NodeModel node) {
@@ -121,12 +116,12 @@ class ReminderExtension implements IExtension, IMapChangeListener {
 	}
 
 	public void onPreNodeDelete(final NodeModel oldParent, final NodeModel selectedNode, final int index) {
-		displayStateIcon(oldParent, ClockState.REMOVE_CLOCK);
+		displayStateIcon(oldParent, null);
 	}
 
 	public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
 	                           final NodeModel child, final int newIndex) {
-		displayStateIcon(oldParent, ClockState.REMOVE_CLOCK);
+		displayStateIcon(oldParent, null);
 	}
 
 	public void mapChanged(final MapChangeEvent event) {
@@ -137,22 +132,10 @@ class ReminderExtension implements IExtension, IMapChangeListener {
 	
 	public void displayState(final ClockState stateAdded, final NodeModel pNode,
 	                  final boolean recurse) {
-		UIIcon icon = null;
-		if (stateAdded == ClockState.CLOCK_VISIBLE) {
-			icon = getClockIcon();
-		}
-		else if (stateAdded == ClockState.CLOCK_INVISIBLE) {
-			if (pNode == getNode()) {
-				icon = getBellIcon();
-			}
-			else {
-				icon = getFlagIcon();
-			}
-		}
-		if (stateAdded != ClockState.REMOVE_CLOCK || pNode == getNode()
-		        || ReminderExtension.getExtension(pNode) == null) {
-			pNode.setStateIcon(STATE_TOOLTIP, icon, true);
-		}
+		if(stateAdded != null)
+			pNode.putExtension(stateAdded);
+		else
+			pNode.removeExtension(ClockState.class);
 		Controller.getCurrentModeController().getMapController().nodeRefresh(pNode);
 		if (!recurse) {
 			return;
@@ -162,25 +145,5 @@ class ReminderExtension implements IExtension, IMapChangeListener {
 			return;
 		}
 		displayState(stateAdded, parentNode, recurse);
-	}
-	private UIIcon getBellIcon() {
-		if (bellIcon == null) {
-			bellIcon = STORE.getUIIcon("bell.png");
-		}
-		return bellIcon;
-	}
-
-	private UIIcon getClockIcon() {
-		if (clockIcon == null) {
-			clockIcon = STORE.getUIIcon("clock.png");
-		}
-		return clockIcon;
-	}
-
-	private UIIcon getFlagIcon() {
-		if (flagIcon == null) {
-			flagIcon = STORE.getUIIcon("flag.png");
-		}
-		return flagIcon;
 	}
 }

@@ -65,9 +65,17 @@ public class IconController implements IExtension {
 	}
 
 // 	final private ModeController modeController;
+	final private Collection<IStateIconProvider> stateIconProviders;
 
+	public boolean addStateIconProvider(IStateIconProvider o) {
+	    return stateIconProviders.add(o);
+    }
+	public boolean removeStateIconProvider(IStateIconProvider o) {
+	    return stateIconProviders.remove(o);
+    }
 	public IconController(final ModeController modeController) {
 		super();
+		stateIconProviders = new LinkedList<IStateIconProvider>();
 		iconHandlers = new CombinedPropertyChain<Collection<MindIcon>, NodeModel>(false);
 //		this.modeController = modeController;
 		final MapController mapController = modeController.getMapController();
@@ -108,6 +116,19 @@ public class IconController implements IExtension {
 
 	public Collection<MindIcon> getIcons(final NodeModel node) {
 		final Collection<MindIcon> icons = iconHandlers.getProperty(node, new LinkedList<MindIcon>());
+		return icons;
+	}
+	
+	public final Collection<UIIcon> getStateIcons(final NodeModel node){
+		final LinkedList<UIIcon> icons = new LinkedList<UIIcon>();
+		for(IStateIconProvider provider : stateIconProviders){
+			final UIIcon stateIcon = provider.getStateIcon(node);
+			if(stateIcon != null){
+				icons.add(stateIcon);
+				final IconRegistry iconRegistry = node.getMap().getIconRegistry();
+				iconRegistry.addIcon(stateIcon);
+			}
+		}
 		return icons;
 	}
 

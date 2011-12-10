@@ -50,6 +50,16 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 
 	public HierarchicalIcons() {
 		this(Mode.OR);
+		final ModeController modeController = Controller.getCurrentModeController();
+		IconController.getController(modeController).addStateIconProvider(new IStateIconProvider() {
+			public UIIcon getStateIcon(NodeModel node) {
+				AccumulatedIcons iconSet = node.getExtension(AccumulatedIcons.class);
+				if(iconSet != null)
+					return new UIIconSet(iconSet, 0.75f);
+				else
+					return null;
+			}
+		});
 		new HierarchicalIcons2();
 	}
 	protected HierarchicalIcons(Mode mode) {
@@ -71,12 +81,13 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	/**
 	 */
 	private void addAccumulatedIconsToTreeSet(final NodeModel child, final TreeSet<UIIcon> iconSet) {
-		iconSet.addAll(IconController.getController().getIcons(child));
-		final UIIconSet uiIcon = (UIIconSet) child.getStateIcons().get(getHookName());
-		if (uiIcon == null) {
+		final IconController iconController = IconController.getController();
+		iconSet.addAll(iconController.getIcons(child));
+		final AccumulatedIcons icons = (AccumulatedIcons) child.getExtension(AccumulatedIcons.class);
+		if (icons == null) {
 			return;
 		}
-		iconSet.addAll(uiIcon.getIcons());
+		iconSet.addAll(icons);
 	}
 
 	@Override
@@ -101,6 +112,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	/**
 	 */
 	private void gatherLeavesAndSetStyle(final NodeModel node) {
+		node.removeExtension(AccumulatedIcons.class);
 		if (node.getChildCount() == 0) {
 			setStyle(node);
 			return;
@@ -193,17 +205,19 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	/**
 	 */
 	private void removeIcons(final NodeModel node) {
-		node.removeStateIcons(getHookName());
-		Controller.getCurrentModeController().getMapController().nodeRefresh(node);
-		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
-			removeIcons(child);
+		AccumulatedIcons icons = node.removeExtension(AccumulatedIcons.class);
+		if(icons != null){
+			Controller.getCurrentModeController().getMapController().nodeRefresh(node);
+			for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
+				removeIcons(child);
+			}
 		}
 	}
 
 	public static enum Mode{AND, OR};
 	private Mode mode = Mode.OR;
 	private void setStyle(final NodeModel node) {
-		final TreeSet<UIIcon> iconSet = new TreeSet<UIIcon>();
+		final AccumulatedIcons iconSet = new AccumulatedIcons();
 		boolean first = true;
 		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
 			if(first || mode.equals(Mode.OR)){
@@ -221,10 +235,10 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		iconSet.removeAll(IconController.getController().getIcons(node));
 		
 		if (iconSet.size() > 0) {
-			node.setStateIcon(getHookName(), new UIIconSet(iconSet, 0.75f), false);
+			node.putExtension(iconSet);
 		}
 		else {
-			node.removeStateIcons(getHookName());
+			node.removeExtension(AccumulatedIcons.class);
 		}
 		Controller.getCurrentModeController().getMapController().delayedNodeRefresh(node, HierarchicalIcons.ICONS, null, null);
 	}

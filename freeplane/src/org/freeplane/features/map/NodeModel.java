@@ -224,7 +224,6 @@ public class NodeModel implements MutableTreeNode {
 		return Collections.unmodifiableList(childrenList);
 	}
 
-	@SuppressWarnings("unchecked")
     public <T extends IExtension> T getExtension(final Class<T> clazz) {
 		return (T) extensionContainer.getExtension(clazz);
 	}
@@ -289,10 +288,6 @@ public class NodeModel implements MutableTreeNode {
 			node = node.getParentNode();
 		}
 		return path;
-	}
-
-	public Map<String, UIIcon> getStateIcons() {
-		return icons.getStateIcons();
 	}
 
 	public String getText() {
@@ -424,7 +419,7 @@ public class NodeModel implements MutableTreeNode {
 		fireNodeRemoved((NodeModel) node, index);
 	}
 
-	public IExtension removeExtension(final Class<? extends IExtension> clazz) {
+	public <T extends IExtension> T removeExtension(final Class<T> clazz){
 		return extensionContainer.removeExtension(clazz);
 	}
 
@@ -512,18 +507,6 @@ public class NodeModel implements MutableTreeNode {
 		parent = newParent;
 	}
 
-	public void setStateIcon(final String key, final UIIcon icon, final boolean register) {
-		icons.setStateIcon(key, icon);
-		if (register && icon != null && map != null) {
-			map.getIconRegistry().addIcon(icon);
-		}
-	}
-
-	public void removeStateIcons(final String key) {
-		if (icons != null) {
-			icons.removeStateIcons(key);
-		}
-	}
 
 	public final void setText(final String text) {
 		userObject = XmlUtils.makeValidXml(text);

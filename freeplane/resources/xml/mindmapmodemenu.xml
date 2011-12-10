@@ -186,6 +186,8 @@
 					<menu_action action="RevisionPluginAction" />
 					<menu_action action="HierarchicalIconsAction" />
 					<menu_action action="HierarchicalIcons2Action" />
+					<menu_action action="SetBooleanMapPropertyAction.show_note_icons" />	
+					<menu_action action="SetBooleanMapPropertyAction.show_icon_for_attributes" />	
 				</menu_submenu>
 				<menu_separator />
 			<menu_action action="SetShortenerStateAction" />

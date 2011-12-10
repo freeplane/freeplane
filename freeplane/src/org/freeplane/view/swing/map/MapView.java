@@ -70,6 +70,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.link.ConnectorModel;
@@ -1020,11 +1021,23 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			getRoot().updateAll();
 			return;
 		}
+		if(property.equals(AttributeController.SHOW_ICON_FOR_ATTRIBUTES)
+				||property.equals(NoteController.SHOW_NOTE_ICONS))
+			updateStateIconsRecursively(getRoot());
 		if(property.equals(NoteController.SHOW_NOTES_IN_MAP))
 			setShowNotes();
 	}
 
-    private void updateContentStyle() {
+    private void updateStateIconsRecursively(NodeView node) {
+    	node.getMainView().updateIcons(node);
+    	for(int i = 0; i < node.getComponentCount(); i++){
+    		final Component component = node.getComponent(i);
+    		if(component instanceof NodeView)
+    		updateStateIconsRecursively((NodeView) component);
+    	}
+    }
+
+	private void updateContentStyle() {
         final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(NodeStyleController.class);
         MapModel map = getModel();
         noteFont = style.getDefaultFont(map, MapStyleModel.NOTE_STYLE);

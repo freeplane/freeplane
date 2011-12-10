@@ -63,6 +63,8 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.note.NoteController;
+import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.ShortenedTextModel;
 import org.freeplane.features.text.TextController;

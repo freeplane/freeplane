@@ -28,6 +28,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.icon.IStateIconProvider;
+import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.IMapLifeCycleListener;
@@ -38,6 +40,7 @@ import org.freeplane.features.map.MapReader;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.text.IContentTransformer;
 import org.freeplane.features.text.TextController;
 
@@ -45,9 +48,9 @@ import org.freeplane.features.text.TextController;
  * @author Dimitry Polivaev 22.11.2008
  */
 public class AttributeController implements IExtension {
+	public static final String SHOW_ICON_FOR_ATTRIBUTES = "show_icon_for_attributes";
 	private static final Integer ATTRIBUTE_TOOLTIP = 7;
 	static private UIIcon attributeIcon = null;
-	private static final String STATE_ICON = "AttributeExist";
 	public static AttributeController getController() {
 		return getController(Controller.getCurrentModeController());
 	}
@@ -79,6 +82,7 @@ public class AttributeController implements IExtension {
 			}
 		});
 		registerTooltipProvider();
+		registerStateIconProvider();
 	}
 
 	public NodeAttributeTableModel createAttributeTableModel(final NodeModel node) {
@@ -153,21 +157,6 @@ public class AttributeController implements IExtension {
 		throw new UnsupportedOperationException();
 	}
 
-	public void setStateIcon(NodeAttributeTableModel attributes) {
-		final NodeModel node = attributes.getNode();
-		final boolean showIcon = ResourceController.getResourceController().getBooleanProperty(
-		    "show_icon_for_attributes");
-		if (showIcon && attributes.getRowCount() == 0) {
-			node.removeStateIcons(STATE_ICON);
-		}
-		if (showIcon && attributes.getRowCount() == 1) {
-			if (attributeIcon == null) {
-				attributeIcon = IconStoreFactory.create().getUIIcon("showAttributes.png");
-			}
-			node.setStateIcon(STATE_ICON, attributeIcon, true);
-		}
-	}
-
 	private void registerTooltipProvider() {
 		modeController.addToolTipProvider(ATTRIBUTE_TOOLTIP, new ITooltipProvider() {
 			public String getTooltip(ModeController modeController, NodeModel node, Component view) {
@@ -234,6 +223,27 @@ public class AttributeController implements IExtension {
 		});
 	}
 
+	private void registerStateIconProvider() {
+	    IconController.getController().addStateIconProvider(new IStateIconProvider() {
+			public UIIcon getStateIcon(NodeModel node) {
+				NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);;
+				if (attributes.getRowCount() == 0) {
+					return null;
+				}
+				final String showAttributeIcon = MapStyle.getController(modeController).getPropertySetDefault(node.getMap(), SHOW_ICON_FOR_ATTRIBUTES);
+				final boolean showIcon = Boolean.parseBoolean(showAttributeIcon);
+				if(showIcon) {
+					if (attributeIcon == null) {
+						attributeIcon = IconStoreFactory.create().getUIIcon("showAttributes.png");
+					}
+					return attributeIcon;
+				}
+				else
+					return null;
+			}
+		});
+    }
+	
 	public boolean canEdit() {
 	    return false;
     }

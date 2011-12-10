@@ -164,7 +164,7 @@ public class MModeControllerFactory {
 		modeController.addAction(new ChangeExternalImageAction());
 		modeController.addAction(new ShowFormatPanelAction());
 		modeController.addAction(new FitToPage());
-		MEncryptionController.install(new MEncryptionController());
+		MEncryptionController.install(new MEncryptionController(modeController));
 		modeController.addAction(new IconSelectionPlugin());
 		modeController.addAction(new NewParentNode());
 		modeController.addAction(new SaveAll());
