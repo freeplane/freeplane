@@ -40,7 +40,6 @@ import org.freeplane.main.addons.AddOnProperties;
 import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.plugin.script.ScriptingEngine;
 import org.freeplane.plugin.script.ScriptingPermissions;
-import org.freeplane.plugin.script.addons.ManageAddOnsDialog.AddOnTableModel;
 
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 import com.jgoodies.forms.factories.FormFactory;
@@ -51,12 +50,14 @@ import com.jgoodies.forms.layout.RowSpec;
 @SuppressWarnings("serial")
 public class AddOnInstallerPanel extends JPanel {
 
-	private JComponent managementPanel;
+	private ManageAddOnsPanel manageAddOnsPanel;
+	private ManageAddOnsPanel manageThemesPanel;
 	private JButton installButton;
 	private JTextField urlField;
 
-	public AddOnInstallerPanel(AddOnTableModel tableModel, JComponent managementPanel) {
-		this.managementPanel = managementPanel;
+	public AddOnInstallerPanel(final ManageAddOnsPanel manageAddOnsPanel, ManageAddOnsPanel manageThemesPanel) {
+		this.manageAddOnsPanel = manageAddOnsPanel;
+		this.manageThemesPanel = manageThemesPanel;
 		setLayout(new FormLayout(new ColumnSpec[] {
 				ColumnSpec.decode("default:grow"),},
 			new RowSpec[] {
@@ -84,7 +85,7 @@ public class AddOnInstallerPanel extends JPanel {
 		installButton = createInstallButton();
 		urlField = createUrlField(installButton);
 		final JButton selectFile = createFileChooser(urlField);
-		installButton.addActionListener(createInstallActionListener(tableModel, urlField));
+		installButton.addActionListener(createInstallActionListener());
 		final Box box = Box.createHorizontalBox();
 		box.add(urlField);
 		box.add(selectFile);
@@ -124,26 +125,30 @@ public class AddOnInstallerPanel extends JPanel {
 		return installButton;
     }
 
-	private ActionListener createInstallActionListener(final AddOnTableModel tableModel, final JTextField urlField) {
-		return new ActionListener() {
+	private ActionListener createInstallActionListener() {
+	    return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final Controller controller = Controller.getCurrentController();
 				try {
 					LogUtils.info("installing add-on from " + urlField.getText());
 					controller.getViewController().setWaitingCursor(true);
-					final URL homepage = toURL(urlField.getText());
-					ManageAddOnsDialog.setStatusInfo(getText("status.installing"));
+					final URL url = toURL(urlField.getText());
+					setStatusInfo(getText("status.installing"));
 					final ModeController modeController = controller.getModeController(MModeController.MODENAME);
 					final MFileManager fileManager = (MFileManager) MFileManager.getController(modeController);
 					MapModel newMap = modeController.getMapController().newModel(null);
-					fileManager.loadImpl(homepage, newMap);
+					if (!fileManager.loadImpl(url, newMap)) {
+					    LogUtils.warn("can not load " + url);
+					    return;
+					}
 					AddOnProperties addOn = (AddOnProperties) ScriptingEngine.executeScript(newMap.getRootNode(),
 					    getInstallScriptSource(), ScriptingPermissions.getPermissiveScriptingPermissions());
 					if (addOn != null) {
-						addOn.setHomepage(homepage);
-						ManageAddOnsDialog.setStatusInfo(getText("status.success", addOn.getName()));
+						setStatusInfo(getText("status.success", addOn.getName()));
 						AddOnsController.getController().registerInstalledAddOn(addOn);
-						tableModel.addAddOn(addOn);
+						final ManageAddOnsPanel managementPanel = addOn.isTheme() ? manageThemesPanel
+						        : manageAddOnsPanel;
+						managementPanel.getTableModel().addAddOn(addOn);
 						urlField.setText("");
 						((JTabbedPane)getParent()).setSelectedComponent(managementPanel);
 						selectLastAddOn(managementPanel);
@@ -259,4 +264,8 @@ public class AddOnInstallerPanel extends JPanel {
 	JTextField getUrlField() {
     	return urlField;
     }
+
+	private static void setStatusInfo(final String message) {
+		Controller.getCurrentController().getViewController().out(message);
+	}
 }

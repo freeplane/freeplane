@@ -33,14 +33,24 @@ class LinkProxy extends AbstractProxy<NodeModel> implements Proxy.Link {
 
 	// LinkRO
 	public File getFile() {
-	    final URI link = getUri();
+	    URI link = getUri();
 	    try {
-	    	return link == null ? null : new File(link);
+	        if (link == null)
+	            return null;
+	        if (!link.isAbsolute() && isFileUri(link)) {
+	            final File mapFile = getDelegate().getMap().getFile();
+	            return mapFile == null ? null : new File(mapFile.getParent(), link.getPath());
+	        }
+	    	return new File(link);
 	    }
 	    catch (Exception e) {
 			LogUtils.warn("link is not a file uri: " + e);
 			return null;
 	    }
+    }
+
+    private boolean isFileUri(URI link) {
+        return link.getScheme() == null || link.getScheme().equals("file");
     }
 
 	// LinkRO

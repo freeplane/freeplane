@@ -180,6 +180,24 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 		return value == null ? valueIfNull : value;
 	}
 
+	/** rounds a number to integral type. */
+    public Long round(final Double d) {
+            if (d == null)
+                    return null;
+            return Math.round(d);
+    }
+    
+    /** round to the given number of decimal places: <code>round(0.1234, 2) -> 0.12</code> */
+    public Double round(final Double d, final int precision) {
+            if (d == null)
+                    return d;
+            double factor = 1;
+            for (int i = 0; i < precision; i++) {
+                    factor *= 10.;
+            }
+            return Math.round(d * factor) / factor;
+    }
+
 	/** formats according to the internal standard, that is the conversion will be reversible
 	 * for types that are handled special by the scripting api namely Dates and Numbers.
 	 * @see Convertible#toString(Object) */
