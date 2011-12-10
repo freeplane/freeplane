@@ -20,23 +20,13 @@
 package org.freeplane.features.url.mindmapmode;
 
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringWriter;
 import java.net.URL;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.map.DocuMapAttribute;
-import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 
@@ -75,14 +65,10 @@ class RevertAction extends AFreeplaneAction {
 			UITools.errorMessage(TextUtils.getText("map_not_saved"));
 			return;
 		}
-		final boolean documentationMap = map.containsExtension(DocuMapAttribute.class);
 		final MMapController mapController = (MMapController) controller.getModeController().getMapController();
 		try {
 			controller.close(true);
-			if(documentationMap)
-				mapController.newDocumentationMap(url);
-			else
-				mapController.newMap(url);
+				mapController.restoreMap(map);
 		}
 		catch (final Exception e) {
 			LogUtils.severe(e);

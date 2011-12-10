@@ -580,20 +580,30 @@ public class MapController extends SelectionController {
 	}
 
 	public boolean newMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
-		return newMap(url, false, false);
+		return newMap(url, LoadingMode.EDIT);
+	}
+
+	public boolean restoreMap(final MapModel map) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
+		final URL url = map.getURL();
+		if(map.containsExtension(DocuMapAttribute.class))
+			return newMap(url, LoadingMode.DOCU);
+		else
+			return newMap(url, LoadingMode.RESTORE);
 	}
 
 	public boolean newUntitledMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
-		return newMap(url, true, false);
+		return newMap(url, LoadingMode.UNTITLED);
 	}
 
 	public boolean newDocumentationMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
-		return newMap(url, false, true);
+		return newMap(url, LoadingMode.DOCU);
 	}
+	
+	public enum LoadingMode{UNTITLED, DOCU, RESTORE, EDIT};
 	/** creates a new MapView for the url unless it is already opened.
 	 * @returns false if the map was already opened and true if it is newly created. 
 	 */
-	private boolean newMap(final URL url, boolean untitled, boolean docu) throws FileNotFoundException, XMLParseException,
+	private boolean newMap(final URL url, LoadingMode loadingMode) throws FileNotFoundException, XMLParseException,
 	        IOException, URISyntaxException {
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		/*
@@ -602,7 +612,7 @@ public class MapController extends SelectionController {
 		 * check whether or not the file is already opened.
 		 * VB: this comment seems to be out-of-date since the url is checked.
 		 */
-		if (!untitled) {
+		if (loadingMode != LoadingMode.UNTITLED) {
 			final String mapExtensionKey = mapViewManager.checkIfFileIsAlreadyOpened(url);
 			if (mapExtensionKey != null) {
 				mapViewManager.tryToChangeToMapView(mapExtensionKey);
@@ -614,11 +624,11 @@ public class MapController extends SelectionController {
 				return false;
 			Controller.getCurrentController().getViewController().setWaitingCursor(true);
 			final MapModel newModel = newModel(null);
-			UrlManager.getController().load(url, newModel);
-			if (untitled) {
+			UrlManager.getController().load(url, newModel, loadingMode == LoadingMode.RESTORE);
+			if (loadingMode == LoadingMode.UNTITLED) {
 				newModel.setURL(null);
 			}
-			if(docu){
+			if(loadingMode == LoadingMode.DOCU){
 				newModel.addExtension(DocuMapAttribute.instance);
 				newModel.setReadOnly(true);
 			}
