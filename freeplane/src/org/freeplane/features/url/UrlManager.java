@@ -264,6 +264,7 @@ public class UrlManager implements IExtension {
 	        URISyntaxException {
 		loadImpl(url, map);
 		map.setReadOnly(true);
+		map.setSaved(true);
 	}
 
 	/** returns true only if loading was successful. Displays an error dialog on an error loading the map.
