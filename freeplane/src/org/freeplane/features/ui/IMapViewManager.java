@@ -66,10 +66,10 @@ public interface IMapViewManager {
 	/**
 	 * Close the currently active map, return false if closing canceled.
 	 *
-	 * @param force
+	 * @param withoutSave
 	 *            forces the closing without any save actions.
 	 */
-	public boolean close(final boolean force);
+	public boolean close(final boolean withoutSave);
 
 	public String createHtmlMap();
 

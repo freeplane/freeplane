@@ -44,7 +44,9 @@ import org.freeplane.core.io.UnknownElements;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel.NodeChangeType;
@@ -583,12 +585,20 @@ public class MapController extends SelectionController {
 		return newMap(url, LoadingMode.EDIT);
 	}
 
-	public boolean restoreMap(final MapModel map) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
+	public boolean restoreCurrentMap() throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
+		final Controller controller = Controller.getCurrentController();
+		final MapModel map = controller.getMap();
 		final URL url = map.getURL();
+		if(url == null){
+			UITools.errorMessage(TextUtils.getText("map_not_saved"));
+			return false;
+		}
+		controller.close(true);
 		if(map.containsExtension(DocuMapAttribute.class))
-			return newMap(url, LoadingMode.DOCU);
-		else
-			return newMap(url, LoadingMode.RESTORE);
+			return newDocumentationMap(url);
+		else{
+			return newMap(url);
+		}
 	}
 
 	public boolean newUntitledMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
@@ -599,7 +609,7 @@ public class MapController extends SelectionController {
 		return newMap(url, LoadingMode.DOCU);
 	}
 	
-	public enum LoadingMode{UNTITLED, DOCU, RESTORE, EDIT};
+	public enum LoadingMode{UNTITLED, DOCU, EDIT};
 	/** creates a new MapView for the url unless it is already opened.
 	 * @returns false if the map was already opened and true if it is newly created. 
 	 */
@@ -624,7 +634,7 @@ public class MapController extends SelectionController {
 				return false;
 			Controller.getCurrentController().getViewController().setWaitingCursor(true);
 			final MapModel newModel = newModel(null);
-			UrlManager.getController().load(url, newModel, loadingMode == LoadingMode.RESTORE);
+			UrlManager.getController().load(url, newModel);
 			if (loadingMode == LoadingMode.UNTITLED) {
 				newModel.setURL(null);
 			}

@@ -136,6 +136,8 @@ class FileRevisionsDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private final static String KEY_BASE = "FileRevisionsDialog";
 	private JButton btnRestore;
+	private JButton btnSkip;
+	private boolean cancelled;
 	private final File file;
 	private File selectedFile;
 	private final SimpleDateFormat dateFormat = new SimpleDateFormat();
@@ -144,6 +146,7 @@ class FileRevisionsDialog extends JDialog {
 	private class CloseAction implements ActionListener {
 		public void actionPerformed(final ActionEvent e) {
 			final Object source = e.getSource();
+			cancelled = (source == btnSkip);
 			dispose();
 		}
 	}
@@ -151,7 +154,7 @@ class FileRevisionsDialog extends JDialog {
 	public FileRevisionsDialog(final File file, final File[] revisions) {
 		super(UITools.getFrame(), TextUtils.getText(FileRevisionsDialog.key("title")), true);
 		UITools.backOtherWindows();
-		this.file = file;
+		this.selectedFile = this.file = file;
 		setBackground(Color.white);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		UITools.addEscapeActionToDialog(this);
@@ -159,7 +162,9 @@ class FileRevisionsDialog extends JDialog {
 		final JTable table = createTable(revisions);
 		final JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.getViewport().setBackground(Color.white);
-		scrollPane.getViewport().setPreferredSize(table.getPreferredSize());
+		final Dimension tablePreferredSize = table.getPreferredSize();
+		int maxHeight = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 2 / 3;
+		scrollPane.getViewport().setPreferredSize(new Dimension(tablePreferredSize.width, Math.min(maxHeight, tablePreferredSize.height)));
 		add(scrollPane);
 		add(createQuestion());
 		add(createButtonBar());
@@ -217,9 +222,13 @@ class FileRevisionsDialog extends JDialog {
 		controllerBox.setBorder(new EmptyBorder(5, 0, 5, 0));
 		final CloseAction closeAction = new CloseAction();
 		controllerBox.add(Box.createHorizontalGlue());
+		btnSkip = createButton(FileRevisionsDialog.key("cancel"), null, closeAction);
 		btnRestore = createButton(FileRevisionsDialog.key("restore"),
-	    FileRevisionsDialog.key("restore.tooltip"), closeAction);
+			FileRevisionsDialog.key("restore.tooltip"), closeAction);
 		controllerBox.add(btnRestore);
+		controllerBox.add(Box.createHorizontalStrut(10));
+		controllerBox.add(btnSkip);
+		controllerBox.add(Box.createHorizontalStrut(10));
 		return controllerBox;
 	}
 
@@ -234,8 +243,11 @@ class FileRevisionsDialog extends JDialog {
 			button.setToolTipText(TextUtils.format(tooltipKey, file.getName(), selectedFileName));
 		return button;
 	}
-
+	
+	/** returns null on cancel */
 	public File getSelectedFile() {
+		if(cancelled)
+			return null;
 		return selectedFile;
 	}
 

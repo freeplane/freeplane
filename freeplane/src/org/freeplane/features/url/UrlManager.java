@@ -260,7 +260,7 @@ public class UrlManager implements IExtension {
 		}
 	}
 
-	public void load(final URL url, final MapModel map, boolean restoreFromHistory) throws FileNotFoundException, IOException, XMLParseException,
+	public void load(final URL url, final MapModel map) throws FileNotFoundException, IOException, XMLParseException,
 	        URISyntaxException {
 		loadImpl(url, map);
 		map.setReadOnly(true);

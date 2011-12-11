@@ -24,7 +24,10 @@ import java.awt.Point;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -40,11 +43,13 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.DocuMapAttribute;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapController.LoadingMode;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -599,4 +604,41 @@ public class MMapController extends MapController {
 		select(newNode);
 		return newNode;
 	}
+
+	@Override
+    public boolean restoreCurrentMap() throws FileNotFoundException, XMLParseException, IOException, URISyntaxException {
+	    final Controller controller = Controller.getCurrentController();
+        final MapModel map = controller.getMap();
+        final boolean wasSaved = map.isSaved();
+        final URL url = map.getURL();
+        if(url == null){
+        	UITools.errorMessage(TextUtils.getText("map_not_saved"));
+        	return false;
+        }
+        
+		if(map.containsExtension(DocuMapAttribute.class)){
+			controller.close(true);
+			return newDocumentationMap(url);
+		}
+		
+		final URL alternativeURL = MFileManager.getController(getMModeController()).getAlternativeURL(url);
+		if(alternativeURL == null)
+			return false;
+		Controller.getCurrentController().getViewController().setWaitingCursor(true);
+		try{
+			final MapModel newModel = newModel(null);
+			UrlManager.getController().load(alternativeURL, newModel);
+			newModel.setURL(url);
+			map.setSaved(wasSaved);
+			fireMapCreated(newModel);
+			controller.close(true);
+			newMapView(newModel);
+			return true;
+		}
+		finally {
+			Controller.getCurrentController().getViewController().setWaitingCursor(false);
+		}
+	}
+	
+	
 }

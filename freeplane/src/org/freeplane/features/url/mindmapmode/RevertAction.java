@@ -59,16 +59,9 @@ class RevertAction extends AFreeplaneAction {
 	 */
 	public void actionPerformed(final ActionEvent ev) {
 		Controller controller =Controller.getCurrentController();
-		final MapModel map = controller.getMap();
-		final URL url = map.getURL();
-		if(url == null){
-			UITools.errorMessage(TextUtils.getText("map_not_saved"));
-			return;
-		}
 		final MMapController mapController = (MMapController) controller.getModeController().getMapController();
 		try {
-			controller.close(true);
-				mapController.restoreMap(map);
+			mapController.restoreCurrentMap();
 		}
 		catch (final Exception e) {
 			LogUtils.severe(e);
