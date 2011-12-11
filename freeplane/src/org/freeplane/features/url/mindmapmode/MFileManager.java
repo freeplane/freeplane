@@ -252,6 +252,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		final Controller controller = Controller.getCurrentController();
 		final ModeController modeController = controller.getModeController();
 		controller.addAction(new OpenAction());
+		controller.addAction(new OpenURLMapAction());
 		controller.addAction(new NewMapAction());
 		final File userTemplates = defaultUserTemplateDir();
 		userTemplates.mkdir();

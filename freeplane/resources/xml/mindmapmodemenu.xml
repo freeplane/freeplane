@@ -12,6 +12,7 @@
 			<menu_action action="RevertAction" />	
 			<menu_separator />							
 			<menu_action action="OpenAction" accelerator="control O" />
+			<menu_action action="OpenURLMapAction" />
 			<menu_submenu name="last" name_ref="most_recent_files" menu_key="main_menu_most_recent_files"/>				
 			<menu_separator />			
 			<menu_action action="ExportAction"/>

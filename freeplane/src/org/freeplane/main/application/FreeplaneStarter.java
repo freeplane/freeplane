@@ -23,6 +23,7 @@ import java.awt.EventQueue;
 import java.awt.Frame;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Set;
@@ -265,19 +266,26 @@ public class FreeplaneStarter {
 			String fileArgument = args[i];
 			if (fileArgument.toLowerCase().endsWith(
 			    org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
-				if (!FileUtils.isAbsolutePath(fileArgument)) {
-					fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
-				}
 				try {
+					final URL url;
+					if(fileArgument.startsWith("http://")){
+						url = new URL(fileArgument);
+					}
+					else{
+						if (!FileUtils.isAbsolutePath(fileArgument)) {
+							fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
+						}
+						url = Compat.fileToUrl(new File(fileArgument));
+					}
 					if (!fileLoaded) {
 						controller.selectMode(MModeController.MODENAME);
 					}
 					final MModeController modeController = (MModeController) controller.getModeController();
-					modeController.getMapController().newMap(Compat.fileToUrl(new File(fileArgument)));
+					modeController.getMapController().newMap(url);
 					fileLoaded = true;
 				}
 				catch (final Exception ex) {
-					System.err.println("File " + fileArgument + " not found error");
+					System.err.println("File " + fileArgument + " not loaded");
 				}
 			}
 		}
