@@ -74,6 +74,7 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
 		final MapModel map = (MapModel) userObject;
 		writer.addAttribute("version", FreeplaneVersion.XML_VERSION);
+		writer.addAttribute("dialect", FreeplaneVersion.DIALECT_VERSION);
 		writer.addExtensionAttributes(map, Arrays.asList(map.getExtensions().values().toArray(new IExtension[] {})));
 	}
 
