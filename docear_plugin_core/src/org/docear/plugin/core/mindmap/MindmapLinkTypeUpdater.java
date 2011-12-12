@@ -15,26 +15,37 @@ public class MindmapLinkTypeUpdater extends AMindmapUpdater {
 		super(title);		
 	}
 
-//	@Override
-//	public boolean (NodeModel node) {
-//		NodeLinks links = NodeLinks.getLinkExtension(node);
-//		
-//		if (links == null || links.getHyperLink() == null) {
-//			return false;
-//		}
-//		
-//		URI uri = links.getHyperLink();
-//		if (uri.getScheme() == null) {
-//			uri = (new File(uri.getPath()).toURI());
-//		}
-//		links.setHyperLink(LinkController.toLinkTypeDependantURI(node.getMap().getFile(), WorkspaceUtils.resolveURI(uri)));
-//				
-//		return true;
-//	}
-	@Override
 	public boolean updateMindmap(MapModel map) {
-		// TODO Auto-generated method stub
-		return false;
+		return updateNodesRecursive(map.getRootNode());
+	}
+	
+	private boolean updateMindmap(NodeModel node) {
+		NodeLinks links = NodeLinks.getLinkExtension(node);
+
+		if (links == null || links.getHyperLink() == null) {
+			return false;
+		}
+
+		URI uri = links.getHyperLink();
+		if (uri.getScheme() == null) {
+			uri = (new File(uri.getPath()).toURI());
+		}
+		links.setHyperLink(LinkController.toLinkTypeDependantURI(node.getMap().getFile(), WorkspaceUtils.resolveURI(uri)));
+
+		return true;
+	}
+	
+	/**
+	 * @param node
+	 * @return
+	 */
+	private boolean updateNodesRecursive(NodeModel node) {
+		boolean changes = false;
+		for(NodeModel child : node.getChildren()) {
+			changes = changes | updateNodesRecursive(child);
+		}
+		changes = changes | updateMindmap(node);
+		return changes;
 	}
 
 }

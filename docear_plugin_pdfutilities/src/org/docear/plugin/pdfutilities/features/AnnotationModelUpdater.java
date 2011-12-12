@@ -26,32 +26,31 @@ public class AnnotationModelUpdater extends AMindmapUpdater {
 		super(title);		
 	}
 
-//	@Override
-//	public boolean updateNode(NodeModel node) {
-//		boolean changed = false;
-//		if(NodeUtils.isPdfLinkedNode(node) && AnnotationController.getModel(node, false) == null){
-//			try {
-//				if(!importedPdfs.containsKey(Tools.getAbsoluteUri(node))){					
-//					AnnotationModel pdf = new PdfAnnotationImporter().importPdf(Tools.getAbsoluteUri(node));
-//					importedPdfs.put(Tools.getAbsoluteUri(node), this.getPlainAnnotationList(pdf));					
-//				}			
-//				for(AnnotationModel annotation : importedPdfs.get(Tools.getAbsoluteUri(node))){
-//					if(annotation.getTitle().equals(node.getText())){
-//						AnnotationController.setModel(node, annotation);	
-//						changed = true;
-//						break;
-//					}
-//				}
-//			} catch (COSRuntimeException e) {
-//				LogUtils.warn(e);
-//			} catch (IOException e) {
-//				LogUtils.warn(e);
-//			} catch (COSLoadException e) {
-//				LogUtils.warn(e);
-//			}
-//		}
-//		return changed;
-//	}
+	private boolean updateNode(NodeModel node) {
+		boolean changed = false;
+		if(NodeUtils.isPdfLinkedNode(node) && AnnotationController.getModel(node, false) == null){
+			try {
+				if(!importedPdfs.containsKey(Tools.getAbsoluteUri(node))){					
+					AnnotationModel pdf = new PdfAnnotationImporter().importPdf(Tools.getAbsoluteUri(node));
+					importedPdfs.put(Tools.getAbsoluteUri(node), this.getPlainAnnotationList(pdf));					
+				}			
+				for(AnnotationModel annotation : importedPdfs.get(Tools.getAbsoluteUri(node))){
+					if(annotation.getTitle().equals(node.getText())){
+						AnnotationController.setModel(node, annotation);	
+						changed = true;
+						break;
+					}
+				}
+			} catch (COSRuntimeException e) {
+				LogUtils.warn(e);
+			} catch (IOException e) {
+				LogUtils.warn(e);
+			} catch (COSLoadException e) {
+				LogUtils.warn(e);
+			}
+		}
+		return changed;
+	}
 	
 	private List<AnnotationModel> getPlainAnnotationList(AnnotationModel root){
 		List<AnnotationModel> result = new ArrayList<AnnotationModel>();
@@ -64,7 +63,19 @@ public class AnnotationModelUpdater extends AMindmapUpdater {
 
 	@Override
 	public boolean updateMindmap(MapModel map) {
-		// TODO Auto-generated method stub
-		return false;
+		return updateNodesRecursive(map.getRootNode());
+	}
+	
+	/**
+	 * @param node
+	 * @return
+	 */
+	private boolean updateNodesRecursive(NodeModel node) {
+		boolean changes = false;
+		for(NodeModel child : node.getChildren()) {
+			changes = changes | updateNodesRecursive(child);
+		}
+		changes = changes | updateNode(node);
+		return changes;
 	}
 }

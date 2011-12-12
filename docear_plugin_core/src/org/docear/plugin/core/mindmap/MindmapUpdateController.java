@@ -175,11 +175,13 @@ public class MindmapUpdateController {
 			
 			@Override
 		    protected void done() {
-				NodeView.setModifyModelWithoutRepaint(false);				
+				NodeView.setModifyModelWithoutRepaint(true);				
 				for (MapModel map : getAllOpenMaps()) {
 				if (uris.contains(map.getFile().toURI())) {
 					NodeView nodeView = ((MapView) Controller.getCurrentController().getViewController().getMapView()).getNodeView(map.getRootNode());
-					nodeView.updateAll();
+					if(nodeView != null) {
+						nodeView.updateAll();
+					}
 				}
 				}
 				NodeView.setModifyModelWithoutRepaint(false);

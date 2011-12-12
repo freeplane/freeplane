@@ -2,6 +2,7 @@ package org.docear.plugin.bibtex;
 
 import org.docear.plugin.core.mindmap.AMindmapUpdater;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 
 public class SplmmReferenceUpdater extends AMindmapUpdater {
 
@@ -9,15 +10,22 @@ public class SplmmReferenceUpdater extends AMindmapUpdater {
 		super(title);		
 	}
 
-//	@Override
-//	public boolean updateMindmap(Ma) {
-//		boolean changes = ReferencesController.getController().getSplmmAttributes().translate(node);
-//		return changes;
-//	}
-
-
-
-	@Override
 	public boolean updateMindmap(MapModel map) {
-		return false;
-	}}
+		return updateNodesRecursive(map.getRootNode());		
+	}
+
+	/**
+	 * @param node
+	 * @return
+	 */
+	private boolean updateNodesRecursive(NodeModel node) {
+		boolean changes = false;
+		for(NodeModel child : node.getChildren()) {
+			changes = changes | updateNodesRecursive(child);
+		}
+		changes = changes | ReferencesController.getController().getSplmmAttributes().translate(node);
+		return changes;
+	}
+	
+	
+}
