@@ -6,8 +6,8 @@
 			<menu_action action="new_map_from_user_templates" />
 			<menu_action action="EncryptedMap" />				
 			<menu_separator />
-			<menu_action action="SaveAsAction" accelerator="control shift S" />
 			<menu_action action="SaveAction" accelerator="control S" />
+			<menu_action action="SaveAsAction" accelerator="control shift S" />
 			<menu_action action="SaveAll" />
 			<menu_action action="RevertAction" />	
 			<menu_separator />							
@@ -368,10 +368,10 @@
 				</menu_category>
 				<menu_separator />
 				<menu_category name="scripting" plugin="org.freeplane.plugin.script" menu_key="main_menu_scripting">
-					<menu_action action="ExecuteScriptForSelectionAction" plugin="org.freeplane.plugin.script"/>
-					<menu_action action="ExecuteScriptForAllNodes" plugin="org.freeplane.plugin.script"/>					
-					<menu_action action="ScriptEditor" plugin="org.freeplane.plugin.script"/>					
 				</menu_category>
+				<menu_action action="ExecuteScriptForSelectionAction" plugin="org.freeplane.plugin.script"/>
+				<menu_action action="ExecuteScriptForAllNodes" plugin="org.freeplane.plugin.script"/>					
+				<menu_action action="ScriptEditor" plugin="org.freeplane.plugin.script"/>					
 				<menu_separator />
 				<menu_submenu name="formula" name_ref="formula.menuname" plugin="org.freeplane.plugin.formula">
 					<menu_action action="formula.EvaluateAllAction" plugin="org.freeplane.plugin.formula"/>
