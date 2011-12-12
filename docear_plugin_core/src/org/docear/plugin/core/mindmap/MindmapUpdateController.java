@@ -16,15 +16,16 @@ import org.docear.plugin.core.ui.SwingWorkerDialog;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
+import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 import org.jdesktop.swingworker.SwingWorker;
 
-public class MindmapUpdateController {	
+public class MindmapUpdateController {
 	private final ArrayList<AMindmapUpdater> updaters = new ArrayList<AMindmapUpdater>();
 	
 	public void addMindmapUpdater(AMindmapUpdater updater) {
@@ -34,7 +35,7 @@ public class MindmapUpdateController {
 	public List<AMindmapUpdater> getMindmapUpdaters() {
 		return this.updaters;
 	}
-	
+
 	public boolean updateAllMindmapsInWorkspace() {	
 		List<URI> uris = WorkspaceUtils.getModel().getAllNodesFiltered(".mm");
 		return updateMindmaps(uris);
@@ -46,28 +47,52 @@ public class MindmapUpdateController {
 	}
 	
 	public boolean updateOpenMindmaps() {
+		List<URI> maps = getAllOpenMapUris();
+		
+		return updateMindmaps(maps);
+	}
+
+	private List<URI> getAllOpenMapUris() {
+		List<URI> maps = new ArrayList<URI>();
+		for(MapModel map : getAllOpenMaps()) {
+			maps.add(map.getFile().toURI());
+		}
+		return maps;
+	}
+
+	private List<MapModel> getAllOpenMaps() {
 		List<MapModel> maps = new ArrayList<MapModel>();
 		Map<String, MapModel> openMaps = Controller.getCurrentController().getMapViewManager().getMaps();
 		for (String name : openMaps.keySet()) {
 			maps.add(openMaps.get(name));			
 		}
-		
-		return updateMindmaps(maps);
+		return maps;
 	}
+	
+	
+	
+	
 	
 	public boolean updateCurrentMindmap() {
-		List<MapModel> maps = new ArrayList<MapModel>();
-		maps.add(Controller.getCurrentController().getMap());
+		List<URI> maps = new ArrayList<URI>();
+		maps.add(Controller.getCurrentController().getMap().getFile().toURI());
 		
 		return updateMindmaps(maps);
 	}
 	
-	public boolean updateMindmapsInList(List<MapModel> maps) {	
-		return updateMindmaps(maps);
+	public boolean updateMindmapsInList(List<MapModel> maps) {
+		List<URI> uris = new ArrayList<URI>();
+		
+		for (MapModel map : maps) {
+			uris.add(map.getFile().toURI());			
+		}
+		
+		return updateMindmaps(uris);
+		
 	}
 	
-	private boolean updateMindmaps(List<?> maps) {		
-		SwingWorker<Void, Void> thread = getUpdateThread(maps);		
+	public boolean updateMindmaps(List<URI> uris) {
+		SwingWorker<Void, Void> thread = getUpdateThread(uris);		
 		
 		SwingWorkerDialog workerDialog = new SwingWorkerDialog(Controller.getCurrentController().getViewController().getJFrame());
 		workerDialog.setHeadlineText(TextUtils.getText("updating_mindmaps_headline"));
@@ -75,62 +100,66 @@ public class MindmapUpdateController {
 		workerDialog.showDialog(thread);
 		workerDialog = null;
 		
-		return !thread.isCancelled();
+		return !thread.isCancelled();	
 	}
 	
-	public SwingWorker<Void, Void> getUpdateThread(final List<?> maps){
+	public SwingWorker<Void, Void> getUpdateThread(final List<URI> uris){
 		
 		return new SwingWorker<Void, Void>(){			
 			private int totalCount;
 			private int count = 0;
-			
-			private boolean isUri = false;
 			private boolean mapHasChanged = false;
 
 			@Override
-			protected Void doInBackground() throws Exception {
-				
-				if (maps == null || maps.size() == 0) {
+			protected Void doInBackground() throws Exception {				
+				if (uris == null || uris.size() == 0) {
 					return null;
 				}
-				
-				isUri = maps.get(0) instanceof URI;
-				
+				NodeView.setModifyModelWithoutRepaint(true);
 				fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
-				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("computing_node_count"));
-				if (isUri) {
-					totalCount = maps.size();
-				}
-				else {
-					computeTotalNodeCount(maps);
-				}
+				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("computing_node_count"));				
+				totalCount = uris.size();				
 				if(canceled()) return null;				
 				fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
 				fireProgressUpdate(100 * count / totalCount);
 				
 				for (AMindmapUpdater updater : getMindmapUpdaters()) {
 					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, updater.getTitle());
-					if(canceled()) return null;
-					MapModel map = null;
-					for(Object o : maps) {
-						mapHasChanged = false;
-						if (isUri) {							
-							map = getMapModel((URI) o);							
-						}
-						else {
-							map = (MapModel) o;
-						}
+					if(canceled()) return null;					 
+					for(URI uri : uris) {
+						System.out.println("uri: "+uri);
+						mapHasChanged = false;													
+						MapModel map = getMapModel(uri);
 						fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_against_p1")+getMapTitle(map)+TextUtils.getText("updating_against_p2"));
-						updateNodes(map.getRootNode(), updater);
-						if (isUri) {							
+						this.mapHasChanged = updater.updateMindmap(map);
+						if (this.mapHasChanged && !isMapOpen(uri)) {							
 							saveMap(map);
-							map.destroy();
-							count++;
-							fireProgressUpdate(100 * count / totalCount);
+							map.destroy();							
 						}
+						count++;
+						fireProgressUpdate(100 * count / totalCount);
 					}			
 				}
 				return null;
+			}
+			
+			private boolean isMapOpen(URI uri) {
+				URL url;
+				try {
+					url = WorkspaceUtils.resolveURI(uri).toURL();								
+					String mapExtensionKey = Controller.getCurrentController().getMapViewManager().checkIfFileIsAlreadyOpened(url);
+				
+					if (mapExtensionKey == null) {
+						return false;
+					}
+					else {
+						return true;
+					}
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+					return false;
+				}
 			}
 
 			private String getMapTitle(MapModel map) {
@@ -145,7 +174,16 @@ public class MindmapUpdateController {
 			}
 			
 			@Override
-		    protected void done() {			
+		    protected void done() {
+				NodeView.setModifyModelWithoutRepaint(false);				
+				for (MapModel map : getAllOpenMaps()) {
+				if (uris.contains(map.getFile().toURI())) {
+					NodeView nodeView = ((MapView) Controller.getCurrentController().getViewController().getMapView()).getNodeView(map.getRootNode());
+					nodeView.updateAll();
+				}
+				}
+				NodeView.setModifyModelWithoutRepaint(false);
+				
 				if(this.isCancelled() || Thread.currentThread().isInterrupted()){					
 					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("update_canceled"));
 				}
@@ -153,26 +191,8 @@ public class MindmapUpdateController {
 					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("update_complete"));
 				}
 				
+				
 			}
-			
-			private void updateNodes(NodeModel parent, AMindmapUpdater mindmapupdater) throws InterruptedException, InvocationTargetException {	
-				if (parent == null) {
-					return;
-				}
-				if (mindmapupdater.updateNode(parent)) {
-					this.mapHasChanged = true;
-				}
-				if (!isUri) {
-					count++;
-					fireProgressUpdate(100 * count / totalCount);
-					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, mindmapupdater.getTitle() + "           Updating node: " + count + " / " + totalCount);
-				}
-				for(NodeModel child : parent.getChildren()) {
-					updateNodes(child, mindmapupdater);
-					if(canceled()) return;
-				}
-			}
-
 			
 			private boolean canceled() throws InterruptedException{
 				Thread.sleep(1L);
@@ -199,22 +219,22 @@ public class MindmapUpdateController {
 				   );	
 			}
 			
-			@SuppressWarnings("unchecked")
-			private void computeTotalNodeCount(List<?> maps) {
-				for(MapModel map : (List<MapModel>) maps){
-					computeTotalNodeCount(map.getRootNode());
-				}					
-			}
-
-			private void computeTotalNodeCount(NodeModel node) {
-				if(node.isRoot()){
-					this.totalCount++;
-				}
-				this.totalCount += node.getChildCount();
-				for(NodeModel child : node.getChildren()){
-					computeTotalNodeCount(child);
-				}					
-			}
+//			@SuppressWarnings("unchecked")
+//			private void computeTotalNodeCount(List<?> maps) {
+//				for(MapModel map : (List<MapModel>) maps){
+//					computeTotalNodeCount(map.getRootNode());
+//				}					
+//			}
+//
+//			private void computeTotalNodeCount(NodeModel node) {
+//				if(node.isRoot()){
+//					this.totalCount++;
+//				}
+//				this.totalCount += node.getChildCount();
+//				for(NodeModel child : node.getChildren()){
+//					computeTotalNodeCount(child);
+//				}					
+//			}
 			
 			private MapModel getMapModel(URI uri) {
 				MapModel map = null;
@@ -258,11 +278,10 @@ public class MindmapUpdateController {
 				if (!this.mapHasChanged) {					
 					return;
 				}
-				System.out.println("saving map ");
+				System.out.println("saving map: "+map.getURL());
 				map.setSaved(false);
 				((MFileManager) UrlManager.getController()).save(map, false);				
 			}
 		};
 	}
-	
 }
