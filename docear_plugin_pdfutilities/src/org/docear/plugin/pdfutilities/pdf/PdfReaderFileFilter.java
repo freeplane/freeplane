@@ -14,6 +14,10 @@ public class PdfReaderFileFilter implements FileFilter {
 			return true;
 		}
 		
+		if(isPdfXChange(file)){
+			return true;
+		}
+		
 		if(isFoxit(file)){
 			return true;
 		}
@@ -27,6 +31,10 @@ public class PdfReaderFileFilter implements FileFilter {
 	
 	public boolean isFoxit(File file){
 		return file.getName().matches("[Ff][Oo][Xx].*[.][Ee][Xx][Ee]");
+	}
+	
+	public boolean isPdfXChange(File file){
+		return file.getName().matches("[Pp][Dd][Ff][Xx][Cc].*[.][Ee][Xx][Ee]");
 	}
 
 }

@@ -1,4 +1,4 @@
-<map version="0.9.0" dialect="docear 1.0" software_name="SciPlore_MindMapping" software_version="0.14" private="1" mapID="88c560da-0c67-49c7-870a-fa7c1b63bc38">
+<map version="0.9.0" docear_map_version="1.0" dialect="docear 1.0" software_name="SciPlore_MindMapping" software_version="0.14" private="1" mapID="88c560da-0c67-49c7-870a-fa7c1b63bc38">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <node TEXT="Welcome" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1322910607046" COLOR="#ffffff" BACKGROUND_COLOR="#0099cc">
 <font SIZE="16" BOLD="true" ITALIC="false"/>
@@ -137,7 +137,7 @@
 <node TEXT="Nothing - it&apos;s free and open source :-)" ID="ID_1850957007" CREATED="1322907418290" MODIFIED="1322999863352"/>
 </node>
 </node>
-<node TEXT="This is a free node" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_897735871" CREATED="1323259896025" MODIFIED="1323260126994" HGAP="-1107" VSHIFT="10">
+<node TEXT="This is a free node" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_897735871" CREATED="1323259896025" MODIFIED="1323419346888" HGAP="-1167" VSHIFT="140">
 <hook NAME="FreeNode"/>
 <font BOLD="true"/>
 <node ID="ID_455171254" CREATED="1323259941961" MODIFIED="1323260018869"><richcontent TYPE="NODE">
@@ -185,7 +185,7 @@
 <node TEXT="Feedback" ID="ID_210411846" CREATED="1322907550711" MODIFIED="1322910644877">
 <font BOLD="true"/>
 <node TEXT="Please let us know what we can do better" ID="ID_1039608161" CREATED="1322912169719" MODIFIED="1322912184452" LINK="#ID_1046976431"/>
-<node TEXT="Read what others like about Docear (Testimonials)" ID="ID_734818819" CREATED="1322912062238" MODIFIED="1322912083426" LINK="http://docear.org/software/testimonials/"/>
+<node TEXT="Read what others like about Docear (Testimonials)" ID="ID_734818819" CREATED="1322912062238" MODIFIED="1323419217994" LINK="http://docear.org/software/testimonials/"/>
 </node>
 <node TEXT="Usability" ID="ID_182288749" CREATED="1322907564736" MODIFIED="1322910644877">
 <font BOLD="true"/>
@@ -227,12 +227,12 @@
 <node TEXT="Help" POSITION="left" ID="ID_1046976431" CREATED="1322906802746" MODIFIED="1322910930433" BACKGROUND_COLOR="#8dc9fc">
 <font SIZE="14" BOLD="true"/>
 <edge COLOR="#006666" WIDTH="2"/>
-<node TEXT="Submit a Bug Report" ID="ID_402486912" CREATED="1322912203164" MODIFIED="1322999812535"/>
-<node TEXT="Tell us your ideas" ID="ID_647468086" CREATED="1322912212028" MODIFIED="1322912229663"/>
-<node TEXT="Ask a question" ID="ID_1698803512" CREATED="1322912230811" MODIFIED="1322912236707"/>
-<node TEXT="User Manual" ID="ID_1791784277" CREATED="1322912251555" MODIFIED="1322912255968"/>
-<node TEXT="FAQ" ID="ID_418884785" CREATED="1322912256419" MODIFIED="1322912260152"/>
-<node TEXT="Buy a Feature" ID="ID_850664765" CREATED="1322912265218" MODIFIED="1322912268049"/>
+<node TEXT="User Manual" ID="ID_402486912" CREATED="1322912203164" MODIFIED="1323419112224" LINK="http://www.docear.org/support/user-manual/"/>
+<node TEXT="Tell us your ideas" ID="ID_647468086" CREATED="1322912212028" MODIFIED="1323419083306" LINK="http://www.docear.org/support/idea-tracker/"/>
+<node TEXT="Ask a question" ID="ID_1698803512" CREATED="1322912230811" MODIFIED="1323419165946" LINK="http://www.docear.org/support/get-support/"/>
+<node TEXT="Submit a Bug Report" ID="ID_1791784277" CREATED="1322912251555" MODIFIED="1323419137090" LINK="http://www.docear.org/support/bug-report/"/>
+<node TEXT="FAQ" ID="ID_418884785" CREATED="1322912256419" MODIFIED="1323419159561" LINK="http://www.docear.org/support/faq-frequently-asked-questions/"/>
+<node TEXT="Buy a Feature" ID="ID_850664765" CREATED="1322912265218" MODIFIED="1323419184426" LINK="http://www.docear.org/support/buy-a-feature/"/>
 </node>
 <node TEXT="Examples" POSITION="left" ID="ID_703448322" CREATED="1322906814721" MODIFIED="1322910930433" BACKGROUND_COLOR="#8dc9fc">
 <font SIZE="14" BOLD="true"/>
@@ -256,7 +256,7 @@
 </node>
 </node>
 <node TEXT="If the attributes annoy you, you can hide them" ID="ID_282700923" CREATED="1323264106920" MODIFIED="1323264171012" COLOR="#000000" BACKGROUND_COLOR="#ffff00"/>
-<node TEXT="Simply select in the menu &quot;View -&gt; Node Attributes -&gt; Hide All&quot;" ID="ID_1422384115" CREATED="1323264132660" MODIFIED="1323264171011" COLOR="#000000" BACKGROUND_COLOR="#ffff00"/>
+<node TEXT="Simply select  &quot;View -&gt; Node Attributes -&gt; Hide All&quot;" ID="ID_1422384115" CREATED="1323264132660" MODIFIED="1323419567161" COLOR="#000000" BACKGROUND_COLOR="#ffff00"/>
 </node>
 <node TEXT="Images" FOLDED="true" ID="ID_1845462789" CREATED="1322909991251" MODIFIED="1322909993183">
 <node TEXT="You can add images to a node" ID="ID_1616796999" CREATED="1323258374189" MODIFIED="1323258452250"/>
@@ -273,8 +273,30 @@
 </node>
 </node>
 <node TEXT="LaTeX" FOLDED="true" ID="ID_1513162719" CREATED="1322909993491" MODIFIED="1322909995723">
-<node TEXT="Docear can display LaTeX code" ID="ID_701321157" CREATED="1323258526550" MODIFIED="1323258533613"/>
-<node TEXT="Example" ID="ID_1117394712" CREATED="1323258539412" MODIFIED="1323258643483"/>
+<node TEXT="With Docear you use LaTeX" ID="ID_701321157" CREATED="1323258526550" MODIFIED="1323419310058"/>
+<node TEXT="Examples" ID="ID_1117394712" CREATED="1323258539412" MODIFIED="1323419285650">
+<node TEXT="Limes" ID="ID_1864216888" CREATED="1290021668094" MODIFIED="1290021671938">
+<hook EQUATION="\lim_{x \to \infty} \exp(-x) = 0" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+<node TEXT="Fractions" ID="ID_136570750" CREATED="1290021775423" MODIFIED="1290021779533">
+<hook EQUATION=" \frac{n!}{k!(n-k)!} = \binom{n}{k}" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+<node TEXT="Roots" ID="ID_792588810" CREATED="1290021832424" MODIFIED="1290021835580">
+<hook EQUATION="\sqrt[n]{1+x+x^2+x^3+\ldots}" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+<node TEXT="Sum" ID="ID_1304861695" CREATED="1290021938629" MODIFIED="1290021970207">
+<hook EQUATION=" \sum_{\substack{&#xa;   0&lt;i&lt;m \\&#xa;   0&lt;j&lt;n&#xa;  }}&#xa; P(i,j)" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+<node TEXT="Integtral" ID="ID_308113122" CREATED="1290021961394" MODIFIED="1290021972285">
+<hook EQUATION=" \int_0^\infty e^{-x}\,dx" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+<node TEXT="Matrix" ID="ID_481316229" CREATED="1290022032176" MODIFIED="1290022036551">
+<hook EQUATION=" A_{m,n} =&#xa; \begin{pmatrix}&#xa;  a_{1,1} &amp; a_{1,2} &amp; \cdots &amp; a_{1,n} \\&#xa;  a_{2,1} &amp; a_{2,2} &amp; \cdots &amp; a_{2,n} \\&#xa;  \vdots  &amp; \vdots  &amp; \ddots &amp; \vdots  \\&#xa;  a_{m,1} &amp; a_{m,2} &amp; \cdots &amp; a_{m,n}&#xa; \end{pmatrix}" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+<node TEXT="Chemistry" ID="ID_154100943" CREATED="1290022408560" MODIFIED="1290022413326">
+<hook EQUATION="6CO_2+6H_2O\longrightarrow C_6H_{12}O_6+6O_2" NAME="plugins/latex/LatexNodeHook.properties"/>
+</node>
+</node>
 </node>
 <node TEXT="Summary Nodes" FOLDED="true" ID="ID_130342491" CREATED="1323259526489" MODIFIED="1323259530806">
 <node TEXT="To annotate multiple nodes..." ID="ID_1287672899" CREATED="1323259532355" MODIFIED="1323259550779">
@@ -295,7 +317,9 @@
 <node TEXT="Double click somewhere in the mind map" ID="ID_1226802166" CREATED="1323259674362" MODIFIED="1323259684445"/>
 <node TEXT="or select the option on the menu" ID="ID_649461033" CREATED="1323259685577" MODIFIED="1323259690943"/>
 <node TEXT="to create a free floating node" ID="ID_971039626" CREATED="1323259691336" MODIFIED="1323259696744"/>
-<node TEXT="An example is on the left side" ID="ID_525837283" CREATED="1323259698182" MODIFIED="1323259929694"/>
+<node TEXT="An example is on the left side" ID="ID_525837283" CREATED="1323259698182" MODIFIED="1323419341926">
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_897735871" STARTINCLINATION="325;0;" ENDINCLINATION="325;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+</node>
 </node>
 <node TEXT="Icons" FOLDED="true" ID="ID_1915898063" CREATED="1322910047851" MODIFIED="1322910049264">
 <node TEXT="You can assign icons to nodes" ID="ID_1318535933" CREATED="1323260138295" MODIFIED="1323260162796"/>
@@ -320,7 +344,7 @@
 <node TEXT="You can add hyperlinks" ID="ID_1850169993" CREATED="1323261282999" MODIFIED="1323261290315">
 <node TEXT="www.docear.org" ID="ID_269140470" CREATED="1323261304272" MODIFIED="1323261342900" LINK="http://www.docear.org"/>
 </node>
-<node TEXT="You can add internal links to other nodes in this mind map" ID="ID_634699852" CREATED="1323261346219" MODIFIED="1323261362306">
+<node TEXT="You can add internal links to&#xa;other nodes in this mind map" ID="ID_634699852" CREATED="1323261346219" MODIFIED="1323419364544">
 <node TEXT="Click the green arrow" ID="ID_1774839721" CREATED="1323261365350" MODIFIED="1323261385631" LINK="#ID_1643291026"/>
 </node>
 <node TEXT="You can add visual links" ID="ID_1921629847" CREATED="1323261418441" MODIFIED="1323261425205">
@@ -393,11 +417,13 @@
 <node TEXT="Again, you can use HTML code to format them" ID="ID_1721266520" CREATED="1323260831689" MODIFIED="1323260838925"/>
 <node TEXT="Or you use the build-in editor" ID="ID_1080334653" CREATED="1323260839174" MODIFIED="1323260847390"/>
 <node TEXT="Examples" ID="ID_1153374301" CREATED="1323260707876" MODIFIED="1323260709400">
-<node TEXT="Example 1" ID="ID_559653108" CREATED="1323260710627" MODIFIED="1323260743179" COLOR="#ff0000"/>
-<node TEXT="Example 2" ID="ID_729680291" CREATED="1323260712553" MODIFIED="1323260754694">
+<node TEXT="Example 1" ID="ID_559653108" CREATED="1323260710627" MODIFIED="1323419611915" COLOR="#ff0000" FORMAT="">
+<edge STYLE="horizontal"/>
+</node>
+<node TEXT="Example 2" ID="ID_729680291" CREATED="1323260712553" MODIFIED="1323419590845" STYLE="bubble" HGAP="70" VSHIFT="20">
 <font NAME="Segoe Script" SIZE="20"/>
 </node>
-<node ID="ID_784567414" CREATED="1323260715062" MODIFIED="1323260771582"><richcontent TYPE="NODE">
+<node ID="ID_784567414" CREATED="1323260715062" MODIFIED="1323419587286" COLOR="#ffffff" BACKGROUND_COLOR="#3399ff" HGAP="40" VSHIFT="20"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -411,7 +437,7 @@
 </html>
 </richcontent>
 </node>
-<node ID="ID_942602768" CREATED="1323260717252" MODIFIED="1323260827136"><richcontent TYPE="NODE">
+<node ID="ID_942602768" CREATED="1323260717252" MODIFIED="1323419584527" HGAP="40" VSHIFT="20"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -424,14 +450,22 @@
   </body>
 </html>
 </richcontent>
+<edge STYLE="hide_edge"/>
 </node>
 </node>
+</node>
+<node TEXT="Auto Numbering" FOLDED="true" ID="ID_195571125" CREATED="1323419631226" MODIFIED="1323419634615">
+<node TEXT="Docear" ID="ID_1899637700" CREATED="1323419635322" MODIFIED="1323419667744" NUMBERED="true"/>
+<node TEXT="can" ID="ID_493071469" CREATED="1323419638666" MODIFIED="1323419639575" NUMBERED="true"/>
+<node TEXT="auto" ID="ID_200987983" CREATED="1323419639930" MODIFIED="1323419641640" NUMBERED="true"/>
+<node TEXT="number" ID="ID_1576241944" CREATED="1323419641962" MODIFIED="1323419644234" NUMBERED="true"/>
+<node TEXT="nodes" ID="ID_150087640" CREATED="1323419645986" MODIFIED="1323419647367" NUMBERED="true"/>
 </node>
 </node>
 <node TEXT="Keyboard Shortcuts" FOLDED="true" ID="ID_836153271" CREATED="1322911798182" MODIFIED="1322911803407">
 <font BOLD="true"/>
 <node TEXT="Using keyboard shortcuts makes your life much easier" ID="ID_1641903022" CREATED="1322912461754" MODIFIED="1322912490479"/>
-<node TEXT="Here are the most important ones" FOLDED="true" ID="ID_1533218274" CREATED="1322912490818" MODIFIED="1322912497366">
+<node TEXT="Here are the most important ones" ID="ID_1533218274" CREATED="1322912490818" MODIFIED="1322912497366">
 <node TEXT="F2" ID="ID_184652233" CREATED="1323261836555" MODIFIED="1323261924441">
 <font NAME="Courier New"/>
 <node TEXT="Rename a node" ID="ID_527031514" CREATED="1323261927851" MODIFIED="1323261942893"/>
@@ -464,7 +498,7 @@
 <node TEXT="Drag&amp;Drop the left corner of a node" ID="ID_1620693421" CREATED="1323262118533" MODIFIED="1323262129325">
 <node TEXT="This will move the node to a free postion" ID="ID_1932019998" CREATED="1323262132244" MODIFIED="1323262141379"/>
 </node>
-<node TEXT="Drag&amp;Drop the center of a node" FOLDED="true" ID="ID_448465592" CREATED="1323262143077" MODIFIED="1323263781732">
+<node TEXT="Drag&amp;Drop the center of a node" ID="ID_448465592" CREATED="1323262143077" MODIFIED="1323263781732">
 <node TEXT="This will attach the node to another node" ID="ID_43166963" CREATED="1323263788946" MODIFIED="1323263801431"/>
 </node>
 </node>
