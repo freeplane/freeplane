@@ -27,7 +27,7 @@ import org.jdesktop.swingworker.SwingWorker;
 
 public class MindmapUpdateController {
 	private final ArrayList<AMindmapUpdater> updaters = new ArrayList<AMindmapUpdater>();
-
+	
 	public void addMindmapUpdater(AMindmapUpdater updater) {
 		this.updaters.add(updater);
 	}
@@ -70,10 +70,14 @@ public class MindmapUpdateController {
 	}
 
 	public boolean updateCurrentMindmap() {
+		return updateCurrentMindmap(false);
+	}
+
+	public boolean updateCurrentMindmap(boolean closeWhenDone) {
 		List<URI> maps = new ArrayList<URI>();
 		maps.add(Controller.getCurrentController().getMap().getFile().toURI());
 
-		return updateMindmaps(maps);
+		return updateMindmaps(maps, closeWhenDone);
 	}
 
 	public boolean updateMindmapsInList(List<MapModel> maps) {
@@ -88,7 +92,11 @@ public class MindmapUpdateController {
 	}
 
 	public boolean updateMindmaps(List<URI> uris) {
-		SwingWorker<Void, Void> thread = getUpdateThread(uris);
+		return updateMindmaps(uris, false);
+	}
+	
+	public boolean updateMindmaps(List<URI> uris, boolean closeWhenDone) {
+		SwingWorker<Void, Void> thread = getUpdateThread(uris, closeWhenDone);
 
 		SwingWorkerDialog workerDialog = new SwingWorkerDialog(Controller.getCurrentController().getViewController().getJFrame());
 		workerDialog.setHeadlineText(TextUtils.getText("updating_mindmaps_headline"));
@@ -100,6 +108,10 @@ public class MindmapUpdateController {
 	}
 
 	public SwingWorker<Void, Void> getUpdateThread(final List<URI> uris) {
+		return getUpdateThread(uris, false);
+	}
+
+	public SwingWorker<Void, Void> getUpdateThread(final List<URI> uris, final boolean closeWhenDone) {
 
 		return new SwingWorker<Void, Void>() {
 			private int totalCount;
@@ -125,14 +137,15 @@ public class MindmapUpdateController {
 					if (canceled())
 						return null;
 					for (URI uri : uris) {
-						fireStatusUpdate(SwingWorkerDialog.DETAILS_LOG_TEXT, null, TextUtils.getText("updating_references_for_map")+uri.getPath());
+						fireStatusUpdate(SwingWorkerDialog.DETAILS_LOG_TEXT, null,
+								TextUtils.getText("updating_references_for_map") + uri.getPath());
 						mapHasChanged = false;
 						MapModel map = getMapModel(uri);
 						fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_against_p1")
 								+ getMapTitle(map) + TextUtils.getText("updating_against_p2"));
 						this.mapHasChanged = updater.updateMindmap(map);
 						fireProgressUpdate(100 * count / totalCount);
-						if (this.mapHasChanged && !isMapOpen(uri)) {							
+						if (this.mapHasChanged && !isMapOpen(uri)) {
 							saveMap(map);
 							map.destroy();
 						}
@@ -188,15 +201,6 @@ public class MindmapUpdateController {
 							opened = true;
 						}
 					}
-					try {
-						
-						//firePropertyChange(SwingWorkerDialog.DETAILS_LOG_TEXT, null, TextUtils.getText("updating_view_for_map") + mapUri.getPath());
-					}
-					catch(Exception e) {
-						e.printStackTrace();
-					}
-
-					System.out.println("repaint viewModel.uri: " + view.getModel().getFile().toURI());
 					if (opened) {
 						NodeView nodeView = view.getNodeView(view.getModel().getRootNode());
 						nodeView.updateAll();
@@ -208,6 +212,15 @@ public class MindmapUpdateController {
 				}
 				else {
 					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("update_complete"));
+				}
+
+				if (closeWhenDone) {
+					try {
+						this.firePropertyChange(SwingWorkerDialog.CLOSE, null, null);
+					}
+					catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 
 			}
@@ -277,8 +290,9 @@ public class MindmapUpdateController {
 				if (!this.mapHasChanged) {
 					return;
 				}
-				fireStatusUpdate(SwingWorkerDialog.DETAILS_LOG_TEXT, null, TextUtils.getText("update_references_save_map")+map.getURL().getPath());
-				
+				fireStatusUpdate(SwingWorkerDialog.DETAILS_LOG_TEXT, null, TextUtils.getText("update_references_save_map")
+						+ map.getURL().getPath());
+
 				System.out.println("saving map: " + map.getURL());
 				map.setSaved(false);
 				((MFileManager) UrlManager.getController()).save(map, false);

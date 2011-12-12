@@ -6,7 +6,11 @@ import net.sf.jabref.DatabaseChangeListener;
 import net.sf.jabref.export.DocearReferenceUpdateController;
 
 import org.docear.plugin.bibtex.JabRefAttributes;
+import org.docear.plugin.bibtex.ReferenceUpdater;
 import org.docear.plugin.bibtex.ReferencesController;
+import org.docear.plugin.core.mindmap.MindmapUpdateController;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.jdesktop.swingworker.SwingWorker;
@@ -16,36 +20,45 @@ public class JabRefChangeListener implements DatabaseChangeListener {
 	public void databaseChanged(DatabaseChangeEvent e) {
 		if (DocearReferenceUpdateController.isLocked()) {		
 			return;
-		}		
-		DocearReferenceUpdateController.lock();
-
-		BibtexEntry entry = e.getEntry();
-		
-		NodeModel root;
-		
-		try {
-			root = Controller.getCurrentModeController().getMapController().getRootNode();
 		}
-		catch(NullPointerException ex) {
-			//no database open
+		MapModel currentMap = Controller.getCurrentController().getMap();
+		if (currentMap == null) {
 			return;
 		}
+		
+		MindmapUpdateController mindmapUpdateController = new MindmapUpdateController();
+		mindmapUpdateController.addMindmapUpdater(new ReferenceUpdater(TextUtils.getText("update_references_open_mindmaps")));
+		mindmapUpdateController.updateCurrentMindmap(true);
+		
+		DocearReferenceUpdateController.lock();
 
-		if (e.getType() == DatabaseChangeEvent.REMOVED_ENTRY) {
-			System.out.println("debug removed: " + e.getEntry().getCiteKey());
-			deleteNodeAttributes(root, entry);
-		}
-		else if (e.getType() == DatabaseChangeEvent.CHANGED_ENTRY) {
-			ReferencesController.getController().setInChange(Controller.getCurrentController().getMap());
-			updateNodeAttributes(root, entry);
-		}
-		else if (e.getType() == DatabaseChangeEvent.CHANGING_ENTRY) {
-			System.out.println("debug changing: " + e.getEntry().getCiteKey());
-		}
-		else if (e.getType() == DatabaseChangeEvent.ADDED_ENTRY) {
-			ReferencesController.getController().setInAdd(Controller.getCurrentController().getMap());
-			System.out.println("debug added: " + e.getEntry().getCiteKey());
-		}
+//		BibtexEntry entry = e.getEntry();
+//		
+//		NodeModel root;
+//		
+//		try {
+//			root = Controller.getCurrentModeController().getMapController().getRootNode();
+//		}
+//		catch(NullPointerException ex) {
+//			//no database open
+//			return;
+//		}
+//
+//		if (e.getType() == DatabaseChangeEvent.REMOVED_ENTRY) {
+//			System.out.println("debug removed: " + e.getEntry().getCiteKey());
+//			deleteNodeAttributes(root, entry);
+//		}
+//		else if (e.getType() == DatabaseChangeEvent.CHANGED_ENTRY) {
+//			ReferencesController.getController().setInChange(Controller.getCurrentController().getMap());
+//			updateNodeAttributes(root, entry);
+//		}
+//		else if (e.getType() == DatabaseChangeEvent.CHANGING_ENTRY) {
+//			System.out.println("debug changing: " + e.getEntry().getCiteKey());
+//		}
+//		else if (e.getType() == DatabaseChangeEvent.ADDED_ENTRY) {
+//			ReferencesController.getController().setInAdd(Controller.getCurrentController().getMap());
+//			System.out.println("debug added: " + e.getEntry().getCiteKey());
+//		}
 
 		DocearReferenceUpdateController.unlock();
 	}

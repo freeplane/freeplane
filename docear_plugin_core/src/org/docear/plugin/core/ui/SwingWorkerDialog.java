@@ -44,6 +44,7 @@ public class SwingWorkerDialog extends JDialog implements PropertyChangeListener
 	public static final String PROGRESS_BAR_TEXT = "progress_bar_text";
 	public static final String DETAILS_LOG_TEXT = "details_log_text";
 	public static final String REPAINT = "repaint";
+	public static final String CLOSE = "close";
 	/**
 	 * 
 	 */
@@ -251,6 +252,9 @@ public class SwingWorkerDialog extends JDialog implements PropertyChangeListener
 	}
 
 	public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getPropertyName().equals(CLOSE)) {
+			this.dispose();
+		}
 		if(evt.getPropertyName().equals(PROGRESS)){
 			progressBar.setValue((Integer)evt.getNewValue());
 		}
