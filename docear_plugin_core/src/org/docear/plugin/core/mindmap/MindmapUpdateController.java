@@ -125,20 +125,22 @@ public class MindmapUpdateController {
 					if (canceled())
 						return null;
 					for (URI uri : uris) {
-						System.out.println("uri: " + uri);
+						fireStatusUpdate(SwingWorkerDialog.DETAILS_LOG_TEXT, null, TextUtils.getText("updating_references_for_map")+uri.getPath());
 						mapHasChanged = false;
 						MapModel map = getMapModel(uri);
 						fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_against_p1")
 								+ getMapTitle(map) + TextUtils.getText("updating_against_p2"));
 						this.mapHasChanged = updater.updateMindmap(map);
-						if (this.mapHasChanged && !isMapOpen(uri)) {
+						fireProgressUpdate(100 * count / totalCount);
+						if (this.mapHasChanged && !isMapOpen(uri)) {							
 							saveMap(map);
 							map.destroy();
 						}
 						count++;
-						fireProgressUpdate(100 * count / totalCount);
+
 					}
 				}
+				fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_references_mapviews"));
 				return null;
 			}
 
@@ -176,17 +178,25 @@ public class MindmapUpdateController {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected void done() {
-				NodeView.setModifyModelWithoutRepaint(false);				
-				for (MapView view :(List<MapView>) Controller.getCurrentController().getViewController()
-						.getMapViewManager().getMapViewVector()) {
+				NodeView.setModifyModelWithoutRepaint(false);
+				for (MapView view : (List<MapView>) Controller.getCurrentController().getViewController().getMapViewManager()
+						.getMapViewVector()) {
 					boolean opened = false;
+					URI mapUri = view.getModel().getFile().toURI();
 					for (URI uri : uris) {
-						if (uri.equals(view.getModel().getFile().toURI())) {
+						if (uri.equals(mapUri)) {
 							opened = true;
 						}
 					}
-					
-					System.out.println("repaint viewModel.uri: "+view.getModel().getFile().toURI());
+					try {
+						
+						//firePropertyChange(SwingWorkerDialog.DETAILS_LOG_TEXT, null, TextUtils.getText("updating_view_for_map") + mapUri.getPath());
+					}
+					catch(Exception e) {
+						e.printStackTrace();
+					}
+
+					System.out.println("repaint viewModel.uri: " + view.getModel().getFile().toURI());
 					if (opened) {
 						NodeView nodeView = view.getNodeView(view.getModel().getRootNode());
 						nodeView.updateAll();
@@ -223,23 +233,6 @@ public class MindmapUpdateController {
 					}
 				});
 			}
-
-			// @SuppressWarnings("unchecked")
-			// private void computeTotalNodeCount(List<?> maps) {
-			// for(MapModel map : (List<MapModel>) maps){
-			// computeTotalNodeCount(map.getRootNode());
-			// }
-			// }
-			//
-			// private void computeTotalNodeCount(NodeModel node) {
-			// if(node.isRoot()){
-			// this.totalCount++;
-			// }
-			// this.totalCount += node.getChildCount();
-			// for(NodeModel child : node.getChildren()){
-			// computeTotalNodeCount(child);
-			// }
-			// }
 
 			private MapModel getMapModel(URI uri) {
 				MapModel map = null;
@@ -280,10 +273,12 @@ public class MindmapUpdateController {
 
 			}
 
-			private void saveMap(MapModel map) {
+			private void saveMap(MapModel map) throws InterruptedException, InvocationTargetException {
 				if (!this.mapHasChanged) {
 					return;
 				}
+				fireStatusUpdate(SwingWorkerDialog.DETAILS_LOG_TEXT, null, TextUtils.getText("update_references_save_map")+map.getURL().getPath());
+				
 				System.out.println("saving map: " + map.getURL());
 				map.setSaved(false);
 				((MFileManager) UrlManager.getController()).save(map, false);
