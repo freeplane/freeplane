@@ -261,8 +261,7 @@ public class JabRefAttributes {
 	
 	public boolean setReferenceToNode(Reference reference, NodeModel node) {
 		NodeUtils.setAttributeValue(node, reference.getKey().getName(), reference.getKey().getValue(), false);
-		updateReferenceToNode(reference, node);
-		return true;
+		return updateReferenceToNode(reference, node);		
 	}
 
 
