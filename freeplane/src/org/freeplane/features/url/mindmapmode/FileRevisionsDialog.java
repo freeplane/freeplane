@@ -54,6 +54,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.url.mindmapmode.MFileManager.AlternativeFileMode;
 
 /**
  * @author vboerchers
@@ -80,9 +81,9 @@ class FileRevisionsDialog extends JDialog {
 		private static final long serialVersionUID = 1L;
 
 		public RevisionTable(final Object[][] data, int selectedRow) {
-			super(data, new Object[] { TextUtils.getText(FileRevisionsDialog.key("file_name")),
-			        TextUtils.getText(FileRevisionsDialog.key("file_size")),
-			        TextUtils.getText(FileRevisionsDialog.key("file_last_modified")) });
+			super(data, new Object[] { TextUtils.getText(key("file_name")),
+			        TextUtils.getText(key("file_size")),
+			        TextUtils.getText(key("file_last_modified")) });
 			int width = Toolkit.getDefaultToolkit().getScreenSize().width * 2 / 3;
 			getColumnModel().getColumn(0).setPreferredWidth((int) (width * 0.7));
 			getColumnModel().getColumn(1).setPreferredWidth((int) (width * 0.1));
@@ -93,6 +94,28 @@ class FileRevisionsDialog extends JDialog {
 			setDefaultRenderer(Object.class, renderer);
 			setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			setRowSelectionInterval(selectedRow, selectedRow);
+			getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+				public void valueChanged(final ListSelectionEvent event) {
+					// Update the word field if a suggestion is click
+					if (!event.getValueIsAdjusting()) {
+						final ListSelectionModel lsm = (ListSelectionModel) event.getSource();
+						final boolean enable = !(lsm.isSelectionEmpty());
+						if (enable) {
+							final FileWrapper fileWrapper = (FileWrapper) getModel().getValueAt(getSelectedRow(), 0);
+							if (file.equals(fileWrapper.getFile())) {
+								setButtonOpenDefault();
+							}
+							else {
+								setButtonOpenRestore(fileWrapper);
+							}
+							setSelectedFile(fileWrapper.getFile());
+						}
+						else {
+							setButtonOpenDefault();
+						}
+					}
+				}
+			});
 			addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
 					if (e.getClickCount() >= 2) {
@@ -105,6 +128,16 @@ class FileRevisionsDialog extends JDialog {
 			});
 		}
 
+		private void setButtonOpenDefault() {
+			MenuBuilder.setLabelAndMnemonic(btnRestore, TextUtils.getRawText(key("open")));
+			btnRestore.setToolTipText(TextUtils.format(key("open.tooltip")));
+		}
+
+		private void setButtonOpenRestore(final FileWrapper fileWrapper) {
+			MenuBuilder.setLabelAndMnemonic(btnRestore, TextUtils.getRawText(key("restore")));
+			btnRestore.setToolTipText(TextUtils.format(key("restore.tooltip"),
+			    file.getName(), fileWrapper.toString()));
+		}
 		private final DefaultTableCellRenderer renderer = new DefaultTableCellRenderer() {
 			private static final long serialVersionUID = 1L;
 
@@ -134,7 +167,9 @@ class FileRevisionsDialog extends JDialog {
 	}
 
 	private static final long serialVersionUID = 1L;
-	private final static String KEY_BASE = "FileRevisionsDialog";
+	private final static String ALL_KEY_BASE = "FileRevisionsDialog";
+	private final static String AUTOSAVE_KEY_BASE = "NewerFileRevisionsFoundDialog";
+	private String keyBase;
 	private JButton btnRestore;
 	private JButton btnSkip;
 	private boolean cancelled;
@@ -151,8 +186,13 @@ class FileRevisionsDialog extends JDialog {
 		}
 	}
 
-	public FileRevisionsDialog(final File file, final File[] revisions) {
-		super(UITools.getFrame(), TextUtils.getText(FileRevisionsDialog.key("title")), true);
+	public FileRevisionsDialog(final File file, final File[] revisions, AlternativeFileMode mode) {
+		super(UITools.getFrame(), true);
+		if(mode == AlternativeFileMode.ALL)
+			keyBase = ALL_KEY_BASE;
+		else if(mode == AlternativeFileMode.AUTOSAVE)
+			keyBase = AUTOSAVE_KEY_BASE;
+		setTitle(TextUtils.getText(key("title")));
 		UITools.backOtherWindows();
 		this.selectedFile = this.file = file;
 		setBackground(Color.white);
@@ -175,7 +215,7 @@ class FileRevisionsDialog extends JDialog {
 	}
 
 	private Component createQuestion() {
-		final String text = TextUtils.format(FileRevisionsDialog.key("question"), file.getName());
+		final String text = TextUtils.format(key("question"), file.getName());
 		final String html = HtmlUtils.plainToHTML(text);
 		final JLabel textArea = new JLabel(html);
 		textArea.setAlignmentX(0.5f);
@@ -184,8 +224,8 @@ class FileRevisionsDialog extends JDialog {
 		return textArea;
 	}
 
-	private static String key(final String appendix) {
-		return KEY_BASE + "." + appendix;
+	private String key(final String appendix) {
+		return keyBase + "." + appendix;
 	}
 
 	private JTable createTable(final File[] revisions) {
@@ -222,9 +262,8 @@ class FileRevisionsDialog extends JDialog {
 		controllerBox.setBorder(new EmptyBorder(5, 0, 5, 0));
 		final CloseAction closeAction = new CloseAction();
 		controllerBox.add(Box.createHorizontalGlue());
-		btnSkip = createButton(FileRevisionsDialog.key("cancel"), null, closeAction);
-		btnRestore = createButton(FileRevisionsDialog.key("restore"),
-			FileRevisionsDialog.key("restore.tooltip"), closeAction);
+		btnSkip = createButton(key("cancel"), null, closeAction);
+		btnRestore = createButton(key("open"), key("open.tooltip"), closeAction);
 		controllerBox.add(btnRestore);
 		controllerBox.add(Box.createHorizontalStrut(10));
 		controllerBox.add(btnSkip);

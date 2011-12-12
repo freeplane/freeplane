@@ -126,6 +126,7 @@ public interface IMapViewManager {
 	 * nothing + returns false.
 	 */
 	public boolean tryToChangeToMapView(final String mapView);
+	public boolean tryToChangeToMapView(final URL url) throws MalformedURLException;
 
 	public void updateMapViewName();
 

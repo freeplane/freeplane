@@ -79,6 +79,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.features.url.mindmapmode.MFileManager.AlternativeFileMode;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
@@ -123,15 +124,20 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_version_updater.xslt";
 	private static File singleBackupDirectory;
 
-	private File[] findFileRevisions(final File file, final File backupDir) {
-		final Pattern pattern = Pattern.compile("^" + Pattern.quote(backupFileName(file)) + "\\.+\\d+\\.(" + BACKUP_EXTENSION + "|"
-		        + DoAutomaticSave.AUTOSAVE_EXTENSION + ")");
+	private File[] findFileRevisions(final File file, final File backupDir, final AlternativeFileMode mode) {
+		final String fileExtensionPattern;
+		if(mode == AlternativeFileMode.ALL)
+			fileExtensionPattern = "(" + BACKUP_EXTENSION + "|"+ DoAutomaticSave.AUTOSAVE_EXTENSION + ")";
+		else
+			fileExtensionPattern = DoAutomaticSave.AUTOSAVE_EXTENSION;
+		final Pattern pattern = Pattern.compile("^" + Pattern.quote(backupFileName(file)) + "\\.+\\d+\\." + fileExtensionPattern);
 		if (backupDir.exists()) {
 			final File[] fileList = backupDir.listFiles(new java.io.FileFilter() {
 				public boolean accept(final File f) {
 					final String name = f.getName();
-					return pattern.matcher(name).matches() && f.isFile();
+					return pattern.matcher(name).matches() && f.isFile()
 					        // && (f.lastModified() > (file.lastModified() - DEBUG_OFFSET) || name.endsWith(BACKUP_EXTENSION))
+							&&(mode == AlternativeFileMode.ALL || f.lastModified() > (file.lastModified() - DEBUG_OFFSET)); 
 				}
 			});
 			return fileList;
@@ -401,14 +407,14 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
         }
 	}
 
-	public URL getAlternativeURL(final URL url){
+	public URL getAlternativeURL(final URL url, AlternativeFileMode mode){
 		try {
 	        final File file = Compat.urlToFile(url);
 	        if(file == null){
-	        	return null;
+	        	return url;
 	        }
 	        File alternativeFile;
-	        alternativeFile = getAlternativeFile(file);
+	        alternativeFile = getAlternativeFile(file, mode);
 	        if(alternativeFile != null)
 		        return Compat.fileToUrl(alternativeFile);
 	        else
@@ -421,11 +427,18 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
         return null;
 	}
 
-	public File getAlternativeFile(final File file){
-		final File[] revisions = findFileRevisions(file, MFileManager.backupDir(file));
-		final FileRevisionsDialog newerFileRevisionsFoundDialog = new FileRevisionsDialog(
-			file, revisions);
+	public enum AlternativeFileMode{ALL, AUTOSAVE};
+	public File getAlternativeFile(final File file, AlternativeFileMode mode){
+		final File[] revisions = findFileRevisions(file, MFileManager.backupDir(file), mode);
+		if(revisions.length == 0 && mode == AlternativeFileMode.AUTOSAVE)
+			return file;
+		final FileRevisionsDialog newerFileRevisionsFoundDialog = new FileRevisionsDialog(file, revisions, mode);
 		final File selectedFile = newerFileRevisionsFoundDialog.getSelectedFile();
+		if(file.equals(selectedFile)){
+			boolean success = file.setLastModified(System.currentTimeMillis());
+			if (!success)
+				LogUtils.warn("Unable to set the last modification time for " + file);
+		}
 		return selectedFile;
 	}
 

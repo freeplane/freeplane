@@ -507,6 +507,15 @@ public class MapViewController implements IMapViewManager {
 		}
 	}
 
+	public boolean tryToChangeToMapView(URL url) throws MalformedURLException {
+		final String mapExtensionKey = checkIfFileIsAlreadyOpened(url);
+		if (mapExtensionKey != null) {
+			tryToChangeToMapView(mapExtensionKey);
+			return true;
+		}
+		return false;
+    }
+
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#updateMapViewName()
 	 */

@@ -582,7 +582,22 @@ public class MapController extends SelectionController {
 	}
 
 	public boolean newMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
-		return newMap(url, LoadingMode.EDIT);
+        	final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+        	if (mapViewManager.tryToChangeToMapView(url))
+        		return false;
+        	try {
+        	if (AddOnsController.getController().installIfAppropriate(url))
+        		return false;
+        	Controller.getCurrentController().getViewController().setWaitingCursor(true);
+        	final MapModel newModel = newModel(null);
+        	UrlManager.getController().load(url, newModel);
+        	fireMapCreated(newModel);
+        	newMapView(newModel);
+        	return true;
+        }
+        finally {
+        	Controller.getCurrentController().getViewController().setWaitingCursor(false);
+        }
 	}
 
 	public boolean restoreCurrentMap() throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
@@ -602,55 +617,39 @@ public class MapController extends SelectionController {
 	}
 
 	public boolean newUntitledMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
-		return newMap(url, LoadingMode.UNTITLED);
+        try {
+        	Controller.getCurrentController().getViewController().setWaitingCursor(true);
+        	final MapModel newModel = newModel(null);
+        	UrlManager.getController().load(url, newModel);
+        	newModel.setURL(null);
+        	fireMapCreated(newModel);
+        	newMapView(newModel);
+        	return true;
+        }
+        finally {
+        	Controller.getCurrentController().getViewController().setWaitingCursor(false);
+        }
 	}
 
 	public boolean newDocumentationMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
-		return newMap(url, LoadingMode.DOCU);
+		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+		if (mapViewManager.tryToChangeToMapView(url))
+			return false;
+        try {
+        	Controller.getCurrentController().getViewController().setWaitingCursor(true);
+        	final MapModel newModel = newModel(null);
+        	UrlManager.getController().load(url, newModel);
+        	newModel.addExtension(DocuMapAttribute.instance);
+        	newModel.setReadOnly(true);
+        	fireMapCreated(newModel);
+        	newMapView(newModel);
+        	return true;
+        }
+        finally {
+        	Controller.getCurrentController().getViewController().setWaitingCursor(false);
+        }
 	}
 	
-	public enum LoadingMode{UNTITLED, DOCU, EDIT};
-	/** creates a new MapView for the url unless it is already opened.
-	 * @returns false if the map was already opened and true if it is newly created. 
-	 */
-	private boolean newMap(final URL url, LoadingMode loadingMode) throws FileNotFoundException, XMLParseException,
-	        IOException, URISyntaxException {
-		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-		/*
-		 * this can lead to confusion if the user handles multiple maps
-		 * with the same name. Obviously, this is wrong. Get a better
-		 * check whether or not the file is already opened.
-		 * VB: this comment seems to be out-of-date since the url is checked.
-		 */
-		if (loadingMode != LoadingMode.UNTITLED) {
-			final String mapExtensionKey = mapViewManager.checkIfFileIsAlreadyOpened(url);
-			if (mapExtensionKey != null) {
-				mapViewManager.tryToChangeToMapView(mapExtensionKey);
-				return false;
-			}
-		}
-		try {
-			if (AddOnsController.getController().installIfAppropriate(url))
-				return false;
-			Controller.getCurrentController().getViewController().setWaitingCursor(true);
-			final MapModel newModel = newModel(null);
-			UrlManager.getController().load(url, newModel);
-			if (loadingMode == LoadingMode.UNTITLED) {
-				newModel.setURL(null);
-			}
-			if(loadingMode == LoadingMode.DOCU){
-				newModel.addExtension(DocuMapAttribute.instance);
-				newModel.setReadOnly(true);
-			}
-			fireMapCreated(newModel);
-			newMapView(newModel);
-			return true;
-		}
-		finally {
-			Controller.getCurrentController().getViewController().setWaitingCursor(false);
-		}
-	}
-
 	public void newMapView(final MapModel mapModel) {
 		Controller.getCurrentController().getMapViewManager().newMapView(mapModel, Controller.getCurrentModeController());
 		// FIXME: removed to be able to set state in MFileManager
