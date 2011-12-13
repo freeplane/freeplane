@@ -30,7 +30,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
 
 	}
 
-	public boolean updateMindmap(MapModel map) {
+	public boolean updateMindmap(MapModel map) {		
 		jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
 		database = ReferencesController.getController().getJabrefWrapper().getDatabase();
 		if (this.pdfReferences.size() == 0) {
@@ -43,6 +43,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
 	private boolean updateMap(MapModel map) {
 		referenceNodes.clear();
 		buildIndex(map.getRootNode());
+		System.out.println("debug update references for map: "+map.getURL().getPath());
 		System.out.println("map entries: " + referenceNodes.size());
 
 		int size = 0;

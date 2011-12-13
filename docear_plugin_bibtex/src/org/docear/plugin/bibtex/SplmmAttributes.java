@@ -29,13 +29,13 @@ public class SplmmAttributes extends JabRefAttributes {
 		
 		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(node);
 		for (String splmmAttributeName : attributes.getAttributeKeyList()) {
-			String attributeName = splmmValueAttributes.get(splmmAttributeName);
+			String attributeName = splmmValueAttributes.get(splmmAttributeName.toLowerCase());
 			if (attributeName != null) {
-				AttributeController.getController().performSetValueAt(attributes, attributeName, attributes.getAttributePosition(splmmKey), 0);
+				AttributeController.getController().performSetValueAt(attributes, attributeName, attributes.getAttributePosition(splmmAttributeName), 0);
 			}
 		}
 		
-		AttributeController.getController().performSetValueAt(attributes, this.getKeyAttribute(), attributes.getAttributePosition(SPLMM_KEY_ATTRIBUTE), 0);
+		AttributeController.getController().performSetValueAt(attributes, this.getKeyAttribute(), attributes.getAttributePosition(SPLMM_KEY_ATTRIBUTE), 0);		
 		return true;
 	}
 	

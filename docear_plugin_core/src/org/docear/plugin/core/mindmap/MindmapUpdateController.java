@@ -77,6 +77,7 @@ public class MindmapUpdateController {
 	public boolean updateCurrentMindmap(boolean closeWhenDone) {
 		List<URI> maps = new ArrayList<URI>();
 		maps.add(Controller.getCurrentController().getMap().getFile().toURI());
+		Controller.getCurrentController().getMap().setSaved(false);
 
 		return updateMindmaps(maps, closeWhenDone);
 	}
@@ -146,12 +147,19 @@ public class MindmapUpdateController {
 								+ getMapTitle(map) + TextUtils.getText("updating_against_p2"));
 						this.mapHasChanged = updater.updateMindmap(map);
 						fireProgressUpdate(100 * count / totalCount);
-						if (this.mapHasChanged && !isMapOpen(uri)) {
-							saveMap(map);
-							MapChangeEvent event = new MapChangeEvent(this, UrlManager.MAP_URL, map.getURL(), null);
-							Controller.getCurrentModeController().getMapController().fireMapChanged(event);
-							map.destroy();
+						if (this.mapHasChanged) {
+							if (!isMapOpen(uri)) {
+								saveMap(map);
+								MapChangeEvent event = new MapChangeEvent(this, UrlManager.MAP_URL, map.getURL(), null);
+								Controller.getCurrentModeController().getMapController().fireMapChanged(event);
+								map.destroy();
+							}
+							else {
+								map.setSaved(false);
+								map.setReadOnly(false);
+							}
 						}
+
 						count++;
 
 					}
