@@ -69,15 +69,15 @@ public class ReferenceUpdater extends AMindmapUpdater {
 	}
 
 	private boolean updateReferenceNodes() {
-		// int i = 0;
+		 int i = 0;
 		boolean changes = false;
 		for (Entry<String, LinkedList<NodeModel>> entry : referenceNodes.entrySet()) {
 			Reference reference = new Reference(database.getEntryByKey(entry.getKey()));
 			for (NodeModel node : entry.getValue()) {
-				// i++;
-				// if (i % 100 == 0) {
-				// System.out.println("node: " + i);
-				// }
+				 i++;
+				 if (i % 100 == 0) {
+				 LogUtils.info("node: " + i);
+				 }
 				String key = jabRefAttributes.getBibtexKey(node);
 				if (key == null) {
 					changes = true;

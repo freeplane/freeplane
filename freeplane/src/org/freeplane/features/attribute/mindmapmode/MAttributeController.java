@@ -33,6 +33,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.view.swing.map.NodeView;
 
 public class MAttributeController extends AttributeController {
 	
@@ -165,6 +166,9 @@ public class MAttributeController extends AttributeController {
 		public void act() {
 			final Attribute newAttribute = new Attribute(name, value);
 			model.getAttributes().add(row, newAttribute);
+			if (NodeView.isModifyModelWithoutRepaint()) {
+				return;
+			}
 			setStateIcon(model);
 			model.fireTableRowsInserted(row, row);
 		}

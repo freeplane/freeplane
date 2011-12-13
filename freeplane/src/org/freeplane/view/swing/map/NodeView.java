@@ -79,7 +79,7 @@ import org.freeplane.view.swing.map.edge.SummaryEdgeView;
  * TreeCellRenderer).
  */
 public class NodeView extends JComponent implements INodeView {
-	static boolean modifyModelWithoutRepaint = false;
+	public static boolean modifyModelWithoutRepaint = false;
 	
 	final static int ALIGN_BOTTOM = -1;
 	final static int ALIGN_CENTER = 0;
@@ -912,7 +912,10 @@ public class NodeView extends JComponent implements INodeView {
 	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
 	 */
 	@Override
-	public void paint(final Graphics g) {		
+	public void paint(final Graphics g) {
+		if (modifyModelWithoutRepaint) {
+			return;
+		}
 		if (getMainView() == null)
 			return;
 		final PaintingMode paintingMode = map.getPaintingMode();
@@ -1459,6 +1462,9 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public void updateAll() {
+		if (modifyModelWithoutRepaint) {
+			return;
+		}
 		NodeViewFactory.getInstance().updateNoteViewer(this);
 		update();
 		invalidate();
@@ -1590,5 +1596,9 @@ public class NodeView extends JComponent implements INodeView {
 
 	public static void setModifyModelWithoutRepaint(boolean modifyModelWithoutRepaint) {
 		NodeView.modifyModelWithoutRepaint = modifyModelWithoutRepaint;
+	}
+	
+	public static boolean isModifyModelWithoutRepaint() {
+		return modifyModelWithoutRepaint;
 	}
 }
