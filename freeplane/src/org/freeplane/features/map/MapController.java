@@ -233,6 +233,10 @@ public class MapController extends SelectionController {
 			public void setAttribute(final Object node, final String value) {
 			}
 		});
+		readManager.addAttributeHandler("map", "dialect", new IAttributeHandler() {
+			public void setAttribute(final Object node, final String value) {
+			}
+		});
 		writeManager.addElementWriter("map", mapWriter);
 		writeManager.addAttributeWriter("map", mapWriter);
 		final UnknownElementWriter unknownElementWriter = new UnknownElementWriter();
