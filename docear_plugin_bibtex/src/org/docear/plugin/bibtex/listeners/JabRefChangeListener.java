@@ -1,99 +1,51 @@
 package org.docear.plugin.bibtex.listeners;
 
-import net.sf.jabref.BibtexEntry;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
+
+import javax.swing.SwingUtilities;
+
 import net.sf.jabref.DatabaseChangeEvent;
 import net.sf.jabref.DatabaseChangeListener;
 import net.sf.jabref.export.DocearReferenceUpdateController;
 
-import org.docear.plugin.bibtex.JabRefAttributes;
+import org.docear.plugin.bibtex.ReferenceUpdater;
 import org.docear.plugin.bibtex.ReferencesController;
-import org.freeplane.features.map.NodeModel;
+import org.docear.plugin.core.mindmap.MindmapUpdateController;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
-import org.jdesktop.swingworker.SwingWorker;
 
 public class JabRefChangeListener implements DatabaseChangeListener {	
 
 	public void databaseChanged(DatabaseChangeEvent e) {
-		if (DocearReferenceUpdateController.isLocked()) {		
-			return;
-		}		
-		DocearReferenceUpdateController.lock();
-
-		BibtexEntry entry = e.getEntry();
-		
-		NodeModel root;
-		
-		try {
-			root = Controller.getCurrentModeController().getMapController().getRootNode();
-		}
-		catch(NullPointerException ex) {
-			//no database open
-			return;
-		}
-
-		if (e.getType() == DatabaseChangeEvent.REMOVED_ENTRY) {
-			System.out.println("debug removed: " + e.getEntry().getCiteKey());
-			deleteNodeAttributes(root, entry);
-		}
-		else if (e.getType() == DatabaseChangeEvent.CHANGED_ENTRY) {
-			ReferencesController.getController().setInChange(Controller.getCurrentController().getMap());
-			updateNodeAttributes(root, entry);
-		}
-		else if (e.getType() == DatabaseChangeEvent.CHANGING_ENTRY) {
-			System.out.println("debug changing: " + e.getEntry().getCiteKey());
-		}
-		else if (e.getType() == DatabaseChangeEvent.ADDED_ENTRY) {
-			ReferencesController.getController().setInAdd(Controller.getCurrentController().getMap());
-			System.out.println("debug added: " + e.getEntry().getCiteKey());
-		}
-
-		DocearReferenceUpdateController.unlock();
-	}
-
-	private void updateNodeAttributes(final NodeModel node, final BibtexEntry entry) {
-		SwingWorker<Void, Void> thread = new SwingWorker<Void, Void>() {
+		SwingUtilities.invokeLater(new Runnable() {
 			
-			protected Void doInBackground() throws Exception {
-				if (entry.getCiteKey().length() <= 0) {
-					return null;
-				}
-				JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
-
-				if (jabRefAttributes.isReferencing(entry, node)) {
-					jabRefAttributes.updateReferenceToNode(entry, node);
-				}
-
-				for (NodeModel child : node.getChildren()) {
-					updateNodeAttributes(child, entry);
-				}
-
-				return null;
-			}
-		};
-
-		thread.run();
-	}
-
-	public void deleteNodeAttributes(final NodeModel node, final BibtexEntry entry) {
-		SwingWorker<Void, Void> thread = new SwingWorker<Void, Void>() {
+			@Override
+			public void run() {
 			
-			protected Void doInBackground() throws Exception {
-				JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
-
-				if (jabRefAttributes.isReferencing(entry, node)) {
-					jabRefAttributes.removeReferenceFromNode(node);
+				if (DocearReferenceUpdateController.isLocked()) {
+					return;
 				}
 
-				for (NodeModel child : node.getChildren()) {
-					updateNodeAttributes(child, entry);
+				// ReferencesController.getController().getJabrefWrapper().getBasePanel().undoManager.undoableEditHappened(e)
+
+				DocearReferenceUpdateController.lock();
+				MapModel currentMap = Controller.getCurrentController().getMap();
+				if (currentMap == null) {
+					return;
 				}
 
-				return null;
+				MindmapUpdateController mindmapUpdateController = new MindmapUpdateController();
+				mindmapUpdateController.addMindmapUpdater(new ReferenceUpdater(TextUtils
+						.getText("update_references_open_mindmaps")));
+				mindmapUpdateController.updateCurrentMindmap(true);
+
+				DocearReferenceUpdateController.unlock();
 			}
-		};
-
-		thread.run();
-
+		});
 	}
 
+	
 }

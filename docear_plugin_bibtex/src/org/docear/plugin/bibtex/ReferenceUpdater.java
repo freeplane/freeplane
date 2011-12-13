@@ -10,6 +10,7 @@ import net.sf.jabref.BibtexDatabase;
 import net.sf.jabref.BibtexEntry;
 
 import org.docear.plugin.core.mindmap.AMindmapUpdater;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -26,15 +27,15 @@ public class ReferenceUpdater extends AMindmapUpdater {
 		super(title);
 		referenceNodes = new HashMap<String, LinkedList<NodeModel>>();
 		pdfReferences = new HashMap<String, String>();
-		
+
 	}
 
 	public boolean updateMindmap(MapModel map) {
 		jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
 		database = ReferencesController.getController().getJabrefWrapper().getDatabase();
-		if(this.pdfReferences.size() == 0) {
+		if (this.pdfReferences.size() == 0) {
 			buildPdfIndex();
-		}					
+		}
 		return updateMap(map);
 	}
 
@@ -52,7 +53,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
 
 		return updateReferenceNodes();
 	}
-	
+
 	private void buildPdfIndex() {
 		for (BibtexEntry entry : database.getEntries()) {
 			String path = entry.getField("file");
@@ -64,16 +65,16 @@ public class ReferenceUpdater extends AMindmapUpdater {
 			path = jabRefAttributes.parsePathName(entry, path);
 			this.pdfReferences.put(path, entry.getCiteKey());
 		}
-		System.out.println("pdf size: "+pdfReferences.size());
+		System.out.println("pdf size: " + pdfReferences.size());
 	}
 
 	private boolean updateReferenceNodes() {
-//		int i = 0;
+		// int i = 0;
 		boolean changes = false;
 		for (Entry<String, LinkedList<NodeModel>> entry : referenceNodes.entrySet()) {
 			Reference reference = new Reference(database.getEntryByKey(entry.getKey()));
 			for (NodeModel node : entry.getValue()) {
-//				i++;
+				// i++;
 				// if (i % 100 == 0) {
 				// System.out.println("node: " + i);
 				// }
@@ -83,9 +84,9 @@ public class ReferenceUpdater extends AMindmapUpdater {
 					ReferencesController.getController().getJabRefAttributes().setReferenceToNode(reference, node);
 				}
 				else {
-					changes = changes | ReferencesController.getController().getJabRefAttributes().updateReferenceToNode(reference, node);
+					changes = changes
+							| ReferencesController.getController().getJabRefAttributes().updateReferenceToNode(reference, node);
 				}
-				
 
 			}
 		}
@@ -101,46 +102,36 @@ public class ReferenceUpdater extends AMindmapUpdater {
 	}
 
 	private void getReference(NodeModel node) {
-		
-		String key = jabRefAttributes.getBibtexKey(node);
-		if (key == null) {
-			System.out.println("");
-			URI uri = NodeLinks.getLink(node);
-			if (uri == null) {
-				System.out.println("filtered: "+ uri);
-				return;
-			}
-			// TODO:
-			try {
+		try {
+			String key = jabRefAttributes.getBibtexKey(node);
+			if (key == null) {
+				URI uri = NodeLinks.getLink(node);
+				if (uri == null) {
+					return;
+				}
+				// TODO:
 				File file;
-//			if(uri.getScheme() == null) {
-//				file = new File(uri);
-//			} 
-//			else {
+
 				file = WorkspaceUtils.resolveURI(uri, node.getMap());
-//			}
 				if (file == null) {
 					return;
 				}
 				String path = file.getName();
 				key = this.pdfReferences.get(path);
 			}
-			catch(Exception e) {
-				//System.out.println(node.getText());		
-				System.out.println("referenceupdater uri: "+NodeLinks.getLink(node));
-			}
-		}
-		if (key != null) {
-			LinkedList<NodeModel> nodes = referenceNodes.get(key);
-			if (nodes == null) {
-				nodes = new LinkedList<NodeModel>();
-				referenceNodes.put(key, nodes);
-			}
-			else {
+			if (key != null) {
+				LinkedList<NodeModel> nodes = referenceNodes.get(key);
+				if (nodes == null) {
+					nodes = new LinkedList<NodeModel>();
+					referenceNodes.put(key, nodes);
+				}
 				nodes.add(node);
 			}
 		}
-		
+		catch (Exception e) {
+			LogUtils.warn("referenceupdater uri: " + NodeLinks.getLink(node));
+			LogUtils.warn(e);			
+		}
 	}
 
 }
