@@ -15,6 +15,7 @@ import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.ui.SwingWorkerDialog;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeRegistry;
+import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
@@ -147,6 +148,8 @@ public class MindmapUpdateController {
 						fireProgressUpdate(100 * count / totalCount);
 						if (this.mapHasChanged && !isMapOpen(uri)) {
 							saveMap(map);
+							MapChangeEvent event = new MapChangeEvent(this, UrlManager.MAP_URL, map.getURL(), null);
+							Controller.getCurrentModeController().getMapController().fireMapChanged(event);
 							map.destroy();
 						}
 						count++;
@@ -281,7 +284,7 @@ public class MindmapUpdateController {
 				catch (Exception e) {
 					e.printStackTrace();
 				}
-
+				
 				return map;
 
 			}
