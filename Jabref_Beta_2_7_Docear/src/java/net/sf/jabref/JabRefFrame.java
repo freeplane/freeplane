@@ -425,7 +425,9 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 					}
 				}
 			}
-			frame.setBounds(posX, posY, sizeX, sizeY);
+			if (this.isTopLevel) {
+				frame.setBounds(posX, posY, sizeX, sizeY);
+			}
 		}
 
 		tabbedPane.setBorder(null);
