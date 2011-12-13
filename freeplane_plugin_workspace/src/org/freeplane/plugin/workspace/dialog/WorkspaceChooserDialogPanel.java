@@ -103,7 +103,7 @@ public class WorkspaceChooserDialogPanel extends JPanel {
 				add(label, "2, 2, 3, 1, default, top");
 			}
 			{
-				String text = TextUtils.format("workspace_chooser_help_2", (Compat.isWindowsOS() ? "c:": ""));
+				String text = TextUtils.format("workspace_chooser_help_2", (Compat.isWindowsOS() ? "c:": "/home/user"));
 				label_1 = new JLabel((Compat.isWindowsOS() ? text: text.replace("\\", "/")));
 				add(label_1, "2, 4");
 			}

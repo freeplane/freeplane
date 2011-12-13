@@ -20,14 +20,14 @@ import org.freeplane.features.mode.Controller;
 public class JabRefChangeListener implements DatabaseChangeListener {	
 
 	public void databaseChanged(DatabaseChangeEvent e) {
+		if (DocearReferenceUpdateController.isLocked()) {
+			return;
+		}
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			
 			@Override
-			public void run() {
-			
-				if (DocearReferenceUpdateController.isLocked()) {
-					return;
-				}
+			public void run() {	
 
 				// ReferencesController.getController().getJabrefWrapper().getBasePanel().undoManager.undoableEditHappened(e)
 
