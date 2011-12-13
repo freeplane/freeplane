@@ -107,7 +107,7 @@ public class JabRefAttributes {
 	}
 	
 	public void updateReferenceOnPdf(URI uri, NodeModel node) {
-		BibtexEntry entry = findBibtexEntryForPDF(uri);
+		BibtexEntry entry = findBibtexEntryForPDF(uri,node);
 		if (entry != null) {
 			setReferenceToNode(entry, node);
 		}
@@ -199,7 +199,7 @@ public class JabRefAttributes {
 		if (url!=null) {
 			URI uri = parsePath(entry, url.toString());
 			if (uri!=null) {
-				url = WorkspaceUtils.resolveURI(uri).getPath();
+				url = WorkspaceUtils.resolveURI(uri, node.getMap()).getPath();
 			}
 			else {
 				url = null;
@@ -277,14 +277,16 @@ public class JabRefAttributes {
 		}
 	}
 	
-	public BibtexEntry findBibtexEntryForPDF(URI uri) {
+	public BibtexEntry findBibtexEntryForPDF(URI uri, NodeModel node) {
 		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
-		String nodePath = WorkspaceUtils.resolveURI(uri).getAbsolutePath();
+		// path linked in a node
+		String nodePath = WorkspaceUtils.resolveURI(uri, node.getMap()).getAbsolutePath();
 		
 		for (BibtexEntry entry : database.getEntries()) {			
 			String jabrefFile = entry.getField("file");
 			if (jabrefFile != null) {
 				try {
+					// path linked in jabref
 					jabrefFile = WorkspaceUtils.resolveURI(parsePath(entry, jabrefFile)).getAbsolutePath();
 				}
 				catch(Exception e) {

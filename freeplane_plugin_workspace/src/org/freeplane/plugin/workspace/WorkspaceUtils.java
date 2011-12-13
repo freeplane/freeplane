@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLConnection;
@@ -22,6 +23,8 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
 import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
@@ -198,7 +201,7 @@ public class WorkspaceUtils {
 			}
 			else {
 				// URI test = urlConnection.getURL().toURI();
-				return urlConnection.getURL().toURI();
+				return urlConnection.getURL().toURI().normalize();
 			}
 		}
 		catch (URISyntaxException e) {
@@ -207,7 +210,7 @@ public class WorkspaceUtils {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		return uri;
+		return uri.normalize();
 
 	}
 	
@@ -215,7 +218,20 @@ public class WorkspaceUtils {
 		return LinkController.toRelativeURI(null, file, LinkController.LINK_RELATIVE_TO_WORKSPACE);
 	}
 
+	public static File resolveURI(final URI uri, final MapModel map) {
+		try {
+		return resolveURI(UrlManager.getController().getAbsoluteUri(map, uri));
+		} 
+		catch (MalformedURLException ex) {
+			LogUtils.warn(ex);
+		}
+		return null;
+	}
+	
 	public static File resolveURI(final URI uri) {
+		if(uri.getFragment() != null) {
+			return null;
+		}
 		URI absoluteUri = absoluteURI(uri);
 		if (absoluteUri == null) {
 			return null;

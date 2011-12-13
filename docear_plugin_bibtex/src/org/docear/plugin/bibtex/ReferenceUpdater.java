@@ -101,26 +101,34 @@ public class ReferenceUpdater extends AMindmapUpdater {
 	}
 
 	private void getReference(NodeModel node) {
-		try {
+		
 		String key = jabRefAttributes.getBibtexKey(node);
 		if (key == null) {
+			System.out.println("");
 			URI uri = NodeLinks.getLink(node);
 			if (uri == null) {
+				System.out.println("filtered: "+ uri);
 				return;
 			}
 			// TODO:
-			File file;
+			try {
+				File file;
 //			if(uri.getScheme() == null) {
 //				file = new File(uri);
 //			} 
 //			else {
-				file = WorkspaceUtils.resolveURI(uri);
+				file = WorkspaceUtils.resolveURI(uri, node.getMap());
 //			}
-			if (file == null) {
-				return;
+				if (file == null) {
+					return;
+				}
+				String path = file.getName();
+				key = this.pdfReferences.get(path);
 			}
-			String path = file.getName();
-			key = this.pdfReferences.get(path);
+			catch(Exception e) {
+				//System.out.println(node.getText());		
+				System.out.println("referenceupdater uri: "+NodeLinks.getLink(node));
+			}
 		}
 		if (key != null) {
 			LinkedList<NodeModel> nodes = referenceNodes.get(key);
@@ -132,11 +140,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
 				nodes.add(node);
 			}
 		}
-		}
-		catch(Exception e) {
-			System.out.println(node.getText());		
-			System.out.println("referenceupdater uri: "+NodeLinks.getLink(node));
-		}
+		
 	}
 
 }

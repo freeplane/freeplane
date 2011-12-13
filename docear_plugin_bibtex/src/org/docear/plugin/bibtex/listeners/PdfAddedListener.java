@@ -23,7 +23,7 @@ public class PdfAddedListener implements IDocearEventListener {
 		URI uri = (URI) event.getEventObject();
 		
 		JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
-		BibtexEntry entry = jabRefAttributes.findBibtexEntryForPDF(uri);
+		BibtexEntry entry = jabRefAttributes.findBibtexEntryForPDF(uri,node);
 		
 		if (entry != null) {
 			jabRefAttributes.setReferenceToNode(entry, node);
