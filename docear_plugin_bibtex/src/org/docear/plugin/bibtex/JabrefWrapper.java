@@ -24,6 +24,7 @@ import net.sf.jabref.imports.ParserResult;
 import net.sf.jabref.imports.PostOpenAction;
 import net.sf.jabref.label.HandleDuplicateWarnings;
 
+import org.docear.plugin.bibtex.listeners.JabRefChangeListener;
 import org.docear.plugin.bibtex.listeners.MapViewListener;
 import org.docear.plugin.bibtex.listeners.PdfAddedListener;
 import org.docear.plugin.core.DocearController;
@@ -81,10 +82,10 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 	}
 	
 	private void registerListeners() {
-		Controller.getCurrentController().getMapViewManager().addMapViewChangeListener(this);
+		Controller.getCurrentController().getMapViewManager().addMapViewChangeListener(this);		
 		SwingUtilities.invokeLater(new  Runnable() {
 			public void run() {
-				synchronized (Controller.getCurrentModeController().getMapController()) {
+				synchronized (Controller.getCurrentModeController().getMapController()) {		
 		Controller.getCurrentModeController().getMapController().addNodeSelectionListener(mapViewListener);	
 				}
 			}
@@ -104,11 +105,11 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 		this.file = file;
 		String fileName = file.getPath();		
 		BibtexDatabase database = pr.getDatabase();
-		database.addDatabaseChangeListener(ReferencesController.getJabRefChangeListener());
+		database.addDatabaseChangeListener(ReferencesController.getJabRefChangeListener());		
 		this.setMeta(pr.getMetaData());
 		this.setEncoding(pr.getEncoding());
 		
-		BasePanel bp = new BasePanel(getJabrefFrame(), database, file, meta, pr.getEncoding());
+		BasePanel bp = new BasePanel(getJabrefFrame(), database, file, meta, pr.getEncoding());		
 	
 		// file is set to null inside the EventDispatcherThread
 		//SwingUtilities.invokeLater(new OpenItSwingHelper(bp, file, raisePanel));
