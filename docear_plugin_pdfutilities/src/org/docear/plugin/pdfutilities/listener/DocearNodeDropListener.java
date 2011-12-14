@@ -119,7 +119,7 @@ public class DocearNodeDropListener extends MNodeDropListener {
 							            	for(AnnotationModel annotation : getInsertedNodes(annotations)){
 												firePropertyChange(SwingWorkerDialog.DETAILS_LOG_TEXT, null, "Imported " + annotation.getTitle() +"\n");												
 											}	
-							            	DocearEvent event = new DocearEvent(newNode, DocearEventType.MINDMAP_ADD_PDF_TO_NODE, uri);
+							            	DocearEvent event = new DocearEvent(newNode, DocearEventType.MINDMAP_ADD_PDF_TO_NODE, true);
 							            	DocearController.getController().dispatchDocearEvent(event);
 							            }
 							        }

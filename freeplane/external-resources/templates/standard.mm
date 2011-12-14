@@ -1,5 +1,5 @@
 <map version="0.9.0">
-<!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
+<!--To view this file, download Docear - The Academic Literature Suite from http://www.docear.org -->
 <node LOCALIZED_TEXT="new_mindmap" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1283093380553">
 <hook NAME="MapStyle" max_node_width="600">
 <map_styles>

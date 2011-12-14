@@ -98,6 +98,8 @@ public class LinkTypeMyPublicationsNode extends ALinkNode implements IWorkspaceN
 		mFileManager.newMap();
 		MapModel map = Controller.getCurrentController().getMap();
 		map.getRootNode().setText(getName());
+		DocearEvent evnt = new DocearEvent(this, DocearEventType.NEW_MY_PUBLICATIONS, map);
+		DocearController.getController().dispatchDocearEvent(evnt);
 		
 		mFileManager.save(Controller.getCurrentController().getMap(), f);
 		Controller.getCurrentController().close(false);
