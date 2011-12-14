@@ -6,6 +6,7 @@ import java.text.MessageFormat;
 import java.util.Enumeration;
 
 import org.docear.plugin.core.actions.DocearLicenseAction;
+import org.docear.plugin.core.actions.DocearNewMapAction;
 import org.docear.plugin.core.actions.DocearOpenUrlAction;
 import org.docear.plugin.core.actions.DocearQuitAction;
 import org.docear.plugin.core.actions.SaveAction;
@@ -24,6 +25,7 @@ import org.docear.plugin.core.workspace.creator.LinkTypeLiteratureAnnotationsCre
 import org.docear.plugin.core.workspace.creator.LinkTypeMyPublicationsCreator;
 import org.docear.plugin.core.workspace.creator.LinkTypeReferencesCreator;
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
+import org.docear.plugin.features.DocearMapWriter;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
@@ -101,6 +103,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		modeController.addAction(new DocearChangeLibraryPathAction());
 		modeController.addAction(new DocearRenameAction());
 		
+		FreeplaneActionCascade.insertActionBefore(new DocearNewMapAction());
 		prepareWorkspace();
 		addPluginDefaults();
 		replaceFreeplaneStringsAndActions();
@@ -109,6 +112,8 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 				
 		modifyContextMenus();
 		
+		setDocearMapWriter();
+		
 		registerController(modeController);
 		URI uri = CoreConfiguration.projectPathObserver.getUri();
 		if (uri != null) {
@@ -116,6 +121,11 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		}
 	}
 	
+	private void setDocearMapWriter() {
+		DocearMapWriter mapWriter = new DocearMapWriter(Controller.getCurrentModeController().getMapController());
+		mapWriter.setMapWriteHandler();		
+	}
+
 	private void registerController(ModeController modeController) {
 		DocearNodeModelExtensionController.install(new DocearNodeModelExtensionController(modeController));		
 	}

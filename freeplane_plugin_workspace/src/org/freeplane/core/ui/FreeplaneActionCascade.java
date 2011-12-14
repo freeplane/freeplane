@@ -29,6 +29,14 @@ public class FreeplaneActionCascade {
 		Controller.getCurrentController().addAction(new FreeplaneActionMultiCaster(previousAction, action));
 	}
 	
+	public static void insertActionBefore(AFreeplaneAction action) {
+		AFreeplaneAction previousAction = Controller.getCurrentController().getAction(action.getKey());
+		if(previousAction != null) {
+			Controller.getCurrentController().removeAction(action.getKey());
+		}
+		Controller.getCurrentController().addAction(new FreeplaneActionMultiCaster(action, previousAction));
+	}
+	
 	public static boolean hasAction(String key) {
 		return (Controller.getCurrentController().getAction(key) != null);
 	}
