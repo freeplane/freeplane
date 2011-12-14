@@ -17,6 +17,9 @@ import javax.swing.Icon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import org.docear.plugin.core.DocearController;
+import org.docear.plugin.core.event.DocearEvent;
+import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.features.DocearNodeModelExtension;
 import org.docear.plugin.core.features.DocearNodeModelExtension.DocearExtensionKey;
@@ -176,6 +179,8 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 						continue;
 					}
 					
+					DocearEvent event = new DocearEvent(this, DocearEventType.MINDMAP_ADD_PDF_TO_NODE, true);
+					DocearController.getController().dispatchDocearEvent(event);
 					if(newAnnotations.size() > 100){
 						fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
 						fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Resetting folding ...");

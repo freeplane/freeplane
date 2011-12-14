@@ -1,5 +1,5 @@
 <map version="0.9.0">
-<!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
+<!--To view this file, download Docear - The Academic Literature Suite from http://www.docear.org -->
 <node TEXT="viewer standard">
 <hook NAME="MapStyle" max_node_width="600">
 <map_styles>

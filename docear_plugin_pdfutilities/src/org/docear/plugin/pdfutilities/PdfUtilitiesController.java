@@ -20,6 +20,8 @@ import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
+import org.docear.plugin.core.features.DocearMapModelController;
+import org.docear.plugin.core.features.DocearMapModelExtension.DocearMapType;
 import org.docear.plugin.pdfutilities.actions.AbstractMonitoringAction;
 import org.docear.plugin.pdfutilities.actions.AddMonitoringFolderAction;
 import org.docear.plugin.pdfutilities.actions.DeleteMonitoringFolderAction;
@@ -372,15 +374,23 @@ public class PdfUtilitiesController extends ALanguageController{
 		DocearController.getController().addDocearEventListener(new IDocearEventListener() {
 			
 			public void handleEvent(DocearEvent event) {
-				if(event.getType().equals(DocearEventType.NEW_LITERATURE_MAP)){
+				if(event.getType().equals(DocearEventType.NEW_INCOMING)){
 					MapModel map = (MapModel)event.getEventObject();
 					NodeUtils.addMonitoringDir(map.getRootNode(), CoreConfiguration.repositoryPathObserver.getUri());
 					NodeUtils.addMindmapDir(map.getRootNode(), CoreConfiguration.LIBRARY_PATH);
 					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_AUTO, 2);
 					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_SUBDIRS, 2);
 					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_FLATTEN_DIRS, 0);
+					DocearMapModelController.getModel(map).setType(DocearMapType.incoming);
 				}
-				
+				if(event.getType().equals(DocearEventType.NEW_MY_PUBLICATIONS)){
+					MapModel map = (MapModel)event.getEventObject();
+					DocearMapModelController.getModel(map).setType(DocearMapType.my_publications);
+				}
+				if(event.getType().equals(DocearEventType.NEW_LITERATURE_ANNOTATIONS)){
+					MapModel map = (MapModel)event.getEventObject();
+					DocearMapModelController.getModel(map).setType(DocearMapType.literature_annotations);
+				}
 			}
 		});
 		

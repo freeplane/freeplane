@@ -97,6 +97,8 @@ public class LinkTypeLiteratureAnnotationsNode extends ALinkNode implements IWor
 		mFileManager.newMap();
 		MapModel map = Controller.getCurrentController().getMap();
 		map.getRootNode().setText(getName());
+		DocearEvent evnt = new DocearEvent(this, DocearEventType.NEW_LITERATURE_ANNOTATIONS, map);
+		DocearController.getController().dispatchDocearEvent(evnt);
 		
 		mFileManager.save(Controller.getCurrentController().getMap(), f);
 		Controller.getCurrentController().close(false);
