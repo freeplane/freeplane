@@ -1,11 +1,8 @@
-/**
- * author: Marcel Genzmehr
- * 14.11.2011
- */
 package org.docear.plugin.core.workspace.actions;
 
 import java.awt.event.ActionEvent;
 
+import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.LocationDialog;
 import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
 
@@ -33,7 +30,8 @@ public class WorkspaceChangeLocationsAction extends AWorkspaceAction {
 	 **********************************************************************************/
 
 	public void actionPerformed(ActionEvent e) {
-		LocationDialog dialog = new LocationDialog(); 
+		LocationDialog dialog = new LocationDialog();
+		
     	dialog.setVisible(true);
 	}
 }

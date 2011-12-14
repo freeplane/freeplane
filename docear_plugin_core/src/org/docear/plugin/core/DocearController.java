@@ -11,14 +11,10 @@ import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
 import org.docear.plugin.core.mindmap.MindmapLinkTypeUpdater;
 import org.docear.plugin.core.mindmap.MindmapUpdateController;
-import org.docear.plugin.core.workspace.node.FolderTypeLibraryNode;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 /**
  * 

@@ -15,229 +15,272 @@ import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.ui.SwingWorkerDialog;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeRegistry;
+import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
+import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 import org.jdesktop.swingworker.SwingWorker;
 
-public class MindmapUpdateController {	
+public class MindmapUpdateController {
 	private final ArrayList<AMindmapUpdater> updaters = new ArrayList<AMindmapUpdater>();
 	
 	public void addMindmapUpdater(AMindmapUpdater updater) {
 		this.updaters.add(updater);
 	}
-	
+
 	public List<AMindmapUpdater> getMindmapUpdaters() {
 		return this.updaters;
 	}
-	
-	public boolean updateAllMindmapsInWorkspace() {	
+
+	public boolean updateAllMindmapsInWorkspace() {
 		List<URI> uris = WorkspaceUtils.getModel().getAllNodesFiltered(".mm");
 		return updateMindmaps(uris);
 	}
-	
+
 	public boolean updateRegisteredMindmapsInWorkspace() {
-		List<URI> uris = DocearController.getController().getLibrary().getMindmaps();		
+		List<URI> uris = DocearController.getController().getLibrary().getMindmaps();
 		return updateMindmaps(uris);
 	}
-	
+
 	public boolean updateOpenMindmaps() {
+		List<URI> maps = getAllOpenMapUris();
+
+		return updateMindmaps(maps);
+	}
+
+	private List<URI> getAllOpenMapUris() {
+		List<URI> maps = new ArrayList<URI>();
+		for (MapModel map : getAllOpenMaps()) {
+			maps.add(map.getFile().toURI());
+		}
+		return maps;
+	}
+
+	private List<MapModel> getAllOpenMaps() {
 		List<MapModel> maps = new ArrayList<MapModel>();
 		Map<String, MapModel> openMaps = Controller.getCurrentController().getMapViewManager().getMaps();
 		for (String name : openMaps.keySet()) {
-			maps.add(openMaps.get(name));			
+			maps.add(openMaps.get(name));
 		}
-		
-		return updateMindmaps(maps);
+		return maps;
 	}
-	
+
 	public boolean updateCurrentMindmap() {
-		List<MapModel> maps = new ArrayList<MapModel>();
-		maps.add(Controller.getCurrentController().getMap());
-		
-		return updateMindmaps(maps);
+		return updateCurrentMindmap(false);
+	}
+
+	public boolean updateCurrentMindmap(boolean closeWhenDone) {
+		List<URI> maps = new ArrayList<URI>();
+		maps.add(Controller.getCurrentController().getMap().getFile().toURI());
+		Controller.getCurrentController().getMap().setSaved(false);
+
+		return updateMindmaps(maps, closeWhenDone);
+	}
+
+	public boolean updateMindmapsInList(List<MapModel> maps) {
+		List<URI> uris = new ArrayList<URI>();
+
+		for (MapModel map : maps) {
+			uris.add(map.getFile().toURI());
+		}
+
+		return updateMindmaps(uris);
+
+	}
+
+	public boolean updateMindmaps(List<URI> uris) {
+		return updateMindmaps(uris, false);
 	}
 	
-	public boolean updateMindmapsInList(List<MapModel> maps) {	
-		return updateMindmaps(maps);
-	}
-	
-	private boolean updateMindmaps(List<?> maps) {		
-		SwingWorker<Void, Void> thread = getUpdateThread(maps);		
-		
+	public boolean updateMindmaps(List<URI> uris, boolean closeWhenDone) {
+		SwingWorker<Void, Void> thread = getUpdateThread(uris, closeWhenDone);
+
 		SwingWorkerDialog workerDialog = new SwingWorkerDialog(Controller.getCurrentController().getViewController().getJFrame());
 		workerDialog.setHeadlineText(TextUtils.getText("updating_mindmaps_headline"));
 		workerDialog.setSubHeadlineText(TextUtils.getText("updating_mindmaps_subheadline"));
 		workerDialog.showDialog(thread);
 		workerDialog = null;
-		
+
 		return !thread.isCancelled();
 	}
-	
-	public SwingWorker<Void, Void> getUpdateThread(final List<?> maps){
-		
-		return new SwingWorker<Void, Void>(){			
+
+	public SwingWorker<Void, Void> getUpdateThread(final List<URI> uris) {
+		return getUpdateThread(uris, false);
+	}
+
+	public SwingWorker<Void, Void> getUpdateThread(final List<URI> uris, final boolean closeWhenDone) {
+
+		return new SwingWorker<Void, Void>() {
 			private int totalCount;
 			private int count = 0;
-			
-			private boolean isUri = false;
 			private boolean mapHasChanged = false;
 
 			@Override
 			protected Void doInBackground() throws Exception {
-				
-				if (maps == null || maps.size() == 0) {
+				if (uris == null || uris.size() == 0) {
 					return null;
 				}
-				
-				isUri = maps.get(0) instanceof URI;
-				
+				NodeView.setModifyModelWithoutRepaint(true);
 				fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
 				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("computing_node_count"));
-				if (isUri) {
-					totalCount = maps.size();
-				}
-				else {
-					computeTotalNodeCount(maps);
-				}
-				if(canceled()) return null;				
+				totalCount = uris.size();
+				if (canceled())
+					return null;
 				fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
 				fireProgressUpdate(100 * count / totalCount);
-				
+
 				for (AMindmapUpdater updater : getMindmapUpdaters()) {
 					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, updater.getTitle());
-					if(canceled()) return null;
-					MapModel map = null;
-					for(Object o : maps) {
+					if (canceled())
+						return null;
+					for (URI uri : uris) {
+						fireStatusUpdate(SwingWorkerDialog.DETAILS_LOG_TEXT, null,
+								TextUtils.getText("updating_references_for_map") + uri.getPath());
 						mapHasChanged = false;
-						if (isUri) {							
-							map = getMapModel((URI) o);							
+						MapModel map = getMapModel(uri);
+						fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_against_p1")
+								+ getMapTitle(map) + TextUtils.getText("updating_against_p2"));
+						this.mapHasChanged = updater.updateMindmap(map);
+						fireProgressUpdate(100 * count / totalCount);
+						if (this.mapHasChanged) {
+							if (!isMapOpen(uri)) {
+								saveMap(map);
+								MapChangeEvent event = new MapChangeEvent(this, UrlManager.MAP_URL, map.getURL(), null);
+								Controller.getCurrentModeController().getMapController().fireMapChanged(event);
+								map.destroy();
+							}
+							else {
+								map.setSaved(false);
+								map.setReadOnly(false);
+							}
 						}
-						else {
-							map = (MapModel) o;
-						}
-						fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_against_p1")+getMapTitle(map)+TextUtils.getText("updating_against_p2"));
-						updateNodes(map.getRootNode(), updater);
-						if (isUri) {							
-							saveMap(map);
-							map.destroy();
-							count++;
-							fireProgressUpdate(100 * count / totalCount);
-						}
-					}			
+
+						count++;
+
+					}
 				}
+				fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_references_mapviews"));
 				return null;
+			}
+
+			private boolean isMapOpen(URI uri) {
+				URL url;
+				try {
+					url = WorkspaceUtils.resolveURI(uri).toURL();
+					String mapExtensionKey = Controller.getCurrentController().getMapViewManager()
+							.checkIfFileIsAlreadyOpened(url);
+
+					if (mapExtensionKey == null) {
+						return false;
+					}
+					else {
+						return true;
+					}
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+					return false;
+				}
 			}
 
 			private String getMapTitle(MapModel map) {
 				String mapTitle = "";
-				if(map.getFile() != null){
+				if (map.getFile() != null) {
 					mapTitle = map.getFile().getName();
 				}
-				else{
+				else {
 					mapTitle = map.getTitle();
 				}
 				return mapTitle;
 			}
-			
+
+			@SuppressWarnings("unchecked")
 			@Override
-		    protected void done() {			
-				if(this.isCancelled() || Thread.currentThread().isInterrupted()){					
+			protected void done() {
+				NodeView.setModifyModelWithoutRepaint(false);
+				for (MapView view : (List<MapView>) Controller.getCurrentController().getViewController().getMapViewManager()
+						.getMapViewVector()) {
+					boolean opened = false;
+					URI mapUri = view.getModel().getFile().toURI();
+					for (URI uri : uris) {
+						if (uri.equals(mapUri)) {
+							opened = true;
+						}
+					}
+					if (opened) {
+						NodeView nodeView = view.getNodeView(view.getModel().getRootNode());
+						nodeView.updateAll();
+					}
+				}
+
+				if (this.isCancelled() || Thread.currentThread().isInterrupted()) {
 					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("update_canceled"));
 				}
 				else {
 					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("update_complete"));
 				}
-				
-			}
-			
-			private void updateNodes(NodeModel parent, AMindmapUpdater mindmapupdater) throws InterruptedException, InvocationTargetException {	
-				if (parent == null) {
-					return;
+
+				if (closeWhenDone) {
+					try {
+						this.firePropertyChange(SwingWorkerDialog.CLOSE, null, null);
+					}
+					catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
-				if (mindmapupdater.updateNode(parent)) {
-					this.mapHasChanged = true;
-				}
-				if (!isUri) {
-					count++;
-					fireProgressUpdate(100 * count / totalCount);
-					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, mindmapupdater.getTitle() + "           Updating node: " + count + " / " + totalCount);
-				}
-				for(NodeModel child : parent.getChildren()) {
-					updateNodes(child, mindmapupdater);
-					if(canceled()) return;
-				}
+
 			}
 
-			
-			private boolean canceled() throws InterruptedException{
+			private boolean canceled() throws InterruptedException {
 				Thread.sleep(1L);
 				return (this.isCancelled() || Thread.currentThread().isInterrupted());
 			}
-			
-			private void fireStatusUpdate(final String propertyName, final Object oldValue, final Object newValue) throws InterruptedException, InvocationTargetException{				
-				SwingUtilities.invokeAndWait(
-				        new Runnable() {
-				            public void run(){
-				            	firePropertyChange(propertyName, oldValue, newValue);										
-				            }
-				        }
-				   );	
-			}
-			
-			private void fireProgressUpdate(final int progress) throws InterruptedException, InvocationTargetException{
-				SwingUtilities.invokeAndWait(
-				        new Runnable() {
-				            public void run(){
-				            	setProgress(progress);						
-				            }
-				        }
-				   );	
-			}
-			
-			@SuppressWarnings("unchecked")
-			private void computeTotalNodeCount(List<?> maps) {
-				for(MapModel map : (List<MapModel>) maps){
-					computeTotalNodeCount(map.getRootNode());
-				}					
+
+			private void fireStatusUpdate(final String propertyName, final Object oldValue, final Object newValue)
+					throws InterruptedException, InvocationTargetException {
+				SwingUtilities.invokeAndWait(new Runnable() {
+					public void run() {
+						firePropertyChange(propertyName, oldValue, newValue);
+					}
+				});
 			}
 
-			private void computeTotalNodeCount(NodeModel node) {
-				if(node.isRoot()){
-					this.totalCount++;
-				}
-				this.totalCount += node.getChildCount();
-				for(NodeModel child : node.getChildren()){
-					computeTotalNodeCount(child);
-				}					
+			private void fireProgressUpdate(final int progress) throws InterruptedException, InvocationTargetException {
+				SwingUtilities.invokeAndWait(new Runnable() {
+					public void run() {
+						setProgress(progress);
+					}
+				});
 			}
-			
+
 			private MapModel getMapModel(URI uri) {
 				MapModel map = null;
-				
+
 				URL url;
 				String mapExtensionKey;
 				try {
 					url = WorkspaceUtils.resolveURI(uri).toURL();
-					mapExtensionKey = Controller.getCurrentController().getMapViewManager().checkIfFileIsAlreadyOpened(url);					
+					mapExtensionKey = Controller.getCurrentController().getMapViewManager().checkIfFileIsAlreadyOpened(url);
 				}
 				catch (MalformedURLException e) {
 					e.printStackTrace();
 					return null;
-				};
-											
+				}
+				;
+
 				if (mapExtensionKey != null) {
 					map = Controller.getCurrentController().getViewController().getMapViewManager().getMaps()
 							.get(mapExtensionKey);
-					if (map!=null) {
+					if (map != null) {
 						return map;
 					}
 				}
-				
+
 				map = new MMapModel(null);
 				AttributeRegistry.createRegistry(map);
 				try {
@@ -246,23 +289,25 @@ public class MindmapUpdateController {
 						UrlManager.getController().load(url, map);
 					}
 				}
-				catch (Exception e) {			
+				catch (Exception e) {
 					e.printStackTrace();
 				}
 				
 				return map;
-			
+
 			}
-			
-			private void saveMap(MapModel map) {
-				if (!this.mapHasChanged) {					
+
+			private void saveMap(MapModel map) throws InterruptedException, InvocationTargetException {
+				if (!this.mapHasChanged) {
 					return;
 				}
-				System.out.println("saving map ");
+				fireStatusUpdate(SwingWorkerDialog.DETAILS_LOG_TEXT, null, TextUtils.getText("update_references_save_map")
+						+ map.getURL().getPath());
+
+				System.out.println("saving map: " + map.getURL());
 				map.setSaved(false);
-				((MFileManager) UrlManager.getController()).save(map, false);				
+				((MFileManager) UrlManager.getController()).save(map, false);
 			}
 		};
 	}
-	
 }

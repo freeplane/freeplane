@@ -18,6 +18,7 @@ import net.sf.jabref.JabRefPreferences;
 
 import org.docear.plugin.bibtex.actions.AddExistingReferenceAction;
 import org.docear.plugin.bibtex.actions.AddNewReferenceAction;
+import org.docear.plugin.bibtex.actions.ConvertSplmmReferencesAction;
 import org.docear.plugin.bibtex.actions.CopyBibtexToClipboard;
 import org.docear.plugin.bibtex.actions.ReferenceQuitAction;
 import org.docear.plugin.bibtex.actions.RemoveReferenceAction;
@@ -31,11 +32,13 @@ import org.docear.plugin.bibtex.listeners.JabRefChangeListener;
 import org.docear.plugin.bibtex.listeners.NodeAttributeListener;
 import org.docear.plugin.bibtex.listeners.NodeSelectionListener;
 import org.docear.plugin.bibtex.listeners.ReferencePathListener;
+import org.docear.plugin.bibtex.listeners.SplmmMapsConvertedListener;
 import org.docear.plugin.core.ALanguageController;
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.IDocearEventListener;
+import org.docear.plugin.pdfutilities.util.MapConverter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -66,12 +69,15 @@ public class ReferencesController extends ALanguageController implements IDocear
 	
 	private final static JabRefChangeListener jabRefChangeListener = new JabRefChangeListener();	
 	
-	private static ReferencesController referencesController = null;
+	private static ReferencesController referencesController = null;	
+	
 	private JabrefWrapper jabrefWrapper;
 	
 	private JabRefAttributes jabRefAttributes;
+	private SplmmAttributes splmmAttributes;
 	
 	private final NodeAttributeListener attributeListener = new NodeAttributeListener();
+	private final SplmmMapsConvertedListener splmmMapsConvertedListener = new SplmmMapsConvertedListener();
 
 	public static final String MENU_BAR = "/menu_bar"; //$NON-NLS-1$
 	public static final String NODE_POPUP_MENU = "/node_popup"; //$NON-NLS-1$
@@ -89,7 +95,9 @@ public class ReferencesController extends ALanguageController implements IDocear
 	private static final String UPDATE_REFERENCES_ALL_MAPS_LANG_KEY = "menu_update_references_all_maps";
 	private static final String UPDATE_REFERENCES_ALL_OPEN_MAPS_LANG_KEY = "menu_update_references_all_open_maps";
 	private static final String UPDATE_REFERENCES_CURRENT_MAP_LANG_KEY = "menu_update_references_current_map";
+	private static final String CONVERT_SPLMM_REFERENCES_LANG_KEY = "menu_update_splmm_references_current_map";
 	private static final String COPY_BIBTEX_LANG_KEY = "menu_copy_bibtex";
+	
 
 	private ModeController modeController;
 	private AFreeplaneAction UpdateReferencesCurrentMap = new UpdateReferencesCurrentMapAction(
@@ -98,6 +106,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 			UPDATE_REFERENCES_ALL_OPEN_MAPS_LANG_KEY);
 	private AFreeplaneAction UpdateReferencesInLibrary = new UpdateReferencesInLibrary(UPDATE_REFERENCES_IN_LIBRARY_LANG_KEY);
 	private AFreeplaneAction UpdateReferencesAllMaps = new UpdateReferencesAllMapsAction(UPDATE_REFERENCES_ALL_MAPS_LANG_KEY);
+	private AFreeplaneAction ConvertSplmmReferences = new ConvertSplmmReferencesAction(CONVERT_SPLMM_REFERENCES_LANG_KEY);
 	private AFreeplaneAction AddExistingReference = new AddExistingReferenceAction(ADD_EXISTING_REFERENCES_LANG_KEY);
 	private AFreeplaneAction RemoveReference = new RemoveReferenceAction(REMOVE_REFERENCE_LANG_KEY);
 	private AFreeplaneAction AddNewReference = new AddNewReferenceAction(ADD_NEW_REFERENCE_LANG_KEY);
@@ -132,6 +141,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 	
 
 	private void registerListeners() {
+		MapConverter.addMapsConvertedListener(splmmMapsConvertedListener);
 		CoreConfiguration.referencePathObserver.addChangeListener(new ReferencePathListener());
 		
 		this.modeController.addINodeViewLifeCycleListener(new INodeViewLifeCycleListener() {
@@ -178,6 +188,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 	private void initJabref() {		
 		if(WorkspaceController.getController().isInitialized() && !isRunning) {
 			this.jabRefAttributes = new JabRefAttributes();
+			this.splmmAttributes = new SplmmAttributes();
 			
 			NodeSelectionListener nodeSelectionListener = new NodeSelectionListener();
 			nodeSelectionListener.init();
@@ -207,9 +218,9 @@ public class ReferencesController extends ALanguageController implements IDocear
 	public JabRefAttributes getJabRefAttributes() {
 		return jabRefAttributes;
 	}
-
-	public void setJabRefAttributes(JabRefAttributes jabRefAttributes) {
-		this.jabRefAttributes = jabRefAttributes;
+	
+	public SplmmAttributes getSplmmAttributes() {
+		return splmmAttributes;
 	}
 
 	public JabrefWrapper getJabrefWrapper() {
@@ -264,6 +275,8 @@ public class ReferencesController extends ALanguageController implements IDocear
 						MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU, UpdateReferencesAllMaps,
 						MenuBuilder.AS_CHILD);
+				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU, ConvertSplmmReferences,
+						MenuBuilder.AS_CHILD);
 				
 				
 				builder.addMenuItem(NODE_POPUP_MENU /*+ NODE_FEATURES_MENU*/,
@@ -284,7 +297,8 @@ public class ReferencesController extends ALanguageController implements IDocear
 						UpdateReferencesInLibrary, MenuBuilder.AS_CHILD);
 				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU,
 						UpdateReferencesAllMaps, MenuBuilder.AS_CHILD);
-				
+				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU, 
+						ConvertSplmmReferences,	MenuBuilder.AS_CHILD);
 				
 				builder.addAction(MENU_BAR + TOOLS_MENU, ShowJabrefPreferences, MenuBuilder.AS_CHILD);
 

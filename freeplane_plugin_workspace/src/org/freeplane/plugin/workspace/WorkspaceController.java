@@ -51,7 +51,7 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 		
 	private static final WorkspaceController workspaceController = new WorkspaceController();
 	private static final WorkspaceConfiguration configuration = new WorkspaceConfiguration();
-	private static final FileSystemAlterationMonitor monitor = new FileSystemAlterationMonitor(5000);
+	private static final FileSystemAlterationMonitor monitor = new FileSystemAlterationMonitor(30000);
 
 	private final FilesystemManager fsReader;
 	private final Vector<IWorkspaceListener> workspaceListener = new Vector<IWorkspaceListener>();
@@ -219,7 +219,7 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 		if (getConfiguration().reload()) {
 			showWorkspace(true);
 			UrlManager.getController().setLastCurrentDir(new File(preferences.getWorkspaceLocation()));
-			dispatchWorkspaceEvent(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_EVENT_TYPE_CHANGE, getConfiguration()));
+			dispatchWorkspaceEvent(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_EVENT_TYPE_CHANGED, getConfiguration()));
 		}
 		else {
 			showWorkspace(false);
@@ -363,20 +363,8 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 	}
 
 	private void dispatchWorkspaceEvent(WorkspaceEvent event) {
-		switch (event.getType()) {
-			case (WorkspaceEvent.WORKSPACE_EVENT_TYPE_CHANGE): {
-				for (IWorkspaceListener listener : workspaceListener) {
-					listener.workspaceChanged(event);
-				}
-				break;
-			}
-			case (WorkspaceEvent.WORKSPACE_EVENT_TYPE_TOOLBAR_EVENT): {
-				for (IWorkspaceListener listener : workspaceListener) {
-					listener.workspaceChanged(event);
-				}
-				break;
-			}
-
+		for (IWorkspaceListener listener : workspaceListener) {
+			listener.workspaceChanged(event);
 		}
 	}
 	

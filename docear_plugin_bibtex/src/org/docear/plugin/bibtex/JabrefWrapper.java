@@ -24,6 +24,7 @@ import net.sf.jabref.imports.ParserResult;
 import net.sf.jabref.imports.PostOpenAction;
 import net.sf.jabref.label.HandleDuplicateWarnings;
 
+import org.docear.plugin.bibtex.listeners.JabRefChangeListener;
 import org.docear.plugin.bibtex.listeners.MapViewListener;
 import org.docear.plugin.bibtex.listeners.PdfAddedListener;
 import org.docear.plugin.core.DocearController;
@@ -70,7 +71,7 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 	public JabrefWrapper(JFrame frame, File file) {
 		//super(frame, new String[]{"true", "-i", "\""+file.toString()+"\""});
 		super(frame);
-		registerListeners();
+		registerListeners();				
 		openIt(file, true);
 
 	}
@@ -80,9 +81,15 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 		return this.jrf;
 	}
 	
-	private void registerListeners() {	
-		Controller.getCurrentController().getMapViewManager().addMapViewChangeListener(this);
-		Controller.getCurrentModeController().getMapController().addNodeSelectionListener(mapViewListener);
+	private void registerListeners() {
+		Controller.getCurrentController().getMapViewManager().addMapViewChangeListener(this);		
+		SwingUtilities.invokeLater(new  Runnable() {
+			public void run() {
+				synchronized (Controller.getCurrentModeController().getMapController()) {		
+		Controller.getCurrentModeController().getMapController().addNodeSelectionListener(mapViewListener);	
+				}
+			}
+		});
 		DocearController.getController().addDocearEventListener(pdfAddedLister);
 	}
 	
@@ -98,11 +105,11 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 		this.file = file;
 		String fileName = file.getPath();		
 		BibtexDatabase database = pr.getDatabase();
-		database.addDatabaseChangeListener(ReferencesController.getJabRefChangeListener());
+		database.addDatabaseChangeListener(ReferencesController.getJabRefChangeListener());		
 		this.setMeta(pr.getMetaData());
 		this.setEncoding(pr.getEncoding());
 		
-		BasePanel bp = new BasePanel(getJabrefFrame(), database, file, meta, pr.getEncoding());
+		BasePanel bp = new BasePanel(getJabrefFrame(), database, file, meta, pr.getEncoding());		
 	
 		// file is set to null inside the EventDispatcherThread
 		//SwingUtilities.invokeLater(new OpenItSwingHelper(bp, file, raisePanel));
@@ -246,28 +253,13 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 
 	public void afterViewClose(final Component oldView) {
 		System.out.println("debug close mapviewlistener");
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			
-			public void run() {
-				oldView.removeMouseListener(mapViewListener);
-				
-			}
-		});
+		oldView.removeMouseListener(mapViewListener);
 	}
 
 
 	public void afterViewCreated(final Component mapView) {
 		System.out.println("debug add mapviewlistener");
-		SwingUtilities.invokeLater(new Runnable() {
-			
-
-			public void run() {
-				mapView.addMouseListener(mapViewListener);
-				
-			}
-		});
-		
+		mapView.addMouseListener(mapViewListener);		
 	}
 
 

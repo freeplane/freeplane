@@ -59,7 +59,7 @@ public class AddNewReferenceAction extends AFreeplaneAction{
 			JabrefWrapper jabrefWrapper = ReferencesController.getController().getJabrefWrapper();
 
 			if (link != null && link.getPath().toLowerCase().endsWith(".pdf")) {
-				String path = WorkspaceUtils.resolveURI(link).getAbsolutePath();
+				String path = WorkspaceUtils.resolveURI(link, node.getMap()).getAbsolutePath();
 				PdfImporter pdfImporter = new PdfImporter(jabrefWrapper.getJabrefFrame(), jabrefWrapper.getJabrefFrame()
 						.basePanel(), null, 0);
 				pdfImporter.importPdfFiles(new String[] { path }, Controller.getCurrentController()

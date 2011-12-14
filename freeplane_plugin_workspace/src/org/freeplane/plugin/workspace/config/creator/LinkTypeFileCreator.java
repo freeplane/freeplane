@@ -1,6 +1,6 @@
 package org.freeplane.plugin.workspace.config.creator;
 
-import java.io.File;
+import java.net.URI;
 
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
@@ -20,11 +20,10 @@ public class LinkTypeFileCreator extends AWorkspaceNodeCreator {
 		
 
 		String path = data.getAttribute("path", null);
-		if (path == null) {
+		if (path == null || path.length() == 0) {
 			return null;
 		}
-		//FIXME: DOCEAR - this should be made URI compatible
-		node.setLinkPath((new File(path)).toURI()); 		
+		node.setLinkPath(URI.create(path)); 		
 		String name = data.getAttribute("name", WorkspaceUtils.resolveURI(node.getLinkPath()).getName());
 		node.setName(name);
 		

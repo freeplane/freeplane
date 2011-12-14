@@ -36,7 +36,7 @@ public class Tools {
 		if(uri == null) return null;
 		
 		try {
-			return WorkspaceUtils.resolveURI(uri.normalize());			
+			return WorkspaceUtils.resolveURI(uri);			
 		} 
 		catch (IllegalArgumentException e) {			
 			LogUtils.warn(e);

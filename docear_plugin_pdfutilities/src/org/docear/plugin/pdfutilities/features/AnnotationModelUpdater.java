@@ -12,6 +12,7 @@ import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 
 import de.intarsys.pdf.cos.COSRuntimeException;
@@ -25,8 +26,7 @@ public class AnnotationModelUpdater extends AMindmapUpdater {
 		super(title);		
 	}
 
-	@Override
-	public boolean updateNode(NodeModel node) {
+	private boolean updateNode(NodeModel node) {
 		boolean changed = false;
 		if(NodeUtils.isPdfLinkedNode(node) && AnnotationController.getModel(node, false) == null){
 			try {
@@ -59,5 +59,23 @@ public class AnnotationModelUpdater extends AMindmapUpdater {
 			result.addAll(this.getPlainAnnotationList(child));						
 		}
 		return result;
+	}
+
+	@Override
+	public boolean updateMindmap(MapModel map) {
+		return updateNodesRecursive(map.getRootNode());
+	}
+	
+	/**
+	 * @param node
+	 * @return
+	 */
+	private boolean updateNodesRecursive(NodeModel node) {
+		boolean changes = false;
+		for(NodeModel child : node.getChildren()) {
+			changes = changes | updateNodesRecursive(child);
+		}
+		changes = changes | updateNode(node);
+		return changes;
 	}
 }

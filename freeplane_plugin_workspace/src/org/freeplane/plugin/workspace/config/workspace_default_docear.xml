@@ -4,12 +4,13 @@
         <link type="literature_annotations" name="Literature &amp; Annotations" path="workspace:/@@PROFILENAME@@/Library/PapersAnnotationsAndIdeas.mm" system="true" />
         <link type="my_publications" name="My Publications" path="workspace:/@@PROFILENAME@@/Library/MyPublications.mm" system="true" />
         
-    </folder>
+    </folder>3
     <folder type="literature_repository" path="" system="true" />
     <folder type="projects" name="Projects" path="" monitor="true" system="true"/>
     <link type="references" path="" system="true" />
     
-    <folder type="virtual" name="Miscellaneous" >        
+    <folder type="virtual" name="Miscellaneous" > 
+    	<link type="file" name="docear_welcome.mm" path="workspace:/docear_welcome.mm"/>      
     </folder>
 
 </workspace>

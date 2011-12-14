@@ -390,21 +390,27 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 	public List<URI> getAllNodesFiltered(String filter) {
 		HashSet<URI> set = new HashSet<URI>();
 		for(AWorkspaceTreeNode node : hashStringKeyIndex.values()) {
+			
+			
 			if(node instanceof AFolderNode || node instanceof FolderFileNode) {
 				continue;
 			}
 			
 			if(node instanceof DefaultFileNode) {
 				File file = ((DefaultFileNode) node).getFile();
+				System.out.println("node: "+node.getName());
 				if(file.getName().endsWith(filter)) {
 					set.add(file.toURI());
+					System.out.println("node_2: "+node.getName());
 				}
 			} 
 			else 
 			if(node instanceof ALinkNode) {
 				URI uri = ((ALinkNode) node).getLinkPath();
+				System.out.println("link: "+node.getName());
 				if(uri.getPath().endsWith(filter)) {
 					set.add(WorkspaceUtils.absoluteURI(uri));
+					System.out.println("limk_2: "+node.getName());
 				}
 			}			
 		}		

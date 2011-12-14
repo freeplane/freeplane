@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.MutableComboBoxModel;
 import javax.swing.event.ListDataListener;
 
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspacePreferences;
@@ -102,7 +103,8 @@ public class WorkspaceChooserDialogPanel extends JPanel {
 				add(label, "2, 2, 3, 1, default, top");
 			}
 			{
-				label_1 = new JLabel(TextUtils.getText("workspace_chooser_help_2"));;
+				String text = TextUtils.format("workspace_chooser_help_2", (Compat.isWindowsOS() ? "c:": "/home/user"));
+				label_1 = new JLabel((Compat.isWindowsOS() ? text: text.replace("\\", "/")));
 				add(label_1, "2, 4");
 			}
 			location = new JTextField();
