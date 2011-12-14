@@ -210,6 +210,7 @@ def installImages() {
 }
 
 void unpack(File destDir, byte[] zipData) {
+    mapStructureAssert(zipData, textUtils.getText('addons.installer.no.zipdata'))
 	ZipInputStream result = new ZipInputStream(new ByteArrayInputStream(zipData))
 	result.withStream{
 		def entry
