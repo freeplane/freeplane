@@ -13,6 +13,7 @@ import javax.swing.SwingUtilities;
 
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.ui.SwingWorkerDialog;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.map.MapChangeEvent;
@@ -39,6 +40,9 @@ public class MindmapUpdateController {
 
 	public boolean updateAllMindmapsInWorkspace() {
 		List<URI> uris = WorkspaceUtils.getModel().getAllNodesFiltered(".mm");
+		for (URI uri : uris) {
+			System.out.println("uri: "+uri);
+		}
 		return updateMindmaps(uris);
 	}
 
@@ -119,52 +123,61 @@ public class MindmapUpdateController {
 			private int totalCount;
 			private int count = 0;
 			private boolean mapHasChanged = false;
+			
+			private final long start = System.currentTimeMillis();
 
 			@Override
 			protected Void doInBackground() throws Exception {
-				if (uris == null || uris.size() == 0) {
-					return null;
-				}
-				NodeView.setModifyModelWithoutRepaint(true);
-				fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
-				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("computing_node_count"));
-				totalCount = uris.size();
-				if (canceled())
-					return null;
-				fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
-				fireProgressUpdate(100 * count / totalCount);
-
-				for (AMindmapUpdater updater : getMindmapUpdaters()) {
-					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, updater.getTitle());
+				try {
+					if (uris == null || uris.size() == 0) {
+						return null;
+					}
+					NodeView.setModifyModelWithoutRepaint(true);
+					fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
+					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("computing_node_count"));
+					totalCount = uris.size();
 					if (canceled())
 						return null;
-					for (URI uri : uris) {
-						fireStatusUpdate(SwingWorkerDialog.DETAILS_LOG_TEXT, null,
-								TextUtils.getText("updating_references_for_map") + uri.getPath());
-						mapHasChanged = false;
-						MapModel map = getMapModel(uri);
-						fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_against_p1")
-								+ getMapTitle(map) + TextUtils.getText("updating_against_p2"));
-						this.mapHasChanged = updater.updateMindmap(map);
-						fireProgressUpdate(100 * count / totalCount);
-						if (this.mapHasChanged) {
-							if (!isMapOpen(uri)) {
-								saveMap(map);
-								MapChangeEvent event = new MapChangeEvent(this, UrlManager.MAP_URL, map.getURL(), null);
-								Controller.getCurrentModeController().getMapController().fireMapChanged(event);
-								map.destroy();
+					fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
+					fireProgressUpdate(100 * count / totalCount);
+	
+					for (AMindmapUpdater updater : getMindmapUpdaters()) {
+						fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, updater.getTitle());
+						if (canceled())
+							return null;
+						for (URI uri : uris) {
+							fireStatusUpdate(SwingWorkerDialog.DETAILS_LOG_TEXT, null,
+									TextUtils.getText("updating_references_for_map") + uri.getPath());
+							mapHasChanged = false;
+							MapModel map = getMapModel(uri);
+							fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_against_p1")
+									+ getMapTitle(map) + TextUtils.getText("updating_against_p2"));
+							this.mapHasChanged = updater.updateMindmap(map);
+							fireProgressUpdate(100 * count / totalCount);
+							if (this.mapHasChanged) {
+								if (!isMapOpen(uri)) {
+									saveMap(map);
+									MapChangeEvent event = new MapChangeEvent(this, UrlManager.MAP_URL, map.getURL(), null);
+									Controller.getCurrentModeController().getMapController().fireMapChanged(event);
+									map.destroy();
+								}
+								else {
+									map.setSaved(false);
+									map.setReadOnly(false);
+								}
 							}
-							else {
-								map.setSaved(false);
-								map.setReadOnly(false);
-							}
+	
+							count++;
+	
 						}
-
-						count++;
-
 					}
+					
+					fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_references_mapviews"));
+					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("updating_references_mapviews"));
+				}				
+				catch (Exception e) {
+					LogUtils.warn(e);
 				}
-				fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_references_mapviews"));
 				return null;
 			}
 
@@ -212,7 +225,7 @@ public class MindmapUpdateController {
 							opened = true;
 						}
 					}
-					if (opened) {
+					if (opened) {						
 						NodeView nodeView = view.getNodeView(view.getModel().getRootNode());
 						nodeView.updateAll();
 					}
@@ -222,9 +235,10 @@ public class MindmapUpdateController {
 					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("update_canceled"));
 				}
 				else {
+					this.firePropertyChange(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
 					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("update_complete"));
 				}
-
+				
 				if (closeWhenDone) {
 					try {
 						this.firePropertyChange(SwingWorkerDialog.CLOSE, null, null);
@@ -232,6 +246,10 @@ public class MindmapUpdateController {
 					catch (Exception e) {
 						e.printStackTrace();
 					}
+				}
+				else {
+					long time = System.currentTimeMillis() - this.start;
+					this.firePropertyChange(SwingWorkerDialog.DETAILS_LOG_TEXT, null, TextUtils.getText("execution_time")+" "+time+" ms");
 				}
 
 			}

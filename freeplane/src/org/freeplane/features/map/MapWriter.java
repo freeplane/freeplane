@@ -99,7 +99,7 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 		fileout.close();
 	}
 
-	private void writeNode(final ITreeWriter xmlWriter, final NodeModel node, final boolean writeInvisible,
+	protected void writeNode(final ITreeWriter xmlWriter, final NodeModel node, final boolean writeInvisible,
 	                       final boolean writeChildren) throws IOException {
 		final NodeWriter oldNodeWriter = currentNodeWriter;
 		final Object mode = xmlWriter.getHint(Hint.MODE);

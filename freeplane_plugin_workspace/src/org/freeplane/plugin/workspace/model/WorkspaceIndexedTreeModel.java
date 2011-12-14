@@ -398,10 +398,8 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 			
 			if(node instanceof DefaultFileNode) {
 				File file = ((DefaultFileNode) node).getFile();
-				System.out.println("node: "+node.getName());
 				if(file.getName().endsWith(filter)) {
 					set.add(file.toURI());
-					System.out.println("node_2: "+node.getName());
 				}
 			} 
 			else 
@@ -410,7 +408,6 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 				System.out.println("link: "+node.getName());
 				if(uri.getPath().endsWith(filter)) {
 					set.add(WorkspaceUtils.absoluteURI(uri));
-					System.out.println("limk_2: "+node.getName());
 				}
 			}			
 		}		

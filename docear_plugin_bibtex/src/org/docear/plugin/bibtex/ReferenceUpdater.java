@@ -30,7 +30,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
 
 	}
 
-	public boolean updateMindmap(MapModel map) {		
+	public boolean updateMindmap(MapModel map) {
 		jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
 		database = ReferencesController.getController().getJabrefWrapper().getDatabase();
 		if (this.pdfReferences.size() == 0) {
@@ -38,19 +38,18 @@ public class ReferenceUpdater extends AMindmapUpdater {
 		}
 		return updateMap(map);
 	}
-
-	@SuppressWarnings("unchecked")
+	
 	private boolean updateMap(MapModel map) {
 		referenceNodes.clear();
 		buildIndex(map.getRootNode());
-		System.out.println("debug update references for map: "+map.getURL().getPath());
-		System.out.println("map entries: " + referenceNodes.size());
-
-		int size = 0;
-		for (Entry<?, ?> entry : referenceNodes.entrySet()) {
-			size += ((LinkedList<NodeModel>) entry.getValue()).size();
-		}
-		System.out.println("total entries: " + size);
+//		System.out.println("debug update references for map: " + map.getURL().getPath());
+//		System.out.println("map entries: " + referenceNodes.size());
+//
+//		int size = 0;
+//		for (Entry<?, ?> entry : referenceNodes.entrySet()) {
+//			size += ((LinkedList<NodeModel>) entry.getValue()).size();
+//		}
+//		System.out.println("total entries: " + size);
 
 		return updateReferenceNodes();
 	}
@@ -66,19 +65,21 @@ public class ReferenceUpdater extends AMindmapUpdater {
 			path = jabRefAttributes.parsePathName(entry, path);
 			this.pdfReferences.put(path, entry.getCiteKey());
 		}
-		System.out.println("pdf size: " + pdfReferences.size());
+		//System.out.println("pdf size: " + pdfReferences.size());
 	}
 
 	private boolean updateReferenceNodes() {
-		 int i = 0;
+//		int i = 0;
 		boolean changes = false;
 		for (Entry<String, LinkedList<NodeModel>> entry : referenceNodes.entrySet()) {
-			Reference reference = new Reference(database.getEntryByKey(entry.getKey()));
+
+			BibtexEntry bibtexEntry = database.getEntryByKey(entry.getKey());
 			for (NodeModel node : entry.getValue()) {
-				 i++;
-				 if (i % 100 == 0) {
-				 LogUtils.info("node: " + i);
-				 }
+				Reference reference = new Reference(bibtexEntry, node);
+//				i++;
+//				if (i % 100 == 0) {
+//					LogUtils.info("node: " + i);
+//				}
 				String key = jabRefAttributes.getBibtexKey(node);
 				if (key == null) {
 					changes = true;
@@ -131,7 +132,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
 		}
 		catch (Exception e) {
 			LogUtils.warn("referenceupdater uri: " + NodeLinks.getLink(node));
-			LogUtils.warn(e);			
+			LogUtils.warn(e);
 		}
 	}
 
