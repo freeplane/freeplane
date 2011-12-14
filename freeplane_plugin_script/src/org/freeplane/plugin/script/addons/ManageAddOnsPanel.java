@@ -82,7 +82,7 @@ public class ManageAddOnsPanel extends JPanel {
 		}
 
 		public boolean isCellEditable(int row, int column) {
-			return column == textColumn;
+			return column == buttonsColumn;
 		}
 
 		public void setValueAt(Object aValue, int row, int column) {
