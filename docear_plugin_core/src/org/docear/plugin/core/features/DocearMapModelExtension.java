@@ -16,13 +16,13 @@ public class DocearMapModelExtension implements IExtension{
 	}
 	
 	public void setType(String type) {
-		if(type == "incoming"){
+		if(type.equalsIgnoreCase("incoming")){
 			this.type = DocearMapType.incoming;
 		}
-		else if(type == "my_publications"){
+		else if(type.equalsIgnoreCase("my_publications")){
 			this.type = DocearMapType.my_publications;
 		}
-		else if(type == "literature_annotations"){
+		else if(type.equalsIgnoreCase("literature_annotations")){
 			this.type = DocearMapType.literature_annotations;
 		}		
 	}
