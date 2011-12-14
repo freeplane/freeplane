@@ -21,7 +21,7 @@ import org.freeplane.features.mode.Controller;
 
 public class PdfAddedListener implements IDocearEventListener {
 
-	public void handleEvent(DocearEvent event) {
+	public void handleEvent(final DocearEvent event) {
 		if (DocearReferenceUpdateController.isLocked()) {
 			return;
 		}		
@@ -40,11 +40,14 @@ public class PdfAddedListener implements IDocearEventListener {
 				if (currentMap == null) {
 					return;
 				}
-
+				boolean showDialog = true;
+				if(event.getEventObject() instanceof Boolean){
+					showDialog = (Boolean)event.getEventObject();
+				}
 				MindmapUpdateController mindmapUpdateController = new MindmapUpdateController();
 				mindmapUpdateController.addMindmapUpdater(new ReferenceUpdater(TextUtils
 						.getText("update_references_open_mindmaps")));
-				mindmapUpdateController.updateCurrentMindmap(true);
+				mindmapUpdateController.updateCurrentMindmap(showDialog);
 
 				DocearReferenceUpdateController.unlock();
 			}

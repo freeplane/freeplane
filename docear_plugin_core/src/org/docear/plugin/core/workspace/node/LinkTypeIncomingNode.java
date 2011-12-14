@@ -99,7 +99,7 @@ public class LinkTypeIncomingNode extends ALinkNode implements IWorkspaceNodeEve
 		mFileManager.newMap();
 		MapModel map = Controller.getCurrentController().getMap();
 		map.getRootNode().setText(getName());
-		DocearEvent evnt = new DocearEvent(this, DocearEventType.NEW_LITERATURE_MAP, map);
+		DocearEvent evnt = new DocearEvent(this, DocearEventType.NEW_INCOMING, map);
 		DocearController.getController().dispatchDocearEvent(evnt);
 		
 		mFileManager.save(Controller.getCurrentController().getMap(), f);		

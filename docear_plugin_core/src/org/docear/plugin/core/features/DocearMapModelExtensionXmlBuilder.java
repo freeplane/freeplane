@@ -1,5 +1,6 @@
 package org.docear.plugin.core.features;
 
+import org.docear.plugin.core.features.DocearMapModelExtension.DocearMapType;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementDOMHandler;
@@ -15,6 +16,7 @@ public class DocearMapModelExtensionXmlBuilder implements IElementDOMHandler, IE
 	
 	private static final String DOCEAR_MAP_EXTENSION_XML_TAG = "map";
 	private static final String DOCEAR_MAP_EXTENSION_VERSION_XML_TAG = "dialect";
+	private static final String DOCEAR_MAP_EXTENSION_TYPE_XML_TAG = "type";
 	
 	public void registerBy(final ReadManager reader, final WriteManager writer) {
 		reader.addElementHandler(DOCEAR_MAP_EXTENSION_XML_TAG, this);
@@ -34,6 +36,17 @@ public class DocearMapModelExtensionXmlBuilder implements IElementDOMHandler, IE
 			}
 			
 		});	
+		
+		reader.addAttributeHandler(DOCEAR_MAP_EXTENSION_XML_TAG, DOCEAR_MAP_EXTENSION_TYPE_XML_TAG, new IAttributeHandler() {
+			
+			public void setAttribute(Object node, String value) {
+				final MapModel mapModel = (MapModel) node;
+				final DocearMapModelExtension docearMapModel = new DocearMapModelExtension();				
+				docearMapModel.setType(value);
+				DocearMapModelController.setModel(mapModel, docearMapModel);
+			}
+			
+		});
 	}
 
 	public Object createElement(Object parent, String tag, XMLElement attributes) {
@@ -68,7 +81,11 @@ public class DocearMapModelExtensionXmlBuilder implements IElementDOMHandler, IE
 		final String version = modelExtension.getVersion();
 		if (version != null && version.length() > 0) {
 			writer.addAttribute(DOCEAR_MAP_EXTENSION_VERSION_XML_TAG, "docear " + version);			
-		}		
+		}
+		final DocearMapType type = modelExtension.getType();
+		if(type != null){
+			writer.addAttribute(DOCEAR_MAP_EXTENSION_TYPE_XML_TAG, type.toString());
+		}
 	}
 
 }

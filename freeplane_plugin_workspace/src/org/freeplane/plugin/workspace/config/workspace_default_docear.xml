@@ -1,7 +1,7 @@
 <workspace name="My Workspace" version="1.0" meta="docear">
 	<folder name="Library" type="library" system="true">
-        <link type="incoming" name="Incoming" path="workspace:/@@PROFILENAME@@/Library/NewPapersandAnnotations.mm" window="new" system="true" />
-        <link type="literature_annotations" name="Literature &amp; Annotations" path="workspace:/@@PROFILENAME@@/Library/PapersAnnotationsAndIdeas.mm" system="true" />
+        <link type="incoming" name="Incoming" path="workspace:/@@PROFILENAME@@/Library/Incoming.mm" window="new" system="true" />
+        <link type="literature_annotations" name="Literature &amp; Annotations" path="workspace:/@@PROFILENAME@@/Library/LiteratureAnnotations.mm" system="true" />
         <link type="my_publications" name="My Publications" path="workspace:/@@PROFILENAME@@/Library/MyPublications.mm" system="true" />
         
     </folder>3
