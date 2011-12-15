@@ -24,7 +24,6 @@ public class Activator extends DocearPlugin implements BundleActivator {
 	}
 
 	public void startPlugin(BundleContext context, ModeController modeController) {
-		// TODO Auto-generated method stub
 		new PdfUtilitiesController(modeController);
 	}
 

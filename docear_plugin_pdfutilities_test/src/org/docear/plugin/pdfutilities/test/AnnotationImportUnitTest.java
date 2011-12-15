@@ -1,7 +1,6 @@
 package org.docear.plugin.pdfutilities.test;
 
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -264,14 +263,11 @@ public class AnnotationImportUnitTest {
 			List<AnnotationModel> annotations = importer.importAnnotations(pdfFile.toURI());
 			importer.setImportAll(false);
 			System.out.println(annotations.size());
-		} catch (COSRuntimeException e) {
-			// TODO Auto-generated catch block
+		} catch (COSRuntimeException e) {			
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (COSLoadException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -299,19 +295,15 @@ public class AnnotationImportUnitTest {
 				}
 			}
 		} catch (COSRuntimeException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (COSLoadException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally{
 			try {				
 				doc.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

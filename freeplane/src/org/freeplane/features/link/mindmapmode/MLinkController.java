@@ -777,8 +777,11 @@ public class MLinkController extends LinkController {
 				if (uri != null && uri.toString().startsWith("#")) {
 					links.setLocalHyperlink(node, uri.toString().substring(1));
 				}
+				//FIXME: DOCEAR - replace old nodeChanged event and use new LinkChanged property
+				URI oldHyperLink = links.getHyperLink();
 				links.setHyperLink(uri);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+				//Controller.getCurrentModeController().getMapController().nodeChanged(node);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.HYPERLINK_CHANGED, oldHyperLink, uri);
 			}
 
 			public String getDescription() {

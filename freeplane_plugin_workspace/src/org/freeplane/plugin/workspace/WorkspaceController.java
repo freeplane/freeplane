@@ -320,8 +320,7 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 				Class<?>[] args = {};
 				for (Object key : props.keySet()) {
 					try {
-						// TODO: IMPLEMENT WITH REFLECTIONS - HAS TO WORK WITH
-						// JAR FILES
+						// TODO: IMPLEMENT WITH REFLECTIONS - HAS TO WORK WITH JAR FILES
 						Class<?> clazz = org.freeplane.plugin.workspace.io.creator.DefaultFileNodeCreator.class;
 
 						if (key.toString().equals("org.freeplane.plugin.workspace.io.creator.FolderFileNodeCreator")) {
@@ -349,13 +348,11 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 						System.out.println("Class [" + key + "] is not of type: PhysicalNode");
 					}
 					catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
 			}
 			catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

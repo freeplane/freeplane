@@ -34,9 +34,7 @@ public class MonitoringGroupRadioButtonAction extends GroupRadioButtonAction imp
 		}
 	}
 
-	public void onDeselect(NodeModel node) {
-		// TODO Auto-generated method stub
-		
+	public void onDeselect(NodeModel node) {		
 	}
 
 	public void onSelect(NodeModel node) {

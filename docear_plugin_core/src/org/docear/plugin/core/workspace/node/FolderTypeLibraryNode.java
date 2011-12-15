@@ -344,9 +344,7 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 		return null;
 	}
 
-	public void treeNodesChanged(TreeModelEvent e) {
-		// TODO Auto-generated method stub
-		
+	public void treeNodesChanged(TreeModelEvent e) {		
 	}
 	
 	public void treeNodesInserted(TreeModelEvent event) {

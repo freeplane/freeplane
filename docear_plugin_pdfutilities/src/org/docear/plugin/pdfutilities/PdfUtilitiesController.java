@@ -299,7 +299,6 @@ public class PdfUtilitiesController extends ALanguageController{
 			}
 
 			public void onViewRemoved(Container nodeView) {
-				// TODO Auto-generated method stub
 			}
 
 		});

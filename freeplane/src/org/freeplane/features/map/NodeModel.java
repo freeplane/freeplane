@@ -63,6 +63,8 @@ public class NodeModel implements MutableTreeNode {
 	public final static int RIGHT_POSITION = 1;
 	public final static int UNKNOWN_POSITION = 0;
 	static public final Object UNKNOWN_PROPERTY = new Object();
+	//FIXME: DOCEAR - new property type for node link changes
+	static public final Object HYPERLINK_CHANGED = "hyperlink_changed";
 	public static final String NODE_ICON = "icon";
 	protected final List<NodeModel> children = new ArrayList<NodeModel>();
 	private final ExtensionContainer extensionContainer;

@@ -63,11 +63,9 @@ public class NodeUtils {
 		try {
 			((MFileManager) UrlManager.getController()).writeToFile(map, map.getFile());
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;			
 		}
@@ -124,10 +122,8 @@ public class NodeUtils {
 			urlManager.loadImpl(url, map);			
 			return map;
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

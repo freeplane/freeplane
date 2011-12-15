@@ -43,9 +43,8 @@ public class ImportAllAnnotationsAction extends ImportAnnotationsAction {
 			URI uri = Tools.getAbsoluteUri(selected);
             try {
             	PdfAnnotationImporter importer = new PdfAnnotationImporter();            	
-				List<AnnotationModel> annotations = importer.importAnnotations(uri);
-				NodeUtils nodeUtils = new NodeUtils();                
-                nodeUtils.insertChildNodesFrom(annotations, selected.isLeft(), selected);
+				List<AnnotationModel> annotations = importer.importAnnotations(uri);             
+				NodeUtils.insertChildNodesFrom(annotations, selected.isLeft(), selected);
 			} catch (IOException e) {
 				LogUtils.severe("ImportAllAnnotationsAction IOException at URI("+uri+"): ", e);
 			} catch (COSLoadException e) {

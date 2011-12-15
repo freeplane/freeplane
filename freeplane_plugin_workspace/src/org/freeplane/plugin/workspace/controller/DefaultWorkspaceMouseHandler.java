@@ -83,17 +83,9 @@ public class DefaultWorkspaceMouseHandler implements MouseListener, MouseMotionL
 	public void mouseExited(MouseEvent e) {
 	}
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
-	 */
-	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+	public void mouseDragged(MouseEvent e) {		
 	}
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent)
-	 */
 	public void mouseMoved(MouseEvent e) {
 		JTree tree = ((JTree) e.getSource());		
 		TreePath path = tree.getPathForLocation(e.getX(), e.getY());
