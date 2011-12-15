@@ -272,5 +272,16 @@ public class WorkspaceUtils {
 	public static WorkspaceIndexedTreeModel getModel() {
 		return WorkspaceController.getController().getWorkspaceModel();
 	}
+	
+	public static AWorkspaceTreeNode getNodeForPath(String path) {
+		if(path == null || path.length() <= 0) {
+			return null;
+		}
+		String key = "";
+		for(String token : path.split("/")) {
+			key += "/"+Integer.toHexString(token.hashCode()).toUpperCase(); 
+		}		
+		return getModel().getNode(key);
+	}
 
 }

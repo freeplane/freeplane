@@ -1,9 +1,15 @@
 package org.docear.plugin.core;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Enumeration;
+import java.util.Locale;
 
 import org.docear.plugin.core.actions.DocearLicenseAction;
 import org.docear.plugin.core.actions.DocearNewMapAction;
@@ -32,15 +38,20 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.FreeplaneActionCascade;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.main.application.FreeplaneStarter;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
+import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
+import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
+import org.freeplane.plugin.workspace.model.node.ALinkNode;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 public class CoreConfiguration extends ALanguageController implements IFreeplanePropertyListener {
@@ -106,6 +117,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		FreeplaneActionCascade.insertActionBefore(new DocearNewMapAction());
 		prepareWorkspace();
 		addPluginDefaults();
+		copyWelcomeMindmapIfNeeded();
 		replaceFreeplaneStringsAndActions();
 		DocearMapModelController.install(new DocearMapModelController(modeController));
 		
@@ -121,6 +133,19 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		}
 	}
 	
+	private void copyWelcomeMindmapIfNeeded() {
+		final File baseDir = new File(FreeplaneStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();
+		
+		final String map = ResourceController.getResourceController().getProperty("first_start_map");		
+		final File docearWelcome = ConfigurationUtils.getLocalizedFile(baseDir, map, Locale.getDefault().getLanguage());
+		
+		AWorkspaceTreeNode parent = WorkspaceUtils.getNodeForPath("My Workspace/Miscellaneous");
+		LinkTypeFileNode node = new LinkTypeFileNode();
+		node.setName(docearWelcome.getName());
+		node.setLinkPath(WorkspaceUtils.getWorkspaceRelativeURI(docearWelcome));
+		WorkspaceUtils.getModel().addNodeTo(node, parent);
+	}
+
 	private void setDocearMapWriter() {
 		DocearMapWriter mapWriter = new DocearMapWriter(Controller.getCurrentModeController().getMapController());
 		mapWriter.setMapWriteHandler();		
