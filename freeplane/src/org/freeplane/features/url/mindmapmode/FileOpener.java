@@ -87,32 +87,38 @@ public class FileOpener implements DropTargetListener {
 				final List<File> list = (List<File>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
 				for (final File file : list) {
 					String fileName = file.getName();
-					if (file.isDirectory() || !fileName.substring(fileName.length() - 3).equalsIgnoreCase(".mm")) {
+					if (file.isDirectory() || !isMindMapUrl(fileName)) {
 						continue;
 					}
 					modeController.getMapController().newMap(Compat.fileToUrl(file));
 				}
 			}
 			if (transferable.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-				final String files = (String) transferable.getTransferData(DataFlavor.stringFlavor);
-				final Matcher matcher = filePattern.matcher(files);
-				while (matcher.find()) {
-					final String urlString = matcher.group();
-					if (!urlString.substring(urlString.length() - 3).equalsIgnoreCase(".mm")) {
-						continue;
-					}
-					try {
-						final URI uri = new URI(urlString);
-						final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
-						final File file = Compat.urlToFile(url);
-						if(! file.exists() || file.isDirectory())
+				final String urls = (String) transferable.getTransferData(DataFlavor.stringFlavor);
+				if(urls.startsWith("file:")){
+					final Matcher matcher = filePattern.matcher(urls);
+					while (matcher.find()) {
+						final String urlString = matcher.group();
+						if (!isMindMapUrl(urlString)) {
 							continue;
-						modeController.getMapController().newMap(url);
+						}
+						try {
+							final URI uri = new URI(urlString);
+							final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
+							final File file = Compat.urlToFile(url);
+							if(! file.exists() || file.isDirectory())
+								continue;
+							modeController.getMapController().newMap(url);
+						}
+						catch (final Exception e) {
+							e.printStackTrace();
+							continue;
+						}
 					}
-					catch (final Exception e) {
-						e.printStackTrace();
-						continue;
-					}
+				}
+				else if(urls.startsWith("http://") && isMindMapUrl(urls)){
+					final URL url = new URL(urls);
+					modeController.getMapController().newMap(url);
 				}
 			}
 		}
@@ -123,6 +129,10 @@ public class FileOpener implements DropTargetListener {
 		}
 		dtde.dropComplete(true);
 	}
+
+	private boolean isMindMapUrl(final String urlString) {
+	    return urlString.substring(urlString.length() - 3).equalsIgnoreCase(".mm");
+    }
 
 	public void dropActionChanged(final DropTargetDragEvent e) {
 	}
