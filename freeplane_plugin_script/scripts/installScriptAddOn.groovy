@@ -278,9 +278,8 @@ void createKeyboardShortcut(ScriptAddOnProperties.Script script) {
 	mapStructureAssert(keyStroke, textUtils.format('addons.installer.invalid.keyboard.shortcut', script.keyboardShortcut))
 	String newShortcut = keyStrokeToString(keyStroke)
 	// check if key is used (see AccelerateableAction.newAccelerator())
-	MenuBuilder menuBuilder = Controller.currentModeController.userInputListenerFactory.menuBuilder
 	String menuItemKey = ExecuteScriptAction.makeMenuItemKey(script.menuTitleKey, script.executionMode)
-	String shortcutKey = makeAcceleratorKey(menuItemKey)
+	String shortcutKey = MenuUtils.makeAcceleratorKey(menuItemKey)
 	String oldShortcut = ResourceController.getResourceController().getProperty(shortcutKey);
 	if (oldShortcut && !oldShortcut.equals(newShortcut)
 			&& !askForRemoveShortcutViaDialog(script.name, oldShortcut, newShortcut)) {
@@ -288,6 +287,7 @@ void createKeyboardShortcut(ScriptAddOnProperties.Script script) {
 		return
 	}
 	else {
+	    MenuBuilder menuBuilder = Controller.currentModeController.userInputListenerFactory.menuBuilder
 		// it's a long way to the menu item title
 		DefaultMutableTreeNode menubarNode = menuBuilder.getMenuBar(menuBuilder.get("main_menu_scripting"));
 		assert menubarNode != null : "can't find menubar"
@@ -305,10 +305,6 @@ void createKeyboardShortcut(ScriptAddOnProperties.Script script) {
 	}
 	println "set keyboardShortcut $shortcutKey to $newShortcut"
 	ResourceController.getResourceController().setProperty(shortcutKey, newShortcut)
-}
-
-private static String makeAcceleratorKey(String menuItemKey) {
-	return 'acceleratorForMindMap/$' + menuItemKey + '$0';
 }
 
 private String keyStrokeToString(KeyStroke keyStroke) {

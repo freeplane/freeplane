@@ -15,13 +15,16 @@ import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.apache.commons.lang.StringUtils;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.MenuUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IconNotFound;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.main.addons.AddOnProperties;
+import org.freeplane.plugin.script.ExecuteScriptAction;
 import org.freeplane.plugin.script.addons.ScriptAddOnProperties.Script;
 
 import com.jgoodies.forms.factories.FormFactory;
@@ -110,7 +113,7 @@ public class AddOnDetailsPanel extends JPanel {
 				text.append(row("th", getText("header.function"), getText("header.menu"), getText("header.shortcut")));
 				for (ScriptAddOnProperties.Script script : scripts) {
 					text.append(row("td", bold(TextUtils.getText(script.menuTitleKey)), formatMenuLocation(script),
-						formatShortcut(script.keyboardShortcut)));
+						formatShortcut(script)));
 				}
 				text.append("</table>");
 			}
@@ -127,10 +130,13 @@ public class AddOnDetailsPanel extends JPanel {
 		return label;
 	}
 
-	private String formatShortcut(final String shortCut) {
-		KeyStroke keyStroke = UITools.getKeyStroke(shortCut);
-		return UITools.keyStrokeToString(keyStroke);
-	}
+    private String formatShortcut(final Script script) {
+        final String menuItemKey = ExecuteScriptAction.makeMenuItemKey(script.menuTitleKey, script.executionMode);
+        final String shortcutKey = MenuUtils.makeAcceleratorKey(menuItemKey);
+        final String oldShortcut = ResourceController.getResourceController().getProperty(shortcutKey);
+        final KeyStroke keyStroke = UITools.getKeyStroke(oldShortcut != null ? oldShortcut : script.keyboardShortcut);
+        return UITools.keyStrokeToString(keyStroke);
+    }
 
 	private String formatMenuLocation(ScriptAddOnProperties.Script script) {
 		final String location = script.menuLocation == null ? "main_menu_scripting" : script.menuLocation;
