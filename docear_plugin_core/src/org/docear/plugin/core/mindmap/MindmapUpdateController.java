@@ -219,10 +219,13 @@ public class MindmapUpdateController {
 				for (MapView view : (List<MapView>) Controller.getCurrentController().getViewController().getMapViewManager()
 						.getMapViewVector()) {
 					boolean opened = false;
-					URI mapUri = view.getModel().getFile().toURI();
-					for (URI uri : uris) {
-						if (uri.equals(mapUri)) {
-							opened = true;
+					File mapFile = view.getModel().getFile();
+					if (mapFile != null) {
+						URI mapUri = mapFile.toURI();
+						for (URI uri : uris) {
+							if (uri.equals(mapUri)) {
+								opened = true;
+							}
 						}
 					}
 					if (opened) {						
