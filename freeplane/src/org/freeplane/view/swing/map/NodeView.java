@@ -28,6 +28,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Stroke;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DragSource;
@@ -49,6 +50,7 @@ import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeStyle;
+import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.HierarchicalIcons;
 import org.freeplane.features.map.HistoryInformationModel;
 import org.freeplane.features.map.INodeView;
@@ -1157,6 +1159,21 @@ public class NodeView extends JComponent implements INodeView {
 		g.translate(origin.x, origin.y);
 		mainView.paintDecoration(this, g);
 		g.translate(-origin.x, -origin.y);
+		final FilterController filterController = FilterController.getController(getMap().getModeController().getController());
+		if(filterController.isNodeHighlighted(getModel())){
+			final Color oldColor = g.getColor();
+			final Stroke oldStroke = g.getStroke();
+			g.setColor(Color.MAGENTA);
+			g.setStroke(getMap().getStandardSelectionStroke());
+			final JComponent content = getContent();
+			Point contentLocation = content.getLocation();
+			final int arcWidth = 8;
+			g.drawRoundRect(contentLocation.x - arcWidth, contentLocation.y - arcWidth, content.getWidth() + 2 * arcWidth,
+			    content.getHeight() + 2 * arcWidth, 15, 15);
+			g.setColor(oldColor);
+			g.setStroke(oldStroke);
+			
+		}
 	}
 
 	/**

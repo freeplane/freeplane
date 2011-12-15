@@ -1280,10 +1280,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (selected.getMainView().isEdited()) {
 			return;
 		}
-		final int arcWidth = 4;
 		final JComponent content = selected.getContent();
 		final Point contentLocation = new Point();
 		UITools.convertPointToAncestor(content, contentLocation, this);
+		final int arcWidth = 4;
 		g.drawRoundRect(contentLocation.x - arcWidth, contentLocation.y - arcWidth, content.getWidth() + 2 * arcWidth,
 		    content.getHeight() + 2 * arcWidth, 15, 15);
 	}
@@ -1295,10 +1295,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final Color c = g.getColor();
 		final Stroke s = g.getStroke();
 		g.setColor(MapView.standardSelectRectangleColor);
-		if (MapView.standardSelectionStroke == null) {
-			MapView.standardSelectionStroke = new BasicStroke(2.0f);
-		}
-		g.setStroke(MapView.standardSelectionStroke);
+		final Stroke standardSelectionStroke = getStandardSelectionStroke();
+		g.setStroke(standardSelectionStroke);
 		final Object renderingHint = getModeController().getController().getViewController().setEdgesRenderingHint(g);
 		for (final NodeView selected : getSelection()) {
 			paintSelected(g, selected);
@@ -1307,6 +1305,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		g.setStroke(s);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 	}
+
+	Stroke getStandardSelectionStroke() {
+	    if (MapView.standardSelectionStroke == null) {
+			MapView.standardSelectionStroke = new BasicStroke(2.0f);
+		}
+		final Stroke standardSelectionStroke = MapView.standardSelectionStroke;
+	    return standardSelectionStroke;
+    }
 
 	/**
 	 * Call preparePrinting() before printing and endPrinting() after printing
