@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.pdfutilities.util.MapConverter;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 
@@ -73,11 +74,11 @@ public class DocearMapConverterListener implements IMapSelectionListener,  Windo
 	
 	private String getMessage(){
 		if(this.mapsToConvert.size() > 1){
-			return mapsToConvert.size() + " of your currently opened maps, need to be updated.\n Update now ?";
+			return mapsToConvert.size() + " of your currently opened maps, need to be updated.\n Update now?\n\n"+TextUtils.getText("update_splmm_to_docear_explanation");
 		}
 		else if (this.mapsToConvert.size() == 1){
-			return mapsToConvert.get(0).getTitle() + " needs to be updated.\n Update now ?";
-		}
+			return mapsToConvert.get(0).getTitle() + " needs to be updated.\n Update now?\n\n"+TextUtils.getText("update_splmm_to_docear_explanation");
+		}		
 		return "";
 	}
 	

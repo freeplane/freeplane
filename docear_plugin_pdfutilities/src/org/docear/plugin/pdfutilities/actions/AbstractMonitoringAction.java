@@ -45,6 +45,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
@@ -662,10 +663,10 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			
 			private String getMessage(List<MapModel> mapsToConvert){
 				if(mapsToConvert.size() > 1){
-					return mapsToConvert.size() + " of your monitored maps, need to be updated.\n Update now ?";
+					return mapsToConvert.size() + " of your monitored maps, need to be updated.\n Update now?\n\n"+TextUtils.getText("update_splmm_to_docear_explanation");
 				}
 				else if (mapsToConvert.size() == 1){
-					return mapsToConvert.get(0).getTitle() + " needs to be updated.\n Update now ?";
+					return mapsToConvert.get(0).getTitle() + " needs to be updated.\n Update now?\n\n"+TextUtils.getText("update_splmm_to_docear_explanation");
 				}
 				return "";
 			}
