@@ -18,6 +18,7 @@ public class NodeAttributeObserver {
 		if(listener == null) {
 			return;
 		}
+		this.listeners.clear();
 		this.listeners.add(listener);
 	}
 	
