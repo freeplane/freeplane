@@ -189,7 +189,7 @@ public class WorkspaceUtils {
 			return null;
 		}
 
-		return string.replaceAll("[^a-zA-Z0-9äöüÄÖÜ]+", "");
+		return string.replaceAll("[^a-zA-Z0-9äöüÄÖÜ ]+", "");
 	}
 
 	public static URI absoluteURI(final URI uri) {
