@@ -29,7 +29,6 @@ public class FreeplaneActionMultiCaster extends AFreeplaneAction {
 		if(a != null) {
 			assert(b.getKey().equals(a.getKey()));
 		}
-		
 		this.a = a;
 		this.b = b;
 	}
@@ -37,6 +36,10 @@ public class FreeplaneActionMultiCaster extends AFreeplaneAction {
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
+	
+	public boolean isEnabled() {
+		return b.isEnabled();
+	}
 	
 	public void setEnabled() {
 		//FIXME: DOCEAR - check annotation settings
