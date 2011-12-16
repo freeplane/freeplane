@@ -19,6 +19,10 @@ public class JabRefChangeListener implements DatabaseChangeListener {
 			return;
 		}
 		
+		if (e.getEntry() == null || e.getEntry().getCiteKey() == null) {
+			return;
+		}
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			
 			@Override

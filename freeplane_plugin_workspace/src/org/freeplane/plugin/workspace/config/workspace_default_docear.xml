@@ -6,7 +6,7 @@
         
     </folder>
     <folder type="literature_repository" path="" system="true" />
-    <folder type="projects" name="Projects" path="" monitor="true" system="true"/>
+    <folder type="projects" name="Projects" path="" monitor="false" system="true"/>
     <link type="references" path="" system="true" />
     
     <folder type="virtual" name="Miscellaneous" > 
