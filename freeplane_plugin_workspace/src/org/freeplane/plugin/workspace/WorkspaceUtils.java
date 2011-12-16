@@ -219,24 +219,29 @@ public class WorkspaceUtils {
 
 	public static File resolveURI(final URI uri, final MapModel map) {
 		try {
-		return resolveURI(UrlManager.getController().getAbsoluteUri(map, uri));
+			return resolveURI(UrlManager.getController().getAbsoluteUri(map, uri));
 		} 
-		catch (MalformedURLException ex) {
+		catch (Exception ex) {
 			LogUtils.warn(ex);
 		}
 		return null;
 	}
 	
 	public static File resolveURI(final URI uri) {
-		if(uri.getFragment() != null) {
-			return null;
+		try {
+			if(uri.getFragment() != null) {
+				return null;
+			}
+			URI absoluteUri = absoluteURI(uri);
+			if (absoluteUri == null) {
+				return null;
+			}
+			if(absoluteUri.getScheme().equalsIgnoreCase("file")){
+				return new File(absoluteUri);
+			}
 		}
-		URI absoluteUri = absoluteURI(uri);
-		if (absoluteUri == null) {
-			return null;
-		}
-		if(absoluteUri.getScheme().equalsIgnoreCase("file")){
-			return new File(absoluteUri);
+		catch(Exception ex) {
+			LogUtils.warn(ex);
 		}
 		return null;
 	}
