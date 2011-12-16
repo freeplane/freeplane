@@ -12,7 +12,6 @@ import java.util.Enumeration;
 import java.util.Locale;
 
 import org.docear.plugin.core.actions.DocearLicenseAction;
-import org.docear.plugin.core.actions.DocearNewMapAction;
 import org.docear.plugin.core.actions.DocearOpenUrlAction;
 import org.docear.plugin.core.actions.DocearQuitAction;
 import org.docear.plugin.core.actions.SaveAction;
@@ -114,7 +113,6 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		modeController.addAction(new DocearChangeLibraryPathAction());
 		modeController.addAction(new DocearRenameAction());
 		
-		FreeplaneActionCascade.insertActionBefore(new DocearNewMapAction());
 		prepareWorkspace();
 		addPluginDefaults();
 		copyWelcomeMindmapIfNeeded();

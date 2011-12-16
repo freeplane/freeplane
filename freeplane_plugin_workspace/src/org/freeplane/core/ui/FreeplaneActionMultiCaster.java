@@ -11,6 +11,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 /**
  * 
  */
+@EnabledAction(checkOnPopup=true)
 public class FreeplaneActionMultiCaster extends AFreeplaneAction {
 
 	private static final long serialVersionUID = 1L;
@@ -36,6 +37,12 @@ public class FreeplaneActionMultiCaster extends AFreeplaneAction {
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
+	
+	public void setEnabled() {
+		//FIXME: DOCEAR - check annotation settings
+		this.a.setEnabled();
+		this.b.setEnabled();
+	}
 	
 	public AFreeplaneAction getA() {
 		return a;
