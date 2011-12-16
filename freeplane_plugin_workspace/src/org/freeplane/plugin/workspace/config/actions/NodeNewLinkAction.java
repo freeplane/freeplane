@@ -34,13 +34,17 @@ public class NodeNewLinkAction extends AWorkspaceAction {
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
-
+	
+	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 
 	public void actionPerformed(ActionEvent e) {
 		AWorkspaceTreeNode targetNode = getNodeFromActionEvent(e);
+		if(targetNode == null) {
+			targetNode = (AWorkspaceTreeNode) WorkspaceUtils.getModel().getRoot();
+		}
 		if(targetNode instanceof AFolderNode) {
 			JFileChooser chooser = new JFileChooser(WorkspaceUtils.resolveURI(((AFolderNode) targetNode).getPath() == null ? WorkspaceUtils.getProfileBaseURI() : ((AFolderNode) targetNode).getPath()));
 			chooser.setMultiSelectionEnabled(false);
@@ -55,9 +59,9 @@ public class NodeNewLinkAction extends AWorkspaceAction {
 						return;
 					}	
 					node.setLinkPath(path);
-					WorkspaceUtils.getModel().addNodeTo(node, getNodeFromActionEvent(e));
+					WorkspaceUtils.getModel().addNodeTo(node, targetNode);
 					WorkspaceUtils.saveCurrentConfiguration();
-					getNodeFromActionEvent(e).refresh();
+					targetNode.refresh();
 				}
 			}
 		}

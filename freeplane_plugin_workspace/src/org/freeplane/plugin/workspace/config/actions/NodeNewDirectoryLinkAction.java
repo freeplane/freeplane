@@ -23,7 +23,6 @@ public class NodeNewDirectoryLinkAction extends AWorkspaceAction {
 		super("workspace.action.node.new.directory");
 	}
 	
-	
 	/**
 	 * @param targetNode
 	 * @param file
@@ -55,6 +54,9 @@ public class NodeNewDirectoryLinkAction extends AWorkspaceAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		AWorkspaceTreeNode targetNode = getNodeFromActionEvent(e);
+		if(targetNode == null) {
+			targetNode = (AWorkspaceTreeNode) WorkspaceUtils.getModel().getRoot();
+		}
 		if(targetNode instanceof AFolderNode) {			
 			File file = WorkspaceUtils.resolveURI(((AFolderNode) targetNode).getPath() == null ? WorkspaceUtils.getProfileBaseURI() : ((AFolderNode) targetNode).getPath());
 			makeNewDirectoryLink(targetNode, file);
