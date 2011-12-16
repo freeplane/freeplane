@@ -34,7 +34,5 @@ public class FileNodeNewFileAction extends AWorkspaceAction {
 	 **********************************************************************************/
 	
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 }

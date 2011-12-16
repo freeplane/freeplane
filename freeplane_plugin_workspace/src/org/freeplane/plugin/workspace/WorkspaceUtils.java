@@ -79,7 +79,6 @@ public class WorkspaceUtils {
 			config = WorkspaceUtils.resolveURI(uri);
 		}
 		catch (URISyntaxException e) {
-			// TODO DOCEAR: error message
 			e.printStackTrace();
 			return;
 		}

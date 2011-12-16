@@ -42,8 +42,6 @@ public abstract class ALinkNode extends AWorkspaceTreeNode {
 	}
 
 	@Override
-	public void initializePopup() {
-		// TODO Auto-generated method stub
-		
+	public void initializePopup() {		
 	}
 }

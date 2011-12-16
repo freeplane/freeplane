@@ -18,6 +18,7 @@ import org.docear.plugin.core.actions.DocearQuitAction;
 import org.docear.plugin.core.actions.SaveAction;
 import org.docear.plugin.core.actions.SaveAsAction;
 import org.docear.plugin.core.features.DocearMapModelController;
+import org.docear.plugin.core.features.DocearMapWriter;
 import org.docear.plugin.core.features.DocearNodeModelExtensionController;
 import org.docear.plugin.core.listeners.WorkspaceChangeListener;
 import org.docear.plugin.core.workspace.actions.DocearChangeLibraryPathAction;
@@ -31,7 +32,6 @@ import org.docear.plugin.core.workspace.creator.LinkTypeLiteratureAnnotationsCre
 import org.docear.plugin.core.workspace.creator.LinkTypeMyPublicationsCreator;
 import org.docear.plugin.core.workspace.creator.LinkTypeReferencesCreator;
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
-import org.docear.plugin.features.DocearMapWriter;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;

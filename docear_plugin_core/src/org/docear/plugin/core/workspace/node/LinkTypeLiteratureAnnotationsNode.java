@@ -46,7 +46,6 @@ public class LinkTypeLiteratureAnnotationsNode extends ALinkNode implements IWor
 	 **********************************************************************************/
 	public LinkTypeLiteratureAnnotationsNode(String type) {
 		super(type);
-		// TODO Auto-generated constructor stub
 	}
 	
 	/***********************************************************************************

@@ -2,7 +2,7 @@
  * author: Marcel Genzmehr
  * 14.12.2011
  */
-package org.docear.plugin.features;
+package org.docear.plugin.core.features;
 
 import java.io.IOException;
 import java.util.ArrayList;

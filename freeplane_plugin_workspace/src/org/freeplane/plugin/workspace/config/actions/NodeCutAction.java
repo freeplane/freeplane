@@ -28,7 +28,7 @@ public class NodeCutAction extends AWorkspaceAction {
 	}
 	
 	public void actionPerformed(final ActionEvent e) {
-		//TODO: IMPLEMENTATION
+		//TODO: IMPLEMENTATION MISSING
     }
 
 

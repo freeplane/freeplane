@@ -234,7 +234,7 @@ public class WorkspaceChooserDialogPanel extends JPanel {
 					initProfileList(file);
 				}
 				else {
-					// TODO: DOCEAR> do sth.
+					// TODO: DOCEAR - do sth.
 				}
 			}
 			this.internalModel = new DefaultComboBoxModel(itemList.toArray());
