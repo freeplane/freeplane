@@ -170,7 +170,7 @@ public class JabRefAttributes {
 		return setReferenceToNode(new Reference(entry, node), node);
 	}
 	
-	public boolean setReferenceToNode(Reference reference, NodeModel node) {
+	public boolean setReferenceToNode(Reference reference, NodeModel node) {		
 		NodeUtils.setAttributeValue(node, reference.getKey().getName(), reference.getKey().getValue(), false);
 		return updateReferenceToNode(reference, node);		
 	}
@@ -178,7 +178,11 @@ public class JabRefAttributes {
 	public BibtexEntry findBibtexEntryForPDF(URI uri, NodeModel node) {
 		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
 		// file name linked in a node
-		String nodeFile = WorkspaceUtils.resolveURI(uri, node.getMap()).getName();
+		File nodeFile = WorkspaceUtils.resolveURI(uri, node.getMap());
+		if (nodeFile == null) {
+			return null;
+		}
+		String nodeFileName = nodeFile.getName();
 		
 		for (BibtexEntry entry : database.getEntries()) {			
 			String jabrefFile = entry.getField("file");
@@ -186,12 +190,11 @@ public class JabRefAttributes {
 				try {
 					// path linked in jabref
 					jabrefFile = parsePathName(entry, jabrefFile);
-					System.out.println("file in jabref: "+jabrefFile);
 				}
 				catch(Exception e) {
 					continue;
 				}
-				if (nodeFile.equals(jabrefFile)) {
+				if (nodeFileName.equals(jabrefFile)) {
 					return entry;
 				}
 			}

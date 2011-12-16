@@ -25,7 +25,6 @@ import net.sf.jabref.imports.PostOpenAction;
 import net.sf.jabref.label.HandleDuplicateWarnings;
 
 import org.docear.plugin.bibtex.listeners.MapViewListener;
-import org.docear.plugin.core.DocearController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewChangeListener;

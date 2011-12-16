@@ -6,9 +6,7 @@ import java.util.TreeMap;
 
 import net.sf.jabref.BibtexDatabase;
 import net.sf.jabref.BibtexEntry;
-import net.sf.jabref.Globals;
 import net.sf.jabref.export.DocearReferenceUpdateController;
-import net.sf.jabref.labelPattern.LabelPatternUtil;
 
 import org.docear.plugin.bibtex.ReferencesController;
 import org.freeplane.features.map.INodeSelectionListener;
@@ -42,9 +40,6 @@ public class MapViewListener implements MouseListener, INodeSelectionListener {
 		for (BibtexEntry entry : database.getEntries()) {
 			String nodeId = entry.getField("docear_add_to_node");
 			if (nodeId != null) {						
-				if (entry.getCiteKey() == null) {
-					LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), database, entry);
-				}
 				entryNodeTuples.put(nodeId, entry);				
 			}
 			NodeModel node = mapModel.getNodeForID(nodeId);			

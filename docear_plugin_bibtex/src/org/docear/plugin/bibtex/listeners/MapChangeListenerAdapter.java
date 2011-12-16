@@ -21,7 +21,7 @@ public class MapChangeListenerAdapter extends AMapChangeListenerAdapter {
 	public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
 	}
 
-	public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
+	public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {	
 	}
 
 	public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
@@ -39,7 +39,7 @@ public class MapChangeListenerAdapter extends AMapChangeListenerAdapter {
 			if (newUri != null) {
 				JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
 				BibtexEntry entry = jabRefAttributes.findBibtexEntryForPDF(newUri, event.getNode());
-				
+
 				if (entry != null) {
 					jabRefAttributes.setReferenceToNode(entry, event.getNode());
 				}
