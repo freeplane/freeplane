@@ -13,7 +13,6 @@ import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import net.sf.jabref.BasePanel;
 import net.sf.jabref.JabRefPreferences;
 
 import org.docear.plugin.bibtex.actions.AddExistingReferenceAction;
@@ -29,6 +28,7 @@ import org.docear.plugin.bibtex.actions.UpdateReferencesCurrentMapAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesInLibrary;
 import org.docear.plugin.bibtex.listeners.BibtexNodeDropListener;
 import org.docear.plugin.bibtex.listeners.JabRefChangeListener;
+import org.docear.plugin.bibtex.listeners.MapChangeListenerAdapter;
 import org.docear.plugin.bibtex.listeners.NodeAttributeListener;
 import org.docear.plugin.bibtex.listeners.NodeSelectionListener;
 import org.docear.plugin.bibtex.listeners.ReferencePathListener;
@@ -46,11 +46,7 @@ import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.map.AMapChangeListenerAdapter;
-import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeChangeEvent;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -154,65 +150,8 @@ public class ReferencesController extends ALanguageController implements IDocear
 			public void onViewRemoved(Container nodeView) {
 			}
 		});
-		//TODO: STEFAN - react on every event regarding a map or a node 
-		AMapChangeListenerAdapter changeListenerAdapter = new AMapChangeListenerAdapter() {
-			
-			public void mapChanged(MapChangeEvent event) {
-			}
-
-			public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
-			}
-
-			public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
-			}
-
-			public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-			}
-
-			public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
-			}
-
-			public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-			}
-
-			public void nodeChanged(NodeChangeEvent event) {
-				if(event.getProperty().equals(NodeModel.HYPERLINK_CHANGED)) {
-					//TODO: STEFAN - your reference update here (maybe improved for only one node)
-					//REMINDER: check what happens to child nodes if a link (pdf) on the parent is manually changed!!!
-				}
-			}
-
-			public void onCreate(MapModel map) {
-			}
-
-
-			public void onRemove(MapModel map) {
-			}
-
-			
-			public void onSavedAs(MapModel map) {
-				ReferencesController.getController().getJabrefWrapper().getJabrefFrame();
-				try {
-					saveJabrefDatabase();
-				}
-				catch (Throwable ex) {
-					ex.printStackTrace();
-				}
-				
-			}
-
-			
-			public void onSaved(MapModel map) {
-				ReferencesController.getController().getJabrefWrapper().getJabrefFrame();
-				try {
-					saveJabrefDatabase();
-				}
-				catch (Throwable ex) {
-					ex.printStackTrace();
-				}
-			}
-		};
 		
+		MapChangeListenerAdapter changeListenerAdapter = new MapChangeListenerAdapter();		
 		this.modeController.getMapController().addNodeChangeListener(changeListenerAdapter);
 		this.modeController.getMapController().addMapChangeListener(changeListenerAdapter);
 		this.modeController.getMapController().addMapLifeCycleListener(changeListenerAdapter);
@@ -381,12 +320,6 @@ public class ReferencesController extends ALanguageController implements IDocear
 		return attributeListener;
 	}
 	
-	private void saveJabrefDatabase() {
-		BasePanel basePanel = ReferencesController.getController().getJabrefWrapper().getBasePanel();
-		basePanel.runCommand("save");
-		
-	}
-
 	public static JabRefChangeListener getJabRefChangeListener() {
 		return jabRefChangeListener;
 	}

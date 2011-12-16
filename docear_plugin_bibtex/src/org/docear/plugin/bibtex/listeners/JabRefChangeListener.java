@@ -1,9 +1,5 @@
 package org.docear.plugin.bibtex.listeners;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
-
 import javax.swing.SwingUtilities;
 
 import net.sf.jabref.DatabaseChangeEvent;
@@ -11,7 +7,6 @@ import net.sf.jabref.DatabaseChangeListener;
 import net.sf.jabref.export.DocearReferenceUpdateController;
 
 import org.docear.plugin.bibtex.ReferenceUpdater;
-import org.docear.plugin.bibtex.ReferencesController;
 import org.docear.plugin.core.mindmap.MindmapUpdateController;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
@@ -28,9 +23,6 @@ public class JabRefChangeListener implements DatabaseChangeListener {
 			
 			@Override
 			public void run() {	
-
-				// ReferencesController.getController().getJabrefWrapper().getBasePanel().undoManager.undoableEditHappened(e)
-
 				DocearReferenceUpdateController.lock();
 				MapModel currentMap = Controller.getCurrentController().getMap();
 				if (currentMap == null) {

@@ -24,9 +24,7 @@ import net.sf.jabref.imports.ParserResult;
 import net.sf.jabref.imports.PostOpenAction;
 import net.sf.jabref.label.HandleDuplicateWarnings;
 
-import org.docear.plugin.bibtex.listeners.JabRefChangeListener;
 import org.docear.plugin.bibtex.listeners.MapViewListener;
-import org.docear.plugin.bibtex.listeners.PdfAddedListener;
 import org.docear.plugin.core.DocearController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.mode.Controller;
@@ -48,7 +46,6 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
     }
 
     private static final MapViewListener mapViewListener = new MapViewListener();
-    private static final PdfAddedListener pdfAddedLister = new PdfAddedListener();
 	private ParserResult parserResult = null;
 	private String encoding = null;
 	private File file;
@@ -90,7 +87,6 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 				}
 			}
 		});
-		DocearController.getController().addDocearEventListener(pdfAddedLister);
 	}
 	
 	public BasePanel getBasePanel() {		

@@ -177,20 +177,21 @@ public class JabRefAttributes {
 	
 	public BibtexEntry findBibtexEntryForPDF(URI uri, NodeModel node) {
 		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
-		// path linked in a node
-		String nodePath = WorkspaceUtils.resolveURI(uri, node.getMap()).getAbsolutePath();
+		// file name linked in a node
+		String nodeFile = WorkspaceUtils.resolveURI(uri, node.getMap()).getName();
 		
 		for (BibtexEntry entry : database.getEntries()) {			
 			String jabrefFile = entry.getField("file");
 			if (jabrefFile != null) {
 				try {
 					// path linked in jabref
-					jabrefFile = WorkspaceUtils.resolveURI(parsePath(entry, jabrefFile)).getAbsolutePath();
+					jabrefFile = parsePathName(entry, jabrefFile);
+					System.out.println("file in jabref: "+jabrefFile);
 				}
 				catch(Exception e) {
 					continue;
 				}
-				if (nodePath.equals(jabrefFile)) {
+				if (nodeFile.equals(jabrefFile)) {
 					return entry;
 				}
 			}
