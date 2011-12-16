@@ -188,7 +188,7 @@ public class WorkspaceUtils {
 		if (string == null) {
 			return null;
 		}
-
+		//FIXME: DOCEAR - allow "space" in alpha 2
 		return string.replaceAll("[^a-zA-Z0-9äöüÄÖÜ]+", "");
 	}
 
