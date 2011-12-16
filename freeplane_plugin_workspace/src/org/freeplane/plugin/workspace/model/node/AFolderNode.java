@@ -40,7 +40,7 @@ public abstract class AFolderNode extends AWorkspaceTreeNode {
 	 **********************************************************************************/
 	
 	
-	public final String getTagName() {
+	public String getTagName() {
 		return "folder";
 	}
 }

@@ -49,7 +49,7 @@ import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 
-public class WorkspaceRoot extends AWorkspaceTreeNode implements IConfigurationInfo, IWorkspaceNodeEventListener, IDropAcceptor {
+public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IWorkspaceNodeEventListener, IDropAcceptor {
 
 	private static final long serialVersionUID = 1L;
 	private static Icon DEFAULT_ICON = new ImageIcon(
@@ -63,7 +63,7 @@ public class WorkspaceRoot extends AWorkspaceTreeNode implements IConfigurationI
 		super(null);
 	}
 
-	public String getTagName() {
+	public final String getTagName() {
 		return "workspace";
 	}
 
@@ -299,5 +299,10 @@ public class WorkspaceRoot extends AWorkspaceTreeNode implements IConfigurationI
 		}
 		node.setName(file.getName());
 		return node;
+	}
+	
+	public URI getPath() {
+		// not needed for workspace root
+		return null;
 	}
 }

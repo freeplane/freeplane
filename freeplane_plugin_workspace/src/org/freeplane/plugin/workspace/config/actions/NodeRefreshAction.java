@@ -2,6 +2,7 @@ package org.freeplane.plugin.workspace.config.actions;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
@@ -17,8 +18,13 @@ public class NodeRefreshAction extends AWorkspaceAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		AWorkspaceTreeNode node = getNodeFromActionEvent(e);
-		node.refresh();
+		AWorkspaceTreeNode targetNode = getNodeFromActionEvent(e);
+		if(targetNode == null) {
+			targetNode = (AWorkspaceTreeNode) WorkspaceUtils.getModel().getRoot();
+		}
+		else {
+			targetNode.refresh();
+		}
 	}	
 	
 	
