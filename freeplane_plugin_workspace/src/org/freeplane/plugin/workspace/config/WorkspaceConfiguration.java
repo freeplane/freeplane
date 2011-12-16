@@ -112,21 +112,7 @@ public class WorkspaceConfiguration {
 		String appName = Controller.getCurrentController().getResourceController().getProperty("ApplicationName", "Freeplane");
 		String xml;
 		if (appName.equalsIgnoreCase("docear")) {
-			xml = getSubstitutedWorkspaceXml(DEFAULT_CONFIG_FILE_NAME_DOCEAR);
-
-			final File baseDir = new File(FreeplaneStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();
-			final String map = ResourceController.getResourceController().getProperty("first_start_map");
-			final File docearWelcome = ConfigurationUtils.getLocalizedFile(baseDir, map, Locale.getDefault().getLanguage());
-			
-			File destination = null;
-			try {
-				destination = WorkspaceUtils.resolveURI(new URI("workspace:/docear_welcome.mm"));
-			}
-			catch (URISyntaxException e) {
-				e.printStackTrace();
-			}
-			
-			copyFile(docearWelcome, destination);
+			xml = getSubstitutedWorkspaceXml(DEFAULT_CONFIG_FILE_NAME_DOCEAR);			
 		}
 		else {
 			xml = getSubstitutedWorkspaceXml(DEFAULT_CONFIG_FILE_NAME);
@@ -135,27 +121,7 @@ public class WorkspaceConfiguration {
 		out.write(xml.getBytes());
 		out.close();
 	}
-
-	private void copyFile(File from, File to) throws IOException {
-		if (from == null || to == null) {
-			return;
-		}
-		
-		FileInputStream fin = new FileInputStream(from);
-		FileOutputStream fout = new FileOutputStream(to);
-
-		byte[] b = new byte[1024];
-		int noOfBytes = 0;
-
-		while ((noOfBytes = fin.read(b)) != -1) {
-			fout.write(b, 0, noOfBytes);
-		}
-		
-		fin.close();
-		fout.close();
-
-	}
-
+	
 	private void initReadManager() {
 		readManager.addElementHandler("workspace", getWorkspaceRootCreator());
 		readManager.addElementHandler("folder", getFolderCreator());
