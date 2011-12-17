@@ -58,6 +58,8 @@ public class AutomaticLayout extends PersistentNodeHook implements IExtension {
 	}
 
 	private IStyle getStyle(final NodeModel node) {
+		if(node.isLeaf())
+			return MapStyleModel.DEFAULT_STYLE;
 		final int depth = node.depth();
 		final MapModel map = node.getMap();
 		final MapStyleModel extension = MapStyleModel.getExtension(map);
