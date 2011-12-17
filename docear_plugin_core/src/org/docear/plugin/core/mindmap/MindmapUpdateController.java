@@ -228,7 +228,8 @@ public class MindmapUpdateController {
 							}
 						}
 					}
-					if (opened) {						
+					if (opened) {	
+						LogUtils.info("updating view for map: "+view.getModel().getFile());
 						NodeView nodeView = view.getNodeView(view.getModel().getRootNode());
 						nodeView.updateAll();
 					}
