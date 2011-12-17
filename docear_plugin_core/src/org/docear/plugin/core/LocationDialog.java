@@ -1,20 +1,17 @@
 package org.docear.plugin.core;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -30,7 +27,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
-public class LocationDialog extends JDialog {
+public class LocationDialog extends JPanel {
 
 	/**
 	 * 
@@ -57,6 +54,18 @@ public class LocationDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
+	
+	public static void showWorkspaceChooserDialog() {
+		showWorkspaceChooserDialog(true);
+	}
+	
+	public static void showWorkspaceChooserDialog(boolean useDefaults) {
+		LocationDialog dialog = new LocationDialog(useDefaults);
+		
+		JOptionPane.showMessageDialog(UITools.getFrame(), dialog, TextUtils.getRawText("docear_initialization"), JOptionPane.PLAIN_MESSAGE);
+	
+		dialog.onOkButton();
+	}
 	
 	public static boolean allVariablesSet() {
 		boolean variablesSet = true;		
@@ -126,10 +135,6 @@ public class LocationDialog extends JDialog {
 		}
 	}
 	
-	private void onCancelButton() {
-		this.dispose();
-	}
-	
 	private void onOkButton() {
 		if(chckbxUseDefaults.isSelected()) {
 			setLiteratureLocation(WorkspaceUtils.resolveURI(URI.create(LITERATURE_REPOSITORY_INIT_PATH)).getPath());
@@ -144,69 +149,51 @@ public class LocationDialog extends JDialog {
 		WorkspaceController.getController().refreshWorkspace();
 		//TODO: DOCEAR: create Docear-Workspace
 		
-		this.dispose();
+//		this.dispose();
 	}
-	
-	public LocationDialog() {
-		this(false);
-	}
-	
+			
 	public LocationDialog(boolean useDefaults) {
 		WorkspaceController workspaceController = WorkspaceController.getController();
 		this.workspaceLocation = new File(workspaceController.getPreferences().getWorkspaceLocation());
-		this.addWindowListener(new WindowListener() {
-			
-			public void windowOpened(WindowEvent e) {				
-			}
-			
-			public void windowIconified(WindowEvent e) {				
-			}
-			
-			public void windowDeiconified(WindowEvent e) {
-			}
-			
-			public void windowDeactivated(WindowEvent e) {
-			}
-			
-			public void windowClosing(WindowEvent e) {
-				if(chckbxUseDefaults.isSelected()) {
-					setLiteratureLocation(WorkspaceUtils.resolveURI(URI.create(LITERATURE_REPOSITORY_INIT_PATH)).getPath());
-					setBibtexLocation(WorkspaceUtils.resolveURI(URI.create(BIBTEX_PATH_INIT)).getPath());
-					setProjectsLocation(WorkspaceUtils.resolveURI(URI.create(PROJECTS_PATH_INIT)).getPath());
-				}
-				else {
-					setLiteratureLocation(literatureLocation.getText());
-					setBibtexLocation(bibtexLocation.getText());
-					setProjectsLocation(projectsLocation.getText());
-				}		
-			}
-			
-			public void windowClosed(WindowEvent e) {
-			}
-			
-			public void windowActivated(WindowEvent e) {
-			}
-		});
+//		this.addWindowListener(new WindowListener() {
+//			
+//			public void windowOpened(WindowEvent e) {				
+//			}
+//			
+//			public void windowIconified(WindowEvent e) {				
+//			}
+//			
+//			public void windowDeiconified(WindowEvent e) {
+//			}
+//			
+//			public void windowDeactivated(WindowEvent e) {
+//			}
+//			
+//			public void windowClosing(WindowEvent e) {
+//				if(chckbxUseDefaults.isSelected()) {
+//					setLiteratureLocation(WorkspaceUtils.resolveURI(URI.create(LITERATURE_REPOSITORY_INIT_PATH)).getPath());
+//					setBibtexLocation(WorkspaceUtils.resolveURI(URI.create(BIBTEX_PATH_INIT)).getPath());
+//					setProjectsLocation(WorkspaceUtils.resolveURI(URI.create(PROJECTS_PATH_INIT)).getPath());
+//				}
+//				else {
+//					setLiteratureLocation(literatureLocation.getText());
+//					setBibtexLocation(bibtexLocation.getText());
+//					setProjectsLocation(projectsLocation.getText());
+//				}		
+//			}
+//			
+//			public void windowClosed(WindowEvent e) {
+//			}
+//			
+//			public void windowActivated(WindowEvent e) {
+//			}
+//		});
 		
 		BIBTEX_PATH_INIT = "workspace:/."+workspaceController.getPreferences().getWorkspaceProfile()+"/docear.bib";
 		PROJECTS_PATH_INIT = "workspace:/projects";
 		
-		this.setModal(true);
-		setTitle(TextUtils.getText("docear_initialization"));
-		setBounds(100, 100, 516, 282);
-		getContentPane().setLayout(new BorderLayout());
-		//final JCheckboxBorder border = new JCheckboxBorder(null, "Enable", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0));
-//		border.setCheckboxAction(new AbstractAction("Enable") {
-//			
-//			private static final long serialVersionUID = 1L;
-//
-//			public void actionPerformed(ActionEvent e) {
-//				System.out.println(e);
-//				
-//			}
-//		});
-		//contentPanel.setBorder(border);
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		this.setLayout(new BorderLayout());
+		this.add(contentPanel, BorderLayout.CENTER);
 		{			
 			contentPanel.setLayout(new FormLayout(new ColumnSpec[] {
 					FormFactory.RELATED_GAP_COLSPEC,
@@ -331,32 +318,7 @@ public class LocationDialog extends JDialog {
 				}
 			}
 		}
-		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			{
-				JButton okButton = new JButton(TextUtils.getText("ok"));
-				okButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						onOkButton();
-					}
-				});
-//				{
-//					JButton cancelButton = new JButton(TextUtils.getText("cancel"));
-//					cancelButton.addActionListener(new ActionListener() {
-//						public void actionPerformed(ActionEvent e) {
-//							onCancelButton();
-//						}
-//					});
-//					cancelButton.setActionCommand("cancel");
-//					buttonPane.add(cancelButton);
-//				}
-				okButton.setActionCommand("ok");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
-			}
-		}	
+			
 	}
 	
 	private void setPathsEnabled(boolean b) {
