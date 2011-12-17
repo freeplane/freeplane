@@ -52,7 +52,7 @@ class ForkMainView extends MainView {
     public
 	Point getLeftPoint() {
 		int edgeWidth = getEdgeWidth();
-		final Point in = new Point(0, getHeight() + edgeWidth / 2);
+		final Point in = new Point(0, getHeight() - edgeWidth / 2);
 		return in;
 	}
 
@@ -90,7 +90,7 @@ class ForkMainView extends MainView {
     public
 	Point getRightPoint() {
 		int edgeWidth = getEdgeWidth();
-		final Point in = new Point(getWidth() - 1, getHeight() + edgeWidth / 2);
+		final Point in = new Point(getWidth() - 1, getHeight() - edgeWidth / 2);
 		return in;
 	}
 
@@ -142,15 +142,17 @@ class ForkMainView extends MainView {
 		}
 		super.paintFoldingMark(nodeView, g, p, itself);
 	}
-    private static Insets insets = new Insets(0, 2, 0, 2);
-    
+	
     @Override
     public Insets getInsets() {
-        return ForkMainView.insets;
+        return getInsets(new Insets(0, 2, getEdgeWidth(), 2));
     }
 
     @Override
     public Insets getInsets(Insets insets) {
-        return ForkMainView.insets;
+    	if(insets == null)
+    		return getInsets();
+    	insets.set(0, 2, getEdgeWidth(), 2);
+        return insets;
     }
 }
