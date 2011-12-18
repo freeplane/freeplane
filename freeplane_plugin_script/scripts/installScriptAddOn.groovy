@@ -486,7 +486,7 @@ boolean confirmInstall(ScriptAddOnProperties addOn, ScriptAddOnProperties instal
 		return false
 	// 2. license
 	boolean licenseUnchanged = addOn.license && installedAddOn?.license && addOn.license.equals(installedAddOn.license)
-	def license = addOn.license.replaceAll("</?(html|body)>", "")
+	def license = addOn.license.replaceAll('</?(html|body|head)>', '').trim()
 	def question = textUtils.removeTranslateComment(textUtils.format('addons.installer.confirm.licence', license)).replace("\n", "<p>")
 	if (licenseUnchanged)
 		c.statusInfo = textUtils.getText('addons.installer.licence.unchanged')
