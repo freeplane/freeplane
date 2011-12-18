@@ -55,7 +55,6 @@ import org.freeplane.features.mode.browsemode.BModeController;
 import org.freeplane.features.mode.filemode.FModeController;
 import org.freeplane.features.mode.mindmapmode.LoadAcceleratorPresetsAction;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.note.NoteController;
 import org.freeplane.features.print.PrintController;
 import org.freeplane.features.styles.LogicalStyleFilterController;
 import org.freeplane.features.styles.MapViewLayout;
