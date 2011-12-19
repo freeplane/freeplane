@@ -25,7 +25,7 @@ public class JabRefChangeListener implements DatabaseChangeListener {
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			
-			@Override
+
 			public void run() {	
 				DocearReferenceUpdateController.lock();
 				MapModel currentMap = Controller.getCurrentController().getMap();

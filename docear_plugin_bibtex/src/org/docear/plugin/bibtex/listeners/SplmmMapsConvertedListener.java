@@ -13,7 +13,6 @@ import org.freeplane.features.map.MapModel;
 public class SplmmMapsConvertedListener implements ISplmmMapsConvertedListener {
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public void mapsConverted(SplmmMapsConvertedEvent event) {
 		List<MapModel> maps = (List<MapModel>) event.getObject();
 
