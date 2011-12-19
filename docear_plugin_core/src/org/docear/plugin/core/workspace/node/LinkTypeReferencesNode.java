@@ -56,8 +56,6 @@ public class LinkTypeReferencesNode extends LinkTypeFileNode implements IBibtexD
 
 	public LinkTypeReferencesNode(String type) {
 		super(type);
-		DocearEvent event = new DocearEvent(this, DocearEventType.LIBRARY_NEW_REFERENCES_INDEXING_REQUEST, this);
-		DocearController.getController().dispatchDocearEvent(event);
 		CoreConfiguration.referencePathObserver.addChangeListener(this);
 	}
 	
@@ -100,7 +98,8 @@ public class LinkTypeReferencesNode extends LinkTypeFileNode implements IBibtexD
 		if (uri != null) {
 			createIfNeeded(uri);
 		}		
-		
+		DocearEvent event = new DocearEvent(this, DocearEventType.LIBRARY_NEW_REFERENCES_INDEXING_REQUEST, this);
+		DocearController.getController().dispatchDocearEvent(event);
 	}
 	
 	public void setName(String name) {

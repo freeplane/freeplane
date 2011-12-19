@@ -68,10 +68,9 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 
 	public FolderTypeLibraryNode(String type) {
 		super(type);
-		DocearController.getController().addDocearEventListener(this);
 		DocearEvent event = new DocearEvent(this, DocearEventType.NEW_LIBRARY);
 		DocearController.getController().dispatchDocearEvent(event);
-		//WorkspaceController.getController().getFilesystemReader().addNodeCreatedListener(this);
+		DocearController.getController().addDocearEventListener(this);
 		WorkspaceUtils.getModel().addTreeModelListener(this);
 	}	
 	
@@ -128,7 +127,13 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 	}
 	
 	protected void addReferenceToIndex(IBibtexDatabase ref) {
+		referencesIndex.clear();
+		if(ref == null) {
+			return;
+		}
 		referencesIndex.add(ref);
+		DocearEvent event = new DocearEvent(this, DocearEventType.LIBRARY_CHANGED, ref);
+		DocearController.getController().dispatchDocearEvent(event);
 	}
 	
 	/**
