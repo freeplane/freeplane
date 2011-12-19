@@ -45,9 +45,8 @@ public class ImportAllChildAnnotationsAction extends ImportAnnotationsAction {
 			PdfAnnotationImporter importer = new PdfAnnotationImporter();    
 			URI uri = Tools.getAbsoluteUri(selected);
 			try {
-				AnnotationModel annotation = importer.searchAnnotation(uri, selected);
-				NodeUtils nodeUtils = new NodeUtils();                
-                nodeUtils.insertChildNodesFrom(annotation.getChildren(), selected.isLeft(), selected);
+				AnnotationModel annotation = importer.searchAnnotation(uri, selected);				          
+                NodeUtils.insertChildNodesFrom(annotation.getChildren(), selected.isLeft(), selected);
 			} catch (COSRuntimeException e) {
 				LogUtils.severe("ImportAllChildAnnotationsAction COSRuntimeException at URI("+uri+"): ", e);
 			} catch (IOException e) {

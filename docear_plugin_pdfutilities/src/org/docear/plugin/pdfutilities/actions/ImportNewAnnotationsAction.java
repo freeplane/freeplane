@@ -49,9 +49,8 @@ public class ImportNewAnnotationsAction extends ImportAnnotationsAction {
 			URI uri = Tools.getAbsoluteUri(selected);
             try {
             	PdfAnnotationImporter importer = new PdfAnnotationImporter();            	
-				Collection<AnnotationModel> annotations = importer.importAnnotations(uri);
-				NodeUtils nodeUtils = new NodeUtils();
-				Map<AnnotationID, Collection<AnnotationNodeModel>> oldAnnotations = nodeUtils.getOldAnnotationsFromCurrentMap();				
+				Collection<AnnotationModel> annotations = importer.importAnnotations(uri);				
+				Map<AnnotationID, Collection<AnnotationNodeModel>> oldAnnotations = NodeUtils.getOldAnnotationsFromCurrentMap();				
 				annotations = AnnotationController.markNewAnnotations(annotations, oldAnnotations);
 				Map<AnnotationID, Collection<IAnnotation>> conflicts = AnnotationController.getConflictedAnnotations(annotations, oldAnnotations);
 				if(conflicts.size() > 0){
@@ -59,7 +58,7 @@ public class ImportNewAnnotationsAction extends ImportAnnotationsAction {
 					dialog.showDialog();
 				}
 				
-                nodeUtils.insertNewChildNodesFrom(annotations, selected.isLeft(), selected, selected);
+                NodeUtils.insertNewChildNodesFrom(annotations, selected.isLeft(), selected, selected);
 			} catch (IOException e) {
 				LogUtils.severe("ImportAllAnnotationsAction IOException at URI("+uri+"): ", e); //$NON-NLS-1$ //$NON-NLS-2$
 			} catch (COSLoadException e) {

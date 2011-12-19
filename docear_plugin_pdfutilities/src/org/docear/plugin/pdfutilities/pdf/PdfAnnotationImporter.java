@@ -1,25 +1,16 @@
 package org.docear.plugin.pdfutilities.pdf;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.Writer;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.channels.FileLock;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.apache.commons.io.input.AutoCloseInputStream;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.features.AnnotationController;
@@ -58,10 +49,6 @@ import de.intarsys.pdf.pd.PDPage;
 import de.intarsys.pdf.pd.PDTextAnnotation;
 import de.intarsys.pdf.pd.PDTextMarkupAnnotation;
 import de.intarsys.tools.locator.FileLocator;
-import de.intarsys.tools.locator.ILocator;
-import de.intarsys.tools.locator.LocatorFactory;
-import de.intarsys.tools.randomaccess.IRandomAccess;
-import de.intarsys.tools.randomaccess.RandomAccessFile;
 
 public class PdfAnnotationImporter {
 	

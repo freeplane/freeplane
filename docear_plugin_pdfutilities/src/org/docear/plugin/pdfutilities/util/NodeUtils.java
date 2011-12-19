@@ -118,6 +118,7 @@ public class NodeUtils {
 			final UrlManager urlManager = (UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class);			
 			MapModel map = new MMapModel(null);			
 			AttributeRegistry.createRegistry(map);
+			@SuppressWarnings("deprecation")
 			URL url = Tools.getFilefromUri(uri).toURL();
 			urlManager.loadImpl(url, map);			
 			return map;
