@@ -69,7 +69,7 @@ public class MonitorungNodeUpdater extends AMindmapUpdater {
 				AttributeController.getController().performSetValueAt(attributeTable, keyAttribute.getValue(), i, 0);
 				try {
 					String path = (String) attribute.getValue();
-					URI uri = URI.create(path);
+					URI uri = new File(path).toURI();
 					if (uri.getScheme().length() == 1) {
 						throw new Exception("absolut windows paths do not work in linux!");
 					}
