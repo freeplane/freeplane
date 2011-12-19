@@ -119,7 +119,7 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 	}
 		
 	public void replaceDatabase(File file, boolean raisePanel) {
-		getJabrefFrame().closeCurrentTab();
+		getJabrefFrame().getTabbedPane().removeAll();
 		openIt(file, raisePanel);
 	}
 		
