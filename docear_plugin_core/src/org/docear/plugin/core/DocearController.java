@@ -80,12 +80,6 @@ public class DocearController implements IDocearEventListener, IFreeplanePropert
 	public void handleEvent(DocearEvent event) {
 		if(event.getType() == DocearEventType.NEW_LIBRARY && event.getSource() instanceof IDocearLibrary) {
 			this.currentLibrary = (IDocearLibrary) event.getSource();
-//			if(this.currentLibrary != null && this.currentLibrary instanceof FolderTypeLibraryNode) {
-//				WorkspaceController.getController().getWorkspaceViewTree().expandPath(((FolderTypeLibraryNode) this.currentLibrary).getTreePath());
-//				WorkspaceController.getController().getExpansionStateHandler().addPathKey(((AWorkspaceTreeNode) WorkspaceUtils.getModel().getRoot()).getTreePath().toString());
-//				WorkspaceController.getController().getExpansionStateHandler().addPathKey(((FolderTypeLibraryNode) this.currentLibrary).getTreePath().toString());
-//				WorkspaceController.getController().refreshWorkspace();
-//			}
 			LogUtils.info("DOCEAR: new DocearLibrary set");
 		}	
 	}
