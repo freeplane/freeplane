@@ -1174,7 +1174,7 @@ public class EntryEditor extends JPanel implements VetoableChangeListener {
                     else
                         panel.output(Globals.lang("BibTeX key is unique."));
                 } else { // key is null/empty
-                    warnEmptyBibtexkey();
+                    //warnEmptyBibtexkey();
                 }
 
                 // Add an UndoableKeyChange to the baseframe's undoManager.
