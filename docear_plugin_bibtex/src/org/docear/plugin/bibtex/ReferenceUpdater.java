@@ -74,22 +74,24 @@ public class ReferenceUpdater extends AMindmapUpdater {
 		for (Entry<String, LinkedList<NodeModel>> entry : referenceNodes.entrySet()) {
 
 			BibtexEntry bibtexEntry = database.getEntryByKey(entry.getKey());
-			for (NodeModel node : entry.getValue()) {
-				Reference reference = new Reference(bibtexEntry, node);
-//				i++;
-//				if (i % 100 == 0) {
-//					LogUtils.info("node: " + i);
-//				}
-				String key = jabRefAttributes.getBibtexKey(node);
-				if (key == null) {
-					changes = true;
-					ReferencesController.getController().getJabRefAttributes().setReferenceToNode(reference, node);
+			if (bibtexEntry != null) {
+				for (NodeModel node : entry.getValue()) {
+					Reference reference = new Reference(bibtexEntry, node);
+	//				i++;
+	//				if (i % 100 == 0) {
+	//					LogUtils.info("node: " + i);
+	//				}
+					String key = jabRefAttributes.getBibtexKey(node);
+					if (key == null) {
+						changes = true;
+						ReferencesController.getController().getJabRefAttributes().setReferenceToNode(reference, node);
+					}
+					else {
+						changes = changes
+								| ReferencesController.getController().getJabRefAttributes().updateReferenceToNode(reference, node);
+					}
+	
 				}
-				else {
-					changes = changes
-							| ReferencesController.getController().getJabRefAttributes().updateReferenceToNode(reference, node);
-				}
-
 			}
 		}
 		return changes;

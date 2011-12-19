@@ -29,7 +29,7 @@ import org.jdesktop.swingworker.SwingWorker;
 
 public class MindmapUpdateController {
 	private final ArrayList<AMindmapUpdater> updaters = new ArrayList<AMindmapUpdater>();
-	
+
 	public void addMindmapUpdater(AMindmapUpdater updater) {
 		this.updaters.add(updater);
 	}
@@ -41,7 +41,7 @@ public class MindmapUpdateController {
 	public boolean updateAllMindmapsInWorkspace() {
 		List<URI> uris = WorkspaceUtils.getModel().getAllNodesFiltered(".mm");
 		for (URI uri : uris) {
-			System.out.println("uri: "+uri);
+			System.out.println("uri: " + uri);
 		}
 		return updateMindmaps(uris);
 	}
@@ -80,7 +80,13 @@ public class MindmapUpdateController {
 
 	public boolean updateCurrentMindmap(boolean closeWhenDone) {
 		List<URI> maps = new ArrayList<URI>();
-		maps.add(Controller.getCurrentController().getMap().getFile().toURI());
+		
+		try {
+			maps.add(Controller.getCurrentController().getMap().getFile().toURI());
+		}
+		catch (NullPointerException e) {			
+		}
+
 		Controller.getCurrentController().getMap().setSaved(false);
 
 		return updateMindmaps(maps, closeWhenDone);
@@ -90,7 +96,11 @@ public class MindmapUpdateController {
 		List<URI> uris = new ArrayList<URI>();
 
 		for (MapModel map : maps) {
-			uris.add(map.getFile().toURI());
+			try {
+				uris.add(map.getFile().toURI());
+			}
+			catch (NullPointerException e) {				
+			}
 		}
 
 		return updateMindmaps(uris);
@@ -100,7 +110,7 @@ public class MindmapUpdateController {
 	public boolean updateMindmaps(List<URI> uris) {
 		return updateMindmaps(uris, false);
 	}
-	
+
 	public boolean updateMindmaps(List<URI> uris, boolean closeWhenDone) {
 		SwingWorker<Void, Void> thread = getUpdateThread(uris, closeWhenDone);
 
@@ -123,7 +133,7 @@ public class MindmapUpdateController {
 			private int totalCount;
 			private int count = 0;
 			private boolean mapHasChanged = false;
-			
+
 			private final long start = System.currentTimeMillis();
 
 			@Override
@@ -140,7 +150,7 @@ public class MindmapUpdateController {
 						return null;
 					fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
 					fireProgressUpdate(100 * count / totalCount);
-	
+
 					for (AMindmapUpdater updater : getMindmapUpdaters()) {
 						fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, updater.getTitle());
 						if (canceled())
@@ -166,15 +176,15 @@ public class MindmapUpdateController {
 									map.setReadOnly(false);
 								}
 							}
-	
+
 							count++;
-	
+
 						}
 					}
-					
+
 					fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_references_mapviews"));
 					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("updating_references_mapviews"));
-				}				
+				}
 				catch (Exception e) {
 					LogUtils.warn(e);
 				}
@@ -228,8 +238,8 @@ public class MindmapUpdateController {
 							}
 						}
 					}
-					if (opened) {	
-						LogUtils.info("updating view for map: "+view.getModel().getFile());
+					if (opened) {
+						LogUtils.info("updating view for map: " + view.getModel().getFile());
 						NodeView nodeView = view.getNodeView(view.getModel().getRootNode());
 						nodeView.updateAll();
 					}
@@ -242,7 +252,7 @@ public class MindmapUpdateController {
 					this.firePropertyChange(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
 					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("update_complete"));
 				}
-				
+
 				if (closeWhenDone) {
 					try {
 						this.firePropertyChange(SwingWorkerDialog.CLOSE, null, null);
@@ -253,7 +263,8 @@ public class MindmapUpdateController {
 				}
 				else {
 					long time = System.currentTimeMillis() - this.start;
-					this.firePropertyChange(SwingWorkerDialog.DETAILS_LOG_TEXT, null, TextUtils.getText("execution_time")+" "+time+" ms");
+					this.firePropertyChange(SwingWorkerDialog.DETAILS_LOG_TEXT, null, TextUtils.getText("execution_time") + " "
+							+ time + " ms");
 				}
 
 			}
@@ -314,7 +325,7 @@ public class MindmapUpdateController {
 				catch (Exception e) {
 					e.printStackTrace();
 				}
-				
+
 				return map;
 
 			}
