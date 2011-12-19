@@ -52,9 +52,8 @@ public class ImportNewChildAnnotationsAction extends ImportAnnotationsAction {
 			PdfAnnotationImporter importer = new PdfAnnotationImporter();    
 			URI uri = Tools.getAbsoluteUri(selected);
 			try {
-				AnnotationModel annotation = importer.searchAnnotation(uri, selected);
-				NodeUtils nodeUtils = new NodeUtils();
-				Map<AnnotationID, Collection<AnnotationNodeModel>> oldAnnotations = nodeUtils.getOldAnnotationsFromCurrentMap();				
+				AnnotationModel annotation = importer.searchAnnotation(uri, selected);			
+				Map<AnnotationID, Collection<AnnotationNodeModel>> oldAnnotations = NodeUtils.getOldAnnotationsFromCurrentMap();				
 				Collection<AnnotationModel> annotations = AnnotationController.markNewAnnotations(annotation.getChildren(), oldAnnotations);
 				Map<AnnotationID, Collection<IAnnotation>> conflicts = AnnotationController.getConflictedAnnotations(annotations, oldAnnotations);
 				if(conflicts.size() > 0){
@@ -62,7 +61,7 @@ public class ImportNewChildAnnotationsAction extends ImportAnnotationsAction {
 					dialog.showDialog();
 				}
 				
-				nodeUtils.insertNewChildNodesFrom(annotations, selected.isLeft(), selected, selected);
+				NodeUtils.insertNewChildNodesFrom(annotations, selected.isLeft(), selected, selected);
 			} catch (COSRuntimeException e) {
 				LogUtils.severe("ImportAllChildAnnotationsAction COSRuntimeException at URI("+uri+"): ", e);
 			} catch (IOException e) {
