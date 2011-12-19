@@ -425,8 +425,8 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 						tempAnnotation.setTitle(" " + tempAnnotation.getTitle());
 					}
 					NodeModel node = ((MMapController) Controller.getCurrentModeController().getMapController()).newNode(tempAnnotation.getTitle(), target.getMap());
-					NodeUtils.setLinkFrom(tempAnnotation.getUri(), node);
 					AnnotationController.setModel(node, tempAnnotation);
+					NodeUtils.setLinkFrom(tempAnnotation.getUri(), node);
 					result.push(node);
 					tempAnnotation.setInserted(true);
 					tempAnnotation = tempAnnotation.getParent();
