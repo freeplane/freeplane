@@ -183,14 +183,14 @@ public class NodeUtils {
 	
 	public static NodeModel insertChildNodeFrom(URI file, boolean isLeft, NodeModel target, AnnotationType type){
 		final NodeModel node = ((MMapController) Controller.getCurrentModeController().getMapController()).newNode(Tools.getFilefromUri(file).getName(), target.getMap());
-		setLinkFrom(file, node);
+		
 		
 		if(type != null){
 			IAnnotation model = new AnnotationModel();
 			model.setAnnotationType(type);
 			AnnotationController.setModel(node, model);
 		}
-		
+		setLinkFrom(file, node);
 		return insertChildNodeFrom(node, isLeft, target);
 	}
 	
@@ -199,9 +199,9 @@ public class NodeUtils {
 			annotation.setTitle(" " + annotation.getTitle());
 		}
 		final NodeModel node = ((MMapController) Controller.getCurrentModeController().getMapController()).newNode(annotation.getTitle(), target.getMap());
-		setLinkFrom(file, node);
 		AnnotationController.setModel(node, annotation);
-		
+		setLinkFrom(file, node);
+				
 		return insertChildNodeFrom(node, isLeft, target);
 	}
 	

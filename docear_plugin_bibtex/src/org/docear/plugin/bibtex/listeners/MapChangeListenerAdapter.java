@@ -7,11 +7,19 @@ import net.sf.jabref.BibtexEntry;
 
 import org.docear.plugin.bibtex.JabRefAttributes;
 import org.docear.plugin.bibtex.ReferencesController;
+import org.docear.plugin.core.util.Tools;
+import org.docear.plugin.pdfutilities.features.AnnotationController;
+import org.docear.plugin.pdfutilities.features.AnnotationID;
+import org.docear.plugin.pdfutilities.features.AnnotationModel;
+import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.AMapChangeListenerAdapter;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
+
+import spl.filter.PdfFileFilter;
 
 public class MapChangeListenerAdapter extends AMapChangeListenerAdapter {
 
@@ -37,6 +45,19 @@ public class MapChangeListenerAdapter extends AMapChangeListenerAdapter {
 		if (event.getProperty().equals(NodeModel.HYPERLINK_CHANGED)) {
 			URI newUri = (URI) event.getNewValue();
 			if (newUri != null) {
+				try{
+					if(new PdfFileFilter().accept(Tools.getFilefromUri(Tools.getAbsoluteUri(newUri)))){
+						if(AnnotationController.getModel(event.getNode(), false) == null){
+							AnnotationModel model = new AnnotationModel();
+							model.setAnnotationID(new AnnotationID(newUri, 0));
+							model.setAnnotationType(AnnotationType.PDF_FILE);
+							AnnotationController.setModel(event.getNode(), model);
+						}
+					}
+				}
+				catch(Exception e){
+					LogUtils.warn(e);
+				}
 				JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
 				BibtexEntry entry = jabRefAttributes.findBibtexEntryForPDF(newUri, event.getNode());
 

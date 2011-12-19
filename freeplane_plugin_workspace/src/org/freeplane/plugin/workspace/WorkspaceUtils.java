@@ -204,10 +204,13 @@ public class WorkspaceUtils {
 			}
 		}
 		catch (URISyntaxException e) {
-			e.printStackTrace();
+			LogUtils.warn(e);
 		}
 		catch (IOException e) {
-			e.printStackTrace();
+			LogUtils.warn(e);
+		}
+		catch (Exception e){
+			LogUtils.warn(e);
 		}
 		return uri.normalize();
 
@@ -242,7 +245,7 @@ public class WorkspaceUtils {
 		}
 		catch(Exception ex) {
 			LogUtils.warn(ex);
-		}
+		}		
 		return null;
 	}
 
