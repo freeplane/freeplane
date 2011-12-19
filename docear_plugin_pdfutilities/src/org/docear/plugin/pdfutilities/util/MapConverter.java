@@ -8,6 +8,7 @@ import org.docear.plugin.core.listeners.ISplmmMapsConvertedListener;
 import org.docear.plugin.core.listeners.SplmmMapsConvertedEvent;
 import org.docear.plugin.core.mindmap.MindmapUpdateController;
 import org.docear.plugin.pdfutilities.features.AnnotationModelUpdater;
+import org.docear.plugin.pdfutilities.features.MonitorungNodeUpdater;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
@@ -35,6 +36,7 @@ public class MapConverter {
 		if(maps == null || maps.size() <= 0) return false;
 		MindmapUpdateController mindmapUpdateController = new MindmapUpdateController();
 		mindmapUpdateController.addMindmapUpdater(new AnnotationModelUpdater("Converting Mindmaps...."));
+		mindmapUpdateController.addMindmapUpdater(new MonitorungNodeUpdater("Updating Monitoring folder...."));
 		if(mindmapUpdateController.updateMindmapsInList(maps)){
 			for(MapModel map : maps){				
 				DocearMapModelController.setModelWithCurrentVersion(map);				
