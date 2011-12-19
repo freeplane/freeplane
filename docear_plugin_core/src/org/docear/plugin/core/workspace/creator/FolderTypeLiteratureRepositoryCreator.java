@@ -44,8 +44,7 @@ public class FolderTypeLiteratureRepositoryCreator extends AWorkspaceNodeCreator
 			URI uri = CoreConfiguration.repositoryPathObserver.getUri();
 			
 			if (uri == null) {
-				LocationDialog dialog = new LocationDialog(true); 
-		    	dialog.setVisible(true);		    	
+				LocationDialog.showWorkspaceChooserDialog();	
 			}
 			else {
 				node.setPath(uri);

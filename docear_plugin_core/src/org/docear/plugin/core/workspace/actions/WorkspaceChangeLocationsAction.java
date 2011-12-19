@@ -30,8 +30,6 @@ public class WorkspaceChangeLocationsAction extends AWorkspaceAction {
 	 **********************************************************************************/
 
 	public void actionPerformed(ActionEvent e) {
-		LocationDialog dialog = new LocationDialog();
-		
-    	dialog.setVisible(true);
+		LocationDialog.showWorkspaceChooserDialog(false);
 	}
 }
