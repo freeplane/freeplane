@@ -81,11 +81,12 @@ public class MonitorungNodeUpdater extends AMindmapUpdater {
 				}				
 			}
 			
-			String newAttributeName = monitoringAttributes.get(attribute.getName());
-			
+			String newAttributeName = monitoringAttributes.get(attribute.getName());			
 			if (newAttributeName != null) {
+				int value = Integer.parseInt((String) attribute.getValue());
 				isOldMinitoringNode = true;
 				AttributeController.getController().performSetValueAt(attributeTable, newAttributeName, i, 0);
+				AttributeController.getController().performSetValueAt(attributeTable, value, i, 1);
 			}
 		}
 		
