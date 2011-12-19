@@ -233,7 +233,7 @@ public class MindmapUpdateController {
 					if (mapFile != null) {
 						URI mapUri = mapFile.toURI();
 						for (URI uri : uris) {
-							if (uri.equals(mapUri)) {
+							if (uri.equals(mapUri)) {3
 								opened = true;
 							}
 						}

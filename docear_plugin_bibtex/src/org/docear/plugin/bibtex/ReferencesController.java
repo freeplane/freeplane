@@ -30,13 +30,14 @@ import org.docear.plugin.bibtex.listeners.JabRefChangeListener;
 import org.docear.plugin.bibtex.listeners.MapChangeListenerAdapter;
 import org.docear.plugin.bibtex.listeners.NodeAttributeListener;
 import org.docear.plugin.bibtex.listeners.NodeSelectionListener;
-import org.docear.plugin.bibtex.listeners.ReferencePathListener;
 import org.docear.plugin.bibtex.listeners.SplmmMapsConvertedListener;
 import org.docear.plugin.core.ALanguageController;
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
+import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
+import org.docear.plugin.core.workspace.node.LinkTypeReferencesNode;
 import org.docear.plugin.pdfutilities.util.MapConverter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -136,7 +137,6 @@ public class ReferencesController extends ALanguageController implements IDocear
 
 	private void registerListeners() {
 		MapConverter.addMapsConvertedListener(splmmMapsConvertedListener);
-		CoreConfiguration.referencePathObserver.addChangeListener(new ReferencePathListener());
 		
 		this.modeController.addINodeViewLifeCycleListener(new INodeViewLifeCycleListener() {
 			
@@ -309,6 +309,10 @@ public class ReferencesController extends ALanguageController implements IDocear
 
 	public void handleEvent(DocearEvent event) {
 		System.out.println("JabrefWrapper DocearEvent: "+ event);
+		if(event.getType() == DocearEventType.LIBRARY_NEW_REFERENCES_INDEXING_REQUEST && event.getEventObject() instanceof LinkTypeReferencesNode) {
+			File file = WorkspaceUtils.resolveURI(CoreConfiguration.referencePathObserver.getUri());
+			ReferencesController.getController().getJabrefWrapper().replaceDatabase(file, true);
+		}
 	}
 
 	public void workspaceChanged(WorkspaceEvent event) {
