@@ -185,6 +185,9 @@ public class MindmapUpdateController {
 					fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_references_mapviews"));
 					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("updating_references_mapviews"));
 				}
+				catch (InterruptedException e) {
+					LogUtils.info("MindmapUpdateController aborted.");
+				}
 				catch (Exception e) {
 					LogUtils.warn(e);
 				}

@@ -1174,6 +1174,7 @@ public class EntryEditor extends JPanel implements VetoableChangeListener {
                     else
                         panel.output(Globals.lang("BibTeX key is unique."));
                 } else { // key is null/empty
+                	//FIXME: DOCEAR - stops working see #184
                     //warnEmptyBibtexkey();
                 }
 
