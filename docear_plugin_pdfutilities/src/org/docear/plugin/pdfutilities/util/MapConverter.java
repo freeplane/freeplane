@@ -38,7 +38,7 @@ public class MapConverter {
 		MindmapUpdateController mindmapUpdateController = new MindmapUpdateController();
 		mindmapUpdateController.addMindmapUpdater(new AnnotationModelUpdater("Converting Mindmaps...."));
 		mindmapUpdateController.addMindmapUpdater(new MonitorungNodeUpdater("Updating Monitoring folder...."));
-		mindmapUpdateController.addMindmapUpdater(new MindmapLinkTypeUpdater("Converting hyperlinks...."));
+		//mindmapUpdateController.addMindmapUpdater(new MindmapLinkTypeUpdater("Converting hyperlinks...."));
 		if(mindmapUpdateController.updateMindmapsInList(maps)){
 			for(MapModel map : maps){				
 				DocearMapModelController.setModelWithCurrentVersion(map);				
