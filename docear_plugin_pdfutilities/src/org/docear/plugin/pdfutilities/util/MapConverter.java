@@ -6,6 +6,7 @@ import java.util.List;
 import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.listeners.ISplmmMapsConvertedListener;
 import org.docear.plugin.core.listeners.SplmmMapsConvertedEvent;
+import org.docear.plugin.core.mindmap.MindmapLinkTypeUpdater;
 import org.docear.plugin.core.mindmap.MindmapUpdateController;
 import org.docear.plugin.pdfutilities.features.AnnotationModelUpdater;
 import org.docear.plugin.pdfutilities.features.MonitorungNodeUpdater;
@@ -37,6 +38,7 @@ public class MapConverter {
 		MindmapUpdateController mindmapUpdateController = new MindmapUpdateController();
 		mindmapUpdateController.addMindmapUpdater(new AnnotationModelUpdater("Converting Mindmaps...."));
 		mindmapUpdateController.addMindmapUpdater(new MonitorungNodeUpdater("Updating Monitoring folder...."));
+		mindmapUpdateController.addMindmapUpdater(new MindmapLinkTypeUpdater("Converting hyperlinks...."));
 		if(mindmapUpdateController.updateMindmapsInList(maps)){
 			for(MapModel map : maps){				
 				DocearMapModelController.setModelWithCurrentVersion(map);				

@@ -30,7 +30,10 @@ public class MindmapLinkTypeUpdater extends AMindmapUpdater {
 		if (uri.getScheme() == null) {
 			uri = (new File(uri.getPath()).toURI());
 		}
-		links.setHyperLink(LinkController.toLinkTypeDependantURI(node.getMap().getFile(), WorkspaceUtils.resolveURI(uri, node.getMap())));
+		File file = WorkspaceUtils.resolveURI(uri, node.getMap());
+		if (file != null) {
+			links.setHyperLink(LinkController.toLinkTypeDependantURI(node.getMap().getFile(), file));
+		}
 
 		return true;
 	}
