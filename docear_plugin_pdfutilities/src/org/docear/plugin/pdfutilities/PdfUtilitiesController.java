@@ -70,11 +70,11 @@ public class PdfUtilitiesController extends ALanguageController{
 	private static final String AUTOUPDATE_MENU = "/Autoupdate";
 	public static final String DELETE_ACTION = "/DeleteAction";
 	public static final String SUBFOLDERS_MENU = "/subfolders";
-	public static final String MON_SUBDIRS = "res_mon_subdirs";
-	public static final String MON_AUTO = "res_mon_auto";
-	public static final String MON_FLATTEN_DIRS = "res_mon_flatten_dirs";
-	public static final String MON_MINDMAP_FOLDER = "res_mon_mindmap_folder";
-	public static final String MON_INCOMING_FOLDER = "res_mon_incoming_folder";
+	public static final String MON_SUBDIRS = "mon_subdirs";
+	public static final String MON_AUTO = "mon_auto";
+	public static final String MON_FLATTEN_DIRS = "mon_flatten_dirs";
+	public static final String MON_MINDMAP_FOLDER = "mon_mindmap_folder";
+	public static final String MON_INCOMING_FOLDER = "mon_incoming_folder";
 	public static final String SETTINGS_MENU = "/Settings";
 	public static final String OPEN_ON_PAGE_READER_PATH_KEY = "docear_open_on_page_reader_path"; //$NON-NLS-1$
 	public static final String OPEN_PDF_VIEWER_ON_PAGE_KEY = "docear_open_on_page"; //$NON-NLS-1$
