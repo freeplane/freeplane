@@ -31,16 +31,21 @@ public class ReferenceQuitAction extends QuitAction {
 	 **********************************************************************************/
 	public void actionPerformed(ActionEvent e) {
 		LogUtils.info("saving all references ...");
-		if(ReferencesController.getController().getJabrefWrapper() != null) {
-			BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
-			
-			for (BibtexEntry entry : database.getEntries()) {
-				if (entry.getField("docear_add_to_node") != null) {
-					entry.setField("docear_add_to_node", null);
+		try {
+			if(ReferencesController.getController().getJabrefWrapper() != null) {
+				BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
+				
+				for (BibtexEntry entry : database.getEntries()) {
+					if (entry.getField("docear_add_to_node") != null) {
+						entry.setField("docear_add_to_node", null);
+					}
 				}
+			
+				ReferencesController.getController().getJabrefWrapper().getBasePanel().runCommand("save");
 			}
-		
-			ReferencesController.getController().getJabrefWrapper().getBasePanel().runCommand("save");
+		} 
+		catch (Exception ex) {
+			LogUtils.warn(ex);
 		}
 	}
 }
