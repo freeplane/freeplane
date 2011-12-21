@@ -18,8 +18,8 @@ import org.osgi.framework.ServiceReference;
 public class Activator extends WorkspaceDependentPlugin {
 	
 	public void startPlugin(BundleContext context, ModeController modeController) {
-		new CoreConfiguration(modeController);
 		loadAndStoreVersion();
+		new CoreConfiguration(modeController);		
 		startPluginServices(context, modeController);
 	}
 	
@@ -109,7 +109,7 @@ public class Activator extends WorkspaceDependentPlugin {
 		final Properties versionProperties = new Properties();
 		InputStream in = null;
 		try {
-			in = CoreConfiguration.class.getResource("/version.properties").openStream();
+			in = Activator.this.getClass().getResource("/version.properties").openStream();
 			versionProperties.load(in);
 		}
 		catch (final IOException e) {
@@ -120,7 +120,7 @@ public class Activator extends WorkspaceDependentPlugin {
 		final String versionStatusNumber = versionProperties.getProperty("docear_version_status_number");
 		final String versionBuild = versionProperties.getProperty("docear_version_build");
 		ResourceController.getResourceController().setProperty("docear_version", versionNumber);
-		ResourceController.getResourceController().setProperty("docear_status", versionStatus+" "+versionStatusNumber+" build"+versionBuild);
+		ResourceController.getResourceController().setProperty("docear_status", versionStatus+" "+versionStatusNumber+" build "+versionBuild);
 		
 	}
 
