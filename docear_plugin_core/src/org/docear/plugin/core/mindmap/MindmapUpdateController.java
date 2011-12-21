@@ -16,6 +16,8 @@ import org.docear.plugin.core.ui.SwingWorkerDialog;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeRegistry;
+import org.freeplane.features.attribute.AttributeTableLayoutModel;
+import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.mindmapmode.MMapModel;
@@ -242,9 +244,11 @@ public class MindmapUpdateController {
 						}
 					}
 					if (opened) {
-						LogUtils.info("updating view for map: " + view.getModel().getFile());
-						NodeView nodeView = view.getNodeView(view.getModel().getRootNode());
-						nodeView.updateAll();
+						LogUtils.info("updating view for map: " + view.getModel().getFile());						
+						setAttributeViewType(view.getModel(), AttributeTableLayoutModel.HIDE_ALL);
+						setAttributeViewType(view.getModel(), AttributeTableLayoutModel.SHOW_ALL);
+						/*NodeView nodeView = view.getNodeView(view.getModel().getRootNode());
+						nodeView.updateAll();*/
 					}
 				}
 
@@ -343,6 +347,28 @@ public class MindmapUpdateController {
 				System.out.println("saving map: " + map.getURL());
 				map.setSaved(false);
 				((MFileManager) UrlManager.getController()).save(map, false);
+			}
+			
+			protected void setAttributeViewType(final MapModel map, final String type) {
+				final String attributeViewType = getAttributeViewType(map);
+				if (attributeViewType != null && attributeViewType != type) {
+					final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
+					attributes.setAttributeViewType(type);
+					final MapChangeEvent mapChangeEvent = new MapChangeEvent(this, map, ModelessAttributeController.ATTRIBUTE_VIEW_TYPE, attributeViewType, type);
+					Controller.getCurrentModeController().getMapController().fireMapChanged(mapChangeEvent);
+				}
+			}
+			
+			protected String getAttributeViewType(final MapModel map) {
+				if (map == null) {
+					return null;
+				}
+				final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
+				if (attributes == null) {
+					return null;
+				}
+				final String attributeViewType = attributes.getAttributeViewType();
+				return attributeViewType;
 			}
 		};
 	}
