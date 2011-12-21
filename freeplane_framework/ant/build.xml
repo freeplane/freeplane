@@ -13,6 +13,7 @@
 
 	<property name="workspace" location=".." />
 	<property file="${workspace}/freeplane/viewer-resources/version.properties" />
+	<property file="${workspace}/docear_plugin_core/resources/version.properties" />
 	<property file="ant/ant.properties" />
     <property file="${workspace}/freeplane/viewer-resources/freeplane.properties" />
 	<property name="freeplaneant.jar" value="${workspace}/freeplane_ant/dist/freeplaneant.jar" />
@@ -23,8 +24,13 @@
 	<property name="dist" value="${root}/dist" />
     <property name="macappfullpath" value="${build4mac}/Freeplane.app" />
     <toLowerCase property="ApplicationNameToLowerCase" value="${ApplicationName}" />
-	<condition property="ver" value="${freeplane_version}_${minor}" else="${freeplane_version}">
+	<condition property="ver_freeplane" value="${freeplane_version}_${minor}" else="${freeplane_version}">
 		<isset property="minor" />
+	</condition>
+    <property name="ver_docear" value="${docear_version}_${docear_version_status}_${docear_version_build}" />
+
+	<condition property="ver" value="${ver_docear}" else="${ver_freeplane}">
+        <equals arg1="${ApplicationNameToLowerCase}" arg2="docear"/>
 	</condition>
 
 	<property name="license" value="license.txt" />
