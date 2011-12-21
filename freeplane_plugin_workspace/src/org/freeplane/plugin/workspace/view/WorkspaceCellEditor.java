@@ -8,11 +8,15 @@ import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.util.EventObject;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellEditor;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
+import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.model.node.AFolderNode;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 /**
@@ -20,6 +24,10 @@ import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
  */
 public class WorkspaceCellEditor extends DefaultTreeCellEditor {
 
+	private static final Icon DEFAULT_ICON = new ImageIcon(WorkspaceNodeRenderer.class.getResource("/images/16x16/text-x-preview.png"));
+	private static final Icon DEFAULT_FOLDER_CLOSED_ICON = new ImageIcon(WorkspaceNodeRenderer.class.getResource("/images/16x16/folder-blue.png"));
+	private static final Icon DEFAULT_FOLDER_OPEN_ICON = new ImageIcon(WorkspaceNodeRenderer.class.getResource("/images/16x16/folder-blue_open.png"));
+	
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
@@ -36,15 +44,14 @@ public class WorkspaceCellEditor extends DefaultTreeCellEditor {
 	 * METHODS
 	 **********************************************************************************/
 
-	public Component getTreeCellEditorComponent(JTree tree, Object node, boolean isSelected, boolean expanded, boolean leaf,
+	public Component getTreeCellEditorComponent(JTree tree, Object treeNode, boolean isSelected, boolean expanded, boolean leaf,
 			int row) {
-		if (node instanceof AWorkspaceTreeNode)
-			return super.getTreeCellEditorComponent(tree,
-					((AWorkspaceTreeNode) node).getName(), isSelected, expanded, leaf,
-					row);
-		else
-			return super.getTreeCellEditorComponent(tree, node, isSelected, expanded, leaf, row);
-
+		if (treeNode instanceof AWorkspaceTreeNode) {
+			AWorkspaceTreeNode node = (AWorkspaceTreeNode) treeNode;
+			setNodeIcon(renderer,node);
+			return super.getTreeCellEditorComponent(tree, node.getName(), isSelected, expanded, leaf, row);	
+		}
+		return super.getTreeCellEditorComponent(tree, treeNode, isSelected, expanded, leaf, row);
 	}
 
 	public boolean isCellEditable(EventObject event) {		
@@ -60,7 +67,35 @@ public class WorkspaceCellEditor extends DefaultTreeCellEditor {
 				}
 			}
 		}
+		else if(event == null && WorkspaceController.getController().getWorkspaceViewTree().getSelectionPath() != null) {
+			//FIXME: DOCEAR - disable any shortcut key that leads to editing a node (e.g. F2) 
+//			AWorkspaceTreeNode treeNode = (AWorkspaceTreeNode) WorkspaceController.getController().getWorkspaceViewTree().getSelectionPath().getLastPathComponent();
+//			if(treeNode.isSystem() || !treeNode.isEditable()) {
+//				return false;
+//			}
+			return false;
+		}
 		return super.isCellEditable(event);
+	}
+	
+	/**
+	 * @param value
+	 */
+	protected void setNodeIcon(DefaultTreeCellRenderer renderer, AWorkspaceTreeNode wsNode) {
+		renderer.setOpenIcon(DEFAULT_FOLDER_OPEN_ICON);
+		renderer.setClosedIcon(DEFAULT_FOLDER_CLOSED_ICON);
+		
+		if(wsNode.setIcons(renderer)) {
+			return;
+		}		
+		if(!wsNode.isLeaf() || wsNode instanceof AFolderNode) {
+			renderer.setLeafIcon(DEFAULT_FOLDER_CLOSED_ICON);
+		} 
+		else {
+			renderer.setLeafIcon(DEFAULT_ICON);
+		}
+		
+		
 	}
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
