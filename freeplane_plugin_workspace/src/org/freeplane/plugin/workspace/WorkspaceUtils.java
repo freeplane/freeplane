@@ -228,7 +228,6 @@ public class WorkspaceUtils {
 
 	public static File resolveURI(final URI uri, final MapModel map) {
 		try {
-			LogUtils.info("try to resolve "+uri);
 			return resolveURI(UrlManager.getController().getAbsoluteUri(map, uri));
 		} 
 		catch (Exception ex) {

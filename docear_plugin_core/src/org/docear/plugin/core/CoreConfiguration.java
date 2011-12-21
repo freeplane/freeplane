@@ -215,7 +215,7 @@ public class CoreConfiguration extends ALanguageController {
 		String programmer = resourceController.getProperty("docear_programmer");
 		String copyright = resourceController.getProperty("docear_copyright");
 		String version	= resourceController.getProperty("docear_version");
-		String status	= resourceController.getProperty("docear_version_status");
+		String status	= resourceController.getProperty("docear_status");
 		
 		String aboutText = TextUtils.getRawText("docear_about");
 		MessageFormat formatter;
