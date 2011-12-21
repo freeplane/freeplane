@@ -46,11 +46,13 @@ import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.mindmapmode.SaveAll;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.jdesktop.swingworker.SwingWorker;
 
 import de.intarsys.pdf.cos.COSRuntimeException;
@@ -114,8 +116,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			LogUtils.warn("====================================");
 			LogUtils.warn(e.getCause());
 			
-		}
-					
+		}			
 	}
 	
 	public static SwingWorker<Map<AnnotationID, Collection<IAnnotation>>, AnnotationModel[]> getMonitoringThread(final List<NodeModel> targets){
@@ -133,7 +134,6 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			Map<String, List<NodeModel>> equalChildIndex = new HashMap<String, List<NodeModel>>();
 			Map<AnnotationID, Collection<IAnnotation>> conflicts = new HashMap<AnnotationID, Collection<IAnnotation>>();
 			
-			@Override
 			protected Map<AnnotationID, Collection<IAnnotation>> doInBackground() throws Exception {				
 				for(final NodeModel target : targets){					
 					if(canceled()) return conflicts;
@@ -216,9 +216,11 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 						if(annotation.getAnnotationType().equals(AnnotationType.FILE)) continue;
 						if(widowedLinkedNode.contains(node)) continue;						
 						try{
-							File file = Tools.getFilefromUri(Tools.getAbsoluteUri(node));
+							//File file = Tools.getFilefromUri(Tools.getAbsoluteUri(node));
+							File file = WorkspaceUtils.resolveURI(NodeLinks.getValidLink(node));
 							if(file != null){
-								File monitoringDirectory = Tools.getFilefromUri(Tools.getAbsoluteUri(NodeUtils.getPdfDirFromMonitoringNode(target), target.getMap()));
+								//File monitoringDirectory = Tools.getFilefromUri(Tools.getAbsoluteUri(NodeUtils.getPdfDirFromMonitoringNode(target), target.getMap()));
+								File monitoringDirectory = WorkspaceUtils.resolveURI(NodeUtils.getPdfDirFromMonitoringNode(target), target.getMap());
 								if(file.getPath().startsWith(monitoringDirectory.getPath())){
 									AnnotationModel annoation = new PdfAnnotationImporter().searchAnnotation(Tools.getAbsoluteUri(node), node);
 									if(annoation == null){
@@ -432,16 +434,19 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					tempAnnotation = tempAnnotation.getParent();
 				} while(tempAnnotation != null);
 				if(!isFlattenSubfolders(target)){
-					URI pdfDirURI = Tools.getAbsoluteUri(NodeUtils.getPdfDirFromMonitoringNode(target));
+					//URI pdfDirURI = Tools.getAbsoluteUri(NodeUtils.getPdfDirFromMonitoringNode(target));
 					
-					File pdfDirFile = Tools.getFilefromUri(pdfDirURI);		
-					File parent = Tools.getFilefromUri(annotation.getUri()).getParentFile();
-					while(parent != null && !parent.equals(pdfDirFile)){
-						if(canceled()) return result;
-						NodeModel node = ((MMapController) Controller.getCurrentModeController().getMapController()).newNode(parent.getName(), target.getMap());
-						DocearNodeModelExtensionController.setEntry(node, DocearExtensionKey.MONITOR_PATH, null);
-						result.push(node);
-						parent = parent.getParentFile();						
+					File pdfDirFile = WorkspaceUtils.resolveURI(NodeUtils.getPdfDirFromMonitoringNode(target));//Tools.getFilefromUri(pdfDirURI);		
+					File annoFile = WorkspaceUtils.resolveURI(annotation.getUri());
+					if(annoFile != null) {
+						File parent = annoFile.getParentFile();
+						while(parent != null && !parent.equals(pdfDirFile)){
+							if(canceled()) return result;
+							NodeModel node = ((MMapController) Controller.getCurrentModeController().getMapController()).newNode(parent.getName(), target.getMap());
+							DocearNodeModelExtensionController.setEntry(node, DocearExtensionKey.MONITOR_PATH, null);
+							result.push(node);
+							parent = parent.getParentFile();						
+						}
 					}
 				}
 				return result;
@@ -543,7 +548,8 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 
 			private void buildAnnotationNodeIndex(NodeModel node) throws InterruptedException {
 				if(canceled()) return;
-				File file = Tools.getFilefromUri(Tools.getAbsoluteUri(node));
+				//File file = Tools.getFilefromUri(Tools.getAbsoluteUri(node));
+				File file = WorkspaceUtils.resolveURI(NodeLinks.getValidLink(node));
 				if(file != null && !file.exists()){
 					widowedLinkedNode.add(node);
 				}				
