@@ -27,7 +27,6 @@ import org.docear.plugin.core.workspace.creator.LinkTypeLiteratureAnnotationsCre
 import org.docear.plugin.core.workspace.creator.LinkTypeMyPublicationsCreator;
 import org.docear.plugin.core.workspace.creator.LinkTypeReferencesCreator;
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
-import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -47,7 +46,7 @@ import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
-public class CoreConfiguration extends ALanguageController implements IFreeplanePropertyListener {
+public class CoreConfiguration extends ALanguageController {
 
 	private static final String ABOUT_TEXT = "about_text";
 	private static final String DOCEAR = "Docear";
@@ -78,9 +77,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	public static final NodeAttributeObserver referencePathObserver = new NodeAttributeObserver();
 	public static final NodeAttributeObserver repositoryPathObserver = new NodeAttributeObserver();
 	
-	public CoreConfiguration(ModeController modeController) {
-		addPropertyChangeListener();
-		
+	public CoreConfiguration(ModeController modeController) {		
 		try {
 			if (WorkspaceController.getController().isInitialized()) {
 				//showLocationDialogIfNeeded();
@@ -93,11 +90,6 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		LogUtils.info("org.docear.plugin.core.CoreConfiguration() initializing...");
 		init(modeController);
 	}	
-
-	private void addPropertyChangeListener() {
-		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
-		resCtrl.addPropertyChangeListener(this);
-	}
 	
 	private void init(ModeController modeController) {
 		// set up context menu for workspace
@@ -277,8 +269,5 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		AWorkspaceTreeNode root =  (AWorkspaceTreeNode) WorkspaceUtils.getModel().getRoot();
 		WorkspacePopupMenuBuilder.insertAction(root.getContextMenu(), "workspace.action.docear.locations.change", 3);
 	}
-
-	public void propertyChanged(String propertyName, String newValue, String oldValue) {
-	}	
 	
 }

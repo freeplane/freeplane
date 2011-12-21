@@ -9,17 +9,14 @@ import java.util.Vector;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
-import org.docear.plugin.core.mindmap.MindmapLinkTypeUpdater;
-import org.docear.plugin.core.mindmap.MindmapUpdateController;
-import org.freeplane.core.resources.IFreeplanePropertyListener;
+import org.docear.plugin.core.listeners.PropertyListener;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 
 /**
  * 
  */
-public class DocearController implements IDocearEventListener, IFreeplanePropertyListener {
+public class DocearController implements IDocearEventListener {
 //	public final static String DOCUMENT_REPOSITORY_PATH_PROPERTY = "document_repository_path";
 //	public final static String PROJECTS_PATH_PROPERTY = "docear_projects_path";
 //	public final static String BIBTEX_PATH_PROPERTY = "docear_bibtex_path";
@@ -35,7 +32,7 @@ public class DocearController implements IDocearEventListener, IFreeplanePropert
 	 **********************************************************************************/
 	
 	protected DocearController() {
-		Controller.getCurrentController().getResourceController().addPropertyChangeListener(this);
+		Controller.getCurrentController().getResourceController().addPropertyChangeListener(new PropertyListener());
 		addDocearEventListener(this);
 	}
 	/***********************************************************************************
@@ -84,12 +81,5 @@ public class DocearController implements IDocearEventListener, IFreeplanePropert
 		}	
 	}
 
-	public void propertyChanged(String propertyName, String newValue, String oldValue) {
-		if (propertyName.equals("links") && (!newValue.equals(oldValue))) {
-			MindmapUpdateController mindmapUpdateController = new MindmapUpdateController();
-			mindmapUpdateController.addMindmapUpdater(new MindmapLinkTypeUpdater(TextUtils.getText("updating_link_types")));
-			mindmapUpdateController.updateAllMindmapsInWorkspace();
-			
-		}
-	}
+	
 }
