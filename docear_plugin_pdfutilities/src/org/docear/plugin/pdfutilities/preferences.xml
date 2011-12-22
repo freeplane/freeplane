@@ -17,8 +17,10 @@
 			    <radiobutton name = "docear_open_internal" enabled = "false"/>
 			    <radiobutton name = "docear_open_on_page"/> 
 			    <path name = "docear_open_on_page_reader_path" suffixes = "exe"/>
-			</separator>
-			<separator name ="folder_monitoring">
+			</separator>			
+		</tab>
+		<tab name ="folder_monitoring">
+			<separator name ="monitoring_settings">
 			    <boolean name="docear_auto_monitoring" />
                 <boolean name="docear_subdir_monitoring" />
                 <string name="docear_files_to_import"/>   
