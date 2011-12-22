@@ -98,9 +98,6 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 			WorkspaceUtils.showWorkspaceChooserDialog();
 		}
 		
-		ResourceController.getResourceController().setProperty(WorkspacePreferences.LINK_PROPERTY_KEY,
-				WorkspacePreferences.RELATIVE_TO_WORKSPACE);
-		
 		initializeConfiguration();
 		initializeView();
 		isInitialized = true;

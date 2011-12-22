@@ -38,6 +38,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.main.application.ApplicationResourceController;
 import org.freeplane.main.application.FreeplaneStarter;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
@@ -76,6 +77,7 @@ public class CoreConfiguration extends ALanguageController {
 	public static final NodeAttributeObserver projectPathObserver = new NodeAttributeObserver();
 	public static final NodeAttributeObserver referencePathObserver = new NodeAttributeObserver();
 	public static final NodeAttributeObserver repositoryPathObserver = new NodeAttributeObserver();
+	private boolean firstRun;
 	
 	public CoreConfiguration(ModeController modeController) {		
 		try {
@@ -88,6 +90,8 @@ public class CoreConfiguration extends ALanguageController {
 		}
 				
 		LogUtils.info("org.docear.plugin.core.CoreConfiguration() initializing...");
+		final File userPreferencesFile = ApplicationResourceController.getUserPreferencesFile();
+		firstRun = !userPreferencesFile.exists();
 		init(modeController);
 	}	
 	
@@ -236,7 +240,8 @@ public class CoreConfiguration extends ALanguageController {
 		controller.addAction(action);
 	}
 
-	private void addPluginDefaults() {		
+	private void addPluginDefaults() {
+		
 		ResourceController resController = Controller.getCurrentController().getResourceController();
 		if (resController.getProperty("ApplicationName").equals("Docear")) {
 			resController.setProperty("first_start_map", "/doc/docear-welcome.mm");
@@ -245,24 +250,15 @@ public class CoreConfiguration extends ALanguageController {
 		if (defaults == null)
 			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
 		Controller.getCurrentController().getResourceController().addDefaults(defaults);
-		if (resController.getProperty("ApplicationName").equals("Docear")) {
-			Controller.getCurrentController().getResourceController().setDefaultProperty("selection_method", "selection_method_by_click");
-			Controller.getCurrentController().getResourceController().setDefaultProperty("links", "relative_to_workspace");
-			Controller.getCurrentController().getResourceController().setDefaultProperty("save_folding", "always_save_folding");
-			Controller.getCurrentController().getResourceController().setDefaultProperty("leftToolbarVisible", "false");			
-			Controller.getCurrentController().getResourceController().setDefaultProperty("styleScrollPaneVisible", "true");
+		if (resController.getProperty("ApplicationName").equals("Docear") && firstRun) {
+			Controller.getCurrentController().getResourceController().setProperty("selection_method", "selection_method_by_click");
+			Controller.getCurrentController().getResourceController().setProperty("links", "relative_to_workspace");
+			Controller.getCurrentController().getResourceController().setProperty("save_folding", "always_save_folding");
+			Controller.getCurrentController().getResourceController().setProperty("leftToolbarVisible", "false");			
+			Controller.getCurrentController().getResourceController().setProperty("styleScrollPaneVisible", "true");
 		}
 		
-		FreeplaneActionCascade.addAction(new DocearQuitAction());
-		//FIXME: DOCEAR: does it work without the property?
-//		if(DocearController.getController().getLibrary() != null){
-//			URI uri = DocearController.getController().getLibrary().getLibraryPath();
-			
-//			if (uri!=null && uri.getPath().length()>0) {
-//				Controller.getCurrentController().getResourceController().setProperty(LIBRARY_PATH, uri.getPath());
-//			}
-//		}
-		
+		FreeplaneActionCascade.addAction(new DocearQuitAction());		
 	}
 	
 	private void modifyContextMenus() {		
