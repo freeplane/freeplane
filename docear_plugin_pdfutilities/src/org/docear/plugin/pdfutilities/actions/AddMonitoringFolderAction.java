@@ -75,6 +75,10 @@ public class AddMonitoringFolderAction extends AbstractMonitoringAction {
 
 	@Override
 	public void setEnabled(){
+		if(Controller.getCurrentController().getSelection() == null) {
+			this.setEnabled(false);
+			return;
+		}
 		NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
 		if(selected == null){
 			this.setEnabled(false);
