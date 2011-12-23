@@ -549,7 +549,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			private void buildAnnotationNodeIndex(NodeModel node) throws InterruptedException {
 				if(canceled()) return;
 				//File file = Tools.getFilefromUri(Tools.getAbsoluteUri(node));
-				File file = WorkspaceUtils.resolveURI(NodeLinks.getValidLink(node));
+				File file = WorkspaceUtils.resolveURI(NodeLinks.getValidLink(node), node.getMap());
 				if(file != null && !file.exists()){
 					widowedLinkedNode.add(node);
 				}				
