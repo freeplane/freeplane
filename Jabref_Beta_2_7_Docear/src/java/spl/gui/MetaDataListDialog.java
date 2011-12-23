@@ -147,12 +147,17 @@ public class MetaDataListDialog extends JDialog {
         dispose();
     }
 
-    public void showDialog() {
+    public void showDialog() {    	
         SwingWorker worker = new SwingWorker<Void, Void>() {
             @Override
             public Void doInBackground() {
                 System.out.println("Starting Webclient...");
+                //FIXME: DOCEAR: use other classloader
+                final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();                
+        		Thread.currentThread().setContextClassLoader(getClass().getClassLoader());        		
                 webserviceStatus = SplWebClient.getMetaData(new File(fileName));
+                //FIXME: DOCEAR: reset classloader
+                Thread.currentThread().setContextClassLoader(contextClassLoader);
                 return null;
             }
 
@@ -207,6 +212,7 @@ public class MetaDataListDialog extends JDialog {
                 }
             }
         };
+       
         worker.execute();
         this.pack();
         this.setVisible(true);
