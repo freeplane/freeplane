@@ -193,7 +193,7 @@ public class MapModel {
 	}
 
 	public boolean isSaved() {
-		return (changesPerformedSinceLastSave == 0);
+		return changesPerformedSinceLastSave == 0 || containsExtension(DocuMapAttribute.class);
 	}
 
 	/**

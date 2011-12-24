@@ -642,8 +642,8 @@ public class MapController extends SelectionController {
         try {
         	Controller.getCurrentController().getViewController().setWaitingCursor(true);
         	final MapModel newModel = newModel(null);
-        	UrlManager.getController().load(url, newModel);
         	newModel.addExtension(DocuMapAttribute.instance);
+        	UrlManager.getController().load(url, newModel);
         	newModel.setReadOnly(true);
         	fireMapCreated(newModel);
         	newMapView(newModel);
