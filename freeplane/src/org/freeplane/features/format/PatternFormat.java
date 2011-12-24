@@ -34,7 +34,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * Parsing is not supported! */
 public abstract class PatternFormat /*extends Format*/ {
 	private static final String SERIALIZATION_SEPARATOR = ":";
-	private static final long serialVersionUID = 1L;
 
 	private static class IdentityPatternFormat extends PatternFormat {
 
@@ -124,7 +123,7 @@ public abstract class PatternFormat /*extends Format*/ {
 	}
 
 	// yyyy-MM-dd HH:mm:ss
-	final static Pattern datePattern = Pattern.compile("yy");
+	final static Pattern datePattern = Pattern.compile("yy|[Hh]{1,2}:mm");
 
 	// %[argument_index$] [flags] [width] conversion
 	// == conversions

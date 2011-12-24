@@ -6,6 +6,9 @@ Online documentation map accessible
 Action "Open map from URL" for accessing maps from the internet
 Action "Restore from local history" for easy access of backuped or autosaved maps
 Settings "Display attribute icon" and "display note icon" saved with each map separately
+Files ending on addon.mm are recognized as add-on packages
+Icon support for add-ons
+Action "Highlight all matching nodes"
  
 ===============================
 1.2.11 beta

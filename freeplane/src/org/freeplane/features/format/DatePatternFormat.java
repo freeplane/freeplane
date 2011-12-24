@@ -23,7 +23,6 @@ import java.util.Date;
 
 
 class DatePatternFormat extends PatternFormat {
-	private static final long serialVersionUID = 1L;
 	public DatePatternFormat(String pattern) {
         super(pattern, IFormattedObject.TYPE_DATE);
     }

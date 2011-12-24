@@ -68,6 +68,7 @@ import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.features.url.mindmapmode.MFileManager.AlternativeFileMode;
+import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
@@ -613,6 +614,8 @@ public class MMapController extends MapController {
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		if (mapViewManager.tryToChangeToMapView(url))
 			return false;
+        if (AddOnsController.getController().installIfAppropriate(url))
+            return false;
 		Controller.getCurrentController().getViewController().setWaitingCursor(true);
 		URL alternativeURL = null;
 		try {

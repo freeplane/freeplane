@@ -1,11 +1,21 @@
+// @ExecutionModes({on_single_node="main_menu_scripting/scripts[addons.installer.title]"})
+// Copyright (C) 2011 Volker Boerchers
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 2 of the License, or
+// (at your option) any later version.
+
 import groovy.swing.SwingBuilder
 
+import java.awt.Component;
 import java.awt.Dimension
 import java.awt.FlowLayout
 import java.awt.Toolkit
 import java.util.zip.ZipInputStream
 
 import javax.swing.BoxLayout
+import javax.swing.JDialog;
 import javax.swing.JMenuItem
 import javax.swing.JOptionPane
 import javax.swing.KeyStroke
@@ -198,7 +208,7 @@ def installZips() {
 
 def installImages() {
     File destDir = new File(installationbase, 'resources/images')
-    // FIXME: create directory!
+    destDir.mkdirs()
     configMap['images'].each{ filename, imageData ->
         try {
             new File(destDir, expandVariables(filename)).bytes = imageData
@@ -276,7 +286,7 @@ void createKeyboardShortcut(ScriptAddOnProperties.Script script) {
 	// check key syntax
 	KeyStroke keyStroke = ui.getKeyStroke(script.keyboardShortcut)
 	mapStructureAssert(keyStroke, textUtils.format('addons.installer.invalid.keyboard.shortcut', script.keyboardShortcut))
-	String newShortcut = keyStrokeToString(keyStroke)
+	String newShortcut = ui.keyStrokeToString(keyStroke)
 	// check if key is used (see AccelerateableAction.newAccelerator())
 	String menuItemKey = ExecuteScriptAction.makeMenuItemKey(script.menuTitleKey, script.executionMode)
 	String shortcutKey = MenuUtils.makeAcceleratorKey(menuItemKey)
@@ -305,10 +315,6 @@ void createKeyboardShortcut(ScriptAddOnProperties.Script script) {
 	}
 	println "set keyboardShortcut $shortcutKey to $newShortcut"
 	ResourceController.getResourceController().setProperty(shortcutKey, newShortcut)
-}
-
-private String keyStrokeToString(KeyStroke keyStroke) {
-	return keyStroke.toString().replaceAll("pressed |typed ", "").replace("ctrl", "control")
 }
 
 private boolean askForRemoveShortcutViaDialog(String scriptName, String oldShortcut, String newShortcut) {
@@ -481,12 +487,13 @@ boolean confirmInstall(ScriptAddOnProperties addOn, ScriptAddOnProperties instal
 	}
 	defaultButton.requestFocusInWindow()
     ui.addEscapeActionToDialog(dial)
+    ui.setDialogLocationRelativeTo(dial, ui.frame)
     dial.visible = true
 	if (!vars.ok)
 		return false
 	// 2. license
 	boolean licenseUnchanged = addOn.license && installedAddOn?.license && addOn.license.equals(installedAddOn.license)
-	def license = addOn.license.replaceAll("</?(html|body)>", "")
+	def license = addOn.license.replaceAll('</?(html|body|head)>', '').trim()
 	def question = textUtils.removeTranslateComment(textUtils.format('addons.installer.confirm.licence', license)).replace("\n", "<p>")
 	if (licenseUnchanged)
 		c.statusInfo = textUtils.getText('addons.installer.licence.unchanged')
