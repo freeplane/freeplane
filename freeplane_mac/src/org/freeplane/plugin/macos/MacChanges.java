@@ -88,7 +88,7 @@ public class MacChanges extends ApplicationAdapter  {
 				System.setProperty("org.freeplane.param" + loadedMapCounter, event.getFilename());				
 			} else {
 				// Direct loading
-				getModeController().getMapController().newMap(Compat.fileToUrl(new File(event.getFilename())), false);
+				getModeController().getMapController().newMap(Compat.fileToUrl(new File(event.getFilename())));
 			}
 			event.setHandled(true);
 		} catch (Exception e) {

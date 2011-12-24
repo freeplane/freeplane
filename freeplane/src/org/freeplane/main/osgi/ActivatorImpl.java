@@ -176,11 +176,11 @@ class ActivatorImpl implements BundleActivator {
 		final Controller controller = starter.createController();
 		starter.createModeControllers(controller);
 		try {
-			final ServiceReference<?>[] controllerProviders = context.getServiceReferences(
+			final ServiceReference[] controllerProviders = context.getServiceReferences(
 			    IControllerExtensionProvider.class.getName(), null);
 			if (controllerProviders != null) {
 				for (int i = 0; i < controllerProviders.length; i++) {
-					final ServiceReference<?> controllerProvider = controllerProviders[i];
+					final ServiceReference controllerProvider = controllerProviders[i];
 					final IControllerExtensionProvider service = (IControllerExtensionProvider) context
 					    .getService(controllerProvider);
 					service.installExtension(controller);
