@@ -506,6 +506,9 @@
 			<menu_action action="ItalicAction" />
 		</menu_category>
 		<menu_separator />
+		<menu_action action="CloudAction" />
+		<menu_action action="CloudColorAction" />
+		<menu_separator />
 		<menu_category name="folding">
 			<menu_action action="UnfoldOneLevelAction"/>
 			<menu_action action="FoldOneLevelAction"/>
