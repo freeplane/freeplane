@@ -80,6 +80,7 @@ import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -621,8 +622,8 @@ public class EditNodeTextField extends EditNodeBase {
 		}
 		textfield.setSize(textFieldSize.width, textFieldSize.height);
 		final Rectangle textR = ((ZoomableLabelUI)parent.getUI()).getTextR(parent);
-		horizontalSpace = Math.max(nodeWidth - textR.width, textR.x);
-		verticalSpace = Math.max(nodeHeight - textR.height, textR.y);
+		horizontalSpace = Math.max(nodeWidth - textFieldSize.width, textR.x);
+		verticalSpace = Math.max(nodeHeight - textFieldSize.height, textR.y);
 		final Dimension newParentSize = new Dimension(horizontalSpace + textFieldSize.width, verticalSpace + textFieldSize.height);
 		parent.setPreferredSize(newParentSize);
 

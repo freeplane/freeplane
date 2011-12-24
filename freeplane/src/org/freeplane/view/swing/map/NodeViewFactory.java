@@ -144,9 +144,6 @@ class NodeViewFactory {
 					
 					prefSize.height += preferredCompSize.height;
 					prefSize.width = Math.max(prefSize.width, preferredCompSize.width);
-					if (component instanceof ForkMainView){
-						prefSize.height += ((ForkMainView)component).getEdgeWidth();
-					}
 				}
 			}
 			return prefSize;
