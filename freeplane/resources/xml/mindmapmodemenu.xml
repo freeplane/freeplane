@@ -155,6 +155,7 @@
 			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="view" name_ref="menu_view">
+			<menu_action action="NewMapViewAction"/>
 			<menu_category name="Menu_Toolbar_Panel">
 					<menu_category name="toolbars">
 						<menu_submenu name="toolbars" name_ref="menu_toolbars">
