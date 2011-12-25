@@ -194,7 +194,7 @@ public class JabRefAttributes {
 				catch(Exception e) {
 					continue;
 				}
-				if (nodeFileName.equals(jabrefFile)) {
+				if (jabrefFile.endsWith(nodeFileName)) {
 					return entry;
 				}
 			}
