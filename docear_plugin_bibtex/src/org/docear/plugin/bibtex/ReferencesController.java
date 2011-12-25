@@ -113,7 +113,8 @@ public class ReferencesController extends ALanguageController implements IDocear
 	
 	private boolean isRunning = false;
 
-	public ReferencesController(ModeController modeController) {		
+	public ReferencesController(ModeController modeController) {
+		super();
 		setReferencesController(this);
 		setPreferencesForDocear();
 		this.modeController = modeController;

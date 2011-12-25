@@ -79,7 +79,7 @@ public class CoreConfiguration extends ALanguageController {
 	public static final NodeAttributeObserver repositoryPathObserver = new NodeAttributeObserver();
 	private boolean firstRun;
 	
-	public CoreConfiguration(ModeController modeController) {		
+	public CoreConfiguration(ModeController modeController) {
 		try {
 			if (WorkspaceController.getController().isInitialized()) {
 				//showLocationDialogIfNeeded();

@@ -159,7 +159,7 @@ public class MindmapUpdateController {
 							return null;
 						for (URI uri : uris) {
 							fireStatusUpdate(SwingWorkerDialog.DETAILS_LOG_TEXT, null,
-									TextUtils.getText("updating_references_for_map") + uri.getPath());
+									TextUtils.getText("updating_map") + uri.getPath());
 							mapHasChanged = false;
 							MapModel map = getMapModel(uri);
 							fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_against_p1")
@@ -184,8 +184,8 @@ public class MindmapUpdateController {
 						}
 					}
 
-					fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_references_mapviews"));
-					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("updating_references_mapviews"));
+					fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_mapviews"));
+					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("updating_mapviews"));
 				}
 				catch (InterruptedException e) {
 					LogUtils.info("MindmapUpdateController aborted.");
