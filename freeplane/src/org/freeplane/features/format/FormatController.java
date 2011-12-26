@@ -172,6 +172,7 @@ public class FormatController implements IExtension {
 		dateFormats.add(PatternFormat.create("yyyy-MM-dd HH:mm", dStyle, dType, "long iso date", locale));
 		dateFormats.add(PatternFormat.create(FormattedDate.ISO_DATE_TIME_FORMAT_PATTERN, dStyle, dType,
 		    "full iso date", locale));
+		dateFormats.add(PatternFormat.create("HH:mm", dStyle, dType, "time", locale));
 	}
 
 	private PatternFormat createLocalPattern(String name, int dateStyle, Integer timeStyle) {
