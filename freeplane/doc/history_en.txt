@@ -9,6 +9,7 @@ Settings "Display attribute icon" and "display note icon" saved with each map se
 Files ending on addon.mm are recognized as add-on packages
 Icon support for add-ons
 Action "Highlight all matching nodes"
+Fixes for date and number input parsing
  
 ===============================
 1.2.11 beta

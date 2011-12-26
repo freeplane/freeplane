@@ -137,8 +137,10 @@ public class FreeplaneStarter {
 			mapViewController.addMapViewChangeListener(applicationResourceController.getLastOpenedList());
 			FilterController.install();
 			PrintController.install();
-			ScannerController.install(new ScannerController());
-			FormatController.install(new FormatController());
+            FormatController.install(new FormatController());
+            final ScannerController scannerController = new ScannerController();
+            ScannerController.install(scannerController);
+            scannerController.addParsersForStandardFormats();
 			ModelessAttributeController.install();
 			TextController.install();
 			TimeController.install();
