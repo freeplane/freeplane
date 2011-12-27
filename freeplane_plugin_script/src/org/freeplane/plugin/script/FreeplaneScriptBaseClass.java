@@ -17,6 +17,9 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.format.FormatController;
+import org.freeplane.features.format.IFormattedObject;
+import org.freeplane.features.format.ScannerController;
 import org.freeplane.plugin.script.proxy.Convertible;
 import org.freeplane.plugin.script.proxy.Proxy;
 
@@ -196,6 +199,19 @@ public abstract class FreeplaneScriptBaseClass extends Script {
                     factor *= 10.;
             }
             return Math.round(d * factor) / factor;
+    }
+
+    /** parses text to the proper data type, if possible, setting format to the standard. Parsing is configured via
+     * config file scanner.xml */
+    public Object parse(final String text) {
+        return ScannerController.getController().parse(text);
+    }
+    
+    /** formats according to the internal standard, that is the conversion will be reversible
+     * for types that are handled special by the scripting api namely Dates and Numbers.
+     * @return {@link IFormattedObject} if possible. */
+    public Object format(final Object object, final String formatString) {
+        return FormatController.format(object, formatString);
     }
 
 	/** formats according to the internal standard, that is the conversion will be reversible
