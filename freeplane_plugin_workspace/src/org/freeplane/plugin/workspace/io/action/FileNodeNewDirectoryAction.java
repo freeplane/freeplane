@@ -16,8 +16,10 @@ import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
 import org.freeplane.plugin.workspace.dialog.NewDirectoryDialogPanel;
+import org.freeplane.plugin.workspace.io.IFileSystemRepresentation;
 import org.freeplane.plugin.workspace.io.node.FolderFileNode;
 import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
+import org.freeplane.plugin.workspace.model.node.AFolderNode;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 /**
@@ -69,8 +71,8 @@ public class FileNodeNewDirectoryAction extends AWorkspaceAction {
 	
 	public void actionPerformed(ActionEvent e) {
 		AWorkspaceTreeNode targetNode = getNodeFromActionEvent(e);
-		if(targetNode instanceof FolderFileNode) {
-			File parentDir = ((FolderFileNode) targetNode).getFile();
+		if(targetNode instanceof FolderFileNode || (targetNode instanceof IFileSystemRepresentation && targetNode instanceof AFolderNode)) {
+			File parentDir = ((IFileSystemRepresentation) targetNode).getFile();
 			makeNewDirectory(targetNode, parentDir);
 		} 
 		else 
@@ -79,6 +81,11 @@ public class FileNodeNewDirectoryAction extends AWorkspaceAction {
 			makeNewDirectory(targetNode, parentDir);
 			
 		}
+//		else
+//		if(targetNode instanceof IFileSystemRepresentation && targetNode instanceof AFolderNode) {
+//			File parentDir = ((IFileSystemRepresentation) targetNode).getFile();
+//			makeNewDirectory(targetNode, parentDir);
+//		}
 
 	}	
 }
