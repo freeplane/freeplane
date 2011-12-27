@@ -105,7 +105,6 @@ public class CoreConfiguration extends ALanguageController {
 		
 		prepareWorkspace();
 		addPluginDefaults();
-		copyWelcomeMindmapIfNeeded();
 		replaceFreeplaneStringsAndActions();
 		DocearMapModelController.install(new DocearMapModelController(modeController));
 		
@@ -121,19 +120,6 @@ public class CoreConfiguration extends ALanguageController {
 		}
 	}
 	
-	private void copyWelcomeMindmapIfNeeded() {
-		final File baseDir = new File(FreeplaneStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();
-		
-		final String map = ResourceController.getResourceController().getProperty("first_start_map");		
-		final File docearWelcome = ConfigurationUtils.getLocalizedFile(baseDir, map, Locale.getDefault().getLanguage());
-		
-		AWorkspaceTreeNode parent = WorkspaceUtils.getNodeForPath("My Workspace/Miscellaneous");
-		LinkTypeFileNode node = new LinkTypeFileNode();
-		node.setName(docearWelcome.getName());
-		node.setLinkPath(WorkspaceUtils.getWorkspaceRelativeURI(docearWelcome));
-		WorkspaceUtils.getModel().addNodeTo(node, parent);
-	}
-
 	private void setDocearMapWriter() {
 		DocearMapWriter mapWriter = new DocearMapWriter(Controller.getCurrentModeController().getMapController());
 		mapWriter.setMapWriteHandler();		
