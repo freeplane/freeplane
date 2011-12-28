@@ -219,8 +219,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			if ((sNextURI.contains("_tenth_")&& (i > 10))|| ((sNextURI.contains("_quarter_"))&& (i > 4))) {
 				return false;
 			}
-			final ExternalResource nextView = new ExternalResource();
-			nextView.setUri(nextUri);
+			final ExternalResource nextView = new ExternalResource(nextUri);
 			nextView.setZoom(activeView.getZoom());
 			remove(node, activeView);
 			add(node, nextView);
@@ -465,8 +464,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		if (useRelativeUri) {
 			uri = LinkController.toRelativeURI(map.getFile(), input);
 		}
-		final ExternalResource preview = new ExternalResource();
-		preview.setUri(uri);
+		final ExternalResource preview = new ExternalResource(uri);
 		ProgressIcons.updateExtendedProgressIcons(node, input.getName());
 		return preview;
 	}
@@ -482,23 +480,23 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 
 	@Override
 	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
-		final ExternalResource previewUrl = new ExternalResource();
 		try {
 			final String attrUri = element.getAttribute("URI", null);
 			if (attrUri != null) {
 				final URI uri = new URI(attrUri);
-				previewUrl.setUri(uri);
+				final ExternalResource previewUrl = new ExternalResource(uri);
+				final String attrSize = element.getAttribute("SIZE", null);
+				if (attrSize != null) {
+					final float size = Float.parseFloat(attrSize);
+					previewUrl.setZoom(size);
+				}
+				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+				return previewUrl;
 			}
-			final String attrSize = element.getAttribute("SIZE", null);
-			if (attrSize != null) {
-				final float size = Float.parseFloat(attrSize);
-				previewUrl.setZoom(size);
-			}
-			Controller.getCurrentModeController().getMapController().nodeChanged(node);
 		}
 		catch (final URISyntaxException e) {
 		}
-		return previewUrl;
+		return null;
 	}
 
 	void createViewer(final ExternalResource model, final NodeView view) {
@@ -660,8 +658,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			return false;
 		}
 		
-		final ExternalResource preview = new ExternalResource();
-		preview.setUri(uri);
+		final ExternalResource preview = new ExternalResource(uri);
 		undoableDeactivateHook(node);
 		undoableActivateHook(node, preview);
 		ProgressIcons.updateExtendedProgressIcons(node, uri.getPath());
@@ -699,8 +696,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		else {
 			node = targetNode;
 		}
-		final ExternalResource preview = new ExternalResource();
-		preview.setUri(uri);
+		final ExternalResource preview = new ExternalResource(uri);
 		undoableDeactivateHook(node);
 		undoableActivateHook(node, preview);
 		ProgressIcons.updateExtendedProgressIcons(node, file.getName());
