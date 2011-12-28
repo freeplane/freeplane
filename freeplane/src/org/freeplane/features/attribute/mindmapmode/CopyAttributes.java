@@ -73,8 +73,12 @@ class CopyAttributes extends AFreeplaneAction {
 	@Override
     public void setEnabled() {
 		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
-		final NodeAttributeTableModel model = NodeAttributeTableModel.getModel(node);
-		setEnabled(model != null && model.getAttributeTableLength() > 0);
+		if(node != null){
+			final NodeAttributeTableModel model = NodeAttributeTableModel.getModel(node);
+			setEnabled(model != null && model.getAttributeTableLength() > 0);
+		}
+		else
+			setEnabled(false);
     }
 }
 
