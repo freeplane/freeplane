@@ -189,6 +189,11 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
 		@Override
         public void endElement(Object parent, String tag, Object userObject, XMLElement xml) {
+			// do nothing for not root nodes
+			final XMLElement parentNodeElement = xml.getParent().getParent();
+			if (parentNodeElement == null || !parentNodeElement.getName().equals("map")) {
+				return;
+			}
 			NodeModel node = (NodeModel) userObject;
 			loadMapStyleProperties(MapStyleModel.getExtension(node), xml);
        }
