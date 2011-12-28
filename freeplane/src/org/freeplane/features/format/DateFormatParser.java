@@ -62,7 +62,7 @@ public class DateFormatParser extends Parser {
                 calendar.set(Calendar.YEAR, year);
             if (missingFields.contains("M"))
                 calendar.set(Calendar.MONTH, month);
-            if (missingFields.contains("y"))
+            if (missingFields.contains("d"))
                 calendar.set(Calendar.DAY_OF_MONTH, day);
             date = calendar.getTime();
         }
