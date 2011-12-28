@@ -127,12 +127,15 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				return;
 			}
 		}
-
 		final MainView component = (MainView) e.getComponent();
+		NodeView nodeView = component.getNodeView();
+		if (nodeView == null)
+			return;
+
 		if(e.getButton() == 1){
 			if(Compat.isPlainEvent(e)){
 				if (component.isInFollowLinkRegion(e.getX())) {
-					LinkController.getController(mc).loadURL(component.getNodeView().getModel(), e);
+					LinkController.getController(mc).loadURL(nodeView.getModel(), e);
 					return;
 				}
 
