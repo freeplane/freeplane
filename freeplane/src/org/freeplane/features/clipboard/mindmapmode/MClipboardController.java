@@ -456,8 +456,7 @@ public class MClipboardController extends ClipboardController {
 	    		}
 	            ImageIO.write(image, IMAGE_FORMAT, file);
 				final NodeModel node = mapController.newNode(file.getName(), target.getMap());
-				final ExternalResource extension = new ExternalResource();
-				extension.setUri(uri);
+				final ExternalResource extension = new ExternalResource(uri);
 				node.addExtension(extension);
 				mapController.insertNode(node, target, asSibling, isLeft, isLeft);
             }

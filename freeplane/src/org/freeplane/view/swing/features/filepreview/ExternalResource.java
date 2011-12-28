@@ -20,8 +20,11 @@ import org.freeplane.view.swing.map.NodeView;
 public class ExternalResource implements IExtension {
 	final private Set<NodeView> viewers;
 
-	public ExternalResource() {
+	public ExternalResource(URI uri) {
+		if(uri == null)
+			throw new NullPointerException();
 		viewers = new HashSet<NodeView>();
+		this.uri = uri;
 	}
 
 	void removeViewers() {
@@ -51,11 +54,7 @@ public class ExternalResource implements IExtension {
 		return null;
 	}
 
-	public void setUri(final URI url) {
-		uri = url;
-	}
-
-	private URI uri;
+	final private URI uri;
 	private float zoom = -1f;
 
 	public float getZoom() {
@@ -92,19 +91,4 @@ public class ExternalResource implements IExtension {
         setZoom(zoom);
         return zoom;
     }
-
-
-	static ExternalResource getPreviewUrl(final NodeModel model) {
-		return (ExternalResource) model.getExtension(ExternalResource.class);
-	}
-
-	static ExternalResource setPreviewUrl(final NodeModel model, final URI uri, final IViewerFactory factory) {
-		ExternalResource extension = (ExternalResource) model.getExtension(ExternalResource.class);
-		if (extension == null) {
-			extension = new ExternalResource();
-			model.addExtension(extension);
-		}
-		extension.setUri(uri);
-		return extension;
-	}
 }

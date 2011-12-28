@@ -25,6 +25,7 @@ import javax.swing.ImageIcon;
 
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.IStyle;
@@ -58,8 +59,13 @@ public class AssignStyleAction extends AMultipleNodeAction {
 
 	@Override
 	public void setSelected() {
-		NodeModel node= Controller.getCurrentController().getSelection().getSelected();
-		final IStyle style = LogicalStyleController.getController().getFirstStyle(node);
-		setSelected(this.style.equals(style));
+		IMapSelection selection = Controller.getCurrentController().getSelection();
+		if(selection != null){
+			NodeModel node= selection.getSelected();
+			final IStyle style = LogicalStyleController.getController().getFirstStyle(node);
+			setSelected(this.style.equals(style));
+		}
+		else
+			setSelected(false);
 	}
 }

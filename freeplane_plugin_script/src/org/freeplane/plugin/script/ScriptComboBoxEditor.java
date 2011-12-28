@@ -90,7 +90,7 @@ public class ScriptComboBoxEditor implements ComboBoxEditor {
 		dialog.setVisible(true);
 		bounds = dialog.getBounds();
 		final Integer result = ((Integer)optionPane.getValue());
-		if(result != JOptionPane.OK_OPTION)
+		if(result == null || result != JOptionPane.OK_OPTION)
 			return;
 		script = textEditor.getText();
 		setButtonText();

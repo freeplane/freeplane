@@ -51,8 +51,7 @@ class ExternalObjectProxy extends AbstractProxy<NodeModel> implements Proxy.Exte
 					return;
 				}
 				getViewerController().undoableToggleHook(getDelegate(), externalObject);
-				externalObject = new ExternalResource();
-				externalObject.setUri(new URI(uri));
+				externalObject = new ExternalResource(new URI(uri));
 				getViewerController().undoableToggleHook(getDelegate(), externalObject);
 			}
 		}

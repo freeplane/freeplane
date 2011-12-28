@@ -220,6 +220,8 @@ public class EditNodeTextField extends EditNodeBase {
 		textfield.revalidate();
 		final NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, parent);
 		final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, nodeView);
+		if(mapView == null)
+			return;
 		if(layoutMapOnTextChange)
 			mapView.scrollNodeToVisible(nodeView);
 		else
