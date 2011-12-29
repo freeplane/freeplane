@@ -81,11 +81,5 @@ public class FileNodeNewDirectoryAction extends AWorkspaceAction {
 			makeNewDirectory(targetNode, parentDir);
 			
 		}
-//		else
-//		if(targetNode instanceof IFileSystemRepresentation && targetNode instanceof AFolderNode) {
-//			File parentDir = ((IFileSystemRepresentation) targetNode).getFile();
-//			makeNewDirectory(targetNode, parentDir);
-//		}
-
 	}	
 }
