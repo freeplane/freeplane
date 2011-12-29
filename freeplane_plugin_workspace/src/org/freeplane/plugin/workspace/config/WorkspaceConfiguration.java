@@ -32,6 +32,7 @@ import org.freeplane.plugin.workspace.config.creator.FolderTypePhysicalCreator;
 import org.freeplane.plugin.workspace.config.creator.FolderTypeVirtualCreator;
 import org.freeplane.plugin.workspace.config.creator.LinkTypeFileCreator;
 import org.freeplane.plugin.workspace.config.creator.WorkspaceRootCreator;
+import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
 import org.freeplane.plugin.workspace.io.xml.ConfigurationWriter;
 import org.freeplane.plugin.workspace.io.xml.WorkspaceNodeWriter;
 import org.freeplane.plugin.workspace.model.creator.AWorkspaceNodeCreator;
@@ -63,6 +64,7 @@ public class WorkspaceConfiguration {
 		this.readManager = new ReadManager();
 		this.writeManager = new WriteManager();
 		this.configWriter = new ConfigurationWriter(writeManager);
+		WorkspaceController.getController().getNodeTypeIconManager().addNodeTypeIconHandler(LinkTypeFileNode.class, new LinkTypeFileIconHandler());
 		initReadManager();
 		initWriteManager();
 	}

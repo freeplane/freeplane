@@ -1,48 +1,27 @@
 /**
  * author: Marcel Genzmehr
- * 16.08.2011
+ * 27.12.2011
  */
-package org.freeplane.plugin.workspace.model.node;
+package org.freeplane.plugin.workspace.controller;
 
-import java.net.URI;
+import javax.swing.Icon;
 
+import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 /**
  * 
  */
-public abstract class ALinkNode extends AWorkspaceTreeNode {
-	
-	private static final long serialVersionUID = 1L;
-	
+public interface INodeTypeIconHandler {
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
-	
-	public static final String LINK_TYPE_FILE = "file";
-
-	/**
-	 * @param type
-	 */
-	public ALinkNode(String type) {
-		super(type);
-	}
 
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
-
-	public abstract URI getLinkPath();
+	public Icon getIconForNode(AWorkspaceTreeNode node);
 	
-
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
-	
-	public final String getTagName() {
-		return "link";
-	}
-
-	@Override
-	public void initializePopup() {		
-	}
 }

@@ -27,11 +27,13 @@ import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.controller.AWorkspaceExpansionStateHandler;
+import org.freeplane.plugin.workspace.controller.DefaultNodeTypeIconManager;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceComponentHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceDropHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceExpansionStateHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceKeyHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceMouseHandler;
+import org.freeplane.plugin.workspace.controller.INodeTypeIconManager;
 import org.freeplane.plugin.workspace.controller.IWorkspaceListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferHandler;
@@ -70,6 +72,7 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 	String workspaceLocation;
 	private boolean isInitialized = false;
 	private DefaultWorkspaceExpansionStateHandler expansionStateHandler;
+	private INodeTypeIconManager nodeTypeIconManager;
 
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -120,6 +123,12 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 		return monitor;
 	}
 
+	public INodeTypeIconManager getNodeTypeIconManager() {
+		if(nodeTypeIconManager == null) {
+			nodeTypeIconManager = new DefaultNodeTypeIconManager();
+		}
+		return nodeTypeIconManager;
+	}
 	public JTree getWorkspaceViewTree() {
 		return getWorkspaceView().getTreeView();
 	}

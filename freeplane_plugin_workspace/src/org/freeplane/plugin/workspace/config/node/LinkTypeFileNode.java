@@ -12,9 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.Icon;
+import javax.swing.tree.DefaultTreeCellRenderer;
+
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
@@ -28,11 +32,11 @@ import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeEventListener, IWorkspaceTransferableCreator {
 	
-	private static final long serialVersionUID = 1L;	
+	private static final long serialVersionUID = 1L;		
 
-	private URI linkPath;
-	
+	private URI linkPath;	
 	private static WorkspacePopupMenu popupMenu = null;
+	private Icon fileIcon = null;
 	
 	public LinkTypeFileNode() {
 		super(ALinkNode.LINK_TYPE_FILE);	
@@ -64,7 +68,12 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeEventLi
 	}
 	
 	public void setLinkPath(URI linkPath) {
-		this.linkPath = linkPath;		
+		this.linkPath = linkPath;
+		if(linkPath != null) {			
+			fileIcon = WorkspaceController.getController().getNodeTypeIconManager().getIconForNode(this);
+		} else {
+			fileIcon = null;
+		}
 	}	
 
 	public void handleEvent(WorkspaceNodeEvent event) {
@@ -143,6 +152,14 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeEventLi
 
 	public boolean processDrop(DropTargetDropEvent event) {
 		event.rejectDrop();
+		return true;
+	}
+	
+	public boolean setIcons(DefaultTreeCellRenderer renderer) {
+		if(fileIcon == null) {
+			return false;
+		}
+		renderer.setLeafIcon(fileIcon);	
 		return true;
 	}
 }
