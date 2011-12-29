@@ -20,6 +20,7 @@
 package org.freeplane.features.filter;
 
 import java.awt.Component;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 
 import javax.swing.ButtonModel;
@@ -69,9 +70,11 @@ class QuickHighlightAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final ASelectableCondition condition = filterEditor.getCondition();
-		final boolean isSelected = !isModelSelected();
+		final boolean isSelected = ! isModelSelected();
 		if(isSelected){
 			if(condition == null){
+				setSelected(true);
+				setSelected(false);
 				return;
 			}
 		}

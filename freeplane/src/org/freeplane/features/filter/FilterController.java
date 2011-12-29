@@ -331,8 +331,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		final JButton applyFindNextBtn = new JButton(controller.getAction("QuickFindAction.FORWARD"));
 		final JButton applyQuickFilterBtn = new JButton(controller.getAction("QuickFilterAction"));
 		final JButton applyQuickSelectBtn = new JButton(controller.getAction("QuickFindAllAction"));
-		final JToggleButton applyQuickHighlightBtn = new JToggleButton(controller.getAction("QuickHighlightAction"));
-		
+		final JToggleButton applyQuickHighlightBtn = new JAutoToggleButton(controller.getAction("QuickHighlightAction"));		
 		
 		filterToolbar.addSeparator();
 		filterToolbar.add(undoBtn);
