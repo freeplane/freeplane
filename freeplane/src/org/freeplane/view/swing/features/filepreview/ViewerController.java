@@ -177,7 +177,10 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 				node = Controller.getCurrentModeController().getMapController().getSelectedNode();
 			}
 			final MapModel map = node.getMap();
-			final String sActUri = activeView.getAbsoluteUri(map).toString();
+			URI absoluteUri = activeView.getAbsoluteUri(map);
+			if(absoluteUri == null)
+				return false;
+			final String sActUri = absoluteUri.toString();
 			if (!sActUri.matches(".*_[0-9]{2}\\.[a-zA-Z0-9]*")) {
 				return false;
 			}
