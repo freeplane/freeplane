@@ -23,10 +23,13 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.KeyboardFocusManager;
 import java.awt.Window;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -235,10 +238,16 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		updateColumnWidths();
 		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		getTableHeader().setReorderingAllowed(false);
-		getRowHeight();
-		updateRowHeights();
 		setRowSelectionAllowed(false);
 		putClientProperty("JTable.autoStartsEdit", Boolean.FALSE);
+		addHierarchyListener(new HierarchyListener() {
+			public void hierarchyChanged(HierarchyEvent e) {
+				if(isDisplayable()){
+					updateRowHeights();
+					removeHierarchyListener(this);
+				}
+			}
+		});
 	}
 
 	private void changeSelectedRowHeight(final int rowIndex) {
@@ -741,7 +750,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 		final int constHeight = getTableHeaderHeight() + AttributeTable.EXTRA_HEIGHT;
 		final float zoom = getZoom();
-		final float fontSize = getFontSize();
+		final float fontSize = (float) getFont().getMaxCharBounds(((Graphics2D)getGraphics()).getFontRenderContext()).getHeight();
 		final float tableRowHeight = fontSize + zoom * AttributeTable.TABLE_ROW_HEIGHT;
 		int newHeight = (int) ((tableRowHeight * rowCount + (zoom - 1) * constHeight) / rowCount);
 		if (newHeight < 1) {
