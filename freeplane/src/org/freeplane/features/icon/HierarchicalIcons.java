@@ -148,8 +148,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		if (!(property.equals("icon") || property.equals(LogicalStyleModel.class))) {
 			return;
 		}
-		setStyle(node);
-		onUpdateChildren(node);
+		setStyleRecursive(node);
 	}
 
 	public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
@@ -176,16 +175,6 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	}
 
 	public void onPreNodeDelete(final NodeModel parent, final NodeModel child, final int index) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * freeplane.extensions.PermanentNodeHook#onUpdateChildrenHook(freeplane.modes
-	 * .MindMapNode)
-	 */
-	private void onUpdateChildren(final NodeModel updatedNode) {
-		setStyleRecursive(updatedNode);
 	}
 
 	public void readingCompleted(final NodeModel topNode, final Map<String, String> newIds) {
