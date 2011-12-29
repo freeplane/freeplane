@@ -49,6 +49,7 @@
 				<menu_action action="NewSummaryAction" accelerator="alt shift INSERT" />
 				<menu_action action="FirstGroupNodeAction" accelerator = "alt shift B"/>
 				<menu_action action="SummaryNodeAction" accelerator = "alt shift S"/>
+				<menu_action action="AlwaysUnfoldedNodeAction"/>
 				<menu_action action="CloudAction" accelerator="control shift B" />
 			</menu_submenu>	
 			<menu_action action="AddConnectorAction" accelerator="control L" />						
@@ -447,6 +448,7 @@
 			<menu_separator />
 		<menu_action action="NewSummaryAction" accelerator="alt shift INSERT" />
 		<menu_action action="SummaryNodeAction" accelerator = "alt shift S"/>
+		<menu_action action="AlwaysUnfoldedNodeAction"/>
 		<menu_action action="FreeNodeAction"/>
 		<menu_action action="CloudAction" accelerator="control shift B" />
 		<menu_submenu name="menu_applyStyle" name_ref="menu_applyStyle" menu_key="node_popup_styles"/>
