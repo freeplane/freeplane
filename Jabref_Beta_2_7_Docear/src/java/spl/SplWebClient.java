@@ -40,7 +40,8 @@ public class SplWebClient {
         CLIENT.setConnectTimeout(1000);
         CLIENT.setReadTimeout(70000);
     }
-    private static WebResource WEBRESOURCE = CLIENT.resource( "http://141.44.30.50:8080/" );
+    //FIXME: DOCEAR: new address
+    private static WebResource WEBRESOURCE = CLIENT.resource( "http://api.mr-dlib.org/" );
     private static WebResource INTERNETRESOURCE = CLIENT.resource( "http://www.google.com" );
     //private static WebResource WEBRESOURCE = CLIENT.resource( "http://localhost:8080/rest/" );
 
@@ -119,7 +120,7 @@ public class SplWebClient {
         }catch(Exception e){
             System.out.println(Tools.getStackTraceAsString(e));
             //Todo logging
-        }
+        }        
         return WebServiceStatus.NO_METADATA;
     }
 

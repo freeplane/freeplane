@@ -1,0 +1,142 @@
+GNU OPÆA JAVNA LICENCA
+verzija 2, lipanj 1991.
+
+    Ovo je neslužbeni prijevod GNU Opæe javne licence na hrvatski jezik. Nije ga objavio Free Software Foundation i zakonito ne izrièe uvjete distribucije programa koji koriste GNU GPL -- to èini samo izvorni, engleski tekst GNU GPL-a. Meðutim, nadamo se da æe ovaj prijevod pomoæi hrvatskim èitateljima u boljem razumijevanju GPL-a.
+
+This is an unofficial translation of the GNU General Public License into Croatian. It was not published by the Free Software Foundation, and does not legally state the distribution terms for software that uses the GNU GPL--only the original English text of the GNU GPL does that. However, we hope that this translation will help Croatian speakers understand the GNU GPL better. 
+
+
+Copyright (C) 1989., 1991. Free Software Foundation, Inc.
+59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+Umnažanje i distribuiranje primjeraka ove licence jednakih izvorniku dopušteno je svakomu, no njeno je mijenjanje zabranjeno.
+
+Predgovor
+
+Licence veæine programa nastoje vam oduzeti slobodu da ih dijelite i mijenjate. Tomu nasuprot, GNU Opæa javna licenca jamèi vam slobodu dijeljenja i mijenjanja slobodnih programa -- kako bi program bio slobodan za sve svoje korisnike. Ova Opæa javna licenca vrijedi za veæi dio programa Free Software Foundationa i bilo koji drugi program èiji se autor obveže na njeno korištenje. (Neke druge programe Free Software Foundationa pokriva GNU Opæa javna licenca za knjižnice.) I vi je možete primjeniti na svoje programe.
+
+Kada govorimo o slobodnim programima, govorimo o slobodi, a ne cijeni. Naša Opæa javna licenca je stvorena kako bi vam zajamèila slobodu distribuiranja primjeraka slobodnih programa (i, ako želite, naplaæivanje toga), primanje izvornog koda ili moguænost da ga dobijete, moguænost mijenjanja programa ili korištenja njegovih dijelova u novim slobodnim programima; te saznanje da to možete uèiniti.
+
+Kako bi zaštitili vaša prava, moramo postaviti ogranièenja koja zabranjuju bilo kome poricanje ovih prava ili zahtjev da ih se odreknete. Ova ogranièenja predstavljaju odreðene odgovornosti za vas ako distribuirate ili mijenjate primjerke programa.
+
+Na primjer, ako distribuirate primjerke takvog programa, besplatno ili ne, primateljima morate dati sva prava koja imate i sami. Takoðer, oni moraju dobiti izvorni kod ili moguænost njegova dobivanja. A vi ih morate obavijestiti o ovim uvjetima kako bi znali svoja prava.
+
+Vaša prava štitimo u dva koraka: 1. stavljajuæi autorska prava na program, te 2. nudeæi vam ovu licencu koja vam omoguæava zakonito umnažanje, distribuiranje i/ili mijenjanje programa.
+
+Takoðer, zbog zaštite svakog autora i nas, želimo biti sigurni da svi razumiju da za ovakve slobodne programe nema jamstva. Ako program netko promijeni i pošalje dalje, želimo da njegovi primatelji znaju kako ono što su dobili nije izvornik, kako bilo kakvi problemi u takvoj verziji ne bi utjecali na ugled izvornog autora.
+
+Na kraju, svakom slobodnom programu stalno prijete patenti. Želimo izbjeæi opasnost individualnog licenciranja od strane redistributora slobodnog programa, što bi program uèinilo vlasništvom. Da to sprijeèimo, razjasnili smo kako svaki patent mora biti licenciran za svaèiju slobodnu uporabu ili uopæe ne biti licenciran.
+
+Slijede toène obveze i uvjeti za umnažanje, distribuiranje i mijenjanje.
+
+GNU OPÆA JAVNA LICENCA
+OBVEZE I UVJETI ZA UMNAŽANJE, DISTRIBUIRANJE I MIJENJANJE
+
+0. Ova Licenca vrijedi za svaki program ili drugo djelo koje sadrži obavijest vlasnika autorskog prava prema kojoj se ono može distribuirati pod uvjetima ove Opæe javne licence. Pojam "Program" nadalje se odnosi na svaki takav program ili djelo, a "djelo zasnovano na Programu" odnosi se na Program ili bilo koji rad izveden iz njega po zakonu o autorskim pravima: dakle, djelo koje sadrži program ili njegov dio, toèan ili s promjenama i/ili preveden na drugi jezik. (Nadalje, prijevod je bez ogranièenja ukljuèen u pojam "promjena".) Svakom korisniku licence obraæamo se kao "vama".
+
+O aktivnostima osim umnažanja, distribucije i mijenjanja ova Licenca ne govori; one su izvan njenog dosega. Èin pokretanja Programa nije ogranièen, a o njegovom rezultatu govorimo samo ako je sadržaj rezultata takoðer djelo zasnovano na Programu (bez obzira što ga je stvorio Program). Je li to istina ovisi o funkciji Programa.
+
+1. Smijete umnažati i distribuirati toène kopije izvornog koda Programa kakvog ga dobijete, na bilo kakvom mediju, ako oèigledno i prikladno na svakoj kopiji istaknete odgovarajuæu poruku o autorskim pravima i odricanje jamstava; ostavite nepromijenjenim sve obavijesti koje se odnose na ovu Licencu i na nepostojanje jamstava; i dajte svakom primatelju Programa primjerak ove Licence zajedno s Programom.
+
+Smijete naplatiti fizièki èin prenošenja kopije i možete po svom izboru ponuditi jamstvo za naplatu.
+
+2. Smijete mijenjati svoj primjerak ili primjerke Programa ili bilo kojeg njegovog dijela, tako oblikovajuæi djelo zasnovano na Programu, i umnažati i distribuirati takve promjene ili djelo pod uvjetima prethodnog Dijela 1., ako zadovoljavate ove uvjete:
+
+    a) Promijenjene datoteke moraju nositi istaknute obavijesti da ste promijenili datoteke i datum svake promjene.
+
+    b) Svako djelo koje distribuirate ili objavite, a koje u cjelosti ili djelomièno sadrži ili je izvedeno iz Programa ili njegovog dijela, mora biti licencirano u cjelosti bez naplate svima pod uvjetima ove Licence.
+
+    c) Ako promijenjeni program, kada je normalno pokrenut, èita naredbe interaktivno, on mora, pokrenut za takvu interaktivnu uporabu u najuobièajenijem naèinu, ispisati ili prikazati obavijest koja ukljuèuje odgovarajuæu poruku o autorskim pravima i obavijest da nema jamstva (ili drugaèiju, koja kaže da vi jamèite) i da korisnici mogu ponovno distribuirati program pod ovim uvjetima, i objasniti korisniku kako da proèita primjerak ove Licence. (Iznimka: ako je sam Program interaktivan, ali obièno ne ispisuje takvu obavijest, vaše djelo zasnovano na Programu ne mora ispisati obavijest.) 
+
+Ove potrebe vrijede za promijenjeno djelo u cjelini. Ako raspoznatljivi dijelovi tog djela nisu izvedeni iz Programa, i mogu se sami razumno smatrati nezavisnim i odvojenim djelima, onda ova Licenca, i njeni uvjeti, ne vrijede za te dijelove kada ih distribuirate kao zasebna djela. Ali ako distribuirate iste dijelove kao dio cjeline koja je djelo zasnovano na Programu, distribucija te cjeline mora zadovoljavati uvjete ove Licence, èije dozvole drugima koji su je licencirali vrijede za cjelinu, odnosno svaki njen dio bez obzira tko ga je napisao.
+
+Dakle, ovom dijelu nije namjera da dobije prava ili da pobija vaša prava na djelo koje ste vi napisali u cjelini; namjera mu je poboljšati pravo nadzora distribucije izvedenih ili skupljenih djela zasnovanih na Programu.
+
+Takoðer, sama integracija drugog djela nezasnovanog na Programu s Programom (ili djelom zasnovanim na Programu) na mediju pohranjivanja ili distribucije ne dovodi to drugo djelo u doseg ove Licence.
+
+3. Smijete umnažati i distribuirati Program (ili djelo na njemu zasnovano, po Dijelu 2.) u objektnom kodu ili izvršnom obliku pod uvjetima Dijela 1. i 2. ako uèinite jedno od sljedeæeg:
+
+    a) Popratite ga potpunim odgovarajuæim strojno èitljivim izvornim kodom, koji mora biti distribuiran pod uvjetima Dijela 1. i 2. na mediju po izboru korištenom za razmjenu programa; ili
+
+    b) Popratite ga pisanom ponudom, koja vrijedi barem tri godine, da æete svakoj treæoj stranci dati, za cijenu ne veæu od vašeg troška fizièkog vršenja distribucije izvornog koda, potpunu strojno èitljivu kopiju odgovarajuæeg izvornog koda, koju æe se distribuirati pod uvjetima Dijela 1. i 2. na mediju po izboru korištenom za razmjenu programa; ili
+
+    c) Popratite ga informacijama koje ste vi primili o ponudi za distribuciju odgovarajuæeg izvornog koda. (Ova moguænost vrijedi samo za nekomercijalnu distribuciju i samo ako ste primili program u objektnom kodu ili izvršnom obliku s takvom ponudom, prema prethodnom Odlomku b.) 
+
+Pod izvornim kodom za djelo mislimo na željeni oblik djela za njegovo mijenjanje. Za izvršno djelo, potpuni izvorni kod odnosi se na izvorni kod svih modula koje ono sadrži, uz datoteke koje definiraju svako ukljuèeno suèelje, uz skripte za nadzor prevoðenja i instalacije izvršne datoteke. Meðutim, kao posebna iznimka, distribuirani izvorni kod ne mora ukljuèiti bilo što što se obièno distribuira (bilo u izvornom kodu, bilo u izvršnom obliku) s glavnim dijelovima (prevodioc, jezgra, itd.) operacijskog sustava na kojem izvršna datoteka radi, osim ako sam taj dio prati izvršnu datoteku.
+
+Ako se izvršna datoteka ili objektni kod distribuira omoguæavanjem pristupa kopiji na odreðenom mjestu, onda se omoguæavanje jednakog pristupa izvornom kodu smatra distribucijom izvornog koda, iako se drugi ne prisiljavaju na umnažanje izvornog koda zajedno s objektnim.
+
+4. Ne smijete umnažati, mijenjati, podlicencirati ili distribuirati Program osim kako je izraženo u ovoj Licenci. Bilo kakav pokušaj umnažanja, mijenjanja, podlicenciranja ili distribuiranja Programa je nezakonit, i odmah poništava vaša prava prema ovoj Licenci. Meðutim, strankama koje su od vas dobile kopije ili prava pod ovom Licencom neæe biti poništene licence, dok zadovoljavaju sve uvjete.
+
+5. Ne morate prihvatiti ovu Licencu, pošto ju niste potpisali. Meðutim, ništa vam drugo ne jamèi dozvolu za mijenjanje ili distribuciju Programa ili iz njega izvedenih djela. Te su radnje zakonom zabranjene ako ne prihvatite ovu Licencu. Prema tome, mijenjanjem ili distribuiranjem Programa (ili djela na njemu zasnovanog), pokazujete svoj pristanak na ovu Licencu, i sve njene obveze i uvjete za umnažanje, distribuiranje i mijenjanje Programa ili djela na njemu zasnovanih.
+
+6. Svaki put kada ponovo distribuirate Program (ili bilo koje djelo zasnovano na Programu), primatelj automatski prima licencu od izvornog vlasnika za umnažanje, distribuiranje ili mijenjanje Programa prema ovim obvezama i uvjetima. Ne smijete nametnuti bilo kakva daljnja ogranièenja na primateljevo korištenje ovdje zajamèenih prava. Niste odgovorni za traženje zadovoljavanja ove Licence od drugih stranaka.
+
+7. Ako vam se, kao posljedicu sudske presude ili tužbe za kršenje patenta ili iz bilo kojeg drugog razloga (ne samo što se tièe patenata), nameæu obveze (bilo sudskim nalogom, nagodbom, ili drukèije) u kontradikciji s uvjetima ove Licence, to ne znaèi da smijete kršiti uvjete ove Licence. Ako ne možete distribuirati tako da zadovoljavate istodobno i svoje obveze pod ovom Licencom i sve ostale odgovarajuæe obveze, onda kao posljedicu uopæe ne smijete distribuirati Program. Na primjer, ako patentna licenca ne dopušta slobodnu redistribuciju Programa svima koji njegove kopije dobiju izravno ili neizravno od vas, onda je jedini naèin na koji možete zadovoljiti i nju i ovu Licencu prestanak distribuiranja Programa.
+
+Ako se bilo koji dio ovog Dijela drži nevažeæim ili neprovedivim pod bilo kakvim okolnostima, namjena je Dijela da vrijedi i Dio u cjelini namijenjen je da vrijedi u drugim okolnostima.
+
+Ovom Dijelu nije svrha da vas potakne na kršenje patenata ili drugih prava na vlasništvo ili na njihovo pobijanje; jedina mu je svrha zaštita integriteta distribucijskog sustava slobodnih programa, kojeg implementira javna praksa. Mnogi ljudi su velikodušno pridonijeli velikom broju programa distribuiranim kroz taj sustav pouzdajuæi se u dosljednu primjenu tog sustava; na autoru/donatoru je odluka da li æe programe distribuirati nekim drugim sustavom i korisnik licence ne može mu nametati svoj izbor.
+
+Namjera ovog Dijela je razjašnjavanje onoga za što se vjeruje da su posljedice ostatka Licence.
+
+8. Ako je distribucija i/ili korištenje Programa u nekim državama ogranièeno bilo patentima bilo suèeljima na koje se polažu autorska prava, izvorni vlasnik autorskih prava koji je Program stavio pod ovu Licencu može dodati eksplicitno zemljopisno ogranièenje distribucije izuzimajuæi takve države, i èineæi distribuciju dozvoljenom samo u ili meðu državama koje nisu izuzete. U tom sluèaju, ova Licenca ukljuèuje ogranièenje kao da je napisano u tijelu ove Licence.
+
+9. Free Software Foundation s vremena na vrijeme može objaviti promijenjene i/ili nove verzije Opæe javne licence. Takve nove verzije bit æe duhom sliène sadašnjoj, no mogu se razlikovati u detaljima kako bi se riješili novi problemi ili brige.
+
+Svakoj verziji se daje razlièit broj verzije. Ako Program navodi broj verzije ove Licence koja za njega vrijedi i "bilo koja kasnija verzija", smijete poštovati obveze i uvjete te verzije ili bilo koje kasnije verzije koju je objavio Free Software Foundation. Ako Program ne odreðuje broj verzije ove Licence, smijete odabrati bilo koju verziju ikad izdanu od strane Free Software Foundationa.
+
+10. Ako želite ukljuèiti dijelove Programa u druge besplatne programe èiji se uvjeti distribucije razlikuju, pišite autoru i tražite njegovu dozvolu. Za programe èija autorska prava ima Free Software Foundation, pišite Free Software Foundationu; ponekad radi toga radimo iznimke. U odluèivanju æe nas voditi dva cilja èuvanja slobode svih izvedenica iz našeg programa i promicanje dijeljenja i ponovnog korištenja programa opæenito.
+
+NEMA JAMSTVA
+
+11. POŠTO JE PROGRAM LICENCIRAN BESPLATNO, ZA PROGRAM NEMA JAMSTVA, U MJERI DOPUŠTENOJ PRIMJENJIVIM ZAKONOM. OSIM AKO JE DRUKÈIJE IZRAŽENO NAPISMENO, VLASNICI AUTORSKIH PRAVA I/ILI DRUGE STRANKE PROGRAM DAJU "KAKAV JEST" BEZ JAMSTVA BILO KOJE VRSTE, IZRAŽENOG ILI PODRAZUMIJEVANOG, UKLJUÈUJUÆI, ALI NE SAMO NJIH, PODRAZUMIJEVANA JAMSTVA TRGOVINSKE PRIKLADNOSTI I ODGOVARANJA ODREÐENOJ SVRSI. SVI RIZICI VEZANI ZA KVALITETU I BRZINU PROGRAMA OSTAJU NA VAMA. AKO SE PROGRAM POKAŽE NEVALJANIM, VI SNOSITE SVE TROŠKOVE POTREBNOG ODRŽAVANJA, POPRAVLJANJA I ISPRAVLJANJA.
+
+12. NI U KOJEM SLUÈAJU, OSIM NUŽNO PO PRIMJENJIVOM ZAKONU ILI NAGODBOM NAPISMENO, BILO KOJI VLASNIK AUTORSKIH PRAVA, ILI BILO KOJA DRUGA STRANKA KOJA SMIJE MIJENJATI I/ILI REDISTRIBUIRATI PROGRAM KAKO JE DOZVOLJENO GORE, NEÆE BITI VAMA ODGOVORAN ZA ŠTETE, UKLJUÈUJUÆI OPÆE, POSEBNE, SLUÈAJNE ILI POSLJEDIÈNE ŠTETE PROIZAŠLE IZ KORIŠTENJA ILI NEMOGUÆNOSTI KORIŠTENJA PROGRAMA (UKLJUÈUJUÆI, ALI NE SAMO NJIH, GUBITAK PODATAKA ILI ÈINJENJE PODATAKA NETOÈNIM ILI GUBITKE VAS ILI DRUGIH STRANAKA ILI NEUSPJEH PROGRAMA DA RADI S BILO KOJIM DRUGIM PROGRAMOM), ÈAK I AKO JE TAKAV VLASNIK ILI DRUGA STRANKA UPOZORENA NA MOGUÆNOST TAKVIH ŠTETA.
+
+KRAJ OBVEZA I UVJETA
+
+Kako ove obveze primjeniti na vaše nove programe
+
+Ako razvijete novi program i želite da bude od najveæe moguæe koristi javnosti, najbolji je naèin da to postignete uèiniti ga slobodnim programom, kojeg svatko može distribuirati i mijenjati pod ovim uvjetima.
+
+Kako biste to uèinili, programu dodajte sljedeæe obavijesti. Najsigurnije je dodati ih na poèetku svake datoteke s izvornim kodom, da naglasite nepostojanje jamstva; svaka bi datoteka trebala imati barem i "copyright" red i upustvo kako doæi do cijele obavijesti.
+
+<jedan red za ime programa i poruku o njegovoj svrsi.>
+Copyright (C) 19gg  <ime autora>
+
+Ovaj program je slobodan; možete ga distribuirati i/ili
+mijenjati pod uvjetima GNU Opæe javne licence kako ju je
+objavio Free Software Foundation; ili verzije 2 Licence,
+ili (po vašem izboru) bilo koje novije verzije.
+
+Ovaj program se distribuira u nadi da æe biti koristan, ali
+BEZ IKAKVOG JAMSTVA; èak i bez podrazumijevanog jamstva
+TRGOVINSKE PRIKLADNOSTI ili ODGOVARANJA ODREÐENOJ SVRSI. Za
+detalje proèitajte GNU Opæu javnu licencu.
+
+Trebali ste dobiti primjerak GNU Opæe javne licence uz ovaj
+program; ako niste, pišite na adresu:
+Free Software Foundation, Inc.,
+59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+Takoðer dodajte informacije kako vas kontaktirati elektronski i poštom.
+
+Ako je program interaktivan, neka ispiše kratku poruku poput ove kada se pokreæe u interaktivnom naèinu:
+
+Gnomovizija verzija 69, Copyright (C) 19gg ime autora
+Gnomovizija dolazi BEZ IKAKVOG JAMSTVA; za detalje napišite
+"pokaži j". Ovo je slobodan program, i slobodno ga
+možete distribuirati pod odreðenim uvjetima; za detalje
+napišite "pokaži u".
+
+Hipotetske naredbe "pokaži j" i "pokaži u" trebale bi pokazati odgovarajuæe dijelove Opæe javne licence. Naravno, naredbe koje æete vi koristiti mogu se zvati drukèije; to èak mogu biti klikovi mišem ili dijelovi izbornika -- što god odgovara vašem programu.
+
+Takoðer biste trebali zamoliti svog poslodavca (ako radite kao programer) ili školu, ako je ima, da, ako je potrebno, potpiše "odricanje od autorskih prava" za program. Evo primjera; promijenite imena:
+
+MM, d. o. o., odrièe se svih autorskih prava na program "Gnomoviziju"
+(koji se upucava kompajlerima) koji je napisao Hrvoje Haker.
+
+<potpis Miroslava Moænika>, 1. travnja 1989.
+Miroslav Moænik, predsjednik MM d. o. o.
+
+Ova Opæa javna licenca ne dozvoljava ukljuèivanje vašeg programa u vlasnièke programe. Ako je vaš program knjižnica podrutina, možda æete smatrati korisnijim ako dopustite vezanje vlasnièkih aplikacija s njom. Ako to želite uèiniti, umjesto ove Licence koristite GNU Opæu javnu licencu za knjižnice.

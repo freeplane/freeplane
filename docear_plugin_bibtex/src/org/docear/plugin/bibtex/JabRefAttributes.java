@@ -171,7 +171,7 @@ public class JabRefAttributes {
 	}
 	
 	public boolean setReferenceToNode(Reference reference, NodeModel node) {		
-		NodeUtils.setAttributeValue(node, reference.getKey().getName(), reference.getKey().getValue(), false);
+		NodeUtils.setAttributeValue(node, reference.getKey().getName(), reference.getKey().getValue());
 		return updateReferenceToNode(reference, node);		
 	}
 	
@@ -194,7 +194,7 @@ public class JabRefAttributes {
 				catch(Exception e) {
 					continue;
 				}
-				if (nodeFileName.equals(jabrefFile)) {
+				if (jabrefFile.endsWith(nodeFileName)) {
 					return entry;
 				}
 			}

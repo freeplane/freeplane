@@ -9,7 +9,6 @@ import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.mindmap.AMindmapUpdater;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
@@ -20,19 +19,19 @@ import org.freeplane.plugin.workspace.WorkspaceUtils;
 
 public class MonitorungNodeUpdater extends AMindmapUpdater {
 	
-	private final static Attribute keyAttribute = new Attribute("splmm_dirmon_path", TextUtils.getText(PdfUtilitiesController.MON_INCOMING_FOLDER));
+	private final static Attribute keyAttribute = new Attribute("splmm_dirmon_path", PdfUtilitiesController.MON_INCOMING_FOLDER);
 	private static HashMap<String, String> monitoringAttributes;
 	private static ArrayList<Attribute> newMonitoringAttributes;
 	
 	public MonitorungNodeUpdater(String title) {
 		super(title);	
 		monitoringAttributes = new HashMap<String, String>();		
-		MonitorungNodeUpdater.monitoringAttributes.put("splmm_dirmon_auto", TextUtils.getText(PdfUtilitiesController.MON_AUTO));
-		MonitorungNodeUpdater.monitoringAttributes.put("splmm_dirmon_subdirs", TextUtils.getText(PdfUtilitiesController.MON_SUBDIRS));
+		MonitorungNodeUpdater.monitoringAttributes.put("splmm_dirmon_auto", PdfUtilitiesController.MON_AUTO);
+		MonitorungNodeUpdater.monitoringAttributes.put("splmm_dirmon_subdirs", PdfUtilitiesController.MON_SUBDIRS);
 		
 		newMonitoringAttributes = new ArrayList<Attribute>();
-		newMonitoringAttributes.add(new Attribute(TextUtils.getText(PdfUtilitiesController.MON_MINDMAP_FOLDER), CoreConfiguration.LIBRARY_PATH));
-		newMonitoringAttributes.add(new Attribute(TextUtils.getText(PdfUtilitiesController.MON_FLATTEN_DIRS), 0));		
+		newMonitoringAttributes.add(new Attribute(PdfUtilitiesController.MON_MINDMAP_FOLDER, CoreConfiguration.LIBRARY_PATH));
+		newMonitoringAttributes.add(new Attribute(PdfUtilitiesController.MON_FLATTEN_DIRS, 0));		
 	}
 
 	@Override
