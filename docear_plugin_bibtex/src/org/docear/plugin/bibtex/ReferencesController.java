@@ -37,6 +37,7 @@ import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
+import org.docear.plugin.core.util.CoreUtils;
 import org.docear.plugin.core.workspace.node.LinkTypeReferencesNode;
 import org.docear.plugin.pdfutilities.util.MapConverter;
 import org.freeplane.core.resources.ResourceController;
@@ -199,10 +200,10 @@ public class ReferencesController extends ALanguageController implements IDocear
 				
 				public void run() {
 					Thread.currentThread().setContextClassLoader(classLoader);
-					URI uri = DocearController.getController().getLibrary().getBibtexDatabase();
+					URI uri = DocearController.getController().getLibrary().getBibtexDatabase();					
 					
-					if (uri != null) {
-						jabrefWrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame(), new File(WorkspaceUtils.absoluteURI(uri)));						
+					if (uri != null) {						
+						jabrefWrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame(), CoreUtils.resolveURI(uri));						
 					}
 					else {
 						jabrefWrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame());
