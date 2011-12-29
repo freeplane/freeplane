@@ -316,7 +316,13 @@ public class UrlManager implements IExtension {
 		}
 		try {
 			final String extension = FileUtils.getExtension(uri.getRawPath());
-			uri = getAbsoluteUri(uri);
+			if(! uri.isAbsolute()){
+				uri = getAbsoluteUri(uri);
+				if(uri == null){
+					UITools.errorMessage(TextUtils.getText("map_not_saved"));
+					return;
+				}
+			}
 			try {
 				if ((extension != null)
 				        && extension.equals(UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
@@ -359,7 +365,10 @@ public class UrlManager implements IExtension {
 		}
 		final String path = uri.getPath();
 		try {
-			final URL url = new URL(map.getURL(), path);
+			URL context = map.getURL();
+			if(context == null)
+				return null;
+			final URL url = new URL(context, path);
 			return new URI(url.getProtocol(), url.getHost(), url.getPath(), uri.getQuery(), uri.getFragment());
 		}
 		catch (final URISyntaxException e) {
