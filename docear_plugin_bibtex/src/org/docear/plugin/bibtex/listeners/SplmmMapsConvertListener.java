@@ -1,6 +1,7 @@
 package org.docear.plugin.bibtex.listeners;
 
 import org.docear.plugin.bibtex.ReferenceUpdater;
+import org.docear.plugin.bibtex.SplmmReferenceUpdater;
 import org.docear.plugin.core.listeners.ISplmmMapsConvertListener;
 import org.docear.plugin.core.listeners.SplmmMapsConvertEvent;
 import org.docear.plugin.core.mindmap.MindmapUpdateController;
@@ -10,7 +11,8 @@ public class SplmmMapsConvertListener implements ISplmmMapsConvertListener {
 
 	public void mapsConvert(SplmmMapsConvertEvent event) {	
 		MindmapUpdateController mindmapUpdateController = (MindmapUpdateController) event.getObject();
-		mindmapUpdateController.addMindmapUpdater(new ReferenceUpdater(TextUtils.getText("update_references_open_mindmaps")));
+		mindmapUpdateController.addMindmapUpdater(new SplmmReferenceUpdater(TextUtils.getText("update_splmm_references_current_map")));
+		mindmapUpdateController.addMindmapUpdater(new ReferenceUpdater(TextUtils.getText("update_references_current_mindmap")));
 	}
 
 }
