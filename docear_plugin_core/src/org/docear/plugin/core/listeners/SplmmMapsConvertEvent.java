@@ -1,10 +1,10 @@
 package org.docear.plugin.core.listeners;
 
-public class SplmmMapsConvertedEvent {
+public class SplmmMapsConvertEvent {
 
 	private Object object;
 	
-	public SplmmMapsConvertedEvent(Object object) {
+	public SplmmMapsConvertEvent(Object object) {
 		this.object = object;
 	}
 	
