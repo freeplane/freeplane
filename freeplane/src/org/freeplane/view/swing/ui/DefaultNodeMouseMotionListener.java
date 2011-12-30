@@ -163,9 +163,6 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				if (NodeLinks.getValidLink(mapController.getSelectedNode()) == null) {
 					mapController.toggleFolded();
 				}
-				else {
-					LinkController.getController(mc).loadURL(e);
-				}
 				return;
 			}
 			mapController.toggleFolded(mapController.getSelectedNodes());
