@@ -394,16 +394,13 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
         		TextUtils.format("locking_failed_by_open", file.getName()));
         	map.setReadOnly(true);
         }
-        NodeModel root = null;
-        if (file.length() != 0) {
-        	root = loadTree(map, file);
+		if (file.length() != 0) {
+        	NodeModel root = loadTree(map, file);
+        	assert(map.getRootNode() == root);
         	setFile(map, file);
         }
         else{
-        	root = map.getRootNode();
-        }
-        if (root != null) {
-        	((MMapModel) map).setRoot(root);
+        	map.createNewRoot();
         }
 	}
 
@@ -541,7 +538,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			return;
 		}
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
-		final MapModel map = mapController.newMap(((NodeModel) null));
+		final MapModel map = mapController.newMap();
 		mapController.setSaved(map, SET_NEW_MAP_SAVED);
 	}
 
@@ -593,7 +590,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			file = startFile;
 		}
 		try {
-			Controller.getCurrentModeController().getMapController().newUntitledMap(Compat.fileToUrl(file));
+			final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+			mapController.newUntitledMap(Compat.fileToUrl(file));
 			final Controller controller = Controller.getCurrentController();
 			final MapModel map = controller.getMap();
 			final Object rootText = map.getRootNode().getUserObject();

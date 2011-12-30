@@ -45,19 +45,16 @@ public class AttributeRegistry implements IExtension {
 	static public final int GLOBAL = -1;
 	private static final int TABLE_FONT_SIZE = 12;
 
-	static AttributeRegistry createRegistry( final MapModel map) {
-		AttributeRegistry registry = AttributeRegistry.getRegistry(map);
+	public static AttributeRegistry getRegistry(final MapModel map) {
+		AttributeRegistry registry = (AttributeRegistry) map.getExtension(AttributeRegistry.class);
 		if (registry == null) {
 			final AttributeController attributeController = AttributeController.getController();
 			registry = new AttributeRegistry(attributeController);
 			map.addExtension(AttributeRegistry.class, registry);
-			registry.registryAttributes(Controller.getCurrentModeController().getMapController(), map.getRootNode());
+			final NodeModel rootNode = map.getRootNode();
+			if(rootNode != null)
+				registry.registryAttributes(Controller.getCurrentModeController().getMapController(), rootNode);
 		}
-		return registry;
-	}
-
-	public static AttributeRegistry getRegistry(final MapModel map) {
-		final AttributeRegistry registry = (AttributeRegistry) map.getExtension(AttributeRegistry.class);
 		return registry;
 	}
 

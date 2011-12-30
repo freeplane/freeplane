@@ -32,6 +32,7 @@ import org.freeplane.core.util.FreeplaneIconUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -136,11 +137,12 @@ public class AddOnInstallerPanel extends JPanel {
 					setStatusInfo(getText("status.installing"));
 					final ModeController modeController = controller.getModeController(MModeController.MODENAME);
 					final MFileManager fileManager = (MFileManager) MFileManager.getController(modeController);
-					MapModel newMap = modeController.getMapController().newModel(null);
+					MapModel newMap = new MMapModel();
 					if (!fileManager.loadImpl(url, newMap)) {
 					    LogUtils.warn("can not load " + url);
 					    return;
 					}
+					controller.getModeController().getMapController().fireMapCreated(newMap);
 					AddOnProperties addOn = (AddOnProperties) ScriptingEngine.executeScript(newMap.getRootNode(),
 					    getInstallScriptSource(), ScriptingPermissions.getPermissiveScriptingPermissions());
 					if (addOn != null) {

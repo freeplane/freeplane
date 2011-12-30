@@ -28,6 +28,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.browsemode.BModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -56,7 +57,7 @@ class OnlineDocumentationAction extends AFreeplaneAction {
 				try {
 					if (url.getPath().endsWith(".mm")) {
 						Controller.getCurrentController().selectMode(MModeController.MODENAME);
-						Controller.getCurrentModeController().getMapController().newDocumentationMap(url);
+						((MMapController)Controller.getCurrentModeController().getMapController()).newDocumentationMap(url);
 					}
 					else {
 						Controller.getCurrentController().getViewController().openDocument(url);

@@ -25,7 +25,7 @@ import org.freeplane.features.map.MapModel;
 
 class FMapModel extends MapModel {
 	public FMapModel(final File root) {
-		super(null);
+		super();
 		setRoot(new FNodeModel(root, this));
 		getRootNode().setFolded(false);
 	}

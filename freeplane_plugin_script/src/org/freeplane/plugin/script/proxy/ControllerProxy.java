@@ -183,7 +183,7 @@ class ControllerProxy implements Proxy.Controller {
 
 	public Map newMap() {
 		final MapModel oldMap = Controller.getCurrentController().getMap();
-		final MapModel newMap = Controller.getCurrentModeController().getMapController().newMap(((NodeModel) null));
+		final MapModel newMap = Controller.getCurrentModeController().getMapController().newMap();
 		restartTransaction(oldMap, newMap);
 		return new MapProxy(newMap, scriptContext);
 	}

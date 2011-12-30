@@ -331,7 +331,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	}
 
 	private void createDefaultStyleMap(final MapModel map) {
-	    final MapModel styleMapContainer = new MapModel(null);
+	    final MapModel styleMapContainer = new MapModel();
 		UrlManager.getController().loadDefault(styleMapContainer);
 		moveStyle(styleMapContainer, map, false);
     }
@@ -359,7 +359,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
     }
 	
 	public void copyStyle(final URL source, final MapModel targetMap, boolean undoable) {
-	    final MapModel styleMapContainer = Controller.getCurrentModeController().getMapController().newModel(null);
+	    final MapModel styleMapContainer = new MapModel();
 		final IExtension oldStyleModel = targetMap.getRootNode().removeExtension(MapStyleModel.class);
 		UrlManager.getController().loadImpl(source, styleMapContainer);
 		onCreate(styleMapContainer);

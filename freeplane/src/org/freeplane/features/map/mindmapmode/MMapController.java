@@ -45,7 +45,6 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.map.DocuMapAttribute;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.IMapSelection;
@@ -546,9 +545,17 @@ public class MMapController extends MapController {
 		return newIndex;
 	}
 
+	public MapModel newModel(NodeModel existingNode) {
+		final MMapModel mindMapMapModel = new MMapModel();
+		mindMapMapModel.setRoot(existingNode);
+		fireMapCreated(mindMapMapModel);
+		return mindMapMapModel;
+    }
+	
 	@Override
-	public MapModel newModel(final NodeModel root) {
-		final MMapModel mindMapMapModel = new MMapModel(root);
+	public MapModel newModel() {
+		final MMapModel mindMapMapModel = new MMapModel();
+		mindMapMapModel.createNewRoot();
 		fireMapCreated(mindMapMapModel);
 		return mindMapMapModel;
 	}
@@ -609,6 +616,21 @@ public class MMapController extends MapController {
 		return newNode;
 	}
 
+	public boolean newUntitledMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
+        try {
+        	Controller.getCurrentController().getViewController().setWaitingCursor(true);
+        	final MapModel newModel = new MapModel();
+        	UrlManager.getController().load(url, newModel);
+        	newModel.setURL(null);
+        	fireMapCreated(newModel);
+        	newMapView(newModel);
+        	return true;
+        }
+        finally {
+        	Controller.getCurrentController().getViewController().setWaitingCursor(false);
+        }
+	}
+
 	@Override
     public boolean newMap(URL url) throws FileNotFoundException, XMLParseException, IOException, URISyntaxException {
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
@@ -641,7 +663,7 @@ public class MMapController extends MapController {
 		if(alternativeURL == null)
 			return false;
 		try{
-			final MapModel newModel = newModel(null);
+			final MapModel newModel = new MMapModel();
 			UrlManager.getController().load(alternativeURL, newModel);
 			newModel.setURL(url);
 			newModel.setSaved(alternativeURL.equals(url));
@@ -654,7 +676,25 @@ public class MMapController extends MapController {
 		}
     }
 
-	@Override
+	public boolean newDocumentationMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
+		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+		if (mapViewManager.tryToChangeToMapView(url))
+			return false;
+        try {
+        	Controller.getCurrentController().getViewController().setWaitingCursor(true);
+        	final MapModel newModel = new MMapModel();
+        	newModel.addExtension(DocuMapAttribute.instance);
+        	UrlManager.getController().load(url, newModel);
+        	newModel.setReadOnly(true);
+        	fireMapCreated(newModel);
+        	newMapView(newModel);
+        	return true;
+        }
+        finally {
+        	Controller.getCurrentController().getViewController().setWaitingCursor(false);
+        }
+	}
+	
     public boolean restoreCurrentMap() throws FileNotFoundException, XMLParseException, IOException, URISyntaxException {
 	    final Controller controller = Controller.getCurrentController();
         final MapModel map = controller.getMap();
@@ -674,7 +714,7 @@ public class MMapController extends MapController {
 			return false;
 		Controller.getCurrentController().getViewController().setWaitingCursor(true);
 		try{
-			final MapModel newModel = newModel(null);
+			final MapModel newModel = new MMapModel();
 			UrlManager.getController().load(alternativeURL, newModel);
 			newModel.setURL(url);
 			newModel.setSaved(alternativeURL.equals(url));
@@ -687,6 +727,6 @@ public class MMapController extends MapController {
 			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
 	}
-	
+
 	
 }

@@ -282,14 +282,7 @@ public class UrlManager implements IExtension {
 		}
 		try {
 			final ModeController modeController = Controller.getCurrentModeController();
-			final NodeModel root = modeController.getMapController().getMapReader().createNodeTreeFromXml(map,
-			    urlStreamReader, Mode.FILE);
-			if (root != null) {
-				map.setRoot(root);
-			}
-			else {
-				throw new IOException();
-			}
+			modeController.getMapController().getMapReader().createNodeTreeFromXml(map, urlStreamReader, Mode.FILE);
             return true;
 		}
 		catch (final Exception ex) {

@@ -56,25 +56,22 @@ public class MapModel {
 	private NodeModel root;
 	private URL url;
 
-	public MapModel( NodeModel root) {
+	public MapModel() {
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
-		this.root = root;
+		this.root = null;
 		listeners = new LinkedList<IMapChangeListener>();
 		nodes = new HashMap<String, NodeModel>();
 		final FilterController filterController = FilterController.getCurrentFilterController();
 		if (filterController != null) {
 			filter = filterController.createTransparentFilter();
 		}
-		if (root == null) {
-			root = new NodeModel(TextUtils.getText("new_mindmap"), this);
-			setRoot(root);
-		}
-		else {
-			root.setMap(this);
-		}
 		final ModeController modeController = Controller.getCurrentModeController();
 		iconRegistry = new IconRegistry(modeController.getMapController(), this);
 	}
+
+	public void createNewRoot() {
+	    root = new NodeModel(TextUtils.getText("new_mindmap"), this);
+    }
 
 	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
 		extensionContainer.addExtension(clazz, extension);
@@ -193,7 +190,7 @@ public class MapModel {
 	}
 
 	public boolean isSaved() {
-		return changesPerformedSinceLastSave == 0 || containsExtension(DocuMapAttribute.class);
+		return changesPerformedSinceLastSave == 0;
 	}
 
 	/**
@@ -258,6 +255,7 @@ public class MapModel {
 
 	public void setRoot(final NodeModel root) {
 		this.root = root;
+		root.setMap(this);
 	}
 
 	/**

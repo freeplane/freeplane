@@ -118,6 +118,8 @@ public class MapReader implements IElementDOMHandler {
 
 		public void setMapChild(final NodeModel mapChild) {
 			this.mapChild = mapChild;
+			if(createdMap.getRootNode() == null && mapChild != null)
+				createdMap.setRoot(mapChild);
 		}
 
 		public void substituteNodeID(final String value, final String realId) {

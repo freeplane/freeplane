@@ -593,7 +593,7 @@ public class MapController extends SelectionController {
         	if (AddOnsController.getController().installIfAppropriate(url))
         		return false;
         	Controller.getCurrentController().getViewController().setWaitingCursor(true);
-        	final MapModel newModel = newModel(null);
+        	final MapModel newModel = new MapModel();
         	UrlManager.getController().load(url, newModel);
         	fireMapCreated(newModel);
         	newMapView(newModel);
@@ -604,71 +604,22 @@ public class MapController extends SelectionController {
         }
 	}
 
-	public boolean restoreCurrentMap() throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
-		final Controller controller = Controller.getCurrentController();
-		final MapModel map = controller.getMap();
-		final URL url = map.getURL();
-		if(url == null){
-			UITools.errorMessage(TextUtils.getText("map_not_saved"));
-			return false;
-		}
-		controller.close(true);
-		if(map.containsExtension(DocuMapAttribute.class))
-			return newDocumentationMap(url);
-		else{
-			return newMap(url);
-		}
-	}
-
-	public boolean newUntitledMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
-        try {
-        	Controller.getCurrentController().getViewController().setWaitingCursor(true);
-        	final MapModel newModel = newModel(null);
-        	UrlManager.getController().load(url, newModel);
-        	newModel.setURL(null);
-        	fireMapCreated(newModel);
-        	newMapView(newModel);
-        	return true;
-        }
-        finally {
-        	Controller.getCurrentController().getViewController().setWaitingCursor(false);
-        }
-	}
-
-	public boolean newDocumentationMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
-		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-		if (mapViewManager.tryToChangeToMapView(url))
-			return false;
-        try {
-        	Controller.getCurrentController().getViewController().setWaitingCursor(true);
-        	final MapModel newModel = newModel(null);
-        	newModel.addExtension(DocuMapAttribute.instance);
-        	UrlManager.getController().load(url, newModel);
-        	newModel.setReadOnly(true);
-        	fireMapCreated(newModel);
-        	newMapView(newModel);
-        	return true;
-        }
-        finally {
-        	Controller.getCurrentController().getViewController().setWaitingCursor(false);
-        }
-	}
-	
 	public void newMapView(final MapModel mapModel) {
 		Controller.getCurrentController().getMapViewManager().newMapView(mapModel, Controller.getCurrentModeController());
 		// FIXME: removed to be able to set state in MFileManager
 		//		setSaved(mapModel, true);
 	}
 
-	public MapModel newMap(final NodeModel root) {
-		final MapModel newModel = newModel(root);
+	public MapModel newMap() {
+		final MapModel newModel = newModel();
 		fireMapCreated(newModel);
 		newMapView(newModel);
 		return newModel;
 	}
 
-	public MapModel newModel(final NodeModel root) {
-		final MapModel mindMapMapModel = new MapModel(root);
+	public MapModel newModel() {
+		final MapModel mindMapMapModel = new MapModel();
+		mindMapMapModel.createNewRoot();
 		fireMapCreated(mindMapMapModel);
 		return mindMapMapModel;
 	}

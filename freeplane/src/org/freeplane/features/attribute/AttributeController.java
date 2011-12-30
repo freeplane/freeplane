@@ -73,14 +73,6 @@ public class AttributeController implements IExtension {
 		final MapReader mapReader = mapController.getMapReader();
 		final AttributeBuilder attributeBuilder = new AttributeBuilder(this, mapReader);
 		attributeBuilder.registerBy(readManager, writeManager);
-		mapController.addMapLifeCycleListener(new IMapLifeCycleListener() {
-			public void onCreate(final MapModel map) {
-				AttributeRegistry.createRegistry(map);
-			}
-
-			public void onRemove(final MapModel map) {
-			}
-		});
 		registerTooltipProvider();
 		registerStateIconProvider();
 	}
