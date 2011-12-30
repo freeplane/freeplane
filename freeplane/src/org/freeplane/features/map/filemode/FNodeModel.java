@@ -36,7 +36,8 @@ class FNodeModel extends NodeModel {
 	public FNodeModel(final File file, final MapModel map) {
 		super(map);
 		this.file = file;
-		setFolded(!file.isFile());
+		final String[] children = file.list();
+		setFolded(children != null && children.length > 0);
 	}
 
 	@Override
