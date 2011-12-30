@@ -21,11 +21,14 @@ package org.freeplane.features.map.filemode;
 
 import java.io.File;
 
+import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.map.MapModel;
 
 class FMapModel extends MapModel {
 	public FMapModel(final File root) {
 		super();
+		// create empty attribute registry
+		AttributeRegistry.getRegistry(this);
 		setRoot(new FNodeModel(root, this));
 		getRootNode().setFolded(false);
 	}
