@@ -548,6 +548,7 @@ public class MMapController extends MapController {
 	public MapModel newModel(NodeModel existingNode) {
 		final MMapModel mindMapMapModel = new MMapModel();
 		mindMapMapModel.setRoot(existingNode);
+		mindMapMapModel.registryNodeRecursive(existingNode);
 		fireMapCreated(mindMapMapModel);
 		return mindMapMapModel;
     }
