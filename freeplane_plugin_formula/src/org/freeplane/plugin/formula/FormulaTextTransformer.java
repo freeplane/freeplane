@@ -40,8 +40,8 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 		return result.toString();
 	}
 
-	public EditNodeBase createEditor(final NodeModel node, final EditedComponent editedComponent,
-	                                 final EditNodeBase.IEditControl editControl, String text, final boolean editLong) {
+	public EditNodeBase createEditor(final NodeModel node, final EditNodeBase.IEditControl editControl,
+	                                 String text, final boolean editLong) {
 		final KeyEvent firstKeyEvent = MTextController.getController().getEventQueue().getFirstEvent(); 
 		if(firstKeyEvent != null){
 			if (firstKeyEvent.getKeyChar() == '='){

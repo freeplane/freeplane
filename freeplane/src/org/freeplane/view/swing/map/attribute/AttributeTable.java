@@ -74,9 +74,9 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
+import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
-import org.freeplane.features.text.mindmapmode.IEditBaseCreator.EditedComponent;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.map.MapView;
@@ -364,6 +364,14 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 				public void cancel() {
 					stopCellEditing();
 				}
+
+				public boolean canSplit() {
+	                return false;
+                }
+
+				public EditedComponent getEditType() {
+	                return EditedComponent.TEXT;
+                }
 			};
         }
 
@@ -415,7 +423,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			final IAttributeTableModel model = (IAttributeTableModel) getModel();
 			final String text = getValueAt(row, col).toString();
 			final DialogTableCellEditor dialogTableCellEditor = new DialogTableCellEditor();
-			EditNodeBase base = textController.getEditNodeBase(model.getNode(), text, EditedComponent.TEXT, dialogTableCellEditor.getEditControl(), false);
+			EditNodeBase base = textController.getEditNodeBase(model.getNode(), text, dialogTableCellEditor.getEditControl(), false);
 			if(base != null){
 				dialogTableCellEditor.setEditBase(base);
 				return dialogTableCellEditor;

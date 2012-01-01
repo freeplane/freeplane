@@ -78,7 +78,8 @@ import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.IContentTransformer;
 import org.freeplane.features.text.ShortenedTextModel;
 import org.freeplane.features.text.TextController;
-import org.freeplane.features.text.mindmapmode.IEditBaseCreator.EditedComponent;
+import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
+import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 
@@ -375,8 +376,15 @@ public class MTextController extends TextController {
 				Controller.getCurrentModeController().setBlocked(false);
 				mCurrentEditDialog = null;
 			}
+			public boolean canSplit() {
+                return false;
+            }
+
+			public EditedComponent getEditType() {
+                return EditedComponent.DETAIL;
+            }
 		};
-		mCurrentEditDialog = createEditor(nodeModel, IEditBaseCreator.EditedComponent.DETAIL, editControl, text, false, editLong, true);
+		mCurrentEditDialog = createEditor(nodeModel, editControl, text, false, editLong, true);
 		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities.getWindowAncestor(controller.getViewController().getMapView());
 		mCurrentEditDialog.show(frame);
     }
@@ -601,7 +609,7 @@ public class MTextController extends TextController {
 			dispatcher.install();
 			return;
 		};
-		final EditNodeBase.IEditControl editControl = new EditNodeBase.IEditControl() {
+		final IEditControl editControl = new IEditControl() {
 			public void cancel() {
 				if (isNewNode && nodeModel.getMap().equals(controller.getMap())) {
 				    if(nodeModel.getParent() != null){
@@ -641,31 +649,37 @@ public class MTextController extends TextController {
 				viewController.obtainFocusForSelected();
 				stop();
 			}
+			public boolean canSplit() {
+                return true;
+            }
+
+			public EditedComponent getEditType() {
+                return EditedComponent.TEXT;
+            }
 		};
-		mCurrentEditDialog = createEditor(nodeModel, IEditBaseCreator.EditedComponent.TEXT, editControl, nodeModel.getText(), isNewNode, editLong, true);
+		mCurrentEditDialog = createEditor(nodeModel, editControl, nodeModel.getText(), isNewNode, editLong, true);
 		final JFrame frame = controller.getViewController().getJFrame();
 		mCurrentEditDialog.show(frame);
 	}
 
-	private EditNodeBase createEditor(final NodeModel nodeModel, final EditedComponent editedComponent,
-                                      final EditNodeBase.IEditControl editControl, String text, final boolean isNewNode,
-                                      final boolean editLong, boolean internal) {
+	private EditNodeBase createEditor(final NodeModel nodeModel, final IEditControl editControl,
+                                      String text, final boolean isNewNode, final boolean editLong,
+                                      boolean internal) {
 	    Controller.getCurrentModeController().setBlocked(true);
-		EditNodeBase base = getEditNodeBase(nodeModel, text, editedComponent, editControl, editLong);
+		EditNodeBase base = getEditNodeBase(nodeModel, text, editControl, editLong);
 		if(base != null || ! internal){
 			return base;
 		}
 		final IEditBaseCreator textFieldCreator = (IEditBaseCreator) Controller.getCurrentController().getMapViewManager();
-		return textFieldCreator.createEditor(nodeModel, editedComponent, editControl, text, editLong);
+		return textFieldCreator.createEditor(nodeModel, editControl, text, editLong);
     }
 
 
-	public EditNodeBase getEditNodeBase(final NodeModel nodeModel, final String text, EditedComponent editedComponent, final EditNodeBase.IEditControl editControl,
-                                final boolean editLong) {
+	public EditNodeBase getEditNodeBase(final NodeModel nodeModel, final String text, final IEditControl editControl, final boolean editLong) {
 	    final List<IContentTransformer> textTransformers = getTextTransformers();
 		for(IContentTransformer t : textTransformers){
 			if(t instanceof IEditBaseCreator){
-				final EditNodeBase base = ((IEditBaseCreator) t).createEditor(nodeModel, editedComponent, editControl, text, editLong);
+				final EditNodeBase base = ((IEditBaseCreator) t).createEditor(nodeModel, editControl, text, editLong);
 				if(base != null){
 					return base;
 				}

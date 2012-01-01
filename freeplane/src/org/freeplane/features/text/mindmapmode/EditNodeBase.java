@@ -51,6 +51,7 @@ import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
  * @author foltin
  */
 abstract public class EditNodeBase {
+	public static enum EditedComponent{TEXT, DETAIL, NOTE}
 	abstract static class EditDialog{
 		 private final JDialog dialog; 
 		protected JDialog getDialog() {
@@ -234,6 +235,10 @@ abstract public class EditNodeBase {
 		void ok(String newText);
 
 		void split(String newText, int position);
+		
+		boolean canSplit();
+		
+		EditedComponent getEditType();
 	}
 
 	protected static final int BUTTON_CANCEL = 1;
