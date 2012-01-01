@@ -32,6 +32,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -59,6 +60,9 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.format.ScannerController;
+import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
@@ -181,8 +185,81 @@ public class MTextController extends TextController {
 		return strings;
 	}
 
+	private String addContent(String joinedContent, final boolean isHtml, String nodeContent, final boolean isHtmlNode) {
+		if (isHtml) {
+			final String joinedContentParts[] = JoinNodesAction.BODY_END.split(joinedContent, -2);
+			joinedContent = joinedContentParts[0];
+			if (!isHtmlNode) {
+				final String end[] = JoinNodesAction.BODY_START.split(joinedContent, 2);
+				if (end.length == 1) {
+					end[0] = "<html>";
+				}
+				nodeContent = end[0] + "<body><p>" + nodeContent + "</p>";
+			}
+		}
+		if (isHtmlNode & !joinedContent.equals("")) {
+			final String nodeContentParts[] = JoinNodesAction.BODY_START.split(nodeContent, 2);
+			// if no <body> tag is found
+			if (nodeContentParts.length == 1) {
+				nodeContent = nodeContent.substring(6);
+				nodeContentParts[0] = "<html>";
+			}
+			else {
+				nodeContent = nodeContentParts[1];
+			}
+			if (!isHtml) {
+				joinedContent = nodeContentParts[0] + "<body><p>" + joinedContent + "</p>";
+			}
+		}
+		if (joinedContent.equals("")) {
+			return nodeContent;
+		}
+		if (isHtml || isHtmlNode) {
+			joinedContent += '\n';
+		}
+		else {
+			joinedContent += ' ';
+		}
+		joinedContent += nodeContent;
+		return joinedContent;
+	}
+
 	public void joinNodes(final List<NodeModel> selectedNodes) {
-		((JoinNodesAction) Controller.getCurrentModeController().getAction("JoinNodesAction")).joinNodes(selectedNodes);
+		if(selectedNodes.isEmpty())
+			return;
+		final NodeModel selectedNode = selectedNodes.get(0);
+		final NodeModel parentNode = selectedNode.getParentNode();
+		for (final NodeModel node: selectedNodes) {
+			if(node.getParentNode() != parentNode){
+				UITools.errorMessage(TextUtils.getText("cannot_add_parent_diff_parents"));
+				return;
+			}
+		}
+		String joinedContent = "";
+		final Controller controller = Controller.getCurrentController();
+		boolean isHtml = false;
+		final LinkedHashSet<MindIcon> icons = new LinkedHashSet<MindIcon>();
+		for (final NodeModel node: selectedNodes) {
+			final String nodeContent = node.getText();
+			icons.addAll(node.getIcons());
+			final boolean isHtmlNode = HtmlUtils.isHtmlNode(nodeContent);
+			joinedContent = addContent(joinedContent, isHtml, nodeContent, isHtmlNode);
+			if (node != selectedNode) {
+				final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+				for(final NodeModel child: node.getChildren().toArray(new NodeModel[]{})){
+					mapController.moveNode(child, selectedNode, selectedNode.getChildCount());
+				}
+				mapController.deleteNode(node);
+			}
+			isHtml = isHtml || isHtmlNode;
+		}
+		controller.getSelection().selectAsTheOnlyOneSelected(selectedNode);
+		setNodeText(selectedNode, joinedContent);
+		final MIconController iconController = (MIconController) IconController.getController();
+		iconController.removeAllIcons(selectedNode);
+		for (final MindIcon icon : icons) {
+			iconController.addIcon(selectedNode, icon);
+		}
 	}
 
 	public void setImageByFileChooser() {
