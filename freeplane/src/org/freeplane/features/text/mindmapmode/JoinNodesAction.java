@@ -98,11 +98,18 @@ class JoinNodesAction extends AFreeplaneAction {
 	public void joinNodes(final List<NodeModel> selectedNodes) {
 		if(selectedNodes.isEmpty())
 			return;
+		final NodeModel selectedNode = selectedNodes.get(0);
+		final NodeModel parentNode = selectedNode.getParentNode();
+		for (final NodeModel node: selectedNodes) {
+			if(node.getParentNode() != parentNode){
+				UITools.errorMessage(TextUtils.getText("cannot_add_parent_diff_parents"));
+				return;
+			}
+		}
 		String joinedContent = "";
 		final Controller controller = Controller.getCurrentController();
 		boolean isHtml = false;
 		final LinkedHashSet<MindIcon> icons = new LinkedHashSet<MindIcon>();
-		final NodeModel selectedNode = selectedNodes.get(0);
 		for (final NodeModel node: selectedNodes) {
 			final String nodeContent = node.getText();
 			icons.addAll(node.getIcons());
