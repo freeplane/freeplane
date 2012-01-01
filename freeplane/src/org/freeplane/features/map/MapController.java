@@ -621,8 +621,6 @@ public class MapController extends SelectionController {
 
 	public void newMapView(final MapModel mapModel) {
 		Controller.getCurrentController().getMapViewManager().newMapView(mapModel, Controller.getCurrentModeController());
-		// FIXME: removed to be able to set state in MFileManager
-		//		setSaved(mapModel, true);
 	}
 
 	public MapModel newMap(final NodeModel root) {

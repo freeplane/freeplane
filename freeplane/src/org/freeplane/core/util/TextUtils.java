@@ -29,7 +29,7 @@ public class TextUtils {
 			processedArguments = new String[messageArguments.length];
 			int i = 0;
 			for(Object s : messageArguments){
-				processedArguments[i++] = HtmlUtils.toXMLEscapedText(s.toString());
+				processedArguments[i++] = HtmlUtils.toHTMLEscapedText(s.toString());
 			}
 		}
 		else{

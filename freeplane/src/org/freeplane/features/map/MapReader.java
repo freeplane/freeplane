@@ -74,7 +74,7 @@ public class MapReader implements IElementDOMHandler {
 			start(map);
 			final NodeModel node = create(pReader);
 			if (node == null)
-				throw new RuntimeException("corrupt map");
+				throw new RuntimeException("corrupted map, no root node found");
 			finish(node);
 			return node;
 		}

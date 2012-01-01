@@ -5,6 +5,8 @@ public class StyleString implements IStyle {
 
 	public StyleString(String string) {
 	    super();
+	    if(string == null)
+	    	throw new IllegalArgumentException("null");
 	    this.string = string;
     }
 
