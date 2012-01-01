@@ -114,7 +114,7 @@ class ConvexHull {
 
 	Vector<Point> doGraham(final Vector<Point> p) {
 		int i;
-		int min, M;
+		int min, m;
 		Point t;
 		min = 0;
 		for (i = 1; i < p.size(); ++i) {
@@ -133,18 +133,18 @@ class ConvexHull {
 		final thetaComparator comp = new thetaComparator((Point) p.get(0));
 		Collections.sort(p, comp);
 		p.add(0, new Point((Point) p.get(p.size() - 1)));
-		M = 3;
+		m = 3;
 		for (i = 4; i < p.size(); ++i) {
-			while (ccw((Point) p.get(M), (Point) p.get(M - 1), (Point) p.get(i)) >= 0) {
-				M--;
+			while (m > 0 && ccw((Point) p.get(m), (Point) p.get(m - 1), (Point) p.get(i)) >= 0) {
+				m--;
 			}
-			M++;
-			t = (Point) p.get(M);
-			p.set(M, p.get(i));
+			m++;
+			t = (Point) p.get(m);
+			p.set(m, p.get(i));
 			p.set(i, t);
 		}
 		p.remove(0);
-		p.setSize(M);
+		p.setSize(m);
 		return p;
 	}
 }
