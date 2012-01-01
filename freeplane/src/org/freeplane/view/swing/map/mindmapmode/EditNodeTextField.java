@@ -307,6 +307,17 @@ public class EditNodeTextField extends EditNodeBase {
 					nodeView.requestFocusInWindow();
 					e.consume();
 					break;
+				case KeyEvent.VK_S:
+					if(e.isAltDown() && getEditControl().canSplit()){
+						eventSource = CANCEL;
+						final String output = getNewText();
+						final int caretPosition = textfield.getCaretPosition();
+						hideMe();
+						getEditControl().split(output, caretPosition);
+						nodeView.requestFocusInWindow();
+						e.consume();
+					}
+					break;
 				case KeyEvent.VK_ENTER: {
 					final boolean enterConfirms = ResourceController.getResourceController().getBooleanProperty("el__enter_confirms_by_default");
 					if (enterConfirms == e.isAltDown() || e.isShiftDown()) {
@@ -317,13 +328,13 @@ public class EditNodeTextField extends EditNodeBase {
 						SwingUtilities.processKeyBindings(keyEvent);
 						break;
 					}
+					final String output = getNewText();
+					e.consume();
+					eventSource = CANCEL;
+					hideMe();
+					submitText(output);
+					nodeView.requestFocusInWindow();
 				}
-				final String output = getNewText();
-				e.consume();
-				eventSource = CANCEL;
-				hideMe();
-				submitText(output);
-				nodeView.requestFocusInWindow();
 				break;
 				case KeyEvent.VK_TAB:
 					textfield.replaceSelection("    ");
