@@ -181,8 +181,8 @@ public class MTextController extends TextController {
 		return strings;
 	}
 
-	public void joinNodes(final NodeModel selectedNode, final List<NodeModel> selectedNodes) {
-		((JoinNodesAction) Controller.getCurrentModeController().getAction("JoinNodesAction")).joinNodes(selectedNode, selectedNodes);
+	public void joinNodes(final List<NodeModel> selectedNodes) {
+		((JoinNodesAction) Controller.getCurrentModeController().getAction("JoinNodesAction")).joinNodes(selectedNodes);
 	}
 
 	public void setImageByFileChooser() {

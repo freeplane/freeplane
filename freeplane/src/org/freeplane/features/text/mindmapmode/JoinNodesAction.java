@@ -52,9 +52,8 @@ class JoinNodesAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel selectedNode = Controller.getCurrentController().getSelection().getSelected();
 		final List<NodeModel> selectedNodes = Controller.getCurrentController().getSelection().getSortedSelection(true);
-		joinNodes(selectedNode, selectedNodes);
+		joinNodes(selectedNodes);
 	}
 
 	private String addContent(String joinedContent, final boolean isHtml, String nodeContent, final boolean isHtmlNode) {
@@ -96,26 +95,25 @@ class JoinNodesAction extends AFreeplaneAction {
 		return joinedContent;
 	}
 
-	public void joinNodes(final NodeModel selectedNode, final List<NodeModel> selectedNodes) {
+	public void joinNodes(final List<NodeModel> selectedNodes) {
+		if(selectedNodes.isEmpty())
+			return;
 		String joinedContent = "";
 		final Controller controller = Controller.getCurrentController();
-		for (final NodeModel node : selectedNodes) {
-			if (Controller.getCurrentModeController().getMapController().hasChildren(node)) {
-				UITools.informationMessage(controller.getViewController().getFrame(), TextUtils
-				    .getText("cannot_join_nodes_with_children"), "Freeplane", JOptionPane.WARNING_MESSAGE);
-				return;
-			}
-		}
 		boolean isHtml = false;
 		final LinkedHashSet<MindIcon> icons = new LinkedHashSet<MindIcon>();
-		for (final Iterator<NodeModel> it = selectedNodes.iterator(); it.hasNext();) {
-			final NodeModel node = (NodeModel) it.next();
+		final NodeModel selectedNode = selectedNodes.get(0);
+		for (final NodeModel node: selectedNodes) {
 			final String nodeContent = node.getText();
 			icons.addAll(node.getIcons());
 			final boolean isHtmlNode = HtmlUtils.isHtmlNode(nodeContent);
 			joinedContent = addContent(joinedContent, isHtml, nodeContent, isHtmlNode);
 			if (node != selectedNode) {
-				((MMapController) Controller.getCurrentModeController().getMapController()).deleteNode(node);
+				final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+				for(final NodeModel child: node.getChildren().toArray(new NodeModel[]{})){
+					mapController.moveNode(child, selectedNode, selectedNode.getChildCount());
+				}
+				mapController.deleteNode(node);
 			}
 			isHtml = isHtml || isHtmlNode;
 		}
