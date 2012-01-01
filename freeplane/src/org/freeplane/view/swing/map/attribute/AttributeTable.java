@@ -57,6 +57,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import org.freeplane.core.ui.components.TypedListCellRenderer;
@@ -82,12 +83,38 @@ import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
+
 /**
  * @author Dimitry Polivaev
  */
 class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	private static final String EDITING_STOPPED = AttributeTable.class.getName() + ".editingStopped";
 	private static int CLICK_COUNT_TO_START = 2;
+
+	private static final class TableHeaderRendererImpl implements TableCellRenderer {
+		final private TableCellRenderer delegate;
+		TableHeaderRendererImpl(TableCellRenderer renderer){
+			this.delegate = renderer;
+		}
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+				int row, int column) {
+			final Component c = delegate.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+			final int height = (int) (((AttributeTable)table).getZoom() * 6);
+			final Dimension preferredSize = new Dimension(1, height);
+			c.setPreferredSize(preferredSize);
+			return c;
+		}
+	}
+	@SuppressWarnings("serial")
+	private static final class TableHeader extends JTableHeader {
+		private TableHeader(TableColumnModel cm) {
+			super(cm);
+		}
+		@Override
+		protected TableCellRenderer createDefaultRenderer() {
+			return new TableHeaderRendererImpl(super.createDefaultRenderer());
+		}
+	}
 
 	static private class HeaderMouseListener extends MouseAdapter {
 		@Override
@@ -213,20 +240,6 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		addFocusListener(AttributeTable.focusListener);
 		addMouseListener(AttributeTable.cursorUpdater);
 		addMouseMotionListener(AttributeTable.cursorUpdater);
-		final JTableHeader tableHeader = getTableHeader();
-		final TableCellRenderer defaultRenderer = tableHeader.getDefaultRenderer();
-		tableHeader.setDefaultRenderer(new TableCellRenderer() {
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-			                                               int row, int column) {
-				final Component c = defaultRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-				final int height = (int) (((AttributeTable)table).getZoom() * 6);
-				final Dimension preferredSize = new Dimension(1, height);
-				c.setPreferredSize(preferredSize);
-				return c;
-				
-			}
-		});
-		setTableHeader(tableHeader);
 		if (attributeView.getMapView().getModeController().canEdit()) {
 			tableHeader.addMouseListener(AttributeTable.componentListener);
 		}
@@ -240,14 +253,13 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		getTableHeader().setReorderingAllowed(false);
 		setRowSelectionAllowed(false);
 		putClientProperty("JTable.autoStartsEdit", Boolean.FALSE);
-		addHierarchyListener(new HierarchyListener() {
-			public void hierarchyChanged(HierarchyEvent e) {
-				if(isDisplayable()){
-					updateRowHeights();
-					removeHierarchyListener(this);
-				}
-			}
-		});
+		updateRowHeights();
+	}
+
+	@SuppressWarnings("serial")
+	@Override
+	protected JTableHeader createDefaultTableHeader() {
+		return new TableHeader(columnModel);
 	}
 
 	private void changeSelectedRowHeight(final int rowIndex) {
@@ -752,6 +764,16 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	}
 
 	private void updateRowHeights() {
+		if(! isDisplayable()){
+			addHierarchyListener(new HierarchyListener() {
+				public void hierarchyChanged(HierarchyEvent e) {
+					if(isDisplayable()){
+						updateRowHeights();
+					}
+				}
+			});
+			return;
+		}
 		final int rowCount = getRowCount();
 		if (rowCount == 0) {
 			return;
