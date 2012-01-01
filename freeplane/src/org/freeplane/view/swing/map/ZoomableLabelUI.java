@@ -13,10 +13,14 @@ import java.beans.PropertyChangeEvent;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.plaf.basic.BasicLabelUI;
 import javax.swing.text.View;
+
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.TextUtils;
 
 /*
  *  Freeplane - mind map editor
@@ -133,7 +137,7 @@ public class ZoomableLabelUI extends BasicLabelUI {
 	public void paint(final Graphics g, final JComponent label) {
 		final ZoomableLabel mainView = (ZoomableLabel) label;
 		if (!mainView.useFractionalMetrics()) {
-			super.paint(g, label);
+			superPaintSafe(g, mainView);
 			return;
 		}
 		final Graphics2D g2 = (Graphics2D) g;
@@ -151,7 +155,7 @@ public class ZoomableLabelUI extends BasicLabelUI {
 			if(htmlViewSet){
 				GlyphPainterMetricResetter.resetPainter();
 			}
-			super.paint(g, label);
+			superPaintSafe(g, mainView);
 		}
 		finally {
 			isPainting = false;
@@ -163,6 +167,19 @@ public class ZoomableLabelUI extends BasicLabelUI {
 		if (oldRenderingHintFM != newRenderingHintFM) {
 			g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, oldRenderingHintFM != null ? oldRenderingHintFM
 			        : RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT);
+		}
+	}
+
+	// Workaround for http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7126361
+	private void superPaintSafe(final Graphics g, final JLabel label) {
+		try {
+			super.paint(g, label);
+		} catch (ClassCastException e) {
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					label.setText(TextUtils.format("html_problem", label.getText()));
+				}
+			});
 		}
 	}
 

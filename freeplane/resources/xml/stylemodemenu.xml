@@ -3,7 +3,6 @@
 		<menu_submenu name="file" name_ref="file">	
 			<menu_action action="styledialog.ok"/>
 			<menu_action action="styledialog.cancel"/>
-			<menu_action accelerator="control Q" action="QuitAction" menu_key="MB_QuitAction"/>
 		</menu_submenu>
 		<menu_submenu name="edit" name_ref="edit">
 			<menu_submenu name="menu_group" name_ref="menu_group">

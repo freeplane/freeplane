@@ -431,7 +431,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		super();
 		this.model = model;
 		this.modeController = modeController;
-		final String name = getModel().getTitle();
+		final String name = model.getTitle();
 		setName(name);
 		if (MapView.standardSelectColor == null) {
 			final String stdcolor = ResourceController.getResourceController().getProperty(
