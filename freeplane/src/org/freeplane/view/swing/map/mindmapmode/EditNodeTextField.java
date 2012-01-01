@@ -295,7 +295,7 @@ public class EditNodeTextField extends EditNodeBase {
         }
 
 		public void keyPressed(final KeyEvent e) {
-			if (e.isControlDown() || e.isMetaDown() || eventSource == CANCEL) {
+			if (e.isControlDown() || e.isMetaDown() || eventSource == CANCEL||textfield==null) {
 				return;
 			}
 			switch (e.getKeyCode()) {
