@@ -620,7 +620,7 @@ public class MMapController extends MapController {
 	public boolean newUntitledMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
         try {
         	Controller.getCurrentController().getViewController().setWaitingCursor(true);
-        	final MapModel newModel = new MapModel();
+        	final MapModel newModel = new MMapModel();
         	UrlManager.getController().load(url, newModel);
         	newModel.setURL(null);
         	fireMapCreated(newModel);
