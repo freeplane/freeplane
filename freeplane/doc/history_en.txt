@@ -10,6 +10,9 @@ Files ending on addon.mm are recognized as add-on packages
 Icon support for add-ons
 Action "Highlight all matching nodes"
 Fixes for date and number input parsing
+Node can be split from the in-line editor pressing alt+S .
+Nodes containing child nodes can be joined, their child nodes are moved as well.
+New node property "always unfolded node"
  
 ===============================
 1.2.11 beta
