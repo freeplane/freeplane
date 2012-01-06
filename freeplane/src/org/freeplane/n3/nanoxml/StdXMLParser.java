@@ -124,7 +124,7 @@ public class StdXMLParser implements IXMLParser {
 			throw e;
 		}
 		catch (final Exception e) {
-			throw new XMLException(e);
+			throw new RuntimeException(e);
 		}
 	}
 

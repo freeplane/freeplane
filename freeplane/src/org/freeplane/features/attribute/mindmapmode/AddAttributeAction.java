@@ -86,7 +86,7 @@ public class AddAttributeAction extends AFreeplaneAction {
 			final String value = valueSelectedItem != null ? valueSelectedItem.toString() : "";
 			//Add attributes to nodes
 			for (final NodeModel node : nodes) {
-				final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
+				final NodeAttributeTableModel attributes = attrContr.createAttributeTableModel(node);
 				attrContr.performInsertRow(attributes, attributes.getRowCount(), name, value);
 			}
 		}
