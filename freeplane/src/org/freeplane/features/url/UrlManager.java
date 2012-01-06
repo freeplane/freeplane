@@ -69,6 +69,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
@@ -287,13 +288,21 @@ public class UrlManager implements IExtension {
 			else {
 				throw new IOException();
 			}
+			return;
 		}
-		catch (final Exception ex) {
+		catch (final XMLException ex) {
+			LogUtils.warn(ex);
+		}
+		catch (final IOException ex) {
+			LogUtils.warn(ex);
+		}
+		catch (final RuntimeException ex) {
 			LogUtils.severe(ex);
 		}
 		finally {
 			FileUtils.silentlyClose(urlStreamReader);
 		}
+		UITools.errorMessage(TextUtils.format("url_open_error", url.toString()));
     }
 
 	public void loadURL(URI uri) {
