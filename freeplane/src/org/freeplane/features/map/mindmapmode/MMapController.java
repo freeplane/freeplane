@@ -546,9 +546,8 @@ public class MMapController extends MapController {
 	}
 
 	public MapModel newModel(NodeModel existingNode) {
-	    // keep compatibility to prior behavior
-	    if (existingNode == null)
-	        return newModel();
+		if(existingNode == null)
+			throw new NullPointerException("null node not allowed.");
 		final MMapModel mindMapMapModel = new MMapModel();
 		mindMapMapModel.setRoot(existingNode);
 		mindMapMapModel.registryNodeRecursive(existingNode);
