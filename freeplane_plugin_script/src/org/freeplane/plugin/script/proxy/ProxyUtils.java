@@ -4,6 +4,7 @@ import groovy.lang.Closure;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
@@ -14,6 +15,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.freeplane.features.filter.condition.ICondition;
+import org.freeplane.features.format.FormattedDate;
+import org.freeplane.features.format.FormattedNumber;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.ScriptContext;
@@ -195,5 +198,28 @@ public class ProxyUtils {
 	            return collection.size();
             }
 		};		
+    }
+
+	/** used for node core texts and for attribute values. Note that it would lead to an error on reopening of a map
+	 * if we would allow to assign GStrings here. So all unknown stuff is cast to String. */
+    static Object transformObject(final Object object) {
+    	if (object instanceof IFormattedObject)
+    		return object;
+    	else if (object instanceof Number)
+            return new FormattedNumber((Number) object);
+    	else if (object instanceof Date)
+            return createDefaultFormattedDate((Date) object);
+    	else if (object instanceof Calendar)
+            return createDefaultFormattedDate(((Calendar) object).getTime());
+    	else
+            return Convertible.toString(object);
+    }
+
+    static FormattedDate createDefaultFormattedDate(final Date date) {
+        return FormattedDate.createDefaultFormattedDate(date.getTime(), IFormattedObject.TYPE_DATE);
+    }
+
+    static FormattedDate createDefaultFormattedDateTime(final Date date) {
+        return FormattedDate.createDefaultFormattedDate(date.getTime(), IFormattedObject.TYPE_DATETIME);
     }
 }

@@ -5,7 +5,6 @@ package org.freeplane.plugin.script.proxy;
 
 import groovy.lang.Closure;
 
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -20,8 +19,6 @@ import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.features.encrypt.Base64Coding;
 import org.freeplane.features.filter.condition.ICondition;
-import org.freeplane.features.format.FormattedDate;
-import org.freeplane.features.format.FormattedNumber;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
@@ -452,23 +449,14 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	
 	// Node: R/W
 	public void setObject(final Object object) {
-		final MTextController textController = (MTextController) TextController.getController();
-		if (object instanceof IFormattedObject)
-			textController.setNodeObject(getDelegate(), object);
-		else if (object instanceof Number)
-			textController.setNodeObject(getDelegate(), new FormattedNumber((Number) object));
-		else if (object instanceof Date)
-			textController.setNodeObject(getDelegate(), createDefaultFormattedDate((Date) object));
-		else if (object instanceof Calendar)
-			textController.setNodeObject(getDelegate(), createDefaultFormattedDate(((Calendar) object).getTime()));
-		else
-			textController.setNodeText(getDelegate(), Convertible.toString(object));
+	    final MTextController textController = (MTextController) TextController.getController();
+		textController.setNodeObject(getDelegate(), ProxyUtils.transformObject(object));
 	}
-	
-	// Node: R/W
+
+    // Node: R/W
 	public void setDateTime(final Date date) {
 		final MTextController textController = (MTextController) TextController.getController();
-		textController.setNodeObject(getDelegate(), createDefaultFormattedDateTime(date));
+		textController.setNodeObject(getDelegate(), ProxyUtils.createDefaultFormattedDateTime(date));
 	}
 
 	// Node: R/W
@@ -484,14 +472,6 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	
 	public void setLeft(final boolean isLeft) {
 		getDelegate().setLeft(isLeft);
-	}
-	
-	private FormattedDate createDefaultFormattedDate(final Date date) {
-	    return FormattedDate.createDefaultFormattedDate(date.getTime(), IFormattedObject.TYPE_DATE);
-    }
-	
-	private FormattedDate createDefaultFormattedDateTime(final Date date) {
-		return FormattedDate.createDefaultFormattedDate(date.getTime(), IFormattedObject.TYPE_DATETIME);
 	}
 
 	// NodeRO: R
