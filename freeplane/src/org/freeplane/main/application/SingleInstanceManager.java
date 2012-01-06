@@ -129,8 +129,12 @@ public class SingleInstanceManager {
                                 client.close();
 								starter.loadMapsLater(filesToLoadForClient);
 							}
+							catch (SecurityException e) {
+							    // this happens when the master is currently executing a script
+							    LogUtils.warn("master is currently not accepting new files. Try again later", e);
+							}
 							catch (IOException e) {
-								socketClosed = true;
+							    socketClosed = true;
 							}
 							catch (ClassNotFoundException e) {
 								// this should never happen
