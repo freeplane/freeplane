@@ -26,7 +26,6 @@ import java.util.Formatter;
  * @author Volker Boerchers
  */
 class FormatterPatternFormat extends PatternFormat {
-	private static final long serialVersionUID = 1L;
 	private final Formatter formatter;
 	
 	public FormatterPatternFormat(String pattern, String type) {
