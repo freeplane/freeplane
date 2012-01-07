@@ -29,13 +29,15 @@ import java.util.Vector;
 
 import javax.swing.JComboBox;
 
+import org.freeplane.features.format.PatternFormat;
+
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-public class EditableComboProperty extends PropertyBean implements IPropertyControl {
+public abstract class EditableComboProperty<T> extends PropertyBean implements IPropertyControl {
 	final JComboBox comboBox;
-	private String selected;
+	private T selected;
 
-	public EditableComboProperty(final String name, List<String> values) {
+	public EditableComboProperty(final String name, final List<? extends T> values) {
 		super(name);
 		comboBox = createFormatChooser(values);
 		comboBox.addActionListener(new ActionListener() {
@@ -45,12 +47,14 @@ public class EditableComboProperty extends PropertyBean implements IPropertyCont
 		});
 	}
 
-	private JComboBox createFormatChooser(final List<String> values) {
-    	final JComboBox formatChooser = new JComboBox(new Vector<String>(values));
+    private JComboBox createFormatChooser(final List<? extends T> list) {
+    	final JComboBox formatChooser = new JComboBox(new Vector<T>(list));
     	formatChooser.setEditable(true);
     	formatChooser.addItemListener(new ItemListener() {
     		public void itemStateChanged(final ItemEvent e) {
-    			selected = (String) e.getItem();
+    			final T valueObject = toValueObject(e.getItem());
+    			if (valueObject != null)
+    			    selected = valueObject;
     		}
     	});
     	return formatChooser;
@@ -58,8 +62,12 @@ public class EditableComboProperty extends PropertyBean implements IPropertyCont
 
 	@Override
 	public String getValue() {
-		return selected;
+		return selected == null ? null : selected.toString();
 	}
+
+    public T getSelected() {
+        return selected;
+    }
 
 	public void layout(final DefaultFormBuilder builder) {
 		layout(builder, comboBox);
@@ -71,10 +79,10 @@ public class EditableComboProperty extends PropertyBean implements IPropertyCont
 
 	@Override
 	public void setValue(final String value) {
-		comboBox.setSelectedItem(value);
+		comboBox.setSelectedItem(value == null ? null : toValueObject(value));
 	}
 
-	public void setToolTipText(String text) {
+    public void setToolTipText(String text) {
 	    comboBox.setToolTipText(text);
     }
 
@@ -82,4 +90,6 @@ public class EditableComboProperty extends PropertyBean implements IPropertyCont
     protected Component[] getComponents() {
 	    return comboBox.getComponents();
     }
+
+    abstract public T toValueObject(Object value);
 }

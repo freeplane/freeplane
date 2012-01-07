@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -59,6 +60,8 @@ import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.format.FormatController;
+import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
@@ -77,6 +80,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.IContentTransformer;
@@ -103,7 +107,11 @@ public class MTextController extends TextController {
 	private EditNodeBase mCurrentEditDialog = null;
 	private final Collection<IEditorPaneListener> editorPaneListeners;
 	private final EventBuffer eventQueue;
-
+	// from http://lists.xml.org/archives/xml-dev/200108/msg00891.html
+	// but make scheme mandatory
+	private static final String URI_REGEXP = "([a-zA-Z][0-9a-zA-Z+\\-\\.]+:" //
+			+ "/{0,2}[0-9a-zA-Z;/?:@&=+$\\.\\-_!~*'()%]+)?(#[0-9a-zA-Z;/?:@&=+$\\.\\-_!~*'()%]+)?";
+	private static Pattern uriPattern = Pattern.compile(URI_REGEXP);
 
 	public static MTextController getController() {
 		return (MTextController) TextController.getController();
@@ -336,21 +344,46 @@ public class MTextController extends TextController {
 
 	private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);
 
-	public void setGuessedNodeObject(final NodeModel node, final String newText) {
+    public void setGuessedNodeObject(final NodeModel node, final String newText) {
 		if (HtmlUtils.isHtmlNode(newText))
 			setNodeObject(node, newText);
 		else
-			setNodeObject(node, guessObject(newText));
+			setNodeObject(node, guessObject(newText, NodeStyleModel.getNodeFormat(node)));
 	}
 
-	/** converts strings to date or number if possible. All other data types are left unchanged. */
-	public Object guessObject(final Object text) {
-		if (ResourceController.getResourceController().getBooleanProperty(
-        "parse_data") && text instanceof String)
-			return ScannerController.getController(modeController.getController()).parse((String) text);
-		return text;
+    /** converts strings to date or number if possible. All other data types are left unchanged. */
+    public Object guessObject(final Object text, final String oldFormat) {
+        if (ResourceController.getResourceController().getBooleanProperty("parse_data") && text instanceof String) {
+            if (PatternFormat.getIdentityPatternFormat().getPattern().equals(oldFormat))
+                return text;
+            final Object parseResult = ScannerController.getController().parse((String) text);
+            return oldFormat != null ? FormatController.format(parseResult, oldFormat) : parseResult;
+        }
+        return text;
+    }
+	
+	/** converts strings to date, number or URI if possible. All other data types are left unchanged. */
+	public Object guessObjectOrURI(final Object object, final String oldFormat) {
+		Object guessedObject = guessObject(object, oldFormat);
+		if (guessedObject == object && !(object instanceof URI) && matchUriPattern(object)) {
+			try {
+				return new URI((String) object);
+			}
+			catch (URISyntaxException e) {
+				LogUtils.warn("URI regular expression does not match URI parser for " + object);
+				return object;
+			}
+		}
+		return guessedObject;
 	}
 	
+	private boolean matchUriPattern(Object object) {
+		if (!(object instanceof String))
+			return false;
+		final String text = (String) object;
+		return text.length() > 0 && uriPattern.matcher(text).matches();
+	}
+
 	public void setNodeText(final NodeModel node, final String newText) {
 		setNodeObject(node, newText);
 	}

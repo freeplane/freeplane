@@ -19,26 +19,30 @@
  */
 package org.freeplane.features.format;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.time.FastDateFormat;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.TypeReference;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-/** a thin wrapper around {@link FastDateFormat} and {@link Formatter}.
+/** a thin wrapper around {@link SimpleDateFormat}, {@link DecimalFormat} and {@link Formatter}.
  * <p>
  * Parsing is not supported! */
 public abstract class PatternFormat /*extends Format*/ {
 	private static final String SERIALIZATION_SEPARATOR = ":";
 
 	private static class IdentityPatternFormat extends PatternFormat {
+		private static final String PATTERN = "NO_FORMAT";
+		private static final String NAME = TextUtils.getText(PATTERN);
 
-		public IdentityPatternFormat() {
-			super("", TYPE_ANY);
+        public IdentityPatternFormat() {
+			super(PATTERN, TYPE_IDENTITY);
 		}
 
 		@Override
@@ -50,13 +54,18 @@ public abstract class PatternFormat /*extends Format*/ {
 		public Object formatObject(Object toFormat) {
 			return toFormat;
 		}
+
+	    @Override
+	    public String toString() {
+	        return NAME;
+	    }
 	};
 
 	private static final PatternFormat IDENTITY = new IdentityPatternFormat();
 	static final String STYLE_FORMATTER = "formatter";
 	static final String STYLE_DATE = "date";
 	static final String STYLE_DECIMAL = "decimal";
-	private static final String TYPE_ANY = "any";
+	static final String TYPE_IDENTITY = "identity";
 	private static final String ELEMENT_NAME = "format";
 	private final String type;
 	private final String pattern;
@@ -180,6 +189,10 @@ public abstract class PatternFormat /*extends Format*/ {
 			if (pattern.indexOf('#') != -1 || pattern.indexOf('0') != -1) {
 				return new DecimalPatternFormat(pattern);
 			}
+			// only as a last resort?!
+			if (pattern.equals(IDENTITY.getPattern())) {
+			    return IDENTITY;
+			}
 			LogUtils.warn("not a pattern format: '" + pattern + "'");
 			return null;
 		}
@@ -268,5 +281,10 @@ public abstract class PatternFormat /*extends Format*/ {
 	    else if (!type.equals(other.type))
 		    return false;
 	    return true;
+    }
+
+    @Override
+    public String toString() {
+        return pattern;
     }
 }
