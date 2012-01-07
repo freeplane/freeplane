@@ -44,9 +44,7 @@ import org.freeplane.core.io.UnknownElements;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel.NodeChangeType;
@@ -747,6 +745,18 @@ public class MapController extends SelectionController {
 			}
 		}
 	}
+
+	public Collection<IMapChangeListener> getMapChangeListeners() {
+        return Collections.unmodifiableCollection(mapChangeListeners);
+    }
+
+	public Collection<IMapLifeCycleListener> getMapLifeCycleListeners() {
+        return Collections.unmodifiableCollection(mapLifeCycleListeners);
+    }
+
+	public Collection<INodeChangeListener> getNodeChangeListeners() {
+        return Collections.unmodifiableCollection(nodeChangeListeners);
+    }
 
 	public void select(final NodeModel node) {
 		displayNode(node);
