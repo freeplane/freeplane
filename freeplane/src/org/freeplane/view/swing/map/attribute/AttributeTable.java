@@ -768,6 +768,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 				public void hierarchyChanged(HierarchyEvent e) {
 					if(isDisplayable()){
 						updateRowHeights();
+						removeHierarchyListener(this);
 					}
 				}
 			});
