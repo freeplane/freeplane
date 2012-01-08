@@ -497,7 +497,7 @@ public class MenuBuilder extends UIBuilder {
 			return;
 		}
 		item.setText(TextUtils.removeMnemonic(rawLabel));
-		final int mnemoSignIndex = rawLabel.indexOf("&");
+		final int mnemoSignIndex = rawLabel.indexOf('&');
 		if (mnemoSignIndex >= 0 && mnemoSignIndex + 1 < rawLabel.length()) {
 			final char charAfterMnemoSign = rawLabel.charAt(mnemoSignIndex + 1);
 			if (charAfterMnemoSign != ' ') {
