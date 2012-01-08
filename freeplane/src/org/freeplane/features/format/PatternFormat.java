@@ -36,13 +36,13 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * Parsing is not supported! */
 public abstract class PatternFormat /*extends Format*/ {
 	private static final String SERIALIZATION_SEPARATOR = ":";
+	public static final String IDENTITY_PATTERN = "NO_FORMAT";
 
 	private static class IdentityPatternFormat extends PatternFormat {
-		private static final String PATTERN = "NO_FORMAT";
-		private static final String NAME = TextUtils.getText(PATTERN);
+		private static final String NAME = TextUtils.getText(IDENTITY_PATTERN);
 
         public IdentityPatternFormat() {
-			super(PATTERN, TYPE_IDENTITY);
+			super(IDENTITY_PATTERN, TYPE_IDENTITY);
 		}
 
 		@Override
