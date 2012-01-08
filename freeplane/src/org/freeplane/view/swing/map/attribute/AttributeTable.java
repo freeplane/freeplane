@@ -254,6 +254,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		setRowSelectionAllowed(false);
 		putClientProperty("JTable.autoStartsEdit", Boolean.FALSE);
 		updateRowHeights();
+		updateColumnWidths();
 	}
 
 	@Override
