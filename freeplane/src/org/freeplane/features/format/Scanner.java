@@ -110,7 +110,7 @@ public class Scanner {
 		if (TextUtils.isEmpty(string) || (checkFirstChars && firstChars.indexOf(string.charAt(0)) == -1))
 			return string;
 		if(string.charAt(0) == '\'')
-		    return string.substring(1);
+		    return string;
 		for (Parser parser : parsers) {
 			final Object object = parser.parse(string);
 			if (object != null)

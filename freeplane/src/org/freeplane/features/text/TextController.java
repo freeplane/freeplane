@@ -30,6 +30,7 @@ import java.util.List;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -120,6 +121,11 @@ public class TextController implements IExtension {
 	public Object getTransformedObject(Object object, final NodeModel nodeModel, Object extension) throws TransformationException{
 		if(PatternFormat.IDENTITY_PATTERN.equals(getNodeFormat(nodeModel)))
 			return object;
+		if(object instanceof String && ResourceController.getResourceController().getBooleanProperty("parse_data")){
+			String string = (String) object;
+			if(string.length() > 0 && string.charAt(0) == '\'')
+				return string.substring(1);
+		}
 		for (IContentTransformer textTransformer : getTextTransformers()) {
 			try {
 	            object = textTransformer.transformContent(object, nodeModel, extension);
