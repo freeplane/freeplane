@@ -27,7 +27,7 @@ import org.freeplane.plugin.workspace.WorkspacePreferences;
 public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 	private static final long serialVersionUID = 3680863351623884961L;
 	private Point lastLocation;
-	protected boolean expanded;
+	protected boolean collapsed;
 	protected boolean isMouseOver = false;
 	private JPanel hotspot;
 
@@ -38,11 +38,12 @@ public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 	 * @param ui
 	 */
 	public WorkspaceSplitDivider(BasicSplitPaneUI ui) {
-		super(ui);
-		expanded = Controller.getCurrentController().getResourceController()
-				.getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY);
+		super(ui);		
 		lastLocation = new Point(Controller.getCurrentController().getResourceController()
 				.getIntProperty(WorkspacePreferences.WORKSPACE_WIDTH_PROPERTY_KEY, 200), 0);
+		collapsed = Controller.getCurrentController().getResourceController()
+				.getBooleanProperty(WorkspacePreferences.COLLAPSE_WORKSPACE_PROPERTY_KEY);
+		
 		
 		if(lastLocation == null || lastLocation.x <= 1) {
 			lastLocation = new Point(200,0);						
@@ -64,7 +65,7 @@ public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 			                  Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR) :
 			                  Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));   
 				}
-				if(expanded) {
+				if(!collapsed) {
 					e.getComponent().setCursor((orientation == JSplitPane.HORIZONTAL_SPLIT) ?
 			                  Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR) :
 			                  Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));
@@ -76,7 +77,7 @@ public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 				if(e.getComponent() == getHotSpot()) {
 					getHotSpot().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				}
-				if(!expanded) {
+				if(collapsed) {
 					e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				}
 				repaintLabelArea();
@@ -84,7 +85,7 @@ public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 
 			public void mouseClicked(MouseEvent e) {
 				if(e.getComponent() == getHotSpot()) {
-					if (expanded) {
+					if (!collapsed) {
 							lastLocation = getLocation();
 							splitPane.getLeftComponent().setVisible(false);
 							splitPane.getLeftComponent().setSize(0, 0);
@@ -92,7 +93,7 @@ public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 							finishDraggingTo(0);
 							splitPane.setEnabled(false);
 							getHotSpot().setEnabled(true);
-							expanded = false;
+							collapsed = true;
 					}
 					else {
 						splitPane.getLeftComponent().setVisible(true);
@@ -100,25 +101,28 @@ public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 						dragDividerTo(lastLocation.x);
 						finishDraggingTo(lastLocation.x);
 						splitPane.setEnabled(true);						
-						expanded = true;
+						collapsed = false;
 					}
 				} 
 				else {
-					if (!expanded) {
+					if (collapsed) {
 						splitPane.getLeftComponent().setVisible(true);
 						splitPane.getLeftComponent().setSize(lastLocation.x, 0);
 						dragDividerTo(lastLocation.x);
 						finishDraggingTo(lastLocation.x);
 						splitPane.setEnabled(true);
-						expanded = true;
+						collapsed = false;
 					}
 				}
+				Controller.getCurrentController().getResourceController().setProperty(WorkspacePreferences.COLLAPSE_WORKSPACE_PROPERTY_KEY, collapsed);
 			}
 		};
 		getHotSpot().addMouseListener(listener);
 		addMouseListener(listener);
 		
 		add(getHotSpot());
+		dragDividerTo(lastLocation.x);
+		finishDraggingTo(lastLocation.x);
 	}
 
 	/***********************************************************************************
@@ -133,12 +137,11 @@ public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 		g.setColor(getBackground());
 		g.fillRect(0, 0, getWidth(), getHeight());
 		if (getLocation().x <= 1) {
-			expanded = false;
+			collapsed = true;
 			splitPane.setEnabled(false);
-			
 		}
 		else {
-			expanded = true;
+			collapsed = false;
 			splitPane.setEnabled(true);
 			//getHotSpot().setBounds(0, 0, getDividerSize(), 24);
 		}
@@ -151,7 +154,7 @@ public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 				private static final long serialVersionUID = -5321517835206976034L;
 
 				public void paint(Graphics g) {
-					if (expanded) {
+					if (!collapsed) {
 						drawCollapseLabel(g);
 					}
 					else {
