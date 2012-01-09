@@ -20,6 +20,8 @@
 package org.freeplane.features.map.mindmapmode;
 
 import java.awt.EventQueue;
+import java.io.File;
+import java.net.URL;
 import java.util.Timer;
 
 import org.freeplane.core.resources.ResourceController;
@@ -28,7 +30,6 @@ import org.freeplane.core.undo.UndoHandler;
 import org.freeplane.core.util.SysUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.DoAutomaticSave;
 import org.freeplane.features.url.mindmapmode.DummyLockManager;
@@ -45,10 +46,9 @@ public class MMapModel extends MapModel {
 	 * The current version and all other version that don't need XML update for
 	 * sure.
 	 */
-	public MMapModel( final NodeModel root) {
-		super(root);
+	public MMapModel() {
+		super();
 		addExtension(IUndoHandler.class, new UndoHandler());
-		setReadOnly(false);
 		this.setLockManager(ResourceController.getResourceController().getBooleanProperty(
 		    "experimental_file_locking_on") ? new LockManager() : new DummyLockManager());
 		EventQueue.invokeLater(new Runnable() {
@@ -57,6 +57,11 @@ public class MMapModel extends MapModel {
 			}
 		});
 	}
+
+	@Override
+    public boolean isSaved() {
+	    return super.isSaved() || containsExtension(DocuMapAttribute.class);
+    }
 
 	/**
 	 * When a map is closed, this method is called.
@@ -84,8 +89,13 @@ public class MMapModel extends MapModel {
 
 	@Override
 	public String getTitle() {
-		if (getURL() != null) {
-			return getFile().getName();
+		final URL url = getURL();
+		if (url != null) {
+			final File file = getFile();
+			if(file != null)
+				return file.getName();
+			else
+				return url.toString();
 		}
 		if (titleNumber == 0) {
 			titleNumber = MMapModel.unnamedMapsNumber++;

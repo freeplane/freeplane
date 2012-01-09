@@ -4,7 +4,7 @@
     <attribute_name VISIBLE="true" NAME="See also"/>
     <attribute_name VISIBLE="true" NAME="a2"/>
 </attribute_registry>
-<node STYLE_REF="Introduction" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1316703313972" VGAP="10" BACKGROUND_COLOR="#00ff99" STYLE="bubble">
+<node LOCALIZED_STYLE_REF="default" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1323809213727" VGAP="10" BACKGROUND_COLOR="#00ff66">
 <icon BUILTIN="bee"/>
 <richcontent TYPE="NODE">
 
@@ -14,7 +14,7 @@
   </head>
   <body>
     <p>
-      <b>Handleiding </b>
+      <b>Quick reference </b>
     </p>
     <p>
       <b>Freeplane 1.2</b>
@@ -25,7 +25,16 @@
 <hook NAME="MapStyle">
     <conditional_styles>
         <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
-            <time_condition_modified_after DATE="1315131197170"/>
+            <conjunct_condition user_name="1.2.9_05">
+                <time_condition_modified_after DATE="1318794562631"/>
+                <time_condition_modified_before DATE="1319399362631"/>
+            </conjunct_condition>
+        </conditional_style>
+        <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
+            <conjunct_condition user_name="1.2.10_04">
+                <time_condition_modified_after DATE="1321127854495"/>
+                <time_condition_modified_before DATE="1321732654495"/>
+            </conjunct_condition>
         </conditional_style>
     </conditional_styles>
     <properties show_notes_in_map="false"/>
@@ -61,6 +70,22 @@
 </stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right">
+<stylenode TEXT="Consumer" COLOR="#ffffff" BACKGROUND_COLOR="#009999" STYLE="bubble">
+<font BOLD="true"/>
+<edge STYLE="bezier" COLOR="#33ffcc"/>
+</stylenode>
+<stylenode TEXT="Beginner" BACKGROUND_COLOR="#33ffcc" STYLE="bubble">
+<font BOLD="true"/>
+<edge STYLE="bezier" COLOR="#33ffcc"/>
+</stylenode>
+<stylenode TEXT="Advanced" COLOR="#000000" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
+<font BOLD="true"/>
+<edge STYLE="bezier" COLOR="#33ffcc"/>
+</stylenode>
+<stylenode TEXT="Professional" BACKGROUND_COLOR="#ff9900" STYLE="bubble">
+<font BOLD="true"/>
+<edge STYLE="bezier" COLOR="#33ffcc"/>
+</stylenode>
 <stylenode TEXT="Example">
 <icon BUILTIN="../AttributesView"/>
 <edge STYLE="bezier" COLOR="#808080"/>
@@ -68,24 +93,41 @@
 <stylenode TEXT="Revision">
 <icon BUILTIN="revision"/>
 </stylenode>
-<stylenode TEXT="Beginner" BACKGROUND_COLOR="#33ffcc" STYLE="bubble">
-<font BOLD="true"/>
-<edge STYLE="bezier" COLOR="#33ffcc"/>
+<stylenode TEXT="BeginnerTopic"/>
+<stylenode TEXT="ConsumerTopic"/>
+<stylenode TEXT="AdvancedTopic"/>
+<stylenode TEXT="ProfessionalTopic"/>
+<stylenode TEXT="MainWidth" MIN_WIDTH="600"/>
+<stylenode TEXT="SubWidth" MAX_WIDTH="550" MIN_WIDTH="550"/>
+<stylenode TEXT="MenuTitle" STYLE="combined"/>
+<stylenode TEXT="TitlesContent" STYLE="fork">
+<edge STYLE="hide_edge"/>
 </stylenode>
-<stylenode TEXT="BeginnerOnderwerp"/>
-<stylenode TEXT="Gevorderde" BACKGROUND_COLOR="#ffff00" STYLE="bubble">
-<font BOLD="true"/>
-<edge STYLE="bezier" COLOR="#33ffcc"/>
-</stylenode>
-<stylenode TEXT="GevorderdeOnderwerp">
-<edge STYLE="bezier" COLOR="#808080"/>
-</stylenode>
-<stylenode TEXT="Professional" BACKGROUND_COLOR="#ff9900" STYLE="bubble">
-<font BOLD="true"/>
-<edge STYLE="bezier" COLOR="#33ffcc"/>
-</stylenode>
-<stylenode TEXT="ProfessionalOnderwerp">
-<edge STYLE="bezier" COLOR="#808080"/>
+<stylenode TEXT="MyTemplate">
+<icon BUILTIN="females"/>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b><font color="#3333ff" size="4">Template information</font></b>
+    </p>
+    <ul>
+      <li>
+        <i>Name</i>:
+      </li>
+      <li>
+        Address:
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<attribute NAME="birth date" VALUE=""/>
+<attribute NAME="e-mail" VALUE=""/>
 </stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.topic" POSITION="right" COLOR="#18898b" STYLE="fork">
@@ -104,8 +146,7 @@
 </map_styles>
 </hook>
 <hook NAME="FirstGroupNode"/>
-<edge STYLE="bezier"/>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_232622736" CREATED="1320005728532" MODIFIED="1321129481002" HGAP="0" VSHIFT="-111" LINK="freeplaneFunctions_nl.mm" TEXT_SHORTENED="true" STYLE="fork"><richcontent TYPE="NODE">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_232622736" CREATED="1320005728532" MODIFIED="1323809812721" HGAP="19" VSHIFT="-94" LINK="freeplaneFunctions_nl.mm" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -118,7 +159,8 @@
   </body>
 </html>
 </richcontent>
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<hook NAME="FreeNode"/>
+<richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -142,10 +184,13 @@
   </body>
 </html>
 </richcontent>
-<hook NAME="FreeNode"/>
 </node>
-<node TEXT="Inleiding" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1316342821057" BACKGROUND_COLOR="#00cc66" NUMBERED="true" VSHIFT="110">
-<node TEXT="Doel" STYLE_REF="Beginner" ID="ID_1309964220" CREATED="1314735478858" MODIFIED="1321909041374"><richcontent TYPE="DETAILS">
+<node TEXT="Inleiding" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1323682151885" BACKGROUND_COLOR="#00cc33" NUMBERED="true" VSHIFT="90" MIN_WIDTH="180">
+<node TEXT="Doel" STYLE_REF="Consumer" FOLDED="true" ID="ID_1074607965" CREATED="1314422854653" MODIFIED="1323681027437" HGAP="17" VSHIFT="79" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1704300991" CREATED="1323439375808" MODIFIED="1323681032897" HGAP="-22" VSHIFT="70" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -164,8 +209,63 @@
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+<node TEXT="Basisinstructie voor het gebruiken van mindmaps (animatie)" STYLE_REF="Beginner" ID="ID_1059593400" CREATED="1316334611538" MODIFIED="1323681922705" LINK="freeplaneTutorialConsumer_nl.htm" HGAP="-549" VSHIFT="145"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Klik op het rode pijltje om de animatie te starten. Druk tijdens de animatie op de pijlen om door/terug te gaan.
+    </p>
+    <p>
+      
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubWidth" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Leeswijzer" STYLE_REF="Beginner" ID="ID_110608784" CREATED="1316010609737" MODIFIED="1316343113230"><richcontent TYPE="DETAILS">
+<node TEXT="Basisinstructie voor het maken van een elementaire mindmap (animatie)" STYLE_REF="Beginner" ID="ID_886108715" CREATED="1316337673931" MODIFIED="1323681998069" LINK="freeplaneTutorialBeginnerNodeHandling_nl.htm" HGAP="-549" VSHIFT="12"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Klik op het rode pijltje om de instructie te starten.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Let op: </b>de instructie is gebaseerd op Freeplane 1.3. De werking van Freeplane 1.2 is in principe gelijk, aleen zijn de menu's anders georganiseerd. Hieronder wordt de nieuwe structuur beschreven.
+    </p>
+    <p>
+      
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubWidth" LAST="false"/>
+</hook>
+<edge STYLE="hide_edge"/>
+</node>
+</node>
+</node>
+<node TEXT="Leeswijzer" STYLE_REF="Consumer" ID="ID_195004053" CREATED="1316097186850" MODIFIED="1323809374329" COLOR="#ffffff" STYLE="combined" MIN_WIDTH="1">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_525900700" CREATED="1323439682466" MODIFIED="1323809267063" STYLE="fork" HGAP="-53" VSHIFT="199"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -195,15 +295,19 @@
         <b>Professional</b>&#160;(oranje/bruin): Kennis om Freeplane aan te passen aan je wensen en om de productietools van Freeplane te gebruiken.
       </li>
     </ol>
-    <p>
-      
-    </p>
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Wat is een mindmap" STYLE_REF="Beginner" FOLDED="true" ID="ID_448981847" CREATED="1314122243021" MODIFIED="1316291909288">
-<node TEXT="Basisinstructie voor het gebruiken van mindmaps (animatie)" STYLE_REF="Beginner" ID="ID_1059593400" CREATED="1316334611538" MODIFIED="1316338198226" LINK="freeplaneTutorialConsumer_nl.htm"><richcontent TYPE="DETAILS">
+</node>
+<node TEXT="Knopen" STYLE_REF="Consumer" FOLDED="true" ID="ID_1368882439" CREATED="1316154547031" MODIFIED="1323809361865" HGAP="23" VSHIFT="1" MIN_WIDTH="1" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_859940648" CREATED="1323460494762" MODIFIED="1323809277390" HGAP="-35" VSHIFT="70"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -211,145 +315,27 @@
   </head>
   <body>
     <p>
-      Klik op het rode pijltje om de animatie te starten. Druk tijdens de animatie op de pijlen om door/terug te gaan.
+      Een mindmap is een vlak met informatie in zogenaamde <b>knopen</b>. Een knoop is te vergelijken met een paragraaf in een boek. Het verschil is dat je een knoop en zijn informatie eenvoudig kunt verplaatsen en verbergen. Hierdoor kan een mindmap goed worden gebruikt bij het ontwikkelen van nieuwe informatie en bij het aanpassen van getoonde infromatie aan de behoefte van een gebruiker.
     </p>
     <p>
       
+    </p>
+    <p>
+      De tekst die je nu leest bevindt zich in een knoop. De tekst hierboven, &quot;<i>Knopen</i>&quot; is een knoop.&#160;&#160;En de grote ovaal links is een speciale knoop, de stamvaderknoop of <b>stamknoop</b>.,
     </p>
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Basisinstructie voor het maken van een elementaire mindmap (animatie)" STYLE_REF="Beginner" ID="ID_886108715" CREATED="1316337673931" MODIFIED="1316338248162" LINK="freeplaneTutorialBeginnerNodeHandling_nl.htm"><richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Klik op het rode pijltje om de instructie te starten.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b>Let op: </b>de instructie is gebaseerd op Freeplane 1.3. De werking van Freeplane 1.2 is in principe gelijk, aleen zijn de menu's anders georganiseerd. Hieronder wordt de nieuwe structuur beschreven.
-    </p>
-    <p>
-      
-    </p>
-  </body>
-</html>
-</richcontent>
 </node>
-<node TEXT="Basisbegrippen" STYLE_REF="Beginner" ID="ID_753196500" CREATED="1316264518770" MODIFIED="1316291843861"><richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een mindmap is een vlak met informatie in zogenaamde <b>knopen</b>. Een knoop is te vergelijken
-    </p>
-    <p>
-      met een paragraaf in een boek. Het verschil is dat je een knoop en zijn informatie eenvoudig
-    </p>
-    <p>
-      kunt verplaatsen en verbergen. Hierdoor kan een mindmap goed worden gebruikt bij het
-    </p>
-    <p>
-      ontwikkelen van nieuwe informatie en bij het aanpassen van getoonde infromatie aan de
-    </p>
-    <p>
-      behoefte van een gebruiker.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      De tekst die je nu leest bevindt zich in een knoop. De tekst links, <i>Inleiding</i>, is ook een knoop. Ook
-    </p>
-    <p>
-      de &#160;tekst <i>Wat is een mindmap</i>&#160;is een knoop. En de grote ovaal links is een speciale knoop, de
-    </p>
-    <p>
-      stamvaderknoop of <b>stamknoop</b>.,
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
-<node TEXT="Knoopkern" STYLE_REF="Beginner" ID="ID_907651872" CREATED="1316012352922" MODIFIED="1316291856893" HGAP="38"><richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      De informatie in een knoop is zichtbaar via twee gebieden. Het ene gebied bevindt<br/>zich in het midden van de knoop, in de kern en dit veld kan worden omgeven door<br/>een kader. De tekst die je nu&#160;&#160;leest bevindt zich in de kern. Het gekleurde gebied net
-    </p>
-    <p>
-      boven de tekst die je nu leest bevindt zich in de knoopkern. De tekst in de knoopkern
-    </p>
-    <p>
-      kan kort zijn zoals bij een titel, maar kan ook meerdere regels omvatten. Verder kan
-    </p>
-    <p>
-      de tekst verschillende presentatiecomponenten bevatten zoals plaatjes en
-    </p>
-    <p>
-      pictogrammen. De knoopkern kan ookhyperlinks, een formule en componenten voor
-    </p>
-    <p>
-      tijdmanagement en bescherming met een wachtwoord bevatten.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Het andere gebied bevindt zich onder de knoopkern en wordt <b>knoopdetails</b>&#160;&#160;genoemd.
-    </p>
-    <p>
-      De tekst die je nu leest bevindt zich in dit gebied. Dit gebied onderscheidt zich doordat
-    </p>
-    <p>
-      het onafhankelijk van de knoopkern kan worden verborgen. Een manier om dit te doen
-    </p>
-    <p>
-      is door op het driehoekje naast de tekst te klikken (probeer dit !).
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Vervorgen tekst kan ook zichtbaar gemaakt worden door er de cursor boven de
-    </p>
-    <p>
-      knoopkern te houden (zweven). Dit is vooral van belang als is ingesteld dat knoopdetails
-    </p>
-    <p>
-      permanet verborgen moeten worden - er is dan geen driehoekje om de tekst zchtbaar te
-    </p>
-    <p>
-      maken. Als er tekst is die via zweven zichtbaar gemaakt kan worden dan bevat de knoop
-    </p>
-    <p>
-      aan de ouder-zijde een klein cirkeltje. De knoop hieronder is een voorbeeld. Zweef met
-    </p>
-    <p>
-      de cursor over de knoopkern en lees de tekst (probeer dit !)
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
-<node TEXT="Zweef over deze tekst voor familierelaties" STYLE_REF="Beginner" FOLDED="true" ID="ID_1733030008" CREATED="1316266082250" MODIFIED="1318969944066" TEXT_SHORTENED="true" VSHIFT="40"><richcontent TYPE="DETAILS">
+<node TEXT="Familierelaties" STYLE_REF="Consumer" FOLDED="true" ID="ID_1971514033" CREATED="1314122290117" MODIFIED="1323809357731" HGAP="22" TEXT_SHORTENED="true" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1269567767" CREATED="1323465595335" MODIFIED="1323809284956" HGAP="-75" VSHIFT="69"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -377,15 +363,22 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="(relative) parent" FOLDED="true" ID="ID_687495618" CREATED="1314131160308" MODIFIED="1314365178476">
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1105307139" MIDDLE_LABEL="descendancy" STARTINCLINATION="25;-45;" ENDINCLINATION="-36;-44;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<node TEXT="child" ID="ID_1105307139" CREATED="1314131174886" MODIFIED="1314131181330"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+<node TEXT="ouder (relatief)" STYLE_REF="ConsumerTopic" ID="ID_687495618" CREATED="1314131160308" MODIFIED="1323682720381" VSHIFT="20">
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1105307139" MIDDLE_LABEL="afstamming" STARTINCLINATION="25;-45;" ENDINCLINATION="-36;-44;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<node TEXT="kind" STYLE_REF="ConsumerTopic" ID="ID_1105307139" CREATED="1314131174886" MODIFIED="1323682756605" HGAP="30" VSHIFT="15">
+<edge STYLE="bezier"/>
 </node>
 </node>
-<node TEXT="Zussen" ID="ID_97088684" CREATED="1314123303183" MODIFIED="1314736887189">
-<hook NAME="SummaryNode"/>
 </node>
-<node TEXT="Knopen open- en dichtvouwen" STYLE_REF="Beginner" FOLDED="true" ID="ID_1338867820" CREATED="1314122456335" MODIFIED="1316291880756" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+</node>
+<node TEXT="Open- en dichtvouwen van knopen" STYLE_REF="Consumer" FOLDED="true" ID="ID_1338867820" CREATED="1314122456335" MODIFIED="1323809351241" HGAP="22" VSHIFT="-150" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_434382705" CREATED="1323465258749" MODIFIED="1323683690654" HGAP="-185" VSHIFT="70"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -399,18 +392,15 @@
       
     </p>
     <p>
-      Als ik (de knoop die je leest) ben opengevouwen, dan zie je vier pictogrammen. Deze pictogrammen zie je ook in de werkbalk bovenin het scherm. Door op deze pictogrammen in de werkbalk te klikken kun je knopen op verschillende manieren open- en dichtvouwen.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Klik nu&#160;&#160;op knoop Inleiding om mij te laten verdwijnen en klik opnieuw om mij weer te laten verschijnen. Lees daarna de volgende knoop.
+      Als de knoop die je nu leest is opengevouwen, dan zie je vier pictogrammen. Deze pictogrammen zie je ook in de werkbalk bovenin het scherm. Door op deze pictogrammen in de werkbalk te klikken kun je knopen op verschillende manieren open- en dichtvouwen.
     </p>
   </body>
 </html>
 </richcontent>
-<node TEXT="Alle knopen openvouwen" ID="ID_933325044" CREATED="1310134532679" MODIFIED="1314738412975" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+<node TEXT="Alle knopen openvouwen" ID="ID_1281616092" CREATED="1310134532679" MODIFIED="1323683248394" TEXT_SHORTENED="true">
 <icon BUILTIN="../unfold_all"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -445,8 +435,9 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Alle knopen dichtvouwen" ID="ID_657829947" CREATED="1310134532679" MODIFIED="1314738667131" TEXT_SHORTENED="true">
+<node TEXT="Alle knopen dichtvouwen" ID="ID_613340915" CREATED="1310134532679" MODIFIED="1323683248394" TEXT_SHORTENED="true">
 <icon BUILTIN="../fold_all"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -481,8 +472,9 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Een niveau openvouwen" ID="ID_321295556" CREATED="1310134532663" MODIFIED="1314739192524" TEXT_SHORTENED="true">
+<node TEXT="Een niveau openvouwen" ID="ID_1090568502" CREATED="1310134532663" MODIFIED="1323683248394" TEXT_SHORTENED="true">
 <icon BUILTIN="../unfold_one_level"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -500,8 +492,9 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Een niveau dichtvouwen" ID="ID_831251421" CREATED="1310134532679" MODIFIED="1314739199404" TEXT_SHORTENED="true">
+<node TEXT="Een niveau dichtvouwen" ID="ID_1503644667" CREATED="1310134532679" MODIFIED="1323683248394" TEXT_SHORTENED="true">
 <icon BUILTIN="../fold_one_level"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -519,9 +512,17 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
 </node>
-<node TEXT="Navigeren" STYLE_REF="Beginner" ID="ID_1945042033" CREATED="1314248633083" MODIFIED="1316291887506"><richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+</node>
+<node TEXT="Basis mindmap" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_1337127972" CREATED="1314109409850" MODIFIED="1323684772516" NUMBERED="true" MIN_WIDTH="180">
+<node TEXT="Knoopkern" STYLE_REF="Beginner" FOLDED="true" ID="ID_1370298116" CREATED="1315860175003" MODIFIED="1323683596009" HGAP="24" VSHIFT="5" MIN_WIDTH="1" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1314148002" CREATED="1323461584875" MODIFIED="1323809491267" HGAP="-53" VSHIFT="110"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -529,36 +530,31 @@
   </head>
   <body>
     <p>
-      In het begin is het gemakkelijk om van knoop naar knoop te gaan door de muis van knoop naar knoop te bewegen. Als je enige ervaring met Freeplane hebt is het soms handiger om de sneltoetsen hiervoor te gebruiken. Zie menu <i>Navigeren</i>.
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
-</node>
-<node TEXT="Maak er een gewoonte van" STYLE_REF="Beginner" ID="ID_571097520" CREATED="1314208825274" MODIFIED="1316291926651"><richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      De vormgeving in deze gebruikershandleiding verschilt van knoop tot knoop. Dit is gedaan om een indruk te geven van de mogelijkheden en voor- en nadelen. Dit kan leiden tot chaos. Om dit te voork&#243;men, vouw elke knoop die gelezen is dicht.
+      De informatie in een knoop is zichtbaar via twee gebieden. Het ene gebied bevindt zich in het midden van de knoop, in de <b>kern</b>&#160;en dit veld kan worden omgeven door een kader. De tekst die je nu&#160;&#160;leest bevindt zich in de kern. Het gekleurde gebied net boven de tekst die je nu leest bevindt zich ook in een knoopkern (van een andere knoop).
     </p>
     <p>
       
     </p>
     <p>
-      Vouw nu knoop <i>1 Inleiding</i>&#160;dicht om ruimte te maken voor de rest van de instructie.
+      De tekst in de knoopkern kan kort zijn zoals bij een titel, maar kan ook meerdere regels omvatten. Verder kan de tekst verschillende presentatiecomponenten bevatten zoals plaatjes en pictogrammen. De knoopkern kan ook hyperlinks, een formule en componenten voor tijdmanagement en bescherming met een wachtwoord bevatten.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Naast de knoopkern kan tekst voorkomen in velden voor <b>knoopdetails</b>, <b>notities</b>&#160; en <b>attributen</b>. Deze worden op een andere plaats beschreven.
     </p>
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
 </node>
-<node TEXT="Basis mindmap" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_1337127972" CREATED="1314109409850" MODIFIED="1316291983197" NUMBERED="true">
-<node TEXT="Bewerken knoopkern (snel)" STYLE_REF="Beginner" FOLDED="true" ID="ID_268413071" CREATED="1314125550476" MODIFIED="1321029952743"><richcontent TYPE="DETAILS">
+<node TEXT="Bewerken knoopkern (snel)" STYLE_REF="Beginner" FOLDED="true" ID="ID_268413071" CREATED="1314125550476" MODIFIED="1323809457274" HGAP="22" STYLE="combined" MIN_WIDTH="115">
+<edge STYLE="bezier"/>
+<node ID="ID_265318117" CREATED="1323437723250" MODIFIED="1323809479536" HGAP="-146" VSHIFT="135" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -588,7 +584,8 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="Nieuwe mindmap" STYLE_REF="BeginnerOnderwerp" ID="ID_1310307853" CREATED="1310134532663" MODIFIED="1316292230760" TEXT_SHORTENED="true">
+<edge STYLE="hide_edge"/>
+<node TEXT="Nieuwe mindmap" STYLE_REF="BeginnerOnderwerp" ID="ID_1310307853" CREATED="1310134532663" MODIFIED="1323684127330" TEXT_SHORTENED="true">
 <icon BUILTIN="../filenew"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -607,8 +604,9 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Opslaan bewaarde mindmap.." STYLE_REF="BeginnerOnderwerp" ID="ID_1284635316" CREATED="1310134532663" MODIFIED="1316292230775" TEXT_SHORTENED="true">
+<node TEXT="Opslaan bewaarde mindmap.." STYLE_REF="BeginnerOnderwerp" ID="ID_1284635316" CREATED="1310134532663" MODIFIED="1323684127330" TEXT_SHORTENED="true">
 <icon BUILTIN="../fileopen"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -627,8 +625,9 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Afdrukken mindmap" STYLE_REF="BeginnerOnderwerp" ID="ID_111478060" CREATED="1310134532663" MODIFIED="1316292230783" TEXT_SHORTENED="true">
+<node TEXT="Afdrukken mindmap" STYLE_REF="BeginnerOnderwerp" ID="ID_111478060" CREATED="1310134532663" MODIFIED="1323684127330" TEXT_SHORTENED="true">
 <icon BUILTIN="../fileprint"/>
 <richcontent TYPE="DETAILS">
 
@@ -646,8 +645,9 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Knippen" STYLE_REF="BeginnerOnderwerp" ID="ID_353410114" CREATED="1310134532663" MODIFIED="1316292230790" TEXT_SHORTENED="true">
+<node TEXT="Knippen" STYLE_REF="BeginnerOnderwerp" ID="ID_353410114" CREATED="1310134532663" MODIFIED="1323684127330" TEXT_SHORTENED="true">
 <icon BUILTIN="../editcut"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -666,8 +666,9 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Kopieren" STYLE_REF="BeginnerOnderwerp" ID="ID_1274800359" CREATED="1310134532663" MODIFIED="1316292230796" TEXT_SHORTENED="true">
+<node TEXT="Kopieren" STYLE_REF="BeginnerOnderwerp" ID="ID_1274800359" CREATED="1310134532663" MODIFIED="1323684127346" TEXT_SHORTENED="true">
 <icon BUILTIN="../editcopy"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -685,8 +686,9 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Plakken" STYLE_REF="BeginnerOnderwerp" ID="ID_1705754282" CREATED="1310134532663" MODIFIED="1316292230802" TEXT_SHORTENED="true">
+<node TEXT="Plakken" STYLE_REF="BeginnerOnderwerp" ID="ID_1705754282" CREATED="1310134532663" MODIFIED="1323684127346" TEXT_SHORTENED="true">
 <icon BUILTIN="../editpaste"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -704,8 +706,9 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Nieuwe kindknoop" STYLE_REF="BeginnerOnderwerp" ID="ID_942355748" CREATED="1266249828031" MODIFIED="1316292230806" TEXT_SHORTENED="true">
+<node TEXT="Nieuwe kindknoop" STYLE_REF="BeginnerOnderwerp" ID="ID_942355748" CREATED="1266249828031" MODIFIED="1323684127346" TEXT_SHORTENED="true">
 <icon BUILTIN="../idea"/>
 <richcontent TYPE="DETAILS">
 
@@ -734,14 +737,27 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="&lt;Ins&gt; Nieuwe kindknoop" ID="ID_33311014" CREATED="1316702689073" MODIFIED="1316702709400"/>
-<node TEXT="&lt;Shift&gt;+&lt;Enter&gt; Toevoegen nieuwe regel" ID="ID_312543101" CREATED="1316723348757" MODIFIED="1316724642164"/>
-<node TEXT="&lt;Enter&gt; Afsluiten bewerken" ID="ID_1113787270" CREATED="1316702710297" MODIFIED="1316702765163"/>
-<node TEXT="2 x &lt;Enter&gt; Nieuwe zus-knoop" ID="ID_1173879612" CREATED="1316702765996" MODIFIED="1316724094292"/>
-<node TEXT="Rechtsklik: contextmenu" ID="ID_807808681" CREATED="1316723959021" MODIFIED="1316723979820"/>
+<node TEXT="&lt;Ins&gt; Nieuwe kindknoop" ID="ID_33311014" CREATED="1316702689073" MODIFIED="1323684127346">
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Bewerken knoopkern in venster" STYLE_REF="Beginner" FOLDED="true" ID="ID_1279324490" CREATED="1314126040831" MODIFIED="1321030146948"><richcontent TYPE="DETAILS">
+<node TEXT="&lt;Shift&gt;+&lt;Enter&gt; Toevoegen nieuwe regel" ID="ID_312543101" CREATED="1316723348757" MODIFIED="1323684127346">
+<edge STYLE="horizontal"/>
+</node>
+<node TEXT="&lt;Enter&gt; Afsluiten bewerken" ID="ID_1113787270" CREATED="1316702710297" MODIFIED="1323684127346">
+<edge STYLE="horizontal"/>
+</node>
+<node TEXT="2 x &lt;Enter&gt; Nieuwe zus-knoop" ID="ID_1173879612" CREATED="1316702765996" MODIFIED="1323684127346">
+<edge STYLE="horizontal"/>
+</node>
+<node TEXT="Rechtsklik: contextmenu" ID="ID_807808681" CREATED="1316723959021" MODIFIED="1323684127346">
+<edge STYLE="horizontal"/>
+</node>
+</node>
+</node>
+<node TEXT="Bewerken knoopkern (in venster)" STYLE_REF="Beginner" FOLDED="true" ID="ID_1279324490" CREATED="1314126040831" MODIFIED="1323809447181" STYLE="combined" HGAP="23" MIN_WIDTH="115">
+<node ID="ID_1433249332" CREATED="1323438495734" MODIFIED="1323809499098" HGAP="-179" VSHIFT="120" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -749,7 +765,7 @@
   </head>
   <body>
     <p>
-      Een tweede manier om een knoop te bewerken is in een afzonderlijk venster welke eigen menuknoppen heeft. Als het knoop is geselecteerd, kies in menu <i>Knoop</i>&#160;optie <i>Bewerken knooptitel in venster</i>. (In het volgende geven we deze procedure aan als: <i>Knoop &gt; Bewerken knooptitel in venster </i>). Je kunt nu de tekst in het venster typen en de menu's van het venster gebruiken om de tekst te bewerken en op te maken. Druk op <i>OK</i>&#160;als je klaar bent. De tekst wordt dan opgenomen in de knoop. Merk op dat de menu's van het venster meer mogelijkheden bieden voor het opmaken van tekst dan <i>Bewerken knooptitel (snel)</i>.
+      Een tweede manier om een knoop te bewerken is in een afzonderlijk venster welke eigen menuknoppen heeft. Rechtslklik op de knoop en kies in het contextmenu <i>Bewerken knooptitel in venster</i>. Je kunt nu de tekst in het venster typen en de menu's van het venster gebruiken om de tekst te bewerken en op te maken. Druk op <i>OK</i>&#160;als je klaar bent. De tekst wordt dan opgenomen in de knoop. Merk op dat de menu's van het venster meer mogelijkheden bieden voor het opmaken van tekst dan <i>Bewerken knooptitel (snel)</i>.
     </p>
     <p>
       
@@ -759,17 +775,29 @@
     </p>
     <ul>
       <li>
-        Als je met de rechter muisknop op een knoop klikt (niet in de bewerkingsmodus) dan opent een <b>context menu</b>. Dit menu bevat de meestgebruikte functies van een knoop. Je kunt via dit menu het bewerkingsvenster openen. N.B. Dit is een ander contextmenu is dan besproken bij <i>Bewerken knooptitel (snel)</i>.
+        Als je met de rechter muisknop op een knoop klikt (niet in de bewerkingsmodus) dan opent een <b>context menu</b>. Dit menu bevat de meestgebruikte functies van een knoop.
+      </li>
+      <li>
+        Je kunt alle opdrachten die in het contextmenu staan ook via het hoofdmenu openen. Bijvoorbeeld, om het bewerkingsvenster te openen kies dan <i>Bewerken&gt; Knoopkern &gt; Bewerken knooptitel (in venster</i>).
       </li>
     </ul>
   </body>
 </html>
 </richcontent>
-<node TEXT="Eigen menu&apos;s" ID="ID_1285520943" CREATED="1316723899901" MODIFIED="1316723909563"/>
-<node TEXT="&lt;Enter&gt; Nieuwe regel" ID="ID_1609356152" CREATED="1316723917228" MODIFIED="1316723930927"/>
-<node TEXT="Rechtsklik: contextmenu" ID="ID_1771133184" CREATED="1316723959021" MODIFIED="1316723979820"/>
+<edge STYLE="hide_edge"/>
+<node TEXT="Eigen menu&apos;s !" ID="ID_1285520943" CREATED="1316723899901" MODIFIED="1323684851172">
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Bewaren en sluiten mindmap" STYLE_REF="Beginner" FOLDED="true" ID="ID_48547188" CREATED="1314127927655" MODIFIED="1316669969273"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&lt;Enter&gt;: Nieuwe regel" ID="ID_1609356152" CREATED="1316723917228" MODIFIED="1323684855540">
+<edge STYLE="horizontal"/>
+</node>
+<node TEXT="Rechtsklik: Contextmenu" ID="ID_1771133184" CREATED="1316723959021" MODIFIED="1323684865758">
+<edge STYLE="horizontal"/>
+</node>
+</node>
+</node>
+<node TEXT="Bewaren en sluiten" STYLE_REF="Beginner" FOLDED="true" ID="ID_48547188" CREATED="1314127927655" MODIFIED="1323809442064" HGAP="22" STYLE="combined" MIN_WIDTH="115">
+<node ID="ID_1460485800" CREATED="1323438690647" MODIFIED="1323809505775" HGAP="-103" VSHIFT="37" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -782,7 +810,8 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="Bewaren mindmap" ID="ID_1253878525" CREATED="1310134532663" MODIFIED="1314958928908" TEXT_SHORTENED="true">
+<edge STYLE="hide_edge"/>
+<node TEXT="Bewaren" STYLE_REF="BeginnerTopic" ID="ID_1253878525" CREATED="1310134532663" MODIFIED="1323684992835" TEXT_SHORTENED="true">
 <icon BUILTIN="../filesave"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -792,7 +821,7 @@
   </head>
   <body>
     <p>
-      Bewaart hele mindmap.
+      Look in the toolbar for the icon button to save the current map.
     </p>
   </body>
 </html>
@@ -800,8 +829,9 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Bewaren mindmap als..." ID="ID_449363060" CREATED="1310134532663" MODIFIED="1314958938845" TEXT_SHORTENED="true">
+<node TEXT="Bewaren als ..." STYLE_REF="BeginnerTopic" ID="ID_449363060" CREATED="1310134532663" MODIFIED="1323685003163" TEXT_SHORTENED="true">
 <icon BUILTIN="../filesaveas"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -811,7 +841,7 @@
   </head>
   <body>
     <p>
-      Bewaart de hele mindmap.
+      Look up in the toolbar
     </p>
   </body>
 </html>
@@ -820,8 +850,9 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Sluiten mindmap" ID="ID_1018458898" CREATED="1310134532663" MODIFIED="1314958347261" TEXT_SHORTENED="true">
+<node TEXT="Sluiten huidige mindmap" STYLE_REF="BeginnerTopic" ID="ID_1018458898" CREATED="1310134532663" MODIFIED="1323685019012" TEXT_SHORTENED="true">
 <icon BUILTIN="../close"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -831,7 +862,7 @@
   </head>
   <body>
     <p>
-      <font color="#000000" face="SansSerif, sans-serif">Sluit de geselecteerde mindmap. Als er meerdere mindmaps open zijn, kijk in de balk met open mindmaps welke mindap geselecteerd is (de focus heeft). </font>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Closes the map that has focus. If multiple maps are open, focus refers to the tab that you are currently editing.</span></font>
     </p>
   </body>
 </html>
@@ -839,9 +870,13 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
 </node>
-<node TEXT="Instellen knoopbreedte" STYLE_REF="Gevorderde" ID="ID_374213598" CREATED="1321975262072" MODIFIED="1321975690901"><richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+<node TEXT="Vrije knopen" STYLE_REF="Advanced" ID="ID_1401167294" CREATED="1323470356903" MODIFIED="1323809434654" MIN_WIDTH="80">
+<node TEXT="Post-it knopen: vrij positioneerbaar, vrij zwevend" STYLE_REF="Advanced" FOLDED="true" ID="ID_630972811" CREATED="1323076049931" MODIFIED="1323809737825" HGAP="23" VSHIFT="212" STYLE="combined">
+<node ID="ID_830664496" CREATED="1323434577171" MODIFIED="1323809517537" HGAP="-262" VSHIFT="69" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -849,33 +884,84 @@
   </head>
   <body>
     <p>
-      Om knopen uit te lijnen kun je een vaste minum en/of maximum knoopbreedte in te stellen. Zie
+      Door op een vrije plaats in de mindmap te dubbelklikken opent een zogenaamde vrij positioneebare, vrij zwevende knoop. Dezeze knoop is te vergelijken met een post-it (geeltje). Je kunt de knoop verplaatsen zonder dat dit effect heeft op de andere knopen. De opmaak van deze knoop wordt bepaald door de systeem stijl<i>&#160;Zwevende knoop</i>. Je kunt deze stijl veranderen, bijvoorbeeld de wolk verwijderen of de takken zichtbaar maken. Je kunt de post-it node aan een knoop in de hierarchie vastmaken door hem op een andere knoop te plaatsen: de post-it wordt dan een kindknoop van deze knoop en is niet langer een vrije knoop. Voor voorbeelden, zie wiki <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Floating_nodes">Tutorial Freeplane.</a>
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+<node TEXT="The floating nodes with hidden edges are intended for adding meta information to maps like legends, titles, summaries, authors etc. If such informations relates to a whole map, such nodes should have a root node as their parent so that are always visible and their position does not depend on anything else. Sometimes such information is relevant only for a part of a map. In this case a floating node with hidden edge can be attached to a non root node. For understanding of the context (which I find important) its parent edge is usually displayed as a dashed line if a node is selected unless its color was set to the map background color.&#xa;The free nodes do not require that you hide their edges. The second use case for them is a better use of map space. The automatic layout algorithm does not allow any map branches to overlap. If you want to create more compact maps you can convert some nodes to free nodes. This way they can be placed flexible. And their logical position relative to other sibling nodes now depends on their coordinates. You can see it too if you change to outline view which always reflect logical node positions." STYLE_REF="SubWidth" ID="ID_1557640435" CREATED="1323470600645" MODIFIED="1323809560983" HGAP="-549" VSHIFT="165"/>
+</node>
+</node>
+<node TEXT="Maken en verplaatsen vrije knopen" STYLE_REF="Advanced" FOLDED="true" ID="ID_128387683" CREATED="1317135703793" MODIFIED="1323809740633" VGAP="0" HGAP="24" VSHIFT="-210" MAX_WIDTH="550" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1188410566" CREATED="1323685758847" MODIFIED="1323686159936" HGAP="-184" VSHIFT="179"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      A free node is a node which is freely positionable, independently of the position of the other nodes of the mind map. A free node can be recognized by this behaviour and because the oval handle for moving the node is blue and filled in stead of red and open.&#160;&#160;
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      A new, free node can be generated by double-clicking a free place of the mind map. The newly generated free node will have the system&#160;&#160;style <i>Free floating node</i>, with properties <i>rectangular cloud</i>&#160;and <i>hidden edge</i>. These properties can be changed in the usual way to e.g. no-cloud and visible edge. It is invisibly connetcted to the root.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      An existing node can be turned into a free node by selecting it and choosing &#160;<i>Edit-&gt;Free positioned node (set/reset).</i>&#160;In this case the properties of the node (edge, cloud, folding)&#160;&#160;stay as they are. You can set the properties for cloud and hidden edge in the usual way . The freed node initially appears near the node it is invisibly connected to and can be moved from there to any desired position by dragging its (blue) oval handle. Moving a free floating node onto another parent / sibling by usual drag and drop cancels its free positioned status.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
     </p>
     <ul>
       <li>
-        Opmaakpaneel; of
-      </li>
-      <li>
-        Opmaken &gt; Instellen grenzen knoopbreedte
+        A free node made by clicking a free space of the mind map is connected to the root node, also if the connecting edge is invisible. This explains why a child node of this free node, if moved onto the upper half of its parent free node, shifts towards the root node
       </li>
     </ul>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="SubWidth" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Vrije knoop" LOCALIZED_STYLE_REF="defaultstyle.floating" ID="ID_1757242560" CREATED="1317754595087" MODIFIED="1323685884299" HGAP="590" VSHIFT="19" MAX_WIDTH="150">
+<hook NAME="FreeNode"/>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
     <p>
-      
-    </p>
-    <p>
-      N.B. In de knoop die je nu leest is de minimum = maximum knoopbreedte 300 pixels.
+      Zweef met de cursor over mijn linker zijde tot het blauwe ovaal zichtbaar wordt. Sleep me aan dit blauwe ovaal, mijn handle.
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
-<node TEXT="Toevoegen plaatje of pictogram aan knoopkern" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_475633626" CREATED="1314281837074" MODIFIED="1316330654795" HGAP="30">
-<node TEXT="Pictogram (icoontje)" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_331137637" CREATED="1314214040000" MODIFIED="1316329918843">
+</node>
+</node>
+<node TEXT="Pictogrammen" STYLE_REF="Advanced" FOLDED="true" ID="ID_222393549" CREATED="1323433444639" MODIFIED="1323809422970" STYLE="combined" HGAP="21" MIN_WIDTH="80">
 <icon BUILTIN="bookmark"/>
-<icon BUILTIN="messagebox_warning"/>
-<icon BUILTIN="button_ok"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<icon BUILTIN="idea"/>
+<node ID="ID_715025500" CREATED="1323437305973" MODIFIED="1323809588439" HGAP="-108" VSHIFT="146" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -883,27 +969,11 @@
   </head>
   <body>
     <p>
-      Een pictogram is een mini-plaatje dat kan worden toegevoegd aan een knooptitel. Zie de titel hierboven.
-    </p>
-    <p>
-      
-    </p>
-  </body>
-</html>
-</richcontent>
-<node TEXT="Een pictogram toevoegen" STYLE_REF="Gevorderde" ID="ID_1567736235" CREATED="1314214176898" MODIFIED="1316329938093"><richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Er zijn verschillende manieren om een pictogram toe te voegen.
+      Een pictogram is een klein plaatje. Freeplane bevat een bibliotheek met pictogrammen. Er zijn verschillende manieren om een pictogram toe te voegen.
     </p>
     <ol>
       <li>
-        Met de pictogrammenbalk naast het scherm. Als je deze balk niet ziet, kies dan <i>Beeld &gt; werkbalken &gt; Tonenen pictogrammenbalk.</i><br/>
+        Met de pictogrammenbalk naast het scherm. Als je deze balk niet ziet, kies dan <i>Beeld &gt; werkbalken &gt; Tonen pictogrammenbalk.</i><br/>
       </li>
       <li>
         Door de pictogrammen te kiezen uit een tabel: kies Knoopkenmerken &gt; Pictogram &gt; Kiezen pictogram uit tabel.
@@ -918,37 +988,18 @@
     <p>
       
     </p>
-  </body>
-</html>
-</richcontent>
-</node>
-<node TEXT="Een pictogram verwijderen" STYLE_REF="Gevorderde" ID="ID_1648336728" CREATED="1314214912765" MODIFIED="1316329938125"><richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
     <p>
       Om een pictogram te verwijderen, klik in de menu's op een pictogram met een rood kruis.
     </p>
     <p>
       
     </p>
-  </body>
-</html>
-</richcontent>
-</node>
-<node TEXT="Opmerking" STYLE_REF="Gevorderde" ID="ID_24456170" CREATED="1314215005296" MODIFIED="1316329938125"><richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
+    <p>
+      <b>Note</b>
+    </p>
     <ul>
       <li>
-        Het is mogelijk meerdere pictogrammen toe te voegen aan dezelfde knooptitel.
+        Het is mogelijk meerdere pictogrammen toe te voegen aan dezelfde knoopkern.
       </li>
       <li>
         Pictogrammen kunnen niet aan knoopkenmerken ot knoopnotities worden toegevoegd.
@@ -957,9 +1008,12 @@
   </body>
 </html>
 </richcontent>
+<edge STYLE="hide_edge"/>
 </node>
 </node>
-<node TEXT="Afbeelding (knoopkern)" STYLE_REF="Gevorderde" ID="ID_828859020" CREATED="1316330066497" MODIFIED="1318967105060"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Afbeeldingen" STYLE_REF="Advanced" FOLDED="true" ID="ID_1795262306" CREATED="1323469507087" MODIFIED="1323687172762" MIN_WIDTH="80">
+<node TEXT="Afbeelding (knoopkern)" STYLE_REF="Advanced" FOLDED="true" ID="ID_806240384" CREATED="1315581148847" MODIFIED="1323809760149" STYLE="combined" HGAP="22" VSHIFT="45">
+<node ID="ID_199889694" CREATED="1323435536299" MODIFIED="1323809600015" HGAP="-123" VSHIFT="80" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -967,7 +1021,7 @@
   </head>
   <body>
     <p>
-      In en knoopkern kan een plaatje worden opgenomen. Kies<i>&#160;Bewerken &gt; Knoopkern &gt; Toevoegen afbeelding of converteren koppeling.</i>&#160;Dit plaatje heeft een vaste grootte welke niet kan worden veranderd.Als een plaatje in de knoopkern is opgenomen, kan er in de knoopkern geen tekst worden getoond.
+      In en knoopkern kan een plaatje worden opgenomen. Kies<i>&#160;Bewerken &gt; Knoopkern &gt; Toevoegen afbeelding of converteren koppeling.</i>&#160;Dit plaatje heeft een vaste grootte welke niet kan worden veranderd.
     </p>
     <p>
       
@@ -980,14 +1034,21 @@
         Om de grootte van het plaatje te veranderen: laadt het plaatje in een tekenprogramma en bewaar het met minder pixels.
       </li>
       <li>
-        Zie <i>Knoopuitbreiding</i>&#160;voor schaapbare afbeeldingen.
+        Zie <i>Knoopuitbreiding</i>&#160;voor schaalbare afbeeldingen.
       </li>
     </ul>
   </body>
 </html>
 </richcontent>
+<edge STYLE="hide_edge"/>
 </node>
-<node TEXT="Een koppeling naar een plaatje (rood pijltje)" STYLE_REF="Gevorderde" ID="ID_1955041924" CREATED="1314282007169" MODIFIED="1316329344643"><richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+<node TEXT="Koppeling naar afbeelding (rode pijl)" STYLE_REF="Advanced" FOLDED="true" ID="ID_1955041924" CREATED="1314282007169" MODIFIED="1323809769805" HGAP="21" VSHIFT="1" MAX_WIDTH="550" MIN_WIDTH="1" STYLE="combined">
+<edge STYLE="bezier"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_728788498" CREATED="1323469662830" MODIFIED="1323809612822" HGAP="-192" VSHIFT="111"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -997,14 +1058,45 @@
     <p>
       Plaatjes nemen veel ruimte in, ook als je de knoop niet aan het bekijken bent. Een koppeling naar een plaatje heeft dit nadeel niet: het plaatje is alleen zichtbaar nadat je op de koppeling hebt geklikt. Je kunt een koppeling naar een plaatje in een knoop opnemen met kopi&#235;ren en plakken. Als je het gekopieerde plaatje op de bovenzijde van een knoop plakt dan komt het plaatje in de knoop zelf. Als je het plaatje aan de kindzijde plakt dan wordt een kindknoop gemaakt met de koppeling. Het adres van de koppeling verschijnt in de knooptitel. Dit adres mag je wissen of vervangen door een eigen tekst. De koppeling (het pijltje) blijft daarbij staan.
     </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Zie ook</b>
+    </p>
+    <ul>
+      <li>
+        Onderstreepte hyperlinks. Hiermee kunnen in &#233;&#233;n tekst meerdere hyperlinks naar plaatjes worden gemaakt.
+      </li>
+    </ul>
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="% Schijf indicator" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_1644368711" CREATED="1314283858479" MODIFIED="1316330620951">
-<node TEXT="Kleine schijf" STYLE_REF="Gevorderde" ID="ID_1826965169" CREATED="1314283872699" MODIFIED="1316330607348">
+</node>
+<node TEXT="Afbeelding via HTML-code" STYLE_REF="Professional" FOLDED="true" ID="ID_680497355" CREATED="1314282819174" MODIFIED="1323687136601" VSHIFT="-48" MAX_WIDTH="550" MIN_WIDTH="1" STYLE="combined">
+<edge STYLE="bezier"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node TEXT="Ervaren gebruikers kunnen ook met zogenaamde HTML-code plaatjes invoegen. Er is zelfs een script om dit te doen. Raadpleeg hiervoor de handleiding (Help &gt; Handleiding)." ID="ID_990348986" CREATED="1323469818677" MODIFIED="1323809657376" HGAP="-137" VSHIFT="29">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
+</node>
+<node TEXT="Voortgang %" STYLE_REF="Professional" FOLDED="true" ID="ID_1644368711" CREATED="1314283858479" MODIFIED="1323809414764" HGAP="21" MIN_WIDTH="100">
+<node TEXT="Als je in een knoop wilt laten zien dat er sprake is van voortgang, dan kun je gebruik maken van een kleine of grote voortgangsindicator." ID="ID_707469329" CREATED="1323436243939" MODIFIED="1323687803128" HGAP="29" VSHIFT="80" STYLE="fork"/>
+<node TEXT="Small progress (icon)" STYLE_REF="Advanced" ID="ID_1826965169" CREATED="1314283872699" MODIFIED="1323471209694" HGAP="33" VSHIFT="10" MAX_WIDTH="550" MIN_WIDTH="1" STYLE="combined">
 <icon BUILTIN="25%"/>
-<richcontent TYPE="DETAILS">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1268781768" CREATED="1323470955796" MODIFIED="1323809628141" HGAP="-132" VSHIFT="38"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1017,11 +1109,18 @@
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Grote schijf" STYLE_REF="Gevorderde" ID="ID_1080017148" CREATED="1314283905093" MODIFIED="1316330607379">
+</node>
+<node TEXT="Large progress (icon &amp; image)" STYLE_REF="Advanced" ID="ID_1080017148" CREATED="1314283905093" MODIFIED="1323687690886" HGAP="30" VSHIFT="-62" MAX_WIDTH="550" MIN_WIDTH="1" STYLE="combined">
 <icon BUILTIN="0%"/>
 <hook URI="freeplaneresource:/images/svg/Progress_tenth_01.svg" SIZE="1.0" NAME="ExternalObject"/>
-<richcontent TYPE="DETAILS">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+<node ID="ID_522359814" CREATED="1323470998328" MODIFIED="1323687698311" HGAP="-175" VSHIFT="125"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1029,72 +1128,36 @@
   </head>
   <body>
     <p>
-      Een grote schijf is een extern plaatje. Bij een grote schijf kan worden gekozen uit 10% of 25% stappen. Om een externe schijf voor 10% stappen toe te voegen, kies <i>Knoopkenmerken &gt; %Schijf &gt; Schijf met 10% punt.</i>&#160; Om het perccentage met 10% te vergroten dubbelklik op de schijf. Om het percentage met 10% te verkleinen, houdt Ctrl in gedrukt en dubbelklik op het plaatje.
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
-</node>
-<node TEXT="In-line afbeelding" STYLE_REF="Professional" ID="ID_680497355" CREATED="1314282819174" MODIFIED="1316329340431"><richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Ervaren gebruikers kunnen ook met zogenaamde HTML-code plaatjes invoegen. Er is zelfs een script om dit te doen. Raadpleeg hiervoor de handleiding.
-    </p>
-    <p>
-      
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
-</node>
-<node TEXT="Kopieren en plakken knoopkern formaat" STYLE_REF="Gevorderde" ID="ID_1478149178" CREATED="1316702912722" MODIFIED="1316723034391"><richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      De opmaak die geldt voor de hele knoopkern kan worden gekopieerd met<i>&#160; Bewerken &gt; Knoopkern &gt; Kopieren opmaak</i>. En het gekopieerde formaat kan in een andere knoop worden eplakt met <i>Bewerken &gt; Knoopkern &gt; Plakken opmaak..</i>
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
-<node TEXT="Samenvoegen en splitsen knopen (alleen kern)" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_675930201" CREATED="1316669159372" MODIFIED="1316723045806">
-<node TEXT="Splitsen knoop (kern) in twee knopen" STYLE_REF="Gevorderde" ID="ID_86544018" CREATED="1316669216828" MODIFIED="1316723200183"><richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een knooptekst van meerdere regels kan worden verdeeld over aparte knopen door de betreffende knoop te selecteren en het kiezen van menu <i>Bewerken &gt; Knoopkern &gt;Splits knoopkern</i>.
+      Een grote schijf is een extern plaatje. Bij een grote schijf kan worden gekozen uit 10% of 25% stappen. Om een externe schijf voor 10% stappen toe te voegen, kies <i>Bewerken &gt; Knoopkern &gt;&#160;&#160;%Schijf &gt; Schijf met 10% punt.</i>&#160;&#160;Om het perccentage met 10% te vergroten dubbelklik op de schijf. Om het percentage met 10% te verkleinen, houdt Ctrl in gedrukt en dubbelklik op het plaatje.
     </p>
     <p>
       
     </p>
     <p>
-      <b>Opmerking</b>
+      <b>Note</b>
     </p>
     <ul>
       <li>
-        Dit werkt alleen goed bij knopen zonere andere componenten zoals knoopdetails.
+        Er worden twee afbeeldingen getoond. Het kleinste is een pictogram in de knoopkern. Het andere plaatje is een afbeelding in knoopuitbreiding.
+      </li>
+      <li>
+        <b>BELANGRIJK</b>. het grotere plaatje is een .svg file welke niet in het Java Applet wordt getoond !
       </li>
     </ul>
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Samenvoegen twee knopen (kern)" STYLE_REF="Gevorderde" ID="ID_244770286" CREATED="1316669193904" MODIFIED="1316723272163"><richcontent TYPE="DETAILS">
+</node>
+</node>
+<node TEXT="Samenvoegen knoopkernen" STYLE_REF="Professional" FOLDED="true" ID="ID_998103410" CREATED="1316668137651" MODIFIED="1323809403485" HGAP="19" MAX_WIDTH="600" MIN_WIDTH="100" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_795220191" CREATED="1323468276180" MODIFIED="1323809671759" HGAP="-146" VSHIFT="63"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1102,7 +1165,7 @@
   </head>
   <body>
     <p>
-      Om de teksten van de verschillende knopen samen te voegen in &#233;&#233;n knoop, selecteer de knopen en kies menu <i>Bewerken &gt; Knoopdetails &gt; Samenvoegen knoopkernen.</i>
+      Om de teksten van de verschillende knopen samen te voegen in &#233;&#233;n knoop, selecteer de knopen en kies menu <i>Bewerken &gt; Knoopkern &gt; Samenvoegen knoopkernen.</i>
     </p>
     <p>
       
@@ -1118,9 +1181,17 @@
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
 </node>
-<node TEXT="Een wetenschappelijke formule toevoegen (LaTeX)" STYLE_REF="Professional" ID="ID_616494746" CREATED="1314361765668" MODIFIED="1316292731819"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Een knoopkern splitsen" STYLE_REF="Professional" FOLDED="true" ID="ID_247213553" CREATED="1316668117473" MODIFIED="1323809681260" HGAP="19" MAX_WIDTH="600" MIN_WIDTH="100" STYLE="combined">
+<font ITALIC="false"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_497224980" CREATED="1323468073621" MODIFIED="1323809696532" HGAP="-125" VSHIFT="79"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1128,7 +1199,7 @@
   </head>
   <body>
     <p>
-      Het is ook mogelijk een wetenschappelijke formule te tonen. Gebruik heirvoor <i>Knoopkenmerken</i>&#160;&gt;<i>&#160;LaTeX</i>.
+      Een knoopkerntekst van meerdere regels kan worden verdeeld over aparte knopen door de betreffende knoop te selecteren en het kiezen van menu <i>Bewerken &gt; Knoopkern &gt;Splits knoopkern</i>. De actie kan ook via een button in het bewerkingsvenster worden uitgevoerd.
     </p>
     <p>
       
@@ -1136,14 +1207,27 @@
     <p>
       <b>Opmerking</b>
     </p>
-    <p>
-      Lees meer hierover in de Freeplane Handleiding.
-    </p>
+    <ul>
+      <li>
+        Dit werkt alleen goed bij knopen zonder andere componenten zoals knoopdetails.
+      </li>
+      <li>
+        Zie <i>Help &gt; Documentatie</i>&#160;voor details.
+      </li>
+    </ul>
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Berekeningen uitvoeren" STYLE_REF="Professional" ID="ID_448338872" CREATED="1316197624394" MODIFIED="1317663260656" LINK="http://freeplane.sourceforge.net/wiki/index.php/Formula"><richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+<node TEXT="Berekenen" STYLE_REF="Professional" FOLDED="true" ID="ID_448338872" CREATED="1316197624394" MODIFIED="1323809389555" LINK="http://freeplane.sourceforge.net/wiki/index.php/Formula" MIN_WIDTH="100" HGAP="19" VSHIFT="-1" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_60050529" CREATED="1323467815625" MODIFIED="1323688751173" HGAP="-86" VSHIFT="95"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1161,20 +1245,41 @@
     </p>
     <ul>
       <li>
-        Scrips can be used to do calculations over branches, hence emulating spreadsheet like behaviour. Click the red arrow to go to the wiki page where this is explained.
+        Berekeningen werken niet&#160;&#160;alleen gelezen kan worden, zoals bij de help-bestanden van Freeplane en bij publicatie op Internet (Java Applet).
       </li>
       <li>
-        As a standard setting a node core containing a formula is surrouded by a kind of bubble. You can remove this in<i>&#160;View. &gt; Don't mark formula's with a border</i>.
+        Berekeningen kunnen over meerdere knopen gaan. Klik het rode pijltje voor uitleg.
+      </li>
+      <li>
+        Berekeningen worden standaard omlijnd. De omlijning kan worden verwijderd: <i>Beeld &gt; Knoopkern &gt; Markeer formules niet met een rand. </i>
       </li>
     </ul>
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
 </node>
-<node TEXT="Knopen selecteren en verplaatsen" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_272980743" CREATED="1314248580003" MODIFIED="1316293097721" NUMBERED="true">
-<node TEXT="Selecteren" STYLE_REF="Beginner" FOLDED="true" ID="ID_988945254" CREATED="1314248646507" MODIFIED="1316293109133" NUMBERED="true">
-<node TEXT="Automatische selectie" STYLE_REF="Beginner" ID="ID_1387234491" CREATED="1314249066966" MODIFIED="1316293142236" HGAP="65" VSHIFT="29"><richcontent TYPE="DETAILS">
+</node>
+<node TEXT="Selecteren en verplaatsen" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_272980743" CREATED="1314248580003" MODIFIED="1323691983233" NUMBERED="true" MIN_WIDTH="180">
+<node TEXT="Vrij scrollen van de hele mindmap" STYLE_REF="Beginner" FOLDED="true" ID="ID_1577961914" CREATED="1314644535914" MODIFIED="1323767192200" HGAP="19" VSHIFT="22" MIN_WIDTH="1" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node TEXT="Je kunt de hele mindmap vrij verplaatsen door in de achtergrond te klikken en de cursor te slepen." ID="ID_1560196388" CREATED="1323511488363" MODIFIED="1323690797241" HGAP="-180" VSHIFT="21">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Selecteren" STYLE_REF="Beginner" ID="ID_1573267345" CREATED="1323507663956" MODIFIED="1323767168441" MIN_WIDTH="60">
+<node TEXT="Automatisch seleceren" STYLE_REF="Beginner" FOLDED="true" ID="ID_1387234491" CREATED="1314249066966" MODIFIED="1323692021547" VSHIFT="107" MAX_WIDTH="600" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1185537684" CREATED="1323506992696" MODIFIED="1323690544786" HGAP="-120" VSHIFT="35"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1182,30 +1287,22 @@
   </head>
   <body>
     <p>
-      Je kunt een knoop selecteren door er met de muis-
-    </p>
-    <p>
-      cursor overheen te zweven. Na een korte vertraging
-    </p>
-    <p>
-      zal de knoop dan een blauwe rand krijgen ten teken
-    </p>
-    <p>
-      dat de knoop geselecteerd is. Dit heet <b>automatische </b>
-    </p>
-    <p>
-      <b>selectie. </b>Je kunt ook op een knoop klikken om deze
-    </p>
-    <p>
-      te selecteren.
+      Je kunt een knoop selecteren door er met de muiscursor overheen te zweven. Na een korte vertraging zal de knoop dan een blauwe rand krijgen ten teken dat de knoop geselecteerd is. Dit heet <b>automatische selectie. </b>Je kunt ook op een knoop klikken om deze te selecteren.
     </p>
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Automatische selectie vasthouden" STYLE_REF="Beginner" ID="ID_970057223" CREATED="1314248859369" MODIFIED="1316293142244" HGAP="62" VSHIFT="-1">
-<icon BUILTIN="yes"/>
-<richcontent TYPE="DETAILS">
+</node>
+<node TEXT="Selectie vasthouden" STYLE_REF="Beginner" FOLDED="true" ID="ID_970057223" CREATED="1314248859369" MODIFIED="1323690562851" HGAP="22" VSHIFT="-1" MAX_WIDTH="550" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<edge STYLE="bezier" COLOR="#33ffcc"/>
+<node ID="ID_299898759" CREATED="1323507254371" MODIFIED="1323809843968" HGAP="-105" VSHIFT="30"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1213,22 +1310,20 @@
   </head>
   <body>
     <p>
-      Het automatisch selecteren van een knoop kan in
-    </p>
-    <p>
-      sommige gevallen onhandig zijn. Je kunt het
-    </p>
-    <p>
-      geselecteerd zijn van een knoop vasthouden door
-    </p>
-    <p>
-      bij het bewegen de <i>Shift</i>&#160;toets ingedrukt te houden.
+      Het automatisch selecteren van een knoop kan in sommige gevallen onhandig zijn. Je kunt het geselecteerd zijn van een knoop vasthouden door bij het bewegen de <i>Shift</i>&#160;toets ingedrukt te houden.
     </p>
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+<edge STYLE="hide_edge"/>
 </node>
-<node TEXT="Ga naar de stamknoop" STYLE_REF="Beginner" ID="ID_1316263866" CREATED="1314249586526" MODIFIED="1316293142247" HGAP="59"><richcontent TYPE="DETAILS">
+</node>
+<node TEXT="Esc naar stamknoop" STYLE_REF="Beginner" FOLDED="true" ID="ID_1316263866" CREATED="1314249586526" MODIFIED="1323690715216" HGAP="24" VSHIFT="-105" MAX_WIDTH="550" MIN_WIDTH="1" STYLE="combined">
+<edge STYLE="bezier"/>
+<node ID="ID_279008116" CREATED="1323507943923" MODIFIED="1323809848336" HGAP="-106" VSHIFT="25"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1236,21 +1331,48 @@
   </head>
   <body>
     <p>
-      Bij een grote mindmap kun je gemakkelijk&#160;
-    </p>
-    <p>
-      verdwalen. Om in die situatie de stamknoop terug te
-    </p>
-    <p>
-      vinden, druk op <i>Escape</i>.
+      Bij een grote mindmap kun je gemakkelijk&#160;verdwalen. Om in die situatie de stamknoop terug te vinden, druk op <i>Escape</i>.
     </p>
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
 </node>
-<node TEXT="Verplaatsen" STYLE_REF="Beginner" FOLDED="true" ID="ID_1560992291" CREATED="1314248654564" MODIFIED="1316293109142" NUMBERED="true">
-<node TEXT="Verplaatsen in de ruimte" STYLE_REF="Beginner" ID="ID_293115184" CREATED="1314249849956" MODIFIED="1316293478461" HGAP="70" VSHIFT="30"><richcontent TYPE="DETAILS">
+</node>
+<node TEXT="Verplaatsen" STYLE_REF="Beginner" ID="ID_1560992291" CREATED="1314248654564" MODIFIED="1323767095714" MAX_WIDTH="600" MIN_WIDTH="60">
+<node TEXT="Een knoop verschuiven" STYLE_REF="Beginner" FOLDED="true" ID="ID_293115184" CREATED="1314249849956" MODIFIED="1323692025759" HGAP="16" VSHIFT="2" MAX_WIDTH="550" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node TEXT="Je kunt een knoop verplaatsen maar de verbinding met andere knopen in takt laten. Hiervoor moet je de verplaatsingshandel van de te verplaatsen knoop zoeken. Deze bevindt zich aan de ouderzijde. Zweef met de cursor over de ouderzijde en wacht tot het ovaaltje verschijnt. Klik vervolgens op het ovaaltje en sleep de knoop naar de gewenste positie." ID="ID_1319283887" CREATED="1323510779368" MODIFIED="1323809856822" HGAP="-121" VSHIFT="45">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Een knoop verplaatsen in de hierarchie" STYLE_REF="Beginner" FOLDED="true" ID="ID_125921821" CREATED="1314250124540" MODIFIED="1323692043481" HGAP="17" VSHIFT="-2" MAX_WIDTH="550" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node TEXT="Om een knoop los te maken van zijn ouder en aan een andere knoop vast te maken, klik en sleep de knoop naar zijn nieuwe ouder. In mijn kinderen kun je lezen dat het verschil maakt op welk punt van de doelknoop je de gesleepte knoop laat vallen. Je kunt kindknopen ook verplaatsen door deze te sorteren." FOLDED="true" ID="ID_1599927930" CREATED="1323510888467" MODIFIED="1323809869521" HGAP="-211" VSHIFT="37">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+<node TEXT="video illustratie" ID="ID_760768670" CREATED="1322820636797" MODIFIED="1323690953834" LINK="https://www.youtube.com/watch?v=0xkUzsd4naA" HGAP="30" VSHIFT="10" MIN_WIDTH="1">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+</node>
+</node>
+</node>
+<node TEXT="Dropping positions" STYLE_REF="Beginner" FOLDED="true" ID="ID_1039655261" CREATED="1314250309213" MODIFIED="1323692049799" HGAP="17" MAX_WIDTH="600" MIN_WIDTH="1" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_786303568" CREATED="1323511320373" MODIFIED="1323809880721" HGAP="-95" VSHIFT="79" MIN_WIDTH="80"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1258,64 +1380,7 @@
   </head>
   <body>
     <p>
-      Je kunt een knoop verplaatsen maar de verbinding met andere knopen in takt laten. Hiervoor moet je de verplaatsingshandel van de te verplaatsen knoop zoeken. Deze bevindt zich aan de ouderzijde. Zweef met
-    </p>
-    <p>
-      de cursor over de ouderzijde en wacht tot het ovaaltje verschijnt. Klik vervolgens op het ovaaltje en sleep de knoop naar de gewenste positie.
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
-<node TEXT="Verplaatsen in de hierarchie" STYLE_REF="Beginner" FOLDED="true" ID="ID_125921821" CREATED="1314250124540" MODIFIED="1316293202612" HGAP="70" VSHIFT="-10"><richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een knoop los te maken van zijn ouder en
-    </p>
-    <p>
-      aan een andere knoop vast te maken, klik en
-    </p>
-    <p>
-      sleep de knoop naar zijn nieuwe ouder. In mijn
-    </p>
-    <p>
-      kinderen kun je lezen dat het verschil maakt
-    </p>
-    <p>
-      op welk punt van de doelknoop je de gesleepte
-    </p>
-    <p>
-      knoop laat vallen.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Je kunt ook kindknopen verplaatsen door deze
-    </p>
-    <p>
-      te sorteren.
-    </p>
-  </body>
-</html>
-</richcontent>
-<node TEXT="Valposities" STYLE_REF="Beginner" ID="ID_1039655261" CREATED="1314250309213" MODIFIED="1316293503373"><richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Elke knoop heeft twee posities waar je een gesleepte knoop kunt laten
-    </p>
-    <p>
-      vallen.
+      Elke knoop heeft twee posities waar je een gesleepte knoop kunt laten &quot;vallen&quot;:
     </p>
     <ol>
       <li>
@@ -1329,16 +1394,21 @@
       <b>Opmerking</b>
     </p>
     <p>
-      Bij de stamknoop kun je een gesleepte knoop zowel aan de linkerzijde als
-    </p>
-    <p>
-      aan de rechterzijde loslaten.
+      Bij de stamknoop kun je een gesleepte knoop zowel aan de linkerzijde als aan de rechterzijde loslaten.
     </p>
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Knopen sorteren" STYLE_REF="Gevorderde" ID="ID_1014457432" CREATED="1314338769195" MODIFIED="1316293508378"><richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+<node TEXT="Verplaatsen groepsknoop (accollade)" STYLE_REF="Advanced" FOLDED="true" ID="ID_1040002877" CREATED="1316181690861" MODIFIED="1323692128922" HGAP="18" VSHIFT="-1" MAX_WIDTH="600" MIN_WIDTH="1" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1239614830" CREATED="1323511365121" MODIFIED="1323809889192" HGAP="-202" VSHIFT="78"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1346,56 +1416,33 @@
   </head>
   <body>
     <p>
-      De kindknopen van de geselecteerde knoop kun je alfabetisch sorteren op
-    </p>
-    <p>
-      de tekst van de knooptitel. Kies hiervoor <i>Knoop &gt; Sorteren kindknopen</i>.
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
-</node>
-<node TEXT="Vrij scrollen van de mindmap" STYLE_REF="Beginner" ID="ID_1577961914" CREATED="1314644535914" MODIFIED="1316293437121" HGAP="70" VSHIFT="-20"><richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Je kunt de hele mindmap vrij verplaatsen door in de achtergrond te klikken en de cursor te slepen.
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
-<node TEXT="Een knoopgroep verplaatsen" STYLE_REF="Gevorderde" ID="ID_1013945137" CREATED="1316293554120" MODIFIED="1316293792946"><richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Om een groep knopen te verplaatsen moet je alle knopen, inculsief de knoopgroep verplaatsen:
+      Om een groep knopen te verplaatsen moet je alle knopen, inculsief de knoop achter de accollade, selecteren en verplaatsen:
     </p>
     <p>
       
     </p>
     <ol>
       <li>
-        Selecteer de knoopgroep: Houd <i>Shift</i>&#160;ingedrukt en selecteer de eerste knoop van de groep en dan de knoopgroep.
+        Selecteer de knoopgroep: Houd <i>Shift</i>&#160;ingedrukt en selecteer de eerste knoop van de groep en dan de knoopgroep. (Bij een accolade, selecteer ook de knoop achter de accollade; houdt zo nodig Ctrl-ingedrukt)
       </li>
       <li>
-        Met <i>Shift</i>&#160;nog steeds ingedrukt: sleep de groep naar zijn niewe bestemming.
+        Met <i>Shift</i>&#160;nog steeds ingedrukt: sleep de groep naar zijn nieuwe bestemming.
       </li>
     </ol>
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Een vrije knoop maken en verplaatsen" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_363670846" CREATED="1317136338338" MODIFIED="1318623111896" VGAP="0"><richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+</node>
+<node TEXT="Knopen sorteren" STYLE_REF="Advanced" FOLDED="true" ID="ID_1014457432" CREATED="1314338769195" MODIFIED="1323767189907" HGAP="18" VSHIFT="-18" MAX_WIDTH="600" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_915226922" CREATED="1323511424855" MODIFIED="1323691750107" HGAP="-85" VSHIFT="30"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1403,32 +1450,33 @@
   </head>
   <body>
     <p>
-      Een vrije beweegbare knoop of vrije knoop is een knoop die kan worden verplaatst zonder dat dit de positie van de andere knopen beinvloedt. Een vrije knoop is te herkennen aan een blauw gevuld ovaaltje in plaats van een rood open ovaaltje waaraan de knoop kan worden versleept.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Een vrije knoop kan worden gemaakt door op een vrije plek van de mindmap te dubbelklikken. De nieuw gegenereerde knoop krijgt als standaard de systeemstijl <i>Vrije knoop</i>&#160;met als eigenschappen een wolk en een verborgen tak (lijn). De knoop is onzichtbaar verbonden met de stamknoop.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Een bestaande knoop kan worden omgezet in een vrije knoop (en v.v.) door de knoop te selecteren en <i>Edit&#160;&#160;&gt; Vrij beweegbare knoop</i>&#160;te kiezen. In dit geval wordt niet automatisch een wolk toegevoegd of de tak verborgen.&#160;&#160;De knoop wordt op zijn ouder geplaatst en kan vandaar naar elke positie worden bewogen. Als de ouder wordt dichtgevouwen, wordt de vrije knoop onzichtbaar.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Als een vrije knoop op een andere knoop wordt gesleept, gedraagt de knoop zich weer als normale knoop.
+      De kindknopen van de geselecteerde knoop kun je alfabetisch sorteren op de tekst van de knooptitel. Kies hiervoor Bewerken<i>&#160;&gt; Verplaatsen en sorteren</i>.
     </p>
   </body>
 </html>
 </richcontent>
-<node TEXT="Vrije knoop" LOCALIZED_STYLE_REF="defaultstyle.floating" ID="ID_1957899877" CREATED="1317754935782" MODIFIED="1318622778426" HGAP="260" VSHIFT="-1">
-<hook NAME="FreeNode"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
+</node>
+<node TEXT="Relaties en groepen" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_215646874" CREATED="1314109445053" MODIFIED="1323694436026" NUMBERED="true" MIN_WIDTH="180">
+<node TEXT="Tak" STYLE_REF="Beginner" FOLDED="true" ID="ID_1492225657" CREATED="1314162236991" MODIFIED="1323809937740" VSHIFT="201" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node TEXT="Een tak (&quot;edge&quot;) is een afstammingslijn tussen twee knopen. Het is mogelijk de vorm van de tak (buiging, dikte, kleur) te veranderen. Ga hiervoor naar het opmaakpaneel, zie onder." ID="ID_751107880" CREATED="1323514479284" MODIFIED="1323809959424" HGAP="-13" VSHIFT="30">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Verbindingslijn" STYLE_REF="Beginner" FOLDED="true" ID="ID_1073407528" CREATED="1314129123086" MODIFIED="1323693539804" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1649729730" CREATED="1323514507513" MODIFIED="1323809964244" HGAP="-75" VSHIFT="135"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1436,54 +1484,13 @@
   </head>
   <body>
     <p>
-      Zweef met de cursor over mijn linker zijde en
-    </p>
-    <p>
-      zie het blauwe ovaaltje.
-    </p>
-    <p>
-      Sleep mij rond aan dit blauwe ovaaltje.
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
-</node>
-</node>
-</node>
-<node TEXT="Knopen relateren en groeperen" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_215646874" CREATED="1314109445053" MODIFIED="1316293891297" NUMBERED="true">
-<node TEXT="Bewerken afstammingslijnen en takken" STYLE_REF="Beginner" ID="ID_1492225657" CREATED="1314162236991" MODIFIED="1317049270626" VSHIFT="-18"><richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Je kunt de buiging, de kleur en de dikte van afstamminglijnen veranderen en je kunt de lijnen verbergen. De plaats om dit te doen is in het <b>opmaakpaneel</b>, zie onder, of inhet menu <i>Opmaken</i>.
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
-<node TEXT="Verbindingslijnen" STYLE_REF="Beginner" FOLDED="true" ID="ID_1073407528" CREATED="1314129123086" MODIFIED="1317049317847" VSHIFT="-10"><richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een verbindingslijn is een lijn tussen twee willekeurige knopen welke geen afstammingslijn is. Om een verbindingslijn te maken, selecteer twee knopen en kies<i>&#160;Knoop &gt; Toevoegen verbindingslijn.</i>
+      Een verbindingslijn is een lijn tussen twee willekeurige knopen welke geen afstammingslijn is. Om een verbindingslijn te maken, selecteer twee knopen, rechtklik op &#233;&#233;n van beide en kies<i>Toevoege n verbindingslijn.</i>
     </p>
     <p>
       
     </p>
     <p>
-      De buiging van een verbindingslijn kan worden veranderd door op de lijn te klikken en de lijn te slepen. Het slepen kan aan de lijn zelf of aan twee hulplijnen die aan de uiteinden verschijnen. De opmaak van een verbindingslijn kan worden aangepast door op de lijn te rechtsklikken. Er verschijnt dan een <b>contextmenu</b>&#160;waarin ook <b>tekstlabels</b>&#160; kunnen worden ingevoerd die in het midden of aan de uiteinden van
-    </p>
-    <p>
-      de verdingslijn verschijnen.
+      De buiging van een verbindingslijn kan worden veranderd door op de lijn te klikken en de lijn te slepen. Het slepen kan aan de lijn zelf of aan twee hulplijnen die aan de uiteinden verschijnen. De opmaak van een verbindingslijn kan worden aangepast door op de lijn te rechtsklikken. Er verschijnt dan een <b>contextmenu</b>&#160;waarin ook <b>tekstlabels</b>&#160; kunnen worden ingevoerd die in het midden of aan de uiteinden van de verdingslijn verschijnen.
     </p>
     <p>
       
@@ -1493,7 +1500,7 @@
     </p>
     <ul>
       <li>
-        Om twee of meer knopen tegelijkertijd te selecteren: houdt <i>Ctrl</i>&#160; of <i>Shift</i>&#160;ingedrukt bij het selecteren van de knopen..
+        Om twee of meer knopen tegelijkertijd te selecteren: houdt <i>Ctrl</i>&#160;&#160;of <i>Shift</i>&#160;ingedrukt bij het selecteren van de knopen.
       </li>
       <li>
         Vergeet na het invoeren van een tekstlabel niet om op <i>Enter</i>&#160;te drukken.
@@ -1502,15 +1509,25 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="a" STYLE_REF="BeginnerOnderwerp" FOLDED="true" ID="ID_1328399304" CREATED="1314130936565" MODIFIED="1316294034701">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+<node TEXT="a" ID="ID_1328399304" CREATED="1314130936565" MODIFIED="1323517469534" HGAP="25" STYLE="as_parent">
+<edge STYLE="hide_edge"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_581303769" MIDDLE_LABEL="label" STARTINCLINATION="9;-23;" ENDINCLINATION="-28;-89;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<node TEXT="b" STYLE_REF="BeginnerOnderwerp" FOLDED="true" ID="ID_273400211" CREATED="1314130940427" MODIFIED="1317049106061">
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_273400211" MIDDLE_LABEL="lijn of pijl&#xa;zonder begin-&#xa;knoop" STARTINCLINATION="76;68;" ENDINCLINATION="76;68;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<node TEXT="c" STYLE_REF="BeginnerOnderwerp" ID="ID_581303769" CREATED="1314130942275" MODIFIED="1316294034706"/>
+<node TEXT="b" ID="ID_273400211" CREATED="1314130940427" MODIFIED="1323517479815">
+<edge STYLE="bezier"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_273400211" MIDDLE_LABEL="connector&#xa;without&#xa;begin" STARTINCLINATION="19;86;" ENDINCLINATION="19;86;" STARTARROW="NONE" ENDARROW="NONE"/>
+<node TEXT="c" ID="ID_581303769" CREATED="1314130942275" MODIFIED="1314130945036"/>
 </node>
 </node>
 </node>
-<node TEXT="Groepsknoop met accolade" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_1700918771" CREATED="1314129783832" MODIFIED="1317049283215"><richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+<node TEXT="Knoopgroep met accollade" STYLE_REF="Advanced" FOLDED="true" ID="ID_1700918771" CREATED="1314129783832" MODIFIED="1323694206003" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_651594550" CREATED="1323514659262" MODIFIED="1323809976365" HGAP="-139" VSHIFT="87"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1518,7 +1535,7 @@
   </head>
   <body>
     <p>
-      Een groep zusknopen kan door een accolade worden verbonden. De knoop achter de accolade wordt groepsknoop genoemd. Selecteer de zussen van de groep en kies vervolgens <i>Knoop &gt; Nieuwe groepsknoop</i>.
+      Een groep zusknopen kan door een accolade worden verbonden. De knoop achter de accolade wordt groepsknoop genoemd. Selecteer de zussen van de groep, rechtsklik op een van de geselecteerde knopen en kies vervolgens <i>Knoopgroep met accollade toevoegen.</i>
     </p>
     <p>
       
@@ -1531,22 +1548,30 @@
     </p>
     <ul>
       <li>
-        &#160;Er zijn geavanceerde functies met betrekking tot de groepsknoop. Raadpleeg hiervoor de Handleiding.
+        &#160;Er zijn geavanceerde functies met betrekking tot de groepsknoop, zie <i>Bewerken &gt; Knoopgroep.</i>&#160;&#160;Raadpleeg hiervoor<i>&#160;Help &gt; Handleiding</i>.
       </li>
     </ul>
   </body>
 </html>
 </richcontent>
-<node TEXT="a" STYLE_REF="GevorderdeOnderwerp" ID="ID_902940862" CREATED="1314130883345" MODIFIED="1316294075747">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+<node TEXT="a" STYLE_REF="AdvancedTopic" ID="ID_902940862" CREATED="1314130883345" MODIFIED="1316165216808">
 <hook NAME="FirstGroupNode"/>
 </node>
-<node TEXT="b" STYLE_REF="GevorderdeOnderwerp" ID="ID_303013117" CREATED="1314130889936" MODIFIED="1316294075755"/>
-<node TEXT="c" STYLE_REF="GevorderdeOnderwerp" ID="ID_1837144570" CREATED="1314130892393" MODIFIED="1316294075758" VSHIFT="-9"/>
-<node TEXT="Groepsknoop" STYLE_REF="GevorderdeOnderwerp" ID="ID_460668684" CREATED="1314130905124" MODIFIED="1316294075762">
+<node TEXT="b" STYLE_REF="AdvancedTopic" ID="ID_303013117" CREATED="1314130889936" MODIFIED="1316165216824"/>
+<node TEXT="c" STYLE_REF="AdvancedTopic" ID="ID_1837144570" CREATED="1314130892393" MODIFIED="1316165216824" VSHIFT="-9"/>
+<node TEXT="Summary node" STYLE_REF="AdvancedTopic" ID="ID_460668684" CREATED="1314130905124" MODIFIED="1316165216824">
 <hook NAME="SummaryNode"/>
 </node>
 </node>
-<node TEXT="Groep knopen binnen een wolk" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_1150908697" CREATED="1314130460475" MODIFIED="1316294112943"><richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+<node TEXT="Knoopgroep met wolk" STYLE_REF="Advanced" FOLDED="true" ID="ID_1150908697" CREATED="1314130460475" MODIFIED="1323694233834" VSHIFT="-195" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1862713604" CREATED="1323514733122" MODIFIED="1323809984805" HGAP="-115" VSHIFT="37"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1554,23 +1579,42 @@
   </head>
   <body>
     <p>
-      De samenhang van een ouderknoop en zijn kindknopen kan worden geaccentueerd door een gemeenschappelijke achtergrondkleur, een <b>wolk</b>. Selecteer hiervoor de ouderknoop en kies <i>Knoop &gt; Toevoegen wolk. </i>De eigenschappen van een wolk kunnen worden ingesteld in het opmaakpaneel, zie onder.
+      De samenhang van een ouderknoop en zijn kindknopen kan worden geaccentueerd door een gemeenschappelijke achtergrondkleur, een <b>wolk</b>. Rechtsklik de ouderknoop en kies <i>Toevoegen wolk. </i>De eigenschappen van een wolk kunnen worden ingesteld in het opmaakpaneel, zie onder.
+    </p>
+    <p>
+      
     </p>
   </body>
 </html>
 </richcontent>
-<node TEXT="wolk a" STYLE_REF="GevorderdeOnderwerp" FOLDED="true" ID="ID_1742435994" CREATED="1314130827910" MODIFIED="1316294131909" HGAP="30">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+<node TEXT="wolk a" STYLE_REF="AdvancedTopic" ID="ID_1742435994" CREATED="1314130827910" MODIFIED="1323694337137" VSHIFT="15">
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <node TEXT="b" ID="ID_1270291744" CREATED="1314130833239" MODIFIED="1314130836016"/>
 <node TEXT="c" ID="ID_1022872809" CREATED="1314130837348" MODIFIED="1314130840017"/>
 </node>
-<node TEXT="wolk b" STYLE_REF="GevorderdeOnderwerp" FOLDED="true" ID="ID_539843005" CREATED="1314208596772" MODIFIED="1316294131916" HGAP="30" VSHIFT="-9">
+<node TEXT="wolk b" STYLE_REF="AdvancedTopic" ID="ID_539843005" CREATED="1314208596772" MODIFIED="1323694345202" HGAP="30" VSHIFT="-9">
 <cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
 <node TEXT="e" ID="ID_249943796" CREATED="1314208605486" MODIFIED="1314208607670"/>
 <node TEXT="f" ID="ID_1428582117" CREATED="1314208608472" MODIFIED="1314208611937"/>
 </node>
-<node TEXT="Toevoegen wolk" STYLE_REF="GevorderdeOnderwerp" ID="ID_649516172" CREATED="1310106596579" MODIFIED="1316294131919" TEXT_SHORTENED="true">
+<node STYLE_REF="AdvancedTopic" ID="ID_649516172" CREATED="1310106596579" MODIFIED="1323694370069" TEXT_SHORTENED="true">
 <icon BUILTIN="../Cloud24"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      icon-button for <i>Add default cloud</i>
+    </p>
+  </body>
+</html>
+</richcontent>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
@@ -1578,16 +1622,22 @@
     
   </head>
   <body>
+    <p>
+      Find this icon button in the toolbar
+    </p>
   </body>
 </html>
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
 </node>
 </node>
-<node TEXT="Koppelingen maken" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_114835202" CREATED="1314284617264" MODIFIED="1318619748320" NUMBERED="true" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+</node>
+<node TEXT="Kopelingen (Hyperlinks)" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_114835202" CREATED="1314284617264" MODIFIED="1323696055168" NUMBERED="true" MIN_WIDTH="180">
+<node ID="ID_55001637" CREATED="1323100759475" MODIFIED="1323696035153" VSHIFT="40"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1595,55 +1645,18 @@
   </head>
   <body>
     <p>
-      Een dynamische koppeling is een electronische verbinding van een bronknoop naar een bestemming. De bestemming kan een map, bestand, webpagina, applicatie, e-mail, enz. zijn. De koppeling is in de bronknoop zichtbaar als onderstreepte tekst, een <b>rood pijltje</b>&#160;(externe&#160;hyperlink) of <b>groen pijltje</b>&#160;(interne snelkoppeling), <b>e-mail pictogram</b>. Een knoop kan meerdere onderstreepte hyperlinks hebben en &#233;&#233;n pijl- of e-mail-hyperlink. Daarnaast kunnen knoopattributen meerdere hyperlinks (&#233;&#233;n per attribuut) bevatten.
+      Een dynamische koppeling is een electronische verbinding van een bronknoop naar een bestemming. De bestemming kan een map, bestand, webpagina, applicatie, e-mail, enz. zijn. De koppeling is in de bronknoop zichtbaar als onderstreepte tekst, een <b>rood pijltje</b>&#160;(externe&#160;hyperlink) of <b>groen pijltje</b>&#160;(interne snelkoppeling), of <b>e-mail pictogram</b>. Een knoop kan meerdere onderstreepte hyperlinks hebben en &#233;&#233;n pijl- of e-mail-hyperlink. Daarnaast kunnen knoopattributen meerdere hyperlinks (&#233;&#233;n per attribuut) bevatten. Het is ook mogelijk vanuit een andere mindmap of programma naar een bepaalde knoop te linken.
     </p>
-  </body>
-</html>
-</richcontent>
-<node STYLE_REF="Beginner" ID="ID_241324782" CREATED="1315336877701" MODIFIED="1318620808254"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <a href="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch">Onderstreepte koppeling</a>
-    </p>
-  </body>
-</html>
-</richcontent>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      In de knoopkern, knoopdetails en in een Notitie kun je een koppeling naar een interne of externe bestemming maken zolas je dit in bijvoorbeeld Word doet. Je opent de knoop in een venster, selecteert een tekstdeel en kiest in het menu van het bewerkingsvenster <i>Bewerken &gt; Kiezen koppeling</i>&#160;of <i>&#160;Bewerken.&gt; Koppeling typen of wijzigen.</i>&#160; In het venster dat opent kun je het adres van de koppeling typen of een gekopieerd adres te plakken door op <i>Ctrl + V </i>te drukken..
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b>Opmerking</b>
-    </p>
-    <ul>
-      <li>
-        De tekst van de koppeling kan worden bewerkt zonder dat de link (het adres) verandert. Met de menus van het dialoogvenster kan de formattering (kleur, grootte) worden gewijzigd.
-      </li>
-      <li>
-        Het adres van de link kan worden bewerkt door de hele onderstreepte tekst te selecteren en dan <i>Bewerken.&gt; Koppeling typen of wijzigen </i>te kiezen.&#160;
-      </li>
-    </ul>
   </body>
 </html>
 </richcontent>
 </node>
-<node TEXT="Pijl-hyperlink (rood pijltje)" STYLE_REF="Beginner" ID="ID_640110372" CREATED="1286651969385" MODIFIED="1318620496519" LINK="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch">
+<node TEXT="Externe koppeling" STYLE_REF="Beginner" FOLDED="true" ID="ID_640110372" CREATED="1286651969385" MODIFIED="1323696207713" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane" STYLE="combined">
 <attribute_layout NAME_WIDTH="82" VALUE_WIDTH="161"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1913035829" CREATED="1323512829161" MODIFIED="1323810025396" HGAP="-91" VSHIFT="152"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1682,8 +1695,16 @@
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Pijl-snelkoppeling (groen pijltje)" STYLE_REF="Beginner" ID="ID_1942100751" CREATED="1314360169447" MODIFIED="1318620505770" LINK="#ID_86446891"><richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+<node TEXT="Interne koppeling" STYLE_REF="Beginner" FOLDED="true" ID="ID_1942100751" CREATED="1314360169447" MODIFIED="1323696231659" LINK="#ID_86446891" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1830541497" CREATED="1323512880196" MODIFIED="1323810037299" HGAP="-106" VSHIFT="88"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1691,7 +1712,7 @@
   </head>
   <body>
     <p>
-      Een koppeling&#160;&#160;tussen twee knopen is als een groen pijltje zichtbaar in &#233;&#233;n van beide knopen, de bronknoop. Als op het pijltje wordt geklikt verschuift de focus naar de andere knoop. Deze koppeling kan worden ingesteld door met <i>Ctrl</i>&#160;ingedrukt eerst de bronknoop en dan de bestemmingsknoop te selecteren. Kies vervolgens, met beide knopen geselecteerd, menu <i>Knoopkenmerken &gt; Koppeling &gt; Snelkoppeling naar andere knoop</i>.
+      Een koppeling&#160;&#160;tussen twee knopen is als een groen pijltje zichtbaar in &#233;&#233;n van beide knopen, de bronknoop. Als op het pijltje wordt geklikt verschuift de focus naar de andere knoop. Deze koppeling kan worden ingesteld door met <i>Ctrl</i>&#160;ingedrukt eerst de bronknoop te selecteren en dan de bestemmingsknooprechtsklikken. Kies vervolgens<i>&#160;Koppeling &gt; Snelkoppeling naar andere knoop</i>.
     </p>
     <p>
       
@@ -1701,7 +1722,7 @@
     </p>
     <ul>
       <li>
-        kies <i>Koppeling &gt; Koppeling typen of wijzigen... </i>of druk<i>&#160;Ctrl + K; en</i>
+        rechtsklik op de knoop en kies <i>Koppeling &gt; Koppeling typen of wijzigen... </i>of druk<i>&#160;Ctrl + K; en</i>
       </li>
       <li>
         verwijder de tekst (het adres) in het tekstveld
@@ -1710,8 +1731,16 @@
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Email koppeling" STYLE_REF="Gevorderde" ID="ID_869144882" CREATED="1270892460675" MODIFIED="1318620534583" LINK="mailto:%20jokro@freeplane.nl"><richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+<node TEXT="Email koppeling" STYLE_REF="Professional" FOLDED="true" ID="ID_869144882" CREATED="1270892460675" MODIFIED="1323696417440" LINK="mailto:%20jokro@freeplane.nl">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1480409284" CREATED="1323512986970" MODIFIED="1323810043711" HGAP="-95" VSHIFT="147"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1731,7 +1760,7 @@
       
     </p>
     <p>
-      Om een email-koppeling in een bepaalde knoop te maken, kies <i>Knoopkenmerken &gt; Koppeling &gt; Typen of wijzigen koppeling. </i>Type in het tekstveld:
+      Om een email-koppeling in een bepaalde knoop te maken, rechtsklik de knoop en kies <i>Koppeling &gt; Typen of wijzigen koppeling. </i>Type in het tekstveld:
     </p>
     <p>
       
@@ -1752,16 +1781,18 @@
         kies <i>Koppeling &gt; Koppeling typen of wijzigen... </i>of druk<i>&#160;Ctrl + K; en</i>
       </li>
       <li>
-        verwijder de tekst (het adres) in het tekstveld
+        verwijder de tekst (het adres) in het tekstveld.
       </li>
     </ul>
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Koppeling (pijltje)  in attribuut" STYLE_REF="Gevorderde" ID="ID_457929879" CREATED="1312540477537" MODIFIED="1316294963842">
-<attribute_layout NAME_WIDTH="48" VALUE_WIDTH="101"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+<node STYLE_REF="Professional" FOLDED="true" ID="ID_241324782" CREATED="1315336877701" MODIFIED="1323697099192"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1769,13 +1800,15 @@
   </head>
   <body>
     <p>
-      Een koppeling in een attribuutwaarde wordt hieronder besproken.
+      . <a href="https://sourceforge.net/apps/phpbb/freeplane/viewforum.php?f=1">Onderstreepte hyperlinks</a>&#160;.
     </p>
   </body>
 </html>
 </richcontent>
-</node>
-<node TEXT="Koppeling naar menu item" STYLE_REF="Professional" ID="ID_350080162" CREATED="1314359739019" MODIFIED="1318620555659"><richcontent TYPE="DETAILS" HIDDEN="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1356533861" CREATED="1323512914336" MODIFIED="1323810056534" HGAP="-140" VSHIFT="178"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1783,7 +1816,49 @@
   </head>
   <body>
     <p>
-      Een bijzondere vorm van een sneltoets is een knoop die je kunt klikken om een specifiek menu item te kiezen. Kies <i>Knoopkenmerken &gt; Koppeling &gt; Snelkoppeling naar menutoegang</i>&#160;om deze link te definieren.
+      In de knoopkern, knoopdetails en in een Notitie kun je een koppeling naar een interne of externe bestemming maken zolas je dit in bijvoorbeeld Word doet. Je opent de knoop in een venster, selecteert een tekstdeel en kiest in het menu van het bewerkingsvenster <i>Bewerken &gt; Kiezen koppeling</i>&#160;of <i>&#160;Bewerken.&gt; Koppeling typen of wijzigen.</i>&#160; In het venster dat opent kun je het adres van de koppeling typen of een gekopieerd adres te plakken door op <i>Ctrl + V </i>te drukken. voorbeeld van een koppeling: <a href="https://sourceforge.net/apps/phpbb/freeplane/viewforum.php?f=1"><font color="#ff0000"><i>Deze</i></font>&#160;koppeling</a>&#160;brengt je naar het Freeplane Open Forum.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Opmerking</b>
+    </p>
+    <ul>
+      <li>
+        De tekst van de koppeling kan worden bewerkt zonder dat de link (het adres) verandert. Met de menus van het dialoogvenster kan de formattering (kleur, grootte) worden gewijzigd.
+      </li>
+      <li>
+        Het adres van de link kan worden bewerkt door de hele onderstreepte tekst te selecteren en dan <i>Bewerken.&gt; Koppeling typen of wijzigen </i>te kiezen.&#160;
+      </li>
+      <li>
+        Als een knoopkern alleen een onderstreepte koppeling heeft, dan is open/dichtvouwen lastig. Plaats een punt met een of meer spaties aan het begin en eind om ruimte te make waar kan worden geklikt zonder dat de hyperlink opent.
+      </li>
+      <li>
+        Als een hyperlink aan het begin of eind van de tekst wordt geplaatst, dan is het niet mogelijk om later nog tekst voor resp. achter de hyperlink toe te voegen (alleen door naar het HTML-venster te gaan). Zorg dus dat er voor en achter een hyperlink altijd een of meer niet-hyperlink tekens staan (spaties tellen niet mee).
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Hyperlink naar menu" STYLE_REF="Professional" FOLDED="true" ID="ID_350080162" CREATED="1314359739019" MODIFIED="1323697235817" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1108178356" CREATED="1323513038412" MODIFIED="1323810066268" HGAP="-107" VSHIFT="79"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een bijzondere vorm van een sneltoets is een knoop die je kunt klikken om een specifiek menu item te kiezen. Rechtsklik een knoop en kies <i>Koppeling &gt; Snelkoppeling naar menutoegang</i>&#160;om deze link te definieren.
     </p>
     <p>
       <i>. </i>
@@ -1802,8 +1877,16 @@
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Sneltoetsen en F-toetsen" STYLE_REF="Professional" ID="ID_1819697018" CREATED="1314526511158" MODIFIED="1316295033417"><richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+<node TEXT="F-toetsen en andere sneltoesen" STYLE_REF="Professional" FOLDED="true" ID="ID_1819697018" CREATED="1314526511158" MODIFIED="1323697357576" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_116460964" CREATED="1323513079714" MODIFIED="1323810074801" HGAP="-171" VSHIFT="93"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1825,20 +1908,76 @@
     <p>
       Om een bewaarde set later te hergebruiken, kies<i>&#160;Extra &gt; Sneltoetsenset </i>en kies de naam waaronder je de set eerder hebt bewaard.&#160;
     </p>
-    <p>
-      
-    </p>
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
 </node>
-<node TEXT="Opmaken en stijlen" STYLE_REF="Gevorderde" FOLDED="true" POSITION="right" ID="ID_1778719162" CREATED="1291143603918" MODIFIED="1316295367693" NUMBERED="true">
+<node TEXT="Koppeling van buiten naar een bepaalde knoop" STYLE_REF="Professional" FOLDED="true" ID="ID_1418102707" CREATED="1322224946352" MODIFIED="1323810143349" STYLE="combined" HGAP="18" VSHIFT="-57">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_822375535" CREATED="1323513104618" MODIFIED="1323810088327" HGAP="-253" VSHIFT="138"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om vanuit een andere mindmap naar een bepaalde knoop in een bepaalde mindmap te springen, voeg in het hyperlinkadres achter de filenaam een '#' en het knoopID toe: doelmap.mm#knooID
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Om het knoopID the bepalen:
+    </p>
+    <ul>
+      <li>
+        Rechtsklik op de knoop
+      </li>
+      <li>
+        Kies <i>Kopieer knoopID</i>
+      </li>
+      <li>
+        Plak het nummer achter de filenaam doelmap.mm#
+      </li>
+    </ul>
+    <p>
+      <b>Opmerking</b>
+    </p>
+    <ul>
+      <li>
+        Sommige programma's geven het knoopnummer niet automatisch door, ook al is dit in de hyperlink opgenomen. In dat geval is het niet mogelijk on direkt naar een bepaalde knoop te springen.
+      </li>
+      <li>
+        Deze Quick reference bevat twee knopen (Index functies en Index applicaties) die naar een andere mind map verwijzen. Als je deze volgt, dan bevatten deze knopen die weer terug verwijzen naar een bepaalde knoop van deze Quick reference.
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
+</node>
+<node TEXT="Opmaken en stylen" STYLE_REF="Advanced" FOLDED="true" POSITION="right" ID="ID_1778719162" CREATED="1291143603918" MODIFIED="1323697806139" NUMBERED="true" MIN_WIDTH="180" VGAP="0">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
 </hook>
-<node TEXT="Eigenschappen" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_873516196" CREATED="1314162578896" MODIFIED="1316295381842" NUMBERED="true">
-<node TEXT="Opmaakpaneel" STYLE_REF="Gevorderde" ID="ID_1812601804" CREATED="1314162700896" MODIFIED="1316295621973"><richcontent TYPE="DETAILS">
+<node TEXT="Eigenschappen" STYLE_REF="Advanced" ID="ID_873516196" CREATED="1314162578896" MODIFIED="1323768429422" NUMBERED="true" HGAP="25" VSHIFT="61" MIN_WIDTH="110">
+<node TEXT="Opmaakpaneel" STYLE_REF="Advanced" FOLDED="true" ID="ID_1812601804" CREATED="1314162700896" MODIFIED="1323698385867" HGAP="25" VSHIFT="454" MAX_WIDTH="550" MIN_WIDTH="1" STYLE="combined">
+<icon BUILTIN="info"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_503272481" CREATED="1323517943396" MODIFIED="1323810168574" HGAP="-77" VSHIFT="87"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1859,14 +1998,22 @@
         Een andere manier om het opmaakpaneel te openen is via <i>Beeld &gt; Opmaakpaneel</i>
       </li>
       <li>
-        Een andere manier om eigenschappen in te stellen is via menu <i>Opmaken</i>
+        Een andere manier om eigenschappen in te stellen is via menu <i>Opmaken.</i>
       </li>
     </ul>
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Een eigenschap instellen" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_1707940964" CREATED="1314163244315" MODIFIED="1316295714032"><richcontent TYPE="DETAILS">
+</node>
+<node TEXT="Bewerken opmaak" STYLE_REF="Advanced" FOLDED="true" ID="ID_1707940964" CREATED="1314163244315" MODIFIED="1323697988550" HGAP="30" VSHIFT="1" MAX_WIDTH="500" MIN_WIDTH="1" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node FOLDED="true" ID="ID_676577574" CREATED="1323518049125" MODIFIED="1323698072572" HGAP="-95" VSHIFT="109"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1891,18 +2038,28 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="Ronde bocht" STYLE_REF="GevorderdeOnderwerp" ID="ID_1333040751" CREATED="1314172748460" MODIFIED="1316295826882" HGAP="40" VSHIFT="-30"/>
-<node TEXT="Verborgen tak" STYLE_REF="GevorderdeOnderwerp" ID="ID_1968961455" CREATED="1314172761269" MODIFIED="1316296022629" HGAP="50">
-<edge STYLE="hide_edge"/>
-</node>
-<node TEXT="Rechthoekige bocht" STYLE_REF="GevorderdeOnderwerp" ID="ID_494591913" CREATED="1314172936705" MODIFIED="1316296058771" HGAP="49" VSHIFT="27">
-<edge STYLE="horizontal"/>
-</node>
-<node TEXT="Rechte lijn" STYLE_REF="GevorderdeOnderwerp" ID="ID_34702829" CREATED="1314172753397" MODIFIED="1316296084336" HGAP="29" VSHIFT="19">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+<node TEXT="linear" STYLE_REF="AdvancedTopic" ID="ID_34702829" CREATED="1314172753397" MODIFIED="1323518514233" HGAP="14" VSHIFT="-26">
 <edge STYLE="linear"/>
 </node>
+<node TEXT="curved" STYLE_REF="AdvancedTopic" ID="ID_1333040751" CREATED="1314172748460" MODIFIED="1323518517665" HGAP="35" VSHIFT="-27">
+<edge STYLE="bezier"/>
 </node>
-<node TEXT="Automatische takkleur" STYLE_REF="Gevorderde" ID="ID_1005719714" CREATED="1314164029738" MODIFIED="1316296144175"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="hidden" STYLE_REF="AdvancedTopic" ID="ID_1968961455" CREATED="1314172761269" MODIFIED="1323518014549" HGAP="40" VSHIFT="-5">
+<edge STYLE="hide_edge"/>
+</node>
+<node TEXT="horizontal" STYLE_REF="AdvancedTopic" ID="ID_494591913" CREATED="1314172936705" MODIFIED="1323518524951" HGAP="39" VSHIFT="25">
+<edge STYLE="horizontal"/>
+</node>
+</node>
+</node>
+<node TEXT="Automatische takkleur" STYLE_REF="Advanced" FOLDED="true" ID="ID_1005719714" CREATED="1314164029738" MODIFIED="1323698008455" HGAP="30" VSHIFT="-2" MAX_WIDTH="550" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1565463565" CREATED="1323518106869" MODIFIED="1323810180898" HGAP="-119" VSHIFT="37"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1912,14 +2069,19 @@
     <p>
       Freeplane opent standaard met de eigenschap &#160;<i><b>Automatische takkleur.</b></i>&#160;Deze eigenschap staat in de groep <i>Opmaakstijl knoop</i>&#160;en zorgt er voor dat elke nieuwe tak een andere kleur krijgt. Voor deze handleiding is dit uitgezet door het vinkje voor <i>Automatische takkleur</i>&#160;weg te halen.
     </p>
-    <p>
-      
-    </p>
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Automatische knoopnummering" STYLE_REF="Gevorderde" ID="ID_1861361284" CREATED="1314283445398" MODIFIED="1316296170559"><richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+<node TEXT="Automatisch knoopnummer" STYLE_REF="Advanced" FOLDED="true" ID="ID_1861361284" CREATED="1314283445398" MODIFIED="1323698092009" HGAP="30" MAX_WIDTH="550" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1531819965" CREATED="1323518137156" MODIFIED="1323810191366" HGAP="-147" VSHIFT="30"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1929,33 +2091,26 @@
     <p>
       Een handige eigenschap is <i>automatische knoopnummering</i>. Deze eigenschap staat in groep <i>Opmaak knooptitel</i>. Je kunt dit voor alle geselecteerde knopen tegelijk instellen.
     </p>
-    <p>
-      
-    </p>
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Andere eigenschappen" STYLE_REF="Gevorderde" ID="ID_457725429" CREATED="1314167397870" MODIFIED="1316296204485">
+</node>
+<node TEXT="Andere eigenschappen" STYLE_REF="Advanced" FOLDED="true" ID="ID_457725429" CREATED="1314167397870" MODIFIED="1323698164175" HGAP="30" VSHIFT="3" MAX_WIDTH="550" STYLE="combined">
 <font ITALIC="false"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Loop door de opties van het opmaakpaneel heen om een indruk te krijgen wat er allemaal kan worden ingesteld. De eigenschappen voor (conditionele) stijlen worden hieronder besproken. Alle eigenschappen zijn meer gedetailleerd beschreven in de Handleiding Freeplane.
-    </p>
-    <p>
-      
-    </p>
-  </body>
-</html>
-</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node TEXT="Loop door de opties van het opmaakpaneel heen om een indruk te krijgen wat er allemaal kan worden ingesteld. De eigenschappen voor (conditionele) stijlen worden hieronder besproken. Alle eigenschappen zijn meer gedetailleerd beschreven in de Handleiding Freeplane." STYLE_REF="TitlesContent" ID="ID_1014522598" CREATED="1323518167241" MODIFIED="1323810196919" HGAP="-119" VSHIFT="37"/>
 </node>
-<node TEXT="Menu Opmaken" STYLE_REF="Gevorderde" ID="ID_1128382958" CREATED="1314167687616" MODIFIED="1316296221872"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Menu Opmaken" STYLE_REF="Advanced" FOLDED="true" ID="ID_1128382958" CREATED="1314167687616" MODIFIED="1323698221162" HGAP="30" VSHIFT="3" MAX_WIDTH="550" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node FOLDED="true" ID="ID_1716769321" CREATED="1323518205453" MODIFIED="1323810207746" HGAP="-76" VSHIFT="37"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1965,14 +2120,64 @@
     <p>
       De eigenshappen in het opmaakpaneel zijn ook beschikbaar in <b>menu Opmaken</b>. Dit menu bevat ook enkele eigenschappen die niet in het opmaakpaneel staan. Voorbeelden zijn <i>Achtergrondkleur mindmap</i>&#160;en <i>Knipperen</i>.
     </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+<node TEXT="Bold" STYLE_REF="AdvancedTopic" ID="ID_25890496" CREATED="1266251692562" MODIFIED="1323519139108" TEXT_SHORTENED="true" HGAP="25" STYLE="as_parent">
+<icon BUILTIN="../Bold16"/>
+<font NAME="SansSerif" SIZE="12" BOLD="true" ITALIC="false"/>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
     <p>
-      
+      This icon-button in the toolbar affects thee whole node text.
     </p>
   </body>
 </html>
 </richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Werkmenu" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_1235607524" CREATED="1314167879005" MODIFIED="1316296235884"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Italic" STYLE_REF="AdvancedTopic" ID="ID_408787243" CREATED="1266251689531" MODIFIED="1323519147984" TEXT_SHORTENED="true">
+<icon BUILTIN="../Italic16"/>
+<font ITALIC="true"/>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <ul>
+      <li>
+        This icon-button in the toolbar affects the whole node text
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<edge STYLE="horizontal"/>
+</node>
+</node>
+</node>
+<node TEXT="Werkmenu (Tool bar)" STYLE_REF="Advanced" FOLDED="true" ID="ID_1235607524" CREATED="1314167879005" MODIFIED="1323768601123" HGAP="30" VSHIFT="-461" MAX_WIDTH="550" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_158808063" CREATED="1323518244867" MODIFIED="1323810214719" HGAP="-108" VSHIFT="87"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1999,50 +2204,29 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="Italic" STYLE_REF="GevorderdeOnderwerp" ID="ID_408787243" CREATED="1266251689531" MODIFIED="1316296252225" TEXT_SHORTENED="true">
-<icon BUILTIN="../Italic16"/>
-<font ITALIC="true"/>
-<richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Deze pictogram-knop heeft betrekking op de hele knooptitel.
-    </p>
-  </body>
-</html>
-</richcontent>
 <hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Bold" STYLE_REF="GevorderdeOnderwerp" ID="ID_25890496" CREATED="1266251692562" MODIFIED="1316296252230" TEXT_SHORTENED="true">
-<icon BUILTIN="../Bold16"/>
-<font NAME="SansSerif" SIZE="12" BOLD="true" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Deze pictogram-knop heeft betrekking op de hele knooptitel.
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="FirstGroupNode"/>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
 </node>
 </node>
 </node>
-<node TEXT="Stijlen" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_1724703419" CREATED="1316295248623" MODIFIED="1316296375091" NUMBERED="true" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Sijlen" STYLE_REF="Advanced" ID="ID_1838680824" CREATED="1314646406529" MODIFIED="1323768605897" NUMBERED="true" MIN_WIDTH="110" HGAP="25" VSHIFT="10">
+<node TEXT="Waarom stijlen ?" FOLDED="true" ID="ID_539515158" CREATED="1323521177251" MODIFIED="1323768599017" HGAP="30" VSHIFT="110">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Advanced" LAST="false"/>
+</hook>
+<node TEXT="Stijlen (klassen) helpen je om een groep knopen dezelfde opmaak te geven. Ze helpen om knopen te vinden en te filteren. En ze kunnen worden gebruikt om een sjabloon of template met tekst en attributen te maken." ID="ID_795139567" CREATED="1323768015986" MODIFIED="1323810232472" HGAP="-82" VSHIFT="29">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Een stijl vinden en toepassen" STYLE_REF="Advanced" FOLDED="true" ID="ID_512501370" CREATED="1291199304490" MODIFIED="1323698515924" HGAP="30" VSHIFT="2" MAX_WIDTH="550" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_602520818" CREATED="1323521250360" MODIFIED="1323810242877" HGAP="-155" VSHIFT="103"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2050,29 +2234,13 @@
   </head>
   <body>
     <p>
-      Een stijl (klasse) biedt de mogelijkheid om eenvoudig en snel de eigenschappen van een hele groep van knopen te veranderen. Een stijl kun je verder gebruiken om knopen met een bepaalde structuur of inhoud te filteren en te vinden.
-    </p>
-    <p>
-      
-    </p>
-  </body>
-</html>
-</richcontent>
-<node TEXT="Een stijl zoeken en toepassen" STYLE_REF="Gevorderde" ID="ID_512501370" CREATED="1291199304490" MODIFIED="1316297197087"><richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font color="#000000" face="SansSerif, sans-serif">Freeplane heeft een aantal standaardstijlen en je kunt je eigen stijlen hieraan toevoegen. De stijl die op een knoop van toepassing is, wordt weergegeven in het opmaakpaneel in de groep Opmaakstijl, achter Stijlnaam. Meestal is dit de standaard stijl. (Als er meerdere stijlen van toepassing zijn dan kun je dit zien onder <i>Conditionele stijl voor knoop.</i></font>) Voor de knoop die je nu leest is de stijlnaam<i><font color="#000000" face="SansSerif, sans-serif">&#160; Gevorderde </font></i>zichtbaar.
+      <font color="#000000" face="SansSerif, sans-serif">Freeplane heeft een aantal standaardstijlen en je kunt je eigen stijlen hieraan toevoegen. De stijl die op een knoop van toepassing is, wordt weergegeven in het opmaakpaneel in de groep Opmaakstijl, achter Stijlnaam. Meestal is dit de standaard stijl. (Als er meerdere stijlen van toepassing zijn dan kun je dit zien onder <i>Conditionele stijl voor knoop.</i></font>) Voor de knoop die je nu leest is de stijlnaam<font color="#000000" face="SansSerif, sans-serif"><i>&#160; Gevorderde </i></font>zichtbaar.
     </p>
     <p>
       
     </p>
     <p>
-      <b><font color="#000000" face="SansSerif, sans-serif">Opmerking</font></b><font color="#000000" face="SansSerif, sans-serif">&#160;</font>
+      <font color="#000000" face="SansSerif, sans-serif"><b>Opmerking</b>&#160;</font>
     </p>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Andere plaatsen waar je de knoopstijl kunt instellen zijn: </font>
@@ -2092,10 +2260,15 @@
 </html>
 </richcontent>
 <hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Een stijl bewerken" STYLE_REF="Gevorderde" ID="ID_1277682010" CREATED="1291196100290" MODIFIED="1316297240641"><richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+<node TEXT="Een stijl bewerken" STYLE_REF="Advanced" FOLDED="true" ID="ID_1277682010" CREATED="1291196100290" MODIFIED="1323698589759" HGAP="30" VSHIFT="3" MAX_WIDTH="550" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_443461395" CREATED="1323521242303" MODIFIED="1323810254920" HGAP="-95" VSHIFT="104"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2135,10 +2308,16 @@
 </html>
 </richcontent>
 <hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Meerdere stijlen toepassen in &#xe9;&#xe9;n knoop" STYLE_REF="Gevorderde" ID="ID_270284358" CREATED="1314342119553" MODIFIED="1316297253561"><richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+<node TEXT="Meerdere stijlen toepassen op dezelfde knoop" STYLE_REF="Advanced" FOLDED="true" ID="ID_270284358" CREATED="1314342119553" MODIFIED="1323698705044" HGAP="31" VSHIFT="1" MAX_WIDTH="550" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Introduction" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+</hook>
+<node ID="ID_1030002880" CREATED="1323521314827" MODIFIED="1323810265497" HGAP="-267" VSHIFT="152"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2178,20 +2357,21 @@
       <b>Opmerking</b>
     </p>
     <p>
-      Lees meer over stijlen in de Handleiding Freeplane. !
-    </p>
-    <p>
-      
+      Lees meer over stijlen in de Handleiding Freeplane !
     </p>
   </body>
 </html>
 </richcontent>
 <hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Introduction" LAST="false"/>
-    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Stijlen voorwaardelijk toepassen" STYLE_REF="Professional" ID="ID_1300028086" CREATED="1314343996581" MODIFIED="1316297295440"><richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+<node TEXT="Voorwaardelijke of Conditionele stijlen" STYLE_REF="Professional" FOLDED="true" ID="ID_1632551821" CREATED="1314343996581" MODIFIED="1323699018308" HGAP="32" VSHIFT="-2" MAX_WIDTH="550" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1437965047" CREATED="1323521350949" MODIFIED="1323699024360" HGAP="-204" VSHIFT="202"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2199,7 +2379,16 @@
   </head>
   <body>
     <p>
-      Het is mogelijk om een stijl niet altijd, maar alleen in bepaalde gevallen toe te passen. Denk aan het tonen dat een knoop is gewijzigd. In deze mindmap is hiervoor de stijl <i>Revision</i>&#160;gedefineerd met een i-pictogram. De regel die bepaald of de stijl moet worden toegepast, wordt als volgt opgegeven. Open het opmaakpaneel en klik onder <i>Conditionele stijl voor mindmap</i>.&#160;&#160;Er open eenzelfde venster als hierboven werd besproken voor <i>Conditionele stijl voor knoop</i>.
+      In het voorbeeld hierboven wordt een stijl altijd, onvoorwaardelijk toegepast. Het is mogelijk om een stijl niet altijd, maar alleen in bepaalde gevallen toe te passen. Denk aan het tonen dat een knoop is gewijzigd.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Voorbeeld: Revisies</b>
+    </p>
+    <p>
+      &#160;In deze mindmap is de stijl <i>Revision</i>&#160;gedefineerd met een R-pictogram. De regel die bepaalt of de stijl moet worden toegepast, wordt als volgt opgegeven. Open het opmaakpaneel en klik onder <i>Conditionele stijl voor mindmap</i>.&#160;&#160;Er open eenzelfde venster als hierboven werd besproken voor <i>Conditionele stijl voor knoop</i>.
     </p>
     <ul>
       <li>
@@ -2241,8 +2430,16 @@
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Knoopniveau stijlen" STYLE_REF="Gevorderde" ID="ID_521918713" CREATED="1314344484933" MODIFIED="1316297306813"><richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+<node TEXT="Knoopniveaustijlen" STYLE_REF="Professional" FOLDED="true" ID="ID_521918713" CREATED="1314344484933" MODIFIED="1323810435803" HGAP="34" VSHIFT="-1" MAX_WIDTH="550">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1011147934" CREATED="1323521380784" MODIFIED="1323810283609" HGAP="-97" VSHIFT="72"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2250,27 +2447,27 @@
   </head>
   <body>
     <p>
-      Een andere toepassing van conditionele stijlen is om knopen op eenzelfde knoopniveau dezelfde, en knopen op verschillende niveau's een andere stijl te geven. Freeplane maakt dit makkelijk omdat deze situatie voor 5 knoopniveau's al is gedefineerd.&#160;&#160;Open het opmaakpaneel en zet een vinkje voor <i>Knoopniveau stijle</i>n. Elk knoopniveau krijgt nu een eigen opmaak. Als je de standaard opmaak wilt veranderen dan kan dit ook. Ga hiervoor naar <i>Stijlen &gt; Bewerken stijlen</i>. En bewerk elke knoopniveau stijl op de wijze zoals hierboven werd besproken.
+      Een andere toepassing van conditionele stijlen is om knopen op eenzelfde knoopniveau dezelfde, en knopen op verschillende niveau's een andere stijl te geven. Freeplane maakt dit makkelijk omdat deze situatie voor 5 knoopniveau's al is gedefineerd.&#160;&#160;Open het opmaakpaneel en zet een vinkje voor <i>Knoopniveau stijle</i>n. Elk knoopniveau krijgt nu een eigen opmaak.
     </p>
-  </body>
-</html>
-</richcontent>
-</node>
-<node TEXT="Sjablonen" STYLE_REF="Professional" ID="ID_1403178597" CREATED="1311948532074" MODIFIED="1316297323372"><richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
     <p>
-      Een stijl kan informatie bevatten die in elke knoop terugkomt, zoals bij een formulier of sjabloon. Zet deze informatie in de knoopinhoud en de attributen van de stijl.&#160;Als je een nieuwe knoop opent en direkt de stijl kiest, wordt deze informatie in de nieuwe knoop gekopieerd. Op een later moment kun je deze informatie alsnog kopi&#235;ren, maar dan door het kiezen van <i>Stijlen &gt; Kopieer uit stijlsjabloon.</i>
+      
+    </p>
+    <p>
+      Als je de standaard opmaak wilt veranderen dan kan dit ook. Ga hiervoor naar<i>&#160;Opmaken &gt; Beheren stijlen&#160;&gt; Bewerken stijlen</i>. En bewerk elke knoopniveau stijl op de wijze zoals hierboven werd besproken.
     </p>
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Mindmap stijl" STYLE_REF="Professional" ID="ID_13843990" CREATED="1291196992351" MODIFIED="1316297323378"><richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+<node TEXT="Map style" STYLE_REF="Professional" FOLDED="true" ID="ID_13843990" CREATED="1291196992351" MODIFIED="1323810431123" HGAP="34" VSHIFT="-129" MAX_WIDTH="550" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1896765128" CREATED="1323521437116" MODIFIED="1323699258564" HGAP="-45" VSHIFT="85"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2290,13 +2487,13 @@
 </html>
 </richcontent>
 <hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
 </node>
 </node>
 </node>
-<node TEXT="Publiceren en delen" STYLE_REF="Gevorderde" FOLDED="true" POSITION="right" ID="ID_1613405030" CREATED="1314258163054" MODIFIED="1316297366617" NUMBERED="true" VSHIFT="-110">
-<node TEXT="Afdrukken" STYLE_REF="Gevorderde" ID="ID_1344283469" CREATED="1314352873779" MODIFIED="1316297386176"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Sjablonen" STYLE_REF="Advanced" FOLDED="true" ID="ID_183210534" CREATED="1323612770999" MODIFIED="1323768454756" HGAP="25" NUMBERED="true" MIN_WIDTH="110">
+<node ID="ID_1268042238" CREATED="1323521409870" MODIFIED="1323810293374" HGAP="47" VSHIFT="-11" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2304,16 +2501,12 @@
   </head>
   <body>
     <p>
-      Druk je mindmap af met de funties in menu <i>Bestand</i>. Bij grotere mindmaps kan het handig zijn om de mindmap in overzichtsweergave af te drukken. Verander de weergave van de mindmap met <i>Beeld &gt; Overzichtsweergave,</i>
-    </p>
-    <p>
-      
+      Een stijl kan informatie bevatten die in elke knoop terugkomt, zoals bij een formulier of sjabloon. Zet deze informatie in de knoopinhoud en de attributen van de stijl.&#160;Als je een nieuwe knoop opent en direkt de stijl kiest, wordt deze informatie in de nieuwe knoop gekopieerd. Op een later moment kun je deze informatie alsnog kopi&#235;ren, maar dan door het kiezen van <i>Bewerken &gt; Knoopuitbreiding &gt; Kopieer uit stijlsjabloon.</i>
     </p>
   </body>
 </html>
 </richcontent>
-</node>
-<node TEXT="Mindmaps delen" STYLE_REF="Gevorderde" ID="ID_566359973" CREATED="1314352830240" MODIFIED="1316297386195"><richcontent TYPE="DETAILS">
+<node ID="ID_357953420" CREATED="1323613544023" MODIFIED="1323810320721" HGAP="-598" VSHIFT="123"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2321,7 +2514,225 @@
   </head>
   <body>
     <p>
-      Het uitwisselen van mindmaps met andere gebruikers van Freeplane is eenvoudig: je geeft de andere gebruiker eenvoudig je bestand jouwmap.mm. Als je mindmap plaatjes bevat, dan moet je deze apart meegeven, want in de mindmap zelf bevinden zich geen plaatjes maar alleen links naar plaatjes. Let er op dat op de nieuwe lokatie de plaatjes op dezelfde (relatieve) plaats staan als in jouw computer. Het eenvoudigste is het om bij het maken je mindmap en de plaatjes in dezelfde map (directory) te plaatsen.
+      De stapen om een sjabloon of template te definieren:
+    </p>
+    <ul>
+      <li>
+        definieer een nieuwe stijl, bijv.&#160;&#160;MyTemplate
+      </li>
+      <li>
+        open&#160; <i>Opmaken &gt; Beheren stijlen &gt; Bewerken stijlen</i>
+      </li>
+      <li>
+        bewerk knoopdetails van MyTemplate: (Bewerken &gt; Knoopuitbruiding &gt; ..details)
+      </li>
+      <li>
+        voeg attributen toe aan MyTemplate (Bewerken &gt; Knoopuitbreiding &gt; ... attribuut)
+      </li>
+      <li>
+        sluit het bewerkingvenster voor stijlen (bewaar de bewerkte stijl)
+      </li>
+      <li>
+        open a neeuwe knoop, tik een naam
+      </li>
+      <li>
+        pas de nieuwe stijl MyTemplate toe
+      </li>
+    </ul>
+    <p>
+      De nieuwe knoop heeft nu de inhoud van de knoopdetails en attributen van MyStyle.
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="My Example" STYLE_REF="MyTemplate" ID="ID_679492060" CREATED="1323614118804" MODIFIED="1323615655812">
+<attribute NAME="birth date" VALUE=""/>
+<attribute NAME="e-mail" VALUE=""/>
+<attribute NAME="birth date" VALUE=""/>
+<attribute NAME="e-mail" VALUE=""/>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b><font color="#3333ff" size="4">Template information</font></b>
+    </p>
+    <ul>
+      <li>
+        <i>Name</i>:
+      </li>
+      <li>
+        Address:
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Overig" STYLE_REF="Advanced" ID="ID_429763637" CREATED="1323251384433" MODIFIED="1323768463180" HGAP="25" VSHIFT="-60" NUMBERED="true" MIN_WIDTH="110">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MainWidth" LAST="false"/>
+</hook>
+<node TEXT="Plakken van tekst zonder opmaak" STYLE_REF="Advanced" FOLDED="true" ID="ID_1745656146" CREATED="1323251632079" MODIFIED="1323768653025" HGAP="30" VSHIFT="134" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_885396924" CREATED="1323522491275" MODIFIED="1323810334995" HGAP="-183" VSHIFT="29"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Bij plakken van informatie uit de webbrowser, wordt ook de opmaak geplakt. Het is mogelijk allen (platte) tekst te plakken, zie&#160; <a href="http://www.stevemiller.net/puretext/">http://www.stevemiller.net/puretext/</a>&#160; .
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Vaste knoopbreedte" STYLE_REF="Advanced" FOLDED="true" ID="ID_1709254927" CREATED="1321975856238" MODIFIED="1323810457658" HGAP="32" VSHIFT="1" MIN_WIDTH="1" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_15604512" CREATED="1323522575632" MODIFIED="1323810343716" HGAP="-107" VSHIFT="80" MAX_WIDTH="300" MIN_WIDTH="300"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om knopen uit te lijnen kun je een vaste minum en/of maximum knoopbreedte in te stellen. Zie
+    </p>
+    <ul>
+      <li>
+        Opmaakpaneel; of
+      </li>
+      <li>
+        Opmaken &gt; Instellen grenzen knoopbreedte
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <p>
+      N.B. In de knoop die je nu leest is de minimum = maximum knoopbreedte 300 pixels.
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Opmaak van knoopkern kopieren en plakken" STYLE_REF="Advanced" FOLDED="true" ID="ID_1195279427" CREATED="1316670043816" MODIFIED="1323768640982" HGAP="32" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_670948093" CREATED="1323522647369" MODIFIED="1323810356898" HGAP="-243" VSHIFT="38"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      De opmaak die geldt voor de hele knoopkern kan worden gekopieerd met<i>&#160; Bewerken &gt; Knoopkern &gt; Kopieren opmaak</i>. En het gekopieerde formaat kan in een andere knoop worden eplakt met <i>Bewerken &gt; Knoopkern &gt; Plakken opmaak..</i>
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Opties voor plakken" STYLE_REF="Advanced" FOLDED="true" ID="ID_506336466" CREATED="1322990524257" MODIFIED="1323700568703" HGAP="32" VSHIFT="-137" MIN_WIDTH="1" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1072558009" CREATED="1323522694317" MODIFIED="1323810363403" HGAP="-104" VSHIFT="72"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Zie <i>Bewerken &gt; Plakken als</i>&#160;voor andere opties, zoals plakken zonder opmaak.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        Als je deze optie vaak gebruikt, definieer een sneltoets.
+      </li>
+      <li>
+        Als je van Internet kopieert wordt automatisch de opmaak meegenomen. Er zijn hulpmiddelen om dit te voork&#243;men.<br/>
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Publiceren en delen" STYLE_REF="Advanced" FOLDED="true" POSITION="right" ID="ID_1613405030" CREATED="1314258163054" MODIFIED="1323704802892" NUMBERED="true" MIN_WIDTH="180" VSHIFT="-90">
+<node TEXT="Afdrukken" STYLE_REF="Advanced" FOLDED="true" ID="ID_1344283469" CREATED="1314352873779" MODIFIED="1323700953774" VSHIFT="265" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1759870173" CREATED="1323523347602" MODIFIED="1323700688979" HGAP="-50" VSHIFT="35"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Druk je mindmap af met de funties in menu <i>Bestand</i>. Bij grotere mindmaps kan het handig zijn om de mindmap in overzichtsweergave af te drukken. Verander de weergave van de mindmap met <i>Beeld &gt; Overzichtsweergave.</i>
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Delen van mindmaps" STYLE_REF="Advanced" FOLDED="true" ID="ID_566359973" CREATED="1314352830240" MODIFIED="1323700787696" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1964465318" CREATED="1323523371275" MODIFIED="1323810508218" HGAP="-108" VSHIFT="54"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Het uitwisselen van mindmaps met andere gebruikers van Freeplane is eenvoudig: je geeft de andere gebruiker eenvoudig je bestand<i>&#160;jouwmap.mm</i>. Als je mindmap plaatjes bevat, dan moet je deze apart meegeven, want in de mindmap zelf bevinden zich geen plaatjes maar alleen links naar plaatjes. Let er op dat op de nieuwe lokatie de plaatjes op dezelfde (relatieve) plaats staan als in jouw computer. Het eenvoudigste is het om bij het maken je mindmap en de plaatjes in dezelfde map (directory) te plaatsen.
     </p>
     <p>
       
@@ -2329,8 +2740,16 @@
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Publiceren op Internet en intranet" STYLE_REF="Professional" ID="ID_1417348323" CREATED="1314352836706" MODIFIED="1316297397009"><richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+<node TEXT="Publiceren op Internet" STYLE_REF="Professional" FOLDED="true" ID="ID_1417348323" CREATED="1314352836706" MODIFIED="1323700810082" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1669899571" CREATED="1323523398700" MODIFIED="1323810515831" HGAP="-114" VSHIFT="135"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2356,31 +2775,43 @@
       <li>
         Als je wilt dat de mindmap op een bepaalde manier wordt open/dichtgevouwen, kies dan v&#243;&#243;r het exporteren <i>Extra &gt; Instellingen &gt; Omgeving &gt; Bewaar situatie van open/dicht vouwen &gt; Altijd.</i><br/>
       </li>
+      <li>
+        Zie dit <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Publishing_multiple_maps_in_one_Java_applet">voorbeeld</a>&#160;hoe je meerdere mindmaps in &#233;&#233;n Java Applet kunt publiceren.<br/>
+      </li>
     </ul>
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Met een tekstverwerker uitwisselen" STYLE_REF="Professional" ID="ID_118482" CREATED="1314353836801" MODIFIED="1316297397016"><richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+<node TEXT="Uitwisselen met tekstverwerker" STYLE_REF="Professional" FOLDED="true" ID="ID_118482" CREATED="1314353836801" MODIFIED="1323700879565" VSHIFT="-270" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node TEXT="Zie Help &gt; Handleiding  Freeplane: je kunt opmaakcode behouden." ID="ID_1023242392" CREATED="1323523390908" MODIFIED="1323810525986" HGAP="-175" VSHIFT="21">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
+</node>
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_766584529" CREATED="1320005728532" MODIFIED="1323809820178" HGAP="12" VSHIFT="148" LINK="freeplaneApplications.mm" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
 
 <html>
   <head>
     
   </head>
   <body>
-    <p>
-      Zie Handleiding&#160;&#160;Freeplane: je kunt opmaakcode behouden.
-    </p>
-    <p>
-      <br/>
+    <p style="text-align: center">
+      <a href="freeplaneFunctions_nl.mm">Toepassingen</a>
     </p>
   </body>
 </html>
 </richcontent>
-</node>
-</node>
-<node TEXT="Knoopuitbreiding" STYLE_REF="Gevorderde" FOLDED="true" POSITION="left" ID="ID_143196514" CREATED="1314206563418" MODIFIED="1321039586039" NUMBERED="true" VSHIFT="80">
-<node TEXT="Tekst bewerken in knoopdetails" STYLE_REF="Gevorderde" ID="ID_898889730" CREATED="1314197390735" MODIFIED="1317221965087"><richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -2388,7 +2819,40 @@
   </head>
   <body>
     <p>
-      Om een knoop zoals deze te maken, maak je eerst een nieuwe knoop zoals je boven hebt geleerd. Vervolgens type je de titel van de knoop iin de knoopkern, zoals je ook al weet. Je maakt de titel op in een vorm zoals je die wilt. Dan kies je <i>Knoopkenmerken &gt; Bewerken knoopdetails (in venster)</i>&#160;en type je de tekst die onder de knoopkern moet komen. Je sluit af door op <i>OK</i>&#160;&#160;te drukken. Je tekst is nu zichtbaar onder de knooptitel.
+      Klik op de koppeling om een mindmap te openen met de belangrijkste toepassingen van Freeplane. Hiervoor is verbinding met Internet noodzakelijk.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Opmerking </b>
+    </p>
+    <ul>
+      <li>
+        &#160;Om uit de index terug te keren, kies&#160; <i>Navigeren .&gt; Ga naar vorige mind map</i>&#160;of klik op dit pictogram in de werkbalk.
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<hook NAME="FreeNode"/>
+</node>
+<node TEXT="Knoopuitbreidingen" STYLE_REF="Advanced" FOLDED="true" POSITION="left" ID="ID_143196514" CREATED="1314206563418" MODIFIED="1323705023820" NUMBERED="true" MIN_WIDTH="180" VSHIFT="80">
+<node TEXT="Bewerken tekst in knoopdetails" STYLE_REF="Advanced" ID="ID_898889730" CREATED="1314197390735" MODIFIED="1323705667539" VSHIFT="80"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      De knop die je nu ziet bestaat uit een <b>knoopkern</b>&#160;met de titel &quot;<i>Bewerken knoopdetails</i>&quot;. Hieronder bevindt zich de tekst die je nu leest, in het veld <b>knoopdetails</b>. Het veld knoopdetails heeft links een <i><b>driehoekje</b></i>&#160; waarmee je de tekst kunt verbergen of tonen; de tekst van de knoopkern blijft hierbij gewoon zichtbaar.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Om een knoop zoals deze te maken, maak je eerst een nieuwe knoop zoals je boven hebt geleerd. Vervolgens type je de titel van de knoop in de knoopkern, zoals je ook al weet. Je maakt de titel op in een vorm zoals je die wilt. Dan rechtsklik je op de knoop (niet in bewerken modus) en kies je <i>Bewerken knoopdetails (in venster).</i>&#160;In het venster dat opent type je de tekst die onder de knoopkern moet komen. Je sluit af door op <i>OK</i>&#160;&#160;te drukken. Je tekst is nu zichtbaar onder de knooptitel.
     </p>
     <p>
       
@@ -2408,7 +2872,11 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Minimaliseren knoop (zweeftekst)" STYLE_REF="Gevorderde" ID="ID_288274844" CREATED="1314206958207" MODIFIED="1319726587358"><richcontent TYPE="DETAILS">
+<node TEXT="Minimaliseren knoop (zweeftekst, tooltip)" STYLE_REF="Advanced" FOLDED="true" ID="ID_288274844" CREATED="1314206958207" MODIFIED="1323705980429" VSHIFT="5" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1704074218" CREATED="1323527323490" MODIFIED="1323810579900" HGAP="-239" VSHIFT="130"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2416,7 +2884,7 @@
   </head>
   <body>
     <p>
-      Knoopinhoud kan&#160;verborgen worden tot het moment dat je met de cursor naar de knoop wijst en alleen worden getoond zolang je met de cursor boven de knoop zweeft. Dit heeft als voordeel dat de tekst geen ruimte op het scherm inneemt zolang je niet in de knoop bent ge&#239;nteresseerd. Bij de knoop die je nu leest is dit het geval.
+      Knoopdetails kunnen worden&#160;verborgen&#160;&#160;tot het moment dat je met de cursor boven de knoop zweeft; dan wordt de verborgen informatie in een pop-up venster (tooltip) getoond.&#160;&#160;Dit heeft als voordeel dat de tekst geen ruimte op het scherm inneemt zolang je niet in de knoop bent ge&#239;nteresseerd. Bij de knoop hiernaast is dit het geval.
     </p>
     <p>
       
@@ -2441,8 +2909,14 @@
   </body>
 </html>
 </richcontent>
-</node>
-<node TEXT="Schaalbaar plaatje (knoopuitbreiding)" STYLE_REF="Gevorderde" FOLDED="true" ID="ID_1572435893" CREATED="1314215157545" MODIFIED="1318966595189"><richcontent TYPE="DETAILS">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+<node TEXT="Voorbeeld tooltip" STYLE_REF="Advanced" ID="ID_1710723594" CREATED="1323462581502" MODIFIED="1323706026917" HGAP="24" VSHIFT="-12" STYLE="combined" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -2450,39 +2924,24 @@
   </head>
   <body>
     <p>
-      Plaatjes zijn geen onderdeel van een
-    </p>
-    <p>
-      mindmap, maar kunnen wel binnen een
-    </p>
-    <p>
-      mindmap worden getoond. Het maakt
-    </p>
-    <p>
-      daarbij uit waar zich het plaatje&#160;&#160;bevindt
-    </p>
-    <p>
-      en welke methode wordt gebruikt: klikken
-    </p>
-    <p>
-      en slepen of kopieren en plakken. Merk op
-    </p>
-    <p>
-      dat de eigenschappen van een plaatje in
-    </p>
-    <p>
-      de knoopkern anders zijn dan de hier
-    </p>
-    <p>
-      beschreven plaatjes (knoop-
-    </p>
-    <p>
-      uitbrreiding).<br/>
+      Voorbeeld van verborgen tekst.
     </p>
   </body>
 </html>
 </richcontent>
-<node TEXT="Locale afbeelding" STYLE_REF="Gevorderde" ID="ID_1456181199" CREATED="1318965130884" MODIFIED="1318966874203"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="" ID="ID_1347491550" CREATED="1323462604083" MODIFIED="1323525624921" HGAP="-80" VSHIFT="50">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Afbeelding (knoopuitbreiding)" STYLE_REF="Advanced" FOLDED="true" ID="ID_575269438" CREATED="1314215157545" MODIFIED="1323706167099" MIN_WIDTH="1">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MainWidth" LAST="false"/>
+</hook>
+<node ID="ID_1931512160" CREATED="1323526694210" MODIFIED="1323706133777" HGAP="32" VSHIFT="-5"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2490,7 +2949,25 @@
   </head>
   <body>
     <p>
-      Er zijn verschillende manieren waarop met afbeeldingen kan worden gewerkt. Een makkelijke manier is om een plaatje in een knoop te slepen. Als je het plaatje op de bovenzijde van de knoop &quot;laat vallen&quot; (de bovenzijde licht op), komt het plaatje in de knoop zelf. Als je het plaatje op de kindzijde laat vallen (de kindzijde van de knoop licht op), wordt een kindknoop gemaakt en komt het plaatje in de kindknoop. De grootte van he tplaatje kan worden veranderd door de hoek rechtsonder te slepen.
+      Plaatjes zijn geen onderdeel van een mindmap, maar kunnen wel binnen een mindmap worden getoond. Het maakt daarbij uit waar zich het plaatje&#160;&#160;bevindt en welke methode wordt gebruikt: klikken en slepen of kopieren en plakken. Merk op dat de eigenschappen van een plaatje in de knoopkern anders zijn dan de hier beschreven plaatjes (knoopuitbrreiding).<br/>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Interne oorsprong" STYLE_REF="Advanced" FOLDED="true" ID="ID_1322185425" CREATED="1318936419394" MODIFIED="1323706335345" HGAP="25" VSHIFT="1" MAX_WIDTH="550" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1990291656" CREATED="1323527938617" MODIFIED="1323810598480" HGAP="-106" VSHIFT="128"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Er zijn verschillende manieren waarop met afbeeldingen kan worden gewerkt. Een makkelijke manier is om een plaatje in een knoop te slepen. Als je het plaatje op de bovenzijde van de knoop &quot;laat vallen&quot; (de bovenzijde licht op), komt het plaatje in de knoop zelf. Als je het plaatje op de kindzijde laat vallen (de kindzijde van de knoop licht op), wordt een kindknoop gemaakt en komt het plaatje in de kindknoop. De grootte van het plaatje kan worden veranderd door de hoek rechtsonder te slepen.
     </p>
     <p>
       
@@ -2512,9 +2989,16 @@
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="" ID="ID_1340827226" CREATED="1318966639826" MODIFIED="1318966639826"/>
-<node TEXT="Afbeeling van Internet, PrintScreen" STYLE_REF="Gevorderde" ID="ID_261430529" CREATED="1318965149423" MODIFIED="1318966511526"><richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+<node TEXT="Externe oorsprong" STYLE_REF="Advanced" FOLDED="true" ID="ID_17945363" CREATED="1323528121146" MODIFIED="1323810716822" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node STYLE_REF="TitlesContent" ID="ID_594983153" CREATED="1318936453549" MODIFIED="1323810727601" HGAP="-109" VSHIFT="88" MAX_WIDTH="550"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2535,30 +3019,25 @@
     </p>
   </body>
 </html>
-</richcontent>
-</node>
-<node TEXT="In-line afbeelding" STYLE_REF="Professional" ID="ID_1040294564" CREATED="1314282819174" MODIFIED="1316330761499"><richcontent TYPE="DETAILS" HIDDEN="true">
 
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Ervaren gebruikers kunnen ook met zogenaamde HTML-code plaatjes invoegen. Er is zelfs een script om dit te doen. Raadpleeg hiervoor de handleiding.
-    </p>
-    <p>
-      
-    </p>
-  </body>
-</html>
 </richcontent>
 </node>
 </node>
-<node TEXT="Attributen in knoopuitbreiding" STYLE_REF="Professional" FOLDED="true" ID="ID_1324773677" CREATED="1314208168037" MODIFIED="1321038132930" HGAP="30" VSHIFT="-4">
-<node TEXT="Wat is een attribuut ?" STYLE_REF="Professional" ID="ID_1657366174" CREATED="1314209542018" MODIFIED="1316331070013">
+<node TEXT="In-line image" STYLE_REF="Professional" FOLDED="true" ID="ID_1242295211" CREATED="1314282819174" MODIFIED="1323528288558" HGAP="30" VSHIFT="-30" MAX_WIDTH="550" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node TEXT="Ervaren gebruikers kunnen ook met zogenaamde HTML-code plaatjes invoegen. Er is zelfs een script om dit te doen. Raadpleeg hiervoor wiki pagina over scrips of Help &gt; Handleiding." ID="ID_796258305" CREATED="1323528211774" MODIFIED="1323810620211" HGAP="-77" VSHIFT="31" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
+</node>
+<node TEXT="Attributen (knoopuitbreiding)" STYLE_REF="Professional" FOLDED="true" ID="ID_1324773677" CREATED="1314208168037" MODIFIED="1323706758395" MIN_WIDTH="1">
+<node TEXT="Wat zijn attributen ?" STYLE_REF="Professional" ID="ID_1657366174" CREATED="1314209542018" MODIFIED="1323707290781" HGAP="-170" VSHIFT="80" MAX_WIDTH="550">
 <attribute_layout NAME_WIDTH="34" VALUE_WIDTH="92"/>
-<attribute NAME="Naam" VALUE="John"/>
+<attribute NAME="Name" VALUE="John"/>
 <attribute NAME="email" VALUE="john@gmail.com"/>
 <richcontent TYPE="DETAILS">
 
@@ -2573,8 +3052,7 @@
   </body>
 </html>
 </richcontent>
-</node>
-<node TEXT="Een attribuut toevoegen" STYLE_REF="Professional" ID="ID_1441506319" CREATED="1314210058883" MODIFIED="1316331127531"><richcontent TYPE="DETAILS">
+<node TEXT="Attributen toevoegen" STYLE_REF="Professional" ID="ID_1441506319" CREATED="1314210058883" MODIFIED="1323707243384" HGAP="-550" VSHIFT="196" MAX_WIDTH="550"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -2582,7 +3060,13 @@
   </head>
   <body>
     <p>
-      Er zijn verschillende manieren om een attribuut toe te voegen. Maak eerst een knoop en open het opmaakpaneel. Kies in het opmaakpaneel de tab <i>Agenda en attributen. </i>Onderaan zie je een aantal opties voor attributen. Kies <i>Nieuw attribuut</i>. Er open een nieuwe regel in de tabel. Voeg links in <i>Naam</i>&#160;en rechts <i>John</i>. Herhaal de procedure om het email adres van John toe te voegen. Als je het voorbeeld hebt ingevoerd, dan zie je dat de tekst niet goed in de tabel past.&#160;&#160;Klik op <i>Optimale breedte</i>&#160;om de tabel aan te passen aan de tekst.
+      Er zijn verschillende manieren om een attribuut toe te voegen. Maak eerst een knoop. Rechtsklik op de knoop en kies <i>Toevoegen en bewerken attribuut.</i>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Als je al een attribuut hebt, rechtsklik dan op het attribuut voor meer opties. Zo kun je&#160; <i>Optimale breedte</i>&#160;kiezen om de tabel aan te passen aan de tekst. (Beide kolommen hebben een ander contextmenu !)
     </p>
     <p>
       
@@ -2595,17 +3079,16 @@
     </p>
     <ul>
       <li>
-        via het contextmenu voor attributen: rechtsklik op het attribuut. (Merk op dat het naamveld en het waardeveld verschillende contextmenu's hebben !)<br/>
+        Kies in het opmaakpaneel de tab <i>Agenda en attributen. </i>Onderaan zie je een aantal opties voor attributen. Kies <i>Nieuw attribuut</i>.<br/>
       </li>
       <li>
-        door <i>Bewerken&gt; Knoopuitbreiding &gt; Attributen &gt; Toevoegen attribuut</i>&#160;te kiezen.<br/>
+        Kies <i>Bewerken&gt; Knoopuitbreiding &gt; Attributen &gt; Toevoegen attribuut</i>.<br/>
       </li>
     </ul>
   </body>
 </html>
 </richcontent>
-</node>
-<node TEXT="Mogelijke attribuutwaarden" STYLE_REF="Professional" ID="ID_1108500341" CREATED="1314211635490" MODIFIED="1316331265404"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Attribuutwaarden" STYLE_REF="Professional" ID="ID_1108500341" CREATED="1314211635490" MODIFIED="1323707370778" HGAP="-550" VSHIFT="177" MAX_WIDTH="550"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -2622,14 +3105,10 @@
     <p>
       Getallen en datums kunnen automatisch worden geformatteerd. Klik in het opmaakpaneel (Agenda en attributen) op het veld boven het attribuutveld. Er wordt dan een lijst met mogelijke formatteringen getoond. Zie de handleiding voor een toelichting.
     </p>
-    <p>
-      <br/>
-    </p>
   </body>
 </html>
 </richcontent>
-</node>
-<node TEXT="Andere mogelijkheden voor het bewerken van attributen" STYLE_REF="Professional" ID="ID_609269277" CREATED="1314278394970" MODIFIED="1316331299490"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Professional editing of attrtibutes" STYLE_REF="Professional" ID="ID_609269277" CREATED="1314278394970" MODIFIED="1323090892099" HGAP="-550" VSHIFT="100" MAX_WIDTH="550"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -2637,10 +3116,22 @@
   </head>
   <body>
     <p>
-      Kies menu<i>&#160;Knoopkenmerken &gt; Attributen</i>&#160;voor andere opties om attributen te bewerken.
+      There are several options to change e.g. the names of the attributes and/or values of all nodes. <i>Edit &gt; Node extensions&#160;&#160;&gt; Attributes</i>&#160;for all available methods and the Freeplane documentation for their description.
     </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="Hyperlink (arrow) in attribute" STYLE_REF="Professional" ID="ID_457929879" CREATED="1312540477537" MODIFIED="1323091000613" HGAP="-550" VSHIFT="80" MAX_WIDTH="550">
+<attribute_layout NAME_WIDTH="48" VALUE_WIDTH="101"/>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
     <p>
-      <br/>
+      It will be described below that hyperlinks can be added to attribute values through the context menu of the attribute value.
     </p>
   </body>
 </html>
@@ -2648,8 +3139,43 @@
 </node>
 </node>
 </node>
-<node TEXT="Knoopnotitie" STYLE_REF="Gevorderde" FOLDED="true" POSITION="left" ID="ID_154656521" CREATED="1316331564182" MODIFIED="1316331645225" NUMBERED="true">
-<node ID="ID_1329399780" CREATED="1316331632761" MODIFIED="1316497386656"><richcontent TYPE="NODE">
+</node>
+</node>
+</node>
+<node TEXT="Wetenschappelijke formule (LaTeX)" STYLE_REF="Professional" FOLDED="true" ID="ID_616494746" CREATED="1314361765668" MODIFIED="1323707404505" VSHIFT="-15" MIN_WIDTH="1" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1460441144" CREATED="1323527775837" MODIFIED="1323712018425"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Om een wetenschappelijke formule te tonen kan gebruik worden gemaakt van LaTeX, see <i>Edit &gt; Node extensions &gt; LaTeX</i>.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Opmerking</b>
+    </p>
+    <p>
+      Lees meer in <i>Help &gt; Documentatie</i>.
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
+</node>
+<node TEXT="Knoopnotitie" STYLE_REF="Advanced" FOLDED="true" POSITION="left" ID="ID_274601394" CREATED="1314208248182" MODIFIED="1323704993556" NUMBERED="true" MIN_WIDTH="180" VSHIFT="-5">
+<node ID="ID_1960771486" CREATED="1323524664411" MODIFIED="1323704959119"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2678,11 +3204,11 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="Datum en tijdacties" STYLE_REF="Professional" FOLDED="true" POSITION="left" ID="ID_1959496513" CREATED="1303932101749" MODIFIED="1316331410453" NUMBERED="true">
+<node TEXT="Datum en tijd" STYLE_REF="Professional" FOLDED="true" POSITION="left" ID="ID_1959496513" CREATED="1303932101749" MODIFIED="1323712047363" NUMBERED="true" MIN_WIDTH="180">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
-<node TEXT="Agenda funcies" STYLE_REF="Professional" ID="ID_1047570728" CREATED="1314367182383" MODIFIED="1316331423604"><richcontent TYPE="DETAILS">
+<node TEXT="Agenda functies" STYLE_REF="Professional" ID="ID_1047570728" CREATED="1314367182383" MODIFIED="1323712186798" MAX_WIDTH="600" VSHIFT="40"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -2713,20 +3239,61 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Managen tijd..." STYLE_REF="ProfessionalOnderwerp" FOLDED="true" ID="ID_1104707017" CREATED="1267746559867" MODIFIED="1316331448501">
+<node TEXT="Managen tijd" STYLE_REF="Professional" FOLDED="true" ID="ID_1104707017" CREATED="1267746559867" MODIFIED="1323810805788" VSHIFT="10" MAX_WIDTH="450" STYLE="combined">
 <icon BUILTIN="../TimeManagementAction"/>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="Zet jaar, maand en dag" STYLE_REF="ProfessionalOnderwerp" ID="ID_629838545" CREATED="1310058100675" MODIFIED="1316331448517"/>
-<node TEXT="Toevoegen datum" STYLE_REF="ProfessionalOnderwerp" ID="ID_77223280" CREATED="1288907062597" MODIFIED="1316331448532"/>
-<node TEXT="Toevoegen herinnering" STYLE_REF="ProfessionalOnderwerp" ID="ID_1905175036" CREATED="1310058020709" MODIFIED="1316331448532"/>
-<node TEXT="Verwijderen herinnering" STYLE_REF="ProfessionalOnderwerp" ID="ID_1600844387" CREATED="1310058040514" MODIFIED="1316331448532"/>
+<node FOLDED="true" ID="ID_1158360877" CREATED="1323528703218" MODIFIED="1323810818955" HGAP="-103" VSHIFT="89" MAX_WIDTH="400" MIN_WIDTH="400"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens a dialog to set or change a date (text) or a reminder which has been attached to the selected node. The node and its predecessors show a clock icon. This icon flashes at the reminder time. Also a red exclamation mark flashes in the root node.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        <i>Properties Panel &gt; Calendar &amp; Attributes</i>&#160;for an alternative dialog
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubWidth" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+<node TEXT="Set year, month and day" STYLE_REF="Method" ID="ID_629838545" CREATED="1310058100675" MODIFIED="1323529167120" STYLE="as_parent">
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Managen taken" STYLE_REF="ProfessionalOnderwerp" ID="ID_1106133151" CREATED="1266247905093" MODIFIED="1316331448517" BACKGROUND_COLOR="#ffffff">
+<node TEXT="Insert date in selection" STYLE_REF="Method" ID="ID_77223280" CREATED="1288907062597" MODIFIED="1323529167120" STYLE="as_parent">
+<edge STYLE="horizontal"/>
+</node>
+<node TEXT="Remind me at this date" STYLE_REF="Method" ID="ID_1905175036" CREATED="1310058020709" MODIFIED="1323529167120" STYLE="as_parent">
+<edge STYLE="horizontal"/>
+</node>
+<node TEXT="Remove reminder (time)" STYLE_REF="Method" ID="ID_1600844387" CREATED="1310058040514" MODIFIED="1323529167120" STYLE="as_parent">
+<edge STYLE="horizontal"/>
+</node>
+</node>
+</node>
+<node TEXT="Managen taken" STYLE_REF="Professional" FOLDED="true" ID="ID_1106133151" CREATED="1266247905093" MODIFIED="1323810826817" MAX_WIDTH="450" MIN_WIDTH="1" STYLE="combined">
 <icon BUILTIN="../TimeListAction"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1106133151" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<node ID="ID_1400536343" CREATED="1323528892096" MODIFIED="1323810855178" MAX_WIDTH="400" HGAP="-112" VSHIFT="97"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2763,46 +3330,75 @@
 </html>
 </richcontent>
 <hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1106133151" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
-<node TEXT="Verwijderen herinnering" STYLE_REF="ProfessionalOnderwerp" ID="ID_148977369" CREATED="1303932208426" MODIFIED="1316331448517" TEXT_SHORTENED="true">
+</node>
+<node TEXT="Remove reminder" STYLE_REF="Professional" FOLDED="true" ID="ID_148977369" CREATED="1303932208426" MODIFIED="1323810863930" MAX_WIDTH="450" MIN_WIDTH="1" STYLE="combined">
 <icon BUILTIN="../ReminderHookAction"/>
 <hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_740100275" CREATED="1323528999915" MODIFIED="1323810874694" HGAP="-125" VSHIFT="65"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Verwijder de herinnering van de geselecteerde knoop.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>See also</b>
+    </p>
+    <ul>
+      <li>
+        <i>Extra &gt; Agenda.</i>.
+      </li>
+      <li>
+        <i>Properties Panel &gt; Kalender &amp; attributen</i>
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
 </node>
-<node TEXT="" STYLE_REF="ProfessionalOnderwerp" ID="ID_517678813" CREATED="1288542096079" MODIFIED="1316331448532">
+</node>
+<node TEXT="" ID="ID_517678813" CREATED="1288542096079" MODIFIED="1316165471057" TEXT_SHORTENED="true">
 <hook NAME="plugins/TimeManagementReminder.xml">
     <Parameters REMINDUSERAT="2077460580480"/>
 </hook>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="ProfessionalTopic" LAST="false"/>
 </hook>
 <hook NAME="SummaryNode"/>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
-<node TEXT="Filteren en zoeken" STYLE_REF="Professional" FOLDED="true" POSITION="left" ID="ID_828862571" CREATED="1314109608813" MODIFIED="1316331747686" NUMBERED="true">
-<node TEXT="Waarom filteren ?" STYLE_REF="Professional" ID="ID_887149959" CREATED="1314362530273" MODIFIED="1316331685208"><richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Filteren zorgt er voor dat je alleen die knopen ziet die je wilt zien. De filterregel bepaalt welke knopen je wel en niet ziet. Dezelfde filterregel kan worden gebruikt om selectief knopen te zoeken.
-    </p>
-    <p>
-      
-    </p>
-  </body>
-</html>
-</richcontent>
+<node TEXT="Zoeken en filteren" STYLE_REF="Professional" FOLDED="true" POSITION="left" ID="ID_828862571" CREATED="1314109608813" MODIFIED="1323712436690" NUMBERED="true" MIN_WIDTH="180">
+<node TEXT="Waarom filteren ?" STYLE_REF="Professional" FOLDED="true" ID="ID_887149959" CREATED="1314362530273" MODIFIED="1323770435404" VSHIFT="25" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node TEXT="Filteren zorgt er voor dat je alleen die knopen ziet die je wilt zien. De filterregel bepaalt welke knopen je wel en niet ziet. Dezelfde filterregel kan worden gebruikt om selectief knopen te zoeken." ID="ID_1511890775" CREATED="1323770291298" MODIFIED="1323770322483" HGAP="-105" VSHIFT="30">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Filterelementen" STYLE_REF="Professional" FOLDED="true" ID="ID_1598853306" CREATED="1314362902185" MODIFIED="1316332011826"><richcontent TYPE="DETAILS">
+</node>
+<node TEXT="Filterelementen" STYLE_REF="Professional" FOLDED="true" ID="ID_1598853306" CREATED="1314362902185" MODIFIED="1323770426964" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1492352902" CREATED="1323770358262" MODIFIED="1323770411286" HGAP="-95" VSHIFT="135"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2810,14 +3406,14 @@
   </head>
   <body>
     <p>
-      <font face="SansSerif, sans-serif" color="#000000">Voor dat je kunt filteren moet je in de filterwerkbalk een filterregel maken. De filterwerkbalk bevindt zich boven het werkgebied voor de mindmap. Een filterregel bestaat uit de volgende elementen: </font>
+      <font color="#000000" face="SansSerif, sans-serif">Voor dat je kunt filteren moet je in de filterwerkbalk een filterregel maken. De filterwerkbalk bevindt zich boven het werkgebied voor de mindmap. Een filterregel bestaat uit de volgende elementen: </font>
     </p>
     <p>
       
     </p>
     <ul>
       <li>
-        <i><b>Knoopcomponent</b>&#160;</i>(Knooptitel. Knoopinhoud, Tijdstip, Pictogram, enz)
+        <b><i>Knoopcomponent</i></b><i>&#160;</i>(Knooptitel. Knoopinhoud, Tijdstip, Pictogram, enz)
       </li>
       <li>
         <i><b>Type regel: </b></i>&#160;component <i>bestaat</i>, <i>bevat</i>, <i>=</i>, &gt; etc.
@@ -2847,57 +3443,33 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="Snelfilter" FOLDED="true" ID="ID_1189166757" CREATED="1310134532663" MODIFIED="1315063745483" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+<node TEXT="Snelfilter" ID="ID_1357131173" CREATED="1310134532663" MODIFIED="1323712723293" TEXT_SHORTENED="true">
 <icon BUILTIN="../apply_quick_filter"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
-<node TEXT="Laatste wijzigingen zoeken" ID="ID_884023176" CREATED="1311098601253" MODIFIED="1315063997143" TEXT_SHORTENED="true">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
-    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
-</hook>
-<attribute NAME="Chapter" VALUE="2,9"/>
-<richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Met filteren kun je alle knopen vinden die na een bepaalde datum zijn gewijzigd. Stel hiervoor in de filterwerkbalk in: (datum, veranderd na datum, xxx) en kies Snelfilter.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b>Zie ook</b>
-    </p>
-    <ul>
-      <li>
-        <i>Alle knopen zoeken en vervangen</i>.
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
+<edge STYLE="horizontal"/>
 </node>
-</node>
-<node TEXT="Ongedaan maken filterenZoek" ID="ID_983064948" CREATED="1310134532663" MODIFIED="1315063678044" TEXT_SHORTENED="true">
+<node TEXT="Ongedaan maken filterenZoek" ID="ID_346907540" CREATED="1310134532663" MODIFIED="1323712731702" TEXT_SHORTENED="true">
 <icon BUILTIN="../remove_filtering"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Volgende zoeken" ID="ID_507981913" CREATED="1310134532663" MODIFIED="1315063785138" TEXT_SHORTENED="true">
+<node TEXT="Volgende zoeken" ID="ID_1476937761" CREATED="1310134532663" MODIFIED="1323712731702" TEXT_SHORTENED="true">
 <icon BUILTIN="../find_next"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
 </node>
-<node TEXT="Filterknoppen" STYLE_REF="Professional" FOLDED="true" ID="ID_1254354349" CREATED="1266240693156" MODIFIED="1316331723366" TEXT_SHORTENED="true" VSHIFT="18"><richcontent TYPE="DETAILS">
+</node>
+<node TEXT="Filter methoden" STYLE_REF="Professional" FOLDED="true" ID="ID_1254354349" CREATED="1266240693156" MODIFIED="1323712672359" TEXT_SHORTENED="true" VSHIFT="-2" STYLE="combined"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -2912,9 +3484,9 @@
 </richcontent>
 <attribute NAME="Chapter" VALUE="9"/>
 <hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="Filteractie ongedaan maken" STYLE_REF="ProfessionalOnderwerp" ID="ID_619416419" CREATED="1310134532663" MODIFIED="1316331714614" TEXT_SHORTENED="true">
+<node TEXT="Filteractie ongedaan maken" STYLE_REF="ProfessionalOnderwerp" ID="ID_619416419" CREATED="1310134532663" MODIFIED="1323712769267" TEXT_SHORTENED="true">
 <icon BUILTIN="../undo_filter"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -2933,8 +3505,9 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Herhalen laatste filteractie" STYLE_REF="ProfessionalOnderwerp" ID="ID_1724296233" CREATED="1310134532663" MODIFIED="1316331714630" TEXT_SHORTENED="true">
+<node TEXT="Herhalen laatste filteractie" STYLE_REF="ProfessionalOnderwerp" ID="ID_1724296233" CREATED="1310134532663" MODIFIED="1323712769267" TEXT_SHORTENED="true">
 <icon BUILTIN="../redo_filter"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -2952,8 +3525,9 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Opnieuw filteren (verfijnen)" STYLE_REF="ProfessionalOnderwerp" ID="ID_1748016122" CREATED="1310134532663" MODIFIED="1316331714630" TEXT_SHORTENED="true">
+<node TEXT="Opnieuw filteren (verfijnen)" STYLE_REF="ProfessionalOnderwerp" ID="ID_1748016122" CREATED="1310134532663" MODIFIED="1323712769282" TEXT_SHORTENED="true">
 <icon BUILTIN="../reapply_filter"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -2971,8 +3545,9 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Filteren mindmap" STYLE_REF="ProfessionalOnderwerp" FOLDED="true" ID="ID_1552136796" CREATED="1310134532663" MODIFIED="1316331714645" TEXT_SHORTENED="true">
+<node TEXT="Filteren mindmap" STYLE_REF="ProfessionalOnderwerp" FOLDED="true" ID="ID_1552136796" CREATED="1310134532663" MODIFIED="1323712769282" TEXT_SHORTENED="true">
 <icon BUILTIN="../apply_quick_filter"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -3015,6 +3590,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 <node TEXT="Find last modified nodes" ID="ID_1539236846" CREATED="1311098601253" MODIFIED="1314077884276" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
@@ -3047,7 +3623,7 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="Niet-geslecteerde knopen verbergen" STYLE_REF="ProfessionalOnderwerp" ID="ID_402507556" CREATED="1310134532663" MODIFIED="1316331714645" TEXT_SHORTENED="true">
+<node TEXT="Niet-geslecteerde knopen verbergen" STYLE_REF="ProfessionalOnderwerp" ID="ID_402507556" CREATED="1310134532663" MODIFIED="1323712769282" TEXT_SHORTENED="true">
 <icon BUILTIN="../filter_selected_nodes"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -3080,8 +3656,9 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute_layout NAME_WIDTH="68" VALUE_WIDTH="68"/>
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Filteren en selecteren" STYLE_REF="ProfessionalOnderwerp" ID="ID_164487469" CREATED="1310134532663" MODIFIED="1316331714661" TEXT_SHORTENED="true">
+<node TEXT="Filteren en selecteren" STYLE_REF="ProfessionalOnderwerp" ID="ID_164487469" CREATED="1310134532663" MODIFIED="1323712769282" TEXT_SHORTENED="true">
 <icon BUILTIN="../select_all_found_nodes"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -3099,8 +3676,9 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Stop filteren" STYLE_REF="ProfessionalOnderwerp" ID="ID_1978139715" CREATED="1310134532663" MODIFIED="1316331714661" TEXT_SHORTENED="true">
+<node TEXT="Stop filteren" STYLE_REF="ProfessionalOnderwerp" ID="ID_1978139715" CREATED="1310134532663" MODIFIED="1323712769282" TEXT_SHORTENED="true">
 <icon BUILTIN="../remove_filtering"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -3118,8 +3696,9 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Componeren filter" STYLE_REF="ProfessionalOnderwerp" FOLDED="true" ID="ID_1142884544" CREATED="1310134532663" MODIFIED="1316331714661" TEXT_SHORTENED="true">
+<node TEXT="Componeren filter" STYLE_REF="ProfessionalOnderwerp" ID="ID_1142884544" CREATED="1310134532663" MODIFIED="1323712769282" TEXT_SHORTENED="true">
 <icon BUILTIN="../edit_filtering_condition"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -3185,182 +3764,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
-<node TEXT="First filter entry field" STYLE_REF="Method" FOLDED="true" ID="ID_1625917093" CREATED="1312123492440" MODIFIED="1314078031259">
-<attribute NAME="Chapter" VALUE="9"/>
-<node TEXT="Node Text (default)" ID="ID_440014122" CREATED="1312123267776" MODIFIED="1312123719962">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Parent Text" ID="ID_58128801" CREATED="1312123283057" MODIFIED="1312123720196">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Details" ID="ID_1976565775" CREATED="1312123289164" MODIFIED="1312123720181">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Icon" ID="ID_265220662" CREATED="1312123306722" MODIFIED="1312123720150">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Hyperlink" ID="ID_1229040721" CREATED="1312123310770" MODIFIED="1312123720118">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Connector label" ID="ID_725547789" CREATED="1312123356611" MODIFIED="1312123720103">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Connector" ID="ID_1614932096" CREATED="1312123365245" MODIFIED="1312123720087">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Date filter" ID="ID_1276079599" CREATED="1312123370370" MODIFIED="1312123720072">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Priority" ID="ID_30298697" CREATED="1312123376602" MODIFIED="1312123720056">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Node" ID="ID_863184223" CREATED="1312123395954" MODIFIED="1312123720040">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Style" ID="ID_1110522569" CREATED="1312123399644" MODIFIED="1312123720025">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Node level" ID="ID_1102698985" CREATED="1312123420696" MODIFIED="1312123720009">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Reminder" ID="ID_988583509" CREATED="1312123426101" MODIFIED="1312123720009">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Script filter" ID="ID_1339780088" CREATED="1312123431320" MODIFIED="1312123719994">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-<node TEXT="and user defined styles..." ID="ID_1524254052" CREATED="1312123439299" MODIFIED="1312123719994">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-</node>
-<node TEXT="Second filter entry field" STYLE_REF="Method" FOLDED="true" ID="ID_387521533" CREATED="1312123543788" MODIFIED="1314078043256">
-<attribute NAME="Chapter" VALUE="9"/>
-<node TEXT="Contains (default)" ID="ID_1227202337" CREATED="1312123550505" MODIFIED="1312123823391">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Is equal to" ID="ID_39134629" CREATED="1312123556784" MODIFIED="1312123823453">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Is not equal to" ID="ID_1364103252" CREATED="1312123568866" MODIFIED="1312123823437">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-<node TEXT="&gt;" ID="ID_877198724" CREATED="1312123576922" MODIFIED="1312123823437">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-<node TEXT="&gt;=" ID="ID_1015544739" CREATED="1312123587882" MODIFIED="1312123823422">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-<node TEXT="&lt;=" ID="ID_1164055784" CREATED="1312123591711" MODIFIED="1312123823406">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-<node TEXT="&gt;" ID="ID_1681290681" CREATED="1312123597631" MODIFIED="1312123823406">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Matches regexpr" ID="ID_91821609" CREATED="1312123615252" MODIFIED="1312123823406">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-</node>
-<node TEXT="Third filter entry field" STYLE_REF="Method" FOLDED="true" ID="ID_871096693" CREATED="1312123628941" MODIFIED="1314078054644">
-<attribute NAME="Chapter" VALUE="9"/>
-<node TEXT="empty text field (default)" STYLE_REF="OptionalValue" ID="ID_1473584730" CREATED="1312123652068" MODIFIED="1312920883566"/>
-</node>
-<node TEXT="Check box" STYLE_REF="Method" FOLDED="true" ID="ID_191687274" CREATED="1312123857125" MODIFIED="1314078066515">
-<attribute NAME="Chapter" VALUE="9"/>
-<node TEXT="Match case" ID="ID_939695594" CREATED="1312123867351" MODIFIED="1312123893606">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-</node>
-<node TEXT="Table with List of filters" STYLE_REF="Method" ID="ID_1260531487" CREATED="1312142902004" MODIFIED="1314078079619">
-<attribute NAME="Chapter" VALUE="9"/>
-</node>
-<node TEXT="Buttons of Filter composer" STYLE_REF="Method" FOLDED="true" ID="ID_1027349840" CREATED="1312142569809" MODIFIED="1314078099275">
-<attribute NAME="Chapter" VALUE="9"/>
-<node TEXT="Add" STYLE_REF="Method" ID="ID_1309133157" CREATED="1312142576136" MODIFIED="1312920971020"/>
-<node TEXT="And" STYLE_REF="Method" ID="ID_1757300074" CREATED="1312142621789" MODIFIED="1312920971067"/>
-<node TEXT="Or" STYLE_REF="Method" ID="ID_1457390872" CREATED="1312142626695" MODIFIED="1312920971067"/>
-<node TEXT="Split" STYLE_REF="Method" ID="ID_473058214" CREATED="1312142630728" MODIFIED="1312920971051" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      To split a filter rule which was composed with AND and OR.
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
-<node TEXT="Delete" STYLE_REF="Method" ID="ID_1607587118" CREATED="1312142647630" MODIFIED="1312920971051"/>
-<node TEXT="Set Name" STYLE_REF="Method" ID="ID_1779620539" CREATED="1312142655048" MODIFIED="1312920971051"/>
-<node TEXT="Right" STYLE_REF="Method" ID="ID_208287444" CREATED="1312142731636" MODIFIED="1312920971035">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
-</hook>
-<hook NAME="SummaryNode"/>
-</node>
-<node TEXT="OK" STYLE_REF="Method" ID="ID_1874975203" CREATED="1312142849292" MODIFIED="1312920971035"/>
-<node TEXT="Apply" STYLE_REF="Method" ID="ID_1375530764" CREATED="1312142661031" MODIFIED="1312920971035"/>
-<node TEXT="Cancel" STYLE_REF="Method" ID="ID_23661885" CREATED="1312142699056" MODIFIED="1312920971035"/>
-<node TEXT="Save" STYLE_REF="Method" ID="ID_1878373607" CREATED="1312142707706" MODIFIED="1312920971035"/>
-<node TEXT="Load" STYLE_REF="Method" ID="ID_1746410510" CREATED="1312142713221" MODIFIED="1312920971020"/>
-<node TEXT="Bottom" ID="ID_1789678903" CREATED="1312142752033" MODIFIED="1312143004256">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
-</hook>
-<hook NAME="SummaryNode"/>
-</node>
-</node>
+<edge STYLE="horizontal"/>
 </node>
 <node TEXT="Filter acties" STYLE_REF="ProfessionalOnderwerp" ID="ID_214063901" CREATED="1310496676053" MODIFIED="1316331714677">
 <hook NAME="SummaryNode"/>
@@ -3368,7 +3772,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Verder filteren (verfijnen)" STYLE_REF="ProfessionalOnderwerp" ID="ID_1768599003" CREATED="1310134532663" MODIFIED="1316331714677" TEXT_SHORTENED="true">
+<node TEXT="Verder filteren (verfijnen)" STYLE_REF="ProfessionalOnderwerp" ID="ID_1768599003" CREATED="1310134532663" MODIFIED="1323712769282" TEXT_SHORTENED="true">
 <icon BUILTIN="../applies_to_filtered_nodes"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -3387,8 +3791,9 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Ook voorouders tonen" STYLE_REF="ProfessionalOnderwerp" ID="ID_1384592614" CREATED="1310134532663" MODIFIED="1316331714677" TEXT_SHORTENED="true">
+<node TEXT="Ook voorouders tonen" STYLE_REF="ProfessionalOnderwerp" ID="ID_1384592614" CREATED="1310134532663" MODIFIED="1323712769282" TEXT_SHORTENED="true">
 <icon BUILTIN="../show_ancestors"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -3417,8 +3822,9 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Ook afstammelingen tonen" STYLE_REF="ProfessionalOnderwerp" ID="ID_347749612" CREATED="1310134532663" MODIFIED="1316331714692" TEXT_SHORTENED="true">
+<node TEXT="Ook afstammelingen tonen" STYLE_REF="ProfessionalOnderwerp" ID="ID_347749612" CREATED="1310134532663" MODIFIED="1323712769282" TEXT_SHORTENED="true">
 <icon BUILTIN="../show_descendants"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -3447,6 +3853,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
 <node TEXT="Filter condities" STYLE_REF="ProfessionalOnderwerp" ID="ID_1103140596" CREATED="1310496750715" MODIFIED="1316331714692">
 <hook NAME="SummaryNode"/>
@@ -3454,7 +3861,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Vorige zoeken" STYLE_REF="ProfessionalOnderwerp" ID="ID_132872030" CREATED="1310134532663" MODIFIED="1316331714692" TEXT_SHORTENED="true">
+<node TEXT="Vorige zoeken" STYLE_REF="ProfessionalOnderwerp" ID="ID_132872030" CREATED="1310134532663" MODIFIED="1323712769298" TEXT_SHORTENED="true">
 <icon BUILTIN="../find_previous"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -3490,8 +3897,9 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Volgende zoeken" STYLE_REF="ProfessionalOnderwerp" ID="ID_1528431308" CREATED="1310134532663" MODIFIED="1316331714692" TEXT_SHORTENED="true">
+<node TEXT="Volgende zoeken" STYLE_REF="ProfessionalOnderwerp" ID="ID_1528431308" CREATED="1310134532663" MODIFIED="1323712769298" TEXT_SHORTENED="true">
 <icon BUILTIN="../find_next"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -3526,6 +3934,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<edge STYLE="horizontal"/>
 </node>
 <node TEXT="Zoeken" STYLE_REF="ProfessionalOnderwerp" ID="ID_721920269" CREATED="1310496838340" MODIFIED="1316331714692">
 <hook NAME="SummaryNode"/>
@@ -3534,7 +3943,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="Filtersets maken en hergebruiken" STYLE_REF="Professional" ID="ID_313931211" CREATED="1316332045232" MODIFIED="1316333091748"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Gebruiken filter sets" STYLE_REF="Professional" FOLDED="true" ID="ID_665978371" CREATED="1316203189752" MODIFIED="1323811027426" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_49510380" CREATED="1323529306279" MODIFIED="1323811009018" HGAP="-93" VSHIFT="110"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3542,13 +3955,33 @@
   </head>
   <body>
     <p>
-      Filterregels kun je maken en bewaren voor gebruik op een later moment of op een andere computer. Open menu<i>&#160;Filteren &gt; Componeren filter</i>&#160; en maak de filterregels die je nodig hebt. Voorzie de filterregels die je wilt hergebruiken van een naamlabel om ze herkenbaar te maken. Kies dan <i>Bewaren</i>&#160;voor het bewaren van de set. Op het moment dat je de set nodig hebt kies je in het venster voor het componeren <i>Laden</i>&#160;voor het opnieuw installeren van de set.
+      Filterregels kun je maken en bewaren voor gebruik op een later moment of op een andere computer. Je kunt filterregels combineren met EN en OF operatoren en je kunt filterregels een maamlabel geven. En je kunt een filterset bewaren voor later hergebruik.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      Open menu<i>&#160;Filteren &gt; Componeren filter</i>&#160;&#160;en maak de filterregels die je nodig hebt. Voorzie de filterregels die je wilt hergebruiken van een naamlabel om ze herkenbaar te maken. Kies dan <i>Bewaren</i>&#160;voor het bewaren van de set. Op het moment dat je de set nodig hebt kies je in het venster voor het componeren <i>Laden</i>&#160;voor het opnieuw installeren van de set.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      De filterregels zijn beschikbaar in de filter menubalk. Om een regel te kiezen, klik op het venster naast &quot;<i>Niet filteren (verwijderen)</i>&quot;. &#160;Je ziet dan de eerder gedefinieerde filters. Klik op de regel naar keuze. Na het filteren klik op pictogram &#160;<i><b>Stop&#160;filter</b></i>.
     </p>
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Filter instruction" STYLE_REF="Professional" FOLDED="true" ID="ID_1284293100" CREATED="1316177216317" MODIFIED="1316960259890"><richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+<node TEXT="Laden en gebruiken van de filterset voor deze Quick reference" STYLE_REF="Professional" FOLDED="true" ID="ID_1284293100" CREATED="1316177216317" MODIFIED="1323713282573" LINK="http://www.kioo.nl/freeplane/tutorial_en/filterSet" MIN_WIDTH="1" VSHIFT="-30">
+<node TEXT="Consider using a powerfull feature of Freeplane, filtering, to present to you only the information of&#xa;one of these 3 levels (Beginner, Advanced, Professional) at a time.&#xa;&#xa;The procedure for filtering is described to the left.  If you do not see it, click on the colored bar above&#xa;this text to unhide it. If you click on the red arrow, the instruction is illustrated in an animation." ID="ID_352888342" CREATED="1323529491351" MODIFIED="1323529654285"/>
+<node TEXT="Load filter set for this Quick reference" ID="ID_551050917" CREATED="1317234746190" MODIFIED="1323811074382">
+<icon BUILTIN="full-0"/>
+<richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -3556,36 +3989,19 @@
   </head>
   <body>
     <p>
-      &lt;TE IMPLEMENTEREN&gt;
+      As an example of using filter sets, the Freeplane directory has a subdirectory <i>doc</i>&#160;with a file called <i>freeplaneTutorial.mmfilter</i>. Choose <i>Fiter &gt; Filter composer &gt; Load</i>&#160;and find and load this file.
     </p>
     <p>
-      
-    </p>
-    <p>
-      Je kunt filteren gebruiken om &#233;&#233;n van de drie niveau's van deze mindmap te laten zien. In de tekst links wordt
-    </p>
-    <p>
-      uitgelegd hoe dit moet. Zie je deze tekst niet, klik dan op mijn titel om de tekst zichtbaar te maken.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Druk op het rode pijltje voor een demonstratie
-    </p>
-    <p>
-      &#160;(animatie) hoe filteren gaat.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Click on my title to open.
+      After this you can use the filters as described in the following nodes.
     </p>
   </body>
 </html>
 </richcontent>
-<node TEXT="Select filter and Quickfilter" LOCALIZED_STYLE_REF="default" ID="ID_1871459381" CREATED="1316156118436" MODIFIED="1316344938119" LINK="FilterExampleBegin.jpg">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubWidth" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Select filter and Quickfilter" LOCALIZED_STYLE_REF="default" ID="ID_81563733" CREATED="1316156118436" MODIFIED="1323811089701" LINK="FilterExampleBegin.jpg">
 <icon BUILTIN="full-1"/>
 <richcontent TYPE="DETAILS">
 
@@ -3595,7 +4011,7 @@
   </head>
   <body>
     <p>
-      To see only the information at the first level of experience (Consumer):
+      To see only the information at the first level of experience (Beginner):
     </p>
     <p>
       
@@ -3607,7 +4023,7 @@
             Click in field with <i>&quot;No filtering (remove)&quot;</i>: a list with filters drops down.
           </li>
           <li>
-            Select ane of the shown rules e.g. Beginner (formerly Consumer)
+            Select ane of the shown rules e.g. Beginner
           </li>
           <li>
             Click <i>Quick filter</i>&#160;as shown in the image.
@@ -3621,8 +4037,11 @@
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubWidth" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Unfold to make visible" ID="ID_367674383" CREATED="1316176206878" MODIFIED="1316344952362" VSHIFT="22" LINK="FilterExampleEnd.jpg">
+<node TEXT="Unfold to make visible" ID="ID_1451237301" CREATED="1316176206878" MODIFIED="1323811105176" HGAP="15" VSHIFT="-8" LINK="FilterExampleEnd.jpg">
 <icon BUILTIN="full-2"/>
 <richcontent TYPE="DETAILS">
 
@@ -3645,8 +4064,11 @@
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubWidth" LAST="false"/>
+</hook>
 </node>
-<node TEXT="View and finish" ID="ID_1976159749" CREATED="1316177379721" MODIFIED="1316344974342" VSHIFT="26" LINK="FilterExampleUnfold.jpg">
+<node TEXT="View and finish" ID="ID_1331360426" CREATED="1316177379721" MODIFIED="1323811125472" VSHIFT="6" LINK="FilterExampleUnfold.jpg">
 <icon BUILTIN="full-3"/>
 <richcontent TYPE="DETAILS">
 
@@ -3669,25 +4091,19 @@
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubWidth" LAST="false"/>
+    <conditional_style ACTIVE="true" LOCALIZED_STYLE_REF="default" LAST="false"/>
+</hook>
 </node>
 </node>
 </node>
-<node TEXT="Beveiligen knopen" STYLE_REF="Professional" FOLDED="true" POSITION="left" ID="ID_1878167877" CREATED="1314339453691" MODIFIED="1316333172353" NUMBERED="true">
-<node TEXT="Nieuwe beveiligde mindmap" STYLE_REF="Professional" ID="ID_843632552" CREATED="1314362258060" MODIFIED="1316333165707"><richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Een mindmap kan in zijn geheel worden beveiligd met een wachtwoord. Kies hiervoor <i>Nieuwe beveiligde mindmap.</i>
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
-<node TEXT="Beveiligen kindknopen met wachtwoord" STYLE_REF="Professional" ID="ID_1225524383" CREATED="1314362016509" MODIFIED="1316333165723"><richcontent TYPE="DETAILS">
+<node TEXT="Beveiligen knopen" STYLE_REF="Professional" FOLDED="true" POSITION="left" ID="ID_1232153769" CREATED="1314339453691" MODIFIED="1323713604605" NUMBERED="true" MIN_WIDTH="180">
+<node TEXT="Beveilgen knopen met een wachtwoord" STYLE_REF="Professional" FOLDED="true" ID="ID_1433157907" CREATED="1314362016509" MODIFIED="1323770587395" VSHIFT="35">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_386223744" CREATED="1323770459872" MODIFIED="1323770490605" HGAP="-225" VSHIFT="95"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3708,15 +4124,25 @@
         De knoop waarvoor je een wachtwoord instelt is zelf wel zichtbaar. Dit geldt ook voor zijn knoopinhoud.
       </li>
       <li>
-        De beveiliging wordt gerealiseerd met zogenaamde DES encryptie, zie de Handleiding Freeplane.
+        De beveiliging wordt gerealiseerd met zogenaamde DES encryptie, zie Help &gt; Handleiding.
+      </li>
+      <li>
+        Zie ook:<i>&#160;Extra &gt; Knoopbeveiliging</i>.
       </li>
     </ul>
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
 </node>
-<node TEXT="Fijnregelen Freeplane" STYLE_REF="Professional" FOLDED="true" POSITION="left" ID="ID_1746471823" CREATED="1314215326284" MODIFIED="1316333510148" NUMBERED="true" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Nieuwe beveiligde mindmap" STYLE_REF="Professional" FOLDED="true" ID="ID_1064538299" CREATED="1314362258060" MODIFIED="1323770575757" VSHIFT="-40" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_528457926" CREATED="1323770517195" MODIFIED="1323770569658" HGAP="-160" VSHIFT="25"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3724,21 +4150,19 @@
   </head>
   <body>
     <p>
-      Freeplane heeft vele mogelijkheden om de werking aan je persoonlijke wensen aan te passen.
-    </p>
-    <p>
-      De meestgebruikte staan in menu <i>Beeld</i>. Veel meer staan in &#160;<i>Extra &gt; Instellingen. </i>
-    </p>
-    <p>
-      Daarnaast kun je met zogenaamde scripts je eigen uitbredingen op Freeplane maken.
-    </p>
-    <p>
-      Zie Handleiding Freepplane voor een beschrijving.
+      Een mindmap kan in zijn geheel worden beveiligd met een wachtwoord. Kies hiervoor <i>Nieuwe beveiligde mindmap.</i>
     </p>
   </body>
 </html>
 </richcontent>
-<node TEXT="Standaard knoopstijl veranderen" STYLE_REF="Gevorderde" ID="ID_203050189" CREATED="1321644235589" MODIFIED="1321645071552"><richcontent TYPE="DETAILS" HIDDEN="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
+</node>
+<node TEXT="Fijnregelen Freeplane" STYLE_REF="Professional" FOLDED="true" POSITION="left" ID="ID_1746471823" CREATED="1314215326284" MODIFIED="1323811170119" NUMBERED="true" MIN_WIDTH="180">
+<node ID="ID_931065203" CREATED="1323095428935" MODIFIED="1323713673861" VSHIFT="100"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3746,48 +4170,106 @@
   </head>
   <body>
     <p>
-      De standaard vorm van een knoop of tak kun je veranderen door de stijl <i>Standaardstijl</i>&#160; te bewerken:
+      Freeplane heeft vele mogelijkheden om de werking aan je persoonlijke wensen aan te passen. De meestgebruikte staan in menu <i>Beeld</i>. Veel meer staan in &#160;<i>Extra &gt; Instellingen. </i>Daarnaast kun je met zogenaamde scripts je eigen uitbredingen op Freeplane maken. Zie Help &gt; Handleiding voor een beschrijving.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Alle knopen een omlijning" STYLE_REF="Advanced" FOLDED="true" ID="ID_210892586" CREATED="1321645917041" MODIFIED="1323713954568" MIN_WIDTH="1" STYLE="combined"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1274034553" CREATED="1323529940039" MODIFIED="1323713961853" HGAP="-145" VSHIFT="25"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Een nieuwe knoop krijgt stijl <i>Default</i>. Deze stijl kan worden vernaderd : <i>Opmaken &gt; Beheren stijlen &gt; Bewerken stijlen. </i>Als je <i>omlijning</i>&#160;instelt krijgen alle nieuwe knopen een omlijning of kader.
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Instellingen in menu Beeld" STYLE_REF="Professional" FOLDED="true" ID="ID_1173853188" CREATED="1315687352137" MODIFIED="1323714027311" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node TEXT="In menu Beeld kun je verschillende eigenschappen van de knoopkern instellen zoals de breedte van de tekst, of een selectierand moet worden getoond, of formules met een rand moeten worden omgeven en welke achtergrondkleur voor een revisie moet worden toegepast. Je kunt verder instellen hoe knoopdetails moeten worden getoond, met of zonder zweeftekst en revisies (tijdstippen). Je kunt verder aangeven welke attributen moeten moeten worden getoond of verborgen. En je kunt aangeven of knoopnotities in een apart venster moeten worden getoond dat op het scherm blijft staan, en op welke positie van het scherm." ID="ID_1748316183" CREATED="1323530207075" MODIFIED="1323714034721" HGAP="-155" VSHIFT="60">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Scientific suite (Docear)" STYLE_REF="Professional" FOLDED="true" ID="ID_170927482" CREATED="1316706324268" MODIFIED="1323530407966" LINK="http://docear.org/details.php" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1788895132" CREATED="1323530348451" MODIFIED="1323530397748" HGAP="-155" VSHIFT="102"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span lang="EN-US">Docear is an &quot;academic literature suite&quot;. It provides to researchers what an office suite provides to office workers. By that we mean, Docear supports you in doing all the tasks related to literature management: </span>
+    </p>
+    <p>
+      <span lang="EN-US">&#160; </span>
+    </p>
+    <p>
+      <span lang="EN-US">&#160;&#160;&#160;1. Finding new literature (searching and exploring) </span>
+    </p>
+    <p>
+      <span lang="EN-US">&#160;&#160;&#160;2. Organizing literature (reading, annotating, and retrieving) </span>
+    </p>
+    <p>
+      <span lang="EN-US">&#160;&#160;&#160;3. Creating your own literature (drafting, writing, referencing, and publishing) </span>
+    </p>
+    <p>
+      <span lang="EN-US">&#160; </span>
+    </p>
+    <p>
+      <span lang="EN-US">Docear is the successor of SciPlore MindMapping and funded by the European Union and German Federal Ministry of Economics and Technology.</span>
     </p>
     <p>
       
     </p>
-    <ul>
-      <li>
-        Kies&#160; <i>Opmaken &gt; Beheren knoopstijlen &gt; Opmaken knoopslijlen</i>
-      </li>
-      <li>
-        Selekteer de knoop Standaardstijl
-      </li>
-      <li>
-        Open het Opmaakpaneel; en
-      </li>
-      <li>
-        bewerk de knoopstijl.
-      </li>
-    </ul>
     <p>
-      Als je voor omlijning <i>Knoopomlijning</i>&#160;kiest, krijgen alle nieuwe knopen een omlijning. Op een zelfde wijze kun je bijvoorbeeld instellen dat alle nieuwe knopen een bepaalde takvorm of -kleur krijgen.
+      <b>It is expected that Docear will become available as plugin in October 2011: click the red arrow</b>
     </p>
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Menu Beeld" STYLE_REF="Professional" ID="ID_1923037593" CREATED="1314360573319" MODIFIED="1316333938681"><richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      In menu Beeld kun je verschillende eigenschappen van de knoopkern instellen zoals de breedte van de tekst, of een selectierand moet worden getoond, of formules met een rand moeten worden omgeven en welke achtergrondkleur voor een revisie moet worden toegepast. Je kunt verder instellen hoe knoopdetails moeten worden getoond, met of zonder zweeftekst en revisies (tijdstippen). Je kunt verder aangeven welke attributen moeten moeten worden getoond of verborgen. En je kunt aangeven of knoopnotities in een apart venster moeten worden getoond dat op het scherm blijft staan, en op welke positie van het scherm.
-    </p>
-  </body>
-</html>
-</richcontent>
 </node>
-<node TEXT="Extra &gt; Instellingen" STYLE_REF="Professional" FOLDED="true" ID="ID_889570489" CREATED="1314730257257" MODIFIED="1316334010737">
-<node TEXT="Omgeving" STYLE_REF="Professional" ID="ID_908072469" CREATED="1314708954177" MODIFIED="1316334010722"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Standaard instellingen in Extra &gt; Voorkeuren" STYLE_REF="Professional" FOLDED="true" ID="ID_889570489" CREATED="1314730257257" MODIFIED="1323714512035" MIN_WIDTH="1" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node TEXT="Omgeving" FOLDED="true" ID="ID_908072469" CREATED="1314708954177" MODIFIED="1323714273667" HGAP="-190" VSHIFT="104" MAX_WIDTH="550" MIN_WIDTH="550" STYLE="fork">
+<font BOLD="true"/>
+<richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -3820,8 +4302,7 @@
   </body>
 </html>
 </richcontent>
-</node>
-<node TEXT="V&#xf3;&#xf3;rkomen" STYLE_REF="Professional" ID="ID_1541392544" CREATED="1314709723082" MODIFIED="1316334010722"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Voorkomen" STYLE_REF="Introduction" FOLDED="true" ID="ID_1541392544" CREATED="1314709723082" MODIFIED="1323714290702" HGAP="-550" VSHIFT="145" MIN_WIDTH="550"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -3845,8 +4326,8 @@
   </body>
 </html>
 </richcontent>
-</node>
-<node TEXT="Toetsen" STYLE_REF="Professional" ID="ID_748518266" CREATED="1314720398255" MODIFIED="1316334010737"><richcontent TYPE="DETAILS" HIDDEN="true">
+<font BOLD="true"/>
+<node TEXT="Toetsen" STYLE_REF="Introduction" FOLDED="true" ID="ID_748518266" CREATED="1314720398255" MODIFIED="1323714332869" HGAP="-555" VSHIFT="70" MIN_WIDTH="550"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -3854,13 +4335,16 @@
   </head>
   <body>
     <p>
-      De sneltoetsen die worden gebruikt voor bepaalde pictogrammen.
+      De sneltoetsen die worden gebruikt voor bepaalde pictogrammen
+    </p>
+    <p>
+      
     </p>
   </body>
 </html>
 </richcontent>
-</node>
-<node TEXT="Gedrag" STYLE_REF="Professional" ID="ID_1578508847" CREATED="1314720581515" MODIFIED="1316334010737"><richcontent TYPE="DETAILS" HIDDEN="true">
+<font BOLD="true"/>
+<node TEXT="Gedrag" STYLE_REF="Introduction" FOLDED="true" ID="ID_1578508847" CREATED="1314720581515" MODIFIED="1323714377157" HGAP="-550" VSHIFT="163" MIN_WIDTH="550"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -3914,8 +4398,8 @@
   </body>
 </html>
 </richcontent>
-</node>
-<node TEXT="HTML" STYLE_REF="Professional" ID="ID_1185446743" CREATED="1314729741193" MODIFIED="1316334010722"><richcontent TYPE="DETAILS" HIDDEN="true">
+<font BOLD="true"/>
+<node TEXT="HTML" STYLE_REF="Introduction" FOLDED="true" ID="ID_1185446743" CREATED="1314729741193" MODIFIED="1323714416516" HGAP="-550" VSHIFT="161" MIN_WIDTH="550"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -3928,10 +4412,33 @@
   </body>
 </html>
 </richcontent>
+<font BOLD="true"/>
+<node TEXT="Plugins" STYLE_REF="Introduction" ID="ID_1546138946" CREATED="1314729857046" MODIFIED="1323714478838" HGAP="-550" VSHIFT="55" MIN_WIDTH="550"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Instellingen voor formules en scripts
+    </p>
+  </body>
+</html>
+</richcontent>
+<font BOLD="true"/>
 </node>
-<node TEXT="Add-ons" STYLE_REF="Professional" ID="ID_1156954596" CREATED="1319993853694" MODIFIED="1321036693319" LINK="http://freeplane.sourceforge.net/wiki/index.php/Add-ons_%28install%29"/>
 </node>
-<node TEXT="Gebruiken en schrijven van een script" STYLE_REF="Professional" ID="ID_519455593" CREATED="1316158310467" MODIFIED="1319640671289" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting"><richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Scripts" STYLE_REF="Professional" FOLDED="true" ID="ID_519455593" CREATED="1316158310467" MODIFIED="1323811193426" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1965879157" CREATED="1323530732191" MODIFIED="1323714575357" HGAP="-160" VSHIFT="45"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3950,8 +4457,16 @@
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Indexeren .mm in Windows7" STYLE_REF="Professional" ID="ID_952466464" CREATED="1313349075257" MODIFIED="1316334030658" VSHIFT="20"><richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+<node TEXT="Indexing .mm in Windows7" STYLE_REF="Professional" FOLDED="true" ID="ID_952466464" CREATED="1313349075257" MODIFIED="1323530875579" VSHIFT="2" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_844014092" CREATED="1323530829949" MODIFIED="1323714635916" HGAP="-150" VSHIFT="149"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3992,66 +4507,32 @@
     </p>
     <ul>
       <li>
-        In the standard mode only node properties are indexed, not content. The above procedure also adds the content to the filtering mechanism
+        In the standard mode only node properties are indexed, not content. The above procedure also adds the content to the filtering mechanism.
       </li>
     </ul>
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Woordenlijsten voor spellingcontrole" STYLE_REF="Professional" ID="ID_141336344" CREATED="1271096394315" MODIFIED="1317837496974" LINK="http://sourceforge.net/projects/freeplane/files/spell_check_dictionaries"><richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Spellingcontrole is standaard voor Engels ingesteld. Voor het Nederlands moet de woordenlijst worden opgehaald van Internet. Klik op het rode pijltje. Download het bestand dictionary_nl.ortho. En bewaar dit bestand in Extra &gt; Gebruikersdirectory &gt; Resources/Ortho. &#160;Raadpleeg verder de Handleiding Freeplane.
-    </p>
-  </body>
-</html>
-</richcontent>
 </node>
-<node TEXT="Scientific suite (Docear)" STYLE_REF="Professional" ID="ID_170927482" CREATED="1316706324268" MODIFIED="1317222002886" LINK="http://docear.org/details.php"><richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <span lang="EN-US">Docear is an &quot;academic literature suite&quot;. It provides to researchers what an office suite provides to office workers. By that we mean, Docear supports you in doing all the tasks related to literature management: </span>
-    </p>
-    <p>
-      <span lang="EN-US">&#160; </span>
-    </p>
-    <p>
-      <span lang="EN-US">&#160;&#160;&#160;1. Finding new literature (searching and exploring) </span>
-    </p>
-    <p>
-      <span lang="EN-US">&#160;&#160;&#160;2. Organizing literature (reading, annotating, and retrieving) </span>
-    </p>
-    <p>
-      <span lang="EN-US">&#160;&#160;&#160;3. Creating your own literature (drafting, writing, referencing, and publishing) </span>
-    </p>
-    <p>
-      <span lang="EN-US">&#160; </span>
-    </p>
-    <p>
-      <span lang="EN-US">Docear is the successor of SciPlore MindMapping and funded by the European Union and German Federal Ministry of Economics and Technology.</span>
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b>It is expected that Docear will become available as plugin in October 2011: click the red arrow</b>
-    </p>
-  </body>
-</html>
-</richcontent>
+<node TEXT="Woordenlijsten voor spellingcontrole" STYLE_REF="Professional" FOLDED="true" ID="ID_141336344" CREATED="1271096394315" MODIFIED="1323714684417" LINK="http://sourceforge.net/projects/freeplane/files/spell_check_dictionaries" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node TEXT="Spellingcontrole is standaard voor Engels ingesteld. Voor het Nederlands moet de woordenlijst worden opgehaald van Internet. Klik op het rode pijltje. Download het bestand dictionary_nl.ortho. En bewaar dit bestand in Extra &gt; Gebruikersdirectory &gt; Resources/Ortho.  Raadpleeg verder de Handleiding Freeplane." ID="ID_1759599610" CREATED="1323530909501" MODIFIED="1323714704743" HGAP="-230" VSHIFT="35">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Sneltoetsen" STYLE_REF="Professional" ID="ID_186620665" CREATED="1319568754941" MODIFIED="1319640321831"><richcontent TYPE="DETAILS" HIDDEN="true">
+</node>
+<node TEXT="Standaard sneltoetsen" STYLE_REF="Professional" FOLDED="true" ID="ID_64846119" CREATED="1316185102923" MODIFIED="1323714780419" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_667200365" CREATED="1323530988242" MODIFIED="1323714784693" HGAP="-130" VSHIFT="35"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4064,10 +4545,15 @@
   </body>
 </html>
 </richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
 </node>
-<node TEXT="Voorbeelden" STYLE_REF="Beginner" FOLDED="true" POSITION="left" ID="ID_722085722" CREATED="1314363768463" MODIFIED="1321090867615" BACKGROUND_COLOR="#00cc66" NUMBERED="true" VSHIFT="-80">
-<node ID="ID_1610683606" CREATED="1315075717144" MODIFIED="1318620924766"><richcontent TYPE="NODE">
+<node TEXT="Add-ons" STYLE_REF="Professional" ID="ID_1156954596" CREATED="1319993853694" MODIFIED="1323531432400" LINK="http://freeplane.sourceforge.net/wiki/index.php/Add-ons_%28install%29" VSHIFT="-140" MIN_WIDTH="1"/>
+</node>
+<node TEXT="Voorbeelden" STYLE_REF="Beginner" FOLDED="true" POSITION="left" ID="ID_722085722" CREATED="1314363768463" MODIFIED="1323714891898" BACKGROUND_COLOR="#00cc33" NUMBERED="true" VSHIFT="-80" MIN_WIDTH="180">
+<node STYLE_REF="BeginnerTopic" ID="ID_163805859" CREATED="1314422714136" MODIFIED="1323714844755"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4075,14 +4561,15 @@
   </head>
   <body>
     <p>
-      Klik <a href="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch"><b>hier</b></a>&#160;om naar de wiki met voorbeelden op Internet te gaan
+      Klik <a href="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch"><b>hier</b></a>&#160;om naar de wiki met voorbeelden op Internet te gaan.
     </p>
   </body>
 </html>
 </richcontent>
 </node>
-<node TEXT="Voorbeelden" STYLE_REF="Beginner" FOLDED="true" ID="ID_1633743457" CREATED="1314363768463" MODIFIED="1316342834130" BACKGROUND_COLOR="#00cc66" NUMBERED="true" HGAP="30" VSHIFT="-80">
-<node ID="ID_1212233815" CREATED="1315075717144" MODIFIED="1318620924766"><richcontent TYPE="NODE">
+<node TEXT="Revisions" ID="ID_1424120147" CREATED="1323615838293" MODIFIED="1323615928431" LINK="#ID_1437965047"/>
+</node>
+<node LOCALIZED_STYLE_REF="default" POSITION="left" ID="ID_59598318" CREATED="1322149746220" MODIFIED="1322149989113" HGAP="197" VSHIFT="282" COLOR="#ffffff"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4090,84 +4577,13 @@
   </head>
   <body>
     <p>
-      Klik <a href="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch"><b>hier</b></a>&#160;om naar de wiki met voorbeelden op Internet te gaan
+      &#169; <font size="1">Jokro</font>
     </p>
-  </body>
-</html>
-</richcontent>
-</node>
-</node>
-<node TEXT="Voorbeelden" STYLE_REF="Beginner" FOLDED="true" ID="ID_1031640671" CREATED="1314363768463" MODIFIED="1318624874799" BACKGROUND_COLOR="#00cc66" NUMBERED="true" VSHIFT="-80">
-<node ID="ID_1672913228" CREATED="1315075717144" MODIFIED="1318620924766"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Klik <a href="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch"><b>hier</b></a>&#160;om naar de wiki met voorbeelden op Internet te gaan
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
-<node TEXT="Voorbeelden" STYLE_REF="Beginner" FOLDED="true" ID="ID_1970015749" CREATED="1314363768463" MODIFIED="1316342834130" BACKGROUND_COLOR="#00cc66" NUMBERED="true" HGAP="30" VSHIFT="-80">
-<node ID="ID_187642437" CREATED="1315075717144" MODIFIED="1318620924766"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Klik <a href="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch"><b>hier</b></a>&#160;om naar de wiki met voorbeelden op Internet te gaan
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
-</node>
-</node>
-</node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_1215635278" CREATED="1320005728532" MODIFIED="1321129494152" HGAP="10" VSHIFT="169" LINK="freeplaneFunctions_nl.mm" TEXT_SHORTENED="true" STYLE="fork"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p style="text-align: center">
-      <a href="freeplaneFunctions_nl.mm">Toepassingen</a>
-    </p>
-  </body>
-</html>
-</richcontent>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Klik op de koppeling om een mindmap te openen met de belangrijkste toepassingen van Freeplane. Hiervoor is verbinding met Internet noodzakelijk.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b>Opmerking </b>
-    </p>
-    <ul>
-      <li>
-        &#160;Om uit de index terug te keren, kies&#160; <i>Navigeren .&gt; Ga naar vorige mind map</i>&#160;of klik op dit pictogram in de werkbalk.
-      </li>
-    </ul>
   </body>
 </html>
 </richcontent>
 <hook NAME="FreeNode"/>
+<edge STYLE="hide_edge" COLOR="#ffffff"/>
 </node>
 </node>
 </map>

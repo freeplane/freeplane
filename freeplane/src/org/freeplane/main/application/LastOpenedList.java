@@ -52,6 +52,7 @@ import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.mindmapmode.DocuMapAttribute;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -150,6 +151,9 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 		if (map == null) {
 			return null;
 		}
+		//ignore documentation maps loaded using documentation actions
+		if(map.containsExtension(DocuMapAttribute.class))
+			return null;
 		final ModeController modeController = Controller.getCurrentModeController();
 		if (!modeController.getModeName().equals(MModeController.MODENAME)) {
 			return null;
@@ -206,7 +210,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 				if (PORTABLE_APP && fileName.startsWith(":") && USER_DRIVE.endsWith(":")) {
 					fileName = USER_DRIVE + fileName.substring(1);
 				}
-				Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(new File(fileName)), false);
+				Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(new File(fileName)));
 			}
 		}
 	}
@@ -287,6 +291,9 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	}
 
 	private void updateList(final MapModel map, final String restoreString) {
+		//ignore documentation maps loaded using documentation actions
+		if(map.containsExtension(DocuMapAttribute.class))
+			return;
 		if (restoreString != null) {
 			if (lastOpenedList.contains(restoreString)) {
 				lastOpenedList.remove(restoreString);

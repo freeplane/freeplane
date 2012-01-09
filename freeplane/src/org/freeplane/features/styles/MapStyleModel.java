@@ -100,7 +100,6 @@ public class MapStyleModel implements IExtension {
 	    this.styleMap = styleMap;
 		final NodeModel rootNode = styleMap.getRootNode();
 		createNodeStyleMap(rootNode);
-		styleMap.setReadOnly(false);
 		styleMap.putExtension(IUndoHandler.class, map.getExtension(IUndoHandler.class));
 		final MapStyleModel defaultStyleModel = new MapStyleModel();
 		defaultStyleModel.styleNodes = styleNodes;
@@ -117,7 +116,8 @@ public class MapStyleModel implements IExtension {
 
 	void createStyleMap(final MapModel parentMap, MapStyleModel mapStyleModel, final String styleMapStr) {
 		final ModeController modeController = Controller.getCurrentModeController();
-		MapModel styleMap = new StyleMapModel(null);
+		MapModel styleMap = new StyleMapModel();
+		styleMap.createNewRoot();
 		modeController.getMapController().fireMapCreated(styleMap);
 		final MapReader mapReader = modeController.getMapController().getMapReader();
 		final Reader styleReader = new StringReader(styleMapStr);

@@ -44,7 +44,9 @@ import org.freeplane.core.io.UnknownElements;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel.NodeChangeType;
@@ -228,6 +230,10 @@ public class MapController extends SelectionController {
 		mapReader = new MapReader(readManager);
 		readManager.addElementHandler("map", mapReader);
 		readManager.addAttributeHandler("map", "version", new IAttributeHandler() {
+			public void setAttribute(final Object node, final String value) {
+			}
+		});
+		readManager.addAttributeHandler("map", "dialect", new IAttributeHandler() {
 			public void setAttribute(final Object node, final String value) {
 			}
 		});
@@ -593,61 +599,39 @@ public class MapController extends SelectionController {
 		return node.isFolded();
 	}
 
-	/** creates a new MapView for the url unless it is already opened.
-	 * @returns false if the map was already opened and true if it is newly created. 
-	 * @param untitled
-	 */
-	public boolean newMap(final URL url, boolean untitled) throws FileNotFoundException, XMLParseException,
-	        IOException, URISyntaxException {
-		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-		/*
-		 * this can lead to confusion if the user handles multiple maps
-		 * with the same name. Obviously, this is wrong. Get a better
-		 * check whether or not the file is already opened.
-		 * VB: this comment seems to be out-of-date since the url is checked.
-		 */
-		if (!untitled) {
-			final String mapExtensionKey = mapViewManager.checkIfFileIsAlreadyOpened(url);
-			if (mapExtensionKey != null) {
-				mapViewManager.tryToChangeToMapView(mapExtensionKey);
-				return false;
-			}
-		}
-		try {
-			if (AddOnsController.getController().installIfAppropriate(url))
-				return false;
-			Controller.getCurrentController().getViewController().setWaitingCursor(true);
-			final MapModel newModel = newModel(null);
-			UrlManager.getController().load(url, newModel);
-			if (untitled) {
-				newModel.setURL(null);
-			}
-			fireMapCreated(newModel);
-			newMapView(newModel);
-			// FIXME: removed to be able to set state in MFileManager
-			//			setSaved(newModel, true);
-			return true;
-		}
-		finally {
-			Controller.getCurrentController().getViewController().setWaitingCursor(false);
-		}
+	public boolean newMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
+        	final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+        	if (mapViewManager.tryToChangeToMapView(url))
+        		return false;
+        	try {
+        	if (AddOnsController.getController().installIfAppropriate(url))
+        		return false;
+        	Controller.getCurrentController().getViewController().setWaitingCursor(true);
+        	final MapModel newModel = new MapModel();
+        	UrlManager.getController().load(url, newModel);
+        	fireMapCreated(newModel);
+        	newMapView(newModel);
+        	return true;
+        }
+        finally {
+        	Controller.getCurrentController().getViewController().setWaitingCursor(false);
+        }
 	}
 
 	public void newMapView(final MapModel mapModel) {
 		Controller.getCurrentController().getMapViewManager().newMapView(mapModel, Controller.getCurrentModeController());
-		// FIXME: removed to be able to set state in MFileManager
-		//		setSaved(mapModel, true);
 	}
 
-	public MapModel newMap(final NodeModel root) {
-		final MapModel newModel = newModel(root);
+	public MapModel newMap() {
+		final MapModel newModel = newModel();
 		fireMapCreated(newModel);
 		newMapView(newModel);
 		return newModel;
 	}
 
-	public MapModel newModel(final NodeModel root) {
-		final MapModel mindMapMapModel = new MapModel(root);
+	public MapModel newModel() {
+		final MapModel mindMapMapModel = new MapModel();
+		mindMapMapModel.createNewRoot();
 		fireMapCreated(mindMapMapModel);
 		return mindMapMapModel;
 	}

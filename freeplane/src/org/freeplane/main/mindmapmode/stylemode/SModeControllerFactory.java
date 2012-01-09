@@ -129,7 +129,9 @@ public class SModeControllerFactory {
 		LogicalStyleController.install(logicalStyleController);
 		AttributeController.install(new MAttributeController(modeController));
 		FormatController.install(new FormatController());
-		ScannerController.install(new ScannerController());
+		final ScannerController scannerController = new ScannerController();
+        ScannerController.install(scannerController);
+        scannerController.addParsersForStandardFormats();
 		modeController.addAction(new EditAttributesAction());
 		userInputListenerFactory.setMapMouseListener(new MMapMouseListener());
 		final JPopupMenu popupmenu = new JPopupMenu();

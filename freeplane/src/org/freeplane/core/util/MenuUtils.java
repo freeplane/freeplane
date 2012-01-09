@@ -250,4 +250,8 @@ public class MenuUtils {
 		}
 		return null;
 	}
+
+    public static String makeAcceleratorKey(String menuItemKey) {
+        return "acceleratorForMindMap/$" + menuItemKey + "$0";
+    }
 }

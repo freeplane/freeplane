@@ -590,6 +590,13 @@ public interface Proxy {
 
 		/** @since 1.2 */
 		boolean isSaved();
+
+        /** @since 1.2 */
+        Color getBackgroundColor();
+
+        /** returns HTML color spec like #ff0000 (red) or #222222 (darkgray).
+         *  @since 1.2 */
+        String getBackgroundColorCode();
 	}
 
 	/** The map a node belongs to: <code>node.map</code> - read-write. */
@@ -620,6 +627,13 @@ public interface Proxy {
 		/** Sets the map (frame/tab) title. Note that there is <em>no undo</em> for this method!
 		 * @since 1.2 */
 		void setName(String title);
+
+        /** @since 1.2 */
+        void setBackgroundColor(Color color);
+
+        /** @param rgbString a HTML color spec like #ff0000 (red) or #222222 (darkgray).
+         *  @since 1.2 */
+        void setBackgroundColorCode(String rgbString);
 		
 		/** install a Groovy closure as the current filter in this map. If <code>closure</code> is null then filtering will
 		 * be disabled. The filter state of a node can be checked by {@link Node#isVisible()}. <br>

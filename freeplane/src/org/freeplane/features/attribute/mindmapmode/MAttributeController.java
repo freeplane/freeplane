@@ -29,11 +29,15 @@ import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.AttributeRegistryElement;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
+import org.freeplane.features.map.AMapChangeListenerAdapter;
+import org.freeplane.features.map.MapChangeEvent;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.view.swing.map.NodeView;
+import org.freeplane.features.styles.mindmapmode.SetBooleanMapPropertyAction;
 
 public class MAttributeController extends AttributeController {
 	
@@ -169,7 +173,6 @@ public class MAttributeController extends AttributeController {
 			if (NodeView.isModifyModelWithoutRepaint()) {
 				return;
 			}
-			setStateIcon(model);
 			model.fireTableRowsInserted(row, row);
 		}
 
@@ -179,7 +182,6 @@ public class MAttributeController extends AttributeController {
 
 		public void undo() {
 			model.getAttributes().remove(row);
-			setStateIcon(model);
 			model.fireTableRowsDeleted(row, row);
 		}
 	}
@@ -534,6 +536,7 @@ public class MAttributeController extends AttributeController {
 		modeController.addAction(new CopyAttributes());
 		modeController.addAction(new PasteAttributes());
 		modeController.addAction(new AddStyleAttributes());
+		modeController.addAction(new SetBooleanMapPropertyAction(SHOW_ICON_FOR_ATTRIBUTES));
 	}
 
 	public int editAttribute(final NodeModel pNode, final String pName, final String pNewValue) {

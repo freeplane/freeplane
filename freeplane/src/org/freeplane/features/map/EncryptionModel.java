@@ -28,16 +28,10 @@ import java.util.logging.Logger;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.clipboard.ClipboardController;
-import org.freeplane.features.icon.IconStore;
-import org.freeplane.features.icon.UIIcon;
-import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.MapWriter.Mode;
 
 public class EncryptionModel implements IExtension {
-	private static UIIcon decryptedIcon;
-	private static UIIcon encryptedIcon;
 	private static Logger logger;
-	private static final IconStore STORE = IconStoreFactory.create();
 
 	public static EncryptionModel getModel(final NodeModel node) {
 		return (EncryptionModel) node.getExtension(EncryptionModel.class);
@@ -62,7 +56,6 @@ public class EncryptionModel implements IExtension {
 		encryptedContent = null;
 		setAccessible(true);
 		isDecrypted = true;
-		init(node);
 	}
 
 	/**
@@ -73,7 +66,6 @@ public class EncryptionModel implements IExtension {
 		this.encryptedContent = encryptedContent;
 		setAccessible(false);
 		isDecrypted = false;
-		init(node);
 	}
 
 	/**
@@ -169,19 +161,6 @@ public class EncryptionModel implements IExtension {
 		return encryptedContent;
 	}
 
-	private void init(final NodeModel node) {
-		if (EncryptionModel.logger == null) {
-			EncryptionModel.logger = LogUtils.getLogger();
-		}
-		if (EncryptionModel.encryptedIcon == null) {
-			EncryptionModel.encryptedIcon = STORE.getUIIcon("lock.png");
-		}
-		if (EncryptionModel.decryptedIcon == null) {
-			EncryptionModel.decryptedIcon = STORE.getUIIcon("unlock.png");
-		}
-		updateIcon();
-	}
-
 	/**
 	 * @return Returns the isAccessible (ie. if the node is decrypted
 	 *         (isAccessible==true) or not).
@@ -207,25 +186,9 @@ public class EncryptionModel implements IExtension {
 	 */
 	public void setAccessible(final boolean isAccessible) {
 		this.isAccessible = isAccessible;
-		updateIcon();
 	}
 
 	public void setEncrypter(final IEncrypter encrypter) {
 		mEncrypter = encrypter;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.modes.MindMapNode#getIcons()
-	 */
-	public void updateIcon() {
-		if (isAccessible()) {
-			node.removeStateIcons("encrypted");
-			node.setStateIcon("decrypted", EncryptionModel.decryptedIcon, true);
-		}
-		else {
-			node.removeStateIcons("decrypted");
-			node.setStateIcon("encrypted", EncryptionModel.encryptedIcon, true);
-		}
 	}
 }

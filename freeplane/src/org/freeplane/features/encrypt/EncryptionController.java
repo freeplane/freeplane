@@ -25,6 +25,11 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.icon.IStateIconProvider;
+import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.IconStore;
+import org.freeplane.features.icon.UIIcon;
+import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
@@ -36,6 +41,9 @@ import org.freeplane.features.mode.ModeController;
  * Feb 13, 2011
  */
 public class EncryptionController implements IExtension {
+	private static final IconStore STORE = IconStoreFactory.create();
+	private static UIIcon decryptedIcon = STORE.getUIIcon("unlock.png");
+	private static UIIcon encryptedIcon = STORE.getUIIcon("lock.png");
 	
 	public static void install(EncryptionController encryptionController){
 		final ModeController modeController = Controller.getCurrentModeController();
@@ -43,6 +51,27 @@ public class EncryptionController implements IExtension {
 		final EnterPassword pwdAction = new EnterPassword(encryptionController);
 		modeController.addAction(pwdAction);
 	}
+	
+	
+	public EncryptionController(final ModeController modeController) {
+		registerStateIconProvider(modeController);
+    }
+
+
+	private void registerStateIconProvider(final ModeController modeController) {
+	    IconController.getController(modeController).addStateIconProvider(new IStateIconProvider() {
+			public UIIcon getStateIcon(NodeModel node) {
+				final EncryptionModel encNode = EncryptionModel.getModel(node);
+				if (encNode != null) {
+					if(encNode.isAccessible())
+						return decryptedIcon;
+					else
+						return encryptedIcon;
+				}
+				return null;
+			}
+		});
+    }
 	/**
 	 * @param e 
 	 */
@@ -74,7 +103,6 @@ public class EncryptionController implements IExtension {
 					if (wasAccessible) {
 						node.setFolded(true);
 					}
-					encNode.updateIcon();
 					mindMapController.getMapController().nodeRefresh(node);
 				}
 
@@ -87,7 +115,6 @@ public class EncryptionController implements IExtension {
 					if (wasAccessible) {
 						node.setFolded(wasFolded);
 					}
-					encNode.updateIcon();
 					mindMapController.getMapController().nodeRefresh(node);
 				}
 			};
@@ -135,7 +162,6 @@ public class EncryptionController implements IExtension {
 		final IActor actor = new IActor() {
 			public void act() {
 				node.addExtension(encryptedMindMapNode);
-				encryptedMindMapNode.updateIcon();
 				Controller.getCurrentModeController().getMapController().nodeChanged(node);
 			}
 
@@ -145,7 +171,6 @@ public class EncryptionController implements IExtension {
 
 			public void undo() {
 				node.removeExtension(encryptedMindMapNode);
-				node.removeStateIcons("decrypted");
 				Controller.getCurrentModeController().getMapController().nodeChanged(node);
 			}
 		};

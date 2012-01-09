@@ -37,6 +37,11 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
+import org.freeplane.features.icon.IStateIconProvider;
+import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.IconStore;
+import org.freeplane.features.icon.UIIcon;
+import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.ITooltipProvider;
@@ -142,11 +147,60 @@ public class ReminderHook extends PersistentNodeHook {
 		registerAction(new NodeListAction());
 		registerAction(new AllMapsNodeListAction());
 		registerTooltipProvider();
+		registerStateIconProvider();
 
 		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(9,
 			new ReminderConditionController());
 	}
+	private static final IconStore STORE = IconStoreFactory.create();
+	private static UIIcon bellIcon;
+	private static UIIcon clockIcon;
+	private static UIIcon flagIcon;
+	void registerStateIconProvider(){
+		IconController.getController(modeController).addStateIconProvider(new IStateIconProvider() {
+			public UIIcon getStateIcon(NodeModel node) {
+				UIIcon icon = null;
+				ClockState stateAdded = node.getExtension(ClockState.class);
+				ReminderExtension reminder = node.getExtension(ReminderExtension.class);
+				if (stateAdded == ClockState.CLOCK_VISIBLE) {
+					icon = getClockIcon();
+				}
+				else if (stateAdded == ClockState.CLOCK_INVISIBLE) {
+					if (reminder != null && node == reminder.getNode()) {
+						icon = getBellIcon();
+					}
+					else {
+						icon = getFlagIcon();
+					}
+				}
+				if (stateAdded != null || reminder != null &&  node == reminder.getNode()
+				        || ReminderExtension.getExtension(node) == null) {
+					return icon;
+				}
+				return null;
+			}
+		});
+	}
+	private UIIcon getBellIcon() {
+		if (bellIcon == null) {
+			bellIcon = STORE.getUIIcon("bell.png");
+		}
+		return bellIcon;
+	}
 
+	private UIIcon getClockIcon() {
+		if (clockIcon == null) {
+			clockIcon = STORE.getUIIcon("clock.png");
+		}
+		return clockIcon;
+	}
+
+	private UIIcon getFlagIcon() {
+		if (flagIcon == null) {
+			flagIcon = STORE.getUIIcon("flag.png");
+		}
+		return flagIcon;
+	}
 	private void registerTooltipProvider() {
 		modeController.addToolTipProvider(REMINDER_TOOLTIP, new ITooltipProvider() {
 			public String getTooltip(ModeController modeController, NodeModel node, Component view) {
@@ -237,7 +291,7 @@ public class ReminderHook extends PersistentNodeHook {
 	protected void remove(final NodeModel node, final IExtension extension) {
 		final ReminderExtension reminderExtension = (ReminderExtension) extension;
 		reminderExtension.deactivateTimer();
-		reminderExtension.displayState(ClockState.REMOVE_CLOCK, reminderExtension.getNode(), true);
+		reminderExtension.displayState(null, reminderExtension.getNode(), true);
 		modeController.getMapController().removeMapChangeListener(reminderExtension);
 		super.remove(node, extension);
 	}

@@ -28,6 +28,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Stroke;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DragSource;
@@ -49,6 +50,7 @@ import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeStyle;
+import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.HierarchicalIcons;
 import org.freeplane.features.map.HistoryInformationModel;
 import org.freeplane.features.map.INodeView;
@@ -63,6 +65,8 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.note.NoteController;
+import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.ShortenedTextModel;
 import org.freeplane.features.text.TextController;
@@ -1157,6 +1161,21 @@ public class NodeView extends JComponent implements INodeView {
 		g.translate(origin.x, origin.y);
 		mainView.paintDecoration(this, g);
 		g.translate(-origin.x, -origin.y);
+		final FilterController filterController = FilterController.getController(getMap().getModeController().getController());
+		if(filterController.isNodeHighlighted(getModel())){
+			final Color oldColor = g.getColor();
+			final Stroke oldStroke = g.getStroke();
+			g.setColor(Color.MAGENTA);
+			g.setStroke(getMap().getStandardSelectionStroke());
+			final JComponent content = getContent();
+			Point contentLocation = content.getLocation();
+			final int arcWidth = 8;
+			g.drawRoundRect(contentLocation.x - arcWidth, contentLocation.y - arcWidth, content.getWidth() + 2 * arcWidth,
+			    content.getHeight() + 2 * arcWidth, 15, 15);
+			g.setColor(oldColor);
+			g.setStroke(oldStroke);
+			
+		}
 	}
 
 	/**
@@ -1420,12 +1439,15 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public int getEdgeWidth() {
-		if (edgeWidth != null)
-			return edgeWidth;
-		return getParentView().getEdgeWidth();
-	}
-
-	public Color getEdgeColor() {
+		if(edgeWidth != null)
+		    return edgeWidth;
+		final NodeView parentView = getParentView();
+		if(parentView != null)
+			return parentView.getEdgeWidth();
+		return 1;
+    }
+	
+    public Color getEdgeColor() {
 		if (edgeColor != null)
 			return edgeColor;
 		return getParentView().getEdgeColor();

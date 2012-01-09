@@ -728,4 +728,8 @@ public class HtmlUtils {
 		return ! (newText.contains("<img") || newText.contains("<table")) 
 				&& htmlToPlain(newText).equals("");
     }
+
+	public static String toHTMLEscapedText(String s) {
+		return toXMLEscapedText(s).replaceAll("\n", "<br>\n");
+	}
 }

@@ -176,6 +176,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 			tableHeader.setBackground(AttributeView.HEADER_BACKGROUND);
 			addTableListeners();
 			attributeViewScrollPane = new AttributeViewScrollPane(attributeTable);
+			attributeViewScrollPane.setAlignmentX(AttributeViewScrollPane.LEFT_ALIGNMENT);
 			if(addToNodeView()){
 				getNodeView().addContent(attributeViewScrollPane, VIEWER_POSITION);
 			}

@@ -44,7 +44,7 @@ public class Attribute {
 
 	public Attribute(final String name, final Object value) {
 		this.name = name;
-		this.value = value;
+		setValue(value);
 	}
 
 	public String getName() {
@@ -60,6 +60,8 @@ public class Attribute {
 	}
 
 	public void setValue(final Object value) {
+		if(value == null)
+			throw new NullPointerException();
 		this.value = value;
 	}
 

@@ -8,6 +8,7 @@ import org.freeplane.core.io.IExtensionAttributeWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -20,7 +21,12 @@ public class DocearMapModelExtensionXmlBuilder implements IElementDOMHandler, IE
 	
 	public void registerBy(final ReadManager reader, final WriteManager writer) {
 		reader.addElementHandler(DOCEAR_MAP_EXTENSION_XML_TAG, this);
-		registerAttributeHandlers(reader);
+		try {
+			registerAttributeHandlers(reader);
+		}
+		catch (Exception e) {
+			LogUtils.warn(e);
+		}
 		writer.addExtensionAttributeWriter(DocearMapModelExtension.class, this);		
 	}
 	

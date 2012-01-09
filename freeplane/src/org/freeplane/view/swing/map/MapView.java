@@ -70,6 +70,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.link.ConnectorModel;
@@ -430,7 +431,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		super();
 		this.model = model;
 		this.modeController = modeController;
-		final String name = getModel().getTitle();
+		final String name = model.getTitle();
 		setName(name);
 		if (MapView.standardSelectColor == null) {
 			final String stdcolor = ResourceController.getResourceController().getProperty(
@@ -1020,11 +1021,23 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			getRoot().updateAll();
 			return;
 		}
+		if(property.equals(AttributeController.SHOW_ICON_FOR_ATTRIBUTES)
+				||property.equals(NoteController.SHOW_NOTE_ICONS))
+			updateStateIconsRecursively(getRoot());
 		if(property.equals(NoteController.SHOW_NOTES_IN_MAP))
 			setShowNotes();
 	}
 
-    private void updateContentStyle() {
+    private void updateStateIconsRecursively(NodeView node) {
+    	node.getMainView().updateIcons(node);
+    	for(int i = 0; i < node.getComponentCount(); i++){
+    		final Component component = node.getComponent(i);
+    		if(component instanceof NodeView)
+    		updateStateIconsRecursively((NodeView) component);
+    	}
+    }
+
+	private void updateContentStyle() {
         final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(NodeStyleController.class);
         MapModel map = getModel();
         noteFont = style.getDefaultFont(map, MapStyleModel.NOTE_STYLE);
@@ -1166,9 +1179,20 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	@Override
 	public void paintChildren(final Graphics graphics) {
-		paintingMode = PaintingMode.ALL;
-		super.paintChildren(graphics);
-		paintLinks((Graphics2D) graphics);
+		final boolean paintLinksBehind = ResourceController.getResourceController().getBooleanProperty(
+		    "paint_connectors_behind");
+		if (paintLinksBehind) {
+			paintingMode = PaintingMode.CLOUDS;
+			super.paintChildren(graphics);
+			paintLinks((Graphics2D) graphics);
+			paintingMode = PaintingMode.NODES;
+			super.paintChildren(graphics);
+		}
+		else {
+			paintingMode = PaintingMode.ALL;
+			super.paintChildren(graphics);
+			paintLinks((Graphics2D) graphics);
+		}
 		paintSelecteds((Graphics2D) graphics);
 	}
 
@@ -1258,10 +1282,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (selected.getMainView().isEdited()) {
 			return;
 		}
-		final int arcWidth = 4;
 		final JComponent content = selected.getContent();
 		final Point contentLocation = new Point();
 		UITools.convertPointToAncestor(content, contentLocation, this);
+		final int arcWidth = 4;
 		g.drawRoundRect(contentLocation.x - arcWidth, contentLocation.y - arcWidth, content.getWidth() + 2 * arcWidth,
 		    content.getHeight() + 2 * arcWidth, 15, 15);
 	}
@@ -1273,10 +1297,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final Color c = g.getColor();
 		final Stroke s = g.getStroke();
 		g.setColor(MapView.standardSelectRectangleColor);
-		if (MapView.standardSelectionStroke == null) {
-			MapView.standardSelectionStroke = new BasicStroke(2.0f);
-		}
-		g.setStroke(MapView.standardSelectionStroke);
+		final Stroke standardSelectionStroke = getStandardSelectionStroke();
+		g.setStroke(standardSelectionStroke);
 		final Object renderingHint = getModeController().getController().getViewController().setEdgesRenderingHint(g);
 		for (final NodeView selected : getSelection()) {
 			paintSelected(g, selected);
@@ -1285,6 +1307,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		g.setStroke(s);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 	}
+
+	Stroke getStandardSelectionStroke() {
+	    if (MapView.standardSelectionStroke == null) {
+			MapView.standardSelectionStroke = new BasicStroke(2.0f);
+		}
+		final Stroke standardSelectionStroke = MapView.standardSelectionStroke;
+	    return standardSelectionStroke;
+    }
 
 	/**
 	 * Call preparePrinting() before printing and endPrinting() after printing

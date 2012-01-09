@@ -189,6 +189,11 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
 		@Override
         public void endElement(Object parent, String tag, Object userObject, XMLElement xml) {
+			// do nothing for not root nodes
+			final XMLElement parentNodeElement = xml.getParent().getParent();
+			if (parentNodeElement == null || !parentNodeElement.getName().equals("map")) {
+				return;
+			}
 			NodeModel node = (NodeModel) userObject;
 			loadMapStyleProperties(MapStyleModel.getExtension(node), xml);
        }
@@ -326,7 +331,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	}
 
 	private void createDefaultStyleMap(final MapModel map) {
-	    final MapModel styleMapContainer = new MapModel(null);
+	    final MapModel styleMapContainer = new MapModel();
 		UrlManager.getController().loadDefault(styleMapContainer);
 		moveStyle(styleMapContainer, map, false);
     }
@@ -354,7 +359,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
     }
 	
 	public void copyStyle(final URL source, final MapModel targetMap, boolean undoable) {
-	    final MapModel styleMapContainer = Controller.getCurrentModeController().getMapController().newModel(null);
+	    final MapModel styleMapContainer = new MapModel();
 		final IExtension oldStyleModel = targetMap.getRootNode().removeExtension(MapStyleModel.class);
 		UrlManager.getController().loadImpl(source, styleMapContainer);
 		onCreate(styleMapContainer);
@@ -493,13 +498,22 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
             }
 		};
 		Controller.getCurrentModeController().execute(actor, model);
-    }
+	}
+
+	public String getPropertySetDefault(final MapModel model, final String key) {
+			final MapStyleModel styleModel = MapStyleModel.getExtension(model);
+			final String oldValue = styleModel.getProperty(key);
+			if(oldValue != null){
+				return oldValue;
+			}
+			final String value = ResourceController.getResourceController().getProperty(key);
+			styleModel.setProperty(key, value);
+			return value;
+	}
 
 	public void onSavedAs(MapModel map) {
-		
 	}
 
 	public void onSaved(MapModel map) {
-		
 	}
 }

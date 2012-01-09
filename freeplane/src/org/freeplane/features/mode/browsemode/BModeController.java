@@ -19,17 +19,11 @@
  */
 package org.freeplane.features.mode.browsemode;
 
-import org.freeplane.features.icon.UIIcon;
-import org.freeplane.features.icon.factory.IconStoreFactory;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.note.NoteController;
-import org.freeplane.features.note.NoteModel;
 
 public class BModeController extends ModeController {
 	static public final String MODENAME = "Browse";
-	private UIIcon noteIcon;
 
 	public BModeController(final Controller controller) {
 		super(controller);
@@ -38,18 +32,5 @@ public class BModeController extends ModeController {
 	@Override
 	public String getModeName() {
 		return BModeController.MODENAME;
-	}
-
-	public void setNoteIcon(final NodeModel node) {
-		final String noteText = NoteModel.getNoteText(node);
-		if (noteText != null && !noteText.equals("")) {
-			if (noteIcon == null) {
-				noteIcon = IconStoreFactory.create().getUIIcon("knotes.png");
-			}
-			node.setStateIcon(NoteController.NODE_NOTE_ICON, noteIcon, true);
-		}
-		for (final NodeModel child : getMapController().childrenUnfolded(node)) {
-			setNoteIcon(child);
-		}
 	}
 }

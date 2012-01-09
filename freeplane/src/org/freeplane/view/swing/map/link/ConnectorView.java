@@ -156,12 +156,18 @@ public class ConnectorView extends AConnectorView{
 		return connectorModel;
 	}
 
-	Point getCenterPoint() {
+	private Point getCenterPoint() {
 		if (arrowLinkCurve == null) {
 			return null;
 		}
 		final double halfLength = getHalfLength();
 		final PathIterator pathIterator = arrowLinkCurve.getPathIterator(new AffineTransform(), PRECISION);
+		if(getTarget() == getSource()){
+			pathIterator.next();
+			final double nextCoords[] = new double[6];
+			pathIterator.currentSegment(nextCoords);
+			return new Point((int)nextCoords[0], (int)nextCoords[1]);
+		}
 		double lastCoords[] = new double[6];
 		pathIterator.currentSegment(lastCoords);
 		double length = 0;

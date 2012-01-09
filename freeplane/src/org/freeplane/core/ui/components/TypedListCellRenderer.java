@@ -33,7 +33,7 @@ import org.freeplane.features.ui.ViewController;
  * @author Dimitry Polivaev
  * Mar 16, 2011
  */
-public class TypedListCellRenderer extends DefaultListCellRenderer implements ListCellRenderer {
+public class TypedListCellRenderer extends DefaultListCellRenderer{
 
 	final private static TypedListCellRenderer instance = new TypedListCellRenderer();
 	static TypedListCellRenderer getInstance() {

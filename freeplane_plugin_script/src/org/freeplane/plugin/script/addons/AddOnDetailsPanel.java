@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -14,12 +15,16 @@ import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.apache.commons.lang.StringUtils;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.MenuUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.icon.IconNotFound;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.main.addons.AddOnProperties;
+import org.freeplane.plugin.script.ExecuteScriptAction;
 import org.freeplane.plugin.script.addons.ScriptAddOnProperties.Script;
 
 import com.jgoodies.forms.factories.FormFactory;
@@ -34,34 +39,54 @@ public class AddOnDetailsPanel extends JPanel {
 
 	public AddOnDetailsPanel(final AddOnProperties addOn, final String warning) {
 		this.warning = warning;
-		setLayout(new FormLayout(new ColumnSpec[] { ColumnSpec.decode("default:grow"), }, new RowSpec[] {
-		        FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, FormFactory.RELATED_GAP_ROWSPEC,
-		        FormFactory.DEFAULT_ROWSPEC, FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
-		        RowSpec.decode("top:default:grow"), }));
+		setLayout(new FormLayout(new ColumnSpec[] {
+				FormFactory.DEFAULT_COLSPEC,
+				FormFactory.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				RowSpec.decode("top:default:grow"),}));
+		
+		JLabel imageLabel = createImageLabel(addOn);
+		add(imageLabel, "1, 2");
 		JLabel title = createTitleLabel(addOn);
-		add(title, "1, 2");
+		add(title, "3, 2");
 		JLabel author = createAuthorLabel(addOn);
-		add(author, "1, 4");
+		add(author, "3, 4");
 		final Box box = Box.createHorizontalBox();
 		box.add(new JLabel(getText("homepage")));
 		box.add(createAddOnHomepageButton(addOn));
-		add(box, "1, 6, left, default");
+		add(box, "3, 6, left, default");
 		JComponent details = createDetails(addOn);
-		add(details, "1, 7");
+		add(details, "3, 7");
 	}
 
+	private JLabel createImageLabel(AddOnProperties addOn) {
+		final JLabel label = new JLabel("");
+		label.setIcon(IconNotFound.createIconOrReturnNotFoundIcon(addOn.getName() + ".png"));
+		return label;
+	}
+
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public AddOnDetailsPanel(AddOnProperties addOn) {
 		this(addOn, null);
 	}
 
 	private JLabel createTitleLabel(final AddOnProperties addOn) {
 		return new JLabel("<html><body><b><font size='+2'>" + addOn.getTranslatedName() + " "
-		        + addOn.getVersion().replaceAll("^v", "") + "</font></b></body></html>");
+				+ addOn.getVersion().replaceAll("^v", "") + "</font></b></body></html>");
 	}
 
 	private JLabel createAuthorLabel(final AddOnProperties addOn) {
 		final String text = addOn.getAuthor() == null ? "" : "<html><body><b><font size='-1'>"
-		        + getText("authored.by", addOn.getAuthor()) + "</font></b></body></html>";
+				+ getText("authored.by", addOn.getAuthor()) + "</font></b></body></html>";
 		return new JLabel(text);
 	}
 
@@ -88,7 +113,7 @@ public class AddOnDetailsPanel extends JPanel {
 				text.append(row("th", getText("header.function"), getText("header.menu"), getText("header.shortcut")));
 				for (ScriptAddOnProperties.Script script : scripts) {
 					text.append(row("td", bold(TextUtils.getText(script.menuTitleKey)), formatMenuLocation(script),
-					    formatShortcut(script.keyboardShortcut)));
+						formatShortcut(script)));
 				}
 				text.append("</table>");
 			}
@@ -98,13 +123,20 @@ public class AddOnDetailsPanel extends JPanel {
 			text.append(warning.replaceAll("</?(html|body)>", ""));
 		}
 		text.append("</body></html>");
-		return new JLabel(text.toString());
+		final JLabel label = new JLabel(text.toString());
+		final ImageIcon icon = IconNotFound.createIconOrReturnNull(addOn.getName() + "-screenshot-1.png");
+		if (icon != null)
+			label.setIcon(icon);
+		return label;
 	}
 
-	private String formatShortcut(final String shortCut) {
-		KeyStroke keyStroke = UITools.getKeyStroke(shortCut);
-		return UITools.keyStrokeToString(keyStroke);
-	}
+    private String formatShortcut(final Script script) {
+        final String menuItemKey = ExecuteScriptAction.makeMenuItemKey(script.menuTitleKey, script.executionMode);
+        final String shortcutKey = MenuUtils.makeAcceleratorKey(menuItemKey);
+        final String oldShortcut = ResourceController.getResourceController().getProperty(shortcutKey);
+        final KeyStroke keyStroke = UITools.getKeyStroke(oldShortcut != null ? oldShortcut : script.keyboardShortcut);
+        return UITools.keyStrokeToString(keyStroke);
+    }
 
 	private String formatMenuLocation(ScriptAddOnProperties.Script script) {
 		final String location = script.menuLocation == null ? "main_menu_scripting" : script.menuLocation;

@@ -172,6 +172,7 @@ public class FormatController implements IExtension {
 		dateFormats.add(PatternFormat.create("yyyy-MM-dd HH:mm", dStyle, dType, "long iso date", locale));
 		dateFormats.add(PatternFormat.create(FormattedDate.ISO_DATE_TIME_FORMAT_PATTERN, dStyle, dType,
 		    "full iso date", locale));
+		dateFormats.add(PatternFormat.create("HH:mm", dStyle, dType, "time", locale));
 	}
 
 	private PatternFormat createLocalPattern(String name, int dateStyle, Integer timeStyle) {
@@ -349,8 +350,12 @@ public class FormatController implements IExtension {
 		defaultDateFormat = createDateFormat(datePattern);
 		resourceController.addPropertyChangeListener(new IFreeplanePropertyListener() {
 			public void propertyChanged(String propertyName, String newValue, String oldValue) {
-				if (propertyName.equals(RESOURCES_DATE_FORMAT))
-					defaultDateFormat = createDateFormat(newValue);
+				if (propertyName.equals(RESOURCES_DATE_FORMAT)) {
+				    defaultDateFormat = createDateFormat(newValue);
+				    final ScannerController scannerController = ScannerController.getController();
+				    if (scannerController != null)
+				        scannerController.addParsersForStandardFormats();
+				}
 			}
 		});
 		return defaultDateFormat;
@@ -374,7 +379,10 @@ public class FormatController implements IExtension {
 			public void propertyChanged(String propertyName, String newValue, String oldValue) {
 				if (propertyName.equals(RESOURCES_DATETIME_FORMAT)) {
 					defaultDateTimeFormat = createDefaultDateTimeFormat(newValue);
-				}
+                    final ScannerController scannerController = ScannerController.getController();
+                    if (scannerController != null)
+                        scannerController.addParsersForStandardFormats();
+                }
 			}
 		});
 		return defaultDateTimeFormat;
