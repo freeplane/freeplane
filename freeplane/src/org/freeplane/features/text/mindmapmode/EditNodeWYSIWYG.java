@@ -189,7 +189,6 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 
 	private static final Dimension PREFERRED_SIZE = new Dimension(600, 400);
 
-	final private boolean enableSplit;
 	final private String purpose;
 	
 	private Font font;
@@ -222,7 +221,6 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 
 	public EditNodeWYSIWYG(String purpose, final NodeModel node, final String text, final IEditControl editControl, boolean enableSplit) {
 		super(node, text, editControl);
-		this.enableSplit = enableSplit;
 		this.purpose = purpose;
 	}
 
@@ -233,7 +231,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			final String title;
 			title = TextUtils.getText(purpose);
 			htmlEditorWindow.getDialog().setTitle(title);
-			htmlEditorWindow.setSplitEnabled(enableSplit);
+			htmlEditorWindow.setSplitEnabled(getEditControl().canSplit());
 			final SHTMLPanel htmlEditorPanel = (htmlEditorWindow).getHtmlEditorPanel();
 			final StringBuilder ruleBuilder = new StringBuilder(100);
 			ruleBuilder.append("body {");

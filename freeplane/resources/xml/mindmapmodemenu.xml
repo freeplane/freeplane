@@ -6,12 +6,13 @@
 			<menu_action action="new_map_from_user_templates" />
 			<menu_action action="EncryptedMap" />				
 			<menu_separator />
-			<menu_action action="SaveAsAction" accelerator="control shift S" />
 			<menu_action action="SaveAction" accelerator="control S" />
+			<menu_action action="SaveAsAction" accelerator="control shift S" />
 			<menu_action action="SaveAll" />
 			<menu_action action="RevertAction" />	
 			<menu_separator />							
 			<menu_action action="OpenAction" accelerator="control O" />
+			<menu_action action="OpenURLMapAction" />
 			<menu_submenu name="last" name_ref="most_recent_files" menu_key="main_menu_most_recent_files"/>				
 			<menu_separator />			
 			<menu_action action="ExportAction"/>
@@ -48,6 +49,7 @@
 				<menu_action action="NewSummaryAction" accelerator="alt shift INSERT" />
 				<menu_action action="FirstGroupNodeAction" accelerator = "alt shift B"/>
 				<menu_action action="SummaryNodeAction" accelerator = "alt shift S"/>
+				<menu_action action="AlwaysUnfoldedNodeAction"/>
 				<menu_action action="CloudAction" accelerator="control shift B" />
 			</menu_submenu>	
 			<menu_action action="AddConnectorAction" accelerator="control L" />						
@@ -154,6 +156,7 @@
 			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="view" name_ref="menu_view">
+			<menu_action action="NewMapViewAction"/>
 			<menu_category name="Menu_Toolbar_Panel">
 					<menu_category name="toolbars">
 						<menu_submenu name="toolbars" name_ref="menu_toolbars">
@@ -186,6 +189,8 @@
 					<menu_action action="RevisionPluginAction" />
 					<menu_action action="HierarchicalIconsAction" />
 					<menu_action action="HierarchicalIcons2Action" />
+					<menu_action action="SetBooleanMapPropertyAction.show_note_icons" />	
+					<menu_action action="SetBooleanMapPropertyAction.show_icon_for_attributes" />	
 				</menu_submenu>
 				<menu_separator />
 			<menu_action action="SetShortenerStateAction" />
@@ -283,7 +288,7 @@
 			<menu_separator />
 			<menu_action action="NodeWidthAction" />
 		</menu_submenu>
-		<menu_submenu name="navigate" name_ref="menu_navigate">
+		<menu_submenu name="navigate" name_ref="menu_navigate" menu_key="menu_navigate">
 			<menu_category name="navigate">
 				<menu_action action="NavigationPreviousMapAction" accelerator="control shift TAB" />
 				<menu_action action="NavigationNextMapAction" accelerator="control TAB" />
@@ -312,7 +317,7 @@
 			<menu_category name="links">
 			<menu_separator />
 				<menu_action action="FollowLinkAction" accelerator="control ENTER" />
-				<!-- goto -->
+				<menu_category menu_key="menu_goto_links"/>
 			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="filter" name_ref="menu_filter">
@@ -365,10 +370,10 @@
 				</menu_category>
 				<menu_separator />
 				<menu_category name="scripting" plugin="org.freeplane.plugin.script" menu_key="main_menu_scripting">
-					<menu_action action="ExecuteScriptForSelectionAction" plugin="org.freeplane.plugin.script"/>
-					<menu_action action="ExecuteScriptForAllNodes" plugin="org.freeplane.plugin.script"/>					
-					<menu_action action="ScriptEditor" plugin="org.freeplane.plugin.script"/>					
 				</menu_category>
+				<menu_action action="ExecuteScriptForSelectionAction" plugin="org.freeplane.plugin.script"/>
+				<menu_action action="ExecuteScriptForAllNodes" plugin="org.freeplane.plugin.script"/>					
+				<menu_action action="ScriptEditor" plugin="org.freeplane.plugin.script"/>					
 				<menu_separator />
 				<menu_submenu name="formula" name_ref="formula.menuname" plugin="org.freeplane.plugin.formula">
 					<menu_action action="formula.EvaluateAllAction" plugin="org.freeplane.plugin.formula"/>
@@ -404,8 +409,9 @@
 				<menu_action action="AboutAction" menu_key="MB_AboutAction"/>	
 			</menu_category>				
 			<menu_separator />
-			<menu_action action="GettingStartedAction"/>
-			<menu_action action="DocumentationAction" accelerator="F1" />	
+			<menu_action action="GettingStartedAction" accelerator="F1" />
+			<menu_action action="DocumentationAction" />	
+			<menu_action action="OnlineReference" />	
 			<menu_action action="HotKeyInfoAction"/>
 			<menu_separator />
 		</menu_submenu>
@@ -442,17 +448,19 @@
 			<menu_separator />
 		<menu_action action="NewSummaryAction" accelerator="alt shift INSERT" />
 		<menu_action action="SummaryNodeAction" accelerator = "alt shift S"/>
+		<menu_action action="AlwaysUnfoldedNodeAction"/>
 		<menu_action action="FreeNodeAction"/>
 		<menu_action action="CloudAction" accelerator="control shift B" />
 		<menu_submenu name="menu_applyStyle" name_ref="menu_applyStyle" menu_key="node_popup_styles"/>
 		<menu_action action="AddConnectorAction" accelerator="control L" />						
-		<menu_submenu name="links" name_ref="menu_links">
+		<menu_submenu name="links" name_ref="menu_links" menu_key="popup_navigate">
 			<menu_action action="SetLinkByFileChooserAction" accelerator="control shift K" />
 			<menu_action action="SetLinkByTextFieldAction" accelerator="control K" />
 			<menu_action action="ExtractLinkFromTextAction" />
 			<menu_separator/>
 			<menu_action action="AddLocalLinkAction" accelerator="alt shift L" />
 			<menu_action action="AddMenuItemLinkAction" accelerator="" />
+			<menu_category menu_key="popup_goto_links"/>
 		</menu_submenu>	
 		<menu_separator />
 		<menu_action action="EnterPassword" />
@@ -496,9 +504,15 @@
 		</menu_category>
 		<menu_separator />
 		<menu_category name="font" menu_key="main_toolbar_font">
+		<menu_category name="toolbar_styles" menu_key="main_toolbar_style"/>
+		<menu_category name="toolbar_fonts" menu_key="main_toolbar_font_name"/>
+		<menu_category name="toolbar_fonts" menu_key="main_toolbar_font_size"/>
 			<menu_action action="BoldAction" />
 			<menu_action action="ItalicAction" />
 		</menu_category>
+		<menu_separator />
+		<menu_action action="CloudAction" />
+		<menu_action action="CloudColorAction" />
 		<menu_separator />
 		<menu_category name="folding">
 			<menu_action action="UnfoldOneLevelAction"/>

@@ -22,7 +22,6 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
 import org.freeplane.main.addons.AddOnProperties;
-import org.freeplane.plugin.script.addons.ManageAddOnsDialog.AddOnTableModel;
 
 /**
  * Editor and Renderer for multiple buttons inside a table cell.
@@ -106,7 +105,7 @@ class ButtonsInCellRenderer extends AbstractCellEditor implements TableCellRende
 	}
 
 	protected void setButtonsVisible(JTable table, int row) {
-		final ManageAddOnsDialog.AddOnTableModel model = (AddOnTableModel) table.getModel();
+		final ManageAddOnsPanel.AddOnTableModel model = (ManageAddOnsPanel.AddOnTableModel) table.getModel();
 	    final AddOnProperties addOn = model.getAddOnAt(row);
 		for (JButton btn : buttons) {
 			final boolean supportsOperation = addOn.supportsOperation(btn.getName());

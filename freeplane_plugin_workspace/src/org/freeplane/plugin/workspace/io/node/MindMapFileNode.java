@@ -46,7 +46,7 @@ public class MindMapFileNode extends DefaultFileNode {
 		if(event.getType() == WorkspaceNodeEvent.WSNODE_OPEN_DOCUMENT) {
 			try {
 				final URL mapUrl = Compat.fileToUrl(getFile());
-				Controller.getCurrentModeController().getMapController().newMap(mapUrl, false);
+				Controller.getCurrentModeController().getMapController().newMap(mapUrl);
 			}
 			catch (final Exception e) {
 				LogUtils.severe(e);

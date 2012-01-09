@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -53,11 +54,12 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.url.mindmapmode.MFileManager.AlternativeFileMode;
 
 /**
  * @author vboerchers
  */
-public class NewerFileRevisionsFoundDialog extends JDialog {
+class FileRevisionsDialog extends JDialog {
 	public static class FileWrapper {
 		private final File file;
 
@@ -78,20 +80,20 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 	private class RevisionTable extends JTable {
 		private static final long serialVersionUID = 1L;
 
-		public RevisionTable(final Object[][] data) {
-			super(data, new Object[] { TextUtils.getText(NewerFileRevisionsFoundDialog.key("file_name")),
-			        TextUtils.getText(NewerFileRevisionsFoundDialog.key("file_size")),
-			        TextUtils.getText(NewerFileRevisionsFoundDialog.key("file_last_modified")) });
-			final Dimension dim = this.getPreferredSize();
-			getColumnModel().getColumn(0).setPreferredWidth((int) (dim.width * 0.62));
-			getColumnModel().getColumn(1).setPreferredWidth((int) (dim.width * 0.13));
-			getColumnModel().getColumn(2).setPreferredWidth((int) (dim.width * 0.25));
+		public RevisionTable(final Object[][] data, int selectedRow) {
+			super(data, new Object[] { TextUtils.getText(key("file_name")),
+			        TextUtils.getText(key("file_size")),
+			        TextUtils.getText(key("file_last_modified")) });
+			int width = Toolkit.getDefaultToolkit().getScreenSize().width * 2 / 3;
+			getColumnModel().getColumn(0).setPreferredWidth((int) (width * 0.7));
+			getColumnModel().getColumn(1).setPreferredWidth((int) (width * 0.1));
+			getColumnModel().getColumn(2).setPreferredWidth((int) (width * 0.2));
 			setRowHeight(20);
 			setRowSelectionAllowed(true);
 			setFocusable(false);
 			setDefaultRenderer(Object.class, renderer);
 			setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			setRowSelectionInterval(0, 0);
+			setRowSelectionInterval(selectedRow, selectedRow);
 			getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 				public void valueChanged(final ListSelectionEvent event) {
 					// Update the word field if a suggestion is click
@@ -120,12 +122,22 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 						final FileWrapper fileWrapper = (FileWrapper) getModel().getValueAt(getSelectedRow(), 0);
 						setSelectedFile(fileWrapper.getFile());
 						if (fileWrapper != null)
-							btnOpen.doClick();
+							btnRestore.doClick();
 					}
 				}
 			});
 		}
 
+		private void setButtonOpenDefault() {
+			MenuBuilder.setLabelAndMnemonic(btnRestore, TextUtils.getRawText(key("open")));
+			btnRestore.setToolTipText(TextUtils.format(key("open.tooltip")));
+		}
+
+		private void setButtonOpenRestore(final FileWrapper fileWrapper) {
+			MenuBuilder.setLabelAndMnemonic(btnRestore, TextUtils.getRawText(key("restore")));
+			btnRestore.setToolTipText(TextUtils.format(key("restore.tooltip"),
+			    file.getName(), fileWrapper.toString()));
+		}
 		private final DefaultTableCellRenderer renderer = new DefaultTableCellRenderer() {
 			private static final long serialVersionUID = 1L;
 
@@ -136,10 +148,15 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 				final Component c = super
 				    .getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 				// change the font of the first line which contains the original file
-				if (row == 0)
+				if (containsOriginalFile(table, row))
 					c.setFont(getFont().deriveFont(Font.BOLD));
 				return c;
 			}
+
+			private boolean containsOriginalFile(JTable table, int row) {
+				FileWrapper fileHolder = (FileWrapper) table.getValueAt(row, 0);
+				return fileHolder.getFile().equals(file);
+            }
 		};
 
 		@Override
@@ -147,23 +164,15 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 			return false;
 		}
 
-		private void setButtonOpenDefault() {
-			MenuBuilder.setLabelAndMnemonic(btnOpen, TextUtils.getRawText(NewerFileRevisionsFoundDialog.key("open")));
-			btnOpen.setToolTipText(TextUtils.format(NewerFileRevisionsFoundDialog.key("open.tooltip")));
-		}
-
-		private void setButtonOpenRestore(final FileWrapper fileWrapper) {
-			MenuBuilder.setLabelAndMnemonic(btnOpen, TextUtils.getRawText(NewerFileRevisionsFoundDialog.key("restore")));
-			btnOpen.setToolTipText(TextUtils.format(NewerFileRevisionsFoundDialog.key("restore.tooltip"),
-			    file.getName(), fileWrapper.toString()));
-		}
 	}
 
 	private static final long serialVersionUID = 1L;
-	private final static String KEY_BASE = "NewerFileRevisionsFoundDialog";
-	private JButton btnOpen;
+	private final static String ALL_KEY_BASE = "FileRevisionsDialog";
+	private final static String AUTOSAVE_KEY_BASE = "NewerFileRevisionsFoundDialog";
+	private String keyBase;
+	private JButton btnRestore;
 	private JButton btnSkip;
-	private boolean canContinue = false;
+	private boolean cancelled;
 	private final File file;
 	private File selectedFile;
 	private final SimpleDateFormat dateFormat = new SimpleDateFormat();
@@ -172,34 +181,41 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 	private class CloseAction implements ActionListener {
 		public void actionPerformed(final ActionEvent e) {
 			final Object source = e.getSource();
-			canContinue = (source == btnOpen);
+			cancelled = (source == btnSkip);
 			dispose();
 		}
 	}
 
-	public NewerFileRevisionsFoundDialog(final File file, final File[] revisions) {
-		super(UITools.getFrame(), TextUtils.getText(NewerFileRevisionsFoundDialog.key("title")), true);
+	public FileRevisionsDialog(final File file, final File[] revisions, AlternativeFileMode mode) {
+		super(UITools.getFrame(), true);
+		if(mode == AlternativeFileMode.ALL)
+			keyBase = ALL_KEY_BASE;
+		else if(mode == AlternativeFileMode.AUTOSAVE)
+			keyBase = AUTOSAVE_KEY_BASE;
+		setTitle(TextUtils.getText(key("title")));
 		UITools.backOtherWindows();
-		this.file = file;
+		this.selectedFile = this.file = file;
 		setBackground(Color.white);
-		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		UITools.addEscapeActionToDialog(this);
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		final JTable table = createTable(revisions);
 		final JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.getViewport().setBackground(Color.white);
-		scrollPane.getViewport().setPreferredSize(new Dimension(460, 120));
+		final Dimension tablePreferredSize = table.getPreferredSize();
+		int maxHeight = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 2 / 3;
+		scrollPane.getViewport().setPreferredSize(new Dimension(tablePreferredSize.width, Math.min(maxHeight, tablePreferredSize.height)));
 		add(scrollPane);
 		add(createQuestion());
 		add(createButtonBar());
-		getRootPane().setDefaultButton(btnOpen);
+		getRootPane().setDefaultButton(btnRestore);
 		pack();
 		setLocationRelativeTo(UITools.getFrame());
 		setVisible(true);
 	}
 
 	private Component createQuestion() {
-		final String text = TextUtils.format(NewerFileRevisionsFoundDialog.key("question"), file.getName());
+		final String text = TextUtils.format(key("question"), file.getName());
 		final String html = HtmlUtils.plainToHTML(text);
 		final JLabel textArea = new JLabel(html);
 		textArea.setAlignmentX(0.5f);
@@ -208,8 +224,8 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 		return textArea;
 	}
 
-	private static String key(final String appendix) {
-		return KEY_BASE + "." + appendix;
+	private String key(final String appendix) {
+		return keyBase + "." + appendix;
 	}
 
 	private JTable createTable(final File[] revisions) {
@@ -218,18 +234,22 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 				final long diff = f1.lastModified() - f2.lastModified();
 				if (diff == 0)
 					return f1.getName().compareTo(f2.getName());
-				return diff > 0 ? -1 : (diff > 0 ? 1 : 0);
+				return diff < 0 ? -1 : (diff > 0 ? 1 : 0);
 			}
 		});
+		sortedRevisions.add(file);
 		sortedRevisions.addAll(Arrays.asList(revisions));
-		final Object[][] data = new Object[sortedRevisions.size() + 1][];
+		final Object[][] data = new Object[sortedRevisions.size()][];
 		int i = 0;
-		data[i++] = createRow(file);
+		int selectedRow = 0;
 		for (final File f : sortedRevisions) {
-			data[i++] = createRow(f);
+			data[i] = createRow(f);
+			if(f == file)
+				selectedRow = i;
+			i++;
 		}
-		sortedRevisions.addAll(Arrays.asList(revisions));
-		return new RevisionTable(data);
+		final RevisionTable revisionTable = new RevisionTable(data, selectedRow);
+		return revisionTable;
 	}
 
 	private Object[] createRow(final File file) {
@@ -241,15 +261,13 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 		final Box controllerBox = Box.createHorizontalBox();
 		controllerBox.setBorder(new EmptyBorder(5, 0, 5, 0));
 		final CloseAction closeAction = new CloseAction();
-		btnOpen = createButton(NewerFileRevisionsFoundDialog.key("open"),
-		    NewerFileRevisionsFoundDialog.key("open.tooltip"), closeAction);
-		btnSkip = createButton(NewerFileRevisionsFoundDialog.key("skip"),
-		    NewerFileRevisionsFoundDialog.key("skip.tooltip"), closeAction);
 		controllerBox.add(Box.createHorizontalGlue());
-		controllerBox.add(btnOpen);
-		controllerBox.add(Box.createHorizontalGlue());
+		btnSkip = createButton(key("cancel"), null, closeAction);
+		btnRestore = createButton(key("open"), key("open.tooltip"), closeAction);
+		controllerBox.add(btnRestore);
+		controllerBox.add(Box.createHorizontalStrut(10));
 		controllerBox.add(btnSkip);
-		controllerBox.add(Box.createHorizontalGlue());
+		controllerBox.add(Box.createHorizontalStrut(10));
 		return controllerBox;
 	}
 
@@ -264,16 +282,15 @@ public class NewerFileRevisionsFoundDialog extends JDialog {
 			button.setToolTipText(TextUtils.format(tooltipKey, file.getName(), selectedFileName));
 		return button;
 	}
-
+	
+	/** returns null on cancel */
 	public File getSelectedFile() {
+		if(cancelled)
+			return null;
 		return selectedFile;
 	}
 
 	private void setSelectedFile(final File selectedFile) {
 		this.selectedFile = selectedFile;
-	}
-
-	public boolean confirmContinue() {
-		return canContinue;
 	}
 }

@@ -321,8 +321,8 @@ public class MindmapUpdateController {
 					}
 				}
 
-				map = new MMapModel(null);
-				AttributeRegistry.createRegistry(map);
+				map = new MMapModel();
+				AttributeRegistry.getRegistry(map);
 				try {
 					File f = WorkspaceUtils.resolveURI(uri);
 					if (f.exists()) {

@@ -57,7 +57,7 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 			final XMLElement itemElement = conditionalStylesRoot.createElement("conditional_style");
 			conditionalStylesRoot.addChild(itemElement);
 			itemElement.setAttribute("ACTIVE", Boolean.toString(isActive()));
-			final Object style = getStyle();
+			final IStyle style = getStyle();
 			if (style instanceof StyleNamedObject) {
 				final String referencedStyle = ((StyleNamedObject)style).getObject().toString();
 				itemElement.setAttribute("LOCALIZED_STYLE_REF", referencedStyle);

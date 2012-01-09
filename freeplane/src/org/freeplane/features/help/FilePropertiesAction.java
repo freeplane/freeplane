@@ -79,7 +79,7 @@ class FilePropertiesAction extends AFreeplaneAction {
 			final DecimalFormat def = new DecimalFormat();
 			def.setGroupingUsed(true);
 			fileSize = def.format(map.getFile().length()) + " "
-			        + TextUtils.getText("NewerFileRevisionsFoundDialog.file_size");
+			        + TextUtils.getText("FileRevisionsDialog.file_size");
 			//fileChangesSinceSave
 			fileChangesSinceSave = map.getNumberOfChangesSinceLastSave();
 		}

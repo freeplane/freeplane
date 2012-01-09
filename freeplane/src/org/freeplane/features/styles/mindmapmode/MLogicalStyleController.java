@@ -294,10 +294,6 @@ public class MLogicalStyleController extends LogicalStyleController {
 	}
 
 	public void setStyle(final NodeModel node, final IStyle style) {
-        final MTextController textController = MTextController.getController();
-        if(textController.isFirstEditRunning(node)){
-            copyStyleExtensions(style, node);
-        }
 		final ModeController modeController = Controller.getCurrentModeController();
         final IStyle oldStyle = LogicalStyleModel.getStyle(node);
 		if (oldStyle != null && oldStyle.equals(style) || oldStyle == style) {

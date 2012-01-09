@@ -108,6 +108,8 @@ class ExternalImagePopupMenu extends JPopupMenu implements MouseListener {
 			open.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					final ExternalResource extRes = (ExternalResource) node.getExtension(ExternalResource.class);
+					if(extRes == null)
+						return;
 					final UrlManager urlManager = (UrlManager) Controller.getCurrentModeController().getExtension(
 					    UrlManager.class);
 					urlManager.loadURL(extRes.getUri());

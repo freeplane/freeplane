@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.clipboard.mindmapmode;
 
+import java.awt.Graphics2D;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -386,10 +387,15 @@ public class MClipboardController extends ClipboardController {
     	private static final String IMAGE_FORMAT = "png";
 		final private BufferedImage image;
 
-        public ImageFlavorHandler(BufferedImage image) {
-	        super();
-	        this.image = image;
-        }
+		public ImageFlavorHandler(BufferedImage img) {
+			super();
+			BufferedImage fixedImg = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			Graphics2D fig = fixedImg.createGraphics();
+			fig.drawImage(img, 0, 0, null);
+			fig.dispose();
+			fixedImg.flush();
+			this.image = fixedImg;
+		}
 
         public void paste(Transferable t, NodeModel target, boolean asSibling, boolean isLeft) {
 			final ModeController modeController = Controller.getCurrentModeController();
@@ -440,8 +446,7 @@ public class MClipboardController extends ClipboardController {
 	    		}
 	            ImageIO.write(image, IMAGE_FORMAT, file);
 				final NodeModel node = mapController.newNode(file.getName(), target.getMap());
-				final ExternalResource extension = new ExternalResource();
-				extension.setUri(uri);
+				final ExternalResource extension = new ExternalResource(uri);
 				node.addExtension(extension);
 				mapController.insertNode(node, target, asSibling, isLeft, isLeft);
             }

@@ -17,15 +17,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.text.mindmapmode;
+package org.freeplane.features.map.mindmapmode;
 
 import org.freeplane.core.extension.IExtension;
 
 /**
  * @author Dimitry Polivaev
- * Jun 19, 2011
+ * Dec 10, 2011
  */
-class FirstEditFlag implements IExtension {
-    final static private FirstEditFlag instance = new FirstEditFlag();
-    final static FirstEditFlag getInstance(){return instance;}
+public class DocuMapAttribute implements IExtension {
+	public static final IExtension instance = new DocuMapAttribute();
 }

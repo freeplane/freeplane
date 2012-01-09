@@ -93,7 +93,7 @@ public class UserPropertiesUpdater {
 		if(! userDefault.getParentFile().exists()){
 			return;
 		}
-		MapModel defaultStyleMap = new MapModel(null);
+		MapModel defaultStyleMap = new MapModel();
 		final File allUserTemplates = fm.defaultStandardTemplateDir();
 		final File standardTemplate = new File(allUserTemplates, "standard.mm");
 		try {
@@ -105,6 +105,7 @@ public class UserPropertiesUpdater {
 				fm.loadImpl(ResourceController.getResourceController().getResource("/styles/viewer_standard.mm"), defaultStyleMap);
 			}
 			catch (Exception e2) {
+				defaultStyleMap.createNewRoot();
 				LogUtils.severe(e);
 			}
 		}

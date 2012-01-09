@@ -57,6 +57,7 @@ public class HelpController implements IExtension {
 		final String tutorialMap = resourceController.getProperty("tutorial_map");
 		controller.addAction(new DocumentationAction("GettingStartedAction", tutorialMap));
 		controller.addAction(new HotKeyInfoAction());
+		controller.addAction(new OnlineDocumentationAction("OnlineReference", "docu-online"));
 	}
 
 	/**

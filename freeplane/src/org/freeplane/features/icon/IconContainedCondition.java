@@ -49,7 +49,7 @@ public class IconContainedCondition extends ASelectableCondition {
 	}
 
 	private static boolean isStateIconContained(final NodeModel node, final String iconName) {
-		final Collection<UIIcon> stateIcons = node.getStateIcons().values();
+		final Collection<UIIcon> stateIcons = IconController.getController().getStateIcons(node);
 		for (final UIIcon stateIcon : stateIcons) {
 			if (iconName.equals(stateIcon.getName())) {
 				return true;

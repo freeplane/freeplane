@@ -38,6 +38,8 @@ public class DetailsViewMouseListener extends LinkNavigatorMouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
     	final NodeView nodeView = (NodeView)SwingUtilities.getAncestorOfClass(NodeView.class, e.getComponent());
+    	if(nodeView == null)
+    		return;
     	final NodeModel model = nodeView.getModel();
     	TextController controller = TextController.getController();
     	final ZoomableLabel component = (ZoomableLabel) e.getComponent();

@@ -44,6 +44,7 @@ import org.freeplane.core.ui.IndexedTree.Node;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.IKeyBindingManager;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.MenuUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
@@ -212,6 +213,8 @@ public class AccelerateableAction implements IFreeplaneAction {
 		        final KeyStroke accelerator = UITools.getKeyStroke(shortcut);
 		        menuBuilder.setAccelerator((Node) menuBuilder.get(key), accelerator);
 		        ResourceController.getResourceController().setProperty(shortcutKey, shortcut);
+                LogUtils.info("created shortcut '" + shortcut + "' for menuitem '" + key + "', shortcutKey '"
+                        + shortcutKey + "' (" + editedItem.getText() + ")");
 		    }
 		}
 		else{
@@ -226,6 +229,8 @@ public class AccelerateableAction implements IFreeplaneAction {
 		    }
             menuBuilder.setAccelerator((Node) menuBuilder.get(key), newAccelerator);
             ResourceController.getResourceController().setProperty(shortcutKey, toString(newAccelerator));
+            LogUtils.info("created shortcut '" + toString(newAccelerator) + "' for menuitem '" + key
+                    + "', shortcutKey '" + shortcutKey + "' (" + editedItem.getText() + ")");
 		}
 	}
 

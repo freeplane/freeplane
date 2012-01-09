@@ -29,8 +29,8 @@ import org.freeplane.features.map.NodeModel;
  */
 class StyleMapModel extends MapModel {
 	private static final String STYLES = "styles";
-    StyleMapModel(NodeModel root) {
-	    super(root);
+    StyleMapModel() {
+	    super();
     }
 
     @Override

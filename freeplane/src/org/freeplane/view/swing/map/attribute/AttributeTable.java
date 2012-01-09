@@ -23,10 +23,13 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.KeyboardFocusManager;
 import java.awt.Window;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -54,6 +57,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import org.freeplane.core.ui.components.TypedListCellRenderer;
@@ -71,13 +75,14 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
+import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
-import org.freeplane.features.text.mindmapmode.IEditBaseCreator.EditedComponent;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
+
 
 /**
  * @author Dimitry Polivaev
@@ -85,6 +90,31 @@ import org.freeplane.view.swing.map.NodeView;
 class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	private static final String EDITING_STOPPED = AttributeTable.class.getName() + ".editingStopped";
 	private static int CLICK_COUNT_TO_START = 2;
+
+	private static final class TableHeaderRendererImpl implements TableCellRenderer {
+		final private TableCellRenderer delegate;
+		TableHeaderRendererImpl(TableCellRenderer renderer){
+			this.delegate = renderer;
+		}
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+				int row, int column) {
+			final Component c = delegate.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+			final int height = (int) (((AttributeTable)table).getZoom() * 6);
+			final Dimension preferredSize = new Dimension(1, height);
+			c.setPreferredSize(preferredSize);
+			return c;
+		}
+	}
+	@SuppressWarnings("serial")
+	private static final class TableHeader extends JTableHeader {
+		private TableHeader(TableColumnModel cm) {
+			super(cm);
+		}
+		@Override
+		protected TableCellRenderer createDefaultRenderer() {
+			return new TableHeaderRendererImpl(super.createDefaultRenderer());
+		}
+	}
 
 	static private class HeaderMouseListener extends MouseAdapter {
 		@Override
@@ -210,20 +240,6 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		addFocusListener(AttributeTable.focusListener);
 		addMouseListener(AttributeTable.cursorUpdater);
 		addMouseMotionListener(AttributeTable.cursorUpdater);
-		final JTableHeader tableHeader = getTableHeader();
-		final TableCellRenderer defaultRenderer = tableHeader.getDefaultRenderer();
-		tableHeader.setDefaultRenderer(new TableCellRenderer() {
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-			                                               int row, int column) {
-				final Component c = defaultRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-				final int height = (int) (((AttributeTable)table).getZoom() * 6);
-				final Dimension preferredSize = new Dimension(1, height);
-				c.setPreferredSize(preferredSize);
-				return c;
-				
-			}
-		});
-		setTableHeader(tableHeader);
 		if (attributeView.getMapView().getModeController().canEdit()) {
 			tableHeader.addMouseListener(AttributeTable.componentListener);
 		}
@@ -235,10 +251,15 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		updateColumnWidths();
 		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		getTableHeader().setReorderingAllowed(false);
-		getRowHeight();
-		updateRowHeights();
 		setRowSelectionAllowed(false);
 		putClientProperty("JTable.autoStartsEdit", Boolean.FALSE);
+		updateRowHeights();
+	}
+
+	@SuppressWarnings("serial")
+	@Override
+	protected JTableHeader createDefaultTableHeader() {
+		return new TableHeader(columnModel);
 	}
 
 	private void changeSelectedRowHeight(final int rowIndex) {
@@ -355,6 +376,14 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 				public void cancel() {
 					stopCellEditing();
 				}
+
+				public boolean canSplit() {
+	                return false;
+                }
+
+				public EditedComponent getEditType() {
+	                return EditedComponent.TEXT;
+                }
 			};
         }
 
@@ -406,7 +435,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			final IAttributeTableModel model = (IAttributeTableModel) getModel();
 			final String text = getValueAt(row, col).toString();
 			final DialogTableCellEditor dialogTableCellEditor = new DialogTableCellEditor();
-			EditNodeBase base = textController.getEditNodeBase(model.getNode(), text, EditedComponent.TEXT, dialogTableCellEditor.getEditControl(), false);
+			EditNodeBase base = textController.getEditNodeBase(model.getNode(), text, dialogTableCellEditor.getEditControl(), false);
 			if(base != null){
 				dialogTableCellEditor.setEditBase(base);
 				return dialogTableCellEditor;
@@ -735,13 +764,23 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	}
 
 	private void updateRowHeights() {
+		if(! isDisplayable()){
+			addHierarchyListener(new HierarchyListener() {
+				public void hierarchyChanged(HierarchyEvent e) {
+					if(isDisplayable()){
+						updateRowHeights();
+					}
+				}
+			});
+			return;
+		}
 		final int rowCount = getRowCount();
 		if (rowCount == 0) {
 			return;
 		}
 		final int constHeight = getTableHeaderHeight() + AttributeTable.EXTRA_HEIGHT;
 		final float zoom = getZoom();
-		final float fontSize = getFontSize();
+		final float fontSize = (float) getFont().getMaxCharBounds(((Graphics2D)getGraphics()).getFontRenderContext()).getHeight();
 		final float tableRowHeight = fontSize + zoom * AttributeTable.TABLE_ROW_HEIGHT;
 		int newHeight = (int) ((tableRowHeight * rowCount + (zoom - 1) * constHeight) / rowCount);
 		if (newHeight < 1) {

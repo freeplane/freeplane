@@ -44,8 +44,9 @@ public class AutomaticLayout extends PersistentNodeHook implements IExtension {
 			public Collection<IStyle> getProperty(NodeModel model, Collection<IStyle> currentValue) {
 				if(model.getMap().getRootNode().containsExtension(AutomaticLayout.class)){
 					final IStyle autoStyle = getStyle(model);
-					LogicalStyleController.getController().add(model, currentValue, autoStyle);
-					currentValue.add(autoStyle);
+					if(autoStyle != null){
+						LogicalStyleController.getController().add(model, currentValue, autoStyle);
+					}
 				}
 				return currentValue;
 			}
@@ -58,6 +59,8 @@ public class AutomaticLayout extends PersistentNodeHook implements IExtension {
 	}
 
 	private IStyle getStyle(final NodeModel node) {
+		if(node.isLeaf())
+			return null;
 		final int depth = node.depth();
 		final MapModel map = node.getMap();
 		final MapStyleModel extension = MapStyleModel.getExtension(map);
@@ -67,7 +70,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IExtension {
 		if (extension.getStyleNode(style) != null) {
 			return style;
 		}
-		return MapStyleModel.DEFAULT_STYLE;
+		return null;
 	}
 
 	@Override

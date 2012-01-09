@@ -21,6 +21,8 @@ package org.freeplane.core.ui.components;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -86,31 +88,28 @@ public class BitmapViewerComponent extends JComponent {
 				super.paintComponent(g);
 				return;
 			}
-			if (imageWidth != width || imageHeight != height) {
-				final int imageType = image.getType();
-				cachedImage = new BufferedImage(width, height, 
-					imageType != BufferedImage.TYPE_CUSTOM ? imageType :  BufferedImage.TYPE_INT_RGB);
-				final double kComponent = (double) height / (double) width;
-				final double kImage = (double) imageHeight / (double) imageWidth;
-				final Image scaledImage;
-				final int x,y;
-				if (kComponent >= kImage) {
-					final int calcHeight = (int) (width * kImage);
-					scaledImage = image.getScaledInstance(width, calcHeight, hint);
-					x = 0;
-					y = (height - calcHeight) / 2;
-				}
-				else {
-					final int calcWidth = (int) (height / kImage);
-					scaledImage = image.getScaledInstance(calcWidth, height, hint);
-					x = (width - calcWidth) / 2;
-					y = 0;
-				}
-				cachedImage.createGraphics().drawImage(scaledImage, x, y, null);
+			GraphicsConfiguration config = getGraphicsConfiguration();
+			cachedImage =config.createCompatibleImage(width, height);
+			final double kComponent = (double) height / (double) width;
+			final double kImage = (double) imageHeight / (double) imageWidth;
+			final Image scaledImage;
+			final int x,y;
+			if (kComponent >= kImage) {
+				final int calcHeight = (int) (width * kImage);
+				scaledImage = image.getScaledInstance(width, calcHeight, hint);
+				x = 0;
+				y = (height - calcHeight) / 2;
 			}
 			else {
-				cachedImage = image;
+				final int calcWidth = (int) (height / kImage);
+				scaledImage = image.getScaledInstance(calcWidth, height, hint);
+				x = (width - calcWidth) / 2;
+				y = 0;
 			}
+			final Graphics2D fig = cachedImage.createGraphics();
+			fig.drawImage(scaledImage, x, y, null);
+			fig.dispose();
+			cachedImage.flush();
 		}
 		g.drawImage(cachedImage, 0, 0, null);
 	}

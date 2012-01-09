@@ -31,6 +31,10 @@ import org.freeplane.features.mode.ModeController;
  * Feb 13, 2011
  */
 public class MEncryptionController extends EncryptionController {
+	public MEncryptionController(ModeController modeController) {
+	    super(modeController);
+    }
+
 	public static void install(MEncryptionController encryptionController){
 		EncryptionController.install(encryptionController);
 		final ModeController modeController = Controller.getCurrentModeController();
@@ -52,7 +56,6 @@ public class MEncryptionController extends EncryptionController {
 		final IActor actor = new IActor() {
 			public void act() {
 				node.removeExtension(encryptedMindMapNode);
-				node.removeStateIcons("decrypted");
 				Controller.getCurrentModeController().getMapController().nodeChanged(node);
 			}
 
@@ -62,7 +65,6 @@ public class MEncryptionController extends EncryptionController {
 
 			public void undo() {
 				node.addExtension(encryptedMindMapNode);
-				encryptedMindMapNode.updateIcon();
 				Controller.getCurrentModeController().getMapController().nodeChanged(node);
 			}
 		};

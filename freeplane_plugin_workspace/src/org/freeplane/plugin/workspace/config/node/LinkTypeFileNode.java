@@ -88,7 +88,7 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeEventLi
 				if(fileExt.equalsIgnoreCase(".mm") || fileExt.equalsIgnoreCase(".dcr")) {
 					try {
 						final URL mapUrl = Compat.fileToUrl(file);
-						Controller.getCurrentModeController().getMapController().newMap(mapUrl, false);
+						Controller.getCurrentModeController().getMapController().newMap(mapUrl);
 					}
 					catch (final Exception e) {
 						LogUtils.severe(e);

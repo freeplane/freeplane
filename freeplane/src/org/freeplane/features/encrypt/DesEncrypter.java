@@ -32,7 +32,9 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IEncrypter;
 
 /**
@@ -147,7 +149,7 @@ public class DesEncrypter implements IEncrypter {
 				LogUtils.severe(e);
 			}
 			catch (final java.security.spec.InvalidKeySpecException e) {
-				LogUtils.severe(e);
+				UITools.errorMessage(TextUtils.getText("password_is_not_ascii"));
 			}
 			catch (final javax.crypto.NoSuchPaddingException e) {
 				LogUtils.severe(e);
