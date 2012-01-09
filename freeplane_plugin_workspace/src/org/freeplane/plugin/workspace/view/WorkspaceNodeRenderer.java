@@ -35,7 +35,12 @@ public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 			setNodeIcon(renderer,node);
 			JLabel label = (JLabel) renderer.getTreeCellRendererComponent(tree, treeNode, sel, expanded, leaf, row, hasFocus);			
 			if(row == this.highlightedRow) {
+				try {
 				label.setBorder(BorderFactory.createLineBorder(UIManager.getColor(borderSelectionColor), 1));
+				} 
+				catch (Exception e) {
+					label.setBorder(BorderFactory.createLineBorder(label.getForeground(), 1));
+				}
 			}
 			label.setText(node.getName());
 			return label;
