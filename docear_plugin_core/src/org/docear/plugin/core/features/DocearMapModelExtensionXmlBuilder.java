@@ -31,9 +31,15 @@ public class DocearMapModelExtensionXmlBuilder implements IElementDOMHandler, IE
 	}
 	
 	private void registerAttributeHandlers(ReadManager reader) {
+		final IAttributeHandler freeplaneDialectHandler = reader.getAttributeHandlers().get(DOCEAR_MAP_EXTENSION_XML_TAG).get(DOCEAR_MAP_EXTENSION_VERSION_XML_TAG);
+		reader.removeAttributeHandler(DOCEAR_MAP_EXTENSION_XML_TAG, DOCEAR_MAP_EXTENSION_VERSION_XML_TAG, freeplaneDialectHandler);
 		reader.addAttributeHandler(DOCEAR_MAP_EXTENSION_XML_TAG, DOCEAR_MAP_EXTENSION_VERSION_XML_TAG, new IAttributeHandler() {
 			
 			public void setAttribute(Object node, String value) {
+				if (!value.startsWith("docear")) {
+					freeplaneDialectHandler.setAttribute(node, value);
+					return;
+				}
 				final MapModel mapModel = (MapModel) node;
 				final DocearMapModelExtension docearMapModel = new DocearMapModelExtension();
 				value = value.replace("docear ", "");
@@ -83,10 +89,6 @@ public class DocearMapModelExtensionXmlBuilder implements IElementDOMHandler, IE
 		final DocearMapModelExtension modelExtension = extension != null ? (DocearMapModelExtension) extension : DocearMapModelController.getModel(((NodeModel) userObject).getMap());
 		if (modelExtension == null) {
 			return;
-		}
-		final String version = modelExtension.getVersion();
-		if (version != null && version.length() > 0) {
-			writer.addAttribute(DOCEAR_MAP_EXTENSION_VERSION_XML_TAG, "docear " + version);			
 		}
 		final DocearMapType type = modelExtension.getType();
 		if(type != null){
