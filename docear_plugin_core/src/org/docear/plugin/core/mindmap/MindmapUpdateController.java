@@ -133,7 +133,6 @@ public class MindmapUpdateController {
 
 		return new SwingWorker<Void, Void>() {
 			private int totalCount;
-			private int count = 0;
 			private boolean mapHasChanged = false;
 
 			private final long start = System.currentTimeMillis();
@@ -147,10 +146,11 @@ public class MindmapUpdateController {
 					NodeView.setModifyModelWithoutRepaint(true);
 					fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
 					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("computing_node_count"));
-					totalCount = uris.size();
+					totalCount = uris.size()*getMindmapUpdaters().size();
 					if (canceled())
 						return null;
 					fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
+					int count = 0;
 					fireProgressUpdate(100 * count / totalCount);
 
 					for (AMindmapUpdater updater : getMindmapUpdaters()) {
