@@ -35,7 +35,8 @@ public class WorkspacePreferences {
 	public static final String VIEW_MENU = "/view";
 
 	public static final String SHOW_WORKSPACE_TEXT = "show_workspace";
-	public static final String SHOW_WORKSPACE_PROPERTY_KEY = "show_workspace";
+	public static final String SHOW_WORKSPACE_PROPERTY_KEY = "workspace.enabled";
+	public static final String COLLAPSE_WORKSPACE_PROPERTY_KEY = "workspace.collapsed";
 	public static final String WORKSPACE_WIDTH_PROPERTY_KEY = "workspace_view_width";
 	public static final String WORKSPACE_LOCATION = "workspace_location";
 	public static final String WORKSPACE_LOCATION_NEW = "workspace_location_new";
@@ -49,7 +50,9 @@ public class WorkspacePreferences {
 		this.modeController = Controller.getCurrentModeController();
 		addLanguageResources();
 		addMenuEntries();
-		addDefaultPreferences();	
+		if(WorkspaceController.isFirstApplicationStart()) {
+			addDefaultPreferences();	
+		}
 	}
 	
 	public String getWorkspaceProfile() {
