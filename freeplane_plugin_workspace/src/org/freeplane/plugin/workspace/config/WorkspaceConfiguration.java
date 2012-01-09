@@ -15,6 +15,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,11 +24,15 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.main.application.FreeplaneStarter;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.creator.FolderTypePhysicalCreator;
 import org.freeplane.plugin.workspace.config.creator.FolderTypeVirtualCreator;
 import org.freeplane.plugin.workspace.config.creator.LinkTypeFileCreator;
@@ -82,6 +87,7 @@ public class WorkspaceConfiguration {
 		}
 
 		File configFile = new File(workspaceLocation + File.separator + "." + profileName + File.separator + CONFIG_FILE_NAME);
+		boolean newConfig = false;
 		if (!configFile.exists()) {
 			// CREATE NEW WORKSPACE
 			File profileFolder = new File(workspaceLocation + File.separator + "." + profileName);
@@ -94,12 +100,15 @@ public class WorkspaceConfiguration {
 				}
 			}
 			copyDefaultConfigTo(configFile);
+			newConfig = true;
 		}
 
 		WorkspaceController.getController().getWorkspaceModel()
 				.removeAllElements((AWorkspaceTreeNode) WorkspaceController.getController().getWorkspaceModel().getRoot());
 		this.load(configFile.toURI().toURL());
-
+		if(newConfig) {
+			linkWelcomeMindmapAfterWorkspaceCreation();
+		}
 		return true;
 	}
 
@@ -115,6 +124,23 @@ public class WorkspaceConfiguration {
 		DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(config)));
 		out.write(xml.getBytes());
 		out.close();
+	}
+	
+	private void linkWelcomeMindmapAfterWorkspaceCreation() {
+		final File baseDir = new File(FreeplaneStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();
+		
+		final String map = ResourceController.getResourceController().getProperty("first_start_map");		
+		final File docearWelcome = ConfigurationUtils.getLocalizedFile(baseDir, map, Locale.getDefault().getLanguage());
+		
+		AWorkspaceTreeNode parent = WorkspaceUtils.getNodeForPath("My Workspace/Miscellaneous");
+		if (parent == null) {
+			return;
+		}
+		LinkTypeFileNode node = new LinkTypeFileNode();
+		node.setName(docearWelcome.getName());
+		node.setLinkPath(WorkspaceUtils.getWorkspaceRelativeURI(docearWelcome));
+		WorkspaceUtils.getModel().addNodeTo(node, parent);
+		parent.refresh();
 	}
 	
 	private void initReadManager() {
