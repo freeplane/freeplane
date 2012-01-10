@@ -11,7 +11,7 @@ public class PropertyListener implements IFreeplanePropertyListener {
 		if (propertyName.equals("links") && (!newValue.equals(oldValue))) {
 			MindmapUpdateController mindmapUpdateController = new MindmapUpdateController();
 			mindmapUpdateController.addMindmapUpdater(new MindmapLinkTypeUpdater(TextUtils.getText("updating_link_types")));
-			mindmapUpdateController.updateRegisteredMindmapsInWorkspace();
+			mindmapUpdateController.updateRegisteredMindmapsInWorkspace(true);
 			
 		}
 	}

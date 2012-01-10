@@ -47,9 +47,20 @@ public class MindmapUpdateController {
 		}
 		return updateMindmaps(uris);
 	}
-
+	
 	public boolean updateRegisteredMindmapsInWorkspace() {
+		return updateRegisteredMindmapsInWorkspace(false);
+	}
+
+	public boolean updateRegisteredMindmapsInWorkspace(boolean openMindmapsToo) {
 		List<URI> uris = DocearController.getController().getLibrary().getMindmaps();
+		
+		if (openMindmapsToo) {
+			for (URI uri : getAllOpenMapUris()) {
+				uris.add(uri);
+			}
+		}
+		
 		return updateMindmaps(uris);
 	}
 
