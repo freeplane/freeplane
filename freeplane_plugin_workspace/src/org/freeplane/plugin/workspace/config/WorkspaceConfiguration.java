@@ -77,7 +77,7 @@ public class WorkspaceConfiguration {
 	public IConfigurationInfo getConfigurationInfo() {
 		return this.configurationInfo;
 	}
-
+	
 	private boolean initializeConfig() throws NullPointerException, FileNotFoundException, IOException, URISyntaxException {
 		String workspaceLocation = WorkspaceController.getController().getPreferences().getWorkspaceLocation();
 		String profileName = WorkspaceController.getController().getPreferences().getWorkspaceProfile();
@@ -126,7 +126,7 @@ public class WorkspaceConfiguration {
 		out.close();
 	}
 	
-	private void linkWelcomeMindmapAfterWorkspaceCreation() {
+	public void linkWelcomeMindmapAfterWorkspaceCreation() {
 		final File baseDir = new File(FreeplaneStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();
 		
 		final String map = ResourceController.getResourceController().getProperty("first_start_map");		

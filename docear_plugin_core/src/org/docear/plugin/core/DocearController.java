@@ -9,9 +9,7 @@ import java.util.Vector;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
-import org.docear.plugin.core.listeners.PropertyListener;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.mode.Controller;
 
 /**
  * 
@@ -29,7 +27,6 @@ public class DocearController implements IDocearEventListener {
 	 **********************************************************************************/
 	
 	protected DocearController() {
-		Controller.getCurrentController().getResourceController().addPropertyChangeListener(new PropertyListener());
 		addDocearEventListener(this);
 	}
 	/***********************************************************************************
