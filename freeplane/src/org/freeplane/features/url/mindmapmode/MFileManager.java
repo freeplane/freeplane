@@ -391,9 +391,11 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
         	map.setReadOnly(true);
         }
 		if (file.length() != 0) {
+			//Fixme: Docear - set the file for the map before parsing the xml --> needed by org.docear.plugin.pdfutilities.features.AnnotationXmlBuilder:95
+			setFile(map, file);
         	NodeModel root = loadTree(map, file);
         	assert(map.getRootNode() == root);
-        	setFile(map, file);
+        	
         }
         else{
         	map.createNewRoot();

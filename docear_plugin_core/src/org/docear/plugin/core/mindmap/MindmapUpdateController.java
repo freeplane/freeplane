@@ -154,6 +154,7 @@ public class MindmapUpdateController {
 					fireProgressUpdate(100 * count / totalCount);
 
 					for (AMindmapUpdater updater : getMindmapUpdaters()) {
+						count++;
 						fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, updater.getTitle());
 						if (canceled())
 							return null;
@@ -162,6 +163,9 @@ public class MindmapUpdateController {
 									TextUtils.getText("updating_map") + uri.getPath());
 							mapHasChanged = false;
 							MapModel map = getMapModel(uri);
+							if (map==null) {								
+								continue;
+							}
 							fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_against_p1")
 									+ getMapTitle(map) + TextUtils.getText("updating_against_p2"));
 							this.mapHasChanged = updater.updateMindmap(map);
@@ -178,8 +182,6 @@ public class MindmapUpdateController {
 									map.setReadOnly(false);
 								}
 							}
-
-							count++;
 
 						}
 					}
@@ -311,7 +313,7 @@ public class MindmapUpdateController {
 					e.printStackTrace();
 					return null;
 				}
-				;
+				
 
 				if (mapExtensionKey != null) {
 					map = Controller.getCurrentController().getViewController().getMapViewManager().getMaps()
@@ -322,11 +324,15 @@ public class MindmapUpdateController {
 				}
 
 				map = new MMapModel();
-				AttributeRegistry.getRegistry(map);
 				try {
 					File f = WorkspaceUtils.resolveURI(uri);
-					if (f.exists()) {
+					if (f.exists()) {						
 						UrlManager.getController().load(url, map);
+						map.setURL(url);
+						map.setSaved(true);
+					}
+					else {
+						return null;
 					}
 				}
 				catch (Exception e) {
