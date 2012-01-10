@@ -45,9 +45,7 @@ public class WorkspacePreferences {
 		this.modeController = Controller.getCurrentModeController();
 		addLanguageResources();
 		addMenuEntries();
-		if(WorkspaceController.isFirstApplicationStart()) {
-			addDefaultPreferences();	
-		}
+		addDefaultPreferences();	
 	}
 	
 	public String getWorkspaceProfile() {
