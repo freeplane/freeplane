@@ -121,7 +121,6 @@ public class WorkspacePreferences {
 		}
 	}
 	
-	
 
 	@SelectableAction(checkOnPropertyChange=SHOW_WORKSPACE_PROPERTY_KEY, checkOnPopup = true)
 	private class CheckBoxAction extends AFreeplaneAction {
