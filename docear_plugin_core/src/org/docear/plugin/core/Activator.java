@@ -115,10 +115,20 @@ public class Activator extends WorkspaceDependentPlugin {
 		catch (final IOException e) {
 			
 		}
+		
+		final Properties buildProperties = new Properties();
+		in = null;
+		try {
+			in = Activator.this.getClass().getResource("/build.number").openStream();
+			buildProperties.load(in);
+		}
+		catch (final IOException e) {
+			
+		}
 		final String versionNumber = versionProperties.getProperty("docear_version");
 		final String versionStatus = versionProperties.getProperty("docear_version_status");
 		final String versionStatusNumber = versionProperties.getProperty("docear_version_status_number");
-		final String versionBuild = versionProperties.getProperty("docear_version_build");
+		final int versionBuild = Integer.parseInt(buildProperties.getProperty("build.number")) -1;
 		ResourceController.getResourceController().setProperty("docear_version", versionNumber);
 		ResourceController.getResourceController().setProperty("docear_status", versionStatus+" "+versionStatusNumber+" build "+versionBuild);
 		

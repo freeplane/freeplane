@@ -58,7 +58,7 @@
 	</target>
 
     <target name="build_core">
-        <buildnumber />
+        <buildnumber file="../docear_plugin_core/resources/build.number"/>
         <property name="ver_docear" value="${docear_version}_${docear_version_status}_build${build.number}" />
 	    <condition property="ver" value="${ver_docear}" else="${ver_freeplane}">
             <equals arg1="${ApplicationNameToLowerCase}" arg2="docear"/>
