@@ -230,6 +230,7 @@ public class CoreConfiguration extends ALanguageController {
 		ResourceController resController = Controller.getCurrentController().getResourceController();
 		if (resController.getProperty("ApplicationName").equals("Docear")) {
 			resController.setProperty("first_start_map", "/doc/docear-welcome.mm");
+			resController.setProperty("tutorial_map", "/doc/docear-welcome.mm");
 		}
 		final URL defaults = this.getClass().getResource(ResourceController.PLUGIN_DEFAULTS_RESOURCE);
 		if (defaults == null)
@@ -241,6 +242,7 @@ public class CoreConfiguration extends ALanguageController {
 			Controller.getCurrentController().getResourceController().setProperty("save_folding", "always_save_folding");
 			Controller.getCurrentController().getResourceController().setProperty("leftToolbarVisible", "false");			
 			Controller.getCurrentController().getResourceController().setProperty("styleScrollPaneVisible", "true");
+			
 		}
 		Controller.getCurrentController().getResourceController().addPropertyChangeListener(new PropertyListener());
 		FreeplaneActionCascade.addAction(new DocearQuitAction());		
