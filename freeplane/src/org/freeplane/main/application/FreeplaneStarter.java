@@ -39,6 +39,7 @@ import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.MenuUtils;
 import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.NextNodeAction;
@@ -63,6 +64,7 @@ import org.freeplane.features.time.TimeController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.main.addons.AddOnsController;
+import org.freeplane.main.application.CommandLineParser.Options;
 import org.freeplane.main.browsemode.BModeControllerFactory;
 import org.freeplane.main.filemode.FModeControllerFactory;
 import org.freeplane.main.mindmapmode.MModeControllerFactory;
@@ -137,10 +139,10 @@ public class FreeplaneStarter {
 			mapViewController.addMapViewChangeListener(applicationResourceController.getLastOpenedList());
 			FilterController.install();
 			PrintController.install();
-            FormatController.install(new FormatController());
-            final ScannerController scannerController = new ScannerController();
-            ScannerController.install(scannerController);
-            scannerController.addParsersForStandardFormats();
+			FormatController.install(new FormatController());
+	        final ScannerController scannerController = new ScannerController();
+	        ScannerController.install(scannerController);
+	        scannerController.addParsersForStandardFormats();
 			ModelessAttributeController.install();
 			TextController.install();
 			TimeController.install();
@@ -187,7 +189,8 @@ public class FreeplaneStarter {
 		new UserPropertiesUpdater().importOldDefaultStyle();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				loadMaps(args);
+			    final Options options = CommandLineParser.parse(args);
+				loadMaps(options.getFilesToOpenAsArray());
 				viewController.init(Controller.getCurrentController());
 				splash.toBack();
 				final Frame frame = viewController.getFrame();
@@ -200,10 +203,18 @@ public class FreeplaneStarter {
 				splash = null;
 				frame.toFront();
 				startupFinished = true;
-			}
+		        System.setProperty("nonInteractive", Boolean.toString(options.isNonInteractive()));
+		        try {
+                    Thread.sleep(1000);
+                }
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                MenuUtils.executeMenuItems(options.getMenuItemsToExecute());
+            }
 		});
 	}
-
+	
 	private void loadMaps( final String[] args) {
 		final Controller controller = Controller.getCurrentController();
 		final boolean alwaysLoadLastMaps = ResourceController.getResourceController().getBooleanProperty(

@@ -228,4 +228,8 @@ class ControllerProxy implements Proxy.Controller {
     public void setZoom(float ratio) {
     	getViewController().setZoom(ratio);
     }
+
+    public boolean isInteractive() {
+        return !Boolean.parseBoolean(System.getProperty("nonInteractive"));
+    }
 }
