@@ -42,14 +42,6 @@ public class ReferenceUpdater extends AMindmapUpdater {
 	private boolean updateMap(MapModel map) {
 		referenceNodes.clear();
 		buildIndex(map.getRootNode());
-//		System.out.println("debug update references for map: " + map.getURL().getPath());
-//		System.out.println("map entries: " + referenceNodes.size());
-//
-//		int size = 0;
-//		for (Entry<?, ?> entry : referenceNodes.entrySet()) {
-//			size += ((LinkedList<NodeModel>) entry.getValue()).size();
-//		}
-//		System.out.println("total entries: " + size);
 
 		return updateReferenceNodes();
 	}
@@ -65,7 +57,6 @@ public class ReferenceUpdater extends AMindmapUpdater {
 			path = jabRefAttributes.parsePathName(entry, path);
 			this.pdfReferences.put(path, entry.getCiteKey());
 		}
-		//System.out.println("pdf size: " + pdfReferences.size());
 	}
 
 	private boolean updateReferenceNodes() {

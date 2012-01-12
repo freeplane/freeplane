@@ -18,11 +18,11 @@ import org.osgi.framework.ServiceReference;
 public class Activator extends WorkspaceDependentPlugin {
 	
 	public void startPlugin(BundleContext context, ModeController modeController) {
-		loadAndStoreVersion();
+		loadAndStoreVersion();	
 		new CoreConfiguration(modeController);		
 		startPluginServices(context, modeController);
 	}
-	
+		
 	@SuppressWarnings("rawtypes")
 	protected void startPluginServices(BundleContext context, ModeController modeController) {		
 		try {

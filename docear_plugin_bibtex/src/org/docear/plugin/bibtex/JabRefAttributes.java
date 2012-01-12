@@ -227,7 +227,10 @@ public class JabRefAttributes {
 			URI uri = CoreConfiguration.referencePathObserver.getUri();
 			URI absUri = WorkspaceUtils.absoluteURI(uri);
 			
+			final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+	        Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
 			URI pdfUri = absUri.resolve(UriBuilder.fromPath(path).build());
+			Thread.currentThread().setContextClassLoader(contextClassLoader);
 			File file = null;
 			try {
 				file = new File(pdfUri);
