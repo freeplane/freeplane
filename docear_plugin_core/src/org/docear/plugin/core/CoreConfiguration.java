@@ -1,6 +1,5 @@
 package org.docear.plugin.core;
 
-import java.io.File;
 import java.net.URI;
 import java.net.URL;
 import java.text.MessageFormat;
@@ -37,7 +36,6 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.url.UrlManager;
-import org.freeplane.main.application.ApplicationResourceController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
@@ -64,6 +62,8 @@ public class CoreConfiguration extends ALanguageController {
 	private static final String OPEN_FREEPLANE_SITE_ACTION = "OpenFreeplaneSiteAction";
 	private static final String WEB_DOCEAR_LOCATION = "webDocearLocation";
 	private static final String WEB_FREEPLANE_LOCATION = "webFreeplaneLocation";
+	private static final String DOCEAR_FIRST_RUN_PROPERTY = "docear.already_initialized";
+	
 
 //	public static final String DOCUMENT_REPOSITORY_PATH = DocearController.DOCUMENT_REPOSITORY_PATH_PROPERTY;
 	public static final String LIBRARY_PATH = "@@library_mindmaps@@"; 
@@ -74,7 +74,7 @@ public class CoreConfiguration extends ALanguageController {
 	public static final NodeAttributeObserver projectPathObserver = new NodeAttributeObserver();
 	public static final NodeAttributeObserver referencePathObserver = new NodeAttributeObserver();
 	public static final NodeAttributeObserver repositoryPathObserver = new NodeAttributeObserver();
-	private boolean firstRun;
+	private final boolean firstRun;
 	
 	public CoreConfiguration(ModeController modeController) {
 		try {
@@ -87,10 +87,14 @@ public class CoreConfiguration extends ALanguageController {
 		}
 				
 		LogUtils.info("org.docear.plugin.core.CoreConfiguration() initializing...");
-		final File userPreferencesFile = ApplicationResourceController.getUserPreferencesFile();
-		firstRun = !userPreferencesFile.exists();
+		firstRun = !ResourceController.getResourceController().getBooleanProperty(DOCEAR_FIRST_RUN_PROPERTY);
+		ResourceController.getResourceController().setProperty(DOCEAR_FIRST_RUN_PROPERTY, true);
 		init(modeController);
-	}	
+	}
+	
+	public boolean isDocearFirstStart() {
+		return firstRun;
+	}
 	
 	private void init(ModeController modeController) {
 		// set up context menu for workspace
@@ -236,13 +240,13 @@ public class CoreConfiguration extends ALanguageController {
 		if (defaults == null)
 			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
 		Controller.getCurrentController().getResourceController().addDefaults(defaults);
-		if (resController.getProperty("ApplicationName").equals("Docear") && firstRun) {
+		if (resController.getProperty("ApplicationName").equals("Docear") && isDocearFirstStart()) {
 			Controller.getCurrentController().getResourceController().setProperty("selection_method", "selection_method_by_click");
 			Controller.getCurrentController().getResourceController().setProperty("links", "relative_to_workspace");
 			Controller.getCurrentController().getResourceController().setProperty("save_folding", "always_save_folding");
 			Controller.getCurrentController().getResourceController().setProperty("leftToolbarVisible", "false");			
 			Controller.getCurrentController().getResourceController().setProperty("styleScrollPaneVisible", "true");
-			
+			Controller.getCurrentController().getResourceController().setProperty(DOCEAR_FIRST_RUN_PROPERTY, true);
 		}
 		Controller.getCurrentController().getResourceController().addPropertyChangeListener(new PropertyListener());
 		FreeplaneActionCascade.addAction(new DocearQuitAction());		

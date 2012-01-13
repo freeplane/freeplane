@@ -15,12 +15,12 @@ import org.freeplane.core.util.LogUtils;
  * 
  */
 public class DocearController implements IDocearEventListener {
+
 	
 	private final Vector<IDocearEventListener> docearListeners = new Vector<IDocearEventListener>();		
 	private final static DocearController docearController = new DocearController();
 	
 	private IDocearLibrary currentLibrary = null;	
-	
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -63,7 +63,6 @@ public class DocearController implements IDocearEventListener {
 		return currentLibrary;
 	}
 	
-	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
@@ -74,6 +73,7 @@ public class DocearController implements IDocearEventListener {
 			LogUtils.info("DOCEAR: new DocearLibrary set");
 		}	
 	}
+	
 
 	
 }
