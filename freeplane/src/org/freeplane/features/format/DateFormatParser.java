@@ -26,37 +26,46 @@ import java.util.Date;
 
 public class DateFormatParser extends Parser {
 	private final SimpleDateFormat parser;
-	private final boolean hasYear;
+	private final String missingFields;
 	private boolean forbidLeadingSpaces;
 
-	public DateFormatParser(final String format) {
-		super(Parser.STYLE_DATE, getTypeDependingOnFormat(format), format);
-		forbidLeadingSpaces = (format.charAt(0) != ' ');
-		parser = new SimpleDateFormat(format.replaceFirst("^\\s", ""));
-		parser.setLenient(false);
-		hasYear = format.contains("y");
-	}
+    public DateFormatParser(final String format) {
+        super(Parser.STYLE_DATE, getTypeDependingOnFormat(format), format);
+        forbidLeadingSpaces = (format.charAt(0) != ' ');
+        parser = new SimpleDateFormat(format.replaceFirst("^\\s", ""));
+        parser.setLenient(false);
+        missingFields = (format.contains("y") ? "" : "y") //
+                + (format.contains("M") ? "" : "M") //
+                + (format.contains("d") ? "" : "d");
+    }
 
 	private static String getTypeDependingOnFormat(final String format) {
 		// if it contains minute format -> datetime
 		return format.contains("m") ? IFormattedObject.TYPE_DATETIME : IFormattedObject.TYPE_DATE;
 	}
 
-	@Override
-	Object parse(String string) {
-		if (string == null || (forbidLeadingSpaces && string.charAt(0) == ' '))
-			return null;
-		final ParsePosition parsePosition = new ParsePosition(0);
-		Date date = parser.parse(string, parsePosition);
-		if (parsePosition.getIndex() != string.length())
-			return null;
-		if (!hasYear) {
-			final Calendar calendar = Calendar.getInstance();
-			final int year = calendar.get(Calendar.YEAR);
-			calendar.setTime(date);
-			calendar.set(Calendar.YEAR, year);
-			date = calendar.getTime();
-		}
-		return FormattedDate.createDefaultFormattedDate(date.getTime(), getType());
-	}
+    @Override
+    Object parse(String string) {
+        if (string == null || (forbidLeadingSpaces && string.charAt(0) == ' '))
+            return null;
+        final ParsePosition parsePosition = new ParsePosition(0);
+        Date date = parser.parse(string, parsePosition);
+        if (parsePosition.getIndex() != string.length())
+            return null;
+        if (missingFields.length() != 0) {
+            final Calendar calendar = Calendar.getInstance();
+            final int year = calendar.get(Calendar.YEAR);
+            final int month = calendar.get(Calendar.MONTH);
+            final int day = calendar.get(Calendar.DAY_OF_MONTH);
+            calendar.setTime(date);
+            if (missingFields.contains("y"))
+                calendar.set(Calendar.YEAR, year);
+            if (missingFields.contains("M"))
+                calendar.set(Calendar.MONTH, month);
+            if (missingFields.contains("d"))
+                calendar.set(Calendar.DAY_OF_MONTH, day);
+            date = calendar.getTime();
+        }
+        return FormattedDate.createDefaultFormattedDate(date.getTime(), getType());
+    }
 }

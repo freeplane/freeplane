@@ -24,6 +24,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.monitor.FileAlterationListener;
 import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.docear.plugin.core.CoreConfiguration;
+import org.docear.plugin.core.DocearController;
+import org.docear.plugin.core.event.DocearEvent;
+import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.workspace.actions.DocearProjectEnableMonitoringAction;
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
 import org.freeplane.core.util.LogUtils;
@@ -60,6 +63,10 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 	
+	public FolderTypeProjectsNode() {
+		this("projects");
+	}
+	
 	public FolderTypeProjectsNode(String type) {
 		super(type);
 		CoreConfiguration.projectPathObserver.addChangeListener(this);
@@ -85,6 +92,8 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 			createIfNeeded(getPath());
 		}		
 		CoreConfiguration.projectPathObserver.setUri(uri);
+		DocearEvent event = new DocearEvent(this, DocearEventType.LIBRARY_NEW_PROJECT_INDEXING_REQUEST, this);
+		DocearController.getController().dispatchDocearEvent(event);
 		locked = false;
 	}
 	

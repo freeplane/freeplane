@@ -20,6 +20,7 @@
 package org.freeplane.features.map;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -30,6 +31,7 @@ import java.util.Random;
 
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
@@ -50,29 +52,26 @@ public class MapModel {
 	final private IconRegistry iconRegistry;
 	final private List<IMapChangeListener> listeners;
 	final private Map<String, NodeModel> nodes;
-	private boolean readOnly = true;
+	private boolean readOnly = false;
 	private NodeModel root;
 	private URL url;
 
-	public MapModel( NodeModel root) {
+	public MapModel() {
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
-		this.root = root;
+		this.root = null;
 		listeners = new LinkedList<IMapChangeListener>();
 		nodes = new HashMap<String, NodeModel>();
 		final FilterController filterController = FilterController.getCurrentFilterController();
 		if (filterController != null) {
 			filter = filterController.createTransparentFilter();
 		}
-		if (root == null) {
-			root = new NodeModel(TextUtils.getText("new_mindmap"), this);
-			setRoot(root);
-		}
-		else {
-			root.setMap(this);
-		}
 		final ModeController modeController = Controller.getCurrentModeController();
 		iconRegistry = new IconRegistry(modeController.getMapController(), this);
 	}
+
+	public void createNewRoot() {
+	    root = new NodeModel(TextUtils.getText("new_mindmap"), this);
+    }
 
 	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
 		extensionContainer.addExtension(clazz, extension);
@@ -89,6 +88,10 @@ public class MapModel {
 	public IExtension putExtension(final IExtension extension) {
 		return extensionContainer.putExtension(extension);
 	}
+
+	public boolean containsExtension(Class<? extends IExtension> clazz) {
+	    return extensionContainer.containsExtension(clazz);
+    }
 
 	public void addMapChangeListener(final IMapChangeListener listener) {
 		listeners.add(listener);
@@ -119,7 +122,7 @@ public class MapModel {
 		return returnValue;
 	}
 
-	public IExtension getExtension(final Class<? extends IExtension> clazz) {
+	public <T extends IExtension> T getExtension(final Class<T> clazz) {
 		return extensionContainer.getExtension(clazz);
 	}
 
@@ -131,10 +134,12 @@ public class MapModel {
 	 * Change this to always return null if your model doesn't support files.
 	 */
 	public File getFile() {
-		if(url != null){			
-			File test = new File(url.getFile());
-		}
-		return url != null  && url.getProtocol().equals("file") ? new File(url.getFile()) : null;
+		try {
+	        return url != null  && url.getProtocol().equals("file") ? Compat.urlToFile(url) : null;
+        }
+        catch (URISyntaxException e) {
+        	return null;
+        }
 	}
 
 	public Filter getFilter() {
@@ -185,7 +190,7 @@ public class MapModel {
 	}
 
 	public boolean isSaved() {
-		return (changesPerformedSinceLastSave == 0);
+		return changesPerformedSinceLastSave == 0;
 	}
 
 	/**
@@ -250,6 +255,7 @@ public class MapModel {
 
 	public void setRoot(final NodeModel root) {
 		this.root = root;
+		root.setMap(this);
 	}
 
 	/**

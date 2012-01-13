@@ -44,7 +44,10 @@ import javax.swing.text.html.StyleSheet;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
+import org.freeplane.features.map.AMapChangeListenerAdapter;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -56,6 +59,7 @@ import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.mindmapmode.SetBooleanMapPropertyAction;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.url.UrlManager;
 
@@ -129,7 +133,11 @@ public class MNoteController extends NoteController {
 	public MNoteController(ModeController modeController) {
 		super();
 		noteManager = new NoteManager(this);
-		modeController.addAction(new SelectNoteAction(this));
+		createActions(modeController);
+	}
+
+	private void createActions(ModeController modeController) {
+	    modeController.addAction(new SelectNoteAction(this));
 		modeController.addAction(new ShowHideNoteAction(this));
 		modeController.addAction(new EditNoteInDialogAction());
 		modeController.addAction(new SetNoteWindowPosition("top"));
@@ -137,7 +145,8 @@ public class MNoteController extends NoteController {
 		modeController.addAction(new SetNoteWindowPosition("right"));
 		modeController.addAction(new SetNoteWindowPosition("bottom"));
 		modeController.addAction(new RemoveNoteAction(this));
-	}
+		modeController.addAction(new SetBooleanMapPropertyAction(SHOW_NOTE_ICONS));
+    }
 
 	SHTMLPanel getHtmlEditorPanel() {
 		if (htmlEditorPanel != null) {
@@ -240,7 +249,6 @@ public class MNoteController extends NoteController {
 						node.removeExtension(NoteModel.class);
 					}
 				}
-				setStateIcon(node, enabled);
 				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NOTE_TEXT, oldText, text);
 				if(noteManager != null)
 					noteManager.updateEditor();

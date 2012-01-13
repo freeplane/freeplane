@@ -65,9 +65,9 @@ public class BModeControllerFactory {
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
 		new MapController(modeController);
+		IconController.install(new IconController(modeController));
 		UrlManager.install(new UrlManager());
 		AttributeController.install(new AttributeController(modeController));
-		IconController.install(new IconController(modeController));
 		NodeStyleController.install(new NodeStyleController(modeController));
 		EdgeController.install(new EdgeController(modeController));
 		CloudController.install(new CloudController(modeController));
@@ -98,7 +98,7 @@ public class BModeControllerFactory {
 		    .getStatusBar());
 		new UnfoldAll();
 		new ViewerController();
-		EncryptionController.install(new EncryptionController());
+		EncryptionController.install(new EncryptionController(modeController));
 		return modeController;
 	}
 }

@@ -12,7 +12,10 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -59,6 +62,7 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 	
 	private final Vector<URI> mindmapIndex = new Vector<URI>();
 	private final Vector<IBibtexDatabase> referencesIndex = new Vector<IBibtexDatabase>();
+	private final Set<FolderTypeProjectsNode> projectIndex = new HashSet<FolderTypeProjectsNode>();
 
 	private static WorkspacePopupMenu popupMenu = null;
 	
@@ -134,6 +138,14 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 		referencesIndex.add(ref);
 		DocearEvent event = new DocearEvent(this, DocearEventType.LIBRARY_CHANGED, ref);
 		DocearController.getController().dispatchDocearEvent(event);
+	}
+	
+	protected void addProjectToIndex(FolderTypeProjectsNode project) {
+		projectIndex.clear();
+		if(project == null) {
+			return;
+		}
+		projectIndex.add(project);
 	}
 	
 	/**
@@ -229,7 +241,7 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 			if(event.getEventObject() instanceof URI) {
 				URI uri = (URI) event.getEventObject();
 				if(!mindmapIndex.contains(uri)) {
-					LogUtils.info("DOCEAR: adding new mindmap to library: "+ uri);
+					LogUtils.info("DOCEAR: adding mindmap to library: "+ uri);
 					addMindmapToIndex(uri);
 				}
 			}			
@@ -237,13 +249,21 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 		else if(event.getType() == DocearEventType.LIBRARY_NEW_REFERENCES_INDEXING_REQUEST) {
 			if(event.getEventObject() instanceof IBibtexDatabase) {
 				if(!referencesIndex.contains((IBibtexDatabase) event.getEventObject())) {
-					LogUtils.info("DOCEAR: adding new reference database to library: "+ event.getEventObject());
+					LogUtils.info("DOCEAR: adding reference database to library: "+ event.getEventObject());
 					addReferenceToIndex((IBibtexDatabase) event.getEventObject());
 				}
 			}			
 		}
 		else if(event.getType() == DocearEventType.LIBRARY_EMPTY_MINDMAP_INDEX_REQUEST) {
 			mindmapIndex.removeAllElements();			
+		} 
+		else if(event.getType() == DocearEventType.LIBRARY_NEW_PROJECT_INDEXING_REQUEST) {
+			if(event.getEventObject() instanceof FolderTypeProjectsNode) {
+				if(!projectIndex.contains((FolderTypeProjectsNode) event.getEventObject())) {
+					LogUtils.info("DOCEAR: adding project to library: "+ event.getEventObject());
+					addProjectToIndex((FolderTypeProjectsNode) event.getEventObject());
+				}
+			}			
 		}
 		
 	}
@@ -257,6 +277,19 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 	
 	public List<URI> getMindmaps() {
 		return mindmapIndex;
+	}
+	
+	public Set<FolderTypeProjectsNode> getProjects() {
+		return projectIndex;
+	}
+	
+	public List<URI> getProjectPaths() {
+		List<URI> uriList= new ArrayList<URI>();
+		Iterator<FolderTypeProjectsNode> iter= projectIndex.iterator();
+		while(iter.hasNext()) {
+			uriList.add(iter.next().getPath());
+		}
+		return uriList;
 	}
 	
 	public URI getLibraryPath() {		

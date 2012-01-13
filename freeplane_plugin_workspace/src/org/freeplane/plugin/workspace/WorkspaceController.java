@@ -25,13 +25,16 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.main.application.ApplicationResourceController;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.controller.AWorkspaceExpansionStateHandler;
+import org.freeplane.plugin.workspace.controller.DefaultNodeTypeIconManager;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceComponentHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceDropHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceExpansionStateHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceKeyHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceMouseHandler;
+import org.freeplane.plugin.workspace.controller.INodeTypeIconManager;
 import org.freeplane.plugin.workspace.controller.IWorkspaceListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferHandler;
@@ -70,6 +73,12 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 	String workspaceLocation;
 	private boolean isInitialized = false;
 	private DefaultWorkspaceExpansionStateHandler expansionStateHandler;
+	private INodeTypeIconManager nodeTypeIconManager;
+	protected static final boolean firstApplicationStart;
+	static {
+		final File userPreferencesFile = ApplicationResourceController.getUserPreferencesFile();
+		firstApplicationStart = !userPreferencesFile.exists();
+	}
 
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -80,9 +89,6 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 		registerToIMapLifeCycleListener();
 		getPreferences();
 		initTree();
-
-		// this.popups = new PopupMenus();
-
 		this.fsReader = new FilesystemManager(getFileTypeManager());
 	}
 	
@@ -93,13 +99,14 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(this);
 	}
 	
+	public static boolean isFirstApplicationStart() {
+		return firstApplicationStart;
+	}
+	
 	public void initialStart() {
 		if (getPreferences().getWorkspaceLocation() == null) {
 			WorkspaceUtils.showWorkspaceChooserDialog();
 		}
-		
-		ResourceController.getResourceController().setProperty(WorkspacePreferences.LINK_PROPERTY_KEY,
-				WorkspacePreferences.RELATIVE_TO_WORKSPACE);
 		
 		initializeConfiguration();
 		initializeView();
@@ -123,6 +130,12 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 		return monitor;
 	}
 
+	public INodeTypeIconManager getNodeTypeIconManager() {
+		if(nodeTypeIconManager == null) {
+			nodeTypeIconManager = new DefaultNodeTypeIconManager();
+		}
+		return nodeTypeIconManager;
+	}
 	public JTree getWorkspaceViewTree() {
 		return getWorkspaceView().getTreeView();
 	}
@@ -207,8 +220,11 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 	}
 
 	private void initializeConfiguration() {
+		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
+		
 		String workspaceLocation = getPreferences().getWorkspaceLocation();
 		if (workspaceLocation == null || workspaceLocation.trim().length() <= 0) {
+			resCtrl.setProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY, false);
 			showWorkspace(false);
 			return;
 		}
@@ -217,12 +233,15 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 		dispatchWorkspaceEvent(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_EVENT_TYPE_RELOAD, getConfiguration()));
 
 		if (getConfiguration().reload()) {
-			showWorkspace(true);
+			//showWorkspace(true);
+			showWorkspace(Controller.getCurrentController().getResourceController()
+					.getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY));
 			UrlManager.getController().setLastCurrentDir(new File(preferences.getWorkspaceLocation()));
 			dispatchWorkspaceEvent(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_EVENT_TYPE_CHANGED, getConfiguration()));
 		}
 		else {
-			showWorkspace(false);
+			showWorkspace(Controller.getCurrentController().getResourceController()
+					.getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY));
 			getPreferences().setNewWorkspaceLocation(null);
 		}
 	}
@@ -274,13 +293,18 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
  
 	private void setWorkspaceWidth(int width) {
 		JSplitPane splitPane = (JSplitPane) (getWSContentPane().getComponent(0));
-		getWorkspaceView().setVisible(width > 0);
-		getWorkspaceView().setSize(width, 0);
-		splitPane.setDividerLocation(width + 1);
-//		if(!Controller.getCurrentController().getResourceController().getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY)) {
-			splitPane.setDividerSize((width > 0 ? 7 : 0));
-			splitPane.setEnabled(width > 0);
-//		}
+		if(width != -1) {
+			getWorkspaceView().setVisible(true);
+			getWorkspaceView().setSize(width, 0);
+			splitPane.setDividerLocation(width);
+			splitPane.setDividerSize(7);
+			splitPane.setEnabled(true);
+		} 
+		else {
+			getWorkspaceView().setVisible(false);
+			splitPane.setEnabled(false);
+			splitPane.setDividerSize(0);
+		}
 	}
 
 	private void resetWorkspaceView() {

@@ -100,7 +100,9 @@
 <edge COLOR="#808080" WIDTH="thin"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.details"/>
-<stylenode LOCALIZED_TEXT="defaultstyle.note"/>
+<stylenode LOCALIZED_TEXT="defaultstyle.note">
+<edge COLOR="#cc0000"/>
+</stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.floating">
 <edge STYLE="hide_edge"/>
 <cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
@@ -237,7 +239,7 @@
 </html>
 </richcontent>
 <edge STYLE="bezier"/>
-<node TEXT="Goal" STYLE_REF="UserGuide" ID="ID_910734357" CREATED="1314824090302" MODIFIED="1315981629525" TEXT_SHORTENED="true" HGAP="30" VSHIFT="-10"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Goal" STYLE_REF="UserGuide" ID="ID_910734357" CREATED="1314824090302" MODIFIED="1322427196808" TEXT_SHORTENED="true" HGAP="30" VSHIFT="-10" MIN_WIDTH="80"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -278,7 +280,7 @@
 </html>
 </richcontent>
 </node>
-<node STYLE_REF="UserGuide" FOLDED="true" ID="ID_1108028010" CREATED="1309552935597" MODIFIED="1319034779813" HGAP="27" VSHIFT="-7" TEXT_SHORTENED="true" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane"><richcontent TYPE="NODE">
+<node STYLE_REF="UserGuide" FOLDED="true" ID="ID_1108028010" CREATED="1309552935597" MODIFIED="1322427732981" HGAP="27" VSHIFT="-7" TEXT_SHORTENED="true" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane" MIN_WIDTH="80"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -562,7 +564,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Basic terms" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1480936832" CREATED="1309419658445" MODIFIED="1314859219674" TEXT_SHORTENED="true" HGAP="30"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Basic terms" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1480936832" CREATED="1309419658445" MODIFIED="1322427235636" TEXT_SHORTENED="true" HGAP="30" MIN_WIDTH="80"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -1578,7 +1580,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Install" STYLE_REF="UserGuide" FOLDED="true" ID="ID_931855473" CREATED="1311401499171" MODIFIED="1314857307386" HGAP="31" VSHIFT="2">
+<node TEXT="Install" STYLE_REF="UserGuide" FOLDED="true" ID="ID_931855473" CREATED="1311401499171" MODIFIED="1322427246494" HGAP="31" VSHIFT="2" MIN_WIDTH="80">
 <node TEXT="Download" ID="_Freeplane_Link_904501221" CREATED="1270892460638" MODIFIED="1317904760841" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
@@ -1910,7 +1912,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Macintosh" STYLE_REF="UserGuide" ID="ID_480781217" CREATED="1270892460643" MODIFIED="1314857321113" TEXT_SHORTENED="true" HGAP="30" VSHIFT="9"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Macintosh" STYLE_REF="UserGuide" ID="ID_480781217" CREATED="1270892460643" MODIFIED="1322427271267" TEXT_SHORTENED="true" HGAP="30" VSHIFT="9" MIN_WIDTH="80"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -1996,7 +1998,7 @@
 </richcontent>
 </node>
 <node TEXT="This Documentation" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1263067716" CREATED="1311401568817" MODIFIED="1314857303041" HGAP="32" VSHIFT="4">
-<node FOLDED="true" ID="ID_518502200" CREATED="1309618730385" MODIFIED="1312922288130"><richcontent TYPE="NODE">
+<node ID="ID_518502200" CREATED="1309618730385" MODIFIED="1312922288130"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2009,8 +2011,8 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="Use Design principles" FOLDED="true" ID="ID_1034693607" CREATED="1309694957628" MODIFIED="1310196223167" TEXT_SHORTENED="true">
-<node TEXT="Easy use" FOLDED="true" ID="ID_971999971" CREATED="1309695171606" MODIFIED="1310196223167" TEXT_SHORTENED="true">
+<node TEXT="Use Design principles" ID="ID_1034693607" CREATED="1309694957628" MODIFIED="1310196223167" TEXT_SHORTENED="true">
+<node TEXT="Easy use" ID="ID_971999971" CREATED="1309695171606" MODIFIED="1310196223167" TEXT_SHORTENED="true">
 <node TEXT="Target group: educated laymen" FOLDED="true" ID="ID_650466721" CREATED="1309695100454" MODIFIED="1310196223151" TEXT_SHORTENED="true">
 <node TEXT="The visually limited" ID="ID_1067605334" CREATED="1309695629927" MODIFIED="1310196223151" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
@@ -2056,8 +2058,37 @@
 <node TEXT="Examples" ID="ID_1077186776" CREATED="1309696266689" MODIFIED="1310196223105" TEXT_SHORTENED="true"/>
 </node>
 <node TEXT="Standard use of node elements" FOLDED="true" ID="ID_1585389386" CREATED="1309696673647" MODIFIED="1310196223089" TEXT_SHORTENED="true">
-<node TEXT="core: title/name" ID="ID_1920924045" CREATED="1309696563043" MODIFIED="1315980974114" TEXT_SHORTENED="true"/>
+<node TEXT="core: title/name" ID="ID_1920924045" CREATED="1309696563043" MODIFIED="1322393587164" TEXT_SHORTENED="true">
+<hook NAME="FirstGroupNode"/>
+</node>
 <node TEXT="details: what/how to" ID="ID_715096689" CREATED="1309696579165" MODIFIED="1310196223089" TEXT_SHORTENED="true"/>
+<node TEXT="Rationale" ID="ID_798222829" CREATED="1322393587117" MODIFIED="1322394107221">
+<hook NAME="SummaryNode"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p class="MsoNormal">
+      <span lang="EN-US">Freeplane offers two mechanisms to implement this behavior. </span>
+    </p>
+    <ol>
+      <li>
+        <span lang="EN-US">The first mechanism consists of parent (=title) and child (=content) nodes, with folding of children to create overview and fast navigation. What is missing in the current FP, is that it is not possible to define which node contains a title and which node contains the content. As a result it is not possible to force that the content-node is folded by default. This is a big fundamental disadvantage. Besides, as your example documentation shows, when unfolding a content (child) node the text frequently moves out of the visible area. <o p="#DEFAULT"></o>Finally, if you use filtering, than ending/undoing filtering will create a state with nodes staying unfolded. That is, it is not easy to have all content folded. With complex maps this may result in loosing overview (a mess).</span><br/><br/>
+      </li>
+      <li>
+        <span lang="EN-US">The second mechanism is core (=title) and details (=content), with hiding of details to create overview and fast navigation. This mechanism more purely fits the purpose of the logical design. Details can be hidden by design. When details are hidden, focus is on oversight and navigation. When unhiding details, these appear under the node and are less likely to move out of the visible area than a child node would. When unhiding by hovering (tool tip) details are definitely staying in the visible area. <o p="#DEFAULT"/></span>
+      </li>
+    </ol>
+    <p>
+      <span lang="EN-US">In this documentation is chosen for the second soluttion becaus it seems most logical an practical. </span>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
 </node>
 <node TEXT="Standard Form" FOLDED="true" ID="ID_762818872" CREATED="1309696773167" MODIFIED="1310196223073" TEXT_SHORTENED="true">
 <node TEXT="Styles" ID="ID_1772043588" CREATED="1309695477062" MODIFIED="1310196223073" TEXT_SHORTENED="true"/>
@@ -2122,7 +2153,7 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="Define Category" FOLDED="true" ID="ID_507010795" CREATED="1310838169626" MODIFIED="1310838588667">
+<node TEXT="Define Category" ID="ID_507010795" CREATED="1310838169626" MODIFIED="1310838588667">
 <node TEXT="Content" FOLDED="true" ID="ID_862676309" CREATED="1310838629343" MODIFIED="1310838635553">
 <node TEXT="Definition" ID="ID_611433412" CREATED="1310838201903" MODIFIED="1310838488593" TEXT_SHORTENED="true"/>
 <node TEXT="Method" ID="ID_247256524" CREATED="1310838209149" MODIFIED="1310838488624" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
@@ -2515,7 +2546,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Version, revisions and credits" FOLDED="true" ID="_Freeplane_Link_784043927" CREATED="1270892460645" MODIFIED="1312145108660" TEXT_SHORTENED="true">
+<node TEXT="Version, revisions and credits" ID="_Freeplane_Link_784043927" CREATED="1270892460645" MODIFIED="1322426670806" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
@@ -2545,7 +2576,7 @@
     </p>
     <ul>
       <li>
-        The nodes revised are marked with a blue icon with &quot;i&quot;.
+        The nodes revised are marked with a blue icon with &quot;R&quot;.
       </li>
       <li>
         Find or filter for these nodes with <i>(Style,IsEqual, Revision)</i>
@@ -2554,7 +2585,7 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="Version Freeplane 1.2.8" ID="ID_605038742" CREATED="1289133018961" MODIFIED="1312922583938"/>
+<node TEXT="1.2.11" ID="ID_605038742" CREATED="1289133018961" MODIFIED="1322427357597"/>
 <node TEXT="Documentation" FOLDED="true" ID="ID_136822724" CREATED="1286311222217" MODIFIED="1310284652022">
 <node TEXT="Jokro" FOLDED="true" ID="ID_1128010246" CREATED="1286311242349" MODIFIED="1293375084474" LINK="mailto:jokro@users.sourceforge.net?subject%20=%20handleiding">
 <node TEXT="Basic rewrite of Freeplane 1.3 to Freeplane 1.2" ID="ID_52670674" CREATED="1289731003743" MODIFIED="1310284343860"/>
@@ -2584,7 +2615,7 @@
 </node>
 </node>
 </node>
-<node TEXT="FAQ" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1040911735" CREATED="1312613811349" MODIFIED="1314857314481" TEXT_SHORTENED="true" HGAP="34" VSHIFT="7">
+<node TEXT="FAQ" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1040911735" CREATED="1312613811349" MODIFIED="1322427454333" TEXT_SHORTENED="true" HGAP="34" VSHIFT="7" MIN_WIDTH="80">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
@@ -2624,7 +2655,7 @@
 </html>
 </richcontent>
 <edge STYLE="horizontal"/>
-<node TEXT="All nodes a bubble, a particular edge etc." ID="ID_391816540" CREATED="1321645207585" MODIFIED="1321645761737" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="All  new nodes a bubble, a particular font, edge etc." ID="ID_391816540" CREATED="1321645207585" MODIFIED="1322063397368" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -2632,10 +2663,36 @@
   </head>
   <body>
     <p>
-      A new node gets style Default. This style can be edited, <a href="#ID_1277682010">see</a>
+      A new node gets style <i>Default, </i>new Details<i>&#160;</i>get style<i>&#160;Details</i>&#160;and a new note gets style <i>Note</i>. Style Default can be edited to have a larger font, different edge, bubble, different width, etc, <a href="#ID_1277682010">see.</a>&#160;Style Note and style Details can be edited to have a different font, font size color etc.; but not edge, bubble etc. that are connected to the node core.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        A new font size will overrule the font number shown initially in the dialog - until you press the font number.
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Paste without format" ID="ID_547441247" CREATED="1322991055865" MODIFIED="1322991099064"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      See Edit &gt; Paste as
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
 <node TEXT="Limitations and known bugs" FOLDED="true" ID="ID_1348021717" CREATED="1314027459750" MODIFIED="1314027482026">
@@ -2751,7 +2808,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Change default font of Edit dialog (Simply HTML)" ID="ID_256904484" CREATED="1321996257631" MODIFIED="1321996457708"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Change default style of new node ( font, bubble, etc)" ID="ID_256904484" CREATED="1321996257631" MODIFIED="1322062107698"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -2759,7 +2816,7 @@
   </head>
   <body>
     <p>
-      Change the font size of system style Default. This will overrule the font number shown in the dialog - until you press the font number.
+      Change the font size of system style <i>Default</i>&#160;for node core or style &quot;<i>Note</i>&quot; for notes. This will overrule the font number shown in the dialog - until you press the font number.
     </p>
     <p>
       
@@ -2767,12 +2824,13 @@
     <p>
       <b>See</b>
     </p>
-    <p>
-      Format &gt; Manage styles &gt; Edit styles
-    </p>
+    <ul>
+      <li>
+        <i>Format &gt; Manage styles &gt; Edit styles</i>&#160;and edit note <i>Default</i>&#160; or node <i>Note</i>.
+      </li>
+    </ul>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -2819,7 +2877,7 @@
 </html>
 </richcontent>
 <edge STYLE="bezier"/>
-<node TEXT="File" STYLE_REF="MainMenu" FOLDED="true" ID="ID_1242926404" CREATED="1310134532663" MODIFIED="1311402702137" TEXT_SHORTENED="true">
+<node TEXT="File" STYLE_REF="MainMenu" FOLDED="true" ID="ID_1242926404" CREATED="1310134532663" MODIFIED="1322427085034" TEXT_SHORTENED="true" MIN_WIDTH="60">
 <attribute_layout NAME_WIDTH="37" VALUE_WIDTH="77"/>
 <attribute NAME="Chapter" VALUE="1,2,6,8"/>
 <hook NAME="NodeConditionalStyles">
@@ -3761,7 +3819,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Edit" FOLDED="true" ID="ID_1198850460" CREATED="1310134532663" MODIFIED="1311404647788" TEXT_SHORTENED="true">
+<node TEXT="Edit" FOLDED="true" ID="ID_1198850460" CREATED="1310134532663" MODIFIED="1322427074784" TEXT_SHORTENED="true" MIN_WIDTH="60">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
 </hook>
@@ -4490,7 +4548,7 @@
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
-<node TEXT="" STYLE_REF="Aggregatie als Toelichting" FOLDED="true" ID="ID_557988874" CREATED="1305558188109" MODIFIED="1312919875648" TEXT_SHORTENED="true">
+<node TEXT="" STYLE_REF="Aggregatie als Toelichting" ID="ID_557988874" CREATED="1305558188109" MODIFIED="1312919875648" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
@@ -7156,7 +7214,7 @@
 <attribute NAME="Chapter" VALUE="9"/>
 </node>
 </node>
-<node TEXT="View" STYLE_REF="MainMenu" FOLDED="true" ID="ID_389115947" CREATED="1266240584812" MODIFIED="1311402648660" TEXT_SHORTENED="true">
+<node TEXT="View" STYLE_REF="MainMenu" FOLDED="true" ID="ID_389115947" CREATED="1266240584812" MODIFIED="1322427064582" TEXT_SHORTENED="true" MIN_WIDTH="60">
 <attribute_layout VALUE_WIDTH="216"/>
 <attribute NAME="Chapter" VALUE="1,2,3,4,5"/>
 <hook NAME="NodeConditionalStyles">
@@ -10138,7 +10196,7 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="Format" FOLDED="true" ID="ID_258919699" CREATED="1266240683718" MODIFIED="1311405450276" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Format" FOLDED="true" ID="ID_258919699" CREATED="1266240683718" MODIFIED="1322427054161" TEXT_SHORTENED="true" MIN_WIDTH="60"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -10221,7 +10279,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
-<node TEXT="Apply style" FOLDED="true" ID="ID_512501370" CREATED="1291199304490" MODIFIED="1315735285080" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Apply style" ID="ID_512501370" CREATED="1291199304490" MODIFIED="1315735285080" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -10267,23 +10325,115 @@
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
 <hook NAME="FirstGroupNode"/>
-<node TEXT="Default" ID="ID_1111398038" CREATED="1310066467081" MODIFIED="1310848304117" TEXT_SHORTENED="true">
+<node TEXT="Default" ID="ID_1111398038" CREATED="1310066467081" MODIFIED="1322064137683" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      This style is applied to each new node core. The style includes aspects like buble, edge style etc.
+    </p>
+    <p>
+      So if you want each new node to have a bubble, set it in style Default.
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="FirstGroupNode"/>
 </node>
-<node TEXT="Details" ID="ID_1577454061" CREATED="1310066475584" MODIFIED="1310848304133" TEXT_SHORTENED="true">
+<node TEXT="Details" ID="ID_1577454061" CREATED="1310066475584" MODIFIED="1322063880626" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      A speciasl style which is automatically applied to each new Details of a node. It will set the font type, size color, but not e.g. bubble and edge. So if you want each Details to have a specific color, set it here.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        If you apply this node as a regular style, you can also set edge, bubble etc. But this is not the basic purpose of this style.
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
 </node>
-<node TEXT="Note" ID="ID_985652023" CREATED="1310066511975" MODIFIED="1310848304133" TEXT_SHORTENED="true">
+<node TEXT="Note" ID="ID_985652023" CREATED="1310066511975" MODIFIED="1322063830690" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      A speciasl style which is automatically applied to each new note of a node. It will set the font type, size color, but not e.g. bubble and edge. So if you want each note to have a specific color, set it here.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        If you apply this node as a regular style, you can also set edge, bubble etc. But this is not the basic purpose of this style.
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
 </node>
-<node TEXT="Floating node" STYLE_REF="OptionalValue" ID="ID_114978489" CREATED="1319831491288" MODIFIED="1319831554780"/>
+<node TEXT="Floating node" STYLE_REF="OptionalValue" ID="ID_114978489" CREATED="1319831491288" MODIFIED="1322064098761" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      A special style which is automatically applied if you double click a free space of the map. The style is then automatically combined with the Edit &gt; Free posinoned node status.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        If you apply this node as a regular style, the Free posioned node status will not be set.
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+</node>
 <node TEXT="Hierarchical Level styles" STYLE_REF="Method" ID="ID_1923695111" CREATED="1311948335133" MODIFIED="1312920119258"/>
+<node TEXT="For default size, bubble, etc." ID="ID_1228191937" CREATED="1322064137683" MODIFIED="1322064342192">
+<hook NAME="SummaryNode"/>
+</node>
 <node TEXT="User defined styles" ID="ID_948529232" CREATED="1291550475365" MODIFIED="1311405450074" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
@@ -12110,7 +12260,7 @@ elements from the styles activated by conditions are copied.</pre>
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Set node width limits" ID="ID_601879583" CREATED="1266251602796" MODIFIED="1321890707664" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Set node width limits" ID="ID_601879583" CREATED="1266251602796" MODIFIED="1322427684948" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -12134,6 +12284,14 @@ elements from the styles activated by conditions are copied.</pre>
         View &gt; Properties panel &gt; Max node width
       </li>
     </ul>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        All child nodes of node Reference have minimum width 80. In this way all (direct) children of Reference nicely line up.
+      </li>
+    </ul>
   </body>
 </html>
 </richcontent>
@@ -12142,7 +12300,7 @@ elements from the styles activated by conditions are copied.</pre>
 </hook>
 </node>
 </node>
-<node TEXT="Navigate" STYLE_REF="MainMenu" FOLDED="true" ID="ID_1224083972" CREATED="1310134532663" MODIFIED="1313821394890" TEXT_SHORTENED="true">
+<node TEXT="Navigate" STYLE_REF="MainMenu" FOLDED="true" ID="ID_1224083972" CREATED="1310134532663" MODIFIED="1322427031494" TEXT_SHORTENED="true" MIN_WIDTH="60">
 <attribute NAME="Chapter" VALUE="1,2,6"/>
 <richcontent TYPE="DETAILS">
 
@@ -12948,7 +13106,7 @@ elements from the styles activated by conditions are copied.</pre>
 </richcontent>
 </node>
 </node>
-<node TEXT="Filter" STYLE_REF="MainMenu" FOLDED="true" ID="ID_1254354349" CREATED="1266240693156" MODIFIED="1313955586844" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Filter" STYLE_REF="MainMenu" FOLDED="true" ID="ID_1254354349" CREATED="1266240693156" MODIFIED="1322427016627" TEXT_SHORTENED="true" MIN_WIDTH="60"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -13731,7 +13889,7 @@ elements from the styles activated by conditions are copied.</pre>
 <attribute NAME="Chapter" VALUE="9"/>
 </node>
 </node>
-<node TEXT="Tools" STYLE_REF="MainMenu" FOLDED="true" ID="ID_1833899525" CREATED="1266240695203" MODIFIED="1312966035614" TEXT_SHORTENED="true">
+<node TEXT="Tools" STYLE_REF="MainMenu" FOLDED="true" ID="ID_1833899525" CREATED="1266240695203" MODIFIED="1322427093692" TEXT_SHORTENED="true" MIN_WIDTH="60">
 <attribute_layout NAME_WIDTH="37" VALUE_WIDTH="77"/>
 <attribute NAME="Chapter" VALUE="3,6,7,8"/>
 <hook NAME="NodeConditionalStyles">
@@ -16178,7 +16336,7 @@ elements from the styles activated by conditions are copied.</pre>
 </node>
 </node>
 </node>
-<node TEXT="Maps" FOLDED="true" ID="ID_1279811672" CREATED="1310134532679" MODIFIED="1311405837812" TEXT_SHORTENED="true">
+<node TEXT="Maps" FOLDED="true" ID="ID_1279811672" CREATED="1310134532679" MODIFIED="1322427102599" TEXT_SHORTENED="true" MIN_WIDTH="60">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
 </hook>
@@ -16328,7 +16486,7 @@ elements from the styles activated by conditions are copied.</pre>
 </node>
 </node>
 </node>
-<node TEXT="Help" FOLDED="true" ID="ID_278329781" CREATED="1310134532679" MODIFIED="1312571971561" TEXT_SHORTENED="true">
+<node TEXT="Help" FOLDED="true" ID="ID_278329781" CREATED="1310134532679" MODIFIED="1322427114018" TEXT_SHORTENED="true" MIN_WIDTH="60">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
 </hook>

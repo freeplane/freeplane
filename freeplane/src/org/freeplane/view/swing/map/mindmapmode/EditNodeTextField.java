@@ -80,6 +80,7 @@ import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -219,6 +220,8 @@ public class EditNodeTextField extends EditNodeBase {
 		textfield.revalidate();
 		final NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, parent);
 		final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, nodeView);
+		if(mapView == null)
+			return;
 		if(layoutMapOnTextChange)
 			mapView.scrollNodeToVisible(nodeView);
 		else
@@ -293,7 +296,7 @@ public class EditNodeTextField extends EditNodeBase {
         }
 
 		public void keyPressed(final KeyEvent e) {
-			if (e.isControlDown() || e.isMetaDown() || eventSource == CANCEL) {
+			if (e.isControlDown() || e.isMetaDown() || eventSource == CANCEL||textfield==null) {
 				return;
 			}
 			switch (e.getKeyCode()) {
@@ -303,6 +306,17 @@ public class EditNodeTextField extends EditNodeBase {
 					getEditControl().cancel();
 					nodeView.requestFocusInWindow();
 					e.consume();
+					break;
+				case KeyEvent.VK_S:
+					if(e.isAltDown() && getEditControl().canSplit()){
+						eventSource = CANCEL;
+						final String output = getNewText();
+						final int caretPosition = textfield.getCaretPosition();
+						hideMe();
+						getEditControl().split(output, caretPosition);
+						nodeView.requestFocusInWindow();
+						e.consume();
+					}
 					break;
 				case KeyEvent.VK_ENTER: {
 					final boolean enterConfirms = ResourceController.getResourceController().getBooleanProperty("el__enter_confirms_by_default");
@@ -314,13 +328,13 @@ public class EditNodeTextField extends EditNodeBase {
 						SwingUtilities.processKeyBindings(keyEvent);
 						break;
 					}
+					final String output = getNewText();
+					e.consume();
+					eventSource = CANCEL;
+					hideMe();
+					submitText(output);
+					nodeView.requestFocusInWindow();
 				}
-				final String output = getNewText();
-				e.consume();
-				eventSource = CANCEL;
-				hideMe();
-				submitText(output);
-				nodeView.requestFocusInWindow();
 				break;
 				case KeyEvent.VK_TAB:
 					textfield.replaceSelection("    ");
@@ -621,8 +635,8 @@ public class EditNodeTextField extends EditNodeBase {
 		}
 		textfield.setSize(textFieldSize.width, textFieldSize.height);
 		final Rectangle textR = ((ZoomableLabelUI)parent.getUI()).getTextR(parent);
-		horizontalSpace = Math.max(nodeWidth - textR.width, textR.x);
-		verticalSpace = Math.max(nodeHeight - textR.height, textR.y);
+		horizontalSpace = Math.max(nodeWidth - textFieldSize.width, textR.x);
+		verticalSpace = Math.max(nodeHeight - textFieldSize.height, textR.y);
 		final Dimension newParentSize = new Dimension(horizontalSpace + textFieldSize.width, verticalSpace + textFieldSize.height);
 		parent.setPreferredSize(newParentSize);
 

@@ -66,10 +66,11 @@ public class Tools {
 				final UrlManager urlManager = (UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class);
 				//MapModel map = Controller.getCurrentController().getMap();
 				if(map == null || urlManager == null) return null;
-				if(uri.getScheme() == null ||uri.getScheme().equals(""))
-				uri = urlManager.getAbsoluteUri(map, uri);				
+				if(uri.getScheme() == null ||uri.getScheme().equals("")) {
+					uri = urlManager.getAbsoluteUri(map, uri);
+				}
 			}
-			if(uri.getScheme().equals("file")) return uri;
+			if("file".equals(uri.getScheme())) return uri;
 			return uri.toURL().openConnection().getURL().toURI();
 		} 
 		catch(IllegalArgumentException e){

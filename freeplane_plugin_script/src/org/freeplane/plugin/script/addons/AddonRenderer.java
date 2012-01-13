@@ -20,6 +20,7 @@
 package org.freeplane.plugin.script.addons;
 
 import java.awt.Component;
+import java.text.BreakIterator;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -42,7 +43,7 @@ public class AddonRenderer extends DefaultTableCellRenderer {
 			final String description = addOn.getDescription();
 			final String shortDescription = HtmlUtils.toXMLEscapedText(shorten(HtmlUtils.htmlToPlain(description), 120));
 			String text = "<html><body><b><font size='+1'>" + addOn.getTranslatedName() + " "
-			        + addOn.getVersion().replaceAll("^v", "") + "</font></b><br>"
+			        + addOn.getVersion().replaceAll("^v", "") + createAuthorText(addOn.getAuthor())  + "</font></b><br>"
 			        + shortDescription + "</body></html>";
 			value = text;
 			setToolTipText(description);
@@ -51,10 +52,21 @@ public class AddonRenderer extends DefaultTableCellRenderer {
 		return tableCellRendererComponent;
     }
 	
-	private String shorten(String string, int maxLength) {
-		if (string.length() <= 3 || string.length() <= maxLength)
-			return string;
-		return string.substring(0, maxLength - 3) + "...";
-	}
+	private String createAuthorText(String author) {
+		if (author == null || author.length() == 0)
+			return "";
+	    return " " + ManageAddOnsDialog.getText("authored.by", author);
+    }
+
+    private String shorten(String string, int maxLength) {
+        if (string.length() <= 3 || string.length() <= maxLength)
+            return string;
+        final BreakIterator bi = BreakIterator.getSentenceInstance();
+        bi.setText(string);
+        string = string.substring(0, bi.next());
+        if (string.length() <= 3 || string.length() <= maxLength)
+            return string + "...";
+        return string.substring(0, maxLength - 3) + "...";
+    }
 
 }

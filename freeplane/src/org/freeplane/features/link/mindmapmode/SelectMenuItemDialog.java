@@ -57,7 +57,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
  *
  * @author vboerchers
  */
-class SelectMenuItemDialog extends JDialog {
+public class SelectMenuItemDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 	// append "/extras/first/scripting/scripts" for scripts
 	private static final String SELECTION_ROOT_KEY = FreeplaneMenuBar.MENU_BAR_PREFIX;

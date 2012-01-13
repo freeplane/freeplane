@@ -114,9 +114,6 @@ class NodeViewFactory {
 						}
 					}
 					y += preferredCompSize.height;
-					if (component instanceof ForkMainView){
-						y += ((ForkMainView)component).getEdgeWidth();
-					}
 				}
 				else{
 					component.setBounds(0, y, 0, 0);
@@ -147,9 +144,6 @@ class NodeViewFactory {
 					
 					prefSize.height += preferredCompSize.height;
 					prefSize.width = Math.max(prefSize.width, preferredCompSize.width);
-					if (component instanceof ForkMainView){
-						prefSize.height += ((ForkMainView)component).getEdgeWidth();
-					}
 				}
 			}
 			return prefSize;

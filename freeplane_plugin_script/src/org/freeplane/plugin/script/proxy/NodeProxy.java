@@ -241,14 +241,13 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	// NodeRO: R
-	@Deprecated
 	public String getNoteText() {
-		return getNote().getString();
+		return NoteModel.getNoteText(getDelegate());
 	}
 
 	// NodeRO: R
 	public Convertible getNote() {
-		final String noteText = NoteModel.getNoteText(getDelegate());
+		final String noteText = getNoteText();
 		return (noteText == null) ? null : new ConvertibleNoteText(getDelegate(), getScriptContext());
 	}
 
@@ -441,7 +440,6 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	// Node: R/W
-	@Deprecated
 	public void setNoteText(final String text) {
 		final MNoteController noteController = (MNoteController) NoteController.getController();
 		noteController.setNoteText(getDelegate(), text);

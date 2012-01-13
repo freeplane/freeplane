@@ -19,6 +19,9 @@
  */
 package org.freeplane.main.mindmapmode;
 
+import java.awt.Container;
+import java.awt.Dimension;
+
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
@@ -38,11 +41,23 @@ class MToolbarContributor implements IMenuContributor {
 
 	public void updateMenus(final ModeController modeController, final MenuBuilder builder) {
 		final AFreeplaneAction action = modeController.getAction("IncreaseNodeFontAction");
-		if(builder.contains("main_toolbar_font_name"))
-			builder.addComponent("main_toolbar_font_name", uiFactory.createFontBox(), action, MenuBuilder.AS_CHILD);
-		if(builder.contains("main_toolbar_font_size"))
-			builder.addComponent("main_toolbar_font_size", uiFactory.createSizeBox(), action, MenuBuilder.AS_CHILD);
-		if(builder.contains("main_toolbar_style"))
-			builder.addComponent("main_toolbar_style", uiFactory.createStyleBox(), action, MenuBuilder.AS_CHILD);
+		if(builder.contains("main_toolbar_font_name")){
+			final Container fontBox = uiFactory.createFontBox();
+			final Dimension preferredSize = fontBox.getPreferredSize();
+			preferredSize.width = 90;
+			fontBox.setPreferredSize(preferredSize);
+			builder.addComponent("main_toolbar_font_name", fontBox, action, MenuBuilder.AS_CHILD);
+		}
+		if(builder.contains("main_toolbar_font_size")){
+			final Container sizeBox = uiFactory.createSizeBox();
+			builder.addComponent("main_toolbar_font_size", sizeBox, action, MenuBuilder.AS_CHILD);
+		}
+		if(builder.contains("main_toolbar_style")){
+			final Container styleBox = uiFactory.createStyleBox();
+			final Dimension preferredSize = styleBox.getPreferredSize();
+			preferredSize.width = 90;
+			styleBox.setPreferredSize(preferredSize);
+			builder.addComponent("main_toolbar_style", styleBox, action, MenuBuilder.AS_CHILD);
+		}
 	}
 }

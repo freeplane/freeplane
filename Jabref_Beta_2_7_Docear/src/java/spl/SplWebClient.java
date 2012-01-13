@@ -35,13 +35,23 @@ import com.sun.jersey.multipart.FormDataMultiPart;
  */
 public class SplWebClient {
 
-    private static Client CLIENT = Client.create();
+    private static Client CLIENT;
+    private static WebResource WEBRESOURCE; 
+    private static WebResource INTERNETRESOURCE;
     static{
+    	final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+    	Thread.currentThread().setContextClassLoader(SplWebClient.class.getClassLoader());
+    	CLIENT = Client.create();
         CLIENT.setConnectTimeout(1000);
         CLIENT.setReadTimeout(70000);
+        
+        WEBRESOURCE = CLIENT.resource( "http://api.mr-dlib.org/" );
+        INTERNETRESOURCE = CLIENT.resource( "http://www.google.com" );
+        
+        Thread.currentThread().setContextClassLoader(contextClassLoader);
     }
-    private static WebResource WEBRESOURCE = CLIENT.resource( "http://141.44.30.50:8080/" );
-    private static WebResource INTERNETRESOURCE = CLIENT.resource( "http://www.google.com" );
+    //FIXME: DOCEAR: new address
+   
     //private static WebResource WEBRESOURCE = CLIENT.resource( "http://localhost:8080/rest/" );
 
     public static Document metadata;
@@ -119,7 +129,7 @@ public class SplWebClient {
         }catch(Exception e){
             System.out.println(Tools.getStackTraceAsString(e));
             //Todo logging
-        }
+        }        
         return WebServiceStatus.NO_METADATA;
     }
 

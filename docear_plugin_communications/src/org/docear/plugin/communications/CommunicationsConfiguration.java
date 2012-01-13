@@ -62,8 +62,11 @@ public class CommunicationsConfiguration extends ALanguageController implements 
 		addPropertiesToOptionPanel();		
 		
 		Controller.getCurrentController().getOptionPanelController().addButtonListener(this);
+        final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+        Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
 		this.account = new DocearAccount();
 		AccountManager.registerAccount(account);
+        Thread.currentThread().setContextClassLoader(contextClassLoader);
 
 //		final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 //		Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
@@ -139,8 +142,12 @@ public class CommunicationsConfiguration extends ALanguageController implements 
 		formParams.add(USERNAME, this.account.getUsername());
 		formParams.add(PASSWORD, this.account.getPassword());		
 		try {
+            final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+            Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
+		    
 			ClientResponse response = this.getAccount().getWebresource()
 					.path("user").put(ClientResponse.class, formParams);
+            Thread.currentThread().setContextClassLoader(contextClassLoader);
 			switch (response.getClientResponseStatus()) {
 
 			case BAD_REQUEST:

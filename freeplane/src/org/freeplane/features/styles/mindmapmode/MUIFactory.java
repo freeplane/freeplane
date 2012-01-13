@@ -25,6 +25,7 @@ import java.util.Collection;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
@@ -180,6 +181,7 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 
 	public Container createStyleBox() {
 		final JComboBox stylesBox = new JComboBox(styles);
+		stylesBox.setRenderer(new ComboBoxRendererWithTooltip(stylesBox));
 		return stylesBox;
 	}
 
@@ -194,6 +196,7 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 	public Container createFontBox() {
 		final JComboBox fontsBox = new JComboBox(fonts);
 		fontsBox.setMaximumRowCount(9);
+		fontsBox.setRenderer(new ComboBoxRendererWithTooltip(fontsBox));
 		return fontsBox;
 	}
 

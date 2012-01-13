@@ -177,6 +177,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	private ASelectableCondition selectedViewCondition;
 	private final ButtonModel showAncestors;
 	private final ButtonModel showDescendants;
+	private final ButtonModel highlightNodes;
+	private ASelectableCondition highlightCondition;
 	private JComboBox activeFilterConditionComboBox;
 	private FilterConditionEditor quickEditor;
 
@@ -190,6 +192,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		showDescendants = new JToggleButton.ToggleButtonModel();
 		showDescendants.setSelected(false);
 		showDescendants.addChangeListener(filterChangeListener);
+		highlightNodes = new JToggleButton.ToggleButtonModel();
+		highlightNodes.setSelected(false);
 		applyToVisibleNodeOnly = new JToggleButton.ToggleButtonModel();
 		applyToVisibleNodeOnly.setSelected(false);
 		controller.getMapViewManager().addMapSelectionListener(this);
@@ -209,6 +213,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		controller.addAction(new QuickFindAction(this, quickEditor, Direction.BACK));
 		controller.addAction(new QuickFindAction(this, quickEditor, Direction.FORWARD));
 		controller.addAction(new QuickFindAllAction(this, quickEditor));
+		controller.addAction(new QuickHighlightAction(this, quickEditor));
 
 		final FindAction find = new FindAction();
 		controller.addAction(find);
@@ -326,6 +331,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		final JButton applyFindNextBtn = new JButton(controller.getAction("QuickFindAction.FORWARD"));
 		final JButton applyQuickFilterBtn = new JButton(controller.getAction("QuickFilterAction"));
 		final JButton applyQuickSelectBtn = new JButton(controller.getAction("QuickFindAllAction"));
+		final JToggleButton applyQuickHighlightBtn = new JAutoToggleButton(controller.getAction("QuickHighlightAction"));		
 		
 		filterToolbar.addSeparator();
 		filterToolbar.add(undoBtn);
@@ -344,6 +350,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterToolbar.add(applyFindNextBtn);
 		filterToolbar.add(applyQuickSelectBtn);
 		filterToolbar.add(applyQuickFilterBtn);
+		filterToolbar.add(applyQuickHighlightBtn);
 		activeFilterConditionComboBox.setRenderer(this.getConditionRenderer());
 		return filterToolbar;
 	}
@@ -400,10 +407,22 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	public ButtonModel getShowAncestors() {
 		return showAncestors;
 	}
-
+	
 	public ButtonModel getShowDescendants() {
 		return showDescendants;
 	}
+
+	public ButtonModel getHighlightNodes() {
+		return highlightNodes;
+	}
+
+	public ASelectableCondition getHighlightCondition() {
+    	return highlightCondition;
+    }
+
+	public void setHighlightCondition(ASelectableCondition highlightCondition) {
+    	this.highlightCondition = highlightCondition;
+    }
 
 	private void initConditions() {
 		filterConditions = new DefaultComboBoxModel();
@@ -606,5 +625,9 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	public void undo() {
 		history.undo();
 		updateSettingsFromHistory();
+    }
+
+	public boolean isNodeHighlighted(NodeModel node) {
+		return highlightCondition != null && highlightCondition.checkNode(node);
     }
 }

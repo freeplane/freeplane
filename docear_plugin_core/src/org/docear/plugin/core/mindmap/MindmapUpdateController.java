@@ -16,6 +16,8 @@ import org.docear.plugin.core.ui.SwingWorkerDialog;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeRegistry;
+import org.freeplane.features.attribute.AttributeTableLayoutModel;
+import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.mindmapmode.MMapModel;
@@ -45,9 +47,20 @@ public class MindmapUpdateController {
 		}
 		return updateMindmaps(uris);
 	}
-
+	
 	public boolean updateRegisteredMindmapsInWorkspace() {
+		return updateRegisteredMindmapsInWorkspace(false);
+	}
+
+	public boolean updateRegisteredMindmapsInWorkspace(boolean openMindmapsToo) {
 		List<URI> uris = DocearController.getController().getLibrary().getMindmaps();
+		
+		if (openMindmapsToo) {
+			for (URI uri : getAllOpenMapUris()) {
+				uris.add(uri);
+			}
+		}
+		
 		return updateMindmaps(uris);
 	}
 
@@ -131,7 +144,6 @@ public class MindmapUpdateController {
 
 		return new SwingWorker<Void, Void>() {
 			private int totalCount;
-			private int count = 0;
 			private boolean mapHasChanged = false;
 
 			private final long start = System.currentTimeMillis();
@@ -145,21 +157,26 @@ public class MindmapUpdateController {
 					NodeView.setModifyModelWithoutRepaint(true);
 					fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
 					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("computing_node_count"));
-					totalCount = uris.size();
+					totalCount = uris.size()*getMindmapUpdaters().size();
 					if (canceled())
 						return null;
 					fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
+					int count = 0;
 					fireProgressUpdate(100 * count / totalCount);
 
 					for (AMindmapUpdater updater : getMindmapUpdaters()) {
+						count++;
 						fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, updater.getTitle());
 						if (canceled())
 							return null;
 						for (URI uri : uris) {
 							fireStatusUpdate(SwingWorkerDialog.DETAILS_LOG_TEXT, null,
-									TextUtils.getText("updating_references_for_map") + uri.getPath());
+									TextUtils.getText("updating_map") + uri.getPath());
 							mapHasChanged = false;
 							MapModel map = getMapModel(uri);
+							if (map==null) {								
+								continue;
+							}
 							fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_against_p1")
 									+ getMapTitle(map) + TextUtils.getText("updating_against_p2"));
 							this.mapHasChanged = updater.updateMindmap(map);
@@ -177,13 +194,14 @@ public class MindmapUpdateController {
 								}
 							}
 
-							count++;
-
 						}
 					}
 
-					fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_references_mapviews"));
-					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("updating_references_mapviews"));
+					fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_mapviews"));
+					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("updating_mapviews"));
+				}
+				catch (InterruptedException e) {
+					LogUtils.info("MindmapUpdateController aborted.");
 				}
 				catch (Exception e) {
 					LogUtils.warn(e);
@@ -239,9 +257,11 @@ public class MindmapUpdateController {
 						}
 					}
 					if (opened) {
-						LogUtils.info("updating view for map: " + view.getModel().getFile());
-						NodeView nodeView = view.getNodeView(view.getModel().getRootNode());
-						nodeView.updateAll();
+						LogUtils.info("updating view for map: " + view.getModel().getFile());						
+						setAttributeViewType(view.getModel(), AttributeTableLayoutModel.HIDE_ALL);
+						setAttributeViewType(view.getModel(), AttributeTableLayoutModel.SHOW_ALL);
+						/*NodeView nodeView = view.getNodeView(view.getModel().getRootNode());
+						nodeView.updateAll();*/
 					}
 				}
 
@@ -304,7 +324,7 @@ public class MindmapUpdateController {
 					e.printStackTrace();
 					return null;
 				}
-				;
+				
 
 				if (mapExtensionKey != null) {
 					map = Controller.getCurrentController().getViewController().getMapViewManager().getMaps()
@@ -314,12 +334,16 @@ public class MindmapUpdateController {
 					}
 				}
 
-				map = new MMapModel(null);
-				AttributeRegistry.createRegistry(map);
+				map = new MMapModel();
 				try {
 					File f = WorkspaceUtils.resolveURI(uri);
-					if (f.exists()) {
+					if (f.exists()) {						
 						UrlManager.getController().load(url, map);
+						map.setURL(url);
+						map.setSaved(true);
+					}
+					else {
+						return null;
 					}
 				}
 				catch (Exception e) {
@@ -340,6 +364,28 @@ public class MindmapUpdateController {
 				System.out.println("saving map: " + map.getURL());
 				map.setSaved(false);
 				((MFileManager) UrlManager.getController()).save(map, false);
+			}
+			
+			protected void setAttributeViewType(final MapModel map, final String type) {
+				final String attributeViewType = getAttributeViewType(map);
+				if (attributeViewType != null && attributeViewType != type) {
+					final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
+					attributes.setAttributeViewType(type);
+					final MapChangeEvent mapChangeEvent = new MapChangeEvent(this, map, ModelessAttributeController.ATTRIBUTE_VIEW_TYPE, attributeViewType, type);
+					Controller.getCurrentModeController().getMapController().fireMapChanged(mapChangeEvent);
+				}
+			}
+			
+			protected String getAttributeViewType(final MapModel map) {
+				if (map == null) {
+					return null;
+				}
+				final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
+				if (attributes == null) {
+					return null;
+				}
+				final String attributeViewType = attributes.getAttributeViewType();
+				return attributeViewType;
 			}
 		};
 	}

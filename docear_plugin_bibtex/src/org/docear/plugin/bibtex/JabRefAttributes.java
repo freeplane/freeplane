@@ -171,7 +171,7 @@ public class JabRefAttributes {
 	}
 	
 	public boolean setReferenceToNode(Reference reference, NodeModel node) {		
-		NodeUtils.setAttributeValue(node, reference.getKey().getName(), reference.getKey().getValue(), false);
+		NodeUtils.setAttributeValue(node, reference.getKey().getName(), reference.getKey().getValue());
 		return updateReferenceToNode(reference, node);		
 	}
 	
@@ -194,7 +194,7 @@ public class JabRefAttributes {
 				catch(Exception e) {
 					continue;
 				}
-				if (nodeFileName.equals(jabrefFile)) {
+				if (jabrefFile.endsWith(nodeFileName)) {
 					return entry;
 				}
 			}
@@ -227,7 +227,10 @@ public class JabRefAttributes {
 			URI uri = CoreConfiguration.referencePathObserver.getUri();
 			URI absUri = WorkspaceUtils.absoluteURI(uri);
 			
+			final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+	        Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
 			URI pdfUri = absUri.resolve(UriBuilder.fromPath(path).build());
+			Thread.currentThread().setContextClassLoader(contextClassLoader);
 			File file = null;
 			try {
 				file = new File(pdfUri);

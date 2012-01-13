@@ -56,7 +56,6 @@ class NoteBuilder implements IElementContentHandler {
 				final NoteModel note = new NoteModel();
 				note.setXml(xmlText);
 				((NodeModel) node).addExtension((IExtension) note);
-				noteController.setStateIcon(((NodeModel) node), true);
 			}
 		}
 	}

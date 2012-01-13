@@ -81,11 +81,11 @@ public class Controller extends AController {
 	/**
 	 * Closes the actual map.
 	 * 
-	 * @param force
+	 * @param withoutSave
 	 *            true= without save.
 	 */
-	public void close(final boolean force) {
-		getMapViewManager().close(force);
+	public void close(final boolean withoutSave) {
+		getMapViewManager().close(withoutSave);
 	}
 
 	public IExtension getExtension(final Class<? extends IExtension> clazz) {

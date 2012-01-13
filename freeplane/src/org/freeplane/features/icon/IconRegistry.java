@@ -44,7 +44,9 @@ public class IconRegistry implements IExtension {
 	public IconRegistry(final MapController mapController, final MapModel map) {
 		super();
 		mapIcons = new SortedComboBoxModel();
-		registryNodeIcons(mapController, map.getRootNode());
+		final NodeModel rootNode = map.getRootNode();
+		if(rootNode != null)
+			registryNodeIcons(mapController, rootNode);
 	}
 
 	public void addIcon(final UIIcon icon) {

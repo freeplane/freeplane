@@ -1,11 +1,21 @@
+// @ExecutionModes({on_single_node="main_menu_scripting/scripts[addons.installer.title]"})
+// Copyright (C) 2011 Volker Boerchers
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 2 of the License, or
+// (at your option) any later version.
+
 import groovy.swing.SwingBuilder
 
+import java.awt.Component;
 import java.awt.Dimension
 import java.awt.FlowLayout
 import java.awt.Toolkit
 import java.util.zip.ZipInputStream
 
 import javax.swing.BoxLayout
+import javax.swing.JDialog;
 import javax.swing.JMenuItem
 import javax.swing.JOptionPane
 import javax.swing.KeyStroke
@@ -52,9 +62,9 @@ def confirm(String question) {
 
 boolean yesNoOrTerminate(String question) {
 	final int selection = JOptionPane.showConfirmDialog(ui.frame, question, dialogTitle, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-	if (selection != JOptionPane.OK_OPTION)
+	if (selection != JOptionPane.YES_OPTION)
 		throw new Exception(textUtils.getText('addons.installer.canceled'))
-	return selection == JOptionPane.OK_OPTION
+	return selection == JOptionPane.YES_OPTION
 }
 
 def mapStructureAssert(check, String issue) {
@@ -172,6 +182,18 @@ def parseZips(Map childNodeMap) {
 	println property + ': ' + configMap[property].dump()
 }
 
+def parseImages(Map childNodeMap) {
+    def property = 'images'
+    Proxy.Node propertyNode = childNodeMap[property]
+    if (!propertyNode)
+        return
+    configMap[property] = propertyNode.children.inject([:]){ map, child ->
+        map[child.plainText] = ensureNoHtml(theOnlyChild(child)).binary
+        return map
+    }
+    println property + ': ' + configMap[property].dump()
+}
+
 def installZips() {
 	File destDir = installationbase
 	configMap['zips'].each{ zipData ->
@@ -184,7 +206,21 @@ def installZips() {
 	}
 }
 
+def installImages() {
+    File destDir = new File(installationbase, 'resources/images')
+    destDir.mkdirs()
+    configMap['images'].each{ filename, imageData ->
+        try {
+            new File(destDir, expandVariables(filename)).bytes = imageData
+        } catch (Exception e) {
+            e.printStackTrace()
+            installationAssert(false, e.message);
+        }
+    }
+}
+
 void unpack(File destDir, byte[] zipData) {
+    mapStructureAssert(zipData, textUtils.getText('addons.installer.no.zipdata'))
 	ZipInputStream result = new ZipInputStream(new ByteArrayInputStream(zipData))
 	result.withStream{
 		def entry
@@ -250,11 +286,10 @@ void createKeyboardShortcut(ScriptAddOnProperties.Script script) {
 	// check key syntax
 	KeyStroke keyStroke = ui.getKeyStroke(script.keyboardShortcut)
 	mapStructureAssert(keyStroke, textUtils.format('addons.installer.invalid.keyboard.shortcut', script.keyboardShortcut))
-	String newShortcut = keyStrokeToString(keyStroke)
+	String newShortcut = ui.keyStrokeToString(keyStroke)
 	// check if key is used (see AccelerateableAction.newAccelerator())
-	MenuBuilder menuBuilder = Controller.currentModeController.userInputListenerFactory.menuBuilder
 	String menuItemKey = ExecuteScriptAction.makeMenuItemKey(script.menuTitleKey, script.executionMode)
-	String shortcutKey = makeAcceleratorKey(menuItemKey)
+	String shortcutKey = MenuUtils.makeAcceleratorKey(menuItemKey)
 	String oldShortcut = ResourceController.getResourceController().getProperty(shortcutKey);
 	if (oldShortcut && !oldShortcut.equals(newShortcut)
 			&& !askForRemoveShortcutViaDialog(script.name, oldShortcut, newShortcut)) {
@@ -262,6 +297,7 @@ void createKeyboardShortcut(ScriptAddOnProperties.Script script) {
 		return
 	}
 	else {
+	    MenuBuilder menuBuilder = Controller.currentModeController.userInputListenerFactory.menuBuilder
 		// it's a long way to the menu item title
 		DefaultMutableTreeNode menubarNode = menuBuilder.getMenuBar(menuBuilder.get("main_menu_scripting"));
 		assert menubarNode != null : "can't find menubar"
@@ -279,14 +315,6 @@ void createKeyboardShortcut(ScriptAddOnProperties.Script script) {
 	}
 	println "set keyboardShortcut $shortcutKey to $newShortcut"
 	ResourceController.getResourceController().setProperty(shortcutKey, newShortcut)
-}
-
-private static String makeAcceleratorKey(String menuItemKey) {
-	return 'acceleratorForMindMap/$' + menuItemKey + '$0';
-}
-
-private String keyStrokeToString(KeyStroke keyStroke) {
-	return keyStroke.toString().replaceAll("pressed |typed ", "").replace("ctrl", "control")
 }
 
 private boolean askForRemoveShortcutViaDialog(String scriptName, String oldShortcut, String newShortcut) {
@@ -386,6 +414,7 @@ AddOnProperties parse() {
 		'scripts',
 		'zips',
 		'deinstall',
+		'images',
 	]
 	Map<String, Proxy.Node> childNodeMap = propertyNames.inject([:]) { map, key ->
 		map[key] = node.map.root.find{ it.plainText == key }[0]
@@ -394,6 +423,8 @@ AddOnProperties parse() {
 	def Map<String, Proxy.Node> missingChildNodes = childNodeMap.findAll{ k,v->
 		v == null
 	}
+    // note: images came after the first beta
+    missingChildNodes.remove('images')
 	mapStructureAssert( ! missingChildNodes, textUtils.format('addons.installer.missing.child.nodes', missingChildNodes.keySet()))
 
 	parseProperties(childNodeMap)
@@ -405,6 +436,7 @@ AddOnProperties parse() {
 	parseDefaultProperties(childNodeMap)
 	parseScripts(childNodeMap)
 	parseZips(childNodeMap)
+	parseImages(childNodeMap)
 	parseDeinstallationRules(childNodeMap)
 
 	def addOn = new ScriptAddOnProperties(configMap['properties']['name'])
@@ -420,6 +452,7 @@ AddOnProperties parse() {
 	addOn.preferencesXml = configMap['preferences.xml']
 	addOn.defaultProperties = configMap['default.properties']
 	addOn.deinstallationRules = configMap['deinstall']
+    addOn.images = configMap['images'] ? configMap['images'].keySet() : []
 	addOn.scripts = configMap['scripts']
 
 	return addOn
@@ -454,12 +487,13 @@ boolean confirmInstall(ScriptAddOnProperties addOn, ScriptAddOnProperties instal
 	}
 	defaultButton.requestFocusInWindow()
     ui.addEscapeActionToDialog(dial)
+    ui.setDialogLocationRelativeTo(dial, ui.frame)
     dial.visible = true
 	if (!vars.ok)
 		return false
 	// 2. license
 	boolean licenseUnchanged = addOn.license && installedAddOn?.license && addOn.license.equals(installedAddOn.license)
-	def license = addOn.license.replaceAll("</?(html|body)>", "")
+	def license = addOn.license.replaceAll('</?(html|body|head)>', '').trim()
 	def question = textUtils.removeTranslateComment(textUtils.format('addons.installer.confirm.licence', license)).replace("\n", "<p>")
 	if (licenseUnchanged)
 		c.statusInfo = textUtils.getText('addons.installer.licence.unchanged')
@@ -474,6 +508,7 @@ boolean confirmInstall(ScriptAddOnProperties addOn, ScriptAddOnProperties instal
 def install(AddOnProperties addOn) {
 	createScripts()
 	installZips()
+	installImages()
 	new File(addOnDir(), expandVariables('${name}.script.xml')).text = addOn.toXmlString()
 }
 

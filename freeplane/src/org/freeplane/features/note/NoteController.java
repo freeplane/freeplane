@@ -27,6 +27,8 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.filter.FilterController;
+import org.freeplane.features.icon.IStateIconProvider;
+import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.ITooltipProvider;
@@ -35,6 +37,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.TextController;
 
@@ -49,7 +52,7 @@ public class NoteController implements IExtension {
 	public static final String NODE_NOTE_ICON = "accessories.plugins.NodeNoteIcon";
 	private static UIIcon noteIcon;
 	public static URL bwNoteIconUrl;
-	public static final String RESOURCES_DON_T_SHOW_NOTE_ICONS = "don_t_show_note_icons";
+	public static final String SHOW_NOTE_ICONS = "show_note_icons";
 	private static final Integer NODE_TOOLTIP = 9;
 	public static final String SHOW_NOTES_IN_MAP = "show_notes_in_map";
 
@@ -72,18 +75,19 @@ public class NoteController implements IExtension {
 		}
 	}
 
-// 	final private ModeController modeController;
+ 	final private ModeController modeController;
 
 	public NoteController() {
 		super();
-//		this.modeController = modeController;
 		final ModeController modeController = Controller.getCurrentModeController();
+		this.modeController = modeController;
 		modeController.getMapController().getReadManager().addElementHandler("richcontent", new NoteBuilder(this));
 		final NoteWriter noteWriter = new NoteWriter(this);
 		final WriteManager writeManager = modeController.getMapController().getWriteManager();
 		writeManager.addAttributeWriter("map", noteWriter);
 		writeManager.addExtensionElementWriter(NoteModel.class, noteWriter);
-		registerNoteTooltip(modeController);
+		registerNoteTooltipProvider(modeController);
+		registerStateIconProvider();
 	}
 
 	public final String getNoteText(final NodeModel node) {
@@ -102,16 +106,7 @@ public class NoteController implements IExtension {
 	protected void onWrite(final MapModel map) {
 	}
 
-	protected void setStateIcon(final NodeModel node, final boolean enabled) {
-		boolean showIcon = enabled;
-		if (ResourceController.getResourceController().getBooleanProperty(
-			NoteController.RESOURCES_DON_T_SHOW_NOTE_ICONS)) {
-			showIcon = false;
-		}
-		node.setStateIcon(NoteController.NODE_NOTE_ICON, (showIcon) ? noteIcon : null, true);
-	}
-
-	private void registerNoteTooltip(ModeController modeController) {
+	private void registerNoteTooltipProvider(ModeController modeController) {
 		modeController.addToolTipProvider(NODE_TOOLTIP, new ITooltipProvider() {
 			public String getTooltip(ModeController modeController, NodeModel node, Component view) {
 				if(showNotesInMap(node.getMap()) && ! TextController.getController(modeController).isMinimized(node)){
@@ -149,6 +144,21 @@ public class NoteController implements IExtension {
 			}
 		});
 	}
+
+	private void registerStateIconProvider() {
+		IconController.getController().addStateIconProvider(new IStateIconProvider() {
+			public UIIcon getStateIcon(NodeModel node) {
+				boolean showIcon;
+				if(NoteModel.getNote(node) != null){
+					final String showNoteIcon = MapStyle.getController(modeController).getPropertySetDefault(node.getMap(), SHOW_NOTE_ICONS);
+					showIcon = Boolean.parseBoolean(showNoteIcon);
+					if(showIcon) 
+						return noteIcon;
+				}
+				return null;
+			}
+		});
+    }
 
 	public boolean showNotesInMap(MapModel model) {
 		final String property = MapStyleModel.getExtension(model).getProperty(NoteController.SHOW_NOTES_IN_MAP);

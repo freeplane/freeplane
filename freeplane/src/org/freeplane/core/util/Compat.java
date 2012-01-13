@@ -98,18 +98,25 @@ public class Compat {
 	 * slightly differently.
 	 */
 	private static String urlGetFile(final URL url) {
+		if( !url.getProtocol().equals("file"))
+			return null;
+		String fileName = url.toString().replaceFirst("^file:", "");
 		final String osNameStart = System.getProperty("os.name").substring(0, 3);
 		if (osNameStart.equals("Win") && url.getProtocol().equals("file")) {
-			final String fileName = url.toString().replaceFirst("^file:", "").replace('/', '\\');
+			fileName = fileName.replace('/', File.separatorChar);
 			return (fileName.indexOf(':') >= 0) ? fileName.replaceFirst("^\\\\*", "") : fileName;
 		}
 		else {
-			return url.getFile();
+			return fileName;
 		}
 	}
 
 	public static File urlToFile(final URL pUrl) throws URISyntaxException {
-		return new File(Compat.urlGetFile(pUrl));
+		final String path = Compat.urlGetFile(pUrl);
+		if(path != null)
+			return new File(path);
+		else
+			return null;
 	}
 
 	public static void macAppChanges() {

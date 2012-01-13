@@ -21,7 +21,7 @@ package org.freeplane.features.format;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.util.TextUtils;
@@ -72,6 +72,10 @@ public class Scanner {
 	public void addParser(Parser parser) {
 		parsers.add(parser);
 	}
+
+    public List<Parser> getParsers() {
+        return new ArrayList<Parser>(parsers);
+    }
 
 	public XMLElement toXml() {
 		final XMLElement xmlElement = new XMLElement(ELEM_SCANNER);

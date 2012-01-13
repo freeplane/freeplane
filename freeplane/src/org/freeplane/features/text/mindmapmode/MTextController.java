@@ -32,6 +32,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -59,6 +60,9 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.format.ScannerController;
+import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
@@ -78,7 +82,8 @@ import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.IContentTransformer;
 import org.freeplane.features.text.ShortenedTextModel;
 import org.freeplane.features.text.TextController;
-import org.freeplane.features.text.mindmapmode.IEditBaseCreator.EditedComponent;
+import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
+import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 
@@ -180,8 +185,81 @@ public class MTextController extends TextController {
 		return strings;
 	}
 
-	public void joinNodes(final NodeModel selectedNode, final List<NodeModel> selectedNodes) {
-		((JoinNodesAction) Controller.getCurrentModeController().getAction("JoinNodesAction")).joinNodes(selectedNode, selectedNodes);
+	private String addContent(String joinedContent, final boolean isHtml, String nodeContent, final boolean isHtmlNode) {
+		if (isHtml) {
+			final String joinedContentParts[] = JoinNodesAction.BODY_END.split(joinedContent, -2);
+			joinedContent = joinedContentParts[0];
+			if (!isHtmlNode) {
+				final String end[] = JoinNodesAction.BODY_START.split(joinedContent, 2);
+				if (end.length == 1) {
+					end[0] = "<html>";
+				}
+				nodeContent = end[0] + "<body><p>" + nodeContent + "</p>";
+			}
+		}
+		if (isHtmlNode & !joinedContent.equals("")) {
+			final String nodeContentParts[] = JoinNodesAction.BODY_START.split(nodeContent, 2);
+			// if no <body> tag is found
+			if (nodeContentParts.length == 1) {
+				nodeContent = nodeContent.substring(6);
+				nodeContentParts[0] = "<html>";
+			}
+			else {
+				nodeContent = nodeContentParts[1];
+			}
+			if (!isHtml) {
+				joinedContent = nodeContentParts[0] + "<body><p>" + joinedContent + "</p>";
+			}
+		}
+		if (joinedContent.equals("")) {
+			return nodeContent;
+		}
+		if (isHtml || isHtmlNode) {
+			joinedContent += '\n';
+		}
+		else {
+			joinedContent += ' ';
+		}
+		joinedContent += nodeContent;
+		return joinedContent;
+	}
+
+	public void joinNodes(final List<NodeModel> selectedNodes) {
+		if(selectedNodes.isEmpty())
+			return;
+		final NodeModel selectedNode = selectedNodes.get(0);
+		final NodeModel parentNode = selectedNode.getParentNode();
+		for (final NodeModel node: selectedNodes) {
+			if(node.getParentNode() != parentNode){
+				UITools.errorMessage(TextUtils.getText("cannot_add_parent_diff_parents"));
+				return;
+			}
+		}
+		String joinedContent = "";
+		final Controller controller = Controller.getCurrentController();
+		boolean isHtml = false;
+		final LinkedHashSet<MindIcon> icons = new LinkedHashSet<MindIcon>();
+		for (final NodeModel node: selectedNodes) {
+			final String nodeContent = node.getText();
+			icons.addAll(node.getIcons());
+			final boolean isHtmlNode = HtmlUtils.isHtmlNode(nodeContent);
+			joinedContent = addContent(joinedContent, isHtml, nodeContent, isHtmlNode);
+			if (node != selectedNode) {
+				final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+				for(final NodeModel child: node.getChildren().toArray(new NodeModel[]{})){
+					mapController.moveNode(child, selectedNode, selectedNode.getChildCount());
+				}
+				mapController.deleteNode(node);
+			}
+			isHtml = isHtml || isHtmlNode;
+		}
+		controller.getSelection().selectAsTheOnlyOneSelected(selectedNode);
+		setNodeText(selectedNode, joinedContent);
+		final MIconController iconController = (MIconController) IconController.getController();
+		iconController.removeAllIcons(selectedNode);
+		for (final MindIcon icon : icons) {
+			iconController.addIcon(selectedNode, icon);
+		}
 	}
 
 	public void setImageByFileChooser() {
@@ -375,8 +453,15 @@ public class MTextController extends TextController {
 				Controller.getCurrentModeController().setBlocked(false);
 				mCurrentEditDialog = null;
 			}
+			public boolean canSplit() {
+                return false;
+            }
+
+			public EditedComponent getEditType() {
+                return EditedComponent.DETAIL;
+            }
 		};
-		mCurrentEditDialog = createEditor(nodeModel, IEditBaseCreator.EditedComponent.DETAIL, editControl, text, false, editLong, true);
+		mCurrentEditDialog = createEditor(nodeModel, editControl, text, false, editLong, true);
 		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities.getWindowAncestor(controller.getViewController().getMapView());
 		mCurrentEditDialog.show(frame);
     }
@@ -554,7 +639,6 @@ public class MTextController extends TextController {
 			MapController mapController = modeController.getMapController();
 			mapController.removeNodeChangeListener(this);
 			mapController.removeNodeSelectionListener(this);
-			nodeModel.removeExtension(FirstEditFlag.getInstance());
         }
 
 		public void install() {
@@ -596,15 +680,13 @@ public class MTextController extends TextController {
 		}
 		node.requestFocus();
 		stopEditing();
-		if(nodeModel.getExtension(FirstEditFlag.class) == null)
-		    nodeModel.addExtension(FirstEditFlag.getInstance());
 		if(isNewNode && ! eventQueue.isActive() 
 				&& ! ResourceController.getResourceController().getBooleanProperty("display_inline_editor_for_all_new_nodes")){
 			final EditEventDispatcher dispatcher = new EditEventDispatcher(Controller.getCurrentModeController(), nodeModel, prevSelectedModel, isNewNode, parentFolded, editLong);
 			dispatcher.install();
 			return;
 		};
-		final EditNodeBase.IEditControl editControl = new EditNodeBase.IEditControl() {
+		final IEditControl editControl = new IEditControl() {
 			public void cancel() {
 				if (isNewNode && nodeModel.getMap().equals(controller.getMap())) {
 				    if(nodeModel.getParent() != null){
@@ -623,8 +705,6 @@ public class MTextController extends TextController {
 			private void stop() {
 				Controller.getCurrentModeController().setBlocked(false);
 				viewController.obtainFocusForSelected();
-				if (isNewNode)
-				    nodeModel.removeExtension(FirstEditFlag.getInstance());
 				mCurrentEditDialog = null;
 			}
 
@@ -646,31 +726,37 @@ public class MTextController extends TextController {
 				viewController.obtainFocusForSelected();
 				stop();
 			}
+			public boolean canSplit() {
+                return true;
+            }
+
+			public EditedComponent getEditType() {
+                return EditedComponent.TEXT;
+            }
 		};
-		mCurrentEditDialog = createEditor(nodeModel, IEditBaseCreator.EditedComponent.TEXT, editControl, nodeModel.getText(), isNewNode, editLong, true);
+		mCurrentEditDialog = createEditor(nodeModel, editControl, nodeModel.getText(), isNewNode, editLong, true);
 		final JFrame frame = controller.getViewController().getJFrame();
 		mCurrentEditDialog.show(frame);
 	}
 
-	private EditNodeBase createEditor(final NodeModel nodeModel, final EditedComponent editedComponent,
-                                      final EditNodeBase.IEditControl editControl, String text, final boolean isNewNode,
-                                      final boolean editLong, boolean internal) {
+	private EditNodeBase createEditor(final NodeModel nodeModel, final IEditControl editControl,
+                                      String text, final boolean isNewNode, final boolean editLong,
+                                      boolean internal) {
 	    Controller.getCurrentModeController().setBlocked(true);
-		EditNodeBase base = getEditNodeBase(nodeModel, text, editedComponent, editControl, editLong);
+		EditNodeBase base = getEditNodeBase(nodeModel, text, editControl, editLong);
 		if(base != null || ! internal){
 			return base;
 		}
 		final IEditBaseCreator textFieldCreator = (IEditBaseCreator) Controller.getCurrentController().getMapViewManager();
-		return textFieldCreator.createEditor(nodeModel, editedComponent, editControl, text, editLong);
+		return textFieldCreator.createEditor(nodeModel, editControl, text, editLong);
     }
 
 
-	public EditNodeBase getEditNodeBase(final NodeModel nodeModel, final String text, EditedComponent editedComponent, final EditNodeBase.IEditControl editControl,
-                                final boolean editLong) {
+	public EditNodeBase getEditNodeBase(final NodeModel nodeModel, final String text, final IEditControl editControl, final boolean editLong) {
 	    final List<IContentTransformer> textTransformers = getTextTransformers();
 		for(IContentTransformer t : textTransformers){
 			if(t instanceof IEditBaseCreator){
-				final EditNodeBase base = ((IEditBaseCreator) t).createEditor(nodeModel, editedComponent, editControl, text, editLong);
+				final EditNodeBase base = ((IEditBaseCreator) t).createEditor(nodeModel, editControl, text, editLong);
 				if(base != null){
 					return base;
 				}
@@ -739,10 +825,6 @@ public class MTextController extends TextController {
     	fireEditorPaneCreated(editorPane, purpose);
 		return editorPane;
     }
-	
-	public boolean isFirstEditRunning(NodeModel nodeModel){
-	    return nodeModel.containsExtension(FirstEditFlag.class);
-	}
 
 	public EventBuffer getEventQueue() {
     	return eventQueue;

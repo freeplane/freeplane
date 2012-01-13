@@ -3,7 +3,6 @@
 		<menu_submenu name="file" name_ref="file">	
 			<menu_action action="styledialog.ok"/>
 			<menu_action action="styledialog.cancel"/>
-			<menu_action accelerator="control Q" action="QuitAction" menu_key="MB_QuitAction"/>
 		</menu_submenu>
 		<menu_submenu name="edit" name_ref="edit">
 			<menu_submenu name="menu_group" name_ref="menu_group">
@@ -165,7 +164,10 @@
 			<menu_action action="UndoAction"/>
 			<menu_action action="RedoAction"/>
 		</menu_category>
+		<menu_category name="toolbar_styles" menu_key="main_toolbar_style"/>
 		<menu_category menu_key="main_toolbar_font" name="font">
+			<menu_category name="toolbar_fonts" menu_key="main_toolbar_font_name"/>
+			<menu_category name="toolbar_fonts" menu_key="main_toolbar_font_size"/>
 			<menu_action action="BoldAction"/>
 			<menu_action action="ItalicAction"/>
 		</menu_category>

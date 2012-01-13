@@ -13,6 +13,7 @@ import java.net.URI;
 public abstract class ALinkNode extends AWorkspaceTreeNode {
 	
 	private static final long serialVersionUID = 1L;
+	
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/

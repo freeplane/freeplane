@@ -1,5 +1,7 @@
 package org.freeplane.view.swing.features.time.mindmapmode;
 
-public enum ClockState {
-	REMOVE_CLOCK, CLOCK_INVISIBLE, CLOCK_VISIBLE
+import org.freeplane.core.extension.IExtension;
+
+public enum ClockState implements IExtension{
+	CLOCK_INVISIBLE, CLOCK_VISIBLE
 }

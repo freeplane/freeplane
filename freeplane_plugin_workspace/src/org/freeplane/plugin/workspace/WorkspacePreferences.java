@@ -30,7 +30,8 @@ public class WorkspacePreferences {
 	public static final String VIEW_MENU = "/view";
 
 	public static final String SHOW_WORKSPACE_TEXT = "show_workspace";
-	public static final String SHOW_WORKSPACE_PROPERTY_KEY = "show_workspace";
+	public static final String SHOW_WORKSPACE_PROPERTY_KEY = "workspace.enabled";
+	public static final String COLLAPSE_WORKSPACE_PROPERTY_KEY = "workspace.collapsed";
 	public static final String WORKSPACE_WIDTH_PROPERTY_KEY = "workspace_view_width";
 	public static final String WORKSPACE_LOCATION = "workspace_location";
 	public static final String WORKSPACE_LOCATION_NEW = "workspace_location_new";
@@ -106,7 +107,7 @@ public class WorkspacePreferences {
 		
 		File f = WorkspaceUtils.resolveURI(newWorkspaceLocation);
 		if (f != null) {
-			if (!f.exists()) {
+			if (!f.exists()) {				
 				if (!f.mkdirs()) {
 					JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(),
 							TextUtils.getText("error_create_workspace_folder") + " " + f.getAbsolutePath(),
@@ -117,6 +118,7 @@ public class WorkspacePreferences {
 			ResourceController.getResourceController().setProperty(WorkspacePreferences.WORKSPACE_LOCATION, f.getAbsolutePath());			
 		}
 	}
+	
 
 	@SelectableAction(checkOnPropertyChange=SHOW_WORKSPACE_PROPERTY_KEY, checkOnPopup = true)
 	private class CheckBoxAction extends AFreeplaneAction {

@@ -138,7 +138,7 @@ public class LinkTypeIncomingNode extends ALinkNode implements IWorkspaceNodeEve
 				if (!f.exists()) {
 					createNewMindmap(f);
 				}
-				Controller.getCurrentModeController().getMapController().newMap(f.toURL(), false);
+				Controller.getCurrentModeController().getMapController().newMap(f.toURL());
 				
 			}
 			catch (Exception e) {

@@ -25,7 +25,10 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
@@ -61,6 +64,7 @@ public class ScannerController implements IExtension {
 		pathToFile = freeplaneUserDirectory == null ? null : freeplaneUserDirectory + File.separator + SCANNER_XML;
 		initScanners();
 		selectScanner(Locale.getDefault());
+        addParsersForStandardFormats();
 	}
 
 	public static ScannerController getController() {
@@ -97,6 +101,18 @@ public class ScannerController implements IExtension {
 		}
 		return countryScanner == null ? defaultScanner : countryScanner;
 	}
+	
+	private Scanner findGoodMatch(final Locale locale) {
+	    final String localeAsString = locale.toString();
+	    Scanner countryScanner = null;
+	    for (Scanner scanner : scanners) {
+	        if (scanner.localeMatchesExactly(localeAsString))
+	            return scanner;
+	        else if (localeAsString.contains("_") && scanner.countryMatches(localeAsString))
+	            countryScanner = scanner;
+	    }
+	    return countryScanner;
+	}
 
 	private void initScanners() {
 		if (scannersLoaded)
@@ -110,18 +126,50 @@ public class ScannerController implements IExtension {
 			LogUtils.warn(e);
 			UITools.errorMessage(TextUtils.getText("scanners_not_loaded"));
 		}
-        if (scanners.isEmpty()) {
-            addStandardScanners();
-            saveScannersNoThrow();
+		addAndSaveStandardScanners();
+	}
+
+    /** if standard formats wouldn't be parseable it would be difficult to edit recognized dates since the standard
+     * format is used by the editor. */
+    public void addParsersForStandardFormats() {
+        final HashSet<String> patterns = new HashSet<String>();
+        final List<Parser> parsers = selectedScanner.getParsers();
+        for (Parser parser : parsers) {
+            patterns.add(parser.getFormat());
         }
-	}
+        final String standardDateFormat = FormatController.getController().getDefaultDateFormat().toPattern();
+        if (!patterns.contains(standardDateFormat)) {
+            selectedScanner.addParser(Parser.createParser(Parser.STYLE_DATE, IFormattedObject.TYPE_DATETIME,
+                standardDateFormat, Locale.getDefault(), "STANDARD FORMAT"));
+            LogUtils.info("added parsing support for standard date format " + standardDateFormat);
+        }
+        final String standardDateTimeFormat = FormatController.getController().getDefaultDateTimeFormat().toPattern();
+        if (!patterns.contains(standardDateTimeFormat)) {
+            selectedScanner.addParser(Parser.createParser(Parser.STYLE_DATE, IFormattedObject.TYPE_DATETIME,
+                standardDateTimeFormat, Locale.getDefault(), "STANDARD FORMAT"));
+            LogUtils.info("added parsing support for standard date time format " + standardDateTimeFormat);
+        }
+        // let's hope that for every locale a proper decimal number parser is defined.
+    }
 
-	private void addStandardScanners() {
-		scanners.add(createEnglishScanner());
-		scanners.add(createGermanScanner());
-	}
+    private void addAndSaveStandardScanners() {
+        final int originalCount = scanners.size();
+        if (findGoodMatch(new Locale("en")) == null)
+            scanners.add(createScanner_en());
+        if (findGoodMatch(new Locale("de")) == null)
+            scanners.add(createScanner_de());
+        if (findGoodMatch(new Locale("hr")) == null)
+            scanners.add(createScanner_hr());
+        if (findGoodMatch(Locale.getDefault()) == null) {
+            // "de_DE_WIN" -> "de_DE"
+            final String shortLocale = Locale.getDefault().toString().replaceAll("(.*_.*)_.*", "$1");
+            scanners.add(createScanner(new Locale(shortLocale)));
+        }
+        if (scanners.size() != originalCount)
+            saveScannersNoThrow();
+    }
 
-	private Scanner createEnglishScanner() {
+    private Scanner createScanner_en() {
 		final Scanner s = new Scanner(new String[] { "en" }, true);
 		s.setFirstChars("+-0123456789.");
 		final String tNumber = IFormattedObject.TYPE_NUMBER;
@@ -133,17 +181,23 @@ public class ScannerController implements IExtension {
 		s.addParser(Parser.createParser(Parser.STYLE_ISODATE, tDate, null, loc, "ISO reader for date and date/time"));
 		s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "M/d", loc, "completes date with current year"));
 		s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "M/d/y", loc, "parses 4/21/11 or 4/21/2011"));
+		s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "M/d/y H:m", loc, "parses datetime"));
+		s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "M/d/y H:m:s", loc, "parses datetime"));
+        s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "H:m", loc, "parses time, sets date to today"));
 		return s;
 	}
 
-	private Scanner createGermanScanner() {
-		final Scanner s = new Scanner(new String[] { "de", "hr" }, false);
+	private Scanner createScanner_de() {
+		final Scanner s = new Scanner(new String[] { "de" }, false);
 		s.setFirstChars("+-0123456789,.");
 		final String tNumber = IFormattedObject.TYPE_NUMBER;
 		final String tDate = IFormattedObject.TYPE_DATETIME;
 		final Locale loc = new Locale("de");
 		s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "d.M", loc, "completes date with current year"));
 		s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "d.M.y", loc, "parses 21.4.11 or 21.4.2011"));
+		s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "d.M.y H:m", loc, "parses datetime"));
+		s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "d.M.y H:m:s", loc, "parses datetime"));
+        s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "H:m", loc, "parses time, sets date to today"));
 		s.addParser(Parser.createParser(Parser.STYLE_DECIMAL, tNumber, null, loc,
 		    "uses comma as decimal separator: 1.234,12"));
 		s.addParser(Parser.createParser(Parser.STYLE_ISODATE, tDate, null, loc, "ISO reader for date and date/time"));
@@ -151,6 +205,49 @@ public class ScannerController implements IExtension {
 		    "support dot as decimal separator (if nothing else matches)"));
 		return s;
 	}
+	
+	private Scanner createScanner_hr() {
+	    final Scanner s = new Scanner(new String[] { "hr" }, false);
+	    s.setFirstChars("+-0123456789,.");
+	    final String tNumber = IFormattedObject.TYPE_NUMBER;
+	    final String tDate = IFormattedObject.TYPE_DATETIME;
+	    final Locale loc = new Locale("hr");
+	    s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "d.M", loc, "completes date with current year"));
+	    s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "d.M.y", loc, "parses 21.4.11 or 21.4.2011"));
+	    s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "d.M.y.", loc, "parses 21.4.11. or 21.4.2011."));
+        s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "d.M.y. H:m.", loc, "parses datetime"));
+        s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "d.M.y. H:m:s", loc, "parses datetime"));
+	    s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "H:m", loc, "parses time, sets date to today"));
+	    s.addParser(Parser.createParser(Parser.STYLE_DECIMAL, tNumber, null, loc,
+	            "uses comma as decimal separator: 1.234,12"));
+	    s.addParser(Parser.createParser(Parser.STYLE_ISODATE, tDate, null, loc, "ISO reader for date and date/time"));
+	    s.addParser(Parser.createParser(Parser.STYLE_NUMBERLITERAL, tNumber, null, loc,
+	            "support dot as decimal separator (if nothing else matches)"));
+	    return s;
+	}
+
+    private Scanner createScanner(Locale loc) {
+        final Scanner s = new Scanner(new String[] { loc.toString() }, false);
+        s.setFirstChars("+-0123456789,.");
+        final String tNumber = IFormattedObject.TYPE_NUMBER;
+        final String tDate = IFormattedObject.TYPE_DATETIME;
+        final DateFormat shortDateTimeFormat = SimpleDateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT,
+            loc);
+        if (shortDateTimeFormat instanceof SimpleDateFormat) {
+            s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate,
+                ((SimpleDateFormat) shortDateTimeFormat).toPattern(), loc, "short datetime format"));
+        }
+        final DateFormat shortDateFormat = SimpleDateFormat.getDateInstance(DateFormat.SHORT, loc);
+        if (shortDateFormat instanceof SimpleDateFormat) {
+            s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, ((SimpleDateFormat) shortDateFormat).toPattern(),
+                loc, "short date format"));
+        }
+        s.addParser(Parser.createParser(Parser.STYLE_DECIMAL, tNumber, null, loc, "number format"));
+        s.addParser(Parser.createParser(Parser.STYLE_ISODATE, tDate, null, loc, "ISO reader for date and date/time"));
+        s.addParser(Parser.createParser(Parser.STYLE_NUMBERLITERAL, tNumber, null, loc,
+            "support dot as decimal separator (if nothing else matches)"));
+        return s;
+    }
 
 	void loadScanners() throws Exception {
 		final File configXml = new File(pathToFile);

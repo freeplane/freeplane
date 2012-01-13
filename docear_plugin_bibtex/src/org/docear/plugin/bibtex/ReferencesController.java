@@ -30,13 +30,14 @@ import org.docear.plugin.bibtex.listeners.JabRefChangeListener;
 import org.docear.plugin.bibtex.listeners.MapChangeListenerAdapter;
 import org.docear.plugin.bibtex.listeners.NodeAttributeListener;
 import org.docear.plugin.bibtex.listeners.NodeSelectionListener;
-import org.docear.plugin.bibtex.listeners.SplmmMapsConvertedListener;
+import org.docear.plugin.bibtex.listeners.SplmmMapsConvertListener;
 import org.docear.plugin.core.ALanguageController;
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
+import org.docear.plugin.core.util.CoreUtils;
 import org.docear.plugin.core.workspace.node.LinkTypeReferencesNode;
 import org.docear.plugin.pdfutilities.util.MapConverter;
 import org.freeplane.core.resources.ResourceController;
@@ -74,7 +75,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 	private SplmmAttributes splmmAttributes;
 	
 	private final NodeAttributeListener attributeListener = new NodeAttributeListener();
-	private final SplmmMapsConvertedListener splmmMapsConvertedListener = new SplmmMapsConvertedListener();
+	private final SplmmMapsConvertListener splmmMapsConvertedListener = new SplmmMapsConvertListener();
 
 	public static final String MENU_BAR = "/menu_bar"; //$NON-NLS-1$
 	public static final String NODE_POPUP_MENU = "/node_popup"; //$NON-NLS-1$
@@ -113,7 +114,8 @@ public class ReferencesController extends ALanguageController implements IDocear
 	
 	private boolean isRunning = false;
 
-	public ReferencesController(ModeController modeController) {		
+	public ReferencesController(ModeController modeController) {
+		super();
 		setReferencesController(this);
 		setPreferencesForDocear();
 		this.modeController = modeController;
@@ -198,10 +200,10 @@ public class ReferencesController extends ALanguageController implements IDocear
 				
 				public void run() {
 					Thread.currentThread().setContextClassLoader(classLoader);
-					URI uri = DocearController.getController().getLibrary().getBibtexDatabase();
+					URI uri = DocearController.getController().getLibrary().getBibtexDatabase();					
 					
-					if (uri != null) {
-						jabrefWrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame(), new File(WorkspaceUtils.absoluteURI(uri)));						
+					if (uri != null) {						
+						jabrefWrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame(), CoreUtils.resolveURI(uri));						
 					}
 					else {
 						jabrefWrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame());

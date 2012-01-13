@@ -5,7 +5,6 @@ import java.net.URI;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Enumeration;
-import java.util.Locale;
 
 import org.docear.plugin.core.actions.DocearLicenseAction;
 import org.docear.plugin.core.actions.DocearOpenUrlAction;
@@ -15,6 +14,7 @@ import org.docear.plugin.core.actions.SaveAsAction;
 import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.features.DocearMapWriter;
 import org.docear.plugin.core.features.DocearNodeModelExtensionController;
+import org.docear.plugin.core.listeners.PropertyListener;
 import org.docear.plugin.core.listeners.WorkspaceChangeListener;
 import org.docear.plugin.core.workspace.actions.DocearChangeLibraryPathAction;
 import org.docear.plugin.core.workspace.actions.DocearRenameAction;
@@ -27,27 +27,24 @@ import org.docear.plugin.core.workspace.creator.LinkTypeLiteratureAnnotationsCre
 import org.docear.plugin.core.workspace.creator.LinkTypeMyPublicationsCreator;
 import org.docear.plugin.core.workspace.creator.LinkTypeReferencesCreator;
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
-import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.FreeplaneActionCascade;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.url.UrlManager;
-import org.freeplane.main.application.FreeplaneStarter;
+import org.freeplane.main.application.ApplicationResourceController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
-import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
-public class CoreConfiguration extends ALanguageController implements IFreeplanePropertyListener {
+public class CoreConfiguration extends ALanguageController {
 
 	private static final String ABOUT_TEXT = "about_text";
 	private static final String DOCEAR = "Docear";
@@ -77,10 +74,9 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 	public static final NodeAttributeObserver projectPathObserver = new NodeAttributeObserver();
 	public static final NodeAttributeObserver referencePathObserver = new NodeAttributeObserver();
 	public static final NodeAttributeObserver repositoryPathObserver = new NodeAttributeObserver();
+	private boolean firstRun;
 	
 	public CoreConfiguration(ModeController modeController) {
-		addPropertyChangeListener();
-		
 		try {
 			if (WorkspaceController.getController().isInitialized()) {
 				//showLocationDialogIfNeeded();
@@ -91,13 +87,10 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		}
 				
 		LogUtils.info("org.docear.plugin.core.CoreConfiguration() initializing...");
+		final File userPreferencesFile = ApplicationResourceController.getUserPreferencesFile();
+		firstRun = !userPreferencesFile.exists();
 		init(modeController);
 	}	
-
-	private void addPropertyChangeListener() {
-		ResourceController resCtrl = Controller.getCurrentController().getResourceController();
-		resCtrl.addPropertyChangeListener(this);
-	}
 	
 	private void init(ModeController modeController) {
 		// set up context menu for workspace
@@ -107,9 +100,9 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		modeController.addAction(new DocearChangeLibraryPathAction());
 		modeController.addAction(new DocearRenameAction());
 		
-		prepareWorkspace();
 		addPluginDefaults();
-		copyWelcomeMindmapIfNeeded();
+		prepareWorkspace();
+		
 		replaceFreeplaneStringsAndActions();
 		DocearMapModelController.install(new DocearMapModelController(modeController));
 		
@@ -125,19 +118,6 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		}
 	}
 	
-	private void copyWelcomeMindmapIfNeeded() {
-		final File baseDir = new File(FreeplaneStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();
-		
-		final String map = ResourceController.getResourceController().getProperty("first_start_map");		
-		final File docearWelcome = ConfigurationUtils.getLocalizedFile(baseDir, map, Locale.getDefault().getLanguage());
-		
-		AWorkspaceTreeNode parent = WorkspaceUtils.getNodeForPath("My Workspace/Miscellaneous");
-		LinkTypeFileNode node = new LinkTypeFileNode();
-		node.setName(docearWelcome.getName());
-		node.setLinkPath(WorkspaceUtils.getWorkspaceRelativeURI(docearWelcome));
-		WorkspaceUtils.getModel().addNodeTo(node, parent);
-	}
-
 	private void setDocearMapWriter() {
 		DocearMapWriter mapWriter = new DocearMapWriter(Controller.getCurrentModeController().getMapController());
 		mapWriter.setMapWriteHandler();		
@@ -158,6 +138,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, LinkTypeIncomingCreator.LINK_TYPE_INCOMING , new LinkTypeIncomingCreator());
 		
 		controller.reloadWorkspace();
+		controller.getConfiguration().linkWelcomeMindmapAfterWorkspaceCreation();
 	}
 
 	private void replaceFreeplaneStringsAndActions() {
@@ -223,7 +204,7 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		String programmer = resourceController.getProperty("docear_programmer");
 		String copyright = resourceController.getProperty("docear_copyright");
 		String version	= resourceController.getProperty("docear_version");
-		String status	= resourceController.getProperty("docear_version_status");
+		String status	= resourceController.getProperty("docear_status");
 		
 		String aboutText = TextUtils.getRawText("docear_about");
 		MessageFormat formatter;
@@ -244,41 +225,32 @@ public class CoreConfiguration extends ALanguageController implements IFreeplane
 		controller.addAction(action);
 	}
 
-	private void addPluginDefaults() {		
+	private void addPluginDefaults() {
+		
 		ResourceController resController = Controller.getCurrentController().getResourceController();
 		if (resController.getProperty("ApplicationName").equals("Docear")) {
 			resController.setProperty("first_start_map", "/doc/docear-welcome.mm");
+			resController.setProperty("tutorial_map", "/doc/docear-welcome.mm");
 		}
 		final URL defaults = this.getClass().getResource(ResourceController.PLUGIN_DEFAULTS_RESOURCE);
 		if (defaults == null)
 			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
 		Controller.getCurrentController().getResourceController().addDefaults(defaults);
-		if (resController.getProperty("ApplicationName").equals("Docear")) {
-			Controller.getCurrentController().getResourceController().setDefaultProperty("selection_method", "selection_method_by_click");
-			Controller.getCurrentController().getResourceController().setDefaultProperty("links", "relative_to_workspace");
-			Controller.getCurrentController().getResourceController().setDefaultProperty("save_folding", "always_save_folding");
-			Controller.getCurrentController().getResourceController().setDefaultProperty("leftToolbarVisible", "false");			
-			Controller.getCurrentController().getResourceController().setDefaultProperty("styleScrollPaneVisible", "true");
-		}
-		
-		FreeplaneActionCascade.addAction(new DocearQuitAction());
-		//FIXME: DOCEAR: does it work without the property?
-//		if(DocearController.getController().getLibrary() != null){
-//			URI uri = DocearController.getController().getLibrary().getLibraryPath();
+		if (resController.getProperty("ApplicationName").equals("Docear") && firstRun) {
+			Controller.getCurrentController().getResourceController().setProperty("selection_method", "selection_method_by_click");
+			Controller.getCurrentController().getResourceController().setProperty("links", "relative_to_workspace");
+			Controller.getCurrentController().getResourceController().setProperty("save_folding", "always_save_folding");
+			Controller.getCurrentController().getResourceController().setProperty("leftToolbarVisible", "false");			
+			Controller.getCurrentController().getResourceController().setProperty("styleScrollPaneVisible", "true");
 			
-//			if (uri!=null && uri.getPath().length()>0) {
-//				Controller.getCurrentController().getResourceController().setProperty(LIBRARY_PATH, uri.getPath());
-//			}
-//		}
-		
+		}
+		Controller.getCurrentController().getResourceController().addPropertyChangeListener(new PropertyListener());
+		FreeplaneActionCascade.addAction(new DocearQuitAction());		
 	}
 	
 	private void modifyContextMenus() {		
 		AWorkspaceTreeNode root =  (AWorkspaceTreeNode) WorkspaceUtils.getModel().getRoot();
 		WorkspacePopupMenuBuilder.insertAction(root.getContextMenu(), "workspace.action.docear.locations.change", 3);
 	}
-
-	public void propertyChanged(String propertyName, String newValue, String oldValue) {
-	}	
 	
 }

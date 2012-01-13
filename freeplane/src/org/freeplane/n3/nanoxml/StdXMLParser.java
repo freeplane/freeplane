@@ -124,7 +124,6 @@ public class StdXMLParser implements IXMLParser {
 			throw e;
 		}
 		catch (final Exception e) {
-			LogUtils.severe(e);
 			throw new XMLException(e);
 		}
 	}

@@ -22,7 +22,9 @@ package org.freeplane.main.mindmapmode.stylemode;
 import java.awt.event.ActionEvent;
 
 
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
@@ -45,6 +47,10 @@ public class EditStylesAction extends AEditStylesAction {
 		undoHandler.startTransaction();
 		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map);
 		final MapModel styleMap = mapStyleModel.getStyleMap();
+		if(styleMap == null){
+			UITools.errorMessage(TextUtils.getText("no_styles_found_in_map"));
+			return;
+		}
 		init();
 		getModeController().getMapController().newMapView(styleMap);
 		dialog.setLocationRelativeTo(Controller.getCurrentController().getViewController().getJFrame());

@@ -37,6 +37,7 @@ import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EditNodeWYSIWYG;
+import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
 import org.freeplane.features.ui.ViewController;
 
 class EditNoteInDialogAction extends AFreeplaneAction {
@@ -87,6 +88,13 @@ class EditNoteInDialogAction extends AFreeplaneAction {
 
 			public void split(final String newText, final int position) {
 			}
+			public boolean canSplit() {
+                return false;
+            }
+
+			public EditedComponent getEditType() {
+                return EditedComponent.NOTE;
+            }
 		}, false);
 		mCurrentEditDialog = editNodeWYSIWYG;
 		editNodeWYSIWYG.setBackground(Color.WHITE);

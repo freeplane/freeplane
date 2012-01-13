@@ -23,6 +23,7 @@ import java.awt.EventQueue;
 import java.awt.Frame;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Set;
@@ -54,7 +55,6 @@ import org.freeplane.features.mode.browsemode.BModeController;
 import org.freeplane.features.mode.filemode.FModeController;
 import org.freeplane.features.mode.mindmapmode.LoadAcceleratorPresetsAction;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.note.NoteController;
 import org.freeplane.features.print.PrintController;
 import org.freeplane.features.styles.LogicalStyleFilterController;
 import org.freeplane.features.styles.MapViewLayout;
@@ -137,8 +137,10 @@ public class FreeplaneStarter {
 			mapViewController.addMapViewChangeListener(applicationResourceController.getLastOpenedList());
 			FilterController.install();
 			PrintController.install();
-			ScannerController.install(new ScannerController());
-			FormatController.install(new FormatController());
+            FormatController.install(new FormatController());
+            final ScannerController scannerController = new ScannerController();
+            ScannerController.install(scannerController);
+            scannerController.addParsersForStandardFormats();
 			ModelessAttributeController.install();
 			TextController.install();
 			TimeController.install();
@@ -266,19 +268,26 @@ public class FreeplaneStarter {
 			String fileArgument = args[i];
 			if (fileArgument.toLowerCase().endsWith(
 			    org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
-				if (!FileUtils.isAbsolutePath(fileArgument)) {
-					fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
-				}
 				try {
+					final URL url;
+					if(fileArgument.startsWith("http://")){
+						url = new URL(fileArgument);
+					}
+					else{
+						if (!FileUtils.isAbsolutePath(fileArgument)) {
+							fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
+						}
+						url = Compat.fileToUrl(new File(fileArgument));
+					}
 					if (!fileLoaded) {
 						controller.selectMode(MModeController.MODENAME);
 					}
 					final MModeController modeController = (MModeController) controller.getModeController();
-					modeController.getMapController().newMap(Compat.fileToUrl(new File(fileArgument)), false);
+					modeController.getMapController().newMap(url);
 					fileLoaded = true;
 				}
 				catch (final Exception ex) {
-					System.err.println("File " + fileArgument + " not found error");
+					System.err.println("File " + fileArgument + " not loaded");
 				}
 			}
 		}

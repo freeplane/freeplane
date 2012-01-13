@@ -6,6 +6,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.Collection;
 
 import org.docear.plugin.bibtex.ReferencesController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -26,9 +27,18 @@ public class CopyBibtexToClipboard extends AFreeplaneAction{
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
-		final String bibtexKey = ReferencesController.getController().getJabRefAttributes().getBibtexKey(node);
-		
+		Collection<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
+		String strBuffer = "";
+		for(NodeModel node : nodes) {
+			String bibKey = ReferencesController.getController().getJabRefAttributes().getBibtexKey(node);
+			if(strBuffer.indexOf(bibKey) == -1) {
+				if(!"".equals(strBuffer)) {
+					strBuffer += ",";
+				}
+				strBuffer += bibKey;
+			}
+		}
+		final String bibtexKeys = strBuffer;
 		Transferable content = new Transferable() {
 			public boolean isDataFlavorSupported(DataFlavor flavor) {
 				return DataFlavor.stringFlavor.equals(flavor);
@@ -40,7 +50,7 @@ public class CopyBibtexToClipboard extends AFreeplaneAction{
 			
 			public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
 				if(DataFlavor.stringFlavor.equals(flavor)) {
-					return bibtexKey;
+					return bibtexKeys;
 				}
 				throw new UnsupportedFlavorException(flavor);
 			}

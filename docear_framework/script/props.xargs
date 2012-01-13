@@ -1,0 +1,44 @@
+#
+# Properties used by both init.xargs and restart.xargs
+#
+
+# The Service Platform ID should be used by bundles needing to
+# a unique ID for the platform itself
+-Dorg.osgi.provisioning.spid=knopflerfish
+
+
+# Security
+#-Djava.security.manager=
+#-Djava.security.policy=file:framework.policy
+
+# URL to bundle repository
+#-Doscar.repository.url=http://www.knopflerfish.org/releases/current/repository.xml
+
+# Initial startup verbosity, 0 is low verbosity
+-Dorg.knopflerfish.verbosity=0
+# Various debug flags
+-Dorg.knopflerfish.framework.debug.packages=false
+-Dorg.knopflerfish.framework.debug.errors=true
+-Dorg.knopflerfish.framework.debug.classloader=false
+-Dorg.knopflerfish.framework.debug.startlevel=false
+-Dorg.knopflerfish.framework.debug.ldap=false
+-Dorg.knopflerfish.framework.debug.service_reference=false
+-Dorg.knopflerfish.framework.debug.bundle_resource=false
+
+# Add all standard packages for the currently running JRE version to
+# the set of packages exported by the system classloader.
+#-Dorg.knopflerfish.framework.system.export.all=true
+-Dorg.knopflerfish.framework.system.export.all_15=true
+
+# Comma-separated list of packages to be added to the set of packages
+# exported by system classloader.
+#-Dorg.osgi.framework.system.packages=
+
+# Comma-separated list of packages that must be loaded by system classloader
+-Dorg.osgi.framework.bootdelegation=*
+#-Dorg.osgi.framework.bootdelegation=sun.*,com.sun.*,apple.laf.*
+
+
+-Dorg.knopflerfish.startlevel.use=true
+
+

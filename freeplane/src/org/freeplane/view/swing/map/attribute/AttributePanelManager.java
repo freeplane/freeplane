@@ -173,6 +173,7 @@ public class AttributePanelManager{
             });
             tablePanel.add(Box.createVerticalStrut(5));
             JComponent c = attributeView.getContainer();
+            c.setAlignmentX(0.5f);
             tablePanel.add(c);
             tablePanel.add(Box.createGlue());
             tablePanel.revalidate();

@@ -1,5 +1,5 @@
-<map version="0.9.0" docear_map_version="1.0" dialect="docear 1.0" software_name="SciPlore_MindMapping" software_version="0.14" private="1" mapID="88c560da-0c67-49c7-870a-fa7c1b63bc38">
-<!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
+<map version="0.9.0" docear_map_version="1.0" software_name="SciPlore_MindMapping" software_version="0.14" private="1" mapID="88c560da-0c67-49c7-870a-fa7c1b63bc38" dialect="docear 1.0">
+<!--To view this file, download Docear - The Academic Literature Suite from http://www.docear.org -->
 <node TEXT="Welcome" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1322910607046" COLOR="#ffffff" BACKGROUND_COLOR="#0099cc">
 <font SIZE="16" BOLD="true" ITALIC="false"/>
 <hook NAME="MapStyle">
@@ -184,13 +184,13 @@
 </node>
 <node TEXT="Feedback" ID="ID_210411846" CREATED="1322907550711" MODIFIED="1322910644877">
 <font BOLD="true"/>
-<node TEXT="Please let us know what we can do better" ID="ID_1039608161" CREATED="1322912169719" MODIFIED="1322912184452" LINK="#ID_1046976431"/>
+<node TEXT="Please let us know what we can do better" ID="ID_1039608161" CREATED="1322912169719" MODIFIED="1322912184452" LINK="workspace:/../sciplore/Entwicklung/eclipse/docear/"/>
 <node TEXT="Read what others like about Docear (Testimonials)" ID="ID_734818819" CREATED="1322912062238" MODIFIED="1323419217994" LINK="http://docear.org/software/testimonials/"/>
 </node>
 <node TEXT="Usability" ID="ID_182288749" CREATED="1322907564736" MODIFIED="1322910644877">
 <font BOLD="true"/>
 <node TEXT="Docear is extremely powerful" ID="ID_1866937594" CREATED="1322907660932" MODIFIED="1322907705681"/>
-<node TEXT="Have a look at the examples to get an idea what&#xa;Docear can do (click the green arrow)" ID="ID_471397245" CREATED="1322907723021" MODIFIED="1322907806472" LINK="#ID_703448322"/>
+<node TEXT="Have a look at the examples to get an idea what&#xa;Docear can do (click the green arrow)" ID="ID_471397245" CREATED="1322907723021" MODIFIED="1322907806472" LINK="workspace:/../sciplore/Entwicklung/eclipse/docear/"/>
 <node ID="ID_166372850" CREATED="1322907706939" MODIFIED="1323258180578"><richcontent TYPE="NODE">
 
 <html>
@@ -345,7 +345,7 @@
 <node TEXT="www.docear.org" ID="ID_269140470" CREATED="1323261304272" MODIFIED="1323261342900" LINK="http://www.docear.org"/>
 </node>
 <node TEXT="You can add internal links to&#xa;other nodes in this mind map" ID="ID_634699852" CREATED="1323261346219" MODIFIED="1323419364544">
-<node TEXT="Click the green arrow" ID="ID_1774839721" CREATED="1323261365350" MODIFIED="1323261385631" LINK="#ID_1643291026"/>
+<node TEXT="Click the green arrow" ID="ID_1774839721" CREATED="1323261365350" MODIFIED="1323261385631" LINK="workspace:/../sciplore/Entwicklung/eclipse/docear/"/>
 </node>
 <node TEXT="You can add visual links" ID="ID_1921629847" CREATED="1323261418441" MODIFIED="1323261425205">
 <node TEXT="Visual link to" ID="ID_1119495334" CREATED="1323261427096" MODIFIED="1323261436173">
@@ -354,10 +354,10 @@
 <node TEXT="this node" ID="ID_932870811" CREATED="1323261432886" MODIFIED="1323261434346"/>
 </node>
 <node TEXT="You can add links to local files" ID="ID_33520894" CREATED="1323261408174" MODIFIED="1323261414466">
-<node TEXT="Local file link" ID="ID_1461806695" CREATED="1323261443776" MODIFIED="1323261561366" LINK="../../../temp/temp-mypubs.mm"/>
+<node TEXT="Local file link" ID="ID_1461806695" CREATED="1323261443776" MODIFIED="1323261561366" LINK="workspace:/../sciplore/temp/temp-mypubs.mm"/>
 </node>
 <node TEXT="You can add links to local folders" ID="ID_401086023" CREATED="1323261491558" MODIFIED="1323261497773">
-<node TEXT="images" ID="ID_1568080425" CREATED="1323261487620" MODIFIED="1323261487622" LINK="../resources/images/"/>
+<node TEXT="images" ID="ID_1568080425" CREATED="1323261487620" MODIFIED="1323261487622" LINK="workspace:/../sciplore/Entwicklung/eclipse/resources/images"/>
 </node>
 </node>
 <node TEXT="Clouds" FOLDED="true" ID="ID_1227135545" CREATED="1322910690077" MODIFIED="1322910691429">

@@ -279,7 +279,7 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 				if(fileExt.equalsIgnoreCase(".mm") || fileExt.equalsIgnoreCase(".dcr")) {
 					try {
 						final URL mapUrl = Compat.fileToUrl(getFile());
-						Controller.getCurrentModeController().getMapController().newMap(mapUrl, false);
+						Controller.getCurrentModeController().getMapController().newMap(mapUrl);
 					}
 					catch (final Exception e) {
 						LogUtils.severe(e);
