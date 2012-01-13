@@ -73,7 +73,12 @@ public class MindmapUpdateController {
 	private List<URI> getAllOpenMapUris() {
 		List<URI> maps = new ArrayList<URI>();
 		for (MapModel map : getAllOpenMaps()) {
-			maps.add(map.getFile().toURI());
+			if (map.getFile() == null) {
+				((MFileManager) UrlManager.getController()).save(map, true);
+			}
+			if (map.getFile() != null) {
+				maps.add(map.getFile().toURI());
+			}
 		}
 		return maps;
 	}
