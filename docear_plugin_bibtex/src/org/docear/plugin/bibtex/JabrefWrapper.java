@@ -95,6 +95,9 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 	}
 	
 	public BibtexDatabase getDatabase() {
+		if(getBasePanel() == null) {
+			return null;
+		}
 		return getBasePanel().getDatabase();
 	}
 	

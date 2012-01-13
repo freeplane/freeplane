@@ -34,7 +34,9 @@ public class ReferenceQuitAction extends QuitAction {
 		try {
 			if(ReferencesController.getController().getJabrefWrapper() != null) {
 				BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
-				
+				if(database == null) {
+					return;
+				}
 				for (BibtexEntry entry : database.getEntries()) {
 					if (entry.getField("docear_add_to_node") != null) {
 						entry.setField("docear_add_to_node", null);

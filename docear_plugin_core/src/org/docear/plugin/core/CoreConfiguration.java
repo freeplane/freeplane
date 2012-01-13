@@ -88,7 +88,6 @@ public class CoreConfiguration extends ALanguageController {
 				
 		LogUtils.info("org.docear.plugin.core.CoreConfiguration() initializing...");
 		firstRun = !ResourceController.getResourceController().getBooleanProperty(DOCEAR_FIRST_RUN_PROPERTY);
-		ResourceController.getResourceController().setProperty(DOCEAR_FIRST_RUN_PROPERTY, true);
 		init(modeController);
 	}
 	
