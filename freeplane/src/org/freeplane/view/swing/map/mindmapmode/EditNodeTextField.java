@@ -478,7 +478,8 @@ public class EditNodeTextField extends EditNodeBase {
 		}
 		textfield.getDocument().removeDocumentListener(documentListener);
 		parent.setPreferredSize(null);
-		nodeView.update();
+		if(nodeView.isDisplayable())
+			nodeView.update();
 		if(nodeView.isRoot() && parent instanceof MainView)
 		    parent.setHorizontalAlignment(JLabel.CENTER);
 		if(layoutMapOnTextChange)

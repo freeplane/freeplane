@@ -691,14 +691,18 @@ public class MapController extends SelectionController implements IExtension{
 
 	public void delayedNodeRefresh(final NodeModel node, final Object property, final Object oldValue,
 	                               final Object newValue) {
+		final ModeController originalModeController = Controller.getCurrentModeController();
 		if (nodeSet == null) {
 			nodeSet = new HashSet<NodeModel>();
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
+					final ModeController currentModeController = Controller.getCurrentModeController();
+					if(! currentModeController.equals(originalModeController))
+						return;
 					final Collection<NodeModel> set = nodeSet;
 					nodeSet = null;
 					for (final NodeModel node : set) {
-						Controller.getCurrentModeController().getMapController().nodeRefresh(node, property, oldValue, newValue);
+						currentModeController.getMapController().nodeRefresh(node, property, oldValue, newValue);
 					}
 				}
 			});

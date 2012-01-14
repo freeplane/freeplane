@@ -20,6 +20,7 @@
 package org.freeplane.features.styles.mindmapmode;
 
 import java.awt.Component;
+import java.awt.Container;
 
 import javax.swing.JComboBox;
 import javax.swing.JList;
@@ -38,11 +39,17 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
 	                                                  int index, boolean isSelected, boolean cellHasFocus) {
 	    	super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 	    	final String text;
-	    	final int parentWidth = list.getParent().getWidth();
+	    	final Container parent = list.getParent();
+	    	if(parent == null){
+	    		text = getText();
+	    	}
+	    	else {
+			final int parentWidth = parent.getWidth();
 			if(index == -1 || parentWidth > 0 && parentWidth < getPreferredSize().width)
 	    		text = getText();
 	    	else
 	    		text = null;
+	    	}
 			if(index == -1){
 	    		box.setToolTipText(text);
 	    	}
