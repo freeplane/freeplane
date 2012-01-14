@@ -641,7 +641,6 @@ public class MMapController extends MapController {
 			return false;
 		if (AddOnsController.getController().installIfAppropriate(url))
 			return false;
-		Controller.getCurrentController().getViewController().setWaitingCursor(true);
 		URL alternativeURL = null;
 		try {
 			final File file = Compat.urlToFile(url);
@@ -670,6 +669,7 @@ public class MMapController extends MapController {
 
 		if(alternativeURL == null)
 			return false;
+		Controller.getCurrentController().getViewController().setWaitingCursor(true);
 		try{
 			final MapModel newModel = new MMapModel();
     		final MFileManager fileManager = MFileManager.getController(getMModeController());
