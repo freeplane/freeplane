@@ -639,30 +639,35 @@ public class MMapController extends MapController {
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		if (mapViewManager.tryToChangeToMapView(url))
 			return false;
-        if (AddOnsController.getController().installIfAppropriate(url))
-            return false;
+		if (AddOnsController.getController().installIfAppropriate(url))
+			return false;
 		Controller.getCurrentController().getViewController().setWaitingCursor(true);
 		URL alternativeURL = null;
 		try {
-	        final File file = Compat.urlToFile(url);
-	        if(file == null){
-	        	alternativeURL =  url;
-	        }
-	        else{
-	    		final MFileManager fileManager = MFileManager.getController(getMModeController());
-	    		File alternativeFile = fileManager.getAlternativeFile(file, AlternativeFileMode.AUTOSAVE);
-	    		if(alternativeFile != null){
-	    			alternativeURL = Compat.fileToUrl(alternativeFile);
-	    		}
-	    		else
-	    			return false;
-	        }
+			final File file = Compat.urlToFile(url);
+			if(file == null){
+				alternativeURL =  url;
+			}
+			else{
+				if(file.exists()){
+					final MFileManager fileManager = MFileManager.getController(getMModeController());
+					File alternativeFile = fileManager.getAlternativeFile(file, AlternativeFileMode.AUTOSAVE);
+					if(alternativeFile != null){
+						alternativeURL = Compat.fileToUrl(alternativeFile);
+					}
+					else
+						return false;
+				}
+				else{
+					alternativeURL = url;
+				}
+			}
 		}
 		catch (MalformedURLException e) {
-        }
-        catch (URISyntaxException e) {
-        }
-		
+		}
+		catch (URISyntaxException e) {
+		}
+
 		if(alternativeURL == null)
 			return false;
 		try{
