@@ -53,6 +53,7 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
+import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
@@ -124,6 +125,7 @@ public class SModeControllerFactory {
 		NoteController.install(new MNoteController(modeController));
 		LinkController.install(new LinkController());
 		MFileManager.install(new MFileManager());
+		MMapIO.install(modeController);
 		final MLogicalStyleController logicalStyleController = new MLogicalStyleController(modeController);
 		logicalStyleController.initS();
 		LogicalStyleController.install(logicalStyleController);

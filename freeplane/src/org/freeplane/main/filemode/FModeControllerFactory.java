@@ -33,6 +33,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.filemode.CenterAction;
 import org.freeplane.features.map.filemode.FMapController;
 import org.freeplane.features.map.filemode.OpenPathAction;
+import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.IPropertyHandler;
 import org.freeplane.features.mode.filemode.FModeController;
@@ -61,6 +62,7 @@ public class FModeControllerFactory {
 		controller.selectModeForBuild(modeController);
 		new FMapController(modeController);
 		UrlManager.install(new UrlManager());
+		MapIO.install(modeController);
 		IconController.install(new IconController(modeController));
 		NodeStyleController.install(new NodeStyleController(modeController));
 		EdgeController.install(new EdgeController(modeController));
