@@ -58,8 +58,7 @@ class ImportBranchAction extends AFreeplaneAction {
 			try {
 				final MapModel map = parent.getMap();
 				final URL url = map.getURL();
-				final NodeModel node = ((MMapController) Controller.getCurrentModeController().getMapController()).loadTree(map, chooser
-				    .getSelectedFile());
+				final NodeModel node = ((MFileManager) UrlManager.getController()).loadTree(map, chooser.getSelectedFile());
 				map.setURL(url);
 				PersistentNodeHook.removeMapExtensions(node);
 				((MMapController) Controller.getCurrentModeController().getMapController()).insertNode(node, parent);

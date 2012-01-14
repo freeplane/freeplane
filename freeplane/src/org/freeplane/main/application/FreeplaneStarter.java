@@ -242,7 +242,7 @@ public class FreeplaneStarter {
 		}
 		controller.selectMode(MModeController.MODENAME);
 		final MModeController modeController = (MModeController) controller.getModeController();
-		MFileManager.getController(modeController).newMap();
+		MFileManager.getController(modeController).newMapFromDefaultTemplate();
 	}
 	
 	public void loadMapsLater(final String[] args){

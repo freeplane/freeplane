@@ -261,16 +261,18 @@ public class UrlManager implements IExtension {
 		}
 	}
 
-	public void load(final URL url, final MapModel map) throws FileNotFoundException, IOException, XMLParseException,
-	        URISyntaxException {
-		loadImpl(url, map);
+	/**@deprecated -- use MapIO*/
+	@Deprecated
+	public boolean load(final URL url, final MapModel map){
+		final boolean loaded = loadImpl(url, map);
 		map.setReadOnly(true);
 		map.setSaved(true);
+		return loaded;
 	}
-
-	/** returns true only if loading was successful. Displays an error dialog on an error loading the map.
-	 * This and other errors are logged to the logfile. */
-	public boolean loadImpl(final URL url, final MapModel map) {
+	
+	/**@deprecated -- use MapIO*/
+	@Deprecated
+	protected boolean loadImpl(final URL url, final MapModel map) {
 		setURL(map, url);
 		InputStreamReader urlStreamReader = null;
 		try {
@@ -302,6 +304,8 @@ public class UrlManager implements IExtension {
 		return false;
 	}
 
+	/**@deprecated -- use MapIO*/
+	@Deprecated
 	public void loadURL(URI uri) {
 		final String uriString = uri.toString();
 		if (uriString.startsWith("#")) {
@@ -416,6 +420,8 @@ public class UrlManager implements IExtension {
 		map.setURL(url);
 	}
 
+	/**@deprecated -- use MapIO*/
+	@Deprecated
 	public void loadDefault(MapModel target) {
 	    try {
 	    	loadImpl(ResourceController.getResourceController().getResource("/styles/viewer_standard.mm"), target);

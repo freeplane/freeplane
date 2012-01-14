@@ -347,10 +347,6 @@ public class MMapController extends MapController {
 		return true;
 	}
 
-	public NodeModel loadTree(final MapModel map, final File file) throws XMLParseException, IOException {
-		return ((MFileManager) UrlManager.getController()).loadTree(map, file);
-	}
-
 	public void moveNode(NodeModel node, int i) {
 		   moveNode(node, node.getParentNode(), i);
 	}
@@ -619,6 +615,8 @@ public class MMapController extends MapController {
 		return newNode;
 	}
 
+	/**@deprecated -- use MMapIO*/
+	@Deprecated
 	public boolean newUntitledMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
         try {
         	Controller.getCurrentController().getViewController().setWaitingCursor(true);
@@ -634,6 +632,8 @@ public class MMapController extends MapController {
         }
 	}
 
+	/**@deprecated -- use MMapIO*/
+	@Deprecated
 	@Override
     public boolean newMap(URL url) throws FileNotFoundException, XMLParseException, IOException, URISyntaxException {
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
@@ -667,7 +667,8 @@ public class MMapController extends MapController {
 			return false;
 		try{
 			final MapModel newModel = new MMapModel();
-			UrlManager.getController().load(alternativeURL, newModel);
+    		final MFileManager fileManager = MFileManager.getController(getMModeController());
+    		fileManager.load(alternativeURL, newModel);
 			newModel.setURL(url);
 			newModel.setSaved(alternativeURL.equals(url));
 			fireMapCreated(newModel);
@@ -679,6 +680,8 @@ public class MMapController extends MapController {
 		}
     }
 
+	/**@deprecated -- use MMapIO*/
+	@Deprecated
 	public boolean newDocumentationMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		if (mapViewManager.tryToChangeToMapView(url))
@@ -698,6 +701,8 @@ public class MMapController extends MapController {
         }
 	}
 	
+	/**@deprecated -- use MMapIO*/
+	@Deprecated
     public boolean restoreCurrentMap() throws FileNotFoundException, XMLParseException, IOException, URISyntaxException {
 	    final Controller controller = Controller.getCurrentController();
         final MapModel map = controller.getMap();

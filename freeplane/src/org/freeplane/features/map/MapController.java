@@ -37,6 +37,7 @@ import java.util.List;
 
 import javax.swing.Action;
 
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.UnknownElementWriter;
@@ -61,7 +62,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
 /**
  * @author Dimitry Polivaev
  */
-public class MapController extends SelectionController {
+public class MapController extends SelectionController implements IExtension{
 	public enum Direction {
 		BACK, BACK_N_FOLD, FORWARD, FORWARD_N_FOLD
 	}
@@ -583,6 +584,8 @@ public class MapController extends SelectionController {
 		return node.isFolded();
 	}
 
+	/**@deprecated -- use MapIO*/
+	@Deprecated
 	public boolean newMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
         	final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
         	if (mapViewManager.tryToChangeToMapView(url))

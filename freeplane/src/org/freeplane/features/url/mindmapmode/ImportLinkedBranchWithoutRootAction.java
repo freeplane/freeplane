@@ -64,7 +64,7 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction {
 			final URL url = map.getURL();
 			final File file = uri.isAbsolute() && !uri.isOpaque() ? new File(uri) : new File(new URL(url, uri
 			    .getPath()).getFile());
-			final NodeModel node = ((MMapController) modeController.getMapController()).loadTree(map, file);
+			final NodeModel node = ((MFileManager) UrlManager.getController()).loadTree(map, file);
 			map.setURL(url);
 			for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
 				((MMapController) modeController.getMapController()).insertNode(child, selected);

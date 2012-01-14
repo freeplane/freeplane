@@ -97,12 +97,12 @@ public class UserPropertiesUpdater {
 		final File allUserTemplates = fm.defaultStandardTemplateDir();
 		final File standardTemplate = new File(allUserTemplates, "standard.mm");
 		try {
-			fm.loadImpl(standardTemplate.toURL(), defaultStyleMap);
+			fm.load(standardTemplate.toURL(), defaultStyleMap);
 		}
 		catch (Exception e) {
 			LogUtils.warn(e);
 			try {
-				fm.loadImpl(ResourceController.getResourceController().getResource("/styles/viewer_standard.mm"), defaultStyleMap);
+				fm.load(ResourceController.getResourceController().getResource("/styles/viewer_standard.mm"), defaultStyleMap);
 			}
 			catch (Exception e2) {
 				defaultStyleMap.createNewRoot();

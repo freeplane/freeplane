@@ -366,8 +366,9 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
         return input.toURI();
 	}
 
-	@Override
-	public void load(final URL url, final MapModel map) throws FileNotFoundException, IOException, XMLParseException,
+	/**@deprecated -- use MapIO*/
+	@Deprecated
+	public void loadAndLock(final URL url, final MapModel map) throws FileNotFoundException, IOException, XMLParseException,
 	        URISyntaxException {
 		final File file = Compat.urlToFile(url);
 		if(file == null){
@@ -439,6 +440,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		return selectedFile;
 	}
 
+	/**@deprecated -- use MMapIO*/
+	@Deprecated
 	public NodeModel loadTree(final MapModel map, final File file) throws XMLParseException, IOException {
 		try {
 			final NodeModel rootNode = loadTreeImpl(map, file);
@@ -492,6 +495,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		}
 	}
 
+	/**@deprecated -- use MapIO*/
+	@Deprecated
 	@Override
 	public void loadURL(final URI relative) {
 		final MapModel map = Controller.getCurrentController().getMap();
@@ -507,6 +512,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		super.loadURL(relative);
 	}
 
+	/**@deprecated -- use MapIO*/
+	@Deprecated
 	public void open() {
 		final JFileChooser chooser = getFileChooser(false);
 		chooser.setMultiSelectionEnabled(true);
@@ -531,15 +538,17 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		Controller.getCurrentController().getViewController().setTitle();
 	}
 
-	public void newMap() {
+	/**@deprecated -- use MMapIO*/
+	@Deprecated
+	public MapModel newMapFromDefaultTemplate() {
 		final File file = defaultTemplateFile();
 		if (file != null) {
-			newMapFromTemplate(file);
-			return;
+			return newMapFromTemplate(file);
 		}
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		final MapModel map = mapController.newMap();
 		mapController.setSaved(map, SET_NEW_MAP_SAVED);
+		return map;
 	}
 
 	private File defaultTemplateFile() {
@@ -571,7 +580,9 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		return ResourceController.getResourceController().getProperty("standard_template");
 	}
 
-	public void newMapFromTemplate(final File startFile) {
+	/**@deprecated -- use MMapIO*/
+	@Deprecated
+	public MapModel newMapFromTemplate(final File startFile) {
 		final File file;
 		if (startFile == null) {
 			file = getLastCurrentDir();
@@ -582,7 +593,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController()
 			    .getMapView());
 			if (returnVal != JFileChooser.APPROVE_OPTION) {
-				return;
+				return null;
 			}
 			file = chooser.getSelectedFile();
 		}
@@ -599,12 +610,16 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				map.getRootNode().setText(rootText.toString());
 			}
 			controller.getModeController().getMapController().setSaved(map, SET_NEW_MAP_SAVED);
+			return map;
 		}
 		catch (Exception e) {
 			handleLoadingException(e);
 		}
+		return null;
 	}
 
+	/**@deprecated -- use MMapIO*/
+	@Deprecated
 	public void saveAsUserTemplate() {
 		final JFileChooser chooser = new JFileChooser();
 		final FileFilter filter = getFileFilter();
@@ -629,6 +644,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		saveInternal((MMapModel) Controller.getCurrentController().getMap(), file, false);
 	}
 
+	/**@deprecated -- use MMapIO*/
+	@Deprecated
 	public boolean save(final MapModel map) {
 		if (map == null || map.isSaved()) {
 			return true;
@@ -641,9 +658,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		}
 	}
 
-	/**
-	 * Return the success of saving
-	 */
+	/**@deprecated -- use MMapIO*/
+	@Deprecated
 	public boolean save(final MapModel map, final File file) {
 		if(file == null){
 			return saveAs(map);
@@ -678,9 +694,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		return true;
 	}
 
-	/**
-	 * Save as; return false is the action was cancelled
-	 */
+	/**@deprecated -- use MMapIO*/
+	@Deprecated
 	public boolean saveAs(final MapModel map) {
 		final JFileChooser chooser = getFileChooser(true);
 		if (getMapsParentFile(map) == null) {
@@ -763,6 +778,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		return false;
 	}
 
+	/**@deprecated -- use MMapIO*/
+	@Deprecated
 	public void writeToFile(final MapModel map, final File file) throws FileNotFoundException, IOException {
 		final FileOutputStream out = new FileOutputStream(file);
 		final FileLock lock = out.getChannel().tryLock();
@@ -799,7 +816,10 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	 * @throws Exception
 	 *             , when the locking failed for other reasons than that the
 	 *             file is being edited.
+	 *             
+	 * @deprecated -- use MMapIO
 	 */
+	@Deprecated
 	public String tryToLock(final MapModel map, final File file) throws Exception {
 		final String lockingUser = ((MMapModel) map).getLockManager().tryToLock(file);
 		final String lockingUserOfOldLock = ((MMapModel) map).getLockManager().popLockingUserOfOldLock();
@@ -830,6 +850,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		return (MFileManager) modeController.getExtension(UrlManager.class);
 	}
 
+	/**@deprecated -- use MMapIO*/
+	@Deprecated
 	public void loadDefault(MapModel target) {
 		try {
 			final File file = defaultTemplateFile();

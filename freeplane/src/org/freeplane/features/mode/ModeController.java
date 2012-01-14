@@ -219,7 +219,7 @@ public class ModeController extends AController {
 		return controller;
 	}
 
-	public IExtension getExtension(final Class<? extends IExtension> clazz) {
+	public <T extends IExtension> T getExtension(final Class<T> clazz) {
 		return extensionContainer.getExtension(clazz);
 	}
 
@@ -286,6 +286,7 @@ public class ModeController extends AController {
 
 	public void setMapController(final MapController mapController) {
 		this.mapController = mapController;
+		addExtension(MapController.class, mapController);
 	}
 
 	public void setUserInputListenerFactory(final IUserInputListenerFactory userInputListenerFactory) {
