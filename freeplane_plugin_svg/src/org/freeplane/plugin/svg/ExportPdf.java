@@ -84,7 +84,9 @@ class ExportPdf extends ExportVectorGraphic {
 			org.freeplane.core.util.LogUtils.warn(ex);
 			UITools.errorMessage(ex.getLocalizedMessage());
 		}
-		Controller.getCurrentController().getViewController().setWaitingCursor(false);
+		finally{
+			Controller.getCurrentController().getViewController().setWaitingCursor(false);
+		}
 	}
 
 }
