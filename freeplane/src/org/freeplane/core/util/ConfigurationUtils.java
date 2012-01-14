@@ -14,6 +14,8 @@ public class ConfigurationUtils {
 	public static List<String> decodeListValue(final String value, boolean requireTwo) {
 		final String[] values = value.length() == 0 ? new String[0] : value
 		    .split(requireTwo ? CONFIG_LIST_VALUE_SEPARATOR_STRICT : CONFIG_LIST_VALUE_SEPARATOR_ONE_OR_MORE);
+		for(int i = 0; i < values.length; i++)
+			values[i] = values[i].trim();
 		return Arrays.asList(values);
 	}
 
