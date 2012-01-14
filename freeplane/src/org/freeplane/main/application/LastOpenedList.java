@@ -262,6 +262,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			open(restoreable);
 		}
 		catch (final Exception ex) {
+			LogUtils.warn(ex);
 			final String message = TextUtils.format("remove_file_from_list_on_error", restoreable);
 			final Frame frame = UITools.getFrame();
 			final Window[] ownedWindows = frame.getOwnedWindows();
@@ -275,7 +276,6 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			if (remove == JOptionPane.YES_OPTION) {
 				remove(restoreable);
 			}
-			LogUtils.warn(ex);
 		}
 	}
 

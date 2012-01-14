@@ -55,7 +55,6 @@ public class LogUtils {
 			return;
 		}
 		loggerCreated = true;
-		final ResourceController resourceController = ResourceController.getResourceController();
 		FileHandler mFileHandler = null;
 		final Logger parentLogger = Logger.getAnonymousLogger().getParent();
 		final Handler[] handlers = parentLogger.getHandlers();
@@ -66,10 +65,15 @@ public class LogUtils {
 			}
 		}
 		try {
-			mFileHandler = new FileHandler(resourceController.getFreeplaneUserDirectory() + File.separator + "log",
-				1400000, 5, false);
-			mFileHandler.setFormatter(new StdFormatter());
-			parentLogger.addHandler(mFileHandler);
+			final String logDirectoryPath = getLogDirectory();
+			final File logDirectory = new File(logDirectoryPath);
+			logDirectory.mkdirs();
+			if(logDirectory.isDirectory()){
+				final String pathPattern = logDirectoryPath + File.separatorChar + "log";
+				mFileHandler = new FileHandler(pathPattern, 1400000, 5, false);
+				mFileHandler.setFormatter(new StdFormatter());
+				parentLogger.addHandler(mFileHandler);
+			}
 			final ConsoleHandler stdConsoleHandler = new ConsoleHandler();
 			stdConsoleHandler.setFormatter(new StdFormatter());
 			if(System.getProperty("java.util.logging.config.file", null) == null){
@@ -89,6 +93,11 @@ public class LogUtils {
 			LogUtils.warn("Error creating logging File Handler", e);
 		}
 	}
+
+	public static String getLogDirectory() {
+	    final String logDirectory = ResourceController.getResourceController().getFreeplaneUserDirectory() + File.separatorChar + "logs";
+	    return logDirectory;
+    }
 
 	public static void info(final String string) {
 		LOGGER.log(Level.INFO, string);

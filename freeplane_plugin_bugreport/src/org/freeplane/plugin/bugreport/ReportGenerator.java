@@ -1,8 +1,11 @@
 package org.freeplane.plugin.bugreport;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -19,8 +22,8 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.StreamHandler;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.resources.ResourceController;
@@ -29,6 +32,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.ViewController;
 
 public class ReportGenerator extends StreamHandler {
 	private class SubmitRunner implements Runnable {
@@ -63,8 +67,6 @@ public class ReportGenerator extends StreamHandler {
 	private static String BUG_TRACKER_URL = null;
 	static boolean disabled = false;
 	private static int errorCounter = 0;
-	static Icon errorIcon = null;
-
 	private static String info;
 	static final private String OPTION = "org.freeplane.plugin.bugreport";
 	private static ByteArrayOutputStream out = null;
@@ -199,6 +201,21 @@ public class ReportGenerator extends StreamHandler {
 		}
 	}
 
+	private static class LogOpener implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			final String freeplaneLogDirectoryPath = LogUtils.getLogDirectory();
+			final File file = new File(freeplaneLogDirectoryPath);
+			if(file.isDirectory()){
+				final ViewController viewController = Controller.getCurrentController().getViewController();
+				try {
+	                viewController.openDocument(file.toURL());
+                }
+                catch (Exception ex) {
+                }
+			}
+        }
+	}
+	JButton logButton;
 	@Override
 	public synchronized void publish(final LogRecord record) {
 		if (out == null) {
@@ -214,16 +231,20 @@ public class ReportGenerator extends StreamHandler {
 		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				if(errorIcon == null)
-					errorIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-						"/images/icons/messagebox_warning.png"));
 				errorCounter++;
-				final ResourceController resourceController = ResourceController.getResourceController();
-				final String freeplaneUserDirectory = resourceController.getFreeplaneUserDirectory();
 				if(TextUtils.getRawText("internal_error_tooltip", null) != null){
-					String tooltip = TextUtils.format("internal_error_tooltip", freeplaneUserDirectory);
-					Controller.getCurrentController().getViewController()
-					.addStatusInfo("internal_error", TextUtils.format("errornumber", errorCounter), errorIcon, tooltip);
+					if(logButton == null){
+						logButton = new JButton();
+						logButton.addActionListener(new LogOpener());
+						final ImageIcon errorIcon = new ImageIcon(ResourceController.getResourceController().getResource(
+								"/images/icons/messagebox_warning.png"));
+						logButton.setIcon(errorIcon);
+						String tooltip = TextUtils.getText("internal_error_tooltip");
+						logButton.setToolTipText(tooltip);
+						Controller.getCurrentController().getViewController().addStatusComponent("internal_error", logButton);
+					}
+					logButton.setText(TextUtils.format("errornumber", errorCounter));
+
 				}
 			}
 		});

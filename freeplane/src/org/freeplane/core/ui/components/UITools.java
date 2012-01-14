@@ -43,6 +43,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -531,5 +532,17 @@ public class UITools {
     		}
     	});
     	return button;
-    }
+	}
+
+	public static final int getComponentIndex(Component component) {
+		if (component != null && component.getParent() != null) {
+			Container c = component.getParent();
+			for (int i = 0; i < c.getComponentCount(); i++) {
+				if (c.getComponent(i) == component)
+					return i;
+			}
+		}
+
+		return -1;
+	}
 }

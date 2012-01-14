@@ -71,6 +71,7 @@ import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.ContainerComboBoxEditor;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.format.FormattedDate;
@@ -147,7 +148,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	private final IMapViewManager mapViewManager;
 	final private JScrollPane scrollPane;
 	final private JLabel status;
-	final private Map<String, JLabel> statusInfos;
+	final private Map<String, Component> statusInfos;
 	final private JPanel statusPanel;
 	final private JComponent toolbarPanel[];
 	final private String userDefinedZoom;
@@ -191,7 +192,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		status = new JLabel();
 		status.setBorder(BorderFactory.createEtchedBorder());
 		statusPanel.add(status);
-		statusInfos = new HashMap<String, JLabel>();
+		statusInfos = new HashMap<String, Component>();
 		statusInfos.put(STANDARD_STATUS_INFO_KEY, status);
 //		this.controller = controller;
 		controller.setViewController(this);
@@ -505,30 +506,41 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	}
 	
 	public void addStatusInfo(final String key, final String info, Icon icon, final String tooltip) {
-		JLabel label = statusInfos.get(key);
+		JLabel label = (JLabel) statusInfos.get(key);
 		if (label == null) {
 			label = new JLabel(info);
 			label.setBorder(BorderFactory.createEtchedBorder());
 			statusInfos.put(key, label);
 			statusPanel.add(label, statusPanel.getComponentCount() - 1);
-			label.setIcon(icon);
 		}
 		else {
 			label.setText(info);
-			label.setIcon(icon);
 			label.revalidate();
 			label.repaint();
 		}
+		label.setIcon(icon);
 		label.setToolTipText(tooltip);
 		label.setVisible(info != null || icon != null);
 	}
 
+	public void addStatusComponent(final String key, Component component) {
+		Component oldComponent = statusInfos.put(key, component);
+		if (oldComponent == null) {
+			statusPanel.add(component, statusPanel.getComponentCount() - 1);
+		}
+		else {
+			final int index = UITools.getComponentIndex(component);
+			statusPanel.remove(index);
+			statusPanel.add(component, index);
+		}
+	}
+
 	public void removeStatus(final String key) {
-		final JLabel oldLabel = statusInfos.remove(key);
-		if (oldLabel == null) {
+		final Component oldComponent = statusInfos.remove(key);
+		if (oldComponent == null) {
 			return;
 		}
-		statusPanel.remove(oldLabel);
+		statusPanel.remove(oldComponent);
 	}
 
 	public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
