@@ -266,7 +266,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 				final TreeNodeInfo childInfo = (TreeNodeInfo) childNode.getUserObject();
 				if (childInfo.getSelected() == TreeNodeInfo.FULL_SELECTED) {
 					final String value = childInfo.getInfo();
-					currentAttributes.getAttributeController().performRegistryAttributeValue(name, value);
+					currentAttributes.getAttributeController().performRegistryAttributeValue(name, value, true);
 				}
 			}
 			else {

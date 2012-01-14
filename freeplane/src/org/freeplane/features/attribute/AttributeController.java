@@ -101,7 +101,7 @@ public class AttributeController implements IExtension {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performRegistryAttributeValue(final String name, final String value) {
+	public void performRegistryAttributeValue(final String name, final String value, boolean manual) {
 		throw new UnsupportedOperationException();
 	}
 
