@@ -264,15 +264,6 @@ public class UrlManager implements IExtension {
 	/**@deprecated -- use MapIO*/
 	@Deprecated
 	public boolean load(final URL url, final MapModel map){
-		final boolean loaded = loadImpl(url, map);
-		map.setReadOnly(true);
-		map.setSaved(true);
-		return loaded;
-	}
-	
-	/**@deprecated -- use MapIO*/
-	@Deprecated
-	protected boolean loadImpl(final URL url, final MapModel map) {
 		setURL(map, url);
 		InputStreamReader urlStreamReader = null;
 		try {
@@ -424,7 +415,7 @@ public class UrlManager implements IExtension {
 	@Deprecated
 	public void loadDefault(MapModel target) {
 	    try {
-	    	loadImpl(ResourceController.getResourceController().getResource("/styles/viewer_standard.mm"), target);
+	    	load(ResourceController.getResourceController().getResource("/styles/viewer_standard.mm"), target);
         }
          catch (Exception e) {
 	        e.printStackTrace();

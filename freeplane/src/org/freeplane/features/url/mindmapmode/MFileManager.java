@@ -857,7 +857,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			final File file = defaultTemplateFile();
 			if (file != null) {
 				try {
-					loadImpl(Compat.fileToUrl(file), target);
+					load(Compat.fileToUrl(file), target);
 					return;
 				}
 				catch (Exception e) {
@@ -866,7 +866,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				}
 			}
 			final URL url = ResourceController.getResourceController().getResource("/styles/viewer_standard.mm");
-			loadImpl(url, target);
+			load(url, target);
 		}
 		catch (Exception e) {
 			LogUtils.severe(e);

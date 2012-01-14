@@ -596,6 +596,8 @@ public class MapController extends SelectionController implements IExtension{
         	Controller.getCurrentController().getViewController().setWaitingCursor(true);
         	final MapModel newModel = new MapModel();
         	UrlManager.getController().load(url, newModel);
+        	newModel.setReadOnly(true);
+        	newModel.setSaved(true);
         	fireMapCreated(newModel);
         	newMapView(newModel);
         	return true;

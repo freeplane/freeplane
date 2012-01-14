@@ -673,7 +673,7 @@ public class MMapController extends MapController {
 		try{
 			final MapModel newModel = new MMapModel();
     		final MFileManager fileManager = MFileManager.getController(getMModeController());
-    		fileManager.load(alternativeURL, newModel);
+    		fileManager.loadAndLock(alternativeURL, newModel);
 			newModel.setURL(url);
 			newModel.setSaved(alternativeURL.equals(url));
 			fireMapCreated(newModel);
@@ -728,7 +728,7 @@ public class MMapController extends MapController {
 		Controller.getCurrentController().getViewController().setWaitingCursor(true);
 		try{
 			final MapModel newModel = new MMapModel();
-			UrlManager.getController().load(alternativeURL, newModel);
+			((MFileManager)MFileManager.getController()).loadAndLock(alternativeURL, newModel);
 			newModel.setURL(url);
 			newModel.setSaved(alternativeURL.equals(url));
 			fireMapCreated(newModel);
