@@ -228,7 +228,8 @@ public class NodeStyleModel implements IExtension, Cloneable {
 
 	public void setShape(final String shape) {
 		try {
-			Shapes.valueOf(shape);
+			if(shape != null)
+				Shapes.valueOf(shape);
 			this.shape = shape;
 		} catch (IllegalArgumentException e) {
 			LogUtils.warn("unknown shape " + shape, e);
