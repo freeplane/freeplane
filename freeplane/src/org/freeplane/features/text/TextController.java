@@ -119,8 +119,6 @@ public class TextController implements IExtension {
 	}
 	
 	public Object getTransformedObject(Object object, final NodeModel nodeModel, Object extension) throws TransformationException{
-		if(PatternFormat.IDENTITY_PATTERN.equals(getNodeFormat(nodeModel)))
-			return object;
 		if(object instanceof String && ResourceController.getResourceController().getBooleanProperty("parse_data")){
 			String string = (String) object;
 			if(string.length() > 0 && string.charAt(0) == '\'')
@@ -128,7 +126,7 @@ public class TextController implements IExtension {
 		}
 		for (IContentTransformer textTransformer : getTextTransformers()) {
 			try {
-	            object = textTransformer.transformContent(object, nodeModel, extension);
+	            object = textTransformer.transformContent(this, object, nodeModel, extension);
             }
             catch (RuntimeException e) {
             	throw new TransformationException(e);

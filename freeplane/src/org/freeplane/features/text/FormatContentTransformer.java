@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.format.FormatController;
+import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.NodeModel;
 
 class FormatContentTransformer extends AbstractContentTransformer {
@@ -14,7 +15,7 @@ class FormatContentTransformer extends AbstractContentTransformer {
 		this.textController = textController;
 	}
 
-	public Object transformContent(Object obj, final NodeModel node, Object transformedExtension) {
+	public Object transformContent(TextController textController, Object obj, final NodeModel node, Object transformedExtension) {
 		if (obj == null || node.getUserObject() != transformedExtension)
 			return obj;
 		final String format = textController.getNodeFormat(node);
@@ -23,7 +24,7 @@ class FormatContentTransformer extends AbstractContentTransformer {
 	}
 
 	private Object expandFormat(Object obj, final NodeModel node, final String format, boolean nodeNumbering) {
-		final boolean hasFormat = format != null && format.length() != 0;
+		final boolean hasFormat = format != null && format.length() != 0 && !PatternFormat.IDENTITY_PATTERN.equals(format);
 		if (!hasFormat && !nodeNumbering){
 			return obj;
 		}
