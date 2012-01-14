@@ -22,6 +22,7 @@ package org.freeplane.core.ui;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Insets;
+import java.awt.MenuItem;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedInputStream;
@@ -76,6 +77,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class MenuBuilder extends UIBuilder {
+	private static final int MAX_MENU_ITEM_COUNT = ResourceController.getResourceController().getIntProperty("max_menu_item_count");
 	private static class ActionHolder implements INameMnemonicHolder {
 		final private Action action;
 
@@ -614,7 +616,25 @@ public class MenuBuilder extends UIBuilder {
 	protected void addComponent(final Container container, final Component component, final int index) {
 		if (container instanceof JMenu) {
 			final JMenu menu = (JMenu) container;
-			menu.getPopupMenu().insert(component, index);
+			final JPopupMenu popupMenu = menu.getPopupMenu();
+			final int itemCount = popupMenu.getComponentCount();
+			if(itemCount < MAX_MENU_ITEM_COUNT || index < itemCount)
+				popupMenu.insert(component, index);
+			else{
+				final JMenu submenu;
+				final Component lastMenuItem = popupMenu.getComponent(itemCount - 1);
+				if(itemCount == MAX_MENU_ITEM_COUNT 
+						|| ! (lastMenuItem instanceof JMenu)){
+					if (component instanceof JPopupMenu.Separator)
+						return;
+					submenu = new JMenu();
+					popupMenu.add(submenu);
+				}
+				else{
+					submenu = (JMenu) lastMenuItem;
+				}
+				addComponent(submenu, component, submenu.getPopupMenu().getComponentCount());
+			}
 			return;
 		}
 		if (container instanceof JToolBar && component instanceof AbstractButton) {
