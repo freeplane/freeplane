@@ -62,9 +62,6 @@ public class MMapIO extends MapIO{
     URISyntaxException {
     	fileManager.loadAndLock(url, map);
     }
-    public void loadURL(URI relative) {
-	    fileManager.loadURL(relative);
-    }
 	public void open() {
 	    fileManager.open();
     }

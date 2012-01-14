@@ -304,7 +304,7 @@ public class UrlManager implements IExtension {
 		return false;
 	}
 
-	/**@deprecated -- use MapIO*/
+	/**@deprecated -- use LinkController*/
 	@Deprecated
 	public void loadURL(URI uri) {
 		final String uriString = uri.toString();

@@ -495,7 +495,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		}
 	}
 
-	/**@deprecated -- use MapIO*/
+	/**@deprecated -- use LinkController*/
 	@Deprecated
 	@Override
 	public void loadURL(final URI relative) {

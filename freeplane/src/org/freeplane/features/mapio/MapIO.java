@@ -55,9 +55,6 @@ public class MapIO implements IExtension{
             URISyntaxException {
 	    urlManager.load(url, map);
     }
-	public void loadURL(URI uri) {
-	    urlManager.loadURL(uri);
-    }
 	public void loadDefault(MapModel target) {
 	    urlManager.loadDefault(target);
     }
