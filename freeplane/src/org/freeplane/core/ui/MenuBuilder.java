@@ -77,6 +77,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class MenuBuilder extends UIBuilder {
+	private static final String EXTRA_SUBMENU = MenuBuilder.class.getName()+".extra_submenu";
 	private static final int MAX_MENU_ITEM_COUNT = ResourceController.getResourceController().getIntProperty("max_menu_item_count");
 	private static class ActionHolder implements INameMnemonicHolder {
 		final private Action action;
@@ -623,12 +624,11 @@ public class MenuBuilder extends UIBuilder {
 			else{
 				final JMenu submenu;
 				final Component lastMenuItem = popupMenu.getComponent(itemCount - 1);
-				if(itemCount == MAX_MENU_ITEM_COUNT 
-						|| ! (lastMenuItem instanceof JMenu)
-						|| ! ((JMenu)lastMenuItem).getText().equals("")){
+				if(itemCount == MAX_MENU_ITEM_COUNT || ! isExtraSubMenu(lastMenuItem)){
 					if (component instanceof JPopupMenu.Separator)
 						return;
 					submenu = new JMenu("");
+					submenu.putClientProperty(EXTRA_SUBMENU, Boolean.TRUE);
 					popupMenu.add(submenu);
 				}
 				else{
@@ -645,6 +645,10 @@ public class MenuBuilder extends UIBuilder {
 		}
 		super.addComponent(container, component, index);
 	}
+
+	private boolean isExtraSubMenu(final Component c) {
+	    return (c instanceof JMenu) &&  (Boolean.TRUE.equals(((JMenu)c).getClientProperty(EXTRA_SUBMENU)));
+    }
 
 	public void addComponent(final String parent, final Container item, final Action action, final int position) {
 		action.addPropertyChangeListener(new Enabler(item));
@@ -801,6 +805,17 @@ public class MenuBuilder extends UIBuilder {
 		}
 		return super.getChildComponent(parentComponent, index);
 	}
+	
+	@Override
+	protected Container getNextParentComponent(Container parentComponent) {
+		if(parentComponent.getComponentCount() > 0 && parentComponent instanceof JMenu)
+		{
+			final Component lastComponent = parentComponent.getComponent(parentComponent.getComponentCount()-1);
+			if(isExtraSubMenu(lastComponent))
+				return (Container) lastComponent;
+		}
+		return null;
+    }
 
 	public Node getMenuBar(DefaultMutableTreeNode element) {
 	    while (element != null) {

@@ -47,7 +47,7 @@ public abstract class UIBuilder extends IndexedTree {
 	 */
 	protected void addComponent(final DefaultMutableTreeNode childNode, final int position) {
 		int index;
-		final Container parentComponent = getParentComponent(childNode, Container.class);
+		Container parentComponent = getParentComponent(childNode, Container.class);
 		if (parentComponent == null) {
 			return;
 		}
@@ -59,10 +59,13 @@ public abstract class UIBuilder extends IndexedTree {
 			final Component relative = getPrevious(childNode);
 			index = -1;
 			if (relative != null) {
-				for (int i = 0; i < getParentComponentCount(parentComponent); i++) {
-					if (getChildComponent(parentComponent, i) == relative) {
-						index = i;
-						break;
+				ParentLoop: for (Container nextParentComponent = parentComponent; nextParentComponent != null; nextParentComponent = getNextParentComponent(nextParentComponent)) {
+					parentComponent = nextParentComponent;
+					for (int i = 0; i < getParentComponentCount(parentComponent); i++) {
+						if (getChildComponent(parentComponent, i) == relative) {
+							index = i;
+							break ParentLoop;
+						}
 					}
 				}
 			}
@@ -73,6 +76,10 @@ public abstract class UIBuilder extends IndexedTree {
 		final Component component = (Component) childNode.getUserObject();
 		addComponent(parentComponent, component, index);
 	}
+
+	protected Container getNextParentComponent(Container parentComponent) {
+	    return null;
+    }
 
 	@Override
 	protected void addNode(final DefaultMutableTreeNode relativeNode, final DefaultMutableTreeNode node,
