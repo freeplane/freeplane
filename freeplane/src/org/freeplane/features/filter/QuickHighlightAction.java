@@ -20,21 +20,14 @@
 package org.freeplane.features.filter;
 
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 
-import javax.swing.ButtonModel;
-import javax.swing.DefaultButtonModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.filter.condition.ASelectableCondition;
-import org.freeplane.features.map.IMapSelection;
-import org.freeplane.features.map.MapController;
-import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.map.MapController.Direction;
 import org.freeplane.features.mode.Controller;
 
 /**

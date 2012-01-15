@@ -27,8 +27,6 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
-import java.util.List;
-
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 

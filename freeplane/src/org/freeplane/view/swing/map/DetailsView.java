@@ -20,7 +20,6 @@
 package org.freeplane.view.swing.map;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 
 /**

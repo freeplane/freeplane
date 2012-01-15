@@ -19,8 +19,6 @@
  */
 package org.freeplane.view.swing.features.time.mindmapmode;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -28,9 +26,6 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import org.freeplane.core.resources.NamedObject;
 
 /**

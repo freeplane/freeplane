@@ -29,8 +29,6 @@ import java.util.Vector;
 
 import javax.swing.JComboBox;
 
-import org.freeplane.features.format.PatternFormat;
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public abstract class EditableComboProperty<T> extends PropertyBean implements IPropertyControl {

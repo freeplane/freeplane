@@ -22,7 +22,6 @@ package org.freeplane.core.ui;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Insets;
-import java.awt.MenuItem;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedInputStream;

@@ -36,7 +36,6 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
-import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.ITooltipProvider;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;

@@ -49,7 +49,6 @@ import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeSizeModel;
-import org.freeplane.features.nodestyle.NodeStyleController;
 
 /**
  * @author Dimitry Polivaev

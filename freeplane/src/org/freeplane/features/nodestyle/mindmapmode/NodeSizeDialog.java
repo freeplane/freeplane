@@ -41,7 +41,6 @@ import javax.swing.Action;
 
 import org.freeplane.core.util.TextUtils;
 
-import java.util.ResourceBundle;
 import java.awt.Color;
 import javax.swing.SpinnerNumberModel;
 

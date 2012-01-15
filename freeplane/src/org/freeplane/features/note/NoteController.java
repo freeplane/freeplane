@@ -26,7 +26,6 @@ import java.net.URL;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IStateIconProvider;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.UIIcon;

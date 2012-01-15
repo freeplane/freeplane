@@ -34,8 +34,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Collection;
-import java.util.Map.Entry;
-
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
