@@ -624,10 +624,11 @@ public class MenuBuilder extends UIBuilder {
 				final JMenu submenu;
 				final Component lastMenuItem = popupMenu.getComponent(itemCount - 1);
 				if(itemCount == MAX_MENU_ITEM_COUNT 
-						|| ! (lastMenuItem instanceof JMenu)){
+						|| ! (lastMenuItem instanceof JMenu)
+						|| ! ((JMenu)lastMenuItem).getText().equals("")){
 					if (component instanceof JPopupMenu.Separator)
 						return;
-					submenu = new JMenu();
+					submenu = new JMenu("");
 					popupMenu.add(submenu);
 				}
 				else{
