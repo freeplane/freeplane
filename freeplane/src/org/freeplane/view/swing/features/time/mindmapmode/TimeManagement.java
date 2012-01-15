@@ -275,14 +275,17 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 			for (final NodeModel node : controller.getModeController().getMapController().getSelectedNodes()) {
 				final ReminderExtension alreadyPresentHook = ReminderExtension.getExtension(node);
 				if (alreadyPresentHook != null) {
-					final Object[] messageArguments = { new Date(alreadyPresentHook.getRemindUserAt()), date };
-					final MessageFormat formatter = new MessageFormat(
-					    getResourceString("plugins/TimeManagement.xml_reminderNode_onlyOneDate"));
-					final String message = formatter.format(messageArguments);
-					final int result = JOptionPane.showConfirmDialog(controller.getViewController().getFrame(), message,
-					    "Freeplane", JOptionPane.YES_NO_OPTION);
-					if (result == JOptionPane.NO_OPTION) {
-						return;
+					final long oldReminderTime = alreadyPresentHook.getRemindUserAt();
+					if(oldReminderTime > System.currentTimeMillis()){
+						final Object[] messageArguments = { new Date(oldReminderTime), date };
+						final MessageFormat formatter = new MessageFormat(
+							getResourceString("plugins/TimeManagement.xml_reminderNode_onlyOneDate"));
+						final String message = formatter.format(messageArguments);
+						final int result = JOptionPane.showConfirmDialog(controller.getViewController().getFrame(), message,
+							"Freeplane", JOptionPane.YES_NO_OPTION);
+						if (result == JOptionPane.NO_OPTION) {
+							return;
+						}
 					}
 					reminderHook.undoableToggleHook(node);
 				}
