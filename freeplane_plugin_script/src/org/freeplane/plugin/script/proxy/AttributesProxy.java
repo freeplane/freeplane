@@ -216,7 +216,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 
 	public void set(final String name, final Object value) {
 		final int index = findFirst(name);
-		final Attribute attribute = new Attribute(name, value);
+		final Attribute attribute = new Attribute(name, ProxyUtils.transformObject(value));
 		if (index == -1) {
 			getAttributeController().addAttribute(getDelegate(), attribute);
 		}
@@ -225,8 +225,8 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		}
 	}
 
-	public void add(final String name, final Object value) {
-		final Attribute attribute = new Attribute(name, value);
+    public void add(final String name, final Object value) {
+		final Attribute attribute = new Attribute(name, ProxyUtils.transformObject(value));
 		getAttributeController().addAttribute(getDelegate(), attribute);
 	}
 

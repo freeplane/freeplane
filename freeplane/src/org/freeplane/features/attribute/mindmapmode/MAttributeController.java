@@ -29,9 +29,6 @@ import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.AttributeRegistryElement;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
-import org.freeplane.features.map.AMapChangeListenerAdapter;
-import org.freeplane.features.map.MapChangeEvent;
-import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -251,15 +248,22 @@ public class MAttributeController extends AttributeController {
 	private static class RegistryAttributeValueActor implements IActor {
 		private final AttributeRegistryElement element;
 		private final Object newValue;
+		private final boolean setManual;
+		private final boolean wasManual;
 
-		private RegistryAttributeValueActor(final AttributeRegistryElement element, final Object newValue) {
+		private RegistryAttributeValueActor(final AttributeRegistryElement element, final Object newValue, boolean setManual) {
 			this.element = element;
 			this.newValue = newValue;
+			this.setManual = setManual;
+			this.wasManual = element.isManual();
 		}
 
 		public void act() {
-			if (newValue != null)
+			if (newValue != null){
 				element.addValue(newValue);
+				if(setManual)
+					element.setManual(true);
+			}
 		}
 
 		public String getDescription() {
@@ -267,8 +271,11 @@ public class MAttributeController extends AttributeController {
 		}
 
 		public void undo() {
-			if (newValue != null)
+			if (newValue != null){
 				element.removeValue(newValue);
+				if(setManual & ! wasManual)
+					element.setManual(false);
+			}
 		}
 	}
 
@@ -495,7 +502,7 @@ public class MAttributeController extends AttributeController {
 		final private RegistryAttributeValueActor registryActor;
 
 		private UnregistryAttributeValueActor(final AttributeRegistryElement element, final String newValue) {
-			registryActor = new RegistryAttributeValueActor(element, newValue);
+			registryActor = new RegistryAttributeValueActor(element, newValue, element.isManual());
 		}
 
 		public void act() {
@@ -575,7 +582,7 @@ public class MAttributeController extends AttributeController {
 					value = element.getValues().firstElement().toString();
 				}
 				else {
-					final IActor actor = new RegistryAttributeValueActor(element, value);
+					final IActor actor = new RegistryAttributeValueActor(element, value, false);
 					Controller.getCurrentModeController().execute(actor, map);
 				}
 			}
@@ -585,7 +592,7 @@ public class MAttributeController extends AttributeController {
 			final IActor nameActor = new RegistryAttributeActor(name, false, false, registry, map);
 			Controller.getCurrentModeController().execute(nameActor, map);
 			final AttributeRegistryElement element = registry.getElement(name);
-			final IActor valueActor = new RegistryAttributeValueActor(element, value);
+			final IActor valueActor = new RegistryAttributeValueActor(element, value, false);
 			Controller.getCurrentModeController().execute(valueActor, map);
 		}
 		final Object newValue = value;
@@ -611,7 +618,7 @@ public class MAttributeController extends AttributeController {
 	}
 
 	@Override
-	public void performRegistryAttributeValue(final String name, final String value) {
+	public void performRegistryAttributeValue(final String name, final String value, boolean manual) {
 		if (name.equals("")) {
 			return;
 		}
@@ -622,7 +629,7 @@ public class MAttributeController extends AttributeController {
 			if (element.getValues().contains(value)) {
 				return;
 			}
-			final IActor actor = new RegistryAttributeValueActor(element, value);
+			final IActor actor = new RegistryAttributeValueActor(element, value, manual);
 			Controller.getCurrentModeController().execute(actor, map);
 			return;
 		}
@@ -630,7 +637,7 @@ public class MAttributeController extends AttributeController {
 			final IActor nameActor = new RegistryAttributeActor(name, true, false, attributeRegistry, map);
 			Controller.getCurrentModeController().execute(nameActor, map);
 			final AttributeRegistryElement element = attributeRegistry.getElement(name);
-			final IActor valueActor = new RegistryAttributeValueActor(element, value);
+			final IActor valueActor = new RegistryAttributeValueActor(element, value, false);
 			Controller.getCurrentModeController().execute(valueActor, map);
 		}
 	}
@@ -641,7 +648,7 @@ public class MAttributeController extends AttributeController {
 		for (int i = 0; i < nodeAttributeTableModel.getRowCount(); i++) {
 			final String name = nodeAttributeTableModel.getValueAt(i, 0).toString();
 			final String value = nodeAttributeTableModel.getValueAt(i, 1).toString();
-			performRegistryAttributeValue(name, value);
+			performRegistryAttributeValue(name, value, false);
 		}
 		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
 			performRegistrySubtreeAttributes(child);
@@ -699,7 +706,7 @@ public class MAttributeController extends AttributeController {
 		final AttributeRegistryElement newElement = registry.getElement(newName);
 		for (int i = 0; i < values.getSize(); i++) {
 			final IActor registryValueActor = new RegistryAttributeValueActor(newElement, values.getElementAt(i)
-			    .toString());
+			    .toString(), false);
 			Controller.getCurrentModeController().execute(registryValueActor, map);
 		}
 		final IVisitor replacer = new AttributeRenamer(oldName, newName);
@@ -818,7 +825,7 @@ public class MAttributeController extends AttributeController {
 				final AttributeRegistryElement element = registry.getElement(name);
 				final int index = element.getValues().getIndexOf(o);
 				if (index == -1) {
-					final IActor registryActor = new RegistryAttributeValueActor(element, o);
+					final IActor registryActor = new RegistryAttributeValueActor(element, o, false);
 					Controller.getCurrentModeController().execute(registryActor, map);
 				}
 				break;

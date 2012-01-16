@@ -97,7 +97,7 @@ public class MapChangeListenerAdapter extends AMapChangeListenerAdapter {
 
 	private void saveJabrefDatabase() {
 		BasePanel basePanel = ReferencesController.getController().getJabrefWrapper().getBasePanel();
-		if(basePanel.isBaseChanged()) {
+		if(basePanel != null && basePanel.isBaseChanged()) {
 			basePanel.runCommand("save");
 		}
 

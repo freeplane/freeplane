@@ -47,7 +47,7 @@ public class AttributeRegistryElement {
 
 		@Override
 		public void add(final Object element) {
-			registry.getAttributeController().performRegistryAttributeValue(getKey(), element.toString());
+			registry.getAttributeController().performRegistryAttributeValue(getKey(), element.toString(), true);
 		}
 
 		public String getKey() {
@@ -146,6 +146,8 @@ public class AttributeRegistryElement {
 		}
 		if (isRestricted()) {
 			element.setAttribute("RESTRICTED", "true");
+		}
+		if (isManual() || isRestricted()) {
 			for (int i = 0; i < values.getSize(); i++) {
 				final XMLElement xmlValue = new XMLElement();
 				xmlValue.setName(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_VALUE);

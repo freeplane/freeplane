@@ -39,6 +39,8 @@ import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.MMapModel;
+import org.freeplane.features.mapio.MapIO;
+import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
@@ -113,12 +115,12 @@ public class NodeUtils {
 				return entry.getValue();
 			}
 		}
-		try {
-			final UrlManager urlManager = (UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class);			
+		try {						
 			MapModel map = new MMapModel();			
 			AttributeRegistry.getRegistry(map);
 			URL url = Tools.getFilefromUri(uri).toURL();
-			urlManager.loadImpl(url, map);			
+			final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
+			mapIO.load(url, map);			
 			return map;
 		} catch (MalformedURLException e) {
 			e.printStackTrace();

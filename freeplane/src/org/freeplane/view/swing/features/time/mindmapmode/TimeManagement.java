@@ -92,8 +92,11 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
         private static final long serialVersionUID = 1L;
 		private JButton setReminderButton;
 		private JButton removeReminderButton;
+		private JButton remindLaterButton;
+		private PeriodPanel periodPanel;
 		private ComboBoxEditor scriptEditor;
 		private JCalendar calendarComponent;
+		private JComboBox dateFormatChooser;
 
 		public JTimePanel(boolean useTriple, int colCount) {
 	        super();
@@ -109,15 +112,24 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 			final boolean reminderIsSet = reminder != null;
 			removeReminderButton.setEnabled(reminderIsSet);
 			if(reminderIsSet){
-				TimeManagement.this.calendar.setTimeInMillis(reminder.getRemindUserAt());
-				calendarComponent.setCalendar(TimeManagement.this.calendar);
+				final long reminderTime = reminder.getRemindUserAt();
+				updateCalendar(reminderTime);
+				periodPanel.setPeriod(reminder.getPeriod());
+				periodPanel.setPeriodUnit(reminder.getPeriodUnit());
 				if(scriptEditor != null)
 					scriptEditor.setItem(reminder.getScript());
 			}
-			else
+			else{
 				if(scriptEditor != null)
 					scriptEditor.setItem(null);
+			}
 		}
+
+		private void updateCalendar(final long reminderTime) {
+	        TimeManagement.this.calendar.setTimeInMillis(reminderTime);
+	        calendarComponent.setCalendar(TimeManagement.this.calendar);
+	        dateFormatChooser.repaint();
+        }
 
 		private void init(boolean useTriple, int colCount) {
 			final JComponent calendarContainer;
@@ -164,11 +176,11 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 						calendarComponent.setCalendar(TimeManagement.this.calendar);
 					}
 				});
-				addButton(btnBuilder, todayButton, colCount);
+				btnBuilder.append(todayButton);
 			}
 			{
-				final JComboBox dateFormatChooser = createDateFormatChooser();
-				addButton(btnBuilder, dateFormatChooser, colCount);
+				dateFormatChooser = createDateFormatChooser();
+				btnBuilder.append(dateFormatChooser);
 			}
 			{
 				final JButton appendButton = new JButton(getResourceString("plugins/TimeManagement.xml_appendButton"));
@@ -181,7 +193,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 						insertTime(dialog, appendButton);
 					}
 				});
-				addButton(btnBuilder, appendButton, colCount);
+				btnBuilder.append(appendButton);
 			}
 			{
 				scriptEditor = null;
@@ -189,7 +201,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 				if(editor != null){
 					scriptEditor = editor.createComboBoxEditor(new Dimension(600, 400));
 					Component scriptButton = scriptEditor.getEditorComponent();
-					addButton(btnBuilder, scriptButton, colCount);
+					btnBuilder.append(scriptButton);
 				}
 			}
 			{
@@ -201,7 +213,25 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 						addReminder();
 					}
 				});
-				addButton(btnBuilder, setReminderButton, colCount);
+				btnBuilder.append(setReminderButton);
+			}
+			{
+				remindLaterButton = new JButton(
+				    getResourceString("plugins/TimeManagement.xml_remindLaterButton"));
+				remindLaterButton.setToolTipText(getResourceString("plugins/TimeManagement.xml_remindLaterButton_tooltip"));
+				remindLaterButton.addMouseListener(new MouseAdapter() {
+
+					@Override
+	                public void mouseClicked(MouseEvent e) {
+						remindLaterReminder();
+	               }
+					
+				});
+				btnBuilder.append(remindLaterButton);
+			}
+			{
+				periodPanel = new PeriodPanel();
+				btnBuilder.append(periodPanel);
 			}
 			{
 				removeReminderButton = new JButton(
@@ -215,7 +245,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 	               }
 					
 				});
-				addButton(btnBuilder, removeReminderButton, colCount);
+				btnBuilder.append(removeReminderButton);
 			}
 			if (dialog != null) {
 				final JButton cancelButton = new JButton(getResourceString("plugins/TimeManagement.xml_closeButton"));
@@ -226,17 +256,13 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 						disposeDialog();
 					}
 				});
-				addButton(btnBuilder, cancelButton, colCount);
+				btnBuilder.append(cancelButton);
 			}
 			final JPanel btnPanel = btnBuilder.getPanel();
 			btnPanel.setAlignmentX(CENTER_ALIGNMENT);
 			add(btnPanel);
         }
 
-		private void addButton(DefaultFormBuilder btnBuilder, Component component, int colCount) {
-	        btnBuilder.append(component);
-        }
-        
 		private void addReminder() {
 			final Date date = getCalendarDate();
 			String script = null;
@@ -249,19 +275,24 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 			for (final NodeModel node : controller.getModeController().getMapController().getSelectedNodes()) {
 				final ReminderExtension alreadyPresentHook = ReminderExtension.getExtension(node);
 				if (alreadyPresentHook != null) {
-					final Object[] messageArguments = { new Date(alreadyPresentHook.getRemindUserAt()), date };
-					final MessageFormat formatter = new MessageFormat(
-					    getResourceString("plugins/TimeManagement.xml_reminderNode_onlyOneDate"));
-					final String message = formatter.format(messageArguments);
-					final int result = JOptionPane.showConfirmDialog(controller.getViewController().getFrame(), message,
-					    "Freeplane", JOptionPane.YES_NO_OPTION);
-					if (result == JOptionPane.NO_OPTION) {
-						return;
+					final long oldReminderTime = alreadyPresentHook.getRemindUserAt();
+					if(oldReminderTime > System.currentTimeMillis()){
+						final Object[] messageArguments = { new Date(oldReminderTime), date };
+						final MessageFormat formatter = new MessageFormat(
+							getResourceString("plugins/TimeManagement.xml_reminderNode_onlyOneDate"));
+						final String message = formatter.format(messageArguments);
+						final int result = JOptionPane.showConfirmDialog(controller.getViewController().getFrame(), message,
+							"Freeplane", JOptionPane.YES_NO_OPTION);
+						if (result == JOptionPane.NO_OPTION) {
+							return;
+						}
 					}
 					reminderHook.undoableToggleHook(node);
 				}
 				final ReminderExtension reminderExtension = new ReminderExtension(node);
 				reminderExtension.setRemindUserAt(date.getTime());
+				reminderExtension.setPeriodUnit(periodPanel.getPeriodUnit());
+				reminderExtension.setPeriod(periodPanel.getPeriod());
 				reminderExtension.setScript(script);
 				reminderHook.undoableActivateHook(node, reminderExtension);
 			}
@@ -275,6 +306,11 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 				}
 			}
 	    }
+		private void remindLaterReminder(){
+			Date nextTime = periodPanel.calculateNextTime(calendar.getTime());
+			updateCalendar(nextTime.getTime());
+			addReminder();
+		}
 	}
 	private Calendar calendar;
 	public final static String REMINDER_HOOK_NAME = "plugins/TimeManagementReminder.xml";

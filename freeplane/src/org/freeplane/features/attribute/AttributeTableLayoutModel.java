@@ -21,18 +21,21 @@ package org.freeplane.features.attribute;
 
 import javax.swing.event.EventListenerList;
 
+import org.freeplane.core.resources.ResourceController;
+
 /**
  * @author Dimitry Polivaev
  */
 public class AttributeTableLayoutModel {
-	public static final int DEFAULT_COLUMN_WIDTH = 75;
 	public static final String HIDE_ALL = "hide";
 	public static final String SHOW_ALL = "extended";
 	public static final String SHOW_SELECTED = "selected";
 	ColumnWidthChangeEvent[] layoutChangeEvent = { null, null };
 	private EventListenerList listenerList = null;
-	final private int[] width = { AttributeTableLayoutModel.DEFAULT_COLUMN_WIDTH,
-	        AttributeTableLayoutModel.DEFAULT_COLUMN_WIDTH };
+	final private int[] width = { 
+			ResourceController.getResourceController().getIntProperty("default_attribute_key_column_width"),
+			ResourceController.getResourceController().getIntProperty("default_attribute_value_column_width") 
+	};
 
 	public AttributeTableLayoutModel() {
 		super();

@@ -24,7 +24,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -42,7 +41,6 @@ import java.io.Writer;
 import java.net.URI;
 import javax.swing.Action;
 import javax.swing.ActionMap;
-import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.InputMap;
 import javax.swing.JEditorPane;
@@ -80,13 +78,11 @@ import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
-import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EventBuffer;
@@ -240,6 +236,19 @@ public class EditNodeTextField extends EditNodeBase {
 	    textfield.putClientProperty("EditNodeTextField.linewrap", true);
     }
 
+	private static final int SPLIT_KEY_CODE;
+	static {
+		String rawLabel = TextUtils.getRawText("split");
+		final int mnemoSignIndex = rawLabel.indexOf('&');
+		if (mnemoSignIndex >= 0 && mnemoSignIndex + 1 < rawLabel.length()) {
+			final char charAfterMnemoSign = rawLabel.charAt(mnemoSignIndex + 1);
+			if (charAfterMnemoSign != ' ') {
+				SPLIT_KEY_CODE = charAfterMnemoSign;
+			}
+			else SPLIT_KEY_CODE = -1;
+		}
+		else SPLIT_KEY_CODE = -1;
+	}
 	class TextFieldListener implements KeyListener, FocusListener, MouseListener {
 		final int CANCEL = 2;
 		final int EDIT = 1;
@@ -299,7 +308,8 @@ public class EditNodeTextField extends EditNodeBase {
 			if (e.isControlDown() || e.isMetaDown() || eventSource == CANCEL||textfield==null) {
 				return;
 			}
-			switch (e.getKeyCode()) {
+			final int keyCode = e.getKeyCode();
+			switch (keyCode) {
 				case KeyEvent.VK_ESCAPE:
 					eventSource = CANCEL;
 					hideMe();
@@ -307,23 +317,12 @@ public class EditNodeTextField extends EditNodeBase {
 					nodeView.requestFocusInWindow();
 					e.consume();
 					break;
-				case KeyEvent.VK_S:
-					if(e.isAltDown() && getEditControl().canSplit()){
-						eventSource = CANCEL;
-						final String output = getNewText();
-						final int caretPosition = textfield.getCaretPosition();
-						hideMe();
-						getEditControl().split(output, caretPosition);
-						nodeView.requestFocusInWindow();
-						e.consume();
-					}
-					break;
 				case KeyEvent.VK_ENTER: {
 					final boolean enterConfirms = ResourceController.getResourceController().getBooleanProperty("el__enter_confirms_by_default");
 					if (enterConfirms == e.isAltDown() || e.isShiftDown()) {
 						e.consume();
 						final Component component = e.getComponent();
-						final KeyEvent keyEvent = new KeyEvent(component, e.getID(), e.getWhen(), 0, e.getKeyCode(), e
+						final KeyEvent keyEvent = new KeyEvent(component, e.getID(), e.getWhen(), 0, keyCode, e
 						    .getKeyChar(), e.getKeyLocation());
 						SwingUtilities.processKeyBindings(keyEvent);
 						break;
@@ -340,6 +339,17 @@ public class EditNodeTextField extends EditNodeBase {
 					textfield.replaceSelection("    ");
 				case KeyEvent.VK_SPACE:
 					e.consume();
+					break;
+				default:
+					if(keyCode == SPLIT_KEY_CODE && keyCode != -1 && e.isAltDown() && getEditControl().canSplit()){
+						eventSource = CANCEL;
+						final String output = getNewText();
+						final int caretPosition = textfield.getCaretPosition();
+						hideMe();
+						getEditControl().split(output, caretPosition);
+						nodeView.requestFocusInWindow();
+						e.consume();
+					}
 					break;
 			}
 		}
@@ -464,7 +474,8 @@ public class EditNodeTextField extends EditNodeBase {
 		}
 		textfield.getDocument().removeDocumentListener(documentListener);
 		parent.setPreferredSize(null);
-		nodeView.update();
+		if(nodeView.isDisplayable())
+			nodeView.update();
 		if(nodeView.isRoot() && parent instanceof MainView)
 		    parent.setHorizontalAlignment(JLabel.CENTER);
 		if(layoutMapOnTextChange)

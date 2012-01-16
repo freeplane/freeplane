@@ -81,6 +81,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
+import org.freeplane.features.url.UrlManager;
 
 /**
  * @author Dimitry Polivaev
@@ -1006,4 +1007,9 @@ public class MLinkController extends LinkController {
 		};
 		Controller.getCurrentModeController().execute(actor, connector.getSource().getMap());
 	}
+
+	@SuppressWarnings("deprecation")
+    public void loadURI(URI uri) {
+		UrlManager.getController().loadURL(uri);
+    }
 }

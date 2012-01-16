@@ -19,8 +19,9 @@ import org.docear.plugin.core.workspace.IDocearMindmap;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mapio.MapIO;
+import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
@@ -94,15 +95,22 @@ public class LinkTypeIncomingNode extends ALinkNode implements IWorkspaceNodeEve
 		if (!createFolderStructure(f)) {
 			return false;
 		}
-
-		MFileManager mFileManager = MFileManager.getController(Controller.getCurrentModeController());
-		mFileManager.newMap();
+		
+		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);		
+		try {
+			mapIO.newMap(f.toURL());
+		}
+		catch (Exception e) {
+			LogUtils.severe(e);
+			return false;
+		}
+		
 		MapModel map = Controller.getCurrentController().getMap();
 		map.getRootNode().setText(getName());
 		DocearEvent evnt = new DocearEvent(this, DocearEventType.NEW_INCOMING, map);
 		DocearController.getController().dispatchDocearEvent(evnt);
 		
-		mFileManager.save(Controller.getCurrentController().getMap(), f);		
+		mapIO.save(Controller.getCurrentController().getMap(), f);		
 		Controller.getCurrentController().close(false);
 
 		LogUtils.info("New Mindmap Created: " + f.getAbsolutePath());
@@ -138,8 +146,14 @@ public class LinkTypeIncomingNode extends ALinkNode implements IWorkspaceNodeEve
 				if (!f.exists()) {
 					createNewMindmap(f);
 				}
-				Controller.getCurrentModeController().getMapController().newMap(f.toURL());
 				
+				final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);		
+				try {
+					mapIO.newMap(f.toURL());
+				}
+				catch (Exception e) {
+					LogUtils.severe(e);
+				}
 			}
 			catch (Exception e) {
 				LogUtils.warn("could not open document (" + getLinkPath() + ")", e);

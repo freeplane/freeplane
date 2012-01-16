@@ -245,7 +245,9 @@ public class FormatController implements IExtension {
 	}
 
 	public ArrayList<PatternFormat> getAllFormats() {
-		final ArrayList<PatternFormat> formats = new ArrayList<PatternFormat>(numberFormats);
+		final ArrayList<PatternFormat> formats = new ArrayList<PatternFormat>();
+		formats.add(PatternFormat.getIdentityPatternFormat());
+		formats.addAll(numberFormats);
 		formats.addAll(dateFormats);
 		formats.addAll(stringFormats);
 		return formats;
@@ -270,7 +272,8 @@ public class FormatController implements IExtension {
 		        + "<!--   - 'name': a informal name, a comment that's not visible in the app -->" + sep //
 		        + "<!--   - 'locale': the name of the locale, only set for locale dependent format codes -->" + sep;
 		for (PatternFormat patternFormat : formats) {
-			saver.addChild(patternFormat.toXml());
+            if (!patternFormat.getType().equals(PatternFormat.TYPE_IDENTITY))
+                saver.addChild(patternFormat.toXml());
 		}
 		final Writer writer = new FileWriter(pathToFile);
 		final XMLWriter xmlWriter = new XMLWriter(writer);
@@ -291,6 +294,7 @@ public class FormatController implements IExtension {
 		return stringFormats;
 	}
 
+	@Deprecated
 	public List<String> getAllPatterns() {
 		final ArrayList<PatternFormat> formats = getAllFormats();
 		ArrayList<String> result = new ArrayList<String>(formats.size());

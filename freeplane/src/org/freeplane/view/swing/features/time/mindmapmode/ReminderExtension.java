@@ -23,9 +23,6 @@ import java.util.Date;
 import java.util.Timer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.SysUtils;
-import org.freeplane.features.icon.IconStore;
-import org.freeplane.features.icon.UIIcon;
-import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.NodeModel;
@@ -44,6 +41,8 @@ class ReminderExtension implements IExtension, IMapChangeListener {
 
 	private final NodeModel node;
 	private long remindUserAt = 0;
+	private PeriodUnit periodUnit;
+	private int period;
 	private Timer timer;
 	private String script;
 	private TimerBlinkTask task;
@@ -64,6 +63,22 @@ class ReminderExtension implements IExtension, IMapChangeListener {
 		this.remindUserAt = remindUserAt;
 	}
 	
+
+	public PeriodUnit getPeriodUnit() {
+    	return periodUnit;
+    }
+
+	public void setPeriodUnit(PeriodUnit periodUnit) {
+    	this.periodUnit = periodUnit;
+    }
+
+	public int getPeriod() {
+    	return period;
+    }
+
+	public void setPeriod(int period) {
+    	this.period = period;
+    }
 
 	String getScript() {
     	return script;

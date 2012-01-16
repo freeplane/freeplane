@@ -20,13 +20,8 @@
 package org.freeplane.features.url.mindmapmode;
 
 import java.awt.event.ActionEvent;
-import java.net.URL;
-
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 

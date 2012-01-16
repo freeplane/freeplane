@@ -22,6 +22,8 @@ import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapModel;
+import org.freeplane.features.mapio.MapIO;
+import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.text.TextController;
@@ -183,7 +185,8 @@ class ControllerProxy implements Proxy.Controller {
 
 	public Map newMap() {
 		final MapModel oldMap = Controller.getCurrentController().getMap();
-		final MapModel newMap = Controller.getCurrentModeController().getMapController().newMap();
+		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
+		final MapModel newMap = mapIO.newMapFromDefaultTemplate();
 		restartTransaction(oldMap, newMap);
 		return new MapProxy(newMap, scriptContext);
 	}
@@ -227,5 +230,9 @@ class ControllerProxy implements Proxy.Controller {
     
     public void setZoom(float ratio) {
     	getViewController().setZoom(ratio);
+    }
+
+    public boolean isInteractive() {
+        return !Boolean.parseBoolean(System.getProperty("nonInteractive"));
     }
 }

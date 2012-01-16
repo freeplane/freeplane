@@ -21,10 +21,6 @@ package org.freeplane.features.url.mindmapmode;
 
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.swing.JOptionPane;
@@ -35,9 +31,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.n3.nanoxml.XMLParseException;
 
 class OpenURLMapAction extends AFreeplaneAction {
 	/**

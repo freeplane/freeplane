@@ -73,7 +73,12 @@ public class MindmapUpdateController {
 	private List<URI> getAllOpenMapUris() {
 		List<URI> maps = new ArrayList<URI>();
 		for (MapModel map : getAllOpenMaps()) {
-			maps.add(map.getFile().toURI());
+			if (map.getFile() == null) {
+				((MFileManager) UrlManager.getController()).save(map, true);
+			}
+			if (map.getFile() != null) {
+				maps.add(map.getFile().toURI());
+			}
 		}
 		return maps;
 	}
@@ -171,14 +176,14 @@ public class MindmapUpdateController {
 							return null;
 						for (URI uri : uris) {
 							fireStatusUpdate(SwingWorkerDialog.DETAILS_LOG_TEXT, null,
-									TextUtils.getText("updating_map") + uri.getPath());
+									updater.getTitle()+": " + uri.getPath());
 							mapHasChanged = false;
 							MapModel map = getMapModel(uri);
 							if (map==null) {								
 								continue;
 							}
 							fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_against_p1")
-									+ getMapTitle(map) + TextUtils.getText("updating_against_p2"));
+									+ getMapTitle(map) + TextUtils.getText("updating_against_p2"));							
 							this.mapHasChanged = updater.updateMindmap(map);
 							fireProgressUpdate(100 * count / totalCount);
 							if (this.mapHasChanged) {

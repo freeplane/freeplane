@@ -74,7 +74,9 @@ public class ExportToOoWriter extends AExportEngine {
 			LogUtils.warn(ex);
 			UITools.errorMessage(TextUtils.getText("export_failed"));
 		}
-		Controller.getCurrentController().getViewController().setWaitingCursor(false);
+		finally{
+			Controller.getCurrentController().getViewController().setWaitingCursor(false);
+		}
 	}
 
 	/**

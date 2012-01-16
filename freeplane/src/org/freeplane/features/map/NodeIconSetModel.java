@@ -21,13 +21,8 @@ package org.freeplane.features.map;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.freeplane.features.icon.MindIcon;
-import org.freeplane.features.icon.UIIcon;
 
 /**
  * @author Dimitry Polivaev 20.11.2008

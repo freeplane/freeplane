@@ -127,6 +127,8 @@ public class ReminderHook extends PersistentNodeHook {
 	//******************************************
 	static final String PLUGIN_LABEL = "plugins/TimeManagementReminder.xml";
 	static final String REMINDUSERAT = "REMINDUSERAT";
+	static final String PERIOD = "PERIOD";
+	static final String UNIT = "UNIT";
 	static final String SCRIPT = "SCRIPT";
 	private static final Integer REMINDER_TOOLTIP = 12;
 	private ModeController modeController;
@@ -270,8 +272,12 @@ public class ReminderHook extends PersistentNodeHook {
 	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
 		final ReminderExtension reminderExtension = new ReminderExtension(node);
 		final XMLElement parameters = element.getFirstChildNamed("Parameters");
-		final String attribute = parameters.getAttribute(REMINDUSERAT, "0");
-		reminderExtension.setRemindUserAt(Long.parseLong(attribute));
+		final String time = parameters.getAttribute(REMINDUSERAT, "0");
+		final String unit = parameters.getAttribute(UNIT, "DAY");
+		final String period = parameters.getAttribute(PERIOD, "1");
+		reminderExtension.setRemindUserAt(Long.parseLong(time));
+		reminderExtension.setPeriodUnit(PeriodUnit.valueOf(unit));
+		reminderExtension.setPeriod(Integer.parseInt(period));
 		final String script = parameters.getAttribute(SCRIPT, null);
 		reminderExtension.setScript(script);
 		return reminderExtension;
@@ -302,6 +308,8 @@ public class ReminderHook extends PersistentNodeHook {
 		final ReminderExtension reminderExtension = (ReminderExtension) extension;
 		final XMLElement parameters = element.createElement("Parameters");
 		parameters.setAttribute(REMINDUSERAT, Long.toString(reminderExtension.getRemindUserAt()));
+		parameters.setAttribute(PERIOD, Integer.toString(reminderExtension.getPeriod()));
+		parameters.setAttribute(UNIT, reminderExtension.getPeriodUnit().toString());
 		final String script = reminderExtension.getScript();
 		if(script != null){
 			parameters.setAttribute(SCRIPT, script);

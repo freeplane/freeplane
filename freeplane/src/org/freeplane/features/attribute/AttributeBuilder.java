@@ -277,14 +277,15 @@ class AttributeBuilder implements IElementDOMHandler {
 		}
 	}
 
+	private static final int DEFAULT_COLUMN_WIDTH = 75;
 	private void saveLayout(AttributeTableLayoutModel layout, final ITreeWriter writer) throws IOException {
 		if (layout != null) {
 			XMLElement attributeElement = null;
-			if (layout.getColumnWidth(0) != AttributeTableLayoutModel.DEFAULT_COLUMN_WIDTH) {
+			if (layout.getColumnWidth(0) != DEFAULT_COLUMN_WIDTH) {
 				attributeElement = initializeNodeAttributeLayoutXMLElement(attributeElement);
 				attributeElement.setAttribute("NAME_WIDTH", Integer.toString(layout.getColumnWidth(0)));
 			}
-			if (layout.getColumnWidth(1) != AttributeTableLayoutModel.DEFAULT_COLUMN_WIDTH) {
+			if (layout.getColumnWidth(1) != DEFAULT_COLUMN_WIDTH) {
 				attributeElement = initializeNodeAttributeLayoutXMLElement(attributeElement);
 				attributeElement.setAttribute("VALUE_WIDTH", Integer.toString(layout.getColumnWidth(1)));
 			}

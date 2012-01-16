@@ -122,8 +122,11 @@ public class ExportDialog {
 					return;
 				}
 				if (selectedFile != null && evt.getPropertyName().equals(JFileChooser.DIRECTORY_CHANGED_PROPERTY)) {
-						final ExampleFileFilter filter = (ExampleFileFilter) fileChooser.getFileFilter();
-						final File acceptableFile = getAcceptableFile(selectedFile, filter);
+						final FileFilter filter = fileChooser.getFileFilter();
+						if(! (filter instanceof ExampleFileFilter)){
+							return;
+						}
+						final File acceptableFile = getAcceptableFile(selectedFile, (ExampleFileFilter) filter);
 						final File currentDirectory = fileChooser.getCurrentDirectory();
 						if(currentDirectory != null){
 							final File file = new File (currentDirectory, acceptableFile.getName());
@@ -143,6 +146,10 @@ public class ExportDialog {
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				// we check which filter has been selected by the user and use its
 				// description as key for the map to get the corresponding XSLT file
+				if(! (fileChooser.getFileFilter() instanceof ExampleFileFilter)){
+					UITools.errorMessage(TextUtils.getText("invalid_export_file"));
+					return;
+				}
 				final ExampleFileFilter fileFilter = (ExampleFileFilter) fileChooser.getFileFilter();
 				final File selectedFile = getAcceptableFile(fileChooser.getSelectedFile(), fileFilter);
 				if (selectedFile == null) {

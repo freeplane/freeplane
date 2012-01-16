@@ -306,6 +306,10 @@ public interface Proxy {
 		/** returns the current zoom factor. A value of 1 means 100%.
 		 * @since 1.2 */
 		float getZoom();
+		
+		/** returns false if the system 'nonInteractive' is set. This can be used in actions to not open dialogs etc.
+		 * @since 1.2 */
+		boolean isInteractive();
 	}
 
 	/** Access to global state: <code>c</code> - read-write. */

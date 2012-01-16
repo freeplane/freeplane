@@ -20,7 +20,6 @@
 package org.freeplane.view.swing.map;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 
 /**
@@ -33,22 +32,6 @@ final class DetailsView extends ZoomableLabel {
     public DetailsView() {
         super();
    }
-
-
-	@Override
-    public Dimension getPreferredSize(int width) {
-		final NodeView nodeView = getNodeView();
-		if(nodeView == null){
-			return super.getPreferredSize(width);
-		}
-    	int mainW = nodeView.getMainView().getPreferredSize(width).width;
-    	final Dimension ownPrefSize = new Dimension(super.getPreferredSize(width));
-    	if(ownPrefSize.width < mainW){
-    		ownPrefSize.width = mainW;
-    	}
-    	return ownPrefSize;
-    }
-
 
     @Override
     protected void paintComponent(Graphics g) {

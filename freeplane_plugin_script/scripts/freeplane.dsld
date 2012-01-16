@@ -25,4 +25,28 @@
         type: 'java.lang.Object',
         params: [value: 'java.lang.String', valueIfNull: 'java.lang.Object'],
         doc: 'returns valueIfNull if value is null and value otherwise'
+    method name: 'round',
+        type: 'java.lang.Long',
+        params: [d: 'java.lang.Double'],
+        doc: 'rounds a number to integral type'
+    method name: 'round',
+        type: 'java.lang.Double',
+        params: [d: 'java.lang.Double', precision: 'java.lang.Integer'],
+        doc: 'round to the given number of decimal places: round(0.1234, 2) -> 0.12'
+    method name: 'parse',
+        type: 'java.lang.Object',
+        params: [text: 'java.lang.String'],
+        doc: 'parses text to the proper data type, if possible, setting format to the standard.'
+    method name: 'format',
+        type: 'java.lang.Object',
+        params: [object: 'java.lang.Object', formatString: 'java.lang.String'],
+        doc: 'uses formatString to return a FormattedObject'
+    method name: 'format',
+        type: 'java.lang.Object',
+        params: [object: 'java.lang.Object'],
+        doc: 'Applies default date-time format for dates or default number format for numbers'
+    method name: 'toString',
+        type: 'java.lang.String',
+        params: [object: 'java.lang.Object'],
+        doc: 'formats according to the internal standard'
 }

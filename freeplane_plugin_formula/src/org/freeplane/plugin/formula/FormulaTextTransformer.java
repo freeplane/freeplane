@@ -8,8 +8,10 @@ import javax.swing.JEditorPane;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.AbstractContentTransformer;
+import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EditNodeDialog;
 import org.freeplane.features.text.mindmapmode.IEditBaseCreator;
@@ -22,10 +24,12 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 		super(priority);
 	}
 
-	public Object transformContent(final Object obj, final NodeModel node, Object transformedExtension) {
+	public Object transformContent(TextController textController, final Object obj, final NodeModel node, Object transformedExtension) {
 		if (! (obj instanceof String)) {
 			return obj;
 		}
+		if(PatternFormat.IDENTITY_PATTERN.equals(textController.getNodeFormat(node)))
+			return transformedExtension;
 		final String text = obj.toString();
 		final String plainText = HtmlUtils.htmlToPlain(text);
 		if (!FormulaUtils.containsFormula(plainText)) {

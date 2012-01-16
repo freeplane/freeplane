@@ -32,7 +32,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -375,6 +374,11 @@ public class LinkController extends SelectionController implements IExtension {
 		ModeController modeController = Controller.getCurrentModeController();
 		loadURL(modeController.getMapController().getSelectedNode(), e);
 	}
+	
+	@SuppressWarnings("deprecation")
+    public void loadURI(URI uri) {
+		UrlManager.getController().loadURL(uri);
+    }
 
 	void loadURL(final NodeModel selectedNode, final ActionEvent e) {
 		final URI link = NodeLinks.getValidLink(selectedNode);
@@ -396,15 +400,10 @@ public class LinkController extends SelectionController implements IExtension {
 				action.actionPerformed(e);
 			}
 			else {
-				getURLManager().loadURL(link);
+				loadURI(link);
 			}
 			onSelect(modeController.getController().getSelection().getSelected());
 		}
-	}
-
-	private UrlManager getURLManager() {
-		ModeController modeController = Controller.getCurrentModeController();
-		return (UrlManager) modeController.getExtension(UrlManager.class);
 	}
 
 	public static int getLinkType() {

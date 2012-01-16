@@ -254,9 +254,9 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		setRowSelectionAllowed(false);
 		putClientProperty("JTable.autoStartsEdit", Boolean.FALSE);
 		updateRowHeights();
+		updateColumnWidths();
 	}
 
-	@SuppressWarnings("serial")
 	@Override
 	protected JTableHeader createDefaultTableHeader() {
 		return new TableHeader(columnModel);
@@ -769,6 +769,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 				public void hierarchyChanged(HierarchyEvent e) {
 					if(isDisplayable()){
 						updateRowHeights();
+						removeHierarchyListener(this);
 					}
 				}
 			});
@@ -809,7 +810,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	            Object value = editor.getCellEditorValue();
 				if (value != null) {
 					final MTextController textController = (MTextController) TextController.getController();
-					setValueAt(textController.guessObject(value), editingRow, editingColumn);
+					// attributes don't have a format override - there's only the formatted object so oldFormat is null
+					setValueAt(textController.guessObjectOrURI(value, null), editingRow, editingColumn);
 				}
 	            removeEditor();
 	        }

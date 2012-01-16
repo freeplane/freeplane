@@ -21,7 +21,6 @@ package org.freeplane.features.styles;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev

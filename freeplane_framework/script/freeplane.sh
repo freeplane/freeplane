@@ -194,6 +194,10 @@ _debug "Calling: "\
  "-Dorg.freeplane.param2=$2"\
  "-Dorg.freeplane.param3=$3"\
  "-Dorg.freeplane.param4=$4"\
+ "-Dorg.freeplane.param4=$5"\
+ "-Dorg.freeplane.param4=$6"\
+ "-Dorg.freeplane.param4=$7"\
+ "-Dorg.freeplane.param4=$8"\
  "-Dorg.knopflerfish.framework.bundlestorage=memory"\
  "-Dorg.freeplane.globalresourcedir=${freedir}/resources"\
  "-Dorg.knopflerfish.gosg.jars=reference:file:${freedir}/core/"\
@@ -208,6 +212,10 @@ _debug "Calling: "\
  "-Dorg.freeplane.param2=$2"\
  "-Dorg.freeplane.param3=$3"\
  "-Dorg.freeplane.param4=$4"\
+ "-Dorg.freeplane.param4=$5"\
+ "-Dorg.freeplane.param4=$6"\
+ "-Dorg.freeplane.param4=$7"\
+ "-Dorg.freeplane.param4=$8"\
  "-Dorg.knopflerfish.framework.bundlestorage=memory"\
  "-Dorg.freeplane.globalresourcedir=${freedir}/resources"\
  "-Dorg.knopflerfish.gosg.jars=reference:file:${freedir}/core/"\

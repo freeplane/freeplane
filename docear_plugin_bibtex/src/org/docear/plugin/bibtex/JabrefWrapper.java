@@ -30,7 +30,9 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewChangeListener;
 
 public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
-		
+
+	private static final int MAX_TRY_OPEN = 5; 
+	
 	private static ArrayList<PostOpenAction> postOpenActions =
             new ArrayList<PostOpenAction>();
 
@@ -93,6 +95,9 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 	}
 	
 	public BibtexDatabase getDatabase() {
+		if(getBasePanel() == null) {
+			return null;
+		}
 		return getBasePanel().getDatabase();
 	}
 	
@@ -119,7 +124,13 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 	}
 		
 	public void replaceDatabase(File file, boolean raisePanel) {
-		getJabrefFrame().getTabbedPane().removeAll();
+		//getJabrefFrame().getTabbedPane().removeAll();
+//		if(getBasePanel() != null) {
+//			getBasePanel().runCommand("save");
+//		}
+		while(getJabrefFrame().getTabbedPane().getTabCount() > 0) {
+			getJabrefFrame().closeCurrentTab();
+		}
 		openIt(file, raisePanel);
 	}
 		
@@ -128,8 +139,9 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
             File fileToLoad = file;
             System.out.println(Globals.lang("Opening References") + ": '" + file.getPath() + "'");
 
+            int tryCounter = 0;
             boolean done = false;
-            while (!done) {
+            while (!done && tryCounter++ < MAX_TRY_OPEN) {
                 String fileName = file.getPath();
                 Globals.prefs.put("workingDirectory", file.getPath());
                 // Should this be done _after_ we know it was successfully opened?
@@ -168,23 +180,24 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
                 if ((pr == null) || (pr == ParserResult.INVALID_FORMAT)) {
                     System.out.println("ERROR: Could not load file"+file);
                     continue;
-                } else done = true;
-
-                final BasePanel panel = addNewDatabase(pr, file, raisePanel);
-                
-                panel.markNonUndoableBaseChanged();
-
-                // After adding the database, go through our list and see if
-                // any post open actions need to be done. For instance, checking
-                // if we found new entry types that can be imported, or checking
-                // if the database contents should be modified due to new features
-                // in this version of JabRef:
-                final ParserResult prf = pr;
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        performPostOpenActions(panel, prf, true);
-                    }
-                });
+                } else {
+                	done = true;
+	                final BasePanel panel = addNewDatabase(pr, file, raisePanel);
+	                
+	                panel.markNonUndoableBaseChanged();
+	
+	                // After adding the database, go through our list and see if
+	                // any post open actions need to be done. For instance, checking
+	                // if we found new entry types that can be imported, or checking
+	                // if the database contents should be modified due to new features
+	                // in this version of JabRef:
+	                final ParserResult prf = pr;
+	                SwingUtilities.invokeLater(new Runnable() {
+	                    public void run() {
+	                        performPostOpenActions(panel, prf, true);
+	                    }
+	                });
+                }
             }
                         
         }
