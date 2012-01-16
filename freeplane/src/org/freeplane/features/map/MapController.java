@@ -37,6 +37,7 @@ import java.util.List;
 
 import javax.swing.Action;
 
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.ReadManager;
@@ -62,7 +63,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
 /**
  * @author Dimitry Polivaev
  */
-public class MapController extends SelectionController {
+public class MapController extends SelectionController implements IExtension{
 	public enum Direction {
 		BACK, BACK_N_FOLD, FORWARD, FORWARD_N_FOLD
 	}
@@ -605,6 +606,8 @@ public class MapController extends SelectionController {
 		return node.isFolded();
 	}
 
+	/**@deprecated -- use MapIO*/
+	@Deprecated
 	public boolean newMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
         	final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
         	if (mapViewManager.tryToChangeToMapView(url))
@@ -615,6 +618,8 @@ public class MapController extends SelectionController {
         	Controller.getCurrentController().getViewController().setWaitingCursor(true);
         	final MapModel newModel = new MapModel();
         	UrlManager.getController().load(url, newModel);
+        	newModel.setReadOnly(true);
+        	newModel.setSaved(true);
         	fireMapCreated(newModel);
         	newMapView(newModel);
         	return true;
@@ -708,14 +713,18 @@ public class MapController extends SelectionController {
 
 	public void delayedNodeRefresh(final NodeModel node, final Object property, final Object oldValue,
 	                               final Object newValue) {
+		final ModeController originalModeController = Controller.getCurrentModeController();
 		if (nodeSet == null) {
 			nodeSet = new HashSet<NodeModel>();
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
+					final ModeController currentModeController = Controller.getCurrentModeController();
+					if(! currentModeController.equals(originalModeController))
+						return;
 					final Collection<NodeModel> set = nodeSet;
 					nodeSet = null;
 					for (final NodeModel node : set) {
-						Controller.getCurrentModeController().getMapController().nodeRefresh(node, property, oldValue, newValue);
+						currentModeController.getMapController().nodeRefresh(node, property, oldValue, newValue);
 					}
 				}
 			});
@@ -767,6 +776,18 @@ public class MapController extends SelectionController {
 			}
 		}
 	}
+
+	public Collection<IMapChangeListener> getMapChangeListeners() {
+        return Collections.unmodifiableCollection(mapChangeListeners);
+    }
+
+	public Collection<IMapLifeCycleListener> getMapLifeCycleListeners() {
+        return Collections.unmodifiableCollection(mapLifeCycleListeners);
+    }
+
+	public Collection<INodeChangeListener> getNodeChangeListeners() {
+        return Collections.unmodifiableCollection(nodeChangeListeners);
+    }
 
 	public void select(final NodeModel node) {
 		displayNode(node);

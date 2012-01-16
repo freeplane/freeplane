@@ -79,7 +79,9 @@ public class ExportToImage extends AExportEngine {
 			LogUtils.warn(e1);
 			UITools.errorMessage(TextUtils.getText("export_failed"));
 		}
-		Controller.getCurrentController().getViewController().setWaitingCursor(false);
+		finally{
+			Controller.getCurrentController().getViewController().setWaitingCursor(false);
+		}
 		return true;
 	}
 

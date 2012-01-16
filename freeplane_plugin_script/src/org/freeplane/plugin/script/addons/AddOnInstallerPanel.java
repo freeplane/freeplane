@@ -138,7 +138,7 @@ public class AddOnInstallerPanel extends JPanel {
 					final ModeController modeController = controller.getModeController(MModeController.MODENAME);
 					final MFileManager fileManager = (MFileManager) MFileManager.getController(modeController);
 					MapModel newMap = new MMapModel();
-					if (!fileManager.loadImpl(url, newMap)) {
+					if (!fileManager.load(url, newMap)) {
 					    LogUtils.warn("can not load " + url);
 					    return;
 					}

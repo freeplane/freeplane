@@ -69,6 +69,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
@@ -270,17 +271,10 @@ public class UrlManager implements IExtension {
 		}
 	}
 
-	public void load(final URL url, final MapModel map) throws FileNotFoundException, IOException, XMLParseException,
-	        URISyntaxException {
-		loadImpl(url, map);
-		map.setReadOnly(true);
-		map.setSaved(true);
-	}
-
-	/** returns true only if loading was successful. Displays an error dialog on an error loading the map.
-	 * This and other errors are logged to the logfile. */
-	public boolean loadImpl(final URL url, final MapModel map) {
-	    setURL(map, url);
+	/**@deprecated -- use MapIO*/
+	@Deprecated
+	public boolean load(final URL url, final MapModel map){
+		setURL(map, url);
 		InputStreamReader urlStreamReader = null;
 		try {
 			urlStreamReader = new InputStreamReader(url.openStream());
@@ -293,17 +287,26 @@ public class UrlManager implements IExtension {
 		try {
 			final ModeController modeController = Controller.getCurrentModeController();
 			modeController.getMapController().getMapReader().createNodeTreeFromXml(map, urlStreamReader, Mode.FILE);
-            return true;
+			return true;
 		}
-		catch (final Exception ex) {
+		catch (final XMLException ex) {
+			LogUtils.warn(ex);
+		}
+		catch (final IOException ex) {
+			LogUtils.warn(ex);
+		}
+		catch (final RuntimeException ex) {
 			LogUtils.severe(ex);
-            return false;
 		}
 		finally {
 			FileUtils.silentlyClose(urlStreamReader);
 		}
-    }
+		UITools.errorMessage(TextUtils.format("url_open_error", url.toString()));
+		return false;
+	}
 
+	/**@deprecated -- use LinkController*/
+	@Deprecated
 	public void loadURL(URI uri) {
 		final String uriString = uri.toString();
 		if (uriString.startsWith("#")) {
@@ -445,9 +448,11 @@ public class UrlManager implements IExtension {
 		map.setURL(url);
 	}
 
+	/**@deprecated -- use MapIO*/
+	@Deprecated
 	public void loadDefault(MapModel target) {
 	    try {
-	    	loadImpl(ResourceController.getResourceController().getResource("/styles/viewer_standard.mm"), target);
+	    	load(ResourceController.getResourceController().getResource("/styles/viewer_standard.mm"), target);
         }
          catch (Exception e) {
 	        e.printStackTrace();

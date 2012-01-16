@@ -24,7 +24,6 @@ package org.freeplane.features.format;
  * @author vboerchers
  */
 class DecimalPatternFormat extends PatternFormat {
-	private static final long serialVersionUID = 1L;
 
 	public DecimalPatternFormat(final String pattern) {
 		super(pattern, IFormattedObject.TYPE_NUMBER);

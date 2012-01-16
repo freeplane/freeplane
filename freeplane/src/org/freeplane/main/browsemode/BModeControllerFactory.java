@@ -38,6 +38,7 @@ import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.map.UnfoldAll;
+import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.browsemode.BModeController;
 import org.freeplane.features.nodelocation.LocationController;
@@ -67,6 +68,7 @@ public class BModeControllerFactory {
 		new MapController(modeController);
 		IconController.install(new IconController(modeController));
 		UrlManager.install(new UrlManager());
+		MapIO.install(modeController);
 		AttributeController.install(new AttributeController(modeController));
 		NodeStyleController.install(new NodeStyleController(modeController));
 		EdgeController.install(new EdgeController(modeController));

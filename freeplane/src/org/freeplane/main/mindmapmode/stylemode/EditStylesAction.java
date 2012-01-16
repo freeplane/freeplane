@@ -43,14 +43,14 @@ public class EditStylesAction extends AEditStylesAction {
 	
 	public void actionPerformed(final ActionEvent e) {
 		final MapModel map = Controller.getCurrentController().getMap();
-		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
-		undoHandler.startTransaction();
 		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map);
 		final MapModel styleMap = mapStyleModel.getStyleMap();
 		if(styleMap == null){
 			UITools.errorMessage(TextUtils.getText("no_styles_found_in_map"));
 			return;
 		}
+		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
+		undoHandler.startTransaction();
 		init();
 		getModeController().getMapController().newMapView(styleMap);
 		dialog.setLocationRelativeTo(Controller.getCurrentController().getViewController().getJFrame());

@@ -6,6 +6,7 @@ import groovy.lang.MissingMethodException;
 import groovy.lang.MissingPropertyException;
 import groovy.lang.Script;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Pattern;
@@ -207,11 +208,22 @@ public abstract class FreeplaneScriptBaseClass extends Script {
         return ScannerController.getController().parse(text);
     }
     
-    /** formats according to the internal standard, that is the conversion will be reversible
-     * for types that are handled special by the scripting api namely Dates and Numbers.
-     * @return {@link IFormattedObject} if possible. */
+    /** uses formatString to return a FormattedObject.
+     * @return {@link IFormattedObject} if object is formattable and the unchanged object otherwise. */
     public Object format(final Object object, final String formatString) {
         return FormatController.format(object, formatString);
+    }
+
+    /** Applies default date-time format for dates or default number format for numbers. All other objects are left unchanged.
+     * @return {@link IFormattedObject} if object is formattable and the unchanged object otherwise. */
+    public Object format(final Object object) {
+        if (object instanceof Date)
+            return FormatController.format(object, FormatController.getController().getDefaultDateTimeFormat()
+                .toPattern());
+        if (object instanceof Number)
+            return FormatController.format(object, FormatController.getController().getDefaultNumberFormat()
+                .toPattern());
+        return object;
     }
 
 	/** formats according to the internal standard, that is the conversion will be reversible

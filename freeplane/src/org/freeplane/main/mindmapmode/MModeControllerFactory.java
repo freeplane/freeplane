@@ -72,6 +72,7 @@ import org.freeplane.features.map.UnfoldAll;
 import org.freeplane.features.map.mindmapmode.ChangeNodeLevelController;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.NewParentNode;
+import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.nodelocation.LocationController;
@@ -224,6 +225,7 @@ public class MModeControllerFactory {
 		new MMapController(modeController);
 		final MFileManager fileManager = new MFileManager();
 		UrlManager.install(fileManager);
+		MMapIO.install(modeController);
 		controller.getMapViewManager().addMapViewChangeListener(fileManager);
 		IconController.install(new MIconController(modeController));
 		new ProgressFactory().installActions(modeController);

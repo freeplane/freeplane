@@ -20,17 +20,14 @@
 package org.freeplane.features.help;
 
 import java.awt.event.ActionEvent;
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import javax.swing.SwingUtilities;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.browsemode.BModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 
 class OnlineDocumentationAction extends AFreeplaneAction {

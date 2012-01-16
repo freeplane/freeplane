@@ -40,9 +40,13 @@ import javax.swing.event.ListSelectionListener;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeController;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.IFormattedObject;
+import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
+import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -56,7 +60,7 @@ public class AttributePanelManager{
     final private JPanel tablePanel;
     private ModeController modeController;
     private int axis = BoxLayout.Y_AXIS;
-    private class TableCreator implements INodeSelectionListener{
+    private class TableCreator implements INodeSelectionListener, INodeChangeListener{
 
         private AttributeView attributeView;
         private JComboBox formatChooser;
@@ -196,6 +200,12 @@ public class AttributePanelManager{
             btnSize.width =  Math.max(btnSize.width, preferredSize.width);
             btnSize.height =  Math.max(btnSize.height, preferredSize.height);
         }
+
+		public void nodeChanged(NodeChangeEvent event) {
+			if(attributeView != null && event.getProperty().equals(NodeAttributeTableModel.class)){
+				attributeView.update();
+			}
+        }
     }
 
     public AttributePanelManager(final ModeController modeController){
@@ -205,7 +215,10 @@ public class AttributePanelManager{
         tablePanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
         tablePanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
         tablePanel.setLayout(new BoxLayout(tablePanel, axis));
-        modeController.getMapController().addNodeSelectionListener(new TableCreator());
+        final TableCreator tableCreator = new TableCreator();
+		final MapController mapController = modeController.getMapController();
+		mapController.addNodeSelectionListener(tableCreator);
+		mapController.addNodeChangeListener(tableCreator);
     }
     public JPanel getTablePanel() {
         return tablePanel;

@@ -19,12 +19,15 @@
  */
 package org.freeplane.core.util;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.swing.Action;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -34,10 +37,12 @@ import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.IndexedTree.Node;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 
 public class MenuUtils {
 	/** The userObject type for createMenuEntryTree(). */
@@ -253,5 +258,23 @@ public class MenuUtils {
 
     public static String makeAcceleratorKey(String menuItemKey) {
         return "acceleratorForMindMap/$" + menuItemKey + "$0";
+    }
+
+    public static void executeMenuItems(final List<String> menuItemKeys) {
+        LogUtils.info("menu items to execute: " + menuItemKeys);
+        for (String menuItemKey : menuItemKeys) {
+            final ModeController modeController = Controller.getCurrentModeController();
+            final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
+            final DefaultMutableTreeNode treeNode = menuBuilder.get(menuItemKey);
+            if (treeNode == null || !treeNode.isLeaf() || !(treeNode.getUserObject() instanceof JMenuItem)) {
+                UITools.errorMessage(TextUtils.format("MenuUtils.invalid_menuitem", menuItemKey));
+                return;
+            }
+            final JMenuItem menuItem = (JMenuItem) treeNode.getUserObject();
+            final Action action = menuItem.getAction();
+            LogUtils.info("executing " + menuItem.getText() + "(" + menuItemKey + ")");
+            ActionEvent e = new ActionEvent(menuItem, 0, null);
+            action.actionPerformed(e);
+        }
     }
 }

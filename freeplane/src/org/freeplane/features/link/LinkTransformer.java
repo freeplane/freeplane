@@ -24,6 +24,7 @@ import java.net.URI;
 import javax.swing.Icon;
 
 import org.freeplane.core.ui.components.ObjectAndIcon;
+import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
@@ -49,7 +50,9 @@ public class LinkTransformer extends AbstractContentTransformer {
 		modeController.getMapController().addMapChangeListener(listener);
     }
 
-	public Object transformContent(Object content, NodeModel node, Object transformedExtension) {
+	public Object transformContent(TextController textController, Object content, NodeModel node, Object transformedExtension) {
+		if(PatternFormat.IDENTITY_PATTERN.equals(textController.getNodeFormat(node)))
+			return transformedExtension;
 		final MapModel map = node.getMap();
 		return transformContent(content, map);
 	}

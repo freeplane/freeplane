@@ -9,8 +9,9 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.mapio.MapIO;
+import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.workspace.io.IFileSystemRepresentation;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
@@ -56,9 +57,16 @@ public class FileNodeNewMindmapAction extends AWorkspaceAction {
     }
 	
 	private boolean createNewMindmap(final File f) {
-		MFileManager mFileManager = MFileManager.getController(Controller.getCurrentModeController());
-		mFileManager.newMap();		
-		mFileManager.save(Controller.getCurrentController().getMap(), f);
+		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);		
+		try {
+			mapIO.newMap(f.toURL());
+		}
+		catch (Exception e) {
+			LogUtils.severe(e);
+			return false;
+		}
+				
+		mapIO.save(Controller.getCurrentController().getMap(), f);
 		Controller.getCurrentController().getMap().getRootNode().setText(f.getName());
 		//Controller.getCurrentController().close(false);
 

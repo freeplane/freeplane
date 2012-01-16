@@ -606,7 +606,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		isPrinting = false;
 		if (zoom == 1f) {
 			getRoot().updateAll();
-			validateTree();
+			synchronized (getTreeLock()) {
+				validateTree();
+			}
 		}
 		if (MapView.printOnWhiteBackground) {
 			setBackground(background);
@@ -1325,7 +1327,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (isPreparedForPrinting == false) {
 			if (zoom == 1f) {
 				getRoot().updateAll();
-				validateTree();
+				synchronized (getTreeLock()) {
+					validateTree();
+				}
 			}
 			if (MapView.printOnWhiteBackground) {
 				background = getBackground();

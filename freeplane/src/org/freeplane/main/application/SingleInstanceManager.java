@@ -15,6 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.main.application.CommandLineParser.Options;
 
 public class SingleInstanceManager {
 	private File lockFile = new File(Compat.getFreeplaneUserDirectory(), "single_instance.lock");
@@ -32,8 +33,10 @@ public class SingleInstanceManager {
 		isSingleInstanceForceMode = resourceController.getBooleanProperty("single_instance_force");
 	}
 
-	public void start(String[] filesToLoad) {
-		if (isSingleInstanceMode) {
+	public void start(String[] args) {
+        final Options options = CommandLineParser.parse(args);
+        final String[] filesToLoad = options.getFilesToOpenAsArray();
+		if (isSingleInstanceMode && !options.hasMenuItemsToExecute()) {
 			initLockFile();
 			if (filesToLoad.length == 0 && !isSingleInstanceForceMode && checkIsMasterPresent()) {
 				isMasterPresent = true;
@@ -129,8 +132,12 @@ public class SingleInstanceManager {
                                 client.close();
 								starter.loadMapsLater(filesToLoadForClient);
 							}
+							catch (SecurityException e) {
+							    // this happens when the master is currently executing a script
+							    LogUtils.warn("master is currently not accepting new files. Try again later", e);
+							}
 							catch (IOException e) {
-								socketClosed = true;
+							    socketClosed = true;
 							}
 							catch (ClassNotFoundException e) {
 								// this should never happen

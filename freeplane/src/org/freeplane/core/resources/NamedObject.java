@@ -20,7 +20,6 @@
 package org.freeplane.core.resources;
 
 import java.awt.Component;
-
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
 import javax.swing.JList;
@@ -133,4 +132,17 @@ public class NamedObject {
 		};
 		return listCellRenderer;
 	}
+
+	public static NamedObject[] fromEnum(Class<? extends Enum<?>> enumeration) {
+		return fromEnum(enumeration.getSimpleName() + "." , enumeration);
+	}
+	public static NamedObject[] fromEnum(final String prefix, Class<? extends Enum<?>> enumeration) {
+		final Enum<?>[] enumConstants=enumeration.getEnumConstants();
+		NamedObject[] objs = new NamedObject[enumConstants.length];
+		int i = 0;
+		for(Enum<?> value : enumConstants){
+			objs[i++] = new NamedObject(value, TextUtils.getText(prefix + value.toString()));
+		}
+		return objs;
+    }
 }

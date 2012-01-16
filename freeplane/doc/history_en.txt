@@ -13,7 +13,12 @@ Fixes for date and number input parsing
 Node can be split from the in-line editor pressing alt+S .
 Nodes containing child nodes can be joined, their child nodes are moved as well.
 New node property "always unfolded node"
- 
+New properties for standard attribute key and attribute values widths
+New node format "Text" for disabling formulas and format for selected nodes
+Rename automatic level styles to Title and Heading X
+Command line arguments allow batch execution of menu items
+Remind later feature
+
 ===============================
 1.2.11 beta
 ===============================

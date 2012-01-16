@@ -44,7 +44,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ColorProperty;
 import org.freeplane.core.resources.components.ComboProperty;
-import org.freeplane.core.resources.components.EditableComboProperty;
 import org.freeplane.core.resources.components.FontProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.NextColumnProperty;
@@ -66,6 +65,7 @@ import org.freeplane.features.edge.mindmapmode.AutomaticEdgeColorHook;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.IFormattedObject;
+import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.AMapChangeListenerAdapter;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeChangeListener;
@@ -325,7 +325,7 @@ public class StyleEditorPanel extends JPanel {
 		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MNodeStyleController styleController = (MNodeStyleController) Controller.getCurrentModeController()
 			    .getExtension(NodeStyleController.class);
-			styleController.setNodeFormat(node, enabled ? mNodeFormat.getValue() : null);
+			styleController.setNodeFormat(node, enabled ? mNodeFormat.getSelectedPattern() : null);
 		}
 	}
 
@@ -446,7 +446,7 @@ public class StyleEditorPanel extends JPanel {
 	private ComboProperty mNodeFontSize;
 	private BooleanProperty mNodeNumbering;
 	private ComboProperty mNodeShape;
-	private EditableComboProperty mNodeFormat;
+	private EditablePatternComboProperty mNodeFormat;
 	private NumberProperty mMaxNodeWidth;
 	private NumberProperty mMinNodeWidth;
 
@@ -499,18 +499,17 @@ public class StyleEditorPanel extends JPanel {
 		mNodeBackgroundColor.fireOnMouseClick();
 	}
 
-	private void addFormatControl(final List<IPropertyControl> controls) {
-		mSetNodeFormat = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
-		controls.add(mSetNodeFormat);
-		mNodeFormat = new EditableComboProperty(StyleEditorPanel.NODE_FORMAT,
-		    FormatController.getController().getAllPatterns());
-		controls.add(mNodeFormat);
-		final NodeFormatChangeListener listener = new NodeFormatChangeListener(mSetNodeFormat,
-		    mNodeFormat);
-		mSetNodeFormat.addPropertyChangeListener(listener);
-		mNodeFormat.addPropertyChangeListener(listener);
-		mNodeFormat.fireOnMouseClick();
-	}
+    private void addFormatControl(final List<IPropertyControl> controls) {
+        mSetNodeFormat = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
+        controls.add(mSetNodeFormat);
+        mNodeFormat = new EditablePatternComboProperty(StyleEditorPanel.NODE_FORMAT,
+            PatternFormat.getIdentityPatternFormat(), FormatController.getController().getAllFormats());
+        controls.add(mNodeFormat);
+        final NodeFormatChangeListener listener = new NodeFormatChangeListener(mSetNodeFormat, mNodeFormat);
+        mSetNodeFormat.addPropertyChangeListener(listener);
+        mNodeFormat.addPropertyChangeListener(listener);
+        mNodeFormat.fireOnMouseClick();
+    }
 	
 	private void addNodeNumberingControl(final List<IPropertyControl> controls) {
 		mSetNodeNumbering = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
@@ -910,7 +909,7 @@ public class StyleEditorPanel extends JPanel {
 			{
 				String nodeFormat = NodeStyleModel.getNodeFormat(node);
 				mSetNodeFormat.setValue(nodeFormat != null);
-//				LogUtils.warn("hi, getNodeFormat(" + node.getUserObject() + ": " + node.getUserObject().getClass());
+//				LogUtils.info("hi, getNodeFormat(" + node.getUserObject() + ": " + node.getUserObject().getClass());
 				if (nodeFormat == null && node.getUserObject() instanceof IFormattedObject)
 					nodeFormat = ((IFormattedObject)node.getUserObject()).getPattern();
 				mNodeFormat.setValue(nodeFormat);

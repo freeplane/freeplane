@@ -24,7 +24,6 @@ import java.net.URI;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -32,10 +31,8 @@ import org.freeplane.features.icon.IStateIconProvider;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
-import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.ITooltipProvider;
 import org.freeplane.features.map.MapController;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapReader;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -101,7 +98,7 @@ public class AttributeController implements IExtension {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performRegistryAttributeValue(final String name, final String value) {
+	public void performRegistryAttributeValue(final String name, final String value, boolean manual) {
 		throw new UnsupportedOperationException();
 	}
 
