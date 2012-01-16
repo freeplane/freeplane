@@ -93,6 +93,7 @@ public class LinkTypeMyPublicationsNode extends ALinkNode implements IWorkspaceN
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	private boolean createNewMindmap(final File f) {
 		if (!createFolderStructure(f)) {
 			return false;

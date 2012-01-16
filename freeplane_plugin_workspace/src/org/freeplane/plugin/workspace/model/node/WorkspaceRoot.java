@@ -34,7 +34,6 @@ import org.freeplane.plugin.workspace.config.actions.WorkspaceChangeLocationActi
 import org.freeplane.plugin.workspace.config.actions.WorkspaceCollapseAction;
 import org.freeplane.plugin.workspace.config.actions.WorkspaceDeleteNodeAction;
 import org.freeplane.plugin.workspace.config.actions.WorkspaceExpandAction;
-import org.freeplane.plugin.workspace.config.actions.WorkspaceHideAction;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
 import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
@@ -48,6 +47,7 @@ import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
+import org.freeplane.plugin.workspace.model.action.WorkspaceHideAction;
 
 public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IWorkspaceNodeEventListener, IDropAcceptor {
 
@@ -134,7 +134,7 @@ public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IW
 					WorkspacePopupMenuBuilder.endSubMenu(),
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.location.change",
-					"workspace.action.hide",
+					//"workspace.action.hide",
 					WorkspacePopupMenuBuilder.SEPARATOR,						
 					"workspace.action.node.paste",
 					"workspace.action.node.copy",

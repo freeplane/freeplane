@@ -15,7 +15,6 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
-import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.workspace.IDocearMindmap;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
@@ -91,6 +90,7 @@ public class LinkTypeLiteratureAnnotationsNode extends ALinkNode implements IWor
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	private boolean createNewMindmap(final File f) {
 		if (!createFolderStructure(f)) {
 			return false;

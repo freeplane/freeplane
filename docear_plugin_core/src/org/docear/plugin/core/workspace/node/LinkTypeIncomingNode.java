@@ -94,6 +94,7 @@ public class LinkTypeIncomingNode extends ALinkNode implements IWorkspaceNodeEve
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	private boolean createNewMindmap(final File f) {
 		if (!createFolderStructure(f)) {
 			return false;
