@@ -103,6 +103,14 @@ public class AnnotationController implements IExtension{
 		return annotation;
 	}
 	
+	public static int getAnnotationPosition(NodeModel node){
+		AnnotationModel annotation = AnnotationController.getModel(node, false);
+    	if(annotation != null && annotation.getParent() != null){
+    		return annotation.getParent().getChildIndex(annotation);
+    	}
+    	return -1;
+	}
+	
 	public static AnnotationNodeModel getAnnotationNodeModel(final NodeModel node){
 		IAnnotation annotation = AnnotationController.getModel(node, true);
 		File file = WorkspaceUtils.resolveURI(NodeLinks.getValidLink(node), node.getMap());

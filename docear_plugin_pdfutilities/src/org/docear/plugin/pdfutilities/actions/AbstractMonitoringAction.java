@@ -300,8 +300,21 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 								if(canceled()) return false;
 								SwingUtilities.invokeAndWait(
 							        new Runnable() {
-							            public void run(){								            	
-							            	finalTarget.insert(finalInsertNode);
+							            public void run(){	
+							            	int newNodePostion = AnnotationController.getAnnotationPosition(finalInsertNode);
+							            	boolean pasted = false;
+						            		for(NodeModel child : finalTarget.getChildren()){
+						            			int childPosition =  AnnotationController.getAnnotationPosition(child);
+						            			if(childPosition > newNodePostion){
+						            				finalTarget.insert(finalInsertNode, finalTarget.getChildPosition(child));
+						            				pasted = true;
+						            				break;
+						            			}						            				
+						            		}
+						            		if(!pasted){
+						            			finalTarget.insert(finalInsertNode);
+						            			
+						            		}							            							            	
 							            }
 							        }
 								);

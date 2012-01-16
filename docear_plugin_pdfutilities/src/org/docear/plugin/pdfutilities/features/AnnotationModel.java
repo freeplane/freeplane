@@ -182,7 +182,11 @@ public class AnnotationModel implements IAnnotation{
 
 	public void setInserted(boolean isInserted) {
 		this.isInserted = isInserted;
-	}	
+	}
+	
+	public int getChildIndex(AnnotationModel child){
+		return this.children.indexOf(child);
+	}
 	
 	
 	
