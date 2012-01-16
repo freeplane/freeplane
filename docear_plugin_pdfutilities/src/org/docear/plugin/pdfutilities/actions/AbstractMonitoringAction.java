@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -209,22 +210,25 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					fireProgressUpdate(100 * count / nodeIndex.keySet().size());
 					if(importedFiles.containsKey(id)) continue;					
 					for(NodeModel node : nodeIndex.get(id)){
+						if(!isMonitoringNodeChild(target, node)) continue;						
 						AnnotationNodeModel annotation = AnnotationController.getAnnotationNodeModel(node);
 						if(annotation == null) continue;
-						if(annotation.getAnnotationType() == null) continue;
-						if(annotation.getAnnotationType().equals(AnnotationType.PDF_FILE)) continue;
+						if(annotation.getAnnotationType() == null) continue;						
 						if(annotation.getAnnotationType().equals(AnnotationType.FILE)) continue;
 						if(widowedLinkedNode.contains(node)) continue;						
-						try{
-							//File file = Tools.getFilefromUri(Tools.getAbsoluteUri(node));
-							File file = WorkspaceUtils.resolveURI(NodeLinks.getValidLink(node));
-							if(file != null){
+						try{							
+							File file = WorkspaceUtils.resolveURI(NodeLinks.getValidLink(node), node.getMap());
+							if(file != null && !file.exists()){
+								widowedLinkedNode.add(node);
+								continue;
+							}
+							else if(file != null){
 								//File monitoringDirectory = Tools.getFilefromUri(Tools.getAbsoluteUri(NodeUtils.getPdfDirFromMonitoringNode(target), target.getMap()));
 								File monitoringDirectory = WorkspaceUtils.resolveURI(NodeUtils.getPdfDirFromMonitoringNode(target), target.getMap());
 								if(file.getPath().startsWith(monitoringDirectory.getPath())){
 									AnnotationModel annoation = new PdfAnnotationImporter().searchAnnotation(Tools.getAbsoluteUri(node), node);
 									if(annoation == null){
-										widowedLinkedNode.add(node);							
+										widowedLinkedNode.add(node);										
 									}
 								}
 							}
@@ -239,6 +243,11 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					}				
 				}
 				return true;
+			}
+
+			private boolean isMonitoringNodeChild(NodeModel monitoringNode, NodeModel node) {
+				List<NodeModel> pathToRoot = Arrays.asList(node.getPathToRoot());
+				return pathToRoot.contains(monitoringNode);
 			}
 
 			private boolean cleanUpCollections() {
@@ -320,7 +329,9 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 							        new Runnable() {
 							            public void run(){
 							            	try{
-							            		node.removeFromParent();
+							            		if(node.getParentNode() != null){
+							            			node.removeFromParent();
+							            		}
 							            	} catch(Exception e){
 							            		LogUtils.warn(e);
 							            	}
@@ -541,18 +552,13 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					if(canceled()) return false;
 					buildAnnotationNodeIndex(map.getRootNode());
 				}
-				buildEqualChildIndex(target.getChildren());
+				buildEqualChildIndex(target.getChildren());				
 				if(canceled()) return false;
 				return true;
 			}
 
 			private void buildAnnotationNodeIndex(NodeModel node) throws InterruptedException {
-				if(canceled()) return;
-				//File file = Tools.getFilefromUri(Tools.getAbsoluteUri(node));
-				File file = WorkspaceUtils.resolveURI(NodeLinks.getValidLink(node), node.getMap());
-				if(file != null && !file.exists()){
-					widowedLinkedNode.add(node);
-				}				
+				if(canceled()) return;							
 				AnnotationNodeModel annotation = AnnotationController.getAnnotationNodeModel(node);				
 				if(annotation != null && annotation.getAnnotationID() != null){
 					AnnotationID id = annotation.getAnnotationID();

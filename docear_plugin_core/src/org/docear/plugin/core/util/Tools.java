@@ -45,7 +45,7 @@ public class Tools {
 	}
 	
 	public static URI getAbsoluteUri(NodeModel node){
-		URI uri = NodeLinks.getValidLink(node);
+		URI uri = NodeLinks.getValidLink(node);		
 		return Tools.getAbsoluteUri(uri, node.getMap());
 	}
 	
