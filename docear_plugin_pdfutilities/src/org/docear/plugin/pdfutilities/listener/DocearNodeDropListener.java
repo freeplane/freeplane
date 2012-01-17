@@ -61,7 +61,7 @@ public class DocearNodeDropListener extends MNodeDropListener {
 				super.drop(dtde);
 				return;
 			}
-			// do not combine with the previous condition unless you what you are doing! 
+			// do not combine with the previous condition unless you know what you are doing! 
 			if (dtde.isDataFlavorSupported(fileListFlavor) || (dtde.isDataFlavorSupported(uriListFlavor))) {
 	            				
 	            
@@ -169,13 +169,13 @@ public class DocearNodeDropListener extends MNodeDropListener {
 			
 		};
 		
-		if(fileList.size() > 10){
+		/*if(fileList.size() > 10){
 			SwingWorkerDialog monitoringDialog = new SwingWorkerDialog(Controller.getCurrentController().getViewController().getJFrame());
 			monitoringDialog.showDialog(thread);
 		}
-		else{
+		else{*/
 			thread.execute();
-		}
+		//}
 	}
 	
 	/*public boolean isDragAcceptable(final DropTargetDragEvent ev) {
