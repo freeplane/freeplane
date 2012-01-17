@@ -17,14 +17,14 @@ public abstract class DocearThread< T, V > extends Thread{
 	
 	public DocearThread(){
 		super();
-		this.setName("DocearThread");
+		this.setName("DocearThread"); //$NON-NLS-1$
 	}
 	
 	public void run(){
 		try {
 			result = this.doInBackground();			
 		} catch (Exception e) {
-			LogUtils.severe("Exception in Docear Thread: " + e.getMessage());
+			LogUtils.severe("Exception in Docear Thread: " + e.getMessage()); //$NON-NLS-1$
 		} finally {
 			this.done();
 		}

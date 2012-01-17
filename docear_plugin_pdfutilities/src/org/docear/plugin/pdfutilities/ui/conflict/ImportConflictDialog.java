@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 import org.docear.plugin.pdfutilities.features.AnnotationID;
 import org.docear.plugin.pdfutilities.features.AnnotationNodeModel;
 import org.docear.plugin.pdfutilities.features.IAnnotation;
+import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -105,45 +106,45 @@ public class ImportConflictDialog extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(0, 0, 5, 0));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("default:grow"),},
+				ColumnSpec.decode("default:grow"),}, //$NON-NLS-1$
 			new RowSpec[] {
-				RowSpec.decode("fill:default:grow"),
+				RowSpec.decode("fill:default:grow"), //$NON-NLS-1$
 				FormFactory.RELATED_GAP_ROWSPEC,}));
 		
 		importConflictPanel = new ImportConflictPanel();
-		contentPanel.add(importConflictPanel, "1, 1, fill, fill");		
+		contentPanel.add(importConflictPanel, "1, 1, fill, fill");		 //$NON-NLS-1$
 		
 		JPanel buttonPane = new JPanel();
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 		buttonPane.setLayout(new FormLayout(new ColumnSpec[] {
-				new ColumnSpec(ColumnSpec.FILL, Sizes.bounded(Sizes.PREFERRED, Sizes.constant("4dlu", true), Sizes.constant("100dlu", true)), 1),
+				new ColumnSpec(ColumnSpec.FILL, Sizes.bounded(Sizes.PREFERRED, Sizes.constant("4dlu", true), Sizes.constant("100dlu", true)), 1), //$NON-NLS-1$ //$NON-NLS-2$
 				FormFactory.BUTTON_COLSPEC,
 				FormFactory.RELATED_GAP_COLSPEC,
 				FormFactory.BUTTON_COLSPEC,
-				ColumnSpec.decode("20dlu"),
+				ColumnSpec.decode("20dlu"), //$NON-NLS-1$
 				FormFactory.BUTTON_COLSPEC,
 				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("right:max(50dlu;pref)"),
-				ColumnSpec.decode("right:4dlu"),},
+				ColumnSpec.decode("right:max(50dlu;pref)"), //$NON-NLS-1$
+				ColumnSpec.decode("right:4dlu"),}, //$NON-NLS-1$
 			new RowSpec[] {
-				RowSpec.decode("23px"),
+				RowSpec.decode("23px"), //$NON-NLS-1$
 				FormFactory.LINE_GAP_ROWSPEC,}));
 		
-		JButton btnNewButton_1 = new JButton("Finish");
+		JButton btnNewButton_1 = new JButton(TextUtils.getText("ImportConflictDialog.9")); //$NON-NLS-1$
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				onOK(e);
 			}
 		});
-		buttonPane.add(btnNewButton_1, "6, 1");
+		buttonPane.add(btnNewButton_1, "6, 1"); //$NON-NLS-1$
 	
-		JButton btnNewButton = new JButton("Cancel");
+		JButton btnNewButton = new JButton(TextUtils.getText("ImportConflictDialog.11")); //$NON-NLS-1$
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				onCancel(e);
 			}
 		});
-		buttonPane.add(btnNewButton, "8, 1, fill, fill");
+		buttonPane.add(btnNewButton, "8, 1, fill, fill"); //$NON-NLS-1$
 	}
 
 	protected void onOK(ActionEvent e) {

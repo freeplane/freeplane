@@ -12,6 +12,8 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.border.EmptyBorder;
 
+import org.freeplane.core.util.TextUtils;
+
 public class ImportConflictPanel extends JPanel {
 
 	/**
@@ -34,53 +36,53 @@ public class ImportConflictPanel extends JPanel {
 		panel.setBorder(null);
 		scrollPane.setViewportView(panel);
 		panel.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("5dlu"),
-				ColumnSpec.decode("default:grow"),
-				ColumnSpec.decode("5dlu"),},
+				ColumnSpec.decode("5dlu"), //$NON-NLS-1$
+				ColumnSpec.decode("default:grow"), //$NON-NLS-1$
+				ColumnSpec.decode("5dlu"),}, //$NON-NLS-1$
 			new RowSpec[] {
-				RowSpec.decode("fill:5dlu"),				
-				RowSpec.decode("fill:5dlu"),}));
+				RowSpec.decode("fill:5dlu"),				 //$NON-NLS-1$
+				RowSpec.decode("fill:5dlu"),})); //$NON-NLS-1$
 		
 		JPanel HeaderPanel = new JPanel();
 		HeaderPanel.setBackground(new Color(-1643275));
 		add(HeaderPanel, BorderLayout.NORTH);
 		HeaderPanel.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("5dlu"),
-				ColumnSpec.decode("default:grow"),
-				ColumnSpec.decode("5dlu"),},
+				ColumnSpec.decode("5dlu"), //$NON-NLS-1$
+				ColumnSpec.decode("default:grow"), //$NON-NLS-1$
+				ColumnSpec.decode("5dlu"),}, //$NON-NLS-1$
 			new RowSpec[] {
-				RowSpec.decode("fill:5dlu"),
-				RowSpec.decode("fill:default:grow"),
-				RowSpec.decode("fill:5dlu"),
-				RowSpec.decode("fill:default:grow"),
-				RowSpec.decode("fill:20dlu"),}));
+				RowSpec.decode("fill:5dlu"), //$NON-NLS-1$
+				RowSpec.decode("fill:default:grow"), //$NON-NLS-1$
+				RowSpec.decode("fill:5dlu"), //$NON-NLS-1$
+				RowSpec.decode("fill:default:grow"), //$NON-NLS-1$
+				RowSpec.decode("fill:20dlu"),})); //$NON-NLS-1$
 		
-		JLabel lblAnnotationImportConflict = new JLabel("Annotation Import Conflict");
-		lblAnnotationImportConflict.setFont(new Font("Dialog", Font.BOLD, 14));
-		HeaderPanel.add(lblAnnotationImportConflict, "2, 2");
+		JLabel lblAnnotationImportConflict = new JLabel(TextUtils.getText("ImportConflictPanel.13")); //$NON-NLS-1$
+		lblAnnotationImportConflict.setFont(new Font(TextUtils.getText("ImportConflictPanel.14"), Font.BOLD, 14)); //$NON-NLS-1$
+		HeaderPanel.add(lblAnnotationImportConflict, "2, 2"); //$NON-NLS-1$
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(-1643275));
-		HeaderPanel.add(panel_1, "2, 4, fill, fill");
+		HeaderPanel.add(panel_1, "2, 4, fill, fill"); //$NON-NLS-1$
 		panel_1.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("15dlu"),
-				ColumnSpec.decode("default:grow"),},
+				ColumnSpec.decode("15dlu"), //$NON-NLS-1$
+				ColumnSpec.decode("default:grow"),}, //$NON-NLS-1$
 			new RowSpec[] {
-				RowSpec.decode("fill:default:grow"),}));
+				RowSpec.decode("fill:default:grow"),})); //$NON-NLS-1$
 		
-		JLabel lblChooseWhichAnnotations = new JLabel("Choose which annotations should be overwritten ");
-		lblChooseWhichAnnotations.setFont(new Font("Dialog", Font.PLAIN, 13));
-		panel_1.add(lblChooseWhichAnnotations, "2, 1");		
+		JLabel lblChooseWhichAnnotations = new JLabel(TextUtils.getText("ImportConflictPanel.20")); //$NON-NLS-1$
+		lblChooseWhichAnnotations.setFont(new Font(TextUtils.getText("ImportConflictPanel.21"), Font.PLAIN, 13)); //$NON-NLS-1$
+		panel_1.add(lblChooseWhichAnnotations, "2, 1");		 //$NON-NLS-1$
 	}
 	
 	public void addPdfConflictPanel(PdfConflictPanel pdfConflictPanel){
 		FormLayout formLayout = (FormLayout)panel.getLayout();		
 		if(formLayout.getRowCount() > 2){
-			formLayout.insertRow(formLayout.getRowCount(), RowSpec.decode("fill:5dlu"));
+			formLayout.insertRow(formLayout.getRowCount(), RowSpec.decode("fill:5dlu")); //$NON-NLS-1$
 		}		
 		
-		formLayout.insertRow(formLayout.getRowCount(), RowSpec.decode("fill:default"));		
-		this.panel.add(pdfConflictPanel, "2, " + (formLayout.getRowCount() - 1) + ", fill, fill");
+		formLayout.insertRow(formLayout.getRowCount(), RowSpec.decode("fill:default"));		 //$NON-NLS-1$
+		this.panel.add(pdfConflictPanel, "2, " + (formLayout.getRowCount() - 1) + ", fill, fill"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }

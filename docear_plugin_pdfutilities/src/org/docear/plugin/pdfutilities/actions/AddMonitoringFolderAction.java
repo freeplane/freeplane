@@ -36,7 +36,7 @@ public class AddMonitoringFolderAction extends AbstractMonitoringAction {
 	public void actionPerformed(ActionEvent e) {
 		NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
 		if(Controller.getCurrentController().getMap().getFile() == null){
-			int result = UITools.showConfirmDialog(selected, "You have to save the map first.", "Save Map", JOptionPane.OK_CANCEL_OPTION);
+			int result = UITools.showConfirmDialog(selected, TextUtils.getText("AddMonitoringFolderAction.0"), TextUtils.getText("AddMonitoringFolderAction.1"), JOptionPane.OK_CANCEL_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
 			if(result == JOptionPane.OK_OPTION){
 				SaveAsAction saveAction = new SaveAsAction();
 				saveAction.actionPerformed(null);

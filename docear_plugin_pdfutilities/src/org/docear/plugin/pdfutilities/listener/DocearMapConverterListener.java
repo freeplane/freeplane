@@ -74,22 +74,22 @@ public class DocearMapConverterListener implements IMapSelectionListener,  Windo
 	
 	private String getMessage(){
 		if(this.mapsToConvert.size() > 1){
-			return mapsToConvert.size() + " of your currently opened maps, need to be updated.\n Update now?\n\n"+TextUtils.getText("update_splmm_to_docear_explanation");
+			return mapsToConvert.size() + TextUtils.getText("DocearMapConverterListener.0")+TextUtils.getText("update_splmm_to_docear_explanation"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		else if (this.mapsToConvert.size() == 1){
-			return mapsToConvert.get(0).getTitle() + " needs to be updated.\n Update now?\n\n"+TextUtils.getText("update_splmm_to_docear_explanation");
+			return mapsToConvert.get(0).getTitle() + TextUtils.getText("DocearMapConverterListener.2")+TextUtils.getText("update_splmm_to_docear_explanation"); //$NON-NLS-1$ //$NON-NLS-2$
 		}		
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 	
 	private String getTitle(){
 		if(this.mapsToConvert.size() > 1){
-			return mapsToConvert.size() + " maps need to be updated";
+			return mapsToConvert.size() + TextUtils.getText("DocearMapConverterListener.5"); //$NON-NLS-1$
 		}
 		else if (this.mapsToConvert.size() == 1){
-			return mapsToConvert.get(0).getTitle() + " needs to be updated";
+			return mapsToConvert.get(0).getTitle() + TextUtils.getText("DocearMapConverterListener.6"); //$NON-NLS-1$
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 }

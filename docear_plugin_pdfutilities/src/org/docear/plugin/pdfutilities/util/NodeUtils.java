@@ -196,7 +196,7 @@ public class NodeUtils {
 	
 	public static NodeModel insertChildNodeFrom(URI file, IAnnotation annotation, boolean isLeft, NodeModel target){	
 		if(annotation.getTitle() != null && annotation.getTitle().length() > 1 && annotation.getTitle().charAt(0) == '='){
-			annotation.setTitle(" " + annotation.getTitle());
+			annotation.setTitle(" " + annotation.getTitle()); //$NON-NLS-1$
 		}
 		final NodeModel node = ((MMapController) Controller.getCurrentModeController().getMapController()).newNode(annotation.getTitle(), target.getMap());
 		AnnotationController.setModel(node, annotation);
@@ -480,7 +480,7 @@ public class NodeUtils {
 				return true;				
 				
 			case 2:
-				return ResourceController.getResourceController().getBooleanProperty("docear_auto_monitoring");
+				return ResourceController.getResourceController().getBooleanProperty("docear_auto_monitoring"); //$NON-NLS-1$
 				
 			default:
 				return false;

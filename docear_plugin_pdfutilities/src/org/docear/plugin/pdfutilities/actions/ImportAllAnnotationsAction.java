@@ -46,11 +46,11 @@ public class ImportAllAnnotationsAction extends ImportAnnotationsAction {
 				List<AnnotationModel> annotations = importer.importAnnotations(uri);             
 				NodeUtils.insertChildNodesFrom(annotations, selected.isLeft(), selected);
 			} catch (IOException e) {
-				LogUtils.severe("ImportAllAnnotationsAction IOException at URI("+uri+"): ", e);
+				LogUtils.severe("ImportAllAnnotationsAction IOException at URI("+uri+"): ", e); //$NON-NLS-1$ //$NON-NLS-2$
 			} catch (COSLoadException e) {
-				LogUtils.severe("ImportAllAnnotationsAction COSLoadException at URI("+uri+"): ", e);
+				LogUtils.severe("ImportAllAnnotationsAction COSLoadException at URI("+uri+"): ", e); //$NON-NLS-1$ //$NON-NLS-2$
 			} catch (COSRuntimeException e) {
-				LogUtils.severe("ImportAllAnnotationsAction COSRuntimeException at URI("+uri+"): ", e);
+				LogUtils.severe("ImportAllAnnotationsAction COSRuntimeException at URI("+uri+"): ", e); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 	}

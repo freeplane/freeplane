@@ -21,6 +21,7 @@ import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.ui.EnabledAction;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
@@ -46,7 +47,7 @@ public class MonitoringFlattenSubfoldersAction extends DocearAction {
 			selected.setFolded(true);
 			SwingWorker<Void, Void> thread = getFlattenThread(selected);
 			SwingWorkerDialogLite dialog = new SwingWorkerDialogLite(Controller.getCurrentController().getViewController().getFrame());
-			dialog.setHeadlineText("Flatten subfolders...");
+			dialog.setHeadlineText(TextUtils.getText("MonitoringFlattenSubfoldersAction.0")); //$NON-NLS-1$
 			dialog.showDialog(thread);
 			NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 1);				
 			selected.setFolded(isFolded);
@@ -56,7 +57,7 @@ public class MonitoringFlattenSubfoldersAction extends DocearAction {
 			selected.setFolded(true);
 			SwingWorker<Void, Void> thread = getUnFlattenThread(selected);
 			SwingWorkerDialogLite dialog = new SwingWorkerDialogLite(Controller.getCurrentController().getViewController().getFrame());
-			dialog.setHeadlineText("Creating subfolder nodes...");
+			dialog.setHeadlineText(TextUtils.getText("MonitoringFlattenSubfoldersAction.1")); //$NON-NLS-1$
 			dialog.showDialog(thread);
 			NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 0);
 			selected.setFolded(isFolded);			
@@ -79,10 +80,10 @@ public class MonitoringFlattenSubfoldersAction extends DocearAction {
 			@Override
 		    protected void done() {			
 				if(this.isCancelled() || Thread.currentThread().isInterrupted()){					
-					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, "Flatten subfolders canceled.");
+					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("MonitoringFlattenSubfoldersAction.2")); //$NON-NLS-1$
 				}
 				else{
-					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, "Flatten subfolders complete.");
+					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("MonitoringFlattenSubfoldersAction.3")); //$NON-NLS-1$
 				}
 				
 			}			
@@ -123,10 +124,10 @@ public class MonitoringFlattenSubfoldersAction extends DocearAction {
 			@Override
 		    protected void done() {			
 				if(this.isCancelled() || Thread.currentThread().isInterrupted()){					
-					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, "Creating subfolder nodes canceled.");
+					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("MonitoringFlattenSubfoldersAction.4")); //$NON-NLS-1$
 				}
 				else{
-					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, "Creating subfolder nodes complete.");
+					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("MonitoringFlattenSubfoldersAction.5")); //$NON-NLS-1$
 				}
 				
 			}			

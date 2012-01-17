@@ -18,15 +18,15 @@ public class AnnotationID implements Comparable<AnnotationID>{
 
 	public void setId(URI absoluteUri, Integer objectNumber) throws IllegalArgumentException{
 		if(absoluteUri == null){
-			throw new IllegalArgumentException(this.getClass().getName() + ": Uri can not be null.");
+			throw new IllegalArgumentException(this.getClass().getName() + ": Uri can not be null."); //$NON-NLS-1$
 		}
 		if(objectNumber == null){
-			throw new IllegalArgumentException(this.getClass().getName() + ": Object number can not be null.");
+			throw new IllegalArgumentException(this.getClass().getName() + ": Object number can not be null."); //$NON-NLS-1$
 		}
 		
 		String uri = absoluteUri.getPath();
 		uri = uri.trim();
-		this.id = uri + " " + objectNumber;
+		this.id = uri + " " + objectNumber; //$NON-NLS-1$
 		this.objectNumber = objectNumber;
 		this.uri = absoluteUri;
 	}
