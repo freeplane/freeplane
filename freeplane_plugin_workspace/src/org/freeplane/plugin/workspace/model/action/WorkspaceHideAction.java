@@ -1,14 +1,15 @@
-package org.freeplane.plugin.workspace.config.actions;
+package org.freeplane.plugin.workspace.model.action;
 
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspacePreferences;
-import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
 
 @SelectableAction(checkOnPropertyChange=WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY)
+@EnabledAction(checkOnPopup = true)
 public class WorkspaceHideAction extends AWorkspaceAction {
 
 	/**
@@ -23,6 +24,10 @@ public class WorkspaceHideAction extends AWorkspaceAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		WorkspaceController.getController().showWorkspace(!this.isSelected());
+	}
+	
+	public void setEnabled() {
+		setEnabled(false);
 	}
 
 	public void setSelected() {

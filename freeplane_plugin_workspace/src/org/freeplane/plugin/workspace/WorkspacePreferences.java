@@ -29,7 +29,7 @@ public class WorkspacePreferences {
 	public static final String MENU_BAR = "/menu_bar";
 	public static final String VIEW_MENU = "/view";
 
-	public static final String SHOW_WORKSPACE_TEXT = "show_workspace";
+	public static final String SHOW_WORKSPACE_MENUITEM = "show_workspace";
 	public static final String SHOW_WORKSPACE_PROPERTY_KEY = "workspace.enabled";
 	public static final String COLLAPSE_WORKSPACE_PROPERTY_KEY = "workspace.collapsed";
 	public static final String WORKSPACE_WIDTH_PROPERTY_KEY = "workspace_view_width";
@@ -87,10 +87,11 @@ public class WorkspacePreferences {
 	}
 
 	private void addMenuEntries() {
-
+		//Controller.getCurrentModeController().addAction(new CheckBoxAction(SHOW_WORKSPACE_MENUITEM));
+		
 		this.modeController.addMenuContributor(new IMenuContributor() {
 			public void updateMenus(ModeController modeController, MenuBuilder builder) {
-				builder.addAction(MENU_BAR + VIEW_MENU,	new CheckBoxAction(SHOW_WORKSPACE_TEXT), IndexedTree.AS_CHILD);
+				builder.addAction(MENU_BAR + VIEW_MENU,	new CheckBoxAction(SHOW_WORKSPACE_MENUITEM), IndexedTree.AS_CHILD);				
 			}
 		});
 	}

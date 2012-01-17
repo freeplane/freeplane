@@ -1,14 +1,9 @@
 package org.docear.plugin.bibtex.actions;
 
 import java.awt.event.ActionEvent;
-import java.net.URL;
-
-import javax.swing.ImageIcon;
 
 import org.docear.plugin.bibtex.ReferencesController;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.util.LogUtils;
 
 public class ShowJabrefPreferencesAction extends AFreeplaneAction{
 
@@ -36,6 +31,9 @@ public class ShowJabrefPreferencesAction extends AFreeplaneAction{
 
 	public void actionPerformed(ActionEvent e) {
 		ReferencesController.getController().getJabrefWrapper().getJabrefFrame().preferences();
+	}
+	
+	public void afterMapChange(final Object newMap) {
 	}
 	
 }

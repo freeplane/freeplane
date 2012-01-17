@@ -7,11 +7,12 @@ import javax.swing.Icon;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.workspace.io.IFileSystemRepresentation;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
@@ -56,21 +57,21 @@ public class FileNodeNewMindmapAction extends AWorkspaceAction {
 		}
     }
 	
+	@SuppressWarnings("deprecation")
 	private boolean createNewMindmap(final File f) {
-		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);		
-		try {
-			mapIO.newMap(f.toURL());
-		}
-		catch (Exception e) {
-			LogUtils.severe(e);
-			return false;
-		}
-				
+		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MMapIO.class);		
+//		try {
+//			mapIO.newMap(f.toURL());
+//		}
+//		catch (Exception e) {
+//			LogUtils.severe(e);
+//			return false;
+//		}
+		final ModeController modeController = Controller.getCurrentController().getModeController(MModeController.MODENAME);
+		MFileManager.getController(modeController).newMapFromDefaultTemplate();
+		
 		mapIO.save(Controller.getCurrentController().getMap(), f);
 		Controller.getCurrentController().getMap().getRootNode().setText(f.getName());
-		//Controller.getCurrentController().close(false);
-
-		LogUtils.info("New Mindmap Created: " + f.getAbsolutePath());
 		return true;
 	}
 

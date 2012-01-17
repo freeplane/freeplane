@@ -253,6 +253,7 @@ public class JCheckboxBorder extends TitledBorder {
 		return true;
 	}
 
+	@SuppressWarnings("deprecation")
 	public FontMetrics getFontMetrics(JComponent c, Graphics g, Font font) {
 		if (c != null) {
 			// Note: We assume that we're using the FontMetrics

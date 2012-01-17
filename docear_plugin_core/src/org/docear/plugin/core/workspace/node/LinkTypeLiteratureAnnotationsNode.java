@@ -19,9 +19,11 @@ import org.docear.plugin.core.workspace.IDocearMindmap;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
@@ -88,21 +90,30 @@ public class LinkTypeLiteratureAnnotationsNode extends ALinkNode implements IWor
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	private boolean createNewMindmap(final File f) {
 		if (!createFolderStructure(f)) {
 			return false;
 		}
 		
-		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);		
-		try {
-			mapIO.newMap(f.toURL());
-		}
-		catch (Exception e) {
-			LogUtils.severe(e);
-			return false;
-		}
+		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MMapIO.class);		
+//		try {
+//			if(!f.exists() && !f.createNewFile()) {
+//				return false;
+//			}
+//			if(!mapIO.newMap(f.toURL())) {
+//				return false;
+//			}
+//		}
+//		catch (Exception e) {
+//			LogUtils.severe(e);
+//			return false;
+//		}
+		final ModeController modeController = Controller.getCurrentController().getModeController(MModeController.MODENAME);
+		MFileManager.getController(modeController).newMapFromDefaultTemplate();
 		
 		MapModel map = Controller.getCurrentController().getMap();
+		//DocearMapModelController.setModelWithCurrentVersion(map);
 		map.getRootNode().setText(getName());
 		DocearEvent evnt = new DocearEvent(this, DocearEventType.NEW_LITERATURE_ANNOTATIONS, map);
 		DocearController.getController().dispatchDocearEvent(evnt);
@@ -144,7 +155,7 @@ public class LinkTypeLiteratureAnnotationsNode extends ALinkNode implements IWor
 				if (!f.exists()) {
 					createNewMindmap(f);
 				}
-				final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);		
+				final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MMapIO.class);		
 				try {
 					mapIO.newMap(f.toURL());
 				}

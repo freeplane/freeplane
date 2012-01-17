@@ -5,6 +5,8 @@ import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Enumeration;
 
+import javax.swing.SwingUtilities;
+
 import org.docear.plugin.core.actions.DocearLicenseAction;
 import org.docear.plugin.core.actions.DocearOpenUrlAction;
 import org.docear.plugin.core.actions.DocearQuitAction;
@@ -30,6 +32,7 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.FreeplaneActionCascade;
+import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -37,6 +40,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.WorkspacePreferences;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
@@ -152,7 +156,20 @@ public class CoreConfiguration extends ALanguageController {
 		Controller.getCurrentModeController().addAction(new SaveAsAction());
 		Controller.getCurrentModeController().removeAction("SaveAction");
 		Controller.getCurrentModeController().addAction(new SaveAction());
-
+		
+		//remove sidepanel switcher
+		//Controller.getCurrentModeController().removeAction("ShowFormatPanel");
+		Controller.getCurrentModeController().addMenuContributor(new IMenuContributor() {
+			public void updateMenus(ModeController modeController,final  MenuBuilder builder) {
+				SwingUtilities.invokeLater(new Runnable() {					
+					public void run() {
+						builder.removeElement("$" + WorkspacePreferences.SHOW_WORKSPACE_MENUITEM + "$0");	
+					}
+				});
+													
+			}
+		});
+		
 		if (!resourceController.getProperty(APPLICATION_NAME, "").equals(DOCEAR)) {
 			return;
 		}
@@ -182,6 +199,7 @@ public class CoreConfiguration extends ALanguageController {
 		replaceAction(DOCUMENTATION_ACTION,
 				new DocearOpenUrlAction(DOCUMENTATION_ACTION, resourceController.getProperty(WEB_DOCU_LOCATION)));
 		replaceAction(LICENSE_ACTION, new DocearLicenseAction(LICENSE_ACTION));
+		
 	}
 
 	private void replaceResourceBundleStrings() {
