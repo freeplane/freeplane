@@ -2,7 +2,6 @@ package org.docear.plugin.core.workspace.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.docear.plugin.core.LocationDialog;
 import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
 
 /**

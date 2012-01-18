@@ -1,4 +1,4 @@
-package org.docear.plugin.core;
+package org.docear.plugin.core.workspace.actions;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -14,7 +14,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
 
+import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
@@ -99,6 +101,18 @@ public class LocationDialog extends JPanel {
 	
 	private void browseBibtex() {
 		JFileChooser fileChooser = UrlManager.getController().getFileChooser(null, false, true);
+		final String filterDescription = "*.bib ("+TextUtils.getText("locationdialog.filefilter.bib")+")";
+		FileFilter bibFilter = new FileFilter() {
+			
+			public String getDescription() {
+				return filterDescription;
+			}
+			
+			public boolean accept(File f) {
+				return f.getName().endsWith(".bib");
+			}
+		};
+		fileChooser.addChoosableFileFilter(bibFilter);
 		if (bibtexLocation != null) {
 			File file = new File(this.bibtexLocation.getText());
 			if (file.exists()) {

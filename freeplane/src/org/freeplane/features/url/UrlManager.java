@@ -337,7 +337,7 @@ public class UrlManager implements IExtension {
 			try {
 				if ((extension != null)
 				        && extension.equals(UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
-					//FIXME: Docear: mindmaps can be linked in a mindmap --> therefore workspace-relative-paths are possible
+					//DOCEAR: mindmaps can be linked in a mindmap --> therefore workspace-relative-paths are possible
 					//final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
 					final URL url = uri.toURL().openConnection().getURL();
 					final ModeController modeController = Controller.getCurrentModeController();

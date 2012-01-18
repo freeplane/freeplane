@@ -764,6 +764,13 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 		if (this.isTopLevel) {
 			pushExternalButton = new PushToApplicationButton(this, PushToApplicationButton.applications);			
 		}
+		else { //DOCEAR: necessary modification to prepare for short cut keyEvents in combination with another TopLevelFrame 
+			mb = new JMenuBar() {
+				public Container getParent() {
+					return frame;
+				}
+			};
+		}
 		fillMenu();
 		createToolBar();
 		this.setLayout(gbl);
@@ -780,7 +787,8 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 		// this.add(mb);
 		if (this.isTopLevel) {
 			frame.setJMenuBar(mb);
-		}
+		} 
+		
 		con.anchor = GridBagConstraints.NORTH;
 		// con.gridwidth = 1;//GridBagConstraints.REMAINDER;;
 		gbl.setConstraints(tlb, con);
@@ -1093,45 +1101,50 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 		// mb.putClientProperty(Options.HEADER_STYLE_KEY, HeaderStyle.BOTH);
 		mb.setBorder(null);
 		JMenu file = subMenu("File"), sessions = subMenu("Sessions"), edit = subMenu("Edit"), bibtex = subMenu("BibTeX"), view = subMenu("View"), tools = subMenu("Tools"), web = subMenu("Web search"), options = subMenu("Options"), newSpec = subMenu("New entry..."), helpMenu = subMenu("Help");
-
-		setUpImportMenus();
-
-		newDatabaseMenu.add(newDatabaseAction);
-		newDatabaseMenu.add(newSubDatabaseAction);
-
-		file.add(newDatabaseAction);
-		file.add(open); // opendatabaseaction
-		file.add(mergeDatabaseAction);
+		//DOCEAR: prohibited when integrated
+		if (this.isTopLevel) {
+			setUpImportMenus();
+	
+			newDatabaseMenu.add(newDatabaseAction);
+			newDatabaseMenu.add(newSubDatabaseAction);
+	
+			file.add(newDatabaseAction);
+			file.add(open); // opendatabaseaction
+			file.add(mergeDatabaseAction);
+		}
 		file.add(save);
 		if (this.isTopLevel) {
 			file.add(saveAs);
 		}
 		file.add(saveAll);
-		file.add(saveSelectedAs);
-		file.addSeparator();
-		// file.add(importMenu);
-		// file.add(importNewMenu);
-		file.add(importNew);
-		file.add(importCurrent);
-		file.add(exportAll);
-		file.add(exportSelected);
-		file.add(dbConnect);
-		file.add(dbImport);
-		file.add(dbExport);
+		//DOCEAR: prohibited when integrated
+		if (this.isTopLevel) {
+			file.add(saveSelectedAs);
+			file.addSeparator();
+			// file.add(importMenu);
+			// file.add(importNewMenu);
+			file.add(importNew);
+			file.add(importCurrent);
+			file.add(exportAll);
+			file.add(exportSelected);
+			file.add(dbConnect);
+			file.add(dbImport);
+			file.add(dbExport);
 
-		file.addSeparator();
-		file.add(databaseProperties);
-		file.addSeparator();
-
-		sessions.add(loadSessionAction);
-		sessions.add(saveSessionAction);
-		file.add(sessions);
-		file.add(fileHistory);
-		// file.addSeparator();
-
-		file.addSeparator();
-		file.add(close);
-		file.add(quit);
+			file.addSeparator();
+			file.add(databaseProperties);
+			file.addSeparator();
+	
+			sessions.add(loadSessionAction);
+			sessions.add(saveSessionAction);
+			file.add(sessions);
+			file.add(fileHistory);
+			// file.addSeparator();
+	
+			file.addSeparator();
+			file.add(close);
+			file.add(quit);
+		}
 		mb.add(file);
 		// edit.add(test);
 		edit.add(undo);
@@ -1160,9 +1173,12 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 		view.add(back);
 		view.add(forward);
 		view.add(focusTable);
-		view.add(nextTab);
-		view.add(prevTab);
-		view.add(sortTabs);
+		//DOCEAR: prohibited when integrated
+		if (this.isTopLevel) {
+			view.add(nextTab);
+			view.add(prevTab);
+			view.add(sortTabs);
+		}
 		view.addSeparator();
 		view.add(increaseFontSize);
 		view.add(decreseFontSize);
@@ -1222,27 +1238,32 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 		tools.add(openUrl);
 		// tools.add(openSpires);
 		tools.addSeparator();
-		tools.add(newSubDatabaseAction);
-
+		//DOCEAR: prohibited when integrated
+		if (this.isTopLevel) {
+			tools.add(newSubDatabaseAction);
+		}
 		tools.addSeparator();
 		tools.add(abbreviateIso);
 		tools.add(abbreviateMedline);
 		tools.add(unabbreviate);
 		mb.add(tools);
 
-		web.add(fetchCiteSeer);
+		//DOCEAR: prohibited when integrated
+		if (this.isTopLevel) {
+			web.add(fetchCiteSeer);
+	
+			/*
+			 * Add all entryFetchers
+			 */
+			for (EntryFetcher fetcher : fetchers) {
+				GeneralFetcher generalFetcher = new GeneralFetcher(sidePaneManager, this, fetcher);
+				generalFetcher.setHelpResourceOwner(fetcher.getClass());
+				web.add(generalFetcher.getAction());
+				fetcherActions.add(generalFetcher.getAction());
+			}
 
-		/*
-		 * Add all entryFetchers
-		 */
-		for (EntryFetcher fetcher : fetchers) {
-			GeneralFetcher generalFetcher = new GeneralFetcher(sidePaneManager, this, fetcher);
-			generalFetcher.setHelpResourceOwner(fetcher.getClass());
-			web.add(generalFetcher.getAction());
-			fetcherActions.add(generalFetcher.getAction());
+			mb.add(web);
 		}
-
-		mb.add(web);
 
 		options.add(showPrefs);
 		AbstractAction customizeAction = new CustomizeEntryTypeAction();
@@ -1285,6 +1306,11 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 		mb.add(helpMenu);
 		helpMenu.addSeparator();
 		helpMenu.add(errorConsole);
+		
+		//DOCEAR: register actions and their shortcuts to the KeyboardManager
+		if(!this.isTopLevel) {
+			mb.addNotify();
+		}
 	}
 
 	public static JMenu subMenu(String name) {

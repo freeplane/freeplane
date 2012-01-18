@@ -185,17 +185,13 @@ public class JabRefAttributes {
 		String nodeFileName = nodeFile.getName();
 		
 		for (BibtexEntry entry : database.getEntries()) {			
-			String jabrefFile = entry.getField("file");
-			if (jabrefFile != null) {
-				try {
-					// path linked in jabref
-					jabrefFile = parsePathName(entry, jabrefFile);
-				}
-				catch(Exception e) {
-					continue;
-				}
-				if (jabrefFile.endsWith(nodeFileName)) {
-					return entry;
+			String jabrefFiles = entry.getField("file");
+			if (jabrefFiles != null) {				
+				// path linked in jabref
+				for (String jabrefFile : parsePathNames(entry, jabrefFiles)) {				
+					if (jabrefFile.endsWith(nodeFileName)) {
+						return entry;
+					}
 				}
 			}
 		}
@@ -204,45 +200,62 @@ public class JabRefAttributes {
 		
 	}
 
-	public String parsePathName(BibtexEntry entry, String path) {
-		path = extractPath(path);
+	public ArrayList<String> parsePathNames(BibtexEntry entry, String path) {
+		ArrayList<String> fileNames = new ArrayList<String>();
+		
+		ArrayList<String> paths = extractPaths(path);
 		if(path == null){
 			LogUtils.warn("Could not extract path from: "+ entry.getCiteKey());
-			return null; 
-		}		
-		return new File(removeEscapingCharacter(path)).getName();
+			return fileNames; 
+		}
+		if (paths == null || paths.size()==0) {
+			return fileNames;
+		}
+		for (String s : paths) {
+			try {
+				fileNames.add(new File(removeEscapingCharacter(s)).getName());
+			}
+			catch (Exception e) {
+				continue;
+			}
+		}
+		return fileNames;
 	}
 	
-	public URI parsePath(BibtexEntry entry, String path) {		
-		path = extractPath(path);
-		if(path == null){
-			LogUtils.warn("Could not extract path from: "+ entry.getCiteKey());
-			return null; 
-		}		
-		path = removeEscapingCharacter(path);
-		if(isAbsolutePath(path)&& (new File(path)).exists()){
-				return new File(path).toURI();
+	public ArrayList<URI> parsePaths(BibtexEntry entry, String pathInBibtexFile) {
+		ArrayList<URI> uris = new ArrayList<URI>();
+		ArrayList<String> paths = extractPaths(pathInBibtexFile);
+		
+		for (String path : paths) {
+			if(path == null){
+				LogUtils.warn("Could not extract path from: "+ entry.getCiteKey());
+				continue; 
+			}		
+			path = removeEscapingCharacter(path);
+			if(isAbsolutePath(path)&& (new File(path)).exists()){
+					uris.add(new File(path).toURI());
+			}
+			else{
+				URI uri = CoreConfiguration.referencePathObserver.getUri();
+				URI absUri = WorkspaceUtils.absoluteURI(uri);
+				
+				final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+		        Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
+				URI pdfUri = absUri.resolve(UriBuilder.fromPath(path).build());
+				Thread.currentThread().setContextClassLoader(contextClassLoader);
+				File file = null;
+				try {
+					file = new File(pdfUri);
+				}
+				catch (IllegalArgumentException e) {
+					LogUtils.warn(e.getMessage()+" for: "+path);
+				}
+				if(file != null && file.exists()){
+					uris.add(pdfUri);
+				}
+			}		
 		}
-		else{
-			URI uri = CoreConfiguration.referencePathObserver.getUri();
-			URI absUri = WorkspaceUtils.absoluteURI(uri);
-			
-			final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-	        Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
-			URI pdfUri = absUri.resolve(UriBuilder.fromPath(path).build());
-			Thread.currentThread().setContextClassLoader(contextClassLoader);
-			File file = null;
-			try {
-				file = new File(pdfUri);
-			}
-			catch (IllegalArgumentException e) {
-				LogUtils.warn(e.getMessage()+" for: "+path);
-			}
-			if(file != null && file.exists()){
-				return pdfUri;
-			}
-		}		
-		return null;
+		return uris;
 	}
 	
 	private static boolean isAbsolutePath(String path) {
@@ -253,12 +266,21 @@ public class JabRefAttributes {
 		return string.replaceAll("([^\\\\]{1,1})[\\\\]{1}", "$1");	
 	}
 
-	private static String extractPath(String path) {
+	
+	private static ArrayList<String> extractPaths(String path) {
+//		String[] array = path.split("(^:|(?<=[^\\\\]):)"); // splits the string at non escaped double points
+//		  if(array.length >= 3){
+//		   return array[1];
+//		  }
+//		  return null;
+		
 		String[] array = path.split("(^:|(?<=[^\\\\]):)"); // splits the string at non escaped double points
-		if(array.length >= 3){
-			return array[1];
+		ArrayList<String> paths = new ArrayList<String>();
+				
+		for (int i=0; i<(array.length)/2; i++) {
+			paths.add(array[i*2+1]);
 		}
-		return null;
+		return paths;
 	}
 
 }

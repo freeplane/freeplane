@@ -36,6 +36,7 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -284,6 +285,11 @@ public abstract class PersistentNodeHook {
 	}
 
 	protected NodeModel[] getSelectedNodes() {
+		//DOCEAR: if nothing is selected (map is opened in background for updating)
+		IMapSelection iMapSelection = Controller.getCurrentController().getSelection();
+		if (iMapSelection == null) {
+			return null;
+		}
 		final Collection<NodeModel> selection = Controller.getCurrentController().getSelection().getSelection();
 		final int size = selection.size();
 		final NodeModel[] nodes = new NodeModel[size];
@@ -304,6 +310,10 @@ public abstract class PersistentNodeHook {
 
 	protected boolean isActiveForSelection() {
 		final NodeModel[] nodes = getNodes();
+		//Docear: if nothing is selected (map is opened in background for updating)
+		if (nodes == null) {
+			return false;
+		}
 		for (int i = 0; i < nodes.length; i++) {
 			final NodeModel nodeModel = nodes[i];
 			if (nodeModel.containsExtension(getExtensionClass())) {

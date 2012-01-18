@@ -119,7 +119,7 @@ public class NodeUtils {
 			MapModel map = new MMapModel();			
 			AttributeRegistry.getRegistry(map);
 			URL url = Tools.getFilefromUri(uri).toURL();
-			final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
+			final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MMapIO.class);
 			mapIO.load(url, map);			
 			return map;
 		} catch (MalformedURLException e) {

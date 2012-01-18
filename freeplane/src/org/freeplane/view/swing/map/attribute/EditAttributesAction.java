@@ -27,6 +27,7 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.ShortenedTextModel;
@@ -59,8 +60,12 @@ public class EditAttributesAction extends AFreeplaneAction {
 
 	@Override
 	public void setEnabled() {
-		final NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
-		setEnabled(! ShortenedTextModel.isShortened(selected));
+		//DOCEAR: if nothing is selected (map is opened in background for updating)
+		IMapSelection selection = Controller.getCurrentController().getSelection();
+		if (selection != null) {
+			final NodeModel selected = selection.getSelected();
+			setEnabled(! ShortenedTextModel.isShortened(selected));
+		}
 	}
 
 }
