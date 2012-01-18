@@ -115,13 +115,18 @@ public class DocearNodeDropListener extends MNodeDropListener {
 		            		SwingUtilities.invokeAndWait(
 							        new Runnable() {
 							            public void run(){
-							            	URI uri = file.toURI();
-							            	NodeModel newNode = NodeUtils.insertChildNodesFromPdf(uri, annotations, isLeft, targetNode);	            
-							            	for(AnnotationModel annotation : getInsertedNodes(annotations)){
-												firePropertyChange(SwingWorkerDialog.DETAILS_LOG_TEXT, null, TextUtils.getText("DocearNodeDropListener.4") + annotation.getTitle() +TextUtils.getText("DocearNodeDropListener.5"));												 //$NON-NLS-1$ //$NON-NLS-2$
-											}	
-							            	DocearEvent event = new DocearEvent(newNode, DocearEventType.MINDMAP_ADD_PDF_TO_NODE, true);
-							            	DocearController.getController().dispatchDocearEvent(event);
+							            	try {
+								            	URI uri = file.toURI();
+								            	NodeModel newNode = NodeUtils.insertChildNodesFromPdf(uri, annotations, isLeft, targetNode);	            
+								            	for(AnnotationModel annotation : getInsertedNodes(annotations)){
+													firePropertyChange(SwingWorkerDialog.DETAILS_LOG_TEXT, null, TextUtils.getText("DocearNodeDropListener.4") + annotation.getTitle() +TextUtils.getText("DocearNodeDropListener.5"));												 //$NON-NLS-1$ //$NON-NLS-2$
+												}	
+								            	DocearEvent event = new DocearEvent(newNode, DocearEventType.MINDMAP_ADD_PDF_TO_NODE, true);
+								            	DocearController.getController().dispatchDocearEvent(event);
+							            	}
+							            	catch (Exception e) {
+							            		LogUtils.severe(e);
+							            	}
 							            }
 							        }
 							   );						

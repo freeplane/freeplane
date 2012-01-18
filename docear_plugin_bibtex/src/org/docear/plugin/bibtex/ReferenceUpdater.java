@@ -8,6 +8,8 @@ import java.util.Map.Entry;
 
 import net.sf.jabref.BibtexDatabase;
 import net.sf.jabref.BibtexEntry;
+import net.sf.jabref.Globals;
+import net.sf.jabref.labelPattern.LabelPatternUtil;
 
 import org.docear.plugin.core.mindmap.AMindmapUpdater;
 import org.freeplane.core.util.LogUtils;
@@ -48,14 +50,18 @@ public class ReferenceUpdater extends AMindmapUpdater {
 
 	private void buildPdfIndex() {
 		for (BibtexEntry entry : database.getEntries()) {
-			String path = entry.getField("file");
-			if (path == null || path.length() == 0) {
+			String paths = entry.getField("file");
+			if (paths == null || paths.length() == 0) {
 				continue;
 			}
 
 			// TODO
-			path = jabRefAttributes.parsePathName(entry, path);
-			this.pdfReferences.put(path, entry.getCiteKey());
+			for (String name : jabRefAttributes.parsePathNames(entry, paths)) {
+				if (entry.getCiteKey() == null) {
+					LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), database, entry);
+				}
+				this.pdfReferences.put(name, entry.getCiteKey());
+			}
 		}
 	}
 

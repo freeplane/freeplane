@@ -56,12 +56,15 @@ public class Reference {
 		boolean isFile = true;
 		String url = entry.getField("file");
 		if (url != null) {
-			uri = jabRefAttributes.parsePath(entry, url.toString());
-			if (uri != null) {
-				url = WorkspaceUtils.resolveURI(uri, node.getMap()).getPath();
-			}
-			else {
-				url = null;
+			ArrayList<URI> uris = jabRefAttributes.parsePaths(entry, url.toString());
+			if (uris.size() > 0) {
+				uri = jabRefAttributes.parsePaths(entry, url.toString()).get(0);
+				if (uri != null) {
+					url = WorkspaceUtils.resolveURI(uri, node.getMap()).getPath();
+				}
+				else {
+					url = null;
+				}
 			}
 		}
 		
