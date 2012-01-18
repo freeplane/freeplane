@@ -24,7 +24,7 @@ public class SolveConflictForNode implements ISolveConflictCommand {
 		}
 		else{
 			boolean test = NodeUtils.saveMap(this.getTarget().getMap());
-			System.out.println("Saved in background: " + test);
+			System.out.println("Saved in background: " + test); //$NON-NLS-1$
 		}
 		
 	}

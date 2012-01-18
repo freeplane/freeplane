@@ -15,11 +15,11 @@ public class CustomFileListFilter implements FileFilter{
 	public CustomFileListFilter(String property){
 		List<String> temp = Tools.getStringList(property);
 		for(String s : temp){
-			if(!s.contains(".")) continue;
-			s = s.substring(s.indexOf(".") + 1);
-			String regex = ".*[.]";
+			if(!s.contains(".")) continue; //$NON-NLS-1$
+			s = s.substring(s.indexOf(".") + 1); //$NON-NLS-1$
+			String regex = ".*[.]"; //$NON-NLS-1$
 			for(char c : s.toCharArray()){
-				regex = regex + "[" + Character.toLowerCase(c) + Character.toUpperCase(c) + "]";
+				regex = regex + "[" + Character.toLowerCase(c) + Character.toUpperCase(c) + "]"; //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			regexList.add(regex);
 		}

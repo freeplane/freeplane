@@ -21,7 +21,7 @@ import org.freeplane.features.mode.Controller;
 public class DocearPasteAction extends AFreeplaneAction {
 
 	public DocearPasteAction() {
-		super("PasteAction");
+		super("PasteAction"); //$NON-NLS-1$
 	}
 
 	/**
@@ -36,8 +36,8 @@ public class DocearPasteAction extends AFreeplaneAction {
 		final Transferable transferable = clipboardController.getClipboardContents();
 		
 		try{
-			final DataFlavor fileListFlavor = new DataFlavor("application/x-java-file-list; class=java.util.List");
-			final DataFlavor uriListFlavor = new DataFlavor("text/uri-list; class=java.lang.String");
+			final DataFlavor fileListFlavor = new DataFlavor("application/x-java-file-list; class=java.util.List"); //$NON-NLS-1$
+			final DataFlavor uriListFlavor = new DataFlavor("text/uri-list; class=java.lang.String"); //$NON-NLS-1$
 			if(!transferable.isDataFlavorSupported(MindMapNodesSelection.mindMapNodesFlavor) && (transferable.isDataFlavorSupported(fileListFlavor) || transferable.isDataFlavorSupported(uriListFlavor))){
 				
 				List<File> fileList = new ArrayList<File>();           

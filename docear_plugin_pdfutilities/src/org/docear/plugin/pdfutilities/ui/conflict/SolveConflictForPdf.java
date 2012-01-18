@@ -8,6 +8,7 @@ import org.docear.plugin.pdfutilities.features.AnnotationModel;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 
 import de.intarsys.pdf.cos.COSRuntimeException;
 import de.intarsys.pdf.parser.COSLoadException;
@@ -27,8 +28,8 @@ public class SolveConflictForPdf implements ISolveConflictCommand {
 		try {
 			new PdfAnnotationImporter().renameAnnotation(getTarget(), getNewTitle());
 		} catch (IOException e) {
-			if(e.getMessage().equals("destination is read only")){
-				int result = UITools.showConfirmDialog(null, "Could not rename annotation in PDF file.\n Please close the file in other Applications. ", "Could not rename annotation.", JOptionPane.OK_CANCEL_OPTION);
+			if(e.getMessage().equals("destination is read only")){ //$NON-NLS-1$
+				int result = UITools.showConfirmDialog(null, TextUtils.getText("SolveConflictForPdf.1"), TextUtils.getText("SolveConflictForPdf.2"), JOptionPane.OK_CANCEL_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
 				if( result == JOptionPane.OK_OPTION){
 					this.solveConflict();
 				}
@@ -37,12 +38,12 @@ public class SolveConflictForPdf implements ISolveConflictCommand {
 				}
 			}
 			else{
-				LogUtils.severe("SolveConflictForPdf IOException at Target("+target.getTitle()+"): ", e);
+				LogUtils.severe("SolveConflictForPdf IOException at Target("+target.getTitle()+"): ", e); //$NON-NLS-1$ //$NON-NLS-2$
 			}			
 		} catch (COSLoadException e) {
-			LogUtils.severe("SolveConflictForPdf COSLoadException at Target("+target.getTitle()+"): ", e);
+			LogUtils.severe("SolveConflictForPdf COSLoadException at Target("+target.getTitle()+"): ", e); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (COSRuntimeException e) {
-			LogUtils.severe("SolveConflictForPdf COSRuntimeException at Target("+target.getTitle()+"): ", e);
+			LogUtils.severe("SolveConflictForPdf COSRuntimeException at Target("+target.getTitle()+"): ", e); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 

@@ -19,7 +19,7 @@ public class ExeFileFilter implements FileFilter {
 	}
 	
 	public boolean isExe(File file){
-		return file.getName().matches(".*[.][Ee][Xx][Ee]");
+		return file.getName().matches(".*[.][Ee][Xx][Ee]"); //$NON-NLS-1$
 	}
 
 }

@@ -17,11 +17,11 @@ import org.freeplane.n3.nanoxml.XMLElement;
 
 public class AnnotationXmlBuilder implements IElementDOMHandler, IExtensionElementWriter {
 	
-	private static final String ANNOTATION_PAGE_XML_TAG = "page";
-	private static final String ANNOTATION_TYPE_XML_TAG = "type";
-	private static final String ANNOTATION_OBJECT_NUMBER_XML_TAG = "object_number";
-	private static final String ANNOTATION_GENERATION_NUMBER_XML_TAG = "generation_number";
-	private static final String PDF_ANNOTATION_XML_TAG = "pdf_annotation";
+	private static final String ANNOTATION_PAGE_XML_TAG = "page"; //$NON-NLS-1$
+	private static final String ANNOTATION_TYPE_XML_TAG = "type"; //$NON-NLS-1$
+	private static final String ANNOTATION_OBJECT_NUMBER_XML_TAG = "object_number"; //$NON-NLS-1$
+	private static final String ANNOTATION_GENERATION_NUMBER_XML_TAG = "generation_number"; //$NON-NLS-1$
+	private static final String PDF_ANNOTATION_XML_TAG = "pdf_annotation"; //$NON-NLS-1$
 	
 	
 	public AnnotationXmlBuilder(){		
@@ -50,7 +50,7 @@ public class AnnotationXmlBuilder implements IElementDOMHandler, IExtensionEleme
 				try{
 					annotation.setPage(Integer.parseInt(value));
 				} catch(NumberFormatException e){
-					LogUtils.warn("Could not Parse Pdf Annotation Page Number.");
+					LogUtils.warn("Could not Parse Pdf Annotation Page Number."); //$NON-NLS-1$
 				}
 			}
 			
@@ -63,7 +63,7 @@ public class AnnotationXmlBuilder implements IElementDOMHandler, IExtensionEleme
 				try{
 					annotation.setObjectNumber(Integer.parseInt(value));
 				} catch(NumberFormatException e){
-					LogUtils.warn("Could not Parse Pdf Annotation Page Number.");
+					LogUtils.warn("Could not Parse Pdf Annotation Page Number."); //$NON-NLS-1$
 				}
 			}
 			
@@ -76,7 +76,7 @@ public class AnnotationXmlBuilder implements IElementDOMHandler, IExtensionEleme
 				try{
 					annotation.setGenerationNumber(Integer.parseInt(value));
 				} catch(NumberFormatException e){
-					LogUtils.warn("Could not Parse Pdf Annotation Page Number.");
+					LogUtils.warn("Could not Parse Pdf Annotation Page Number."); //$NON-NLS-1$
 				}
 			}
 			
@@ -129,17 +129,17 @@ public class AnnotationXmlBuilder implements IElementDOMHandler, IExtensionEleme
 		
 		final Integer page = model.getPage();
 		if (page != null) {
-			pdfAnnotation.setAttribute(ANNOTATION_PAGE_XML_TAG, "" + page);
+			pdfAnnotation.setAttribute(ANNOTATION_PAGE_XML_TAG, "" + page); //$NON-NLS-1$
 		}
 		
 		final Integer objectNumber = model.getObjectNumber();
 		if (objectNumber != null) {
-			pdfAnnotation.setAttribute(ANNOTATION_OBJECT_NUMBER_XML_TAG, "" + objectNumber);
+			pdfAnnotation.setAttribute(ANNOTATION_OBJECT_NUMBER_XML_TAG, "" + objectNumber); //$NON-NLS-1$
 		}
 		
 		final Integer generationNumber = model.getGenerationNumber();
 		if (generationNumber != null) {
-			pdfAnnotation.setAttribute(ANNOTATION_GENERATION_NUMBER_XML_TAG, "" + generationNumber);
+			pdfAnnotation.setAttribute(ANNOTATION_GENERATION_NUMBER_XML_TAG, "" + generationNumber); //$NON-NLS-1$
 		}
 		
 		writer.addElement(model, pdfAnnotation);

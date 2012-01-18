@@ -54,7 +54,7 @@ public class DocearAutoMonitoringListener implements IMapLifeCycleListener,  Win
 //						
 //						Controller.getCurrentController().getMapViewManager().removeMapViewChangeListener(changeListener);
 //					}
-					LogUtils.info("Monitoring started");
+					LogUtils.info("Monitoring started"); //$NON-NLS-1$
 					startMonitoring();
 			
 				} //run()

@@ -8,6 +8,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
 import org.docear.plugin.core.util.Tools;
+import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
@@ -35,7 +36,7 @@ public class PdfConflictPanel extends JPanel {
 	}	
 
 	private void init() {
-		setBorder(new TitledBorder(null, "PDF Name", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		setBorder(new TitledBorder(null, TextUtils.getText("PdfConflictPanel_0"), TitledBorder.LEADING, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 		setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -44,12 +45,12 @@ public class PdfConflictPanel extends JPanel {
 		panel = new JPanel();
 		scrollPane.setViewportView(panel);
 		panel.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("5dlu"),
-				ColumnSpec.decode("default:grow"),
-				ColumnSpec.decode("5dlu"),},
+				ColumnSpec.decode("5dlu"), //$NON-NLS-1$
+				ColumnSpec.decode("default:grow"), //$NON-NLS-1$
+				ColumnSpec.decode("5dlu"),}, //$NON-NLS-1$
 			new RowSpec[] {
-				RowSpec.decode("fill:5dlu"),
-				RowSpec.decode("fill:5dlu"),}));
+				RowSpec.decode("fill:5dlu"), //$NON-NLS-1$
+				RowSpec.decode("fill:5dlu"),})); //$NON-NLS-1$
 	}
 
 	public void setTitle(String fileName){
@@ -60,11 +61,11 @@ public class PdfConflictPanel extends JPanel {
 	public void addAnnotationConflictPanel(AnnotationConflictPanel annotationConflictPanel){
 		FormLayout formLayout = (FormLayout)panel.getLayout();		
 		if(formLayout.getRowCount() > 2){
-			formLayout.insertRow(formLayout.getRowCount(), RowSpec.decode("fill:5dlu"));
+			formLayout.insertRow(formLayout.getRowCount(), RowSpec.decode("fill:5dlu")); //$NON-NLS-1$
 		}		
 		
-		formLayout.insertRow(formLayout.getRowCount(), RowSpec.decode("fill:default"));		
-		this.panel.add(annotationConflictPanel, "2, " + (formLayout.getRowCount() - 1) + ", fill, fill");
+		formLayout.insertRow(formLayout.getRowCount(), RowSpec.decode("fill:default"));		 //$NON-NLS-1$
+		this.panel.add(annotationConflictPanel, "2, " + (formLayout.getRowCount() - 1) + ", fill, fill"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }

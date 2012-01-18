@@ -206,13 +206,13 @@ public class PdfAnnotationImporter {
 	private URI getAnnotationDestinationUri(PDOutlineItem bookmark) {
 		if(bookmark != null && !(bookmark.cosGetField(PDOutlineItem.DK_A) instanceof COSNull)){
 			COSDictionary cosDictionary = (COSDictionary)bookmark.cosGetField(PDOutlineItem.DK_A);
-			if(!(cosDictionary.get(COSName.create("URI")) instanceof COSNull)){
-				COSObject destination = cosDictionary.get(COSName.create("URI"));
+			if(!(cosDictionary.get(COSName.create("URI")) instanceof COSNull)){ //$NON-NLS-1$
+				COSObject destination = cosDictionary.get(COSName.create("URI")); //$NON-NLS-1$
 		        if(destination instanceof COSString && destination.getValueString(null) != null && destination.getValueString(null).length() > 0){
 		        	try {
 						return new URI(destination.getValueString(null));						
 					} catch (URISyntaxException e) {
-						LogUtils.warn("Bookmark Destination Uri Syntax incorrect.", e);
+						LogUtils.warn("Bookmark Destination Uri Syntax incorrect.", e); //$NON-NLS-1$
 					}
 		        }
 			}            
@@ -226,7 +226,7 @@ public class PdfAnnotationImporter {
 		}
 		if(bookmark != null && !(bookmark.cosGetField(PDOutlineItem.DK_A) instanceof COSNull)){
 			COSDictionary cosDictionary = (COSDictionary)bookmark.cosGetField(PDOutlineItem.DK_A);
-			if(!(cosDictionary.get(COSName.create("URI")) instanceof COSNull)){
+			if(!(cosDictionary.get(COSName.create("URI")) instanceof COSNull)){ //$NON-NLS-1$
 				return AnnotationType.BOOKMARK_WITH_URI;
 			}            
 		}
@@ -246,13 +246,13 @@ public class PdfAnnotationImporter {
 			importHighlightedTexts = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.IMPORT_HIGHLIGHTED_TEXTS_KEY);
 		}
 		
-		String lastString = "";
+		String lastString = ""; //$NON-NLS-1$
 		
 		@SuppressWarnings("unchecked")
 		List<PDAnnotation> pdAnnotations = document.getAnnotations();
 		for(PDAnnotation annotation : pdAnnotations){
 			// Avoid empty entries			
-            if(annotation.getContents().equals("")/* && !annotation.isMarkupAnnotation()*/) continue;
+            if(annotation.getContents().equals("")/* && !annotation.isMarkupAnnotation()*/) continue; //$NON-NLS-1$
             // Avoid double entries (Foxit Reader)
             if(annotation.getContents().equals(lastString)/* && !annotation.isMarkupAnnotation()*/) continue;
             lastString = annotation.getContents();
@@ -340,7 +340,7 @@ public class PdfAnnotationImporter {
 	}
 
 	private COSArray getCOSArrayFromDestination(COSDictionary cosDictionary) {
-		COSObject cosObject = cosDictionary.get(COSName.create("D"));
+		COSObject cosObject = cosDictionary.get(COSName.create("D")); //$NON-NLS-1$
 		if(cosObject instanceof COSArray){
 			return (COSArray)cosObject;
 		}
@@ -356,7 +356,7 @@ public class PdfAnnotationImporter {
     				COSName key = (COSName) i.next();
     				if(key.stringValue().equals(destinationName)){
     					cosDictionary = (COSDictionary)dests.get(key);
-    					cosObject = cosDictionary.get(COSName.create("D"));
+    					cosObject = cosDictionary.get(COSName.create("D")); //$NON-NLS-1$
     					if(cosObject instanceof COSArray){
     						return (COSArray)cosObject;
     					}
@@ -373,7 +373,7 @@ public class PdfAnnotationImporter {
     					CDSNameTreeEntry entry = (CDSNameTreeEntry) i.next();        					
     					if(entry.getName().stringValue().equals(destinationName)){
     						cosDictionary = (COSDictionary)entry.getValue();
-    						cosObject = cosDictionary.get(COSName.create("D"));
+    						cosObject = cosDictionary.get(COSName.create("D")); //$NON-NLS-1$
         					if(cosObject instanceof COSArray){
         						return (COSArray)cosObject;
         					}       					
