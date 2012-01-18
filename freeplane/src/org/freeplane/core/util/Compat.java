@@ -180,7 +180,7 @@ public class Compat {
 		if(userFpDir == null){						
 			userFpDir = System.getProperty("user.home")+ File.separator + "." + applicationName;			
 		}
-		if(PREVIEW_DIR != null)
+		if(PREVIEW_DIR != null && applicationName.equalsIgnoreCase("freeplane"))
 			return userFpDir + PREVIEW_DIR;
 		return userFpDir;
 	}
