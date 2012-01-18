@@ -23,7 +23,8 @@ import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 public class DocearChangeLibraryPathAction extends AWorkspaceAction {
 
 	private static final long serialVersionUID = 1L;
-
+	private final String bibFilterDescription = "*.bib ("+TextUtils.getText("locationdialog.filefilter.bib")+")";
+	
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
@@ -71,7 +72,7 @@ public class DocearChangeLibraryPathAction extends AWorkspaceAction {
 			FileFilter bibFilter = new FileFilter() {
 				
 				public String getDescription() {
-					return "*.bib (Bibtex Files)";
+					return bibFilterDescription;
 				}
 				
 				public boolean accept(File f) {
