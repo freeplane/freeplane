@@ -764,7 +764,7 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 		if (this.isTopLevel) {
 			pushExternalButton = new PushToApplicationButton(this, PushToApplicationButton.applications);			
 		}
-		else {
+		else { //DOCEAR: necessary modification to prepare for short cut keyEvents in combination with another TopLevelFrame 
 			mb = new JMenuBar() {
 				public Container getParent() {
 					return frame;
@@ -1294,6 +1294,7 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 		helpMenu.addSeparator();
 		helpMenu.add(errorConsole);
 		
+		//DOCEAR: register actions and their shortcuts to the KeyboardManager
 		if(!this.isTopLevel) {
 			mb.addNotify();
 		}
