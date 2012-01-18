@@ -12,6 +12,7 @@ import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.features.AnnotationModel;
 import org.docear.plugin.pdfutilities.features.AnnotationNodeModel;
 import org.docear.plugin.pdfutilities.features.IAnnotation;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 
 import com.jgoodies.forms.factories.FormFactory;
@@ -40,14 +41,14 @@ public class AnnotationConflictDropdownBoxPanel extends JPanel {
 
 	private void init() {
 		setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("left:80px:grow"),
+				ColumnSpec.decode("left:80px:grow"), //$NON-NLS-1$
 				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-				ColumnSpec.decode("right:80px:grow"),},
+				ColumnSpec.decode("right:80px:grow"),}, //$NON-NLS-1$
 			new RowSpec[] {
-				RowSpec.decode("fill:default"),}));
+				RowSpec.decode("fill:default"),})); //$NON-NLS-1$
 		
-		label = new JLabel("Annotation name in <file name> : ");
-		add(label, "1, 1, left, default");
+		label = new JLabel(TextUtils.getText("AnnotationConflictDropdownBoxPanel.3")); //$NON-NLS-1$
+		add(label, "1, 1, left, default"); //$NON-NLS-1$
 		
 		comboBox = new JComboBox();
 		comboBox.addItemListener(new ItemListener() {
@@ -55,15 +56,15 @@ public class AnnotationConflictDropdownBoxPanel extends JPanel {
 				selectionChanged(e);
 			}
 		});
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"<file annotation name>"}));
-		add(comboBox, "3, 1, fill, default");
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {TextUtils.getText("AnnotationConflictDropdownBoxPanel.5")})); //$NON-NLS-1$
+		add(comboBox, "3, 1, fill, default"); //$NON-NLS-1$
 	}
 	
 	public void setAnnotationData(Collection<IAnnotation> annotations, IAnnotation target){
 		//TODO: DOCEAR remove hard coded strings
 		this.target = target;
 		String fileName = getFileName(target);		
-		this.label.setText("Annotation name in " + fileName + " : ");
+		this.label.setText(TextUtils.getText("AnnotationConflictDropdownBoxPanel.7") + fileName + " : "); //$NON-NLS-1$ //$NON-NLS-2$
 		Collection<IAnnotation> doubleEntries = new ArrayList<IAnnotation>();
 		for(IAnnotation annotation : annotations){
 			if(doubleEntries.contains(annotation)) continue;

@@ -29,7 +29,7 @@ public class PdfFileFilter implements FileFilter{
     public boolean accept(String path) {
         if(path == null || path.trim().length()==0) return false;
         
-        if(path.matches(".*[.][pP][dD][fF]")){
+        if(path.matches(".*[.][pP][dD][fF]")){ //$NON-NLS-1$
             return true;
         }        
         else{

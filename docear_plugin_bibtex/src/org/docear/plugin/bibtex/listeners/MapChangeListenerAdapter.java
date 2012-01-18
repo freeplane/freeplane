@@ -65,6 +65,9 @@ public class MapChangeListenerAdapter extends AMapChangeListenerAdapter {
 					jabRefAttributes.setReferenceToNode(entry, event.getNode());
 				}
 			}
+			if(newUri == null && AnnotationController.getModel(event.getNode(), false) != null){
+				AnnotationController.setModel(event.getNode(), null);
+			}
 		}
 	}
 

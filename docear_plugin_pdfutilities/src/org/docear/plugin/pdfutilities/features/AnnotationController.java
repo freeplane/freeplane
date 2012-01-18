@@ -15,10 +15,12 @@ import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 
 import de.intarsys.pdf.cos.COSRuntimeException;
 import de.intarsys.pdf.parser.COSLoadException;
@@ -101,12 +103,24 @@ public class AnnotationController implements IExtension{
 		return annotation;
 	}
 	
+	public static int getAnnotationPosition(NodeModel node){
+		AnnotationModel annotation = AnnotationController.getModel(node, false);
+    	if(annotation != null && annotation.getParent() != null){
+    		return annotation.getParent().getChildIndex(annotation);
+    	}
+    	return -1;
+	}
+	
 	public static AnnotationNodeModel getAnnotationNodeModel(final NodeModel node){
 		IAnnotation annotation = AnnotationController.getModel(node, true);
+		File file = WorkspaceUtils.resolveURI(NodeLinks.getValidLink(node), node.getMap());
+		if(annotation != null && file == null){
+			setModel(node, null);
+			return null;
+		}
 		if(annotation != null && annotation.getAnnotationType() != null && !annotation.getAnnotationType().equals(AnnotationType.PDF_FILE)){
 			return new AnnotationNodeModel(node, new AnnotationID(Tools.getAbsoluteUri(node), annotation.getObjectNumber()), annotation.getAnnotationType());
-		}
-		File file = Tools.getFilefromUri(Tools.getAbsoluteUri(node));
+		}		
 		if(annotation != null && file != null && annotation.getAnnotationType().equals(AnnotationType.PDF_FILE)){
 			return new AnnotationNodeModel(node, new AnnotationID(Tools.getAbsoluteUri(node), 0), AnnotationType.PDF_FILE); 
 		}		
@@ -135,6 +149,9 @@ public class AnnotationController implements IExtension{
 			node.addExtension(annotationModel);
 		}
 		else if (annotationModel == null && oldAnnotationModel != null) {
+			node.removeExtension(AnnotationModel.class);
+		}
+		else if(annotationModel == null && oldAnnotationModel == null){
 			node.removeExtension(AnnotationModel.class);
 		}
 	}

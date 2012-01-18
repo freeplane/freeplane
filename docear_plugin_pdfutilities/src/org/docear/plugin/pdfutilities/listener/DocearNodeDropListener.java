@@ -25,6 +25,7 @@ import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.clipboard.MindMapNodesSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -47,21 +48,21 @@ public class DocearNodeDropListener extends MNodeDropListener {
 	
 	@SuppressWarnings("unchecked")
 	public void drop(final DropTargetDropEvent dtde) {
-		LogUtils.info("DocearNodedroplistener Drop activated....");
+		LogUtils.info("DocearNodedroplistener Drop activated...."); //$NON-NLS-1$
 					
 		final MainView mainView = (MainView) dtde.getDropTargetContext().getComponent();
 		final NodeView targetNodeView = mainView.getNodeView();
 		final NodeModel targetNode = targetNodeView.getModel();		
 		
 		try{
-			final DataFlavor fileListFlavor = new DataFlavor("application/x-java-file-list; class=java.util.List");
-			final DataFlavor uriListFlavor = new DataFlavor("text/uri-list; class=java.lang.String");
+			final DataFlavor fileListFlavor = new DataFlavor("application/x-java-file-list; class=java.util.List"); //$NON-NLS-1$
+			final DataFlavor uriListFlavor = new DataFlavor("text/uri-list; class=java.lang.String"); //$NON-NLS-1$
 			//TODO: DOCEAR - why restrict to !dtde.isLocalTransfer only?
 			if(dtde.isDataFlavorSupported(MindMapNodesSelection.mindMapNodesFlavor) ) {
 				super.drop(dtde);
 				return;
 			}
-			// do not combine with the previous condition unless you what you are doing! 
+			// do not combine with the previous condition unless you know what you are doing! 
 			if (dtde.isDataFlavorSupported(fileListFlavor) || (dtde.isDataFlavorSupported(uriListFlavor))) {
 	            				
 	            
@@ -86,7 +87,7 @@ public class DocearNodeDropListener extends MNodeDropListener {
 	            return;		
 	        }
 		 } catch (final Exception e) {
-			LogUtils.severe("DocearNodeDropListener Drop exception:", e);
+			LogUtils.severe("DocearNodeDropListener Drop exception:", e); //$NON-NLS-1$
 			dtde.dropComplete(false);
 			return;
 		 }
@@ -117,7 +118,7 @@ public class DocearNodeDropListener extends MNodeDropListener {
 							            	URI uri = file.toURI();
 							            	NodeModel newNode = NodeUtils.insertChildNodesFromPdf(uri, annotations, isLeft, targetNode);	            
 							            	for(AnnotationModel annotation : getInsertedNodes(annotations)){
-												firePropertyChange(SwingWorkerDialog.DETAILS_LOG_TEXT, null, "Imported " + annotation.getTitle() +"\n");												
+												firePropertyChange(SwingWorkerDialog.DETAILS_LOG_TEXT, null, TextUtils.getText("DocearNodeDropListener.4") + annotation.getTitle() +TextUtils.getText("DocearNodeDropListener.5"));												 //$NON-NLS-1$ //$NON-NLS-2$
 											}	
 							            	DocearEvent event = new DocearEvent(newNode, DocearEventType.MINDMAP_ADD_PDF_TO_NODE, true);
 							            	DocearController.getController().dispatchDocearEvent(event);
@@ -126,11 +127,11 @@ public class DocearNodeDropListener extends MNodeDropListener {
 							   );						
 		            		    	
 		            	} catch(COSRuntimeException e) {			                		
-		            		LogUtils.warn("Exception during import on file: " + file.getName(), e);
+		            		LogUtils.warn("Exception during import on file: " + file.getName(), e); //$NON-NLS-1$
 		            	} catch(IOException e) {
-		            		LogUtils.warn("Exception during import on file: " + file.getName(), e);
+		            		LogUtils.warn("Exception during import on file: " + file.getName(), e); //$NON-NLS-1$
 		            	} catch(COSLoadException e) {
-		            		LogUtils.warn("Exception during import on file: " + file.getName(), e);
+		            		LogUtils.warn("Exception during import on file: " + file.getName(), e); //$NON-NLS-1$
 		            	}
 		            }
 		            else {		            	
@@ -169,13 +170,13 @@ public class DocearNodeDropListener extends MNodeDropListener {
 			
 		};
 		
-		if(fileList.size() > 10){
+		/*if(fileList.size() > 10){
 			SwingWorkerDialog monitoringDialog = new SwingWorkerDialog(Controller.getCurrentController().getViewController().getJFrame());
 			monitoringDialog.showDialog(thread);
 		}
-		else{
+		else{*/
 			thread.execute();
-		}
+		//}
 	}
 	
 	/*public boolean isDragAcceptable(final DropTargetDragEvent ev) {

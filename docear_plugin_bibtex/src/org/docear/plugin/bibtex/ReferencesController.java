@@ -1,10 +1,12 @@
 package org.docear.plugin.bibtex;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
@@ -12,6 +14,7 @@ import java.net.URL;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
 
 import net.sf.jabref.JabRefPreferences;
 
@@ -43,6 +46,7 @@ import org.docear.plugin.pdfutilities.util.MapConverter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.FreeplaneActionCascade;
+import org.freeplane.core.ui.IKeyStrokeInterceptor;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
@@ -124,8 +128,33 @@ public class ReferencesController extends ALanguageController implements IDocear
 		this.addPropertiesToOptionPanel();
 		this.addPluginDefaults();
 		this.addMenuEntries();
-		this.registerListeners();		
-		
+		this.registerListeners();
+		//TODO: DOCEAR - (ticket #225) refactor with separate class  
+		modeController.getUserInputListenerFactory().getMenuBar().addKeyStrokeInterceptor(new IKeyStrokeInterceptor() {
+			public boolean interceptKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
+				Object source = e.getSource();
+				if(hasPackageNameOrAncestor(source, "net.sf.jabref")) {
+					return true;
+				}
+				return false;
+			}
+			
+			private boolean hasPackageNameOrAncestor(Object obj, String packageName) {
+				if(obj == null || packageName == null) {
+					return false;
+				}
+				String str = obj.getClass().getPackage().getName();
+				if(str.startsWith(packageName)) {
+					return true;
+				} 
+				else {
+					if(obj instanceof Component) {
+						return hasPackageNameOrAncestor(((Component) obj).getParent(), packageName);
+					}
+				}
+				return false;
+			}
+		});
 		FreeplaneActionCascade.addAction(new ReferenceQuitAction());
 		this.initJabref();		
 	}

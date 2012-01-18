@@ -19,15 +19,15 @@ import org.freeplane.plugin.workspace.WorkspaceUtils;
 
 public class MonitorungNodeUpdater extends AMindmapUpdater {
 	
-	private final static Attribute keyAttribute = new Attribute("splmm_dirmon_path", PdfUtilitiesController.MON_INCOMING_FOLDER);
+	private final static Attribute keyAttribute = new Attribute("splmm_dirmon_path", PdfUtilitiesController.MON_INCOMING_FOLDER); //$NON-NLS-1$
 	private static HashMap<String, String> monitoringAttributes;
 	private static ArrayList<Attribute> newMonitoringAttributes;
 	
 	public MonitorungNodeUpdater(String title) {
 		super(title);	
 		monitoringAttributes = new HashMap<String, String>();		
-		MonitorungNodeUpdater.monitoringAttributes.put("splmm_dirmon_auto", PdfUtilitiesController.MON_AUTO);
-		MonitorungNodeUpdater.monitoringAttributes.put("splmm_dirmon_subdirs", PdfUtilitiesController.MON_SUBDIRS);
+		MonitorungNodeUpdater.monitoringAttributes.put("splmm_dirmon_auto", PdfUtilitiesController.MON_AUTO); //$NON-NLS-1$
+		MonitorungNodeUpdater.monitoringAttributes.put("splmm_dirmon_subdirs", PdfUtilitiesController.MON_SUBDIRS); //$NON-NLS-1$
 		
 		newMonitoringAttributes = new ArrayList<Attribute>();
 		newMonitoringAttributes.add(new Attribute(PdfUtilitiesController.MON_MINDMAP_FOLDER, CoreConfiguration.LIBRARY_PATH));
@@ -70,7 +70,7 @@ public class MonitorungNodeUpdater extends AMindmapUpdater {
 					String path = (String) attribute.getValue();
 					URI uri = new File(path).toURI();
 					if (uri.getScheme().length() == 1) {
-						throw new Exception("absolut windows paths do not work in linux!");
+						throw new Exception("absolut windows paths do not work in linux!"); //$NON-NLS-1$
 					}
 					uri = MLinkController.toLinkTypeDependantURI(node.getMap().getFile(), WorkspaceUtils.resolveURI(uri));
 					AttributeController.getController().performSetValueAt(attributeTable, uri, i, 1);

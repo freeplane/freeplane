@@ -764,6 +764,13 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 		if (this.isTopLevel) {
 			pushExternalButton = new PushToApplicationButton(this, PushToApplicationButton.applications);			
 		}
+		else {
+			mb = new JMenuBar() {
+				public Container getParent() {
+					return frame;
+				}
+			};
+		}
 		fillMenu();
 		createToolBar();
 		this.setLayout(gbl);
@@ -780,7 +787,8 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 		// this.add(mb);
 		if (this.isTopLevel) {
 			frame.setJMenuBar(mb);
-		}
+		} 
+		
 		con.anchor = GridBagConstraints.NORTH;
 		// con.gridwidth = 1;//GridBagConstraints.REMAINDER;;
 		gbl.setConstraints(tlb, con);
@@ -1285,6 +1293,10 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 		mb.add(helpMenu);
 		helpMenu.addSeparator();
 		helpMenu.add(errorConsole);
+		
+		if(!this.isTopLevel) {
+			mb.addNotify();
+		}
 	}
 
 	public static JMenu subMenu(String name) {

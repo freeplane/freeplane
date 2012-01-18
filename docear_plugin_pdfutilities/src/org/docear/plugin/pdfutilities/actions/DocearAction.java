@@ -48,7 +48,7 @@ public abstract class DocearAction extends AFreeplaneAction {
 	
 	public static List<Component> getMenuKey(final MenuBuilder builder, final AFreeplaneAction action) {
 		List<Component> views = new ArrayList<Component>();
-        final String actionKey = "$" + action.getKey() + '$';
+        final String actionKey = "$" + action.getKey() + '$'; //$NON-NLS-1$
 		for(int i = 0; i < 1000; i++){
 			final String key = actionKey + i;
 			if (builder.get(key) != null){

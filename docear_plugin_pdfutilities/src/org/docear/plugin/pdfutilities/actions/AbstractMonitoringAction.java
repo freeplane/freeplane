@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -92,8 +93,8 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			SwingWorker<Map<AnnotationID, Collection<IAnnotation>>, AnnotationModel[]> thread = getMonitoringThread(targets);		
 			
 			SwingWorkerDialog workerDialog = new SwingWorkerDialog(Controller.getCurrentController().getViewController().getJFrame());
-			workerDialog.setHeadlineText("Folder Monitoring");
-			workerDialog.setSubHeadlineText("Updating against monitored folder in progress....");
+			workerDialog.setHeadlineText(TextUtils.getText("AbstractMonitoringAction.0")); //$NON-NLS-1$
+			workerDialog.setSubHeadlineText(TextUtils.getText("AbstractMonitoringAction.1")); //$NON-NLS-1$
 			workerDialog.showDialog(thread);
 			workerDialog = null;			
 			Map<AnnotationID, Collection<IAnnotation>> conflicts = thread.get();
@@ -104,16 +105,16 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			}	
 			thread = null;			
 		} catch (CancellationException e){
-			LogUtils.info("CancellationException during monitoring update.");
+			LogUtils.info("CancellationException during monitoring update."); //$NON-NLS-1$
 		} catch (InterruptedException e) {
-			LogUtils.info("InterruptedException during monitoring update.");
+			LogUtils.info("InterruptedException during monitoring update."); //$NON-NLS-1$
 		} catch (ExecutionException e) {
 			LogUtils.warn(e);
-			LogUtils.warn("ExecutionException during monitoring update.");
+			LogUtils.warn("ExecutionException during monitoring update."); //$NON-NLS-1$
 			LogUtils.warn(e.getCause());
 		} catch (Exception e){
 			LogUtils.warn(e);
-			LogUtils.warn("====================================");
+			LogUtils.warn("===================================="); //$NON-NLS-1$
 			LogUtils.warn(e.getCause());
 			
 		}			
@@ -137,7 +138,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			protected Map<AnnotationID, Collection<IAnnotation>> doInBackground() throws Exception {				
 				for(final NodeModel target : targets){					
 					if(canceled()) return conflicts;
-					fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, "Updating against "+ target.getText() +" in progress....");
+					fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("AbstractMonitoringAction.6")+ target.getText() +TextUtils.getText("AbstractMonitoringAction.7")); //$NON-NLS-1$ //$NON-NLS-2$
 					fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
 					
 					if(!cleanUpCollections()) continue;
@@ -155,7 +156,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					final boolean isfolded =  target.isFolded();
 					if(newAnnotations.size() > 100){
 						fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
-						fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Folding node ...");		
+						fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.8"));		 //$NON-NLS-1$
 						SwingUtilities.invokeAndWait(
 					        new Runnable() {
 					            public void run(){								            	
@@ -168,7 +169,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					if(!pasteNewNodesAndRemoveWidowedNodes(target)){
 						if(newAnnotations.size() > 100){
 							fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
-							fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Resetting folding ...");
+							fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.9")); //$NON-NLS-1$
 							SwingUtilities.invokeAndWait(
 						        new Runnable() {
 						            public void run(){								            	
@@ -184,7 +185,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					DocearController.getController().dispatchDocearEvent(event);
 					if(newAnnotations.size() > 100){
 						fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
-						fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Resetting folding ...");
+						fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.9")); //$NON-NLS-1$
 						SwingUtilities.invokeAndWait(
 					        new Runnable() {
 					            public void run(){								            	
@@ -201,7 +202,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			
 			private boolean searchingWidowedNodes(NodeModel target) throws InterruptedException, InvocationTargetException {
 				fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
-				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Searching widowed annotations ...");
+				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.11")); //$NON-NLS-1$
 				int count = 0;
 				for(AnnotationID id : nodeIndex.keySet()){
 					if(canceled()) return false;
@@ -209,36 +210,44 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					fireProgressUpdate(100 * count / nodeIndex.keySet().size());
 					if(importedFiles.containsKey(id)) continue;					
 					for(NodeModel node : nodeIndex.get(id)){
+						if(!isMonitoringNodeChild(target, node)) continue;						
 						AnnotationNodeModel annotation = AnnotationController.getAnnotationNodeModel(node);
 						if(annotation == null) continue;
-						if(annotation.getAnnotationType() == null) continue;
-						if(annotation.getAnnotationType().equals(AnnotationType.PDF_FILE)) continue;
+						if(annotation.getAnnotationType() == null) continue;						
 						if(annotation.getAnnotationType().equals(AnnotationType.FILE)) continue;
 						if(widowedLinkedNode.contains(node)) continue;						
-						try{
-							//File file = Tools.getFilefromUri(Tools.getAbsoluteUri(node));
-							File file = WorkspaceUtils.resolveURI(NodeLinks.getValidLink(node));
-							if(file != null){
+						try{							
+							File file = WorkspaceUtils.resolveURI(NodeLinks.getValidLink(node), node.getMap());
+							if(file != null && !file.exists()){
+								widowedLinkedNode.add(node);
+								continue;
+							}
+							else if(file != null){
 								//File monitoringDirectory = Tools.getFilefromUri(Tools.getAbsoluteUri(NodeUtils.getPdfDirFromMonitoringNode(target), target.getMap()));
 								File monitoringDirectory = WorkspaceUtils.resolveURI(NodeUtils.getPdfDirFromMonitoringNode(target), target.getMap());
 								if(file.getPath().startsWith(monitoringDirectory.getPath())){
 									AnnotationModel annoation = new PdfAnnotationImporter().searchAnnotation(Tools.getAbsoluteUri(node), node);
 									if(annoation == null){
-										widowedLinkedNode.add(node);							
+										widowedLinkedNode.add(node);										
 									}
 								}
 							}
 							
 						} catch(IOException e){
-							LogUtils.info("IOexception during import file: "+ Tools.getAbsoluteUri(node));
+							LogUtils.info("IOexception during import file: "+ Tools.getAbsoluteUri(node)); //$NON-NLS-1$
 						} catch(COSRuntimeException e){
-							LogUtils.info("COSRuntimeException during import file: "+ Tools.getAbsoluteUri(node));
+							LogUtils.info("COSRuntimeException during import file: "+ Tools.getAbsoluteUri(node)); //$NON-NLS-1$
 						} catch(COSLoadException e){
-							LogUtils.info("COSLoadException during import file: "+ Tools.getAbsoluteUri(node));
+							LogUtils.info("COSLoadException during import file: "+ Tools.getAbsoluteUri(node)); //$NON-NLS-1$
 						}
 					}				
 				}
 				return true;
+			}
+
+			private boolean isMonitoringNodeChild(NodeModel monitoringNode, NodeModel node) {
+				List<NodeModel> pathToRoot = Arrays.asList(node.getPathToRoot());
+				return pathToRoot.contains(monitoringNode);
 			}
 
 			private boolean cleanUpCollections() {
@@ -257,10 +266,10 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			@Override
 		    protected void done() {			
 				if(this.isCancelled() || Thread.currentThread().isInterrupted()){					
-					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, "Import canceled.");
+					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("AbstractMonitoringAction.15")); //$NON-NLS-1$
 				}
 				else{
-					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, "Import complete.");
+					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("AbstractMonitoringAction.16")); //$NON-NLS-1$
 				}
 				
 			}
@@ -272,7 +281,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			
 			private boolean pasteNewNodesAndRemoveWidowedNodes(NodeModel target) throws InterruptedException, InvocationTargetException {			
 				fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
-				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Pasting new annotations ...");				
+				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.17"));				 //$NON-NLS-1$
 								
 				for(AnnotationModel annotation : newAnnotations){
 					if(canceled()) return false;
@@ -291,8 +300,21 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 								if(canceled()) return false;
 								SwingUtilities.invokeAndWait(
 							        new Runnable() {
-							            public void run(){								            	
-							            	finalTarget.insert(finalInsertNode);
+							            public void run(){	
+							            	int newNodePostion = AnnotationController.getAnnotationPosition(finalInsertNode);
+							            	boolean pasted = false;
+						            		for(NodeModel child : finalTarget.getChildren()){
+						            			int childPosition =  AnnotationController.getAnnotationPosition(child);
+						            			if(childPosition > newNodePostion){
+						            				finalTarget.insert(finalInsertNode, finalTarget.getChildPosition(child));
+						            				pasted = true;
+						            				break;
+						            			}						            				
+						            		}
+						            		if(!pasted){
+						            			finalTarget.insert(finalInsertNode);
+						            			
+						            		}							            							            	
 							            }
 							        }
 								);
@@ -311,16 +333,18 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					}
 				}
 				if(widowedLinkedNode.size() > 0){
-					int result = UITools.showConfirmDialog(target, "Delete nodes with widowed links ?", "Delete nodes with widowed links ?", JOptionPane.YES_NO_OPTION);
+					int result = UITools.showConfirmDialog(target, TextUtils.getText("AbstractMonitoringAction.18"), TextUtils.getText("AbstractMonitoringAction.18"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
 					if(result == JOptionPane.OK_OPTION){
 						fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
-						fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Deleting widowed nodes ...");
+						fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.20")); //$NON-NLS-1$
 						for(final NodeModel node : widowedLinkedNode){
 							SwingUtilities.invokeAndWait(
 							        new Runnable() {
 							            public void run(){
 							            	try{
-							            		node.removeFromParent();
+							            		if(node.getParentNode() != null){
+							            			node.removeFromParent();
+							            		}
 							            	} catch(Exception e){
 							            		LogUtils.warn(e);
 							            	}
@@ -424,7 +448,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					if(canceled()) return result;
 					// Scripting Error Bugfix
 					if(tempAnnotation.getTitle() != null && tempAnnotation.getTitle().length() > 1 && tempAnnotation.getTitle().charAt(0) == '='){
-						tempAnnotation.setTitle(" " + tempAnnotation.getTitle());
+						tempAnnotation.setTitle(" " + tempAnnotation.getTitle()); //$NON-NLS-1$
 					}
 					NodeModel node = ((MMapController) Controller.getCurrentModeController().getMapController()).newNode(tempAnnotation.getTitle(), target.getMap());
 					AnnotationController.setModel(node, tempAnnotation);
@@ -454,7 +478,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 
 			private boolean searchNewAndConflictedNodes() throws InterruptedException, InvocationTargetException {
 				fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
-				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Searching new or conflicted annotations ...");
+				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.22")); //$NON-NLS-1$
 				int count = 0;
 				for(AnnotationID id : importedFiles.keySet()){
 					if(canceled()) return false;
@@ -493,7 +517,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 
 			private boolean loadMonitoredFiles(NodeModel target) throws InterruptedException, InvocationTargetException{
 				fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
-				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Loading monitored files ...");
+				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.23")); //$NON-NLS-1$
 				for(URI uri : monitorFiles){
 					if(canceled()) return false;
 					try{
@@ -513,11 +537,11 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 							}							
 						}
 					} catch(IOException e){
-						LogUtils.info("IOexception during update file: "+ uri);
+						LogUtils.info("IOexception during update file: "+ uri); //$NON-NLS-1$
 					} catch(COSRuntimeException e){
-						LogUtils.info("COSRuntimeException during update file: "+ uri);
+						LogUtils.info("COSRuntimeException during update file: "+ uri); //$NON-NLS-1$
 					} catch(COSLoadException e){
-						LogUtils.info("COSLoadException during update file: "+ uri);
+						LogUtils.info("COSLoadException during update file: "+ uri); //$NON-NLS-1$
 					}
 				}			
 				return true;
@@ -536,23 +560,18 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			}			
 
 			private boolean buildNodeIndex(NodeModel target) throws InterruptedException, InvocationTargetException {
-				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Building node index ...");
+				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.27")); //$NON-NLS-1$
 				for(MapModel map : monitoredMindmaps){
 					if(canceled()) return false;
 					buildAnnotationNodeIndex(map.getRootNode());
 				}
-				buildEqualChildIndex(target.getChildren());
+				buildEqualChildIndex(target.getChildren());				
 				if(canceled()) return false;
 				return true;
 			}
 
 			private void buildAnnotationNodeIndex(NodeModel node) throws InterruptedException {
-				if(canceled()) return;
-				//File file = Tools.getFilefromUri(Tools.getAbsoluteUri(node));
-				File file = WorkspaceUtils.resolveURI(NodeLinks.getValidLink(node), node.getMap());
-				if(file != null && !file.exists()){
-					widowedLinkedNode.add(node);
-				}				
+				if(canceled()) return;							
 				AnnotationNodeModel annotation = AnnotationController.getAnnotationNodeModel(node);				
 				if(annotation != null && annotation.getAnnotationID() != null){
 					AnnotationID id = annotation.getAnnotationID();
@@ -579,17 +598,17 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 
 			private boolean setupPreconditions(NodeModel target) throws InterruptedException, InvocationTargetException {
 				
-				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Searching monitored files ...");
+				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.28")); //$NON-NLS-1$
 					if(canceled()) return false;
 					URI monitoringDirectory = Tools.getAbsoluteUri(NodeUtils.getPdfDirFromMonitoringNode(target), target.getMap());
 					if(monitoringDirectory == null || Tools.getFilefromUri(monitoringDirectory) == null || !Tools.getFilefromUri(monitoringDirectory).exists()){
-						UITools.informationMessage("Monitoring directory does not exist.");
+						UITools.informationMessage(TextUtils.getText("AbstractMonitoringAction.29")); //$NON-NLS-1$
 						return false;
 					}
-					CustomFileListFilter monitorFileFilter = new CustomFileListFilter(ResourceController.getResourceController().getProperty("docear_files_to_import"));
+					CustomFileListFilter monitorFileFilter = new CustomFileListFilter(ResourceController.getResourceController().getProperty(TextUtils.getText("AbstractMonitoringAction.30"))); //$NON-NLS-1$
 					monitorFiles = Tools.getFilteredFileList(monitoringDirectory, monitorFileFilter, isMonitorSubDirectories(target));
 				
-				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Searching monitored mindmaps ...");
+				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.31")); //$NON-NLS-1$
 					if(canceled()) return false;
 					List<URI> mindmapDirectories = NodeUtils.getMindmapDirFromMonitoringNode(target);
 					Collection<URI> mindmapFiles = new ArrayList<URI>();
@@ -597,7 +616,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 						uri = Tools.getAbsoluteUri(uri, target.getMap());
 						if(Tools.getFilefromUri(uri) == null || !Tools.getFilefromUri(uri).exists()) continue;
 						if(Tools.getFilefromUri(uri).isDirectory()){
-							mindmapFiles.addAll(Tools.getFilteredFileList(uri, new CustomFileFilter(".*[.][mM][mM]"), isMonitorSubDirectories(target)));
+							mindmapFiles.addAll(Tools.getFilteredFileList(uri, new CustomFileFilter(".*[.][mM][mM]"), isMonitorSubDirectories(target))); //$NON-NLS-1$
 						}
 						else{
 							mindmapFiles.add(uri);
@@ -607,7 +626,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 						mindmapFiles.add(target.getMap().getFile().toURI());
 					}
 				
-				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Loading monitored mindmaps ...");	
+				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.33"));	 //$NON-NLS-1$
 					if(canceled()) return false;
 					monitoredMindmaps = NodeUtils.getMapsFromUris(mindmapFiles);
 					if(updateMindmaps(monitoredMindmaps)){
@@ -629,13 +648,13 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 				if(mapsToUpdate.size() > 0){
 					int result = UITools.showConfirmDialog(null, getMessage(mapsToUpdate), getTitle(mapsToUpdate), JOptionPane.OK_CANCEL_OPTION);
 					if(result == JOptionPane.OK_OPTION){
-						fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, "Converting " + mapsToUpdate.size() + " monitored mindmaps ...");
+						fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.34") + mapsToUpdate.size() + TextUtils.getText("AbstractMonitoringAction.35")); //$NON-NLS-1$ //$NON-NLS-2$
 						if(!MapConverter.convert(mapsToUpdate)){							
-							fireStatusUpdate(SwingWorkerDialog.IS_CANCELED, null, "Monitoring canceled.");
+							fireStatusUpdate(SwingWorkerDialog.IS_CANCELED, null, TextUtils.getText("AbstractMonitoringAction.36")); //$NON-NLS-1$
 						}
 					}
 					else{
-						fireStatusUpdate(SwingWorkerDialog.IS_CANCELED, null, "Monitoring canceled.");
+						fireStatusUpdate(SwingWorkerDialog.IS_CANCELED, null, TextUtils.getText("AbstractMonitoringAction.36")); //$NON-NLS-1$
 					}
 					return true;
 				}
@@ -663,28 +682,28 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					case 1:
 						return true;						
 					case 2:
-						return ResourceController.getResourceController().getBooleanProperty("docear_subdir_monitoring");			
+						return ResourceController.getResourceController().getBooleanProperty("docear_subdir_monitoring");			 //$NON-NLS-1$
 				}
 			}
 			
 			private String getMessage(List<MapModel> mapsToConvert){
 				if(mapsToConvert.size() > 1){
-					return mapsToConvert.size() + " of your monitored maps, need to be updated.\n Update now?\n\n"+TextUtils.getText("update_splmm_to_docear_explanation");
+					return mapsToConvert.size() + TextUtils.getText("AbstractMonitoringAction.39")+TextUtils.getText("update_splmm_to_docear_explanation"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				else if (mapsToConvert.size() == 1){
-					return mapsToConvert.get(0).getTitle() + " needs to be updated.\n Update now?\n\n"+TextUtils.getText("update_splmm_to_docear_explanation");
+					return mapsToConvert.get(0).getTitle() + TextUtils.getText("AbstractMonitoringAction.41")+TextUtils.getText("update_splmm_to_docear_explanation"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 			
 			private String getTitle(List<MapModel> mapsToConvert){
 				if(mapsToConvert.size() > 1){
-					return mapsToConvert.size() + " maps need to be updated";
+					return mapsToConvert.size() + TextUtils.getText("AbstractMonitoringAction.44"); //$NON-NLS-1$
 				}
 				else if (mapsToConvert.size() == 1){
-					return mapsToConvert.get(0).getTitle() + " needs to be updated";
+					return mapsToConvert.get(0).getTitle() + TextUtils.getText("AbstractMonitoringAction.45"); //$NON-NLS-1$
 				}
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 
 			private void fireStatusUpdate(final String propertyName, final Object oldValue, final Object newValue) throws InterruptedException, InvocationTargetException{				

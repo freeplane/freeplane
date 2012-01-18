@@ -54,11 +54,11 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 			final MainView component = (MainView) e.getComponent();
 			final ModeController modeController = Controller.getCurrentModeController();
 			final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
-			final String osName = System.getProperty("os.name");
+			final String osName = System.getProperty("os.name"); //$NON-NLS-1$
 			
 			if (!component.isInFollowLinkRegion(e.getX()) ||
 				!NodeUtils.isPdfLinkedNode(selectedNode) ||
-				!osName.substring(0, 3).equals("Win")) {
+				!osName.substring(0, 3).equals("Win")) { //$NON-NLS-1$
 				this.mouseListener.mouseClicked(e);
 				return;
 			}
@@ -99,8 +99,8 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 				this.mouseListener.mouseClicked(e);
 				return;
 			}catch(COSLoadException x){
-				UITools.errorMessage("Could not find page because the document\n" + uri.toString() + "\nthrew a COSLoadExcpetion.\nTry to open file with standard options.");
-				System.err.println("Caught: " + x);
+				UITools.errorMessage("Could not find page because the document\n" + uri.toString() + "\nthrew a COSLoadExcpetion.\nTry to open file with standard options."); //$NON-NLS-1$ //$NON-NLS-2$
+				System.err.println("Caught: " + x); //$NON-NLS-1$
 			}
 			
 			LinkController.getController().onDeselect(selectedNode);
@@ -118,8 +118,8 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 				return;
 			}					
 			catch (final IOException x) {
-				UITools.errorMessage("Could not invoke Pdf Reader.\n\nDocear excecuted the following statement on a command line:\n\"" + command + "\".");
-				System.err.println("Caught: " + x);
+				UITools.errorMessage("Could not invoke Pdf Reader.\n\nDocear excecuted the following statement on a command line:\n\"" + command + "\"."); //$NON-NLS-1$ //$NON-NLS-2$
+				System.err.println("Caught: " + x); //$NON-NLS-1$
 			}
 				
 			LinkController.getController().onSelect(selectedNode);			
@@ -133,13 +133,13 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 		PdfReaderFileFilter readerFilter = new PdfReaderFileFilter();
 		File file = Tools.getFilefromUri(Tools.getAbsoluteUri(uriToFile, Controller.getCurrentController().getMap()));
 		if(readerFilter.isAdobe(new File(readerPath)) && file != null){
-			return readerPath + " /A page=" + page + " " + file.getAbsolutePath();
+			return readerPath + " /A page=" + page + " " + file.getAbsolutePath(); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if(readerFilter.isFoxit(new File(readerPath)) && file != null){
-			return readerPath + " \"" + file.getAbsolutePath() + "\" /A page=" + page;
+			return readerPath + " \"" + file.getAbsolutePath() + "\" /A page=" + page; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if(readerFilter.isPdfXChange(new File(readerPath)) && file != null){
-			return readerPath + " /A \"page=" + page+"\" \"" + file.getAbsolutePath() + "\"";
+			return readerPath + " /A \"page=" + page+"\" \"" + file.getAbsolutePath() + "\""; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		return null;
 	}
@@ -148,16 +148,16 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 		PdfReaderFileFilter readerFilter = new PdfReaderFileFilter();
 		File file = Tools.getFilefromUri(Tools.getAbsoluteUri(uriToFile, Controller.getCurrentController().getMap()));
 		if(readerFilter.isAdobe(new File(readerPath)) && file != null){
-			return readerPath + " /A page=" + annotation.getPage() + " " + file.getAbsolutePath();
+			return readerPath + " /A page=" + annotation.getPage() + " " + file.getAbsolutePath(); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if(readerFilter.isFoxit(new File(readerPath)) && file != null){
-			return readerPath + " \"" + file.getAbsolutePath() + "\" /A page=" + annotation.getPage();
+			return readerPath + " \"" + file.getAbsolutePath() + "\" /A page=" + annotation.getPage(); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if(readerFilter.isPdfXChange(new File(readerPath)) && file != null){
-			return readerPath + " /A \""
-					+"page=" + annotation.getPage()
-					+"&nameddest="+ annotation.getTitle()
-					+"\" \"" + file.getAbsolutePath() + "\"";
+			return readerPath + " /A \"" //$NON-NLS-1$
+					+"page=" + annotation.getPage() //$NON-NLS-1$
+					+"&nameddest="+ annotation.getTitle() //$NON-NLS-1$
+					+"\" \"" + file.getAbsolutePath() + "\""; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return null;
 	}
