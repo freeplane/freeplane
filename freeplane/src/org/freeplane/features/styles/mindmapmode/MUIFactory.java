@@ -30,6 +30,7 @@ import javax.swing.event.ListDataListener;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.features.map.IMapChangeListener;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
@@ -138,6 +139,7 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 	}
 
 	private void changeToolbar(final NodeModel node) {
+		
 		final Controller controller = Controller.getCurrentController();
 		final MNodeStyleController styleController = (MNodeStyleController) controller.getModeController()
 		    .getExtension(NodeStyleController.class);
@@ -150,10 +152,14 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 	}
 
 	public void nodeChanged(final NodeChangeEvent event) {
-		if (event.getNode() != Controller.getCurrentController().getSelection().getSelected()) {
-			return;
+		//DOCEAR: if nothing is selected (map is opened in background for updating)
+		IMapSelection selection = Controller.getCurrentController().getSelection();
+		if (selection != null) {
+			if (event.getNode() != Controller.getCurrentController().getSelection().getSelected()) {
+				return;
+			}
+			changeToolbar(event.getNode());
 		}
-		changeToolbar(event.getNode());
 	}
 
 	public void onDeselect(final NodeModel node) {
