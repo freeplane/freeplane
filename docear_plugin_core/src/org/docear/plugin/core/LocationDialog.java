@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
 
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
 import org.freeplane.core.ui.components.UITools;
@@ -99,6 +100,17 @@ public class LocationDialog extends JPanel {
 	
 	private void browseBibtex() {
 		JFileChooser fileChooser = UrlManager.getController().getFileChooser(null, false, true);
+		FileFilter bibFilter = new FileFilter() {
+			
+			public String getDescription() {
+				return "*.bib (Bibtex Files)";
+			}
+			
+			public boolean accept(File f) {
+				return f.getName().endsWith(".bib");
+			}
+		};
+		fileChooser.addChoosableFileFilter(bibFilter);
 		if (bibtexLocation != null) {
 			File file = new File(this.bibtexLocation.getText());
 			if (file.exists()) {

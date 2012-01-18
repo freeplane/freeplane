@@ -4,24 +4,25 @@
  */
 package org.docear.plugin.core.ui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URI;
 
-import javax.swing.JPanel;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.factories.FormFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.RowSpec;
 
 public class LocationDialogPanel extends JPanel {
 
@@ -31,7 +32,7 @@ public class LocationDialogPanel extends JPanel {
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
-	public LocationDialogPanel(URI oldLocation, final boolean directoryOnly) {
+	public LocationDialogPanel(URI oldLocation, final boolean directoryOnly, final FileFilter... fileFilters) {
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("max(150dlu;default):grow"),
@@ -50,6 +51,12 @@ public class LocationDialogPanel extends JPanel {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = UrlManager.getController().getFileChooser(null, true, true);
+				if(fileFilters != null) {
+					for(FileFilter filter : fileFilters) {
+						fileChooser.addChoosableFileFilter(filter);
+					}
+				}				
+				
 				if (txtLocationString != null) {
 					File file = new File(txtLocationString.getText());
 					if (file.exists()) {

@@ -5,9 +5,11 @@
 package org.docear.plugin.core.workspace.actions;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.net.URI;
 
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
 
 import org.docear.plugin.core.ui.LocationDialogPanel;
 import org.docear.plugin.core.workspace.node.FolderTypeLiteratureRepositoryNode;
@@ -38,8 +40,8 @@ public class DocearChangeLibraryPathAction extends AWorkspaceAction {
 	 * @param directory 
 	 * @return
 	 */
-	private URI requestUri(URI oldLocation, boolean directory) {
-		LocationDialogPanel locDialog = new LocationDialogPanel(oldLocation, directory);
+	private URI requestUri(URI oldLocation, boolean directory, FileFilter... fileFilters) {
+		LocationDialogPanel locDialog = new LocationDialogPanel(oldLocation, directory, fileFilters);
 		int option = JOptionPane.showConfirmDialog(UITools.getFrame(), locDialog, TextUtils.getRawText(getKey()+".title"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 		if(option == JOptionPane.OK_OPTION) {
 			return locDialog.getLocationUri();
@@ -66,7 +68,17 @@ public class DocearChangeLibraryPathAction extends AWorkspaceAction {
 			}
 		}
 		else if(targetNode instanceof LinkTypeReferencesNode) {
-			URI uri = requestUri(((LinkTypeReferencesNode) targetNode).getLinkPath(), false);
+			FileFilter bibFilter = new FileFilter() {
+				
+				public String getDescription() {
+					return "*.bib (Bibtex Files)";
+				}
+				
+				public boolean accept(File f) {
+					return f.getName().endsWith(".bib");
+				}
+			};
+			URI uri = requestUri(((LinkTypeReferencesNode) targetNode).getLinkPath(), false, bibFilter);
 			if(uri != null) {
 				((LinkTypeReferencesNode)targetNode).setLinkPath(uri);
 			}
