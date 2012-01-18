@@ -9,7 +9,7 @@
            if(attributes.get("value") != null || attributes.get("value") != "undefined"){
               project.setNewProperty(attributes.get("property"), attributes.get("value").toLowerCase());
            }
-    </scriptdef >
+    </scriptdef >	
 
 	<property name="workspace" location=".." />
 	<property file="${workspace}/freeplane/viewer-resources/version.properties" />
@@ -39,8 +39,8 @@
 	<condition property="isMacOs">
 	      <os family="mac"/>
 	</condition>
-
-    <property name="mac-jarbundler" value = "${root}/mac-jarbundler"/>
+	
+	<property name="mac-jarbundler" value = "${root}/mac-jarbundler"/>
 	<property name="jarbundler.jar" value = "jarbundler-2.1.0.jar"/>
 	<taskdef name="jarbundler" onerror="report"
 			 classpath="${mac-jarbundler}/${jarbundler.jar}"
@@ -48,7 +48,9 @@
 	<taskdef name="create-plugin" onerror="report"
 			 classpath="${freeplaneant.jar}"
 			 classname="org.freeplane.ant.CreatePlugin"/>
-
+	<taskdef name="nsis" 
+		classpath="${root}/lib/nsisant-1.3.jar" 
+		classname="com.danielreese.nsisant.Task" />
 	<target name="makePlugin">
 		<ant antfile="ant/build.xml" target="${anttarget}" dir="${workspace}/${plugindir}" inheritall="false" />
 		<mkdir dir="${build}/${targetdir}/${pluginname}" />
@@ -523,6 +525,9 @@
 		<copy file="${workspace}/freeplane_plugin_script/dist/script-api.zip"
 			tofile="${dist}/script-api-${ver}.zip"
 			failonerror="false"/>
+		<nsis script="${root}/windows-installer/docear_windows_installer.nsi" verbosity="4" out="${root}/dist/nsis-build.log" noconfig="yes">
+		    <define name="VERSION" value="${ver_docear}"/>		    
+		</nsis>
 	</target>
 
 	<target name="cleandist" depends="clean,dist">
