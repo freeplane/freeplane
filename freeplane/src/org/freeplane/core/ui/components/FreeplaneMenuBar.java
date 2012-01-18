@@ -113,7 +113,7 @@ public class FreeplaneMenuBar extends JMenuBar {
 		return super.processKeyBinding(derivedKS, e, condition, pressed);
 	}
 	
-	//TODO: DOCEAR - added functionality to intercept key binding events (and delegate to the interceptor?)
+	//TODO: DOCEAR - added methods for interceptor handling
 	private boolean intercepted(final KeyStroke ks, final KeyEvent e, final int condition, final boolean pressed) {
 		Iterator<IKeyStrokeInterceptor> iter = interceptors.iterator();
 		boolean intercept = false;
