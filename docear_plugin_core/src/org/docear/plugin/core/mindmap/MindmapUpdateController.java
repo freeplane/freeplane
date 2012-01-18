@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.swing.SwingUtilities;
 
 import org.docear.plugin.core.DocearController;
+import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.ui.SwingWorkerDialog;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -175,13 +176,13 @@ public class MindmapUpdateController {
 						if (canceled())
 							return null;
 						for (URI uri : uris) {
-							fireStatusUpdate(SwingWorkerDialog.DETAILS_LOG_TEXT, null,
-									updater.getTitle()+": " + uri.getPath());
 							mapHasChanged = false;
 							MapModel map = getMapModel(uri);
 							if (map==null) {								
 								continue;
 							}
+							fireStatusUpdate(SwingWorkerDialog.DETAILS_LOG_TEXT, null,
+									updater.getTitle()+": " + uri.getPath());
 							fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_against_p1")
 									+ getMapTitle(map) + TextUtils.getText("updating_against_p2"));							
 							this.mapHasChanged = updater.updateMindmap(map);
@@ -344,6 +345,10 @@ public class MindmapUpdateController {
 					File f = WorkspaceUtils.resolveURI(uri);
 					if (f.exists()) {						
 						UrlManager.getController().load(url, map);
+						//do not work on non-docear-mindmaps
+						if (DocearMapModelController.getModel(map) == null) {
+							return null;
+						}
 						map.setURL(url);
 						map.setSaved(true);
 					}
