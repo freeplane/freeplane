@@ -1,5 +1,7 @@
 package org.docear.plugin.core;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.text.MessageFormat;
@@ -7,6 +9,7 @@ import java.util.Enumeration;
 
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.io.FileUtils;
 import org.docear.plugin.core.actions.DocearLicenseAction;
 import org.docear.plugin.core.actions.DocearOpenUrlAction;
 import org.docear.plugin.core.actions.DocearQuitAction;
@@ -146,6 +149,23 @@ public class CoreConfiguration extends ALanguageController {
 		
 		controller.reloadWorkspace();
 		controller.getConfiguration().linkWelcomeMindmapAfterWorkspaceCreation();
+		copyInfoIfNeeded();
+		
+	}
+
+	private void copyInfoIfNeeded() {
+		File infoFile = new File(WorkspaceUtils.getProfileBaseFile(), "!!!info.txt");
+		if(!infoFile.exists()) {
+			try {
+				infoFile.createNewFile();
+				FileUtils.copyInputStreamToFile(CoreConfiguration.this.getClass().getResourceAsStream("/conf/!!!info.txt"), infoFile);
+			}
+			catch (IOException e) {
+				LogUtils.warn(e);
+			}
+			
+		}
+		
 	}
 
 	private void replaceFreeplaneStringsAndActions() {

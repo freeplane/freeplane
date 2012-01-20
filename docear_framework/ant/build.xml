@@ -22,7 +22,7 @@
 	<property name="build4mac" value="${root}/build4mac" />
     <property name="build.plugins" value="${build}/plugins" />
 	<property name="dist" value="${root}/dist" />
-    <property name="macappfullpath" value="${build4mac}/Freeplane.app" />
+    <property name="macappfullpath" value="${build4mac}/Docear.app" />
     <toLowerCase property="ApplicationNameToLowerCase" value="${ApplicationName}" />
 	<condition property="ver_freeplane" value="${freeplane_version}_${minor}" else="${freeplane_version}">
 		<isset property="minor" />
@@ -425,21 +425,21 @@
 		<isset property="debugparams"/>
 	</condition>
 
-    <!-- Delete any existing Freeplane.app (it's a directory) -->
+    <!-- Delete any existing Docear.app (it's a directory) -->
 	<mkdir dir="${build4mac}"/>
-    <delete dir="${build4mac}/Freeplane.app"/>
+    <delete dir="${build4mac}/Docear.app"/>
     <jarbundler dir="${build4mac}"
-                name="Freeplane"
+                name="Docear"
                 mainclass="org.knopflerfish.framework.Main"
                 version="${ver}"
-                infostring="Freeplane ${ver}"
-                shortname="Freeplane"
+                infostring="Docear-${ver_docear}"
+                shortname="Docear"
                 bundleid="org.freeplane.core"
                 jvmversion="1.2+"
                 vmoptions="${debugparams} -Xmx512m ${macdefines}"
                 arguments="-xargs ./props.xargs -xargs ./init.xargs"
                 jar="${build}/framework.jar"
-                icon="${mac-jarbundler}/freeplane.icns"
+                icon="${mac-jarbundler}/docear.icns"
                 stubfile="${mac-jarbundler}/FreeplaneJavaApplicationStub"
                 signature="FP"
                 >
@@ -457,13 +457,13 @@
       <documenttype name="Mindmap"
                     extensions="mm"
                     ostypes="MM"
-                    iconfile="${mac-jarbundler}/freeplanedoc.icns"
+                    iconfile="${mac-jarbundler}/docear.icns"
                     role="Editor"/>
     </jarbundler>
 	<chmod file="${macappfullpath}/Contents/MacOS/FreeplaneJavaApplicationStub" perm="ugo+rx" />
     <!-- Patch the Info.plist file created by JarBundler, to work with Knopflerfish OSGI
            Courtesy of Volker who supplied the logic for this <replace> subtask
-           Allows Freeplane to start when double-clicking on Freeplane.app in Finder
+           Allows Freeplane to start when double-clicking on Docear.app in Finder
            Sets the WorkingDirectory to $JAVAROOT
               Found this idea in a post on Knopflerfish's SF site:
                 http://sourceforge.net/tracker/index.php?func=detail&aid=1651148&group_id=82798&atid=567241
@@ -481,7 +481,7 @@
           Also exclude the OSGI framework.jar which is copied by the jarbundler task
           Doing this separately to allow specifying jar=framework.jar in the jarbundler task
             jarbundler allows either jar= or jarfileset but not both
-            Copying after the jarbundler task which creates the Freeplane.app directory
+            Copying after the jarbundler task which creates the Docear.app directory
               JarBundler may erase the directory if it already exists
                 This is documented in their change log
             !! TODO: Test restoring the jarfileset inside jarbundler
@@ -512,7 +512,7 @@
 	</target>
 	<target name="dmg4mac"  depends="bzr_version_info, macosxapp" if="isMacOs" >
 		<exec executable="hdiutil">
-		<arg line="create -srcfolder ${macappfullpath} ${dist}/freeplane_app-${ver}.dmg"/>
+		<arg line="create -srcfolder ${macappfullpath} ${dist}/docear-${ver_docear}.dmg"/>
 		</exec>
 	</target>
 
