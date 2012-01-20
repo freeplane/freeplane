@@ -1,9 +1,9 @@
-<map version="0.9.0" docear_map_version="1.0" software_name="SciPlore_MindMapping" software_version="0.14" private="1" mapID="88c560da-0c67-49c7-870a-fa7c1b63bc38" dialect="docear 1.0">
+<map version="0.9.0" dialect="docear 1.0" docear_map_version="1.0" software_name="SciPlore_MindMapping" software_version="0.14" private="1" mapID="88c560da-0c67-49c7-870a-fa7c1b63bc38">
 <!--To view this file, download Docear - The Academic Literature Suite from http://www.docear.org -->
 <node TEXT="Welcome" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1322910607046" COLOR="#ffffff" BACKGROUND_COLOR="#0099cc">
 <font SIZE="16" BOLD="true" ITALIC="false"/>
-<hook NAME="MapStyle">
-    <properties show_notes_in_map="false"/>
+<hook NAME="MapStyle" zoom="1.21">
+    <properties show_icon_for_attributes="true" show_note_icons="true" show_notes_in_map="false"/>
 
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node">
@@ -53,7 +53,7 @@
 </map_styles>
 </hook>
 <hook NAME="AutomaticEdgeColor" COUNTER="6"/>
-<node TEXT="Are you new to Docear?" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_1201323859" CREATED="1322907859869" MODIFIED="1323263906394" HGAP="-46" VSHIFT="-309" COLOR="#990000">
+<node TEXT="Are you new to Docear?" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_1201323859" CREATED="1322907859869" MODIFIED="1326904378062" HGAP="-163" VSHIFT="-470" COLOR="#990000">
 <font BOLD="true"/>
 <hook NAME="FreeNode"/>
 <node TEXT="Then spend 5 minutes looking at this mind map and its information" ID="ID_949131562" CREATED="1322907901930" MODIFIED="1322907932459"/>
@@ -190,7 +190,7 @@
 <node TEXT="Usability" ID="ID_182288749" CREATED="1322907564736" MODIFIED="1322910644877">
 <font BOLD="true"/>
 <node TEXT="Docear is extremely powerful" ID="ID_1866937594" CREATED="1322907660932" MODIFIED="1322907705681"/>
-<node TEXT="Have a look at the examples to get an idea what&#xa;Docear can do (click the green arrow)" ID="ID_471397245" CREATED="1322907723021" MODIFIED="1322907806472" LINK="workspace:/../sciplore/Entwicklung/eclipse/docear/"/>
+<node TEXT="Have a look at the examples to get an idea what&#xa;Docear can do (click the green arrow)" ID="ID_549788626" CREATED="1326904253596" MODIFIED="1326904261795" LINK="#ID_1297465718"/>
 <node ID="ID_166372850" CREATED="1322907706939" MODIFIED="1323258180578"><richcontent TYPE="NODE">
 
 <html>
@@ -208,7 +208,7 @@
 </node>
 <node TEXT="Reference Docear" ID="ID_1643291026" CREATED="1322907571406" MODIFIED="1322910644877">
 <font BOLD="true"/>
-<node ID="ID_658844051" CREATED="1323258185915" MODIFIED="1323258235121"><richcontent TYPE="NODE">
+<node ID="ID_658844051" CREATED="1323258185915" MODIFIED="1326904062635" LINK="http://doi.acm.org/10.1145/1998076.1998188"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -221,6 +221,11 @@
   </body>
 </html>
 </richcontent>
+<attribute_layout NAME_WIDTH="44" VALUE_WIDTH="514"/>
+<attribute NAME="year" VALUE="2011"/>
+<attribute NAME="title" VALUE="Docear: An Academic Literature Suite for Searching, Organizing and Creating Academic Literature"/>
+<attribute NAME="authors" VALUE="Beel, Joeran and Gipp, Bela and Langer, Stefan and Genzmehr, Marcel"/>
+<attribute NAME="key" VALUE="Beel2011c"/>
 </node>
 </node>
 </node>
@@ -233,13 +238,14 @@
 <node TEXT="Submit a Bug Report" ID="ID_1791784277" CREATED="1322912251555" MODIFIED="1323419137090" LINK="http://www.docear.org/support/bug-report/"/>
 <node TEXT="FAQ" ID="ID_418884785" CREATED="1322912256419" MODIFIED="1323419159561" LINK="http://www.docear.org/support/faq-frequently-asked-questions/"/>
 <node TEXT="Buy a Feature" ID="ID_850664765" CREATED="1322912265218" MODIFIED="1323419184426" LINK="http://www.docear.org/support/buy-a-feature/"/>
+<node TEXT="Watch a video" ID="ID_1137752462" CREATED="1326904333762" MODIFIED="1326904339279" LINK="http://www.youtube.com/watch?v=3T5V4wTo2uo"/>
 </node>
 <node TEXT="Examples" POSITION="left" ID="ID_703448322" CREATED="1322906814721" MODIFIED="1322910930433" BACKGROUND_COLOR="#8dc9fc">
 <font SIZE="14" BOLD="true"/>
 <edge COLOR="#006699" WIDTH="2"/>
 <node TEXT="Major Mind Mapping Features" ID="ID_1297465718" CREATED="1322909976174" MODIFIED="1322910644877">
 <font BOLD="true"/>
-<node TEXT="Attributes" FOLDED="true" ID="ID_1886246636" CREATED="1322909984711" MODIFIED="1322909990513">
+<node TEXT="Attributes" ID="ID_1886246636" CREATED="1322909984711" MODIFIED="1322909990513">
 <node TEXT="Attributes help you assigning additional information to a node" ID="ID_566654208" CREATED="1323260877099" MODIFIED="1323260888072"/>
 <node TEXT="Later you can filter nodes based on their attributes" ID="ID_460451549" CREATED="1323260891325" MODIFIED="1323260900270"/>
 <node TEXT="Docear uses attributes to store references" ID="ID_349142527" CREATED="1323260900608" MODIFIED="1323260911674"/>
@@ -339,13 +345,12 @@
 <icon BUILTIN="100%"/>
 </node>
 </node>
-<node TEXT="Calender / Reminder" ID="ID_667045336" CREATED="1322910053266" MODIFIED="1322910315024"/>
 <node TEXT="Links" FOLDED="true" ID="ID_1580203669" CREATED="1322910217738" MODIFIED="1322910218859">
 <node TEXT="You can add hyperlinks" ID="ID_1850169993" CREATED="1323261282999" MODIFIED="1323261290315">
 <node TEXT="www.docear.org" ID="ID_269140470" CREATED="1323261304272" MODIFIED="1323261342900" LINK="http://www.docear.org"/>
 </node>
 <node TEXT="You can add internal links to&#xa;other nodes in this mind map" ID="ID_634699852" CREATED="1323261346219" MODIFIED="1323419364544">
-<node TEXT="Click the green arrow" ID="ID_1774839721" CREATED="1323261365350" MODIFIED="1323261385631" LINK="workspace:/../sciplore/Entwicklung/eclipse/docear/"/>
+<node TEXT="Click the green arrow" ID="ID_204794864" CREATED="1326904443353" MODIFIED="1326904461385" LINK="#ID_1643291026"/>
 </node>
 <node TEXT="You can add visual links" ID="ID_1921629847" CREATED="1323261418441" MODIFIED="1323261425205">
 <node TEXT="Visual link to" ID="ID_1119495334" CREATED="1323261427096" MODIFIED="1323261436173">
@@ -353,12 +358,8 @@
 </node>
 <node TEXT="this node" ID="ID_932870811" CREATED="1323261432886" MODIFIED="1323261434346"/>
 </node>
-<node TEXT="You can add links to local files" ID="ID_33520894" CREATED="1323261408174" MODIFIED="1323261414466">
-<node TEXT="Local file link" ID="ID_1461806695" CREATED="1323261443776" MODIFIED="1323261561366" LINK="workspace:/../sciplore/temp/temp-mypubs.mm"/>
-</node>
-<node TEXT="You can add links to local folders" ID="ID_401086023" CREATED="1323261491558" MODIFIED="1323261497773">
-<node TEXT="images" ID="ID_1568080425" CREATED="1323261487620" MODIFIED="1323261487622" LINK="workspace:/../sciplore/Entwicklung/eclipse/resources/images"/>
-</node>
+<node TEXT="You can add links to local files" ID="ID_33520894" CREATED="1323261408174" MODIFIED="1323261414466"/>
+<node TEXT="You can add links to local folders" ID="ID_401086023" CREATED="1323261491558" MODIFIED="1323261497773"/>
 </node>
 <node TEXT="Clouds" FOLDED="true" ID="ID_1227135545" CREATED="1322910690077" MODIFIED="1322910691429">
 <node TEXT="To visualize" ID="ID_577805129" CREATED="1323260256359" MODIFIED="1323260353647">
@@ -515,7 +516,7 @@
 <node TEXT="coming soon" ID="ID_1954347648" CREATED="1323263823130" MODIFIED="1323263826989"/>
 </node>
 </node>
-<node POSITION="right" ID="ID_657573964" CREATED="1323261615880" MODIFIED="1323264089795" BACKGROUND_COLOR="#ccccff" HGAP="-150" VSHIFT="15"><richcontent TYPE="NODE">
+<node POSITION="right" ID="ID_657573964" CREATED="1323261615880" MODIFIED="1326904544552" BACKGROUND_COLOR="#ccccff" HGAP="-150" VSHIFT="7"><richcontent TYPE="NODE">
 
 <html>
   <head>
