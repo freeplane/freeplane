@@ -136,7 +136,7 @@ public class WorkspaceSplitDivider extends BasicSplitPaneDivider {
 		
 		g.setColor(getBackground());
 		g.fillRect(0, 0, getWidth(), getHeight());
-		if (getLocation().x <= 1) {
+		if (getLocation().x <= 2) {
 			collapsed = true;
 			splitPane.setEnabled(false);
 		}
