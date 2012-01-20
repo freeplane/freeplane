@@ -31,8 +31,6 @@ import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.map.MapWriter.Mode;
 
 public class EncryptionModel implements IExtension {
-	private static Logger logger;
-
 	public static EncryptionModel getModel(final NodeModel node) {
 		return (EncryptionModel) node.getExtension(EncryptionModel.class);
 	}
@@ -73,7 +71,7 @@ public class EncryptionModel implements IExtension {
 	public boolean checkPassword(final IEncrypter encrypter) {
 		final String decryptedNode = decryptXml(encryptedContent, encrypter);
 		if (decryptedNode == null || !decryptedNode.equals("") && !decryptedNode.startsWith("<node ")) {
-			EncryptionModel.logger.warning("Wrong password supplied (stored!=given).");
+			LogUtils.warn("Wrong password supplied (stored!=given).");
 			return false;
 		}
 		setEncrypter(encrypter);
