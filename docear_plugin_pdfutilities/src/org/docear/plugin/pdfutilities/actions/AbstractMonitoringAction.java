@@ -306,14 +306,14 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 						            		for(NodeModel child : finalTarget.getChildren()){
 						            			int childPosition =  AnnotationController.getAnnotationPosition(child);
 						            			if(childPosition > newNodePostion){
-						            				finalTarget.insert(finalInsertNode, finalTarget.getChildPosition(child));
+						            				//finalTarget.insert(finalInsertNode, finalTarget.getChildPosition(child));	
+						            				((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(finalInsertNode, finalTarget, finalTarget.getChildPosition(child), finalTarget.isNewChildLeft());
 						            				pasted = true;
 						            				break;
 						            			}						            				
 						            		}
 						            		if(!pasted){
-						            			finalTarget.insert(finalInsertNode);
-						            			
+						            			((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(finalInsertNode, finalTarget, finalTarget.getChildCount(), finalTarget.isNewChildLeft());						            			
 						            		}							            							            	
 							            }
 							        }
