@@ -195,7 +195,10 @@ public class LinkController extends SelectionController implements IExtension {
 	            builder.addPopupMenuListener(menuKey, new PopupMenuListener(
 	            		) {
 	            		public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-	            			final NodeModel node = modeController.getController().getSelection().getSelected();
+	            			final IMapSelection selection = modeController.getController().getSelection();
+	            			if(selection == null)
+	            				return;
+							final NodeModel node = selection.getSelected();
 	            			Set<LinkModel> links = new LinkedHashSet<LinkModel>( NodeLinks.getLinks(node));
 	            			links.addAll(getLinksTo(node));
 	            			if(links.isEmpty())
