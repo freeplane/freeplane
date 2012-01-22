@@ -50,10 +50,12 @@ public abstract class PatternFormat /*extends Format*/ {
 			return STYLE_FORMATTER;
 		}
 
-		@Override
-		public Object formatObject(Object toFormat) {
-			return toFormat;
-		}
+        @Override
+        public Object formatObject(Object toFormat) {
+            if (toFormat instanceof IFormattedObject)
+                return ((IFormattedObject) toFormat).getObject();
+            return toFormat;
+        }
 
 	    @Override
 	    public String toString() {
