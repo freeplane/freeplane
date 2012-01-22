@@ -43,6 +43,7 @@ import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.IFormattedObject;
+import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
@@ -127,7 +128,7 @@ public class AttributePanelManager{
                     if (handlingEvent || !formatChooser.isEnabled())
                         return;
                     handlingEvent = true;
-                    final String newFormat = (String) e.getItem();
+                    final PatternFormat newFormat = toPatternFormat(e.getItem());
                     final AttributeTable table = attributeView.getAttributeTable();
                     if (table.getSelectedColumn() == 1 && table.getSelectedRow() != -1) {
                         final Object value = table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
@@ -146,10 +147,18 @@ public class AttributePanelManager{
                     handlingEvent = false;
                 }
 
-                private Object formatValue(final String newFormat, final AttributeTable table, final Object toFormat) {
+                public PatternFormat toPatternFormat(Object value) {
+                    if (value instanceof PatternFormat)
+                        return (PatternFormat) value;
+                    final PatternFormat patternFormat = PatternFormat.guessPatternFormat(value.toString());
+                    return (patternFormat == null) ? PatternFormat.getIdentityPatternFormat() : patternFormat;
+                }
+
+                private Object formatValue(final PatternFormat newFormat, final AttributeTable table,
+                                           final Object toFormat) {
                     if (formatChooser.getSelectedItem() == null)
                         return null;
-                    return FormatController.format(toFormat, newFormat);
+                    return newFormat.formatObject(toFormat);
                 }
             });
 
@@ -185,8 +194,8 @@ public class AttributePanelManager{
         }
 
         private JComboBox createFormatChooser() {
-            final List<String> formatPatterns = FormatController.getController().getAllPatterns();
-            final JComboBox formatChooser = new JComboBox(new Vector<String>(formatPatterns));
+            final List<PatternFormat> formats = FormatController.getController().getAllFormats();
+            final JComboBox formatChooser = new JComboBox(new Vector<PatternFormat>(formats));
             formatChooser.setEditable(true);
             formatChooser.setSelectedItem(null);
             final String NODE_FORMAT = "OptionPanel.nodeformat"; // duplicated from StyleEditorPanel

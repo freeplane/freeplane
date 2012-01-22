@@ -27,7 +27,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.TypeReference;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -37,29 +36,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public abstract class PatternFormat /*extends Format*/ {
 	private static final String SERIALIZATION_SEPARATOR = ":";
 	public static final String IDENTITY_PATTERN = "NO_FORMAT";
-
-	private static class IdentityPatternFormat extends PatternFormat {
-		private static final String NAME = TextUtils.getText(IDENTITY_PATTERN);
-
-        public IdentityPatternFormat() {
-			super(IDENTITY_PATTERN, TYPE_IDENTITY);
-		}
-
-		@Override
-		public String getStyle() {
-			return STYLE_FORMATTER;
-		}
-
-		@Override
-		public Object formatObject(Object toFormat) {
-			return toFormat;
-		}
-
-	    @Override
-	    public String toString() {
-	        return NAME;
-	    }
-	};
 
 	private static final PatternFormat IDENTITY = new IdentityPatternFormat();
 	static final String STYLE_FORMATTER = "formatter";

@@ -294,7 +294,7 @@ public class FormatController implements IExtension {
 		return stringFormats;
 	}
 
-	@Deprecated
+	/** @deprecated use getAllFormats() instead. */
 	public List<String> getAllPatterns() {
 		final ArrayList<PatternFormat> formats = getAllFormats();
 		ArrayList<String> result = new ArrayList<String>(formats.size());
