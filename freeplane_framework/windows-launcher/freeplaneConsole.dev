@@ -49,7 +49,7 @@ ResourceIncludes=
 MakeIncludes=
 Compiler=
 CppCompiler=
-Linker=-mwindows_@@_
+Linker=
 PreprocDefines=CONSOLE_APP_@@_
 CompilerSettings=0000000000000000000000
 Icon=
@@ -65,4 +65,5 @@ IncludeVersionInfo=1
 SupportXPThemes=0
 CompilerSet=0
 CompilerType=0
+ImagesOutput=Images\
 
