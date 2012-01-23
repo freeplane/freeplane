@@ -62,7 +62,6 @@ import org.freeplane.plugin.workspace.controller.IWorkspaceListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 import org.freeplane.view.swing.map.NodeView;
 
-
 public class ReferencesController extends ALanguageController implements IDocearEventListener, IWorkspaceListener, ActionListener {
 
 	//mapModel with reference which is currently changed
