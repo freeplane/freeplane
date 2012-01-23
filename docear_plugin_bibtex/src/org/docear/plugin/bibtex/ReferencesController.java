@@ -73,7 +73,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 	
 	private static ReferencesController referencesController = null;	
 	
-	private JabrefWrapper jabrefWrapper;
+	JabrefWrapper jabrefWrapper;
 	
 	private JabRefAttributes jabRefAttributes;
 	private SplmmAttributes splmmAttributes;
@@ -129,32 +129,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 		this.addPluginDefaults();
 		this.addMenuEntries();
 		this.registerListeners();
-		//TODO: DOCEAR - (ticket #225) refactor with separate class  
-		modeController.getUserInputListenerFactory().getMenuBar().addKeyStrokeInterceptor(new IKeyStrokeInterceptor() {
-			public boolean interceptKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
-				Object source = e.getSource();
-				if(hasPackageNameOrAncestor(source, "net.sf.jabref")) {
-					return true;
-				}
-				return false;
-			}
-			
-			private boolean hasPackageNameOrAncestor(Object obj, String packageName) {
-				if(obj == null || packageName == null) {
-					return false;
-				}
-				String str = obj.getClass().getPackage().getName();
-				if(str.startsWith(packageName)) {
-					return true;
-				} 
-				else {
-					if(obj instanceof Component) {
-						return hasPackageNameOrAncestor(((Component) obj).getParent(), packageName);
-					}
-				}
-				return false;
-			}
-		});
+		
 		FreeplaneActionCascade.addAction(new ReferenceQuitAction());
 		this.initJabref();		
 	}
@@ -237,6 +212,8 @@ public class ReferencesController extends ALanguageController implements IDocear
 					else {
 						jabrefWrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame());
 					}
+					//TODO: DOCEAR - (ticket #225) refactor with separate class  
+					modeController.getUserInputListenerFactory().getMenuBar().addKeyStrokeInterceptor(new KeyBindInterceptor());
 					createOptionPanel(jabrefWrapper.getJabrefFrame());					
 				}
 			};
@@ -384,6 +361,37 @@ public class ReferencesController extends ALanguageController implements IDocear
 		if (e.getActionCommand().equals(ShowJabrefPreferences.getKey())) {
 			ShowJabrefPreferences.actionPerformed(e);
 		}		
+	}
+	
+	private class KeyBindInterceptor implements IKeyStrokeInterceptor {
+		
+		public boolean interceptKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
+			Object source = e.getSource();
+			if(hasPackageNameOrAncestor(source, "net.sf.jabref")) {
+				if(jabrefWrapper.getJabrefFrame().getMenuBar().processKeyBinding(ks, e, condition, pressed)) {
+					e.consume();
+					
+				}
+				return true;
+			}
+			return false;
+		}
+		
+		private boolean hasPackageNameOrAncestor(Object obj, String packageName) {
+			if(obj == null || packageName == null) {
+				return false;
+			}
+			String str = obj.getClass().getPackage().getName();
+			if(str.startsWith(packageName)) {
+				return true;
+			} 
+			else {
+				if(obj instanceof Component) {
+					return hasPackageNameOrAncestor(((Component) obj).getParent(), packageName);
+				}
+			}
+			return false;
+		}
 	}
 
 }

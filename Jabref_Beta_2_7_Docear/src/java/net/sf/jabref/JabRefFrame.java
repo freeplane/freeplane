@@ -123,7 +123,7 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 
 	ToolBar tlb = new ToolBar();
 
-	JMenuBar mb = new JMenuBar();
+	JabRefMenuBar mb = new JabRefMenuBar();
 	JMenu pluginMenu = subMenu("Plugins");
 	boolean addedToPluginMenu = false;
 
@@ -765,7 +765,7 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 			pushExternalButton = new PushToApplicationButton(this, PushToApplicationButton.applications);			
 		}
 		else { //DOCEAR: necessary modification to prepare for short cut keyEvents in combination with another TopLevelFrame 
-			mb = new JMenuBar() {
+			mb = new JabRefMenuBar() {
 				public Container getParent() {
 					return frame;
 				}
@@ -1308,9 +1308,13 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 		helpMenu.add(errorConsole);
 		
 		//DOCEAR: register actions and their shortcuts to the KeyboardManager
-		if(!this.isTopLevel) {
-			mb.addNotify();
-		}
+//		if(!this.isTopLevel) {
+//			mb.addNotify();
+//		}
+	}
+	//DOCEAR - getMenubar for shortcut handling
+	public JabRefMenuBar getMenuBar() {
+		return mb;
 	}
 
 	public static JMenu subMenu(String name) {

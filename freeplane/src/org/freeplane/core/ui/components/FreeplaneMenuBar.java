@@ -23,6 +23,7 @@ import java.awt.event.KeyEvent;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import javax.swing.JComponent;
 import javax.swing.JMenuBar;
 import javax.swing.KeyStroke;
 import javax.swing.text.JTextComponent;
