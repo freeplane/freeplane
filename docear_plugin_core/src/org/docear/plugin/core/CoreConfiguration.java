@@ -83,16 +83,7 @@ public class CoreConfiguration extends ALanguageController {
 	public static final NodeAttributeObserver repositoryPathObserver = new NodeAttributeObserver();
 	private final boolean firstRun;
 	
-	public CoreConfiguration(ModeController modeController) {
-		try {
-			if (WorkspaceController.getController().isInitialized()) {
-				//showLocationDialogIfNeeded();
-			}
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-				
+	public CoreConfiguration(ModeController modeController) {			
 		LogUtils.info("org.docear.plugin.core.CoreConfiguration() initializing...");
 		firstRun = !ResourceController.getResourceController().getBooleanProperty(DOCEAR_FIRST_RUN_PROPERTY);
 		init(modeController);
@@ -153,12 +144,15 @@ public class CoreConfiguration extends ALanguageController {
 		
 	}
 
-	private void copyInfoIfNeeded() {
+	public static void copyInfoIfNeeded() {
 		File infoFile = new File(WorkspaceUtils.getProfileBaseFile(), "!!!info.txt");
 		if(!infoFile.exists()) {
 			try {
+				if(!infoFile.getParentFile().exists() && !infoFile.getParentFile().mkdirs()) {
+					return;
+				}
 				infoFile.createNewFile();
-				FileUtils.copyInputStreamToFile(CoreConfiguration.this.getClass().getResourceAsStream("/conf/!!!info.txt"), infoFile);
+				FileUtils.copyInputStreamToFile(CoreConfiguration.class.getResourceAsStream("/conf/!!!info.txt"), infoFile);
 			}
 			catch (IOException e) {
 				LogUtils.warn(e);

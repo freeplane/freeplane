@@ -16,6 +16,7 @@ public class WorkspaceChangeListener implements IWorkspaceListener {
 			CoreConfiguration.projectPathObserver.reset();
 			CoreConfiguration.referencePathObserver.reset();
 			CoreConfiguration.repositoryPathObserver.reset();
+			CoreConfiguration.copyInfoIfNeeded();
 		}
 		else if (event.getType() == WorkspaceEvent.WORKSPACE_EVENT_TYPE_CHANGED) {
 			IDocearLibrary lib = DocearController.getController().getLibrary();
