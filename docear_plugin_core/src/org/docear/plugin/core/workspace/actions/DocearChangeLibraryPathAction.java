@@ -76,7 +76,7 @@ public class DocearChangeLibraryPathAction extends AWorkspaceAction {
 				}
 				
 				public boolean accept(File f) {
-					return f.getName().endsWith(".bib");
+					return (f.isDirectory() || f.getName().endsWith(".bib"));
 				}
 			};
 			URI uri = requestUri(((LinkTypeReferencesNode) targetNode).getLinkPath(), false, bibFilter);

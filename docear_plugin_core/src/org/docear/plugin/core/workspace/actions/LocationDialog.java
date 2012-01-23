@@ -109,7 +109,7 @@ public class LocationDialog extends JPanel {
 			}
 			
 			public boolean accept(File f) {
-				return f.getName().endsWith(".bib");
+				return (f.isDirectory() || f.getName().endsWith(".bib"));
 			}
 		};
 		fileChooser.addChoosableFileFilter(bibFilter);

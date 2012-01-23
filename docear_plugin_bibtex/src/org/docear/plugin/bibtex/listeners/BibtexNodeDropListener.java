@@ -4,6 +4,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 
+
 import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.groups.TransferableEntrySelection;
 

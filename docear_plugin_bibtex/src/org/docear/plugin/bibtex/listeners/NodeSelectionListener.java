@@ -1,5 +1,6 @@
 package org.docear.plugin.bibtex.listeners;
 
+
 import org.docear.plugin.bibtex.ReferencesController;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;

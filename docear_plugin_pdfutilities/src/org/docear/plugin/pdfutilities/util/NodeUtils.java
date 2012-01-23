@@ -44,6 +44,7 @@ import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.attribute.AttributeView;
 
@@ -252,7 +253,8 @@ public class NodeUtils {
 		}
 		else{
 			pathNode = ((MMapController) Controller.getCurrentModeController().getMapController()).newNode(parent.getName(), target.getMap());
-			DocearNodeModelExtensionController.setEntry(pathNode, DocearExtensionKey.MONITOR_PATH, null);			
+			DocearNodeModelExtensionController.setEntry(pathNode, DocearExtensionKey.MONITOR_PATH, null);
+			NodeUtils.setLinkFrom(WorkspaceUtils.getURI(parent), pathNode);
 			NodeUtils.insertChildNodeFrom(pathNode, target.isLeft(), target);
 			return createFolderStructurePath(pathNode, pathStack);
 		}			

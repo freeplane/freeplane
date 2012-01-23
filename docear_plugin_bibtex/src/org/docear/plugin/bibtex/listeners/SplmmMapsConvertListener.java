@@ -1,5 +1,6 @@
 package org.docear.plugin.bibtex.listeners;
 
+
 import org.docear.plugin.bibtex.ReferenceUpdater;
 import org.docear.plugin.bibtex.SplmmReferenceUpdater;
 import org.docear.plugin.core.listeners.ISplmmMapsConvertListener;

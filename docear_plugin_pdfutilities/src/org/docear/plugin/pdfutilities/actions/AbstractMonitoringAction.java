@@ -222,8 +222,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 								widowedLinkedNode.add(node);
 								continue;
 							}
-							else if(file != null){
-								//File monitoringDirectory = Tools.getFilefromUri(Tools.getAbsoluteUri(NodeUtils.getPdfDirFromMonitoringNode(target), target.getMap()));
+							else if(file != null){								
 								File monitoringDirectory = WorkspaceUtils.resolveURI(NodeUtils.getPdfDirFromMonitoringNode(target), target.getMap());
 								if(file.getPath().startsWith(monitoringDirectory.getPath())){
 									AnnotationModel annoation = new PdfAnnotationImporter().searchAnnotation(Tools.getAbsoluteUri(node), node);
@@ -306,14 +305,14 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 						            		for(NodeModel child : finalTarget.getChildren()){
 						            			int childPosition =  AnnotationController.getAnnotationPosition(child);
 						            			if(childPosition > newNodePostion){
-						            				finalTarget.insert(finalInsertNode, finalTarget.getChildPosition(child));
+						            				//finalTarget.insert(finalInsertNode, finalTarget.getChildPosition(child));	
+						            				((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(finalInsertNode, finalTarget, finalTarget.getChildPosition(child), finalTarget.isNewChildLeft());
 						            				pasted = true;
 						            				break;
 						            			}						            				
 						            		}
 						            		if(!pasted){
-						            			finalTarget.insert(finalInsertNode);
-						            			
+						            			((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(finalInsertNode, finalTarget, finalTarget.getChildCount(), finalTarget.isNewChildLeft());						            			
 						            		}							            							            	
 							            }
 							        }
@@ -457,10 +456,8 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					tempAnnotation.setInserted(true);
 					tempAnnotation = tempAnnotation.getParent();
 				} while(tempAnnotation != null);
-				if(!isFlattenSubfolders(target)){
-					//URI pdfDirURI = Tools.getAbsoluteUri(NodeUtils.getPdfDirFromMonitoringNode(target));
-					
-					File pdfDirFile = WorkspaceUtils.resolveURI(NodeUtils.getPdfDirFromMonitoringNode(target));//Tools.getFilefromUri(pdfDirURI);		
+				if(!isFlattenSubfolders(target)){					
+					File pdfDirFile = WorkspaceUtils.resolveURI(NodeUtils.getPdfDirFromMonitoringNode(target));
 					File annoFile = WorkspaceUtils.resolveURI(annotation.getUri());
 					if(annoFile != null) {
 						File parent = annoFile.getParentFile();
@@ -468,6 +465,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 							if(canceled()) return result;
 							NodeModel node = ((MMapController) Controller.getCurrentModeController().getMapController()).newNode(parent.getName(), target.getMap());
 							DocearNodeModelExtensionController.setEntry(node, DocearExtensionKey.MONITOR_PATH, null);
+							NodeUtils.setLinkFrom(WorkspaceUtils.getURI(parent), node);
 							result.push(node);
 							parent = parent.getParentFile();						
 						}

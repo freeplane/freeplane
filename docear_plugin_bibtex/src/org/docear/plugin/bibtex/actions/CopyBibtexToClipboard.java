@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.Collection;
 
+
 import org.docear.plugin.bibtex.ReferencesController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;

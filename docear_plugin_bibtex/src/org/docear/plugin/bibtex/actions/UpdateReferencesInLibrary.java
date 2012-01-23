@@ -2,6 +2,7 @@ package org.docear.plugin.bibtex.actions;
 
 import java.awt.event.ActionEvent;
 
+
 import org.docear.plugin.bibtex.ReferenceUpdater;
 import org.docear.plugin.core.mindmap.MindmapUpdateController;
 import org.freeplane.core.ui.AFreeplaneAction;

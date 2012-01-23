@@ -1,0 +1,1 @@
+This directory was created by Docear. It contains the workspace and profile settings and files. Please do not modify or delete anything in this folder and its sub-folders. 
