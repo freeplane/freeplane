@@ -210,6 +210,15 @@
             <param name="pluginname" value="org.docear.plugin.pdfutilities"/>
         </antcall>
     </target>
+	
+	<target name="build_docear_dragbase" unless="skip_dragbase">
+	        <antcall target="makePlugin" inheritall="false">
+	            <param name="anttarget" value="dist"/>
+	            <param name="targetdir" value="plugins"/>
+	            <param name="plugindir" value="docear_plugin_dragbase"/>
+	            <param name="pluginname" value="org.docear.plugin.dragbase"/>
+	        </antcall>
+	    </target>
 
     <target name="build_docear_bibtex" unless="skip_bibtex">
         <antcall target="makePlugin" inheritall="false">
@@ -240,7 +249,7 @@
 
 	
 	<target name="build" depends="build_core, build_latex, build_svg, build_script, build_formula, build_bugreport, build_accountmanager,
-    build_workspace, build_docear_core, build_docear_communications, build_docear_pdfutilities, build_docear_bibtex, build_docear_backup, 
+    build_workspace, build_docear_core, build_docear_communications, build_docear_pdfutilities, build_docear_dragbase, build_docear_bibtex, build_docear_backup, 
     build_docear_optionpane, bzr_version_info">
        <mkdir dir="${build.resources}" />
         <copy todir="${build.resources}">
@@ -524,10 +533,21 @@
 			failonerror="false"/>
 		<copy file="${workspace}/freeplane_plugin_script/dist/script-api.zip"
 			tofile="${dist}/script-api-${ver}.zip"
-			failonerror="false"/>
-		<nsis script="${root}/windows-installer/docear_windows_installer.nsi" verbosity="4" out="${root}/dist/nsis-build.log" noconfig="yes">
-		    <define name="VERSION" value="${ver_docear}"/>		    
-		</nsis>
+			failonerror="false"/>		
+	</target>
+	
+	<target name="dist+installer" depends="bzr_version_info, binzip, srczip, installer, portableinstaller, zip4mac, dmg4mac, javadoc">
+	        <copy file="${workspace}/freeplane/doc/history_en.txt"
+	            todir="${dist}" />
+	        <copy file="${build}/bzrinfo.txt"
+	            tofile="${dist}/bzrinfo-${ver}.txt"
+	            failonerror="false"/>
+	        <copy file="${workspace}/freeplane_plugin_script/dist/script-api.zip"
+	            tofile="${dist}/script-api-${ver}.zip"
+	            failonerror="false"/>
+	        <nsis script="${root}/windows-installer/docear_windows_installer.nsi" verbosity="4" out="${root}/dist/nsis-build.log" noconfig="yes">
+	            <define name="VERSION" value="${ver_docear}"/>          
+	        </nsis>
 	</target>
 
 	<target name="cleandist" depends="clean,dist">
