@@ -21,16 +21,14 @@ import org.freeplane.view.swing.map.NodeView;
  * (Delete Node). It forwards the requests to NodeController.
  */
 public class DefaultNodeKeyListener implements KeyListener {
-	// // 	final private Controller controller;
 	final private IEditHandler editHandler;
 
 	public DefaultNodeKeyListener(final IEditHandler editHandler) {
-		//		this.controller = controller;
 		this.editHandler = editHandler;
 	}
 
 	public void keyPressed(final KeyEvent e) {
-		if (e.isAltDown() || e.isControlDown() || e.isMetaDown()) {
+		if ((e.isAltDown() || e.isControlDown() || e.isMetaDown()) && !(e.isControlDown() && e.isShiftDown())) {
 			return;
 		}
 		switch (e.getKeyCode()) {
@@ -44,31 +42,86 @@ public class DefaultNodeKeyListener implements KeyListener {
 				return;
 		}
 		final boolean continious = e.isShiftDown();
+		final boolean pan = e.isShiftDown() && e.isControlDown();
 		final MapView mapView = (MapView) Controller.getCurrentController().getViewController().getMapView();
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_UP:
-				if (mapView.selectUp(continious)) 
+				if (pan) {
+					mapView.scrollBy(0, -10);
 					e.consume();
+				}
+				else {
+					if (mapView.selectUp(continious)) {
+						e.consume();
+					}
+					else {
+						mapView.scrollBy(0, -10);
+						e.consume();
+					}
+				}
 				return;
 			case KeyEvent.VK_DOWN:
-				if (mapView.selectDown(continious)) 
+				if (pan) {
+					mapView.scrollBy(0, 10);
 					e.consume();
+				}
+				else {
+					if (mapView.selectDown(continious)) {
+						e.consume();
+					}
+					else {
+						mapView.scrollBy(0, 10);
+						e.consume();
+					}
+				}
 				return;
 			case KeyEvent.VK_LEFT:
-				if (mapView.selectLeft(continious)) 
+				if (pan) {
+					mapView.scrollBy(-10, 0);
 					e.consume();
+				}
+				else {
+					if (mapView.selectLeft(continious)) {
+						e.consume();
+					}
+					else {
+						mapView.scrollBy(-10, 0);
+						e.consume();
+					}
+				}
 				return;
 			case KeyEvent.VK_RIGHT:
-				if (mapView.selectRight(continious)) 
+				if (pan) {
+					mapView.scrollBy(10, 0);
 					e.consume();
+				}
+				else {
+					if (mapView.selectRight(continious)) {
+						e.consume();
+					}
+					else {
+						mapView.scrollBy(10, 0);
+						e.consume();
+					}
+				}
 				return;
 			case KeyEvent.VK_PAGE_UP:
-				if (mapView.selectPageUp(continious)) 
+				if (mapView.selectPageUp(continious)) {
 					e.consume();
+				}
+				else {
+					mapView.scrollBy(0, -10);
+					e.consume();
+				}
 				return;
 			case KeyEvent.VK_PAGE_DOWN:
-				if (mapView.selectPageDown(continious)) 
+				if (mapView.selectPageDown(continious)) {
 					e.consume();
+				}
+				else {
+					mapView.scrollBy(0, 10);
+					e.consume();
+				}
 				return;
 			case KeyEvent.VK_HOME:
 			case KeyEvent.VK_END:

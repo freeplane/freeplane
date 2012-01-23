@@ -67,6 +67,7 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.n3.nanoxml.XMLException;
@@ -271,7 +272,7 @@ public class UrlManager implements IExtension {
 		}
 	}
 
-	/**@deprecated -- use MapIO*/
+	/**@deprecated -- use {@link MapIO#load(URL url, MapModel map)} */
 	@Deprecated
 	public boolean load(final URL url, final MapModel map){
 		setURL(map, url);
@@ -305,7 +306,13 @@ public class UrlManager implements IExtension {
 		return false;
 	}
 
-	/**@deprecated -- use LinkController*/
+    /**@deprecated -- use {@link MapIO#load(URL url, MapModel map)} */
+    @Deprecated
+    public boolean loadImpl(final URL url, final MapModel map){
+        return load(url, map);
+    }
+
+    /**@deprecated -- use LinkController*/
 	@Deprecated
 	public void loadURL(URI uri) {
 		final String uriString = uri.toString();
