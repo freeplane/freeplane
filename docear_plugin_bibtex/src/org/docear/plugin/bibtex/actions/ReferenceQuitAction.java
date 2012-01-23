@@ -6,6 +6,7 @@ package org.docear.plugin.bibtex.actions;
 
 import java.awt.event.ActionEvent;
 
+
 import net.sf.jabref.BibtexDatabase;
 import net.sf.jabref.BibtexEntry;
 

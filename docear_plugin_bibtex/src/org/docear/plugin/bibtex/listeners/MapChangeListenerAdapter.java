@@ -2,6 +2,7 @@ package org.docear.plugin.bibtex.listeners;
 
 import java.net.URI;
 
+
 import net.sf.jabref.BasePanel;
 import net.sf.jabref.BibtexEntry;
 

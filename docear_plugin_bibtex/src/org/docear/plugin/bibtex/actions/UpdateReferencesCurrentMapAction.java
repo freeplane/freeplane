@@ -2,6 +2,7 @@ package org.docear.plugin.bibtex.actions;
 
 import java.awt.event.ActionEvent;
 
+
 import org.docear.plugin.bibtex.ReferenceUpdater;
 import org.docear.plugin.core.mindmap.MindmapUpdateController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -18,13 +19,8 @@ public class UpdateReferencesCurrentMapAction extends AFreeplaneAction {
 		super(key);	
 	}
 
-	@SuppressWarnings("unchecked")
 	public void actionPerformed(ActionEvent e) {
-//		ReferenceUpdater referenceUpdater = new ReferenceUpdater(TextUtils.getText("update_references_open_mindmaps"));
-//		ArrayList<MapModel> maps = new ArrayList<MapModel>();
-//		maps.add(Controller.getCurrentController().getMap());
-//		referenceUpdater.run(maps);
-		
+
 		new SaveAll().actionPerformed(null);
 		
 		MindmapUpdateController mindmapUpdateController = new MindmapUpdateController();
