@@ -2,9 +2,14 @@ package org.docear.plugin.bibtex;
 
 import java.awt.Component;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -26,6 +31,7 @@ import net.sf.jabref.label.HandleDuplicateWarnings;
 
 import org.docear.plugin.bibtex.listeners.MapViewListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewChangeListener;
 
@@ -136,6 +142,9 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 		
 	public void openIt(File file, boolean raisePanel) {
         if ((file != null) && (file.exists())) {
+        	if (!isCompatibleToJabref(file)) {
+        		return;
+        	}	
             File fileToLoad = file;
             System.out.println(Globals.lang("Opening References") + ": '" + file.getPath() + "'");
 
@@ -202,6 +211,120 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
                         
         }
     }
+	
+	//JabRef does not use character escaping of "{" and "}"
+	//unfortunately all other escapings are not unambiguously or might be set in jabref-preferences too
+		public boolean isCompatibleToJabref(File f) {
+			int escapeCount = 0;
+			int allCount = 0;
+			
+			ArrayList<Character> allowedCharsBeforeSlash = new ArrayList<Character>();
+			allowedCharsBeforeSlash.add('\"');
+			allowedCharsBeforeSlash.add('\'');
+			allowedCharsBeforeSlash.add('`');
+			allowedCharsBeforeSlash.add('^');
+			allowedCharsBeforeSlash.add('~');
+			
+	        Scanner in = null;
+	        try {
+	            in = new Scanner(new FileReader(f));            
+	            while(in.hasNextLine()) {
+	            	String line = in.nextLine();	            	
+	            	line = line;
+	            	
+	            	String normalized = line.trim().toLowerCase(); 
+	            	if (normalized.startsWith("journal") || normalized.startsWith("title") || normalized.startsWith("booktitle")) {
+	            		int pos = 0;
+	            		int i = 0;
+	            		
+	            		String s = normalized.substring(normalized.indexOf("=")+1).trim();	            		
+	            		while (s.charAt(pos) == '{') {
+	            			pos++;
+	            		}
+	            		while ((i = s.indexOf("{", pos)) >= 0 ) {
+	            			pos = (i+1);
+	            			if (allowedCharsBeforeSlash.contains(s.charAt(i-1))) {
+	            				continue;
+	            			}
+	            			allCount++;
+	            				            			
+	            		}
+	            		
+	            		pos = 0;
+	            		i = 0;
+	            		while ((i = s.indexOf("\\{", pos)) >= 0) {
+	            			escapeCount++;
+	            			pos = (i+1);	            			
+	            		}
+	            	}
+	                System.out.print("");
+	            }
+	        }
+	        catch(IOException e) {
+	            e.printStackTrace();      
+	        }
+	        finally {
+	            try { in.close() ; } catch(Exception e) { LogUtils.warn(e); }  
+	        }
+	     
+	        //if no escaped and no unescaped char sequence was found in the whole file we assume it to be ok for usage in jabref  
+	        if (allCount/2 > escapeCount) {
+	        	return true;
+	        }
+	        return false;
+	    }
+	
+	//JabRef does not use character escaping
+//	public boolean isCompatibleToJabref(File f) {
+//		int escapeCount = 0;
+//		int unescapeCount = 0;
+//		
+//		ArrayList<Pattern> escaped = new ArrayList<Pattern>();
+//		escaped.add(Pattern.compile("\\\\\""));
+//		escaped.add(Pattern.compile("\\\\/"));
+//		escaped.add(Pattern.compile("\\\\\\&"));
+//		ArrayList<Pattern> unescaped = new ArrayList<Pattern>();
+//		unescaped.add(Pattern.compile("[^\\\\]\""));		
+//		unescaped.add(Pattern.compile("[^\\\\]\\/"));
+//		unescaped.add(Pattern.compile("[^\\\\]\\&"));
+//		//unescaped.add(Pattern.compile("[^\\\\]\\}"));
+//		
+//        Scanner in = null;
+//        try {
+//            in = new Scanner(new FileReader(f));            
+//            while(in.hasNextLine()) {
+//            	String line = in.nextLine();
+//            	line = line;
+//            	for (Pattern escapedPattern : escaped) {
+//            		Matcher escapeMatcher = escapedPattern.matcher(line);
+//            		if (escapeMatcher.find()) {
+//            			escapeCount++;
+//            		}
+//            	}
+//            	for (Pattern unescapedPattern : unescaped) {
+//            		Matcher unescapeMatcher = unescapedPattern.matcher(line);
+//            		if (unescapeMatcher.find()) {
+//            			unescapeCount++;
+//            		}
+//            	}            		
+//            	if (line.contains("$backslash$")) {
+//            		return false;
+//            	}
+//            }
+//        }
+//        catch(IOException e) {
+//            e.printStackTrace();      
+//        }
+//        finally {
+//            try { in.close() ; } catch(Exception e) { LogUtils.warn(e); }  
+//        }
+//     
+//        //if no escaped and no unescaped char sequence was found in the whole file we assume it to be ok for usage in jabref  
+//        if (unescapeCount > escapeCount) {
+//        	return true;
+//        }
+//        return false;
+//    }
 	
     
     /**
