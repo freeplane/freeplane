@@ -302,7 +302,7 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 
 		// if no escaped and no unescaped char sequence was found in the whole
 		// file we assume it to be ok for usage in jabref
-		if (allCount / 2 > escapeCount) {
+		if (allCount / 2 >= escapeCount) {
 			return true;
 		}
 		return false;
