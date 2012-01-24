@@ -343,6 +343,7 @@ public class MTextController extends TextController {
 	}
 
 	private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);
+	private EditEventDispatcher keyEventDispatcher;
 
     public void setGuessedNodeObject(final NodeModel node, final String newText) {
 		if (HtmlUtils.isHtmlNode(newText))
@@ -672,6 +673,7 @@ public class MTextController extends TextController {
 			MapController mapController = modeController.getMapController();
 			mapController.removeNodeChangeListener(this);
 			mapController.removeNodeSelectionListener(this);
+			keyEventDispatcher = null;
         }
 
 		public void install() {
@@ -715,8 +717,8 @@ public class MTextController extends TextController {
 		stopEditing();
 		if(isNewNode && ! eventQueue.isActive() 
 				&& ! ResourceController.getResourceController().getBooleanProperty("display_inline_editor_for_all_new_nodes")){
-			final EditEventDispatcher dispatcher = new EditEventDispatcher(Controller.getCurrentModeController(), nodeModel, prevSelectedModel, isNewNode, parentFolded, editLong);
-			dispatcher.install();
+			keyEventDispatcher = new EditEventDispatcher(Controller.getCurrentModeController(), nodeModel, prevSelectedModel, isNewNode, parentFolded, editLong);
+			keyEventDispatcher.install();
 			return;
 		};
 		final IEditControl editControl = new IEditControl() {
@@ -800,6 +802,9 @@ public class MTextController extends TextController {
 
 
 	public void stopEditing() {
+		if(keyEventDispatcher != null){
+			keyEventDispatcher.uninstall();
+		}
 		if (mCurrentEditDialog != null) {
 			mCurrentEditDialog.closeEdit();
 			mCurrentEditDialog = null;
