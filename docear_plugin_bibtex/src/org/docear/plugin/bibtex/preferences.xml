@@ -2,13 +2,7 @@
 <preferences_structure>
 	<tabbed_pane>
 		<tab name="reference_management">
-			<separator name="default_bibtex">			     
-				<combo name = "docear_bibtex_source">
-                    <choice value="docear_bibtex_source.jabref"/>
-                    <choice value="docear_bibtex_source.mendeley"/>
-                    <choice value="docear_bibtex_source.zotero"/>
-                    <choice value="docear_bibtex_source.other"/>
-                </combo>
+			<separator name="default_bibtex">
                 <combo name = "docear_bibtex_encoding">
                     <choice value="docear_bibtex_encoding.ISO8859_1"/>
                     <choice value="docear_bibtex_encoding.UTF8"/>

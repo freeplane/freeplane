@@ -30,6 +30,7 @@ import net.sf.jabref.imports.ParserResult;
 import net.sf.jabref.imports.PostOpenAction;
 import net.sf.jabref.label.HandleDuplicateWarnings;
 
+import org.docear.plugin.bibtex.actions.FilePathValidatorAction;
 import org.docear.plugin.bibtex.listeners.MapViewListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
@@ -46,6 +47,9 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 	private static ArrayList<PostOpenAction> postOpenActions = new ArrayList<PostOpenAction>();
 
 	static {
+		//bibtex files exported by mendeley do not contain leading "/" for absolute paths so we do not know if
+		//the file contaions relative paths or absolute paths
+		postOpenActions.add(new FilePathValidatorAction());
 		// Add the action for checking for new custom entry types loaded from
 		// the bib file:
 		postOpenActions.add(new CheckForNewEntryTypesAction());

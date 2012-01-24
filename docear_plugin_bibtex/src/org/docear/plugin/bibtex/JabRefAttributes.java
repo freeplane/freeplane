@@ -267,7 +267,7 @@ public class JabRefAttributes {
 	}
 
 	
-	private static ArrayList<String> extractPaths(String path) {
+	public static ArrayList<String> extractPaths(String path) {
 //		String[] array = path.split("(^:|(?<=[^\\\\]):)"); // splits the string at non escaped double points
 //		  if(array.length >= 3){
 //		   return array[1];
