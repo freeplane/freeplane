@@ -2,9 +2,6 @@ package org.docear.plugin.bibtex;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.LayoutManager;
-
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
