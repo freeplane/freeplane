@@ -81,7 +81,7 @@ import org.freeplane.features.nodestyle.mindmapmode.RevisionPlugin;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
-import org.freeplane.features.styles.AutomaticLayout;
+import org.freeplane.features.styles.AutomaticLayoutController;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
@@ -149,7 +149,7 @@ public class MModeControllerFactory {
 		tabs.add(TextUtils.getText("format_panel"), styleScrollPane);
 		new AttributePanelManager(modeController);
 		new HierarchicalIcons();
-		new AutomaticLayout();
+		new AutomaticLayoutController();
 		new BlinkingNodeHook();
 		SummaryNode.install();
 		AlwaysUnfoldedNode.install();

@@ -302,6 +302,13 @@ public abstract class PersistentNodeHook {
 		return nodeModel.containsExtension(getExtensionClass());
 	}
 
+	public IExtension getExtension(final NodeModel nodeModel) {
+		if (!nodeModel.isRoot() && getHookAnnotation().onceForMap()) {
+			return getExtension(nodeModel.getMap().getRootNode());
+		}
+		return nodeModel.getExtension(getExtensionClass());
+	}
+
 	protected boolean isActiveForSelection() {
 		final NodeModel[] nodes = getNodes();
 		for (int i = 0; i < nodes.length; i++) {

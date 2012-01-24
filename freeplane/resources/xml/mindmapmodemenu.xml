@@ -221,7 +221,11 @@
 			</menu_submenu>
 		<menu_submenu name="format" name_ref="menu_format">
 			<menu_submenu name="menu_applyStyle" name_ref="menu_applyStyle" menu_key="main_menu_styles"/>
-				<menu_action action="AutomaticLayoutAction" />		
+				<menu_submenu name="AutomaticLayoutAction" name_ref="automatic_layout">
+				<menu_action action="AutomaticLayoutControllerAction.HEADINGS" />		
+				<menu_action action="AutomaticLayoutControllerAction.ALL" />		
+				<menu_action action="AutomaticLayoutControllerAction.null" />						
+				</menu_submenu>
 			<menu_submenu name="menu_manageStyles" name_ref="menu_manageStyles">
 				<menu_action action="NewUserStyleAction" />				
 				<menu_action action="RedefineStyleAction" />				

@@ -33,13 +33,18 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicButtonUI;
 
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ColorProperty;
@@ -81,6 +86,7 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.styles.AutomaticLayout;
+import org.freeplane.features.styles.AutomaticLayoutController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleModel;
@@ -93,6 +99,8 @@ import com.jgoodies.forms.factories.Borders;
 import com.jgoodies.forms.layout.FormLayout;
 
 public class StyleEditorPanel extends JPanel {
+	private static final NamedObject AUTOMATIC_LAYOUT_DISABLED = new NamedObject("automatic_layout_disabled");
+
 	private class BgColorChangeListener extends ChangeListener {
 		public BgColorChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
@@ -754,24 +762,32 @@ public class StyleEditorPanel extends JPanel {
 	    rightBuilder.nextLine();
     }
 
-	private JCheckBox mAutomaticLayoutCheckBox;
+	private JComboBox mAutomaticLayoutComboBox;
 	private JCheckBox mAutomaticEdgeColorCheckBox;
 	private Container mStyleBox;
 	private void addAutomaticLayout(final DefaultFormBuilder rightBuilder) {
 		{
-		if(mAutomaticLayoutCheckBox == null){
-			 mAutomaticLayoutCheckBox = new JCheckBox();
-			 mAutomaticLayoutCheckBox.addActionListener(new ActionListener() {
+		if(mAutomaticLayoutComboBox == null){
+			 NamedObject[] automaticLayoutTypes = NamedObject.fromEnum(AutomaticLayout.class);
+			 mAutomaticLayoutComboBox = new JComboBox(automaticLayoutTypes);
+			 DefaultComboBoxModel automaticLayoutComboBoxModel = (DefaultComboBoxModel) mAutomaticLayoutComboBox.getModel();
+			 automaticLayoutComboBoxModel.addElement(AUTOMATIC_LAYOUT_DISABLED);
+			 automaticLayoutComboBoxModel.setSelectedItem(AUTOMATIC_LAYOUT_DISABLED);
+			 mAutomaticLayoutComboBox.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					final ModeController modeController = Controller.getCurrentModeController();
-					AutomaticLayout al = (AutomaticLayout) modeController.getExtension(AutomaticLayout.class);
-					al.undoableToggleHook(Controller.getCurrentController().getMap().getRootNode(), al);
+					AutomaticLayoutController al = modeController.getExtension(AutomaticLayoutController.class);
+					NamedObject selectedItem = (NamedObject)mAutomaticLayoutComboBox.getSelectedItem();
+					al.undoableDeactivateHook(Controller.getCurrentController().getMap().getRootNode());
+					if(!selectedItem.equals(AUTOMATIC_LAYOUT_DISABLED)){
+						al.undoableActivateHook(Controller.getCurrentController().getMap().getRootNode(), (AutomaticLayout) selectedItem.getObject());
+					}
 				}
 			});
 		}
 	    final String label = TextUtils.getText("AutomaticLayoutAction.text");
 	    rightBuilder.append(new JLabel(label), 5);
-	    rightBuilder.append(mAutomaticLayoutCheckBox);
+	    rightBuilder.append(mAutomaticLayoutComboBox);
 	    rightBuilder.nextLine();
 		}
 		{
@@ -913,10 +929,14 @@ public class StyleEditorPanel extends JPanel {
 					nodeFormat = ((IFormattedObject)node.getUserObject()).getPattern();
 				mNodeFormat.setValue(nodeFormat);
 			}
-			if(mAutomaticLayoutCheckBox != null){
+			if(mAutomaticLayoutComboBox != null){
 				final ModeController modeController = Controller.getCurrentModeController();
-				AutomaticLayout al = (AutomaticLayout) modeController.getExtension(AutomaticLayout.class);
-				mAutomaticLayoutCheckBox.setSelected(al.isActive(node));
+				AutomaticLayoutController al = modeController.getExtension(AutomaticLayoutController.class);
+				IExtension extension = al.getExtension(node);
+				if(extension == null)
+					mAutomaticLayoutComboBox.setSelectedItem(AUTOMATIC_LAYOUT_DISABLED);
+				else
+					mAutomaticLayoutComboBox.setSelectedIndex(((AutomaticLayout)extension).ordinal());
 			}
 			if(mAutomaticEdgeColorCheckBox != null){
 				final ModeController modeController = Controller.getCurrentModeController();
