@@ -35,6 +35,9 @@ public class ReferenceUpdater extends AMindmapUpdater {
 	public boolean updateMindmap(MapModel map) {
 		jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
 		database = ReferencesController.getController().getJabrefWrapper().getDatabase();
+		if (database == null) {
+			return false;
+		}
 		if (this.pdfReferences.size() == 0) {
 			buildPdfIndex();
 		}

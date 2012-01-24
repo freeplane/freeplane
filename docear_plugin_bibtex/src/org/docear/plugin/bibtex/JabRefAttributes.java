@@ -177,6 +177,9 @@ public class JabRefAttributes {
 	
 	public BibtexEntry findBibtexEntryForPDF(URI uri, NodeModel node) {
 		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
+		if (database == null) {
+			return null;
+		}
 		// file name linked in a node
 		File nodeFile = WorkspaceUtils.resolveURI(uri, node.getMap());
 		if (nodeFile == null) {
