@@ -80,17 +80,17 @@ public class WorkspaceConfiguration {
 	
 	private boolean initializeConfig() throws NullPointerException, FileNotFoundException, IOException, URISyntaxException {
 		String workspaceLocation = WorkspaceController.getController().getPreferences().getWorkspaceLocation();
-		String profileName = WorkspaceController.getController().getPreferences().getWorkspaceProfile();
+		String profile = WorkspaceController.getController().getPreferences().getWorkspaceProfileHome();
 
 		if (workspaceLocation == null) {
 			return false;
 		}
 
-		File configFile = new File(workspaceLocation + File.separator + "." + profileName + File.separator + CONFIG_FILE_NAME);
+		File configFile = new File(workspaceLocation + File.separator + profile + File.separator + CONFIG_FILE_NAME);
 		boolean newConfig = false;
 		if (!configFile.exists()) {
 			// CREATE NEW WORKSPACE
-			File profileFolder = new File(workspaceLocation + File.separator + "." + profileName);
+			File profileFolder = new File(workspaceLocation + File.separator + profile);
 			if (!profileFolder.exists() || !profileFolder.isDirectory()) {
 				if (!profileFolder.mkdirs()) {
 					JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(),
@@ -244,7 +244,7 @@ public class WorkspaceConfiguration {
 
 		Pattern pattern = Pattern.compile(PLACEHOLDER_PROFILENAME);
 		Matcher mainMatcher = pattern.matcher(ret);
-		ret = mainMatcher.replaceAll("." + WorkspaceController.getController().getPreferences().getWorkspaceProfile());
+		ret = mainMatcher.replaceAll(WorkspaceController.getController().getPreferences().getWorkspaceProfileHome());
 
 		return ret;
 	}

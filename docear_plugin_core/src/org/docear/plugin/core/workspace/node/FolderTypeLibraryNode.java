@@ -294,7 +294,7 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 	
 	public URI getLibraryPath() {		
 		Matcher mainMatcher = PATTERN.matcher(DEFAULT_LIBRARY_PATH);
-		String ret = mainMatcher.replaceAll("." + WorkspaceController.getController().getPreferences().getWorkspaceProfile());
+		String ret = mainMatcher.replaceAll(WorkspaceController.getController().getPreferences().getWorkspaceProfileHome());
 		return WorkspaceUtils.absoluteURI(URI.create(ret));
 	}
 
