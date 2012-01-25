@@ -95,7 +95,7 @@ public class DocearNodeDropListener extends MNodeDropListener {
 	}
 
 	public static void pasteFileList(final List<File> fileList, final NodeModel targetNode, final boolean isLeft)
-			throws UnsupportedFlavorException, IOException, ClassNotFoundException {	
+			throws UnsupportedFlavorException, IOException, ClassNotFoundException, Exception {	
 		
 		
 		SwingWorker<Void, Void> thread = new SwingWorker<Void, Void>(){
