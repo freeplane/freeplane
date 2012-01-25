@@ -87,9 +87,13 @@ public class PdfAnnotationImporter {
 			annotations.addAll(this.importAnnotations(document));					
 			annotations.addAll(this.importBookmarks(document.getOutline()));
 			
-		} catch(ClassCastException e){			
-			PDOutlineItem outline = (PDOutlineItem)PDOutline.META.createFromCos(document.getCatalog().cosGetOutline());
-			annotations.addAll(this.importBookmarks(outline));			
+		} catch(ClassCastException e){
+			try{
+				PDOutlineItem outline = (PDOutlineItem)PDOutline.META.createFromCos(document.getCatalog().cosGetOutline());
+				annotations.addAll(this.importBookmarks(outline));
+			}catch(ClassCastException ex){
+				LogUtils.warn(ex);
+			}
 		} finally {
 			if(document != null){				
 				document.close();
