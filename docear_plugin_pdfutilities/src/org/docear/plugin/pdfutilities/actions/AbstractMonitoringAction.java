@@ -130,7 +130,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			Map<AnnotationID, List<NodeModel>> nodeIndex = new HashMap<AnnotationID, List<NodeModel>>();
 			Map<AnnotationID, AnnotationModel> importedFiles = new HashMap<AnnotationID, AnnotationModel>();
 			Map<AnnotationID, AnnotationModel> importedOtherFiles = new HashMap<AnnotationID, AnnotationModel>();
-			List<NodeModel> widowedLinkedNode = new ArrayList<NodeModel>();
+			List<NodeModel> orphanedNodes = new ArrayList<NodeModel>();
 			List<AnnotationModel> newAnnotations = new ArrayList<AnnotationModel>();
 			Map<String, List<NodeModel>> equalChildIndex = new HashMap<String, List<NodeModel>>();
 			Map<AnnotationID, Collection<IAnnotation>> conflicts = new HashMap<AnnotationID, Collection<IAnnotation>>();
@@ -151,7 +151,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					
 					if(!searchNewAndConflictedNodes()) continue;
 					
-					if(!searchingWidowedNodes(target)) continue;
+					if(!searchingOrphanedNodes(target)) continue;
 					
 					final boolean isfolded =  target.isFolded();
 					if(newAnnotations.size() > 100){
@@ -166,7 +166,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 						);
 					}	
 					
-					if(!pasteNewNodesAndRemoveWidowedNodes(target)){
+					if(!pasteNewNodesAndRemoveOrphanedNodes(target)){
 						if(newAnnotations.size() > 100){
 							fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
 							fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.9")); //$NON-NLS-1$
@@ -200,7 +200,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 				return conflicts;
 			}
 			
-			private boolean searchingWidowedNodes(NodeModel target) throws InterruptedException, InvocationTargetException {
+			private boolean searchingOrphanedNodes(NodeModel target) throws InterruptedException, InvocationTargetException {
 				fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
 				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.11")); //$NON-NLS-1$
 				int count = 0;
@@ -215,11 +215,11 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 						if(annotation == null) continue;
 						if(annotation.getAnnotationType() == null) continue;						
 						if(annotation.getAnnotationType().equals(AnnotationType.FILE)) continue;
-						if(widowedLinkedNode.contains(node)) continue;						
+						if(orphanedNodes.contains(node)) continue;						
 						try{							
 							File file = WorkspaceUtils.resolveURI(NodeLinks.getValidLink(node), node.getMap());
 							if(file != null && !file.exists()){
-								widowedLinkedNode.add(node);
+								orphanedNodes.add(node);
 								continue;
 							}
 							else if(file != null){								
@@ -227,7 +227,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 								if(file.getPath().startsWith(monitoringDirectory.getPath())){
 									AnnotationModel annoation = new PdfAnnotationImporter().searchAnnotation(Tools.getAbsoluteUri(node), node);
 									if(annoation == null){
-										widowedLinkedNode.add(node);										
+										orphanedNodes.add(node);										
 									}
 								}
 							}
@@ -256,7 +256,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 				importedFiles.clear();
 				newAnnotations.clear();
 				equalChildIndex.clear();
-				widowedLinkedNode.clear();
+				orphanedNodes.clear();
 				importedOtherFiles.clear();
 				otherFilesLinkedInMindMap.clear();
 				return true;
@@ -278,7 +278,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 				return (this.isCancelled() || Thread.currentThread().isInterrupted());
 			}
 			
-			private boolean pasteNewNodesAndRemoveWidowedNodes(NodeModel target) throws InterruptedException, InvocationTargetException {			
+			private boolean pasteNewNodesAndRemoveOrphanedNodes(NodeModel target) throws InterruptedException, InvocationTargetException {			
 				fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
 				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.17"));				 //$NON-NLS-1$
 								
@@ -333,12 +333,12 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 						LogUtils.warn(e);
 					}
 				}
-				if(widowedLinkedNode.size() > 0){
+				if(orphanedNodes.size() > 0){
 					int result = UITools.showConfirmDialog(target, TextUtils.getText("AbstractMonitoringAction.18"), TextUtils.getText("AbstractMonitoringAction.18"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
 					if(result == JOptionPane.OK_OPTION){
 						fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
 						fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.20")); //$NON-NLS-1$
-						for(final NodeModel node : widowedLinkedNode){
+						for(final NodeModel node : orphanedNodes){
 							SwingUtilities.invokeAndWait(
 							        new Runnable() {
 							            public void run(){
