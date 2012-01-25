@@ -775,6 +775,8 @@ public class StyleEditorPanel extends JPanel {
 			 automaticLayoutComboBoxModel.setSelectedItem(AUTOMATIC_LAYOUT_DISABLED);
 			 mAutomaticLayoutComboBox.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					if(internalChange)
+						return;
 					final ModeController modeController = Controller.getCurrentModeController();
 					AutomaticLayoutController al = modeController.getExtension(AutomaticLayoutController.class);
 					NamedObject selectedItem = (NamedObject)mAutomaticLayoutComboBox.getSelectedItem();
