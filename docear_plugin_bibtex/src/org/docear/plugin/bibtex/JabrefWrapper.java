@@ -2,9 +2,6 @@ package org.docear.plugin.bibtex;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.LayoutManager;
-
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -33,6 +30,7 @@ import net.sf.jabref.imports.ParserResult;
 import net.sf.jabref.imports.PostOpenAction;
 import net.sf.jabref.label.HandleDuplicateWarnings;
 
+import org.docear.plugin.bibtex.actions.FilePathValidatorAction;
 import org.docear.plugin.bibtex.listeners.MapViewListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
@@ -49,6 +47,9 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 	private static ArrayList<PostOpenAction> postOpenActions = new ArrayList<PostOpenAction>();
 
 	static {
+		//bibtex files exported by mendeley do not contain leading "/" for absolute paths so we do not know if
+		//the file contaions relative paths or absolute paths
+		postOpenActions.add(new FilePathValidatorAction());
 		// Add the action for checking for new custom entry types loaded from
 		// the bib file:
 		postOpenActions.add(new CheckForNewEntryTypesAction());
@@ -302,7 +303,7 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 
 		// if no escaped and no unescaped char sequence was found in the whole
 		// file we assume it to be ok for usage in jabref
-		if (allCount / 2 > escapeCount) {
+		if (allCount / 2 >= escapeCount) {
 			return true;
 		}
 		return false;

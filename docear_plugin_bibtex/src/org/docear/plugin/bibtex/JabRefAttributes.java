@@ -177,6 +177,9 @@ public class JabRefAttributes {
 	
 	public BibtexEntry findBibtexEntryForPDF(URI uri, NodeModel node) {
 		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
+		if (database == null) {
+			return null;
+		}
 		// file name linked in a node
 		File nodeFile = WorkspaceUtils.resolveURI(uri, node.getMap());
 		if (nodeFile == null) {
@@ -267,7 +270,7 @@ public class JabRefAttributes {
 	}
 
 	
-	private static ArrayList<String> extractPaths(String path) {
+	public static ArrayList<String> extractPaths(String path) {
 //		String[] array = path.split("(^:|(?<=[^\\\\]):)"); // splits the string at non escaped double points
 //		  if(array.length >= 3){
 //		   return array[1];
