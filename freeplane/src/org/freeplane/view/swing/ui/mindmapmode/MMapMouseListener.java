@@ -69,12 +69,12 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 				distSqToTarget = targetLinkPoint.distanceSq(originX, originY);
 				distSqToSource = sourceLinkPoint.distanceSq(originX, originY);
 			}
-			if ((targetView == null || sourceView != null) && distSqToSource < distSqToTarget * 2.25) {
+			if ((targetView == null || sourceView != null) && distSqToSource <= distSqToTarget * 2.25) {
 				final Point changedInclination = draggedLink.getStartInclination();
 				draggedLink.changeInclination(deltaX, deltaY, draggedLink.getSource(), changedInclination);
 				draggedLink.setStartInclination(changedInclination);
 			}
-			if ((sourceView == null || targetView != null) && distSqToTarget < distSqToSource * 2.25) {
+			if ((sourceView == null || targetView != null) && distSqToTarget <= distSqToSource * 2.25) {
 				final Point changedInclination = draggedLink.getEndInclination();
 				draggedLink.changeInclination(deltaX, deltaY, target, changedInclination);
 				draggedLink.setEndInclination(changedInclination);
