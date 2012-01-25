@@ -108,29 +108,11 @@ public class DocearNodeDropListener extends MNodeDropListener {
 					if(Thread.currentThread().isInterrupted()) return null;
 					firePropertyChange(SwingWorkerDialog.NEW_FILE, null, file.getName());
 		        	boolean importAnnotations = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.AUTO_IMPORT_ANNOTATIONS_KEY);
-		            if(new PdfFileFilter().accept(file) && importAnnotations){
+		            if(new PdfFileFilter().accept(file) && importAnnotations){	
+		            	List<AnnotationModel> annotations = new ArrayList<AnnotationModel>();
 		            	try{
 		            		PdfAnnotationImporter importer = new PdfAnnotationImporter();
-		            		final List<AnnotationModel> annotations = importer.importAnnotations(file.toURI());	            		
-		            		SwingUtilities.invokeAndWait(
-							        new Runnable() {
-							            public void run(){
-							            	try {
-								            	URI uri = file.toURI();
-								            	NodeModel newNode = NodeUtils.insertChildNodesFromPdf(uri, annotations, isLeft, targetNode);	            
-								            	for(AnnotationModel annotation : getInsertedNodes(annotations)){
-													firePropertyChange(SwingWorkerDialog.DETAILS_LOG_TEXT, null, TextUtils.getText("DocearNodeDropListener.4") + annotation.getTitle() +TextUtils.getText("DocearNodeDropListener.5"));												 //$NON-NLS-1$ //$NON-NLS-2$
-												}	
-								            	DocearEvent event = new DocearEvent(newNode, DocearEventType.MINDMAP_ADD_PDF_TO_NODE, true);
-								            	DocearController.getController().dispatchDocearEvent(event);
-							            	}
-							            	catch (Exception e) {
-							            		LogUtils.severe(e);
-							            	}
-							            }
-							        }
-							   );						
-		            		    	
+		            		annotations = importer.importAnnotations(file.toURI());	            		    	
 		            	} catch(COSRuntimeException e) {			                		
 		            		LogUtils.warn("Exception during import on file: " + file.getName(), e); //$NON-NLS-1$
 		            	} catch(IOException e) {
@@ -138,6 +120,31 @@ public class DocearNodeDropListener extends MNodeDropListener {
 		            	} catch(COSLoadException e) {
 		            		LogUtils.warn("Exception during import on file: " + file.getName(), e); //$NON-NLS-1$
 		            	}
+		            	final List<AnnotationModel> finalAnnotations;
+		            	if(annotations != null){
+		            		finalAnnotations = annotations;	 
+		            	}
+		            	else{
+		            		finalAnnotations = new ArrayList<AnnotationModel>();
+		            	}
+		            	SwingUtilities.invokeAndWait(
+						        new Runnable() {
+						            public void run(){
+						            	try {
+							            	URI uri = file.toURI();
+							            	NodeModel newNode = NodeUtils.insertChildNodesFromPdf(uri, finalAnnotations, isLeft, targetNode);	            
+							            	for(AnnotationModel annotation : getInsertedNodes(finalAnnotations)){
+												firePropertyChange(SwingWorkerDialog.DETAILS_LOG_TEXT, null, TextUtils.getText("DocearNodeDropListener.4") + annotation.getTitle() +TextUtils.getText("DocearNodeDropListener.5"));												 //$NON-NLS-1$ //$NON-NLS-2$
+											}	
+							            	DocearEvent event = new DocearEvent(newNode, DocearEventType.MINDMAP_ADD_PDF_TO_NODE, true);
+							            	DocearController.getController().dispatchDocearEvent(event);
+						            	}
+						            	catch (Exception e) {
+						            		LogUtils.severe(e);
+						            	}
+						            }
+						        }
+						   );	
 		            }
 		            else {		            	
 		    			ModeController modeController = Controller.getCurrentController().getModeController();
