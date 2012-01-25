@@ -190,8 +190,11 @@ public class WorkspaceChooserDialogPanel extends JPanel {
 		private static final long serialVersionUID = 1L;
 		private final FileFilter profileFilter = new FileFilter() {
 			public boolean accept(File pathname) {
-				if (pathname.isDirectory() && !pathname.getName().equals("." + WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT)
-						&& pathname.getName().startsWith(".") && Arrays.asList(pathname.list()).contains("workspace.xml")) {
+				if (pathname.isDirectory() 
+						&& Arrays.asList(pathname.list()).contains("workspace.xml")
+						&& !pathname.getName().equals(WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT)
+						//&& pathname.getParentFile().getPath().endsWith(WorkspaceController.getController().getPreferences().getWorkspaceProfilesRoot()) 
+						) {
 					return true;
 				}
 				return false;
@@ -205,10 +208,10 @@ public class WorkspaceChooserDialogPanel extends JPanel {
 
 		private void initProfileList(File workspaceBase) {
 			if (workspaceBase.isDirectory()) {
-				for (File folder : workspaceBase.listFiles(profileFilter)) {
-					itemList.add(new ProfileListObject(folder.getName().substring(1), folder.getName().substring(1)));
-					if (WorkspaceController.getController().getPreferences().getWorkspaceProfile()
-							.equals(folder.getName().substring(1))) {
+				File profileDir = new File(workspaceBase, WorkspaceController.getController().getPreferences().getWorkspaceProfilesRoot());
+				for (File folder : profileDir.listFiles(profileFilter)) {
+					itemList.add(new ProfileListObject(folder.getName(), folder.getName()));
+					if (WorkspaceController.getController().getPreferences().getWorkspaceProfile().endsWith(folder.getName())) {
 						selectedObject = itemList.elementAt(itemList.size() - 1);
 					}
 				}

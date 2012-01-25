@@ -24,6 +24,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
@@ -61,20 +62,32 @@ public class WorkspaceUtils {
 		}
 	
 		File f = new File(location);
-		WorkspaceController.getController().getPreferences().setNewWorkspaceLocation(WorkspaceUtils.getURI(f));
-		WorkspaceController.getController().getPreferences().setWorkspaceProfile(profileName);
+		URI newProfileBase = WorkspaceUtils.getURI(new File(f, WorkspaceController.getController().getPreferences().getWorkspaceProfilesRoot()+profileName));
+		URI currentProfileBase = getProfileBaseURI();
+		if(!currentProfileBase.equals(newProfileBase)) {
+			closeAllMindMaps();	
+			WorkspaceController.getController().getPreferences().setNewWorkspaceLocation(WorkspaceUtils.getURI(f));
+			WorkspaceController.getController().getPreferences().setWorkspaceProfile(profileName);
+			WorkspaceController.getController().reloadWorkspace();
+		}
+	}
+	
+	private static void closeAllMindMaps() {
+		while(Controller.getCurrentController().getMap() != null) {
+			Controller.getCurrentController().close(false);
+		}	
 	}
 	
 	public static void saveCurrentConfiguration() {
-		String profileName = ResourceController.getResourceController().getProperty(WorkspacePreferences.WORKSPACE_PROFILE, null);
+		String profile = WorkspaceController.getController().getPreferences().getWorkspaceProfileHome();
 
 		URI uri;
 		File temp, config;
 		try {
-			uri = new URI(WorkspaceController.WORKSPACE_RESOURCE_URL_PROTOCOL + ":/." + profileName + "/tmp_"
+			uri = new URI(WorkspaceController.WORKSPACE_RESOURCE_URL_PROTOCOL + ":/" + profile + "/tmp_"
 					+ WorkspaceConfiguration.CONFIG_FILE_NAME);
 			temp = WorkspaceUtils.resolveURI(uri);
-			uri = new URI(WorkspaceController.WORKSPACE_RESOURCE_URL_PROTOCOL + ":/." + profileName + "/"
+			uri = new URI(WorkspaceController.WORKSPACE_RESOURCE_URL_PROTOCOL + ":/" + profile + "/"
 					+ WorkspaceConfiguration.CONFIG_FILE_NAME);
 			config = WorkspaceUtils.resolveURI(uri);
 		}
@@ -92,12 +105,11 @@ public class WorkspaceUtils {
 			to.transferFrom(from, 0, from.size());
 			to.close();
 			from.close();
-
-			temp.delete();
 		}
 		catch (IOException e1) {
-			e1.printStackTrace();
+			LogUtils.severe(e1);
 		}
+		temp.delete();
 	}
 
 	public static PhysicalFolderNode createPhysicalFolderNode(final File path, final AWorkspaceTreeNode parent) {
@@ -163,9 +175,9 @@ public class WorkspaceUtils {
 	public static URI getProfileBaseURI() {
 		URI base = getWorkspaceBaseFile().toURI();
 		try {
-			return new URI(base.getScheme(), base.getUserInfo(), base.getHost(), base.getPort(), base.getPath() + "/."
-					+ WorkspaceController.getController().getPreferences().getWorkspaceProfile(), base.getQuery(),
-					base.getFragment());
+			return (new URI(base.getScheme(), base.getUserInfo(), base.getHost(), base.getPort(), base.getPath() + "/" 
+					+ WorkspaceController.getController().getPreferences().getWorkspaceProfileHome()+"/", base.getQuery(),
+					base.getFragment())).normalize();
 		}
 		catch (URISyntaxException e) {
 		}
@@ -279,7 +291,7 @@ public class WorkspaceUtils {
 	}
 
 	public static URI getURI(final File f) {
-		return f.toURI();
+		return f.toURI().normalize();
 	}
 
 	/**

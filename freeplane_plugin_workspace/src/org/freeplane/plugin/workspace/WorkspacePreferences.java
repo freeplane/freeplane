@@ -52,6 +52,14 @@ public class WorkspacePreferences {
 		return Controller.getCurrentController().getResourceController().getProperty(WORKSPACE_PROFILE, WORKSPACE_PROFILE_DEFAULT);
 	}
 	
+	public String getWorkspaceProfileHome() {
+		return getWorkspaceProfilesRoot() + getWorkspaceProfile();
+	}
+	
+	public String getWorkspaceProfilesRoot() {
+		return "_data/profile/";
+	}
+	
 	public void setWorkspaceProfile(String profile) {
 		Controller.getCurrentController().getResourceController().setProperty(WORKSPACE_PROFILE, (profile == null || profile.trim().length() <= 0 ) ? WORKSPACE_PROFILE_DEFAULT : profile);
 	}
