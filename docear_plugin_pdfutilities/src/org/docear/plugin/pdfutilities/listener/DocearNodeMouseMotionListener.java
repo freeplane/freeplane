@@ -43,9 +43,11 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 
 	public void mouseClicked(MouseEvent e) {
 		boolean openOnPage = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.OPEN_PDF_VIEWER_ON_PAGE_KEY);
+		boolean openOnPageWine = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.OPEN_PDF_VIEWER_ON_PAGE_KEY_WINE);
 		String readerPath = ResourceController.getResourceController().getProperty(PdfUtilitiesController.OPEN_ON_PAGE_READER_PATH_KEY);
+		String readerPathWine = ResourceController.getResourceController().getProperty(PdfUtilitiesController.OPEN_ON_PAGE_READER_PATH_KEY_WINE);
 		
-		if(!openOnPage || !isValidReaderPath(readerPath)){
+		if((!openOnPage || !isValidReaderPath(readerPath)) && (!openOnPageWine || readerPathWine==null)) {
 			this.mouseListener.mouseClicked(e);
 			return;
 		}
@@ -58,14 +60,14 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 			
 			if (!component.isInFollowLinkRegion(e.getX()) ||
 				!NodeUtils.isPdfLinkedNode(selectedNode) ||
-				!osName.substring(0, 3).equals("Win")) { //$NON-NLS-1$
+				(!osName.substring(0, 3).equals("Win") && !openOnPageWine)) { //$NON-NLS-1$
 				this.mouseListener.mouseClicked(e);
 				return;
 			}
 			
 			URI uri = Tools.getAbsoluteUri(selectedNode);				
 			
-			String command = null;
+			String[] command = null;
 			
 			IAnnotation annotation = null;
 			try{
@@ -80,7 +82,12 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 						annotation.getAnnotationType() == AnnotationType.COMMENT ||
 						annotation.getAnnotationType() == AnnotationType.HIGHLIGHTED_TEXT){
 					if(annotation.getPage() != null) {
-						command = getExecCommand(readerPath, uri, annotation);						
+						if (openOnPage) {
+							command = getExecCommand(readerPath, uri, annotation);
+						}
+						else if (openOnPageWine) {
+							command = getExecCommandWine(readerPathWine, uri, annotation);
+						}
 					}
 					if(annotation.getPage() == null){
 						//TODO: DOCEAR Error Message for User ??
@@ -91,7 +98,12 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 				
 				if(annotation.getAnnotationType() == AnnotationType.BOOKMARK_WITHOUT_DESTINATION ||
 						annotation.getAnnotationType() == AnnotationType.BOOKMARK_WITH_URI){
-					command = getExecCommand(readerPath, uri, 1);					
+					if (openOnPage) {
+						command = getExecCommand(readerPath, uri, 1);
+					}
+					else if (openOnPageWine) {
+						command = getExecCommandWine(readerPath, uri, 1);
+					}
 				}
 				
 				
@@ -129,37 +141,78 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 		}
 	}
 
-	private String getExecCommand(String readerPath, URI uriToFile, int page) {
+	private String[] getExecCommand(String readerPath, URI uriToFile, int page) {
 		PdfReaderFileFilter readerFilter = new PdfReaderFileFilter();
 		File file = Tools.getFilefromUri(Tools.getAbsoluteUri(uriToFile, Controller.getCurrentController().getMap()));
+		String[] command = new String[4];
 		if(readerFilter.isAdobe(new File(readerPath)) && file != null){
-			return readerPath + " /A page=" + page + " " + file.getAbsolutePath(); //$NON-NLS-1$ //$NON-NLS-2$
+			command[0] = readerPath;
+			command[1] = "/A";
+			command[2] = "page=" + page;
+			command[3] = file.getAbsolutePath();
+			return  command;  //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if(readerFilter.isFoxit(new File(readerPath)) && file != null){
-			return readerPath + " \"" + file.getAbsolutePath() + "\" /A page=" + page; //$NON-NLS-1$ //$NON-NLS-2$
+			command[0] = readerPath;
+			command[1] = file.getAbsolutePath();
+			command[2] = "/A";
+			command[3] = "page=" + page;
+			return command; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if(readerFilter.isPdfXChange(new File(readerPath)) && file != null){
-			return readerPath + " /A \"page=" + page+"\" \"" + file.getAbsolutePath() + "\""; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			command[0] = readerPath;
+			command[1] = "/A";
+			command[2] = "page=" + page;
+			command[3] = file.getAbsolutePath();
+			return command; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		return null;
 	}
 	
-	private String getExecCommand(String readerPath, URI uriToFile, IAnnotation annotation) {
+	private String[] getExecCommand(String readerPath, URI uriToFile, IAnnotation annotation) {
 		PdfReaderFileFilter readerFilter = new PdfReaderFileFilter();
 		File file = Tools.getFilefromUri(Tools.getAbsoluteUri(uriToFile, Controller.getCurrentController().getMap()));
+		String[] command = new String[4];
 		if(readerFilter.isAdobe(new File(readerPath)) && file != null){
-			return readerPath + " /A page=" + annotation.getPage() + " " + file.getAbsolutePath(); //$NON-NLS-1$ //$NON-NLS-2$
+			command[0] = readerPath;
+			command[1] = "/A";
+			command[2] = "page=" + annotation.getPage();
+			command[3] = file.getAbsolutePath();
+			return  command;  //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if(readerFilter.isFoxit(new File(readerPath)) && file != null){
-			return readerPath + " \"" + file.getAbsolutePath() + "\" /A page=" + annotation.getPage(); //$NON-NLS-1$ //$NON-NLS-2$
+			command[0] = readerPath;
+			command[1] = file.getAbsolutePath();
+			command[2] = "/A";
+			command[3] = "page=" + annotation.getPage();
+			return command; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if(readerFilter.isPdfXChange(new File(readerPath)) && file != null){
-			return readerPath + " /A \"" //$NON-NLS-1$
-					+"page=" + annotation.getPage() //$NON-NLS-1$
-					+"&nameddest="+ annotation.getTitle() //$NON-NLS-1$
-					+"\" \"" + file.getAbsolutePath() + "\""; //$NON-NLS-1$ //$NON-NLS-2$
+			command[0] = readerPath;
+			command[1] = "/A";
+			command[2] = "page=" + annotation.getPage() + "&nameddest=" + annotation.getTitle();
+			command[3] = file.getAbsolutePath();
+			return command;
 		}
 		return null;
+	}
+	
+	private String[] getExecCommandWine(String readerPathWine, URI uriToFile, IAnnotation annotation) {
+		return getExecCommandWine(readerPathWine, uriToFile, annotation.getPage());
+	}
+	
+	private String[] getExecCommandWine(String readerPathWine, URI uriToFile, int page) {
+		String wineFile = Tools.getFilefromUri(uriToFile).getAbsolutePath();		
+		wineFile = "Z:"+wineFile+"";
+		
+		String[] command = new String[5];
+		command[0] = "/usr/bin/wine";
+		command[1] = readerPathWine;
+		command[2] = wineFile;
+		command[3] = "/A";
+		command[4] = "page=" + page;		
+		
+		return  command;		
 	}
 
 	private boolean isValidReaderPath(String readerPath) {		
