@@ -246,6 +246,7 @@ public class FormatController implements IExtension {
 
 	public ArrayList<PatternFormat> getAllFormats() {
 		final ArrayList<PatternFormat> formats = new ArrayList<PatternFormat>();
+		formats.add(PatternFormat.getStandardPatternFormat());
 		formats.add(PatternFormat.getIdentityPatternFormat());
 		formats.addAll(numberFormats);
 		formats.addAll(dateFormats);
