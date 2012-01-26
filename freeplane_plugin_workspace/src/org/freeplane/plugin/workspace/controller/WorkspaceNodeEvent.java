@@ -24,6 +24,8 @@ public class WorkspaceNodeEvent {
 	final private int y;
 	final private Object baggage;
 	
+	private boolean consumed = false;
+	
 	public WorkspaceNodeEvent(AWorkspaceTreeNode source, int eventType, int x, int y) {		
 		this(source, eventType, x, y, null);
 	}
@@ -60,6 +62,14 @@ public class WorkspaceNodeEvent {
 		return baggage;
 	}
 	
+	public void consume() {
+		consumed = true;
+	}
+	
+	public boolean isConsumed() {
+		return consumed;
+	}
+	
 	private String getTypeTranslated() {
 		String type = "";
 		if((this.getType()&MOUSE_LEFT) > 0)
@@ -78,4 +88,6 @@ public class WorkspaceNodeEvent {
 	public String toString() {
 		return "WorkspaceNodeEvent[type="+getTypeTranslated()+";x="+getX()+";y="+getY()+";source={"+getSource()+((getBaggage()!=null)?"};baggage={"+getBaggage():"")+"}]";
 	}
+	
+	
 }

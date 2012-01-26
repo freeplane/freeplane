@@ -7,6 +7,7 @@ package org.freeplane.plugin.workspace.controller;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.List;
 
 import javax.swing.JTree;
 import javax.swing.tree.TreePath;
@@ -40,26 +41,37 @@ public class DefaultWorkspaceMouseHandler implements MouseListener, MouseMotionL
 		TreePath path = ((JTree) e.getSource()).getPathForLocation(e.getX(), e.getY());
 		
 		WorkspaceController.getController().getWorkspaceViewTree().addSelectionPath(path);
-		if (path != null) {
-			
+		if (path != null) {			
 			AWorkspaceTreeNode node = (AWorkspaceTreeNode) path.getLastPathComponent();
-
-			if (node instanceof IWorkspaceNodeEventListener) {
-				int eventType = 0;
-				if (e.getButton() == MouseEvent.BUTTON1) {
-					eventType += WorkspaceNodeEvent.MOUSE_LEFT;
+			// encode buttons
+			int eventType = 0;
+			if (e.getButton() == MouseEvent.BUTTON1) {
+				eventType += WorkspaceNodeEvent.MOUSE_LEFT;
+			}
+			if (e.getButton() == MouseEvent.BUTTON3) {
+				eventType += WorkspaceNodeEvent.MOUSE_RIGHT;
+			}
+			if (e.getClickCount() % 2 == 0) {
+				eventType += WorkspaceNodeEvent.MOUSE_DBLCLICK;
+			}
+			else {
+				eventType += WorkspaceNodeEvent.MOUSE_CLICK;
+			}
+			
+			WorkspaceNodeEvent event = new WorkspaceNodeEvent(node, eventType, e.getX(), e.getY(), e.getComponent());
+			
+			List<IWorkspaceNodeEventListener> nodeEventListeners = WorkspaceController.getIOController().getNodeEventListeners(node, eventType);
+			if(nodeEventListeners != null)  {
+				for(IWorkspaceNodeEventListener listener : nodeEventListeners) {
+					if(event.isConsumed()) {
+						break;
+					}
+					listener.handleEvent(event);
 				}
-				if (e.getButton() == MouseEvent.BUTTON3) {
-					eventType += WorkspaceNodeEvent.MOUSE_RIGHT;
-				}
-				if (e.getClickCount() % 2 == 0) {
-					eventType += WorkspaceNodeEvent.MOUSE_DBLCLICK;
-				}
-				else {
-					eventType += WorkspaceNodeEvent.MOUSE_CLICK;
-				}
-				((IWorkspaceNodeEventListener) node).handleEvent(new WorkspaceNodeEvent(node,
-						eventType, e.getX(), e.getY(), e.getComponent()));
+			}
+			
+			if (!event.isConsumed() && node instanceof IWorkspaceNodeEventListener) {				
+				((IWorkspaceNodeEventListener) node).handleEvent(event);
 			}
 
 		}
