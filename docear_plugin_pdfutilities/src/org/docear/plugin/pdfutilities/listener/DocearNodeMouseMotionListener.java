@@ -16,6 +16,7 @@ import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Compat;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -203,7 +204,7 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 	
 	private String[] getExecCommandWine(String readerPathWine, URI uriToFile, int page) {
 		String wineFile = Tools.getFilefromUri(uriToFile).getAbsolutePath();		
-		wineFile = "Z:"+wineFile+"";
+		wineFile = "Z:"+wineFile.replace("/", "\\")+"";
 		
 		String[] command = new String[6];
 		command[0] = "bash";
