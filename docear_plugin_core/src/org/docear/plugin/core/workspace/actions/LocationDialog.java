@@ -203,7 +203,7 @@ public class LocationDialog extends JPanel {
 //			}
 //		});
 		
-		BIBTEX_PATH_INIT = "workspace:/."+workspaceController.getPreferences().getWorkspaceProfile()+"/docear.bib";
+		BIBTEX_PATH_INIT = "workspace:/"+workspaceController.getPreferences().getWorkspaceProfileHome()+"/docear.bib";
 		PROJECTS_PATH_INIT = "workspace:/projects";
 		
 		this.setLayout(new BorderLayout());

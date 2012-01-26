@@ -47,8 +47,9 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 	private static ArrayList<PostOpenAction> postOpenActions = new ArrayList<PostOpenAction>();
 
 	static {
-		//bibtex files exported by mendeley do not contain leading "/" for absolute paths so we do not know if
-		//the file contaions relative paths or absolute paths
+		// bibtex files exported by mendeley do not contain leading "/" for
+		// absolute paths so we do not know if
+		// the file contaions relative paths or absolute paths
 		postOpenActions.add(new FilePathValidatorAction());
 		// Add the action for checking for new custom entry types loaded from
 		// the bib file:
@@ -150,17 +151,17 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 
 	public void openIt(File file, boolean raisePanel) {
 		if ((file != null) && (file.exists())) {
-			if (!isCompatibleToJabref(file)) {				
-				JHyperlink hyperlink = new JHyperlink("http://docear.org", "http://docear.org");
+			if (!isCompatibleToJabref(file)) {
+				JHyperlink hyperlink = new JHyperlink("http://www.docear.org/support/user-manual/#docear_and_mendeley ",
+						"http://www.docear.org/support/user-manual/#docear_and_mendeley");
 				JPanel panel = new JPanel(new BorderLayout());
 				panel.add(new JLabel(TextUtils.getText("jabref_mendeley_incompatible_1")), BorderLayout.NORTH);
 				panel.add(hyperlink, BorderLayout.CENTER);
 				panel.add(new JLabel(TextUtils.getText("jabref_mendeley_incompatible_2")), BorderLayout.SOUTH);
-				
+
 				int option = JOptionPane.showConfirmDialog(UITools.getFrame(), panel,
-						
-						TextUtils.getText("jabref_mendeley_incompatible_title"), JOptionPane.YES_NO_OPTION,
-						JOptionPane.WARNING_MESSAGE);
+
+				TextUtils.getText("jabref_mendeley_incompatible_title"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 				if (option == JOptionPane.YES_OPTION) {
 					return;
 				}

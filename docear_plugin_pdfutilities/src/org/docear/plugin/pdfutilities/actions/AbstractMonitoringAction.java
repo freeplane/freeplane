@@ -288,7 +288,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 						fireProgressUpdate(100 * newAnnotations.indexOf(annotation) / newAnnotations.size());
 						if(annotation.isInserted()) continue;
 						// PDF's with no new annotations should not be imported, see Ticket #283
-						if(annotation.getAnnotationType().equals(AnnotationType.PDF_FILE) && !annotation.hasNewChildren()) continue;
+						if(annotation.getAnnotationType().equals(AnnotationType.PDF_FILE) && annotation.getChildren().size() > 0 && !annotation.hasNewChildren()) continue;
 						Stack<NodeModel> treePathStack = getTreePathStack(annotation, target);
 						if(canceled()) return false;
 						NodeModel tempTarget = target;

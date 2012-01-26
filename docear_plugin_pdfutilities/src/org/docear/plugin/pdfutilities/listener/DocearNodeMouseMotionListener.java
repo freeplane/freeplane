@@ -205,12 +205,13 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 		String wineFile = Tools.getFilefromUri(uriToFile).getAbsolutePath();		
 		wineFile = "Z:"+wineFile+"";
 		
-		String[] command = new String[5];
-		command[0] = "/usr/bin/wine";
-		command[1] = readerPathWine;
-		command[2] = wineFile;
-		command[3] = "/A";
-		command[4] = "page=" + page;		
+		String[] command = new String[6];
+		command[0] = "bash";
+		command[1] = "wine";
+		command[2] = readerPathWine;
+		command[3] = wineFile;
+		command[4] = "/A";
+		command[5] = "page=" + page;		
 		
 		return  command;		
 	}

@@ -89,11 +89,16 @@ public class PdfAnnotationImporter {
 			
 		} catch(ClassCastException e){
 			try{
+				LogUtils.warn(e);
 				PDOutlineItem outline = (PDOutlineItem)PDOutline.META.createFromCos(document.getCatalog().cosGetOutline());
 				annotations.addAll(this.importBookmarks(outline));
-			}catch(ClassCastException ex){
+			} catch(Exception ex){
 				LogUtils.warn(ex);
+				return annotations;
 			}
+		} catch(Exception e){
+			LogUtils.warn(e);
+			return annotations;
 		} finally {
 			if(document != null){				
 				document.close();
@@ -105,7 +110,16 @@ public class PdfAnnotationImporter {
 	}
 	
 	public AnnotationModel importPdf(URI uri) throws IOException, COSLoadException, COSRuntimeException{
-		Collection<AnnotationModel> importedAnnotations = importAnnotations(uri);
+		Collection<AnnotationModel> importedAnnotations = new ArrayList<AnnotationModel>();
+		try{
+			importedAnnotations = importAnnotations(uri);
+		} catch(IOException e){
+			LogUtils.info("IOexception during update file: "+ uri); //$NON-NLS-1$
+		} catch(COSRuntimeException e){
+			LogUtils.info("COSRuntimeException during update file: "+ uri); //$NON-NLS-1$
+		} catch(COSLoadException e){
+			LogUtils.info("COSLoadException during update file: "+ uri); //$NON-NLS-1$
+		}
 		AnnotationModel root = new AnnotationModel(new AnnotationID(Tools.getAbsoluteUri(uri), 0), AnnotationType.PDF_FILE);
 		root.setTitle(Tools.getFilefromUri(Tools.getAbsoluteUri(uri)).getName());
 		root.getChildren().addAll(importedAnnotations);	
@@ -126,9 +140,15 @@ public class PdfAnnotationImporter {
 			annotations.addAll(this.importAnnotations(document));					
 			annotations.addAll(this.importBookmarks(document.getOutline()));
 			
-		} catch(ClassCastException e){			
-			PDOutlineItem outline = (PDOutlineItem)PDOutline.META.createFromCos(document.getCatalog().cosGetOutline());
-			annotations.addAll(this.importBookmarks(outline));			
+		} catch(ClassCastException e){		
+			try{
+				PDOutlineItem outline = (PDOutlineItem)PDOutline.META.createFromCos(document.getCatalog().cosGetOutline());
+				annotations.addAll(this.importBookmarks(outline));
+			} catch(Exception ex){
+				LogUtils.warn(ex);
+			}
+		} catch(Exception e){
+			LogUtils.warn(e);
 		} finally {
 			this.setImportAll(true);
 			this.setPDObject(false);
@@ -376,11 +396,16 @@ public class PdfAnnotationImporter {
     				for (Iterator<?> i = destsTree.iterator(); i.hasNext();) {
     					CDSNameTreeEntry entry = (CDSNameTreeEntry) i.next();        					
     					if(entry.getName().stringValue().equals(destinationName)){
-    						cosDictionary = (COSDictionary)entry.getValue();
-    						cosObject = cosDictionary.get(COSName.create("D")); //$NON-NLS-1$
-        					if(cosObject instanceof COSArray){
-        						return (COSArray)cosObject;
-        					}       					
+    						if(entry.getValue() instanceof COSDictionary){
+	    						cosDictionary = (COSDictionary)entry.getValue();
+	    						cosObject = cosDictionary.get(COSName.create("D")); //$NON-NLS-1$
+	        					if(cosObject instanceof COSArray){
+	        						return (COSArray)cosObject;
+	        					}
+    						}
+    						else if(entry.getValue() instanceof COSArray){
+    							return (COSArray)entry.getValue();
+    						}
         				}
     				}
     			}
