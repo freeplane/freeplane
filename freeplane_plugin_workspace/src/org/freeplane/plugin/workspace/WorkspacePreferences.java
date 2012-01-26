@@ -57,7 +57,7 @@ public class WorkspacePreferences {
 	}
 	
 	public String getWorkspaceProfilesRoot() {
-		return "_data/profile/";
+		return "_data/profiles/";
 	}
 	
 	public void setWorkspaceProfile(String profile) {
