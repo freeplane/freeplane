@@ -336,6 +336,14 @@ public class FormatController implements IExtension {
 		}
 	}
 
+    public static Object formatUsingDefault(final Object object) {
+        if (object instanceof Date)
+            return format(object, FormatController.getController().getDefaultDateTimeFormat().toPattern());
+        if (object instanceof Number)
+            return format(object, FormatController.getController().getDefaultNumberFormat().toPattern());
+        return object;
+    }
+
 	public Format getDefaultFormat(String type) {
 		if (type.equals(IFormattedObject.TYPE_DATE))
 			return getDefaultDateFormat();
