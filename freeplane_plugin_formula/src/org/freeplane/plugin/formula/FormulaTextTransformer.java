@@ -33,7 +33,7 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 		final String text = obj.toString();
 		final String plainText = HtmlUtils.htmlToPlain(text);
 		if (!FormulaUtils.containsFormula(plainText)) {
-			return text;
+			return obj;
 		}
 		// starting a new ScriptContext in evalIfScript
 		final Object result = FormulaUtils.evalIfScript(node, null, plainText);
@@ -41,7 +41,7 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 			throw new ExecuteScriptException("got null result from evaluating " + node.getID() + ", text='"
 			        + plainText.substring(1) + "'");
 		}
-		return result.toString();
+		return result;
 	}
 
 	public EditNodeBase createEditor(final NodeModel node, final EditNodeBase.IEditControl editControl,
