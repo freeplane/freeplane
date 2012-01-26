@@ -1,11 +1,13 @@
 package org.docear.plugin.pdfutilities.listener;
 
+import java.awt.Container;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
+import org.docear.plugin.core.util.CoreUtils;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.features.IAnnotation;
@@ -21,15 +23,16 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.view.swing.map.MainView;
+import org.freeplane.view.swing.map.NodeView;
 
 import de.intarsys.pdf.parser.COSLoadException;
 
 public class DocearNodeMouseMotionListener implements IMouseListener {
-	
+
 	private IMouseListener mouseListener;
 	private boolean wasFocused;
-	
-	public DocearNodeMouseMotionListener(IMouseListener mouseListener){
+
+	public DocearNodeMouseMotionListener(IMouseListener mouseListener) {
 		this.mouseListener = mouseListener;
 	}
 
@@ -41,63 +44,118 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 		this.mouseListener.mouseMoved(e);
 	}
 
-	public void mouseClicked(MouseEvent e) {
-		boolean openOnPage = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.OPEN_PDF_VIEWER_ON_PAGE_KEY);
-		boolean openOnPageWine = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.OPEN_PDF_VIEWER_ON_PAGE_KEY_WINE);
-		String readerPath = ResourceController.getResourceController().getProperty(PdfUtilitiesController.OPEN_ON_PAGE_READER_PATH_KEY);
-		String readerPathWine = ResourceController.getResourceController().getProperty(PdfUtilitiesController.OPEN_ON_PAGE_READER_PATH_KEY_WINE);
-		
-		if((!openOnPage || !isValidReaderPath(readerPath)) && (!openOnPageWine || readerPathWine==null)) {
+	public void openPageWithFoxitInWine(MouseEvent e, final String readerPathWine, NodeModel node) {		
+		if (readerPathWine == null || readerPathWine.length() == 0) {
 			this.mouseListener.mouseClicked(e);
 			return;
 		}
 		
-		if (wasFocused() && (e.getModifiers() & ~ (InputEvent.ALT_DOWN_MASK | InputEvent.ALT_MASK)) == InputEvent.BUTTON1_MASK) {
+		URI uri = Tools.getAbsoluteUri(node);
+		if (!CoreUtils.resolveURI(uri).getName().toLowerCase().endsWith("pdf")) {
+			this.mouseListener.mouseClicked(e);
+			return;
+		}
+		
+
+		IAnnotation annotation = null;
+		try {
+			annotation = new PdfAnnotationImporter().searchAnnotation(uri, node);
+
+			if (annotation == null || annotation.getPage() == null) {
+				Controller.exec(getExecCommandWine(readerPathWine, uri, 1));
+				return;
+			}
+			else {
+				Controller.exec(getExecCommandWine(readerPathWine, uri, annotation));
+				return;
+			}
+
+		}
+		catch (IOException x) {
+			this.mouseListener.mouseClicked(e);
+			return;
+		}
+		catch (COSLoadException x) {
+			UITools.errorMessage("Could not find page because the document\n" + uri.toString() + "\nthrew a COSLoadExcpetion.\nTry to open file with standard options."); //$NON-NLS-1$ //$NON-NLS-2$
+			System.err.println("Caught: " + x); //$NON-NLS-1$
+		}
+		
+	}
+
+	public void mouseClicked(MouseEvent e) {		
+		boolean openOnPage = ResourceController.getResourceController().getBooleanProperty(
+				PdfUtilitiesController.OPEN_PDF_VIEWER_ON_PAGE_KEY);
+		boolean openOnPageWine = ResourceController.getResourceController().getBooleanProperty(
+				PdfUtilitiesController.OPEN_PDF_VIEWER_ON_PAGE_KEY_WINE);
+		String readerPath = ResourceController.getResourceController().getProperty(
+				PdfUtilitiesController.OPEN_ON_PAGE_READER_PATH_KEY);
+		final String readerPathWine = ResourceController.getResourceController().getProperty(
+				PdfUtilitiesController.OPEN_ON_PAGE_READER_PATH_KEY_WINE);
+
+		if ((!openOnPage || !isValidReaderPath(readerPath)) && ((!openOnPageWine || readerPathWine==null))) {
+			this.mouseListener.mouseClicked(e);
+			return;
+		}
+
+		if (/*wasFocused() && */(e.getModifiers() & ~(InputEvent.ALT_DOWN_MASK | InputEvent.ALT_MASK)) == InputEvent.BUTTON1_MASK) {
 			final MainView component = (MainView) e.getComponent();
 			final ModeController modeController = Controller.getCurrentModeController();
-			final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
-			final String osName = System.getProperty("os.name"); //$NON-NLS-1$
+			NodeModel node = null;
+			try {
+				node = ((MainView) e.getSource()).getNodeView().getModel();
+			}
+			catch (Exception ex) {			
+			}
 			
-			if (!component.isInFollowLinkRegion(e.getX()) ||
-				!NodeUtils.isPdfLinkedNode(selectedNode) ||
-				(!osName.substring(0, 3).equals("Win") && !openOnPageWine)) { //$NON-NLS-1$
-				this.mouseListener.mouseClicked(e);
+			if (node==null) {
+				node = modeController.getMapController().getSelectedNode();
+			}
+			
+			final String osName = System.getProperty("os.name"); //$NON-NLS-1$
+
+			if (openOnPageWine) {
+				openPageWithFoxitInWine(e, readerPathWine, node);
 				return;
 			}
 			
-			URI uri = Tools.getAbsoluteUri(selectedNode);				
-			
+			if (!component.isInFollowLinkRegion(e.getX()) || !NodeUtils.isPdfLinkedNode(node)
+					|| !osName.substring(0, 3).equals("Win")) { //$NON-NLS-1$
+				this.mouseListener.mouseClicked(e);
+				return;
+			}
+
+			URI uri = Tools.getAbsoluteUri(node);
+
 			String[] command = null;
-			
+
 			IAnnotation annotation = null;
-			try{
-				annotation = new PdfAnnotationImporter().searchAnnotation(uri, selectedNode);
-				
-				if(annotation == null){
+			try {
+				annotation = new PdfAnnotationImporter().searchAnnotation(uri, node);
+
+				if (annotation == null) {
 					this.mouseListener.mouseClicked(e);
 					return;
 				}
-				
-				if(annotation.getAnnotationType() == AnnotationType.BOOKMARK ||
-						annotation.getAnnotationType() == AnnotationType.COMMENT ||
-						annotation.getAnnotationType() == AnnotationType.HIGHLIGHTED_TEXT){
-					if(annotation.getPage() != null) {
+
+				if (annotation.getAnnotationType() == AnnotationType.BOOKMARK
+						|| annotation.getAnnotationType() == AnnotationType.COMMENT
+						|| annotation.getAnnotationType() == AnnotationType.HIGHLIGHTED_TEXT) {
+
+					if (annotation.getPage() != null) {
 						if (openOnPage) {
 							command = getExecCommand(readerPath, uri, annotation);
 						}
-						else if (openOnPageWine) {
-							command = getExecCommandWine(readerPathWine, uri, annotation);
-						}
 					}
-					if(annotation.getPage() == null){
-						//TODO: DOCEAR Error Message for User ??
-						this.mouseListener.mouseClicked(e);							
+					else {
+						// TODO: DOCEAR Error Message for User ??
+						this.mouseListener.mouseClicked(e);
 						return;
 					}
+
 				}
-				
-				if(annotation.getAnnotationType() == AnnotationType.BOOKMARK_WITHOUT_DESTINATION ||
-						annotation.getAnnotationType() == AnnotationType.BOOKMARK_WITH_URI){
+
+				if (annotation.getAnnotationType() == AnnotationType.BOOKMARK_WITHOUT_DESTINATION
+						|| annotation.getAnnotationType() == AnnotationType.BOOKMARK_WITH_URI) {
 					if (openOnPage) {
 						command = getExecCommand(readerPath, uri, 1);
 					}
@@ -105,38 +163,38 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 						command = getExecCommandWine(readerPath, uri, 1);
 					}
 				}
-				
-				
-			}catch(IOException x){
+
+			}
+			catch (IOException x) {
 				this.mouseListener.mouseClicked(e);
 				return;
-			}catch(COSLoadException x){
+			}
+			catch (COSLoadException x) {
 				UITools.errorMessage("Could not find page because the document\n" + uri.toString() + "\nthrew a COSLoadExcpetion.\nTry to open file with standard options."); //$NON-NLS-1$ //$NON-NLS-2$
 				System.err.println("Caught: " + x); //$NON-NLS-1$
 			}
-			
-			LinkController.getController().onDeselect(selectedNode);
-			
-			
-			//TODO: DOCEAR Are all URI's working ??
-			/*String uriString = uri.toString();
-			final String UNC_PREFIX = "file:////";
-			if (uriString.startsWith(UNC_PREFIX)) {
-				uriString = "file://" + uriString.substring(UNC_PREFIX.length());
-			}*/			
-				
-			try {								
+
+			LinkController.getController().onDeselect(node);
+
+			// TODO: DOCEAR Are all URI's working ??
+			/*
+			 * String uriString = uri.toString(); final String UNC_PREFIX =
+			 * "file:////"; if (uriString.startsWith(UNC_PREFIX)) { uriString =
+			 * "file://" + uriString.substring(UNC_PREFIX.length()); }
+			 */
+
+			try {
 				Controller.exec(command);
 				return;
-			}					
+			}
 			catch (final IOException x) {
 				UITools.errorMessage("Could not invoke Pdf Reader.\n\nDocear excecuted the following statement on a command line:\n\"" + command + "\"."); //$NON-NLS-1$ //$NON-NLS-2$
 				System.err.println("Caught: " + x); //$NON-NLS-1$
 			}
-				
-			LinkController.getController().onSelect(selectedNode);			
+
+			LinkController.getController().onSelect(node);
 		}
-		else{
+		else {
 			this.mouseListener.mouseClicked(e);
 		}
 	}
@@ -145,21 +203,21 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 		PdfReaderFileFilter readerFilter = new PdfReaderFileFilter();
 		File file = Tools.getFilefromUri(Tools.getAbsoluteUri(uriToFile, Controller.getCurrentController().getMap()));
 		String[] command = new String[4];
-		if(readerFilter.isAdobe(new File(readerPath)) && file != null){
+		if (readerFilter.isAdobe(new File(readerPath)) && file != null) {
 			command[0] = readerPath;
 			command[1] = "/A";
 			command[2] = "page=" + page;
 			command[3] = file.getAbsolutePath();
-			return  command;  //$NON-NLS-1$ //$NON-NLS-2$
+			return command; //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		if(readerFilter.isFoxit(new File(readerPath)) && file != null){
+		if (readerFilter.isFoxit(new File(readerPath)) && file != null) {
 			command[0] = readerPath;
 			command[1] = file.getAbsolutePath();
 			command[2] = "/A";
 			command[3] = "page=" + page;
 			return command; //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		if(readerFilter.isPdfXChange(new File(readerPath)) && file != null){
+		if (readerFilter.isPdfXChange(new File(readerPath)) && file != null) {
 			command[0] = readerPath;
 			command[1] = "/A";
 			command[2] = "page=" + page;
@@ -168,26 +226,26 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 		}
 		return null;
 	}
-	
+
 	private String[] getExecCommand(String readerPath, URI uriToFile, IAnnotation annotation) {
 		PdfReaderFileFilter readerFilter = new PdfReaderFileFilter();
 		File file = Tools.getFilefromUri(Tools.getAbsoluteUri(uriToFile, Controller.getCurrentController().getMap()));
 		String[] command = new String[4];
-		if(readerFilter.isAdobe(new File(readerPath)) && file != null){
+		if (readerFilter.isAdobe(new File(readerPath)) && file != null) {
 			command[0] = readerPath;
 			command[1] = "/A";
 			command[2] = "page=" + annotation.getPage();
 			command[3] = file.getAbsolutePath();
-			return  command;  //$NON-NLS-1$ //$NON-NLS-2$
+			return command; //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		if(readerFilter.isFoxit(new File(readerPath)) && file != null){
+		if (readerFilter.isFoxit(new File(readerPath)) && file != null) {
 			command[0] = readerPath;
 			command[1] = file.getAbsolutePath();
 			command[2] = "/A";
 			command[3] = "page=" + annotation.getPage();
 			return command; //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		if(readerFilter.isPdfXChange(new File(readerPath)) && file != null){
+		if (readerFilter.isPdfXChange(new File(readerPath)) && file != null) {
 			command[0] = readerPath;
 			command[1] = "/A";
 			command[2] = "page=" + annotation.getPage() + "&nameddest=" + annotation.getTitle();
@@ -196,28 +254,28 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 		}
 		return null;
 	}
-	
+
 	private String[] getExecCommandWine(String readerPathWine, URI uriToFile, IAnnotation annotation) {
 		return getExecCommandWine(readerPathWine, uriToFile, annotation.getPage());
 	}
-	
+
 	private String[] getExecCommandWine(String readerPathWine, URI uriToFile, int page) {
-		String wineFile = Tools.getFilefromUri(uriToFile).getAbsolutePath();		
-		wineFile = "Z:"+wineFile+"";
-		
-		String[] command = new String[6];
-		command[0] = "bash";
-		command[1] = "wine";
-		command[2] = readerPathWine;
-		command[3] = wineFile;
-		command[4] = "/A";
-		command[5] = "page=" + page;		
-		
-		return  command;		
+		String wineFile = Tools.getFilefromUri(uriToFile).getAbsolutePath();
+		wineFile = "Z:" + wineFile.replace("/", "\\") + "";
+
+		String[] command = new String[5];
+		command[0] = "wine";
+		command[1] = readerPathWine;
+		command[2] = wineFile;
+		command[3] = "/A";
+		command[4] = "page=" + page;
+
+		return command;
 	}
 
-	private boolean isValidReaderPath(String readerPath) {		
-		return readerPath != null && readerPath.length() > 0 && new File(readerPath).exists() && new PdfReaderFileFilter().accept(new File(readerPath));
+	private boolean isValidReaderPath(String readerPath) {
+		return readerPath != null && readerPath.length() > 0 && new File(readerPath).exists()
+				&& new PdfReaderFileFilter().accept(new File(readerPath));
 	}
 
 	public void mousePressed(MouseEvent e) {
@@ -237,9 +295,9 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 	public void mouseExited(MouseEvent e) {
 		this.mouseListener.mouseExited(e);
 	}
-	
+
 	public boolean wasFocused() {
-    	return wasFocused;
-    }
+		return wasFocused;
+	}
 
 }
