@@ -358,7 +358,11 @@ public class MTextController extends TextController {
             if (PatternFormat.getIdentityPatternFormat().getPattern().equals(oldFormat))
                 return text;
             final Object parseResult = ScannerController.getController().parse((String) text);
-            return oldFormat != null ? FormatController.format(parseResult, oldFormat) : parseResult;
+            if (oldFormat != null) {
+                final Object formatted = FormatController.format(parseResult, oldFormat, null);
+                return (formatted == null) ? text : formatted;
+            }
+            return parseResult;
         }
         return text;
     }

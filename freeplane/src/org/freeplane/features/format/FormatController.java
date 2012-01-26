@@ -305,9 +305,10 @@ public class FormatController implements IExtension {
 		return result;
 	}
 
-	/** returns a matching IFormattedObject if possible and if formatString is not-null.
-	 * Removes format if formatString is null. */
-	public static Object format(final Object obj, final String formatString) {
+	/** returns a matching {@link IFormattedObject} if possible and if <a>formatString</a> is not-null.
+	 * Otherwise <a>defaultObject</a> is returned.
+	 * Removes format if <a>formatString</a> is null. */
+	public static Object format(final Object obj, final String formatString, final Object defaultObject) {
 		try {
 			final PatternFormat format = PatternFormat.guessPatternFormat(formatString);
 			// logging for invalid pattern is done in guessPatternFormat()
@@ -329,12 +330,19 @@ public class FormatController implements IExtension {
 			}
 		}
 		catch (Exception e) {
-			// Be quiet, just like Excel does...
-			// LogUtils.warn("cannot format '" + StringUtils.abbreviate(obj.toString(), 20) + "' with " + formatString
-			//               + ": " + e.getMessage());
-			return obj;
+		    // Be quiet, just like Excel does...
+		    // LogUtils.warn("cannot format '" + StringUtils.abbreviate(obj.toString(), 20) + "' with " + formatString
+		    //               + ": " + e.getMessage());
+			return defaultObject;
 		}
 	}
+
+    /** returns a matching IFormattedObject if possible and if formatString is not-null.
+     * Otherwise <a>obj</a> is returned.
+     * Removes format if formatString is null. */
+    public static Object format(final Object obj, final String formatString) {
+        return format(obj, formatString, obj);
+    }
 
     public static Object formatUsingDefault(final Object object) {
         if (object instanceof Date)
