@@ -51,7 +51,7 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 		}
 		
 		URI uri = Tools.getAbsoluteUri(node);
-		if (!CoreUtils.resolveURI(uri).getName().toLowerCase().endsWith("pdf")) {
+		if (!CoreUtils.resolveURI(uri).getName().toLowerCase().endsWith(".pdf")) {
 			this.mouseListener.mouseClicked(e);
 			return;
 		}
