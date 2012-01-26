@@ -42,6 +42,7 @@ import org.docear.plugin.pdfutilities.listener.DocearNodeDropListener;
 import org.docear.plugin.pdfutilities.listener.DocearNodeMouseMotionListener;
 import org.docear.plugin.pdfutilities.listener.DocearNodeSelectionListener;
 import org.docear.plugin.pdfutilities.listener.DocearRenameAnnotationListener;
+import org.docear.plugin.pdfutilities.listener.WorkspaceNodeOpenDocumentListener;
 import org.docear.plugin.pdfutilities.pdf.PdfReaderFileFilter;
 import org.docear.plugin.pdfutilities.ui.JDocearInvisibleMenu;
 import org.docear.plugin.pdfutilities.ui.JMonitoringMenu;
@@ -63,6 +64,10 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.INodeViewLifeCycleListener;
+import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
+import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.view.swing.map.NodeView;
 
 public class PdfUtilitiesController extends ALanguageController{
@@ -159,6 +164,9 @@ public class PdfUtilitiesController extends ALanguageController{
 		
 		this.modecontroller.removeAction("PasteAction"); //$NON-NLS-1$
 		this.modecontroller.addAction(new DocearPasteAction());
+		
+		WorkspaceController.getIOController().registerNodeEventListener (DefaultFileNode.class, WorkspaceNodeEvent.WSNODE_OPEN_DOCUMENT, new WorkspaceNodeOpenDocumentListener());
+		WorkspaceController.getIOController().registerNodeEventListener (LinkTypeFileNode.class, WorkspaceNodeEvent.WSNODE_OPEN_DOCUMENT, new WorkspaceNodeOpenDocumentListener());
 	}
 
 	private void addMenuEntries() {

@@ -1,6 +1,5 @@
 package org.docear.plugin.pdfutilities.listener;
 
-import java.awt.Container;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -18,12 +17,12 @@ import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Compat;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.view.swing.map.MainView;
-import org.freeplane.view.swing.map.NodeView;
 
 import de.intarsys.pdf.parser.COSLoadException;
 
@@ -111,15 +110,17 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 				node = modeController.getMapController().getSelectedNode();
 			}
 			
-			final String osName = System.getProperty("os.name"); //$NON-NLS-1$
+			if (!component.isInFollowLinkRegion(e.getX()) || !NodeUtils.isPdfLinkedNode(node)) {
+				this.mouseListener.mouseClicked(e);
+				return;
+			}
 
 			if (openOnPageWine) {
 				openPageWithFoxitInWine(e, readerPathWine, node);
 				return;
 			}
 			
-			if (!component.isInFollowLinkRegion(e.getX()) || !NodeUtils.isPdfLinkedNode(node)
-					|| !osName.substring(0, 3).equals("Win")) { //$NON-NLS-1$
+			if (!Compat.isWindowsOS()) {
 				this.mouseListener.mouseClicked(e);
 				return;
 			}
@@ -133,37 +134,45 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 				annotation = new PdfAnnotationImporter().searchAnnotation(uri, node);
 
 				if (annotation == null) {
-					this.mouseListener.mouseClicked(e);
-					return;
-				}
-
-				if (annotation.getAnnotationType() == AnnotationType.BOOKMARK
-						|| annotation.getAnnotationType() == AnnotationType.COMMENT
-						|| annotation.getAnnotationType() == AnnotationType.HIGHLIGHTED_TEXT) {
-
-					if (annotation.getPage() != null) {
-						if (openOnPage) {
-							command = getExecCommand(readerPath, uri, annotation);
-						}
-					}
-					else {
-						// TODO: DOCEAR Error Message for User ??
+					if(uri == null) { 
 						this.mouseListener.mouseClicked(e);
 						return;
+					} 
+					else {
+						command = new String[2];
+						command[0] = readerPath;
+						command[1] = Tools.getFilefromUri(uri).getAbsolutePath();
 					}
-
+				} 
+				else {
+					if (annotation.getAnnotationType() == AnnotationType.BOOKMARK
+							|| annotation.getAnnotationType() == AnnotationType.COMMENT
+							|| annotation.getAnnotationType() == AnnotationType.HIGHLIGHTED_TEXT) {
+	
+						if (annotation.getPage() != null) {
+							if (openOnPage) {
+								command = getExecCommand(readerPath, uri, annotation);
+							}
+						}
+						else {
+							// TODO: DOCEAR Error Message for User ??
+							this.mouseListener.mouseClicked(e);
+							return;
+						}
+	
+					}
+	
+					if (annotation.getAnnotationType() == AnnotationType.BOOKMARK_WITHOUT_DESTINATION
+							|| annotation.getAnnotationType() == AnnotationType.BOOKMARK_WITH_URI) {
+						if (openOnPage) {
+							command = getExecCommand(readerPath, uri, 1);
+						}
+						else if (openOnPageWine) {
+							command = getExecCommandWine(readerPath, uri, 1);
+						}
+					}
+	
 				}
-
-				if (annotation.getAnnotationType() == AnnotationType.BOOKMARK_WITHOUT_DESTINATION
-						|| annotation.getAnnotationType() == AnnotationType.BOOKMARK_WITH_URI) {
-					if (openOnPage) {
-						command = getExecCommand(readerPath, uri, 1);
-					}
-					else if (openOnPageWine) {
-						command = getExecCommandWine(readerPath, uri, 1);
-					}
-				}
-
 			}
 			catch (IOException x) {
 				this.mouseListener.mouseClicked(e);

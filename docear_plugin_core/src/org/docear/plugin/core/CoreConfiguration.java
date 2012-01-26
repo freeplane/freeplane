@@ -20,7 +20,6 @@ import org.docear.plugin.core.features.DocearMapWriter;
 import org.docear.plugin.core.features.DocearNodeModelExtensionController;
 import org.docear.plugin.core.listeners.PropertyListener;
 import org.docear.plugin.core.listeners.WorkspaceChangeListener;
-import org.docear.plugin.core.listeners.WorkspaceNodeOpenDocumentListener;
 import org.docear.plugin.core.workspace.actions.DocearChangeLibraryPathAction;
 import org.docear.plugin.core.workspace.actions.DocearRenameAction;
 import org.docear.plugin.core.workspace.actions.WorkspaceChangeLocationsAction;
@@ -40,7 +39,6 @@ import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.clipboard.MindMapNodesSelection;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.url.UrlManager;
@@ -48,9 +46,6 @@ import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspacePreferences;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
-import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
-import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
@@ -143,9 +138,6 @@ public class CoreConfiguration extends ALanguageController {
 		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, LinkTypeLiteratureAnnotationsCreator.LINK_TYPE_LITERATUREANNOTATIONS , new LinkTypeLiteratureAnnotationsCreator());
 		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, LinkTypeIncomingCreator.LINK_TYPE_INCOMING , new LinkTypeIncomingCreator());
 		
-		WorkspaceController.getIOController().registerNodeEventListener (DefaultFileNode.class, WorkspaceNodeEvent.WSNODE_OPEN_DOCUMENT, new WorkspaceNodeOpenDocumentListener());
-		WorkspaceController.getIOController().registerNodeEventListener (LinkTypeFileNode.class, WorkspaceNodeEvent.WSNODE_OPEN_DOCUMENT, new WorkspaceNodeOpenDocumentListener());
-		
 		controller.reloadWorkspace();
 		controller.getConfiguration().linkWelcomeMindmapAfterWorkspaceCreation();
 		copyInfoIfNeeded();
@@ -161,6 +153,20 @@ public class CoreConfiguration extends ALanguageController {
 				}
 				infoFile.createNewFile();
 				FileUtils.copyInputStreamToFile(CoreConfiguration.class.getResourceAsStream("/conf/!!!info.txt"), infoFile);
+			}
+			catch (IOException e) {
+				LogUtils.warn(e);
+			}
+			
+		}
+		File _dataInfoFile = new File(WorkspaceUtils.getProfileBaseFile().getParentFile().getParentFile(), "!!!info.txt");
+		if(!_dataInfoFile.exists()) {
+			try {
+				if(!_dataInfoFile.getParentFile().exists() && !_dataInfoFile.getParentFile().mkdirs()) {
+					return;
+				}
+				_dataInfoFile.createNewFile();
+				FileUtils.copyInputStreamToFile(CoreConfiguration.class.getResourceAsStream("/conf/!!!info.txt"), _dataInfoFile);
 			}
 			catch (IOException e) {
 				LogUtils.warn(e);
