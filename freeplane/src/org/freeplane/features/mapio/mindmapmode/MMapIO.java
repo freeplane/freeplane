@@ -51,7 +51,7 @@ public class MMapIO extends MapIO{
 		MFileManager urlManager = (MFileManager) modeController.getExtension(UrlManager.class);
 		MMapController mapController = (MMapController) modeController.getMapController();
 		final MMapIO mapIO = new MMapIO(urlManager, mapController);
-		modeController.addExtension(MMapIO.class, mapIO);
+		modeController.addExtension(MapIO.class, mapIO);
 	}
     public void load(URL url, MapModel map) throws FileNotFoundException, IOException, XMLParseException,
     URISyntaxException {
