@@ -284,8 +284,11 @@ public class EditNodeTextField extends EditNodeBase {
 				eventSource = CANCEL;
 				return;
 			}
-			if (e.isTemporary() && e.getOppositeComponent() == null) {
-				return;
+			if (e.isTemporary()) {
+				Component oppositeComponent = e.getOppositeComponent();
+				if(oppositeComponent == null || SwingUtilities.getRootPane(textfield).equals(oppositeComponent)){
+					return;
+				}
 			}
 			if(textfield.isShowing()){
 				submitText();

@@ -164,7 +164,6 @@
         </separator>
         <separator name="inline_editor">
        	    <boolean name="display_inline_editor_for_all_new_nodes" />
-       	    <boolean name="start_editor_on_double_click" />
        	    <boolean name="layout_map_on_text_change" />
             <boolean name="el__enter_confirms_by_default" />
         </separator>
