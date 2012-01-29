@@ -164,9 +164,10 @@ public class NodeBuilder implements IElementDOMHandler {
 				}
 				if (nodeCount <= 0) {
 					node.setFolded(true);
-					return nodeCount;
 				}
-				nodeCount -= node.getChildCount();
+				else{
+					nodeCount -= node.getChildCount();
+				}
 				for (final NodeModel child : node.getChildren()) {
 					nodeCount = foldAll(child, nodeCount);
 				}
