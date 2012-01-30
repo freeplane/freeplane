@@ -57,6 +57,7 @@ import org.freeplane.core.resources.components.RadioButtonProperty;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
@@ -365,13 +366,14 @@ public class PdfUtilitiesController extends ALanguageController{
 
 		optionController.addPropertyLoadListener(new PropertyLoadListener() {
 			public void propertiesLoaded(Collection<IPropertyControl> properties) {
-
 				((RadioButtonProperty) optionController.getPropertyControl(OPEN_STANDARD_PDF_VIEWER_KEY))
 						.addPropertyChangeListener(new PropertyChangeListener() {
 							public void propertyChange(PropertyChangeEvent evt) {
 								if (evt.getNewValue().equals("true")) { //$NON-NLS-1$
 									((IPropertyControl) optionController.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY))
-											.setEnabled(false);
+											.setEnabled(false);									
+										((IPropertyControl) optionController.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY_WINE))
+										.setEnabled(false);									
 								}
 							}
 						});
@@ -382,6 +384,8 @@ public class PdfUtilitiesController extends ALanguageController{
 								if (evt.getNewValue().equals(true)) {
 									((IPropertyControl) optionController.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY))
 											.setEnabled(false);
+									((IPropertyControl) optionController.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY_WINE))
+									.setEnabled(false);
 								}
 							}
 						});
@@ -392,9 +396,29 @@ public class PdfUtilitiesController extends ALanguageController{
 								if (evt.getNewValue().equals(true)) {
 									((IPropertyControl) optionController.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY))
 											.setEnabled(true);
+									((IPropertyControl) optionController.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY_WINE))
+									.setEnabled(false);
 								}
 							}
 						});
+				
+				((RadioButtonProperty) optionController.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY_WINE))
+					.addPropertyChangeListener(new PropertyChangeListener() {
+						public void propertyChange(PropertyChangeEvent evt) {
+							if (evt.getNewValue().equals(true)) {
+								if (!Compat.isWindowsOS() && !Compat.isMacOsX()) {
+									((IPropertyControl) optionController.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY_WINE))
+										.setEnabled(true);
+								}
+								((IPropertyControl) optionController.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY))
+								.setEnabled(false);
+							}
+						}
+					});
+				
+				if (Compat.isWindowsOS() || Compat.isMacOsX()) {
+					((RadioButtonProperty) optionController.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY_WINE)).setEnabled(false);
+				}
 
 			}
 		});

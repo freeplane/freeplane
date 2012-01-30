@@ -18,7 +18,7 @@
 			    <radiobutton name = "docear_open_on_page"/>			     
 			    <path name = "docear_open_on_page_reader_path" suffixes = "exe"/>
 			    <radiobutton name = "docear_open_on_page_wine"/> 
-			    <path name = "docear_open_on_page_reader_path_wine" suffixes = "exe"/>
+			    <string name = "docear_open_on_page_reader_path_wine"/>
 			</separator>			
 		</tab>
 		<tab name ="folder_monitoring">
