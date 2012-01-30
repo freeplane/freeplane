@@ -35,6 +35,7 @@ import org.freeplane.plugin.workspace.controller.DefaultWorkspaceExpansionStateH
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceKeyHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceMouseHandler;
 import org.freeplane.plugin.workspace.controller.INodeTypeIconManager;
+import org.freeplane.plugin.workspace.controller.IOController;
 import org.freeplane.plugin.workspace.controller.IWorkspaceListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferHandler;
@@ -53,6 +54,7 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 	public static final String WORKSPACE_VERSION = "1.0";
 		
 	private static final WorkspaceController workspaceController = new WorkspaceController();
+	private static final IOController workspaceIOController = new IOController();
 	private static final WorkspaceConfiguration configuration = new WorkspaceConfiguration();
 	private static final FileSystemAlterationMonitor monitor = new FileSystemAlterationMonitor(30000);
 
@@ -116,6 +118,10 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 
 	public static WorkspaceController getController() {
 		return workspaceController;
+	}
+	
+	public static IOController getIOController() {
+		return workspaceIOController;
 	}
 
 	public boolean isInitialized() {

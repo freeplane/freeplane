@@ -63,8 +63,7 @@ public class WorkspaceUtils {
 	
 		File f = new File(location);
 		URI newProfileBase = WorkspaceUtils.getURI(new File(f, WorkspaceController.getController().getPreferences().getWorkspaceProfilesRoot()+profileName));
-		URI currentProfileBase = getProfileBaseURI();
-		if(!currentProfileBase.equals(newProfileBase)) {
+		if(WorkspaceController.isFirstApplicationStart() || !newProfileBase.equals(getProfileBaseURI())) {
 			closeAllMindMaps();	
 			WorkspaceController.getController().getPreferences().setNewWorkspaceLocation(WorkspaceUtils.getURI(f));
 			WorkspaceController.getController().getPreferences().setWorkspaceProfile(profileName);

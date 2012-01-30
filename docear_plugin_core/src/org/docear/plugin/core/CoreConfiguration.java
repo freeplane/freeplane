@@ -159,6 +159,20 @@ public class CoreConfiguration extends ALanguageController {
 			}
 			
 		}
+		File _dataInfoFile = new File(WorkspaceUtils.getProfileBaseFile().getParentFile().getParentFile(), "!!!info.txt");
+		if(!_dataInfoFile.exists()) {
+			try {
+				if(!_dataInfoFile.getParentFile().exists() && !_dataInfoFile.getParentFile().mkdirs()) {
+					return;
+				}
+				_dataInfoFile.createNewFile();
+				FileUtils.copyInputStreamToFile(CoreConfiguration.class.getResourceAsStream("/conf/!!!info.txt"), _dataInfoFile);
+			}
+			catch (IOException e) {
+				LogUtils.warn(e);
+			}
+			
+		}
 		
 	}
 

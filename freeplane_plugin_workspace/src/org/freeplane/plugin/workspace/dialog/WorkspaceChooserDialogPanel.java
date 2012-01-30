@@ -209,6 +209,9 @@ public class WorkspaceChooserDialogPanel extends JPanel {
 		private void initProfileList(File workspaceBase) {
 			if (workspaceBase.isDirectory()) {
 				File profileDir = new File(workspaceBase, WorkspaceController.getController().getPreferences().getWorkspaceProfilesRoot());
+				if(profileDir == null || (!profileDir.exists()&&!profileDir.mkdirs())) {
+					return;
+				}
 				for (File folder : profileDir.listFiles(profileFilter)) {
 					itemList.add(new ProfileListObject(folder.getName(), folder.getName()));
 					if (WorkspaceController.getController().getPreferences().getWorkspaceProfile().endsWith(folder.getName())) {
