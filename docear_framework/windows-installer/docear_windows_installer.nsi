@@ -20,10 +20,15 @@ Name Docear
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\orange-uninstall.ico"
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 
+# JRE Detection Definitions
+!define JRE_VERSION "1.6"
+!define JRE_URL "http://javadl.sun.com/webapps/download/AutoDL?BundleId=58124"
+
 # Included files
 !include Sections.nsh
 !include MUI2.nsh
-!include FileAssociation.nsh
+!include FileAssociation.nsh 
+!include JREDyna_Inetc.nsh
 
 # Variables
 Var StartMenuGroup
@@ -31,6 +36,7 @@ Var StartMenuGroup
 # Installer pages
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE ..\..\docear_plugin_core\src\license.txt
+!insertmacro CUSTOM_PAGE_JREINFO
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_STARTMENU Application $StartMenuGroup
 !insertmacro MUI_PAGE_INSTFILES
@@ -65,6 +71,7 @@ ShowUninstDetails show
 
 # Installer sections
 Section -Main SEC0000
+    call DownloadAndInstallJREIfNecessary
     SetOutPath $INSTDIR
     SetOverwrite on
     SetShellVarContext all

@@ -249,7 +249,7 @@
 
 	
 	<target name="build" depends="build_core, build_latex, build_svg, build_script, build_formula, build_bugreport, build_accountmanager,
-    build_workspace, build_docear_core, build_docear_communications, build_docear_pdfutilities, build_docear_dragbase, build_docear_bibtex, build_docear_backup, 
+    build_workspace, build_docear_core, build_docear_communications, build_docear_pdfutilities, build_docear_bibtex, build_docear_backup, 
     build_docear_optionpane, bzr_version_info">
        <mkdir dir="${build.resources}" />
         <copy todir="${build.resources}">
