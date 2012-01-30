@@ -32,8 +32,11 @@ import org.docear.plugin.core.IDocearLibrary;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
+import org.docear.plugin.core.workspace.actions.DocearLibraryNewMindmap;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
@@ -84,13 +87,17 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 	
 	public void initializePopup() {
 		if (popupMenu  == null) {
-
+			ModeController modeController = Controller.getCurrentModeController();
+			modeController.addAction(new DocearLibraryNewMindmap());
+			
 			popupMenu = new WorkspacePopupMenu();
 			
 			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {WorkspacePopupMenuBuilder.createSubMenu(TextUtils.getRawText("workspace.action.new.label")),
 					"workspace.action.node.new.folder",
 					"workspace.action.node.new.link",
 					"workspace.action.node.new.directory",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.library.new.mindmap",
 					WorkspacePopupMenuBuilder.endSubMenu(),
 					WorkspacePopupMenuBuilder.SEPARATOR,						
 					"workspace.action.node.paste",
@@ -430,6 +437,7 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 		}
 		
 	}
+	
 
 	/* (non-Javadoc)
 	 * @see javax.swing.event.TreeModelListener#treeStructureChanged(javax.swing.event.TreeModelEvent)
@@ -438,5 +446,8 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 		// TODO Auto-generated method stub
 		
 	}
+
+	
+	
 	
 }
