@@ -2,8 +2,6 @@
     <folder type="virtual" name="Mindmaps">
     	<folder type="physical" path="workspace:/mindmaps/" />
     </folder>
-    
-    <folder type="physical" name="workspace folder" path="workspace:/./" />
 
     <folder type="virtual" name="Miscellaneous" >
         <link type="file" path="workspace:/mindmaps/new_mindmap.mm" />

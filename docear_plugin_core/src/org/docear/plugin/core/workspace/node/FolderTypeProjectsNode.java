@@ -82,26 +82,19 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 			enableMonitoring(false);
 			this.pathURI = uri;
 			if (uri != null) {
-				createIfNeeded(getPath());
+				createPathIfNeeded(getPath());
 				first  = true;
 				enableMonitoring(true);
 			}
 		} 
 		else {
 			this.pathURI = uri;
-			createIfNeeded(getPath());
+			createPathIfNeeded(getPath());
 		}		
 		CoreConfiguration.projectPathObserver.setUri(uri);
 		DocearEvent event = new DocearEvent(this, DocearEventType.LIBRARY_NEW_PROJECT_INDEXING_REQUEST, this);
 		DocearController.getController().dispatchDocearEvent(event);
 		locked = false;
-	}
-	
-	private void createIfNeeded(URI uri) {
-		File file = WorkspaceUtils.resolveURI(uri);
-		if (file != null && !file.exists()) {
-			file.mkdirs();			
-		}
 	}
 	
 	@ExportAsAttribute("path")
@@ -354,13 +347,12 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 		if (file != null) {
 			if (!file.exists()) {
 				if (file.mkdirs()) {
-					LogUtils.info("New Projects Folder Created: " + file.getAbsolutePath());
+					
 				}
 			}
-			this.setName(file.getName());
 		}
 		else {
-			this.setName("no folder selected!");
+			LogUtils.warn("no project folder selected!");
 		}
 
 		
@@ -369,12 +361,6 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 	public void stateChanged(ChangeEvent e) {
 		if(!locked && e.getSource() instanceof NodeAttributeObserver) {			
 			URI uri = ((NodeAttributeObserver) e.getSource()).getUri();
-			try{		
-				createPathIfNeeded(uri);				
-			}
-			catch (Exception ex) {
-				return;
-			}
 			this.setPath(uri);
 			this.refresh();
 		}

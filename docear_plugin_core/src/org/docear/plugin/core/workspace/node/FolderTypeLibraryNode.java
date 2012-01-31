@@ -59,7 +59,7 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 	private static final long serialVersionUID = 1L;
 	
 	private final static String PLACEHOLDER_PROFILENAME = "@@PROFILENAME@@";
-	private static final String DEFAULT_LIBRARY_PATH = "workspace:/"+PLACEHOLDER_PROFILENAME+"/Library";
+	private static final String DEFAULT_LIBRARY_PATH = "workspace:/"+PLACEHOLDER_PROFILENAME+"/library";
 	private final static Pattern PATTERN = Pattern.compile(PLACEHOLDER_PROFILENAME);
 	
 	
