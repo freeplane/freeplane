@@ -868,7 +868,7 @@ public class JabRef {
 
     /**
      * Go through all registered instances of SidePanePlugin, and register them
-     * in the SidePaneManager.
+     * in the SidePaneManager.2
      *
      * @param jrf The JabRefFrame.
      */
@@ -887,7 +887,8 @@ public class JabRef {
 	        }
     	}
     	catch(Exception e) {
-    		e.printStackTrace();
+    		//DOCEAR
+    		System.out.println("JabRef exception suppressed by Docear: "+e.getMessage());
     	}
     }
 
