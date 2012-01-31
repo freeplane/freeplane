@@ -314,7 +314,7 @@ public class UrlManager implements IExtension {
 
     /**@deprecated -- use LinkController*/
 	@Deprecated
-	public void loadURL(URI uri) {
+	public void loadURL(URI uri) {		
 		final String uriString = uri.toString();
 		if (uriString.startsWith("#")) {
 			final String target = uri.getFragment();
@@ -332,6 +332,7 @@ public class UrlManager implements IExtension {
 			}
 			return;
 		}
+		
 		try {
 			final String extension = FileUtils.getExtension(uri.getRawPath());
 			if(! uri.isAbsolute()){
@@ -341,12 +342,21 @@ public class UrlManager implements IExtension {
 					return;
 				}
 			}
+			//DOCEAR: mindmaps can be linked in a mindmap --> therefore workspace-relative-paths are possible
+			if(!"file".equals(uri.getScheme())) {
+				try {
+					uri = uri.toURL().openConnection().getURL().toURI().normalize();
+				}
+				catch (Exception e) {
+					LogUtils.warn("link " + uri + " not found", e);
+					UITools.errorMessage(TextUtils.format("link_not_found", uri.toString()));
+				}
+			}
+			
 			try {
 				if ((extension != null)
 				        && extension.equals(UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
-					//DOCEAR: mindmaps can be linked in a mindmap --> therefore workspace-relative-paths are possible
-					//final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
-					final URL url = uri.toURL().openConnection().getURL();
+					final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
 					final ModeController modeController = Controller.getCurrentModeController();
 					modeController.getMapController().newMap(url);
 					final String ref = uri.getFragment();
