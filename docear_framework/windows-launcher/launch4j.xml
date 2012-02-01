@@ -5,11 +5,11 @@
   <outfile>C:\Users\Anwender\Documents\DocearWorkspace\trunk\docear_framework\build\docear.exe</outfile>
   <errTitle></errTitle>
   <cmdLine>-xargs &quot;props.xargs&quot; -xargs &quot;init.xargs&quot;</cmdLine>
-  <chdir>.</chdir>
+  <chdir></chdir>
   <priority>normal</priority>
   <downloadUrl>http://java.com/download</downloadUrl>
   <supportUrl></supportUrl>
-  <customProcName>true</customProcName>
+  <customProcName>false</customProcName>
   <stayAlive>false</stayAlive>
   <manifest></manifest>
   <icon>C:\Users\Anwender\Documents\DocearWorkspace\trunk\docear_resources\images\icons\icon-windows_all_sizes_combined.ico</icon>
