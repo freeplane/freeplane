@@ -1,5 +1,8 @@
 package org.docear.plugin.core;
 
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.text.MessageFormat;
@@ -27,10 +30,13 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.FreeplaneActionCascade;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspacePreferences;
@@ -228,8 +234,53 @@ public class CoreConfiguration extends ALanguageController {
 			Controller.getCurrentController().getResourceController().setProperty("leftToolbarVisible", "false");			
 			Controller.getCurrentController().getResourceController().setProperty("styleScrollPaneVisible", "true");
 			Controller.getCurrentController().getResourceController().setProperty(DOCEAR_FIRST_RUN_PROPERTY, true);
+			replaceHelpAction();
 		}
 		Controller.getCurrentController().getResourceController().addPropertyChangeListener(new PropertyListener());
 		FreeplaneActionCascade.addAction(new DocearQuitAction());		
-	}	
+	}
+	
+	private void replaceHelpAction() {
+		Controller.getCurrentController().removeAction("GettingStartedAction");
+		Controller.getCurrentController().addAction(new GettingStartedAction());
+	}
+	
+	class GettingStartedAction extends AFreeplaneAction {
+		
+		public GettingStartedAction() {
+			super("GettingStartedAction");			
+		}
+
+		private static final long serialVersionUID = 1L;
+
+		public void actionPerformed(final ActionEvent e) {
+			final ResourceController resourceController = ResourceController.getResourceController();
+			final File baseDir = new File(resourceController.getResourceBaseDir()).getAbsoluteFile().getParentFile();
+			final String languageCode = resourceController.getLanguageCode();
+			final File file = ConfigurationUtils.getLocalizedFile(baseDir, Controller.getCurrentController().getResourceController().getProperty("tutorial_map"), languageCode);
+			try {
+				final URL endUrl = file.toURL();
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							if (endUrl.getFile().endsWith(".mm")) {
+								 Controller.getCurrentController().selectMode(MModeController.MODENAME);
+								 ((MMapController)Controller.getCurrentModeController().getMapController()).newDocumentationMap(endUrl);
+							}
+							else {
+								Controller.getCurrentController().getViewController().openDocument(endUrl);
+							}
+						}
+						catch (final Exception e1) {
+							LogUtils.severe(e1);
+						}
+					}
+				});
+			}
+			catch (final MalformedURLException e1) {
+				LogUtils.warn(e1);
+			}
+		}
+	}
+
 }
