@@ -387,9 +387,11 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeAct
 			List<File> fileList = new Vector<File>();
 			fileList.add(new File(uri));
 			transferable.addData(WorkspaceTransferable.WORKSPACE_FILE_LIST_FLAVOR, fileList);
-			List<AWorkspaceTreeNode> objectList = new ArrayList<AWorkspaceTreeNode>();
-			objectList.add(this);
-			transferable.addData(WorkspaceTransferable.WORKSPACE_NODE_FLAVOR, objectList);
+			if(!this.isSystem()) {
+				List<AWorkspaceTreeNode> objectList = new ArrayList<AWorkspaceTreeNode>();
+				objectList.add(this);
+				transferable.addData(WorkspaceTransferable.WORKSPACE_NODE_FLAVOR, objectList);
+			}
 			return transferable;
 		}
 		catch (Exception e) {

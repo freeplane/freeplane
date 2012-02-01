@@ -135,7 +135,7 @@ public class LinkTypeReferencesNode extends LinkTypeFileNode implements IBibtexD
 	public void refresh() {
 		//maybe do sth
 	}
-	
+		
 	private void createIfNeeded(URI uri) {
 		try {
 			File file = WorkspaceUtils.resolveURI(uri);
