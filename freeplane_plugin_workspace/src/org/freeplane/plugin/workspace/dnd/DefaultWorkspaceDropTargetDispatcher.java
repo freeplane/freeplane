@@ -26,8 +26,8 @@ public class DefaultWorkspaceDropTargetDispatcher implements IDropTargetDispatch
 	private IDropAcceptor getDropAcceptor(final DropTargetDropEvent event) {
 		AWorkspaceTreeNode targetNode = (AWorkspaceTreeNode) WorkspaceController.getController().getWorkspaceViewTree()
 				.getPathForLocation(event.getLocation().x, event.getLocation().y).getLastPathComponent();
-		while(targetNode != null && targetNode instanceof IDropAcceptor) {
-			if(((IDropAcceptor)targetNode).acceptDrop(event.getCurrentDataFlavors())) {
+		while(targetNode != null) {
+			if(targetNode instanceof IDropAcceptor && ((IDropAcceptor)targetNode).acceptDrop(event.getCurrentDataFlavors())) {
 				return (IDropAcceptor)targetNode;
 			}
 			targetNode = targetNode.getParent();			
