@@ -1,4 +1,4 @@
-package org.freeplane.plugin.workspace.config;
+package org.freeplane.plugin.workspace;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -15,7 +15,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,20 +23,18 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.main.application.FreeplaneStarter;
 import org.freeplane.n3.nanoxml.XMLException;
-import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.WorkspaceUtils;
+import org.freeplane.plugin.workspace.config.IConfigurationInfo;
+import org.freeplane.plugin.workspace.config.LinkTypeFileIconHandler;
 import org.freeplane.plugin.workspace.config.creator.FolderTypePhysicalCreator;
 import org.freeplane.plugin.workspace.config.creator.FolderTypeVirtualCreator;
 import org.freeplane.plugin.workspace.config.creator.LinkTypeFileCreator;
 import org.freeplane.plugin.workspace.config.creator.WorkspaceRootCreator;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
+import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 import org.freeplane.plugin.workspace.io.xml.ConfigurationWriter;
 import org.freeplane.plugin.workspace.io.xml.WorkspaceNodeWriter;
 import org.freeplane.plugin.workspace.model.creator.AWorkspaceNodeCreator;
@@ -53,7 +50,8 @@ public class WorkspaceConfiguration {
 	public final static int WSNODE_LINK = 2;
 
 	private final static String DEFAULT_CONFIG_FILE_NAME = "workspace_default.xml";
-	private final static String DEFAULT_CONFIG_FILE_NAME_DOCEAR = "workspace_default_docear.xml";
+	private URL DEFAULT_CONFIG_TEMPLATE_URL = WorkspaceConfiguration.class.getResource("/conf/"+DEFAULT_CONFIG_FILE_NAME);
+	//private final static String DEFAULT_CONFIG_FILE_NAME_DOCEAR = "workspace_default_docear.xml";
 	public final static String CONFIG_FILE_NAME = "workspace.xml";
 
 	private final static String PLACEHOLDER_PROFILENAME = "@@PROFILENAME@@";
@@ -78,6 +76,13 @@ public class WorkspaceConfiguration {
 		return this.configurationInfo;
 	}
 	
+	public void setDefaultConfigTemplateUrl(URL templateUrl) {
+		if(templateUrl == null) {
+			return ;
+		}
+		this.DEFAULT_CONFIG_TEMPLATE_URL = templateUrl;
+	}
+	
 	private boolean initializeConfig() throws NullPointerException, FileNotFoundException, IOException, URISyntaxException {
 		String workspaceLocation = WorkspaceController.getController().getPreferences().getWorkspaceLocation();
 		String profile = WorkspaceController.getController().getPreferences().getWorkspaceProfileHome();
@@ -85,7 +90,7 @@ public class WorkspaceConfiguration {
 		if (workspaceLocation == null) {
 			return false;
 		}
-
+		WorkspaceController.getController().fireOpenWorkspace(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_RELOAD, this));
 		File configFile = new File(workspaceLocation + File.separator + profile + File.separator + CONFIG_FILE_NAME);
 		boolean newConfig = false;
 		if (!configFile.exists()) {
@@ -107,7 +112,7 @@ public class WorkspaceConfiguration {
 				.removeAllElements((AWorkspaceTreeNode) WorkspaceController.getController().getWorkspaceModel().getRoot());
 		this.load(configFile.toURI().toURL());
 		if(newConfig) {
-			linkWelcomeMindmapAfterWorkspaceCreation();
+			WorkspaceController.getController().fireWorkspaceReady(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_CHANGED, this));
 		}
 		return true;
 	}
@@ -115,33 +120,33 @@ public class WorkspaceConfiguration {
 	private void copyDefaultConfigTo(File config) throws FileNotFoundException, IOException {
 		String appName = Controller.getCurrentController().getResourceController().getProperty("ApplicationName", "Freeplane");
 		String xml;
-		if (appName.equalsIgnoreCase("docear")) {
-			xml = getSubstitutedWorkspaceXml(DEFAULT_CONFIG_FILE_NAME_DOCEAR);			
-		}
-		else {
-			xml = getSubstitutedWorkspaceXml(DEFAULT_CONFIG_FILE_NAME);
-		}
+//		if (appName.equalsIgnoreCase("docear")) {
+//			xml = getSubstitutedWorkspaceXml("/conf/"+DEFAULT_CONFIG_FILE_NAME_DOCEAR);			
+//		}
+//		else {
+			xml = getSubstitutedWorkspaceXml(DEFAULT_CONFIG_TEMPLATE_URL.openStream());
+		//}
 		DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(config)));
 		out.write(xml.getBytes());
 		out.close();
 	}
 	
-	public void linkWelcomeMindmapAfterWorkspaceCreation() {
-		final File baseDir = new File(FreeplaneStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();
-		
-		final String map = ResourceController.getResourceController().getProperty("first_start_map");		
-		final File docearWelcome = ConfigurationUtils.getLocalizedFile(baseDir, map, Locale.getDefault().getLanguage());
-		
-		AWorkspaceTreeNode parent = WorkspaceUtils.getNodeForPath("My Workspace/Miscellaneous");
-		if (parent == null) {
-			return;
-		}
-		LinkTypeFileNode node = new LinkTypeFileNode();
-		node.setName(docearWelcome.getName());
-		node.setLinkPath(WorkspaceUtils.getWorkspaceRelativeURI(docearWelcome));
-		WorkspaceUtils.getModel().addNodeTo(node, parent);
-		parent.refresh();
-	}
+//	public void linkWelcomeMindmapAfterWorkspaceCreation() {
+//		final File baseDir = new File(FreeplaneStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();
+//		
+//		final String map = ResourceController.getResourceController().getProperty("first_start_map");		
+//		final File docearWelcome = ConfigurationUtils.getLocalizedFile(baseDir, map, Locale.getDefault().getLanguage());
+//		
+//		AWorkspaceTreeNode parent = WorkspaceUtils.getNodeForPath("My Workspace/Miscellaneous");
+//		if (parent == null) {
+//			return;
+//		}
+//		LinkTypeFileNode node = new LinkTypeFileNode();
+//		node.setName(docearWelcome.getName());
+//		node.setLinkPath(WorkspaceUtils.getWorkspaceRelativeURI(docearWelcome));
+//		WorkspaceUtils.getModel().addNodeTo(node, parent);
+//		parent.refresh();
+//	}
 	
 	private void initReadManager() {
 		readManager.addElementHandler("workspace", getWorkspaceRootCreator());
@@ -209,7 +214,7 @@ public class WorkspaceConfiguration {
 
 	}
 
-	public boolean reload() {
+	public boolean load() {
 		try {
 			return initializeConfig();
 		}
@@ -233,10 +238,10 @@ public class WorkspaceConfiguration {
 		}
 	}
 
-	private String getSubstitutedWorkspaceXml(String filename) {
+	private String getSubstitutedWorkspaceXml(InputStream fileStream) {
 		String ret = "";
 		try {
-			ret = this.getFileContent(filename);
+			ret = this.getFileContent(fileStream);
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -249,13 +254,13 @@ public class WorkspaceConfiguration {
 		return ret;
 	}
 
-	private String getFileContent(String filename) throws IOException {
-		InputStream in = getClass().getResourceAsStream(filename);
+	private String getFileContent(InputStream fileStream) throws IOException {
+		//InputStream in = getClass().getResourceAsStream(filename);
 		Writer writer = new StringWriter();
 		char[] buffer = new char[1024];
 
 		try {
-			Reader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+			Reader reader = new BufferedReader(new InputStreamReader(fileStream, "UTF-8"));
 			int n;
 
 			while ((n = reader.read(buffer)) != -1) {
@@ -264,7 +269,7 @@ public class WorkspaceConfiguration {
 
 		}
 		finally {
-			in.close();
+			fileStream.close();
 		}
 
 		return writer.toString();

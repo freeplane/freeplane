@@ -1,13 +1,13 @@
 package org.docear.plugin.communications;
 
-import org.docear.plugin.core.DocearPlugin;
+import org.docear.plugin.core.DocearService;
 import org.freeplane.features.mode.ModeController;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 import com.sun.jersey.api.client.Client;
 
-public class Activator extends DocearPlugin implements BundleActivator {
+public class Activator extends DocearService implements BundleActivator {
 
 	// public void start(BundleContext context) throws Exception {
 	// final Hashtable<String, String[]> props = new Hashtable<String,
@@ -25,7 +25,7 @@ public class Activator extends DocearPlugin implements BundleActivator {
 	public void stop(BundleContext context) throws Exception {
 	}
 
-	public void startPlugin(BundleContext context, ModeController modeController) {
+	public void startService(BundleContext context, ModeController modeController) {
 
 		final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 		Thread.currentThread().setContextClassLoader(getClass().getClassLoader());

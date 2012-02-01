@@ -46,32 +46,32 @@ public class DefaultWorkspaceMouseHandler implements MouseListener, MouseMotionL
 			// encode buttons
 			int eventType = 0;
 			if (e.getButton() == MouseEvent.BUTTON1) {
-				eventType += WorkspaceNodeEvent.MOUSE_LEFT;
+				eventType += WorkspaceNodeAction.MOUSE_LEFT;
 			}
 			if (e.getButton() == MouseEvent.BUTTON3) {
-				eventType += WorkspaceNodeEvent.MOUSE_RIGHT;
+				eventType += WorkspaceNodeAction.MOUSE_RIGHT;
 			}
 			if (e.getClickCount() % 2 == 0) {
-				eventType += WorkspaceNodeEvent.MOUSE_DBLCLICK;
+				eventType += WorkspaceNodeAction.MOUSE_DBLCLICK;
 			}
 			else {
-				eventType += WorkspaceNodeEvent.MOUSE_CLICK;
+				eventType += WorkspaceNodeAction.MOUSE_CLICK;
 			}
 			
-			WorkspaceNodeEvent event = new WorkspaceNodeEvent(node, eventType, e.getX(), e.getY(), e.getComponent());
+			WorkspaceNodeAction event = new WorkspaceNodeAction(node, eventType, e.getX(), e.getY(), e.getComponent());
 			
-			List<IWorkspaceNodeEventListener> nodeEventListeners = WorkspaceController.getIOController().getNodeEventListeners(node.getClass(), eventType);
+			List<IWorkspaceNodeActionListener> nodeEventListeners = WorkspaceController.getIOController().getNodeActionListeners(node.getClass(), eventType);
 			if(nodeEventListeners != null)  {
-				for(IWorkspaceNodeEventListener listener : nodeEventListeners) {
+				for(IWorkspaceNodeActionListener listener : nodeEventListeners) {
 					if(event.isConsumed()) {
 						break;
 					}
-					listener.handleEvent(event);
+					listener.handleAction(event);
 				}
 			}
 			
-			if (!event.isConsumed() && node instanceof IWorkspaceNodeEventListener) {				
-				((IWorkspaceNodeEventListener) node).handleEvent(event);
+			if (!event.isConsumed() && node instanceof IWorkspaceNodeActionListener) {				
+				((IWorkspaceNodeActionListener) node).handleAction(event);
 			}
 
 		}

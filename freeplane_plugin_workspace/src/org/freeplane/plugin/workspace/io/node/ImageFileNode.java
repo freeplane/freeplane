@@ -2,7 +2,7 @@ package org.freeplane.plugin.workspace.io.node;
 
 import java.io.File;
 
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.controller.WorkspaceNodeAction;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 public class ImageFileNode extends DefaultFileNode {
@@ -29,9 +29,9 @@ public class ImageFileNode extends DefaultFileNode {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	@Override
-	public void handleEvent(WorkspaceNodeEvent event) {
+	public void handleAction(WorkspaceNodeAction event) {
 		System.out.println("ImageFileNode: "+ event);
-		super.handleEvent(event);
+		super.handleAction(event);
 		
 		
 	}

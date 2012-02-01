@@ -69,7 +69,7 @@ public class DefaultWorkspaceDropHandler implements IWorkspaceDragnDropControlle
 						else {
 							WorkspaceUtils.createLinkTypeFileNode(file, targetNode);
 						}
-						WorkspaceController.getController().reloadWorkspace();
+						WorkspaceController.getController().loadWorkspace();
 					}					
 				}				
 				event.getDropTargetContext().dropComplete(true);
@@ -99,7 +99,7 @@ public class DefaultWorkspaceDropHandler implements IWorkspaceDragnDropControlle
 				else {
 					WorkspaceUtils.createLinkTypeFileNode(file, targetNode);
 				}
-				WorkspaceController.getController().reloadWorkspace();
+				WorkspaceController.getController().loadWorkspace();
 				
 				event.getDropTargetContext().dropComplete(true);
 				return true;

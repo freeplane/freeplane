@@ -22,10 +22,6 @@ import org.osgi.service.url.URLStreamHandlerService;
 
 public class Activator implements BundleActivator {
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
-	 */
 	public void start(final BundleContext context) throws Exception {		
 		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
 		props.put("mode", new String[] { MModeController.MODENAME });
@@ -37,6 +33,7 @@ public class Activator implements BundleActivator {
 			    	changeQuitAction();
 				    WorkspaceController.getController().initialStart();
 				    startPluginServices(context, modeController);
+				    WorkspaceController.getController().loadWorkspace();
 			    }
 		    }, props);
 	}
@@ -76,10 +73,6 @@ public class Activator implements BundleActivator {
 		return null;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
-	 */
 	public void stop(BundleContext context) throws Exception {
 		System.out.println("DOCEAR: save config ...");
 		WorkspaceUtils.saveCurrentConfiguration();
@@ -88,12 +81,12 @@ public class Activator implements BundleActivator {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void startPluginServices(BundleContext context, ModeController modeController) {
 		try {
-			final ServiceReference[] dependends = context.getServiceReferences(WorkspaceDependentPlugin.class.getName(),
-					"(dependsOn="+ WorkspaceDependentPlugin.DEPENDS_ON +")");
+			final ServiceReference[] dependends = context.getServiceReferences(WorkspaceDependentService.class.getName(),
+					"(dependsOn="+ WorkspaceDependentService.DEPENDS_ON +")");
 			if (dependends != null) {
 				for (int i = 0; i < dependends.length; i++) {
 					final ServiceReference serviceReference = dependends[i];
-					final WorkspaceDependentPlugin service = (WorkspaceDependentPlugin) context.getService(serviceReference);
+					final WorkspaceDependentService service = (WorkspaceDependentService) context.getService(serviceReference);
 					service.startPlugin(context, modeController);
 					context.ungetService(serviceReference);
 				}

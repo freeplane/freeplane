@@ -23,8 +23,8 @@ import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
 import org.freeplane.plugin.workspace.config.node.VirtualFolderNode;
-import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.controller.IWorkspaceNodeActionListener;
+import org.freeplane.plugin.workspace.controller.WorkspaceNodeAction;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.io.node.FolderFileNode;
 import org.freeplane.plugin.workspace.model.node.AFolderNode;
@@ -471,8 +471,8 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 
 	public void valueForPathChanged(TreePath path, Object newValue) {
 		AWorkspaceTreeNode node = (AWorkspaceTreeNode) path.getLastPathComponent();
-		if (node instanceof IWorkspaceNodeEventListener) {
-			((IWorkspaceNodeEventListener) node).handleEvent(new WorkspaceNodeEvent(node, WorkspaceNodeEvent.WSNODE_CHANGED,
+		if (node instanceof IWorkspaceNodeActionListener) {
+			((IWorkspaceNodeActionListener) node).handleAction(new WorkspaceNodeAction(node, WorkspaceNodeAction.WSNODE_CHANGED,
 					newValue));
 			nodeChanged(node);
 		}

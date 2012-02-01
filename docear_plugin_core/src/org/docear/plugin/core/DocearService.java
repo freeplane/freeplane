@@ -13,17 +13,17 @@ import org.osgi.framework.BundleContext;
 /**
  * 
  */
-public abstract class DocearPlugin implements BundleActivator {
+public abstract class DocearService implements BundleActivator {
 	public final static String DEPENDS_ON = "org.docear.plugin.core";
 	private DocearBundleInfo info;
 	
-	public abstract void startPlugin(BundleContext context, ModeController modeController);
+	public abstract void startService(BundleContext context, ModeController modeController);
 	
 	public void start(BundleContext context) throws Exception {
 		this.info = new DocearBundleInfo(context);
 		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
 		props.put("dependsOn", new String[] { DEPENDS_ON }); //$NON-NLS-1$
-		context.registerService(DocearPlugin.class.getName(), this, props);
+		context.registerService(DocearService.class.getName(), this, props);
 	}
 	
 	public DocearBundleInfo getBundleInfo() {		

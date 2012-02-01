@@ -1,11 +1,11 @@
 package org.docear.plugin.backup;
 
-import org.docear.plugin.core.DocearPlugin;
+import org.docear.plugin.core.DocearService;
 import org.freeplane.features.mode.ModeController;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-public class Activator extends DocearPlugin implements BundleActivator {
+public class Activator extends DocearService implements BundleActivator {
 
 //	public void start(BundleContext context) throws Exception {
 //		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
@@ -26,7 +26,7 @@ public class Activator extends DocearPlugin implements BundleActivator {
 	}
 
 
-	public void startPlugin(BundleContext context, ModeController modeController) {
+	public void startService(BundleContext context, ModeController modeController) {
 //		new BackupConfiguration();
 //	    new BackupStarter();
 //	    new BackupPreferences();		

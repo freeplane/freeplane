@@ -13,7 +13,7 @@ import org.osgi.framework.BundleContext;
 /**
  * 
  */
-public abstract class WorkspaceDependentPlugin implements BundleActivator{
+public abstract class WorkspaceDependentService implements BundleActivator{
 	public final static String DEPENDS_ON = "org.freeplane.plugin.workspace";
 	
 	/***********************************************************************************
@@ -33,7 +33,7 @@ public abstract class WorkspaceDependentPlugin implements BundleActivator{
 	public void start(BundleContext context) throws Exception {
 		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
 		props.put("dependsOn", new String[] { DEPENDS_ON }); //$NON-NLS-1$
-		context.registerService(WorkspaceDependentPlugin.class.getName(), this, props);
+		context.registerService(WorkspaceDependentService.class.getName(), this, props);
 	}
 	
 }

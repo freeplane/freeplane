@@ -28,8 +28,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.controller.IWorkspaceNodeActionListener;
+import org.freeplane.plugin.workspace.controller.WorkspaceNodeAction;
 import org.freeplane.plugin.workspace.dnd.IDropAcceptor;
 import org.freeplane.plugin.workspace.dnd.IWorkspaceTransferableCreator;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
@@ -41,7 +41,7 @@ import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 /**
  * 
  */
-public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNodeEventListener, IWorkspaceTransferableCreator, IDropAcceptor, IFileSystemRepresentation {
+public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNodeActionListener, IWorkspaceTransferableCreator, IDropAcceptor, IFileSystemRepresentation {
 	private static final Icon FOLDER_OPEN_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/folder-orange_open.png"));
 	private static final Icon FOLDER_CLOSED_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/folder-orange.png"));
 	private static final Icon ACROBAT_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/acrobat.png"));
@@ -258,8 +258,8 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 		return this.file;
 	}
 	
-	public void handleEvent(WorkspaceNodeEvent event) {	
-		if(event.getType() == WorkspaceNodeEvent.WSNODE_CHANGED) {
+	public void handleAction(WorkspaceNodeAction event) {	
+		if(event.getType() == WorkspaceNodeAction.WSNODE_CHANGED) {
 			if(rename(event.getBaggage().toString())) {
 				setName(event.getBaggage().toString());
 			}
@@ -268,7 +268,7 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 			}
 			
 		}
-		else if(event.getType() == WorkspaceNodeEvent.WSNODE_OPEN_DOCUMENT) {
+		else if(event.getType() == WorkspaceNodeAction.WSNODE_OPEN_DOCUMENT) {
 			
 			if(getFile() != null) {
 				int dot = getFile().getPath().lastIndexOf('.');
@@ -302,7 +302,7 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 				LogUtils.warn("could not open document ("+getFile()+")", e);
 			}
 		}
-		else if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {
+		else if (event.getType() == WorkspaceNodeAction.MOUSE_RIGHT_CLICK) {
             showPopup((Component) event.getBaggage(), event.getX(), event.getY());
         }
 	}

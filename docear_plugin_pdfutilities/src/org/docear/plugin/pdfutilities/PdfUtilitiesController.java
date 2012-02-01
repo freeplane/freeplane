@@ -67,7 +67,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.INodeViewLifeCycleListener;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.controller.WorkspaceNodeAction;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -166,8 +166,8 @@ public class PdfUtilitiesController extends ALanguageController{
 		this.modecontroller.removeAction("PasteAction"); //$NON-NLS-1$
 		this.modecontroller.addAction(new DocearPasteAction());
 		
-		WorkspaceController.getIOController().registerNodeEventListener (DefaultFileNode.class, WorkspaceNodeEvent.WSNODE_OPEN_DOCUMENT, new WorkspaceNodeOpenDocumentListener());
-		WorkspaceController.getIOController().registerNodeEventListener (LinkTypeFileNode.class, WorkspaceNodeEvent.WSNODE_OPEN_DOCUMENT, new WorkspaceNodeOpenDocumentListener());
+		WorkspaceController.getIOController().registerNodeActionListener (DefaultFileNode.class, WorkspaceNodeAction.WSNODE_OPEN_DOCUMENT, new WorkspaceNodeOpenDocumentListener());
+		WorkspaceController.getIOController().registerNodeActionListener (LinkTypeFileNode.class, WorkspaceNodeAction.WSNODE_OPEN_DOCUMENT, new WorkspaceNodeOpenDocumentListener());
 	}
 
 	private void addMenuEntries() {

@@ -3,7 +3,7 @@ package org.freeplane.plugin.workspace.controller;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 
-public class WorkspaceNodeEvent {
+public class WorkspaceNodeAction {
 	public static final int MOUSE_CLICK = 1;
 	public static final int MOUSE_DBLCLICK = 256;
 	public static final int MOUSE_LEFT = 2;
@@ -26,15 +26,15 @@ public class WorkspaceNodeEvent {
 	
 	private boolean consumed = false;
 	
-	public WorkspaceNodeEvent(AWorkspaceTreeNode source, int eventType, int x, int y) {		
+	public WorkspaceNodeAction(AWorkspaceTreeNode source, int eventType, int x, int y) {		
 		this(source, eventType, x, y, null);
 	}
 	
-	public WorkspaceNodeEvent(AWorkspaceTreeNode source, int eventType, Object baggage) {		
+	public WorkspaceNodeAction(AWorkspaceTreeNode source, int eventType, Object baggage) {		
 		this(source, eventType, 0, 0, baggage);
 	}
 	
-	public WorkspaceNodeEvent(AWorkspaceTreeNode source, int eventType, int x, int y, Object baggage) {		
+	public WorkspaceNodeAction(AWorkspaceTreeNode source, int eventType, int x, int y, Object baggage) {		
 		this.x = x;
 		this.y = y;
 		this.source = source;

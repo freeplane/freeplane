@@ -17,8 +17,8 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.controller.IWorkspaceNodeActionListener;
+import org.freeplane.plugin.workspace.controller.WorkspaceNodeAction;
 import org.freeplane.plugin.workspace.dnd.IDropAcceptor;
 import org.freeplane.plugin.workspace.dnd.IWorkspaceTransferableCreator;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
@@ -28,7 +28,7 @@ import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.node.AFolderNode;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
-public class VirtualFolderNode extends AFolderNode implements IWorkspaceNodeEventListener, IWorkspaceTransferableCreator, IDropAcceptor {
+public class VirtualFolderNode extends AFolderNode implements IWorkspaceNodeActionListener, IWorkspaceTransferableCreator, IDropAcceptor {
 	
 	private static final long serialVersionUID = 1L;
 	private static final Icon DEFAULT_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/object-group-2.png"));
@@ -72,8 +72,8 @@ public class VirtualFolderNode extends AFolderNode implements IWorkspaceNodeEven
 		return true;
 	}
 
-	public void handleEvent(WorkspaceNodeEvent event) {
-		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {	
+	public void handleAction(WorkspaceNodeAction event) {
+		if (event.getType() == WorkspaceNodeAction.MOUSE_RIGHT_CLICK) {	
 			showPopup( (Component) event.getBaggage(), event.getX(), event.getY());
 		}
 		System.out.println("Event: " + event);

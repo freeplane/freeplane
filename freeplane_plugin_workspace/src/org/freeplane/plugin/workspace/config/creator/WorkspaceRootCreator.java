@@ -1,8 +1,8 @@
 package org.freeplane.plugin.workspace.config.creator;
 
 import org.freeplane.n3.nanoxml.XMLElement;
+import org.freeplane.plugin.workspace.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.model.creator.AWorkspaceNodeCreator;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.model.node.WorkspaceRoot;

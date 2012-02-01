@@ -11,35 +11,54 @@ import java.util.EventObject;
  */
 public class WorkspaceEvent extends EventObject {
 
-	public static final int WORKSPACE_EVENT_TYPE_CHANGED = 1;
-	public static final int WORKSPACE_EVENT_TYPE_TOOLBAR_EVENT = 2;
-	public static final int WORKSPACE_EVENT_TYPE_RELOAD = 3;
-	
 	private static final long serialVersionUID = 1L;
 	
+	public static final WORKSPACE_EVENT_TYPE WORKSPACE_CHANGED = WORKSPACE_EVENT_TYPE.CHANGED;
+	public static final WORKSPACE_EVENT_TYPE WORKSPACE_TOOLBAR_EVENT = WORKSPACE_EVENT_TYPE.TOOLBAR;
+	public static final WORKSPACE_EVENT_TYPE WORKSPACE_RELOAD = WORKSPACE_EVENT_TYPE.RELOADED;
 	
-	private final int type;
+		
+	
+	private final WORKSPACE_EVENT_TYPE type;
+	private transient boolean consumed = false;
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 	/**
 	 * @param source
 	 */
-	public WorkspaceEvent(final int type, final Object source) {
+	public WorkspaceEvent(final WORKSPACE_EVENT_TYPE type, final Object source) {
 		super(source);
 		this.type = type;
-	}
-	/**
-	 * @return
-	 */
-	public int getType() {
-		return this.type;
-	}
+	}	
 	
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
-
+	/**
+	 * @return
+	 */
+	public WORKSPACE_EVENT_TYPE getType() {
+		return this.type;
+	}
+	
+	public void consume() {
+		this.consumed = true;
+	}
+	
+	public boolean isConsumed() {
+		return this.consumed;
+	}
+	
+	
+	/**
+     * Returns a String representation of this Event.
+     *
+     * @return  a String representation of this Event.
+     */
+    public String toString() {
+        return getClass().getName() + "[type="+ type +";source=" + source + "]";
+    }
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/

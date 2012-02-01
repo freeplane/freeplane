@@ -33,7 +33,7 @@ import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.controller.WorkspaceNodeAction;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
@@ -70,12 +70,12 @@ public class LinkTypeReferencesNode extends LinkTypeFileNode implements IBibtexD
 		return true;
 	}
 	
-	public void handleEvent(WorkspaceNodeEvent event) {
-		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {			
+	public void handleAction(WorkspaceNodeAction event) {
+		if (event.getType() == WorkspaceNodeAction.MOUSE_RIGHT_CLICK) {			
 			showPopup((Component) event.getBaggage(), event.getX(), event.getY());
 		} 
 		else {
-			super.handleEvent(event);
+			super.handleAction(event);
 		}
 	}
 

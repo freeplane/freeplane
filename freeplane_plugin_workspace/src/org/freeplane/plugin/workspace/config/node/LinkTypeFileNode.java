@@ -20,8 +20,8 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.controller.IWorkspaceNodeActionListener;
+import org.freeplane.plugin.workspace.controller.WorkspaceNodeAction;
 import org.freeplane.plugin.workspace.dnd.IWorkspaceTransferableCreator;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
@@ -30,7 +30,7 @@ import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.node.ALinkNode;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
-public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeEventListener, IWorkspaceTransferableCreator {
+public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeActionListener, IWorkspaceTransferableCreator {
 	
 	private static final long serialVersionUID = 1L;		
 
@@ -76,8 +76,8 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeEventLi
 		}
 	}	
 
-	public void handleEvent(WorkspaceNodeEvent event) {
-		if(event.getType() == WorkspaceNodeEvent.WSNODE_OPEN_DOCUMENT) {
+	public void handleAction(WorkspaceNodeAction event) {
+		if(event.getType() == WorkspaceNodeAction.WSNODE_OPEN_DOCUMENT) {
 			File file = WorkspaceUtils.resolveURI(getLinkPath());
 			if(file != null) {
 				int dot = file.getPath().lastIndexOf('.');
@@ -104,7 +104,7 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeEventLi
 				}
 			}
 		}
-		else if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {
+		else if (event.getType() == WorkspaceNodeAction.MOUSE_RIGHT_CLICK) {
 			showPopup((Component) event.getBaggage(), event.getX(), event.getY());
 		}
 	}

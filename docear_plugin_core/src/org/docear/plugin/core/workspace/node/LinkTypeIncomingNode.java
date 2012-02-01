@@ -26,8 +26,8 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.controller.IWorkspaceNodeActionListener;
+import org.freeplane.plugin.workspace.controller.WorkspaceNodeAction;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
@@ -37,7 +37,7 @@ import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 /**
  * 
  */
-public class LinkTypeIncomingNode extends ALinkNode implements IWorkspaceNodeEventListener, IDocearMindmap {
+public class LinkTypeIncomingNode extends ALinkNode implements IWorkspaceNodeActionListener, IDocearMindmap {
 	private static final Icon DEFAULT_ICON = new ImageIcon(ResourceController.class.getResource("/images/docear16.png"));
 
 	private static final long serialVersionUID = 1L;
@@ -147,9 +147,9 @@ public class LinkTypeIncomingNode extends ALinkNode implements IWorkspaceNodeEve
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	
-	public void handleEvent(WorkspaceNodeEvent event) {
+	public void handleAction(WorkspaceNodeAction event) {
 		System.out.println("event: "+event.getType());
-		if (event.getType() == WorkspaceNodeEvent.MOUSE_LEFT_DBLCLICK) {
+		if (event.getType() == WorkspaceNodeAction.MOUSE_LEFT_DBLCLICK) {
 			System.out.println("doublecklicked MindmapNode");
 			try {				
 				File f = WorkspaceUtils.resolveURI(getLinkPath());
@@ -172,7 +172,7 @@ public class LinkTypeIncomingNode extends ALinkNode implements IWorkspaceNodeEve
 				LogUtils.warn("could not open document (" + getLinkPath() + ")", e);
 			}
 		}
-		else if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {			
+		else if (event.getType() == WorkspaceNodeAction.MOUSE_RIGHT_CLICK) {			
 				showPopup((Component) event.getBaggage(), event.getX(), event.getY());
 		}
 		else {

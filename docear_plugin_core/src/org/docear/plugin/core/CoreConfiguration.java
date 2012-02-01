@@ -1,7 +1,5 @@
 package org.docear.plugin.core;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.text.MessageFormat;
@@ -9,7 +7,6 @@ import java.util.Enumeration;
 
 import javax.swing.SwingUtilities;
 
-import org.apache.commons.io.FileUtils;
 import org.docear.plugin.core.actions.DocearLicenseAction;
 import org.docear.plugin.core.actions.DocearOpenUrlAction;
 import org.docear.plugin.core.actions.DocearQuitAction;
@@ -23,13 +20,6 @@ import org.docear.plugin.core.listeners.WorkspaceChangeListener;
 import org.docear.plugin.core.workspace.actions.DocearChangeLibraryPathAction;
 import org.docear.plugin.core.workspace.actions.DocearRenameAction;
 import org.docear.plugin.core.workspace.actions.WorkspaceChangeLocationsAction;
-import org.docear.plugin.core.workspace.creator.FolderTypeLibraryCreator;
-import org.docear.plugin.core.workspace.creator.FolderTypeLiteratureRepositoryCreator;
-import org.docear.plugin.core.workspace.creator.FolderTypeProjectsCreator;
-import org.docear.plugin.core.workspace.creator.LinkTypeIncomingCreator;
-import org.docear.plugin.core.workspace.creator.LinkTypeLiteratureAnnotationsCreator;
-import org.docear.plugin.core.workspace.creator.LinkTypeMyPublicationsCreator;
-import org.docear.plugin.core.workspace.creator.LinkTypeReferencesCreator;
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
@@ -45,9 +35,6 @@ import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspacePreferences;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
-import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 public class CoreConfiguration extends ALanguageController {
 
@@ -82,7 +69,7 @@ public class CoreConfiguration extends ALanguageController {
 	public static final NodeAttributeObserver referencePathObserver = new NodeAttributeObserver();
 	public static final NodeAttributeObserver repositoryPathObserver = new NodeAttributeObserver();
 	private final boolean firstRun;
-	
+		
 	public CoreConfiguration(ModeController modeController) {			
 		LogUtils.info("org.docear.plugin.core.CoreConfiguration() initializing...");
 		firstRun = !ResourceController.getResourceController().getBooleanProperty(DOCEAR_FIRST_RUN_PROPERTY);
@@ -102,13 +89,10 @@ public class CoreConfiguration extends ALanguageController {
 		modeController.addAction(new DocearRenameAction());
 		
 		addPluginDefaults();
-		prepareWorkspace();
+		//prepareWorkspace();
 		
 		replaceFreeplaneStringsAndActions();
 		DocearMapModelController.install(new DocearMapModelController(modeController));
-		
-				
-		modifyContextMenus();
 		
 		setDocearMapWriter();
 		
@@ -126,54 +110,6 @@ public class CoreConfiguration extends ALanguageController {
 
 	private void registerController(ModeController modeController) {
 		DocearNodeModelExtensionController.install(new DocearNodeModelExtensionController(modeController));		
-	}
-	
-	private void prepareWorkspace() {
-		WorkspaceController controller = WorkspaceController.getController();
-		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_FOLDER, FolderTypeLibraryCreator.FOLDER_TYPE_LIBRARY, new FolderTypeLibraryCreator());
-		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_FOLDER, FolderTypeLiteratureRepositoryCreator.FOLDER_TYPE_LITERATUREREPOSITORY, new FolderTypeLiteratureRepositoryCreator());
-		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_FOLDER, FolderTypeProjectsCreator.FOLDER_TYPE_PROJECTS, new FolderTypeProjectsCreator());
-		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, LinkTypeMyPublicationsCreator.LINK_TYPE_MYPUBLICATIONS , new LinkTypeMyPublicationsCreator());
-		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, LinkTypeReferencesCreator.LINK_TYPE_REFERENCES , new LinkTypeReferencesCreator());
-		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, LinkTypeLiteratureAnnotationsCreator.LINK_TYPE_LITERATUREANNOTATIONS , new LinkTypeLiteratureAnnotationsCreator());
-		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, LinkTypeIncomingCreator.LINK_TYPE_INCOMING , new LinkTypeIncomingCreator());
-		
-		controller.reloadWorkspace();
-		controller.getConfiguration().linkWelcomeMindmapAfterWorkspaceCreation();
-		copyInfoIfNeeded();
-		
-	}
-
-	public static void copyInfoIfNeeded() {
-		File infoFile = new File(WorkspaceUtils.getProfileBaseFile(), "!!!info.txt");
-		if(!infoFile.exists()) {
-			try {
-				if(!infoFile.getParentFile().exists() && !infoFile.getParentFile().mkdirs()) {
-					return;
-				}
-				infoFile.createNewFile();
-				FileUtils.copyInputStreamToFile(CoreConfiguration.class.getResourceAsStream("/conf/!!!info.txt"), infoFile);
-			}
-			catch (IOException e) {
-				LogUtils.warn(e);
-			}
-			
-		}
-		File _dataInfoFile = new File(WorkspaceUtils.getProfileBaseFile().getParentFile().getParentFile(), "!!!info.txt");
-		if(!_dataInfoFile.exists()) {
-			try {
-				if(!_dataInfoFile.getParentFile().exists() && !_dataInfoFile.getParentFile().mkdirs()) {
-					return;
-				}
-				_dataInfoFile.createNewFile();
-				FileUtils.copyInputStreamToFile(CoreConfiguration.class.getResourceAsStream("/conf/!!!info.txt"), _dataInfoFile);
-			}
-			catch (IOException e) {
-				LogUtils.warn(e);
-			}
-			
-		}
-		
 	}
 
 	private void replaceFreeplaneStringsAndActions() {
@@ -295,11 +231,5 @@ public class CoreConfiguration extends ALanguageController {
 		}
 		Controller.getCurrentController().getResourceController().addPropertyChangeListener(new PropertyListener());
 		FreeplaneActionCascade.addAction(new DocearQuitAction());		
-	}
-	
-	private void modifyContextMenus() {		
-		AWorkspaceTreeNode root =  (AWorkspaceTreeNode) WorkspaceUtils.getModel().getRoot();
-		WorkspacePopupMenuBuilder.insertAction(root.getContextMenu(), "workspace.action.docear.locations.change", 3);
-	}
-	
+	}	
 }

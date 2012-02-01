@@ -10,7 +10,7 @@ import java.net.URL;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.controller.WorkspaceNodeAction;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 /**
@@ -42,8 +42,8 @@ public class MindMapFileNode extends DefaultFileNode {
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
-	public void handleEvent(WorkspaceNodeEvent event) {
-		if(event.getType() == WorkspaceNodeEvent.WSNODE_OPEN_DOCUMENT) {
+	public void handleAction(WorkspaceNodeAction event) {
+		if(event.getType() == WorkspaceNodeAction.WSNODE_OPEN_DOCUMENT) {
 			try {
 				final URL mapUrl = Compat.fileToUrl(getFile());
 				Controller.getCurrentModeController().getMapController().newMap(mapUrl);
@@ -53,6 +53,6 @@ public class MindMapFileNode extends DefaultFileNode {
 			}
 		} 
 		else 
-			super.handleEvent(event);
+			super.handleAction(event);
 	}
 }

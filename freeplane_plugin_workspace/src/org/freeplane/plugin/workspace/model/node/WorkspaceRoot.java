@@ -36,8 +36,8 @@ import org.freeplane.plugin.workspace.config.actions.WorkspaceDeleteNodeAction;
 import org.freeplane.plugin.workspace.config.actions.WorkspaceExpandAction;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
 import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
-import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.controller.IWorkspaceNodeActionListener;
+import org.freeplane.plugin.workspace.controller.WorkspaceNodeAction;
 import org.freeplane.plugin.workspace.dnd.IDropAcceptor;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
 import org.freeplane.plugin.workspace.io.action.FileNodeNewDirectoryAction;
@@ -49,7 +49,7 @@ import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.action.WorkspaceHideAction;
 
-public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IWorkspaceNodeEventListener, IDropAcceptor {
+public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IWorkspaceNodeActionListener, IDropAcceptor {
 
 	private static final long serialVersionUID = 1L;
 	private static Icon DEFAULT_ICON = new ImageIcon(
@@ -67,8 +67,8 @@ public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IW
 		return "workspace";
 	}
 
-	public void handleEvent(WorkspaceNodeEvent event) {
-		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {
+	public void handleAction(WorkspaceNodeAction event) {
+		if (event.getType() == WorkspaceNodeAction.MOUSE_RIGHT_CLICK) {
 			showPopup((Component) event.getBaggage(), event.getX(), event.getY());
 		}
 	}

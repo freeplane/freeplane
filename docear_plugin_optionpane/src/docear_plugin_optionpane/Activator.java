@@ -1,11 +1,11 @@
 package docear_plugin_optionpane;
 
-import org.docear.plugin.core.DocearPlugin;
+import org.docear.plugin.core.DocearService;
 import org.freeplane.features.mode.ModeController;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-public class Activator extends DocearPlugin implements BundleActivator {
+public class Activator extends DocearService implements BundleActivator {
 
 	
 	
@@ -13,7 +13,7 @@ public class Activator extends DocearPlugin implements BundleActivator {
 		
 	}
 
-	public void startPlugin(BundleContext context, ModeController modeController) {
+	public void startService(BundleContext context, ModeController modeController) {
 //		new OptionPaneConfiguration(modeController);
 	}
 

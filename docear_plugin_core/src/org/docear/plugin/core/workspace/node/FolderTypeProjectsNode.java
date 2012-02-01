@@ -36,8 +36,8 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
-import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.controller.IWorkspaceNodeActionListener;
+import org.freeplane.plugin.workspace.controller.WorkspaceNodeAction;
 import org.freeplane.plugin.workspace.dnd.IDropAcceptor;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
 import org.freeplane.plugin.workspace.io.IFileSystemRepresentation;
@@ -49,7 +49,7 @@ import org.freeplane.plugin.workspace.model.node.AFolderNode;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 
-public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNodeEventListener, FileAlterationListener, ChangeListener, IDropAcceptor, IFileSystemRepresentation {
+public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNodeActionListener, FileAlterationListener, ChangeListener, IDropAcceptor, IFileSystemRepresentation {
 
 	private static final long serialVersionUID = 1L;
 	private static final Icon DEFAULT_ICON = new ImageIcon(FolderTypeLibraryNode.class.getResource("/images/project-open-2.png"));
@@ -233,8 +233,8 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	
-	public void handleEvent(WorkspaceNodeEvent event) {
-		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {
+	public void handleAction(WorkspaceNodeAction event) {
+		if (event.getType() == WorkspaceNodeAction.MOUSE_RIGHT_CLICK) {
 			showPopup((Component) event.getBaggage(), event.getX(), event.getY());
 		}
 	}

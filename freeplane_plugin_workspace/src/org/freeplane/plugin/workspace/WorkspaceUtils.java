@@ -26,7 +26,6 @@ import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
-import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
 import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
 import org.freeplane.plugin.workspace.config.node.VirtualFolderNode;
@@ -67,7 +66,7 @@ public class WorkspaceUtils {
 			closeAllMindMaps();	
 			WorkspaceController.getController().getPreferences().setNewWorkspaceLocation(WorkspaceUtils.getURI(f));
 			WorkspaceController.getController().getPreferences().setWorkspaceProfile(profileName);
-			WorkspaceController.getController().reloadWorkspace();
+			WorkspaceController.getController().loadWorkspace();
 		}
 	}
 	
@@ -170,6 +169,12 @@ public class WorkspaceUtils {
 		ret = getWorkspaceBaseFile().toURI();
 		return ret;
 	}
+	
+	public static URI getDataDirectoryURI() {
+		URI ret = null;
+		ret = getDataDirectory().toURI();
+		return ret;
+	}
 
 	public static URI getProfileBaseURI() {
 		URI base = getWorkspaceBaseFile().toURI();
@@ -189,6 +194,10 @@ public class WorkspaceUtils {
 			location = ResourceController.getResourceController().getProperty("workspace_location_new");
 		}
 		return new File(location);
+	}
+	
+	public static File getDataDirectory() {
+		return new File(getWorkspaceBaseFile(), "_data");
 	}
 
 	public static File getProfileBaseFile() {
