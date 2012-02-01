@@ -1,0 +1,31 @@
+<launch4jConfig>
+  <dontWrapJar>true</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>framework.jar</jar>
+  <outfile>C:\Users\Anwender\Documents\DocearWorkspace\trunk\docear_framework\build\docear.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine>-xargs &quot;props.xargs&quot; -xargs &quot;init.xargs&quot;</cmdLine>
+  <chdir></chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl></supportUrl>
+  <customProcName>false</customProcName>
+  <stayAlive>false</stayAlive>
+  <manifest></manifest>
+  <icon>C:\Users\Anwender\Documents\DocearWorkspace\trunk\docear_resources\images\icons\icon-windows_all_sizes_combined.ico</icon>
+  <jre>
+    <path></path>
+    <minVersion>1.6.0</minVersion>
+    <maxVersion></maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+    <opt>-Xmx512m</opt>
+    <opt>-Dorg.knopflerfish.framework.bundlestorage=memory</opt>
+    <opt>-Dorg.knopflerfish.gosg.jars=reference:file:%EXEDIR%/core/</opt>
+    <opt>-Dorg.freeplane.globalresourcedir=%EXEDIR%/resources/</opt>
+    <opt>-Dorg.freeplane.param1=%~1%</opt>
+    <opt>-Dorg.freeplane.param1=%~2%</opt>
+    <opt>-Dorg.freeplane.param3=%~3%</opt>
+    <opt>-Dorg.freeplane.param4=%~4%</opt>
+    <opt>-Dorg.freeplane.userfpdir=%appdata%/Docear</opt>
+  </jre>
+</launch4jConfig>
