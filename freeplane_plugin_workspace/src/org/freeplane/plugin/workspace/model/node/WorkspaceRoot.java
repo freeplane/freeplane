@@ -40,6 +40,7 @@ import org.freeplane.plugin.workspace.controller.IWorkspaceNodeActionListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeAction;
 import org.freeplane.plugin.workspace.dnd.IDropAcceptor;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
+import org.freeplane.plugin.workspace.io.action.FileNodeDeleteAction;
 import org.freeplane.plugin.workspace.io.action.FileNodeNewDirectoryAction;
 import org.freeplane.plugin.workspace.io.action.FileNodeNewFileAction;
 import org.freeplane.plugin.workspace.io.action.FileNodeNewMindmapAction;
@@ -124,6 +125,7 @@ public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IW
 			modeController.addAction(new FileNodeNewDirectoryAction());
 			modeController.addAction(new FileNodeNewMindmapAction());
 			modeController.addAction(new FileNodeNewFileAction());
+			modeController.addAction(new FileNodeDeleteAction());
 			
 			popupMenu = new WorkspacePopupMenu();
 			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {

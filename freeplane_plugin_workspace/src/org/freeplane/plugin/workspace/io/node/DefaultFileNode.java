@@ -13,8 +13,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -187,7 +187,7 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 	public void moveTo(File destFile) throws IOException {
 		assert(destFile != null);
 		if(destFile.isDirectory()) {
-			if(getFile().isDirectory()) {
+			if(getFile().isDirectory()) {				
 				FileUtils.moveDirectoryToDirectory(getFile(), destFile, true);
 			}
 			else {
@@ -330,13 +330,15 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 			transferable.addData(WorkspaceTransferable.WORKSPACE_URI_LIST_FLAVOR, uri.toString());
 			List<File> fileList = new Vector<File>();
 			fileList.add(new File(uri));
-			transferable.addData(WorkspaceTransferable.WORKSPACE_FILE_LIST_FLAVOR, fileList);
+			transferable.addData(WorkspaceTransferable.WORKSPACE_FILE_LIST_FLAVOR, fileList);			
 		}
-		catch (URISyntaxException e) {
-			e.printStackTrace();
+		catch (Exception e) {
+			LogUtils.warn(e);
 		}
-		catch (IOException e) {
-			e.printStackTrace();
+		if(!this.isSystem()) {
+			List<AWorkspaceTreeNode> objectList = new ArrayList<AWorkspaceTreeNode>();
+			objectList.add(this);
+			transferable.addData(WorkspaceTransferable.WORKSPACE_NODE_FLAVOR, objectList);
 		}
 		return transferable;
 	}
@@ -345,14 +347,14 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 		if (popupMenu == null) {			
 			popupMenu = new WorkspacePopupMenu();
 			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
-					"workspace.action.node.paste",
-					"workspace.action.node.copy",
 					"workspace.action.node.cut",
+					"workspace.action.node.copy",
+					"workspace.action.node.paste",
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.rename",
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.refresh",
-					"workspace.action.node.delete"
+					"workspace.action.file.delete"
 			});
 		}
 	}
