@@ -15,7 +15,6 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
-import org.docear.plugin.core.workspace.IDocearMindmap;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
@@ -32,11 +31,12 @@ import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.node.ALinkNode;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.node.IMutableLinkNode;
 
 /**
  * 
  */
-public class LinkTypeLiteratureAnnotationsNode extends ALinkNode implements IWorkspaceNodeActionListener, IDocearMindmap {
+public class LinkTypeLiteratureAnnotationsNode extends ALinkNode implements IWorkspaceNodeActionListener, IMutableLinkNode {
 	private static final Icon DEFAULT_ICON = new ImageIcon(ResourceController.class.getResource("/images/docear16.png"));
 
 	private static final long serialVersionUID = 1L;
@@ -55,7 +55,7 @@ public class LinkTypeLiteratureAnnotationsNode extends ALinkNode implements IWor
 	 * METHODS
 	 **********************************************************************************/
 
-	@ExportAsAttribute("path")
+	@ExportAsAttribute(name="path")
 	public URI getLinkPath() {
 		return linkPath;
 	}
@@ -79,12 +79,16 @@ public class LinkTypeLiteratureAnnotationsNode extends ALinkNode implements IWor
 		if (popupMenu == null) {
 						
 			popupMenu  = new WorkspacePopupMenu();
-			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {						
-					"workspace.action.node.paste",
-					"workspace.action.node.copy",
+			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
 					"workspace.action.node.cut",
+					"workspace.action.node.copy",						
+					"workspace.action.node.paste",
 					WorkspacePopupMenuBuilder.SEPARATOR,
-					"workspace.action.docear.node.rename"
+					"workspace.action.node.rename",						
+					"workspace.action.node.remove",
+					"workspace.action.file.delete",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.refresh"
 			});
 		}
 		
@@ -189,7 +193,7 @@ public class LinkTypeLiteratureAnnotationsNode extends ALinkNode implements IWor
 		return popupMenu;
 	}
 
-	public boolean changeNameTo(String newName) {
+	public boolean changeName(String newName, boolean renameLink) {
 		// simple set the node name
 		this.setName(newName);
 		return true;

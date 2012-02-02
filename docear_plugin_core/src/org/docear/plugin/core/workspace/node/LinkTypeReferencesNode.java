@@ -112,12 +112,14 @@ public class LinkTypeReferencesNode extends LinkTypeFileNode implements IBibtexD
 			popupMenu = new WorkspacePopupMenu();
 			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
 					"workspace.action.docear.uri.change",					
-					WorkspacePopupMenuBuilder.SEPARATOR,						
-					"workspace.action.node.paste",
-					"workspace.action.node.copy",
-					"workspace.action.node.cut",
 					WorkspacePopupMenuBuilder.SEPARATOR,
-					"workspace.action.node.rename",
+					"workspace.action.node.cut",
+					"workspace.action.node.copy",						
+					"workspace.action.node.paste",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.rename",						
+					"workspace.action.node.remove",
+					"workspace.action.file.delete",
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.refresh"	
 			});

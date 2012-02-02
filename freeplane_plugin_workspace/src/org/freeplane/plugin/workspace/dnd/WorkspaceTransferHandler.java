@@ -128,7 +128,8 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 					return NONE;
 				}
 				//SYSTEM NODES are vulnerable for DnD move events (e.g. Copy a system file link and delete the copy hard afterwards, maybe the original will also be deleted.) 
-				if(selectionPath.getLastPathComponent() instanceof AWorkspaceTreeNode && ((AWorkspaceTreeNode) selectionPath.getLastPathComponent()).isSystem()) {
+				if(selectionPath.getLastPathComponent() instanceof AWorkspaceTreeNode 
+						&& ( ((AWorkspaceTreeNode) selectionPath.getLastPathComponent()).isSystem() || !((AWorkspaceTreeNode) selectionPath.getLastPathComponent()).isTransferable() ) ) {
 					//DOCEAR: REJECT DnD on system nodes for now
 					return NONE;
 				}

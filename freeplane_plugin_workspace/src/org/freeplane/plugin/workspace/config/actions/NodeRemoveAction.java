@@ -13,11 +13,12 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
+import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 @EnabledAction(checkOnPopup = true)
-public class WorkspaceDeleteNodeAction extends AWorkspaceAction {
+public class NodeRemoveAction extends AWorkspaceAction {
 
 	private static final long serialVersionUID = -8965412338727545850L;
 
@@ -25,8 +26,8 @@ public class WorkspaceDeleteNodeAction extends AWorkspaceAction {
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 
-	public WorkspaceDeleteNodeAction() {
-		super("workspace.action.node.delete");
+	public NodeRemoveAction() {
+		super("workspace.action.node.remove");
 	}
 	
 	/***********************************************************************************
@@ -34,7 +35,7 @@ public class WorkspaceDeleteNodeAction extends AWorkspaceAction {
 	 **********************************************************************************/
 	
 	public void setEnabledFor(AWorkspaceTreeNode node) {
-		if(node.isSystem()) {
+		if(node.isSystem() || !node.isTransferable() || node instanceof DefaultFileNode) {
 			setEnabled(false);
 		}
 		else{
@@ -48,8 +49,8 @@ public class WorkspaceDeleteNodeAction extends AWorkspaceAction {
 	public void actionPerformed(ActionEvent e) {
 		int option = JOptionPane.showConfirmDialog(
 				UITools.getFrame()
-				,TextUtils.getRawText("workspace.action.node.delete.confirm.text") +" "+ getNodeFromActionEvent(e).getName()
-				,TextUtils.getRawText("workspace.action.node.delete.confirm.title")
+				,TextUtils.format("workspace.action.node.remove.confirm.text", getNodeFromActionEvent(e).getName())
+				,TextUtils.getRawText("workspace.action.node.remove.confirm.title")
 				,JOptionPane.YES_NO_OPTION
 				,JOptionPane.QUESTION_MESSAGE
 		);

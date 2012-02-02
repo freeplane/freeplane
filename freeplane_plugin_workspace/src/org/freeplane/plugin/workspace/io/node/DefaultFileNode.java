@@ -37,11 +37,12 @@ import org.freeplane.plugin.workspace.io.IFileSystemRepresentation;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.node.IMutableLinkNode;
 
 /**
  * 
  */
-public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNodeActionListener, IWorkspaceTransferableCreator, IDropAcceptor, IFileSystemRepresentation {
+public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNodeActionListener, IWorkspaceTransferableCreator, IDropAcceptor, IFileSystemRepresentation, IMutableLinkNode {
 	private static final Icon FOLDER_OPEN_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/folder-orange_open.png"));
 	private static final Icon FOLDER_CLOSED_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/folder-orange.png"));
 	private static final Icon ACROBAT_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/acrobat.png"));
@@ -91,7 +92,7 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 	}
 	
 	public boolean rename(final String name) {
-		File newFile = new File(getFile().getParentFile() + File.separator + name);
+		File newFile = new File(getFile().getParentFile(), name);
 		if(getFile().renameTo(newFile)) {
 			this.file = newFile;
 			this.fileExtension = FilenameUtils.getExtension(getFile().getPath());
@@ -260,13 +261,9 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 	
 	public void handleAction(WorkspaceNodeAction event) {	
 		if(event.getType() == WorkspaceNodeAction.WSNODE_CHANGED) {
-			if(rename(event.getBaggage().toString())) {
-				setName(event.getBaggage().toString());
+			if(changeName(event.getBaggage().toString(), true)) {
+				event.consume();
 			}
-			else {
-				LogUtils.warn("Could not rename File("+getName()+") to File("+event.getBaggage()+")");
-			}
-			
 		}
 		else if(event.getType() == WorkspaceNodeAction.WSNODE_OPEN_DOCUMENT) {
 			
@@ -352,9 +349,10 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 					"workspace.action.node.paste",
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.rename",
+					"workspace.action.node.remove",
+					"workspace.action.file.delete",
 					WorkspacePopupMenuBuilder.SEPARATOR,
-					"workspace.action.node.refresh",
-					"workspace.action.file.delete"
+					"workspace.action.node.refresh"
 			});
 		}
 	}
@@ -369,5 +367,17 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 			initializePopup();
 		}
 		return popupMenu;
+	}
+
+	public boolean changeName(String newName, boolean renameLink) {
+		String oldName = getName();
+		if(rename(newName)) {
+			setName(newName);
+			return true;
+		} 
+		else {
+			LogUtils.warn("cannot rename "+oldName);
+		}
+		return false;
 	}
 }

@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
 
-import org.docear.plugin.core.workspace.IDocearMindmap;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
@@ -16,6 +15,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.node.IMutableLinkNode;
 
 @EnabledAction(checkOnPopup=true)
 public class DocearRenameAction extends AWorkspaceAction {
@@ -34,11 +34,8 @@ public class DocearRenameAction extends AWorkspaceAction {
 	 **********************************************************************************/
 
 	public void setEnabledFor(AWorkspaceTreeNode node) {
-		if(node instanceof IDocearMindmap) {
+		if(node instanceof IMutableLinkNode) {
 			setEnabled();	
-		} 
-		else if(node.isSystem()) {
-			setEnabled(false);
 		}
 		else{
 			setEnabled();
@@ -52,13 +49,13 @@ public class DocearRenameAction extends AWorkspaceAction {
 	public void actionPerformed(ActionEvent e) {
 		AWorkspaceTreeNode targetNode = getNodeFromActionEvent(e);
 	
-		if(targetNode instanceof IDocearMindmap) {
+		if(targetNode instanceof IMutableLinkNode) {
 			String oldName = targetNode.getName();		
 			String newName = JOptionPane.showInputDialog(UITools.getFrame(),
 					TextUtils.getText("docear.confirm.action.rename.mindmap.text"), oldName);
 
 			if (newName != null) {
-				if(((IDocearMindmap) targetNode).changeNameTo(newName)) {
+				if(((IMutableLinkNode) targetNode).changeName(newName, false)) {
 					WorkspaceUtils.saveCurrentConfiguration();
 				}
 				else {

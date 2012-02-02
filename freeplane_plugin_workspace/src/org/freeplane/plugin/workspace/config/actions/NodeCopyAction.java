@@ -19,7 +19,7 @@ public class NodeCopyAction extends AWorkspaceAction {
 	}
 	
 	public void setEnabledFor(AWorkspaceTreeNode node) {
-		if(node.isSystem() || !(node instanceof IWorkspaceTransferableCreator)) {
+		if(node.isSystem() || !node.isTransferable() || !(node instanceof IWorkspaceTransferableCreator)) {
 			setEnabled(false);
 		}
 		else{

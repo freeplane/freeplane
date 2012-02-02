@@ -32,7 +32,7 @@ import org.freeplane.plugin.workspace.config.actions.NodeRefreshAction;
 import org.freeplane.plugin.workspace.config.actions.NodeRenameAction;
 import org.freeplane.plugin.workspace.config.actions.WorkspaceChangeLocationAction;
 import org.freeplane.plugin.workspace.config.actions.WorkspaceCollapseAction;
-import org.freeplane.plugin.workspace.config.actions.WorkspaceDeleteNodeAction;
+import org.freeplane.plugin.workspace.config.actions.NodeRemoveAction;
 import org.freeplane.plugin.workspace.config.actions.WorkspaceExpandAction;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
 import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
@@ -78,7 +78,7 @@ public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IW
 		this.version = version;
 	}
 
-	@ExportAsAttribute("version")
+	@ExportAsAttribute(name="version")
 	public String getVersion() {
 		return this.version;
 	}
@@ -87,7 +87,7 @@ public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IW
 		this.meta = meta;
 	}
 
-	@ExportAsAttribute("meta")
+	@ExportAsAttribute(name="meta")
 	public Object getMeta() {
 		return this.meta;
 	}
@@ -111,7 +111,7 @@ public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IW
 			modeController.addAction(new WorkspaceChangeLocationAction());
 			modeController.addAction(new NodeRefreshAction());
 			modeController.addAction(new WorkspaceHideAction());
-			modeController.addAction(new WorkspaceDeleteNodeAction());
+			modeController.addAction(new NodeRemoveAction());
 			modeController.addAction(new NodeNewFolderAction());
 			modeController.addAction(new NodeNewLinkAction());
 			modeController.addAction(new NodeNewDirectoryLinkAction());
@@ -137,10 +137,10 @@ public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IW
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.location.change",
 					//"workspace.action.hide",
-					WorkspacePopupMenuBuilder.SEPARATOR,						
-					"workspace.action.node.paste",
-					"workspace.action.node.copy",
+					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.cut",
+					"workspace.action.node.copy",						
+					"workspace.action.node.paste",
 					WorkspacePopupMenuBuilder.SEPARATOR, 
 					"workspace.action.all.expand",
 					"workspace.action.all.collapse",					 

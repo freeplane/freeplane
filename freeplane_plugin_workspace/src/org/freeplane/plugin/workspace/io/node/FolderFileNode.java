@@ -107,15 +107,16 @@ public class FolderFileNode extends DefaultFileNode {
 						//WorkspacePopupMenuBuilder.SEPARATOR,
 						//"workspace.action.file.new.file",
 						WorkspacePopupMenuBuilder.endSubMenu(),
-						WorkspacePopupMenuBuilder.SEPARATOR, 
-						"workspace.action.node.paste",
-						"workspace.action.node.copy",
+						WorkspacePopupMenuBuilder.SEPARATOR,
 						"workspace.action.node.cut",
+						"workspace.action.node.copy", 
+						"workspace.action.node.paste",
 						WorkspacePopupMenuBuilder.SEPARATOR,
 						"workspace.action.node.rename",
+						"workspace.action.node.remove",
+						"workspace.action.file.delete",
 						WorkspacePopupMenuBuilder.SEPARATOR,
-						"workspace.action.node.refresh",
-						"workspace.action.node.delete"		
+						"workspace.action.node.refresh"		
 				});
 			}
 		}

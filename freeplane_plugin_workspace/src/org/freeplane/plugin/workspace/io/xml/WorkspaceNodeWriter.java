@@ -63,12 +63,13 @@ public class WorkspaceNodeWriter implements IElementWriter, IAttributeWriter {
 		Object[] args = null;
 		Object value;
 		try {
-			value = m.invoke(object, args);
-			if(value instanceof Boolean && ((Boolean) value).booleanValue() == false) {
-				return;
-			}
+			value = m.invoke(object, args);				
 			if(value != null) {
-				String attrName = m.getAnnotation(ExportAsAttribute.class).value();
+				ExportAsAttribute annotation = m.getAnnotation(ExportAsAttribute.class);
+				if(value instanceof Boolean && ((Boolean) value).booleanValue() == annotation.defaultBool()) {
+					return;
+				}
+				String attrName = annotation.name();
 				if(attrName.trim().length()==0) throw new IllegalArgumentException("value for annotation 'ExportAsAttribute' must not be empty!");
 				writer.addAttribute(attrName.trim(), value.toString());
 			}

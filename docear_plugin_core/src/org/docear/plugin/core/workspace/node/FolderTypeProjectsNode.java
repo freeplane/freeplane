@@ -97,7 +97,7 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 		locked = false;
 	}
 	
-	@ExportAsAttribute("path")
+	@ExportAsAttribute(name="path")
 	public URI getPath() {
 		return this.pathURI;		
 	}
@@ -128,7 +128,7 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 		}
 	}
 	
-	@ExportAsAttribute("monitor")
+	@ExportAsAttribute(name="monitor")
 	public boolean isMonitoring() {
 		return this.doMonitoring;
 	}
@@ -319,15 +319,17 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 					//"workspace.action.file.new.file",
 					WorkspacePopupMenuBuilder.endSubMenu(),
 					WorkspacePopupMenuBuilder.SEPARATOR,
-					"workspace.action.docear.uri.change",					
-					"workspace.action.docear.project.enable.monitoring",
-					WorkspacePopupMenuBuilder.SEPARATOR,						
-					"workspace.action.node.paste",
-					"workspace.action.node.copy",
+					"workspace.action.docear.uri.change",
+					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.cut",
+					"workspace.action.node.copy",						
+					"workspace.action.node.paste",
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.rename",
-					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.remove",
+					"workspace.action.file.delete",
+					WorkspacePopupMenuBuilder.SEPARATOR,					
+					"workspace.action.docear.project.enable.monitoring",
 					"workspace.action.node.refresh"	
 			});
 		}

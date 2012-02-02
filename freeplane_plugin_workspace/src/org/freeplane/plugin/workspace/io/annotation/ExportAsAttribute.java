@@ -17,5 +17,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value=ElementType.METHOD)
 public @interface ExportAsAttribute {
-	String value();
+	String name();
+	boolean defaultBool() default false;
 }

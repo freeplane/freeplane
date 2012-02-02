@@ -99,13 +99,15 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.library.new.mindmap",
 					WorkspacePopupMenuBuilder.endSubMenu(),
-					WorkspacePopupMenuBuilder.SEPARATOR,						
-					"workspace.action.node.paste",
-					"workspace.action.node.copy",
-					"workspace.action.node.cut",
 					WorkspacePopupMenuBuilder.SEPARATOR,
-					"workspace.action.node.refresh",
-					"workspace.action.node.delete"
+					"workspace.action.node.cut",
+					"workspace.action.node.copy",						
+					"workspace.action.node.paste",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.remove",
+					"workspace.action.file.delete",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.refresh"
 			});
 		}
 	}

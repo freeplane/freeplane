@@ -37,6 +37,7 @@ public abstract class AWorkspaceTreeNode implements Cloneable, TreeNode, Destruc
 	private int currentMode;
 	private final String type;
 	private boolean system = false;
+	private boolean isTranferable = true;
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -81,13 +82,25 @@ public abstract class AWorkspaceTreeNode implements Cloneable, TreeNode, Destruc
 		children.add(node);
 	}
 	
-	@ExportAsAttribute("system")
+	@ExportAsAttribute(name="system")
 	public boolean isSystem() {		
 		return system;
 	}
 
 	public void setSystem(boolean system) {
 		this.system = system;
+	}
+	
+	public void setTransferable(boolean enabled) {
+		this.isTranferable = enabled;
+	}
+	
+	/**
+	 * @return
+	 */
+	@ExportAsAttribute(name="transferable",defaultBool=true)
+	public boolean isTransferable() {
+		return isTranferable;
 	}
 
 	
@@ -133,6 +146,10 @@ public abstract class AWorkspaceTreeNode implements Cloneable, TreeNode, Destruc
 		String system = data.getAttribute("system", "false");		
 		if (system.equals("true")) {
 			setSystem(true);
+		}
+		String transferable = data.getAttribute("transferable", "true");		
+		if (transferable.equals("false")) {
+			setTransferable(false);
 		}
 	}
 	
@@ -237,6 +254,8 @@ public abstract class AWorkspaceTreeNode implements Cloneable, TreeNode, Destruc
 		WorkspaceUtils.getModel().removeAllElements(this);
 		this.parent = null;
 	}
+
+	
 
 		
 }
