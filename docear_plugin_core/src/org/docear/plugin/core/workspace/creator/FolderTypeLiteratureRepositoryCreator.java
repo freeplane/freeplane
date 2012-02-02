@@ -7,7 +7,7 @@ package org.docear.plugin.core.workspace.creator;
 import java.net.URI;
 
 import org.docear.plugin.core.CoreConfiguration;
-import org.docear.plugin.core.workspace.actions.LocationDialog;
+import org.docear.plugin.core.ui.LocationDialog;
 import org.docear.plugin.core.workspace.node.FolderTypeLiteratureRepositoryNode;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.WorkspaceController;
