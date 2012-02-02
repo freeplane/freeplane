@@ -15,10 +15,9 @@
 			<separator name ="annotations_open">
 			    <radiobutton name = "docear_open_standard"/>
 			    <radiobutton name = "docear_open_internal" enabled = "false"/>
-			    <radiobutton name = "docear_open_on_page"/>			     
-			    <path name = "docear_open_on_page_reader_path" suffixes = "exe"/>
-			    <radiobutton name = "docear_open_on_page_wine"/> 
-			    <string name = "docear_open_on_page_reader_path_wine"/>
+			    <text name = "docear_open_on_page_explanation" />
+			    <radiobutton name = "docear_open_on_page"/>
+			    <path name = "docear_open_on_page_reader_path" showhidden="true" suffixes = "exe"/>			    
 			</separator>			
 		</tab>
 		<tab name ="folder_monitoring">

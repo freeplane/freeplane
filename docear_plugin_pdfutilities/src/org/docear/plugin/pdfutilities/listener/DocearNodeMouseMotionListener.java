@@ -83,15 +83,11 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 
 	public void mouseClicked(MouseEvent e) {		
 		boolean openOnPage = ResourceController.getResourceController().getBooleanProperty(
-				PdfUtilitiesController.OPEN_PDF_VIEWER_ON_PAGE_KEY);
-		boolean openOnPageWine = ResourceController.getResourceController().getBooleanProperty(
-				PdfUtilitiesController.OPEN_PDF_VIEWER_ON_PAGE_KEY_WINE);
+				PdfUtilitiesController.OPEN_PDF_VIEWER_ON_PAGE_KEY);		
 		String readerPath = ResourceController.getResourceController().getProperty(
-				PdfUtilitiesController.OPEN_ON_PAGE_READER_PATH_KEY);
-		final String readerPathWine = ResourceController.getResourceController().getProperty(
-				PdfUtilitiesController.OPEN_ON_PAGE_READER_PATH_KEY_WINE);
+				PdfUtilitiesController.OPEN_ON_PAGE_READER_PATH_KEY);		
 
-		if ((!openOnPage || !isValidReaderPath(readerPath)) && ((!openOnPageWine || readerPathWine==null))) {
+		if (!openOnPage || !isValidReaderPath(readerPath)) {
 			this.mouseListener.mouseClicked(e);
 			return;
 		}
@@ -115,8 +111,8 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 				return;
 			}
 
-			if (openOnPageWine) {
-				openPageWithFoxitInWine(e, readerPathWine, node);
+			if (openOnPage && !(Compat.isMacOsX() || Compat.isWindowsOS())) {
+				openPageWithFoxitInWine(e, readerPath, node);
 				return;
 			}
 			
@@ -165,11 +161,14 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 					if (annotation.getAnnotationType() == AnnotationType.BOOKMARK_WITHOUT_DESTINATION
 							|| annotation.getAnnotationType() == AnnotationType.BOOKMARK_WITH_URI) {
 						if (openOnPage) {
-							command = getExecCommand(readerPath, uri, 1);
+							if (Compat.isWindowsOS() || Compat.isMacOsX()) {
+								command = getExecCommand(readerPath, uri, 1);
+							}
+							else {
+								command = getExecCommandWine(readerPath, uri, 1);
+							}
 						}
-						else if (openOnPageWine) {
-							command = getExecCommandWine(readerPath, uri, 1);
-						}
+						
 					}
 	
 				}
