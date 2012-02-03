@@ -16,6 +16,9 @@ import org.docear.plugin.core.workspace.creator.LinkTypeMyPublicationsCreator;
 import org.docear.plugin.core.workspace.creator.LinkTypeReferencesCreator;
 import org.docear.plugin.core.workspace.node.FolderTypeLibraryNode;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mapio.mindmapmode.MMapIO;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
@@ -99,48 +102,75 @@ public class WorkspaceChangeListener implements IWorkspaceEventListener {
 	private void copyInfoIfNeeded() {
 		File infoFile = new File(WorkspaceUtils.getProfileBaseFile(), "!!!info.txt");
 		if(!infoFile.exists()) {
-			try {
-				if(!infoFile.getParentFile().exists() && !infoFile.getParentFile().mkdirs()) {
-					return;
-				}
-				infoFile.createNewFile();
-				FileUtils.copyInputStreamToFile(CoreConfiguration.class.getResourceAsStream("/conf/!!!info.txt"), infoFile);
-			}
-			catch (IOException e) {
-				LogUtils.warn(e);
-			}
-			
+			createAndCopy(infoFile, "/conf/!!!info.txt");
 		}
-		File _dataInfoFile = new File(WorkspaceUtils.getProfileBaseFile().getParentFile().getParentFile(), "!!!info.txt");
+		
+		File _dataInfoFile = new File(WorkspaceUtils.getDataDirectory(), "!!!info.txt");
 		if(!_dataInfoFile.exists()) {
-			try {
-				if(!_dataInfoFile.getParentFile().exists() && !_dataInfoFile.getParentFile().mkdirs()) {
-					return;
-				}
-				_dataInfoFile.createNewFile();
-				FileUtils.copyInputStreamToFile(CoreConfiguration.class.getResourceAsStream("/conf/!!!info.txt"), _dataInfoFile);
-			}
-			catch (IOException e) {
-				LogUtils.warn(e);
-			}
-			
+			createAndCopy(_dataInfoFile, "/conf/!!!info.txt");
 		}
 		
 		File _welcomeFile = new File(WorkspaceUtils.getDataDirectory(), "/help/docear-welcome.mm");
 		if(!_welcomeFile.exists()) {
-			try {
-				if(!_welcomeFile.getParentFile().exists() && !_welcomeFile.getParentFile().mkdirs()) {
-					return;
-				}
-				_welcomeFile.createNewFile();
-				FileUtils.copyInputStreamToFile(CoreConfiguration.class.getResourceAsStream("/conf/docear-welcome.mm"), _welcomeFile);
-			}
-			catch (IOException e) {
-				LogUtils.warn(e);
-			}
-			
+			createAndCopy(_welcomeFile, "/conf/docear-welcome.mm");			
 		}
 		
+		
+		File libPath = WorkspaceUtils.resolveURI(DocearController.getController().getLibraryPath());
+		
+		File _tempFile = new File(libPath, "temp.mm");			
+		if(!_tempFile.exists()) {
+			createAndCopy(_tempFile, "/conf/simple_mindmap.template");
+			createAndRenameMap(_tempFile, "temp");
+		}
+		
+		File _trashFile = new File(libPath, "trash.mm");
+		if(!_trashFile.exists()) {
+			createAndCopy(_trashFile, "/conf/simple_mindmap.template");
+			createAndRenameMap(_trashFile, "trash");
+			
+		}		
+	}
+
+	/**
+	 * @param string
+	 */
+	private void createAndRenameMap(File file ,String name) {
+		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MMapIO.class);
+		try {
+			MapModel map = new MapModel();
+			mapIO.loadTree(map, file);
+			map.getRootNode().setText(name);
+			mapIO.writeToFile(map, file);
+		}
+		catch (Exception e) {
+			LogUtils.severe("Could not create '"+name+"' map.",e);
+		}		
+	}
+
+	/**
+	 * @param file
+	 * @param resourcePath
+	 */
+	private void createAndCopy(File file, String resourcePath) {
+		try {
+			createFile(file);
+			FileUtils.copyInputStreamToFile(CoreConfiguration.class.getResourceAsStream(resourcePath), file);
+		}
+		catch (IOException e) {
+			LogUtils.warn(e);
+		}	
+	}
+
+	/**
+	 * @param file
+	 * @throws IOException
+	 */
+	private void createFile(File file) throws IOException {
+		if(!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
+			return;
+		}
+		file.createNewFile();
 	}
 	
 	private void linkWelcomeMindmapAfterWorkspaceCreation() {		

@@ -17,8 +17,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -37,7 +35,6 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
 import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
@@ -56,12 +53,7 @@ import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventListener, IDocearLibrary, IWorkspaceNodeActionListener, IWorkspaceTransferableCreator, IDropAcceptor, TreeModelListener {
 	private static final Icon DEFAULT_ICON = new ImageIcon(FolderTypeLibraryNode.class.getResource("/images/folder-database.png"));
 
-	private static final long serialVersionUID = 1L;
-	
-	private final static String PLACEHOLDER_PROFILENAME = "@@PROFILENAME@@";
-	private static final String DEFAULT_LIBRARY_PATH = "workspace:/"+PLACEHOLDER_PROFILENAME+"/library";
-	private final static Pattern PATTERN = Pattern.compile(PLACEHOLDER_PROFILENAME);
-	
+	private static final long serialVersionUID = 1L;	
 	
 	private final Vector<URI> mindmapIndex = new Vector<URI>();
 	private final Vector<IBibtexDatabase> referencesIndex = new Vector<IBibtexDatabase>();
@@ -300,12 +292,6 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 		}
 		return uriList;
 	}
-	
-	public URI getLibraryPath() {		
-		Matcher mainMatcher = PATTERN.matcher(DEFAULT_LIBRARY_PATH);
-		String ret = mainMatcher.replaceAll(WorkspaceController.getController().getPreferences().getWorkspaceProfileHome());
-		return WorkspaceUtils.absoluteURI(URI.create(ret));
-	}
 
 	public URI getBibtexDatabase() {
 		URI uri = null;
@@ -390,6 +376,10 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 		// this is a virtual folder, no path is needed
 		return null;
 	}
+	
+	public URI getLibraryPath() {
+		return DocearController.getController().getLibraryPath();
+	}
 
 	public void treeNodesChanged(TreeModelEvent e) {		
 	}
@@ -448,6 +438,8 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 		// TODO Auto-generated method stub
 		
 	}
+
+	
 
 	
 	

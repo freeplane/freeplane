@@ -4,18 +4,27 @@
  */
 package org.docear.plugin.core;
 
+import java.net.URI;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 
 /**
  * 
  */
 public class DocearController implements IDocearEventListener {
 
+	private final static String PLACEHOLDER_PROFILENAME = "@@PROFILENAME@@";
+	private static final String DEFAULT_LIBRARY_PATH = "workspace:/"+PLACEHOLDER_PROFILENAME+"/library";
+	private final static Pattern PATTERN = Pattern.compile(PLACEHOLDER_PROFILENAME);
+	
 	
 	private final Vector<IDocearEventListener> docearListeners = new Vector<IDocearEventListener>();		
 	private final static DocearController docearController = new DocearController();
@@ -61,6 +70,12 @@ public class DocearController implements IDocearEventListener {
 	
 	public IDocearLibrary getLibrary() {
 		return currentLibrary;
+	}
+	
+	public URI getLibraryPath() {		
+		Matcher mainMatcher = PATTERN.matcher(DEFAULT_LIBRARY_PATH);
+		String ret = mainMatcher.replaceAll(WorkspaceController.getController().getPreferences().getWorkspaceProfileHome());
+		return WorkspaceUtils.absoluteURI(URI.create(ret));
 	}
 	
 	/***********************************************************************************
