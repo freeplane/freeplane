@@ -171,6 +171,10 @@ public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IW
 		return popupMenu;
 	}
 	
+	public String getName() {
+		return WorkspaceController.getController().getPreferences().getWorkspaceProfile() + " (Workspace)"; 
+	}
+	
 	public void refresh() {
 		WorkspaceController.getController().refreshWorkspace();
 	}
