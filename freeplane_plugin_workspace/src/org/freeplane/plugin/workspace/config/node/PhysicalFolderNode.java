@@ -20,8 +20,11 @@ import org.apache.commons.io.monitor.FileAlterationListener;
 import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
+import org.freeplane.plugin.workspace.config.actions.PhysicalFolderSortOrderAction;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeActionListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeAction;
 import org.freeplane.plugin.workspace.dnd.IDropAcceptor;
@@ -52,6 +55,7 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeAct
 	private URI folderPath;
 	private boolean doMonitoring = false;
 	private boolean first;
+	private boolean orderDescending = false;
 	
 	public PhysicalFolderNode() {
 		this(AFolderNode.FOLDER_TYPE_PHYSICAL);
@@ -107,6 +111,8 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeAct
 						"workspace.action.node.remove",
 						"workspace.action.file.delete",
 						WorkspacePopupMenuBuilder.SEPARATOR,
+						"workspace.action.node.physical.sort",
+						WorkspacePopupMenuBuilder.SEPARATOR,
 						"workspace.action.node.enable.monitoring",
 						"workspace.action.node.refresh"		
 				});
@@ -144,6 +150,15 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeAct
 	@ExportAsAttribute(name="monitor")
 	public boolean isMonitoring() {
 		return this.doMonitoring;
+	}
+	
+	public void orderDescending(boolean enable) {
+		this.orderDescending = enable;
+	}
+	
+	@ExportAsAttribute(name="orderDescending")
+	public boolean orderDescending() {
+		return orderDescending;
 	}
 
 	public void handleAction(WorkspaceNodeAction event) {

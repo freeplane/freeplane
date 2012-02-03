@@ -14,7 +14,7 @@ import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.model.node.IMutableLinkNode;
 
-@EnabledAction(checkOnNodeChange = true, checkOnPopup = true)
+@EnabledAction(checkOnPopup = true)
 public class NodeRenameAction extends AWorkspaceAction {
 
 	/**

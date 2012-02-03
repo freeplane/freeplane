@@ -42,6 +42,9 @@ public class FolderTypeProjectsCreator extends AWorkspaceNodeCreator {
 		boolean monitor = Boolean.parseBoolean(data.getAttribute("monitor", "false"));
 		node.enableMonitoring(monitor);
 		
+		boolean descending = Boolean.parseBoolean(data.getAttribute("orderDescending", "false"));
+		node.orderDescending(descending);
+		
 		String path = data.getAttribute("path", null);
 		if(path == null || path.trim().length() == 0) {
 			URI uri = CoreConfiguration.projectPathObserver.getUri();
