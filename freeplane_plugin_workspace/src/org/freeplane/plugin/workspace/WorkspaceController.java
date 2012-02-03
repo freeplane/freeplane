@@ -29,7 +29,6 @@ import org.freeplane.main.application.ApplicationResourceController;
 import org.freeplane.plugin.workspace.controller.AWorkspaceExpansionStateHandler;
 import org.freeplane.plugin.workspace.controller.DefaultNodeTypeIconManager;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceComponentHandler;
-import org.freeplane.plugin.workspace.controller.DefaultWorkspaceDropHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceExpansionStateHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceKeyHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceMouseHandler;
@@ -268,8 +267,7 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 			this.view.getTreeView().addKeyListener(new DefaultWorkspaceKeyHandler());
 			this.view.getTreeView().setRowHeight(18);
 			this.view.getTreeView().addTreeExpansionListener((DefaultWorkspaceExpansionStateHandler) getExpansionStateHandler());
-			this.transferHandler = WorkspaceTransferHandler.configureDragAndDrop(this.view.getTreeView(),
-					new DefaultWorkspaceDropHandler());
+			this.transferHandler = WorkspaceTransferHandler.configureDragAndDrop(this.view.getTreeView());
 		}
 		return this.view;
 	}

@@ -34,21 +34,20 @@ public class WorkspaceNodeOpenDocumentListener implements IWorkspaceNodeActionLi
 		}
 		
 		
-		boolean openOnPageWine = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.OPEN_PDF_VIEWER_ON_PAGE_KEY_WINE);
-		final String readerPathWine = ResourceController.getResourceController().getProperty(PdfUtilitiesController.OPEN_ON_PAGE_READER_PATH_KEY_WINE);
+		boolean openOnPage = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.OPEN_PDF_VIEWER_ON_PAGE_KEY);
+		final String readerPath = ResourceController.getResourceController().getProperty(PdfUtilitiesController.OPEN_ON_PAGE_READER_PATH_KEY);
 
 		String[] command = null;
-		if (openOnPageWine && readerPathWine.length() > 0) {
+		if (!Compat.isMacOsX() && !Compat.isWindowsOS() && openOnPage && readerPath.length() > 0) {
 			String wineFile = Tools.getFilefromUri(uri).getAbsolutePath();
 			wineFile = "Z:" + wineFile.replace("/", "\\") + "";
 
 			command = new String[3];
 			command[0] = "wine";
-			command[1] = readerPathWine;
+			command[1] = readerPath;
 			command[2] = wineFile;
 			
-		} else if(Compat.isWindowsOS() && ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.OPEN_PDF_VIEWER_ON_PAGE_KEY) ) {
-			String readerPath = ResourceController.getResourceController().getProperty(PdfUtilitiesController.OPEN_ON_PAGE_READER_PATH_KEY);
+		} else if(Compat.isWindowsOS() && openOnPage ) {			
 			if(isValidReaderPath(readerPath)) {
 				command = new String[2];
 				command[0] = readerPath;

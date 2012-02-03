@@ -34,12 +34,14 @@ import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.node.AFolderNode;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.node.IMutableLinkNode;
 
 public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeActionListener
 																, FileAlterationListener
 																, IWorkspaceTransferableCreator
 																, IDropAcceptor
-																, IFileSystemRepresentation {
+																, IFileSystemRepresentation
+																, IMutableLinkNode {
 	
 	private static final long serialVersionUID = 1L;
 	private static Icon FOLDER_OPEN_ICON = new ImageIcon(PhysicalFolderNode.class.getResource("/images/16x16/folder-orange_open.png"));
@@ -59,7 +61,7 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeAct
 		super(id);
 	}
 
-	@ExportAsAttribute("path")
+	@ExportAsAttribute(name="path")
 	public URI getPath() {
 		return folderPath;
 	}
@@ -97,16 +99,16 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeAct
 						//"workspace.action.file.new.file",
 						WorkspacePopupMenuBuilder.endSubMenu(),
 						WorkspacePopupMenuBuilder.SEPARATOR,
-						"workspace.action.node.enable.monitoring",
-						WorkspacePopupMenuBuilder.SEPARATOR,						
-						"workspace.action.node.paste",
-						"workspace.action.node.copy",
 						"workspace.action.node.cut",
+						"workspace.action.node.copy",						
+						"workspace.action.node.paste",
 						WorkspacePopupMenuBuilder.SEPARATOR,
 						"workspace.action.node.rename",
+						"workspace.action.node.remove",
+						"workspace.action.file.delete",
 						WorkspacePopupMenuBuilder.SEPARATOR,
-						"workspace.action.node.refresh",
-						"workspace.action.node.delete"		
+						"workspace.action.node.enable.monitoring",
+						"workspace.action.node.refresh"		
 				});
 			}
 		}
@@ -139,7 +141,7 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeAct
 		}
 	}
 	
-	@ExportAsAttribute("monitor")
+	@ExportAsAttribute(name="monitor")
 	public boolean isMonitoring() {
 		return this.doMonitoring;
 	}
@@ -387,9 +389,11 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeAct
 			List<File> fileList = new Vector<File>();
 			fileList.add(new File(uri));
 			transferable.addData(WorkspaceTransferable.WORKSPACE_FILE_LIST_FLAVOR, fileList);
-			List<AWorkspaceTreeNode> objectList = new ArrayList<AWorkspaceTreeNode>();
-			objectList.add(this);
-			transferable.addData(WorkspaceTransferable.WORKSPACE_NODE_FLAVOR, objectList);
+			if(!this.isSystem()) {
+				List<AWorkspaceTreeNode> objectList = new ArrayList<AWorkspaceTreeNode>();
+				objectList.add(this);
+				transferable.addData(WorkspaceTransferable.WORKSPACE_NODE_FLAVOR, objectList);
+			}
 			return transferable;
 		}
 		catch (Exception e) {
@@ -400,5 +404,35 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeAct
 
 	public File getFile() {
 		return WorkspaceUtils.resolveURI(this.getPath());
+	}
+	
+	public boolean changeName(String newName, boolean renameLink) {
+		assert(newName != null);
+		assert(newName.trim().length() > 0);
+		
+		if(renameLink) {
+			File oldFile = WorkspaceUtils.resolveURI(getPath());
+			try{
+				if(oldFile == null) {
+					throw new Exception("failed to resolve the file for"+getName());
+				}
+				File destFile = new File(oldFile.getParentFile(), newName);
+				if(oldFile.exists() && oldFile.renameTo(destFile)) {					
+					this.setName(newName);
+					return true;
+				}
+				else {
+					LogUtils.warn("cannot rename "+oldFile.getName());
+				}
+			}
+			catch (Exception e) {
+				LogUtils.warn("cannot rename "+oldFile.getName(), e);
+			}
+		}
+		else {
+			this.setName(newName);
+			return true;
+		}
+		return false;
 	}
 }

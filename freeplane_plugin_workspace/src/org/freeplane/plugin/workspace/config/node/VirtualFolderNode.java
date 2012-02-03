@@ -53,14 +53,14 @@ public class VirtualFolderNode extends AFolderNode implements IWorkspaceNodeActi
 					"workspace.action.node.new.directory",
 					WorkspacePopupMenuBuilder.endSubMenu(),
 					WorkspacePopupMenuBuilder.SEPARATOR, 
-					"workspace.action.node.paste",
-					"workspace.action.node.copy",
 					"workspace.action.node.cut",
+					"workspace.action.node.copy",
+					"workspace.action.node.paste",
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.rename",
+					"workspace.action.node.remove",
 					WorkspacePopupMenuBuilder.SEPARATOR,
-					"workspace.action.node.refresh",
-					"workspace.action.node.delete"		
+					"workspace.action.node.refresh"		
 			});
 		}
 	}

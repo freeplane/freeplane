@@ -29,8 +29,9 @@ import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.node.ALinkNode;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.node.IMutableLinkNode;
 
-public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeActionListener, IWorkspaceTransferableCreator {
+public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeActionListener, IWorkspaceTransferableCreator, IMutableLinkNode {
 	
 	private static final long serialVersionUID = 1L;		
 
@@ -50,19 +51,20 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeActionL
 		if (popupMenu == null) {			
 			popupMenu = new WorkspacePopupMenu();
 			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
-					WorkspacePopupMenuBuilder.SEPARATOR, 
-					"workspace.action.node.paste",
-					"workspace.action.node.copy",
 					"workspace.action.node.cut",
+					"workspace.action.node.copy", 
+					"workspace.action.node.paste",
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.rename",
+					"workspace.action.node.remove",
+					"workspace.action.file.delete",
 					WorkspacePopupMenuBuilder.SEPARATOR,
-					"workspace.action.node.delete"
+					"workspace.action.node.refresh"
 			});
 		}
 	}
 	
-	@ExportAsAttribute("path")
+	@ExportAsAttribute(name="path")
 	public URI getLinkPath() {
 		return linkPath;
 	}
@@ -117,9 +119,11 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeActionL
 			List<File> fileList = new Vector<File>();
 			fileList.add(new File(uri));
 			transferable.addData(WorkspaceTransferable.WORKSPACE_FILE_LIST_FLAVOR, fileList);
-			List<AWorkspaceTreeNode> objectList = new ArrayList<AWorkspaceTreeNode>();
-			objectList.add(this);
-			transferable.addData(WorkspaceTransferable.WORKSPACE_NODE_FLAVOR, objectList);
+			if(!this.isSystem()) {
+				List<AWorkspaceTreeNode> objectList = new ArrayList<AWorkspaceTreeNode>();
+				objectList.add(this);
+				transferable.addData(WorkspaceTransferable.WORKSPACE_NODE_FLAVOR, objectList);
+			}
 			return transferable;
 		}
 		catch (Exception e) {
@@ -161,5 +165,35 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeActionL
 		}
 		renderer.setLeafIcon(fileIcon);	
 		return true;
+	}
+
+	public boolean changeName(String newName, boolean renameLink) {
+		assert(newName != null);
+		assert(newName.trim().length() > 0);
+		
+		if(renameLink) {
+			File oldFile = WorkspaceUtils.resolveURI(getLinkPath());
+			try{
+				if(oldFile == null) {
+					throw new Exception("failed to resolve the file for"+getName());
+				}
+				File destFile = new File(oldFile.getParentFile(), newName);
+				if(oldFile.exists() && oldFile.renameTo(destFile)) {					
+					this.setName(newName);
+					return true;
+				}
+				else {
+					LogUtils.warn("cannot rename "+oldFile.getName());
+				}
+			}
+			catch (Exception e) {
+				LogUtils.warn("cannot rename "+oldFile.getName(), e);
+			}
+		}
+		else {
+			this.setName(newName);
+			return true;
+		}
+		return false;
 	}
 }
