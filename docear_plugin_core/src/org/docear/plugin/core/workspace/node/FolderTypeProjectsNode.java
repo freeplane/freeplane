@@ -58,6 +58,8 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 	private boolean locked = false;
 	private static WorkspacePopupMenu popupMenu = null;
 	private boolean first = true;
+	private boolean fsChanges = false;
+	private boolean orderDescending;
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -239,7 +241,6 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 		}
 	}
 
-	private boolean fsChanges = false;
 	public void onStart(FileAlterationObserver observer) {
 		fsChanges = false;
 		if(first ) return;
@@ -328,6 +329,8 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 					"workspace.action.node.rename",
 					"workspace.action.node.remove",
 					"workspace.action.file.delete",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.physical.sort",
 					WorkspacePopupMenuBuilder.SEPARATOR,					
 					"workspace.action.docear.project.enable.monitoring",
 					"workspace.action.node.refresh"	
@@ -427,5 +430,14 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 	
 	public File getFile() {
 		return WorkspaceUtils.resolveURI(this.getPath());
+	}
+	
+	public void orderDescending(boolean enable) {
+		this.orderDescending = enable;
+	}
+
+	@ExportAsAttribute(name="orderDescending")
+	public boolean orderDescending() {
+		return orderDescending;
 	}
 }

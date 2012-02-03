@@ -34,6 +34,7 @@ import org.freeplane.plugin.workspace.dnd.IDropAcceptor;
 import org.freeplane.plugin.workspace.dnd.IWorkspaceTransferableCreator;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
 import org.freeplane.plugin.workspace.io.IFileSystemRepresentation;
+import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
@@ -59,6 +60,7 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 	
 	private File file;
 	private String fileExtension;
+	private boolean orderDescending;
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -379,5 +381,14 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 			LogUtils.warn("cannot rename "+oldName);
 		}
 		return false;
+	}
+	
+	public void orderDescending(boolean enable) {
+		this.orderDescending = enable;
+	}
+	
+	@ExportAsAttribute(name="orderDescending")
+	public boolean orderDescending() {
+		return orderDescending;
 	}
 }

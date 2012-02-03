@@ -35,6 +35,9 @@ public class FolderTypePhysicalCreator extends AWorkspaceNodeCreator {
 		boolean monitor = Boolean.parseBoolean(data.getAttribute("monitor", "false"));
 		node.enableMonitoring(monitor);
 		
+		boolean descending = Boolean.parseBoolean(data.getAttribute("orderDescending", "false"));
+		node.orderDescending(descending);
+		
 		String name = data.getAttribute("name", file.getName());
 		node.setName(name);
 

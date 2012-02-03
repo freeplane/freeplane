@@ -105,6 +105,8 @@ public class FolderTypeLiteratureRepositoryNode extends PhysicalFolderNode imple
 					"workspace.action.node.rename",
 					"workspace.action.node.remove",
 					"workspace.action.file.delete",					
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.physical.sort",
 					WorkspacePopupMenuBuilder.SEPARATOR,					
 					"workspace.action.docear.enable.monitoring",
 					"workspace.action.node.refresh"

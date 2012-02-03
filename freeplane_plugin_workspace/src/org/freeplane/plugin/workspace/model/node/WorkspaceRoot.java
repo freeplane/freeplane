@@ -30,6 +30,7 @@ import org.freeplane.plugin.workspace.config.actions.NodeNewLinkAction;
 import org.freeplane.plugin.workspace.config.actions.NodePasteAction;
 import org.freeplane.plugin.workspace.config.actions.NodeRefreshAction;
 import org.freeplane.plugin.workspace.config.actions.NodeRenameAction;
+import org.freeplane.plugin.workspace.config.actions.PhysicalFolderSortOrderAction;
 import org.freeplane.plugin.workspace.config.actions.WorkspaceChangeLocationAction;
 import org.freeplane.plugin.workspace.config.actions.WorkspaceCollapseAction;
 import org.freeplane.plugin.workspace.config.actions.NodeRemoveAction;
@@ -127,6 +128,8 @@ public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IW
 			modeController.addAction(new FileNodeNewFileAction());
 			modeController.addAction(new FileNodeDeleteAction());
 			
+			modeController.addAction(new PhysicalFolderSortOrderAction());
+			
 			popupMenu = new WorkspacePopupMenu();
 			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
 					WorkspacePopupMenuBuilder.createSubMenu(TextUtils.getRawText("workspace.action.new.label")),
@@ -166,6 +169,10 @@ public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IW
 			initializePopup();
 		}
 		return popupMenu;
+	}
+	
+	public String getName() {
+		return WorkspaceController.getController().getPreferences().getWorkspaceProfile() + " (Workspace)"; 
 	}
 	
 	public void refresh() {

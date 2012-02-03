@@ -37,7 +37,12 @@ public class FilesystemManager {
 
 		if (file != null && file.exists()) {
 			if (file.isDirectory()) {
-				iterateDirectory(node, file);
+				if(node instanceof IFileSystemRepresentation) {
+					iterateDirectory(node, file, ((IFileSystemRepresentation) node).orderDescending());
+				} 
+				else {
+					iterateDirectory(node, file, false);
+				}
 			}
 			else {
 				createFileNode(node, file);
@@ -61,13 +66,18 @@ public class FilesystemManager {
 		return typeManager.getFileTypeHandlers();
 	}
 
-	private void iterateDirectory(AWorkspaceTreeNode parent, File directory) {
-		for (File file : sortFiles(directory.listFiles(new DirectoryFilter()), true, true)) {
+	private void iterateDirectory(AWorkspaceTreeNode parent, File directory, final boolean orderDescending) {
+		boolean orderDesc = orderDescending;
+//		if(parent instanceof IFileSystemRepresentation) {
+//			orderDesc = ((IFileSystemRepresentation) parent).orderDescending();
+//		}
+		
+		for (File file : sortFiles(directory.listFiles(new DirectoryFilter()), orderDesc, true)) {
 			AWorkspaceTreeNode newParent = createFileNode(parent, FileReadManager.DIRECTORY_HANDLE, file);
-			iterateDirectory(newParent, file);
+			iterateDirectory(newParent, file, orderDesc);
 
 		}
-		for (File file : sortFiles(directory.listFiles(new FilesOnlyFilter()), true, true)) {
+		for (File file : sortFiles(directory.listFiles(new FilesOnlyFilter()), orderDesc, true)) {
 			createFileNode(parent, file);
 		}
 	}

@@ -40,6 +40,9 @@ public class FolderTypeLiteratureRepositoryCreator extends AWorkspaceNodeCreator
 		// TODO: add missing attribute handling
 		String path = data.getAttribute("path", null);
 		
+		boolean descending = Boolean.parseBoolean(data.getAttribute("orderDescending", "false"));
+		node.orderDescending(descending);
+		
 		if (path == null || path.length()==0) {
 			URI uri = CoreConfiguration.repositoryPathObserver.getUri();
 			
