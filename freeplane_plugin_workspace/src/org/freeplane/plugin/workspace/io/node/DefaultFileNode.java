@@ -20,13 +20,17 @@ import java.util.Vector;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeActionListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeAction;
@@ -270,15 +274,22 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 		else if(event.getType() == WorkspaceNodeAction.WSNODE_OPEN_DOCUMENT) {
 			
 			if(getFile() != null) {
-				int dot = getFile().getPath().lastIndexOf('.');
-				String fileExt = "";
-				if(-1 != dot) {
-					fileExt = file.getPath().substring(dot);
-				}				
-				if(fileExt.equalsIgnoreCase(".mm") || fileExt.equalsIgnoreCase(".dcr")) {
+				
+				if(!file.exists()) {
+					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.format("workspace.node.link.notfound", 
+							new Object[]{
+								file.isDirectory()? TextUtils.getText("workspace.node.link.notfound.directory"):TextUtils.getText("workspace.node.link.notfound.file")
+										,file.getName()
+										,file.getParent()
+							}));
+					return;
+				}						
+				if(file.getName().toLowerCase().endsWith(".mm") || file.getName().toLowerCase().endsWith(".dcr")) {
 					try {
 						final URL mapUrl = Compat.fileToUrl(getFile());
-						Controller.getCurrentModeController().getMapController().newMap(mapUrl);
+						final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MMapIO.class);
+						mapIO.newMap(mapUrl);
+//						Controller.getCurrentModeController().getMapController().newMap(mapUrl);
 					}
 					catch (final Exception e) {
 						LogUtils.severe(e);
