@@ -48,6 +48,18 @@ public class WorkspaceUtils {
 	 * METHODS
 	 **********************************************************************************/
 
+	/**
+	 * @param file
+	 */
+	public static void showFileNotFoundMessage(File file) {
+		JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.format("workspace.node.link.notfound", 
+				new Object[]{
+					file.isDirectory()? TextUtils.getText("workspace.node.link.notfound.directory"):TextUtils.getText("workspace.node.link.notfound.file")
+							,file.getName()
+							,file.getParent()
+				}));
+	}
+	
 	public static void showWorkspaceChooserDialog() {
 		WorkspaceChooserDialogPanel dialog = new WorkspaceChooserDialogPanel();
 		

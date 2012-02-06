@@ -35,7 +35,7 @@ public class LinkTypeFileIconHandler implements INodeTypeIconHandler {
 
 	public LinkTypeFileIconHandler() {
 		Properties properties = new Properties();
-		InputStream inStream = LinkTypeFileIconHandler.this.getClass().getResourceAsStream("linkTypeFileIcons.properties");
+		InputStream inStream = LinkTypeFileIconHandler.this.getClass().getResourceAsStream("/conf/fileIcons.properties");
 		try {
 			properties.load(inStream);
 			init(properties);

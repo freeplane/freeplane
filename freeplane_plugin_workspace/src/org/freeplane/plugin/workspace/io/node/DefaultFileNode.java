@@ -20,18 +20,17 @@ import java.util.Vector;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeActionListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeAction;
 import org.freeplane.plugin.workspace.dnd.IDropAcceptor;
@@ -50,12 +49,11 @@ import org.freeplane.plugin.workspace.model.node.IMutableLinkNode;
 public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNodeActionListener, IWorkspaceTransferableCreator, IDropAcceptor, IFileSystemRepresentation, IMutableLinkNode {
 	private static final Icon FOLDER_OPEN_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/folder-orange_open.png"));
 	private static final Icon FOLDER_CLOSED_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/folder-orange.png"));
-	private static final Icon ACROBAT_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/acrobat.png"));
-	private static final Icon GRAPHICS_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/image-x-generic.png"));
 	private static final Icon DEFAULT_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/text-x-preview.png"));
-	private static final Icon WEB_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/text-html-2.png"));
+	private static final Icon NOT_EXISTING = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/cross.png"));
 	public static final Icon DOCEAR_ICON = new ImageIcon(ResourceController.class.getResource("/images/docear16.png"));
 	public static final Icon FREEPLANE_ICON = new ImageIcon(ResourceController.class.getResource("/images/Freeplane_frame_icon.png"));
+	
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -214,34 +212,18 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 	}
 	
 	public boolean setIcons(DefaultTreeCellRenderer renderer) {
+		if(!getFile().exists()) {
+			renderer.setLeafIcon(NOT_EXISTING);
+			renderer.setOpenIcon(NOT_EXISTING);
+			renderer.setClosedIcon(NOT_EXISTING);
+			return true;
+		}
 		if (getFile().isFile()) {
-			if (getFileExtension().equalsIgnoreCase(".pdf")
-					|| getFileExtension().equalsIgnoreCase(".ps")) {
-				renderer.setLeafIcon(ACROBAT_ICON);
-			}
-			else if (getFileExtension().equalsIgnoreCase(".jpg")
-					|| getFileExtension().equalsIgnoreCase(".png")
-					|| getFileExtension().equalsIgnoreCase(".gif")
-					|| getFileExtension().equalsIgnoreCase(".bmp")
-					|| getFileExtension().equalsIgnoreCase(".jpeg")) {
-				renderer.setLeafIcon(GRAPHICS_ICON);
-			}
-			else if (getFileExtension().equalsIgnoreCase(".mm")
-					|| getFileExtension().equalsIgnoreCase(".dcr")) {
-				if(ResourceController.getResourceController().getProperty("ApplicationName", "Freeplane").equals("Docear")) {
-					renderer.setLeafIcon(DOCEAR_ICON);
-				} else {
-					renderer.setLeafIcon(FREEPLANE_ICON);
-				}
-			}
-			else if (getFileExtension().equalsIgnoreCase(".html")
-					|| getFileExtension().equalsIgnoreCase(".htm")
-					|| getFileExtension().equalsIgnoreCase(".css")
-					|| getFileExtension().equalsIgnoreCase(".xhtml")) {
-				renderer.setLeafIcon(WEB_ICON);
-			}			
-			else {
+			Icon icon = WorkspaceController.getController().getNodeTypeIconManager().getIconForNode(this);
+			if(icon == null) {
 				renderer.setLeafIcon(DEFAULT_ICON);
+			} else {
+				renderer.setLeafIcon(icon);
 			}
 		} 
 		else {
@@ -276,12 +258,7 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 			if(getFile() != null) {
 				
 				if(!file.exists()) {
-					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.format("workspace.node.link.notfound", 
-							new Object[]{
-								file.isDirectory()? TextUtils.getText("workspace.node.link.notfound.directory"):TextUtils.getText("workspace.node.link.notfound.file")
-										,file.getName()
-										,file.getParent()
-							}));
+					WorkspaceUtils.showFileNotFoundMessage(file);
 					return;
 				}						
 				if(file.getName().toLowerCase().endsWith(".mm") || file.getName().toLowerCase().endsWith(".dcr")) {
