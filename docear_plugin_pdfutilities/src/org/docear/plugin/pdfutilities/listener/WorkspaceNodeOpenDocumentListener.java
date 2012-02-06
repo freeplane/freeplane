@@ -12,6 +12,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.controller.IWorkspaceNodeActionListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceNodeAction;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
@@ -30,6 +31,12 @@ public class WorkspaceNodeOpenDocumentListener implements IWorkspaceNodeActionLi
 		}
 
 		if(uri == null || !CoreUtils.resolveURI(uri).getName().toLowerCase().endsWith(".pdf")) {
+			return;
+		}
+		File file = CoreUtils.resolveURI(uri);
+		if(file!=null  && !file.exists()) {
+			WorkspaceUtils.showFileNotFoundMessage(file);
+			event.consume();
 			return;
 		}
 		

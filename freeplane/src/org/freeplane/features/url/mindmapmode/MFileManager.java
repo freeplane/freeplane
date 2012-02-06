@@ -704,7 +704,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 	
 	public boolean saveAs(final MapModel map, boolean showHiddenFiles) {
-		final JFileChooser chooser = getFileChooser(true);
+		//FIXME - DOCEAR: changed the getFileChooser from 'true' to 'false' because its for files not directories 
+		final JFileChooser chooser = getFileChooser(false);
 		if (getMapsParentFile(map) == null) {
 			chooser.setSelectedFile(new File(getFileNameProposal(map)
 			        + org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION));

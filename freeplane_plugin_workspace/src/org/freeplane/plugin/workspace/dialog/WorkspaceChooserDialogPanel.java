@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.MutableComboBoxModel;
 import javax.swing.event.ListDataListener;
 
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.workspace.WorkspaceController;
@@ -68,13 +69,25 @@ public class WorkspaceChooserDialogPanel extends JPanel {
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		if (location != null) {
-			File file = new File(this.location.getText());
+			File file = new File(this.location.getText());			
 			if (file.exists()) {
+				fileChooser.setCurrentDirectory(file.getParentFile());
 				fileChooser.setSelectedFile(file);
+				//fileChooser.setSelectedFile(file);
+			}
+			else {
+				while((file = file.getParentFile()) != null && !file.exists()) {
+				}
+				if(file == null) {
+					fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+				}
+				else {
+					fileChooser.setCurrentDirectory(file);
+				}
 			}
 		}
 
-		int retVal = fileChooser.showOpenDialog(this);
+		int retVal = fileChooser.showOpenDialog(UITools.getFrame());
 		if (retVal == JFileChooser.APPROVE_OPTION) {
 			File selectedfile = fileChooser.getSelectedFile();
 			this.location.setText(selectedfile.getPath());

@@ -13,13 +13,10 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.Icon;
-import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceController;
@@ -87,12 +84,7 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeActionL
 			File file = WorkspaceUtils.resolveURI(getLinkPath());
 			if(file != null) {
 				if(!file.exists()) {
-					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.format("workspace.node.link.notfound", 
-							new Object[]{
-								file.isDirectory()? TextUtils.getText("workspace.node.link.notfound.directory"):TextUtils.getText("workspace.node.link.notfound.file")
-										,file.getName()
-										,file.getParent()
-							}));
+					WorkspaceUtils.showFileNotFoundMessage(file);
 					return;
 				}
 				if(file.getName().toLowerCase().endsWith(".mm") || file.getName().toLowerCase().endsWith(".dcr")) {

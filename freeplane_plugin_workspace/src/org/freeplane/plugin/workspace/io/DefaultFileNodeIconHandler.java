@@ -2,7 +2,7 @@
  * author: Marcel Genzmehr
  * 28.12.2011
  */
-package org.freeplane.plugin.workspace.config;
+package org.freeplane.plugin.workspace.io;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,24 +18,22 @@ import javax.swing.ImageIcon;
 import org.apache.commons.io.FilenameUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
 import org.freeplane.plugin.workspace.controller.INodeTypeIconHandler;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 /**
  * 
  */
-public class LinkTypeFileIconHandler implements INodeTypeIconHandler {
+public class DefaultFileNodeIconHandler implements INodeTypeIconHandler {
 
 	private HashMap<String, Icon> iconMap = new HashMap<String, Icon>();
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 
-	public LinkTypeFileIconHandler() {
+	public DefaultFileNodeIconHandler() {
 		Properties properties = new Properties();
-		InputStream inStream = LinkTypeFileIconHandler.this.getClass().getResourceAsStream("/conf/fileIcons.properties");
+		InputStream inStream = DefaultFileNodeIconHandler.this.getClass().getResourceAsStream("/conf/fileIcons.properties");
 		try {
 			properties.load(inStream);
 			init(properties);
@@ -69,7 +67,7 @@ public class LinkTypeFileIconHandler implements INodeTypeIconHandler {
 				String iconPath = properties.getProperty(key, null);
 				URL url = null;
 				if(iconPath !=null) {
-					url = LinkTypeFileIconHandler.this.getClass().getResource(iconPath);
+					url = DefaultFileNodeIconHandler.this.getClass().getResource(iconPath);
 					if(url == null) {
 						url = ResourceController.class.getResource(iconPath);
 						if(url == null) {
@@ -98,9 +96,9 @@ public class LinkTypeFileIconHandler implements INodeTypeIconHandler {
 	 **********************************************************************************/
 	
 	public Icon getIconForNode(AWorkspaceTreeNode node) {
-		assert(node instanceof LinkTypeFileNode);
-		File file = WorkspaceUtils.resolveURI(((LinkTypeFileNode) node).getLinkPath());
-		if(file != null) {
+		assert(node instanceof IFileSystemRepresentation);
+		File file = ((IFileSystemRepresentation) node).getFile();
+		if(file != null && file.isFile()) {
 			String ext = FilenameUtils.getExtension(file.getName());
 			return selectIconForExtension(ext);
 		}

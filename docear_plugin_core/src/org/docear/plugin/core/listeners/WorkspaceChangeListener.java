@@ -27,6 +27,7 @@ import org.freeplane.plugin.workspace.controller.IWorkspaceEventListener;
 import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.node.WorkspaceRoot;
 
 public class WorkspaceChangeListener implements IWorkspaceEventListener {
 
@@ -174,7 +175,7 @@ public class WorkspaceChangeListener implements IWorkspaceEventListener {
 	}
 	
 	private void linkWelcomeMindmapAfterWorkspaceCreation() {		
-		AWorkspaceTreeNode parent = WorkspaceUtils.getNodeForPath("My Workspace/Miscellaneous");
+		AWorkspaceTreeNode parent = WorkspaceUtils.getNodeForPath(((WorkspaceRoot) WorkspaceUtils.getModel().getRoot()).getName()+"/Miscellaneous");
 		if (parent == null) {
 			return;
 		}
