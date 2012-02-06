@@ -63,6 +63,7 @@ public class LocationDialogPanel extends JPanel {
 				
 				if (txtLocationString != null) {
 					File file = new File(txtLocationString.getText());
+					
 					if (file.exists()) {
 						fileChooser.setSelectedFile(file);
 					}

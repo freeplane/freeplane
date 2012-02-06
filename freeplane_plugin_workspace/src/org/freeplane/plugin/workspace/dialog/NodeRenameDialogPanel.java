@@ -67,7 +67,7 @@ public class NodeRenameDialogPanel extends JPanel {
 	 * METHODS
 	 **********************************************************************************/
 	
-	public String getName() {
+	public String getText() {
 		return txtNodeName.getText();
 	}
 	

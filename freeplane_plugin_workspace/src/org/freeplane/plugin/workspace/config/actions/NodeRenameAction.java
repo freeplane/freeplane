@@ -54,7 +54,7 @@ public class NodeRenameAction extends AWorkspaceAction {
 			}
 //		}
 		int okButton = JOptionPane.showConfirmDialog(UITools.getFrame(), panel, TextUtils.getText("confirm_rename_file_action"),  JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-		String newName = panel.getName();
+		String newName = panel.getText();
 		
 		if(okButton != JOptionPane.OK_OPTION || oldName.equals(newName)) {
 			return;
