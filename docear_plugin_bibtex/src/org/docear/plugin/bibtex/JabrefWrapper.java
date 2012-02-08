@@ -67,13 +67,8 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 	private File file;
 	private HashMap<String, String> meta = null;
 
-	protected JabrefWrapper(String[] arg0) {
-		super(arg0);
-
-	}
-
 	public JabrefWrapper(JFrame frame) {
-		super(frame);
+		this(frame, null);
 
 	}
 
@@ -85,7 +80,9 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 		// super(frame, new String[]{"true", "-i", "\""+file.toString()+"\""});
 		super(frame);
 		registerListeners();
-		openIt(file, true);
+		if(file != null ) {
+			openIt(file, true);
+		}
 
 	}
 
@@ -99,6 +96,7 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				synchronized (Controller.getCurrentModeController().getMapController()) {
+					
 					Controller.getCurrentModeController().getMapController().addNodeSelectionListener(mapViewListener);
 				}
 			}

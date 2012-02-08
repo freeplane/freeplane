@@ -83,6 +83,7 @@ public class AddNewReferenceAction extends AFreeplaneAction{
 			showJabRefTab();
 			if (entry != null) {
 				entry.setField("docear_add_to_node", node.getID());
+				ReferencesController.getController().setInAdd(node.getMap());
 			}			
 		}
 
