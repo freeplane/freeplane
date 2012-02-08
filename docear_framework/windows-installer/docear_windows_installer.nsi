@@ -98,6 +98,9 @@ Section -Main SEC0000
     SetShellVarContext all
     File ..\..\docear_plugin_core\src\license.txt
     File /r ..\build\*
+    ${If} "$R8" == 1
+        CreateShortcut $DESKTOP\Docear.lnk $INSTDIR\docear.exe
+    ${EndIf}
     SetOutPath $SMPROGRAMS\$StartMenuGroup
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\Docear.lnk $INSTDIR\docear.exe    
     !insertmacro "CreateURLShortCut" "$SMPROGRAMS\$StartMenuGroup\Docear Website" "http://www.docear.org" "Visit Docear Website"    
@@ -114,9 +117,6 @@ Section -post SEC0001
     SetOutPath $SMPROGRAMS\$StartMenuGroup
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^UninstallLink).lnk" $INSTDIR\uninstall.exe
     !insertmacro MUI_STARTMENU_WRITE_END
-    ${If} "$R8" == 1
-        CreateShortcut $DESKTOP\Docear.lnk $INSTDIR\docear.exe
-    ${EndIf}
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayName "$(^Name)"
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayVersion "${VERSION}"
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" Publisher "${COMPANY}"
