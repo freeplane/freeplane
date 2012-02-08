@@ -100,6 +100,7 @@ Section -Main SEC0000
     File /r ..\build\*
     ${If} "$R8" == 1
         CreateShortcut $DESKTOP\Docear.lnk $INSTDIR\docear.exe
+        CreateShortcut $DESKTOP\Docear (compatibility mode).lnk $INSTDIR\docear.bat
     ${EndIf}
     SetOutPath $SMPROGRAMS\$StartMenuGroup
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\Docear.lnk $INSTDIR\docear.exe    
