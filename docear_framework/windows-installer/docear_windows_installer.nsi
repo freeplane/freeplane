@@ -10,7 +10,7 @@ Name Docear
 !define URL www.docear.org
 
 # MUI Symbol Definitions
-!define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\orange-install.ico"
+!define MUI_ICON "icon-windows_all_sizes_combined.ico"
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT HKLM
 !define MUI_STARTMENUPAGE_NODISABLE
@@ -78,7 +78,7 @@ OutFile "..\dist\docear-${VERSION}.exe"
 InstallDir $PROGRAMFILES\Docear
 CRCCheck on
 XPStyle on
-ShowInstDetails show
+ShowInstDetails hide
 VIProductVersion 0.0.0.0
 VIAddVersionKey /LANG=${LANG_ENGLISH} ProductName Docear
 VIAddVersionKey /LANG=${LANG_ENGLISH} ProductVersion "${VERSION}"
@@ -93,6 +93,11 @@ ShowUninstDetails show
 # Installer sections
 Section -Main SEC0000
     call DownloadAndInstallJREIfNecessary
+    ${If} ${RunningX64}
+        SetRegView 64
+    ${Else}
+        SetRegView 32
+    ${EndIf}
     SetOutPath $INSTDIR
     SetOverwrite on
     SetShellVarContext all
@@ -100,7 +105,7 @@ Section -Main SEC0000
     File /r ..\build\*
     ${If} "$R8" == 1
         CreateShortcut $DESKTOP\Docear.lnk $INSTDIR\docear.exe
-        CreateShortcut $DESKTOP\Docear (compatibility mode).lnk $INSTDIR\docear.bat
+        CreateShortcut "$DESKTOP\Docear (compatibility mode).lnk" $INSTDIR\docear.bat "" $INSTDIR\docear.exe 1
     ${EndIf}
     SetOutPath $SMPROGRAMS\$StartMenuGroup
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\Docear.lnk $INSTDIR\docear.exe    
@@ -144,11 +149,17 @@ done${UNSECTION_ID}:
 
 # Uninstaller sections
 Section /o -un.Main UNSEC0000
+    ${If} ${RunningX64}
+        SetRegView 64
+    ${Else}
+        SetRegView 32
+    ${EndIf}
     RmDir /r /REBOOTOK $APPDATA\Docear
     SetShellVarContext all
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\Docear Website.URL"
     Delete /REBOOTOK $SMPROGRAMS\$StartMenuGroup\Docear.lnk
     Delete /REBOOTOK $DESKTOP\Docear.lnk
+    Delete /REBOOTOK "$DESKTOP\Docear (compatibility mode).lnk"
     RmDir /r /REBOOTOK $INSTDIR
     RmDir /r /REBOOTOK $INSTDIR
     RmDir /r /REBOOTOK $INSTDIR
