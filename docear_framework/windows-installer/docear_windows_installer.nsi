@@ -31,13 +31,14 @@ Name Docear
 !define INI_FILE "docear-setup.ini"
 
 # Included files
-!include Sections.nsh
-!include InstallOptions.nsh
-!include 'nsdialogs.nsh'
-!include MUI2.nsh
-!include FileAssociation.nsh
 !include "x64.nsh"
-!include "JRECheck.nsh"
+!include "LogicLib.nsh"
+!include "WinMessages.NSH"
+!include "MUI2.nsh"
+!include "Sections.nsh"
+!include "InstallOptions.nsh"
+!include FileAssociation.nsh
+!include JRECheck.nsh
 
 # Variables
 Var StartMenuGroup
@@ -105,13 +106,13 @@ Section -Main SEC0000
     File /r ..\build\*
     ${If} "$R8" == 1
         CreateShortcut $DESKTOP\Docear.lnk $INSTDIR\docear.exe
-        CreateShortcut "$DESKTOP\Docear (compatibility mode).lnk" $INSTDIR\docear.bat "" $INSTDIR\docear.exe 1
+        ;CreateShortcut "$DESKTOP\Docear (compatibility mode).lnk" $INSTDIR\docear.bat "" $INSTDIR\docear.exe 1
     ${EndIf}
     SetOutPath $SMPROGRAMS\$StartMenuGroup
     CreateShortcut $SMPROGRAMS\$StartMenuGroup\Docear.lnk $INSTDIR\docear.exe    
     !insertmacro "CreateURLShortCut" "$SMPROGRAMS\$StartMenuGroup\Docear Website" "http://www.docear.org" "Visit Docear Website"    
     WriteRegStr HKLM "${REGKEY}\Components" Main 1
-    ${registerExtension} "$INSTDIR\docear.exe" ".mm" "Docear Mindmap"
+    ${registerExtension} "$INSTDIR\docear.exe" ".mm" "Docear Mindmap"    
 SectionEnd
 
 Section -post SEC0001
@@ -131,6 +132,22 @@ Section -post SEC0001
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" UninstallString $INSTDIR\uninstall.exe
     WriteRegDWORD HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoModify 1
     WriteRegDWORD HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoRepair 1
+    
+    ReadRegStr $R9 HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" "Path"
+    Call GetJreInstallPath
+    Pop $R7    ; get JRE path    
+    ${If} ${RunningX64}
+        SetRegView 64
+    ${Else}
+        SetRegView 32
+    ${EndIf}
+    
+    ${WordFind} "$R9" "$R7" "*" $R6
+    ${IF} $R6 <= 0 
+        WriteRegStr HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" "Path" "$R9;$R7\bin"
+        SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
+    ${EndIf} 
+    
 SectionEnd
 
 # Macro for selecting uninstaller sections

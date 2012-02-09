@@ -259,4 +259,65 @@ DetectJREEnd:
 
 
 FunctionEnd
+
+
+Function GetJreInstallPath
+  
+  ; first, check for an installed JRE
+  SetRegView 32
+  ReadRegStr $1 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" "CurrentVersion"  
+  StrCmp $1 "" DetectTry2
+  ReadRegStr $2 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$1" "JavaHome"
+  StrCmp $2 "" DetectTry2
+  Goto GetJRE
+ 
+DetectTry2:
+  ; next, check for an installed JDK
+  SetRegView 32
+  ReadRegStr $1 HKLM "SOFTWARE\JavaSoft\Java Development Kit" "CurrentVersion"
+  DetailPrint "JDK version: $1"
+  StrCmp $1 "" DetectTry1_64
+  ReadRegStr $2 HKLM "SOFTWARE\JavaSoft\Java Development Kit\$1" "JavaHome"
+  DetailPrint "JDK home: $2"
+  StrCmp $2 "" DetectTry1_64
+  
+DetectTry1_64:
+  SetRegView 64 
+  ReadRegStr $1 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" "CurrentVersion"  
+  StrCmp $1 "" DetectTry2_64
+  ReadRegStr $2 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$1" "JavaHome"
+  StrCmp $2 "" DetectTry2_64
+  Goto GetJRE
+ 
+DetectTry2_64:
+  ; next, check for an installed JDK
+  SetRegView 64
+  ReadRegStr $1 HKLM "SOFTWARE\JavaSoft\Java Development Kit" "CurrentVersion"
+  DetailPrint "JDK version: $1"
+  StrCmp $1 "" NoFound
+  ReadRegStr $2 HKLM "SOFTWARE\JavaSoft\Java Development Kit\$1" "JavaHome"
+  DetailPrint "JDK home: $2"
+  StrCmp $2 "" NoFound
+ 
+GetJRE:
+  ; ok, we found a JRE, let's compare it's version and make sure it is new enough
+; $0 = version requested. $1 = version found. $2 = javaHome
+  IfFileExists "$2\bin\java.exe" DetectJREEnd NoFound 
+
+;  ${VersionCompare} $0 $1 $3 ; $3 now contains the result of the comparison
+;  DetailPrint "Comparing version $0 to $1 results in $3"
+;  intcmp $3 1 FoundOld
+;  goto FoundNew
+; 
+NoFound:
+  ; No JRE found
+  strcpy $0 "0"
+  strcpy $1 "No JRE Found"
+  Goto DetectJREEnd
+  
+DetectJREEnd:
+        
+    Push $2   
+
+FunctionEnd
   !endif ; // JRE_DECLARES
