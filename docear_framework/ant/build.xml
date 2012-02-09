@@ -536,7 +536,8 @@
 	
 	<target name="docear-nsis" depends="docear-bin">
 		<nsis script="${root}/windows-installer/docear_windows_installer.nsi" verbosity="4" out="${root}/dist/nsis-build.log" noconfig="yes">
-			  <define name="VERSION" value="${ver_docear}"/>          
+			<define name="VERSION" value="${ver_docear}"/>
+			<define name="DOCEAR_OUT_FILE" value="docear_setup.exe"/>
 		</nsis>
 	</target>
 	

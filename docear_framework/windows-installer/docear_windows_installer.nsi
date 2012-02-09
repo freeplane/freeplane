@@ -50,7 +50,7 @@ Var StartMenuGroup
   ;the actual installation should be stored first in the data block,
   ;because this will make your installer start faster.
  
-  ReserveFile "docear-setup.ini"
+ReserveFile "docear-setup.ini"
 
 # Installer pages
 !insertmacro MUI_PAGE_WELCOME
@@ -75,7 +75,11 @@ Page Custom OptionPageNS OptionPageProcess
 
 
 # Installer attributes
-OutFile "..\dist\docear-${VERSION}.exe"
+!ifdef DOCEAR_OUT_FILE
+    OutFile "..\dist\${DOCEAR_OUT_FILE}"
+!else
+    OutFile "..\dist\docear-${VERSION}.exe"
+!endif
 InstallDir $PROGRAMFILES\Docear
 CRCCheck on
 XPStyle on
@@ -166,11 +170,6 @@ done${UNSECTION_ID}:
 
 # Uninstaller sections
 Section /o -un.Main UNSEC0000
-    ${If} ${RunningX64}
-        SetRegView 64
-    ${Else}
-        SetRegView 32
-    ${EndIf}
     RmDir /r /REBOOTOK $APPDATA\Docear
     SetShellVarContext all
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\Docear Website.URL"
@@ -214,6 +213,11 @@ FunctionEnd
 
 # Uninstaller functions
 Function un.onInit
+    ${If} ${RunningX64}
+        SetRegView 64
+    ${Else}
+        SetRegView 32
+    ${EndIf}
     ReadRegStr $INSTDIR HKLM "${REGKEY}" Path
     DetailPrint "Install directory: $INSTDIR"
     !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuGroup
