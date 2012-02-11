@@ -68,8 +68,10 @@ public class TimeConditionController implements IElementaryConditionController {
 		return true;
 	}
 
+	@Override
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
-	                                            final Object value, final boolean ignoreCase) {
+	                                            final Object value, final boolean matchCase,
+	                                            final boolean matchApproximately) {
 		return TimeCondition.create(simpleCond, (FormattedDate) value);
 	}
 

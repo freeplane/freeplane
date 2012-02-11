@@ -70,7 +70,7 @@ class AttributeConditionController implements IElementaryConditionController {
 	}
 
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCondition,
-	                                            final Object value, final boolean matchCase) {
+	                                            final Object value, final boolean matchCase, final boolean matchApproximately) {
 		final String attribute = (String) selectedItem;
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_EXIST)) {
 			return new AttributeExistsCondition(attribute);
@@ -79,25 +79,25 @@ class AttributeConditionController implements IElementaryConditionController {
 			return new AttributeNotExistsCondition(attribute);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-		    return new AttributeCompareCondition(attribute, value, matchCase, 0, true);
+		    return new AttributeCompareCondition(attribute, value, matchCase, 0, true, matchApproximately);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_NOT_EQUAL_TO)) {
-		    return new AttributeCompareCondition(attribute, value, matchCase, 0, false);
+		    return new AttributeCompareCondition(attribute, value, matchCase, 0, false, matchApproximately);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_GT)) {
-		    return new AttributeCompareCondition(attribute, value, matchCase, 1, true);
+		    return new AttributeCompareCondition(attribute, value, matchCase, 1, true, false);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_GE)) {
-		    return new AttributeCompareCondition(attribute, value, matchCase, -1, false);
+		    return new AttributeCompareCondition(attribute, value, matchCase, -1, false, false);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_LT)) {
-		    return new AttributeCompareCondition(attribute, value, matchCase, -1, true);
+		    return new AttributeCompareCondition(attribute, value, matchCase, -1, true, false);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_LE)) {
-		    return new AttributeCompareCondition(attribute, value, matchCase, 1, false);
+		    return new AttributeCompareCondition(attribute, value, matchCase, 1, false, false);
 		}
         if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
-            return new AttributeContainsCondition(attribute, value.toString(), matchCase);
+            return new AttributeContainsCondition(attribute, value.toString(), matchCase, matchApproximately);
         }
         if (simpleCondition.objectEquals(ConditionFactory.FILTER_REGEXP)) {
             return new AttributeMatchesCondition(attribute, value.toString(), matchCase);

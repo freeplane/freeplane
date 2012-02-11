@@ -19,8 +19,10 @@
  */
 package org.freeplane.features.styles.mindmapmode;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 
 import javax.swing.JComboBox;
 import javax.swing.JList;
@@ -30,9 +32,10 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
  * @author Dimitry Polivaev
  * Dec 31, 2011
  */
-@SuppressWarnings("serial") class ComboBoxRendererWithTooltip extends BasicComboBoxRenderer {
+@SuppressWarnings("serial")
+public class ComboBoxRendererWithTooltip extends BasicComboBoxRenderer {
 		final private JComboBox box;
-		ComboBoxRendererWithTooltip(JComboBox box){
+		public ComboBoxRendererWithTooltip(JComboBox box){
 			this.box = box;
 		}
 	    public Component getListCellRendererComponent(JList list, Object value,
@@ -56,6 +59,12 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
 	    	else{
 	    		list.setToolTipText(text);
 	    	}
+			
+			// FELIXHACK
+			//setFont(getFont().deriveFont(8.0F));
+			//setPreferredSize(new Dimension(Math.max(40, getPreferredSize().width), 20));
+			//setBackground(Color.RED);
+			
 	    	return this;
 	    }
 }

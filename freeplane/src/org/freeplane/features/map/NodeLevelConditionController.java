@@ -88,33 +88,35 @@ class NodeLevelConditionController implements IElementaryConditionController {
 		return false;
 	}
 
+	@Override
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
-	                                            final Object value, final boolean ignoreCase) {
+	                                            final Object value, final boolean matchCase,
+	                                            final boolean matchApproximately) {
 		if(value instanceof PeriodicLevelCondition){
 			return (ASelectableCondition) value;
 		}
-		return createASelectableCondition(simpleCond, (String) value, ignoreCase);
+		return createASelectableCondition(simpleCond, (String) value, matchCase, matchApproximately);
 	}
 
 	protected ASelectableCondition createASelectableCondition(final NamedObject simpleCondition, final String value,
-	                                                   final boolean ignoreCase) {
+	                                                   final boolean matchCase, final boolean matchApproximately) {
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-			return new NodeLevelCompareCondition(value, ignoreCase, 0, true);
+			return new NodeLevelCompareCondition(value, matchCase, 0, true);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_NOT_EQUAL_TO)) {
-			return new NodeLevelCompareCondition(value, ignoreCase, 0, false);
+			return new NodeLevelCompareCondition(value, matchCase, 0, false);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_GT)) {
-			return new NodeLevelCompareCondition(value, ignoreCase, 1, true);
+			return new NodeLevelCompareCondition(value, matchCase, 1, true);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_GE)) {
-			return new NodeLevelCompareCondition(value, ignoreCase, -1, false);
+			return new NodeLevelCompareCondition(value, matchCase, -1, false);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_LT)) {
-			return new NodeLevelCompareCondition(value, ignoreCase, -1, true);
+			return new NodeLevelCompareCondition(value, matchCase, -1, true);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_LE)) {
-			return new NodeLevelCompareCondition(value, ignoreCase, 1, false);
+			return new NodeLevelCompareCondition(value, matchCase, 1, false);
 		}
 		if (simpleCondition.objectEquals(NodeLevelConditionController.FILTER_ROOT))
 			return new RootCondition();

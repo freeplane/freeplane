@@ -48,6 +48,7 @@ import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ComboBoxEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
@@ -83,6 +84,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.StyleNamedObject;
+import org.freeplane.features.styles.mindmapmode.ComboBoxRendererWithTooltip;
 import org.freeplane.features.time.TimeComboBoxEditor;
 
 /**
@@ -219,6 +221,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		controller.addAction(new ToggleToolbarAction("ToggleToolbarAction", "/main_toolbar"));
 		controller.addAction(new ToggleToolbarAction("ToggleStatusAction", "/status"));
 		toolbarPanel = new JComponent[4];
+
 		toolbarPanel[TOP] = new HorizontalToolbarPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		toolbarPanel[BOTTOM] = Box.createHorizontalBox();
 		toolbarPanel[LEFT] = Box.createVerticalBox();
@@ -729,6 +732,8 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 				}
 			});
 			menuBuilder.addElement("main_toolbar_zoom", zoomBox, MenuBuilder.AS_CHILD);
+			// FELIXHACK
+			//zoomBox.setRenderer(new ComboBoxRendererWithTooltip(zoomBox));
 		}
 	}
 

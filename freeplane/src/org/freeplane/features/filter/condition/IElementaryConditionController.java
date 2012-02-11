@@ -39,7 +39,8 @@ public interface IElementaryConditionController {
 	boolean canSelectValues(final Object property, final NamedObject simpleCond);
 
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
-	                                            final Object value, final boolean ignoreCase);
+	                                            final Object value, final boolean matchCase,
+	                                            final boolean approximateMatching);
 
 	ComboBoxModel getConditionsForProperty(final Object property);
 

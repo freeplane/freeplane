@@ -69,19 +69,21 @@ class NodeTextConditionController implements IElementaryConditionController {
 		return true;
 	}
 
+	@Override
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCondition,
-	                                            final Object value, final boolean matchCase) {
+	                                            final Object value, final boolean matchCase, final boolean matchApproximately) {
 		final String item = (String) ((NamedObject)selectedItem).getObject();
-		return createASelectableCondition(item, simpleCondition, value, matchCase);
+		return createASelectableCondition(item, simpleCondition, value, matchCase, matchApproximately);
 	}
 
 	private ASelectableCondition createASelectableCondition(final String item, final NamedObject simpleCondition, final Object value,
-	                                                   final boolean matchCase) {
+	                                                   final boolean matchCase, final boolean matchApproximately) {
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
 			if (value.equals("")) {
 				return null;
 			}
-			return matchCase ? new MatchCaseNodeContainsCondition(item, value.toString()) : new NodeContainsCondition(item, value.toString());
+			return matchCase ? new MatchCaseNodeContainsCondition(item, value.toString(), matchApproximately) : 
+				               new NodeContainsCondition(item, value.toString(), matchApproximately);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_REGEXP)) {
 			try {
@@ -93,22 +95,22 @@ class NodeTextConditionController implements IElementaryConditionController {
 			}
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-			return new NodeTextCompareCondition(item, value, matchCase, 0, true);
+			return new NodeTextCompareCondition(item, value, matchCase, 0, true, matchApproximately);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_NOT_EQUAL_TO)) {
-			return new NodeTextCompareCondition(item, value, matchCase, 0, false);
+			return new NodeTextCompareCondition(item, value, matchCase, 0, false, matchApproximately);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_GT)) {
-			return new NodeTextCompareCondition(item, value, matchCase, 1, true);
+			return new NodeTextCompareCondition(item, value, matchCase, 1, true, matchApproximately);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_GE)) {
-			return new NodeTextCompareCondition(item, value, matchCase, -1, false);
+			return new NodeTextCompareCondition(item, value, matchCase, -1, false, matchApproximately);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_LT)) {
-			return new NodeTextCompareCondition(item, value, matchCase, -1, true);
+			return new NodeTextCompareCondition(item, value, matchCase, -1, true, matchApproximately);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_LE)) {
-			return new NodeTextCompareCondition(item, value, matchCase, 1, false);
+			return new NodeTextCompareCondition(item, value, matchCase, 1, false, matchApproximately);
 		}
 		return null;
 	}

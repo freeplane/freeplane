@@ -21,20 +21,26 @@ package org.freeplane.features.filter;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
 
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.text.JTextComponent;
@@ -42,6 +48,7 @@ import javax.swing.text.JTextComponent;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -77,6 +84,21 @@ public class FilterConditionEditor extends JComponent {
 			}
 		}
 	}
+	
+	/**
+	 * Start "Find next" action when pressing enter key in "value" combo box
+	 */
+	private void setValuesEnterKeyListener()
+	{
+		values.getEditor().addActionListener(new ActionListener()  {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Controller.getCurrentController().getAction("QuickFindAction.FORWARD").actionPerformed(null);
+			}
+			
+		});
+	}
 
 	private void setValuesEditor() {
 		final Object selectedProperty = filteredPropertiesComponent.getSelectedItem();
@@ -91,6 +113,7 @@ public class FilterConditionEditor extends JComponent {
 		
 		final ComboBoxEditor valueEditor = conditionController.getValueEditor(selectedProperty, selectedCondition);
 		values.setEditor(valueEditor != null ? valueEditor : new BasicComboBoxEditor());
+		setValuesEnterKeyListener();
 		
 		final ListCellRenderer valueRenderer = conditionController.getValueRenderer(selectedProperty, selectedCondition);
 		values.setRenderer(valueRenderer != null ? valueRenderer : filterController.getConditionRenderer());
@@ -107,7 +130,9 @@ public class FilterConditionEditor extends JComponent {
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final String PROPERTY_FILTER_MATCH_CASE = "filter_match_case";
+	private static final String PROPERTY_FILTER_APPROXIMATE_MATCH = "filter_match_approximate";
 	final private JCheckBox caseSensitive;
+	final private JCheckBox approximateMatching;
 	final private JComboBox elementaryConditions;
 	final private FilterController filterController;
 	final private JComboBox filteredPropertiesComponent;
@@ -158,22 +183,38 @@ public class FilterConditionEditor extends JComponent {
 			gridBagConstraints.gridy++;
 		}
 		values.setEditable(true);
+		setValuesEnterKeyListener();
+		
+		JPanel ignoreCaseAndApproximateMatchingPanel = new JPanel();
+		ignoreCaseAndApproximateMatchingPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		
 		// Ignore case checkbox
 		caseSensitive = new JCheckBox();
-		add(caseSensitive, gridBagConstraints);
-		gridBagConstraints.gridx++;
+		//add(caseSensitive, gridBagConstraints);
+		ignoreCaseAndApproximateMatchingPanel.add(caseSensitive);
+		//gridBagConstraints.gridx++;
 		MenuBuilder.setLabelAndMnemonic(caseSensitive,TextUtils.getRawText(PROPERTY_FILTER_MATCH_CASE));
 		caseSensitive.setSelected(ResourceController.getResourceController().getBooleanProperty(
 		    PROPERTY_FILTER_MATCH_CASE));
+		
+		// add approximate matching checkbox	
+		approximateMatching = new JCheckBox();
+		MenuBuilder.setLabelAndMnemonic(approximateMatching, TextUtils.getRawText(PROPERTY_FILTER_APPROXIMATE_MATCH));
+		//add(approximateMatching, gridBagConstraints);
+		ignoreCaseAndApproximateMatchingPanel.add(approximateMatching);
+		approximateMatching.setSelected(ResourceController.getResourceController().getBooleanProperty(
+			    PROPERTY_FILTER_APPROXIMATE_MATCH));
 		mapChanged(Controller.getCurrentController().getMap());
+		
+		add(ignoreCaseAndApproximateMatchingPanel, gridBagConstraints);
 
 	}
 
-	public void focusInputField() {
+	public void focusInputField(final boolean selectAll) {
 		if (values.isEnabled()) {
 			values.requestFocus();
 			final Component editorComponent = values.getEditor().getEditorComponent();
-			if (editorComponent instanceof JTextComponent) {
+			if (selectAll && editorComponent instanceof JTextComponent) {
 				((JTextComponent) editorComponent).selectAll();
 			}
 			return;
@@ -202,9 +243,10 @@ public class FilterConditionEditor extends JComponent {
 		}
 		final NamedObject simpleCond = (NamedObject) elementaryConditions.getSelectedItem();
 		final boolean matchCase = caseSensitive.isSelected();
+		final boolean matchApproximately = approximateMatching.isSelected();
 		ResourceController.getResourceController().setProperty(PROPERTY_FILTER_MATCH_CASE, matchCase);
 		final Object selectedItem = filteredPropertiesComponent.getSelectedItem();
-		newCond = filterController.getConditionFactory().createCondition(selectedItem, simpleCond, value, matchCase);
+		newCond = filterController.getConditionFactory().createCondition(selectedItem, simpleCond, value, matchCase, matchApproximately);
 		if (values.isEditable()) {
 			if (!value.equals("")) {
 				values.removeItem(value);
