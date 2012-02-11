@@ -467,8 +467,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		Reader reader = null;
 		MapVersionInterpreter versionInterpreter = MapVersionInterpreter.getVersionInterpreter(mapStart);
 		if(versionInterpreter.anotherDialect){
-			String dialectInfo = versionInterpreter.getDialectInfo();
-			UITools.showMessage(dialectInfo, JOptionPane.WARNING_MESSAGE);
+			String message = versionInterpreter.getDialectInfo(f.getAbsolutePath());
+			UITools.showMessage(message, JOptionPane.WARNING_MESSAGE);
 		}
 		if(versionInterpreter.needsConversion){
 			final int showResult = OptionalDontShowMeAgainDialog.show("really_convert_to_current_version",
