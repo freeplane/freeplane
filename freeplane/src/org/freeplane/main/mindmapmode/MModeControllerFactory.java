@@ -20,17 +20,13 @@
 package org.freeplane.main.mindmapmode;
 
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-
 import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
-import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.DelayedMouseListener;
 import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
