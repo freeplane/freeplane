@@ -343,6 +343,10 @@ public class UITools {
 		    TextUtils.getText("error"), JOptionPane.ERROR_MESSAGE);
 	}
 	
+	static public void showMessage(String message, int messageType) {
+		backOtherWindows();
+		JOptionPane.showMessageDialog(getFrame(), message, "Freeplane", messageType);
+	}
 	public static int showConfirmDialog(final NodeModel node, final Object message, final String title,
 	                                    final int optionType, final int messageType) {
 		final Controller controller = Controller.getCurrentController();

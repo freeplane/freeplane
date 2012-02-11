@@ -119,8 +119,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	private static final String BACKUP_FILE_NUMBER = "backup_file_number";
-	private static final String EXPECTED_START_STRINGS[] = { "<map version=\"" + FreeplaneVersion.XML_VERSION + "\"",
-	        "<map version=\"0.7.1\"" };
 	private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_version_updater.xslt";
 	private static File singleBackupDirectory;
 
@@ -467,14 +465,12 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		final ByteArrayInputStream readBytes = new ByteArrayInputStream(buffer, 0, readCount);
 		final InputStream sequencedInput = new SequenceInputStream(readBytes, file);
 		Reader reader = null;
-		for (int i = 0; i < EXPECTED_START_STRINGS.length; i++) {
-			versionInfoLength = EXPECTED_START_STRINGS[i].length();
-			if (mapStart.startsWith(EXPECTED_START_STRINGS[i])) {
-				reader = UrlManager.getActualReader(sequencedInput);
-				break;
-			}
+		MapVersionInterpreter versionInterpreter = MapVersionInterpreter.getVersionInterpreter(mapStart);
+		if(versionInterpreter.anotherDialect){
+			String dialectInfo = versionInterpreter.getDialectInfo();
+			UITools.showMessage(dialectInfo, JOptionPane.WARNING_MESSAGE);
 		}
-		if (reader == null) {
+		if(versionInterpreter.needsConversion){
 			final int showResult = OptionalDontShowMeAgainDialog.show("really_convert_to_current_version",
 			    "confirmation", MMapController.RESOURCES_CONVERT_TO_CURRENT_VERSION,
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
@@ -486,6 +482,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				reader = UrlManager.getUpdateReader(f, FREEPLANE_VERSION_UPDATER_XSLT);
 			}
 		}
+		else
+			reader = UrlManager.getActualReader(sequencedInput);
 		try {
 			return Controller.getCurrentModeController().getMapController().getMapReader()
 			    .createNodeTreeFromXml(map, reader, Mode.FILE);

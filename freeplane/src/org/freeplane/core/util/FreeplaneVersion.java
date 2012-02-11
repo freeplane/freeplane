@@ -28,8 +28,7 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 	private static final FreeplaneVersion VERSION = FreeplaneVersion.loadVersion();
 	public static final String VERSION_KEY = "freeplane_version";
 	public static final String VERSION_PROPERTIES = "/version.properties";
-	public static final String XML_VERSION = "0.9.0";
-	public static String DIALECT_VERSION = String.format("freeplane %d.%d.%d", VERSION.getMaj(), VERSION.getMid(), 0);
+	public static final String XML_VERSION = "freeplane 1.2.0";
 	/** major version, the 1 in "1.0.38 rc" */
 	private final int mMaj;
 	/** mid version, the 0 in "1.0.38 rc" */
