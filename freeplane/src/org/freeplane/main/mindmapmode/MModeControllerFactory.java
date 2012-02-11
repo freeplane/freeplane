@@ -210,7 +210,6 @@ public class MModeControllerFactory {
 		CloudController.install(new MCloudController(modeController));
 		NoteController.install(new MNoteController(modeController));
 		userInputListenerFactory.setMapMouseListener(new MMapMouseListener());
-//		userInputListenerFactory.setMapMouseListener(new DelayedMouseListener(new MMapMouseListener(), 2, 1));
 		final MTextController textController = new MTextController(modeController);
 		TextController.install(textController);
 		LinkController.install(new MLinkController());

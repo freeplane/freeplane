@@ -25,6 +25,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Compat;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.ConnectorModel.Shape;
@@ -127,7 +128,7 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 	@Override
     public void mouseClicked(MouseEvent e) {
 
-		if(e.getClickCount() == 2){
+		if(Compat.isCtrlEvent(e)){
 			final MapView mapView = (MapView) e.getComponent();
 			final Object object = mapView.detectCollision(new Point(originX, originY));
 			if(object != null)
