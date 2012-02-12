@@ -24,6 +24,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.lang.ref.WeakReference;
@@ -78,6 +80,21 @@ public class FilterConditionEditor extends JComponent {
 		}
 	}
 
+	/**
+	 * Start "Find next" action when pressing enter key in "value" combo box
+	 */
+	private void setValuesEnterKeyListener()
+	{
+		values.getEditor().addActionListener(new ActionListener()  {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				((QuickFindAction)Controller.getCurrentController().getAction("QuickFindAction.FORWARD")).executeAction(true);
+			}
+			
+		});
+	}
+
 	private void setValuesEditor() {
 		final Object selectedProperty = filteredPropertiesComponent.getSelectedItem();
 		final IElementaryConditionController conditionController = filterController.getConditionFactory()
@@ -91,6 +108,7 @@ public class FilterConditionEditor extends JComponent {
 		
 		final ComboBoxEditor valueEditor = conditionController.getValueEditor(selectedProperty, selectedCondition);
 		values.setEditor(valueEditor != null ? valueEditor : new BasicComboBoxEditor());
+		setValuesEnterKeyListener();
 		
 		final ListCellRenderer valueRenderer = conditionController.getValueRenderer(selectedProperty, selectedCondition);
 		values.setRenderer(valueRenderer != null ? valueRenderer : filterController.getConditionRenderer());
@@ -158,6 +176,8 @@ public class FilterConditionEditor extends JComponent {
 			gridBagConstraints.gridy++;
 		}
 		values.setEditable(true);
+		setValuesEnterKeyListener();
+		
 		// Ignore case checkbox
 		caseSensitive = new JCheckBox();
 		add(caseSensitive, gridBagConstraints);
@@ -169,11 +189,11 @@ public class FilterConditionEditor extends JComponent {
 
 	}
 
-	public void focusInputField() {
+	public void focusInputField(final boolean selectAll) {
 		if (values.isEnabled()) {
 			values.requestFocus();
 			final Component editorComponent = values.getEditor().getEditorComponent();
-			if (editorComponent instanceof JTextComponent) {
+			if (selectAll && editorComponent instanceof JTextComponent) {
 				((JTextComponent) editorComponent).selectAll();
 			}
 			return;

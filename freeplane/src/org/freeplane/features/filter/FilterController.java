@@ -92,7 +92,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	    @Override
 		public void actionPerformed(ActionEvent event) {
 	    	if(isVisible() && ! quickEditor.isInputFieldFocused() && (EventQueue.getCurrentEvent() instanceof KeyEvent))
-	    		quickEditor.focusInputField();
+	    		quickEditor.focusInputField(true);
 	    	else
 	    		super.actionPerformed(event);
 		}
@@ -101,7 +101,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	    protected void setVisible(final JComponent toolBar, final boolean visible) {
 	    	quickEditor.addAncestorListener(new AncestorListener() {
 	    		public void ancestorAdded(final AncestorEvent event) {
-	    			quickEditor.focusInputField();
+	    			quickEditor.focusInputField(true);
 	    			quickEditor.removeAncestorListener(this);
 	    		}
 	    		public void ancestorMoved(final AncestorEvent event) {
