@@ -32,6 +32,7 @@ import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.DelayedMouseListener;
 import org.freeplane.core.ui.IEditHandler;
+import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
 import org.freeplane.core.ui.components.FButtonBar;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
@@ -189,32 +190,9 @@ public class MModeControllerFactory {
 		final Controller controller = Controller.getCurrentController();
 		modeController = new MModeController(controller);
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
-		final int maxClickNumber;
-        if(ResourceController.getResourceController().getBooleanProperty("start_editor_on_double_click"))
-            maxClickNumber = 2;
-        else
-            maxClickNumber = 1;
 		
-        final DelayedMouseListener nodeMouseMotionListener = new DelayedMouseListener( new MNodeMouseMotionListener(), maxClickNumber, MouseEvent.BUTTON1){
-        	public void mouseClicked(final MouseEvent e) {
-        		MNodeMouseMotionListener delegate = (MNodeMouseMotionListener)getDelegate();
-        		if(! delegate.wasFocused())
-        			delegate.mouseClicked(e);
-        		else
-        			super.mouseClicked(e);
-        	}
-        };
+        final IMouseListener nodeMouseMotionListener = new MNodeMouseMotionListener();
         userInputListenerFactory.setNodeMouseMotionListener(nodeMouseMotionListener);
-        ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
-            public void propertyChanged(String propertyName, String newValue, String oldValue) {
-                if("start_editor_on_double_click".equals(propertyName)){
-                    if(Boolean.parseBoolean(newValue))
-                        nodeMouseMotionListener.setMaxClickNumber(2);
-                    else
-                        nodeMouseMotionListener.setMaxClickNumber(1);
-                }
-            }
-        });
 		final JPopupMenu popupmenu = new JPopupMenu();
 		userInputListenerFactory.setNodePopupMenu(popupmenu);
 		modeController.setUserInputListenerFactory(userInputListenerFactory);

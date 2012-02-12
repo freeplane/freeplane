@@ -220,6 +220,9 @@ public class FormatController implements IExtension {
 					else if (type.equals(IFormattedObject.TYPE_STRING)) {
 						stringFormats.add(format);
 					}
+					else if (type.equals(PatternFormat.TYPE_STANDARD)) {
+					    // ignore this pattern that crept in in some 1.2 beta version
+					}
 					else {
 						throw new RuntimeException("unknown type in " + configXml + ": type=" + type + ", style="
 						        + style + ", element content=" + content);
@@ -273,8 +276,10 @@ public class FormatController implements IExtension {
 		        + "<!--   - 'name': a informal name, a comment that's not visible in the app -->" + sep //
 		        + "<!--   - 'locale': the name of the locale, only set for locale dependent format codes -->" + sep;
 		for (PatternFormat patternFormat : formats) {
-            if (!patternFormat.getType().equals(PatternFormat.TYPE_IDENTITY))
+            if (!patternFormat.getType().equals(PatternFormat.TYPE_IDENTITY)
+                    && !patternFormat.getType().equals(PatternFormat.TYPE_STANDARD)) {
                 saver.addChild(patternFormat.toXml());
+            }
 		}
 		final Writer writer = new FileWriter(pathToFile);
 		final XMLWriter xmlWriter = new XMLWriter(writer);
@@ -330,9 +335,9 @@ public class FormatController implements IExtension {
 			}
 		}
 		catch (Exception e) {
-		    // Be quiet, just like Excel does...
-		    // LogUtils.warn("cannot format '" + StringUtils.abbreviate(obj.toString(), 20) + "' with " + formatString
-		    //               + ": " + e.getMessage());
+            // Be quiet, just like Excel does...
+            // LogUtils.warn("cannot format '" + StringUtils.abbreviate(obj.toString(), 20) + "' of type "
+            //               + obj.getClass().getSimpleName() + " with " + formatString + ": " + e.getMessage());
 			return defaultObject;
 		}
 	}

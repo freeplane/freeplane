@@ -46,6 +46,7 @@ class RemoveAllIconsAction extends AMultipleNodeAction implements IIconInformati
 	 */
 	public RemoveAllIconsAction() {
 		super("RemoveAllIconsAction");
+		putValue(Action.SHORT_DESCRIPTION, getDescription());
 	}
 
 	@Override

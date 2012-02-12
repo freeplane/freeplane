@@ -435,9 +435,9 @@ public class MTextController extends TextController {
 		if (strings == null) {
 			return;
 		}
-		final String newUpperContent = strings[0];
-		final String newLowerContent = strings[1];
-		setGuessedNodeObject(node, newUpperContent);
+		final String newUpperContent = makePlainIfNoFormattingFound(strings[0]);
+		final String newLowerContent = makePlainIfNoFormattingFound(strings[1]);
+		setNodeObject(node, newUpperContent);
 		final NodeModel parent = node.getParentNode();
 		final ModeController modeController = Controller.getCurrentModeController();
 		final NodeModel lowerNode = ((MMapController) modeController.getMapController()).addNewNode(parent, parent
@@ -445,7 +445,7 @@ public class MTextController extends TextController {
 		final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController
 		    .getController();
 		nodeStyleController.copyStyle(node, lowerNode);
-		setGuessedNodeObject(lowerNode, newLowerContent);
+		setNodeObject(lowerNode, newLowerContent);
 	}
 
 	public boolean useRichTextInEditor(String key) {
@@ -748,14 +748,7 @@ public class MTextController extends TextController {
 			}
 
 			public void ok(final String text) {
-				String processedText = text;
-				if(HtmlUtils.isHtmlNode(processedText)){
-					processedText = HTML_HEAD.matcher(processedText).replaceFirst("");
-					if(! containsFormatting(processedText)){
-						processedText = HtmlUtils.htmlToPlain(processedText);
-					}
-				}
-				processedText = processedText.replaceFirst("\\s+$", "");
+				String processedText = makePlainIfNoFormattingFound(text);
 				setGuessedNodeObject(nodeModel, processedText);
 				stop();
 			}
@@ -871,6 +864,17 @@ public class MTextController extends TextController {
 	public EventBuffer getEventQueue() {
     	return eventQueue;
     }
+
+	private String makePlainIfNoFormattingFound(String text) {
+		if(HtmlUtils.isHtmlNode(text)){
+			text = HTML_HEAD.matcher(text).replaceFirst("");
+			if(! containsFormatting(text)){
+				text = HtmlUtils.htmlToPlain(text);
+			}
+		}
+		text = text.replaceFirst("\\s+$", "");
+		return text;
+	}
 
 }
 
