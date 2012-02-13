@@ -149,7 +149,8 @@ public class FreeplaneStarter {
 			LinkController.install();
 			IconController.install();
 			HelpController.install();
-			controller.addAction(new UpdateCheckAction());
+			//FIXME: DOCEAR replace with docear check for update action
+			//controller.addAction(new UpdateCheckAction());
 			controller.addAction(new NextNodeAction(Direction.FORWARD));
 			controller.addAction(new NextNodeAction(Direction.BACK));
 			controller.addAction(new NextNodeAction(Direction.FORWARD_N_FOLD));
