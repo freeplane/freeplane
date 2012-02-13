@@ -2,11 +2,13 @@ package org.docear.plugin.core;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Enumeration;
+import java.util.Properties;
 
 import javax.swing.SwingUtilities;
 
@@ -155,19 +157,16 @@ public class CoreConfiguration extends ALanguageController {
 		ResourceController resourceController = ResourceController.getResourceController();
 
 		resourceController.setProperty(WEB_FREEPLANE_LOCATION, resourceController.getProperty(WEB_DOCEAR_LOCATION));
-		replaceAction(OPEN_FREEPLANE_SITE_ACTION,
-				new DocearOpenUrlAction(OPEN_FREEPLANE_SITE_ACTION, resourceController.getProperty(WEB_FREEPLANE_LOCATION)));
 		resourceController.setProperty(BUG_TRACKER_LOCATION, resourceController.getProperty(DOCEAR_BUG_TRACKER_LOCATION));
-		replaceAction(REPORT_BUG_ACTION,
-				new DocearOpenUrlAction(REPORT_BUG_ACTION, resourceController.getProperty(BUG_TRACKER_LOCATION)));
 		resourceController.setProperty(HELP_FORUM_LOCATION, resourceController.getProperty("docear_helpForumLocation"));
-		replaceAction(ASK_FOR_HELP, new DocearOpenUrlAction(ASK_FOR_HELP, resourceController.getProperty(HELP_FORUM_LOCATION)));
 		resourceController.setProperty(FEATURE_TRACKER_LOCATION, resourceController.getProperty(DOCEAR_FEATURE_TRACKER_LOCATION));
-		replaceAction(REQUEST_FEATURE_ACTION,
-				new DocearOpenUrlAction(REQUEST_FEATURE_ACTION, resourceController.getProperty(FEATURE_TRACKER_LOCATION)));
 		resourceController.setProperty(WEB_DOCU_LOCATION, resourceController.getProperty(DOCEAR_WEB_DOCU_LOCATION));
-		replaceAction(DOCUMENTATION_ACTION,
-				new DocearOpenUrlAction(DOCUMENTATION_ACTION, resourceController.getProperty(WEB_DOCU_LOCATION)));
+		
+		replaceAction(REQUEST_FEATURE_ACTION, new DocearOpenUrlAction(REQUEST_FEATURE_ACTION, resourceController.getProperty(FEATURE_TRACKER_LOCATION)));
+		replaceAction(ASK_FOR_HELP, new DocearOpenUrlAction(ASK_FOR_HELP, resourceController.getProperty(HELP_FORUM_LOCATION)));
+		replaceAction(REPORT_BUG_ACTION, new DocearOpenUrlAction(REPORT_BUG_ACTION, resourceController.getProperty(BUG_TRACKER_LOCATION)));
+		replaceAction(OPEN_FREEPLANE_SITE_ACTION, new DocearOpenUrlAction(OPEN_FREEPLANE_SITE_ACTION, resourceController.getProperty(WEB_FREEPLANE_LOCATION)));
+		replaceAction(DOCUMENTATION_ACTION, new DocearOpenUrlAction(DOCUMENTATION_ACTION, resourceController.getProperty(WEB_DOCU_LOCATION)));
 		replaceAction(LICENSE_ACTION, new DocearLicenseAction(LICENSE_ACTION));
 		
 	}
@@ -192,8 +191,15 @@ public class CoreConfiguration extends ALanguageController {
 				}
 			}
 		}
-		String programmer = resourceController.getProperty("docear_programmer");
-		String copyright = resourceController.getProperty("docear_copyright");
+		Properties about_props = new Properties();
+		try {
+			about_props.load(this.getClass().getResourceAsStream("/about.properties"));
+		}
+		catch (IOException e1) {
+			LogUtils.warn("DOCEAR: could not load core \"about\" properties");
+		}
+		String programmer = about_props.getProperty("docear_programmer");
+		String copyright = about_props.getProperty("docear_copyright");
 		String version	= resourceController.getProperty("docear_version");
 		String status	= resourceController.getProperty("docear_status");
 		
