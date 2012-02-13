@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -262,9 +263,8 @@ public class MenuUtils {
 
     public static void executeMenuItems(final List<String> menuItemKeys) {
         LogUtils.info("menu items to execute: " + menuItemKeys);
+        final MenuBuilder menuBuilder = getMenuBuilder();
         for (String menuItemKey : menuItemKeys) {
-            final ModeController modeController = Controller.getCurrentModeController();
-            final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
             final DefaultMutableTreeNode treeNode = menuBuilder.get(menuItemKey);
             if (treeNode == null || !treeNode.isLeaf() || !(treeNode.getUserObject() instanceof JMenuItem)) {
                 UITools.errorMessage(TextUtils.format("MenuUtils.invalid_menuitem", menuItemKey));
@@ -276,5 +276,20 @@ public class MenuUtils {
             ActionEvent e = new ActionEvent(menuItem, 0, null);
             action.actionPerformed(e);
         }
+    }
+
+    private static MenuBuilder getMenuBuilder() {
+        final ModeController modeController = Controller.getCurrentModeController();
+        final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
+        return menuBuilder;
+    }
+
+    public static Icon getMenuItemIcon(String menuItemKey) {
+        final DefaultMutableTreeNode treeNode = getMenuBuilder().get(menuItemKey);
+        if (treeNode == null || !treeNode.isLeaf() || !(treeNode.getUserObject() instanceof JMenuItem)) {
+            return null;
+        }
+        final JMenuItem menuItem = (JMenuItem) treeNode.getUserObject();
+        return menuItem.getIcon();
     }
 }
