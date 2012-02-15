@@ -61,7 +61,8 @@ public class WorkspaceUtils {
 	}
 	
 	public static void showWorkspaceChooserDialog() {
-		WorkspaceChooserDialogPanel dialog = new WorkspaceChooserDialogPanel();
+		String defaultLocation = System.getProperty("user.home")+File.separator+ResourceController.getResourceController().getProperty("ApplicationName", "freeplane").toLowerCase()+"_workspace";
+		WorkspaceChooserDialogPanel dialog = new WorkspaceChooserDialogPanel(defaultLocation);
 		
 		JOptionPane.showMessageDialog(UITools.getFrame(), dialog, TextUtils.getRawText("no_location_set"), JOptionPane.PLAIN_MESSAGE);
 	
@@ -69,10 +70,11 @@ public class WorkspaceUtils {
 		String profileName = dialog.getProfileName();
 	
 		if (location.length() == 0 || profileName.length() == 0) {			
-			location = System.getProperty("user.home")+File.separator+ResourceController.getResourceController().getProperty("ApplicationName", "freeplane").toLowerCase()+"_workspace";
+			location = defaultLocation;
 		}
 	
 		File f = new File(location);
+		
 		URI newProfileBase = WorkspaceUtils.getURI(new File(f, WorkspaceController.getController().getPreferences().getWorkspaceProfilesRoot()+profileName));
 		if(WorkspaceController.isFirstApplicationStart() || !newProfileBase.equals(getProfileBaseURI())) {
 			closeAllMindMaps();	
