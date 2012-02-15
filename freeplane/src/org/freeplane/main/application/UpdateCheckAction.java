@@ -20,6 +20,7 @@ import javax.swing.Timer;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FreeplaneVersion;
@@ -32,6 +33,7 @@ import org.freeplane.features.ui.IMapViewChangeListener;
  * 
  * @author robert ladstaetter
  */
+@EnabledAction(checkOnPopup=true)
 class UpdateCheckAction extends AFreeplaneAction {
 	private static boolean autorunEnabled = true;
 	private static Timer autorunTimer = null;
@@ -87,6 +89,14 @@ class UpdateCheckAction extends AFreeplaneAction {
 				controller.getMapViewManager().removeMapViewChangeListener(this);
 			}
 		});
+	}
+	
+	//FIXME: DOCEAR
+	public void setEnabled() {
+		this.setEnabled(false);
+	}
+	public void setEnabled(boolean enabled) {
+		super.setEnabled(false);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

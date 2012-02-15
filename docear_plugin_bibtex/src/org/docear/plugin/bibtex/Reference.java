@@ -45,7 +45,7 @@ public class Reference {
 		attributes = new ArrayList<Reference.Item>();
 		
 		if (entry.getCiteKey() == null) {
-			LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), database, entry);
+			jabRefAttributes.generateBibtexEntry(entry);			
 		}
 		
 		this.key = new Item(jabRefAttributes.getKeyAttribute(), entry.getCiteKey());		

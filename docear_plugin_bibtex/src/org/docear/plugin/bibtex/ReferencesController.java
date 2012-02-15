@@ -125,7 +125,6 @@ public class ReferencesController extends ALanguageController implements IDocear
 		this.modeController = modeController;
 		LogUtils.info("starting DocearReferencesController(ModeController)"); //$NON-NLS-1$
 
-		this.addPropertiesToOptionPanel();
 		this.addPluginDefaults();
 		this.addMenuEntries();
 		this.registerListeners();
@@ -256,19 +255,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE); //$NON-NLS-1$
 		Controller.getCurrentController().getResourceController().addDefaults(defaults);
 	}
-
-	private void addPropertiesToOptionPanel() {
-		final URL preferences = this.getClass().getResource("preferences.xml");
-		if (preferences == null)
-			throw new RuntimeException("cannot open docear.bibtex plugin preferences"); //$NON-NLS-1$
-
-		((MModeController) modeController).getOptionPanelBuilder().load(preferences);
-		/*Controller.getCurrentController().getOptionPanelController().addButtonListener(this);
-		OptionPanelBuilder builder = ((MModeController) Controller.getCurrentModeController()).getOptionPanelBuilder();
-		builder.addSeparator("reference_management", "OptionPanel.docear_bibtex_preferences", IndexedTree.AS_CHILD);
-		builder.addActionProperty("reference_management/OptionPanel.docear_bibtex_preferences" , "OptionPanel.docear_jabref_preferences", ShowJabrefPreferences.getKey(), IndexedTree.AS_CHILD);*/
-	}
-
+	
 	private void addMenuEntries() {
 
 		this.modeController.addMenuContributor(new IMenuContributor() {

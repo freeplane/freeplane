@@ -148,7 +148,7 @@ public class FreeplaneStarter {
 			TimeController.install();
 			LinkController.install();
 			IconController.install();
-			HelpController.install();
+			HelpController.install();			
 			controller.addAction(new UpdateCheckAction());
 			controller.addAction(new NextNodeAction(Direction.FORWARD));
 			controller.addAction(new NextNodeAction(Direction.BACK));
