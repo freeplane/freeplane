@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Properties;
 
@@ -26,8 +27,10 @@ import org.docear.plugin.core.workspace.actions.DocearChangeLibraryPathAction;
 import org.docear.plugin.core.workspace.actions.DocearRenameAction;
 import org.docear.plugin.core.workspace.actions.WorkspaceChangeLocationsAction;
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
+import org.freeplane.core.resources.OptionPanelController;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.FreeplaneActionCascade;
 import org.freeplane.core.ui.IMenuContributor;
@@ -121,7 +124,9 @@ public class CoreConfiguration extends ALanguageController {
 	}
 
 	private void replaceFreeplaneStringsAndActions() {
-		ResourceController resourceController = ResourceController.getResourceController();
+		disableAutoUpdater();
+		
+		ResourceController resourceController = ResourceController.getResourceController();		
 		
 		//replace this actions if docear_core is present
 		Controller.getCurrentModeController().removeAction("SaveAsAction");
@@ -129,13 +134,14 @@ public class CoreConfiguration extends ALanguageController {
 		Controller.getCurrentModeController().removeAction("SaveAction");
 		Controller.getCurrentModeController().addAction(new SaveAction());
 		
+		
 		//remove sidepanel switcher
 		//Controller.getCurrentModeController().removeAction("ShowFormatPanel");
 		Controller.getCurrentModeController().addMenuContributor(new IMenuContributor() {
 			public void updateMenus(ModeController modeController,final  MenuBuilder builder) {
 				SwingUtilities.invokeLater(new Runnable() {					
 					public void run() {
-						builder.removeElement("$" + WorkspacePreferences.SHOW_WORKSPACE_MENUITEM + "$0");	
+						builder.removeElement("$" + WorkspacePreferences.SHOW_WORKSPACE_MENUITEM + "$0");
 					}
 				});
 													
@@ -150,6 +156,17 @@ public class CoreConfiguration extends ALanguageController {
 		replaceResourceBundleStrings();
 
 		replaceActions();
+	}
+
+	private void disableAutoUpdater() {
+		final OptionPanelController optionController = Controller.getCurrentController().getOptionPanelController();		
+		optionController.addPropertyLoadListener(new OptionPanelController.PropertyLoadListener() {
+			
+			@Override
+			public void propertiesLoaded(Collection<IPropertyControl> properties) {
+				((IPropertyControl) optionController.getPropertyControl("check_updates_automatically")).setEnabled(false);
+			}
+		});
 	}
 
 	private void replaceActions() {
