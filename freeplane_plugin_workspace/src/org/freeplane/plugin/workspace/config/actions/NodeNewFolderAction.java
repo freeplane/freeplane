@@ -6,7 +6,11 @@ package org.freeplane.plugin.workspace.config.actions;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.JOptionPane;
+
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
+import org.freeplane.plugin.workspace.dialog.WorkspaceNewFolderPanel;
 import org.freeplane.plugin.workspace.dialog.WorkspaceNewGroupDialog;
 import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
 import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
@@ -40,5 +44,8 @@ public class NodeNewFolderAction extends AWorkspaceAction {
 		}
 		WorkspaceNewGroupDialog dlg = new WorkspaceNewGroupDialog("Create new Folder...", targetNode);
 		dlg.setVisible(true);
+//		WorkspaceNewFolderPanel panel = new WorkspaceNewFolderPanel(WorkspaceNewFolderPanel.MODE_PHYSICAL_ONLY, targetNode);
+//		int response = JOptionPane.showConfirmDialog(UITools.getFrame(), panel, "Create new Folder...", JOptionPane.OK_CANCEL_OPTION);
+		
 	}
 }
