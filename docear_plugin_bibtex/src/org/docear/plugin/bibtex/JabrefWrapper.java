@@ -34,6 +34,7 @@ import org.docear.plugin.bibtex.actions.FilePathValidatorAction;
 import org.docear.plugin.bibtex.listeners.MapViewListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
@@ -261,6 +262,11 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 				String line = in.nextLine();
 
 				String normalized = line.trim().toLowerCase();
+				if (Compat.isWindowsOS() && normalized.startsWith("file")) {
+					if (normalized.contains("backslash$:")) {
+						return false;
+					}
+				}
 				if (normalized.startsWith("journal") || normalized.startsWith("title") || normalized.startsWith("booktitle")) {
 					int pos = 0;
 					int i = 0;
