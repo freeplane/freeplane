@@ -68,8 +68,8 @@ public class WorkspaceUtils {
 		String location = dialog.getLocationPath();
 		String profileName = dialog.getProfileName();
 	
-		if (location.length() == 0 || profileName.length() == 0) {
-			location = "."+File.separator;
+		if (location.length() == 0 || profileName.length() == 0) {			
+			location = System.getProperty("user.home")+File.separator+ResourceController.getResourceController().getProperty("ApplicationName", "freeplane").toLowerCase()+"_workspace";
 		}
 	
 		File f = new File(location);
