@@ -43,7 +43,7 @@ public class WorkspaceChooserDialogPanel extends JPanel {
 	private JButton btnCreateNew;
 	private JLabel label;
 	private JLabel label_1;
-
+	
 	
 	public String getLocationPath() {
 		return location.getText();
@@ -95,7 +95,11 @@ public class WorkspaceChooserDialogPanel extends JPanel {
 		}
 	}
 
-	public WorkspaceChooserDialogPanel() {	
+	public WorkspaceChooserDialogPanel() {
+		new WorkspaceChooserDialogPanel("");
+	}
+	
+	public WorkspaceChooserDialogPanel(String defaultLocation) {
 		{	
 			this.setLayout(new FormLayout(new ColumnSpec[] {
 					FormFactory.RELATED_GAP_COLSPEC,
@@ -126,6 +130,9 @@ public class WorkspaceChooserDialogPanel extends JPanel {
 			String currentLocation = WorkspaceController.getController().getPreferences().getWorkspaceLocation();
 			if (currentLocation != null && currentLocation.length() > 0) {
 				location.setText(currentLocation);
+			}
+			else {
+				location.setText(defaultLocation);
 			}
 			location.setColumns(30);
 			{
