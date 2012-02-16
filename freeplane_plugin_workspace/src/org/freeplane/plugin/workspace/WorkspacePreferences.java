@@ -34,7 +34,6 @@ public class WorkspacePreferences {
 	public static final String COLLAPSE_WORKSPACE_PROPERTY_KEY = "workspace.collapsed";
 	public static final String WORKSPACE_WIDTH_PROPERTY_KEY = "workspace_view_width";
 	public static final String WORKSPACE_LOCATION = "workspace_location";
-	public static final String WORKSPACE_LOCATION_NEW = "workspace_location_new";
 	public static final String WORKSPACE_PROFILE = "workspace.profile";
 	public static final String WORKSPACE_PROFILE_DEFAULT = "default";
 

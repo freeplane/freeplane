@@ -73,12 +73,12 @@ public class WorkspaceUtils {
 			location = defaultLocation;
 		}
 	
-		File f = new File(location);
-		
+		File f = new File(location);		
 		URI newProfileBase = WorkspaceUtils.getURI(new File(f, WorkspaceController.getController().getPreferences().getWorkspaceProfilesRoot()+profileName));
-		if(WorkspaceController.isFirstApplicationStart() || !newProfileBase.equals(getProfileBaseURI())) {
+		
+		if(WorkspaceController.getController().getPreferences().getWorkspaceLocation() == null || !newProfileBase.equals(getProfileBaseURI())) {
 			closeAllMindMaps();	
-			WorkspaceController.getController().getPreferences().setNewWorkspaceLocation(WorkspaceUtils.getURI(f));
+			WorkspaceController.getController().getPreferences().setNewWorkspaceLocation(WorkspaceUtils.getURI(f));			
 			WorkspaceController.getController().getPreferences().setWorkspaceProfile(profileName);
 			WorkspaceController.getController().loadWorkspace();
 		}
@@ -203,9 +203,9 @@ public class WorkspaceUtils {
 	}
 
 	public static File getWorkspaceBaseFile() {
-		String location = ResourceController.getResourceController().getProperty("workspace_location");
-		if (location == null || location.length() == 0) {
-			location = ResourceController.getResourceController().getProperty("workspace_location_new");
+		String location = WorkspaceController.getController().getPreferences().getWorkspaceLocation();
+		if(location == null) {
+			showWorkspaceChooserDialog();
 		}
 		return new File(location);
 	}
