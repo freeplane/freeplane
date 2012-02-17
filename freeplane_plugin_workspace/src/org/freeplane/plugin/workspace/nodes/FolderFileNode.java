@@ -267,7 +267,6 @@ public class FolderFileNode extends DefaultFileNode {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	public void handleAction(WorkspaceActionEvent event) {	
-		System.out.println("FolderFileNode: "+ event);
 		if(event.getType() == WorkspaceActionEvent.WSNODE_CHANGED) {
 			if(rename(event.getBaggage().toString())) {
 				setName(event.getBaggage().toString());

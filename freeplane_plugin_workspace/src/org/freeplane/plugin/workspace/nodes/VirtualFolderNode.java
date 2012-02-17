@@ -74,8 +74,6 @@ public class VirtualFolderNode extends AFolderNode implements IWorkspaceNodeActi
 		if (event.getType() == WorkspaceActionEvent.MOUSE_RIGHT_CLICK) {	
 			showPopup( (Component) event.getBaggage(), event.getX(), event.getY());
 		}
-		System.out.println("Event: " + event);
-
 	}
 	
 	

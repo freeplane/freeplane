@@ -404,7 +404,6 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 			else 
 			if(node instanceof ALinkNode) {
 				URI uri = ((ALinkNode) node).getLinkPath();
-				System.out.println("link: "+node.getName());
 				if(uri.getPath().endsWith(filter)) {
 					set.add(WorkspaceUtils.absoluteURI(uri));
 				}

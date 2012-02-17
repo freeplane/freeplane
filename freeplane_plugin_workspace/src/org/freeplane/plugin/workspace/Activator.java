@@ -9,6 +9,7 @@ import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.IPropertyControlCreator;
 import org.freeplane.core.ui.FreeplaneActionCascade;
 import org.freeplane.core.ui.IndexedTree;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
@@ -74,7 +75,7 @@ public class Activator implements BundleActivator {
 	}
 	
 	public void stop(BundleContext context) throws Exception {
-		System.out.println("DOCEAR: save config ...");
+		LogUtils.info("DOCEAR: save config ...");
 		WorkspaceUtils.saveCurrentConfiguration();
 	}
 	

@@ -360,11 +360,10 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 						this.fileTypeManager.addFileHandler(handler);
 					}
 					catch (ClassNotFoundException e) {
-						e.printStackTrace();
-						System.out.println("Class not found [" + key + "]");
+						LogUtils.warn("Class not found [" + key + "]", e);
 					}
 					catch (ClassCastException e) {
-						System.out.println("Class [" + key + "] is not of type: PhysicalNode");
+						LogUtils.warn("Class [" + key + "] is not of type: PhysicalNode", e);
 					}
 					catch (Exception e) {
 						e.printStackTrace();
@@ -443,8 +442,7 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 		// }
 	}
 	
-	public void actionPerformed(ActionEvent e) {
-		System.out.println(e);		
+	public void actionPerformed(ActionEvent e) {		
 	}
 
 

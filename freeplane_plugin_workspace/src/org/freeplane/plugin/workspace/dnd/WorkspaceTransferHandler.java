@@ -75,9 +75,6 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 	}
 
 	public Transferable createTransferable(JComponent comp) {
-		System.out.println("createTransferable");
-//		StringOutputStream writer = new StringOutputStream();
-//		List<AWorkspaceTreeNode> objectList = new ArrayList<AWorkspaceTreeNode>();
 		if (comp instanceof JTree) {
 			JTree t = (JTree) comp;			
 			for (TreePath p : t.getSelectionPaths()) {
@@ -86,21 +83,9 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 					//FIXME: prepare for multiple node selection
 					return ((IWorkspaceTransferableCreator)node).getTransferable();
 				} 
-//				else {
-//					try {
-//						ObjectOutputStream oos = new ObjectOutputStream(writer);
-//						oos.writeObject(node);
-//						objectList.add(node);
-//					}
-//					catch (IOException e) {
-//					}
-//				}
 			}
-		}	
-		
-		WorkspaceTransferable transferable = null;//new WorkspaceTransferable(WorkspaceTransferable.WORKSPACE_NODE_FLAVOR, objectList);
-		//transferable.addData(WorkspaceTransferable.WORKSPACE_SERIALIZED_FLAVOR, writer.getString());
-		return transferable;
+		}		
+		return null;
 
 	}
 
@@ -169,11 +154,9 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 	}
 
 	public final void dragEnter(DropTargetDragEvent dtde) {
-		System.out.println("dragEnter: " + dtde);
 	}
 
 	public final void dragExit(DropTargetEvent dte) {
-		System.out.println("dragExit: " + dte);
 	}
 
 	private TreePath lastPathLocation = null;
@@ -197,7 +180,6 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 	}
 
 	public final void dropActionChanged(DropTargetDragEvent dtde) {
-		System.out.println("dropActionChanged: " + dtde);
 	}
 
 	/***********************************************************************************

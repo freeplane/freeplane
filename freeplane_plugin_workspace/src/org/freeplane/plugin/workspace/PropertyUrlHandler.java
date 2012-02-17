@@ -6,6 +6,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.LogUtils;
 import org.osgi.service.url.AbstractURLStreamHandlerService;
 
 public class PropertyUrlHandler extends AbstractURLStreamHandlerService {
@@ -23,7 +24,7 @@ public class PropertyUrlHandler extends AbstractURLStreamHandlerService {
 			URL ret = file.toURI().toURL();	        
 			return ret.openConnection();
 		}
-		System.out.println("Property Path :"+url+" is unknown");
+		LogUtils.warn("Property Path :"+url+" is unknown");
 		return null;
 	}
 }
