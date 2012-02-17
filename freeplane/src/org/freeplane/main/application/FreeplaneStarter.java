@@ -124,6 +124,7 @@ public class FreeplaneStarter {
 			controller.addAction(new QuitAction());
 			applicationResourceController.init();
 			LogUtils.createLogger();
+			FreeplaneStarter.showSysInfo();
 			final String lookandfeel = System.getProperty("lookandfeel", applicationResourceController
 			    .getProperty("lookandfeel"));
 			ViewController.setLookAndFeel(lookandfeel);
