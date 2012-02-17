@@ -45,7 +45,10 @@ class AboutAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final StringBuilder sb = new StringBuilder(TextUtils.getText("about_text"));
+		sb.append(' ');
 		sb.append(FreeplaneVersion.getVersion());
+		sb.append('\n');
+		sb.append(FreeplaneVersion.getVersion().getRevision());
 		sb.append('\n');
 		sb.append(TextUtils.format("java_version", Compat.JAVA_VERSION));
 		sb.append('\n');

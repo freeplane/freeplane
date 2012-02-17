@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
@@ -18,7 +17,6 @@ import java.security.MessageDigest;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.StreamHandler;
@@ -159,22 +157,12 @@ public class ReportGenerator extends StreamHandler {
 			sb.append("; freeplane_xml_version = ");
 			sb.append(FreeplaneVersion.XML_VERSION);
 			
-			final URL bzrInfo = ResourceController.getResourceController().getResource("/bzrinfo.properties");
-			if(bzrInfo != null){
-				Properties bzrProps = new Properties();
-				try {
-	                bzrProps.load(bzrInfo.openStream());
-                }
-                catch (IOException e) {
-                }
-				revision = bzrProps.getProperty("bzr-revision-id", "");
+			revision = FreeplaneVersion.getVersion().getRevision();
+			
+			if(! revision.equals("")){
 				sb.append("\nbzr revision = ");
 				sb.append(revision);
 			}
-			else{
-				revision = "";
-			}
-			
 			sb.append("\njava_version = ");
 			sb.append(System.getProperty("java.version"));
 			sb.append("; os_name = ");
