@@ -27,8 +27,7 @@ public class NodeAttributeListener implements TableModelListener {
 			String key = null;
 			//only act on known attributes
 			if (attribute.getName().equals(jabRefAttributes.getKeyAttribute())) {
-				System.out.println("debug e: "+e.getSource());
-				
+				//TODO - what should be done here???				
 			}
 			else if (jabRefAttributes.getValueAttributes().containsKey(attribute.getName())) {				
 				int pos = table.getAttributePosition(jabRefAttributes.getKeyAttribute());

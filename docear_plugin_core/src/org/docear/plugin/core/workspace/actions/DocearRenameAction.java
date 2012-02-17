@@ -13,9 +13,9 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
-import org.freeplane.plugin.workspace.model.node.IMutableLinkNode;
+import org.freeplane.plugin.workspace.actions.AWorkspaceAction;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.IMutableLinkNode;
 
 @EnabledAction(checkOnPopup=true)
 public class DocearRenameAction extends AWorkspaceAction {

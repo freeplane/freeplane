@@ -7,7 +7,6 @@ package org.freeplane.plugin.workspace.model;
 import javax.swing.tree.TreePath;
 
 import org.docear.lang.Destructable;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 /**
  * 

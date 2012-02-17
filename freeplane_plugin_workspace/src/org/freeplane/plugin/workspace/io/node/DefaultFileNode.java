@@ -31,17 +31,17 @@ import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.controller.IWorkspaceNodeActionListener;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeAction;
+import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
+import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.dnd.IDropAcceptor;
 import org.freeplane.plugin.workspace.dnd.IWorkspaceTransferableCreator;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
+import org.freeplane.plugin.workspace.event.IWorkspaceNodeActionListener;
+import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
 import org.freeplane.plugin.workspace.io.IFileSystemRepresentation;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
-import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
-import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
-import org.freeplane.plugin.workspace.model.node.IMutableLinkNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.IMutableLinkNode;
 
 /**
  * 
@@ -247,13 +247,13 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 		return this.file;
 	}
 	
-	public void handleAction(WorkspaceNodeAction event) {	
-		if(event.getType() == WorkspaceNodeAction.WSNODE_CHANGED) {
+	public void handleAction(WorkspaceActionEvent event) {	
+		if(event.getType() == WorkspaceActionEvent.WSNODE_CHANGED) {
 			if(changeName(event.getBaggage().toString(), true)) {
 				event.consume();
 			}
 		}
-		else if(event.getType() == WorkspaceNodeAction.WSNODE_OPEN_DOCUMENT) {
+		else if(event.getType() == WorkspaceActionEvent.WSNODE_OPEN_DOCUMENT) {
 			
 			if(getFile() != null) {
 				
@@ -289,7 +289,7 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 				LogUtils.warn("could not open document ("+getFile()+")", e);
 			}
 		}
-		else if (event.getType() == WorkspaceNodeAction.MOUSE_RIGHT_CLICK) {
+		else if (event.getType() == WorkspaceActionEvent.MOUSE_RIGHT_CLICK) {
             showPopup((Component) event.getBaggage(), event.getX(), event.getY());
         }
 	}

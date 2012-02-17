@@ -23,12 +23,12 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeAction;
+import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
+import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
-import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
-import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.nodes.LinkTypeFileNode;
 
 /**
  * 
@@ -267,9 +267,9 @@ public class FolderFileNode extends DefaultFileNode {
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
-	public void handleAction(WorkspaceNodeAction event) {	
+	public void handleAction(WorkspaceActionEvent event) {	
 		System.out.println("FolderFileNode: "+ event);
-		if(event.getType() == WorkspaceNodeAction.WSNODE_CHANGED) {
+		if(event.getType() == WorkspaceActionEvent.WSNODE_CHANGED) {
 			if(rename(event.getBaggage().toString())) {
 				setName(event.getBaggage().toString());
 				if(event.getSource() instanceof AWorkspaceTreeNode) {
@@ -287,7 +287,7 @@ public class FolderFileNode extends DefaultFileNode {
 			}
 			
 		} 
-		else if(event.getType() == WorkspaceNodeAction.WSNODE_OPEN_DOCUMENT) {
+		else if(event.getType() == WorkspaceActionEvent.WSNODE_OPEN_DOCUMENT) {
 			//do nth
 		}
 		else {

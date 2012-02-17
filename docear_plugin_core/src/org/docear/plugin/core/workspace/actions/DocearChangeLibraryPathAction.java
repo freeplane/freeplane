@@ -18,8 +18,8 @@ import org.docear.plugin.core.workspace.node.FolderTypeProjectsNode;
 import org.docear.plugin.core.workspace.node.LinkTypeReferencesNode;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.actions.AWorkspaceAction;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.swingplus.JHyperlink;
 
 public class DocearChangeLibraryPathAction extends AWorkspaceAction {

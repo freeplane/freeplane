@@ -34,6 +34,7 @@ import java.util.Vector;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.AController.IActionOnChange;
 import org.freeplane.features.mode.Controller;
 
@@ -220,7 +221,7 @@ public abstract class ResourceController {
 		try {
 			in = new BufferedInputStream(url.openStream());
 			resultProps.load(in);
-			System.out.println("Loaded properties from " + url);
+			LogUtils.info("Loaded properties from " + url);
 			return true;
 		}
 		catch (final Exception ex) {

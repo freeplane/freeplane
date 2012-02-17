@@ -21,15 +21,14 @@ import javax.swing.tree.TreePath;
 
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
-import org.freeplane.plugin.workspace.config.node.VirtualFolderNode;
-import org.freeplane.plugin.workspace.controller.IWorkspaceNodeActionListener;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeAction;
+import org.freeplane.plugin.workspace.event.IWorkspaceNodeActionListener;
+import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.io.node.FolderFileNode;
-import org.freeplane.plugin.workspace.model.node.AFolderNode;
-import org.freeplane.plugin.workspace.model.node.ALinkNode;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.nodes.AFolderNode;
+import org.freeplane.plugin.workspace.nodes.ALinkNode;
+import org.freeplane.plugin.workspace.nodes.PhysicalFolderNode;
+import org.freeplane.plugin.workspace.nodes.VirtualFolderNode;
 
 public class WorkspaceIndexedTreeModel implements TreeModel {
 
@@ -472,7 +471,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 	public void valueForPathChanged(TreePath path, Object newValue) {
 		AWorkspaceTreeNode node = (AWorkspaceTreeNode) path.getLastPathComponent();
 		if (node instanceof IWorkspaceNodeActionListener) {
-			((IWorkspaceNodeActionListener) node).handleAction(new WorkspaceNodeAction(node, WorkspaceNodeAction.WSNODE_CHANGED,
+			((IWorkspaceNodeActionListener) node).handleAction(new WorkspaceActionEvent(node, WorkspaceActionEvent.WSNODE_CHANGED,
 					newValue));
 			nodeChanged(node);
 		}

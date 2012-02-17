@@ -62,7 +62,7 @@ public class DocearController implements IDocearEventListener {
 	}
 	
 	public void dispatchDocearEvent(DocearEvent event) {
-		LogUtils.info("DOCEAR: dispatchEvent: "+ event);
+		//LogUtils.info("DOCEAR: dispatchEvent: "+ event);
 		for(IDocearEventListener listener : this.docearListeners) {
 			listener.handleEvent(event);
 		}

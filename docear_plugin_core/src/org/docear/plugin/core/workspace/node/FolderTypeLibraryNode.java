@@ -36,19 +36,18 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
-import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
-import org.freeplane.plugin.workspace.controller.IWorkspaceNodeActionListener;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeAction;
+import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
+import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.dnd.IDropAcceptor;
 import org.freeplane.plugin.workspace.dnd.IWorkspaceTransferableCreator;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
+import org.freeplane.plugin.workspace.event.IWorkspaceNodeActionListener;
+import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
-import org.freeplane.plugin.workspace.io.node.MindMapFileNode;
-import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
-import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
-import org.freeplane.plugin.workspace.model.node.AFolderNode;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.nodes.AFolderNode;
+import org.freeplane.plugin.workspace.nodes.LinkTypeFileNode;
+import org.freeplane.plugin.workspace.nodes.PhysicalFolderNode;
 
 public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventListener, IDocearLibrary, IWorkspaceNodeActionListener, IWorkspaceTransferableCreator, IDropAcceptor, TreeModelListener {
 	private static final Icon DEFAULT_ICON = new ImageIcon(FolderTypeLibraryNode.class.getResource("/images/folder-database.png"));
@@ -269,8 +268,8 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 		
 	}
 	
-	public void handleAction(WorkspaceNodeAction event) {
-		if (event.getType() == WorkspaceNodeAction.MOUSE_RIGHT_CLICK) {
+	public void handleAction(WorkspaceActionEvent event) {
+		if (event.getType() == WorkspaceActionEvent.MOUSE_RIGHT_CLICK) {
 			showPopup( (Component) event.getBaggage(), event.getX(), event.getY());
 		}
 		
@@ -387,22 +386,23 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 	public void treeNodesInserted(TreeModelEvent event) {
 		if(this.getTreePath().isDescendant(event.getTreePath())) {
 			for(Object newNode : event.getChildren()) {
-				if(newNode instanceof MindMapFileNode) {
-					URI uri = ((MindMapFileNode)newNode).getFile().toURI();
-					if(!mindmapIndex.contains(uri)) {
-						LogUtils.info("DOCEAR: adding new mindmap to library: "+ uri);
-						mindmapIndex.add(uri);
-					}
+				if(newNode instanceof DefaultFileNode) {
+					URI uri = ((DefaultFileNode)newNode).getFile().toURI();
+					addToIndex(uri);
 				} 
 				else
 				if(newNode instanceof LinkTypeFileNode && ((LinkTypeFileNode)newNode).getLinkPath() != null) {
 					URI uri = WorkspaceUtils.absoluteURI(((LinkTypeFileNode)newNode).getLinkPath());
-					if((new File(uri)).getName().endsWith(".mm") && !mindmapIndex.contains(uri)) {
-						LogUtils.info("DOCEAR: adding new mindmap to library: "+ uri);
-						mindmapIndex.add(uri);	
-					}
+					addToIndex(uri);
 				}
 			}
+		}
+	}
+
+	private void addToIndex(URI uri) {
+		if((new File(uri)).getName().endsWith(".mm") && !mindmapIndex.contains(uri)) {
+			LogUtils.info("DOCEAR: adding new mindmap to library: "+ uri);
+			mindmapIndex.add(uri);	
 		}
 	}
 
@@ -410,30 +410,27 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 		//TODO: propagate other filetypes
 		if(this.getTreePath().isDescendant(event.getTreePath())) {
 			for(Object newNode : event.getChildren()) {
-				if(newNode instanceof MindMapFileNode) {
-					URI uri = ((MindMapFileNode)newNode).getFile().toURI();
-					if(mindmapIndex.contains(uri)) {
-						LogUtils.info("DOCEAR: mindmap removed from library: "+ uri);
-						mindmapIndex.remove(uri);
-					}
+				if(newNode instanceof DefaultFileNode) {
+					URI uri = ((DefaultFileNode)newNode).getFile().toURI();
+					removeFromIndex(uri);
 				} 
 				else
 				if(newNode instanceof LinkTypeFileNode) {
 					URI uri = WorkspaceUtils.absoluteURI(((LinkTypeFileNode)newNode).getLinkPath());
-					if((new File(uri)).getName().endsWith(".mm") && mindmapIndex.contains(uri)) {
-						LogUtils.info("DOCEAR: mindmap removed from library: "+ uri);
-						mindmapIndex.remove(uri);	
-					}
+					removeFromIndex(uri);
 				}
 			}
 		}
 		
 	}
-	
 
-	/* (non-Javadoc)
-	 * @see javax.swing.event.TreeModelListener#treeStructureChanged(javax.swing.event.TreeModelEvent)
-	 */
+	private void removeFromIndex(URI uri) {
+		if((new File(uri)).getName().endsWith(".mm") && mindmapIndex.contains(uri)) {
+			LogUtils.info("DOCEAR: mindmap removed from library: "+ uri);
+			mindmapIndex.remove(uri);	
+		}
+	}
+	
 	public void treeStructureChanged(TreeModelEvent e) {
 		// TODO Auto-generated method stub
 		

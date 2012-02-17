@@ -24,17 +24,21 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.url.UrlManager;
-import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
-import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
-import org.freeplane.plugin.workspace.config.node.VirtualFolderNode;
-import org.freeplane.plugin.workspace.dialog.WorkspaceChooserDialogPanel;
+import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.plugin.workspace.components.dialog.WorkspaceChooserDialogPanel;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.model.WorkspaceIndexedTreeModel;
-import org.freeplane.plugin.workspace.model.node.AFolderNode;
-import org.freeplane.plugin.workspace.model.node.ALinkNode;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.nodes.AFolderNode;
+import org.freeplane.plugin.workspace.nodes.ALinkNode;
+import org.freeplane.plugin.workspace.nodes.LinkTypeFileNode;
+import org.freeplane.plugin.workspace.nodes.PhysicalFolderNode;
+import org.freeplane.plugin.workspace.nodes.VirtualFolderNode;
 
 /**
  * 
@@ -88,6 +92,37 @@ public class WorkspaceUtils {
 		while(Controller.getCurrentController().getMap() != null) {
 			Controller.getCurrentController().close(false);
 		}	
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static boolean createNewMindmap(final File f, String name) {
+		if (!createFolderStructure(f)) {
+			return false;
+		}
+		
+		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MMapIO.class);		
+
+		//FIXME - seems not to add the docear map model extension
+		//mapIO.newMapFromDefaultTemplate();
+		final ModeController modeController = Controller.getCurrentController().getModeController(MModeController.MODENAME);
+		MFileManager.getController(modeController).newMapFromDefaultTemplate();
+		
+		MapModel map = Controller.getCurrentController().getMap();
+		map.getRootNode().setText(name);
+		
+		mapIO.save(Controller.getCurrentController().getMap(), f);
+		Controller.getCurrentController().close(false);
+
+		LogUtils.info("New Mindmap Created: " + f.getAbsolutePath());
+		return false;
+	}
+	
+	private static boolean createFolderStructure(final File f) {
+		final File folder = f.getParentFile();
+		if (folder.exists()) {
+			return true;
+		}
+		return folder.mkdirs();
 	}
 	
 	public static void saveCurrentConfiguration() {

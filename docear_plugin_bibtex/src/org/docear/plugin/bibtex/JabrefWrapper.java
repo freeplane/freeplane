@@ -131,7 +131,7 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 
 		getJabrefFrame().addTab(bp, file, raisePanel);
 
-		System.out.println(Globals.lang("Opened database") + " '" + fileName + "' " + Globals.lang("with") + " "
+		LogUtils.info(Globals.lang("Opened database") + " '" + fileName + "' " + Globals.lang("with") + " "
 				+ database.getEntryCount() + " " + Globals.lang("entries") + ".");
 
 		return bp;
@@ -166,7 +166,7 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 				}
 			}
 			File fileToLoad = file;
-			System.out.println(Globals.lang("Opening References") + ": '" + file.getPath() + "'");
+			LogUtils.info(Globals.lang("Opening References") + ": '" + file.getPath() + "'");
 
 			int tryCounter = 0;
 			boolean done = false;
@@ -212,7 +212,7 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 					pr = null;
 				}
 				if ((pr == null) || (pr == ParserResult.INVALID_FORMAT)) {
-					System.out.println("ERROR: Could not load file" + file);
+					LogUtils.warn("ERROR: Could not load file" + file);
 					continue;
 				}
 				else {
@@ -291,7 +291,6 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 						pos = (i + 1);
 					}
 				}
-				System.out.print("");
 			}
 		}
 		catch (IOException e) {
@@ -370,12 +369,10 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 	}
 
 	public void afterViewClose(final Component oldView) {
-		System.out.println("debug close mapviewlistener");
 		oldView.removeMouseListener(mapViewListener);
 	}
 
 	public void afterViewCreated(final Component mapView) {
-		System.out.println("debug add mapviewlistener");
 		mapView.addMouseListener(mapViewListener);
 	}
 

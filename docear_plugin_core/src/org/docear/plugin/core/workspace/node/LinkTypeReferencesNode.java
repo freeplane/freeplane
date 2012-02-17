@@ -32,11 +32,11 @@ import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeAction;
-import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
-import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
+import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
+import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.nodes.LinkTypeFileNode;
 
 /**
  * 
@@ -70,8 +70,8 @@ public class LinkTypeReferencesNode extends LinkTypeFileNode implements IBibtexD
 		return true;
 	}
 	
-	public void handleAction(WorkspaceNodeAction event) {
-		if (event.getType() == WorkspaceNodeAction.MOUSE_RIGHT_CLICK) {			
+	public void handleAction(WorkspaceActionEvent event) {
+		if (event.getType() == WorkspaceActionEvent.MOUSE_RIGHT_CLICK) {			
 			showPopup((Component) event.getBaggage(), event.getX(), event.getY());
 		} 
 		else {

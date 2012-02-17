@@ -8,7 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.event.IWorkspaceNodeActionListener;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 /**
  * 

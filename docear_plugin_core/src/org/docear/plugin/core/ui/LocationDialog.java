@@ -72,8 +72,6 @@ public class LocationDialog extends JPanel {
 		variablesSet = variablesSet
 				&& CoreConfiguration.projectPathObserver.getUri() != null;
 
-		System.out.println("DOCEAR: allVariablesSet: " + variablesSet);
-
 		return variablesSet;
 	}
 

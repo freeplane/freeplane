@@ -8,8 +8,8 @@ import java.net.URI;
 
 import org.docear.plugin.core.workspace.node.LinkTypeMyPublicationsNode;
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.plugin.workspace.model.creator.AWorkspaceNodeCreator;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceNodeCreator;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 /**
  * 

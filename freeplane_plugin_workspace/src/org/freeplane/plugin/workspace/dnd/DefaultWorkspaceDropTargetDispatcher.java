@@ -7,7 +7,7 @@ package org.freeplane.plugin.workspace.dnd;
 import java.awt.dnd.DropTargetDropEvent;
 
 import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 /**
  * 

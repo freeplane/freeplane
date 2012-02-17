@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URL;
 
@@ -56,7 +55,6 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.INodeViewLifeCycleListener;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
@@ -175,7 +173,6 @@ public class ReferencesController extends ALanguageController implements IDocear
 
 	private void createOptionPanel(JPanel comp) {
 		try {
-			System.out.println("JabrefPane: " + modeController);
 			final JTabbedPane tabs = (JTabbedPane) modeController.getUserInputListenerFactory().getToolBar("/format")
 					.getComponent(1);
 			Dimension fixSize =  new Dimension(tabs.getComponent(0).getWidth(), 32000);
@@ -184,7 +181,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 			tabs.setSelectedComponent(comp);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			LogUtils.severe(e);
 		}
 	}
 
@@ -200,7 +197,6 @@ public class ReferencesController extends ALanguageController implements IDocear
 			isRunning  = true;
 			try {
 				SwingUtilities.invokeAndWait( new Runnable() {
-//			Thread thread = new Thread() {
 					public void run() {
 						Thread.currentThread().setContextClassLoader(classLoader);
 						URI uri = null;
@@ -213,23 +209,15 @@ public class ReferencesController extends ALanguageController implements IDocear
 						}
 						else {
 							jabrefWrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame());
-						}
-						//TODO: DOCEAR - (ticket #225) refactor with separate class  
+						} 
 						modeController.getUserInputListenerFactory().getMenuBar().addKeyStrokeInterceptor(new KeyBindInterceptor());
 						createOptionPanel(jabrefWrapper.getJabrefFrame());					
 					}
 				});
 			}
-			catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			catch (Exception e) {
+				LogUtils.severe(e);
 			}
-			catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-//	
-//			thread.start();
 		}
 	}
 	
@@ -315,7 +303,6 @@ public class ReferencesController extends ALanguageController implements IDocear
 	
 
 	public void handleEvent(DocearEvent event) {
-		System.out.println("JabrefWrapper DocearEvent: "+ event);
 		if(event.getType() == DocearEventType.LIBRARY_NEW_REFERENCES_INDEXING_REQUEST && event.getEventObject() instanceof LinkTypeReferencesNode) {
 			final File file = WorkspaceUtils.resolveURI(CoreConfiguration.referencePathObserver.getUri());
 			SwingUtilities.invokeLater(new Runnable() {

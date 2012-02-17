@@ -12,7 +12,7 @@ import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
-import org.freeplane.plugin.workspace.view.WorkspaceInformingQuitAction;
+import org.freeplane.plugin.workspace.components.WorkspaceInformingQuitAction;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;

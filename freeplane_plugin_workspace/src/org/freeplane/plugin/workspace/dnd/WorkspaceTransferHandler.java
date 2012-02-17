@@ -22,9 +22,9 @@ import javax.swing.TransferHandler;
 import javax.swing.tree.TreePath;
 
 import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
-import org.freeplane.plugin.workspace.model.node.WorkspaceRoot;
-import org.freeplane.plugin.workspace.view.WorkspaceNodeRenderer;
+import org.freeplane.plugin.workspace.components.WorkspaceNodeRenderer;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.nodes.WorkspaceRoot;
 /**
  * 
  */

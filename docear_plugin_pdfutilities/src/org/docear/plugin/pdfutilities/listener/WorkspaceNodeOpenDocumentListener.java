@@ -13,14 +13,14 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.controller.IWorkspaceNodeActionListener;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeAction;
+import org.freeplane.plugin.workspace.event.IWorkspaceNodeActionListener;
+import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
-import org.freeplane.plugin.workspace.model.node.ALinkNode;
+import org.freeplane.plugin.workspace.nodes.ALinkNode;
 
 public class WorkspaceNodeOpenDocumentListener implements IWorkspaceNodeActionListener {
 	
-	public void handleAction(WorkspaceNodeAction event) {
+	public void handleAction(WorkspaceActionEvent event) {
 		
 		URI uri = null;
 		if(event.getSource() instanceof DefaultFileNode) {

@@ -22,12 +22,12 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
-import org.freeplane.plugin.workspace.controller.IWorkspaceEventListener;
-import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
-import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
-import org.freeplane.plugin.workspace.model.node.WorkspaceRoot;
+import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
+import org.freeplane.plugin.workspace.event.IWorkspaceEventListener;
+import org.freeplane.plugin.workspace.event.WorkspaceEvent;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.nodes.LinkTypeFileNode;
+import org.freeplane.plugin.workspace.nodes.WorkspaceRoot;
 
 public class WorkspaceChangeListener implements IWorkspaceEventListener {
 

@@ -1,9 +1,7 @@
 package org.docear.plugin.core.mindmap;
 
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +22,6 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 import org.jdesktop.swingworker.SwingWorker;
 
@@ -218,8 +215,6 @@ public class MindmapUpdateController {
 				return mapTitle;
 			}
 
-			@SuppressWarnings("unchecked")
-			@Override
 			protected void done() {
 				NodeView.setModifyModelWithoutRepaint(false);
 				for (MapItem item : maps) {
@@ -287,7 +282,6 @@ public class MindmapUpdateController {
 				fireStatusUpdate(SwingWorkerDialog.DETAILS_LOG_TEXT, null, TextUtils.getText("update_references_save_map")
 						+ map.getURL().getPath());
 
-				System.out.println("saving map: " + map.getURL());
 				map.setSaved(false);
 				((MFileManager) UrlManager.getController()).save(map, false);
 			}

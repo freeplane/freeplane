@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import org.freeplane.core.io.IReadCompletionListener;
 import org.freeplane.core.io.ListHashTable;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.plugin.workspace.io.creator.IFileTypeHandler;
 
 public class FileReadManager {
 	public final static String DIRECTORY_HANDLE = "__MaG__FS_DIRECTORY__MaG__";

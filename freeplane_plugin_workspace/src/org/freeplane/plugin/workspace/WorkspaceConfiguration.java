@@ -28,23 +28,21 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.plugin.workspace.config.IConfigurationInfo;
-import org.freeplane.plugin.workspace.config.LinkTypeFileIconHandler;
-import org.freeplane.plugin.workspace.config.creator.FolderTypePhysicalCreator;
-import org.freeplane.plugin.workspace.config.creator.FolderTypeVirtualCreator;
-import org.freeplane.plugin.workspace.config.creator.LinkTypeFileCreator;
-import org.freeplane.plugin.workspace.config.creator.WorkspaceRootCreator;
-import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
-import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
-import org.freeplane.plugin.workspace.io.DefaultFileNodeIconHandler;
+import org.freeplane.plugin.workspace.controller.DefaultFileNodeIconHandler;
+import org.freeplane.plugin.workspace.controller.LinkTypeFileIconHandler;
+import org.freeplane.plugin.workspace.creator.FolderCreator;
+import org.freeplane.plugin.workspace.creator.FolderTypePhysicalCreator;
+import org.freeplane.plugin.workspace.creator.FolderTypeVirtualCreator;
+import org.freeplane.plugin.workspace.creator.LinkCreator;
+import org.freeplane.plugin.workspace.creator.LinkTypeFileCreator;
+import org.freeplane.plugin.workspace.creator.WorkspaceRootCreator;
+import org.freeplane.plugin.workspace.event.WorkspaceEvent;
 import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
-import org.freeplane.plugin.workspace.io.node.ImageFileNode;
-import org.freeplane.plugin.workspace.io.node.MindMapFileNode;
 import org.freeplane.plugin.workspace.io.xml.ConfigurationWriter;
 import org.freeplane.plugin.workspace.io.xml.WorkspaceNodeWriter;
-import org.freeplane.plugin.workspace.model.creator.AWorkspaceNodeCreator;
-import org.freeplane.plugin.workspace.model.creator.FolderCreator;
-import org.freeplane.plugin.workspace.model.creator.LinkCreator;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceNodeCreator;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.nodes.LinkTypeFileNode;
 
 public class WorkspaceConfiguration {
 	final private ReadManager readManager;
@@ -74,8 +72,6 @@ public class WorkspaceConfiguration {
 		
 		WorkspaceController.getController().getNodeTypeIconManager().addNodeTypeIconHandler(LinkTypeFileNode.class, new LinkTypeFileIconHandler());
 		WorkspaceController.getController().getNodeTypeIconManager().addNodeTypeIconHandler(DefaultFileNode.class, new DefaultFileNodeIconHandler());
-		WorkspaceController.getController().getNodeTypeIconManager().addNodeTypeIconHandler(MindMapFileNode.class, new DefaultFileNodeIconHandler());
-		WorkspaceController.getController().getNodeTypeIconManager().addNodeTypeIconHandler(ImageFileNode.class, new DefaultFileNodeIconHandler());
 		initReadManager();
 		initWriteManager();
 	}

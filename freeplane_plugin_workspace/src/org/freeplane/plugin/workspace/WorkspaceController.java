@@ -26,6 +26,8 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.main.application.ApplicationResourceController;
+import org.freeplane.plugin.workspace.components.TreeView;
+import org.freeplane.plugin.workspace.components.WorkspaceSplitPaneUI;
 import org.freeplane.plugin.workspace.controller.AWorkspaceExpansionStateHandler;
 import org.freeplane.plugin.workspace.controller.DefaultNodeTypeIconManager;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceComponentHandler;
@@ -34,17 +36,15 @@ import org.freeplane.plugin.workspace.controller.DefaultWorkspaceKeyHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceMouseHandler;
 import org.freeplane.plugin.workspace.controller.INodeTypeIconManager;
 import org.freeplane.plugin.workspace.controller.IOController;
-import org.freeplane.plugin.workspace.controller.IWorkspaceEventListener;
-import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferHandler;
+import org.freeplane.plugin.workspace.event.IWorkspaceEventListener;
+import org.freeplane.plugin.workspace.event.WorkspaceEvent;
+import org.freeplane.plugin.workspace.io.AFileNodeCreator;
 import org.freeplane.plugin.workspace.io.FileReadManager;
 import org.freeplane.plugin.workspace.io.FileSystemAlterationMonitor;
 import org.freeplane.plugin.workspace.io.FilesystemManager;
-import org.freeplane.plugin.workspace.io.creator.AFileNodeCreator;
 import org.freeplane.plugin.workspace.model.WorkspaceIndexedTreeModel;
-import org.freeplane.plugin.workspace.model.node.WorkspaceRoot;
-import org.freeplane.plugin.workspace.view.TreeView;
-import org.freeplane.plugin.workspace.view.WorkspaceSplitPaneUI;
+import org.freeplane.plugin.workspace.nodes.WorkspaceRoot;
 
 public class WorkspaceController implements IFreeplanePropertyListener, IMapLifeCycleListener, ActionListener {
 	public static final String WORKSPACE_RESOURCE_URL_PROTOCOL = "workspace";
@@ -346,35 +346,23 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 			this.fileTypeManager = new FileReadManager();
 			Properties props = new Properties();
 			try {
-				props.load(this.getClass().getResourceAsStream("filenodetypes.properties"));
+				props.load(this.getClass().getResourceAsStream("/conf/filenodetypes.properties"));
 
 				Class<?>[] args = {};
 				for (Object key : props.keySet()) {
 					try {
-						// TODO: IMPLEMENT WITH REFLECTIONS - HAS TO WORK WITH JAR FILES
 						Class<?> clazz = org.freeplane.plugin.workspace.io.creator.DefaultFileNodeCreator.class;
-
-						if (key.toString().equals("org.freeplane.plugin.workspace.io.creator.FolderFileNodeCreator")) {
-							clazz = org.freeplane.plugin.workspace.io.creator.FolderFileNodeCreator.class;
-						}
-						else if (key.toString().equals("org.freeplane.plugin.workspace.io.creator.ImageFileNodeCreator")) {
-							clazz = org.freeplane.plugin.workspace.io.creator.ImageFileNodeCreator.class;
-						}
-						else if (key.toString().equals("org.freeplane.plugin.workspace.io.creator.MindMapFileNodeCreator")) {
-							clazz = org.freeplane.plugin.workspace.io.creator.MindMapFileNodeCreator.class;
-						}
-
-						// Class<?> clazz =
-						// Thread.currentThread().getContextClassLoader().loadClass(key.toString());
+						
+						clazz = this.getClass().getClassLoader().loadClass(key.toString());
 
 						AFileNodeCreator handler = (AFileNodeCreator) clazz.getConstructor(args).newInstance();
 						handler.setFileTypeList(props.getProperty(key.toString(), ""), "\\|");
 						this.fileTypeManager.addFileHandler(handler);
 					}
-					// catch (ClassNotFoundException e) {
-					// e.printStackTrace();
-					// System.out.println("Class not found [" + key + "]");
-					// }
+					catch (ClassNotFoundException e) {
+						e.printStackTrace();
+						System.out.println("Class not found [" + key + "]");
+					}
 					catch (ClassCastException e) {
 						System.out.println("Class [" + key + "] is not of type: PhysicalNode");
 					}

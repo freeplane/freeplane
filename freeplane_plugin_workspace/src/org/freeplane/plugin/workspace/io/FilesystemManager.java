@@ -13,8 +13,7 @@ import java.util.List;
 
 import org.freeplane.core.io.ListHashTable;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.plugin.workspace.io.creator.IFileTypeHandler;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public class FilesystemManager {
 
