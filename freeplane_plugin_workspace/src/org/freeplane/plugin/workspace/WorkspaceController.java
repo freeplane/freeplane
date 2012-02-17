@@ -351,7 +351,7 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 				Class<?>[] args = {};
 				for (Object key : props.keySet()) {
 					try {
-						Class<?> clazz = org.freeplane.plugin.workspace.io.creator.DefaultFileNodeCreator.class;
+						Class<?> clazz = org.freeplane.plugin.workspace.creator.DefaultFileNodeCreator.class;
 						
 						clazz = this.getClass().getClassLoader().loadClass(key.toString());
 

@@ -1,20 +1,21 @@
 /**
  * author: Marcel Genzmehr
- * 21.07.2011
+ * 22.07.2011
  */
-package org.freeplane.plugin.workspace.io.creator;
+package org.freeplane.plugin.workspace.creator;
 
 import java.io.File;
 
 import org.freeplane.plugin.workspace.io.AFileNodeCreator;
-import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.nodes.FolderFileNode;
 
 /**
  * 
  */
-public class DefaultFileNodeCreator extends AFileNodeCreator {
+public class FolderFileNodeCreator extends AFileNodeCreator {
 
+	
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
@@ -22,21 +23,19 @@ public class DefaultFileNodeCreator extends AFileNodeCreator {
 	/**
 	 * @param tree
 	 */
-	public DefaultFileNodeCreator() {
+	public FolderFileNodeCreator() {
 	}
-	
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
 
-	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	
 	public AWorkspaceTreeNode getNode(String name, File file, String fileExtension) {
-		DefaultFileNode node = new DefaultFileNode(name, file, fileExtension);
+		FolderFileNode node = new FolderFileNode(file.getName(), file);
+		node.setFileExtension(fileExtension);
 		return node;
 	}
-	
 }

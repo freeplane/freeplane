@@ -15,8 +15,8 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.event.IWorkspaceNodeActionListener;
 import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
-import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.nodes.ALinkNode;
+import org.freeplane.plugin.workspace.nodes.DefaultFileNode;
 
 public class WorkspaceNodeOpenDocumentListener implements IWorkspaceNodeActionListener {
 	

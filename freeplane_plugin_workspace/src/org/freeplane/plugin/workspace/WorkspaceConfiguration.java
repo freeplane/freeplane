@@ -37,11 +37,11 @@ import org.freeplane.plugin.workspace.creator.LinkCreator;
 import org.freeplane.plugin.workspace.creator.LinkTypeFileCreator;
 import org.freeplane.plugin.workspace.creator.WorkspaceRootCreator;
 import org.freeplane.plugin.workspace.event.WorkspaceEvent;
-import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.io.xml.ConfigurationWriter;
 import org.freeplane.plugin.workspace.io.xml.WorkspaceNodeWriter;
 import org.freeplane.plugin.workspace.model.AWorkspaceNodeCreator;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.nodes.DefaultFileNode;
 import org.freeplane.plugin.workspace.nodes.LinkTypeFileNode;
 
 public class WorkspaceConfiguration {

@@ -1,4 +1,4 @@
-package org.freeplane.plugin.workspace.io.node;
+package org.freeplane.plugin.workspace.nodes;
 
 import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;

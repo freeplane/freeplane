@@ -2,7 +2,7 @@
  * author: Marcel Genzmehr
  * 22.07.2011
  */
-package org.freeplane.plugin.workspace.io.node;
+package org.freeplane.plugin.workspace.nodes;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -28,7 +28,6 @@ import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
 import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
-import org.freeplane.plugin.workspace.nodes.LinkTypeFileNode;
 
 /**
  * 

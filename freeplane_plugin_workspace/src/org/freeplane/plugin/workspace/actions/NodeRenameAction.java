@@ -9,9 +9,9 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.components.dialog.NodeRenameDialogPanel;
-import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.model.IMutableLinkNode;
+import org.freeplane.plugin.workspace.nodes.DefaultFileNode;
 
 @EnabledAction(checkOnPopup = true)
 public class NodeRenameAction extends AWorkspaceAction {
