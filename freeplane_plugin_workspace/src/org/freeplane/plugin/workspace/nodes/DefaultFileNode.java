@@ -20,6 +20,7 @@ import java.util.Vector;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.apache.commons.io.FileUtils;
@@ -218,8 +219,15 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 			renderer.setClosedIcon(NOT_EXISTING);
 			return true;
 		}
+		
+		Icon icon = FileSystemView.getFileSystemView().getSystemIcon(getFile());
+		if(icon != null) {
+			renderer.setLeafIcon(icon);
+			return true;
+		}
+		// the next steps should not get reached
 		if (getFile().isFile()) {
-			Icon icon = WorkspaceController.getController().getNodeTypeIconManager().getIconForNode(this);
+			icon = WorkspaceController.getController().getNodeTypeIconManager().getIconForNode(this);
 			if(icon == null) {
 				renderer.setLeafIcon(DEFAULT_ICON);
 			} else {

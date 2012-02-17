@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.freeplane.core.util.Compat;
@@ -35,6 +37,8 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeActionL
 	
 	private static final long serialVersionUID = 1L;		
 
+	private static final Icon NOT_EXISTING = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/cross.png"));
+	
 	private URI linkPath;	
 	private static WorkspacePopupMenu popupMenu = null;
 	private Icon fileIcon = null;
@@ -161,7 +165,20 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeActionL
 	}
 	
 	public boolean setIcons(DefaultTreeCellRenderer renderer) {
+		File file = WorkspaceUtils.resolveURI(getLinkPath());
+		if(file == null || !file.exists()) {
+			renderer.setLeafIcon(NOT_EXISTING);
+			renderer.setOpenIcon(NOT_EXISTING);
+			renderer.setClosedIcon(NOT_EXISTING);
+			return true;
+		}
+		
 		if(fileIcon == null) {
+			fileIcon = FileSystemView.getFileSystemView().getSystemIcon(file);
+			if(fileIcon != null) {
+				renderer.setLeafIcon(fileIcon);
+				return true;
+			}
 			return false;
 		}
 		renderer.setLeafIcon(fileIcon);	
