@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
-import org.freeplane.plugin.workspace.nodes.PhysicalFolderNode;
+import org.freeplane.plugin.workspace.nodes.FolderLinkNode;
 
 @SelectableAction(checkOnPopup=true)
 public class NodeEnableMonitoringAction extends AWorkspaceAction {
@@ -34,14 +34,14 @@ public class NodeEnableMonitoringAction extends AWorkspaceAction {
 	
 	public void actionPerformed(ActionEvent e) {
 		AWorkspaceTreeNode targetNode = getNodeFromActionEvent(e);
-		if(targetNode instanceof PhysicalFolderNode) {
-			((PhysicalFolderNode) targetNode).enableMonitoring(!((PhysicalFolderNode) targetNode).isMonitoring());
+		if(targetNode instanceof FolderLinkNode) {
+			((FolderLinkNode) targetNode).enableMonitoring(!((FolderLinkNode) targetNode).isMonitoring());
 		}
 	}
 	
 	public void setSelectedFor(AWorkspaceTreeNode targetNode) {
-		if(targetNode instanceof PhysicalFolderNode) {
-			setSelected(((PhysicalFolderNode) targetNode).isMonitoring());
+		if(targetNode instanceof FolderLinkNode) {
+			setSelected(((FolderLinkNode) targetNode).isMonitoring());
 		} 
 		else {
 			setSelected(false);

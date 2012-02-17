@@ -19,7 +19,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
-import org.freeplane.plugin.workspace.nodes.VirtualFolderNode;
+import org.freeplane.plugin.workspace.nodes.FolderVirtualNode;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -106,7 +106,7 @@ public class WorkspaceNewGroupDialog extends JDialog {
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					VirtualFolderNode node = new VirtualFolderNode();
+					FolderVirtualNode node = new FolderVirtualNode();
 					node.setName(txtGroupname.getText());
 					WorkspaceUtils.getModel().addNodeTo(node, targetNode);
 					WorkspaceUtils.saveCurrentConfiguration();

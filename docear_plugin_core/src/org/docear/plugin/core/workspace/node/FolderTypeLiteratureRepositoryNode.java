@@ -19,12 +19,12 @@ import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.io.IFileSystemRepresentation;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
-import org.freeplane.plugin.workspace.nodes.PhysicalFolderNode;
+import org.freeplane.plugin.workspace.nodes.FolderLinkNode;
 
 /**
  * 
  */
-public class FolderTypeLiteratureRepositoryNode extends PhysicalFolderNode implements ChangeListener, IFileSystemRepresentation {
+public class FolderTypeLiteratureRepositoryNode extends FolderLinkNode implements ChangeListener, IFileSystemRepresentation {
 
 	private static final long serialVersionUID = 1L;
 	private boolean locked;

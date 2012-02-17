@@ -27,8 +27,8 @@ import org.freeplane.plugin.workspace.nodes.AFolderNode;
 import org.freeplane.plugin.workspace.nodes.ALinkNode;
 import org.freeplane.plugin.workspace.nodes.DefaultFileNode;
 import org.freeplane.plugin.workspace.nodes.FolderFileNode;
-import org.freeplane.plugin.workspace.nodes.PhysicalFolderNode;
-import org.freeplane.plugin.workspace.nodes.VirtualFolderNode;
+import org.freeplane.plugin.workspace.nodes.FolderLinkNode;
+import org.freeplane.plugin.workspace.nodes.FolderVirtualNode;
 
 public class WorkspaceIndexedTreeModel implements TreeModel {
 
@@ -423,15 +423,15 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 			targetNode.addChildNode(newTarget);
 		}
 		
-		if(node instanceof VirtualFolderNode) {
+		if(node instanceof FolderVirtualNode) {
 			Enumeration<AWorkspaceTreeNode> children = node.children();
 			while(children.hasMoreElements()) {
 				appendNodeCopyRecursive(newTarget, children.nextElement());
 			}
 		} 
 		else 
-		if(node instanceof PhysicalFolderNode) {
-			PhysicalFolderNode phyNode = (PhysicalFolderNode) node;
+		if(node instanceof FolderLinkNode) {
+			FolderLinkNode phyNode = (FolderLinkNode) node;
 			WorkspaceController.getController().getFilesystemMgr()
 					.scanFileSystem(phyNode, WorkspaceUtils.resolveURI(phyNode.getPath()));			
 		} 

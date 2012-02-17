@@ -53,7 +53,7 @@ public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IW
 
 	private static final long serialVersionUID = 1L;
 	private static Icon DEFAULT_ICON = new ImageIcon(
-			PhysicalFolderNode.class.getResource("/images/16x16/preferences-desktop-filetype-association.png"));
+			FolderLinkNode.class.getResource("/images/16x16/preferences-desktop-filetype-association.png"));
 	private static WorkspacePopupMenu popupMenu;
 
 	private String version = WorkspaceController.WORKSPACE_VERSION;
@@ -295,7 +295,7 @@ public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IW
 	private AWorkspaceTreeNode createFSNodeLinks(File file) {
 		AWorkspaceTreeNode node = null;
 		if(file.isDirectory()) {
-			PhysicalFolderNode pNode = new PhysicalFolderNode();
+			FolderLinkNode pNode = new FolderLinkNode();
 			pNode.setPath(WorkspaceUtils.getWorkspaceRelativeURI(file));
 			node = pNode;
 		}

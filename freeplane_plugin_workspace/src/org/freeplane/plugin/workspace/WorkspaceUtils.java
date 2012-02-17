@@ -37,8 +37,8 @@ import org.freeplane.plugin.workspace.nodes.AFolderNode;
 import org.freeplane.plugin.workspace.nodes.ALinkNode;
 import org.freeplane.plugin.workspace.nodes.DefaultFileNode;
 import org.freeplane.plugin.workspace.nodes.LinkTypeFileNode;
-import org.freeplane.plugin.workspace.nodes.PhysicalFolderNode;
-import org.freeplane.plugin.workspace.nodes.VirtualFolderNode;
+import org.freeplane.plugin.workspace.nodes.FolderLinkNode;
+import org.freeplane.plugin.workspace.nodes.FolderVirtualNode;
 
 /**
  * 
@@ -159,13 +159,13 @@ public class WorkspaceUtils {
 		temp.delete();
 	}
 
-	public static PhysicalFolderNode createPhysicalFolderNode(final File path, final AWorkspaceTreeNode parent) {
+	public static FolderLinkNode createPhysicalFolderNode(final File path, final AWorkspaceTreeNode parent) {
 		if (!path.isDirectory()) {
 			LogUtils.warn("the given path is no folder.");
 			return null;
 		}
 
-		PhysicalFolderNode node = new PhysicalFolderNode(AFolderNode.FOLDER_TYPE_PHYSICAL);
+		FolderLinkNode node = new FolderLinkNode(AFolderNode.FOLDER_TYPE_PHYSICAL);
 		String name = path.getName();
 
 		node.setName(name == null ? "directory" : name);
@@ -207,7 +207,7 @@ public class WorkspaceUtils {
 		AWorkspaceTreeNode targetNode = (AWorkspaceTreeNode) (parent == null ? WorkspaceController.getController()
 				.getWorkspaceModel().getRoot() : parent);
 
-		VirtualFolderNode node = new VirtualFolderNode(AFolderNode.FOLDER_TYPE_VIRTUAL);
+		FolderVirtualNode node = new FolderVirtualNode(AFolderNode.FOLDER_TYPE_VIRTUAL);
 		node.setName(folderName);
 
 		addAndSave(targetNode, node);
@@ -364,7 +364,7 @@ public class WorkspaceUtils {
 	public static AWorkspaceTreeNode findAllowedTargetNode(final AWorkspaceTreeNode node) {
 		AWorkspaceTreeNode targetNode = node;
 		// DOCEAR: drops are not allowed on physical nodes, for the moment
-		while (targetNode instanceof DefaultFileNode || targetNode instanceof PhysicalFolderNode
+		while (targetNode instanceof DefaultFileNode || targetNode instanceof FolderLinkNode
 				|| targetNode instanceof ALinkNode) {
 			targetNode = (AWorkspaceTreeNode) targetNode.getParent();
 		}

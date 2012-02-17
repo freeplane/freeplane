@@ -26,18 +26,18 @@ import org.freeplane.plugin.workspace.event.IWorkspaceNodeActionListener;
 import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
-public class VirtualFolderNode extends AFolderNode implements IWorkspaceNodeActionListener, IWorkspaceTransferableCreator, IDropAcceptor {
+public class FolderVirtualNode extends AFolderNode implements IWorkspaceNodeActionListener, IWorkspaceTransferableCreator, IDropAcceptor {
 	
 	private static final long serialVersionUID = 1L;
 	private static final Icon DEFAULT_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/object-group-2.png"));
 	
 	private static WorkspacePopupMenu popupMenu = null;
 	
-	public VirtualFolderNode() {
+	public FolderVirtualNode() {
 		super(AFolderNode.FOLDER_TYPE_VIRTUAL);
 	}
 
-	public VirtualFolderNode(String type) {
+	public FolderVirtualNode(String type) {
 		super(type);
 	}
 
@@ -78,7 +78,7 @@ public class VirtualFolderNode extends AFolderNode implements IWorkspaceNodeActi
 	
 	
 	public AWorkspaceTreeNode clone() {
-		VirtualFolderNode node = new VirtualFolderNode(getType());
+		FolderVirtualNode node = new FolderVirtualNode(getType());
 		return clone(node);
 	}
 	
@@ -158,7 +158,7 @@ public class VirtualFolderNode extends AFolderNode implements IWorkspaceNodeActi
 	private AWorkspaceTreeNode createFSNodeLinks(File file) {
 		AWorkspaceTreeNode node = null;
 		if(file.isDirectory()) {
-			PhysicalFolderNode pNode = new PhysicalFolderNode();
+			FolderLinkNode pNode = new FolderLinkNode();
 			pNode.setPath(WorkspaceUtils.getWorkspaceRelativeURI(file));
 			node = pNode;
 		}

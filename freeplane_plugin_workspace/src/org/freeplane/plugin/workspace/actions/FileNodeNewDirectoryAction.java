@@ -19,7 +19,7 @@ import org.freeplane.plugin.workspace.io.IFileSystemRepresentation;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.nodes.AFolderNode;
 import org.freeplane.plugin.workspace.nodes.FolderFileNode;
-import org.freeplane.plugin.workspace.nodes.PhysicalFolderNode;
+import org.freeplane.plugin.workspace.nodes.FolderLinkNode;
 
 /**
  * 
@@ -75,8 +75,8 @@ public class FileNodeNewDirectoryAction extends AWorkspaceAction {
 			makeNewDirectory(targetNode, parentDir);
 		} 
 		else 
-		if(targetNode instanceof PhysicalFolderNode && ((PhysicalFolderNode)targetNode).getPath() != null) {
-			File parentDir = WorkspaceUtils.resolveURI(((PhysicalFolderNode)targetNode).getPath());
+		if(targetNode instanceof FolderLinkNode && ((FolderLinkNode)targetNode).getPath() != null) {
+			File parentDir = WorkspaceUtils.resolveURI(((FolderLinkNode)targetNode).getPath());
 			makeNewDirectory(targetNode, parentDir);
 			
 		}

@@ -47,7 +47,7 @@ import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.nodes.AFolderNode;
 import org.freeplane.plugin.workspace.nodes.DefaultFileNode;
 import org.freeplane.plugin.workspace.nodes.LinkTypeFileNode;
-import org.freeplane.plugin.workspace.nodes.PhysicalFolderNode;
+import org.freeplane.plugin.workspace.nodes.FolderLinkNode;
 
 public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventListener, IDocearLibrary, IWorkspaceNodeActionListener, IWorkspaceTransferableCreator, IDropAcceptor, TreeModelListener {
 	private static final Icon DEFAULT_ICON = new ImageIcon(FolderTypeLibraryNode.class.getResource("/images/folder-database.png"));
@@ -155,7 +155,7 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 	private AWorkspaceTreeNode createFSNodeLinks(File file) {
 		AWorkspaceTreeNode node = null;
 		if(file.isDirectory()) {
-			PhysicalFolderNode pNode = new PhysicalFolderNode();
+			FolderLinkNode pNode = new FolderLinkNode();
 			pNode.setPath(WorkspaceUtils.getWorkspaceRelativeURI(file));
 			node = pNode;
 		}

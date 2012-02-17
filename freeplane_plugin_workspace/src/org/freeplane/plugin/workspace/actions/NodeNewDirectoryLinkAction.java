@@ -11,7 +11,7 @@ import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.nodes.AFolderNode;
-import org.freeplane.plugin.workspace.nodes.PhysicalFolderNode;
+import org.freeplane.plugin.workspace.nodes.FolderLinkNode;
 import org.freeplane.plugin.workspace.nodes.WorkspaceRoot;
 
 public class NodeNewDirectoryLinkAction extends AWorkspaceAction {
@@ -38,7 +38,7 @@ public class NodeNewDirectoryLinkAction extends AWorkspaceAction {
 		if (retVal == JFileChooser.APPROVE_OPTION) {
 			File path = fileChooser.getSelectedFile();
 			if (path != null) {
-				PhysicalFolderNode node = new PhysicalFolderNode();
+				FolderLinkNode node = new FolderLinkNode();
 				String name = path.getName();				
 				node.setName(name == null ? "directory" : name);			
 				node.setPath(MLinkController.toLinkTypeDependantURI(WorkspaceUtils.getWorkspaceBaseFile(), path, LinkController.LINK_RELATIVE_TO_WORKSPACE));

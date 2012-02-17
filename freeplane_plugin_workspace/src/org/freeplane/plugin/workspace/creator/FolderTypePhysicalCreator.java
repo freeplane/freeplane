@@ -9,7 +9,7 @@ import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.model.AWorkspaceNodeCreator;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.nodes.AFolderNode;
-import org.freeplane.plugin.workspace.nodes.PhysicalFolderNode;
+import org.freeplane.plugin.workspace.nodes.FolderLinkNode;
 
 public class FolderTypePhysicalCreator extends AWorkspaceNodeCreator {
 
@@ -19,7 +19,7 @@ public class FolderTypePhysicalCreator extends AWorkspaceNodeCreator {
 	public AWorkspaceTreeNode getNode(XMLElement data) {
 
 		String type = data.getAttribute("type", AFolderNode.FOLDER_TYPE_PHYSICAL);
-		PhysicalFolderNode node = new PhysicalFolderNode(type);
+		FolderLinkNode node = new FolderLinkNode(type);
 		
 		String path = data.getAttribute("path", null);
 		if (path == null) {
@@ -54,7 +54,7 @@ public class FolderTypePhysicalCreator extends AWorkspaceNodeCreator {
 				.getController()
 				.getFilesystemMgr()
 				.scanFileSystem((AWorkspaceTreeNode) currentNode,
-						WorkspaceUtils.resolveURI(((PhysicalFolderNode) currentNode).getPath()));
+						WorkspaceUtils.resolveURI(((FolderLinkNode) currentNode).getPath()));
 
 	}
 

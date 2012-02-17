@@ -34,7 +34,7 @@ import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.model.IMutableLinkNode;
 
-public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeActionListener
+public class FolderLinkNode extends AFolderNode implements IWorkspaceNodeActionListener
 																, FileAlterationListener
 																, IWorkspaceTransferableCreator
 																, IDropAcceptor
@@ -42,8 +42,8 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeAct
 																, IMutableLinkNode {
 	
 	private static final long serialVersionUID = 1L;
-	private static Icon FOLDER_OPEN_ICON = new ImageIcon(PhysicalFolderNode.class.getResource("/images/16x16/folder-orange_open.png"));
-	private static final Icon FOLDER_CLOSED_ICON = new ImageIcon(PhysicalFolderNode.class.getResource("/images/16x16/folder-orange.png"));
+	private static Icon FOLDER_OPEN_ICON = new ImageIcon(FolderLinkNode.class.getResource("/images/16x16/folder-orange_open.png"));
+	private static final Icon FOLDER_CLOSED_ICON = new ImageIcon(FolderLinkNode.class.getResource("/images/16x16/folder-orange.png"));
 	
 	private static WorkspacePopupMenu popupMenu = null;
 	
@@ -52,11 +52,11 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeAct
 	private boolean first;
 	private boolean orderDescending = false;
 	
-	public PhysicalFolderNode() {
+	public FolderLinkNode() {
 		this(AFolderNode.FOLDER_TYPE_PHYSICAL);
 	}
 
-	public PhysicalFolderNode(String id) {
+	public FolderLinkNode(String id) {
 		super(id);
 	}
 
@@ -190,7 +190,7 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeAct
 		}		
 	}
 	
-	protected AWorkspaceTreeNode clone(PhysicalFolderNode node) {		
+	protected AWorkspaceTreeNode clone(FolderLinkNode node) {		
 		node.setPath(getPath());		
 		return super.clone(node);
 	}
@@ -331,7 +331,7 @@ public class PhysicalFolderNode extends AFolderNode implements IWorkspaceNodeAct
 	}
 	
 	public AWorkspaceTreeNode clone() {
-		PhysicalFolderNode node = new PhysicalFolderNode(getType());
+		FolderLinkNode node = new FolderLinkNode(getType());
 		return clone(node);
 	}
 	
