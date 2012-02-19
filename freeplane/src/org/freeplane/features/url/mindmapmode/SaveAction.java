@@ -22,10 +22,13 @@ package org.freeplane.features.url.mindmapmode;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 
+@EnabledAction(checkOnNodeChange=true)
 class SaveAction extends AFreeplaneAction {
 	/**
 	 * 
@@ -46,5 +49,12 @@ class SaveAction extends AFreeplaneAction {
 			controller.getViewController().out(TextUtils.getText("saving_canceled"));
 		}
 		controller.getViewController().setTitle();
+	}
+	
+	@Override
+	public void setEnabled() {
+		final Controller controller = Controller.getCurrentController();
+		MapModel map = controller.getMap();
+		setEnabled(map != null && ! map.isSaved() && ! map.isReadOnly());
 	}
 }
