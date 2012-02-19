@@ -43,6 +43,7 @@ import org.freeplane.features.map.ITooltipProvider;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.mindmapmode.DocuMapAttribute;
 import org.freeplane.features.ui.INodeViewLifeCycleListener;
 
 /**
@@ -223,6 +224,13 @@ public class ModeController extends AController {
 		return extensionContainer.getExtension(clazz);
 	}
 
+	public boolean containsExtension(final Class<? extends IExtension> clazz) {
+		return extensionContainer.containsExtension(clazz);
+	}
+
+	public void removeExtension(Class<DocuMapAttribute> clazz) {
+		extensionContainer.removeExtension(clazz);
+	}
 	public MapController getMapController() {
 		return mapController;
 	}
@@ -379,4 +387,5 @@ public class ModeController extends AController {
 			toolTip.put(key, tooltip);
 		}
 	}
+
 }

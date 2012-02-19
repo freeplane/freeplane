@@ -373,7 +373,7 @@ public class LinkController extends SelectionController implements IExtension {
 		UrlManager.getController().loadURL(uri);
     }
 
-	void loadURL(final NodeModel selectedNode, final ActionEvent e) {
+	protected void loadURL(final NodeModel selectedNode, final ActionEvent e) {
 		final URI link = NodeLinks.getValidLink(selectedNode);
 		if (link != null) {
 			onDeselect(selectedNode);

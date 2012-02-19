@@ -636,6 +636,10 @@ public class MMapController extends MapController {
 	@Deprecated
 	@Override
     public boolean newMap(URL url) throws FileNotFoundException, XMLParseException, IOException, URISyntaxException {
+		// load as documentation map if necessary 
+		if(getMModeController().containsExtension(DocuMapAttribute.class)){
+			return newDocumentationMap(url);
+		}
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		if (mapViewManager.tryToChangeToMapView(url))
 			return false;
