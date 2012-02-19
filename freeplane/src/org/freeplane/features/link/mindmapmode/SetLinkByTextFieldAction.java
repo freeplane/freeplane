@@ -19,7 +19,11 @@
  */
 package org.freeplane.features.link.mindmapmode;
 
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -28,6 +32,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.NodeModel;
@@ -50,10 +55,23 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 		String linkAsString = NodeLinks.getLinkAsString(selectedNode);
 		if(Compat.isWindowsOS() && linkAsString != null && linkAsString.startsWith("smb:")){
 			final URI link = NodeLinks.getValidLink(selectedNode);
-		    linkAsString = Compat.smbUri2unc(link);
+			linkAsString = Compat.smbUri2unc(link);
 		}
-		if(linkAsString == null || "".equals(linkAsString))
+		if(linkAsString == null || "".equals(linkAsString)){
 			linkAsString = "http://";
+			// if clipboard contains a valid uri use it
+			ClipboardController clipboardController = modeController.getExtension(ClipboardController.class);
+			Transferable t = clipboardController.getClipboardContents();
+			if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+				try {
+					final String plainTextFromClipboard = t.getTransferData(DataFlavor.stringFlavor).toString().trim();
+					new URI(plainTextFromClipboard);
+					linkAsString = plainTextFromClipboard;
+				}
+				catch (final Exception ex) {
+				}
+			}
+		}
 		final String inputValue = UITools.showInputDialog(
 		    Controller.getCurrentController().getSelection().getSelected(), TextUtils.getText("edit_link_manually"), linkAsString);
 		if (inputValue != null && ! inputValue.matches("\\w+://")) {
