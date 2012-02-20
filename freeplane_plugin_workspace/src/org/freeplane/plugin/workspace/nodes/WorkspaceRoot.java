@@ -28,6 +28,7 @@ import org.freeplane.plugin.workspace.actions.NodeCutAction;
 import org.freeplane.plugin.workspace.actions.NodeEnableMonitoringAction;
 import org.freeplane.plugin.workspace.actions.NodeNewFolderAction;
 import org.freeplane.plugin.workspace.actions.NodeNewLinkAction;
+import org.freeplane.plugin.workspace.actions.NodeOpenLocationAction;
 import org.freeplane.plugin.workspace.actions.NodePasteAction;
 import org.freeplane.plugin.workspace.actions.NodeRefreshAction;
 import org.freeplane.plugin.workspace.actions.NodeRemoveAction;
@@ -112,6 +113,7 @@ public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IW
 			modeController.addAction(new NodeNewFolderAction());
 			modeController.addAction(new NodeNewLinkAction());
 			modeController.addAction(new NodeEnableMonitoringAction());
+			modeController.addAction(new NodeOpenLocationAction());
 			
 			modeController.addAction(new NodeCutAction());
 			modeController.addAction(new NodeRenameAction());
@@ -132,6 +134,7 @@ public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IW
 					WorkspacePopupMenuBuilder.endSubMenu(),
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.location.change",
+					"workspace.action.node.open.location",
 					//"workspace.action.hide",
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.cut",

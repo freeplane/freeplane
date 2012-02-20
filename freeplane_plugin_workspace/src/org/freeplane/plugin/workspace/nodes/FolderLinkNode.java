@@ -98,6 +98,8 @@ public class FolderLinkNode extends AFolderNode implements IWorkspaceNodeActionL
 						//"workspace.action.file.new.file",
 						WorkspacePopupMenuBuilder.endSubMenu(),
 						WorkspacePopupMenuBuilder.SEPARATOR,
+						"workspace.action.node.open.location",
+						WorkspacePopupMenuBuilder.SEPARATOR,
 						"workspace.action.node.cut",
 						"workspace.action.node.copy",						
 						"workspace.action.node.paste",
@@ -159,6 +161,7 @@ public class FolderLinkNode extends AFolderNode implements IWorkspaceNodeActionL
 	public void handleAction(WorkspaceActionEvent event) {
 		if (event.getType() == WorkspaceActionEvent.MOUSE_RIGHT_CLICK) {
 			showPopup( (Component) event.getBaggage(), event.getX(), event.getY());
+			event.consume();
 		}
 	}
 	

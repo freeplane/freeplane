@@ -97,6 +97,7 @@ public class FolderTypeLiteratureRepositoryNode extends FolderLinkNode implement
 					WorkspacePopupMenuBuilder.endSubMenu(),
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.docear.uri.change",
+					"workspace.action.node.open.location",
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.cut",
 					"workspace.action.node.copy",

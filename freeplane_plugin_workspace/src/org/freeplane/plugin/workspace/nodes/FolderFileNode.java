@@ -107,6 +107,8 @@ public class FolderFileNode extends DefaultFileNode {
 						//"workspace.action.file.new.file",
 						WorkspacePopupMenuBuilder.endSubMenu(),
 						WorkspacePopupMenuBuilder.SEPARATOR,
+						"workspace.action.node.open.location",
+						WorkspacePopupMenuBuilder.SEPARATOR,
 						"workspace.action.node.cut",
 						"workspace.action.node.copy", 
 						"workspace.action.node.paste",
@@ -286,7 +288,12 @@ public class FolderFileNode extends DefaultFileNode {
 			
 		} 
 		else if(event.getType() == WorkspaceActionEvent.WSNODE_OPEN_DOCUMENT) {
-			//do nth
+//			try {
+//				Controller.getCurrentController().getViewController().openDocument(Compat.fileToUrl(getFile()));
+//				event.consume();
+//			} catch (Exception e) {
+//				LogUtils.warn(e);
+//			}
 		}
 		else {
 			super.handleAction(event);
