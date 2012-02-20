@@ -54,11 +54,41 @@ public class FilesystemManager {
 	 * @param parentDir
 	 * @throws IOException 
 	 */
-	public void createDirectory(String directoryName, File parentDir) throws IOException {
+	public File createDirectory(String directoryName, File parentDir) throws IOException {
 		File newDir = new File(parentDir, directoryName);
+		int count = 0;
+		while(newDir.exists() && count++ < 100) {
+			newDir = new File(parentDir, directoryName + " ("+count+")");
+		}
 		if(!newDir.mkdirs()) {
 			throw new IOException("could not create directory: "+newDir.getPath());
-		}		
+		}
+		return newDir;
+	}
+	
+	/**
+	 * @param directoryName
+	 * @param parentDir
+	 * @throws IOException 
+	 */
+	public File createFile(String fileName, File parentDir) throws IOException {
+		String pureName = fileName;
+		String fileExtension = "";
+		
+		int strPointer = fileName.lastIndexOf(".");
+		if(strPointer > -1) {
+			pureName = fileName.substring(0, strPointer);
+			fileExtension = fileName.substring(strPointer+1);
+		}
+		File newFile = new File(parentDir, pureName+"."+fileExtension);
+		int count = 0;
+		while(newFile.exists() && count++ < 100) {
+			newFile = new File(parentDir, pureName + " ("+count+")" +(fileExtension.trim().length() > 0 ? "."+fileExtension : ""));
+		}
+		if(!newFile.createNewFile()) {
+			throw new IOException("could not create file: "+newFile.getPath());
+		}
+		return newFile;
 	}
 	
 	private ListHashTable<String, IFileTypeHandler> getFileTypeHandlers() {

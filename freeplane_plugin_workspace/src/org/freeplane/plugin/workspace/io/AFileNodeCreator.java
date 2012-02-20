@@ -12,7 +12,7 @@ import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public abstract class AFileNodeCreator implements IFileTypeHandler {
-	abstract public AWorkspaceTreeNode getNode(String name, File file, String extension);
+	abstract public AWorkspaceTreeNode getNode(String name, File file);
 	private final Vector<Object> typeList = new Vector<Object>();
 	
 	/***********************************************************************************
@@ -53,13 +53,8 @@ public abstract class AFileNodeCreator implements IFileTypeHandler {
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
-	public AWorkspaceTreeNode createFileNode(AWorkspaceTreeNode parent, String fileExtension, final File file) {				
-		String fileExt = fileExtension;
-		int dot = file.getPath().lastIndexOf('.');
-		if(-1 != dot) {
-			fileExt = file.getPath().substring(dot);
-		}		
-		final AWorkspaceTreeNode node = getNode(file.getName(), file, fileExt);
+	public AWorkspaceTreeNode createFileNode(AWorkspaceTreeNode parent, String fileExtension, final File file) {		
+		final AWorkspaceTreeNode node = getNode(file.getName(), file);
 		if (node != null) {
 			WorkspaceUtils.getModel().addNodeTo(node, parent, false);
 			return node;

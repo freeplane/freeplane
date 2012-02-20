@@ -24,7 +24,6 @@ import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
@@ -48,8 +47,6 @@ import org.freeplane.plugin.workspace.model.IMutableLinkNode;
  * 
  */
 public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNodeActionListener, IWorkspaceTransferableCreator, IDropAcceptor, IFileSystemRepresentation, IMutableLinkNode {
-	private static final Icon FOLDER_OPEN_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/folder-orange_open.png"));
-	private static final Icon FOLDER_CLOSED_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/folder-orange.png"));
 	private static final Icon DEFAULT_ICON = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/text-x-preview.png"));
 	private static final Icon NOT_EXISTING = new ImageIcon(AWorkspaceTreeNode.class.getResource("/images/16x16/cross.png"));
 	public static final Icon DOCEAR_ICON = new ImageIcon(ResourceController.class.getResource("/images/docear16.png"));
@@ -62,8 +59,8 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 	
 	
 	private File file;
-	private String fileExtension;
 	private boolean orderDescending;
+	private Icon icon = null;
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -76,31 +73,18 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 		super("physical_file");
 		this.setName(name);
 		this.file = file;
-		
-	}
-	
-	public DefaultFileNode(final String name, final File file, String fileExtension) {
-		this(name, file);
-		setFileExtension(fileExtension);		
+		icon = WorkspaceController.getController().getNodeTypeIconManager().getIconForNode(this);
 	}
 
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
 	
-	public String getFileExtension() {
-		return this.fileExtension;
-	}
-
-	public void setFileExtension(String fileExtension) {
-		this.fileExtension = fileExtension;
-	}
-	
 	public boolean rename(final String name) {
 		File newFile = new File(getFile().getParentFile(), name);
 		if(getFile().renameTo(newFile)) {
 			this.file = newFile;
-			this.fileExtension = FilenameUtils.getExtension(getFile().getPath());
+			icon = WorkspaceController.getController().getNodeTypeIconManager().getIconForNode(this);
 			return true;
 		}
 		return false;
@@ -114,7 +98,6 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 		File newFile = new File(parentFolder, getName());
 		if(newFile.exists()) {
 			this.file = newFile;
-			this.fileExtension = FilenameUtils.getExtension(getFile().getPath());
 		}
 	}
 	
@@ -218,32 +201,23 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 			renderer.setOpenIcon(NOT_EXISTING);
 			renderer.setClosedIcon(NOT_EXISTING);
 			return true;
-		}
+		}		
 		
-		Icon icon = FileSystemView.getFileSystemView().getSystemIcon(getFile());
-		if(icon != null) {
+		if(icon == null) {
+			icon = FileSystemView.getFileSystemView().getSystemIcon(getFile());
 			renderer.setLeafIcon(icon);
 			return true;
 		}
 		// the next steps should not get reached
-		if (getFile().isFile()) {
-			icon = WorkspaceController.getController().getNodeTypeIconManager().getIconForNode(this);
-			if(icon == null) {
-				renderer.setLeafIcon(DEFAULT_ICON);
-			} else {
-				renderer.setLeafIcon(icon);
-			}
-		} 
-		else {
-			renderer.setOpenIcon(FOLDER_OPEN_ICON);
-			renderer.setClosedIcon(FOLDER_CLOSED_ICON);
-			renderer.setLeafIcon(FOLDER_CLOSED_ICON);
+		if(icon == null) {
+			renderer.setLeafIcon(DEFAULT_ICON);
+		} else {
+			renderer.setLeafIcon(icon);
 		}
 		return true;
 	}
 	
 	protected AWorkspaceTreeNode clone(DefaultFileNode node) {
-		node.setFileExtension(getFileExtension());
 		return super.clone(node);
 	}
 		
@@ -356,7 +330,7 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 	}
 
 	public AWorkspaceTreeNode clone() {
-		DefaultFileNode node = new DefaultFileNode(getName(), getFile(),getFileExtension());
+		DefaultFileNode node = new DefaultFileNode(getName(), getFile());
 		return clone(node);
 	}
 	

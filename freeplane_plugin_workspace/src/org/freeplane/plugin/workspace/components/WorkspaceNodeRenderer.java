@@ -10,6 +10,7 @@ import javax.swing.JTree;
 import javax.swing.UIManager;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import org.freeplane.plugin.workspace.io.IFileSystemRepresentation;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.nodes.AFolderNode;
 
@@ -32,7 +33,8 @@ public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 		if(treeNode != null && treeNode instanceof AWorkspaceTreeNode ) {
 			DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
 			AWorkspaceTreeNode node = (AWorkspaceTreeNode) treeNode;
-			setNodeIcon(renderer,node);
+			setNodeIcon(renderer, node);
+			setToolTip(renderer, node);
 			JLabel label = (JLabel) renderer.getTreeCellRendererComponent(tree, treeNode, sel, expanded, leaf, row, hasFocus);			
 			if(row == this.highlightedRow) {
 				try {
@@ -42,10 +44,16 @@ public class WorkspaceNodeRenderer extends DefaultTreeCellRenderer {
 					label.setBorder(BorderFactory.createLineBorder(label.getForeground(), 1));
 				}
 			}
-			label.setText(node.getName());
+			label.setText(node.getName());			
 			return label;
 		}
 		return super.getTreeCellRendererComponent(tree, treeNode, sel, expanded, leaf, row, hasFocus);
+	}
+
+	private void setToolTip(DefaultTreeCellRenderer renderer, AWorkspaceTreeNode node) {
+		if(node instanceof IFileSystemRepresentation) {
+			renderer.setToolTipText(((IFileSystemRepresentation) node).getFile().getPath());
+		}
 	}
 
 	/**

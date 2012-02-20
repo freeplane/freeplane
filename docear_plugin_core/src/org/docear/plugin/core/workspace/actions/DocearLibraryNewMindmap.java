@@ -11,9 +11,11 @@ import javax.swing.Icon;
 import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FilenameUtils;
+import org.docear.plugin.core.IDocearLibrary;
 import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.workspace.node.FolderTypeLibraryNode;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
@@ -22,6 +24,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.actions.AWorkspaceAction;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
@@ -63,19 +66,27 @@ private static final long serialVersionUID = 1L;
 					fileName += ".mm";
 				}
 				try{
-					File file = new File(WorkspaceUtils.resolveURI(((FolderTypeLibraryNode)targetNode).getLibraryPath()), fileName);
-				
-					if (file.exists()) {
-						JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(),
-	                            TextUtils.getText("error_file_exists"), TextUtils.getText("error_file_exists_title"),
-	                            JOptionPane.ERROR_MESSAGE);
-					} 
-					else if (createNewMindmap(file)) {
-						LinkTypeFileNode newNode = new LinkTypeFileNode();
-						newNode.setLinkPath(WorkspaceUtils.getWorkspaceRelativeURI(file));
-						newNode.setName(FilenameUtils.getBaseName(file.getName()));
-						WorkspaceUtils.getModel().addNodeTo(newNode, targetNode);
-						targetNode.refresh();
+					File parentFolder = WorkspaceUtils.resolveURI(((IDocearLibrary)targetNode).getLibraryPath());
+					File file = new File(parentFolder, fileName);
+					try {
+						file = WorkspaceController.getController().getFilesystemMgr().createFile(fileName, parentFolder);
+						
+//					if (file.exists()) {
+//						JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(),
+//	                            TextUtils.getText("error_file_exists"), TextUtils.getText("error_file_exists_title"),
+//	                            JOptionPane.ERROR_MESSAGE);
+//					} 
+//					else 
+						if (createNewMindmap(file)) {
+							LinkTypeFileNode newNode = new LinkTypeFileNode();
+							newNode.setLinkPath(WorkspaceUtils.getWorkspaceRelativeURI(file));
+							newNode.setName(FilenameUtils.getBaseName(file.getName()));
+							WorkspaceUtils.getModel().addNodeTo(newNode, targetNode);
+							targetNode.refresh();
+						}
+					}
+					catch(Exception ex) {
+						JOptionPane.showMessageDialog(UITools.getFrame(), ex.getMessage(), "Error ... ", JOptionPane.ERROR_MESSAGE);
 					}
 				} 
 				catch (Exception ex) {
