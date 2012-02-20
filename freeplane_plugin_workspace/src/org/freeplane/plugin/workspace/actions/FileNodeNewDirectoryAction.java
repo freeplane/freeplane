@@ -24,6 +24,7 @@ import org.freeplane.plugin.workspace.nodes.FolderLinkNode;
 /**
  * 
  */
+@Deprecated
 public class FileNodeNewDirectoryAction extends AWorkspaceAction {
 
 	private static final long serialVersionUID = 1L;

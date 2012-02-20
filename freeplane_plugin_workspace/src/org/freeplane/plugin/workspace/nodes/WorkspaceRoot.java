@@ -21,13 +21,11 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.actions.FileNodeDeleteAction;
-import org.freeplane.plugin.workspace.actions.FileNodeNewDirectoryAction;
 import org.freeplane.plugin.workspace.actions.FileNodeNewFileAction;
 import org.freeplane.plugin.workspace.actions.FileNodeNewMindmapAction;
 import org.freeplane.plugin.workspace.actions.NodeCopyAction;
 import org.freeplane.plugin.workspace.actions.NodeCutAction;
 import org.freeplane.plugin.workspace.actions.NodeEnableMonitoringAction;
-import org.freeplane.plugin.workspace.actions.NodeNewDirectoryLinkAction;
 import org.freeplane.plugin.workspace.actions.NodeNewFolderAction;
 import org.freeplane.plugin.workspace.actions.NodeNewLinkAction;
 import org.freeplane.plugin.workspace.actions.NodePasteAction;
@@ -113,7 +111,6 @@ public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IW
 			modeController.addAction(new NodeRemoveAction());
 			modeController.addAction(new NodeNewFolderAction());
 			modeController.addAction(new NodeNewLinkAction());
-			modeController.addAction(new NodeNewDirectoryLinkAction());
 			modeController.addAction(new NodeEnableMonitoringAction());
 			
 			modeController.addAction(new NodeCutAction());
@@ -121,7 +118,6 @@ public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IW
 			modeController.addAction(new NodeCopyAction());
 			modeController.addAction(new NodePasteAction());
 			
-			modeController.addAction(new FileNodeNewDirectoryAction());
 			modeController.addAction(new FileNodeNewMindmapAction());
 			modeController.addAction(new FileNodeNewFileAction());
 			modeController.addAction(new FileNodeDeleteAction());
@@ -133,7 +129,6 @@ public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IW
 					WorkspacePopupMenuBuilder.createSubMenu(TextUtils.getRawText("workspace.action.new.label")),
 					"workspace.action.node.new.folder",
 					"workspace.action.node.new.link",
-					"workspace.action.node.new.directory",
 					WorkspacePopupMenuBuilder.endSubMenu(),
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.location.change",

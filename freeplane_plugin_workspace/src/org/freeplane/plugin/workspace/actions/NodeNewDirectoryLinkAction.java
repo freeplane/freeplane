@@ -13,7 +13,7 @@ import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.nodes.AFolderNode;
 import org.freeplane.plugin.workspace.nodes.FolderLinkNode;
 import org.freeplane.plugin.workspace.nodes.WorkspaceRoot;
-
+@Deprecated
 public class NodeNewDirectoryLinkAction extends AWorkspaceAction {
 
 	private static final long serialVersionUID = 1L;

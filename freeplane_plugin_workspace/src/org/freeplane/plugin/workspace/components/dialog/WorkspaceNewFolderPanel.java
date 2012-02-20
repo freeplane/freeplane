@@ -10,15 +10,16 @@ import java.awt.event.ActionListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
@@ -42,18 +43,13 @@ public class WorkspaceNewFolderPanel extends JPanel implements ActionListener {
 	
 	
 	
-	private JRadioButton rdbtnNewRadioButton;
+	private JCheckBox chbkLinkFolder;
 	private JTextField textField;
 	private JLabel lblFolder;
 	private JButton button;
-	
-	private JRadioButton rdbtnVirtual;
 	JLabel lblName;
 	private JTextField txtGroupname;
 	
-	
-	
-	private int chooserType = 0;
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -81,52 +77,43 @@ public class WorkspaceNewFolderPanel extends JPanel implements ActionListener {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
-		JLabel lblPath = new JLabel("Parent:");
+		JLabel lblPath = new JLabel(TextUtils.getText("workspace.action.node.new.folder.dialog.parent.label"));
 		lblPath.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblPath, "2, 2, right, default");
 		
-		JLabel lblParentpath = new JLabel("parentPath");
+		JLabel lblParentpath = new JLabel("/");
 		add(lblParentpath, "4, 2, 3, 1");
 		lblParentpath.setText(getParentPath(targetNode));
 		
 		{
-			rdbtnVirtual = new JRadioButton("Virtual");
-			rdbtnVirtual.addActionListener(this);
-			rdbtnVirtual.setSelected((chooserMode&MODE_VIRTUAL_ONLY) > 0);
-			rdbtnVirtual.setEnabled((chooserMode&MODE_VIRTUAL_ONLY) > 0);
-			add(rdbtnVirtual, "2, 4, 7, 1");			
 			
-			lblName = new JLabel("Name:");
+			lblName = new JLabel(TextUtils.getText("workspace.action.node.new.folder.dialog.input1.label"));
 			lblName.setHorizontalAlignment(SwingConstants.RIGHT);
-			add(lblName, "2, 6, 3, 1, right, default");
+			add(lblName, "2, 4, right, default");
 			
 			txtGroupname = new JTextField();
-			txtGroupname.setText("folder");
-			add(txtGroupname, "6, 6, 3, 1, fill, default");
-			
-			enableVirtualInput(rdbtnVirtual.isSelected());
+			txtGroupname.setText(TextUtils.getText("workspace.action.node.new.folder.dialog.input1.default"));
+			add(txtGroupname, "4, 4, 5, 1, fill, default");
 		}
 		
 		JSeparator separator = new JSeparator();
-		add(separator, "2, 8, 7, 1");
+		add(separator, "2, 6, 7, 1");
 		
 		{
-			rdbtnNewRadioButton = new JRadioButton("Choose from disk");
-			rdbtnNewRadioButton.addActionListener(this);
-			rdbtnNewRadioButton.setEnabled((chooserMode&MODE_PHYSICAL_ONLY) > 0);
-			rdbtnNewRadioButton.setSelected((chooserMode&MODE_VIRTUAL_ONLY) == 0);
-			add(rdbtnNewRadioButton, "2, 10, 7, 1");
+			chbkLinkFolder = new JCheckBox(TextUtils.getText("workspace.action.node.new.folder.dialog.disk.label"));
+			chbkLinkFolder.addActionListener(this);
+			chbkLinkFolder.setEnabled((chooserMode&MODE_PHYSICAL_ONLY) > 0);
+			chbkLinkFolder.setSelected((chooserMode&MODE_VIRTUAL_ONLY) == 0);
+			add(chbkLinkFolder, "2, 8, 7, 1");
 			
-			lblFolder = new JLabel("Folder:");
-			add(lblFolder, "2, 13, 3, 1, right, default");
+			lblFolder = new JLabel(TextUtils.getText("workspace.action.node.new.folder.dialog.input2.label"));
+			add(lblFolder, "2, 11, 3, 1, right, default");
 			
 			textField = new JTextField();
-			add(textField, "6, 13, fill, default");
+			add(textField, "6, 11, fill, default");
 			
 			button = new JButton(new AbstractAction("...") {
 				
@@ -139,12 +126,13 @@ public class WorkspaceNewFolderPanel extends JPanel implements ActionListener {
 					int result = chooser.showOpenDialog(UITools.getFrame());
 					if(result == JFileChooser.APPROVE_OPTION) {
 						textField.setText(chooser.getSelectedFile().getPath());
+						txtGroupname.setText(chooser.getSelectedFile().getName());
 					}
 				}
 			});
-			add(button, "8, 13");
+			add(button, "8, 11");
 			
-			enablePhysicalInput(rdbtnNewRadioButton.isSelected());
+			enablePhysicalInput(chbkLinkFolder.isSelected());
 		}
 	}
 	
@@ -164,18 +152,20 @@ public class WorkspaceNewFolderPanel extends JPanel implements ActionListener {
 	 * METHODS
 	 **********************************************************************************/
 
-	public String getFolderString() {
-		if(chooserType == MODE_VIRTUAL_ONLY) {
-			return txtGroupname.getText();
-		}
-		if(chooserType == MODE_PHYSICAL_ONLY) {
+	public String getFolderName() {
+		return txtGroupname.getText();
+	}
+	
+	public String getLinkPath() {
+		if(isLinkedFolder()) {
 			return textField.getText();
-		}
+		} 
+		
 		return null;
 	}
 	
-	public int getChoosenType() {
-		return chooserType;
+	public boolean isLinkedFolder() {
+		return chbkLinkFolder.isSelected();
 	}
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
@@ -183,19 +173,13 @@ public class WorkspaceNewFolderPanel extends JPanel implements ActionListener {
 
 	
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource().equals(rdbtnNewRadioButton)) {
-			this.chooserType = PHYSICAL;
-			rdbtnNewRadioButton.setSelected(true);
-			rdbtnVirtual.setSelected(false);
-			enablePhysicalInput(true);
-			enableVirtualInput(false);			
-		}
-		else if(e.getSource().equals(rdbtnVirtual)) {
-			this.chooserType = VIRTUAL;
-			rdbtnNewRadioButton.setSelected(false);
-			rdbtnVirtual.setSelected(true);
-			enablePhysicalInput(false);
-			enableVirtualInput(true);
+		if(e.getSource().equals(chbkLinkFolder)) {
+			if(chbkLinkFolder.isSelected()) {
+				enablePhysicalInput(true);
+			} else {
+				enablePhysicalInput(false);
+			}
+						
 		}	
 	}
 	
@@ -203,10 +187,5 @@ public class WorkspaceNewFolderPanel extends JPanel implements ActionListener {
 		lblFolder.setEnabled(enabled);
 		textField.setEnabled(enabled);
 		button.setEnabled(enabled);
-	}
-	
-	private void enableVirtualInput(boolean enabled) {
-		lblName.setEnabled(enabled);
-		txtGroupname.setEnabled(enabled);
 	}
 }

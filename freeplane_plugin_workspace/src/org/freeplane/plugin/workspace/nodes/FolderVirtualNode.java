@@ -48,7 +48,6 @@ public class FolderVirtualNode extends AFolderNode implements IWorkspaceNodeActi
 					WorkspacePopupMenuBuilder.createSubMenu(TextUtils.getRawText("workspace.action.new.label")),
 					"workspace.action.node.new.folder",
 					"workspace.action.node.new.link",
-					"workspace.action.node.new.directory",
 					WorkspacePopupMenuBuilder.endSubMenu(),
 					WorkspacePopupMenuBuilder.SEPARATOR, 
 					"workspace.action.node.cut",

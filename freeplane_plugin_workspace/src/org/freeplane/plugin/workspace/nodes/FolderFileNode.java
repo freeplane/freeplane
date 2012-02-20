@@ -101,7 +101,7 @@ public class FolderFileNode extends DefaultFileNode {
 				popupMenu = new WorkspacePopupMenu();
 				WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
 						WorkspacePopupMenuBuilder.createSubMenu(TextUtils.getRawText("workspace.action.new.label")),
-						"workspace.action.file.new.directory",
+						"workspace.action.node.new.folder",
 						"workspace.action.file.new.mindmap",
 						//WorkspacePopupMenuBuilder.SEPARATOR,
 						//"workspace.action.file.new.file",
