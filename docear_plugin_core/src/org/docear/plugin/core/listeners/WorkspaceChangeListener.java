@@ -183,7 +183,7 @@ public class WorkspaceChangeListener implements IWorkspaceEventListener {
 		LinkTypeFileNode node = new LinkTypeFileNode();
 		node.setName(_welcomeFile.getName());
 		node.setLinkPath(WorkspaceUtils.getWorkspaceRelativeURI(_welcomeFile));
-		WorkspaceUtils.getModel().addNodeTo(node, parent);
+		WorkspaceUtils.getModel().addNodeTo(node, parent, false);
 		parent.refresh();
 	}
 	

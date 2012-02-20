@@ -319,7 +319,23 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 	 * @param targetNode
 	 */
 	public boolean addNodeTo(AWorkspaceTreeNode node, AWorkspaceTreeNode targetNode) {
+		return addNodeTo(node, targetNode, true);
+	}
+	
+	/**
+	 * @param node
+	 * @param targetNode
+	 */
+	public boolean addNodeTo(AWorkspaceTreeNode node, AWorkspaceTreeNode targetNode, boolean allowRenaming) {
 		node.setParent(targetNode);
+		//DOCEAR - look for problems that may caused by this change!!!
+		if(allowRenaming) {
+			String newNodeName = node.getName();
+			int nameCount = 0;
+			while(this.containsNode(node.getKey()) && nameCount++ < 100) {
+				node.setName(newNodeName+" ("+nameCount+")");
+			}
+		}
 		if(this.containsNode(node.getKey())) {
 			return false;
 		}

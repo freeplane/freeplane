@@ -61,7 +61,7 @@ public abstract class AFileNodeCreator implements IFileTypeHandler {
 		}		
 		final AWorkspaceTreeNode node = getNode(file.getName(), file, fileExt);
 		if (node != null) {
-			WorkspaceUtils.getModel().addNodeTo(node, parent);
+			WorkspaceUtils.getModel().addNodeTo(node, parent, false);
 			return node;
 		}
 		return parent;		
