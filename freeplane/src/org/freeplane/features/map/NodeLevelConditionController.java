@@ -28,6 +28,7 @@ import javax.swing.ListModel;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
@@ -143,7 +144,7 @@ class NodeLevelConditionController implements IElementaryConditionController {
 
 	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
 		if(selectedCondition.objectEquals(FILTER_PERIODIC_LEVEL)){
-			return new BasicComboBoxEditor();
+			return new FixedBasicComboBoxEditor();
 		}
 		return levelEditor;
 	}

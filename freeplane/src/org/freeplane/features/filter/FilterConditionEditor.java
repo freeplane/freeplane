@@ -20,6 +20,7 @@
 package org.freeplane.features.filter;
 
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -38,11 +39,13 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.ListCellRenderer;
+import javax.swing.RootPaneContainer;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
@@ -87,12 +90,25 @@ public class FilterConditionEditor extends JComponent {
 	{
 		values.getEditor().addActionListener(new ActionListener()  {
 
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				((QuickFindAction)Controller.getCurrentController().getAction("QuickFindAction.FORWARD")).executeAction(true);
 			}
 			
 		});
+	}
+	
+	public void setSearchingBusyCursor()
+	{
+		RootPaneContainer root = (RootPaneContainer)getTopLevelAncestor();
+		root.getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		root.getGlassPane().setVisible(true);
+	}
+	
+	public void setSearchingDefaultCursor()
+	{
+		RootPaneContainer root = (RootPaneContainer)getTopLevelAncestor();
+		root.getGlassPane().setCursor(Cursor.getDefaultCursor());
+		root.getGlassPane().setVisible(false);
 	}
 
 	private void setValuesEditor() {
@@ -107,7 +123,7 @@ public class FilterConditionEditor extends JComponent {
 		values.setModel(conditionController.getValuesForProperty(selectedProperty, selectedCondition));
 		
 		final ComboBoxEditor valueEditor = conditionController.getValueEditor(selectedProperty, selectedCondition);
-		values.setEditor(valueEditor != null ? valueEditor : new BasicComboBoxEditor());
+		values.setEditor(valueEditor != null ? valueEditor : new FixedBasicComboBoxEditor());
 		setValuesEnterKeyListener();
 		
 		final ListCellRenderer valueRenderer = conditionController.getValueRenderer(selectedProperty, selectedCondition);
