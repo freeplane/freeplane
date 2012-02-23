@@ -16,6 +16,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
@@ -184,7 +185,7 @@ public class FolderVirtualNode extends AFolderNode implements IWorkspaceNodeActi
 					} 
 					else if (dropAction == DnDConstants.ACTION_MOVE) {
 						AWorkspaceTreeNode parent = node.getParent();
-						WorkspaceUtils.getModel().removeNodeFromParent(node);
+						WorkspaceUtils.getModel().cutNodeFromParent(node);
 						parent.refresh();
 						newNode = node;
 					}
@@ -193,6 +194,7 @@ public class FolderVirtualNode extends AFolderNode implements IWorkspaceNodeActi
 					continue;
 				}
 				WorkspaceUtils.getModel().addNodeTo(newNode, this);
+				WorkspaceController.getController().getExpansionStateHandler().addPathKey(this.getKey());
 			}
 			WorkspaceUtils.saveCurrentConfiguration();
 			

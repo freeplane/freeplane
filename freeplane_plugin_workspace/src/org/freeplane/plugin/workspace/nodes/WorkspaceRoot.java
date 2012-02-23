@@ -236,7 +236,7 @@ public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IW
 					} 
 					else if (dropAction == DnDConstants.ACTION_MOVE) {
 						AWorkspaceTreeNode parent = node.getParent();
-						WorkspaceUtils.getModel().removeNodeFromParent(node);
+						WorkspaceUtils.getModel().cutNodeFromParent(node);
 						parent.refresh();
 						newNode = node;
 					}
@@ -245,6 +245,7 @@ public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IW
 					continue;
 				}
 				WorkspaceUtils.getModel().addNodeTo(newNode, this);
+				WorkspaceController.getController().getExpansionStateHandler().addPathKey(this.getKey());
 			}
 			WorkspaceUtils.saveCurrentConfiguration();
 			

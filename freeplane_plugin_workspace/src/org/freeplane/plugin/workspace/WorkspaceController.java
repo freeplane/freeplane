@@ -191,8 +191,7 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 		initTree();
 		initializeConfiguration();
 		reloadView();
-		showWorkspace(Controller.getCurrentController().getResourceController()
-				.getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY));
+		showWorkspace(Controller.getCurrentController().getResourceController().getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY));
 		getExpansionStateHandler().restoreExpansionStates();
 		fireWorkspaceReady(new WorkspaceEvent(null, getConfiguration()));
 		loadInProcess = false;
@@ -200,7 +199,6 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 
 	public void refreshWorkspace() {
 		getWorkspaceModel().reload();
-		getExpansionStateHandler().restoreExpansionStates();
 	}
 	
 	public WorkspaceIndexedTreeModel getWorkspaceModel() {
