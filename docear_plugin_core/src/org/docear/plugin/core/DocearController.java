@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
+import org.docear.plugin.core.logger.DocearEventLogger;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
@@ -25,6 +26,7 @@ public class DocearController implements IDocearEventListener {
 	private static final String DEFAULT_LIBRARY_PATH = "workspace:/"+PLACEHOLDER_PROFILENAME+"/library";
 	private final static Pattern PATTERN = Pattern.compile(PLACEHOLDER_PROFILENAME);
 	
+	private final DocearEventLogger docearEventLogger = new DocearEventLogger();
 	
 	private final Vector<IDocearEventListener> docearListeners = new Vector<IDocearEventListener>();		
 	private final static DocearController docearController = new DocearController();
@@ -76,6 +78,10 @@ public class DocearController implements IDocearEventListener {
 		Matcher mainMatcher = PATTERN.matcher(DEFAULT_LIBRARY_PATH);
 		String ret = mainMatcher.replaceAll(WorkspaceController.getController().getPreferences().getWorkspaceProfileHome());
 		return WorkspaceUtils.absoluteURI(URI.create(ret));
+	}
+	
+	public DocearEventLogger getDocearEventLogger() {
+		return this.docearEventLogger;
 	}
 	
 	/***********************************************************************************

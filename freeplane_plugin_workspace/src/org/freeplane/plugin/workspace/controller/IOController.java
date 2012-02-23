@@ -4,6 +4,7 @@
  */
 package org.freeplane.plugin.workspace.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
@@ -27,9 +28,27 @@ public class IOController {
 	 * @param node 
 	 **********************************************************************************/
 	public List<IWorkspaceNodeActionListener> getNodeActionListeners(Class<? extends AWorkspaceTreeNode> clazz, Integer eventType) {
+		HashMap<Integer, List<IWorkspaceNodeActionListener>> wildcard = listenerMap.get(AWorkspaceTreeNode.class);
 		HashMap<Integer, List<IWorkspaceNodeActionListener>> levelOne = listenerMap.get(clazz);
-		if(levelOne != null) {		
-			return levelOne.get(eventType);	
+		if(levelOne != null) {
+			List<IWorkspaceNodeActionListener> result = new ArrayList<IWorkspaceNodeActionListener>();
+			if (levelOne.get(eventType) != null) {
+				result.addAll(levelOne.get(eventType));
+			}			
+			if(wildcard != null) {
+				List<IWorkspaceNodeActionListener> wildcardListeners = wildcard.get(eventType);
+				if(wildcardListeners != null) {
+					result.addAll(wildcardListeners);
+				}
+			}
+			if(result.size() == 0) {
+				return null;
+			}
+			return result;	
+		} 
+		else if(wildcard != null) {
+			return wildcard.get(eventType);
+			
 		}
 		return null;
 	}

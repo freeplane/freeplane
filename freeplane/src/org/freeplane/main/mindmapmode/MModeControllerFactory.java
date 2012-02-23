@@ -20,18 +20,15 @@
 package org.freeplane.main.mindmapmode;
 
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-
 import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
-import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.DelayedMouseListener;
 import org.freeplane.core.ui.IEditHandler;
+import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
 import org.freeplane.core.ui.components.FButtonBar;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
@@ -83,7 +80,7 @@ import org.freeplane.features.nodestyle.mindmapmode.RevisionPlugin;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
-import org.freeplane.features.styles.AutomaticLayout;
+import org.freeplane.features.styles.AutomaticLayoutController;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
@@ -151,7 +148,7 @@ public class MModeControllerFactory {
 		tabs.add(TextUtils.getText("format_panel"), styleScrollPane);
 		new AttributePanelManager(modeController);
 		new HierarchicalIcons();
-		new AutomaticLayout();
+		new AutomaticLayoutController();
 		new BlinkingNodeHook();
 		SummaryNode.install();
 		AlwaysUnfoldedNode.install();
@@ -191,32 +188,9 @@ public class MModeControllerFactory {
 		final Controller controller = Controller.getCurrentController();
 		modeController = new MModeController(controller);
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
-		final int maxClickNumber;
-        if(ResourceController.getResourceController().getBooleanProperty("start_editor_on_double_click"))
-            maxClickNumber = 2;
-        else
-            maxClickNumber = 1;
 		
-        final DelayedMouseListener nodeMouseMotionListener = new DelayedMouseListener( new MNodeMouseMotionListener(), maxClickNumber, MouseEvent.BUTTON1){
-        	public void mouseClicked(final MouseEvent e) {
-        		MNodeMouseMotionListener delegate = (MNodeMouseMotionListener)getDelegate();
-        		if(! delegate.wasFocused())
-        			delegate.mouseClicked(e);
-        		else
-        			super.mouseClicked(e);
-        	}
-        };
+        final IMouseListener nodeMouseMotionListener = new MNodeMouseMotionListener();
         userInputListenerFactory.setNodeMouseMotionListener(nodeMouseMotionListener);
-        ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
-            public void propertyChanged(String propertyName, String newValue, String oldValue) {
-                if("start_editor_on_double_click".equals(propertyName)){
-                    if(Boolean.parseBoolean(newValue))
-                        nodeMouseMotionListener.setMaxClickNumber(2);
-                    else
-                        nodeMouseMotionListener.setMaxClickNumber(1);
-                }
-            }
-        });
 		final JPopupMenu popupmenu = new JPopupMenu();
 		userInputListenerFactory.setNodePopupMenu(popupmenu);
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
@@ -234,7 +208,6 @@ public class MModeControllerFactory {
 		CloudController.install(new MCloudController(modeController));
 		NoteController.install(new MNoteController(modeController));
 		userInputListenerFactory.setMapMouseListener(new MMapMouseListener());
-//		userInputListenerFactory.setMapMouseListener(new DelayedMouseListener(new MMapMouseListener(), 2, 1));
 		final MTextController textController = new MTextController(modeController);
 		TextController.install(textController);
 		LinkController.install(new MLinkController());

@@ -20,15 +20,10 @@
 package org.freeplane.features.link.mindmapmode;
 
 import java.awt.event.ActionEvent;
-import java.net.URI;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.MenuUtils.MenuEntry;
-import org.freeplane.features.icon.IconController;
-import org.freeplane.features.icon.MindIcon;
-import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.link.LinkController;
-import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
@@ -43,22 +38,8 @@ class AddMenuItemLinkAction extends AFreeplaneAction {
 		final NodeModel selectedNode = Controller.getCurrentModeController().getMapController().getSelectedNode();
 		final SelectMenuItemDialog dialog = new SelectMenuItemDialog(selectedNode);
 		final MenuEntry menuItem = dialog.getMenuItem();
-		if (menuItem != null) {
-			final URI link = NodeLinks.getValidLink(selectedNode);
-			if (link != null && LinkController.isMenuItemLink(link)) {
-				// remove all icons since we don't know which icon was assigned to the old menuitem
-				while (getIconController().removeIcon(selectedNode) > 0)
-					;
-			}
-			final MindIcon icon = menuItem.createMindIcon();
-			if (icon != null)
-				getIconController().addIcon(selectedNode, icon);
-			((MLinkController) LinkController.getController()).setLink(selectedNode, LinkController
-				.createMenuItemLink(menuItem.getKey()), LinkController.LINK_ABSOLUTE);
+		if (menuItem != null) {			
+			((MLinkController) LinkController.getController()).setLink(selectedNode, LinkController.createMenuItemLink(menuItem.getKey()), LinkController.LINK_ABSOLUTE);
 		}
-	}
-
-	private MIconController getIconController() {
-		return (MIconController) IconController.getController();
 	}
 }

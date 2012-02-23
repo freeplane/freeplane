@@ -28,7 +28,29 @@ public class DefaultNodeKeyListener implements KeyListener {
 	}
 
 	public void keyPressed(final KeyEvent e) {
-		if ((e.isAltDown() || e.isControlDown() || e.isMetaDown()) && !(e.isControlDown() && e.isShiftDown())) {
+		final boolean checkForScrollMap = e.isShiftDown() && e.isControlDown();
+		final MapView mapView = (MapView) Controller.getCurrentController().getViewController().getMapView();
+		if(checkForScrollMap){
+			switch (e.getKeyCode()) {
+			case KeyEvent.VK_UP:
+					mapView.scrollBy(0, -10);
+					e.consume();
+				return;
+			case KeyEvent.VK_DOWN:
+					mapView.scrollBy(0, 10);
+					e.consume();
+				return;
+			case KeyEvent.VK_LEFT:
+					mapView.scrollBy(-10, 0);
+					e.consume();
+				return;
+			case KeyEvent.VK_RIGHT:
+					mapView.scrollBy(10, 0);
+					e.consume();
+			}
+			return;
+		}
+		if ((e.isAltDown() || e.isControlDown() || e.isMetaDown())) {
 			return;
 		}
 		switch (e.getKeyCode()) {
@@ -42,86 +64,30 @@ public class DefaultNodeKeyListener implements KeyListener {
 				return;
 		}
 		final boolean continious = e.isShiftDown();
-		final boolean pan = e.isShiftDown() && e.isControlDown();
-		final MapView mapView = (MapView) Controller.getCurrentController().getViewController().getMapView();
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_UP:
-				if (pan) {
-					mapView.scrollBy(0, -10);
+				if (mapView.selectUp(continious)) 
 					e.consume();
-				}
-				else {
-					if (mapView.selectUp(continious)) {
-						e.consume();
-					}
-					else {
-						mapView.scrollBy(0, -10);
-						e.consume();
-					}
-				}
 				return;
 			case KeyEvent.VK_DOWN:
-				if (pan) {
-					mapView.scrollBy(0, 10);
+				if (mapView.selectDown(continious)) 
 					e.consume();
-				}
-				else {
-					if (mapView.selectDown(continious)) {
-						e.consume();
-					}
-					else {
-						mapView.scrollBy(0, 10);
-						e.consume();
-					}
-				}
 				return;
 			case KeyEvent.VK_LEFT:
-				if (pan) {
-					mapView.scrollBy(-10, 0);
+				if (mapView.selectLeft(continious)) 
 					e.consume();
-				}
-				else {
-					if (mapView.selectLeft(continious)) {
-						e.consume();
-					}
-					else {
-						mapView.scrollBy(-10, 0);
-						e.consume();
-					}
-				}
 				return;
 			case KeyEvent.VK_RIGHT:
-				if (pan) {
-					mapView.scrollBy(10, 0);
+				if (mapView.selectRight(continious)) 
 					e.consume();
-				}
-				else {
-					if (mapView.selectRight(continious)) {
-						e.consume();
-					}
-					else {
-						mapView.scrollBy(10, 0);
-						e.consume();
-					}
-				}
 				return;
 			case KeyEvent.VK_PAGE_UP:
-				if (mapView.selectPageUp(continious)) {
+				if (mapView.selectPageUp(continious)) 
 					e.consume();
-				}
-				else {
-					mapView.scrollBy(0, -10);
-					e.consume();
-				}
 				return;
 			case KeyEvent.VK_PAGE_DOWN:
-				if (mapView.selectPageDown(continious)) {
+				if (mapView.selectPageDown(continious)) 
 					e.consume();
-				}
-				else {
-					mapView.scrollBy(0, 10);
-					e.consume();
-				}
 				return;
 			case KeyEvent.VK_HOME:
 			case KeyEvent.VK_END:
@@ -141,6 +107,7 @@ public class DefaultNodeKeyListener implements KeyListener {
 					popupmenu.show(mainView, mainView.getX(), mainView.getY());
 				}
 		}
+		
 		final String keyTypeActionString = ResourceController.getResourceController().getProperty("key_type_action",
 		    FirstAction.EDIT_CURRENT.toString());
 		final FirstAction keyTypeAction = FirstAction.valueOf(keyTypeActionString);

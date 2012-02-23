@@ -34,6 +34,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.features.styles.MapStyle;
+import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -69,8 +70,10 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 
 	@Override
 	protected void add(final NodeModel node, final IExtension extension) {
-		gatherLeavesAndSetStyle(node);
-		gatherLeavesAndSetParentsStyle(node);
+		if(MapStyleModel.getExtension(node.getMap()) != null){
+			gatherLeavesAndSetStyle(node);
+			gatherLeavesAndSetParentsStyle(node);
+		}
 		super.add(node, extension);
 	}
 

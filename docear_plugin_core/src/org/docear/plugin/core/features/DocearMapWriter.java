@@ -98,7 +98,7 @@ public class DocearMapWriter extends MapWriter {
 		final DocearMapModelExtension modelExtension = DocearMapModelController.getModel(map);
 		writer.addAttribute("version", FreeplaneVersion.XML_VERSION);
 		if (modelExtension == null) {			
-			writer.addAttribute("dialect", FreeplaneVersion.DIALECT_VERSION);
+			//writer.addAttribute("dialect", FreeplaneVersion.DIALECT_VERSION);
 		}
 		else {			
 			final String version = modelExtension.getVersion();
@@ -106,7 +106,7 @@ public class DocearMapWriter extends MapWriter {
 				writer.addAttribute("dialect", "docear " + version);			
 			} else {
 				// FIXME: DOCEAR - dialect version not set, why and what to do?
-				writer.addAttribute("dialect", FreeplaneVersion.DIALECT_VERSION);
+				//writer.addAttribute("dialect", FreeplaneVersion.DIALECT_VERSION);
 				LogUtils.warn("dialect version is null! This should not happen!");
 			}
 		}
