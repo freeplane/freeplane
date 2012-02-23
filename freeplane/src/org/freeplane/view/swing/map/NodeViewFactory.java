@@ -25,6 +25,8 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -228,12 +230,26 @@ class NodeViewFactory {
 	NodeView newNodeView(final NodeModel model, final int position, final MapView map, final Container parent) {
 		final NodeView newView = new NodeView(model, position, map, parent);
 		model.addViewer(newView);
+		if(map.isDisplayable())
+			updateNewView(newView);
+		else
+			map.addHierarchyListener(new HierarchyListener() {
+				public void hierarchyChanged(HierarchyEvent e) {
+					if(map.isDisplayable()){
+						map.removeHierarchyListener(this);
+						updateNewView(newView);
+					}
+				}
+			});
+		return newView;
+	}
+
+	private void updateNewView(final NodeView newView) {
 		newView.setLayout(SelectableLayout.getInstance());
 		newView.setMainView(newMainView(newView));
 		updateNoteViewer(newView);
-        newView.update();
-        fireNodeViewCreated(newView); 
-		return newView;
+		newView.update();
+        fireNodeViewCreated(newView);
 	}
 
 	private static Map<Color, Icon> coloredNoteIcons  = new HashMap<Color, Icon>();

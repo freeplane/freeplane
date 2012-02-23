@@ -22,6 +22,7 @@ package org.freeplane.features.clipboard;
 import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.BufferedWriter;
@@ -47,8 +48,8 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.IMapSelection;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
@@ -311,6 +312,11 @@ public class ClipboardController implements IExtension {
 			selection.setContents(t, null);
 		}
 	}
+
+    /** copies a string to the system clipboard. */
+    public void setClipboardContents(final String string) {
+        setClipboardContents(new StringSelection(string));
+    }
 
 	public NodeModel duplicate(final NodeModel source, boolean withChildren) {
 		try {

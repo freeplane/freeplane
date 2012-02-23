@@ -74,4 +74,5 @@ IncludeVersionInfo=1
 SupportXPThemes=0
 CompilerSet=0
 CompilerType=0
+ImagesOutput=Images\
 

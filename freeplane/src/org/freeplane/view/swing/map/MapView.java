@@ -41,6 +41,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.awt.geom.AffineTransform;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
@@ -977,12 +979,18 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return (int) Math.ceil(number * zoom);
 	}
 
-	public void initRoot() {
+	private void initRoot() {
 		anchorContentLocation = new Point();
 		rootView = NodeViewFactory.getInstance().newNodeView(getModel().getRootNode(), 0, this, this);
-		rootView.insert();
 		anchor = rootView;
-		revalidate();
+		addHierarchyListener(new HierarchyListener() {
+			public void hierarchyChanged(HierarchyEvent e) {
+				if(isDisplayable()){
+					removeHierarchyListener(this);
+					rootView.insert();
+				}
+			}
+		});
 	}
 
 	public boolean isPrinting() {

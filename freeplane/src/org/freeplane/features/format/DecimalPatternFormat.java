@@ -31,8 +31,10 @@ class DecimalPatternFormat extends PatternFormat {
 
 	@Override
 	public Object formatObject(final Object obj) {
-		if (obj instanceof Number)
-			return new FormattedNumber((Number) obj, getPattern());
+		if (obj instanceof Number) {
+		    final Number number = (obj instanceof FormattedNumber) ? ((FormattedNumber) obj).getNumber() : (Number) obj;
+		    return new FormattedNumber(number, getPattern());
+		}
 		return obj;
 	}
 

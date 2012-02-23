@@ -52,13 +52,13 @@ public class FreeplaneSplashModern extends JWindow {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Font versionTextFont = null;
-	private final String description = "Free mind mapping and knowledge management software";
-	private final String copyright = "\u00a9 2000-2010";
-	private final FreeplaneVersion version = FreeplaneVersion.getVersion();	
+	private final String description = ResourceController.getResourceController().getProperty("freeplane_description");
+	private final String copyright = ResourceController.getResourceController().getProperty("freeplane_copyright");
+	private final FreeplaneVersion version = FreeplaneVersion.getVersion(); 
 	private String freeplaneNumber = version.numberToString();
 	private String status = version.getType().toUpperCase();
 	private final String appName;
-	
+
 	public FreeplaneSplashModern(final JFrame frame) {
 		super(frame);
 		String splashImageName = "";

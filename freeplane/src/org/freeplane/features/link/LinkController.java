@@ -32,6 +32,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -63,6 +64,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.MenuUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconStore;
@@ -205,7 +207,10 @@ public class LinkController extends SelectionController implements IExtension {
 	            builder.addPopupMenuListener(menuKey, new PopupMenuListener(
 	            		) {
 	            		public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-	            			final NodeModel node = modeController.getController().getSelection().getSelected();
+	            			final IMapSelection selection = modeController.getController().getSelection();
+	            			if(selection == null)
+	            				return;
+							final NodeModel node = selection.getSelected();
 	            			Set<LinkModel> links = new LinkedHashSet<LinkModel>( NodeLinks.getLinks(node));
 	            			links.addAll(getLinksTo(node));
 	            			if(links.isEmpty())
@@ -380,7 +385,7 @@ public class LinkController extends SelectionController implements IExtension {
 		UrlManager.getController().loadURL(uri);
     }
 
-	void loadURL(final NodeModel selectedNode, final ActionEvent e) {
+	protected void loadURL(final NodeModel selectedNode, final ActionEvent e) {
 		final URI link = NodeLinks.getValidLink(selectedNode);
 		if (link != null) {
 			onDeselect(selectedNode);
@@ -551,8 +556,9 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 	}
 
-	static final private Pattern urlPattern = Pattern.compile("file://[^\\s\"'<>]+|(:?https?|ftp)://[^\\s()'\",;|<>{}]+");
-	static private Pattern mailPattern = Pattern.compile("([!+\\-/=~.\\w#]+@[\\w.\\-+?&=%]+)");
+	private static final Pattern urlPattern = Pattern.compile("file://[^\\s\"'<>]+|(:?https?|ftp)://[^\\s()'\",;|<>{}]+");
+	private static final Pattern mailPattern = Pattern.compile("([!+\\-/=~.\\w#]+@[\\w.\\-+?&=%]+)");
+    private static final HashMap<String, Icon> menuItemCache = new HashMap<String, Icon>();
 
 	static public String findLink(final String text) {
 		final Matcher urlMatcher = urlPattern.matcher(text);
@@ -685,11 +691,17 @@ public class LinkController extends SelectionController implements IExtension {
 	    	iconPath = MAIL_ICON;
 	    }
 	    else if (isMenuItemLink(link)) {
-	    	// nodes with menu item link contain the image from the menu if available
-	    	if (model == null || model.getIcons().isEmpty())
-	    		iconPath = MENUITEM_ICON;
-	    	else
-	    		iconPath = null;
+	        // if the menu item has an icon take it or use the default icon othewise
+	    	final String menuItemKey = parseMenuItemLink(link);
+	    	synchronized (menuItemCache) {
+	    	    Icon icon = menuItemCache.get(menuItemKey);
+                if (icon == null) {
+                    final Icon menuItemIcon = MenuUtils.getMenuItemIcon(menuItemKey);
+                    icon = (menuItemIcon == null) ? ICON_STORE.getUIIcon(MENUITEM_ICON).getIcon() : menuItemIcon;
+                    menuItemCache.put(menuItemKey, icon);
+                }
+	    	    return icon;
+	    	}
 	    }
 	    else if (Compat.isWindowsExecutable(link)) {
 	    	iconPath = EXECUTABLE_ICON;

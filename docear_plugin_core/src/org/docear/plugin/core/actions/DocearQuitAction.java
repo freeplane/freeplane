@@ -6,6 +6,8 @@ package org.docear.plugin.core.actions;
 
 import java.awt.event.ActionEvent;
 
+import org.docear.plugin.core.DocearController;
+import org.docear.plugin.core.logger.DocearEventLogger;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.QuitAction;
 
@@ -27,6 +29,7 @@ public class DocearQuitAction extends QuitAction {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	public void actionPerformed(ActionEvent e) {
+		DocearController.getController().getDocearEventLogger().write(this, DocearEventLogger.DocearEvent.APPLICATION_CLOSED, "");
 		LogUtils.info("saving all docear components ...");
 	}
 }

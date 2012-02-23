@@ -10,6 +10,8 @@ import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.styles.LogicalStyleModel;
+import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.IContentTransformer;
 import org.freeplane.plugin.script.FormulaUtils;
 
@@ -18,11 +20,12 @@ public class FormulaUpdateChangeListener implements INodeChangeListener, IMapCha
 	public void nodeChanged(NodeChangeEvent event) {
 		Object property = event.getProperty();
 		// Note: this doesn't mean that other properties are not interesting here (e.g. links, edges, ...)
-		// since all these could be referenced by formulas too. It's restricted to the properties that may
-		// contain formulas only to limit the number of updates.
-		if (NodeModel.NODE_TEXT.equals(property) || NodeAttributeTableModel.class.equals(property)
-		        || NodeModel.NOTE_TEXT.equals(property)) {
-			nodeChangedImpl(false, event.getNode());
+		// since all these could be referenced by formulas too. It's restricted only to limit the number of updates.
+		// ALTERNATIVE: property.getClass() == Class.class && IExtension.class.isAssignableFrom((Class<?>)property)
+        if (NodeModel.NODE_TEXT.equals(property) || NodeAttributeTableModel.class.equals(property)
+                || NodeModel.NOTE_TEXT.equals(property) || NodeModel.NODE_ICON.equals(property)
+                || LogicalStyleModel.class.equals(property) || DetailTextModel.class.equals(property)) {
+            nodeChangedImpl(false, event.getNode());
 		}
 	}
 

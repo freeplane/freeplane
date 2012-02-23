@@ -25,6 +25,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Compat;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.ConnectorModel.Shape;
@@ -69,12 +70,12 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 				distSqToTarget = targetLinkPoint.distanceSq(originX, originY);
 				distSqToSource = sourceLinkPoint.distanceSq(originX, originY);
 			}
-			if ((targetView == null || sourceView != null) && distSqToSource < distSqToTarget * 2.25) {
+			if ((targetView == null || sourceView != null) && distSqToSource <= distSqToTarget * 2.25) {
 				final Point changedInclination = draggedLink.getStartInclination();
 				draggedLink.changeInclination(deltaX, deltaY, draggedLink.getSource(), changedInclination);
 				draggedLink.setStartInclination(changedInclination);
 			}
-			if ((sourceView == null || targetView != null) && distSqToTarget < distSqToSource * 2.25) {
+			if ((sourceView == null || targetView != null) && distSqToTarget <= distSqToSource * 2.25) {
 				final Point changedInclination = draggedLink.getEndInclination();
 				draggedLink.changeInclination(deltaX, deltaY, target, changedInclination);
 				draggedLink.setEndInclination(changedInclination);
@@ -127,7 +128,7 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 	@Override
     public void mouseClicked(MouseEvent e) {
 
-		if(e.getClickCount() == 2){
+		if(Compat.isCtrlEvent(e)){
 			final MapView mapView = (MapView) e.getComponent();
 			final Object object = mapView.detectCollision(new Point(originX, originY));
 			if(object != null)

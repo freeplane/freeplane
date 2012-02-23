@@ -27,7 +27,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.TypeReference;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -37,35 +36,15 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public abstract class PatternFormat /*extends Format*/ {
 	private static final String SERIALIZATION_SEPARATOR = ":";
 	public static final String IDENTITY_PATTERN = "NO_FORMAT";
-
-	private static class IdentityPatternFormat extends PatternFormat {
-		private static final String NAME = TextUtils.getText(IDENTITY_PATTERN);
-
-        public IdentityPatternFormat() {
-			super(IDENTITY_PATTERN, TYPE_IDENTITY);
-		}
-
-		@Override
-		public String getStyle() {
-			return STYLE_FORMATTER;
-		}
-
-		@Override
-		public Object formatObject(Object toFormat) {
-			return toFormat;
-		}
-
-	    @Override
-	    public String toString() {
-	        return NAME;
-	    }
-	};
+	public static final String STANDARD_FORMAT_PATTERN = "STANDARD_FORMAT";
 
 	private static final PatternFormat IDENTITY = new IdentityPatternFormat();
+	private static final PatternFormat STANDARD = new StandardPatternFormat();
 	static final String STYLE_FORMATTER = "formatter";
 	static final String STYLE_DATE = "date";
 	static final String STYLE_DECIMAL = "decimal";
 	static final String TYPE_IDENTITY = "identity";
+	static final String TYPE_STANDARD = "standard";
 	private static final String ELEMENT_NAME = "format";
 	private final String type;
 	private final String pattern;
@@ -190,8 +169,11 @@ public abstract class PatternFormat /*extends Format*/ {
 				return new DecimalPatternFormat(pattern);
 			}
 			// only as a last resort?!
-			if (pattern.equals(IDENTITY.getPattern())) {
+			if (pattern.equals(IDENTITY_PATTERN)) {
 			    return IDENTITY;
+			}
+			if (pattern.equals(STANDARD_FORMAT_PATTERN)) {
+			    return STANDARD;
 			}
 			LogUtils.warn("not a pattern format: '" + pattern + "'");
 			return null;
@@ -204,6 +186,10 @@ public abstract class PatternFormat /*extends Format*/ {
 
 	public static PatternFormat getIdentityPatternFormat() {
 	    return IDENTITY;
+    }
+
+    public static PatternFormat getStandardPatternFormat() {
+        return STANDARD;
     }
 
 	public XMLElement toXml() {

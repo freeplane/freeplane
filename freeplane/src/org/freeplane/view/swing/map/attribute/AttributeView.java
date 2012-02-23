@@ -301,6 +301,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 		}
 		if (attributeTable != null) {
 			attributeTable.viewRemoved(nodeView);
+			attributeTable = null;
 		}
 	}
 

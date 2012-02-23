@@ -26,6 +26,7 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -35,14 +36,17 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.TreeSet;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
@@ -209,6 +213,25 @@ class FileRevisionsDialog extends JDialog {
 		add(createQuestion());
 		add(createButtonBar());
 		getRootPane().setDefaultButton(btnRestore);
+		getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "up");
+		getRootPane().getActionMap().put("up", new AbstractAction() {
+			
+			public void actionPerformed(ActionEvent e) {
+				int newSelectedRow = table.getSelectedRow() - 1;
+				if(newSelectedRow >= 0)
+					table.setRowSelectionInterval(newSelectedRow, newSelectedRow);
+				
+			}
+		});
+		getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "down");
+		getRootPane().getActionMap().put("down", new AbstractAction() {
+			
+			public void actionPerformed(ActionEvent e) {
+				int newSelectedRow = table.getSelectedRow() + 1;
+				if(newSelectedRow < table.getRowCount())
+					table.setRowSelectionInterval(newSelectedRow, newSelectedRow);
+			}
+		});
 		pack();
 		setLocationRelativeTo(UITools.getFrame());
 		setVisible(true);

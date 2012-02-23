@@ -23,6 +23,8 @@ import org.docear.plugin.core.features.DocearMapWriter;
 import org.docear.plugin.core.features.DocearNodeModelExtensionController;
 import org.docear.plugin.core.listeners.PropertyListener;
 import org.docear.plugin.core.listeners.WorkspaceChangeListener;
+import org.docear.plugin.core.listeners.WorkspaceOpenDocumentListener;
+import org.docear.plugin.core.logger.DocearEventLogger;
 import org.docear.plugin.core.workspace.actions.DocearChangeLibraryPathAction;
 import org.docear.plugin.core.workspace.actions.DocearRenameAction;
 import org.docear.plugin.core.workspace.actions.WorkspaceChangeLocationsAction;
@@ -46,6 +48,8 @@ import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspacePreferences;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
+import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public class CoreConfiguration extends ALanguageController {
 
@@ -92,6 +96,8 @@ public class CoreConfiguration extends ALanguageController {
 	}
 	
 	private void init(ModeController modeController) {
+		DocearController.getController().getDocearEventLogger().write(this, DocearEventLogger.DocearEvent.APPLICATION_STARTED, "");
+		
 		// set up context menu for workspace
 		WorkspaceController.getController().addWorkspaceListener(WORKSPACE_CHANGE_LISTENER);
 		
@@ -260,6 +266,7 @@ public class CoreConfiguration extends ALanguageController {
 			replaceHelpAction();
 		}
 		Controller.getCurrentController().getResourceController().addPropertyChangeListener(new PropertyListener());
+		WorkspaceController.getIOController().registerNodeActionListener(AWorkspaceTreeNode.class, WorkspaceActionEvent.WSNODE_OPEN_DOCUMENT, new WorkspaceOpenDocumentListener());
 		FreeplaneActionCascade.addAction(new DocearQuitAction());		
 	}
 	

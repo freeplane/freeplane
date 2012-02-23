@@ -52,7 +52,7 @@ public class LinkTransformer extends AbstractContentTransformer {
 
 	public Object transformContent(TextController textController, Object content, NodeModel node, Object transformedExtension) {
 		if(PatternFormat.IDENTITY_PATTERN.equals(textController.getNodeFormat(node)))
-			return transformedExtension;
+			return content;
 		final MapModel map = node.getMap();
 		return transformContent(content, map);
 	}

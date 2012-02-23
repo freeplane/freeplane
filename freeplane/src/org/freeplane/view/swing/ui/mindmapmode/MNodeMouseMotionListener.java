@@ -21,9 +21,9 @@ package org.freeplane.view.swing.ui.mindmapmode;
 
 import java.awt.event.MouseEvent;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.util.Compat;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.view.swing.ui.DefaultNodeMouseMotionListener;
 
@@ -33,15 +33,13 @@ import org.freeplane.view.swing.ui.DefaultNodeMouseMotionListener;
  */
 public class MNodeMouseMotionListener extends DefaultNodeMouseMotionListener {
     public void mouseClicked(final MouseEvent e) {
-    	if (wasFocused() && e.getClickCount() == 2
-    			&& Compat.isPlainEvent(e) && e.getButton() == MouseEvent.BUTTON1) {
-    		if(ResourceController.getResourceController().getBooleanProperty("start_editor_on_double_click")) {
-    			final MTextController textController = (MTextController) MTextController.getController();
-    			textController.getEventQueue().activate(e);
-    			textController.edit(FirstAction.EDIT_CURRENT, e.isAltDown());
-    		}
-    		return;
+    	if (wasFocused() && Compat.isCtrlEvent(e) && e.getButton() == MouseEvent.BUTTON1
+    			&& Controller.getCurrentController().getSelection().size() == 1) {
+    		final MTextController textController = (MTextController) MTextController.getController();
+    		textController.getEventQueue().activate(e);
+    		textController.edit(FirstAction.EDIT_CURRENT, false);
     	}
-    	super.mouseClicked(e);
+    	else
+    		super.mouseClicked(e);
     }
 }
