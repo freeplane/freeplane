@@ -156,6 +156,10 @@ class AttributeConditionController implements IElementaryConditionController {
 	public boolean isCaseDependent(final Object selectedItem, final NamedObject simpleCond) {
 		return true;
 	}
+	
+	public boolean supportsApproximateMatching(final Object property, final NamedObject simpleCond) {
+		return true;
+	}
 
 	public ASelectableCondition loadCondition(final XMLElement element) {
 		if (element.getName().equalsIgnoreCase(AttributeCompareCondition.NAME)) {
@@ -179,4 +183,5 @@ class AttributeConditionController implements IElementaryConditionController {
             return null;
 	    return new TypedListCellRenderer();
     }
+
 }

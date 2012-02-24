@@ -88,7 +88,6 @@ class NodeLevelConditionController implements IElementaryConditionController {
 		return false;
 	}
 
-	@Override
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
 	                                            final Object value, final boolean matchCase,
 	                                            final boolean matchApproximately) {
@@ -158,6 +157,10 @@ class NodeLevelConditionController implements IElementaryConditionController {
 	}
 
 	public boolean isCaseDependent(final Object selectedItem, final NamedObject simpleCond) {
+		return false;
+	}
+
+	public boolean supportsApproximateMatching(final Object selectedItem, final NamedObject simpleCond) {
 		return false;
 	}
 

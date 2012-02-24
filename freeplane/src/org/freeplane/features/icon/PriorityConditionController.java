@@ -62,7 +62,6 @@ class PriorityConditionController implements IElementaryConditionController {
 		return true;
 	}
 
-	@Override
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCondition,
 	                                            final Object valueObj, final boolean matchCase,
 	                                            final boolean matchApproximately) {
@@ -116,6 +115,10 @@ class PriorityConditionController implements IElementaryConditionController {
 	}
 
 	public boolean isCaseDependent(final Object property, final NamedObject simpleCond) {
+		return false;
+	}
+
+	public boolean supportsApproximateMatching(final Object property, final NamedObject simpleCond) {
 		return false;
 	}
 

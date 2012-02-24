@@ -113,6 +113,10 @@ public class ScriptConditionController implements IElementaryConditionController
 		return false;
 	}
 
+	public boolean supportsApproximateMatching(final Object property, final NamedObject simpleCond) {
+		return false;
+	}
+
 	public ASelectableCondition loadCondition(final XMLElement element) {
 		try {
 			if (element.getName().equalsIgnoreCase(ScriptCondition.NAME)) {

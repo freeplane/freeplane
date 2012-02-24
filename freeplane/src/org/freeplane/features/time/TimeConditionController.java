@@ -68,7 +68,6 @@ public class TimeConditionController implements IElementaryConditionController {
 		return true;
 	}
 
-	@Override
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
 	                                            final Object value, final boolean matchCase,
 	                                            final boolean matchApproximately) {
@@ -102,6 +101,10 @@ public class TimeConditionController implements IElementaryConditionController {
 	}
 
 	public boolean isCaseDependent(final Object property, final NamedObject simpleCond) {
+		return false;
+	}
+
+	public boolean supportsApproximateMatching(final Object property, final NamedObject simpleCond) {
 		return false;
 	}
 

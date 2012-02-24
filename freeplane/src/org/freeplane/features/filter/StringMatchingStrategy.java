@@ -2,7 +2,7 @@ package org.freeplane.features.filter;
 
 public interface StringMatchingStrategy {
 	
-	float APPROXIMATE_MATCHING_MINPROB = 0.7F;
+	float APPROXIMATE_MATCHING_MINPROB = 0.65F;
 	
 	StringMatchingStrategy DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY = new DamerauLevenshtein();
 	

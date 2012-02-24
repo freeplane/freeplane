@@ -4,13 +4,15 @@ import java.util.Arrays;
 
 /**
  * Pseudo-Damerau-Levenshtein (aka "Optimal String Distance")
- * implementation which allows some non-adjacent transpositions.
+ * implementation which allows some non-adjacent transpositions(?)
  * Computes the edit distance with insertions/deletions/substitutions/transpositions.
  * 
  * Optionally the edit distance of a semi-global alignment is computed which
  * allows the search term to be shifted free-of-cost (i.e. dist("file", "a file is")==0).
  * 
- * Some properties are explained in the unit test, {@link org.freeplane.features.filter.EditDistanceStringMatchingStrategiesTest}
+ * Some properties are explained in the unit test, {@link org.freeplane.features.filter.EditDistanceStringMatchingStrategiesTest}.
+ * 
+ * TODO: use unicode code points instead of chars !!
  * 
  * @author Felix Natter <fnatter@gmx.net>
  *
@@ -137,7 +139,13 @@ public class PseudoDamerauLevenshtein implements EditDistanceStringMatchingStrat
 	}
 
 	public void init(String searchTerm, String searchText,
-			boolean subStringMatch, boolean caseSensitive) {
+			boolean subStringMatch, boolean caseSensitive) 
+	{
+		if (searchTerm == null || searchText == null)
+		{
+			throw new IllegalArgumentException("Null searchText/searchTerm!");
+		}
+
 		if (caseSensitive)
 		{
 			this.searchTerm = searchTerm;

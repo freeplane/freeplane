@@ -8,11 +8,14 @@ import org.freeplane.core.util.LogUtils;
  * Damerau-Levenshtein implementation, computes the edit distance (ins/del/subst/transpos)
  * between a search term and a text to search against.
  * see http://en.wikipedia.org/wiki/Damerau–Levenshtein_distance 
+ * The basic algorithm is orignally from wikipedia, and was extended for semi-global alignments. 
  * 
  * Optionally the edit distance of a semi-global alignment is computed which
  * allows the search term to be shifted free-of-cost (i.e. dist("file", "a file is")==0).
  * 
- * Some properties are explained in the unit test, {@link org.freeplane.features.filter.EditDistanceStringMatchingStrategiesTest}
+ * Some properties are explained in the unit test, {@link org.freeplane.features.filter.EditDistanceStringMatchingStrategiesTest}.
+ * 
+ * TODO: use unicode code points instead of chars !!
  * 
  * @author Felix Natter <fnatter@gmx.net>
  *
@@ -138,6 +141,11 @@ public class DamerauLevenshtein implements EditDistanceStringMatchingStrategy {
 	public void init(final String searchTerm, final String searchText, final boolean subStringMatch,
 			final boolean caseSensitive)
 	{
+		if (searchTerm == null || searchText == null)
+		{
+			throw new IllegalArgumentException("Null searchText/searchTerm!");
+		}
+			
 		if (caseSensitive)
 		{
 			this.searchTerm = searchTerm;
@@ -164,7 +172,7 @@ public class DamerauLevenshtein implements EditDistanceStringMatchingStrategy {
 	public boolean matches(final String searchTerm, final String searchText, final boolean subStringMatch,
 			final boolean caseSensitive)
 	{
-		LogUtils.severe(String.format("DL(%s,%s)\n", searchTerm, searchText));
+		//LogUtils.severe(String.format("DL(%s,%s)\n", searchTerm, searchText));
 		init(searchTerm, searchText, subStringMatch, caseSensitive);
 		
 		return matchProb() > StringMatchingStrategy.APPROXIMATE_MATCHING_MINPROB; 

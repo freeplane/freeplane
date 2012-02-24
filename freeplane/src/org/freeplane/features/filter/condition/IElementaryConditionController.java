@@ -53,6 +53,8 @@ public interface IElementaryConditionController {
 	ComboBoxModel getValuesForProperty(final Object property, NamedObject simpleCond);
 
 	boolean isCaseDependent(final Object property, final NamedObject simpleCond);
+	
+	boolean supportsApproximateMatching(final Object property, final NamedObject simpleCond);
 
 	ASelectableCondition loadCondition(final XMLElement element);
 }

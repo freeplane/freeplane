@@ -56,26 +56,43 @@ final class QuickFindAction extends AFreeplaneAction {
 		this.filterEditor = quickEditor;
 		this.direction =direction ;
 	}
-
-	public void actionPerformed(final ActionEvent e) {
+	
+	public void executeAction(final boolean reFocusSearchInputField)
+	{
 		final ASelectableCondition condition = filterEditor.getCondition();
 		if(condition == null){
 			return;
 		}
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
 		final NodeModel selected = selection.getSelected();
-		final NodeModel next = filterController.findNext(selected, null, direction, condition);
+		
+		final NodeModel next;
+		try
+		{
+			filterEditor.setSearchingBusyCursor();
+			next = filterController.findNext(selected, null, direction, condition);
+		}
+		finally
+		{
+			filterEditor.setSearchingDefaultCursor();
+		}
+
+		
 		if(next != null){
 			final MapController mapController = Controller.getCurrentModeController().getMapController();
 			mapController.displayNode(next);
 			selection.selectAsTheOnlyOneSelected(next);
-			if (e == null) 
+			if (reFocusSearchInputField) 
 			{
-				// actionPerformed was called by Enter key listener in FilterConditionEditor
+				// this is called by Enter key listener in FilterConditionEditor
 				// => we want to re-focus the search term input field so that one can hit enter
-				// to find the next search result!
+				// again to find the next search result!
 				filterEditor.focusInputField(false);
 			}
 		}
+	}
+
+	public void actionPerformed(final ActionEvent e) {
+		executeAction(false);
 	}
 }

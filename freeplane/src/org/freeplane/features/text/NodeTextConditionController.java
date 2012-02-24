@@ -69,7 +69,6 @@ class NodeTextConditionController implements IElementaryConditionController {
 		return true;
 	}
 
-	@Override
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCondition,
 	                                            final Object value, final boolean matchCase, final boolean matchApproximately) {
 		final String item = (String) ((NamedObject)selectedItem).getObject();
@@ -147,6 +146,10 @@ class NodeTextConditionController implements IElementaryConditionController {
 	}
 
 	public boolean isCaseDependent(final Object selectedItem, final NamedObject simpleCond) {
+		return true;
+	}
+	
+	public boolean supportsApproximateMatching(final Object selectedItem, final NamedObject simpleCond) {
 		return true;
 	}
 

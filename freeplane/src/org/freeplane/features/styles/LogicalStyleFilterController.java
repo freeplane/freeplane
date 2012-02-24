@@ -40,7 +40,6 @@ public class LogicalStyleFilterController implements IElementaryConditionControl
 		return true;
 	}
 
-	@Override
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
 	                                            final Object value, final boolean matchCase, final boolean matchApproximately) {
 		if(simpleCond.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO))
@@ -75,6 +74,10 @@ public class LogicalStyleFilterController implements IElementaryConditionControl
 	}
 
 	public boolean isCaseDependent(final Object property, final NamedObject simpleCond) {
+		return false;
+	}
+
+	public boolean supportsApproximateMatching(final Object property, final NamedObject simpleCond) {
 		return false;
 	}
 

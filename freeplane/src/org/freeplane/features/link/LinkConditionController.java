@@ -61,7 +61,6 @@ public class LinkConditionController implements IElementaryConditionController {
 		return !simpleCond.objectEquals(ConditionFactory.FILTER_EXIST);
 	}
 
-	@Override
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
 	                                            final Object value, final boolean matchCase,
 	                                            final boolean matchApproximately) {
@@ -132,6 +131,10 @@ public class LinkConditionController implements IElementaryConditionController {
 	}
 
 	public boolean isCaseDependent(final Object property, final NamedObject simpleCond) {
+		return ((NamedObject) property).objectEquals(CONNECTOR_LABEL);
+	}
+	
+	public boolean supportsApproximateMatching(final Object property, final NamedObject simpleCond) {
 		return ((NamedObject) property).objectEquals(CONNECTOR_LABEL);
 	}
 

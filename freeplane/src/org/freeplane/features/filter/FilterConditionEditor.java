@@ -20,6 +20,7 @@
 package org.freeplane.features.filter;
 
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -42,6 +43,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
+import javax.swing.RootPaneContainer;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.text.JTextComponent;
 
@@ -92,12 +94,25 @@ public class FilterConditionEditor extends JComponent {
 	{
 		values.getEditor().addActionListener(new ActionListener()  {
 
-			@Override
 			public void actionPerformed(ActionEvent e) {
-				Controller.getCurrentController().getAction("QuickFindAction.FORWARD").actionPerformed(null);
+				((QuickFindAction)Controller.getCurrentController().getAction("QuickFindAction.FORWARD")).executeAction(true);
 			}
 			
 		});
+	}
+	
+	public void setSearchingBusyCursor()
+	{
+		RootPaneContainer root = (RootPaneContainer)getTopLevelAncestor();
+		root.getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		root.getGlassPane().setVisible(true);
+	}
+	
+	public void setSearchingDefaultCursor()
+	{
+		RootPaneContainer root = (RootPaneContainer)getTopLevelAncestor();
+		root.getGlassPane().setCursor(Cursor.getDefaultCursor());
+		root.getGlassPane().setVisible(false);
 	}
 
 	private void setValuesEditor() {
@@ -124,13 +139,17 @@ public class FilterConditionEditor extends JComponent {
 		}
 		caseSensitive.setEnabled(canSelectValues
 		        && conditionController.isCaseDependent(selectedProperty, selectedCondition));
+		approximateMatching.setEnabled(canSelectValues
+				&& conditionController.supportsApproximateMatching(selectedProperty, selectedCondition));
 	}
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final String PROPERTY_FILTER_MATCH_CASE = "filter_match_case";
-	private static final String PROPERTY_FILTER_APPROXIMATE_MATCH = "filter_match_approximate";
+	private static final String PROPERTY_FILTER_MATCH_CASE_TOOLTIP = "filter_match_case_tooltip";
+	private static final String PROPERTY_FILTER_APPROXIMATE_MATCH = "filter_match_approximately";
+	private static final String PROPERTY_FILTER_APPROXIMATE_MATCH_TOOLTIP = "filter_match_approximately_tooltip";
 	final private JCheckBox caseSensitive;
 	final private JCheckBox approximateMatching;
 	final private JComboBox elementaryConditions;
@@ -190,6 +209,7 @@ public class FilterConditionEditor extends JComponent {
 		
 		// Ignore case checkbox
 		caseSensitive = new JCheckBox();
+		caseSensitive.setToolTipText(TextUtils.getRawText(PROPERTY_FILTER_MATCH_CASE_TOOLTIP));
 		//add(caseSensitive, gridBagConstraints);
 		ignoreCaseAndApproximateMatchingPanel.add(caseSensitive);
 		//gridBagConstraints.gridx++;
@@ -199,6 +219,7 @@ public class FilterConditionEditor extends JComponent {
 		
 		// add approximate matching checkbox	
 		approximateMatching = new JCheckBox();
+		approximateMatching.setToolTipText(TextUtils.getRawText(PROPERTY_FILTER_APPROXIMATE_MATCH_TOOLTIP));
 		MenuBuilder.setLabelAndMnemonic(approximateMatching, TextUtils.getRawText(PROPERTY_FILTER_APPROXIMATE_MATCH));
 		//add(approximateMatching, gridBagConstraints);
 		ignoreCaseAndApproximateMatchingPanel.add(approximateMatching);

@@ -64,9 +64,8 @@ class IconConditionController implements IElementaryConditionController {
 	    return !simpleCond.objectEquals(ConditionFactory.FILTER_EXIST);
     }
 
-	@Override
     public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
-                                                final Object value, final boolean ignoreCase, final boolean approximateMatching) {
+                                                final Object value, final boolean matchCase, final boolean approximateMatching) {
         if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS))
             return value instanceof UIIcon ? new IconContainedCondition(((UIIcon) value).getName()) : null;
         if (simpleCond.objectEquals(ConditionFactory.FILTER_EXIST))
@@ -103,6 +102,10 @@ class IconConditionController implements IElementaryConditionController {
 	}
 
 	public boolean isCaseDependent(final Object property, final NamedObject simpleCond) {
+		return false;
+	}
+	
+	public boolean supportsApproximateMatching(final Object property, final NamedObject simpleCond) {
 		return false;
 	}
 

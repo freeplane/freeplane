@@ -56,6 +56,8 @@ public class EditDistanceStringMatchingStrategiesTest {
 		assertDistance(strategy, "abcd", "cd", false, true, 2); // two subst
 		assertDistance(strategy, "flies", "time flies", false, true, 5); // 5 subst
 		assertDistance(strategy, "visible", "public Y getXXX() / public void setXXX(...) in camel case", true, true, 5);
+		assertDistance(strategy, "hello world", "is the world", true, true, 3);
+		assertDistance(strategy, "print", "pointer", true, true, 1);
 	}
 
 	@Test
@@ -98,5 +100,7 @@ public class EditDistanceStringMatchingStrategiesTest {
 		assertDistance(strategy, "files", "a file is read", true, true, 1);
 		assertDistance(strategy, "Number_Format", "new NumberFormat(bla bla bla)", true, true, 1);
 		assertDistance(strategy, "files", "time flies by", true, true, 1);
+		assertDistance(strategy, "hobbies", "hobbys", true, true, 2);
+		assertDistance(strategy, "hobbys", "hobbies", true, true, 2);
 	}
 }
