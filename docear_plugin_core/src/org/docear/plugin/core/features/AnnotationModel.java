@@ -1,11 +1,10 @@
-package org.docear.plugin.pdfutilities.features;
+package org.docear.plugin.core.features;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import de.intarsys.pdf.pd.PDObject;
 
 public class AnnotationModel implements IAnnotation{
 	
@@ -18,7 +17,7 @@ public class AnnotationModel implements IAnnotation{
 	private boolean isNew;
 	private Integer objectNumber;
 	private URI uri;
-	private PDObject annotationObject; 
+	private Object annotationObject; 
 	
 	
 	private boolean isConflicted;
@@ -160,11 +159,11 @@ public class AnnotationModel implements IAnnotation{
 		return false;
 	}
 
-	public PDObject getPDObject() {
+	public Object getAnnotationObject() {
 		return annotationObject;
 	}
 
-	public void setPDObject(PDObject annotationObject) {
+	public void setAnnotationObject(Object annotationObject) {
 		this.annotationObject = annotationObject;
 	}
 

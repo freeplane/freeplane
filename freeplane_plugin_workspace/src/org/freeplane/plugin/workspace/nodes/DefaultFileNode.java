@@ -27,7 +27,7 @@ import org.apache.commons.io.FileUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.mapio.mindmapmode.MMapIO;
+import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
@@ -246,7 +246,7 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 				if(file.getName().toLowerCase().endsWith(".mm") || file.getName().toLowerCase().endsWith(".dcr")) {
 					try {
 						final URL mapUrl = Compat.fileToUrl(getFile());
-						final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MMapIO.class);
+						final MapIO mapIO = (MapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
 						mapIO.newMap(mapUrl);
 //						Controller.getCurrentModeController().getMapController().newMap(mapUrl);
 					}
@@ -262,13 +262,6 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 						LogUtils.warn("could not open document ("+getFile()+")", e);
 					}
 				}
-			}
-			
-			try {
-				Controller.getCurrentController().getViewController().openDocument(Compat.fileToUrl(getFile()));
-			}
-			catch (Exception e) {
-				LogUtils.warn("could not open document ("+getFile()+")", e);
 			}
 		}
 		else if (event.getType() == WorkspaceActionEvent.MOUSE_RIGHT_CLICK) {

@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 
 
 import org.docear.plugin.bibtex.ReferencesController;
-import org.docear.plugin.pdfutilities.features.AnnotationModel;
+import org.docear.plugin.core.features.AnnotationModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.map.NodeModel;

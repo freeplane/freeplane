@@ -17,7 +17,7 @@ import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.mapio.mindmapmode.MMapIO;
+import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
@@ -115,7 +115,7 @@ public class LinkTypeMyPublicationsNode extends ALinkNode implements IWorkspaceN
 						LogUtils.warn("could not create " + getLinkPath());
 					}
 				}
-				final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MMapIO.class);		
+				final MapIO mapIO = (MapIO) Controller.getCurrentModeController().getExtension(MapIO.class);		
 				try {
 					if(mapIO.newMap(f.toURL())) {
 						DocearEvent evnt = new DocearEvent(this, DocearEventType.NEW_MY_PUBLICATIONS, Controller.getCurrentController().getMap());

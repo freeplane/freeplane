@@ -1,20 +1,25 @@
-package org.docear.plugin.pdfutilities.features;
+package org.docear.plugin.core.mindmap;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
+import org.docear.plugin.core.features.AnnotationID;
+import org.docear.plugin.core.features.AnnotationModel;
+import org.docear.plugin.core.features.AnnotationNodeModel;
+import org.docear.plugin.core.features.AnnotationXmlBuilder;
+import org.docear.plugin.core.features.IAnnotation;
+import org.docear.plugin.core.features.IAnnotation.AnnotationType;
 import org.docear.plugin.core.util.Tools;
-import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
-import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
-import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
@@ -22,10 +27,17 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 
-import de.intarsys.pdf.cos.COSRuntimeException;
-import de.intarsys.pdf.parser.COSLoadException;
-
 public class AnnotationController implements IExtension{
+	
+	private final static Set<IAnnotationImporter> annotationImporters = new HashSet<IAnnotationImporter>();
+	
+	public static void addAnnotationImporter(IAnnotationImporter annotationImporter) {
+		annotationImporters.add(annotationImporter);
+	}
+	
+	public static Set<IAnnotationImporter> getAnnotationImporters() {
+		return annotationImporters; 
+	}
 	
 	public static AnnotationController getController() {
 		return getController(Controller.getCurrentModeController());
@@ -98,7 +110,8 @@ public class AnnotationController implements IExtension{
 	public static AnnotationModel getModel(final NodeModel node, boolean update) {
 		AnnotationModel annotation = (AnnotationModel) node.getExtension(AnnotationModel.class);
 		if(annotation == null && update){
-			return AnnotationController.setModel(node);
+			AnnotationController.setModel(node);
+			annotation = (AnnotationModel) node.getExtension(AnnotationModel.class);
 		}
 		return annotation;
 	}
@@ -109,6 +122,13 @@ public class AnnotationController implements IExtension{
     		return annotation.getParent().getChildIndex(annotation);
     	}
     	return -1;
+	}
+	
+	private static boolean isPdfFile(File file) {
+		if (file == null) {
+			return false;
+		}
+		return file.getName().toLowerCase().endsWith(".pdf");
 	}
 	
 	public static AnnotationNodeModel getAnnotationNodeModel(final NodeModel node){
@@ -124,10 +144,10 @@ public class AnnotationController implements IExtension{
 		if(annotation != null && file != null && annotation.getAnnotationType().equals(AnnotationType.PDF_FILE)){
 			return new AnnotationNodeModel(node, new AnnotationID(Tools.getAbsoluteUri(node), 0), AnnotationType.PDF_FILE); 
 		}		
-		if(annotation == null && file != null && file.getName().equals(node.getText()) && NodeUtils.isPdfLinkedNode(node)){
+		if(annotation == null && file != null && file.getName().equals(node.getText()) && isPdfFile(file)){
 			return new AnnotationNodeModel(node, new AnnotationID(Tools.getAbsoluteUri(node), 0), AnnotationType.PDF_FILE); 
 		}
-		if(annotation == null && file != null && file.getName().equals(node.getText()) && !NodeUtils.isPdfLinkedNode(node)){
+		if(annotation == null && file != null && file.getName().equals(node.getText()) && !isPdfFile(file)){
 			return new AnnotationNodeModel(node, new AnnotationID(Tools.getAbsoluteUri(node), 0), AnnotationType.FILE); 
 		}
 		return null;
@@ -156,22 +176,20 @@ public class AnnotationController implements IExtension{
 		}
 	}
 	
-	private static AnnotationModel setModel(final NodeModel node){
-		if(!NodeUtils.isPdfLinkedNode(node)){
-			return null;
+	private static void setModel(final NodeModel node){
+		File file = WorkspaceUtils.resolveURI(NodeLinks.getValidLink(node), node.getMap());
+		if(!isPdfFile(file)){
+			return;
 		}
-		URI uri = Tools.getAbsoluteUri(node);	
-		try {
-			AnnotationModel model = new PdfAnnotationImporter().searchAnnotation(uri, node);			
-			return model;
-		} catch (COSRuntimeException e) {
-			// TODO: DOCEAR exception handling ?			
-		} catch (IOException e) {
+		URI uri = Tools.getAbsoluteUri(node);
+		for(IAnnotationImporter importer : annotationImporters) {
+			try {			
+				importer.searchAnnotation(uri, node);
 			
-		} catch (COSLoadException e) {
-			
-		}
-		return null;
+			} catch (Exception e) {			
+				LogUtils.warn(e.getMessage());
+			}
+		}		
 	}
 	
 	public static void addConflictedAnnotation(IAnnotation annotation, Map<AnnotationID, Collection<IAnnotation>> result){
@@ -210,5 +228,7 @@ public class AnnotationController implements IExtension{
 			}
 		}
 	}
+
+	
 
 }

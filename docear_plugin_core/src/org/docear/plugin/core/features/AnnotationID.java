@@ -1,4 +1,4 @@
-package org.docear.plugin.pdfutilities.features;
+package org.docear.plugin.core.features;
 
 import java.net.URI;
 

@@ -14,6 +14,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -69,7 +70,7 @@ public class FileNodeNewMindmapAction extends AWorkspaceAction {
 	
 	@SuppressWarnings("deprecation")
 	private boolean createNewMindmap(final File f) throws FileNotFoundException, XMLParseException, MalformedURLException, IOException, URISyntaxException {
-		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MMapIO.class);
+		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
 		final ModeController modeController = Controller.getCurrentController().getModeController(MModeController.MODENAME);
 		MFileManager.getController(modeController).newMapFromDefaultTemplate();
 		Controller.getCurrentController().getMap().getRootNode().setText(FilenameUtils.getBaseName(f.getName()));

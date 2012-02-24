@@ -15,9 +15,9 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import org.docear.plugin.pdfutilities.features.AnnotationID;
-import org.docear.plugin.pdfutilities.features.AnnotationNodeModel;
-import org.docear.plugin.pdfutilities.features.IAnnotation;
+import org.docear.plugin.core.features.AnnotationID;
+import org.docear.plugin.core.features.AnnotationNodeModel;
+import org.docear.plugin.core.features.IAnnotation;
 import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.factories.FormFactory;

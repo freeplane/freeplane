@@ -1,12 +1,20 @@
 package org.freeplane.features.url.mindmapmode;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.url.UrlManager;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -16,30 +24,53 @@ public class MapVersionInterpreter{
 	FREEPLANE1_2_0("freeplane 1.2.0", false, false, "Freeplane", "freeplane.url"),
 	FREEPLANE1_1("0.9.0", false, false, "Freeplane", "freeplane.url"),
 	FREEMIND_1("1.", false, true, "FreeMind", "freemind.url"),
-	DOCEAR("docear ", false, true, "Docear", "docear.url"),
 	
 */	
+	//DOCEAR
 	static final public MapVersionInterpreter DEFAULT = new MapVersionInterpreter("", false, true, null, null);
+	static final public IMapInputStreamConverter DEFAULT_INPUTSTREAM_CONVERTER = new IMapInputStreamConverter() {		
+		private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_version_updater.xslt";
+		public Reader getConvertedStream(File f) throws FileNotFoundException, IOException {			
+			return UrlManager.getUpdateReader(f, FREEPLANE_VERSION_UPDATER_XSLT);
+		}		
+	};
 	final public String mapBegin;
 	final public boolean needsConversion;
 	final public boolean anotherDialect;
 	final public String appName;
 	final public String url;
-	MapVersionInterpreter(String versionBegin, boolean needsConversion, boolean anotherDialect,
+	final public IMapInputStreamConverter inputStreamConverter;
+	final public IMapConverter mapConverter;
+	
+	public MapVersionInterpreter(String versionBegin, boolean needsConversion, boolean anotherDialect,
 			String appName, String url) {
+		this(versionBegin, needsConversion, anotherDialect, appName, url, DEFAULT_INPUTSTREAM_CONVERTER, null);
+	}
+	
+	public MapVersionInterpreter(String versionBegin, boolean needsConversion, boolean anotherDialect,
+			String appName, String url, IMapInputStreamConverter inputStreamConverter, IMapConverter mapConverter) {
+		this.inputStreamConverter = inputStreamConverter;
+		this.mapConverter = mapConverter;
 		this.mapBegin = "<map version=\"" + versionBegin;
 		this.needsConversion = needsConversion;
 		this.anotherDialect = anotherDialect;
 		this.appName = appName;
 		this.url = url;
 	}
-	
+			
 	static MapVersionInterpreter getVersionInterpreter(String mapBegin){
 		for (MapVersionInterpreter interpreter : MapVersionInterpreter.values()){
 			if(interpreter.knows(mapBegin))
 				return interpreter;
 		}
 		return DEFAULT;
+	}
+	
+	public static void addMapVersionInterpreter(MapVersionInterpreter interpreter) {
+		ArrayList<MapVersionInterpreter> list = new ArrayList<MapVersionInterpreter>();
+		list.add(interpreter);
+		list.addAll(Arrays.asList(values()));
+		values = list.toArray(values);
 	}
 
 	private static MapVersionInterpreter[] values = null;
@@ -76,6 +107,14 @@ public class MapVersionInterpreter{
 		return mapBegin.startsWith(this.mapBegin);
 	}
 	
+	public IMapConverter getMapConverter() {
+		return this.mapConverter;
+	}
+	
+	public IMapInputStreamConverter getMapInputStreamConverter() {
+		return this.inputStreamConverter;
+	}
+	
 	String getDialectInfo(String path){
 		final String appInfo;
 		if(appName != null)
@@ -90,4 +129,6 @@ public class MapVersionInterpreter{
 			urlInfo = TextUtils.getText("dialect_info.unknownURL");
 		return appInfo +" "+ warning +" "+ urlInfo;
 	}
+
+	
 }

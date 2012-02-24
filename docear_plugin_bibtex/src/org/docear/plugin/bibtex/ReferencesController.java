@@ -41,9 +41,10 @@ import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
+import org.docear.plugin.core.mindmap.MapConverter;
 import org.docear.plugin.core.util.CoreUtils;
 import org.docear.plugin.core.workspace.node.LinkTypeReferencesNode;
-import org.docear.plugin.pdfutilities.util.MapConverter;
+import org.docear.plugin.pdfutilities.listener.MonitorungNodeUpdater;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.FreeplaneActionCascade;
@@ -138,8 +139,9 @@ public class ReferencesController extends ALanguageController implements IDocear
 	}
 	
 
-	private void registerListeners() {
+	private void registerListeners() {		
 		MapConverter.addMapsConvertedListener(splmmMapsConvertedListener);
+		
 		
 		this.modeController.addINodeViewLifeCycleListener(new INodeViewLifeCycleListener() {
 			

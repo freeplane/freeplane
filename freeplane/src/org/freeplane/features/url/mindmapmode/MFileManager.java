@@ -452,8 +452,10 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		}
 	}
 
+	
+	//DOCEAR
 	private NodeModel loadTreeImpl(final MapModel map, final File f) throws FileNotFoundException, IOException,
-	        XMLException {
+	        XMLException, MapConversionException {
 		final BufferedInputStream file = new BufferedInputStream(new FileInputStream(f));
 		int versionInfoLength = 1000;
 		final byte[] buffer = new byte[versionInfoLength];
@@ -471,19 +473,24 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			final int showResult = OptionalDontShowMeAgainDialog.show("really_convert_to_current_version",
 			    "confirmation", MMapController.RESOURCES_CONVERT_TO_CURRENT_VERSION,
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
-			if (showResult != JOptionPane.OK_OPTION) {
+			IMapInputStreamConverter isConverter = versionInterpreter.getMapInputStreamConverter();
+			if (showResult != JOptionPane.OK_OPTION || isConverter == null) {
 				reader = UrlManager.getActualReader(sequencedInput);
 			}
 			else {
-				sequencedInput.close();
-				reader = UrlManager.getUpdateReader(f, FREEPLANE_VERSION_UPDATER_XSLT);
+				sequencedInput.close();				
+				reader = isConverter.getConvertedStream(f);				
 			}
 		}
 		else
 			reader = UrlManager.getActualReader(sequencedInput);
 		try {
-			return Controller.getCurrentModeController().getMapController().getMapReader()
-			    .createNodeTreeFromXml(map, reader, Mode.FILE);
+			NodeModel root = Controller.getCurrentModeController().getMapController().getMapReader()
+			    .createNodeTreeFromXml(map, reader, Mode.FILE);			
+			if (versionInterpreter.getMapConverter() != null) {
+				versionInterpreter.getMapConverter().convert(root);
+			}
+			return root;
 		}
 		finally {
 			FileUtils.silentlyClose(reader);

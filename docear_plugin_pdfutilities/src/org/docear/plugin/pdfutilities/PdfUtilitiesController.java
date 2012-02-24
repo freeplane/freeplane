@@ -22,6 +22,8 @@ import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
 import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.features.DocearMapModelExtension.DocearMapType;
+import org.docear.plugin.core.mindmap.AnnotationController;
+import org.docear.plugin.core.mindmap.MapConverter;
 import org.docear.plugin.pdfutilities.actions.AbstractMonitoringAction;
 import org.docear.plugin.pdfutilities.actions.AddMonitoringFolderAction;
 import org.docear.plugin.pdfutilities.actions.DeleteMonitoringFolderAction;
@@ -35,14 +37,14 @@ import org.docear.plugin.pdfutilities.actions.MonitoringFlattenSubfoldersAction;
 import org.docear.plugin.pdfutilities.actions.MonitoringGroupRadioButtonAction;
 import org.docear.plugin.pdfutilities.actions.RadioButtonAction;
 import org.docear.plugin.pdfutilities.actions.UpdateMonitoringFolderAction;
-import org.docear.plugin.pdfutilities.features.AnnotationController;
 import org.docear.plugin.pdfutilities.listener.DocearAutoMonitoringListener;
-import org.docear.plugin.pdfutilities.listener.DocearMapConverterListener;
 import org.docear.plugin.pdfutilities.listener.DocearNodeDropListener;
 import org.docear.plugin.pdfutilities.listener.DocearNodeMouseMotionListener;
 import org.docear.plugin.pdfutilities.listener.DocearNodeSelectionListener;
 import org.docear.plugin.pdfutilities.listener.DocearRenameAnnotationListener;
+import org.docear.plugin.pdfutilities.listener.MonitorungNodeUpdater;
 import org.docear.plugin.pdfutilities.listener.WorkspaceNodeOpenDocumentListener;
+import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.docear.plugin.pdfutilities.pdf.PdfReaderFileFilter;
 import org.docear.plugin.pdfutilities.ui.JDocearInvisibleMenu;
 import org.docear.plugin.pdfutilities.ui.JMonitoringMenu;
@@ -291,6 +293,8 @@ public class PdfUtilitiesController extends ALanguageController{
 	}
 
 	private void registerListener() {
+		MapConverter.addMapsConvertedListener(new MonitorungNodeUpdater(TextUtils.getText("MapConverter.1")));
+		AnnotationController.addAnnotationImporter(new PdfAnnotationImporter());
 		this.modecontroller.addINodeViewLifeCycleListener(new INodeViewLifeCycleListener() {
 
 			public void onViewCreated(Container nodeView) {
@@ -401,9 +405,9 @@ public class PdfUtilitiesController extends ALanguageController{
 		
 		this.modecontroller.getMapController().addNodeChangeListener(new DocearRenameAnnotationListener());
 		
-		DocearMapConverterListener mapConverterListener = new DocearMapConverterListener();
-		this.modecontroller.getController().getMapViewManager().addMapSelectionListener(mapConverterListener);
-		Controller.getCurrentController().getViewController().getJFrame().addWindowFocusListener(mapConverterListener);
+//		DocearMapConverterListener mapConverterListener = new DocearMapConverterListener();
+//		this.modecontroller.getController().getMapViewManager().addMapSelectionListener(mapConverterListener);
+//		Controller.getCurrentController().getViewController().getJFrame().addWindowFocusListener(mapConverterListener);
 		
 		DocearAutoMonitoringListener autoMonitoringListener = new DocearAutoMonitoringListener();
 		this.modecontroller.getMapController().addMapLifeCycleListener(autoMonitoringListener);

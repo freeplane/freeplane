@@ -6,11 +6,11 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
+import org.docear.plugin.core.features.IAnnotation;
+import org.docear.plugin.core.features.IAnnotation.AnnotationType;
 import org.docear.plugin.core.util.CoreUtils;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
-import org.docear.plugin.pdfutilities.features.IAnnotation;
-import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.docear.plugin.pdfutilities.pdf.PdfReaderFileFilter;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
@@ -69,14 +69,14 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 				return;
 			}
 
-		}
-		catch (IOException x) {
-			this.mouseListener.mouseClicked(e);
-			return;
-		}
+		}		
 		catch (COSLoadException x) {
 			UITools.errorMessage("Could not find page because the document\n" + uri.toString() + "\nthrew a COSLoadExcpetion.\nTry to open file with standard options."); //$NON-NLS-1$ //$NON-NLS-2$
 			System.err.println("Caught: " + x); //$NON-NLS-1$
+		}
+		catch (Exception x) {
+			this.mouseListener.mouseClicked(e);
+			return;
 		}
 		
 	}
@@ -172,14 +172,14 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 					}
 	
 				}
-			}
-			catch (IOException x) {
-				this.mouseListener.mouseClicked(e);
-				return;
-			}
+			}			
 			catch (COSLoadException x) {
 				UITools.errorMessage("Could not find page because the document\n" + uri.toString() + "\nthrew a COSLoadExcpetion.\nTry to open file with standard options."); //$NON-NLS-1$ //$NON-NLS-2$
 				System.err.println("Caught: " + x); //$NON-NLS-1$
+			}
+			catch (Exception x) {
+				this.mouseListener.mouseClicked(e);
+				return;
 			}
 
 			LinkController.getController().onDeselect(node);

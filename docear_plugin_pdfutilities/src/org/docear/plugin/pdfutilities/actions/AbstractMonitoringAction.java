@@ -21,25 +21,25 @@ import javax.swing.SwingUtilities;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
+import org.docear.plugin.core.features.AnnotationID;
+import org.docear.plugin.core.features.AnnotationModel;
+import org.docear.plugin.core.features.AnnotationNodeModel;
 import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.features.DocearNodeModelExtension;
+import org.docear.plugin.core.features.IAnnotation;
 import org.docear.plugin.core.features.DocearNodeModelExtension.DocearExtensionKey;
+import org.docear.plugin.core.features.IAnnotation.AnnotationType;
 import org.docear.plugin.core.features.DocearNodeModelExtensionController;
+import org.docear.plugin.core.mindmap.AnnotationController;
+import org.docear.plugin.core.mindmap.MapConverter;
 import org.docear.plugin.core.ui.SwingWorkerDialog;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
-import org.docear.plugin.pdfutilities.features.AnnotationController;
-import org.docear.plugin.pdfutilities.features.AnnotationID;
-import org.docear.plugin.pdfutilities.features.AnnotationModel;
-import org.docear.plugin.pdfutilities.features.AnnotationNodeModel;
-import org.docear.plugin.pdfutilities.features.IAnnotation;
-import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
 import org.docear.plugin.pdfutilities.ui.conflict.ImportConflictDialog;
 import org.docear.plugin.pdfutilities.util.CustomFileFilter;
 import org.docear.plugin.pdfutilities.util.CustomFileListFilter;
-import org.docear.plugin.pdfutilities.util.MapConverter;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -232,12 +232,8 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 								}
 							}
 							
-						} catch(IOException e){
-							LogUtils.info("IOexception during import file: "+ Tools.getAbsoluteUri(node)); //$NON-NLS-1$
-						} catch(COSRuntimeException e){
-							LogUtils.info("COSRuntimeException during import file: "+ Tools.getAbsoluteUri(node)); //$NON-NLS-1$
-						} catch(COSLoadException e){
-							LogUtils.info("COSLoadException during import file: "+ Tools.getAbsoluteUri(node)); //$NON-NLS-1$
+						} catch(Exception e) {
+							LogUtils.info("Exception during import file: "+ Tools.getAbsoluteUri(node)); //$NON-NLS-1$
 						}
 					}				
 				}

@@ -8,12 +8,13 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.docear.plugin.core.features.DocearMapModelController;
-import org.docear.plugin.pdfutilities.util.MapConverter;
+import org.docear.plugin.core.mindmap.MapConverter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 
+@Deprecated
 public class DocearMapConverterListener implements IMapSelectionListener,  WindowFocusListener{
 	
 	private List<MapModel> mapsToConvert = new ArrayList<MapModel>();	
@@ -30,11 +31,8 @@ public class DocearMapConverterListener implements IMapSelectionListener,  Windo
 	public void beforeMapChange(MapModel oldMap, MapModel newMap) {
 		if(newMap == null || DocearMapModelController.getModel(newMap) != null || newMap.getFile() == null) return;
 		if(this.isAlreadyQuestioned(newMap)) return;
-		if(startup){
-			mapsToConvert.add(newMap);
-		}
-		else{			
-			mapsToConvert.add(newMap);			
+		mapsToConvert.add(newMap);		
+		if (!startup) {						
 			showConversionDialog();
 		}
 	}
@@ -55,9 +53,9 @@ public class DocearMapConverterListener implements IMapSelectionListener,  Windo
 	private void showConversionDialog() {
 		int result = UITools.showConfirmDialog(null, getMessage(), getTitle(), JOptionPane.OK_CANCEL_OPTION);
 		if(result == JOptionPane.OK_OPTION){	
-			DocearMapConverterListener.currentlyConverting = true;
+			currentlyConverting = true;
 			MapConverter.convert(mapsToConvert);
-			DocearMapConverterListener.currentlyConverting = false;
+			currentlyConverting = false;
 		}			
 		mapsQuestionedInCurrentSession.addAll(mapsToConvert);
 		mapsToConvert.clear();

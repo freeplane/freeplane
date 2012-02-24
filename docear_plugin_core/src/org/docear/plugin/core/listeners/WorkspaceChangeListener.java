@@ -17,6 +17,7 @@ import org.docear.plugin.core.workspace.creator.LinkTypeReferencesCreator;
 import org.docear.plugin.core.workspace.node.FolderTypeLibraryNode;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceConfiguration;
@@ -137,7 +138,7 @@ public class WorkspaceChangeListener implements IWorkspaceEventListener {
 	 * @param string
 	 */
 	private void createAndRenameMap(File file ,String name) {
-		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MMapIO.class);
+		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
 		try {
 			MapModel map = new MapModel();
 			mapIO.loadTree(map, file);

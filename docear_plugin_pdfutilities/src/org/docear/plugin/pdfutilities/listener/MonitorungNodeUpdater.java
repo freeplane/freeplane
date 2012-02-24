@@ -1,4 +1,4 @@
-package org.docear.plugin.pdfutilities.features;
+package org.docear.plugin.pdfutilities.listener;
 
 import java.io.File;
 import java.net.URI;
@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.docear.plugin.core.CoreConfiguration;
+import org.docear.plugin.core.listeners.ISplmmMapsConvertListener;
+import org.docear.plugin.core.listeners.SplmmMapsConvertEvent;
 import org.docear.plugin.core.mindmap.AMindmapUpdater;
+import org.docear.plugin.core.mindmap.MindmapUpdateController;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.Attribute;
@@ -17,7 +20,8 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 
-public class MonitorungNodeUpdater extends AMindmapUpdater {
+public class MonitorungNodeUpdater extends AMindmapUpdater implements ISplmmMapsConvertListener {
+	public static final String MON_AUTO = "mon_auto";
 	
 	private final static Attribute keyAttribute = new Attribute("splmm_dirmon_path", PdfUtilitiesController.MON_INCOMING_FOLDER); //$NON-NLS-1$
 	private static HashMap<String, String> monitoringAttributes;
@@ -96,6 +100,11 @@ public class MonitorungNodeUpdater extends AMindmapUpdater {
 		}
 		
 		return isOldMinitoringNode;
+	}
+
+	public void mapsConvert(SplmmMapsConvertEvent event) {
+		MindmapUpdateController mindmapUpdateController = (MindmapUpdateController) event.getObject();
+		mindmapUpdateController.addMindmapUpdater(this);
 	}
 	
 	

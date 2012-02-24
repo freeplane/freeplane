@@ -1,22 +1,18 @@
 package org.docear.plugin.pdfutilities.actions;
 
 import java.awt.event.ActionEvent;
-import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 
+import org.docear.plugin.core.features.AnnotationModel;
+import org.docear.plugin.core.features.IAnnotation.AnnotationType;
 import org.docear.plugin.core.util.Tools;
-import org.docear.plugin.pdfutilities.features.AnnotationModel;
-import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-
-import de.intarsys.pdf.cos.COSRuntimeException;
-import de.intarsys.pdf.parser.COSLoadException;
 
 @EnabledAction( checkOnPopup = true, checkOnNodeChange = true )
 public class ImportAllChildAnnotationsAction extends ImportAnnotationsAction {
@@ -47,12 +43,8 @@ public class ImportAllChildAnnotationsAction extends ImportAnnotationsAction {
 			try {
 				AnnotationModel annotation = importer.searchAnnotation(uri, selected);				          
                 NodeUtils.insertChildNodesFrom(annotation.getChildren(), selected.isLeft(), selected);
-			} catch (COSRuntimeException e) {
-				LogUtils.severe("ImportAllChildAnnotationsAction COSRuntimeException at URI("+uri+"): ", e); //$NON-NLS-1$ //$NON-NLS-2$
-			} catch (IOException e) {
-				LogUtils.severe("ImportAllChildAnnotationsAction IOException at URI("+uri+"): ", e); //$NON-NLS-1$ //$NON-NLS-2$
-			} catch (COSLoadException e) {
-				LogUtils.severe("ImportAllChildAnnotationsAction COSLoadException at URI("+uri+"): ", e); //$NON-NLS-1$ //$NON-NLS-2$
+			} catch (Exception e) {
+				LogUtils.severe("ImportAllChildAnnotationsAction Exception at URI("+uri+"): ", e); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 

@@ -24,6 +24,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -36,9 +37,9 @@ import org.freeplane.plugin.workspace.model.WorkspaceIndexedTreeModel;
 import org.freeplane.plugin.workspace.nodes.AFolderNode;
 import org.freeplane.plugin.workspace.nodes.ALinkNode;
 import org.freeplane.plugin.workspace.nodes.DefaultFileNode;
-import org.freeplane.plugin.workspace.nodes.LinkTypeFileNode;
 import org.freeplane.plugin.workspace.nodes.FolderLinkNode;
 import org.freeplane.plugin.workspace.nodes.FolderVirtualNode;
+import org.freeplane.plugin.workspace.nodes.LinkTypeFileNode;
 
 /**
  * 
@@ -100,7 +101,7 @@ public class WorkspaceUtils {
 			return false;
 		}
 		
-		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MMapIO.class);		
+		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);		
 
 		//FIXME - seems not to add the docear map model extension
 		//mapIO.newMapFromDefaultTemplate();

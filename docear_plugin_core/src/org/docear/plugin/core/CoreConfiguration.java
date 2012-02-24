@@ -25,6 +25,7 @@ import org.docear.plugin.core.listeners.PropertyListener;
 import org.docear.plugin.core.listeners.WorkspaceChangeListener;
 import org.docear.plugin.core.listeners.WorkspaceOpenDocumentListener;
 import org.docear.plugin.core.logger.DocearEventLogger;
+import org.docear.plugin.core.mindmap.MapConverter;
 import org.docear.plugin.core.workspace.actions.DocearChangeLibraryPathAction;
 import org.docear.plugin.core.workspace.actions.DocearRenameAction;
 import org.docear.plugin.core.workspace.actions.WorkspaceChangeLocationsAction;
@@ -45,6 +46,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.features.url.mindmapmode.MapVersionInterpreter;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspacePreferences;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
@@ -97,6 +99,7 @@ public class CoreConfiguration extends ALanguageController {
 	
 	private void init(ModeController modeController) {
 		DocearController.getController().getDocearEventLogger().write(this, DocearEventLogger.DocearEvent.APPLICATION_STARTED, "");
+		MapVersionInterpreter.addMapVersionInterpreter(new MapVersionInterpreter("0.9.0\" software_name=\"SciPlore_", false, true, "SciploreMM", "http://sciplore.org", null, new MapConverter()));
 		
 		// set up context menu for workspace
 		WorkspaceController.getController().addWorkspaceListener(WORKSPACE_CHANGE_LISTENER);

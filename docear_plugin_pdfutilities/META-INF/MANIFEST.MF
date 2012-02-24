@@ -16,8 +16,7 @@ Bundle-ClassPath: .,
  lib/jpod/isrt.jar,
  lib/jpod/jbig2.jar,
  lib/plugin.jar
-Export-Package: org.docear.plugin.pdfutilities.features,
- org.docear.plugin.pdfutilities.listener,
+Export-Package: org.docear.plugin.pdfutilities.listener,
  org.docear.plugin.pdfutilities.pdf,
  org.docear.plugin.pdfutilities.ui,
  org.docear.plugin.pdfutilities.util
