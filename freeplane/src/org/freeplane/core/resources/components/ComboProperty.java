@@ -20,6 +20,7 @@
 package org.freeplane.core.resources.components;
 
 import java.awt.Component;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -30,7 +31,6 @@ import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
-import org.freeplane.core.ui.ComboBoxSmallFontRenderer;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 
