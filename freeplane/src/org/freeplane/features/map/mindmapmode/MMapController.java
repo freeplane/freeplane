@@ -542,6 +542,7 @@ public class MMapController extends MapController {
 	}
 
 	public MapModel newModel(NodeModel existingNode) {
+	    // use new MMapModel() instead of calling this method with a null arg
 		if(existingNode == null)
 			throw new NullPointerException("null node not allowed.");
 		final MMapModel mindMapMapModel = new MMapModel();

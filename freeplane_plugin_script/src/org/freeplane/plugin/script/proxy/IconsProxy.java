@@ -3,6 +3,7 @@
  */
 package org.freeplane.plugin.script.proxy;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -77,6 +78,19 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 			list.add(icon.getName());
 		}
 		return Collections.unmodifiableList(list);
+	}
+
+	public List<URL> getUrls() {
+	    final List<MindIcon> icons = getDelegate().getIcons();
+	    final int size = icons.size();
+	    if (size == 0) {
+	        return Collections.emptyList();
+	    }
+	    final ArrayList<URL> list = new ArrayList<URL>(size);
+	    for (final MindIcon icon : icons) {
+	        list.add(icon.getUrl());
+	    }
+	    return Collections.unmodifiableList(list);
 	}
 
 	public boolean remove(final int index) {
