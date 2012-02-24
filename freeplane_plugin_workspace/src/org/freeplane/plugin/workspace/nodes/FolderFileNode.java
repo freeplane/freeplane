@@ -85,8 +85,7 @@ public class FolderFileNode extends DefaultFileNode {
 			if (getFile().isDirectory()) {
 				WorkspaceUtils.getModel().removeAllElements(this);
 				WorkspaceController.getController().getFilesystemMgr().scanFileSystem(this, getFile());
-				WorkspaceUtils.getModel().reload(this);
-				WorkspaceController.getController().getExpansionStateHandler().restoreExpansionStates();				
+				WorkspaceUtils.getModel().reload(this);				
 			}
 		}
 		catch (Exception e) {
@@ -142,7 +141,7 @@ public class FolderFileNode extends DefaultFileNode {
 						else if(dropAction == DnDConstants.ACTION_MOVE) {
 							((DefaultFileNode) node).moveTo(targetDir);
 							AWorkspaceTreeNode parent = node.getParent();
-							WorkspaceUtils.getModel().removeNodeFromParent(node);
+							WorkspaceUtils.getModel().cutNodeFromParent(node);
 							parent.refresh();
 						}
 					}
@@ -153,7 +152,7 @@ public class FolderFileNode extends DefaultFileNode {
 						FileUtils.copyFileToDirectory(srcFile, targetDir);
 						if(dropAction == DnDConstants.ACTION_MOVE) {
 							AWorkspaceTreeNode parent = node.getParent();
-							WorkspaceUtils.getModel().removeNodeFromParent(node);
+							WorkspaceUtils.getModel().cutNodeFromParent(node);
 							parent.refresh();
 						}
 					}
@@ -163,6 +162,7 @@ public class FolderFileNode extends DefaultFileNode {
 		catch (Exception e) {
 			LogUtils.warn(e);
 		}
+		WorkspaceController.getController().getExpansionStateHandler().addPathKey(this.getKey());
 		refresh();
 	}
 	

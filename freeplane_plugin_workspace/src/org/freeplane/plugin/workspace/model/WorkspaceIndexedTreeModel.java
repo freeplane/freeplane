@@ -6,6 +6,7 @@ package org.freeplane.plugin.workspace.model;
 
 import java.io.File;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -27,8 +28,6 @@ import org.freeplane.plugin.workspace.nodes.AFolderNode;
 import org.freeplane.plugin.workspace.nodes.ALinkNode;
 import org.freeplane.plugin.workspace.nodes.DefaultFileNode;
 import org.freeplane.plugin.workspace.nodes.FolderFileNode;
-import org.freeplane.plugin.workspace.nodes.FolderLinkNode;
-import org.freeplane.plugin.workspace.nodes.FolderVirtualNode;
 
 public class WorkspaceIndexedTreeModel implements TreeModel {
 
@@ -201,6 +200,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 	public void reload(AWorkspaceTreeNode node) {
 		if (node != null) {
 			fireTreeStructureChanged(this, node.getTreePath(), null, null);
+			WorkspaceController.getController().getExpansionStateHandler().restoreExpansionStates();
 		}
 	}
 
@@ -312,11 +312,11 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 	public AWorkspaceTreeNode getNode(String key) {
 		return this.hashStringKeyIndex.get(key);
 	}
-	
-	
+		
 	/**
 	 * @param node
 	 * @param targetNode
+	 * @return
 	 */
 	public boolean addNodeTo(AWorkspaceTreeNode node, AWorkspaceTreeNode targetNode) {
 		return addNodeTo(node, targetNode, true);
@@ -325,6 +325,8 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 	/**
 	 * @param node
 	 * @param targetNode
+	 * @param allowRenaming
+	 * @return
 	 */
 	public boolean addNodeTo(AWorkspaceTreeNode node, AWorkspaceTreeNode targetNode, boolean allowRenaming) {
 		node.setParent(targetNode);
@@ -340,11 +342,26 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 			return false;
 		}
 		targetNode.addChildNode(node);
-		this.hashStringKeyIndex.put(node.getKey(), node);
-		nodesWereInserted(targetNode, new int[]{targetNode.getChildCount()-1});
+		addToIndexRecursively(node, targetNode);
 		return true;
 	}
+
+	private void addToIndexRecursively(AWorkspaceTreeNode node, AWorkspaceTreeNode targetNode) {
+		this.hashStringKeyIndex.put(node.getKey(), node);
+		if(node.getChildCount() > 0) {
+			int[] indices = new int[node.getChildCount()];
+			for(int i=0; i < node.getChildCount(); i++) {
+				AWorkspaceTreeNode childNode = node.getChildAt(i);
+				addToIndexRecursively(childNode, node);				
+				indices[i] = targetNode.getChildCount()-1; 
+			}
+			nodesWereInserted(targetNode, indices);
+		}
+	}
 	
+	/**
+	 * @param node
+	 */
 	public void removeAllElements(AWorkspaceTreeNode node) {
 		Enumeration<AWorkspaceTreeNode> children = node.children();
 		AWorkspaceTreeNode child = null;
@@ -364,37 +381,39 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 	public void removeNodeFromParent(AWorkspaceTreeNode node) {
 		this.hashStringKeyIndex.remove(node.getKey());
 		AWorkspaceTreeNode parent = node.getParent();
-		parent.removeChildNode(node);
+		parent.removeChild(node);
 		node.disassociateReferences();
 		fireTreeNodesRemoved(this, parent.getTreePath(), null, new Object[] {node});
 	}
 	
 	/**
 	 * @param node
-	 * @param targetNode
 	 */
-	public void moveNodeTo(AWorkspaceTreeNode node, AWorkspaceTreeNode targetNode) {
-		
-		AWorkspaceTreeNode oldParent = node.getParent();
-		oldParent.removeChildNode(node);
-		fireTreeStructureChanged(this, oldParent.getTreePath());
-		
-		targetNode.addChildNode(node);
-		if(node instanceof AFolderNode) {
-			((AFolderNode)node).refresh();
-		}
-		fireTreeStructureChanged(this, targetNode.getTreePath());
+	public void cutNodeFromParent(AWorkspaceTreeNode node) {
+		AWorkspaceTreeNode parent = node.getParent();
+		removeFromIndexRecursively(node);
+		parent.removeChild(node);		
+		fireTreeNodesRemoved(this, parent.getTreePath(), null, new Object[] {node});
 	}
 	
 	/**
 	 * @param node
-	 * @param targetNode
 	 */
-	public void copyNodeTo(AWorkspaceTreeNode node, AWorkspaceTreeNode targetNode) {
-		// TODO implement better method
-		appendNodeCopyRecursive(targetNode, node);
+	private void removeFromIndexRecursively(AWorkspaceTreeNode node) {
+		List<AWorkspaceTreeNode> removes = new ArrayList<AWorkspaceTreeNode>();
+		this.hashStringKeyIndex.remove(node.getKey());
+		if(node.getChildCount() > 0) {
+			int[] indices = new int[node.getChildCount()];
+			for(int i=0; i < node.getChildCount(); i++) {
+				AWorkspaceTreeNode childNode = node.getChildAt(i);
+				removeFromIndexRecursively(childNode);
+				removes.add(childNode);
+				indices[i] = i;
+			}
+			fireTreeNodesRemoved(this, node.getTreePath(), indices, removes.toArray());
+		}		
 	}
-	
+		
 	/**
 	 * 
 	 */
@@ -426,38 +445,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 			}			
 		}		
 		return Arrays.asList(set.toArray(new URI[]{}));
-	}
-	
-	
-	private void appendNodeCopyRecursive(AWorkspaceTreeNode targetNode, AWorkspaceTreeNode node) {			
-		AWorkspaceTreeNode newTarget = node.clone();
-		newTarget.setParent(targetNode);
-		if(WorkspaceUtils.getModel().containsNode(newTarget.getKey())) {
-			newTarget = WorkspaceUtils.getModel().getNode(newTarget.getKey());
-		} 
-		else {
-			targetNode.addChildNode(newTarget);
-		}
-		
-		if(node instanceof FolderVirtualNode) {
-			Enumeration<AWorkspaceTreeNode> children = node.children();
-			while(children.hasMoreElements()) {
-				appendNodeCopyRecursive(newTarget, children.nextElement());
-			}
-		} 
-		else 
-		if(node instanceof FolderLinkNode) {
-			FolderLinkNode phyNode = (FolderLinkNode) node;
-			WorkspaceController.getController().getFilesystemMgr()
-					.scanFileSystem(phyNode, WorkspaceUtils.resolveURI(phyNode.getPath()));			
-		} 
-		else 
-		if(node instanceof AFolderNode) {
-			((AFolderNode) node).refresh();
-		}
-		
-	}
-	
+	}	
 	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES

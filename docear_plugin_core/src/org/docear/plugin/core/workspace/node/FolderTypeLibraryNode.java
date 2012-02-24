@@ -36,6 +36,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
@@ -187,7 +188,7 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 					} 
 					else if (dropAction == DnDConstants.ACTION_MOVE) {
 						AWorkspaceTreeNode parent = node.getParent();
-						WorkspaceUtils.getModel().removeNodeFromParent(node);
+						WorkspaceUtils.getModel().cutNodeFromParent(node);						
 						parent.refresh();
 						newNode = node;
 					}
@@ -196,6 +197,7 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 					continue;
 				}
 				WorkspaceUtils.getModel().addNodeTo(newNode, this);
+				WorkspaceController.getController().getExpansionStateHandler().addPathKey(this.getKey());
 			}
 			WorkspaceUtils.saveCurrentConfiguration();
 			

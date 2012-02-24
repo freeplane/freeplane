@@ -184,8 +184,7 @@ public class FolderLinkNode extends AFolderNode implements IWorkspaceNodeActionL
 			if (folder.isDirectory()) {
 				WorkspaceUtils.getModel().removeAllElements(this);
 				WorkspaceController.getController().getFilesystemMgr().scanFileSystem(this, folder);
-				WorkspaceUtils.getModel().reload(this);
-				WorkspaceController.getController().getExpansionStateHandler().restoreExpansionStates();				
+				WorkspaceUtils.getModel().reload(this);				
 			}
 		}
 		catch (Exception e) {
@@ -210,7 +209,7 @@ public class FolderLinkNode extends AFolderNode implements IWorkspaceNodeActionL
 						else if(dropAction == DnDConstants.ACTION_MOVE) {
 							((DefaultFileNode) node).moveTo(targetDir);
 							AWorkspaceTreeNode parent = node.getParent();
-							WorkspaceUtils.getModel().removeNodeFromParent(node);
+							WorkspaceUtils.getModel().cutNodeFromParent(node);
 							parent.refresh();
 						}
 					}
@@ -221,12 +220,13 @@ public class FolderLinkNode extends AFolderNode implements IWorkspaceNodeActionL
 						FileUtils.copyFileToDirectory(srcFile, targetDir);
 						if(dropAction == DnDConstants.ACTION_MOVE) {
 							AWorkspaceTreeNode parent = node.getParent();
-							WorkspaceUtils.getModel().removeNodeFromParent(node);
+							WorkspaceUtils.getModel().cutNodeFromParent(node);
 							parent.refresh();
 						}
 					}
 				}
 			}
+			WorkspaceController.getController().getExpansionStateHandler().addPathKey(this.getKey());
 			refresh();
 		}
 		catch (Exception e) {
