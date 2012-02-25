@@ -58,6 +58,13 @@ public class EditDistanceStringMatchingStrategiesTest {
 		assertDistance(strategy, "visible", "public Y getXXX() / public void setXXX(...) in camel case", true, true, 5);
 		assertDistance(strategy, "hello world", "is the world", true, true, 3);
 		assertDistance(strategy, "print", "pointer", true, true, 1);
+		assertDistance(strategy, "network", "netzwerk", true, true, 2);
+		assertDistance(strategy, "approximately", "aproxximatelly", true, true, 3);
+		assertDistance(strategy, "variable", "visible", true, true, 3);
+		assertDistance(strategy, "featured article", "featured main article", true, true, 5);
+		assertDistance(strategy, "expected distance", "expected edit distance", true, true, 5);
+		assertDistance(strategy, "RandomFileAccess", "RandomAccessFolder", false, true, 10);
+		assertDistance(strategy, "fitness studio", "fitness center", true, true, 6);
 	}
 
 	@Test
