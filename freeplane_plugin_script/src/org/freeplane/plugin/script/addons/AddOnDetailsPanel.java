@@ -18,6 +18,7 @@ import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.MenuUtils;
 import org.freeplane.core.util.TextUtils;
@@ -80,13 +81,13 @@ public class AddOnDetailsPanel extends JPanel {
 	}
 
 	private JLabel createTitleLabel(final AddOnProperties addOn) {
-		return new JLabel("<html><body><b><font size='+2'>" + addOn.getTranslatedName() + " "
+		return new JLabel("<html><body><b><font size='+2'>" + toHtml(addOn.getTranslatedName()) + " "
 				+ addOn.getVersion().replaceAll("^v", "") + "</font></b></body></html>");
 	}
 
 	private JLabel createAuthorLabel(final AddOnProperties addOn) {
 		final String text = addOn.getAuthor() == null ? "" : "<html><body><b><font size='-1'>"
-				+ getText("authored.by", addOn.getAuthor()) + "</font></b></body></html>";
+				+ getText("authored.by", toHtml(addOn.getAuthor())) + "</font></b></body></html>";
 		return new JLabel(text);
 	}
 
@@ -104,7 +105,7 @@ public class AddOnDetailsPanel extends JPanel {
 	private JComponent createDetails(final AddOnProperties addOn) {
 		final StringBuilder text = new StringBuilder(1024);
 		text.append("<html><body>");
-		text.append(addOn.getDescription().replaceAll("</?(html|body)>", ""));
+		text.append(toHtml(addOn.getDescription()));
 		text.append("<p>");
 		if (addOn instanceof ScriptAddOnProperties) {
 			List<Script> scripts = ((ScriptAddOnProperties) addOn).getScripts();
@@ -129,6 +130,13 @@ public class AddOnDetailsPanel extends JPanel {
 			label.setIcon(icon);
 		return label;
 	}
+
+    private String toHtml(String htmlOrPlainText) {
+        if (HtmlUtils.isHtmlNode(htmlOrPlainText))
+            return htmlOrPlainText.replaceAll("</?(html|body)>", "");
+        else
+            return HtmlUtils.toHTMLEscapedText(htmlOrPlainText);
+    }
 
     private String formatShortcut(final Script script) {
         final String menuItemKey = ExecuteScriptAction.makeMenuItemKey(script.menuTitleKey, script.executionMode);
@@ -188,7 +196,7 @@ public class AddOnDetailsPanel extends JPanel {
 
 	private static String getText(String key, Object... parameters) {
 		if (parameters.length == 0)
-			return TextUtils.getText(getResourceKey(key));
+			return TextUtils.getRawText(getResourceKey(key));
 		else
 			return TextUtils.format(getResourceKey(key), parameters);
 	}

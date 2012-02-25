@@ -36,6 +36,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
+import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.ITooltipProvider;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
@@ -120,8 +121,12 @@ public class TextController implements IExtension {
 	public Object getTransformedObject(Object object, final NodeModel nodeModel, Object extension) throws TransformationException{
 		if(object instanceof String && ResourceController.getResourceController().getBooleanProperty("parse_data")){
 			String string = (String) object;
-			if(string.length() > 0 && string.charAt(0) == '\'')
-				return string.substring(1);
+			if(string.length() > 0 && string.charAt(0) == '\''){
+				if(isTextFormattingDisabled(nodeModel))
+					return string;
+				else
+					return string.substring(1);
+			}
 		}
 		for (IContentTransformer textTransformer : getTextTransformers()) {
 			try {
@@ -132,6 +137,10 @@ public class TextController implements IExtension {
             }
 		}
 		return object;
+	}
+
+	public boolean isTextFormattingDisabled(final NodeModel nodeModel) {
+		return PatternFormat.IDENTITY_PATTERN.equals(getNodeFormat(nodeModel));
 	}
 	
 	/** returns an error message instead of a normal result if something goes wrong. */

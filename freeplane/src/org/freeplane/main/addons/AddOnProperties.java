@@ -154,7 +154,7 @@ public class AddOnProperties {
 	}
 
 	public String getTranslatedName() {
-		return TextUtils.getText(getNameKey());
+		return TextUtils.getRawText(getNameKey());
 	}
 	
 	public String getName() {

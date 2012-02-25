@@ -196,10 +196,13 @@ class ScriptEditorPanel extends JDialog {
 						getErrorHandler());
                 }
                 catch (Throwable e2) {
-        			final String cause = ((e2.getCause() != null) ? e2.getCause().getMessage() : "");
-        			final String message = ((e2.getMessage() != null) ? e2.getMessage() : "");
-        			UITools.errorMessage(e2.getClass().getName() + ": " + cause
-        			        + ((cause.length() != 0 && message.length() != 0) ? ", " : "") + message);
+        			Throwable cause = e2.getCause();
+					String causeMessage = "";
+					if(cause != null && cause.getMessage()!= null)
+						causeMessage = cause.getMessage();
+        			final String message = e2.getMessage() != null ? e2.getMessage() : "";
+        			UITools.errorMessage(e2.getClass().getName() + ": " + causeMessage
+        			        + ((causeMessage.length() != 0 && message.length() != 0) ? ", " : "") + message);
         			result = message;
                 }
 				getPrintStream().print(TextUtils.getText("plugins/ScriptEditor/window.Result") + result);

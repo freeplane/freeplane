@@ -542,6 +542,7 @@ public class MMapController extends MapController {
 	}
 
 	public MapModel newModel(NodeModel existingNode) {
+	    // use new MMapModel() instead of calling this method with a null arg
 		if(existingNode == null)
 			throw new NullPointerException("null node not allowed.");
 		final MMapModel mindMapMapModel = new MMapModel();
@@ -636,6 +637,10 @@ public class MMapController extends MapController {
 	@Deprecated
 	@Override
     public boolean newMap(URL url) throws FileNotFoundException, XMLParseException, IOException, URISyntaxException {
+		// load as documentation map if necessary 
+		if(getMModeController().containsExtension(DocuMapAttribute.class)){
+			return newDocumentationMap(url);
+		}
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		if (mapViewManager.tryToChangeToMapView(url))
 			return false;

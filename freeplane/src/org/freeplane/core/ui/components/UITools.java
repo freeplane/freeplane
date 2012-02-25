@@ -44,6 +44,7 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -343,6 +344,19 @@ public class UITools {
 		    TextUtils.getText("error"), JOptionPane.ERROR_MESSAGE);
 	}
 	
+	static public void showMessage(String message, int messageType) {
+		backOtherWindows();
+		JTextArea infoPane = new JTextArea();
+		infoPane.setEditable(false);
+		infoPane.setMargin(new Insets(5,5,5,5));  
+		infoPane.setLineWrap(true);
+		infoPane.setWrapStyleWord(true);
+		infoPane.setText(message);
+		infoPane.setColumns(60);
+		JScrollPane scrollPane = new JScrollPane(infoPane);
+		scrollPane.setPreferredSize(new Dimension(400, 200));
+		JOptionPane.showMessageDialog(getFrame(), scrollPane, "Freeplane", messageType);
+	}
 	public static int showConfirmDialog(final NodeModel node, final Object message, final String title,
 	                                    final int optionType, final int messageType) {
 		final Controller controller = Controller.getCurrentController();

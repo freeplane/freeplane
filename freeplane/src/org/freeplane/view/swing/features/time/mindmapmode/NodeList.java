@@ -834,7 +834,14 @@ class NodeList {
 		layoutConstraints.gridy++;
 		GridBagConstraints treeConstraints = (GridBagConstraints) layoutConstraints.clone();
 		treeConstraints.fill = GridBagConstraints.BOTH;
-		contentPane.add(new JScrollPane(mTreeLabel), treeConstraints);
+		@SuppressWarnings("serial")
+		JScrollPane scrollPane = new JScrollPane(mTreeLabel){
+			@Override
+			public boolean isValidateRoot() {
+				return false;
+			}
+		};
+		contentPane.add(scrollPane, treeConstraints);
 		final AbstractAction exportAction = new AbstractAction(TextUtils.getText("plugins/TimeManagement.xml_Export")) {
 			/**
 			     * 

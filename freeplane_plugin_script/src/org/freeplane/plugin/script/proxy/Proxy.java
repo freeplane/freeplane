@@ -477,7 +477,7 @@ public interface Proxy {
 		 * @since 1.2 */
 		String getAt(int index);
 
-		/** returns the name of the first icon if the node has an icon assigned. Equivalent: <code>node.icons[0]</code>.
+		/** returns the name of the first icon if the node has an icon assigned or null otherwise. Equivalent: <code>node.icons[0]</code>.
 		 * @since 1.2 */
 		String getFirst();
 
@@ -493,6 +493,9 @@ public interface Proxy {
 		 * since it leads to ugly code, e.g. use <code>node.icons.first</code> or <code>node.icons[0]</code> instead of
 		 * <code>node.icons.icons[0]</code>. */
 		List<String> getIcons();
+		
+		/** returns a list of the urls of the icons the node has. */
+		List<URL> getUrls();
 	}
 
 	/** Node's icons: <code>node.icons</code> - read-write. */
