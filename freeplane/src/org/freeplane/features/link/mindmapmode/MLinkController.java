@@ -77,6 +77,7 @@ import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.mindmapmode.DocuMapAttribute;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -997,4 +998,23 @@ public class MLinkController extends LinkController {
     public void loadURI(URI uri) {
 		UrlManager.getController().loadURL(uri);
     }
+	
+	@Override
+	protected void loadURL(final NodeModel node, final ActionEvent e) {
+		ModeController modeController = Controller.getCurrentModeController();
+		// load as documentation map if the node belongs to a documentation map 
+		boolean addDocuMapAttribute = node.getMap().containsExtension(DocuMapAttribute.class)
+				&& ! modeController.containsExtension(DocuMapAttribute.class);
+		if(addDocuMapAttribute){
+			modeController.addExtension(DocuMapAttribute.class, DocuMapAttribute.instance);
+		}
+		try{
+			super.loadURL(node, e);
+		}
+		finally{
+			if(addDocuMapAttribute){
+				modeController.removeExtension(DocuMapAttribute.class);
+			}
+		}
+	}
 }

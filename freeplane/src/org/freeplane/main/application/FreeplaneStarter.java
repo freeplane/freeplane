@@ -82,8 +82,14 @@ public class FreeplaneStarter {
 		final StringBuilder info = new StringBuilder();
 		info.append("freeplane_version = ");
 		info.append(FreeplaneVersion.getVersion());
+		String revision = FreeplaneVersion.getVersion().getRevision();
+		
 		info.append("; freeplane_xml_version = ");
 		info.append(FreeplaneVersion.XML_VERSION);
+		if(! revision.equals("")){
+			info.append("\nbzr revision = ");
+			info.append(revision);
+		}
 		info.append("\njava_version = ");
 		info.append(System.getProperty("java.version"));
 		info.append("; os_name = ");
@@ -124,6 +130,7 @@ public class FreeplaneStarter {
 			controller.addAction(new QuitAction());
 			applicationResourceController.init();
 			LogUtils.createLogger();
+			FreeplaneStarter.showSysInfo();
 			final String lookandfeel = System.getProperty("lookandfeel", applicationResourceController
 			    .getProperty("lookandfeel"));
 			ViewController.setLookAndFeel(lookandfeel);
@@ -234,7 +241,7 @@ public class FreeplaneStarter {
 		if(firstRun && ! dontLoadLastMaps){
 			final File baseDir = new File(FreeplaneStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();
 			final String map = ResourceController.getResourceController().getProperty("first_start_map");
-			final File absolutFile = ConfigurationUtils.getLocalizedFile(baseDir, map, Locale.getDefault().getLanguage()); 
+			final File absolutFile = ConfigurationUtils.getLocalizedFile(new File[]{baseDir}, map, Locale.getDefault().getLanguage()); 
 			loadMaps(controller, new String[]{absolutFile.getAbsolutePath()});
 		}
 		if (null != controller.getMap()) {

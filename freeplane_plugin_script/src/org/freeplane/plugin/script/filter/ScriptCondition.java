@@ -7,6 +7,7 @@ import java.io.PrintStream;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.filter.FilterCancelledException;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -65,7 +66,7 @@ public class ScriptCondition extends ASelectableCondition {
 			if(result == JOptionPane.OK_OPTION)
 				return;
 		}
-		throw new RuntimeException(info);
+		throw new FilterCancelledException(info);
     }
 
 	@Override

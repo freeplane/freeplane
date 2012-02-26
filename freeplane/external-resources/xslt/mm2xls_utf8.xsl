@@ -97,9 +97,10 @@
 	<xsl:template name="output-node-text-as-data">
 		<xsl:choose>
 			<xsl:when test="richcontent[@TYPE='NODE']">
-				<ss:Data ss:Type="String" xmlns="http://www.w3.org/TR/REC-html40">
+				<xsl:element name="ss:Data" namespace="urn:schemas-microsoft-com:office:spreadsheet">
+					<xsl:attribute name="ss:Type">String</xsl:attribute>
 					<xsl:copy-of select="richcontent[@TYPE='NODE']/html/body/*" />
-				</ss:Data>
+				</xsl:element>
 			</xsl:when>
 			<xsl:otherwise>
 				<Data ss:Type="String">
@@ -114,10 +115,10 @@
 	<xsl:template name="output-note-text-as-comment">
 		<xsl:if test="richcontent[@TYPE='NOTE' or @TYPE='DETAILS']">
 			<Comment>
-				<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+				<xsl:element name="ss:Data" namespace="urn:schemas-microsoft-com:office:spreadsheet">
 					<xsl:copy-of select="richcontent[@TYPE='DETAILS']/html/body/*" />
 					<xsl:copy-of select="richcontent[@TYPE='NOTE']/html/body/*" />
-				</ss:Data>
+				</xsl:element>
 			</Comment>
 		</xsl:if>
 	</xsl:template>

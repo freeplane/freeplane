@@ -19,8 +19,14 @@
  */
 package org.freeplane.core.util;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.Properties;
 import java.util.StringTokenizer;
+
+import org.freeplane.core.resources.ResourceController;
+
+import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 
 /** provides access to the current Freeplane version. In scripts use <code>Controller.freeplaneVersion</code>.
  * For usage instructions see {@link #compareTo(FreeplaneVersion)}. */
@@ -28,8 +34,7 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 	private static final FreeplaneVersion VERSION = FreeplaneVersion.loadVersion();
 	public static final String VERSION_KEY = "freeplane_version";
 	public static final String VERSION_PROPERTIES = "/version.properties";
-	public static final String XML_VERSION = "0.9.0";
-	public static String DIALECT_VERSION = String.format("freeplane %d.%d.%d", VERSION.getMaj(), VERSION.getMid(), 0);
+	public static final String XML_VERSION = "freeplane 1.2.0";
 	/** major version, the 1 in "1.0.38 rc" */
 	private final int mMaj;
 	/** mid version, the 0 in "1.0.38 rc" */
@@ -40,6 +45,8 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 	private final int mNum;
 	/** release type e.g. "", "rc", "beta", "alpha" or "nightly_build". */
 	private String mType;
+	
+	private final String revision;
 
 	public static FreeplaneVersion getVersion() {
 		return VERSION;
@@ -63,7 +70,7 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 			final int min = info.length < 3 ? 0 : Integer.parseInt(info[2]);
 			final String type = info.length < 4 ? "" : info[3];
 			final int num = info.length < 5 ? 0 : Integer.parseInt(info[4]);
-			return new FreeplaneVersion(maj, mid, min, type, num);
+			return new FreeplaneVersion(maj, mid, min, type, num, loadRevision());
 		}
 		catch (final NumberFormatException e) {
 			throw new IllegalArgumentException("Wrong version token: " + pString, e);
@@ -98,18 +105,23 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 	public String getType() {
 		return mType;
 	}
+	
+	public String getRevision(){
+		return revision;
+	}
 
-	public FreeplaneVersion(final int pMaj, final int pMid, final int pMin, final String pType, final int pNum) {
+	public FreeplaneVersion(final int pMaj, final int pMid, final int pMin, final String pType, final int pNum, final String revision) {
 		super();
 		mMaj = pMaj;
 		mMid = pMid;
 		mMin = pMin;
 		mType = pType;
 		mNum = pNum;
+		this.revision = revision;
 	}
 
 	public FreeplaneVersion(final int pMaj, final int pMid, final int pMin) {
-		this(pMaj, pMid, pMin, "", 0);
+		this(pMaj, pMid, pMin, "", 0, "");
 	}
 
 	/** Use it like this:
@@ -185,5 +197,23 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 	
 	public boolean isNewerThan(FreeplaneVersion freeplaneVersion) {
 		return compareTo(freeplaneVersion) > 0;
+	}
+
+	private static String loadRevision() {
+		final URL bzrInfo = ResourceController.getResourceController().getResource("/bzrinfo.properties");
+		final String revision;
+		if(bzrInfo != null){
+			Properties bzrProps = new Properties();
+			try {
+		        bzrProps.load(bzrInfo.openStream());
+		    }
+		    catch (IOException e) {
+		    }
+			revision = bzrProps.getProperty("bzr-revision-id", "");
+		}
+		else{
+			revision = "";
+		}
+		return revision;
 	}
 }

@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.PrivateKey;
 import java.security.Signature;
 import java.security.cert.Certificate;
@@ -217,7 +218,8 @@ class SignedScriptHandler {
 			return content.toString();
 		}
 		catch (final Exception e) {
-			LogUtils.severe(e);
+			if(! (e instanceof KeyStoreException))
+				LogUtils.severe(e);
 			UITools.errorMessage(e.getLocalizedMessage());
 		}
 		return content.mScript;

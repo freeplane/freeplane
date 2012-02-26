@@ -89,7 +89,6 @@
 				<menu_action action="RequestFeatureAction"/>	
 			</menu_category>				
 			<menu_category name="legacy">
-				<menu_action action="LicenseAction"/>
 				<menu_action action="AboutAction" menu_key="MB_AboutAction"/>	
 			</menu_category>				
 			<menu_action action="GettingStartedAction"/>

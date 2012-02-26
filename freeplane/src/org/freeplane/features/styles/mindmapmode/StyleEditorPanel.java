@@ -33,7 +33,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -91,6 +90,7 @@ import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.MapStyle;
+import org.freeplane.features.text.TextController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.IMapViewManager;
 
@@ -925,11 +925,11 @@ public class StyleEditorPanel extends JPanel {
 			}
 			{
 				String nodeFormat = NodeStyleModel.getNodeFormat(node);
+				String viewNodeFormat = TextController.getController().getNodeFormat(node);
 				mSetNodeFormat.setValue(nodeFormat != null);
-//				LogUtils.info("hi, getNodeFormat(" + node.getUserObject() + ": " + node.getUserObject().getClass());
-				if (nodeFormat == null && node.getUserObject() instanceof IFormattedObject)
-					nodeFormat = ((IFormattedObject)node.getUserObject()).getPattern();
-				mNodeFormat.setValue(nodeFormat);
+				if (viewNodeFormat == null && node.getUserObject() instanceof IFormattedObject)
+					viewNodeFormat = ((IFormattedObject)node.getUserObject()).getPattern();
+				mNodeFormat.setValue(viewNodeFormat);
 			}
 			if(mAutomaticLayoutComboBox != null){
 				final ModeController modeController = Controller.getCurrentModeController();
