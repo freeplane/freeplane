@@ -88,13 +88,8 @@ public class FilterConditionEditor extends JComponent {
 	 */
 	private void setValuesEnterKeyListener()
 	{
-		values.getEditor().addActionListener(new ActionListener()  {
-
-			public void actionPerformed(ActionEvent e) {
-				((QuickFindAction)Controller.getCurrentController().getAction("QuickFindAction.FORWARD")).executeAction(true);
-			}
-			
-		});
+		values.getEditor().removeActionListener(listener);
+		values.getEditor().addActionListener(listener);
 	}
 	
 	public void setSearchingBusyCursor()
@@ -122,6 +117,7 @@ public class FilterConditionEditor extends JComponent {
 		values.setEditable(false);
 		values.setModel(conditionController.getValuesForProperty(selectedProperty, selectedCondition));
 		
+		values.getEditor().removeActionListener(listener);
 		final ComboBoxEditor valueEditor = conditionController.getValueEditor(selectedProperty, selectedCondition);
 		values.setEditor(valueEditor != null ? valueEditor : new FixedBasicComboBoxEditor());
 		setValuesEnterKeyListener();
@@ -148,11 +144,22 @@ public class FilterConditionEditor extends JComponent {
 	final private ExtendedComboBoxModel filteredPropertiesModel;
 	private WeakReference<MapModel> lastMap;
 	final private JComboBox values;
+	private ActionListener listener;
+	private ActionListener actionListener;
 	public FilterConditionEditor(final FilterController filterController) {
 		this(filterController, 5, false);
 	}
 	public FilterConditionEditor(final FilterController filterController, final int borderWidth, final boolean horizontal) {
 		super();
+		listener = new ActionListener()  {
+
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			// TODO
+		};
+
 		setLayout(new GridBagLayout());
 		final GridBagConstraints gridBagConstraints = new GridBagConstraints();
 		gridBagConstraints.fill = GridBagConstraints.BOTH;
@@ -276,6 +283,11 @@ public class FilterConditionEditor extends JComponent {
 			filteredPropertiesModel.setExtensionList(null);
 		}
 		lastMap = new WeakReference<MapModel>(newMap);
+	}
+
+	public void setActionListener(ActionListener actionListener) {
+		this.actionListener = actionListener;
+		
 	}
 
 }
