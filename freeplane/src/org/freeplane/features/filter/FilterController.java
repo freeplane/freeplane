@@ -22,6 +22,7 @@ package org.freeplane.features.filter;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -199,6 +200,14 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		controller.getMapViewManager().addMapSelectionListener(this);
         final AFreeplaneAction showFilterToolbar = new ToggleFilterToolbarAction("ShowFilterToolbarAction", "/filter_toolbar");
 		quickEditor = new FilterConditionEditor(this, 0, true);
+		quickEditor.setActionListener( new ActionListener()  {
+
+			public void actionPerformed(ActionEvent e) {
+				((QuickFindAction)Controller.getCurrentController().getAction("QuickFindAction.FORWARD")).executeAction(true);
+			}
+			
+		}
+		);
 		controller.addAction(showFilterToolbar);
 		controller.addAction(new ApplyNoFilteringAction(this));
 		controller.addAction(new ApplySelectedViewConditionAction(this));
