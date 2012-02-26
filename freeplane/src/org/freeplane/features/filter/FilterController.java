@@ -200,7 +200,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		controller.getMapViewManager().addMapSelectionListener(this);
         final AFreeplaneAction showFilterToolbar = new ToggleFilterToolbarAction("ShowFilterToolbarAction", "/filter_toolbar");
 		quickEditor = new FilterConditionEditor(this, 0, true);
-		quickEditor.setActionListener( new ActionListener()  {
+		quickEditor.setEnterKeyActionListener( new ActionListener()  {
 
 			public void actionPerformed(ActionEvent e) {
 				((QuickFindAction)Controller.getCurrentController().getAction("QuickFindAction.FORWARD")).executeAction(true);
