@@ -26,6 +26,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -389,9 +390,16 @@ public class NodeStyleController implements IExtension {
 	public int getMaxWidth(NodeModel node) {
 		final MapModel map = node.getMap();
 		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
-		final Collection<IStyle> style = styleController.getStyles(node);
-		final int maxTextWidth = getStyleMaxNodeWidth(map, style);
-		return maxTextWidth;
+		//DOCEAR - FIXME: asynch threads collide while reseting and reading nodestyle
+		try {
+			final Collection<IStyle> style = styleController.getStyles(node);
+			final int maxTextWidth = getStyleMaxNodeWidth(map, style);
+			return maxTextWidth;
+		}
+		catch(Exception ex) {
+			LogUtils.warn(ex);
+			return getDefaultMaxNodeWidth();
+		}
     }
 
 	public int getMinWidth(NodeModel node) {
