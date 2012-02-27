@@ -115,7 +115,8 @@ public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IW
 			modeController.addAction(new NodeEnableMonitoringAction());
 			modeController.addAction(new NodeOpenLocationAction());
 			
-			modeController.addAction(new NodeCutAction());
+			//FIXME: #332
+//			modeController.addAction(new NodeCutAction());
 			modeController.addAction(new NodeRenameAction());
 			modeController.addAction(new NodeCopyAction());
 			modeController.addAction(new NodePasteAction());
