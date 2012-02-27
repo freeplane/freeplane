@@ -7,6 +7,7 @@ package org.freeplane.plugin.workspace.components.dialog;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -48,7 +49,7 @@ public class WorkspaceNewFolderPanel extends JPanel implements ActionListener {
 	private JLabel lblFolder;
 	private JButton button;
 	JLabel lblName;
-	private JTextField txtGroupname;
+	private JTextField txtFoldername;
 	
 	
 	/***********************************************************************************
@@ -94,9 +95,9 @@ public class WorkspaceNewFolderPanel extends JPanel implements ActionListener {
 			lblName.setHorizontalAlignment(SwingConstants.RIGHT);
 			add(lblName, "2, 4, right, default");
 			
-			txtGroupname = new JTextField();
-			txtGroupname.setText(TextUtils.getText("workspace.action.node.new.folder.dialog.input1.default"));
-			add(txtGroupname, "4, 4, 5, 1, fill, default");
+			txtFoldername = new JTextField();
+			txtFoldername.setText(TextUtils.getText("workspace.action.node.new.folder.dialog.input1.default"));
+			add(txtFoldername, "4, 4, 5, 1, fill, default");
 		}
 		
 		JSeparator separator = new JSeparator();
@@ -125,8 +126,17 @@ public class WorkspaceNewFolderPanel extends JPanel implements ActionListener {
 					chooser.setFileHidingEnabled(true);
 					int result = chooser.showOpenDialog(UITools.getFrame());
 					if(result == JFileChooser.APPROVE_OPTION) {
+						File oldPath = new File("");
+						try {
+							oldPath = new File(textField.getText());
+						}
+						catch (Exception ex) {
+						}
 						textField.setText(chooser.getSelectedFile().getPath());
-						txtGroupname.setText(chooser.getSelectedFile().getName());
+						String folderName = txtFoldername.getText();
+						if (folderName.length()==0 || folderName.equals(TextUtils.getText("workspace.action.node.new.folder.dialog.input1.default")) || oldPath.getName().equals(folderName) ) {
+							txtFoldername.setText(chooser.getSelectedFile().getName());
+						}
 					}
 				}
 			});
@@ -153,7 +163,7 @@ public class WorkspaceNewFolderPanel extends JPanel implements ActionListener {
 	 **********************************************************************************/
 
 	public String getFolderName() {
-		return txtGroupname.getText();
+		return txtFoldername.getText();
 	}
 	
 	public String getLinkPath() {
