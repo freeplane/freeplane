@@ -59,6 +59,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
@@ -198,8 +199,8 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	public void onPreNodeDelete(final NodeModel oldParent, final NodeModel selectedNode, final int index) {
 	}
 
-	public void open(final String restoreable) throws FileNotFoundException, XMLParseException, MalformedURLException,
-	        IOException, URISyntaxException {
+	public void open(final String restoreable) throws FileNotFoundException, MalformedURLException,
+	        IOException, URISyntaxException, XMLException {
 		final boolean changedToMapView = tryToChangeToMapView(restoreable);
 		if ((restoreable != null) && !(changedToMapView)) {
 			final StringTokenizer token = new StringTokenizer(restoreable, ":");

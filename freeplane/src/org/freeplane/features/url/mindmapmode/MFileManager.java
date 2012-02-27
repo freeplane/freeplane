@@ -365,7 +365,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	        URISyntaxException {
 		final File file = Compat.urlToFile(url);
 		if(file == null){
-			super.load(url, map);
+			super.loadCatchExceptions(url, map);
 			return;
 		}
 		if (!file.exists()) {
@@ -872,17 +872,11 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		try {
 			final File file = defaultTemplateFile();
 			if (file != null) {
-				try {
-					load(Compat.fileToUrl(file), target);
-					return;
-				}
-				catch (Exception e) {
-					UITools.errorMessage(e.getMessage());
-					LogUtils.warn(e);
-				}
+				loadCatchExceptions(Compat.fileToUrl(file), target);
+				return;
 			}
 			final URL url = ResourceController.getResourceController().getResource("/styles/viewer_standard.mm");
-			load(url, target);
+			loadCatchExceptions(url, target);
 		}
 		catch (Exception e) {
 			LogUtils.severe(e);

@@ -43,9 +43,10 @@ class DocumentationAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final ResourceController resourceController = ResourceController.getResourceController();
-		final File baseDir = new File(resourceController.getResourceBaseDir()).getAbsoluteFile().getParentFile();
+		final File userDir = new File(resourceController.getFreeplaneUserDirectory());
+		final File baseDir = new File(resourceController.getInstallationBaseDir());
 		final String languageCode = resourceController.getLanguageCode();
-		final File file = ConfigurationUtils.getLocalizedFile(baseDir, document, languageCode);
+		final File file = ConfigurationUtils.getLocalizedFile(new File[]{userDir, baseDir}, document, languageCode);
 		try {
 			final URL endUrl = file.toURL();
 			SwingUtilities.invokeLater(new Runnable() {

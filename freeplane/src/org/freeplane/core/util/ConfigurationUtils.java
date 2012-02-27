@@ -25,23 +25,27 @@ public class ConfigurationUtils {
 		        : CONFIG_LIST_VALUE_SEPARATOR_ONE_OR_MORE);
 	}
 
-	public static File getLocalizedFile(final File baseDir, final String document, final String languageCode) {
-        final File file;
+	public static File getLocalizedFile(final File[] baseDirs, final String document, final String languageCode) {
     	final int extPosition = document.lastIndexOf('.');
+    	final String localizedDocument;
     	if (extPosition != -1) {
-    		final String map = document.substring(0, extPosition) + "_" + languageCode
-    		        + document.substring(extPosition);
-    		final File localFile = new File(baseDir, map);
-    		if (localFile.canRead()) {
-    			file = localFile;
-    		}
-    		else {
-    			file = new File(baseDir, document);
+    		localizedDocument = document.substring(0, extPosition) + "_" + languageCode + document.substring(extPosition);
+    	}
+    	else{
+    		localizedDocument = document;
+    	}
+    	for(File baseDir : baseDirs){
+    		if(baseDir != null){
+    			final File localFile = new File(baseDir, localizedDocument);
+    			if (localFile.canRead()) {
+    				return localFile;
+    			}
+    			final File file = new File(baseDir, document);
+    			if (file.canRead()) {
+    				return file;
+    			}
     		}
     	}
-    	else {
-    		file = new File(baseDir, document);
-    	}
-        return file;
+        return null;
     }
 }

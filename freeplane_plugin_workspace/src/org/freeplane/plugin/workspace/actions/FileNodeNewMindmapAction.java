@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import org.apache.commons.io.FilenameUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mapio.mindmapmode.MMapIO;
@@ -20,6 +21,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.io.IFileSystemRepresentation;
@@ -76,7 +78,11 @@ public class FileNodeNewMindmapAction extends AWorkspaceAction {
 		Controller.getCurrentController().getMap().getRootNode().setText(FilenameUtils.getBaseName(f.getName()));
 		mapIO.save(Controller.getCurrentController().getMap(), f);
 		Controller.getCurrentController().close(true);
-		mapIO.newMap(f.toURL());
+		try {
+			mapIO.newMap(f.toURL());
+		} catch (XMLException e) {
+			LogUtils.severe(e);
+		}
 		
 		return true;
 	}

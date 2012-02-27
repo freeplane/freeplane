@@ -23,6 +23,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -539,6 +540,7 @@ public class UITools {
     	button.setOpaque(false);
     	button.setBackground(Color.lightGray);
     	button.setFocusable(false);
+    	button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     	button.addActionListener(new ActionListener() {
     		public void actionPerformed(ActionEvent e) {
     			final ModeController modeController = Controller.getCurrentModeController();
