@@ -117,6 +117,11 @@ public class WorkspaceChangeListener implements IWorkspaceEventListener {
 			createAndCopy(_welcomeFile, "/conf/docear-welcome.mm");			
 		}
 		
+		File _docearLogo = new File(WorkspaceUtils.getDataDirectory(), "/help/docear-logo.png");
+		if(!_docearLogo.exists()) {
+			createAndCopy(_docearLogo, "/images/docear_logo.png");			
+		}
+		
 		
 		File libPath = WorkspaceUtils.resolveURI(DocearController.getController().getLibraryPath());
 		

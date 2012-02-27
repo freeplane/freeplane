@@ -274,7 +274,7 @@
 <node TEXT="Just copy and paste or drag&amp;drop an image to the mind map" ID="ID_452528799" CREATED="1323258499023" MODIFIED="1323258510560"/>
 <node TEXT="Example" ID="ID_1279466317" CREATED="1323258482873" MODIFIED="1323258489257">
 <node TEXT="Docear Logo" ID="ID_1178635212" CREATED="1323258343803" MODIFIED="1323258361211">
-<hook URI="../../docear_resources/welcome_files/docear_logo.png" SIZE="1.0" NAME="ExternalObject"/>
+<hook URI="docear-logo.png" SIZE="1.0" NAME="ExternalObject"/>
 </node>
 </node>
 </node>
