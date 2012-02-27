@@ -37,7 +37,8 @@ import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 
-class AboutAction extends AFreeplaneAction {
+//DOCEAR
+public class AboutAction extends AFreeplaneAction {
 	/**
 	 * 
 	 */
@@ -46,7 +47,8 @@ class AboutAction extends AFreeplaneAction {
 	/**
 	 *
 	 */
-	AboutAction() {
+	//DOCEAR
+	public AboutAction() {
 		super("AboutAction");
 	}
 

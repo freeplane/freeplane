@@ -13,6 +13,7 @@ import java.util.Properties;
 
 import javax.swing.SwingUtilities;
 
+import org.docear.plugin.core.actions.DocearAboutAction;
 import org.docear.plugin.core.actions.DocearLicenseAction;
 import org.docear.plugin.core.actions.DocearOpenUrlAction;
 import org.docear.plugin.core.actions.DocearQuitAction;
@@ -181,7 +182,7 @@ public class CoreConfiguration extends ALanguageController {
 	private void replaceActions() {
 		
 		ResourceController resourceController = ResourceController.getResourceController();
-
+		AFreeplaneAction action;
 		resourceController.setProperty(WEB_FREEPLANE_LOCATION, resourceController.getProperty(WEB_DOCEAR_LOCATION));
 		resourceController.setProperty(BUG_TRACKER_LOCATION, resourceController.getProperty(DOCEAR_BUG_TRACKER_LOCATION));
 		resourceController.setProperty(HELP_FORUM_LOCATION, resourceController.getProperty("docear_helpForumLocation"));
@@ -193,7 +194,9 @@ public class CoreConfiguration extends ALanguageController {
 		replaceAction(REPORT_BUG_ACTION, new DocearOpenUrlAction(REPORT_BUG_ACTION, resourceController.getProperty(BUG_TRACKER_LOCATION)));
 		replaceAction(OPEN_FREEPLANE_SITE_ACTION, new DocearOpenUrlAction(OPEN_FREEPLANE_SITE_ACTION, resourceController.getProperty(WEB_FREEPLANE_LOCATION)));
 		replaceAction(DOCUMENTATION_ACTION, new DocearOpenUrlAction(DOCUMENTATION_ACTION, resourceController.getProperty(WEB_DOCU_LOCATION)));
-		replaceAction(LICENSE_ACTION, new DocearLicenseAction(LICENSE_ACTION));
+		
+		action = new DocearAboutAction();
+		replaceAction(action.getKey(), action);
 		
 	}
 
@@ -216,29 +219,7 @@ public class CoreConfiguration extends ALanguageController {
 					}
 				}
 			}
-		}
-		Properties about_props = new Properties();
-		try {
-			about_props.load(this.getClass().getResourceAsStream("/about.properties"));
-		}
-		catch (IOException e1) {
-			LogUtils.warn("DOCEAR: could not load core \"about\" properties");
-		}
-		String programmer = about_props.getProperty("docear_programmer");
-		String copyright = about_props.getProperty("docear_copyright");
-		String version	= resourceController.getProperty("docear_version");
-		String status	= resourceController.getProperty("docear_status");
-		
-		String aboutText = TextUtils.getRawText("docear_about");
-		MessageFormat formatter;
-        try {
-            formatter = new MessageFormat(aboutText);
-            aboutText = formatter.format(new Object[]{ version+" "+status, copyright, programmer});
-        }
-        catch (IllegalArgumentException e) {
-            LogUtils.severe("wrong format " + aboutText + " for property " + "docear_about", e);
-        }		
-		bundles.putResourceString(ABOUT_TEXT, aboutText);
+		}		
 	}
 
 	private void replaceAction(String actionKey, AFreeplaneAction action) {
