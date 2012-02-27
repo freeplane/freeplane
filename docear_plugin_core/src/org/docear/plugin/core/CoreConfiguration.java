@@ -99,7 +99,7 @@ public class CoreConfiguration extends ALanguageController {
 	
 	private void init(ModeController modeController) {
 		DocearController.getController().getDocearEventLogger().write(this, DocearEventLogger.DocearEvent.APPLICATION_STARTED, "");
-		MapVersionInterpreter.addMapVersionInterpreter(new MapVersionInterpreter("0.9.0\" software_name=\"SciPlore_", false, true, "SciploreMM", "http://sciplore.org", null, new MapConverter()));
+		MapVersionInterpreter.addMapVersionInterpreter(new MapVersionInterpreter("0.9.0\" software_name=\"SciPlore_", false, false, "SciploreMM", "http://sciplore.org", null, new MapConverter()));
 		
 		// set up context menu for workspace
 		WorkspaceController.getController().addWorkspaceListener(WORKSPACE_CHANGE_LISTENER);
