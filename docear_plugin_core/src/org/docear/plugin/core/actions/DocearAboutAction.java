@@ -68,7 +68,7 @@ public class DocearAboutAction extends AboutAction {
 		addFormattedMessage(box, "java_version", Compat.JAVA_VERSION);
 		addFormattedMessage(box, "main_resource_directory", ResourceController.getResourceController().getResourceBaseDir());
 		addUri(box, resourceController.getProperty("license_url"), TextUtils.getText("license"));
-		addMessage(box, TextUtils.getText("license_text"));
+		addMessage(box, TextUtils.removeTranslateComment(TextUtils.getText("license_text")));
 		
 		JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getViewport(), box, TextUtils
 		    .getText("AboutAction.text"), JOptionPane.INFORMATION_MESSAGE);
