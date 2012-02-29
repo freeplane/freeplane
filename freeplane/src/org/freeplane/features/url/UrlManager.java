@@ -272,22 +272,12 @@ public class UrlManager implements IExtension {
 		}
 	}
 
-	/**@deprecated -- use {@link MapIO#load(URL url, MapModel map)} */
+	/**@deprecated -- use {@link MapIO#loadCatchExceptions(URL url, MapModel map)} */
 	@Deprecated
-	public boolean load(final URL url, final MapModel map){
-		setURL(map, url);
+	public boolean loadCatchExceptions(final URL url, final MapModel map){
 		InputStreamReader urlStreamReader = null;
 		try {
-			urlStreamReader = new InputStreamReader(url.openStream());
-		}
-		catch (final Exception ex) {
-			UITools.errorMessage(TextUtils.format("url_open_error", url.toString()));
-			LogUtils.warn(ex.getMessage());
-			return false;
-		}
-		try {
-			final ModeController modeController = Controller.getCurrentModeController();
-			modeController.getMapController().getMapReader().createNodeTreeFromXml(map, urlStreamReader, Mode.FILE);
+			urlStreamReader = load(url, map);
 			return true;
 		}
 		catch (final XMLException ex) {
@@ -306,10 +296,22 @@ public class UrlManager implements IExtension {
 		return false;
 	}
 
+	/**@deprecated -- use {@link MapIO#load(URL url, MapModel map)} */
+	@Deprecated
+	public InputStreamReader load(final URL url, final MapModel map)
+			throws IOException, XMLException {
+		InputStreamReader urlStreamReader;
+		setURL(map, url);
+		urlStreamReader = new InputStreamReader(url.openStream());
+		final ModeController modeController = Controller.getCurrentModeController();
+		modeController.getMapController().getMapReader().createNodeTreeFromXml(map, urlStreamReader, Mode.FILE);
+		return urlStreamReader;
+	}
+
     /**@deprecated -- use {@link MapIO#load(URL url, MapModel map)} */
     @Deprecated
     public boolean loadImpl(final URL url, final MapModel map){
-        return load(url, map);
+        return loadCatchExceptions(url, map);
     }
 
     /**@deprecated -- use LinkController*/
@@ -469,7 +471,7 @@ public class UrlManager implements IExtension {
 	@Deprecated
 	public void loadDefault(MapModel target) {
 	    try {
-	    	load(ResourceController.getResourceController().getResource("/styles/viewer_standard.mm"), target);
+	    	loadCatchExceptions(ResourceController.getResourceController().getResource("/styles/viewer_standard.mm"), target);
         }
          catch (Exception e) {
 	        e.printStackTrace();

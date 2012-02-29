@@ -11,13 +11,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.docear.plugin.core.features.AnnotationID;
+import org.docear.plugin.core.features.AnnotationModel;
+import org.docear.plugin.core.features.IAnnotation;
+import org.docear.plugin.core.features.IAnnotation.AnnotationType;
+import org.docear.plugin.core.mindmap.AnnotationController;
+import org.docear.plugin.core.mindmap.IAnnotationImporter;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
-import org.docear.plugin.pdfutilities.features.AnnotationController;
-import org.docear.plugin.pdfutilities.features.AnnotationID;
-import org.docear.plugin.pdfutilities.features.AnnotationModel;
-import org.docear.plugin.pdfutilities.features.IAnnotation;
-import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
@@ -41,7 +42,6 @@ import de.intarsys.pdf.pd.PDAnyAnnotation;
 import de.intarsys.pdf.pd.PDDocument;
 import de.intarsys.pdf.pd.PDExplicitDestination;
 import de.intarsys.pdf.pd.PDHighlightAnnotation;
-import de.intarsys.pdf.pd.PDObject;
 import de.intarsys.pdf.pd.PDOutline;
 import de.intarsys.pdf.pd.PDOutlineItem;
 import de.intarsys.pdf.pd.PDOutlineNode;
@@ -50,17 +50,14 @@ import de.intarsys.pdf.pd.PDTextAnnotation;
 import de.intarsys.pdf.pd.PDTextMarkupAnnotation;
 import de.intarsys.tools.locator.FileLocator;
 
-public class PdfAnnotationImporter {
+public class PdfAnnotationImporter implements IAnnotationImporter {
 	
 	private URI currentFile;
-	private MapModel map;
 	private boolean importAll = false;
 	private boolean setPDObject = false;
 	
 	public PdfAnnotationImporter(){
-		if(Controller.getCurrentController() != null && Controller.getCurrentController().getMap() != null){
-			this.map = Controller.getCurrentController().getMap();
-		}
+		AnnotationController.addAnnotationImporter(this);
 	}
 	
 	
@@ -154,13 +151,13 @@ public class PdfAnnotationImporter {
 			this.setPDObject(false);
 			AnnotationModel result = this.searchAnnotation(annotations, annotation);
 			if(result != null){
-				PDObject pdObject = result.getPDObject();
-				if(pdObject != null && pdObject instanceof PDOutlineItem){
-					((PDOutlineItem)pdObject).setTitle(newTitle);
+				Object annotationObject = result.getAnnotationObject();
+				if(annotationObject != null && annotationObject instanceof PDOutlineItem){
+					((PDOutlineItem)annotationObject).setTitle(newTitle);
 					ret = true;
 				}
-				if(pdObject != null && pdObject instanceof PDAnnotation){
-					((PDAnnotation)pdObject).setContents(newTitle);
+				if(annotationObject != null && annotationObject instanceof PDAnnotation){
+					((PDAnnotation)annotationObject).setContents(newTitle);
 					ret = true;
 				}
 				document.save();		
@@ -182,10 +179,11 @@ public class PdfAnnotationImporter {
 
 
 	public PDDocument getPDDocument(URI uri) throws IOException,	COSLoadException, COSRuntimeException {
-		if(uri == null || Tools.getFilefromUri(Tools.getAbsoluteUri(uri, this.map)) == null || !Tools.exists(uri, this.map) || !new PdfFileFilter().accept(uri)){
+		MapModel map = Controller.getCurrentController().getMap();
+		if(uri == null || Tools.getFilefromUri(Tools.getAbsoluteUri(uri, map)) == null || !Tools.exists(uri, map) || !new PdfFileFilter().accept(uri)){
 			return null;
 		}
-		File file = Tools.getFilefromUri(Tools.getAbsoluteUri(uri, this.map));
+		File file = Tools.getFilefromUri(Tools.getAbsoluteUri(uri, map));
 		
 		FileLocator locator = new FileLocator(file);
 		
@@ -206,7 +204,7 @@ public class PdfAnnotationImporter {
 			Integer objectNumber = child.cosGetObject().getIndirectObject().getObjectNumber();
 			AnnotationModel annotation = new AnnotationModel(new AnnotationID(this.currentFile, objectNumber));
 			if(this.setPDObject()){
-				annotation.setPDObject(child);
+				annotation.setAnnotationObject(child);
         	}
 			annotation.setTitle(child.getTitle());			
 			annotation.setAnnotationType(getAnnotationType(child));			
@@ -297,7 +295,7 @@ public class PdfAnnotationImporter {
     			AnnotationModel pdfAnnotation = new AnnotationModel(new AnnotationID(this.currentFile, objectNumber));            	
             	pdfAnnotation.setTitle(annotation.getContents()); 
             	if(this.setPDObject()){
-            		pdfAnnotation.setPDObject(annotation);
+            		pdfAnnotation.setAnnotationObject(annotation);
             	}
             	pdfAnnotation.setAnnotationType(AnnotationType.COMMENT);            	
             	pdfAnnotation.setGenerationNumber(annotation.cosGetObject().getIndirectObject().getGenerationNumber());
@@ -315,7 +313,7 @@ public class PdfAnnotationImporter {
             		System.out.println(test);
             	}  */ 
             	if(this.setPDObject()){
-            		pdfAnnotation.setPDObject(annotation);
+            		pdfAnnotation.setAnnotationObject(annotation);
             	}
             	pdfAnnotation.setAnnotationType(AnnotationType.HIGHLIGHTED_TEXT);             	
             	pdfAnnotation.setGenerationNumber(annotation.cosGetObject().getIndirectObject().getGenerationNumber());
@@ -433,9 +431,9 @@ public class PdfAnnotationImporter {
 	         }	                 
 	    }
 	    return null;
-	}	
+	}
 
-	public AnnotationModel searchAnnotation(URI uri, NodeModel node) throws IOException, COSLoadException, COSRuntimeException {
+	public AnnotationModel searchAnnotation(URI uri, NodeModel node) throws Exception {
 		this.currentFile = uri;
 		if(!this.isImportAll()) this.setImportAll(true);
 		List<AnnotationModel> annotations = this.importAnnotations(uri);
@@ -487,12 +485,5 @@ public class PdfAnnotationImporter {
 		this.importAll = importAll;
 	}
 
-	public MapModel getMap() {
-		return map;
-	}
-
-	public void setMap(MapModel map) {
-		this.map = map;
-	}
 
 }

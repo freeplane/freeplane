@@ -1,0 +1,14 @@
+<workspace name="My Workspace" version="1.0" meta="docear">
+	<folder name="Library" type="library" system="true">
+        <link type="incoming" name="Incoming" path="workspace:/@@PROFILENAME@@/library/incoming.mm" window="new" system="true" />
+        <link type="literature_annotations" name="Literature &amp; Annotations" path="workspace:/@@PROFILENAME@@/library/literature_and_annotations.mm" system="true" />
+        <link type="my_publications" name="My Publications" path="workspace:/@@PROFILENAME@@/library/my_publications.mm" system="true" />        
+    </folder>
+    <folder type="literature_repository" path="" system="true" />
+    <folder type="projects" name="Projects" path="" monitor="false" system="true"/>
+    <link type="references" path="" system="true" />
+    
+    <folder type="virtual" name="Miscellaneous" >     
+    </folder>
+
+</workspace>

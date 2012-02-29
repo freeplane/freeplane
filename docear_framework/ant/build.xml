@@ -1,4 +1,4 @@
-<project name="freeplane" default="dist" basedir="..">
+<project name="freeplane" default="docear-bin" basedir="..">
 
     <scriptdef name="toLowerCase" language="javascript">
            <classpath>
@@ -526,28 +526,25 @@
 	</target>
 
 	<target name="dist" depends="bzr_version_info, binzip, srczip, installer, portableinstaller, zip4mac, dmg4mac, javadoc">
-		<copy file="${workspace}/freeplane/doc/history_en.txt"
-			todir="${dist}" />
-		<copy file="${build}/bzrinfo.txt"
-			tofile="${dist}/bzrinfo-${ver}.txt"
-			failonerror="false"/>
-		<copy file="${workspace}/freeplane_plugin_script/dist/script-api.zip"
-			tofile="${dist}/script-api-${ver}.zip"
-			failonerror="false"/>		
+		<copy file="${workspace}/freeplane/doc/history_en.txt"	todir="${dist}" />
+		<copy file="${build}/bzrinfo.txt" tofile="${dist}/bzrinfo-${ver}.txt" failonerror="false"/>
+		<copy file="${workspace}/freeplane_plugin_script/dist/script-api.zip" tofile="${dist}/script-api-${ver}.zip" failonerror="false"/>		
 	</target>
 	
-	<target name="dist+installer" depends="bzr_version_info, binzip, srczip, installer, portableinstaller, zip4mac, dmg4mac, javadoc">
-	        <copy file="${workspace}/freeplane/doc/history_en.txt"
-	            todir="${dist}" />
-	        <copy file="${build}/bzrinfo.txt"
-	            tofile="${dist}/bzrinfo-${ver}.txt"
-	            failonerror="false"/>
-	        <copy file="${workspace}/freeplane_plugin_script/dist/script-api.zip"
-	            tofile="${dist}/script-api-${ver}.zip"
-	            failonerror="false"/>
-	        <nsis script="${root}/windows-installer/docear_windows_installer.nsi" verbosity="4" out="${root}/dist/nsis-build.log" noconfig="yes">
-	            <define name="VERSION" value="${ver_docear}"/>          
-	        </nsis>
+	<target name="docear-mac" depends="docear-bin, zip4mac, dmg4mac">
+	</target>
+	
+	<target name="docear-nsis" depends="docear-bin">
+		<nsis script="${root}/windows-installer/docear_windows_installer.nsi" verbosity="4" out="${root}/dist/nsis-build.log" noconfig="yes">
+			<define name="VERSION" value="${ver_docear}"/>
+			<define name="DOCEAR_OUT_FILE" value="docear_setup.exe"/>
+		</nsis>
+	</target>
+	
+	<target name="docear-bin" depends="clean, bzr_version_info, binzip, srczip, javadoc">
+		<copy file="${workspace}/freeplane/doc/history_en.txt" todir="${dist}" />
+		<copy file="${build}/bzrinfo.txt" tofile="${dist}/bzrinfo-${ver}.txt" failonerror="false"/>
+		<copy file="${workspace}/freeplane_plugin_script/dist/script-api.zip" tofile="${dist}/script-api-${ver}.zip" failonerror="false"/>
 	</target>
 
 	<target name="cleandist" depends="clean,dist">

@@ -23,8 +23,7 @@ public class SolveConflictForNode implements ISolveConflictCommand {
 			this.getTarget().fireNodeChanged(event);
 		}
 		else{
-			boolean test = NodeUtils.saveMap(this.getTarget().getMap());
-			System.out.println("Saved in background: " + test); //$NON-NLS-1$
+			NodeUtils.saveMap(this.getTarget().getMap());
 		}
 		
 	}

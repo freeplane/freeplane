@@ -48,6 +48,7 @@ class RemoveIconAction extends AMultipleNodeAction implements IIconInformation {
 	public RemoveIconAction( final int position) {
 		super(position == -1 ? "RemoveIconAction" : "RemoveIcon_" + position + "_Action");
 		this.position = position;
+		putValue(Action.SHORT_DESCRIPTION, getDescription());
 	}
 
 	@Override

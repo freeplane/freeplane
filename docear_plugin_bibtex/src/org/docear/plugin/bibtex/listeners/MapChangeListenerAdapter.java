@@ -8,11 +8,12 @@ import net.sf.jabref.BibtexEntry;
 
 import org.docear.plugin.bibtex.JabRefAttributes;
 import org.docear.plugin.bibtex.ReferencesController;
+import org.docear.plugin.core.features.AnnotationID;
+import org.docear.plugin.core.features.AnnotationModel;
+import org.docear.plugin.core.features.IAnnotation.AnnotationType;
+import org.docear.plugin.core.mindmap.AnnotationController;
 import org.docear.plugin.core.util.Tools;
-import org.docear.plugin.pdfutilities.features.AnnotationController;
-import org.docear.plugin.pdfutilities.features.AnnotationID;
-import org.docear.plugin.pdfutilities.features.AnnotationModel;
-import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
+import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.AMapChangeListenerAdapter;
 import org.freeplane.features.map.MapChangeEvent;
@@ -20,7 +21,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 
-import spl.filter.PdfFileFilter;
 
 public class MapChangeListenerAdapter extends AMapChangeListenerAdapter {
 

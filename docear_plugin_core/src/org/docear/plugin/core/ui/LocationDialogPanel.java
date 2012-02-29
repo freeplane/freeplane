@@ -1,9 +1,10 @@
 /**
- * author: Marcel Genzmehr
+ * 
  * 22.11.2011
  */
 package org.docear.plugin.core.ui;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -16,6 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 
@@ -27,7 +29,8 @@ import com.jgoodies.forms.layout.RowSpec;
 public class LocationDialogPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JTextField txtLocationString;
+	private JTextField txtLocationString;	
+	private JButton button;
 
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -35,19 +38,20 @@ public class LocationDialogPanel extends JPanel {
 	public LocationDialogPanel(URI oldLocation, final boolean directoryOnly, final FileFilter... fileFilters) {
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(150dlu;default):grow"),
+				FormFactory.DEFAULT_COLSPEC,
 				FormFactory.RELATED_GAP_COLSPEC,
 				FormFactory.DEFAULT_COLSPEC,},
 			new RowSpec[] {
 				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
 		txtLocationString = new JTextField();
 		txtLocationString.setText("locationString");
 		add(txtLocationString, "2, 2, fill, default");
-		txtLocationString.setColumns(10);
+		txtLocationString.setColumns(40);
 		
-		JButton button = new JButton("...");
+		button = new JButton(TextUtils.getText("browse"));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = UrlManager.getController().getFileChooser(null, true, true);
@@ -59,6 +63,7 @@ public class LocationDialogPanel extends JPanel {
 				
 				if (txtLocationString != null) {
 					File file = new File(txtLocationString.getText());
+					
 					if (file.exists()) {
 						fileChooser.setSelectedFile(file);
 					}
@@ -88,9 +93,25 @@ public class LocationDialogPanel extends JPanel {
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
-
+	public void setExplanation(Component explanation) {
+		add(explanation, "2, 3, 3, 1");
+	}
+	
+	public void setEnabled(boolean enabled) {
+		this.txtLocationString.setEnabled(enabled);
+		this.button.setEnabled(enabled);
+	}
+	
 	public URI getLocationUri() {
 		return WorkspaceUtils.getWorkspaceRelativeURI(new File(txtLocationString.getText()));
+	}
+	
+	public void setText(String text) {
+		this.txtLocationString.setText(text);
+	}
+	
+	public String getText() {
+		return this.txtLocationString.getText();
 	}
 	
 	/***********************************************************************************

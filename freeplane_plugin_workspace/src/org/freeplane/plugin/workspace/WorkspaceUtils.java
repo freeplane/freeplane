@@ -24,18 +24,22 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mapio.MapIO;
+import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.url.UrlManager;
-import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
-import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
-import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
-import org.freeplane.plugin.workspace.config.node.VirtualFolderNode;
-import org.freeplane.plugin.workspace.dialog.WorkspaceChooserDialogPanel;
-import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
+import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.plugin.workspace.components.dialog.WorkspaceChooserDialogPanel;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.model.WorkspaceIndexedTreeModel;
-import org.freeplane.plugin.workspace.model.node.AFolderNode;
-import org.freeplane.plugin.workspace.model.node.ALinkNode;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.nodes.AFolderNode;
+import org.freeplane.plugin.workspace.nodes.ALinkNode;
+import org.freeplane.plugin.workspace.nodes.DefaultFileNode;
+import org.freeplane.plugin.workspace.nodes.FolderLinkNode;
+import org.freeplane.plugin.workspace.nodes.FolderVirtualNode;
+import org.freeplane.plugin.workspace.nodes.LinkTypeFileNode;
 
 /**
  * 
@@ -49,25 +53,39 @@ public class WorkspaceUtils {
 	 * METHODS
 	 **********************************************************************************/
 
+	/**
+	 * @param file
+	 */
+	public static void showFileNotFoundMessage(File file) {
+		JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.format("workspace.node.link.notfound", 
+				new Object[]{
+					file.isDirectory()? TextUtils.getText("workspace.node.link.notfound.directory"):TextUtils.getText("workspace.node.link.notfound.file")
+							,file.getName()
+							,file.getParent()
+				}));
+	}
+	
 	public static void showWorkspaceChooserDialog() {
-		WorkspaceChooserDialogPanel dialog = new WorkspaceChooserDialogPanel();
+		String defaultLocation = System.getProperty("user.home")+File.separator+ResourceController.getResourceController().getProperty("ApplicationName", "freeplane").toLowerCase()+"_workspace";
+		WorkspaceChooserDialogPanel dialog = new WorkspaceChooserDialogPanel(defaultLocation);
 		
 		JOptionPane.showMessageDialog(UITools.getFrame(), dialog, TextUtils.getRawText("no_location_set"), JOptionPane.PLAIN_MESSAGE);
 	
 		String location = dialog.getLocationPath();
 		String profileName = dialog.getProfileName();
 	
-		if (location.length() == 0 || profileName.length() == 0) {
-			location = "."+File.separator;
+		if (location.length() == 0 || profileName.length() == 0) {			
+			location = defaultLocation;
 		}
 	
-		File f = new File(location);
+		File f = new File(location);		
 		URI newProfileBase = WorkspaceUtils.getURI(new File(f, WorkspaceController.getController().getPreferences().getWorkspaceProfilesRoot()+profileName));
-		if(WorkspaceController.isFirstApplicationStart() || !newProfileBase.equals(getProfileBaseURI())) {
+		
+		if(WorkspaceController.getController().getPreferences().getWorkspaceLocation() == null || !newProfileBase.equals(getProfileBaseURI())) {
 			closeAllMindMaps();	
-			WorkspaceController.getController().getPreferences().setNewWorkspaceLocation(WorkspaceUtils.getURI(f));
+			WorkspaceController.getController().getPreferences().setNewWorkspaceLocation(WorkspaceUtils.getURI(f));			
 			WorkspaceController.getController().getPreferences().setWorkspaceProfile(profileName);
-			WorkspaceController.getController().reloadWorkspace();
+			WorkspaceController.getController().loadWorkspace();
 		}
 	}
 	
@@ -75,6 +93,37 @@ public class WorkspaceUtils {
 		while(Controller.getCurrentController().getMap() != null) {
 			Controller.getCurrentController().close(false);
 		}	
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static boolean createNewMindmap(final File f, String name) {
+		if (!createFolderStructure(f)) {
+			return false;
+		}
+		
+		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);		
+
+		//FIXME - seems not to add the docear map model extension
+		//mapIO.newMapFromDefaultTemplate();
+		final ModeController modeController = Controller.getCurrentController().getModeController(MModeController.MODENAME);
+		MFileManager.getController(modeController).newMapFromDefaultTemplate();
+		
+		MapModel map = Controller.getCurrentController().getMap();
+		map.getRootNode().setText(name);
+		
+		mapIO.save(Controller.getCurrentController().getMap(), f);
+		Controller.getCurrentController().close(false);
+
+		LogUtils.info("New Mindmap Created: " + f.getAbsolutePath());
+		return false;
+	}
+	
+	private static boolean createFolderStructure(final File f) {
+		final File folder = f.getParentFile();
+		if (folder.exists()) {
+			return true;
+		}
+		return folder.mkdirs();
 	}
 	
 	public static void saveCurrentConfiguration() {
@@ -111,13 +160,13 @@ public class WorkspaceUtils {
 		temp.delete();
 	}
 
-	public static PhysicalFolderNode createPhysicalFolderNode(final File path, final AWorkspaceTreeNode parent) {
+	public static FolderLinkNode createPhysicalFolderNode(final File path, final AWorkspaceTreeNode parent) {
 		if (!path.isDirectory()) {
 			LogUtils.warn("the given path is no folder.");
 			return null;
 		}
 
-		PhysicalFolderNode node = new PhysicalFolderNode(AFolderNode.FOLDER_TYPE_PHYSICAL);
+		FolderLinkNode node = new FolderLinkNode(AFolderNode.FOLDER_TYPE_PHYSICAL);
 		String name = path.getName();
 
 		node.setName(name == null ? "directory" : name);
@@ -159,7 +208,7 @@ public class WorkspaceUtils {
 		AWorkspaceTreeNode targetNode = (AWorkspaceTreeNode) (parent == null ? WorkspaceController.getController()
 				.getWorkspaceModel().getRoot() : parent);
 
-		VirtualFolderNode node = new VirtualFolderNode(AFolderNode.FOLDER_TYPE_VIRTUAL);
+		FolderVirtualNode node = new FolderVirtualNode(AFolderNode.FOLDER_TYPE_VIRTUAL);
 		node.setName(folderName);
 
 		addAndSave(targetNode, node);
@@ -168,6 +217,12 @@ public class WorkspaceUtils {
 	public static URI getWorkspaceBaseURI() {
 		URI ret = null;
 		ret = getWorkspaceBaseFile().toURI();
+		return ret;
+	}
+	
+	public static URI getDataDirectoryURI() {
+		URI ret = null;
+		ret = getDataDirectory().toURI();
 		return ret;
 	}
 
@@ -184,11 +239,15 @@ public class WorkspaceUtils {
 	}
 
 	public static File getWorkspaceBaseFile() {
-		String location = ResourceController.getResourceController().getProperty("workspace_location");
-		if (location == null || location.length() == 0) {
-			location = ResourceController.getResourceController().getProperty("workspace_location_new");
+		String location = WorkspaceController.getController().getPreferences().getWorkspaceLocation();
+		if(location == null) {
+			showWorkspaceChooserDialog();
 		}
 		return new File(location);
+	}
+	
+	public static File getDataDirectory() {
+		return new File(getWorkspaceBaseFile(), "_data");
 	}
 
 	public static File getProfileBaseFile() {
@@ -306,7 +365,7 @@ public class WorkspaceUtils {
 	public static AWorkspaceTreeNode findAllowedTargetNode(final AWorkspaceTreeNode node) {
 		AWorkspaceTreeNode targetNode = node;
 		// DOCEAR: drops are not allowed on physical nodes, for the moment
-		while (targetNode instanceof DefaultFileNode || targetNode instanceof PhysicalFolderNode
+		while (targetNode instanceof DefaultFileNode || targetNode instanceof FolderLinkNode
 				|| targetNode instanceof ALinkNode) {
 			targetNode = (AWorkspaceTreeNode) targetNode.getParent();
 		}

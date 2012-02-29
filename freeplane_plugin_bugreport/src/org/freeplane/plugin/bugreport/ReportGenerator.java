@@ -1,12 +1,12 @@
 package org.freeplane.plugin.bugreport;
 
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
@@ -17,7 +17,6 @@ import java.security.MessageDigest;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.StreamHandler;
@@ -158,22 +157,12 @@ public class ReportGenerator extends StreamHandler {
 			sb.append("; freeplane_xml_version = ");
 			sb.append(FreeplaneVersion.XML_VERSION);
 			
-			final URL bzrInfo = ResourceController.getResourceController().getResource("/bzrinfo.properties");
-			if(bzrInfo != null){
-				Properties bzrProps = new Properties();
-				try {
-	                bzrProps.load(bzrInfo.openStream());
-                }
-                catch (IOException e) {
-                }
-				revision = bzrProps.getProperty("bzr-revision-id", "");
+			revision = FreeplaneVersion.getVersion().getRevision();
+			
+			if(! revision.equals("")){
 				sb.append("\nbzr revision = ");
 				sb.append(revision);
 			}
-			else{
-				revision = "";
-			}
-			
 			sb.append("\njava_version = ");
 			sb.append(System.getProperty("java.version"));
 			sb.append("; os_name = ");
@@ -230,14 +219,21 @@ public class ReportGenerator extends StreamHandler {
 			EventQueue.invokeLater(new SubmitStarter());
 		}
 		EventQueue.invokeLater(new Runnable() {
+			@SuppressWarnings("serial")
 			public void run() {
 				errorCounter++;
 				if(TextUtils.getRawText("internal_error_tooltip", null) != null){
 					if(logButton == null){
-						logButton = new JButton();
-						logButton.addActionListener(new LogOpener());
 						final ImageIcon errorIcon = new ImageIcon(ResourceController.getResourceController().getResource(
 								"/images/icons/messagebox_warning.png"));
+						logButton = new JButton(){
+							@Override public Dimension getPreferredSize(){
+								Dimension preferredSize = super.getPreferredSize();
+								preferredSize.height = getIcon().getIconHeight();
+								return preferredSize;
+							}
+						};
+						logButton.addActionListener(new LogOpener());
 						logButton.setIcon(errorIcon);
 						String tooltip = TextUtils.getText("internal_error_tooltip");
 						logButton.setToolTipText(tooltip);

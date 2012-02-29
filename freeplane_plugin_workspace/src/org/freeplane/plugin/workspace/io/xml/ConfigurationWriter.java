@@ -15,13 +15,9 @@ import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
-/**
- * StringWriter writer = new StringWriter();
-			WorkspaceController.getCurrentWorkspaceController().saveConfigurationAsXML(writer);
-			System.out.println(writer.toString());
- */
+
 public class ConfigurationWriter implements IElementWriter, IAttributeWriter {
 
 	final private WriteManager writeManager;
@@ -66,7 +62,6 @@ public class ConfigurationWriter implements IElementWriter, IAttributeWriter {
 	 **********************************************************************************/
 
 	public void writeAttributes(ITreeWriter writer, Object userObject, String tag) {
-		System.out.println("write attributes for "+tag);
 	}
 
 	public void writeContent(ITreeWriter writer, Object element, String tag) throws IOException {

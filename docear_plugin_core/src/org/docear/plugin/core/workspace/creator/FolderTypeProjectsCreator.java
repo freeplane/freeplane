@@ -7,13 +7,13 @@ package org.docear.plugin.core.workspace.creator;
 import java.net.URI;
 
 import org.docear.plugin.core.CoreConfiguration;
-import org.docear.plugin.core.workspace.actions.LocationDialog;
+import org.docear.plugin.core.ui.LocationDialog;
 import org.docear.plugin.core.workspace.node.FolderTypeProjectsNode;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.model.creator.AWorkspaceNodeCreator;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceNodeCreator;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public class FolderTypeProjectsCreator extends AWorkspaceNodeCreator {
 	public static final String FOLDER_TYPE_PROJECTS = "projects";
@@ -41,6 +41,9 @@ public class FolderTypeProjectsCreator extends AWorkspaceNodeCreator {
 		
 		boolean monitor = Boolean.parseBoolean(data.getAttribute("monitor", "false"));
 		node.enableMonitoring(monitor);
+		
+		boolean descending = Boolean.parseBoolean(data.getAttribute("orderDescending", "false"));
+		node.orderDescending(descending);
 		
 		String path = data.getAttribute("path", null);
 		if(path == null || path.trim().length() == 0) {

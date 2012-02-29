@@ -2,7 +2,8 @@ package org.docear.plugin.core.workspace.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
+import org.docear.plugin.core.ui.LocationDialog;
+import org.freeplane.plugin.workspace.actions.AWorkspaceAction;
 
 /**
  * 

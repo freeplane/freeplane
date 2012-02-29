@@ -49,7 +49,8 @@ import org.freeplane.view.swing.map.NodeView;
  * This class represents a ArrowLink around a node.
  */
 public class ConnectorView extends AConnectorView{
-	private static final float[] DOTTED_DASH = new float[] { 2, 7};
+	private static final int NORMAL_LENGTH = 100;
+	private static final float[] DOTTED_DASH = new float[] { 4, 7};
 	static final Stroke DEF_STROKE = new BasicStroke(1);
 	private static final int LABEL_SHIFT = 4;
 	private static final double PRECISION = 2;
@@ -323,18 +324,32 @@ public class ConnectorView extends AConnectorView{
 		}
 		if (startPoint != null) {
 			startPoint2 = new Point(startPoint);
-			startPoint2.translate(((sourceIsLeft) ? -1 : 1) * getMap().getZoomed(connectorModel.getStartInclination().x),
-				getMap().getZoomed(connectorModel.getStartInclination().y));
+			Point startInclination = connectorModel.getStartInclination();
+			if(endPoint == null){
+				normalize(NORMAL_LENGTH, startInclination);
+			}
+			startPoint2.translate(((sourceIsLeft) ? -1 : 1) * getMap().getZoomed(startInclination.x),
+				getMap().getZoomed(startInclination.y));
 
 		}
 		if (endPoint != null) {
 			endPoint2 = new Point(endPoint);
-			endPoint2.translate(((targetIsLeft) ? -1 : 1) * getMap().getZoomed(connectorModel.getEndInclination().x), getMap()
-				.getZoomed(connectorModel.getEndInclination().y));
+			Point endInclination = connectorModel.getEndInclination();
+			if(startPoint == null){
+				normalize(NORMAL_LENGTH, endInclination);
+			}
+			endPoint2.translate(((targetIsLeft) ? -1 : 1) * getMap().getZoomed(endInclination.x), getMap()
+				.getZoomed(endInclination.y));
 		}
 		paintCurve(g, startPoint, startPoint2, endPoint2, endPoint);
 		drawLabels(g, startPoint, startPoint2, endPoint2, endPoint);
 		g.setColor(oldColor);
+	}
+
+	private void normalize(int normalLength, Point startInclination) {
+		double k = normalLength / Math.sqrt(startInclination.x * startInclination.x + startInclination.y * startInclination.y);
+		startInclination.x *= k;
+		startInclination.y *= k;
 	}
 
 	private Shape createLine(Point p1, Point p2) {

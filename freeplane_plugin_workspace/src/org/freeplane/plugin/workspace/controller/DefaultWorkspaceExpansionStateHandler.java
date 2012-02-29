@@ -12,8 +12,8 @@ import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.model.WorkspaceIndexedTreeModel;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
 
 /**
  * 

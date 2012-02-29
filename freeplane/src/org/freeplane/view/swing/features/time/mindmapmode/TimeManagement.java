@@ -35,7 +35,6 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -317,7 +316,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 	private static TimeManagement sCurrentlyOpenTimeManagement = null;
 	private JDialog dialog;
 	private final ReminderHook reminderHook;
-	private SimpleDateFormat dateFormat;
+	private PatternFormat dateFormat;
 	private INodeChangeListener nodeChangeListener;
 	private INodeSelectionListener nodeSelectionListener;
 
@@ -355,7 +354,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 	}
 
 	private FormattedDate getCalendarDate() {
-		return new FormattedDate(calendar.getTime().getTime(), dateFormat);
+		return new FormattedDate(calendar.getTime(), dateFormat.getPattern());
 	}
 
 	private ModeController getMindMapController() {
@@ -435,19 +434,18 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 
 	private JComboBox createDateFormatChooser() {
 		class DateFormatComboBoxElement {
-			private final SimpleDateFormat dateFormat;
+			private final PatternFormat dateFormat;
 
-			DateFormatComboBoxElement(SimpleDateFormat dateFormat) {
+			DateFormatComboBoxElement(PatternFormat dateFormat) {
 				this.dateFormat = dateFormat;
 			}
 
-			SimpleDateFormat getDateFormat() {
+			PatternFormat getDateFormat() {
 				return dateFormat;
 			}
 
 			public String toString() {
-				//final Date sampleDate = new GregorianCalendar(1999, 11, 31, 23, 59, 59).getTime();
-				return dateFormat.format(getCalendarDate());
+				return dateFormat.formatObject(getCalendarDate()).toString();
 			}
 		}
 		final String dateFormatPattern = ResourceController.getResourceController().getProperty(
@@ -456,10 +454,9 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		final List<PatternFormat> datePatterns = FormatController.getController().getDateFormats();
 		int selectedIndex = 0;
 		for (int i = 0; i < datePatterns.size(); ++i) {
-			SimpleDateFormat patternFormat = FormatController.getController(
-			    reminderHook.getModeController().getController()).getDateFormat(datePatterns.get(i).getPattern());
+			final PatternFormat patternFormat = datePatterns.get(i);
 			values.add(new DateFormatComboBoxElement(patternFormat));
-			if (patternFormat.toPattern().equals(dateFormatPattern)) {
+			if (patternFormat.getPattern().equals(dateFormatPattern)) {
 				dateFormat = patternFormat;
 				selectedIndex = i;
 			}
@@ -484,7 +481,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 							if(date instanceof FormattedDate){
 								final FormattedDate fd = (FormattedDate) date;
 								if(! fd.getDateFormat().equals(dateFormat)){
-									table.setValueAt(new FormattedDate(fd.getTime(), dateFormat), r, c);
+									table.setValueAt(new FormattedDate(fd, dateFormat.getPattern()), r, c);
 								}
 							}
 						}
@@ -497,7 +494,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 						if(date instanceof FormattedDate){
 							final FormattedDate fd = (FormattedDate) date;
 							if(! fd.getDateFormat().equals(dateFormat)){
-								textController.setNodeObject(node, new FormattedDate(fd.getTime(), dateFormat));
+								textController.setNodeObject(node, new FormattedDate(fd, dateFormat.getPattern()));
 							}
 						}
 					}
@@ -511,7 +508,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 
 	void insertTime(final Dialog dialog, final JButton appendButton) {
 	    FormattedDate date = getCalendarDate();
-	    final String dateAsString = dateFormat.format(date);
+	    final String dateAsString = dateFormat.formatObject(date).toString();
 	    final Window parentWindow;
 	    if (dialog != null) {
 	    	parentWindow = (Window) dialog.getParent();

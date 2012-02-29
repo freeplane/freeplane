@@ -4,9 +4,9 @@ import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
-import org.docear.plugin.pdfutilities.features.AnnotationController;
-import org.docear.plugin.pdfutilities.features.AnnotationNodeModel;
-import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
+import org.docear.plugin.core.features.AnnotationNodeModel;
+import org.docear.plugin.core.features.IAnnotation.AnnotationType;
+import org.docear.plugin.core.mindmap.AnnotationController;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;

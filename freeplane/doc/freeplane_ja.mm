@@ -1,13 +1,14 @@
-<map version="0.9.0">
+<map version="0.9.0" dialect="freeplane 1.2.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <attribute_registry SHOW_ATTRIBUTES="selected">
     <attribute_name VISIBLE="true" NAME="Chapter"/>
     <attribute_name VISIBLE="true" NAME="See also"/>
     <attribute_name VISIBLE="true" NAME="a2"/>
 </attribute_registry>
-<node STYLE_REF="MainMenuAccent" FOLDED="false" ID="ID_1723255651" VGAP="0">
+<node STYLE_REF="MainMenuAccent" FOLDED="false" ID="ID_1723255651" VGAP="0" TEXT_SHORTENED="true">
 <icon BUILTIN="bee"/>
 <richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -20,8 +21,9 @@
       <font size="4">Freeplane 1.2</font>
     </p>
   </body>
-</html></richcontent>
-<hook NAME="MapStyle" zoom="1.1" max_node_width="600" min_node_width="1">
+</html>
+</richcontent>
+<hook NAME="MapStyle" zoom="1.1">
     <conditional_styles>
         <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
             <time_condition_modified_after DATE="1312451668603"/>
@@ -30,11 +32,12 @@
             <time_condition_modified_after DATE="1312651262739"/>
         </conditional_style>
     </conditional_styles>
-    <properties show_notes_in_map="false"/>
+    <properties show_notes_in_map="false" show_icon_for_attributes="true"/>
+
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node">
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
-<stylenode LOCALIZED_TEXT="default"/>
+<stylenode LOCALIZED_TEXT="default" MAX_WIDTH="600" MIN_WIDTH="1"/>
 <stylenode LOCALIZED_TEXT="defaultstyle.details"/>
 <stylenode LOCALIZED_TEXT="defaultstyle.note"/>
 <stylenode LOCALIZED_TEXT="defaultstyle.floating">
@@ -123,6 +126,7 @@
 </hook>
 <hook NAME="FirstGroupNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -150,37 +154,89 @@
       <font size="2">&#12414;&#12428;&#12390;&#12356;&#12427;&#12494;&#12540;&#12489;&#12364;&#23637;&#38283;&#34920;&#31034;&#12373;&#12428;&#12414;&#12377;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1615599589" HGAP="18" VSHIFT="-109" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
+</html>
+</richcontent>
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" FOLDED="true" POSITION="right" ID="ID_1632154058" HGAP="-20" VSHIFT="-213" STYLE="fork" LINK="freeplaneFunctions_ja.mm" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
   </head>
   <body>
-    <p>
-      <font size="4"><b><a href="freeplaneFunctions.mm">&#12463;&#12451;&#12483;&#12463;&#12452;&#12531;&#12487;&#12483;&#12463;&#12473;</a></b></font>
+    <p style="text-align: center">
+      <b><a href="freeplaneFunctions_ja.mm"><font size="3">Freeplane &#12398;&#27231;&#33021;</font></a></b>
     </p>
   </body>
 </html>
 </richcontent>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      &#12522;&#12531;&#12463;&#12434;&#12463;&#12522;&#12483;&#12463;&#12377;&#12427;&#12392;&#12289;Freeplane &#12398;&#20027;&#35201;&#27231;&#33021;&#12395;&#38306;&#12377;&#12427;&#12510;&#12452;&#12531;&#12489;&#12510;&#12483;&#12503;&#12364;&#38283;&#12365;&#12414;&#12377;&#12290;&#12486;&#12461;&#12473;&#12488;&#19978;&#12391;&#12507;&#12496;&#12540;&#12522;&#12531;&#12464;&#65339;&#12510;&#12454;&#12473;&#12459;&#12540;&#12477;&#12523;&#12434;&#32622;&#12356;&#12383;&#29366;&#24907;&#12391;&#12375;&#12400;&#12425;&#12367;&#24453;&#12388;&#12371;&#12392;&#65341;&#12377;&#12427;&#12392;&#12289;&#38750;&#34920;&#31034;&#20013;&#12398;&#12522;&#12531;&#12463;&#12364;&#34920;&#31034;&#12373;&#12428;&#12414;&#12377;&#12290;&#12371;&#12428;&#12425;&#12398;&#12522;&#12531;&#12463;&#12399;&#12289;&#12371;&#12398;<i>&#12300;&#12463;&#12451;&#12483;&#12463;&#12522;&#12501;&#12449;&#12524;&#12531;&#12473;&#12301;</i>&#12289;&#21450;&#12403;<i>&#12300;&#12504;&#12523;&#12503; &gt; &#12510;&#12491;&#12517;&#12450;&#12523;&#12301;</i>&#12398;&#24403;&#35442;&#27231;&#33021;&#12395;&#38306;&#12377;&#12427;&#35500;&#26126;&#12395;&#12472;&#12515;&#12531;&#12503;&#12377;&#12427;&#12424;&#12358;&#35373;&#23450;&#12373;&#12428;&#12390;&#12356;&#12414;&#12377;&#12290;
+      &#12522;&#12531;&#12463;&#12434;&#12463;&#12522;&#12483;&#12463;&#12377;&#12427;&#12392;&#12289;Freeplane &#12398;&#20027;&#35201;&#27231;&#33021;&#12434;&#20351;&#12387;&#12383;&#12510;&#12452;&#12531;&#12489;&#12510;&#12483;&#12503;&#12364;&#38283;&#12365;&#12414;&#12377;&#12290;&#12494;&#12540;&#12489;&#12486;&#12461;&#12473;&#12488;&#19978;&#12391;&#12507;&#12496;&#12540;&#12377;&#12427;&#12392;&#12289;&#38750;&#34920;&#31034;&#12395;&#12394;&#12387;&#12390;&#12356;&#12427;&#12522;&#12531;&#12463;&#12364;&#34920;&#31034;&#12373;&#12428;&#12289;&#12371;&#12398;<i>&#12463;&#12451;&#12483;&#12463;&#12522;&#12501;&#12449;&#12524;&#12531;&#12473;</i>&#12289;&#21450;&#12403;<i>&#12300;&#12504;&#12523;&#12503; &gt; &#12510;&#12491;&#12517;&#12450;&#12523;&#12301;</i>&#12395;&#12354;&#12427;&#12289;&#35576;&#27231;&#33021;&#12398;&#35500;&#26126;&#12395;&#12472;&#12515;&#12531;&#12503;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;
     </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>&#12494;&#12540;&#12488;&#160;</b>
+    </p>
+    <ul>
+      <li>
+        &#12452;&#12531;&#12487;&#12483;&#12463;&#12473;&#12510;&#12483;&#12503;&#12363;&#12425;&#12289;&#12371;&#12398;&#12510;&#12483;&#12503;&#12395;&#25147;&#12427;&#12395;&#12399;&#12289;<i>&#12300;&#12490;&#12499;&#12466;&#12540;&#12471;&#12519;&#12531; &gt; &#21069;&#12398;&#12510;&#12483;&#12503;&#12301;</i>(&#21448;&#12399;&#12450;&#12452;&#12467;&#12531;&#12484;&#12540;&#12523;&#12496;&#12540;&#65289;&#12434;&#36984;&#25246;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
+      </li>
+    </ul>
   </body>
 </html>
 </richcontent>
 <hook NAME="FreeNode"/>
+<node ID="ID_409693088" HGAP="-80" VSHIFT="29" STYLE="fork" LINK="freeplaneApplications_ja.mm" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p style="text-align: center">
+      <font size="3"><b><a href="freeplaneFunctions_ja.mm">Freeplane &#12398;&#36969;&#29992;&#20107;&#20363;</a></b></font>
+    </p>
+  </body>
+</html>
+</richcontent>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      &#12522;&#12531;&#12463;&#12434;&#12463;&#12522;&#12483;&#12463;&#12377;&#12427;&#12392;&#12289;Freeplane &#12398;&#20027;&#35201;&#12394;&#36969;&#29992;&#20107;&#20363;&#12434;&#31034;&#12377;&#12510;&#12452;&#12531;&#12489;&#12510;&#12483;&#12503;&#12364;&#38283;&#12365;&#12414;&#12377;&#12290;&#12452;&#12531;&#12487;&#12483;&#12463;&#12473;&#12398;&#12522;&#12531;&#12463;&#12395;&#12375;&#12383;&#12364;&#12387;&#12390;&#12472;&#12515;&#12531;&#12503;&#12377;&#12427;&#12395;&#12399;&#12289;&#12452;&#12531;&#12479;&#12540;&#12493;&#12483;&#12488;&#12408;&#12398;&#25509;&#32154;&#12364;&#24517;&#35201;&#12391;&#12377;&#12290;
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>&#12494;&#12540;&#12488;&#160;</b>
+    </p>
+    <ul>
+      <li>
+        &#12452;&#12531;&#12487;&#12483;&#12463;&#12473;&#12510;&#12483;&#12503;&#12363;&#12425;&#12371;&#12398;&#12510;&#12483;&#12503;&#12395;&#25147;&#12427;&#12395;&#12399;&#12289;<i>&#12300;&#12490;&#12499;&#12466;&#12540;&#12471;&#12519;&#12531; &gt; &#21069;&#12398;&#12510;&#12483;&#12503;&#12301;</i>(&#21448;&#12399;&#12450;&#12452;&#12467;&#12531;&#12484;&#12540;&#12523;&#12496;&#12540;&#65289;&#12434;&#36984;&#25246;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+</node>
 </node>
 <node TEXT="&#x30ea;&#x30d5;&#x30a1;&#x30ec;&#x30f3;&#x30b9;" STYLE_REF="Title" FOLDED="true" POSITION="right" ID="ID_154931094" HGAP="40" VSHIFT="-126" TEXT_SHORTENED="true">
 <icon BUILTIN="wizard"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -216,15 +272,17 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <edge STYLE="bezier"/>
-<node TEXT="&#x30d5;&#x30a1;&#x30a4;&#x30eb;" STYLE_REF="MainMenu" FOLDED="true" ID="ID_497994313" TEXT_SHORTENED="true">
+<node TEXT="&#x30d5;&#x30a1;&#x30a4;&#x30eb;" STYLE_REF="MainMenu" ID="ID_497994313" TEXT_SHORTENED="true">
 <attribute_layout NAME_WIDTH="37" VALUE_WIDTH="77"/>
 <attribute NAME="Chapter" VALUE="1,2,6,8"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -234,11 +292,13 @@
       &#12510;&#12452;&#12531;&#12489;&#12510;&#12483;&#12503;&#12501;&#12449;&#12452;&#12523;&#12398;&#20966;&#29702;&#12434;&#34892;&#12394;&#12356;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <edge STYLE="horizontal"/>
 <node TEXT="&#x65b0;&#x898f;&#x30de;&#x30c3;&#x30d7;" ID="ID_107874057" TEXT_SHORTENED="true">
 <icon BUILTIN="../filenew"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -248,7 +308,8 @@
       &#26032;&#35215;&#12398; Freeplane &#12510;&#12483;&#12503;&#12434;&#20316;&#25104;&#12375;&#12414;&#12377;&#12290;&#12371;&#12398;&#12510;&#12483;&#12503;&#12399;&#12289;&#20445;&#23384;&#12373;&#12428;&#12427;&#12414;&#12391;&#12398;&#38291;&#12289;&#12513;&#12514;&#12522;&#12540;&#19978;&#12395;&#23384;&#22312;&#12377;&#12427;&#12384;&#12369;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
@@ -258,6 +319,7 @@
 <node TEXT="&#x30c6;&#x30f3;&#x30d7;&#x30ec;&#x30fc;&#x30c8;&#x304b;&#x3089;&#x65b0;&#x898f;&#x30de;&#x30c3;&#x30d7;..." ID="ID_803136262" TEXT_SHORTENED="true">
 <icon BUILTIN="../new_map_"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -267,15 +329,17 @@
       &#26032;&#35215;&#20316;&#25104;&#12510;&#12483;&#12503;&#12398;&#21407;&#22411;&#12392;&#12394;&#12427;&#12510;&#12483;&#12503;&#12473;&#12479;&#12452;&#12523;&#36984;&#25246;&#29992;&#12398;&#12480;&#12452;&#12450;&#12525;&#12464;&#12434;&#38283;&#12365;&#12414;&#12377;&#12290;&#12371;&#12398;&#12510;&#12483;&#12503;&#12399;&#12289;&#20445;&#23384;&#12373;&#12428;&#12427;&#12414;&#12391;&#12398;&#38291;&#12289;&#12513;&#12514;&#12522;&#12540;&#19978;&#12395;&#23384;&#22312;&#12377;&#12427;&#12384;&#12369;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="&#x4fdd;&#x8b77;&#xff08;&#x6697;&#x8a3c;&#xff09;&#x4ed8;&#x304d;&#x65b0;&#x898f;&#x30de;&#x30c3;&#x30d7;..." FOLDED="true" ID="ID_719533374" TEXT_SHORTENED="true">
+<node TEXT="&#x4fdd;&#x8b77;&#xff08;&#x6697;&#x8a3c;&#xff09;&#x4ed8;&#x304d;&#x65b0;&#x898f;&#x30de;&#x30c3;&#x30d7;..." ID="ID_719533374" TEXT_SHORTENED="true">
 <icon BUILTIN="../lock"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -296,7 +360,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -305,7 +370,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -320,7 +386,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="8"/>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
@@ -334,7 +401,8 @@
 </node>
 <node TEXT="&#x540d;&#x524d;&#x3092;&#x3064;&#x3051;&#x3066;&#x30de;&#x30c3;&#x30d7;&#x3092;&#x4fdd;&#x5b58;..." ID="ID_558599945" TEXT_SHORTENED="true">
 <icon BUILTIN="../filesaveas"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -344,7 +412,8 @@
       <span style="color: #000000; font-family: SansSerif, sans-serif"><font color="#000000" face="SansSerif, sans-serif">&#26082;&#12395;&#20445;&#23384;&#12373;&#12428;&#12390;&#12356;&#12427;&#12510;&#12483;&#12503;&#12434;&#21029;&#12398;&#12501;&#12449;&#12452;&#12523;&#21517;&#12391;&#20445;&#23384;&#12377;&#12427;&#12383;&#12417;&#12395;&#12289;&#12480;&#12452;&#12450;&#12525;&#12464;&#12434;&#38283;&#12365;&#12414;&#12377;&#12290;</font></span>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
@@ -353,7 +422,8 @@
 </node>
 <node TEXT="&#x30de;&#x30c3;&#x30d7;&#x3092;&#xff08;&#x4e0a;&#x66f8;&#x304d;&#xff09;&#x4fdd;&#x5b58;" ID="ID_610043338" TEXT_SHORTENED="true">
 <icon BUILTIN="../filesave"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -382,14 +452,15 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="1,2"/>
 </node>
-<node TEXT="&#x3059;&#x3079;&#x3066;&#x306e;&#x30de;&#x30c3;&#x30d7;&#x3092;&#x4fdd;&#x5b58;" ID="ID_1850053399" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x3059;&#x3079;&#x3066;&#x306e;&#x30de;&#x30c3;&#x30d7;&#x3092;&#x4fdd;&#x5b58;" ID="ID_1850053399" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -399,12 +470,13 @@
       &#12458;&#12540;&#12503;&#12531;&#20013;&#12398;&#12377;&#12409;&#12390;&#12398;&#12510;&#12483;&#12503;&#12434;&#20445;&#23384;&#12375;&#12414;&#12377;&#12290;&#12300;&#19978;&#26360;&#12365;&#20445;&#23384;&#12301;&#12392;&#21516;&#12376;&#21205;&#20316;&#12391;&#12377;&#12364;&#12289;&#12458;&#12540;&#12503;&#12531;&#20013;&#12398;&#12377;&#12409;&#12390;&#12398;&#12510;&#12483;&#12503;&#12395;&#36969;&#29992;&#12373;&#12428;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x30de;&#x30c3;&#x30d7;&#x3092;&#x4fdd;&#x5b58;" FOLDED="true" ID="ID_1689022735" TEXT_SHORTENED="true">
+<node TEXT="&#x30de;&#x30c3;&#x30d7;&#x3092;&#x4fdd;&#x5b58;" ID="ID_1689022735" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
@@ -415,7 +487,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -430,12 +503,13 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
-<node TEXT="&#x6700;&#x5f8c;&#x306e;&#x4fdd;&#x5b58;&#x72b6;&#x614b;&#x306b;&#x623b;&#x3059;" ID="ID_1350858734" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x6700;&#x5f8c;&#x306e;&#x4fdd;&#x5b58;&#x72b6;&#x614b;&#x306b;&#x623b;&#x3059;" ID="ID_1350858734" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -467,14 +541,16 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 <node TEXT="&#x4fdd;&#x5b58;&#x30de;&#x30c3;&#x30d7;&#x3092;&#x958b;&#x304f;..." ID="ID_82865012" TEXT_SHORTENED="true">
 <icon BUILTIN="../fileopen"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -484,15 +560,16 @@
       &#12510;&#12483;&#12503;&#36984;&#25246;&#12480;&#12452;&#12450;&#12525;&#12464;&#12434;&#38283;&#12365;&#12289;&#20445;&#23384;&#28168;&#12415;&#12398;&#12510;&#12483;&#12503;&#12434;&#38283;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="1,2"/>
 </node>
-<node TEXT="&#x6700;&#x8fd1;&#x4f7f;&#x3063;&#x305f;&#x30de;&#x30c3;&#x30d7;" ID="ID_187162494" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x6700;&#x8fd1;&#x4f7f;&#x3063;&#x305f;&#x30de;&#x30c3;&#x30d7;" ID="ID_187162494" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -502,13 +579,14 @@
       &#26368;&#36817;&#38283;&#12356;&#12383;&#12510;&#12483;&#12503;&#12398;&#19968;&#35239;&#34920;&#12434;&#38283;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="&#x30de;&#x30c3;&#x30d7;&#x3092;&#x958b;&#x304f;" FOLDED="true" ID="ID_565242033" LINK="#ID_950384750" TEXT_SHORTENED="true">
+<node TEXT="&#x30de;&#x30c3;&#x30d7;&#x3092;&#x958b;&#x304f;" ID="ID_565242033" LINK="#ID_950384750" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
@@ -522,9 +600,10 @@
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
-<node TEXT="&#x30de;&#x30c3;&#x30d7;&#x3092;&#x30a8;&#x30af;&#x30b9;&#x30dd;&#x30fc;&#x30c8;..." FOLDED="true" ID="ID_1070433175" TEXT_SHORTENED="true">
+<node TEXT="&#x30de;&#x30c3;&#x30d7;&#x3092;&#x30a8;&#x30af;&#x30b9;&#x30dd;&#x30fc;&#x30c8;..." ID="ID_1070433175" TEXT_SHORTENED="true">
 <icon BUILTIN="../export"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -534,14 +613,15 @@
       &#12456;&#12463;&#12473;&#12509;&#12540;&#12488;&#20808;&#12392;&#12456;&#12463;&#12473;&#12509;&#12540;&#12488;&#12398;&#31278;&#39006;&#12434;&#36984;&#25246;&#12377;&#12427;&#12480;&#12452;&#12450;&#12525;&#12464;&#12434;&#38283;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="6"/>
-<node TEXT="HTML &#x30d5;&#x30a1;&#x30a4;&#x30eb;&#x306b;" STYLE_REF="OptionalValue" ID="ID_345536299" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="HTML &#x30d5;&#x30a1;&#x30a4;&#x30eb;&#x306b;" STYLE_REF="OptionalValue" ID="ID_345536299" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -551,12 +631,13 @@
       <font color="#000000" face="SansSerif, sans-serif">&#12510;&#12483;&#12503;&#20840;&#20307;&#12434; HTML &#12501;&#12449;&#12452;&#12523;&#12395;&#12456;&#12463;&#12473;&#12509;&#12540;&#12488;&#12375;&#12414;&#12377;&#12290;&#12510;&#12483;&#12503;&#12399;&#12289;&#12300;&#12354;&#12427;&#12364;&#12414;&#12414;&#12301;&#12395;&#12456;&#12463;&#12473;&#12509;&#12540;&#12488;&#12373;&#12428;&#12414;&#12377;&#12290;&#12377;&#12394;&#12431;&#12385;&#12289;HTML &#12501;&#12449;&#12452;&#12523;&#12399;&#12289; Freeplane &#12391;&#12510;&#12483;&#12503;&#12364;&#34920;&#31034;&#12373;&#12428;&#12390;&#12356;&#12383;&#12398;&#12392;&#21516;&#12376;&#12424;&#12358;&#12395;&#12289;&#34920;&#31034;&#12373;&#12428;&#12414;&#12377;&#12290;&#12494;&#12540;&#12489;&#12364;&#23637;&#38283;&#12373;&#12428;&#12390;&#12356;&#12428;&#12400;&#12289;HTML &#12501;&#12449;&#12452;&#12523;&#12391;&#12418;&#23637;&#38283;&#34920;&#31034;&#12373;&#12428;&#12414;&#12377;&#12290;&#12456;&#12463;&#12473;&#12509;&#12540;&#12488;&#26178;&#12395;&#12494;&#12540;&#12489;&#12364;&#25240;&#12426;&#30067;&#12414;&#12428;&#12390;&#12356;&#12428;&#12400;&#12289;HTML &#12501;&#12449;&#12452;&#12523;&#12391;&#12418;&#25240;&#12426;&#30067;&#12415;&#34920;&#31034;&#12373;&#12428;&#12414;&#12377;&#12290;HTML &#12501;&#12449;&#12452;&#12523;&#12395;&#12289;&#25240;&#12426;&#30067;&#12414;&#12428;&#12383;&#12494;&#12540;&#12489;&#12434;&#23637;&#38283;&#12377;&#12427;&#160; Java &#12473;&#12463;&#12522;&#12503;&#12488;&#12434;&#28155;&#20184;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
-<node TEXT="&#x679d;&#x3092; HTML &#x30d5;&#x30a1;&#x30a4;&#x30eb;&#x306b;" STYLE_REF="OptionalValue" ID="ID_605285109" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x679d;&#x3092; HTML &#x30d5;&#x30a1;&#x30a4;&#x30eb;&#x306b;" STYLE_REF="OptionalValue" ID="ID_605285109" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -566,11 +647,12 @@
       <font color="#000000" face="SansSerif, sans-serif">&#36984;&#25246;&#12494;&#12540;&#12489;&#12392;&#12381;&#12398;&#12377;&#12417;&#12390;&#12398;&#19979;&#20301;&#12494;&#12540;&#12489;&#32676;&#12395;&#38480;&#12387;&#12390;&#12289;&#12510;&#12483;&#12503;&#12398;&#26525;&#12434;&#12456;&#12463;&#12473;&#12509;&#12540;&#12488;&#12375;&#12414;&#12377;&#12290;&#12381;&#12398;&#20182;&#12398;&#28857;&#12391;&#12399;&#12289;&#12300;HTML &#12395;&#12301;&#12456;&#12463;&#12473;&#12509;&#12540;&#12488;&#12392;&#21516;&#12376;&#12391;&#12377;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
-<node TEXT="Open Office Writer &#x30d5;&#x30a1;&#x30a4;&#x30eb;&#x306b;&#xff08;ODT&#xff09;" STYLE_REF="OptionalValue" ID="ID_429860919" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Open Office Writer &#x30d5;&#x30a1;&#x30a4;&#x30eb;&#x306b;&#xff08;ODT&#xff09;" STYLE_REF="OptionalValue" ID="ID_429860919" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -580,11 +662,12 @@
       <font color="#000000" face="SansSerif, sans-serif">&#12510;&#12483;&#12503;&#12434; Open Office Writer &#12501;&#12449;&#12452;&#12523;&#12395;&#12456;&#12463;&#12473;&#12509;&#12540;&#12488;&#12375;&#12414;&#12377;&#12290; </font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
-<node TEXT="PNG &#x30a4;&#x30e1;&#x30fc;&#x30b8;&#x306b;" STYLE_REF="OptionalValue" ID="ID_1720625924" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="PNG &#x30a4;&#x30e1;&#x30fc;&#x30b8;&#x306b;" STYLE_REF="OptionalValue" ID="ID_1720625924" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -594,11 +677,12 @@
       <font color="#000000" face="SansSerif, sans-serif">&#12510;&#12483;&#12503;&#20840;&#20307;&#12434; PNG &#12452;&#12513;&#12540;&#12472;&#24418;&#24335;&#12395;&#12456;&#12463;&#12473;&#12509;&#12540;&#12488;&#12375;&#12414;&#12377;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
-<node TEXT="JPEG &#x30a4;&#x30e1;&#x30fc;&#x30b8;&#x306b;" STYLE_REF="OptionalValue" ID="ID_760837856" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="JPEG &#x30a4;&#x30e1;&#x30fc;&#x30b8;&#x306b;" STYLE_REF="OptionalValue" ID="ID_760837856" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -608,11 +692,12 @@
       <font color="#000000" face="SansSerif, sans-serif">&#12510;&#12483;&#12503;&#20840;&#20307;&#12434; JPEG&#65295;JPG&#160; &#12452;&#12513;&#12540;&#12472;&#24418;&#24335;&#12395;&#12456;&#12463;&#12473;&#12509;&#12540;&#12488;&#12375;&#12414;&#12377;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
-<node TEXT="XHTML&#xff08;Javascript &#x7248;&#xff09;&#x306b;" STYLE_REF="OptionalValue" ID="ID_1701842398" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="XHTML&#xff08;Javascript &#x7248;&#xff09;&#x306b;" STYLE_REF="OptionalValue" ID="ID_1701842398" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -622,11 +707,12 @@
       <font color="#000000" face="SansSerif, sans-serif">&#12510;&#12483;&#12503;&#20840;&#20307;&#12434;&#23436;&#20840;&#12394;&#160;JavaScript &#27231;&#33021;&#20184;&#12365;&#12391;&#12456;&#12463;&#12473;&#12509;&#12540;&#12488;&#12375;&#12414;&#12377;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
-<node TEXT="XHTML&#xff08;&#x30af;&#x30ea;&#x30c3;&#x30ab;&#x30d6;&#x30eb;&#x30de;&#x30c3;&#x30d7;&#x7248;&#xff09;&#x306b;" STYLE_REF="OptionalValue" ID="ID_1544879272" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="XHTML&#xff08;&#x30af;&#x30ea;&#x30c3;&#x30ab;&#x30d6;&#x30eb;&#x30de;&#x30c3;&#x30d7;&#x7248;&#xff09;&#x306b;" STYLE_REF="OptionalValue" ID="ID_1544879272" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -636,11 +722,12 @@
       <font color="#000000" face="SansSerif, sans-serif">&#12510;&#12483;&#12503;&#20840;&#20307;&#12434;&#12456;&#12463;&#12473;&#12509;&#12540;&#12488;&#12375;&#12414;&#12377;&#12290;&#12506;&#12540;&#12472;&#20869;&#12398;&#27604;&#29575;&#12399;&#12289;Freplane &#12391;&#12398;&#12510;&#12483;&#12503;&#34920;&#31034;&#12392;&#12381;&#12387;&#12367;&#12426;&#12395;&#20877;&#29694;&#12373;&#12428;&#12414;&#12377;&#12290;&#19968;&#37096;&#12398;&#12494;&#12540;&#12489;&#12364;&#25240;&#12426;&#30067;&#12415;&#29366;&#24907;&#12391;&#12289;&#19968;&#37096;&#12364;&#23637;&#38283;&#20013;&#12398;&#22580;&#21512;&#12289;&#65339;&#12456;&#12463;&#12473;&#12509;&#12540;&#12488;&#65341;&#12501;&#12449;&#12452;&#12523;&#12391;&#12418;&#21516;&#12376;&#12395;&#12394;&#12426;&#12414;&#12377;&#12290;&#12506;&#12540;&#12472;&#12398;&#35443;&#32048;&#37096;&#20998;&#12395;&#12399;&#12289;&#12450;&#12454;&#12488;&#12521;&#12452;&#12531;&#24418;&#24335;&#12391;&#12377;&#12409;&#12390;&#12398;&#12494;&#12540;&#12489;&#12434;&#21454;&#37682;&#12375;&#12414;&#12377;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
-<node TEXT="Java &#x30a2;&#x30d7;&#x30ec;&#x30c3;&#x30c8;&#x306b;(HTML)" STYLE_REF="OptionalValue" FOLDED="true" ID="ID_1251574363" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Java &#x30a2;&#x30d7;&#x30ec;&#x30c3;&#x30c8;&#x306b;(HTML)" STYLE_REF="OptionalValue" ID="ID_1251574363" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -650,7 +737,8 @@
       <font color="#000000" face="SansSerif, sans-serif">&#12454;&#12455;&#12502;&#12506;&#12540;&#12472;&#12391;&#12398;&#20844;&#38283;&#21521;&#12365;&#12398;&#12289;HTML &#22475;&#12417;&#36796;&#12415;&#29256;&#12510;&#12483;&#12503;&#12434;&#20316;&#25104;&#12375;&#12414;&#12377;&#12290;&#23455;&#38555;&#12398;&#12510;&#12483;&#12503;&#12381;&#12387;&#12367;&#12426;&#12395;&#20877;&#29694;&#12373;&#12428;&#12414;&#12377;&#12290;&#12377;&#12394;&#12431;&#12385;&#12289;Freeplane &#12450;&#12503;&#12522;&#19978;&#12392;&#21516;&#27096;&#12395;&#12289;&#12494;&#12540;&#12489;&#12398;&#23637;&#38283;&#12539;&#25240;&#12426;&#30067;&#12415;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="6"/>
 <node TEXT="&#x30a6;&#x30a7;&#x30d6;&#x30b5;&#x30a4;&#x30c8;&#x3067;&#x306e;&#x516c;&#x958b;&#x3084;&#x30b7;&#x30a7;&#x30a2;" ID="ID_1151783885" LINK="#ID_452599330" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
@@ -660,7 +748,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="6"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -695,12 +784,13 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
-<node TEXT="Flash &#x306b;(HTML)" STYLE_REF="OptionalValue" ID="ID_1614795199" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Flash &#x306b;(HTML)" STYLE_REF="OptionalValue" ID="ID_1614795199" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -710,11 +800,12 @@
       <font color="#000000" face="SansSerif, sans-serif">&#23455;&#38555;&#12398;&#12510;&#12483;&#12503;&#12381;&#12387;&#12367;&#12426;&#12398; Flash &#12510;&#12483;&#12503;&#12395;&#12456;&#12463;&#12473;&#12509;&#12540;&#12488;&#12375;&#12414;&#12377;&#12290;Freeplane &#12450;&#12503;&#12522;&#19978;&#12392;&#21516;&#27096;&#12395;&#12289;&#12494;&#12540;&#12489;&#12398;&#23637;&#38283;&#12539;&#25240;&#12426;&#30067;&#12415;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
-<node TEXT="&#x30bf;&#x30b9;&#x30af;&#x3092; TASKS &#x30ce;&#x30fc;&#x30c9;&#x304b;&#x3089; TaskJuggler &#x30d5;&#x30a1;&#x30a4;&#x30eb;&#x306b;&#xff08;TJI&#xff09;" STYLE_REF="OptionalValue" ID="ID_1149086587" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x30bf;&#x30b9;&#x30af;&#x3092; TASKS &#x30ce;&#x30fc;&#x30c9;&#x304b;&#x3089; TaskJuggler &#x30d5;&#x30a1;&#x30a4;&#x30eb;&#x306b;&#xff08;TJI&#xff09;" STYLE_REF="OptionalValue" ID="ID_1149086587" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -724,11 +815,12 @@
       <font color="#000000" face="SansSerif, sans-serif">&#12458;&#12540;&#12503;&#12531;&#12477;&#12540;&#12473;&#12398;&#12503;&#12525;&#12472;&#12455;&#12463;&#12488;&#12510;&#12493;&#12472;&#12513;&#12531;&#12488;&#12484;&#12540;&#12523; TaskJuggler &#12363;&#12425;&#21628;&#12403;&#20986;&#12377;&#12371;&#12392;&#12398;&#12391;&#12365;&#12427;&#12501;&#12449;&#12452;&#12523;&#12395;&#12456;&#12463;&#12473;&#12509;&#12540;&#12488;&#12375;&#12414;&#12377;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
-<node TEXT="&#x30ea;&#x30bd;&#x30fc;&#x30b9;&#x3092; RESOURCES &#x30ce;&#x30fc;&#x30c9;&#x304b;&#x3089;  TaskJuggler &#x30d5;&#x30a1;&#x30a4;&#x30eb;&#x306b;&#xff08;TJI&#xff09;" STYLE_REF="OptionalValue" ID="ID_148675074" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x30ea;&#x30bd;&#x30fc;&#x30b9;&#x3092; RESOURCES &#x30ce;&#x30fc;&#x30c9;&#x304b;&#x3089;  TaskJuggler &#x30d5;&#x30a1;&#x30a4;&#x30eb;&#x306b;&#xff08;TJI&#xff09;" STYLE_REF="OptionalValue" ID="ID_148675074" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -738,11 +830,12 @@
       <font color="#000000" face="SansSerif, sans-serif">&#12458;&#12540;&#12503;&#12531;&#12477;&#12540;&#12473;&#12398;&#12503;&#12525;&#12472;&#12455;&#12463;&#12488;&#12510;&#12493;&#12472;&#12513;&#12531;&#12488;&#12484;&#12540;&#12523; TaskJuggler &#12363;&#12425;&#21628;&#12403;&#20986;&#12377;&#12371;&#12392;&#12398;&#12391;&#12365;&#12427;&#12501;&#12449;&#12452;&#12523;&#12395;&#12456;&#12463;&#12473;&#12509;&#12540;&#12488;&#12375;&#12414;&#12377;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
-<node TEXT="TWiki &#x306b;(TW)" STYLE_REF="OptionalValue" ID="ID_107208189" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="TWiki &#x306b;(TW)" STYLE_REF="OptionalValue" ID="ID_107208189" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -752,7 +845,8 @@
       <font color="#000000" face="SansSerif, sans-serif">&#12510;&#12483;&#12503;&#20840;&#20307;&#12434; TWiki &#24418;&#24335;&#12398;&#12501;&#12449;&#12452;&#12523;&#12395;&#12456;&#12463;&#12473;&#12509;&#12540;&#12488;&#12375;&#12414;&#12377;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
 <node TEXT="Freeplane 1.1 &#x30d5;&#x30a1;&#x30a4;&#x30eb;&#x306b;" STYLE_REF="OptionalValue" ID="ID_1737656870" TEXT_SHORTENED="true">
@@ -791,8 +885,8 @@
 <node TEXT="(XML, XLS)" STYLE_REF="OptionalValue" ID="ID_944473030" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
-<node TEXT="PDF &#x30d5;&#x30a1;&#x30a4;&#x30eb;&#x306b;" STYLE_REF="OptionalValue" ID="ID_1473392398" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="PDF &#x30d5;&#x30a1;&#x30a4;&#x30eb;&#x306b;" STYLE_REF="OptionalValue" ID="ID_1473392398" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -802,11 +896,12 @@
       <font color="#000000" face="SansSerif, sans-serif">&#12510;&#12483;&#12503;&#20840;&#20307;&#12434; Adobe Acrobat PDF &#24418;&#24335;&#12395;&#12456;&#12463;&#12473;&#12509;&#12540;&#12488;&#12375;&#12414;&#12377;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
-<node TEXT="SVG &#x30a4;&#x30e1;&#x30fc;&#x30b8;&#x306b;" STYLE_REF="OptionalValue" ID="ID_1270778319" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="SVG &#x30a4;&#x30e1;&#x30fc;&#x30b8;&#x306b;" STYLE_REF="OptionalValue" ID="ID_1270778319" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -816,16 +911,18 @@
       <font color="#000000" face="SansSerif, sans-serif">&#12510;&#12483;&#12503;&#20840;&#20307;&#12434; SVG &#12452;&#12513;&#12540;&#12472;&#24418;&#24335;&#12395;&#12456;&#12463;&#12473;&#12509;&#12540;&#12488;&#12375;&#12414;&#12377;&#12290; </font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
-<node TEXT="" FOLDED="true" ID="ID_783046977" TEXT_SHORTENED="true">
+<node TEXT="" ID="ID_783046977" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="6"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -852,10 +949,11 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
-<node TEXT="&#x4ed6;&#x306e;&#x30a8;&#x30c7;&#x30a3;&#x30bf;&#x3078;" ID="ID_22164919" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x4ed6;&#x306e;&#x30a8;&#x30c7;&#x30a3;&#x30bf;&#x3078;" ID="ID_22164919" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -865,13 +963,14 @@
       &#26525;&#12434;&#26222;&#36890;&#12398;&#12486;&#12461;&#12473;&#12488;&#12456;&#12487;&#12451;&#12479;&#12395;&#12467;&#12509;&#12540;&#12377;&#12427;&#12392;&#12289;&#26525;&#12398;&#38542;&#23652;&#27083;&#36896;&#12364;&#12452;&#12531;&#12487;&#12531;&#12488;&#12524;&#12505;&#12523;&#12398;&#24418;&#12391;&#20877;&#29694;&#12373;&#12428;&#12414;&#12377;&#12290;&#12495;&#12452;&#12497;&#12540;&#12522;&#12531;&#12463;&#12399;&#12289;&#25324;&#24359;&#20869;&#12395;&#34920;&#31034;&#12373;&#12428;&#12414;&#12377;&#12290;&#12522;&#12483;&#12481;&#12486;&#12461;&#12473;&#12488;&#12434;&#25805;&#20316;&#12391;&#12365;&#12427;&#12456;&#12487;&#12451;&#12479;&#12395;&#12399;&#12289;OpenOffice/Write&#12289;MSWord&#12289;Wordpad&#12289;Outlook &#12394;&#12393;&#12364;&#12354;&#12426;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
 </node>
 </node>
-<node TEXT="&#x679d;&#x3092;&#x65b0;&#x3057;&#x3044;&#x30de;&#x30c3;&#x30d7;&#x306b;..." ID="ID_622929381" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x679d;&#x3092;&#x65b0;&#x3057;&#x3044;&#x30de;&#x30c3;&#x30d7;&#x306b;..." ID="ID_622929381" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -881,13 +980,14 @@
       &#36984;&#25246;&#12494;&#12540;&#12489;&#12392;&#12381;&#12398;&#19979;&#20301;&#12494;&#12540;&#12489;&#32676;&#12434;&#26032;&#35215;&#12510;&#12483;&#12503;&#12395;&#20445;&#23384;&#12375;&#12414;&#12377;&#12290;&#26032;&#35215;&#12510;&#12483;&#12503;&#12391;&#12399;&#12289;&#36984;&#25246;&#20013;&#12398;&#12494;&#12540;&#12489;&#12364;&#12523;&#12540;&#12488;&#12494;&#12540;&#12489;&#12392;&#12394;&#12426;&#12289;&#12381;&#12371;&#12395;&#20999;&#12426;&#20986;&#12375;&#20803;&#12398;&#20301;&#32622;&#12408;&#12398;&#12495;&#12452;&#12497;&#12540;&#12522;&#12531;&#12463;&#12364;&#20184;&#21152;&#12373;&#12428;&#12414;&#12377;&#12290;&#36984;&#25246;&#12494;&#12540;&#12489;&#12395;&#26032;&#35215;&#12510;&#12483;&#12503;&#21521;&#12369;&#12398;&#12495;&#12452;&#12497;&#12540;&#12522;&#12531;&#12463;&#12364;&#12391;&#12365;&#12289;&#12414;&#12383;&#19979;&#20301;&#12494;&#12540;&#12489;&#32676;&#12399;&#21066;&#38500;&#12373;&#12428;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
-<node TEXT="&#x30de;&#x30c3;&#x30d7;&#x306b;&#x30a4;&#x30f3;&#x30dd;&#x30fc;&#x30c8;" FOLDED="true" ID="ID_581805624" TEXT_SHORTENED="true">
+<node TEXT="&#x30de;&#x30c3;&#x30d7;&#x306b;&#x30a4;&#x30f3;&#x30dd;&#x30fc;&#x30c8;" ID="ID_581805624" TEXT_SHORTENED="true">
 <icon BUILTIN="../import"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
@@ -918,7 +1018,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="6"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -933,7 +1034,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
@@ -944,8 +1046,8 @@
 </hook>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
-<node TEXT="&#x5370;&#x5237;&#x8a2d;&#x5b9a;..." ID="ID_413574870" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x5370;&#x5237;&#x8a2d;&#x5b9a;..." ID="ID_413574870" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -999,7 +1101,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
@@ -1009,6 +1112,7 @@
 <node TEXT="&#x5370;&#x5237;&#x30d7;&#x30ec;&#x30d3;&#x30e5;&#x30fc;..." ID="ID_741687932" TEXT_SHORTENED="true">
 <icon BUILTIN="../print_preview"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1029,7 +1133,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -1037,7 +1142,8 @@
 </node>
 <node TEXT="&#x30de;&#x30c3;&#x30d7;&#x3092;&#x5370;&#x5237;..." ID="ID_1054511597" TEXT_SHORTENED="true">
 <icon BUILTIN="../fileprint"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1047,7 +1153,8 @@
       &#12510;&#12483;&#12503;&#21360;&#21047;&#29992;&#12398;&#12503;&#12522;&#12531;&#12479;&#38306;&#36899;&#12398;&#12480;&#12452;&#12450;&#12525;&#12464;&#12508;&#12483;&#12463;&#12473;&#12434;&#38283;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -1068,7 +1175,8 @@
 </node>
 <node TEXT="&#x8868;&#x793a;&#x4e2d;&#x306e;&#x30de;&#x30c3;&#x30d7;&#x3092;&#x9589;&#x3058;&#x308b;" ID="ID_1018458898" TEXT_SHORTENED="true">
 <icon BUILTIN="../close"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1078,7 +1186,8 @@
       &#12501;&#12457;&#12540;&#12459;&#12473;&#29366;&#24907;&#12398;&#12510;&#12483;&#12503;&#12434;&#38281;&#12376;&#12414;&#12377;&#12290;&#35079;&#25968;&#12398;&#12510;&#12483;&#12503;&#12364;&#38283;&#12363;&#12428;&#12390;&#12356;&#12427;&#22580;&#21512;&#12289;&#12501;&#12457;&#12540;&#12459;&#12473;&#29366;&#24907;&#12392;&#12399;&#32232;&#38598;&#20013;&#12398;&#12479;&#12502;&#12398;&#12418;&#12398;&#12434;&#25351;&#12375;&#12414;&#12377;&#12290;.
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -1086,7 +1195,8 @@
 </node>
 <node TEXT="Freeplane &#x3092;&#x7d42;&#x4e86;" ID="ID_623268381" TEXT_SHORTENED="true">
 <icon BUILTIN="../quit"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1096,18 +1206,20 @@
       &#12458;&#12540;&#12503;&#12531;&#20013;&#12398;&#12377;&#12409;&#12390;&#12398;&#12510;&#12483;&#12503;&#12434;&#38281;&#12376;&#12289;Freeplae &#12434;&#32066;&#20102;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="&#x7de8;&#x96c6;" FOLDED="true" ID="ID_129813756" TEXT_SHORTENED="true">
+<node TEXT="&#x7de8;&#x96c6;" ID="ID_129813756" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1117,15 +1229,17 @@
       &#38971;&#32321;&#12395;&#20351;&#12431;&#12428;&#12427;&#32232;&#38598;&#27231;&#33021;&#12364;&#21547;&#12414;&#12428;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <edge STYLE="horizontal"/>
-<node TEXT="&#x65b0;&#x898f;&#x30ce;&#x30fc;&#x30c9;&#x4f5c;&#x6210;" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1557207269" TEXT_SHORTENED="true">
+<node TEXT="&#x65b0;&#x898f;&#x30ce;&#x30fc;&#x30c9;&#x4f5c;&#x6210;" STYLE_REF="SubMenu" ID="ID_1557207269" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
 <node TEXT="&#x65b0;&#x898f;&#x5b50;&#x30ce;&#x30fc;&#x30c9;" ID="ID_942355748" TEXT_SHORTENED="true">
 <icon BUILTIN="../idea"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1149,14 +1263,16 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 <node TEXT="&#x65b0;&#x898f;&#x5f1f;&#x30ce;&#x30fc;&#x30c9;" ID="ID_1544212529" TEXT_SHORTENED="true">
 <icon BUILTIN="../NewSiblingAction"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1180,13 +1296,14 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x65b0;&#x898f;&#x5144;&#x30ce;&#x30fc;&#x30c9;" ID="ID_852536639" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x65b0;&#x898f;&#x5144;&#x30ce;&#x30fc;&#x30c9;" ID="ID_852536639" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1207,14 +1324,16 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 <node TEXT="&#x65b0;&#x898f;&#x89aa;&#x30ce;&#x30fc;&#x30c9;" ID="ID_1509185966" TEXT_SHORTENED="true">
 <icon BUILTIN="../stock_text_indent"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1235,15 +1354,16 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x30b0;&#x30eb;&#x30fc;&#x30d7;" STYLE_REF="SubMenu" FOLDED="true" ID="ID_479655918" TEXT_SHORTENED="true">
-<node TEXT="&#x65b0;&#x898f;&#x307e;&#x3068;&#x3081;&#x30ce;&#x30fc;&#x30c9;&#xff08;&#x9078;&#x629e;&#x30ce;&#x30fc;&#x30c9;&#x7fa4;&#xff09;" FOLDED="true" ID="ID_1126176775" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x30b0;&#x30eb;&#x30fc;&#x30d7;" STYLE_REF="SubMenu" ID="ID_479655918" TEXT_SHORTENED="true">
+<node TEXT="&#x65b0;&#x898f;&#x307e;&#x3068;&#x3081;&#x30ce;&#x30fc;&#x30c9;&#xff08;&#x9078;&#x629e;&#x30ce;&#x30fc;&#x30c9;&#x7fa4;&#xff09;" ID="ID_1126176775" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1278,7 +1398,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -1287,7 +1408,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1302,13 +1424,15 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="" ID="ID_1070404224" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1321,10 +1445,11 @@
       &#29305;&#23450;&#12464;&#12523;&#12540;&#12503;&#12398;&#12414;&#12392;&#12417;&#12494;&#12540;&#12489;&#12434;&#20316;&#25104;&#12391;&#12365;&#12394;&#12356;&#12392;&#12356;&#12358;&#12289;<b>&#12456;&#12521;&#12540;&#12513;&#12483;&#12475;&#12540;&#12472;</b>&#12364;&#20986;&#12427;&#12371;&#12392;&#12364;&#12354;&#12426;&#12414;&#12377;&#12290;&#12371;&#12428;&#12399;&#12289;&#12464;&#12523;&#12540;&#12503;&#20869;&#12398;&#12494;&#12540;&#12489;&#12398;&#12402;&#12392;&#12388;&#12364;<i>&#12300;&#12494;&#12540;&#12489; &gt; &#12494;&#12540;&#12489;&#12464;&#12523;&#12540;&#12503;&#12398;&#22987;&#28857;&#12301;</i>&#12395;&#25351;&#23450;&#12373;&#12428;&#12390;&#12356;&#12427;&#12379;&#12356;&#12391;&#36215;&#12371;&#12427;&#12363;&#12418;&#12375;&#12428;&#12414;&#12379;&#12435;&#12290;&#12381;&#12398;&#22580;&#21512;&#12399;&#12289;<i>&#12300;&#12494;&#12540;&#12489; &gt; &#12414;&#12392;&#12417;&#12494;&#12540;&#12489;&#32676;&#12428;&#12398;&#22987;&#28857;&#12301;</i>&#160;&#12398;&#12481;&#12455;&#12483;&#12463;&#12434;&#12399;&#12378;&#12375;&#12390;&#12289;&#12420;&#12426;&#30452;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x307e;&#x3068;&#x3081;&#x30ce;&#x30fc;&#x30c9;&#xff0f;&#x6ce2;&#x62ec;&#x5f27;" FOLDED="true" ID="ID_1919219984" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x307e;&#x3068;&#x3081;&#x30ce;&#x30fc;&#x30c9;&#xff0f;&#x6ce2;&#x62ec;&#x5f27;" ID="ID_1919219984" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1348,18 +1473,19 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="false" STYLE_REF="MenuGroupLabel" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
 </hook>
-<node TEXT="" FOLDED="true" ID="ID_1195560268" TEXT_SHORTENED="true">
+<node TEXT="" ID="ID_1195560268" TEXT_SHORTENED="true">
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <node TEXT="1" ID="ID_1351236194" TEXT_SHORTENED="true">
 <edge WIDTH="thin"/>
 </node>
-<node TEXT="2" FOLDED="true" ID="ID_1855113133" TEXT_SHORTENED="true">
+<node TEXT="2" ID="ID_1855113133" TEXT_SHORTENED="true">
 <hook NAME="FirstGroupNode"/>
 <edge WIDTH="thin"/>
 <node TEXT="xx" ID="ID_1443415412" TEXT_SHORTENED="true"/>
@@ -1377,8 +1503,8 @@
 </node>
 </node>
 </node>
-<node TEXT="&#x307e;&#x3068;&#x3081;&#x30ce;&#x30fc;&#x30c9;&#x7fa4;&#x306e;&#x59cb;&#x70b9;" FOLDED="true" ID="ID_1181026745" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x307e;&#x3068;&#x3081;&#x30ce;&#x30fc;&#x30c9;&#x7fa4;&#x306e;&#x59cb;&#x70b9;" ID="ID_1181026745" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1417,7 +1543,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -1425,7 +1552,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1452,11 +1580,12 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="&#x307e;&#x3068;&#x3081;&#x30ce;&#x30fc;&#x30c9;&#x306b;&#x6307;&#x5b9a;&#xff0f;&#x89e3;&#x9664;" ID="ID_1343097813" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x307e;&#x3068;&#x3081;&#x30ce;&#x30fc;&#x30c9;&#x306b;&#x6307;&#x5b9a;&#xff0f;&#x89e3;&#x9664;" ID="ID_1343097813" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1494,14 +1623,16 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 <node TEXT="&#x96f2;&#xff08;&#x6a19;&#x6e96;&#xff09;&#x3092;&#x4ed8;&#x52a0;" ID="ID_1169707898" TEXT_SHORTENED="true">
 <icon BUILTIN="../Cloud24"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1517,16 +1648,18 @@
       <font color="#000000" face="SansSerif, sans-serif">&#29305;&#23450;&#12398;&#12494;&#12540;&#12489;&#12434;&#24375;&#35519;&#12377;&#12427;&#12398;&#12395;&#24441;&#31435;&#12385;&#12414;&#12377;&#12290;&#38642;&#12399;&#12289;&#36984;&#25246;&#12494;&#12540;&#12489;&#12392;&#12381;&#12398;&#12377;&#12409;&#12390;&#12398;&#23376;&#12494;&#12540;&#12489;&#12434;&#21253;&#12415;&#12414;&#12377;&#12290;&#65288;&#12496;&#12521;&#12496;&#12521;&#12398;&#12494;&#12540;&#12489;&#12395;&#12388;&#12356;&#12390;&#65289;<i>&#12300;Ctrl&#12301;</i>&#12461;&#12540;&#12434;&#25276;&#12375;&#12383;&#12414;&#12414;&#36984;&#25246;&#12375;&#12383;&#12426;&#12289;&#12354;&#12427;&#12356;&#12399;&#12289;&#26368;&#21021;&#12398;&#36984;&#25246;&#12494;&#12540;&#12489;&#12392;&#26368;&#24460;&#12398;&#12494;&#12540;&#12489;&#12398;&#38291;&#12395;&#12354;&#12427;&#12377;&#12409;&#12390;&#12398;&#12494;&#12540;&#12489;&#12434;&#23550;&#35937;&#12392;&#12377;&#12427;&#22580;&#21512;&#12399;&#12289;<i>&#12300;Shift&#12301;</i>&#12434;&#25276;&#12375;&#12383;&#12414;&#12414;&#36984;&#25246;&#12377;&#12427;&#12371;&#12392;&#12395;&#12424;&#12426;&#12289;&#21516;&#26178;&#12395;&#35079;&#25968;&#12398;&#38642;&#12434;&#20316;&#25104;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;<i>&#160; &#12300;&#26360;&#24335;&#160;&gt; &#38642;&#12398;&#33394;&#12301;</i>&#12418;&#21442;&#29031;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
 </node>
 </node>
-<node TEXT="&#x30b3;&#x30cd;&#x30af;&#x30bf;&#x3092;&#x4ed8;&#x52a0;" FOLDED="true" ID="ID_1862998311" TEXT_SHORTENED="true">
+<node TEXT="&#x30b3;&#x30cd;&#x30af;&#x30bf;&#x3092;&#x4ed8;&#x52a0;" ID="ID_1862998311" TEXT_SHORTENED="true">
 <icon BUILTIN="../designer"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1567,11 +1700,12 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
-<node TEXT="&#x30b3;&#x30cd;&#x30af;&#x30bf;" FOLDED="true" ID="ID_176015803" HGAP="50" TEXT_SHORTENED="true">
+<node TEXT="&#x30b3;&#x30cd;&#x30af;&#x30bf;" ID="ID_176015803" HGAP="50" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
@@ -1579,18 +1713,19 @@
 </hook>
 <cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000099" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_176015803" MIDDLE_LABEL="&#x6ce8;&#x91c8;&#x7528;&#x306e;&#x300c;&#x7dda;&#xff0b;&#x30e9;&#x30d9;&#x30eb;&#x300d;" STARTINCLINATION="13;65;" ENDINCLINATION="13;65;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9; a" FOLDED="true" ID="ID_203460200" TEXT_SHORTENED="true">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9; a" ID="ID_203460200" TEXT_SHORTENED="true">
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_328603953" SOURCE_LABEL="&#x59cb;&#x70b9;&#xa;&#x30e9;&#x30d9;&#x30eb;" TARGET_LABEL="&#x7d42;&#x70b9;&#xa;&#x30e9;&#x30d9;&#x30eb;" MIDDLE_LABEL="&#x4e2d;&#x9593;&#x70b9;&#xa;&#x30e9;&#x30d9;&#x30eb;" STARTINCLINATION="10;26;" ENDINCLINATION="-19;52;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9; b" FOLDED="true" ID="ID_417320567" TEXT_SHORTENED="true">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9; b" ID="ID_417320567" TEXT_SHORTENED="true">
 <edge STYLE="bezier"/>
 <node TEXT="&#x30ce;&#x30fc;&#x30c9; c" ID="ID_328603953" TEXT_SHORTENED="true"/>
 </node>
 </node>
 </node>
 </node>
-<node TEXT="&#x30ea;&#x30f3;&#x30af;" FOLDED="true" ID="ID_868346728" TEXT_SHORTENED="true">
+<node TEXT="&#x30ea;&#x30f3;&#x30af;" ID="ID_868346728" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1638,14 +1773,16 @@
       
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
 <node TEXT="&#x30ea;&#x30f3;&#x30af;&#x5148;&#x3092;&#x6307;&#x5b9a;&#xff08;&#x30d5;&#x30a1;&#x30a4;&#x30eb;&#x9078;&#x629e;&#xff09;..." ID="ID_178833757" TEXT_SHORTENED="true">
 <icon BUILTIN="../SetLinkByFileChooserAction"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1672,16 +1809,18 @@
       &#160;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
 </node>
-<node TEXT="&#x30ea;&#x30f3;&#x30af;&#x5148;&#x3092;&#x6307;&#x5b9a;&#xff08;&#x30c6;&#x30ad;&#x30b9;&#x30c8;&#x5165;&#x529b;&#xff09;..." FOLDED="true" ID="ID_873690575" TEXT_SHORTENED="true">
+<node TEXT="&#x30ea;&#x30f3;&#x30af;&#x5148;&#x3092;&#x6307;&#x5b9a;&#xff08;&#x30c6;&#x30ad;&#x30b9;&#x30c8;&#x5165;&#x529b;&#xff09;..." ID="ID_873690575" TEXT_SHORTENED="true">
 <icon BUILTIN="../SetLinkByTextFieldAction"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1705,13 +1844,14 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
-<node TEXT="&#x30b3;&#x30d4;&#x30fc;&#xff06;&#x8cbc;&#x308a;&#x4ed8;&#x3051;" STYLE_REF="ToNote" ID="ID_146192801" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30b3;&#x30d4;&#x30fc;&#xff06;&#x8cbc;&#x308a;&#x4ed8;&#x3051;" STYLE_REF="ToNote" ID="ID_146192801" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1721,12 +1861,14 @@
       &#12486;&#12461;&#12473;&#12488;&#12501;&#12451;&#12540;&#12523;&#12489;&#12391;&#12398;&#12467;&#12500;&#12540;&#65286;&#36028;&#12426;&#20184;&#12369;&#12395;&#12399;&#12289;&#12300;Ctrl &#65291; C&#12301;&#12392;&#12300;Ctrl &#65291; V&#12301;&#12434;&#20351;&#12387;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x6587;&#x5b57;&#x5217;&#x304b;&#x3089;&#x30ea;&#x30f3;&#x30af;&#x8a2d;&#x5b9a;" ID="ID_1049705529" TEXT_SHORTENED="true">
 <icon BUILTIN="../ExtractLinkFromTextAction"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1736,7 +1878,8 @@
       &#36984;&#25246;&#12494;&#12540;&#12489;&#12398;&#22522;&#26412;&#12486;&#12461;&#12473;&#12488;&#20013;&#12398;&#12450;&#12489;&#12524;&#12473;(http://www.google.com/ &#12398;&#12424;&#12358;&#12394; URL)&#12434;&#12289;&#12463;&#12522;&#12483;&#12463;&#12391;&#12472;&#12515;&#12531;&#12503;&#12377;&#12427;&#12495;&#12452;&#12497;&#12540;&#12522;&#12531;&#12463;&#12395;&#22793;&#25563;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -1745,6 +1888,7 @@
 <node TEXT="&#x30ed;&#x30fc;&#x30ab;&#x30eb;&#x30ea;&#x30f3;&#x30af;&#x3092;&#x4ed8;&#x52a0;" ID="ID_305908477" TEXT_SHORTENED="true">
 <icon BUILTIN="../LinkLocal"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1754,14 +1898,15 @@
       &#29694;&#22312;&#12398;&#12510;&#12483;&#12503;&#20869;&#12395;&#12354;&#12427;&#20108;&#12388;&#12398;&#12494;&#12540;&#12489;&#38291;&#12395;&#12522;&#12531;&#12463;&#12434;&#24418;&#25104;&#12375;&#12414;&#12377;&#12290;&#12371;&#12398;&#12467;&#12510;&#12531;&#12489;&#12434;&#21628;&#12403;&#20986;&#12377;&#21069;&#12395;&#12289;&#65298;&#12388;&#12398;&#12494;&#12540;&#12489;&#12434;&#36984;&#25246;&#12375;&#12390;&#12362;&#12363;&#12394;&#12367;&#12399;&#12394;&#12426;&#12414;&#12379;&#12435;&#12290;&#20808;&#12395;&#36984;&#25246;&#12375;&#12383;&#12494;&#12540;&#12489;&#12364;&#12289;&#24460;&#12391;&#36984;&#25246;&#12375;&#12383;&#12494;&#12540;&#12489;&#12395;&#20184;&#21152;&#12373;&#12428;&#12427;&#12522;&#12531;&#12463;&#12398;&#34892;&#20808;&#12395;&#12394;&#12426;&#12289;&#12522;&#12531;&#12463;&#12399;&#23567;&#12373;&#12394;&#32209;&#33394;&#12398;&#30690;&#21360;&#12391;&#34920;&#12373;&#12428;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
 </node>
-<node TEXT="&#x6a5f;&#x80fd;&#xff08;&#x30e1;&#x30cb;&#x30e5;&#x30fc;&#x9805;&#x76ee;&#xff09;&#x306b;&#x30ea;&#x30f3;&#x30af;..." FOLDED="true" ID="ID_1607683947" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x6a5f;&#x80fd;&#xff08;&#x30e1;&#x30cb;&#x30e5;&#x30fc;&#x9805;&#x76ee;&#xff09;&#x306b;&#x30ea;&#x30f3;&#x30af;..." ID="ID_1607683947" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1771,13 +1916,14 @@
       Opens a dialog to choose a menu option to which a hyperlink will be added in the selected node.
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
-<node TEXT="&#x30b9;&#x30af;&#x30ea;&#x30d7;&#x30c8;&#x8d77;&#x52d5;&#x3078;&#x306e;&#x30ea;&#x30f3;&#x30af;&#x7528;&#x4f8b;" ID="ID_1605161172" LINK="#ID_840644558" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x30b9;&#x30af;&#x30ea;&#x30d7;&#x30c8;&#x8d77;&#x52d5;&#x3078;&#x306e;&#x30ea;&#x30f3;&#x30af;&#x7528;&#x4f8b;" ID="ID_1605161172" LINK="#ID_840644558" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1787,14 +1933,15 @@
       &#65339;&#12371;&#12398;&#12494;&#12540;&#12489;&#12363;&#12425;&#12398;&#12522;&#12531;&#12463;&#20808;&#12391;&#12289;&#65341;&#36196;&#33394;&#12398;&#30690;&#21360;&#12434;&#25276;&#12377;&#12392;&#12289;&#27231;&#33021;&#12522;&#12531;&#12463;&#12434;&#29992;&#12356;&#12390;&#12473;&#12463;&#12522;&#12503;&#12488;&#12434;&#36215;&#21205;&#12377;&#12427;&#29992;&#20363;&#12364;&#35211;&#12425;&#12428;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
 </hook>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
-<node TEXT="" STYLE_REF="Aggregatie als Toelichting" FOLDED="true" ID="ID_557988874" TEXT_SHORTENED="true">
+<node TEXT="" STYLE_REF="Aggregatie als Toelichting" ID="ID_557988874" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
@@ -1802,8 +1949,8 @@
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
-<node TEXT="&#x30cf;&#x30a4;&#x30d1;&#x30fc;&#x30ea;&#x30f3;&#x30af;" ID="Freeplane_Link_203858515" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30cf;&#x30a4;&#x30d1;&#x30fc;&#x30ea;&#x30f3;&#x30af;" ID="Freeplane_Link_203858515" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1830,14 +1977,15 @@
       &#12495;&#12452;&#12497;&#12540;&#12522;&#12531;&#12463;&#12399;&#12289;&#12489;&#12521;&#12483;&#12464;&#65286;&#12489;&#12525;&#12483;&#12503;&#12420;&#12513;&#12491;&#12517;&#12540;&#36984;&#25246;&#12395;&#12424;&#12387;&#12390;&#20184;&#21152;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
 </node>
-<node TEXT="&#x30c9;&#x30e9;&#x30c3;&#x30b0;&#xff06;&#x30c9;&#x30ed;&#x30c3;&#x30d7;&#x3067;&#x30cf;&#x30a4;&#x30d1;&#x30fc;&#x30ea;&#x30f3;&#x30af;&#xff08;&#x8907;&#x6570;&#x53ef;&#xff09;&#x8a2d;&#x5b9a;" ID="ID_640110372" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30c9;&#x30e9;&#x30c3;&#x30b0;&#xff06;&#x30c9;&#x30ed;&#x30c3;&#x30d7;&#x3067;&#x30cf;&#x30a4;&#x30d1;&#x30fc;&#x30ea;&#x30f3;&#x30af;&#xff08;&#x8907;&#x6570;&#x53ef;&#xff09;&#x8a2d;&#x5b9a;" ID="ID_640110372" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1859,15 +2007,16 @@
       &#12371;&#12358;&#12375;&#12390;&#20316;&#12425;&#12428;&#12427;&#12494;&#12540;&#12489;&#12398;&#12486;&#12461;&#12473;&#12488;&#12399;&#12289;&#24403;&#21021;&#12289;&#12495;&#12452;&#12497;&#12540;&#12522;&#12531;&#12463;&#20808;&#12398;&#12450;&#12489;&#12524;&#12473;&#12392;&#12394;&#12426;&#12414;&#12377;&#12290;&#12371;&#12398;&#12486;&#12461;&#12473;&#12488;&#12399;&#12289;&#21066;&#38500;&#12375;&#12390;&#12418;&#12424;&#12356;&#12375;&#12289;&#32232;&#38598;&#12394;&#12356;&#12375;&#32622;&#25563;&#12375;&#12390;&#12418;&#12363;&#12414;&#12356;&#12414;&#12379;&#12435;&#12290;&#12371;&#12398;&#22793;&#26356;&#12399;&#12289;&#12495;&#12452;&#12497;&#12540;&#12522;&#12531;&#12463;&#33258;&#20307;&#65288;&#36196;&#33394;&#12398;&#30690;&#21360;)&#12395;&#12399;&#24433;&#38911;&#12375;&#12414;&#12379;&#12435;&#12290;&#12495;&#12452;&#12497;&#12540;&#12522;&#12531;&#12463;&#20808;&#12434;&#32232;&#38598;&#12377;&#12427;&#12395;&#12399;&#12289;<i>&#12300;&#12494;&#12540;&#12489;&#12398;&#27231;&#33021;&#160; &gt; &#12522;&#12531;&#12463;&#160;&gt; &#12522;&#12531;&#12463;&#12434;&#25351;&#23450;(&#12479;&#12452;&#12503;&#20837;&#21147;)...&#12301;</i>&#12434;&#36984;&#25246;&#12375;&#12289;&#12450;&#12489;&#12524;&#12473;&#12434;&#32232;&#38598;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute_layout NAME_WIDTH="82" VALUE_WIDTH="161"/>
 <attribute NAME="Chapter" VALUE="3"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
 </node>
-<node TEXT="E-mail &#x30ea;&#x30f3;&#x30af;" ID="ID_869144882" LINK="mailto:%20jokro@freeplane.nl" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="E-mail &#x30ea;&#x30f3;&#x30af;" ID="ID_869144882" LINK="mailto:%20jokro@freeplane.nl" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1888,7 +2037,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
@@ -1899,7 +2049,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1917,9 +2068,10 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x95a2;&#x9023;&#x30cf;&#x30a4;&#x30d1;&#x30fc;&#x30ea;&#x30f3;&#x30af;" ID="ID_1942965129" TEXT_SHORTENED="true" LINK="#ID_710508360">
+<node TEXT="&#x95a2;&#x9023;&#x30cf;&#x30a4;&#x30d1;&#x30fc;&#x30ea;&#x30f3;&#x30af;" ID="ID_1942965129" LINK="#ID_710508360" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
@@ -1935,8 +2087,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x4ed6;&#x306e;&#x30de;&#x30c3;&#x30d7;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x5411;&#x3051;&#x30ea;&#x30f3;&#x30af;" STYLE_REF="Procedure" ID="ID_199586221" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting:_Example_scripts#Insert_Link_to_a_node_in_another_map" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x4ed6;&#x306e;&#x30de;&#x30c3;&#x30d7;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x5411;&#x3051;&#x30ea;&#x30f3;&#x30af;" STYLE_REF="Procedure" ID="ID_199586221" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting:_Example_scripts#Insert_Link_to_a_node_in_another_map" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -1961,11 +2113,12 @@
       3. <u><strong>&#31532;&#65299;&#12395;&#12289;&#12371;&#12398;&#12300;TN&#12301;&#12494;&#12540;&#12489;&#12398;&#65321;&#65316;&#12467;&#12540;&#12489;&#12434;&#12289;&#12473;&#12486;&#12483;&#12503;&#65297;&#12391;&#20316;&#25104;&#12375;&#12383;&#12522;&#12531;&#12463;&#12395;&#36861;&#21152;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;</strong></u>&#65288;&#25563;&#35328;&#12377;&#12427;&#12392;&#12289;&#12510;&#12483;&#12503;&#21521;&#12369;&#12522;&#12531;&#12463;&#12434;&#12494;&#12540;&#12489;&#21521;&#12369;&#12522;&#12531;&#12463;&#12395;&#22793;&#25563;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;&#65289;&#12371;&#12428;&#12395;&#12399;&#12289;&#65288;&#12300;SM&#12301;&#12510;&#12483;&#12503;&#12398;&#65289;&#12300;SN&#12301;&#12494;&#12540;&#12489;&#12395;&#25147;&#12426;&#12289;&#65288;&#12513;&#12452;&#12531;&#12513;&#12491;&#12517;&#12540;&#12289;&#21448;&#12399;&#12467;&#12531;&#12486;&#12461;&#12473;&#12488;&#12513;&#12491;&#12517;&#12540;&#32076;&#30001;&#12391;&#65289;&#12300;&#12494;&#12540;&#12489;&#12398;&#27231;&#33021; &gt; &#12522;&#12531;&#12463; &gt; &#12495;&#12452;&#12497;&#12540;&#12522;&#12531;&#12463;&#12434;&#20184;&#21152;&#21448;&#12399;&#20462;&#27491;&#65288;&#12479;&#12452;&#12503;&#20837;&#21147;&#65289;&#12434;&#23455;&#34892;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;&#34920;&#31034;&#12373;&#12428;&#12427;&#12300;&#20837;&#21147;&#12301;&#12392;&#12356;&#12358;&#12509;&#12483;&#12503;&#12450;&#12483;&#12503;&#12513;&#12491;&#12517;&#12540;&#12391;&#12289;&#12300;.mm&#12301;&#12398;&#12377;&#12368;&#24460;&#12395;&#65288;&#12473;&#12506;&#12540;&#12473;&#12434;&#32622;&#12363;&#12378;&#65289;&#12289;&#12473;&#12486;&#12483;&#12503;&#65298;&#12391;&#12467;&#12500;&#12540;&#12375;&#12383;&#12300;TN&#12301;&#12494;&#12540;&#12489;&#12398;&#65321;&#65316;&#12467;&#12540;&#12489;&#12434;&#26360;&#12365;&#36796;&#12435;&#12391;&#12367;&#12384;&#12373;&#12356;&#12290;&#20363;&#12360;&#12400;&#12289;&#12300;...../mytargetmap.mm#ID_123456&#12301;&#12392;&#12356;&#12387;&#12383;&#20855;&#21512;&#12395;&#12394;&#12426;&#12414;&#12377;&#12290;&#23646;&#24615;&#20516;&#12395;&#12495;&#12452;&#12497;&#12540;&#12522;&#12531;&#12463;&#12434;&#32622;&#12367;&#22580;&#21512;&#12418;&#12289;&#25163;&#38918;&#12399;&#21516;&#12376;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="3"/>
 </node>
-<node TEXT="&#x30a4;&#x30f3;&#x30e9;&#x30a4;&#x30f3;&#x30cf;&#x30a4;&#x30d1;&#x30fc;&#x30ea;&#x30f3;&#x30af;" STYLE_REF="ToNote" ID="ID_408844993" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30a4;&#x30f3;&#x30e9;&#x30a4;&#x30f3;&#x30cf;&#x30a4;&#x30d1;&#x30fc;&#x30ea;&#x30f3;&#x30af;" STYLE_REF="ToNote" ID="ID_408844993" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2009,14 +2162,16 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="3"/>
 </node>
 </node>
 </node>
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x524a;&#x9664;" ID="ID_673358354" TEXT_SHORTENED="true">
 <icon BUILTIN="../editdelete"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2037,7 +2192,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -2045,10 +2201,11 @@
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;" STYLE_REF="MenuGroupLabel" ID="ID_1306487115" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x30b3;&#x30a2;&#x95a2;&#x9023;" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1154882439" TEXT_SHORTENED="true">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x30b3;&#x30a2;&#x95a2;&#x9023;" STYLE_REF="SubMenu" ID="ID_1154882439" TEXT_SHORTENED="true">
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x30b3;&#x30a2;&#x3092;&#x30a4;&#x30f3;&#x30e9;&#x30a4;&#x30f3;&#x7de8;&#x96c6;" ID="ID_900286880" TEXT_SHORTENED="true">
 <icon BUILTIN="../edit_node"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2127,7 +2284,8 @@
 </node>
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x30b3;&#x30a2;&#x3092;&#x30c0;&#x30a4;&#x30a2;&#x30ed;&#x30b0;&#x7de8;&#x96c6;..." ID="ID_440856514" TEXT_SHORTENED="true">
 <icon BUILTIN="../edit_long_node"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2185,15 +2343,17 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="1"/>
 </node>
-<node TEXT="LaTeX &#x6570;&#x5f0f;" FOLDED="true" ID="ID_1750517188" TEXT_SHORTENED="true">
+<node TEXT="LaTeX &#x6570;&#x5f0f;" ID="ID_1750517188" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="10" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2203,13 +2363,14 @@
       LaTeX &#12399;&#12289;&#31185;&#23398;&#25968;&#24335;&#12398;&#12524;&#12452;&#12450;&#12454;&#12488;&#12434;&#23450;&#32681;&#12377;&#12427;&#26041;&#27861;&#12398;&#65297;&#12388;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3,7"/>
-<node TEXT="LaTeX &#x6570;&#x5f0f;&#x3092;&#x4ed8;&#x52a0;..." ID="ID_816429133" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="LaTeX &#x6570;&#x5f0f;&#x3092;&#x4ed8;&#x52a0;..." ID="ID_816429133" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2219,7 +2380,8 @@
       LaTeX &#20316;&#25104;&#29992;&#12398;&#12456;&#12487;&#12451;&#12479;&#12434;&#38283;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -2249,6 +2411,7 @@
 <node TEXT="&#x66f8;&#x5f0f;&#x306e;&#x307f;&#x30b3;&#x30d4;&#x30fc;" ID="ID_693387904" TEXT_SHORTENED="true">
 <icon BUILTIN="../colorpicker"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2269,7 +2432,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -2277,6 +2441,7 @@
 <node TEXT="&#x66f8;&#x5f0f;&#x306e;&#x307f;&#x8cbc;&#x308a;&#x4ed8;&#x3051;" ID="ID_1734557080" TEXT_SHORTENED="true">
 <icon BUILTIN="../color_fill"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2297,14 +2462,16 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x7d71;&#x5408;" ID="ID_1720469761" TEXT_SHORTENED="true">
 <icon BUILTIN="../JoinNodesAction"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2314,14 +2481,16 @@
       &#65298;&#12388;&#12398;&#12494;&#12540;&#12489;&#12434;&#12402;&#12392;&#12388;&#12395;&#32113;&#21512;&#12375;&#12414;&#12377;&#65288;&#22522;&#26412;&#12486;&#12461;&#12473;&#12488;&#12398;&#12415;&#65289;&#12290;&#23376;&#12494;&#12540;&#12489;&#12398;&#12394;&#12356;&#12494;&#12540;&#12489;&#19978;&#12391;&#12375;&#12363;&#20316;&#21205;&#12375;&#12414;&#12379;&#12435;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x5206;&#x5272;" ID="ID_1796564424" TEXT_SHORTENED="true">
 <icon BUILTIN="../split_node"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2337,19 +2506,20 @@
       <font face="SansSerif, sans-serif" color="#000000"><i>&#12300;&#12494;&#12540;&#12489;&#12434;&#20998;&#21106;&#12301;</i>&#12467;&#12510;&#12531;&#12489;&#12399;&#12289;&#25913;&#34892;&#12373;&#12360;&#12354;&#12428;&#12400;&#12289;&#12354;&#12425;&#12422;&#12427;&#12503;&#12524;&#12540;&#12531;&#12486;&#12461;&#12473;&#12488;&#12494;&#12540;&#12489;&#12391;&#21033;&#29992;&#12391;&#12365;&#12414;&#12377;&#12290;&#12371;&#12398;&#22580;&#21512;&#12398;&#25913;&#34892;&#12399;&#12289;&#12300;Shift + Enter&#12301;&#12391;&#25407;&#20837;&#12391;&#12365;&#12414;&#12377;&#12290;&#12414;&#12383;&#12289;&#12300;&#12494;&#12540;&#12489;&#12434;&#20998;&#21106;&#12301;&#12399;&#12289;&#35079;&#25968;&#12398;&#27573;&#33853;&#12434;&#21547;&#12416;&#12418;&#12398;&#12391;&#12354;&#12428;&#12400;&#12289;&#12354;&#12425;&#12422;&#12427;&#12522;&#12483;&#12481;&#12486;&#12461;&#12473;&#24418;&#24335;&#65288;&#38263;&#25991;&#12394;&#12356;&#12375;HTML&#65289;&#12398;&#12494;&#12540;&#12489;&#12391;&#26377;&#21177;&#12391;&#12377;&#12290;&#12356;&#12378;&#12428;&#12398;&#22580;&#21512;&#12395;&#12418;&#12289;&#25913;&#34892;&#12394;&#12356;&#12375;&#27573;&#33853;&#26367;&#12360;&#12398;&#31623;&#25152;&#12391;&#12494;&#12540;&#12489;&#12364;&#20998;&#21106;&#12373;&#12428;&#12414;&#12377;&#12290;HTML &#12494;&#12540;&#12489;&#12395;&#12388;&#12356;&#12390;&#12399;&#12289;&#20837;&#12428;&#23376;&#12395;&#12373;&#12428;&#12383;&#35201;&#32032;&#12391;&#12354;&#12428;&#12400;&#12289;&#20998;&#21106;&#12434;&#32368;&#12426;&#36820;&#12375;&#36969;&#29992;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;&#12503;&#12524;&#12540;&#12531;&#12486;&#12461;&#12473;&#12488;&#12494;&#12540;&#12489;&#12399;&#12289;&#12414;&#12378;&#12289;&#12300;&#26360;&#24335; &gt; &#12522;&#12483;&#12481;&#12486;&#12461;&#12473;&#12488;&#12434;&#20351;&#29992;&#12301;&#12434;&#20351;&#12387;&#12390;&#65339;&#12522;&#12483;&#12481;&#12486;&#12461;&#12473;&#12488;&#12395;&#65341;&#22793;&#25563;&#12377;&#12428;&#12400;&#12289;&#12393;&#12371;&#12391;&#12418;&#20998;&#21106;&#12391;&#12365;&#12414;&#12377;&#12290;&#27425;&#12395;&#12289;&#12371;&#12398;&#12494;&#12540;&#12489;&#12434;&#12463;&#12522;&#12483;&#12463;&#12375;&#12390;&#12300;&#12494;&#12540;&#12489;&#12398;&#38263;&#25991;&#32232;&#38598;&#12301;&#12454;&#12451;&#12531;&#12489;&#12454;&#12434;&#38283;&#12365;&#12414;&#12377;&#12290;&#12381;&#12398;&#12454;&#12451;&#12531;&#12489;&#12454;&#12391;&#12289;&#12494;&#12540;&#12489;&#12434;&#20998;&#21106;&#12375;&#12383;&#12356;&#20301;&#32622;&#12395;&#12459;&#12540;&#12477;&#12523;&#12434;&#32622;&#12365;&#12289;&#27425;&#12395;&#12289;&#12480;&#12452;&#12450;&#12525;&#12464;&#12398;&#26368;&#19979;&#37096;&#12395;&#12354;&#12427;&#12300;&#20998;&#21106;&#12301;&#12508;&#12479;&#12531;&#12434;&#12463;&#12522;&#12483;&#12463;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;&#12459;&#12540;&#12477;&#12523;&#12424;&#12426;&#21491;&#20596;&#12398;&#12494;&#12540;&#12489;&#37096;&#20998;&#12364;&#12289;&#20803;&#12398;&#12494;&#12540;&#12489;&#12398;&#19979;&#20596;&#12395;&#29694;&#12428;&#12414;&#12377;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x30a4;&#x30e1;&#x30fc;&#x30b8;" FOLDED="true" ID="ID_604986373" TEXT_SHORTENED="true">
+<node TEXT="&#x30a4;&#x30e1;&#x30fc;&#x30b8;" ID="ID_604986373" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3,6"/>
-<node TEXT="&#x8a73;&#x7d30;&#x90e8;&#x5206;&#x306b;&#x30a4;&#x30e1;&#x30fc;&#x30b8;" ID="ID_534717693" LINK="#ID_840644558" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x8a73;&#x7d30;&#x90e8;&#x5206;&#x306b;&#x30a4;&#x30e1;&#x30fc;&#x30b8;" ID="ID_534717693" LINK="#ID_840644558" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2362,7 +2532,8 @@
       &#32209;&#12398;&#30690;&#21360;&#12434;&#12463;&#12522;&#12483;&#12463;&#12375;&#12390;&#12289;&#29992;&#20363;&#12434;&#12372;&#35239;&#12367;&#12384;&#12373;&#12356;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
 </hook>
@@ -2376,6 +2547,7 @@
 </hook>
 <attribute NAME="Chapter" VALUE=""/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2385,16 +2557,18 @@
       &#12494;&#12540;&#12489;&#12395;&#20184;&#21152;&#12377;&#12427;&#12450;&#12452;&#12467;&#12531;&#12434;&#12289;&#12450;&#12452;&#12467;&#12531;&#20184;&#12365;&#12469;&#12502;&#12513;&#12491;&#12517;&#12540;&#32076;&#30001;&#12391;&#36984;&#12435;&#12391;&#12367;&#12384;&#12373;&#12356;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 </node>
-<node TEXT="&#x30a2;&#x30a4;&#x30b3;&#x30f3;&#x4e00;&#x89a7;&#x304b;&#x3089;&#x9078;&#x629e;" FOLDED="true" ID="ID_1962266219" TEXT_SHORTENED="true">
+<node TEXT="&#x30a2;&#x30a4;&#x30b3;&#x30f3;&#x4e00;&#x89a7;&#x304b;&#x3089;&#x9078;&#x629e;" ID="ID_1962266219" TEXT_SHORTENED="true">
 <icon BUILTIN="../designer"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2415,12 +2589,14 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="" ID="ID_1213506322" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2430,10 +2606,11 @@
       &#20182;&#12398;&#12450;&#12452;&#12467;&#12531;&#19968;&#35239;&#34920;&#12392;&#30064;&#12394;&#12426;&#12289;&#12371;&#12398;&#34920;&#12399;&#12471;&#12473;&#12486;&#12512;&#12450;&#12452;&#12467;&#12531;&#12434;&#21547;&#12417;&#12390;&#34920;&#31034;&#12375;&#12414;&#12377;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="" STYLE_REF="Aggregatie als Toelichting" FOLDED="true" ID="ID_892520547" TEXT_SHORTENED="true">
+<node TEXT="" STYLE_REF="Aggregatie als Toelichting" ID="ID_892520547" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 <attribute_layout NAME_WIDTH="82" VALUE_WIDTH="211"/>
 <attribute NAME="Chapter" VALUE="3"/>
@@ -2447,7 +2624,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2457,7 +2635,8 @@
       &#12450;&#12452;&#12467;&#12531;&#12392;&#12399;&#12289;&#12511;&#12491;&#12452;&#12513;&#12540;&#12472;&#12398;&#12371;&#12392;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT=" &#x30a2;&#x30a4;&#x30b3;&#x30f3;&#x306e;&#x7528;&#x4f8b;" ID="ID_835126969" TEXT_SHORTENED="true">
 <icon BUILTIN="help"/>
@@ -2471,7 +2650,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2481,7 +2661,8 @@
       &#36984;&#25246;&#12450;&#12452;&#12467;&#12531;&#12522;&#12473;&#12488;&#12395;&#12289;&#12518;&#12540;&#12470;&#12364;&#29420;&#33258;&#12398;&#12450;&#12452;&#12467;&#12531;&#12434;&#36861;&#21152;&#12377;&#12427;&#12395;&#12399;&#12289;&#12518;&#12540;&#12470;&#12487;&#12451;&#12524;&#12463;&#12488;&#12522;&#12398;&#12469;&#12502;&#12487;&#12451;&#12524;&#12463;&#12488;&#12522;<i>&#12300;icons&#12301;</i>&#12395;&#160; myicon.png &#12501;&#12449;&#12452;&#12523;&#12434;&#20837;&#12428;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;&#12518;&#12540;&#12470;&#12487;&#12451;&#12524;&#12463;&#12488;&#12522;&#12399;&#12289;<i>&#12300;&#12484;&#12540;&#12523;&#160;&gt; &#12518;&#12540;&#12470;&#12487;&#12451;&#12524;&#12463;&#12488;&#12522;&#12434;&#38283;&#12367;&#12301;</i>&#12434;&#36984;&#25246;&#12375;&#12390;&#38283;&#12365;&#12414;&#12377;&#12290;.
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x3059;&#x3079;&#x3066;&#x306e;&#x30a2;&#x30a4;&#x30b3;&#x30f3;&#x3092;&#x524a;&#x9664;" ID="ID_608054065" TEXT_SHORTENED="true">
 <icon BUILTIN="../icon_trash"/>
@@ -2489,7 +2670,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2499,7 +2681,8 @@
       &#36984;&#25246;&#12494;&#12540;&#12489;&#12363;&#12425;&#12377;&#12409;&#12390;&#12398;&#12450;&#12452;&#12467;&#12531;&#12434;&#21066;&#38500;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x6700;&#x5f8c;&#x306e;&#x30a2;&#x30a4;&#x30b3;&#x30f3;&#x3092;&#x524a;&#x9664;" ID="ID_86039207" TEXT_SHORTENED="true">
 <icon BUILTIN="../remove_last_icon"/>
@@ -2507,7 +2690,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2517,7 +2701,8 @@
       &#36984;&#25246;&#12494;&#12540;&#12489;&#12398;&#26368;&#26032;&#12398;&#12450;&#12452;&#12467;&#12531;&#12434;&#21066;&#38500;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x5148;&#x982d;&#x306e;&#x30a2;&#x30a4;&#x30b3;&#x30f3;&#x3092;&#x524a;&#x9664;" ID="ID_1175732957" TEXT_SHORTENED="true">
 <icon BUILTIN="../remove_first_icon"/>
@@ -2525,7 +2710,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2535,13 +2721,15 @@
       &#36984;&#25246;&#12494;&#12540;&#12489;&#12395;&#26368;&#21021;&#12395;&#20184;&#21152;&#12373;&#12428;&#12383;&#12450;&#12452;&#12467;&#12531;&#12434;&#21066;&#38500;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="&#x9032;&#x6357;&#x5ea6;" FOLDED="true" ID="ID_1053622072" TEXT_SHORTENED="true">
+<node TEXT="&#x9032;&#x6357;&#x5ea6;" ID="ID_1053622072" TEXT_SHORTENED="true">
 <icon BUILTIN="25%"/>
 <font NAME="SansSerif" SIZE="10" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2565,14 +2753,16 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
 <node TEXT="&#x9032;&#x6357;&#x5ea6;&#x3092;&#x4e0a;&#x3052;&#x308b;" ID="ID_1352152467" TEXT_SHORTENED="true">
 <icon BUILTIN="25%"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2582,14 +2772,16 @@
       &#36984;&#25246;&#12494;&#12540;&#12489;&#12395;&#36914;&#25431;&#24230;&#25351;&#27161;&#12434;&#20184;&#21152;&#12375;&#12289;&#65297;&#22238;&#12398;&#23455;&#34892;&#12372;&#12392;&#12395;25&#65285;&#21051;&#12415;&#12391;&#12300;100&#65285;&#65291;&#65327;&#65323;&#12301;&#12414;&#12391;&#24341;&#12365;&#19978;&#12370;&#12390;&#12356;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 <node TEXT="&#x9032;&#x6357;&#x5ea6;&#x3092;&#x4e0b;&#x3052;&#x308b;" ID="ID_1503763375" TEXT_SHORTENED="true">
 <icon BUILTIN="25%"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2599,14 +2791,16 @@
       &#36984;&#25246;&#12494;&#12540;&#12489;&#12398;&#36914;&#25431;&#24230;&#25351;&#27161;&#12434;25&#65285;&#21051;&#12415;&#12391;&#24341;&#12365;&#19979;&#12370;&#12289;&#26368;&#32066;&#30340;&#12395;&#12399;&#25351;&#27161;&#12450;&#12452;&#12467;&#12531;&#12434;&#21066;&#38500;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 <node TEXT="&#x5927;&#x304d;&#x3044;&#x56f3;&#x3092;&#x4ed8;&#x52a0;&#xff08;10%&#x523b;&#x307f;)" ID="ID_931502203" TEXT_SHORTENED="true">
 <icon BUILTIN="25%"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2624,7 +2818,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <hook URI="freeplaneresource:/images/svg/Progress_tenth_02.svg" SIZE="1.0" NAME="ExternalObject"/>
 <hook NAME="NodeConditionalStyles">
@@ -2633,7 +2828,8 @@
 </node>
 <node TEXT="&#x5927;&#x304d;&#x3044;&#x56f3;&#x3092;&#x4ed8;&#x52a0;&#xff08;25%&#x523b;&#x307f;)" ID="ID_1330662491" TEXT_SHORTENED="true">
 <icon BUILTIN="25%"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2651,7 +2847,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook URI="freeplaneresource:/images/svg/Progress_quarter_01.svg" SIZE="1.0" NAME="ExternalObject"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
@@ -2662,7 +2859,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2672,7 +2870,8 @@
       &#22823;&#12365;&#12356;&#25351;&#27161;&#12399; .svg &#12452;&#12513;&#12540;&#12472;&#12434;&#20351;&#12387;&#12390;&#12356;&#12414;&#12377;&#12290;&#12371;&#12428;&#12399;&#12289;Java &#12450;&#12503;&#12524;&#12483;&#12488;&#12391;&#12399;&#34920;&#31034;&#12373;&#12428;&#12414;&#12379;&#12435;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="SummaryNode"/>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
@@ -2684,7 +2883,8 @@
 </node>
 <node TEXT="&#x753b;&#x50cf;&#xff08;&#x30d5;&#x30a1;&#x30a4;&#x30eb;&#x9078;&#x629e; or &#x30ea;&#x30f3;&#x30af;&#x304b;&#x3089;&#xff09;" ID="ID_743208762" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2722,17 +2922,19 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
 </node>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x62e1;&#x5f35;&#x60c5;&#x5831;" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1400990107" TEXT_SHORTENED="true">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x62e1;&#x5f35;&#x60c5;&#x5831;" STYLE_REF="SubMenu" ID="ID_1400990107" TEXT_SHORTENED="true">
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x8a73;&#x7d30;&#x3092;&#x30a4;&#x30f3;&#x30e9;&#x30a4;&#x30f3;&#x7de8;&#x96c6;" ID="ID_1807308711" TEXT_SHORTENED="true">
 <icon BUILTIN="../edit_details"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2759,7 +2961,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -2770,7 +2973,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2791,10 +2995,11 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x30ce;&#x30fc;&#x30c9;&#x304b;&#x3089;&#x62e1;&#x5f35;&#x60c5;&#x5831;&#x3092;&#x30b3;&#x30d4;&#x30fc;" ID="ID_1200772173" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x30ce;&#x30fc;&#x30c9;&#x304b;&#x3089;&#x62e1;&#x5f35;&#x60c5;&#x5831;&#x3092;&#x30b3;&#x30d4;&#x30fc;" ID="ID_1200772173" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2826,10 +3031,11 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x5185;&#x5bb9;&#x3092;&#x30c4;&#x30fc;&#x30eb;&#x30c1;&#x30c3;&#x30d7;&#x8868;&#x793a;" ID="ID_1299973423" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x5185;&#x5bb9;&#x3092;&#x30c4;&#x30fc;&#x30eb;&#x30c1;&#x30c3;&#x30d7;&#x8868;&#x793a;" ID="ID_1299973423" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2864,13 +3070,14 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x8a73;&#x7d30;&#x3092;&#x524a;&#x9664;" ID="ID_949038869" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x8a73;&#x7d30;&#x3092;&#x524a;&#x9664;" ID="ID_949038869" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2880,7 +3087,8 @@
       &#36984;&#25246;&#12494;&#12540;&#12489;&#12363;&#12425;&#12289;&#35443;&#32048;&#12486;&#12461;&#12473;&#12488;&#12434;&#21066;&#38500;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -2888,7 +3096,8 @@
 </node>
 <node TEXT="&#x8a73;&#x7d30;&#x30c6;&#x30ad;&#x30b9;&#x30c8;" STYLE_REF="MenuGroupLabel" ID="ID_1543644666" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2926,7 +3135,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
@@ -2934,13 +3144,14 @@
 <attribute NAME="Chapter" VALUE="3"/>
 <hook NAME="SummaryNode"/>
 </node>
-<node TEXT="&#x5916;&#x90e8;&#x30a4;&#x30e1;&#x30fc;&#x30b8;&#x3092;&#x4ed8;&#x52a0;..." FOLDED="true" ID="ID_334408230" TEXT_SHORTENED="true">
+<node TEXT="&#x5916;&#x90e8;&#x30a4;&#x30e1;&#x30fc;&#x30b8;&#x3092;&#x4ed8;&#x52a0;..." ID="ID_334408230" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
 <hook NAME="FirstGroupNode"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -2998,14 +3209,16 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
-<node TEXT="" FOLDED="true" ID="ID_1294427474" TEXT_SHORTENED="true">
+</html>
+</richcontent>
+<node TEXT="" ID="ID_1294427474" TEXT_SHORTENED="true">
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <node TEXT="" ID="ID_124027424" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3023,7 +3236,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x30a4;&#x30e1;&#x30fc;&#x30b8;&#x306e;&#x30c9;&#x30e9;&#x30c3;&#x30b0;&#xff06;&#x30c9;&#x30ed;&#x30c3;&#x30d7;&#x3001;&#x53ca;&#x3073;&#x30ea;&#x30f3;&#x30af;&#x306e;&#x30b3;&#x30d4;&#x30fc;&#xff06;&#x8cbc;&#x308a;&#x4ed8;&#x3051;" ID="ID_225689401" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -3032,7 +3246,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3075,13 +3290,15 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 </node>
 <node TEXT="&#x5916;&#x90e8;&#x30a4;&#x30e1;&#x30fc;&#x30b8;&#x3092;&#x5909;&#x66f4;..." ID="ID_1875250551" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3091,7 +3308,8 @@
       &#36984;&#25246;&#12494;&#12540;&#12489;&#12398;&#22806;&#37096;&#12452;&#12513;&#12540;&#12472;&#12398;&#22823;&#12365;&#12373;&#12434;&#22793;&#26356;&#12391;&#12365;&#12427;&#12495;&#12531;&#12489;&#12523;&#12434;&#34920;&#31034;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -3103,7 +3321,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3113,10 +3332,11 @@
       &#36984;&#25246;&#12494;&#12540;&#12489;&#12363;&#12425;&#22806;&#37096;&#12452;&#12513;&#12540;&#12472;&#12434;&#21066;&#38500;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x30a4;&#x30e1;&#x30fc;&#x30b8;" FOLDED="true" ID="ID_1620391394" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30a4;&#x30e1;&#x30fc;&#x30b8;" ID="ID_1620391394" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3167,7 +3387,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
@@ -3181,7 +3402,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3208,13 +3430,15 @@
       &#12371;&#12428;&#12391;&#12289; <i>myFile.html</i>&#160;&#12501;&#12449;&#12452;&#12523;&#12392;&#12469;&#12502;&#12487;&#12451;&#12524;&#12463;&#12488;&#12522;&#160; <i>myFile.html_files</i>&#160;&#12434;&#12289;&#12450;&#12463;&#12475;&#12473;&#35377;&#21487;&#12375;&#12383;&#12356;&#22580;&#25152;&#65288;&#12487;&#12451;&#12524;&#12463;&#12488;&#12522;&#65289;&#12395;&#31227;&#21205;&#12391;&#12365;&#12427;&#12424;&#12358;&#12395;&#12394;&#12426;&#12414;&#12377;&#12290;&#12510;&#12452;&#12531;&#12489;&#12510;&#12483;&#12503;&#12434;&#38283;&#12367;&#12395;&#12399;&#12289;<i>myFile.html</i>&#160;&#12434;&#21628;&#12403;&#20986;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;&#12452;&#12531;&#12479;&#12540;&#12493;&#12483;&#12488;&#19978;&#12395;&#20844;&#38283;&#12377;&#12427;&#22580;&#21512;&#12399;&#12289;myFile.html &#12434;&#12289;&#20363;&#12360;&#12400; index.html &#12395;&#21517;&#31216;&#22793;&#26356;&#12375;&#12390;&#12418;&#12363;&#12414;&#12356;&#12414;&#12379;&#12435;&#12290;&#12469;&#12502;&#12487;&#12451;&#12524;&#12463;&#12488;&#12522;&#12395;&#12388;&#12356;&#12390;&#12399;&#12289;&#21517;&#31216;&#22793;&#26356;&#12375;&#12390;&#12399;&#12356;&#12369;&#12414;&#12379;&#12435;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
 <node TEXT="&#x5c5e;&#x6027;&#x3092;&#x30a4;&#x30f3;&#x30e9;&#x30a4;&#x30f3;&#x7de8;&#x96c6;" ID="ID_588022191" TEXT_SHORTENED="true">
 <icon BUILTIN="../EditAttributesAction"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3238,14 +3462,15 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3" OBJECT="org.freeplane.features.format.FormattedNumber|3.0"/>
 </node>
-<node TEXT="&#x5c5e;&#x6027;&#x3092;&#x4ed8;&#x52a0;" FOLDED="true" ID="ID_984784283" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x5c5e;&#x6027;&#x3092;&#x4ed8;&#x52a0;" ID="ID_984784283" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3280,12 +3505,13 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3" OBJECT="org.freeplane.features.format.FormattedNumber|3.0"/>
-<node TEXT="" FOLDED="true" ID="ID_1214682222" TEXT_SHORTENED="true">
+<node TEXT="" ID="ID_1214682222" TEXT_SHORTENED="true">
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <node TEXT="" ID="ID_1094419120" TEXT_SHORTENED="true">
 <attribute_layout NAME_WIDTH="90" VALUE_WIDTH="163"/>
@@ -3293,7 +3519,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3303,14 +3530,16 @@
       &#36984;&#25246;&#20013;&#12398;&#12377;&#12409;&#12390;&#12398;&#12494;&#12540;&#12489;&#12395;&#12289;&#19968;&#24230;&#12395;&#21516;&#12376;&#23646;&#24615;&#12392;&#23646;&#24615;&#20516;&#12434;&#20184;&#21152;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x5c5e;&#x6027;&#x306e;&#x30b3;&#x30d4;&#x30fc;&#x3068;&#x8cbc;&#x308a;&#x4ed8;&#x3051;" ID="ID_1449305302" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="0" OBJECT="org.freeplane.features.format.FormattedNumber|0.0"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3328,7 +3557,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x5c5e;&#x6027;&#x3042;&#x308a;&#x30a2;&#x30a4;&#x30b3;&#x30f3;&#x3092;&#x8868;&#x793a;" ID="ID_395016262" LINK="#ID_1228898153" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -3343,7 +3573,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3" OBJECT="org.freeplane.features.format.FormattedNumber|3.0"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3353,10 +3584,11 @@
       &#12377;&#12409;&#12390;&#12398;&#12494;&#12540;&#12489;&#12398;&#12377;&#12409;&#12390;&#12398;&#23646;&#24615;&#12434;&#31649;&#29702;&#12377;&#12427;&#12480;&#12452;&#12450;&#12525;&#12464;&#12434;&#38283;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x5c5e;&#x6027;&#x3092;&#x30b3;&#x30d4;&#x30fc;" ID="ID_338594349" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x5c5e;&#x6027;&#x3092;&#x30b3;&#x30d4;&#x30fc;" ID="ID_338594349" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3377,14 +3609,15 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
 </node>
-<node TEXT="&#x5c5e;&#x6027;&#x3092;&#x8cbc;&#x308a;&#x4ed8;&#x3051;" ID="ID_1033981021" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x5c5e;&#x6027;&#x3092;&#x8cbc;&#x308a;&#x4ed8;&#x3051;" ID="ID_1033981021" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3408,7 +3641,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -3419,7 +3653,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3" OBJECT="org.freeplane.features.format.FormattedNumber|3.0"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3449,9 +3684,10 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x5c5e;&#x6027;&#x3092;&#x524a;&#x9664;" STYLE_REF="SubMenu" FOLDED="true" ID="ID_187455075" TEXT_SHORTENED="true">
+<node TEXT="&#x5c5e;&#x6027;&#x3092;&#x524a;&#x9664;" STYLE_REF="SubMenu" ID="ID_187455075" TEXT_SHORTENED="true">
 <node TEXT="&#x6700;&#x521d;&#x306e;&#x5c5e;&#x6027;&#x3092;&#x524a;&#x9664;" ID="ID_416728298" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
@@ -3469,8 +3705,8 @@
 </hook>
 </node>
 </node>
-<node TEXT="Attribute manager" STYLE_REF="Method" ID="ID_859278067" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="Attribute manager" STYLE_REF="Method" ID="ID_859278067" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3494,10 +3730,11 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x5c5e;&#x6027;&#x30de;&#x30cd;&#x30fc;&#x30b8;&#x30e3;" FOLDED="true" ID="ID_1310153809" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x5c5e;&#x6027;&#x30de;&#x30cd;&#x30fc;&#x30b8;&#x30e3;" ID="ID_1310153809" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3521,14 +3758,16 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
-<node TEXT="" FOLDED="true" ID="ID_196085861" TEXT_SHORTENED="true">
+</html>
+</richcontent>
+<node TEXT="" ID="ID_196085861" TEXT_SHORTENED="true">
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <node TEXT="" ID="ID_1794495670" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3543,11 +3782,13 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x5c5e;&#x6027; a1 &#x3092;&#x96a0;&#x3057;&#x3001;&#x5c5e;&#x6027; a2 &#x3092;&#x8868;&#x793a;&#x3002;" ID="ID_150790746" TEXT_SHORTENED="true">
 <font ITALIC="false"/>
 <richcontent TYPE="NOTE">
+
 <html>
   <head>
     
@@ -3557,13 +3798,15 @@
       &#12371;&#12428;&#12399;&#12289;&#12494;&#12540;&#12488;&#12501;&#12451;&#12540;&#12523;&#12489;&#12398;&#12486;&#12461;&#12473;&#12488;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="a1" VALUE="value 1"/>
 <attribute NAME="a2" VALUE="value 2"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3584,10 +3827,11 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node ID="ID_1420562009" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
+<node ID="ID_1420562009" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -3597,9 +3841,11 @@
       &#23646;&#24615;&#12434;&#34920;&#31034;&#65295;&#38750;&#34920;&#31034;&#12392;<i>&#12300;&#12494;&#12540;&#12489;&#12398;&#20869;&#23481;&#12434;&#30701;&#32302;&#34920;&#31034;&#12301;&#12398;&#32068;&#12415;&#21512;&#12431;&#12379;</i>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <font ITALIC="false"/>
 <richcontent TYPE="NOTE">
+
 <html>
   <head>
     
@@ -3609,13 +3855,15 @@
       &#12371;&#12428;&#12399;&#12289;&#12494;&#12540;&#12488;&#12501;&#12451;&#12540;&#12523;&#12489;&#12398;&#12486;&#12461;&#12473;&#12488;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="a1" VALUE="value 1"/>
 <attribute NAME="a2" VALUE="value 2"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3645,12 +3893,13 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 </node>
-<node TEXT="&#x5c5e;&#x6027;" ID="ID_1336806888" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x5c5e;&#x6027;" ID="ID_1336806888" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3680,7 +3929,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
@@ -3688,9 +3938,10 @@
 <hook NAME="SummaryNode"/>
 </node>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c8;" FOLDED="true" ID="ID_1127803116" TEXT_SHORTENED="true">
+<node TEXT="&#x30ce;&#x30fc;&#x30c8;" ID="ID_1127803116" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3725,7 +3976,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
@@ -3733,7 +3985,8 @@
 <node TEXT="&#x30ce;&#x30fc;&#x30c8;&#x3092;&#x7de8;&#x96c6;" ID="ID_753192689" TEXT_SHORTENED="true">
 <icon BUILTIN="../EditNoteInDialogAction"/>
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3743,7 +3996,8 @@
       &#36984;&#25246;&#12494;&#12540;&#12489;&#12398;&#12494;&#12540;&#12488;&#12501;&#12451;&#12540;&#12523;&#12489;&#32232;&#38598;&#29992;&#12398;&#12480;&#12452;&#12450;&#12525;&#12464;&#12434;&#38283;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -3751,7 +4005,8 @@
 </node>
 <node TEXT="&#x30ce;&#x30fc;&#x30c8;&#x3092;&#x524a;&#x9664;" ID="ID_647231999" TEXT_SHORTENED="true">
 <icon BUILTIN="../RemoveNoteAction"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3761,14 +4016,15 @@
       &#36984;&#25246;&#12494;&#12540;&#12489;&#12398;&#12494;&#12540;&#12488;&#12501;&#12451;&#12540;&#12523;&#12489;&#21066;&#38500;&#29992;&#12398;&#12480;&#12452;&#12450;&#12525;&#12464;&#12434;&#38283;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c8;&#x30d1;&#x30cd;&#x30eb;&#x3067;&#x7de8;&#x96c6;" FOLDED="true" ID="ID_1751079482" COLOR="#663300" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30ce;&#x30fc;&#x30c8;&#x30d1;&#x30cd;&#x30eb;&#x3067;&#x7de8;&#x96c6;" ID="ID_1751079482" COLOR="#663300" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3783,7 +4039,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute_layout NAME_WIDTH="82" VALUE_WIDTH="165"/>
 <attribute NAME="Chapter" VALUE="3"/>
 <hook NAME="NodeConditionalStyles">
@@ -3796,7 +4053,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3806,7 +4064,8 @@
       <b>&#12494;&#12540;&#12488;</b>&#12399;&#12289;&#29305;&#27530;&#12394;&#12486;&#12461;&#12473;&#12488;&#12501;&#12451;&#12540;&#12523;&#12489;&#12391;&#12289;&#12494;&#12540;&#12489;&#12395;&#65339;&#26222;&#27573;&#12399;&#38750;&#34920;&#31034;&#12391;&#65341;&#12289;&#12494;&#12540;&#12488;&#20184;&#12365;&#12398;&#22580;&#21512;&#12399;&#20882;&#38957;&#12395;&#12494;&#12540;&#12488;<b>&#12450;&#12452;&#12467;&#12531;</b>&#12364;&#34920;&#31034;&#12373;&#12428;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x30ce;&#x30fc;&#x30c8;&#x30a2;&#x30a4;&#x30b3;&#x30f3;&#x3092;&#x975e;&#x8868;&#x793a;&#x306b;" ID="ID_1135212982" LINK="#ID_635307234" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -3822,6 +4081,7 @@
 <node TEXT="&#x5143;&#x306b;&#x623b;&#x3059;" ID="ID_1252928137" TEXT_SHORTENED="true">
 <icon BUILTIN="../undo"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3850,14 +4110,16 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 <node TEXT="&#x3084;&#x308a;&#x76f4;&#x3059;" ID="ID_767297940" TEXT_SHORTENED="true">
 <icon BUILTIN="../redo"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3867,13 +4129,14 @@
       &#12300;&#20803;&#12395;&#25147;&#12377;&#65379;&#12398;&#21205;&#20316;&#12434;&#36961;&#12387;&#12390;&#21462;&#12426;&#28040;&#12375;&#12414;&#12377;&#12290;&#12371;&#12398;&#21205;&#20316;&#12399;&#12289;&#26368;&#36817;&#12395;&#12394;&#12373;&#12428;&#12383;&#12300;&#20803;&#12395;&#25147;&#12377;&#65379;&#12395;&#12375;&#12363;&#36969;&#29992;&#12391;&#12365;&#12414;&#12379;&#12435;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x8868;&#x793a;&#x4e2d;&#x306e;&#x3059;&#x3079;&#x3066;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x9078;&#x629e;" ID="ID_1410954936" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x8868;&#x793a;&#x4e2d;&#x306e;&#x3059;&#x3079;&#x3066;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x9078;&#x629e;" ID="ID_1410954936" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3883,14 +4146,15 @@
       &#12510;&#12483;&#12503;&#19978;&#12395;&#34920;&#31034;&#20013;&#12398;&#12377;&#12409;&#12390;&#12398;&#12494;&#12540;&#12489;&#12434;&#36984;&#25246;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x679d;&#x306e;&#x8868;&#x793a;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x3059;&#x3079;&#x3066;&#x9078;&#x629e;" ID="ID_1872670234" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x679d;&#x306e;&#x8868;&#x793a;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x3059;&#x3079;&#x3066;&#x9078;&#x629e;" ID="ID_1872670234" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3900,7 +4164,8 @@
       &#36984;&#25246;&#20013;&#12398;&#12494;&#12540;&#12489;&#12398;&#23376;&#12494;&#12540;&#12489;&#12398;&#12358;&#12385;&#12289;&#34920;&#31034;&#20013;&#12398;&#65288;&#25240;&#12426;&#30067;&#12414;&#12428;&#12390;&#12356;&#12394;&#12356;)&#12418;&#12398;&#12434;&#12377;&#12409;&#12390;&#36984;&#25246;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -3914,6 +4179,7 @@
 <node TEXT="&#x5207;&#x308a;&#x53d6;&#x308a;" ID="ID_593223718" TEXT_SHORTENED="true">
 <icon BUILTIN="../editcut"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3923,16 +4189,18 @@
       &#36984;&#25246;&#20013;&#12398;&#12494;&#12540;&#12489;&#12392;&#12381;&#12398;&#12377;&#12409;&#12390;&#12398;&#23376;&#12494;&#12540;&#12489;&#12434;&#20999;&#12426;&#21462;&#12426;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x30b3;&#x30d4;&#x30fc;" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1000565263" TEXT_SHORTENED="true">
+<node TEXT="&#x30b3;&#x30d4;&#x30fc;" STYLE_REF="SubMenu" ID="ID_1000565263" TEXT_SHORTENED="true">
 <node TEXT="&#x30b3;&#x30d4;&#x30fc;" ID="ID_1144110421" TEXT_SHORTENED="true">
 <icon BUILTIN="../editcopy"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3942,14 +4210,16 @@
       &#36984;&#25246;&#20013;&#12398;&#12494;&#12540;&#12489;&#12392;&#12381;&#12398;&#12377;&#12409;&#12390;&#12398;&#23376;&#12494;&#12540;&#12489;&#12434;&#12467;&#12500;&#12540;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 <node TEXT="&#x9078;&#x629e;&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x307f;&#x30b3;&#x30d4;&#x30fc;" ID="ID_1521191048" TEXT_SHORTENED="true">
 <icon BUILTIN="../copy_single"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3959,13 +4229,14 @@
       &#36984;&#25246;&#12494;&#12540;&#12489;&#12395;&#23376;&#12494;&#12540;&#12489;&#12364;&#12354;&#12387;&#12390;&#12418;&#12289;&#24403;&#35442;&#12494;&#12540;&#12489;&#12494;&#12540;&#12489;&#12384;&#12369;&#12467;&#12500;&#12540;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#xff29;&#xff24;&#x3092;&#x30b3;&#x30d4;&#x30fc;" ID="ID_71485983" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#xff29;&#xff24;&#x3092;&#x30b3;&#x30d4;&#x30fc;" ID="ID_71485983" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3975,7 +4246,8 @@
       <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">&#36984;&#25246;&#20013;&#12398;&#12494;&#12540;&#12489;&#12398;&#20869;&#37096; ID &#12434;&#21462;&#24471;&#12375;&#12289;&#12471;&#12473;&#12486;&#12512;&#12398;&#12463;&#12522;&#12483;&#12503;&#12508;&#12540;&#12489;&#12395;&#20445;&#23384;&#12375;&#12414;&#12377;&#12290;&#12371;&#12398;&#27231;&#33021;&#12399;&#12289;&#12383;&#12356;&#12390;&#12356;&#12398;&#22580;&#21512;&#12289;&#12513;&#12491;&#12517;&#12540;&#12398;<i>&#12300;&#25407;&#20837; &#65310; &#12525;&#12540;&#12459;&#12523;&#12522;&#12531;&#12463;&#12398;&#20184;&#21152;&#12301;</i>&#12467;&#12510;&#12531;&#12489;&#12391;&#20195;&#29992;&#12391;&#12365;&#12414;&#12377;&#12290;</span></font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -3983,7 +4255,8 @@
 </node>
 <node TEXT="&#x8cbc;&#x308a;&#x4ed8;&#x3051;" ID="ID_1036972266" TEXT_SHORTENED="true">
 <icon BUILTIN="../editpaste"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -3993,7 +4266,8 @@
       <span style="color: #000000; font-family: SansSerif, sans-serif"><font face="SansSerif, sans-serif" color="#000000">&#12467;&#12500;&#12540;&#12373;&#12428;&#12383;&#12486;&#12461;&#12473;&#12488;&#12434;&#36028;&#12426;&#20184;&#12369;&#12414;&#12377;&#12290;&#36984;&#25246;&#20013;&#12398;&#12494;&#12540;&#12489;&#12364;&#32232;&#38598;&#12514;&#12540;&#12489;&#12398;&#22580;&#21512;&#12289;&#12486;&#12461;&#12473;&#12488;&#12399;&#12494;&#12540;&#12489;&#12398;&#20869;&#23481;&#12395;&#36861;&#21152;&#12373;&#12428;&#12414;&#12377;&#12290;&#36984;&#25246;&#20013;&#12398;&#12494;&#12540;&#12489;&#12364;&#32232;&#38598;&#12514;&#12540;&#12489;&#12391;&#12394;&#12356;&#22580;&#21512;&#12399;&#12289;&#12486;&#12461;&#12473;&#12488;&#12399;&#23376;&#12494;&#12540;&#12489;&#12392;&#12375;&#12390;&#20184;&#21152;&#12373;&#12428;&#12414;&#12377;&#12290;</font></span>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -4010,7 +4284,7 @@
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x79fb;&#x52d5;&#x3068;&#x4e26;&#x3079;&#x66ff;&#x3048;" STYLE_REF="Aggregatie als Toelichting" FOLDED="true" ID="ID_999302270" TEXT_SHORTENED="true">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x79fb;&#x52d5;&#x3068;&#x4e26;&#x3079;&#x66ff;&#x3048;" STYLE_REF="Aggregatie als Toelichting" ID="ID_999302270" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
@@ -4021,7 +4295,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4042,14 +4317,16 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x79fb;&#x52d5;&#xff08;&#x5144;&#x5f1f;&#x9593;&#x3067;&#x4e0a;&#x3078;&#xff09;" ID="ID_1779409764" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4070,11 +4347,13 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x5b50;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x4e26;&#x3079;&#x66ff;&#x3048;" ID="ID_1942706169" TEXT_SHORTENED="true">
 <icon BUILTIN="../SortNodes"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4084,7 +4363,8 @@
       &#36984;&#25246;&#12494;&#12540;&#12489;&#12398;&#12377;&#12409;&#12390;&#12398;&#23376;&#12494;&#12540;&#12489;&#12434;&#20877;&#24112;&#30340;&#12395;&#12289;&#19979;&#21521;&#12365;&#12395;&#12450;&#12523;&#12501;&#12449;&#12505;&#12483;&#12488;&#38918;&#12395;&#20006;&#12409;&#26367;&#12360;&#12414;&#12377;&#12290;&#12494;&#12540;&#12489;&#38542;&#12398;&#22793;&#26356;&#12399;&#12354;&#12426;&#12414;&#12379;&#12435;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -4095,7 +4375,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4116,14 +4397,16 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x79fb;&#x52d5;&#xff08;&#x5144;&#x306e;&#x672b;&#x5b50;&#x3078;&#xff09;" ID="ID_1201405914" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4144,19 +4427,21 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 <node TEXT="&#x30d5;&#x30ea;&#x30fc;&#x30dd;&#x30b8;&#x30b7;&#x30e7;&#x30f3;&#x30ce;&#x30fc;&#x30c9;&#x306b;&#x6307;&#x5b9a;&#xff0f;&#x89e3;&#x9664;" ID="ID_572207726" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="2"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      &#25351;&#23450;&#12373;&#12428;&#12427;&#12392;&#12289;&#24403;&#35442;&#12494;&#12540;&#12489;&#65288;&#21450;&#12403;&#12381;&#12398;&#19979;&#20301;&#12494;&#12540;&#12489;)&#12364;&#12289;&#20182;&#12398;&#12494;&#12540;&#12489;&#12398;&#20301;&#32622;&#12395;&#38306;&#12431;&#12426;&#12394;&#12367;&#12289;&#33258;&#30001;&#12395;&#31227;&#21205;&#12391;&#12365;&#12427;&#12424;&#12358;&#12395;&#12394;&#12426;&#12414;&#12377;&#12290;&#25351;&#23450;&#12494;&#12540;&#12489;&#12399;&#12289;&#12494;&#12540;&#12489;&#12398;&#31227;&#21205;&#12395;&#29992;&#12356;&#12427;&#26965;&#20870;&#24418;&#12398;&#12495;&#12531;&#12489;&#12523;&#12364;&#38738;&#33394;&#12395;&#12394;&#12427;&#12371;&#12392;&#12391;&#35672;&#21029;&#12391;&#12365;&#12414;&#12377;&#12290;
+      &#25351;&#23450;&#12377;&#12427;&#12392;&#12289;&#24403;&#35442;&#12494;&#12540;&#12489;&#65288;&#21450;&#12403;&#12381;&#12398;&#19979;&#20301;&#12494;&#12540;&#12489;)&#12364;&#12289;&#20182;&#12398;&#12494;&#12540;&#12489;&#12398;&#20301;&#32622;&#12395;&#38306;&#12431;&#12426;&#12394;&#12367;&#12289;&#33258;&#30001;&#12395;&#31227;&#21205;&#12391;&#12365;&#12427;&#12424;&#12358;&#12395;&#12394;&#12426;&#12414;&#12377;&#12290;&#25351;&#23450;&#12494;&#12540;&#12489;&#12399;&#12289;&#12494;&#12540;&#12489;&#12398;&#31227;&#21205;&#12395;&#29992;&#12356;&#12427;&#26965;&#20870;&#24418;&#12398;&#12495;&#12531;&#12489;&#12523;&#12364;&#38738;&#33394;&#12395;&#12394;&#12427;&#12371;&#12392;&#12391;&#35672;&#21029;&#12391;&#12365;&#12414;&#12377;&#12290;
     </p>
     <p>
       
@@ -4179,13 +4464,38 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
+<node TEXT="&#x5236;&#x9650;&#x4e8b;&#x9805;" STYLE_REF="ToNote" ID="ID_294060265" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      1.&#12456;&#12483;&#12472;&#12398;&#32218;&#12364;&#34920;&#31034;&#12373;&#12428;&#12394;&#12356;&#12501;&#12525;&#12540;&#12486;&#12451;&#12531;&#12464;&#12494;&#12540;&#12489;&#12399;&#12289;&#20961;&#20363;&#12289;&#35211;&#12384;&#12375;&#12289;&#35201;&#32004;&#12289;&#33879;&#32773;&#12394;&#12393;&#12398;&#12513;&#12479;&#24773;&#22577;&#12434;&#12510;&#12483;&#12503;&#12395;&#20184;&#21152;&#12377;&#12427;&#12383;&#12417;&#12398;&#12418;&#12398;&#12391;&#12377;&#12290;&#12371;&#12358;&#12375;&#12383;&#24773;&#22577;&#12364;&#12510;&#12483;&#12503;&#20840;&#20307;&#12395;&#38306;&#36899;&#12377;&#12427;&#12418;&#12398;&#12384;&#12392;&#12377;&#12427;&#12392;&#12289;&#12371;&#12428;&#12425;&#12398;&#12494;&#12540;&#12489;&#12399;&#12289;&#24120;&#12395;&#35222;&#37326;&#12395;&#20837;&#12427;&#12424;&#12358;&#12395;&#12523;&#12540;&#12488;&#12494;&#12540;&#12489;&#12434;&#35242;&#12392;&#12377;&#12427;&#12418;&#12398;&#12395;&#12394;&#12427;&#12399;&#12378;&#12391;&#12354;&#12426;&#12289;&#20182;&#12398;&#12494;&#12540;&#12489;&#12392;&#12399;&#28961;&#38306;&#20418;&#12395;&#37197;&#32622;&#12373;&#12428;&#12427;&#12371;&#12392;&#12395;&#12394;&#12426;&#12414;&#12377;&#12290;&#26178;&#12395;&#12399;&#12289;&#12371;&#12358;&#12375;&#12383;&#24773;&#22577;&#12364;&#12510;&#12483;&#12503;&#12398;&#19968;&#37096;&#12395;&#12375;&#12363;&#38306;&#20418;&#12394;&#12356;&#12371;&#12392;&#12418;&#12354;&#12426;&#12414;&#12377;&#12290;&#12371;&#12398;&#22580;&#21512;&#12399;&#12289;&#12456;&#12483;&#12472;&#12398;&#32218;&#12364;&#34920;&#31034;&#12373;&#12428;&#12394;&#12356;&#12501;&#12525;&#12540;&#12486;&#12451;&#12531;&#12464;&#12494;&#12540;&#12489;&#12434;&#12289;&#12523;&#12540;&#12488;&#12494;&#12540;&#12489;&#20197;&#22806;&#12398;&#12494;&#12540;&#12489;&#12395;&#36899;&#32080;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;&#12381;&#12358;&#12375;&#12383;&#12494;&#12540;&#12489;&#12391;&#12399;&#12289;&#29289;&#20107;&#12398;&#21069;&#24460;&#38306;&#20418;&#12364;&#12431;&#12363;&#12427;&#65288;&#12371;&#12428;&#12399;&#37325;&#35201;&#12394;&#12371;&#12392;&#12391;&#12377;&#65289;&#12424;&#12358;&#12395;&#12289;&#35242;&#12494;&#12540;&#12489;&#12395;&#32080;&#12400;&#12428;&#12427;&#12456;&#12483;&#12472;&#12398;&#32218;&#12364;&#12289;&#12510;&#12483;&#12503;&#12398;&#32972;&#26223;&#12392;&#21516;&#12376;&#33394;&#12395;&#25351;&#23450;&#12373;&#12428;&#12390;&#12356;&#12427;&#12398;&#12391;&#12394;&#12356;&#12363;&#12366;&#12426;&#12289;&#36890;&#24120;&#12289;&#12494;&#12540;&#12489;&#36984;&#25246;&#26178;&#12395;&#30772;&#32218;&#12398;&#24418;&#12391;&#34920;&#31034;&#12373;&#12428;&#12414;&#12377;&#12290;
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      2.&#12501;&#12522;&#12540;&#12494;&#12540;&#12489;&#12399;&#12289;&#12456;&#12483;&#12472;&#12398;&#32218;&#12364;&#38750;&#34920;&#31034;&#12391;&#12394;&#12367;&#12390;&#12418;&#12363;&#12414;&#12356;&#12414;&#12379;&#12435;&#12290;&#12371;&#12398;&#31532;&#65298;&#12398;&#29992;&#27861;&#12399;&#12289;&#12510;&#12483;&#12503;&#12398;&#12473;&#12506;&#12540;&#12473;&#12398;&#26377;&#21177;&#21033;&#29992;&#12395;&#24441;&#31435;&#12385;&#12414;&#12377;&#12290;&#33258;&#21205;&#12524;&#12452;&#12450;&#12454;&#12488;&#12450;&#12523;&#12468;&#12522;&#12474;&#12512;&#12398;&#20685;&#12365;&#12395;&#12424;&#12426;&#12289;&#12510;&#12483;&#12503;&#12398;&#26525;&#21516;&#22763;&#12364;&#37325;&#35079;&#12375;&#12394;&#12356;&#12424;&#12358;&#12395;&#12394;&#12387;&#12390;&#12356;&#12414;&#12377;&#12290;&#12467;&#12531;&#12497;&#12463;&#12488;&#12394;&#12510;&#12483;&#12503;&#12434;&#20316;&#25104;&#12375;&#12383;&#12356;&#22580;&#21512;&#12289;&#19968;&#37096;&#12398;&#12494;&#12540;&#12489;&#12434;&#12501;&#12522;&#12540;&#12494;&#12540;&#12489;&#12395;&#22793;&#25563;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;&#12371;&#12428;&#12395;&#12424;&#12426;&#12289;&#12494;&#12540;&#12489;&#12398;&#20301;&#32622;&#12434;&#26580;&#36575;&#12395;&#22793;&#26356;&#12391;&#12365;&#12427;&#12424;&#12358;&#12395;&#12394;&#12426;&#12414;&#12377;&#12290;&#12414;&#12383;&#12289;
+    </p>
+    <p>
+      &#20182;&#12398;&#20804;&#24351;&#12494;&#12540;&#12489;&#12395;&#23550;&#12377;&#12427;&#24403;&#35442;&#12494;&#12540;&#12489;&#12398;&#35542;&#29702;&#30340;&#20301;&#32622;&#38306;&#20418;&#12399;&#12289;&#21516;&#12376;&#38542;&#23652;&#12398;&#12414;&#12414;&#12391;&#22793;&#12431;&#12426;&#12414;&#12379;&#12435;&#12290;&#24120;&#12395;&#12494;&#12540;&#12489;&#12398;&#35542;&#29702;&#30340;&#12394;&#20301;&#32622;&#38306;&#20418;&#12395;&#24467;&#12387;&#12390;&#34920;&#31034;&#12373;&#12428;&#12427;&#12450;&#12454;&#12488;&#12521;&#12452;&#12531;&#12499;&#12517;&#12540;&#12395;&#20999;&#12426;&#26367;&#12360;&#12383;&#22580;&#21512;&#12418;&#12289;&#12371;&#12398;&#28857;&#12399;&#22793;&#12431;&#12426;&#12354;&#12426;&#12414;&#12379;&#12435;&#12290;
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
 </node>
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x4f4d;&#x7f6e;&#x3092;&#x30ea;&#x30bb;&#x30c3;&#x30c8;" ID="ID_1456464643" VSHIFT="67" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4195,11 +4505,13 @@
       <span style="font-family: SansSerif, sans-serif; color: #000000"><font color="#000000" face="SansSerif, sans-serif">&#12494;&#12540;&#12489;&#12434;&#20316;&#25104;&#26178;&#12398;&#20301;&#32622;&#12395;&#25147;&#12375;&#12414;&#12377;&#12290;&#12494;&#12540;&#12489;&#12398;&#34920;&#31034;&#20301;&#32622;&#12434;&#21205;&#12363;&#12375;&#12383;&#24460;&#12395;&#12510;&#12483;&#12503;&#20840;&#20307;&#12398;&#26360;&#24335;&#12434;&#12522;&#12475;&#12483;&#12488;&#12375;&#12383;&#12356;&#22580;&#21512;&#12395;&#12289;&#12371;&#12398;&#12467;&#12510;&#12531;&#12489;&#12364;&#24441;&#31435;&#12385;&#12414;&#12377;&#12290; <i>&#12300;Esc&#12301;&#160;</i>&#12395;&#32154;&#12356;&#12390;<i>&#12300;Ctrl + A&#12301;</i>&#12434;&#25276;&#12377;&#12392;&#12510;&#12483;&#12503;&#12398;&#12377;&#12409;&#12390;&#12398;&#12494;&#12540;&#12489;&#12364;&#36984;&#25246;&#12373;&#12428;&#12414;&#12377;&#12290;</font></span>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x691c;&#x7d22;..." ID="ID_412879235" TEXT_SHORTENED="true">
 <icon BUILTIN="../filefind"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4220,7 +4532,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
@@ -4229,7 +4542,8 @@
 </node>
 <node TEXT="&#x6b21;&#x3092;&#x691c;&#x7d22;" ID="ID_409531459" TEXT_SHORTENED="true">
 <icon BUILTIN="../find_next"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4250,15 +4564,17 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="9"/>
 </node>
-<node TEXT="&#x691c;&#x7d22;&#xff06;&#x7f6e;&#x63db;..." FOLDED="true" ID="ID_1230019641" TEXT_SHORTENED="true">
+<node TEXT="&#x691c;&#x7d22;&#xff06;&#x7f6e;&#x63db;..." ID="ID_1230019641" TEXT_SHORTENED="true">
 <icon BUILTIN="../NodeListAction"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4279,7 +4595,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -4289,7 +4606,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4321,13 +4639,14 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <attribute NAME="Chapter" VALUE="9"/>
 </node>
 </node>
-<node TEXT="&#x3059;&#x3079;&#x3066;&#x306e;&#x30de;&#x30c3;&#x30d7;&#x3067;&#x691c;&#x7d22;&#xff06;&#x7f6e;&#x63db;..." ID="ID_4891503" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x3059;&#x3079;&#x3066;&#x306e;&#x30de;&#x30c3;&#x30d7;&#x3067;&#x691c;&#x7d22;&#xff06;&#x7f6e;&#x63db;..." ID="ID_4891503" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4348,7 +4667,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -4362,13 +4682,14 @@
 <attribute NAME="Chapter" VALUE="9"/>
 </node>
 </node>
-<node TEXT="&#x8868;&#x793a;" STYLE_REF="MainMenu" FOLDED="true" ID="ID_340092359" TEXT_SHORTENED="true">
+<node TEXT="&#x8868;&#x793a;" STYLE_REF="MainMenu" ID="ID_340092359" TEXT_SHORTENED="true">
 <attribute_layout VALUE_WIDTH="216"/>
 <attribute NAME="Chapter" VALUE="1,2,3,4,5"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4378,10 +4699,11 @@
       &#12510;&#12452;&#12531;&#12489;&#12510;&#12483;&#12503;&#12398;&#20307;&#35009;&#12434;&#22793;&#26356;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <edge STYLE="horizontal"/>
-<node TEXT="&#x30c4;&#x30fc;&#x30eb;&#x30d0;&#x30fc;" FOLDED="true" ID="ID_464156542" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30c4;&#x30fc;&#x30eb;&#x30d0;&#x30fc;" ID="ID_464156542" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4397,13 +4719,14 @@
       &#24517;&#35201;&#12398;&#12394;&#12356;&#12513;&#12491;&#12517;&#12540;&#12496;&#12540;&#12434;&#38750;&#34920;&#31034;&#12395;&#12375;&#12390;&#12289;&#34920;&#31034;&#30011;&#38754;&#12398;&#12473;&#12506;&#12540;&#12473;&#12434;&#31680;&#32004;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;&#12377;&#12409;&#12390;&#12398;&#12496;&#12540;&#12364;&#38750;&#34920;&#31034;&#12392;&#12394;&#12387;&#12383;&#22580;&#21512;&#12289;&#34920;&#31034;&#30011;&#38754;&#19978;&#12391;&#21491;&#12463;&#12522;&#12483;&#12463;&#12375;&#12390;&#12467;&#12531;&#12486;&#12461;&#12473;&#12488;&#12513;&#12491;&#12517;&#12540;&#12434;&#34920;&#31034;&#12373;&#12379;&#12289;&#38750;&#34920;&#31034;&#12395;&#12394;&#12387;&#12383;&#12496;&#12540;&#12434;&#20877;&#34920;&#31034;&#12373;&#12379;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
-<node TEXT="&#x30e1;&#x30cb;&#x30e5;&#x30fc;&#x30d0;&#x30fc;" FOLDED="true" ID="ID_364770497" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x30e1;&#x30cb;&#x30e5;&#x30fc;&#x30d0;&#x30fc;" ID="ID_364770497" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4427,7 +4750,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -4439,6 +4763,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4462,11 +4787,12 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="&#x30c4;&#x30fc;&#x30eb;&#x30d0;&#x30fc;" FOLDED="true" ID="ID_1306099455" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x30c4;&#x30fc;&#x30eb;&#x30d0;&#x30fc;" ID="ID_1306099455" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4490,7 +4816,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -4500,7 +4827,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="1"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4510,11 +4838,12 @@
       <b>&#12513;&#12452;&#12531;&#12484;&#12540;&#12523;&#12496;&#12540;</b>&#12399;&#12289;&#26368;&#12418;&#12424;&#12367;&#20351;&#12431;&#12428;&#12427;&#12510;&#12483;&#12503;&#25805;&#20316;&#27231;&#33021;&#12289;&#20363;&#12360;&#12400;&#12289;&#12300;&#21069;&#12398;&#12510;&#12483;&#12503;&#12301;&#12300;&#27425;&#12398;&#12510;&#12483;&#12503;&#12301;&#12394;&#12393;&#12398;&#12450;&#12452;&#12467;&#12531;&#12508;&#12479;&#12531;&#12434;&#34920;&#31034;&#12377;&#12427;&#12496;&#12540;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x30d0;&#x30fc;" FOLDED="true" ID="ID_664463091" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x30d0;&#x30fc;" ID="ID_664463091" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4535,7 +4864,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -4545,7 +4875,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="1"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4555,11 +4886,12 @@
       <b>&#12501;&#12451;&#12523;&#12479;&#12496;&#12540;</b>&#12399;&#12289;&#12501;&#12451;&#12523;&#12479;&#12523;&#12540;&#12523;&#20837;&#21147;&#12501;&#12451;&#12540;&#12523;&#12489;&#12289;&#21450;&#12403;&#26368;&#12418;&#12424;&#12367;&#20351;&#12431;&#12428;&#12427;&#12501;&#12451;&#12523;&#12479;&#27231;&#33021;&#12289;&#20363;&#12360;&#12400;&#12289;&#12300;&#20803;&#12395;&#25147;&#12377;&#65379;&#12300;&#12420;&#12426;&#30452;&#12377;&#65379;&#12394;&#12393;&#12398;&#12450;&#12452;&#12467;&#12531;&#12508;&#12479;&#12531;&#12434;&#34920;&#31034;&#12377;&#12427;&#12496;&#12540;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="F &#x30d0;&#x30fc;" ID="ID_1945242906" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="F &#x30d0;&#x30fc;" ID="ID_1945242906" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4594,14 +4926,15 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="&#x5de6;&#x30c4;&#x30fc;&#x30eb;&#x30d0;&#x30fc;" ID="ID_148946538" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x5de6;&#x30c4;&#x30fc;&#x30eb;&#x30d0;&#x30fc;" ID="ID_148946538" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4622,20 +4955,22 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="&#x30b3;&#x30f3;&#x30c6;&#x30ad;&#x30b9;&#x30c8;&#x30e1;&#x30cb;&#x30e5;&#x30fc;" FOLDED="true" ID="ID_1460700080" TEXT_SHORTENED="true">
+<node TEXT="&#x30b3;&#x30f3;&#x30c6;&#x30ad;&#x30b9;&#x30c8;&#x30e1;&#x30cb;&#x30e5;&#x30fc;" ID="ID_1460700080" TEXT_SHORTENED="true">
 <attribute_layout NAME_WIDTH="82" VALUE_WIDTH="228"/>
 <attribute NAME="Chapter" VALUE="1,2,3,4,5"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4656,13 +4991,15 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="SummaryNode"/>
 <node TEXT="&#x30b3;&#x30f3;&#x30c6;&#x30ad;&#x30b9;&#x30c8;&#x30e1;&#x30cb;&#x30e5;&#x30fc;" ID="ID_497182548" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4672,12 +5009,13 @@
       <b>&#12467;&#12531;&#12486;&#12461;&#12473;&#12488;&#12513;&#12491;&#12517;&#12540;</b>&#12399;&#12289;&#29305;&#23450;&#12398;&#12458;&#12502;&#12472;&#12455;&#12463;&#12488;&#12395;&#32080;&#12403;&#20184;&#12369;&#12425;&#12428;&#12383;&#12513;&#12491;&#12517;&#12540;&#12391;&#12289;&#12371;&#12398;&#12458;&#12502;&#12472;&#12455;&#12463;&#12488;&#12395;&#26368;&#12418;&#38306;&#36899;&#12398;&#28145;&#12356;&#12513;&#12491;&#12517;&#12540;&#38917;&#30446;&#12375;&#12363;&#21547;&#12415;&#12414;&#12379;&#12435;&#12290;&#12467;&#12531;&#12486;&#12461;&#12473;&#12488;&#12513;&#12491;&#12517;&#12540;&#12399;&#12289;&#12458;&#12502;&#12472;&#12455;&#12463;&#12488;&#12434;&#21491;&#12463;&#12522;&#12483;&#12463;&#12377;&#12427;&#12392;&#38283;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 </node>
-<node TEXT="&#x30d7;&#x30ed;&#x30d1;&#x30c6;&#x30a3;&#x30d1;&#x30cd;&#x30eb;" FOLDED="true" ID="ID_1077996948" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30d7;&#x30ed;&#x30d1;&#x30c6;&#x30a3;&#x30d1;&#x30cd;&#x30eb;" ID="ID_1077996948" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4687,7 +5025,8 @@
       &#12503;&#12525;&#12497;&#12486;&#12451;&#12497;&#12493;&#12523;&#12398;&#34920;&#31034;&#65295;&#38750;&#34920;&#31034;&#12434;&#20999;&#12426;&#26367;&#12360;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -4698,7 +5037,8 @@
 </hook>
 <attribute NAME="Chapter" VALUE="1"/>
 <font BOLD="false"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4708,10 +5048,11 @@
       <b>&#12503;&#12525;&#12497;&#12486;&#12451;&#12497;&#12493;&#12523;</b>&#12399;&#12289;&#12494;&#12540;&#12489;&#12398;&#22522;&#26412;&#30340;&#12394;&#12503;&#12525;&#12497;&#12486;&#12451;&#12434;&#22793;&#26356;&#12377;&#12427;&#12383;&#12417;&#12398;&#12480;&#12452;&#12450;&#12525;&#12464;&#12391;&#12377;&#12290;&#12503;&#12525;&#12497;&#12486;&#12451;&#12399;&#12289;&#26360;&#24335;&#38306;&#36899;&#12503;&#12525;&#12497;&#12486;&#12451;&#12392;&#12459;&#12524;&#12531;&#12480;&#65295;&#23646;&#24615;&#38306;&#20418;&#12503;&#12525;&#12497;&#12486;&#12451;&#12395;&#21306;&#20998;&#12373;&#12428;&#12414;&#12377;&#12290;&#160;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x66f8;&#x5f0f;" ID="ID_352838225" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x66f8;&#x5f0f;" ID="ID_352838225" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4743,7 +5084,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
@@ -4752,8 +5094,8 @@
 <hook NAME="FirstGroupNode"/>
 </node>
 <node TEXT="&#x7dda;&#x306e;&#x8272;&#x3092;&#x81ea;&#x52d5;&#x9078;&#x629e;" STYLE_REF="UnChecked" ID="ID_502377582" LINK="#ID_1587417548" TEXT_SHORTENED="true"/>
-<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;" ID="ID_1431348942" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;" ID="ID_1431348942" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4779,10 +5121,11 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x30de;&#x30c3;&#x30d7;&#x7528;&#x6761;&#x4ef6;&#x5bfe;&#x5fdc;&#x30ce;&#x30fc;&#x30c9;&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x8a2d;&#x5b9a;" ID="ID_30023461" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30de;&#x30c3;&#x30d7;&#x7528;&#x6761;&#x4ef6;&#x5bfe;&#x5fdc;&#x30ce;&#x30fc;&#x30c9;&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x8a2d;&#x5b9a;" ID="ID_30023461" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4805,10 +5148,11 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x7528;&#x6761;&#x4ef6;&#x5bfe;&#x5fdc;&#x30ce;&#x30fc;&#x30c9;&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x8a2d;&#x5b9a;" ID="ID_1586903922" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x7528;&#x6761;&#x4ef6;&#x5bfe;&#x5fdc;&#x30ce;&#x30fc;&#x30c9;&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x8a2d;&#x5b9a;" ID="ID_1586903922" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4831,11 +5175,13 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x30b9;&#x30bf;&#x30a4;&#x30eb;" STYLE_REF="MenuGroupLabel" ID="ID_307677922" LINK="#ID_1090849795" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4850,14 +5196,30 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x5f62;" ID="ID_484129486" TEXT_SHORTENED="true">
+<node TEXT="&#x6587;&#x5b57;&#x8272;" ID="ID_158955063" TEXT_SHORTENED="true">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="&#x80cc;&#x666f;&#x8272;" ID="ID_631849825" TEXT_SHORTENED="true"/>
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x30b3;&#x30a2;&#x5168;&#x4f53;&#x306e;&#x8272;" STYLE_REF="MenuGroupLabel" ID="ID_1325673734" TEXT_SHORTENED="true">
+<hook NAME="SummaryNode"/>
+</node>
+<node TEXT="&#x30c6;&#x30f3;&#x30d7;&#x30ec;&#x30fc;&#x30c8;&#xff0f;&#x66f8;&#x5f0f;" ID="ID_835341746" TEXT_SHORTENED="true">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306b;&#x756a;&#x53f7;&#x3092;&#x632f;&#x308b;" ID="ID_716321598" TEXT_SHORTENED="true"/>
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x30b3;&#x30a2;&#x306e;&#x30c6;&#x30ad;&#x30b9;&#x30c8;" STYLE_REF="MenuGroupLabel" ID="ID_1056392580" TEXT_SHORTENED="true">
+<hook NAME="SummaryNode"/>
+</node>
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x5f62;&#x72b6;" ID="ID_1006574881" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4867,14 +5229,95 @@
       <b>&#12494;&#12540;&#12489;&#12398;&#24418;</b>&#12399;&#12289;&#12494;&#12540;&#12489;&#12398;&#22806;&#24418;&#12398;&#12371;&#12392;&#12391;&#12289;&#32257;&#21462;&#12426;&#12508;&#12483;&#12463;&#12473;&#12394;&#12375;&#65288;<i>&#12300;&#12501;&#12457;&#12540;&#12463;&#12301;</i>&#65289;&#12289;&#32257;&#21462;&#12426;&#12508;&#12483;&#12463;&#12473;&#20184;&#12365;&#65288;<i>&#12300;&#22258;&#12415;&#12301;</i>&#65289;&#12289;<i>&#12300;&#35242;&#12392;&#21516;&#12376;&#12301;</i>&#12289;&#21450;&#12403;<i>&#12300;&#35079;&#21512;&#12301;</i>&#12364;&#12354;&#12426;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
+<hook NAME="FirstGroupNode"/>
+<node TEXT="&#x30d5;&#x30a9;&#x30fc;&#x30af;" STYLE_REF="OptionalValue" ID="ID_1016917341" STYLE="as_parent" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="4"/>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x30d5;&#x30a9;&#x30f3;&#x30c8;" FOLDED="true" ID="ID_852543166" TEXT_SHORTENED="true">
+<node TEXT="&#x56f2;&#x307f;" STYLE_REF="OptionalValue" ID="ID_559452645" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="4"/>
+</node>
+<node TEXT="&#x8907;&#x5408;" STYLE_REF="OptionalValue" ID="ID_347035916" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      &#25240;&#12426;&#30067;&#12415;&#29366;&#24907;&#12398;&#22580;&#21512;&#12289;&#22258;&#12415;&#12395;&#20999;&#12426;&#26367;&#12360;&#12414;&#12377;&#12290;
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="&#x89aa;&#x3068;&#x540c;&#x3058;" STYLE_REF="OptionalValue" ID="ID_324797442" TEXT_SHORTENED="true">
+<attribute NAME="Chapter" VALUE="4"/>
+</node>
+</node>
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x6700;&#x5c0f;&#x8868;&#x793a;&#x5e45;" ID="ID_1182377159" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      &#12500;&#12463;&#12475;&#12523;&#21336;&#20301;&#12391;&#12494;&#12540;&#12489;&#12398;&#26368;&#23567;&#34920;&#31034;&#27178;&#24133;&#12434;&#25351;&#23450;&#12375;&#12414;&#12377;&#12290;
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>&#21442;&#12288;&#29031;</b>
+    </p>
+    <ul>
+      <li>
+        <i>&#12300;&#34920;&#31034;&#160;&gt; &#12503;&#12525;&#12497;&#12486;&#12451;&#12497;&#12493;&#12523;&#12301;</i>
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x6700;&#x5927;&#x8868;&#x793a;&#x5e45;" ID="ID_1506239651" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      &#12500;&#12463;&#12475;&#12523;&#21336;&#20301;&#12391;&#12494;&#12540;&#12489;&#12398;&#26368;&#22823;&#34920;&#31034;&#27178;&#24133;&#12434;&#25351;&#23450;&#12375;&#12414;&#12377;&#12290;
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>&#21442;&#12288;&#29031;</b>
+    </p>
+    <ul>
+      <li>
+        <i>&#12300;&#34920;&#31034;&#160;&gt; &#12503;&#12525;&#12497;&#12486;&#12451;&#12497;&#12493;&#12523;&#12301;</i>
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x5f62;" STYLE_REF="MenuGroupLabel" ID="ID_1665588957" TEXT_SHORTENED="true">
+<hook NAME="SummaryNode"/>
+</node>
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x30d5;&#x30a9;&#x30f3;&#x30c8;" ID="ID_852543166" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4884,7 +5327,8 @@
       <b>&#12494;&#12540;&#12489;&#12398;&#12501;&#12457;&#12531;&#12488;</b>&#12399;&#12289;<i>&#12300;&#12501;&#12457;&#12531;&#12488;&#21517;&#12301;</i>&#12289;<i>&#12300;&#25991;&#23383;&#12469;&#12452;&#12474;&#12301;</i>&#12289;<i>&#12300;&#22826;&#23383;&#12301;</i>&#21450;&#12403;<i>&#12300;&#26012;&#20307;&#12301;</i>&#12434;&#25351;&#23450;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="&#x6a19;&#x6e96;&#x7684;&#x306a;&#x6587;&#x5b57;&#x30b5;&#x30a4;&#x30ba;&#x3092;&#x8a2d;&#x5b9a;" ID="ID_627969850" LINK="#ID_728681381" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
@@ -4897,7 +5341,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4918,14 +5363,16 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x7dda;&#x306e;&#x8272;" ID="ID_1289674666" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4935,7 +5382,8 @@
       <b>&#32218;&#12398;&#33394;</b>&#12392;&#12399;&#12289;&#12494;&#12540;&#12489;&#38291;&#12434;&#32080;&#12406;&#32218;(&#12456;&#12483;&#12472;)&#12398;&#33394;&#12398;&#12371;&#12392;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 </node>
 <node TEXT="&#x7dda;&#x306e;&#x5f62;&#x72b6;" ID="ID_1046684670" TEXT_SHORTENED="true">
@@ -4943,7 +5391,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4953,14 +5402,16 @@
       <b>&#32218;&#12398;&#24418;&#29366;</b>&#12392;&#12399;&#12289;&#32218;&#65288;&#12456;&#12483;&#12472;)&#12398;&#26354;&#12364;&#12426;&#20855;&#21512;&#12398;&#12371;&#12392;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x7dda;&#x306e;&#x592a;&#x3055;" ID="ID_1686802072" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4970,17 +5421,19 @@
       <b>&#32218;&#12398;&#22826;&#12373;</b>&#12392;&#12399;&#12289;&#160;&#160;&#32218;(&#12456;&#12483;&#12472;&#65289;&#12398;&#24133;&#12398;&#12371;&#12392;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x7dda;(&#x30a8;&#x30c3;&#x30b8;)&#x306e;&#x30d7;&#x30ed;&#x30d1;&#x30c6;&#x30a3;" STYLE_REF="MenuGroupLabel" ID="ID_1536352077">
+<node TEXT="&#x7dda;(&#x30a8;&#x30c3;&#x30b8;)&#x306e;&#x30d7;&#x30ed;&#x30d1;&#x30c6;&#x30a3;" STYLE_REF="MenuGroupLabel" ID="ID_1536352077" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 </node>
-<node TEXT="&#x96f2;&#x306e;&#x8272;" FOLDED="true" ID="ID_1647687904" TEXT_SHORTENED="true">
+<node TEXT="&#x96f2;&#x306e;&#x8272;" ID="ID_1647687904" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -4990,7 +5443,8 @@
       <b>&#38642;&#12398;&#33394;</b>&#12392;&#12399;&#12289;&#38642;&#12398;&#32972;&#26223;&#33394;&#12398;&#12371;&#12392;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="&#x96f2;&#x306e;&#x6a19;&#x6e96;&#x8272;&#x3092;&#x8a2d;&#x5b9a;" ID="ID_322851196" LINK="#ID_749503390" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
@@ -5003,7 +5457,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -5013,14 +5468,16 @@
       <b>&#38642;&#12398;&#24418;</b>&#12392;&#12399;&#12289;&#38642;&#12398;&#22806;&#24418;&#12398;&#12371;&#12392;&#12391;&#12289;&#20363;&#12360;&#12400;&#12289;<i>&#12300;&#12488;&#12531;&#12460;&#12522;&#12301;&#12300;&#30697;&#24418;&#12301;&#12300;&#20024;&#35282;&#30697;&#24418;&#65379;</i>&#12394;&#12393;&#12364;&#12354;&#12426;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x81ea;&#x52d5;&#x5316;&#x30d7;&#x30ed;&#x30d1;&#x30c6;&#x30a3;" FOLDED="true" ID="ID_1295733736" TEXT_SHORTENED="true">
+<node TEXT="&#x81ea;&#x52d5;&#x5316;&#x30d7;&#x30ed;&#x30d1;&#x30c6;&#x30a3;" ID="ID_1295733736" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -5046,13 +5503,15 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="&#x968e;&#x5c64;&#x5225;&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x9069;&#x7528;" ID="ID_945360129" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -5062,7 +5521,8 @@
       <b>&#33258;&#21205;&#12524;&#12452;&#12450;&#12454;&#12488;</b>&#12399;&#12289;&#25152;&#23450;&#38542;&#23652;&#12398;&#12377;&#12409;&#12390;&#12398;&#12494;&#12540;&#12489;&#12395;&#20107;&#21069;&#12395;&#35373;&#23450;&#12373;&#12428;&#12383;&#29305;&#23450;&#12398;&#20307;&#35009;&#12434;&#12289;Freeplane &#12364;&#12289;&#33258;&#21205;&#30340;&#12395;&#20184;&#19982;&#12377;&#12427;&#12418;&#12398;&#12391;&#12377;&#12290;&#12371;&#12398;&#33258;&#21205;&#35373;&#23450;&#12395;&#29992;&#12356;&#12425;&#12428;&#12427;&#20307;&#35009;&#12399;&#12289;&#12473;&#12479;&#12452;&#12523;&#12513;&#12491;&#12517;&#12540;&#12398;&#12394;&#12363;&#12391;&#22793;&#26356;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x7dda;&#x306e;&#x8272;&#x3092;&#x81ea;&#x52d5;&#x9078;&#x629e;" ID="ID_797236430" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -5070,6 +5530,7 @@
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -5079,15 +5540,17 @@
       <b>&#32218;&#12398;&#33394;&#12434;&#33258;&#21205;&#36984;&#25246;</b>&#12399;&#12289;&#26032;&#35215;&#12494;&#12540;&#12489;&#12434;&#20316;&#25104;&#12377;&#12427;&#12388;&#12393;&#12289;Freeplane &#12364;&#12289;&#12428;&#12382;&#12428;&#12395;&#29420;&#33258;&#12398;&#32218;(&#12456;&#12483;&#12472;)&#12398;&#33394;&#12434;&#33258;&#21205;&#30340;&#12395;&#36984;&#25246;&#12377;&#12427;&#12418;&#12398;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x30c6;&#x30ad;&#x30b9;&#x30c8;&#x306e;&#x30c6;&#x30f3;&#x30d7;&#x30ec;&#x30fc;&#x30c8;&#xff0f;&#x66f8;&#x5f0f;" FOLDED="true" ID="ID_1641562552" TEXT_SHORTENED="true">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x30c6;&#x30ad;&#x30b9;&#x30c8;&#x306e;&#x30c6;&#x30f3;&#x30d7;&#x30ec;&#x30fc;&#x30c8;&#xff0f;&#x66f8;&#x5f0f;" ID="ID_1641562552" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -5119,10 +5582,12 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="&#x65e5;&#x4ed8;&#xff0f;&#x6642;&#x523b;&#x306e;&#x66f8;&#x5f0f;&#x8a2d;&#x5b9a;" ID="ID_1987525986" LINK="#ID_713876240" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="4,5"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -5200,11 +5665,13 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x6570;&#x5b57;&#x306e;&#x66f8;&#x5f0f;&#x8a2d;&#x5b9a;" ID="ID_137442334" LINK="#ID_713876240" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="4"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -5247,15 +5714,17 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="" FOLDED="true" ID="ID_1566346250" TEXT_SHORTENED="true">
+<node TEXT="" ID="ID_1566346250" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
 </hook>
 <hook NAME="SummaryNode"/>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -5617,9 +6086,10 @@
       &#65339;&#35379;&#32773;&#27880;&#65306;http://java.sun.com/javase/ja/6/docs/ja/api/java/text/SimpleDateFormat.html &#12434;&#22522;&#26412;&#12395;&#12289;&#34920;&#35352;&#12434;&#19968;&#37096;&#22793;&#26356;&#12290;&#65341;
     </p>
   </body>
-</html></richcontent>
-<node TEXT="" FOLDED="true" ID="ID_139157308" LINK="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+</html>
+</richcontent>
+<node TEXT="" ID="ID_139157308" LINK="http://download.oracle.com/javase/1.5.0/docs/api/java/text/SimpleDateFormat.html" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -5635,7 +6105,8 @@
       </table>
     </blockquote>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
 </hook>
@@ -5643,7 +6114,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -5742,7 +6214,8 @@
       <font face="&#xff2d;&#xff33; &#xff30;&#x660e;&#x671d;">&#65339;&#35379;&#32773;&#27880;&#65306;http://java.sun.com/javase/ja/6/docs/ja/api/java/text/SimpleDateFormat.html&#12288;<br face="&#xff2d;&#xff33; &#xff30;&#x660e;&#x671d;"/>&#12434;&#22522;&#26412;&#12395;&#34920;&#35352;&#12434;&#19968;&#37096;&#22793;&#26356;</font>&#12290;&#65341;
     </h4>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 <node TEXT="" ID="ID_1900179154" LINK="http://download.oracle.com/javase/1.5.0/docs/api/java/util/Formatter.html" TEXT_SHORTENED="true">
@@ -5757,7 +6230,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -5767,14 +6241,16 @@
       &#12503;&#12525;&#12497;&#12486;&#12451;&#38917;&#30446;&#12395;&#22793;&#26356;&#12481;&#12455;&#12483;&#12463;&#12364;&#20184;&#12369;&#12425;&#12428;&#12427;&#12392;&#12289;&#12473;&#12479;&#12452;&#12523;&#12398;&#26082;&#23384;&#35373;&#23450;&#20516;&#12424;&#12426;&#12418;&#12289;&#12381;&#12398;&#22793;&#26356;&#20516;&#12364;&#20778;&#20808;&#12377;&#12427;&#12424;&#12358;&#12395;&#12394;&#12426;&#12414;&#12377;&#12290;&#160;&#20803;&#12398;&#12473;&#12479;&#12452;&#12523;&#20516;&#12395;&#25147;&#12377;&#12395;&#12399;&#12289;&#12300;&#22793;&#26356;&#65379;&#12398;&#12481;&#12455;&#12483;&#12463;&#12434;&#12399;&#12378;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x30d7;&#x30ed;&#x30d1;&#x30c6;&#x30a3;&#x30d1;&#x30cd;&#x30eb;&#x306b;&#x8868;&#x793a;&#x3055;&#x308c;&#x306a;&#x3044;&#x3082;&#x306e;" FOLDED="true" ID="ID_1971371205" TEXT_SHORTENED="true">
+<node TEXT="&#x30d7;&#x30ed;&#x30d1;&#x30c6;&#x30a3;&#x30d1;&#x30cd;&#x30eb;&#x306b;&#x8868;&#x793a;&#x3055;&#x308c;&#x306a;&#x3044;&#x3082;&#x306e;" ID="ID_1971371205" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -5795,12 +6271,14 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x70b9;&#x6ec5;" ID="ID_1863972932" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -5810,7 +6288,8 @@
       <b>&#12494;&#12540;&#12489;&#12434;&#28857;&#28357;</b>&#12392;&#12399;&#12289;&#12494;&#12540;&#12489;&#12398;&#33394;&#12364;&#38918;&#32368;&#12426;&#12395;&#22793;&#12431;&#12387;&#12390;&#12356;&#12367;&#12418;&#12398;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x6587;&#x5b57;&#x8272;&#x3092;&#x8584;&#x304f;" ID="ID_661366038" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -5821,7 +6300,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -5831,13 +6311,15 @@
       <b>&#12510;&#12483;&#12503;&#12398;&#32972;&#26223;&#33394;</b>&#12392;&#12399;&#12289;&#12510;&#12483;&#12503;&#12398;&#12494;&#12540;&#12489;&#20197;&#22806;&#12398;&#37096;&#20998;&#12398;&#33394;&#12398;&#12371;&#12392;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x7dda;&#x3092;&#x96a0;&#x3059;" ID="ID_1015777202" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -5847,24 +6329,26 @@
       <b>&#32218;&#12434;&#38560;&#12377;</b>&#12434;&#25351;&#23450;&#12377;&#12427;&#12392;&#12289;&#32218;(&#12456;&#12483;&#12472;)&#12364;&#38750;&#34920;&#31034;&#12395;&#12394;&#12426;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 </node>
-<node TEXT="&#x30ab;&#x30ec;&#x30f3;&#x30c0;&#x30fc;&#xff0f;&#x5c5e;&#x6027;" FOLDED="true" ID="ID_1378770530" TEXT_SHORTENED="true">
+<node TEXT="&#x30ab;&#x30ec;&#x30f3;&#x30c0;&#x30fc;&#xff0f;&#x5c5e;&#x6027;" ID="ID_1378770530" TEXT_SHORTENED="true">
 <icon BUILTIN="../AttributesView"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="5"/>
-<node TEXT="&#x30ab;&#x30ec;&#x30f3;&#x30c0;&#x30fc;" FOLDED="true" ID="ID_290207655" FORMAT="#0.####" TEXT_SHORTENED="true">
+<node TEXT="&#x30ab;&#x30ec;&#x30f3;&#x30c0;&#x30fc;" ID="ID_290207655" FORMAT="#0.####" TEXT_SHORTENED="true">
 <icon BUILTIN="icon_not_found"/>
 <icon BUILTIN="../TimeManagementAction"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="5"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -5879,7 +6363,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="&#x65e5;&#x4ed8;&#x5f62;&#x5f0f;&#xff08;&#x5e74;&#x6708;&#x65e5;&#xff09;" ID="ID_144760412" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
@@ -5892,7 +6377,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="5"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -5902,14 +6388,16 @@
       &#12459;&#12524;&#12531;&#12480;&#12540;&#12434;&#29694;&#22312;&#12398;&#26085;&#26178;&#12395;&#35373;&#23450;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x9078;&#x629e;&#x4e2d;&#x306e;&#x65e5;&#x4ed8;&#x3092;&#x633f;&#x5165;" ID="ID_63295810" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="5"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -5919,11 +6407,13 @@
       &#26085;&#20184;&#12398;&#27161;&#28310;&#26360;&#24335;&#12395;&#24467;&#12387;&#12390;&#12289;&#12494;&#12540;&#12489;&#12486;&#12461;&#12473;&#12488;&#12395;&#26085;&#20184;&#12434;&#25407;&#20837;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x30b9;&#x30af;&#x30ea;&#x30d7;&#x30c8;&#x3092;&#x7de8;&#x96c6;..." FOLDED="true" ID="ID_252404367" TEXT_SHORTENED="true">
+<node TEXT="&#x30b9;&#x30af;&#x30ea;&#x30d7;&#x30c8;&#x3092;&#x7de8;&#x96c6;..." ID="ID_252404367" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="5"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -5944,10 +6434,12 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="&#x30ea;&#x30de;&#x30a4;&#x30f3;&#x30c0;&#x3067;&#x30b9;&#x30af;&#x30ea;&#x30d7;&#x30c8;&#x3092;&#x8d77;&#x52d5;" ID="ID_121096889" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="5"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -5985,7 +6477,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
 </hook>
@@ -5997,7 +6490,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="5"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6029,16 +6523,17 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x30ea;&#x30de;&#x30a4;&#x30f3;&#x30c0;&#x3092;&#x524a;&#x9664;" FOLDED="true" ID="ID_896190385" TEXT_SHORTENED="true">
+<node TEXT="&#x30ea;&#x30de;&#x30a4;&#x30f3;&#x30c0;&#x3092;&#x524a;&#x9664;" ID="ID_896190385" TEXT_SHORTENED="true">
 <icon BUILTIN="../ReminderHookAction"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="5"/>
-<node TEXT="" ID="ID_1442797370" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="" ID="ID_1442797370" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6061,7 +6556,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
 </hook>
@@ -6069,13 +6565,14 @@
 </node>
 </node>
 </node>
-<node TEXT="&#x5c5e;&#x6027;" FOLDED="true" ID="ID_453776568" TEXT_SHORTENED="true">
+<node TEXT="&#x5c5e;&#x6027;" ID="ID_453776568" TEXT_SHORTENED="true">
 <icon BUILTIN="../showAttributes"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3,4"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6093,7 +6590,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="&#x65b0;&#x898f;&#x5c5e;&#x6027;" ID="ID_682004984" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
@@ -6108,7 +6606,8 @@
 </node>
 <node TEXT="&#x5c5e;&#x6027;&#x30c7;&#x30fc;&#x30bf;&#x306e;&#x66f8;&#x5f0f;&#x8a2d;&#x5b9a;" ID="ID_758656022" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="3,4"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6129,7 +6628,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <font BOLD="false"/>
 </node>
 <node TEXT="&#x5c5e;&#x6027;&#x4e00;&#x89a7;&#x8868;" ID="ID_1780631612" TEXT_SHORTENED="true">
@@ -6137,7 +6637,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3,4"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6181,14 +6682,16 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="" ID="ID_1442016230" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3,4"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6209,14 +6712,15 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <hook NAME="SummaryNode"/>
 </node>
 </node>
 </node>
-<node TEXT="F &#x30ad;&#x30fc;&#x306b;&#x30d7;&#x30ed;&#x30d1;&#x30c6;&#x30a3;&#x30d1;&#x30cd;&#x30eb;&#x3092;&#x5272;&#x308a;&#x5f53;&#x3066;" STYLE_REF="ToNote" ID="ID_1019704667" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="F &#x30ad;&#x30fc;&#x306b;&#x30d7;&#x30ed;&#x30d1;&#x30c6;&#x30a3;&#x30d1;&#x30cd;&#x30eb;&#x3092;&#x5272;&#x308a;&#x5f53;&#x3066;" STYLE_REF="ToNote" ID="ID_1019704667" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6239,12 +6743,14 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 <node TEXT="&#x62e1;&#x5927;&#x8868;&#x793a;" ID="ID_280352342" TEXT_SHORTENED="true">
 <icon BUILTIN="../ZoomIn24"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6254,11 +6760,13 @@
       <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">&#25991;&#23383;&#12469;&#12452;&#12474;&#12392;&#12494;&#12540;&#12489;&#38291;&#12398;&#36317;&#38626;&#12434;&#25313;&#22823;&#12377;&#12427;&#12418;&#12398;&#12391;&#12289;&#34920;&#31034;&#30011;&#38754;&#19978;&#12398;&#12510;&#12483;&#12503;&#12364;&#23567;&#12373;&#12356;&#22580;&#21512;&#12395;&#21521;&#12356;&#12390;&#12356;&#12414;&#12377;&#12290;</span></font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x7e2e;&#x5c0f;&#x8868;&#x793a;" ID="ID_1102837452" TEXT_SHORTENED="true">
 <icon BUILTIN="../ZoomOut24"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6268,11 +6776,13 @@
       <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">&#25991;&#23383;&#12469;&#12452;&#12474;&#12392;&#12494;&#12540;&#12489;&#38291;&#12398;&#36317;&#38626;&#12434;&#32302;&#23567;&#12377;&#12427;&#12418;&#12398;&#12391;&#12289;&#34920;&#31034;&#30011;&#38754;&#19978;&#12398;&#12510;&#12483;&#12503;&#12364;&#22823;&#12365;&#12356;&#22580;&#21512;&#12395;&#21521;&#12356;&#12390;&#12356;&#12414;&#12377;&#12290;</span></font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x30da;&#x30fc;&#x30b8;&#x306b;&#x5408;&#x308f;&#x305b;&#x3066;&#x5168;&#x4f53;&#x8868;&#x793a;" ID="ID_1827952663" TEXT_SHORTENED="true">
 <icon BUILTIN="../FitToPage"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6282,11 +6792,13 @@
       <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">&#30011;&#38754;&#12395;&#12510;&#12483;&#12503;&#20840;&#20307;&#12364;&#34920;&#31034;&#12373;&#12428;&#12427;&#12424;&#12358;&#12395;&#12289;&#25991;&#23383;&#12469;&#12452;&#12474;&#12392;&#12494;&#12540;&#12489;&#38291;&#12398;&#36317;&#38626;&#12434;&#35519;&#25972;&#12375;&#12414;&#12377;&#12290;&#22810;&#25968;&#12398;&#12494;&#12540;&#12489;&#12434;&#34920;&#31034;&#65288;&#23637;&#38283;&#65289;&#20013;&#12398;&#22580;&#21512;&#12289;&#34920;&#31034;&#25991;&#23383;&#12364;&#23567;&#12373;&#12377;&#12366;&#12390;&#12289;&#35501;&#12417;&#12394;&#12367;&#12394;&#12427;&#12371;&#12392;&#12364;&#12354;&#12426;&#12414;&#12377;&#12290;</span></font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x9078;&#x629e;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x4e2d;&#x592e;&#x3078;" FOLDED="true" ID="ID_1435118166" TEXT_SHORTENED="true">
+<node TEXT="&#x9078;&#x629e;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x4e2d;&#x592e;&#x3078;" ID="ID_1435118166" TEXT_SHORTENED="true">
 <icon BUILTIN="../CenterSelectedNodeAction"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6310,7 +6822,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -6321,7 +6834,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="12" OBJECT="org.freeplane.features.format.FormattedNumber|12.0"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6331,13 +6845,15 @@
       &#12510;&#12483;&#12503;&#20840;&#20307;&#65339;&#12398;&#30011;&#38754;&#19978;&#12398;&#20301;&#32622;&#12434;&#65341;&#31227;&#21205;&#12373;&#12379;&#12427;&#22580;&#21512;&#12399;&#12289;&#34920;&#31034;&#30011;&#38754;&#12398;&#31354;&#30333;&#37096;&#20998;&#12434;&#12463;&#12522;&#12483;&#12463;&#12375;&#12510;&#12483;&#12503;&#12434;&#12489;&#12521;&#12483;&#12464;&#12377;&#12427;&#12363;&#12289;&#34920;&#31034;&#30011;&#38754;&#12398;&#21491;&#33031;&#12392;&#26368;&#19979;&#37096;&#12398;&#12473;&#12463;&#12525;&#12540;&#12523;&#12496;&#12540;&#12434;&#20351;&#12387;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
 <node TEXT="&#x30a2;&#x30a6;&#x30c8;&#x30e9;&#x30a4;&#x30f3;&#x30d3;&#x30e5;&#x30fc;" ID="ID_386430636" TEXT_SHORTENED="true">
 <icon BUILTIN="../outline_view"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6365,10 +6881,11 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x5168;&#x753b;&#x9762;&#x8868;&#x793a;" FOLDED="true" ID="ID_1521008407" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x5168;&#x753b;&#x9762;&#x8868;&#x793a;" ID="ID_1521008407" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6378,7 +6895,8 @@
       <font face="SansSerif, sans-serif" color="#000000">&#12377;&#12409;&#12390;&#12398;&#12513;&#12491;&#12517;&#12540;&#12496;&#12540;&#12420;&#12484;&#12540;&#12523;&#12496;&#12540;&#12434;&#34920;&#31034;&#12375;&#12383;&#12426;&#12289;&#38560;&#12375;&#12383;&#12426;&#12375;&#12414;&#12377;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -6386,7 +6904,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6396,12 +6915,14 @@
       <font face="SansSerif, sans-serif" color="#000000">&#19968;&#31471;<i>&#12300;&#20840;&#30011;&#38754;&#34920;&#31034;&#12301;</i>&#12514;&#12540;&#12489;&#12395;&#12377;&#12427;&#12392;&#12289;&#12473;&#12463;&#12522;&#12540;&#12531;&#19978;&#12391;&#21491;&#12463;&#12522;&#12483;&#12463;&#12375;&#12289;<i>&#12300;&#20840;&#30011;&#38754;&#34920;&#31034;&#12301;</i>&#12398;&#12481;&#12455;&#12483;&#12463;&#12434;&#22806;&#12377;&#12375;&#12363;&#12289;&#36890;&#24120;&#30011;&#38754;&#34920;&#31034;&#12514;&#12540;&#12489;&#12395;&#25147;&#12377;&#26041;&#27861;&#12364;&#12354;&#12426;&#12414;&#12379;&#12435;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 <node TEXT="&#x30b9;&#x30c6;&#x30fc;&#x30bf;&#x30b9;&#x30d0;&#x30fc;&#x3092;&#x8868;&#x793a;" ID="ID_72695966" TEXT_SHORTENED="true">
 <icon BUILTIN="icon_not_found"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6411,12 +6932,14 @@
       &#12454;&#12451;&#12531;&#12489;&#12454;&#26368;&#19979;&#37096;&#12398;&#12473;&#12486;&#12540;&#12479;&#12473;&#12496;&#12540;&#12398;&#34920;&#31034;&#65295;&#38750;&#34920;&#31034;&#12434;&#20999;&#12426;&#26367;&#12360;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x30b3;&#x30a2;&#x95a2;&#x9023;" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1969683729" TEXT_SHORTENED="true">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x30b3;&#x30a2;&#x95a2;&#x9023;" STYLE_REF="SubMenu" ID="ID_1969683729" TEXT_SHORTENED="true">
 <node TEXT="&#x9078;&#x629e;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x67a0;&#x56f2;&#x3044;&#x8868;&#x793a;" ID="ID_1251724615" TEXT_SHORTENED="true">
 <icon BUILTIN="../ShowSelectionAsRectangleAction"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6437,13 +6960,15 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x8a08;&#x7b97;&#x5f0f;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x7e01;&#x53d6;&#x308a;&#x8868;&#x793a;&#x3057;&#x306a;&#x3044;" ID="ID_1847984972" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6453,11 +6978,13 @@
       &#35336;&#31639;&#24335;&#12494;&#12540;&#12489;&#12510;&#12540;&#12463;&#12392;&#12394;&#12427;&#33394;&#20184;&#12365;&#30697;&#24418;&#12398;&#26528;&#22258;&#12356;&#12398;&#34920;&#31034;&#65295;&#38750;&#34920;&#31034;&#12434;&#20999;&#12426;&#26367;&#12360;&#12414;&#12377;&#12290;&#21021;&#26399;&#35373;&#23450;&#12391;&#12399;&#12289;&#26528;&#22258;&#12356;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x6700;&#x5927;&#x8868;&#x793a;&#x5e45;&#x3092;&#x8a2d;&#x5b9a;" ID="ID_189812997" TEXT_SHORTENED="true">
 <icon BUILTIN="icon_not_found"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6478,10 +7005,11 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x6700;&#x5c0f;&#x8868;&#x793a;&#x5e45;&#x3092;&#x8a2d;&#x5b9a;" ID="ID_1836236046" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x6700;&#x5c0f;&#x8868;&#x793a;&#x5e45;&#x3092;&#x8a2d;&#x5b9a;" ID="ID_1836236046" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6491,11 +7019,13 @@
       <font face="SansSerif, sans-serif" color="#000000">&#12510;&#12483;&#12503;&#12398;&#12377;&#12409;&#12390;&#12398;&#12494;&#12540;&#12489;&#12398;&#26368;&#23567;&#34920;&#31034;&#24133;&#12434;&#22793;&#26356;&#12377;&#12427;&#12480;&#12452;&#12450;&#12525;&#12464;&#12434;&#38283;&#12365;&#12414;&#12377;&#12290;&#34920;&#31034;&#24133;&#12399;&#12500;&#12463;&#12475;&#12523;&#21336;&#20301;&#12391;&#34920;&#12375;&#12289;&#21021;&#26399;&#20516;&#12399; 600 &#12500;&#12463;&#12475;&#12523;&#12391;&#12377;&#12290;&#12371;&#12398;&#27231;&#33021;&#12399;&#12289;&#26525;&#12398;&#20301;&#32622;&#12434;&#25539;&#12360;&#12427;&#12398;&#12395;&#24441;&#31435;&#12385;&#12414;&#12377;&#12290; </font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x66f4;&#x65b0;&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x80cc;&#x666f;&#x8272;&#x3092;&#x5909;&#x66f4;" FOLDED="true" ID="ID_974319465" BACKGROUND_COLOR="#ffffff" TEXT_SHORTENED="true">
+<node TEXT="&#x66f4;&#x65b0;&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x80cc;&#x666f;&#x8272;&#x3092;&#x5909;&#x66f4;" ID="ID_974319465" BACKGROUND_COLOR="#ffffff" TEXT_SHORTENED="true">
 <icon BUILTIN="../RevisionPluginAction"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6532,7 +7062,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -6541,7 +7072,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6560,12 +7092,14 @@
       &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#9679;&#12371;&#12358;&#12375;&#12383;&#26356;&#26032;&#12494;&#12540;&#12489;&#12398;&#34920;&#31034;&#65295;&#38750;&#34920;&#31034;&#12398;&#20999;&#12426;&#26367;&#12360;&#26041;&#12399;&#12289;&#26178;&#20195;&#36933;&#12428;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 <node TEXT="&#x305d;&#x306e;&#x4ed6;&#x306e;&#x66f4;&#x65b0;&#x30de;&#x30fc;&#x30af;&#x4f5c;&#x6210;&#x6cd5;" ID="ID_961541761" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="1"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6631,7 +7165,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
@@ -6639,14 +7174,15 @@
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
-<node TEXT="&#x30a2;&#x30a4;&#x30b3;&#x30f3;" STYLE_REF="SubMenu" FOLDED="true" ID="ID_655678719" TEXT_SHORTENED="true">
+<node TEXT="&#x30a2;&#x30a4;&#x30b3;&#x30f3;" STYLE_REF="SubMenu" ID="ID_655678719" TEXT_SHORTENED="true">
 <hook NAME="FirstGroupNode"/>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <node TEXT="&#x4e0a;&#x4f4d;&#x30ce;&#x30fc;&#x30c9;&#x306b;&#x3082;&#x30a2;&#x30a4;&#x30b3;&#x30f3;&#x8868;&#x793a;" ID="ID_1929367560" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6656,7 +7192,8 @@
       &#12354;&#12427;&#12494;&#12540;&#12489;&#12398;&#19979;&#20301;&#12494;&#12540;&#12489;&#12395;&#12450;&#12452;&#12467;&#12531;&#12364;&#20184;&#12356;&#12390;&#12356;&#12427;&#22580;&#21512;&#12289;&#12381;&#12428;&#12425;&#12434;&#12371;&#12398;&#12494;&#12540;&#12489;&#12391;&#12395;&#29694;&#12431;&#12428;&#12427;&#12424;&#12358;&#12395;&#12377;&#12427;&#12363;&#12393;&#12358;&#12363;&#12289;&#20999;&#12426;&#26367;&#12360;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x5b50;&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x5171;&#x901a;&#x30a2;&#x30a4;&#x30b3;&#x30f3;&#x3092;&#x8868;&#x793a;" ID="ID_664401378" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -6671,7 +7208,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6712,7 +7250,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 <node TEXT="&#x30de;&#x30c3;&#x30d7;&#x5468;&#x8fba;&#x8868;&#x793a;&#x30e1;&#x30cb;&#x30e5;&#x30fc;" ID="ID_832730564" TEXT_SHORTENED="true">
@@ -6723,7 +7262,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6744,10 +7284,11 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x77ed;&#x7e2e;&#x8868;&#x793a;" ID="ID_180063018" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x77ed;&#x7e2e;&#x8868;&#x793a;" ID="ID_180063018" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6774,10 +7315,11 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x8a73;&#x7d30;&#x3092;&#x96a0;&#x3059;" ID="ID_505492779" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x8a73;&#x7d30;&#x3092;&#x96a0;&#x3059;" ID="ID_505492779" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6798,17 +7340,19 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x30c4;&#x30fc;&#x30eb;&#x30c1;&#x30c3;&#x30d7;" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1599182564" TEXT_SHORTENED="true">
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x60c5;&#x5831;&#x3092;&#x30c4;&#x30fc;&#x30eb;&#x30c1;&#x30c3;&#x30d7;&#x8868;&#x793a;" FOLDED="true" ID="ID_152459666" TEXT_SHORTENED="true">
+<node TEXT="&#x30c4;&#x30fc;&#x30eb;&#x30c1;&#x30c3;&#x30d7;" STYLE_REF="SubMenu" ID="ID_1599182564" TEXT_SHORTENED="true">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x60c5;&#x5831;&#x3092;&#x30c4;&#x30fc;&#x30eb;&#x30c1;&#x30c3;&#x30d7;&#x8868;&#x793a;" ID="ID_152459666" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6832,10 +7376,11 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
-<node TEXT="&#x30c4;&#x30fc;&#x30eb;&#x30c1;&#x30c3;&#x30d7;" ID="ID_1150336926" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30c4;&#x30fc;&#x30eb;&#x30c1;&#x30c3;&#x30d7;" ID="ID_1150336926" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6856,7 +7401,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
@@ -6864,8 +7410,8 @@
 </node>
 <node TEXT="&#x30c4;&#x30fc;&#x30eb;&#x30c1;&#x30c3;&#x30d7;&#x306e;&#x5e45;&#x3092;&#x8a2d;&#x5b9a;" ID="ID_383683750" LINK="#ID_215853027" TEXT_SHORTENED="true"/>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x30c4;&#x30fc;&#x30eb;&#x30c1;&#x30c3;&#x30d7;&#x8868;&#x793a;" ID="ID_499630441" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x30c4;&#x30fc;&#x30eb;&#x30c1;&#x30c3;&#x30d7;&#x8868;&#x793a;" ID="ID_499630441" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6886,11 +7432,13 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT=" &#x66f4;&#x65b0;&#x6642;&#x523b;&#x3092;&#x8868;&#x793a;" ID="ID_469328587" TEXT_SHORTENED="true">
 <icon BUILTIN="../kword"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6911,14 +7459,15 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="&#x5c5e;&#x6027;" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1722579390" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x5c5e;&#x6027;" STYLE_REF="SubMenu" ID="ID_1722579390" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6958,7 +7507,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -6973,7 +7523,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -6988,12 +7539,13 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c8;" STYLE_REF="SubMenu" FOLDED="true" ID="ID_838550014" TEXT_SHORTENED="true">
-<node TEXT="&#x30ce;&#x30fc;&#x30c8;&#x30d1;&#x30cd;&#x30eb;&#x3092;&#x8868;&#x793a;" FOLDED="true" ID="ID_1712383563" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30ce;&#x30fc;&#x30c8;" STYLE_REF="SubMenu" ID="ID_838550014" TEXT_SHORTENED="true">
+<node TEXT="&#x30ce;&#x30fc;&#x30c8;&#x30d1;&#x30cd;&#x30eb;&#x3092;&#x8868;&#x793a;" ID="ID_1712383563" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7017,7 +7569,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -7026,7 +7579,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7036,11 +7590,12 @@
       <b>&#12494;&#12540;&#12488;&#12497;&#12493;&#12523;</b>&#12399;&#12289;&#36984;&#25246;&#12494;&#12540;&#12489;&#12398;&#20013;&#12395;&#35373;&#12369;&#12425;&#12428;&#12427;&#29420;&#31435;&#12454;&#12451;&#12531;&#12489;&#12454;&#12391;&#12289;&#36984;&#25246;&#12494;&#12540;&#12489;&#12398;&#12494;&#12540;&#12488;&#12398;&#20869;&#23481;&#12434;&#34920;&#31034;&#12373;&#12379;&#32232;&#38598;&#12391;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c8;&#x30d1;&#x30cd;&#x30eb;&#x306e;&#x4f4d;&#x7f6e;" ID="ID_1945121061" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30ce;&#x30fc;&#x30c8;&#x30d1;&#x30cd;&#x30eb;&#x306e;&#x4f4d;&#x7f6e;" ID="ID_1945121061" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7050,13 +7605,14 @@
       <font face="SansSerif, sans-serif" color="#000000">&#12494;&#12540;&#12488;&#12497;&#12493;&#12523;&#12398;&#34920;&#31034;&#20301;&#32622;&#12434;&#27770;&#23450;&#12375;&#12414;&#12377;&#12290;&#12458;&#12503;&#12471;&#12519;&#12531;&#12395;&#12399;&#12289;&#19978;&#19979;&#24038;&#21491;&#12364;&#12354;&#12426;&#12414;&#12377;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x30de;&#x30c3;&#x30d7;&#x5185;&#x306b;&#x30ce;&#x30fc;&#x30c8;&#x3092;&#x8868;&#x793a;" ID="ID_414331404" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30de;&#x30c3;&#x30d7;&#x5185;&#x306b;&#x30ce;&#x30fc;&#x30c8;&#x3092;&#x8868;&#x793a;" ID="ID_414331404" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7080,7 +7636,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -7092,7 +7649,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7128,12 +7686,13 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 </node>
-<node TEXT="&#x66f8;&#x5f0f;" FOLDED="true" ID="ID_1625512107" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x66f8;&#x5f0f;" ID="ID_1625512107" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7205,14 +7764,15 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
 <edge STYLE="horizontal"/>
-<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x9069;&#x7528;" FOLDED="true" ID="ID_12581765" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x9069;&#x7528;" ID="ID_12581765" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7247,7 +7807,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -7267,10 +7828,10 @@
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x30d5;&#x30ed;&#x30fc;&#x30c6;&#x30a3;&#x30f3;&#x30b0;&#x30ce;&#x30fc;&#x30c9;" STYLE_REF="OptionalValue" ID="ID_114978489"/>
+<node TEXT="&#x30d5;&#x30ed;&#x30fc;&#x30c6;&#x30a3;&#x30f3;&#x30b0;&#x30ce;&#x30fc;&#x30c9;" STYLE_REF="OptionalValue" ID="ID_114978489" TEXT_SHORTENED="true"/>
 <node TEXT="&#x968e;&#x5c64;&#x5225;&#x30b9;&#x30bf;&#x30a4;&#x30eb;" STYLE_REF="Method" ID="ID_1364581880" TEXT_SHORTENED="true"/>
-<node TEXT="&#x30e6;&#x30fc;&#x30b6;&#x5b9a;&#x7fa9;&#x30b9;&#x30bf;&#x30a4;&#x30eb;" ID="ID_1409741910" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30e6;&#x30fc;&#x30b6;&#x5b9a;&#x7fa9;&#x30b9;&#x30bf;&#x30a4;&#x30eb;" ID="ID_1409741910" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7303,19 +7864,21 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
 </node>
 </node>
-<node TEXT="&#x968e;&#x5c64;&#x5225;&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x9069;&#x7528;" FOLDED="true" ID="ID_1450514499" TEXT_SHORTENED="true">
+<node TEXT="&#x968e;&#x5c64;&#x5225;&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x9069;&#x7528;" ID="ID_1450514499" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7339,7 +7902,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="&#x30eb;&#x30fc;&#x30c8;&#x30ce;&#x30fc;&#x30c9;&#x66f8;&#x5f0f;" ID="ID_1910558168" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -7371,8 +7935,8 @@
 </hook>
 </node>
 </node>
-<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x7ba1;&#x7406;" STYLE_REF="MainMenuAccent" FOLDED="true" ID="ID_1090849795" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x7ba1;&#x7406;" STYLE_REF="MainMenuAccent" ID="ID_1090849795" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7416,14 +7980,15 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
 <edge STYLE="horizontal"/>
-<node TEXT="&#x9078;&#x629e;&#x30ce;&#x30fc;&#x30c9;&#x304b;&#x3089;&#x65b0;&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x4f5c;&#x6210;" FOLDED="true" ID="ID_36146276" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x9078;&#x629e;&#x30ce;&#x30fc;&#x30c9;&#x304b;&#x3089;&#x65b0;&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x4f5c;&#x6210;" ID="ID_36146276" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7461,7 +8026,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -7471,7 +8037,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7494,12 +8061,13 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
-<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x518d;&#x5b9a;&#x7fa9;" STYLE_REF="Functie" ID="ID_1707980722" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x518d;&#x5b9a;&#x7fa9;" STYLE_REF="Functie" ID="ID_1707980722" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7509,14 +8077,15 @@
       &#27161;&#28310;&#12494;&#12540;&#12489;&#12473;&#12479;&#12452;&#12523;&#12434;&#12289;&#36984;&#25246;&#12494;&#12540;&#12489;&#12398;&#12473;&#12479;&#12452;&#12523;&#12395;&#22793;&#26356;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
 </node>
-<node TEXT="&#x30de;&#x30c3;&#x30d7;&#x7528;&#x6761;&#x4ef6;&#x5bfe;&#x5fdc;&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x7ba1;&#x7406;" FOLDED="true" ID="ID_1169167186" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30de;&#x30c3;&#x30d7;&#x7528;&#x6761;&#x4ef6;&#x5bfe;&#x5fdc;&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x7ba1;&#x7406;" ID="ID_1169167186" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7569,17 +8138,19 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
-<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x30eb;&#x30fc;&#x30eb;&#x4e00;&#x89a7;&#x8868;" STYLE_REF="Method" FOLDED="true" ID="ID_1058697460" TEXT_SHORTENED="true">
+<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x30eb;&#x30fc;&#x30eb;&#x4e00;&#x89a7;&#x8868;" STYLE_REF="Method" ID="ID_1058697460" TEXT_SHORTENED="true">
 <node TEXT="&#x7121;&#x6307;&#x5b9a;" ID="ID_1530876191" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7589,11 +8160,12 @@
       &#24403;&#21021;&#12289;&#12473;&#12479;&#12452;&#12523;&#12523;&#12540;&#12523;&#19968;&#35239;&#34920;&#12395;&#12399;&#20309;&#12418;&#25351;&#23450;&#12373;&#12428;&#12390;&#12356;&#12414;&#12379;&#12435;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="&#x65b0;&#x898f;" ID="ID_322783972" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x65b0;&#x898f;" ID="ID_322783972" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7603,10 +8175,11 @@
       &#26032;&#35215;&#12523;&#12540;&#12523;&#12434;&#20184;&#21152;&#12377;&#12427;&#22580;&#21512;&#12395;&#25276;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x7de8;&#x96c6;" LOCALIZED_STYLE_REF="defaultstyle.details" ID="ID_338804554" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x7de8;&#x96c6;" LOCALIZED_STYLE_REF="defaultstyle.details" ID="ID_338804554" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7616,10 +8189,11 @@
       &#36984;&#25246;&#20013;&#12398;&#12523;&#12540;&#12523;&#12434;&#32232;&#38598;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x524a;&#x9664;" ID="ID_44463838" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x524a;&#x9664;" ID="ID_44463838" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7629,10 +8203,11 @@
       &#36984;&#25246;&#20013;&#12398;&#12523;&#12540;&#12523;&#65288;&#35079;&#25968;&#21487;)&#12434;&#21066;&#38500;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x4e0a;&#x3078;" ID="ID_1131478979" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x4e0a;&#x3078;" ID="ID_1131478979" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7642,10 +8217,11 @@
       &#36984;&#25246;&#20013;&#12398;&#12523;&#12540;&#12523;&#12398;&#20301;&#32622;&#12434;&#19968;&#27573;&#19978;&#12395;&#31227;&#21205;&#12373;&#12379;&#12414;&#12377;&#12290;&#12375;&#12383;&#12364;&#12387;&#12390;&#12289;&#23455;&#34892;&#12398;&#38918;&#30058;&#12364;&#32368;&#12426;&#19978;&#12370;&#12425;&#12428;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x4e0b;&#x3078;" ID="ID_198508283" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x4e0b;&#x3078;" ID="ID_198508283" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7655,7 +8231,8 @@
       &#36984;&#25246;&#20013;&#12398;&#12523;&#12540;&#12523;&#12398;&#20301;&#32622;&#12434;&#19968;&#27573;&#19979;&#12395;&#31227;&#21205;&#12373;&#12379;&#12414;&#12377;&#12290;&#12375;&#12383;&#12364;&#12387;&#12390;&#12289;&#23455;&#34892;&#12398;&#38918;&#30058;&#12364;&#32368;&#12426;&#19979;&#12370;&#12425;&#12428;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -7664,7 +8241,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7674,10 +8252,11 @@
       &#12481;&#12455;&#12483;&#12463;&#20184;&#12365;&#12398;&#22580;&#21512;&#24460;&#32154;&#12398;&#12523;&#12540;&#12523;&#12364;&#23455;&#34892;&#12373;&#12428;&#12289;&#12481;&#12455;&#12483;&#12463;&#12394;&#12375;&#12398;&#22580;&#21512;&#23455;&#34892;&#12373;&#12428;&#12414;&#12379;&#12435;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x6761;&#x4ef6;" STYLE_REF="Method" FOLDED="true" ID="ID_1978595059" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x6761;&#x4ef6;" STYLE_REF="Method" ID="ID_1978595059" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7687,12 +8266,14 @@
       &#12393;&#12398;&#12424;&#12358;&#12394;&#22580;&#21512;&#12395;&#12523;&#12540;&#12523;&#12434;&#22987;&#21205;&#12373;&#12379;&#12427;&#12363;&#12434;&#35215;&#23450;&#12377;&#12427;&#26465;&#20214;&#12398;&#12371;&#12392;&#12391;&#12289;&#12501;&#12451;&#12523;&#12479;&#12523;&#12540;&#12523;&#12434;&#29992;&#12356;&#12390;&#35373;&#23450;&#12375;&#12414;&#12377;&#12290;&#12523;&#12540;&#12523;&#12364;&#22987;&#21205;&#12377;&#12427;&#12392;&#12289;&#24403;&#35442;&#12398;&#12473;&#12479;&#12452;&#12523;&#12364;&#36969;&#29992;&#12373;&#12428;&#12414;&#12377;&#12290;&#22987;&#21205;&#12375;&#12394;&#12369;&#12428;&#12400;&#12289;&#12473;&#12479;&#12452;&#12523;&#12399;&#36969;&#29992;&#12373;&#12428;&#12414;&#12379;&#12435;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="&#x5e38;&#x6642;&#x9069;&#x7528;" ID="ID_894528691" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7702,15 +8283,17 @@
       &#21021;&#26399;&#35373;&#23450;&#12398;&#12501;&#12451;&#12523;&#12479;&#12523;&#12540;&#12523;&#12399;&#12289;&#24120;&#12395;&#12473;&#12479;&#12452;&#12523;&#12434;&#22987;&#21205;&#12377;&#12427;&#12424;&#12358;&#35373;&#23450;&#12373;&#12428;&#12390;&#12356;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;" STYLE_REF="Method" FOLDED="true" ID="ID_763369934" TEXT_SHORTENED="true">
+<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;" STYLE_REF="Method" ID="ID_763369934" TEXT_SHORTENED="true">
 <node TEXT="&#x6a19;&#x6e96;&#x30b9;&#x30bf;&#x30a4;&#x30eb;" ID="ID_1063009738" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7720,14 +8303,16 @@
       <i>&#12300;&#27161;&#28310;&#30340;&#12394;&#12473;&#12479;&#12452;&#12523;&#12301;</i>&#12391;&#12377;&#12290;&#12480;&#12502;&#12523;&#12463;&#12522;&#12483;&#12463;&#12377;&#12427;&#12392;&#12289;&#21033;&#29992;&#21487;&#33021;&#12394;&#12473;&#12479;&#12452;&#12523;&#12398;&#12489;&#12525;&#12483;&#12503;&#12480;&#12454;&#12531;&#12522;&#12473;&#12488;&#12364;&#38283;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 <node TEXT="&#x9069;&#x7528;&#x3092;&#x4e2d;&#x6b62;" ID="ID_1428874055" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7737,19 +8322,21 @@
       &#12371;&#12371;&#12395;&#12481;&#12455;&#12483;&#12463;&#12364;&#20184;&#12369;&#12425;&#12428;&#12383;&#29366;&#24907;&#12391;&#12289;&#12371;&#12398;&#12523;&#12540;&#12523;&#12364;&#22987;&#21205;&#12377;&#12427;&#12392;&#12289;&#12371;&#12398;&#12523;&#12540;&#12523;&#12424;&#12426;&#19979;&#12398;&#12523;&#12540;&#12523;&#12399;&#23455;&#34892;&#12373;&#12428;&#12414;&#12379;&#12435;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="" FOLDED="true" ID="ID_1576410916" TEXT_SHORTENED="true">
+<node TEXT="" ID="ID_1576410916" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
-<node TEXT="&#x66f4;&#x65b0;" ID="ID_1791624318" TEXT_SHORTENED="true" LINK="#ID_1678241727">
+<node TEXT="&#x66f4;&#x65b0;" ID="ID_1791624318" LINK="#ID_1678241727" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7762,14 +8349,16 @@
       &#35443;&#12375;&#12367;&#12399;&#12289;&#32209;&#33394;&#12398;&#30690;&#21360;&#12434;&#12463;&#12522;&#12483;&#12463;&#12375;&#12390;&#12289;&#12522;&#12531;&#12463;&#20808;&#12434;&#12372;&#35239;&#12367;&#12384;&#12373;&#12356;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="" ID="ID_362867811" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7779,7 +8368,8 @@
       &#26032;&#35215;&#20316;&#25104;&#12398;&#65288; Freeplane 1.2 &#29992;, &#8800; 1.1.3&#160;&#160;&#29992;&#65289;&#12510;&#12483;&#12503;&#19978;&#12289;&#21448;&#12399;&#12510;&#12483;&#12503;&#12473;&#12479;&#12452;&#12523;&#12398;&#12467;&#12500;&#12540;&#27231;&#33021;&#12395;&#12424;&#12387;&#12390; Freeplane 1.2 &#12398;&#12510;&#12483;&#12503;&#12363;&#12425;&#12467;&#12500;&#12540;&#12375;&#12383;&#12510;&#12483;&#12503;&#12473;&#12479;&#12452;&#12523;&#12434;&#29992;&#12356;&#12383;&#22580;&#21512;&#12375;&#12363;&#12289;&#21205;&#20316;&#12375;&#12414;&#12379;&#12435;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x30c6;&#x30f3;&#x30d7;&#x30ec;&#x30fc;&#x30c8;" ID="ID_1796388799" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -7787,7 +8377,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7828,16 +8419,18 @@
 &#34892;&#12391;&#12365;&#12427;&#12424;&#12358;&#12395;&#12394;&#12426;&#12414;&#12377;&#12290;&#26465;&#20214;&#12395;&#24540;&#12376;&#12390;&#36215;&#21205;&#12373;&#12428;&#12427;&#12473;&#12479;&#12452;&#12523;&#12398;&#26368;&#21021;&#12398;&#35201;&#32032;&#12289;&#12354;&#12427;&#12356;&#12399;&#12377;&#12409;&#12390;&#12398;&#35201;&#32032;
 &#12364;&#12467;&#12500;&#12540;&#12373;&#12428;&#12427;&#12424;&#12358;&#12289;&#26465;&#20214;&#23550;&#24540;&#12473;&#12479;&#12452;&#12523;&#12391;&#20316;&#21205;&#12377;&#12427;&#12424;&#12358;&#12395;&#12371;&#12398;&#21205;&#20316;&#12434;&#22793;&#26356;&#12377;&#12427;&#12371;&#12392;&#12418;&#12391;&#12365;&#12414;&#12377;</pre>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 </node>
 </node>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x7528;&#x6761;&#x4ef6;&#x5bfe;&#x5fdc;&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x7ba1;&#x7406;" FOLDED="true" ID="ID_1036704793" TEXT_SHORTENED="true">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x7528;&#x6761;&#x4ef6;&#x5bfe;&#x5fdc;&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x7ba1;&#x7406;" ID="ID_1036704793" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7887,14 +8480,16 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="4"/>
-<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x30eb;&#x30fc;&#x30eb;&#x4e00;&#x89a7;&#x8868;" STYLE_REF="Method" FOLDED="true" ID="ID_42342492" TEXT_SHORTENED="true">
+<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x30eb;&#x30fc;&#x30eb;&#x4e00;&#x89a7;&#x8868;" STYLE_REF="Method" ID="ID_42342492" TEXT_SHORTENED="true">
 <node TEXT="&#x7121;&#x6307;&#x5b9a;" ID="ID_446952700" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7904,11 +8499,12 @@
       &#24403;&#21021;&#12289;&#12473;&#12479;&#12452;&#12523;&#12523;&#12540;&#12523;&#19968;&#35239;&#34920;&#12395;&#12399;&#20309;&#12418;&#25351;&#23450;&#12373;&#12428;&#12390;&#12356;&#12414;&#12379;&#12435;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="&#x65b0;&#x898f;" ID="ID_456606769" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x65b0;&#x898f;" ID="ID_456606769" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7918,10 +8514,11 @@
       &#26032;&#35215;&#12523;&#12540;&#12523;&#12434;&#20184;&#21152;&#12377;&#12427;&#22580;&#21512;&#12395;&#25276;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x7de8;&#x96c6;" LOCALIZED_STYLE_REF="defaultstyle.details" ID="ID_241525349" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x7de8;&#x96c6;" LOCALIZED_STYLE_REF="defaultstyle.details" ID="ID_241525349" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7931,10 +8528,11 @@
       &#36984;&#25246;&#20013;&#12398;&#12523;&#12540;&#12523;&#12434;&#32232;&#38598;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x524a;&#x9664;" ID="ID_705278755" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x524a;&#x9664;" ID="ID_705278755" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7944,10 +8542,11 @@
       &#36984;&#25246;&#20013;&#12398;&#12523;&#12540;&#12523;&#65288;&#35079;&#25968;&#21487;)&#12434;&#21066;&#38500;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x4e0a;&#x3078;" ID="ID_1941290231" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x4e0a;&#x3078;" ID="ID_1941290231" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7957,10 +8556,11 @@
       &#36984;&#25246;&#20013;&#12398;&#12523;&#12540;&#12523;&#12398;&#20301;&#32622;&#12434;&#19968;&#27573;&#19978;&#12395;&#31227;&#21205;&#12373;&#12379;&#12414;&#12377;&#12290;&#12375;&#12383;&#12364;&#12387;&#12390;&#12289;&#23455;&#34892;&#12398;&#38918;&#30058;&#12364;&#32368;&#12426;&#19978;&#12370;&#12425;&#12428;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x4e0b;&#x3078;" ID="ID_378663185" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x4e0b;&#x3078;" ID="ID_378663185" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7970,7 +8570,8 @@
       &#36984;&#25246;&#20013;&#12398;&#12523;&#12540;&#12523;&#12398;&#20301;&#32622;&#12434;&#19968;&#27573;&#19979;&#12395;&#31227;&#21205;&#12373;&#12379;&#12414;&#12377;&#12290;&#12375;&#12383;&#12364;&#12387;&#12390;&#12289;&#23455;&#34892;&#12398;&#38918;&#30058;&#12364;&#32368;&#12426;&#19979;&#12370;&#12425;&#12428;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -7979,7 +8580,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -7989,10 +8591,11 @@
       &#12481;&#12455;&#12483;&#12463;&#20184;&#12365;&#12398;&#22580;&#21512;&#12289;&#24460;&#32154;&#12398;&#12523;&#12540;&#12523;&#12364;&#23455;&#34892;&#12373;&#12428;&#12289;&#12481;&#12455;&#12483;&#12463;&#12394;&#12375;&#12398;&#22580;&#21512;&#12289;&#23455;&#34892;&#12373;&#12428;&#12414;&#12379;&#12435;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x6761;&#x4ef6;" STYLE_REF="Method" FOLDED="true" ID="ID_904940681" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x6761;&#x4ef6;" STYLE_REF="Method" ID="ID_904940681" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8002,12 +8605,14 @@
       &#12393;&#12398;&#12424;&#12358;&#12394;&#22580;&#21512;&#12395;&#12523;&#12540;&#12523;&#12434;&#22987;&#21205;&#12373;&#12379;&#12427;&#12363;&#12434;&#35215;&#23450;&#12377;&#12427;&#26465;&#20214;&#12398;&#12371;&#12392;&#12391;&#12289;&#12501;&#12451;&#12523;&#12479;&#12523;&#12540;&#12523;&#12434;&#29992;&#12356;&#12390;&#35373;&#23450;&#12375;&#12414;&#12377;&#12290;&#12523;&#12540;&#12523;&#12364;&#22987;&#21205;&#12377;&#12427;&#12392;&#12289;&#24403;&#35442;&#12398;&#12473;&#12479;&#12452;&#12523;&#12364;&#36969;&#29992;&#12373;&#12428;&#12414;&#12377;&#12290;&#22987;&#21205;&#12375;&#12394;&#12369;&#12428;&#12400;&#12289;&#12473;&#12479;&#12452;&#12523;&#12399;&#36969;&#29992;&#12373;&#12428;&#12414;&#12379;&#12435;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="&#x5e38;&#x6642;&#x9069;&#x7528;" ID="ID_1758183773" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8017,16 +8622,18 @@
       &#21021;&#26399;&#35373;&#23450;&#12398;&#12501;&#12451;&#12523;&#12479;&#12523;&#12540;&#12523;&#12399;&#12289;&#24120;&#12395;&#12473;&#12479;&#12452;&#12523;&#12434;&#22987;&#21205;&#12377;&#12427;&#12424;&#12358;&#35373;&#23450;&#12373;&#12428;&#12390;&#12356;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 <node TEXT="Style" STYLE_REF="Method" ID="ID_824994655" TEXT_SHORTENED="true"/>
-<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;" STYLE_REF="Method" FOLDED="true" ID="ID_1608086112" TEXT_SHORTENED="true">
-<node TEXT="&#x6a19;&#x6e96;&#x30b9;&#x30bf;&#x30a4;&#x30eb;" FOLDED="true" ID="ID_1997932445" TEXT_SHORTENED="true">
+<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;" STYLE_REF="Method" ID="ID_1608086112" TEXT_SHORTENED="true">
+<node TEXT="&#x6a19;&#x6e96;&#x30b9;&#x30bf;&#x30a4;&#x30eb;" ID="ID_1997932445" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8036,12 +8643,13 @@
       <i>&#12300;&#27161;&#28310;&#30340;&#12394;&#12473;&#12479;&#12452;&#12523;&#12301;</i>&#12391;&#12377;&#12290;&#12480;&#12502;&#12523;&#12463;&#12522;&#12483;&#12463;&#12377;&#12427;&#12392;&#12289;&#21033;&#29992;&#21487;&#33021;&#12394;&#12473;&#12479;&#12452;&#12523;&#12398;&#12489;&#12525;&#12483;&#12503;&#12480;&#12454;&#12531;&#12522;&#12473;&#12488;&#12364;&#38283;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
-<node TEXT="" FOLDED="true" ID="ID_1554329387" TEXT_SHORTENED="true">
+</html>
+</richcontent>
+<node TEXT="" ID="ID_1554329387" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
-<node TEXT="&#x6761;&#x4ef6;&#x5bfe;&#x5fdc;&#x30ce;&#x30fc;&#x30c9;&#x30b9;&#x30bf;&#x30a4;&#x30eb;" ID="ID_589037277" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x6761;&#x4ef6;&#x5bfe;&#x5fdc;&#x30ce;&#x30fc;&#x30c9;&#x30b9;&#x30bf;&#x30a4;&#x30eb;" ID="ID_589037277" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8054,7 +8662,8 @@
       &#12371;&#12398;&#12494;&#12540;&#12489;&#12395;&#36969;&#29992;&#12373;&#12428;&#12390;&#12356;&#12427;&#65298;&#12388;&#12398;&#12523;&#12540;&#12523;&#12289;&#12377;&#12394;&#12431;&#12385;&#12289;Example&#65288;&#29992;&#20363;&#65289;&#12473;&#12479;&#12452;&#12523;&#36969;&#29992;&#12523;&#12540;&#12523;&#12392; ToNote&#65288;&#30041;&#24847;&#20107;&#38917;&#65289;&#12473;&#12479;&#12452;&#12523;&#36969;&#29992;&#12523;&#12540;&#12523;&#12392;&#12434;&#35211;&#12427;&#12395;&#12399;&#12289;&#12300;&#12473;&#12479;&#12452;&#12523; &gt; &#26465;&#20214;&#23550;&#24540;&#12494;&#12540;&#12489;&#12473;&#12479;&#12452;&#12523;&#12434;&#31649;&#29702;&#12301;&#12398;&#12454;&#12451;&#12531;&#12489;&#12454;&#12434;&#38283;&#12356;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;&#20001;&#26041;&#12398;&#12523;&#12540;&#12523;&#12392;&#12418;&#12289;<i>&#12300;&#12371;&#12398;&#12473;&#12479;&#12452;&#12523;&#12434;&#24120;&#26178;&#36969;&#29992;&#12301;</i>&#12377;&#12427;&#12424;&#12358;&#35373;&#23450;&#12373;&#12428;&#12390;&#12356;&#12414;&#12377;&#12290;&#12371;&#12428;&#12364;&#12289;&#21516;&#19968;&#12494;&#12540;&#12489;&#12395;&#19968;&#24230;&#12395;&#35079;&#25968;&#12398;&#12473;&#12479;&#12452;&#12523;&#12434;&#36969;&#29992;&#12377;&#12427;&#12392;&#12356;&#12358;&#12289;&#26465;&#20214;&#23550;&#24540;&#12494;&#12540;&#12489;&#12473;&#12479;&#12452;&#12523;&#12398;&#26368;&#12418;&#21336;&#32020;&#12394;&#20351;&#29992;&#27861;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
@@ -8067,7 +8676,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8077,16 +8687,17 @@
       &#12371;&#12371;&#12395;&#12481;&#12455;&#12483;&#12463;&#12364;&#20184;&#12369;&#12425;&#12428;&#12383;&#29366;&#24907;&#12391;&#12289;&#12371;&#12398;&#12523;&#12540;&#12523;&#12364;&#22987;&#21205;&#12377;&#12427;&#12392;&#12289;&#12371;&#12398;&#12523;&#12540;&#12523;&#12424;&#12426;&#19979;&#12398;&#12523;&#12540;&#12523;&#12399;&#23455;&#34892;&#12373;&#12428;&#12414;&#12379;&#12435;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="" FOLDED="true" ID="ID_1128751921" TEXT_SHORTENED="true">
+<node TEXT="" ID="ID_1128751921" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
-<node TEXT="Conditional node style" ID="ID_1620188987" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="Conditional node style" ID="ID_1620188987" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8102,7 +8713,8 @@
       Open the window Styles &gt; Manage Conditional Node Styles to see the two rules, one for applying style Example and one for style ToNote. Both rules are of type: always apply this style. This is the most simple use of conditional node styles: to apply more than one style to the same node at once.
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
@@ -8110,8 +8722,8 @@
 </node>
 </node>
 </node>
-<node TEXT="&#x30de;&#x30c3;&#x30d7;&#x306e;&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x30b3;&#x30d4;&#x30fc;..." ID="ID_13843990" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x30de;&#x30c3;&#x30d7;&#x306e;&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x30b3;&#x30d4;&#x30fc;..." ID="ID_13843990" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8135,14 +8747,15 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
 </node>
-<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x7de8;&#x96c6;" STYLE_REF="Functie" ID="ID_1277682010" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x7de8;&#x96c6;" STYLE_REF="Functie" ID="ID_1277682010" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8178,13 +8791,14 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
 </node>
-<node TEXT="&#x8a73;&#x7d30;&#x60c5;&#x5831;" STYLE_REF="Aggregatie als Toelichting" FOLDED="true" ID="ID_222498027" TEXT_SHORTENED="true">
+<node TEXT="&#x8a73;&#x7d30;&#x60c5;&#x5831;" STYLE_REF="Aggregatie als Toelichting" ID="ID_222498027" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 <attribute NAME="Chapter" VALUE="4"/>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
@@ -8194,7 +8808,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8204,7 +8819,8 @@
       &#12494;&#12540;&#12489;&#12398;<b>&#12473;&#12479;&#12452;&#12523;</b>&#12399;&#12289;&#19968;&#36899;&#12398;&#12494;&#12540;&#12489;&#12503;&#12525;&#12497;&#12486;&#12451;&#12392;&#65339;&#12494;&#12540;&#12489;&#65341;&#20869;&#23481;&#12398;&#22522;&#26412;&#27083;&#36896;&#12392;&#12363;&#12425;&#12394;&#12426;&#12289;&#12381;&#12428;&#12425;&#12399;&#12289;&#12473;&#12479;&#12452;&#12523;&#21517;&#12434;&#20351;&#12387;&#12390;&#21628;&#12403;&#20986;&#12375;&#24403;&#35442;&#12494;&#12540;&#12489;&#12395;&#36969;&#29992;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x30c6;&#x30f3;&#x30d7;&#x30ec;&#x30fc;&#x30c8;" ID="ID_613710379" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -8212,7 +8828,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8235,7 +8852,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x306e;&#x4e8b;&#x4f8b;" ID="ID_1082773930" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -8249,7 +8867,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8270,7 +8889,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="Wiki" ID="ID_1760412130" LINK="http://freeplane.sourceforge.net/wiki/index.php/Node_styles" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -8283,9 +8903,10 @@
 <node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x95a2;&#x9023;" STYLE_REF="MenuGroupLabel" ID="ID_177552803" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 </node>
-<node TEXT="&#x30de;&#x30c3;&#x30d7;&#x306e;&#x80cc;&#x666f;&#x8272;" FOLDED="true" ID="ID_1564352042" TEXT_SHORTENED="true">
+<node TEXT="&#x30de;&#x30c3;&#x30d7;&#x306e;&#x80cc;&#x666f;&#x8272;" ID="ID_1564352042" TEXT_SHORTENED="true">
 <icon BUILTIN="../MapBackgroundColorAction"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8295,7 +8916,8 @@
       <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">&#33394;&#24425;&#36984;&#25246;&#12480;&#12452;&#12450;&#12525;&#12464;&#12434;&#29992;&#12356;&#12390;&#12289;&#12510;&#12483;&#12503;&#20840;&#20307;&#12398;&#32972;&#26223;&#33394;&#12434;&#35373;&#23450;&#12375;&#12414;&#12377;&#12290;</span></font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -8305,7 +8927,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8315,7 +8938,8 @@
       &#12371;&#12398;&#12458;&#12503;&#12471;&#12519;&#12531;&#12399;&#12289;<i>&#12300;&#34920;&#31034; &gt; &#12503;&#12525;&#12497;&#12486;&#12451;&#12497;&#12493;&#12523;&#12301;</i>&#12391;&#12399;&#21033;&#29992;&#12391;&#12365;&#12414;&#12379;&#12435;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 <node TEXT="&#x96f2;&#xff08;&#x4ed8;&#x52a0; or &#x5f62;&#x3092;&#x5909;&#x66f4;&#xff09;" ID="ID_581461366" TEXT_SHORTENED="true">
@@ -8325,7 +8949,8 @@
 </node>
 <node TEXT="&#x96f2;&#x306e;&#x8272;" ID="ID_1092192366" TEXT_SHORTENED="true">
 <icon BUILTIN="../Colors24"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8349,7 +8974,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -8361,9 +8987,10 @@
 <hook NAME="SummaryNode"/>
 <attribute NAME="Chapter" VALUE="4"/>
 </node>
-<node TEXT="&#x7dda;&#xff08;&#x30a8;&#x30c3;&#x30b8;&#xff09;&#x306e;&#x5f62;&#x72b6;" FOLDED="true" ID="ID_1001249442" TEXT_SHORTENED="true">
+<node TEXT="&#x7dda;&#xff08;&#x30a8;&#x30c3;&#x30b8;&#xff09;&#x306e;&#x5f62;&#x72b6;" ID="ID_1001249442" TEXT_SHORTENED="true">
 <hook NAME="FirstGroupNode"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8404,11 +9031,12 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
-<node TEXT="" FOLDED="true" ID="ID_831160653" STYLE="bubble" TEXT_SHORTENED="true">
+<node TEXT="" ID="ID_831160653" STYLE="bubble" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
 </hook>
@@ -8435,7 +9063,8 @@
 </node>
 <node TEXT="&#x7dda;&#xff08;&#x30a8;&#x30c3;&#x30b8;&#xff09;&#x306e;&#x592a;&#x3055;" ID="ID_1718207662" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="10" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8479,32 +9108,37 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x7dda;&#xff08;&#x30a8;&#x30c3;&#x30b8;&#xff09;&#x306e;&#x8272;" ID="ID_865389195" TEXT_SHORTENED="true">
-<edge COLOR="#ff0000"/>
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x7dda;&#xff08;&#x30a8;&#x30c3;&#x30b8;&#xff09;&#x306e;&#x8272;" ID="ID_209630257" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="4"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">&#33394;&#24425;&#36984;&#25246;&#12480;&#12452;&#12450;&#12525;&#12464;&#12434;&#29992;&#12356;&#12390;&#12289;&#36984;&#25246;&#12494;&#12540;&#12489;&#12398;&#12501;&#12457;&#12540;&#12463;&#65288;&#12394;&#12356;&#12375;&#22258;&#12415;&#65289;&#12398;&#33394;&#12434;&#36984;&#25246;&#12375;&#12414;&#12377;&#12290;&#12414;&#12383;&#12289;&#35242;&#12494;&#12540;&#12489;&#12392;&#23376;&#12494;&#12540;&#12489;&#12434;&#32080;&#12406;&#32218;&#12362;&#33394;&#12418;&#35373;&#23450;&#12373;&#12428;&#12414;&#12377;&#12290;</span></font>
+      <b>&#32218;&#65288;&#12456;&#12483;&#12472;&#65289;&#12398;&#33394;</b>&#12392;&#12399;&#12289;&#12494;&#12540;&#12489;&#12434;&#32080;&#12403;&#12388;&#12369;&#12427;&#32218;&#65288;&#12456;&#12483;&#12472;&#65289;&#12398;&#33394;&#12398;&#12371;&#12392;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
-</hook>
+</html>
+</richcontent>
+<hook NAME="FirstGroupNode"/>
 </node>
 <node TEXT="&#x7dda;&#xff08;&#x30a8;&#x30c3;&#x30b8;&#xff09;&#x306e;&#x8272;&#x3092;&#x81ea;&#x52d5;&#x9078;&#x629e;" ID="ID_1587417548" TEXT_SHORTENED="true">
 <icon BUILTIN="../AutomaticEdgeColorHookAction"/>
 <font NAME="SansSerif" SIZE="10" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8514,14 +9148,16 @@
       <i><font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">&#12300;&#12473;&#12479;&#12452;&#12523;&#160;&gt; &#33258;&#21205;&#12524;&#12452;&#12450;&#12454;&#12488;&#12301;&#12434;&#21442;&#29031;&#12290;</span></font></i>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 <node TEXT="&#x7dda;&#xff08;&#x30a8;&#x30c3;&#x30b8;&#xff09;&#x306e;&#x30d7;&#x30ed;&#x30d1;&#x30c6;&#x30a3;" STYLE_REF="Aggregatie als Toelichting" ID="ID_881523974" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8531,16 +9167,49 @@
       &#32218;&#65288;&#12456;&#12483;&#12472;&#65289;&#12399;&#35242;&#12494;&#12540;&#12489;&#12392;&#23376;&#12494;&#12540;&#12489;&#12398;&#31995;&#21015;&#65339;&#12434;&#31034;&#12377;&#12418;&#12398;&#65341;&#12391;&#12377;&#12290;&#32218;&#12398;&#27969;&#12428;&#12399;&#12289;&#32218;&#19978;&#12434;&#12463;&#12522;&#12483;&#12463;&#12375;&#21029;&#12398;&#22580;&#25152;&#12395;&#24341;&#12387;&#24373;&#12427;&#12371;&#12392;&#12391;&#22793;&#12360;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;&#25216;&#34899;&#30340;&#12395;&#35328;&#12360;&#12400;&#12289;&#32218;&#12399;&#23376;&#12494;&#12540;&#12489;&#12395;&#23646;&#12375;&#12289;&#32218;&#12398;&#33394;&#12394;&#12393;&#12398;&#12503;&#12525;&#12497;&#12486;&#12451;&#12399;&#12289;&#23376;&#12494;&#12540;&#12489;&#19978;&#12391;&#22793;&#26356;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;<i>&#12300;&#34920;&#31034; &gt; &#12503;&#12525;&#12497;&#12486;&#12451;&#12497;&#12493;&#12523;&#12301;</i>&#12434;&#21442;&#29031;&#12290;&#32218;&#12399;&#38750;&#34920;&#31034;&#12395;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;&#12371;&#12398;&#28857;&#12395;&#12388;&#12356;&#12390;&#12399;&#12289;&#32218;&#12398;&#24418;&#12434;&#21442;&#29031;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x30b3;&#x30a2;&#x95a2;&#x9023;" STYLE_REF="SubMenu" FOLDED="true" ID="ID_39827582" TEXT_SHORTENED="true">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x5e45;&#x306e;&#x4e0a;&#xff0f;&#x4e0b;&#x9650;&#x5024;&#x3092;&#x6307;&#x5b9a;" ID="ID_601879583" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      &#12494;&#12540;&#12489;&#12398;&#27178;&#24133;&#12434;&#22793;&#26356;&#12375;&#12414;&#12377;&#12290;
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000"><b>&#21442;&#12288;&#29031;</b></font>
+    </p>
+    <ul>
+      <li>
+        <i>&#12300;&#34920;&#31034;&#160;&gt; &#12503;&#12525;&#12497;&#12486;&#12451;&#12497;&#12493;&#12523;&#160;&#160;&gt; &#12494;&#12540;&#12489;&#12398;&#26368;&#23567;&#34920;&#31034;&#24133;&#12301;</i>
+      </li>
+      <li>
+        <i>&#12300;&#34920;&#31034;&#160;&gt; &#12503;&#12525;&#12497;&#12486;&#12451;&#12497;&#12493;&#12523;&#160;&#160;&gt; &#12494;&#12540;&#12489;&#12398;&#26368;&#22823;&#34920;&#31034;&#24133;&#12301;</i>
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x30b3;&#x30a2;&#x95a2;&#x9023;" STYLE_REF="SubMenu" ID="ID_39827582" TEXT_SHORTENED="true">
 <node TEXT="&#x592a;&#x5b57;" ID="ID_25890496" TEXT_SHORTENED="true">
 <icon BUILTIN="../Bold16"/>
 <font NAME="SansSerif" SIZE="10" BOLD="true" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8564,7 +9233,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
@@ -8573,7 +9243,8 @@
 <node TEXT="&#x659c;&#x4f53;" ID="ID_408787243" TEXT_SHORTENED="true">
 <icon BUILTIN="../Italic16"/>
 <font ITALIC="true"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8597,7 +9268,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -8605,7 +9277,8 @@
 <node TEXT="&#x6587;&#x5b57;&#x3092;&#x5927;&#x304d;&#x304f;" ID="ID_349364472" TEXT_SHORTENED="true">
 <icon BUILTIN="../IncreaseNodeFontAction"/>
 <font NAME="SansSerif" SIZE="14" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8629,7 +9302,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -8638,7 +9312,8 @@
 <node TEXT="&#x6587;&#x5b57;&#x3092;&#x5c0f;&#x3055;&#x304f;" ID="ID_533544086" TEXT_SHORTENED="true">
 <icon BUILTIN="../DecreaseNodeFontAction"/>
 <font SIZE="10"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8662,14 +9337,15 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
 </node>
-<node ID="ID_863447007" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
+<node ID="ID_863447007" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -8679,14 +9355,16 @@
       &#22522;&#26412;&#12494;&#12540;&#12489;&#12486;&#12461;&#12473;&#12488;<b>&#20840;&#20307;</b>&#12398;&#25991;&#23383;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="SummaryNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8722,11 +9400,13 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x6587;&#x5b57;&#x8272;" ID="ID_1085935601" COLOR="#ff3366" TEXT_SHORTENED="true">
 <icon BUILTIN="../NodeColorAction"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8736,16 +9416,18 @@
       <span style="font-family: SansSerif, sans-serif; color: #000000"><font color="#000000" face="SansSerif, sans-serif">&#33394;&#24425;&#36984;&#25246;&#12480;&#12452;&#12450;&#12525;&#12464;&#12434;&#29992;&#12356;&#12390;&#12289;&#36984;&#25246;&#12494;&#12540;&#12489;&#12398;&#25991;&#23383;&#33394;&#12434;&#35373;&#23450;&#12375;&#12414;&#12377;&#12290;&#12381;&#12398;&#33394;&#12399;&#12289;&#12494;&#12540;&#12489;&#12398;&#12377;&#12409;&#12390;&#12398;&#12486;&#12461;&#12473;&#12488;&#12395;&#36969;&#29992;&#12373;&#12428;&#12414;&#12377;&#12290;</font></span>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x70b9;&#x6ec5;" FOLDED="true" ID="ID_854971495" COLOR="#663300" BACKGROUND_COLOR="#ffffff" TEXT_SHORTENED="true">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x70b9;&#x6ec5;" ID="ID_854971495" COLOR="#663300" BACKGROUND_COLOR="#ffffff" TEXT_SHORTENED="true">
 <icon BUILTIN="../xeyes"/>
 <edge COLOR="#000000"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8755,7 +9437,8 @@
       <span style="font-family: SansSerif, sans-serif; color: #000000"><font color="#000000" face="SansSerif, sans-serif">&#12494;&#12540;&#12489;&#12434;&#28857;&#28357;&#12373;&#12379;&#12414;&#12377;&#12290;&#28857;&#28357;&#20013;&#12399;&#12289;&#12494;&#12540;&#12489;&#12398;&#33394;&#12364;&#38918;&#32368;&#12426;&#12395;&#22793;&#21270;&#12375;&#12414;&#12377;&#12290;</font></span>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -8765,7 +9448,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8775,13 +9459,15 @@
       &#12371;&#12398;&#12503;&#12525;&#12497;&#12486;&#12451;&#12399;&#12289;<i>&#12300;&#34920;&#31034;&#160;&gt; &#12503;&#12525;&#12497;&#12486;&#12451;&#12497;&#12493;&#12523;&#12434;&#12301;</i>&#12391;&#12399;&#21033;&#29992;&#12391;&#12365;&#12414;&#12379;&#12435;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x6587;&#x5b57;&#x8272;&#x3092;&#x8584;&#x304f;" FOLDED="true" ID="ID_1238551182" COLOR="#663300" TEXT_SHORTENED="true">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x6587;&#x5b57;&#x8272;&#x3092;&#x8584;&#x304f;" ID="ID_1238551182" COLOR="#663300" TEXT_SHORTENED="true">
 <icon BUILTIN="../NodeColorBlendAction"/>
 <font NAME="SansSerif" SIZE="10" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8791,7 +9477,8 @@
       <span style="font-family: SansSerif, sans-serif; color: #000000"><font face="SansSerif, sans-serif" color="#000000">&#36984;&#25246;&#12494;&#12540;&#12489;&#12398;&#25991;&#23383;&#33394;&#12434;&#32972;&#26223;&#33394;&#12395;&#36817;&#12389;&#12369;&#12390;&#12356;&#12365;&#12414;&#12377;&#12290;&#32368;&#12426;&#36820;&#12375;&#36969;&#29992;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;<i>&#12300;&#26360;&#24335; &gt; &#12494;&#12540;&#12489;&#12398;&#25991;&#23383;&#33394;...&gt; &#21462;&#12426;&#28040;&#12375;&#12301;</i>&#12434;&#36984;&#25246;&#12377;&#12428;&#12400;&#12289;&#12522;&#12475;&#12483;&#12488;&#12391;&#12365;&#12414;&#12377;&#12290;</font></span>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -8799,7 +9486,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8809,11 +9497,12 @@
       &#12371;&#12398;&#12503;&#12525;&#12497;&#12486;&#12451;&#12399;&#12289;<i>&#12300;&#34920;&#31034;&#160;&gt; &#12503;&#12525;&#12497;&#12486;&#12451;&#12497;&#12493;&#12523;&#12434;&#12301;</i>&#12391;&#12399;&#21033;&#29992;&#12391;&#12365;&#12414;&#12379;&#12435;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
-<node ID="ID_1370207590" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
+<node ID="ID_1370207590" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -8823,7 +9512,8 @@
       &#22522;&#26412;&#12494;&#12540;&#12489;&#12486;&#12461;&#12473;&#12488;<b>&#20840;&#20307;</b>&#12398;&#33394;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="SummaryNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
@@ -8831,7 +9521,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8867,11 +9558,13 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x80cc;&#x666f;&#x8272;..." ID="ID_1529197837" COLOR="#663300" BACKGROUND_COLOR="#ffcc00" TEXT_SHORTENED="true">
 <icon BUILTIN="../NodeBackgroundColorAction"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8895,7 +9588,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
@@ -8908,8 +9602,8 @@
 <attribute NAME="Chapter" VALUE="4"/>
 <hook NAME="SummaryNode"/>
 </node>
-<node TEXT="&#x56f2;&#x307f;" ID="ID_1235732708" STYLE="bubble" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x56f2;&#x307f;" ID="ID_1235732708" STYLE="bubble" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8933,14 +9627,15 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x30d5;&#x30a9;&#x30fc;&#x30af;" ID="ID_401265529" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30d5;&#x30a9;&#x30fc;&#x30af;" ID="ID_401265529" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8964,7 +9659,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -8975,7 +9671,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -8990,10 +9687,11 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x66f8;&#x5f0f;&#x306e;&#x307f;&#x524a;&#x9664;" ID="ID_640761139" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x66f8;&#x5f0f;&#x306e;&#x307f;&#x524a;&#x9664;" ID="ID_640761139" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9014,7 +9712,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -9023,7 +9722,8 @@
 </node>
 <node TEXT="&#x30d7;&#x30ec;&#x30fc;&#x30f3;&#x30c6;&#x30ad;&#x30b9;&#x30c8;&#x3092;&#x4f7f;&#x7528;" ID="ID_1756064919" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="10" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9045,13 +9745,14 @@
       <font color="#000000" face="SansSerif, sans-serif"><i>&#12300;&#12522;&#12483;&#12481;&#12486;&#12461;&#12473;&#12488;&#12434;&#20351;&#29992;&#12301;</i>&#12398;&#36870;&#12398;&#21205;&#20316;&#12434;&#34892;&#12394;&#12356;&#12414;&#12377;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x30ea;&#x30c3;&#x30c1;&#x30c6;&#x30ad;&#x30b9;&#x30c8;(RTF)&#x3092;&#x4f7f;&#x7528;" ID="ID_1489518799" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30ea;&#x30c3;&#x30c1;&#x30c6;&#x30ad;&#x30b9;&#x30c8;(RTF)&#x3092;&#x4f7f;&#x7528;" ID="ID_1489518799" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9073,15 +9774,17 @@
       <i>&#12300;&#12503;&#12524;&#12540;&#12531;&#12486;&#12461;&#12473;&#12488;&#12434;&#20351;&#29992;&#12301;</i>&#12398;&#36870;&#12398;&#21205;&#20316;&#12434;&#34892;&#12394;&#12356;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="&#x30ca;&#x30d3;&#x30b2;&#x30fc;&#x30b7;&#x30e7;&#x30f3;" STYLE_REF="MainMenu" FOLDED="true" ID="ID_349071839" TEXT_SHORTENED="true">
+<node TEXT="&#x30ca;&#x30d3;&#x30b2;&#x30fc;&#x30b7;&#x30e7;&#x30f3;" STYLE_REF="MainMenu" ID="ID_349071839" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="1,2,6"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9091,11 +9794,13 @@
       &#65339;&#35501;&#36796;&#12415;&#28168;&#12415;&#12398;&#65341;&#12510;&#12483;&#12503;&#38291;&#21448;&#12399;&#12494;&#12540;&#12489;&#38291;&#12434;&#31227;&#21205;&#12375;&#12383;&#12426;&#12289;&#12494;&#12540;&#12489;&#12434;&#25240;&#12426;&#30067;&#12435;&#12384;&#12426;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <edge STYLE="horizontal"/>
 <node TEXT="&#x524d;&#x306e;&#x30de;&#x30c3;&#x30d7;" ID="ID_1925064048" TEXT_SHORTENED="true">
 <icon BUILTIN="../MoveTo_PrevMM"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9105,7 +9810,8 @@
       <span style="font-family: SansSerif, sans-serif; color: #000000"><font face="SansSerif, sans-serif" color="#000000"><i>&#12300;&#12510;&#12483;&#12503;&#12301;</i>&#12513;&#12491;&#12517;&#12540;&#12398;&#12522;&#12473;&#12488;&#38918;&#20301;&#12364;&#19978;&#12398;&#12510;&#12483;&#12503;&#12395;&#31227;&#21205;&#12375;&#12414;&#12377;&#12290;&#35079;&#25968;&#12398;&#12510;&#12483;&#12503;&#12364;&#38283;&#12356;&#12390;&#12356;&#12427;&#22580;&#21512;&#12395;&#12398;&#12415;&#21205;&#20316;&#12375;&#12414;&#12377;&#12290;</font></span>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
@@ -9114,7 +9820,8 @@
 </node>
 <node TEXT="&#x6b21;&#x306e;&#x30de;&#x30c3;&#x30d7;" ID="ID_1576684136" TEXT_SHORTENED="true">
 <icon BUILTIN="../MoveTo_NextMM"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9124,7 +9831,8 @@
       <span style="font-family: SansSerif, sans-serif; color: #000000"><font face="SansSerif, sans-serif" color="#000000"><i>&#12300;&#12510;&#12483;&#12503;&#12301;</i>&#12513;&#12491;&#12517;&#12540;&#12398;&#12522;&#12473;&#12488;&#38918;&#20301;&#12364;&#19979;&#12398;&#12510;&#12483;&#12503;&#12395;&#31227;&#21205;&#12375;&#12414;&#12377;&#12290;&#12290;&#35079;&#25968;&#12398;&#12510;&#12483;&#12503;&#12364;&#38283;&#12356;&#12390;&#12356;&#12427;&#22580;&#21512;&#12395;&#12398;&#12415;&#21205;&#20316;&#12375;&#12414;&#12377;&#12290;.</font></span>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -9137,8 +9845,8 @@
 </hook>
 <attribute NAME="Chapter" VALUE="2.6"/>
 </node>
-<node TEXT="&#x6298;&#x308a;&#x7573;&#x3080;&#xff0f;&#x5c55;&#x958b;&#x3059;&#x308b;" ID="ID_1370299836" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x6298;&#x308a;&#x7573;&#x3080;&#xff0f;&#x5c55;&#x958b;&#x3059;&#x308b;" ID="ID_1370299836" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9159,15 +9867,16 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="&#x5b50;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x6298;&#x308a;&#x7573;&#x3080;&#xff0f;&#x5c55;&#x958b;&#x3059;&#x308b;" ID="ID_383325209" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x5b50;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x6298;&#x308a;&#x7573;&#x3080;&#xff0f;&#x5c55;&#x958b;&#x3059;&#x308b;" ID="ID_383325209" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9197,7 +9906,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -9206,6 +9916,7 @@
 <node TEXT="&#xff11;&#x968e;&#x5c64;&#x5206;&#x3060;&#x3051;&#x5c55;&#x958b;&#x3059;&#x308b;" ID="ID_321295556" TEXT_SHORTENED="true">
 <icon BUILTIN="../unfold_one_level"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9215,7 +9926,8 @@
       <span style="color: #000000; font-family: SansSerif, sans-serif"><font color="#000000" face="SansSerif, sans-serif">&#36984;&#25246;&#12494;&#12540;&#12489;&#12398;&#19979;&#20301;&#12494;&#12540;&#12489;&#12434;&#24464;&#12293;&#12395;&#12395;&#23637;&#38283;&#12375;&#12414;&#12377;&#12290;&#19968;&#24230;&#12463;&#12522;&#12483;&#12463;&#12377;&#12427;&#12392;&#23376;&#12494;&#12540;&#12489;&#32676;&#12364;&#23637;&#38283;&#12373;&#12428;&#12414;&#12377;&#12290;&#12418;&#12358;&#19968;&#24230;&#12463;&#12522;&#12483;&#12463;&#12377;&#12427;&#12392;&#23403;&#12494;&#12540;&#12489;&#32676;&#12364;&#23637;&#38283;&#12373;&#12428;&#12427;&#12392;&#12356;&#12387;&#12383;&#20855;&#21512;&#12391;&#12377;&#12290;</font></span>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -9224,6 +9936,7 @@
 <node TEXT="&#xff11;&#x968e;&#x5c64;&#x5206;&#x3060;&#x3051;&#x6298;&#x308a;&#x7573;&#x3080;" ID="ID_831251421" TEXT_SHORTENED="true">
 <icon BUILTIN="../fold_one_level"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9233,7 +9946,8 @@
       &#36984;&#25246;&#12494;&#12540;&#12489;&#12398;&#26368;&#28145;&#38542;&#23652;&#12363;&#12425;&#24464;&#12293;&#12395;&#19979;&#20301;&#12494;&#12540;&#12489;&#12434;&#25240;&#12426;&#30067;&#12415;&#12414;&#12377;&#12290;&#20206;&#12395;&#65300;&#12388;&#12398;&#38542;&#23652;&#12364;&#12354;&#12427;&#12392;&#12377;&#12427;&#12392;&#12289;&#19968;&#24230;&#12463;&#12522;&#12483;&#12463;&#12377;&#12427;&#12392;&#26366;&#23403;&#12494;&#12540;&#12489;&#32676;&#12364;&#25240;&#12426;&#30067;&#12414;&#12428;&#12414;&#12377;&#12290;&#12418;&#12358;&#19968;&#24230;&#12463;&#12522;&#12483;&#12463;&#12377;&#12427;&#12392;&#23403;&#12494;&#12540;&#12489;&#32676;&#12364;&#25240;&#12426;&#30067;&#12414;&#12428;&#12289;&#27425;&#12395;&#12463;&#12522;&#12483;&#12463;&#12377;&#12427;&#12392;&#23376;&#12494;&#12540;&#12489;&#32676;&#12364;&#25240;&#12426;&#30067;&#12414;&#12428;&#12427;&#12392;&#12356;&#12387;&#12383;&#20855;&#21512;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -9242,6 +9956,7 @@
 <node TEXT="&#x3059;&#x3079;&#x3066;&#x5c55;&#x958b;&#x3059;&#x308b;" ID="ID_933325044" TEXT_SHORTENED="true">
 <icon BUILTIN="../unfold_all"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9268,7 +9983,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -9277,6 +9993,7 @@
 <node TEXT="&#x3059;&#x3079;&#x3066;&#x6298;&#x308a;&#x7573;&#x3080;" ID="ID_657829947" TEXT_SHORTENED="true">
 <icon BUILTIN="../fold_all"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9303,7 +10020,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -9317,7 +10035,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9327,10 +10046,11 @@
       <b>&#25240;&#12426;&#30067;&#12416;</b>&#12392;&#12399;&#12289;&#29305;&#23450;&#12494;&#12540;&#12489;&#12398;&#19979;&#20301;&#12398;&#12494;&#12540;&#12489;&#32676;&#12434;&#38560;&#12377;&#12371;&#12392;&#12391;&#12377;&#12290;&#19979;&#20301;&#12494;&#12540;&#12489;&#12364;&#38560;&#12373;&#12428;&#12390;&#12356;&#12427;&#12371;&#12392;&#12398;&#30446;&#21360;&#12392;&#12375;&#12390;&#12289;&#23567;&#12373;&#12394;&#20024;&#21360;&#12364;&#65339;&#12494;&#12540;&#12489;&#12398;&#22806;&#31471;&#12395;&#65341;&#34920;&#31034;&#12373;&#12428;&#12414;&#12377;&#12290;&#23637;&#38283;&#12377;&#12427;&#12392;&#12399;&#12289;&#12371;&#12428;&#12425;&#12398;&#65339;&#38560;&#12373;&#12428;&#12383;&#65341;&#19979;&#20301;&#12494;&#12540;&#12489;&#12434;&#20877;&#34920;&#31034;&#12373;&#12379;&#12427;&#12371;&#12392;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x30eb;&#x30fc;&#x30c8;&#x30ce;&#x30fc;&#x30c9;&#x3078;&#x30b8;&#x30e3;&#x30f3;&#x30d7;" ID="ID_1564476202" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30eb;&#x30fc;&#x30c8;&#x30ce;&#x30fc;&#x30c9;&#x3078;&#x30b8;&#x30e3;&#x30f3;&#x30d7;" ID="ID_1564476202" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9354,7 +10074,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <attribute_layout VALUE_WIDTH="156"/>
 <attribute NAME="Chapter" VALUE="1"/>
@@ -9362,8 +10083,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x6307;&#x5b9a;&#xff29;&#xff24;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x3078;&#x30b8;&#x30e3;&#x30f3;&#x30d7;..." ID="ID_343872144" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x6307;&#x5b9a;&#xff29;&#xff24;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x3078;&#x30b8;&#x30e3;&#x30f3;&#x30d7;..." ID="ID_343872144" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9373,14 +10094,15 @@
       &#12494;&#12540;&#12489;&#65321;&#65316;&#20837;&#21147;&#12480;&#12452;&#12450;&#12525;&#12464;&#12434;&#38283;&#12365;&#12289;&#36984;&#25246;&#12501;&#12457;&#12540;&#12459;&#12473;&#12434;&#12371;&#12398;&#12494;&#12540;&#12489;&#12395;&#31227;&#21205;&#12373;&#12379;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="&#x524d;&#x306e;&#x30ce;&#x30fc;&#x30c9;" ID="ID_482454762" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x524d;&#x306e;&#x30ce;&#x30fc;&#x30c9;" ID="ID_482454762" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9401,14 +10123,15 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="&#x6b21;&#x306e;&#x30ce;&#x30fc;&#x30c9;" ID="ID_43445328" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x6b21;&#x306e;&#x30ce;&#x30fc;&#x30c9;" ID="ID_43445328" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9429,14 +10152,15 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="&#x524d;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#xff08;&#x6298;&#x308a;&#x7573;&#x3080;&#xff09;" ID="ID_303327981" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x524d;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#xff08;&#x6298;&#x308a;&#x7573;&#x3080;&#xff09;" ID="ID_303327981" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9446,14 +10170,15 @@
       <font face="SansSerif, sans-serif" color="#000000">&#36984;&#25246;&#12501;&#12457;&#12540;&#12459;&#12473;&#12434;&#12510;&#12483;&#12503;&#38542;&#23652;&#12398;&#12394;&#12363;&#12391;&#21069;&#12395;&#20301;&#32622;&#12377;&#12427;&#12494;&#12540;&#12489;&#12395;&#31227;&#21205;&#12373;&#12379;&#12289;&#21487;&#33021;&#12394;&#22580;&#21512;&#12399;&#29694;&#22312;&#12398;&#12494;&#12540;&#12489;&#12434;&#25240;&#12426;&#30067;&#12435;&#12391;&#38750;&#34920;&#31034;&#12395;&#12375;&#12414;&#12377;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="&#x6b21;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#xff08;&#x6298;&#x308a;&#x7573;&#x3080;&#xff09;" ID="ID_230717042" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x6b21;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#xff08;&#x6298;&#x308a;&#x7573;&#x3080;&#xff09;" ID="ID_230717042" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9463,7 +10188,8 @@
       <font face="SansSerif, sans-serif" color="#000000">&#36984;&#25246;&#12501;&#12457;&#12540;&#12459;&#12473;&#12434;&#12510;&#12483;&#12503;&#38542;&#23652;&#12398;&#12394;&#12363;&#12391;&#27425;&#12395;&#20301;&#32622;&#12377;&#12427;&#12494;&#12540;&#12489;&#12395;&#31227;&#21205;&#12373;&#12379;&#12289;&#21487;&#33021;&#12394;&#22580;&#21512;&#12399;&#29694;&#22312;&#12398;&#12494;&#12540;&#12489;&#12434;&#25240;&#12426;&#30067;&#12435;&#12391;&#38750;&#34920;&#31034;&#12395;&#12375;&#12414;&#12377;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -9471,7 +10197,8 @@
 </node>
 <node TEXT="&#x9078;&#x629e;&#x5c65;&#x6b74;&#x3092;&#x9061;&#x308b;" ID="ID_449527632" TEXT_SHORTENED="true">
 <icon BUILTIN="../MoveTo_PrevNode"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9481,7 +10208,8 @@
       &#36984;&#25246;&#12501;&#12457;&#12540;&#12459;&#12473;&#12434;&#29694;&#22312;&#36984;&#25246;&#20013;&#12398;&#12494;&#12540;&#12489;&#12424;&#12426;&#21069;&#12395;&#36984;&#25246;&#12373;&#12428;&#12390;&#12356;&#12383;&#12494;&#12540;&#12489;&#12395;&#31227;&#21205;&#12375;&#12414;&#12377;&#12290;&#12371;&#12398;&#27231;&#33021;&#12434;&#29992;&#12356;&#12427;&#24230;&#12395;&#12289;&#20197;&#21069;&#36984;&#25246;&#12373;&#12428;&#12390;&#12356;&#12383;&#12494;&#12540;&#12489;&#12398;&#23653;&#27508;&#12395;&#27839;&#12387;&#12390;&#12289;&#36984;&#25246;&#12364;&#31227;&#21205;&#12375;&#32154;&#12369;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -9489,7 +10217,8 @@
 </node>
 <node TEXT="&#x9078;&#x629e;&#x5c65;&#x6b74;&#x3092;&#x9032;&#x3080;" ID="ID_602013651" TEXT_SHORTENED="true">
 <icon BUILTIN="../MoveTo_NextNode"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9499,21 +10228,22 @@
       <span style="color: #000000; font-family: SansSerif, sans-serif"><font face="SansSerif, sans-serif" color="#000000"><i>&#12300;&#25147;&#12427;&#12301;</i>&#12467;&#12510;&#12531;&#12489;&#12398;&#20351;&#29992;&#12395;&#12424;&#12387;&#12390;&#36984;&#25246;&#12373;&#12428;&#12383;&#12494;&#12540;&#12489;&#12434;&#36870;&#26041;&#21521;&#12395;&#12383;&#12393;&#12426;&#12414;&#12377;&#12290;</font></span>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x9078;&#x629e;" FOLDED="true" ID="ID_950516167" TEXT_SHORTENED="true">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x9078;&#x629e;" ID="ID_950516167" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="1,2"/>
 <hook NAME="SummaryNode"/>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x9078;&#x629e;" FOLDED="true" ID="ID_1403801753" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x9078;&#x629e;" ID="ID_1403801753" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9547,7 +10277,8 @@
       &#65297;&#12394;&#12356;&#12375;&#35079;&#25968;&#12398;&#12494;&#12540;&#12489;&#12434;&#36984;&#25246;&#12377;&#12427;&#21029;&#12398;&#12420;&#12426;&#26041;&#12395;&#12289;&#29305;&#27530;&#12461;&#12540;&#21448;&#12399;&#35079;&#21512;&#12461;&#12540;&#12434;&#25276;&#12377;&#26041;&#27861;&#12364;&#12354;&#12426;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute_layout NAME_WIDTH="82" VALUE_WIDTH="156"/>
 <attribute NAME="Chapter" VALUE="1,2"/>
 <hook NAME="NodeConditionalStyles">
@@ -9560,7 +10291,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="1,2"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9581,11 +10313,12 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="&#x4e00;&#x756a;&#x4e0a;&#xff0f;&#x4e00;&#x756a;&#x4e0b;&#x306e;&#x5144;&#x5f1f;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x9078;&#x629e;" STYLE_REF="Method" ID="ID_1705866199" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x4e00;&#x756a;&#x4e0a;&#xff0f;&#x4e00;&#x756a;&#x4e0b;&#x306e;&#x5144;&#x5f1f;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x9078;&#x629e;" STYLE_REF="Method" ID="ID_1705866199" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9606,14 +10339,15 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="&#x3059;&#x3079;&#x3066;&#x306e;&#x4e0b;&#x4f4d;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x9078;&#x629e;" STYLE_REF="Method" FOLDED="true" ID="ID_228451346" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x3059;&#x3079;&#x3066;&#x306e;&#x4e0b;&#x4f4d;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x9078;&#x629e;" STYLE_REF="Method" ID="ID_228451346" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9642,7 +10376,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
@@ -9654,8 +10389,8 @@
 <icon BUILTIN="../fold_all"/>
 </node>
 </node>
-<node TEXT="&#x3059;&#x3079;&#x3066;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x9078;&#x629e;" STYLE_REF="Method" FOLDED="true" ID="ID_1432526079" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x3059;&#x3079;&#x3066;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x9078;&#x629e;" STYLE_REF="Method" ID="ID_1432526079" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9687,7 +10422,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
@@ -9699,8 +10435,8 @@
 <icon BUILTIN="../fold_all"/>
 </node>
 </node>
-<node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x8868;&#x793a;&#x4e2d;&#x306e;&#x3059;&#x3079;&#x3066;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x9078;&#x629e;" STYLE_REF="Method" ID="ID_1432270723" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x8868;&#x793a;&#x4e2d;&#x306e;&#x3059;&#x3079;&#x3066;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x9078;&#x629e;" STYLE_REF="Method" ID="ID_1432270723" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9710,14 +10446,15 @@
       <font color="#ff0000">&#12501;&#12451;&#12523;&#12479;&#24460;&#12398;&#12377;&#12409;&#12390;&#12398;&#12494;&#12540;&#12489;&#12434;&#36984;&#25246;&#12377;&#12427;&#12395;&#12399;&#12289;&#12288;&#12288;&#12288;&#12288;&#12434;&#21442;&#29031;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="&#x5144;&#x5f1f;&#x30ce;&#x30fc;&#x30c9;&#x7fa4;&#x3092;&#x9078;&#x629e;" STYLE_REF="Method" ID="ID_1664441735" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x5144;&#x5f1f;&#x30ce;&#x30fc;&#x30c9;&#x7fa4;&#x3092;&#x9078;&#x629e;" STYLE_REF="Method" ID="ID_1664441735" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9727,14 +10464,15 @@
       &#20804;&#24351;&#12494;&#12540;&#12489;&#32676;&#12434;&#36984;&#25246;&#12377;&#12427;&#12395;&#12399;&#12289;<i>&#12300;Shift&#12301;</i>&#12434;&#25276;&#12373;&#12360;&#12383;&#12414;&#12414;&#12414;&#12391;&#22987;&#28857;&#12494;&#12540;&#12489;&#12392;&#32066;&#28857;&#12494;&#12540;&#12489;&#12434;&#12463;&#12522;&#12483;&#12463;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="&#x4efb;&#x610f;&#x306e;&#x8907;&#x6570;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x9078;&#x629e;" STYLE_REF="Method" ID="ID_1374755186" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x4efb;&#x610f;&#x306e;&#x8907;&#x6570;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x9078;&#x629e;" STYLE_REF="Method" ID="ID_1374755186" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9744,14 +10482,15 @@
       &#65298;&#12388;&#20197;&#19978;&#12398;&#20219;&#24847;&#12398;&#12494;&#12540;&#12489;&#12434;&#36984;&#25246;&#12377;&#12427;&#12395;&#12399;&#12289;<i>&#12300;Ctrl&#12301;</i>&#12434;&#25276;&#12373;&#12360;&#12383;&#12414;&#12414;&#12391;&#36984;&#25246;&#12375;&#12383;&#12356;&#12494;&#12540;&#12489;&#65288;&#65298;&#12388;&#20197;&#19978;&#65289;&#12434;&#12463;&#12522;&#12483;&#12463;&#12375;&#12390;&#65355;&#12358;&#12384;&#12373;&#12356;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="&#x77e2;&#x5370;&#x30ad;&#x30fc;&#x3092;&#x4f7f;&#x3063;&#x3066;&#x9078;&#x629e;" STYLE_REF="Method" ID="ID_81219304" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x77e2;&#x5370;&#x30ad;&#x30fc;&#x3092;&#x4f7f;&#x3063;&#x3066;&#x9078;&#x629e;" STYLE_REF="Method" ID="ID_81219304" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9775,7 +10514,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
@@ -9783,7 +10523,8 @@
 </node>
 <node TEXT="&#x975e;&#x8868;&#x793a;&#x30c6;&#x30ad;&#x30b9;&#x30c8;&#x306e;&#x30c4;&#x30fc;&#x30eb;&#x30c1;&#x30c3;&#x30d7;&#x8868;&#x793a;" ID="ID_390018350" COLOR="#407000" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="12"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9799,7 +10540,8 @@
       &#12484;&#12540;&#12523;&#12481;&#12483;&#12503;&#12398;&#34920;&#31034;&#12434;&#12420;&#12417;&#12427;&#12395;&#12399;&#12289;&#35442;&#24403;&#12494;&#12540;&#12489;&#12398;&#19978;&#26041;&#12395;&#12459;&#12540;&#12477;&#12523;&#12434;&#19978;&#12395;&#31227;&#21205;&#12373;&#12379;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
@@ -9811,7 +10553,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9832,11 +10575,12 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;" STYLE_REF="MainMenu" FOLDED="true" ID="ID_373126374" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;" STYLE_REF="MainMenu" ID="ID_373126374" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9919,7 +10663,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="9"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
@@ -9927,7 +10672,8 @@
 <edge STYLE="horizontal"/>
 <node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x3092;&#x5143;&#x306b;&#x623b;&#x3059;" ID="ID_619416419" TEXT_SHORTENED="true">
 <icon BUILTIN="../undo_filter"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9937,7 +10683,8 @@
       &#21069;&#12395;&#20351;&#12431;&#12428;&#12383;&#12501;&#12451;&#12523;&#12479;&#12467;&#12510;&#12531;&#12489;&#12398;&#21177;&#26524;&#12434;&#28961;&#21177;&#12395;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
@@ -9946,7 +10693,8 @@
 </node>
 <node TEXT="&#x5143;&#x306e;&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x3092;&#x518d;&#x9069;&#x7528;" ID="ID_1724296233" TEXT_SHORTENED="true">
 <icon BUILTIN="../redo_filter"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9956,7 +10704,8 @@
       &#12300;&#12501;&#12451;&#12523;&#12479; &#65310; &#12501;&#12451;&#12523;&#12479;&#12434;&#20803;&#12395;&#25147;&#12377;&#12301;&#12398;&#23455;&#34892;&#24460;&#12395;&#12289;&#12381;&#12398;&#21069;&#12395;&#29992;&#12356;&#12425;&#12428;&#12383;&#12501;&#12451;&#12523;&#12479;&#12467;&#12510;&#12531;&#12489;&#12434;&#20877;&#36969;&#29992;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -9964,7 +10713,8 @@
 </node>
 <node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x3092;&#x304b;&#x3051;&#x76f4;&#x3059;" ID="ID_933478204" TEXT_SHORTENED="true">
 <icon BUILTIN="../reapply_filter"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -9974,15 +10724,17 @@
       &#12510;&#12483;&#12503;&#12395;&#22793;&#26356;&#12434;&#21152;&#12360;&#12383;&#24460;&#12395;&#12289;&#25913;&#12417;&#12390;&#12501;&#12451;&#12523;&#12479;&#12434;&#12363;&#12369;&#30452;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="9"/>
 </node>
-<node TEXT="&#x30af;&#x30a3;&#x30c3;&#x30af;&#x30d5;&#x30a3;&#x30eb;&#x30bf;" FOLDED="true" ID="ID_346354481" TEXT_SHORTENED="true">
+<node TEXT="&#x30af;&#x30a3;&#x30c3;&#x30af;&#x30d5;&#x30a3;&#x30eb;&#x30bf;" ID="ID_346354481" TEXT_SHORTENED="true">
 <icon BUILTIN="../apply_quick_filter"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10017,7 +10769,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -10028,7 +10781,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="2,9"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10049,12 +10803,14 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 <node TEXT="&#x9078;&#x629e;&#x30ce;&#x30fc;&#x30c9;&#x306b;&#x7d5e;&#x3063;&#x3066;&#x9069;&#x7528;" ID="ID_371510333" TEXT_SHORTENED="true">
 <icon BUILTIN="../filter_selected_nodes"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10078,7 +10834,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -10087,7 +10844,8 @@
 </node>
 <node TEXT="&#x8a72;&#x5f53;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x5168;&#x3066;&#x9078;&#x629e;" ID="ID_738746195" TEXT_SHORTENED="true">
 <icon BUILTIN="../select_all_found_nodes"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10100,7 +10858,8 @@
       &#36984;&#25246;&#12375;&#12414;&#12377;&#12290;&#12381;&#12375;&#12390;&#12289;&#12381;&#12428;&#12425;&#12395;&#25375;&#12414;&#12428;&#12383;&#12494;&#12540;&#12489;&#12418;&#36984;&#25246;&#29366;&#24907;&#12395;&#22793;&#12360;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -10108,7 +10867,8 @@
 </node>
 <node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x89e3;&#x9664;" ID="ID_1725256961" TEXT_SHORTENED="true">
 <icon BUILTIN="../remove_filtering"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10118,15 +10878,17 @@
       <font face="SansSerif, sans-serif" color="#000000">&#36969;&#29992;&#20013;&#12398;&#12354;&#12425;&#12422;&#12427;&#12501;&#12451;&#12523;&#12479;&#12398;&#21177;&#26524;&#12434;&#35299;&#38500;&#12375;&#12414;&#12377;&#12290;&#21021;&#26399;&#35373;&#23450;&#12399;&#12289;&#12501;&#12451;&#12523;&#12479;&#35299;&#38500;&#29366;&#24907;&#12391;&#12377;&#12290;</font><font face="SansSerif, sans-serif" color="#ff0000">Un-sets icon.</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="9"/>
 </node>
-<node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x6761;&#x4ef6;&#x3092;&#x6307;&#x5b9a;..." FOLDED="true" ID="ID_1159715573" TEXT_SHORTENED="true">
+<node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x6761;&#x4ef6;&#x3092;&#x6307;&#x5b9a;..." ID="ID_1159715573" TEXT_SHORTENED="true">
 <icon BUILTIN="../edit_filtering_condition"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10184,12 +10946,13 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="9"/>
-<node TEXT="&#x6700;&#x521d;&#x306e;&#x5165;&#x529b;&#x30d5;&#x30a3;&#x30fc;&#x30eb;&#x30c9;" STYLE_REF="Method" FOLDED="true" ID="ID_1798321694" TEXT_SHORTENED="true">
+<node TEXT="&#x6700;&#x521d;&#x306e;&#x5165;&#x529b;&#x30d5;&#x30a3;&#x30fc;&#x30eb;&#x30c9;" STYLE_REF="Method" ID="ID_1798321694" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="9"/>
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x30c6;&#x30ad;&#x30b9;&#x30c8;&#xff08;&#x521d;&#x671f;&#x8a2d;&#x5b9a;&#xff09;" ID="ID_440014122" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -10267,7 +11030,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="&#xff12;&#x756a;&#x76ee;&#x306e;&#x5165;&#x529b;&#x30d5;&#x30a3;&#x30fc;&#x30eb;&#x30c9;" STYLE_REF="Method" FOLDED="true" ID="ID_811481692" TEXT_SHORTENED="true">
+<node TEXT="&#xff12;&#x756a;&#x76ee;&#x306e;&#x5165;&#x529b;&#x30d5;&#x30a3;&#x30fc;&#x30eb;&#x30c9;" STYLE_REF="Method" ID="ID_811481692" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="9"/>
 <node TEXT="&#x2283;(&#x542b;&#x3080;)&#xff08;&#x521d;&#x671f;&#x8a2d;&#x5b9a;&#xff09;" ID="ID_1227202337" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -10310,11 +11073,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="&#xff13;&#x756a;&#x76ee;&#x306e;&#x5165;&#x529b;&#x30d5;&#x30a3;&#x30fc;&#x30eb;&#x30c9;" STYLE_REF="Method" FOLDED="true" ID="ID_1585437091" TEXT_SHORTENED="true">
+<node TEXT="&#xff13;&#x756a;&#x76ee;&#x306e;&#x5165;&#x529b;&#x30d5;&#x30a3;&#x30fc;&#x30eb;&#x30c9;" STYLE_REF="Method" ID="ID_1585437091" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="9"/>
 <node TEXT="&#x7a7a;&#x767d;&#x306e;&#x30c6;&#x30ad;&#x30b9;&#x30c8;&#x30d5;&#x30a3;&#x30fc;&#x30eb;&#x30c9;&#xff08;&#x521d;&#x671f;&#x8a2d;&#x5b9a;&#xff09;" STYLE_REF="OptionalValue" ID="ID_1473584730" TEXT_SHORTENED="true"/>
 </node>
-<node TEXT="&#x30c1;&#x30a7;&#x30c3;&#x30af;&#x30dc;&#x30c3;&#x30af;&#x30b9;" STYLE_REF="Method" FOLDED="true" ID="ID_1500860624" TEXT_SHORTENED="true">
+<node TEXT="&#x30c1;&#x30a7;&#x30c3;&#x30af;&#x30dc;&#x30c3;&#x30af;&#x30b9;" STYLE_REF="Method" ID="ID_1500860624" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="9"/>
 <node TEXT="&#x5927;&#x6587;&#x5b57;&#xff0f;&#x5c0f;&#x6587;&#x5b57;&#x3092;&#x533a;&#x5225;&#x3057;&#x306a;&#x3044;" ID="ID_939695594" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -10326,13 +11089,13 @@
 <node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x4e00;&#x89a7;&#x8868;" STYLE_REF="Method" ID="ID_619518366" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="9"/>
 </node>
-<node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x4f5c;&#x6210;&#x30c0;&#x30a4;&#x30a2;&#x30ed;&#x30b0;&#x306e;&#x30dc;&#x30bf;&#x30f3;" STYLE_REF="Method" FOLDED="true" ID="ID_1629780291" TEXT_SHORTENED="true">
+<node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x4f5c;&#x6210;&#x30c0;&#x30a4;&#x30a2;&#x30ed;&#x30b0;&#x306e;&#x30dc;&#x30bf;&#x30f3;" STYLE_REF="Method" ID="ID_1629780291" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="9"/>
 <node TEXT="&#x8ffd;&#x52a0;" ID="ID_1309133157" TEXT_SHORTENED="true"/>
 <node TEXT="And" ID="ID_1757300074" TEXT_SHORTENED="true"/>
 <node TEXT="Or" ID="ID_1457390872" TEXT_SHORTENED="true"/>
-<node TEXT="&#x5206;&#x5272;" ID="ID_473058214" COLOR="#000000" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x5206;&#x5272;" ID="ID_473058214" COLOR="#000000" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10342,7 +11105,8 @@
       &quot;And&quot; &#12420; &quot;Or&quot; &#12395;&#12424;&#12387;&#12390;&#27083;&#25104;&#12373;&#12428;&#12383;&#12501;&#12451;&#12523;&#12479;&#12523;&#12540;&#12523;&#12434;&#20998;&#21106;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x524a;&#x9664;" ID="ID_1607587118" TEXT_SHORTENED="true"/>
 <node TEXT="&#x540d;&#x79f0;&#x3092;&#x6307;&#x5b9a;" ID="ID_1779620539" TEXT_SHORTENED="true"/>
@@ -10365,7 +11129,7 @@
 </node>
 </node>
 </node>
-<node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x8868;&#x793a;&#x95a2;&#x4fc2;" FOLDED="true" ID="ID_214063901" TEXT_SHORTENED="true">
+<node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x8868;&#x793a;&#x95a2;&#x4fc2;" ID="ID_214063901" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
@@ -10375,7 +11139,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10385,14 +11150,16 @@
       &#32209;&#33394;&#12398;&#30690;&#21360;&#12434;&#12463;&#12522;&#12483;&#12463;&#12375;&#12390;&#12289;&#29992;&#20363;&#12395;&#31227;&#21205;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
 </node>
 <node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x4e2d;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x306b;&#x9069;&#x7528;&#xff08;&#x7d5e;&#x308a;&#x8fbc;&#x307f;&#xff09;" ID="ID_459453471" TEXT_SHORTENED="true">
 <icon BUILTIN="../applies_to_filtered_nodes"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10402,7 +11169,8 @@
       <font color="#000000" face="SansSerif, sans-serif">&#12501;&#12451;&#12523;&#12479;&#20013;&#12398;&#65288;&#21487;&#35222;&#65289;&#12494;&#12540;&#12489;&#12408;&#12398;&#36969;&#29992;&#65295;&#35299;&#38500;&#12434;&#20999;&#12426;&#26367;&#12360;&#12414;&#12377;&#12290;&#12377;&#12394;&#12431;&#12385;&#12289;&#32080;&#26524;&#12434;&#32094;&#12426;&#36796;&#12416;&#12383;&#12417;&#12395;&#12289;&#36861;&#21152;&#12398;&#12501;&#12451;&#12523;&#12479;&#26465;&#20214;&#12434;&#20184;&#21152;&#12375;&#12414;&#12377;&#12290; </font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
@@ -10411,7 +11179,8 @@
 </node>
 <node TEXT="&#x975e;&#x8868;&#x793a;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x5c55;&#x958b;" ID="ID_415158618" TEXT_SHORTENED="true">
 <icon BUILTIN="../unfold_filtered_ancestors"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10438,7 +11207,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -10446,7 +11216,8 @@
 </node>
 <node TEXT="&#x4e0a;&#x4f4d;&#x30ce;&#x30fc;&#x30c9;&#x3082;&#x8868;&#x793a;" ID="ID_107605808" TEXT_SHORTENED="true">
 <icon BUILTIN="../show_ancestors"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10467,7 +11238,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -10475,7 +11247,8 @@
 </node>
 <node TEXT="&#x4e0b;&#x4f4d;&#x30ce;&#x30fc;&#x30c9;&#x3082;&#x8868;&#x793a;" ID="ID_675488656" TEXT_SHORTENED="true">
 <icon BUILTIN="../show_descendants"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10496,7 +11269,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -10511,7 +11285,8 @@
 </node>
 <node TEXT="&#x524d;&#x65b9;&#x691c;&#x7d22;" ID="ID_973810586" TEXT_SHORTENED="true">
 <icon BUILTIN="../find_previous"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10538,7 +11313,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
@@ -10547,7 +11323,8 @@
 </node>
 <node TEXT="&#x5f8c;&#x65b9;&#x691c;&#x7d22;" ID="ID_424433506" TEXT_SHORTENED="true">
 <icon BUILTIN="../find_next"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10574,7 +11351,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -10588,13 +11366,14 @@
 <attribute NAME="Chapter" VALUE="9"/>
 </node>
 </node>
-<node TEXT="&#x30c4;&#x30fc;&#x30eb;" STYLE_REF="MainMenu" FOLDED="true" ID="ID_1833899525" TEXT_SHORTENED="true">
+<node TEXT="&#x30c4;&#x30fc;&#x30eb;" STYLE_REF="MainMenu" ID="ID_1833899525" TEXT_SHORTENED="true">
 <attribute_layout NAME_WIDTH="37" VALUE_WIDTH="77"/>
 <attribute NAME="Chapter" VALUE="3,6,7,8"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10604,11 +11383,13 @@
       &#22909;&#12415;&#12395;&#21512;&#12431;&#12379;&#12390; Freeplane &#12434;&#35519;&#25972;&#12375;&#12289;&#25313;&#24373;&#27231;&#33021;&#12434;&#21033;&#29992;&#12391;&#12365;&#12427;&#12424;&#12358;&#12395;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <edge STYLE="horizontal"/>
-<node TEXT="&#x6642;&#x9593;&#x7ba1;&#x7406;" FOLDED="true" ID="ID_1350875145" TEXT_SHORTENED="true">
+<node TEXT="&#x6642;&#x9593;&#x7ba1;&#x7406;" ID="ID_1350875145" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="10" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10632,14 +11413,16 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="5"/>
-<node TEXT="&#x6642;&#x9593;&#x3092;&#x7ba1;&#x7406;" FOLDED="true" ID="ID_782427686" TEXT_SHORTENED="true">
+<node TEXT="&#x6642;&#x9593;&#x3092;&#x7ba1;&#x7406;" ID="ID_782427686" TEXT_SHORTENED="true">
 <icon BUILTIN="../TimeManagementAction"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10660,7 +11443,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
@@ -10681,7 +11465,8 @@
 </node>
 <node TEXT="&#x30bf;&#x30b9;&#x30af;&#x3092;&#x7ba1;&#x7406;" ID="ID_745272228" BACKGROUND_COLOR="#ffffff" TEXT_SHORTENED="true">
 <icon BUILTIN="../TimeListAction"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10717,7 +11502,8 @@
       <font face="SansSerif, sans-serif" color="#000000">&#12393;&#12398;&#38917;&#30446;&#12418;&#12289;&#26908;&#32034;&#65286;&#32622;&#25563;&#12434;&#29992;&#12356;&#12428;&#12400;&#12289;&#26908;&#32034;&#12289;&#22793;&#26356;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -10730,7 +11516,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="5"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10754,11 +11541,12 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="" ID="ID_517678813" TEXT_SHORTENED="true">
 <hook NAME="plugins/TimeManagementReminder.xml">
-    <Parameters REMINDUSERAT="2077460580480"/>
+    <Parameters REMINDUSERAT="2077460580480" PERIOD="1" UNIT="DAY"/>
 </hook>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
@@ -10768,12 +11556,13 @@
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
-<node TEXT="&#x30d1;&#x30b9;&#x30ef;&#x30fc;&#x30c9;&#x3067;&#x4fdd;&#x8b77;" FOLDED="true" ID="ID_592262504" TEXT_SHORTENED="true">
+<node TEXT="&#x30d1;&#x30b9;&#x30ef;&#x30fc;&#x30c9;&#x3067;&#x4fdd;&#x8b77;" ID="ID_592262504" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10811,14 +11600,16 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="8"/>
-<node TEXT="&#x30d1;&#x30b9;&#x30ef;&#x30fc;&#x30c9;&#x3067;&#x4fdd;&#x8b77;" FOLDED="true" ID="ID_1516836083" TEXT_SHORTENED="true">
+<node TEXT="&#x30d1;&#x30b9;&#x30ef;&#x30fc;&#x30c9;&#x3067;&#x4fdd;&#x8b77;" ID="ID_1516836083" TEXT_SHORTENED="true">
 <icon BUILTIN="../lock"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10856,12 +11647,13 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="8"/>
-<node TEXT="" FOLDED="true" ID="ID_12483937" TEXT_SHORTENED="true">
+<node TEXT="" ID="ID_12483937" TEXT_SHORTENED="true">
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
-<node TEXT="" ENCRYPTED_CONTENT="dPJIllPAUcU= 1NVwCBt9AkL+XkffnUIxty5KWMs3jZi2EykSx6O1TcZnAWjSJpWhRrvGm85RLYZgU6NbPbU25OeP9Dilij3sCFE0Ussw5Gjn8yFl2YUkqE+uTPqPs/OkvtTfjFkButgN" ID="ID_1295571293" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="" ENCRYPTED_CONTENT="dPJIllPAUcU= 1NVwCBt9AkL+XkffnUIxty5KWMs3jZi2EykSx6O1TcZnAWjSJpWhRrvGm85RLYZgU6NbPbU25OeP9Dilij3sCFE0Ussw5Gjn8yFl2YUkqE+uTPqPs/OkvtTfjFkButgN" ID="ID_1295571293" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10888,14 +11680,15 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="8"/>
 </node>
-<node TEXT="&#x4fdd;&#x8b77;&#xff08;&#x6697;&#x8a3c;&#xff09;" ID="ID_135952990" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x4fdd;&#x8b77;&#xff08;&#x6697;&#x8a3c;&#xff09;" ID="ID_135952990" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10905,7 +11698,8 @@
       &#20445;&#35703;&#65288;&#26263;&#35388;&#65289;&#12399;&#12289;&#20844;&#38283;&#26178;&#65288;Java &#12450;&#12503;&#12524;&#12483;&#12488;&#65289;&#12395;&#12399;&#27231;&#33021;&#12375;&#12414;&#12379;&#12435;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
 </hook>
@@ -10917,7 +11711,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10927,12 +11722,13 @@
       &#12497;&#12473;&#12527;&#12540;&#12489;&#12434;&#20837;&#21147;&#12377;&#12427;&#12371;&#12392;&#12391;&#12289;&#36984;&#25246;&#12494;&#12540;&#12489;&#12398;&#20445;&#35703;&#27231;&#33021;&#12434;&#38500;&#21435;&#12377;&#12427;&#12383;&#12417;&#12398;&#12480;&#12452;&#12450;&#12525;&#12464;&#12434;&#38283;&#12365;&#12414;&#12377;&#12290;&#20197;&#24460;&#12289;&#24403;&#35442;&#12494;&#12540;&#12489;&#12398;&#19979;&#20301;&#12494;&#12540;&#12489;&#12434;&#34920;&#31034;&#12373;&#12379;&#12427;&#12398;&#12395;&#12289;&#12497;&#12473;&#12527;&#12540;&#12489;&#20837;&#21147;&#12398;&#24517;&#35201;&#12364;&#12394;&#12367;&#12394;&#12426;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="8"/>
 </node>
 </node>
-<node TEXT="&#x30a2;&#x30c9;&#x30aa;&#x30f3;" ID="ID_100406395" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30a2;&#x30c9;&#x30aa;&#x30f3;" ID="ID_100406395" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10942,12 +11738,14 @@
       Freeplane &#12399;&#12289;&#12450;&#12489;&#12458;&#12531;&#12434;&#36890;&#12376;&#12390;&#27231;&#33021;&#25313;&#24373;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;&#12450;&#12489;&#12458;&#12531;&#12392;&#12399;&#12289;&#29305;&#23450;&#12398;&#12475;&#12531;&#12479;&#12540;&#12363;&#12425;&#12480;&#12454;&#12531;&#12525;&#12540;&#12489;&#12391;&#12365;&#12427;&#12497;&#12483;&#12465;&#12540;&#12472;&#12391;&#12289;&#27161;&#28310;&#35013;&#20633;&#12373;&#12428;&#12390;&#12356;&#12394;&#12356;&#27231;&#33021;&#12434;&#25552;&#20379;&#12377;&#12427;&#12418;&#12398;&#12391;&#12377;&#12290;&#35443;&#32048;&#12399;&#12289;<a href="http://freeplane.sourceforge.net/wiki/index.php/Add-ons">Add-ons wiki</a>&#160;&#160;&#12434;&#12372;&#35239;&#12367;&#12384;&#12373;&#12356;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 </node>
 <node TEXT="&#x30b7;&#x30e7;&#x30fc;&#x30c8;&#x30ab;&#x30c3;&#x30c8;&#x30ad;&#x30fc;&#x3092;&#x5272;&#x308a;&#x5f53;&#x3066;" ID="ID_855338219" TEXT_SHORTENED="true">
 <icon BUILTIN="../SetAcceleratorOnNextClickAction"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -10990,20 +11788,21 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="8"/>
 </node>
-<node TEXT="&#x30db;&#x30c3;&#x30c8;&#x30ad;&#x30fc;&#x306e;&#x30d7;&#x30ea;&#x30bb;&#x30c3;&#x30c8;" FOLDED="true" ID="ID_1119294587" TEXT_SHORTENED="true">
+<node TEXT="&#x30db;&#x30c3;&#x30c8;&#x30ad;&#x30fc;&#x306e;&#x30d7;&#x30ea;&#x30bb;&#x30c3;&#x30c8;" ID="ID_1119294587" TEXT_SHORTENED="true">
 <icon BUILTIN="../acceleratorPresets"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="8"/>
-<node TEXT="&#x30db;&#x30c3;&#x30c8;&#x30ad;&#x30fc;&#x30bb;&#x30c3;&#x30c8;&#x3092;&#x9078;&#x629e;" ID="ID_1525716871" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30db;&#x30c3;&#x30c8;&#x30ad;&#x30fc;&#x30bb;&#x30c3;&#x30c8;&#x3092;&#x9078;&#x629e;" ID="ID_1525716871" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11024,7 +11823,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
@@ -11032,8 +11832,8 @@
 <attribute NAME="Chapter" VALUE="8" OBJECT="org.freeplane.features.format.FormattedNumber|8.0"/>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
-<node TEXT="&#x30db;&#x30c3;&#x30c8;&#x30ad;&#x30fc;&#x30bb;&#x30c3;&#x30c8;&#x3092;&#x4fdd;&#x5b58;" ID="ID_267090925" COLOR="#000000" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30db;&#x30c3;&#x30c8;&#x30ad;&#x30fc;&#x30bb;&#x30c3;&#x30c8;&#x3092;&#x4fdd;&#x5b58;" ID="ID_267090925" COLOR="#000000" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11069,8 +11869,8 @@
 </hook>
 <attribute NAME="Chapter" VALUE="8"/>
 </node>
-<node TEXT="&#x30db;&#x30c3;&#x30c8;&#x30ad;&#x30fc;&#x30bb;&#x30c3;&#x30c8;&#x3092;&#x524a;&#x9664;" STYLE_REF="Functiegroep" ID="ID_349086275" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30db;&#x30c3;&#x30c8;&#x30ad;&#x30fc;&#x30bb;&#x30c3;&#x30c8;&#x3092;&#x524a;&#x9664;" STYLE_REF="Functiegroep" ID="ID_349086275" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11080,7 +11880,8 @@
       <i>&#12300;&#12484;&#12540;&#12523; &gt; &#12518;&#12540;&#12470;&#12487;&#12451;&#12524;&#12463;&#12488;&#12522;&#12434;&#38283;&#12367;&#12301;</i>&#12434;&#36984;&#25246;&#12375;&#12289;&quot;accelerators&quot; &#12392;&#12356;&#12358;&#12487;&#12451;&#12524;&#12463;&#12488;&#12522;&#12363;&#12425;&#12475;&#12483;&#12488;&#21517;&#12434;&#21066;&#38500;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
@@ -11089,20 +11890,21 @@
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
-<node TEXT="&#x30b7;&#x30e7;&#x30fc;&#x30c8;&#x30ab;&#x30c3;&#x30c8;" FOLDED="true" ID="ID_1175856403" TEXT_SHORTENED="true">
+<node TEXT="&#x30b7;&#x30e7;&#x30fc;&#x30c8;&#x30ab;&#x30c3;&#x30c8;" ID="ID_1175856403" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="8"/>
-<node TEXT="" FOLDED="true" ID="ID_1466182220" TEXT_SHORTENED="true">
+<node TEXT="" ID="ID_1466182220" TEXT_SHORTENED="true">
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <node TEXT="&#x30b7;&#x30e7;&#x30fc;&#x30c8;&#x30ab;&#x30c3;&#x30c8;&#x3001;&#x53c8;&#x306f;&#x30db;&#x30c3;&#x30c8;&#x30ad;&#x30fc;" ID="ID_927299127" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="8"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11112,10 +11914,11 @@
       <b>&#12507;&#12483;&#12488;&#12461;&#12540;</b>&#12399;&#12289;&#65339;&#12484;&#12540;&#12523;&#12496;&#12540;&#12420;&#12467;&#12531;&#12486;&#12461;&#12473;&#12488;&#12513;&#12491;&#12517;&#12540;&#12398;&#65341;&#12513;&#12491;&#12517;&#12540;&#38917;&#30446;&#12414;&#12391;&#31227;&#21205;&#12375;&#12394;&#12367;&#12390;&#12418;&#12289;&#24403;&#35442;&#12513;&#12491;&#12517;&#12540;&#38917;&#30446;&#12434;&#36215;&#21205;&#12391;&#12365;&#12427;&#12424;&#12358;&#12395;&#12377;&#12427;&#29305;&#23450;&#12398;&#65297;&#12461;&#12540;&#12394;&#12356;&#12375;&#35079;&#21512;&#12461;&#12540;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#xff26;&#x30ad;&#x30fc;" ID="ID_1454255501" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#xff26;&#x30ad;&#x30fc;" ID="ID_1454255501" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11125,11 +11928,12 @@
       &#65318;&#12461;&#12540;&#160;(F1 - F12) &#12399;&#12289;&#12507;&#12483;&#12488;&#12461;&#12540;&#12391;&#12377;&#12290;&#21106;&#12426;&#24403;&#12390;&#12420;&#36984;&#25246;&#12289;&#21066;&#38500;&#12395;&#12388;&#12356;&#12390;&#12399;&#12289;&#19978;&#12398;&#12494;&#12540;&#12489;&#12434;&#21442;&#29031;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="8"/>
 </node>
-<node TEXT="&#x30b7;&#x30b9;&#x30c6;&#x30e0;&#x6307;&#x5b9a;&#x30ad;&#x30fc;&#x306e;&#x53c2;&#x8003;&#x6587;&#x66f8;" ID="ID_471805988" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30b7;&#x30b9;&#x30c6;&#x30e0;&#x6307;&#x5b9a;&#x30ad;&#x30fc;&#x306e;&#x53c2;&#x8003;&#x6587;&#x66f8;" ID="ID_471805988" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11144,11 +11948,12 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="8"/>
 </node>
-<node TEXT="&#x672a;&#x5b9a;&#x7fa9;&#x306e; F &#x30ad;&#x30fc;" STYLE_REF="ToNote" FOLDED="true" ID="ID_572257004" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x672a;&#x5b9a;&#x7fa9;&#x306e; F &#x30ad;&#x30fc;" STYLE_REF="ToNote" ID="ID_572257004" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11156,9 +11961,10 @@
   <body>
     <pre wrap=""> &#12501;&#12457;&#12540;&#12459;&#12473;&#20013;&#12398;&#27083;&#25104;&#35201;&#32032;&#12364; JTextComponent &#12398;&#22580;&#21512;&#12289;&#23450;&#32681;&#12373;&#12428;&#12390;&#12356;&#12394;&#12356; F &#12461;&#12540;&#12399;&#12289;<font color="#ff0000">passed through &#12373;&#12428;&#12414;&#12377;&#12290;</font> (1.2.8_05</pre>
   </body>
-</html></richcontent>
-<node ID="ID_1989084854" LINK="https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4652076" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
+</html>
+</richcontent>
+<node ID="ID_1989084854" LINK="https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4652076" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -11166,14 +11972,16 @@
   <body>
     <pre wrap=""><a href="https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4652076" class="moz-txt-link-freetext">https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4652076</a></pre>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 </node>
 </node>
 <node TEXT="&#x9078;&#x629e;&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x30b9;&#x30af;&#x30ea;&#x30d7;&#x30c8;&#x3092;&#x5b9f;&#x884c;" ID="ID_963866825" COLOR="#000000" TEXT_SHORTENED="true">
 <icon BUILTIN="../ExecuteScriptForSelectionAction"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11183,7 +11991,8 @@
       &#29694;&#22312;&#12398;&#36984;&#25246;&#12494;&#12540;&#12489;&#65288;&#35079;&#25968;&#21487;)&#12395;&#35013;&#30528;&#12373;&#12428;&#12390;&#12356;&#12427;&#12377;&#12409;&#12390;&#12398;&#12473;&#12463;&#12522;&#12503;&#12488;&#12434;&#23455;&#34892;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -11191,7 +12000,8 @@
 </node>
 <node TEXT="&#x3059;&#x3079;&#x3066;&#x306e;&#x30b9;&#x30af;&#x30ea;&#x30d7;&#x30c8;&#x3092;&#x5b9f;&#x884c;" ID="ID_266266767" COLOR="#000000" TEXT_SHORTENED="true">
 <icon BUILTIN="../ExecuteScriptForAllNodes"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11201,7 +12011,8 @@
       &#12473;&#12463;&#12522;&#12503;&#12488;&#12456;&#12487;&#12451;&#12479;&#12434;&#20351;&#12387;&#12390;&#20316;&#25104;&#12373;&#12428;&#12383;&#12289;&#29694;&#22312;&#12398;&#12510;&#12483;&#12503;&#19978;&#12398;&#12377;&#12409;&#12390;&#12398;&#12473;&#12463;&#12522;&#12503;&#12488;&#12434;&#23455;&#34892;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -11209,7 +12020,8 @@
 </node>
 <node TEXT="&#x30b9;&#x30af;&#x30ea;&#x30d7;&#x30c8;&#x3092;&#x7de8;&#x96c6;..." ID="ID_1738795858" TEXT_SHORTENED="true">
 <icon BUILTIN="../ScriptEditor"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11219,14 +12031,15 @@
       &#20491;&#12293;&#12398;&#12494;&#12540;&#12489;&#12395;&#35013;&#30528;&#12373;&#12428;&#12289;&#29694;&#22312;&#12398;&#12510;&#12483;&#12503;&#12501;&#12449;&#12452;&#12523;&#12395;&#12375;&#12363;&#20445;&#23384;&#12391;&#12365;&#12394;&#12356;&#12473;&#12463;&#12522;&#12503;&#12488;&#20316;&#25104;&#29992;&#12398;&#12454;&#12451;&#12531;&#12489;&#12454;&#12434;&#34920;&#31034;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="7"/>
 </node>
-<node TEXT="&#x5b9f;&#x884c;&#x53ef;&#x80fd;&#x30b9;&#x30af;&#x30ea;&#x30d7;&#x30c8;" ID="ID_857602556" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x5b9f;&#x884c;&#x53ef;&#x80fd;&#x30b9;&#x30af;&#x30ea;&#x30d7;&#x30c8;" ID="ID_857602556" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11236,14 +12049,15 @@
       &#12518;&#12540;&#12470;&#12398;&#12473;&#12463;&#12522;&#12503;&#12488;&#12487;&#12451;&#12524;&#12463;&#12488;&#12522;&#12395;&#20184;&#21152;&#12373;&#12428;&#12383; Groovy &#12473;&#12463;&#12522;&#12503;&#12488;&#12434;&#38542;&#23652;&#21270;&#12373;&#12428;&#12383;&#12513;&#12491;&#12517;&#12540;&#12398;&#24418;&#12391;&#34920;&#31034;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="7"/>
 </node>
-<node TEXT="&#x8a08;&#x7b97;&#x5f0f;..." STYLE_REF="Functie" FOLDED="true" ID="ID_394104724" BACKGROUND_COLOR="#ffffff" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x8a08;&#x7b97;&#x5f0f;..." STYLE_REF="Functie" ID="ID_394104724" BACKGROUND_COLOR="#ffffff" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11272,7 +12086,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
@@ -11284,14 +12099,15 @@
 </hook>
 </node>
 </node>
-<node TEXT="&#x30b9;&#x30af;&#x30ea;&#x30d7;&#x30c8;&#x3068;&#x8a08;&#x7b97;&#x5f0f;" FOLDED="true" ID="ID_1686912429" TEXT_SHORTENED="true" LINK="#ID_1511750976">
+<node TEXT="&#x30b9;&#x30af;&#x30ea;&#x30d7;&#x30c8;&#x3068;&#x8a08;&#x7b97;&#x5f0f;" ID="ID_1686912429" LINK="#ID_1511750976" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="7"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11317,8 +12133,9 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
-<node TEXT="" FOLDED="true" ID="ID_1684613406" TEXT_SHORTENED="true">
+</html>
+</richcontent>
+<node TEXT="" ID="ID_1684613406" TEXT_SHORTENED="true">
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <node TEXT="&#x8a08;&#x7b97;&#x5f0f;&#x306e; Wiki" ID="ID_1130453106" LINK="http://freeplane.sourceforge.net/wiki/index.php/Formulas" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="7"/>
@@ -11336,6 +12153,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11393,10 +12211,11 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x540c;&#x4e00;&#x30b9;&#x30af;&#x30ea;&#x30d7;&#x30c8;&#x3092;&#x6c4e;&#x7528;&#x7684;&#x306b;&#x4f7f;&#x7528;" ID="ID_776458088" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x540c;&#x4e00;&#x30b9;&#x30af;&#x30ea;&#x30d7;&#x30c8;&#x3092;&#x6c4e;&#x7528;&#x7684;&#x306b;&#x4f7f;&#x7528;" ID="ID_776458088" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11469,15 +12288,16 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x5916;&#x90e8;&#x30b3;&#x30de;&#x30f3;&#x30c9;&#x3092;&#x5b9f;&#x884c;" ID="ID_1044042899" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x5916;&#x90e8;&#x30b3;&#x30de;&#x30f3;&#x30c9;&#x3092;&#x5b9f;&#x884c;" ID="ID_1044042899" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11507,11 +12327,12 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 </node>
-<node TEXT="&#x30e6;&#x30fc;&#x30b6;&#x30c7;&#x30a3;&#x30ec;&#x30af;&#x30c8;&#x30ea;&#x3092;&#x958b;&#x304f;" FOLDED="true" ID="ID_1899966210" TEXT_SHORTENED="true">
+<node TEXT="&#x30e6;&#x30fc;&#x30b6;&#x30c7;&#x30a3;&#x30ec;&#x30af;&#x30c8;&#x30ea;&#x3092;&#x958b;&#x304f;" ID="ID_1899966210" TEXT_SHORTENED="true">
 <icon BUILTIN="../OpenUserDirAction"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
@@ -11522,8 +12343,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
-<node TEXT=".backup &#x30c7;&#x30a3;&#x30ec;&#x30af;&#x30c8;&#x30ea;" FOLDED="true" ID="ID_1731937735" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT=".backup &#x30c7;&#x30a3;&#x30ec;&#x30af;&#x30c8;&#x30ea;" ID="ID_1731937735" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11533,7 +12354,8 @@
       &#33258;&#21205;&#12496;&#12483;&#12463;&#12450;&#12483;&#12503;&#12501;&#12449;&#12452;&#12523;&#12434;&#26684;&#32013;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
@@ -11541,7 +12363,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11551,12 +12374,13 @@
       &#12510;&#12483;&#12503;&#12501;&#12449;&#12452;&#12523;&#12364;&#28040;&#12360;&#12383;&#26178;&#12399;&#12289;&#12371;&#12371;&#12434;&#25506;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
-<node TEXT="templates &#x30c7;&#x30a3;&#x30ec;&#x30af;&#x30c8;&#x30ea;" ID="ID_1073364264" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="templates &#x30c7;&#x30a3;&#x30ec;&#x30af;&#x30c8;&#x30ea;" ID="ID_1073364264" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11580,15 +12404,16 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
-<node TEXT="scripts &#x30c7;&#x30a3;&#x30ec;&#x30af;&#x30c8;&#x30ea;" ID="ID_291190955" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="scripts &#x30c7;&#x30a3;&#x30ec;&#x30af;&#x30c8;&#x30ea;" ID="ID_291190955" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11598,13 +12423,14 @@
       &#12518;&#12540;&#12470;&#23450;&#32681;&#12473;&#12463;&#12522;&#12503;&#12488;&#12434;&#26684;&#32013;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
-<node TEXT="icons &#x30c7;&#x30a3;&#x30ec;&#x30af;&#x30c8;&#x30ea;" ID="ID_140542266" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="icons &#x30c7;&#x30a3;&#x30ec;&#x30af;&#x30c8;&#x30ea;" ID="ID_140542266" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11625,7 +12451,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
@@ -11635,7 +12462,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11648,10 +12476,11 @@
       &#12371;&#12398;&#12487;&#12451;&#12524;&#12463;&#12488;&#12522;&#12434;&#20351;&#12360;&#12400;&#12289;&#12518;&#12540;&#12470;&#12398;&#23450;&#32681;&#12395;&#24467;&#12387;&#12390;&#38542;&#23652;&#21270;&#12373;&#12428;&#12383;&#12513;&#12491;&#12517;&#12540;&#12434;&#26684;&#32013;&#12391;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="accelerators &#x30c7;&#x30a3;&#x30ec;&#x30af;&#x30c8;&#x30ea;" ID="ID_482120942" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="accelerators &#x30c7;&#x30a3;&#x30ec;&#x30af;&#x30c8;&#x30ea;" ID="ID_482120942" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11664,7 +12493,8 @@
       &#12371;&#12428;&#12425;&#12399;&#12289;&#12518;&#12540;&#12470;&#12540;&#38291;&#12391;&#20132;&#25563;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
@@ -11676,7 +12506,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="6,8"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11686,13 +12517,15 @@
       &#12518;&#12540;&#12470;&#12399;&#12289;&#12371;&#12428;&#12425;&#12398;&#12487;&#12451;&#12524;&#12463;&#12488;&#12522;&#12434;&#20351;&#12387;&#12390;&#12289;&#12450;&#12452;&#12467;&#12531;&#12420;&#12473;&#12479;&#12452;&#12523;&#12289;&#12471;&#12519;&#12540;&#12488;&#12459;&#12483;&#12488;&#12461;&#12540;&#12475;&#12483;&#12488;&#12434;&#20182;&#12398;&#12518;&#12540;&#12470;&#12392;&#20132;&#25563;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
-<node TEXT="&#x74b0;&#x5883;&#x8a2d;&#x5b9a;..." FOLDED="true" ID="ID_827606855" TEXT_SHORTENED="true">
+<node TEXT="&#x74b0;&#x5883;&#x8a2d;&#x5b9a;..." ID="ID_827606855" TEXT_SHORTENED="true">
 <icon BUILTIN="../PropertyAction"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -11702,12 +12535,13 @@
       &#12371;&#12398;&#12494;&#12540;&#12489;&#12399;&#12289;&#26908;&#32034;&#12539;&#12501;&#12451;&#12523;&#12479;&#12398;&#30446;&#30340;&#12395;&#12375;&#12363;&#20351;&#12431;&#12428;&#12414;&#12379;&#12435;&#12290;&#35500;&#26126;&#12399;&#12354;&#12426;&#12414;&#12379;&#12435;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="1,3,4,6,7,8"/>
-<node TEXT="&#x74b0;&#x5883;" FOLDED="true" ID="ID_1029291913" TEXT_SHORTENED="true">
+<node TEXT="&#x74b0;&#x5883;" ID="ID_1029291913" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
@@ -11724,8 +12558,8 @@
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
-<node ID="ID_1182954985" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
+<node ID="ID_1182954985" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -11735,20 +12569,21 @@
       <i>&#21336;&#19968;&#12503;&#12525;&#12464;&#12521;&#12512;&#12452;&#12531;&#12473;&#12479;&#12531;&#12473;</i>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
 <hook NAME="SummaryNode"/>
 </node>
-<node TEXT="&#x8a00;&#x8a9e;" FOLDED="true" ID="ID_922308916" TEXT_SHORTENED="true">
+<node TEXT="&#x8a00;&#x8a9e;" ID="ID_922308916" TEXT_SHORTENED="true">
 <node TEXT="&#x81ea;&#x52d5;&#x9078;&#x629e;" ID="ID_1563480497" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="&#x6700;&#x8fd1;&#x4f7f;&#x3063;&#x305f;&#x30d5;&#x30a1;&#x30a4;&#x30eb;&#x306e;&#x8868;&#x793a;&#x6570;" FOLDED="true" ID="ID_980964669" TEXT_SHORTENED="true">
+<node TEXT="&#x6700;&#x8fd1;&#x4f7f;&#x3063;&#x305f;&#x30d5;&#x30a1;&#x30a4;&#x30eb;&#x306e;&#x8868;&#x793a;&#x6570;" ID="ID_980964669" TEXT_SHORTENED="true">
 <node TEXT="25" ID="ID_707557773" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -11779,7 +12614,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x6a19;&#x6e96;&#x30c6;&#x30f3;&#x30d7;&#x30ec;&#x30fc;&#x30c8;&#x30d5;&#x30a1;&#x30a4;&#x30eb;" FOLDED="true" ID="ID_1036795471" TEXT_SHORTENED="true">
+<node TEXT="&#x6a19;&#x6e96;&#x30c6;&#x30f3;&#x30d7;&#x30ec;&#x30fc;&#x30c8;&#x30d5;&#x30a1;&#x30a4;&#x30eb;" ID="ID_1036795471" TEXT_SHORTENED="true">
 <node TEXT="standard.mm" ID="ID_706234894" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -11792,7 +12627,7 @@
 </hook>
 <hook NAME="SummaryNode"/>
 </node>
-<node TEXT="&#x81ea;&#x52d5;&#x4fdd;&#x5b58;&#x9593;&#x9694;" FOLDED="true" ID="ID_1187275639" TEXT_SHORTENED="true">
+<node TEXT="&#x81ea;&#x52d5;&#x4fdd;&#x5b58;&#x9593;&#x9694;" ID="ID_1187275639" TEXT_SHORTENED="true">
 <node TEXT="60,000" ID="ID_1936163905" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -11812,14 +12647,14 @@
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x30d5;&#x30a1;&#x30a4;&#x30eb;&#x3054;&#x3068;&#x306e;&#x81ea;&#x52d5;&#x4fdd;&#x5b58;&#x4ef6;&#x6570;" FOLDED="true" ID="ID_1665531613" COLOR="#000000" TEXT_SHORTENED="true">
+<node TEXT="&#x30d5;&#x30a1;&#x30a4;&#x30eb;&#x3054;&#x3068;&#x306e;&#x81ea;&#x52d5;&#x4fdd;&#x5b58;&#x4ef6;&#x6570;" ID="ID_1665531613" COLOR="#000000" TEXT_SHORTENED="true">
 <node TEXT="10" ID="ID_205157037" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="&#x30d0;&#x30c3;&#x30af;&#x30a2;&#x30c3;&#x30d7;&#x30d5;&#x30a1;&#x30a4;&#x30eb;&#x306e;&#x4fdd;&#x6301;&#x6570;" FOLDED="true" ID="ID_862892627" TEXT_SHORTENED="true">
+<node TEXT="&#x30d0;&#x30c3;&#x30af;&#x30a2;&#x30c3;&#x30d7;&#x30d5;&#x30a1;&#x30a4;&#x30eb;&#x306e;&#x4fdd;&#x6301;&#x6570;" ID="ID_862892627" TEXT_SHORTENED="true">
 <node TEXT="2" ID="ID_1142741407" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -11832,7 +12667,7 @@
 </hook>
 <hook NAME="SummaryNode"/>
 </node>
-<node TEXT="&#xff3b;&#x81ea;&#x52d5;&#x4fdd;&#x5b58;&#x6642;&#x306e;&#xff3d;&#x6298;&#x308a;&#x7573;&#x307f;&#x306e;&#x6271;&#x3044;" FOLDED="true" ID="ID_886253731" TEXT_SHORTENED="true">
+<node TEXT="&#xff3b;&#x81ea;&#x52d5;&#x4fdd;&#x5b58;&#x6642;&#x306e;&#xff3d;&#x6298;&#x308a;&#x7573;&#x307f;&#x306e;&#x6271;&#x3044;" ID="ID_886253731" TEXT_SHORTENED="true">
 <node TEXT="&#x4fdd;&#x5b58;&#x3057;&#x306a;&#x3044;" ID="ID_689273752" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -11856,7 +12691,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x8aad;&#x307f;&#x8fbc;&#x307f;&#x6642;&#x306e;&#x6298;&#x308a;&#x7573;&#x307f;&#x306e;&#x6271;&#x3044;" FOLDED="true" ID="ID_6779259" TEXT_SHORTENED="true">
+<node TEXT="&#x8aad;&#x307f;&#x8fbc;&#x307f;&#x6642;&#x306e;&#x6298;&#x308a;&#x7573;&#x307f;&#x306e;&#x6271;&#x3044;" ID="ID_6779259" TEXT_SHORTENED="true">
 <node TEXT="&#x3059;&#x3079;&#x3066;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x304c;&#x6298;&#x308a;&#x7573;&#x307f;&#x72b6;&#x614b;&#x306a;&#x3089;&#x3001;&#x6298;&#x308a;&#x7573;&#x3080;" ID="ID_1843878856" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -11873,14 +12708,14 @@
 </hook>
 </node>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x6700;&#x5927;&#x8868;&#x793a;&#x6570;" FOLDED="true" ID="ID_1905038356" TEXT_SHORTENED="true">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x6700;&#x5927;&#x8868;&#x793a;&#x6570;" ID="ID_1905038356" TEXT_SHORTENED="true">
 <node TEXT="20" ID="ID_1759313322" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="&#x6587;&#x5b57;&#x30b3;&#x30fc;&#x30c9;" FOLDED="true" ID="ID_884107518" TEXT_SHORTENED="true">
+<node TEXT="&#x6587;&#x5b57;&#x30b3;&#x30fc;&#x30c9;" ID="ID_884107518" TEXT_SHORTENED="true">
 <node TEXT="&#x6a19;&#x6e96;" ID="ID_198865739" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -11898,7 +12733,7 @@
 </hook>
 <hook NAME="SummaryNode"/>
 </node>
-<node TEXT="&#x30ea;&#x30f3;&#x30af;" FOLDED="true" ID="ID_82833119" TEXT_SHORTENED="true">
+<node TEXT="&#x30ea;&#x30f3;&#x30af;" ID="ID_82833119" TEXT_SHORTENED="true">
 <node TEXT="&#x76f8;&#x5bfe;&#x7684;" ID="ID_1185657954" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -11929,7 +12764,7 @@
 </hook>
 <hook NAME="SummaryNode"/>
 </node>
-<node TEXT="&#x57fa;&#x672c;&#x7684;&#x306a;&#x5bfe;&#x5fdc;&#x65b9;&#x91dd;" FOLDED="true" ID="ID_938224301" TEXT_SHORTENED="true">
+<node TEXT="&#x57fa;&#x672c;&#x7684;&#x306a;&#x5bfe;&#x5fdc;&#x65b9;&#x91dd;" ID="ID_938224301" TEXT_SHORTENED="true">
 <node TEXT="&#x30ec;&#x30dd;&#x30fc;&#x30c8;&#x30c0;&#x30a4;&#x30a2;&#x30ed;&#x30b0;&#x3092;&#x8868;&#x793a;" ID="ID_1017882911" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -11953,12 +12788,12 @@
 <hook NAME="SummaryNode"/>
 </node>
 </node>
-<node TEXT="&#x753b;&#x9762;&#x8868;&#x793a;" FOLDED="true" ID="ID_186670407" COLOR="#000000" TEXT_SHORTENED="true">
+<node TEXT="&#x753b;&#x9762;&#x8868;&#x793a;" ID="ID_186670407" COLOR="#000000" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="8"/>
-<node TEXT="&#x30eb;&#x30c3;&#x30af;&#xff06;&#x30d5;&#x30a3;&#x30fc;&#x30eb;" FOLDED="true" ID="ID_702879709" TEXT_SHORTENED="true">
+<node TEXT="&#x30eb;&#x30c3;&#x30af;&#xff06;&#x30d5;&#x30a3;&#x30fc;&#x30eb;" ID="ID_702879709" TEXT_SHORTENED="true">
 <node TEXT="&#x6a19;&#x6e96;" ID="ID_1366474327" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -12015,7 +12850,7 @@
 <hook NAME="SummaryNode"/>
 <attribute NAME="Chapter" VALUE="8"/>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#xff29;&#xff24;&#x3092;&#x8868;&#x793a;" FOLDED="true" ID="ID_591129045" TEXT_SHORTENED="true">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#xff29;&#xff24;&#x3092;&#x8868;&#x793a;" ID="ID_591129045" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -12028,7 +12863,7 @@
 <attribute NAME="Chapter" VALUE="8"/>
 </node>
 </node>
-<node TEXT="&#x66f4;&#x65b0;&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x80cc;&#x666f;" FOLDED="true" ID="ID_665414546" TEXT_SHORTENED="true">
+<node TEXT="&#x66f4;&#x65b0;&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x80cc;&#x666f;" ID="ID_665414546" TEXT_SHORTENED="true">
 <hook NAME="FirstGroupNode"/>
 <node TEXT="&#x9ec4;&#x8272;" ID="ID_17029124" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -12042,7 +12877,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x96f2;" FOLDED="true" ID="ID_749503390" TEXT_SHORTENED="true">
+<node TEXT="&#x96f2;" ID="ID_749503390" TEXT_SHORTENED="true">
 <node TEXT="#f0f0f0" ID="ID_327342349" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -12062,14 +12897,14 @@
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x67a0;&#x56f2;&#x3044;&#x306e;&#x8272;" FOLDED="true" ID="ID_224972929" LINK="#ID_922308916" TEXT_SHORTENED="true">
+<node TEXT="&#x67a0;&#x56f2;&#x3044;&#x306e;&#x8272;" ID="ID_224972929" LINK="#ID_922308916" TEXT_SHORTENED="true">
 <node TEXT="#002080" ID="ID_1345958852" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="&#x80cc;&#x666f;&#x8272;" FOLDED="true" ID="ID_465580103" TEXT_SHORTENED="true">
+<node TEXT="&#x80cc;&#x666f;&#x8272;" ID="ID_465580103" TEXT_SHORTENED="true">
 <node TEXT="#d2d2d2" ID="ID_1819028753" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -12091,7 +12926,7 @@
 <hook NAME="SummaryNode"/>
 <attribute NAME="Chapter" VALUE="8"/>
 </node>
-<node TEXT="&#x30a2;&#x30f3;&#x30c1;&#x30a8;&#x30a4;&#x30ea;&#x30a2;&#x30b9;" STYLE_REF="Method" FOLDED="true" ID="ID_1632529978" TEXT_SHORTENED="true">
+<node TEXT="&#x30a2;&#x30f3;&#x30c1;&#x30a8;&#x30a4;&#x30ea;&#x30a2;&#x30b9;" STYLE_REF="Method" ID="ID_1632529978" TEXT_SHORTENED="true">
 <node TEXT="&#x7dda;&#x3060;&#x3051;&#x30a2;&#x30f3;&#x30c1;&#x30a8;&#x30a4;&#x30ea;&#x30a2;&#x30b9;" ID="ID_1654348959" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -12116,7 +12951,7 @@
 <attribute NAME="Chapter" VALUE="8"/>
 </node>
 </node>
-<node TEXT="&#x77ed;&#x7e2e;&#x8868;&#x793a;&#x6642;&#x306e;&#x8868;&#x793a;" FOLDED="true" ID="ID_1747043647" TEXT_SHORTENED="true">
+<node TEXT="&#x77ed;&#x7e2e;&#x8868;&#x793a;&#x6642;&#x306e;&#x8868;&#x793a;" ID="ID_1747043647" TEXT_SHORTENED="true">
 <hook NAME="FirstGroupNode"/>
 <node TEXT="100" ID="ID_602426240" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -12124,14 +12959,14 @@
 </hook>
 </node>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#xff3b;&#x306e;&#x6700;&#x5927;&#x8868;&#x793a;&#x5e45;&#xff3d;" FOLDED="true" ID="ID_1131898915" TEXT_SHORTENED="true">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#xff3b;&#x306e;&#x6700;&#x5927;&#x8868;&#x793a;&#x5e45;&#xff3d;" ID="ID_1131898915" TEXT_SHORTENED="true">
 <node TEXT="600" ID="ID_1544215822" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="&#x30c4;&#x30fc;&#x30eb;&#x30c1;&#x30c3;&#x30d7;&#xff3b;&#x306e;&#x6700;&#x5927;&#x8868;&#x793a;&#x5e45;&#xff3d;" FOLDED="true" ID="ID_215853027" TEXT_SHORTENED="true">
+<node TEXT="&#x30c4;&#x30fc;&#x30eb;&#x30c1;&#x30c3;&#x30d7;&#xff3b;&#x306e;&#x6700;&#x5927;&#x8868;&#x793a;&#x5e45;&#xff3d;" ID="ID_215853027" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="1"/>
 <node TEXT="600" ID="ID_1670353099" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -12146,21 +12981,21 @@
 <hook NAME="SummaryNode"/>
 <attribute NAME="Chapter" VALUE="1,8"/>
 </node>
-<node TEXT="&#xff3b;&#x30b3;&#x30cd;&#x30af;&#x30bf;&#x306e;&#xff3d;&#x6a19;&#x6e96;&#x8272;" FOLDED="true" ID="ID_1272643299" COLOR="#000000" TEXT_SHORTENED="true">
+<node TEXT="&#xff3b;&#x30b3;&#x30cd;&#x30af;&#x30bf;&#x306e;&#xff3d;&#x6a19;&#x6e96;&#x8272;" ID="ID_1272643299" COLOR="#000000" TEXT_SHORTENED="true">
 <node TEXT="#000000" ID="ID_1523516109" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="&#xff3b;&#x30b3;&#x30cd;&#x30af;&#x30bf;&#x306e;&#xff3d;&#x900f;&#x904e;&#x6027;" FOLDED="true" ID="ID_1391515369" TEXT_SHORTENED="true">
+<node TEXT="&#xff3b;&#x30b3;&#x30cd;&#x30af;&#x30bf;&#x306e;&#xff3d;&#x900f;&#x904e;&#x6027;" ID="ID_1391515369" TEXT_SHORTENED="true">
 <node TEXT="80" ID="ID_1305662372" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="&#xff3b;&#x30b3;&#x30cd;&#x30af;&#x30bf;&#x306e;&#xff3d;&#x5f62;&#x72b6;" FOLDED="true" ID="ID_266926804" TEXT_SHORTENED="true">
+<node TEXT="&#xff3b;&#x30b3;&#x30cd;&#x30af;&#x30bf;&#x306e;&#xff3d;&#x5f62;&#x72b6;" ID="ID_266926804" TEXT_SHORTENED="true">
 <node TEXT="&#x66f2;&#x7dda;" ID="ID_53878188" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -12182,21 +13017,21 @@
 </hook>
 </node>
 </node>
-<node TEXT="&#xff3b;&#x30b3;&#x30cd;&#x30af;&#x30bf;&#x306e;&#xff3d;&#x592a;&#x3055;" FOLDED="true" ID="ID_1481643722" TEXT_SHORTENED="true">
+<node TEXT="&#xff3b;&#x30b3;&#x30cd;&#x30af;&#x30bf;&#x306e;&#xff3d;&#x592a;&#x3055;" ID="ID_1481643722" TEXT_SHORTENED="true">
 <node TEXT="2" ID="ID_22643760" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="&#xff3b;&#x30b3;&#x30cd;&#x30af;&#x30bf;&#x30e9;&#x30d9;&#x30eb;&#x306e;&#xff3d;&#x30d5;&#x30a9;&#x30f3;&#x30c8;&#x540d;" FOLDED="true" ID="ID_1221903920" TEXT_SHORTENED="true">
+<node TEXT="&#xff3b;&#x30b3;&#x30cd;&#x30af;&#x30bf;&#x30e9;&#x30d9;&#x30eb;&#x306e;&#xff3d;&#x30d5;&#x30a9;&#x30f3;&#x30c8;&#x540d;" ID="ID_1221903920" TEXT_SHORTENED="true">
 <node TEXT="SansSerif" ID="ID_1484575894" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="&#xff3b;&#x30b3;&#x30cd;&#x30af;&#x30bf;&#x30e9;&#x30d9;&#x30eb;&#x306e;&#xff3d;&#x6587;&#x5b57;&#x30b5;&#x30a4;&#x30ba;" STYLE_REF="Method" FOLDED="true" ID="ID_728681381" TEXT_SHORTENED="true">
+<node TEXT="&#xff3b;&#x30b3;&#x30cd;&#x30af;&#x30bf;&#x30e9;&#x30d9;&#x30eb;&#x306e;&#xff3d;&#x6587;&#x5b57;&#x30b5;&#x30a4;&#x30ba;" STYLE_REF="Method" ID="ID_728681381" TEXT_SHORTENED="true">
 <node TEXT="12" ID="ID_589330080" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -12222,28 +13057,28 @@
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x6a19;&#x6e96;&#x306e;&#x6700;&#x5c0f;&#x7e26;&#x5e45;" FOLDED="true" ID="ID_1734781250" TEXT_SHORTENED="true">
+<node TEXT="&#x6a19;&#x6e96;&#x306e;&#x6700;&#x5c0f;&#x7e26;&#x5e45;" ID="ID_1734781250" TEXT_SHORTENED="true">
 <node TEXT="150" ID="ID_1551290999" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="&#x6a19;&#x6e96;&#x306e;&#x6700;&#x5927;&#x7e26;&#x5e45;" FOLDED="true" ID="ID_720944351" TEXT_SHORTENED="true">
+<node TEXT="&#x6a19;&#x6e96;&#x306e;&#x6700;&#x5927;&#x7e26;&#x5e45;" ID="ID_720944351" TEXT_SHORTENED="true">
 <node TEXT="600" ID="ID_1973666685" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="&#x6a19;&#x6e96;&#x306e;&#x6700;&#x5c0f;&#x6a2a;&#x5e45;" FOLDED="true" ID="ID_741939779" TEXT_SHORTENED="true">
+<node TEXT="&#x6a19;&#x6e96;&#x306e;&#x6700;&#x5c0f;&#x6a2a;&#x5e45;" ID="ID_741939779" TEXT_SHORTENED="true">
 <node TEXT="400" ID="ID_164780892" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="&#x6a19;&#x6e96;&#x306e;&#x6700;&#x5927;&#x6a2a;&#x5e45;" FOLDED="true" ID="ID_848971421" TEXT_SHORTENED="true">
+<node TEXT="&#x6a19;&#x6e96;&#x306e;&#x6700;&#x5927;&#x6a2a;&#x5e45;" ID="ID_848971421" TEXT_SHORTENED="true">
 <node TEXT="900" ID="ID_1286106720" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -12257,14 +13092,14 @@
 <hook NAME="SummaryNode"/>
 <attribute NAME="Chapter" VALUE="8"/>
 </node>
-<node TEXT="&#x4e0a;&#x4e0b;&#x306e;&#x9593;&#x9694;" FOLDED="true" ID="ID_1935836042" TEXT_SHORTENED="true">
+<node TEXT="&#x4e0a;&#x4e0b;&#x306e;&#x9593;&#x9694;" ID="ID_1935836042" TEXT_SHORTENED="true">
 <node TEXT="5" ID="ID_1567487763" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="&#x5de6;&#x53f3;&#x306e;&#x9593;&#x9694;" FOLDED="true" ID="ID_1853135324" TEXT_SHORTENED="true">
+<node TEXT="&#x5de6;&#x53f3;&#x306e;&#x9593;&#x9694;" ID="ID_1853135324" TEXT_SHORTENED="true">
 <node TEXT="15" ID="ID_1756020932" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -12291,7 +13126,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x5c5e;&#x6027;&#x3042;&#x308a;&#x30a2;&#x30a4;&#x30b3;&#x30f3;&#x3092;&#x8868;&#x793a;" FOLDED="true" ID="ID_1228898153" COLOR="#000000" TEXT_SHORTENED="true">
+<node TEXT="&#x5c5e;&#x6027;&#x3042;&#x308a;&#x30a2;&#x30a4;&#x30b3;&#x30f3;&#x3092;&#x8868;&#x793a;" ID="ID_1228898153" COLOR="#000000" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="3"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
@@ -12301,7 +13136,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -12319,7 +13155,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 <node TEXT="&#x30a2;&#x30a4;&#x30b3;&#x30f3;" ID="ID_1409698218" TEXT_SHORTENED="true">
@@ -12331,15 +13168,15 @@
 <hook NAME="SummaryNode"/>
 </node>
 </node>
-<node TEXT="&#x30ad;&#x30fc;&#x8a2d;&#x5b9a;" FOLDED="true" ID="ID_1511501068" TEXT_SHORTENED="true">
+<node TEXT="&#x30ad;&#x30fc;&#x8a2d;&#x5b9a;" ID="ID_1511501068" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="8"/>
 <node TEXT="&#x5404;&#x7a2e;&#x30a2;&#x30a4;&#x30b3;&#x30f3;&#x7528;&#x306e;&#x4e8b;&#x524d;&#x8a2d;&#x5b9a;&#x30db;&#x30c3;&#x30c8;&#x30ad;&#x30fc;&#x30b7;&#x30e7;&#x30fc;&#x30c8;&#x30ab;&#x30c3;&#x30c8;&#x3092;&#x5236;&#x5fa1;&#x3057;&#x307e;&#x3059;&#x3002;" ID="ID_699416889" TEXT_SHORTENED="true"/>
 </node>
-<node TEXT="&#x52d5;&#x4f5c;&#x8a2d;&#x5b9a;" FOLDED="true" ID="ID_1251832106" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x52d5;&#x4f5c;&#x8a2d;&#x5b9a;" ID="ID_1251832106" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -12349,12 +13186,13 @@
       &#12518;&#12540;&#12470;&#12452;&#12531;&#12479;&#12501;&#12455;&#12540;&#12473;&#12398;&#27096;&#12293;&#12394;&#37096;&#38754;&#12434;&#21046;&#24481;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="8"/>
-<node TEXT="&#x65b0;&#x898f;&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x914d;&#x7f6e;" FOLDED="true" ID="ID_1206588336" TEXT_SHORTENED="true">
+<node TEXT="&#x65b0;&#x898f;&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x914d;&#x7f6e;" ID="ID_1206588336" TEXT_SHORTENED="true">
 <node TEXT="&#x5192;&#x982d;" ID="ID_1088081628" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -12379,14 +13217,14 @@
 </hook>
 </node>
 <node TEXT="&#x30de;&#x30c3;&#x30d7;&#x30b9;&#x30af;&#x30ed;&#x30fc;&#x30eb;&#x6642;&#x306b;&#x30de;&#x30a6;&#x30b9;&#x30ab;&#x30fc;&#x30bd;&#x30eb;&#x3092;&#x96a0;&#x3059;" ID="ID_673199843" TEXT_SHORTENED="true"/>
-<node TEXT="&#x6298;&#x308a;&#x7573;&#x307f;&#x4e2d;&#x30b7;&#x30f3;&#x30dc;&#x30eb;&#x306e;&#x5e45;" FOLDED="true" ID="ID_162608451" TEXT_SHORTENED="true">
+<node TEXT="&#x6298;&#x308a;&#x7573;&#x307f;&#x4e2d;&#x30b7;&#x30f3;&#x30dc;&#x30eb;&#x306e;&#x5e45;" ID="ID_162608451" TEXT_SHORTENED="true">
 <node TEXT="6" ID="ID_917162640" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="&#xff08;&#x30ce;&#x30fc;&#x30c9;&#x4f4d;&#x7f6e;&#x79fb;&#x52d5;&#x6642;&#x306e;)&#x30b0;&#x30ea;&#x30c3;&#x30c9;&#x306e;&#x9593;&#x9694;" FOLDED="true" ID="ID_1904922870" TEXT_SHORTENED="true">
+<node TEXT="&#xff08;&#x30ce;&#x30fc;&#x30c9;&#x4f4d;&#x7f6e;&#x79fb;&#x52d5;&#x6642;&#x306e;)&#x30b0;&#x30ea;&#x30c3;&#x30c9;&#x306e;&#x9593;&#x9694;" ID="ID_1904922870" TEXT_SHORTENED="true">
 <node TEXT="10" ID="ID_230800785" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -12399,7 +13237,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x30ad;&#x30fc;&#x30bf;&#x30a4;&#x30d7;&#x306e;&#x52d5;&#x4f5c;" FOLDED="true" ID="ID_870410939" TEXT_SHORTENED="true">
+<node TEXT="&#x30ad;&#x30fc;&#x30bf;&#x30a4;&#x30d7;&#x306e;&#x52d5;&#x4f5c;" ID="ID_870410939" TEXT_SHORTENED="true">
 <node TEXT="&#x5185;&#x5bb9;&#x3092;&#x4e0a;&#x66f8;&#x304d;" ID="ID_906283996" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -12429,7 +13267,7 @@
 </hook>
 <hook NAME="SummaryNode"/>
 </node>
-<node TEXT="&#x6570;&#x5024;&#x3084;&#x65e5;&#x6642;&#x306e;&#x5165;&#x529b;&#x3092;&#x8a8d;&#x8b58;" FOLDED="true" ID="ID_1904729163" TEXT_SHORTENED="true">
+<node TEXT="&#x6570;&#x5024;&#x3084;&#x65e5;&#x6642;&#x306e;&#x5165;&#x529b;&#x3092;&#x8a8d;&#x8b58;" ID="ID_1904729163" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="4"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="UnChecked" LAST="false"/>
@@ -12442,7 +13280,7 @@
 <attribute NAME="Chapter" VALUE="4"/>
 </node>
 </node>
-<node TEXT="&#x6570;&#x5024;&#x306e;&#x6a19;&#x6e96;&#x66f8;&#x5f0f;" FOLDED="true" ID="ID_1543011178" TEXT_SHORTENED="true">
+<node TEXT="&#x6570;&#x5024;&#x306e;&#x6a19;&#x6e96;&#x66f8;&#x5f0f;" ID="ID_1543011178" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="4"/>
 <node TEXT="#0.####" ID="ID_599272734" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -12451,7 +13289,7 @@
 <attribute NAME="Chapter" VALUE="4"/>
 </node>
 </node>
-<node TEXT="&#x65e5;&#x4ed8;&#x306e;&#x6a19;&#x6e96;&#x66f8;&#x5f0f;" FOLDED="true" ID="ID_1356962423" TEXT_SHORTENED="true">
+<node TEXT="&#x65e5;&#x4ed8;&#x306e;&#x6a19;&#x6e96;&#x66f8;&#x5f0f;" ID="ID_1356962423" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="4"/>
 <node TEXT="SHORT" ID="ID_1799574764" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -12460,7 +13298,7 @@
 <attribute NAME="Chapter" VALUE="4"/>
 </node>
 </node>
-<node TEXT="&#x6642;&#x523b;&#x4ed8;&#x304d;&#x65e5;&#x4ed8;&#x306e;&#x6a19;&#x6e96;&#x66f8;&#x5f0f;" FOLDED="true" ID="ID_1291135490" TEXT_SHORTENED="true">
+<node TEXT="&#x6642;&#x523b;&#x4ed8;&#x304d;&#x65e5;&#x4ed8;&#x306e;&#x6a19;&#x6e96;&#x66f8;&#x5f0f;" ID="ID_1291135490" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="4"/>
 <node TEXT="SHORT,SHORT" ID="ID_1489062870" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -12469,7 +13307,7 @@
 <attribute NAME="Chapter" VALUE="4"/>
 </node>
 </node>
-<node TEXT="&#x66f8;&#x5f0f;&#x306e;&#x30ed;&#x30b1;&#x30fc;&#x30eb;" FOLDED="true" ID="ID_415722182" TEXT_SHORTENED="true">
+<node TEXT="&#x66f8;&#x5f0f;&#x306e;&#x30ed;&#x30b1;&#x30fc;&#x30eb;" ID="ID_415722182" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="4"/>
 <node TEXT="&#x81ea;&#x52d5;&#x9078;&#x629e;&#xff08;&#x8a00;&#x8a9e;&#x30ea;&#x30b9;&#x30c8;&#xff09;" ID="ID_1141766183" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -12484,7 +13322,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -12499,7 +13338,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="SummaryNode"/>
 </node>
 <node TEXT="&#x3059;&#x3079;&#x3066;&#x306e;&#x65b0;&#x898f;&#x30ce;&#x30fc;&#x30c9;&#x306b;&#x30a4;&#x30f3;&#x30e9;&#x30a4;&#x30f3;&#x30a8;&#x30c7;&#x30a3;&#x30bf;&#x3092;&#x8868;&#x793a;" ID="ID_1855645772" TEXT_SHORTENED="true">
@@ -12533,7 +13373,7 @@
 <hook NAME="SummaryNode"/>
 <attribute NAME="Chapter" VALUE="8"/>
 </node>
-<node TEXT="&#x8cbc;&#x308a;&#x4ed8;&#x3051;&#x30ce;&#x30fc;&#x30c9;&#x3067;&#x30ea;&#x30c3;&#x30c1;&#x30c6;&#x30ad;&#x30b9;&#x30c8;&#x3092;&#x4f7f;&#x7528;" FOLDED="true" ID="ID_95105756" TEXT_SHORTENED="true">
+<node TEXT="&#x8cbc;&#x308a;&#x4ed8;&#x3051;&#x30ce;&#x30fc;&#x30c9;&#x3067;&#x30ea;&#x30c3;&#x30c1;&#x30c6;&#x30ad;&#x30b9;&#x30c8;&#x3092;&#x4f7f;&#x7528;" ID="ID_95105756" TEXT_SHORTENED="true">
 <node TEXT="&#x78ba;&#x8a8d;&#x3059;&#x308b;" ID="ID_1722707084" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -12588,7 +13428,7 @@
 </hook>
 <attribute NAME="Chapter" VALUE="8"/>
 </node>
-<node TEXT="&#x9078;&#x629e;&#x65b9;&#x6cd5;" FOLDED="true" ID="ID_1935087614" TEXT_SHORTENED="true">
+<node TEXT="&#x9078;&#x629e;&#x65b9;&#x6cd5;" ID="ID_1935087614" TEXT_SHORTENED="true">
 <node TEXT="&#x30de;&#x30a6;&#x30b9;&#x30aa;&#x30fc;&#x30d0;&#x30fc;&#x5f8c;&#x3001;&#x9593;&#x3092;&#x304a;&#x3044;&#x3066;&#x81ea;&#x52d5;&#x9078;&#x629e;" ID="ID_844433841" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -12605,7 +13445,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="&#x81ea;&#x52d5;&#x9078;&#x629e;&#x307e;&#x3067;&#x306e;&#x6642;&#x9593;" FOLDED="true" ID="ID_326872031" TEXT_SHORTENED="true">
+<node TEXT="&#x81ea;&#x52d5;&#x9078;&#x629e;&#x307e;&#x3067;&#x306e;&#x6642;&#x9593;" ID="ID_326872031" TEXT_SHORTENED="true">
 <node TEXT="200" ID="ID_1264808816" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -12625,7 +13465,7 @@
 <hook NAME="SummaryNode"/>
 <attribute NAME="Chapter" VALUE="8"/>
 </node>
-<node TEXT="&#x52a0;&#x901f;&#x5ea6;" FOLDED="true" ID="ID_1877269542" TEXT_SHORTENED="true">
+<node TEXT="&#x52a0;&#x901f;&#x5ea6;" ID="ID_1877269542" TEXT_SHORTENED="true">
 <node TEXT="80" ID="ID_324161648" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -12639,7 +13479,7 @@
 <hook NAME="SummaryNode"/>
 <attribute NAME="Chapter" VALUE="8"/>
 </node>
-<node TEXT="&#x901f;&#x5ea6;" FOLDED="true" ID="ID_337671733" TEXT_SHORTENED="true">
+<node TEXT="&#x901f;&#x5ea6;" ID="ID_337671733" TEXT_SHORTENED="true">
 <node TEXT="20" ID="ID_1492439142" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -12677,14 +13517,14 @@
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x30c0;&#x30a4;&#x30a2;&#x30ed;&#x30b0;&#x306b;&#x8868;&#x793a;&#x3059;&#x308b;&#x5019;&#x88dc;&#x306e;&#x6700;&#x5927;&#x5024;" FOLDED="true" ID="ID_854267681" TEXT_SHORTENED="true">
+<node TEXT="&#x30c0;&#x30a4;&#x30a2;&#x30ed;&#x30b0;&#x306b;&#x8868;&#x793a;&#x3059;&#x308b;&#x5019;&#x88dc;&#x306e;&#x6700;&#x5927;&#x5024;" ID="ID_854267681" TEXT_SHORTENED="true">
 <node TEXT="15" ID="ID_1785386989" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="&#x30e1;&#x30cb;&#x30e5;&#x30fc;&#x306b;&#x8868;&#x793a;&#x3059;&#x308b;&#x5019;&#x88dc;&#x306e;&#x6700;&#x5927;&#x5024;" FOLDED="true" ID="ID_975657338" TEXT_SHORTENED="true">
+<node TEXT="&#x30e1;&#x30cb;&#x30e5;&#x30fc;&#x306b;&#x8868;&#x793a;&#x3059;&#x308b;&#x5019;&#x88dc;&#x306e;&#x6700;&#x5927;&#x5024;" ID="ID_975657338" TEXT_SHORTENED="true">
 <node TEXT="15" ID="ID_223576174" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -12704,21 +13544,21 @@
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x6700;&#x521d;&#x306b;&#x8868;&#x793a;&#x3059;&#x308b;&#x307e;&#x3067;&#x306e;&#x6642;&#x9593;&#xff08;&#x30df;&#x30ea;&#x79d2;&#xff09;" STYLE_REF="Method" FOLDED="true" ID="ID_1343633498" TEXT_SHORTENED="true">
+<node TEXT="&#x6700;&#x521d;&#x306b;&#x8868;&#x793a;&#x3059;&#x308b;&#x307e;&#x3067;&#x306e;&#x6642;&#x9593;&#xff08;&#x30df;&#x30ea;&#x79d2;&#xff09;" STYLE_REF="Method" ID="ID_1343633498" TEXT_SHORTENED="true">
 <node TEXT="750" ID="ID_1782324302" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="&#x8868;&#x793a;&#x3092;&#x4e2d;&#x65ad;&#x3059;&#x308b;&#x307e;&#x3067;&#x306e;&#x6642;&#x9593;&#xff08;&#x30df;&#x30ea;&#x79d2;&#xff09;" STYLE_REF="Method" FOLDED="true" ID="ID_118778413" TEXT_SHORTENED="true">
+<node TEXT="&#x8868;&#x793a;&#x3092;&#x4e2d;&#x65ad;&#x3059;&#x308b;&#x307e;&#x3067;&#x306e;&#x6642;&#x9593;&#xff08;&#x30df;&#x30ea;&#x79d2;&#xff09;" STYLE_REF="Method" ID="ID_118778413" TEXT_SHORTENED="true">
 <node TEXT="4,000" ID="ID_1660267918" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="&#x8868;&#x793a;&#x3092;&#x518d;&#x958b;&#x3059;&#x308b;&#x307e;&#x3067;&#x306e;&#x6642;&#x9593;&#xff08;&#x30df;&#x30ea;&#x79d2;&#xff09;" STYLE_REF="Method" FOLDED="true" ID="ID_1017873473" TEXT_SHORTENED="true">
+<node TEXT="&#x8868;&#x793a;&#x3092;&#x518d;&#x958b;&#x3059;&#x308b;&#x307e;&#x3067;&#x306e;&#x6642;&#x9593;&#xff08;&#x30df;&#x30ea;&#x79d2;&#xff09;" STYLE_REF="Method" ID="ID_1017873473" TEXT_SHORTENED="true">
 <node TEXT="500" ID="ID_1275414273" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -12732,7 +13572,7 @@
 <hook NAME="SummaryNode"/>
 <attribute NAME="Chapter" VALUE="8"/>
 </node>
-<node TEXT="&#x5165;&#x529b;&#x6b04;&#x306e;&#x8ffd;&#x52a0;&#x5e45;" STYLE_REF="Method" FOLDED="true" ID="ID_74989020" TEXT_SHORTENED="true">
+<node TEXT="&#x5165;&#x529b;&#x6b04;&#x306e;&#x8ffd;&#x52a0;&#x5e45;" STYLE_REF="Method" ID="ID_74989020" TEXT_SHORTENED="true">
 <node TEXT="80" ID="ID_1049715479" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -12746,7 +13586,7 @@
 <hook NAME="SummaryNode"/>
 <attribute NAME="Chapter" VALUE="8"/>
 </node>
-<node TEXT="&#x5143;&#x306b;&#x623b;&#x3059;&#x56de;&#x6570;&#x306e;&#x4e0a;&#x9650;" STYLE_REF="Method" FOLDED="true" ID="ID_1377721651" TEXT_SHORTENED="true">
+<node TEXT="&#x5143;&#x306b;&#x623b;&#x3059;&#x56de;&#x6570;&#x306e;&#x4e0a;&#x9650;" STYLE_REF="Method" ID="ID_1377721651" TEXT_SHORTENED="true">
 <node TEXT="100" ID="ID_933957391" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -12761,8 +13601,8 @@
 <attribute NAME="Chapter" VALUE="8"/>
 </node>
 </node>
-<node TEXT="&#xff28;&#xff34;&#xff2d;&#xff2c;" FOLDED="true" ID="ID_1770350324" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#xff28;&#xff34;&#xff2d;&#xff2c;" ID="ID_1770350324" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -12772,33 +13612,34 @@
       <span style="font-family: SansSerif, sans-serif; color: #000000"><font face="SansSerif, sans-serif" color="#000000">&#12454;&#12455;&#12502;&#12502;&#12521;&#12454;&#12470;&#12392;&#12398;&#30456;&#20114;&#38306;&#20418;&#12289;&#21450;&#12403;HTML &#12392;&#12398;&#12456;&#12463;&#12473;&#12509;&#12540;&#12488;&#12420;&#12452;&#12531;&#12509;&#12540;&#12488;&#12395;&#38306;&#12377;&#12427;&#12458;&#12503;&#12471;&#12519;&#12531;&#12434;&#21046;&#24481;&#12375;&#12390;&#12356;&#12414;&#12377;&#12290;</font></span>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="6,8"/>
-<node TEXT="Windows NT" FOLDED="true" ID="ID_285818766" TEXT_SHORTENED="true">
+<node TEXT="Windows NT" ID="ID_285818766" TEXT_SHORTENED="true">
 <node TEXT="cmd.exe/c start&quot;&quot; &quot;{0}&quot;" ID="ID_1405736836" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="Windows 9x" FOLDED="true" ID="ID_1767258052" TEXT_SHORTENED="true">
+<node TEXT="Windows 9x" ID="ID_1767258052" TEXT_SHORTENED="true">
 <node TEXT="command.com /c start &quot;{0}&quot;" ID="ID_1915045103" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="&#x305d;&#x306e;&#x4ed6;&#x306e;&#xff2f;&#xff33;" FOLDED="true" ID="ID_1677430296" TEXT_SHORTENED="true">
+<node TEXT="&#x305d;&#x306e;&#x4ed6;&#x306e;&#xff2f;&#xff33;" ID="ID_1677430296" TEXT_SHORTENED="true">
 <node TEXT="xdg-open {0}" ID="ID_155698917" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="MAC &#xff2f;&#xff33; &#xff38;" FOLDED="true" ID="ID_487716764" TEXT_SHORTENED="true">
+<node TEXT="MAC &#xff2f;&#xff33; &#xff38;" ID="ID_487716764" TEXT_SHORTENED="true">
 <node TEXT="open {0}" ID="ID_1454396895" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -12812,7 +13653,7 @@
 <hook NAME="SummaryNode"/>
 <attribute NAME="Chapter" VALUE="8"/>
 </node>
-<node TEXT="&#x6298;&#x308a;&#x7573;&#x307f;&#x306e;&#x6271;&#x3044;" FOLDED="true" ID="ID_326052798" TEXT_SHORTENED="true">
+<node TEXT="&#x6298;&#x308a;&#x7573;&#x307f;&#x306e;&#x6271;&#x3044;" ID="ID_326052798" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="6"/>
 <node TEXT="&#x3059;&#x3079;&#x3066;&#x5c55;&#x958b;&#x3057;&#x3066;&#x66f8;&#x304d;&#x51fa;&#x3059;" ID="ID_495590352" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -12869,7 +13710,7 @@
 <hook NAME="SummaryNode"/>
 </node>
 </node>
-<node TEXT="&#x30d7;&#x30e9;&#x30b0;&#x30a4;&#x30f3;" FOLDED="true" ID="ID_121069743" TEXT_SHORTENED="true">
+<node TEXT="&#x30d7;&#x30e9;&#x30b0;&#x30a4;&#x30f3;" ID="ID_121069743" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
@@ -12943,7 +13784,7 @@
 <node TEXT="&#x7f72;&#x540d;&#x7528;&#x30e6;&#x30fc;&#x30b6;&#x30ad;&#x30fc;&#x30a8;&#x30a4;&#x30ea;&#x30a2;&#x30b9;" ID="ID_1319215468" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="7"/>
 </node>
-<node TEXT="&#x30b9;&#x30af;&#x30ea;&#x30d7;&#x30c8;&#x30c7;&#x30a3;&#x30ec;&#x30af;&#x30c8;&#x30ea;" FOLDED="true" ID="ID_1885113964" TEXT_SHORTENED="true">
+<node TEXT="&#x30b9;&#x30af;&#x30ea;&#x30d7;&#x30c8;&#x30c7;&#x30a3;&#x30ec;&#x30af;&#x30c8;&#x30ea;" ID="ID_1885113964" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="7"/>
 <node TEXT="&#x30b9;&#x30af;&#x30ea;&#x30d7;&#x30c8;" ID="ID_1078878417" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -12964,12 +13805,13 @@
 </node>
 </node>
 </node>
-<node TEXT="&#x30de;&#x30c3;&#x30d7;" FOLDED="true" ID="ID_572760232" TEXT_SHORTENED="true">
+<node TEXT="&#x30de;&#x30c3;&#x30d7;" ID="ID_572760232" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="6"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -12979,10 +13821,11 @@
       &#12510;&#12452;&#12531;&#12489;&#12510;&#12483;&#12503;&#12434;&#36984;&#25246;&#12375;&#12289;&#25805;&#20316;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <edge STYLE="horizontal"/>
-<node TEXT="&#x30de;&#x30c3;&#x30d7;&#x7de8;&#x96c6;&#x30e2;&#x30fc;&#x30c9;" ID="ID_327363055" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30de;&#x30c3;&#x30d7;&#x7de8;&#x96c6;&#x30e2;&#x30fc;&#x30c9;" ID="ID_327363055" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -12992,14 +13835,15 @@
       &#12510;&#12452;&#12531;&#12489;&#12510;&#12483;&#12503;&#12434;&#20316;&#25104;&#12289;&#32232;&#38598;&#12377;&#12427;&#12514;&#12540;&#12489;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
-<node TEXT="&#x30de;&#x30c3;&#x30d7;&#x95b2;&#x89a7;&#x30e2;&#x30fc;&#x30c9;" ID="ID_524078813" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30de;&#x30c3;&#x30d7;&#x95b2;&#x89a7;&#x30e2;&#x30fc;&#x30c9;" ID="ID_524078813" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13009,7 +13853,8 @@
       <font face="SansSerif, sans-serif" color="#000000">&#12371;&#12428;&#12399;&#12289;&#12510;&#12483;&#12503;&#12434;&#32232;&#38598;&#12377;&#12427;&#12398;&#12391;&#12394;&#12367;&#12289;&#38322;&#35239;&#12377;&#12427;&#12383;&#12417;&#12398;&#12514;&#12540;&#12489;&#12391;&#12377;&#12290;&#20027;&#12394;&#20351;&#12356;&#36947;&#12399;&#65298;&#12388;&#12354;&#12426;&#12414;&#12377;&#12290;&#31532;&#65297;&#12395;&#12289;&#12300;&#12456;&#12463;&#12473;&#12509;&#12540;&#12488; &gt; &#160;Java &#12450;&#12503;&#12524;&#12483;&#12488;&#12395;...&#12301;&#12434;&#20351;&#12358;&#38555;&#12395;&#12289;&#12450;&#12503;&#12524;&#12483;&#12488;&#12434;&#12522;&#12540;&#12489;&#12458;&#12531;&#12522;&#12540;&#38283;&#12367;&#22580;&#21512;&#12391;&#12377;&#12290;&#12381;&#12428;&#12399;&#12289;&#12454;&#12455;&#12502;&#32076;&#30001;&#12391;&#12398;&#12510;&#12483;&#12503;&#32232;&#38598;&#27231;&#33021;&#12364;&#12469;&#12509;&#12540;&#12488;&#12373;&#12428;&#12390;&#12356;&#12394;&#12356;&#12383;&#12417;&#12391;&#12377;&#12290;&#31532;&#65298;&#12395;&#12289;Freeplane &#12398;&#12504;&#12523;&#12503;&#12501;&#12449;&#12452;&#12523;&#12395;&#12289;&#12300;&#12504;&#12523;&#12503; &gt; &#12510;&#12491;&#12517;&#12450;&#12523;&#12301;&#12394;&#12356;&#12375; F1 &#32076;&#30001;&#12391;'&#12450;&#12463;&#12475;&#12473;&#12375;&#12383;&#22580;&#21512;&#12391;&#12377;&#12290;&#12371;&#12428;&#12399;&#12289;&#12518;&#12540;&#12470;-&#12364; Freeplane &#12398;&#35576;&#27231;&#33021;&#12395;&#12388;&#12356;&#12390;&#23398;&#32722;&#12375;&#12390;&#12356;&#12427;&#38291;&#12289;&#12510;&#12491;&#12517;&#12450;&#12523;&#12398;&#20869;&#23481;&#12434;&#20445;&#35703;&#12377;&#12427;&#12383;&#12417;&#12395;&#12289;&#12522;&#12540;&#12489;&#12458;&#12531;&#12522;&#12540;&#12514;&#12540;&#12489;&#12391;&#38283;&#12367;&#12418;&#12398;&#12391;&#12377;&#12290;&#12381;&#12398;&#20182;&#12391;&#12399;&#12289;&#36890;&#24120;&#12289;&#12371;&#12398;&#12510;&#12483;&#12503;&#38322;&#35239;&#12514;&#12540;&#12489;&#12434;&#20351;&#12358;&#12371;&#12392;&#12399;&#12354;&#12426;&#12414;&#12379;&#12435;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -13025,12 +13870,13 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x30a6;&#x30a7;&#x30d6;&#x30da;&#x30fc;&#x30b8;&#x306b;&#x30de;&#x30a4;&#x30f3;&#x30c9;&#x30de;&#x30c3;&#x30d7;&#x3092;&#x516c;&#x958b;" FOLDED="true" ID="ID_1615767068" TEXT_SHORTENED="true">
+<node TEXT="&#x30a6;&#x30a7;&#x30d6;&#x30da;&#x30fc;&#x30b8;&#x306b;&#x30de;&#x30a4;&#x30f3;&#x30c9;&#x30de;&#x30c3;&#x30d7;&#x3092;&#x516c;&#x958b;" ID="ID_1615767068" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="6"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13086,14 +13932,16 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="SummaryNode"/>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <node TEXT="wiki &#x306b;&#x30de;&#x30a4;&#x30f3;&#x30c9;&#x30de;&#x30c3;&#x30d7;&#x3092;&#x57cb;&#x3081;&#x8fbc;&#x3080;" ID="ID_590309579" LINK="http://freeplane.sourceforge.net/wiki/index.php/Embedding_mind_maps" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13103,16 +13951,18 @@
       &#12454;&#12455;&#12502;&#12469;&#12452;&#12488;&#12420; wiki &#12408;&#12398;&#12510;&#12452;&#12531;&#12489;&#12510;&#12483;&#12503;&#22475;&#12417;&#36796;&#12415;&#12395;&#12388;&#12356;&#25163;&#12399;&#12289;&#12452;&#12531;&#12479;&#12540;&#12493;&#12483;&#12488;&#19978;&#12398;&#35500;&#26126;&#12434;&#12372;&#35239;&#12367;&#12384;&#12373;&#12356;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 </node>
-<node TEXT="&#x30d8;&#x30eb;&#x30d7;" FOLDED="true" ID="ID_832864139" TEXT_SHORTENED="true">
+<node TEXT="&#x30d8;&#x30eb;&#x30d7;" ID="ID_832864139" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="1"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13122,14 +13972,16 @@
       Freeplane &#20351;&#29992;&#20013;&#12395;&#29983;&#12376;&#12427;&#21839;&#38988;&#12398;&#35299;&#27770;&#12395;&#24441;&#31435;&#12388;&#21508;&#31278;&#24773;&#22577;&#28304;&#12434;&#32057;&#20171;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <edge STYLE="horizontal"/>
 <node TEXT="&#x30d7;&#x30ed;&#x30b0;&#x30e9;&#x30e0;&#x306e;&#x66f4;&#x65b0;&#x78ba;&#x8a8d;" ID="ID_373235221" TEXT_SHORTENED="true">
 <icon BUILTIN="../update"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13139,10 +13991,11 @@
       Freeplane &#12398;&#26032;&#12496;&#12540;&#12472;&#12519;&#12531;&#12364;&#12522;&#12522;&#12540;&#12473;&#12373;&#12428;&#12390;&#12356;&#12427;&#12363;&#12393;&#12358;&#12363;&#12289;&#25163;&#21205;&#12391;&#30906;&#35469;&#12375;&#12414;&#12377;&#12290;&#38283;&#12356;&#12383;&#12480;&#12452;&#12450;&#12525;&#12464;&#12398;&#26368;&#19979;&#37096;&#12395;&#12354;&#12427;&#23550;&#24540;&#12481;&#12455;&#12483;&#12463;&#12508;&#12483;&#12463;&#12473;&#12434;&#26377;&#21177;&#12395;&#12377;&#12428;&#12400;&#12289;&#12371;&#12398;&#12481;&#12455;&#12483;&#12463;&#12364;&#33258;&#21205;&#30340;&#12395;&#34892;&#12394;&#12431;&#12428;&#12427;&#12424;&#12358;&#12395;&#12394;&#12426;&#12414;&#12377;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="Freeplane &#x30db;&#x30fc;&#x30e0;&#x30da;&#x30fc;&#x30b8;" ID="ID_423013051" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="Freeplane &#x30db;&#x30fc;&#x30e0;&#x30da;&#x30fc;&#x30b8;" ID="ID_423013051" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13152,13 +14005,14 @@
       Freeplane &#12454;&#12455;&#12502;&#12469;&#12452;&#12488;&#12398;&#12507;&#12540;&#12512;&#12506;&#12540;&#12472;&#12434;&#12289;&#12454;&#12455;&#12502;&#12502;&#12521;&#12454;&#12470;&#12391;&#38283;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x30cd;&#x30c3;&#x30c8;&#x3067;&#x52a9;&#x8a00;&#x3092;&#x8981;&#x8acb;" FOLDED="true" ID="ID_1043826397" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30cd;&#x30c3;&#x30c8;&#x3067;&#x52a9;&#x8a00;&#x3092;&#x8981;&#x8acb;" ID="ID_1043826397" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13168,15 +14022,16 @@
       Freeplane &#12398; Open Discussion Forum &#12434;&#12289;&#12454;&#12455;&#12502;&#12502;&#12521;&#12454;&#12470;&#12454;&#12451;&#12531;&#12489;&#12454;&#12395;&#38283;&#12365;&#12414;&#12377;&#12290;&#30906;&#35469;&#12480;&#12452;&#12450;&#12525;&#12464;&#12364;&#38283;&#12365;&#12289;&#12371;&#12398;&#27231;&#33021;&#12434;&#20351;&#12358;&#12383;&#12417;&#12395;&#12399;&#12289;SourceForge.net &#12395;&#12525;&#12464;&#12452;&#12531;&#12377;&#12427;&#24517;&#35201;&#12364;&#12354;&#12427;&#12392;&#12356;&#12358;&#35686;&#21578;&#12364;&#34920;&#31034;&#12373;&#12428;&#12414;&#12377;&#12290;SourceForge.net &#12391;&#12398;&#28961;&#26009;&#12450;&#12459;&#12454;&#12531;&#12488;&#12398;&#38283;&#35373;&#12399;&#23481;&#26131;&#12391;&#12377;&#12290;&#12525;&#12464;&#12452;&#12531;&#12377;&#12427;&#12392;&#12289;&#26908;&#32034;&#27231;&#33021;&#12434;&#20351;&#12387;&#12390;&#30097;&#21839;&#12395;&#38306;&#36899;&#12377;&#12427;&#24773;&#22577;&#12434;&#12481;&#12455;&#12483;&#12463;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;&#26908;&#32034;&#12501;&#12451;&#12540;&#12523;&#12489;&#12399;&#12289;&#12501;&#12457;&#12540;&#12521;&#12512;&#12513;&#12491;&#12517;&#12540;&#12398;&#35211;&#20986;&#12375;&#12398;&#12377;&#12368;&#19979;&#12395;&#12354;&#12426;&#12414;&#12377;&#12290;&#12373;&#12425;&#12395;&#12289;&#29420;&#33258;&#12398;&#36074;&#21839;&#12434;&#12375;&#12383;&#12356;&#12394;&#12425;&#12400;&#12289;&#12506;&#12540;&#12472;&#12398;&#26368;&#19979;&#37096;&#12414;&#12391;&#12473;&#12463;&#12525;&#12540;&#12523;&#12480;&#12454;&#12531;&#12375;&#12390;&#12289;&#8221;Add a Topic&quot; &#12398;&#35211;&#20986;&#12375;&#12434;&#35211;&#12388;&#12369;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;&quot;Enter topic title&quot; &#12398;&#12521;&#12505;&#12523;&#12398;&#12388;&#12356;&#12383;&#34892;&#12395;&#31777;&#21336;&#12394;&#34920;&#38988;&#12434;&#12479;&#12452;&#12503;&#12375;&#12289;&#27425;&#12395;&#12289;&#19979;&#26041;&#12398;&#22823;&#12365;&#12356;&#12486;&#12461;&#12473;&#12488;&#12508;&#12483;&#12463;&#12473;&#12395;&#12513;&#12483;&#12475;&#12540;&#12472;&#12434;&#20837;&#21147;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="1"/>
 <node TEXT="&#x30c8;&#x30e9;&#x30d6;&#x30eb;&#x30b7;&#x30e5;&#x30fc;&#x30c6;&#x30a3;&#x30f3;&#x30b0;" ID="ID_389902247" LINK="http://freeplane.sourceforge.net/wiki/index.php/Troubleshooting" TEXT_SHORTENED="true"/>
 </node>
-<node TEXT="&#x30d0;&#x30b0;&#x5831;&#x544a;" ID="ID_962008923" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30d0;&#x30b0;&#x5831;&#x544a;" ID="ID_962008923" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13186,13 +14041,14 @@
       Mantis Bug tracker &#12398;&#12506;&#12540;&#12472;&#12434;&#12289;&#12454;&#12455;&#12502;&#12502;&#12521;&#12454;&#12470;&#12391;&#38283;&#12365;&#12414;&#12377;&#12290;&#12371;&#12371;&#12363;&#12425;&#12496;&#12464;&#12434;&#22577;&#21578;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;&#160;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x6a5f;&#x80fd;&#x306e;&#x8ffd;&#x52a0;&#x3092;&#x8981;&#x671b;" ID="ID_98014582" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x6a5f;&#x80fd;&#x306e;&#x8ffd;&#x52a0;&#x3092;&#x8981;&#x671b;" ID="ID_98014582" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13202,13 +14058,14 @@
       Mantis Tracker &#12398; Freeplane &#27231;&#33021;&#36861;&#21152;&#35201;&#26395;&#12506;&#12540;&#12472;&#12434;&#12289;&#12454;&#12455;&#12502;&#12502;&#12521;&#12454;&#12470;&#12391;&#38283;&#12365;&#12414;&#12377;&#12290;&#12371;&#12371;&#12363;&#12425;&#35201;&#26395;&#12434;&#25552;&#20986;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x30e9;&#x30a4;&#x30bb;&#x30f3;&#x30b9;" ID="ID_27246134" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30e9;&#x30a4;&#x30bb;&#x30f3;&#x30b9;" ID="ID_27246134" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13218,13 +14075,14 @@
       Freeplane &#12398;&#33879;&#20316;&#27177;&#12420;&#12521;&#12452;&#12475;&#12531;&#12473;&#24773;&#22577;&#12398;&#35201;&#28857;&#12434;&#31034;&#12377;&#12454;&#12451;&#12531;&#12489;&#12454;&#12434;&#38283;&#12365;&#12414;&#12377;&#12290;GNU&#160; &#19968;&#33324;&#20844;&#34886;&#21033;&#29992;&#35377;&#35582;&#26360;&#12398;&#23436;&#20840;&#29256;&#12398;&#25152;&#22312;&#24773;&#22577;&#12418;&#21547;&#12414;&#12428;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Freeplane &#x306b;&#x3064;&#x3044;&#x3066;" ID="ID_1959296182" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="Freeplane &#x306b;&#x3064;&#x3044;&#x3066;" ID="ID_1959296182" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13234,7 +14092,8 @@
       &#33879;&#20316;&#27177;&#12289;&#12496;&#12540;&#12472;&#12519;&#12531;&#12289;&#21450;&#12403;&#25216;&#34899;&#30340;&#24773;&#22577;&#12434;&#34920;&#31034;&#12377;&#12427;&#12480;&#12452;&#12450;&#12525;&#12464;&#12434;&#38283;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -13244,7 +14103,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13254,10 +14114,11 @@
       &#12513;&#12491;&#12517;&#12540;&#27010;&#35201;&#12434;&#35501;&#12415;&#36796;&#12415;&#23554;&#29992;&#12514;&#12540;&#12489;&#12391;&#38283;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x30de;&#x30cb;&#x30e5;&#x30a2;&#x30eb;" ID="ID_604224444" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30de;&#x30cb;&#x30e5;&#x30a2;&#x30eb;" ID="ID_604224444" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13267,7 +14128,8 @@
       &#22522;&#26412;&#12510;&#12491;&#12517;&#12450;&#12523;&#12501;&#12449;&#12452;&#12523;&#12434;&#35501;&#12415;&#36796;&#12415;&#23554;&#29992;&#12514;&#12540;&#12489;&#12391;&#38283;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -13282,7 +14144,8 @@
 </node>
 <node TEXT="&#x30e6;&#x30fc;&#x30b6;&#x30ac;&#x30a4;&#x30c9;" STYLE_REF="Title" FOLDED="true" POSITION="left" ID="ID_1765144490" HGAP="38" VSHIFT="-127" TEXT_SHORTENED="true">
 <icon BUILTIN="gohome"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13310,10 +14173,11 @@
       &#12384;&#12373;&#12356;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <edge STYLE="bezier"/>
-<node TEXT="&#x76ee;&#x6a19;" STYLE_REF="UserGuide" ID="ID_910734357" HGAP="30" VSHIFT="-10" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x76ee;&#x6a19;" STYLE_REF="UserGuide" ID="ID_910734357" HGAP="30" VSHIFT="-10" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13350,11 +14214,12 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <edge STYLE="horizontal"/>
 </node>
-<node STYLE_REF="UserGuide" FOLDED="true" ID="ID_1108028010" HGAP="27" VSHIFT="-7" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
+<node STYLE_REF="UserGuide" ID="ID_1108028010" HGAP="27" VSHIFT="-7" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -13364,15 +14229,17 @@
       <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane">&#27010;&#35201;</a>
     </p>
   </body>
-</html></richcontent>
-<richcontent TYPE="DETAILS">
+</html>
+</richcontent>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      &#12371;&#12398;&#12510;&#12491;&#12517;&#12450;&#12523;&#12399;&#12289;Freeplane <a href="freeplaneTutorial.mm">&#12463;&#12451;&#12483;&#12463;&#12522;&#12501;&#12449;&#12524;&#12531;&#12473;&#160;</a>&#160; &#12398;&#20184;&#37682;&#12391;&#12377;&#12290;&#12463;&#12451;&#12483;&#12463;&#12522;&#12501;&#12449;&#12524;&#12531;&#12473;&#12395;&#12388;&#12356;&#12390;&#12399;&#12289;Freeplane &#12513;&#12452;&#12531;&#12513;&#12491;&#12517;&#12540;&#12398;<i>&#12300;&#12504;&#12523;&#12503; &gt; &#12373;&#12354;&#12289;&#22987;&#12417;&#12424;&#12358;&#65281;&#12301;</i>&#12434;&#12372;&#35239;&#12367;&#12384;&#12373;&#12356;&#12290;&#12452;&#12531;&#12479;&#12540;&#12493;&#12483;&#12488;&#19978;&#12398;&#12510;&#12452;&#12531;&#12489;&#12510;&#12483;&#12503;&#20316;&#25104;&#20837;&#38272;&#12289;&#21450;&#12403; Freeplane &#12481;&#12517;&#12540;&#12488;&#12522;&#12450;&#12523;&#12398;&#12506;&#12540;&#12472;&#12434;&#35211;&#12427;&#22580;&#21512;&#12399;&#12289;&#36196;&#12356;&#30690;&#21360;&#12434;&#12463;&#12522;&#12483;&#12463;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
+      &#12371;&#12398;&#12510;&#12491;&#12517;&#12450;&#12523;&#12399;&#12289;Freeplane <a href="freeplaneTutorial_ja.mm">&#12463;&#12451;&#12483;&#12463;&#12522;&#12501;&#12449;&#12524;&#12531;&#12473;&#160;</a>&#160; &#12398;&#20184;&#37682;&#12391;&#12377;&#12290;&#12463;&#12451;&#12483;&#12463;&#12522;&#12501;&#12449;&#12524;&#12531;&#12473;&#12395;&#12388;&#12356;&#12390;&#12399;&#12289;Freeplane &#12513;&#12452;&#12531;&#12513;&#12491;&#12517;&#12540;&#12398;<i>&#12300;&#12504;&#12523;&#12503; &gt; &#12373;&#12354;&#12289;&#22987;&#12417;&#12424;&#12358;&#65281;&#12301;</i>&#12434;&#12372;&#35239;&#12367;&#12384;&#12373;&#12356;&#12290;&#12452;&#12531;&#12479;&#12540;&#12493;&#12483;&#12488;&#19978;&#12398;&#12510;&#12452;&#12531;&#12489;&#12510;&#12483;&#12503;&#20316;&#25104;&#20837;&#38272;&#12289;&#21450;&#12403; Freeplane &#12481;&#12517;&#12540;&#12488;&#12522;&#12450;&#12523;&#12398;&#12506;&#12540;&#12472;&#12434;&#35211;&#12427;&#22580;&#21512;&#12399;&#12289;&#36196;&#12356;&#30690;&#21360;&#12434;&#12463;&#12522;&#12483;&#12463;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
     </p>
     <p>
       
@@ -13399,14 +14266,16 @@
       <i>&#12300;&#12452;&#12531;&#12473;&#12488;&#12540;&#12523;&#12301;</i>&#12494;&#12540;&#12489;&#12399;&#12289;Freeplane &#12398;&#12480;&#12454;&#12531;&#12525;&#12540;&#12489;&#12420;&#12452;&#12531;&#12473;&#12488;&#12540;&#12523;&#12289;&#24076;&#26395;&#12393;&#12362;&#12426;&#12398;&#12481;&#12517;&#12540;&#12491;&#12531;&#12464;&#12395;&#12388;&#12356;&#12390;&#35500;&#26126;&#12375;&#12390;&#12356;&#12414;&#12377;&#12290;<i>&#12300; Macintosh&#12301;</i>&#12494;&#12540;&#12489;&#12399;&#12289;Macintosh &#19978;&#12391;&#12398; &#65318;&#65328;&#160;&#160;&#12398;&#20351;&#29992;&#27861;&#12434;&#35500;&#26126;&#12375;&#12390;&#12356;&#12414;&#12377;&#12290;Macintosh &#12364;&#33509;&#24178;&#29305;&#30064;&#12394;&#12452;&#12531;&#12479;&#12540;&#12501;&#12455;&#12540;&#12473;&#12434;&#20351;&#29992;&#12375;&#12390;&#12356;&#12427;&#12363;&#12425;&#12391;&#12377;&#12290;<font color="#000000"><i>&#12300;&#12371;&#12398;&#25991;&#26360;&#12395;&#12388;&#12356;&#12390;&#12301;</i></font>&#12494;&#12540;&#12489;&#12399;&#12289;&#12371;&#12398;&#12510;&#12452;&#12531;&#12489;&#12510;&#12483;&#12503;&#12398;&#20316;&#25104;&#12395;&#24403;&#12383;&#12387;&#12390;&#29992;&#12356;&#12383;&#21508;&#31278;&#12398;&#21407;&#21063;&#12392;&#25216;&#34899;&#20107;&#38917;&#12395;&#12388;&#12356;&#12390;&#35500;&#26126;&#12375;&#12390;&#12356;&#12414;&#12377;&#12290;&#12371;&#12428;&#12399;&#12289;&#12371;&#12398;&#12424;&#12358;&#12394;&#35079;&#38609;&#12394;&#12510;&#12452;&#12531;&#12489;&#12510;&#12483;&#12503;&#12434;&#35373;&#35336;&#12289;&#20316;&#25104;&#12377;&#12427;&#26041;&#27861;&#12398;&#22909;&#20363;&#12392;&#12418;&#12394;&#12426;&#12414;&#12377;&#12290;&#12414;&#12383;&#12289;&#19978;&#25163;&#12394;&#24773;&#22577;&#26908;&#32034;&#12395;&#24441;&#31435;&#12388;&#12363;&#12418;&#12375;&#12428;&#12414;&#12379;&#12435;&#12290;<i>&#12300;&#65318;&#65313;&#65329;&#12301;</i>&#12494;&#12540;&#12489;&#12395;&#12399;&#12289;&#38971;&#32321;&#12395;&#35338;&#12363;&#12428;&#12427;&#36074;&#21839;&#12398;&#12356;&#12367;&#12388;&#12363;&#12364;&#21454;&#12417;&#12425;&#12428;&#12390;&#12356;&#12414;&#12377;&#12290;&#12424;&#12426;&#35443;&#32048;&#12394;&#22238;&#31572;&#12399;&#12289;&#12300;&#12522;&#12501;&#12449;&#12524;&#12531;&#12473;&#65379;&#12395;&#12354;&#12427;&#12399;&#12378;&#12391;&#12377;&#12290;&#12371;&#12371;&#12395;&#12399;&#12289;&#12518;&#12540;&#12470;&#12364;&#30452;&#38754;&#12375;&#12420;&#12377;&#12356;&#26082;&#30693;&#12398;&#12496;&#12464;&#12395;&#12388;&#12356;&#12390;&#12398;&#35500;&#26126;&#12418;&#21547;&#12414;&#12428;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <edge STYLE="horizontal"/>
-<node TEXT="&#x5185;&#x5bb9;&#x3092;&#x8b58;&#x5225;" STYLE_REF="UserGuide" FOLDED="true" ID="ID_740355128" TEXT_SHORTENED="true">
+<node TEXT="&#x5185;&#x5bb9;&#x3092;&#x8b58;&#x5225;" STYLE_REF="UserGuide" ID="ID_740355128" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="1,2"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13425,10 +14294,12 @@
       &#12463;&#12522;&#12483;&#12463;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;&#160;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="&#x5b9a;&#x7fa9;&#xff08;Definition&#xff09;" STYLE_REF="Definition" ID="ID_956317163" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="1,2"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13449,11 +14320,13 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x6a5f;&#x80fd;&#xff08;Method&#xff09;" STYLE_REF="Method" ID="ID_1120480647" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="1,2"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13463,11 +14336,13 @@
       &#27231;&#33021;&#12392;&#12399;&#12289;&#12513;&#12491;&#12517;&#12540;&#38917;&#30446;&#12395;&#25522;&#12370;&#12383;&#12424;&#12358;&#12394; Freeplane &#12398;&#21205;&#20316;&#12398;&#12371;&#12392;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x30aa;&#x30d7;&#x30b7;&#x30e7;&#x30f3;&#x5024;&#xff08;OptionalValue&#xff09;" STYLE_REF="OptionalValue" FOLDED="true" ID="ID_95043315" TEXT_SHORTENED="true">
+<node TEXT="&#x30aa;&#x30d7;&#x30b7;&#x30e7;&#x30f3;&#x5024;&#xff08;OptionalValue&#xff09;" STYLE_REF="OptionalValue" ID="ID_95043315" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="2"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13477,7 +14352,8 @@
       &#12458;&#12503;&#12471;&#12519;&#12531;&#20516;&#12392;&#12399;&#12289;&#12513;&#12491;&#12517;&#12540;&#12480;&#12452;&#12450;&#12525;&#12464;&#12398;&#20013;&#12391;&#36984;&#25246;&#21487;&#33021;&#12394;&#20505;&#35036;&#20516;&#12398;&#12371;&#12392;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="&#x30c1;&#x30a7;&#x30c3;&#x30af;&#x4ed8;&#x304d;" ID="ID_1938236186" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="IsChecked" LAST="false"/>
@@ -13496,6 +14372,7 @@
 <node TEXT="&#x624b;&#x9806;&#xff08;Procedure&#xff09;" STYLE_REF="Procedure" ID="ID_1538273710" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="1"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13505,11 +14382,13 @@
       &#25163;&#38918;&#12392;&#12399;&#12289;&#29305;&#23450;&#12398;&#21177;&#26524;&#12434;&#23455;&#29694;&#12377;&#12427;&#12383;&#12417;&#12395;&#35576;&#12293;&#12398;&#27231;&#33021;&#12434;&#12393;&#12398;&#12424;&#12358;&#12395;&#20351;&#29992;&#12377;&#12427;&#12363;&#12434;&#12289;&#35500;&#26126;&#12377;&#12427;&#12418;&#12398;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x4f8b;&#x5916;&#xff08;Exception&#xff09;" STYLE_REF="Exception" ID="ID_873140029" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="2"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13519,11 +14398,13 @@
       &#20363;&#22806;&#12392;&#12399;&#12289;&#24819;&#23450;&#22806;&#12398;&#21205;&#20316;&#12398;&#12371;&#12392;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x7559;&#x610f;&#x4e8b;&#x9805;&#xff08;ToNote&#xff09;" STYLE_REF="ToNote" ID="ID_1101759572" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="2"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13533,11 +14414,13 @@
       &#30041;&#24847;&#12377;&#12409;&#12365;&#24773;&#22577;&#12391;&#12289;&#38306;&#36899;&#12377;&#12427;&#21205;&#20316;&#12408;&#12398;&#27880;&#24847;&#12434;&#20419;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x8a73;&#x3057;&#x3044;&#x8aac;&#x660e;&#xff08;Refine&#xff09;" STYLE_REF="Refine" ID="ID_369686575" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="2"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13547,11 +14430,13 @@
       &#12371;&#12398;&#12473;&#12479;&#12452;&#12523;&#12391;&#34920;&#31034;&#12373;&#12428;&#12427;&#24773;&#22577;&#12399;&#12289;&#32972;&#26223;&#12420;&#32048;&#37096;&#12395;&#12388;&#12356;&#12390;&#12424;&#12426;&#35443;&#12375;&#12367;&#35500;&#26126;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x7528;&#x4f8b;&#xff08;Example&#xff09;" STYLE_REF="Example" ID="ID_584103658" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="2"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13561,11 +14446,13 @@
       &#12371;&#12398;&#12473;&#12479;&#12452;&#12523;&#12391;&#34920;&#31034;&#12373;&#12428;&#12427;&#24773;&#22577;&#12399;&#12289;&#29992;&#20363;&#12434;&#31034;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x66f4;&#x65b0;&#xff08;Revision&#xff09;" STYLE_REF="Revision" ID="ID_599389034" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="2"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13586,11 +14473,13 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x30e1;&#x30a4;&#x30f3;&#x30e1;&#x30cb;&#x30e5;&#x30fc;&#xff08;MainMenu&#xff09;" STYLE_REF="MainMenu" ID="ID_1469688782" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="1,2"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13600,10 +14489,11 @@
       &#12371;&#12398;&#12473;&#12479;&#12452;&#12523;&#12391;&#34920;&#31034;&#12373;&#12428;&#12427;&#24773;&#22577;&#12399;&#12289;&#12513;&#12452;&#12531;&#12484;&#12540;&#12523;&#12496;&#12540;&#19978;&#12395;&#31034;&#12373;&#12428;&#12427;&#12513;&#12491;&#12517;&#12540;&#12434;&#24847;&#21619;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x30e1;&#x30cb;&#x30e5;&#x30fc;&#x30b0;&#x30eb;&#x30fc;&#x30d7;&#xff08;MenuGroup&#xff09;" STYLE_REF="MenuGroupLabel" ID="ID_1698050814" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30e1;&#x30cb;&#x30e5;&#x30fc;&#x30b0;&#x30eb;&#x30fc;&#x30d7;&#xff08;MenuGroup&#xff09;" STYLE_REF="MenuGroupLabel" ID="ID_1698050814" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13613,13 +14503,14 @@
       &#12371;&#12398;&#12473;&#12479;&#12452;&#12523;&#12391;&#34920;&#31034;&#12373;&#12428;&#12427;&#24773;&#22577;&#12399;&#12289;&#30456;&#20114;&#12395;&#38306;&#36899;&#12377;&#12427;&#35576;&#27231;&#33021;&#12434;&#19968;&#25324;&#34920;&#31034;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
 </node>
 </node>
-<node TEXT="&#x57fa;&#x672c;&#x7528;&#x8a9e;" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1480936832" HGAP="30" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x57fa;&#x672c;&#x7528;&#x8a9e;" STYLE_REF="UserGuide" ID="ID_1480936832" HGAP="30" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13641,10 +14532,11 @@
       &#26126;&#12434;&#12362;&#35501;&#12415;&#12367;&#12384;&#12373;&#12356;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <edge STYLE="horizontal"/>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;" FOLDED="true" ID="ID_1676021072" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;" ID="ID_1676021072" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13660,13 +14552,14 @@
       &#12371;&#12398;&#12494;&#12540;&#12489;&#12395;&#20837;&#21147;&#12373;&#12428;&#12383;&#12418;&#12398;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="1"/>
-<node TEXT="&#x30eb;&#x30fc;&#x30c8;&#xff0f;&#x30eb;&#x30fc;&#x30c8;&#x30ce;&#x30fc;&#x30c9;" ID="ID_1340270723" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30eb;&#x30fc;&#x30c8;&#xff0f;&#x30eb;&#x30fc;&#x30c8;&#x30ce;&#x30fc;&#x30c9;" ID="ID_1340270723" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13676,15 +14569,16 @@
       <b>&#12523;&#12540;&#12488;&#12494;&#12540;&#12489;</b>&#12399;&#12289;&#20013;&#24515;&#12398;&#12494;&#12540;&#12489;&#12391;&#12289;&#38542;&#23652;&#30340;&#12395;&#35211;&#12427;&#12392;&#20182;&#12398;&#12494;&#12540;&#12489;&#12399;&#12381;&#12371;&#12363;&#12425;&#22987;&#12414;&#12426;&#12414;&#12377;&#12290;&#21021;&#26399;&#29366;&#24907;&#12391;&#12399; Freeplane &#12398;&#20316;&#26989;&#12473;&#12506;&#12540;&#12473;&#12398;&#20013;&#24515;&#12395;&#20301;&#32622;&#12375;&#12289;&#26965;&#20870;&#24418;&#12434;&#12375;&#12390;&#12356;&#12414;&#12377;&#12290;&#21066;&#38500;&#12377;&#12427;&#12371;&#12392;&#12418;&#12289;&#12414;&#12383;&#35079;&#25968;&#12398;&#12523;&#12540;&#12488;&#12494;&#12540;&#12489;&#12434;&#20316;&#12427;&#12371;&#12392;&#12418;&#12391;&#12365;&#12414;&#12379;&#12435;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="1"/>
 </node>
-<node TEXT="&#x89aa;&#x30ce;&#x30fc;&#x30c9;" STYLE_REF="Definition" ID="ID_50690196" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x89aa;&#x30ce;&#x30fc;&#x30c9;" STYLE_REF="Definition" ID="ID_50690196" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13694,14 +14588,15 @@
       <b>&#35242;&#12494;&#12540;&#12489;</b>&#12399;&#12289;&#38542;&#23652;&#27083;&#36896;&#19978;&#12289;&#21029;&#12398;&#12494;&#12540;&#12489;&#12398;&#19978;&#20301;&#12395;&#20301;&#32622;&#12377;&#12427;&#12494;&#12540;&#12489;&#12398;&#21628;&#31216;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="1"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x5b50;&#x30ce;&#x30fc;&#x30c9;" STYLE_REF="Definition" ID="ID_427496140" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x5b50;&#x30ce;&#x30fc;&#x30c9;" STYLE_REF="Definition" ID="ID_427496140" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13711,14 +14606,15 @@
       <b>&#23376;&#12494;&#12540;&#12489;</b>&#12399;&#12289;&#38542;&#23652;&#27083;&#36896;&#19978;&#12289;&#21029;&#12398;&#12494;&#12540;&#12489;&#65288;&#35242;&#12494;&#12540;&#12489;)&#12398;<font color="#000000">&#19979;&#20301;&#12395;&#20301;&#32622;&#12377;&#12427;</font>&#12494;&#12540;&#12489;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="1"/>
 </node>
-<node TEXT="&#x5144;&#x5f1f;&#x30ce;&#x30fc;&#x30c9;" STYLE_REF="Definition" ID="ID_1766953193" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x5144;&#x5f1f;&#x30ce;&#x30fc;&#x30c9;" STYLE_REF="Definition" ID="ID_1766953193" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13728,7 +14624,8 @@
       <b>&#20804;&#24351;&#12494;&#12540;&#12489;</b>&#12399;&#12289;&#20182;&#12398;&#19968;&#23450;&#12398;&#12494;&#12540;&#12489;&#12392;&#21516;&#19968;&#38542;&#23652;&#12395;&#20301;&#32622;&#12377;&#12427;&#12494;&#12540;&#12489;&#12391;&#12377;&#12290;&#12375;&#12383;&#12364;&#12387;&#12390;&#12289;&#12354;&#12427;&#12494;&#12540;&#12489;&#12434;&#25407;&#20837;&#12375;&#12289;&#27425;&#12395;&#12381;&#12398;&#19979;&#20596;&#12395;&#21029;&#12398;&#12494;&#12540;&#12489;&#12434;&#25407;&#20837;&#12377;&#12427;&#22580;&#21512;&#12289;&#20804;&#24351;&#12494;&#12540;&#12489;&#12434;&#20316;&#25104;&#12375;&#12383;&#12371;&#12392;&#12395;&#12394;&#12426;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
@@ -13737,6 +14634,7 @@
 <node TEXT="&#x95a2;&#x4fc2;&#x8868;&#x8a18;&#x306f;&#x89aa;&#x621a;&#x7528;&#x8a9e;&#x3067;" ID="ID_1402619445" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13746,15 +14644,16 @@
       &#12371;&#12428;&#12425;&#12398;&#23478;&#26063;&#38306;&#36899;&#29992;&#35486;&#12399;&#12289;&#31062;&#29238;&#27597;&#12420;&#23403;&#12289;&#21460;&#29238;&#12539;&#20271;&#29238;&#31561;&#12392;&#12356;&#12387;&#12383;&#20491;&#21029;&#12398;&#38306;&#20418;&#12395;&#12414;&#12391;&#25313;&#24373;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;&#65339;&#9679;&#35379;&#32773;&#27880;&#65306;&#26085;&#26412;&#35486;&#35379;&#12391;&#12399;&#12289;&#22810;&#12367;&#12398;&#22580;&#21512;&#12289;&#23376;&#23403;&#12494;&#12540;&#12489;&#12434;&#12300;&#19979;&#20301;&#12494;&#12540;&#12489;&#12301;&#12289;&#20808;&#31062;&#31563;&#12398;&#12494;&#12540;&#12489;&#12434;&#12300;&#19978;&#20301;&#12494;&#12540;&#12489;&#12301;&#12392;&#35379;&#12375;&#12390;&#12356;&#12427;&#12290;&#65341;&#25351;&#31034;&#12373;&#12428;&#12383;&#29992;&#35486;&#12399;&#12289;&#30456;&#23550;&#30340;&#12394;&#12418;&#12398;&#12391;&#12377;&#12290;&#12375;&#12383;&#12364;&#12387;&#12390;&#12289;&#21516;&#12376;&#12494;&#12540;&#12489;&#12364;&#12289;&#35242;&#12494;&#12540;&#12489;&#12395;&#23550;&#12375;&#12390;&#12399;&#23376;&#12494;&#12540;&#12489;&#12392;&#12394;&#12426;&#12289;&#23376;&#12494;&#12540;&#12489;&#12395;&#23550;&#12375;&#12390;&#12399;&#35242;&#12494;&#12540;&#12489;&#12395;&#12394;&#12427;&#12392;&#12356;&#12387;&#12383;&#20855;&#21512;&#12395;&#12394;&#12427;&#12371;&#12392;&#12395;&#30041;&#24847;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="1"/>
 </node>
 </node>
-<node TEXT="&#x95a2;&#x4fc2;" STYLE_REF="Definition" FOLDED="true" ID="ID_1963924039" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x95a2;&#x4fc2;" STYLE_REF="Definition" ID="ID_1963924039" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13773,12 +14672,13 @@
       &#38306;&#20418;&#12434;&#31034;&#12377;&#12418;&#12398;&#12418;&#12354;&#12426;&#12414;&#12377;&#12290;&#12371;&#12428;&#12425;&#12395;&#12388;&#12356;&#12390;&#12399;&#12289;&#24460;&#12411;&#12393;&#35500;&#26126;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
-<node TEXT="&#x7dda;&#xff08;&#x30a8;&#x30c3;&#x30b8;&#xff09;" STYLE_REF="Definition" FOLDED="true" ID="ID_1789556284" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x7dda;&#xff08;&#x30a8;&#x30c3;&#x30b8;&#xff09;" STYLE_REF="Definition" ID="ID_1789556284" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13805,13 +14705,14 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="1"/>
-<node TEXT="&#x679d;" STYLE_REF="Definition" ID="ID_659870454" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x679d;" STYLE_REF="Definition" ID="ID_659870454" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13827,14 +14728,15 @@
       <b><font color="#ff0000">&#26525;&#20998;&#12369;</font></b>&#12392;&#12399;&#12289;&#12354;&#12427;&#26525;&#12398;&#12494;&#12540;&#12489;&#32676;&#12434;&#20999;&#12426;&#21462;&#12426;&#12289;&#21029;&#12398;&#12510;&#12483;&#12503;&#12395;&#12456;&#12463;&#12473;&#12509;&#12540;&#12488;&#12377;&#12427;&#12371;&#12392;&#12434;&#24847;&#21619;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="&#x30b3;&#x30cd;&#x30af;&#x30bf;" STYLE_REF="Definition" ID="ID_1337501519" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x30b3;&#x30cd;&#x30af;&#x30bf;" STYLE_REF="Definition" ID="ID_1337501519" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13844,13 +14746,14 @@
       <b>&#12467;&#12493;&#12463;&#12479;</b>&#12399;&#12289;&#22522;&#26412;&#30340;&#12394;&#12484;&#12522;&#12540;&#38542;&#23652;&#27083;&#36896;&#12363;&#12425;&#22806;&#12428;&#12383;&#32080;&#12403;&#12388;&#12365;&#31034;&#12377;&#35222;&#35226;&#30340;&#36899;&#32080;&#25163;&#27573;&#12391;&#12377;&#12290;&#12381;&#12428;&#12399;&#12289;&#20219;&#24847;&#12398;&#65298;&#12388;&#12398;&#12494;&#12540;&#12489;&#38291;&#12434;&#32080;&#12406;&#30690;&#21360;&#12394;&#12356;&#12375;&#32218;&#12398;&#24418;&#12434;&#12392;&#12426;&#12289;&#12518;&#12540;&#12470;&#12398;&#23450;&#32681;&#12395;&#24467;&#12387;&#12390;&#26263;&#31034;&#30340;&#12394;&#24847;&#21619;&#12434;&#34920;&#29694;&#12375;&#12414;&#12377;&#12290;&#12371;&#12398;&#24847;&#21619;&#12395;&#12388;&#12356;&#12390;&#12399;&#12289;&#12521;&#12505;&#12523;&#12434;&#29992;&#12356;&#12390;&#26126;&#31034;&#12377;&#12427;&#12371;&#12392;&#12418;&#12391;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x96f2;" STYLE_REF="Definition" ID="ID_1109822175" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x96f2;" STYLE_REF="Definition" ID="ID_1109822175" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13860,14 +14763,15 @@
       <b>&#38642;</b>&#12399;&#12289;&#26525;&#12398;&#19968;&#29872;&#12434;&#12394;&#12377;&#12494;&#12540;&#12489;&#32676;&#12434;&#35222;&#35226;&#30340;&#12395;&#21253;&#12415;&#36796;&#12416;&#12418;&#12398;&#12391;&#12377;&#12290;&#12371;&#12398;&#12464;&#12523;&#12540;&#12503;&#12399;&#12289;&#65297;&#12388;&#12398;&#12494;&#12540;&#12489;&#12395;&#24112;&#23646;&#12375;&#12289;&#12371;&#12398;&#12494;&#12540;&#12489;&#33258;&#36523;&#12392;&#12381;&#12398;&#12377;&#12409;&#12390;&#12398;&#19979;&#20301;&#12494;&#12540;&#12489;&#12364;&#21547;&#12414;&#12428;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <font BOLD="false"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x307e;&#x3068;&#x3081;&#x30ce;&#x30fc;&#x30c9;" STYLE_REF="Definition" ID="ID_1831303797" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x307e;&#x3068;&#x3081;&#x30ce;&#x30fc;&#x30c9;" STYLE_REF="Definition" ID="ID_1831303797" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13877,7 +14781,8 @@
       <b>&#12414;&#12392;&#12417;&#12494;&#12540;&#12489;</b>&#12399;&#12289;&#12518;&#12540;&#12470;&#12364;&#23450;&#32681;&#12377;&#12427;&#20804;&#24351;&#12494;&#12540;&#12489;&#32676;&#12434;&#35222;&#35226;&#30340;&#12395;&#34920;&#31034;&#12377;&#12427;&#12354;&#12427;&#27083;&#36896;&#12391;&#12377;&#12290;&#27874;&#25324;&#24359;&#12398;&#26411;&#31471;&#12364;&#12464;&#12523;&#12540;&#12503;&#12398;&#22987;&#28857;&#12392;&#32066;&#28857;&#12434;&#31034;&#12375;&#12414;&#12377;&#12290;&#12464;&#12523;&#12540;&#12503;&#12398;&#20013;&#22830;&#12395;&#12289;&#12464;&#12523;&#12540;&#12503;&#38306;&#36899;&#24773;&#22577;&#12434;&#31034;&#12377;&#12494;&#12540;&#12489;&#12289;&#12388;&#12414;&#12426;&#20107;&#23455;&#19978;&#12398;&#12414;&#12392;&#12417;&#12494;&#12540;&#12489;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
@@ -13887,7 +14792,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13903,13 +14809,15 @@
       &#12494;&#12540;&#12488;&#12289;&#23646;&#24615;&#12289;&#12495;&#12452;&#12497;&#12540;&#12522;&#12531;&#12463;&#12289;&#12452;&#12513;&#12540;&#12472;&#12394;&#12393;&#12364;&#12381;&#12398;&#20363;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x30d7;&#x30ed;&#x30d1;&#x30c6;&#x30a3;" ID="ID_502368623" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -13933,11 +14841,12 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="&#x7ae0;&#x5225;&#x5b66;&#x7fd2;&#x30ac;&#x30a4;&#x30c9;" STYLE_REF="UserGuide" FOLDED="true" ID="ID_919267416" HGAP="30" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x7ae0;&#x5225;&#x5b66;&#x7fd2;&#x30ac;&#x30a4;&#x30c9;" STYLE_REF="UserGuide" ID="ID_919267416" HGAP="30" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -14007,16 +14916,18 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
 <edge STYLE="horizontal"/>
 <node TEXT="&#x76ee;&#x6b21;" ID="ID_1750213503" HGAP="50" VSHIFT="-10" TEXT_SHORTENED="true">
 <font BOLD="true"/>
 <edge STYLE="hide_edge"/>
 </node>
-<node TEXT="&#x521d;&#x3081;&#x3066;&#x306e;&#x30de;&#x30a4;&#x30f3;&#x30c9;&#x30de;&#x30c3;&#x30d7;" FOLDED="true" ID="ID_829890234" NUMBERED="true" TEXT_SHORTENED="true">
+<node TEXT="&#x521d;&#x3081;&#x3066;&#x306e;&#x30de;&#x30a4;&#x30f3;&#x30c9;&#x30de;&#x30c3;&#x30d7;" ID="ID_829890234" NUMBERED="true" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="0"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -14089,14 +15000,15 @@
       <b>&#20840;&#20307;&#12398;&#25163;&#38918;&#12420;&#20351;&#29992;&#12377;&#12427;&#12450;&#12452;&#12467;&#12531;&#12508;&#12479;&#12531;&#12395;&#12388;&#12356;&#12390;&#12399;&#12289;&#24038;&#26041;&#12398;&#12494;&#12540;&#12489;&#12434;&#21442;&#29031;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;</b>
     </p>
   </body>
-</html></richcontent>
-<node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x30eb;&#x30fc;&#x30eb;&#x3092;&#x5b9a;&#x7fa9;" FOLDED="true" ID="ID_1670868929" TEXT_SHORTENED="true">
+</html>
+</richcontent>
+<node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x30eb;&#x30fc;&#x30eb;&#x3092;&#x5b9a;&#x7fa9;" ID="ID_1670868929" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="0"/>
-<node STYLE_REF="ProcedureStep" ID="ID_1014969877" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
+<node STYLE_REF="ProcedureStep" ID="ID_1014969877" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14106,10 +15018,12 @@
       <i>&#12300;&#31456;&#12301;(Chapter)</i>&#12434;&#36984;&#25246;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="0"/>
 <hook NAME="FirstGroupNode"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -14124,10 +15038,11 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node STYLE_REF="ProcedureStep" ID="ID_1048644932" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
+<node STYLE_REF="ProcedureStep" ID="ID_1048644932" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14137,7 +15052,8 @@
       <i>&#12300;&#8835;(&#21547;&#12416;)&#12301;</i>&#12434;&#36984;&#25246;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="0"/>
 </node>
 <node TEXT="&#x300c;1&#x300d;&#x3092;&#x9078;&#x629e;&#xff0f;&#x5165;&#x529b;" STYLE_REF="ProcedureStep" ID="ID_48466550" TEXT_SHORTENED="true">
@@ -14148,13 +15064,13 @@
 <attribute NAME="Chapter" VALUE="0"/>
 </node>
 </node>
-<node TEXT="&#x3059;&#x3079;&#x3066;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x5c55;&#x958b;" FOLDED="true" ID="ID_1968664250" TEXT_SHORTENED="true">
+<node TEXT="&#x3059;&#x3079;&#x3066;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x5c55;&#x958b;" ID="ID_1968664250" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="0"/>
-<node STYLE_REF="ProcedureStep" ID="ID_179404412" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
+<node STYLE_REF="ProcedureStep" ID="ID_179404412" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14164,13 +15080,15 @@
       <i>&#12300;&#12523;&#12540;&#12488;&#12408;&#12472;&#12515;&#12531;&#12503;&#12301;</i>&#65288;&#12300;Esc&#12301;&#12434;&#25276;&#12377;)
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <attribute NAME="Chapter" VALUE="0"/>
 </node>
 <node STYLE_REF="ProcedureStep" ID="ID_1986038792" TEXT_SHORTENED="true">
 <icon BUILTIN="../unfold_all"/>
 <richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14180,14 +15098,16 @@
       <i>&#12300;&#12377;&#12409;&#12390;&#23637;&#38283;&#12377;&#12427;&#12301;</i>&#12434;&#25276;&#12377;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="0"/>
 </node>
 </node>
-<node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x8868;&#x793a;" STYLE_REF="Procedure" FOLDED="true" ID="ID_1044635142" TEXT_SHORTENED="true">
+<node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x8868;&#x793a;" STYLE_REF="Procedure" ID="ID_1044635142" TEXT_SHORTENED="true">
 <node STYLE_REF="ProcedureStep" ID="ID_1699746394" TEXT_SHORTENED="true">
 <icon BUILTIN="../apply_quick_filter"/>
 <richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14197,12 +15117,14 @@
       <i>&#12300;&#12463;&#12451;&#12483;&#12463;&#12501;&#12451;&#12523;&#12479;&#12301;</i>&#12434;&#25276;&#12377;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="0"/>
 </node>
 <node STYLE_REF="ProcedureStep" ID="ID_1477283067" TEXT_SHORTENED="true">
 <icon BUILTIN="../show_ancestors"/>
 <richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14212,7 +15134,8 @@
       <i>&#12300;&#19978;&#20301;&#12494;&#12540;&#12489;&#12418;&#34920;&#31034;&#12301;</i>&#12434;&#28961;&#21177;&#12395;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="0"/>
 </node>
 <node TEXT="&#x30c4;&#x30fc;&#x30eb;&#x30d0;&#x30fc;&#x306e;&#x30a2;&#x30a4;&#x30b3;&#x30f3;&#x3092;&#x53c2;&#x7167;&#x3002;" ID="ID_1657145431" TEXT_SHORTENED="true">
@@ -14220,7 +15143,7 @@
 <hook NAME="SummaryNode"/>
 </node>
 </node>
-<node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x6761;&#x4ef6;&#x306e;&#x521d;&#x671f;&#x8a2d;&#x5b9a;&#x3092;&#x30c1;&#x30a7;&#x30c3;&#x30af;" FOLDED="true" ID="ID_1618746225" TEXT_SHORTENED="true">
+<node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x6761;&#x4ef6;&#x306e;&#x521d;&#x671f;&#x8a2d;&#x5b9a;&#x3092;&#x30c1;&#x30a7;&#x30c3;&#x30af;" ID="ID_1618746225" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
@@ -14228,6 +15151,7 @@
 <node STYLE_REF="ProcedureStep" ID="ID_467302191" TEXT_SHORTENED="true">
 <icon BUILTIN="../show_descendants"/>
 <richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14237,12 +15161,14 @@
       <i>&#12300;&#19979;&#20301;&#12494;&#12540;&#12489;&#12418;&#34920;&#31034;&#12301;</i>&#12434;&#28961;&#21177;&#12395;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="0"/>
 </node>
 <node STYLE_REF="ProcedureStep" ID="ID_178956245" TEXT_SHORTENED="true">
 <icon BUILTIN="../unfold_filtered_ancestors"/>
 <richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14252,12 +15178,14 @@
       <i>&#12300;&#12501;&#12451;&#12523;&#12479;&#20013;&#12398;&#12494;&#12540;&#12489;&#12434;&#23637;&#38283;&#12301;</i>&#12434;&#26377;&#21177;&#12395;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="0"/>
 </node>
 <node STYLE_REF="ProcedureStep" ID="ID_588285753" TEXT_SHORTENED="true">
 <icon BUILTIN="../applies_to_filtered_nodes"/>
 <richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14267,7 +15195,8 @@
       &#12300;<i>&#12501;&#12451;&#12523;&#12479;&#20013;&#12398;&#12494;&#12540;&#12489;&#12395;&#36969;&#29992;&#12301;</i>&#12434;&#28961;&#21177;&#12395;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="0"/>
 </node>
 </node>
@@ -14275,8 +15204,8 @@
 <attribute NAME="Chapter" VALUE="0"/>
 <hook NAME="SummaryNode"/>
 </node>
-<node FOLDED="true" ID="ID_1678666271" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
+<node ID="ID_1678666271" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14286,7 +15215,8 @@
       <i>&#12300;1. &#21021;&#12417;&#12390;&#12398;&#12510;&#12452;&#12531;&#12489;&#12510;&#12483;&#12503;&#12301;</i>&#12398;&#12501;&#12451;&#12523;&#12479;&#34920;&#31034;&#12434;&#32066;&#12360;&#12427;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="1"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
@@ -14295,6 +15225,7 @@
 <node STYLE_REF="ProcedureStep" ID="ID_1343052095" TEXT_SHORTENED="true">
 <icon BUILTIN="../remove_filtering"/>
 <richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14304,11 +15235,12 @@
       <i>&#12300;&#12501;&#12451;&#12523;&#12479;&#35299;&#38500;&#65379;</i>&#12434;&#25276;&#12377;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="1"/>
 </node>
-<node STYLE_REF="ProcedureStep" ID="ID_1663841014" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
+<node STYLE_REF="ProcedureStep" ID="ID_1663841014" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14318,13 +15250,15 @@
       <i>&#12300;&#12523;&#12540;&#12488;&#12408;&#12472;&#12515;&#12531;&#12503;&#12301;</i>&#65288;<i>&#12300;Esc&#12301;</i>&#12434;&#25276;&#12377;)
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <attribute NAME="Chapter" VALUE="1"/>
 </node>
 <node STYLE_REF="ProcedureStep" ID="ID_1495450969" TEXT_SHORTENED="true">
 <icon BUILTIN="../fold_all"/>
 <richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14334,7 +15268,8 @@
       <i>&#12300;&#12377;&#12409;&#12390;&#25240;&#12426;&#30067;&#12416;&#65379;</i>&#12434;&#25276;&#12377;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="1"/>
 </node>
 <node TEXT="&#x3059;&#x3079;&#x3066;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x6298;&#x308a;&#x7573;&#x3080;" ID="ID_1931349122" TEXT_SHORTENED="true">
@@ -14343,8 +15278,8 @@
 </node>
 </node>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x64cd;&#x4f5c;" ID="ID_1153833253" NUMBERED="true" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x64cd;&#x4f5c;" ID="ID_1153833253" NUMBERED="true" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -14374,11 +15309,12 @@
       2. &#25163;&#38918;&#12395;&#12388;&#12356;&#12390;&#12399;&#12289;&#12300;1.<i>&#160;&#21021;&#12417;&#12390;&#12398;&#12510;&#12452;&#12531;&#12489;&#12510;&#12483;&#12503;</i>&#12301;&#12398;&#31456;&#12434;&#21442;&#29031;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="0"/>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x6a5f;&#x80fd;" ID="ID_1790476268" NUMBERED="true" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x6a5f;&#x80fd;" ID="ID_1790476268" NUMBERED="true" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -14399,11 +15335,12 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="0"/>
 </node>
-<node TEXT="&#x66f8;&#x5f0f;&#x3068;&#x30b9;&#x30bf;&#x30a4;&#x30eb;" ID="ID_247370880" NUMBERED="true" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x66f8;&#x5f0f;&#x3068;&#x30b9;&#x30bf;&#x30a4;&#x30eb;" ID="ID_247370880" NUMBERED="true" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -14424,11 +15361,12 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="0"/>
 </node>
-<node TEXT="&#x65e5;&#x4ed8;&#x3001;&#x6642;&#x523b;&#x3001;&#x30ea;&#x30de;&#x30a4;&#x30f3;&#x30c0;" ID="ID_13139289" NUMBERED="true" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x65e5;&#x4ed8;&#x3001;&#x6642;&#x523b;&#x3001;&#x30ea;&#x30de;&#x30a4;&#x30f3;&#x30c0;" ID="ID_13139289" NUMBERED="true" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -14449,11 +15387,12 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="0"/>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x79fb;&#x52d5;&#x3068;&#x30de;&#x30c3;&#x30d7;&#x306e;&#x516c;&#x958b;" ID="ID_691709596" NUMBERED="true" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x79fb;&#x52d5;&#x3068;&#x30de;&#x30c3;&#x30d7;&#x306e;&#x516c;&#x958b;" ID="ID_691709596" NUMBERED="true" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -14474,11 +15413,12 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="0"/>
 </node>
-<node TEXT="&#x30b9;&#x30af;&#x30ea;&#x30d7;&#x30c8;&#x3068;&#x8a08;&#x7b97;&#x5f0f;" ID="ID_444100909" NUMBERED="true" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30b9;&#x30af;&#x30ea;&#x30d7;&#x30c8;&#x3068;&#x8a08;&#x7b97;&#x5f0f;" ID="ID_444100909" NUMBERED="true" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -14499,11 +15439,12 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="0"/>
 </node>
-<node TEXT="&#x30bb;&#x30ad;&#x30e5;&#x30ea;&#x30c6;&#x30a3;&#x3068;&#x74b0;&#x5883;&#x8a2d;&#x5b9a;" ID="ID_1261425134" NUMBERED="true" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30bb;&#x30ad;&#x30e5;&#x30ea;&#x30c6;&#x30a3;&#x3068;&#x74b0;&#x5883;&#x8a2d;&#x5b9a;" ID="ID_1261425134" NUMBERED="true" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -14524,12 +15465,14 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="0"/>
 </node>
 <node TEXT="9 &#x691c;&#x7d22;&#x3068;&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x8868;&#x793a;" ID="ID_1111099001" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="9"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -14550,11 +15493,12 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x4ed8;&#x9332;" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1016814885" TEXT_SHORTENED="true">
-<node TEXT="&#x3059;&#x3079;&#x3066;&#x306e;&#x5b9a;&#x7fa9;(definition)&#x3092;&#x8868;&#x793a;" FOLDED="true" ID="ID_137485117" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x4ed8;&#x9332;" STYLE_REF="UserGuide" ID="ID_1016814885" TEXT_SHORTENED="true">
+<node TEXT="&#x3059;&#x3079;&#x3066;&#x306e;&#x5b9a;&#x7fa9;(definition)&#x3092;&#x8868;&#x793a;" ID="ID_137485117" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -14581,14 +15525,15 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
-<node TEXT="&#x6761;&#x4ef6;&#x3092;&#x30c1;&#x30a7;&#x30c3;&#x30af;" STYLE_REF="UserGuide" FOLDED="true" ID="ID_925717472" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x6761;&#x4ef6;&#x3092;&#x30c1;&#x30a7;&#x30c3;&#x30af;" STYLE_REF="UserGuide" ID="ID_925717472" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -14601,7 +15546,8 @@
       &#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="&#x300c;&#x4e0a;&#x4f4d;&#x30ce;&#x30fc;&#x30c9;&#x3082;&#x8868;&#x793a;&#x300d;&#x3092;&#x7121;&#x52b9;&#x306b;" STYLE_REF="ProcedureStep" ID="ID_558856858" TEXT_SHORTENED="true">
 <icon BUILTIN="../show_ancestors"/>
 <hook NAME="FirstGroupNode"/>
@@ -14616,9 +15562,9 @@
 <icon BUILTIN="../applies_to_filtered_nodes"/>
 </node>
 </node>
-<node TEXT="&#x3059;&#x3079;&#x3066;&#xff08;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#xff09;&#x5c55;&#x958b;" STYLE_REF="UserGuide" FOLDED="true" ID="ID_135686189" TEXT_SHORTENED="true">
-<node ID="ID_1652334229" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
+<node TEXT="&#x3059;&#x3079;&#x3066;&#xff08;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#xff09;&#x5c55;&#x958b;" STYLE_REF="UserGuide" ID="ID_135686189" TEXT_SHORTENED="true">
+<node ID="ID_1652334229" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14628,12 +15574,14 @@
       <i>&#12300;&#12523;&#12540;&#12488;&#12408;&#12472;&#12515;&#12531;&#12503;&#12301;</i>&#160; (<i>&#12300;Esc&#12301;</i>&#12434;&#25276;&#12377;)
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 </node>
 <node ID="ID_1437799222" TEXT_SHORTENED="true">
 <icon BUILTIN="../unfold_all"/>
 <richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14643,12 +15591,13 @@
       <i>&#12300;&#12377;&#12409;&#12390;&#65339;&#12398;&#19979;&#20301;&#12494;&#12540;&#12489;&#12434;&#65341;&#23637;&#38283;&#12377;&#12427;&#12301;</i>&#12434;&#25276;&#12377;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x3092;&#x5b9a;&#x7fa9;" STYLE_REF="UserGuide" FOLDED="true" ID="ID_989011629" TEXT_SHORTENED="true">
-<node ID="ID_296337141" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
+<node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x3092;&#x5b9a;&#x7fa9;" STYLE_REF="UserGuide" ID="ID_989011629" TEXT_SHORTENED="true">
+<node ID="ID_296337141" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14658,11 +15607,12 @@
       <i>&#12300;Class&#12301;</i>&#12434;&#36984;&#25246;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 </node>
-<node ID="ID_1232714581" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
+<node ID="ID_1232714581" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14672,10 +15622,11 @@
       <i>&#12300;&#8835;(&#21547;&#12416;)&#12301;</i>&#12434;&#36984;&#25246;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node ID="ID_1783341782" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
+<node ID="ID_1783341782" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14685,11 +15636,13 @@
       <i>&#12300;Definition&#12301;</i>&#12434;&#36984;&#25246;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node ID="ID_1492821244" TEXT_SHORTENED="true">
 <icon BUILTIN="../apply_quick_filter"/>
 <richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14699,13 +15652,15 @@
       <i>&#12300;&#12463;&#12451;&#12483;&#12463;&#12501;&#12451;&#12523;&#12479;&#12301;</i>&#12434;&#25276;&#12377;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="&#x7d42;&#x3048;&#x308b;&#x306b;&#x306f;" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1869718411" TEXT_SHORTENED="true">
+<node TEXT="&#x7d42;&#x3048;&#x308b;&#x306b;&#x306f;" STYLE_REF="UserGuide" ID="ID_1869718411" TEXT_SHORTENED="true">
 <node ID="ID_1896767397" TEXT_SHORTENED="true">
 <icon BUILTIN="../remove_filtering"/>
 <richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14715,10 +15670,11 @@
       <i>&#12300;&#12501;&#12451;&#12523;&#12479;&#35299;&#38500;&#12301;</i>&#12434;&#25276;&#12377;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node STYLE_REF="ProcedureStep" ID="ID_1535041398" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
+<node STYLE_REF="ProcedureStep" ID="ID_1535041398" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14728,12 +15684,14 @@
       <i>&#12300;&#12523;&#12540;&#12488;&#12408;&#12472;&#12515;&#12531;&#12503;&#12301; </i>(<i>&#12300;Esc&#12301;</i>&#12434;&#25276;&#12377;)
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 </node>
 <node STYLE_REF="ProcedureStep" ID="ID_253518936" TEXT_SHORTENED="true">
 <icon BUILTIN="../fold_all"/>
 <richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14743,15 +15701,16 @@
       <i>&#12300;&#12377;&#12409;&#12390;&#65339;&#12398;&#19979;&#20301;&#12494;&#12540;&#12489;&#12434;&#65341;</i>&#23637;&#38283;&#12377;&#12427;&#12301;&#12434;&#25276;&#12377;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x3059;&#x3079;&#x3066;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x6298;&#x308a;&#x7573;&#x3080;" ID="ID_1018925528" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 </node>
 </node>
 </node>
-<node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x8868;&#x793a;&#x306b;&#x95a2;&#x3059;&#x308b;&#x5b8c;&#x5168;&#x8aac;&#x660e;" FOLDED="true" ID="ID_1873380309" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x8868;&#x793a;&#x306b;&#x95a2;&#x3059;&#x308b;&#x5b8c;&#x5168;&#x8aac;&#x660e;" ID="ID_1873380309" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -14807,15 +15766,16 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
-<node TEXT="&#x6761;&#x4ef6;&#x3092;&#x30c1;&#x30a7;&#x30c3;&#x30af;" STYLE_REF="UserGuide" FOLDED="true" ID="ID_25461383" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x6761;&#x4ef6;&#x3092;&#x30c1;&#x30a7;&#x30c3;&#x30af;" STYLE_REF="UserGuide" ID="ID_25461383" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -14825,10 +15785,12 @@
       &#24038;&#35352;&#12398;&#12450;&#12452;&#12467;&#12531;&#12508;&#12479;&#12531;&#12364;&#12377;&#12409;&#12390;&#38750;&#36984;&#25246;&#29366;&#24907;&#12395;&#12394;&#12387;&#12390;&#12356;&#12427;&#12363;&#12393;&#12358;&#12363;&#12481;&#12455;&#12483;&#12463;&#12375;&#12289;&#36949;&#12387;&#12390;&#12356;&#12428;&#12400;&#12508;&#12479;&#12531;&#12434;&#25276;&#12375;&#12390;&#36984;&#25246;&#35299;&#38500;&#12375;&#12390;&#12367;&#12384;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node ID="ID_495695197" TEXT_SHORTENED="true">
 <icon BUILTIN="../show_ancestors"/>
 <richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14838,12 +15800,14 @@
       <i>&#12300;&#19978;&#20301;&#12494;&#12540;&#12489;&#12418;&#34920;&#31034;&#12301;</i>&#12434;&#28961;&#21177;&#12395;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 </node>
 <node ID="ID_878732630" TEXT_SHORTENED="true">
 <icon BUILTIN="../show_descendants"/>
 <richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14853,11 +15817,13 @@
       <i>&#12300;&#19979;&#20301;&#12494;&#12540;&#12489;&#12418;&#34920;&#31034;&#12301;</i>&#12434;&#28961;&#21177;&#12395;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node ID="ID_1394638468" TEXT_SHORTENED="true">
 <icon BUILTIN="../unfold_filtered_ancestors"/>
 <richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14867,11 +15833,13 @@
       <i>&#12300;&#38750;&#34920;&#31034;&#12398;&#12494;&#12540;&#12489;&#12434;&#23637;&#38283;&#12301;</i>&#12434;&#28961;&#21177;&#12395;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node ID="ID_1342621920" TEXT_SHORTENED="true">
 <icon BUILTIN="../applies_to_filtered_nodes"/>
 <richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14881,12 +15849,13 @@
       <i>&#65378;&#12501;&#12451;&#12523;&#12479;&#20013;&#12398;&#12494;&#12540;&#12489;&#12395;&#36969;&#29992;&#12301;</i>&#12434;&#28961;&#21177;&#12395;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="&#x3059;&#x3079;&#x3066;&#xff08;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#xff09;&#x5c55;&#x958b;" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1859325076" TEXT_SHORTENED="true">
-<node ID="ID_956693368" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
+<node TEXT="&#x3059;&#x3079;&#x3066;&#xff08;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#xff09;&#x5c55;&#x958b;" STYLE_REF="UserGuide" ID="ID_1859325076" TEXT_SHORTENED="true">
+<node ID="ID_956693368" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14896,12 +15865,14 @@
       <i>&#12300;&#12523;&#12540;&#12488;&#12408;&#12472;&#12515;&#12531;&#12503;&#12301;</i>&#160; (<i>&#12300;Esc&#12301;</i>&#12434;&#25276;&#12377;)
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 </node>
 <node ID="ID_205411813" TEXT_SHORTENED="true">
 <icon BUILTIN="../unfold_all"/>
 <richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14911,12 +15882,13 @@
       <i>&#12300;&#12377;&#12409;&#12390;&#65339;&#12398;&#19979;&#20301;&#12494;&#12540;&#12489;&#12434;&#65341;&#23637;&#38283;&#12377;&#12427;&#12301;</i>&#12434;&#25276;&#12377;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x30eb;&#x30fc;&#x30eb;&#x3092;&#x5b9a;&#x7fa9;" STYLE_REF="UserGuide" FOLDED="true" ID="ID_226284160" TEXT_SHORTENED="true">
-<node ID="ID_1734926057" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
+<node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x30eb;&#x30fc;&#x30eb;&#x3092;&#x5b9a;&#x7fa9;" STYLE_REF="UserGuide" ID="ID_226284160" TEXT_SHORTENED="true">
+<node ID="ID_1734926057" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14926,11 +15898,12 @@
       <i>&#12300;&#12494;&#12540;&#12489;&#12486;&#12461;&#12473;&#12488;&#12301;</i>&#12434;&#36984;&#25246;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 </node>
-<node ID="ID_7376434" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
+<node ID="ID_7376434" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14940,10 +15913,11 @@
       <i>&#12300;&#8835;(&#21547;&#12416;)&#12301;</i>&#12434;&#36984;&#25246;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node ID="ID_1345958489" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
+<node ID="ID_1345958489" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14953,11 +15927,13 @@
       <i>&#12300;filter&#12301;</i>&#12434;&#12479;&#12452;&#12503;&#20837;&#21147;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node ID="ID_338438421" TEXT_SHORTENED="true">
 <icon BUILTIN="../apply_quick_filter"/>
 <richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14967,13 +15943,15 @@
       <i>&#12300;&#12463;&#12451;&#12483;&#12463;&#12501;&#12451;&#12523;&#12479;&#12301;</i>&#12434;&#25276;&#12377;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="&#x7d42;&#x3048;&#x308b;&#x306b;&#x306f;" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1679478175" TEXT_SHORTENED="true">
+<node TEXT="&#x7d42;&#x3048;&#x308b;&#x306b;&#x306f;" STYLE_REF="UserGuide" ID="ID_1679478175" TEXT_SHORTENED="true">
 <node ID="ID_407446498" TEXT_SHORTENED="true">
 <icon BUILTIN="../remove_filtering"/>
 <richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14983,10 +15961,11 @@
       <i>&#12300;&#12501;&#12451;&#12523;&#12479;&#12434;&#35299;&#38500;&#12301;</i>&#12434;&#25276;&#12377;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node ID="ID_647928992" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
+<node ID="ID_647928992" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -14996,12 +15975,14 @@
       <i>&#12300;&#12523;&#12540;&#12488;&#12408;&#12472;&#12515;&#12531;&#12503;&#12301;</i>&#160; (<i>&#12300;Esc&#12301;</i>&#12434;&#25276;&#12377;)
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <hook NAME="FirstGroupNode"/>
 </node>
 <node ID="ID_1201115927" TEXT_SHORTENED="true">
 <icon BUILTIN="../fold_all"/>
 <richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -15011,7 +15992,8 @@
       <i>&#12300;&#12377;&#12409;&#12390;&#65339;&#12398;&#19979;&#20301;&#12494;&#12540;&#12489;&#12434;&#65341;&#23637;&#38283;&#12377;&#12427;&#12301;</i>&#12434;&#25276;&#12377;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x3059;&#x3079;&#x3066;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x6298;&#x308a;&#x7573;&#x3080;" ID="ID_426393770" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
@@ -15020,10 +16002,10 @@
 </node>
 </node>
 </node>
-<node TEXT="&#x30a4;&#x30f3;&#x30b9;&#x30c8;&#x30fc;&#x30eb;" STYLE_REF="UserGuide" FOLDED="true" ID="ID_931855473" HGAP="31" VSHIFT="2" TEXT_SHORTENED="true">
+<node TEXT="&#x30a4;&#x30f3;&#x30b9;&#x30c8;&#x30fc;&#x30eb;" STYLE_REF="UserGuide" ID="ID_931855473" HGAP="31" VSHIFT="2" TEXT_SHORTENED="true">
 <edge STYLE="horizontal"/>
-<node TEXT="&#x30c0;&#x30a6;&#x30f3;&#x30ed;&#x30fc;&#x30c9;" ID="ID_1964917961" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30c0;&#x30a6;&#x30f3;&#x30ed;&#x30fc;&#x30c9;" ID="ID_1964917961" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15033,12 +16015,13 @@
       Freeplane Wiki &#19978;&#12395; &#65327;&#65331;&#21029;&#12398;&#12469;&#12509;&#12540;&#12488;&#12506;&#12540;&#12472;&#12364;&#12354;&#12426;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="Freeplane &#x306e;&#x30db;&#x30fc;&#x30e0;&#x30da;&#x30fc;&#x30b8;" ID="ID_1672680147" LINK="http://freeplane.sourceforge.net" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="10"/>
 </node>
-<node TEXT="Windows &#x30d7;&#x30e9;&#x30c3;&#x30c8;&#x30db;&#x30fc;&#x30e0;" STYLE_REF="Functiegroep" FOLDED="true" ID="_Freeplane_Link_139664576" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="Windows &#x30d7;&#x30e9;&#x30c3;&#x30c8;&#x30db;&#x30fc;&#x30e0;" STYLE_REF="Functiegroep" ID="_Freeplane_Link_139664576" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15048,12 +16031,14 @@
       <span style="color: #000000; font-family: SansSerif, sans-serif"><font face="SansSerif, sans-serif" color="#000000">Microsoft Windows &#12395;&#160;Freeplane &#12434;&#12452;&#12531;&#12473;&#12488;&#12540;&#12523;&#12377;&#12427;&#22580;&#21512;&#12399;&#12289;Sun &#12363;&#12425; Java &#12434;&#12452;&#12531;&#12473;&#12488;&#12540;&#12523;&#12375;&#12289;Freeplane &#12452;&#12531;&#12473;&#12488;&#12540;&#12521;&#12434;&#20351;&#12387;&#12390; Freeplane &#12434;&#12452;&#12531;&#12473;&#12488;&#12540;&#12523;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;</font></span>
     </p>
   </body>
-</html></richcontent>
-<node TEXT=" Java Runtime Environment ( J2RE1.5&#x4ee5;&#x964d;)&#x3092;&#x30c0;&#x30a6;&#x30f3;&#x30ed;&#x30fc;&#x30c9;" FOLDED="true" ID="ID_1620747952" TEXT_SHORTENED="true">
+</html>
+</richcontent>
+<node TEXT=" Java Runtime Environment ( J2RE1.5&#x4ee5;&#x964d;)&#x3092;&#x30c0;&#x30a6;&#x30f3;&#x30ed;&#x30fc;&#x30c9;" ID="ID_1620747952" TEXT_SHORTENED="true">
 <icon BUILTIN="full-1"/>
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="10"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15063,15 +16048,17 @@
       Freeplane &#12507;&#12540;&#12512;&#12506;&#12540;&#12472;&#12363;&#12425; Freeplane &#12434;&#12480;&#12454;&#12531;&#12525;&#12540;&#12489;&#12377;&#12427;&#12392;&#12289;&#22823;&#25269;&#12399;&#33258;&#21205;&#30340;&#12395;&#12371;&#12398;&#21205;&#20316;&#12364;&#23455;&#34892;&#12373;&#12428;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="Java SE Downloads - Sun Developer Network &#xff08;&#x82f1;&#x8a9e;&#xff09;&#x304b;&#x3089;" ID="ID_972525405" LINK="http://java.sun.com/javase/downloads/index.jsp" TEXT_SHORTENED="true"/>
 <node TEXT="&#x30b5;&#x30f3;&#x30fb;&#x30de;&#x30a4;&#x30af;&#x30ed;&#x30b7;&#x30b9;&#x30c6;&#x30e0;&#x30ba;&#x682a;&#x5f0f;&#x4f1a;&#x793e;&#x306e;JRE&#x30c0;&#x30a6;&#x30f3;&#x30ed;&#x30fc;&#x30c9;&#x30b5;&#x30a4;&#x30c8;&#xff08;&#x65e5;&#x672c;&#x8a9e;&#xff09;&#x304b;&#x3089;" ID="ID_522870849" LINK="http://www.java.com/ja/download/" TEXT_SHORTENED="true"/>
 </node>
-<node TEXT="Freeplane &#x306e;&#x30a2;&#x30d7;&#x30ea;&#x30b1;&#x30fc;&#x30b7;&#x30e7;&#x30f3;&#x3092;&#x30c0;&#x30a6;&#x30f3;&#x30ed;&#x30fc;&#x30c9;" FOLDED="true" ID="_Freeplane_Link_1612101865" TEXT_SHORTENED="true">
+<node TEXT="Freeplane &#x306e;&#x30a2;&#x30d7;&#x30ea;&#x30b1;&#x30fc;&#x30b7;&#x30e7;&#x30f3;&#x3092;&#x30c0;&#x30a6;&#x30f3;&#x30ed;&#x30fc;&#x30c9;" ID="_Freeplane_Link_1612101865" TEXT_SHORTENED="true">
 <icon BUILTIN="full-2"/>
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="10"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15081,7 +16068,8 @@
       Freeplane &#12507;&#12540;&#12512;&#12506;&#12540;&#12472;&#12363;&#12425; Freeplane &#12434;&#12480;&#12454;&#12531;&#12525;&#12540;&#12489;&#12377;&#12427;&#12392;&#12289;&#22823;&#25269;&#12399;&#33258;&#21205;&#30340;&#12395;&#12371;&#12398;&#21205;&#20316;&#12364;&#23455;&#34892;&#12373;&#12428;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="Freeplane &#x306e;&#x30db;&#x30fc;&#x30e0;&#x30da;&#x30fc;&#x30b8;&#xff08;&#x82f1;&#x8a9e;&#xff09;&#x304b;&#x3089;" ID="ID_1482343480" LINK="http://freeplane.sourceforge.net" TEXT_SHORTENED="true">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="10"/>
@@ -15092,8 +16080,8 @@
 <icon BUILTIN="full-3"/>
 </node>
 </node>
-<node TEXT="Linux &#x30d7;&#x30e9;&#x30c3;&#x30c8;&#x30db;&#x30fc;&#x30e0;" STYLE_REF="Functiegroep" ID="ID_223844455" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="Linux &#x30d7;&#x30e9;&#x30c3;&#x30c8;&#x30db;&#x30fc;&#x30e0;" STYLE_REF="Functiegroep" ID="ID_223844455" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15103,11 +16091,12 @@
       <font face="SansSerif, sans-serif" color="#000000">Linux &#12395;&#160;Freeplane &#12434;&#12452;&#12531;&#12473;&#12488;&#12540;&#12523;&#12377;&#12427;&#22580;&#21512;&#12399;&#12289;Java Runtime Environment &#12392; Freeplane &#12450;&#12503;&#12522;&#12465;&#12540;&#12471;&#12519;&#12531;&#12434;&#12480;&#12454;&#12531;&#12525;&#12540;&#12489;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;&#26368;&#21021;&#12395; Java &#12434;&#12452;&#12531;&#12473;&#12488;&#12540;&#12523;&#12375;&#12289;&#27425;&#12395; Freeplane &#12434;&#35299;&#20941;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;Freeplane &#12364;&#36215;&#21205;&#12377;&#12427;&#12395;&#12399;&#12289;Freeplane.sh &#12434;&#23455;&#34892;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="Ubuntu" ID="ID_461043347" TEXT_SHORTENED="true"/>
-<node TEXT=" MAC &#x30d7;&#x30e9;&#x30c3;&#x30c8;&#x30db;&#x30fc;&#x30e0;" STYLE_REF="Functiegroep" ID="ID_824405171" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT=" MAC &#x30d7;&#x30e9;&#x30c3;&#x30c8;&#x30db;&#x30fc;&#x30e0;" STYLE_REF="Functiegroep" ID="ID_824405171" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15117,12 +16106,28 @@
       <font face="SansSerif, sans-serif" color="#000000">Microsoft Windows &#21450;&#12403;&#160;Mac OS X &#12395;&#12452;&#12531;&#12473;&#12488;&#12540;&#12523;&#12377;&#12427;&#22580;&#21512;&#12289;&#12414;&#12378;&#12289;&#20869;&#34101;&#12398;&#12477;&#12501;&#12488;&#12454;&#12455;&#12450;&#12450;&#12483;&#12503;&#12487;&#12540;&#12488;&#27231;&#33021;&#12434;&#20351;&#12387;&#12390;&#12289;&#21033;&#29992;&#21487;&#33021;&#12394;&#26368;&#26032;&#12398;&#12450;&#12483;&#12503;&#12487;&#12540;&#12488;&#12434;&#12289;&#29305;&#12395; Java &#12395;&#12388;&#12356;&#12390;&#12289;&#12377;&#12409;&#12390;&#28168;&#12414;&#12379;&#12390;&#12356;&#12427;&#12371;&#12392;&#12434;&#30906;&#35469;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;&#12300;&#12477;&#12501;&#12488;&#12454;&#12455;&#12450;&#12450;&#12483;&#12503;&#12487;&#12540;&#12488;&#12301;&#12399;&#12289;&#30011;&#38754;&#24038;&#19978;&#38533;&#12395;&#12354;&#12427; Apple &#12525;&#12468;&#12513;&#12491;&#12517;&#12540;&#12398;&#19979;&#12395;&#12354;&#12426;&#12414;&#12377;&#12290;&#160;&#27425;&#12395;&#12289;Freeplane &#12398; Mac &#23554;&#29992;&#12496;&#12540;&#12472;&#12519;&#12531;&#12434;&#12480;&#12454;&#12531;&#12525;&#12540;&#12489;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;&quot;.zip&quot; &#12496;&#12540;&#12472;&#12519;&#12531;&#12418;&#21033;&#29992;&#12391;&#12365;&#12414;&#12377;&#12364;&#12289;&#12418;&#12387;&#12392;&#12418;&#23481;&#26131;&#12395;&#12452;&#12531;&#12473;&#12488;&#12540;&#12523;&#12391;&#12365;&#12427;&#12398;&#12399; &quot;.dmg&quot; &#12496;&#12540;&#12472;&#12519;&#12531;&#12391;&#12377;&#12290;&#12480;&#12454;&#12531;&#12525;&#12540;&#12489;&#12364;&#23436;&#20102;&#12377;&#12427;&#12392;&#12289;&#12518;&#12540;&#12470;&#12398; WEB &#12502;&#12521;&#12454;&#12470;&#12398;&#35373;&#23450;&#12395;&#12424;&#12387;&#12390;&#12399;&#12289;&#12501;&#12449;&#12452;&#12523;&#12364;&#33258;&#21205;&#30340;&#12395;&#32068;&#12415;&#36796;&#12414;&#12428;&#65288;&#12383;&#12426;&#12289;&#21448;&#12399;&#35299;&#20941;&#12373;&#12428;&#12383;&#12426;&#12377;&#65289;&#12427;&#12363;&#12418;&#12375;&#12428;&#12414;&#12379;&#12435;&#12290;&#12381;&#12358;&#12394;&#12425;&#12394;&#12356;&#22580;&#21512;&#12399;&#12289;&#12480;&#12454;&#12531;&#12525;&#12540;&#12489;&#12375;&#12383; &quot;.dmg&quot; &#12501;&#12449;&#12452;&#12523;&#12434;&#12480;&#12502;&#12523;&#12463;&#12522;&#12483;&#12463;&#12375;&#12390;&#32068;&#12415;&#36796;&#12416;&#12363;&#12289;&#21448;&#12399;&#12480;&#12454;&#12531;&#12525;&#12540;&#12489;&#12375;&#12383;&#160;&quot;.zip&quot; &#12501;&#12449;&#12452;&#12523;&#12434;&#12480;&#12502;&#12523;&#12463;&#12522;&#12483;&#12463;&#12375;&#12390;&#35299;&#20941;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;&#12371;&#12371;&#12391;&#12289;&#12518;&#12540;&#12470;&#12399; Freeplane &#12450;&#12503;&#12522;&#12465;&#12540;&#12471;&#12519;&#12531;&#12398;&#12450;&#12452;&#12467;&#12531;&#12434;&#30446;&#12395;&#12377;&#12427;&#12399;&#12378;&#12391;&#12289;&#12371;&#12428;&#12434;&#12450;&#12503;&#12522;&#12465;&#12540;&#12471;&#12519;&#12531;&#12501;&#12457;&#12523;&#12480;&#12395;&#12489;&#12521;&#12483;&#12464;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;&#27425;&#12395;&#12289;&#24517;&#35201;&#12364;&#12354;&#12428;&#12400;&#12289;&#12487;&#12473;&#12463;&#12488;&#12483;&#12503;&#19978;&#12420;&#12489;&#12483;&#12463;&#12395;&#12456;&#12452;&#12522;&#12450;&#12473;&#65288;&#12471;&#12519;&#12540;&#12488;&#12459;&#12483;&#12488;&#65289;&#12434;&#20316;&#25104;&#12375;&#12390;&#12418;&#12424;&#12356;&#12391;&#12375;&#12423;&#12358;&#12290;Freeplane &#12434;&#36215;&#21205;&#12377;&#12427;&#12395;&#12399;&#12289;&#65288;&#12450;&#12503;&#12522;&#12465;&#12540;&#12471;&#12519;&#12531;&#12501;&#12457;&#12523;&#12480;&#12398;&#65289;&#12450;&#12503;&#12522;&#12465;&#12540;&#12471;&#12519;&#12531;&#12289;&#12418;&#12375;&#12367;&#12399;&#12487;&#12473;&#12463;&#12488;&#12483;&#12503;&#19978;&#12398;&#12471;&#12519;&#12540;&#12488;&#12459;&#12483;&#12488;&#12434;&#12480;&#12502;&#12523;&#12463;&#12522;&#12483;&#12463;&#12377;&#12427;&#12363;&#12289;&#21448;&#12399;&#12489;&#12483;&#12463;&#12398;&#12450;&#12452;&#12467;&#12531;&#12434;&#12527;&#12531;&#12463;&#12522;&#12483;&#12463;&#12375;&#12414;&#12377;&#12290;Freeplane Wiki &#12398; Macintosh &#12506;&#12540;&#12472;&#12395;&#12418;&#12387;&#12392;&#35443;&#12375;&#12356;&#24773;&#22577;&#12364;&#12354;&#12426;&#12414;&#12377; &#12290;</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x30dd;&#x30fc;&#x30bf;&#x30d6;&#x30eb; Freeplane" ID="ID_252894978" TEXT_SHORTENED="true"/>
+<node ID="ID_797098004" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Wiki <a href="http://freeplane.sourceforge.net/wiki/index.php/Support">Download help</a>&#160;&#12434;&#21442;&#29031;
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="SummaryNode"/>
 </node>
-<node TEXT="&#x30a4;&#x30f3;&#x30b9;&#x30c8;&#x30fc;&#x30eb;" ID="Freeplane_Link_1822195277" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+</node>
+<node TEXT="&#x30a4;&#x30f3;&#x30b9;&#x30c8;&#x30fc;&#x30eb;" ID="Freeplane_Link_1822195277" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15137,9 +16142,10 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
-<node TEXT="&#x30b7;&#x30b9;&#x30c6;&#x30e0;&#x8868;&#x793a;&#x8a00;&#x8a9e;" ID="ID_1505415448" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+</html>
+</richcontent>
+<node TEXT="&#x30b7;&#x30b9;&#x30c6;&#x30e0;&#x8868;&#x793a;&#x8a00;&#x8a9e;" ID="ID_1505415448" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15168,10 +16174,31 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
-</node>
-<node TEXT="&#x30b9;&#x30da;&#x30eb;&#x30c1;&#x30a7;&#x30c3;&#x30af;&#x7528;&#x306e;&#x8f9e;&#x66f8;" STYLE_REF="Professional" ID="ID_141336344" LINK="http://sourceforge.net/projects/freeplane/files/spell_check_dictionaries" TEXT_SHORTENED="true">
+</html>
+</richcontent>
+<node TEXT="&#x65e5;&#x672c;&#x8a9e;&#x4f7f;&#x7528;&#x6642;&#x306e;&#x6ce8;&#x610f;&#x4e8b;&#x9805;" ID="ID_1720635001" TEXT_SHORTENED="true">
+<icon BUILTIN="info"/>
 <richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Freeplane 1.2.x &#12391;&#12289;&#26085;&#26412;&#35486;&#12364;&#27491;&#24120;&#12395;&#20837;&#21147;&#12391;&#12365;&#12394;&#12356;&#12392;&#12398;&#35380;&#12360;&#12364;&#12354;&#12426;&#12414;&#12377;&#12290;
+    </p>
+    <p>
+      &#12371;&#12428;&#12399;&#12289;&#12487;&#12501;&#12457;&#12523;&#12488;&#12398;&#29366;&#24907;&#12364;&#26085;&#26412;&#35486;&#20837;&#21147;&#12395;&#36969;&#12373;&#12394;&#12356;&#35373;&#23450;&#12373;&#12428;&#12390;&#12356;&#12427;&#12383;&#12417;&#12391;&#12377;&#12290;&#12452;&#12531;&#12473;&#12488;&#12540;&#12523;&#12364;&#32066;&#12431;&#12387;&#12383;&#12425;&#12289;&#24517;&#12378;&#12300;&#12484;&#12540;&#12523; &gt; &#29872;&#22659;&#35373;&#23450; &gt; &#21205;&#20316;&#35373;&#23450; &gt; &#12452;&#12531;&#12521;&#12452;&#12531;&#12494;&#12540;&#12489;&#12456;&#12487;&#12451;&#12479; &gt; &#12377;&#12409;&#12390;&#12398;&#12494;&#12540;&#12489;&#12395;&#12452;&#12531;&#12521;&#12452;&#12531;&#12456;&#12487;&#12451;&#12479;&#12434;&#34920;&#31034;&#12301;&#12395;&#12481;&#12455;&#12483;&#12463;&#12434;&#20184;&#12369;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;&#65339;&#26085;&#26412;&#35486;&#35379;&#32773;&#12363;&#12425;&#12398;&#35036;&#36275;&#65341;
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="accessories/plugins/BlinkingNodeHook.properties"/>
+</node>
+</node>
+<node TEXT="&#x30b9;&#x30da;&#x30eb;&#x30c1;&#x30a7;&#x30c3;&#x30af;&#x7528;&#x306e;&#x8f9e;&#x66f8;" STYLE_REF="Professional" ID="ID_141336344" LINK="http://sourceforge.net/projects/freeplane/files/spell_check_dictionaries" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15184,9 +16211,10 @@
       language_XX.ortho&#65288;xx &#12399;&#35328;&#35486;&#12434;&#31034;&#12377;&#65298;&#25991;&#23383;&#12467;&#12540;&#12489;&#65289;&#12434;&#12480;&#12454;&#12531;&#12525;&#12540;&#12489;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;&#12371;&#12398;&#12501;&#12449;&#12452;&#12523;&#12434;&#12289;&#12300;&#12484;&#12540;&#12523; &gt; &#12518;&#12540;&#12470;&#12487;&#12451;&#12524;&#12463;&#12488;&#12522;&#12434;&#38283;&#12367; &gt; \resources\ortho&#12301;&#12395;&#20445;&#23384;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
     </p>
   </body>
-</html></richcontent>
-<node TEXT="&#x30a2;&#x30c9;&#x30aa;&#x30f3;" ID="ID_622849479" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+</html>
+</richcontent>
+<node TEXT="&#x30a2;&#x30c9;&#x30aa;&#x30f3;" ID="ID_622849479" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15200,8 +16228,8 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="&#x81ea;&#x52d5;&#x30d0;&#x30c3;&#x30af;&#x30a2;&#x30c3;&#x30d7;" ID="ID_595250711" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x81ea;&#x52d5;&#x30d0;&#x30c3;&#x30af;&#x30a2;&#x30c3;&#x30d7;" ID="ID_595250711" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15229,10 +16257,11 @@
       &#33258;&#21205;&#20445;&#23384;&#12289;&#21450;&#12403;&#33258;&#21205;&#12496;&#12483;&#12463;&#12450;&#12483;&#12503;&#12399;&#12289;<i>&#12300;&#12484;&#12540;&#12523; &#65310; &#29872;&#22659;&#35373;&#23450; &#65310; &#29872;&#22659; &#65310; &#33258;&#21205;&#20445;&#23384;&#12301;</i>&#32076;&#30001;&#12391;&#24517;&#35201;&#12395;&#21512;&#12431;&#12379;&#12390;&#35519;&#25972;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="Windows 7 &#x3067; *.MM &#x30a4;&#x30f3;&#x30c7;&#x30c3;&#x30af;&#x30b9;&#x3092;&#x8a2d;&#x5b9a;" ID="ID_1978530827" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="Windows 7 &#x3067; *.MM &#x30a4;&#x30f3;&#x30c7;&#x30c3;&#x30af;&#x30b9;&#x3092;&#x8a2d;&#x5b9a;" ID="ID_1978530827" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15276,10 +16305,11 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x30e6;&#x30fc;&#x30b6;&#x6307;&#x5b9a;&#x30b7;&#x30b9;&#x30c6;&#x30e0;&#x30a2;&#x30a4;&#x30b3;&#x30f3;" ID="ID_1121692870" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30e6;&#x30fc;&#x30b6;&#x6307;&#x5b9a;&#x30b7;&#x30b9;&#x30c6;&#x30e0;&#x30a2;&#x30a4;&#x30b3;&#x30f3;" ID="ID_1121692870" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15329,12 +16359,13 @@
       Freeplane &#12434;&#20877;&#36215;&#21205;&#12377;&#12427;&#12392;&#12289;&#26087;&#26469;&#12398;&#12471;&#12473;&#12486;&#12512;&#12450;&#12452;&#12467;&#12531;&#12395;&#20195;&#12360;&#12390;&#26032;&#12375;&#12356;&#12450;&#12452;&#12467;&#12531;&#12364;&#12289;&#34920;&#31034;&#12373;&#12428;&#12427;&#12399;&#12378;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
 </node>
-<node TEXT="Macintosh" STYLE_REF="UserGuide" ID="ID_480781217" HGAP="30" VSHIFT="9" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="Macintosh" STYLE_REF="UserGuide" ID="ID_480781217" HGAP="30" VSHIFT="9" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15418,13 +16449,14 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <edge STYLE="horizontal"/>
 </node>
-<node TEXT="&#x3053;&#x306e;&#x6587;&#x66f8;&#x306b;&#x3064;&#x3044;&#x3066;" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1263067716" HGAP="32" VSHIFT="4" TEXT_SHORTENED="true">
+<node TEXT="&#x3053;&#x306e;&#x6587;&#x66f8;&#x306b;&#x3064;&#x3044;&#x3066;" STYLE_REF="UserGuide" ID="ID_1263067716" HGAP="32" VSHIFT="4" TEXT_SHORTENED="true">
 <edge STYLE="horizontal"/>
-<node FOLDED="true" ID="ID_7136454" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
+<node ID="ID_7136454" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -15434,12 +16466,13 @@
       &#12510;&#12491;&#12517;&#12450;&#12523; Freeplane 1.2 &#12398;&#20316;&#25104;
     </p>
   </body>
-</html></richcontent>
-<node TEXT="&#x30c7;&#x30b6;&#x30a4;&#x30f3;&#x539f;&#x5247;&#x3092;&#x6d3b;&#x7528;" FOLDED="true" ID="ID_1451437324" TEXT_SHORTENED="true">
-<node TEXT="&#x4f7f;&#x3044;&#x3084;&#x3059;&#x304f;" FOLDED="true" ID="ID_292534096" TEXT_SHORTENED="true">
-<node TEXT="&#x6559;&#x990a;&#x306f;&#x3042;&#x308b;&#x304c;&#x975e;&#x5c02;&#x9580;&#x5bb6;&#x3092;&#x5bfe;&#x8c61;&#x306b;" FOLDED="true" ID="ID_923262609" TEXT_SHORTENED="true">
-<node TEXT="&#x8996;&#x899a;&#x52b9;&#x679c;&#x3092;&#x9650;&#x5b9a;&#x4f7f;&#x7528;" ID="ID_279740634" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+</html>
+</richcontent>
+<node TEXT="&#x30c7;&#x30b6;&#x30a4;&#x30f3;&#x539f;&#x5247;&#x3092;&#x6d3b;&#x7528;" ID="ID_1451437324" TEXT_SHORTENED="true">
+<node TEXT="&#x4f7f;&#x3044;&#x3084;&#x3059;&#x304f;" ID="ID_292534096" TEXT_SHORTENED="true">
+<node TEXT="&#x6559;&#x990a;&#x306f;&#x3042;&#x308b;&#x304c;&#x975e;&#x5c02;&#x9580;&#x5bb6;&#x3092;&#x5bfe;&#x8c61;&#x306b;" ID="ID_923262609" TEXT_SHORTENED="true">
+<node TEXT="&#x8996;&#x899a;&#x52b9;&#x679c;&#x3092;&#x9650;&#x5b9a;&#x4f7f;&#x7528;" ID="ID_279740634" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15454,11 +16487,12 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="&#x76ee;&#x7684;&#x306b;&#x5373;&#x3057;&#x305f;&#x7bc4;&#x56f2;&#x3092;&#x8868;&#x793a;" FOLDED="true" ID="ID_514607477" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x76ee;&#x7684;&#x306b;&#x5373;&#x3057;&#x305f;&#x7bc4;&#x56f2;&#x3092;&#x8868;&#x793a;" ID="ID_514607477" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15468,10 +16502,11 @@
       &#12479;&#12473;&#12463;&#38306;&#36899;&#12391;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="&#x6240;&#x5b9a;&#x306e;&#x6761;&#x4ef6;&#x306b;&#x3088;&#x308b;&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x8868;&#x793a;" ID="ID_1046642159" TEXT_SHORTENED="true"/>
 </node>
-<node TEXT="&#x5185;&#x5bb9;&#x306e;&#x57fa;&#x672c;&#x5206;&#x985e;" FOLDED="true" ID="ID_1725581120" TEXT_SHORTENED="true">
+<node TEXT="&#x5185;&#x5bb9;&#x306e;&#x57fa;&#x672c;&#x5206;&#x985e;" ID="ID_1725581120" TEXT_SHORTENED="true">
 <node TEXT="&#x8aad;&#x307f;&#x65b9;&#x30ac;&#x30a4;&#x30c9;" ID="ID_754327054" TEXT_SHORTENED="true"/>
 <node TEXT="&#x5b9a;&#x7fa9;" ID="ID_1594805543" TEXT_SHORTENED="true"/>
 <node TEXT="&#x6a5f;&#x80fd;" ID="ID_1690427045" TEXT_SHORTENED="true"/>
@@ -15479,26 +16514,26 @@
 <node TEXT="&#x4f8b;&#x5916;" ID="ID_22860584" TEXT_SHORTENED="true"/>
 <node TEXT="&#x7528;&#x4f8b;" ID="ID_1077186776" TEXT_SHORTENED="true"/>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x8981;&#x7d20;&#x306e;&#x6a19;&#x6e96;&#x7684;&#x306a;&#x4f7f;&#x7528;&#x6cd5;" FOLDED="true" ID="ID_663045918" TEXT_SHORTENED="true">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x8981;&#x7d20;&#x306e;&#x6a19;&#x6e96;&#x7684;&#x306a;&#x4f7f;&#x7528;&#x6cd5;" ID="ID_663045918" TEXT_SHORTENED="true">
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x8981;&#x7d20;&#x306e;&#x6a19;&#x6e96;&#x7684;&#x306a;&#x4f7f;&#x7528;&#x6cd5;" ID="ID_1819352209" TEXT_SHORTENED="true"/>
 <node TEXT="&#x8a73;&#x7d30;&#xff1a;&#x610f;&#x5473;&#xff0f;&#x4f7f;&#x7528;&#x6cd5;&#x306e;&#x8aac;&#x660e;" ID="ID_1589052099" TEXT_SHORTENED="true"/>
 </node>
-<node TEXT="&#x6a19;&#x6e96;&#x7684;&#x306a;&#x5f62;" FOLDED="true" ID="ID_173847860" TEXT_SHORTENED="true">
+<node TEXT="&#x6a19;&#x6e96;&#x7684;&#x306a;&#x5f62;" ID="ID_173847860" TEXT_SHORTENED="true">
 <node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;" ID="ID_636140553" TEXT_SHORTENED="true"/>
 </node>
-<node TEXT="&#x64cd;&#x4f5c;&#x306e;&#x7c21;&#x4fbf;&#x5316;" FOLDED="true" ID="ID_1975789949" TEXT_SHORTENED="true">
+<node TEXT="&#x64cd;&#x4f5c;&#x306e;&#x7c21;&#x4fbf;&#x5316;" ID="ID_1975789949" TEXT_SHORTENED="true">
 <node TEXT="&#x30b9;&#x30af;&#x30ea;&#x30d7;&#x30c8;" ID="ID_1538209739" TEXT_SHORTENED="true"/>
 </node>
 </node>
-<node TEXT="&#x7c21;&#x5358;&#x306b;&#x30e1;&#x30f3;&#x30c6;&#x30ca;&#x30f3;&#x30b9;" FOLDED="true" ID="ID_252044006" TEXT_SHORTENED="true">
+<node TEXT="&#x7c21;&#x5358;&#x306b;&#x30e1;&#x30f3;&#x30c6;&#x30ca;&#x30f3;&#x30b9;" ID="ID_252044006" TEXT_SHORTENED="true">
 <node TEXT="&#x30e1;&#x30a4;&#x30f3;&#x30e1;&#x30cb;&#x30e5;&#x30fc;&#x306e;&#x968e;&#x5c64;&#x69cb;&#x9020;&#x306b;&#x6cbf;&#x3063;&#x3066;" ID="ID_1374985285" TEXT_SHORTENED="true"/>
 <node TEXT="&#x5185;&#x5bb9;&#x306e;&#x5b9a;&#x7fa9;&#x306f;&#x4e00;&#x5ea6;&#x3067;&#x3001;&#x7e70;&#x308a;&#x8fd4;&#x3057;&#x4f7f;&#x7528;" ID="ID_599399448" TEXT_SHORTENED="true"/>
 <node TEXT="&#x6761;&#x4ef6;&#x5bfe;&#x5fdc;&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x4f7f;&#x7528;" ID="ID_1144923217" TEXT_SHORTENED="true"/>
 </node>
 </node>
-<node TEXT="&#x771f;&#x3063;&#x3055;&#x3089;&#x306a;&#x30de;&#x30a4;&#x30f3;&#x30c9;&#x30de;&#x30c3;&#x30d7;&#x3092;&#x7528;&#x610f;" FOLDED="true" ID="ID_1571541949" TEXT_SHORTENED="true">
-<node TEXT="&#x300c;&#x7dda;&#x306e;&#x8272;&#x3092;&#x81ea;&#x52d5;&#x9078;&#x629e;&#x300d;&#x6a5f;&#x80fd;&#x3092;&#x7121;&#x52b9;&#x306b;" ID="ID_1087840240" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x771f;&#x3063;&#x3055;&#x3089;&#x306a;&#x30de;&#x30a4;&#x30f3;&#x30c9;&#x30de;&#x30c3;&#x30d7;&#x3092;&#x7528;&#x610f;" ID="ID_1571541949" TEXT_SHORTENED="true">
+<node TEXT="&#x300c;&#x7dda;&#x306e;&#x8272;&#x3092;&#x81ea;&#x52d5;&#x9078;&#x629e;&#x300d;&#x6a5f;&#x80fd;&#x3092;&#x7121;&#x52b9;&#x306b;" ID="ID_1087840240" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15510,10 +16545,11 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x5c5e;&#x6027;&#x3092;&#x975e;&#x8868;&#x793a;&#x306b;" ID="ID_1495523505" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x5c5e;&#x6027;&#x3092;&#x975e;&#x8868;&#x793a;&#x306b;" ID="ID_1495523505" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15525,10 +16561,11 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x5c5e;&#x6027;&#x30a2;&#x30a4;&#x30b3;&#x30f3;&#x3092;&#x975e;&#x8868;&#x793a;" ID="ID_1937953602" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x5c5e;&#x6027;&#x30a2;&#x30a4;&#x30b3;&#x30f3;&#x3092;&#x975e;&#x8868;&#x793a;" ID="ID_1937953602" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15540,14 +16577,15 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="&#x30ab;&#x30c6;&#x30b4;&#x30ea;&#x30fc;&#x3092;&#x5b9a;&#x7fa9;" FOLDED="true" ID="ID_1469202418" TEXT_SHORTENED="true">
-<node TEXT="&#x5185;&#x5bb9;" FOLDED="true" ID="ID_862676309" TEXT_SHORTENED="true">
+<node TEXT="&#x30ab;&#x30c6;&#x30b4;&#x30ea;&#x30fc;&#x3092;&#x5b9a;&#x7fa9;" ID="ID_1469202418" TEXT_SHORTENED="true">
+<node TEXT="&#x5185;&#x5bb9;" ID="ID_862676309" TEXT_SHORTENED="true">
 <node TEXT="&#x5b9a;&#x7fa9;" ID="ID_611433412" TEXT_SHORTENED="true"/>
-<node TEXT="&#x6a5f;&#x80fd;" ID="ID_247256524" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x6a5f;&#x80fd;" ID="ID_247256524" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15557,10 +16595,11 @@
       &#12513;&#12491;&#12517;&#12540;&#38917;&#30446;&#12434;&#25351;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x624b;&#x9806;" ID="ID_528236762" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x624b;&#x9806;" ID="ID_528236762" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15570,10 +16609,11 @@
       &#19968;&#36899;&#12398;&#21205;&#20316;&#12398;&#12371;&#12392;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x30aa;&#x30d7;&#x30b7;&#x30e7;&#x30f3;&#x5024;" ID="ID_1278994490" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30aa;&#x30d7;&#x30b7;&#x30e7;&#x30f3;&#x5024;" ID="ID_1278994490" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15583,10 +16623,11 @@
       &#12381;&#12398;&#27231;&#33021;&#12398;&#20013;&#12391;&#20351;&#29992;&#21487;&#33021;&#12394;&#20516;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x4f8b;&#x5916;" ID="ID_1086387726" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x4f8b;&#x5916;" ID="ID_1086387726" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15596,10 +16637,11 @@
       &#29305;&#27530;&#12394;&#29366;&#27841;&#12434;&#25351;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x8a73;&#x3057;&#x3044;&#x8aac;&#x660e;" ID="ID_464752434" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x8a73;&#x3057;&#x3044;&#x8aac;&#x660e;" ID="ID_464752434" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15609,12 +16651,13 @@
       &#12424;&#12426;&#35443;&#32048;&#12394;&#35500;&#26126;&#12391;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x7528;&#x4f8b;" ID="ID_1007698430" TEXT_SHORTENED="true"/>
 <node TEXT="&#x7559;&#x610f;&#x4e8b;&#x9805;" ID="ID_961458845" TEXT_SHORTENED="true"/>
 </node>
-<node TEXT="&#x69cb;&#x9020;" FOLDED="true" ID="ID_1577905162" TEXT_SHORTENED="true">
+<node TEXT="&#x69cb;&#x9020;" ID="ID_1577905162" TEXT_SHORTENED="true">
 <node TEXT="&#x898b;&#x51fa;&#x3057;" ID="ID_405338718" TEXT_SHORTENED="true"/>
 <node TEXT="&#x30e1;&#x30a4;&#x30f3;&#x30e1;&#x30cb;&#x30e5;&#x30fc;" ID="ID_65441144" TEXT_SHORTENED="true"/>
 <node TEXT="&#x30b5;&#x30d6;&#x30e1;&#x30cb;&#x30e5;&#x30fc;" ID="ID_1383579659" TEXT_SHORTENED="true"/>
@@ -15622,10 +16665,11 @@
 </node>
 <node TEXT="&#x66f4;&#x65b0;" ID="ID_1107739085" TEXT_SHORTENED="true"/>
 </node>
-<node TEXT="&#x7ae0;&#x3092;&#x5b9a;&#x7fa9;" FOLDED="true" ID="ID_651974088" TEXT_SHORTENED="true">
+<node TEXT="&#x7ae0;&#x3092;&#x5b9a;&#x7fa9;" ID="ID_651974088" TEXT_SHORTENED="true">
 <node TEXT="&#x76ee;&#x6a19;" ID="ID_403391885" TEXT_SHORTENED="true">
 <icon BUILTIN="full-0"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15635,11 +16679,12 @@
       &#12371;&#12398;&#12501;&#12451;&#12523;&#12479;&#12399;&#12289;Scope=GS1 &#12398;&#12494;&#12540;&#12489;&#32676;&#12384;&#12369;&#12434;&#34920;&#31034;&#12377;&#12427;&#12424;&#12358;&#12395;&#12289;&#12501;&#12451;&#12523;&#12479;&#12523;&#12540;&#12523;&#12420;&#12501;&#12451;&#12523;&#12479;&#26465;&#20214;&#12434;&#35373;&#23450;&#12377;&#12427;&#25163;&#38918;&#12434;&#31034;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="0" OBJECT="org.freeplane.features.format.FormattedNumber|0.0"/>
 </node>
-<node TEXT="&#x7b2c;&#xff11;&#x7ae0; &#x521d;&#x3081;&#x3066;&#x306e;&#x30de;&#x30a4;&#x30f3;&#x30c9;&#x30de;&#x30c3;&#x30d7;" ID="ID_52333658" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x7b2c;&#xff11;&#x7ae0; &#x521d;&#x3081;&#x3066;&#x306e;&#x30de;&#x30a4;&#x30f3;&#x30c9;&#x30de;&#x30c3;&#x30d7;" ID="ID_52333658" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15675,13 +16720,15 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="1"/>
 <font BOLD="true"/>
 </node>
 <node TEXT="&#x7b2c;&#xff12;&#x7ae0;&#x3000;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x64cd;&#x4f5c;" ID="ID_782482897" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="2"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15711,11 +16758,12 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <font BOLD="true"/>
 </node>
-<node TEXT="&#x7b2c;3&#x7ae0;&#x3000;&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x57fa;&#x672c;&#x6a5f;&#x80fd;" ID="ID_1058695096" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x7b2c;3&#x7ae0;&#x3000;&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x57fa;&#x672c;&#x6a5f;&#x80fd;" ID="ID_1058695096" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15742,7 +16790,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute NAME="Chapter" VALUE="3"/>
 <font BOLD="true"/>
 </node>
@@ -15767,7 +16816,7 @@
 <font BOLD="true"/>
 </node>
 </node>
-<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x5b9a;&#x7fa9;" FOLDED="true" ID="ID_1139262997" TEXT_SHORTENED="true">
+<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x5b9a;&#x7fa9;" ID="ID_1139262997" TEXT_SHORTENED="true">
 <node TEXT="&#x6a19;&#x6e96;&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#xff08;Default&#xff09;" ID="ID_1424311678" TEXT_SHORTENED="true"/>
 <node TEXT="&#x5b9a;&#x7fa9;&#xff08;Definition&#xff09;" STYLE_REF="Defenition" ID="ID_147976858" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
@@ -15822,8 +16871,8 @@
 <node TEXT="&#x898b;&#x51fa;&#x3057;&#xff08;Title&#xff09;" STYLE_REF="Title" ID="ID_932764551" TEXT_SHORTENED="true"/>
 <node TEXT="&#x66f4;&#x65b0;&#xff08;Revision&#xff09;" STYLE_REF="Revision" ID="ID_1694804519" TEXT_SHORTENED="true"/>
 </node>
-<node TEXT="&#x6761;&#x4ef6;&#x5bfe;&#x5fdc;&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x5b9a;&#x7fa9;" FOLDED="true" ID="ID_4604251" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x6761;&#x4ef6;&#x5bfe;&#x5fdc;&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x3092;&#x5b9a;&#x7fa9;" ID="ID_4604251" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15844,9 +16893,10 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
-<node ID="ID_813678576" TEXT_SHORTENED="true">
-<richcontent TYPE="NODE">
+</html>
+</richcontent>
+<node ID="ID_813678576" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -15856,13 +16906,14 @@
       &#23646;&#24615;&#12398;<i>&#12300;Class&#12301;</i>&#12364;&#12289;&#36969;&#29992;&#12377;&#12427;&#12473;&#12479;&#12452;&#12523;&#12434;&#23450;&#32681;&#12375;&#12414;&#12377;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="&#x300c;Class&#x300d;&#x306e;&#x5024; = &#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x540d;&#x4e00;&#x89a7;" ID="ID_864906280" TEXT_SHORTENED="true"/>
 </node>
 </node>
-<node TEXT="&#x3053;&#x306e;&#x30de;&#x30cb;&#x30e5;&#x30a2;&#x30eb;&#x306e;&#x7ffb;&#x8a33;" LOCALIZED_STYLE_REF="default" ID="ID_1859568483" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x3053;&#x306e;&#x30de;&#x30cb;&#x30e5;&#x30a2;&#x30eb;&#x306e;&#x7ffb;&#x8a33;" LOCALIZED_STYLE_REF="default" ID="ID_1859568483" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15933,16 +16984,18 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x30d0;&#x30fc;&#x30b8;&#x30e7;&#x30f3;&#x3001;&#x66f4;&#x65b0;&#x3001;&#x53ca;&#x3073;&#x30af;&#x30ec;&#x30b8;&#x30c3;&#x30c8;" FOLDED="true" ID="ID_1678241727" TEXT_SHORTENED="true">
+<node TEXT="&#x30d0;&#x30fc;&#x30b8;&#x30e7;&#x30f3;&#x3001;&#x66f4;&#x65b0;&#x3001;&#x53ca;&#x3073;&#x30af;&#x30ec;&#x30b8;&#x30c3;&#x30c8;" ID="ID_1678241727" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="1"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -15971,17 +17024,18 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="&#x6e96;&#x62e0;&#x30d0;&#x30fc;&#x30b8;&#x30e7;&#x30f3;&#xff1a;Freeplane 1.2.8" ID="ID_605038742" TEXT_SHORTENED="true"/>
-<node TEXT="&#x6587;&#x66f8;&#x4f5c;&#x6210;" FOLDED="true" ID="ID_136822724" TEXT_SHORTENED="true">
-<node TEXT="Jokro" FOLDED="true" ID="ID_1128010246" LINK="mailto:jokro@users.sourceforge.net?subject%20=%20handleiding" TEXT_SHORTENED="true">
+<node TEXT="&#x6587;&#x66f8;&#x4f5c;&#x6210;" ID="ID_136822724" TEXT_SHORTENED="true">
+<node TEXT="Jokro" ID="ID_1128010246" LINK="mailto:jokro@users.sourceforge.net?subject%20=%20handleiding" TEXT_SHORTENED="true">
 <node TEXT="&#x57fa;&#x672c;&#x7684;&#x306b;&#x3001;Freeplane 1.1.3 &#x306e;&#x5185;&#x5bb9;&#x3092;  Freeplane 1.2 &#x306b;&#x3042;&#x308f;&#x305b;&#x3066;&#x66f8;&#x304d;&#x76f4;&#x3057;" ID="ID_52670674" TEXT_SHORTENED="true"/>
 <node TEXT="Freeplane 1.2 &#x306e; Wiki &#x53ca;&#x3073; Tutorial" ID="ID_1524499902" VSHIFT="-10" TEXT_SHORTENED="true"/>
 </node>
 <node TEXT="&#x6700;&#x7d42;&#x66f4;&#x65b0;&#x65e5;&#xff1a;" ID="ID_21798827" TEXT_SHORTENED="true"/>
 </node>
-<node TEXT="&#x30bd;&#x30d5;&#x30c8;&#x30a6;&#x30a7;&#x30a2;" FOLDED="true" ID="ID_298252563" TEXT_SHORTENED="true">
-<node TEXT="&#x30aa;&#x30ea;&#x30b8;&#x30ca;&#x30eb;&#x306e;&#x8457;&#x4f5c;&#x6a29;&#x8005;" FOLDED="true" ID="Freeplane_Link_415458128" TEXT_SHORTENED="true">
+<node TEXT="&#x30bd;&#x30d5;&#x30c8;&#x30a6;&#x30a7;&#x30a2;" ID="ID_298252563" TEXT_SHORTENED="true">
+<node TEXT="&#x30aa;&#x30ea;&#x30b8;&#x30ca;&#x30eb;&#x306e;&#x8457;&#x4f5c;&#x6a29;&#x8005;" ID="Freeplane_Link_415458128" TEXT_SHORTENED="true">
 <node TEXT="Joerg Mueller" ID="_Freeplane_Link_1896457660" TEXT_SHORTENED="true"/>
 <node TEXT="Daniel Polansky" ID="ID_790827459" LINK="http://danpolansky.blogspot.com/" TEXT_SHORTENED="true"/>
 <node TEXT="Petr Novak" ID="_Freeplane_Link_459203293" TEXT_SHORTENED="true"/>
@@ -15989,8 +17043,8 @@
 <node TEXT="Dimitry Polivaev" ID="_Freeplane_Link_1415293905" TEXT_SHORTENED="true"/>
 <node TEXT="Graphical Design by Predrag Cuklin" ID="ID_1094825033" TEXT_SHORTENED="true"/>
 </node>
-<node TEXT="&#x73fe;&#x5728;&#x306e;&#x958b;&#x767a;&#x30c1;&#x30fc;&#x30e0;" FOLDED="true" ID="ID_1090487344" TEXT_SHORTENED="true">
-<node TEXT="Release 1.1.x" FOLDED="true" ID="ID_1795869028" TEXT_SHORTENED="true">
+<node TEXT="&#x73fe;&#x5728;&#x306e;&#x958b;&#x767a;&#x30c1;&#x30fc;&#x30e0;" ID="ID_1090487344" TEXT_SHORTENED="true">
+<node TEXT="Release 1.1.x" ID="ID_1795869028" TEXT_SHORTENED="true">
 <node TEXT="Dimitry Polivaev" ID="ID_809494025" TEXT_SHORTENED="true"/>
 <node TEXT="Volker Boerchers" ID="ID_548414191" TEXT_SHORTENED="true"/>
 <node TEXT="Eric L." ID="ID_306583030" TEXT_SHORTENED="true"/>
@@ -16002,13 +17056,14 @@
 </node>
 </node>
 </node>
-<node TEXT="&#xff26;&#xff21;&#xff31;" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1040911735" HGAP="34" VSHIFT="7" TEXT_SHORTENED="true">
+<node TEXT="&#xff26;&#xff21;&#xff31;" STYLE_REF="UserGuide" ID="ID_1040911735" HGAP="34" VSHIFT="7" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -16041,15 +17096,30 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <edge STYLE="horizontal"/>
-<node TEXT="&#x5236;&#x9650;&#x4e8b;&#x9805;&#x3068;&#x65e2;&#x77e5;&#x306e;&#x30d0;&#x30b0;" FOLDED="true" ID="ID_1348021717" TEXT_SHORTENED="true">
-<edge STYLE="bezier"/>
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x304c;&#x3059;&#x3079;&#x3066;&#x56f2;&#x307f;&#x306b;&#x306a;&#x308b;&#x3001;&#x7279;&#x6b8a;&#x306a;&#x30a8;&#x30c3;&#x30b8;&#x306e;&#x7dda;&#x304c;&#x51fa;&#x308b;&#x3001;&#x7b49;" ID="ID_877869093" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      &#26032;&#35215;&#20316;&#25104;&#12494;&#12540;&#12489;&#12399;&#12289;&#27161;&#28310;&#12398;&#12473;&#12479;&#12452;&#12523;&#12395;&#24467;&#12387;&#12390;&#24418;&#29366;&#12364;&#27770;&#12414;&#12426;&#12414;&#12377;&#12290;&#12371;&#12398;&#12473;&#12479;&#12452;&#12523;&#12399;&#12289;&#32232;&#38598;&#12391;&#12365;&#12414;&#12377;&#65288;<a href="#ID_1277682010">&#21442;&#29031;</a>&#65289;&#12290;
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="&#x5236;&#x9650;&#x4e8b;&#x9805;&#x3068;&#x65e2;&#x77e5;&#x306e;&#x30d0;&#x30b0;" ID="ID_1348021717" TEXT_SHORTENED="true">
+<edge STYLE="horizontal"/>
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x304c;&#x4ed6;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x30c6;&#x30ad;&#x30b9;&#x30c8;&#x306b;&#x91cd;&#x8907;&#x8868;&#x793a;" ID="ID_1348493491" LINK="https://sourceforge.net/apps/mantisbt/freeplane/view.php?id=1210" TEXT_SHORTENED="true"/>
 <node TEXT="Flash player &#x306b;&#x3064;&#x3044;&#x3066;" ID="ID_1294313915" LINK="https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4668966" TEXT_SHORTENED="true"/>
 </node>
-<node TEXT="&#x30de;&#x30c3;&#x30d7;&#xff0f;&#x30ce;&#x30fc;&#x30c9;&#x304c;&#x7de8;&#x96c6;&#x3067;&#x304d;&#x306a;&#x3044;" ID="ID_138844829" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30de;&#x30c3;&#x30d7;&#xff0f;&#x30ce;&#x30fc;&#x30c9;&#x304c;&#x7de8;&#x96c6;&#x3067;&#x304d;&#x306a;&#x3044;" ID="ID_138844829" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -16059,10 +17129,11 @@
       &#12300;&#12510;&#12483;&#12503; &gt; &#12510;&#12483;&#12503;&#38322;&#35239;&#12514;&#12540;&#12489;&#12301;&#12391;&#12394;&#12367;&#12300;&#12510;&#12483;&#12503;&#160;&gt; &#12510;&#12483;&#12503;&#32232;&#38598;&#12514;&#12540;&#12489;&#12301;&#12434;&#20351;&#12387;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x30e1;&#x30cb;&#x30e5;&#x30fc;&#x304c;&#x8868;&#x793a;&#x3055;&#x308c;&#x306a;&#x3044;" ID="ID_475459868" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30e1;&#x30cb;&#x30e5;&#x30fc;&#x304c;&#x8868;&#x793a;&#x3055;&#x308c;&#x306a;&#x3044;" ID="ID_475459868" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -16072,10 +17143,11 @@
       &#12513;&#12491;&#12517;&#12540;&#12496;&#12540;&#12364;&#34920;&#31034;&#12373;&#12428;&#12394;&#12356;&#22580;&#21512;&#12399;&#12289;&#30011;&#38754;&#19978;&#12398;&#31354;&#30333;&#37096;&#20998;&#12391;&#21491;&#12463;&#12522;&#12483;&#12463;&#12375;&#12390;&#12289;&#12300;&#12484;&#12540;&#12523;&#12496;&#12540;&#12301;&#12434;&#36984;&#25246;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x5c55;&#x958b;&#x3067;&#x304d;&#x306a;&#x3044;" ID="ID_1598827129" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x5c55;&#x958b;&#x3067;&#x304d;&#x306a;&#x3044;" ID="ID_1598827129" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -16093,10 +17165,11 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x304c;&#x9069;&#x7528;&#x3055;&#x308c;&#x306a;&#x3044;" ID="ID_1903605589" TEXT_SHORTENED="true">
-<richcontent TYPE="DETAILS">
+<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x304c;&#x9069;&#x7528;&#x3055;&#x308c;&#x306a;&#x3044;" ID="ID_1903605589" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
 <html>
   <head>
     
@@ -16106,7 +17179,86 @@
       &#12503;&#12525;&#12497;&#12486;&#12451;&#12497;&#12493;&#12523;&#12398;&#12481;&#12455;&#12483;&#12463;&#12434;&#12377;&#12409;&#12390;&#22806;&#12375;&#12414;&#12377;&#12290;&#12481;&#12455;&#12483;&#12463;&#38917;&#30446;&#12399;&#12289;&#12473;&#12479;&#12452;&#12523;&#12424;&#12426;&#12418;&#12371;&#12371;&#12391;&#12398;&#35373;&#23450;&#12364;&#20778;&#20808;&#12375;&#12414;&#12377;&#12290;&#160;
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
+</node>
+<node ID="ID_1194109651" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <a href="https://sourceforge.net/apps/phpbb/freeplane/viewtopic.php?f=1&amp;t=77">&#12494;&#12540;&#12489;&#12398;&#27178;&#24133;&#12395;&#38306;&#12377;&#12427;&#21839;&#38988;</a>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT=" &#x30a4;&#x30e1;&#x30fc;&#x30b8;&#x3078;&#x306e;&#x30a2;&#x30af;&#x30bb;&#x30b9;&#x304c;&#x62d2;&#x5426;&#x3055;&#x308c;&#x308b;&#xff08;Java &#x30a2;&#x30d7;&#x30ec;&#x30c3;&#x30c8;&#xff09;" ID="ID_44291998" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      &#12371;&#12398;&#12456;&#12521;&#12540;&#12399;&#12289;&#12497;&#12473;&#21517;&#12395; &quot;Drop box&quot; &#12398;&#12424;&#12358;&#12394;&#12473;&#12506;&#12540;&#12473;&#20184;&#12365;&#12398;&#12487;&#12451;&#12524;&#12463;&#12488;&#12522;&#12364;&#21547;&#12414;&#12428;&#12427;&#22580;&#21512;&#12395;&#36215;&#12365;&#12414;&#12377;&#12290;
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>&#35299;&#27770;&#27861;</b>
+    </p>
+    <ul>
+      <li>
+        &#12473;&#12506;&#12540;&#12473;&#12434;&#12450;&#12531;&#12480;&#12540;&#12473;&#12467;&#12450;&#12395;&#32622;&#25563;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="&#x30d5;&#x30ea;&#x30fc;&#x30d5;&#x30ed;&#x30fc;&#x30c6;&#x30a3;&#x30f3;&#x30b0;&#xff06;&#x30d5;&#x30ea;&#x30fc;&#x30dd;&#x30b8;&#x30b7;&#x30e7;&#x30f3;&#x30ce;&#x30fc;&#x30c9;" ID="ID_413418407" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      &#21046;&#38480;&#20107;&#38917;&#12395;&#12388;&#12356;&#12390;&#12289;<a href="http://freeplane.sourceforge.net/wiki/index.php/Mind_map_gallery#Free_positioned_versus_floating_nodes.">forum</a>&#160;&#12434;&#21442;&#29031;&#12290;
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="&#x9577;&#x6587;&#x7de8;&#x96c6;&#x30c0;&#x30a4;&#x30a2;&#x30ed;&#x30b0;&#xff08;Simply HTML&#xff09;&#x306e;&#x6a19;&#x6e96;&#x30d5;&#x30a9;&#x30f3;&#x30c8;&#x3092;&#x5909;&#x3048;&#x308b;" ID="ID_543539918" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      &#12471;&#12473;&#12486;&#12512;&#27161;&#28310;&#12473;&#12479;&#12452;&#12523;&#12398;&#25991;&#23383;&#12469;&#12452;&#12474;&#12434;&#22793;&#26356;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;&#12480;&#12452;&#12450;&#12525;&#12464;&#12395;&#34920;&#31034;&#12373;&#12428;&#12427;&#25991;&#23383;&#12469;&#12452;&#12474;&#12398;&#20516;&#12434;&#12463;&#12522;&#12483;&#12463;&#12377;&#12427;&#12414;&#12391;&#12399;&#12289;&#12471;&#12473;&#12486;&#12512;&#27161;&#28310;&#12398;&#25991;&#23383;&#12469;&#12452;&#12474;&#12364;&#20778;&#20808;&#30340;&#12395;&#36969;&#29992;&#12373;&#12428;&#12414;&#12377;&#12290;
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>&#21442;&#12288;&#29031; </b>
+    </p>
+    <ul>
+      <li>
+        <i>&#12300;&#26360;&#24335;&#160;&gt; &#12473;&#12479;&#12452;&#12523;&#12434;&#31649;&#29702;&#160;&gt; &#12473;&#12479;&#12452;&#12523;&#12434;&#32232;&#38598;&#12301;</i>
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
 </node>
 </node>
 </node>

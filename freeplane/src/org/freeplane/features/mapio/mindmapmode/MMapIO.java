@@ -32,6 +32,7 @@ import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
@@ -51,13 +52,18 @@ public class MMapIO extends MapIO{
 		MFileManager urlManager = (MFileManager) modeController.getExtension(UrlManager.class);
 		MMapController mapController = (MMapController) modeController.getMapController();
 		final MMapIO mapIO = new MMapIO(urlManager, mapController);
-		modeController.addExtension(MMapIO.class, mapIO);
+		modeController.addExtension(MapIO.class, mapIO);
 	}
-    public void load(URL url, MapModel map) throws FileNotFoundException, IOException, XMLParseException,
+    public void load(URL url, MapModel map) throws FileNotFoundException, IOException, XMLException, XMLParseException,
     URISyntaxException {
     	fileManager.load(url, map);
     }
-    public void loadAndLock(URL url, MapModel map) throws FileNotFoundException, IOException, XMLParseException,
+    public boolean loadCatchExceptions(URL url, MapModel map)
+    {
+    	return fileManager.loadCatchExceptions(url, map);
+    }
+    
+    public void loadSafeAndLock(URL url, MapModel map) throws FileNotFoundException, IOException, XMLParseException,
     URISyntaxException {
     	fileManager.loadAndLock(url, map);
     }
@@ -104,14 +110,14 @@ public class MMapIO extends MapIO{
             URISyntaxException {
 	    return mapController.newUntitledMap(url);
     }
-	public boolean newMap(URL url) throws FileNotFoundException, XMLParseException, IOException, URISyntaxException {
+	public boolean newMap(URL url) throws FileNotFoundException, IOException, URISyntaxException, XMLException {
 	    return mapController.newMap(url);
     }
-	public boolean newDocumentationMap(URL url) throws FileNotFoundException, XMLParseException, IOException,
-            URISyntaxException {
+	public boolean newDocumentationMap(URL url) throws FileNotFoundException, IOException,
+            URISyntaxException, XMLException {
 	    return mapController.newDocumentationMap(url);
     }
-	public boolean restoreCurrentMap() throws FileNotFoundException, XMLParseException, IOException, URISyntaxException {
+	public boolean restoreCurrentMap() throws FileNotFoundException, IOException, URISyntaxException, XMLException {
 	    return mapController.restoreCurrentMap();
     }
 	

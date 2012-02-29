@@ -7,10 +7,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
-import net.sf.jabref.BibtexDatabase;
 import net.sf.jabref.BibtexEntry;
-import net.sf.jabref.Globals;
-import net.sf.jabref.labelPattern.LabelPatternUtil;
 
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
@@ -39,13 +36,12 @@ public class Reference {
 	private URI uri = null;
 	
 	public Reference(BibtexEntry entry, NodeModel node) {
-		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
 		JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();		
 		
 		attributes = new ArrayList<Reference.Item>();
 		
 		if (entry.getCiteKey() == null) {
-			LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), database, entry);
+			jabRefAttributes.generateBibtexEntry(entry);			
 		}
 		
 		this.key = new Item(jabRefAttributes.getKeyAttribute(), entry.getCiteKey());		

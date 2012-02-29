@@ -6,9 +6,9 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.docear.plugin.core.features.AnnotationModel;
+import org.docear.plugin.core.features.IAnnotation.AnnotationType;
 import org.docear.plugin.core.util.Tools;
-import org.docear.plugin.pdfutilities.features.AnnotationModel;
-import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.ui.EnabledAction;

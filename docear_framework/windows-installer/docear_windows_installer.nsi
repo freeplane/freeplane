@@ -10,7 +10,7 @@ Name Docear
 !define URL www.docear.org
 
 # MUI Symbol Definitions
-!define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\orange-install.ico"
+!define MUI_ICON "icon-windows_all_sizes_combined.ico"
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT HKLM
 !define MUI_STARTMENUPAGE_NODISABLE
@@ -22,16 +22,35 @@ Name Docear
 
 # JRE Detection Definitions
 !define JRE_VERSION "1.6"
-!define JRE_URL "http://javadl.sun.com/webapps/download/AutoDL?BundleId=58124"
+!define JRE_URL_32 "http://javadl.sun.com/webapps/download/AutoDL?BundleId=58124"
+!define JRE_URL_64 "http://javadl.sun.com/webapps/download/AutoDL?BundleId=58126"
+!ifndef VERSION
+    !define VERSION "1.0"
+!endif
+
+!define INI_FILE "docear-setup.ini"
 
 # Included files
-!include Sections.nsh
-!include MUI2.nsh
-!include FileAssociation.nsh 
-!include JREDyna_Inetc.nsh
+!include "x64.nsh"
+!include "LogicLib.nsh"
+!include "WinMessages.NSH"
+!include "MUI2.nsh"
+!include "Sections.nsh"
+!include "InstallOptions.nsh"
+!include FileAssociation.nsh
+!include JRECheck.nsh
 
 # Variables
 Var StartMenuGroup
+
+;--------------------------------
+;Reserve Files
+ 
+  ;If you are using solid compression, files that are required before
+  ;the actual installation should be stored first in the data block,
+  ;because this will make your installer start faster.
+ 
+ReserveFile "docear-setup.ini"
 
 # Installer pages
 !insertmacro MUI_PAGE_WELCOME
@@ -39,7 +58,8 @@ Var StartMenuGroup
 !insertmacro CUSTOM_PAGE_JREINFO
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_STARTMENU Application $StartMenuGroup
-!insertmacro MUI_PAGE_INSTFILES
+Page Custom OptionPageNS OptionPageProcess
+!insertmacro MUI_PAGE_INSTFILES 
 !insertmacro MUI_PAGE_FINISH
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
@@ -52,8 +72,14 @@ Var StartMenuGroup
   WriteINIStr "${URLFile}.URL" "InternetShortcut" "URL" "${URLSite}"
 !macroend
 
+
+
 # Installer attributes
-OutFile "..\dist\docear-${VERSION}.exe"
+!ifdef DOCEAR_OUT_FILE
+    OutFile "..\dist\${DOCEAR_OUT_FILE}"
+!else
+    OutFile "..\dist\docear-${VERSION}.exe"
+!endif
 InstallDir $PROGRAMFILES\Docear
 CRCCheck on
 XPStyle on
@@ -72,16 +98,25 @@ ShowUninstDetails show
 # Installer sections
 Section -Main SEC0000
     call DownloadAndInstallJREIfNecessary
+    ${If} ${RunningX64}
+        SetRegView 64
+    ${Else}
+        SetRegView 32
+    ${EndIf}
     SetOutPath $INSTDIR
     SetOverwrite on
     SetShellVarContext all
     File ..\..\docear_plugin_core\src\license.txt
     File /r ..\build\*
+    ${If} "$R8" == 1
+        CreateShortcut $DESKTOP\Docear.lnk $INSTDIR\docear.exe
+        ;CreateShortcut "$DESKTOP\Docear (compatibility mode).lnk" $INSTDIR\docear.bat "" $INSTDIR\docear.exe 1
+    ${EndIf}
     SetOutPath $SMPROGRAMS\$StartMenuGroup
-    CreateShortcut $SMPROGRAMS\$StartMenuGroup\Docear.lnk $INSTDIR\docear.exe
+    CreateShortcut $SMPROGRAMS\$StartMenuGroup\Docear.lnk $INSTDIR\docear.exe    
     !insertmacro "CreateURLShortCut" "$SMPROGRAMS\$StartMenuGroup\Docear Website" "http://www.docear.org" "Visit Docear Website"    
     WriteRegStr HKLM "${REGKEY}\Components" Main 1
-    ${registerExtension} "$INSTDIR\docear.exe" ".mm" "Docear Mindmap"
+    ${registerExtension} "$INSTDIR\docear.exe" ".mm" "Docear Mindmap"    
 SectionEnd
 
 Section -post SEC0001
@@ -101,12 +136,29 @@ Section -post SEC0001
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" UninstallString $INSTDIR\uninstall.exe
     WriteRegDWORD HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoModify 1
     WriteRegDWORD HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoRepair 1
+    
+    ReadRegStr $R9 HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" "Path"
+    Call GetJreInstallPath
+    Pop $R7    ; get JRE path    
+    ${If} ${RunningX64}
+        SetRegView 64
+    ${Else}
+        SetRegView 32
+    ${EndIf}
+    
+    ${WordFind} "$R9" "$R7" "*" $R6
+    ${IF} $R6 <= 0 
+        WriteRegStr HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" "Path" "$R9;$R7\bin"
+        SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
+    ${EndIf} 
+    
 SectionEnd
 
 # Macro for selecting uninstaller sections
 !macro SELECT_UNSECTION SECTION_NAME UNSECTION_ID
     Push $R0
     ReadRegStr $R0 HKLM "${REGKEY}\Components" "${SECTION_NAME}"
+    DetailPrint "$R0"
     StrCmp $R0 1 0 next${UNSECTION_ID}
     !insertmacro SelectSection "${UNSECTION_ID}"
     GoTo done${UNSECTION_ID}
@@ -122,6 +174,8 @@ Section /o -un.Main UNSEC0000
     SetShellVarContext all
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\Docear Website.URL"
     Delete /REBOOTOK $SMPROGRAMS\$StartMenuGroup\Docear.lnk
+    Delete /REBOOTOK $DESKTOP\Docear.lnk
+    Delete /REBOOTOK "$DESKTOP\Docear (compatibility mode).lnk"
     RmDir /r /REBOOTOK $INSTDIR
     RmDir /r /REBOOTOK $INSTDIR
     RmDir /r /REBOOTOK $INSTDIR
@@ -154,13 +208,41 @@ SectionEnd
 # Installer functions
 Function .onInit
     InitPluginsDir
+    ;File /oname=$PLUGINSDIR\test.ini "${INI_FILE}"
 FunctionEnd
 
 # Uninstaller functions
 Function un.onInit
+    ${If} ${RunningX64}
+        SetRegView 64
+    ${Else}
+        SetRegView 32
+    ${EndIf}
     ReadRegStr $INSTDIR HKLM "${REGKEY}" Path
+    DetailPrint "Install directory: $INSTDIR"
     !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuGroup
     !insertmacro SELECT_UNSECTION Main ${UNSEC0000}
+FunctionEnd
+
+Function OptionPageNS
+   GetTempFileName $R0
+   File /oname=$R0 "${INI_FILE}"
+   InstallOptions::dialog $R0
+   Pop $R1
+   StrCmp $R1 "cancel" done
+   StrCmp $R1 "back" done
+   StrCmp $R1 "success" process
+   
+   process:   
+    ReadINIStr $R8 $R0 "Field 1" "State"
+   done:
+FunctionEnd
+
+Function OptionPageProcess    
+    ReadINIStr $0 $R0 "Settings" "State"
+    ${If} "$0" > 0
+        Abort
+    ${EndIf}
 FunctionEnd
 
 # Installer Language Strings

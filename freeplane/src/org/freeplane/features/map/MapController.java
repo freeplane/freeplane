@@ -58,6 +58,7 @@ import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.main.addons.AddOnsController;
+import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
@@ -606,9 +607,10 @@ public class MapController extends SelectionController implements IExtension{
 		return node.isFolded();
 	}
 
-	/**@deprecated -- use MapIO*/
+	/**@throws XMLException 
+	 * @deprecated -- use MapIO*/
 	@Deprecated
-	public boolean newMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
+	public boolean newMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException, XMLException{
         	final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
         	if (mapViewManager.tryToChangeToMapView(url))
         		return false;
@@ -617,7 +619,7 @@ public class MapController extends SelectionController implements IExtension{
         		return false;
         	Controller.getCurrentController().getViewController().setWaitingCursor(true);
         	final MapModel newModel = new MapModel();
-        	UrlManager.getController().load(url, newModel);
+        	UrlManager.getController().loadCatchExceptions(url, newModel);
         	newModel.setReadOnly(true);
         	newModel.setSaved(true);
         	fireMapCreated(newModel);

@@ -35,21 +35,21 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
-import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
+import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.dnd.IDropAcceptor;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
+import org.freeplane.plugin.workspace.event.IWorkspaceNodeActionListener;
+import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
 import org.freeplane.plugin.workspace.io.IFileSystemRepresentation;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
-import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
-import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
-import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
-import org.freeplane.plugin.workspace.model.node.AFolderNode;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.nodes.AFolderNode;
+import org.freeplane.plugin.workspace.nodes.DefaultFileNode;
+import org.freeplane.plugin.workspace.nodes.LinkTypeFileNode;
 
 
-public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNodeEventListener, FileAlterationListener, ChangeListener, IDropAcceptor, IFileSystemRepresentation {
+public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNodeActionListener, FileAlterationListener, ChangeListener, IDropAcceptor, IFileSystemRepresentation {
 
 	private static final long serialVersionUID = 1L;
 	private static final Icon DEFAULT_ICON = new ImageIcon(FolderTypeLibraryNode.class.getResource("/images/project-open-2.png"));
@@ -58,6 +58,8 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 	private boolean locked = false;
 	private static WorkspacePopupMenu popupMenu = null;
 	private boolean first = true;
+	private boolean fsChanges = false;
+	private boolean orderDescending;
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -82,14 +84,14 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 			enableMonitoring(false);
 			this.pathURI = uri;
 			if (uri != null) {
-				createIfNeeded(getPath());
+				createPathIfNeeded(getPath());
 				first  = true;
 				enableMonitoring(true);
 			}
 		} 
 		else {
 			this.pathURI = uri;
-			createIfNeeded(getPath());
+			createPathIfNeeded(getPath());
 		}		
 		CoreConfiguration.projectPathObserver.setUri(uri);
 		DocearEvent event = new DocearEvent(this, DocearEventType.LIBRARY_NEW_PROJECT_INDEXING_REQUEST, this);
@@ -97,14 +99,7 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 		locked = false;
 	}
 	
-	private void createIfNeeded(URI uri) {
-		File file = WorkspaceUtils.resolveURI(uri);
-		if (file != null && !file.exists()) {
-			file.mkdirs();			
-		}
-	}
-	
-	@ExportAsAttribute("path")
+	@ExportAsAttribute(name="path")
 	public URI getPath() {
 		return this.pathURI;		
 	}
@@ -135,7 +130,7 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 		}
 	}
 	
-	@ExportAsAttribute("monitor")
+	@ExportAsAttribute(name="monitor")
 	public boolean isMonitoring() {
 		return this.doMonitoring;
 	}
@@ -169,7 +164,7 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 						else if(dropAction == DnDConstants.ACTION_MOVE) {
 							((DefaultFileNode) node).moveTo(targetDir);
 							AWorkspaceTreeNode parent = node.getParent();
-							WorkspaceUtils.getModel().removeNodeFromParent(node);
+							WorkspaceUtils.getModel().cutNodeFromParent(node);
 							parent.refresh();
 						}
 					}
@@ -180,12 +175,13 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 						FileUtils.copyFileToDirectory(srcFile, targetDir);
 						if(dropAction == DnDConstants.ACTION_MOVE) {
 							AWorkspaceTreeNode parent = node.getParent();
-							WorkspaceUtils.getModel().removeNodeFromParent(node);
+							WorkspaceUtils.getModel().cutNodeFromParent(node);
 							parent.refresh();
 						}
 					}
 				}
 			}
+			WorkspaceController.getController().getExpansionStateHandler().addPathKey(this.getKey());
 			refresh();
 		}
 		catch (Exception e) {
@@ -240,13 +236,12 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	
-	public void handleEvent(WorkspaceNodeEvent event) {
-		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {
+	public void handleAction(WorkspaceActionEvent event) {
+		if (event.getType() == WorkspaceActionEvent.MOUSE_RIGHT_CLICK) {
 			showPopup((Component) event.getBaggage(), event.getX(), event.getY());
 		}
 	}
 
-	private boolean fsChanges = false;
 	public void onStart(FileAlterationObserver observer) {
 		fsChanges = false;
 		if(first ) return;
@@ -299,7 +294,6 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 				WorkspaceUtils.getModel().removeAllElements(this);
 				WorkspaceController.getController().getFilesystemMgr().scanFileSystem(this, file);
 				WorkspaceUtils.getModel().reload(this);
-				WorkspaceController.getController().getExpansionStateHandler().restoreExpansionStates();
 			}			
 		}
 		catch (Exception e) {
@@ -320,21 +314,26 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 			popupMenu = new WorkspacePopupMenu();
 			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
 					WorkspacePopupMenuBuilder.createSubMenu(TextUtils.getRawText("workspace.action.new.label")),
-					"workspace.action.file.new.directory",
+					"workspace.action.node.new.folder",
 					"workspace.action.file.new.mindmap",
 					//WorkspacePopupMenuBuilder.SEPARATOR,
 					//"workspace.action.file.new.file",
 					WorkspacePopupMenuBuilder.endSubMenu(),
 					WorkspacePopupMenuBuilder.SEPARATOR,
-					"workspace.action.docear.uri.change",					
-					"workspace.action.docear.project.enable.monitoring",
-					WorkspacePopupMenuBuilder.SEPARATOR,						
-					"workspace.action.node.paste",
-					"workspace.action.node.copy",
+					"workspace.action.docear.uri.change",
+					"workspace.action.node.open.location",
+					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.cut",
+					"workspace.action.node.copy",						
+					"workspace.action.node.paste",
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.rename",
+					"workspace.action.node.remove",
+					"workspace.action.file.delete",
 					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.physical.sort",
+					WorkspacePopupMenuBuilder.SEPARATOR,					
+					"workspace.action.docear.project.enable.monitoring",
 					"workspace.action.node.refresh"	
 			});
 		}
@@ -354,13 +353,12 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 		if (file != null) {
 			if (!file.exists()) {
 				if (file.mkdirs()) {
-					LogUtils.info("New Projects Folder Created: " + file.getAbsolutePath());
+					
 				}
 			}
-			this.setName(file.getName());
 		}
 		else {
-			this.setName("no folder selected!");
+			LogUtils.warn("no project folder selected!");
 		}
 
 		
@@ -369,12 +367,6 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 	public void stateChanged(ChangeEvent e) {
 		if(!locked && e.getSource() instanceof NodeAttributeObserver) {			
 			URI uri = ((NodeAttributeObserver) e.getSource()).getUri();
-			try{		
-				createPathIfNeeded(uri);				
-			}
-			catch (Exception ex) {
-				return;
-			}
 			this.setPath(uri);
 			this.refresh();
 		}
@@ -439,5 +431,14 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 	
 	public File getFile() {
 		return WorkspaceUtils.resolveURI(this.getPath());
+	}
+	
+	public void orderDescending(boolean enable) {
+		this.orderDescending = enable;
+	}
+
+	@ExportAsAttribute(name="orderDescending")
+	public boolean orderDescending() {
+		return orderDescending;
 	}
 }

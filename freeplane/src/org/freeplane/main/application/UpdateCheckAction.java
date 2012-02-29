@@ -32,6 +32,7 @@ import org.freeplane.features.ui.IMapViewChangeListener;
  * 
  * @author robert ladstaetter
  */
+
 class UpdateCheckAction extends AFreeplaneAction {
 	private static boolean autorunEnabled = true;
 	private static Timer autorunTimer = null;
@@ -87,6 +88,17 @@ class UpdateCheckAction extends AFreeplaneAction {
 				controller.getMapViewManager().removeMapViewChangeListener(this);
 			}
 		});
+		//FIXME DOCEAR
+		setEnabled(false);
+		ResourceController.getResourceController().setProperty(CHECK_UPDATES_AUTOMATICALLY, false);
+	}
+	
+	//FIXME: DOCEAR
+	public void setEnabled() {
+		this.setEnabled(false);
+	}
+	public void setEnabled(boolean enabled) {
+		super.setEnabled(false);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

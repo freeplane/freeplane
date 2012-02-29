@@ -56,6 +56,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.BlindIcon;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
@@ -195,10 +196,13 @@ class ScriptEditorPanel extends JDialog {
 						getErrorHandler());
                 }
                 catch (Throwable e2) {
-        			final String cause = ((e2.getCause() != null) ? e2.getCause().getMessage() : "");
-        			final String message = ((e2.getMessage() != null) ? e2.getMessage() : "");
-        			UITools.errorMessage(e2.getClass().getName() + ": " + cause
-        			        + ((cause.length() != 0 && message.length() != 0) ? ", " : "") + message);
+        			Throwable cause = e2.getCause();
+					String causeMessage = "";
+					if(cause != null && cause.getMessage()!= null)
+						causeMessage = cause.getMessage();
+        			final String message = e2.getMessage() != null ? e2.getMessage() : "";
+        			UITools.errorMessage(e2.getClass().getName() + ": " + causeMessage
+        			        + ((causeMessage.length() != 0 && message.length() != 0) ? ", " : "") + message);
         			result = message;
                 }
 				getPrintStream().print(TextUtils.getText("plugins/ScriptEditor/window.Result") + result);
@@ -326,7 +330,12 @@ class ScriptEditorPanel extends JDialog {
 		mScriptTextField = editorPane;
 		mScriptTextField.setEnabled(false);
 		mCentralUpperPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, mScriptList, new JScrollPane(mScriptTextField));
-		editorPane.setContentType("text/groovy");
+		try {
+			editorPane.setContentType("text/groovy");
+		} catch (Exception e) {
+			LogUtils.warn(e);
+			editorPane.setContentType("text/plain");
+		}
 		mCentralUpperPanel.setContinuousLayout(true);
 		mScriptResultField = new JTextArea();
 		mScriptResultField.setEditable(false);

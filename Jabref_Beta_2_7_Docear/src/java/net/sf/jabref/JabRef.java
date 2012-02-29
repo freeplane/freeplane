@@ -879,14 +879,20 @@ public class JabRef {
 	        
 	        List<_JabRefPlugin.SidePanePluginExtension> plugins = jabrefPlugin.getSidePanePluginExtensions();
 	        for (_JabRefPlugin.SidePanePluginExtension extension : plugins) {
-	            SidePanePlugin plugin = extension.getSidePanePlugin();
-	            plugin.init(jrf, jrf.sidePaneManager);
-	            SidePaneComponent comp = plugin.getSidePaneComponent();
-	            jrf.sidePaneManager.register(comp.getName(), comp);
-	            jrf.addPluginMenuItem(plugin.getMenuItem());
+	        	try {
+		            SidePanePlugin plugin = extension.getSidePanePlugin();
+		            plugin.init(jrf, jrf.sidePaneManager);
+		            SidePaneComponent comp = plugin.getSidePaneComponent();
+		            jrf.sidePaneManager.register(comp.getName(), comp);
+		            jrf.addPluginMenuItem(plugin.getMenuItem());
+	        	}
+	        	catch(Throwable e) {
+	        		//DOCEAR
+	        		System.out.println("JabRef exception suppressed by Docear: "+e.getMessage());
+	        	}
 	        }
     	}
-    	catch(Exception e) {
+    	catch(Throwable e) {
     		//DOCEAR
     		System.out.println("JabRef exception suppressed by Docear: "+e.getMessage());
     	}

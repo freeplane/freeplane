@@ -10,7 +10,9 @@ import java.awt.event.KeyListener;
 import javax.swing.JTree;
 import javax.swing.tree.TreePath;
 
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.event.IWorkspaceNodeActionListener;
+import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 /**
  * 
@@ -41,8 +43,8 @@ public class DefaultWorkspaceKeyHandler implements KeyListener {
 			}
 			AWorkspaceTreeNode node = (AWorkspaceTreeNode) path.getLastPathComponent();
 			
-			if (node instanceof IWorkspaceNodeEventListener) {
-				((IWorkspaceNodeEventListener) node).handleEvent(new WorkspaceNodeEvent(node, WorkspaceNodeEvent.WSNODE_OPEN_DOCUMENT, 0, 0, e.getComponent()));
+			if (node instanceof IWorkspaceNodeActionListener) {
+				((IWorkspaceNodeActionListener) node).handleAction(new WorkspaceActionEvent(node, WorkspaceActionEvent.WSNODE_OPEN_DOCUMENT, 0, 0, e.getComponent()));
 				e.consume();
 			}
 		}

@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import org.docear.plugin.core.mindmap.MapConverter;
 import org.docear.plugin.pdfutilities.actions.UpdateMonitoringFolderAction;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.util.LogUtils;
@@ -67,7 +68,7 @@ public class DocearAutoMonitoringListener implements IMapLifeCycleListener,  Win
 	}
 
 	public void windowGainedFocus(WindowEvent e) {
-		if(startup && !DocearMapConverterListener.currentlyConverting){
+		if(startup && !MapConverter.currentlyConverting){
 			startup = false;
 			startMonitoring();			
 		}

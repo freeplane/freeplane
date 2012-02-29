@@ -6,7 +6,7 @@ package org.freeplane.plugin.workspace.controller;
 
 import javax.swing.Icon;
 
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 /**
  * 

@@ -220,6 +220,9 @@ public class FormatController implements IExtension {
 					else if (type.equals(IFormattedObject.TYPE_STRING)) {
 						stringFormats.add(format);
 					}
+					else if (type.equals(PatternFormat.TYPE_STANDARD)) {
+					    // ignore this pattern that crept in in some 1.2 beta version
+					}
 					else {
 						throw new RuntimeException("unknown type in " + configXml + ": type=" + type + ", style="
 						        + style + ", element content=" + content);
@@ -246,6 +249,7 @@ public class FormatController implements IExtension {
 
 	public ArrayList<PatternFormat> getAllFormats() {
 		final ArrayList<PatternFormat> formats = new ArrayList<PatternFormat>();
+		formats.add(PatternFormat.getStandardPatternFormat());
 		formats.add(PatternFormat.getIdentityPatternFormat());
 		formats.addAll(numberFormats);
 		formats.addAll(dateFormats);
@@ -272,8 +276,10 @@ public class FormatController implements IExtension {
 		        + "<!--   - 'name': a informal name, a comment that's not visible in the app -->" + sep //
 		        + "<!--   - 'locale': the name of the locale, only set for locale dependent format codes -->" + sep;
 		for (PatternFormat patternFormat : formats) {
-            if (!patternFormat.getType().equals(PatternFormat.TYPE_IDENTITY))
+            if (!patternFormat.getType().equals(PatternFormat.TYPE_IDENTITY)
+                    && !patternFormat.getType().equals(PatternFormat.TYPE_STANDARD)) {
                 saver.addChild(patternFormat.toXml());
+            }
 		}
 		final Writer writer = new FileWriter(pathToFile);
 		final XMLWriter xmlWriter = new XMLWriter(writer);
@@ -294,7 +300,7 @@ public class FormatController implements IExtension {
 		return stringFormats;
 	}
 
-	@Deprecated
+	/** @deprecated use getAllFormats() instead. */
 	public List<String> getAllPatterns() {
 		final ArrayList<PatternFormat> formats = getAllFormats();
 		ArrayList<String> result = new ArrayList<String>(formats.size());
@@ -304,9 +310,10 @@ public class FormatController implements IExtension {
 		return result;
 	}
 
-	/** returns a matching IFormattedObject if possible and if formatString is not-null.
-	 * Removes format if formatString is null. */
-	public static Object format(final Object obj, final String formatString) {
+	/** returns a matching {@link IFormattedObject} if possible and if <a>formatString</a> is not-null.
+	 * Otherwise <a>defaultObject</a> is returned.
+	 * Removes format if <a>formatString</a> is null. */
+	public static Object format(final Object obj, final String formatString, final Object defaultObject) {
 		try {
 			final PatternFormat format = PatternFormat.guessPatternFormat(formatString);
 			// logging for invalid pattern is done in guessPatternFormat()
@@ -328,12 +335,27 @@ public class FormatController implements IExtension {
 			}
 		}
 		catch (Exception e) {
-			// Be quiet, just like Excel does...
-			// LogUtils.warn("cannot format '" + StringUtils.abbreviate(obj.toString(), 20) + "' with " + formatString
-			//               + ": " + e.getMessage());
-			return obj;
+            // Be quiet, just like Excel does...
+            // LogUtils.warn("cannot format '" + StringUtils.abbreviate(obj.toString(), 20) + "' of type "
+            //               + obj.getClass().getSimpleName() + " with " + formatString + ": " + e.getMessage());
+			return defaultObject;
 		}
 	}
+
+    /** returns a matching IFormattedObject if possible and if formatString is not-null.
+     * Otherwise <a>obj</a> is returned.
+     * Removes format if formatString is null. */
+    public static Object format(final Object obj, final String formatString) {
+        return format(obj, formatString, obj);
+    }
+
+    public static Object formatUsingDefault(final Object object) {
+        if (object instanceof Date)
+            return format(object, FormatController.getController().getDefaultDateTimeFormat().toPattern());
+        if (object instanceof Number)
+            return format(object, FormatController.getController().getDefaultNumberFormat().toPattern());
+        return object;
+    }
 
 	public Format getDefaultFormat(String type) {
 		if (type.equals(IFormattedObject.TYPE_DATE))

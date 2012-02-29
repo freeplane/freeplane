@@ -15,16 +15,16 @@ import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
+import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
+import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.io.IFileSystemRepresentation;
-import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
-import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.nodes.FolderLinkNode;
 
 /**
  * 
  */
-public class FolderTypeLiteratureRepositoryNode extends PhysicalFolderNode implements ChangeListener, IFileSystemRepresentation {
+public class FolderTypeLiteratureRepositoryNode extends FolderLinkNode implements ChangeListener, IFileSystemRepresentation {
 
 	private static final long serialVersionUID = 1L;
 	private boolean locked;
@@ -90,22 +90,27 @@ public class FolderTypeLiteratureRepositoryNode extends PhysicalFolderNode imple
 			popupMenu = new WorkspacePopupMenu();
 			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
 					WorkspacePopupMenuBuilder.createSubMenu(TextUtils.getRawText("workspace.action.new.label")),
-					"workspace.action.file.new.directory",
+					"workspace.action.node.new.folder",
 					"workspace.action.file.new.mindmap",
 					//WorkspacePopupMenuBuilder.SEPARATOR,
 					//"workspace.action.file.new.file",
 					WorkspacePopupMenuBuilder.endSubMenu(),
 					WorkspacePopupMenuBuilder.SEPARATOR,
-					"workspace.action.docear.uri.change",					
-					"workspace.action.docear.enable.monitoring",
-					WorkspacePopupMenuBuilder.SEPARATOR,						
-					"workspace.action.node.paste",
-					"workspace.action.node.copy",
+					"workspace.action.docear.uri.change",
+					"workspace.action.node.open.location",
+					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.cut",
+					"workspace.action.node.copy",
+					"workspace.action.node.paste",
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.rename",
+					"workspace.action.node.remove",
+					"workspace.action.file.delete",					
 					WorkspacePopupMenuBuilder.SEPARATOR,
-					"workspace.action.node.refresh"	
+					"workspace.action.node.physical.sort",
+					WorkspacePopupMenuBuilder.SEPARATOR,					
+					"workspace.action.docear.enable.monitoring",
+					"workspace.action.node.refresh"
 			});
 		}
 		

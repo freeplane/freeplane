@@ -32,11 +32,11 @@ import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
-import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
-import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
+import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
+import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.nodes.LinkTypeFileNode;
 
 /**
  * 
@@ -70,12 +70,12 @@ public class LinkTypeReferencesNode extends LinkTypeFileNode implements IBibtexD
 		return true;
 	}
 	
-	public void handleEvent(WorkspaceNodeEvent event) {
-		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {			
+	public void handleAction(WorkspaceActionEvent event) {
+		if (event.getType() == WorkspaceActionEvent.MOUSE_RIGHT_CLICK) {			
 			showPopup((Component) event.getBaggage(), event.getX(), event.getY());
 		} 
 		else {
-			super.handleEvent(event);
+			super.handleAction(event);
 		}
 	}
 
@@ -112,12 +112,14 @@ public class LinkTypeReferencesNode extends LinkTypeFileNode implements IBibtexD
 			popupMenu = new WorkspacePopupMenu();
 			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
 					"workspace.action.docear.uri.change",					
-					WorkspacePopupMenuBuilder.SEPARATOR,						
-					"workspace.action.node.paste",
-					"workspace.action.node.copy",
-					"workspace.action.node.cut",
 					WorkspacePopupMenuBuilder.SEPARATOR,
-					"workspace.action.node.rename",
+					"workspace.action.node.cut",
+					"workspace.action.node.copy",						
+					"workspace.action.node.paste",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.rename",						
+					"workspace.action.node.remove",
+					"workspace.action.file.delete",
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.refresh"	
 			});
@@ -135,7 +137,7 @@ public class LinkTypeReferencesNode extends LinkTypeFileNode implements IBibtexD
 	public void refresh() {
 		//maybe do sth
 	}
-	
+		
 	private void createIfNeeded(URI uri) {
 		try {
 			File file = WorkspaceUtils.resolveURI(uri);

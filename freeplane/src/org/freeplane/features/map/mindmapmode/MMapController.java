@@ -68,6 +68,7 @@ import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.features.url.mindmapmode.MFileManager.AlternativeFileMode;
 import org.freeplane.main.addons.AddOnsController;
+import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
@@ -542,6 +543,7 @@ public class MMapController extends MapController {
 	}
 
 	public MapModel newModel(NodeModel existingNode) {
+	    // use new MMapModel() instead of calling this method with a null arg
 		if(existingNode == null)
 			throw new NullPointerException("null node not allowed.");
 		final MMapModel mindMapMapModel = new MMapModel();
@@ -621,7 +623,7 @@ public class MMapController extends MapController {
         try {
         	Controller.getCurrentController().getViewController().setWaitingCursor(true);
         	final MapModel newModel = new MMapModel();
-        	UrlManager.getController().load(url, newModel);
+        	UrlManager.getController().loadCatchExceptions(url, newModel);
         	newModel.setURL(null);
         	fireMapCreated(newModel);
         	newMapView(newModel);
@@ -632,10 +634,15 @@ public class MMapController extends MapController {
         }
 	}
 
-	/**@deprecated -- use MMapIO*/
+	/**@throws XMLException 
+	 * @deprecated -- use MMapIO*/
 	@Deprecated
 	@Override
-    public boolean newMap(URL url) throws FileNotFoundException, XMLParseException, IOException, URISyntaxException {
+    public boolean newMap(URL url) throws FileNotFoundException, IOException, URISyntaxException, XMLException {
+		// load as documentation map if necessary 
+		if(getMModeController().containsExtension(DocuMapAttribute.class)){
+			return newDocumentationMap(url);
+		}
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		if (mapViewManager.tryToChangeToMapView(url))
 			return false;
@@ -685,9 +692,10 @@ public class MMapController extends MapController {
 		}
     }
 
-	/**@deprecated -- use MMapIO*/
+	/**@throws XMLException 
+	 * @deprecated -- use MMapIO*/
 	@Deprecated
-	public boolean newDocumentationMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
+	public boolean newDocumentationMap(final URL url) throws FileNotFoundException, IOException, URISyntaxException, XMLException{
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		if (mapViewManager.tryToChangeToMapView(url))
 			return false;
@@ -706,9 +714,10 @@ public class MMapController extends MapController {
         }
 	}
 	
-	/**@deprecated -- use MMapIO*/
+	/**@throws XMLException 
+	 * @deprecated -- use MMapIO*/
 	@Deprecated
-    public boolean restoreCurrentMap() throws FileNotFoundException, XMLParseException, IOException, URISyntaxException {
+    public boolean restoreCurrentMap() throws FileNotFoundException, IOException, URISyntaxException, XMLException {
 	    final Controller controller = Controller.getCurrentController();
         final MapModel map = controller.getMap();
         final URL url = map.getURL();

@@ -7,12 +7,13 @@ package org.freeplane.plugin.workspace.io;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import org.freeplane.core.io.ListHashTable;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.plugin.workspace.io.creator.IFileTypeHandler;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public class FilesystemManager {
 
@@ -35,7 +36,12 @@ public class FilesystemManager {
 
 		if (file != null && file.exists()) {
 			if (file.isDirectory()) {
-				iterateFolder(node, file);
+				if(node instanceof IFileSystemRepresentation) {
+					iterateDirectory(node, file, ((IFileSystemRepresentation) node).orderDescending());
+				} 
+				else {
+					iterateDirectory(node, file, false);
+				}
 			}
 			else {
 				createFileNode(node, file);
@@ -48,26 +54,87 @@ public class FilesystemManager {
 	 * @param parentDir
 	 * @throws IOException 
 	 */
-	public void createDirectory(String directoryName, File parentDir) throws IOException {
+	public File createDirectory(String directoryName, File parentDir) throws IOException {
 		File newDir = new File(parentDir, directoryName);
+		int count = 0;
+		while(newDir.exists() && count++ < 100) {
+			newDir = new File(parentDir, directoryName + " ("+count+")");
+		}
 		if(!newDir.mkdirs()) {
 			throw new IOException("could not create directory: "+newDir.getPath());
-		}		
+		}
+		return newDir;
+	}
+	
+	/**
+	 * @param directoryName
+	 * @param parentDir
+	 * @throws IOException 
+	 */
+	public File createFile(String fileName, File parentDir) throws IOException {
+		String pureName = fileName;
+		String fileExtension = "";
+		
+		int strPointer = fileName.lastIndexOf(".");
+		if(strPointer > -1) {
+			pureName = fileName.substring(0, strPointer);
+			fileExtension = fileName.substring(strPointer+1);
+		}
+		File newFile = new File(parentDir, pureName+"."+fileExtension);
+		int count = 0;
+		while(newFile.exists() && count++ < 100) {
+			newFile = new File(parentDir, pureName + " ("+count+")" +(fileExtension.trim().length() > 0 ? "."+fileExtension : ""));
+		}
+		if(!newFile.createNewFile()) {
+			throw new IOException("could not create file: "+newFile.getPath());
+		}
+		return newFile;
 	}
 	
 	private ListHashTable<String, IFileTypeHandler> getFileTypeHandlers() {
 		return typeManager.getFileTypeHandlers();
 	}
 
-	private void iterateFolder(AWorkspaceTreeNode parent, File folder) {
-		for (File file : folder.listFiles(new FolderFilter())) {
-			AWorkspaceTreeNode newParent = createFileNode(parent, FileReadManager.FOLDER_HANDLE, file);
-			iterateFolder(newParent, file);
+	private void iterateDirectory(AWorkspaceTreeNode parent, File directory, final boolean orderDescending) {
+		boolean orderDesc = orderDescending;
+//		if(parent instanceof IFileSystemRepresentation) {
+//			orderDesc = ((IFileSystemRepresentation) parent).orderDescending();
+//		}
+		
+		for (File file : sortFiles(directory.listFiles(new DirectoryFilter()), orderDesc, true)) {
+			AWorkspaceTreeNode newParent = createFileNode(parent, FileReadManager.DIRECTORY_HANDLE, file);
+			iterateDirectory(newParent, file, orderDesc);
 
 		}
-		for (File file : folder.listFiles(new NoFolderFilter())) {
+		for (File file : sortFiles(directory.listFiles(new FilesOnlyFilter()), orderDesc, true)) {
 			createFileNode(parent, file);
 		}
+	}
+
+	/**
+	 * @param files
+	 * @param orderAscending
+	 * @param ignoreCase
+	 * @return
+	 */
+	private File[] sortFiles(File[] files, final boolean orderDescending, final boolean ignoreCase) {
+		Comparator<File> comparator = new Comparator<File>() {
+			public int compare(File o1, File o2) {
+				File f1 = o1;
+				File f2 = o2;
+				if(ignoreCase) {
+					f1 = new File(f1.getParentFile(), f1.getName().toLowerCase());
+					f2 = new File(f2.getParentFile(), f2.getName().toLowerCase());
+				}
+				int compareResult = f1.compareTo(f2);
+				if(orderDescending) {
+					return compareResult*-1;
+				}
+				return compareResult;
+			}
+		};
+		Arrays.sort(files, comparator);
+		return files;
 	}
 
 	private AWorkspaceTreeNode createFileNode(final AWorkspaceTreeNode parent, final File file) {
@@ -98,7 +165,7 @@ public class FilesystemManager {
 	 * INTERNAL CLASS DEFINITIONS
 	 **********************************************************************************/
 	
-	private class FolderFilter implements FileFilter  {
+	private class DirectoryFilter implements FileFilter  {
 		private boolean filtering = true;
 		
 		public boolean accept(File pathname) {
@@ -112,7 +179,7 @@ public class FilesystemManager {
 		}
 	}
 	
-	private class NoFolderFilter implements FileFilter {
+	private class FilesOnlyFilter implements FileFilter {
 		private boolean filtering = true;
 		
 		public boolean accept(File pathname) {

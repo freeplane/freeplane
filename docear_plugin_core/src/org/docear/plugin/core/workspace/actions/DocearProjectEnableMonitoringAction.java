@@ -8,8 +8,8 @@ import java.awt.event.ActionEvent;
 
 import org.docear.plugin.core.workspace.node.FolderTypeProjectsNode;
 import org.freeplane.core.ui.SelectableAction;
-import org.freeplane.plugin.workspace.model.action.AWorkspaceAction;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.actions.AWorkspaceAction;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 @SelectableAction(checkOnPopup=true)
 public class DocearProjectEnableMonitoringAction extends AWorkspaceAction {

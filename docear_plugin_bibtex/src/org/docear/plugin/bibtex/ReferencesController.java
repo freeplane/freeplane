@@ -15,6 +15,7 @@ import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 
 import net.sf.jabref.JabRefPreferences;
 
@@ -40,9 +41,10 @@ import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
+import org.docear.plugin.core.mindmap.MapConverter;
 import org.docear.plugin.core.util.CoreUtils;
 import org.docear.plugin.core.workspace.node.LinkTypeReferencesNode;
-import org.docear.plugin.pdfutilities.util.MapConverter;
+import org.docear.plugin.pdfutilities.listener.MonitorungNodeUpdater;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.FreeplaneActionCascade;
@@ -54,15 +56,12 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.INodeViewLifeCycleListener;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.controller.IWorkspaceListener;
-import org.freeplane.plugin.workspace.controller.WorkspaceEvent;
 import org.freeplane.view.swing.map.NodeView;
 
-public class ReferencesController extends ALanguageController implements IDocearEventListener, IWorkspaceListener, ActionListener {
+public class ReferencesController extends ALanguageController implements IDocearEventListener, ActionListener {
 
 	//mapModel with reference which is currently changed
 	private MapModel inChange = null;
@@ -125,7 +124,6 @@ public class ReferencesController extends ALanguageController implements IDocear
 		this.modeController = modeController;
 		LogUtils.info("starting DocearReferencesController(ModeController)"); //$NON-NLS-1$
 
-		this.addPropertiesToOptionPanel();
 		this.addPluginDefaults();
 		this.addMenuEntries();
 		this.registerListeners();
@@ -141,8 +139,9 @@ public class ReferencesController extends ALanguageController implements IDocear
 	}
 	
 
-	private void registerListeners() {
+	private void registerListeners() {		
 		MapConverter.addMapsConvertedListener(splmmMapsConvertedListener);
+		
 		
 		this.modeController.addINodeViewLifeCycleListener(new INodeViewLifeCycleListener() {
 			
@@ -161,8 +160,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 		this.modeController.getMapController().addMapChangeListener(changeListenerAdapter);
 		this.modeController.getMapController().addMapLifeCycleListener(changeListenerAdapter);
 		
-		DocearController.getController().addDocearEventListener(this);
-		WorkspaceController.getController().addWorkspaceListener(this);		
+		DocearController.getController().addDocearEventListener(this);		
 	}
 	
 	
@@ -177,7 +175,6 @@ public class ReferencesController extends ALanguageController implements IDocear
 
 	private void createOptionPanel(JPanel comp) {
 		try {
-			System.out.println("JabrefPane: " + modeController);
 			final JTabbedPane tabs = (JTabbedPane) modeController.getUserInputListenerFactory().getToolBar("/format")
 					.getComponent(1);
 			Dimension fixSize =  new Dimension(tabs.getComponent(0).getWidth(), 32000);
@@ -186,7 +183,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 			tabs.setSelectedComponent(comp);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			LogUtils.severe(e);
 		}
 	}
 
@@ -200,25 +197,29 @@ public class ReferencesController extends ALanguageController implements IDocear
 			
 			final ClassLoader classLoader = getClass().getClassLoader();
 			isRunning  = true;
-			Thread thread = new Thread() {
-				
-				public void run() {
-					Thread.currentThread().setContextClassLoader(classLoader);
-					URI uri = DocearController.getController().getLibrary().getBibtexDatabase();					
-					
-					if (uri != null) {						
-						jabrefWrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame(), CoreUtils.resolveURI(uri));						
+			try {
+				SwingUtilities.invokeAndWait( new Runnable() {
+					public void run() {
+						Thread.currentThread().setContextClassLoader(classLoader);
+						URI uri = null;
+						if(DocearController.getController().getLibrary() != null) {
+							uri = DocearController.getController().getLibrary().getBibtexDatabase();
+						}
+						
+						if (uri != null) {						
+							jabrefWrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame(), CoreUtils.resolveURI(uri));						
+						}
+						else {
+							jabrefWrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame());
+						} 
+						modeController.getUserInputListenerFactory().getMenuBar().addKeyStrokeInterceptor(new KeyBindInterceptor());
+						createOptionPanel(jabrefWrapper.getJabrefFrame());					
 					}
-					else {
-						jabrefWrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame());
-					}
-					//TODO: DOCEAR - (ticket #225) refactor with separate class  
-					modeController.getUserInputListenerFactory().getMenuBar().addKeyStrokeInterceptor(new KeyBindInterceptor());
-					createOptionPanel(jabrefWrapper.getJabrefFrame());					
-				}
-			};
-	
-			thread.start();
+				});
+			}
+			catch (Exception e) {
+				LogUtils.severe(e);
+			}
 		}
 	}
 	
@@ -244,19 +245,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE); //$NON-NLS-1$
 		Controller.getCurrentController().getResourceController().addDefaults(defaults);
 	}
-
-	private void addPropertiesToOptionPanel() {
-		final URL preferences = this.getClass().getResource("preferences.xml");
-		if (preferences == null)
-			throw new RuntimeException("cannot open docear.bibtex plugin preferences"); //$NON-NLS-1$
-
-		((MModeController) modeController).getOptionPanelBuilder().load(preferences);
-		/*Controller.getCurrentController().getOptionPanelController().addButtonListener(this);
-		OptionPanelBuilder builder = ((MModeController) Controller.getCurrentModeController()).getOptionPanelBuilder();
-		builder.addSeparator("reference_management", "OptionPanel.docear_bibtex_preferences", IndexedTree.AS_CHILD);
-		builder.addActionProperty("reference_management/OptionPanel.docear_bibtex_preferences" , "OptionPanel.docear_jabref_preferences", ShowJabrefPreferences.getKey(), IndexedTree.AS_CHILD);*/
-	}
-
+	
 	private void addMenuEntries() {
 
 		this.modeController.addMenuContributor(new IMenuContributor() {
@@ -316,15 +305,16 @@ public class ReferencesController extends ALanguageController implements IDocear
 	
 
 	public void handleEvent(DocearEvent event) {
-		System.out.println("JabrefWrapper DocearEvent: "+ event);
 		if(event.getType() == DocearEventType.LIBRARY_NEW_REFERENCES_INDEXING_REQUEST && event.getEventObject() instanceof LinkTypeReferencesNode) {
-			File file = WorkspaceUtils.resolveURI(CoreConfiguration.referencePathObserver.getUri());
-			ReferencesController.getController().getJabrefWrapper().replaceDatabase(file, true);
+			final File file = WorkspaceUtils.resolveURI(CoreConfiguration.referencePathObserver.getUri());
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					ReferencesController contr = ReferencesController.getController();
+					JabrefWrapper wrapper = contr.getJabrefWrapper();
+					wrapper.replaceDatabase(file, true);					
+				}
+			});
 		}
-	}
-
-	public void workspaceChanged(WorkspaceEvent event) {
-		// TODO: workspaceChanged(WorkspaceEvent event)		
 	}
 
 	public NodeAttributeListener getAttributeListener() {

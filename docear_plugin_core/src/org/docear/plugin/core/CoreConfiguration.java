@@ -1,15 +1,19 @@
 package org.docear.plugin.core;
 
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.Collection;
 import java.util.Enumeration;
+import java.util.Properties;
 
 import javax.swing.SwingUtilities;
 
-import org.apache.commons.io.FileUtils;
+import org.docear.plugin.core.actions.DocearAboutAction;
 import org.docear.plugin.core.actions.DocearLicenseAction;
 import org.docear.plugin.core.actions.DocearOpenUrlAction;
 import org.docear.plugin.core.actions.DocearQuitAction;
@@ -20,34 +24,35 @@ import org.docear.plugin.core.features.DocearMapWriter;
 import org.docear.plugin.core.features.DocearNodeModelExtensionController;
 import org.docear.plugin.core.listeners.PropertyListener;
 import org.docear.plugin.core.listeners.WorkspaceChangeListener;
+import org.docear.plugin.core.listeners.WorkspaceOpenDocumentListener;
+import org.docear.plugin.core.logger.DocearEventLogger;
+import org.docear.plugin.core.mindmap.MapConverter;
 import org.docear.plugin.core.workspace.actions.DocearChangeLibraryPathAction;
 import org.docear.plugin.core.workspace.actions.DocearRenameAction;
 import org.docear.plugin.core.workspace.actions.WorkspaceChangeLocationsAction;
-import org.docear.plugin.core.workspace.creator.FolderTypeLibraryCreator;
-import org.docear.plugin.core.workspace.creator.FolderTypeLiteratureRepositoryCreator;
-import org.docear.plugin.core.workspace.creator.FolderTypeProjectsCreator;
-import org.docear.plugin.core.workspace.creator.LinkTypeIncomingCreator;
-import org.docear.plugin.core.workspace.creator.LinkTypeLiteratureAnnotationsCreator;
-import org.docear.plugin.core.workspace.creator.LinkTypeMyPublicationsCreator;
-import org.docear.plugin.core.workspace.creator.LinkTypeReferencesCreator;
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
+import org.freeplane.core.resources.OptionPanelController;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.FreeplaneActionCascade;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.features.url.mindmapmode.MapVersionInterpreter;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspacePreferences;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.config.WorkspaceConfiguration;
-import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public class CoreConfiguration extends ALanguageController {
 
@@ -82,7 +87,7 @@ public class CoreConfiguration extends ALanguageController {
 	public static final NodeAttributeObserver referencePathObserver = new NodeAttributeObserver();
 	public static final NodeAttributeObserver repositoryPathObserver = new NodeAttributeObserver();
 	private final boolean firstRun;
-	
+		
 	public CoreConfiguration(ModeController modeController) {			
 		LogUtils.info("org.docear.plugin.core.CoreConfiguration() initializing...");
 		firstRun = !ResourceController.getResourceController().getBooleanProperty(DOCEAR_FIRST_RUN_PROPERTY);
@@ -94,6 +99,9 @@ public class CoreConfiguration extends ALanguageController {
 	}
 	
 	private void init(ModeController modeController) {
+		DocearController.getController().getDocearEventLogger().write(this, DocearEventLogger.DocearEvent.APPLICATION_STARTED, "");
+		MapVersionInterpreter.addMapVersionInterpreter(new MapVersionInterpreter("0.9.0\" software_name=\"SciPlore_", false, false, "SciploreMM", "http://sciplore.org", null, new MapConverter()));
+		
 		// set up context menu for workspace
 		WorkspaceController.getController().addWorkspaceListener(WORKSPACE_CHANGE_LISTENER);
 		
@@ -102,13 +110,10 @@ public class CoreConfiguration extends ALanguageController {
 		modeController.addAction(new DocearRenameAction());
 		
 		addPluginDefaults();
-		prepareWorkspace();
+		//prepareWorkspace();
 		
 		replaceFreeplaneStringsAndActions();
 		DocearMapModelController.install(new DocearMapModelController(modeController));
-		
-				
-		modifyContextMenus();
 		
 		setDocearMapWriter();
 		
@@ -127,57 +132,11 @@ public class CoreConfiguration extends ALanguageController {
 	private void registerController(ModeController modeController) {
 		DocearNodeModelExtensionController.install(new DocearNodeModelExtensionController(modeController));		
 	}
-	
-	private void prepareWorkspace() {
-		WorkspaceController controller = WorkspaceController.getController();
-		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_FOLDER, FolderTypeLibraryCreator.FOLDER_TYPE_LIBRARY, new FolderTypeLibraryCreator());
-		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_FOLDER, FolderTypeLiteratureRepositoryCreator.FOLDER_TYPE_LITERATUREREPOSITORY, new FolderTypeLiteratureRepositoryCreator());
-		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_FOLDER, FolderTypeProjectsCreator.FOLDER_TYPE_PROJECTS, new FolderTypeProjectsCreator());
-		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, LinkTypeMyPublicationsCreator.LINK_TYPE_MYPUBLICATIONS , new LinkTypeMyPublicationsCreator());
-		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, LinkTypeReferencesCreator.LINK_TYPE_REFERENCES , new LinkTypeReferencesCreator());
-		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, LinkTypeLiteratureAnnotationsCreator.LINK_TYPE_LITERATUREANNOTATIONS , new LinkTypeLiteratureAnnotationsCreator());
-		controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_LINK, LinkTypeIncomingCreator.LINK_TYPE_INCOMING , new LinkTypeIncomingCreator());
-		
-		controller.reloadWorkspace();
-		controller.getConfiguration().linkWelcomeMindmapAfterWorkspaceCreation();
-		copyInfoIfNeeded();
-		
-	}
-
-	public static void copyInfoIfNeeded() {
-		File infoFile = new File(WorkspaceUtils.getProfileBaseFile(), "!!!info.txt");
-		if(!infoFile.exists()) {
-			try {
-				if(!infoFile.getParentFile().exists() && !infoFile.getParentFile().mkdirs()) {
-					return;
-				}
-				infoFile.createNewFile();
-				FileUtils.copyInputStreamToFile(CoreConfiguration.class.getResourceAsStream("/conf/!!!info.txt"), infoFile);
-			}
-			catch (IOException e) {
-				LogUtils.warn(e);
-			}
-			
-		}
-		File _dataInfoFile = new File(WorkspaceUtils.getProfileBaseFile().getParentFile().getParentFile(), "!!!info.txt");
-		if(!_dataInfoFile.exists()) {
-			try {
-				if(!_dataInfoFile.getParentFile().exists() && !_dataInfoFile.getParentFile().mkdirs()) {
-					return;
-				}
-				_dataInfoFile.createNewFile();
-				FileUtils.copyInputStreamToFile(CoreConfiguration.class.getResourceAsStream("/conf/!!!info.txt"), _dataInfoFile);
-			}
-			catch (IOException e) {
-				LogUtils.warn(e);
-			}
-			
-		}
-		
-	}
 
 	private void replaceFreeplaneStringsAndActions() {
-		ResourceController resourceController = ResourceController.getResourceController();
+		disableAutoUpdater();
+		
+		ResourceController resourceController = ResourceController.getResourceController();		
 		
 		//replace this actions if docear_core is present
 		Controller.getCurrentModeController().removeAction("SaveAsAction");
@@ -185,13 +144,14 @@ public class CoreConfiguration extends ALanguageController {
 		Controller.getCurrentModeController().removeAction("SaveAction");
 		Controller.getCurrentModeController().addAction(new SaveAction());
 		
+		
 		//remove sidepanel switcher
 		//Controller.getCurrentModeController().removeAction("ShowFormatPanel");
 		Controller.getCurrentModeController().addMenuContributor(new IMenuContributor() {
 			public void updateMenus(ModeController modeController,final  MenuBuilder builder) {
 				SwingUtilities.invokeLater(new Runnable() {					
 					public void run() {
-						builder.removeElement("$" + WorkspacePreferences.SHOW_WORKSPACE_MENUITEM + "$0");	
+						builder.removeElement("$" + WorkspacePreferences.SHOW_WORKSPACE_MENUITEM + "$0");
 					}
 				});
 													
@@ -208,25 +168,35 @@ public class CoreConfiguration extends ALanguageController {
 		replaceActions();
 	}
 
+	private void disableAutoUpdater() {
+		final OptionPanelController optionController = Controller.getCurrentController().getOptionPanelController();		
+		optionController.addPropertyLoadListener(new OptionPanelController.PropertyLoadListener() {
+			
+			@Override
+			public void propertiesLoaded(Collection<IPropertyControl> properties) {
+				((IPropertyControl) optionController.getPropertyControl("check_updates_automatically")).setEnabled(false);
+			}
+		});
+	}
+
 	private void replaceActions() {
 		
 		ResourceController resourceController = ResourceController.getResourceController();
-
+		AFreeplaneAction action;
 		resourceController.setProperty(WEB_FREEPLANE_LOCATION, resourceController.getProperty(WEB_DOCEAR_LOCATION));
-		replaceAction(OPEN_FREEPLANE_SITE_ACTION,
-				new DocearOpenUrlAction(OPEN_FREEPLANE_SITE_ACTION, resourceController.getProperty(WEB_FREEPLANE_LOCATION)));
 		resourceController.setProperty(BUG_TRACKER_LOCATION, resourceController.getProperty(DOCEAR_BUG_TRACKER_LOCATION));
-		replaceAction(REPORT_BUG_ACTION,
-				new DocearOpenUrlAction(REPORT_BUG_ACTION, resourceController.getProperty(BUG_TRACKER_LOCATION)));
 		resourceController.setProperty(HELP_FORUM_LOCATION, resourceController.getProperty("docear_helpForumLocation"));
-		replaceAction(ASK_FOR_HELP, new DocearOpenUrlAction(ASK_FOR_HELP, resourceController.getProperty(HELP_FORUM_LOCATION)));
 		resourceController.setProperty(FEATURE_TRACKER_LOCATION, resourceController.getProperty(DOCEAR_FEATURE_TRACKER_LOCATION));
-		replaceAction(REQUEST_FEATURE_ACTION,
-				new DocearOpenUrlAction(REQUEST_FEATURE_ACTION, resourceController.getProperty(FEATURE_TRACKER_LOCATION)));
 		resourceController.setProperty(WEB_DOCU_LOCATION, resourceController.getProperty(DOCEAR_WEB_DOCU_LOCATION));
-		replaceAction(DOCUMENTATION_ACTION,
-				new DocearOpenUrlAction(DOCUMENTATION_ACTION, resourceController.getProperty(WEB_DOCU_LOCATION)));
-		replaceAction(LICENSE_ACTION, new DocearLicenseAction(LICENSE_ACTION));
+		
+		replaceAction(REQUEST_FEATURE_ACTION, new DocearOpenUrlAction(REQUEST_FEATURE_ACTION, resourceController.getProperty(FEATURE_TRACKER_LOCATION)));
+		replaceAction(ASK_FOR_HELP, new DocearOpenUrlAction(ASK_FOR_HELP, resourceController.getProperty(HELP_FORUM_LOCATION)));
+		replaceAction(REPORT_BUG_ACTION, new DocearOpenUrlAction(REPORT_BUG_ACTION, resourceController.getProperty(BUG_TRACKER_LOCATION)));
+		replaceAction(OPEN_FREEPLANE_SITE_ACTION, new DocearOpenUrlAction(OPEN_FREEPLANE_SITE_ACTION, resourceController.getProperty(WEB_FREEPLANE_LOCATION)));
+		replaceAction(DOCUMENTATION_ACTION, new DocearOpenUrlAction(DOCUMENTATION_ACTION, resourceController.getProperty(WEB_DOCU_LOCATION)));
+		
+		action = new DocearAboutAction();
+		replaceAction(action.getKey(), action);
 		
 	}
 
@@ -249,22 +219,7 @@ public class CoreConfiguration extends ALanguageController {
 					}
 				}
 			}
-		}
-		String programmer = resourceController.getProperty("docear_programmer");
-		String copyright = resourceController.getProperty("docear_copyright");
-		String version	= resourceController.getProperty("docear_version");
-		String status	= resourceController.getProperty("docear_status");
-		
-		String aboutText = TextUtils.getRawText("docear_about");
-		MessageFormat formatter;
-        try {
-            formatter = new MessageFormat(aboutText);
-            aboutText = formatter.format(new Object[]{ version+" "+status, copyright, programmer});
-        }
-        catch (IllegalArgumentException e) {
-            LogUtils.severe("wrong format " + aboutText + " for property " + "docear_about", e);
-        }		
-		bundles.putResourceString(ABOUT_TEXT, aboutText);
+		}		
 	}
 
 	private void replaceAction(String actionKey, AFreeplaneAction action) {
@@ -292,14 +247,54 @@ public class CoreConfiguration extends ALanguageController {
 			Controller.getCurrentController().getResourceController().setProperty("leftToolbarVisible", "false");			
 			Controller.getCurrentController().getResourceController().setProperty("styleScrollPaneVisible", "true");
 			Controller.getCurrentController().getResourceController().setProperty(DOCEAR_FIRST_RUN_PROPERTY, true);
+			replaceHelpAction();
 		}
 		Controller.getCurrentController().getResourceController().addPropertyChangeListener(new PropertyListener());
+		WorkspaceController.getIOController().registerNodeActionListener(AWorkspaceTreeNode.class, WorkspaceActionEvent.WSNODE_OPEN_DOCUMENT, new WorkspaceOpenDocumentListener());
 		FreeplaneActionCascade.addAction(new DocearQuitAction());		
 	}
 	
-	private void modifyContextMenus() {		
-		AWorkspaceTreeNode root =  (AWorkspaceTreeNode) WorkspaceUtils.getModel().getRoot();
-		WorkspacePopupMenuBuilder.insertAction(root.getContextMenu(), "workspace.action.docear.locations.change", 3);
+	private void replaceHelpAction() {
+		Controller.getCurrentController().removeAction("GettingStartedAction");
+		Controller.getCurrentController().addAction(new GettingStartedAction());
 	}
 	
+	class GettingStartedAction extends AFreeplaneAction {
+		
+		public GettingStartedAction() {
+			super("GettingStartedAction");			
+		}
+
+		private static final long serialVersionUID = 1L;
+
+		public void actionPerformed(final ActionEvent e) {
+			final ResourceController resourceController = ResourceController.getResourceController();
+			final File baseDir = new File(resourceController.getResourceBaseDir()).getAbsoluteFile().getParentFile();
+			final String languageCode = resourceController.getLanguageCode();
+			final File file = ConfigurationUtils.getLocalizedFile(new File[]{baseDir}, Controller.getCurrentController().getResourceController().getProperty("tutorial_map"), languageCode);
+			try {
+				final URL endUrl = file.toURL();
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							if (endUrl.getFile().endsWith(".mm")) {
+								 Controller.getCurrentController().selectMode(MModeController.MODENAME);
+								 ((MMapController)Controller.getCurrentModeController().getMapController()).newDocumentationMap(endUrl);
+							}
+							else {
+								Controller.getCurrentController().getViewController().openDocument(endUrl);
+							}
+						}
+						catch (final Exception e1) {
+							LogUtils.severe(e1);
+						}
+					}
+				});
+			}
+			catch (final MalformedURLException e1) {
+				LogUtils.warn(e1);
+			}
+		}
+	}
+
 }

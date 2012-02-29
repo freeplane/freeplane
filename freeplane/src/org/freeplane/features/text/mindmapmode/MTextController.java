@@ -343,6 +343,7 @@ public class MTextController extends TextController {
 	}
 
 	private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);
+	private EditEventDispatcher keyEventDispatcher;
 
     public void setGuessedNodeObject(final NodeModel node, final String newText) {
 		if (HtmlUtils.isHtmlNode(newText))
@@ -357,7 +358,11 @@ public class MTextController extends TextController {
             if (PatternFormat.getIdentityPatternFormat().getPattern().equals(oldFormat))
                 return text;
             final Object parseResult = ScannerController.getController().parse((String) text);
-            return oldFormat != null ? FormatController.format(parseResult, oldFormat) : parseResult;
+            if (oldFormat != null) {
+                final Object formatted = FormatController.format(parseResult, oldFormat, null);
+                return (formatted == null) ? text : formatted;
+            }
+            return parseResult;
         }
         return text;
     }
@@ -430,9 +435,9 @@ public class MTextController extends TextController {
 		if (strings == null) {
 			return;
 		}
-		final String newUpperContent = strings[0];
-		final String newLowerContent = strings[1];
-		setGuessedNodeObject(node, newUpperContent);
+		final String newUpperContent = makePlainIfNoFormattingFound(strings[0]);
+		final String newLowerContent = makePlainIfNoFormattingFound(strings[1]);
+		setNodeObject(node, newUpperContent);
 		final NodeModel parent = node.getParentNode();
 		final ModeController modeController = Controller.getCurrentModeController();
 		final NodeModel lowerNode = ((MMapController) modeController.getMapController()).addNewNode(parent, parent
@@ -440,7 +445,7 @@ public class MTextController extends TextController {
 		final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController
 		    .getController();
 		nodeStyleController.copyStyle(node, lowerNode);
-		setGuessedNodeObject(lowerNode, newLowerContent);
+		setNodeObject(lowerNode, newLowerContent);
 	}
 
 	public boolean useRichTextInEditor(String key) {
@@ -672,6 +677,7 @@ public class MTextController extends TextController {
 			MapController mapController = modeController.getMapController();
 			mapController.removeNodeChangeListener(this);
 			mapController.removeNodeSelectionListener(this);
+			keyEventDispatcher = null;
         }
 
 		public void install() {
@@ -715,8 +721,8 @@ public class MTextController extends TextController {
 		stopEditing();
 		if(isNewNode && ! eventQueue.isActive() 
 				&& ! ResourceController.getResourceController().getBooleanProperty("display_inline_editor_for_all_new_nodes")){
-			final EditEventDispatcher dispatcher = new EditEventDispatcher(Controller.getCurrentModeController(), nodeModel, prevSelectedModel, isNewNode, parentFolded, editLong);
-			dispatcher.install();
+			keyEventDispatcher = new EditEventDispatcher(Controller.getCurrentModeController(), nodeModel, prevSelectedModel, isNewNode, parentFolded, editLong);
+			keyEventDispatcher.install();
 			return;
 		};
 		final IEditControl editControl = new IEditControl() {
@@ -742,14 +748,7 @@ public class MTextController extends TextController {
 			}
 
 			public void ok(final String text) {
-				String processedText = text;
-				if(HtmlUtils.isHtmlNode(processedText)){
-					processedText = HTML_HEAD.matcher(processedText).replaceFirst("");
-					if(! containsFormatting(processedText)){
-						processedText = HtmlUtils.htmlToPlain(processedText);
-					}
-				}
-				processedText = processedText.replaceFirst("\\s+$", "");
+				String processedText = makePlainIfNoFormattingFound(text);
 				setGuessedNodeObject(nodeModel, processedText);
 				stop();
 			}
@@ -800,6 +799,9 @@ public class MTextController extends TextController {
 
 
 	public void stopEditing() {
+		if(keyEventDispatcher != null){
+			keyEventDispatcher.uninstall();
+		}
 		if (mCurrentEditDialog != null) {
 			mCurrentEditDialog.closeEdit();
 			mCurrentEditDialog = null;
@@ -862,6 +864,17 @@ public class MTextController extends TextController {
 	public EventBuffer getEventQueue() {
     	return eventQueue;
     }
+
+	private String makePlainIfNoFormattingFound(String text) {
+		if(HtmlUtils.isHtmlNode(text)){
+			text = HTML_HEAD.matcher(text).replaceFirst("");
+			if(! containsFormatting(text)){
+				text = HtmlUtils.htmlToPlain(text);
+			}
+		}
+		text = text.replaceFirst("\\s+$", "");
+		return text;
+	}
 
 }
 

@@ -29,6 +29,7 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
@@ -50,14 +51,18 @@ public class MapIO implements IExtension{
 		final MapIO mapIO = new MapIO(urlManager, mapController);
 		modeController.addExtension(MapIO.class, mapIO);
 	}
-	public void load(URL url, MapModel map) throws FileNotFoundException, IOException, XMLParseException,
-            URISyntaxException {
-	    urlManager.load(url, map);
-    }
+	public boolean loadCatchExceptions(URL url, MapModel map){
+		return urlManager.loadCatchExceptions(url, map);
+	}
+	
+	public void load(URL url, MapModel map) throws FileNotFoundException, IOException, XMLException, XMLParseException,
+	URISyntaxException {
+		urlManager.load(url, map);
+	}
 	public void loadDefault(MapModel target) {
-	    urlManager.loadDefault(target);
-    }
-	public boolean newMap(URL url) throws FileNotFoundException, XMLParseException, IOException, URISyntaxException {
+		urlManager.loadDefault(target);
+	}
+	public boolean newMap(URL url) throws FileNotFoundException, IOException, URISyntaxException, XMLException {
 	    return mapController.newMap(url);
     }
 }

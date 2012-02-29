@@ -478,10 +478,7 @@ public class EditNodeTextField extends EditNodeBase {
 			nodeView.update();
 		if(nodeView.isRoot() && parent instanceof MainView)
 		    parent.setHorizontalAlignment(JLabel.CENTER);
-		if(layoutMapOnTextChange)
-			parent.remove(0);
-		else
-			nodeView.getMap().remove(0);
+		textfield.getParent().remove(textfield);
 		parent.revalidate();
 		parent.repaint();
 		textfield = null;

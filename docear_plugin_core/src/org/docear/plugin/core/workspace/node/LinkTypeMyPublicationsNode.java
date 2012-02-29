@@ -15,29 +15,24 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
-import org.docear.plugin.core.features.DocearMapModelController;
-import org.docear.plugin.core.workspace.IDocearMindmap;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.map.MapModel;
-import org.freeplane.features.mapio.mindmapmode.MMapIO;
+import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
+import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
+import org.freeplane.plugin.workspace.event.IWorkspaceNodeActionListener;
+import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
 import org.freeplane.plugin.workspace.io.annotation.ExportAsAttribute;
-import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
-import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
-import org.freeplane.plugin.workspace.model.node.ALinkNode;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.IMutableLinkNode;
+import org.freeplane.plugin.workspace.nodes.ALinkNode;
 
 /**
  * 
  */
-public class LinkTypeMyPublicationsNode extends ALinkNode implements IWorkspaceNodeEventListener, IDocearMindmap {
+public class LinkTypeMyPublicationsNode extends ALinkNode implements IWorkspaceNodeActionListener, IMutableLinkNode {
 	private static final Icon DEFAULT_ICON = new ImageIcon(ResourceController.class.getResource("/images/docear16.png"));
 
 	private static final long serialVersionUID = 1L;
@@ -58,7 +53,7 @@ public class LinkTypeMyPublicationsNode extends ALinkNode implements IWorkspaceN
 	 * METHODS
 	 **********************************************************************************/
 
-	@ExportAsAttribute("path")
+	@ExportAsAttribute(name="path")
 	public URI getLinkPath() {
 		return linkPath;
 	}
@@ -82,59 +77,21 @@ public class LinkTypeMyPublicationsNode extends ALinkNode implements IWorkspaceN
 		if (popupMenu == null) {
 						
 			popupMenu = new WorkspacePopupMenu();
-			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {						
-					"workspace.action.node.paste",
-					"workspace.action.node.copy",
+			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
 					"workspace.action.node.cut",
+					"workspace.action.node.copy",						
+					"workspace.action.node.paste",
 					WorkspacePopupMenuBuilder.SEPARATOR,
-					"workspace.action.docear.node.rename"
+					"workspace.action.node.rename",					
+					"workspace.action.node.remove",
+					"workspace.action.file.delete",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.refresh"
 			});
 		}
 		
 	}
 	
-	@SuppressWarnings("deprecation")
-	private boolean createNewMindmap(final File f) {
-		if (!createFolderStructure(f)) {
-			return false;
-		}	
-		
-		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MMapIO.class);		
-//		try {
-//			if(!f.exists() && !f.createNewFile()) {
-//				return false;
-//			}
-//			if(!mapIO.newMap(f.toURL())) {
-//				return false;
-//			}
-//		}
-//		catch (Exception e) {
-//			LogUtils.severe(e);
-//			return false;
-//		}
-		final ModeController modeController = Controller.getCurrentController().getModeController(MModeController.MODENAME);
-		MFileManager.getController(modeController).newMapFromDefaultTemplate();
-		
-		MapModel map = Controller.getCurrentController().getMap();
-		DocearMapModelController.setModelWithCurrentVersion(map);
-		map.getRootNode().setText(getName());
-		DocearEvent evnt = new DocearEvent(this, DocearEventType.NEW_MY_PUBLICATIONS, map);
-		DocearController.getController().dispatchDocearEvent(evnt);
-		
-		mapIO.save(Controller.getCurrentController().getMap(), f);
-		Controller.getCurrentController().close(false);
-
-		LogUtils.info("New Mindmap Created: " + f.getAbsolutePath());
-		return true;
-	}
-
-	private boolean createFolderStructure(final File f) {
-		final File folder = f.getParentFile();
-		if (folder.exists()) {
-			return true;
-		}
-		return folder.mkdirs();
-	}
 	
 	protected AWorkspaceTreeNode clone(LinkTypeMyPublicationsNode node) {
 		node.setLinkPath(getLinkPath());
@@ -146,21 +103,24 @@ public class LinkTypeMyPublicationsNode extends ALinkNode implements IWorkspaceN
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	
-	public void handleEvent(WorkspaceNodeEvent event) {
-		System.out.println("event: "+event.getType());
-		if (event.getType() == WorkspaceNodeEvent.MOUSE_LEFT_DBLCLICK) {
-			System.out.println("doublecklicked MindmapNode");
+	public void handleAction(WorkspaceActionEvent event) {
+		if (event.getType() == WorkspaceActionEvent.MOUSE_LEFT_DBLCLICK) {
 			try {				
 				File f = WorkspaceUtils.resolveURI(getLinkPath());
 				if(f == null) {
 					return;
 				}
 				if (!f.exists()) {
-					createNewMindmap(f);
+					if(!WorkspaceUtils.createNewMindmap(f, getName())) {
+						LogUtils.warn("could not create " + getLinkPath());
+					}
 				}
-				final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MMapIO.class);		
+				final MapIO mapIO = (MapIO) Controller.getCurrentModeController().getExtension(MapIO.class);		
 				try {
-					mapIO.newMap(f.toURL());
+					if(mapIO.newMap(f.toURL())) {
+						DocearEvent evnt = new DocearEvent(this, DocearEventType.NEW_MY_PUBLICATIONS, Controller.getCurrentController().getMap());
+						DocearController.getController().dispatchDocearEvent(evnt);
+					}
 				}
 				catch (Exception e) {
 					LogUtils.severe(e);
@@ -171,7 +131,7 @@ public class LinkTypeMyPublicationsNode extends ALinkNode implements IWorkspaceN
 				LogUtils.warn("could not open document (" + getLinkPath() + ")", e);
 			}
 		}
-		else if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {			
+		else if (event.getType() == WorkspaceActionEvent.MOUSE_RIGHT_CLICK) {			
 			showPopup((Component) event.getBaggage(), event.getX(), event.getY());
 		}
 		else {
@@ -191,7 +151,7 @@ public class LinkTypeMyPublicationsNode extends ALinkNode implements IWorkspaceN
 		return popupMenu;
 	}
 
-	public boolean changeNameTo(String newName) {
+	public boolean changeName(String newName, boolean renameLink) {
 		// simple set the node name
 		this.setName(newName);
 		return true;

@@ -34,6 +34,7 @@ import org.docear.plugin.bibtex.actions.FilePathValidatorAction;
 import org.docear.plugin.bibtex.listeners.MapViewListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
@@ -67,13 +68,8 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 	private File file;
 	private HashMap<String, String> meta = null;
 
-	protected JabrefWrapper(String[] arg0) {
-		super(arg0);
-
-	}
-
 	public JabrefWrapper(JFrame frame) {
-		super(frame);
+		this(frame, null);
 
 	}
 
@@ -85,7 +81,9 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 		// super(frame, new String[]{"true", "-i", "\""+file.toString()+"\""});
 		super(frame);
 		registerListeners();
-		openIt(file, true);
+		if(file != null ) {
+			openIt(file, true);
+		}
 
 	}
 
@@ -99,6 +97,7 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				synchronized (Controller.getCurrentModeController().getMapController()) {
+					
 					Controller.getCurrentModeController().getMapController().addNodeSelectionListener(mapViewListener);
 				}
 			}
@@ -132,7 +131,7 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 
 		getJabrefFrame().addTab(bp, file, raisePanel);
 
-		System.out.println(Globals.lang("Opened database") + " '" + fileName + "' " + Globals.lang("with") + " "
+		LogUtils.info(Globals.lang("Opened database") + " '" + fileName + "' " + Globals.lang("with") + " "
 				+ database.getEntryCount() + " " + Globals.lang("entries") + ".");
 
 		return bp;
@@ -167,7 +166,7 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 				}
 			}
 			File fileToLoad = file;
-			System.out.println(Globals.lang("Opening References") + ": '" + file.getPath() + "'");
+			LogUtils.info(Globals.lang("Opening References") + ": '" + file.getPath() + "'");
 
 			int tryCounter = 0;
 			boolean done = false;
@@ -213,7 +212,7 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 					pr = null;
 				}
 				if ((pr == null) || (pr == ParserResult.INVALID_FORMAT)) {
-					System.out.println("ERROR: Could not load file" + file);
+					LogUtils.warn("ERROR: Could not load file" + file);
 					continue;
 				}
 				else {
@@ -263,6 +262,11 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 				String line = in.nextLine();
 
 				String normalized = line.trim().toLowerCase();
+				if (Compat.isWindowsOS() && normalized.startsWith("file")) {
+					if (normalized.contains("backslash$:")) {
+						return false;
+					}
+				}
 				if (normalized.startsWith("journal") || normalized.startsWith("title") || normalized.startsWith("booktitle")) {
 					int pos = 0;
 					int i = 0;
@@ -287,7 +291,6 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 						pos = (i + 1);
 					}
 				}
-				System.out.print("");
 			}
 		}
 		catch (IOException e) {
@@ -366,12 +369,10 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 	}
 
 	public void afterViewClose(final Component oldView) {
-		System.out.println("debug close mapviewlistener");
 		oldView.removeMouseListener(mapViewListener);
 	}
 
 	public void afterViewCreated(final Component mapView) {
-		System.out.println("debug add mapviewlistener");
 		mapView.addMouseListener(mapViewListener);
 	}
 

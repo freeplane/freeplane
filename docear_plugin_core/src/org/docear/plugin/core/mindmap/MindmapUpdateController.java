@@ -1,10 +1,7 @@
 package org.docear.plugin.core.mindmap;
 
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +9,7 @@ import java.util.Map;
 import javax.swing.SwingUtilities;
 
 import org.docear.plugin.core.DocearController;
-import org.docear.plugin.core.features.DocearMapModelController;
+import org.docear.plugin.core.MapItem;
 import org.docear.plugin.core.ui.SwingWorkerDialog;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -21,12 +18,10 @@ import org.freeplane.features.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 import org.jdesktop.swingworker.SwingWorker;
 
@@ -42,11 +37,12 @@ public class MindmapUpdateController {
 	}
 
 	public boolean updateAllMindmapsInWorkspace() {
-		List<URI> uris = WorkspaceUtils.getModel().getAllNodesFiltered(".mm");
-		for (URI uri : uris) {
-			System.out.println("uri: " + uri);
+		List<MapItem> maps = new ArrayList<MapItem>();
+		for (URI uri : WorkspaceUtils.getModel().getAllNodesFiltered(".mm")) {
+			maps.add(new MapItem(uri));
 		}
-		return updateMindmaps(uris);
+		
+		return updateMindmaps(maps);
 	}
 	
 	public boolean updateRegisteredMindmapsInWorkspace() {
@@ -54,41 +50,32 @@ public class MindmapUpdateController {
 	}
 
 	public boolean updateRegisteredMindmapsInWorkspace(boolean openMindmapsToo) {
-		List<URI> uris = DocearController.getController().getLibrary().getMindmaps();
+		List<MapItem> maps = new ArrayList<MapItem>(); 
+		
+		for (URI uri : DocearController.getController().getLibrary().getMindmaps()) {
+			maps.add(new MapItem(uri));
+		}
 		
 		if (openMindmapsToo) {
-			for (URI uri : getAllOpenMapUris()) {
-				uris.add(uri);
+			for (MapItem item : getAllOpenMaps()) {
+				maps.add(item);
 			}
 		}
 		
-		return updateMindmaps(uris);
+		return updateMindmaps(maps);
 	}
 
 	public boolean updateOpenMindmaps() {
-		List<URI> maps = getAllOpenMapUris();
+		List<MapItem> maps = getAllOpenMaps();
 
 		return updateMindmaps(maps);
 	}
 
-	private List<URI> getAllOpenMapUris() {
-		List<URI> maps = new ArrayList<URI>();
-		for (MapModel map : getAllOpenMaps()) {
-			if (map.getFile() == null) {
-				((MFileManager) UrlManager.getController()).save(map, true);
-			}
-			if (map.getFile() != null) {
-				maps.add(map.getFile().toURI());
-			}
-		}
-		return maps;
-	}
-
-	private List<MapModel> getAllOpenMaps() {
-		List<MapModel> maps = new ArrayList<MapModel>();
+	private List<MapItem> getAllOpenMaps() {
+		List<MapItem> maps = new ArrayList<MapItem>();
 		Map<String, MapModel> openMaps = Controller.getCurrentController().getMapViewManager().getMaps();
 		for (String name : openMaps.keySet()) {
-			maps.add(openMaps.get(name));
+			maps.add(new MapItem(openMaps.get(name)));
 		}
 		return maps;
 	}
@@ -98,10 +85,10 @@ public class MindmapUpdateController {
 	}
 
 	public boolean updateCurrentMindmap(boolean closeWhenDone) {
-		List<URI> maps = new ArrayList<URI>();
+		List<MapItem> maps = new ArrayList<MapItem>();
 		
 		try {
-			maps.add(Controller.getCurrentController().getMap().getFile().toURI());
+			maps.add(new MapItem(Controller.getCurrentController().getMap()));
 		}
 		catch (NullPointerException e) {			
 		}
@@ -112,26 +99,26 @@ public class MindmapUpdateController {
 	}
 
 	public boolean updateMindmapsInList(List<MapModel> maps) {
-		List<URI> uris = new ArrayList<URI>();
+		List<MapItem> mapItems = new ArrayList<MapItem>();
 
 		for (MapModel map : maps) {
 			try {
-				uris.add(map.getFile().toURI());
+				mapItems.add(new MapItem(map));
 			}
 			catch (NullPointerException e) {				
 			}
 		}
 
-		return updateMindmaps(uris);
+		return updateMindmaps(mapItems);
 
 	}
 
-	public boolean updateMindmaps(List<URI> uris) {
+	public boolean updateMindmaps(List<MapItem> uris) {
 		return updateMindmaps(uris, false);
 	}
 
-	public boolean updateMindmaps(List<URI> uris, boolean closeWhenDone) {
-		SwingWorker<Void, Void> thread = getUpdateThread(uris, closeWhenDone);
+	public boolean updateMindmaps(List<MapItem> maps, boolean closeWhenDone) {
+		SwingWorker<Void, Void> thread = getUpdateThread(maps, closeWhenDone);
 
 		SwingWorkerDialog workerDialog = new SwingWorkerDialog(Controller.getCurrentController().getViewController().getJFrame());
 		workerDialog.setHeadlineText(TextUtils.getText("updating_mindmaps_headline"));
@@ -142,11 +129,11 @@ public class MindmapUpdateController {
 		return !thread.isCancelled();
 	}
 
-	public SwingWorker<Void, Void> getUpdateThread(final List<URI> uris) {
-		return getUpdateThread(uris, false);
+	public SwingWorker<Void, Void> getUpdateThread(final List<MapItem> maps) {
+		return getUpdateThread(maps, false);
 	}
 
-	public SwingWorker<Void, Void> getUpdateThread(final List<URI> uris, final boolean closeWhenDone) {
+	public SwingWorker<Void, Void> getUpdateThread(final List<MapItem> maps, final boolean closeWhenDone) {
 
 		return new SwingWorker<Void, Void>() {
 			private int totalCount;
@@ -157,13 +144,13 @@ public class MindmapUpdateController {
 			@Override
 			protected Void doInBackground() throws Exception {
 				try {
-					if (uris == null || uris.size() == 0) {
+					if (maps == null || maps.size() == 0) {
 						return null;
 					}
 					NodeView.setModifyModelWithoutRepaint(true);
 					fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
 					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("computing_node_count"));
-					totalCount = uris.size()*getMindmapUpdaters().size();
+					totalCount = maps.size()*getMindmapUpdaters().size();
 					if (canceled())
 						return null;
 					fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
@@ -175,20 +162,20 @@ public class MindmapUpdateController {
 						fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, updater.getTitle());
 						if (canceled())
 							return null;
-						for (URI uri : uris) {
+						for (MapItem mapItem : maps) {
 							mapHasChanged = false;
-							MapModel map = getMapModel(uri);
+							MapModel map = mapItem.getModel();
 							if (map==null) {								
 								continue;
 							}
 							fireStatusUpdate(SwingWorkerDialog.DETAILS_LOG_TEXT, null,
-									updater.getTitle()+": " + uri.getPath());
+									updater.getTitle()+": " + mapItem.getIdentifierForDialog());
 							fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_against_p1")
 									+ getMapTitle(map) + TextUtils.getText("updating_against_p2"));							
 							this.mapHasChanged = updater.updateMindmap(map);
 							fireProgressUpdate(100 * count / totalCount);
 							if (this.mapHasChanged) {
-								if (!isMapOpen(uri)) {
+								if (!mapItem.isMapOpen()) {
 									saveMap(map);
 									MapChangeEvent event = new MapChangeEvent(this, UrlManager.MAP_URL, map.getURL(), null);
 									Controller.getCurrentModeController().getMapController().fireMapChanged(event);
@@ -215,25 +202,7 @@ public class MindmapUpdateController {
 				return null;
 			}
 
-			private boolean isMapOpen(URI uri) {
-				URL url;
-				try {
-					url = WorkspaceUtils.resolveURI(uri).toURL();
-					String mapExtensionKey = Controller.getCurrentController().getMapViewManager()
-							.checkIfFileIsAlreadyOpened(url);
-
-					if (mapExtensionKey == null) {
-						return false;
-					}
-					else {
-						return true;
-					}
-				}
-				catch (Exception e) {
-					e.printStackTrace();
-					return false;
-				}
-			}
+			
 
 			private String getMapTitle(MapModel map) {
 				String mapTitle = "";
@@ -246,26 +215,13 @@ public class MindmapUpdateController {
 				return mapTitle;
 			}
 
-			@SuppressWarnings("unchecked")
-			@Override
 			protected void done() {
 				NodeView.setModifyModelWithoutRepaint(false);
-				for (MapView view : (List<MapView>) Controller.getCurrentController().getViewController().getMapViewManager()
-						.getMapViewVector()) {
-					boolean opened = false;
-					File mapFile = view.getModel().getFile();
-					if (mapFile != null) {
-						URI mapUri = mapFile.toURI();
-						for (URI uri : uris) {
-							if (uri.equals(mapUri)) {
-								opened = true;
-							}
-						}
-					}
-					if (opened) {
-						LogUtils.info("updating view for map: " + view.getModel().getFile());						
-						setAttributeViewType(view.getModel(), AttributeTableLayoutModel.HIDE_ALL);
-						setAttributeViewType(view.getModel(), AttributeTableLayoutModel.SHOW_ALL);
+				for (MapItem item : maps) {
+					if (item.isMapOpen()) {
+						LogUtils.info("updating view for map: " + item.getIdentifierForDialog());						
+						setAttributeViewType(item.getModel(), AttributeTableLayoutModel.HIDE_ALL);
+						setAttributeViewType(item.getModel(), AttributeTableLayoutModel.SHOW_ALL);
 						/*NodeView nodeView = view.getNodeView(view.getModel().getRootNode());
 						nodeView.updateAll();*/
 					}
@@ -317,52 +273,7 @@ public class MindmapUpdateController {
 				});
 			}
 
-			private MapModel getMapModel(URI uri) {
-				MapModel map = null;
-
-				URL url;
-				String mapExtensionKey;
-				try {
-					url = WorkspaceUtils.resolveURI(uri).toURL();
-					mapExtensionKey = Controller.getCurrentController().getMapViewManager().checkIfFileIsAlreadyOpened(url);
-				}
-				catch (MalformedURLException e) {
-					e.printStackTrace();
-					return null;
-				}
-				
-
-				if (mapExtensionKey != null) {
-					map = Controller.getCurrentController().getViewController().getMapViewManager().getMaps()
-							.get(mapExtensionKey);
-					if (map != null) {
-						return map;
-					}
-				}
-
-				map = new MMapModel();
-				try {
-					File f = WorkspaceUtils.resolveURI(uri);
-					if (f.exists()) {						
-						UrlManager.getController().load(url, map);
-						//do not work on non-docear-mindmaps
-						if (DocearMapModelController.getModel(map) == null) {
-							return null;
-						}
-						map.setURL(url);
-						map.setSaved(true);
-					}
-					else {
-						return null;
-					}
-				}
-				catch (Exception e) {
-					e.printStackTrace();
-				}
-
-				return map;
-
-			}
+			
 
 			private void saveMap(MapModel map) throws InterruptedException, InvocationTargetException {
 				if (!this.mapHasChanged) {
@@ -371,7 +282,6 @@ public class MindmapUpdateController {
 				fireStatusUpdate(SwingWorkerDialog.DETAILS_LOG_TEXT, null, TextUtils.getText("update_references_save_map")
 						+ map.getURL().getPath());
 
-				System.out.println("saving map: " + map.getURL());
 				map.setSaved(false);
 				((MFileManager) UrlManager.getController()).save(map, false);
 			}

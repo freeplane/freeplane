@@ -8,10 +8,9 @@ import java.util.LinkedList;
 import org.freeplane.core.io.IReadCompletionListener;
 import org.freeplane.core.io.ListHashTable;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.plugin.workspace.io.creator.IFileTypeHandler;
 
 public class FileReadManager {
-	public final static String FOLDER_HANDLE = "__MaG__FS_FOLDER__MaG__";
+	public final static String DIRECTORY_HANDLE = "__MaG__FS_DIRECTORY__MaG__";
 	public final static String DEFAULT_HANDLE = "__MaG__FS_DEFAULT__MaG__";
 	
 	final private ListHashTable<String, IFileTypeHandler> fileHandlers;
@@ -30,8 +29,8 @@ public class FileReadManager {
 			fileHandlers.add(DEFAULT_HANDLE, handler);
 			return;
 		}
-		if(fileExtension.toLowerCase().endsWith("folder_handle")) {
-			fileHandlers.add(FOLDER_HANDLE, handler);
+		if(fileExtension.toLowerCase().endsWith("directory_handle")) {
+			fileHandlers.add(DIRECTORY_HANDLE, handler);
 			return;	
 		}		
 		fileHandlers.add(fileExtension, handler);

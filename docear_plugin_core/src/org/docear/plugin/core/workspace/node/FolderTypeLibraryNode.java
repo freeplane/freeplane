@@ -17,8 +17,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -33,35 +31,30 @@ import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
 import org.docear.plugin.core.workspace.actions.DocearLibraryNewMindmap;
+import org.docear.plugin.core.workspace.actions.DocearLibraryOpenLocation;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.plugin.workspace.config.node.LinkTypeFileNode;
-import org.freeplane.plugin.workspace.config.node.PhysicalFolderNode;
-import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
+import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
+import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.dnd.IDropAcceptor;
 import org.freeplane.plugin.workspace.dnd.IWorkspaceTransferableCreator;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
-import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
-import org.freeplane.plugin.workspace.io.node.MindMapFileNode;
-import org.freeplane.plugin.workspace.model.WorkspacePopupMenu;
-import org.freeplane.plugin.workspace.model.WorkspacePopupMenuBuilder;
-import org.freeplane.plugin.workspace.model.node.AFolderNode;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.event.IWorkspaceNodeActionListener;
+import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.nodes.AFolderNode;
+import org.freeplane.plugin.workspace.nodes.DefaultFileNode;
+import org.freeplane.plugin.workspace.nodes.LinkTypeFileNode;
+import org.freeplane.plugin.workspace.nodes.FolderLinkNode;
 
-public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventListener, IDocearLibrary, IWorkspaceNodeEventListener, IWorkspaceTransferableCreator, IDropAcceptor, TreeModelListener {
+public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventListener, IDocearLibrary, IWorkspaceNodeActionListener, IWorkspaceTransferableCreator, IDropAcceptor, TreeModelListener {
 	private static final Icon DEFAULT_ICON = new ImageIcon(FolderTypeLibraryNode.class.getResource("/images/folder-database.png"));
 
-	private static final long serialVersionUID = 1L;
-	
-	private final static String PLACEHOLDER_PROFILENAME = "@@PROFILENAME@@";
-	private static final String DEFAULT_LIBRARY_PATH = "workspace:/"+PLACEHOLDER_PROFILENAME+"/Library";
-	private final static Pattern PATTERN = Pattern.compile(PLACEHOLDER_PROFILENAME);
-	
+	private static final long serialVersionUID = 1L;	
 	
 	private final Vector<URI> mindmapIndex = new Vector<URI>();
 	private final Vector<IBibtexDatabase> referencesIndex = new Vector<IBibtexDatabase>();
@@ -89,23 +82,29 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 		if (popupMenu  == null) {
 			ModeController modeController = Controller.getCurrentModeController();
 			modeController.addAction(new DocearLibraryNewMindmap());
+			modeController.removeAction(new DocearLibraryOpenLocation().getKey());
+			modeController.addAction(new DocearLibraryOpenLocation());
+			
 			
 			popupMenu = new WorkspacePopupMenu();
 			
 			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {WorkspacePopupMenuBuilder.createSubMenu(TextUtils.getRawText("workspace.action.new.label")),
 					"workspace.action.node.new.folder",
 					"workspace.action.node.new.link",
-					"workspace.action.node.new.directory",
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.library.new.mindmap",
 					WorkspacePopupMenuBuilder.endSubMenu(),
-					WorkspacePopupMenuBuilder.SEPARATOR,						
-					"workspace.action.node.paste",
-					"workspace.action.node.copy",
-					"workspace.action.node.cut",
 					WorkspacePopupMenuBuilder.SEPARATOR,
-					"workspace.action.node.refresh",
-					"workspace.action.node.delete"
+					"workspace.action.node.open.location",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.cut",
+					"workspace.action.node.copy",						
+					"workspace.action.node.paste",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.remove",
+					"workspace.action.file.delete",
+					WorkspacePopupMenuBuilder.SEPARATOR,
+					"workspace.action.node.refresh"
 			});
 		}
 	}
@@ -162,7 +161,7 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 	private AWorkspaceTreeNode createFSNodeLinks(File file) {
 		AWorkspaceTreeNode node = null;
 		if(file.isDirectory()) {
-			PhysicalFolderNode pNode = new PhysicalFolderNode();
+			FolderLinkNode pNode = new FolderLinkNode();
 			pNode.setPath(WorkspaceUtils.getWorkspaceRelativeURI(file));
 			node = pNode;
 		}
@@ -189,7 +188,7 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 					} 
 					else if (dropAction == DnDConstants.ACTION_MOVE) {
 						AWorkspaceTreeNode parent = node.getParent();
-						WorkspaceUtils.getModel().removeNodeFromParent(node);
+						WorkspaceUtils.getModel().cutNodeFromParent(node);						
 						parent.refresh();
 						newNode = node;
 					}
@@ -198,6 +197,7 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 					continue;
 				}
 				WorkspaceUtils.getModel().addNodeTo(newNode, this);
+				WorkspaceController.getController().getExpansionStateHandler().addPathKey(this.getKey());
 			}
 			WorkspaceUtils.saveCurrentConfiguration();
 			
@@ -275,8 +275,8 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 		
 	}
 	
-	public void handleEvent(WorkspaceNodeEvent event) {
-		if (event.getType() == WorkspaceNodeEvent.MOUSE_RIGHT_CLICK) {
+	public void handleAction(WorkspaceActionEvent event) {
+		if (event.getType() == WorkspaceActionEvent.MOUSE_RIGHT_CLICK) {
 			showPopup( (Component) event.getBaggage(), event.getX(), event.getY());
 		}
 		
@@ -297,12 +297,6 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 			uriList.add(iter.next().getPath());
 		}
 		return uriList;
-	}
-	
-	public URI getLibraryPath() {		
-		Matcher mainMatcher = PATTERN.matcher(DEFAULT_LIBRARY_PATH);
-		String ret = mainMatcher.replaceAll(WorkspaceController.getController().getPreferences().getWorkspaceProfileHome());
-		return WorkspaceUtils.absoluteURI(URI.create(ret));
 	}
 
 	public URI getBibtexDatabase() {
@@ -388,6 +382,10 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 		// this is a virtual folder, no path is needed
 		return null;
 	}
+	
+	public URI getLibraryPath() {
+		return DocearController.getController().getLibraryPath();
+	}
 
 	public void treeNodesChanged(TreeModelEvent e) {		
 	}
@@ -395,22 +393,23 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 	public void treeNodesInserted(TreeModelEvent event) {
 		if(this.getTreePath().isDescendant(event.getTreePath())) {
 			for(Object newNode : event.getChildren()) {
-				if(newNode instanceof MindMapFileNode) {
-					URI uri = ((MindMapFileNode)newNode).getFile().toURI();
-					if(!mindmapIndex.contains(uri)) {
-						LogUtils.info("DOCEAR: adding new mindmap to library: "+ uri);
-						mindmapIndex.add(uri);
-					}
+				if(newNode instanceof DefaultFileNode) {
+					URI uri = ((DefaultFileNode)newNode).getFile().toURI();
+					addToIndex(uri);
 				} 
 				else
 				if(newNode instanceof LinkTypeFileNode && ((LinkTypeFileNode)newNode).getLinkPath() != null) {
 					URI uri = WorkspaceUtils.absoluteURI(((LinkTypeFileNode)newNode).getLinkPath());
-					if((new File(uri)).getName().endsWith(".mm") && !mindmapIndex.contains(uri)) {
-						LogUtils.info("DOCEAR: adding new mindmap to library: "+ uri);
-						mindmapIndex.add(uri);	
-					}
+					addToIndex(uri);
 				}
 			}
+		}
+	}
+
+	private void addToIndex(URI uri) {
+		if((new File(uri)).getName().endsWith(".mm") && !mindmapIndex.contains(uri)) {
+			LogUtils.info("DOCEAR: adding new mindmap to library: "+ uri);
+			mindmapIndex.add(uri);	
 		}
 	}
 
@@ -418,34 +417,33 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 		//TODO: propagate other filetypes
 		if(this.getTreePath().isDescendant(event.getTreePath())) {
 			for(Object newNode : event.getChildren()) {
-				if(newNode instanceof MindMapFileNode) {
-					URI uri = ((MindMapFileNode)newNode).getFile().toURI();
-					if(mindmapIndex.contains(uri)) {
-						LogUtils.info("DOCEAR: mindmap removed from library: "+ uri);
-						mindmapIndex.remove(uri);
-					}
+				if(newNode instanceof DefaultFileNode) {
+					URI uri = ((DefaultFileNode)newNode).getFile().toURI();
+					removeFromIndex(uri);
 				} 
 				else
 				if(newNode instanceof LinkTypeFileNode) {
 					URI uri = WorkspaceUtils.absoluteURI(((LinkTypeFileNode)newNode).getLinkPath());
-					if((new File(uri)).getName().endsWith(".mm") && mindmapIndex.contains(uri)) {
-						LogUtils.info("DOCEAR: mindmap removed from library: "+ uri);
-						mindmapIndex.remove(uri);	
-					}
+					removeFromIndex(uri);
 				}
 			}
 		}
 		
 	}
-	
 
-	/* (non-Javadoc)
-	 * @see javax.swing.event.TreeModelListener#treeStructureChanged(javax.swing.event.TreeModelEvent)
-	 */
+	private void removeFromIndex(URI uri) {
+		if((new File(uri)).getName().endsWith(".mm") && mindmapIndex.contains(uri)) {
+			LogUtils.info("DOCEAR: mindmap removed from library: "+ uri);
+			mindmapIndex.remove(uri);	
+		}
+	}
+	
 	public void treeStructureChanged(TreeModelEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
+
+	
 
 	
 	

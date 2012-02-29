@@ -22,7 +22,6 @@ public abstract class ALanguageController {
 			res = this.getClass().getResource("/translations/Resources_"+lang+".properties");
 		}
 		
-		System.out.println("DEBUG res: "+res);
 		if (res == null) {
 			return;
 		}

@@ -52,20 +52,20 @@ public class FreeplaneSplashModern extends JWindow {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Font versionTextFont = null;
-	private final String description = "Free mind mapping and knowledge management software";
-	private final String copyright = "\u00a9 2000-2010";
-	private final FreeplaneVersion version = FreeplaneVersion.getVersion();	
+	private final String description = ResourceController.getResourceController().getProperty("freeplane_description");
+	private final String copyright = ResourceController.getResourceController().getProperty("freeplane_copyright");
+	private final FreeplaneVersion version = FreeplaneVersion.getVersion(); 
 	private String freeplaneNumber = version.numberToString();
 	private String status = version.getType().toUpperCase();
-	
-	
+	private final String appName;
+
 	public FreeplaneSplashModern(final JFrame frame) {
 		super(frame);
 		String splashImageName = "";
+		appName = ResourceController.getResourceController().getProperty("ApplicationName");
 		try {
-			splashImageName = ResourceController.getResourceController().getProperty("ApplicationName")+"_splash.png";
-			//FIXME: synch with plugin/app start
-			String appName = ResourceController.getResourceController().getProperty("ApplicationName");
+			splashImageName = appName+"_splash.png";
+			//FIXME - DOCEAR: synch with plugin/app start			
 			if(appName != null && !"freeplane".equals(appName.toLowerCase())) {
 				freeplaneNumber = ResourceController.getResourceController().getProperty(appName.toLowerCase()+"_version");
 				status = ResourceController.getResourceController().getProperty(appName.toLowerCase()+"_version_status");
@@ -120,30 +120,32 @@ public class FreeplaneSplashModern extends JWindow {
 	public void paint(final Graphics g) {
 		final Graphics2D g2 = (Graphics2D) g;
 		splashImage.paintIcon(this, g2, 0, 0);
-		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		{
+		if(appName != null && "freeplane".equals(appName.toLowerCase())) {
+			g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			{
+				g2.setColor(Color.WHITE);
+				createVersionTextFont();
+				final float versionFontSize;
+				if(! status.equals(""))
+					versionFontSize = 18;
+				else
+					versionFontSize = 24;
+				g2.setFont(versionTextFont.deriveFont(versionFontSize));
+				final int xCoordinate = getWidth() - new Integer(g2.getFontMetrics().stringWidth(copyright)) - 10;
+				final int yCoordinate = 212;			
+				g2.drawString(freeplaneNumber + " " + status, xCoordinate, yCoordinate);
+			}
+			g2.setFont(versionTextFont.deriveFont(10f));
 			g2.setColor(Color.WHITE);
-			createVersionTextFont();
-			final float versionFontSize;
-			if(! status.equals(""))
-				versionFontSize = 18;
-			else
-				versionFontSize = 24;
-			g2.setFont(versionTextFont.deriveFont(versionFontSize));
-			final int xCoordinate = getWidth() - new Integer(g2.getFontMetrics().stringWidth(copyright)) - 10;
-			final int yCoordinate = 212;			
-			g2.drawString(freeplaneNumber + " " + status, xCoordinate, yCoordinate);
+			int xCoordinate = 10;
+			final int yCoordinate = getSize().height - 10;
+			g2.drawString(description, xCoordinate, yCoordinate);
+			if (mWidth3 == null) {
+				mWidth3 = new Integer(g2.getFontMetrics().stringWidth(copyright));
+			}
+			xCoordinate = getSize().width - mWidth3.intValue() - 10;
+			g2.drawString(copyright, xCoordinate, yCoordinate);
 		}
-		g2.setFont(versionTextFont.deriveFont(10f));
-		g2.setColor(Color.WHITE);
-		int xCoordinate = 10;
-		final int yCoordinate = getSize().height - 10;
-		g2.drawString(description, xCoordinate, yCoordinate);
-		if (mWidth3 == null) {
-			mWidth3 = new Integer(g2.getFontMetrics().stringWidth(copyright));
-		}
-		xCoordinate = getSize().width - mWidth3.intValue() - 10;
-		g2.drawString(copyright, xCoordinate, yCoordinate);
 	}
 
 	@Override

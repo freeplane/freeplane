@@ -11,7 +11,7 @@
 <booleanAttribute key="default" value="true"/>
 <booleanAttribute key="default_auto_start" value="true"/>
 <intAttribute key="default_start_level" value="1"/>
-<stringAttribute key="deselected_workspace_plugins" value="docear_plugin_optionpane,freeplane_plugin_script_test,freeplane_uitest,org.docear.plugin.dragbase"/>
+<stringAttribute key="deselected_workspace_plugins" value="docear_plugin_optionpane,freeplane_plugin_script_test,freeplane_uitest"/>
 <booleanAttribute key="includeOptional" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.JAVA_COMMAND" value="java"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -arch ${target.arch} -nl ${target.nl} -console"/>

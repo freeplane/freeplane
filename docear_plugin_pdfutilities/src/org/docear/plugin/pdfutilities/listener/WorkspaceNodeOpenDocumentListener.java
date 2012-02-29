@@ -12,14 +12,15 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.plugin.workspace.controller.IWorkspaceNodeEventListener;
-import org.freeplane.plugin.workspace.controller.WorkspaceNodeEvent;
-import org.freeplane.plugin.workspace.io.node.DefaultFileNode;
-import org.freeplane.plugin.workspace.model.node.ALinkNode;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
+import org.freeplane.plugin.workspace.event.IWorkspaceNodeActionListener;
+import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
+import org.freeplane.plugin.workspace.nodes.ALinkNode;
+import org.freeplane.plugin.workspace.nodes.DefaultFileNode;
 
-public class WorkspaceNodeOpenDocumentListener implements IWorkspaceNodeEventListener {
+public class WorkspaceNodeOpenDocumentListener implements IWorkspaceNodeActionListener {
 	
-	public void handleEvent(WorkspaceNodeEvent event) {
+	public void handleAction(WorkspaceActionEvent event) {
 		
 		URI uri = null;
 		if(event.getSource() instanceof DefaultFileNode) {
@@ -32,23 +33,28 @@ public class WorkspaceNodeOpenDocumentListener implements IWorkspaceNodeEventLis
 		if(uri == null || !CoreUtils.resolveURI(uri).getName().toLowerCase().endsWith(".pdf")) {
 			return;
 		}
+		File file = CoreUtils.resolveURI(uri);
+		if(file!=null  && !file.exists()) {
+			WorkspaceUtils.showFileNotFoundMessage(file);
+			event.consume();
+			return;
+		}
 		
 		
-		boolean openOnPageWine = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.OPEN_PDF_VIEWER_ON_PAGE_KEY_WINE);
-		final String readerPathWine = ResourceController.getResourceController().getProperty(PdfUtilitiesController.OPEN_ON_PAGE_READER_PATH_KEY_WINE);
+		boolean openOnPage = ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.OPEN_PDF_VIEWER_ON_PAGE_KEY);
+		final String readerPath = ResourceController.getResourceController().getProperty(PdfUtilitiesController.OPEN_ON_PAGE_READER_PATH_KEY);
 
 		String[] command = null;
-		if (openOnPageWine && readerPathWine.length() > 0) {
+		if (!Compat.isMacOsX() && !Compat.isWindowsOS() && openOnPage && readerPath.length() > 0) {
 			String wineFile = Tools.getFilefromUri(uri).getAbsolutePath();
 			wineFile = "Z:" + wineFile.replace("/", "\\") + "";
 
 			command = new String[3];
 			command[0] = "wine";
-			command[1] = readerPathWine;
+			command[1] = readerPath;
 			command[2] = wineFile;
 			
-		} else if(Compat.isWindowsOS() && ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.OPEN_PDF_VIEWER_ON_PAGE_KEY) ) {
-			String readerPath = ResourceController.getResourceController().getProperty(PdfUtilitiesController.OPEN_ON_PAGE_READER_PATH_KEY);
+		} else if(Compat.isWindowsOS() && openOnPage ) {			
 			if(isValidReaderPath(readerPath)) {
 				command = new String[2];
 				command[0] = readerPath;

@@ -15,10 +15,6 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JTree;
@@ -26,10 +22,9 @@ import javax.swing.TransferHandler;
 import javax.swing.tree.TreePath;
 
 import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.io.StringOutputStream;
-import org.freeplane.plugin.workspace.model.node.AWorkspaceTreeNode;
-import org.freeplane.plugin.workspace.model.node.WorkspaceRoot;
-import org.freeplane.plugin.workspace.view.WorkspaceNodeRenderer;
+import org.freeplane.plugin.workspace.components.WorkspaceNodeRenderer;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.nodes.WorkspaceRoot;
 /**
  * 
  */
@@ -43,15 +38,13 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 	private static final Insets DEFAULT_INSETS = new Insets(20, 20, 20, 20);
 
 	private JTree tree;
-	private final IWorkspaceDragnDropController controller;
 	private final IDropTargetDispatcher dispatcher;
 
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 
-	public WorkspaceTransferHandler(JTree tree, IWorkspaceDragnDropController controller, int action, boolean drawIcon) {
-		this.controller = controller;
+	public WorkspaceTransferHandler(JTree tree) {
 		this.dispatcher = new DefaultWorkspaceDropTargetDispatcher();
 		
 		this.tree = tree;
@@ -65,8 +58,8 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 	 * METHODS
 	 **********************************************************************************/
 
-	public static WorkspaceTransferHandler configureDragAndDrop(JTree tree, IWorkspaceDragnDropController controller) {
-		return new WorkspaceTransferHandler(tree, controller, DnDConstants.ACTION_COPY_OR_MOVE, true);
+	public static WorkspaceTransferHandler configureDragAndDrop(JTree tree) {
+		return new WorkspaceTransferHandler(tree);
 	}
 
 	private void autoscroll(JTree tree, Point cursorLocation) {
@@ -82,9 +75,6 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 	}
 
 	public Transferable createTransferable(JComponent comp) {
-		System.out.println("createTransferable");
-		StringOutputStream writer = new StringOutputStream();
-		List<AWorkspaceTreeNode> objectList = new ArrayList<AWorkspaceTreeNode>();
 		if (comp instanceof JTree) {
 			JTree t = (JTree) comp;			
 			for (TreePath p : t.getSelectionPaths()) {
@@ -93,26 +83,13 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 					//FIXME: prepare for multiple node selection
 					return ((IWorkspaceTransferableCreator)node).getTransferable();
 				} 
-				else {
-					try {
-						ObjectOutputStream oos = new ObjectOutputStream(writer);
-						oos.writeObject(node);
-						objectList.add(node);
-					}
-					catch (IOException e) {
-					}
-				}
 			}
-		}	
-		
-		WorkspaceTransferable transferable = new WorkspaceTransferable(WorkspaceTransferable.WORKSPACE_NODE_FLAVOR, objectList);
-		//transferable.addData(WorkspaceTransferable.WORKSPACE_SERIALIZED_FLAVOR, writer.getString());
-		return transferable;
+		}		
+		return null;
 
 	}
 
 	public boolean importData(JComponent comp, Transferable transf) {
-		System.out.println("importData: " + comp);
 		if (comp instanceof JTree) {
 			JTree t = (JTree) comp;			
 			for (TreePath p : t.getSelectionPaths()) {
@@ -134,9 +111,12 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 			if(selectionPath != null) {
 				if(selectionPath.getLastPathComponent() instanceof WorkspaceRoot) {
 					return NONE;
-				} 
-				if(selectionPath.getLastPathComponent() instanceof AWorkspaceTreeNode && ((AWorkspaceTreeNode) selectionPath.getLastPathComponent()).isSystem()) {
-					return COPY;
+				}
+				//SYSTEM NODES are vulnerable for DnD move events (e.g. Copy a system file link and delete the copy hard afterwards, maybe the original will also be deleted.) 
+				if(selectionPath.getLastPathComponent() instanceof AWorkspaceTreeNode 
+						&& ( ((AWorkspaceTreeNode) selectionPath.getLastPathComponent()).isSystem() || !((AWorkspaceTreeNode) selectionPath.getLastPathComponent()).isTransferable() ) ) {
+					//DOCEAR: REJECT DnD on system nodes for now
+					return NONE;
 				}
 			}
 		}
@@ -144,20 +124,16 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 	}
 
 	public void exportToClipboard(JComponent comp, Clipboard clip, int action) throws IllegalStateException {
-		System.out.println("exportToClipboard");
 		super.exportToClipboard(comp, clip, action);
 	}
 
 	// Causes the Swing drag support to be initiated.
 	public void exportAsDrag(JComponent comp, java.awt.event.InputEvent e, int action) {
-		System.out.println("exportAsDrag");
-		
 		super.exportAsDrag(comp, e, action);
 	}
 
 	// Invoked after data has been exported.
 	public void exportDone(JComponent source, Transferable data, int action) {
-		System.out.println("exportDone");
 		super.exportDone(source, data, action);
 	}
 
@@ -173,24 +149,14 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 		// new method to handle drop events
 		if(this.dispatcher.dispatchDropEvent(event)) {
 			return;
-		}
-		//FIXME: remove/comment out the following code if new drop handling works, maybe leave some fall back routines
-		System.out.println("drop: " + event.getSource());
-		if(controller.canPerformAction(event)) {
-//			if(controller.executeDrop(event)) {
-//				return;
-//			}
-		}
-		
+		}		
 		event.rejectDrop();
 	}
 
 	public final void dragEnter(DropTargetDragEvent dtde) {
-		System.out.println("dragEnter: " + dtde);
 	}
 
 	public final void dragExit(DropTargetEvent dte) {
-		System.out.println("dragExit: " + dte);
 	}
 
 	private TreePath lastPathLocation = null;
@@ -214,7 +180,6 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 	}
 
 	public final void dropActionChanged(DropTargetDragEvent dtde) {
-		System.out.println("dropActionChanged: " + dtde);
 	}
 
 	/***********************************************************************************
