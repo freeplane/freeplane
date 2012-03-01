@@ -64,24 +64,14 @@ class QuickHighlightAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final ASelectableCondition condition = filterEditor.getCondition();
 		final boolean isSelected = ! isModelSelected();
-		if(isSelected){
-			if(condition == null){
-				setSelected(true);
-				setSelected(false);
-				return;
-			}
-		}
 		filterController.getHighlightNodes().setSelected(isSelected);
-		setSelected(isSelected);
 		if(isSelected){
 			filterController.setHighlightCondition(condition);
 		}
 		else{
+			setSelected(false);
 			filterController.setHighlightCondition(null);
 		}
-		final Component mapViewComponent = Controller.getCurrentController().getMapViewManager().getMapViewComponent();
-		if(mapViewComponent != null)
-			mapViewComponent.repaint();
 	}
 	private boolean isModelSelected() {
 		return filterController.getHighlightNodes().isSelected();

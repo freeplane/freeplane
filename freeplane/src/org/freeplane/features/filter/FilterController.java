@@ -204,6 +204,9 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 			public void actionPerformed(ActionEvent e) {
 				((QuickFindAction)Controller.getCurrentController().getAction("QuickFindAction.FORWARD")).executeAction(true);
+				if(getHighlightNodes().isSelected()){
+					setHighlightCondition( quickEditor.getCondition());
+				}
 			}
 			
 		}
@@ -429,10 +432,19 @@ public class FilterController implements IMapSelectionListener, IExtension {
     	return highlightCondition;
     }
 
-	public void setHighlightCondition(ASelectableCondition highlightCondition) {
-    	this.highlightCondition = highlightCondition;
-    }
-
+	void setHighlightCondition(final ASelectableCondition condition) {
+		if(condition != null){
+			this.highlightCondition = condition;
+			getHighlightNodes().setSelected(true);
+		}
+		else{
+			this.highlightCondition = null;
+		}
+		final Component mapViewComponent = Controller.getCurrentController().getMapViewManager().getMapViewComponent();
+		if(mapViewComponent != null)
+			mapViewComponent.repaint();
+	}
+	
 	private void initConditions() {
 		filterConditions = new DefaultComboBoxModel();
 		addStandardConditions();
