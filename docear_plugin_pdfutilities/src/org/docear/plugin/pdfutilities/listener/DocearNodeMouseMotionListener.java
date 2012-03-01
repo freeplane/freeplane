@@ -6,6 +6,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
 import org.docear.plugin.core.features.IAnnotation;
 import org.docear.plugin.core.features.IAnnotation.AnnotationType;
 import org.docear.plugin.core.util.CoreUtils;
@@ -18,6 +22,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -28,11 +33,11 @@ import de.intarsys.pdf.parser.COSLoadException;
 
 public class DocearNodeMouseMotionListener implements IMouseListener {
 
-	private IMouseListener mouseListener;
+	private IMouseListener mouseListener;	
 	private boolean wasFocused;
 
 	public DocearNodeMouseMotionListener(IMouseListener mouseListener) {
-		this.mouseListener = mouseListener;
+		this.mouseListener = mouseListener;		
 	}
 
 	public void mouseDragged(MouseEvent e) {
@@ -80,6 +85,72 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 		}
 		
 	}
+	
+	public void openPageMacOs(MouseEvent e, final String readerPath, NodeModel node) {		
+		/*if (readerPath == null || readerPath.length() == 0) {
+			this.mouseListener.mouseClicked(e);
+			return;
+		}*/
+		
+		URI uri = Tools.getAbsoluteUri(node);
+		if (!CoreUtils.resolveURI(uri).getName().toLowerCase().endsWith(".pdf")) {
+			this.mouseListener.mouseClicked(e);
+			return;
+		}
+		
+
+		IAnnotation annotation = null;
+		try {
+			annotation = new PdfAnnotationImporter().searchAnnotation(uri, node);
+
+			if (annotation == null || annotation.getPage() == null) {
+				//Controller.exec(getExecCommandMacOs(readerPath, uri, 1));
+				runAppleScript(uri, 1);
+				return;
+			}
+			else {
+				runAppleScript(uri, annotation.getPage());
+				//Controller.exec(getExecCommandMacOs(readerPath, uri, annotation));
+				return;
+			}
+
+		}		
+		catch (COSLoadException x) {
+			UITools.errorMessage("Could not find page because the document\n" + uri.toString() + "\nthrew a COSLoadExcpetion.\nTry to open file with standard options."); //$NON-NLS-1$ //$NON-NLS-2$
+			System.err.println("Caught: " + x); //$NON-NLS-1$
+		}
+		catch (Exception x) {
+			LogUtils.warn(x);
+			this.mouseListener.mouseClicked(e);
+			return;
+		}
+		
+	}
+
+	private void runAppleScript(URI uri, int i) throws ScriptException {	    	    	
+    	String script = "set pdfPath to POSIX file \""+Tools.getFilefromUri(uri).getAbsolutePath()+"\"\n" +
+						"tell application \"Adobe Acrobat Pro\"\n" +
+							"open pdfPath\n" +
+							"set frontmost to true\n" +							
+							"repeat with currentDocument in documents\n" +								
+								"if file alias of currentDocument as string is equal to pdfPath as string then\n" +										
+									//"bring to front currentDocument\n" +
+									"tell currentDocument\n" +
+										"tell every PDF Window\n" +											
+											"goto page "+ i +"\n" +
+										"end tell\n" +
+									"end tell\n" +
+								"end if\n" +
+							"end repeat\n" +
+						"end tell\n";    	
+    	final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+        Thread.currentThread().setContextClassLoader(null);
+        ScriptEngineManager mgr = new ScriptEngineManager();
+    	ScriptEngine engine = mgr.getEngineByName("AppleScript");
+        Thread.currentThread().setContextClassLoader(contextClassLoader);    	
+		engine.eval(script);		
+		LogUtils.info("Successfully ran apple script");
+	}
 
 	public void mouseClicked(MouseEvent e) {		
 		boolean openOnPage = ResourceController.getResourceController().getBooleanProperty(
@@ -87,7 +158,7 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 		String readerPath = ResourceController.getResourceController().getProperty(
 				PdfUtilitiesController.OPEN_ON_PAGE_READER_PATH_KEY);		
 
-		if (!openOnPage || !isValidReaderPath(readerPath)) {
+		if (!openOnPage || (!isValidReaderPath(readerPath) && !Compat.isMacOsX())) {
 			this.mouseListener.mouseClicked(e);
 			return;
 		}
@@ -113,6 +184,11 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 
 			if (openOnPage && !(Compat.isMacOsX() || Compat.isWindowsOS())) {
 				openPageWithFoxitInWine(e, readerPath, node);
+				return;
+			}
+			
+			if (openOnPage && Compat.isMacOsX()) {
+				openPageMacOs(e, readerPath, node);
 				return;
 			}
 			
@@ -261,7 +337,7 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 			return command;
 		}
 		return null;
-	}
+	}	
 
 	private String[] getExecCommandWine(String readerPathWine, URI uriToFile, IAnnotation annotation) {
 		return getExecCommandWine(readerPathWine, uriToFile, annotation.getPage());

@@ -11,9 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.docear.plugin.core.mindmap.AnnotationID;
-import org.docear.plugin.core.mindmap.AnnotationModel;
-import org.docear.plugin.core.mindmap.IAnnotation.AnnotationType;
+import org.docear.plugin.core.features.AnnotationID;
+import org.docear.plugin.core.features.AnnotationModel;
+import org.docear.plugin.core.features.IAnnotation.AnnotationType;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
 import org.junit.Assert;

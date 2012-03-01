@@ -113,7 +113,7 @@ public class PdfUtilitiesController extends ALanguageController{
 	private static final String EDIT_MONITORING_FOLDER_LANG_KEY = "menu_import_edit_monitoring_folder"; //$NON-NLS-1$
 	private static final String TOGGLE_FOLDER_VIEW_LANG_KEY = "menu_import_folder_view"; //$NON-NLS-1$
 
-	private ModeController modecontroller;
+	private ModeController modecontroller;		
 	private ImportAllAnnotationsAction importAllAnnotationsAction;
 	private ImportNewAnnotationsAction importNewAnnotationsAction;
 	private AbstractMonitoringAction addMonitoringFolderAction;
@@ -128,8 +128,7 @@ public class PdfUtilitiesController extends ALanguageController{
 		super();
 
 		LogUtils.info("starting DocearPdfUtilitiesStarter(ModeController)"); //$NON-NLS-1$
-		this.modecontroller = modeController;
-		
+		this.modecontroller = modeController;		
 		this.addPropertiesToOptionPanel();
 		this.addPluginDefaults();
 		this.registerController();
