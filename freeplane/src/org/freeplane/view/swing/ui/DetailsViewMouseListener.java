@@ -19,8 +19,6 @@
  */
 package org.freeplane.view.swing.ui;
 
-import java.awt.Component;
-import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 
 import javax.swing.SwingUtilities;

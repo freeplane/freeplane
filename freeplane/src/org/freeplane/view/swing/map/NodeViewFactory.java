@@ -27,8 +27,6 @@ import java.awt.Graphics;
 import java.awt.LayoutManager;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
@@ -41,7 +39,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.core.ui.DelayedMouseListener;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;

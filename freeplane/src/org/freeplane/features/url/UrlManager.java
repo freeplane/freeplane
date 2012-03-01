@@ -60,7 +60,6 @@ import javax.xml.transform.stream.StreamSource;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -71,7 +70,6 @@ import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
