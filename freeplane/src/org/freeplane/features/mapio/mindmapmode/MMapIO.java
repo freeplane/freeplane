@@ -97,9 +97,6 @@ public class MMapIO extends MapIO{
 	public String tryToLock(MapModel map, File file) throws Exception {
 	    return fileManager.tryToLock(map, file);
     }
-	public MapModel loadDefault() {
-	    return fileManager.loadDefault();
-    }
 	public NodeModel loadTree(MapModel map, File file) throws XMLParseException, IOException {
 		return fileManager.loadTree(map, file);
     }

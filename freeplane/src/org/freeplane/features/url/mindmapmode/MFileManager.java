@@ -549,7 +549,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		return map;
 	}
 
-	private File defaultTemplateFile() {
+	public File defaultTemplateFile() {
 		final String userDefinedTemplateFile = getStandardTemplateName();
 		final File absolute = new File(userDefinedTemplateFile);
 		if(absolute.isAbsolute() && absolute.exists() && ! absolute.isDirectory()){
@@ -848,22 +848,4 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		return (MFileManager) modeController.getExtension(UrlManager.class);
 	}
 
-	/**@deprecated -- use MMapIO*/
-	@Deprecated
-	public MapModel loadDefault() {
-		final File file = defaultTemplateFile();
-		try {
-			if (file != null) {
-				MapModel map = new MapModel();
-				load(Compat.fileToUrl(file), map);
-				if (null != MapStyleModel.getExtension(map))
-					return map;
-			};
-		}
-		catch (Exception e) {
-			LogUtils.warn(e);
-		}
-		UITools.errorMessage(TextUtils.format("error_in_template", file));
-		return super.loadDefault();
-	}
 }
