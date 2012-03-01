@@ -331,8 +331,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	}
 
 	private void createDefaultStyleMap(final MapModel map) {
-	    final MapModel styleMapContainer = new MapModel();
-		UrlManager.getController().loadDefault(styleMapContainer);
+	    final MapModel styleMapContainer = UrlManager.getController().loadDefault();
 		moveStyle(styleMapContainer, map, false);
     }
 

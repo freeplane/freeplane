@@ -76,6 +76,7 @@ import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.url.UrlManager;
@@ -849,18 +850,20 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	/**@deprecated -- use MMapIO*/
 	@Deprecated
-	public void loadDefault(MapModel target) {
+	public MapModel loadDefault() {
+		final File file = defaultTemplateFile();
 		try {
-			final File file = defaultTemplateFile();
 			if (file != null) {
-				loadCatchExceptions(Compat.fileToUrl(file), target);
-				return;
-			}
-			final URL url = ResourceController.getResourceController().getResource("/styles/viewer_standard.mm");
-			loadCatchExceptions(url, target);
+				MapModel map = new MapModel();
+				load(Compat.fileToUrl(file), map);
+				if (null != MapStyleModel.getExtension(map))
+					return map;
+			};
 		}
 		catch (Exception e) {
-			LogUtils.severe(e);
+			LogUtils.warn(e);
 		}
+		UITools.errorMessage(TextUtils.format("error_in_template", file));
+		return super.loadDefault();
 	}
 }
