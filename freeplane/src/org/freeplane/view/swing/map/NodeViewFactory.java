@@ -28,6 +28,7 @@ import java.awt.LayoutManager;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
@@ -41,6 +42,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.DelayedMouseListener;
+import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -254,7 +256,7 @@ class NodeViewFactory {
 
 	private static Map<Color, Icon> coloredNoteIcons  = new HashMap<Color, Icon>();
 	private Icon coloredIcon = createColoredIcon();
-	private static final DelayedMouseListener DETAILS_MOUSE_LISTENER = new DelayedMouseListener(new DetailsViewMouseListener(), 2, MouseEvent.BUTTON1);
+	private static final IMouseListener DETAILS_MOUSE_LISTENER = new DetailsViewMouseListener();
 	private static final LinkNavigatorMouseListener LINK_MOUSE_LISTENER = new LinkNavigatorMouseListener();
 	
 	public ZoomableLabel createNoteViewer() {
