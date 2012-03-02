@@ -28,6 +28,7 @@ import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.NodeAttributeTableModel;

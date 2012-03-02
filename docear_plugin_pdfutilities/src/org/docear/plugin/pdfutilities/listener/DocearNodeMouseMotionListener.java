@@ -4,10 +4,13 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 
+import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.features.IAnnotation;
 import org.docear.plugin.core.features.IAnnotation.AnnotationType;
+import org.docear.plugin.core.logger.DocearLogEvent;
 import org.docear.plugin.core.util.CoreUtils;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
@@ -18,10 +21,12 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.view.swing.map.MainView;
 
 import de.intarsys.pdf.parser.COSLoadException;
@@ -106,7 +111,10 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 				node = modeController.getMapController().getSelectedNode();
 			}
 			
-			if (!component.isInFollowLinkRegion(e.getX()) || !NodeUtils.isPdfLinkedNode(node)) {
+			if (component.isInFollowLinkRegion(e.getX())) {
+				writeToLog(node);
+			}
+			if (!component.isInFollowLinkRegion(e.getX()) || !NodeUtils.isPdfLinkedNode(node)) {				
 				this.mouseListener.mouseClicked(e);
 				return;
 			}
@@ -204,6 +212,24 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 		}
 		else {
 			this.mouseListener.mouseClicked(e);
+		}
+	}
+
+	private void writeToLog(NodeModel node) {
+		URI uri = Tools.getAbsoluteUri(node);
+		if (uri.getScheme().equals("file")) {
+			File f = WorkspaceUtils.resolveURI(uri);
+			//if map file is opened, then there is a MapLifeCycleListener Event
+			if (!f.getName().endsWith(".mm")) {
+				DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.FILE_OPENED,  f);
+			}
+		}
+		else {					
+			try {
+				DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.OPEN_URL, uri.toURL());
+			} catch (MalformedURLException ex) {						
+				LogUtils.warn(ex);
+			}
 		}
 	}
 

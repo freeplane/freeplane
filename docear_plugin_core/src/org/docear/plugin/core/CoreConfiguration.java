@@ -1,20 +1,17 @@
 package org.docear.plugin.core;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Enumeration;
-import java.util.Properties;
 
 import javax.swing.SwingUtilities;
 
 import org.docear.plugin.core.actions.DocearAboutAction;
-import org.docear.plugin.core.actions.DocearLicenseAction;
 import org.docear.plugin.core.actions.DocearOpenUrlAction;
 import org.docear.plugin.core.actions.DocearQuitAction;
 import org.docear.plugin.core.actions.SaveAction;
@@ -22,10 +19,12 @@ import org.docear.plugin.core.actions.SaveAsAction;
 import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.features.DocearMapWriter;
 import org.docear.plugin.core.features.DocearNodeModelExtensionController;
+import org.docear.plugin.core.listeners.MapLifeCycleListener;
 import org.docear.plugin.core.listeners.PropertyListener;
+import org.docear.plugin.core.listeners.PropertyLoadListener;
 import org.docear.plugin.core.listeners.WorkspaceChangeListener;
 import org.docear.plugin.core.listeners.WorkspaceOpenDocumentListener;
-import org.docear.plugin.core.logger.DocearEventLogger;
+import org.docear.plugin.core.logger.DocearLogEvent;
 import org.docear.plugin.core.mindmap.MapConverter;
 import org.docear.plugin.core.workspace.actions.DocearChangeLibraryPathAction;
 import org.docear.plugin.core.workspace.actions.DocearRenameAction;
@@ -41,7 +40,6 @@ import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -56,10 +54,8 @@ import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public class CoreConfiguration extends ALanguageController {
 
-	private static final String ABOUT_TEXT = "about_text";
 	private static final String DOCEAR = "Docear";
 	private static final String APPLICATION_NAME = "ApplicationName";
-	private static final String LICENSE_ACTION = "LicenseAction";
 	private static final String DOCUMENTATION_ACTION = "DocumentationAction";
 	private static final String DOCEAR_WEB_DOCU_LOCATION = "docear_webDocuLocation";
 	private static final String WEB_DOCU_LOCATION = "webDocuLocation";
@@ -99,7 +95,14 @@ public class CoreConfiguration extends ALanguageController {
 	}
 	
 	private void init(ModeController modeController) {
-		DocearController.getController().getDocearEventLogger().write(this, DocearEventLogger.DocearEvent.APPLICATION_STARTED, "");
+		DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.APPLICATION_STARTED);
+		Toolkit.getDefaultToolkit();		
+		DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.OS_OPERATING_SYSTEM, System.getProperty("os.name"));
+		DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.OS_LANGUAGE_CODE, System.getProperty("user.language"));
+		DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.OS_COUNTRY_CODE, System.getProperty("user.country"));
+		DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.OS_TIME_ZONE, System.getProperty("user.timezone"));
+		DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.OS_SCREEN_RESOLUTION, Toolkit.getDefaultToolkit().getScreenSize().toString());
+		
 		MapVersionInterpreter.addMapVersionInterpreter(new MapVersionInterpreter("0.9.0\" software_name=\"SciPlore_", false, false, "SciploreMM", "http://sciplore.org", null, new MapConverter()));
 		
 		// set up context menu for workspace
@@ -110,6 +113,7 @@ public class CoreConfiguration extends ALanguageController {
 		modeController.addAction(new DocearRenameAction());
 		
 		addPluginDefaults();
+		registerListeners();
 		//prepareWorkspace();
 		
 		replaceFreeplaneStringsAndActions();
@@ -123,7 +127,7 @@ public class CoreConfiguration extends ALanguageController {
 			UrlManager.getController().setLastCurrentDir(WorkspaceUtils.resolveURI(CoreConfiguration.projectPathObserver.getUri()));
 		}
 	}
-	
+		
 	private void setDocearMapWriter() {
 		DocearMapWriter mapWriter = new DocearMapWriter(Controller.getCurrentModeController().getMapController());
 		mapWriter.setMapWriteHandler();		
@@ -194,6 +198,7 @@ public class CoreConfiguration extends ALanguageController {
 		replaceAction(REPORT_BUG_ACTION, new DocearOpenUrlAction(REPORT_BUG_ACTION, resourceController.getProperty(BUG_TRACKER_LOCATION)));
 		replaceAction(OPEN_FREEPLANE_SITE_ACTION, new DocearOpenUrlAction(OPEN_FREEPLANE_SITE_ACTION, resourceController.getProperty(WEB_FREEPLANE_LOCATION)));
 		replaceAction(DOCUMENTATION_ACTION, new DocearOpenUrlAction(DOCUMENTATION_ACTION, resourceController.getProperty(WEB_DOCU_LOCATION)));
+		replaceAction("GettingStartedAction", new GettingStartedAction());
 		
 		action = new DocearAboutAction();
 		replaceAction(action.getKey(), action);
@@ -246,18 +251,17 @@ public class CoreConfiguration extends ALanguageController {
 			Controller.getCurrentController().getResourceController().setProperty("save_folding", "always_save_folding");
 			Controller.getCurrentController().getResourceController().setProperty("leftToolbarVisible", "false");			
 			Controller.getCurrentController().getResourceController().setProperty("styleScrollPaneVisible", "true");
-			Controller.getCurrentController().getResourceController().setProperty(DOCEAR_FIRST_RUN_PROPERTY, true);
-			replaceHelpAction();
+			Controller.getCurrentController().getResourceController().setProperty(DOCEAR_FIRST_RUN_PROPERTY, true);			
 		}
-		Controller.getCurrentController().getResourceController().addPropertyChangeListener(new PropertyListener());
-		WorkspaceController.getIOController().registerNodeActionListener(AWorkspaceTreeNode.class, WorkspaceActionEvent.WSNODE_OPEN_DOCUMENT, new WorkspaceOpenDocumentListener());
 		FreeplaneActionCascade.addAction(new DocearQuitAction());		
 	}
 	
-	private void replaceHelpAction() {
-		Controller.getCurrentController().removeAction("GettingStartedAction");
-		Controller.getCurrentController().addAction(new GettingStartedAction());
-	}
+	private void registerListeners() {
+		Controller.getCurrentController().getOptionPanelController().addPropertyLoadListener(new PropertyLoadListener());
+		Controller.getCurrentController().getResourceController().addPropertyChangeListener(new PropertyListener());
+		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(new MapLifeCycleListener());
+		WorkspaceController.getIOController().registerNodeActionListener(AWorkspaceTreeNode.class, WorkspaceActionEvent.WSNODE_OPEN_DOCUMENT, new WorkspaceOpenDocumentListener());
+	}	
 	
 	class GettingStartedAction extends AFreeplaneAction {
 		
@@ -294,6 +298,8 @@ public class CoreConfiguration extends ALanguageController {
 			catch (final MalformedURLException e1) {
 				LogUtils.warn(e1);
 			}
+			
+			DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.SHOW_HELP);
 		}
 	}
 

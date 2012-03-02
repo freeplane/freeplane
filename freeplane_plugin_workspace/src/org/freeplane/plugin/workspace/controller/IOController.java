@@ -30,16 +30,16 @@ public class IOController {
 	public List<IWorkspaceNodeActionListener> getNodeActionListeners(Class<? extends AWorkspaceTreeNode> clazz, Integer eventType) {
 		HashMap<Integer, List<IWorkspaceNodeActionListener>> wildcard = listenerMap.get(AWorkspaceTreeNode.class);
 		HashMap<Integer, List<IWorkspaceNodeActionListener>> levelOne = listenerMap.get(clazz);
-		if(levelOne != null) {
+		if(levelOne != null) {			
 			List<IWorkspaceNodeActionListener> result = new ArrayList<IWorkspaceNodeActionListener>();
-			if (levelOne.get(eventType) != null) {
-				result.addAll(levelOne.get(eventType));
-			}			
 			if(wildcard != null) {
 				List<IWorkspaceNodeActionListener> wildcardListeners = wildcard.get(eventType);
 				if(wildcardListeners != null) {
 					result.addAll(wildcardListeners);
 				}
+			}
+			if (levelOne.get(eventType) != null) {
+				result.addAll(levelOne.get(eventType));
 			}
 			if(result.size() == 0) {
 				return null;
