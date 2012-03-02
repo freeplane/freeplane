@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="/docear_plugin_pdfutilities/lib/jpod/isrt.jar"/>
 	<classpathentry kind="lib" path="/docear_plugin_pdfutilities/lib/jpod/jbig2.jar"/>
 	<classpathentry kind="lib" path="/docear_plugin_pdfutilities/lib/jpod/jPod.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/docear_plugin_core"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
