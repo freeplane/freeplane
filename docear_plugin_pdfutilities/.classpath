@@ -7,7 +7,6 @@
 	<classpathentry kind="lib" path="lib/jpod/isrt.jar" sourcepath="C:/Users/Anwender/Desktop/distribution/src"/>
 	<classpathentry kind="lib" path="lib/jpod/jbig2.jar"/>
 	<classpathentry kind="lib" path="lib/jpod/jPod.jar" sourcepath="C:/Users/Anwender/Downloads/distribution/src"/>
-	<classpathentry kind="lib" path="lib/felix.jar"/>
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
