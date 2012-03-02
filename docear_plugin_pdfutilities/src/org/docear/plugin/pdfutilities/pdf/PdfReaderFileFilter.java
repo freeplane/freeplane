@@ -3,11 +3,21 @@ package org.docear.plugin.pdfutilities.pdf;
 import java.io.File;
 import java.io.FileFilter;
 
+import org.freeplane.core.util.Compat;
+
 public class PdfReaderFileFilter implements FileFilter {
 
 	public boolean accept(File file) {
+		if(Compat.isMacOsX()){
+			return true;
+		}
+		
 		if(file == null || !file.exists() || !file.isFile()){
 			return false;
+		}
+		
+		if(!Compat.isWindowsOS()){
+			return true;
 		}
 		
 		if(isAdobe(file)){

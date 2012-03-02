@@ -4,19 +4,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.MutableComboBoxModel;
-import javax.swing.event.ListDataListener;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
@@ -30,7 +27,6 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
-import javax.swing.JLabel;
 
 public class WorkspaceChooserDialogPanel extends JPanel {
 
@@ -143,7 +139,7 @@ public class WorkspaceChooserDialogPanel extends JPanel {
 				{
 					profileComboBox = new JComboBox();
 					this.add(profileComboBox, "2, 8, fill, default");
-					profileComboBox.setModel(new WorkspaceProfileListModel());					
+					profileComboBox.setModel(new WorkspaceProfileListModel(currentLocation == null ? defaultLocation : currentLocation));					
 					
 				}
 				{
@@ -204,9 +200,8 @@ public class WorkspaceChooserDialogPanel extends JPanel {
 		}
 	}
 
-	private class WorkspaceProfileListModel implements MutableComboBoxModel, Serializable {
-		DefaultComboBoxModel internalModel;
-		Vector<ProfileListObject> itemList;
+	private class WorkspaceProfileListModel extends DefaultComboBoxModel {
+		
 
 		private static final long serialVersionUID = 1L;
 		private final FileFilter profileFilter = new FileFilter() {
@@ -223,8 +218,8 @@ public class WorkspaceChooserDialogPanel extends JPanel {
 		};
 		private Object selectedObject;
 
-		public WorkspaceProfileListModel() {
-			reload(null);
+		public WorkspaceProfileListModel(String currentLocation) {
+			reload(currentLocation);
 		}
 
 		private void initProfileList(File workspaceBase) {
@@ -234,9 +229,9 @@ public class WorkspaceChooserDialogPanel extends JPanel {
 					return;
 				}
 				for (File folder : profileDir.listFiles(profileFilter)) {
-					itemList.add(new ProfileListObject(folder.getName(), folder.getName()));
+					addElement(new ProfileListObject(folder.getName(), folder.getName()));
 					if (WorkspaceController.getController().getPreferences().getWorkspaceProfile().endsWith(folder.getName())) {
-						selectedObject = itemList.elementAt(itemList.size() - 1);
+						selectedObject = getElementAt(getSize() - 1);
 					}
 				}
 			}
@@ -247,12 +242,14 @@ public class WorkspaceChooserDialogPanel extends JPanel {
 		}
 
 		public void reload(String path, String newProfileName) {
-			itemList = new Vector<WorkspaceChooserDialogPanel.ProfileListObject>();
-			itemList.add(new ProfileListObject(WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT, "<"
+			while(getSize() > 0) {
+				this.removeElementAt(0);
+			}
+			addElement(new ProfileListObject(WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT, "<"
 					+ WorkspacePreferences.WORKSPACE_PROFILE_DEFAULT + "> profile"));
-			selectedObject = itemList.elementAt(0);
+			selectedObject = getElementAt(0);
 			if (newProfileName != null) {
-				itemList.add(new ProfileListObject(newProfileName, newProfileName));				
+				addElement(new ProfileListObject(newProfileName, newProfileName));				
 			}
 
 			if (path != null) {
@@ -264,59 +261,11 @@ public class WorkspaceChooserDialogPanel extends JPanel {
 					// TODO: DOCEAR - do sth.
 				}
 			}
-			this.internalModel = new DefaultComboBoxModel(itemList.toArray());
 			if (newProfileName != null) {
-				selectedObject = itemList.elementAt(1);
+				selectedObject = getElementAt(1);
 			}
 			setSelectedItem(selectedObject);
 		}
-
-		public int getSize() {
-			return internalModel.getSize();
-		}
-
-		public Object getElementAt(int index) {
-			return internalModel.getElementAt(index);
-		}
-
-		public Object getSelectedItem() {
-			if (internalModel.getSelectedItem() == null) {
-				return internalModel.getElementAt(0);
-			}
-			return internalModel.getSelectedItem();
-		}
-
-		public void setSelectedItem(Object anItem) {
-			if (anItem == null) {
-				internalModel.setSelectedItem(internalModel.getElementAt(0));
-			}
-			internalModel.setSelectedItem(anItem);
-		}
-
-		public void addListDataListener(ListDataListener l) {
-			internalModel.addListDataListener(l);
-		}
-
-		public void removeListDataListener(ListDataListener l) {
-			internalModel.removeListDataListener(l);
-		}
-
-		public void addElement(Object obj) {
-			internalModel.addElement(obj);
-		}
-
-		public void removeElement(Object obj) {
-			internalModel.removeElement(obj);
-		}
-
-		public void insertElementAt(Object obj, int index) {
-			internalModel.insertElementAt(obj, index);
-		}
-
-		public void removeElementAt(int index) {
-			internalModel.removeElementAt(index);
-		}
-
 	}
 
 	public class ProfileListObject {
