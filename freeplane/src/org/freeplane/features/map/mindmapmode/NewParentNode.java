@@ -64,13 +64,14 @@ public class NewParentNode extends AFreeplaneAction {
 	 * java.util.List)
 	 */
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel focussed = Controller.getCurrentModeController().getMapController().getSelectedNode();
-		final NodeModel selectedNode = focussed;
+		final NodeModel selectedNode = Controller.getCurrentModeController().getMapController().getSelectedNode();
+		if(selectedNode == null)
+			return;
 		Collection<NodeModel> unmodifyable = Controller.getCurrentModeController().getMapController().getSelectedNodes();
 		final List<NodeModel> selectedNodes = new ArrayList<NodeModel>(unmodifyable.size());
 		selectedNodes.addAll(unmodifyable);
 		Controller.getCurrentModeController().getMapController().sortNodesByDepth(selectedNodes);
-		if (focussed.isRoot()) {
+		if (selectedNode.isRoot()) {
 			UITools.errorMessage(TextUtils.getText("cannot_add_parent_to_root"));
 			return;
 		}

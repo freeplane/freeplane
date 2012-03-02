@@ -1,10 +1,10 @@
-<map version="0.9.0">
+<map version="freeplane 1.2.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <attribute_registry>
     <attribute_name VISIBLE="true" NAME="See also"/>
     <attribute_name VISIBLE="true" NAME="a2"/>
 </attribute_registry>
-<node LOCALIZED_STYLE_REF="default" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1322149737859" BACKGROUND_COLOR="#00ff66" VGAP="8">
+<node LOCALIZED_STYLE_REF="default" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1330615135709" BACKGROUND_COLOR="#00ff66" VGAP="8">
 <icon BUILTIN="bee"/>
 <richcontent TYPE="NODE">
 
@@ -21,36 +21,28 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 <hook NAME="MapStyle">
     <conditional_styles>
         <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
-            <conjunct_condition user_name="1.2.9_05">
-                <time_condition_modified_after DATE="1318794562631"/>
-                <time_condition_modified_before DATE="1319399362631"/>
-            </conjunct_condition>
-        </conditional_style>
-        <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
-            <conjunct_condition user_name="1.2.10_04">
-                <time_condition_modified_after DATE="1321127854495"/>
-                <time_condition_modified_before DATE="1321732654495"/>
-            </conjunct_condition>
+            <time_condition_modified_after DATE="1329751370546"/>
         </conditional_style>
     </conditional_styles>
-    <properties show_notes_in_map="false"/>
+    <properties show_icon_for_attributes="false" show_note_icons="true" show_notes_in_map="false"/>
 
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node">
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
+<stylenode LOCALIZED_TEXT="defaultstyle.details"/>
 <stylenode LOCALIZED_TEXT="default">
 <edge COLOR="#808080" WIDTH="thin"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="defaultstyle.details"/>
-<stylenode LOCALIZED_TEXT="defaultstyle.note"/>
 <stylenode LOCALIZED_TEXT="defaultstyle.floating">
 <edge STYLE="hide_edge"/>
 <cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
 </stylenode>
+<stylenode LOCALIZED_TEXT="defaultstyle.note"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right">
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000">
@@ -70,10 +62,6 @@
 </stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right">
-<stylenode TEXT="Consumer" COLOR="#ffffff" BACKGROUND_COLOR="#009999" STYLE="bubble">
-<font BOLD="true"/>
-<edge STYLE="bezier" COLOR="#33ffcc"/>
-</stylenode>
 <stylenode TEXT="Beginner" BACKGROUND_COLOR="#33ffcc" STYLE="bubble">
 <font BOLD="true"/>
 <edge STYLE="bezier" COLOR="#33ffcc"/>
@@ -86,22 +74,15 @@
 <font BOLD="true"/>
 <edge STYLE="bezier" COLOR="#33ffcc"/>
 </stylenode>
+<stylenode TEXT="TitlesContent" STYLE="fork">
+<edge STYLE="hide_edge"/>
+</stylenode>
 <stylenode TEXT="Example">
 <icon BUILTIN="../AttributesView"/>
 <edge STYLE="bezier" COLOR="#808080"/>
 </stylenode>
 <stylenode TEXT="Revision">
 <icon BUILTIN="revision"/>
-</stylenode>
-<stylenode TEXT="BeginnerTopic"/>
-<stylenode TEXT="ConsumerTopic"/>
-<stylenode TEXT="AdvancedTopic"/>
-<stylenode TEXT="ProfessionalTopic"/>
-<stylenode TEXT="MainWidth" MIN_WIDTH="600"/>
-<stylenode TEXT="SubWidth" MAX_WIDTH="550" MIN_WIDTH="550"/>
-<stylenode TEXT="MenuTitle" STYLE="combined"/>
-<stylenode TEXT="TitlesContent" STYLE="fork">
-<edge STYLE="hide_edge"/>
 </stylenode>
 <stylenode TEXT="MyTemplate">
 <icon BUILTIN="females"/>
@@ -128,6 +109,11 @@
 </richcontent>
 <attribute NAME="birth date" VALUE=""/>
 <attribute NAME="e-mail" VALUE=""/>
+</stylenode>
+<stylenode TEXT="MainWidth" MIN_WIDTH="600"/>
+<stylenode TEXT="SubWidth" MAX_WIDTH="550" MIN_WIDTH="550"/>
+<stylenode TEXT="Method" STYLE="as_parent">
+<edge STYLE="horizontal"/>
 </stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.topic" POSITION="right" COLOR="#18898b" STYLE="fork">
@@ -186,7 +172,7 @@
 </richcontent>
 </node>
 <node TEXT="Introduction" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1323806734662" BACKGROUND_COLOR="#00cc33" NUMBERED="true" VGAP="2" HGAP="21" VSHIFT="94" MIN_WIDTH="180">
-<node TEXT="Goal" STYLE_REF="Consumer" FOLDED="true" ID="ID_1074607965" CREATED="1314422854653" MODIFIED="1323805754824" HGAP="23" VSHIFT="97" STYLE="combined">
+<node TEXT="Goal" STYLE_REF="Beginner" FOLDED="true" ID="ID_1074607965" CREATED="1314422854653" MODIFIED="1329892191407" HGAP="23" VSHIFT="97">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -214,11 +200,8 @@
 </hook>
 </node>
 </node>
-<node TEXT="Reading guide" STYLE_REF="Consumer" FOLDED="true" ID="ID_195004053" CREATED="1316097186850" MODIFIED="1323805708102" COLOR="#ffffff" STYLE="combined" MIN_WIDTH="1" HGAP="22" VSHIFT="3">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
-</hook>
-<node ID="ID_525900700" CREATED="1323439682466" MODIFIED="1323805861310" STYLE="fork" HGAP="-68" VSHIFT="167"><richcontent TYPE="NODE">
+<node TEXT="Reading guide" STYLE_REF="Beginner" FOLDED="true" ID="ID_195004053" CREATED="1316097186850" MODIFIED="1329892325146" MIN_WIDTH="1" HGAP="22" VSHIFT="3">
+<node ID="ID_525900700" CREATED="1323439682466" MODIFIED="1330288772906" STYLE="fork" HGAP="-66" VSHIFT="200"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -232,7 +215,7 @@
       
     </p>
     <p>
-      The chapters after the Introduction are worth reading for the following reason. In Freeplane the same result can be reached in a number of ways. Using the Freeplane menu generally is not the fastest and most effcient way. The different chapters cover all of the functionality and show what is the most efficient way of doing using socalled context menus. You do not need to read the chapters in order, but can pick the things you are needing at the moment. To help you pick the information is color coded, with the following meaning:<br/>
+      The chapters after the Introduction are worth reading for the following reason. In Freeplane the same result can be achieved in a number of ways. Using the Freeplane menu generally is not the fastest and most effcient way. The different chapters cover all of the functionality and show what is the most efficient way of doing using socalled context menus. You do not need to read the chapters in order, but can pick the things you are needing at the moment. To help you pick the sections are color coded, with the following meaning:<br/>
     </p>
     <ol>
       <li>
@@ -246,7 +229,19 @@
       </li>
     </ol>
     <p>
-      <font color="#ff0000">Click </font><a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Meeting_support"><font color="#0000ff">here</font></a><font color="#ff0000">&#160;to go to the Internet. You will see two examples for respectively the beginning and advanced user. You can also view an introductory video animation for the beginning user.</font>
+      <b><font color="#ff0000">IMPORTANT</font></b><font color="#ff0000">&#160;</font>
+    </p>
+    <p>
+      <font color="#ff0000">Check <a href="http://freeplane.sourceforge.net/wiki/index.php/Add-ons_%28Language_pack%29">here</a>&#160;if there exists a language pack add-on for your language.</font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font color="#ff0000">Click </font><font color="#0000ff"><a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Meeting_support">here</a></font><font color="#ff0000">&#160;to go to the Internet. You will see two examples for respectively the beginning and advanced user. You can also view an introductory video animation for the beginning user. </font>
+    </p>
+    <p>
+      
     </p>
   </body>
 </html>
@@ -256,7 +251,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Nodes" STYLE_REF="Consumer" FOLDED="true" ID="ID_1368882439" CREATED="1316154547031" MODIFIED="1323681698954" HGAP="22" VSHIFT="-2" MIN_WIDTH="1" STYLE="combined">
+<node TEXT="Nodes" STYLE_REF="Beginner" FOLDED="true" ID="ID_1368882439" CREATED="1316154547031" MODIFIED="1329892340356" HGAP="22" VSHIFT="-2" MIN_WIDTH="1">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -284,11 +279,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="Family relations" STYLE_REF="Consumer" FOLDED="true" ID="ID_1971514033" CREATED="1314122290117" MODIFIED="1323469112024" HGAP="22" TEXT_SHORTENED="true" STYLE="combined">
+<node TEXT="Family relations" STYLE_REF="Beginner" FOLDED="true" ID="ID_1971514033" CREATED="1314122290117" MODIFIED="1329892353616" HGAP="22" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node FOLDED="true" ID="ID_1269567767" CREATED="1323465595335" MODIFIED="1323805885116" HGAP="-81" VSHIFT="84"><richcontent TYPE="NODE">
+<node ID="ID_1269567767" CREATED="1323465595335" MODIFIED="1323805885116" HGAP="-81" VSHIFT="84"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -328,7 +323,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
-<node TEXT="(relative) parent" STYLE_REF="ConsumerTopic" FOLDED="true" ID="ID_687495618" CREATED="1314131160308" MODIFIED="1323465789150" VSHIFT="20">
+<node TEXT="(relative) parent" STYLE_REF="ConsumerTopic" ID="ID_687495618" CREATED="1314131160308" MODIFIED="1323465789150" VSHIFT="20">
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1105307139" MIDDLE_LABEL="descendancy" STARTINCLINATION="25;-45;" ENDINCLINATION="-36;-44;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <node TEXT="child" STYLE_REF="ConsumerTopic" ID="ID_1105307139" CREATED="1314131174886" MODIFIED="1323682830658">
 <edge STYLE="bezier"/>
@@ -336,11 +331,11 @@
 </node>
 </node>
 </node>
-<node TEXT="Folding nodes" STYLE_REF="Consumer" FOLDED="true" ID="ID_1338867820" CREATED="1314122456335" MODIFIED="1323805730301" HGAP="22" VSHIFT="-100" STYLE="combined">
+<node TEXT="Folding nodes" STYLE_REF="Beginner" FOLDED="true" ID="ID_1338867820" CREATED="1314122456335" MODIFIED="1329892371541" HGAP="22" VSHIFT="1">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node FOLDED="true" ID="ID_434382705" CREATED="1323465258749" MODIFIED="1323805897128" HGAP="-70" VSHIFT="76"><richcontent TYPE="NODE">
+<node FOLDED="true" ID="ID_434382705" CREATED="1323465258749" MODIFIED="1329771890103" HGAP="-68" VSHIFT="110"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -348,13 +343,22 @@
   </head>
   <body>
     <p>
-      You can <b>fold</b>&#160;and <b>unfold</b>&#160;a node by clicking the node. Unfolding will reveal hidden children. Folding will hide possible children. If a node is folded, it shows a small <b>circle</b>&#160;at its <b>child side</b>.&#160;
+      Genrally, you can <b>fold</b>&#160;and <b>unfold</b>&#160;a node by clicking the node. Unfolding will reveal hidden children. Folding will hide possible children. If a node is folded, it shows a small <b>circle</b>&#160;at its <b>child side</b>.&#160;
     </p>
     <p>
       
     </p>
     <p>
-      If you have me unfolded, you see 4 icons wich also are displayed in the toolbar at the top of the screen. These are icon-buttons with which you can fold/unfold the descendants of a selected node.<br/><br/>Now click on node <i>Introduction</i>&#160;&#160;to hide its children &#160;and notice the circle!&#160;&#160;And thereafter, click again to continue reading the following node.
+      If you have me unfolded, to my right you see 4 icons wich also are displayed in the toolbar at the top of the screen. These are icon-buttons with which you can fold/unfold the descendants of a selected node.<br/><br/>Now click on node <i>Introduction</i>&#160;&#160;to hide its children &#160;and notice the circle!&#160;&#160;And thereafter, click again to continue reading the following node.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Excetion</b>
+    </p>
+    <p>
+      It is possible to keep a node from folding by setting <i>Edit &gt; Node Group &gt; Always unfolded node (set/unset)</i>. This can be useful in cloud groups.
     </p>
   </body>
 </html>
@@ -478,13 +482,29 @@
 </node>
 </node>
 </node>
+<node TEXT="Open map on Internet" STYLE_REF="Advanced" FOLDED="true" ID="ID_794559549" CREATED="1329413644062" MODIFIED="1329768103086" VSHIFT="-91">
+<node STYLE_REF="TitlesContent" ID="ID_663032265" CREATED="1329413694345" MODIFIED="1329772026197" HGAP="-110" VSHIFT="34"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To open a mind map on Internet, this map must first be copied to your local computer. Menu <i>File &gt; Open map from URL </i>does just this.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
 </node>
 <node TEXT="Main map" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_1337127972" CREATED="1314109409850" MODIFIED="1323431803244" NUMBERED="true" MIN_WIDTH="180">
-<node TEXT="Node core" STYLE_REF="Beginner" FOLDED="true" ID="ID_1370298116" CREATED="1315860175003" MODIFIED="1323804560202" HGAP="24" VSHIFT="10" MIN_WIDTH="1" STYLE="combined">
+<node TEXT="Node core" STYLE_REF="Beginner" FOLDED="true" ID="ID_1370298116" CREATED="1315860175003" MODIFIED="1323989022951" HGAP="24" VSHIFT="10" MIN_WIDTH="115" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1314148002" CREATED="1323461584875" MODIFIED="1323806139380" HGAP="-47" VSHIFT="91"><richcontent TYPE="NODE">
+<node ID="ID_1314148002" CREATED="1323461584875" MODIFIED="1329413917584" HGAP="-101" VSHIFT="93"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -528,7 +548,7 @@
 </html>
 </richcontent>
 <edge STYLE="bezier"/>
-<node ID="ID_265318117" CREATED="1323437723250" MODIFIED="1323806127306" HGAP="-102" VSHIFT="116" STYLE="fork"><richcontent TYPE="NODE">
+<node ID="ID_265318117" CREATED="1323437723250" MODIFIED="1329769161285" HGAP="-102" VSHIFT="126" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -536,7 +556,7 @@
   </head>
   <body>
     <p>
-      When Freeplane first opens you will be greeted by a blank map. It contains one, elliptical form, the root node. The root node contains a text such as &quot;New map&quot;. This text is highligted, meaning you can replace it by typing your own text. Simply type your title and press <i>Enter</i>. The <i>Insert</i>&#160;&#160;key will add a child node - again just type and press <i>Enter</i>. A second <i>Enter</i>&#160;&#160;will add a sibling. That's really all there is to it. The basic modus operandi is that simple. You can now easily create a simple map.
+      When Freeplane first opens you will be greeted by a blank map. It contains one, elliptical form, the root node. The root node contains a text such as &quot;New map&quot;. This text is highligted, meaning you can replace it by typing your own text. Simply type your title and press <i>Enter</i>. The <i>Insert</i>&#160;&#160;key will add a child node - again just type and press <i>Enter</i>. A second <i>Enter</i>&#160;&#160;will add a sibling. That's really all there is to it. If you want to edit an existing node, left-click the node text while keeping <i>Control</i>&#160;pressed (META omn MAC OS). It is that simple. You can now easily create a simple map.
     </p>
     <p>
       
@@ -552,7 +572,7 @@
         If you right-click when editing text, a so called <b>context menu</b>&#160;for editing text opens, giving quick access to formatting functions like copy and paste.
       </li>
       <li>
-        If you first select a text and right-click, a <i>Format</i>&#160;menu is displayed to make text bold etc. This formatting only applies to the selected&#160;&#160;text.
+        If you first select a text and then right-click, a <i>Format</i>&#160;menu is displayed to make text bold etc. This formatting only applies to the selected&#160;&#160;text.
       </li>
     </ul>
   </body>
@@ -747,7 +767,7 @@
   </body>
 </html>
 </richcontent>
-<node FOLDED="true" ID="ID_1433249332" CREATED="1323438495734" MODIFIED="1323806153545" HGAP="-98" VSHIFT="102" STYLE="fork"><richcontent TYPE="NODE">
+<node ID="ID_1433249332" CREATED="1323438495734" MODIFIED="1329769321248" HGAP="-98" VSHIFT="102" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -755,7 +775,7 @@
   </head>
   <body>
     <p>
-      A second way to edit a node is in a separate dialog. Right-click on the node. This opens the contextmenu of the node. (This context menu is different from the context menu for editing text !) In this contextmenu choose&#160;<i><b>Edit core in dialog</b></i><b>.</b>&#160;You can now type the text and use the shown options to format the text. When you close the dialog by pressing OK, the text will appear in the node. This dialog has more extensive options for formatting text than available wen performing in-line editing.
+      A second way to edit a node is in a separate dialog. Right-click on the node. This opens the context menu of the node. (This context menu is different from the context menu for editing text !) In this context menu choose&#160;<b><i>Edit core in dialog</i>.</b>&#160;You can now type the text and use the shown options to format the text. When you close the dialog by pressing OK, the text will appear in the node. This dialog has more extensive options for formatting text than available wen performing in-line editing.
     </p>
     <p>
       
@@ -776,13 +796,13 @@
     <conditional_style ACTIVE="true" STYLE_REF="BeginnerTopic" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
-<node TEXT="Own menu&apos;s" ID="ID_1425310908" CREATED="1316724523734" MODIFIED="1323726898876">
+<node TEXT="Has menu&apos;s of its own" ID="ID_1425310908" CREATED="1316724523734" MODIFIED="1329769343603">
 <edge STYLE="horizontal"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="BeginnerTopic" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&lt;Enter&gt; New line" ID="ID_1043315983" CREATED="1316724531504" MODIFIED="1323438577431">
+<node TEXT="&lt;Enter&gt;: New line" ID="ID_1043315983" CREATED="1316724531504" MODIFIED="1329769358251">
 <edge STYLE="horizontal"/>
 </node>
 <node TEXT="Right-click: contextmenu" ID="ID_1846126640" CREATED="1316724447049" MODIFIED="1323438577431">
@@ -874,7 +894,7 @@
 </node>
 <node TEXT="Free nodes" STYLE_REF="Advanced" FOLDED="true" ID="ID_1401167294" CREATED="1323470356903" MODIFIED="1323806018792" MIN_WIDTH="80" HGAP="22" VSHIFT="-1">
 <node TEXT="Post-it nodes: free positionable, free floating" STYLE_REF="Advanced" FOLDED="true" ID="ID_630972811" CREATED="1323076049931" MODIFIED="1323806244665" HGAP="18" VSHIFT="227" STYLE="combined">
-<node ID="ID_830664496" CREATED="1323434577171" MODIFIED="1323806266334" HGAP="-238" VSHIFT="61" STYLE="fork"><richcontent TYPE="NODE">
+<node ID="ID_830664496" CREATED="1323434577171" MODIFIED="1329769494815" HGAP="-238" VSHIFT="70" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -882,7 +902,7 @@
   </head>
   <body>
     <p>
-      If you double click at any free place of a mindmap, a so-called free positional, free floating node opens. This node behaves like a paper post-it: you can move it anywhere, independent of the nodes which are part of the root-hierarchy. The format of this node is determined by the system style <i>Floating node</i>. This standard style can be edited, giving all floating nodes this edited style. A post-it node can be&#160; connected to a hierarchical node by dragging and dropping it on the node of your choice: it will become a child node of this node. For examples of different types of free floating nodes, see the wiki <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Floating_nodes">Tutorial Freeplane</a>
+      If you keep <i>Control</i>&#160;pressed and click at any free place of a mindmap, a so-called free positional, free floating node opens. This node behaves like a paper post-it: you can move it anywhere, independent of the nodes which are part of the root-hierarchy. The format of this node is determined by the system style <i>Floating node</i>. This standard style can be edited, giving all floating nodes this edited style. A post-it node can be&#160;&#160;conected to a hierarchical node by dragging and dropping it on the node of your choice: it will become a child node of this node. For examples of different types of free floating nodes, see the wiki <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Floating_nodes">Tutorial Freeplane</a>
     </p>
   </body>
 </html>
@@ -890,14 +910,30 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
-<node TEXT="The floating nodes with hidden edges are intended for adding meta information to maps like legends, titles, summaries, authors etc. If such informations relates to a whole map, such nodes should have a root node as their parent so that are always visible and their position does not depend on anything else. Sometimes such information is relevant only for a part of a map. In this case a floating node with hidden edge can be attached to a non root node. For understanding of the context (which I find important) its parent edge is usually displayed as a dashed line if a node is selected unless its color was set to the map background color.&#xa;The free nodes do not require that you hide their edges. The second use case for them is a better use of map space. The automatic layout algorithm does not allow any map branches to overlap. If you want to create more compact maps you can convert some nodes to free nodes. This way they can be placed flexible. And their logical position relative to other sibling nodes now depends on their coordinates. You can see it too if you change to outline view which always reflect logical node positions." STYLE_REF="SubWidth" ID="ID_1557640435" CREATED="1323470600645" MODIFIED="1323806366158" HGAP="-543" VSHIFT="162"/>
+<node STYLE_REF="SubWidth" ID="ID_1557640435" CREATED="1323470600645" MODIFIED="1329769751482" HGAP="-543" VSHIFT="162"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>The floating nodes with hidden edges are intended for adding meta information to maps like legends, titles, summaries, authors etc. If such informations relates to a whole map, these nodes should have a root node as their parent so that they are always visible and their position does not depend on anything else. Sometimes such information is relevant only for a part of a map. In this case a floating node with hidden edge can be attached to a non root node. For understanding of the context, its parent edge is usually displayed as a dashed line if a node is selected unless its color was set to the map background color. </i>
+    </p>
+    <p>
+      <i>The free nodes do not require that you hide their edges. The second use case for them is a better use of map space. The automatic layout algorithm does not allow any map branches to overlap. If you want to create more compact maps you can convert some nodes to free nodes. This way they can be placed flexible. And their logical position relative to other sibling nodes now depends on their coordinates. You can see it too if you change to outline view which always reflect logical node positions.</i>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
 </node>
 </node>
 <node TEXT="Making and moving a free floating node" STYLE_REF="Advanced" FOLDED="true" ID="ID_128387683" CREATED="1317135703793" MODIFIED="1323806240625" VGAP="0" HGAP="17" VSHIFT="-230" MAX_WIDTH="550" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1188410566" CREATED="1323685758847" MODIFIED="1323806397327" HGAP="-206" VSHIFT="181"><richcontent TYPE="NODE">
+<node ID="ID_1188410566" CREATED="1323685758847" MODIFIED="1329769928653" HGAP="-206" VSHIFT="181"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -911,7 +947,7 @@
       
     </p>
     <p>
-      A new, free node can be generated by double-clicking a free place of the mind map. The newly generated free node will have the system&#160;&#160;style <i>Free floating node</i>, with properties <i>rectangular cloud</i>&#160;and <i>hidden edge</i>. These properties can be changed in the usual way to e.g. no-cloud and visible edge. It is invisibly connetcted to the root.
+      A new, free node can be generated by keeping <i>Control</i>&#160;pressed and clicking a free place of the mind map. The newly generated free node will have the system&#160;&#160;style <i>Free floating node</i>, wih proerties <i>rectangular cloud</i>&#160;and <i>hidden edge</i>. These properties can be changed in the usual way to e.g. no-cloud and visible edge. It is invisibly connected to the root.
     </p>
     <p>
       
@@ -927,7 +963,7 @@
     </p>
     <ul>
       <li>
-        A free node made by clicking a free space of the mind map is connected to the root node, also if the connecting edge is invisible. This explains why a child node of this free node, if moved onto the upper half of its parent free node, shifts towards the root node
+        A free node made by clicking a free space of the mind map will be connected to the root node, also if the connecting edge is invisible. This explains why a child node of this free node, if moved onto the upper half of its parent free node, shifts towards the root node.
       </li>
     </ul>
   </body>
@@ -959,7 +995,7 @@
 <node TEXT="Icons" STYLE_REF="Advanced" FOLDED="true" ID="ID_222393549" CREATED="1323433444639" MODIFIED="1323686436275" STYLE="combined" HGAP="21" VSHIFT="-3" MIN_WIDTH="80">
 <icon BUILTIN="bookmark"/>
 <icon BUILTIN="idea"/>
-<node ID="ID_715025500" CREATED="1323437305973" MODIFIED="1323806412319" HGAP="-61" VSHIFT="120" STYLE="fork"><richcontent TYPE="NODE">
+<node ID="ID_715025500" CREATED="1323437305973" MODIFIED="1329770058476" HGAP="-61" VSHIFT="130" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -996,6 +1032,9 @@
       <li>
         Icons cannot be added to node details or note fields.
       </li>
+      <li>
+        It is possible to define and add your own icons to the tool bar.
+      </li>
     </ul>
   </body>
 </html>
@@ -1005,7 +1044,7 @@
 </node>
 <node TEXT="Images" STYLE_REF="Advanced" FOLDED="true" ID="ID_1795262306" CREATED="1323469507087" MODIFIED="1323505754927" MIN_WIDTH="80">
 <node TEXT="Image (node core)" STYLE_REF="Advanced" FOLDED="true" ID="ID_806240384" CREATED="1315581148847" MODIFIED="1323806455078" STYLE="combined" HGAP="18" VSHIFT="12">
-<node ID="ID_199889694" CREATED="1323435536299" MODIFIED="1323806485280" HGAP="-90" VSHIFT="70" STYLE="fork"><richcontent TYPE="NODE">
+<node ID="ID_199889694" CREATED="1323435536299" MODIFIED="1329770200592" HGAP="-90" VSHIFT="81" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1013,7 +1052,7 @@
   </head>
   <body>
     <p>
-      Each node core can contain one image which has a fixed &quot;real size&quot;.&#160;&#160;To change the size you could use a drawing program. To add an image, select the node and choose menu <i>Edit &gt; Node core &gt; Image by choice </i>or <i>link</i>. This same menu can be used to convert the textual hyperlink address of an image to the image itself.
+      Each node core can contain one image which has a fixed &quot;real size&quot;.&#160;&#160;(If you need a different size, use a drawing program to resize the original image.) To add an image, select the node and choose menu <i>Edit &gt; Node core &gt; Image by choice </i>or <i>link</i>. This same menu can be used to convert the textual hyperlink address of an image to the image itself.
     </p>
     <p>
       
@@ -1037,7 +1076,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_728788498" CREATED="1323469662830" MODIFIED="1323806492986" HGAP="-132" VSHIFT="103"><richcontent TYPE="NODE">
+<node ID="ID_728788498" CREATED="1323469662830" MODIFIED="1329770321024" HGAP="-132" VSHIFT="103"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1045,7 +1084,7 @@
   </head>
   <body>
     <p>
-      An image in a node takes visual space which is scarce.&#160;&#160;A hyperlink does not have this disadvantage, while you can still view the image if you press the hyperlink. To add a hyperlink, copy the image source and paste it into the node (this is unlike drag and drop !). If you paste on the upper part of the node, a hyperlink to the image will be added in the node itself. If you paste at the child side of the node a child node will be created with the hyperlink. This hyperlink appears as a red arrow. After pasting, also the textual path to the image will appear. You can safely erase it or replace it with your own text.
+      An image in a node takes visual space which is scarce.&#160;&#160;A hyperlink does not have this disadvantage, while you can still view the image if you press the hyperlink. To add a hyperlink to an image, copy the image source and paste it into the node (this is unlike drag and drop !). If you paste at the upper part of the node, a hyperlink to the image will be added in the node itself. If you paste at the child side of the node a child node will be created with the hyperlink. This hyperlink appears as a red arrow. After pasting, also the textual path to the image will appear. You can safely erase it or replace it with your own text.
     </p>
     <p>
       
@@ -1055,7 +1094,7 @@
     </p>
     <ul>
       <li>
-        Inline-hyperlinks (underlined hyperlinks). These can also link to an image and it is possible to have multiple links in the text.
+        Inline-hyperlinks (underlined hyperlinks). With these it is possible to have multiple links in the text.
       </li>
     </ul>
   </body>
@@ -1091,7 +1130,7 @@
 </node>
 </node>
 <node TEXT="Progress" STYLE_REF="Professional" FOLDED="true" ID="ID_1644368711" CREATED="1314283858479" MODIFIED="1323804533822" HGAP="21" MIN_WIDTH="100">
-<node TEXT="When you need to show the progress of some sort, you can add a small or big progress indicator. The amount of progress can be changed. Note that the procedure to do so differs for small and large indicators." ID="ID_707469329" CREATED="1323436243939" MODIFIED="1323806594262" HGAP="39" VSHIFT="81" STYLE="fork"/>
+<node TEXT="When you need to show the progress of some sort, you can add a small or big progress indicator. The amount of progress can be changed. Note that the procedure to do so differs for small and large indicators." ID="ID_707469329" CREATED="1323436243939" MODIFIED="1329770386560" HGAP="28" VSHIFT="81" STYLE="fork"/>
 <node TEXT="Small progress (icon)" STYLE_REF="Advanced" FOLDED="true" ID="ID_1826965169" CREATED="1314283872699" MODIFIED="1323806550925" HGAP="26" VSHIFT="1" MAX_WIDTH="550" MIN_WIDTH="1" STYLE="combined">
 <icon BUILTIN="25%"/>
 <hook NAME="NodeConditionalStyles">
@@ -1121,7 +1160,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
-<node ID="ID_522359814" CREATED="1323470998328" MODIFIED="1323806588193" HGAP="-179" VSHIFT="112"><richcontent TYPE="NODE">
+<node ID="ID_522359814" CREATED="1323470998328" MODIFIED="1329770454217" HGAP="-179" VSHIFT="112"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1142,7 +1181,7 @@
         Two images are displayed. The smaller one is a pictogram which is being displayed in the node core. The larger picture is an image displayed in node details.
       </li>
       <li>
-        <b>IMPORTANT</b>. The larger image (svg file) cannot be displayed in Java Applet !
+        <b>IMPORTANT</b>. The larger image (svg file) cannot be displayed in a Java Applet !
       </li>
     </ul>
   </body>
@@ -1158,7 +1197,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_795220191" CREATED="1323468276180" MODIFIED="1323806616929" HGAP="-84" VSHIFT="66"><richcontent TYPE="NODE">
+<node ID="ID_795220191" CREATED="1323468276180" MODIFIED="1329415622120" HGAP="-84" VSHIFT="71"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1166,7 +1205,7 @@
   </head>
   <body>
     <p>
-      The text of different node cores can be combined by selecting the nodes and choosing menu <i>Edit &gt; Node core &gt; Join nodes. </i>
+      The text of different node cores can be combined by selecting the nodes and choosing menu <i>Edit &gt; Node core &gt; Join nodes. </i>Child nodes of the joind nodes become childs of the new joined node.
     </p>
     <p>
       
@@ -1195,7 +1234,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_497224980" CREATED="1323468073621" MODIFIED="1323806622513" HGAP="-85" VSHIFT="90"><richcontent TYPE="NODE">
+<node ID="ID_497224980" CREATED="1323468073621" MODIFIED="1329415808579" HGAP="-85" VSHIFT="95"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1203,7 +1242,7 @@
   </head>
   <body>
     <p>
-      A multiline node core can be distributed over several nodes with each node containing one line by selecting the node and choosing menu <i>Edit &gt; Node core &gt; Split node</i>.
+      A multiline node core can be distributed over several nodes with each node containing one line by selecting the node and choosing menu <i>Edit &gt; Node core &gt; Split node; </i>or in the in-line editor pressing<i>&#160; Alt + S</i>
     </p>
     <p>
       
@@ -1237,7 +1276,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_60050529" CREATED="1323467815625" MODIFIED="1323806630033" HGAP="-85" VSHIFT="85"><richcontent TYPE="NODE">
+<node ID="ID_60050529" CREATED="1323467815625" MODIFIED="1329770817139" HGAP="-83" VSHIFT="105"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1245,7 +1284,7 @@
   </head>
   <body>
     <p>
-      A core text can like a spreadsheet cell contain a formula which starts with &quot;=&quot;.&#160;&#160;If this is the case,&#160;&#160;the formula is calculated and only the result is displayed.
+      A core text can, like a spreadsheet cell, contain a formula which starts with &quot;=&quot;.&#160;&#160;If this is the case,&#160;&#160;the formula is calculated and only the result is displayed.
     </p>
     <p>
       
@@ -1260,6 +1299,9 @@
       <li>
         As a standard setting a node core containing a formula is surrouded by a kind of bubble. You can remove this in<i>&#160;View &gt; Node core &gt; Don't mark formula's with a border</i>.
       </li>
+      <li>
+        The automatic calculation can be prevented by opening the properties panel and setting field&#160; <i>Format</i>&#160;&#160;to <i>Text</i>.
+      </li>
     </ul>
   </body>
 </html>
@@ -1271,12 +1313,11 @@
 </node>
 </node>
 <node TEXT="Selecting and moving nodes" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_272980743" CREATED="1314248580003" MODIFIED="1322149417847" NUMBERED="true" MIN_WIDTH="180">
-<node TEXT="Moving a node in the hierarchy" STYLE_REF="Beginner" FOLDED="true" ID="ID_125921821" CREATED="1314250124540" MODIFIED="1323804996071" HGAP="22" VSHIFT="63" MAX_WIDTH="550" STYLE="combined">
+<node TEXT="Scrolling and panning the map" STYLE_REF="Beginner" FOLDED="true" ID="ID_1577961914" CREATED="1314644535914" MODIFIED="1329426413942" HGAP="24" VSHIFT="77" MIN_WIDTH="1" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
-    <conditional_style ACTIVE="true" STYLE_REF="BeginnerTopic" LAST="false"/>
 </hook>
-<node ID="ID_1599927930" CREATED="1323510888467" MODIFIED="1323511007858" HGAP="-170" VSHIFT="40"><richcontent TYPE="NODE">
+<node ID="ID_1560196388" CREATED="1323511488363" MODIFIED="1329426378713" HGAP="-119" VSHIFT="47"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1284,19 +1325,23 @@
   </head>
   <body>
     <p>
-      To disconnect a node from its current parent and connect it to another parent you can simply click and drag it to its new location. As you can read below it makes a difference at which position of the target node you drop. You can&#160;also move nodes by sorting.
+      You can drag the whole map by:
     </p>
+    <ul>
+      <li>
+        clicking in the background and drag the map around; or
+      </li>
+      <li>
+        pan the map with Ctrl+Shift+Cursor up/down/left/right
+      </li>
+    </ul>
   </body>
 </html>
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="BeginnerTopic" LAST="false"/>
 </hook>
-<node TEXT="video illustration" ID="ID_760768670" CREATED="1322820636797" MODIFIED="1323510912080" LINK="https://www.youtube.com/watch?v=0xkUzsd4naA" HGAP="30" VSHIFT="10" MIN_WIDTH="1">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
-</hook>
-</node>
 </node>
 </node>
 <node TEXT="Selecting" STYLE_REF="Beginner" ID="ID_1573267345" CREATED="1323507663956" MODIFIED="1323767312133" MIN_WIDTH="60">
@@ -1348,7 +1393,7 @@
 <edge STYLE="hide_edge"/>
 </node>
 </node>
-<node TEXT="Key to the root" STYLE_REF="Beginner" FOLDED="true" ID="ID_1316263866" CREATED="1314249586526" MODIFIED="1323512154389" HGAP="24" VSHIFT="-70" MAX_WIDTH="550" MIN_WIDTH="1" STYLE="combined">
+<node TEXT="Key to the root" STYLE_REF="Beginner" FOLDED="true" ID="ID_1316263866" CREATED="1314249586526" MODIFIED="1329770982772" HGAP="24" VSHIFT="-3" MAX_WIDTH="550" MIN_WIDTH="1" STYLE="combined">
 <edge STYLE="bezier"/>
 <node ID="ID_279008116" CREATED="1323507943923" MODIFIED="1323806776439" HGAP="-71" VSHIFT="21"><richcontent TYPE="NODE">
 
@@ -1369,13 +1414,17 @@
 </hook>
 </node>
 </node>
+<node TEXT="Select all nodes" STYLE_REF="Beginner" FOLDED="true" ID="ID_376722702" CREATED="1329770963443" MODIFIED="1329771148110" HGAP="23" VSHIFT="-59">
+<node TEXT="To select all nodes, first select the root (press Escape) and next press CTrl + A." STYLE_REF="TitlesContent" ID="ID_1214336373" CREATED="1329770999440" MODIFIED="1329771117580" HGAP="-78" VSHIFT="26"/>
+</node>
 </node>
 <node TEXT="Moving" STYLE_REF="Beginner" ID="ID_1560992291" CREATED="1314248654564" MODIFIED="1323804984668" MAX_WIDTH="600" MIN_WIDTH="60">
-<node TEXT="Free scrolling the map" STYLE_REF="Beginner" FOLDED="true" ID="ID_1577961914" CREATED="1314644535914" MODIFIED="1323512720249" HGAP="24" VSHIFT="77" MIN_WIDTH="1" STYLE="combined">
+<node TEXT="Moving a node in the hierarchy" STYLE_REF="Beginner" FOLDED="true" ID="ID_125921821" CREATED="1314250124540" MODIFIED="1329426162962" VSHIFT="6" MAX_WIDTH="550" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="BeginnerTopic" LAST="false"/>
 </hook>
-<node ID="ID_1560196388" CREATED="1323511488363" MODIFIED="1323806794753" HGAP="-117" VSHIFT="21"><richcontent TYPE="NODE">
+<node ID="ID_1599927930" CREATED="1323510888467" MODIFIED="1323511007858" HGAP="-170" VSHIFT="40"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1383,34 +1432,26 @@
   </head>
   <body>
     <p>
-      You can drag the whole map by clicking in the background and drag the map around
+      To disconnect a node from its current parent and connect it to another parent you can simply click and drag it to its new location. As you can read below it makes a difference at which position of the target node you drop. You can&#160;also move nodes by sorting.
     </p>
   </body>
 </html>
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
-    <conditional_style ACTIVE="true" STYLE_REF="BeginnerTopic" LAST="false"/>
 </hook>
+<node TEXT="video illustration" ID="ID_760768670" CREATED="1322820636797" MODIFIED="1323510912080" LINK="https://www.youtube.com/watch?v=0xkUzsd4naA" HGAP="30" VSHIFT="10" MIN_WIDTH="1">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+</node>
 </node>
 </node>
 <node TEXT="Moving a connected node in space" STYLE_REF="Beginner" FOLDED="true" ID="ID_293115184" CREATED="1314249849956" MODIFIED="1323512671920" HGAP="21" VSHIFT="-3" MAX_WIDTH="550" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1319283887" CREATED="1323510779368" MODIFIED="1323806804394" HGAP="-182" VSHIFT="44"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      To displace a node while leaving its connections in tact, find the oval handle which is at the parent side of a node. Move the cursor over the this side of the node &#160;until the ovel lights up. Then click the oval and drag wherever you want the node to go. All other nodes may move with it. &#160;You can restore a moved node to it original position by double clicking its oval handle.
-    </p>
-  </body>
-</html>
-</richcontent>
+<node TEXT="To displace a node while leaving its connections in tact, find the oval handle which is at the parent side of a node. Move the cursor over the this side of the node  until the oval lights up. Then click the oval and drag wherever you want the node to go. All other nodes may move with it.  You can restore a moved node to itsoriginal position by double clicking its oval handle." ID="ID_1319283887" CREATED="1323510779368" MODIFIED="1329771234144" HGAP="-182" VSHIFT="44">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="BeginnerTopic" LAST="false"/>
@@ -1454,7 +1495,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Moving a group" STYLE_REF="Advanced" FOLDED="true" ID="ID_1040002877" CREATED="1316181690861" MODIFIED="1323767298467" HGAP="23" VSHIFT="-66" MAX_WIDTH="600" MIN_WIDTH="1" STYLE="combined">
+<node TEXT="Moving a group" STYLE_REF="Advanced" FOLDED="true" ID="ID_1040002877" CREATED="1316181690861" MODIFIED="1329425882266" VSHIFT="-1" MAX_WIDTH="600" MIN_WIDTH="1" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -1489,7 +1530,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_915226922" CREATED="1323511424855" MODIFIED="1323806833941" HGAP="-67" VSHIFT="37"><richcontent TYPE="NODE">
+<node ID="ID_915226922" CREATED="1323511424855" MODIFIED="1329771378570" HGAP="-68" VSHIFT="39"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1497,7 +1538,7 @@
   </head>
   <body>
     <p>
-      Using titles you may want to sort nodes alphabetically. If you select a node, you can sort its children by right-cliking the node and choosing<i>&#160;Sort children. </i>More sorting options are available in<i>&#160;Edit &gt; Moving and sorting</i>.
+      You may want to sort nodes alphabetically. If you select a node, you can sort its children by right-cliking the node and choosing<i>&#160;Sort children. </i>More sorting options are available in<i>&#160;Edit &gt; Moving and sorting</i>.
     </p>
   </body>
 </html>
@@ -1509,11 +1550,11 @@
 </node>
 </node>
 <node TEXT="Relating and grouping nodes" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_215646874" CREATED="1314109445053" MODIFIED="1322149436895" NUMBERED="true" MIN_WIDTH="180">
-<node TEXT="Edges" STYLE_REF="Beginner" FOLDED="true" ID="ID_1492225657" CREATED="1314162236991" MODIFIED="1323768786779" VSHIFT="190" STYLE="combined">
+<node TEXT="Edges" STYLE_REF="Beginner" FOLDED="true" ID="ID_1492225657" CREATED="1314162236991" MODIFIED="1323989390222" HGAP="22" VSHIFT="210" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_751107880" CREATED="1323514479284" MODIFIED="1323806888275" HGAP="-27" VSHIFT="37"><richcontent TYPE="NODE">
+<node ID="ID_751107880" CREATED="1323514479284" MODIFIED="1329772082389" HGAP="-27" VSHIFT="37"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1521,7 +1562,7 @@
   </head>
   <body>
     <p>
-      Edges are basic relations which define the node hierarchy. You can change the curving of edges, their color and thickness and you can&#160;&#160;hide edges. The place to do so is in the <b>Properties&#160;panel</b>&#160;described below or in menu <b>Format</b>.
+      Edges are basic relations which define the node hierarchy. You can change the curving of edges, their color and thickness and you can&#160;&#160;hide edges. The place to do so is in the <b>Properties&#160;panel</b>&#160;described below, or&#160;&#160;menu <b>Format</b>.
     </p>
   </body>
 </html>
@@ -1536,7 +1577,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node FOLDED="true" ID="ID_1649729730" CREATED="1323514507513" MODIFIED="1323806902237" HGAP="-56" VSHIFT="118"><richcontent TYPE="NODE">
+<node ID="ID_1649729730" CREATED="1323514507513" MODIFIED="1329772551282" HGAP="-57" VSHIFT="112"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1544,7 +1585,7 @@
   </head>
   <body>
     <p>
-      It is possible to connect any two nodes with a line called (bilateral) <b>connector</b>: &#160;right-click a node and drag to the node you want to connect with.
+      It is possible to connect any two nodes with a line called (bilateral) <b>connector</b>: &#160;right-click a node and drag to the node you want to connect.
     </p>
     <p>
       
@@ -1561,12 +1602,11 @@
     <ul>
       <li>
         <p>
-          You can also select two nodes, then rightclick the second node and choose <i>Add connector </i>while keeping<i>&#160;Ctrl </i>pressed.
+          You can also select two nodes, then rightclick the second node and choose <i>Add connector </i>while keeping<i>&#160;Ctrl </i>pressed. After entering a lable, press Enter.
         </p>
-        After entering a lable, press enter.
       </li>
       <li>
-        To get a connector without begin,&#160;&#160;a <b>unilateral</b>&#160; connector, right-click the node and drag onto itself.
+        For a connector without begin,&#160;&#160;a <b>unilateral</b>&#160;&#160;connector, right-click the node and drag onto itself.
       </li>
     </ul>
   </body>
@@ -1576,10 +1616,10 @@
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="BeginnerTopic" LAST="false"/>
 </hook>
-<node TEXT="a" FOLDED="true" ID="ID_1328399304" CREATED="1314130936565" MODIFIED="1323517469534" HGAP="25" STYLE="as_parent">
+<node TEXT="a" ID="ID_1328399304" CREATED="1314130936565" MODIFIED="1323517469534" HGAP="25" STYLE="as_parent">
 <edge STYLE="hide_edge"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_581303769" MIDDLE_LABEL="label" STARTINCLINATION="9;-23;" ENDINCLINATION="-28;-89;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<node TEXT="b" FOLDED="true" ID="ID_273400211" CREATED="1314130940427" MODIFIED="1323517479815">
+<node TEXT="b" ID="ID_273400211" CREATED="1314130940427" MODIFIED="1323517479815">
 <edge STYLE="bezier"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_273400211" MIDDLE_LABEL="connector&#xa;without&#xa;begin" STARTINCLINATION="19;86;" ENDINCLINATION="19;86;" STARTARROW="NONE" ENDARROW="NONE"/>
 <node TEXT="c" ID="ID_581303769" CREATED="1314130942275" MODIFIED="1314130945036"/>
@@ -1587,11 +1627,11 @@
 </node>
 </node>
 </node>
-<node TEXT="Summary node group" STYLE_REF="Advanced" FOLDED="true" ID="ID_1700918771" CREATED="1314129783832" MODIFIED="1323517619845" STYLE="combined">
+<node TEXT="Summary node group" STYLE_REF="Advanced" FOLDED="true" ID="ID_1700918771" CREATED="1314129783832" MODIFIED="1323989384590" STYLE="combined" VSHIFT="-1">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node FOLDED="true" ID="ID_651594550" CREATED="1323514659262" MODIFIED="1323806909944" HGAP="-110" VSHIFT="71"><richcontent TYPE="NODE">
+<node ID="ID_651594550" CREATED="1323514659262" MODIFIED="1329772746548" HGAP="-110" VSHIFT="73"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1599,7 +1639,7 @@
   </head>
   <body>
     <p>
-      It is possible to connect a group of siblings with a so called <b>summary node.</b>&#160;This node connects the siblings with an accolade. Select the group of siblings and rightclick one of the selected nodes while keeping Ctrl pressed. Choose <i>New summary node (selected nodes) </i>in the node contectmenu<i>.</i>
+      A group of siblings can be connected to a so called <b>summary node.</b>. This node connects the siblings with an accolade. Select the group of siblings and right-click one of the selected nodes while keeping <i>Ctrl</i>&#160; pressed. Choose <i>New summary node (selected nodes) </i>in the node contextmenu.
     </p>
     <p>
       
@@ -1628,11 +1668,11 @@
 </node>
 </node>
 </node>
-<node TEXT="Cloud node group" STYLE_REF="Advanced" FOLDED="true" ID="ID_1150908697" CREATED="1314130460475" MODIFIED="1323524146872" VSHIFT="-195" STYLE="combined">
+<node TEXT="Cloud node group" STYLE_REF="Advanced" FOLDED="true" ID="ID_1150908697" CREATED="1314130460475" MODIFIED="1323989400674" VSHIFT="-207" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node FOLDED="true" ID="ID_1862713604" CREATED="1323514733122" MODIFIED="1323806922923" HGAP="-90" VSHIFT="36"><richcontent TYPE="NODE">
+<node ID="ID_1862713604" CREATED="1323514733122" MODIFIED="1329772893797" HGAP="-90" VSHIFT="47"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1640,7 +1680,7 @@
   </head>
   <body>
     <p>
-      It is possible to visually group a whole branch of nodes with a common background called <b>cloud</b>. Right-click the parent of the branch and choose <i>Nodes &gt; Add cloud. </i>You can modify<i>&#160;</i>the color and style of the cloud in the <i>Properties panel </i>described below.
+      It is possible to visually group a whole branch of nodes with a common background called <b>cloud</b>. Right-click the parent of the branch and choose <i>Nodes &gt; Add cloud. </i>You can modify<i>&#160;</i>the color and style of the cloud in the <i>Properties panel </i>described below. To prevent the nodes in the node group from folding, select<i>&#160;Edit &gt; Node group &gt; All unfolded nodes.</i>
     </p>
   </body>
 </html>
@@ -1648,12 +1688,12 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
-<node TEXT="cloud a" STYLE_REF="AdvancedTopic" FOLDED="true" ID="ID_1742435994" CREATED="1314130827910" MODIFIED="1323517713897" VSHIFT="15">
+<node TEXT="cloud a" STYLE_REF="AdvancedTopic" ID="ID_1742435994" CREATED="1314130827910" MODIFIED="1323517713897" VSHIFT="15">
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <node TEXT="b" ID="ID_1270291744" CREATED="1314130833239" MODIFIED="1314130836016"/>
 <node TEXT="c" ID="ID_1022872809" CREATED="1314130837348" MODIFIED="1314130840017"/>
 </node>
-<node TEXT="cloud b" STYLE_REF="AdvancedTopic" FOLDED="true" ID="ID_539843005" CREATED="1314208596772" MODIFIED="1316165226464" HGAP="30" VSHIFT="-9">
+<node TEXT="cloud b" STYLE_REF="AdvancedTopic" ID="ID_539843005" CREATED="1314208596772" MODIFIED="1316165226464" HGAP="30" VSHIFT="-9">
 <cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
 <node TEXT="e" ID="ID_249943796" CREATED="1314208605486" MODIFIED="1314208607670"/>
 <node TEXT="f" ID="ID_1428582117" CREATED="1314208608472" MODIFIED="1314208611937"/>
@@ -1711,7 +1751,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1913035829" CREATED="1323512829161" MODIFIED="1323807012140" HGAP="-74" VSHIFT="144"><richcontent TYPE="NODE">
+<node ID="ID_1913035829" CREATED="1323512829161" MODIFIED="1330036000109" HGAP="-66" VSHIFT="160"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1719,7 +1759,7 @@
   </head>
   <body>
     <p>
-      An hyperlink to an address outside the map can be created by right-clicking a node and selecting <i>Link</i>. However, the easiest way to add a hyperlink or group of hyperlinks to external objects, is by drag and drop. Dropping a copy of a directory, file, file or web address will generate a child node of the selected node with a hyperlink. The target address of the hyperlink is contained in the title. This text may be removed ar changed without changing the dynamics of the hyperlink itself.
+      A hyperlink to an address outside the map can be created by right-clicking a node and selecting <i>Link</i>. However, the easiest way to add a hyperlink or group of hyperlinks to external objects, is by drag and drop. Dropping a copy of a directory, file, or web address will generate a child node of the selected node containing a hyperlink. The target address of the hyperlink is contained in the title. This text may be removed or changed without changing the dynamics of the hyperlink itself.
     </p>
     <p>
       
@@ -1731,7 +1771,13 @@
       
     </p>
     <p>
-      To edit the target address of the hyperlink, right-click the node containing the link and choose <i>Links &gt; Add or modify hyperlink (type)...</i>&#160;In the dialog that opens you can&#160;edit the address. With <i>Ctrl + V</i>&#160;a copied adress can be pasted in the entry field.
+      To edit the target address of the hyperlink, right-click the node containing the link and choose <i>Links &gt;&#160;Add or modify hyperlink (type)...</i>&#160;In the dialog that opens you can&#160;edit the address. With <i>Ctrl + V</i>&#160;a copied address can be pasted in the entry field.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      To link to a node in a different mind map, see<a href="#ID_1418102707">&#160;Link from outside to a particular node</a>.
     </p>
     <p>
       
@@ -1760,7 +1806,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1830541497" CREATED="1323512880196" MODIFIED="1323807024791" HGAP="-59" VSHIFT="71"><richcontent TYPE="NODE">
+<node ID="ID_1830541497" CREATED="1323512880196" MODIFIED="1329773191089" HGAP="-59" VSHIFT="71"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1768,7 +1814,7 @@
   </head>
   <body>
     <p>
-      A hyperlink from one node to another node (local hyperlink) can be created by selecting two nodes, then right-clicking one of them while keeping <i>Ctrl</i>&#160;pressed, and then choosing menu <i>Links &gt; Local hyperlink. </i>
+      A hyperlink from one node to another node (local hyperlink) can be created by selecting two nodes, then right-clicking one of them while keeping <i>Ctrl</i>&#160;pressed, and finally choosing menu <i>Links &gt; Local hyperlink. </i>
     </p>
     <p>
       
@@ -1797,7 +1843,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1480409284" CREATED="1323512986970" MODIFIED="1323807031250" HGAP="-49" VSHIFT="120"><richcontent TYPE="NODE">
+<node ID="ID_1480409284" CREATED="1323512986970" MODIFIED="1329773290991" HGAP="-49" VSHIFT="125"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1805,7 +1851,7 @@
   </head>
   <body>
     <p>
-      The simplest way to create an e-mail link which autmatically opens your email program is to copy and paste the email address into a node. This will generate a<b>&#160;child node</b>&#160;of the selected node with the link. The text of the child node will consist of the e-mail address. You may replace this address by e.g. only the name.
+      The simplest way to create an e-mail link which automatically opens your email program is to copy and paste the email address into a node. This will generate a<b>&#160;child node</b>&#160;of the selected node with the link. The text of the child node will consist of the e-mail address. You may replace this address by e.g. only the name.
     </p>
     <p>
       
@@ -1837,7 +1883,7 @@
 </hook>
 </node>
 </node>
-<node STYLE_REF="Professional" FOLDED="true" ID="ID_241324782" CREATED="1315336877701" MODIFIED="1323807070203" STYLE="combined"><richcontent TYPE="NODE">
+<node STYLE_REF="Professional" FOLDED="true" ID="ID_241324782" CREATED="1315336877701" MODIFIED="1329773391893" STYLE="combined"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1845,7 +1891,7 @@
   </head>
   <body>
     <p>
-      . <a href="https://sourceforge.net/apps/phpbb/freeplane/viewforum.php?f=1">Underlined hyperlinks</a>&#160;.
+      Underlined <a href="https://sourceforge.net/apps/phpbb/freeplane/viewforum.php?f=1">hyperlinks</a>&#160;.
     </p>
   </body>
 </html>
@@ -1853,7 +1899,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1356533861" CREATED="1323512914336" MODIFIED="1323807094664" HGAP="-114" VSHIFT="177"><richcontent TYPE="NODE">
+<node ID="ID_1356533861" CREATED="1323512914336" MODIFIED="1330036224438" HGAP="-118" VSHIFT="234"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1861,7 +1907,7 @@
   </head>
   <body>
     <p>
-      To define an underlined hyperlink, first open the text dialog for&#160;&#160;Node core, Node details or Note. Then type and select the piece of text to which the link applies. And finally select&#160;&#160;in the Edit menu of the dialog window <i>Add hyperlink (choose)...</i>&#160;or <i>Add or modify hyperlink (type)</i>. In the latter case you can&#160;&#160;type the address of the hyperlink or you can paste a copied address by pressing Ctr + V. Example link: <a href="https://sourceforge.net/apps/phpbb/freeplane/viewforum.php?f=1"><i><font color="#ff0000">This</font></i>&#160;link</a>&#160;brings you to the Freeplane Open Forum.
+      To define an underlined hyperlink, first open the text dialog for&#160;&#160;Node core, Node details or Note. Then type and select the piece of text to which the link applies. And finally select&#160;&#160;in the Edit menu of the dialog window <i>Add hyperlink (choose)...</i>&#160;or <i>Add or modify hyperlink (type)</i>. In the latter case you can&#160;&#160;type the address of the hyperlink or you can paste a copied address by pressing Ctr + V. Example link: <a href="https://sourceforge.net/apps/phpbb/freeplane/viewforum.php?f=1"><font color="#ff0000"><i>This</i></font>&#160;link</a>&#160;brings you to the Freeplane Open Forum.
     </p>
     <p>
       
@@ -1881,6 +1927,15 @@
       </li>
       <li>
         If the text is unformatted, or is formatted with the properties panel, the links are blue. If the text is formatted with the menu's of the edit-dialog, it has the color and size set in this dialog.
+      </li>
+      <li>
+        Ta add an internal hyperlink to another node, put #NodeId as address. To get the NodeID, right-click the node and select <i>Copy NodeId</i>. Then paste the NodeId with Ctrl + V in the link address which opens when you selct <i>Add or modify hyperlink (type)</i>. Don't forget to put # before the nodeId.
+      </li>
+      <li>
+        To link to a node in a different mind map, see<a href="#ID_1418102707">&#160;Link from outside to a particular node</a>.
+      </li>
+      <li>
+        To link to a node in the same mindmap, the address should contain #NodeID. NodeID is got by rightclicking and selecting <i>Copy node ID</i>. It can be pasted with<i>&#160;Ctrl + V</i>&#160;in the fiield for the link address.
       </li>
       <li>
         To remove the address and the text of an underlined hyperlink, delete all underlined text of the hyperlink. To delete only the address, leaving the text:
@@ -1968,7 +2023,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_822375535" CREATED="1323513104618" MODIFIED="1323807118173" HGAP="-205" VSHIFT="138"><richcontent TYPE="NODE">
+<node ID="ID_822375535" CREATED="1323513104618" MODIFIED="1330036282485" HGAP="-205" VSHIFT="128"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1976,28 +2031,11 @@
   </head>
   <body>
     <p>
-      To jump from another program or other mind map to a particular node in a map you may add&#160;&#160;#nodeID behind the filename, e.g. WhatIsMindmapping.mm#ID_930373151
+      To jump from another program or source mind map to a particular node in a target mindmap, the address field of the hyperlink should contain the path to the target mind map and the nodeID, seperated by #. If source and target mind map are in the same directory, the address can be defined &#160;as destination.mm#NodeID, e.g. &#160;as WhatIsMindmapping.mm#ID_930373151.&#160;&#160;This has the advantage that if the containing direcory is moved as a whole, the link keeps correct. In the other case the absolute path should be provided. To get the full pathname of a node, right-click the node and select <i>Copy node URI. </i>Next you can paste the address with<i>&#160;&#160;Cntrl + V&#160; </i>in the edit field for the link address.&#160;
     </p>
     <p>
       
     </p>
-    <ul>
-      <li>
-        Write the path and filename of the mindmap
-      </li>
-      <li>
-        Add # behind it
-      </li>
-      <li>
-        Right-click the node you want to link to
-      </li>
-      <li>
-        Select Copy node ID
-      </li>
-      <li>
-        Paste behind #
-      </li>
-    </ul>
     <p>
       <b>Note</b>
     </p>
@@ -2019,13 +2057,13 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
 </hook>
-<node TEXT="Properties" STYLE_REF="Advanced" ID="ID_873516196" CREATED="1314162578896" MODIFIED="1323807213692" NUMBERED="true" HGAP="25" VSHIFT="77" MIN_WIDTH="90">
+<node TEXT="Properties" STYLE_REF="Advanced" FOLDED="true" ID="ID_873516196" CREATED="1314162578896" MODIFIED="1323807213692" NUMBERED="true" HGAP="25" VSHIFT="77" MIN_WIDTH="90">
 <node TEXT="Properties panel" STYLE_REF="Advanced" FOLDED="true" ID="ID_1812601804" CREATED="1314162700896" MODIFIED="1323807343250" HGAP="32" VSHIFT="457" MAX_WIDTH="550" MIN_WIDTH="1" STYLE="combined">
 <icon BUILTIN="info"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_503272481" CREATED="1323517943396" MODIFIED="1323807232131" HGAP="-86" VSHIFT="86"><richcontent TYPE="NODE">
+<node ID="ID_503272481" CREATED="1323517943396" MODIFIED="1329818213211" HGAP="-86" VSHIFT="86"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2033,7 +2071,7 @@
   </head>
   <body>
     <p>
-      Freeplane has many possibilities to to set or change properties which apply to a whole node or all nodes. You can think of the basic color of a node, containing a node in a bubble, the size of the text and much more. The most versatile method to edit properties is in the <b>Properties panel</b>. To open or close the Properties panel, right-click in an empty space in the background and select Properties panel.
+      Freeplane has many possibilities to to set or change properties which apply to a whole node or all nodes. You can think of the basic color of a node, enclosing a node in a bubble, the size of the text, the width of the node core and much more. The most versatile method to edit properties is in the <b>Properties panel</b>. To open or close the Properties panel, right-click in an empty space of the background and select <i>Properties panel</i>.
     </p>
     <p>
       
@@ -2046,7 +2084,7 @@
         An alternative way to open or close the panel, choose <i>View &gt; Properties panel</i>.
       </li>
       <li>
-        An alternative way to change properties is by using menu <i>Format.</i>
+        An alternative way to change properties, use menu <i>Format.</i>
       </li>
     </ul>
   </body>
@@ -2061,7 +2099,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node FOLDED="true" ID="ID_676577574" CREATED="1323518049125" MODIFIED="1323807240399" HGAP="-87" VSHIFT="109"><richcontent TYPE="NODE">
+<node ID="ID_676577574" CREATED="1323518049125" MODIFIED="1329818709281" HGAP="-88" VSHIFT="135"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2069,7 +2107,7 @@
   </head>
   <body>
     <p>
-      The <i>Properties panel</i>&#160;shows the properties of the node which has the focus and only the properties of this node can be changed (there are a few exceptions). While the panel is showing, you can select a different node to give it the focus. To change a property, set a check in the check box before the property and then change the value of the property.
+      The <i>Properties panel</i>&#160;shows the properties of the node which has the focus. Only the properties of the selected node can be changed. (Generally you select one node, but with some properties it is possible to select and change more than one node at a time.) While the panel is showing, you can select a different node to give it the focus. To change a property, change the value of the property. This will also set a check indicating the changed value applies. Uncheck if you want to return to the default behaviour. Also uncheck if you want conditional styles affect (set) the property.
     </p>
     <p>
       
@@ -2081,7 +2119,7 @@
       
     </p>
     <p>
-      As a second example, find node group <i>Edges&#160;</i>and check the box for <i>Edge style</i>. Clicking next to <i>Edge style</i>&#160;will drop down a menu with possible styles like <i>Linear</i>, <i>Smoothly curved</i>, <i>Hidden</i>,&#160;and others. Try these to know which styles are possible. Or click me to see a few examples.
+      As a second example, find node group <i>Edges&#160;</i>and check the box for <i>Edge style</i>. Clicking next to <i>Edge style</i>&#160;will drop down a menu with possible styles like <i>Linear</i>, <i>Smoothly curved</i>, <i>Hidden</i>,&#160;and others. Try these to know which styles are possible. Or cselect me to see a few examples of changed properties in the <i>Properties panel.</i>
     </p>
   </body>
 </html>
@@ -2107,7 +2145,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1565463565" CREATED="1323518106869" MODIFIED="1323807255828" HGAP="-108" VSHIFT="53"><richcontent TYPE="NODE">
+<node ID="ID_1565463565" CREATED="1323518106869" MODIFIED="1329818841975" HGAP="-111" VSHIFT="61"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2115,7 +2153,7 @@
   </head>
   <body>
     <p>
-      Standardly each new map in Freeplane will generate a different color for each new branch. This supports one of the principles held by the inventor of the mind map, which states that colors help the brain to structure and memorize information more easily. This property is called&#160;<b>Automatic edge color</b>&#160;and it can be disabled in the Propertieds panel. For this, open the Properties panel and find the properties group <i>Node style</i>, at the top of the <i>Properties&#160;&#160;panel</i>. Uncheck &#160;Automatic edge color, like I did for the the mind map of this tutorial.
+      By default each new map in Freeplane will generate a different color for each new branch. This supports one of the principles held by the inventor of the mind map, which states that colors help the brain to structure and memorize information more easily. This property is called&#160;<b>Automatic edge color.</b>&#160;This property can be disabled in the Propertieds panel. To disable automatic edge color, open the Properties panel and find the properties group <i>Node style</i>, at the top of the <i>Properties&#160;&#160;panel</i>. Uncheck &#160;<i>Automatic edge color</i>, like I did for the the mind map of this tutorial.
     </p>
   </body>
 </html>
@@ -2129,7 +2167,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1531819965" CREATED="1323518137156" MODIFIED="1323807263830" HGAP="-141" VSHIFT="38"><richcontent TYPE="NODE">
+<node ID="ID_1531819965" CREATED="1323518137156" MODIFIED="1329819007928" HGAP="-141" VSHIFT="38"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2137,7 +2175,7 @@
   </head>
   <body>
     <p>
-      An interesting option in the <i>Properties Panel </i>is automatic <b>node numbering</b>. You can set node numbering for a group of nodes by first selecting the group (keep Shift or Control pressed when you click nodes) and then checking this option in the <i>Properties Panel</i>.
+      The <i>Properties Panel </i>contains the property&#160;automatic <b>node numbering </b>to give a node a number.&#160;You can set node numbering for a group of nodes by first selecting the group (keep Shift or Control pressed when you click nodes) and then checking this option in the <i>Properties Panel</i>.
     </p>
   </body>
 </html>
@@ -2171,7 +2209,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node FOLDED="true" ID="ID_1716769321" CREATED="1323518205453" MODIFIED="1323807290865" HGAP="-61" VSHIFT="38"><richcontent TYPE="NODE">
+<node ID="ID_1716769321" CREATED="1323518205453" MODIFIED="1323807290865" HGAP="-61" VSHIFT="38"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2238,7 +2276,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_158808063" CREATED="1323518244867" MODIFIED="1323518794371" HGAP="-35" VSHIFT="91"><richcontent TYPE="NODE">
+<node ID="ID_158808063" CREATED="1323518244867" MODIFIED="1329819164022" HGAP="-34" VSHIFT="103"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2256,10 +2294,10 @@
     </p>
     <ul>
       <li>
-        Bold and italic set&#160;&#160;in the <i>Properties panel</i>, menu <i>Format </i>or with the toolbar, are applied (forced) to the whole title.
+        Bold and italic set&#160;&#160;in the <i>Properties panel</i>, menu <i>Format </i>or with the toolbar, are applied (forced) to the whole node core.
       </li>
       <li>
-        To apply bold and italic to a part of the title, use the ways described above in node <i>Beginner map</i>.
+        To apply bold and italic to a part of the node core, use the method described above in node <i>Beginner map</i>.
       </li>
       <li>
         Using both methods at the same time to the same node may give unexpected effects. For example, it is not possible to remove bold set with the first method by using the second method.
@@ -2280,7 +2318,19 @@
     <conditional_style ACTIVE="true" STYLE_REF="Advanced" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="Styles (classes) are a means to quickly  apply or change a group of visual properties or define a template text  for all related nodes at once. Styles can also be used to find, select or filter nodes which are associated with a particular type of content or structure." ID="ID_406943626" CREATED="1323767710004" MODIFIED="1323767854457" HGAP="-65" VSHIFT="35">
+<node ID="ID_406943626" CREATED="1323767710004" MODIFIED="1329979180694" HGAP="-65" VSHIFT="45" LINK="#ID_1394424447"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Styles (classes) are a means to quickly&#160;&#160;apply or change a group of visual properties or define a template text&#160;&#160;for all related nodes at once. Styles can also be used to find, select or filter nodes which are associated with a particular type of content or structure. This Quick reference mind map is also made with styles, see node <a href="#ID_1394424447">The making of this mind map</a>.
+    </p>
+  </body>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
@@ -2290,7 +2340,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_602520818" CREATED="1323521250360" MODIFIED="1323521543806" HGAP="-102" VSHIFT="110"><richcontent TYPE="NODE">
+<node ID="ID_602520818" CREATED="1323521250360" MODIFIED="1330082500773" HGAP="-102" VSHIFT="110"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2298,16 +2348,16 @@
   </head>
   <body>
     <p>
-      <font color="#000000" face="SansSerif, sans-serif">Freeplane comes with a number of system styles which you may extend with your own styles. The list of styles is displayed in the workmenu bar at the top of the screen&#160;in the field next to the cloud-icon.&#160;&#160;You can apply a style to the selected node by clicking a style in the list. For the node you are reading now, style <i>Advanced</i>&#160;was applied. </font>
+      <font face="SansSerif, sans-serif" color="#000000">Freeplane comes with a number of system styles which you can extend with your own styles. The list of styles is displayed in the workmenu bar at the top of the screen&#160;in the field next to the cloud-icon.&#160;&#160;You can apply a style to the selected node by clicking a style in the list. For the node you are reading now, style <i>TitlesContent</i>&#160;was applied. </font>
     </p>
     <p>
       
     </p>
     <p>
-      <b><font color="#000000" face="SansSerif, sans-serif">Note</font></b><font color="#000000" face="SansSerif, sans-serif">&#160;</font>
+      <font color="#000000" face="SansSerif, sans-serif"><b>Note</b>&#160;</font>
     </p>
     <p>
-      <font color="#000000" face="SansSerif, sans-serif">Styles are also accessable through: </font>
+      <font color="#000000" face="SansSerif, sans-serif">Styles are also accessable: </font>
     </p>
     <ul>
       <li>
@@ -2332,7 +2382,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_443461395" CREATED="1323521242303" MODIFIED="1323807470000" HGAP="-129" VSHIFT="130"><richcontent TYPE="NODE">
+<node ID="ID_443461395" CREATED="1323521242303" MODIFIED="1329820460446" HGAP="-130" VSHIFT="95"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2340,34 +2390,11 @@
   </head>
   <body>
     <p>
-      You can define new styles in <i>Format&#160;&gt;&#160;Manage style. </i>You can also&#160;edit styles in a special dialog. Open this dialog with<i>&#160;&#160;Format&#160;&gt;&#160;Manage styles &gt; Edit style</i>
+      You can define a new style by selecting a node and choosing menu <i>Format&#160;&gt;&#160;Manage style &gt; New style from selection. </i>You will be asked for a unique name for the style and the properties of the selected node will be copied to this style. Alternatively you can open a special style dialog with menu <i>&#160;Format&#160;&gt;&#160;Manage styles &gt; Edit style. </i>You can add a style by right-clicking one of the styles en selecting <i>New style from selection</i>. Once you have defined a style you can modify the style in the special style dialog with the menus available and the properties panel
     </p>
     <p>
       
     </p>
-    <p>
-      To define a new user style in this dialog:
-    </p>
-    <ul>
-      <li>
-        Select the standard node style
-      </li>
-      <li>
-        Click-right and select <i>Save selection as user style</i>
-      </li>
-      <li>
-        Save it under a new name
-      </li>
-      <li>
-        Modify the newly created, saved style with <i>View &gt; Properties panel</i>
-      </li>
-      <li>
-        Leave the dialog; it has no OK button.
-      </li>
-      <li>
-        When asked to save, press OK.
-      </li>
-    </ul>
     <p>
       <b>Note</b>
     </p>
@@ -2384,12 +2411,12 @@
 </hook>
 </node>
 </node>
-<node TEXT="Apply multiple styles" STYLE_REF="Advanced" FOLDED="true" ID="ID_270284358" CREATED="1314342119553" MODIFIED="1323807422062" HGAP="31" VSHIFT="1" MAX_WIDTH="550" STYLE="combined">
+<node TEXT="Apply multiple styles" FOLDED="true" ID="ID_270284358" CREATED="1314342119553" MODIFIED="1329821005551" HGAP="31" VSHIFT="1" MAX_WIDTH="550" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Introduction" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Advanced" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
 </hook>
-<node ID="ID_1030002880" CREATED="1323521314827" MODIFIED="1323522229461" HGAP="-127" VSHIFT="166"><richcontent TYPE="NODE">
+<node ID="ID_1030002880" CREATED="1323521314827" MODIFIED="1329837899761" HGAP="-125" VSHIFT="129"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2397,20 +2424,14 @@
   </head>
   <body>
     <p>
-      Styles can be used to to indicate that a node contains specific information. In the Freeplane documentation different styles are used to indicate if a node contains a definition, a procedure, an example etc. Different icons and colors were used to give different appearances to each type of content.&#160;&#160;In case different types of content are present in the same node, multiple styles must be applied. As an example, I applied two styles to the node you are reading right now: style Introduction and style <i>Example</i>. To follow the following example, define styles <i>Introduction</i>&#160; and style <i>Example</i>. Do not forget to include in style <i>Example</i>&#160; the eye-icon. (Yes, you can include an icon in a style !).
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      To apply these two styles to the same node, open the<i>&#160;Properties panel </i>and click below <i>Node conditional styles for node. </i>Now a dialog opens and in this<i>&#160;</i>dialog:
+      Styles can indicate that a node contains specific information. As an example, the parent node &quot;&#196;pply multiple styles&quot; of the node you are reading&#160;&#160;is made up of two styles: Advanced, and Example. Advanced makes the yellow color and Example adds the eye-icon. To implement this example, first define the two styles and then apply them as node conditional styles by opening the<i>&#160;Properties panel </i>and clicking below <i>Node conditional styles for node. </i>Now a dialog opens and in this<i>&#160;</i>dialog:
     </p>
     <ul>
       <li>
         click <i>New</i>
       </li>
       <li>
-        In the rule that opens, click on <i>Default</i>&#160;to open the styles list. Select <i>Introduction</i>.
+        In the rule that opens, click on <i>Default</i>&#160;to open the styles list. Select <i>Advanced</i>.
       </li>
       <li>
         Click <i>New</i>&#160;again. Click default again and select <i>Example</i>.
@@ -2439,11 +2460,12 @@
 </hook>
 </node>
 </node>
-<node TEXT="Conditional styles" STYLE_REF="Professional" FOLDED="true" ID="ID_1632551821" CREATED="1314343996581" MODIFIED="1323807426539" HGAP="31" VSHIFT="-1" MAX_WIDTH="550" STYLE="combined">
+<node TEXT="Conditional styles" STYLE_REF="Professional" FOLDED="true" ID="ID_1632551821" CREATED="1314343996581" MODIFIED="1329858287410" HGAP="31" VSHIFT="-1" MAX_WIDTH="550" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
 </hook>
-<node ID="ID_1437965047" CREATED="1323521350949" MODIFIED="1323807497924" HGAP="-89" VSHIFT="125"><richcontent TYPE="NODE">
+<node ID="ID_1437965047" CREATED="1323521350949" MODIFIED="1329924763116" HGAP="-90" VSHIFT="133"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2451,7 +2473,7 @@
   </head>
   <body>
     <p>
-      In the example above the multiple styles are applied unconditionally. It is possible to connect the application of each style to a filter and apply a style only if the filter conditions are met.
+      In the node above multiple styles are applied unconditionally. Styles can also be applied conditionally,&#160;&#160;if a certain condition is true which is specified in a filter rule. In the following example a conditional style is used to signal if a node is modified after a particular revision date.
     </p>
     <p>
       
@@ -2460,7 +2482,13 @@
       <b>Example: Revisions</b>
     </p>
     <p>
-      Conditional styles are used in this map to signal revisions. To achieve this first a style <i>Revision </i>was defined&#160;with a special revision-icon (see the styles list). Then in the<i>&#160;Properties panel</i>&#160; I clicked below<i>&#160;Conditional map styles </i>to open its dialog<i>.</i>&#160;I pressed <i>New</i>&#160;to add a filter. I clicked the new rule and defined a filter (Modified after, date). I selected this filter rule and pressed <i>OK</i>.&#160;&#160;As a result you can see which nodes I modified after the date set, they are displaying the i-icon. You can see this happen if you check the rule I defined for this in the conditional styles list. (N.B. In the internet version of this tutorial you cannot do this).
+      First a style <i>Revision </i>was defined&#160;with a special revision R-icon (see the styles list). Then in the<i>&#160;Properties panel</i>&#160;&#160;I clicked below<i>&#160;Conditional map styles </i>to open its dialog<i>.</i>&#160;I pressed <i>New</i>&#160;to add a filter. I clicked the new rule and defined a filter (Modified after, date). I selected this filter rule and pressed <i>OK</i>.&#160;&#160;
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      If you are in the conditional styles dialog, you see the rule I defined to be unchecked. I did so because normally you do not want to see the R-icons. Check one of the rules and you will see some revision R-icons appear. To see all revions you have to unfold the nodes.
     </p>
     <p>
       
@@ -2483,7 +2511,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1011147934" CREATED="1323521380784" MODIFIED="1323807507581" HGAP="-128" VSHIFT="144"><richcontent TYPE="NODE">
+<node ID="ID_1011147934" CREATED="1323521380784" MODIFIED="1330610101427" HGAP="-125" VSHIFT="161"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2491,13 +2519,7 @@
   </head>
   <body>
     <p>
-      One possible application of conditional node styles is to give each node level a different appearance automatically. Say you need five node levels. Then you define 5 styles, one for each level. Next you define 5 conditional style rules.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      To make it easy Freeplane has predefined this case for you. In <i>Properties panel</i>&#160;you can check&#160; <b>Apply level styles </b>in the properties group Node Style. If checked each&#160;node level will get a different appearance automatically.
+      One possible application of conditional node styles is to give each node level a different appearance automatically. Say you need five node levels. Then you define 5 styles, one for each level. Next you define 5 conditional style rules. To make it easy Freeplane has predefined this case for you. In <i>Properties panel</i>&#160;you can check&#160; <b>Apply level styles </b>in the properties group Node Style. If checked each&#160;node level will get a different appearance automatically. The style for the root node is called style Title. The styles for the other levels are called Header 1, Header 2, Header 3 and Header 4.
     </p>
     <p>
       
@@ -2510,12 +2532,21 @@
         Select menu <i>Styles &gt; Edit style</i>
       </li>
       <li>
-        Select the node level you want
+        Select the node level you want (Title, Header 1, Header 2, Header 3 or Header 4)
       </li>
       <li>
         Change its format
       </li>
     </ul>
+    <p>
+      If you want more than 5 different level styles, simply add them in&#160;<i>Styles &gt; Edit style</i>&#160;behind<i>&#160;Apply level styles</i>.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      If you want to apply less than 5 level styles, remove styles in&#160; <i>Styles &gt; Edit style</i>&#160;behind<i>&#160;Apply level styles</i>.
+    </p>
     <p>
       
     </p>
@@ -2557,7 +2588,7 @@
 </node>
 </node>
 <node TEXT="Templates" STYLE_REF="Advanced" FOLDED="true" ID="ID_183210534" CREATED="1323612770999" MODIFIED="1323615706029" HGAP="25" NUMBERED="true" MIN_WIDTH="90">
-<node FOLDED="true" ID="ID_1268042238" CREATED="1323521409870" MODIFIED="1323615092774" HGAP="43" VSHIFT="-11" STYLE="fork"><richcontent TYPE="NODE">
+<node ID="ID_1268042238" CREATED="1323521409870" MODIFIED="1329838278046" HGAP="43" VSHIFT="-11" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2565,12 +2596,12 @@
   </head>
   <body>
     <p>
-      A node style may contain template like information in the form of predefined text in Details field and in the fields for attributes,&#160;&#160;If you define a new node and directly apply a style, this information will be copied into the node right away. Otherwise you can copy this so called style related information by hand: select:<i>&#160;&#160;Edit&#160;&#160;&gt; Node extensions &gt; Copy extensions from style node</i>.
+      A node style may contain template like information in the form of predefined text in Details field and in the fields for attributes,&#160;&#160;Yyou can copy this so called style related information by hand, select:<i>&#160;&#160;Edit&#160;&#160;&gt; Node extensions &gt; Copy extensions from style node</i>.
     </p>
   </body>
 </html>
 </richcontent>
-<node FOLDED="true" ID="ID_357953420" CREATED="1323613544023" MODIFIED="1323615596189" HGAP="-580" VSHIFT="125"><richcontent TYPE="NODE">
+<node FOLDED="true" ID="ID_357953420" CREATED="1323613544023" MODIFIED="1329838405295" HGAP="-580" VSHIFT="125"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2600,7 +2631,7 @@
         open a new node
       </li>
       <li>
-        apply the new style MyTemplate
+        apply the new style MyTemplate (&#160;Edit&#160;&#160;&gt; Node extensions &gt; Copy extensions from style node)
       </li>
     </ul>
     <p>
@@ -2639,7 +2670,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Other" STYLE_REF="Advanced" ID="ID_429763637" CREATED="1323251384433" MODIFIED="1323807207436" HGAP="25" VSHIFT="-78" NUMBERED="true" MIN_WIDTH="90">
+<node TEXT="Other" STYLE_REF="Advanced" FOLDED="true" ID="ID_429763637" CREATED="1323251384433" MODIFIED="1323807207436" HGAP="25" VSHIFT="-78" NUMBERED="true" MIN_WIDTH="90">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainWidth" LAST="false"/>
 </hook>
@@ -2727,7 +2758,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1072558009" CREATED="1323522694317" MODIFIED="1323523055859" HGAP="-67" VSHIFT="70"><richcontent TYPE="NODE">
+<node ID="ID_1072558009" CREATED="1323522694317" MODIFIED="1329838609111" HGAP="-67" VSHIFT="82"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2735,7 +2766,7 @@
   </head>
   <body>
     <p>
-      See <i>Edit &gt; Paste</i>&#160;as for different paste options, like pasting text without format (plain text).
+      If you select menu <i>Edit &gt; Paste</i>&#160;different paste options will be shown, like pasting text without format (plain text).
     </p>
     <p>
       
@@ -2745,7 +2776,7 @@
     </p>
     <ul>
       <li>
-        If you copy text from the internet, the regular paste will also paste&#160;&#160;the formatting (color, size etc.). This option let you select to copy plain text only.
+        If you copy text from the internet, the regular paste will also paste&#160;&#160;the formatting (color, size etc.). The plain text option let you copy plain text only.
       </li>
       <li>
         If you use this option frequently, consider to define a hot key for it, see <i>Tools &gt; Add hot key.</i>
@@ -2791,17 +2822,17 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="You can share mind maps with other users of Freeplane by interchanging the mindmap.mm file. Note that images are not part of a mindmap and therefore must be interchanged seperately. Make sure that in the new location the images are in the same relative location (subdirectory) they were when you developed  your mind map. The best way to do this is to develop your mindmap.mm and the images in one (sub)directory. You can then zip this whole directory and unpack it on the other computer." ID="ID_1964465318" CREATED="1323523371275" MODIFIED="1323807671943" HGAP="-36" VSHIFT="52">
+<node TEXT="You can share mind maps with other users of Freeplane by interchanging the mindmap.mm file. Note that images are not part of a mindmap and therefore must be interchanged seperately. Make sure that at  the new location the images are at the same relative location (subdirectory) they were when you developed  your mind map. The best way to do this is to develop your mindmap.mm and the images in one (sub)directory. You can then zip this whole directory and unpack it at  the other computer." ID="ID_1964465318" CREATED="1323523371275" MODIFIED="1329838727437" HGAP="-36" VSHIFT="52">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="Publish on the internet" STYLE_REF="Professional" FOLDED="true" ID="ID_1417348323" CREATED="1314352836706" MODIFIED="1323523549178" STYLE="combined">
+<node TEXT="Publish on the internet (Java Applet)" STYLE_REF="Professional" FOLDED="true" ID="ID_1417348323" CREATED="1314352836706" MODIFIED="1323896443471" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1669899571" CREATED="1323523398700" MODIFIED="1323807687153" HGAP="-119" VSHIFT="143"><richcontent TYPE="NODE">
+<node ID="ID_1669899571" CREATED="1323523398700" MODIFIED="1323896826498" HGAP="-194" VSHIFT="159"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2809,7 +2840,10 @@
   </head>
   <body>
     <p>
-      To publish your mind map on Internet, export your mindmap with <i>File &gt; Export</i>&#160;and choose for the file format <i>Java Applet</i>. After the export you will have a file <i>yourmap.html</i>&#160;and a directory <i>yourmap.Html_files</i>.&#160;&#160;If you use images in your map, make sure when developing yourmap.mm these images are in the same directory where yourmap.mm resides. After the export, copy the images to yourmap.html_files. You can now move both yourmap.html and directory yourmap.Html_files to the internet server and start the mindmap by calling yourmap.html. Your mind map will open in a browser for reading, but cannot be modified. You can use the same method to share your map with other user's&#160;&#160;who don't have Freeplane installed. Move the file and the directory to their computer in stead of to the Internet server.
+      A <i>Java Applet</i>&#160;is a small program which allows you to display a mind map without Freeplane being installed on your computer.
+    </p>
+    <p>
+      To publish your mind map on Internet using a Java Applet, export your mindmap with <i>File &gt; Export</i>&#160;and choose for the file format <i>Java Applet</i>. After the export you will have a file <i>yourmap.html</i>&#160;and a directory <i>yourmap.Html_files</i>.&#160;&#160;If you use images in your map, make sure when developing yourmap.mm these images are in the same directory where yourmap.mm resides. After the export, copy the images to yourmap.html_files. You can now move both yourmap.html and directory yourmap.Html_files to the internet server and start the mindmap by calling yourmap.html. Your mind map will open in a browser for reading, but cannot be modified. You can use the same method to share your map with other user's&#160;&#160;who don't have Freeplane installed. Move the file and the directory to their computer in stead of to the Internet server.
     </p>
     <p>
       
@@ -2836,6 +2870,40 @@
 </hook>
 </node>
 </node>
+<node TEXT="Publish on the Internet (needs Freeplane)" FOLDED="true" ID="ID_1269157254" CREATED="1323895951531" MODIFIED="1323897461181" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Professional" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_685749368" CREATED="1323895981367" MODIFIED="1329838883453" HGAP="-222" VSHIFT="72"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      You can also publish a mind map directly on the Internet or Intranet. In that case Freeplane is needed to view the map. Use&#160; <i>File &gt; Open map from URL</i>.to open the map and enter the full URL-address of the map.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        In windows, right click the link of the mind map and choose copy hyperlink. Next paste this address in the URL above.
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
 <node TEXT="Interchange with a text editor" STYLE_REF="Professional" FOLDED="true" ID="ID_118482" CREATED="1314353836801" MODIFIED="1323524076563" VSHIFT="-270" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
@@ -2847,7 +2915,7 @@
 </node>
 </node>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_766584529" CREATED="1320005728532" MODIFIED="1323805087363" HGAP="5" VSHIFT="144" LINK="freeplaneApplications.mm" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_766584529" CREATED="1320005728532" MODIFIED="1330614996588" HGAP="14" VSHIFT="144" LINK="freeplaneApplications.mm" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2887,7 +2955,7 @@
 <hook NAME="FreeNode"/>
 </node>
 <node TEXT="Node extensions" STYLE_REF="Advanced" FOLDED="true" POSITION="left" ID="ID_143196514" CREATED="1314206563418" MODIFIED="1323704909339" NUMBERED="true" MIN_WIDTH="180" VSHIFT="80">
-<node TEXT="Edit text in node details" STYLE_REF="Advanced" ID="ID_898889730" CREATED="1314197390735" MODIFIED="1323807835337" HGAP="21" VSHIFT="83"><richcontent TYPE="DETAILS">
+<node TEXT="Edit text in node details" STYLE_REF="Advanced" ID="ID_898889730" CREATED="1314197390735" MODIFIED="1330248073711" HGAP="21" VSHIFT="83"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -2911,7 +2979,7 @@
     </p>
     <ul>
       <li>
-        Node details can also be entered with an inline-editor. To open the inline editor, rightclick the node and choose select <i>Edit node details in-line.&#160;</i>To reopen existing node details text for editing in this way, double click the text. This inline editor behaves the same way as described for the node title text. It has the same context menu.
+        Node details can also be entered with an inline-editor. To open the inline editor, rightclick the node and choose select <i>Edit node details in-line.&#160;</i>To reopen existing node details text for editing in this way,&#160; <i>Ctrl + left-click</i>&#160;the text. (Double clicking also opens&#160;&#160;the editor.) This inline editor behaves the same way as described for the node title text. It has the same context menu.
       </li>
       <li>
         All methods available in context menu's are also accessable through the main menu. For example, the in-line editor is also accessible through <i>Edit &gt; Node extensions &gt; Edit node details in-lin</i>e
@@ -2925,7 +2993,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1704074218" CREATED="1323527323490" MODIFIED="1323807859689" HGAP="-185" VSHIFT="120"><richcontent TYPE="NODE">
+<node FOLDED="true" ID="ID_1704074218" CREATED="1323527323490" MODIFIED="1329839182349" HGAP="-185" VSHIFT="120"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2933,13 +3001,13 @@
   </head>
   <body>
     <p>
-      Node content can be hidden permanently, only showing when you are&#160;&#160;hovering with the cursor over the node. This has the advantage that the space taken by the node keeps at a minimum. The node you are reading behaves just like this.
+      Node content can be hidden permanently, only showing when you are&#160;&#160;hovering with the cursor over the node. This has the advantage that the space taken by the node keeps at a minimum.
     </p>
     <p>
       
     </p>
     <p>
-      To prepare a node for hovering,&#160;right-click the node and choose<i>&#160; Minimize node </i>to hide all information except the first part of the node core text. To restore the non-hidden state, click choose<i>&#160;Minimize node&#160;</i>again<i>. </i>
+      To prepare a node for hovering,&#160;right-click the node and choose<i>&#160; Minimize node </i>to hide all information except the first part of the node core text. To restore the non-hidden state, click<i>&#160;Minimize node&#160;</i>again<i>. </i>
     </p>
     <p>
       
@@ -2990,7 +3058,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainWidth" LAST="false"/>
 </hook>
-<node ID="ID_1931512160" CREATED="1323526694210" MODIFIED="1323528033155" HGAP="32" VSHIFT="-5"><richcontent TYPE="NODE">
+<node ID="ID_1931512160" CREATED="1323526694210" MODIFIED="1329839253751" HGAP="32" VSHIFT="-5"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2998,7 +3066,7 @@
   </head>
   <body>
     <p>
-      Images are not part of a Freeplane map but can be displayed in a Freeplane map. It makes a difference if the image source is stored on your computer or not. and which method you use: drag &amp; drop or copy &amp; paste. Note that the image in <i>Node core</i>&#160;differs from the image desribed here (node extension).
+      Images are not part of a Freeplane map but can be displayed in a Freeplane map. It makes a difference if the image source is stored on your computer or not. and which method you use to add the image: drag &amp; drop or copy &amp; paste. Note that the image in <i>Node core</i>&#160;differs from the image desribed here (node extension).
     </p>
   </body>
 </html>
@@ -3067,7 +3135,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node STYLE_REF="TitlesContent" ID="ID_594983153" CREATED="1318936453549" MODIFIED="1323808153734" HGAP="-94" VSHIFT="89" MAX_WIDTH="550"><richcontent TYPE="NODE">
+<node STYLE_REF="TitlesContent" ID="ID_594983153" CREATED="1318936453549" MODIFIED="1329839399330" HGAP="-94" VSHIFT="89" MAX_WIDTH="550"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3075,7 +3143,7 @@
   </head>
   <body>
     <p>
-      An image from an external source like Internet can be added by copy and paste. Likewise, an image of the screen made with PrintScreen, can be added by pasting it. In both cases the image is added to a newly created child node of the node selected when you pressed paste.&#160;The pasted image can be resized by dragging its lower-right corner.
+      An image from an external source like Internet can be added by copy and paste. Likewise, an image&#160;&#160;made with PrintScreen, can be added by pasting it. In both cases the image is added to a newly created child node of the node selected when you pressed paste.&#160;The pasted image can be resized by dragging its lower-right corner.
     </p>
     <p>
       
@@ -3090,7 +3158,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -3239,7 +3306,7 @@
 </node>
 </node>
 <node TEXT="Notes of nodes" STYLE_REF="Advanced" FOLDED="true" POSITION="left" ID="ID_274601394" CREATED="1314208248182" MODIFIED="1323704896360" NUMBERED="true" MIN_WIDTH="180">
-<node ID="ID_1960771486" CREATED="1323524664411" MODIFIED="1323769280770"><richcontent TYPE="NODE">
+<node ID="ID_1960771486" CREATED="1323524664411" MODIFIED="1329839626607"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3264,7 +3331,7 @@
       <b>Note</b>
     </p>
     <p>
-      In <i>Tools &gt; Preferences</i>&#160;the note icon can be set&#160;&#160;not to display (for all notes !). Exception: On Intenet (Java applet) the icons keep showing.
+      In <i>Tools &gt; Preferences</i>&#160;the note icon can be set&#160;&#160;not to display (for all notes !) for the curent map. Exception: On Intenet (Java applet) the icons keep showing.
     </p>
   </body>
 </html>
@@ -3275,7 +3342,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
-<node TEXT="Time management" STYLE_REF="Professional" ID="ID_1047570728" CREATED="1314367182383" MODIFIED="1323769321439" MAX_WIDTH="600" VSHIFT="40"><richcontent TYPE="DETAILS">
+<node TEXT="Time management" STYLE_REF="Professional" ID="ID_1047570728" CREATED="1314367182383" MODIFIED="1330162826734" MAX_WIDTH="600" VSHIFT="40"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -3293,29 +3360,23 @@
     </p>
     <ul>
       <li>
-        <i>Tools &gt; Time management </i>
+        <i>Tools &gt; Time management , </i>with submenu's for<i>&#160;Managing time </i>and for<i>&#160;managing tasks</i>
       </li>
       <li>
-        <i>Properties panel &gt; Calendar and Attribute</i>s
+        <i>Properties panel &gt; Calendar and Attribute</i>s, NOT for managing task
       </li>
     </ul>
-    <p>
-      
-    </p>
-    <p>
-      The meaning op the options shown is as follows:
-    </p>
   </body>
 </html>
 </richcontent>
 </node>
-<node TEXT="Manage time..." STYLE_REF="Professional" FOLDED="true" ID="ID_1104707017" CREATED="1267746559867" MODIFIED="1323808343056" VSHIFT="10" MAX_WIDTH="450" STYLE="combined">
+<node TEXT="Manage time..." STYLE_REF="Professional" ID="ID_1104707017" CREATED="1267746559867" MODIFIED="1323808343056" VSHIFT="10" MAX_WIDTH="450" STYLE="combined">
 <icon BUILTIN="../TimeManagementAction"/>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node FOLDED="true" ID="ID_1158360877" CREATED="1323528703218" MODIFIED="1323808368000" HGAP="-113" VSHIFT="88" MAX_WIDTH="400" MIN_WIDTH="400"><richcontent TYPE="NODE">
+<node ID="ID_1158360877" CREATED="1323528703218" MODIFIED="1323808368000" HGAP="-113" VSHIFT="88" MAX_WIDTH="400" MIN_WIDTH="400"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3352,12 +3413,13 @@
 <node TEXT="Remind me at this date" STYLE_REF="Method" ID="ID_1905175036" CREATED="1310058020709" MODIFIED="1323529167120" STYLE="as_parent">
 <edge STYLE="horizontal"/>
 </node>
+<node TEXT="Remind later" STYLE_REF="Method" ID="ID_46192835" CREATED="1327347042556" MODIFIED="1327347250233"/>
 <node TEXT="Remove reminder (time)" STYLE_REF="Method" ID="ID_1600844387" CREATED="1310058040514" MODIFIED="1323529167120" STYLE="as_parent">
 <edge STYLE="horizontal"/>
 </node>
 </node>
 </node>
-<node TEXT="Manage tasks" STYLE_REF="Professional" FOLDED="true" ID="ID_1106133151" CREATED="1266247905093" MODIFIED="1323808350684" MAX_WIDTH="450" MIN_WIDTH="1" STYLE="combined">
+<node TEXT="Manage tasks" STYLE_REF="Professional" ID="ID_1106133151" CREATED="1266247905093" MODIFIED="1323808350684" MAX_WIDTH="450" MIN_WIDTH="1" STYLE="combined">
 <icon BUILTIN="../TimeListAction"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
@@ -3444,9 +3506,9 @@
 </hook>
 </node>
 </node>
-<node TEXT="" ID="ID_517678813" CREATED="1288542096079" MODIFIED="1316165471057" TEXT_SHORTENED="true">
+<node TEXT="" ID="ID_517678813" CREATED="1288542096079" MODIFIED="1330162899446" TEXT_SHORTENED="true">
 <hook NAME="plugins/TimeManagementReminder.xml">
-    <Parameters REMINDUSERAT="2077460580480"/>
+    <Parameters REMINDUSERAT="2077460580480" PERIOD="1" UNIT="DAY"/>
 </hook>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
@@ -3454,6 +3516,19 @@
 </hook>
 <hook NAME="SummaryNode"/>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      This node contains a reminder
+    </p>
+  </body>
+</html>
+</richcontent>
 </node>
 </node>
 <node TEXT="Filtering &amp; finding nodes" STYLE_REF="Professional" FOLDED="true" POSITION="left" ID="ID_828862571" CREATED="1314109608813" MODIFIED="1322149509061" NUMBERED="true" MIN_WIDTH="180">
@@ -3461,7 +3536,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="Filtering is a means to only display nodes which you want to see.  The same filter rules can be used to search or find information. The same filter rules are also used in conditional styles." ID="ID_1873557100" CREATED="1323769373332" MODIFIED="1323769446762" HGAP="-85" VSHIFT="30">
+<node TEXT="Filtering is a means to only display nodes which you want to be visible.  The same filter rules can be used to search or find information. The same filter rules are also used in conditional styles." ID="ID_1873557100" CREATED="1323769373332" MODIFIED="1329839797022" HGAP="-85" VSHIFT="30">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
@@ -3471,7 +3546,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node FOLDED="true" ID="ID_1650348629" CREATED="1323769479560" MODIFIED="1323808438060" HGAP="-167" VSHIFT="167"><richcontent TYPE="NODE">
+<node ID="ID_1650348629" CREATED="1323769479560" MODIFIED="1329854479440" HGAP="-167" VSHIFT="167"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3479,30 +3554,30 @@
   </head>
   <body>
     <p>
-      <font color="#000000" face="SansSerif, sans-serif">Before you can find or filter you have to define a rule which determines what you want to find or filter for. You can do this with the Filter toolbar. This toolbar is the horizontal row of icons and entry fields, just above the work area of the map. The find/filter rule consists of:</font>
+      <font face="SansSerif, sans-serif" color="#000000">Before you can find or filter you have to define a rule which determines what you want to find or filter for. You can do this with the Filter toolbar. This toolbar is the horizontal row of icons and entry fields, just above the work area of the map. The find/filter rule consists of:</font>
     </p>
     <ul>
       <li>
         <i>Node <b>component</b></i>&#160;(Core text, Details, Icon, etc.). It is possible to use almost any type of node component in finding and filtering.
       </li>
       <li>
-        <i><b>Type of rule: </b></i>&#160;component <i>exists, contains, =</i>, &gt; etc.
+        <b><i>Type of rule: </i></b>&#160;component <i>exists, contains, =</i>, &gt; etc.
       </li>
       <li>
-        <i><b>Value</b></i>&#160;of component
+        <b><i>Value</i></b>&#160;of component
       </li>
       <li>
-        If value is text, relevancy of <i><b>case</b></i>
+        If value is text, relevancy of <b><i>case</i></b>
       </li>
     </ul>
     <p>
-      If you have set/entered these elements, you can click icon <b>Quick filter</b>&#160; to do the filtering.&#160;&#160;(See below which is icon Quick filter). Or you can click icon <b>Find</b>&#160;to just find one instance at a time.
+      If you have set/entered these elements, you can click icon <b>Quick filter</b>&#160; to do the filtering.&#160;&#160;(See to the left which is icon Quick filter). Or you can click icon <b>Find</b>&#160;to just find one instance at a time.
     </p>
     <p>
       
     </p>
     <p>
-      The result of Quick filter may be modified by setting one or more so called filter options, see below. To exit filtering, click icon <i><b>No filtering</b></i>. (When using Filter, it is not necessary to stop this action.)
+      The result of Quick filter may be modified by setting one or more so called filter options, see below. To exit filtering, click icon <b><i>No filtering</i></b>. (When using Find, it is not necessary to stop this action.)
     </p>
     <p>
       
@@ -3517,7 +3592,7 @@
       <b>Note</b>
     </p>
     <p>
-      You can use a filter rule also to find nodes one by one.
+      You can use a filter rule also to <i>find</i>&#160;nodes one by one.
     </p>
   </body>
 </html>
@@ -3525,31 +3600,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
-<node TEXT="Quick filter" STYLE_REF="ProfessionalTopic" FOLDED="true" ID="ID_1189166757" CREATED="1310134532663" MODIFIED="1323769554551" TEXT_SHORTENED="true">
+<node TEXT="Quick filter" STYLE_REF="ProfessionalTopic" ID="ID_1189166757" CREATED="1310134532663" MODIFIED="1329854269839" TEXT_SHORTENED="true">
 <icon BUILTIN="../apply_quick_filter"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Look in the toolbar for this icon.
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
-</hook>
-<edge STYLE="horizontal"/>
-<node TEXT="Find last modified nodes" ID="ID_884023176" CREATED="1311098601253" MODIFIED="1314077884276" TEXT_SHORTENED="true">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
-    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
-</hook>
-<attribute NAME="Chapter" VALUE="2,9"/>
 <richcontent TYPE="DETAILS">
 
 <html>
@@ -3558,7 +3610,29 @@
   </head>
   <body>
     <p>
-      To filter for all nodes modified after a certain date, ser a filterrrule (Date filter<i>, Modified after, date, xxx)</i>&#160;and <i>Quick filter</i>&#160;for all modified nodes.
+      Perform filter action.
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<edge STYLE="horizontal"/>
+<node TEXT="Find last modified nodes" ID="ID_884023176" CREATED="1311098601253" MODIFIED="1329854051719" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To filter for all nodes modified after a certain date, set a filter rule (Date filter<i>, Modified after, date, xxx)</i>&#160;and <i>Quick filter</i>&#160;for all modified nodes.
     </p>
     <p>
       
@@ -3568,7 +3642,7 @@
     </p>
     <ul>
       <li>
-        <i>Find and replace all nodes...</i>&#160;for an alternative way.
+        menu<i>&#160;Edit &gt; Find and replace...</i>&#160;for an alternative way.
       </li>
     </ul>
   </body>
@@ -3576,16 +3650,29 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="No filtering" STYLE_REF="ProfessionalTopic" ID="ID_983064948" CREATED="1310134532663" MODIFIED="1323769554551" TEXT_SHORTENED="true">
+<node TEXT="No filtering" STYLE_REF="ProfessionalTopic" ID="ID_983064948" CREATED="1310134532663" MODIFIED="1329854292630" TEXT_SHORTENED="true">
 <icon BUILTIN="../remove_filtering"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <edge STYLE="horizontal"/>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Stop filter action
+    </p>
+  </body>
+</html>
+</richcontent>
 </node>
-<node TEXT="Find next" STYLE_REF="ProfessionalTopic" ID="ID_507981913" CREATED="1310134532663" MODIFIED="1323769554551" TEXT_SHORTENED="true">
+<node TEXT="Find next" STYLE_REF="ProfessionalTopic" ID="ID_507981913" CREATED="1310134532663" MODIFIED="1329853641469" TEXT_SHORTENED="true">
 <icon BUILTIN="../find_next"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -3599,7 +3686,7 @@
       
     </p>
     <p>
-      <b><font color="#000000" face="SansSerif, sans-serif">Note</font></b>
+      <font color="#000000" face="SansSerif, sans-serif"><b>Note</b></font>
     </p>
     <ul>
       <li>
@@ -3609,7 +3696,7 @@
         If the found node is folded, it is unfolded.
       </li>
       <li>
-        If the found node is outside the screen, the mind map is shirgted to bring it in the visible are of the screen.
+        If the found node is outside the screen, the mind map is shifted to bring it in the visible are of the screen.
       </li>
     </ul>
   </body>
@@ -3622,7 +3709,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Filter methods" STYLE_REF="Professional" FOLDED="true" ID="ID_1254354349" CREATED="1266240693156" MODIFIED="1323529755732" TEXT_SHORTENED="true" VSHIFT="-2" STYLE="combined"><richcontent TYPE="DETAILS">
+<node TEXT="Filter methods" STYLE_REF="Professional" FOLDED="true" ID="ID_1254354349" CREATED="1266240693156" MODIFIED="1329857262096" TEXT_SHORTENED="true" VSHIFT="-2" STYLE="combined"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -3635,7 +3722,6 @@
   </body>
 </html>
 </richcontent>
-<attribute NAME="Chapter" VALUE="9"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -3697,9 +3783,9 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Quick filter" STYLE_REF="ProfessionalTopic" FOLDED="true" ID="ID_1552136796" CREATED="1310134532663" MODIFIED="1316165694637" TEXT_SHORTENED="true">
+<node TEXT="Quick filter" STYLE_REF="ProfessionalTopic" ID="ID_1552136796" CREATED="1310134532663" MODIFIED="1329856791349" TEXT_SHORTENED="true">
 <icon BUILTIN="../apply_quick_filter"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -3719,9 +3805,6 @@
       <li>
         <i>No Filter</i>&#160;to finish filtering.
       </li>
-      <li>
-        Tool Tip menu Filter (hover the cursor over menu Filter to see its hidden text !)
-      </li>
     </ul>
     <p>
       <b>Note</b>
@@ -3740,12 +3823,11 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
-<node TEXT="Find last modified nodes" ID="ID_1539236846" CREATED="1311098601253" MODIFIED="1314077884276" TEXT_SHORTENED="true">
+<node TEXT="Find last modified nodes" ID="ID_1539236846" CREATED="1311098601253" MODIFIED="1329856905558" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
-<attribute NAME="Chapter" VALUE="2,9"/>
 <richcontent TYPE="DETAILS">
 
 <html>
@@ -3754,7 +3836,7 @@
   </head>
   <body>
     <p>
-      To filter for all nodes modified after a certain date, ser a filterrrule (Date filter<i>, Modified after, date, xxx)</i>&#160;and <i>Quick filter</i>&#160;for all modified nodes.
+      To filter for all nodes modified after a certain date, set a filter rule (Date filter<i>, Modified after, date, xxx)</i>&#160;and <i>Quick filter</i>&#160;for all modified nodes.
     </p>
     <p>
       
@@ -3764,7 +3846,7 @@
     </p>
     <ul>
       <li>
-        <i>Find and replace all nodes...</i>&#160;for an alternative way.
+        <i>Edit &gt; Find and replace...</i>&#160;for an alternative way.
       </li>
     </ul>
   </body>
@@ -3825,7 +3907,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="No filtering" STYLE_REF="ProfessionalTopic" ID="ID_1978139715" CREATED="1310134532663" MODIFIED="1316165694652" TEXT_SHORTENED="true">
+<node TEXT="No filtering" STYLE_REF="ProfessionalTopic" ID="ID_1978139715" CREATED="1310134532663" MODIFIED="1329857078297" TEXT_SHORTENED="true">
 <icon BUILTIN="../remove_filtering"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -3911,7 +3993,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Filter actions" STYLE_REF="ProfessionalTopic" ID="ID_214063901" CREATED="1310496676053" MODIFIED="1316165694668">
+<node TEXT="Filter actions" STYLE_REF="ProfessionalTopic" ID="ID_214063901" CREATED="1310496676053" MODIFIED="1329857056035">
 <hook NAME="SummaryNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
@@ -4148,7 +4230,7 @@
 </node>
 </node>
 <node TEXT="Loading and using filter set for this Quick reference" STYLE_REF="Professional" FOLDED="true" ID="ID_1284293100" CREATED="1316177216317" MODIFIED="1323531342825" LINK="http://www.kioo.nl/freeplane/tutorial_en/filterSet" MIN_WIDTH="1" VSHIFT="-30">
-<node TEXT="Consider using a powerfull feature of Freeplane, filtering, to present to you only the information of&#xa;one of these 3 levels (Beginner, Advanced, Professional) at a time.&#xa;&#xa;The procedure for filtering is described to the left.  If you do not see it, click on the colored bar above&#xa;this text to unhide it. If you click on the red arrow, the instruction is illustrated in an animation." ID="ID_352888342" CREATED="1323529491351" MODIFIED="1323529654285"/>
+<node TEXT="Consider using a powerfull feature of Freeplane, filtering, to present to you only the information of&#xa;one of these 3 levels (Beginner, Advanced, Professional) at a time.&#xa;&#xa;The procedure for filtering is described below. If you click on the red arrow in my parent node, the instruction is illustrated in an animation." ID="ID_352888342" CREATED="1323529491351" MODIFIED="1329857586148"/>
 <node TEXT="Load filter set for this Quick reference" ID="ID_551050917" CREATED="1317234746190" MODIFIED="1323808520350">
 <icon BUILTIN="full-0"/>
 <richcontent TYPE="DETAILS">
@@ -4267,7 +4349,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Protecting nodes" STYLE_REF="Professional" FOLDED="true" POSITION="left" ID="ID_1232153769" CREATED="1314339453691" MODIFIED="1322149562678" NUMBERED="true" MIN_WIDTH="180">
+<node TEXT="Protecting map or nodes" STYLE_REF="Professional" FOLDED="true" POSITION="left" ID="ID_1232153769" CREATED="1314339453691" MODIFIED="1330612832301" NUMBERED="true" MIN_WIDTH="180">
 <node TEXT="Protecting child nodes with a password" STYLE_REF="Professional" FOLDED="true" ID="ID_1433157907" CREATED="1314362016509" MODIFIED="1323769792342" VSHIFT="35" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
@@ -4308,7 +4390,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_802748820" CREATED="1323769723123" MODIFIED="1323808632031" HGAP="-115" VSHIFT="28"><richcontent TYPE="NODE">
+<node ID="ID_802748820" CREATED="1323769723123" MODIFIED="1330612946962" HGAP="-115" VSHIFT="39"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4316,7 +4398,7 @@
   </head>
   <body>
     <p>
-      If you define a new map, you can directly protect is with a password. To do this in one action, choose <i>File &gt; New protected map</i>
+      If you define a new map, you can directly protect is with a password. To do this in one action, choose <i>File &gt; New protected map. </i>This function can be combined with password proction of nodes, to create security layers.
     </p>
   </body>
 </html>
@@ -4377,7 +4459,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1748316183" CREATED="1323530207075" MODIFIED="1323808682793" HGAP="-149" VSHIFT="62"><richcontent TYPE="NODE">
+<node ID="ID_1748316183" CREATED="1323530207075" MODIFIED="1329857816763" HGAP="-149" VSHIFT="62"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4385,7 +4467,7 @@
   </head>
   <body>
     <p>
-      In menu <i>View</i>&#160;you can set characteristics for node core, like width, selection border, border marking for formulas and the background color of revisions. You can set if and how node details should be displayed, with or without hover text (tool tip) and modification times.&#160;&#160;You can set if and which attributes are displayed. Also you can set if and how notes are displayed and with which type of window. Finally it is possible to set some characteristics of icons. Open menu <i>View</i>&#160;and select all options one by one to know which options are available. In the preverences much more can be set.
+      In menu <i>View</i>&#160;you can set characteristics for node core, like width, selection border, border marking for formulas and the background color of revisions. You can set if and how node details should be displayed, with or without tool tip (hover text) and modification times.&#160;&#160;You can set if and which attributes are displayed. Also you can set if and how notes are displayed and with which type of window. Finally it is possible to set some characteristics of icons. Open menu <i>View</i>&#160;and select all options one by one to know which options are available. In the preferences much more can be set.
     </p>
   </body>
 </html>
@@ -4395,11 +4477,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="Scientific suite (Docear)" STYLE_REF="Professional" FOLDED="true" ID="ID_170927482" CREATED="1316706324268" MODIFIED="1323530407966" LINK="http://docear.org/details.php" STYLE="combined">
+<node TEXT="Scientific suite (Docear)" STYLE_REF="Professional" FOLDED="true" ID="ID_170927482" CREATED="1316706324268" MODIFIED="1329857984139" LINK="http://docear.org" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1788895132" CREATED="1323530348451" MODIFIED="1323808689283" HGAP="-160" VSHIFT="102"><richcontent TYPE="NODE">
+<node ID="ID_1788895132" CREATED="1323530348451" MODIFIED="1329857882409" HGAP="-160" VSHIFT="102"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4431,7 +4513,7 @@
       
     </p>
     <p>
-      <b>It is expected that Docear will become available as plugin in October 2011: click the red arrow</b>
+      <b>Click the red arrow</b>
     </p>
   </body>
 </html>
@@ -4621,6 +4703,16 @@
 </node>
 </node>
 </node>
+<node TEXT="Vertical space between nodes" STYLE_REF="Professional" FOLDED="true" ID="ID_1934584954" CREATED="1324029133997" MODIFIED="1324029647531" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node TEXT="Theminimal vertical spacing between nodes can be set for all nodes, existing and new ones. Keep Ctrl pressed, select a nodes handle (oval)  and move the cursor up/down to change the vertical space for all nodes." ID="ID_801516363" CREATED="1324029189260" MODIFIED="1324070707194" HGAP="-177" VSHIFT="37">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
 <node TEXT="Using and writing scripts" STYLE_REF="Professional" FOLDED="true" ID="ID_519455593" CREATED="1316158310467" MODIFIED="1323530793344" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
@@ -4653,7 +4745,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_844014092" CREATED="1323530829949" MODIFIED="1323808731559" HGAP="-157" VSHIFT="147"><richcontent TYPE="NODE">
+<node ID="ID_844014092" CREATED="1323530829949" MODIFIED="1329858066694" HGAP="-157" VSHIFT="147"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4661,7 +4753,7 @@
   </head>
   <body>
     <p>
-      If you use Windows 7 you can make it taking it in the index list, to find it faster. Do as follows:
+      If you use Windows 7 you can make it indexing .mm files. Do as follows:
     </p>
     <ul>
       <li>
@@ -4719,7 +4811,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_667200365" CREATED="1323530988242" MODIFIED="1323808748922" HGAP="-118" VSHIFT="47"><richcontent TYPE="NODE">
+<node ID="ID_667200365" CREATED="1323530988242" MODIFIED="1329858158707" HGAP="-118" VSHIFT="47"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4727,7 +4819,7 @@
   </head>
   <body>
     <p>
-      Freeplane has standard short cuts for most actions which can help speed up processing of your mind map. These short cuts are visible after the menu items when you open the menu's in the main menu bar. There is also an automatically generated overview in menu Help. It is also possible to define your own short cut sets, for example for F-keys. See <i>Help &gt; Documentation</i>.
+      Freeplane has standard short cuts for most actions which can help speed up processing of your mind map. These short cuts are visible to the right of the menu items when you open the menu's in the main menu bar. There is also an automatically generated overview in menu Help. It is also possible to define your own short cut sets, for example for F-keys. See <i>Help &gt; Documentation</i>.
     </p>
   </body>
 </html>
@@ -4737,10 +4829,28 @@
 </hook>
 </node>
 </node>
-<node TEXT="Add-ons" STYLE_REF="Professional" ID="ID_1156954596" CREATED="1319993853694" MODIFIED="1323531432400" LINK="http://freeplane.sourceforge.net/wiki/index.php/Add-ons_%28install%29" VSHIFT="-140" MIN_WIDTH="1"/>
+<node TEXT="Add-ons" STYLE_REF="Professional" FOLDED="true" ID="ID_1156954596" CREATED="1319993853694" MODIFIED="1323531432400" LINK="http://freeplane.sourceforge.net/wiki/index.php/Add-ons_%28install%29" VSHIFT="-140" MIN_WIDTH="1">
+<node STYLE_REF="TitlesContent" ID="ID_1670821464" CREATED="1330288802502" MODIFIED="1330288898808" HGAP="-67" VSHIFT="32"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000">Click the red arrow to read more about extensions on the Interenet. </font>
+    </p>
+    <p>
+      <font color="#000000">Check <a href="http://freeplane.sourceforge.net/wiki/index.php/Add-ons_%28Language_pack%29">here</a>&#160;if there exists a language pack add-on for your language.</font>
+    </p>
+  </body>
+</html>
+</richcontent>
 </node>
-<node TEXT="Best practices" STYLE_REF="Beginner" FOLDED="true" POSITION="left" ID="ID_722085722" CREATED="1314363768463" MODIFIED="1323808890618" BACKGROUND_COLOR="#00cc33" NUMBERED="true" VSHIFT="-80" MIN_WIDTH="180">
-<node STYLE_REF="BeginnerTopic" ID="ID_163805859" CREATED="1314422714136" MODIFIED="1318621208383"><richcontent TYPE="NODE">
+</node>
+</node>
+<node TEXT="Best practices" STYLE_REF="Beginner" FOLDED="true" POSITION="left" ID="ID_722085722" CREATED="1314363768463" MODIFIED="1329924573513" BACKGROUND_COLOR="#00cc33" NUMBERED="true" VSHIFT="-80" MIN_WIDTH="180">
+<node STYLE_REF="Beginner" ID="ID_163805859" CREATED="1314422714136" MODIFIED="1329893453008"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4754,7 +4864,311 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Revisions" ID="ID_1424120147" CREATED="1323615838293" MODIFIED="1323615928431" LINK="#ID_1437965047"/>
+<node TEXT="The making of this mind map" STYLE_REF="Advanced" FOLDED="true" ID="ID_1394424447" CREATED="1329890506053" MODIFIED="1329893525798">
+<node TEXT="Main title with number" FOLDED="true" ID="ID_1866200606" CREATED="1329891158131" MODIFIED="1329923927942" NUMBERED="true" MIN_WIDTH="180"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif">Node with </font>
+    </p>
+    <ul>
+      <li>
+        <font color="#000000" face="SansSerif, sans-serif">style Begin, Advanced or Professional</font>
+      </li>
+      <li>
+        <font color="#000000" face="SansSerif, sans-serif">automatic node number</font>
+      </li>
+      <li>
+        fixed min node width = 180
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<node TEXT="Title" ID="ID_1129463861" CREATED="1329890593164" MODIFIED="1329896626655" VSHIFT="28"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Short label indicating content
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="Content associated with title" ID="ID_1693370436" CREATED="1329890604168" MODIFIED="1329896589667" HGAP="19" VSHIFT="29"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      with
+    </p>
+    <ul>
+      <li>
+        style TitlesContent
+      </li>
+      <li>
+        generally moved below Title with hidden edge
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Signals for Example or Revision" ID="ID_1987503747" CREATED="1329893003272" MODIFIED="1329893364322"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <ul>
+      <li>
+        style Example added as conditional node stye (applies to single node)
+      </li>
+      <li>
+        style Revision added as conditional map style (applies to all nodes)
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="User defined Styles" ID="ID_1542766589" CREATED="1329890665063" MODIFIED="1329891699156">
+<node TEXT="Beginner" STYLE_REF="Beginner" ID="ID_1530366440" CREATED="1329890552011" MODIFIED="1329891025524"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Bold text
+    </p>
+    <p>
+      Bubble
+    </p>
+    <p>
+      Node backround color green
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Advanced" STYLE_REF="Advanced" ID="ID_535640598" CREATED="1329890558413" MODIFIED="1329891023028"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Bold text
+    </p>
+    <p>
+      Bubble
+    </p>
+    <p>
+      Node backround color yellow
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Professional" STYLE_REF="Professional" ID="ID_1633698334" CREATED="1329890564240" MODIFIED="1329891020032"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Bold text
+    </p>
+    <p>
+      Bubble
+    </p>
+    <p>
+      Node backround color orange/brown
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="TitlesContent" STYLE_REF="TitlesContent" ID="ID_1999102003" CREATED="1329890685983" MODIFIED="1329891614417"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      No bubble
+    </p>
+    <p>
+      Hidden edge
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Example" STYLE_REF="Example" ID="ID_149652811" CREATED="1329891620274" MODIFIED="1329892004168"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      eye-icon
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Revision" STYLE_REF="Revision" ID="ID_1141559530" CREATED="1329891634025" MODIFIED="1329892021734"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      R-icon
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="MyTemplate" STYLE_REF="MyTemplate" ID="ID_669326751" CREATED="1329896085816" MODIFIED="1329896350488">
+<attribute NAME="birth date" VALUE=""/>
+<attribute NAME="e-mail" VALUE=""/>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font size="4" color="#3333ff"><b>Template information</b></font>
+    </p>
+    <ul>
+      <li>
+        <i>Name</i>:
+      </li>
+      <li>
+        Address:
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Map with all Freeplane Functions (index)" ID="ID_1680872369" CREATED="1329896383911" MODIFIED="1329897008344" LINK="#ID_232622736"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <ul>
+      <li>
+        Free node
+      </li>
+      <li>
+        Cloud
+      </li>
+      <li>
+        External link
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Map with example applications (index)" ID="ID_311616726" CREATED="1329896409752" MODIFIED="1329896989686" LINK="#ID_766584529"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <ul>
+      <li>
+        Free node
+      </li>
+      <li>
+        Cloud
+      </li>
+      <li>
+        External link
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Display revisions" STYLE_REF="Advanced" ID="ID_1424120147" CREATED="1323615838293" MODIFIED="1329893483412" LINK="#ID_1437965047"/>
+<node TEXT="Restore from local history" STYLE_REF="Professional" FOLDED="true" ID="ID_1448419614" CREATED="1329412616257" MODIFIED="1329893496953">
+<node STYLE_REF="TitlesContent" ID="ID_1628771343" CREATED="1329412632660" MODIFIED="1329413400142" HGAP="-147" VSHIFT="27"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To restore from local history select&#160;&#160;Menu <i>File &gt; Restore from local history</i>.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Batch jobs" STYLE_REF="Professional" FOLDED="true" ID="ID_1371818753" CREATED="1330372522196" MODIFIED="1330372898418">
+<node STYLE_REF="TitlesContent" ID="ID_804893281" CREATED="1330372555097" MODIFIED="1330373617019" HGAP="-66" VSHIFT="74"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      All functions in Freeplane are open for use as batch job, in a command line interface. With this you can for example:
+    </p>
+    <ul>
+      <li>
+        &#160;run a function on start up
+      </li>
+      <li>
+        execute a script an leave
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <p>
+      Read how to at <a href="http://freeplane.sourceforge.net/wiki/index.php/Freeplane_Batch_Job">http://freeplane.sourceforge.net/wiki/index.php/Freeplane_Batch_Job</a>s
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
 </node>
 <node LOCALIZED_STYLE_REF="default" POSITION="left" ID="ID_59598318" CREATED="1322149746220" MODIFIED="1322149989113" HGAP="197" VSHIFT="282" COLOR="#ffffff"><richcontent TYPE="NODE">
 
