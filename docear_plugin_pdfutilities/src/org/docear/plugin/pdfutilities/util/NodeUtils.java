@@ -338,7 +338,15 @@ public class NodeUtils {
 			return null;
 		}
 		
-		return (URI)attributeModel.getValue(attributeModel.getAttributePosition(PdfUtilitiesController.MON_INCOMING_FOLDER));
+		Object value  = attributeModel.getValue(attributeModel.getAttributePosition(PdfUtilitiesController.MON_INCOMING_FOLDER));
+		
+		if(value.toString().equals(CoreConfiguration.DOCUMENT_REPOSITORY_PATH)){
+			return CoreConfiguration.repositoryPathObserver.getUri();
+			
+		}
+		else{			
+			return Tools.getAbsoluteUri((URI)value);
+		}
 	}
 	
 	public static List<URI> getMindmapDirFromMonitoringNode(NodeModel node) {
@@ -352,7 +360,7 @@ public class NodeUtils {
 		Object value = attributeModel.getValue(attributeModel.getAttributePosition(PdfUtilitiesController.MON_MINDMAP_FOLDER));
 		
 		if(value.toString().equals(CoreConfiguration.LIBRARY_PATH)){
-			return DocearController.getController().getLibrary().getMindmaps();
+			return DocearController.getController().getLibrary().getMindmaps();			
 		}
 		else{			
 			result.add(Tools.getAbsoluteUri((URI)value));
@@ -386,6 +394,19 @@ public class NodeUtils {
 	}
 	
 	public static boolean addMonitoringDir(NodeModel target, URI monitoringDir){
+		if(target == null || monitoringDir == null) return false;
+		
+		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
+		if(attributes != null){
+			AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), PdfUtilitiesController.MON_INCOMING_FOLDER, monitoringDir); //$NON-NLS-1$
+			AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
+    		attributeView.setOptimalColumnWidths();
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean addMonitoringDir(NodeModel target, String monitoringDir){
 		if(target == null || monitoringDir == null) return false;
 		
 		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);

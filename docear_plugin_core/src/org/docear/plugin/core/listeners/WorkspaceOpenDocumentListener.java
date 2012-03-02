@@ -17,7 +17,6 @@ import org.freeplane.plugin.workspace.nodes.ALinkNode;
 
 public class WorkspaceOpenDocumentListener implements IWorkspaceNodeActionListener {	
 	
-	@Override
 	public void handleAction(WorkspaceActionEvent event) {
 		AWorkspaceTreeNode targetNode = getNodeFromActionEvent(event);
 		if(targetNode != null) {

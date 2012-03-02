@@ -440,6 +440,11 @@
 		<menu_action action="GotoNodeAction"/>				
 	</menu_category>
 	<menu_category name="node_popup">
+	    <!-- DOCEAR -->
+	    <menu_category name="pdf_management" plugin="org.docear.plugin.pdfutilities" menu_key="pdf_management"/>
+	    <menu_category name="reference_management" plugin="org.docear.plugin.bibtex" menu_key="reference_management"/>
+	    <menu_category name="monitoring" plugin="org.docear.plugin.pdfutilities" menu_key="monitoring"/>  
+	    <!-- DOCEAR -->        
 		<menu_action action="EditLongAction" accelerator="alt ENTER" />
 		<menu_action action="EditDetailsInDialogAction"  />
 		<menu_action action="EditDetailsAction"/>

@@ -73,7 +73,7 @@ public class CoreConfiguration extends ALanguageController {
 	private static final String DOCEAR_FIRST_RUN_PROPERTY = "docear.already_initialized";
 	
 
-//	public static final String DOCUMENT_REPOSITORY_PATH = DocearController.DOCUMENT_REPOSITORY_PATH_PROPERTY;
+	public static final String DOCUMENT_REPOSITORY_PATH = "@@literature_repository@@";
 	public static final String LIBRARY_PATH = "@@library_mindmaps@@"; 
 //	public static final String BIBTEX_PATH = DocearController.BIBTEX_PATH_PROPERTY;
 	
@@ -176,7 +176,6 @@ public class CoreConfiguration extends ALanguageController {
 		final OptionPanelController optionController = Controller.getCurrentController().getOptionPanelController();		
 		optionController.addPropertyLoadListener(new OptionPanelController.PropertyLoadListener() {
 			
-			@Override
 			public void propertiesLoaded(Collection<IPropertyControl> properties) {
 				((IPropertyControl) optionController.getPropertyControl("check_updates_automatically")).setEnabled(false);
 			}
