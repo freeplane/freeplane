@@ -86,21 +86,7 @@ public class FilterConditionEditor extends JComponent {
 			}
 		}
 	}
-	
-	/**
-	 * Start "Find next" action when pressing enter key in "value" combo box
-	 */
-	private void setValuesEnterKeyListener()
-	{
-		values.getEditor().addActionListener(new ActionListener()  {
-
-			public void actionPerformed(ActionEvent e) {
-				((QuickFindAction)Controller.getCurrentController().getAction("QuickFindAction.FORWARD")).executeAction(true);
-			}
-			
-		});
-	}
-	
+		
 	public void setSearchingBusyCursor()
 	{
 		RootPaneContainer root = (RootPaneContainer)getTopLevelAncestor();
@@ -128,7 +114,6 @@ public class FilterConditionEditor extends JComponent {
 		
 		final ComboBoxEditor valueEditor = conditionController.getValueEditor(selectedProperty, selectedCondition);
 		values.setEditor(valueEditor != null ? valueEditor : new BasicComboBoxEditor());
-		setValuesEnterKeyListener();
 		
 		final ListCellRenderer valueRenderer = conditionController.getValueRenderer(selectedProperty, selectedCondition);
 		values.setRenderer(valueRenderer != null ? valueRenderer : filterController.getConditionRenderer());
@@ -202,7 +187,6 @@ public class FilterConditionEditor extends JComponent {
 			gridBagConstraints.gridy++;
 		}
 		values.setEditable(true);
-		setValuesEnterKeyListener();
 		
 		JPanel ignoreCaseAndApproximateMatchingPanel = new JPanel();
 		ignoreCaseAndApproximateMatchingPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
