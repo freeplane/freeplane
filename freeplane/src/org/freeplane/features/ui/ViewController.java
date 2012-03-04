@@ -68,6 +68,7 @@ import javax.swing.plaf.basic.BasicComboBoxEditor;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.ContainerComboBoxEditor;
@@ -874,7 +875,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	public static ComboBoxEditor getTextDateTimeEditor() {
 	    final ContainerComboBoxEditor editor = new ContainerComboBoxEditor();
 		final NamedObject keyText = new NamedObject("text", "1Ab");
-		final BasicComboBoxEditor textEditor = new BasicComboBoxEditor(){
+		final BasicComboBoxEditor textEditor = new FixedBasicComboBoxEditor(){
 			private Object oldItem;
 	
 			@Override

@@ -49,6 +49,7 @@ import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -87,6 +88,19 @@ public class FilterConditionEditor extends JComponent {
 		}
 	}
 		
+
+	/**
+	 * Start "Find next" action when pressing enter key in "value" combo box
+	 */
+	private void setValuesEnterKeyListener()
+	{
+		if (enterKeyActionListener != null)
+		{
+			values.getEditor().removeActionListener(enterKeyActionListener);
+			values.getEditor().addActionListener(enterKeyActionListener);
+		}
+	}
+	
 	public void setSearchingBusyCursor()
 	{
 		RootPaneContainer root = (RootPaneContainer)getTopLevelAncestor();
@@ -113,7 +127,8 @@ public class FilterConditionEditor extends JComponent {
 		values.setModel(conditionController.getValuesForProperty(selectedProperty, selectedCondition));
 		
 		final ComboBoxEditor valueEditor = conditionController.getValueEditor(selectedProperty, selectedCondition);
-		values.setEditor(valueEditor != null ? valueEditor : new BasicComboBoxEditor());
+		values.setEditor(valueEditor != null ? valueEditor : new FixedBasicComboBoxEditor());
+		setValuesEnterKeyListener();
 		
 		final ListCellRenderer valueRenderer = conditionController.getValueRenderer(selectedProperty, selectedCondition);
 		values.setRenderer(valueRenderer != null ? valueRenderer : filterController.getConditionRenderer());
@@ -143,6 +158,7 @@ public class FilterConditionEditor extends JComponent {
 	final private ExtendedComboBoxModel filteredPropertiesModel;
 	private WeakReference<MapModel> lastMap;
 	final private JComboBox values;
+	private ActionListener enterKeyActionListener;
 	public FilterConditionEditor(final FilterController filterController) {
 		this(filterController, 5, false);
 	}
@@ -187,7 +203,8 @@ public class FilterConditionEditor extends JComponent {
 			gridBagConstraints.gridy++;
 		}
 		values.setEditable(true);
-		
+		setValuesEnterKeyListener();
+
 		JPanel ignoreCaseAndApproximateMatchingPanel = new JPanel();
 		ignoreCaseAndApproximateMatchingPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		
@@ -287,6 +304,19 @@ public class FilterConditionEditor extends JComponent {
 			filteredPropertiesModel.setExtensionList(null);
 		}
 		lastMap = new WeakReference<MapModel>(newMap);
+	}
+
+	public void setEnterKeyActionListener(ActionListener enterKeyActionListener) {
+		if (enterKeyActionListener == null)
+		{ 
+			throw new NullPointerException("null value in setEnterKeyActionListener()!");
+		}
+		if (this.enterKeyActionListener != null)
+		{
+			values.getEditor().removeActionListener(this.enterKeyActionListener);
+		}
+		this.enterKeyActionListener = enterKeyActionListener;
+		values.getEditor().addActionListener(enterKeyActionListener);
 	}
 
 }

@@ -22,6 +22,7 @@ package org.freeplane.features.filter;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -199,6 +200,17 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		controller.getMapViewManager().addMapSelectionListener(this);
         final AFreeplaneAction showFilterToolbar = new ToggleFilterToolbarAction("ShowFilterToolbarAction", "/filter_toolbar");
 		quickEditor = new FilterConditionEditor(this, 0, true);
+		quickEditor.setEnterKeyActionListener( new ActionListener()  {
+
+			public void actionPerformed(ActionEvent e) {
+				((QuickFindAction)Controller.getCurrentController().getAction("QuickFindAction.FORWARD")).executeAction(true);
+				if(getHighlightNodes().isSelected()){
+					setHighlightCondition( quickEditor.getCondition());
+				}
+			}
+			
+		}
+		);
 		controller.addAction(showFilterToolbar);
 		controller.addAction(new ApplyNoFilteringAction(this));
 		controller.addAction(new ApplySelectedViewConditionAction(this));
@@ -420,10 +432,19 @@ public class FilterController implements IMapSelectionListener, IExtension {
     	return highlightCondition;
     }
 
-	public void setHighlightCondition(ASelectableCondition highlightCondition) {
-    	this.highlightCondition = highlightCondition;
-    }
-
+	void setHighlightCondition(final ASelectableCondition condition) {
+		if(condition != null){
+			this.highlightCondition = condition;
+			getHighlightNodes().setSelected(true);
+		}
+		else{
+			this.highlightCondition = null;
+		}
+		final Component mapViewComponent = Controller.getCurrentController().getMapViewManager().getMapViewComponent();
+		if(mapViewComponent != null)
+			mapViewComponent.repaint();
+	}
+	
 	private void initConditions() {
 		filterConditions = new DefaultComboBoxModel();
 		addStandardConditions();

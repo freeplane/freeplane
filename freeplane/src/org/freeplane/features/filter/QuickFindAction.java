@@ -56,7 +56,7 @@ final class QuickFindAction extends AFreeplaneAction {
 		this.filterEditor = quickEditor;
 		this.direction =direction ;
 	}
-	
+
 	public void executeAction(final boolean reFocusSearchInputField)
 	{
 		final ASelectableCondition condition = filterEditor.getCondition();
@@ -65,7 +65,7 @@ final class QuickFindAction extends AFreeplaneAction {
 		}
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
 		final NodeModel selected = selection.getSelected();
-		
+
 		final NodeModel next;
 		try
 		{
@@ -77,7 +77,6 @@ final class QuickFindAction extends AFreeplaneAction {
 			filterEditor.setSearchingDefaultCursor();
 		}
 
-		
 		if(next != null){
 			final MapController mapController = Controller.getCurrentModeController().getMapController();
 			mapController.displayNode(next);

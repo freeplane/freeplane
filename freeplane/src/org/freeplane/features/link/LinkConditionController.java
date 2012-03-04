@@ -28,6 +28,7 @@ import javax.swing.ListModel;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
@@ -123,7 +124,7 @@ public class LinkConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
-		return new BasicComboBoxEditor();
+		return new FixedBasicComboBoxEditor();
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object property, NamedObject simpleCond) {

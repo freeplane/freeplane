@@ -29,6 +29,7 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
+import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeChangeListener;
@@ -187,7 +188,7 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 	public Container createSizeBox() {
 		final JComboBox sizeBox = new JComboBox(size);
 		sizeBox.setPreferredSize(sizeBox.getPreferredSize());
-		sizeBox.setEditor(new BasicComboBoxEditor());
+		sizeBox.setEditor(new FixedBasicComboBoxEditor());
 		sizeBox.setEditable(true);
 		return sizeBox;
 	}

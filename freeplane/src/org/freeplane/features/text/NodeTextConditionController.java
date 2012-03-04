@@ -30,6 +30,7 @@ import javax.swing.ListModel;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
@@ -137,7 +138,7 @@ class NodeTextConditionController implements IElementaryConditionController {
 	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
 		if(selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS) 
 				|| selectedCondition.objectEquals(ConditionFactory.FILTER_REGEXP) )
-			return new BasicComboBoxEditor();
+			return new FixedBasicComboBoxEditor();
 		return ViewController.getTextDateTimeEditor();
 	}
 
