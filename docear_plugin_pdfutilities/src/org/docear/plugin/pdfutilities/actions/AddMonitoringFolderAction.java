@@ -60,8 +60,8 @@ public class AddMonitoringFolderAction extends AbstractMonitoringAction {
         	//if(result == JFileChooser.APPROVE_OPTION){
         		//URI mindmapDir = MLinkController.toLinkTypeDependantURI(Controller.getCurrentController().getMap().getFile(), fileChooser.getSelectedFile());
         		
-        		NodeUtils.addMonitoringDir(selected, pdfDir);
-        		NodeUtils.addMindmapDir(selected, CoreConfiguration.LIBRARY_PATH);
+        		NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_INCOMING_FOLDER, pdfDir);
+        		NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_MINDMAP_FOLDER, CoreConfiguration.LIBRARY_PATH);
         		NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_AUTO, 2);
         		NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_SUBDIRS, 2);
         		NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 0);

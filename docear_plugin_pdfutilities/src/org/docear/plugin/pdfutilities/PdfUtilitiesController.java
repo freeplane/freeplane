@@ -399,8 +399,8 @@ public class PdfUtilitiesController extends ALanguageController{
 			public void handleEvent(DocearEvent event) {
 				if(event.getType().equals(DocearEventType.NEW_INCOMING)){
 					MapModel map = (MapModel)event.getEventObject();
-					NodeUtils.addMonitoringDir(map.getRootNode(), CoreConfiguration.DOCUMENT_REPOSITORY_PATH);
-					NodeUtils.addMindmapDir(map.getRootNode(), CoreConfiguration.LIBRARY_PATH);
+					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_INCOMING_FOLDER, CoreConfiguration.DOCUMENT_REPOSITORY_PATH);
+					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_MINDMAP_FOLDER, CoreConfiguration.LIBRARY_PATH);
 					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_AUTO, 2);
 					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_SUBDIRS, 2);
 					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_FLATTEN_DIRS, 0);

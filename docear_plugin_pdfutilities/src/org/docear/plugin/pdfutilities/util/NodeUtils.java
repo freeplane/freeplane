@@ -390,59 +390,7 @@ public class NodeUtils {
 		if(attributeModel.getAttributeKeyList().contains(PdfUtilitiesController.MON_FLATTEN_DIRS)){
 			AttributeController.getController(Controller.getCurrentModeController()).performRemoveRow(attributeModel, attributeModel.getAttributePosition(PdfUtilitiesController.MON_FLATTEN_DIRS));			
 		}
-	}
-	
-	public static boolean addMonitoringDir(NodeModel target, URI monitoringDir){
-		if(target == null || monitoringDir == null) return false;
-		
-		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
-		if(attributes != null){
-			AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), PdfUtilitiesController.MON_INCOMING_FOLDER, monitoringDir); //$NON-NLS-1$
-			AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
-    		attributeView.setOptimalColumnWidths();
-			return true;
-		}
-		return false;
-	}
-	
-	public static boolean addMonitoringDir(NodeModel target, String monitoringDir){
-		if(target == null || monitoringDir == null) return false;
-		
-		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
-		if(attributes != null){
-			AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), PdfUtilitiesController.MON_INCOMING_FOLDER, monitoringDir); //$NON-NLS-1$
-			AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
-    		attributeView.setOptimalColumnWidths();
-			return true;
-		}
-		return false;
-	}
-	
-	public static boolean addMindmapDir(NodeModel target, URI mindmapDir){
-		if(target == null || mindmapDir == null) return false;
-		
-		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
-		if(attributes != null){
-			AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), PdfUtilitiesController.MON_MINDMAP_FOLDER, mindmapDir); //$NON-NLS-1$
-			AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
-    		attributeView.setOptimalColumnWidths();
-			return true;
-		}
-		return false;
-	}
-	
-	public static boolean addMindmapDir(NodeModel target, String value){
-		if(target == null || value == null) return false;
-		
-		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
-		if(attributes != null){
-			AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), PdfUtilitiesController.MON_MINDMAP_FOLDER, value); //$NON-NLS-1$
-			AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
-    		attributeView.setOptimalColumnWidths();
-			return true;
-		}
-		return false;
-	}
+	}	
 		
 	public static boolean setAttributeValue(NodeModel target, String attributeKey, Object value){
 		if(target == null || attributeKey == null || value == null) return false;
@@ -454,11 +402,15 @@ public class NodeUtils {
 				AttributeController.getController().performSetValueAt(attributes, value, attributes.getAttributePosition(attributeKey), 1);
 				for(INodeView view : target.getViewers()){
 					view.nodeChanged(new NodeChangeEvent(target, NodeModel.UNKNOWN_PROPERTY, null, null));
-				}				
+				}
+				AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
+	    		attributeView.setOptimalColumnWidths();
 				return true;
 			}
 			else{
-				AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), attributeKey, value); 
+				AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), attributeKey, value);
+				AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
+	    		attributeView.setOptimalColumnWidths();
 				return true;
 			}
 		}
