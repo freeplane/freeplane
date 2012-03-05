@@ -866,20 +866,4 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		return (MFileManager) modeController.getExtension(UrlManager.class);
 	}
 
-	/**@deprecated -- use MMapIO*/
-	@Deprecated
-	public void loadDefault(MapModel target) {
-		try {
-			final File file = defaultTemplateFile();
-			if (file != null) {
-				loadCatchExceptions(Compat.fileToUrl(file), target);
-				return;
-			}
-			final URL url = ResourceController.getResourceController().getResource("/styles/viewer_standard.mm");
-			loadCatchExceptions(url, target);
-		}
-		catch (Exception e) {
-			LogUtils.severe(e);
-		}
-	}
 }

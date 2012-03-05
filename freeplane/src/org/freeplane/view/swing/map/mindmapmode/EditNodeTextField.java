@@ -607,6 +607,8 @@ public class EditNodeTextField extends EditNodeBase {
 		styleSheet.addRule(ruleBuilder.toString());
 		textfield.setText(text);
 		final MapView mapView = (MapView) viewController.getMapView();
+		if(! mapView.isValid())
+			mapView.validate();
 		final NodeStyleController nsc = NodeStyleController.getController(modeController);
 		maxWidth = nsc.getMaxWidth(node);
 		final Icon icon = parent.getIcon();
@@ -624,8 +626,7 @@ public class EditNodeTextField extends EditNodeBase {
 		textfield.addMouseListener(textFieldListener);
 		SpellCheckerController.getController().enableAutoSpell(textfield, true);
 		mapView.scrollNodeToVisible(nodeView);
-		if(! parent.isValid())
-			parent.setSize(parent.getPreferredSize());
+		assert( parent.isValid());
 		final int nodeWidth = parent.getWidth();
 		final int nodeHeight = parent.getHeight();
 		final Dimension textFieldSize;

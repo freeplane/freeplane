@@ -59,9 +59,6 @@ public class MapIO implements IExtension{
 	URISyntaxException {
 		urlManager.load(url, map);
 	}
-	public void loadDefault(MapModel target) {
-		urlManager.loadDefault(target);
-	}
 	public boolean newMap(URL url) throws FileNotFoundException, IOException, URISyntaxException, XMLException {
 	    return mapController.newMap(url);
     }

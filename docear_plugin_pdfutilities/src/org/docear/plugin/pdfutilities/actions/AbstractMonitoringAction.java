@@ -26,10 +26,11 @@ import org.docear.plugin.core.features.AnnotationModel;
 import org.docear.plugin.core.features.AnnotationNodeModel;
 import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.features.DocearNodeModelExtension;
-import org.docear.plugin.core.features.IAnnotation;
 import org.docear.plugin.core.features.DocearNodeModelExtension.DocearExtensionKey;
-import org.docear.plugin.core.features.IAnnotation.AnnotationType;
 import org.docear.plugin.core.features.DocearNodeModelExtensionController;
+import org.docear.plugin.core.features.IAnnotation;
+import org.docear.plugin.core.features.IAnnotation.AnnotationType;
+import org.docear.plugin.core.logger.DocearLogEvent;
 import org.docear.plugin.core.mindmap.AnnotationController;
 import org.docear.plugin.core.mindmap.MapConverter;
 import org.docear.plugin.core.ui.SwingWorkerDialog;
@@ -61,6 +62,7 @@ import de.intarsys.pdf.parser.COSLoadException;
 
 @EnabledAction( checkOnNodeChange = true )
 public abstract class AbstractMonitoringAction extends AFreeplaneAction {
+	private static long time;
 
 	/**
 	 * 
@@ -79,12 +81,12 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 	
 	public static void updateNodesAgainstMonitoringDir(NodeModel target, boolean saveall) {
 		List<NodeModel> list = new ArrayList<NodeModel>();
-		list.add(target);
+		list.add(target);		
 		AbstractMonitoringAction.updateNodesAgainstMonitoringDir(list, saveall);
 	}
 
 	public static void updateNodesAgainstMonitoringDir(final List<NodeModel> targets, boolean saveall) {		
-		
+		time = System.currentTimeMillis();
 		if(saveall){
 			new SaveAll().actionPerformed(null);
 		}
@@ -105,6 +107,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			}	
 			thread = null;			
 		} catch (CancellationException e){
+			DocearController.getController().getDocearEventLogger().write(AbstractMonitoringAction.class, DocearLogEvent.MONITORING_FOLDER_READ_ABORTED);
 			LogUtils.info("CancellationException during monitoring update."); //$NON-NLS-1$
 		} catch (InterruptedException e) {
 			LogUtils.info("InterruptedException during monitoring update."); //$NON-NLS-1$
@@ -130,13 +133,21 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			Map<AnnotationID, List<NodeModel>> nodeIndex = new HashMap<AnnotationID, List<NodeModel>>();
 			Map<AnnotationID, AnnotationModel> importedFiles = new HashMap<AnnotationID, AnnotationModel>();
 			Map<AnnotationID, AnnotationModel> importedOtherFiles = new HashMap<AnnotationID, AnnotationModel>();
-			List<NodeModel> orphanedNodes = new ArrayList<NodeModel>();
+			List<NodeModel> orphanedNodes = new ArrayList<NodeModel>();			
 			List<AnnotationModel> newAnnotations = new ArrayList<AnnotationModel>();
 			Map<String, List<NodeModel>> equalChildIndex = new HashMap<String, List<NodeModel>>();
 			Map<AnnotationID, Collection<IAnnotation>> conflicts = new HashMap<AnnotationID, Collection<IAnnotation>>();
 			
-			protected Map<AnnotationID, Collection<IAnnotation>> doInBackground() throws Exception {				
-				for(final NodeModel target : targets){					
+			protected Map<AnnotationID, Collection<IAnnotation>> doInBackground() throws Exception {
+				
+				//Controller.getCurrentController().getViewController().getMapView().setVisible(false);
+				for(final NodeModel target : targets){
+					URI uri = NodeUtils.getPdfDirFromMonitoringNode(target);
+					if (uri != null) {
+						DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.MONITORING_FOLDER_READ, WorkspaceUtils.resolveURI(uri));			
+					}
+					
+					
 					if(canceled()) return conflicts;
 					fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("AbstractMonitoringAction.6")+ target.getText() +TextUtils.getText("AbstractMonitoringAction.7")); //$NON-NLS-1$ //$NON-NLS-2$
 					fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
@@ -152,7 +163,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					if(!searchNewAndConflictedNodes()) continue;
 					
 					if(!searchingOrphanedNodes(target)) continue;
-					
+										
 					final boolean isfolded =  target.isFolded();
 					if(newAnnotations.size() > 100){
 						fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
@@ -241,7 +252,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			}
 
 			private boolean isMonitoringNodeChild(NodeModel monitoringNode, NodeModel node) {
-				List<NodeModel> pathToRoot = Arrays.asList(node.getPathToRoot());
+				List<NodeModel> pathToRoot = Arrays.asList(node.getPathToRoot());				
 				return pathToRoot.contains(monitoringNode);
 			}
 
@@ -259,13 +270,17 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			}
 
 			@Override
-		    protected void done() {			
+		    protected void done() {
 				if(this.isCancelled() || Thread.currentThread().isInterrupted()){					
 					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("AbstractMonitoringAction.15")); //$NON-NLS-1$
 				}
 				else{
 					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("AbstractMonitoringAction.16")); //$NON-NLS-1$
 				}
+				
+				//Controller.getCurrentController().getViewController().getMapView().setVisible(true);
+				time = System.currentTimeMillis()-time;
+				System.out.println("execution time: "+(time/1000));
 				
 			}
 			
