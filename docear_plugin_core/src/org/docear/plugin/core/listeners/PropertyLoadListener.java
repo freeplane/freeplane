@@ -9,7 +9,6 @@ import org.freeplane.core.resources.components.IPropertyControl;
 public class PropertyLoadListener implements
 		org.freeplane.core.resources.OptionPanelController.PropertyLoadListener {
 
-	@Override
 	public void propertiesLoaded(Collection<IPropertyControl> properties) {
 		DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.OPEN_PREFERENCES);
 	}

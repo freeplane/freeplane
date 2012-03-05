@@ -33,7 +33,7 @@ public class EditMonitoringFolderAction extends AbstractMonitoringAction {
 
 	public void actionPerformed(ActionEvent e) {
 		JFileChooser fileChooser;
-		Object value = NodeUtils.getAttributeValue(Controller.getCurrentController().getSelection().getSelected(), PdfUtilitiesController.MON_INCOMING_FOLDER);
+		Object value = NodeUtils.getPdfDirFromMonitoringNode((Controller.getCurrentController().getSelection().getSelected()));
 		if(value != null){
 			fileChooser = new JFileChooser(Tools.getFilefromUri(Tools.getAbsoluteUri((URI)value)));
 		}

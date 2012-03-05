@@ -10,7 +10,6 @@ import org.freeplane.features.map.mindmapmode.MMapModel;
 
 public class MapLifeCycleListener implements IMapLifeCycleListener {
 
-	@Override
 	public void onCreate(MapModel map) {
 		if (map instanceof MMapModel) {
 			File f = map.getFile();
@@ -25,7 +24,6 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 		}
 	}
 
-	@Override
 	public void onRemove(MapModel map) {
 		if (map instanceof MMapModel) {
 			File f = map.getFile();
@@ -35,7 +33,6 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 		}
 	}
 
-	@Override
 	public void onSavedAs(MapModel map) {
 		if (map instanceof MMapModel) {
 			File f = map.getFile();
@@ -45,7 +42,6 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 		}
 	}
 
-	@Override
 	public void onSaved(MapModel map) {
 		if (map instanceof MMapModel) {
 			File f = map.getFile();
