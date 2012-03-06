@@ -29,9 +29,11 @@ import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
+import org.freeplane.features.filter.condition.DefaultConditionRenderer;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -182,6 +184,17 @@ public class LinkConditionController implements IElementaryConditionController {
 	}
 
 	public ListCellRenderer getValueRenderer(Object selectedProperty, NamedObject selectedCondition) {
-	    return null;
+		if (((NamedObject)selectedProperty).objectEquals(CONNECTOR) ||
+			(((NamedObject)selectedProperty).objectEquals(FILTER_LINK) &&
+					selectedCondition.objectEquals(ConditionFactory.FILTER_EXIST)))
+		{
+			// don't return null as this would make FilterConditionEditor fall back to filterController.getConditionRenderer()
+			// (and that would put in a default string like "No Filtering (remove)"!)
+			return new DefaultConditionRenderer("");
+		}
+		else
+		{
+			return null;
+		}
     }
 }

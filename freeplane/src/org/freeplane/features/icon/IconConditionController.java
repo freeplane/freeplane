@@ -31,6 +31,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
+import org.freeplane.features.filter.condition.DefaultConditionRenderer;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -117,6 +118,8 @@ class IconConditionController implements IElementaryConditionController {
 	}
 
 	public ListCellRenderer getValueRenderer(Object selectedProperty, NamedObject selectedCondition) {
-	    return null;
+		// don't return null as this would make FilterConditionEditor fall back to filterController.getConditionRenderer()
+		// (and that would put in a default string like "No Filtering (remove)"!)
+		return new DefaultConditionRenderer("");
     }
 }
