@@ -124,7 +124,7 @@ public class PdfUtilitiesController extends ALanguageController{
 	private DeleteMonitoringFolderAction deleteMonitoringFolderAction;
 	private ImportAllChildAnnotationsAction importAllChildAnnotationsAction;
 	private ImportNewChildAnnotationsAction importNewChildAnnotationsAction;
-	private MonitoringFlattenSubfoldersAction monitoringFlattenSubfoldersAction;
+	private MonitoringFlattenSubfoldersAction monitoringFlattenSubfoldersAction;	
 
 	public PdfUtilitiesController(ModeController modeController) {
 		super();
