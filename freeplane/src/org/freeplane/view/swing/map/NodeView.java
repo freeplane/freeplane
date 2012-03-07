@@ -992,156 +992,57 @@ public class NodeView extends JComponent implements INodeView {
             g.translate(-p.x, -p.y);
         }
     }
-
+    
     private void paintEdges(final Graphics2D g, NodeView source) {
-        for (int i = getComponentCount() - 1; i >= 0; i--) {
+    	SummaryEdgePainter summaryEdgePainter = new SummaryEdgePainter(this, isRoot() ? true : isLeft());
+    	SummaryEdgePainter rightSummaryEdgePainter =  isRoot() ? new SummaryEdgePainter(this, false) : null;
+        final int start;
+        final int end;
+        final int step;
+        if (getMap().getLayoutType() == MapViewLayout.OUTLINE){
+        	start = getComponentCount() - 1;
+        	end = -1;
+        	step = -1;
+        }
+        else{
+        	start = 0;
+        	end = getComponentCount();
+        	step = 1;
+        }
+		for (int i = start; i != end; i+=step) {
             final Component component = getComponent(i);
             if (!(component instanceof NodeView)) {
                 continue;
             }
             final NodeView nodeView = (NodeView) component;
-        	if (getMap().getLayoutType() != MapViewLayout.OUTLINE  &&  paintSummaryEdge(g, source, nodeView, i)) {
-        		if(! nodeView.isContentVisible()){
-        			final Rectangle bounds =  SwingUtilities.convertRectangle(this, nodeView.getBounds(), source);
-        			final Graphics cg = g.create(bounds.x, bounds.y, bounds.width, bounds.height);
-        			try{
-        				nodeView.paintEdges((Graphics2D) cg, nodeView);
+        	if (getMap().getLayoutType() != MapViewLayout.OUTLINE) {
+        		SummaryEdgePainter activePainter = nodeView.isLeft() || !isRoot() ? summaryEdgePainter : rightSummaryEdgePainter;
+        		activePainter.addChild(nodeView);
+        		if(activePainter.paintSummaryEdge(g, source, nodeView)){
+        			if(! nodeView.isContentVisible()){
+        				final Rectangle bounds =  SwingUtilities.convertRectangle(this, nodeView.getBounds(), source);
+        				final Graphics cg = g.create(bounds.x, bounds.y, bounds.width, bounds.height);
+        				try{
+        					nodeView.paintEdges((Graphics2D) cg, nodeView);
+        				}
+        				finally{
+        					cg.dispose();
+        				}
+
         			}
-        			finally{
-        				cg.dispose();
-        			}
-        			
+        			continue;
         		}
             }
-        	else{
-        		if (nodeView.isContentVisible()) {
-            		final EdgeView edge = EdgeViewFactory.getInstance().getEdge(source, nodeView, source);
-            		edge.paint(g);
-            	}
-                else {
-                	nodeView.paintEdges(g, source);
-                }
+        	if (nodeView.isContentVisible()) {
+        		final EdgeView edge = EdgeViewFactory.getInstance().getEdge(source, nodeView, source);
+        		edge.paint(g);
+        	}
+        	else {
+        		nodeView.paintEdges(g, source);
         	}
         }
     }
-
-	private boolean paintSummaryEdge(Graphics2D g, NodeView source, NodeView nodeView, int pos) {
-		if(! nodeView.isSummary())
-			return false;
-		final boolean isLeft = nodeView.isLeft();
-		final int spaceAround = getSpaceAround();
-		
-		int level = 0;
-		int anotherLevel = 0;
-		int i;
-		NodeView lastView = null;
-		boolean itemFound = false;
-		boolean firstGroupNodeFound = false;
-		for (i = pos - 1; i >= 0; i--) {
-			final NodeView nodeViewSibling = (NodeView) getComponent(i);
-			if (nodeViewSibling.isLeft() != isLeft)
-				continue;
-			if (lastView == null && nodeViewSibling.getHeight() != 2 * spaceAround) {
-				lastView = nodeViewSibling;
-			}
-			if(! itemFound){ 
-				if( ! nodeViewSibling.isSummary())
-					itemFound = true;
-				else
-					level++;
-	            if(1 == level && nodeViewSibling.isFirstGroupNode())
-	                firstGroupNodeFound = true;
-			}
-			else if(nodeViewSibling.isSummary()){
-				anotherLevel++;
-				if(anotherLevel > level)
-					if(lastView == nodeViewSibling)
-						return false;
-				    break;
-			}
-			else
-				anotherLevel = 0;
-			if(anotherLevel == level && nodeViewSibling.isFirstGroupNode())
-				firstGroupNodeFound = true;
-			if(firstGroupNodeFound  && ! nodeViewSibling.isSummary()){
-				break;
-			}
-			
-		}
-		
-		if (lastView == null) {
-			return false;
-		}
-
-		if(i >= 0){
-		    for (; i > 0; i--) {
-		        final NodeView nodeViewSibling = (NodeView) getComponent(i);
-		        if (nodeViewSibling.isLeft() != isLeft)
-		            continue;
-		        if(nodeViewSibling.isSummary() || nodeViewSibling.isFirstGroupNode())
-		            break;
-		    }
-
-		    for (; ; i++) {
-		        final NodeView nodeViewSibling = (NodeView) getComponent(i);
-		        if (nodeViewSibling.isLeft() != isLeft)
-		            continue;
-		        if(! nodeViewSibling.isSummary())
-		            break;
-		    }
-		}
-        else
-            i = 0;
-
-		anotherLevel = 0;
-        int y1 = lastView.getY() + getSpaceAround();
-		int y2 = lastView.getY() + lastView.getHeight() - getSpaceAround();
-        int x1;
-        if (isLeft) {
-            x1 = lastView.getX() + spaceAround;
-        }
-        else {
-            x1 = lastView.getX() + lastView.getWidth() - spaceAround;
-        }
-		for (; i < pos; i++) {
-			final NodeView nodeViewSibling = (NodeView) getComponent(i);
-			if (nodeViewSibling.isLeft() != isLeft|| nodeViewSibling.getHeight() == 2 * spaceAround)
-				continue;
-			if (nodeViewSibling.isSummary())
-				anotherLevel++;
-			else
-				anotherLevel = 0;
-			if (anotherLevel == level) {
-	            y1 = Math.min(y1, nodeViewSibling.getY() + spaceAround);
-	            y2 = Math.max(y2, nodeViewSibling.getY() + nodeViewSibling.getHeight() - spaceAround);
-			}
-			if (isLeft) {
-				x1 = Math.min(x1, nodeViewSibling.getX() + spaceAround);
-			}
-			else {
-				x1 = Math.max(x1, nodeViewSibling.getX() + nodeViewSibling.getWidth() - spaceAround);
-			}
-		}
-		
-		final JComponent content = nodeView.getContent();
-		int x = nodeView.getX() + content.getX();
-		if (isLeft)
-			x += nodeView.getWidth() - 2 * spaceAround;
-		if(y1 != y2){
-			final Point start1 = new Point(x1, y1);
-			final Point start2 = new Point(x1, y2);
-			final NodeView parentView = nodeView.getParentView();
-			UITools.convertPointToAncestor(parentView, start1, source);
-			UITools.convertPointToAncestor(parentView, start2, source);
-			final EdgeView edgeView = new SummaryEdgeView(source, nodeView, source);
-			edgeView.setStart(start1);
-			edgeView.paint(g);
-			edgeView.setStart(start2);
-			edgeView.paint(g);
-			return true;
-		}
-		return false;
-	}
+    
 
 	int getSpaceAround() {
 		return getZoomed(NodeView.SPACE_AROUND);
