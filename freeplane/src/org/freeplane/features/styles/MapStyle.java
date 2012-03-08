@@ -20,6 +20,7 @@
 package org.freeplane.features.styles;
 
 import java.awt.Color;
+import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
@@ -36,9 +37,13 @@ import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
@@ -331,10 +336,31 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	}
 
 	private void createDefaultStyleMap(final MapModel map) {
-	    final MapModel styleMapContainer = new MapModel();
-		UrlManager.getController().loadDefault(styleMapContainer);
-		moveStyle(styleMapContainer, map, false);
+		UrlManager loader = UrlManager.getController();
+		final File file = loader.defaultTemplateFile();
+		if (file != null) {
+			try {
+				MapModel styleMapContainer = new MapModel();
+				loader.load(Compat.fileToUrl(file), styleMapContainer);
+				if (null != MapStyleModel.getExtension(styleMapContainer)){
+					moveStyle(styleMapContainer, map, false);
+					return;
+				}
+			}
+			catch (Exception e) {
+				LogUtils.warn(e);
+				UITools.errorMessage(TextUtils.format("error_in_template", file));
+			}
+		};
+		MapModel styleMapContainer = new MapModel();
+		try {
+			loader.load(ResourceController.getResourceController().getResource("/styles/viewer_standard.mm"), styleMapContainer);
+			moveStyle(styleMapContainer, map, false);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
     }
+
 
 	private void moveStyle(final MapModel sourceMap, final MapModel targetMap, boolean overwrite) {
 	    final MapStyleModel source = (MapStyleModel) sourceMap.getRootNode().removeExtension(MapStyleModel.class);

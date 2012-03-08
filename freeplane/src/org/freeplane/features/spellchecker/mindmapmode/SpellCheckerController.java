@@ -93,7 +93,10 @@ public class SpellCheckerController implements IExtension {
 		spellCheckerInitialized = true;
 		final ResourceController resourceController = ResourceController.getResourceController();
 		final File orthoDir = new File(resourceController.getResourceBaseDir() + File.separatorChar + "ortho");
-		if (!orthoDir.exists()) {
+		registerDictionaries(orthoDir);
+		final File userOrthoDir = new File(resourceController.getFreeplaneUserDirectory() + File.separatorChar + "ortho");
+		registerDictionaries(userOrthoDir);
+		if (!spellCheckerEnabled) {
 			return;
 		}
 		setSpellCheckOptions(resourceController);
@@ -104,30 +107,6 @@ public class SpellCheckerController implements IExtension {
 				}
 			}
 		});
-		final String[] dictionaryList = orthoDir.list(new FilenameFilter() {
-			public boolean accept(final File dir, final String name) {
-				return name.length() == "dictionary_XX.ortho".length() && name.startsWith("dictionary_")
-				        && name.endsWith(".ortho");
-			}
-		});
-		if (dictionaryList.length == 0) {
-			return;
-		}
-		SpellChecker.setUserDictionaryProvider(new FileUserDictionary(resourceController.getFreeplaneUserDirectory()));
-		final StringBuilder availableLocales = new StringBuilder();
-		for (int i = 0; i < dictionaryList.length; i++) {
-			final String language = dictionaryList[i].substring("dictionary_".length(), "dictionary_".length() + 2);
-			availableLocales.append(language);
-			availableLocales.append(",");
-		}
-		try {
-			SpellChecker.registerDictionaries(orthoDir.toURL(), availableLocales.toString(), null, ".ortho");
-			spellCheckerEnabled = true;
-		}
-		catch (final MalformedURLException e) {
-			LogUtils.severe(e);
-			return;
-		}
 		String spellingLanguage = resourceController.getProperty(SPELLING_LANGUAGE, null);
 		if (spellingLanguage == null) {
 			spellingLanguage = resourceController.getLanguageCode();
@@ -150,6 +129,35 @@ public class SpellCheckerController implements IExtension {
 			}
 		};
 		SpellChecker.addLanguageChangeLister(languageChangeListener);
+	}
+
+	private void registerDictionaries(final File orthoDir) {
+		if(! orthoDir.isDirectory())
+			return;
+		final String[] dictionaryList = orthoDir.list(new FilenameFilter() {
+			public boolean accept(final File dir, final String name) {
+				return name.length() == "dictionary_XX.ortho".length() && name.startsWith("dictionary_")
+				        && name.endsWith(".ortho");
+			}
+		});
+		if (dictionaryList.length == 0) {
+			return;
+		}
+		final ResourceController resourceController = ResourceController.getResourceController();
+		SpellChecker.setUserDictionaryProvider(new FileUserDictionary(resourceController.getFreeplaneUserDirectory()));
+		final StringBuilder availableLocales = new StringBuilder();
+		for (int i = 0; i < dictionaryList.length; i++) {
+			final String language = dictionaryList[i].substring("dictionary_".length(), "dictionary_".length() + 2);
+			availableLocales.append(language);
+			availableLocales.append(",");
+		}
+		try {
+			SpellChecker.registerDictionaries(orthoDir.toURL(), availableLocales.toString(), null, ".ortho");
+			spellCheckerEnabled = true;
+		}
+		catch (final MalformedURLException e) {
+			LogUtils.severe(e);
+		}
 	}
 
 	private void setSpellCheckOptions(final ResourceController resourceController) {

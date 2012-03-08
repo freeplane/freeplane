@@ -1,21 +1,18 @@
-<map version="0.9.0">
+<map version="freeplane 1.2.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <attribute_registry SHOW_ATTRIBUTES="hide">
     <attribute_name VISIBLE="true" NAME="See also"/>
     <attribute_name VISIBLE="true" NAME="a2"/>
 </attribute_registry>
-<node TEXT="Documentation&#xa;Freeplane 1.2" STYLE_REF="MainMenu" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1315378335890" VGAP="0">
+<node TEXT="Documentation&#xa;Freeplane 1.2" STYLE_REF="MainMenu" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1330618336618" VGAP="0">
 <icon BUILTIN="bee"/>
 <hook NAME="MapStyle">
     <conditional_styles>
         <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
-            <conjunct_condition user_name="1.2.9_05">
-                <time_condition_modified_after DATE="1318794562631"/>
-                <time_condition_modified_before DATE="1319399362631"/>
-            </conjunct_condition>
+            <time_condition_modified_after user_name="1.2.12_03" DATE="1330531663397"/>
         </conditional_style>
     </conditional_styles>
-    <properties show_notes_in_map="false"/>
+    <properties show_icon_for_attributes="false" show_note_icons="true" show_notes_in_map="false"/>
 
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node">
@@ -137,7 +134,7 @@
   </body>
 </html>
 </richcontent>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_232622736" CREATED="1320005728532" MODIFIED="1321129758238" VSHIFT="-141" STYLE="fork" TEXT_SHORTENED="true" LINK="freeplaneFunctions.mm"><richcontent TYPE="NODE">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_232622736" CREATED="1320005728532" MODIFIED="1330618265586" HGAP="19" VSHIFT="-108" STYLE="fork" TEXT_SHORTENED="true" LINK="freeplaneFunctions.mm"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -175,7 +172,7 @@
 </html>
 </richcontent>
 <hook NAME="FreeNode"/>
-<node ID="ID_766584529" CREATED="1320005728532" MODIFIED="1321129742731" HGAP="-80" VSHIFT="29" STYLE="fork" TEXT_SHORTENED="true" LINK="freeplaneApplications.mm"><richcontent TYPE="NODE">
+<node ID="ID_766584529" CREATED="1320005728532" MODIFIED="1330615790920" HGAP="-85" VSHIFT="28" STYLE="fork" TEXT_SHORTENED="true" LINK="freeplaneApplications.mm"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -212,9 +209,10 @@
   </body>
 </html>
 </richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
 </node>
 </node>
-<node TEXT="User guide" STYLE_REF="Title" POSITION="left" ID="ID_1405760079" CREATED="1286914216123" MODIFIED="1314858820369" HGAP="-35" VSHIFT="-91" TEXT_SHORTENED="true">
+<node TEXT="User guide" STYLE_REF="Title" POSITION="left" ID="ID_1405760079" CREATED="1286914216123" MODIFIED="1330615758144" HGAP="-37" VSHIFT="-60" TEXT_SHORTENED="true">
 <icon BUILTIN="gohome"/>
 <richcontent TYPE="DETAILS">
 
@@ -239,7 +237,7 @@
 </html>
 </richcontent>
 <edge STYLE="bezier"/>
-<node TEXT="Goal" STYLE_REF="UserGuide" ID="ID_910734357" CREATED="1314824090302" MODIFIED="1322427196808" TEXT_SHORTENED="true" HGAP="30" VSHIFT="-10" MIN_WIDTH="80"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Goal" STYLE_REF="UserGuide" ID="ID_910734357" CREATED="1314824090302" MODIFIED="1330617424420" TEXT_SHORTENED="true" HGAP="27" VSHIFT="22" MIN_WIDTH="80"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -280,7 +278,7 @@
 </html>
 </richcontent>
 </node>
-<node STYLE_REF="UserGuide" FOLDED="true" ID="ID_1108028010" CREATED="1309552935597" MODIFIED="1322427732981" HGAP="27" VSHIFT="-7" TEXT_SHORTENED="true" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane" MIN_WIDTH="80"><richcontent TYPE="NODE">
+<node STYLE_REF="UserGuide" FOLDED="true" ID="ID_1108028010" CREATED="1309552935597" MODIFIED="1330617373607" HGAP="27" TEXT_SHORTENED="true" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane" MIN_WIDTH="80"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -887,7 +885,7 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="Chapter guide" STYLE_REF="UserGuide" FOLDED="true" ID="ID_919267416" CREATED="1311398738170" MODIFIED="1314857330809" TEXT_SHORTENED="true" HGAP="30"><richcontent TYPE="DETAILS">
+<node TEXT="Chapter guide" STYLE_REF="UserGuide" FOLDED="true" ID="ID_919267416" CREATED="1311398738170" MODIFIED="1330617410173" TEXT_SHORTENED="true" HGAP="30" VSHIFT="3"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -1580,7 +1578,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Install" STYLE_REF="UserGuide" FOLDED="true" ID="ID_931855473" CREATED="1311401499171" MODIFIED="1322427246494" HGAP="31" VSHIFT="2" MIN_WIDTH="80">
+<node TEXT="Install" STYLE_REF="UserGuide" FOLDED="true" ID="ID_931855473" CREATED="1311401499171" MODIFIED="1330617400176" HGAP="26" VSHIFT="4" MIN_WIDTH="80">
 <node TEXT="Download" ID="_Freeplane_Link_904501221" CREATED="1270892460638" MODIFIED="1317904760841" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
@@ -1912,7 +1910,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Macintosh" STYLE_REF="UserGuide" ID="ID_480781217" CREATED="1270892460643" MODIFIED="1322427271267" TEXT_SHORTENED="true" HGAP="30" VSHIFT="9" MIN_WIDTH="80"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Macintosh" STYLE_REF="UserGuide" ID="ID_480781217" CREATED="1270892460643" MODIFIED="1330617405478" TEXT_SHORTENED="true" HGAP="27" VSHIFT="1" MIN_WIDTH="80"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -1997,8 +1995,8 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="This Documentation" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1263067716" CREATED="1311401568817" MODIFIED="1314857303041" HGAP="32" VSHIFT="4">
-<node ID="ID_518502200" CREATED="1309618730385" MODIFIED="1312922288130"><richcontent TYPE="NODE">
+<node TEXT="This Documentation" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1263067716" CREATED="1311401568817" MODIFIED="1330617389863" HGAP="28" VSHIFT="4">
+<node FOLDED="true" ID="ID_518502200" CREATED="1309618730385" MODIFIED="1312922288130"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2546,7 +2544,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Version, revisions and credits" ID="_Freeplane_Link_784043927" CREATED="1270892460645" MODIFIED="1322426670806" TEXT_SHORTENED="true">
+<node TEXT="Version, revisions" ID="_Freeplane_Link_784043927" CREATED="1270892460645" MODIFIED="1330617272843" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
@@ -2585,37 +2583,10 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="1.2.11" ID="ID_605038742" CREATED="1289133018961" MODIFIED="1322427357597"/>
-<node TEXT="Documentation" FOLDED="true" ID="ID_136822724" CREATED="1286311222217" MODIFIED="1310284652022">
-<node TEXT="Jokro" FOLDED="true" ID="ID_1128010246" CREATED="1286311242349" MODIFIED="1293375084474" LINK="mailto:jokro@users.sourceforge.net?subject%20=%20handleiding">
-<node TEXT="Basic rewrite of Freeplane 1.3 to Freeplane 1.2" ID="ID_52670674" CREATED="1289731003743" MODIFIED="1310284343860"/>
-<node TEXT="Wiki and Tutorial Freeplane 1.2" ID="ID_1524499902" CREATED="1314907613560" MODIFIED="1314907697316" VSHIFT="-10"/>
-</node>
-<node TEXT="Date of last modification:" ID="ID_21798827" CREATED="1289730911791" MODIFIED="1310284256952"/>
-</node>
-<node TEXT="Software" FOLDED="true" ID="ID_1342635261" CREATED="1270892460645" MODIFIED="1310284708885">
-<node TEXT="Original Authors" FOLDED="true" ID="Freeplane_Link_415458128" CREATED="1270892460646" MODIFIED="1310284712036">
-<node TEXT="Joerg Mueller" ID="_Freeplane_Link_1896457660" CREATED="1270892460646" MODIFIED="1310284722098"/>
-<node TEXT="Daniel Polansky" ID="_Freeplane_Link_984984595" CREATED="1270892460647" MODIFIED="1310284722113" LINK="http://danpolansky.blogspot.com/"/>
-<node TEXT="Petr Novak" ID="_Freeplane_Link_459203293" CREATED="1270892460647" MODIFIED="1310284722098"/>
-<node TEXT="Christian Foltin" ID="_Freeplane_Link_875814410" CREATED="1270892460647" MODIFIED="1310284722098"/>
-<node TEXT="Dimitry Polivaev" ID="_Freeplane_Link_1415293905" CREATED="1270892460648" MODIFIED="1310284722098"/>
-<node TEXT="Graphical Design by Predrag Cuklin" ID="ID_1094825033" CREATED="1270892460648" MODIFIED="1310284722098"/>
-</node>
-<node TEXT="Current Team" FOLDED="true" ID="ID_1090487344" CREATED="1271097427203" MODIFIED="1310284734578">
-<node TEXT="Release 1.1.x" FOLDED="true" ID="ID_1795869028" CREATED="1271097443907" MODIFIED="1310284741099">
-<node TEXT="Dimitry Polivaev" ID="ID_809494025" CREATED="1271097633119" MODIFIED="1271097633119"/>
-<node TEXT="Volker Boerchers" ID="ID_548414191" CREATED="1271097633119" MODIFIED="1271097633119"/>
-<node TEXT="Eric L." ID="ID_306583030" CREATED="1271097633122" MODIFIED="1271097633122"/>
-<node TEXT="jayseye" ID="ID_502187025" CREATED="1271097633123" MODIFIED="1271097633123"/>
-<node TEXT="Predrag" ID="ID_320430724" CREATED="1271097633123" MODIFIED="1271097633123"/>
-<node TEXT="Ryan Wesley" ID="ID_288819242" CREATED="1271097633123" MODIFIED="1271097633123"/>
+<node TEXT="1.2.12_04" ID="ID_605038742" CREATED="1289133018961" MODIFIED="1330618614917"/>
 </node>
 </node>
-</node>
-</node>
-</node>
-<node TEXT="FAQ" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1040911735" CREATED="1312613811349" MODIFIED="1322427454333" TEXT_SHORTENED="true" HGAP="34" VSHIFT="7" MIN_WIDTH="80">
+<node TEXT="FAQ" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1040911735" CREATED="1312613811349" MODIFIED="1330617395222" TEXT_SHORTENED="true" HGAP="28" VSHIFT="-7" MIN_WIDTH="80">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
@@ -2692,7 +2663,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 <node TEXT="Limitations and known bugs" FOLDED="true" ID="ID_1348021717" CREATED="1314027459750" MODIFIED="1314027482026">
@@ -2794,7 +2764,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Free floating &amp; free positionable node" ID="ID_279153431" CREATED="1321130587153" MODIFIED="1321130672048"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Free floating &amp; free positionable node" ID="ID_279153431" CREATED="1321130587153" MODIFIED="1329227590316"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -2833,9 +2803,89 @@
 </html>
 </richcontent>
 </node>
+<node TEXT="Script on opening of mindmap" ID="ID_470865141" CREATED="1327335448459" MODIFIED="1329415122189"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Conditional formatting supports scripts as filter condition. &#160;<a href="http://sourceforge.net/apps/phpbb/freeplane/viewtopic.php?f=1&amp;t=161&amp;sid=019395cb323fe8ff8794fb10a3fa0237#p969">link</a>&#160;
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Batch jobs" ID="ID_1030060663" CREATED="1330373236727" MODIFIED="1330373480551"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      All functions in Freeplane are open for use as batch job, in a command line interface. With this you can for example:
+    </p>
+    <ul>
+      <li>
+        &#160;run a function on start up
+      </li>
+      <li>
+        execute a script an leave
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <p>
+      ,Read how to at <a href="http://freeplane.sourceforge.net/wiki/index.php/Freeplane_Batch_Job">http://freeplane.sourceforge.net/wiki/index.php/Freeplane_Batch_Job</a>s
+    </p>
+    <p>
+      
+    </p>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="Reference" STYLE_REF="Title" POSITION="right" ID="ID_332175012" CREATED="1286914216123" MODIFIED="1314858874673" HGAP="-31" VSHIFT="-85" TEXT_SHORTENED="true">
+</node>
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_1658062789" CREATED="1330615467171" MODIFIED="1330618274268" HGAP="18" VSHIFT="99" TEXT_SHORTENED="true" LINK="#ID_566454554"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p style="text-align: center">
+      Online doc .
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="FreeNode"/>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Most recent information
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="Contributers" ID="ID_1675707038" CREATED="1330616960325" MODIFIED="1330617037843" HGAP="-90" VSHIFT="27" LINK="http://freeplane.sourceforge.net/wiki/index.php/Contributors"/>
+</node>
+<node TEXT="Reference" STYLE_REF="Title" POSITION="right" ID="ID_332175012" CREATED="1286914216123" MODIFIED="1330615754041" HGAP="-37" VSHIFT="-64" TEXT_SHORTENED="true">
 <icon BUILTIN="wizard"/>
 <richcontent TYPE="DETAILS">
 
@@ -2877,7 +2927,7 @@
 </html>
 </richcontent>
 <edge STYLE="bezier"/>
-<node TEXT="File" STYLE_REF="MainMenu" FOLDED="true" ID="ID_1242926404" CREATED="1310134532663" MODIFIED="1322427085034" TEXT_SHORTENED="true" MIN_WIDTH="60">
+<node TEXT="File" STYLE_REF="MainMenu" FOLDED="true" ID="ID_1242926404" CREATED="1310134532663" MODIFIED="1330617346267" TEXT_SHORTENED="true" MIN_WIDTH="60" HGAP="19" VSHIFT="27">
 <attribute_layout NAME_WIDTH="37" VALUE_WIDTH="77"/>
 <attribute NAME="Chapter" VALUE="1,2,6,8"/>
 <hook NAME="NodeConditionalStyles">
@@ -2896,7 +2946,7 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="New map [New]" ID="ID_1310307853" CREATED="1310134532663" MODIFIED="1314559030968" TEXT_SHORTENED="true">
+<node TEXT="New map" ID="ID_1310307853" CREATED="1310134532663" MODIFIED="1330375150968" TEXT_SHORTENED="true">
 <icon BUILTIN="../filenew"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -2937,9 +2987,9 @@
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="New protected (encrypted) map... [Create encrypted map...]" FOLDED="true" ID="ID_1015806590" CREATED="1310134532663" MODIFIED="1314559091995" TEXT_SHORTENED="true">
+<node TEXT="New protected (encrypted) map..." ID="ID_1015806590" CREATED="1310134532663" MODIFIED="1330612645585" TEXT_SHORTENED="true">
 <icon BUILTIN="../lock"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -2947,17 +2997,20 @@
   </head>
   <body>
     <p>
-      <font face="SansSerif, sans-serif" color="#000000">Prompts to enter a password required to open the map and creates a new map. </font>
+      <font face="SansSerif, sans-serif" color="#000000">Prompts to enter a password required to open the map and creates a new map. This funcion is similar to password protecting a node. </font>
     </p>
     <p>
       
     </p>
     <p>
-      <b>See also</b>
+      <font face="SansSerif, sans-serif" color="#000000"><b>Note</b>&#160;</font>
     </p>
     <ul>
       <li>
-        <i>Toggle encrypted/decrypted</i>&#160;to protect a map after it has been created.
+        <font face="SansSerif, sans-serif" color="#000000">This function only works if Tools &gt; Preferences &gt; Environment &gt; Files &gt; Experimental file socling is set.</font>
+      </li>
+      <li>
+        It is possible to create seculity layers by independently password protecting individual nodes.
       </li>
     </ul>
   </body>
@@ -2967,6 +3020,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="8"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="" ID="ID_43524792" CREATED="1310756995899" MODIFIED="1312915935500" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
@@ -3000,7 +3054,7 @@
 </hook>
 <attribute NAME="Chapter" VALUE="1,2,8"/>
 </node>
-<node TEXT="Save map as..[Save as...]." ID="ID_449363060" CREATED="1310134532663" MODIFIED="1314559109139" TEXT_SHORTENED="true">
+<node TEXT="Save map as.." ID="ID_449363060" CREATED="1310134532663" MODIFIED="1330375174857" TEXT_SHORTENED="true">
 <icon BUILTIN="../filesaveas"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -3021,7 +3075,7 @@
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="Save map [Save]" ID="ID_1253878525" CREATED="1310134532663" MODIFIED="1314559123788" TEXT_SHORTENED="true">
+<node TEXT="Save map" ID="ID_1253878525" CREATED="1310134532663" MODIFIED="1330375185653" TEXT_SHORTENED="true">
 <icon BUILTIN="../filesave"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -3063,7 +3117,7 @@
 </hook>
 <attribute NAME="Chapter" VALUE="1,2"/>
 </node>
-<node TEXT="Save all open maps [Save all]" ID="ID_1423263542" CREATED="1310534781892" MODIFIED="1314559143569" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Save all open maps" ID="ID_1423263542" CREATED="1310534781892" MODIFIED="1330375202547" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -3080,18 +3134,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Save map" FOLDED="true" ID="ID_1689022735" CREATED="1310835414628" MODIFIED="1312964634498">
-<hook NAME="SummaryNode"/>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
-</hook>
-<attribute NAME="Chapter" VALUE="1,2"/>
-<node TEXT="Save folding" ID="ID_1155653392" CREATED="1311925121696" MODIFIED="1312915952582" LINK="#ID_619771458" TEXT_SHORTENED="true">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
-    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
-</hook>
-<richcontent TYPE="DETAILS">
+<node TEXT="Restore from local  history" ID="ID_1896010117" CREATED="1310534540786" MODIFIED="1323898751424" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -3099,28 +3142,7 @@
   </head>
   <body>
     <p>
-      <b>Note</b>
-    </p>
-    <ul>
-      <li>
-        In preferences can be set if/how folding must be saved.
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
-</node>
-</node>
-<node TEXT="Revert to last save [Revert]" ID="ID_1896010117" CREATED="1310534540786" MODIFIED="1314559171430" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Reverts the map to the last controlled save.
+      Allows you to reverts the map to a previously saved state.
     </p>
     <p>
       
@@ -3151,7 +3173,40 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Open saved map... [Open...]" ID="ID_1284635316" CREATED="1310134532663" MODIFIED="1314559222848" TEXT_SHORTENED="true">
+<node TEXT="Save map" ID="ID_1689022735" CREATED="1310835414628" MODIFIED="1330597584157">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="1,2"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="Save folding" ID="ID_1155653392" CREATED="1311925121696" MODIFIED="1312915952582" LINK="#ID_619771458" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
+    <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        In preferences can be set if/how folding must be saved.
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+</node>
+<node TEXT="Open saved map..." ID="ID_1284635316" CREATED="1310134532663" MODIFIED="1330375301381" TEXT_SHORTENED="true">
 <icon BUILTIN="../fileopen"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -3172,7 +3227,25 @@
 </hook>
 <attribute NAME="Chapter" VALUE="1,2"/>
 </node>
-<node TEXT="Most recent maps [Most recent files]" ID="ID_655783347" CREATED="1310534990519" MODIFIED="1314559272862" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Open map from URL..." ID="ID_351944217" CREATED="1323898287219" MODIFIED="1330375329181" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens dialog to enter URL
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Most recent maps" ID="ID_655783347" CREATED="1310534990519" MODIFIED="1330375349211" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -3190,12 +3263,13 @@
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="Open map" FOLDED="true" ID="ID_565242033" CREATED="1310835477153" MODIFIED="1312964686462" LINK="#ID_950384750">
+<node TEXT="Open map" ID="ID_565242033" CREATED="1310835477153" MODIFIED="1330597595420" LINK="#ID_950384750">
 <hook NAME="SummaryNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="1,2"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="Load settings" ID="ID_553299918" CREATED="1311925472829" MODIFIED="1312915971021" LINK="#ID_950384750">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
@@ -3204,7 +3278,7 @@
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
-<node TEXT="Export map  [Export]" FOLDED="true" ID="ID_1294197740" CREATED="1310134532663" MODIFIED="1314559289133" TEXT_SHORTENED="true">
+<node TEXT="Export map" FOLDED="true" ID="ID_1294197740" CREATED="1310134532663" MODIFIED="1330375428912" TEXT_SHORTENED="true">
 <icon BUILTIN="../export"/>
 <richcontent TYPE="DETAILS">
 
@@ -3330,7 +3404,7 @@
 </richcontent>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
-<node TEXT="As Java Applet (HTML)..." STYLE_REF="OptionalValue" FOLDED="true" ID="ID_376134497" CREATED="1266417395953" MODIFIED="1312919311512" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="As Java Applet (HTML)..." STYLE_REF="OptionalValue" ID="ID_376134497" CREATED="1266417395953" MODIFIED="1330597631534" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -3344,6 +3418,7 @@
 </html>
 </richcontent>
 <attribute NAME="Chapter" VALUE="6"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="Publish on a website or share" ID="ID_126764093" CREATED="1309808574878" MODIFIED="1312916086753" TEXT_SHORTENED="true" LINK="#ID_1111281504">
 <hook NAME="SummaryNode"/>
 <hook NAME="NodeConditionalStyles">
@@ -3519,7 +3594,7 @@
 </richcontent>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
-<node TEXT="" FOLDED="true" ID="ID_783046977" CREATED="1310799890904" MODIFIED="1312916121556" TEXT_SHORTENED="true">
+<node TEXT="" ID="ID_783046977" CREATED="1310799890904" MODIFIED="1312916121556" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
@@ -3573,7 +3648,7 @@
 </node>
 </node>
 </node>
-<node TEXT=" Move branch to new map [Branch as new map]" ID="ID_995694574" CREATED="1310567044505" MODIFIED="1314559358303" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT=" Move branch to new map" ID="ID_995694574" CREATED="1310567044505" MODIFIED="1330375559402" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -3591,7 +3666,7 @@
 </hook>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
-<node TEXT="Import map [Import]" FOLDED="true" ID="ID_977906606" CREATED="1310134532663" MODIFIED="1314559388193" TEXT_SHORTENED="true">
+<node TEXT="Import" FOLDED="true" ID="ID_977906606" CREATED="1310134532663" MODIFIED="1330375629810" TEXT_SHORTENED="true">
 <icon BUILTIN="../import"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
@@ -3650,7 +3725,7 @@
 </hook>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
-<node TEXT="Print set up [Page set up]" ID="ID_1629904320" CREATED="1310535299236" MODIFIED="1314559405649" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Print set up" ID="ID_1629904320" CREATED="1310535299236" MODIFIED="1330375658016" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -3746,7 +3821,7 @@
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="Print map [Print]" ID="ID_111478060" CREATED="1310134532663" MODIFIED="1314559423886" TEXT_SHORTENED="true">
+<node TEXT="Print map" ID="ID_111478060" CREATED="1310134532663" MODIFIED="1330375679635" TEXT_SHORTENED="true">
 <icon BUILTIN="../fileprint"/>
 <richcontent TYPE="DETAILS">
 
@@ -3773,13 +3848,13 @@
 </hook>
 <attribute NAME="Chapter" VALUE="2,6"/>
 </node>
-<node TEXT="Map statistics [Statistics]" ID="ID_688770977" CREATED="1310134532663" MODIFIED="1314559437816" TEXT_SHORTENED="true">
+<node TEXT="Map statistics" ID="ID_688770977" CREATED="1310134532663" MODIFIED="1330375705700" TEXT_SHORTENED="true">
 <icon BUILTIN="../BranchStats"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Close current map [Close]" ID="ID_1018458898" CREATED="1310134532663" MODIFIED="1314559456568" TEXT_SHORTENED="true">
+<node TEXT="Close current map" ID="ID_1018458898" CREATED="1310134532663" MODIFIED="1330375732278" TEXT_SHORTENED="true">
 <icon BUILTIN="../close"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -3799,7 +3874,7 @@
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="Quit Freeplane  [Quit]" ID="ID_1770693982" CREATED="1310134532663" MODIFIED="1314559471060" TEXT_SHORTENED="true">
+<node TEXT="Quit Freeplane" ID="ID_1770693982" CREATED="1310134532663" MODIFIED="1330375749772" TEXT_SHORTENED="true">
 <icon BUILTIN="../quit"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -3837,7 +3912,7 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="New node" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1557207269" CREATED="1309638877685" MODIFIED="1315727299529" TEXT_SHORTENED="true">
+<node TEXT="New node" STYLE_REF="SubMenu" ID="ID_1557207269" CREATED="1309638877685" MODIFIED="1315727299529" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
@@ -3965,9 +4040,27 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
+<node TEXT="Insert free node" ID="ID_389982270" CREATED="1329754325692" MODIFIED="1330375857746" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Creates a free node which is virtually connected to the root node.
+    </p>
+  </body>
+</html>
+</richcontent>
 </node>
-<node TEXT="Node group" STYLE_REF="SubMenu" FOLDED="true" ID="ID_479655918" CREATED="1313693054166" MODIFIED="1316339429581">
-<node TEXT="New Summary node (selected nodes) [New Summary node]" FOLDED="true" ID="ID_1126176775" CREATED="1304191328224" MODIFIED="1314562182486" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+</node>
+<node TEXT="Node group" STYLE_REF="SubMenu" ID="ID_479655918" CREATED="1313693054166" MODIFIED="1316339429581">
+<node TEXT="New Summary node (selected nodes)" FOLDED="true" ID="ID_1126176775" CREATED="1304191328224" MODIFIED="1330375881899" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -4111,7 +4204,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Summary node (begin of group) [Begin node group ]" FOLDED="true" ID="ID_428394610" CREATED="1305384767382" MODIFIED="1314562230800" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Summary node (begin of group)" FOLDED="true" ID="ID_428394610" CREATED="1305384767382" MODIFIED="1330376027741" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -4192,7 +4285,7 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="Summary node (set/reset) [Summary Node]" ID="ID_1343097813" CREATED="1305384807731" MODIFIED="1314562275096" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Summary node (set/reset)" ID="ID_1343097813" CREATED="1305384807731" MODIFIED="1330376014731" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -4236,7 +4329,21 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="New cloud [Cloud]" ID="ID_649516172" CREATED="1310106596579" MODIFIED="1315727524927" TEXT_SHORTENED="true">
+<node TEXT="Always unfolded node (set/reset)" STYLE_REF="Method" ID="ID_1594802269" CREATED="1330376058560" MODIFIED="1330376165501" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      If set, prevents the node from folding. Especially used with clouds.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Add / remove cloud (default)" ID="ID_649516172" CREATED="1310106596579" MODIFIED="1330375972914" TEXT_SHORTENED="true">
 <icon BUILTIN="../Cloud24"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -4312,13 +4419,14 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
-<node TEXT="Connector" FOLDED="true" ID="ID_725880686" CREATED="1303722690480" MODIFIED="1312919195230" HGAP="50" TEXT_SHORTENED="true">
+<node TEXT="Connector" ID="ID_725880686" CREATED="1303722690480" MODIFIED="1330597776100" HGAP="50" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
 </hook>
 <cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000099" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_725880686" MIDDLE_LABEL="line + label for self-referenced node" STARTINCLINATION="13;65;" ENDINCLINATION="13;65;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <node TEXT="node a" FOLDED="true" ID="ID_504660350" CREATED="1288535672221" MODIFIED="1310196224134" TEXT_SHORTENED="true">
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_580762900" SOURCE_LABEL="begin&#xa;label" TARGET_LABEL="end&#xa;label" MIDDLE_LABEL="middle&#xa;label" STARTINCLINATION="10;26;" ENDINCLINATION="-19;52;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
@@ -4383,7 +4491,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
-<node TEXT="Add hyperlink (choose)... [Hyperlink (File Chooser)...]" ID="ID_178833757" CREATED="1266249910406" MODIFIED="1314563464115" TEXT_SHORTENED="true">
+<node TEXT="Add hyperlink (choose)..." ID="ID_178833757" CREATED="1266249910406" MODIFIED="1330376313311" TEXT_SHORTENED="true">
 <icon BUILTIN="../SetLinkByFileChooserAction"/>
 <richcontent TYPE="DETAILS">
 
@@ -4421,7 +4529,7 @@
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
 </node>
-<node TEXT="Add hyperlink (type)   [Hyperlink (Text Field)... ]" FOLDED="true" ID="ID_873690575" CREATED="1266249928203" MODIFIED="1314563514690" TEXT_SHORTENED="true">
+<node TEXT="Add or modify hyperlink (type)" ID="ID_873690575" CREATED="1266249928203" MODIFIED="1330376304871" TEXT_SHORTENED="true">
 <icon BUILTIN="../SetLinkByTextFieldAction"/>
 <richcontent TYPE="DETAILS">
 
@@ -4469,7 +4577,7 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="Convert link from within text [Activate hyperlink in text]" ID="ID_1049705529" CREATED="1266247483750" MODIFIED="1315727614596" TEXT_SHORTENED="true">
+<node TEXT="Convert link from within text" ID="ID_1049705529" CREATED="1266247483750" MODIFIED="1330376340082" TEXT_SHORTENED="true">
 <icon BUILTIN="../ExtractLinkFromTextAction"/>
 <richcontent TYPE="DETAILS">
 
@@ -4512,7 +4620,7 @@
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
 </node>
-<node TEXT="Add hyperlink to menu item [Hyperlink (Menu entry)... ]" FOLDED="true" ID="ID_1477740287" CREATED="1291192827927" MODIFIED="1315727642567" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Add hyperlink to menu item" FOLDED="true" ID="ID_1477740287" CREATED="1291192827927" MODIFIED="1330376363326" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -4548,7 +4656,7 @@
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
-<node TEXT="" STYLE_REF="Aggregatie als Toelichting" ID="ID_557988874" CREATED="1305558188109" MODIFIED="1312919875648" TEXT_SHORTENED="true">
+<node TEXT="" STYLE_REF="Aggregatie als Toelichting" ID="ID_557988874" CREATED="1305558188109" MODIFIED="1330597806535" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
@@ -4556,6 +4664,7 @@
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="Hyperlink" ID="Freeplane_Link_203858515" CREATED="1270892460675" MODIFIED="1311402835642" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
@@ -4801,7 +4910,7 @@
 <hook NAME="SummaryNode"/>
 </node>
 <node TEXT="Node core" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1154882439" CREATED="1315728115638" MODIFIED="1316158994981">
-<node TEXT="Edit core in-line [Edit node ]" ID="ID_1162372089" CREATED="1266247401765" MODIFIED="1319991157525" TEXT_SHORTENED="true">
+<node TEXT="Edit core in-line" ID="ID_1162372089" CREATED="1266247401765" MODIFIED="1330376482963" TEXT_SHORTENED="true">
 <icon BUILTIN="../edit_node"/>
 <richcontent TYPE="DETAILS">
 
@@ -4872,7 +4981,7 @@
 </hook>
 <attribute NAME="Chapter" VALUE="1"/>
 </node>
-<node TEXT="Edit core in dialog [Edit node in separate Dialog]" ID="ID_1542197841" CREATED="1266244681296" MODIFIED="1315980763857" TEXT_SHORTENED="true">
+<node TEXT="Edit core in dialog" ID="ID_1542197841" CREATED="1266244681296" MODIFIED="1330376497487" TEXT_SHORTENED="true">
 <icon BUILTIN="../edit_long_node"/>
 <richcontent TYPE="DETAILS">
 
@@ -4933,44 +5042,6 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="1"/>
-</node>
-<node TEXT="Copy format" ID="ID_165229421" CREATED="1310134532663" MODIFIED="1315728436024" TEXT_SHORTENED="true">
-<icon BUILTIN="../colorpicker"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Copies the formatting of a node, but not the content of the node. SEE ALSO: Paste Format.</span></font>
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Paste format" ID="ID_85344174" CREATED="1310134532663" MODIFIED="1315728444548" TEXT_SHORTENED="true">
-<icon BUILTIN="../color_fill"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Pastes the formatting of a node, but not the contents of the node. SEE ALSO: Copy Format.</span></font>
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
-</hook>
 </node>
 <node TEXT="Join nodes" ID="ID_1720469761" CREATED="1266247462656" MODIFIED="1309687496955" TEXT_SHORTENED="true">
 <icon BUILTIN="../JoinNodesAction"/>
@@ -5085,7 +5156,7 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="" STYLE_REF="Aggregatie als Toelichting" FOLDED="true" ID="ID_892520547" CREATED="1305729001930" MODIFIED="1312919741496" TEXT_SHORTENED="true">
+<node TEXT="" STYLE_REF="Aggregatie als Toelichting" ID="ID_892520547" CREATED="1305729001930" MODIFIED="1330597845286" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 <attribute_layout NAME_WIDTH="82" VALUE_WIDTH="211"/>
 <attribute NAME="Chapter" VALUE="3"/>
@@ -5094,6 +5165,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
 </hook>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="Icon" ID="ID_845839827" CREATED="1309802783787" MODIFIED="1311402835392" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
@@ -5200,7 +5272,7 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="Progress" FOLDED="true" ID="ID_1053622072" CREATED="1303931822760" MODIFIED="1314563397955" TEXT_SHORTENED="true">
+<node TEXT="Progress icon %" FOLDED="true" ID="ID_1053622072" CREATED="1303931822760" MODIFIED="1330376787720" TEXT_SHORTENED="true">
 <icon BUILTIN="25%"/>
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <richcontent TYPE="DETAILS">
@@ -5356,7 +5428,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Image by choice or link  [Image (File chooser or link)]" ID="ID_1277752024" CREATED="1266249875046" MODIFIED="1315728980938" TEXT_SHORTENED="true">
+<node TEXT="Image by choice or link" ID="ID_1277752024" CREATED="1266249875046" MODIFIED="1330376849716" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -5406,7 +5478,7 @@
 </node>
 </node>
 <node TEXT="Node extensions" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1400990107" CREATED="1315728991618" MODIFIED="1316876395980">
-<node TEXT="Edit details in-line   [Edit node details]" ID="ID_1807308711" CREATED="1291153533418" MODIFIED="1315980814822" TEXT_SHORTENED="true">
+<node TEXT="Edit details in-line" ID="ID_1807308711" CREATED="1291153533418" MODIFIED="1330376990961" TEXT_SHORTENED="true">
 <icon BUILTIN="../edit_details"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -5443,7 +5515,7 @@
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
 </node>
-<node TEXT=" Edit details in dialog  [ Edit node details in separate Dialog]" ID="ID_742575187" CREATED="1309980895003" MODIFIED="1315980850951" TEXT_SHORTENED="true">
+<node TEXT=" Edit details in dialog" ID="ID_742575187" CREATED="1309980895003" MODIFIED="1330376975920" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -5473,7 +5545,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Text from style  [Insert style related content]" ID="ID_1403178597" CREATED="1311948532074" MODIFIED="1315731249074" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Copy extensions from style node" STYLE_REF="Method" ID="ID_1403178597" CREATED="1311948532074" MODIFIED="1330377017683" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -5509,7 +5581,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Set as hover text (tool tip) [shortened node content  ]" ID="ID_787093188" CREATED="1291155413971" MODIFIED="1314891445690" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Set as hover text (tool tip)" ID="ID_787093188" CREATED="1291155413971" MODIFIED="1330442227237" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -5551,7 +5623,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Remove text  [Remove node details]" ID="ID_949038869" CREATED="1291201354423" MODIFIED="1315731463030" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Remove node details" ID="ID_949038869" CREATED="1291201354423" MODIFIED="1330442258245" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -5701,8 +5773,9 @@
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
 <hook NAME="FirstGroupNode"/>
-<node TEXT="" FOLDED="true" ID="ID_1294427474" CREATED="1312919801516" MODIFIED="1312919821532">
+<node TEXT="" ID="ID_1294427474" CREATED="1312919801516" MODIFIED="1330597874224">
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="" ID="ID_1592683562" CREATED="1311880649184" MODIFIED="1311880910313" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
@@ -5828,7 +5901,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Image" FOLDED="true" ID="ID_1620391394" CREATED="1303931708607" MODIFIED="1315731736077" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Image" ID="ID_1620391394" CREATED="1303931708607" MODIFIED="1330597899995" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -5884,6 +5957,7 @@
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
 <hook NAME="SummaryNode"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="Publish images" ID="ID_1111281504" CREATED="1309808574878" MODIFIED="1315731685868" TEXT_SHORTENED="true">
 <attribute_layout NAME_WIDTH="82" VALUE_WIDTH="264"/>
 <attribute NAME="Chapter" VALUE="3,6"/>
@@ -6176,12 +6250,13 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Remove attribute" STYLE_REF="SubMenu" FOLDED="true" ID="ID_187455075" CREATED="1315732300852" MODIFIED="1315732324486">
+<node TEXT="Remove attribute" STYLE_REF="SubMenu" ID="ID_187455075" CREATED="1315732300852" MODIFIED="1315732324486">
 <node TEXT="Remove first attribute" ID="ID_869406084" CREATED="1303930754909" MODIFIED="1315731851868" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
+<node TEXT="Remove last attribute" STYLE_REF="Method" ID="ID_292812840" CREATED="1330442368297" MODIFIED="1330442399201"/>
 <node TEXT="Remove all attributes" FOLDED="true" ID="ID_8268990" CREATED="1303930781149" MODIFIED="1310842754478" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
@@ -6400,25 +6475,6 @@
 <attribute NAME="Chapter" VALUE="3"/>
 <hook NAME="SummaryNode"/>
 </node>
-<node TEXT="LaTeX formula" FOLDED="true" ID="ID_1750517188" CREATED="1303931890027" MODIFIED="1311406091422" TEXT_SHORTENED="true">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      LaTeX is a method to define the layout of scientific formulas..
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
-</hook>
-<attribute NAME="Chapter" VALUE="3,7"/>
 <node TEXT="Add LaTeX formula..." ID="ID_816429133" CREATED="1266250651984" MODIFIED="1311406091422" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
@@ -6452,6 +6508,27 @@
 </hook>
 <attribute NAME="Chapter" VALUE="3,7"/>
 </node>
+<node TEXT="LaTeX formula" ID="ID_1750517188" CREATED="1303931890027" MODIFIED="1330597924643" TEXT_SHORTENED="true">
+<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      LaTeX is a method to define the layout of scientific formulas..
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="3,7"/>
+<hook NAME="SummaryNode"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="See Internet" ID="ID_1974921327" CREATED="1310061549760" MODIFIED="1312920045876" LINK="http://freeplane.sourceforge.net/wiki/index.php/File:Freeplane_LaTex.mm" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
@@ -6462,7 +6539,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Note" ID="ID_1365598976" CREATED="1303930145801" MODIFIED="1315732441401" TEXT_SHORTENED="true">
+<node TEXT="Note" FOLDED="true" ID="ID_1365598976" CREATED="1303930145801" MODIFIED="1315732441401" TEXT_SHORTENED="true">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <richcontent TYPE="DETAILS">
 
@@ -6506,7 +6583,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
-<node TEXT="Edit note" ID="ID_924676619" CREATED="1266255695750" MODIFIED="1311402835283" TEXT_SHORTENED="true">
+<node TEXT="Edit note in dialog" ID="ID_924676619" CREATED="1266255695750" MODIFIED="1330442583225" TEXT_SHORTENED="true">
 <icon BUILTIN="../EditNoteInDialogAction"/>
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -6547,7 +6624,7 @@
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
 </node>
-<node TEXT="Edit in note panel" FOLDED="true" ID="ID_221910481" CREATED="1298574467254" MODIFIED="1311402835283" COLOR="#663300" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Edit in note panel" ID="ID_221910481" CREATED="1298574467254" MODIFIED="1330597939837" COLOR="#663300" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -6572,6 +6649,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
 <hook NAME="SummaryNode"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="Note" ID="ID_875633710" CREATED="1310843490041" MODIFIED="1311402835283" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
@@ -6602,7 +6680,7 @@
 <node TEXT="Main components" STYLE_REF="MenuGroupLabel" ID="ID_1143096620" CREATED="1315732457858" MODIFIED="1315732504909">
 <hook NAME="SummaryNode"/>
 </node>
-<node TEXT="Undo edit [Undo]" ID="ID_1899055023" CREATED="1310134532663" MODIFIED="1314559496644" TEXT_SHORTENED="true">
+<node TEXT="Undo" ID="ID_1899055023" CREATED="1310134532663" MODIFIED="1330442619059" TEXT_SHORTENED="true">
 <icon BUILTIN="../undo"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -6640,7 +6718,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Redo edit [Redo]" ID="ID_807893197" CREATED="1310134532663" MODIFIED="1314559509888" TEXT_SHORTENED="true">
+<node TEXT="Redo" ID="ID_807893197" CREATED="1310134532663" MODIFIED="1330442630977" TEXT_SHORTENED="true">
 <icon BUILTIN="../redo"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -6657,47 +6735,6 @@
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Select all visible nodes [Select all visible]" ID="ID_166465072" CREATED="1310134532663" MODIFIED="1314559531136" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Selects all nodes visible on the map.</span></font>
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="FirstGroupNode"/>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Select visible branch" ID="ID_1140223878" CREATED="1310134532663" MODIFIED="1311226360018" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Selects all the currently-visible (unfolded) children of the node which is already selected.</span></font>
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Select" ID="ID_222729198" CREATED="1310835972305" MODIFIED="1310886250857">
-<hook NAME="SummaryNode"/>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
 </node>
 <node TEXT="Cut" ID="ID_353410114" CREATED="1310134532663" MODIFIED="1314559544053" TEXT_SHORTENED="true">
@@ -6740,7 +6777,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Copy node (single) [Copy single node]" ID="ID_1302326175" CREATED="1310134532663" MODIFIED="1314559620368" TEXT_SHORTENED="true">
+<node TEXT="Copy node (single)" ID="ID_1302326175" CREATED="1310134532663" MODIFIED="1330442872504" TEXT_SHORTENED="true">
 <icon BUILTIN="../copy_single"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -6759,7 +6796,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Copy node ID" ID="ID_1433358397" CREATED="1310193968260" MODIFIED="1314559657262" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Copy node ID" ID="ID_1433358397" CREATED="1310193968260" MODIFIED="1330024725128" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -6767,7 +6804,22 @@
   </head>
   <body>
     <p>
-      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Gets the internal Node ID of the currently selected node and stores it in the system Clipboard. This advanced feature has, for most purposes, been replaced by the menu command Insert &gt; Add Local Hyperlink.</span></font>
+      <font face="SansSerif, sans-serif" color="#000000">Gets the internal Node ID of the currently selected node and stores it in the system Clipboard. This advanced feature has, for most purposes, been replaced by the menu command Insert &gt; Add Local Hyperlink. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">&#160;It is useful for linking to an node in a different mindmap. In that case the nodeID must be preceded by the (path to) the mindmap and the character &quot;#&quot;, e.g. mymap.mm#particularId. To get the full absolute path and nodeID, see Copi node URI. </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <p>
+      Not every program passes #nodeId to the mindmap. Of course a freeplane mindmap does so. If nodeId is not passed, the mindmap opens but the node is not selected.
     </p>
   </body>
 </html>
@@ -6775,6 +6827,29 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+</node>
+<node TEXT="Copy node URI" STYLE_REF="Method" ID="ID_874062942" CREATED="1330023985952" MODIFIED="1330024987708" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Copy the full, absolute address (pathname/filename.mm#nodeID) of the node. This address can be pasted in a hyperlink in a (different) mindmap or other program to open the mindmap and select the node. To make the address relative in stead of absolute, remove the first part of the pathname, leaving at least the #nodeID (internal node) or mindmapName.mm#nodeID external node in different map in same directory.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <p>
+      Not every program passes #nodeId to the mindmap. Of course a freeplane mindmap does so. If nodeId is not passed, the mindmap opens but the node is not selected.
+    </p>
+  </body>
+</html>
+</richcontent>
 </node>
 </node>
 <node TEXT="Paste" ID="ID_1705754282" CREATED="1310134532663" MODIFIED="1314469475538" TEXT_SHORTENED="true">
@@ -6808,12 +6883,12 @@
 </hook>
 <attribute NAME="Chapter" VALUE="3"/>
 </node>
-<node TEXT="Move and sort" STYLE_REF="Aggregatie als Toelichting" FOLDED="true" ID="ID_999302270" CREATED="1306060121800" MODIFIED="1315732930158" TEXT_SHORTENED="true">
+<node TEXT="Move and sort" STYLE_REF="Aggregatie als Toelichting" ID="ID_999302270" CREATED="1306060121800" MODIFIED="1315732930158" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
-<node TEXT="Move node (Sibling down) [Node Down]" ID="ID_694884995" CREATED="1306059969763" MODIFIED="1314562510376" TEXT_SHORTENED="true">
+<node TEXT="Move node (Sibling down)" ID="ID_694884995" CREATED="1306059969763" MODIFIED="1330442919249" TEXT_SHORTENED="true">
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
@@ -6844,7 +6919,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Move node (Sibling up) [Node Up]" ID="ID_33657896" CREATED="1306059989034" MODIFIED="1314562567191" TEXT_SHORTENED="true">
+<node TEXT="Move node (Sibling up)" ID="ID_33657896" CREATED="1306059989034" MODIFIED="1330442926732" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -6894,7 +6969,7 @@
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="Move node (Parents sibling) [Node Left]" ID="ID_1330098607" CREATED="1306059994859" MODIFIED="1314562619077" TEXT_SHORTENED="true">
+<node TEXT="Move node (Parents sibling)" ID="ID_1330098607" CREATED="1306059994859" MODIFIED="1330442944939" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -6927,7 +7002,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Move node (Siblings child) [Node right]" ID="ID_1588077274" CREATED="1306060092075" MODIFIED="1314562683832" TEXT_SHORTENED="true">
+<node TEXT="Move node (Siblings child)" ID="ID_1588077274" CREATED="1306060092075" MODIFIED="1330442954827" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -6960,8 +7035,19 @@
 </html>
 </richcontent>
 </node>
+<node TEXT="Vertical space between nodes" STYLE_REF="Professional" FOLDED="true" ID="ID_1934584954" CREATED="1324029133997" MODIFIED="1324070292271" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<hook NAME="SummaryNode"/>
+<node TEXT="Theminimal vertical spacing between nodes can be set for all nodes. Keep Ctrl pressed, select a nodes handle (oval)  and move the cursor up/down to change the vertical space for all nodes." ID="ID_801516363" CREATED="1324029189260" MODIFIED="1324070325642" HGAP="-158" VSHIFT="30">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
 </node>
-<node TEXT="Free positioned node (set/reset)" FOLDED="true" ID="ID_572207726" CREATED="1317404199533" MODIFIED="1317903835197">
+</node>
+</node>
+<node TEXT="Free positioned node (set/reset)" STYLE_REF="Method" ID="ID_572207726" CREATED="1317404199533" MODIFIED="1330598022346" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="2"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -7003,6 +7089,7 @@
   </body>
 </html>
 </richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="Limitation" STYLE_REF="ToNote" ID="ID_294060265" CREATED="1321125091078" MODIFIED="1321125210592" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
@@ -7024,7 +7111,7 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="Reset start position [Reset position]" ID="ID_1003048503" CREATED="1306060582988" MODIFIED="1317404357750" TEXT_SHORTENED="true">
+<node TEXT="Reset start position" ID="ID_1003048503" CREATED="1306060582988" MODIFIED="1330442990396" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -7106,7 +7193,7 @@
 </hook>
 <attribute NAME="Chapter" VALUE="9"/>
 </node>
-<node TEXT="Find and Replace..." FOLDED="true" ID="ID_1230019641" CREATED="1310134532663" MODIFIED="1314077819926" TEXT_SHORTENED="true">
+<node TEXT="Find and Replace..." ID="ID_1230019641" CREATED="1310134532663" MODIFIED="1330598041050" TEXT_SHORTENED="true">
 <icon BUILTIN="../NodeListAction"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -7136,6 +7223,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="9"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="Find last modified nodes" ID="ID_1272430146" CREATED="1311098601253" MODIFIED="1314078206993" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
@@ -7233,6 +7321,23 @@
   </body>
 </html>
 </richcontent>
+<node TEXT="New map view" ID="ID_1759737398" CREATED="1330374071971" MODIFIED="1330374272886" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens a copy of the current map with an index number.
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
 <node TEXT="Toolbars" FOLDED="true" ID="ID_1963983857" CREATED="1303929006438" MODIFIED="1311947052465" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
@@ -7740,8 +7845,29 @@
 <node TEXT="Color of whole core" STYLE_REF="MenuGroupLabel" ID="ID_1325673734" CREATED="1321889644374" MODIFIED="1321889740408">
 <hook NAME="SummaryNode"/>
 </node>
-<node TEXT="Template / Format" ID="ID_835341746" CREATED="1321889597815" MODIFIED="1321889693561">
+<node TEXT="Template / Format" ID="ID_835341746" CREATED="1321889597815" MODIFIED="1329424276571" FORMAT="NO_FORMAT">
 <hook NAME="FirstGroupNode"/>
+<node TEXT="Standard" STYLE_REF="OptionalValue" ID="ID_1741429260" CREATED="1329424291216" MODIFIED="1329424534999"/>
+<node TEXT="Text" STYLE_REF="OptionalValue" ID="ID_1270028285" CREATED="1329424298568" MODIFIED="1329424572790"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Disables execution of formula
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="#0,####" STYLE_REF="OptionalValue" ID="ID_1336519812" CREATED="1329424306349" MODIFIED="1329424535008" FORMAT="Text#0,####"/>
+<node TEXT="#,00" STYLE_REF="OptionalValue" ID="ID_1407835038" CREATED="1329424374295" MODIFIED="1329424535012" FORMAT="Text#0,####"/>
+<node TEXT="#" STYLE_REF="OptionalValue" ID="ID_963707448" CREATED="1329424397690" MODIFIED="1329424535015" FORMAT="Text#0,####"/>
+<node TEXT="#,##%" STYLE_REF="OptionalValue" ID="ID_1672350213" CREATED="1329424410271" MODIFIED="1329424535017" FORMAT="Text#0,####"/>
+<node TEXT="d-M-yy" STYLE_REF="OptionalValue" ID="ID_65722678" CREATED="1329424460169" MODIFIED="1329424535019" FORMAT="Text#0,####"/>
+<node TEXT="etc." STYLE_REF="OptionalValue" ID="ID_1181579783" CREATED="1329424487659" MODIFIED="1329424535021" FORMAT="Text#0,####"/>
 </node>
 <node TEXT="Node numbering" ID="ID_716321598" CREATED="1321889611457" MODIFIED="1321889629632"/>
 <node TEXT="Core text" STYLE_REF="MenuGroupLabel" ID="ID_1056392580" CREATED="1321889693546" MODIFIED="1321889750689">
@@ -8858,12 +8984,13 @@
 </node>
 </node>
 </node>
-<node TEXT="Calendar and Attributes" FOLDED="true" ID="ID_1981388225" CREATED="1310720605287" MODIFIED="1311487283381">
+<node TEXT="Calendar and Attributes" ID="ID_1981388225" CREATED="1310720605287" MODIFIED="1330598413923">
 <icon BUILTIN="../AttributesView"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="5"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="Calendar" FOLDED="true" ID="ID_22413267" CREATED="1310720744003" MODIFIED="1311412001798" TEXT_SHORTENED="true" FORMAT="#0.####">
 <icon BUILTIN="icon_not_found"/>
 <icon BUILTIN="../TimeManagementAction"/>
@@ -8934,7 +9061,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Edit Script... [Execute script]" FOLDED="true" ID="ID_252404367" CREATED="1312535206255" MODIFIED="1312535543833" TEXT_SHORTENED="true">
+<node TEXT="Edit Script... [Execute script]" ID="ID_252404367" CREATED="1312535206255" MODIFIED="1330598516993" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="5"/>
 <richcontent TYPE="DETAILS">
 
@@ -8960,6 +9087,7 @@
   </body>
 </html>
 </richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="Reminder triggers script" ID="ID_121096889" CREATED="1312569727978" MODIFIED="1312917319233" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="5"/>
 <richcontent TYPE="DETAILS">
@@ -9048,12 +9176,30 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Remove reminder" FOLDED="true" ID="ID_1320064607" CREATED="1310720836910" MODIFIED="1311405889292">
+<node TEXT="Remind later" ID="ID_760755432" CREATED="1329424755694" MODIFIED="1329424855894" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Remind later a number of minutes to years.
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Remove reminder" ID="ID_1320064607" CREATED="1310720836910" MODIFIED="1330598537382">
 <icon BUILTIN="../ReminderHookAction"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="5"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="" ID="ID_1442797370" CREATED="1312569522171" MODIFIED="1312917331432" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
@@ -9209,7 +9355,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="" ID="ID_1128827136" CREATED="1310841040542" MODIFIED="1312966271019" TEXT_SHORTENED="true">
+<node TEXT="" ID="ID_1128827136" CREATED="1310841040542" MODIFIED="1329425066371" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
 </hook>
@@ -9223,6 +9369,9 @@
   <body>
     <p>
       It is possible to add or edit the attribute of one node at the time.
+    </p>
+    <p>
+      URL's aure automatically recognised.
     </p>
     <p>
       
@@ -9328,7 +9477,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Center selected node" FOLDED="true" ID="ID_1435118166" CREATED="1310134532663" MODIFIED="1311402755021" TEXT_SHORTENED="true">
+<node TEXT="Center selected node" ID="ID_1435118166" CREATED="1310134532663" MODIFIED="1330598573012" TEXT_SHORTENED="true">
 <icon BUILTIN="../CenterSelectedNodeAction"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -9361,6 +9510,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="Scroll/move map" ID="ID_1548435797" CREATED="1311407287938" MODIFIED="1312915841416" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
@@ -9486,7 +9636,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Node core" STYLE_REF="SubMenu" FOLDED="true" ID="ID_1969683729" CREATED="1315733476260" MODIFIED="1316207040623">
+<node TEXT="Node core" STYLE_REF="SubMenu" ID="ID_1969683729" CREATED="1315733476260" MODIFIED="1316207040623">
 <node TEXT="Rectangular selection" ID="ID_1851007191" CREATED="1266247206859" MODIFIED="1310721457822" TEXT_SHORTENED="true">
 <icon BUILTIN="../ShowSelectionAsRectangleAction"/>
 <richcontent TYPE="DETAILS">
@@ -9530,56 +9680,6 @@
   <body>
     <p>
       Toggle between not marking or marking the visibility of formula's by a rectangular, colored surrounding. defaultt is a surrounding.
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
-<node TEXT="Set maximum node width" ID="ID_826769128" CREATED="1288558613969" MODIFIED="1318968910283" TEXT_SHORTENED="true">
-<icon BUILTIN="icon_not_found"/>
-<richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font color="#000000" face="SansSerif, sans-serif">Opens dialog to changes the visibl, maximum width of all nodes in the map, measured in pixels. &#160;Default is 600.&#160; </font>
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <font color="#000000" face="SansSerif, sans-serif"><b>Note </b></font>
-    </p>
-    <ul>
-      <li>
-        <font color="#000000" face="SansSerif, sans-serif">To control the width of a particular node, make shorter lines, use <i>Enter</i>&#160;or <i>Shift + Enter.</i></font>
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Set minimum node width" ID="ID_1836236046" CREATED="1318968674114" MODIFIED="1318968845044" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font color="#000000" face="SansSerif, sans-serif">Opens dialog to changes the minimum visible width of all nodes in the map, measured in pixels. &#160;Default is 600.&#160;&#160;This is used to keep branches lined up</font>
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      
     </p>
   </body>
 </html>
@@ -9736,9 +9836,7 @@
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
-<node TEXT="Icons" STYLE_REF="SubMenu" FOLDED="true" ID="ID_655678719" CREATED="1315733776982" MODIFIED="1316207175762">
-<hook NAME="FirstGroupNode"/>
-<node TEXT="Show icons hierarchically" ID="ID_1929367560" CREATED="1310672205671" MODIFIED="1310726026460" TEXT_SHORTENED="true">
+<node TEXT="Show icons hierarchically" ID="ID_1929367560" CREATED="1310672205671" MODIFIED="1323899309745" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -9755,15 +9853,50 @@
   </body>
 </html>
 </richcontent>
+<hook NAME="FirstGroupNode"/>
 </node>
 <node TEXT="Show intersections of icons" ID="ID_664401378" CREATED="1310672261152" MODIFIED="1310726026460">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
+<node TEXT="Show note icons" ID="ID_1472695653" CREATED="1323899192263" MODIFIED="1330443128674" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Displays a note-icon if the node has a note
+    </p>
+  </body>
+</html>
+</richcontent>
 </node>
-<node TEXT="Icons view" ID="ID_382172833" CREATED="1310672383972" MODIFIED="1310728259721" TEXT_SHORTENED="true">
-<hook NAME="SummaryNode"/>
+<node TEXT="Show icon of attributes" ID="ID_1771820903" CREATED="1323899477512" MODIFIED="1323899595126" TEXT_SHORTENED="true">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Displays icon if the node contains attributes
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Icons view" ID="ID_382172833" CREATED="1310672383972" MODIFIED="1323899286402" TEXT_SHORTENED="true">
 <attribute_layout VALUE_WIDTH="160"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
@@ -9816,6 +9949,7 @@
   </body>
 </html>
 </richcontent>
+<hook NAME="SummaryNode"/>
 </node>
 </node>
 <node TEXT="Minimize node" ID="ID_180063018" CREATED="1319034903387" MODIFIED="1319035575687" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
@@ -9847,7 +9981,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Hide details  [Toggle Details]" ID="ID_734978433" CREATED="1291155323140" MODIFIED="1318607128532" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Hide details" ID="ID_734978433" CREATED="1291155323140" MODIFIED="1330443183598" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -9939,7 +10073,7 @@
 </node>
 <node TEXT="Set width tool tip" ID="ID_383683750" CREATED="1311926079888" MODIFIED="1311926122758" LINK="#ID_215853027"/>
 </node>
-<node TEXT="Display node styles in hover text (tool tip) [Display Node styles in Tool Tip ]" ID="ID_499630441" CREATED="1312541024559" MODIFIED="1314558633541" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Display Node styles in Tool Tip" ID="ID_499630441" CREATED="1312541024559" MODIFIED="1330443234175" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -9964,7 +10098,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT=" Display modification times [Show modification times]" ID="ID_208481180" CREATED="1266247851640" MODIFIED="1314558683898" TEXT_SHORTENED="true">
+<node TEXT=" Display modification times" ID="ID_208481180" CREATED="1266247851640" MODIFIED="1330443254766" TEXT_SHORTENED="true">
 <icon BUILTIN="../kword"/>
 <richcontent TYPE="DETAILS">
 
@@ -9995,7 +10129,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Attributes" STYLE_REF="SubMenu" FOLDED="true" ID="ID_353026241" CREATED="1266249735046" MODIFIED="1315733646581" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Node attributes" STYLE_REF="SubMenu" FOLDED="true" ID="ID_353026241" CREATED="1266249735046" MODIFIED="1330443304428" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -10069,8 +10203,8 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Notes" STYLE_REF="SubMenu" ID="ID_838550014" CREATED="1315733725196" MODIFIED="1315733763620">
-<node TEXT="Display note panel [Note panel]" ID="ID_1073686439" CREATED="1266249699921" MODIFIED="1314558919677" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Notes" STYLE_REF="SubMenu" FOLDED="true" ID="ID_838550014" CREATED="1315733725196" MODIFIED="1315733763620">
+<node TEXT="Display note pane" ID="ID_1073686439" CREATED="1266249699921" MODIFIED="1330443339023" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -10120,7 +10254,7 @@
 </richcontent>
 </node>
 </node>
-<node TEXT=" Note panel position [Note position]" ID="ID_1996327153" CREATED="1266249705546" MODIFIED="1314558983824" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT=" Note panel position" ID="ID_1996327153" CREATED="1266249705546" MODIFIED="1330443347223" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -10279,7 +10413,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
-<node TEXT="Apply style" ID="ID_512501370" CREATED="1291199304490" MODIFIED="1315735285080" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Apply style" FOLDED="true" ID="ID_512501370" CREATED="1291199304490" MODIFIED="1315735285080" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -10405,7 +10539,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Floating node" STYLE_REF="OptionalValue" ID="ID_114978489" CREATED="1319831491288" MODIFIED="1322064098761" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Floating node" STYLE_REF="OptionalValue" ID="ID_114978489" CREATED="1319831491288" MODIFIED="1329227651936" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -10413,7 +10547,7 @@
   </head>
   <body>
     <p>
-      A special style which is automatically applied if you double click a free space of the map. The style is then automatically combined with the Edit &gt; Free posinoned node status.
+      A special style which is automatically applied if you press <i>Control</i>&#160; and click a free space of the map. The style is then automatically combined with the Edit &gt; Free posinoned node status.
     </p>
     <p>
       
@@ -10476,12 +10610,12 @@
 <attribute NAME="Chapter" VALUE="4"/>
 </node>
 </node>
-<node TEXT="Apply  level styles  [Level style]" FOLDED="true" ID="ID_1362134553" CREATED="1310063210078" MODIFIED="1314906927181" TEXT_SHORTENED="true">
+<node TEXT="Automatic layout" FOLDED="true" ID="ID_1362134553" CREATED="1310063210078" MODIFIED="1330611071867" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -10490,6 +10624,15 @@
   <body>
     <p>
       Use or don't use level styles. The nodes automatically get the predefined styles related to their node level.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <p>
+      The predifined number of level styles is 5. It is possible to increase or decrease this number by adding or removing styles in the window that opens after <i>Format &gt; Manage styles &gt; Edit styles....</i>
     </p>
     <p>
       
@@ -10508,38 +10651,39 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="Format of the root node" ID="ID_1512017078" CREATED="1310066376934" MODIFIED="1310849026063" TEXT_SHORTENED="true">
+<node TEXT="for no leaves" STYLE_REF="OptionalValue" ID="ID_1030603587" CREATED="1330463948147" MODIFIED="1330464002202"/>
+<node TEXT="for all nodes" STYLE_REF="OptionalValue" ID="ID_1569605151" CREATED="1330463959886" MODIFIED="1330464002218"/>
+<node TEXT="disabled" STYLE_REF="OptionalValue" ID="ID_1863350006" CREATED="1330463972436" MODIFIED="1330464002218"/>
+<node TEXT="default styles" ID="ID_188699461" CREATED="1330596445994" MODIFIED="1330610917885">
+<hook NAME="SummaryNode"/>
+<node TEXT="Title" ID="ID_912205112" CREATED="1310066388858" MODIFIED="1329423693057" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
-<node TEXT="1. Level Node Format" ID="ID_912205112" CREATED="1310066388858" MODIFIED="1310849082192" TEXT_SHORTENED="true">
+<node TEXT="Heading 1" STYLE_REF="OptionalValue" ID="ID_1521677657" CREATED="1310066388858" MODIFIED="1329423916732" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
-<node TEXT="2. Level Node Format" ID="ID_1521677657" CREATED="1310066388858" MODIFIED="1310849082208" TEXT_SHORTENED="true">
+<node TEXT="Heading 2" ID="ID_1792037977" CREATED="1310066388858" MODIFIED="1329423844256" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
-<node TEXT="3. Level Node Format" ID="ID_1792037977" CREATED="1310066388858" MODIFIED="1310849082208" TEXT_SHORTENED="true">
+<node TEXT="Heading 3" ID="ID_33761254" CREATED="1310066388858" MODIFIED="1329423855359" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
-<node TEXT="4. Level Node Format" ID="ID_33761254" CREATED="1310066388858" MODIFIED="1310849082192" TEXT_SHORTENED="true">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
-</hook>
-</node>
-<node TEXT="5. Level Node Format" ID="ID_730037876" CREATED="1310066388858" MODIFIED="1310849082192" TEXT_SHORTENED="true">
+<node TEXT="Heading 4" ID="ID_730037876" CREATED="1310066388858" MODIFIED="1329423868735" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="Manage styles" STYLE_REF="SubMenu" ID="ID_699990019" CREATED="1315734178011" MODIFIED="1315734321797" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+</node>
+<node TEXT="Manage styles" STYLE_REF="SubMenu" FOLDED="true" ID="ID_699990019" CREATED="1315734178011" MODIFIED="1315734321797" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -11373,10 +11517,11 @@ elements from the styles activated by conditions are copied.</pre>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
 </node>
-<node TEXT="More" STYLE_REF="Aggregatie als Toelichting" FOLDED="true" ID="ID_1132402390" CREATED="1305876789039" MODIFIED="1312920625495" TEXT_SHORTENED="true">
+<node TEXT="More" STYLE_REF="Aggregatie als Toelichting" ID="ID_1132402390" CREATED="1305876789039" MODIFIED="1330597501820" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 <attribute NAME="Chapter" VALUE="4"/>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="Style (and Node template)" ID="ID_1305038685" CREATED="1310847063806" MODIFIED="1311405450198" TEXT_SHORTENED="true">
 <attribute_layout NAME_WIDTH="82" VALUE_WIDTH="156"/>
 <attribute NAME="Chapter" VALUE="4"/>
@@ -11464,10 +11609,48 @@ elements from the styles activated by conditions are copied.</pre>
 </node>
 </node>
 </node>
+<node TEXT="Copy format" ID="ID_165229421" CREATED="1310134532663" MODIFIED="1315728436024" TEXT_SHORTENED="true">
+<icon BUILTIN="../colorpicker"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Copies the formatting of a node, but not the content of the node. SEE ALSO: Paste Format.</span></font>
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Paste format" ID="ID_85344174" CREATED="1310134532663" MODIFIED="1315728444548" TEXT_SHORTENED="true">
+<icon BUILTIN="../color_fill"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Pastes the formatting of a node, but not the contents of the node. SEE ALSO: Copy Format.</span></font>
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
 <node TEXT="Styles" STYLE_REF="MenuGroupLabel" ID="ID_177552803" CREATED="1315735285080" MODIFIED="1315735303691">
 <hook NAME="SummaryNode"/>
 </node>
-<node TEXT="Map Background" ID="ID_1564352042" CREATED="1266252207296" MODIFIED="1311405450557" TEXT_SHORTENED="true">
+<node TEXT="Map Background color" ID="ID_1564352042" CREATED="1266252207296" MODIFIED="1330596604249" TEXT_SHORTENED="true">
 <icon BUILTIN="../MapBackgroundColorAction"/>
 <richcontent TYPE="DETAILS">
 
@@ -12027,12 +12210,17 @@ elements from the styles activated by conditions are copied.</pre>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
 </node>
+<node TEXT="Use plain text" STYLE_REF="Method" ID="ID_437526710" CREATED="1330596697169" MODIFIED="1330596716468"/>
 </node>
-<node TEXT="Add cloud or change style  [Cloud ]" ID="ID_759607649" CREATED="1291193913924" MODIFIED="1315734515861" TEXT_SHORTENED="true">
+<node TEXT="Add cloud or change style" FOLDED="true" ID="ID_759607649" CREATED="1291193913924" MODIFIED="1330596991473" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <hook NAME="FirstGroupNode"/>
+<node TEXT="Arc" STYLE_REF="OptionalValue" ID="ID_1461340368" CREATED="1330596991473" MODIFIED="1330597060932"/>
+<node TEXT="Star" STYLE_REF="OptionalValue" ID="ID_158500016" CREATED="1330597001667" MODIFIED="1330597089573"/>
+<node TEXT="Rectangle" STYLE_REF="OptionalValue" ID="ID_217797528" CREATED="1330597007166" MODIFIED="1330597089573"/>
+<node TEXT="Round rectangle" STYLE_REF="OptionalValue" ID="ID_988146678" CREATED="1330597037344" MODIFIED="1330597089573"/>
 </node>
 <node TEXT="Cloud color" ID="ID_1092192366" CREATED="1266252268093" MODIFIED="1310882979628" TEXT_SHORTENED="true">
 <icon BUILTIN="../Colors24"/>
@@ -12074,7 +12262,7 @@ elements from the styles activated by conditions are copied.</pre>
 <hook NAME="SummaryNode"/>
 <attribute NAME="Chapter" VALUE="4"/>
 </node>
-<node TEXT="Edge styles" FOLDED="true" ID="ID_1001249442" CREATED="1266252322375" MODIFIED="1310882979659" TEXT_SHORTENED="true">
+<node TEXT="Edge styles" FOLDED="true" ID="ID_1001249442" CREATED="1266252322375" MODIFIED="1330597265495" TEXT_SHORTENED="true">
 <hook NAME="FirstGroupNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -12123,11 +12311,12 @@ elements from the styles activated by conditions are copied.</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
-<node TEXT="" FOLDED="true" ID="ID_831160653" CREATED="1288536745875" MODIFIED="1312920791838" STYLE="bubble" TEXT_SHORTENED="true">
+<node TEXT="" ID="ID_831160653" CREATED="1288536745875" MODIFIED="1330597248647" STYLE="bubble" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
 </hook>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="As parent" ID="ID_196205281" CREATED="1310115852702" MODIFIED="1310196222340" TEXT_SHORTENED="true"/>
 <node TEXT="Linear" ID="ID_479844675" CREATED="1288538234095" MODIFIED="1310196222325" HGAP="30" TEXT_SHORTENED="true">
 <edge STYLE="linear" WIDTH="4"/>
@@ -12567,7 +12756,48 @@ elements from the styles activated by conditions are copied.</pre>
 </html>
 </richcontent>
 </node>
-<node TEXT="Goto root  [Move to root ]" ID="ID_1564476202" CREATED="1310134532679" MODIFIED="1315734837791" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Select all visible nodes" ID="ID_166465072" CREATED="1310134532663" MODIFIED="1330598748109" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Selects all nodes visible on the map.</span></font>
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="FirstGroupNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Select visible branch" ID="ID_1140223878" CREATED="1310134532663" MODIFIED="1311226360018" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Selects all the currently-visible (unfolded) children of the node which is already selected.</span></font>
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Select" ID="ID_222729198" CREATED="1310835972305" MODIFIED="1310886250857">
+<hook NAME="SummaryNode"/>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
+</hook>
+</node>
+<node TEXT="Goto root" ID="ID_1564476202" CREATED="1310134532679" MODIFIED="1330598823325" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -12601,7 +12831,7 @@ elements from the styles activated by conditions are copied.</pre>
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Goto node with ID...  [Go to node with ID.. ]" ID="ID_343872144" CREATED="1310191716143" MODIFIED="1315734849491" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Goto node with ID..." ID="ID_343872144" CREATED="1310191716143" MODIFIED="1330598835066" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -12619,7 +12849,7 @@ elements from the styles activated by conditions are copied.</pre>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="Goto previous node  [Previous node]" ID="ID_482454762" CREATED="1310134532679" MODIFIED="1315734858976" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Goto previous node" ID="ID_482454762" CREATED="1310134532679" MODIFIED="1330598868020" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -12648,7 +12878,7 @@ elements from the styles activated by conditions are copied.</pre>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="Goto next node  [Next node]" ID="ID_43445328" CREATED="1310134532679" MODIFIED="1315734869896" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Goto next node" ID="ID_43445328" CREATED="1310134532679" MODIFIED="1330598877364" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -12680,7 +12910,7 @@ elements from the styles activated by conditions are copied.</pre>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="Goto previous node (fold)  [Previous node (fold)]" ID="ID_303327981" CREATED="1310134532679" MODIFIED="1315734878773" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Goto previous node (fold)" ID="ID_303327981" CREATED="1310134532679" MODIFIED="1330598884045" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -12698,7 +12928,7 @@ elements from the styles activated by conditions are copied.</pre>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="Goto next node (fold) [Select next node (fold)]" ID="ID_230717042" CREATED="1310134532679" MODIFIED="1315734889115" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Goto next node (fold)" ID="ID_230717042" CREATED="1310134532679" MODIFIED="1330598891027" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -12756,13 +12986,14 @@ elements from the styles activated by conditions are copied.</pre>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="Selecting nodes" FOLDED="true" ID="ID_1414672331" CREATED="1310828830380" MODIFIED="1312965326328">
+<node TEXT="Selecting nodes" ID="ID_1414672331" CREATED="1310828830380" MODIFIED="1330598906789">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="1,2"/>
 <hook NAME="SummaryNode"/>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="Selecting nodes" FOLDED="true" ID="ID_1403801753" CREATED="1309423158240" MODIFIED="1311402615759" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
@@ -13196,7 +13427,7 @@ elements from the styles activated by conditions are copied.</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
 </hook>
-<node TEXT="Undo filter" ID="ID_619416419" CREATED="1310134532663" MODIFIED="1314077900094" TEXT_SHORTENED="true">
+<node TEXT="Undo filter action" ID="ID_619416419" CREATED="1310134532663" MODIFIED="1330598955866" TEXT_SHORTENED="true">
 <icon BUILTIN="../undo_filter"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -13217,7 +13448,7 @@ elements from the styles activated by conditions are copied.</pre>
 </hook>
 <attribute NAME="Chapter" VALUE="9"/>
 </node>
-<node TEXT="Redo filter" ID="ID_1724296233" CREATED="1310134532663" MODIFIED="1314077912668" TEXT_SHORTENED="true">
+<node TEXT="Redo filter action" ID="ID_1724296233" CREATED="1310134532663" MODIFIED="1330598964228" TEXT_SHORTENED="true">
 <icon BUILTIN="../redo_filter"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -13388,7 +13619,7 @@ elements from the styles activated by conditions are copied.</pre>
 </hook>
 <attribute NAME="Chapter" VALUE="9"/>
 </node>
-<node TEXT="No filtering [No filtering (remove)]" ID="ID_1978139715" CREATED="1310134532663" MODIFIED="1314475726484" TEXT_SHORTENED="true">
+<node TEXT="No filtering" ID="ID_1978139715" CREATED="1310134532663" MODIFIED="1330599001234" TEXT_SHORTENED="true">
 <icon BUILTIN="../remove_filtering"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -13408,7 +13639,7 @@ elements from the styles activated by conditions are copied.</pre>
 </hook>
 <attribute NAME="Chapter" VALUE="9"/>
 </node>
-<node TEXT="Compose filter [Edit filtering]" FOLDED="true" ID="ID_1142884544" CREATED="1310134532663" MODIFIED="1314907116363" TEXT_SHORTENED="true">
+<node TEXT="Compose filter" FOLDED="true" ID="ID_1142884544" CREATED="1310134532663" MODIFIED="1330599010312" TEXT_SHORTENED="true">
 <icon BUILTIN="../edit_filtering_condition"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -13652,12 +13883,13 @@ elements from the styles activated by conditions are copied.</pre>
 </node>
 </node>
 </node>
-<node TEXT="Filter actions" FOLDED="true" ID="ID_214063901" CREATED="1310496676053" MODIFIED="1313955660773">
+<node TEXT="action" ID="ID_214063901" CREATED="1310496676053" MODIFIED="1330599024165">
 <hook NAME="SummaryNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="9"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="Filter Example" ID="ID_662270274" CREATED="1312144688348" MODIFIED="1312964442165" LINK="#_Freeplane_Link_784043927" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
@@ -13695,43 +13927,6 @@ elements from the styles activated by conditions are copied.</pre>
 </html>
 </richcontent>
 <hook NAME="FirstGroupNode"/>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
-</hook>
-<attribute NAME="Chapter" VALUE="9"/>
-</node>
-<node TEXT="Unfold hidden nodes" ID="ID_865947666" CREATED="1310134532663" MODIFIED="1314078123299" TEXT_SHORTENED="true">
-<icon BUILTIN="../unfold_filtered_ancestors"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font face="SansSerif, sans-serif" color="#000000">Expand all nodes in a map that match the filter. This is not a toggle switch: once the nodes are expanded, they can only be collapsed using other commands (such as Filter &gt; Undo, which may be used immediately after this command). </font>
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b><font color="#000000" face="SansSerif, sans-serif">See also</font></b><font color="#000000" face="SansSerif, sans-serif">&#160;</font>
-    </p>
-    <ul>
-      <li>
-        <font color="#000000" face="SansSerif, sans-serif">Navigate &gt; Toggle Folded</font>
-      </li>
-      <li>
-        <font color="#000000" face="SansSerif, sans-serif">Navigate &gt; Fold All</font>
-      </li>
-      <li>
-        <font color="#000000" face="SansSerif, sans-serif">Navigate &gt; Fold One Level.</font>
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -13799,12 +13994,50 @@ elements from the styles activated by conditions are copied.</pre>
 </hook>
 <attribute NAME="Chapter" VALUE="9"/>
 </node>
-<node TEXT="Filter conditions / states" ID="ID_1103140596" CREATED="1310496750715" MODIFIED="1313955674984">
+<node TEXT="Filter conditions / states" ID="ID_1103140596" CREATED="1310496750715" MODIFIED="1330599319677">
 <hook NAME="SummaryNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="9"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="Unfold hidden nodes" ID="ID_865947666" CREATED="1310134532663" MODIFIED="1314078123299" TEXT_SHORTENED="true">
+<icon BUILTIN="../unfold_filtered_ancestors"/>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font face="SansSerif, sans-serif" color="#000000">Expand all nodes in a map that match the filter. This is not a toggle switch: once the nodes are expanded, they can only be collapsed using other commands (such as Filter &gt; Undo, which may be used immediately after this command). </font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b><font color="#000000" face="SansSerif, sans-serif">See also</font></b><font color="#000000" face="SansSerif, sans-serif">&#160;</font>
+    </p>
+    <ul>
+      <li>
+        <font color="#000000" face="SansSerif, sans-serif">Navigate &gt; Toggle Folded</font>
+      </li>
+      <li>
+        <font color="#000000" face="SansSerif, sans-serif">Navigate &gt; Fold All</font>
+      </li>
+      <li>
+        <font color="#000000" face="SansSerif, sans-serif">Navigate &gt; Fold One Level.</font>
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="9"/>
+</node>
 </node>
 <node TEXT="Find previous" ID="ID_132872030" CREATED="1310134532663" MODIFIED="1314078151067" TEXT_SHORTENED="true">
 <icon BUILTIN="../find_previous"/>
@@ -13941,7 +14174,7 @@ elements from the styles activated by conditions are copied.</pre>
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="5"/>
-<node TEXT="Manage time  [Show Calendar...]" FOLDED="true" ID="ID_1104707017" CREATED="1267746559867" MODIFIED="1314563702545" TEXT_SHORTENED="true">
+<node TEXT="Manage time  [Show Calendar...]" ID="ID_1104707017" CREATED="1267746559867" MODIFIED="1330599359394" TEXT_SHORTENED="true">
 <icon BUILTIN="../TimeManagementAction"/>
 <richcontent TYPE="DETAILS">
 
@@ -13972,6 +14205,7 @@ elements from the styles activated by conditions are copied.</pre>
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="5"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="Set year, month and day" STYLE_REF="Method" ID="ID_629838545" CREATED="1310058100675" MODIFIED="1314563773401" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="5"/>
 </node>
@@ -13980,6 +14214,16 @@ elements from the styles activated by conditions are copied.</pre>
 </node>
 <node TEXT="Remind me at this date" STYLE_REF="Method" ID="ID_1905175036" CREATED="1310058020709" MODIFIED="1314563800654" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="5"/>
+</node>
+<node TEXT="Remind later" STYLE_REF="Method" ID="ID_482088279" CREATED="1327336499621" MODIFIED="1329732742890">
+<hook NAME="plugins/TimeManagementReminder.xml">
+    <Parameters REMINDUSERAT="1643041920000" PERIOD="10" UNIT="YEAR"/>
+</hook>
+<node TEXT="minutes" ID="ID_488965894" CREATED="1327336533700" MODIFIED="1327336556251"/>
+<node TEXT="hours" ID="ID_12255581" CREATED="1327336557096" MODIFIED="1327336562998"/>
+<node TEXT="days" ID="ID_1083871034" CREATED="1327336564011" MODIFIED="1327336566509"/>
+<node TEXT="weeks" ID="ID_1691377285" CREATED="1327336567364" MODIFIED="1327336571035"/>
+<node TEXT="years" ID="ID_1891442163" CREATED="1327336571867" MODIFIED="1327336576834"/>
 </node>
 <node TEXT="Remove reminder (time)" STYLE_REF="Method" ID="ID_1600844387" CREATED="1310058040514" MODIFIED="1314563806005" TEXT_SHORTENED="true">
 <attribute NAME="Chapter" VALUE="5"/>
@@ -14068,7 +14312,7 @@ elements from the styles activated by conditions are copied.</pre>
 </node>
 <node TEXT="" ID="ID_517678813" CREATED="1288542096079" MODIFIED="1312919951425" TEXT_SHORTENED="true">
 <hook NAME="plugins/TimeManagementReminder.xml">
-    <Parameters REMINDUSERAT="2077460580480"/>
+    <Parameters REMINDUSERAT="2077460580480" PERIOD="1" UNIT="DAY"/>
 </hook>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
@@ -14078,7 +14322,7 @@ elements from the styles activated by conditions are copied.</pre>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
-<node TEXT="Password protection" FOLDED="true" ID="ID_83654353" CREATED="1303931982176" MODIFIED="1314906861318" TEXT_SHORTENED="true">
+<node TEXT="Password protection" ID="ID_83654353" CREATED="1303931982176" MODIFIED="1314906861318" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
@@ -14124,12 +14368,12 @@ elements from the styles activated by conditions are copied.</pre>
 </html>
 </richcontent>
 <attribute NAME="Chapter" VALUE="8"/>
-<node TEXT="(Un)set protection (encryption) [Toggle encrypted / decrypted]" FOLDED="true" ID="ID_1020968664" CREATED="1266247815921" MODIFIED="1314563873023" TEXT_SHORTENED="true">
+<node TEXT="Enter password" ID="ID_1020968664" CREATED="1266247815921" MODIFIED="1330600393924" TEXT_SHORTENED="true">
 <icon BUILTIN="../lock"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -14143,20 +14387,20 @@ elements from the styles activated by conditions are copied.</pre>
       
     </p>
     <p>
-      <font color="#000000" face="SansSerif, sans-serif"><b>Note</b>&#160;</font>
+      <font face="SansSerif, sans-serif" color="#000000"><b>Note</b>&#160;</font>
     </p>
     <ul>
       <li>
-        <font color="#000000" face="SansSerif, sans-serif">To protect a map, select an protect the root node.</font>
-      </li>
-      <li>
-        <font color="#000000" face="SansSerif, sans-serif">The selected node itself is not protected, its information keeps being displayed and editable.</font>
+        <font face="SansSerif, sans-serif" color="#000000">The selected node itself is not protected, its information keeps being displayed and editable.</font>
       </li>
       <li>
         Multiple layer protection is possible: protect a child of a protected parent with a different password.
       </li>
       <li>
         Closing the map will automatically protect the node (toggle <i>Encrypted</i>).
+      </li>
+      <li>
+        To protect a whole map:&#160;&#160;see<i>&#160;File &gt; New protected map.</i>
       </li>
     </ul>
     <p>
@@ -14171,9 +14415,11 @@ elements from the styles activated by conditions are copied.</pre>
 </html>
 </richcontent>
 <attribute NAME="Chapter" VALUE="8"/>
-<node TEXT="" FOLDED="true" ID="ID_1494824963" CREATED="1312920011445" MODIFIED="1312920034379">
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="" ID="ID_1494824963" CREATED="1312920011445" MODIFIED="1330599561945">
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
-<node TEXT="" ENCRYPTED_CONTENT="/xWFGOIZ0dg= gT0iwj5Mr9ZIUJGRpaqO8Htqqrsf2WP03ZNL+++X2kTszPq0YnO2ZeUGmygvV6OwMQ0CXGau4qbnLlt5ODSMosrdy5dZ6ZqDB4hELxsH/uvBkCIhukwfQA7ExofI6u2MbKWGXK/WWJ5cB+65yJVcWqjeLTsDYwNc4stftw3OcVG4ui/40qfkmCCuSemvAOV2sNjrxV5qyDnwzJWVCS0VtwHzUeDKlKRPNz08FmIdhXWpX3YtWYhIn7CLC9rzh9OI" ID="ID_866287848" CREATED="1312574380161" MODIFIED="1312781542844" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="" ENCRYPTED_CONTENT="/xWFGOIZ0dg= gT0iwj5Mr9ZIUJGRpaqO8Htqqrsf2WP03ZNL+++X2kTszPq0YnO2ZeUGmygvV6OwMQ0CXGau4qbnLlt5ODSMosrdy5dZ6ZqDB4hELxsH/uvBkCIhukwfQA7ExofI6u2MbKWGXK/WWJ5cB+65yJVcWqjeLTsDYwNc4stftw3OcVG4ui/40qfkmCCuSemvAOV2sNjrxV5qyDnwzJWVCS0VtwHzUeDKlKRPNz08FmIdhXWpX3YtWYhIn7CLC9rzh9OI" ID="ID_866287848" CREATED="1312574380161" MODIFIED="1330600318670" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -14194,7 +14440,7 @@ elements from the styles activated by conditions are copied.</pre>
     </p>
     <ul>
       <li>
-        Select <i>Toggle Encrypted </i>and enter password <i>freeplane </i>
+        Select <i>Enter password&#160;and </i>enter password <i>freeplane </i>
       </li>
       <li>
         See that I have two child nodes.
@@ -14207,8 +14453,9 @@ elements from the styles activated by conditions are copied.</pre>
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="8"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 </node>
-<node TEXT="Encryption" ID="ID_1331695196" CREATED="1312694750646" MODIFIED="1312781542844" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Encryption" ID="ID_1331695196" CREATED="1312694750646" MODIFIED="1330600482642" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -14216,7 +14463,7 @@ elements from the styles activated by conditions are copied.</pre>
   </head>
   <body>
     <p>
-      Toggle encryption does not function when published (Java Applet)
+      Does not funtion when published as Java Applet ?)
     </p>
   </body>
 </html>
@@ -14228,7 +14475,7 @@ elements from the styles activated by conditions are copied.</pre>
 </node>
 </node>
 </node>
-<node TEXT="Remove protection (encryption) [Remove encryption]" ID="ID_136268743" CREATED="1303932060947" MODIFIED="1314563925002" TEXT_SHORTENED="true">
+<node TEXT="Remove password" ID="ID_136268743" CREATED="1303932060947" MODIFIED="1330599890135" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -14248,7 +14495,21 @@ elements from the styles activated by conditions are copied.</pre>
 <attribute NAME="Chapter" VALUE="8"/>
 </node>
 </node>
-<node TEXT="Assign short cut" ID="ID_764902206" CREATED="1271849865669" MODIFIED="1311405939493" TEXT_SHORTENED="true">
+<node TEXT="Add-ons" STYLE_REF="Method" ID="ID_100406395" CREATED="1319034423088" MODIFIED="1330600557725" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Freeplane is extensible via add-ons, packages that can be downloaded from a central locations and that provide some non-standard functionality. See<a href="http://freeplane.sourceforge.net/wiki/index.php/Add-ons">&#160;wiki</a>.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Assign hot key" ID="ID_764902206" CREATED="1271849865669" MODIFIED="1330600819992" TEXT_SHORTENED="true">
 <icon BUILTIN="../SetAcceleratorOnNextClickAction"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -14403,8 +14664,9 @@ elements from the styles activated by conditions are copied.</pre>
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="8"/>
-<node TEXT="" FOLDED="true" ID="ID_1466182220" CREATED="1312921094954" MODIFIED="1312921114922">
+<node TEXT="" ID="ID_1466182220" CREATED="1312921094954" MODIFIED="1330600843424">
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="Short cut or hot key" ID="ID_812201013" CREATED="1310823944773" MODIFIED="1311405939571" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
@@ -14465,7 +14727,7 @@ elements from the styles activated by conditions are copied.</pre>
 </richcontent>
 <attribute NAME="Chapter" VALUE="8"/>
 </node>
-<node TEXT="Unassigned F-keys" STYLE_REF="ToNote" FOLDED="true" ID="ID_572257004" CREATED="1313323930393" MODIFIED="1313324020030" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Unassigned F-keys" STYLE_REF="ToNote" ID="ID_572257004" CREATED="1313323930393" MODIFIED="1330600871238" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -14476,6 +14738,7 @@ elements from the styles activated by conditions are copied.</pre>
   </body>
 </html>
 </richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node ID="ID_1243435937" CREATED="1313324062197" MODIFIED="1313324062197" LINK="https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4652076"><richcontent TYPE="NODE">
 
 <html>
@@ -14490,6 +14753,24 @@ elements from the styles activated by conditions are copied.</pre>
 </node>
 </node>
 </node>
+</node>
+<node TEXT="Scripts" ID="ID_1890181858" CREATED="1267746871633" MODIFIED="1330601031029" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span style="color: #000000; font-family: SansSerif, sans-serif"><font color="#000000" face="SansSerif, sans-serif">Displays a hierarchical menu of Groovy scripts which have been added to the user's scripts directory.</font></span>
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<attribute NAME="Chapter" VALUE="7"/>
 </node>
 <node TEXT="Execute selected node scripts" ID="ID_894921324" CREATED="1266247915812" MODIFIED="1311405964531" TEXT_SHORTENED="true">
 <icon BUILTIN="../ExecuteScriptForSelectionAction"/>
@@ -14531,7 +14812,7 @@ elements from the styles activated by conditions are copied.</pre>
 </hook>
 <attribute NAME="Chapter" VALUE="7"/>
 </node>
-<node TEXT="Edit script... [Script editor .]." ID="ID_1785517002" CREATED="1310737755450" MODIFIED="1314907189902">
+<node TEXT="Edit script..." ID="ID_1785517002" CREATED="1310737755450" MODIFIED="1330600989047">
 <icon BUILTIN="../ScriptEditor"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -14551,39 +14832,7 @@ elements from the styles activated by conditions are copied.</pre>
 </hook>
 <attribute NAME="Chapter" VALUE="7"/>
 </node>
-<node TEXT="Add-ons" ID="ID_100406395" CREATED="1319034423088" MODIFIED="1319045515157"><richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Freeplane is extensible via add-ons, packages that can be downloaded from a central locations and that provide some non-standard functionality. See<a href="http://freeplane.sourceforge.net/wiki/index.php/Add-ons">&#160;wiki</a>.
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
-<node TEXT="Available scripts [Scripts]" ID="ID_1890181858" CREATED="1267746871633" MODIFIED="1314907221289" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <span style="color: #000000; font-family: SansSerif, sans-serif"><font color="#000000" face="SansSerif, sans-serif">Displays a hierarchical menu of Groovy scripts which have been added to the user's scripts directory.</font></span>
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
-</hook>
-<attribute NAME="Chapter" VALUE="7"/>
-</node>
-<node TEXT="Formulas..." STYLE_REF="Functie" FOLDED="true" ID="ID_394104724" CREATED="1291201976731" MODIFIED="1311405964578" BACKGROUND_COLOR="#ffffff"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Formulas..." STYLE_REF="Functie" ID="ID_394104724" CREATED="1291201976731" MODIFIED="1311405964578" BACKGROUND_COLOR="#ffffff"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -15069,7 +15318,7 @@ elements from the styles activated by conditions are copied.</pre>
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="1,3,4,6,7,8"/>
-<node TEXT="Environment" FOLDED="true" ID="ID_1029291913" CREATED="1310756725581" MODIFIED="1311405939587">
+<node TEXT="Environment" ID="ID_1029291913" CREATED="1310756725581" MODIFIED="1311405939587">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
@@ -15236,7 +15485,17 @@ elements from the styles activated by conditions are copied.</pre>
 </hook>
 </node>
 </node>
-<node TEXT="Maximum number of displayed nodes" STYLE_REF="Method" FOLDED="true" ID="ID_1905038356" CREATED="1310757621062" MODIFIED="1312921337652">
+<node TEXT="Maximum number of displayed nodes" STYLE_REF="Method" FOLDED="true" ID="ID_1905038356" CREATED="1310757621062" MODIFIED="1329504807645" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    &gt;you can define how many nodes you want to see and the Freeplane unfolds them automatically and lets the rest folded.&#160;&#160;The property is actice only if &quot;On load&quot; is set to &quot;Fold all&quot; or &quot;Load from map or fold all
+  </body>
+</html>
+</richcontent>
 <node TEXT="20" ID="ID_1759313322" CREATED="1311710082273" MODIFIED="1311711208708">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -16663,6 +16922,34 @@ elements from the styles activated by conditions are copied.</pre>
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="1"/>
+</node>
+<node TEXT="Documentation Map Online" ID="ID_566454554" CREATED="1323898504458" MODIFIED="1330615901056" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens documentation from Internet. This gives the most recent information.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Key reference" ID="ID_711310932" CREATED="1330601996542" MODIFIED="1330602039803" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Overview of hot keys / short cuts
+    </p>
+  </body>
+</html>
+</richcontent>
 </node>
 <node TEXT="Scripting API" ID="ID_1515623567" CREATED="1303933416063" MODIFIED="1310883900178">
 <hook NAME="NodeConditionalStyles">
