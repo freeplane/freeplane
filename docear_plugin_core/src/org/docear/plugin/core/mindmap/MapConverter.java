@@ -41,24 +41,29 @@ public class MapConverter implements IMapConverter {
 	}
 	
 	public static boolean convert(final List<MapModel> maps){
-		if(maps == null || maps.size() <= 0) return false;
-		currentlyConverting = true;
-		MindmapUpdateController mindmapUpdateController = new MindmapUpdateController();
-		mindmapUpdateController.addMindmapUpdater(new AnnotationModelUpdater(TextUtils.getText("MapConverter.0"))); //$NON-NLS-1$		
-		fireConvertMapsEvent(mindmapUpdateController);
-		//mindmapUpdateController.addMindmapUpdater(new MindmapLinkTypeUpdater("Converting hyperlinks...."));
-		if(mindmapUpdateController.updateMindmapsInList(maps)){
-			for(MapModel map : maps){				
-				DocearMapModelController.setModelWithCurrentVersion(map);				
-				map.setSaved(false);
-				map.setReadOnly(false);
-				((MFileManager) UrlManager.getController()).save(map, false);
+		try{
+			if(maps == null || maps.size() <= 0) return false;
+			currentlyConverting = true;
+			MindmapUpdateController mindmapUpdateController = new MindmapUpdateController();
+			mindmapUpdateController.addMindmapUpdater(new AnnotationModelUpdater(TextUtils.getText("MapConverter.0"))); //$NON-NLS-1$		
+			fireConvertMapsEvent(mindmapUpdateController);
+			//mindmapUpdateController.addMindmapUpdater(new MindmapLinkTypeUpdater("Converting hyperlinks...."));
+			if(mindmapUpdateController.updateMindmapsInList(maps)){
+				for(MapModel map : maps){				
+					DocearMapModelController.setModelWithCurrentVersion(map);				
+					map.setSaved(false);
+					map.setReadOnly(false);
+					((MFileManager) UrlManager.getController()).save(map, false);
+				}
+				currentlyConverting = false;
+				return true;
 			}
 			currentlyConverting = false;
-			return true;
+			return false;
 		}
-		currentlyConverting = false;
-		return false;
+		finally{
+			System.gc();
+		}
 	}
 
 	public static boolean currentlyConverting; 

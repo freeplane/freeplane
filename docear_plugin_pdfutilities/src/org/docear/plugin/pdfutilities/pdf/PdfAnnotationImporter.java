@@ -98,8 +98,8 @@ public class PdfAnnotationImporter implements IAnnotationImporter {
 			return annotations;
 		} finally {
 			if(document != null){				
-				document.close();
-				document = null;
+				document.close();				
+				document = null;				
 			}
 		}
         
@@ -186,7 +186,6 @@ public class PdfAnnotationImporter implements IAnnotationImporter {
 		File file = Tools.getFilefromUri(Tools.getAbsoluteUri(uri, map));
 		
 		FileLocator locator = new FileLocator(file);
-		
 		PDDocument document = PDDocument.createFromLocator(locator);
 		return document;
 	}

@@ -118,9 +118,9 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 		} catch (Exception e){
 			LogUtils.warn(e);
 			LogUtils.warn("===================================="); //$NON-NLS-1$
-			LogUtils.warn(e.getCause());
-			
-		}			
+			LogUtils.warn(e.getCause());			
+		}
+		System.gc();
 	}
 	
 	public static SwingWorker<Map<AnnotationID, Collection<IAnnotation>>, AnnotationModel[]> getMonitoringThread(final List<NodeModel> targets){

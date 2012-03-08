@@ -41,7 +41,8 @@ public class ImportAllChildAnnotationsAction extends ImportAnnotationsAction {
 			PdfAnnotationImporter importer = new PdfAnnotationImporter();    
 			URI uri = Tools.getAbsoluteUri(selected);
 			try {
-				AnnotationModel annotation = importer.searchAnnotation(uri, selected);				          
+				AnnotationModel annotation = importer.searchAnnotation(uri, selected);		
+				System.gc();
                 NodeUtils.insertChildNodesFrom(annotation.getChildren(), selected.isLeft(), selected);
 			} catch (Exception e) {
 				LogUtils.severe("ImportAllChildAnnotationsAction Exception at URI("+uri+"): ", e); //$NON-NLS-1$ //$NON-NLS-2$

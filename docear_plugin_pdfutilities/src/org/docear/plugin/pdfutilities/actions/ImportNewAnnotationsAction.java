@@ -57,7 +57,7 @@ public class ImportNewAnnotationsAction extends ImportAnnotationsAction {
 					ImportConflictDialog dialog = new ImportConflictDialog(Controller.getCurrentController().getViewController().getJFrame(), conflicts);
 					dialog.showDialog();
 				}
-				
+				System.gc();
                 NodeUtils.insertNewChildNodesFrom(annotations, selected.isLeft(), selected, selected);
 			} catch (IOException e) {
 				LogUtils.severe("ImportAllAnnotationsAction IOException at URI("+uri+"): ", e); //$NON-NLS-1$ //$NON-NLS-2$
