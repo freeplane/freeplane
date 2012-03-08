@@ -353,8 +353,9 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 
 	private void init() {
 		macOSXRegistration();
-
-		UIManager.put("FileChooser.readOnly", Globals.prefs.getBoolean("filechooserDisableRename"));
+		if(this.isTopLevel){
+			UIManager.put("FileChooser.readOnly", Globals.prefs.getBoolean("filechooserDisableRename"));
+		}
 
 		MyGlassPane glassPane = new MyGlassPane();
 		frame.setGlassPane(glassPane);
