@@ -131,9 +131,7 @@ public class PropertyAction extends AFreeplaneAction {
 		dialog.setVisible(true);
 	}
 
+	@Override
     public void afterMapChange(final Object newMap) {  
-        if (!isEnabled()) {
-            setEnabled(true);
-        }  
     }
 }
