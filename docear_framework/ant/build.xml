@@ -220,7 +220,11 @@
 	        </antcall>
 	    </target>
 
-    <target name="build_docear_bibtex" unless="skip_bibtex">
+    <target name="prepare_jabref">
+        <ant antfile="${workspace}/Jabref_Beta_2_7_Docear/build.xml" target="jars" dir="${workspace}/Jabref_Beta_2_7_Docear" inheritAll="false"/>
+    </target>
+
+    <target name="build_docear_bibtex" unless="skip_bibtex" depends="prepare_jabref">
         <antcall target="makePlugin" inheritall="false">
             <param name="anttarget" value="dist"/>
             <param name="targetdir" value="plugins"/>
