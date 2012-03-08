@@ -1,4 +1,7 @@
 ===============================
+1.2.13 beta
+===============================
+===============================
 1.2.12 beta
 ===============================
 All documentation maps displayed in MindMapMode
@@ -20,7 +23,8 @@ Automatic recognition of URLs in attributes
 Command line arguments allow batch execution of menu items
 Remind later feature
 Pan the map with Ctrl+Shift+Cursor up/down/left/right
-Inline editor starts on Ctrl + mouse click (META  on Mac OS) instead of double click
+Inline editor and detail editor start on Ctrl + mouse click (META  on Mac OS) instead of double click
+Control (META on Mac OS) should be held for creating free nodes
 
 ===============================
 1.2.11 beta

@@ -2,16 +2,24 @@ package org.docear.plugin.pdfutilities.listener;
 
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.features.IAnnotation;
 import org.docear.plugin.core.features.IAnnotation.AnnotationType;
+import org.docear.plugin.core.logger.DocearLogEvent;
 import org.docear.plugin.core.util.CoreUtils;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
@@ -27,6 +35,7 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.view.swing.map.MainView;
 
 import de.intarsys.pdf.parser.COSLoadException;
@@ -34,11 +43,11 @@ import de.intarsys.pdf.parser.COSLoadException;
 public class DocearNodeMouseMotionListener implements IMouseListener {
 
 	private IMouseListener mouseListener;	
-	private boolean wasFocused;
+	private boolean wasFocused;	
 
 	public DocearNodeMouseMotionListener(IMouseListener mouseListener) {
-		this.mouseListener = mouseListener;		
-	}
+		this.mouseListener = mouseListener;	
+	}	
 
 	public void mouseDragged(MouseEvent e) {
 		this.mouseListener.mouseDragged(e);
@@ -105,11 +114,11 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 
 			if (annotation == null || annotation.getPage() == null) {
 				//Controller.exec(getExecCommandMacOs(readerPath, uri, 1));
-				runAppleScript(uri, 1);
+				runAppleScript(readerPath, uri, 1);
 				return;
 			}
 			else {
-				runAppleScript(uri, annotation.getPage());
+				runAppleScript(readerPath, uri, annotation.getPage());
 				//Controller.exec(getExecCommandMacOs(readerPath, uri, annotation));
 				return;
 			}
@@ -127,28 +136,46 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 		
 	}
 
-	private void runAppleScript(URI uri, int i) throws ScriptException {	    	    	
-    	String script = "set pdfPath to POSIX file \""+Tools.getFilefromUri(uri).getAbsolutePath()+"\"\n" +
-						"tell application \"Adobe Acrobat Pro\"\n" +
-							"open pdfPath\n" +
-							"set frontmost to true\n" +							
-							"repeat with currentDocument in documents\n" +								
-								"if file alias of currentDocument as string is equal to pdfPath as string then\n" +										
-									//"bring to front currentDocument\n" +
-									"tell currentDocument\n" +
-										"tell every PDF Window\n" +											
-											"goto page "+ i +"\n" +
-										"end tell\n" +
-									"end tell\n" +
-								"end if\n" +
-							"end repeat\n" +
-						"end tell\n";    	
+	private void runAppleScript(String readerPath, URI fileUri, int page) throws ScriptException, URISyntaxException, IOException {	    	    	
+    	File reader = new File(readerPath);
+    	StringBuilder builder = new StringBuilder();
+    	builder.append("global pdfPath\n");
+    	builder.append("global page\n");
+    	builder.append("set pdfPath to POSIX file \""+Tools.getFilefromUri(fileUri).getAbsolutePath()+"\"\n");
+    	builder.append("set page to "+ page +" as text\n");
+    	if(reader.exists() && reader.getAbsolutePath().endsWith(".app")){
+    		builder.append("set pdfReaderPath to \""+reader.getAbsolutePath()+"\"\n\n");
+    	}
+    	else{
+    		builder.append("set pdfReaderPath to null\n\n");
+    	}
+    	
+    	URL url = PdfUtilitiesController.class.getResource("OpenOnPageScript.txt");
+    	if (url != null) {    		
+            InputStream input = url.openStream();
+    		try{	    		
+	            BufferedReader inStream = new BufferedReader(new InputStreamReader(input));
+	            String inputLine;
+	
+	            while ((inputLine = inStream.readLine()) != null) {
+	            	builder.append(inputLine + "\n");
+	            }
+    		}
+    		finally{
+    			input.close();
+    		}
+        }
+    	else{
+    		throw new IOException("Could not read applescript file.");
+    	}
     	final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
         Thread.currentThread().setContextClassLoader(null);
+       
         ScriptEngineManager mgr = new ScriptEngineManager();
     	ScriptEngine engine = mgr.getEngineByName("AppleScript");
+    	
         Thread.currentThread().setContextClassLoader(contextClassLoader);    	
-		engine.eval(script);		
+		engine.eval(builder.toString());		
 		LogUtils.info("Successfully ran apple script");
 	}
 
@@ -177,7 +204,10 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 				node = modeController.getMapController().getSelectedNode();
 			}
 			
-			if (!component.isInFollowLinkRegion(e.getX()) || !NodeUtils.isPdfLinkedNode(node)) {
+			if (component.isInFollowLinkRegion(e.getX())) {
+				writeToLog(node);
+			}
+			if (!component.isInFollowLinkRegion(e.getX()) || !NodeUtils.isPdfLinkedNode(node)) {				
 				this.mouseListener.mouseClicked(e);
 				return;
 			}
@@ -280,6 +310,24 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 		}
 		else {
 			this.mouseListener.mouseClicked(e);
+		}
+	}
+
+	private void writeToLog(NodeModel node) {
+		URI uri = Tools.getAbsoluteUri(node);
+		if (uri.getScheme().equals("file")) {
+			File f = WorkspaceUtils.resolveURI(uri);
+			//if map file is opened, then there is a MapLifeCycleListener Event
+			if (!f.getName().endsWith(".mm")) {
+				DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.FILE_OPENED,  f);
+			}
+		}
+		else {					
+			try {
+				DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.OPEN_URL, uri.toURL());
+			} catch (MalformedURLException ex) {						
+				LogUtils.warn(ex);
+			}
 		}
 	}
 

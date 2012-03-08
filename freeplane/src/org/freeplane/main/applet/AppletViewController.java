@@ -116,7 +116,7 @@ class AppletViewController extends ViewController {
 				initialMapName = documentBase.toString();
 			}
 			catch (final Exception e) {
-				UITools.errorMessage(TextUtils.getText("url_load_error") + " " + initialMapName);
+				UITools.errorMessage(TextUtils.format("map_load_error", initialMapName));
 				System.err.println(e);
 				return;
 			}

@@ -23,7 +23,8 @@ public class UpdateMonitoringFolderAction extends AbstractMonitoringAction{
 
 	public void actionPerformed(ActionEvent e) {
 		List<NodeModel> list = new ArrayList<NodeModel>();
-		list.add(Controller.getCurrentController().getSelection().getSelected());		
+		NodeModel node = Controller.getCurrentController().getSelection().getSelected(); 
+		list.add(node);
 		UpdateMonitoringFolderAction.updateNodesAgainstMonitoringDir(list, true);
 	}
 

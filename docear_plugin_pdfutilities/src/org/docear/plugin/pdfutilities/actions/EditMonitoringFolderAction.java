@@ -1,12 +1,15 @@
 package org.docear.plugin.pdfutilities.actions;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFileChooser;
 
+import org.docear.plugin.core.DocearController;
+import org.docear.plugin.core.logger.DocearLogEvent;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
@@ -30,7 +33,7 @@ public class EditMonitoringFolderAction extends AbstractMonitoringAction {
 
 	public void actionPerformed(ActionEvent e) {
 		JFileChooser fileChooser;
-		Object value = NodeUtils.getAttributeValue(Controller.getCurrentController().getSelection().getSelected(), PdfUtilitiesController.MON_INCOMING_FOLDER);
+		Object value = NodeUtils.getPdfDirFromMonitoringNode((Controller.getCurrentController().getSelection().getSelected()));
 		if(value != null){
 			fileChooser = new JFileChooser(Tools.getFilefromUri(Tools.getAbsoluteUri((URI)value)));
 		}
@@ -41,7 +44,8 @@ public class EditMonitoringFolderAction extends AbstractMonitoringAction {
 		fileChooser.setDialogTitle(TextUtils.getText("AddMonitoringFolderAction_dialog_title")); //$NON-NLS-1$
 		int result = fileChooser.showOpenDialog(Controller.getCurrentController().getViewController().getJFrame());
         if(result == JFileChooser.APPROVE_OPTION){
-        	URI pdfDir = MLinkController.toLinkTypeDependantURI(Controller.getCurrentController().getMap().getFile(), fileChooser.getSelectedFile());
+        	File f = fileChooser.getSelectedFile();
+        	URI pdfDir = MLinkController.toLinkTypeDependantURI(Controller.getCurrentController().getMap().getFile(), f);
         	fileChooser.setDialogTitle(TextUtils.getText("AddMonitoringFolderAction_dialog_title_mindmaps")); //$NON-NLS-1$
         	result = fileChooser.showOpenDialog(Controller.getCurrentController().getViewController().getJFrame());
         	if(result == JFileChooser.APPROVE_OPTION){
@@ -50,9 +54,11 @@ public class EditMonitoringFolderAction extends AbstractMonitoringAction {
         		NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_INCOMING_FOLDER, pdfDir);
         		NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_MINDMAP_FOLDER, mindmapDir);
         		List<NodeModel> list = new ArrayList<NodeModel>();
-        		list.add(Controller.getCurrentController().getSelection().getSelected());	
+        		list.add(Controller.getCurrentController().getSelection().getSelected());
+        		
+        		DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.MONITORING_FOLDER_EDIT, f);
         		AddMonitoringFolderAction.updateNodesAgainstMonitoringDir(list, true);
-        	}   		
+        	}
         }
 	}
 
