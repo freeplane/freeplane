@@ -29,7 +29,7 @@ public class DocearQuitAction extends QuitAction {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	public void actionPerformed(ActionEvent e) {
-		DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.APPLICATION_CLOSED);
+		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.APPLICATION_CLOSED);
 		LogUtils.info("saving all docear components ...");
 	}
 }

@@ -33,7 +33,7 @@ public class DeleteMonitoringFolderAction extends AbstractMonitoringAction {
 		}
 		
 		NodeUtils.removeMonitoringEntries(selected);
-		DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.MONITORING_FOLDER_REMOVE, folder);
+		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.MONITORING_FOLDER_REMOVE, folder);
 				
 	}
 

@@ -25,7 +25,7 @@ public enum DocearLogEvent {
 	SHOW_HELP (404),
 	//SHOW_CONTACT_AND_FEEDBACK (405),
 	//IMPORT_BOOKMARS (406),
-	//ADD_REFERENCE (407),
+	//ADD_REFERENCE (407), // --> References
 	
 	MONITORING_FOLDER_ADD (412),
 	MONITORING_FOLDER_REMOVE (413),
@@ -42,7 +42,20 @@ public enum DocearLogEvent {
 	OS_OPERATING_SYSTEM (502),
 	OS_LANGUAGE_CODE (503),
 	OS_COUNTRY_CODE (504),
-	OS_TIME_ZONE (505);
+	OS_TIME_ZONE (505),
+	
+	//References
+	RM_CHANGE_BIBTEX_FILE (601), //eventdata: <filename>;<number of references>
+	RM_ENTRY_ADD (602),
+	RM_ENTRY_CHANGE (603),
+	RM_ENTRY_DELETE (604),
+	
+	DE_MINDMAP_UPDATE (621),
+	DE_ENTRY_ADD (622),
+	DE_CHANGE_ENTRY (623),
+	DE_ENTRY_DELETE (624),
+	DE_COPY_REFERENCE_KEY (625);
+	
 	private final int id;
 	
 	DocearLogEvent(int id) {

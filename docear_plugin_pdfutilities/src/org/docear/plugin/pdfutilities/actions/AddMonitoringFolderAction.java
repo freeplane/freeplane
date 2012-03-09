@@ -73,7 +73,7 @@ public class AddMonitoringFolderAction extends AbstractMonitoringAction {
         		list.add(Controller.getCurrentController().getSelection().getSelected());	
         		AddMonitoringFolderAction.updateNodesAgainstMonitoringDir(list, true);
         	//}
-        	DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.MONITORING_FOLDER_ADD, f);
+        	DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.MONITORING_FOLDER_ADD, f);
         }
 		
 	}	
