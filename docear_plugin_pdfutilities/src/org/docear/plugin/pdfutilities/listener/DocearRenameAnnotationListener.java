@@ -27,6 +27,7 @@ public class DocearRenameAnnotationListener implements INodeChangeListener {
 			if(annotation != null && annotation.getAnnotationType() != null && !annotation.getAnnotationType().equals(AnnotationType.PDF_FILE)){
 				try {
 					new PdfAnnotationImporter().renameAnnotation(annotation, event.getNewValue().toString());
+					System.gc();
 				} catch (IOException e) {
 					if(e.getMessage().equals("destination is read only")){ //$NON-NLS-1$
 						Object[] options = { TextUtils.getText("DocearRenameAnnotationListener.1"), TextUtils.getText("DocearRenameAnnotationListener.2"),TextUtils.getText("DocearRenameAnnotationListener.3") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

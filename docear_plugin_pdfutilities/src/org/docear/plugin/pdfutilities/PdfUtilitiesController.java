@@ -8,7 +8,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Properties;
 
 import javax.swing.JMenu;
@@ -62,6 +64,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -205,10 +208,10 @@ public class PdfUtilitiesController extends ALanguageController{
 				builder.addAction(monitoringCategory + MONITORING_MENU, updateMonitoringFolderAction, MenuBuilder.AS_CHILD);
 				builder.addAction(monitoringCategory + MONITORING_MENU, deleteMonitoringFolderAction, MenuBuilder.AS_CHILD);
 				
-				JMonitoringMenu settingsMenu1 = new JMonitoringMenu("Settings"); //$NON-NLS-1$
-				JMonitoringMenu settingsMenu2 = new JMonitoringMenu("Settings"); //$NON-NLS-1$
-				modecontroller.getMapController().addNodeSelectionListener(settingsMenu1);
-				modecontroller.getMapController().addNodeSelectionListener(settingsMenu2);
+				JMonitoringMenu settingsMenu1 = new JMonitoringMenu("Settings", modeController); //$NON-NLS-1$
+				JMonitoringMenu settingsMenu2 = new JMonitoringMenu("Settings", modeController); //$NON-NLS-1$
+				//modecontroller.getMapController().addNodeSelectionListener(settingsMenu1);
+				//modecontroller.getMapController().addNodeSelectionListener(settingsMenu2);
 				
 				builder.addMenuItem(monitoringCategory + MONITORING_MENU, settingsMenu1, monitoringCategory + MONITORING_MENU + SETTINGS_MENU,
 						MenuBuilder.AS_CHILD);
@@ -399,12 +402,18 @@ public class PdfUtilitiesController extends ALanguageController{
 			public void handleEvent(DocearEvent event) {
 				if(event.getType().equals(DocearEventType.NEW_INCOMING)){
 					MapModel map = (MapModel)event.getEventObject();
+					boolean isMonitoringNode = NodeUtils.isMonitoringNode(map.getRootNode());
 					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_INCOMING_FOLDER, CoreConfiguration.DOCUMENT_REPOSITORY_PATH);
 					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_MINDMAP_FOLDER, CoreConfiguration.LIBRARY_PATH);
 					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_AUTO, 2);
 					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_SUBDIRS, 2);
 					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_FLATTEN_DIRS, 0);
 					DocearMapModelController.getModel(map).setType(DocearMapType.incoming);
+					if(!isMonitoringNode){
+						List<NodeModel> list = new ArrayList<NodeModel>();
+		        		list.add(map.getRootNode());	
+		        		AddMonitoringFolderAction.updateNodesAgainstMonitoringDir(list, true);
+					}
 				}
 				if(event.getType().equals(DocearEventType.NEW_MY_PUBLICATIONS)){
 					MapModel map = (MapModel)event.getEventObject();
