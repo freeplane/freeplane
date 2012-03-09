@@ -85,7 +85,8 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 			    final Object originalContent = attributes.getValueAt(i, 1);
 				final Object text = textController.getTransformedTextNoThrow(originalContent, node, null);
 				compareTo(text);
-				return isComparisonOK() &&  succeed == (getComparisonResult() == comparationResult);
+				if (isComparisonOK() &&  succeed == (getComparisonResult() == comparationResult))
+					return true;
 			}
 			catch (final NumberFormatException fne) {
 			}

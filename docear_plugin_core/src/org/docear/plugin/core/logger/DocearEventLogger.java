@@ -1,40 +1,78 @@
 package org.docear.plugin.core.logger;
 
+import java.io.File;
+import java.net.URL;
+
 import org.freeplane.core.util.LogUtils;
 
 public class DocearEventLogger {
-	
-	public enum DocearEvent {
-		APPLICATION_STARTED (101),
-		APPLICATION_CLOSED (102),
-		APPLICATION_MINIMIZED (103),
-		APPLICATION_MAXIMIZED (104),
-		
-		FILE_OPENED (201),		//eventdata: filename
-		FILE_CLOSED (202),		//eventdata: filename
-		FILE_SAVED (203),		//eventdata: filename
-		FILE_AUTO_SAVED (204),	//eventdata: filename
-		FILE_NEW (205);
-		
-		private final int id;
-		
-		DocearEvent(int id) {
-			this.id = id;
-		}
-		
-		public final int getId() {
-			return this.id;
-		}
-	}
-	
-	
 	
 	public DocearEventLogger() {		
 		
 	}
 	
-	public void write(Object source, DocearEvent event, String message) {
-		LogUtils.info("write to logfile: "+System.currentTimeMillis()+" | "+source.getClass().getName()+" | "+event.getId()+" | "+message);
+//	public void write(Object source, DocearLogEvent event) {
+//		this.appendToLog(source, event, "");
+//	}
+//	
+//	public void write(Object source, DocearLogEvent event, Boolean eventdata) {
+//		this.write(source, event, (eventdata ? 1:0));
+//	}
+//	
+//	public void write(Object source, DocearLogEvent event, Integer eventdata) {
+//		this.appendToLog(source, event, ""+eventdata);
+//	}
+//	
+//	public void write(Object source, DocearLogEvent event, File eventdata) {
+//		this.appendToLog(source, event, eventdata.getAbsolutePath());
+//	}
+//	
+//	public void write(Object source, DocearLogEvent event, URL eventdata) {
+//		this.appendToLog(source, event, eventdata.toString());
+//	}
+//	
+//	public void write(Object source, DocearLogEvent event, String eventdata) {
+//		this.appendToLog(source, event, eventdata);
+//	}
+	
+//	private void appendToLog(Object source, DocearLogEvent event, String eventdata) {
+//		LogUtils.info("write to logfile: "+System.currentTimeMillis()+" | "+source.getClass().getName()+" | "+event.getId()+" | "+eventdata);
+//		LogUtils.info("---");
+//	}
+//	
+	private String getString(Object eventdata) {
+		if (eventdata == null) {
+			return "";
+		}
+		
+		if (eventdata instanceof Boolean) {
+			return ((Boolean) eventdata ? "1":"0");
+		}
+		else if (eventdata instanceof File) {
+			return ((File) eventdata).getAbsolutePath();
+		}
+		
+		
+		return eventdata.toString();
+	}
+	
+	public void appendToLog(Object source, DocearLogEvent event, Object... eventdata) {
+		String s = "";
+		
+		if (eventdata != null && eventdata.length>0) {
+			s += getString(eventdata[0]);
+			for (int i = 1; i<eventdata.length; i++) {
+				s += ";" + getString(eventdata[i]);
+			}			
+		}
+		
+		LogUtils.info("write to logfile: "+System.currentTimeMillis()+" | "+source.getClass().getName()+" | "+event.getId()+" | "+s);
 		LogUtils.info("---");
 	}
+
+	public void appendToLog(Object source, DocearLogEvent event) {
+		appendToLog(source, event, (Object) null);		
+	}
+	
+	
 }

@@ -60,7 +60,6 @@ import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLException;
-import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
  * This class manages a list of the maps that were opened last. It aims to

@@ -147,7 +147,7 @@ public class MindmapUpdateController {
 					if (maps == null || maps.size() == 0) {
 						return null;
 					}
-					NodeView.setModifyModelWithoutRepaint(true);
+					//NodeView.setModifyModelWithoutRepaint(true);
 					fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
 					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("computing_node_count"));
 					totalCount = maps.size()*getMindmapUpdaters().size();
@@ -162,7 +162,7 @@ public class MindmapUpdateController {
 						fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, updater.getTitle());
 						if (canceled())
 							return null;
-						for (MapItem mapItem : maps) {
+						for (MapItem mapItem : maps) {							
 							mapHasChanged = false;
 							MapModel map = mapItem.getModel();
 							if (map==null) {								
@@ -206,7 +206,7 @@ public class MindmapUpdateController {
 
 			private String getMapTitle(MapModel map) {
 				String mapTitle = "";
-				if (map.getFile() != null) {
+					if (map.getFile() != null) {
 					mapTitle = map.getFile().getName();
 				}
 				else {

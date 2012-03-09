@@ -173,7 +173,7 @@ public class NodeStyleController implements IExtension {
 		return null;
 	}
 
-	private int getStyleMaxNodeWidth(final MapModel map, final Collection<IStyle> styleKeys) {
+	private int getStyleMaxNodeWidth(final MapModel map, final Collection<IStyle> styleKeys) throws Exception {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		for(IStyle styleKey : styleKeys){
 			final NodeModel styleNode = model.getStyleNode(styleKey);
@@ -193,22 +193,28 @@ public class NodeStyleController implements IExtension {
 		return getDefaultMaxNodeWidth();
 	}
 	
-	private int getStyleMinWidth(final MapModel map, final Collection<IStyle> styleKeys) {
+	private int getStyleMinWidth(final MapModel map, final Collection<IStyle> styleKeys) throws NullPointerException {		
 		final MapStyleModel model = MapStyleModel.getExtension(map);
-		for(IStyle styleKey : styleKeys){
-			final NodeModel styleNode = model.getStyleNode(styleKey);
-			if (styleNode == null) {
-				continue;
+		//DOCEAR
+		try {
+			for(IStyle styleKey : styleKeys){
+				final NodeModel styleNode = model.getStyleNode(styleKey);
+				if (styleNode == null) {
+					continue;
+				}
+				final NodeSizeModel sizeModel = NodeSizeModel.getModel(styleNode);
+				if (sizeModel == null) {
+					continue;
+				}
+				final int minWidth = sizeModel.getMinNodeWidth();
+				if (minWidth == NodeSizeModel.NOT_SET) {
+					continue;
+				}
+				return minWidth;
 			}
-			final NodeSizeModel sizeModel = NodeSizeModel.getModel(styleNode);
-			if (sizeModel == null) {
-				continue;
-			}
-			final int minWidth = sizeModel.getMinNodeWidth();
-			if (minWidth == NodeSizeModel.NOT_SET) {
-				continue;
-			}
-			return minWidth;
+		}
+		catch (NullPointerException e) {
+			LogUtils.warn(e);
 		}
 		return getDefaultMinNodeWidth();
 	}

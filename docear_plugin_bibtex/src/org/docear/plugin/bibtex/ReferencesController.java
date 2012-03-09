@@ -44,6 +44,7 @@ import org.docear.plugin.core.event.IDocearEventListener;
 import org.docear.plugin.core.mindmap.MapConverter;
 import org.docear.plugin.core.util.CoreUtils;
 import org.docear.plugin.core.workspace.node.LinkTypeReferencesNode;
+import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.listener.MonitorungNodeUpdater;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -251,7 +252,9 @@ public class ReferencesController extends ALanguageController implements IDocear
 		this.modeController.addMenuContributor(new IMenuContributor() {
 
 			public void updateMenus(ModeController modeController, MenuBuilder builder) {
-
+				
+				String referencesCategory = PdfUtilitiesController.getParentCategory(builder, PdfUtilitiesController.REFERENCE_CATEGORY);
+				
 				builder.addMenuItem(MENU_BAR + TOOLS_MENU, new JMenu(TextUtils.getText(REFERENCE_MANAGEMENT_MENU_LANG_KEY)),
 						MENU_BAR + REFERENCE_MANAGEMENT_MENU, MenuBuilder.BEFORE);
 
@@ -275,25 +278,26 @@ public class ReferencesController extends ALanguageController implements IDocear
 //						MenuBuilder.AS_CHILD);
 				
 				
-				builder.addMenuItem(NODE_POPUP_MENU /*+ NODE_FEATURES_MENU*/,
-						new JMenu(TextUtils.getText(REFERENCE_MANAGEMENT_MENU_LANG_KEY)), NODE_POPUP_MENU
+				builder.addMenuItem(referencesCategory,
+						new JMenu(TextUtils.getText(REFERENCE_MANAGEMENT_MENU_LANG_KEY)), referencesCategory
 								+ REFERENCE_MANAGEMENT_MENU, MenuBuilder.AS_CHILD);
-				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU, CopyBibtex, MenuBuilder.AS_CHILD);
-				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU, AddNewReference, MenuBuilder.AS_CHILD);
-				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU, AddExistingReference, MenuBuilder.AS_CHILD);
-				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU, RemoveReference, MenuBuilder.AS_CHILD);
-				builder.addMenuItem(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU,
-						new JMenu(TextUtils.getText(UPDATE_REFERENCES_MENU_LANG_KEY)), NODE_POPUP_MENU
+				builder.addSeparator(referencesCategory + REFERENCE_MANAGEMENT_MENU, MenuBuilder.AFTER);
+				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU, CopyBibtex, MenuBuilder.AS_CHILD);
+				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU, AddNewReference, MenuBuilder.AS_CHILD);
+				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU, AddExistingReference, MenuBuilder.AS_CHILD);
+				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU, RemoveReference, MenuBuilder.AS_CHILD);
+				builder.addMenuItem(referencesCategory + REFERENCE_MANAGEMENT_MENU,
+						new JMenu(TextUtils.getText(UPDATE_REFERENCES_MENU_LANG_KEY)), referencesCategory
 								+ REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU, MenuBuilder.AS_CHILD);
-				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU,
+				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU,
 						UpdateReferencesCurrentMap, MenuBuilder.AS_CHILD);
-				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU,
+				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU,
 						UpdateReferencesAllOpenMaps, MenuBuilder.AS_CHILD);
-				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU,
+				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU,
 						UpdateReferencesInLibrary, MenuBuilder.AS_CHILD);
-				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU,
+				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU,
 						UpdateReferencesAllMaps, MenuBuilder.AS_CHILD);
-//				builder.addAction(NODE_POPUP_MENU + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU, 
+//				builder.addAction(parentMenu + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU, 
 //						ConvertSplmmReferences,	MenuBuilder.AS_CHILD);
 				
 				builder.addAction(MENU_BAR + TOOLS_MENU, ShowJabrefPreferences, MenuBuilder.AS_CHILD);

@@ -103,8 +103,9 @@ public class ContainerComboBoxEditor implements ComboBoxEditor {
 			final ComboBoxEditor editor = editorEntry.getValue();
 			editor.setItem(anObject);
 			final Object item = editor.getItem();
-			if(anObject.equals(item)){
-				editorSelector.setSelectedItem(editorEntry.getKey());
+			NamedObject key = editorEntry.getKey();
+			if(anObject.equals(item) && ! key.equals(editorSelector.getSelectedItem())){
+				editorSelector.setSelectedItem(key);
 				return;
 			}
 		}

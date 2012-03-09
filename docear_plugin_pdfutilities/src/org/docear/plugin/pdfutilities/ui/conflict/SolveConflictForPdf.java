@@ -27,6 +27,7 @@ public class SolveConflictForPdf implements ISolveConflictCommand {
 	public void solveConflict() {
 		try {
 			new PdfAnnotationImporter().renameAnnotation(getTarget(), getNewTitle());
+			System.gc();
 		} catch (IOException e) {
 			if(e.getMessage().equals("destination is read only")){ //$NON-NLS-1$
 				int result = UITools.showConfirmDialog(null, TextUtils.getText("SolveConflictForPdf.1"), TextUtils.getText("SolveConflictForPdf.2"), JOptionPane.OK_CANCEL_OPTION); //$NON-NLS-1$ //$NON-NLS-2$

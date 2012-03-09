@@ -23,6 +23,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.SwingUtilities;
 
+import org.freeplane.core.util.Compat;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.TextController;
@@ -45,9 +46,13 @@ public class DetailsViewMouseListener extends LinkNavigatorMouseListener {
     	final ZoomableLabel component = (ZoomableLabel) e.getComponent();
     	if(e.getX() < component.getIconWidth())
     		controller.setDetailsHidden(model, ! DetailTextModel.getDetailText(model).isHidden());
-    	else if(controller instanceof MTextController && e.getClickCount() == 2){
+    	else if(controller instanceof MTextController && isEditingStartEventt(e)){
     		((MTextController) controller).editDetails(model, e, e.isAltDown());
     	}
     	else super.mouseClicked(e);
     }
+
+	private boolean isEditingStartEventt(MouseEvent e) {
+		return Compat.isCtrlEvent(e) || Compat.isCtrlAltEvent(e);
+	}
 }

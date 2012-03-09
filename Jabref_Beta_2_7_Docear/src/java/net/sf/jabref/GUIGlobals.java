@@ -65,8 +65,8 @@ public class GUIGlobals {
     //linuxDefaultLookAndFeel = "org.jvnet.substance.skin.SubstanceCremeCoffeeLookAndFeel",
     //linuxDefaultLookAndFeel = "org.jvnet.substance.skin.SubstanceNebulaLookAndFeel",
     //linuxDefaultLookAndFeel = "org.jvnet.substance.skin.SubstanceBusinessLookAndFeel",
-    windowsDefaultLookAndFeel = "com.jgoodies.looks.windows.WindowsLookAndFeel";
-    //windowsDefaultLookAndFeel = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
+    //windowsDefaultLookAndFeel = "com.jgoodies.looks.windows.WindowsLookAndFeel";
+    windowsDefaultLookAndFeel = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
 
 	public static Font CURRENTFONT,
 	typeNameFont,
