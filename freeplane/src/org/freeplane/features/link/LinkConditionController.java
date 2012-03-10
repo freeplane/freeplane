@@ -134,11 +134,13 @@ public class LinkConditionController implements IElementaryConditionController {
 	}
 
 	public boolean isCaseDependent(final Object property, final NamedObject simpleCond) {
-		return ((NamedObject) property).objectEquals(CONNECTOR_LABEL);
+		return ((NamedObject) property).objectEquals(CONNECTOR_LABEL) ||
+			   ((NamedObject) property).objectEquals(FILTER_LINK);
 	}
 	
 	public boolean supportsApproximateMatching(final Object property, final NamedObject simpleCond) {
-		return ((NamedObject) property).objectEquals(CONNECTOR_LABEL);
+		return ((NamedObject) property).objectEquals(CONNECTOR_LABEL) ||
+			   ((NamedObject) property).objectEquals(FILTER_LINK);
 	}
 
 	public ASelectableCondition loadCondition(final XMLElement element) {
