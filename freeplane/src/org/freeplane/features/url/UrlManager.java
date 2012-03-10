@@ -420,15 +420,7 @@ public class UrlManager implements IExtension {
 		map.setURL(url);
 	}
 
-	/**@deprecated -- use MapIO*/
-	@Deprecated
-	public void loadDefault(MapModel target) {
-	    try {
-	    	loadCatchExceptions(ResourceController.getResourceController().getResource("/styles/viewer_standard.mm"), target);
-        }
-         catch (Exception e) {
-	        e.printStackTrace();
-        }
-	    
-    }
+	public File defaultTemplateFile() {
+		return null;
+	}
 }

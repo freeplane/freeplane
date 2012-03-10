@@ -113,16 +113,6 @@ class NewSummaryAction extends AFreeplaneAction {
 		if(firstNode != lastNode && SummaryNode.isFirstGroupNode(lastNode))
 			return false;
 		
-		// last node is already followed by a summary node
-		for(int i = end+1; i < parentNode.getChildCount(); i++){
-			final NodeModel next = (NodeModel) parentNode.getChildAt(i);
-			if(next.isLeft() == isLeft){
-				if(SummaryNode.isSummaryNode(next))
-					return false;
-				break;
-			}
-		}
-		
 		summaryLevel = SummaryNode.getSummaryLevel(firstNode);
 		
 		// selected nodes have different summary levels

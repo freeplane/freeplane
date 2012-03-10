@@ -26,8 +26,6 @@ import java.util.StringTokenizer;
 
 import org.freeplane.core.resources.ResourceController;
 
-import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
-
 /** provides access to the current Freeplane version. In scripts use <code>Controller.freeplaneVersion</code>.
  * For usage instructions see {@link #compareTo(FreeplaneVersion)}. */
 public class FreeplaneVersion implements Comparable<FreeplaneVersion> {

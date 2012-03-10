@@ -1,10 +1,10 @@
-<map version="0.9.0">
+<map version="freeplane 1.2.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <node TEXT="Freeplane 1.2&#xa;Functions" FOLDED="false" ID="ID_45488473" CREATED="1288535648658" MODIFIED="1323787510068" BACKGROUND_COLOR="#00ff99" VGAP="0">
 <icon BUILTIN="bee"/>
 <font BOLD="true"/>
 <hook NAME="MapStyle">
-    <properties show_notes_in_map="false"/>
+    <properties show_icon_for_attributes="false" show_note_icons="false" show_notes_in_map="false"/>
 
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node">
@@ -150,7 +150,7 @@
   </body>
 </html>
 </richcontent>
-<node POSITION="left" ID="ID_1556354626" CREATED="1319792091506" MODIFIED="1323787555215" HGAP="-15" VSHIFT="-30" BACKGROUND_COLOR="#ffff00" NUMBERED="true"><richcontent TYPE="NODE">
+<node POSITION="left" ID="ID_1556354626" CREATED="1319792091506" MODIFIED="1329860019627" HGAP="1" VSHIFT="-32" BACKGROUND_COLOR="#ffff00" NUMBERED="true"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -187,42 +187,6 @@
 </html>
 </richcontent>
 <edge STYLE="sharp_bezier" COLOR="#000099" WIDTH="2"/>
-<node ID="ID_300419503" CREATED="1319798221748" MODIFIED="1323787726487" HGAP="310" VSHIFT="-64" STYLE="bubble"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <img src="freeplaneApplications.png"/>
-  </body>
-</html>
-</richcontent>
-<hook NAME="FreeNode"/>
-<edge STYLE="hide_edge"/>
-<richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>See</b>
-    </p>
-    <ul>
-      <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="http://freeplaneTutorial.mm#ID_1795262306">Image (node core)</a>
-      </li>
-      <li>
-        <i>Help &gt; Documentation</i>&#160;<a href="http://freeplane.mm#ID_1277752024">Edit &gt; Node core &gt; Image</a>
-      </li>
-    </ul>
-  </body>
-</html>
-
-</richcontent>
-</node>
 <node ID="ID_1266354824" CREATED="1319799106394" MODIFIED="1323786210620" STYLE="bubble" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
 
 <html>
@@ -256,9 +220,43 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="horizontal" WIDTH="thin"/>
+</node>
+<node ID="ID_300419503" CREATED="1319798221748" MODIFIED="1329860028690" HGAP="305" VSHIFT="-74" STYLE="bubble"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="freeplaneApplications.png"/>
+  </body>
+</html>
+</richcontent>
+<hook NAME="FreeNode"/>
+<edge STYLE="hide_edge"/>
+<richcontent TYPE="NOTE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See</b>
+    </p>
+    <ul>
+      <li>
+        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="http://freeplaneTutorial.mm#ID_1795262306">Image (node core)</a>
+      </li>
+      <li>
+        <i>Help &gt; Documentation</i>&#160;<a href="http://freeplane.mm#ID_1277752024">Edit &gt; Node core &gt; Image</a>
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
 </node>
 <node ID="ID_1519332680" CREATED="1288542452827" MODIFIED="1323786286031" LINK="#ID_784697063" HGAP="21" VSHIFT="-2" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
 
@@ -294,7 +292,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 </node>
 <node TEXT="External arrow-link (one), and:" ID="ID_1537075496" CREATED="1288542605210" MODIFIED="1323786343283" LINK="http://kioo.nl/" HGAP="21" VSHIFT="-3" TEXT_SHORTENED="true">
@@ -319,7 +316,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 </node>
 <node TEXT="Icons" ID="ID_233656995" CREATED="1288542843639" MODIFIED="1323786415950" HGAP="21" VSHIFT="-7" TEXT_SHORTENED="true">
@@ -347,7 +343,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 </node>
 <node TEXT="Progress %" ID="ID_1826346574" CREATED="1319793474635" MODIFIED="1323786473670">
@@ -372,7 +367,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="horizontal" WIDTH="thin"/>
 </node>
@@ -393,7 +387,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="horizontal" WIDTH="thin"/>
 </node>
@@ -416,7 +409,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -495,7 +487,7 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="Free + floating node" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_188185624" CREATED="1319788879948" MODIFIED="1320075782101" HGAP="418" VSHIFT="32" TEXT_SHORTENED="true">
+<node TEXT="Free + floating node" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_188185624" CREATED="1319788879948" MODIFIED="1329860033948" HGAP="431" VSHIFT="43" TEXT_SHORTENED="true">
 <hook NAME="FreeNode"/>
 <font BOLD="true"/>
 <richcontent TYPE="DETAILS">
@@ -739,7 +731,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <font BOLD="false"/>
@@ -782,7 +773,7 @@
 </richcontent>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1639134686" STARTINCLINATION="-134;-30;" ENDINCLINATION="-134;-30;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
-<node ID="ID_1802101455" CREATED="1319799725287" MODIFIED="1323095662319" HGAP="170" VSHIFT="209" BACKGROUND_COLOR="#ffff99">
+<node ID="ID_1802101455" CREATED="1319799725287" MODIFIED="1329859505294" HGAP="138" VSHIFT="192" BACKGROUND_COLOR="#ffff99">
 <icon BUILTIN="yes"/>
 <richcontent TYPE="NODE">
 
@@ -802,10 +793,10 @@
 </richcontent>
 <edge STYLE="hide_edge"/>
 <hook NAME="FreeNode"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1802101455" STARTINCLINATION="-53;-31;" ENDINCLINATION="-53;-31;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1802101455" STARTINCLINATION="-22;-15;" ENDINCLINATION="-22;-15;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 </node>
-<node TEXT="Edges" STYLE_REF="Reference" FOLDED="true" ID="ID_1944496966" CREATED="1319872918353" MODIFIED="1320248405752" HGAP="-60" VSHIFT="-91"><richcontent TYPE="NOTE">
+<node TEXT="Edges" STYLE_REF="Reference" FOLDED="true" ID="ID_1944496966" CREATED="1319872918353" MODIFIED="1329859454342" HGAP="-60" VSHIFT="-91"><richcontent TYPE="NOTE">
 
 <html>
   <head>
@@ -827,9 +818,9 @@
 </html>
 </richcontent>
 <hook NAME="FreeNode"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-28;99;" ENDINCLINATION="-28;99;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-48;91;" ENDINCLINATION="-48;91;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="120;32;" ENDINCLINATION="120;32;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-121;31;" ENDINCLINATION="-121;31;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-137;25;" ENDINCLINATION="-137;25;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <node TEXT="Format edge" ID="ID_1601648824" CREATED="1319796287461" MODIFIED="1319922320701" HGAP="30" VSHIFT="-172">
 <edge STYLE="bezier"/>
 <node TEXT="dikte tak" ID="ID_241458321" CREATED="1288541466835" MODIFIED="1288646970331" VSHIFT="7">
@@ -904,7 +895,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Cloud" STYLE_REF="Reference" FOLDED="true" POSITION="right" ID="ID_1697684606" CREATED="1319873881764" MODIFIED="1320248297129" HGAP="510" VSHIFT="79"><richcontent TYPE="NOTE">
+<node TEXT="Cloud" STYLE_REF="Reference" FOLDED="true" POSITION="right" ID="ID_1697684606" CREATED="1319873881764" MODIFIED="1329860050094" HGAP="510" VSHIFT="79"><richcontent TYPE="NOTE">
 
 <html>
   <head>
@@ -926,7 +917,7 @@
 </html>
 </richcontent>
 <hook NAME="FreeNode"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1697684606" STARTINCLINATION="-67;73;" ENDINCLINATION="-67;73;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1697684606" STARTINCLINATION="-79;67;" ENDINCLINATION="-79;67;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <node TEXT="rectangle" ID="ID_1198357672" CREATED="1305277572322" MODIFIED="1319834257585" HGAP="48" VSHIFT="4">
 <cloud COLOR="#f0f0f0" SHAPE="RECT"/>
 <richcontent TYPE="NOTE">
@@ -976,7 +967,7 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="Relations" POSITION="right" ID="ID_441663322" CREATED="1288536353356" MODIFIED="1323787538585" STYLE="fork" HGAP="-56" VSHIFT="27"><richcontent TYPE="NOTE">
+<node TEXT="Relations" POSITION="right" ID="ID_441663322" CREATED="1288536353356" MODIFIED="1330611653263" STYLE="fork" HGAP="-56" VSHIFT="27"><richcontent TYPE="NOTE">
 
 <html>
   <head>
@@ -990,6 +981,7 @@
 </html>
 </richcontent>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="above a" ID="ID_1863548649" CREATED="1288536207761" MODIFIED="1319919454936" HGAP="37" VSHIFT="-13" STYLE="bubble"/>
 <node TEXT="node a" ID="ID_1119041406" CREATED="1288535672221" MODIFIED="1320248176728" STYLE="bubble" HGAP="53" VSHIFT="7">
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#ff0000" WIDTH="5" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_268922755" SOURCE_LABEL="parent" TARGET_LABEL="grand child" MIDDLE_LABEL="hierarchy" STARTINCLINATION="-2;23;" ENDINCLINATION="-21;59;" STARTARROW="NONE" ENDARROW="NONE"/>
@@ -1124,7 +1116,7 @@
 </node>
 <node TEXT="below a" ID="ID_975219834" CREATED="1288536218798" MODIFIED="1319919509381" HGAP="27" VSHIFT="34" STYLE="bubble"/>
 </node>
-<node STYLE_REF="Reference" POSITION="right" ID="ID_1828022839" CREATED="1319963720129" MODIFIED="1320248089384" HGAP="514" VSHIFT="189"><richcontent TYPE="NODE">
+<node STYLE_REF="Reference" POSITION="right" ID="ID_1828022839" CREATED="1319963720129" MODIFIED="1329859481362" HGAP="541" VSHIFT="183"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1163,9 +1155,9 @@
   </body>
 </html>
 </richcontent>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1828022839" STARTINCLINATION="-46;-50;" ENDINCLINATION="-46;-50;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1828022839" STARTINCLINATION="-60;-48;" ENDINCLINATION="-60;-48;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_654977787" CREATED="1320076533702" MODIFIED="1320083776493" HGAP="510" VSHIFT="267"><richcontent TYPE="NODE">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_654977787" CREATED="1320076533702" MODIFIED="1329860060499" HGAP="538" VSHIFT="263"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1356,7 +1348,7 @@
 </html>
 </richcontent>
 <hook NAME="plugins/TimeManagementReminder.xml">
-    <Parameters REMINDUSERAT="2077460580480"/>
+    <Parameters REMINDUSERAT="2077460580480" PERIOD="1" UNIT="DAY"/>
 </hook>
 <richcontent TYPE="NOTE">
 
@@ -1451,7 +1443,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="horizontal"/>
 </node>
@@ -1547,7 +1538,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <edge COLOR="#ff00ff" WIDTH="3"/>
 <hook NAME="SummaryNode"/>

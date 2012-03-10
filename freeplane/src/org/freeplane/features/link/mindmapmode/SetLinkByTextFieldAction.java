@@ -21,9 +21,7 @@ package org.freeplane.features.link.mindmapmode;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 

@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
@@ -298,7 +299,8 @@ class ScriptingConfiguration {
 			final Matcher m = pattern.matcher(match);
 			if (m.matches()) {
 //				System.err.println(metaData.getScriptName() + ":" + m.group(1) + "->" + m.group(2) + "->" + m.group(3));
-				metaData.addExecutionMode(ExecutionMode.valueOf(m.group(1).toUpperCase()), m.group(2), m.group(3));
+                metaData.addExecutionMode(ExecutionMode.valueOf(m.group(1).toUpperCase(Locale.ENGLISH)), m.group(2),
+                    m.group(3));
 			}
 			else {
 				LogUtils.severe("script " + metaData.getScriptName() + ": not a menu location: '" + match + "'");

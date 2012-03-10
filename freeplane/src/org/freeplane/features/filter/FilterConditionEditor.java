@@ -38,6 +38,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -271,9 +272,17 @@ public class FilterConditionEditor extends JComponent {
 		newCond = filterController.getConditionFactory().createCondition(selectedItem, simpleCond, value, matchCase, matchApproximately);
 		if (values.isEditable()) {
 			if (!value.equals("")) {
-				values.removeItem(value);
-				values.insertItemAt(value, 0);
-				values.setSelectedIndex(0);
+				DefaultComboBoxModel list = (DefaultComboBoxModel) values.getModel();
+				int indexOfValue = list.getIndexOf(value);
+				if(indexOfValue > 0)
+					list.removeElementAt(indexOfValue);
+				if(indexOfValue == -1 || list.getIndexOf(value) != indexOfValue){
+					values.insertItemAt(value, 0);
+					values.setSelectedIndex(0);
+				}
+				else if(indexOfValue != -1){
+					values.setSelectedIndex(indexOfValue);
+				}
 				if (values.getItemCount() >= 10) {
 					values.removeItemAt(9);
 				}

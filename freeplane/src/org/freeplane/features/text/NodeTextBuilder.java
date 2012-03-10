@@ -177,7 +177,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		}
 		else{
 			final String text =  data.toString();
-			if (!HtmlUtils.isHtmlNode(text)) {
+			if (node.getXmlText() == null) {
 				writer.addAttribute(NodeTextBuilder.XML_NODE_TEXT, text.replace('\0', ' '));
 			}
 			if(! (data instanceof String || data instanceof StyleString)){
@@ -189,7 +189,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 	public void writeContent(final ITreeWriter writer, final Object element, final String tag) throws IOException {
 		final NodeModel node = (NodeModel) element;
 		final TransformedXMLExtension transformedXML = (TransformedXMLExtension) node.getExtension(TransformedXMLExtension.class);
-		if (transformedXML != null || HtmlUtils.isHtmlNode(node.getText())) {
+		if (transformedXML != null || node.getXmlText() != null) {
 			final XMLElement htmlElement = new XMLElement();
 			htmlElement.setName(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG);
 			htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE);

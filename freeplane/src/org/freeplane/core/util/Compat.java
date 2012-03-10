@@ -196,4 +196,16 @@ public class Compat {
         return modifiers == InputEvent.CTRL_DOWN_MASK;
     }
 
+	static public boolean isCtrlAltEvent(final MouseEvent e) {
+        final int modifiers = e.getModifiersEx() & 
+        		(InputEvent.CTRL_DOWN_MASK 
+        				| InputEvent.META_DOWN_MASK
+        				| InputEvent.SHIFT_DOWN_MASK
+        				| InputEvent.ALT_DOWN_MASK
+        				);
+		if (isMacOsX())
+        	return modifiers == (InputEvent.META_DOWN_MASK | InputEvent.ALT_DOWN_MASK);
+        return modifiers == (InputEvent.CTRL_DOWN_MASK|InputEvent.ALT_DOWN_MASK);
+    }
+
 }
