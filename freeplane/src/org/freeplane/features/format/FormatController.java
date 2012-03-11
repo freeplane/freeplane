@@ -59,7 +59,7 @@ import org.freeplane.n3.nanoxml.XMLWriter;
 /**
  * @author Volker Boerchers
  */
-public class FormatController implements IExtension {
+public class FormatController implements IExtension, IFreeplanePropertyListener {
 	private static final String RESOURCES_NUMBER_FORMAT = "number_format";
 	private static final String RESOURCES_DATETIME_FORMAT = "datetime_format";
 	private static final String RESOURCES_DATE_FORMAT = "date_format";
@@ -111,6 +111,8 @@ public class FormatController implements IExtension {
 		pathToFile = freeplaneUserDirectory == null ? null : freeplaneUserDirectory + File.separator + FORMATS_XML;
 		locale = FormatUtils.getFormatLocaleFromResources();
 		initPatternFormats();
+        final ResourceController resourceController = ResourceController.getResourceController();
+        resourceController.addPropertyChangeListener(this);
 	}
 
 	public static FormatController getController() {
@@ -367,16 +369,6 @@ public class FormatController implements IExtension {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		String datePattern = resourceController.getProperty(RESOURCES_DATE_FORMAT);
 		defaultDateFormat = createDateFormat(datePattern);
-		resourceController.addPropertyChangeListener(new IFreeplanePropertyListener() {
-			public void propertyChanged(String propertyName, String newValue, String oldValue) {
-				if (propertyName.equals(RESOURCES_DATE_FORMAT)) {
-				    defaultDateFormat = createDateFormat(newValue);
-				    final ScannerController scannerController = ScannerController.getController();
-				    if (scannerController != null)
-				        scannerController.addParsersForStandardFormats();
-				}
-			}
-		});
 		return defaultDateFormat;
 	}
 
@@ -394,16 +386,6 @@ public class FormatController implements IExtension {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		String datetimePattern = resourceController.getProperty(RESOURCES_DATETIME_FORMAT);
 		defaultDateTimeFormat = createDefaultDateTimeFormat(datetimePattern);
-		resourceController.addPropertyChangeListener(new IFreeplanePropertyListener() {
-			public void propertyChanged(String propertyName, String newValue, String oldValue) {
-				if (propertyName.equals(RESOURCES_DATETIME_FORMAT)) {
-					defaultDateTimeFormat = createDefaultDateTimeFormat(newValue);
-                    final ScannerController scannerController = ScannerController.getController();
-                    if (scannerController != null)
-                        scannerController.addParsersForStandardFormats();
-                }
-			}
-		});
 		return defaultDateTimeFormat;
 	}
 
@@ -433,13 +415,6 @@ public class FormatController implements IExtension {
 			return defaultNumberFormat;
 	    final ResourceController resourceController = ResourceController.getResourceController();
 	    defaultNumberFormat = getDecimalFormat(resourceController.getProperty(RESOURCES_NUMBER_FORMAT));
-		resourceController.addPropertyChangeListener(new IFreeplanePropertyListener() {
-			public void propertyChanged(String propertyName, String newValue, String oldValue) {
-				if (propertyName.equals(RESOURCES_NUMBER_FORMAT)) {
-					defaultNumberFormat = getDecimalFormat(newValue);
-				}
-			}
-		});
 	    return defaultNumberFormat;
     }
 
@@ -461,5 +436,26 @@ public class FormatController implements IExtension {
         	dateFormatCache.put(pattern, parser);
         }
 	    return parser;
+    }
+
+    public void propertyChanged(String propertyName, String newValue, String oldValue) {
+        if (propertyName.equals(RESOURCES_DATE_FORMAT)) {
+            defaultDateFormat = createDateFormat(newValue);
+            final ScannerController scannerController = ScannerController.getController();
+            if (scannerController != null)
+                scannerController.addParsersForStandardFormats();
+        }
+        else if (propertyName.equals(RESOURCES_DATETIME_FORMAT)) {
+            defaultDateTimeFormat = createDefaultDateTimeFormat(newValue);
+            final ScannerController scannerController = ScannerController.getController();
+            if (scannerController != null)
+                scannerController.addParsersForStandardFormats();
+        }
+        else if (propertyName.equals(RESOURCES_NUMBER_FORMAT)) {
+            defaultNumberFormat = getDecimalFormat(newValue);
+        }
+        else if (FormatUtils.equalsFormatLocaleName(propertyName)) {
+            locale = FormatUtils.getFormatLocaleFromResources();
+        }
     }
 }
