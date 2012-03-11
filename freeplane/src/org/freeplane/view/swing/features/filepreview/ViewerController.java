@@ -512,8 +512,12 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		viewers.add(view);
 		viewer.setBounds(viewer.getX() - 5, viewer.getY() - 5, viewer.getWidth() + 15, viewer.getHeight() + 15);
 		view.addContent(viewer, VIEWER_POSITION);
-		viewer.revalidate();
-		viewer.repaint();
+		if(view.isShortened())
+			viewer.setVisible(false);
+		else {
+			viewer.revalidate();
+			viewer.repaint();
+		}
 	}
 
 	void deleteViewer(final ExternalResource model, final NodeView nodeView) {
