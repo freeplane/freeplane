@@ -63,7 +63,7 @@ public class ScannerController implements IExtension {
 		// applets have no user directory and no file access anyhow
 		pathToFile = freeplaneUserDirectory == null ? null : freeplaneUserDirectory + File.separator + SCANNER_XML;
 		initScanners();
-		selectScanner(Locale.getDefault());
+		selectScanner(FormatUtils.getFormatLocaleFromResources());
         addParsersForStandardFormats();
 	}
 

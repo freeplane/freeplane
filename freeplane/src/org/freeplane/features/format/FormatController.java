@@ -41,7 +41,6 @@ import java.util.Vector;
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IValidator;
 import org.freeplane.core.ui.components.UITools;
@@ -61,7 +60,6 @@ import org.freeplane.n3.nanoxml.XMLWriter;
  * @author Volker Boerchers
  */
 public class FormatController implements IExtension {
-	private static final String FORMAT_LOCALE = "format_locale";
 	private static final String RESOURCES_NUMBER_FORMAT = "number_format";
 	private static final String RESOURCES_DATETIME_FORMAT = "datetime_format";
 	private static final String RESOURCES_DATE_FORMAT = "date_format";
@@ -111,7 +109,7 @@ public class FormatController implements IExtension {
 		final String freeplaneUserDirectory = ResourceController.getResourceController().getFreeplaneUserDirectory();
 		// applets have no user directory and no file access anyhow
 		pathToFile = freeplaneUserDirectory == null ? null : freeplaneUserDirectory + File.separator + FORMATS_XML;
-		locale = getFormatLocaleFromResources();
+		locale = FormatUtils.getFormatLocaleFromResources();
 		initPatternFormats();
 	}
 
@@ -127,11 +125,6 @@ public class FormatController implements IExtension {
 		Controller.getCurrentController().addExtension(FormatController.class, formatController);
 		Controller.getCurrentController().addOptionValidator(formatController.createValidator());
 	}
-
-	private static Locale getFormatLocaleFromResources() {
-	    final String formatLoc = ResourceController.getResourceController().getProperty(FORMAT_LOCALE);
-		return formatLoc.equals(ResourceBundles.LANGUAGE_AUTOMATIC) ? Locale.getDefault() : new Locale(formatLoc);
-    }
 
 	private void initPatternFormats() {
 		if (formatsLoaded)
@@ -390,9 +383,9 @@ public class FormatController implements IExtension {
 	private static SimpleDateFormat createDateFormat(final String datePattern) {
 		final Integer style = getDateStyle(datePattern);
 		if (style != null)
-			return (SimpleDateFormat) DateFormat.getDateInstance(style, getFormatLocaleFromResources());
+			return (SimpleDateFormat) DateFormat.getDateInstance(style, FormatUtils.getFormatLocaleFromResources());
 		else
-			return new SimpleDateFormat(datePattern, getFormatLocaleFromResources());
+			return new SimpleDateFormat(datePattern, FormatUtils.getFormatLocaleFromResources());
 	}
 
 	public SimpleDateFormat getDefaultDateTimeFormat() {
@@ -418,7 +411,7 @@ public class FormatController implements IExtension {
 		final String[] styles = datetimePattern.split("\\s*,\\s*");
 		if (styles.length == 2 && getDateStyle(styles[0]) != null && getDateStyle(styles[1]) != null)
 			return (SimpleDateFormat) DateFormat.getDateTimeInstance(getDateStyle(styles[0]), getDateStyle(styles[1]),
-			    getFormatLocaleFromResources());
+			    FormatUtils.getFormatLocaleFromResources());
 		else
 			return getDateFormat(datetimePattern);
 	}
@@ -455,7 +448,7 @@ public class FormatController implements IExtension {
 		DecimalFormat format = numberFormatCache.get(pattern);
 		if (format == null) {
 			format = (DecimalFormat) ((pattern == null) ? getDefaultNumberFormat()
-			        : new DecimalFormat(pattern, new DecimalFormatSymbols(getFormatLocaleFromResources())));
+			        : new DecimalFormat(pattern, new DecimalFormatSymbols(FormatUtils.getFormatLocaleFromResources())));
 			numberFormatCache.put(pattern, format);
 		}
 		return format;
@@ -464,7 +457,7 @@ public class FormatController implements IExtension {
 	public SimpleDateFormat getDateFormat(String pattern) {
 	    SimpleDateFormat parser = dateFormatCache.get(pattern);
         if (parser == null) {
-        	parser = new SimpleDateFormat(pattern, getFormatLocaleFromResources());
+        	parser = new SimpleDateFormat(pattern, FormatUtils.getFormatLocaleFromResources());
         	dateFormatCache.put(pattern, parser);
         }
 	    return parser;
