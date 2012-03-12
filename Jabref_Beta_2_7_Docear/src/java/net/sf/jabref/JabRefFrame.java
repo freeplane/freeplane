@@ -364,13 +364,14 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 		if (this.isTopLevel) {
 			frame.setTitle(GUIGlobals.frameTitle);
 			frame.setIconImage(GUIGlobals.getImage("jabrefIcon").getImage());
+			frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+			frame.addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent e) {
+					(new CloseAction()).actionPerformed(null);
+				}
+			});
 		}
-		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		frame.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				(new CloseAction()).actionPerformed(null);
-			}
-		});
+		
 
 		initLabelMaker();
 
