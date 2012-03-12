@@ -17,11 +17,11 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 		if (map instanceof MMapModel) {
 			File f = map.getFile();
 			if (f!=null) {
-				DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.MAP_OPENED, f);
+				DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.MAP_OPENED, f);
 			}
 			else {
 				//if (map. == null) {
-					DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.MAP_NEW);
+					DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.MAP_NEW);
 				//}
 			}
 		}
@@ -31,7 +31,7 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 		if (map instanceof MMapModel) {
 			File f = map.getFile();
 			if (f!=null) {
-				DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.MAP_CLOSED, f);
+				DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.MAP_CLOSED, f);
 				touchFileForAutoSaveBug(f);
 			}
 			
@@ -50,7 +50,7 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 		if (map instanceof MMapModel) {
 			File f = map.getFile();
 			if (f!=null) {
-				DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.MAP_SAVED, f);
+				DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.MAP_SAVED, f);
 			}
 		}
 	}
@@ -59,7 +59,7 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 		if (map instanceof MMapModel) {
 			File f = map.getFile();
 			if (f!=null) {
-				DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.MAP_SAVED, f);
+				DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.MAP_SAVED, f);
 			}
 		}
 	}

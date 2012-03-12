@@ -95,13 +95,13 @@ public class CoreConfiguration extends ALanguageController {
 	}
 	
 	private void init(ModeController modeController) {
-		DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.APPLICATION_STARTED);
+		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.APPLICATION_STARTED);
 		Toolkit.getDefaultToolkit();		
-		DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.OS_OPERATING_SYSTEM, System.getProperty("os.name"));
-		DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.OS_LANGUAGE_CODE, System.getProperty("user.language"));
-		DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.OS_COUNTRY_CODE, System.getProperty("user.country"));
-		DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.OS_TIME_ZONE, System.getProperty("user.timezone"));
-		DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.OS_SCREEN_RESOLUTION, Toolkit.getDefaultToolkit().getScreenSize().toString());
+		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.OS_OPERATING_SYSTEM, System.getProperty("os.name"));
+		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.OS_LANGUAGE_CODE, System.getProperty("user.language"));
+		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.OS_COUNTRY_CODE, System.getProperty("user.country"));
+		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.OS_TIME_ZONE, System.getProperty("user.timezone"));
+		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.OS_SCREEN_RESOLUTION, Toolkit.getDefaultToolkit().getScreenSize().toString());
 		
 		MapVersionInterpreter.addMapVersionInterpreter(new MapVersionInterpreter("0.9.0\" software_name=\"SciPlore_", false, false, "SciploreMM", "http://sciplore.org", null, new MapConverter()));
 		
@@ -298,7 +298,7 @@ public class CoreConfiguration extends ALanguageController {
 				LogUtils.warn(e1);
 			}
 			
-			DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.SHOW_HELP);
+			DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.SHOW_HELP);
 		}
 	}
 

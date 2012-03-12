@@ -319,12 +319,12 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 			File f = WorkspaceUtils.resolveURI(uri);
 			//if map file is opened, then there is a MapLifeCycleListener Event
 			if (!f.getName().endsWith(".mm")) {
-				DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.FILE_OPENED,  f);
+				DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.FILE_OPENED,  f);
 			}
 		}
 		else {					
 			try {
-				DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.OPEN_URL, uri.toURL());
+				DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.OPEN_URL, uri.toURL());
 			} catch (MalformedURLException ex) {						
 				LogUtils.warn(ex);
 			}
