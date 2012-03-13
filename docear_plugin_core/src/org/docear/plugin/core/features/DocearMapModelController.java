@@ -1,14 +1,18 @@
 package org.docear.plugin.core.features;
 
+import java.awt.Component;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.ui.IMapViewChangeListener;
 
 public class DocearMapModelController implements IExtension{
 	
@@ -40,7 +44,28 @@ public class DocearMapModelController implements IExtension{
 				DocearMapModelController.setModelWithCurrentVersion(newMap);					
 			}
 		});
-		
+		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(new IMapLifeCycleListener() {
+			
+			public void onSavedAs(MapModel map) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void onSaved(MapModel map) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void onRemove(MapModel map) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void onCreate(MapModel map) {
+				if(map == null || map.getExtension(DocearMapModelExtension.class) != null || map.getFile() != null) return;
+				DocearMapModelController.setModelWithCurrentVersion(map);
+			}
+		});
 	}
 	
 	public static DocearMapModelExtension getModel(final MapModel map) {

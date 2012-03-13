@@ -1,5 +1,4 @@
-package org.docear.plugin.dragbase;
-
+package dragbase;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
@@ -13,21 +12,21 @@ import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 
-public class DragBaseWrapper {
+import com.sun.jna.Native;
+
+public class dragbase {
 	
 	// Reference to the library
 	static
-	{
+	{		
 		if(Compat.isWindowsOS()){
 			try{
 				String processor = System.getProperty("org.osgi.framework.processor");
 				if(processor.equalsIgnoreCase("x86")){
-					System.loadLibrary("dragbase32");
-					libraryLoaded = true;					
+					System.loadLibrary("dragbase32");								
 				}
 				else if(processor.equalsIgnoreCase("x86-64")){
-					System.loadLibrary("dragbase64");
-					libraryLoaded = true;
+					System.loadLibrary("dragbase64");					
 				}
 			}catch(Exception e){
 				LogUtils.warn(e);
@@ -35,7 +34,7 @@ public class DragBaseWrapper {
 		}
 	}
 	
-	static boolean libraryLoaded = false;
+	
 	
 	/* Intializes dragbase
 	 * Parameters:
@@ -46,39 +45,43 @@ public class DragBaseWrapper {
 	 * 
 	 * Return: 0 if successful, otherwise an error code (see documentation)
 	 */
-	public int Create()	{		
-		if(!libraryLoaded) return 0;
-		
-		String title = Controller.getCurrentController().getViewController().getFrame().getTitle();
-		
-		Properties freeplaneProperties = new Properties();
+	public int Create()	{				
 		try {
-			freeplaneProperties.load(Compat.class.getClassLoader().getResourceAsStream(ResourceController.FREEPLANE_PROPERTIES));
-		} catch (IOException e) {
+			String title = Controller.getCurrentController().getViewController().getFrame().getTitle();
+			
+			Properties freeplaneProperties = new Properties();
+			try {
+				freeplaneProperties.load(Compat.class.getClassLoader().getResourceAsStream(ResourceController.FREEPLANE_PROPERTIES));
+			} catch (IOException e) {
+				LogUtils.warn(e);
+			}
+			String applicationName = freeplaneProperties.getProperty("ApplicationName", "freeplane").toLowerCase(Locale.ENGLISH);
+			
+			SaveInterface saveInterface = new SaveInterface() {
+				
+				public int Save(String filename, String directory) {
+					final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
+					final MapModel map = Controller.getCurrentController().getMap();
+					try {					
+						mapIO.writeToFile(map, new File(filename));
+					}
+					catch (Exception e) {
+						LogUtils.severe("Could not create '"+filename+"' for dragbase.",e);
+						return 0;
+					}	
+					return 1;
+				}
+			};
+			
+			
+			int ret = Create_(title, saveInterface, applicationName);
+			System.out.println("dragbase return: " + ret);
+			System.out.println("dragbase last error return: " + Native.getLastError());		
+			return ret;
+		} catch (Exception e) {
 			LogUtils.warn(e);
 		}
-		String applicationName = freeplaneProperties.getProperty("ApplicationName", "freeplane").toLowerCase(Locale.ENGLISH);
-		
-		SaveInterface saveInterface = new SaveInterface() {
-			
-			public int Save(String filename, String directory) {
-				final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
-				final MapModel map = Controller.getCurrentController().getMap();
-				try {					
-					mapIO.writeToFile(map, new File(filename));
-				}
-				catch (Exception e) {
-					LogUtils.severe("Could not create '"+filename+"' for dragbase.",e);
-					return 0;
-				}	
-				return 1;
-			}
-		};
-		
-		
-		int ret = Create_(title, saveInterface, applicationName);
-		System.out.println("dragbase return: " + ret);
-		return ret;
+		return 0;
 	}
 	
 	/* Specifies a new file name used by dragbase

@@ -16,4 +16,5 @@ Bundle-NativeCode: lib/dragbase32.dll;
   osname=Win32;
   processor=amd64
 Bundle-ClassPath: .,
+ lib/jna.jar,
  lib/plugin.jar
