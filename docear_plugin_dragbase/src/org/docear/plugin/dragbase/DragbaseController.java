@@ -32,9 +32,11 @@ public class DragbaseController {
 	private static Process dragbase = null;
 	private static boolean startup = true;
 	private static boolean dragbaserunning = true;
+	//private static DragBaseWrapper dragbaseWrapper = new DragBaseWrapper();
 	
 	public static void startDragbasePlugin(ModeController modeController){
 		if(Compat.isWindowsOS()){
+			//dragbaseWrapper.Create();
 			
 			Controller.getCurrentController().getViewController().getJFrame().addWindowFocusListener(new WindowFocusListener() {
 				

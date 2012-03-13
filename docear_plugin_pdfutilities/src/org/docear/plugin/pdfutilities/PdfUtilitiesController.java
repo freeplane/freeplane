@@ -463,7 +463,7 @@ public class PdfUtilitiesController extends ALanguageController{
 							result.addWarning(TextUtils.getText(OPEN_ON_PAGE_WARNING_KEY));
 						}
 						else{
-							result.addWarning(TextUtils.getText(OPEN_ON_PAGE_ERROR_KEY));
+							result.addError(TextUtils.getText(OPEN_ON_PAGE_ERROR_KEY));
 						}
 					}
 				}
