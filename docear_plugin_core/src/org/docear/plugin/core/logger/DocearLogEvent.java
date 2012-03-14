@@ -44,17 +44,27 @@ public enum DocearLogEvent {
 	OS_COUNTRY_CODE (504),
 	OS_TIME_ZONE (505),
 	
-	//References
-	RM_CHANGE_BIBTEX_FILE (601), //eventdata: <filename>;<number of references>
-	RM_ENTRY_ADD (602),
-	RM_ENTRY_CHANGE (603),
-	RM_ENTRY_DELETE (604),
+	//References	
+	RM_ENTRY_ADD (601),
+	RM_ENTRY_CHANGE (602),
+	RM_ENTRY_DELETE (603),
+	RM_ENTRY_CREATE_KEY (604),
 	
-	DE_MINDMAP_UPDATE (621),
+	RM_BIBTEX_FILE_OPEN (611),		//eventdata: <filename>;<number of references>
+	RM_BIBTEX_FILE_CHANGE (612), 	//eventdata: <filename>;<number of references>
+	RM_BIBTEX_FILE_SAVE (613), 		//eventdata: <filename>;<number of references>
+	
+		
 	DE_ENTRY_ADD (622),
 	DE_CHANGE_ENTRY (623),
 	DE_ENTRY_DELETE (624),
-	DE_COPY_REFERENCE_KEY (625);
+	DE_COPY_REFERENCE_KEY (625),
+	
+	DE_UPDATE_MAP_SELECTED (631),
+	DE_UPDATE_MAP_OPEN (632),
+	DE_UPDATE_MAP_LIBRARY (632),
+	DE_UPDATE_MAP_ALL (632);
+	
 	
 	private final int id;
 	

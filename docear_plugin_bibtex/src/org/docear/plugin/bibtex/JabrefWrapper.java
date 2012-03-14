@@ -150,7 +150,7 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 		}
 		openIt(file, raisePanel);
 		
-		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.RM_ENTRY_CHANGE, new Object[] {file, this.getDatabase().getEntries().size()});
+		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.RM_BIBTEX_FILE_CHANGE, new Object[] {file, this.getDatabase().getEntries().size()});
 	}
 
 	public void openIt(File file, boolean raisePanel) {
@@ -244,6 +244,9 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 			}
 
 		}
+		
+		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.RM_BIBTEX_FILE_OPEN, new Object[] {file, this.getDatabase().getEntries().size()});
+		
 	}
 
 	// JabRef does not use character escaping of "{" and "}"
