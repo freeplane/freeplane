@@ -2,14 +2,31 @@ package org.docear.plugin.core;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Collection;
 
+import org.freeplane.core.resources.OptionPanelController;
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.resources.OptionPanelController.PropertyLoadListener;
+import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.features.mode.Controller;
 
 public abstract class ALanguageController {
 	private static final String DEFAULT_LANGUAGE = "en";
 	
 	public ALanguageController() {
+		setLanguage();
+		
+		final OptionPanelController optionController = Controller.getCurrentController().getOptionPanelController();
+		
+		optionController.addPropertyLoadListener(new PropertyLoadListener() {
+			
+			public void propertiesLoaded(Collection<IPropertyControl> properties) {
+				setLanguage();
+			}
+		});
+	}
+
+	public void setLanguage() {
 		ResourceBundles resBundle = ((ResourceBundles)Controller.getCurrentModeController().getController().getResourceController().getResources());
 		String lang = resBundle.getLanguageCode();
 		if (lang == null || lang.equals(ResourceBundles.LANGUAGE_AUTOMATIC)) {
@@ -33,4 +50,6 @@ public abstract class ALanguageController {
 				
 		resBundle.addResources(resBundle.getLanguageCode(), res);
 	}
+	
+	
 }
