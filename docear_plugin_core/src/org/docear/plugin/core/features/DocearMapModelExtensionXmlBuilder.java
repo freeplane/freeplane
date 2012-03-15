@@ -33,6 +33,7 @@ public class DocearMapModelExtensionXmlBuilder implements IElementDOMHandler, IE
 	private void registerAttributeHandlers(ReadManager reader) {
 		final IAttributeHandler freeplaneDialectHandler = reader.getAttributeHandlers().get(DOCEAR_MAP_EXTENSION_XML_TAG).get(DOCEAR_MAP_EXTENSION_VERSION_XML_TAG);
 		reader.removeAttributeHandler(DOCEAR_MAP_EXTENSION_XML_TAG, DOCEAR_MAP_EXTENSION_VERSION_XML_TAG, freeplaneDialectHandler);
+		
 		reader.addAttributeHandler(DOCEAR_MAP_EXTENSION_XML_TAG, DOCEAR_MAP_EXTENSION_VERSION_XML_TAG, new IAttributeHandler() {
 			
 			public void setAttribute(Object node, String value) {
@@ -40,8 +41,11 @@ public class DocearMapModelExtensionXmlBuilder implements IElementDOMHandler, IE
 					freeplaneDialectHandler.setAttribute(node, value);
 					return;
 				}
-				final MapModel mapModel = (MapModel) node;
-				final DocearMapModelExtension docearMapModel = new DocearMapModelExtension();
+				final MapModel mapModel = (MapModel) node;				
+				DocearMapModelExtension docearMapModel = mapModel.getExtension(DocearMapModelExtension.class);
+				if (docearMapModel == null) {
+						docearMapModel = new DocearMapModelExtension();
+				}
 				value = value.replace("docear ", "");
 				docearMapModel.setVersion(value);
 				DocearMapModelController.setModel(mapModel, docearMapModel);
@@ -53,8 +57,26 @@ public class DocearMapModelExtensionXmlBuilder implements IElementDOMHandler, IE
 			
 			public void setAttribute(Object node, String value) {
 				final MapModel mapModel = (MapModel) node;
-				final DocearMapModelExtension docearMapModel = new DocearMapModelExtension();				
+				DocearMapModelExtension docearMapModel = mapModel.getExtension(DocearMapModelExtension.class);
+				if (docearMapModel == null) {
+					docearMapModel = new DocearMapModelExtension();
+				}			
 				docearMapModel.setType(value);
+				DocearMapModelController.setModel(mapModel, docearMapModel);
+			}
+			
+		});
+		
+		reader.addAttributeHandler(DOCEAR_MAP_EXTENSION_XML_TAG, DocearMapModelExtension.MAP_ID_ATTRIBUTE, new IAttributeHandler() {
+			
+			public void setAttribute(Object node, String value) {
+				final MapModel mapModel = (MapModel) node;
+				
+				DocearMapModelExtension docearMapModel = mapModel.getExtension(DocearMapModelExtension.class);
+				if (docearMapModel == null) {
+					docearMapModel = new DocearMapModelExtension();
+				}			
+				docearMapModel.setMapId(value);
 				DocearMapModelController.setModel(mapModel, docearMapModel);
 			}
 			
@@ -93,6 +115,10 @@ public class DocearMapModelExtensionXmlBuilder implements IElementDOMHandler, IE
 		final DocearMapType type = modelExtension.getType();
 		if(type != null){
 			writer.addAttribute(DOCEAR_MAP_EXTENSION_TYPE_XML_TAG, type.toString());
+		}
+		final String mapId = modelExtension.getMapId();
+		if(mapId != null){
+			writer.addAttribute(DocearMapModelExtension.MAP_ID_ATTRIBUTE, mapId);
 		}
 	}
 

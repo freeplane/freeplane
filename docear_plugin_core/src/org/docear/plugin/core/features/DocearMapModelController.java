@@ -1,7 +1,6 @@
 package org.docear.plugin.core.features;
 
-import java.awt.Component;
-
+import org.docear.plugin.core.util.CoreUtils;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -12,7 +11,6 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.ui.IMapViewChangeListener;
 
 public class DocearMapModelController implements IExtension{
 	
@@ -88,7 +86,12 @@ public class DocearMapModelController implements IExtension{
 		DocearMapModelExtension mapModelExtension = new DocearMapModelExtension();
 		ResourceController resourceController = ResourceController.getResourceController();
 		mapModelExtension.setVersion(resourceController.getProperty("docear_map_extension_version"));
+		mapModelExtension.setMapId(createMapId());
 		DocearMapModelController.setModel(map, mapModelExtension);
+	}
+	
+	public static String createMapId() {
+		return ""+System.currentTimeMillis()+"_"+CoreUtils.createRandomString(130);
 	}
 
 }

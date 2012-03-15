@@ -96,7 +96,7 @@ public class DocearMapWriter extends MapWriter {
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
 		final MapModel map = (MapModel) userObject;
 		final DocearMapModelExtension modelExtension = DocearMapModelController.getModel(map);
-		writer.addAttribute("version", FreeplaneVersion.XML_VERSION);
+		writer.addAttribute("version", FreeplaneVersion.XML_VERSION);		
 		if (modelExtension == null) {			
 			//writer.addAttribute("dialect", FreeplaneVersion.DIALECT_VERSION);
 		}
@@ -109,6 +109,9 @@ public class DocearMapWriter extends MapWriter {
 				//writer.addAttribute("dialect", FreeplaneVersion.DIALECT_VERSION);
 				LogUtils.warn("dialect version is null! This should not happen!");
 			}
+			
+			final String mapId = modelExtension.getMapId();
+			writer.addAttribute(DocearMapModelExtension.MAP_ID_ATTRIBUTE, (mapId != null ? mapId : ""));			
 		}
 		writer.addExtensionAttributes(map, Arrays.asList(map.getExtensions().values().toArray(new IExtension[] {})));
 	}
