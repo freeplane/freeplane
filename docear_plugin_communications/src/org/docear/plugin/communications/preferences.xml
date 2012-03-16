@@ -3,7 +3,8 @@
 	<tabbed_pane>
 		<tab name="docear">
 			<separator name="account_options">
-				<action name="docear_connect" />
+                <string name="docear.service.connect.username" enabled="false" />
+                <action name="docear_connect" />
 			</separator>
 			<separator name="docear_options">
 				<boolean name="docear_allow_usage_mining" />
