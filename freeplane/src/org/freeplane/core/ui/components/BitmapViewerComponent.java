@@ -33,6 +33,8 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
+import com.thebuzzmedia.imgscalr.Scalr;
+
 /**
  * @author Dimitry Polivaev
  * 22.08.2009
@@ -46,6 +48,8 @@ public class BitmapViewerComponent extends JComponent {
 	private BufferedImage cachedImage;
 	private final URL url;
 	private final Dimension originalSize;
+	private int imageX;
+	private int imageY;
 
 	protected int getHint() {
 		return hint;
@@ -88,29 +92,20 @@ public class BitmapViewerComponent extends JComponent {
 				super.paintComponent(g);
 				return;
 			}
-			GraphicsConfiguration config = getGraphicsConfiguration();
-			cachedImage =config.createCompatibleImage(width, height);
-			final double kComponent = (double) height / (double) width;
-			final double kImage = (double) imageHeight / (double) imageWidth;
-			final Image scaledImage;
-			final int x,y;
-			if (kComponent >= kImage) {
-				final int calcHeight = (int) (width * kImage);
-				scaledImage = image.getScaledInstance(width, calcHeight, hint);
-				x = 0;
-				y = (height - calcHeight) / 2;
+			final BufferedImage scaledImage = Scalr.resize(image, width,height);
+			image.flush();
+			final int scaledImageHeight = scaledImage.getHeight();
+			final int scaledImageWidth = scaledImage.getWidth();
+			if (scaledImageHeight > height) {
+				imageX = 0;
+				imageY = (height - scaledImageHeight) / 2;
 			}
 			else {
-				final int calcWidth = (int) (height / kImage);
-				scaledImage = image.getScaledInstance(calcWidth, height, hint);
-				x = (width - calcWidth) / 2;
-				y = 0;
+				imageX = (width - scaledImageWidth) / 2;
+				imageY = 0;
 			}
-			final Graphics2D fig = cachedImage.createGraphics();
-			fig.drawImage(scaledImage, x, y, null);
-			fig.dispose();
-			cachedImage.flush();
+			cachedImage = scaledImage;
 		}
-		g.drawImage(cachedImage, 0, 0, null);
+		g.drawImage(cachedImage, imageX, imageY, null);
 	}
 }
