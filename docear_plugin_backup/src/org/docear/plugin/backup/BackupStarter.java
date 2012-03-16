@@ -3,11 +3,7 @@ package org.docear.plugin.backup;
 import java.io.StringWriter;
 import java.net.URL;
 
-import org.docear.plugin.backup.listeners.MapLifeCycleListener;
-
 import org.docear.plugin.communications.CommunicationsConfiguration;
-import org.docear.plugin.core.features.AnnotationXmlBuilder;
-import org.docear.plugin.core.mindmap.AnnotationController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapChangeListener;
@@ -25,7 +21,6 @@ public class BackupStarter implements IMapChangeListener, INodeChangeListener {
 	BackupStarter() {
 		
 		LogUtils.info("starting DocearBackupStarter()");
-		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(new MapLifeCycleListener());		
 		
 		Controller.getCurrentModeController().getMapController().addMapChangeListener(this);
 		Controller.getCurrentModeController().getMapController().addNodeChangeListener(this);
