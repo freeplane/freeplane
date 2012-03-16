@@ -30,10 +30,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.Action;
 
@@ -689,27 +690,29 @@ public class MapController extends SelectionController implements IExtension{
 		fireNodeChanged(node, nodeChangeEvent);
 	}
 
-	private HashSet<NodeModel> nodeSet;
+	// nodes may only be refreshed by their own ModeController, so we have to store that too
+	private final ConcurrentHashMap<NodeModel, ModeController> nodesToRefresh = new ConcurrentHashMap<NodeModel, ModeController>();
 
+	/** optimization of nodeRefresh() as it handles multiple nodes in one Runnable, even nodes that weren't on the
+	 * list when the thread was started.*/
 	public void delayedNodeRefresh(final NodeModel node, final Object property, final Object oldValue,
 	                               final Object newValue) {
-		final ModeController originalModeController = Controller.getCurrentModeController();
-		if (nodeSet == null) {
-			nodeSet = new HashSet<NodeModel>();
+	    final boolean startThread = nodesToRefresh.isEmpty();
+	    nodesToRefresh.put(node, Controller.getCurrentModeController());
+        if (startThread) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					final ModeController currentModeController = Controller.getCurrentModeController();
-					if(! currentModeController.equals(originalModeController))
-						return;
-					final Collection<NodeModel> set = nodeSet;
-					nodeSet = null;
-					for (final NodeModel node : set) {
-						currentModeController.getMapController().nodeRefresh(node, property, oldValue, newValue);
+					final Iterator<Entry<NodeModel, ModeController>> it = nodesToRefresh.entrySet().iterator();
+					while (it.hasNext()) {
+					    final Entry<NodeModel, ModeController> entry = it.next();
+					    if (entry.getValue() == currentModeController)
+					        currentModeController.getMapController().nodeRefresh(node, property, oldValue, newValue);
+					    it.remove();
 					}
 				}
 			});
 		}
-		nodeSet.add(node);
 	}
 
 	public void removeMapChangeListener(final IMapChangeListener listener) {
