@@ -107,5 +107,6 @@ public class BitmapViewerComponent extends JComponent {
 			cachedImage = scaledImage;
 		}
 		g.drawImage(cachedImage, imageX, imageY, null);
+		cachedImage.flush();
 	}
 }
