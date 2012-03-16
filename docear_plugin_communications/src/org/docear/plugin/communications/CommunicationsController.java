@@ -68,7 +68,7 @@ public class CommunicationsController extends ALanguageController implements Act
 			MultivaluedMap<String,String> formParams = new MultivaluedMapImpl();
 		    formParams.add("password", password);
 			
-			ClientResponse response = client.resource(new URI("https://api.docear.org/")).path("/authenticate/"+username).post(ClientResponse.class, formParams);
+			ClientResponse response = client.resource(getServiceUri()).path("/authenticate/"+username).post(ClientResponse.class, formParams);
 			Status status = response.getClientResponseStatus();
 			
 			if(status.equals(Status.OK)) {				
@@ -137,7 +137,12 @@ public class CommunicationsController extends ALanguageController implements Act
 	}
 
 	public URI getServiceUri() throws URISyntaxException {
-		return new URI("https://api.docear.org/");
+		//return new URI("https://api.docear.org/");
+		return new URI("http://141.44.30.58:8080/");
+	}
+
+	public String getAccessToken() {
+		return ResourceController.getResourceController().getProperty("docear.service.connect.token");
 	}
 
 }

@@ -36,7 +36,7 @@ public class BackupRunner {
 						try {														
 							if (BackupController.getController().isBackupEnabled()) {
 								LogUtils.info("Docear BackupRunner: synchronizing backups with server");
-								boolean success = CommunicationsController.getController().postFileToDocearService("/mindmaps", true, BackupController.getController().getBackupDirectory().listFiles());								
+								boolean success = CommunicationsController.getController().postFileToDocearService("mindmaps", true, BackupController.getController().getBackupDirectory().listFiles());								
 								if (success) {
 									LogUtils.info("Docear BackupRunner: synchronizing successfull");
 								}
