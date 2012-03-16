@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
+import org.docear.plugin.core.DocearController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
@@ -46,14 +47,13 @@ public class DocearAboutAction extends AboutAction {
 		}
 		String programmer = about_props.getProperty("docear_programmer");
 		String copyright = about_props.getProperty("docear_copyright");
-		String version	= resourceController.getProperty("docear_version");
-		String status	= resourceController.getProperty("docear_status");
+		
 		
 		String aboutText = TextUtils.getRawText("docear_about");
 		MessageFormat formatter;
         try {
             formatter = new MessageFormat(aboutText);
-            aboutText = formatter.format(new Object[]{ version+" "+status, copyright, programmer});
+            aboutText = formatter.format(new Object[]{ DocearController.getController().getApplicationVersion(), copyright, programmer});
         }
         catch (IllegalArgumentException ex) {
             LogUtils.severe("wrong format " + aboutText + " for property " + "docear_about", ex);
