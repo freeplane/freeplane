@@ -30,6 +30,7 @@ import javax.swing.ListModel;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
@@ -70,7 +71,7 @@ class AttributeConditionController implements IElementaryConditionController {
 	}
 
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCondition,
-	                                            final Object value, final boolean matchCase) {
+	                                            final Object value, final boolean matchCase, final boolean matchApproximately) {
 		final String attribute = (String) selectedItem;
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_EXIST)) {
 			return new AttributeExistsCondition(attribute);
@@ -79,25 +80,25 @@ class AttributeConditionController implements IElementaryConditionController {
 			return new AttributeNotExistsCondition(attribute);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-		    return new AttributeCompareCondition(attribute, value, matchCase, 0, true);
+		    return new AttributeCompareCondition(attribute, value, matchCase, 0, true, matchApproximately);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_NOT_EQUAL_TO)) {
-		    return new AttributeCompareCondition(attribute, value, matchCase, 0, false);
+		    return new AttributeCompareCondition(attribute, value, matchCase, 0, false, matchApproximately);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_GT)) {
-		    return new AttributeCompareCondition(attribute, value, matchCase, 1, true);
+		    return new AttributeCompareCondition(attribute, value, matchCase, 1, true, false);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_GE)) {
-		    return new AttributeCompareCondition(attribute, value, matchCase, -1, false);
+		    return new AttributeCompareCondition(attribute, value, matchCase, -1, false, false);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_LT)) {
-		    return new AttributeCompareCondition(attribute, value, matchCase, -1, true);
+		    return new AttributeCompareCondition(attribute, value, matchCase, -1, true, false);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_LE)) {
-		    return new AttributeCompareCondition(attribute, value, matchCase, 1, false);
+		    return new AttributeCompareCondition(attribute, value, matchCase, 1, false, false);
 		}
         if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
-            return new AttributeContainsCondition(attribute, value.toString(), matchCase);
+            return new AttributeContainsCondition(attribute, value.toString(), matchCase, matchApproximately);
         }
         if (simpleCondition.objectEquals(ConditionFactory.FILTER_REGEXP)) {
             return new AttributeMatchesCondition(attribute, value.toString(), matchCase);
@@ -129,7 +130,7 @@ class AttributeConditionController implements IElementaryConditionController {
 	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
 	    if(selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS) 
                 || selectedCondition.objectEquals(ConditionFactory.FILTER_REGEXP) )
-            return new BasicComboBoxEditor();
+            return new FixedBasicComboBoxEditor();
 	    return ViewController.getTextDateTimeEditor();
 	}
 
@@ -156,6 +157,10 @@ class AttributeConditionController implements IElementaryConditionController {
 	public boolean isCaseDependent(final Object selectedItem, final NamedObject simpleCond) {
 		return true;
 	}
+	
+	public boolean supportsApproximateMatching(final Object property, final NamedObject simpleCond) {
+		return true;
+	}
 
 	public ASelectableCondition loadCondition(final XMLElement element) {
 		if (element.getName().equalsIgnoreCase(AttributeCompareCondition.NAME)) {
@@ -179,4 +184,5 @@ class AttributeConditionController implements IElementaryConditionController {
             return null;
 	    return new TypedListCellRenderer();
     }
+
 }

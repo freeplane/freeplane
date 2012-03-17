@@ -5,10 +5,12 @@ import java.lang.reflect.Method;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
+import org.freeplane.features.filter.PseudoDamerauLevenshtein;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 
 public abstract class ASelectableCondition  implements ICondition{
+	public static final float STRING_MIN_MATCH_PROB = 0.7F;
 	transient private String description;
 	transient private JComponent renderer;
 	private String userName;
@@ -28,8 +30,7 @@ public abstract class ASelectableCondition  implements ICondition{
 	public ASelectableCondition() {
 		super();
 	}
-
-
+	
 	@Override
     public int hashCode() {
 		if(HASH == null){

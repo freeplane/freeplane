@@ -525,7 +525,7 @@
 		</menu_category>
 			<menu_category name="find">				
 				<menu_action action="FindAction"/>
-				<menu_action action="QuickFindAction.BACK" />
+				<!-- <menu_action action="QuickFindAction.BACK" /> -->
 				<menu_action action="FindNextAction"/>
 				<menu_action action="NodeListAction"/>
 			</menu_category>

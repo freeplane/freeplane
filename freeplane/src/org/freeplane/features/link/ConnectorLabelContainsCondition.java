@@ -20,6 +20,7 @@
 package org.freeplane.features.link;
 
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.filter.StringMatchingStrategy;
 import org.freeplane.features.filter.condition.ConditionFactory;
 
 /**
@@ -28,9 +29,11 @@ import org.freeplane.features.filter.condition.ConditionFactory;
  */
 public class ConnectorLabelContainsCondition extends ConnectorLabelCondition {
 	public static final String NAME = "connector_label_contains";
+	
 
-	public ConnectorLabelContainsCondition(final String text, final boolean matchCase) {
-		super(text, matchCase);
+	public ConnectorLabelContainsCondition(final String text, final boolean matchCase,
+			final boolean matchApproximately) {
+		super(text, matchCase, matchApproximately);
 	}
 
 	@Override
@@ -54,17 +57,19 @@ public class ConnectorLabelContainsCondition extends ConnectorLabelCondition {
 		if (middleLabel == null) {
 			return false;
 		}
-		if (matchCase()) {
-			return middleLabel.contains(getText());
-		}
-		return middleLabel.toLowerCase().contains(getText());
+		return getStringMatchingStrategy().matches(getText(), middleLabel, true, matchCase());
+		
+//		if (matchCase()) {
+//			return middleLabel.contains(getText());
+//		}
+//		return middleLabel.toLowerCase().contains(getText());
 	}
 
 	@Override
 	protected String createDescription() {
 		final String condition = TextUtils.getText(LinkConditionController.CONNECTOR_LABEL);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
-		return ConditionFactory.createDescription(condition, simpleCondition, getText(), matchCase());
+		return ConditionFactory.createDescription(condition, simpleCondition, getText(), matchCase(), matchApproximately());
 	}
 
 	@Override

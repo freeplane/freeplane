@@ -48,6 +48,7 @@ import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ComboBoxEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
@@ -67,6 +68,7 @@ import javax.swing.plaf.basic.BasicComboBoxEditor;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.ContainerComboBoxEditor;
@@ -83,6 +85,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.StyleNamedObject;
+import org.freeplane.features.styles.mindmapmode.ComboBoxRendererWithTooltip;
 import org.freeplane.features.time.TimeComboBoxEditor;
 
 /**
@@ -219,6 +222,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		controller.addAction(new ToggleToolbarAction("ToggleToolbarAction", "/main_toolbar"));
 		controller.addAction(new ToggleToolbarAction("ToggleStatusAction", "/status"));
 		toolbarPanel = new JComponent[4];
+
 		toolbarPanel[TOP] = new HorizontalToolbarPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		toolbarPanel[BOTTOM] = Box.createHorizontalBox();
 		toolbarPanel[LEFT] = Box.createVerticalBox();
@@ -729,6 +733,8 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 				}
 			});
 			menuBuilder.addElement("main_toolbar_zoom", zoomBox, MenuBuilder.AS_CHILD);
+			// FELIXHACK
+			//zoomBox.setRenderer(new ComboBoxRendererWithTooltip(zoomBox));
 		}
 	}
 
@@ -869,7 +875,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	public static ComboBoxEditor getTextDateTimeEditor() {
 	    final ContainerComboBoxEditor editor = new ContainerComboBoxEditor();
 		final NamedObject keyText = new NamedObject("text", "1Ab");
-		final BasicComboBoxEditor textEditor = new BasicComboBoxEditor(){
+		final BasicComboBoxEditor textEditor = new FixedBasicComboBoxEditor(){
 			private Object oldItem;
 	
 			@Override
