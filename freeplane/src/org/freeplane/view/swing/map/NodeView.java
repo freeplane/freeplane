@@ -341,11 +341,6 @@ public class NodeView extends JComponent implements INodeView {
 		return map.getZoomed(LocationModel.getModel(model).getHGap());
 	}
 
-	Rectangle getInnerBounds() {
-		final int space = getMap().getZoomed(NodeView.SPACE_AROUND);
-		return new Rectangle(space, space, getWidth() - 2 * space, getHeight() - 2 * space);
-	}
-
 	private NodeView getLast(Component startBefore, final boolean leftOnly, final boolean rightOnly) {
 		final Component[] components = getComponents();
 		for (int i = components.length - 1; i >= 0; i--) {

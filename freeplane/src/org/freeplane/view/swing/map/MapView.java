@@ -659,9 +659,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 * size?
 	 */
 	public Rectangle getInnerBounds() {
-		final Rectangle innerBounds = getRoot().getInnerBounds();
-		innerBounds.x += getRoot().getX();
-		innerBounds.y += getRoot().getY();
+		final Rectangle innerBounds = rootView.getBounds();
 		final Rectangle maxBounds = new Rectangle(0, 0, getWidth(), getHeight());
 		for (int i = 0; i < arrowLinkViews.size(); ++i) {
 			final ILinkView arrowView = arrowLinkViews.get(i);
