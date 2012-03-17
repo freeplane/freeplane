@@ -653,11 +653,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		        + MapView.margin);
 	}
 
-	/**
-	 * Return the bounding box of all the descendants of the source view, that
-	 * without BORDER. Should that be implemented in LayoutManager as minimum
-	 * size?
-	 */
 	public Rectangle getInnerBounds() {
 		final Rectangle innerBounds = rootView.getBounds();
 		final Rectangle maxBounds = new Rectangle(0, 0, getWidth(), getHeight());
