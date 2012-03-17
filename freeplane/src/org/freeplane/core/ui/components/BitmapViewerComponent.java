@@ -20,20 +20,22 @@
 package org.freeplane.core.ui.components;
 
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.concurrent.Future;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
-import com.thebuzzmedia.imgscalr.Scalr;
+import org.freeplane.core.util.LogUtils;
+
+import com.thebuzzmedia.imgscalr.AsyncScalr;
 
 /**
  * @author Dimitry Polivaev
@@ -43,6 +45,10 @@ public class BitmapViewerComponent extends JComponent {
 	/**
 	 * 
 	 */
+	static{
+//		System.setProperty("imgscalr.debug", "true");
+		AsyncScalr.setServiceThreadCount(1);
+	}
 	private static final long serialVersionUID = 1L;
 	private int hint;
 	private BufferedImage cachedImage;
@@ -50,6 +56,7 @@ public class BitmapViewerComponent extends JComponent {
 	private final Dimension originalSize;
 	private int imageX;
 	private int imageY;
+	private boolean processing;
 
 	protected int getHint() {
 		return hint;
@@ -64,6 +71,7 @@ public class BitmapViewerComponent extends JComponent {
 		cachedImage = ImageIO.read(url);
 		originalSize = new Dimension(cachedImage.getWidth(), cachedImage.getHeight());
 		hint = Image.SCALE_SMOOTH;
+		processing = false;
 	}
 
 	public Dimension getOriginalSize() {
@@ -72,41 +80,70 @@ public class BitmapViewerComponent extends JComponent {
 
 	@Override
 	protected void paintComponent(final Graphics g) {
-		final int width = getWidth();
-		final int height = getHeight();
-		if (width == 0 || height == 0) {
+		if(processing)
+			return;
+		if (getWidth() == 0 || getHeight() == 0) {
 			return;
 		}
-		if(cachedImage == null || cachedImage.getWidth() != width || cachedImage.getHeight() != height){
-			BufferedImage image;
+		if(! isCachedImageValid()){
+			BufferedImage tempImage;
 	        try {
-		        image = ImageIO.read(url);
+	        	tempImage = ImageIO.read(url);
 	        }
 	        catch (IOException e) {
-				super.paintComponent(g);
 				return;
 	        }
+	        final BufferedImage image = tempImage;
 			final int imageWidth = image.getWidth();
 			final int imageHeight = image.getHeight();
 			if(imageWidth == 0 || imageHeight == 0){
-				super.paintComponent(g);
 				return;
 			}
-			final BufferedImage scaledImage = Scalr.resize(image, width,height);
-			image.flush();
-			final int scaledImageHeight = scaledImage.getHeight();
-			final int scaledImageWidth = scaledImage.getWidth();
-			if (scaledImageHeight > height) {
-				imageX = 0;
-				imageY = (height - scaledImageHeight) / 2;
-			}
-			else {
-				imageX = (width - scaledImageWidth) / 2;
-				imageY = 0;
-			}
-			cachedImage = scaledImage;
+			processing = true;
+			final Future<BufferedImage> result = AsyncScalr.resize(image, getWidth(),getHeight());
+			AsyncScalr.getService().submit(new Runnable() {
+				public void run() {
+					EventQueue.invokeLater(new Runnable() {
+						
+						public void run() {
+							processing = false;
+							BufferedImage scaledImage = null;
+							try {
+								scaledImage = result.get();
+							} catch (Exception e) {
+								LogUtils.severe(e);
+								return;
+							}
+							finally{
+								image.flush();
+							}
+							final int scaledImageHeight = scaledImage.getHeight();
+							final int scaledImageWidth = scaledImage.getWidth();
+							if (scaledImageHeight > getHeight()) {
+								imageX = 0;
+								imageY = (getHeight() - scaledImageHeight) / 2;
+							}
+							else {
+								imageX = (getWidth() - scaledImageWidth) / 2;
+								imageY = 0;
+							}
+							cachedImage = scaledImage;
+							repaint();
+						}
+					});
+				}
+			});
 		}
-		g.drawImage(cachedImage, imageX, imageY, null);
-		cachedImage.flush();
+		else{
+			g.drawImage(cachedImage, imageX, imageY, null);
+			cachedImage.flush();
+		}
+	}
+
+	private boolean isCachedImageValid() {
+		return cachedImage != null && 
+				(1 >= Math.abs(getWidth() -  cachedImage.getWidth()) && getHeight() >= cachedImage.getHeight()
+				||
+				getWidth() >=  cachedImage.getWidth() && 1 >= Math.abs(getHeight() - cachedImage.getHeight()));
 	}
 }
