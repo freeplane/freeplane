@@ -19,11 +19,7 @@
  */
 package org.freeplane.core.ui;
 
-import java.awt.Color;
-
-
 import javax.swing.BorderFactory;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 

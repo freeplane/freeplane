@@ -21,8 +21,6 @@ package org.freeplane.features.filter;
 
 import java.util.Arrays;
 
-import org.freeplane.core.util.LogUtils;
-
 /**
  * Pseudo-Damerau-Levenshtein (aka "Optimal String Distance")
  * implementation which allows some non-adjacent transpositions(?)

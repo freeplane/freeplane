@@ -21,8 +21,6 @@ package org.freeplane.features.filter;
 
 import java.util.Arrays;
 
-import org.freeplane.core.util.LogUtils;
-
 /**
  * Damerau-Levenshtein implementation, computes the edit distance (ins/del/subst/transpos)
  * between a search term and a text to search against.

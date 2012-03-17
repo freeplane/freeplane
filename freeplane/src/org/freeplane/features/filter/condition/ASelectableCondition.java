@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.freeplane.features.filter.PseudoDamerauLevenshtein;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 

@@ -31,8 +31,6 @@ import org.junit.runners.Parameterized.Parameters;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import static org.freeplane.features.filter.EditDistanceStringMatchingStrategy.Type;
-
 @RunWith(value = Parameterized.class)
 public class EditDistanceStringMatchingStrategiesTest {
 	

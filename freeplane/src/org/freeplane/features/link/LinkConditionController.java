@@ -25,11 +25,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
-import javax.swing.plaf.basic.BasicComboBoxEditor;
-
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;

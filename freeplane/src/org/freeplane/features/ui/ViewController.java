@@ -48,7 +48,6 @@ import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ComboBoxEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
@@ -85,7 +84,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.StyleNamedObject;
-import org.freeplane.features.styles.mindmapmode.ComboBoxRendererWithTooltip;
 import org.freeplane.features.time.TimeComboBoxEditor;
 
 /**

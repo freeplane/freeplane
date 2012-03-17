@@ -27,8 +27,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
-import javax.swing.plaf.basic.BasicComboBoxEditor;
-
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelectionListener;

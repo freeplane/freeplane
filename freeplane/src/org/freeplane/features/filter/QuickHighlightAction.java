@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.filter;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import javax.swing.event.ChangeEvent;
@@ -28,7 +27,6 @@ import javax.swing.event.ChangeListener;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.filter.condition.ASelectableCondition;
-import org.freeplane.features.mode.Controller;
 
 /**
  * @author Dimitry Polivaev
