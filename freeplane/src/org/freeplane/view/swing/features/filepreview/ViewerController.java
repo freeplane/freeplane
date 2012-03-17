@@ -88,13 +88,18 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			return factory.getOriginalSize(viewer);
 		}
 
-		public void setViewerSize(final JComponent viewer, final Dimension size) {
-			factory.setViewerSize(viewer, size);
+		public void setFinalViewerSize(final JComponent viewer, final Dimension size) {
+			factory.setFinalViewerSize(viewer, size);
 		}
 
+		public void setDraftViewerSize(JComponent viewer, Dimension size) {
+			factory.setDraftViewerSize(viewer, size);
+			
+		}
 		public boolean accept(final URI uri) {
 			return getViewerFactory(uri) != null;
 		}
+
 	}
 
 	static final class FactoryFileFilter extends FileFilter {
@@ -357,7 +362,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 						return true;
 					}
 					size = new Dimension(x, y);
-					factory.setViewerSize(component, size);
+					factory.setDraftViewerSize(component, size);
 					component.revalidate();
 					break;
 				default:

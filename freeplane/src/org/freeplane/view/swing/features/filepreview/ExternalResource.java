@@ -71,7 +71,7 @@ public class ExternalResource implements IExtension {
 			preferredSize.height = (int) (preferredSize.height * r);
 			preferredSize.width = mapView.getZoomed(preferredSize.width);
 			preferredSize.height = mapView.getZoomed(preferredSize.height);
-			factory.setViewerSize(viewer, preferredSize);
+			factory.setFinalViewerSize(viewer, preferredSize);
 			viewer.revalidate();
 		}
 	}

@@ -57,6 +57,15 @@ public class BitmapViewerComponent extends JComponent {
 	private int imageX;
 	private int imageY;
 	private boolean processing;
+	private boolean scaleEnabled;
+
+	public boolean isScaleEnabled() {
+		return scaleEnabled;
+	}
+
+	public void setScaleEnabled(boolean scaleEnabled) {
+		this.scaleEnabled = scaleEnabled;
+	}
 
 	protected int getHint() {
 		return hint;
@@ -72,6 +81,7 @@ public class BitmapViewerComponent extends JComponent {
 		originalSize = new Dimension(cachedImage.getWidth(), cachedImage.getHeight());
 		hint = Image.SCALE_SMOOTH;
 		processing = false;
+		scaleEnabled = true;
 	}
 
 	public Dimension getOriginalSize() {
@@ -142,8 +152,9 @@ public class BitmapViewerComponent extends JComponent {
 
 	private boolean isCachedImageValid() {
 		return cachedImage != null && 
-				(1 >= Math.abs(getWidth() -  cachedImage.getWidth()) && getHeight() >= cachedImage.getHeight()
-				||
-				getWidth() >=  cachedImage.getWidth() && 1 >= Math.abs(getHeight() - cachedImage.getHeight()));
+				(! scaleEnabled 
+					|| 1 >= Math.abs(getWidth() -  cachedImage.getWidth()) && getHeight() >= cachedImage.getHeight()
+				    || getWidth() >=  cachedImage.getWidth() && 1 >= Math.abs(getHeight() - cachedImage.getHeight())
+				 );
 	}
 }
