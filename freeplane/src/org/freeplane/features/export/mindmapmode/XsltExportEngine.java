@@ -14,7 +14,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.mode.Controller;
@@ -38,11 +40,9 @@ public class XsltExportEngine implements IExportEngine {
         	final Transformer trans = transFact.newTransformer(xsltSource);
         	trans.transform(xmlSource, result);
         }
-        catch (final FileNotFoundException e) {
-        	LogUtils.warn(e);
-        }
         catch (final Exception e) {
-        	LogUtils.severe(e);
+        	UITools.errorMessage(TextUtils.getText("export_failed"));
+        	LogUtils.warn(e);
         }
         finally {
         	try {
@@ -51,7 +51,7 @@ public class XsltExportEngine implements IExportEngine {
         		}
         	}
         	catch (final IOException e) {
-        		e.printStackTrace();
+        		LogUtils.severe(e);
         	}
         }
 	}
