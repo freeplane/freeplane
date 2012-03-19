@@ -37,7 +37,7 @@ public class FiletransferClient {
 	
 	public boolean send(boolean deleteIfTransferred) {
 		FormDataMultiPart formDataMultiPart;
-		FileInputStream inStream;
+		FileInputStream inStream = null;
 		byte[] data;
 		for(File file : files) {
 			try {
@@ -65,6 +65,13 @@ public class FiletransferClient {
 			catch (Exception ex) {
 				LogUtils.warn("Could not upload "+ file.getPath(), ex);
 				return false;
+			}
+			finally {
+				try {
+					inStream.close();
+				} 
+				catch (Exception e) {				
+				}
 			}
 		}
 		return true;		

@@ -46,11 +46,7 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 		DocearMapModelExtension dmme = map.getExtension(DocearMapModelExtension.class);
 		if (dmme == null) {
 			return null;
-		}
-		if (dmme.getMapId() == null || dmme.getMapId().trim().length() == 0) {
-			
-		}
-		
+		}		
 		Properties properties = new Properties();
 		properties.put("mindmap_id", dmme.getMapId());
 		properties.put("timestamp", ""+System.currentTimeMillis());
