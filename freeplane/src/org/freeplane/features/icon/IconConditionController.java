@@ -31,6 +31,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
+import org.freeplane.features.filter.condition.DefaultConditionRenderer;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -65,7 +66,7 @@ class IconConditionController implements IElementaryConditionController {
     }
 
     public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
-                                                final Object value, final boolean ignoreCase) {
+                                                final Object value, final boolean matchCase, final boolean approximateMatching) {
         if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS))
             return value instanceof UIIcon ? new IconContainedCondition(((UIIcon) value).getName()) : null;
         if (simpleCond.objectEquals(ConditionFactory.FILTER_EXIST))
@@ -104,6 +105,10 @@ class IconConditionController implements IElementaryConditionController {
 	public boolean isCaseDependent(final Object property, final NamedObject simpleCond) {
 		return false;
 	}
+	
+	public boolean supportsApproximateMatching(final Object property, final NamedObject simpleCond) {
+		return false;
+	}
 
 	public ASelectableCondition loadCondition(final XMLElement element) {
 		if (element.getName().equalsIgnoreCase(IconContainedCondition.NAME)) {
@@ -113,6 +118,8 @@ class IconConditionController implements IElementaryConditionController {
 	}
 
 	public ListCellRenderer getValueRenderer(Object selectedProperty, NamedObject selectedCondition) {
-	    return null;
+		// don't return null as this would make FilterConditionEditor fall back to filterController.getConditionRenderer()
+		// (and that would put in a default string like "No Filtering (remove)"!)
+		return new DefaultConditionRenderer("");
     }
 }

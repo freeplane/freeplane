@@ -137,8 +137,8 @@ public class CommunicationsController extends ALanguageController implements Act
 	}
 
 	public URI getServiceUri() throws URISyntaxException {
-		return new URI("https://api.docear.org/");
-		//return new URI("http://141.44.30.58:8080/");
+		//return new URI("https://api.docear.org/");
+		return new URI("http://141.44.30.58:8080/");
 	}
 
 	public String getAccessToken() {

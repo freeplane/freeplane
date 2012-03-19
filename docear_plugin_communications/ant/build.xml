@@ -7,7 +7,7 @@
 	<property file="${workspace}/freeplane_framework/ant/ant.properties" />
 	<property file="${workspace}/freeplane/ant/ant.properties" />
 	<property file="ant/ant.properties" />
-	<property name="external.jars" value="${jersey-client.jar}:${jersey-core.jar}:${jersey-multipart.jar}:${jsr311-api.jar}:${mimepull.jar}" />
+    <property name="external.jars" value="${jersey-client.jar}:${jersey-core.jar}:${jersey-multipart.jar}:${jsr311-api.jar}:${mimepull.jar}:${jgoodies.jar}" />
 	<property name="build" value="${root}/build" />
 	<property name="build" value="${root}/build" />
 	<property name="dist" value="${root}/dist" />

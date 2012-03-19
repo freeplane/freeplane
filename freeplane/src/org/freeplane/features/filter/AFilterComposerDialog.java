@@ -533,7 +533,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		if (!controller.getViewController().isApplet()) {
 			final ActionListener saveAction = new SaveAction();
 			btnSave = new JButton();
-			MenuBuilder.setLabelAndMnemonic(btnSave, TextUtils.getRawText("SaveAction.text"));
+			MenuBuilder.setLabelAndMnemonic(btnSave, TextUtils.getRawText("FilterComposerDialog.save"));
 			btnSave.addActionListener(saveAction);
 			btnSave.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 			final ActionListener loadAction = new LoadAction();

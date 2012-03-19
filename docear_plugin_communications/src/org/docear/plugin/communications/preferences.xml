@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <preferences_structure>
 	<tabbed_pane>
-		<tab name="docear">
-			<separator name="account_options">
+		<tab name="docear">			
+			<separator name="account_options">				
+				<uri name="docear.service.help" label="docear.service.help.label" uri="http://docear.org"/>)
                 <string name="docear.service.connect.username" enabled="false" />
                 <action name="docear_connect" />
 			</separator>

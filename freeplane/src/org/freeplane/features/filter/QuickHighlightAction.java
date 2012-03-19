@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.filter;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import javax.swing.event.ChangeEvent;
@@ -28,7 +27,6 @@ import javax.swing.event.ChangeListener;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.filter.condition.ASelectableCondition;
-import org.freeplane.features.mode.Controller;
 
 /**
  * @author Dimitry Polivaev
@@ -64,24 +62,14 @@ class QuickHighlightAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final ASelectableCondition condition = filterEditor.getCondition();
 		final boolean isSelected = ! isModelSelected();
-		if(isSelected){
-			if(condition == null){
-				setSelected(true);
-				setSelected(false);
-				return;
-			}
-		}
 		filterController.getHighlightNodes().setSelected(isSelected);
-		setSelected(isSelected);
 		if(isSelected){
 			filterController.setHighlightCondition(condition);
 		}
 		else{
+			setSelected(false);
 			filterController.setHighlightCondition(null);
 		}
-		final Component mapViewComponent = Controller.getCurrentController().getMapViewManager().getMapViewComponent();
-		if(mapViewComponent != null)
-			mapViewComponent.repaint();
 	}
 	private boolean isModelSelected() {
 		return filterController.getHighlightNodes().isSelected();
