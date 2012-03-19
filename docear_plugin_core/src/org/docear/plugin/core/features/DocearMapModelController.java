@@ -5,8 +5,6 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.features.map.IMapLifeCycleListener;
-import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
@@ -31,39 +29,17 @@ public class DocearMapModelController implements IExtension{
 		final WriteManager writeManager = mapController.getWriteManager();
 		DocearMapModelExtensionXmlBuilder builder = new DocearMapModelExtensionXmlBuilder();
 		builder.registerBy(readManager, writeManager);
-		Controller.getCurrentController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
-			
-			public void beforeMapChange(MapModel oldMap, MapModel newMap) {}
-			
-			public void afterMapClose(MapModel oldMap) {}
-			
-			public void afterMapChange(MapModel oldMap, MapModel newMap) {
-				if(newMap == null || newMap.getExtension(DocearMapModelExtension.class) != null || newMap.getFile() != null) return;
-				DocearMapModelController.setModelWithCurrentVersion(newMap);					
-			}
-		});
-		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(new IMapLifeCycleListener() {
-			
-			public void onSavedAs(MapModel map) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			public void onSaved(MapModel map) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			public void onRemove(MapModel map) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			public void onCreate(MapModel map) {
-				if(map == null || map.getExtension(DocearMapModelExtension.class) != null || map.getFile() != null) return;
-				DocearMapModelController.setModelWithCurrentVersion(map);
-			}
-		});
+//		Controller.getCurrentController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
+//			
+//			public void beforeMapChange(MapModel oldMap, MapModel newMap) {}
+//			
+//			public void afterMapClose(MapModel oldMap) {}
+//			
+//			public void afterMapChange(MapModel oldMap, MapModel newMap) {
+//				if(newMap == null || newMap.getExtension(DocearMapModelExtension.class) != null || newMap.getFile() != null) return;
+//				DocearMapModelController.setModelWithCurrentVersion(newMap);					
+//			}
+//		});
 	}
 	
 	public static DocearMapModelExtension getModel(final MapModel map) {
@@ -79,6 +55,10 @@ public class DocearMapModelController implements IExtension{
 		}
 		else if (mapModelExtension == null && oldMapModelExtension != null) {
 			map.removeExtension(DocearMapModelExtension.class);
+		}
+		else if (mapModelExtension != null && oldMapModelExtension != null) {
+			map.removeExtension(DocearMapModelExtension.class);
+			map.addExtension(mapModelExtension);
 		}
 	}
 	

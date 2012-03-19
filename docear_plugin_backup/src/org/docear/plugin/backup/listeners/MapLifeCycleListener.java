@@ -47,6 +47,9 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 		if (dmme == null) {
 			return null;
 		}
+		if (dmme.getMapId() == null || dmme.getMapId().trim().length() == 0) {
+			
+		}
 		
 		Properties properties = new Properties();
 		properties.put("mindmap_id", dmme.getMapId());
