@@ -25,12 +25,6 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 	}
 
 	public void onSavedAs(MapModel map) {
-		try {
-			createBackup(map);		
-		} 
-		catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void onSaved(MapModel map) {
