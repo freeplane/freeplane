@@ -195,18 +195,24 @@ public class PdfUtilitiesController extends ALanguageController{
 				builder.addMenuItem(MENU_BAR + PDF_MANAGEMENT_MENU,
 						new JMenu(TextUtils.getText(MONITORING_MENU_LANG_KEY)), MENU_BAR + MONITORING_MENU,
 						MenuBuilder.AFTER);
-				builder.addAction(MENU_BAR + MONITORING_MENU, addMonitoringFolderAction, MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + MONITORING_MENU, updateMonitoringFolderAction, MenuBuilder.AS_CHILD);
+				builder.addSeparator(MENU_BAR + MONITORING_MENU, MenuBuilder.AS_CHILD);
+				builder.addAction(MENU_BAR + MONITORING_MENU, addMonitoringFolderAction, MenuBuilder.AS_CHILD);				
 				builder.addAction(MENU_BAR + MONITORING_MENU, deleteMonitoringFolderAction, MenuBuilder.AS_CHILD);
+				builder.addAction(MENU_BAR +  MONITORING_MENU, editMonitoringFolderAction, MenuBuilder.AS_CHILD);
+				builder.addSeparator(MENU_BAR + MONITORING_MENU, MenuBuilder.AS_CHILD);
 				
 				
 				builder.addMenuItem(monitoringCategory,
 						new JMenu(TextUtils.getText(MONITORING_MENU_LANG_KEY)), monitoringCategory + MONITORING_MENU,
 						MenuBuilder.AS_CHILD);
 				builder.addSeparator(monitoringCategory + MONITORING_MENU, MenuBuilder.AFTER);
-				builder.addAction(monitoringCategory + MONITORING_MENU, addMonitoringFolderAction, MenuBuilder.AS_CHILD);
 				builder.addAction(monitoringCategory + MONITORING_MENU, updateMonitoringFolderAction, MenuBuilder.AS_CHILD);
+				builder.addSeparator(monitoringCategory + MONITORING_MENU, MenuBuilder.AS_CHILD);
+				builder.addAction(monitoringCategory + MONITORING_MENU, addMonitoringFolderAction, MenuBuilder.AS_CHILD);				
 				builder.addAction(monitoringCategory + MONITORING_MENU, deleteMonitoringFolderAction, MenuBuilder.AS_CHILD);
+				builder.addAction(monitoringCategory + MONITORING_MENU, editMonitoringFolderAction, MenuBuilder.AS_CHILD);
+				builder.addSeparator(monitoringCategory + MONITORING_MENU, MenuBuilder.AS_CHILD);
 				
 				JMonitoringMenu settingsMenu1 = new JMonitoringMenu("Settings", modeController); //$NON-NLS-1$
 				JMonitoringMenu settingsMenu2 = new JMonitoringMenu("Settings", modeController); //$NON-NLS-1$
@@ -217,8 +223,8 @@ public class PdfUtilitiesController extends ALanguageController{
 						MenuBuilder.AS_CHILD);
 				builder.addMenuItem(MENU_BAR + MONITORING_MENU, settingsMenu2, MENU_BAR + MONITORING_MENU + SETTINGS_MENU, MenuBuilder.AS_CHILD);
 				
-				builder.addAction(monitoringCategory + MONITORING_MENU + SETTINGS_MENU, editMonitoringFolderAction, MenuBuilder.AS_CHILD);
-				builder.addAction(MENU_BAR +  MONITORING_MENU + SETTINGS_MENU, editMonitoringFolderAction, MenuBuilder.AS_CHILD);
+				
+				
 				
 				builder.addMenuItem(MENU_BAR + MONITORING_MENU + SETTINGS_MENU, new JMenu(TextUtils.getText("PdfUtilitiesController_12")), MENU_BAR + PDF_MANAGEMENT_MENU + MONITORING_MENU + SETTINGS_MENU + AUTOUPDATE_MENU, //$NON-NLS-1$
 						MenuBuilder.AS_CHILD);
@@ -241,8 +247,8 @@ public class PdfUtilitiesController extends ALanguageController{
 				autoDefaultAction.addGroupItem(autoOffAction);
 				autoDefaultAction.addGroupItem(autoOnAction);
 				
-				builder.addRadioItem(MENU_BAR + MONITORING_MENU, monitoringFlattenSubfoldersAction, false);
-				builder.addRadioItem(monitoringCategory + MONITORING_MENU, monitoringFlattenSubfoldersAction, false);
+				builder.addRadioItem(MENU_BAR + MONITORING_MENU + SETTINGS_MENU, monitoringFlattenSubfoldersAction, false);
+				builder.addRadioItem(monitoringCategory + MONITORING_MENU + SETTINGS_MENU, monitoringFlattenSubfoldersAction, false);
 				monitoringFlattenSubfoldersAction.initView(builder);
 				
 				builder.addRadioItem(monitoringCategory + MONITORING_MENU + SETTINGS_MENU + AUTOUPDATE_MENU, autoOnAction, false);
@@ -400,14 +406,19 @@ public class PdfUtilitiesController extends ALanguageController{
 		DocearController.getController().addDocearEventListener(new IDocearEventListener() {
 			
 			public void handleEvent(DocearEvent event) {
-				if(event.getType().equals(DocearEventType.NEW_INCOMING)){
+				if(DocearEventType.NEW_INCOMING.equals(event.getType())){
 					MapModel map = (MapModel)event.getEventObject();
 					boolean isMonitoringNode = NodeUtils.isMonitoringNode(map.getRootNode());
 					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_INCOMING_FOLDER, CoreConfiguration.DOCUMENT_REPOSITORY_PATH);
 					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_MINDMAP_FOLDER, CoreConfiguration.LIBRARY_PATH);
 					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_AUTO, 2);
 					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_SUBDIRS, 2);
-					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_FLATTEN_DIRS, 0);
+					if(ResourceController.getResourceController().getBooleanProperty("docear_flatten_subdir")){
+	        			NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_FLATTEN_DIRS, 1);
+	        		}
+	        		else{
+	        			NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_FLATTEN_DIRS, 0);
+	        		}
 					DocearMapModelController.getModel(map).setType(DocearMapType.incoming);
 					if(!isMonitoringNode){
 						List<NodeModel> list = new ArrayList<NodeModel>();
@@ -415,11 +426,11 @@ public class PdfUtilitiesController extends ALanguageController{
 		        		AddMonitoringFolderAction.updateNodesAgainstMonitoringDir(list, true);
 					}
 				}
-				if(event.getType().equals(DocearEventType.NEW_MY_PUBLICATIONS)){
+				if(DocearEventType.NEW_MY_PUBLICATIONS.equals(event.getType())){
 					MapModel map = (MapModel)event.getEventObject();
 					DocearMapModelController.getModel(map).setType(DocearMapType.my_publications);
 				}
-				if(event.getType().equals(DocearEventType.NEW_LITERATURE_ANNOTATIONS)){
+				if(DocearEventType.NEW_LITERATURE_ANNOTATIONS.equals(event.getType())){
 					MapModel map = (MapModel)event.getEventObject();
 					DocearMapModelController.getModel(map).setType(DocearMapType.literature_annotations);
 				}
@@ -458,12 +469,14 @@ public class PdfUtilitiesController extends ALanguageController{
 				boolean openOnPageActivated = Boolean.parseBoolean(properties.getProperty(OPEN_PDF_VIEWER_ON_PAGE_KEY));
 				if(openOnPageActivated){
 					String readerPath = properties.getProperty(OPEN_ON_PAGE_READER_PATH_KEY, ""); //$NON-NLS-1$
-					if(!(new PdfReaderFileFilter().accept(new File(readerPath)))){
-						if(new ExeFileFilter().accept(new File(readerPath))){
-							result.addWarning(TextUtils.getText(OPEN_ON_PAGE_WARNING_KEY));
-						}
-						else{
-							result.addError(TextUtils.getText(OPEN_ON_PAGE_ERROR_KEY));
+					if(readerPath != null && !readerPath.isEmpty()){ 
+						if(!(new PdfReaderFileFilter().accept(new File(readerPath)))){
+							if(new ExeFileFilter().accept(new File(readerPath))){
+								result.addWarning(TextUtils.getText(OPEN_ON_PAGE_WARNING_KEY));
+							}
+							else{
+								result.addError(TextUtils.getText(OPEN_ON_PAGE_ERROR_KEY));
+							}
 						}
 					}
 				}

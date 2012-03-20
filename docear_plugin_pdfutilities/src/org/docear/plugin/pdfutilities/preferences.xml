@@ -24,6 +24,7 @@
 			<separator name ="monitoring_settings">
 			    <boolean name="docear_auto_monitoring" />
                 <boolean name="docear_subdir_monitoring" />
+                <boolean name="docear_flatten_subdir" />
                 <string name="docear_files_to_import"/>   
                 <string name="docear_subdirs_to_ignore"/>   
 			</separator>

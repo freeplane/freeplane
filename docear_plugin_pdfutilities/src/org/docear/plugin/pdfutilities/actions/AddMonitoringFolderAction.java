@@ -15,6 +15,7 @@ import org.docear.plugin.core.actions.SaveAsAction;
 import org.docear.plugin.core.logger.DocearLogEvent;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
@@ -68,7 +69,12 @@ public class AddMonitoringFolderAction extends AbstractMonitoringAction {
         		NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_MINDMAP_FOLDER, CoreConfiguration.LIBRARY_PATH);
         		NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_AUTO, 2);
         		NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_SUBDIRS, 2);
-        		NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 0);
+        		if(ResourceController.getResourceController().getBooleanProperty("docear_flatten_subdir")){
+        			NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 1);
+        		}
+        		else{
+        			NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 0);
+        		}
         		List<NodeModel> list = new ArrayList<NodeModel>();
         		list.add(Controller.getCurrentController().getSelection().getSelected());	
         		AddMonitoringFolderAction.updateNodesAgainstMonitoringDir(list, true);

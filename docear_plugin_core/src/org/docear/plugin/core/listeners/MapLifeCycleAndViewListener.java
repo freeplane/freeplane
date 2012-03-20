@@ -69,21 +69,17 @@ public class MapLifeCycleAndViewListener implements IMapLifeCycleListener, IMapV
 		}
 	}
 		
-	@Override
 	public void afterViewChange(Component oldView, Component newView) {
 	}
 
-	@Override
 	public void afterViewClose(Component oldView) {
 	}
 
-	@Override
 	public void afterViewCreated(Component mapView) {
 		MapModel map = Controller.getCurrentController().getMapViewManager().getModel(mapView);
 		setMapIdIfNeeded(map);
 	}
 
-	@Override
 	public void beforeViewChange(Component oldView, Component newView) {
 	}
 

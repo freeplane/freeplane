@@ -1,6 +1,7 @@
 package org.docear.plugin.backup;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.net.URL;
 
 import org.docear.plugin.backup.listeners.MapLifeCycleListener;
@@ -17,6 +18,12 @@ public class BackupController {
 	
 	private final IMapLifeCycleListener mapLifeCycleListener = new MapLifeCycleListener();
 
+	private static FileFilter zipFilter = new FileFilter() {
+		public boolean accept(File f) {
+			return (f != null && f.getName().toLowerCase().endsWith(".zip"));
+		}		
+	};
+	
 	public BackupController() {
 		LogUtils.info("starting DocearBackupStarter()");		
 		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(mapLifeCycleListener);
@@ -52,5 +59,10 @@ public class BackupController {
 			backupFolder.mkdirs();
 		}
 		return backupFolder;
+	}
+	
+	
+	public File[] getBackupBufferFiles() {
+		return getBackupDirectory().listFiles(zipFilter);
 	}
 }

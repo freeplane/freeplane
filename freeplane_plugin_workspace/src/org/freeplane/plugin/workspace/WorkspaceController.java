@@ -12,6 +12,7 @@ import java.io.Writer;
 import java.util.Properties;
 import java.util.Vector;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
@@ -157,6 +158,15 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 
 	public FilesystemManager getFilesystemMgr() {
 		return this.fsReader;
+	}
+	
+	public void addToolBar(JComponent bar) {
+		getWorkspaceView().add(bar, BorderLayout.PAGE_END);
+		getWorkspaceView().repaint();
+	}
+	
+	public void removeToolBar(JComponent bar) {
+		getWorkspaceView().remove(bar);
 	}
 
 	public void saveConfigurationAsXML(Writer writer) {

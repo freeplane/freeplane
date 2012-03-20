@@ -34,6 +34,10 @@ public class DocearEvent extends EventObject {
 		this.eventObject = eventObj;
 	}
 	
+	public DocearEvent(Object source, Object eventObj) {
+		this(source, DocearEventType.NULL , eventObj);
+	}
+	
 	
 	
 	/***********************************************************************************
