@@ -13,6 +13,7 @@ import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
 import org.docear.plugin.core.logger.DocearEventLogger;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
@@ -82,6 +83,13 @@ public class DocearController implements IDocearEventListener {
 	
 	public DocearEventLogger getDocearEventLogger() {
 		return this.docearEventLogger;
+	}
+	
+	public String getApplicationVersion() {
+		String version	= ResourceController.getResourceController().getProperty("docear_version");
+		String status	= ResourceController.getResourceController().getProperty("docear_status");
+		
+		return version+" "+status;
 	}
 	
 	/***********************************************************************************

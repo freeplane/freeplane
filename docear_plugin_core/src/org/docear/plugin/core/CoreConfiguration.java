@@ -19,7 +19,7 @@ import org.docear.plugin.core.actions.SaveAsAction;
 import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.features.DocearMapWriter;
 import org.docear.plugin.core.features.DocearNodeModelExtensionController;
-import org.docear.plugin.core.listeners.MapLifeCycleListener;
+import org.docear.plugin.core.listeners.MapLifeCycleAndViewListener;
 import org.docear.plugin.core.listeners.PropertyListener;
 import org.docear.plugin.core.listeners.PropertyLoadListener;
 import org.docear.plugin.core.listeners.WorkspaceChangeListener;
@@ -258,7 +258,8 @@ public class CoreConfiguration extends ALanguageController {
 	private void registerListeners() {
 		Controller.getCurrentController().getOptionPanelController().addPropertyLoadListener(new PropertyLoadListener());
 		Controller.getCurrentController().getResourceController().addPropertyChangeListener(new PropertyListener());
-		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(new MapLifeCycleListener());
+		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(new MapLifeCycleAndViewListener());
+		Controller.getCurrentController().getMapViewManager().addMapViewChangeListener(new MapLifeCycleAndViewListener());
 		WorkspaceController.getIOController().registerNodeActionListener(AWorkspaceTreeNode.class, WorkspaceActionEvent.WSNODE_OPEN_DOCUMENT, new WorkspaceOpenDocumentListener());
 	}	
 	

@@ -556,7 +556,7 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 	}
 
-	private static final Pattern urlPattern = Pattern.compile("file://[^\\s\"'<>]+|(:?https?|ftp)://[^\\s()'\",;|<>{}]+");
+	private static final Pattern urlPattern = Pattern.compile("file://[^\\s\"'<>]+|(:?https?|ftp)://[^\\s\"|<>{}]+");
 	private static final Pattern mailPattern = Pattern.compile("([!+\\-/=~.\\w#]+@[\\w.\\-+?&=%]+)");
     private static final HashMap<String, Icon> menuItemCache = new HashMap<String, Icon>();
 

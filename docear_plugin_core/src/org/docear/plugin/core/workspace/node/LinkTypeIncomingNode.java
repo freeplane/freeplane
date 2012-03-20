@@ -15,10 +15,16 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
+import org.docear.plugin.core.features.DocearMapModelController;
+import org.docear.plugin.core.features.DocearMapModelExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.url.UrlManager;
+import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
@@ -118,7 +124,8 @@ public class LinkTypeIncomingNode extends ALinkNode implements IWorkspaceNodeAct
 				final MapIO mapIO = (MapIO) Controller.getCurrentModeController().getExtension(MapIO.class);		
 				try {
 					if(mapIO.newMap(f.toURL())) {
-						DocearEvent evnt = new DocearEvent(this, DocearEventType.NEW_INCOMING, Controller.getCurrentController().getMap());
+						MapModel map = Controller.getCurrentController().getMap();						
+						DocearEvent evnt = new DocearEvent(this, DocearEventType.NEW_INCOMING, map);
 						DocearController.getController().dispatchDocearEvent(evnt);
 					}
 				}

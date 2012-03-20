@@ -35,6 +35,7 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 //	final private int min;
 //	final private int step;
 	final private JSpinner spinner;
+	final private boolean isDoubleProperty;
 
 	/**
 	 */
@@ -49,6 +50,18 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 				firePropertyChangeEvent();
 			}
 		});
+		isDoubleProperty = false;
+	}
+	
+	public NumberProperty(final String name, final double min, final double max, final double step) {
+		super(name);
+		spinner = new JSpinner(new SpinnerNumberModel(min, min, max, step));
+		spinner.addChangeListener(new ChangeListener() {
+			public void stateChanged(final ChangeEvent pE) {
+				firePropertyChangeEvent();
+			}
+		});
+		isDoubleProperty = true;
 	}
 
 	@Override
@@ -66,14 +79,28 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 
 	@Override
 	public void setValue(final String value) {
-		int intValue = 100;
-		try {
-			intValue = Integer.parseInt(value);
+		Number someValue;
+		if (isDoubleProperty)
+		{
+			someValue = 1.0;
+			try {
+				someValue = Double.parseDouble(value);
+			}
+			catch (final NumberFormatException e) {
+				LogUtils.severe(e);
+			}
 		}
-		catch (final NumberFormatException e) {
-			LogUtils.severe(e);
+		else
+		{
+			someValue = 100;
+			try {
+				someValue = Integer.parseInt(value);
+			}
+			catch (final NumberFormatException e) {
+				LogUtils.severe(e);
+			}
 		}
-		spinner.setValue(new Integer(intValue));
+		spinner.setValue(someValue);
 	}
 
 	@Override

@@ -21,28 +21,45 @@ package org.freeplane.features.filter.condition;
 
 import java.util.Date;
 
+
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.TypeReference;
+import org.freeplane.features.filter.ExactStringMatchingStrategy;
+import org.freeplane.features.filter.StringMatchingStrategy;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.FormattedNumber;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.n3.nanoxml.XMLElement;
 
+/**
+ * Adapter for Conditions which compare values (</<=/>/>=/=/!=)
+ * 
+ * @author ?
+ *
+ */
 abstract public class CompareConditionAdapter extends ASelectableCondition {
 	public static final String OBJECT = "OBJECT";
 	public static final String MATCH_CASE = "MATCH_CASE";
+	public static final String MATCH_APPROXIMATELY = "MATCH_APPROXIMATELY";
 	public static final String VALUE = "VALUE";
 	private Comparable<?> conditionValue;
 	final private boolean matchCase;
+	final protected boolean matchApproximately;
+	final StringMatchingStrategy stringMatchingStrategy;
 	private int comparisonResult;
 	private boolean error;
+	
+	abstract public boolean isEqualityCondition();
 
 	@SuppressWarnings("deprecation")
-	protected CompareConditionAdapter(final Object value, final boolean matchCase) {
+	protected CompareConditionAdapter(final Object value, final boolean matchCase, final boolean matchApproximately) {
 		super();
 		this.matchCase = matchCase;
+		this.matchApproximately = matchApproximately;
+		stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
+			new ExactStringMatchingStrategy();
 		final ResourceController resourceController = ResourceController.getResourceController();
 		if(value instanceof String && resourceController.getBooleanProperty("compare_as_number") && TextUtils.isNumber((String) value)) {
 			Number number = TextUtils.toNumber((String) value);
@@ -69,18 +86,25 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 			return;
 		}
 		conditionValue = value.toString();
+		
 	}
 
 	protected CompareConditionAdapter(final Double value) {
 		super();
 		this.matchCase = false;
+		this.matchApproximately = false;
 		conditionValue = value;
+		stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
+			new ExactStringMatchingStrategy();
 	}
 
 	protected CompareConditionAdapter(final Long value) {
 		super();
 		this.matchCase = false;
+		this.matchApproximately = false;
 		conditionValue = value;
+		stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
+			new ExactStringMatchingStrategy();
 	}
 
 	@Override
@@ -92,6 +116,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 		else
 			child.setAttribute(CompareConditionAdapter.VALUE, conditionValue.toString());
 		child.setAttribute(CompareConditionAdapter.MATCH_CASE, TreeXmlWriter.BooleanToXml(matchCase));
+		child.setAttribute(CompareConditionAdapter.MATCH_APPROXIMATELY, TreeXmlWriter.BooleanToXml(matchApproximately));
 	}
 
 	protected void compareTo(final Object transformedContent) throws NumberFormatException {
@@ -126,9 +151,17 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 			error = true;
 			return 0;
 		}
+		
 		final String valueAsString = conditionValue.toString();
 		final String text = transformedContent.toString();
-		return matchCase ? text.compareTo(valueAsString) : text.compareToIgnoreCase(valueAsString);
+		if (isEqualityCondition())
+		{
+			return stringMatchingStrategy.matches(valueAsString, text, false, matchCase) ? 0 : -1;
+		}
+		else
+		{
+			return matchCase ? text.compareTo(valueAsString) : text.compareToIgnoreCase(valueAsString);
+		}
     }
 
 	protected int getComparisonResult() {
@@ -170,7 +203,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 			default:
 				throw new IllegalArgumentException();
 		}
-		return ConditionFactory.createDescription(attribute, simpleCondition, valueDescription(), matchCase);
+		return ConditionFactory.createDescription(attribute, simpleCondition, valueDescription(), matchCase, matchApproximately);
 	}
 
 	private String valueDescription() {

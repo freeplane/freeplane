@@ -120,7 +120,7 @@ public class MapVersionInterpreter{
 		if(appName != null)
 			appInfo = TextUtils.format("dialect_info.app", path, appName);
 		else
-			appInfo = TextUtils.getText("dialect_info.unknownApp");
+			appInfo = TextUtils.format("dialect_info.unknownApp", path);
 		final String warning = TextUtils.getText("dialect_info.warning");
 		final String urlInfo;
 		if(url != null)

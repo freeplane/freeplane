@@ -70,4 +70,9 @@ class DocumentationAction extends AFreeplaneAction {
 			LogUtils.warn(e1);
 		}
 	}
+	
+	@Override
+	public void afterMapChange(final Object newMap) {
+	}
+	
 }

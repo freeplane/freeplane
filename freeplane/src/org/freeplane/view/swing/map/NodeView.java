@@ -74,7 +74,6 @@ import org.freeplane.view.swing.map.cloud.CloudView;
 import org.freeplane.view.swing.map.cloud.CloudViewFactory;
 import org.freeplane.view.swing.map.edge.EdgeView;
 import org.freeplane.view.swing.map.edge.EdgeViewFactory;
-import org.freeplane.view.swing.map.edge.SummaryEdgeView;
 
 /**
  * This class represents a single Node of a MindMap (in analogy to
@@ -338,11 +337,6 @@ public class NodeView extends JComponent implements INodeView {
 
 	public int getHGap() {
 		return map.getZoomed(LocationModel.getModel(model).getHGap());
-	}
-
-	Rectangle getInnerBounds() {
-		final int space = getMap().getZoomed(NodeView.SPACE_AROUND);
-		return new Rectangle(space, space, getWidth() - 2 * space, getHeight() - 2 * space);
 	}
 
 	private NodeView getLast(Component startBefore, final boolean leftOnly, final boolean rightOnly) {

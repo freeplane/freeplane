@@ -35,6 +35,7 @@ import java.util.Vector;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
@@ -50,7 +51,7 @@ import org.freeplane.n3.nanoxml.XMLWriter;
 /**
  * @author Volker Boerchers
  */
-public class ScannerController implements IExtension {
+public class ScannerController implements IExtension, IFreeplanePropertyListener {
 	private static final String SCANNER_XML = "scanner.xml";
 	private static final String ROOT_ELEMENT = "scanners";
 	private String pathToFile;
@@ -63,8 +64,10 @@ public class ScannerController implements IExtension {
 		// applets have no user directory and no file access anyhow
 		pathToFile = freeplaneUserDirectory == null ? null : freeplaneUserDirectory + File.separator + SCANNER_XML;
 		initScanners();
-		selectScanner(Locale.getDefault());
+		selectScanner(FormatUtils.getFormatLocaleFromResources());
         addParsersForStandardFormats();
+        final ResourceController resourceController = ResourceController.getResourceController();
+        resourceController.addPropertyChangeListener(this);
 	}
 
 	public static ScannerController getController() {
@@ -378,4 +381,10 @@ public class ScannerController implements IExtension {
 		}
 		return builder.toString();
 	}
+
+    public void propertyChanged(String propertyName, String newValue, String oldValue) {
+        if (FormatUtils.equalsFormatLocaleName(propertyName)) {
+            selectScanner(FormatUtils.getFormatLocaleFromResources());
+        }
+    }
 }

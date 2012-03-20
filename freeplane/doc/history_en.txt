@@ -1,6 +1,9 @@
 ===============================
 1.2.13 beta
 ===============================
+Search enhancements: Approximate search feature, control search via key presses, busy cursor, some fixes
+Fix editable Comboboxes for some L&Fs
+
 ===============================
 1.2.12 beta
 ===============================

@@ -115,7 +115,7 @@ public abstract class ResourceController {
 	/** register defaults in freeplane.properties respectively defaults.properties instead! */
 	public double getDoubleProperty(final String key, final double defaultValue) {
 		try {
-			return Double.parseDouble(ResourceController.getResourceController().getProperty("user_zoom"));
+			return Double.parseDouble(ResourceController.getResourceController().getProperty(key));
 		}
 		catch (final Exception e) {
 			return defaultValue;
@@ -141,7 +141,11 @@ public abstract class ResourceController {
 	public int getIntProperty(String key) {
 		return Integer.parseInt(getProperty(key));
     }
-	
+
+	public double getDoubleProperty(String key) {
+		return Double.parseDouble(getProperty(key));
+    }
+
 	/** register defaults in freeplane.properties respectively defaults.properties instead. */
 	public long getLongProperty(final String key, final int defaultValue) {
 		try {
