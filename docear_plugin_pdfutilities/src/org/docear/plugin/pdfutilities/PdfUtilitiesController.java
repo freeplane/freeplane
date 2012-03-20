@@ -247,8 +247,8 @@ public class PdfUtilitiesController extends ALanguageController{
 				autoDefaultAction.addGroupItem(autoOffAction);
 				autoDefaultAction.addGroupItem(autoOnAction);
 				
-				builder.addRadioItem(MENU_BAR + MONITORING_MENU, monitoringFlattenSubfoldersAction, false);
-				builder.addRadioItem(monitoringCategory + MONITORING_MENU, monitoringFlattenSubfoldersAction, false);
+				builder.addRadioItem(MENU_BAR + MONITORING_MENU + SETTINGS_MENU, monitoringFlattenSubfoldersAction, false);
+				builder.addRadioItem(monitoringCategory + MONITORING_MENU + SETTINGS_MENU, monitoringFlattenSubfoldersAction, false);
 				monitoringFlattenSubfoldersAction.initView(builder);
 				
 				builder.addRadioItem(monitoringCategory + MONITORING_MENU + SETTINGS_MENU + AUTOUPDATE_MENU, autoOnAction, false);
@@ -413,7 +413,12 @@ public class PdfUtilitiesController extends ALanguageController{
 					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_MINDMAP_FOLDER, CoreConfiguration.LIBRARY_PATH);
 					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_AUTO, 2);
 					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_SUBDIRS, 2);
-					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_FLATTEN_DIRS, 0);
+					if(ResourceController.getResourceController().getBooleanProperty("docear_flatten_subdir")){
+	        			NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_FLATTEN_DIRS, 1);
+	        		}
+	        		else{
+	        			NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_FLATTEN_DIRS, 0);
+	        		}
 					DocearMapModelController.getModel(map).setType(DocearMapType.incoming);
 					if(!isMonitoringNode){
 						List<NodeModel> list = new ArrayList<NodeModel>();
