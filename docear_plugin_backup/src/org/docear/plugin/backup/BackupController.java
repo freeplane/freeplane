@@ -30,9 +30,7 @@ public class BackupController {
 		
 		addPluginDefaults();
 		
-		if (this.isBackupEnabled()) {
-			this.backupRunner.run();
-		}
+		this.backupRunner.run();		
 	}
 	
 	public static BackupController getController() {
