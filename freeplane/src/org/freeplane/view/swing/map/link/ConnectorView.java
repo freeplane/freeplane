@@ -418,7 +418,7 @@ public class ConnectorView extends AConnectorView{
     }
 
 	private void paintArrow(final Graphics2D g, Point startPoint, Point endPoint) {
-	    paintArrow(startPoint, endPoint, g, getZoom() * 10, (int) Math.ceil(0.5 + stroke.getLineWidth() / 4));
+	    paintArrow(startPoint, endPoint, g, getZoom() * 10);
     }
 
 	private void drawLabels(final Graphics2D g, Point startPoint, Point startPoint2, Point endPoint2, Point endPoint) {
