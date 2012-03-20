@@ -36,6 +36,7 @@ import java.util.Vector;
 
 import javax.swing.ButtonModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -177,6 +178,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	final private String pathToFilterFile;
 	private ASelectableCondition selectedViewCondition;
 	private final ButtonModel showAncestors;
+	private final ButtonModel approximateMatchingButtonModel;
+	private final ButtonModel caseSensitiveButtonModel;
 	private final ButtonModel showDescendants;
 	private final ButtonModel highlightNodes;
 	private ASelectableCondition highlightCondition;
@@ -197,6 +200,11 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		highlightNodes.setSelected(false);
 		applyToVisibleNodeOnly = new JToggleButton.ToggleButtonModel();
 		applyToVisibleNodeOnly.setSelected(false);
+		approximateMatchingButtonModel = new JToggleButton.ToggleButtonModel();
+		approximateMatchingButtonModel.setSelected(false);
+		caseSensitiveButtonModel = new JToggleButton.ToggleButtonModel();
+		caseSensitiveButtonModel.setSelected(false);
+		
 		controller.getMapViewManager().addMapSelectionListener(this);
         final AFreeplaneAction showFilterToolbar = new ToggleFilterToolbarAction("ShowFilterToolbarAction", "/filter_toolbar");
 		quickEditor = new FilterConditionEditor(this, 0, true);
@@ -651,4 +659,12 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	public boolean isNodeHighlighted(NodeModel node) {
 		return highlightCondition != null && highlightCondition.checkNode(node);
     }
+
+	public ButtonModel getApproximateMatchingButtonModel() {
+		return approximateMatchingButtonModel;
+	}
+
+	public ButtonModel getCaseSensitiveButtonModel() {
+		return caseSensitiveButtonModel;
+	}
 }
