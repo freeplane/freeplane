@@ -35,7 +35,7 @@ public class DocearEvent extends EventObject {
 	}
 	
 	public DocearEvent(Object source, Object eventObj) {
-		this(source, null, eventObj);
+		this(source, DocearEventType.NULL , eventObj);
 	}
 	
 	

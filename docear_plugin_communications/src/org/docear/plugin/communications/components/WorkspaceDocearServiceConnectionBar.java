@@ -28,7 +28,7 @@ public class WorkspaceDocearServiceConnectionBar extends JToolBar {
 	protected static Insets marginInsets = new Insets(2, 2, 2, 2);
 	
 	private static Icon onIcon = new ImageIcon(WorkspaceDocearServiceConnectionBar.class.getResource("/images/arrow-refresh-on.png"));
-	private static Icon offIcon = new ImageIcon(WorkspaceDocearServiceConnectionBar.class.getResource("/images/arrow-refresh-off.gif"));
+	private static Icon offIcon = new ImageIcon(WorkspaceDocearServiceConnectionBar.class.getResource("/images/arrow-refresh-off.png"));
 	
 	
 	
