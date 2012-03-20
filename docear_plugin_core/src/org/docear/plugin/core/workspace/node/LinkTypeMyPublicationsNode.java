@@ -153,7 +153,14 @@ public class LinkTypeMyPublicationsNode extends ALinkNode implements IWorkspaceN
 
 	public boolean changeName(String newName, boolean renameLink) {
 		// simple set the node name
-		this.setName(newName);
-		return true;
+		//this.setName(newName);
+		try {
+			WorkspaceUtils.getModel().changeNodeName(this, newName);
+			return true;
+		}
+		catch(Exception ex) {
+			// do nth.
+		}
+		return false;
 	}
 }
