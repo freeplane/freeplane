@@ -11,7 +11,8 @@
 		<menu_submenu name="edit" name_ref="edit">
 			<menu_category name="find">				
 				<menu_action accelerator="control G" action="FindAction"/>
-				<menu_action accelerator="control shift G" action="FindNextAction"/>
+				<menu_action accelerator="control shift G" action="QuickFindAction.FORWARD"/>
+				<menu_action action="QuickFindAction.BACK"/>
 				<menu_action action="OpenPathAction"/>
 				</menu_category>
 		</menu_submenu>
