@@ -7,6 +7,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -32,8 +34,10 @@ public class DragbaseController {
 	private static Process dragbase = null;
 	private static boolean startup = true;
 	private static boolean dragbaserunning = true;
+	private static dragbase.dragbase dragbaseWrapper = null;
 	
 	public static void startDragbasePlugin(ModeController modeController){
+		
 		if(Compat.isWindowsOS()){
 			
 			Controller.getCurrentController().getViewController().getJFrame().addWindowFocusListener(new WindowFocusListener() {
@@ -41,70 +45,81 @@ public class DragbaseController {
 				public void windowLostFocus(WindowEvent e) {					
 				}
 				
-				public void windowGainedFocus(WindowEvent e) {					
-					if(startup && Controller.getCurrentController().getViewController().getFrame().isFocused()){
-						startup = false;
-						dragbaserunning = startDragbase();
-						checkDragbaseThread();
-						saveTempFile(Controller.getCurrentController().getMapViewManager().getModel());						
-					}
-					if(!dragbaserunning){
-						dragbaserunning = startDragbase();
-						checkDragbaseThread();
-					}
+				public void windowGainedFocus(WindowEvent e) {
+					//dragbaseWrapper = new dragbase.dragbase();
+					//dragbaseWrapper.Create();					
 				}
 			});
 			
-			Controller.getCurrentController().getViewController().getJFrame().addWindowStateListener(new WindowStateListener() {
-				
-				public void windowStateChanged(WindowEvent e) {
-					if(e.getID() == WindowEvent.WINDOW_CLOSING || e.getID() == WindowEvent.WINDOW_CLOSED){
-						stopDragbasePlugin();
-					}
-				}
-			});
-
-			modeController.getMapController().addMapChangeListener(new IMapChangeListener() {
-				
-				public void onPreNodeMoved(NodeModel oldParent, int oldIndex,
-						NodeModel newParent, NodeModel child, int newIndex) {					
-				}
-				
-				public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode,
-						int index) {					
-				}
-				
-				public void onNodeMoved(NodeModel oldParent, int oldIndex,
-						NodeModel newParent, NodeModel child, int newIndex) {					
-				}
-				
-				public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {					
-				}
-				
-				public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {					
-				}
-				
-				public void mapChanged(MapChangeEvent event) {
-					if(!startup){
-						saveTempFile(event.getMap());
-					}
-				}
-			});
-			
-			Controller.getCurrentController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
-				
-				public void beforeMapChange(MapModel oldMap, MapModel newMap) {					
-				}
-				
-				public void afterMapClose(MapModel oldMap) {					
-				}
-				
-				public void afterMapChange(MapModel oldMap, MapModel newMap) {
-					if(!startup){
-						saveTempFile(newMap);
-					}
-				}
-			});
+//			Controller.getCurrentController().getViewController().getJFrame().addWindowFocusListener(new WindowFocusListener() {
+//				
+//				public void windowLostFocus(WindowEvent e) {					
+//				}
+//				
+//				public void windowGainedFocus(WindowEvent e) {					
+//					if(startup && Controller.getCurrentController().getViewController().getFrame().isFocused()){
+//						startup = false;
+//						dragbaserunning = startDragbase();
+//						checkDragbaseThread();
+//						saveTempFile(Controller.getCurrentController().getMapViewManager().getModel());						
+//					}
+//					if(!dragbaserunning){
+//						dragbaserunning = startDragbase();
+//						checkDragbaseThread();
+//					}
+//				}
+//			});
+//			
+//			Controller.getCurrentController().getViewController().getJFrame().addWindowStateListener(new WindowStateListener() {
+//				
+//				public void windowStateChanged(WindowEvent e) {
+//					if(e.getID() == WindowEvent.WINDOW_CLOSING || e.getID() == WindowEvent.WINDOW_CLOSED){
+//						stopDragbasePlugin();
+//					}
+//				}
+//			});
+//
+//			modeController.getMapController().addMapChangeListener(new IMapChangeListener() {
+//				
+//				public void onPreNodeMoved(NodeModel oldParent, int oldIndex,
+//						NodeModel newParent, NodeModel child, int newIndex) {					
+//				}
+//				
+//				public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode,
+//						int index) {					
+//				}
+//				
+//				public void onNodeMoved(NodeModel oldParent, int oldIndex,
+//						NodeModel newParent, NodeModel child, int newIndex) {					
+//				}
+//				
+//				public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {					
+//				}
+//				
+//				public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {					
+//				}
+//				
+//				public void mapChanged(MapChangeEvent event) {
+//					if(!startup){
+//						saveTempFile(event.getMap());
+//					}
+//				}
+//			});
+//			
+//			Controller.getCurrentController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
+//				
+//				public void beforeMapChange(MapModel oldMap, MapModel newMap) {					
+//				}
+//				
+//				public void afterMapClose(MapModel oldMap) {					
+//				}
+//				
+//				public void afterMapChange(MapModel oldMap, MapModel newMap) {
+//					if(!startup){
+//						saveTempFile(newMap);
+//					}
+//				}
+//			});
 		}
 		
 	}

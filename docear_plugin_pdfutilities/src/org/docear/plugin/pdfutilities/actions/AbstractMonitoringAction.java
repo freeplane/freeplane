@@ -107,7 +107,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			}	
 			thread = null;			
 		} catch (CancellationException e){
-			DocearController.getController().getDocearEventLogger().write(AbstractMonitoringAction.class, DocearLogEvent.MONITORING_FOLDER_READ_ABORTED);
+			DocearController.getController().getDocearEventLogger().appendToLog(AbstractMonitoringAction.class, DocearLogEvent.MONITORING_FOLDER_READ_ABORTED);
 			LogUtils.info("CancellationException during monitoring update."); //$NON-NLS-1$
 		} catch (InterruptedException e) {
 			LogUtils.info("InterruptedException during monitoring update."); //$NON-NLS-1$
@@ -118,9 +118,9 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 		} catch (Exception e){
 			LogUtils.warn(e);
 			LogUtils.warn("===================================="); //$NON-NLS-1$
-			LogUtils.warn(e.getCause());
-			
-		}			
+			LogUtils.warn(e.getCause());			
+		}
+		System.gc();
 	}
 	
 	public static SwingWorker<Map<AnnotationID, Collection<IAnnotation>>, AnnotationModel[]> getMonitoringThread(final List<NodeModel> targets){
@@ -144,7 +144,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 				for(final NodeModel target : targets){
 					URI uri = NodeUtils.getPdfDirFromMonitoringNode(target);
 					if (uri != null) {
-						DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.MONITORING_FOLDER_READ, WorkspaceUtils.resolveURI(uri));			
+						DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.MONITORING_FOLDER_READ, WorkspaceUtils.resolveURI(uri));			
 					}
 					
 					

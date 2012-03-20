@@ -32,6 +32,9 @@ import net.sf.jabref.label.HandleDuplicateWarnings;
 
 import org.docear.plugin.bibtex.actions.FilePathValidatorAction;
 import org.docear.plugin.bibtex.listeners.MapViewListener;
+import org.docear.plugin.core.DocearController;
+import org.docear.plugin.core.event.DocearEventType;
+import org.docear.plugin.core.logger.DocearLogEvent;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
@@ -146,6 +149,8 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 			getJabrefFrame().closeCurrentTab();
 		}
 		openIt(file, raisePanel);
+		
+		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.RM_BIBTEX_FILE_CHANGE, new Object[] {file, this.getDatabase().getEntries().size()});
 	}
 
 	public void openIt(File file, boolean raisePanel) {
@@ -239,6 +244,9 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 			}
 
 		}
+		
+		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.RM_BIBTEX_FILE_OPEN, new Object[] {file, this.getDatabase().getEntries().size()});
+		
 	}
 
 	// JabRef does not use character escaping of "{" and "}"

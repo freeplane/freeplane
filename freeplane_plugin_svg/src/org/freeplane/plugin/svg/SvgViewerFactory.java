@@ -123,8 +123,12 @@ public class SvgViewerFactory implements IViewerFactory {
 		return canvas.getOriginalSize();
 	}
 
-	public void setViewerSize(final JComponent viewer, final Dimension size) {
+	public void setFinalViewerSize(final JComponent viewer, final Dimension size) {
 		final JSVGCanvas canvas = (JSVGCanvas) viewer;
 		canvas.setMySize(size);
+	}
+
+	public void setDraftViewerSize(JComponent viewer, Dimension size) {
+		setFinalViewerSize(viewer, size);
 	}
 }

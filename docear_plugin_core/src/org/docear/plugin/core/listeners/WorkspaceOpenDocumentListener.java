@@ -28,7 +28,7 @@ public class WorkspaceOpenDocumentListener implements IWorkspaceNodeActionListen
 				f = WorkspaceUtils.resolveURI(((ALinkNode) targetNode).getLinkPath());
 			}
 			if (f != null && !f.getName().endsWith(".mm")) {
-				DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.FILE_OPENED, f);
+				DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.FILE_OPENED, f);
 			}
 		}
 

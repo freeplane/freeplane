@@ -20,6 +20,7 @@
 package org.freeplane.core.resources.components;
 
 import java.awt.Component;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -54,6 +55,7 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 		mComboBox = new JComboBox();
 		mComboBox.setModel(new DefaultComboBoxModel(new Vector<String>(possibleTranslations)));
 		mComboBox.addActionListener(this);
+		//mComboBox.setRenderer(ComboBoxSmallFontRenderer.INSTANCE);
 	}
 
 	public ComboProperty(final String name, final String[] strings) {

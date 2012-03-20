@@ -73,7 +73,7 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 		IAnnotation annotation = null;
 		try {
 			annotation = new PdfAnnotationImporter().searchAnnotation(uri, node);
-
+			System.gc();
 			if (annotation == null || annotation.getPage() == null) {
 				Controller.exec(getExecCommandWine(readerPathWine, uri, 1));
 				return;
@@ -111,7 +111,7 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 		IAnnotation annotation = null;
 		try {
 			annotation = new PdfAnnotationImporter().searchAnnotation(uri, node);
-
+			System.gc();
 			if (annotation == null || annotation.getPage() == null) {
 				//Controller.exec(getExecCommandMacOs(readerPath, uri, 1));
 				runAppleScript(readerPath, uri, 1);
@@ -234,7 +234,7 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 			IAnnotation annotation = null;
 			try {
 				annotation = new PdfAnnotationImporter().searchAnnotation(uri, node);
-
+				System.gc();
 				if (annotation == null) {
 					if(uri == null) { 
 						this.mouseListener.mouseClicked(e);
@@ -319,12 +319,12 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 			File f = WorkspaceUtils.resolveURI(uri);
 			//if map file is opened, then there is a MapLifeCycleListener Event
 			if (!f.getName().endsWith(".mm")) {
-				DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.FILE_OPENED,  f);
+				DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.FILE_OPENED,  f);
 			}
 		}
 		else {					
 			try {
-				DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.OPEN_URL, uri.toURL());
+				DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.OPEN_URL, uri.toURL());
 			} catch (MalformedURLException ex) {						
 				LogUtils.warn(ex);
 			}

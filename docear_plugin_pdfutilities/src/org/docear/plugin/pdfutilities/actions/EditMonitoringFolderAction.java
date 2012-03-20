@@ -56,7 +56,7 @@ public class EditMonitoringFolderAction extends AbstractMonitoringAction {
         		List<NodeModel> list = new ArrayList<NodeModel>();
         		list.add(Controller.getCurrentController().getSelection().getSelected());
         		
-        		DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.MONITORING_FOLDER_EDIT, f);
+        		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.MONITORING_FOLDER_EDIT, f);
         		AddMonitoringFolderAction.updateNodesAgainstMonitoringDir(list, true);
         	}
         }

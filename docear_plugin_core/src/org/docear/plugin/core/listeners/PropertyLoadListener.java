@@ -10,7 +10,7 @@ public class PropertyLoadListener implements
 		org.freeplane.core.resources.OptionPanelController.PropertyLoadListener {
 
 	public void propertiesLoaded(Collection<IPropertyControl> properties) {
-		DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.OPEN_PREFERENCES);
+		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.OPEN_PREFERENCES);
 	}
 
 }

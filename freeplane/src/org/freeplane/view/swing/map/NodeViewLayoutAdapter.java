@@ -256,7 +256,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
         
         int childContentHeightSum = 0;
         int visibleChildCounter = 0;
-        int summedChildCounter = 0;
+        boolean useSummaryAsItem = true;
         int top = 0;
         
         final int[] groupStart = new int[highestSummaryLevel];
@@ -274,10 +274,11 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             }
             
             final boolean isSummary = child.isSummary();
-            final boolean isItem = !isSummary || visibleChildCounter <= summedChildCounter;
+            final boolean isItem = !isSummary || useSummaryAsItem;
             final int oldLevel = level;
             if(isItem){
                 level = 0;
+                useSummaryAsItem = true;
             }
             else{
                 level++;
@@ -334,7 +335,6 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                         groupEndY[j] = Integer.MIN_VALUE;
                         groupStartContentHeightSum[j] = childContentHeightSum;
                     }
-                    summedChildCounter = visibleChildCounter;
                 }
                 else if(child.isFirstGroupNode()){
                     groupStartContentHeightSum[0] = childContentHeightSum;
@@ -345,10 +345,9 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                     if (visibleChildCounter > 0)
                         childContentHeightSum +=  getVGap();
                     visibleChildCounter++;
+                    useSummaryAsItem = false;
                 }
-                if(isSummary)
-                    summedChildCounter = visibleChildCounter;
-           }
+            }
             else{
                 final int itemLevel = level - 1;
                 if(child.isFirstGroupNode()){

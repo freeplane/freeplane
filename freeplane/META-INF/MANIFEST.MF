@@ -11,7 +11,8 @@ Bundle-ClassPath: lib/freeplaneviewer.jar,
  lib/forms-1.2.1.jar,
  lib/gnu-regexp-1.1.4.jar,
  lib/SimplyHTML.jar,
- lib/jortho.jar
+ lib/jortho.jar,
+ lib/imgscalr-lib-3.2.jar
 Bundle-Activator: org.freeplane.main.osgi.Activator
 Import-Package: org.osgi.framework,
  org.osgi.service.url;version="1.0.0"

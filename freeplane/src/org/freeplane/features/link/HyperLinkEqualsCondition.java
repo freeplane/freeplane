@@ -22,7 +22,10 @@ package org.freeplane.features.link;
 import java.net.URI;
 
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.filter.ExactStringMatchingStrategy;
+import org.freeplane.features.filter.StringMatchingStrategy;
 import org.freeplane.features.filter.condition.ConditionFactory;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
@@ -30,25 +33,44 @@ import org.freeplane.features.filter.condition.ConditionFactory;
  */
 public class HyperLinkEqualsCondition extends HyperLinkCondition {
 	public static final String NAME = "hyper_link_equals";
+	public static final String MATCH_CASE = "MATCH_CASE";
+	public static final String MATCH_APPROXIMATELY = "MATCH_APPROXIMATELY";
 
-	public HyperLinkEqualsCondition(final String hyperlink) {
+	private final boolean matchCase;
+	private final boolean matchApproximately;
+	private final StringMatchingStrategy stringMatchingStrategy;
+
+	public HyperLinkEqualsCondition(final String hyperlink, final boolean matchCase, final boolean matchApproximately) {
 		super(hyperlink);
+		this.matchCase = matchCase;
+		this.matchApproximately = matchApproximately;
+		this.stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
+			new ExactStringMatchingStrategy();
 	}
 
 	@Override
 	protected boolean checkLink(final URI nodeLink) {
-		return getHyperlink().equals(nodeLink);
+//		return getHyperlink().equals(nodeLink);
+		return stringMatchingStrategy.matches(getHyperlink(), nodeLink.toString(), false, matchCase);
 	}
 
 	@Override
 	protected String createDescription() {
 		final String condition = TextUtils.getText(LinkConditionController.FILTER_LINK);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_IS_EQUAL_TO);
-		return ConditionFactory.createDescription(condition, simpleCondition, getHyperlink(), false);
+		return ConditionFactory.createDescription(condition, simpleCondition, getHyperlink(), matchCase, matchApproximately);
 	}
 
 	@Override
 	protected String getName() {
 		return NAME;
 	}
+	
+	@Override
+	public void fillXML(final XMLElement child) {
+		super.fillXML(child);
+		child.setAttribute(HyperLinkContainsCondition.MATCH_CASE, Boolean.toString(matchCase));
+		child.setAttribute(HyperLinkContainsCondition.MATCH_APPROXIMATELY, Boolean.toString(matchApproximately));
+	}
+	
 }

@@ -2,11 +2,14 @@ package org.docear.plugin.core.features;
 
 import org.freeplane.core.extension.IExtension;
 
-public class DocearMapModelExtension implements IExtension{
+public class DocearMapModelExtension implements IExtension {
+	
+	public final static String MAP_ID_ATTRIBUTE = "id";
 	
 	String version;
 	DocearMapType type;
-
+	String mapId;
+	
 	public DocearMapType getType() {
 		return type;
 	}
@@ -39,4 +42,12 @@ public class DocearMapModelExtension implements IExtension{
 		incoming, my_publications, literature_annotations
 	}
 
+	public String getMapId() {
+		return mapId;
+	}
+
+	public void setMapId(String mapId) {
+		this.mapId = mapId;
+	}
+	
 }

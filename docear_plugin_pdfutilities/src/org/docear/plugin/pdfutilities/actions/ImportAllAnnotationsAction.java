@@ -43,7 +43,8 @@ public class ImportAllAnnotationsAction extends ImportAnnotationsAction {
 			URI uri = Tools.getAbsoluteUri(selected);
             try {
             	PdfAnnotationImporter importer = new PdfAnnotationImporter();            	
-				List<AnnotationModel> annotations = importer.importAnnotations(uri);             
+				List<AnnotationModel> annotations = importer.importAnnotations(uri); 
+				System.gc();
 				NodeUtils.insertChildNodesFrom(annotations, selected.isLeft(), selected);
 			} catch (IOException e) {
 				LogUtils.severe("ImportAllAnnotationsAction IOException at URI("+uri+"): ", e); //$NON-NLS-1$ //$NON-NLS-2$

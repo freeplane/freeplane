@@ -19,7 +19,7 @@ import org.docear.plugin.core.actions.SaveAsAction;
 import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.features.DocearMapWriter;
 import org.docear.plugin.core.features.DocearNodeModelExtensionController;
-import org.docear.plugin.core.listeners.MapLifeCycleListener;
+import org.docear.plugin.core.listeners.MapLifeCycleAndViewListener;
 import org.docear.plugin.core.listeners.PropertyListener;
 import org.docear.plugin.core.listeners.PropertyLoadListener;
 import org.docear.plugin.core.listeners.WorkspaceChangeListener;
@@ -95,13 +95,13 @@ public class CoreConfiguration extends ALanguageController {
 	}
 	
 	private void init(ModeController modeController) {
-		DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.APPLICATION_STARTED);
+		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.APPLICATION_STARTED);
 		Toolkit.getDefaultToolkit();		
-		DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.OS_OPERATING_SYSTEM, System.getProperty("os.name"));
-		DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.OS_LANGUAGE_CODE, System.getProperty("user.language"));
-		DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.OS_COUNTRY_CODE, System.getProperty("user.country"));
-		DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.OS_TIME_ZONE, System.getProperty("user.timezone"));
-		DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.OS_SCREEN_RESOLUTION, Toolkit.getDefaultToolkit().getScreenSize().toString());
+		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.OS_OPERATING_SYSTEM, System.getProperty("os.name"));
+		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.OS_LANGUAGE_CODE, System.getProperty("user.language"));
+		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.OS_COUNTRY_CODE, System.getProperty("user.country"));
+		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.OS_TIME_ZONE, System.getProperty("user.timezone"));
+		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.OS_SCREEN_RESOLUTION, Toolkit.getDefaultToolkit().getScreenSize().toString());
 		
 		MapVersionInterpreter.addMapVersionInterpreter(new MapVersionInterpreter("0.9.0\" software_name=\"SciPlore_", false, false, "SciploreMM", "http://sciplore.org", null, new MapConverter()));
 		
@@ -258,7 +258,8 @@ public class CoreConfiguration extends ALanguageController {
 	private void registerListeners() {
 		Controller.getCurrentController().getOptionPanelController().addPropertyLoadListener(new PropertyLoadListener());
 		Controller.getCurrentController().getResourceController().addPropertyChangeListener(new PropertyListener());
-		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(new MapLifeCycleListener());
+		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(new MapLifeCycleAndViewListener());
+		Controller.getCurrentController().getMapViewManager().addMapViewChangeListener(new MapLifeCycleAndViewListener());
 		WorkspaceController.getIOController().registerNodeActionListener(AWorkspaceTreeNode.class, WorkspaceActionEvent.WSNODE_OPEN_DOCUMENT, new WorkspaceOpenDocumentListener());
 	}	
 	
@@ -298,7 +299,7 @@ public class CoreConfiguration extends ALanguageController {
 				LogUtils.warn(e1);
 			}
 			
-			DocearController.getController().getDocearEventLogger().write(this, DocearLogEvent.SHOW_HELP);
+			DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.SHOW_HELP);
 		}
 	}
 

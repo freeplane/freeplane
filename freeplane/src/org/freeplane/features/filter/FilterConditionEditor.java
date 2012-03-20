@@ -20,10 +20,13 @@
 package org.freeplane.features.filter;
 
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.lang.ref.WeakReference;
@@ -32,15 +35,18 @@ import java.util.Iterator;
 import javax.swing.Box;
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
-import javax.swing.plaf.basic.BasicComboBoxEditor;
+import javax.swing.RootPaneContainer;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
@@ -77,6 +83,33 @@ public class FilterConditionEditor extends JComponent {
 			}
 		}
 	}
+		
+
+	/**
+	 * Start "Find next" action when pressing enter key in "value" combo box
+	 */
+	private void setValuesEnterKeyListener()
+	{
+		if (enterKeyActionListener != null)
+		{
+			values.getEditor().removeActionListener(enterKeyActionListener);
+			values.getEditor().addActionListener(enterKeyActionListener);
+		}
+	}
+	
+	public void setSearchingBusyCursor()
+	{
+		RootPaneContainer root = (RootPaneContainer)getTopLevelAncestor();
+		root.getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		root.getGlassPane().setVisible(true);
+	}
+	
+	public void setSearchingDefaultCursor()
+	{
+		RootPaneContainer root = (RootPaneContainer)getTopLevelAncestor();
+		root.getGlassPane().setCursor(Cursor.getDefaultCursor());
+		root.getGlassPane().setVisible(false);
+	}
 
 	private void setValuesEditor() {
 		final Object selectedProperty = filteredPropertiesComponent.getSelectedItem();
@@ -90,7 +123,8 @@ public class FilterConditionEditor extends JComponent {
 		values.setModel(conditionController.getValuesForProperty(selectedProperty, selectedCondition));
 		
 		final ComboBoxEditor valueEditor = conditionController.getValueEditor(selectedProperty, selectedCondition);
-		values.setEditor(valueEditor != null ? valueEditor : new BasicComboBoxEditor());
+		values.setEditor(valueEditor != null ? valueEditor : new FixedBasicComboBoxEditor());
+		setValuesEnterKeyListener();
 		
 		final ListCellRenderer valueRenderer = conditionController.getValueRenderer(selectedProperty, selectedCondition);
 		values.setRenderer(valueRenderer != null ? valueRenderer : filterController.getConditionRenderer());
@@ -101,19 +135,26 @@ public class FilterConditionEditor extends JComponent {
 		}
 		caseSensitive.setEnabled(canSelectValues
 		        && conditionController.isCaseDependent(selectedProperty, selectedCondition));
+		approximateMatching.setEnabled(canSelectValues
+				&& conditionController.supportsApproximateMatching(selectedProperty, selectedCondition));
 	}
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final String PROPERTY_FILTER_MATCH_CASE = "filter_match_case";
+	private static final String PROPERTY_FILTER_MATCH_CASE_TOOLTIP = "filter_match_case_tooltip";
+	private static final String PROPERTY_FILTER_APPROXIMATE_MATCH = "filter_match_approximately";
+	private static final String PROPERTY_FILTER_APPROXIMATE_MATCH_TOOLTIP = "filter_match_approximately_tooltip";
 	final private JCheckBox caseSensitive;
+	final private JCheckBox approximateMatching;
 	final private JComboBox elementaryConditions;
 	final private FilterController filterController;
 	final private JComboBox filteredPropertiesComponent;
 	final private ExtendedComboBoxModel filteredPropertiesModel;
 	private WeakReference<MapModel> lastMap;
 	final private JComboBox values;
+	private ActionListener enterKeyActionListener;
 	public FilterConditionEditor(final FilterController filterController) {
 		this(filterController, 5, false);
 	}
@@ -158,22 +199,40 @@ public class FilterConditionEditor extends JComponent {
 			gridBagConstraints.gridy++;
 		}
 		values.setEditable(true);
+		setValuesEnterKeyListener();
+
+		JPanel ignoreCaseAndApproximateMatchingPanel = new JPanel();
+		ignoreCaseAndApproximateMatchingPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		
 		// Ignore case checkbox
 		caseSensitive = new JCheckBox();
-		add(caseSensitive, gridBagConstraints);
-		gridBagConstraints.gridx++;
+		caseSensitive.setToolTipText(TextUtils.getRawText(PROPERTY_FILTER_MATCH_CASE_TOOLTIP));
+		//add(caseSensitive, gridBagConstraints);
+		ignoreCaseAndApproximateMatchingPanel.add(caseSensitive);
+		//gridBagConstraints.gridx++;
 		MenuBuilder.setLabelAndMnemonic(caseSensitive,TextUtils.getRawText(PROPERTY_FILTER_MATCH_CASE));
 		caseSensitive.setSelected(ResourceController.getResourceController().getBooleanProperty(
 		    PROPERTY_FILTER_MATCH_CASE));
+		
+		// add approximate matching checkbox	
+		approximateMatching = new JCheckBox();
+		approximateMatching.setToolTipText(TextUtils.getRawText(PROPERTY_FILTER_APPROXIMATE_MATCH_TOOLTIP));
+		MenuBuilder.setLabelAndMnemonic(approximateMatching, TextUtils.getRawText(PROPERTY_FILTER_APPROXIMATE_MATCH));
+		//add(approximateMatching, gridBagConstraints);
+		ignoreCaseAndApproximateMatchingPanel.add(approximateMatching);
+		approximateMatching.setSelected(ResourceController.getResourceController().getBooleanProperty(
+			    PROPERTY_FILTER_APPROXIMATE_MATCH));
 		mapChanged(Controller.getCurrentController().getMap());
+		
+		add(ignoreCaseAndApproximateMatchingPanel, gridBagConstraints);
 
 	}
 
-	public void focusInputField() {
+	public void focusInputField(final boolean selectAll) {
 		if (values.isEnabled()) {
 			values.requestFocus();
 			final Component editorComponent = values.getEditor().getEditorComponent();
-			if (editorComponent instanceof JTextComponent) {
+			if (selectAll && editorComponent instanceof JTextComponent) {
 				((JTextComponent) editorComponent).selectAll();
 			}
 			return;
@@ -202,14 +261,23 @@ public class FilterConditionEditor extends JComponent {
 		}
 		final NamedObject simpleCond = (NamedObject) elementaryConditions.getSelectedItem();
 		final boolean matchCase = caseSensitive.isSelected();
+		final boolean matchApproximately = approximateMatching.isSelected();
 		ResourceController.getResourceController().setProperty(PROPERTY_FILTER_MATCH_CASE, matchCase);
 		final Object selectedItem = filteredPropertiesComponent.getSelectedItem();
-		newCond = filterController.getConditionFactory().createCondition(selectedItem, simpleCond, value, matchCase);
+		newCond = filterController.getConditionFactory().createCondition(selectedItem, simpleCond, value, matchCase, matchApproximately);
 		if (values.isEditable()) {
 			if (!value.equals("")) {
-				values.removeItem(value);
-				values.insertItemAt(value, 0);
-				values.setSelectedIndex(0);
+				DefaultComboBoxModel list = (DefaultComboBoxModel) values.getModel();
+				int indexOfValue = list.getIndexOf(value);
+				if(indexOfValue > 0)
+					list.removeElementAt(indexOfValue);
+				if(indexOfValue == -1 || list.getIndexOf(value) != indexOfValue){
+					values.insertItemAt(value, 0);
+					values.setSelectedIndex(0);
+				}
+				else if(indexOfValue != -1){
+					values.setSelectedIndex(indexOfValue);
+				}
 				if (values.getItemCount() >= 10) {
 					values.removeItemAt(9);
 				}
@@ -240,6 +308,19 @@ public class FilterConditionEditor extends JComponent {
 			filteredPropertiesModel.setExtensionList(null);
 		}
 		lastMap = new WeakReference<MapModel>(newMap);
+	}
+
+	public void setEnterKeyActionListener(ActionListener enterKeyActionListener) {
+		if (enterKeyActionListener == null)
+		{ 
+			throw new NullPointerException("null value in setEnterKeyActionListener()!");
+		}
+		if (this.enterKeyActionListener != null)
+		{
+			values.getEditor().removeActionListener(this.enterKeyActionListener);
+		}
+		this.enterKeyActionListener = enterKeyActionListener;
+		values.getEditor().addActionListener(enterKeyActionListener);
 	}
 
 }

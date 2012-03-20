@@ -34,7 +34,6 @@ import com.jgoodies.forms.layout.RowSpec;
 
 /**
  * @author Stefan Langer
- * 27.12.2008
  */
 public class ActionProperty extends PropertyBean implements IPropertyControl {
 	private static RowSpec rowSpec;
@@ -65,11 +64,14 @@ public class ActionProperty extends PropertyBean implements IPropertyControl {
 		if (labelText == null) {
 			labelText = TextUtils.getOptionalText(getLabel());
 		}
+		if (icon != null) {
+			mButton.setIcon(icon);
+		}
 		mButton.setText(labelText);
 		mButton.setEnabled(true);		
 		
 		if (ActionProperty.rowSpec == null) {
-			ActionProperty.rowSpec = new RowSpec("fill:20dlu");
+			ActionProperty.rowSpec = new RowSpec("fill:20dlu");			
 		}
 		if (3 < builder.getColumn()) {
 			builder.appendRelatedComponentsGapRow();

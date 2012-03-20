@@ -112,7 +112,8 @@ public class DocearNodeDropListener extends MNodeDropListener {
 		            	List<AnnotationModel> annotations = new ArrayList<AnnotationModel>();
 		            	try{
 		            		PdfAnnotationImporter importer = new PdfAnnotationImporter();
-		            		annotations = importer.importAnnotations(file.toURI());	            		    	
+		            		annotations = importer.importAnnotations(file.toURI());
+		            		System.gc();
 		            	} catch(COSRuntimeException e) {			                		
 		            		LogUtils.warn("Exception during import on file: " + file.getName(), e); //$NON-NLS-1$
 		            	} catch(IOException e) {
