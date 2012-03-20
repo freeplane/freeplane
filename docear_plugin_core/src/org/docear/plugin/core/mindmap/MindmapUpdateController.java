@@ -216,12 +216,18 @@ public class MindmapUpdateController {
 			}
 
 			protected void done() {
-				NodeView.setModifyModelWithoutRepaint(false);
+				NodeView.setModifyModelWithoutRepaint(false);				
 				for (MapItem item : maps) {
 					if (item.isMapOpen()) {
-						LogUtils.info("updating view for map: " + item.getIdentifierForDialog());						
+						LogUtils.info("updating view for map: " + item.getIdentifierForDialog());
+						String savedAttributeLayout = getAttributeViewType(item.getModel());
 						setAttributeViewType(item.getModel(), AttributeTableLayoutModel.HIDE_ALL);
-						setAttributeViewType(item.getModel(), AttributeTableLayoutModel.SHOW_ALL);
+						if(savedAttributeLayout.equals(AttributeTableLayoutModel.SHOW_ALL)){
+							setAttributeViewType(item.getModel(), AttributeTableLayoutModel.SHOW_ALL);
+						}
+						if(savedAttributeLayout.equals(AttributeTableLayoutModel.SHOW_SELECTED)){
+							setAttributeViewType(item.getModel(), AttributeTableLayoutModel.SHOW_SELECTED);
+						}
 						/*NodeView nodeView = view.getNodeView(view.getModel().getRootNode());
 						nodeView.updateAll();*/
 					}
