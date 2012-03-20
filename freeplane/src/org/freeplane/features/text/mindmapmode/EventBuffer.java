@@ -20,6 +20,7 @@
 package org.freeplane.features.text.mindmapmode;
 
 import java.awt.Component;
+import java.awt.EventQueue;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.FocusEvent;
@@ -71,7 +72,11 @@ public class EventBuffer implements KeyEventDispatcher, FocusListener {
 		// Prevent Freeplane freeze
 		if(ke.getKeyCode() == KeyEvent.VK_ESCAPE 
 				&& ke.getID() == KeyEvent.KEY_RELEASED){
-			KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(this);
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(EventBuffer.this);
+				}
+			});
 		}
 		ke.consume();
 		return true;
