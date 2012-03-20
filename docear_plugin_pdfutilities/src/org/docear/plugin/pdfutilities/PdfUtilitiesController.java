@@ -400,7 +400,7 @@ public class PdfUtilitiesController extends ALanguageController{
 		DocearController.getController().addDocearEventListener(new IDocearEventListener() {
 			
 			public void handleEvent(DocearEvent event) {
-				if(event.getType().equals(DocearEventType.NEW_INCOMING)){
+				if(DocearEventType.NEW_INCOMING.equals(event.getType())){
 					MapModel map = (MapModel)event.getEventObject();
 					boolean isMonitoringNode = NodeUtils.isMonitoringNode(map.getRootNode());
 					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_INCOMING_FOLDER, CoreConfiguration.DOCUMENT_REPOSITORY_PATH);
@@ -415,11 +415,11 @@ public class PdfUtilitiesController extends ALanguageController{
 		        		AddMonitoringFolderAction.updateNodesAgainstMonitoringDir(list, true);
 					}
 				}
-				if(event.getType().equals(DocearEventType.NEW_MY_PUBLICATIONS)){
+				if(DocearEventType.NEW_MY_PUBLICATIONS.equals(event.getType())){
 					MapModel map = (MapModel)event.getEventObject();
 					DocearMapModelController.getModel(map).setType(DocearMapType.my_publications);
 				}
-				if(event.getType().equals(DocearEventType.NEW_LITERATURE_ANNOTATIONS)){
+				if(DocearEventType.NEW_LITERATURE_ANNOTATIONS.equals(event.getType())){
 					MapModel map = (MapModel)event.getEventObject();
 					DocearMapModelController.getModel(map).setType(DocearMapType.literature_annotations);
 				}
