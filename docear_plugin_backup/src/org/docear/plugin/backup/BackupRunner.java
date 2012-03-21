@@ -51,8 +51,8 @@ public class BackupRunner {
 							}
 							this.wait(60000 * backupMinutes);
 						}
-						catch (InterruptedException e) {
-							e.printStackTrace();
+						catch (Exception e) {
+							LogUtils.warn(e);
 						}
 					}
 				}

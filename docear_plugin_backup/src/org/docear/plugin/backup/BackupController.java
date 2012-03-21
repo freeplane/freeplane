@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileFilter;
 import java.net.URL;
 
+import javax.swing.SwingUtilities;
+
 import org.docear.plugin.backup.listeners.MapLifeCycleListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
@@ -30,7 +32,12 @@ public class BackupController {
 		
 		addPluginDefaults();
 		
-		this.backupRunner.run();		
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				backupRunner.run();			
+			}		
+		});
+		
 	}
 	
 	public static BackupController getController() {

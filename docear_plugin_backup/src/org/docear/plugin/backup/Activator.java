@@ -27,8 +27,8 @@ public class Activator extends DocearService implements BundleActivator {
 
 
 	public void startService(BundleContext context, ModeController modeController) {
-		new BackupConfiguration();
-	    BackupController.getController();
+		BackupController.getController();
+		new BackupConfiguration();	    
 	    new BackupPreferences();		
 	}
 

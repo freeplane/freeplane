@@ -37,6 +37,8 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 	}
 	
 	private Properties getMapProperties(MapModel map) {
+		DocearController docearController = DocearController.getController();
+		
 		DocearMapModelExtension dmme = map.getExtension(DocearMapModelExtension.class);
 		if (dmme == null) {
 			return null;
@@ -47,7 +49,12 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 		properties.put("backup", new Boolean(true).toString());
 		properties.put("allow_ir", new Boolean((ResourceController.getResourceController().getBooleanProperty("docear_allow_information_retrieval"))).toString());
 		properties.put("map_version", dmme.getVersion());
-		properties.put("application", "Docear" + DocearController.getController().getApplicationVersion());
+		properties.put("application_name", docearController.getApplicationName());
+		properties.put("application_version", docearController.getApplicationVersion());
+		properties.put("application_status", docearController.getApplicationStatus());
+		properties.put("application_status_version", docearController.getApplicationStatusVersion());
+		properties.put("application_build", ""+docearController.getApplicationBuildNumber());
+		properties.put("application_date", docearController.getApplicationBuildDate());
 		properties.put("filesize", ""+map.getFile().length());
 		properties.put("filename", map.getFile().getName());
 		properties.put("filepath", map.getFile().getAbsolutePath());
