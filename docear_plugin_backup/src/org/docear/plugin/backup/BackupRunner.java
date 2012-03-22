@@ -38,15 +38,13 @@ public class BackupRunner {
 						try {			
 							if (backupCtrl.isBackupEnabled() && commCtrl.allowTransmission() 
 									&& commCtrl.getAccessToken()!=null && commCtrl.getAccessToken().trim().length()>0) {
-								if (BackupController.getController().isBackupEnabled()) {
-									LogUtils.info("Docear BackupRunner: synchronizing backups with server");
-									boolean success = CommunicationsController.getController().postFileToDocearService("mindmaps", true, BackupController.getController().getBackupBufferFiles());								
-									if (success) {
-										LogUtils.info("Docear BackupRunner: synchronizing successfull");
-									}
-									else {
-										LogUtils.info("Docear BackupRunner: synchronizing failed");
-									}
+								LogUtils.info("Docear BackupRunner: synchronizing backups with server");
+								boolean success = CommunicationsController.getController().postFileToDocearService("mindmaps", true, backupCtrl.getBackupBufferFiles());								
+								if (success) {
+									LogUtils.info("Docear BackupRunner: synchronizing successfull");
+								}
+								else {
+									LogUtils.info("Docear BackupRunner: synchronizing failed");
 								}
 							}
 							this.wait(60000 * backupMinutes);

@@ -150,7 +150,6 @@ public class CommunicationsController extends ALanguageController implements Act
 		if(!allowTransmission || getAccessToken() == null || getAccessToken().trim().length() <= 0 || getUserName() == null || getUserName().trim().length() <= 0) {
 			return false;
 		}
-		connectionBar.setConnectionState(CONNECTION_STATE.UPLOADING);
 		FiletransferClient client = new FiletransferClient(restPath, files);
 		return client.send(deleteIfTransferred);
 	}
@@ -176,12 +175,7 @@ public class CommunicationsController extends ALanguageController implements Act
 		else if(DOCEAR_CONNECTION_TOKEN_PROPERTY.equals(propertyName)) {
 			if(newValue != null && newValue.trim().length() > 0) {
 				connectionBar.setUsername(getUserName());
-				if(allowTransmission) {
-					connectionBar.setConnectionState(CONNECTION_STATE.CONNECTED);
-				}
-				else {
-					connectionBar.setConnectionState(CONNECTION_STATE.INTERRUPTED);
-				}
+				setTransmissionStatus();
 				connectionBar.setEnabled(true);
 			}
 			else {
@@ -199,14 +193,26 @@ public class CommunicationsController extends ALanguageController implements Act
 			WorkspaceDocearServiceConnectionBar.ACTION_COMMAND_TOGGLE_CONNECTION_STATE.equals(event.getEventObject())) {
 			allowTransmission = !allowTransmission;
 			connectionBar.allowTransmission(allowTransmission);
-			if(allowTransmission) {
-				connectionBar.setConnectionState(CONNECTION_STATE.CONNECTED);
+			setTransmissionStatus();
+		}
+		if(event.getSource().equals(FiletransferClient.class)) {
+			if(FiletransferClient.START_UPLOAD.equals(event.getEventObject())) {
+				connectionBar.setConnectionState(CONNECTION_STATE.UPLOADING);
 			}
-			else {
-				connectionBar.setConnectionState(CONNECTION_STATE.INTERRUPTED);
+			else if(FiletransferClient.STOP_UPLOAD.equals(event.getEventObject())) {
+				setTransmissionStatus();
 			}
 		}
 		
+	}
+
+	private void setTransmissionStatus() {
+		if(allowTransmission) {
+			connectionBar.setConnectionState(CONNECTION_STATE.CONNECTED);
+		}
+		else {
+			connectionBar.setConnectionState(CONNECTION_STATE.INTERRUPTED);
+		}
 	}
 	
 	public boolean allowTransmission() {
