@@ -74,6 +74,7 @@ import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.view.swing.features.filepreview.ExternalResource;
 import org.freeplane.view.swing.features.filepreview.ViewerController;
+import org.freeplane.view.swing.features.filepreview.ViewerController.PasteMode;
 
 /**
  * @author Dimitry Polivaev
@@ -121,10 +122,10 @@ public class MClipboardController extends ClipboardController {
 
 		public void paste(Transferable t, final NodeModel target, final boolean asSibling, final boolean isLeft) {
 			ViewerController viewerController = ((ViewerController)Controller.getCurrentModeController().getExtension(ViewerController.class));
-			if(viewerController.paste(t, target, asSibling, isLeft)){
-				return;
-			}
 			for (final File file : fileList) {
+				if(viewerController.paste(file, target, PasteMode.valueOf(asSibling), isLeft)){
+					continue;
+				}
 				final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 				final NodeModel node = mapController.newNode(file.getName(), target.getMap());
 				final URI uri;
@@ -221,7 +222,7 @@ public class MClipboardController extends ClipboardController {
 
 		public void paste(Transferable t, final NodeModel target, final boolean asSibling, final boolean isLeft) {
 			ViewerController viewerController = ((ViewerController)Controller.getCurrentModeController().getExtension(ViewerController.class));
-			if(viewerController.paste(t, target, asSibling, isLeft)){
+			if(viewerController.paste(textFromClipboard, target, PasteMode.valueOf(asSibling), isLeft)){
 				return;
 			}
 			final TextFragment[] textFragments = split(textFromClipboard);

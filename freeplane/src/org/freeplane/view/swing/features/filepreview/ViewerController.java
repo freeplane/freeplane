@@ -621,42 +621,23 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		factories.remove(factory);
 	}
 
-	@SuppressWarnings("unchecked")
-	public boolean paste(final Transferable t, final NodeModel targetNode, final boolean dropAsSibling,
+	public boolean paste(final String fileRef, final NodeModel targetNode, final PasteMode mode,
 	                     final boolean isLeft) {
-		if (t.isDataFlavorSupported(MindMapNodesSelection.fileListFlavor)) {
-			List<File> fileList;
 			try {
-				fileList = (List<File>) (t.getTransferData(MindMapNodesSelection.fileListFlavor));
-			}
-			catch (final Exception e) {
-				return false;
-			}
-			if (fileList.size() != 1) {
-				return false;
-			}
-			final File file = fileList.get(0);
-			return paste(file, targetNode, dropAsSibling, isLeft);
-		}
-		if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-			try {
-				final String text = t.getTransferData(DataFlavor.stringFlavor).toString();
 				final File file;
-				if (text.startsWith("file://")) {
-					final URI uri = new URI(new URL(text).toString());
+				if (fileRef.startsWith("file://")) {
+					final URI uri = new URI(new URL(fileRef).toString());
 					final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
 					file = Compat.urlToFile(url);
 				}
 				else{
-					file = new File(text);
+					file = new File(fileRef);
 				}
-				return paste(file, targetNode, dropAsSibling, isLeft);
+				return paste(file, targetNode, mode, isLeft);
 			}
 			catch (final Exception e) {
 				return false;
 			}
-		}
-		return false;
 	}
 	/**
 	 * This method attaches an image to a node, that is referenced with an uri
@@ -676,11 +657,19 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		ProgressIcons.updateExtendedProgressIcons(node, uri.getPath());
 		return true;
 	}
+	
+	public static enum PasteMode{
+		AS_SIBLING, AS_CHILD, INSIDE;
+		public static PasteMode valueOf(boolean asSibling){
+			return asSibling ? AS_SIBLING : AS_CHILD;
+		}
+	}
+	
 	public boolean paste(final File file, final NodeModel node, final boolean isLeft) {
-		return paste(file, node, true, isLeft);
+		return paste(file, node, PasteMode.INSIDE, isLeft);
 	}
 
-	private boolean paste(final File file, final NodeModel targetNode, final boolean asSibling, final boolean isLeft) {
+	public boolean paste(final File file, final NodeModel targetNode, final PasteMode mode, final boolean isLeft) {
 		if (!file.exists()) {
 			return false;
 		}
@@ -701,12 +690,12 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		final NodeModel node;
-		if (!asSibling) {
-			node = mapController.newNode(file.getName(), targetNode.getMap());
-			mapController.insertNode(node, targetNode, asSibling, isLeft, isLeft);
+		if (mode.equals(PasteMode.INSIDE)) {
+			node = targetNode;
 		}
 		else {
-			node = targetNode;
+			node = mapController.newNode(file.getName(), targetNode.getMap());
+			mapController.insertNode(node, targetNode, mode.equals(PasteMode.AS_SIBLING), isLeft, isLeft);
 		}
 		final ExternalResource preview = new ExternalResource(uri);
 		undoableDeactivateHook(node);
