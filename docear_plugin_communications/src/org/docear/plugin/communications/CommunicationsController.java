@@ -1,5 +1,6 @@
 package org.docear.plugin.communications;
 
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -8,7 +9,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
+import java.util.Scanner;
 
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -67,17 +71,53 @@ public class CommunicationsController extends ALanguageController implements Act
 	public static CommunicationsController getController() {
 		return communicationsController;
 	}
-	
-	
+		
 	public void actionPerformed(ActionEvent e) {		
 		if("docear_connect".equals(e.getActionCommand())) {
-			DocearServiceLoginPanel loginPanel = new DocearServiceLoginPanel();
-			int choice = JOptionPane.showConfirmDialog(UITools.getFrame(), loginPanel, TextUtils.getOptionalText("docear.service.connect.title"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+			JButton[] dialogButtons = new JButton[] {new JButton(TextUtils.getOptionalText("docear.service.connect.dialog.button.ok")), new JButton(TextUtils.getOptionalText("docear.service.connect.dialog.button.cancel"))};
+			final DocearServiceLoginPanel loginPanel = new DocearServiceLoginPanel();
+			loginPanel.ctrlOKButton(dialogButtons[0]);
+			dialogButtons[0].addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Container cont = loginPanel.getParent();
+					while(!(cont instanceof JOptionPane)) {
+						cont = cont.getParent();
+					}
+					((JOptionPane)cont).setValue(e.getSource());
+					closeDialogManually(cont);
+					
+				}
+			});
+			dialogButtons[1].addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Container cont = loginPanel.getParent();
+					closeDialogManually(cont);					
+				}
+			});
 			
-			if(choice == JOptionPane.OK_OPTION) {
+			StringBuilder text = new StringBuilder();
+			Scanner scanner = new Scanner(DocearController.class.getClassLoader().getResourceAsStream("/license.txt"));
+		    try {
+		      while (scanner.hasNextLine()){
+		        text.append(scanner.nextLine() + System.getProperty("line.separator"));
+		      }
+		    }
+		    finally{
+		      scanner.close();
+		    }
+			loginPanel.setLicenseText(text.toString());
+			int choice = JOptionPane.showOptionDialog(UITools.getFrame(), loginPanel, TextUtils.getOptionalText("docear.service.connect.title"), JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, dialogButtons, dialogButtons[0]);
+			if(choice == 0) {
 				tryToConnect(loginPanel.getUsername(), loginPanel.getPassword());
 			}
 		}
+	}
+	
+	private void closeDialogManually(Container container) {
+		while(!(container instanceof JDialog)) {
+			container = container.getParent();
+		}
+		((JDialog)container).dispose();
 	}
 	
 	private void tryToConnect(final String username, final String password) {
@@ -175,7 +215,12 @@ public class CommunicationsController extends ALanguageController implements Act
 		else if(DOCEAR_CONNECTION_TOKEN_PROPERTY.equals(propertyName)) {
 			if(newValue != null && newValue.trim().length() > 0) {
 				connectionBar.setUsername(getUserName());
-				setTransmissionStatus();
+				if(allowTransmission) {
+					connectionBar.setConnectionState(CONNECTION_STATE.CONNECTED);
+				}
+				else {
+					connectionBar.setConnectionState(CONNECTION_STATE.INTERRUPTED);
+				}
 				connectionBar.setEnabled(true);
 			}
 			else {
@@ -193,26 +238,27 @@ public class CommunicationsController extends ALanguageController implements Act
 			WorkspaceDocearServiceConnectionBar.ACTION_COMMAND_TOGGLE_CONNECTION_STATE.equals(event.getEventObject())) {
 			allowTransmission = !allowTransmission;
 			connectionBar.allowTransmission(allowTransmission);
-			setTransmissionStatus();
+			if(allowTransmission) {
+				connectionBar.setConnectionState(CONNECTION_STATE.CONNECTED);
+			}
+			else {
+				connectionBar.setConnectionState(CONNECTION_STATE.INTERRUPTED);
+			}
 		}
 		if(event.getSource().equals(FiletransferClient.class)) {
 			if(FiletransferClient.START_UPLOAD.equals(event.getEventObject())) {
 				connectionBar.setConnectionState(CONNECTION_STATE.UPLOADING);
 			}
 			else if(FiletransferClient.STOP_UPLOAD.equals(event.getEventObject())) {
-				setTransmissionStatus();
+				if(allowTransmission) {
+					connectionBar.setConnectionState(CONNECTION_STATE.CONNECTED);
+				}
+				else {
+					connectionBar.setConnectionState(CONNECTION_STATE.INTERRUPTED);
+				}
 			}
 		}
 		
-	}
-
-	private void setTransmissionStatus() {
-		if(allowTransmission) {
-			connectionBar.setConnectionState(CONNECTION_STATE.CONNECTED);
-		}
-		else {
-			connectionBar.setConnectionState(CONNECTION_STATE.INTERRUPTED);
-		}
 	}
 	
 	public boolean allowTransmission() {
