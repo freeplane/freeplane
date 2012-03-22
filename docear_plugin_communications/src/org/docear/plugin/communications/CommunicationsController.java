@@ -143,8 +143,8 @@ public class CommunicationsController extends ALanguageController implements Act
 		        while (is.read() > -1);
 		        is.close();
 			} else {
-				//ResourceController.getResourceController().setProperty("docear.service.connect.username", "");
-				//((StringProperty)Controller.getCurrentController().getOptionPanelController().getPropertyControl(DOCEAR_CONNECTION_USERNAME_PROPERTY)).setValue("");
+				ResourceController.getResourceController().setProperty("docear.service.connect.username", "");
+				((StringProperty)Controller.getCurrentController().getOptionPanelController().getPropertyControl(DOCEAR_CONNECTION_USERNAME_PROPERTY)).setValue("");
 				ResourceController.getResourceController().setProperty("docear.service.connect.token", "");
 				InputStream is = response.getEntityInputStream();
 				int chr;
