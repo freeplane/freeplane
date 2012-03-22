@@ -40,6 +40,9 @@ public class FiletransferClient {
 		FileInputStream inStream = null;
 		byte[] data;
 		for(File file : files) {
+			if(!CommunicationsController.getController().allowTransmission()) {
+				break;
+			}
 			try {
 				formDataMultiPart = new FormDataMultiPart();
 				inStream = new FileInputStream(file);
@@ -57,13 +60,11 @@ public class FiletransferClient {
 					else if (deleteIfTransferred) {
 						inStream.close();
 						System.gc();
-						if(!file.delete()) {
-							LogUtils.warn("Shit!");
-						}
+						file.delete();
 					}
 				}
 				else {
-					throw new IOException("incomplete read");
+					throw new IOException("incomplete read ("+file.getPath()+")");
 				}
 			} 
 			catch (Exception ex) {

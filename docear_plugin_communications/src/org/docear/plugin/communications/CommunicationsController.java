@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.docear.plugin.communications.components.WorkspaceDocearServiceConnectionBar;
+import org.docear.plugin.communications.components.WorkspaceDocearServiceConnectionBar.CONNECTION_STATE;
 import org.docear.plugin.communications.components.dialog.DocearServiceLoginPanel;
 import org.docear.plugin.core.ALanguageController;
 import org.docear.plugin.core.DocearController;
@@ -60,7 +61,7 @@ public class CommunicationsController extends ALanguageController implements Act
 		DocearController.getController().addDocearEventListener(this);
 		
 		WorkspaceController.getController().addToolBar(connectionBar);
-		connectionBar.setUsername(getUserName());		
+		propertyChanged(DOCEAR_CONNECTION_TOKEN_PROPERTY, getAccessToken(), null);		
 	}
 	
 	public static CommunicationsController getController() {
@@ -97,7 +98,7 @@ public class CommunicationsController extends ALanguageController implements Act
 				ResourceController.getResourceController().setProperty("docear.service.connect.username", username);
 				((StringProperty)Controller.getCurrentController().getOptionPanelController().getPropertyControl(DOCEAR_CONNECTION_USERNAME_PROPERTY)).setValue(username);
 				ResourceController.getResourceController().setProperty("docear.service.connect.token", token);
-				JOptionPane.showMessageDialog(UITools.getFrame(), "UserAccessToken: "+token);
+				JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.format("docear.service.connect.success", username));
 				InputStream is = response.getEntityInputStream();
 		        while (is.read() > -1);
 		        is.close();
@@ -112,7 +113,7 @@ public class CommunicationsController extends ALanguageController implements Act
 		        	message.append((char)chr);
 		        }
 		        is.close();
-				JOptionPane.showMessageDialog(UITools.getFrame(), "failed to authenticate: ("+status+") "+message.toString());
+				JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.format("docear.service.connect.failure", status, message.toString()));
 			}
 		    
 		} 
@@ -149,6 +150,7 @@ public class CommunicationsController extends ALanguageController implements Act
 		if(!allowTransmission || getAccessToken() == null || getAccessToken().trim().length() <= 0 || getUserName() == null || getUserName().trim().length() <= 0) {
 			return false;
 		}
+		connectionBar.setConnectionState(CONNECTION_STATE.UPLOADING);
 		FiletransferClient client = new FiletransferClient(restPath, files);
 		return client.send(deleteIfTransferred);
 	}
@@ -172,7 +174,21 @@ public class CommunicationsController extends ALanguageController implements Act
 			connectionBar.setUsername(newValue);
 		} 
 		else if(DOCEAR_CONNECTION_TOKEN_PROPERTY.equals(propertyName)) {
-			connectionBar.setEnabled((newValue != null && newValue.trim().length() > 0));
+			if(newValue != null && newValue.trim().length() > 0) {
+				connectionBar.setUsername(getUserName());
+				if(allowTransmission) {
+					connectionBar.setConnectionState(CONNECTION_STATE.CONNECTED);
+				}
+				else {
+					connectionBar.setConnectionState(CONNECTION_STATE.INTERRUPTED);
+				}
+				connectionBar.setEnabled(true);
+			}
+			else {
+				connectionBar.setUsername("");
+				connectionBar.setConnectionState(CONNECTION_STATE.DISCONNECTED);
+				connectionBar.setEnabled(false);
+			}
 		}
 		
 		
@@ -182,7 +198,13 @@ public class CommunicationsController extends ALanguageController implements Act
 		if(event.getSource().equals(connectionBar) && 
 			WorkspaceDocearServiceConnectionBar.ACTION_COMMAND_TOGGLE_CONNECTION_STATE.equals(event.getEventObject())) {
 			allowTransmission = !allowTransmission;
-			connectionBar.setConnectionState(allowTransmission);
+			connectionBar.allowTransmission(allowTransmission);
+			if(allowTransmission) {
+				connectionBar.setConnectionState(CONNECTION_STATE.CONNECTED);
+			}
+			else {
+				connectionBar.setConnectionState(CONNECTION_STATE.INTERRUPTED);
+			}
 		}
 		
 	}

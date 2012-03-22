@@ -19,7 +19,14 @@ import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.freeplane.core.util.TextUtils;
 
-public class WorkspaceDocearServiceConnectionBar extends JToolBar {	
+public class WorkspaceDocearServiceConnectionBar extends JToolBar {
+	
+	public static enum CONNECTION_STATE {
+		CONNECTED,
+		DISCONNECTED,
+		UPLOADING,
+		INTERRUPTED
+	}
 
 	private static final long serialVersionUID = 1L;
 	public static final String ACTION_COMMAND_TOGGLE_CONNECTION_STATE = "toggle_connection_state";
@@ -34,20 +41,14 @@ public class WorkspaceDocearServiceConnectionBar extends JToolBar {
 	
 	private final JButton button;
 	private final JLabel lblUsername;
-	private final JLabel lblConnectedAs;
+	private final JLabel lblConnectionState;
+	
+	private CONNECTION_STATE connectionState;
 	
 	public WorkspaceDocearServiceConnectionBar() {
 		setMargin(nullInsets);
 		setFloatable(false);
 		setRollover(true);
-		
-		lblConnectedAs = new JLabel(TextUtils.getText("docear.service.connect.bar.label")+":");
-		lblConnectedAs.setBorder(new EmptyBorder(marginInsets));
-		add(lblConnectedAs);
-		
-		lblUsername = new JLabel("username");
-		lblUsername.setBorder(new EmptyBorder(marginInsets));
-		add(lblUsername);
 		
 		button = add(new AbstractAction("Connection", onIcon) {
 			private static final long serialVersionUID = 1L;
@@ -57,6 +58,16 @@ public class WorkspaceDocearServiceConnectionBar extends JToolBar {
 		});
 		configureComponent(button);
 		button.setDisabledIcon(new ImageIcon(this.getClass().getResource("/images/arrow-refresh-disabled.png")));
+		
+		lblUsername = new JLabel("username");
+		lblUsername.setBorder(new EmptyBorder(marginInsets));
+		add(lblUsername);
+		
+		lblConnectionState = new JLabel(TextUtils.getText("docear.service.connect.bar.status.1")+":");
+		lblConnectionState.setBorder(new EmptyBorder(marginInsets));
+		add(lblConnectionState);
+		
+		
 	}
 	
 	
@@ -67,14 +78,23 @@ public class WorkspaceDocearServiceConnectionBar extends JToolBar {
 		this.lblUsername.setText(name);
 	}
 	
+	public void setConnectionState(CONNECTION_STATE state) {
+		connectionState = state;
+		this.lblConnectionState.setText(TextUtils.getText("docear.service.connect.bar.status."+state.ordinal()));
+	}
+	
+	public CONNECTION_STATE getConnectionState() {
+		return connectionState;
+	}
+	
 	public void setEnabled(boolean enabled) {
 		this.button.setEnabled(enabled);
 		lblUsername.setEnabled(enabled);
-		lblConnectedAs.setEnabled(enabled);
+		lblConnectionState.setEnabled(enabled);
 		super.setEnabled(enabled);
 	}
 	
-	public void setConnectionState(boolean enabled) {
+	public void allowTransmission(boolean enabled) {
 		if(enabled) {
 			button.setIcon(onIcon);
 		}
