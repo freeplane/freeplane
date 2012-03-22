@@ -3,11 +3,12 @@
 	<tabbed_pane>
 		<tab name="docear">			
 			<separator name="account_options">				
-				<uri name="docear.service.help" label="docear.service.help.label" uri="http://docear.org"/>)
+				<uri name="docear.service.help" label="docear.service.help.label" uri="http://www.docear.org/support/user-manual/#web_service"/>)
                 <string name="docear.service.connect.username" enabled="false" />
                 <action name="docear_connect" />
-			</separator>
+			</separator>			
 			<separator name="docear_options">
+				<uri name="docear.service.options.help" label="docear.service.help.label" uri="http://www.docear.org/support/user-manual/#web_service_options"/>)
 				<boolean name="docear_allow_usage_mining" />
 				<boolean name="docear_allow_information_retrieval" />
 			</separator>
