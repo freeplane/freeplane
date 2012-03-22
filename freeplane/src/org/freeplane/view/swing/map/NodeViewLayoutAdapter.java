@@ -277,8 +277,9 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             final boolean isItem = !isSummary || useSummaryAsItem;
             final int oldLevel = level;
             if(isItem){
+            	if(level > 0)
+            		useSummaryAsItem = true;
                 level = 0;
-                useSummaryAsItem = true;
             }
             else{
                 level++;
@@ -301,13 +302,14 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             boolean isFreeNode = child.isFree();
 			data.free[i] = isFreeNode;
 			data.summary[i] = ! isItem;
-			if(isItem && isFreeNode){
+			if(isItem) {
+				if (isFreeNode){
 				data.ly[i] = childShiftY - childContentShift-childCloudHeigth/2 - getSpaceAround();
-            }
-            else if(isItem){
-                if (childShiftY < 0 || visibleChildCounter == 0) {
-                    top += childShiftY;
-                }
+				}
+				else{
+					if (childShiftY < 0 || visibleChildCounter == 0) {
+						top += childShiftY;
+					}
                 top -= childContentShift;
 
                 top += child.getTopOverlap();
@@ -341,13 +343,16 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                     summaryBaseX[0] = 0;
                     groupStart[0] = i;
                 }
-                if (child.getHeight() - 2 * getSpaceAround() != 0) {
+                if (childHeight != 0) {
                     if (visibleChildCounter > 0)
                         childContentHeightSum +=  getVGap();
-                    visibleChildCounter++;
-                    useSummaryAsItem = false;
                 }
-            }
+				}
+	            if (childHeight != 0) {
+	                visibleChildCounter++;
+	                useSummaryAsItem = false;
+				}
+			}
             else{
                 final int itemLevel = level - 1;
                 if(child.isFirstGroupNode()){
