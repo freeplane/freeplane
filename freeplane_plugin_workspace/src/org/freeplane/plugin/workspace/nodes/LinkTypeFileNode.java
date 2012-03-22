@@ -197,9 +197,15 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeActionL
 					throw new Exception("failed to resolve the file for"+getName());
 				}
 				File destFile = new File(oldFile.getParentFile(), newName);
-				if(oldFile.exists() && oldFile.renameTo(destFile)) {					
-					this.setName(newName);
-					return true;
+				if(oldFile.exists() && oldFile.renameTo(destFile)) {
+					try {
+						WorkspaceUtils.getModel().changeNodeName(this, newName);
+						return true;
+					}
+					catch(Exception ex) {
+						destFile.renameTo(oldFile);
+						return false;
+					}
 				}
 				else {
 					LogUtils.warn("cannot rename "+oldFile.getName());
@@ -210,7 +216,12 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeActionL
 			}
 		}
 		else {
-			this.setName(newName);
+			try {
+				WorkspaceUtils.getModel().changeNodeName(this, newName);
+			}
+			catch(Exception ex) {
+				// do nth.
+			}
 			return true;
 		}
 		return false;
