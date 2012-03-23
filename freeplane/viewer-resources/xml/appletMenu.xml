@@ -153,7 +153,8 @@
 		</menu_category>
 		<menu_category name="find">				
 			<menu_action action="FindAction"/>
-			<menu_action action="FindNextAction"/>
+			<menu_action action="QuickFindAction.FORWARD"/>
+			<menu_action action="QuickFindAction.BACK"/>
 		</menu_category>
 		<menu_action action="EnterPassword" />
 		</menu_category>
