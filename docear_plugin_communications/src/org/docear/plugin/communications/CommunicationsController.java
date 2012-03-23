@@ -272,7 +272,7 @@ public class CommunicationsController extends ALanguageController implements Act
 	}
 	
 	public boolean postFileToDocearService(String restPath, boolean deleteIfTransferred, File... files) {
-		if(!allowTransmission || getAccessToken() == null || getAccessToken().trim().length() <= 0 || getUserName() == null || getUserName().trim().length() <= 0) {
+		if(!allowTransmission || getAccessToken() == null || getAccessToken().trim().length() <= 0 || getUserName() == null || getUserName().trim().length() <= 0 || files.length == 0) {
 			return false;
 		}
 		FiletransferClient client = new FiletransferClient(restPath, files);

@@ -73,15 +73,10 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 		final Properties meta = getMapProperties(map);
 		if (meta == null) {
 			return;
-		}		
+		}
 		
-		
-		final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-		Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
-		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-
-			@Override
-			protected Void doInBackground() throws Exception {
+		Thread thread = new Thread() {
+			public void run() {
 				try {
 					File backupFile = new File(BackupController.getController().getBackupDirectory().getAbsolutePath(), System.currentTimeMillis() + "_" + map.getFile().getName() + ".zip");
 					
@@ -115,14 +110,12 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 				catch (Exception e) {
 					LogUtils.warn(e);
 				}
-				return null;
+				
 			}
 			
 		};
 		
-		Thread.currentThread().setContextClassLoader(contextClassLoader);
-		worker.execute();
-		
+		thread.run();
 		
 	}
 
