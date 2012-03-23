@@ -69,7 +69,7 @@ public class MapController extends SelectionController implements IExtension{
 		BACK, BACK_N_FOLD, FORWARD, FORWARD_N_FOLD
 	}
 
-	private static class ActionEnablerOnChange implements INodeChangeListener, INodeSelectionListener, IActionOnChange {
+	private static class ActionEnablerOnChange implements INodeChangeListener, INodeSelectionListener, IActionOnChange, IMapChangeListener {
 		final AFreeplaneAction action;
 
 		public ActionEnablerOnChange(final AFreeplaneAction action) {
@@ -91,6 +91,41 @@ public class MapController extends SelectionController implements IExtension{
 		public void onSelect(final NodeModel node) {
 			action.setEnabled();
 		}
+
+		public void mapChanged(MapChangeEvent event) {
+			action.setEnabled();	
+		}
+
+		public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
+			action.setEnabled();
+		}
+
+		public void onNodeInserted(NodeModel parent, NodeModel child,
+				int newIndex) {
+			action.setEnabled();
+		}
+
+		public void onNodeMoved(NodeModel oldParent, int oldIndex,
+				NodeModel newParent, NodeModel child, int newIndex) {
+			action.setEnabled();
+		}
+
+		public void onPreNodeMoved(NodeModel oldParent, int oldIndex,
+				NodeModel newParent, NodeModel child, int newIndex) {
+		}
+
+		public void onPreNodeDelete(NodeModel oldParent,
+				NodeModel selectedNode, int index) {
+			setActionEnabled();
+		}
+
+		private void setActionEnabled() {
+			final IMapSelection selection = Controller.getCurrentController().getSelection();
+			if (selection == null || selection.getSelected() == null) {
+				return;
+			}
+			action.setEnabled();
+		}
 	}
 
 	private static class ActionSelectorOnChange implements INodeChangeListener, INodeSelectionListener,
@@ -110,6 +145,10 @@ public class MapController extends SelectionController implements IExtension{
 			if (NodeChangeType.REFRESH.equals(event.getProperty())) {
 				return;
 			}
+			setActionSelected();
+		}
+
+		private void setActionSelected() {
 			final IMapSelection selection = Controller.getCurrentController().getSelection();
 			if (selection == null || selection.getSelected() == null) {
 				return;
@@ -121,32 +160,33 @@ public class MapController extends SelectionController implements IExtension{
 		}
 
 		public void onSelect(final NodeModel node) {
-			action.setSelected();
+			setActionSelected();
 		}
 
 		public void mapChanged(final MapChangeEvent event) {
-			final Object property = event.getProperty();
-			if (property.equals(MapStyle.MAP_STYLES)) {
-				action.setSelected();
-				return;
-			}
+			setActionSelected();
 		}
 
 		public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
+			setActionSelected();
 		}
 
 		public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
+			setActionSelected();
 		}
 
 		public void onNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
 		                        final NodeModel child, final int newIndex) {
+			setActionSelected();
 		}
 
 		public void onPreNodeDelete(final NodeModel oldParent, final NodeModel selectedNode, final int index) {
+			setActionSelected();
 		}
 
 		public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
 		                           final NodeModel child, final int newIndex) {
+			setActionSelected();
 		}
 	}
 	
@@ -161,6 +201,7 @@ public class MapController extends SelectionController implements IExtension{
 			final ActionEnablerOnChange listener = new ActionEnablerOnChange(action);
 			addNodeSelectionListener(listener);
 			addNodeChangeListener(listener);
+			addMapChangeListener(listener);
 		}
 		if (AFreeplaneAction.checkSelectionOnChange(action)) {
 			final ActionSelectorOnChange listener = new ActionSelectorOnChange(action);
@@ -174,6 +215,7 @@ public class MapController extends SelectionController implements IExtension{
 		if (AFreeplaneAction.checkEnabledOnChange(action)) {
 			removeNodeSelectionListener(ActionEnablerOnChange.class, action);
 			removeNodeChangeListener(ActionEnablerOnChange.class, action);
+			removeMapChangeListener(ActionEnablerOnChange.class, action);
 		}
 		if (AFreeplaneAction.checkSelectionOnChange(action)) {
 			removeNodeSelectionListener(ActionSelectorOnChange.class, action);
@@ -370,14 +412,16 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	public void fireMapChanged(final MapChangeEvent event) {
+		final MapModel map = event.getMap();
+		if (map != null) {
+			setSaved(map, false);
+		}
 		final IMapChangeListener[] list = mapChangeListeners.toArray(new IMapChangeListener[]{});
 		for (final IMapChangeListener next : list) {
 			next.mapChanged(event);
 		}
-		final MapModel map = event.getMap();
 		if (map != null) {
 			map.fireMapChangeEvent(event);
-			setSaved(map, false);
 		}
 	}
 
