@@ -9,7 +9,6 @@ import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.features.DocearMapModelExtension;
 import org.docear.plugin.core.logger.DocearLogEvent;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.mindmapmode.MMapModel;
@@ -47,7 +46,7 @@ public class MapLifeCycleAndViewListener implements IMapLifeCycleListener, IMapV
 		try {
 			FileUtils.touch(f);
 		} catch (IOException e) {
-			LogUtils.warn(e);
+			//LogUtils.warn(e);
 		}		
 	}
 

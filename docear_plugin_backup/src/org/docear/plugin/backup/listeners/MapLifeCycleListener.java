@@ -109,13 +109,13 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 				}
 				catch (Exception e) {
 					LogUtils.warn(e);
-				}
-				
+				}				
 			}
 			
 		};
 		
-		thread.run();
+		thread.start();
+		System.out.println("running");
 		
 	}
 

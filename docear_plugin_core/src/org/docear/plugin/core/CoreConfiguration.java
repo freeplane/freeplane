@@ -35,7 +35,6 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.FreeplaneActionCascade;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.ConfigurationUtils;
@@ -252,7 +251,11 @@ public class CoreConfiguration extends ALanguageController {
 			Controller.getCurrentController().getResourceController().setProperty("styleScrollPaneVisible", "true");
 			Controller.getCurrentController().getResourceController().setProperty(DOCEAR_FIRST_RUN_PROPERTY, true);			
 		}
-		FreeplaneActionCascade.addAction(new DocearQuitAction());		
+		AFreeplaneAction previousAction = Controller.getCurrentController().getAction("QuitAction");
+		if(previousAction != null) {
+			Controller.getCurrentController().removeAction("QuitAction");
+		}
+		Controller.getCurrentController().addAction(new DocearQuitAction(previousAction));
 	}
 	
 	private void registerListeners() {
