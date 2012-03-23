@@ -7,7 +7,9 @@ package org.docear.plugin.core;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,7 +44,9 @@ public class DocearController implements IDocearEventListener {
 	private final Vector<IDocearEventListener> docearListeners = new Vector<IDocearEventListener>();		
 	private final static DocearController docearController = new DocearController();
 	
-	private IDocearLibrary currentLibrary = null;	
+	private IDocearLibrary currentLibrary = null;
+	
+	private final Set<String> workingThreads = new HashSet<String>();
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -59,6 +63,26 @@ public class DocearController implements IDocearEventListener {
 	public static DocearController getController() {
 		return docearController;
 	}
+	
+	public synchronized void addWorkingThreadHandle(String handleId) {
+		if(handleId == null) {
+			return;
+		}
+		workingThreads.add(handleId);		
+	}
+	
+	public synchronized boolean hasWorkingThreads() {
+		return !workingThreads.isEmpty();
+	}
+	
+	public synchronized void removeWorkingThreadHandle(String handleId) {
+		if(handleId == null) {
+			return;
+		}
+		workingThreads.remove(handleId);		
+	}
+	
+
 	
 	public void setApplicationIdentifiers() {
 		final Properties versionProperties = new Properties();

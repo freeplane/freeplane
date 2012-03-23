@@ -31,5 +31,11 @@ public class DocearQuitAction extends QuitAction {
 	public void actionPerformed(ActionEvent e) {
 		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.APPLICATION_CLOSED);
 		LogUtils.info("saving all docear components ...");
+		while(DocearController.getController().hasWorkingThreads()) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e1) {
+			}
+		}
 	}
 }
