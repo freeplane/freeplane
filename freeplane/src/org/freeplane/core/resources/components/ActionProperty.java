@@ -96,6 +96,10 @@ public class ActionProperty extends PropertyBean implements IPropertyControl {
 	public void setLabelText(final String labelText) {
 		this.labelText = labelText;
 	}
+	
+	public Component getActionComponent() {
+		return mButton;
+	}
 
 	@Override
 	public void setValue(final String value) {

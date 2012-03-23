@@ -1,13 +1,20 @@
 package org.docear.plugin.communications.components.dialog;
 
+import java.awt.AWTEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
@@ -16,11 +23,8 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
-import javax.swing.JCheckBox;
-import javax.swing.JTextArea;
-import javax.swing.JScrollPane;
 
-public class DocearServiceLoginPanel  extends JPanel {
+public class DocearServiceLoginPanel  extends JPanel implements KeyListener {
 	
 	
 	
@@ -56,18 +60,19 @@ public class DocearServiceLoginPanel  extends JPanel {
 		add(lblUsername, "2, 2, right, default");
 		
 		username = new JTextField(ResourceController.getResourceController().getProperty("docear.service.connect.username", ""));
+		username.addKeyListener(this);
 		add(username, "4, 2, fill, default");
 		username.setColumns(10);
+		
 		
 		JLabel lblPassword = new JLabel(TextUtils.getText("docear.service.connect.password.label"));
 		add(lblPassword, "2, 4, right, default");
 		
 		password = new JPasswordField();
+		password.addKeyListener(this);
 		add(password, "4, 4, fill, default");
 		
-		scrollPane = new JScrollPane();
-		add(scrollPane, "4, 6, fill, fill");
-		
+		scrollPane = new JScrollPane();		
 		txtrLicense = new JTextArea();
 		scrollPane.setViewportView(txtrLicense);
 		txtrLicense.setRows(10);
@@ -77,12 +82,12 @@ public class DocearServiceLoginPanel  extends JPanel {
 		chckbxAcceptLicense = new JCheckBox("accept license");
 		chckbxAcceptLicense.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(okButton != null) {
-					okButton.setEnabled(chckbxAcceptLicense.isSelected());
-				}				
+				enableButtonIfPossible(e);			
 			}
 		});
-		add(chckbxAcceptLicense, "4, 8");
+		chckbxAcceptLicense.setSelected(true);
+//		add(scrollPane, "4, 6, fill, fill");
+//		add(chckbxAcceptLicense, "4, 8");
 	}
 	
 	public String getUsername() {
@@ -96,15 +101,36 @@ public class DocearServiceLoginPanel  extends JPanel {
 	
 	public void ctrlOKButton(JButton button) {
 		okButton = button;
-		if(okButton != null) {
-			okButton.setEnabled(chckbxAcceptLicense.isSelected());
-		}
+		enableButtonIfPossible(null);
 	}
 	
 	public void setLicenseText(String text) {
 		txtrLicense.setText(text);
 		txtrLicense.setSelectionStart(0);
 		txtrLicense.setSelectionEnd(0);
+	}
+	
+	private void enableButtonIfPossible(AWTEvent event) {
+		if(okButton != null) {
+			if(chckbxAcceptLicense.isSelected() && (username.getText().trim().length() > 0) && (password.getPassword().length > 0)) {
+				okButton.setEnabled(true);
+			}
+			else {
+				okButton.setEnabled(false);
+			}
+		}
+	}
+	
+	public void keyTyped(KeyEvent e) {}
+	
+	public void keyReleased(KeyEvent e) {}
+	
+	public void keyPressed(final KeyEvent e) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				enableButtonIfPossible(e);
+			}
+		});				
 	}
 
 }
