@@ -180,17 +180,16 @@ public class CommunicationsController extends ALanguageController implements Act
 				
 				if(Status.OK.equals(status)) {				
 					String token = response.getHeaders().getFirst("accessToken");
-					ResourceController.getResourceController().setProperty("docear.service.connect.username", username);
-					((StringProperty)Controller.getCurrentController().getOptionPanelController().getPropertyControl(DOCEAR_CONNECTION_USERNAME_PROPERTY)).setValue(username);
-					ResourceController.getResourceController().setProperty("docear.service.connect.token", token);
 					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.format("docear.service.connect.success", username), TextUtils.getText("docear.service.connect.success.title") , JOptionPane.PLAIN_MESSAGE);
+					
+					ResourceController.getResourceController().setProperty("docear.service.connect.username", username);
+					((StringProperty)Controller.getCurrentController().getOptionPanelController().getPropertyControl(DOCEAR_CONNECTION_USERNAME_PROPERTY)).setValue(username);					
+					ResourceController.getResourceController().setProperty("docear.service.connect.token", token);					
 					InputStream is = response.getEntityInputStream();
 			        while (is.read() > -1);
 			        is.close();
-				} else {
-					ResourceController.getResourceController().setProperty("docear.service.connect.username", "");
-					((StringProperty)Controller.getCurrentController().getOptionPanelController().getPropertyControl(DOCEAR_CONNECTION_USERNAME_PROPERTY)).setValue("");
-					ResourceController.getResourceController().setProperty("docear.service.connect.token", "");
+				} 
+				else {
 					InputStream is = response.getEntityInputStream();
 					int chr;
 					StringBuilder message = new StringBuilder();
@@ -199,6 +198,10 @@ public class CommunicationsController extends ALanguageController implements Act
 			        }
 			        is.close();
 					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.format("docear.service.connect.failure", status, message.toString()), TextUtils.getText("docear.service.connect.failure.title") , JOptionPane.ERROR_MESSAGE);
+					
+					ResourceController.getResourceController().setProperty("docear.service.connect.username", "");
+					((StringProperty)Controller.getCurrentController().getOptionPanelController().getPropertyControl(DOCEAR_CONNECTION_USERNAME_PROPERTY)).setValue("");
+					ResourceController.getResourceController().setProperty("docear.service.connect.token", "");					
 				}
 		    } 
 		    catch (Exception e) {
