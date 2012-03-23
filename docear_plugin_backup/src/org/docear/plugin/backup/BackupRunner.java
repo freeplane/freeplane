@@ -9,16 +9,16 @@ import org.jdesktop.swingworker.SwingWorker;
 
 public class BackupRunner {
 	private SwingWorker<Void, Void> runner;
-	private boolean running = false;
+//	private boolean running = false;
 
 	public void run() {
-		if (running) {
-			return;
-		}
+//		if (running) {
+//			return;
+//		}
 		
 		LogUtils.info("running Docear BackupRunner");
 		
-		running = true;
+//		running = true;
 		
 		final ResourceController resourceCtrl = Controller.getCurrentController().getResourceController();
 		final BackupController backupCtrl = BackupController.getController();
@@ -61,11 +61,11 @@ public class BackupRunner {
 		runner.execute();
 	}
 	
-	public void stop() {
-		LogUtils.info("stoping Docear BackupRunner");
-		
-		runner.cancel(true);
-		running = false;
-	}
+//	public void stop() {
+//		LogUtils.info("stoping Docear BackupRunner");
+//		
+//		runner.cancel(true);
+//		running = false;
+//	}
 
 }
