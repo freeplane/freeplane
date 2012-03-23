@@ -25,7 +25,8 @@ public class WorkspaceDocearServiceConnectionBar extends JToolBar {
 		CONNECTED,
 		DISCONNECTED,
 		UPLOADING,
-		INTERRUPTED
+		DISABLED,
+		NO_CREDENTIALS
 	}
 
 	private static final long serialVersionUID = 1L;

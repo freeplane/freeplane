@@ -11,6 +11,7 @@ import org.docear.plugin.core.event.DocearEvent;
 import org.freeplane.core.util.LogUtils;
 
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.multipart.FormDataMultiPart;
@@ -19,6 +20,7 @@ public class FiletransferClient {
 	private final static Client client;
 	public static final String START_UPLOAD = "docear.service.upload.start";
 	public static final String STOP_UPLOAD = "docear.service.upload.stop";
+	public static final String NO_CONNECTION = "docear.service.connection.problem";
 	
 	
 	static {
@@ -73,7 +75,11 @@ public class FiletransferClient {
 				else {
 					throw new IOException("incomplete read ("+file.getPath()+")");
 				}
-			} 
+			}
+			catch(ClientHandlerException ex) {
+				DocearController.getController().dispatchDocearEvent(new DocearEvent(this.getClass(), NO_CONNECTION));
+				return false;
+			}
 			catch (Exception ex) {
 				LogUtils.warn("Could not upload "+ file.getPath(), ex);
 				DocearController.getController().dispatchDocearEvent(new DocearEvent(this.getClass(), STOP_UPLOAD));

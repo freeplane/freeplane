@@ -74,9 +74,10 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 		}
 		
 		Thread thread = new Thread() {
-			public void run() {
-				try {
+			public void run() {				
+				try {					
 					File backupFile = new File(BackupController.getController().getBackupDirectory().getAbsolutePath(), System.currentTimeMillis() + "_" + map.getFile().getName() + ".zip");
+					DocearController.getController().addWorkingThreadHandle(backupFile.getName());
 					
 					ZipOutputStream out = null;
 					InputStream in = null;
@@ -102,7 +103,8 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 					} 
 					finally {
 						in.close();
-						out.close();			
+						out.close();
+						DocearController.getController().removeWorkingThreadHandle(backupFile.getName());
 					}					
 				}
 				catch (Exception e) {
