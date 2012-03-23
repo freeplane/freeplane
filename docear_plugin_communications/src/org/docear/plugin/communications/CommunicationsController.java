@@ -171,9 +171,20 @@ public class CommunicationsController extends ALanguageController implements Act
 				}
 			});
 		    waitRunner.start();
-		    WebResource webRes = client.resource(getServiceUri()).path("/authenticate/"+username);
 		   
-		    try {
+		   WebResource webRes;
+		   
+		   try {
+			   webRes = client.resource(getServiceUri()).path("/authenticate/"+username);
+		   } 
+		   //DOCEAR: should not happen because the URI is hard coded for now
+		   catch (URISyntaxException ex) {
+			   LogUtils.severe(ex);
+			   dialogButtons[0].doClick();
+			   return;
+		   }
+		   
+		   try { 
 				ClientResponse response = webRes.post(ClientResponse.class, formParams);   
 				Status status = response.getClientResponseStatus();
 				dialogButtons[0].doClick();
@@ -206,13 +217,10 @@ public class CommunicationsController extends ALanguageController implements Act
 		    } 
 		    catch (Exception e) {
 		    	dialogButtons[0].doClick();
+		    	DocearController.getController().dispatchDocearEvent(new DocearEvent(FiletransferClient.class, FiletransferClient.NO_CONNECTION));
 		    	JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.format("docear.service.connect.failure", "-1", e.getCause().getMessage()), TextUtils.getText("docear.service.connect.failure.title") , JOptionPane.ERROR_MESSAGE);
-		    }
-			
+		    }			
 		    
-		} 
-		catch (Exception ex) {
-			LogUtils.severe(ex);
 		}
 		finally {
 			Thread.currentThread().setContextClassLoader(contextClassLoader);
@@ -298,23 +306,28 @@ public class CommunicationsController extends ALanguageController implements Act
 			connectionBar.setUsername(newValue);
 		} 
 		else if(DOCEAR_CONNECTION_TOKEN_PROPERTY.equals(propertyName)) {
-			if(newValue != null && newValue.trim().length() > 0) {
-				connectionBar.setUsername(getUserName());
-				if(allowTransmission) {
-					connectionBar.setConnectionState(CONNECTION_STATE.CONNECTED);
-				}
-				else {
-					connectionBar.setConnectionState(CONNECTION_STATE.INTERRUPTED);
-				}
-				connectionBar.setEnabled(true);
-			}
-			else {
-				connectionBar.setUsername("");
-				connectionBar.setConnectionState(CONNECTION_STATE.DISCONNECTED);
-				connectionBar.setEnabled(false);
-			}
+			adjustInfoBarConnectionState();
+			
 		}
 		
+	}
+
+	private void adjustInfoBarConnectionState() {
+		if(getAccessToken() != null && getAccessToken().trim().length() > 0) {
+			connectionBar.setUsername(getUserName());
+			connectionBar.setEnabled(true);
+			if(allowTransmission) {
+				connectionBar.setConnectionState(CONNECTION_STATE.CONNECTED);
+			}
+			else {
+				connectionBar.setConnectionState(CONNECTION_STATE.DISABLED);
+			}
+		} 
+		else {
+			connectionBar.setUsername("");
+			connectionBar.setConnectionState(CONNECTION_STATE.NO_CREDENTIALS);
+			connectionBar.setEnabled(false);
+		}	
 	}
 	
 	public void handleEvent(DocearEvent event) {
@@ -322,26 +335,22 @@ public class CommunicationsController extends ALanguageController implements Act
 			WorkspaceDocearServiceConnectionBar.ACTION_COMMAND_TOGGLE_CONNECTION_STATE.equals(event.getEventObject())) {
 			allowTransmission = !allowTransmission;
 			connectionBar.allowTransmission(allowTransmission);
-			if(allowTransmission) {
-				connectionBar.setConnectionState(CONNECTION_STATE.CONNECTED);
-			}
-			else {
-				connectionBar.setConnectionState(CONNECTION_STATE.INTERRUPTED);
-			}
+			adjustInfoBarConnectionState();
+			return;
 		}
 		if(event.getSource().equals(FiletransferClient.class)) {
 			if(FiletransferClient.START_UPLOAD.equals(event.getEventObject())) {
 				connectionBar.setConnectionState(CONNECTION_STATE.UPLOADING);
 			}
 			else if(FiletransferClient.STOP_UPLOAD.equals(event.getEventObject())) {
-				if(allowTransmission) {
-					connectionBar.setConnectionState(CONNECTION_STATE.CONNECTED);
-				}
-				else {
-					connectionBar.setConnectionState(CONNECTION_STATE.INTERRUPTED);
-				}
+				adjustInfoBarConnectionState();
 			}
+			else if(FiletransferClient.NO_CONNECTION.equals(event.getEventObject())) {
+				connectionBar.setConnectionState(CONNECTION_STATE.DISCONNECTED);
+			}
+			return;
 		}
+		
 		
 	}
 	
