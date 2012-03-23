@@ -529,7 +529,7 @@
 	</target>
 	<target name="dmg4mac"  depends="bzr_version_info, macosxapp" if="isMacOs" >
 		<exec executable="hdiutil">
-		<arg line="create -srcfolder ${macappfullpath} ${dist}/docear-${ver_docear}.dmg"/>
+		<arg line="create -srcfolder ${macappfullpath} ${dist}/docear.dmg"/>
 		</exec>
 	</target>
 
