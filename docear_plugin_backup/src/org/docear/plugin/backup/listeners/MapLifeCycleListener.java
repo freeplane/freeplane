@@ -9,8 +9,6 @@ import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import javax.swing.SwingWorker;
-
 import org.docear.plugin.backup.BackupController;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.features.DocearMapModelExtension;

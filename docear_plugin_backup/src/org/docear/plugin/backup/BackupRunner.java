@@ -1,5 +1,7 @@
 package org.docear.plugin.backup;
 
+import java.io.File;
+
 import org.docear.plugin.communications.CommunicationsController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
@@ -27,12 +29,18 @@ public class BackupRunner {
 
 						if (backupCtrl.isBackupEnabled() && commCtrl.allowTransmission() && commCtrl.getAccessToken() != null && commCtrl.getAccessToken().trim().length() > 0) {
 							LogUtils.info("Docear BackupRunner: synchronizing backups with server");
-							boolean success = CommunicationsController.getController().postFileToDocearService("mindmaps", true, backupCtrl.getBackupQueue());
-							if (success) {
-								LogUtils.info("Docear BackupRunner: synchronizing successfull");
+							File[] files = backupCtrl.getBackupQueue();
+							if (files != null && files.length>0) {
+								boolean success = CommunicationsController.getController().postFileToDocearService("mindmaps", true, files);
+								if (success) {
+									LogUtils.info("Docear BackupRunner: synchronizing successfull");
+								}
+								else {
+									LogUtils.info("Docear BackupRunner: synchronizing failed");
+								}
 							}
 							else {
-								LogUtils.info("Docear BackupRunner: synchronizing failed");
+								LogUtils.info("Docear BackupRunner: nothing to do");
 							}
 						}
 						sleep(60000 * backupMinutes);

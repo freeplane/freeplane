@@ -53,7 +53,11 @@ public class DocearAboutAction extends AboutAction {
 		MessageFormat formatter;
         try {
             formatter = new MessageFormat(aboutText);
-            aboutText = formatter.format(new Object[]{ DocearController.getController().getApplicationVersion(), copyright, programmer});
+            DocearController ctrl = DocearController.getController();
+            String info = ctrl.getApplicationVersion();
+            info += " " + ctrl.getApplicationStatus() + " " + ctrl.getApplicationStatusVersion();
+            info += " build " + ctrl.getApplicationBuildNumber(); 
+            aboutText = formatter.format(new Object[]{ info, copyright, programmer});
         }
         catch (IllegalArgumentException ex) {
             LogUtils.severe("wrong format " + aboutText + " for property " + "docear_about", ex);

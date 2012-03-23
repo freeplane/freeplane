@@ -7,7 +7,6 @@ import org.docear.plugin.communications.CommunicationsController;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.BooleanProperty;
-import org.freeplane.core.resources.components.StringProperty;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
