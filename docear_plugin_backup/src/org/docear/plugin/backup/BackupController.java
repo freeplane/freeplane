@@ -7,6 +7,7 @@ import java.net.URL;
 import javax.swing.SwingUtilities;
 
 import org.docear.plugin.backup.listeners.MapLifeCycleListener;
+import org.docear.plugin.backup.listeners.PropertyListener;
 import org.docear.plugin.communications.CommunicationsController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
@@ -20,6 +21,7 @@ public class BackupController {
 	private final File backupFolder = new File(CommunicationsController.getController().getCommunicationsQueuePath(), "mindmaps");
 	
 	private final IMapLifeCycleListener mapLifeCycleListener = new MapLifeCycleListener();
+	private final PropertyListener propertyListener = new PropertyListener();
 
 	private static FileFilter zipFilter = new FileFilter() {
 		public boolean accept(File f) {
@@ -30,6 +32,7 @@ public class BackupController {
 	public BackupController() {
 		LogUtils.info("starting DocearBackupStarter()");		
 		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(mapLifeCycleListener);
+		ResourceController.getResourceController().addPropertyChangeListener(propertyListener);
 		
 		addPluginDefaults();
 		
@@ -58,6 +61,10 @@ public class BackupController {
 	
 	public boolean isBackupEnabled() {
 		return ResourceController.getResourceController().getBooleanProperty("docear_save_backup");
+	}
+	
+	public void setBackupEnabled(boolean b) {
+		ResourceController.getResourceController().setProperty("docear_save_backup", b);
 	}
 	
 	public File getBackupDirectory() {		

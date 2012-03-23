@@ -74,42 +74,46 @@ public class CommunicationsController extends ALanguageController implements Act
 		
 	public void actionPerformed(ActionEvent e) {		
 		if("docear_connect".equals(e.getActionCommand())) {
-			JButton[] dialogButtons = new JButton[] {new JButton(TextUtils.getOptionalText("docear.service.connect.dialog.button.ok")), new JButton(TextUtils.getOptionalText("docear.service.connect.dialog.button.cancel"))};
-			final DocearServiceLoginPanel loginPanel = new DocearServiceLoginPanel();
-			loginPanel.ctrlOKButton(dialogButtons[0]);
-			dialogButtons[0].addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					Container cont = loginPanel.getParent();
-					while(!(cont instanceof JOptionPane)) {
-						cont = cont.getParent();
-					}
-					((JOptionPane)cont).setValue(e.getSource());
-					closeDialogManually(cont);
-					
+			showConnectionDialog();
+		}
+	}
+
+	public void showConnectionDialog() {
+		JButton[] dialogButtons = new JButton[] {new JButton(TextUtils.getOptionalText("docear.service.connect.dialog.button.ok")), new JButton(TextUtils.getOptionalText("docear.service.connect.dialog.button.cancel"))};
+		final DocearServiceLoginPanel loginPanel = new DocearServiceLoginPanel();
+		loginPanel.ctrlOKButton(dialogButtons[0]);
+		dialogButtons[0].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Container cont = loginPanel.getParent();
+				while(!(cont instanceof JOptionPane)) {
+					cont = cont.getParent();
 				}
-			});
-			dialogButtons[1].addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					Container cont = loginPanel.getParent();
-					closeDialogManually(cont);					
-				}
-			});
-			
-			StringBuilder text = new StringBuilder();
-			Scanner scanner = new Scanner(DocearController.class.getClassLoader().getResourceAsStream("/license.txt"));
-		    try {
-		      while (scanner.hasNextLine()){
-		        text.append(scanner.nextLine() + System.getProperty("line.separator"));
-		      }
-		    }
-		    finally{
-		      scanner.close();
-		    }
-			loginPanel.setLicenseText(text.toString());
-			int choice = JOptionPane.showOptionDialog(UITools.getFrame(), loginPanel, TextUtils.getOptionalText("docear.service.connect.title"), JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, dialogButtons, dialogButtons[0]);
-			if(choice == 0) {
-				tryToConnect(loginPanel.getUsername(), loginPanel.getPassword());
+				((JOptionPane)cont).setValue(e.getSource());
+				closeDialogManually(cont);
+				
 			}
+		});
+		dialogButtons[1].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Container cont = loginPanel.getParent();
+				closeDialogManually(cont);					
+			}
+		});
+		
+		StringBuilder text = new StringBuilder();
+		Scanner scanner = new Scanner(DocearController.class.getClassLoader().getResourceAsStream("/license.txt"));
+		try {
+		  while (scanner.hasNextLine()){
+		    text.append(scanner.nextLine() + System.getProperty("line.separator"));
+		  }
+		}
+		finally{
+		  scanner.close();
+		}
+		loginPanel.setLicenseText(text.toString());
+		int choice = JOptionPane.showOptionDialog(UITools.getFrame(), loginPanel, TextUtils.getOptionalText("docear.service.connect.title"), JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, dialogButtons, dialogButtons[0]);
+		if(choice == 0) {
+			tryToConnect(loginPanel.getUsername(), loginPanel.getPassword());
 		}
 	}
 	
@@ -233,7 +237,6 @@ public class CommunicationsController extends ALanguageController implements Act
 				connectionBar.setEnabled(false);
 			}
 		}
-		
 		
 	}
 	
