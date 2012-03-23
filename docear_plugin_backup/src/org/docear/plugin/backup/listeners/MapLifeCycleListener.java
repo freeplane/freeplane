@@ -9,10 +9,13 @@ import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import javax.swing.SwingWorker;
+
 import org.docear.plugin.backup.BackupController;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.features.DocearMapModelExtension;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.MapModel;
 
@@ -62,44 +65,65 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 		return properties;
 	}
 
-	public void createBackup(MapModel map) throws IOException {
+	public void createBackup(final MapModel map) throws IOException {
 		if (map == null || !BackupController.getController().isBackupEnabled()) {
 			return;
 		}
 		
-		Properties meta = getMapProperties(map);
+		final Properties meta = getMapProperties(map);
 		if (meta == null) {
 			return;
 		}		
 		
-		File backupFile = new File(BackupController.getController().getBackupDirectory().getAbsolutePath(), System.currentTimeMillis() + "_" + map.getFile().getName() + ".zip");
 		
-		ZipOutputStream out = null;
-		InputStream in = null;
-		try {			
-			out = new ZipOutputStream(new FileOutputStream(backupFile));
-			in = new FileInputStream(map.getFile());
-			
-			ZipEntry entry = new ZipEntry("metadata.inf");
-			out.putNextEntry(entry);
-			meta.store(out, "");
-			
-			entry = new ZipEntry(map.getFile().getName());			
-			out.putNextEntry(entry);
-			
-			while (true) {
-				int data = in.read();
-				if (data == -1) {
-					break;
+		final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+		Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
+		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+
+			@Override
+			protected Void doInBackground() throws Exception {
+				try {
+					File backupFile = new File(BackupController.getController().getBackupDirectory().getAbsolutePath(), System.currentTimeMillis() + "_" + map.getFile().getName() + ".zip");
+					
+					ZipOutputStream out = null;
+					InputStream in = null;
+					try {			
+						out = new ZipOutputStream(new FileOutputStream(backupFile));
+						in = new FileInputStream(map.getFile());
+						
+						ZipEntry entry = new ZipEntry("metadata.inf");
+						out.putNextEntry(entry);
+						meta.store(out, "");
+						
+						entry = new ZipEntry(map.getFile().getName());			
+						out.putNextEntry(entry);
+						
+						while (true) {
+							int data = in.read();
+							if (data == -1) {
+								break;
+							}
+							out.write(data);
+						}
+						
+					} 
+					finally {
+						in.close();
+						out.close();			
+					}					
 				}
-				out.write(data);
+				catch (Exception e) {
+					LogUtils.warn(e);
+				}
+				return null;
 			}
 			
-		} 
-		finally {
-			in.close();
-			out.close();			
-		}
+		};
+		
+		Thread.currentThread().setContextClassLoader(contextClassLoader);
+		worker.execute();
+		
+		
 	}
 
 }
