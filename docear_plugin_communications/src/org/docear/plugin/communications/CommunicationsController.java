@@ -181,6 +181,10 @@ public class CommunicationsController extends ALanguageController implements Act
 
 		modeController.getOptionPanelBuilder().load(preferences);
 	}
+	
+	public File getCommunicationsQueuePath() {
+		return new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "queue");
+	}
 
 	public void propertiesLoaded(Collection<IPropertyControl> properties) {
 		Controller.getCurrentController().getOptionPanelController().getPropertyControl(DOCEAR_CONNECTION_USERNAME_PROPERTY).setEnabled(false);
