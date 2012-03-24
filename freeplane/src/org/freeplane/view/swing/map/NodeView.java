@@ -167,11 +167,17 @@ public class NodeView extends JComponent implements INodeView {
 
 	@Override
 	public boolean contains(final int x, final int y) {
-		//		if (!isValid()) {
-		//			return false;
-		//		}
-		final int space = getMap().getZoomed(NodeView.SPACE_AROUND) - 2 * getZoomedFoldingSymbolHalfWidth();
-		return (x >= space) && (x < getWidth() - space) && (y >= space) && (y < getHeight() - space);
+		if (x >= 0 && x < getWidth() && y >= 0 && y < getHeight()){
+			final int space = getMap().getZoomed(NodeView.SPACE_AROUND) - 2 * getZoomedFoldingSymbolHalfWidth();
+			if (x >= space && x < getWidth() - space && y >= space && y < getHeight() - space)
+				return true;
+			for(int i = 0; i < getComponentCount(); i++){
+			final Component comp = getComponent(i);
+			if(comp.isVisible() && comp.contains(x-comp.getX(), y-comp.getY()))
+				return true;
+			}
+		}
+		return false;
 	}
 
 	protected void convertPointToMap(final Point p) {

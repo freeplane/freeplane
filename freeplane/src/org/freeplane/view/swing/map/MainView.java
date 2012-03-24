@@ -61,6 +61,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.IContentTransformer;
 import org.freeplane.features.text.TextController;
 
@@ -168,6 +169,20 @@ public abstract class MainView extends ZoomableLabel {
 		return xCoord >= iconR.x && xCoord < iconR.x + iconR.width;
 	}
 
+	private boolean isRightOrOutline() {
+		final NodeView nodeView = getNodeView();
+		if (nodeView.isLeft() || MapViewLayout.OUTLINE.equals(nodeView.getMap().getLayoutType()))
+			return false;
+		else
+			return true;
+	}
+
+	public boolean isInLeftFoldingRegion(int x) {
+		return x < getZoomedFoldingSymbolHalfWidth() && ! isRightOrOutline();
+	}
+	public boolean isInRightFoldingRegion(int x) {
+		return x >= getWidth()-getZoomedFoldingSymbolHalfWidth() && isRightOrOutline();
+	}
 	/**
 	 * Determines whether or not the xCoord is in the part p of the node: if
 	 * node is on the left: part [1-p,1] if node is on the right: part[ 0,p] of
@@ -475,6 +490,19 @@ public abstract class MainView extends ZoomableLabel {
 	    	return toolTipText;
 	    return createToolTipText();
     }
-    
-    
+	
+	@Override
+	public boolean contains(int x, int y) {
+		if(getNodeView().getModel().getChildCount() == 0)
+			return super.contains(x, y);
+		final int margin = 2 * getZoomedFoldingSymbolHalfWidth();
+		if(isRightOrOutline())
+			return x >= 0 && x < margin + getWidth()
+				&& y >= 0 && y < getHeight();
+		else
+			return x >= -margin  && x < getWidth()
+				&& y >= 0 && y < getHeight();
+	}
+
+
 }

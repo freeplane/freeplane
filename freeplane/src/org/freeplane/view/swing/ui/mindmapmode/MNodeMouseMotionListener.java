@@ -33,7 +33,7 @@ import org.freeplane.view.swing.ui.DefaultNodeMouseMotionListener;
  */
 public class MNodeMouseMotionListener extends DefaultNodeMouseMotionListener {
     public void mouseClicked(final MouseEvent e) {
-    	if (wasFocused() && Compat.isCtrlEvent(e) && e.getButton() == MouseEvent.BUTTON1
+    	if (e.getClickCount() == 2 && Compat.isPlainEvent(e) && e.getButton() == MouseEvent.BUTTON1
     			&& Controller.getCurrentController().getSelection().size() == 1) {
     		final MTextController textController = (MTextController) MTextController.getController();
     		textController.getEventQueue().activate(e);

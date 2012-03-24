@@ -74,6 +74,19 @@ class NodeViewFactory {
 			}
 			super.paint(g);
 		}
+		
+		@Override
+		public boolean contains(final int x, final int y) {
+			if (super.contains(x, y))
+				return true;
+			for(int i = 0; i < getComponentCount(); i++){
+			final Component comp = getComponent(i);
+			if(comp.isVisible() && comp.contains(x-comp.getX(), y-comp.getY()))
+				return true;
+			}
+			return false;
+		}
+
 	}
 
 	private static class ContentPaneLayout implements LayoutManager {

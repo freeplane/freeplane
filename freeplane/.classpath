@@ -12,7 +12,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/gnu-regexp-1.1.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/SimplyHTML.jar" sourcepath="/simplyHtml/src"/>
 	<classpathentry kind="lib" path="lib/freeplanemac.jar" sourcepath="/freeplane_mac/src"/>
-	<classpathentry kind="lib" path="lib/imgscalr-lib-3.2.jar"/>
+	<classpathentry kind="lib" path="lib/imgscalr-lib-3.2.jar" sourcepath="C:/Users/Dimitry/Downloads/imgscalr-lib-3.2/imgscalr-lib-3.2-sources.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/JOrtho_0.4_freeplane"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

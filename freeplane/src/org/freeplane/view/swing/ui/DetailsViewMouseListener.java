@@ -53,6 +53,6 @@ public class DetailsViewMouseListener extends LinkNavigatorMouseListener {
     }
 
 	private boolean isEditingStartEventt(MouseEvent e) {
-		return Compat.isCtrlEvent(e) || Compat.isCtrlAltEvent(e);
+		return e.getClickCount() == 2;
 	}
 }

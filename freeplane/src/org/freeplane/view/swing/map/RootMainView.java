@@ -176,4 +176,22 @@ class RootMainView extends MainView {
             final Point out = new Point((int) ((1f + Math.cos(angle)) * nWidth), (int) ((1f + Math.sin(angle)) * nHeight));
             return out;
     }
+
+	@Override
+	public boolean isInRightFoldingRegion(int x) {
+		return false;
+	}
+	@Override
+	public boolean isInLeftFoldingRegion(int x) {
+		return false;
+	}
+	
+	@Override
+	public boolean contains(int x, int y) {
+			return x >= 0 && x < getWidth()
+				&& y >= 0 && y < getHeight();
+	}
+
+    
+    
 }

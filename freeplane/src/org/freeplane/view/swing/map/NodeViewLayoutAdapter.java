@@ -62,7 +62,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     private static Dimension minDimension;
     private int childCount;
     private JComponent content;
-    protected final int LISTENER_VIEW_WIDTH = 10;
+    public static final int LISTENER_VIEW_WIDTH = 10;
     protected Point location = new Point();
     private NodeModel model;
     private int spaceAround;
@@ -509,7 +509,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 	public void layoutNodeMotionListenerView(final NodeMotionListenerView view) {
 		final NodeView movedView = view.getMovedView();
 		final JComponent content = movedView.getContent();
-		location.x = -LISTENER_VIEW_WIDTH;
+		location.x = -LISTENER_VIEW_WIDTH -2 * movedView.getMainView().getZoomedFoldingSymbolHalfWidth();
 		location.y = 0;
 		UITools.convertPointToAncestor(content, location, view.getParent());
 		view.setLocation(location);
