@@ -161,23 +161,13 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				}
 			}
 		}
-		extendSelection(e);
-		if (wasFocused() && e.getModifiers() == InputEvent.BUTTON1_MASK) {
+		if (component.isInFoldingRegion(e.getX())) {
 			/* perform action only if one selected node. */
 			final MapController mapController = mc.getMapController();
-			if (mapController.getSelectedNodes().size() != 1) {
-				return;
-			}
-			final NodeModel node = nodeView.getModel();
-			if (!mapController.hasChildren(node)) {
-				/* If the link exists, follow the link; toggle folded otherwise */
-				if (NodeLinks.getValidLink(mapController.getSelectedNode()) == null) {
-					mapController.toggleFolded();
-				}
-				return;
-			}
 			mapController.toggleFolded(mapController.getSelectedNodes());
+			e.consume();
 		}
+		extendSelection(e);
 	}
 
 	/**

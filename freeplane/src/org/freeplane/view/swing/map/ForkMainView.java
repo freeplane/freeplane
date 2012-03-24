@@ -132,7 +132,7 @@ class ForkMainView extends MainView {
     }
 	
 	@Override
-	void paintFoldingMark(final NodeView nodeView, final Graphics2D g, final Point p, boolean itself) {
+	void paintFoldingMark(final NodeView nodeView, final Graphics2D g, final Point p, FoldingMarkType foldingMarkType) {
 		final int zoomedFoldingSymbolHalfWidth = getZoomedFoldingSymbolHalfWidth();
 		if (p.x <= 0) {
 			p.x -= zoomedFoldingSymbolHalfWidth;
@@ -140,7 +140,7 @@ class ForkMainView extends MainView {
 		else {
 			p.x += zoomedFoldingSymbolHalfWidth;
 		}
-		super.paintFoldingMark(nodeView, g, p, itself);
+		super.paintFoldingMark(nodeView, g, p, foldingMarkType);
 	}
 	
     @Override

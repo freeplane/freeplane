@@ -27,9 +27,12 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Ellipse2D;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -171,17 +174,17 @@ public abstract class MainView extends ZoomableLabel {
 
 	private boolean isRightOrOutline() {
 		final NodeView nodeView = getNodeView();
-		if (nodeView.isLeft() || MapViewLayout.OUTLINE.equals(nodeView.getMap().getLayoutType()))
-			return false;
-		else
+		if (!nodeView.isLeft() || MapViewLayout.OUTLINE.equals(nodeView.getMap().getLayoutType()))
 			return true;
+		else
+			return false;
 	}
 
 	public boolean isInLeftFoldingRegion(int x) {
-		return x < getZoomedFoldingSymbolHalfWidth() && ! isRightOrOutline();
+		return getNodeView().getModel().hasChildren() && x < getZoomedFoldingSymbolHalfWidth() && ! isRightOrOutline();
 	}
 	public boolean isInRightFoldingRegion(int x) {
-		return x >= getWidth()-getZoomedFoldingSymbolHalfWidth() && isRightOrOutline();
+		return getNodeView().getModel().hasChildren() && x >= getWidth()-getZoomedFoldingSymbolHalfWidth() && isRightOrOutline();
 	}
 	/**
 	 * Determines whether or not the xCoord is in the part p of the node: if
@@ -217,20 +220,41 @@ public abstract class MainView extends ZoomableLabel {
 		}
 	}
 
-	void paintFoldingMark(final NodeView nodeView, final Graphics2D g, final Point p, boolean itself) {
+	void paintFoldingMark(final NodeView nodeView, final Graphics2D g, final Point p, FoldingMarkType foldingMarkType) {
 		final int zoomedFoldingSymbolHalfWidth = getZoomedFoldingSymbolHalfWidth();
 		p.translate(-zoomedFoldingSymbolHalfWidth, -zoomedFoldingSymbolHalfWidth);
 		final Color color = g.getColor();
-		g.setColor(itself ? Color.WHITE : Color.GRAY);
-		g.fillOval(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2, zoomedFoldingSymbolHalfWidth * 2);
+		g.setColor(foldingMarkType.fillColor);
+		final Shape shape = foldingMarkType.getShape(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2);
+		g.fill(shape);
 		final Color edgeColor = nodeView.getEdgeColor();
 		g.setColor(edgeColor);
-		g.drawOval(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2, zoomedFoldingSymbolHalfWidth * 2);
+		g.draw(shape);
 		g.setColor(color);
 	}
 	
-	static private enum FoldingMarkType {
-		UNFOLDED, ITSELF_FOLDED, UNVISIBLE_CHILDREN_FOLDED
+	static enum FoldingMarkType {
+		UNFOLDED(Color.WHITE), ITSELF_FOLDED(Color.WHITE), UNVISIBLE_CHILDREN_FOLDED(Color.WHITE), SHORTENED(Color.GRAY);
+		final Color fillColor;
+
+		FoldingMarkType(Color fillColor){
+			this.fillColor = fillColor;
+		}
+		
+		Shape getShape(int x, int y, int width){
+			if(equals(SHORTENED)){
+				final Polygon polygon = new Polygon();
+				polygon.addPoint(x, y);
+				polygon.addPoint(x + width, y);
+				polygon.addPoint(x + width / 2, y + width*2/3);
+				polygon.addPoint(x, y);
+				return polygon;
+			}
+			else{
+				return new Ellipse2D.Float(x, y, width, width);
+			}
+		}
+
 	};
 
 	static private FoldingMarkType foldingMarkType(MapController mapController, NodeModel node) {
@@ -250,11 +274,12 @@ public abstract class MainView extends ZoomableLabel {
 		FoldingMarkType markType = foldingMarkType(getMap().getModeController().getMapController(), nodeView.getModel());
 		if (!markType.equals(FoldingMarkType.UNFOLDED)) {
 			final Point out = nodeView.isLeft() ? getLeftPoint() : getRightPoint();
-			paintFoldingMark(nodeView, g, out, markType.equals(FoldingMarkType.ITSELF_FOLDED));
+			paintFoldingMark(nodeView, g, out, markType);
 		}
         if (isShortened()) {
             final Point in =  nodeView.isLeft() ? getRightPoint() : getLeftPoint();
-            paintFoldingMark(nodeView, g, in, true);
+            in.y = getHeight() / 2;
+            paintFoldingMark(nodeView, g, in, FoldingMarkType.SHORTENED);
         }
 	}
 
@@ -502,6 +527,10 @@ public abstract class MainView extends ZoomableLabel {
 		else
 			return x >= -margin  && x < getWidth()
 				&& y >= 0 && y < getHeight();
+	}
+
+	public boolean isInFoldingRegion(int x) {
+		return isInRightFoldingRegion(x) || isInLeftFoldingRegion(x);
 	}
 
 

@@ -25,6 +25,7 @@ import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.util.Compat;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.mindmapmode.MTextController;
+import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.ui.DefaultNodeMouseMotionListener;
 
 /**
@@ -33,8 +34,8 @@ import org.freeplane.view.swing.ui.DefaultNodeMouseMotionListener;
  */
 public class MNodeMouseMotionListener extends DefaultNodeMouseMotionListener {
     public void mouseClicked(final MouseEvent e) {
-    	if (e.getClickCount() == 2 && Compat.isPlainEvent(e) && e.getButton() == MouseEvent.BUTTON1
-    			&& Controller.getCurrentController().getSelection().size() == 1) {
+    	if (e.getClickCount() == 2 && Compat.isPlainEvent(e) && e.getButton() == MouseEvent.BUTTON1 
+    			&& ! ((MainView)e.getComponent()).isInFoldingRegion(e.getX())) {
     		final MTextController textController = (MTextController) MTextController.getController();
     		textController.getEventQueue().activate(e);
     		textController.edit(FirstAction.EDIT_CURRENT, false);
