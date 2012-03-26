@@ -505,14 +505,4 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
         view.setTopOverlap(topOverlap);
         view.setBottomOverlap(height - heigthWithoutOverlap);
     }
-
-	public void layoutNodeMotionListenerView(final NodeMotionListenerView view) {
-		final NodeView movedView = view.getMovedView();
-		final JComponent content = movedView.getContent();
-		location.x = -LISTENER_VIEW_WIDTH -2 * movedView.getMainView().getZoomedFoldingSymbolHalfWidth();
-		location.y = 0;
-		UITools.convertPointToAncestor(content, location, view.getParent());
-		view.setLocation(location);
-		view.setSize(LISTENER_VIEW_WIDTH, content.getHeight());
-	}
 }

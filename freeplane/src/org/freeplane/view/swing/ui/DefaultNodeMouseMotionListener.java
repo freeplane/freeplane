@@ -38,6 +38,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.MouseArea;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.NodeViewLayoutAdapter;
 
@@ -184,10 +185,13 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 
 	public void mouseEntered(final MouseEvent e) {
 		createTimer(e);
+		mouseMoved(e);
 	}
 
 	public void mouseExited(final MouseEvent e) {
 		stopTimerForDelayedSelection();
+		final MainView v = (MainView) e.getSource();
+		v.setMouseArea(MouseArea.DEFAULT);
 	}
 
 	public void mouseMoved(final MouseEvent e) {
@@ -276,7 +280,8 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	}
 
 	public void showPopupMenu(final MouseEvent e) {
-		if (e.isPopupTrigger()) {
+		if (isInside(e) 
+				&& e.isPopupTrigger()) {
 			stopTimerForDelayedSelection();
 			final MainView component = (MainView) e.getComponent();
 			final NodeView nodeView = component.getNodeView();
@@ -291,6 +296,10 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				e.consume();
 			}
 		}
+	}
+
+	private boolean isInside(final MouseEvent e) {
+		return new Rectangle(0, 0, e.getComponent().getWidth(), e.getComponent().getHeight()).contains(e.getPoint());
 	}
 
 	protected void stopTimerForDelayedSelection() {

@@ -19,18 +19,22 @@ import org.freeplane.features.clipboard.MindMapNodesSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MainView;
+import org.freeplane.view.swing.map.MouseArea;
 
 /**
  * The NodeDragListener which belongs to every NodeView
  */
 public class MNodeDragListener implements DragGestureListener {
 	public void dragGestureRecognized(final DragGestureEvent e) {
+		final MainView mainView = (MainView) e.getComponent();
+		if(mainView.getDragRectangle().contains(e.getDragOrigin()))
+			return;
 		if (!ResourceController.getResourceController().getBooleanProperty("draganddrop")) {
 			return;
 		}
 		final int dragActionType = e.getDragAction();
 		if (dragActionType == DnDConstants.ACTION_MOVE) {
-			final NodeModel node = ((MainView) e.getComponent()).getNodeView().getModel();
+			final NodeModel node = mainView.getNodeView().getModel();
 			if (node.isRoot()) {
 				return;
 			}

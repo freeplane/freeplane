@@ -100,8 +100,4 @@ public class OutlineLayout extends NodeViewLayoutAdapter {
 		hGap = getView().getMap().getZoomed(hgap);
 		return true;
 	}
-
-	public void layoutNodeMotionListenerView(final NodeMotionListenerView view) {
-		view.setBounds(0, 0, 0, 0);
-	}
 }

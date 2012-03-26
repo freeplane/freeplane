@@ -113,7 +113,6 @@ public class NodeView extends JComponent implements INodeView {
 	private MainView mainView;
 	private final MapView map;
 	private NodeModel model;
-	private NodeMotionListenerView motionListenerView;
 	private NodeView preferredChild;
 	private EdgeStyle edgeStyle = EdgeStyle.EDGESTYLE_HIDDEN;
 	private Integer edgeWidth = 1;
@@ -132,10 +131,6 @@ public class NodeView extends JComponent implements INodeView {
 		final TreeNode parentNode = model.getParent();
 		final int index = parentNode == null ? 0 : parentNode.getIndex(model);
 		parent.add(this, index);
-		if (!model.isRoot()) {
-			motionListenerView = new NodeMotionListenerView(this);
-			map.add(motionListenerView, 0);
-		}
 	}
 
 	void addDragListener(final DragGestureListener dgl) {
@@ -473,10 +468,6 @@ public class NodeView extends JComponent implements INodeView {
 
 	public NodeModel getModel() {
 		return model;
-	}
-
-	public NodeMotionListenerView getMotionListenerView() {
-		return motionListenerView;
 	}
 
 	protected NodeView getNextSiblingSingle() {
@@ -1098,9 +1089,6 @@ public class NodeView extends JComponent implements INodeView {
 	protected void removeFromMap() {
 		setFocusCycleRoot(false);
 		getParent().remove(this);
-		if (motionListenerView != null) {
-			map.remove(motionListenerView);
-		}
 	}
 
 	private void repaintEdge(final NodeView target) {
@@ -1172,14 +1160,6 @@ public class NodeView extends JComponent implements INodeView {
 		mainView.requestFocus();
 	}
 
-	@Override
-	public void setBounds(final int x, final int y, final int width, final int height) {
-		super.setBounds(x, y, width, height);
-		if (motionListenerView != null) {
-			motionListenerView.invalidate();
-		}
-	}
-
 	void setMainView(final MainView newMainView) {
 		if (contentPane != null) {
 			assert (contentPane.getParent() == this);
@@ -1232,13 +1212,6 @@ public class NodeView extends JComponent implements INodeView {
 		mainView.setText(string);
 	}
 
-	@Override
-	public void setVisible(final boolean isVisible) {
-		super.setVisible(isVisible);
-		if (motionListenerView != null) {
-			motionListenerView.setVisible(isVisible);
-		}
-	}
 
 	void syncronizeAttributeView() {
 		if (attributeView != null) {

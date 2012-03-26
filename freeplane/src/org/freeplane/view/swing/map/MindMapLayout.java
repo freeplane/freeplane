@@ -78,25 +78,6 @@ public class MindMapLayout implements LayoutManager {
 		getRoot(mapView).setLocation(calcXBorderSize, calcYBorderSize);
 		mapView.setSize(calcXBorderSize * 2 + getRoot(mapView).getWidth(), calcYBorderSize * 2
 		        + getRoot(mapView).getHeight());
-		final int componentCount = mapView.getComponentCount();
-		for (int i = 0; i < componentCount; i++) {
-			final Component component = mapView.getComponent(i);
-			if (component instanceof NodeMotionListenerView) {
-				final NodeMotionListenerView nodeMotionListenerView = (NodeMotionListenerView) component;
-				if (nodeMotionListenerView.getMovedView().isContentVisible()) {
-					if (!nodeMotionListenerView.isVisible()) {
-						nodeMotionListenerView.setVisible(true);
-					}
-					final INodeViewLayout layout = (INodeViewLayout) nodeMotionListenerView.getMovedView().getLayout();
-					layout.layoutNodeMotionListenerView(nodeMotionListenerView);
-				}
-				else {
-					if (nodeMotionListenerView.isVisible()) {
-						nodeMotionListenerView.setVisible(false);
-					}
-				}
-			}
-		}
 	}
 
 	public Dimension minimumLayoutSize(final Container parent) {

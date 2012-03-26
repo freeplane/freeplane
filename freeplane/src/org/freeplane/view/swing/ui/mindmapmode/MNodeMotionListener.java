@@ -20,6 +20,7 @@
 package org.freeplane.view.swing.ui.mindmapmode;
 
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -32,6 +33,7 @@ import javax.swing.JScrollPane;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IMouseListener;
+import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.features.map.FreeNode;
@@ -44,14 +46,17 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodelocation.mindmapmode.MLocationController;
+import org.freeplane.features.text.mindmapmode.MTextController;
+import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.NodeMotionListenerView;
+import org.freeplane.view.swing.map.MouseArea;
 import org.freeplane.view.swing.map.NodeView;
+import org.freeplane.view.swing.ui.DefaultNodeMouseMotionListener;
 
 /**
  * The MouseMotionListener which belongs to every NodeView
  */
-public class MNodeMotionListener extends MouseAdapter implements IMouseListener {
+public class MNodeMotionListener extends DefaultNodeMouseMotionListener implements IMouseListener {
 	private Point dragStartingPoint = null;
 	private int originalHGap;
 	private int originalParentVGap;
@@ -92,7 +97,7 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 	/**
 	 */
 	private NodeView getNodeView(final MouseEvent e) {
-		return ((NodeMotionListenerView) e.getSource()).getMovedView();
+		return ((MainView) e.getSource()).getNodeView();
 	}
 
 	/**
@@ -106,13 +111,20 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 		return oldVGap;
 	}
 
-	public boolean isActive() {
+	public boolean isDragActive() {
 		return dragStartingPoint != null;
 	}
 
 	@Override
 	public void mouseClicked(final MouseEvent e) {
-		if (e.getButton() == 1 && e.getClickCount() == 2) {
+		if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2) {
+	    	final MainView mainView = (MainView)e.getComponent();
+			if ( ! mainView.getMouseArea().equals(MouseArea.MOTION) && Compat.isPlainEvent(e) 
+	    			&& ! mainView.isInFoldingRegion(e.getX())) {
+	    		final MTextController textController = (MTextController) MTextController.getController();
+	    		textController.getEventQueue().activate(e);
+	    		textController.edit(FirstAction.EDIT_CURRENT, false);
+	    	}
 			final Controller controller = Controller.getCurrentController();
 			MLocationController locationController = (MLocationController) LocationController.getController(controller.getModeController());
 			if (e.getModifiersEx() == 0) {
@@ -130,19 +142,41 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 				return;
 			}
 		}
+		super.mouseClicked(e);
+	}
+	
+	public void mouseMoved(final MouseEvent e) {
+		if (isDragActive())
+			return;
+		final MainView v = (MainView) e.getSource();
+		final MouseArea mouseArea = v.whichMouseArea(e.getPoint());
+		if(mouseArea.equals(MouseArea.MOTION)){
+			v.setMouseArea(mouseArea);
+			v.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+			return;
+		}
+		v.setMouseArea(MouseArea.DEFAULT);
+		super.mouseMoved(e);
 	}
 
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		if(! isDragActive())
+			super.mouseExited(e);
+	}
 
 	/** Invoked when a mouse button is pressed on a component and then dragged. */
 	public void mouseDragged(final MouseEvent e) {
 		if ((e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) == (InputEvent.BUTTON1_DOWN_MASK)) {
-			final NodeMotionListenerView motionListenerView = (NodeMotionListenerView) e.getSource();
+			stopTimerForDelayedSelection();
+			final MainView motionListenerView = (MainView) e.getSource();
 			final NodeView nodeV = getNodeView(e);
 			final MapView mapView = nodeV.getMap();
 			final Point point = e.getPoint();
 			findGridPoint(point);
-			UITools.convertPointToAncestor(motionListenerView, point, JScrollPane.class);
-			if (!isActive()) {
+			UITools.convertPointToAncestor(nodeV, point, JScrollPane.class);
+			if (!isDragActive()) {
 				setDragStartingPoint(point, nodeV.getModel());
 			}
 			else {
@@ -168,6 +202,7 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					final Rectangle r = motionListenerView.getBounds();
+					UITools.convertRectangleToAncestor(motionListenerView, r, mapView);
 					final boolean isEventPointVisible = mapView.getVisibleRect().contains(r);
 					if (!isEventPointVisible) {
 						mapView.scrollRectToVisible(r);
@@ -187,39 +222,16 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
     }
 
 	@Override
-	public void mouseEntered(final MouseEvent e) {
-		if (!JOptionPane.getFrameForComponent(e.getComponent()).isFocused()) {
-			return;
-		}
-		if (!isActive()) {
-			final NodeMotionListenerView v = (NodeMotionListenerView) e.getSource();
-			v.setMouseEntered();
-		}
-	}
-
-	@Override
-	public void mouseExited(final MouseEvent e) {
-		if (!isActive()) {
-			final NodeMotionListenerView v = (NodeMotionListenerView) e.getSource();
-			v.setMouseExited();
-		}
-	}
-
-	public void mouseMoved(final MouseEvent e) {
-	}
-
-	@Override
 	public void mouseReleased(final MouseEvent e) {
-		final NodeMotionListenerView v = (NodeMotionListenerView) e.getSource();
+		final MainView v = (MainView) e.getSource();
 		if (!v.contains(e.getX(), e.getY())) {
-			v.setMouseExited();
+			v.setMouseArea(MouseArea.DEFAULT);
 		}
-		if (!isActive()) {
+		if (!isDragActive()) {
+			super.mouseReleased(e);
 			return;
 		}
 		final NodeView nodeV = getNodeView(e);
-		final Point point = e.getPoint();
-		UITools.convertPointToAncestor(nodeV, point, JScrollPane.class);
 		final NodeModel node = nodeV.getModel();
 		final ModeController modeController = nodeV.getMap().getModeController();
 		final NodeModel parentNode = nodeV.getModel().getParentNode();
@@ -231,7 +243,6 @@ public class MNodeMotionListener extends MouseAdapter implements IMouseListener 
 		final Controller controller = modeController.getController();
 		MLocationController locationController = (MLocationController) LocationController.getController(controller.getModeController());
 		locationController.moveNodePosition(node, parentVGap, hgap, shiftY);
-			
 		stopDrag();
 	}
 

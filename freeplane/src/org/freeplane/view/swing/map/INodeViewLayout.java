@@ -22,5 +22,4 @@ package org.freeplane.view.swing.map;
 import java.awt.LayoutManager;
 
 public interface INodeViewLayout extends LayoutManager {
-	void layoutNodeMotionListenerView(NodeMotionListenerView view);
 }
