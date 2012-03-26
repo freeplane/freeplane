@@ -155,7 +155,6 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 			v.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 			return;
 		}
-		v.setMouseArea(MouseArea.DEFAULT);
 		super.mouseMoved(e);
 	}
 

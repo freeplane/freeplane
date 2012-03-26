@@ -15,8 +15,13 @@ enum FoldingMark {
 		this.fillColor = fillColor;
 	}
 	
-	void draw(Graphics2D g, final Point p, Color color, Color edgeColor, int zoomedFoldingSymbolHalfWidth) {
-		final Shape shape = getShape(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2);
+	void draw(NodeView nodeView, Graphics2D g, Point p) {
+		final Color color = g.getColor(); 
+		final Color edgeColor = nodeView.getEdgeColor();
+		int zoomedFoldingSymbolHalfWidth = nodeView.getMainView().getZoomedFoldingSymbolHalfWidth();
+		p.translate(-zoomedFoldingSymbolHalfWidth, -zoomedFoldingSymbolHalfWidth);
+		int shapeWidth = zoomedFoldingSymbolHalfWidth * 2;
+		final Shape shape = getShape(p.x, p.y, shapeWidth);
 		g.setColor(fillColor);
 		g.fill(shape);
 		g.setColor(edgeColor);
@@ -24,7 +29,7 @@ enum FoldingMark {
 		g.setColor(color);
 	}
 
-	Shape getShape(int x, int y, int width){
+	private Shape getShape(int x, int y, int width){
 		if(equals(SHORTENED)){
 			final Polygon polygon = new Polygon();
 			polygon.addPoint(x, y);

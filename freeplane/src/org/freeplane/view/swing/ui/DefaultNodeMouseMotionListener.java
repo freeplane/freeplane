@@ -209,15 +209,19 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
         if(followLink){
 			currentController.getViewController().out(link);
 			requiredCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+			node.setMouseArea(MouseArea.LINK);
         }
         else if (node.isInRightFoldingRegion(e.getX())){
         	requiredCursor = rightFoldingCursor();
+        	node.setMouseArea(MouseArea.FOLDING);
         }
         else if (node.isInLeftFoldingRegion(e.getX())){
         	requiredCursor = leftFoldingCursor();
+        	node.setMouseArea(MouseArea.FOLDING);
         }
         else{
         	requiredCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+        	node.setMouseArea(MouseArea.DEFAULT);
         }
         if (node.getCursor().getType() != requiredCursor.getType() || requiredCursor.getType() == Cursor.CUSTOM_CURSOR && node.getCursor() != requiredCursor) {
         	node.setCursor(requiredCursor);

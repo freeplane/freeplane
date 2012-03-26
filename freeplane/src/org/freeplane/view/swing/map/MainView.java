@@ -201,29 +201,35 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	public void paintDragOver(final Graphics2D graphics) {
-		if (isDraggedOver == NodeView.DRAGGED_OVER_SON) {
-			if (getNodeView().isLeft()) {
-				graphics.setPaint(new GradientPaint(getWidth() * 3 / 4, 0, getMap().getBackground(), getWidth() / 4, 0,
-				    NodeView.dragColor));
-				graphics.fillRect(0, 0, getWidth() * 3 / 4, getHeight() - 1);
-			}
-			else {
-				graphics.setPaint(new GradientPaint(getWidth() / 4, 0, getMap().getBackground(), getWidth() * 3 / 4, 0,
-				    NodeView.dragColor));
-				graphics.fillRect(getWidth() / 4, 0, getWidth() - 1, getHeight() - 1);
-			}
+		if (isDraggedOver == NodeView.DRAGGED_OVER_SON || getMouseArea().equals(MouseArea.FOLDING)) {
+			paintDragOverSon(graphics);
 		}
 		if (isDraggedOver == NodeView.DRAGGED_OVER_SIBLING) {
-			graphics.setPaint(new GradientPaint(0, getHeight() * 3 / 5, getMap().getBackground(), 0, getHeight() / 5,
+			paintDragOverSibling(graphics);
+		}
+	}
+
+	private void paintDragOverSibling(final Graphics2D graphics) {
+		graphics.setPaint(new GradientPaint(0, getHeight() * 3 / 5, getMap().getBackground(), 0, getHeight() / 5,
+		    NodeView.dragColor));
+		graphics.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
+	}
+
+	private void paintDragOverSon(final Graphics2D graphics) {
+		if (getNodeView().isLeft()) {
+			graphics.setPaint(new GradientPaint(getWidth() * 3 / 4, 0, getMap().getBackground(), getWidth() / 4, 0,
 			    NodeView.dragColor));
-			graphics.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
+			graphics.fillRect(0, 0, getWidth() * 3 / 4, getHeight() - 1);
+		}
+		else {
+			graphics.setPaint(new GradientPaint(getWidth() / 4, 0, getMap().getBackground(), getWidth() * 3 / 4, 0,
+			    NodeView.dragColor));
+			graphics.fillRect(getWidth() / 4, 0, getWidth() - 1, getHeight() - 1);
 		}
 	}
 
 	void paintFoldingMark(final NodeView nodeView, final Graphics2D g, final Point p, FoldingMark foldingMarkType) {
-		final int zoomedFoldingSymbolHalfWidth = getZoomedFoldingSymbolHalfWidth();
-		p.translate(-zoomedFoldingSymbolHalfWidth, -zoomedFoldingSymbolHalfWidth);
-		foldingMarkType.draw(g, p, g.getColor(), nodeView.getEdgeColor(), zoomedFoldingSymbolHalfWidth);
+		foldingMarkType.draw(nodeView, g, p);
 	}
 	
 	static private FoldingMark foldingMarkType(MapController mapController, NodeModel node) {
@@ -241,7 +247,7 @@ public abstract class MainView extends ZoomableLabel {
 	void paintDecoration(final NodeView nodeView, final Graphics2D g) {
 		drawModificationRect(g);
 		paintDragRectangle(g);
-		FoldingMark markType = foldingMarkType(getMap().getModeController().getMapController(), nodeView.getModel());
+		final FoldingMark markType = foldingMarkType(getMap().getModeController().getMapController(), nodeView.getModel());
 		if (!markType.equals(FoldingMark.UNFOLDED)) {
 			final Point out = nodeView.isLeft() ? getLeftPoint() : getRightPoint();
 			paintFoldingMark(nodeView, g, out, markType);
@@ -249,7 +255,7 @@ public abstract class MainView extends ZoomableLabel {
         if (isShortened()) {
             final Point in =  nodeView.isLeft() ? getRightPoint() : getLeftPoint();
             in.y = getHeight() / 2;
-            paintFoldingMark(nodeView, g, in, FoldingMark.SHORTENED);
+            FoldingMark.SHORTENED.draw(nodeView, g, in);
         }
 	}
 
@@ -306,13 +312,16 @@ public abstract class MainView extends ZoomableLabel {
 		g.setColor(color);
     }
 
-	public void paintBackgound(final Graphics2D graphics) {
+	public void paintBackgound(final Graphics2D g) {
+		final Color color;
 		if (getNodeView().useSelectionColors()) {
-			paintBackground(graphics, getNodeView().getSelectedColor());
+			color = getNodeView().getSelectedColor();
+			paintBackground(g, color);
 		}
 		else {
-			paintBackground(graphics, getNodeView().getTextBackground());
+			color = getNodeView().getTextBackground();
 		}
+		paintBackground(g, color);
 	}
 
 	/*
@@ -553,17 +562,35 @@ public abstract class MainView extends ZoomableLabel {
 	public void setMouseArea(MouseArea mouseArea) {
 		if(mouseArea.equals(this.mouseArea))
 			return;
-		final boolean repaintDraggingRectangle = mouseArea.equals(MouseArea.MOTION) || this.mouseArea.equals(MouseArea.MOTION);
+		final boolean repaintDraggingRectangle = isVisible() && mouseArea.equals(MouseArea.MOTION) || this.mouseArea.equals(MouseArea.MOTION);
+		final boolean repaintFoldingRectangle = isVisible() && mouseArea.equals(MouseArea.FOLDING) || this.mouseArea.equals(MouseArea.FOLDING);
 		this.mouseArea = mouseArea;
 		if(repaintDraggingRectangle)
 			paintDraggingRectanleImmediately();
+		if(repaintFoldingRectangle)
+			paintFoldingRectanleImmediately();
+	}
+
+	private void paintFoldingRectanleImmediately() {
+		paintImmediately(0, 0, getWidth(), getHeight());
 	}
 
 	private void paintDraggingRectanleImmediately() {
-			final Rectangle dragRectangle = getDragRectangle();
-			final MapView map = getMap();
-			UITools.convertRectangleToAncestor(this, dragRectangle, map);
-			map.paintImmediately(dragRectangle);
+		final Rectangle dragRectangle = getDragRectangle();
+		paintDecorationImmediately(dragRectangle);
+	}
+
+	private void paintDecorationImmediately(final Rectangle rectangle) {
+		final MapView map = getMap();
+		UITools.convertRectangleToAncestor(this, rectangle, map);
+		map.paintImmediately(rectangle);
+	}
+
+	@Override
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
+		if(! visible)
+			setMouseArea(MouseArea.DEFAULT);
 	}
 
 }
