@@ -27,13 +27,10 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.Shape;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Ellipse2D;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -223,67 +220,36 @@ public abstract class MainView extends ZoomableLabel {
 		}
 	}
 
-	void paintFoldingMark(final NodeView nodeView, final Graphics2D g, final Point p, FoldingMarkType foldingMarkType) {
+	void paintFoldingMark(final NodeView nodeView, final Graphics2D g, final Point p, FoldingMark foldingMarkType) {
 		final int zoomedFoldingSymbolHalfWidth = getZoomedFoldingSymbolHalfWidth();
 		p.translate(-zoomedFoldingSymbolHalfWidth, -zoomedFoldingSymbolHalfWidth);
-		final Color color = g.getColor();
-		g.setColor(foldingMarkType.fillColor);
-		final Shape shape = foldingMarkType.getShape(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2);
-		g.fill(shape);
-		final Color edgeColor = nodeView.getEdgeColor();
-		g.setColor(edgeColor);
-		g.draw(shape);
-		g.setColor(color);
+		foldingMarkType.draw(g, p, g.getColor(), nodeView.getEdgeColor(), zoomedFoldingSymbolHalfWidth);
 	}
 	
-	static enum FoldingMarkType {
-		UNFOLDED(Color.WHITE), ITSELF_FOLDED(Color.WHITE), UNVISIBLE_CHILDREN_FOLDED(Color.WHITE), SHORTENED(Color.GRAY);
-		final Color fillColor;
-
-		FoldingMarkType(Color fillColor){
-			this.fillColor = fillColor;
-		}
-		
-		Shape getShape(int x, int y, int width){
-			if(equals(SHORTENED)){
-				final Polygon polygon = new Polygon();
-				polygon.addPoint(x, y);
-				polygon.addPoint(x + width, y);
-				polygon.addPoint(x + width / 2, y + width*2/3);
-				polygon.addPoint(x, y);
-				return polygon;
-			}
-			else{
-				return new Ellipse2D.Float(x, y, width, width);
-			}
-		}
-
-	};
-
-	static private FoldingMarkType foldingMarkType(MapController mapController, NodeModel node) {
+	static private FoldingMark foldingMarkType(MapController mapController, NodeModel node) {
 		if (mapController.isFolded(node) && (node.isVisible() || node.getFilterInfo().isAncestor())) {
-			return FoldingMarkType.ITSELF_FOLDED;
+			return FoldingMark.ITSELF_FOLDED;
 		}
 		for (final NodeModel child : mapController.childrenUnfolded(node)) {
-			if (!child.isVisible() && !FoldingMarkType.UNFOLDED.equals(foldingMarkType(mapController, child))) {
-				return FoldingMarkType.UNVISIBLE_CHILDREN_FOLDED;
+			if (!child.isVisible() && !FoldingMark.UNFOLDED.equals(foldingMarkType(mapController, child))) {
+				return FoldingMark.UNVISIBLE_CHILDREN_FOLDED;
 			}
 		}
-		return FoldingMarkType.UNFOLDED;
+		return FoldingMark.UNFOLDED;
 	}
 
 	void paintDecoration(final NodeView nodeView, final Graphics2D g) {
 		drawModificationRect(g);
 		paintDragRectangle(g);
-		FoldingMarkType markType = foldingMarkType(getMap().getModeController().getMapController(), nodeView.getModel());
-		if (!markType.equals(FoldingMarkType.UNFOLDED)) {
+		FoldingMark markType = foldingMarkType(getMap().getModeController().getMapController(), nodeView.getModel());
+		if (!markType.equals(FoldingMark.UNFOLDED)) {
 			final Point out = nodeView.isLeft() ? getLeftPoint() : getRightPoint();
 			paintFoldingMark(nodeView, g, out, markType);
 		}
         if (isShortened()) {
             final Point in =  nodeView.isLeft() ? getRightPoint() : getLeftPoint();
             in.y = getHeight() / 2;
-            paintFoldingMark(nodeView, g, in, FoldingMarkType.SHORTENED);
+            paintFoldingMark(nodeView, g, in, FoldingMark.SHORTENED);
         }
 	}
 
