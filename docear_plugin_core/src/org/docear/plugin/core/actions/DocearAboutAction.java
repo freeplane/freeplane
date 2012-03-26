@@ -53,7 +53,11 @@ public class DocearAboutAction extends AboutAction {
 		MessageFormat formatter;
         try {
             formatter = new MessageFormat(aboutText);
-            aboutText = formatter.format(new Object[]{ DocearController.getController().getApplicationVersion(), copyright, programmer});
+            DocearController ctrl = DocearController.getController();
+            String info = ctrl.getApplicationVersion();
+            info += " " + ctrl.getApplicationStatus() + " " + ctrl.getApplicationStatusVersion();
+            info += " build " + ctrl.getApplicationBuildNumber(); 
+            aboutText = formatter.format(new Object[]{ info, copyright, programmer});
         }
         catch (IllegalArgumentException ex) {
             LogUtils.severe("wrong format " + aboutText + " for property " + "docear_about", ex);
@@ -64,7 +68,7 @@ public class DocearAboutAction extends AboutAction {
 		addUri(box, "http://docear.org", "http://docear.org");		
 		addMessage(box, "based on: ");
 		addUri(box, resourceController.getProperty("homepage_url"), "Freeplane "+FreeplaneVersion.getVersion().toString());		
-		addMessage(box, FreeplaneVersion.getVersion().getRevision());
+		//addMessage(box, FreeplaneVersion.getVersion().getRevision());
 		addFormattedMessage(box, "java_version", Compat.JAVA_VERSION);
 		addFormattedMessage(box, "main_resource_directory", ResourceController.getResourceController().getResourceBaseDir());
 		addUri(box, resourceController.getProperty("license_url"), TextUtils.getText("license"));

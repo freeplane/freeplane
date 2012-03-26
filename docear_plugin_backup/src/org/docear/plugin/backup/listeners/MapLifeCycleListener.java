@@ -13,6 +13,7 @@ import org.docear.plugin.backup.BackupController;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.features.DocearMapModelExtension;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.MapModel;
 
@@ -25,12 +26,6 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 	}
 
 	public void onSavedAs(MapModel map) {
-		try {
-			createBackup(map);		
-		} 
-		catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void onSaved(MapModel map) {
@@ -43,6 +38,8 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 	}
 	
 	private Properties getMapProperties(MapModel map) {
+		DocearController docearController = DocearController.getController();
+		
 		DocearMapModelExtension dmme = map.getExtension(DocearMapModelExtension.class);
 		if (dmme == null) {
 			return null;
@@ -53,7 +50,12 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 		properties.put("backup", new Boolean(true).toString());
 		properties.put("allow_ir", new Boolean((ResourceController.getResourceController().getBooleanProperty("docear_allow_information_retrieval"))).toString());
 		properties.put("map_version", dmme.getVersion());
-		properties.put("application", "Docear" + DocearController.getController().getApplicationVersion());
+		properties.put("application_name", docearController.getApplicationName());
+		properties.put("application_version", docearController.getApplicationVersion());
+		properties.put("application_status", docearController.getApplicationStatus());
+		properties.put("application_status_version", docearController.getApplicationStatusVersion());
+		properties.put("application_build", ""+docearController.getApplicationBuildNumber());
+		properties.put("application_date", docearController.getApplicationBuildDate());
 		properties.put("filesize", ""+map.getFile().length());
 		properties.put("filename", map.getFile().getName());
 		properties.put("filepath", map.getFile().getAbsolutePath());
@@ -61,44 +63,60 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 		return properties;
 	}
 
-	public void createBackup(MapModel map) throws IOException {
+	public void createBackup(final MapModel map) throws IOException {
 		if (map == null || !BackupController.getController().isBackupEnabled()) {
 			return;
 		}
 		
-		Properties meta = getMapProperties(map);
+		final Properties meta = getMapProperties(map);
 		if (meta == null) {
 			return;
-		}		
+		}
 		
-		File backupFile = new File(BackupController.getController().getBackupDirectory().getAbsolutePath() + File.separator + System.currentTimeMillis() + "_" + map.getFile().getName() + ".zip");
-		
-		ZipOutputStream out = null;
-		InputStream in = null;
-		try {			
-			out = new ZipOutputStream(new FileOutputStream(backupFile));
-			in = new FileInputStream(map.getFile());
-			
-			ZipEntry entry = new ZipEntry("metadata.inf");
-			out.putNextEntry(entry);
-			meta.store(out, "");
-			
-			entry = new ZipEntry(map.getFile().getName());			
-			out.putNextEntry(entry);
-			
-			while (true) {
-				int data = in.read();
-				if (data == -1) {
-					break;
+		Thread thread = new Thread() {
+			public void run() {				
+				try {					
+					File backupFile = new File(BackupController.getController().getBackupDirectory().getAbsolutePath(), System.currentTimeMillis() + "_" + map.getFile().getName() + ".zip");
+					DocearController.getController().addWorkingThreadHandle(backupFile.getName());
+					
+					ZipOutputStream out = null;
+					InputStream in = null;
+					try {			
+						out = new ZipOutputStream(new FileOutputStream(backupFile));
+						in = new FileInputStream(map.getFile());
+						
+						ZipEntry entry = new ZipEntry("metadata.inf");
+						out.putNextEntry(entry);
+						meta.store(out, "");
+						
+						entry = new ZipEntry(map.getFile().getName());			
+						out.putNextEntry(entry);
+						
+						while (true) {
+							int data = in.read();
+							if (data == -1) {
+								break;
+							}
+							out.write(data);
+						}
+						
+					} 
+					finally {
+						in.close();
+						out.close();
+						DocearController.getController().removeWorkingThreadHandle(backupFile.getName());
+					}					
 				}
-				out.write(data);
+				catch (Exception e) {
+					LogUtils.warn(e);
+				}				
 			}
 			
-		} 
-		finally {
-			in.close();
-			out.close();			
-		}
+		};
+		
+		thread.start();
+		System.out.println("running");
+		
 	}
 
 }

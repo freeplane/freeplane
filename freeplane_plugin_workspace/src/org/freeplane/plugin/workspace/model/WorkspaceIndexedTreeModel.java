@@ -413,6 +413,19 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 			fireTreeNodesRemoved(this, node.getTreePath(), indices, removes.toArray());
 		}		
 	}
+	
+	public void changeNodeName(AWorkspaceTreeNode node, String newName) throws WorkspaceModelException {
+		String oldName = node.getName();
+		node.setName(newName);
+		if(this.hashStringKeyIndex.containsKey(node.getKey())) {
+			node.setName(oldName);
+			throw new WorkspaceModelException("A Node with the name '"+newName+"' already exists.");
+		}
+		node.setName(oldName);
+		removeFromIndexRecursively(node);
+		node.setName(newName);
+		addToIndexRecursively(node, node.getParent());		
+	}	
 		
 	/**
 	 * 
@@ -493,5 +506,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 
 	public void removeTreeModelListener(TreeModelListener l) {
 		listenerList.remove(TreeModelListener.class, l);
-	}	
+	}
+
+	
 }

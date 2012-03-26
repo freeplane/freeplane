@@ -16,6 +16,7 @@
 			    <radiobutton name = "docear_open_standard"/>
 			    <radiobutton name = "docear_open_internal" enabled = "false"/>
 			    <text name = "docear_open_on_page_explanation" />
+			    <uri name="docear_open_on_page_help" label="docear_open_on_page_help.link_text" uri="http://www.docear.org/support/user-manual/#pdf_management.jump_to_page"/>)
 			    <radiobutton name = "docear_open_on_page"/>
 			    <path name = "docear_open_on_page_reader_path" showhidden="true" suffixes = "exe,app"/>			    
 			</separator>			

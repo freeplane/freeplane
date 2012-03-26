@@ -59,7 +59,11 @@
 		</copy>
 	</target>
 
-    <target name="build_core">
+   <target name="build_core">
+       <propertyfile file="../docear_plugin_core/resources/version.properties"> 
+           <entry  key="build_date" type="date" value="now" pattern="MM/dd/yyyy"/> 
+        </propertyfile> 
+
         <buildnumber file="../docear_plugin_core/resources/build.number"/>
         <property name="ver_docear" value="${docear_version}_${docear_version_status}_build${build.number}" />
 	    <condition property="ver" value="${ver_docear}" else="${ver_freeplane}">
@@ -525,7 +529,7 @@
 	</target>
 	<target name="dmg4mac"  depends="bzr_version_info, macosxapp" if="isMacOs" >
 		<exec executable="hdiutil">
-		<arg line="create -srcfolder ${macappfullpath} ${dist}/docear-${ver_docear}.dmg"/>
+		<arg line="create -srcfolder ${macappfullpath} ${dist}/docear.dmg"/>
 		</exec>
 	</target>
 

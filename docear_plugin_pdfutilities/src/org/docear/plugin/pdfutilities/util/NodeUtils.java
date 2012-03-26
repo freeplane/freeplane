@@ -28,7 +28,7 @@ import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.features.attribute.Attribute;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
@@ -394,26 +394,31 @@ public class NodeUtils {
 	}	
 		
 	public static boolean setAttributeValue(NodeModel target, String attributeKey, Object value){
-		if(target == null || attributeKey == null || value == null) return false;
-				
-		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
-		if(attributes != null){
-			if(attributes.getAttributeKeyList().contains(attributeKey)){
-				//attributes.getAttribute(attributes.getAttributePosition(attributeKey)).setValue(value);
-				AttributeController.getController().performSetValueAt(attributes, value, attributes.getAttributePosition(attributeKey), 1);
-				for(INodeView view : target.getViewers()){
-					view.nodeChanged(new NodeChangeEvent(target, NodeModel.UNKNOWN_PROPERTY, null, null));
+		try {
+			if(target == null || attributeKey == null || value == null) return false;
+					
+			NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
+			if(attributes != null){
+				if(attributes.getAttributeKeyList().contains(attributeKey)){
+					//attributes.getAttribute(attributes.getAttributePosition(attributeKey)).setValue(value);
+					AttributeController.getController().performSetValueAt(attributes, value, attributes.getAttributePosition(attributeKey), 1);
+					for(INodeView view : target.getViewers()){
+						view.nodeChanged(new NodeChangeEvent(target, NodeModel.UNKNOWN_PROPERTY, null, null));
+					}
+					AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
+		    		attributeView.setOptimalColumnWidths();
+					return true;
 				}
-				AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
-	    		attributeView.setOptimalColumnWidths();
-				return true;
+				else{
+					AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), attributeKey, value);
+					AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
+		    		attributeView.setOptimalColumnWidths();
+					return true;
+				}
 			}
-			else{
-				AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), attributeKey, value);
-				AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
-	    		attributeView.setOptimalColumnWidths();
-				return true;
-			}
+		}
+		catch (Exception e) {
+			LogUtils.warn(e);
 		}
 		return false;	
 	}

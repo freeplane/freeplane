@@ -1,9 +1,14 @@
 package org.docear.plugin.backup;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.net.URL;
 
+import javax.swing.SwingUtilities;
+
 import org.docear.plugin.backup.listeners.MapLifeCycleListener;
+import org.docear.plugin.backup.listeners.PropertyListener;
+import org.docear.plugin.communications.CommunicationsController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
@@ -13,19 +18,30 @@ public class BackupController {
 	private final static BackupController backupController = new BackupController();
 	
 	private final BackupRunner backupRunner = new BackupRunner();
-	private final File backupFolder = new File(ResourceController.getResourceController().getFreeplaneUserDirectory() + File.separator + "backup");
+	private final File backupFolder = new File(CommunicationsController.getController().getCommunicationsQueuePath(), "mindmaps");
 	
 	private final IMapLifeCycleListener mapLifeCycleListener = new MapLifeCycleListener();
+	private final PropertyListener propertyListener = new PropertyListener();
 
+	private static FileFilter zipFilter = new FileFilter() {
+		public boolean accept(File f) {
+			return (f != null && f.getName().toLowerCase().endsWith(".zip"));
+		}		
+	};
+	
 	public BackupController() {
 		LogUtils.info("starting DocearBackupStarter()");		
 		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(mapLifeCycleListener);
+		ResourceController.getResourceController().addPropertyChangeListener(propertyListener);
 		
 		addPluginDefaults();
 		
-		if (this.isBackupEnabled()) {
-			this.backupRunner.run();
-		}
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				backupRunner.run();			
+			}		
+		});
+		
 	}
 	
 	public static BackupController getController() {
@@ -47,10 +63,19 @@ public class BackupController {
 		return ResourceController.getResourceController().getBooleanProperty("docear_save_backup");
 	}
 	
+	public void setBackupEnabled(boolean b) {
+		ResourceController.getResourceController().setProperty("docear_save_backup", b);
+	}
+	
 	public File getBackupDirectory() {		
 		if (!backupFolder.exists()) {
 			backupFolder.mkdirs();
 		}
 		return backupFolder;
+	}
+	
+	
+	public File[] getBackupQueue() {
+		return getBackupDirectory().listFiles(zipFilter);
 	}
 }

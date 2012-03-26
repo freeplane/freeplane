@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <preferences_structure>
 	<tabbed_pane>
-		<tab name="docear">			
+		<tab name="backup">			
 			<boolean name="docear_save_backup" />				
 			<number name="save_backup_automcatically" min="0" max="120"/>
 		</tab>			

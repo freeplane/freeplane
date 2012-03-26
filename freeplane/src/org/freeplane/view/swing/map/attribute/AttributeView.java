@@ -34,6 +34,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
@@ -317,7 +318,13 @@ public class AttributeView implements ChangeListener, TableModelListener {
     }
 	
 	public void setOptimalColumnWidths() {
-		attributeTable.setOptimalColumnWidths();
+		//DOCEAR: race conditions
+		try {
+			attributeTable.setOptimalColumnWidths();
+		}
+		catch(Exception e) {
+			LogUtils.warn(e);
+		}
 	}
 
 	public AttributeTable getAttributeTable() {

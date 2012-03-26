@@ -6,15 +6,23 @@ import java.io.IOException;
 
 import javax.ws.rs.core.MediaType;
 
+import org.docear.plugin.core.DocearController;
+import org.docear.plugin.core.event.DocearEvent;
 import org.freeplane.core.util.LogUtils;
 
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.multipart.FormDataMultiPart;
 
 public class FiletransferClient {
 	private final static Client client;
+	public static final String START_UPLOAD = "docear.service.upload.start";
+	public static final String STOP_UPLOAD = "docear.service.upload.stop";
+	public static final String NO_CONNECTION = "docear.service.connection.problem";
+	
+	
 	static {
 		final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 		Thread.currentThread().setContextClassLoader(FiletransferClient.class.getClassLoader());
@@ -36,10 +44,14 @@ public class FiletransferClient {
 	
 	
 	public boolean send(boolean deleteIfTransferred) {
+		DocearController.getController().dispatchDocearEvent(new DocearEvent(this.getClass(), START_UPLOAD));
 		FormDataMultiPart formDataMultiPart;
 		FileInputStream inStream = null;
 		byte[] data;
 		for(File file : files) {
+			if(!CommunicationsController.getController().allowTransmission()) {
+				break;
+			}
 			try {
 				formDataMultiPart = new FormDataMultiPart();
 				inStream = new FileInputStream(file);
@@ -57,17 +69,20 @@ public class FiletransferClient {
 					else if (deleteIfTransferred) {
 						inStream.close();
 						System.gc();
-						if(!file.delete()) {
-							LogUtils.warn("Shit!");
-						}
+						file.delete();
 					}
 				}
 				else {
-					throw new IOException("incomplete read");
+					throw new IOException("incomplete read ("+file.getPath()+")");
 				}
-			} 
+			}
+			catch(ClientHandlerException ex) {
+				DocearController.getController().dispatchDocearEvent(new DocearEvent(this.getClass(), NO_CONNECTION));
+				return false;
+			}
 			catch (Exception ex) {
 				LogUtils.warn("Could not upload "+ file.getPath(), ex);
+				DocearController.getController().dispatchDocearEvent(new DocearEvent(this.getClass(), STOP_UPLOAD));
 				return false;
 			}
 			finally {
@@ -78,6 +93,7 @@ public class FiletransferClient {
 				}
 			}
 		}
+		DocearController.getController().dispatchDocearEvent(new DocearEvent(this.getClass(), STOP_UPLOAD));
 		return true;		
 	}
 }

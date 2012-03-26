@@ -4,7 +4,7 @@ import org.freeplane.core.extension.IExtension;
 
 public class DocearMapModelExtension implements IExtension {
 	
-	public final static String MAP_ID_ATTRIBUTE = "id";
+	public final static String MAP_ID_ATTRIBUTE = "dcr_id";
 	
 	String version;
 	DocearMapType type;
