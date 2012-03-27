@@ -857,9 +857,13 @@ public class MapController extends SelectionController implements IExtension{
 			final NodeModel node = collection.iterator().next();
 			if(node.isRoot()){
 				setFolded(node, false);
-			}
-			else
-				setFolded(node, ! node.isFolded());
+			} else
+				toggleFolded(node);
 		}
+	}
+
+
+	public void toggleFolded(final NodeModel node) {
+		setFolded(node, ! node.isFolded());
 	}
 }

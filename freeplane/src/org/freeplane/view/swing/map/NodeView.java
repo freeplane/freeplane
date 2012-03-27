@@ -160,16 +160,18 @@ public class NodeView extends JComponent implements INodeView {
 		}
 	}
 
+	public static int ADDITIONAL_MOUSE_SENSITIVE_AREA = 50;
 	@Override
 	public boolean contains(final int x, final int y) {
-		if (x >= 0 && x < getWidth() && y >= 0 && y < getHeight()){
-			final int space = getMap().getZoomed(NodeView.SPACE_AROUND) - 2 * getZoomedFoldingSymbolHalfWidth();
-			if (x >= space && x < getWidth() - space && y >= space && y < getHeight() - space)
-				return true;
+		final int space = getMap().getZoomed(NodeView.SPACE_AROUND) - 2 * getZoomedFoldingSymbolHalfWidth();
+		if (x >= space && x < getWidth() - space && y >= space && y < getHeight() - space)
+			return true;
+		final int reducedSpace = space - ADDITIONAL_MOUSE_SENSITIVE_AREA;
+		if (x >= reducedSpace && x < getWidth() - reducedSpace && y >= reducedSpace && y < getHeight() - reducedSpace){
 			for(int i = 0; i < getComponentCount(); i++){
-			final Component comp = getComponent(i);
-			if(comp.isVisible() && comp.contains(x-comp.getX(), y-comp.getY()))
-				return true;
+				final Component comp = getComponent(i);
+				if(comp.isVisible() && comp.contains(x-comp.getX(), y-comp.getY()))
+					return true;
 			}
 		}
 		return false;

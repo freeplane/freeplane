@@ -120,7 +120,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2) {
 	    	final MainView mainView = (MainView)e.getComponent();
 			if ( ! mainView.getMouseArea().equals(MouseArea.MOTION) && Compat.isPlainEvent(e) 
-	    			&& ! mainView.isInFoldingRegion(e.getX())) {
+	    			&& ! mainView.isInFoldingRegion(e.getPoint())) {
 	    		final MTextController textController = (MTextController) MTextController.getController();
 	    		textController.getEventQueue().activate(e);
 	    		textController.edit(FirstAction.EDIT_CURRENT, false);

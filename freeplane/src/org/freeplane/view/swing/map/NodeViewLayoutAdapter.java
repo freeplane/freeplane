@@ -62,7 +62,6 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     private static Dimension minDimension;
     private int childCount;
     private JComponent content;
-    public static final int LISTENER_VIEW_WIDTH = 10;
     protected Point location = new Point();
     private NodeModel model;
     private int spaceAround;

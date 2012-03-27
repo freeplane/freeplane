@@ -21,6 +21,7 @@ package org.freeplane.view.swing.map;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GradientPaint;
@@ -72,7 +73,9 @@ import org.freeplane.features.text.TextController;
  * Base class for all node views.
  */
 public abstract class MainView extends ZoomableLabel {
-    private static final String USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING = "use_common_out_point_for_root_node";
+    private static final int ADDITIONAL_VERTICAL_FOLDING_AREA = 8;
+	private static final int ADDITIONAL_HORIZONTAL_FOLDING_AREA = 32;
+	private static final String USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING = "use_common_out_point_for_root_node";
     public static boolean USE_COMMON_OUT_POINT_FOR_ROOT_NODE = ResourceController.getResourceController().getBooleanProperty(USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING);
 
 	static Dimension maximumSize = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -85,6 +88,7 @@ public abstract class MainView extends ZoomableLabel {
 	private boolean isShortened;
 	private TextModificationState textModified = TextModificationState.NONE;
 	private MouseArea mouseArea = MouseArea.DEFAULT;
+	private static final int LISTENER_VIEW_WIDTH = 10;
 
 	boolean isShortened() {
     	return isShortened;
@@ -180,12 +184,49 @@ public abstract class MainView extends ZoomableLabel {
 			return false;
 	}
 
-	public boolean isInLeftFoldingRegion(int x) {
-		return getNodeView().getModel().hasChildren() && x < getZoomedFoldingSymbolHalfWidth() && ! isRightOrOutline();
+	public boolean isInLeftFoldingRegion(Point p) {
+		return canBeFolded()
+				&& p.x < getWidth()
+				&& isNearContent(p)	
+				&& !isRightOrOutline();
 	}
-	public boolean isInRightFoldingRegion(int x) {
-		return getNodeView().getModel().hasChildren() && x >= getWidth()-getZoomedFoldingSymbolHalfWidth() && isRightOrOutline();
+
+	public boolean isInRightFoldingRegion(Point p) {
+		return  canBeFolded() 
+				&& p.x >= 0
+				&& isNearContent(p)	
+				&& isRightOrOutline();
 	}
+
+	private boolean isNearContent(Point p) {
+		final JComponent content = getNodeView().getContent();
+		if(content != this){
+			p = new Point(p.x + getX(), p.y + getY());
+			for(int i = 0; i < content.getComponentCount(); i++){
+				final Component component = content.getComponent(i);
+				if(component.isVisible() && component.getBounds().contains(p))
+					return false;
+			}
+		}
+		else if(isInside(p))
+			return false;
+		final Rectangle contentBounds = new Rectangle(0, 0, content.getWidth(), content.getHeight());
+		contentBounds.x -= ADDITIONAL_HORIZONTAL_FOLDING_AREA;
+		contentBounds.width += 2 * ADDITIONAL_HORIZONTAL_FOLDING_AREA;
+		contentBounds.height += ADDITIONAL_VERTICAL_FOLDING_AREA;
+		return contentBounds.contains(p);
+	}
+
+	private boolean isInside(Point p) {
+		final Rectangle bounds = new Rectangle(0, 0, getWidth(), getHeight());
+		return bounds.contains(p);
+	}
+
+	private boolean canBeFolded() {
+		final NodeModel node = getNodeView().getModel();
+		return !node.isRoot() && node.hasChildren();
+	}
+
 	/**
 	 * Determines whether or not the xCoord is in the part p of the node: if
 	 * node is on the left: part [1-p,1] if node is on the right: part[ 0,p] of
@@ -284,7 +325,7 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	public Rectangle getDragRectangle() {
-		final int size = NodeViewLayoutAdapter.LISTENER_VIEW_WIDTH;
+		final int size = MainView.LISTENER_VIEW_WIDTH;
 		Rectangle r;
 		if(getNodeView().isLeft())
 			r = new Rectangle(getWidth(), -size, size, getHeight() + size * 2);
@@ -531,17 +572,13 @@ public abstract class MainView extends ZoomableLabel {
 	
 	@Override
 	public boolean contains(int x, int y) {
-		final int margin = getNodeView().getZoomed(30);
-		if(isRightOrOutline())
-			return x >= -NodeViewLayoutAdapter.LISTENER_VIEW_WIDTH && x < margin + getWidth()
-				&& y >= 0 && y < getHeight();
-		else
-			return x >= -margin  && x < getWidth() + NodeViewLayoutAdapter.LISTENER_VIEW_WIDTH
+		return isInFoldingRegion(new Point(x, y)) 
+				|| x >= -LISTENER_VIEW_WIDTH && x < getWidth() + LISTENER_VIEW_WIDTH 
 				&& y >= 0 && y < getHeight();
 	}
 
-	public boolean isInFoldingRegion(int x) {
-		return isInRightFoldingRegion(x) || isInLeftFoldingRegion(x);
+	public boolean isInFoldingRegion(Point p) {
+		return isInRightFoldingRegion(p) || isInLeftFoldingRegion(p);
 	}
 
 	public MouseArea getMouseArea() {
@@ -551,7 +588,7 @@ public abstract class MainView extends ZoomableLabel {
 		final int x = point.x;
 		if(! getNodeView().isRoot() && getDragRectangle().contains(point.x, point.y))
 			return MouseArea.MOTION;
-		if(isInFoldingRegion(x))
+		if(isInFoldingRegion(point))
 			return MouseArea.FOLDING;
 		if(isInFollowLinkRegion(x))
 			return MouseArea.LINK;

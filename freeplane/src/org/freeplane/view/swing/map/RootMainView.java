@@ -178,11 +178,11 @@ class RootMainView extends MainView {
     }
 
 	@Override
-	public boolean isInRightFoldingRegion(int x) {
+	public boolean isInRightFoldingRegion(Point p) {
 		return false;
 	}
 	@Override
-	public boolean isInLeftFoldingRegion(int x) {
+	public boolean isInLeftFoldingRegion(Point p) {
 		return false;
 	}
 	

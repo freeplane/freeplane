@@ -103,6 +103,8 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	}
 
 	private void createTimer(final MouseEvent e) {
+		if(isInFoldingRegion(e))
+			return;
 		stopTimerForDelayedSelection();
 		if (!JOptionPane.getFrameForComponent(e.getComponent()).isFocused()) {
 			return;
@@ -124,6 +126,10 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		    TIME_FOR_DELAYED_SELECTION, 0);
 		timerForDelayedSelection = SysUtils.createTimer(getClass().getSimpleName());
 		timerForDelayedSelection.schedule(new TimeDelayedSelection(e), timeForDelayedSelection);
+	}
+
+	private boolean isInFoldingRegion(MouseEvent e) {
+		return ((MainView)e.getComponent()).isInFoldingRegion(e.getPoint());
 	}
 
 	protected Rectangle getControlRegion(final Point2D p) {
@@ -162,11 +168,12 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				}
 			}
 		}
-		if (component.isInFoldingRegion(e.getX())) {
+		if (isInFoldingRegion(e)) {
 			/* perform action only if one selected node. */
 			final MapController mapController = mc.getMapController();
-			mapController.toggleFolded(mapController.getSelectedNodes());
+			mapController.toggleFolded(nodeView.getModel());
 			e.consume();
+			return;
 		}
 		extendSelection(e);
 	}
@@ -211,11 +218,11 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			requiredCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 			node.setMouseArea(MouseArea.LINK);
         }
-        else if (node.isInRightFoldingRegion(e.getX())){
+        else if (node.isInRightFoldingRegion(e.getPoint())){
         	requiredCursor = rightFoldingCursor();
         	node.setMouseArea(MouseArea.FOLDING);
         }
-        else if (node.isInLeftFoldingRegion(e.getX())){
+        else if (node.isInLeftFoldingRegion(e.getPoint())){
         	requiredCursor = leftFoldingCursor();
         	node.setMouseArea(MouseArea.FOLDING);
         }
