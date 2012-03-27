@@ -148,29 +148,33 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 	@Override
 	public void mouseClicked(final MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2) {
-	    	final MainView mainView = (MainView)e.getComponent();
-			if ( ! mainView.getMouseArea().equals(MouseArea.MOTION) && Compat.isPlainEvent(e) 
-	    			&& ! mainView.isInFoldingRegion(e.getPoint())) {
-				cancelLinkLoading();
-	    		final MTextController textController = (MTextController) MTextController.getController();
-	    		textController.getEventQueue().activate(e);
-	    		textController.edit(FirstAction.EDIT_CURRENT, false);
-	    	}
-			final Controller controller = Controller.getCurrentController();
-			MLocationController locationController = (MLocationController) LocationController.getController(controller.getModeController());
-			if (e.getModifiersEx() == 0) {
-				final NodeView nodeV = getNodeView(e);
-				final NodeModel node = nodeV.getModel();
-				locationController.moveNodePosition(node, LocationModel
-				    .getModel(node).getVGap(), LocationModel.HGAP, 0);
-				return;
+			final MainView mainView = (MainView)e.getComponent();
+			if(mainView.getMouseArea().equals(MouseArea.MOTION) ){
+				final Controller controller = Controller.getCurrentController();
+				MLocationController locationController = (MLocationController) LocationController.getController(controller.getModeController());
+				if (e.getModifiersEx() == 0) {
+					final NodeView nodeV = getNodeView(e);
+					final NodeModel node = nodeV.getModel();
+					locationController.moveNodePosition(node, LocationModel
+							.getModel(node).getVGap(), LocationModel.HGAP, 0);
+					return;
+				}
+				if (Compat.isCtrlEvent(e)) {
+					final NodeView nodeV = getNodeView(e);
+					final NodeModel node = nodeV.getModel();
+					locationController.moveNodePosition(node, LocationModel.VGAP,
+							LocationModel.getModel(node).getHGap(), LocationModel.getModel(node).getShiftY());
+					return;
+				}
 			}
-			if (Compat.isCtrlEvent(e)) {
-				final NodeView nodeV = getNodeView(e);
-				final NodeModel node = nodeV.getModel();
-				locationController.moveNodePosition(node, LocationModel.VGAP,
-				    LocationModel.getModel(node).getHGap(), LocationModel.getModel(node).getShiftY());
-				return;
+			else {
+				if ( Compat.isPlainEvent(e) 
+						&& ! mainView.isInFoldingRegion(e.getPoint())) {
+					cancelLinkLoading();
+					final MTextController textController = (MTextController) MTextController.getController();
+					textController.getEventQueue().activate(e);
+					textController.edit(FirstAction.EDIT_CURRENT, false);
+				}
 			}
 		}
 		super.mouseClicked(e);
