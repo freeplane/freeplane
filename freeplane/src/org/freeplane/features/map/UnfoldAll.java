@@ -140,7 +140,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	}
 
 	public void foldStageN(final NodeModel node, final int stage) {
-		final int k = node.depth();
+		final int k = depth(node);
 		if (k < stage) {
 			setFolded(node, false);
 			final MapController mapController = Controller.getCurrentModeController().getMapController();
@@ -156,7 +156,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	protected int getMaxDepth(final NodeModel node) {
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		if (mapController.isFolded(node) || !mapController.hasChildren(node)) {
-			return node.depth();
+			return depth(node);
 		}
 		int k = 0;
 		for (final NodeModel child : mapController.childrenUnfolded(node)) {
@@ -169,11 +169,15 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	}
 
 	public int getMinDepth(final NodeModel node) {
+		final EncryptionModel encryptionModel = EncryptionModel.getModel(node);
+		if (encryptionModel != null && !encryptionModel.isAccessible() ) {
+			return Integer.MAX_VALUE;
+		}
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		if (mapController.isFolded(node)) {
-			return node.depth();
+			return depth(node);
 		}
-		if (!mapController.hasChildren(node)) {
+		if (!mapController.hasChildren(node)||AlwaysUnfoldedNode.isConnectorNode(node)) {
 			return Integer.MAX_VALUE;
 		}
 		int k = Integer.MAX_VALUE;
@@ -227,7 +231,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	}
 
 	public void unfoldStageN(final NodeModel node, final int stage) {
-		final int k = node.depth();
+		final int k = depth(node);
 		if (k < stage) {
 			setFolded(node, false);
 			final MapController mapController = Controller.getCurrentModeController().getMapController();
@@ -238,5 +242,16 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		else {
 			foldAll(node);
 		}
+	}
+
+	private int depth(NodeModel node) {
+		if (node.isRoot())
+			return 0;
+		final int parentDepth = depth(node.getParentNode());
+		if (! node.isVisible() || AlwaysUnfoldedNode.isConnectorNode(node)) {
+			return parentDepth;
+		}
+		else
+			return parentDepth + 1;
 	}
 }
