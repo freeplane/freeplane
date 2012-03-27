@@ -128,7 +128,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		timerForDelayedSelection.schedule(new TimeDelayedSelection(e), timeForDelayedSelection);
 	}
 
-	private boolean isInFoldingRegion(MouseEvent e) {
+	protected boolean isInFoldingRegion(MouseEvent e) {
 		return ((MainView)e.getComponent()).isInFoldingRegion(e.getPoint());
 	}
 
@@ -183,6 +183,8 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	 * dragged.
 	 */
 	public void mouseDragged(final MouseEvent e) {
+		if(! isInside(e))
+			return;
 		stopTimerForDelayedSelection();
 		final NodeView nodeV = ((MainView) e.getComponent()).getNodeView();
 		if (!((MapView) Controller.getCurrentController().getViewController().getMapView()).isSelected(nodeV)) {
@@ -309,7 +311,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		}
 	}
 
-	private boolean isInside(final MouseEvent e) {
+	protected boolean isInside(final MouseEvent e) {
 		return new Rectangle(0, 0, e.getComponent().getWidth(), e.getComponent().getHeight()).contains(e.getPoint());
 	}
 
