@@ -458,7 +458,21 @@ public abstract class MainView extends ZoomableLabel {
 		if(isShortened){
 			text = shortenText(text);
 		}
+		if(! HtmlUtils.isHtmlNode(text) && ! text.contains("\n"))
+			text = convertTextToHtmlLink(text,  NodeLinks.getLink(nodeModel));
 		updateText(text);
+	}
+
+	private String convertTextToHtmlLink(String text, URI link) {
+		if(! LinkController.LinkType.DEFAULT.equals(LinkController.getLinkType(link, null)))
+			return text;
+		StringBuilder sb = new StringBuilder("<html><body><a href=\"");
+		sb.append(link.toString());
+		sb.append("\">");
+		final String xmlEscapedText = HtmlUtils.toXMLEscapedText(text);
+		sb.append(xmlEscapedText);
+		sb.append("</a></body></html>");
+		return sb.toString();
 	}
 
 	private String shortenText(String longText) {

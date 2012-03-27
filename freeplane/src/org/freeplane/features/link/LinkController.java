@@ -619,25 +619,23 @@ public class LinkController extends SelectionController implements IExtension {
 	private static final String MENUITEM_ICON = "icons/button.png";
 	private static final String EXECUTABLE_ICON = ResourceController.getResourceController().getProperty("executable_icon");
 	private static final IconStore ICON_STORE = IconStoreFactory.create();
+	public static enum LinkType{
+		LOCAL(LINK_LOCAL_ICON), MAIL(MAIL_ICON), EXECUTABLE(EXECUTABLE_ICON), MENU(MENUITEM_ICON), DEFAULT(LINK_ICON);
+		LinkType(String iconPath){
+			final UIIcon uiIcon = ICON_STORE.getUIIcon(iconPath);
+			if(uiIcon == null)
+				this.icon =  null;
+			else
+				this.icon =  uiIcon.getIcon();
+		}
+		final public Icon icon;
+	}
+	
 	public static Icon getLinkIcon(final URI link, final NodeModel model) {
-		if (link == null) 
-			return null;
-	    final String linkText = link.toString();
-	    final String iconPath;
-	    if (linkText.startsWith("#")) {
-	    	final String id = linkText.substring(1);
-	    	if (model == null || model.getMap().getNodeForID(id) == null) {
-	    		iconPath = null;
-	    	}
-	    	else{
-	    		iconPath = LINK_LOCAL_ICON;
-	    	}
-	    }
-	    else if (linkText.startsWith("mailto:")) {
-	    	iconPath = MAIL_ICON;
-	    }
-	    else if (isMenuItemLink(link)) {
-	        // if the menu item has an icon take it or use the default icon othewise
+		final LinkType linkType = getLinkType(link, model);
+	    if(linkType == null)
+	    	return null;
+	    if(linkType.equals(LinkType.MENU)){
 	    	final String menuItemKey = parseMenuItemLink(link);
 	    	synchronized (menuItemCache) {
 	    	    Icon icon = menuItemCache.get(menuItemKey);
@@ -649,18 +647,35 @@ public class LinkController extends SelectionController implements IExtension {
 	    	    return icon;
 	    	}
 	    }
+	    return linkType.icon;
+		
+	}
+	
+	public static LinkType getLinkType(final URI link, final NodeModel model) {
+		if (link == null) 
+			return null;
+	    final String linkText = link.toString();
+	    if (linkText.startsWith("#")) {
+	    	final String id = linkText.substring(1);
+	    	if (model == null || model.getMap().getNodeForID(id) == null) {
+	    		return null;
+	    	}
+	    	else{
+	    		return LinkType.LOCAL;
+	    	}
+	    }
+	    else if (linkText.startsWith("mailto:")) {
+	    	return LinkType.MAIL;
+	    }
+	    else if (isMenuItemLink(link)) {
+	    	return LinkType.MENU;
+	    }
 	    else if (Compat.isWindowsExecutable(link)) {
-	    	iconPath = EXECUTABLE_ICON;
+	    	return LinkType.EXECUTABLE;
 	    }
 	    else{
-	    	iconPath = LinkController.LINK_ICON;
+	    	return LinkType.DEFAULT;
 	    }
-	    if(iconPath == null)
-	    	return null;
-	    final UIIcon uiIcon = ICON_STORE.getUIIcon(iconPath);
-	    if(uiIcon == null)
-	    	return null;
-	    return uiIcon.getIcon();
 	}
 
 
