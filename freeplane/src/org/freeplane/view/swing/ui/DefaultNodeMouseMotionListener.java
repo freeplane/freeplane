@@ -159,11 +159,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 
 				final String link = component.getLink(e.getPoint());
 				if (link != null) {
-					try {
-						UrlManager.getController().loadURL(new URI(link));
-					} catch (Exception ex) {
-						LogUtils.warn(ex);
-					}
+					loadLink(link);
 					return;
 				}
 			}
@@ -176,6 +172,14 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			return;
 		}
 		extendSelection(e);
+	}
+
+	protected void loadLink(final String link) {
+		try {
+			UrlManager.getController().loadURL(new URI(link));
+		} catch (Exception ex) {
+			LogUtils.warn(ex);
+		}
 	}
 
 	/**
