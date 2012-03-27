@@ -24,15 +24,19 @@ import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.Map;
 import java.util.concurrent.Future;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 
 import com.thebuzzmedia.imgscalr.AsyncScalr;
@@ -49,7 +53,10 @@ public class BitmapViewerComponent extends JComponent {
 //		System.setProperty("imgscalr.debug", "true");
 		AsyncScalr.setServiceThreadCount(1);
 	}
+	
+	enum CacheType{IC_DISABLE, IC_FILE, IC_RAM};
 	private static final long serialVersionUID = 1L;
+	private File cacheFile;
 	private int hint;
 	private BufferedImage cachedImage;
 	private final URL url;
@@ -95,6 +102,8 @@ public class BitmapViewerComponent extends JComponent {
 		if (getWidth() == 0 || getHeight() == 0) {
 			return;
 		}
+		if(cachedImage == null && cacheFile != null)
+			loadImageFromCacheFile();
 		if(! isCachedImageValid()){
 			BufferedImage tempImage;
 	        try {
@@ -113,31 +122,33 @@ public class BitmapViewerComponent extends JComponent {
 			final Future<BufferedImage> result = AsyncScalr.resize(image, getWidth(),getHeight());
 			AsyncScalr.getService().submit(new Runnable() {
 				public void run() {
+					BufferedImage scaledImage = null;
+					try {
+						scaledImage = result.get();
+					} catch (Exception e) {
+						LogUtils.severe(e);
+						return;
+					}
+					finally{
+						image.flush();
+					}
+					final int scaledImageHeight = scaledImage.getHeight();
+					final int scaledImageWidth = scaledImage.getWidth();
+					if (scaledImageHeight > getHeight()) {
+						imageX = 0;
+						imageY = (getHeight() - scaledImageHeight) / 2;
+					}
+					else {
+						imageX = (getWidth() - scaledImageWidth) / 2;
+						imageY = 0;
+					}
+					cachedImage = scaledImage;
+					if(getCacheType().equals(CacheType.IC_FILE))
+						writeCacheFile();
 					EventQueue.invokeLater(new Runnable() {
 						
 						public void run() {
 							processing = false;
-							BufferedImage scaledImage = null;
-							try {
-								scaledImage = result.get();
-							} catch (Exception e) {
-								LogUtils.severe(e);
-								return;
-							}
-							finally{
-								image.flush();
-							}
-							final int scaledImageHeight = scaledImage.getHeight();
-							final int scaledImageWidth = scaledImage.getWidth();
-							if (scaledImageHeight > getHeight()) {
-								imageX = 0;
-								imageY = (getHeight() - scaledImageHeight) / 2;
-							}
-							else {
-								imageX = (getWidth() - scaledImageWidth) / 2;
-								imageY = 0;
-							}
-							cachedImage = scaledImage;
 							repaint();
 						}
 					});
@@ -146,7 +157,34 @@ public class BitmapViewerComponent extends JComponent {
 		}
 		else{
 			g.drawImage(cachedImage, imageX, imageY, null);
+			flushImage();
+		}
+	}
+
+	private void flushImage() {
+		final CacheType cacheType = getCacheType();
+		if(CacheType.IC_RAM.equals(cacheType)){
 			cachedImage.flush();
+		}
+		else{
+			cachedImage = null;
+		}
+	}
+
+	private CacheType getCacheType() {
+		return ResourceController.getResourceController().getEnumProperty("image_cache", CacheType.IC_DISABLE);
+	}
+
+	private void writeCacheFile() {
+		File tempDir = new File (System.getProperty("java.io.tmpdir"), "freeplane");
+		tempDir.mkdirs();
+		try {
+			cacheFile = File.createTempFile("cachedImage", ".jpg", tempDir);
+			ImageIO.write(cachedImage, "jpg", cacheFile);
+			
+		} catch (IOException e) {
+			cacheFile.delete();
+			cacheFile = null;
 		}
 	}
 
@@ -157,4 +195,26 @@ public class BitmapViewerComponent extends JComponent {
 				    || getWidth() >=  cachedImage.getWidth() && 1 >= Math.abs(getHeight() - cachedImage.getHeight())
 				 );
 	}
+
+	private void loadImageFromCacheFile() {
+		try {
+			cachedImage = ImageIO.read(cacheFile);
+			if(isCachedImageValid())
+				return;
+		} catch (IOException e) {
+		}
+		cacheFile.delete();
+		cacheFile = null;
+	}
+
+	@Override
+	public void removeNotify() {
+		super.removeNotify();
+		if(cacheFile != null){
+			cacheFile.delete();
+			cacheFile = null;
+		}
+	}
+	
+	
 }

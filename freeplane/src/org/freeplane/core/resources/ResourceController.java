@@ -34,6 +34,7 @@ import java.util.Vector;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.AController.IActionOnChange;
 import org.freeplane.features.mode.Controller;
 
@@ -101,6 +102,19 @@ public abstract class ResourceController {
 	public boolean getBooleanProperty(final String key) {
 		return Boolean.parseBoolean(getProperty(key));
 	}
+	
+	@SuppressWarnings("unchecked")
+	public <T extends Enum<T>> T getEnumProperty(String propertyName, Enum<T>  defaultValue) {
+		try{
+			final String cacheProptertyValue = getProperty(propertyName).toUpperCase();
+			defaultValue = Enum.valueOf(defaultValue.getClass(), cacheProptertyValue);
+		}
+		catch (Exception e) {
+			LogUtils.severe(e);
+		}
+		return (T)defaultValue;
+	}
+
 
 	/**
 	 * @param resourcesNodeTextColor

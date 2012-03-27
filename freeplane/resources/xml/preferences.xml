@@ -48,6 +48,13 @@
                 <choice value="absolute"/>
             </combo>
         </separator>
+        <separator name = "cache">
+        	<combo name = "image_cache">
+        		<choice value = "ic_disable"/>
+        		<choice value = "ic_file"/>
+        		<choice value = "ic_ram"/>
+        	</combo>
+        </separator>
         <separator name = "updates">
         	<boolean name = "check_updates_automatically"/>
         </separator>
