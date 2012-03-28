@@ -735,18 +735,40 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	// nodes may only be refreshed by their own ModeController, so we have to store that too
-	private final ConcurrentHashMap<NodeModel, NodeRefreshEntry> nodesToRefresh = new ConcurrentHashMap<NodeModel, NodeRefreshEntry>();
+	private final ConcurrentHashMap<NodeRefreshKey, NodeRefreshValue> nodesToRefresh = new ConcurrentHashMap<NodeRefreshKey, NodeRefreshValue>();
 	
-	private static class NodeRefreshEntry{
-		final ModeController controller;
+	private static class NodeRefreshKey{
+		final NodeModel node;
 		final Object property;
-		final Object oldValue;
-		final Object newValue;
-		public NodeRefreshEntry(ModeController controller, Object property,
+		public NodeRefreshKey(NodeModel node, Object property) {
+			super();
+			this.node = node;
+			this.property = property;
+		}
+		@Override
+		public int hashCode() {
+			return node.hashCode() + propertyHash();
+		}
+		protected int propertyHash() {
+			return property != null ? 37 * property.hashCode() : 0;
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if (obj == null || ! obj.getClass().equals(getClass()))
+				return false;
+			NodeRefreshKey key2 = (NodeRefreshKey)obj;
+			return node.equals(key2.node) && (property == key2.property || property != null && property.equals(key2.property));
+		}
+	}
+
+	private static class NodeRefreshValue{
+		final ModeController controller;
+		Object oldValue;
+		Object newValue;
+		public NodeRefreshValue(ModeController controller, 
 				Object oldValue, Object newValue) {
 			super();
 			this.controller = controller;
-			this.property = property;
 			this.oldValue = oldValue;
 			this.newValue = newValue;
 		}
@@ -758,17 +780,23 @@ public class MapController extends SelectionController implements IExtension{
 	public void delayedNodeRefresh(final NodeModel node, final Object property, final Object oldValue,
 	                               final Object newValue) {
 	    final boolean startThread = nodesToRefresh.isEmpty();
-	    nodesToRefresh.put(node, new NodeRefreshEntry(Controller.getCurrentModeController(), property, oldValue, newValue)) ;
+	    final NodeRefreshValue value = new NodeRefreshValue(Controller.getCurrentModeController(), oldValue, newValue);
+		final NodeRefreshValue old = nodesToRefresh.put(new NodeRefreshKey(node, property), value);
+		if(old != null){
+			value.oldValue = old.oldValue;
+		}
         if (startThread) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					final ModeController currentModeController = Controller.getCurrentModeController();
-					final Iterator<Entry<NodeModel, NodeRefreshEntry>> it = nodesToRefresh.entrySet().iterator();
+					final Iterator<Entry<NodeRefreshKey, NodeRefreshValue>> it = nodesToRefresh.entrySet().iterator();
 					while (it.hasNext()) {
-					    final Entry<NodeModel, NodeRefreshEntry> entry = it.next();
-					    final NodeRefreshEntry info = entry.getValue();
-					    if (info.controller == currentModeController)
-					        currentModeController.getMapController().nodeRefresh(entry.getKey(), info.property, info.oldValue, info.newValue);
+					    final Entry<NodeRefreshKey, NodeRefreshValue> entry = it.next();
+					    final NodeRefreshValue info = entry.getValue();
+					    if (info.controller == currentModeController){
+					        final NodeRefreshKey key = entry.getKey();
+							currentModeController.getMapController().nodeRefresh(key.node, key.property, info.oldValue, info.newValue);
+					    }
 					    it.remove();
 					}
 				}
