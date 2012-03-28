@@ -781,9 +781,11 @@ public class MapController extends SelectionController implements IExtension{
 	                               final Object newValue) {
 	    final boolean startThread = nodesToRefresh.isEmpty();
 	    final NodeRefreshValue value = new NodeRefreshValue(Controller.getCurrentModeController(), oldValue, newValue);
-		final NodeRefreshValue old = nodesToRefresh.put(new NodeRefreshKey(node, property), value);
-		if(old != null){
-			value.oldValue = old.oldValue;
+		final NodeRefreshKey key = new NodeRefreshKey(node, property);
+		final NodeRefreshValue old = nodesToRefresh.put(key, value);
+		if(old != null && old.newValue != value.newValue){
+			old.newValue = value.newValue;
+			nodesToRefresh.put(key, old);
 		}
         if (startThread) {
 			EventQueue.invokeLater(new Runnable() {
