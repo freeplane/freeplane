@@ -178,7 +178,7 @@ public class NodeTooltipManager implements IExtension{
 		final int minY = sBounds.y;
 		final int maxY = sBounds.y + sBounds.height;
 		int x = locationOnScreen.x;
-		int y = locationOnScreen.y + height;
+		int y = locationOnScreen.y + height + 8;
 		final Dimension tipSize = tip.getPreferredSize();
 		final int tipWidth = tipSize.width;
 		if(x + tipWidth > maxX){
@@ -189,8 +189,8 @@ public class NodeTooltipManager implements IExtension{
 		}
 		final int tipHeight = tipSize.height;
 		if(y + tipHeight > maxY){
-			if(locationOnScreen.y - height > minY){
-				y = locationOnScreen.y - tipHeight;
+			if(locationOnScreen.y - tipHeight - 8 > minY){
+				y = locationOnScreen.y - tipHeight - 8;
 			}
 			else{
 				y = maxY - tipHeight;
