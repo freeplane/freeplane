@@ -1241,9 +1241,6 @@ public class NodeView extends JComponent implements INodeView {
 			i.next().remove();
 		}
 		insert();
-		if (map.getSelected() == null) {
-			map.selectAsTheOnlyOneSelected(this);
-		}
 		map.revalidateSelecteds();
 		revalidate();
 	}

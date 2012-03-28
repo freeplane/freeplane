@@ -1699,6 +1699,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return;
 		}
 		selectedsValid = true;
+		final NodeModel selectedNode = getSelected().getModel();
 		final ArrayList<NodeView> selectedNodes = new ArrayList<NodeView>(getSelection().size());
 		for (final NodeView nodeView : getSelection()) {
 			if (nodeView != null) {
@@ -1706,19 +1707,27 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 		}
 		selection.clear();
-		for (final NodeView oldNodeView : selectedNodes) {
-			if (oldNodeView.isContentVisible()) {
-				final NodeView newNodeView = getNodeView(oldNodeView.getModel());
-				if (newNodeView != null) {
-					selection.add(newNodeView);
-				}
+		for (final NodeView nodeView : selectedNodes) {
+			if (nodeView.isContentVisible() && nodeView.isDisplayable()) {
+				if(getSelected() == null)
+					selectAsTheOnlyOneSelected(nodeView);
+				else
+					selection.add(nodeView);
 			}
 		}
 		NodeView focussedNodeView = getSelected();
 		if (focussedNodeView == null) {
-			focussedNodeView = getRoot();
+			for(NodeModel node = selectedNode.getParentNode(); node != null; node = node.getParentNode()){
+				final NodeView newNodeView = getNodeView(node);
+				if(newNodeView != null && newNodeView.isContentVisible() ){
+					selectAsTheOnlyOneSelected(newNodeView);
+					return;
+				}
+			}
+			selectAsTheOnlyOneSelected(getRoot());
 		}
-		scrollNodeToVisible(focussedNodeView);
+		else
+			scrollNodeToVisible(focussedNodeView);
 	}
 
 	/*
