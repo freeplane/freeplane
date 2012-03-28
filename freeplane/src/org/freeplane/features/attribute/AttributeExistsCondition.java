@@ -64,7 +64,7 @@ public class AttributeExistsCondition extends ASelectableCondition {
 	@Override
 	protected String createDescription() {
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_EXIST);
-		return ConditionFactory.createDescription(attribute, simpleCondition, null, false);
+		return ConditionFactory.createDescription(attribute, simpleCondition, null, false, false);
 	}
 
 	public void fillXML(final XMLElement child) {

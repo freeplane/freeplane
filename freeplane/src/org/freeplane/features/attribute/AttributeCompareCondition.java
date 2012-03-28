@@ -51,7 +51,9 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 		    AttributeCompareCondition.COMPARATION_RESULT, null));
 		final boolean succeed = TreeXmlReader.xmlToBoolean(element.getAttribute(
 		    AttributeCompareCondition.SUCCEED, null));
-		return new AttributeCompareCondition(attr, value, matchCase, compResult, succeed);
+		final boolean matchApproximately = TreeXmlReader.xmlToBoolean(element.getAttribute(
+			    AttributeCompareCondition.MATCH_APPROXIMATELY, null));
+		return new AttributeCompareCondition(attr, value, matchCase, compResult, succeed, matchApproximately);
 	}
 
 	final private String attribute;
@@ -61,12 +63,19 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 	/**
 	 */
 	public AttributeCompareCondition(final String attribute, final Object value, final boolean matchCase,
-	                                 final int comparationResult, final boolean succeed) {
-		super(value, matchCase);
+	                                 final int comparationResult, final boolean succeed, final boolean matchApproximately) {
+		super(value, matchCase, matchApproximately);
 		this.attribute = attribute;
 		this.comparationResult = comparationResult;
 		this.succeed = succeed;
+		
 	}
+	
+	public boolean isEqualityCondition()
+	{
+		return comparationResult == 0;
+	}
+
 
 	/*
 	 * (non-Javadoc)
@@ -85,7 +94,8 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 			    final Object originalContent = attributes.getValueAt(i, 1);
 				final Object text = textController.getTransformedTextNoThrow(originalContent, node, null);
 				compareTo(text);
-				return isComparisonOK() &&  succeed == (getComparisonResult() == comparationResult);
+				if (isComparisonOK() &&  succeed == (getComparisonResult() == comparationResult))
+					return true;
 			}
 			catch (final NumberFormatException fne) {
 			}
@@ -103,6 +113,7 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 		child.setAttribute(AttributeCompareCondition.ATTRIBUTE, attribute);
 		child.setAttribute(AttributeCompareCondition.COMPARATION_RESULT, Integer.toString(comparationResult));
 		child.setAttribute(AttributeCompareCondition.SUCCEED, TreeXmlWriter.BooleanToXml(succeed));
+		child.setAttribute(AttributeCompareCondition.MATCH_APPROXIMATELY, TreeXmlWriter.BooleanToXml(matchApproximately));
 	}
 
 	@Override

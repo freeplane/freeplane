@@ -79,7 +79,7 @@ public class NodeMatchesRegexpCondition extends ASelectableCondition {
 		final String nodeCondition = TextUtils.getText(nodeItem);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_REGEXP);
 		return ConditionFactory.createDescription(nodeCondition, simpleCondition, searchPattern.pattern(),
-		    isMatchCase());
+		    isMatchCase(), false);
 	}
 
 	public void fillXML(final XMLElement child) {

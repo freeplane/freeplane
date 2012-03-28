@@ -95,7 +95,7 @@ class FindAction extends AFreeplaneAction {
 		editor.addAncestorListener(new AncestorListener() {
 			public void ancestorAdded(final AncestorEvent event) {
 				final Component component = event.getComponent();
-				((FilterConditionEditor) component).focusInputField();
+				((FilterConditionEditor) component).focusInputField(true);
 				((JComponent) component).removeAncestorListener(this);
 			}
 
@@ -150,7 +150,7 @@ class FindAction extends AFreeplaneAction {
 				return;
 			}
 		}
-		final NodeModel next = filterController.findNext(start, root, Direction.FORWARD, info.condition);
+		final NodeModel next = filterController.findNext(start, null, Direction.FORWARD, info.condition);
 		if (next == null) {
 			displayNotFoundMessage(root, info.condition);
 			return;

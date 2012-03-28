@@ -30,11 +30,17 @@ public class NoteContainsCondition extends MatchCaseNoteContainsCondition {
 	static final String VALUE = "VALUE";
 
 	static ASelectableCondition load(final XMLElement element) {
-		return new NoteContainsCondition(element.getAttribute(NoteContainsCondition.VALUE, null));
+		return new NoteContainsCondition(element.getAttribute(NoteContainsCondition.VALUE, null),
+				Boolean.valueOf(element.getAttribute(MatchCaseNoteContainsCondition.MATCH_APPROXIMATELY, null)));
+	}
+	
+	protected boolean matchCase()
+	{
+		return false;
 	}
 
-	NoteContainsCondition(final String value) {
-		super(value.toLowerCase());
+	NoteContainsCondition(final String value, final boolean matchApproximately) {
+		super(value.toLowerCase(), matchApproximately);
 	}
 
 	@Override

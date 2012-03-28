@@ -43,11 +43,16 @@ class NodeLevelCompareCondition extends CompareConditionAdapter {
 	final private int comparationResult;
 	final private boolean succeed;
 
-	NodeLevelCompareCondition(final String value, final boolean ignoreCase, final int comparationResult,
+	NodeLevelCompareCondition(final String value, final boolean matchCase, final int comparationResult,
 	                     final boolean succeed) {
 		super(Long.valueOf(value));
 		this.comparationResult = comparationResult;
 		this.succeed = succeed;
+	}
+
+	public boolean isEqualityCondition()
+	{
+		return comparationResult == 0;
 	}
 
 	public boolean checkNode(final NodeModel node) {

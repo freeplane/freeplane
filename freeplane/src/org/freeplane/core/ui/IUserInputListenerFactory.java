@@ -22,6 +22,7 @@ package org.freeplane.core.ui;
 import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelListener;
 import java.util.Set;
 
@@ -52,8 +53,6 @@ public interface IUserInputListenerFactory {
 	DropTargetListener getNodeDropTargetListener();
 
 	KeyListener getNodeKeyListener();
-
-	IMouseListener getNodeMotionListener();
 
 	IMouseListener getNodeMouseMotionListener();
 

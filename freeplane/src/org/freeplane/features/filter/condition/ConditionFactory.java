@@ -41,6 +41,7 @@ public class ConditionFactory {
 	public static final String FILTER_GE = ">=";
 	public static final String FILTER_GT = ">";
 	public static final String FILTER_MATCH_CASE = "filter_match_case";
+	public static final String FILTER_MATCH_APPROX = "filter_match_approximately";
 	public static final String FILTER_IS_EQUAL_TO = "filter_is_equal_to";
 	public static final String FILTER_IS_NOT_EQUAL_TO = "filter_is_not_equal_to";
 	public static final String FILTER_LE = "<=";
@@ -55,9 +56,10 @@ public class ConditionFactory {
 	}
 
 	public static String createDescription(final String attribute, final String simpleCondition, final String value,
-	                                       final boolean matchCase) {
+	                                       final boolean matchCase, final boolean matchApproximately) {
 		final String description = attribute + " " + simpleCondition + (value != null ? " \"" + value + "\"" : "")
-		        + (matchCase && value != null ? ", " + TextUtils.getText(ConditionFactory.FILTER_MATCH_CASE) : "");
+		        + (matchCase && value != null ? ", " + TextUtils.getText(ConditionFactory.FILTER_MATCH_CASE) : "")
+		        + (matchApproximately && value != null ? ", " + TextUtils.getText(ConditionFactory.FILTER_MATCH_APPROX) : "");
 		return description;
 	}
 
@@ -78,8 +80,10 @@ public class ConditionFactory {
 	}
 
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
-	                                            final Object value, final boolean matchCase) {
-		return getConditionController(selectedItem).createCondition(selectedItem, simpleCond, value, matchCase);
+	                                            final Object value, final boolean matchCase,
+	                                            final boolean matchApproximately) {
+		return getConditionController(selectedItem).createCondition(selectedItem, simpleCond, value, matchCase,
+				matchApproximately);
 	}
 
 	public IElementaryConditionController getConditionController(final Object item) {

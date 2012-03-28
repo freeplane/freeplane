@@ -22,6 +22,7 @@ package org.freeplane.features.filter;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -35,6 +36,7 @@ import java.util.Vector;
 
 import javax.swing.ButtonModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -92,7 +94,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	    @Override
 		public void actionPerformed(ActionEvent event) {
 	    	if(isVisible() && ! quickEditor.isInputFieldFocused() && (EventQueue.getCurrentEvent() instanceof KeyEvent))
-	    		quickEditor.focusInputField();
+	    		quickEditor.focusInputField(true);
 	    	else
 	    		super.actionPerformed(event);
 		}
@@ -101,7 +103,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	    protected void setVisible(final JComponent toolBar, final boolean visible) {
 	    	quickEditor.addAncestorListener(new AncestorListener() {
 	    		public void ancestorAdded(final AncestorEvent event) {
-	    			quickEditor.focusInputField();
+	    			quickEditor.focusInputField(true);
 	    			quickEditor.removeAncestorListener(this);
 	    		}
 	    		public void ancestorMoved(final AncestorEvent event) {
@@ -176,6 +178,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	final private String pathToFilterFile;
 	private ASelectableCondition selectedViewCondition;
 	private final ButtonModel showAncestors;
+	private final ButtonModel approximateMatchingButtonModel;
+	private final ButtonModel caseSensitiveButtonModel;
 	private final ButtonModel showDescendants;
 	private final ButtonModel highlightNodes;
 	private ASelectableCondition highlightCondition;
@@ -196,9 +200,25 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		highlightNodes.setSelected(false);
 		applyToVisibleNodeOnly = new JToggleButton.ToggleButtonModel();
 		applyToVisibleNodeOnly.setSelected(false);
+		approximateMatchingButtonModel = new JToggleButton.ToggleButtonModel();
+		approximateMatchingButtonModel.setSelected(false);
+		caseSensitiveButtonModel = new JToggleButton.ToggleButtonModel();
+		caseSensitiveButtonModel.setSelected(false);
+		
 		controller.getMapViewManager().addMapSelectionListener(this);
         final AFreeplaneAction showFilterToolbar = new ToggleFilterToolbarAction("ShowFilterToolbarAction", "/filter_toolbar");
 		quickEditor = new FilterConditionEditor(this, 0, true);
+		quickEditor.setEnterKeyActionListener( new ActionListener()  {
+
+			public void actionPerformed(ActionEvent e) {
+				((QuickFindAction)Controller.getCurrentController().getAction("QuickFindAction.FORWARD")).executeAction(true);
+				if(getHighlightNodes().isSelected()){
+					setHighlightCondition( quickEditor.getCondition());
+				}
+			}
+			
+		}
+		);
 		controller.addAction(showFilterToolbar);
 		controller.addAction(new ApplyNoFilteringAction(this));
 		controller.addAction(new ApplySelectedViewConditionAction(this));
@@ -217,8 +237,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 		final FindAction find = new FindAction();
 		controller.addAction(find);
-		controller.addAction(new FindNextAction(find));
-
 		pathToFilterFile = ResourceController.getResourceController().getFreeplaneUserDirectory() + File.separator
 		        + "auto." + FilterController.FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT;
 	}
@@ -420,10 +438,19 @@ public class FilterController implements IMapSelectionListener, IExtension {
     	return highlightCondition;
     }
 
-	public void setHighlightCondition(ASelectableCondition highlightCondition) {
-    	this.highlightCondition = highlightCondition;
-    }
-
+	void setHighlightCondition(final ASelectableCondition condition) {
+		if(condition != null){
+			this.highlightCondition = condition;
+			getHighlightNodes().setSelected(true);
+		}
+		else{
+			this.highlightCondition = null;
+		}
+		final Component mapViewComponent = Controller.getCurrentController().getMapViewManager().getMapViewComponent();
+		if(mapViewComponent != null)
+			mapViewComponent.repaint();
+	}
+	
 	private void initConditions() {
 		filterConditions = new DefaultComboBoxModel();
 		addStandardConditions();
@@ -630,4 +657,12 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	public boolean isNodeHighlighted(NodeModel node) {
 		return highlightCondition != null && highlightCondition.checkNode(node);
     }
+
+	public ButtonModel getApproximateMatchingButtonModel() {
+		return approximateMatchingButtonModel;
+	}
+
+	public ButtonModel getCaseSensitiveButtonModel() {
+		return caseSensitiveButtonModel;
+	}
 }

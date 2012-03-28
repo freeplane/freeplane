@@ -28,12 +28,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Collection;
+
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -60,7 +62,9 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.IContentTransformer;
 import org.freeplane.features.text.TextController;
 
@@ -69,7 +73,9 @@ import org.freeplane.features.text.TextController;
  * Base class for all node views.
  */
 public abstract class MainView extends ZoomableLabel {
-    private static final String USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING = "use_common_out_point_for_root_node";
+    private static final int ADDITIONAL_VERTICAL_FOLDING_AREA = 9;
+	private static final int ADDITIONAL_HORIZONTAL_FOLDING_AREA = 32;
+	private static final String USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING = "use_common_out_point_for_root_node";
     public static boolean USE_COMMON_OUT_POINT_FOR_ROOT_NODE = ResourceController.getResourceController().getBooleanProperty(USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING);
 
 	static Dimension maximumSize = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -81,6 +87,8 @@ public abstract class MainView extends ZoomableLabel {
 	protected int isDraggedOver = NodeView.DRAGGED_OVER_NO;
 	private boolean isShortened;
 	private TextModificationState textModified = TextModificationState.NONE;
+	private MouseArea mouseArea = MouseArea.DEFAULT;
+	private static final int LISTENER_VIEW_WIDTH = 10;
 
 	boolean isShortened() {
     	return isShortened;
@@ -168,6 +176,57 @@ public abstract class MainView extends ZoomableLabel {
 		return xCoord >= iconR.x && xCoord < iconR.x + iconR.width;
 	}
 
+	private boolean isRightOrOutline() {
+		final NodeView nodeView = getNodeView();
+		if (!nodeView.isLeft() || MapViewLayout.OUTLINE.equals(nodeView.getMap().getLayoutType()))
+			return true;
+		else
+			return false;
+	}
+
+	public boolean isInLeftFoldingRegion(Point p) {
+		return canBeFolded()
+				&& p.x < getWidth()
+				&& isNearContent(p)	
+				&& !isRightOrOutline();
+	}
+
+	public boolean isInRightFoldingRegion(Point p) {
+		return  canBeFolded() 
+				&& p.x >= 0
+				&& isNearContent(p)	
+				&& isRightOrOutline();
+	}
+
+	private boolean isNearContent(Point p) {
+		final JComponent content = getNodeView().getContent();
+		if(content != this){
+			p = new Point(p.x + getX(), p.y + getY());
+			for(int i = 0; i < content.getComponentCount(); i++){
+				final Component component = content.getComponent(i);
+				if(component.isVisible() && component.getBounds().contains(p))
+					return false;
+			}
+		}
+		else if(isInside(p))
+			return false;
+		final Rectangle contentBounds = new Rectangle(0, 0, content.getWidth(), content.getHeight());
+		contentBounds.x -= ADDITIONAL_HORIZONTAL_FOLDING_AREA;
+		contentBounds.width += 2 * ADDITIONAL_HORIZONTAL_FOLDING_AREA;
+		contentBounds.height += ADDITIONAL_VERTICAL_FOLDING_AREA;
+		return contentBounds.contains(p);
+	}
+
+	private boolean isInside(Point p) {
+		final Rectangle bounds = new Rectangle(0, 0, getWidth(), getHeight());
+		return bounds.contains(p);
+	}
+
+	private boolean canBeFolded() {
+		final NodeModel node = getNodeView().getModel();
+		return !node.isRoot() && node.hasChildren();
+	}
+
 	/**
 	 * Determines whether or not the xCoord is in the part p of the node: if
 	 * node is on the left: part [1-p,1] if node is on the right: part[ 0,p] of
@@ -183,64 +242,96 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	public void paintDragOver(final Graphics2D graphics) {
-		if (isDraggedOver == NodeView.DRAGGED_OVER_SON) {
-			if (getNodeView().isLeft()) {
-				graphics.setPaint(new GradientPaint(getWidth() * 3 / 4, 0, getMap().getBackground(), getWidth() / 4, 0,
-				    NodeView.dragColor));
-				graphics.fillRect(0, 0, getWidth() * 3 / 4, getHeight() - 1);
-			}
-			else {
-				graphics.setPaint(new GradientPaint(getWidth() / 4, 0, getMap().getBackground(), getWidth() * 3 / 4, 0,
-				    NodeView.dragColor));
-				graphics.fillRect(getWidth() / 4, 0, getWidth() - 1, getHeight() - 1);
-			}
+		if (isDraggedOver == NodeView.DRAGGED_OVER_SON || getMouseArea().equals(MouseArea.FOLDING)) {
+			paintDragOverSon(graphics);
 		}
 		if (isDraggedOver == NodeView.DRAGGED_OVER_SIBLING) {
-			graphics.setPaint(new GradientPaint(0, getHeight() * 3 / 5, getMap().getBackground(), 0, getHeight() / 5,
-			    NodeView.dragColor));
-			graphics.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
+			paintDragOverSibling(graphics);
 		}
 	}
 
-	void paintFoldingMark(final NodeView nodeView, final Graphics2D g, final Point p, boolean itself) {
-		final int zoomedFoldingSymbolHalfWidth = getZoomedFoldingSymbolHalfWidth();
-		p.translate(-zoomedFoldingSymbolHalfWidth, -zoomedFoldingSymbolHalfWidth);
-		final Color color = g.getColor();
-		g.setColor(itself ? Color.WHITE : Color.GRAY);
-		g.fillOval(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2, zoomedFoldingSymbolHalfWidth * 2);
-		final Color edgeColor = nodeView.getEdgeColor();
-		g.setColor(edgeColor);
-		g.drawOval(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2, zoomedFoldingSymbolHalfWidth * 2);
-		g.setColor(color);
+	private void paintDragOverSibling(final Graphics2D graphics) {
+		graphics.setPaint(new GradientPaint(0, getHeight() * 3 / 5, getMap().getBackground(), 0, getHeight() / 5,
+		    NodeView.dragColor));
+		graphics.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
+	}
+
+	private void paintDragOverSon(final Graphics2D graphics) {
+		if (getNodeView().isLeft()) {
+			graphics.setPaint(new GradientPaint(getWidth() * 3 / 4, 0, getMap().getBackground(), getWidth() / 4, 0,
+			    NodeView.dragColor));
+			graphics.fillRect(0, 0, getWidth() * 3 / 4, getHeight() - 1);
+		}
+		else {
+			graphics.setPaint(new GradientPaint(getWidth() / 4, 0, getMap().getBackground(), getWidth() * 3 / 4, 0,
+			    NodeView.dragColor));
+			graphics.fillRect(getWidth() / 4, 0, getWidth() - 1, getHeight() - 1);
+		}
+	}
+
+	void paintFoldingMark(final NodeView nodeView, final Graphics2D g, final Point p, FoldingMark foldingMarkType) {
+		foldingMarkType.draw(nodeView, g, p);
 	}
 	
-	static private enum FoldingMarkType {
-		UNFOLDED, ITSELF_FOLDED, UNVISIBLE_CHILDREN_FOLDED
-	};
-
-	static private FoldingMarkType foldingMarkType(MapController mapController, NodeModel node) {
+	static private FoldingMark foldingMarkType(MapController mapController, NodeModel node) {
 		if (mapController.isFolded(node) && (node.isVisible() || node.getFilterInfo().isAncestor())) {
-			return FoldingMarkType.ITSELF_FOLDED;
+			return FoldingMark.ITSELF_FOLDED;
 		}
 		for (final NodeModel child : mapController.childrenUnfolded(node)) {
-			if (!child.isVisible() && !FoldingMarkType.UNFOLDED.equals(foldingMarkType(mapController, child))) {
-				return FoldingMarkType.UNVISIBLE_CHILDREN_FOLDED;
+			if (!child.isVisible() && !FoldingMark.UNFOLDED.equals(foldingMarkType(mapController, child))) {
+				return FoldingMark.UNVISIBLE_CHILDREN_FOLDED;
 			}
 		}
-		return FoldingMarkType.UNFOLDED;
+		return FoldingMark.UNFOLDED;
 	}
 
 	void paintDecoration(final NodeView nodeView, final Graphics2D g) {
 		drawModificationRect(g);
-		FoldingMarkType markType = foldingMarkType(getMap().getModeController().getMapController(), nodeView.getModel());
-		if (!markType.equals(FoldingMarkType.UNFOLDED)) {
+		paintDragRectangle(g);
+		final FoldingMark markType = foldingMarkType(getMap().getModeController().getMapController(), nodeView.getModel());
+		if (!markType.equals(FoldingMark.UNFOLDED)) {
 			final Point out = nodeView.isLeft() ? getLeftPoint() : getRightPoint();
-			paintFoldingMark(nodeView, g, out, markType.equals(FoldingMarkType.ITSELF_FOLDED));
+			paintFoldingMark(nodeView, g, out, markType);
 		}
         if (isShortened()) {
             final Point in =  nodeView.isLeft() ? getRightPoint() : getLeftPoint();
-            paintFoldingMark(nodeView, g, in, true);
+            in.y = getHeight() / 2;
+            FoldingMark.SHORTENED.draw(nodeView, g, in);
         }
+	}
+
+	private void paintDragRectangle(final Graphics g) {
+		if (! MouseArea.MOTION.equals(mouseArea)) 
+			return;
+		final Graphics2D g2 = (Graphics2D) g;
+		final Object renderingHint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+		final MapView parent = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
+		parent.getModeController().getController().getViewController().setEdgesRenderingHint(g2);
+		final Color color = g2.getColor();
+		NodeView movedView = getNodeView();
+		Rectangle r = getDragRectangle();
+		if (movedView .isFree()) {
+			g2.setColor(Color.BLUE);
+			g.fillOval(r.x, r.y, r.width - 1, r.height - 1);
+		}
+		else if (LocationModel.getModel(movedView.getModel()).getHGap() <= 0) {
+			g2.setColor(Color.RED);
+			g.fillOval(r.x, r.y, r.width- 1, r.height- 1);
+		}
+		g2.setColor(Color.BLACK);
+		g.drawOval(r.x, r.y, r.width- 1, r.height- 1);
+		g2.setColor(color);
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
+	}
+
+	public Rectangle getDragRectangle() {
+		final int size = MainView.LISTENER_VIEW_WIDTH;
+		Rectangle r;
+		if(getNodeView().isLeft())
+			r = new Rectangle(getWidth(), -size, size, getHeight() + size * 2);
+		else
+			r = new Rectangle(-size, -size, size, getHeight() + size * 2);
+		return r;
 	}
 
     private void drawModificationRect(Graphics g) {
@@ -262,13 +353,16 @@ public abstract class MainView extends ZoomableLabel {
 		g.setColor(color);
     }
 
-	public void paintBackgound(final Graphics2D graphics) {
+	public void paintBackgound(final Graphics2D g) {
+		final Color color;
 		if (getNodeView().useSelectionColors()) {
-			paintBackground(graphics, getNodeView().getSelectedColor());
+			color = getNodeView().getSelectedColor();
+			paintBackground(g, color);
 		}
 		else {
-			paintBackground(graphics, getNodeView().getTextBackground());
+			color = getNodeView().getTextBackground();
 		}
+		paintBackground(g, color);
 	}
 
 	/*
@@ -364,7 +458,21 @@ public abstract class MainView extends ZoomableLabel {
 		if(isShortened){
 			text = shortenText(text);
 		}
+		if(! HtmlUtils.isHtmlNode(text) && ! text.contains("\n"))
+			text = convertTextToHtmlLink(text,  NodeLinks.getLink(nodeModel));
 		updateText(text);
+	}
+
+	private String convertTextToHtmlLink(String text, URI link) {
+		if(! LinkController.LinkType.DEFAULT.equals(LinkController.getLinkType(link, null)))
+			return text;
+		StringBuilder sb = new StringBuilder("<html><body><a href=\"");
+		sb.append(link.toString());
+		sb.append("\">");
+		final String xmlEscapedText = HtmlUtils.toXMLEscapedText(text);
+		sb.append(xmlEscapedText);
+		sb.append("</a></body></html>");
+		return sb.toString();
 	}
 
 	private String shortenText(String longText) {
@@ -475,6 +583,65 @@ public abstract class MainView extends ZoomableLabel {
 	    	return toolTipText;
 	    return createToolTipText();
     }
-    
-    
+	
+	@Override
+	public boolean contains(int x, int y) {
+		return isInFoldingRegion(new Point(x, y)) 
+				|| x >= -LISTENER_VIEW_WIDTH && x < getWidth() + LISTENER_VIEW_WIDTH 
+				&& y >= 0 && y < getHeight();
+	}
+
+	public boolean isInFoldingRegion(Point p) {
+		return isInRightFoldingRegion(p) || isInLeftFoldingRegion(p);
+	}
+
+	public MouseArea getMouseArea() {
+		return mouseArea;
+	}
+	public MouseArea whichMouseArea(Point point) {
+		final int x = point.x;
+		if(! getNodeView().isRoot() && getDragRectangle().contains(point.x, point.y))
+			return MouseArea.MOTION;
+		if(isInFoldingRegion(point))
+			return MouseArea.FOLDING;
+		if(isInFollowLinkRegion(x))
+			return MouseArea.LINK;
+		return MouseArea.DEFAULT;
+	}
+
+
+	public void setMouseArea(MouseArea mouseArea) {
+		if(mouseArea.equals(this.mouseArea))
+			return;
+		final boolean repaintDraggingRectangle = isVisible() && mouseArea.equals(MouseArea.MOTION) || this.mouseArea.equals(MouseArea.MOTION);
+		final boolean repaintFoldingRectangle = isVisible() && mouseArea.equals(MouseArea.FOLDING) || this.mouseArea.equals(MouseArea.FOLDING);
+		this.mouseArea = mouseArea;
+		if(repaintDraggingRectangle)
+			paintDraggingRectanleImmediately();
+		if(repaintFoldingRectangle)
+			paintFoldingRectanleImmediately();
+	}
+
+	private void paintFoldingRectanleImmediately() {
+		paintImmediately(0, 0, getWidth(), getHeight());
+	}
+
+	private void paintDraggingRectanleImmediately() {
+		final Rectangle dragRectangle = getDragRectangle();
+		paintDecorationImmediately(dragRectangle);
+	}
+
+	private void paintDecorationImmediately(final Rectangle rectangle) {
+		final MapView map = getMap();
+		UITools.convertRectangleToAncestor(this, rectangle, map);
+		map.paintImmediately(rectangle);
+	}
+
+	@Override
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
+		if(! visible)
+			setMouseArea(MouseArea.DEFAULT);
+	}
+
 }

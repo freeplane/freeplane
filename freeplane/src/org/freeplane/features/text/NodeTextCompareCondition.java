@@ -32,6 +32,7 @@ public class NodeTextCompareCondition extends CompareConditionAdapter {
 	static final String COMPARATION_RESULT = "COMPARATION_RESULT";
 	static final String NAME = "node_compare_condition";
 	static final String SUCCEED = "SUCCEED";
+	static final String MATCH_APPROXIMATELY = "MATCH_APPROXIMATELY";
 	static final String VALUE = "VALUE";
 	static final String ITEM = "ITEM";
 
@@ -48,12 +49,14 @@ public class NodeTextCompareCondition extends CompareConditionAdapter {
 		final boolean matchCase = TreeXmlReader.xmlToBoolean(element.getAttribute(CompareConditionAdapter.MATCH_CASE, null));
 		final int compResult = Integer.parseInt(element.getAttribute(NodeTextCompareCondition.COMPARATION_RESULT, null));
 		final boolean succeed = TreeXmlReader.xmlToBoolean(element.getAttribute(NodeTextCompareCondition.SUCCEED, null));
+		final boolean matchApproximately = TreeXmlReader.xmlToBoolean(element.getAttribute(NodeTextCompareCondition.MATCH_APPROXIMATELY, null));
 		return new NodeTextCompareCondition(
 			item, 
 			value, 
 			matchCase, 
 			compResult, 
-			succeed);
+			succeed,
+			matchApproximately);
 	}
 
 	final private int comparationResult;
@@ -61,11 +64,16 @@ public class NodeTextCompareCondition extends CompareConditionAdapter {
 	final private String nodeItem;
 
 	NodeTextCompareCondition(String nodeItem, final Object value, final boolean matchCase, final int comparationResult,
-	                     final boolean succeed) {
-		super(value, matchCase);
+	                     final boolean succeed, final boolean matchApproximately) {
+		super(value, matchCase, matchApproximately);
 		this.comparationResult = comparationResult;
 		this.succeed = succeed;
 		this.nodeItem=nodeItem;
+	}
+	
+	public boolean isEqualityCondition()
+	{
+		return comparationResult == 0;
 	}
 
 	public boolean checkNode(final NodeModel node) {
@@ -102,6 +110,7 @@ public class NodeTextCompareCondition extends CompareConditionAdapter {
 		child.setAttribute(NodeTextCompareCondition.COMPARATION_RESULT, Integer.toString(comparationResult));
 		child.setAttribute(NodeTextCompareCondition.SUCCEED, TreeXmlWriter.BooleanToXml(succeed));
 		child.setAttribute(NodeTextCompareCondition.ITEM, nodeItem);
+		child.setAttribute(NodeTextCompareCondition.MATCH_APPROXIMATELY, TreeXmlWriter.BooleanToXml(matchApproximately));
 	}
 
 	@Override

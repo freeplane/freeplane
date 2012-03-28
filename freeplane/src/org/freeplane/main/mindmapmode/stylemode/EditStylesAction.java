@@ -28,6 +28,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
 
@@ -57,13 +58,11 @@ public class EditStylesAction extends AEditStylesAction {
 		dialog.setVisible(true);
 	}
 
-	void commit(final MapModel map) {
+	void commit() {
 	    final MapModel currentMap = Controller.getCurrentController().getMap();
 	    LogicalStyleController.getController().refreshMap(currentMap);
-	    Controller.getCurrentModeController().commit();
-	    Controller.getCurrentModeController().getMapController().setSaved(currentMap, false);
-	    final MapController mapController = getModeController().getMapController();
-	    mapController.setSaved(map, false);
+	    final ModeController currentModeController = Controller.getCurrentModeController();
+		currentModeController.commit();
     }
 
 	void rollback() {

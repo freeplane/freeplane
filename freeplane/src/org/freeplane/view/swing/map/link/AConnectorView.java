@@ -54,15 +54,17 @@ abstract class AConnectorView  implements ILinkView {
      *            is the another point indicating the direction of the arrow.
      * @param d 
      */
-    protected void paintArrow(final Point p1, final Point p2, final Graphics2D g, final double zoomFactor, final int width ) {
+    protected void paintArrow(final Point p1, final Point p2, final Graphics2D g, final double size) {
     	int dx, dy;
     	double dxn, dyn;
     	dx = p2.x - p1.x; /* direction of p1 -> p3 */
     	dy = p2.y - p1.y;
-    	final int r2 = Math.max(20*20, dx * dx + dy * dy);
-		final double length = Math.sqrt(r2) / zoomFactor;
-    	dxn = width * dx / length; /* normalized direction of p1 -> p3 */
-    	dyn = width * dy / length;
+    	final int r2 = dx * dx + dy * dy;
+    	if(r2 == 0)
+    		return;
+		final double length = Math.sqrt(r2);
+    	dxn = size * dx / length; /* normalized direction of p1 -> p3 */
+    	dyn = size * dy / length;
     	final double arrowWidth = .5f;
     	final Polygon p = new Polygon();
     	p.addPoint((p1.x), (p1.y));

@@ -406,7 +406,7 @@ public class ScriptApiTest {
 		@SuppressWarnings("unused")
 		final Node firstChild = map.getRoot().createChild("child 1");
 		final Node secondChild = map.getRoot().createChild("child 2");
-		final List<Node> found = c.find(new NodeContainsCondition(TextController.FILTER_NODE, "child 2"));
+		final List<Node> found = c.find(new NodeContainsCondition(TextController.FILTER_NODE, "child 2", false));
 		assertEquals("one matching node should be found", list(secondChild), found);
 	}
 
@@ -458,15 +458,15 @@ public class ScriptApiTest {
 	public void test_Controller_undo_redo_stuff() {
 		map = c.newMap();
 		map.getRoot().createChild("child 1");
-		assertFalse("node should be there before undo", c.find(new NodeContainsCondition(TextController.FILTER_NODE, "child 1")).isEmpty());
+		assertFalse("node should be there before undo", c.find(new NodeContainsCondition(TextController.FILTER_NODE, "child 1", false)).isEmpty());
 		c.undo();
-		assertTrue("node should be away after undo", c.find(new NodeContainsCondition(TextController.FILTER_NODE, "child 1")).isEmpty());
+		assertTrue("node should be away after undo", c.find(new NodeContainsCondition(TextController.FILTER_NODE, "child 1", false)).isEmpty());
 		c.redo();
-		assertFalse("node should be there after redo", c.find(new NodeContainsCondition(TextController.FILTER_NODE, "child 1")).isEmpty());
+		assertFalse("node should be there after redo", c.find(new NodeContainsCondition(TextController.FILTER_NODE, "child 1", false)).isEmpty());
 		c.deactivateUndo();
 		c.undo();
 		assertTrue("node should still be there after undo since undo is deactivated", c.find(
-		    new NodeContainsCondition(TextController.FILTER_NODE, "child 1")).isEmpty());
+		    new NodeContainsCondition(TextController.FILTER_NODE, "child 1", false)).isEmpty());
 	}
 
 	public void test_Controller_setStatusInfo_String_info() {
@@ -887,7 +887,7 @@ public class ScriptApiTest {
 		map.getRoot().createChild("first node");
 		map.getRoot().createChild("second node");
 		assertTrue("initially all nodes should be visible", firstChild().isVisible());
-		new Filter(new NodeContainsCondition(TextController.FILTER_NODE, "first"), true, true, true).applyFilter(this, Controller
+		new Filter(new NodeContainsCondition(TextController.FILTER_NODE, "first", false), true, true, true).applyFilter(this, Controller
 		    .getCurrentController().getMap(), true);
 		assertTrue("first node should be  matched by the filter", firstChild().isVisible());
 		assertFalse("second node should not be matched by the filter", map.getRoot().getChildren().get(1).isVisible());
@@ -901,7 +901,7 @@ public class ScriptApiTest {
 		@SuppressWarnings("unused")
 		final Node firstChild = map.getRoot().createChild("child 1");
 		final Node secondChild = map.getRoot().createChild("child 2");
-		final List<Node> found = c.find(new NodeContainsCondition(TextController.FILTER_NODE, "child 2"));
+		final List<Node> found = c.find(new NodeContainsCondition(TextController.FILTER_NODE, "child 2", false));
 		assertEquals("one matching node should be found", list(secondChild), found);
 	}
 

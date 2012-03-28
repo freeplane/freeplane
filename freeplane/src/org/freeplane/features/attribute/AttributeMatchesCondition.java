@@ -29,6 +29,9 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
+ * Condition for matching a regexp against an attribute.
+ * Approximate matching setting is ignored here.
+ * 
  * @author Dimitry Polivaev
  */
 public class AttributeMatchesCondition extends ASelectableCondition {
@@ -85,7 +88,7 @@ public class AttributeMatchesCondition extends ASelectableCondition {
 	@Override
 	protected String createDescription() {
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_REGEXP);
-		return ConditionFactory.createDescription(attribute, simpleCondition, null, false);
+		return ConditionFactory.createDescription(attribute, simpleCondition, null, isMatchCase(), false);
 	}
 
 	public void fillXML(final XMLElement child) {

@@ -1,3 +1,4 @@
+*.diff
 *.OTHER
 *.BASE
 *.THIS

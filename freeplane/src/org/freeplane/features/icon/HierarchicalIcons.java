@@ -180,7 +180,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	private void removeIcons(final NodeModel node) {
 		AccumulatedIcons icons = node.removeExtension(AccumulatedIcons.class);
 		if(icons != null){
-			Controller.getCurrentModeController().getMapController().nodeRefresh(node);
+			Controller.getCurrentModeController().getMapController().delayedNodeRefresh(node, HierarchicalIcons.ICONS, null, null);
 			for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
 				removeIcons(child);
 			}

@@ -34,6 +34,7 @@ import java.util.Vector;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.AController.IActionOnChange;
 import org.freeplane.features.mode.Controller;
 
@@ -101,6 +102,19 @@ public abstract class ResourceController {
 	public boolean getBooleanProperty(final String key) {
 		return Boolean.parseBoolean(getProperty(key));
 	}
+	
+	@SuppressWarnings("unchecked")
+	public <T extends Enum<T>> T getEnumProperty(String propertyName, Enum<T>  defaultValue) {
+		try{
+			final String cacheProptertyValue = getProperty(propertyName).toUpperCase();
+			defaultValue = Enum.valueOf(defaultValue.getClass(), cacheProptertyValue);
+		}
+		catch (Exception e) {
+			LogUtils.severe(e);
+		}
+		return (T)defaultValue;
+	}
+
 
 	/**
 	 * @param resourcesNodeTextColor
@@ -113,7 +127,7 @@ public abstract class ResourceController {
 	/** register defaults in freeplane.properties respectively defaults.properties instead! */
 	public double getDoubleProperty(final String key, final double defaultValue) {
 		try {
-			return Double.parseDouble(ResourceController.getResourceController().getProperty("user_zoom"));
+			return Double.parseDouble(ResourceController.getResourceController().getProperty(key));
 		}
 		catch (final Exception e) {
 			return defaultValue;
@@ -139,7 +153,11 @@ public abstract class ResourceController {
 	public int getIntProperty(String key) {
 		return Integer.parseInt(getProperty(key));
     }
-	
+
+	public double getDoubleProperty(String key) {
+		return Double.parseDouble(getProperty(key));
+    }
+
 	/** register defaults in freeplane.properties respectively defaults.properties instead. */
 	public long getLongProperty(final String key, final int defaultValue) {
 		try {

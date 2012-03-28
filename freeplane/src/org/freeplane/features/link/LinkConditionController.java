@@ -25,12 +25,12 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
-import javax.swing.plaf.basic.BasicComboBoxEditor;
-
 import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
+import org.freeplane.features.filter.condition.DefaultConditionRenderer;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -62,14 +62,15 @@ public class LinkConditionController implements IElementaryConditionController {
 	}
 
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
-	                                            final Object value, final boolean matchCase) {
+	                                            final Object value, final boolean matchCase,
+	                                            final boolean matchApproximately) {
 		final NamedObject namedObject = (NamedObject) selectedItem;
 		if (namedObject.objectEquals(FILTER_LINK)) {
 			if (simpleCond.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-				return new HyperLinkEqualsCondition((String) value);
+				return new HyperLinkEqualsCondition((String) value, matchCase, matchApproximately);
 			}
 			if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
-				return new HyperLinkContainsCondition((String) value);
+				return new HyperLinkContainsCondition((String) value, matchCase, matchApproximately);
 			}
 			if (simpleCond.objectEquals(ConditionFactory.FILTER_EXIST)) {
 				return new HyperLinkExistsCondition();
@@ -78,10 +79,10 @@ public class LinkConditionController implements IElementaryConditionController {
 		}
 		if (namedObject.objectEquals(CONNECTOR_LABEL)) {
 			if (simpleCond.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-				return new ConnectorLabelEqualsCondition((String) value, matchCase);
+				return new ConnectorLabelEqualsCondition((String) value, matchCase, matchApproximately);
 			}
 			if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
-				return new ConnectorLabelContainsCondition((String) value, matchCase);
+				return new ConnectorLabelContainsCondition((String) value, matchCase, matchApproximately);
 			}
 			return null;
 		}
@@ -122,7 +123,7 @@ public class LinkConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
-		return new BasicComboBoxEditor();
+		return new FixedBasicComboBoxEditor();
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object property, NamedObject simpleCond) {
@@ -130,17 +131,31 @@ public class LinkConditionController implements IElementaryConditionController {
 	}
 
 	public boolean isCaseDependent(final Object property, final NamedObject simpleCond) {
-		return ((NamedObject) property).objectEquals(CONNECTOR_LABEL);
+		return ((NamedObject) property).objectEquals(CONNECTOR_LABEL) ||
+			   ((NamedObject) property).objectEquals(FILTER_LINK);
+	}
+	
+	public boolean supportsApproximateMatching(final Object property, final NamedObject simpleCond) {
+		return ((NamedObject) property).objectEquals(CONNECTOR_LABEL) ||
+			   ((NamedObject) property).objectEquals(FILTER_LINK);
 	}
 
 	public ASelectableCondition loadCondition(final XMLElement element) {
 		if (element.getName().equalsIgnoreCase(HyperLinkEqualsCondition.NAME)) {
 			final String target = element.getAttribute(HyperLinkEqualsCondition.TEXT, null);
-			return new HyperLinkEqualsCondition(target);
+			final boolean matchCase = Boolean.toString(true).equals(
+				    element.getAttribute(HyperLinkEqualsCondition.MATCH_CASE, null));
+			final boolean matchApproximately = Boolean.toString(true).equals(
+					element.getAttribute(HyperLinkEqualsCondition.MATCH_APPROXIMATELY, null));
+			return new HyperLinkEqualsCondition(target, matchCase, matchApproximately);
 		}
 		if (element.getName().equalsIgnoreCase(HyperLinkContainsCondition.NAME)) {
 			final String target = element.getAttribute(HyperLinkContainsCondition.TEXT, null);
-			return new HyperLinkContainsCondition(target);
+			final boolean matchCase = Boolean.toString(true).equals(
+				    element.getAttribute(HyperLinkContainsCondition.MATCH_CASE, null));
+			final boolean matchApproximately = Boolean.toString(true).equals(
+					element.getAttribute(HyperLinkContainsCondition.MATCH_APPROXIMATELY, null));
+			return new HyperLinkContainsCondition(target, matchCase, matchApproximately);
 		}
 		if (element.getName().equalsIgnoreCase(HyperLinkExistsCondition.NAME)) {
 			return new HyperLinkExistsCondition();
@@ -149,13 +164,17 @@ public class LinkConditionController implements IElementaryConditionController {
 			final String text = element.getAttribute(ConnectorLabelEqualsCondition.TEXT, null);
 			final boolean matchCase = Boolean.toString(true).equals(
 			    element.getAttribute(ConnectorLabelEqualsCondition.MATCH_CASE, null));
-			return new ConnectorLabelEqualsCondition(text, matchCase);
+			final boolean matchApproximately = Boolean.toString(true).equals(
+				    element.getAttribute(ConnectorLabelEqualsCondition.MATCH_APPROXIMATELY, null));
+			return new ConnectorLabelEqualsCondition(text, matchCase, matchApproximately);
 		}
 		if (element.getName().equalsIgnoreCase(ConnectorLabelContainsCondition.NAME)) {
 			final String text = element.getAttribute(ConnectorLabelContainsCondition.TEXT, null);
 			final boolean matchCase = Boolean.toString(true).equals(
 			    element.getAttribute(ConnectorLabelEqualsCondition.MATCH_CASE, null));
-			return new ConnectorLabelContainsCondition(text, matchCase);
+			final boolean matchApproximately = Boolean.toString(true).equals(
+				    element.getAttribute(ConnectorLabelEqualsCondition.MATCH_APPROXIMATELY, null));
+			return new ConnectorLabelContainsCondition(text, matchCase, matchApproximately);
 		}
 		if (element.getName().equalsIgnoreCase(ConnectorExistsCondition.NAME)) {
 			return new ConnectorExistsCondition();
@@ -164,6 +183,17 @@ public class LinkConditionController implements IElementaryConditionController {
 	}
 
 	public ListCellRenderer getValueRenderer(Object selectedProperty, NamedObject selectedCondition) {
-	    return null;
+		if (((NamedObject)selectedProperty).objectEquals(CONNECTOR) ||
+			(((NamedObject)selectedProperty).objectEquals(FILTER_LINK) &&
+					selectedCondition.objectEquals(ConditionFactory.FILTER_EXIST)))
+		{
+			// don't return null as this would make FilterConditionEditor fall back to filterController.getConditionRenderer()
+			// (and that would put in a default string like "No Filtering (remove)"!)
+			return new DefaultConditionRenderer("");
+		}
+		else
+		{
+			return null;
+		}
     }
 }

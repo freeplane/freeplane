@@ -14,7 +14,8 @@ public interface IViewerFactory {
 
 	Dimension getOriginalSize(JComponent viewer);
 
-	void setViewerSize(JComponent viewer, Dimension size);
+	void setFinalViewerSize(JComponent viewer, Dimension size);
+	void setDraftViewerSize(JComponent viewer, Dimension size);
 
 	String getDescription();
 

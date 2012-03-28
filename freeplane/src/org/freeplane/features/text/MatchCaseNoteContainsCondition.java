@@ -21,6 +21,8 @@ package org.freeplane.features.text;
 
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.filter.ExactStringMatchingStrategy;
+import org.freeplane.features.filter.StringMatchingStrategy;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.map.NodeModel;
@@ -30,16 +32,28 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class MatchCaseNoteContainsCondition extends ASelectableCondition {
 	static final String NAME = "match_case_note_contains_condition";
 	static final String VALUE = "VALUE";
-
+	static final String MATCH_APPROXIMATELY = "MATCH_APPROXIMATELY";
+	
 	static ASelectableCondition load(final XMLElement element) {
-		return new MatchCaseNoteContainsCondition(element.getAttribute(MatchCaseNoteContainsCondition.VALUE, null));
+		return new MatchCaseNoteContainsCondition(element.getAttribute(MatchCaseNoteContainsCondition.VALUE, null),
+				Boolean.valueOf(element.getAttribute(MatchCaseNoteContainsCondition.MATCH_APPROXIMATELY, null)));
 	}
 
 	final private String value;
+	final boolean matchApproximately;
+	final StringMatchingStrategy stringMatchingStrategy;
+	
+	protected boolean matchCase()
+	{
+		return true;
+	}
 
-	MatchCaseNoteContainsCondition(final String value) {
+	MatchCaseNoteContainsCondition(final String value, final boolean matchApproximately) {
 		super();
 		this.value = value;
+		this.matchApproximately = matchApproximately;
+		this.stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
+			new ExactStringMatchingStrategy();
 	}
 
 	public boolean checkNode(final NodeModel node) {
@@ -47,7 +61,8 @@ public class MatchCaseNoteContainsCondition extends ASelectableCondition {
 		if (text == null) {
 			return false;
 		}
-		return text.indexOf(value) > -1;
+		//return text.indexOf(value) > -1;
+		return stringMatchingStrategy.matches(value, text, true, matchCase());
 	}
 
 	@Override
@@ -58,7 +73,7 @@ public class MatchCaseNoteContainsCondition extends ASelectableCondition {
 	protected String createDescription(final boolean matchCase) {
 		final String nodeCondition = TextUtils.getText(TextController.FILTER_NOTE);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
-		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, matchCase);
+		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, matchCase, matchApproximately);
 	}
 
 	protected String getText(final NodeModel node) {
@@ -69,6 +84,7 @@ public class MatchCaseNoteContainsCondition extends ASelectableCondition {
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
 		child.setAttribute(MatchCaseNoteContainsCondition.VALUE, value);
+		child.setAttribute(MatchCaseNodeContainsCondition.MATCH_APPROXIMATELY, Boolean.toString(matchApproximately));
 	}
 
 	@Override

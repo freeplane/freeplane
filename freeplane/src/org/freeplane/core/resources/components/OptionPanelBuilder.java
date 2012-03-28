@@ -176,12 +176,34 @@ public class OptionPanelBuilder {
 			};
 		}
 
+		private IPropertyControlCreator createNumberPropertyCreator(
+				final String name, final double min, final double step, final double max) {
+			return new IPropertyControlCreator() {
+				public IPropertyControl createControl() {
+					return new NumberProperty(name, min, max, step);
+				}
+			};
+		}
+		
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
-			final int min = Integer.parseInt(data.getAttribute("min", "1"));
-			final int step = Integer.parseInt(data.getAttribute("step", "1"));
-			final int max = Integer.parseInt(data.getAttribute("max", MAX_INT));
-			return createNumberPropertyCreator(name, min, step, max);
+			final String minString = data.getAttribute("min", "1");
+			final String maxString = data.getAttribute("max", MAX_INT);
+			final String stepString = data.getAttribute("step", "1");
+			if (minString.contains(".") || maxString.contains(".") || stepString.contains("."))
+			{
+				return createNumberPropertyCreator(name,
+						Double.parseDouble(minString),
+						Double.parseDouble(stepString),
+						Double.parseDouble(maxString));
+			}
+			else
+			{
+				return createNumberPropertyCreator(name,
+						Integer.parseInt(minString),
+						Integer.parseInt(stepString),
+						Integer.parseInt(maxString));
+			}
 		}
 	}
 	

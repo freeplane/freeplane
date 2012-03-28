@@ -30,6 +30,7 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -128,6 +129,13 @@ public class UITools {
 		UITools.convertPointToAncestor(source, point, destination);
 	}
 
+	public static void convertRectangleToAncestor(final Component from, final Rectangle r, final Component destination) {
+		Point p = new Point(r.x, r.y);
+		UITools.convertPointToAncestor(from, p , destination);
+		r.x = p.x;
+		r.y = p.y;
+	}
+		
 	public static void convertPointToAncestor(final Component from, final Point p, final Component destination) {
 		int x, y;
 		for (Component c = from; c != destination;c = c.getParent()) {

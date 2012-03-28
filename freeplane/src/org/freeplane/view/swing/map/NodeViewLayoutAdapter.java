@@ -62,7 +62,6 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     private static Dimension minDimension;
     private int childCount;
     private JComponent content;
-    protected final int LISTENER_VIEW_WIDTH = 10;
     protected Point location = new Point();
     private NodeModel model;
     private int spaceAround;
@@ -256,7 +255,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
         
         int childContentHeightSum = 0;
         int visibleChildCounter = 0;
-        int summedChildCounter = 0;
+        boolean useSummaryAsItem = true;
         int top = 0;
         
         final int[] groupStart = new int[highestSummaryLevel];
@@ -274,9 +273,11 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             }
             
             final boolean isSummary = child.isSummary();
-            final boolean isItem = !isSummary || visibleChildCounter <= summedChildCounter;
+            final boolean isItem = !isSummary || useSummaryAsItem;
             final int oldLevel = level;
             if(isItem){
+            	if(level > 0)
+            		useSummaryAsItem = true;
                 level = 0;
             }
             else{
@@ -300,13 +301,14 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             boolean isFreeNode = child.isFree();
 			data.free[i] = isFreeNode;
 			data.summary[i] = ! isItem;
-			if(isItem && isFreeNode){
+			if(isItem) {
+				if (isFreeNode){
 				data.ly[i] = childShiftY - childContentShift-childCloudHeigth/2 - getSpaceAround();
-            }
-            else if(isItem){
-                if (childShiftY < 0 || visibleChildCounter == 0) {
-                    top += childShiftY;
-                }
+				}
+				else{
+					if (childShiftY < 0 || visibleChildCounter == 0) {
+						top += childShiftY;
+					}
                 top -= childContentShift;
 
                 top += child.getTopOverlap();
@@ -334,21 +336,22 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                         groupEndY[j] = Integer.MIN_VALUE;
                         groupStartContentHeightSum[j] = childContentHeightSum;
                     }
-                    summedChildCounter = visibleChildCounter;
                 }
                 else if(child.isFirstGroupNode()){
                     groupStartContentHeightSum[0] = childContentHeightSum;
                     summaryBaseX[0] = 0;
                     groupStart[0] = i;
                 }
-                if (child.getHeight() - 2 * getSpaceAround() != 0) {
+                if (childHeight != 0) {
                     if (visibleChildCounter > 0)
                         childContentHeightSum +=  getVGap();
-                    visibleChildCounter++;
                 }
-                if(isSummary)
-                    summedChildCounter = visibleChildCounter;
-           }
+				}
+	            if (childHeight != 0) {
+	                visibleChildCounter++;
+	                useSummaryAsItem = false;
+				}
+			}
             else{
                 final int itemLevel = level - 1;
                 if(child.isFirstGroupNode()){
@@ -501,14 +504,4 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
         view.setTopOverlap(topOverlap);
         view.setBottomOverlap(height - heigthWithoutOverlap);
     }
-
-	public void layoutNodeMotionListenerView(final NodeMotionListenerView view) {
-		final NodeView movedView = view.getMovedView();
-		final JComponent content = movedView.getContent();
-		location.x = -LISTENER_VIEW_WIDTH;
-		location.y = 0;
-		UITools.convertPointToAncestor(content, location, view.getParent());
-		view.setLocation(location);
-		view.setSize(LISTENER_VIEW_WIDTH, content.getHeight());
-	}
 }

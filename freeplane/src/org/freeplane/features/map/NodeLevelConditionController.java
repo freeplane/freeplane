@@ -25,9 +25,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
-import javax.swing.plaf.basic.BasicComboBoxEditor;
-
 import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
@@ -89,32 +88,33 @@ class NodeLevelConditionController implements IElementaryConditionController {
 	}
 
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
-	                                            final Object value, final boolean ignoreCase) {
+	                                            final Object value, final boolean matchCase,
+	                                            final boolean matchApproximately) {
 		if(value instanceof PeriodicLevelCondition){
 			return (ASelectableCondition) value;
 		}
-		return createASelectableCondition(simpleCond, (String) value, ignoreCase);
+		return createASelectableCondition(simpleCond, (String) value, matchCase, matchApproximately);
 	}
 
 	protected ASelectableCondition createASelectableCondition(final NamedObject simpleCondition, final String value,
-	                                                   final boolean ignoreCase) {
+	                                                   final boolean matchCase, final boolean matchApproximately) {
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-			return new NodeLevelCompareCondition(value, ignoreCase, 0, true);
+			return new NodeLevelCompareCondition(value, matchCase, 0, true);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_NOT_EQUAL_TO)) {
-			return new NodeLevelCompareCondition(value, ignoreCase, 0, false);
+			return new NodeLevelCompareCondition(value, matchCase, 0, false);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_GT)) {
-			return new NodeLevelCompareCondition(value, ignoreCase, 1, true);
+			return new NodeLevelCompareCondition(value, matchCase, 1, true);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_GE)) {
-			return new NodeLevelCompareCondition(value, ignoreCase, -1, false);
+			return new NodeLevelCompareCondition(value, matchCase, -1, false);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_LT)) {
-			return new NodeLevelCompareCondition(value, ignoreCase, -1, true);
+			return new NodeLevelCompareCondition(value, matchCase, -1, true);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_LE)) {
-			return new NodeLevelCompareCondition(value, ignoreCase, 1, false);
+			return new NodeLevelCompareCondition(value, matchCase, 1, false);
 		}
 		if (simpleCondition.objectEquals(NodeLevelConditionController.FILTER_ROOT))
 			return new RootCondition();
@@ -143,7 +143,7 @@ class NodeLevelConditionController implements IElementaryConditionController {
 
 	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
 		if(selectedCondition.objectEquals(FILTER_PERIODIC_LEVEL)){
-			return new BasicComboBoxEditor();
+			return new FixedBasicComboBoxEditor();
 		}
 		return levelEditor;
 	}
@@ -156,6 +156,10 @@ class NodeLevelConditionController implements IElementaryConditionController {
 	}
 
 	public boolean isCaseDependent(final Object selectedItem, final NamedObject simpleCond) {
+		return false;
+	}
+
+	public boolean supportsApproximateMatching(final Object selectedItem, final NamedObject simpleCond) {
 		return false;
 	}
 

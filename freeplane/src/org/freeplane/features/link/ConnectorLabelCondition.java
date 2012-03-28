@@ -21,6 +21,8 @@ package org.freeplane.features.link;
 
 import java.util.Set;
 
+import org.freeplane.features.filter.ExactStringMatchingStrategy;
+import org.freeplane.features.filter.StringMatchingStrategy;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -32,17 +34,34 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public abstract class ConnectorLabelCondition extends ASelectableCondition {
 	static final String TEXT = "TEXT";
 	static final String MATCH_CASE = "MATCH_CASE";
+    static final String MATCH_APPROXIMATELY = "MATCH_APPROXIMATELY";
 	final private String text;
 	final private boolean matchCase;
+	final private boolean matchApproximately;
+	final private StringMatchingStrategy stringMatchingStrategy;
 
 	protected boolean matchCase() {
 		return matchCase;
 	}
+	
+	protected boolean matchApproximately() {
+		return matchApproximately;
+	}
+	
+	protected StringMatchingStrategy getStringMatchingStrategy()
+	{
+		return stringMatchingStrategy;
+	}
 
-	public ConnectorLabelCondition(final String text, final boolean matchCase) {
+	public ConnectorLabelCondition(final String text, final boolean matchCase,
+			final boolean matchApproximately) {
 		super();
 		this.matchCase = matchCase;
-		this.text = matchCase ? text : text.toLowerCase();
+		//this.text = matchCase ? text : text.toLowerCase();
+		this.text = text;
+		this.matchApproximately = matchApproximately;
+		stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
+			new ExactStringMatchingStrategy();
 	}
 
 	public String getText() {
@@ -92,5 +111,6 @@ public abstract class ConnectorLabelCondition extends ASelectableCondition {
 	protected void fillXML(final XMLElement child) {
 		child.setAttribute(TEXT, text);
 		child.setAttribute(MATCH_CASE, Boolean.toString(matchCase));
+		child.setAttribute(MATCH_APPROXIMATELY, Boolean.toString(matchApproximately));
 	}
 }
