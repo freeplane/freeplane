@@ -735,23 +735,40 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	// nodes may only be refreshed by their own ModeController, so we have to store that too
-	private final ConcurrentHashMap<NodeModel, ModeController> nodesToRefresh = new ConcurrentHashMap<NodeModel, ModeController>();
+	private final ConcurrentHashMap<NodeModel, NodeRefreshEntry> nodesToRefresh = new ConcurrentHashMap<NodeModel, NodeRefreshEntry>();
+	
+	private static class NodeRefreshEntry{
+		final ModeController controller;
+		final Object property;
+		final Object oldValue;
+		final Object newValue;
+		public NodeRefreshEntry(ModeController controller, Object property,
+				Object oldValue, Object newValue) {
+			super();
+			this.controller = controller;
+			this.property = property;
+			this.oldValue = oldValue;
+			this.newValue = newValue;
+		}
+		
+	}
 
 	/** optimization of nodeRefresh() as it handles multiple nodes in one Runnable, even nodes that weren't on the
 	 * list when the thread was started.*/
 	public void delayedNodeRefresh(final NodeModel node, final Object property, final Object oldValue,
 	                               final Object newValue) {
 	    final boolean startThread = nodesToRefresh.isEmpty();
-	    nodesToRefresh.put(node, Controller.getCurrentModeController());
+	    nodesToRefresh.put(node, new NodeRefreshEntry(Controller.getCurrentModeController(), property, oldValue, newValue)) ;
         if (startThread) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					final ModeController currentModeController = Controller.getCurrentModeController();
-					final Iterator<Entry<NodeModel, ModeController>> it = nodesToRefresh.entrySet().iterator();
+					final Iterator<Entry<NodeModel, NodeRefreshEntry>> it = nodesToRefresh.entrySet().iterator();
 					while (it.hasNext()) {
-					    final Entry<NodeModel, ModeController> entry = it.next();
-					    if (entry.getValue() == currentModeController)
-					        currentModeController.getMapController().nodeRefresh(node, property, oldValue, newValue);
+					    final Entry<NodeModel, NodeRefreshEntry> entry = it.next();
+					    final NodeRefreshEntry info = entry.getValue();
+					    if (info.controller == currentModeController)
+					        currentModeController.getMapController().nodeRefresh(entry.getKey(), info.property, info.oldValue, info.newValue);
 					    it.remove();
 					}
 				}
