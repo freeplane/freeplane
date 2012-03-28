@@ -164,14 +164,15 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				}
 			}
 		}
-		if (isInFoldingRegion(e)) {
+		if (isInFoldingRegion(e) && Compat.isPlainEvent(e)) {
 			/* perform action only if one selected node. */
 			final MapController mapController = mc.getMapController();
 			mapController.toggleFolded(nodeView.getModel());
 			e.consume();
 			return;
 		}
-		extendSelection(e);
+		if(isInside(e))
+			extendSelection(e);
 	}
 
 	protected void loadLink(final String link) {
