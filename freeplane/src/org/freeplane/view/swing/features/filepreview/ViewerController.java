@@ -621,24 +621,6 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		factories.remove(factory);
 	}
 
-	public boolean paste(final String fileRef, final NodeModel targetNode, final PasteMode mode,
-	                     final boolean isLeft) {
-			try {
-				final File file;
-				if (fileRef.startsWith("file://")) {
-					final URI uri = new URI(new URL(fileRef).toString());
-					final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
-					file = Compat.urlToFile(url);
-				}
-				else{
-					file = new File(fileRef);
-				}
-				return paste(file, targetNode, mode, isLeft);
-			}
-			catch (final Exception e) {
-				return false;
-			}
-	}
 	/**
 	 * This method attaches an image to a node, that is referenced with an uri
 	 * @param uri : The image that is to be attached to a node

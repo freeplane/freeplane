@@ -221,10 +221,6 @@ public class MClipboardController extends ClipboardController {
 		}
 
 		public void paste(Transferable t, final NodeModel target, final boolean asSibling, final boolean isLeft) {
-			ViewerController viewerController = ((ViewerController)Controller.getCurrentModeController().getExtension(ViewerController.class));
-			if(viewerController.paste(textFromClipboard, target, PasteMode.valueOf(asSibling), isLeft)){
-				return;
-			}
 			final TextFragment[] textFragments = split(textFromClipboard);
 			pasteStringWithoutRedisplay(textFragments, target, asSibling, isLeft);
 		}
