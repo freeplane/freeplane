@@ -147,7 +147,7 @@ public class MindmapUpdateController {
 					if (maps == null || maps.size() == 0) {
 						return null;
 					}
-					//NodeView.setModifyModelWithoutRepaint(true);
+					NodeView.setModifyModelWithoutRepaint(true);
 					fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
 					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("computing_node_count"));
 					totalCount = maps.size()*getMindmapUpdaters().size();
