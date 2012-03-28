@@ -87,8 +87,8 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	 */
 	private void gatherLeavesAndSetParentsStyle(final NodeModel node) {
 		if (node.getChildCount() == 0) {
-			if (node.getParentNode() != null) {
-				setStyleRecursive(node.getParentNode());
+			for (NodeModel parent = node.getParentNode(); parent != null; parent = parent.getParentNode()) {
+				AccumulatedIcons.setStyleCheckForChange(parent, mode);
 			}
 			return;
 		}
