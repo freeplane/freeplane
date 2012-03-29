@@ -103,7 +103,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	}
 
 	private void createTimer(final MouseEvent e) {
-		if(isInFoldingRegion(e))
+		if(! isInside(e))
 			return;
 		stopTimerForDelayedSelection();
 		if (!JOptionPane.getFrameForComponent(e.getComponent()).isFocused()) {

@@ -88,7 +88,7 @@ public abstract class MainView extends ZoomableLabel {
 	private boolean isShortened;
 	private TextModificationState textModified = TextModificationState.NONE;
 	private MouseArea mouseArea = MouseArea.OUT;
-	private static final int LISTENER_VIEW_WIDTH = 10;
+	private static final int DRAG_OVAL_WIDTH = 10;
 
 	boolean isShortened() {
     	return isShortened;
@@ -224,7 +224,7 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	public void paintDragOver(final Graphics2D graphics) {
-		if (isDraggedOver == NodeView.DRAGGED_OVER_SON || getMouseArea().equals(MouseArea.FOLDING)) {
+		if (isDraggedOver == NodeView.DRAGGED_OVER_SON) {
 			paintDragOverSon(graphics);
 		}
 		if (isDraggedOver == NodeView.DRAGGED_OVER_SIBLING) {
@@ -321,7 +321,7 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	public Rectangle getDragRectangle() {
-		final int size = MainView.LISTENER_VIEW_WIDTH;
+		final int size = getDraggingWidth();
 		Rectangle r;
 		if(getNodeView().isLeft())
 			r = new Rectangle(getWidth(), -size, size, getHeight() + size * 2);
@@ -582,9 +582,19 @@ public abstract class MainView extends ZoomableLabel {
 	
 	@Override
 	public boolean contains(int x, int y) {
-		return isInFoldingRegion(new Point(x, y)) 
-				|| x >= -LISTENER_VIEW_WIDTH && x < getWidth() + LISTENER_VIEW_WIDTH 
-				&& y >= 0 && y < getHeight();
+		final Point p = new Point(x, y);
+		return isInFoldingRegion(p) || isInDraggingRegion(p)|| super.contains(x, y);
+	}
+
+	protected boolean isInDraggingRegion(Point p) {
+		if (p.y >= 0 && p.y < getHeight()){
+			final NodeView nodeView = getNodeView();
+			if (MapViewLayout.OUTLINE.equals(nodeView.getMap().getLayoutType()))
+				return false;
+			return p.x >= -getDraggingWidth() && p.x < 0;
+		}
+		return false;
+		
 	}
 
 	public boolean isInFoldingRegion(Point p) {
@@ -620,19 +630,24 @@ public abstract class MainView extends ZoomableLabel {
 						|| this.mouseArea.equals(MouseArea.FOLDING));
 		this.mouseArea = mouseArea;
 		if(repaintDraggingRectangle)
-			paintDraggingRectanleImmediately();
+			paintDraggingRectangleImmediately();
 		if(repaintFoldingRectangle)
-			paintFoldingRectanleImmediately();
+			paintFoldingRectangleImmediately();
 	}
 
-	private void paintFoldingRectanleImmediately() {
+	private void paintFoldingRectangleImmediately() {
 			final Rectangle foldingRectangle = new Rectangle(-16, 0, getWidth() + 2 * 16 + 1, getHeight() + 1);
+			int extraHeight = 16 - getHeight();
+			if(extraHeight > 0){
+				foldingRectangle.height += extraHeight;
+				foldingRectangle.y -= extraHeight / 2;
+			}
 			final MapView map = getMap();
 			UITools.convertRectangleToAncestor(this, foldingRectangle, map);
 			map.paintImmediately(foldingRectangle);
 	}
 
-	private void paintDraggingRectanleImmediately() {
+	private void paintDraggingRectangleImmediately() {
 		final Rectangle dragRectangle = getDragRectangle();
 		paintDecorationImmediately(dragRectangle);
 	}
@@ -648,6 +663,10 @@ public abstract class MainView extends ZoomableLabel {
 		super.setVisible(visible);
 		if(! visible)
 			setMouseArea(MouseArea.DEFAULT);
+	}
+
+	private int getDraggingWidth() {
+		return getNodeView().getZoomed(DRAG_OVAL_WIDTH);
 	}
 
 }

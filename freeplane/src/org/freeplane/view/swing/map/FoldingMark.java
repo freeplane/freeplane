@@ -7,8 +7,6 @@ import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
-import sun.java2d.loops.DrawLine;
-
 interface Drawable{
 	void draw(Graphics2D g, NodeView nodeView, Point p);
 }

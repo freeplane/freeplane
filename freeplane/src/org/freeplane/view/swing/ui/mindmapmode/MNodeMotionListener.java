@@ -208,6 +208,8 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 			stopTimerForDelayedSelection();
 			final MainView motionListenerView = (MainView) e.getSource();
 			final NodeView nodeV = getNodeView(e);
+			if(nodeV.isRoot())
+				return;
 			final MapView mapView = nodeV.getMap();
 			final Point point = e.getPoint();
 			findGridPoint(point);
@@ -238,7 +240,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					final Rectangle r = motionListenerView.getBounds();
-					UITools.convertRectangleToAncestor(motionListenerView, r, mapView);
+					UITools.convertRectangleToAncestor(motionListenerView.getParent(), r, mapView);
 					final boolean isEventPointVisible = mapView.getVisibleRect().contains(r);
 					if (!isEventPointVisible) {
 						mapView.scrollRectToVisible(r);

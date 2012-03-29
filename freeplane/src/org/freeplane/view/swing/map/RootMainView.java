@@ -187,6 +187,11 @@ class RootMainView extends MainView {
 	}
 	
 	@Override
+	public boolean isInDraggingRegion(Point p) {
+		return false;
+	}
+	
+	@Override
 	public boolean contains(int x, int y) {
 			return x >= 0 && x < getWidth()
 				&& y >= 0 && y < getHeight();
