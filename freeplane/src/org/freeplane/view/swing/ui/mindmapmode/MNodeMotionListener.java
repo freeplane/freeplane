@@ -40,6 +40,7 @@ import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
@@ -239,11 +240,15 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 			}
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					final Rectangle r = motionListenerView.getBounds();
-					UITools.convertRectangleToAncestor(motionListenerView.getParent(), r, mapView);
-					final boolean isEventPointVisible = mapView.getVisibleRect().contains(r);
-					if (!isEventPointVisible) {
-						mapView.scrollRectToVisible(r);
+					try {
+						final Rectangle r = motionListenerView.getBounds();
+						UITools.convertRectangleToAncestor(motionListenerView.getParent(), r, mapView);
+						final boolean isEventPointVisible = mapView.getVisibleRect().contains(r);
+						if (!isEventPointVisible) {
+							mapView.scrollRectToVisible(r);
+						}
+					} catch (NullPointerException e) {
+						LogUtils.warn(e);
 					}
 				}
 			});
