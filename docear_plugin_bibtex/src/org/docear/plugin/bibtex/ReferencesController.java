@@ -24,6 +24,7 @@ import org.docear.plugin.bibtex.actions.AddNewReferenceAction;
 import org.docear.plugin.bibtex.actions.CopyBibtexToClipboard;
 import org.docear.plugin.bibtex.actions.ReferenceQuitAction;
 import org.docear.plugin.bibtex.actions.RemoveReferenceAction;
+import org.docear.plugin.bibtex.actions.ShowInReferenceManagerAction;
 import org.docear.plugin.bibtex.actions.ShowJabrefPreferencesAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesAllMapsAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesAllOpenMapsAction;
@@ -45,7 +46,6 @@ import org.docear.plugin.core.mindmap.MapConverter;
 import org.docear.plugin.core.util.CoreUtils;
 import org.docear.plugin.core.workspace.node.LinkTypeReferencesNode;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
-import org.docear.plugin.pdfutilities.listener.MonitorungNodeUpdater;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.FreeplaneActionCascade;
@@ -258,6 +258,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 				builder.addMenuItem(MENU_BAR + TOOLS_MENU, new JMenu(TextUtils.getText(REFERENCE_MANAGEMENT_MENU_LANG_KEY)),
 						MENU_BAR + REFERENCE_MANAGEMENT_MENU, MenuBuilder.BEFORE);
 
+				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, new ShowInReferenceManagerAction(),	MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, CopyBibtex,	MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, AddNewReference, MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, AddExistingReference, MenuBuilder.AS_CHILD);
@@ -282,6 +283,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 						new JMenu(TextUtils.getText(REFERENCE_MANAGEMENT_MENU_LANG_KEY)), referencesCategory
 								+ REFERENCE_MANAGEMENT_MENU, MenuBuilder.AS_CHILD);
 				builder.addSeparator(referencesCategory + REFERENCE_MANAGEMENT_MENU, MenuBuilder.AFTER);
+				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU, new ShowInReferenceManagerAction(), MenuBuilder.AS_CHILD);
 				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU, CopyBibtex, MenuBuilder.AS_CHILD);
 				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU, AddNewReference, MenuBuilder.AS_CHILD);
 				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU, AddExistingReference, MenuBuilder.AS_CHILD);

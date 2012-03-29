@@ -12,9 +12,9 @@ public class CoreUtils {
 		return WorkspaceUtils.resolveURI(uri);
 	}
 	
-	public static String createRandomString(int numBits) {
+	public static String createRandomString(int length) {
 		SecureRandom random = new SecureRandom();
-		String s = new BigInteger(numBits, random).toString(Character.MAX_RADIX);
+		String s = new BigInteger(length*8, random).toString(Character.MAX_RADIX);
 		return s;
 	}
 	
