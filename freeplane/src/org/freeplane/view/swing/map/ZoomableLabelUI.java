@@ -105,8 +105,8 @@ public class ZoomableLabelUI extends BasicLabelUI {
 			final float zoom = zLabel.getZoom();
 			viewR.x = insets.left;
 			viewR.y = insets.top;
-			viewR.width = (int) ((width - (insets.left + insets.right)) / zoom);
-			viewR.height = (int)((height- (insets.top + insets.bottom)) / zoom);
+			viewR.width = (int) (width  / zoom) - (insets.left + insets.right);
+			viewR.height = (int)(height / zoom) - (insets.top + insets.bottom);
 		}
 		else if(maximumWidth != Integer.MAX_VALUE){
 			final Insets insets = label.getInsets();
