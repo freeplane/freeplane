@@ -201,43 +201,50 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 			super.mouseExited(e);
 	}
 
-	/** Invoked when a mouse button is pressed on a component and then dragged. */
+	@Override
+	public void mousePressed(MouseEvent e) {
+		if(isInside(e) || isInFoldingRegion(e))
+			super.mousePressed(e);
+		else{
+			if ((e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) == (InputEvent.BUTTON1_DOWN_MASK)) {
+				stopTimerForDelayedSelection();
+				final NodeView nodeV = getNodeView(e);
+				final Point point = e.getPoint();
+				findGridPoint(point);
+				UITools.convertPointToAncestor(nodeV, point, JScrollPane.class);
+				setDragStartingPoint(point, nodeV.getModel());
+			}
+		}
+	}
+
 	public void mouseDragged(final MouseEvent e) {
-		if(!isDragActive() && (isInside(e) || isInFoldingRegion(e)))
+		if(!isDragActive())
 			return;
 		if ((e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) == (InputEvent.BUTTON1_DOWN_MASK)) {
-			stopTimerForDelayedSelection();
 			final MainView motionListenerView = (MainView) e.getSource();
 			final NodeView nodeV = getNodeView(e);
-			if(nodeV.isRoot())
-				return;
 			final MapView mapView = nodeV.getMap();
 			final Point point = e.getPoint();
 			findGridPoint(point);
 			UITools.convertPointToAncestor(nodeV, point, JScrollPane.class);
-			if (!isDragActive()) {
-				setDragStartingPoint(point, nodeV.getModel());
+			ModeController c = Controller.getCurrentController().getModeController();
+			final Point dragNextPoint = point;
+			if (! Compat.isCtrlEvent(e)) {
+				final NodeModel node = nodeV.getModel();
+				final LocationModel locationModel = LocationModel.createLocationModel(node);
+				locationModel.setShiftY(getNodeShiftY(dragNextPoint, node, dragStartingPoint));
+				locationModel.setHGap(getHGap(dragNextPoint, node, dragStartingPoint));
+				c.getMapController().nodeRefresh(node);
 			}
 			else {
-				ModeController c = Controller.getCurrentController().getModeController();
-				final Point dragNextPoint = point;
-				if (! Compat.isCtrlEvent(e)) {
-					final NodeModel node = nodeV.getModel();
-					final LocationModel locationModel = LocationModel.createLocationModel(node);
-					locationModel.setShiftY(getNodeShiftY(dragNextPoint, node, dragStartingPoint));
-					locationModel.setHGap(getHGap(dragNextPoint, node, dragStartingPoint));
-					c.getMapController().nodeRefresh(node);
-				}
-				else {
-					final NodeModel parentNode = nodeV.getVisibleParentView().getModel();
-					LocationModel.createLocationModel(parentNode).setVGap(
-					    getVGap(dragNextPoint, parentNode, dragStartingPoint));
-					final MapController mapController = c.getMapController();
-					mapController.nodeRefresh(parentNode);
-					mapController.nodeRefresh(nodeV.getModel());
-				}
-				dragStartingPoint = point;
+				final NodeModel parentNode = nodeV.getVisibleParentView().getModel();
+				LocationModel.createLocationModel(parentNode).setVGap(
+						getVGap(dragNextPoint, parentNode, dragStartingPoint));
+				final MapController mapController = c.getMapController();
+				mapController.nodeRefresh(parentNode);
+				mapController.nodeRefresh(nodeV.getModel());
 			}
+			dragStartingPoint = point;
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					try {
