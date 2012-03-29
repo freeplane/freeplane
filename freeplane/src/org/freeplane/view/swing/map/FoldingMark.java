@@ -7,20 +7,24 @@ import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
-enum FoldingMark {
-	UNFOLDED(Color.WHITE), ITSELF_FOLDED(Color.WHITE), UNVISIBLE_CHILDREN_FOLDED(Color.WHITE), SHORTENED(Color.GRAY);
-	final Color fillColor;
+interface Drawable{
+	void draw(Graphics2D g, NodeView nodeView, Point p);
+}
 
-	FoldingMark(Color fillColor){
+class DrawableNothing implements Drawable{
+	public void draw(Graphics2D g, NodeView nodeView, Point p) {
+	}
+}
+abstract class DrawableShape implements Drawable{
+	private final Color fillColor;
+
+	public DrawableShape(Color fillColor) {
 		this.fillColor = fillColor;
 	}
-	
-	void draw(NodeView nodeView, Graphics2D g, Point p) {
+	public void draw(Graphics2D g, NodeView nodeView, Point p) {
 		final Color color = g.getColor(); 
 		final Color edgeColor = nodeView.getEdgeColor();
-		int zoomedFoldingSymbolHalfWidth = nodeView.getMainView().getZoomedFoldingSymbolHalfWidth();
-		p.translate(-zoomedFoldingSymbolHalfWidth, -zoomedFoldingSymbolHalfWidth);
-		int shapeWidth = zoomedFoldingSymbolHalfWidth * 2;
+		int shapeWidth = getWidth(nodeView, p);
 		final Shape shape = getShape(p.x, p.y, shapeWidth);
 		g.setColor(fillColor);
 		g.fill(shape);
@@ -28,19 +32,50 @@ enum FoldingMark {
 		g.draw(shape);
 		g.setColor(color);
 	}
+	protected int getWidth(NodeView nodeView, Point p) {
+		int zoomedFoldingSymbolHalfWidth = nodeView.getMainView().getZoomedFoldingSymbolHalfWidth();
+		p.translate(-zoomedFoldingSymbolHalfWidth, -zoomedFoldingSymbolHalfWidth);
+		int shapeWidth = zoomedFoldingSymbolHalfWidth * 2;
+		return shapeWidth;
+	}
+	
+	abstract Shape getShape(int x, int y, int width);
+}
 
-	private Shape getShape(int x, int y, int width){
-		if(equals(SHORTENED)){
-			final Polygon polygon = new Polygon();
-			polygon.addPoint(x, y);
-			polygon.addPoint(x + width, y);
-			polygon.addPoint(x + width / 2, y + width*2/3);
-			polygon.addPoint(x, y);
-			return polygon;
-		}
-		else{
-			return new Ellipse2D.Float(x, y, width, width);
-		}
+class DrawableEllipse extends DrawableShape{
+	public DrawableEllipse(Color fillColor) {
+		super(fillColor);
+	}
+	Shape getShape(int x, int y, int width){
+		return new Ellipse2D.Float(x, y, width, width);
+	}
+}
+
+class DrawableTriangle extends DrawableShape{
+	public DrawableTriangle(Color fillColor) {
+		super(fillColor);
+	}
+	Shape getShape(int x, int y, int width){
+		final Polygon polygon = new Polygon();
+		polygon.addPoint(x, y);
+		polygon.addPoint(x + width, y);
+		polygon.addPoint(x + width / 2, y + width*2/3);
+		polygon.addPoint(x, y);
+		return polygon;
+	}
+}
+
+enum FoldingMark implements Drawable{
+	UNFOLDED(new DrawableNothing()), ITSELF_FOLDED(new DrawableEllipse(Color.WHITE)), UNVISIBLE_CHILDREN_FOLDED(new DrawableEllipse(Color.GRAY)), 
+	SHORTENED(new DrawableTriangle(Color.WHITE));
+	final Drawable drawable;
+
+	FoldingMark(Drawable drawable){
+		this.drawable = drawable;
+	}
+	
+	public void draw(Graphics2D g, NodeView nodeView, Point p) {
+		drawable.draw(g, nodeView, p);
 	}
 
 }
