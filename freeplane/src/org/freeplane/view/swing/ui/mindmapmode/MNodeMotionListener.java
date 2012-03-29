@@ -202,7 +202,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 
 	/** Invoked when a mouse button is pressed on a component and then dragged. */
 	public void mouseDragged(final MouseEvent e) {
-		if(isInside(e) || isInFoldingRegion(e))
+		if(!isDragActive() && (isInside(e) || isInFoldingRegion(e)))
 			return;
 		if ((e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) == (InputEvent.BUTTON1_DOWN_MASK)) {
 			stopTimerForDelayedSelection();
@@ -261,7 +261,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 	public void mouseReleased(final MouseEvent e) {
 		final MainView v = (MainView) e.getSource();
 		if (!v.contains(e.getX(), e.getY())) {
-			v.setMouseArea(MouseArea.DEFAULT);
+			v.setMouseArea(MouseArea.OUT);
 		}
 		if (!isDragActive()) {
 			super.mouseReleased(e);

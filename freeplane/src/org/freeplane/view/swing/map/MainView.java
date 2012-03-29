@@ -87,7 +87,7 @@ public abstract class MainView extends ZoomableLabel {
 	protected int isDraggedOver = NodeView.DRAGGED_OVER_NO;
 	private boolean isShortened;
 	private TextModificationState textModified = TextModificationState.NONE;
-	private MouseArea mouseArea = MouseArea.DEFAULT;
+	private MouseArea mouseArea = MouseArea.OUT;
 	private static final int LISTENER_VIEW_WIDTH = 10;
 
 	boolean isShortened() {
@@ -199,27 +199,9 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	private boolean isNearContent(Point p) {
-		final JComponent content = getNodeView().getContent();
-		if(content != this){
-			p = new Point(p.x + getX(), p.y + getY());
-			for(int i = 0; i < content.getComponentCount(); i++){
-				final Component component = content.getComponent(i);
-				if(component.isVisible() && component.getBounds().contains(p))
-					return false;
-			}
-		}
-		else if(isInside(p))
-			return false;
-		final Rectangle contentBounds = new Rectangle(0, 0, content.getWidth(), content.getHeight());
-		contentBounds.x -= ADDITIONAL_HORIZONTAL_FOLDING_AREA;
-		contentBounds.width += 2 * ADDITIONAL_HORIZONTAL_FOLDING_AREA;
-		contentBounds.height += ADDITIONAL_VERTICAL_FOLDING_AREA;
-		return contentBounds.contains(p);
-	}
-
-	private boolean isInside(Point p) {
-		final Rectangle bounds = new Rectangle(0, 0, getWidth(), getHeight());
-		return bounds.contains(p);
+		return p.y >= 0 && p.y < getHeight() && (
+				p.x >= -16 && p.x < 0
+				||p.x >= getWidth() && p.x < getWidth() + 16);
 	}
 
 	private boolean canBeFolded() {
@@ -270,7 +252,7 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	void paintFoldingMark(final NodeView nodeView, final Graphics2D g, final Point p, FoldingMark foldingMarkType) {
-		foldingMarkType.draw(nodeView, g, p);
+		foldingMarkType.draw(g, nodeView, p);
 	}
 	
 	static private FoldingMark foldingMarkType(MapController mapController, NodeModel node) {
@@ -288,6 +270,7 @@ public abstract class MainView extends ZoomableLabel {
 	void paintDecoration(final NodeView nodeView, final Graphics2D g) {
 		drawModificationRect(g);
 		paintDragRectangle(g);
+		paintFoldingRectangle(g);
 		final FoldingMark markType = foldingMarkType(getMap().getModeController().getMapController(), nodeView.getModel());
 		if (!markType.equals(FoldingMark.UNFOLDED)) {
 			final Point out = nodeView.isLeft() ? getLeftPoint() : getRightPoint();
@@ -296,8 +279,21 @@ public abstract class MainView extends ZoomableLabel {
         if (isShortened()) {
             final Point in =  nodeView.isLeft() ? getRightPoint() : getLeftPoint();
             in.y = getHeight() / 2;
-            FoldingMark.SHORTENED.draw(nodeView, g, in);
+            FoldingMark.SHORTENED.draw(g, nodeView, in);
         }
+	}
+
+	private void paintFoldingRectangle(Graphics2D g) {
+		if (! canBeFolded())
+			return;
+		final Point mousePosition = getMousePosition();
+		if(mousePosition == null)
+			return;
+		if(isRightOrOutline())
+			FoldingMark.FOLDING_CIRCLE.draw(g, getNodeView(), new Point (getWidth() + 16/2, getHeight()/2));
+		else
+			FoldingMark.FOLDING_CIRCLE.draw(g, getNodeView(), new Point (- 16/2, getHeight()/2));
+		
 	}
 
 	private void paintDragRectangle(final Graphics g) {
@@ -613,8 +609,15 @@ public abstract class MainView extends ZoomableLabel {
 	public void setMouseArea(MouseArea mouseArea) {
 		if(mouseArea.equals(this.mouseArea))
 			return;
-		final boolean repaintDraggingRectangle = isVisible() && mouseArea.equals(MouseArea.MOTION) || this.mouseArea.equals(MouseArea.MOTION);
-		final boolean repaintFoldingRectangle = isVisible() && mouseArea.equals(MouseArea.FOLDING) || this.mouseArea.equals(MouseArea.FOLDING);
+		final boolean repaintDraggingRectangle = isVisible()
+				&& (mouseArea.equals(MouseArea.MOTION) 
+						|| this.mouseArea.equals(MouseArea.MOTION)
+						);
+		final boolean repaintFoldingRectangle = isVisible()
+				&& (mouseArea.equals(MouseArea.OUT) 
+						|| mouseArea.equals(MouseArea.FOLDING)
+						|| this.mouseArea.equals(MouseArea.OUT)
+						|| this.mouseArea.equals(MouseArea.FOLDING));
 		this.mouseArea = mouseArea;
 		if(repaintDraggingRectangle)
 			paintDraggingRectanleImmediately();
@@ -623,7 +626,10 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	private void paintFoldingRectanleImmediately() {
-		paintImmediately(0, 0, getWidth(), getHeight());
+			final Rectangle foldingRectangle = new Rectangle(-16, 0, getWidth() + 2 * 16 + 1, getHeight() + 1);
+			final MapView map = getMap();
+			UITools.convertRectangleToAncestor(this, foldingRectangle, map);
+			map.paintImmediately(foldingRectangle);
 	}
 
 	private void paintDraggingRectanleImmediately() {

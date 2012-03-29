@@ -7,6 +7,8 @@ import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
+import sun.java2d.loops.DrawLine;
+
 interface Drawable{
 	void draw(Graphics2D g, NodeView nodeView, Point p);
 }
@@ -24,17 +26,20 @@ abstract class DrawableShape implements Drawable{
 	public void draw(Graphics2D g, NodeView nodeView, Point p) {
 		final Color color = g.getColor(); 
 		final Color edgeColor = nodeView.getEdgeColor();
-		int shapeWidth = getWidth(nodeView, p);
+		int shapeWidth = getWidth(nodeView);
+		p.translate(-shapeWidth/2, -shapeWidth/2);
 		final Shape shape = getShape(p.x, p.y, shapeWidth);
 		g.setColor(fillColor);
 		g.fill(shape);
 		g.setColor(edgeColor);
-		g.draw(shape);
+		drawShape(g, shape, p, nodeView);
 		g.setColor(color);
 	}
-	protected int getWidth(NodeView nodeView, Point p) {
+	protected void drawShape(Graphics2D g, final Shape shape, Point p, NodeView nodeView) {
+		g.draw(shape);
+	}
+	protected int getWidth(NodeView nodeView) {
 		int zoomedFoldingSymbolHalfWidth = nodeView.getMainView().getZoomedFoldingSymbolHalfWidth();
-		p.translate(-zoomedFoldingSymbolHalfWidth, -zoomedFoldingSymbolHalfWidth);
 		int shapeWidth = zoomedFoldingSymbolHalfWidth * 2;
 		return shapeWidth;
 	}
@@ -49,6 +54,28 @@ class DrawableEllipse extends DrawableShape{
 	Shape getShape(int x, int y, int width){
 		return new Ellipse2D.Float(x, y, width, width);
 	}
+}
+
+class FoldingCircle extends DrawableEllipse{
+
+	private static final int WIDTH = 16;
+	public FoldingCircle(Color fillColor) {
+		super(fillColor);
+	}
+
+	@Override
+	protected void drawShape(Graphics2D g, Shape shape, Point p, NodeView nodeView) {
+		super.drawShape(g, shape, p, nodeView);
+		g.drawLine(p.x + WIDTH / 4, p.y + WIDTH / 2, p.x + WIDTH * 3/ 4, p.y + WIDTH / 2);
+		if(nodeView.getModel().isFolded())
+			g.drawLine(p.x + WIDTH / 2, p.y + WIDTH / 4, p.x + WIDTH / 2, p.y + WIDTH * 3 / 4);
+	}
+
+	@Override
+	protected int getWidth(NodeView nodeView) {
+		return WIDTH;
+	}
+	
 }
 
 class DrawableTriangle extends DrawableShape{
@@ -67,7 +94,7 @@ class DrawableTriangle extends DrawableShape{
 
 enum FoldingMark implements Drawable{
 	UNFOLDED(new DrawableNothing()), ITSELF_FOLDED(new DrawableEllipse(Color.WHITE)), UNVISIBLE_CHILDREN_FOLDED(new DrawableEllipse(Color.GRAY)), 
-	SHORTENED(new DrawableTriangle(Color.WHITE));
+	SHORTENED(new DrawableTriangle(Color.WHITE)), FOLDING_CIRCLE(new FoldingCircle(Color.WHITE));
 	final Drawable drawable;
 
 	FoldingMark(Drawable drawable){

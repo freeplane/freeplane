@@ -205,7 +205,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	public void mouseExited(final MouseEvent e) {
 		stopTimerForDelayedSelection();
 		final MainView v = (MainView) e.getSource();
-		v.setMouseArea(MouseArea.DEFAULT);
+		v.setMouseArea(MouseArea.OUT);
 	}
 
 	public void mouseMoved(final MouseEvent e) {
