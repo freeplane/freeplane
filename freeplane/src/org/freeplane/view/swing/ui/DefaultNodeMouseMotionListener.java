@@ -226,11 +226,11 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			node.setMouseArea(MouseArea.LINK);
         }
         else if (node.isInRightFoldingRegion(e.getPoint())){
-        	requiredCursor = rightFoldingCursor();
+        	requiredCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
         	node.setMouseArea(MouseArea.FOLDING);
         }
         else if (node.isInLeftFoldingRegion(e.getPoint())){
-        	requiredCursor = leftFoldingCursor();
+        	requiredCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
         	node.setMouseArea(MouseArea.FOLDING);
         }
         else{
@@ -244,42 +244,6 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				|| !controlRegionForDelayedSelection.contains(e.getPoint())) {
 				createTimer(e);
 		}
-	}
-
-	static private Cursor rightFoldingCursor = null;
-	private Cursor rightFoldingCursor() {
-		if(rightFoldingCursor == null){
-			rightFoldingCursor = createFoldingCursor("right");
-		}
-		return rightFoldingCursor;
-	}
-
-	static private Cursor leftFoldingCursor = null;
-	private Cursor leftFoldingCursor() {
-		if(leftFoldingCursor == null){
-			leftFoldingCursor = createFoldingCursor("left");
-		}
-		return leftFoldingCursor;
-	}
-
-	private Cursor createFoldingCursor(String name) {
-		Cursor cursor;
-		try {
-			final URL resource = ResourceController.getResourceController()
-					.getResource("/images/" + name + "-fold-unfold32.gif");
-			final Toolkit toolkit = Toolkit.getDefaultToolkit();
-			BufferedImage resourceImage = ImageIO.read(resource);
-			final Dimension bestCursorSize = toolkit.getBestCursorSize(32, 32);
-			cursor = toolkit.createCustomCursor(
-					resourceImage,
-					new Point(bestCursorSize.width / 2,
-							bestCursorSize.height / 2), name + "FoldingCursor");
-		} catch (Exception e) {
-			LogUtils.severe(e);
-			cursor = Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR);
-			
-		}
-		return cursor;
 	}
 
 	public void mousePressed(final MouseEvent e) {

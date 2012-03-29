@@ -29,7 +29,7 @@ abstract class DrawableShape implements Drawable{
 		int shapeWidth = getWidth(nodeView);
 		p.translate(-shapeWidth/2, -shapeWidth/2);
 		final Shape shape = getShape(p.x, p.y, shapeWidth);
-		g.setColor(fillColor);
+		g.setColor(getFillColor(nodeView, p));
 		g.fill(shape);
 		g.setColor(edgeColor);
 		drawShape(g, shape, p, nodeView);
@@ -45,6 +45,9 @@ abstract class DrawableShape implements Drawable{
 	}
 	
 	abstract Shape getShape(int x, int y, int width);
+	protected Color getFillColor(NodeView nodeView, Point p) {
+		return fillColor;
+	}
 }
 
 class DrawableEllipse extends DrawableShape{
@@ -66,6 +69,8 @@ class FoldingCircle extends DrawableEllipse{
 	@Override
 	protected void drawShape(Graphics2D g, Shape shape, Point p, NodeView nodeView) {
 		super.drawShape(g, shape, p, nodeView);
+		if(nodeView.getMainView().getMouseArea().equals(MouseArea.FOLDING))
+			g.setColor(Color.WHITE);
 		g.drawLine(p.x + WIDTH / 4, p.y + WIDTH / 2, p.x + WIDTH * 3/ 4, p.y + WIDTH / 2);
 		if(nodeView.getModel().isFolded())
 			g.drawLine(p.x + WIDTH / 2, p.y + WIDTH / 4, p.x + WIDTH / 2, p.y + WIDTH * 3 / 4);
@@ -74,6 +79,14 @@ class FoldingCircle extends DrawableEllipse{
 	@Override
 	protected int getWidth(NodeView nodeView) {
 		return WIDTH;
+	}
+
+	@Override
+	protected Color getFillColor(NodeView nodeView, Point p) {
+		if(nodeView.getMainView().getMouseArea().equals(MouseArea.FOLDING)){
+			return Color.GRAY;
+		}
+		return super.getFillColor(nodeView, p);
 	}
 	
 }
