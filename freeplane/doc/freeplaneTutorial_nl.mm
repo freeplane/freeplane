@@ -4,7 +4,7 @@
     <attribute_name VISIBLE="true" NAME="See also"/>
     <attribute_name VISIBLE="true" NAME="a2"/>
 </attribute_registry>
-<node LOCALIZED_STYLE_REF="default" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1323809213727" VGAP="10" BACKGROUND_COLOR="#00ff66">
+<node LOCALIZED_STYLE_REF="default" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1330893671691" VGAP="10" BACKGROUND_COLOR="#00ff66">
 <icon BUILTIN="bee"/>
 <richcontent TYPE="NODE">
 
@@ -14,7 +14,7 @@
   </head>
   <body>
     <p>
-      <b>Quick reference </b>
+      <b>Handleiding</b>&#160;
     </p>
     <p>
       <b>Freeplane 1.2</b>
@@ -140,7 +140,7 @@
 </map_styles>
 </hook>
 <hook NAME="FirstGroupNode"/>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_232622736" CREATED="1320005728532" MODIFIED="1323809812721" HGAP="19" VSHIFT="-94" LINK="freeplaneFunctions_nl.mm" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_232622736" CREATED="1320005728532" MODIFIED="1330891483629" HGAP="8" VSHIFT="-93" LINK="freeplaneFunctions_nl.mm" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -180,7 +180,67 @@
 </richcontent>
 </node>
 <node TEXT="Inleiding" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1323682151885" BACKGROUND_COLOR="#00cc33" NUMBERED="true" VSHIFT="90" MIN_WIDTH="180">
-<node TEXT="Doel" STYLE_REF="Beginner" FOLDED="true" ID="ID_1074607965" CREATED="1314422854653" MODIFIED="1329925557846" HGAP="24" VSHIFT="164">
+<node STYLE_REF="Beginner" ID="ID_1788333692" CREATED="1332873790447" MODIFIED="1332873996844" VSHIFT="31">
+<icon BUILTIN="video"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <a href="http://freeplane.sourceforge.net/doc/1.2.x/Instruction/ViewingGuide_nl">Gids voor het bekijken van een mindmap</a>
+    </p>
+  </body>
+</html>
+
+</richcontent>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Hiervoor is een Internetverbinding nodig.
+    </p>
+  </body>
+</html>
+
+</richcontent>
+</node>
+<node STYLE_REF="Beginner" ID="ID_1850641724" CREATED="1330636587339" MODIFIED="1332873950465" HGAP="22" VSHIFT="3">
+<icon BUILTIN="video"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <a href="http://freeplane.sourceforge.net/doc/1.2.x/Instruction/WHY_FreeplaneVideo_nl">Waarom Freeplane</a>
+    </p>
+  </body>
+</html>
+</richcontent>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Deze hyperlink vereist een Internet verbinding.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Doel" STYLE_REF="Beginner" FOLDED="true" ID="ID_1074607965" CREATED="1314422854653" MODIFIED="1332434901858" HGAP="23" VSHIFT="1">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -375,7 +435,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_434382705" CREATED="1323465258749" MODIFIED="1329925947707" HGAP="-185" VSHIFT="70"><richcontent TYPE="NODE">
+<node ID="ID_434382705" CREATED="1323465258749" MODIFIED="1332436415028" HGAP="-185" VSHIFT="113"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -390,6 +450,15 @@
     </p>
     <p>
       Als de knoop die je nu leest is opengevouwen, dan zie je aan de rechterkant vier pictogrammen. Deze pictogrammen zie je ook in de werkbalk bovenin het scherm. Door op deze pictogrammen in de werkbalk te klikken kun je knopen op verschillende manieren open- en dichtvouwen.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Uitzondering </b>
+    </p>
+    <p>
+      Als een&#160;knoop wordt dichtgevouwen die een verbindingslijn heeft met een van zijn kindknopen, dan blijft een gestippelde lijn (en een eventueel label) zichtbaar. Door hier op te klikken verschijnt de knoop waarmee de verbinding bestaat.
     </p>
   </body>
 </html>
@@ -513,7 +582,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Mindap op Internet openen" STYLE_REF="Beginner" FOLDED="true" ID="ID_1857240761" CREATED="1329414112893" MODIFIED="1329925615239" VSHIFT="-154">
+<node TEXT="Mindap op Internet openen" STYLE_REF="Beginner" FOLDED="true" ID="ID_1857240761" CREATED="1329414112893" MODIFIED="1332434922263" HGAP="21" VSHIFT="-29">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Consumer" LAST="false"/>
 </hook>
@@ -1220,7 +1289,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_497224980" CREATED="1323468073621" MODIFIED="1330028986403" HGAP="-125" VSHIFT="88"><richcontent TYPE="NODE">
+<node ID="ID_497224980" CREATED="1323468073621" MODIFIED="1332025009399" HGAP="-122" VSHIFT="129"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1228,8 +1297,19 @@
   </head>
   <body>
     <p>
-      Een knoopkerntekst van meerdere regels kan worden verdeeld over aparte knopen door de betreffende knoop te selecteren en het kiezen van menu <i>Bewerken &gt; Knoopkern &gt;Splits knoopkern</i>. De actie kan ook via een button in het bewerkingsvenster worden uitgevoerd. Alt + S in het inline-bewerkingsvenster heeft hetzelfde effect.
+      Er zijn twee verschillende manieren om een knoopkerntekst te verdelen over meerdere knopen, respectievelijk via een actie in het hoofdmenu en via een actie in het bewerkingsvenster.
     </p>
+    <p>
+      
+    </p>
+    <ol>
+      <li>
+        Een knoopkerntekst van meerdere regels kan worden verdeeld over aparte knopen door de betreffende knoop te selecteren en het kiezen van menu <i>Bewerken &gt; Knoopkern &gt;Splits knoopkern</i>. Als er meerdere regels zijn komen deze alle in een aparte knoop.
+      </li>
+      <li>
+        Een tekst kan op de plaats van de cursor worden verdeeld over <b>twee</b>&#160; knopen. In het dialoogvenster, kies knop Splitsen. Of in de snelle in-line bewerkingsvenster, kies. Alt + S.
+      </li>
+    </ol>
     <p>
       
     </p>
@@ -2276,7 +2356,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Sijlen" STYLE_REF="Advanced" ID="ID_1838680824" CREATED="1314646406529" MODIFIED="1330085584131" NUMBERED="true" MIN_WIDTH="110" HGAP="25" VSHIFT="4">
+<node TEXT="Sijlen" STYLE_REF="Advanced" FOLDED="true" ID="ID_1838680824" CREATED="1314646406529" MODIFIED="1330085584131" NUMBERED="true" MIN_WIDTH="110" HGAP="25" VSHIFT="4">
 <node TEXT="Waarom stijlen ?" FOLDED="true" ID="ID_539515158" CREATED="1323521177251" MODIFIED="1323768599017" HGAP="30" VSHIFT="110">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
@@ -2517,7 +2597,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1011147934" CREATED="1323521380784" MODIFIED="1330610534938" HGAP="-97" VSHIFT="136"><richcontent TYPE="NODE">
+<node ID="ID_1011147934" CREATED="1323521380784" MODIFIED="1331059859430" HGAP="-97" VSHIFT="136"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2531,7 +2611,7 @@
       
     </p>
     <p>
-      Als je de standaard opmaak wilt veranderen dan kan dit ook. Ga hiervoor naar<i>&#160;Opmaken &gt; Beheren stijlen&#160;&gt; Bewerken stijlen</i>. En bewerk elke knoopniveau stijl op de wijze zoals hierboven werd besproken. De stijl voor de stamknoop heet stijl Titel. De lagere niveaus heten Kop1, Kop2, Kop3 en Kop4.
+      Als je de standaard opmaak wilt veranderen dan kan dit ook. Ga hiervoor naar<i>&#160;Opmaken &gt; Beheren stijlen&#160;&gt; Bewerken stijlen</i>. En bewerk elke knoopniveau stijl op de wijze zoals hierboven werd besproken. De stijl voor de stamknoop heet stijl Stamknoop. De lagere niveaus heten Nivea1 t/m Niveau 6.
     </p>
     <p>
       
@@ -2544,7 +2624,7 @@
         Om minder dan 5 niveau's toe te passen, ga naar <i>Opmaken &gt; Beheren stijlen&#160;&gt; Bewerken stijlen</i>. verwijder de betreffende knoopniveaustijlen.
       </li>
       <li>
-        Om op meer dan 5 niveaus knoopniveaustijlen toe te passe, ga naar <i>Opmaken &gt; Beheren stijlen&#160;&gt; Bewerken stijlen</i>. en voeg knoopniveaustijlen toe.
+        Om op meer dan 5 niveaus knoopniveaustijlen toe te passen, ga naar <i>Opmaken &gt; Beheren stijlen&#160;&gt; Bewerken stijlen</i>. en voeg knoopniveaustijlen toe.
       </li>
     </ul>
   </body>
@@ -2921,7 +3001,7 @@
 </node>
 </node>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_766584529" CREATED="1320005728532" MODIFIED="1323809820178" HGAP="12" VSHIFT="148" LINK="freeplaneApplications.mm" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_766584529" CREATED="1320005728532" MODIFIED="1330891487607" HGAP="6" VSHIFT="149" LINK="freeplaneApplications.mm" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3082,7 +3162,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1990291656" CREATED="1323527938617" MODIFIED="1330086376830" HGAP="-101" VSHIFT="134"><richcontent TYPE="NODE">
+<node ID="ID_1990291656" CREATED="1323527938617" MODIFIED="1332873600556" HGAP="-104" VSHIFT="153"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3106,11 +3186,15 @@
         Een afbeelding die is verborgen met Instellen zweeftekst (tooltip) blijft bij zweven verborgen.<br/>
       </li>
       <li>
-        Een alternatieve manier om een plaatje toe te voeten is door een knoop te rechtsklikken of menu <i>Edit &gt; Knoopuitbreiding</i>&#160;en vervolgens <i>Toevoegen afbeelding</i>&#160;te kiezen.<br/>
+        Een alternatieve manier om een plaatje toe te voeten is door een knoop te rechtsklikken of menu <i>Edit &gt; Knoopuitbreiding</i>&#160;en vervolgens <i>Toevoegen afbeelding</i>&#160;te kiezen.
+      </li>
+      <li>
+        Het is mogelijk met om een plaatje dat met PrintScreen is gecopieerd, te plakken. Freeplane vraagt dan eerst waar het plaatje moet worden bewaard.<br/>
       </li>
     </ul>
   </body>
 </html>
+
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3121,7 +3205,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node STYLE_REF="TitlesContent" ID="ID_594983153" CREATED="1318936453549" MODIFIED="1330086443147" HGAP="-109" VSHIFT="88" MAX_WIDTH="550"><richcontent TYPE="NODE">
+<node STYLE_REF="TitlesContent" ID="ID_594983153" CREATED="1318936453549" MODIFIED="1332873725809" HGAP="-109" VSHIFT="97" MAX_WIDTH="550"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3138,10 +3222,16 @@
       <b>Opmerking</b>
     </p>
     <p>
-      De geplakte afbeelding is geen onderdeel van de mindmap zelf. De afbeelding wordt automatisch als bestand toegevoegd aan de map (direcory) waarin zich de mindmap bevindt. De naam van dit bestand wordt daarbij opgenomen in de knoopkern. Deze naam mag je wissen.
+      De geplakte afbeelding is geen onderdeel van de mindmap zelf.
     </p>
+    <ul>
+      <li>
+        Het plaatje op Internet, blijft op Internet. Er is dus een Internet verbinding nodig om het plaatje te tonen. Kopieer het plaatje zo nodig naar je computer.
+      </li>
+    </ul>
   </body>
 </html>
+
 </richcontent>
 </node>
 </node>
@@ -3508,11 +3598,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="Filterelementen" STYLE_REF="Professional" ID="ID_1598853306" CREATED="1314362902185" MODIFIED="1323770426964" STYLE="combined">
+<node TEXT="Filterelementen" STYLE_REF="Professional" FOLDED="true" ID="ID_1598853306" CREATED="1314362902185" MODIFIED="1323770426964" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1492352902" CREATED="1323770358262" MODIFIED="1323770411286" HGAP="-95" VSHIFT="135"><richcontent TYPE="NODE">
+<node ID="ID_1492352902" CREATED="1323770358262" MODIFIED="1332437002071" HGAP="-95" VSHIFT="135"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3520,7 +3610,7 @@
   </head>
   <body>
     <p>
-      <font color="#000000" face="SansSerif, sans-serif">Voor dat je kunt filteren moet je in de filterwerkbalk een filterregel maken. De filterwerkbalk bevindt zich boven het werkgebied voor de mindmap. Een filterregel bestaat uit de volgende elementen: </font>
+      <font face="SansSerif, sans-serif" color="#000000">Voor dat je kunt filteren moet je in de filterwerkbalk een filterregel maken. De filterwerkbalk bevindt zich boven het werkgebied voor de mindmap. Een filterregel bestaat uit de volgende elementen: </font>
     </p>
     <p>
       
@@ -3536,7 +3626,7 @@
         <i><b>Waarde</b></i>&#160;van de component
       </li>
       <li>
-        Bij tekst: <b>hoofdlettergevoeligheid</b>
+        Bij tekst: <b>hoofdlettergevoeligheid </b>en<b>&#160;Benaderend zoeken (fuzzy search)</b>
       </li>
     </ul>
     <p>
@@ -4221,7 +4311,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -4244,7 +4333,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -4928,8 +5016,25 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="Versies (revisies)" ID="ID_1424120147" CREATED="1323615838293" MODIFIED="1329925168530" LINK="#ID_1437965047"/>
-<node TEXT="Herstel vanuit automatische back up" FOLDED="true" ID="ID_1223302157" CREATED="1329413171735" MODIFIED="1329413190850">
+<node TEXT="Versies (revisies)" STYLE_REF="Advanced" ID="ID_1424120147" CREATED="1323615838293" MODIFIED="1331307188668" LINK="#ID_1437965047"/>
+<node TEXT="Meerdere views van dezelfde mind map" STYLE_REF="Advanced" FOLDED="true" ID="ID_1926778226" CREATED="1331306719166" MODIFIED="1331307303845">
+<node STYLE_REF="TitlesContent" ID="ID_1319135286" CREATED="1331306733589" MODIFIED="1331307874372" HGAP="-222" VSHIFT="48"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Bij een grote mindmap is het lastig om op twee verschillende plaatsen van de mind map te werken. Kies <i>Beeld &gt; Nieuwe mindmap afbeelding</i>&#160;om een gekoppelde kopie van de huidige mindmap te maken. Via de tabbladen onderin het scherm kun je tussen beide views heen en weer springen. Freeplane ziet beide als dezelfde mind map. Je kunt de twee views niet naast elkaar zien.
+    </p>
+  </body>
+</html>
+</richcontent>
+<font ITALIC="false"/>
+</node>
+</node>
+<node TEXT="Herstel vanuit automatische back up" STYLE_REF="Professional" FOLDED="true" ID="ID_1223302157" CREATED="1329413171735" MODIFIED="1331307176921">
 <node STYLE_REF="TitlesContent" ID="ID_518626633" CREATED="1329413197325" MODIFIED="1330259118603" HGAP="-201" VSHIFT="26"><richcontent TYPE="NODE">
 
 <html>

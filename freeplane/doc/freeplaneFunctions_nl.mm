@@ -1,10 +1,10 @@
-<map version="0.9.0">
+<map version="freeplane 1.2.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <node TEXT="Freeplane&#xa;Functies" FOLDED="false" ID="ID_45488473" CREATED="1288535648658" MODIFIED="1321016216736" BACKGROUND_COLOR="#00ff99" VGAP="0">
 <icon BUILTIN="bee"/>
 <font BOLD="true"/>
 <hook NAME="MapStyle">
-    <properties show_notes_in_map="false"/>
+    <properties show_icon_for_attributes="false" show_note_icons="false" show_notes_in_map="false"/>
 
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node">
@@ -210,32 +210,7 @@
 </richcontent>
 <edge STYLE="horizontal" WIDTH="thin"/>
 </node>
-<node TEXT="Interne pijl-koppeling, of" ID="ID_1519332680" CREATED="1288542452827" MODIFIED="1323788864205" LINK="#ID_784697063" HGAP="21" VSHIFT="-2" TEXT_SHORTENED="true">
-<edge STYLE="horizontal" WIDTH="thin"/>
-<richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>Zie</b>
-    </p>
-    <ul>
-      <li>
-        <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_1830541497">Groene-pijl koppeling</a>&#160;
-      </li>
-      <li>
-        <i>Help &gt; Documentatie: Menu</i>&#160;&#160;<a href="freeplane.mm#ID_271903009">Bewerken &gt; Koppeling </a>
-      </li>
-    </ul>
-  </body>
-</html>
-
-</richcontent>
-</node>
-<node ID="ID_300419503" CREATED="1319798221748" MODIFIED="1323790229691" HGAP="310" VSHIFT="-34" STYLE="bubble"><richcontent TYPE="NODE">
+<node ID="ID_300419503" CREATED="1319798221748" MODIFIED="1332444881037" HGAP="341" VSHIFT="-61" STYLE="bubble"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -268,7 +243,30 @@
     </ul>
   </body>
 </html>
+</richcontent>
+</node>
+<node TEXT="Interne pijl-koppeling, of" ID="ID_1519332680" CREATED="1288542452827" MODIFIED="1323788864205" LINK="#ID_784697063" HGAP="21" VSHIFT="-2" TEXT_SHORTENED="true">
+<edge STYLE="horizontal" WIDTH="thin"/>
+<richcontent TYPE="NOTE">
 
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Zie</b>
+    </p>
+    <ul>
+      <li>
+        <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_1830541497">Groene-pijl koppeling</a>&#160;
+      </li>
+      <li>
+        <i>Help &gt; Documentatie: Menu</i>&#160;&#160;<a href="freeplane.mm#ID_271903009">Bewerken &gt; Koppeling </a>
+      </li>
+    </ul>
+  </body>
+</html>
 </richcontent>
 </node>
 <node TEXT="Externe pijl-koppeling, en" ID="ID_1537075496" CREATED="1288542605210" MODIFIED="1323788903922" LINK="http://kioo.nl/" HGAP="21" VSHIFT="-3" TEXT_SHORTENED="true">
@@ -293,7 +291,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 </node>
 <node TEXT="Pictogrammen" ID="ID_233656995" CREATED="1288542843639" MODIFIED="1323788954544" HGAP="21" VSHIFT="-7" TEXT_SHORTENED="true">
@@ -321,7 +318,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 </node>
 <node TEXT="% Schijf" ID="ID_1826346574" CREATED="1319793474635" MODIFIED="1323788989785">
@@ -346,7 +342,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="horizontal" WIDTH="thin"/>
 </node>
@@ -367,7 +362,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="horizontal" WIDTH="thin"/>
 </node>
@@ -395,7 +389,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <richcontent TYPE="DETAILS">
 
@@ -432,7 +425,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <richcontent TYPE="DETAILS">
 
@@ -691,7 +683,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1639134686" STARTINCLINATION="-108;-23;" ENDINCLINATION="-108;-23;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
@@ -740,9 +731,9 @@
 </html>
 </richcontent>
 <hook NAME="FreeNode"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-28;99;" ENDINCLINATION="-28;99;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-121;31;" ENDINCLINATION="-121;31;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="120;32;" ENDINCLINATION="120;32;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-28;99;" ENDINCLINATION="-28;99;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <node TEXT="Opmaken tak" ID="ID_1601648824" CREATED="1319796287461" MODIFIED="1321037919116" HGAP="30" VSHIFT="-172">
 <edge STYLE="bezier"/>
 <node TEXT="dikte tak" ID="ID_241458321" CREATED="1288541466835" MODIFIED="1288646970331" VSHIFT="7">
@@ -837,7 +828,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1697684606" STARTINCLINATION="-90;73;" ENDINCLINATION="-90;73;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
@@ -1079,7 +1069,7 @@
 </richcontent>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1828022839" STARTINCLINATION="-46;-50;" ENDINCLINATION="-46;-50;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_654977787" CREATED="1320076533702" MODIFIED="1321039271878" HGAP="510" VSHIFT="267"><richcontent TYPE="NODE">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_654977787" CREATED="1320076533702" MODIFIED="1332446345238" HGAP="510" VSHIFT="267"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1087,10 +1077,11 @@
   </head>
   <body>
     <p>
-      <a href="http://www.kioo.nl/freeplane/CoreMeeting">Demonstratie</a><br/>maken mindmap
+      <a href="http://freeplane.sourceforge.net/doc/1.2.x/Instruction/HOWTO_FreeplaneVideo_nl">Demonstratie</a><br/>maken mindmap
     </p>
   </body>
 </html>
+
 </richcontent>
 <hook NAME="FreeNode"/>
 <cloud COLOR="#ffff00" SHAPE="ARC"/>
@@ -1187,7 +1178,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 </node>
 <node TEXT="Speciaal" POSITION="left" ID="ID_206364326" CREATED="1319795251644" MODIFIED="1321009985956" VSHIFT="20">
@@ -1258,7 +1248,7 @@
 </node>
 <node TEXT="Herinnering (Agenda)" ID="ID_1885496887" CREATED="1288542096079" MODIFIED="1321035618625" HGAP="31" VSHIFT="10" TEXT_SHORTENED="true">
 <hook NAME="plugins/TimeManagementReminder.xml">
-    <Parameters REMINDUSERAT="2077460580480"/>
+    <Parameters REMINDUSERAT="2077460580480" PERIOD="1" UNIT="DAY"/>
 </hook>
 <richcontent TYPE="NOTE">
 
@@ -1327,7 +1317,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="horizontal"/>
 </node>
