@@ -73,27 +73,23 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 
 	/**
 	 */
-	private int getHGap(final Point dragNextPoint, final NodeModel node, final Point dragStartingPoint) {
-		int oldHGap = LocationModel.getModel(node).getHGap();
+	private int getHGapChange(final Point dragNextPoint, final NodeModel node, final Point dragStartingPoint) {
 		final Controller controller = Controller.getCurrentController();
 		final MapView mapView = ((MapView) controller.getViewController().getMapView());
 		int hGapChange = (int) ((dragNextPoint.x - dragStartingPoint.x) / mapView.getZoom());
 		if (node.isLeft()) {
 			hGapChange = -hGapChange;
 		}
-		oldHGap += +hGapChange;
-		return oldHGap;
+		return hGapChange;
 	}
 
 	/**
 	 */
-	private int getNodeShiftY(final Point dragNextPoint, final NodeModel node, final Point dragStartingPoint) {
-		int shiftY = LocationModel.getModel(node).getShiftY();
+	private int getNodeShiftYChange(final Point dragNextPoint, final NodeModel node, final Point dragStartingPoint) {
 		final Controller controller = Controller.getCurrentController();
 		final MapView mapView = ((MapView) controller.getViewController().getMapView());
 		final int shiftYChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / mapView.getZoom());
-		shiftY += shiftYChange;
-		return shiftY;
+		return shiftYChange;
 	}
 
 	/**
@@ -104,13 +100,11 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 
 	/**
 	 */
-	private int getVGap(final Point dragNextPoint, final NodeModel node, final Point dragStartingPoint) {
-		int oldVGap = LocationModel.getModel(node).getVGap();
+	private int getVGapChange(final Point dragNextPoint, final NodeModel node, final Point dragStartingPoint) {
 		final Controller controller = Controller.getCurrentController();
 		final MapView mapView = ((MapView) controller.getViewController().getMapView());
 		final int vGapChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / mapView.getZoom());
-		oldVGap = Math.max(0, oldVGap - vGapChange);
-		return oldVGap;
+		return vGapChange;
 	}
 
 	public boolean isDragActive() {
@@ -226,19 +220,37 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 			if (!Compat.isCtrlEvent(e)) {
 				final NodeModel node = nodeV.getModel();
 				final LocationModel locationModel = LocationModel.createLocationModel(node);
-				locationModel.setShiftY(getNodeShiftY(dragNextPoint, node, dragStartingPoint));
-				locationModel.setHGap(getHGap(dragNextPoint, node, dragStartingPoint));
-				c.getMapController().nodeRefresh(node);
+				final int hGapChange = getHGapChange(dragNextPoint, node, dragStartingPoint);
+				if(hGapChange != 0){
+					int oldHGap = LocationModel.getModel(node).getHGap();
+					locationModel.setHGap(oldHGap + hGapChange);
+					dragStartingPoint.x = point.x;
+				}
+				final int shiftYChange = getNodeShiftYChange(dragNextPoint, node, dragStartingPoint);
+				if(shiftYChange != 0){
+					int shiftY = LocationModel.getModel(node).getShiftY();
+					locationModel.setShiftY(shiftY + shiftYChange);
+					dragStartingPoint.y = point.y;
+				}
+				if(hGapChange != 0 || shiftYChange != 0)
+					c.getMapController().nodeRefresh(node);
+				else
+					return;
 			}
 			else {
 				final NodeModel parentNode = nodeV.getVisibleParentView().getModel();
-				LocationModel.createLocationModel(parentNode).setVGap(
-				    getVGap(dragNextPoint, parentNode, dragStartingPoint));
-				final MapController mapController = c.getMapController();
-				mapController.nodeRefresh(parentNode);
-				mapController.nodeRefresh(nodeV.getModel());
+				final int vGapChange = getVGapChange(dragNextPoint, parentNode, dragStartingPoint);
+				if(vGapChange != 0){
+					int oldVGap = LocationModel.getModel(parentNode).getVGap();
+					LocationModel.createLocationModel(parentNode).setVGap(Math.max(0, oldVGap - vGapChange));
+					final MapController mapController = c.getMapController();
+					mapController.nodeRefresh(parentNode);
+					mapController.nodeRefresh(nodeV.getModel());
+					dragStartingPoint = point;
+				}
+				else
+					return;
 			}
-			dragStartingPoint = point;
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					final Rectangle r = mainView.getBounds();
