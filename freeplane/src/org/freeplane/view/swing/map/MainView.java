@@ -175,12 +175,8 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	private boolean isRightOrOutline() {
-		final NodeView nodeView = getNodeView();
-		if (!nodeView.isLeft() || MapViewLayout.OUTLINE.equals(nodeView.getMap().getLayoutType()))
-			return true;
-		else
-			return false;
-	}
+		return !getNodeView().isLeft();
+		}
 
 	private boolean canBeFolded() {
 		final NodeModel node = getNodeView().getModel();
@@ -248,7 +244,7 @@ public abstract class MainView extends ZoomableLabel {
 	void paintDecoration(final NodeView nodeView, final Graphics2D g) {
 		drawModificationRect(g);
 		paintDragRectangle(g);
-		paintFoldingRectangle(g);
+		paintFoldingCircle(g);
 		final FoldingMark markType = foldingMarkType(getMap().getModeController().getMapController(), nodeView.getModel());
 		if (!markType.equals(FoldingMark.UNFOLDED)) {
 			final Point out = nodeView.isLeft() ? getLeftPoint() : getRightPoint();
@@ -261,7 +257,7 @@ public abstract class MainView extends ZoomableLabel {
         }
 	}
 
-	private void paintFoldingRectangle(Graphics2D g) {
+	private void paintFoldingCircle(Graphics2D g) {
 		if (! canBeFolded())
 			return;
 		final Point mousePosition = getMousePosition();
@@ -582,9 +578,13 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	public boolean isInFoldingRegion(Point p) {
-		return canBeFolded() && p.y >= 0 && p.y < getHeight() 
-		&& p.x >= getWidth() && p.x < getWidth() + 16 && isRightOrOutline() ||
-		p.x >= -16 && p.x < 0	&& !isRightOrOutline();
+		if (canBeFolded() && p.y >= 0 && p.y < getHeight()) {
+	        final boolean isLeft = getNodeView().isLeft();
+	        return isLeft && p.x >= -16 && p.x < 0 
+	        		|| ! isLeft && p.x >= getWidth() && p.x < (getWidth() + 16);
+        }
+        else
+			return false;
 	}
 
 	public MouseArea getMouseArea() {

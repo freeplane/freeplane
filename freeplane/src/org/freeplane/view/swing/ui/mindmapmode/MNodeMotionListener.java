@@ -182,9 +182,8 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		if (isDragActive())
 			return;
 		final MainView v = (MainView) e.getSource();
-		final MouseArea mouseArea = v.whichMouseArea(e.getPoint());
-		if (mouseArea.equals(MouseArea.MOTION)) {
-			v.setMouseArea(mouseArea);
+		if (v.isInDragRegion(e.getPoint())) {
+			v.setMouseArea(MouseArea.MOTION);
 			v.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 			return;
 		}
