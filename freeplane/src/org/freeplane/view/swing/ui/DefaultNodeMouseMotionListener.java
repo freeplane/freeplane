@@ -132,6 +132,10 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		return ((MainView)e.getComponent()).isInFoldingRegion(e.getPoint());
 	}
 
+	protected boolean isInDragRegion(MouseEvent e) {
+		return ((MainView)e.getComponent()).isInDragRegion(e.getPoint());
+	}
+
 	protected Rectangle getControlRegion(final Point2D p) {
 		final int side = 8;
 		return new Rectangle((int) (p.getX() - side / 2), (int) (p.getY() - side / 2), side, side);
@@ -225,11 +229,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			requiredCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 			node.setMouseArea(MouseArea.LINK);
         }
-        else if (node.isInRightFoldingRegion(e.getPoint())){
-        	requiredCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
-        	node.setMouseArea(MouseArea.FOLDING);
-        }
-        else if (node.isInLeftFoldingRegion(e.getPoint())){
+        else if (node.isInFoldingRegion(e.getPoint())){
         	requiredCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
         	node.setMouseArea(MouseArea.FOLDING);
         }

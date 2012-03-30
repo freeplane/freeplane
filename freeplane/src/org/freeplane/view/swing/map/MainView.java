@@ -182,26 +182,6 @@ public abstract class MainView extends ZoomableLabel {
 			return false;
 	}
 
-	public boolean isInLeftFoldingRegion(Point p) {
-		return canBeFolded()
-				&& p.x < getWidth()
-				&& isNearContent(p)	
-				&& !isRightOrOutline();
-	}
-
-	public boolean isInRightFoldingRegion(Point p) {
-		return  canBeFolded() 
-				&& p.x >= 0
-				&& isNearContent(p)	
-				&& isRightOrOutline();
-	}
-
-	private boolean isNearContent(Point p) {
-		return p.y >= 0 && p.y < getHeight() && (
-				p.x >= -16 && p.x < 0
-				||p.x >= getWidth() && p.x < getWidth() + 16);
-	}
-
 	private boolean canBeFolded() {
 		final NodeModel node = getNodeView().getModel();
 		return !node.isRoot() && node.hasChildren();
@@ -581,10 +561,10 @@ public abstract class MainView extends ZoomableLabel {
 	@Override
 	public boolean contains(int x, int y) {
 		final Point p = new Point(x, y);
-		return isInFoldingRegion(p) || isInDraggingRegion(p)|| super.contains(x, y);
+		return isInFoldingRegion(p) || isInDragRegion(p)|| super.contains(x, y);
 	}
 
-	protected boolean isInDraggingRegion(Point p) {
+	public boolean isInDragRegion(Point p) {
 		if (p.y >= 0 && p.y < getHeight()){
 			final NodeView nodeView = getNodeView();
 			if (MapViewLayout.OUTLINE.equals(nodeView.getMap().getLayoutType()))
@@ -602,7 +582,9 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	public boolean isInFoldingRegion(Point p) {
-		return isInRightFoldingRegion(p) || isInLeftFoldingRegion(p);
+		return canBeFolded() && p.y >= 0 && p.y < getHeight() 
+		&& p.x >= getWidth() && p.x < getWidth() + 16 && isRightOrOutline() ||
+		p.x >= -16 && p.x < 0	&& !isRightOrOutline();
 	}
 
 	public MouseArea getMouseArea() {
@@ -610,7 +592,7 @@ public abstract class MainView extends ZoomableLabel {
 	}
 	public MouseArea whichMouseArea(Point point) {
 		final int x = point.x;
-		if(! getNodeView().isRoot() && getDragRectangle().contains(point.x, point.y))
+		if(isInDragRegion(point))
 			return MouseArea.MOTION;
 		if(isInFoldingRegion(point))
 			return MouseArea.FOLDING;
