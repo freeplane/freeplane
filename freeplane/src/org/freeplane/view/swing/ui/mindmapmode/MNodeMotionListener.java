@@ -243,16 +243,11 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 			dragStartingPoint = point;
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					try {
-						final Rectangle r = mainView.getBounds();
-						UITools.convertRectangleToAncestor(mainView.getParent(), r, mapView);
-						final boolean isEventPointVisible = mapView.getVisibleRect().contains(r);
-						if (!isEventPointVisible) {
-							mapView.scrollRectToVisible(r);
-						}
-					}
-					catch (NullPointerException e) {
-						LogUtils.warn(e);
+					final Rectangle r = mainView.getBounds();
+					UITools.convertRectangleToAncestor(mainView.getParent(), r, mapView);
+					final boolean isEventPointVisible = mapView.getVisibleRect().contains(r);
+					if (!isEventPointVisible) {
+						mapView.scrollRectToVisible(r);
 					}
 				}
 			});
