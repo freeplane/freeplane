@@ -112,14 +112,19 @@ class ForkMainView extends MainView {
 	
     @Override
     public Insets getInsets() {
-        return new Insets(0, 2, getEdgeWidth(), 2);
+        return  getInsets(null);
     }
 
 	@Override
     public Insets getInsets(Insets insets) {
-    	if(insets == null)
-    		return getInsets();
-    	insets.set(0, 2, getEdgeWidth(), 2);
+    	final NodeView nodeView = getNodeView();
+        int edgeWidth = nodeView.getEdgeWidth();
+        final EdgeStyle style = nodeView.getEdgeStyle();
+        edgeWidth = style.getNodeLineWidth(edgeWidth);
+		if(insets == null)
+    		insets = new Insets(0, 2, edgeWidth, 2);
+    	else
+    		insets.set(0, 2, edgeWidth, 2);
         return insets;
     }
 }
