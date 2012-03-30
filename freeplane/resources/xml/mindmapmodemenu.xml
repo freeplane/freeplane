@@ -389,6 +389,7 @@
 			</menu_category>
 			<menu_separator />
 			<menu_action action="PropertyAction" accelerator="control COMMA" menu_key="MB_PropertyAction"/>
+			<menu_action action="SetBooleanPropertyAction.extended_folding_region" />
 		</menu_submenu>
 		<menu_submenu name="mindmaps" name_ref="mindmaps">
 			<menu_category name="modes" menu_key="main_menu_modes"/>

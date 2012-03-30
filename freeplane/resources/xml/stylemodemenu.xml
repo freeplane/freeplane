@@ -135,6 +135,9 @@
 			<menu_action accelerator="control A" action="SelectAllAction"/>
 				<menu_action accelerator="control shift A" action="SelectBranchAction"/>
 			</menu_submenu>
+		<menu_submenu name="extras" name_ref="menu_extras">
+			<menu_action action="SetBooleanPropertyAction.extended_folding_region" />
+		</menu_submenu>	
 		<menu_submenu name="mindmaps" name_ref="mindmaps">
 			<menu_category menu_key="main_menu_modes" name="modes"/>
 			<menu_category menu_key="main_menu_navigate_maps" name="navigate"/>

@@ -155,8 +155,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				}
 			}
 		}
-		if (isInFoldingRegion(e) && Compat.isPlainEvent(e)) {
-			/* perform action only if one selected node. */
+		if (isInFoldingRegion(e) && Compat.isPlainEvent(e) && !shouldSelectOnClick(e)) {
 			final MapController mapController = mc.getMapController();
 			mapController.toggleFolded(nodeView.getModel());
 			e.consume();
@@ -165,6 +164,15 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		if(isInside(e))
 			extendSelection(e);
 	}
+
+	private boolean shouldSelectOnClick(MouseEvent e) {
+		if(isInside(e) && Compat.isPlainEvent(e)){
+			final MainView component = (MainView) e.getComponent();
+			NodeView nodeView = component.getNodeView();
+			return !nodeView.isSelected() || Controller.getCurrentController().getSelection().size() != 1;
+		}
+	    return false;
+    }
 
 	protected void loadLink(final String link) {
 		try {
