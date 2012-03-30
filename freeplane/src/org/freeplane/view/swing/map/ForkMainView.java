@@ -39,16 +39,6 @@ class ForkMainView extends MainView {
 
 
 	@Override
-	public int getDeltaX() {
-		final NodeView nodeView = getNodeView();
-		final NodeModel model = nodeView.getModel();
-		if (nodeView.getMap().getModeController().getMapController().isFolded(model) && nodeView.isLeft()) {
-			return super.getDeltaX() + getZoomedFoldingSymbolHalfWidth() * 3;
-		}
-		return super.getDeltaX();
-	}
-
-	@Override
     public
 	Point getLeftPoint() {
 		int edgeWidth = getEdgeWidth();
@@ -73,17 +63,6 @@ class ForkMainView extends MainView {
 			height += getZoomedFoldingSymbolHalfWidth();
 		}
 		return height;
-	}
-
-	@Override
-	protected int getMainViewWidthWithFoldingMark() {
-		int width = getWidth();
-		final NodeView nodeView = getNodeView();
-		final NodeModel model = nodeView.getModel();
-		if (nodeView.getMap().getModeController().getMapController().isFolded(model)) {
-			width += getZoomedFoldingSymbolHalfWidth() * 2 + getZoomedFoldingSymbolHalfWidth();
-		}
-		return width;
 	}
 
 	@Override
@@ -131,24 +110,12 @@ class ForkMainView extends MainView {
 		super.paintDecoration(nodeView, g);
     }
 	
-	@Override
-	void paintFoldingMark(final NodeView nodeView, final Graphics2D g, final Point p, FoldingMark foldingMarkType) {
-		final int zoomedFoldingSymbolHalfWidth = getZoomedFoldingSymbolHalfWidth();
-		if (p.x <= 0) {
-			p.x -= zoomedFoldingSymbolHalfWidth;
-		}
-		else {
-			p.x += zoomedFoldingSymbolHalfWidth;
-		}
-		super.paintFoldingMark(nodeView, g, p, foldingMarkType);
-	}
-	
     @Override
     public Insets getInsets() {
         return new Insets(0, 2, getEdgeWidth(), 2);
     }
 
-    @Override
+	@Override
     public Insets getInsets(Insets insets) {
     	if(insets == null)
     		return getInsets();
