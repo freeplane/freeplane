@@ -1,22 +1,14 @@
 package org.freeplane.view.swing.ui;
 
 import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.KeyboardFocusManager;
-import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
-import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
 import java.net.URI;
-import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.imageio.ImageIO;
 import javax.swing.FocusManager;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -30,7 +22,6 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.SysUtils;
 import org.freeplane.features.link.LinkController;
-import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -40,10 +31,6 @@ import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.MouseArea;
 import org.freeplane.view.swing.map.NodeView;
-import org.freeplane.view.swing.map.NodeViewLayoutAdapter;
-
-import com.thebuzzmedia.imgscalr.Scalr;
-import com.thebuzzmedia.imgscalr.Scalr.Rotation;
 
 /**
  * The MouseMotionListener which belongs to every NodeView

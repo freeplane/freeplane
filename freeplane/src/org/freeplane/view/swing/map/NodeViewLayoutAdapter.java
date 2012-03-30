@@ -26,7 +26,6 @@ import java.awt.Point;
 
 import javax.swing.JComponent;
 
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;

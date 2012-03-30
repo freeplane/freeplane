@@ -23,7 +23,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.SwingUtilities;
 
-import org.freeplane.core.util.Compat;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.TextController;

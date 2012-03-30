@@ -54,7 +54,6 @@ import org.freeplane.features.mode.AController.IActionOnChange;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.SelectionController;
-import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.main.addons.AddOnsController;

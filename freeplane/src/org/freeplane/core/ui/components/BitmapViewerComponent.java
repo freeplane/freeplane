@@ -29,13 +29,10 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import java.util.Map;
 import java.util.concurrent.Future;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
-
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 

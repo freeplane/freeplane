@@ -20,7 +20,6 @@ import org.freeplane.features.clipboard.MindMapNodesSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MainView;
-import org.freeplane.view.swing.map.MouseArea;
 
 /**
  * The NodeDragListener which belongs to every NodeView
