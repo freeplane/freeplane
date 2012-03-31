@@ -22,6 +22,7 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.SysUtils;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -62,9 +63,12 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 						return;
 					}
 					try {
-	                    Controller currentController = Controller.getCurrentController();
-						if (!currentController.getModeController().isBlocked() && currentController.getSelection().size() <= 1) {
-							extendSelection(e);
+	                    Controller controller = Controller.getCurrentController();
+						if (!controller.getModeController().isBlocked()&& controller.getSelection().size() <= 1) {
+							final NodeView nodeV = ((MainView) e.getComponent()).getNodeView();
+							if(nodeV.isDisplayable() && nodeV.getModel().isVisible() 
+									&& nodeV.getMap() == controller.getMapViewManager().getMapViewComponent())
+								controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getModel());
 	                    }
                     }
                     catch (NullPointerException e) {
@@ -191,8 +195,9 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			return;
 		stopTimerForDelayedSelection();
 		final NodeView nodeV = ((MainView) e.getComponent()).getNodeView();
-		if (!((MapView) Controller.getCurrentController().getViewController().getMapView()).isSelected(nodeV)) {
-			extendSelection(e);
+		final Controller controller = Controller.getCurrentController();
+		if (!((MapView) controller.getViewController().getMapView()).isSelected(nodeV)) {
+			controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getModel());
 		}
 	}
 
@@ -287,34 +292,27 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		controlRegionForDelayedSelection = null;
 	}
 
-	public boolean extendSelection(final MouseEvent e) {
+	private void extendSelection(final MouseEvent e) {
 		final Controller controller = Controller.getCurrentController();
 		final MainView mainView = (MainView) e.getComponent();
-        final NodeModel newlySelectedNodeView = mainView.getNodeView().getModel();
+		final NodeModel newlySelectedNode = mainView.getNodeView().getModel();
 		final boolean extend = Compat.isMacOsX() ? e.isMetaDown() : e.isControlDown();
 		final boolean range = e.isShiftDown();
-		/* windows alt, linux altgraph .... */
-		boolean retValue = false;
-		if (extend || range 
-		        || !controller.getSelection().isSelected(newlySelectedNodeView) 
-		        || ! (FocusManager.getCurrentManager().getFocusOwner() instanceof MainView)) {
-			if (!range) {
-				if (extend) {
-					controller.getSelection().toggleSelected(newlySelectedNodeView);
-				}
-				else {
-					controller.getSelection().selectAsTheOnlyOneSelected(newlySelectedNodeView);
-				}
-				retValue = true;
-			}
-			else {
-				controller.getSelection().selectContinuous(newlySelectedNodeView);
-				retValue = true;
-			}
+		final IMapSelection selection = controller.getSelection();
+		if (range && !extend) {
+			selection.selectContinuous(newlySelectedNode);
 		}
-		if (retValue) {
+		else if (extend && !range) {
+			selection.toggleSelected(newlySelectedNode);
+		}
+		else {
+			if (selection.isSelected(newlySelectedNode) && selection.size() == 1 
+			        && FocusManager.getCurrentManager().getFocusOwner() instanceof MainView)
+				return;
+			else {
+				selection.selectAsTheOnlyOneSelected(newlySelectedNode);
+			}
 			e.consume();
 		}
-		return retValue;
 	}
 }
