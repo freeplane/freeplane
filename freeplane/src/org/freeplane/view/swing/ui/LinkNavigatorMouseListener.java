@@ -60,7 +60,7 @@ public class LinkNavigatorMouseListener extends AMouseListener {
 	public void mouseClicked(final MouseEvent e) {
     	final ZoomableLabel component = (ZoomableLabel) e.getComponent();
     	if(e.getClickCount() == 1 && e.getButton() == 1)
-    		if(Compat.isCtrlEvent(e)){
+    		if(Compat.isPlainEvent(e)){
     			final String link = component.getLink(e.getPoint());
     			if(link != null){
     				if (link != null) {

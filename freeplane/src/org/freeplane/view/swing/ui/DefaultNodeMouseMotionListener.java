@@ -147,9 +147,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 					LinkController.getController(mc).loadURL(nodeView.getModel(), e);
 					return;
 				}
-			}
 
-			if(Compat.isCtrlEvent(e)){
 				final String link = component.getLink(e.getPoint());
 				if (link != null) {
 					loadLink(link);
