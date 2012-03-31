@@ -73,7 +73,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 
 	/**
 	 */
-	private int getHGapChange(final Point dragNextPoint, final NodeModel node, final Point dragStartingPoint) {
+	private int getHGapChange(final Point dragNextPoint, final NodeModel node) {
 		final Controller controller = Controller.getCurrentController();
 		final MapView mapView = ((MapView) controller.getViewController().getMapView());
 		int hGapChange = (int) ((dragNextPoint.x - dragStartingPoint.x) / mapView.getZoom());
@@ -85,7 +85,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 
 	/**
 	 */
-	private int getNodeShiftYChange(final Point dragNextPoint, final NodeModel node, final Point dragStartingPoint) {
+	private int getNodeShiftYChange(final Point dragNextPoint, final NodeModel node) {
 		final Controller controller = Controller.getCurrentController();
 		final MapView mapView = ((MapView) controller.getViewController().getMapView());
 		final int shiftYChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / mapView.getZoom());
@@ -100,7 +100,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 
 	/**
 	 */
-	private int getVGapChange(final Point dragNextPoint, final NodeModel node, final Point dragStartingPoint) {
+	private int getVGapChange(final Point dragNextPoint, final NodeModel node) {
 		final Controller controller = Controller.getCurrentController();
 		final MapView mapView = ((MapView) controller.getViewController().getMapView());
 		final int vGapChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / mapView.getZoom());
@@ -220,17 +220,13 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 			if (!Compat.isCtrlEvent(e)) {
 				final NodeModel node = nodeV.getModel();
 				final LocationModel locationModel = LocationModel.createLocationModel(node);
-				final int hGapChange = getHGapChange(dragNextPoint, node, dragStartingPoint);
+				final int hGapChange = getHGapChange(dragNextPoint, node);
 				if(hGapChange != 0){
-					int oldHGap = LocationModel.getModel(node).getHGap();
-					locationModel.setHGap(oldHGap + hGapChange);
-					dragStartingPoint.x = point.x;
+					locationModel.setHGap(originalHGap + hGapChange);
 				}
-				final int shiftYChange = getNodeShiftYChange(dragNextPoint, node, dragStartingPoint);
+				final int shiftYChange = getNodeShiftYChange(dragNextPoint, node);
 				if(shiftYChange != 0){
-					int shiftY = LocationModel.getModel(node).getShiftY();
-					locationModel.setShiftY(shiftY + shiftYChange);
-					dragStartingPoint.y = point.y;
+					locationModel.setShiftY(originalShiftY + shiftYChange);
 				}
 				if(hGapChange != 0 || shiftYChange != 0)
 					c.getMapController().nodeRefresh(node);
@@ -239,14 +235,12 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 			}
 			else {
 				final NodeModel parentNode = nodeV.getVisibleParentView().getModel();
-				final int vGapChange = getVGapChange(dragNextPoint, parentNode, dragStartingPoint);
+				final int vGapChange = getVGapChange(dragNextPoint, parentNode);
 				if(vGapChange != 0){
-					int oldVGap = LocationModel.getModel(parentNode).getVGap();
-					LocationModel.createLocationModel(parentNode).setVGap(Math.max(0, oldVGap - vGapChange));
+					LocationModel.createLocationModel(parentNode).setVGap(Math.max(0, originalParentVGap - vGapChange));
 					final MapController mapController = c.getMapController();
 					mapController.nodeRefresh(parentNode);
 					mapController.nodeRefresh(nodeV.getModel());
-					dragStartingPoint = point;
 				}
 				else
 					return;
