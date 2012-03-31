@@ -6,7 +6,6 @@ public enum EdgeStyle {
     EDGESTYLE_BEZIER("bezier", 1f), EDGESTYLE_HIDDEN("hide_edge", 1f), EDGESTYLE_HORIZONTAL("horizontal", 1f), 
     EDGESTYLE_LINEAR("linear", 1f), EDGESTYLE_SHARP_BEZIER("sharp_bezier", 0.25f), EDGESTYLE_SHARP_LINEAR("sharp_linear", 0f),
 	EDGESTYLE_SUMMARY("summary", 1f);
-	static final int MAX_NODE_LINE_WIDTH = 8;
 	private String name;
 	private float nodeLineWeight;
 
@@ -24,9 +23,6 @@ public enum EdgeStyle {
 		final int nlWidth = (int) (nodeLineWeight * width);
 		if (nlWidth == 0) {
 			return 1;
-		}
-		if (nlWidth > MAX_NODE_LINE_WIDTH) {
-			return MAX_NODE_LINE_WIDTH;
 		}
 		return nlWidth;
 	}

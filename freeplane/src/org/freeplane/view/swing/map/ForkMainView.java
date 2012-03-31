@@ -97,10 +97,16 @@ class ForkMainView extends MainView {
 	}
 
 	@Override
+	protected void paintBackground(final Graphics2D graphics, final Color color) {
+		graphics.setColor(color);
+		graphics.fillRect(0, 0, getWidth() - 1, getHeight() - getEdgeWidth());
+	}
+
+	@Override
 	void paintDecoration(final NodeView nodeView, final Graphics2D g) {
 		final Stroke oldStroke = g.getStroke();
 		float edgeWidth  = getEdgeWidth();
-		g.setStroke(new BasicStroke(edgeWidth));
+		g.setStroke(new BasicStroke(edgeWidth, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER));
 		final Color oldColor = g.getColor();
 		g.setColor(nodeView.getEdgeColor());
 		Point leftLinePoint = getLeftPoint();

@@ -908,7 +908,7 @@ public class NodeView extends JComponent implements INodeView {
 	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
 	 */
 	@Override
-	public void paint(final Graphics g) {
+	public void paintComponent(final Graphics g) {
 		if(getMainView() == null)
 			return;
 		final PaintingMode paintingMode = map.getPaintingMode();
@@ -927,7 +927,6 @@ public class NodeView extends JComponent implements INodeView {
                     paintClouds(g2);
 					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 			}
-			super.paint(g);
 			switch (paintingMode) {
 				case NODES:
 				case ALL:
@@ -938,9 +937,7 @@ public class NodeView extends JComponent implements INodeView {
 					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 			}
 		}
-		else {
-			super.paint(g);
-		}
+		super.paintComponent(g);
 		if (PAINT_DEBUG_BORDER && isSelected()){
 			final int spaceAround = getZoomed(SPACE_AROUND);
 			g.drawRect(spaceAround, spaceAround, getWidth() - 2 * spaceAround, getHeight() - 2 * spaceAround);
