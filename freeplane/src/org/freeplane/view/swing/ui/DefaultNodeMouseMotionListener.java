@@ -165,7 +165,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			e.consume();
 			return;
 		}
-		if(isInside(e))
+		if(isInside(e) && ! e.isAltDown())
 			extendSelection(e);
 	}
 
@@ -305,7 +305,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		else if (extend && !range) {
 			selection.toggleSelected(newlySelectedNode);
 		}
-		else {
+		if(extend == range){
 			if (selection.isSelected(newlySelectedNode) && selection.size() == 1 
 			        && FocusManager.getCurrentManager().getFocusOwner() instanceof MainView)
 				return;
