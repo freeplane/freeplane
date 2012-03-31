@@ -252,10 +252,10 @@ public abstract class MainView extends ZoomableLabel {
 		paintDragRectangle(g);
 		paintFoldingMark(nodeView, g);
         if (isShortened()) {
-        	final int zoomedFoldingSymbolHalfWidth = getZoomedFoldingSymbolHalfWidth();
-			int width = zoomedFoldingSymbolHalfWidth * 7 / 5;
+        	final int size = getZoomedFoldingSymbolHalfWidth();
+			int width = size * 7 / 3;
             int x = nodeView.isLeft() ? getWidth() : 0 - width;
-            int height = zoomedFoldingSymbolHalfWidth;
+            int height = size * 5 / 3;
             int y = (getHeight() - height) / 2;
             FoldingMark.SHORTENED.draw(g, nodeView, new Rectangle(x, y, width, height));
         }

@@ -82,6 +82,7 @@ class DrawableTriangle extends DrawableShape{
 		final Polygon polygon = new Polygon();
 		polygon.addPoint(r.x, r.y);
 		polygon.addPoint(r.x + r.width, r.y);
+		polygon.addPoint(r.x + (r.width + 1) / 2, r.y + r.height);
 		polygon.addPoint(r.x + r.width / 2, r.y + r.height);
 		polygon.addPoint(r.x, r.y);
 		return polygon;
