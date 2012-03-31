@@ -115,7 +115,7 @@ def checkFreeplaneVersion(Map configMap) {
 def parseFreeplaneVersion(String propertyName, String versionString) {
 	try {
 		if (versionString)
-			return FreeplaneVersion.getVersion(versionString)
+			return FreeplaneVersion.getVersion(versionString.replaceFirst('^v', ''))
 		return null
 	}
 	catch (Exception e) {
@@ -521,7 +521,7 @@ try {
 	if (confirmInstall(addOn, installedAddOn)) {
 		def message
 		if (isUpdate) {
-			AddOnsController.getController().deInstall(installedAddOn)
+			AddOnsController.getController().deinstall(installedAddOn)
 			message = textUtils.format('addons.installer.success.update', installedAddOn.version, addOn.version)
 		}
 		else {

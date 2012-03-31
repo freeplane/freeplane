@@ -28,6 +28,7 @@ import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IconNotFound;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.main.addons.AddOnProperties;
 import org.freeplane.main.addons.AddOnsController;
@@ -192,7 +193,7 @@ public class ManageAddOnsPanel extends JPanel {
 
 	private AbstractAction createConfigureAction(final AddOnTableModel tableModel) {
 		return new AbstractAction() {
-			public void actionPerformed(ActionEvent e) {
+		    public void actionPerformed(ActionEvent e) {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);
 				if (!addOn.supportsOperation(AddOnProperties.OP_CONFIGURE)) {
@@ -254,13 +255,22 @@ public class ManageAddOnsPanel extends JPanel {
 					    getText("really.deinstall", TextUtils.getText(addOn.getNameKey())), getText("deinstall"),
 					    JOptionPane.OK_CANCEL_OPTION);
 					if (result == JOptionPane.OK_OPTION) {
-						AddOnsController.getController().deInstall(addOn);
-						tableModel.removeAddOn(addOn);
+					    deinstall(tableModel, addOn);
 						repaint();
 						UITools.informationMessage(getText("deinstallation.success", addOn.getTranslatedName()));
 					}
 				}
 			}
+
+            private void deinstall(final AddOnTableModel tableModel, final AddOnProperties addOn) {
+                try {
+                    AddOnsController.getController().deinstall(addOn);
+                    tableModel.removeAddOn(addOn);
+                }
+                finally {
+                    Controller.getCurrentController().getViewController().setWaitingCursor(false);
+                }
+            }
 		};
 	}
 
