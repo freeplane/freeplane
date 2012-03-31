@@ -6,6 +6,7 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
+import java.awt.dnd.DropTarget;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -52,6 +53,8 @@ import org.freeplane.view.swing.map.NodeView;
 @NodeHookDescriptor(hookName = "ExternalObject", //
 onceForMap = false)
 public class ViewerController extends PersistentNodeHook implements INodeViewLifeCycleListener, IExtension {
+	private static final MExternalImageDropListener DTL = new MExternalImageDropListener();
+
 	private final class CombiFactory implements IViewerFactory {
 		private IViewerFactory factory;
 
@@ -511,6 +514,10 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		viewers.add(view);
 		viewer.setBounds(viewer.getX() - 5, viewer.getY() - 5, viewer.getWidth() + 15, viewer.getHeight() + 15);
 		view.addContent(viewer, VIEWER_POSITION);
+		if(view.getMap().getModeController().canEdit()){
+			final DropTarget dropTarget = new DropTarget(viewer, DTL);
+			dropTarget.setActive(true);
+		}
 		if(view.isShortened())
 			viewer.setVisible(false);
 		else {
