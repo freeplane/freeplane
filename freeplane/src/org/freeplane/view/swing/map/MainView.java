@@ -671,7 +671,7 @@ public abstract class MainView extends ZoomableLabel {
 				y = 0;
 			}
 			height += zoomedFoldingSymbolHalfWidth;
-			final Rectangle foldingRectangle = new Rectangle(x, y, width, height);
+			final Rectangle foldingRectangle = new Rectangle(x-1, y-1, width+2, height+2);
 			final MapView map = nodeView.getMap();
 			UITools.convertRectangleToAncestor(this, foldingRectangle, map);
 			map.paintImmediately(foldingRectangle);
