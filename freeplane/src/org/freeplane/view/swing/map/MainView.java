@@ -235,7 +235,7 @@ public abstract class MainView extends ZoomableLabel {
 		}
 	}
 
-	private FoldingMark foldingMarkType(MapController mapController, NodeModel node) {
+	public FoldingMark foldingMarkType(MapController mapController, NodeModel node) {
 		if (mapController.isFolded(node) && (node.isVisible() || node.getFilterInfo().isAncestor())) {
 			return FoldingMark.ITSELF_FOLDED;
 		}
@@ -264,6 +264,7 @@ public abstract class MainView extends ZoomableLabel {
 	protected void paintFoldingMark(final NodeView nodeView, final Graphics2D g) {
 		if (! canBeFolded())
 			return;
+		final FoldingMark markType = foldingMarkType(getMap().getModeController().getMapController(), nodeView.getModel());
 	    final Point mousePosition = getMousePosition();
 		if(mousePosition != null){
 			final int width = Math.max(FOLDING_CIRCLE_WIDTH, getZoomedFoldingSymbolHalfWidth() * 2);
@@ -274,10 +275,16 @@ public abstract class MainView extends ZoomableLabel {
 				p.y -= width/2;
 			if(nodeView.isLeft())
 				p.x -= width;
-			FoldingMark.FOLDING_CIRCLE.draw(g, nodeView, new Rectangle(p.x, p.y, width, width));
+			final FoldingMark foldingCircle;
+			if(markType.equals(FoldingMark.UNFOLDED)) {
+	            foldingCircle = FoldingMark.FOLDING_CIRCLE_UNFOLDED;
+            }
+			else{
+				foldingCircle = FoldingMark.FOLDING_CIRCLE_FOLDED;
+			}
+            foldingCircle.draw(g, nodeView, new Rectangle(p.x, p.y, width, width));
 		}
 		else{
-			final FoldingMark markType = foldingMarkType(getMap().getModeController().getMapController(), nodeView.getModel());
 			final int halfWidth = getZoomedFoldingSymbolHalfWidth();
 			final Point p = getNodeView().isLeft() ? getLeftPoint() : getRightPoint();
 			if (p.x <= 0) {

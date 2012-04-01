@@ -28,6 +28,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.view.swing.map.FoldingMark;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.MouseArea;
@@ -145,10 +146,11 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		if (nodeView == null)
 			return;
 
+		final NodeModel node = nodeView.getModel();
 		if(e.getButton() == 1){
 			if(Compat.isPlainEvent(e)){
 				if (component.isInFollowLinkRegion(e.getX())) {
-					LinkController.getController(mc).loadURL(nodeView.getModel(), e);
+					LinkController.getController(mc).loadURL(node, e);
 					return;
 				}
 
@@ -161,7 +163,8 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		}
 		if (isInFoldingRegion(e) && Compat.isPlainEvent(e) && !shouldSelectOnClick(e)) {
 			final MapController mapController = mc.getMapController();
-			mapController.toggleFolded(nodeView.getModel());
+			boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node));
+			mapController.setFolded(node, fold);
 			e.consume();
 			return;
 		}
