@@ -16,6 +16,7 @@ public class FormulaUtils {
 	// dependency data. It has to be tested but it should "only" lead to some missing updates.
 	private static final boolean ENABLE_CACHING = !Controller.getCurrentController().getResourceController()
 	    .getBooleanProperty("formula_disable_caching");
+    private static final boolean DEBUG_FORMULA_EVALUATION = false;
 
 	/** evaluate text as a script if it starts with '='.
 	 * @return the evaluation result for script and the original text otherwise 
@@ -38,7 +39,8 @@ public class FormulaUtils {
 	 * @return the evaluation result. 
 	 * @throws ExecuteScriptException */
 	public static Object eval(final NodeModel nodeModel, final ScriptContext scriptContext, final String text) {
-		//		System.err.println(nodeModel.getID() + ": " + text);
+	    if (DEBUG_FORMULA_EVALUATION)
+	        System.err.println("eval " + nodeModel.getID() + ": " + text);
 		if (!scriptContext.push(nodeModel, text)) {
 			throw new StackOverflowError(TextUtils.format("formula.error.circularReference",
 			    HtmlUtils.htmlToPlain(scriptContext.getStackFront().getText())));
@@ -49,17 +51,22 @@ public class FormulaUtils {
 				final FormulaCache formulaCache = getFormulaCache(nodeModel.getMap());
 				Object value = formulaCache.get(nodeModel, text);
 				if (value == null) {
-					//				System.out.println("eval(" + text + ")");
 					try {
 						value = ScriptingEngine.executeScript(nodeModel, text, scriptContext, restrictedPermissions);
 						formulaCache.put(nodeModel, text, value);
+						if (DEBUG_FORMULA_EVALUATION)
+						    System.err.println("eval: cache miss: recalculated: " + text);
 					}
 					catch (ExecuteScriptException e) {
 						formulaCache.put(nodeModel, text, e);
+				        if (DEBUG_FORMULA_EVALUATION)
+				            System.err.println("eval: cache miss: exception for: " + text);
 						throw e;
 					}
 				}
 				else {
+			        if (DEBUG_FORMULA_EVALUATION)
+			            System.err.println("eval: cache hit for: " + text);
 					scriptContext.accessNode(nodeModel);
 				}
 				return value;
@@ -122,7 +129,8 @@ public class FormulaUtils {
 	}
 
 	public static void clearCache(MapModel map) {
-		//		System.out.println("clearing formula cache for " + map.getTitle());
+        if (DEBUG_FORMULA_EVALUATION)
+            System.out.println("clearing formula cache for " + map.getTitle());
 		map.removeExtension(FormulaCache.class);
 		map.removeExtension(EvaluationDependencies.class);
 	}
