@@ -161,7 +161,9 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				}
 			}
 		}
-		if (isInFoldingRegion(e) && Compat.isPlainEvent(e) && !shouldSelectOnClick(e)) {
+		if ((isInFoldingRegion(e) && Compat.isPlainEvent(e) 
+				|| (isInFoldingRegion(e) || isInside(e)) && Compat.isCtrlShiftEvent(e)) 
+				&& !shouldSelectOnClick(e)) {
 			final MapController mapController = mc.getMapController();
 			boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node));
 			mapController.setFolded(node, fold);
@@ -173,7 +175,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	}
 
 	private boolean shouldSelectOnClick(MouseEvent e) {
-		if(isInside(e) && Compat.isPlainEvent(e)){
+		if(isInside(e)){
 			final MainView component = (MainView) e.getComponent();
 			NodeView nodeView = component.getNodeView();
 			return !nodeView.isSelected() || Controller.getCurrentController().getSelection().size() != 1;
