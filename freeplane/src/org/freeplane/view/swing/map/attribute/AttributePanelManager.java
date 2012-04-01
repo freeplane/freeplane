@@ -42,6 +42,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.format.FormatController;
+import org.freeplane.features.format.FormattedFormula;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.INodeChangeListener;
@@ -158,6 +159,10 @@ public class AttributePanelManager{
                                            final Object toFormat) {
                     if (formatChooser.getSelectedItem() == null)
                         return null;
+                    if (toFormat instanceof String && ((String)toFormat).startsWith("="))
+                        return new FormattedFormula((String) toFormat, newFormat.getPattern());
+                    if (toFormat instanceof FormattedFormula)
+                        return new FormattedFormula(((FormattedFormula) toFormat).getObject(), newFormat.getPattern());
                     return newFormat.formatObject(toFormat);
                 }
             });
