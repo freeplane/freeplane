@@ -34,6 +34,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -206,6 +207,7 @@ public class AttributePanelManager{
             final String NODE_FORMAT = "OptionPanel.nodeformat"; // duplicated from StyleEditorPanel
             formatChooser.setToolTipText(TextUtils.getRawText(NODE_FORMAT + ".tooltip"));
             formatChooser.setAlignmentX(Component.LEFT_ALIGNMENT);
+            formatChooser.setBorder(new TitledBorder(TextUtils.getText("value_format")));
             return formatChooser;
         }
 
