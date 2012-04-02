@@ -6,9 +6,11 @@ import java.net.URL;
 
 import javax.swing.SwingUtilities;
 
+import org.docear.plugin.backup.actions.DocearAllowUploadChooserAction;
 import org.docear.plugin.backup.listeners.MapLifeCycleListener;
 import org.docear.plugin.backup.listeners.PropertyListener;
 import org.docear.plugin.communications.CommunicationsController;
+import org.docear.plugin.core.DocearController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
@@ -35,9 +37,13 @@ public class BackupController {
 		ResourceController.getResourceController().addPropertyChangeListener(propertyListener);
 		
 		addPluginDefaults();
-		
+		Controller.getCurrentModeController().addAction(new DocearAllowUploadChooserAction());
+	
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
+				if(DocearController.getController().isDocearFirstStart()) {
+					DocearAllowUploadChooserAction.showDialog();
+				}
 				backupRunner.run();			
 			}		
 		});
@@ -67,12 +73,12 @@ public class BackupController {
 		ResourceController.getResourceController().setProperty("docear_save_backup", b);
 	}
 	
-	public boolean isInformationRetrievalEnabled() {
-		return ResourceController.getResourceController().getBooleanProperty("docear_allow_information_retrieval");
+	public int getInformationRetrievalCode() {
+		return Integer.parseInt(ResourceController.getResourceController().getProperty("docear_information_retrieval", "0"));
 	}
 	
-	public void setInformationRetrievalEnabled(boolean b) {
-		ResourceController.getResourceController().setProperty("docear_allow_information_retrieval", b);
+	public void setInformationRetrievalCode(int code) {
+		ResourceController.getResourceController().setProperty("docear_information_retrieval", ""+code);
 	}
 	
 	public File getBackupDirectory() {		
@@ -95,7 +101,7 @@ public class BackupController {
 	public boolean isInformationRetrievalAllowed() {
 		CommunicationsController commCtrl = CommunicationsController.getController();
 		boolean allowed = !isEmpty(commCtrl.getAccessToken()) || !isEmpty(commCtrl.getUserName());		
-		return allowed && isInformationRetrievalEnabled() && commCtrl.allowTransmission();
+		return allowed && getInformationRetrievalCode()>0 && commCtrl.allowTransmission();
 	}
 	
 	private boolean isEmpty(String s) {

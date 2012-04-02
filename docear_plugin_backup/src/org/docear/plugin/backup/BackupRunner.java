@@ -44,7 +44,7 @@ public class BackupRunner {
 						LogUtils.warn(e);
 					}
 					try {
-						sleep(600 * backupMinutes);
+						sleep(60000 * backupMinutes);
 					} catch (InterruptedException e) {						
 					}
 				}

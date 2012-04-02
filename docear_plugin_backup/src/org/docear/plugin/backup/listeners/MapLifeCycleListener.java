@@ -37,7 +37,7 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 		}
 	}
 	
-	private Properties getMapProperties(MapModel map, boolean backup, boolean informationRetrieval) {
+	private Properties getMapProperties(MapModel map, boolean backup, int informationRetrieval) {
 		DocearController docearController = DocearController.getController();
 		
 		DocearMapModelExtension dmme = map.getExtension(DocearMapModelExtension.class);
@@ -48,7 +48,7 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 		properties.put("mindmap_id", dmme.getMapId());
 		properties.put("timestamp", ""+System.currentTimeMillis());
 		properties.put("backup", new Boolean(backup).toString());
-		properties.put("allow_ir", new Boolean(informationRetrieval).toString());
+		properties.put("allow_ir", ""+informationRetrieval);
 		properties.put("map_version", dmme.getVersion());
 		properties.put("application_name", docearController.getApplicationName());
 		properties.put("application_version", docearController.getApplicationVersion());
@@ -70,7 +70,7 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 			return;
 		}
 		
-		final Properties meta = getMapProperties(map, backup, ir);
+		final Properties meta = getMapProperties(map, backup, BackupController.getController().getInformationRetrievalCode());
 		if (meta == null) {
 			return;
 		}

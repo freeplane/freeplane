@@ -1,4 +1,4 @@
-package org.docear.plugin.core.actions;
+package org.docear.plugin.backup.actions;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
-import org.docear.plugin.core.ui.DocearIRChoiceDialogPanel;
+import org.docear.plugin.backup.components.dialog.DocearIRChoiceDialogPanel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
@@ -50,6 +50,7 @@ public class DocearAllowUploadChooserAction extends AFreeplaneAction {
 		chooser.integrateButtons(dialogButtons);
 		
 		JOptionPane.showOptionDialog(UITools.getFrame(), chooser, TextUtils.getText("docear.uploadchooser.title"), JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, dialogButtons, 1);
+		
 	}
 
 

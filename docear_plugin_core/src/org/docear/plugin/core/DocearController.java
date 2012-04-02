@@ -18,6 +18,7 @@ import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
 import org.docear.plugin.core.logger.DocearEventLogger;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
@@ -30,6 +31,7 @@ public class DocearController implements IDocearEventListener {
 	private final static String PLACEHOLDER_PROFILENAME = "@@PROFILENAME@@";
 	private static final String DEFAULT_LIBRARY_PATH = "workspace:/"+PLACEHOLDER_PROFILENAME+"/library";
 	private final static Pattern PATTERN = Pattern.compile(PLACEHOLDER_PROFILENAME);
+	static final String DOCEAR_FIRST_RUN_PROPERTY = "docear.already_initialized";
 	
 	private String applicationName;
 	private String applicationVersion;
@@ -47,12 +49,15 @@ public class DocearController implements IDocearEventListener {
 	private IDocearLibrary currentLibrary = null;
 	
 	private final Set<String> workingThreads = new HashSet<String>();
+	private final boolean firstRun;
+	
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 	
 	protected DocearController() {
+		firstRun = !ResourceController.getResourceController().getBooleanProperty(DOCEAR_FIRST_RUN_PROPERTY);
 		setApplicationIdentifiers();
 		addDocearEventListener(this);
 	}
@@ -60,6 +65,10 @@ public class DocearController implements IDocearEventListener {
 	 * METHODS
 	 **********************************************************************************/
 
+	public boolean isDocearFirstStart() {
+		return firstRun;
+	}
+	
 	public static DocearController getController() {
 		return docearController;
 	}

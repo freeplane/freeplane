@@ -209,7 +209,10 @@ public class CommunicationsController extends ALanguageController implements Act
 
 					ResourceController.getResourceController().setProperty(propertyUserName, username);
 					if (registeredUser) {
-						((StringProperty) Controller.getCurrentController().getOptionPanelController().getPropertyControl(propertyUserName)).setValue(username);
+						IPropertyControl ctrl = Controller.getCurrentController().getOptionPanelController().getPropertyControl(propertyUserName);
+						if(ctrl != null) {
+							((StringProperty) ctrl).setValue(username);
+						}
 					}
 					ResourceController.getResourceController().setProperty(propertyAccessToken, token);
 					InputStream is = response.getEntityInputStream();
@@ -231,7 +234,10 @@ public class CommunicationsController extends ALanguageController implements Act
 
 					ResourceController.getResourceController().setProperty(propertyUserName, "");
 					if (registeredUser) {
-						((StringProperty) Controller.getCurrentController().getOptionPanelController().getPropertyControl(propertyUserName)).setValue("");
+						IPropertyControl ctrl = Controller.getCurrentController().getOptionPanelController().getPropertyControl(propertyUserName);
+						if(ctrl != null) {
+							((StringProperty) ctrl).setValue("");
+						}
 					}
 					ResourceController.getResourceController().setProperty(propertyAccessToken, "");
 				}
@@ -239,7 +245,7 @@ public class CommunicationsController extends ALanguageController implements Act
 				
 				if (!silent) {
 					dialogButtons[0].doClick();
-					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.format("docear.service.connect.failure", "-1", e.getCause().getMessage()), TextUtils.getText("docear.service.connect.failure.title"), JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.format("docear.service.connect.failure", "-1", e.getMessage()), TextUtils.getText("docear.service.connect.failure.title"), JOptionPane.ERROR_MESSAGE);
 				}
 				DocearController.getController().dispatchDocearEvent(new DocearEvent(FiletransferClient.class, FiletransferClient.NO_CONNECTION));
 				

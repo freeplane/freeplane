@@ -69,7 +69,6 @@ public class CoreConfiguration extends ALanguageController {
 	private static final String OPEN_FREEPLANE_SITE_ACTION = "OpenFreeplaneSiteAction";
 	private static final String WEB_DOCEAR_LOCATION = "webDocearLocation";
 	private static final String WEB_FREEPLANE_LOCATION = "webFreeplaneLocation";
-	private static final String DOCEAR_FIRST_RUN_PROPERTY = "docear.already_initialized";
 	
 
 	public static final String DOCUMENT_REPOSITORY_PATH = "@@literature_repository@@";
@@ -81,17 +80,15 @@ public class CoreConfiguration extends ALanguageController {
 	public static final NodeAttributeObserver projectPathObserver = new NodeAttributeObserver();
 	public static final NodeAttributeObserver referencePathObserver = new NodeAttributeObserver();
 	public static final NodeAttributeObserver repositoryPathObserver = new NodeAttributeObserver();
-	private final boolean firstRun;
+	
 		
 	public CoreConfiguration(ModeController modeController) {			
 		LogUtils.info("org.docear.plugin.core.CoreConfiguration() initializing...");
-		firstRun = !ResourceController.getResourceController().getBooleanProperty(DOCEAR_FIRST_RUN_PROPERTY);
+		
 		init(modeController);
 	}
 	
-	public boolean isDocearFirstStart() {
-		return firstRun;
-	}
+	
 	
 	private void init(ModeController modeController) {
 		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.APPLICATION_STARTED);
@@ -243,13 +240,13 @@ public class CoreConfiguration extends ALanguageController {
 		if (defaults == null)
 			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
 		Controller.getCurrentController().getResourceController().addDefaults(defaults);
-		if (resController.getProperty("ApplicationName").equals("Docear") && isDocearFirstStart()) {
+		if (resController.getProperty("ApplicationName").equals("Docear") && DocearController.getController().isDocearFirstStart()) {
 			Controller.getCurrentController().getResourceController().setProperty("selection_method", "selection_method_by_click");
 			Controller.getCurrentController().getResourceController().setProperty("links", "relative_to_workspace");
 			Controller.getCurrentController().getResourceController().setProperty("save_folding", "always_save_folding");
 			Controller.getCurrentController().getResourceController().setProperty("leftToolbarVisible", "false");			
 			Controller.getCurrentController().getResourceController().setProperty("styleScrollPaneVisible", "true");
-			Controller.getCurrentController().getResourceController().setProperty(DOCEAR_FIRST_RUN_PROPERTY, true);			
+			Controller.getCurrentController().getResourceController().setProperty(DocearController.DOCEAR_FIRST_RUN_PROPERTY, true);			
 		}
 		AFreeplaneAction previousAction = Controller.getCurrentController().getAction("QuitAction");
 		if(previousAction != null) {
