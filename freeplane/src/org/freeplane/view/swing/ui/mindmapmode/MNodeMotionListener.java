@@ -34,6 +34,7 @@ import javax.swing.JScrollPane;
 import javax.swing.Timer;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.DoubleClickTimer;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.ui.components.UITools;
@@ -63,8 +64,11 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 	private int originalHGap;
 	private int originalParentVGap;
 	private int originalShiftY;
+	final private DoubleClickTimer linkTimer;
 
 	public MNodeMotionListener() {
+		 linkTimer = new DoubleClickTimer();
+		 foldingTimer.setDelay(DoubleClickTimer.MAX_TIME_BETWEEN_CLICKS);
 	}
 
 	Point getDragStartingPoint() {
@@ -111,29 +115,14 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		return dragStartingPoint != null;
 	}
 
-	static final private int MAX_TIME_BETWEEN_CLICKS;
-	static {
-		final Object p = Toolkit.getDefaultToolkit().getDesktopProperty("awt.multiClickInterval");
-		MAX_TIME_BETWEEN_CLICKS = p instanceof Integer ? (Integer) p : 250;
-	}
-	private Timer linkTimer = null;
 
 	@Override
 	protected void loadLink(final String link) {
-		cancelLinkLoading();
-		linkTimer = new Timer(MAX_TIME_BETWEEN_CLICKS, new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				linkTimer = null;
+		linkTimer.start(new Runnable() {
+			public void run() {
 				MNodeMotionListener.super.loadLink(link);
 			}
 		});
-		linkTimer.setRepeats(false);
-		linkTimer.start();
-	}
-
-	protected void cancelLinkLoading() {
-		if (linkTimer != null)
-			linkTimer.stop();
 	}
 
 	@Override
@@ -161,7 +150,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 			}
 			else {
 				if (Compat.isPlainEvent(e) && !mainView.isInFoldingRegion(e.getPoint())) {
-					cancelLinkLoading();
+					linkTimer.cancel();
 					final MTextController textController = (MTextController) MTextController.getController();
 					textController.getEventQueue().activate(e);
 					textController.edit(FirstAction.EDIT_CURRENT, false);
@@ -191,6 +180,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		foldingTimer.cancel();
 		if (isInDragRegion(e)) {
 			if ((e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) == (InputEvent.BUTTON1_DOWN_MASK)) {
 				stopTimerForDelayedSelection();

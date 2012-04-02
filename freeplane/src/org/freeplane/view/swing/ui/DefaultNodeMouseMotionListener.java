@@ -3,6 +3,8 @@ package org.freeplane.view.swing.ui;
 import java.awt.Cursor;
 import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.net.URI;
@@ -17,6 +19,7 @@ import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ControllerPopupMenuListener;
+import org.freeplane.core.ui.DoubleClickTimer;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
@@ -87,11 +90,13 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 // 	final private ModeController mc;
 	final private ControllerPopupMenuListener popupListener;
 	private Timer timerForDelayedSelection;
+	protected final DoubleClickTimer foldingTimer;
 	private boolean wasFocused;
 
 	public DefaultNodeMouseMotionListener() {
 //		mc = modeController;
 		popupListener = new ControllerPopupMenuListener();
+		foldingTimer = new DoubleClickTimer();
 	}
 
 	private void createTimer(final MouseEvent e) {
@@ -134,7 +139,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	}
 
 	public void mouseClicked(final MouseEvent e) {
-		ModeController mc = Controller.getCurrentController().getModeController();
+		final ModeController mc = Controller.getCurrentController().getModeController();
 		if(Compat.isMacOsX()){
 			final JPopupMenu popupmenu = mc.getUserInputListenerFactory().getNodePopupMenu();
 			if(popupmenu.isShowing()){
@@ -151,13 +156,27 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			if(Compat.isPlainEvent(e)){
 				if (component.isInFollowLinkRegion(e.getX())) {
 					LinkController.getController(mc).loadURL(node, e);
+					e.consume();
 					return;
 				}
 
 				final String link = component.getLink(e.getPoint());
 				if (link != null) {
 					loadLink(link);
+					e.consume();
 					return;
+				}
+				
+				if(isInside(e) && e.getClickCount() == 1){
+					final IMapSelection selection = mc.getController().getSelection();
+					final boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mc.getMapController(), node));
+					if(selection != null && selection.size() == 1 && selection.getSelected().equals(node)){
+						foldingTimer.start(new Runnable() {
+							public void run() {
+								mc.getMapController().setFolded(node, fold);
+							}
+						});
+					}
 				}
 			}
 		}
@@ -166,6 +185,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				&& !shouldSelectOnClick(e)) {
 			final MapController mapController = mc.getMapController();
 			boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node));
+			foldingTimer.cancel();
 			mapController.setFolded(node, fold);
 			e.consume();
 			return;
@@ -252,6 +272,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	}
 
 	public void mousePressed(final MouseEvent e) {
+		foldingTimer.cancel();
 		final MainView component = (MainView) e.getComponent();
 		wasFocused = component.hasFocus();
 		showPopupMenu(e);
