@@ -352,8 +352,8 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 	}
 
 	private void init() {
-		macOSXRegistration();
 		if(this.isTopLevel){
+			macOSXRegistration();
 			UIManager.put("FileChooser.readOnly", Globals.prefs.getBoolean("filechooserDisableRename"));
 		}
 

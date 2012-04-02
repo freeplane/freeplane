@@ -64,6 +64,7 @@ public class MapLifeCycleAndViewListener implements IMapLifeCycleListener, IMapV
 			File f = map.getFile();
 			if (f!=null) {
 				DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.MAP_SAVED, f);
+				setMapUri(map);
 			}
 		}
 	}
@@ -93,6 +94,15 @@ public class MapLifeCycleAndViewListener implements IMapLifeCycleListener, IMapV
 			dmme = map.getExtension(DocearMapModelExtension.class);
 		}
 	}
+	
+	private void setMapUri(MapModel map) {
+		DocearMapModelExtension dmme = map.getExtension(DocearMapModelExtension.class);		
+		if (dmme == null || dmme.getMapId() == null || dmme.getMapId().trim().length()==0) {
+			DocearMapModelController.setModelWithCurrentVersion(map);
+			dmme = map.getExtension(DocearMapModelExtension.class);
+		}
+	}
+	
 
 
 }

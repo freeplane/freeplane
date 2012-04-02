@@ -79,7 +79,7 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 					File backupFile = new File(BackupController.getController().getBackupDirectory().getAbsolutePath(), System.currentTimeMillis() + "_" + map.getFile().getName() + ".zip");
 					DocearController.getController().addWorkingThreadHandle(backupFile.getName());
 					
-					ZipOutputStream out = null;
+					ZipOutputStream out = null;					
 					InputStream in = null;
 					try {			
 						out = new ZipOutputStream(new FileOutputStream(backupFile));
