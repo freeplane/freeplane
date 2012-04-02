@@ -152,8 +152,10 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			return;
 
 		final NodeModel node = nodeView.getModel();
+		final boolean plainEvent = Compat.isPlainEvent(e);
+		final boolean inside = isInside(e);
 		if(e.getButton() == 1){
-			if(Compat.isPlainEvent(e)){
+			if(plainEvent){
 				if (component.isInFollowLinkRegion(e.getX())) {
 					LinkController.getController(mc).loadURL(node, e);
 					e.consume();
@@ -167,10 +169,9 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 					return;
 				}
 				
-				if(isInside(e) && e.getClickCount() == 1){
-					final IMapSelection selection = mc.getController().getSelection();
+				if(inside && e.getClickCount() == 1){
 					final boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mc.getMapController(), node));
-					if(selection != null && selection.size() == 1 && selection.getSelected().equals(node)){
+					if(!shouldSelectOnClick(e)){
 						foldingTimer.start(new Runnable() {
 							public void run() {
 								mc.getMapController().setFolded(node, fold);
@@ -180,8 +181,9 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				}
 			}
 		}
-		if ((isInFoldingRegion(e) && Compat.isPlainEvent(e) 
-				|| (isInFoldingRegion(e) || isInside(e)) && Compat.isCtrlShiftEvent(e)) 
+		final boolean inFoldingRegion = isInFoldingRegion(e);
+		if ((plainEvent && inFoldingRegion 
+				|| (inFoldingRegion || inside) && Compat.isCtrlShiftEvent(e)) 
 				&& !shouldSelectOnClick(e)) {
 			final MapController mapController = mc.getMapController();
 			boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node));
@@ -190,9 +192,10 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			e.consume();
 			return;
 		}
-		if(isInside(e) && ! e.isAltDown())
+		if(inside && ! e.isAltDown())
 			extendSelection(e);
 	}
+
 
 	private boolean shouldSelectOnClick(MouseEvent e) {
 		if(isInside(e)){
@@ -254,7 +257,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			requiredCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 			node.setMouseArea(MouseArea.LINK);
         }
-        else if (node.isInFoldingRegion(e.getPoint())){
+        else if (isInFoldingRegion(e)){
         	requiredCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
         	node.setMouseArea(MouseArea.FOLDING);
         }

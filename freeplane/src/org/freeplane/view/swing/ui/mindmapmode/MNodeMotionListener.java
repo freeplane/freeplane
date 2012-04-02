@@ -65,10 +65,10 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 	private int originalParentVGap;
 	private int originalShiftY;
 	final private DoubleClickTimer linkTimer;
+	private static final String EDIT_ON_DOUBLE_CLICK = "edit_on_double_click";
 
 	public MNodeMotionListener() {
 		 linkTimer = new DoubleClickTimer();
-		 foldingTimer.setDelay(DoubleClickTimer.MAX_TIME_BETWEEN_CLICKS);
 	}
 
 	Point getDragStartingPoint() {
@@ -127,7 +127,8 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 
 	@Override
 	public void mouseClicked(final MouseEvent e) {
-		if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2) {
+		if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2
+				&& foldingTimer.getDelay() > 0) {
 			final MainView mainView = (MainView) e.getComponent();
 			if (mainView.getMouseArea().equals(MouseArea.MOTION)) {
 				final Controller controller = Controller.getCurrentController();
@@ -149,7 +150,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 				}
 			}
 			else {
-				if (Compat.isPlainEvent(e) && !mainView.isInFoldingRegion(e.getPoint())) {
+				if (Compat.isPlainEvent(e) && !isInFoldingRegion(e)) {
 					linkTimer.cancel();
 					final MTextController textController = (MTextController) MTextController.getController();
 					textController.getEventQueue().activate(e);
@@ -181,6 +182,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 	@Override
 	public void mousePressed(MouseEvent e) {
 		foldingTimer.cancel();
+		setFoldingDelay();
 		if (isInDragRegion(e)) {
 			if ((e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) == (InputEvent.BUTTON1_DOWN_MASK)) {
 				stopTimerForDelayedSelection();
@@ -389,4 +391,12 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 	private void stopDrag() {
 		setDragStartingPoint(null, null);
 	}
+	
+	private void setFoldingDelay() {
+	    if (ResourceController.getResourceController().getBooleanProperty(EDIT_ON_DOUBLE_CLICK))
+	        foldingTimer.setDelay(DoubleClickTimer.MAX_TIME_BETWEEN_CLICKS);
+        else {
+	    	foldingTimer.setDelay(0);
+	    }
+    }
 }

@@ -107,7 +107,6 @@
 			<menu_submenu name="encryption" name_ref="menu_encryption">
 				<menu_action action="EnterPassword"/>
 				</menu_submenu>
-				<menu_action action="SetBooleanPropertyAction.extended_folding_region" />
 			</menu_submenu>
 		<menu_submenu name="mindmaps" name_ref="mindmaps">
 			<menu_category menu_key="main_menu_modes" name="modes"/>

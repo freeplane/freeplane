@@ -73,7 +73,6 @@ import org.freeplane.features.text.TextController;
  * Base class for all node views.
  */
 public abstract class MainView extends ZoomableLabel {
-	private static final String EXTENDED_FOLDING_REGION = "extended_folding_region";
 	private static final int FOLDING_CIRCLE_WIDTH = 16;
 	private static final String USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING = "use_common_out_point_for_root_node";
     public static boolean USE_COMMON_OUT_POINT_FOR_ROOT_NODE = ResourceController.getResourceController().getBooleanProperty(USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING);
@@ -609,13 +608,12 @@ public abstract class MainView extends ZoomableLabel {
 		if (canBeFolded() && p.y >= 0 && p.y < getHeight()) {
 			final boolean isLeft = getNodeView().isLeft();
 			final int width = Math.max(FOLDING_CIRCLE_WIDTH, getZoomedFoldingSymbolHalfWidth() * 2);
-			final boolean extendedRegion = ResourceController.getResourceController().getBooleanProperty(EXTENDED_FOLDING_REGION);
 			if (isLeft) {
-	            final int maxX = extendedRegion ? getWidth(): 0;
+	            final int maxX = 0;
 	            return p.x >= -width && p.x < maxX;
             }
             else {
-	            final int minX = extendedRegion ? 0 : getWidth();
+	            final int minX = getWidth();
 	            return p.x >= minX && p.x < (getWidth() + width);
             }
 		}
