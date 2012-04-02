@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
@@ -16,6 +18,7 @@ import javax.swing.JToolBar;
 import javax.swing.border.EmptyBorder;
 
 import org.docear.plugin.core.DocearController;
+import org.docear.plugin.core.actions.DocearAllowUploadChooserAction;
 import org.docear.plugin.core.event.DocearEvent;
 import org.freeplane.core.util.TextUtils;
 
@@ -60,12 +63,26 @@ public class WorkspaceDocearServiceConnectionBar extends JToolBar {
 		configureComponent(button);
 		button.setDisabledIcon(new ImageIcon(this.getClass().getResource("/images/arrow-refresh-disabled.png")));
 		
+		MouseListener clickListener = new MouseListener() {
+			
+			public void mouseReleased(MouseEvent e) {}			
+			public void mousePressed(MouseEvent e) {}			
+			public void mouseExited(MouseEvent e) {}			
+			public void mouseEntered(MouseEvent e) {}
+			
+			public void mouseClicked(MouseEvent e) {
+				DocearAllowUploadChooserAction.showDialog();
+			}
+		};
+		
 		lblUsername = new JLabel("username");
-		lblUsername.setBorder(new EmptyBorder(marginInsets));
+		lblUsername.setBorder(new EmptyBorder(marginInsets));		
+		lblUsername.addMouseListener(clickListener);
 		add(lblUsername);
 		
 		lblConnectionState = new JLabel(TextUtils.getText("docear.service.connect.bar.status.1")+":");
 		lblConnectionState.setBorder(new EmptyBorder(marginInsets));
+		lblConnectionState.addMouseListener(clickListener);
 		add(lblConnectionState);
 		
 		
