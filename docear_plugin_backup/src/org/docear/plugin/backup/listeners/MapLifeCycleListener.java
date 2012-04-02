@@ -37,7 +37,7 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 		}
 	}
 	
-	private Properties getMapProperties(MapModel map) {
+	private Properties getMapProperties(MapModel map, boolean backup, boolean informationRetrieval) {
 		DocearController docearController = DocearController.getController();
 		
 		DocearMapModelExtension dmme = map.getExtension(DocearMapModelExtension.class);
@@ -47,8 +47,8 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 		Properties properties = new Properties();
 		properties.put("mindmap_id", dmme.getMapId());
 		properties.put("timestamp", ""+System.currentTimeMillis());
-		properties.put("backup", new Boolean(true).toString());
-		properties.put("allow_ir", new Boolean((ResourceController.getResourceController().getBooleanProperty("docear_allow_information_retrieval"))).toString());
+		properties.put("backup", new Boolean(backup).toString());
+		properties.put("allow_ir", new Boolean(informationRetrieval).toString());
 		properties.put("map_version", dmme.getVersion());
 		properties.put("application_name", docearController.getApplicationName());
 		properties.put("application_version", docearController.getApplicationVersion());
@@ -64,11 +64,13 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 	}
 
 	public void createBackup(final MapModel map) throws IOException {
-		if (map == null || !BackupController.getController().isBackupEnabled()) {
+		boolean backup = BackupController.getController().isBackupAllowed();
+		boolean ir = BackupController.getController().isInformationRetrievalAllowed();
+		if (map == null || (!backup && !ir)) {
 			return;
 		}
 		
-		final Properties meta = getMapProperties(map);
+		final Properties meta = getMapProperties(map, backup, ir);
 		if (meta == null) {
 			return;
 		}
@@ -79,10 +81,12 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 					File backupFile = new File(BackupController.getController().getBackupDirectory().getAbsolutePath(), System.currentTimeMillis() + "_" + map.getFile().getName() + ".zip");
 					DocearController.getController().addWorkingThreadHandle(backupFile.getName());
 					
+					FileOutputStream fout = null;
 					ZipOutputStream out = null;					
 					InputStream in = null;
 					try {			
-						out = new ZipOutputStream(new FileOutputStream(backupFile));
+						fout = new FileOutputStream(backupFile);
+						out = new ZipOutputStream(fout);
 						in = new FileInputStream(map.getFile());
 						
 						ZipEntry entry = new ZipEntry("metadata.inf");
@@ -99,11 +103,13 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 							}
 							out.write(data);
 						}
-						
+						out.flush();
 					} 
-					finally {
+					finally {	
 						in.close();
 						out.close();
+						fout.close();
+						
 						DocearController.getController().removeWorkingThreadHandle(backupFile.getName());
 					}					
 				}
@@ -115,8 +121,6 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 		};
 		
 		thread.start();
-		System.out.println("running");
-		
 	}
 
 }

@@ -67,6 +67,14 @@ public class BackupController {
 		ResourceController.getResourceController().setProperty("docear_save_backup", b);
 	}
 	
+	public boolean isInformationRetrievalEnabled() {
+		return ResourceController.getResourceController().getBooleanProperty("docear_allow_information_retrieval");
+	}
+	
+	public void setInformationRetrievalEnabled(boolean b) {
+		ResourceController.getResourceController().setProperty("docear_allow_information_retrieval", b);
+	}
+	
 	public File getBackupDirectory() {		
 		if (!backupFolder.exists()) {
 			backupFolder.mkdirs();
@@ -77,5 +85,20 @@ public class BackupController {
 	
 	public File[] getBackupQueue() {
 		return getBackupDirectory().listFiles(zipFilter);
+	}
+	
+	public boolean isBackupAllowed() {
+		CommunicationsController commCtrl = CommunicationsController.getController();
+		return isBackupEnabled() && commCtrl.allowTransmission() && !isEmpty(commCtrl.getRegisteredAccessToken()) && !isEmpty(commCtrl.getRegisteredUserName());
+	}
+	
+	public boolean isInformationRetrievalAllowed() {
+		CommunicationsController commCtrl = CommunicationsController.getController();
+		boolean allowed = !isEmpty(commCtrl.getAccessToken()) || !isEmpty(commCtrl.getUserName());		
+		return allowed && isInformationRetrievalEnabled() && commCtrl.allowTransmission();
+	}
+	
+	private boolean isEmpty(String s) {
+		return s == null || s.trim().length() == 0;
 	}
 }

@@ -14,20 +14,17 @@ public class BackupRunner {
 
 		final ResourceController resourceCtrl = Controller.getCurrentController().getResourceController();
 		final BackupController backupCtrl = BackupController.getController();
-		final CommunicationsController commCtrl = CommunicationsController.getController();
-
 		Thread thread = new Thread() {
 			public void run() {
 				while (true) {
 					System.out.println("thread running");
+					int backupMinutes = resourceCtrl.getIntProperty(
+							"save_backup_automcatically", 0);
+					if (backupMinutes <= 0) {
+						backupMinutes = 30;
+					}
 					try {
-						int backupMinutes = resourceCtrl.getIntProperty(
-								"save_backup_automcatically", 0);
-						if (backupMinutes <= 0) {
-							backupMinutes = 30;
-						}
-
-						if (backupCtrl.isBackupEnabled() && commCtrl.allowTransmission() && commCtrl.getAccessToken() != null && commCtrl.getAccessToken().trim().length() > 0) {
+						if (backupCtrl.isBackupAllowed() || backupCtrl.isInformationRetrievalAllowed()) {
 							LogUtils.info("Docear BackupRunner: synchronizing backups with server");
 							File[] files = backupCtrl.getBackupQueue();
 							if (files != null && files.length>0) {
@@ -43,9 +40,12 @@ public class BackupRunner {
 								LogUtils.info("Docear BackupRunner: nothing to do");
 							}
 						}
-						sleep(60000 * backupMinutes);
 					} catch (Exception e) {
 						LogUtils.warn(e);
+					}
+					try {
+						sleep(600 * backupMinutes);
+					} catch (InterruptedException e) {						
 					}
 				}
 
