@@ -38,7 +38,7 @@ public class AccountRegisterer {
 		try {
 			if (createUser(name, null, USER_TYPE_ANONYMOUS, null, null, false)) {
 				//ResourceController.getResourceController().setProperty(CommunicationsController.DOCEAR_CONNECTION_ANONYMOUS_USERNAME_PROPERTY, name);
-				CommunicationsController.getController().tryToConnect(name, null, false, false);
+				CommunicationsController.getController().tryToConnect(name, null, false, true);
 				return true;
 			}
 			else {
@@ -55,7 +55,7 @@ public class AccountRegisterer {
 		try {
 			if (createUser(name, password, USER_TYPE_REGISTERED, email, birthYear, newsLetter)) {
 				ResourceController.getResourceController().setProperty(CommunicationsController.DOCEAR_CONNECTION_USERNAME_PROPERTY, name);
-				CommunicationsController.getController().tryToConnect(name, password, true, false);
+				CommunicationsController.getController().tryToConnect(name, password, true, true);
 				return true;
 			}
 			else {
