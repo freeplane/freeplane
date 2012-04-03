@@ -60,9 +60,15 @@
 				<menu_separator/>
 				<menu_action action="AddLocalLinkAction" accelerator="alt shift L" />
 				<menu_action action="AddMenuItemLinkAction" accelerator="" />
+				<menu_separator/>
+				<menu_action action="SetLinkAnchorAction" accelerator="" />
+				<menu_action action="MakeLinkFromAnchorAction" accelerator="" />
+				<menu_action action="MakeLinkToAnchorAction" accelerator="" />
+				<menu_action action="ClearLinkAnchorAction" accelerator="" />
 			</menu_submenu>	
+			<menu_separator />
 			<menu_action action="DeleteAction" accelerator="DELETE" />
-			<menu_separator/>
+			<menu_separator />
 			<menu_submenu name="menu_title" name_ref="menu_title">
 				<menu_action action="EditAction" accelerator="F2" />
 				<menu_action action="EditLongAction" accelerator="alt ENTER" />
@@ -464,6 +470,11 @@
 			<menu_separator/>
 			<menu_action action="AddLocalLinkAction" accelerator="alt shift L" />
 			<menu_action action="AddMenuItemLinkAction" accelerator="" />
+			<menu_separator/>
+			<menu_action action="SetLinkAnchorAction" accelerator="" />
+			<menu_action action="MakeLinkFromAnchorAction" accelerator="" />
+			<menu_action action="MakeLinkToAnchorAction" accelerator="" />
+			<menu_action action="ClearLinkAnchorAction" accelerator="" />
 			<menu_category menu_key="popup_goto_links"/>
 		</menu_submenu>	
 		<menu_separator />

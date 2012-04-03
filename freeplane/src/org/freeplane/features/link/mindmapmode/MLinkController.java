@@ -344,10 +344,12 @@ public class MLinkController extends LinkController {
 
 	static private SetLinkByFileChooserAction setLinkByFileChooser;
 	static private SetLinkByTextFieldAction setLinkByTextField;
-
+	static private String anchorID;
+	
 	public MLinkController() {
 		super();
 		createActions();
+		anchorID = null;
 		final ModeController modeController = Controller.getCurrentModeController();
 		(modeController.getMapController()).addMapChangeListener(new NodeDeletionListener());
 	}
@@ -394,6 +396,10 @@ public class MLinkController extends LinkController {
 		modeController.addAction(new AddLocalLinkAction());
 		modeController.addAction(new AddMenuItemLinkAction());
 		modeController.addAction(new ExtractLinkFromTextAction());
+		modeController.addAction(new SetLinkAnchorAction());		// new by Nnamdi Kohn
+		modeController.addAction(new MakeLinkToAnchorAction());		// new by Nnamdi Kohn
+		modeController.addAction(new MakeLinkFromAnchorAction());	// new by Nnamdi Kohn
+		modeController.addAction(new ClearLinkAnchorAction());		// new by Nnamdi Kohn
 	}
 
 	@Override
@@ -1016,5 +1022,13 @@ public class MLinkController extends LinkController {
 				modeController.removeExtension(DocuMapAttribute.class);
 			}
 		}
+	}
+
+	public String getAnchorID() {
+		return anchorID;
+	}
+
+	public void setAnchorID(final String anchorID) {
+		MLinkController.anchorID = anchorID;
 	}
 }
