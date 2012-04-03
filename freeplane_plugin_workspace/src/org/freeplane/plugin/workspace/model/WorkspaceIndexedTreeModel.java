@@ -342,6 +342,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 			return false;
 		}
 		targetNode.addChildNode(node);
+		nodesWereInserted(targetNode,new int[] {targetNode.getChildCount()-1});
 		addToIndexRecursively(node, targetNode);
 		return true;
 	}
