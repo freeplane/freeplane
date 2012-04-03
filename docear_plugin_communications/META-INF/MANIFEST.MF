@@ -15,4 +15,5 @@ Bundle-ClassPath: lib/jsr311-api-1.1.1.jar,
  lib/mimepull-1.3.jar,
  lib/jersey-client-1.1.5.1.jar,
  lib/plugin.jar
-Export-Package: org.docear.plugin.communications;uses:="org.freeplane.plugin.accountmanager,org.osgi.framework"
+Export-Package: org.docear.plugin.communications;uses:="org.freeplane.plugin.accountmanager,org.osgi.framework",
+ org.docear.plugin.communications.features

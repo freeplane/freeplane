@@ -5,7 +5,7 @@
 			<separator name="account_options">				
 				<uri name="docear.service.help" label="docear.service.help.label" uri="http://www.docear.org/support/user-manual/#web_service"/>)
                 <string name="docear.service.connect.username" enabled="false" />
-                <action name="docear_connect" />
+                <!--action name="docear_connect" /-->                
 			</separator>			
 			<separator name="docear_options">
 				<uri name="docear.service.options.help" label="docear.service.help.label" uri="http://www.docear.org/support/user-manual/#web_service_options"/>)

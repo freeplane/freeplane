@@ -6,9 +6,11 @@ import javax.ws.rs.core.Response;
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.communications.FiletransferClient;
 import org.docear.plugin.core.util.CoreUtils;
+import org.freeplane.core.resources.ResourceController;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
@@ -31,25 +33,34 @@ public class AccountRegisterer {
 		
 	}
 	
-	public String createAnonymousUser() {
+	public boolean createAnonymousUser() {
 		String name = createAnonymousUserName();		
 		try {
 			if (createUser(name, null, USER_TYPE_ANONYMOUS, null, null, false)) {
-				return name;
+				//ResourceController.getResourceController().setProperty(CommunicationsController.DOCEAR_CONNECTION_ANONYMOUS_USERNAME_PROPERTY, name);
+				CommunicationsController.getController().tryToConnect(name, null, false, true);
+				return true;
 			}
 			else {
-				return null;
+				return false;
 			}
 		} 
 		catch (Exception e) {		
 			e.printStackTrace();
-			return null;
+			return false;
 		}
 	}
 	
 	public boolean createRegisteredUser(String name, String password, String email, Integer birthYear, Boolean newsLetter) {		
 		try {
-			return createUser(name, password, USER_TYPE_REGISTERED, email, birthYear, newsLetter);
+			if (createUser(name, password, USER_TYPE_REGISTERED, email, birthYear, newsLetter)) {
+				ResourceController.getResourceController().setProperty(CommunicationsController.DOCEAR_CONNECTION_USERNAME_PROPERTY, name);
+				CommunicationsController.getController().tryToConnect(name, password, true, true);
+				return true;
+			}
+			else {
+				return false;
+			}
 		} 
 		catch (Exception e) {		
 			e.printStackTrace();
@@ -78,7 +89,7 @@ public class AccountRegisterer {
 		WebResource res = client.resource(CommunicationsController.getController().getServiceUri()).path("/user/"+name);
 		ClientResponse response = res.post(ClientResponse.class, queryParams);
 		
-		if (response.getClientResponseStatus().equals(Response.Status.OK)) {
+		if (response.getClientResponseStatus() == Status.OK) {
 			return true;			
 		}
 		

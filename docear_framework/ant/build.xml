@@ -237,12 +237,12 @@
         </antcall>
     </target>
 
-    <target name="build_docear_backup" unless="skip_backup">
+    <target name="build_docear_services" unless="skip_services">
         <antcall target="makePlugin" inheritall="false">
             <param name="anttarget" value="dist"/>
             <param name="targetdir" value="plugins"/>
-            <param name="plugindir" value="docear_plugin_backup"/>
-            <param name="pluginname" value="org.docear.plugin.backup"/>
+            <param name="plugindir" value="docear_plugin_services"/>
+            <param name="pluginname" value="org.docear.plugin.services"/>
         </antcall>
     </target>
 
@@ -257,7 +257,7 @@
 
 	
 	<target name="build" depends="build_core, build_latex, build_svg, build_script, build_formula, build_bugreport, build_accountmanager,
-    build_workspace, build_docear_core, build_docear_communications, build_docear_pdfutilities, build_docear_bibtex, build_docear_backup, 
+    build_workspace, build_docear_core, build_docear_communications, build_docear_pdfutilities, build_docear_bibtex, build_docear_services, 
     build_docear_optionpane, bzr_version_info">
        <mkdir dir="${build.resources}" />
         <copy todir="${build.resources}">
@@ -609,7 +609,7 @@
           <ant antfile="ant/build.xml" target="clean" inheritall="false"
               dir="${workspace}/docear_plugin_bibtex"/>
           <ant antfile="ant/build.xml" target="clean" inheritall="false"
-              dir="${workspace}/docear_plugin_backup"/>
+              dir="${workspace}/docear_plugin_services"/>
           <ant antfile="ant/build.xml" target="clean" inheritall="false"
               dir="${workspace}/docear_plugin_optionpane"/>
 	</target>
