@@ -48,7 +48,7 @@ import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
-public class CommunicationsController extends ALanguageController implements ActionListener, PropertyLoadListener, IWorkspaceEventListener, IFreeplanePropertyListener, IDocearEventListener {
+public class CommunicationsController extends ALanguageController implements PropertyLoadListener, IWorkspaceEventListener, IFreeplanePropertyListener, IDocearEventListener {
 	private final static CommunicationsController communicationsController = new CommunicationsController();
 
 	private static final Client client;
@@ -74,7 +74,6 @@ public class CommunicationsController extends ALanguageController implements Act
 		addPluginDefaults();
 		addPropertiesToOptionPanel();
 
-		Controller.getCurrentController().getOptionPanelController().addButtonListener(this);
 		Controller.getCurrentController().getOptionPanelController().addPropertyLoadListener(this);
 		Controller.getCurrentController().getResourceController().addPropertyChangeListener(this);
 		WorkspaceController.getController().addWorkspaceListener(this);
@@ -86,17 +85,6 @@ public class CommunicationsController extends ALanguageController implements Act
 
 	public static CommunicationsController getController() {
 		return communicationsController;
-	}
-
-	public void actionPerformed(ActionEvent e) {
-		if ("docear_connect".equals(e.getActionCommand())) {
-			if (!checkConnection()) {
-				JOptionPane.showMessageDialog(UITools.getFrame(), "No Connection to the Server!", TextUtils.getOptionalText("docear.service.connect.title"), JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-
-			showConnectionDialog();
-		}
 	}
 
 	public void showConnectionDialog() {
