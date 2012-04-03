@@ -9,12 +9,13 @@ import javax.swing.SwingUtilities;
 import org.docear.plugin.backup.actions.DocearAllowUploadChooserAction;
 import org.docear.plugin.backup.listeners.MapLifeCycleListener;
 import org.docear.plugin.backup.listeners.PropertyListener;
+import org.docear.plugin.backup.listeners.WorkspaceListener;
 import org.docear.plugin.communications.CommunicationsController;
-import org.docear.plugin.core.DocearController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.plugin.workspace.WorkspaceController;
 
 public class BackupController {
 	private final static BackupController backupController = new BackupController();
@@ -32,22 +33,24 @@ public class BackupController {
 	};
 	
 	public BackupController() {
-		LogUtils.info("starting DocearBackupStarter()");		
-		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(mapLifeCycleListener);
-		ResourceController.getResourceController().addPropertyChangeListener(propertyListener);
+		LogUtils.info("starting DocearBackupStarter()");
+		initListeners();
 		
 		addPluginDefaults();
 		Controller.getCurrentModeController().addAction(new DocearAllowUploadChooserAction());
 	
 		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				if(DocearController.getController().isDocearFirstStart()) {
-					DocearAllowUploadChooserAction.showDialog();
-				}
+			public void run() {				
 				backupRunner.run();			
 			}		
 		});
 		
+	}
+	
+	public void initListeners() {
+		WorkspaceController.getController().addWorkspaceListener(new WorkspaceListener());
+		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(mapLifeCycleListener);
+		ResourceController.getResourceController().addPropertyChangeListener(propertyListener);
 	}
 	
 	public static BackupController getController() {

@@ -33,6 +33,8 @@ public class DocearController implements IDocearEventListener {
 	private final static Pattern PATTERN = Pattern.compile(PLACEHOLDER_PROFILENAME);
 	static final String DOCEAR_FIRST_RUN_PROPERTY = "docear.already_initialized";
 	
+	private final static String DOCEAR_VERSION_NUMBER = "docear.version.number";
+	
 	private String applicationName;
 	private String applicationVersion;
 	private String applicationStatus;
@@ -67,6 +69,17 @@ public class DocearController implements IDocearEventListener {
 
 	public boolean isDocearFirstStart() {
 		return firstRun;
+	}
+	
+	public boolean isDocearNewVersion() {
+		int storedBuildNumber = Integer.parseInt(ResourceController.getResourceController().getProperty(DOCEAR_VERSION_NUMBER, "0"));
+		if (storedBuildNumber != this.applicationBuildNumber) {
+			ResourceController.getResourceController().setProperty(DOCEAR_VERSION_NUMBER, ""+this.applicationBuildNumber);
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	public static DocearController getController() {
