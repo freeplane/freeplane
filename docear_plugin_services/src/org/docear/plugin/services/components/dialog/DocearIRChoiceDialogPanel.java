@@ -387,12 +387,17 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 	public void integrateButtons(JButton[] buttons) {
 		okButton = buttons[0];
 		enableButtonIfPossible(null);
-		for(JButton button : buttons) {
-			button.addActionListener(new ActionListener() {
+		okButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (checkAccountSettings()) {
+					closeDialogManually();
+				}
+			}
+		});
+		for(int i=1; i < buttons.length; i++) {
+			buttons[i].addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if (checkAccountSettings()) {
-						closeDialogManually();
-					}
+					closeDialogManually();
 				}
 			});
 		}
