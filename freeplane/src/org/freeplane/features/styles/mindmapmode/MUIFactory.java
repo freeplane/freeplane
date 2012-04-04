@@ -242,9 +242,6 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 		ignoreChangeEvent = false;
 	}
 
-	public void afterMapClose(final MapModel oldMap) {
-	}
-
 	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 	}
 }
