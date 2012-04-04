@@ -887,6 +887,19 @@ public class MenuBuilder extends UIBuilder {
 	protected void removeChildComponents(final Container parentComponent, final DefaultMutableTreeNode node) {
 		removeAccelerators(node);
 		super.removeChildComponents(parentComponent, node);
+		if (parentComponent instanceof JMenu) {
+			final JMenu menu = (JMenu) parentComponent;
+			final JPopupMenu popupMenu = menu.getPopupMenu();
+			for(int i = popupMenu.getComponentCount()-1; i >= 0; i--){
+				final Component component = popupMenu.getComponent(i);
+				if(isExtraSubMenu(component)){
+					final Container container = (Container) component;
+					super.removeChildComponents(container, node);
+					if(container.getComponentCount() == 0)
+						popupMenu.remove(container);
+				}
+			}
+		}
 	}
 
 	public void removePopupMenuListener(final Object key, final PopupMenuListener listener) {
