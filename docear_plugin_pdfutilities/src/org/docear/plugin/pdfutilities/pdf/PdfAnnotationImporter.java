@@ -57,7 +57,7 @@ public class PdfAnnotationImporter implements IAnnotationImporter {
 	private boolean setPDObject = false;
 	
 	public PdfAnnotationImporter(){
-		AnnotationController.addAnnotationImporter(this);
+		//AnnotationController.addAnnotationImporter(this);
 	}
 	
 	
