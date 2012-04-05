@@ -121,9 +121,10 @@ public class MClipboardController extends ClipboardController {
 		}
 
 		public void paste(Transferable t, final NodeModel target, final boolean asSibling, final boolean isLeft) {
+			boolean pasteImages = ResourceController.getResourceController().getBooleanProperty("paste_images");
 			ViewerController viewerController = ((ViewerController)Controller.getCurrentModeController().getExtension(ViewerController.class));
 			for (final File file : fileList) {
-				if(viewerController.paste(file, target, PasteMode.valueOf(asSibling), isLeft)){
+				if(pasteImages  && viewerController.paste(file, target, PasteMode.valueOf(asSibling), isLeft)){
 					continue;
 				}
 				final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
