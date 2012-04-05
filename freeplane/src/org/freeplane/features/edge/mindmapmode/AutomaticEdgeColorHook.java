@@ -42,10 +42,12 @@ import org.freeplane.n3.nanoxml.XMLElement;
 
 @NodeHookDescriptor(hookName = "AutomaticEdgeColor")
 public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExtension{
+	private ModeController modeController;
+
 	private class Listener extends AMapChangeListenerAdapter{
 		@Override
 	    public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
-			if(!isActive(child)){
+			if(!isActive(child) || modeController.isUndoAction()){
 				return;
 			}
 			if(MapStyleModel.FLOATING_STYLE.equals(LogicalStyleModel.getStyle(child)))
@@ -83,7 +85,7 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 	public AutomaticEdgeColorHook() {
 	    super();
 		final Listener listener = new Listener();
-		final ModeController modeController = Controller.getCurrentModeController();
+		modeController = Controller.getCurrentModeController();
 		modeController.addExtension(AutomaticEdgeColorHook.class, this);
 		final MapController mapController = modeController.getMapController();
 		mapController.addMapChangeListener(listener);
