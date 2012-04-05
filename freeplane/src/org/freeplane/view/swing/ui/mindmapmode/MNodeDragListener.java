@@ -35,9 +35,6 @@ public class MNodeDragListener implements DragGestureListener {
 		Rectangle bounds = new Rectangle(0, 0, mainView.getWidth(), mainView.getHeight());
 		if(!bounds.contains(e.getDragOrigin()))
 			return;
-		if (!ResourceController.getResourceController().getBooleanProperty("draganddrop")) {
-			return;
-		}
 		final int dragActionType = e.getDragAction();
 		if (dragActionType == DnDConstants.ACTION_MOVE) {
 			final NodeModel node = nodeView.getModel();
