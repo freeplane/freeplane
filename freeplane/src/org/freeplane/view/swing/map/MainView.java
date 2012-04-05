@@ -188,8 +188,18 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	private boolean canBeFolded() {
-		final NodeModel node = getNodeView().getModel();
-		return !node.isRoot() && node.hasChildren();
+		final NodeView nodeView = getNodeView();
+		final NodeModel node = nodeView.getModel();
+		if (node.hasChildren()){
+			if(node.isRoot()){
+				final MapController mapController = nodeView.getMap().getModeController().getMapController();
+				return FoldingMark.UNVISIBLE_CHILDREN_FOLDED.equals(foldingMarkType(mapController, node));
+			}
+			else
+				return true;
+		}
+		else
+			return false;
 	}
 
 	/**
