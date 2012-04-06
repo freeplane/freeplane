@@ -21,7 +21,6 @@ package org.freeplane.view.swing.features.filepreview;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.net.URI;
 import java.util.Collection;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
@@ -52,11 +51,11 @@ public class ChangeExternalImageAction extends AFreeplaneAction {
 		    .getExtension(ViewerController.class));
 		final ExternalResource extRes = (ExternalResource) vc.createExtension(mapController.getSelectedNode());
 		if (extRes != null) {
-			final URI uri = extRes.getAbsoluteUri(mapController.getSelectedNode().getMap());
+			final File file = new File(extRes.getAbsoluteUri(mapController.getSelectedNode().getMap()));
 			for (final NodeModel node : nodes) {
 				if (progUtil.hasExternalResource(node) && !progUtil.hasExtendedProgressIcon(node)) {
 					vc.undoableDeactivateHook(node);
-					vc.paste(uri, node);
+					vc.paste(file, node, node.isLeft());
 				}
 			}
 		}
