@@ -95,9 +95,11 @@ public class BitmapViewerComponent extends JComponent {
 	}
 
 	private Dimension readOriginalSize() throws IOException {
-		final InputStream inputStream = url.openStream();
-		ImageInputStream in = ImageIO.createImageInputStream(inputStream);
+		InputStream inputStream = null;
+		ImageInputStream in = null; 
 		try {
+				inputStream = url.openStream();
+				in = ImageIO.createImageInputStream(inputStream);
 		        final Iterator<ImageReader> readers = ImageIO.getImageReaders(in);
 		        if (readers.hasNext()) {
 		                ImageReader reader = (ImageReader) readers.next();
@@ -112,7 +114,10 @@ public class BitmapViewerComponent extends JComponent {
 		        	throw new IOException("can not create image"); 
 		        }
 		} finally {
-		        if (in != null) in.close();
+		        if (in != null) 
+		        	in.close();
+		        if(inputStream != null)
+		        	inputStream.close();
 		}
     }
 
