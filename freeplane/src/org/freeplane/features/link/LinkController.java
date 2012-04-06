@@ -78,6 +78,10 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.SelectionController;
+import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.styles.IStyle;
+import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.url.UrlManager;
 
@@ -358,6 +362,11 @@ public class LinkController extends SelectionController implements IExtension {
 			return;
 		}
 	}
+	
+	void loadLinkFormat(NodeModel node, boolean enabled) {
+	    NodeLinks.createLinkExtension(node).setFormatNodeAsHyperlink(enabled);
+    }
+
 
 	public void loadURL(final NodeModel node, final MouseEvent e) {
 		loadURL(node, new ActionEvent(e.getSource(), e.getID(), null));
@@ -678,5 +687,36 @@ public class LinkController extends SelectionController implements IExtension {
 	    }
 	}
 
+	public boolean formatNodeAsHyperlink(final NodeModel node){
+	 return formatNodeAsHyperlink(Controller.getCurrentModeController(), node);
+	}
+	
+	public boolean formatNodeAsHyperlink(final ModeController modeController, final NodeModel node){
+		final Boolean ownFlag = ownFormatNodeAsHyperlink(node);
+		if(ownFlag != null)
+			return ownFlag;
+		Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node);
+		final MapStyleModel mapStyles = MapStyleModel.getExtension(node.getMap());
+		for(IStyle styleKey : collection){
+			final NodeModel styleNode = mapStyles.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final Boolean styleFlag = ownFormatNodeAsHyperlink(styleNode);
+			if(styleFlag != null)
+				return styleFlag;
+
+		}
+		return false;
+	}
+
+	private Boolean ownFormatNodeAsHyperlink(final NodeModel node){
+		final NodeLinks linkModel = NodeLinks.getModel(node);
+		if(linkModel == null){
+			return null;
+		}
+		final Boolean formatNodeAsHyperlink = linkModel.formatNodeAsHyperlink();
+		return formatNodeAsHyperlink;
+	}
 
 }
