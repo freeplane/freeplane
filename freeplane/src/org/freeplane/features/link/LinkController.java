@@ -400,13 +400,18 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public static URI toRelativeURI(final File map, final File input) {
-		try {
-			final URI fileUri = input.getAbsoluteFile().toURI();
-			if (map == null) {
-				return fileUri;
+		final URI fileUri = input.getAbsoluteFile().toURI();
+		return toRelativeURI(map, fileUri);
+	}
+
+	public static URI toRelativeURI(final File map, final URI absoluteUri) {
+	    try {
+			final String scheme = absoluteUri.getScheme();
+			if (map == null || scheme == null || ! scheme.toLowerCase().equals("file")) {
+				return absoluteUri;
 			}
 			final URI mapUri = map.getAbsoluteFile().toURI();
-			final String filePathAsString = fileUri.getRawPath();
+			final String filePathAsString = absoluteUri.getRawPath();
 			final String mapPathAsString = mapUri.getRawPath();
 			int differencePos;
 			final int lastIndexOfSeparatorInMapPath = mapPathAsString.lastIndexOf("/");
@@ -420,7 +425,7 @@ public class LinkController extends SelectionController implements IExtension {
 				}
 			}
 			if (lastCommonSeparatorPos == 0) {
-				return fileUri;
+				return absoluteUri;
 			}
 			final StringBuilder relativePath = new StringBuilder();
 			for (int i = lastCommonSeparatorPos + 1; i <= lastIndexOfSeparatorInMapPath; i++) {
@@ -435,7 +440,7 @@ public class LinkController extends SelectionController implements IExtension {
 			e.printStackTrace();
 		}
 		return null;
-	}
+    }
 
 	// patterns only need to be compiled once
 	static Pattern patSMB = Pattern.compile( // \\host\path[#fragement]

@@ -25,6 +25,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.net.URI;
 import java.util.Collection;
 
 import javax.swing.JMenuItem;
@@ -130,10 +131,10 @@ class ExternalImagePopupMenu extends JPopupMenu implements MouseListener {
 				public void actionPerformed(final ActionEvent e) {
 					final ExternalResource extRes = (ExternalResource) viewer.createExtension(node);
 					if (extRes != null) {
-						final File file = new File(extRes.getAbsoluteUri(node.getMap()));
+						final URI uri = extRes.getAbsoluteUri(node.getMap());
 						if (progUtil.hasExternalResource(node) && !progUtil.hasExtendedProgressIcon(node)) {
 							viewer.undoableDeactivateHook(node);
-							viewer.paste(file, node, node.isLeft());
+							viewer.paste(uri, node);
 						}
 					}
 				}
