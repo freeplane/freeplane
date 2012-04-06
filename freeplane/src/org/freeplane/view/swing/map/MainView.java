@@ -26,6 +26,7 @@ import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.HeadlessException;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -274,7 +275,12 @@ public abstract class MainView extends ZoomableLabel {
 		if (! canBeFolded())
 			return;
 		final FoldingMark markType = foldingMarkType(getMap().getModeController().getMapController(), nodeView.getModel());
-	    final Point mousePosition = getMousePosition();
+	    Point mousePosition = null;
+	    try {
+	        mousePosition = getMousePosition();
+        }
+        catch (Exception e) {
+        }
 		if(mousePosition != null){
 			final int width = Math.max(FOLDING_CIRCLE_WIDTH, getZoomedFoldingSymbolHalfWidth() * 2);
 			final Point p = getNodeView().isLeft() ? getLeftPoint() : getRightPoint();
