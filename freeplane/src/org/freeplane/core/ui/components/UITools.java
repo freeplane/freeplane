@@ -115,7 +115,7 @@ public class UITools {
 
 	public static void convertPointFromAncestor(final Component ancestor, final Point p, Component c) {
 		int x, y;
-		while (c != ancestor) {
+		while (c != ancestor && c != null) {
 			x = c.getX();
 			y = c.getY();
 			p.x -= x;
@@ -138,7 +138,7 @@ public class UITools {
 		
 	public static void convertPointToAncestor(final Component from, final Point p, final Component destination) {
 		int x, y;
-		for (Component c = from; c != destination;c = c.getParent()) {
+		for (Component c = from; c != destination && c != null; c = c.getParent()) {
 			x = c.getX();
 			y = c.getY();
 			p.x += x;
