@@ -64,9 +64,9 @@ public class IconStoreFactory {
 		if (groups != null) {
 			return groups;
 		}
-		final IconStore iconStore = new IconStore();
-		IconStoreFactory.setIconGroups(iconStore);
-		return iconStore;
+		groups = new IconStore();
+		IconStoreFactory.setIconGroups(groups);
+		return groups;
 	}
 
 	private static void setIconGroups(final IconStore iconStore) {
