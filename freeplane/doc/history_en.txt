@@ -4,7 +4,7 @@
 Search enhancements: Approximate search feature, control search via key presses, busy cursor, some fixes
 Fix editable Comboboxes for some L&Fs
 New UI for folding 
-Display hyper links as HTML
+Formatting option to display hyper links as HTML 
 
 ===============================
 1.2.12 beta
