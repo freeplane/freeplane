@@ -1061,7 +1061,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    if (newSelected == null) {
 	    	return false;
 		}
-		setSiblingMaxLevel(newSelected.getModel().getNodeLevel(false));
 		if(continious){
 			if(newSelected.isParentOf(getSelected())){
 				selectAsTheOnlyOneSelected(newSelected);
