@@ -27,6 +27,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -60,6 +61,7 @@ public class BitmapViewerComponent extends JComponent {
 	private File cacheFile;
 	private int hint;
 	private BufferedImage cachedImage;
+	private WeakReference<BufferedImage> cachedImageWeakRef;
 	private final URL url;
 	private final Dimension originalSize;
 	private int imageX;
@@ -124,6 +126,10 @@ public class BitmapViewerComponent extends JComponent {
 			return;
 		if (getWidth() == 0 || getHeight() == 0) {
 			return;
+		}
+		if(cachedImage == null && cachedImageWeakRef != null){
+			cachedImage = cachedImageWeakRef.get();
+			cachedImageWeakRef = null;
 		}
 		if(cachedImage == null && cacheFile != null)
 			loadImageFromCacheFile();
@@ -190,6 +196,7 @@ public class BitmapViewerComponent extends JComponent {
 			cachedImage.flush();
 		}
 		else{
+			cachedImageWeakRef = new WeakReference<BufferedImage>(cachedImage);
 			cachedImage = null;
 		}
 	}
