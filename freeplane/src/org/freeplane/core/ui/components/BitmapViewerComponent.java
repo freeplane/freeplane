@@ -26,12 +26,16 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.concurrent.Future;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import javax.swing.JComponent;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
@@ -81,12 +85,34 @@ public class BitmapViewerComponent extends JComponent {
 
 	public BitmapViewerComponent(final URI uri) throws MalformedURLException, IOException {
 		url = uri.toURL();
-		cachedImage = ImageIO.read(url);
-		originalSize = new Dimension(cachedImage.getWidth(), cachedImage.getHeight());
+		originalSize = readOriginalSize();
 		hint = Image.SCALE_SMOOTH;
 		processing = false;
 		scaleEnabled = true;
+		cachedImage = null;
 	}
+
+	private Dimension readOriginalSize() throws IOException {
+		final InputStream inputStream = url.openStream();
+		ImageInputStream in = ImageIO.createImageInputStream(inputStream);
+		try {
+		        final Iterator<ImageReader> readers = ImageIO.getImageReaders(in);
+		        if (readers.hasNext()) {
+		                ImageReader reader = (ImageReader) readers.next();
+		                try {
+		                        reader.setInput(in);
+		                        return new Dimension(reader.getWidth(0), reader.getHeight(0));
+		                } finally {
+		                        reader.dispose();
+		                }
+		        }
+		        else{
+		        	throw new IOException("can not create image"); 
+		        }
+		} finally {
+		        if (in != null) in.close();
+		}
+    }
 
 	public Dimension getOriginalSize() {
 		return new Dimension(originalSize);
