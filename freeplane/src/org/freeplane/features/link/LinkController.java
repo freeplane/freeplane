@@ -514,7 +514,7 @@ public class LinkController extends SelectionController implements IExtension {
 		if (urlMatcher.find()) {
 			String link = urlMatcher.group();
 			try {
-				link = new URL(link).toURI().toString();
+				new URL(link).toURI();
 				return link;
 			}
 			catch (final MalformedURLException e) {

@@ -58,6 +58,8 @@ import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.clipboard.MindMapNodesSelection;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.link.LinkModel;
+import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapModel;
@@ -739,11 +741,28 @@ public class MClipboardController extends ClipboardController {
 		    "relative");
 		for (int i = 0; i < textFragments.length; ++i) {
 			final TextFragment textFragment = textFragments[i];
-			final String text = textFragment.text;
+			String text = textFragment.text;
+			final String link = textFragment.link;
+			URI uri = null;
+			if (link != null) {
+				try {
+					URI linkUri = new URI(link);
+					uri = linkUri;
+					if (useRelativeUri && "file".equals(linkUri.getScheme())) {
+						final File mapFile = map.getFile();
+						uri  = LinkController.toRelativeURI(mapFile, new File(linkUri));
+						if(link.equals(text)){
+							text =  uri.toString();
+						}
+					}
+					
+				}
+				catch (Exception e) {
+				}
+			}
 			final NodeModel node = mapController.newNode(text, map);
-			if (textFragment.link != null) {
-				((MLinkController) LinkController.getController()).setLink(node, textFragment.link,
-				    useRelativeUri);
+			if(uri != null){
+				NodeLinks.createLinkExtension(node).setHyperLink(uri);
 			}
 			for (int j = parentNodes.size() - 1; j >= 0; --j) {
 				if (textFragment.depth > ((Integer) parentNodesDepths.get(j)).intValue()) {
