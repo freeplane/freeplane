@@ -64,11 +64,9 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 	private int originalHGap;
 	private int originalParentVGap;
 	private int originalShiftY;
-	final private DoubleClickTimer linkTimer;
 	private static final String EDIT_ON_DOUBLE_CLICK = "edit_on_double_click";
 
 	public MNodeMotionListener() {
-		 linkTimer = new DoubleClickTimer();
 	}
 
 	Point getDragStartingPoint() {
@@ -115,20 +113,10 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		return dragStartingPoint != null;
 	}
 
-
-	@Override
-	protected void loadLink(final String link) {
-		linkTimer.start(new Runnable() {
-			public void run() {
-				MNodeMotionListener.super.loadLink(link);
-			}
-		});
-	}
-
 	@Override
 	public void mouseClicked(final MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2
-				&& foldingTimer.getDelay() > 0) {
+				&& doubleClickTimer.getDelay() > 0) {
 			final MainView mainView = (MainView) e.getComponent();
 			if (mainView.getMouseArea().equals(MouseArea.MOTION)) {
 				final Controller controller = Controller.getCurrentController();
@@ -151,7 +139,6 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 			}
 			else {
 				if (Compat.isPlainEvent(e) && !isInFoldingRegion(e)) {
-					linkTimer.cancel();
 					final MTextController textController = (MTextController) MTextController.getController();
 					textController.getEventQueue().activate(e);
 					textController.edit(FirstAction.EDIT_CURRENT, false);
@@ -181,8 +168,8 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		foldingTimer.cancel();
-		setFoldingDelay();
+		doubleClickTimer.cancel();
+		setClickDelay();
 		if (isInDragRegion(e)) {
 			if ((e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) == (InputEvent.BUTTON1_DOWN_MASK)) {
 				stopTimerForDelayedSelection();
@@ -392,11 +379,11 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		setDragStartingPoint(null, null);
 	}
 	
-	private void setFoldingDelay() {
+	private void setClickDelay() {
 	    if (ResourceController.getResourceController().getBooleanProperty(EDIT_ON_DOUBLE_CLICK))
-	        foldingTimer.setDelay(DoubleClickTimer.MAX_TIME_BETWEEN_CLICKS);
+	        doubleClickTimer.setDelay(DoubleClickTimer.MAX_TIME_BETWEEN_CLICKS);
         else {
-	    	foldingTimer.setDelay(0);
+	    	doubleClickTimer.setDelay(0);
 	    }
     }
 }

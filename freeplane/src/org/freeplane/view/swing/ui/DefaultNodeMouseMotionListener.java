@@ -90,13 +90,13 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 // 	final private ModeController mc;
 	final private ControllerPopupMenuListener popupListener;
 	private Timer timerForDelayedSelection;
-	protected final DoubleClickTimer foldingTimer;
+	protected final DoubleClickTimer doubleClickTimer;
 	private boolean wasFocused;
 
 	public DefaultNodeMouseMotionListener() {
 //		mc = modeController;
 		popupListener = new ControllerPopupMenuListener();
-		foldingTimer = new DoubleClickTimer();
+		doubleClickTimer = new DoubleClickTimer();
 	}
 
 	private void createTimer(final MouseEvent e) {
@@ -164,7 +164,11 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 
 				final String link = component.getLink(e.getPoint());
 				if (link != null) {
-					loadLink(link);
+					doubleClickTimer.start(new Runnable() {
+						public void run() {
+							loadLink(link);
+						}
+					});
 					e.consume();
 					return;
 				}
@@ -172,7 +176,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				if(inside && e.getClickCount() == 1){
 					final boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mc.getMapController(), node));
 					if(!shouldSelectOnClick(e)){
-						foldingTimer.start(new Runnable() {
+						doubleClickTimer.start(new Runnable() {
 							public void run() {
 								mc.getMapController().setFolded(node, fold);
 							}
@@ -187,7 +191,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				&& !shouldSelectOnClick(e)) {
 			final MapController mapController = mc.getMapController();
 			boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node));
-			foldingTimer.cancel();
+			doubleClickTimer.cancel();
 			mapController.setFolded(node, fold);
 			e.consume();
 			return;
@@ -275,7 +279,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	}
 
 	public void mousePressed(final MouseEvent e) {
-		foldingTimer.cancel();
+		doubleClickTimer.cancel();
 		final MainView component = (MainView) e.getComponent();
 		wasFocused = component.hasFocus();
 		showPopupMenu(e);
