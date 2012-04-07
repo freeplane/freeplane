@@ -266,9 +266,6 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		}
 	}
 
-	public void afterMapClose(final MapModel pOldMapView) {
-	}
-
 	private void applyChanges() {
 		final Object size = this.size.getSelectedItem();
 		final int iSize = Integer.parseInt(size.toString());

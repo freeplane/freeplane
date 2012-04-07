@@ -48,10 +48,15 @@ class ForkMainView extends MainView {
 
 	public int getEdgeWidth() {
 	    final NodeView nodeView = getNodeView();
-		int edgeWidth = nodeView.getEdgeWidth();
+	    final int edgeWidth = nodeView.getEdgeWidth();
 		final EdgeStyle style = nodeView.getEdgeStyle();
-		edgeWidth = nodeView.getMap().getZoomed(style.getNodeLineWidth(edgeWidth));
-	    return edgeWidth;
+		final int nodeLineWidth = style.getNodeLineWidth(edgeWidth);
+		if(edgeWidth == 0)
+			return nodeLineWidth;
+		else{
+			final int zoomedLineWidth = nodeView.getMap().getZoomed(nodeLineWidth);
+			return zoomedLineWidth;
+		}
     }
 
 	@Override

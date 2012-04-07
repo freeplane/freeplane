@@ -65,6 +65,7 @@
 			<menu_separator/>
 			<menu_submenu name="menu_title" name_ref="menu_title">
 				<menu_action action="EditAction" accelerator="F2" />
+				<menu_action action="SetBooleanPropertyAction.edit_on_double_click" />
 				<menu_action action="EditLongAction" accelerator="alt ENTER" />
 				<menu_action action="JoinNodesAction" accelerator="control J" ></menu_action>
 				<menu_action action="SplitNode" />
@@ -389,7 +390,6 @@
 			</menu_category>
 			<menu_separator />
 			<menu_action action="PropertyAction" accelerator="control COMMA" menu_key="MB_PropertyAction"/>
-			<menu_action action="SetBooleanPropertyAction.extended_folding_region" />
 		</menu_submenu>
 		<menu_submenu name="mindmaps" name_ref="mindmaps">
 			<menu_category name="modes" menu_key="main_menu_modes"/>

@@ -212,9 +212,6 @@ public class MLogicalStyleController extends LogicalStyleController {
 				removeStyleMenu(menuBuilder, "node_popup_styles");
 			}
 
-			public void afterMapClose(final MapModel oldMap) {
-			}
-
 			public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 				addStyleMenu(menuBuilder, "main_menu_styles", newMap);
 				addStyleMenu(menuBuilder, "node_popup_styles", newMap);

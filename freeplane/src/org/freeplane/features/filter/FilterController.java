@@ -273,9 +273,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		}
 	}
 
-	public void afterMapClose(final MapModel pOldMapView) {
-	}
-
 	void applyFilter(final boolean force) {
 		final ASelectableCondition selectedCondition = getSelectedCondition();
 		final Filter filter = createFilter(selectedCondition);

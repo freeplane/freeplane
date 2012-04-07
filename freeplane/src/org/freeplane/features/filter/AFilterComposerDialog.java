@@ -570,9 +570,6 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		editor.mapChanged(newMap);
 	}
 
-	public void afterMapClose(final MapModel oldMap) {
-	}
-
 	private boolean applyChanges() {
 		internalConditionsModel.setSelectedItem(elementaryConditionList.getSelectedValue());
 		final int[] selectedIndices = elementaryConditionList.getSelectedIndices();

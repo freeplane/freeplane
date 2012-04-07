@@ -3,6 +3,8 @@ package org.freeplane.view.swing.ui;
 import java.awt.Cursor;
 import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.net.URI;
@@ -17,6 +19,7 @@ import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ControllerPopupMenuListener;
+import org.freeplane.core.ui.DoubleClickTimer;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
@@ -28,6 +31,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.view.swing.map.FoldingMark;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.MouseArea;
@@ -86,11 +90,13 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 // 	final private ModeController mc;
 	final private ControllerPopupMenuListener popupListener;
 	private Timer timerForDelayedSelection;
+	protected final DoubleClickTimer doubleClickTimer;
 	private boolean wasFocused;
 
 	public DefaultNodeMouseMotionListener() {
 //		mc = modeController;
 		popupListener = new ControllerPopupMenuListener();
+		doubleClickTimer = new DoubleClickTimer();
 	}
 
 	private void createTimer(final MouseEvent e) {
@@ -133,7 +139,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	}
 
 	public void mouseClicked(final MouseEvent e) {
-		ModeController mc = Controller.getCurrentController().getModeController();
+		final ModeController mc = Controller.getCurrentController().getModeController();
 		if(Compat.isMacOsX()){
 			final JPopupMenu popupmenu = mc.getUserInputListenerFactory().getNodePopupMenu();
 			if(popupmenu.isShowing()){
@@ -145,32 +151,58 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		if (nodeView == null)
 			return;
 
+		final NodeModel node = nodeView.getModel();
+		final boolean plainEvent = Compat.isPlainEvent(e);
+		final boolean inside = isInside(e);
 		if(e.getButton() == 1){
-			if(Compat.isPlainEvent(e)){
+			if(plainEvent){
 				if (component.isInFollowLinkRegion(e.getX())) {
-					LinkController.getController(mc).loadURL(nodeView.getModel(), e);
+					LinkController.getController(mc).loadURL(node, e);
+					e.consume();
 					return;
 				}
 
 				final String link = component.getLink(e.getPoint());
 				if (link != null) {
-					loadLink(link);
+					doubleClickTimer.start(new Runnable() {
+						public void run() {
+							loadLink(link);
+						}
+					});
+					e.consume();
 					return;
+				}
+				
+				if(inside && e.getClickCount() == 1){
+					final boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mc.getMapController(), node));
+					if(!shouldSelectOnClick(e)){
+						doubleClickTimer.start(new Runnable() {
+							public void run() {
+								mc.getMapController().setFolded(node, fold);
+							}
+						});
+					}
 				}
 			}
 		}
-		if (isInFoldingRegion(e) && Compat.isPlainEvent(e) && !shouldSelectOnClick(e)) {
+		final boolean inFoldingRegion = isInFoldingRegion(e);
+		if ((plainEvent && inFoldingRegion 
+				|| (inFoldingRegion || inside) && Compat.isCtrlShiftEvent(e)) 
+				&& !shouldSelectOnClick(e)) {
 			final MapController mapController = mc.getMapController();
-			mapController.toggleFolded(nodeView.getModel());
+			boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node));
+			doubleClickTimer.cancel();
+			mapController.setFolded(node, fold);
 			e.consume();
 			return;
 		}
-		if(isInside(e) && ! e.isAltDown())
+		if(inside && ! e.isAltDown())
 			extendSelection(e);
 	}
 
+
 	private boolean shouldSelectOnClick(MouseEvent e) {
-		if(isInside(e) && Compat.isPlainEvent(e)){
+		if(isInside(e)){
 			final MainView component = (MainView) e.getComponent();
 			NodeView nodeView = component.getNodeView();
 			return !nodeView.isSelected() || Controller.getCurrentController().getSelection().size() != 1;
@@ -229,7 +261,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			requiredCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 			node.setMouseArea(MouseArea.LINK);
         }
-        else if (node.isInFoldingRegion(e.getPoint())){
+        else if (isInFoldingRegion(e)){
         	requiredCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
         	node.setMouseArea(MouseArea.FOLDING);
         }
@@ -247,6 +279,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	}
 
 	public void mousePressed(final MouseEvent e) {
+		doubleClickTimer.cancel();
 		final MainView component = (MainView) e.getComponent();
 		wasFocused = component.hasFocus();
 		showPopupMenu(e);

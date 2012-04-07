@@ -26,6 +26,7 @@ import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.HeadlessException;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -73,7 +74,6 @@ import org.freeplane.features.text.TextController;
  * Base class for all node views.
  */
 public abstract class MainView extends ZoomableLabel {
-	private static final String EXTENDED_FOLDING_REGION = "extended_folding_region";
 	private static final int FOLDING_CIRCLE_WIDTH = 16;
 	private static final String USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING = "use_common_out_point_for_root_node";
     public static boolean USE_COMMON_OUT_POINT_FOR_ROOT_NODE = ResourceController.getResourceController().getBooleanProperty(USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING);
@@ -189,8 +189,18 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	private boolean canBeFolded() {
-		final NodeModel node = getNodeView().getModel();
-		return !node.isRoot() && node.hasChildren();
+		final NodeView nodeView = getNodeView();
+		final NodeModel node = nodeView.getModel();
+		if (node.hasChildren()){
+			if(node.isRoot()){
+				final MapController mapController = nodeView.getMap().getModeController().getMapController();
+				return FoldingMark.UNVISIBLE_CHILDREN_FOLDED.equals(foldingMarkType(mapController, node));
+			}
+			else
+				return true;
+		}
+		else
+			return false;
 	}
 
 	/**
@@ -235,7 +245,7 @@ public abstract class MainView extends ZoomableLabel {
 		}
 	}
 
-	private FoldingMark foldingMarkType(MapController mapController, NodeModel node) {
+	public FoldingMark foldingMarkType(MapController mapController, NodeModel node) {
 		if (mapController.isFolded(node) && (node.isVisible() || node.getFilterInfo().isAncestor())) {
 			return FoldingMark.ITSELF_FOLDED;
 		}
@@ -264,7 +274,13 @@ public abstract class MainView extends ZoomableLabel {
 	protected void paintFoldingMark(final NodeView nodeView, final Graphics2D g) {
 		if (! canBeFolded())
 			return;
-	    final Point mousePosition = getMousePosition();
+		final FoldingMark markType = foldingMarkType(getMap().getModeController().getMapController(), nodeView.getModel());
+	    Point mousePosition = null;
+	    try {
+	        mousePosition = getMousePosition();
+        }
+        catch (Exception e) {
+        }
 		if(mousePosition != null){
 			final int width = Math.max(FOLDING_CIRCLE_WIDTH, getZoomedFoldingSymbolHalfWidth() * 2);
 			final Point p = getNodeView().isLeft() ? getLeftPoint() : getRightPoint();
@@ -274,10 +290,16 @@ public abstract class MainView extends ZoomableLabel {
 				p.y -= width/2;
 			if(nodeView.isLeft())
 				p.x -= width;
-			FoldingMark.FOLDING_CIRCLE.draw(g, nodeView, new Rectangle(p.x, p.y, width, width));
+			final FoldingMark foldingCircle;
+			if(markType.equals(FoldingMark.UNFOLDED)) {
+	            foldingCircle = FoldingMark.FOLDING_CIRCLE_UNFOLDED;
+            }
+			else{
+				foldingCircle = FoldingMark.FOLDING_CIRCLE_FOLDED;
+			}
+            foldingCircle.draw(g, nodeView, new Rectangle(p.x, p.y, width, width));
 		}
 		else{
-			final FoldingMark markType = foldingMarkType(getMap().getModeController().getMapController(), nodeView.getModel());
 			final int halfWidth = getZoomedFoldingSymbolHalfWidth();
 			final Point p = getNodeView().isLeft() ? getLeftPoint() : getRightPoint();
 			if (p.x <= 0) {
@@ -450,12 +472,13 @@ public abstract class MainView extends ZoomableLabel {
 			text = shortenText(text);
 		}
 		if(! HtmlUtils.isHtmlNode(text) && ! text.contains("\n"))
-			text = convertTextToHtmlLink(text,  NodeLinks.getLink(nodeModel));
+			text = convertTextToHtmlLink(text,  nodeModel);
 		updateText(text);
 	}
 
-	private String convertTextToHtmlLink(String text, URI link) {
-		if(! LinkController.LinkType.DEFAULT.equals(LinkController.getLinkType(link, null)))
+	private String convertTextToHtmlLink(String text, NodeModel node) {
+		URI link = NodeLinks.getLink(node);
+		if(link == null || ! LinkController.getController().formatNodeAsHyperlink(node))
 			return text;
 		StringBuilder sb = new StringBuilder("<html><body><a href=\"");
 		sb.append(link.toString());
@@ -602,13 +625,12 @@ public abstract class MainView extends ZoomableLabel {
 		if (canBeFolded() && p.y >= 0 && p.y < getHeight()) {
 			final boolean isLeft = getNodeView().isLeft();
 			final int width = Math.max(FOLDING_CIRCLE_WIDTH, getZoomedFoldingSymbolHalfWidth() * 2);
-			final boolean extendedRegion = ResourceController.getResourceController().getBooleanProperty(EXTENDED_FOLDING_REGION);
 			if (isLeft) {
-	            final int maxX = extendedRegion ? getWidth(): 0;
+	            final int maxX = 0;
 	            return p.x >= -width && p.x < maxX;
             }
             else {
-	            final int minX = extendedRegion ? 0 : getWidth();
+	            final int minX = getWidth();
 	            return p.x >= minX && p.x < (getWidth() + width);
             }
 		}

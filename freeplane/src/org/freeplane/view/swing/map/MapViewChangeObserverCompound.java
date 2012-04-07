@@ -55,18 +55,19 @@ class MapViewChangeObserverCompound {
 	}
 
 	void afterMapViewClose(final MapView pOldMap) {
-        for (final IMapSelectionListener observer:mapListeners.toArray(new IMapSelectionListener[]{})) {
-			observer.afterMapClose(getModel(pOldMap));
-		}
         for (final IMapViewChangeListener observer : viewListeners.toArray(new IMapViewChangeListener[]{})) {
             observer.afterViewClose(pOldMap);
         }
 	}
 
 	void beforeMapViewChange(final MapView oldMap, final MapView newMap) {
-	    for (final IMapSelectionListener observer:mapListeners.toArray(new IMapSelectionListener[]{})) {
-	        observer.beforeMapChange(getModel(oldMap), getModel(newMap));
-	    }
+		final MapModel oldModel = getModel(oldMap);
+		final MapModel newModel = getModel(newMap);
+		if (oldModel != newModel) {
+			for (final IMapSelectionListener observer:mapListeners.toArray(new IMapSelectionListener[]{})) {
+				observer.beforeMapChange(getModel(oldMap), getModel(newMap));
+			}
+		}
 	    for (final IMapViewChangeListener observer : viewListeners.toArray(new IMapViewChangeListener[]{})) {
 	        observer.beforeViewChange(oldMap, newMap);
 	    }
