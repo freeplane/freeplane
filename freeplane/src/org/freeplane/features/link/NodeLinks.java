@@ -52,6 +52,11 @@ public class NodeLinks implements IExtension {
 		return links != null ? links.getHyperLink() : null;
 	}
 
+	public static Boolean formatNodeAsHyperlink(final NodeModel node) {
+		final NodeLinks links = NodeLinks.getModel(node);
+		return links != null ? links.formatNodeAsHyperlink() : null;
+	}
+
 	public static String getLinkAsString(final NodeModel selectedNode) {
 		final URI link = NodeLinks.getValidLink(selectedNode);
 		return link != null ? link.toString() : null;
@@ -76,6 +81,7 @@ public class NodeLinks implements IExtension {
 	}
 
 	private URI hyperlink;
+	private Boolean formatNodeAsHyperlink;
 	final private LinkedList<LinkModel> links;
 
 	public NodeLinks() {
@@ -166,4 +172,13 @@ public class NodeLinks implements IExtension {
 		}
 		return link;
 	}
+	
+	public Boolean formatNodeAsHyperlink() {
+    	return formatNodeAsHyperlink;
+    }
+
+	public void setFormatNodeAsHyperlink(Boolean formatNodeAsHyperlink) {
+    	this.formatNodeAsHyperlink = formatNodeAsHyperlink;
+    }
+
 }

@@ -20,6 +20,8 @@
 package org.freeplane.core.ui;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -81,20 +83,30 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 
 	final private String key;
 	private boolean selected = false;
+	
+	static private Map<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>();
 
 	public AFreeplaneAction(final String key) {
 		super();
 		this.key = key;
 		MenuBuilder.setLabelAndMnemonic(this, TextUtils.getRawText(getTextKey()));
-		final String iconResource = ResourceController.getResourceController().getProperty(getIconKey(), null);
-		if (iconResource != null) {
-			final URL url = ResourceController.getResourceController().getResource(iconResource);
-			if (url == null) {
-				LogUtils.severe("can not load icon '" + iconResource + "'");
-			}
-			else {
-				final ImageIcon icon = new ImageIcon(url);
-				putValue(SMALL_ICON, icon);
+		final String iconKey = getIconKey();
+		final ImageIcon cachedIcon = iconCache.get(iconKey);
+		if(cachedIcon != null){
+			putValue(SMALL_ICON, cachedIcon);
+		}
+		else{
+			final String iconResource = ResourceController.getResourceController().getProperty(iconKey, null);
+			if (iconResource != null) {
+				final URL url = ResourceController.getResourceController().getResource(iconResource);
+				if (url == null) {
+					LogUtils.severe("can not load icon '" + iconResource + "'");
+				}
+				else {
+					final ImageIcon icon = new ImageIcon(url);
+					putValue(SMALL_ICON, icon);
+					iconCache.put(iconKey, icon);
+				}
 			}
 		}
 		final String tooltip = TextUtils.getRawText(getTooltipKey(), null);

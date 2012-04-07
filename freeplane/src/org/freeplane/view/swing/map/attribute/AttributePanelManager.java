@@ -34,6 +34,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -42,6 +43,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.format.FormatController;
+import org.freeplane.features.format.FormattedFormula;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.INodeChangeListener;
@@ -158,6 +160,10 @@ public class AttributePanelManager{
                                            final Object toFormat) {
                     if (formatChooser.getSelectedItem() == null)
                         return null;
+                    if (toFormat instanceof String && ((String)toFormat).startsWith("="))
+                        return new FormattedFormula((String) toFormat, newFormat.getPattern());
+                    if (toFormat instanceof FormattedFormula)
+                        return new FormattedFormula(((FormattedFormula) toFormat).getObject(), newFormat.getPattern());
                     return newFormat.formatObject(toFormat);
                 }
             });
@@ -201,6 +207,7 @@ public class AttributePanelManager{
             final String NODE_FORMAT = "OptionPanel.nodeformat"; // duplicated from StyleEditorPanel
             formatChooser.setToolTipText(TextUtils.getRawText(NODE_FORMAT + ".tooltip"));
             formatChooser.setAlignmentX(Component.LEFT_ALIGNMENT);
+            formatChooser.setBorder(new TitledBorder(TextUtils.getText("value_format")));
             return formatChooser;
         }
 

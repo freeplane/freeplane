@@ -178,7 +178,7 @@ public class NodeTooltipManager implements IExtension{
 		final int minY = sBounds.y;
 		final int maxY = sBounds.y + sBounds.height;
 		int x = locationOnScreen.x;
-		int y = locationOnScreen.y + height + 8;
+		int y = locationOnScreen.y + height;
 		final Dimension tipSize = tip.getPreferredSize();
 		final int tipWidth = tipSize.width;
 		if(x + tipWidth > maxX){
@@ -189,8 +189,8 @@ public class NodeTooltipManager implements IExtension{
 		}
 		final int tipHeight = tipSize.height;
 		if(y + tipHeight > maxY){
-			if(locationOnScreen.y - tipHeight - 8 > minY){
-				y = locationOnScreen.y - tipHeight - 8;
+			if(locationOnScreen.y - tipHeight > minY){
+				y = locationOnScreen.y - tipHeight;
 			}
 			else{
 				y = maxY - tipHeight;
@@ -286,26 +286,33 @@ public class NodeTooltipManager implements IExtension{
 	mouseEvent = event;
 	if(ResourceController.getResourceController().getBooleanProperty(RESOURCES_SHOW_NODE_TOOLTIPS))
 		enterTimer.restart();
-}
+	}
+
+	protected boolean mouseOverComponent() {
+		if(insideComponent.isShowing()){
+			final Point mousePosition = insideComponent.getMousePosition(true);
+			return mousePosition != null
+					&& new Rectangle(0, 0, insideComponent.getWidth(),
+							insideComponent.getHeight()).contains(mousePosition);
+		}
+		return false;
+	}
+
 
 	private class insideTimerAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (insideComponent != null){ 
-				if( insideComponent.isShowing() && insideComponent.getMousePosition(true) != null) {
+				if( mouseOverComponent()) {
 					// Lazy lookup
 					if (toolTipText == null && mouseEvent != null) {
 						toolTipText = insideComponent.getToolTipText(mouseEvent);
 					}
 					if (toolTipText != null) {
 						showTipWindow();
-					}
-					else {
-						hideTipWindow();
+						return;
 					}
 				}
-				else{
-					hideTipWindow();
-				}
+				hideTipWindow();
 			}
 		}
 	}
@@ -323,7 +330,7 @@ public class NodeTooltipManager implements IExtension{
                 return;
             }
                     
-			if(tip.getMousePosition(true) != null || insideComponent.getMousePosition(true) != null){
+			if(tip.getMousePosition(true) != null || mouseOverComponent()){
 				exitTimer.restart();
 				return;
 			}

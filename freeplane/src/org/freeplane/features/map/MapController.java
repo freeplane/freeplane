@@ -54,7 +54,6 @@ import org.freeplane.features.mode.AController.IActionOnChange;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.SelectionController;
-import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.main.addons.AddOnsController;
@@ -781,9 +780,11 @@ public class MapController extends SelectionController implements IExtension{
 	                               final Object newValue) {
 	    final boolean startThread = nodesToRefresh.isEmpty();
 	    final NodeRefreshValue value = new NodeRefreshValue(Controller.getCurrentModeController(), oldValue, newValue);
-		final NodeRefreshValue old = nodesToRefresh.put(new NodeRefreshKey(node, property), value);
-		if(old != null){
-			value.oldValue = old.oldValue;
+		final NodeRefreshKey key = new NodeRefreshKey(node, property);
+		final NodeRefreshValue old = nodesToRefresh.put(key, value);
+		if(old != null && old.newValue != value.newValue){
+			old.newValue = value.newValue;
+			nodesToRefresh.put(key, old);
 		}
         if (startThread) {
 			EventQueue.invokeLater(new Runnable() {

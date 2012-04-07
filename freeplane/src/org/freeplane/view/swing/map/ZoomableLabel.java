@@ -178,7 +178,9 @@ public class ZoomableLabel extends JLabel {
 			return null;
 		if(!textR.contains(p))
 			return null;
-		final int pos = view.viewToModel(p.x, p.y, textR);
+		int x = (int) (p.x / getZoom());
+		int y = (int) (p.y / getZoom());
+		final int pos = view.viewToModel(x, y, textR);
 		final HTMLDocument document = (HTMLDocument) view.getDocument();
 		final String linkURL = HtmlUtils.getURLOfExistingLink(document, pos);
 		return linkURL;

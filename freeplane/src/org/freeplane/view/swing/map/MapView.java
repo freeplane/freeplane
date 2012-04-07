@@ -1061,7 +1061,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    if (newSelected == null) {
 	    	return false;
 		}
-		setSiblingMaxLevel(newSelected.getModel().getNodeLevel(false));
 		if(continious){
 			if(newSelected.isParentOf(getSelected())){
 				selectAsTheOnlyOneSelected(newSelected);
@@ -1710,8 +1709,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		for (final NodeView nodeView : selectedNodes) {
 			if (nodeView.isContentVisible() && nodeView.isDisplayable()) {
 				if(getSelected() == null)
-					selectAsTheOnlyOneSelected(nodeView);
-				else
 					selection.add(nodeView);
 			}
 		}
@@ -1726,8 +1723,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 			selectAsTheOnlyOneSelected(getRoot());
 		}
-		else
-			scrollNodeToVisible(focussedNodeView);
 	}
 
 	/*

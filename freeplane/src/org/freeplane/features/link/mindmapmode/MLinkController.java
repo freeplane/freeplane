@@ -72,6 +72,7 @@ import org.freeplane.features.link.MapLinks;
 import org.freeplane.features.link.NodeLinkModel;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.ConnectorModel.Shape;
+import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapChangeEvent;
@@ -82,13 +83,43 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
+import org.freeplane.features.styles.LogicalStyleKeys;
 import org.freeplane.features.url.UrlManager;
 
 /**
  * @author Dimitry Polivaev
  */
 public class MLinkController extends LinkController {
+	private static class StyleCopier implements IExtensionCopier {
 
+		public void copy(Object key, NodeModel from, NodeModel to) {
+			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
+				return;
+			}
+			copy(from, to);
+        }
+
+		public void copy(NodeModel from, NodeModel to) {
+	        final Boolean formatNodeAsHyperlink = NodeLinks.formatNodeAsHyperlink(from);
+			if(formatNodeAsHyperlink != null)
+				NodeLinks.createLinkExtension(to).setFormatNodeAsHyperlink(formatNodeAsHyperlink);
+	        
+        }
+
+		public void remove(Object key, NodeModel from) {
+			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
+				return;
+			}
+			final NodeLinks model = NodeLinks.getModel(from);
+			if(model != null)
+				model.setFormatNodeAsHyperlink(null);
+        }
+
+		public void remove(Object key, NodeModel from, NodeModel which) {
+	        if(NodeLinks.formatNodeAsHyperlink(which) != null)
+	        	remove(key, from);
+        }
+	}
 	private final class CreateArrowLinkActor implements IActor {
 		private final String targetID;
 		private final NodeModel source;
@@ -351,6 +382,7 @@ public class MLinkController extends LinkController {
 		createActions();
 		anchorID = null;
 		final ModeController modeController = Controller.getCurrentModeController();
+		modeController.registerExtensionCopier(new StyleCopier());
 		(modeController.getMapController()).addMapChangeListener(new NodeDeletionListener());
 	}
 
@@ -1030,5 +1062,28 @@ public class MLinkController extends LinkController {
 
 	public void setAnchorID(final String anchorID) {
 		MLinkController.anchorID = anchorID;
+	}
+	
+	public void setFormatNodeAsHyperlink(final NodeModel node, final Boolean enabled){
+		final ModeController modeController = Controller.getCurrentModeController();
+		final NodeLinks links = NodeLinks.createLinkExtension(node);
+		IActor actor = new IActor() {
+			final Boolean old = links.formatNodeAsHyperlink();
+			public void act() {
+				links.setFormatNodeAsHyperlink(enabled);
+				modeController.getMapController().nodeChanged(node);
+			}
+
+			public void undo() {
+				links.setFormatNodeAsHyperlink(old);
+				modeController.getMapController().nodeChanged(node);
+			}
+			
+			
+			public String getDescription() {
+				return "setFormatNodeAsHyperlink";
+			}
+		};
+		modeController.execute(actor, node.getMap());
 	}
 }

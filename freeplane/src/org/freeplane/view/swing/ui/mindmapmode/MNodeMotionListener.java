@@ -28,14 +28,13 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.Timer;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.DoubleClickTimer;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.ui.components.UITools;
@@ -65,6 +64,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 	private int originalHGap;
 	private int originalParentVGap;
 	private int originalShiftY;
+	private static final String EDIT_ON_DOUBLE_CLICK = "edit_on_double_click";
 
 	public MNodeMotionListener() {
 	}
@@ -75,27 +75,23 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 
 	/**
 	 */
-	private int getHGap(final Point dragNextPoint, final NodeModel node, final Point dragStartingPoint) {
-		int oldHGap = LocationModel.getModel(node).getHGap();
+	private int getHGapChange(final Point dragNextPoint, final NodeModel node) {
 		final Controller controller = Controller.getCurrentController();
 		final MapView mapView = ((MapView) controller.getViewController().getMapView());
 		int hGapChange = (int) ((dragNextPoint.x - dragStartingPoint.x) / mapView.getZoom());
 		if (node.isLeft()) {
 			hGapChange = -hGapChange;
 		}
-		oldHGap += +hGapChange;
-		return oldHGap;
+		return hGapChange;
 	}
 
 	/**
 	 */
-	private int getNodeShiftY(final Point dragNextPoint, final NodeModel node, final Point dragStartingPoint) {
-		int shiftY = LocationModel.getModel(node).getShiftY();
+	private int getNodeShiftYChange(final Point dragNextPoint, final NodeModel node) {
 		final Controller controller = Controller.getCurrentController();
 		final MapView mapView = ((MapView) controller.getViewController().getMapView());
 		final int shiftYChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / mapView.getZoom());
-		shiftY += shiftYChange;
-		return shiftY;
+		return shiftYChange;
 	}
 
 	/**
@@ -106,71 +102,43 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 
 	/**
 	 */
-	private int getVGap(final Point dragNextPoint, final NodeModel node, final Point dragStartingPoint) {
-		int oldVGap = LocationModel.getModel(node).getVGap();
+	private int getVGapChange(final Point dragNextPoint, final NodeModel node) {
 		final Controller controller = Controller.getCurrentController();
 		final MapView mapView = ((MapView) controller.getViewController().getMapView());
 		final int vGapChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / mapView.getZoom());
-		oldVGap = Math.max(0, oldVGap - vGapChange);
-		return oldVGap;
+		return vGapChange;
 	}
 
 	public boolean isDragActive() {
 		return dragStartingPoint != null;
 	}
 
-	static final private int MAX_TIME_BETWEEN_CLICKS;
-	static{
-		final Object p = Toolkit.getDefaultToolkit().getDesktopProperty("awt.multiClickInterval");
-		MAX_TIME_BETWEEN_CLICKS = p instanceof Integer ? (Integer) p : 250;
-	}
-
-	private Timer linkTimer = null;
-	@Override
-	protected void loadLink(final String link) {
-		cancelLinkLoading();
-		linkTimer = new Timer(MAX_TIME_BETWEEN_CLICKS, new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				linkTimer = null;
-				MNodeMotionListener.super.loadLink(link);
-			}
-		});
-		linkTimer.setRepeats(false);
-		linkTimer.start(); 
-	}
-
-	protected void cancelLinkLoading() {
-		if(linkTimer != null)
-			linkTimer.stop();
-	}
-	
 	@Override
 	public void mouseClicked(final MouseEvent e) {
-		if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2) {
-			final MainView mainView = (MainView)e.getComponent();
-			if(mainView.getMouseArea().equals(MouseArea.MOTION) ){
+		if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2
+				&& doubleClickTimer.getDelay() > 0) {
+			final MainView mainView = (MainView) e.getComponent();
+			if (mainView.getMouseArea().equals(MouseArea.MOTION)) {
 				final Controller controller = Controller.getCurrentController();
-				MLocationController locationController = (MLocationController) LocationController.getController(controller.getModeController());
+				MLocationController locationController = (MLocationController) LocationController
+				    .getController(controller.getModeController());
 				if (e.getModifiersEx() == 0) {
 					final NodeView nodeV = getNodeView(e);
 					final NodeModel node = nodeV.getModel();
-					locationController.moveNodePosition(node, LocationModel
-							.getModel(node).getVGap(), LocationModel.HGAP, 0);
+					locationController.moveNodePosition(node, LocationModel.getModel(node).getVGap(),
+					    LocationModel.HGAP, 0);
 					return;
 				}
 				if (Compat.isCtrlEvent(e)) {
 					final NodeView nodeV = getNodeView(e);
 					final NodeModel node = nodeV.getModel();
-					locationController.moveNodePosition(node, LocationModel.VGAP,
-							LocationModel.getModel(node).getHGap(), LocationModel.getModel(node).getShiftY());
+					locationController.moveNodePosition(node, LocationModel.VGAP, LocationModel.getModel(node)
+					    .getHGap(), LocationModel.getModel(node).getShiftY());
 					return;
 				}
 			}
 			else {
-				if ( Compat.isPlainEvent(e) 
-						&& ! mainView.isInFoldingRegion(e.getPoint())) {
-					cancelLinkLoading();
+				if (Compat.isPlainEvent(e) && !isInFoldingRegion(e)) {
 					final MTextController textController = (MTextController) MTextController.getController();
 					textController.getEventQueue().activate(e);
 					textController.edit(FirstAction.EDIT_CURRENT, false);
@@ -179,66 +147,87 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		}
 		super.mouseClicked(e);
 	}
-	
+
 	public void mouseMoved(final MouseEvent e) {
 		if (isDragActive())
 			return;
 		final MainView v = (MainView) e.getSource();
-		final MouseArea mouseArea = v.whichMouseArea(e.getPoint());
-		if(mouseArea.equals(MouseArea.MOTION)){
-			v.setMouseArea(mouseArea);
+		if (v.isInDragRegion(e.getPoint())) {
+			v.setMouseArea(MouseArea.MOTION);
 			v.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 			return;
 		}
 		super.mouseMoved(e);
 	}
 
-
 	@Override
 	public void mouseExited(MouseEvent e) {
-		if(! isDragActive())
+		if (!isDragActive())
 			super.mouseExited(e);
 	}
 
-	/** Invoked when a mouse button is pressed on a component and then dragged. */
+	@Override
+	public void mousePressed(MouseEvent e) {
+		doubleClickTimer.cancel();
+		setClickDelay();
+		if (isInDragRegion(e)) {
+			if ((e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) == (InputEvent.BUTTON1_DOWN_MASK)) {
+				stopTimerForDelayedSelection();
+				final NodeView nodeV = getNodeView(e);
+				final Point point = e.getPoint();
+				findGridPoint(point);
+				UITools.convertPointToAncestor(nodeV, point, JScrollPane.class);
+				setDragStartingPoint(point, nodeV.getModel());
+			}
+		}
+		else
+			super.mousePressed(e);
+	}
+
 	public void mouseDragged(final MouseEvent e) {
-		if(isInside(e) || isInFoldingRegion(e))
+		if (!isDragActive())
 			return;
 		if ((e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) == (InputEvent.BUTTON1_DOWN_MASK)) {
-			stopTimerForDelayedSelection();
-			final MainView motionListenerView = (MainView) e.getSource();
+			final MainView mainView = (MainView) e.getSource();
 			final NodeView nodeV = getNodeView(e);
 			final MapView mapView = nodeV.getMap();
 			final Point point = e.getPoint();
 			findGridPoint(point);
 			UITools.convertPointToAncestor(nodeV, point, JScrollPane.class);
-			if (!isDragActive()) {
-				setDragStartingPoint(point, nodeV.getModel());
+			ModeController c = Controller.getCurrentController().getModeController();
+			final Point dragNextPoint = point;
+			if (!Compat.isCtrlEvent(e)) {
+				final NodeModel node = nodeV.getModel();
+				final LocationModel locationModel = LocationModel.createLocationModel(node);
+				final int hGapChange = getHGapChange(dragNextPoint, node);
+				if(hGapChange != 0){
+					locationModel.setHGap(originalHGap + hGapChange);
+				}
+				final int shiftYChange = getNodeShiftYChange(dragNextPoint, node);
+				if(shiftYChange != 0){
+					locationModel.setShiftY(originalShiftY + shiftYChange);
+				}
+				if(hGapChange != 0 || shiftYChange != 0)
+					c.getMapController().nodeRefresh(node);
+				else
+					return;
 			}
 			else {
-				ModeController c = Controller.getCurrentController().getModeController();
-				final Point dragNextPoint = point;
-				if (! Compat.isCtrlEvent(e)) {
-					final NodeModel node = nodeV.getModel();
-					final LocationModel locationModel = LocationModel.createLocationModel(node);
-					locationModel.setShiftY(getNodeShiftY(dragNextPoint, node, dragStartingPoint));
-					locationModel.setHGap(getHGap(dragNextPoint, node, dragStartingPoint));
-					c.getMapController().nodeRefresh(node);
-				}
-				else {
-					final NodeModel parentNode = nodeV.getVisibleParentView().getModel();
-					LocationModel.createLocationModel(parentNode).setVGap(
-					    getVGap(dragNextPoint, parentNode, dragStartingPoint));
+				final NodeModel parentNode = nodeV.getVisibleParentView().getModel();
+				final int vGapChange = getVGapChange(dragNextPoint, parentNode);
+				if(vGapChange != 0){
+					LocationModel.createLocationModel(parentNode).setVGap(Math.max(0, originalParentVGap - vGapChange));
 					final MapController mapController = c.getMapController();
 					mapController.nodeRefresh(parentNode);
 					mapController.nodeRefresh(nodeV.getModel());
 				}
-				dragStartingPoint = point;
+				else
+					return;
 			}
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					final Rectangle r = motionListenerView.getBounds();
-					UITools.convertRectangleToAncestor(motionListenerView, r, mapView);
+					final Rectangle r = mainView.getBounds();
+					UITools.convertRectangleToAncestor(mainView.getParent(), r, mapView);
 					final boolean isEventPointVisible = mapView.getVisibleRect().contains(r);
 					if (!isEventPointVisible) {
 						mapView.scrollRectToVisible(r);
@@ -249,19 +238,19 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 	}
 
 	private void findGridPoint(Point point) {
-	    final int gridSize = ResourceController.getResourceController().getIntProperty("grid_size");
-	    if(gridSize <= 2){
-	    	return;
-	    }
-	    point.x  -= point.x % gridSize;
-	    point.y  -= point.y % gridSize;
-    }
+		final int gridSize = ResourceController.getResourceController().getIntProperty("grid_size");
+		if (gridSize <= 2) {
+			return;
+		}
+		point.x -= point.x % gridSize;
+		point.y -= point.y % gridSize;
+	}
 
 	@Override
 	public void mouseReleased(final MouseEvent e) {
 		final MainView v = (MainView) e.getSource();
 		if (!v.contains(e.getX(), e.getY())) {
-			v.setMouseArea(MouseArea.DEFAULT);
+			v.setMouseArea(MouseArea.OUT);
 		}
 		if (!isDragActive()) {
 			super.mouseReleased(e);
@@ -277,93 +266,93 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		adjustNodeIndices(nodeV);
 		resetPositions(node);
 		final Controller controller = modeController.getController();
-		MLocationController locationController = (MLocationController) LocationController.getController(controller.getModeController());
+		MLocationController locationController = (MLocationController) LocationController.getController(controller
+		    .getModeController());
 		locationController.moveNodePosition(node, parentVGap, hgap, shiftY);
 		stopDrag();
 	}
 
 	private void adjustNodeIndices(final NodeView nodeV) {
-		NodeModel[] selectedsBackup = null; 
+		NodeModel[] selectedsBackup = null;
 		final NodeModel node = nodeV.getModel();
-		if(FreeNode.isFreeNode(node)){
+		if (FreeNode.isFreeNode(node)) {
 			selectedsBackup = adjustNodeIndexBackupSelection(nodeV, selectedsBackup);
 		}
-		else{
+		else {
 			final MapView map = nodeV.getMap();
-			final NodeModel[] siblingNodes = node.getParentNode().getChildren().toArray(new NodeModel[]{});
-			for(NodeModel sibling : siblingNodes){
-				if(FreeNode.isFreeNode(sibling)){
+			final NodeModel[] siblingNodes = node.getParentNode().getChildren().toArray(new NodeModel[] {});
+			for (NodeModel sibling : siblingNodes) {
+				if (FreeNode.isFreeNode(sibling)) {
 					final NodeView siblingV = map.getNodeView(sibling);
 					selectedsBackup = adjustNodeIndexBackupSelection(siblingV, selectedsBackup);
 				}
 			}
 		}
-		if(selectedsBackup != null){
+		if (selectedsBackup != null) {
 			final ModeController modeController = nodeV.getMap().getModeController();
 			final Controller controller = modeController.getController();
 			controller.getSelection().replaceSelection(selectedsBackup);
 		}
-    }
+	}
 
 	private NodeModel[] adjustNodeIndexBackupSelection(final NodeView nodeV, NodeModel[] selectedsBackup) {
 		final NodeModel node = nodeV.getModel();
-	    boolean isLeft = nodeV.isLeft();
-	    final int newIndex = calculateNewNodeIndex(nodeV, isLeft, 0, node.getParentNode().getChildCount());
-	    if(newIndex != -1){
-	    	final ModeController modeController = nodeV.getMap().getModeController();
-	    	MMapController mapController = (MMapController) modeController.getMapController();
-	    	if(selectedsBackup == null){
-		    	final Collection<NodeModel> selecteds = mapController.getSelectedNodes();
-	    		selectedsBackup = selecteds.toArray(new NodeModel[selecteds.size()]);
-	    	}
-	    	mapController.moveNode(node, node.getParentNode(),  newIndex, isLeft, false);
-	    }
-	    return selectedsBackup;
-    }
+		boolean isLeft = nodeV.isLeft();
+		final int newIndex = calculateNewNodeIndex(nodeV, isLeft, 0, node.getParentNode().getChildCount());
+		if (newIndex != -1) {
+			final ModeController modeController = nodeV.getMap().getModeController();
+			MMapController mapController = (MMapController) modeController.getMapController();
+			if (selectedsBackup == null) {
+				final Collection<NodeModel> selecteds = mapController.getSelectedNodes();
+				selectedsBackup = selecteds.toArray(new NodeModel[selecteds.size()]);
+			}
+			mapController.moveNode(node, node.getParentNode(), newIndex, isLeft, false);
+		}
+		return selectedsBackup;
+	}
 
 	public int getRefX(final NodeView node) {
-	    return node.getContent().getX() + node.getContent().getWidth()/2;
-    }
+		return node.getContent().getX() + node.getContent().getWidth() / 2;
+	}
 
 	private int calculateNewNodeIndex(final NodeView nodeV, final boolean left, final int start, final int end) {
 		final NodeModel node = nodeV.getModel();
-		if(SummaryNode.isSummaryNode(node))
+		if (SummaryNode.isSummaryNode(node))
 			return -1;
 		final int nodeY = getRefY(nodeV);
 		final NodeView parent = nodeV.getParentView();
 		int newIndex = 0;
 		int oldIndex = -1;
 		int wrondSideCount = 0;
-		for(int i = start; i < end; i++){
+		for (int i = start; i < end; i++) {
 			final Component component = parent.getComponent(i);
-			if(!(component instanceof NodeView))
+			if (!(component instanceof NodeView))
 				continue;
-			NodeView sibling = (NodeView)component;
-			if(sibling.isLeft() == left 
-					&& ! SummaryNode.isSummaryNode(sibling.getModel())
-				&& getRefY(sibling) > nodeY)
+			NodeView sibling = (NodeView) component;
+			if (sibling.isLeft() == left && !SummaryNode.isSummaryNode(sibling.getModel()) && getRefY(sibling) > nodeY)
 				break;
-			else{
-				if(sibling != nodeV){
+			else {
+				if (sibling != nodeV) {
 					newIndex++;
-					if(sibling.isLeft() != left)
+					if (sibling.isLeft() != left)
 						wrondSideCount++;
 					else
 						wrondSideCount = 0;
 				}
-				else{
+				else {
 					oldIndex = i;
 				}
 			}
 		}
 		final int result = newIndex - wrondSideCount;
-		if(result == oldIndex)
+		if (result == oldIndex)
 			return -1;
 		return result;
-    }
+	}
+
 	private int getRefY(NodeView sibling) {
-	    return sibling.getY() + sibling.getContent().getY();
-    }
+		return sibling.getY() + sibling.getContent().getY();
+	}
 
 	/**
 	 */
@@ -390,4 +379,11 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		setDragStartingPoint(null, null);
 	}
 	
+	private void setClickDelay() {
+	    if (ResourceController.getResourceController().getBooleanProperty(EDIT_ON_DOUBLE_CLICK))
+	        doubleClickTimer.setDelay(DoubleClickTimer.MAX_TIME_BETWEEN_CLICKS);
+        else {
+	    	doubleClickTimer.setDelay(0);
+	    }
+    }
 }

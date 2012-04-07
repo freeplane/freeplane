@@ -1,22 +1,16 @@
 package org.freeplane.view.swing.ui;
 
 import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.KeyboardFocusManager;
-import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
-import java.awt.event.InputEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
 import java.net.URI;
-import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.imageio.ImageIO;
 import javax.swing.FocusManager;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -25,25 +19,23 @@ import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ControllerPopupMenuListener;
+import org.freeplane.core.ui.DoubleClickTimer;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.SysUtils;
 import org.freeplane.features.link.LinkController;
-import org.freeplane.features.link.NodeLinks;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.view.swing.map.FoldingMark;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.MouseArea;
 import org.freeplane.view.swing.map.NodeView;
-import org.freeplane.view.swing.map.NodeViewLayoutAdapter;
-
-import com.thebuzzmedia.imgscalr.Scalr;
-import com.thebuzzmedia.imgscalr.Scalr.Rotation;
 
 /**
  * The MouseMotionListener which belongs to every NodeView
@@ -75,9 +67,12 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 						return;
 					}
 					try {
-	                    Controller currentController = Controller.getCurrentController();
-						if (!currentController.getModeController().isBlocked() && currentController.getSelection().size() <= 1) {
-							extendSelection(e);
+	                    Controller controller = Controller.getCurrentController();
+						if (!controller.getModeController().isBlocked()&& controller.getSelection().size() <= 1) {
+							final NodeView nodeV = ((MainView) e.getComponent()).getNodeView();
+							if(nodeV.isDisplayable() && nodeV.getModel().isVisible() 
+									&& nodeV.getMap() == controller.getMapViewManager().getMapViewComponent())
+								controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getModel());
 	                    }
                     }
                     catch (NullPointerException e) {
@@ -95,15 +90,17 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 // 	final private ModeController mc;
 	final private ControllerPopupMenuListener popupListener;
 	private Timer timerForDelayedSelection;
+	protected final DoubleClickTimer doubleClickTimer;
 	private boolean wasFocused;
 
 	public DefaultNodeMouseMotionListener() {
 //		mc = modeController;
 		popupListener = new ControllerPopupMenuListener();
+		doubleClickTimer = new DoubleClickTimer();
 	}
 
 	private void createTimer(final MouseEvent e) {
-		if(isInFoldingRegion(e))
+		if(! isInside(e))
 			return;
 		stopTimerForDelayedSelection();
 		if (!JOptionPane.getFrameForComponent(e.getComponent()).isFocused()) {
@@ -132,13 +129,17 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		return ((MainView)e.getComponent()).isInFoldingRegion(e.getPoint());
 	}
 
+	protected boolean isInDragRegion(MouseEvent e) {
+		return ((MainView)e.getComponent()).isInDragRegion(e.getPoint());
+	}
+
 	protected Rectangle getControlRegion(final Point2D p) {
 		final int side = 8;
 		return new Rectangle((int) (p.getX() - side / 2), (int) (p.getY() - side / 2), side, side);
 	}
 
 	public void mouseClicked(final MouseEvent e) {
-		ModeController mc = Controller.getCurrentController().getModeController();
+		final ModeController mc = Controller.getCurrentController().getModeController();
 		if(Compat.isMacOsX()){
 			final JPopupMenu popupmenu = mc.getUserInputListenerFactory().getNodePopupMenu();
 			if(popupmenu.isShowing()){
@@ -150,30 +151,64 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		if (nodeView == null)
 			return;
 
+		final NodeModel node = nodeView.getModel();
+		final boolean plainEvent = Compat.isPlainEvent(e);
+		final boolean inside = isInside(e);
 		if(e.getButton() == 1){
-			if(Compat.isPlainEvent(e)){
+			if(plainEvent){
 				if (component.isInFollowLinkRegion(e.getX())) {
-					LinkController.getController(mc).loadURL(nodeView.getModel(), e);
+					LinkController.getController(mc).loadURL(node, e);
+					e.consume();
 					return;
 				}
 
 				final String link = component.getLink(e.getPoint());
 				if (link != null) {
-					loadLink(link);
+					doubleClickTimer.start(new Runnable() {
+						public void run() {
+							loadLink(link);
+						}
+					});
+					e.consume();
 					return;
+				}
+				
+				if(inside && e.getClickCount() == 1){
+					final boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mc.getMapController(), node));
+					if(!shouldSelectOnClick(e)){
+						doubleClickTimer.start(new Runnable() {
+							public void run() {
+								mc.getMapController().setFolded(node, fold);
+							}
+						});
+					}
 				}
 			}
 		}
-		if (isInFoldingRegion(e) && Compat.isPlainEvent(e)) {
-			/* perform action only if one selected node. */
+		final boolean inFoldingRegion = isInFoldingRegion(e);
+		if ((plainEvent && inFoldingRegion 
+				|| (inFoldingRegion || inside) && Compat.isCtrlShiftEvent(e)) 
+				&& !shouldSelectOnClick(e)) {
 			final MapController mapController = mc.getMapController();
-			mapController.toggleFolded(nodeView.getModel());
+			boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node));
+			doubleClickTimer.cancel();
+			mapController.setFolded(node, fold);
 			e.consume();
 			return;
 		}
-		if(isInside(e))
+		if(inside && ! e.isAltDown())
 			extendSelection(e);
 	}
+
+
+	private boolean shouldSelectOnClick(MouseEvent e) {
+		if(isInside(e)){
+			final MainView component = (MainView) e.getComponent();
+			NodeView nodeView = component.getNodeView();
+			return !nodeView.isSelected() || Controller.getCurrentController().getSelection().size() != 1;
+		}
+	    return false;
+    }
 
 	protected void loadLink(final String link) {
 		try {
@@ -192,8 +227,9 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			return;
 		stopTimerForDelayedSelection();
 		final NodeView nodeV = ((MainView) e.getComponent()).getNodeView();
-		if (!((MapView) Controller.getCurrentController().getViewController().getMapView()).isSelected(nodeV)) {
-			extendSelection(e);
+		final Controller controller = Controller.getCurrentController();
+		if (!((MapView) controller.getViewController().getMapView()).isSelected(nodeV)) {
+			controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getModel());
 		}
 	}
 
@@ -205,7 +241,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	public void mouseExited(final MouseEvent e) {
 		stopTimerForDelayedSelection();
 		final MainView v = (MainView) e.getSource();
-		v.setMouseArea(MouseArea.DEFAULT);
+		v.setMouseArea(MouseArea.OUT);
 	}
 
 	public void mouseMoved(final MouseEvent e) {
@@ -225,12 +261,8 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			requiredCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 			node.setMouseArea(MouseArea.LINK);
         }
-        else if (node.isInRightFoldingRegion(e.getPoint())){
-        	requiredCursor = rightFoldingCursor();
-        	node.setMouseArea(MouseArea.FOLDING);
-        }
-        else if (node.isInLeftFoldingRegion(e.getPoint())){
-        	requiredCursor = leftFoldingCursor();
+        else if (isInFoldingRegion(e)){
+        	requiredCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
         	node.setMouseArea(MouseArea.FOLDING);
         }
         else{
@@ -246,43 +278,8 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		}
 	}
 
-	static private Cursor rightFoldingCursor = null;
-	private Cursor rightFoldingCursor() {
-		if(rightFoldingCursor == null){
-			rightFoldingCursor = createFoldingCursor("right");
-		}
-		return rightFoldingCursor;
-	}
-
-	static private Cursor leftFoldingCursor = null;
-	private Cursor leftFoldingCursor() {
-		if(leftFoldingCursor == null){
-			leftFoldingCursor = createFoldingCursor("left");
-		}
-		return leftFoldingCursor;
-	}
-
-	private Cursor createFoldingCursor(String name) {
-		Cursor cursor;
-		try {
-			final URL resource = ResourceController.getResourceController()
-					.getResource("/images/" + name + "-fold-unfold32.gif");
-			final Toolkit toolkit = Toolkit.getDefaultToolkit();
-			BufferedImage resourceImage = ImageIO.read(resource);
-			final Dimension bestCursorSize = toolkit.getBestCursorSize(32, 32);
-			cursor = toolkit.createCustomCursor(
-					resourceImage,
-					new Point(bestCursorSize.width / 2,
-							bestCursorSize.height / 2), name + "FoldingCursor");
-		} catch (Exception e) {
-			LogUtils.severe(e);
-			cursor = Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR);
-			
-		}
-		return cursor;
-	}
-
 	public void mousePressed(final MouseEvent e) {
+		doubleClickTimer.cancel();
 		final MainView component = (MainView) e.getComponent();
 		wasFocused = component.hasFocus();
 		showPopupMenu(e);
@@ -328,34 +325,27 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		controlRegionForDelayedSelection = null;
 	}
 
-	public boolean extendSelection(final MouseEvent e) {
+	private void extendSelection(final MouseEvent e) {
 		final Controller controller = Controller.getCurrentController();
 		final MainView mainView = (MainView) e.getComponent();
-        final NodeModel newlySelectedNodeView = mainView.getNodeView().getModel();
+		final NodeModel newlySelectedNode = mainView.getNodeView().getModel();
 		final boolean extend = Compat.isMacOsX() ? e.isMetaDown() : e.isControlDown();
 		final boolean range = e.isShiftDown();
-		/* windows alt, linux altgraph .... */
-		boolean retValue = false;
-		if (extend || range 
-		        || !controller.getSelection().isSelected(newlySelectedNodeView) 
-		        || ! (FocusManager.getCurrentManager().getFocusOwner() instanceof MainView)) {
-			if (!range) {
-				if (extend) {
-					controller.getSelection().toggleSelected(newlySelectedNodeView);
-				}
-				else {
-					controller.getSelection().selectAsTheOnlyOneSelected(newlySelectedNodeView);
-				}
-				retValue = true;
-			}
-			else {
-				controller.getSelection().selectContinuous(newlySelectedNodeView);
-				retValue = true;
-			}
+		final IMapSelection selection = controller.getSelection();
+		if (range && !extend) {
+			selection.selectContinuous(newlySelectedNode);
 		}
-		if (retValue) {
+		else if (extend && !range) {
+			selection.toggleSelected(newlySelectedNode);
+		}
+		if(extend == range){
+			if (selection.isSelected(newlySelectedNode) && selection.size() == 1 
+			        && FocusManager.getCurrentManager().getFocusOwner() instanceof MainView)
+				return;
+			else {
+				selection.selectAsTheOnlyOneSelected(newlySelectedNode);
+			}
 			e.consume();
 		}
-		return retValue;
 	}
 }

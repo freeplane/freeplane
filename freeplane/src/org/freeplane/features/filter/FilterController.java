@@ -36,7 +36,6 @@ import java.util.Vector;
 
 import javax.swing.ButtonModel;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -272,9 +271,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			filterToolbar.setEnabled(false);
 			activeFilterConditionComboBox.setEnabled(false);
 		}
-	}
-
-	public void afterMapClose(final MapModel pOldMapView) {
 	}
 
 	void applyFilter(final boolean force) {

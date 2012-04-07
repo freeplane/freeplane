@@ -20,7 +20,7 @@ import org.freeplane.features.clipboard.MindMapNodesSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MainView;
-import org.freeplane.view.swing.map.MouseArea;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * The NodeDragListener which belongs to every NodeView
@@ -28,15 +28,16 @@ import org.freeplane.view.swing.map.MouseArea;
 public class MNodeDragListener implements DragGestureListener {
 	public void dragGestureRecognized(final DragGestureEvent e) {
 		final MainView mainView = (MainView) e.getComponent();
+		final NodeView nodeView = mainView.getNodeView();
+		if(! nodeView.isSelected()){
+			nodeView.getMap().getModeController().getController().getSelection().selectAsTheOnlyOneSelected(nodeView.getModel());
+		}
 		Rectangle bounds = new Rectangle(0, 0, mainView.getWidth(), mainView.getHeight());
 		if(!bounds.contains(e.getDragOrigin()))
 			return;
-		if (!ResourceController.getResourceController().getBooleanProperty("draganddrop")) {
-			return;
-		}
 		final int dragActionType = e.getDragAction();
 		if (dragActionType == DnDConstants.ACTION_MOVE) {
-			final NodeModel node = mainView.getNodeView().getModel();
+			final NodeModel node = nodeView.getModel();
 			if (node.isRoot()) {
 				return;
 			}

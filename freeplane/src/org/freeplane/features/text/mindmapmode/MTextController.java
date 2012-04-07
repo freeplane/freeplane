@@ -222,12 +222,7 @@ public class MTextController extends TextController {
 		if (joinedContent.equals("")) {
 			return nodeContent;
 		}
-		if (isHtml || isHtmlNode) {
-			joinedContent += '\n';
-		}
-		else {
-			joinedContent += ' ';
-		}
+		joinedContent += '\n';
 		joinedContent += nodeContent;
 		return joinedContent;
 	}

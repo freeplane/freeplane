@@ -69,12 +69,7 @@ public class ZoomableLabelUI extends BasicLabelUI {
 	@Override
 	public Dimension getPreferredSize(final JComponent c) {
 		final Dimension preferredSize = super.getPreferredSize(c);
-		final Insets insets = c.getInsets();
-		preferredSize.width -= (insets.left + insets.right);
-		preferredSize.height -= (insets.top + insets.bottom);
-		if (preferredSize.height == 0) {
-			preferredSize.height = ((ZoomableLabel) c).getFontMetrics().getHeight();
-		}
+		preferredSize.height = Math.max(preferredSize.height, ((ZoomableLabel) c).getFontMetrics().getHeight());
 		if (preferredSize.width <= 4) {
 			preferredSize.width = 4;
 		}
@@ -83,8 +78,6 @@ public class ZoomableLabelUI extends BasicLabelUI {
 			preferredSize.width = (int) (Math.ceil(zoom * preferredSize.width));
 			preferredSize.height = (int) (Math.ceil(zoom * preferredSize.height));
 		}
-		preferredSize.width += (insets.left + insets.right);
-		preferredSize.height += (insets.top + insets.bottom);
 		return preferredSize;
 	}
 
@@ -105,8 +98,8 @@ public class ZoomableLabelUI extends BasicLabelUI {
 			final float zoom = zLabel.getZoom();
 			viewR.x = insets.left;
 			viewR.y = insets.top;
-			viewR.width = (int) ((width - (insets.left + insets.right)) / zoom);
-			viewR.height = (int)((height- (insets.top + insets.bottom)) / zoom);
+			viewR.width = (int) (width  / zoom) - (insets.left + insets.right);
+			viewR.height = (int)(height / zoom) - (insets.top + insets.bottom);
 		}
 		else if(maximumWidth != Integer.MAX_VALUE){
 			final Insets insets = label.getInsets();

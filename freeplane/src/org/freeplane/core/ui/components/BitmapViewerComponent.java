@@ -26,16 +26,18 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import java.util.Map;
+import java.util.Iterator;
 import java.util.concurrent.Future;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import javax.swing.JComponent;
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
-
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 
@@ -59,6 +61,7 @@ public class BitmapViewerComponent extends JComponent {
 	private File cacheFile;
 	private int hint;
 	private BufferedImage cachedImage;
+	private WeakReference<BufferedImage> cachedImageWeakRef;
 	private final URL url;
 	private final Dimension originalSize;
 	private int imageX;
@@ -84,12 +87,39 @@ public class BitmapViewerComponent extends JComponent {
 
 	public BitmapViewerComponent(final URI uri) throws MalformedURLException, IOException {
 		url = uri.toURL();
-		cachedImage = ImageIO.read(url);
-		originalSize = new Dimension(cachedImage.getWidth(), cachedImage.getHeight());
+		originalSize = readOriginalSize();
 		hint = Image.SCALE_SMOOTH;
 		processing = false;
 		scaleEnabled = true;
+		cachedImage = null;
 	}
+
+	private Dimension readOriginalSize() throws IOException {
+		InputStream inputStream = null;
+		ImageInputStream in = null; 
+		try {
+				inputStream = url.openStream();
+				in = ImageIO.createImageInputStream(inputStream);
+		        final Iterator<ImageReader> readers = ImageIO.getImageReaders(in);
+		        if (readers.hasNext()) {
+		                ImageReader reader = (ImageReader) readers.next();
+		                try {
+		                        reader.setInput(in);
+		                        return new Dimension(reader.getWidth(0), reader.getHeight(0));
+		                } finally {
+		                        reader.dispose();
+		                }
+		        }
+		        else{
+		        	throw new IOException("can not create image"); 
+		        }
+		} finally {
+		        if (in != null) 
+		        	in.close();
+		        if(inputStream != null)
+		        	inputStream.close();
+		}
+    }
 
 	public Dimension getOriginalSize() {
 		return new Dimension(originalSize);
@@ -101,6 +131,10 @@ public class BitmapViewerComponent extends JComponent {
 			return;
 		if (getWidth() == 0 || getHeight() == 0) {
 			return;
+		}
+		if(cachedImage == null && cachedImageWeakRef != null){
+			cachedImage = cachedImageWeakRef.get();
+			cachedImageWeakRef = null;
 		}
 		if(cachedImage == null && cacheFile != null)
 			loadImageFromCacheFile();
@@ -167,6 +201,7 @@ public class BitmapViewerComponent extends JComponent {
 			cachedImage.flush();
 		}
 		else{
+			cachedImageWeakRef = new WeakReference<BufferedImage>(cachedImage);
 			cachedImage = null;
 		}
 	}

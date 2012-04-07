@@ -22,6 +22,7 @@ package org.freeplane.view.swing.map;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
@@ -267,9 +268,11 @@ class NodeViewFactory {
 			nodeView.addContent(detailContent, NodeView.DETAIL_VIEWER_POSITION);
 		}
 		if (detailText.isHidden()) {
-			detailContent.setIcon(new ArrowIcon(nodeView, true));
+			final ArrowIcon icon = new ArrowIcon(nodeView, true);
+			detailContent.setIcon(icon);
 			detailContent.setBackground(null);
 			detailContent.updateText("");
+			detailContent.setPreferredSize(new Dimension(icon.getIconWidth(), icon.getIconHeight()));
 		}
 		else {
 			detailContent.setIcon(new ArrowIcon(nodeView, false));
@@ -278,6 +281,7 @@ class NodeViewFactory {
 			detailContent.setFont(map.getDetailFont());
 			detailContent.setForeground(map.getDetailForeground());
 			detailContent.setBackground(nodeView.getDetailBackground());
+			detailContent.setPreferredSize(null);
 		}
 	}
 

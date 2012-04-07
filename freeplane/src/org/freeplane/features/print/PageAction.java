@@ -92,20 +92,6 @@ class PageAction extends AbstractPrintAction {
 		if (fitMap == FitMap.USER_DEFINED) {
 			userZoom.setEditable(true);
 			userZoom.setEnabled(true);
-			//set focus to text field
-			javax.swing.SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					userZoom.grabFocus();
-				}
-			});
-			userZoom.addFocusListener(new FocusAdapter() {
-				@Override
-				public void focusLost(final FocusEvent e) {
-					if (userDefaultScale.isSelected()) {
-						userZoom.grabFocus();
-					}
-				}
-			});
 		}
 		else {
 			userZoom.setEnabled(false);
@@ -119,14 +105,11 @@ class PageAction extends AbstractPrintAction {
 		//Action listener if user defined zoom is selected/ deselected
 		userDefaultScale.addItemListener(new ItemListener() {
 			public void itemStateChanged(final ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) {
-					userZoom.setEditable(true);
-					userZoom.setEnabled(true);
-					userZoom.grabFocus();
-				}
-				else {
-					userZoom.setEditable(false);
-					userZoom.setEnabled(false);
+				final boolean selected = e.getStateChange() == ItemEvent.SELECTED;
+				userZoom.setEditable(selected);
+				userZoom.setEnabled(selected);
+				if (selected) {
+					userZoom.requestFocusInWindow();
 				}
 			}
 		});

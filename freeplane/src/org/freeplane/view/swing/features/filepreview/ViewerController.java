@@ -6,8 +6,7 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DropTarget;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -16,9 +15,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.swing.JComponent;
@@ -32,10 +29,8 @@ import javax.swing.filechooser.FileFilter;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.clipboard.MindMapNodesSelection;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.MapModel;
@@ -58,6 +53,8 @@ import org.freeplane.view.swing.map.NodeView;
 @NodeHookDescriptor(hookName = "ExternalObject", //
 onceForMap = false)
 public class ViewerController extends PersistentNodeHook implements INodeViewLifeCycleListener, IExtension {
+	private static final MExternalImageDropListener DTL = new MExternalImageDropListener();
+
 	private final class CombiFactory implements IViewerFactory {
 		private IViewerFactory factory;
 
@@ -517,6 +514,10 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		viewers.add(view);
 		viewer.setBounds(viewer.getX() - 5, viewer.getY() - 5, viewer.getWidth() + 15, viewer.getHeight() + 15);
 		view.addContent(viewer, VIEWER_POSITION);
+		if(view.getMap().getModeController().canEdit()){
+			final DropTarget dropTarget = new DropTarget(viewer, DTL);
+			dropTarget.setActive(true);
+		}
 		if(view.isShortened())
 			viewer.setVisible(false);
 		else {

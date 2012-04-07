@@ -71,6 +71,7 @@
 			<menu_separator />
 			<menu_submenu name="menu_title" name_ref="menu_title">
 				<menu_action action="EditAction" accelerator="F2" />
+				<menu_action action="SetBooleanPropertyAction.edit_on_double_click" />
 				<menu_action action="EditLongAction" accelerator="alt ENTER" />
 				<menu_action action="JoinNodesAction" accelerator="control J" ></menu_action>
 				<menu_action action="SplitNode" />

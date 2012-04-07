@@ -71,7 +71,9 @@
 <edge STYLE="hide_edge" COLOR="#007c00" WIDTH="3"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1129302195" STARTINCLINATION="132;0;" ENDINCLINATION="132;0;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_1413405922" CREATED="1319315217232" MODIFIED="1329860323345" HGAP="-414" VSHIFT="208" LINK="http://www.kioo.nl/freeplane/CoreMeeting"><richcontent TYPE="NODE">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_1413405922" CREATED="1319315217232" MODIFIED="1332447320921" HGAP="-414" VSHIFT="208" LINK="http://freeplane.sourceforge.net/doc/1.2.x/Instruction/HOWTO_FreeplaneVideo">
+<icon BUILTIN="video"/>
+<richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -79,7 +81,7 @@
   </head>
   <body>
     <p>
-      <a href="http://www.kioo.nl/freeplane/CoreMeeting">Demonstration </a>
+      <a href="http://freeplane.sourceforge.net/doc/1.2.x/Instruction/HOWTO_FreeplaneVideo">Demonstration </a>
     </p>
     <p>
       <a href="http://www.kioo.nl/freeplane/CoreMeeting">creating a map</a>
@@ -468,7 +470,7 @@
 <edge COLOR="#007c7c" WIDTH="3"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#ff0000" WIDTH="4" TRANSPARENCY="255" FONT_SIZE="24" FONT_FAMILY="Britannic Bold" DESTINATION="ID_360719522" MIDDLE_LABEL="Share it" STARTINCLINATION="88;183;" ENDINCLINATION="-3;215;" STARTARROW="NONE" ENDARROW="NONE"/>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_360719522" CREATED="1317966438145" MODIFIED="1318589645732" HGAP="-2" VSHIFT="149" LINK="menuitem:_$GettingStartedAction$0"><richcontent TYPE="NODE">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_360719522" CREATED="1317966438145" MODIFIED="1332170797298" HGAP="-2" VSHIFT="149" LINK="menuitem:_$GettingStartedAction$0"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -493,14 +495,16 @@
       Versatile support for efficient documenting.
     </p>
     <p>
-      The Freeplane<a href="http://www.kioo.nl/freeplane/tutorial_en">&#160;quick reference</a>&#160;is an example.
+      The Freeplane <a href="http://www.kioo.nl/freeplane/tutorial_en">Tutorial</a>&#160;is an example.
     </p>
   </body>
 </html>
 </richcontent>
 <edge COLOR="#7c7c00" WIDTH="3"/>
 </node>
-<node LOCALIZED_STYLE_REF="default" POSITION="right" ID="ID_836908062" CREATED="1318513239698" MODIFIED="1319314894029" HGAP="-325" VSHIFT="174"><richcontent TYPE="NODE">
+<node LOCALIZED_STYLE_REF="default" POSITION="right" ID="ID_836908062" CREATED="1318513239698" MODIFIED="1332872793860" HGAP="-325" VSHIFT="174">
+<icon BUILTIN="video"/>
+<richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -522,7 +526,7 @@
   </head>
   <body>
     <p>
-      Click <a href="http://www.kioo.nl/freeplane/tutorial_en/navigation">here</a>&#160;to learn how to
+      Click <a href="http://freeplane.sourceforge.net/doc/1.2.x/Instruction/ViewingGuide">here</a>&#160;to learn how to
     </p>
     <p>
       display hidden information by
@@ -543,6 +547,7 @@
     </ol>
   </body>
 </html>
+
 </richcontent>
 <edge STYLE="hide_edge" COLOR="#808080"/>
 </node>
