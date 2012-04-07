@@ -149,7 +149,6 @@
                 <choice value="first"/>
                 <choice value="last"/>
             </combo>
-            <boolean name="paste_images"/>
             <boolean name="unfold_on_paste"/>
             <boolean name="disable_cursor_move_paper"/>
             <number name="foldingsymbolwidth"/>
