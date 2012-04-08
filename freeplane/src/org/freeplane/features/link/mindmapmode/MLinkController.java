@@ -1063,7 +1063,15 @@ public class MLinkController extends LinkController {
 	public void setAnchorID(final String anchorID) {
 		MLinkController.anchorID = anchorID;
 	}
-	
+
+	public boolean isAnchored() {
+		if(anchorID == null) {
+			return false;
+		}else {
+			return true;
+		}
+	}
+
 	public void setFormatNodeAsHyperlink(final NodeModel node, final Boolean enabled){
 		final ModeController modeController = Controller.getCurrentModeController();
 		final NodeLinks links = NodeLinks.createLinkExtension(node);

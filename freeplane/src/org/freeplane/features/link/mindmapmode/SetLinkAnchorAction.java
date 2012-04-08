@@ -24,12 +24,14 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
+@SelectableAction(checkOnPopup=true)
 public class SetLinkAnchorAction extends AFreeplaneAction {
 	public SetLinkAnchorAction() {
 		super("SetLinkAnchorAction");
@@ -66,10 +68,16 @@ public class SetLinkAnchorAction extends AFreeplaneAction {
 		/**
 		 * @TODO
 		 *
-		 * -# set tickmark in menu
+		 * -# set tickmark in menu  => done: 8.4.2012
 		 * -# set tooltip for mouse-over SetLinkAnchorAction in menu
 		 * 
 		 */
 		
+	}
+	
+	@Override
+	public void setSelected() {
+		final boolean isAnchored = ((MLinkController)(LinkController.getController())).isAnchored();
+		setSelected( isAnchored );
 	}
 }
