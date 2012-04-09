@@ -17,12 +17,21 @@
  */
 package org.freeplane.features.map;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.plaf.basic.BasicMenuItemUI;
+import javax.swing.plaf.basic.BasicMenuUI;
+
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
@@ -32,9 +41,11 @@ import org.freeplane.features.mode.ModeController;
 /**
  * @author foltin
  */
-public class UnfoldAll implements IMouseWheelEventHandler {
+public class FoldingController implements IMouseWheelEventHandler, IExtension {
+	
+	@SuppressWarnings("serial")
 	private class FoldAllAction extends AMultipleNodeAction {
-		private static final long serialVersionUID = 1L;
+		
 
 		public FoldAllAction() {
 			super("FoldAllAction");
@@ -45,9 +56,10 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 			foldAll(node);
 		}
 	}
-
+	
+	@SuppressWarnings("serial")
 	private class FoldOneLevelAction extends AMultipleNodeAction {
-		private static final long serialVersionUID = 1L;
+		
 
 		public FoldOneLevelAction() {
 			super("FoldOneLevelAction");
@@ -59,8 +71,9 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		}
 	}
 
+	@SuppressWarnings("serial")
 	private class UnfoldAllAction extends AMultipleNodeAction {
-		private static final long serialVersionUID = 1L;
+		
 
 		public UnfoldAllAction() {
 			super("UnfoldAllAction");
@@ -72,8 +85,8 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		}
 	}
 
+	@SuppressWarnings("serial")
 	private class UnfoldOneLevelAction extends AMultipleNodeAction {
-		private static final long serialVersionUID = 1L;
 
 		public UnfoldOneLevelAction() {
 			super("UnfoldOneLevelAction");
@@ -84,10 +97,68 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 			unfoldOneStage(node);
 		}
 	}
+	
+	@SuppressWarnings("serial")
+	private class FoldingPopupMenu extends JPopupMenu{
+		final private NodeModel node;
+		FoldingPopupMenu(NodeModel node){
+			this.node = node;
+			add(new UnfoldOneLevelPopupAction());
+			add(new FoldOneLevelPopupAction());
+			add(new UnfoldAllPopupAction());
+			add(new FoldAllPopupAction());
+		}
+		
+		@Override
+        public JMenuItem add(Action a) {
+	        final JMenuItem menuItem = super.add(a);
+	        menuItem.setToolTipText(menuItem.getText());
+	        menuItem.setText(null);
+	        menuItem.setIconTextGap(0);
+			return menuItem;
+        }
+
+		@SuppressWarnings("serial")
+		private class FoldAllPopupAction extends FoldAllAction{
+			@Override 
+			public void actionPerformed(final ActionEvent e){
+				actionPerformed(e, node);
+			}
+		}
+
+		@SuppressWarnings("serial")
+		private class FoldOneLevelPopupAction extends FoldOneLevelAction{
+			@Override 
+			public void actionPerformed(final ActionEvent e){
+				actionPerformed(e, node);
+			}
+		}
+
+		@SuppressWarnings("serial")
+		private class UnfoldAllPopupAction extends UnfoldAllAction{
+			@Override 
+			public void actionPerformed(final ActionEvent e){
+				actionPerformed(e, node);
+			}
+		}
+
+		@SuppressWarnings("serial")
+		private class UnfoldOneLevelPopupAction extends UnfoldOneLevelAction{
+			@Override 
+			public void actionPerformed(final ActionEvent e){
+				actionPerformed(e, node);
+		}
+	}
+	}
+	
+	
 
 // // 	final private Controller controller;
 
-	public UnfoldAll() {
+	public static void install( final FoldingController foldingController) {
+		Controller.getCurrentModeController().addExtension(FoldingController.class, foldingController);
+	}
+	public FoldingController() {
 		super();
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.getUserInputListenerFactory().addMouseWheelEventHandler(this);
@@ -253,5 +324,9 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		}
 		else
 			return parentDepth + 1;
+	}
+	
+	public JPopupMenu createFoldingPopupMenu(NodeModel node){
+		return new FoldingPopupMenu(node);
 	}
 }

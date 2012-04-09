@@ -25,6 +25,7 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.SysUtils;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.map.FoldingController;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
@@ -295,23 +296,39 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	}
 
 	public void showPopupMenu(final MouseEvent e) {
-		if (isInside(e) 
-				&& e.isPopupTrigger()) {
+		if (! e.isPopupTrigger())
+			return;
+		final boolean inside = isInside(e);
+		final boolean inFoldingRegion = ! inside && isInFoldingRegion(e);
+		if (inside || inFoldingRegion) {
 			stopTimerForDelayedSelection();
 			final MainView component = (MainView) e.getComponent();
 			final NodeView nodeView = component.getNodeView();
-			if(! nodeView.isSelected()){
-				Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(nodeView.getModel());
-			}
 			ModeController mc = Controller.getCurrentController().getModeController();
-			final JPopupMenu popupmenu = mc.getUserInputListenerFactory().getNodePopupMenu();
-			if (popupmenu != null) {
-				popupmenu.addHierarchyListener(popupListener);
-				popupmenu.show(e.getComponent(), e.getX(), e.getY());
-				e.consume();
+			if(inside){
+				if(! nodeView.isSelected()){
+					Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(nodeView.getModel());
+				}
+				final JPopupMenu popupmenu = mc.getUserInputListenerFactory().getNodePopupMenu();
+				showMenuAndConsumeEvent(popupmenu, e);
+			}
+			else if(inFoldingRegion){
+				final FoldingController foldingController = mc.getExtension(FoldingController.class);
+				if(foldingController == null)
+					return;
+				final JPopupMenu popupmenu = foldingController.createFoldingPopupMenu(nodeView.getModel());
+				showMenuAndConsumeEvent(popupmenu, e);
 			}
 		}
 	}
+
+	private void showMenuAndConsumeEvent(final JPopupMenu popupmenu, final MouseEvent e) {
+	    if (popupmenu != null) {
+	    	popupmenu.addHierarchyListener(popupListener);
+	    	popupmenu.show(e.getComponent(), e.getX(), e.getY());
+	    	e.consume();
+	    }
+    }
 
 	protected boolean isInside(final MouseEvent e) {
 		return new Rectangle(0, 0, e.getComponent().getWidth(), e.getComponent().getHeight()).contains(e.getPoint());
