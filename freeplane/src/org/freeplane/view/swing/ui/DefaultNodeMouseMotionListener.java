@@ -21,6 +21,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.DoubleClickTimer;
 import org.freeplane.core.ui.IMouseListener;
+import org.freeplane.core.ui.components.AutoHide;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.SysUtils;
@@ -317,6 +318,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				if(foldingController == null)
 					return;
 				final JPopupMenu popupmenu = foldingController.createFoldingPopupMenu(nodeView.getModel());
+				AutoHide.start(popupmenu);
 				showMenuAndConsumeEvent(popupmenu, e);
 			}
 		}

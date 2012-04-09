@@ -18,16 +18,22 @@
 package org.freeplane.features.map;
 
 import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.Icon;
+import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.plaf.basic.BasicMenuItemUI;
 import javax.swing.plaf.basic.BasicMenuUI;
 
@@ -98,23 +104,25 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 		}
 	}
 	
+	protected static Insets nullInsets = new Insets(0, 0, 0, 0);
+	
 	@SuppressWarnings("serial")
 	private class FoldingPopupMenu extends JPopupMenu{
 		final private NodeModel node;
 		FoldingPopupMenu(NodeModel node){
 			this.node = node;
-			add(new UnfoldOneLevelPopupAction());
-			add(new FoldOneLevelPopupAction());
-			add(new UnfoldAllPopupAction());
-			add(new FoldAllPopupAction());
+			addAction(new UnfoldOneLevelPopupAction());
+			addAction(new FoldOneLevelPopupAction());
+			addAction(new UnfoldAllPopupAction());
+			addAction(new FoldAllPopupAction());
 		}
 		
-		@Override
-        public JMenuItem add(Action a) {
-	        final JMenuItem menuItem = super.add(a);
+        private JButton addAction(Action a) {
+	        final JButton menuItem = new JButton(a);
 	        menuItem.setToolTipText(menuItem.getText());
 	        menuItem.setText(null);
-	        menuItem.setIconTextGap(0);
+	        add(menuItem);
+	        menuItem.setMargin(nullInsets);
 			return menuItem;
         }
 
