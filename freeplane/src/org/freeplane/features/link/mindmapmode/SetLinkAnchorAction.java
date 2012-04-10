@@ -72,6 +72,12 @@ public class SetLinkAnchorAction extends AFreeplaneAction {
 		 * -# set tooltip for mouse-over SetLinkAnchorAction in menu
 		 * 
 		 */
+
+//		setSelected( ((MLinkController)(LinkController.getController())).isAnchored() );
+		
+		// debug
+		System.out.println("SetLinkAnchorAction.actionPerformed:");
+		System.out.println(this.isSelected());
 		
 	}
 	
@@ -79,5 +85,9 @@ public class SetLinkAnchorAction extends AFreeplaneAction {
 	public void setSelected() {
 		final boolean isAnchored = ((MLinkController)(LinkController.getController())).isAnchored();
 		setSelected( isAnchored );
+		
+		// debug
+		System.out.println("SetLinkAnchorAction.setSelected():");
+		System.out.println(this.isSelected());
 	}
 }
