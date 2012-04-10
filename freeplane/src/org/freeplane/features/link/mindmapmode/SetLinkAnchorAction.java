@@ -68,7 +68,7 @@ public class SetLinkAnchorAction extends AFreeplaneAction {
 		/**
 		 * @TODO
 		 *
-		 * -# set tickmark in menu  => done: 8.4.2012
+		 * -# correct tickmark handling in menu (BUG)
 		 * -# set tooltip for mouse-over SetLinkAnchorAction in menu
 		 * 
 		 */

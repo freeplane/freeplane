@@ -21,8 +21,11 @@
 package org.freeplane.features.link.mindmapmode;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -43,15 +46,36 @@ public class MakeLinkToAnchorAction extends AFreeplaneAction {
 		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
 
 		// get anchorID from MLinkController
-		String anchorID = ((MLinkController)(LinkController.getController())).getAnchorID();
+		String targetID = ((MLinkController)(LinkController.getController())).getAnchorID();
 
 		// check if anchorID is valid, then set link in current node
-		if (anchorID != null && ! anchorID.matches("\\w+://")) {
-			
-			// use anchorID as link for current node
-			final MLinkController linkController = (MLinkController) MLinkController.getController();
-			linkController.setLink(selectedNode, anchorID, false);
+		if (targetID != null && ! targetID.matches("\\w+://")) {
 
+			final MLinkController linkController = (MLinkController) MLinkController.getController();
+
+			// extract fileName from target map
+			final String targetMapFileName = targetID.substring( targetID.indexOf("/") +1, targetID.indexOf("#") );
+
+			// get fileName of selected node (source)
+			final File sourceMapFile = selectedNode.getMap().getFile();
+			if(sourceMapFile == null) {
+				UITools.errorMessage(TextUtils.getRawText("map_not_saved"));
+				return;
+			}
+			
+			// check if target and source reside within same map
+			final String sourceMapFileNameURI = sourceMapFile.toURI().toString();
+			if( sourceMapFileNameURI.substring(sourceMapFileNameURI.indexOf("/")+1).equals(targetMapFileName) ) {
+
+				// insert only targetNodeID as link
+				linkController.setLink(selectedNode, targetID.substring(targetID.indexOf("#")), false);
+			
+			} else {
+				
+				// insert whole targetPath (including targetNodeID) as link for current node
+				linkController.setLink(selectedNode, targetID, false);
+
+			}
 		}
 	}
 }
