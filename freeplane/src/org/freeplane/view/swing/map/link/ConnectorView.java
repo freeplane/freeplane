@@ -431,7 +431,7 @@ public class ConnectorView extends AConnectorView{
 
 		final Font oldFont = g.getFont();
 		final String fontFamily = connectorModel.getLabelFontFamily();
-        final int fontSize = connectorModel.getLabelFontSize();
+        final int fontSize = Math.round (connectorModel.getLabelFontSize() * UITools.FONT_SCALE_FACTOR);
         final Font linksFont = new Font(fontFamily, 0, getZoomed(fontSize));
         g.setFont(linksFont);
 

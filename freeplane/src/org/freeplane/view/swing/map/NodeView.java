@@ -692,10 +692,6 @@ public class NodeView extends JComponent implements INodeView {
 		return color;
 	}
 
-	public Font getTextFont() {
-		return getMainView().getFont();
-	}
-
 	/**
 	 * @return Returns the VGAP.
 	 */

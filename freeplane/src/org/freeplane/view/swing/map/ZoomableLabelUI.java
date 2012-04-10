@@ -18,6 +18,7 @@ import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.plaf.basic.BasicLabelUI;
 import javax.swing.text.View;
 
+import org.freeplane.core.ui.components.html.ScaledHTML;
 import org.freeplane.core.util.TextUtils;
 
 /*
@@ -178,15 +179,19 @@ public class ZoomableLabelUI extends BasicLabelUI {
     public void propertyChange(PropertyChangeEvent e) {
 		GlyphPainterMetricResetter.resetPainter();
 	    try {
-	        super.propertyChange(e);
 	    	String name = e.getPropertyName();
 	    	if (name == "text" || "font" == name || "foreground" == name) {
 	    	    JLabel lbl = ((JLabel) e.getSource());
+			    String text = lbl.getText();
+			    ScaledHTML.updateRenderer(lbl, text);
 	    	    View v = (View) lbl.getClientProperty(BasicHTML.propertyKey);
 			    if (v != null) {
 			    	lbl.putClientProperty("preferredWidth", v.getPreferredSpan(View.X_AXIS));
 			    }
 	    	}
+	    	else
+		        super.propertyChange(e);
+
         }
         catch (Exception e1) {
 	        e1.printStackTrace();
@@ -194,6 +199,12 @@ public class ZoomableLabelUI extends BasicLabelUI {
 		GlyphPainterMetricResetter.resetPainter();
     }
 	
+	@Override
+    protected void installComponents(JLabel c) {
+	    ScaledHTML.updateRenderer(c, c.getText());
+        c.setInheritsPopupMenu(true);
+    }
+
 	public Rectangle getIconR(ZoomableLabel label) {
 		layout(label);
     	return iconR;
@@ -230,4 +241,6 @@ public class ZoomableLabelUI extends BasicLabelUI {
 			isPainting = wasPainting;
 		}
 	}
+	
+	
 }

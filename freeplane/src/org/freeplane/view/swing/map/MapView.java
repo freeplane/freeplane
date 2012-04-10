@@ -1043,10 +1043,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private void updateContentStyle() {
         final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(NodeStyleController.class);
         MapModel map = getModel();
-        noteFont = style.getDefaultFont(map, MapStyleModel.NOTE_STYLE);
+        noteFont = UITools.scale(style.getDefaultFont(map, MapStyleModel.NOTE_STYLE));
         final MapStyleModel model = MapStyleModel.getExtension(map);
         final NodeModel detailStyleNode = model.getStyleNodeSafe(MapStyleModel.DETAILS_STYLE);
-        detailFont = style.getFont(detailStyleNode);
+        detailFont = UITools.scale(style.getFont(detailStyleNode));
         detailBackground = style.getBackgroundColor(detailStyleNode);
         detailForeground = style.getColor(detailStyleNode);
     }

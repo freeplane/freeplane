@@ -26,6 +26,7 @@ import javax.swing.JComponent;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -80,14 +81,14 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 	        final NodeView nodeView = mainView.getNodeView();
 			if(EditedComponent.TEXT.equals(editControl.getEditType())){
 	            final Font font = viewController.getFont(node);
-	            editNodeWYSIWYG.setFont(font);
+	            editNodeWYSIWYG.setFont(UITools.invertScale(font));
 	            final Color nodeTextColor = viewController.getTextColor(node);
 	            editNodeWYSIWYG.setTextColor(nodeTextColor);
 				editNodeWYSIWYG.setBackground (nodeView.getTextBackground());
 			}
 			else if(EditedComponent.DETAIL.equals(editControl.getEditType())){
 			    final MapView map = nodeView.getMap();
-                editNodeWYSIWYG.setFont(map.getDetailFont());
+                editNodeWYSIWYG.setFont(UITools.invertScale(map.getDetailFont()));
                 editNodeWYSIWYG.setTextColor(map.getDetailForeground());
                 editNodeWYSIWYG.setBackground (nodeView.getDetailBackground());
 			}

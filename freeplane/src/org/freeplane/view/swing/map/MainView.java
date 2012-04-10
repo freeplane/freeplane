@@ -405,7 +405,7 @@ public abstract class MainView extends ZoomableLabel {
 
 	public void updateFont(final NodeView node) {
 		final Font font = NodeStyleController.getController(node.getMap().getModeController()).getFont(node.getModel());
-		setFont(font);
+		setFont(UITools.scale(font));
 	}
 
 	void updateIcons(final NodeView node) {

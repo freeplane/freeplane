@@ -61,6 +61,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import org.freeplane.core.ui.components.TypedListCellRenderer;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.attribute.ColumnWidthChangeEvent;
@@ -460,7 +461,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	}
 
 	private float getFontSize() {
-		return AttributeRegistry.getRegistry(attributeView.getNode().getMap()).getFontSize();
+		return UITools.FONT_SCALE_FACTOR * AttributeRegistry.getRegistry(attributeView.getNode().getMap()).getFontSize();
 	}
 
 	@Override

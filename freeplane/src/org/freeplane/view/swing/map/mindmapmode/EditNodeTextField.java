@@ -74,6 +74,7 @@ import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.components.html.ScaledEditorKit;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -538,7 +539,7 @@ public class EditNodeTextField extends EditNodeBase {
 			final float fontSize = (int) (Math.rint(font.getSize() * zoom));
 			font = font.deriveFont(fontSize);
 		}
-		textfield.setEditorKit(new HTMLEditorKit(){
+		final HTMLEditorKit kit = new HTMLEditorKit(){
 
 			@Override
             public void write(Writer out, Document doc, int pos, int len) throws IOException, BadLocationException {
@@ -550,7 +551,8 @@ public class EditNodeTextField extends EditNodeBase {
                 }
             }
 			
-		});
+		};
+		textfield.setEditorKit(kit);
 
 		final InputMap inputMap = textfield.getInputMap();
 		final ActionMap actionMap = textfield.getActionMap();

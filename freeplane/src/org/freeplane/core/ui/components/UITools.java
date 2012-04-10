@@ -28,6 +28,7 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.HeadlessException;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -568,4 +569,21 @@ public class UITools {
 
 		return -1;
 	}
+
+	public static final float FONT_SCALE_FACTOR;
+	static {
+		float factor = 1f; 
+		try {
+	        factor = Toolkit.getDefaultToolkit().getScreenResolution()  / 72f;
+        }
+        catch (Exception e) {
+        }
+		FONT_SCALE_FACTOR = factor;
+	}
+	public static Font scale(Font font) {
+	    return font.deriveFont(font.getSize2D()*FONT_SCALE_FACTOR);
+    }
+	public static Font invertScale(Font font) {
+	    return font.deriveFont(font.getSize2D()/FONT_SCALE_FACTOR);
+    }
 }
