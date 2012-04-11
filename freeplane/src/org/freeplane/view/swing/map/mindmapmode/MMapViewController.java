@@ -81,14 +81,14 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 	        final NodeView nodeView = mainView.getNodeView();
 			if(EditedComponent.TEXT.equals(editControl.getEditType())){
 	            final Font font = viewController.getFont(node);
-	            editNodeWYSIWYG.setFont(UITools.invertScale(font));
+	            editNodeWYSIWYG.setFont(font);
 	            final Color nodeTextColor = viewController.getTextColor(node);
 	            editNodeWYSIWYG.setTextColor(nodeTextColor);
 				editNodeWYSIWYG.setBackground (nodeView.getTextBackground());
 			}
 			else if(EditedComponent.DETAIL.equals(editControl.getEditType())){
 			    final MapView map = nodeView.getMap();
-                editNodeWYSIWYG.setFont(UITools.invertScale(map.getDetailFont()));
+                editNodeWYSIWYG.setFont(map.getDetailFont());
                 editNodeWYSIWYG.setTextColor(map.getDetailForeground());
                 editNodeWYSIWYG.setBackground (nodeView.getDetailBackground());
 			}

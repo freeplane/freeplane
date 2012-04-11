@@ -20,6 +20,7 @@
 package org.freeplane.features.text.mindmapmode;
 
 import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
@@ -851,7 +852,20 @@ public class MTextController extends TextController {
     }
 
 	public JEditorPane createEditorPane(Object purpose) {
-     	final JEditorPane editorPane = new JEditorPane();
+     	@SuppressWarnings("serial")
+        final JEditorPane editorPane = new JEditorPane(){
+
+			@Override
+            protected void paintComponent(Graphics g) {
+	            try {
+	                super.paintComponent(g);
+                }
+                catch (Exception e) {
+	                LogUtils.warn(e);
+                }
+            }
+     		
+     	};
     	fireEditorPaneCreated(editorPane, purpose);
 		return editorPane;
     }

@@ -539,7 +539,7 @@ public class EditNodeTextField extends EditNodeBase {
 			final float fontSize = (int) (Math.rint(font.getSize() * zoom));
 			font = font.deriveFont(fontSize);
 		}
-		final HTMLEditorKit kit = new HTMLEditorKit(){
+		final ScaledEditorKit kit = new ScaledEditorKit(){
 
 			@Override
             public void write(Writer out, Document doc, int pos, int len) throws IOException, BadLocationException {
@@ -590,7 +590,8 @@ public class EditNodeTextField extends EditNodeBase {
 		final StringBuilder ruleBuilder = new StringBuilder(100);
 		ruleBuilder.append("body {");
 		ruleBuilder.append("font-family: ").append(font.getFamily()).append(";");
-		ruleBuilder.append("font-size: ").append(font.getSize()).append("pt;");
+		final int fontSize = Math.round(font.getSize() / UITools.FONT_SCALE_FACTOR);
+		ruleBuilder.append("font-size: ").append(fontSize).append("pt;");
 		if (font.isItalic()) {
 			ruleBuilder.append("font-style: italic; ");
 		}
