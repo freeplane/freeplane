@@ -104,6 +104,9 @@ public class MapItem {
 
 					}
 				}
+				if(this.mapIsOpen == null) {
+					this.mapIsOpen = false;
+				}
 			}
 		}
 
