@@ -43,6 +43,7 @@ import org.freeplane.view.swing.map.NodeView;
  * The MouseMotionListener which belongs to every NodeView
  */
 public class DefaultNodeMouseMotionListener implements IMouseListener {
+	private static final String FOLD_ON_CLICK_INSIDE = "fold_on_click_inside";
 	private static final String SELECTION_METHOD_DIRECT = "selection_method_direct";
 	private static final String SELECTION_METHOD_BY_CLICK = "selection_method_by_click";
 	private static final String TIME_FOR_DELAYED_SELECTION = "time_for_delayed_selection";
@@ -175,7 +176,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 					return;
 				}
 				
-				if(inside && e.getClickCount() == 1){
+				if(inside && e.getClickCount() == 1 && ResourceController.getResourceController().getBooleanProperty(FOLD_ON_CLICK_INSIDE)){
 					final boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mc.getMapController(), node));
 					if(!shouldSelectOnClick(e)){
 						doubleClickTimer.start(new Runnable() {

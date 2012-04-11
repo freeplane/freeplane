@@ -150,6 +150,7 @@
                 <choice value="last"/>
             </combo>
             <boolean name="unfold_on_paste"/>
+            <boolean name="fold_on_click_inside"/>
             <boolean name="disable_cursor_move_paper"/>
             <number name="foldingsymbolwidth"/>
             <boolean name="edit_on_double_click"/>
