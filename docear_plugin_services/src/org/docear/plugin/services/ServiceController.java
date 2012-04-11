@@ -7,16 +7,16 @@ import java.net.URL;
 import javax.swing.SwingUtilities;
 
 import org.docear.plugin.communications.CommunicationsController;
+import org.docear.plugin.core.DocearController;
 import org.docear.plugin.services.actions.DocearAllowUploadChooserAction;
+import org.docear.plugin.services.listeners.DocearEventListener;
 import org.docear.plugin.services.listeners.MapLifeCycleListener;
 import org.docear.plugin.services.listeners.PropertiesActionListener;
 import org.docear.plugin.services.listeners.PropertyListener;
-import org.docear.plugin.services.listeners.WorkspaceListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.plugin.workspace.WorkspaceController;
 
 public class ServiceController {
 	private final static ServiceController backupController = new ServiceController();
@@ -37,6 +37,9 @@ public class ServiceController {
 		LogUtils.info("starting DocearBackupStarter()");
 		initListeners();
 		
+		new ServiceConfiguration();	    
+	    new ServicePreferences();
+		
 		addPluginDefaults();
 		Controller.getCurrentModeController().addAction(new DocearAllowUploadChooserAction());
 	
@@ -49,7 +52,7 @@ public class ServiceController {
 	}
 	
 	public void initListeners() {
-		WorkspaceController.getController().addWorkspaceListener(new WorkspaceListener());
+		DocearController.getController().addDocearEventListener(new DocearEventListener());
 		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(mapLifeCycleListener);
 		ResourceController.getResourceController().addPropertyChangeListener(propertyListener);
 		Controller.getCurrentController().getOptionPanelController().addButtonListener(new PropertiesActionListener());

@@ -7,7 +7,6 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -23,16 +22,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.communications.features.AccountRegisterer;
-import org.docear.plugin.core.DocearController;
 import org.docear.plugin.services.ServiceController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
@@ -46,9 +41,10 @@ import com.jgoodies.forms.layout.RowSpec;
 
 public class DocearIRChoiceDialogPanel extends JPanel {
 	public static final int ALLOW_CONTENT_RESEARCH = 1;
-	public static final int ALLOW_CONTENT_ENHANCE_APP = 2;
+	public static final int ALLOW_CONTENT_IR = 2;
 	public static final int ALLOW_USAGE_RESEARCH = 4;
-	public static final int ALLOW_USAGE_ENHANCE_APP = 8;	
+	public static final int ALLOW_USAGE_IR = 8;
+	public static final int ALLOW_RECOMMENDATIONS = 16;
 
 	private static final long serialVersionUID = 1L;
 
@@ -58,15 +54,12 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 	private final JPasswordField pwdRetypepasswd;
 	
 	private boolean registrationNecessary = false;
-
-	private JTextArea txtrLicense;
-	private JCheckBox chckbxAcceptLicense;
 	
 	private JCheckBox chckbxAllowbackup;
-	private JCheckBox chckbxAllowcontentresearch;
-	private JCheckBox chckbxAllowcontentapp;
-	private JCheckBox chckbxAllowusageresearch;
-	private JCheckBox chckbxAllowusageapp;
+	private JCheckBox chckbxAllowResearchContent;
+	private JCheckBox chckbxAllowIRContent;
+	private JCheckBox chckbxAllowResearchUsage;
+	private JCheckBox chckbxAllowIRUsage;
 
 	boolean removed = false;
 	private JButton okButton;
@@ -99,26 +92,26 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 			});
 		}
 	};
+	private JCheckBox chckbxAllowRecommendations;
 	
 	public DocearIRChoiceDialogPanel(boolean allowCancelAction) {
 		this.allowCancelAction = allowCancelAction;
 		setLayout(new FormLayout(new ColumnSpec[] {
+				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("right:default:grow"),
 				FormFactory.RELATED_GAP_COLSPEC,},
 			new RowSpec[] {
-				RowSpec.decode("fill:default"),
+				RowSpec.decode("fill:35dlu"),
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("fill:default"),
 				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("fill:default"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("fill:default:grow"),}));
+				RowSpec.decode("fill:default"),}));
 		
 		JPanel headPanel = new JPanel();
 		headPanel.setBackground(Color.WHITE);
 		headPanel.setPreferredSize(new Dimension(400, 80));
 		headPanel.setMaximumSize(new Dimension(400, 80));
-		add(headPanel, "1, 1, fill, fill");
+		add(headPanel, "1, 1, 3, 1, fill, fill");
 		headPanel.setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
 				FormFactory.DEFAULT_COLSPEC,
@@ -129,9 +122,7 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("top:default:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,}));
+				RowSpec.decode("top:default:grow"),}));
 		
 		JLabel lblDescriptionhead = new JLabel(TextUtils.getText("docear.uploadchooser.header.title"));
 		lblDescriptionhead.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -143,26 +134,12 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		headPanel.add(lblDescriptiontext, "2, 4");
 		headPanel.add(link, "4, 4");
 		
-		JSeparator separator_6 = new JSeparator();
-		separator_6.setForeground(Color.BLACK);
-		headPanel.add(separator_6, "1, 6, 5, 1");
-		
 		JPanel uploadPanel = new JPanel();
 		uploadPanel.setBorder(new TitledBorder(null, TextUtils.getText("docear.uploadchooser.section.upload"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		add(uploadPanel, "1, 3, fill, fill");
+		add(uploadPanel, "2, 3, fill, fill");
 		uploadPanel.setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("right:default"),
-				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("center:default:grow"),
-				FormFactory.RELATED_GAP_COLSPEC,
-				FormFactory.DEFAULT_COLSPEC,
-				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("center:default:grow"),
-				FormFactory.RELATED_GAP_COLSPEC,
-				FormFactory.DEFAULT_COLSPEC,
-				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("center:default:grow"),},
+				ColumnSpec.decode("left:default:grow"),},
 			new RowSpec[] {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
@@ -177,58 +154,39 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
-		JLabel lblBackup = new JLabel(TextUtils.getText("docear.uploadchooser.table.label.backup"));
-		uploadPanel.add(lblBackup, "4, 2");
-		
-		JLabel lblResearch = new JLabel(TextUtils.getText("docear.uploadchooser.table.label.research"));
-		uploadPanel.add(lblResearch, "8, 2");
-		
-		JLabel lblEnhanceApp = new JLabel(TextUtils.getText("docear.uploadchooser.table.label.enhancements"));
-		uploadPanel.add(lblEnhanceApp, "12, 2");
-		
-		JSeparator separator_1 = new JSeparator();
-		uploadPanel.add(separator_1, "2, 4, 11, 1");
-		
-		JLabel lblContent = new JLabel(TextUtils.getText("docear.uploadchooser.table.label.content"));
-		uploadPanel.add(lblContent, "2, 6");
-		
-		chckbxAllowbackup = new JCheckBox();
+		chckbxAllowbackup = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.backup"));
 		chckbxAllowbackup.setSelected(ServiceController.getController().isBackupEnabled());
 		chckbxAllowbackup.addActionListener(actionListener);
-		uploadPanel.add(chckbxAllowbackup, "4, 6");
+		uploadPanel.add(chckbxAllowbackup, "2, 2");
 		
-		chckbxAllowcontentresearch = new JCheckBox();
-		chckbxAllowcontentresearch.addActionListener(actionListener);
-		chckbxAllowcontentresearch.setSelected((ServiceController.getController().getInformationRetrievalCode()&ALLOW_CONTENT_RESEARCH) > 0);
-		uploadPanel.add(chckbxAllowcontentresearch, "8, 6");
+		chckbxAllowRecommendations = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.recommendations"));
+		chckbxAllowRecommendations.addActionListener(actionListener);		
+		chckbxAllowRecommendations.setSelected((ServiceController.getController().getInformationRetrievalCode()&ALLOW_RECOMMENDATIONS) > 0);
+		uploadPanel.add(chckbxAllowRecommendations, "2, 4");
 		
-		chckbxAllowcontentapp = new JCheckBox();
-		chckbxAllowcontentapp.setSelected((ServiceController.getController().getInformationRetrievalCode()&ALLOW_CONTENT_ENHANCE_APP) > 0);
-		uploadPanel.add(chckbxAllowcontentapp, "12, 6");
-		chckbxAllowcontentapp.addActionListener(actionListener);
+		chckbxAllowResearchContent = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.research.content"));
+		chckbxAllowResearchContent.addActionListener(actionListener);		
+		chckbxAllowResearchContent.setSelected((ServiceController.getController().getInformationRetrievalCode()&ALLOW_CONTENT_RESEARCH) > 0);
+		uploadPanel.add(chckbxAllowResearchContent, "2, 6");
 		
-		JSeparator separator_4 = new JSeparator();
-		uploadPanel.add(separator_4, "2, 8");
+		chckbxAllowResearchUsage = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.research.usage"));
+		chckbxAllowResearchUsage.setSelected((ServiceController.getController().getInformationRetrievalCode()&ALLOW_USAGE_RESEARCH) > 0);
+		chckbxAllowResearchUsage.addActionListener(actionListener);
+		uploadPanel.add(chckbxAllowResearchUsage, "2, 8");
 		
-		JLabel lblUsage = new JLabel(TextUtils.getText("docear.uploadchooser.table.label.usage"));
-		uploadPanel.add(lblUsage, "2, 10");
+		chckbxAllowIRContent = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.ir.content"));
+		chckbxAllowIRContent.setSelected((ServiceController.getController().getInformationRetrievalCode()&ALLOW_CONTENT_IR) > 0);
+		uploadPanel.add(chckbxAllowIRContent, "2, 10");
+		chckbxAllowIRContent.addActionListener(actionListener);
 		
-		chckbxAllowusageresearch = new JCheckBox();
-		chckbxAllowusageresearch.setSelected((ServiceController.getController().getInformationRetrievalCode()&ALLOW_USAGE_RESEARCH) > 0);
-		chckbxAllowusageresearch.addActionListener(actionListener);
-		uploadPanel.add(chckbxAllowusageresearch, "8, 10");
-		
-		chckbxAllowusageapp = new JCheckBox();
-		chckbxAllowusageapp.setSelected((ServiceController.getController().getInformationRetrievalCode()&ALLOW_USAGE_ENHANCE_APP) > 0);
-		chckbxAllowusageapp.addActionListener(actionListener);
-		uploadPanel.add(chckbxAllowusageapp, "12, 10");
-		
-		JSeparator separator_7 = new JSeparator();
-		uploadPanel.add(separator_7, "2, 12");
+		chckbxAllowIRUsage = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.ir.usage"));
+		chckbxAllowIRUsage.setSelected((ServiceController.getController().getInformationRetrievalCode()&ALLOW_USAGE_IR) > 0);
+		chckbxAllowIRUsage.addActionListener(actionListener);
+		uploadPanel.add(chckbxAllowIRUsage, "2, 12");
 		
 		JPanel userDataPane = new JPanel();
 		userDataPane.setBorder(new TitledBorder(null, TextUtils.getText("docear.uploadchooser.section.userdata"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		add(userDataPane, "1, 5, fill, fill");
+		add(userDataPane, "2, 5, fill, fill");
 		userDataPane.setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("default:grow"),
@@ -297,34 +255,6 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		pwdRetypepasswd = new JPasswordField();
 		pwdRetypepasswd.addKeyListener(keyListener);
 		userDataPane.add(pwdRetypepasswd, "4, 10");
-		
-		JPanel licensePane = new JPanel();
-		licensePane.setBorder(new TitledBorder(null, TextUtils.getText("docear.uploadchooser.section.license"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		add(licensePane, "1, 7, fill, fill");
-		licensePane.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("93px:grow"),},
-			new RowSpec[] {
-				RowSpec.decode("114px"),
-				FormFactory.LINE_GAP_ROWSPEC,
-				RowSpec.decode("23px"),}));
-		//chckbxAcceptLicense.setSelected(true);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		licensePane.add(scrollPane, "1, 1");
-		
-		txtrLicense = new JTextArea();
-		scrollPane.setViewportView(txtrLicense);
-		txtrLicense.setRows(6);
-		txtrLicense.setEditable(false);
-		txtrLicense.setText("Licence");
-		
-		chckbxAcceptLicense = new JCheckBox("acceptLicense");
-		licensePane.add(chckbxAcceptLicense, "1, 3");
-		chckbxAcceptLicense.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				enableButtonIfPossible(e);			
-			}
-		});
 		enableRegistration(false);
 	}
 	
@@ -350,39 +280,29 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 	}
 	
 	public final boolean allowContentResearch() {
-		return chckbxAllowcontentresearch.isSelected();
+		return chckbxAllowResearchContent.isSelected();
 	}
 	
-	public final boolean allowContentEnhanceApps() {
-		return chckbxAllowcontentapp.isSelected();
+	public final boolean allowContentIR() {
+		return chckbxAllowIRContent.isSelected();
 	}
 	
 	public final boolean allowUsageResearch() {
-		return chckbxAllowusageresearch.isSelected();
+		return chckbxAllowResearchUsage.isSelected();
 	}
 	
-	public final boolean allowUsageEnhanceApps() {
-		return chckbxAllowusageapp.isSelected();
+	public final boolean allowUsageIR() {
+		return chckbxAllowIRUsage.isSelected();
 	}
 	
-	public final boolean isLicenseAccepted() {
-		return chckbxAcceptLicense.isSelected();
+	public final boolean allowRecommendations() {
+		return chckbxAllowRecommendations.isSelected();
 	}
-
 
 
 	public final String getPassword() {
 		return new String(pwdPassword.getPassword());
 	}
-
-
-	public void setLicenseText(String text) {
-		txtrLicense.setText(text);
-		txtrLicense.setSelectionStart(0);
-		txtrLicense.setSelectionEnd(0);
-	}
-
-
 
 	public void integrateButtons(JButton[] buttons) {
 		okButton = buttons[0];
@@ -443,20 +363,20 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 	private void enableButtonIfPossible(AWTEvent event) {
 		if(okButton != null) {
 			if(chckbxAllowbackup.isSelected()) {
-				if(rdbtnLogin.isSelected() && chckbxAcceptLicense.isSelected() && txtUsername.getText().trim().length() > 2 && pwdPassword.getPassword() != null && pwdPassword.getPassword().length > 5) {	
+				if(rdbtnLogin.isSelected() && txtUsername.getText().trim().length() > 2 && pwdPassword.getPassword() != null && pwdPassword.getPassword().length > 5) {	
 					okButton.setEnabled(true);
 				}
-				else if(rdbtnRegister.isSelected() && chckbxAcceptLicense.isSelected() && txtUsername.getText().trim().length() > 2 && pwdPassword.getPassword().length > 5 && txtEmail.getText().trim().length() > 6 && pwdRetypepasswd.getPassword().length > 5 && getPassword().equals(new String(pwdRetypepasswd.getPassword()))) {	
+				else if(rdbtnRegister.isSelected() && txtUsername.getText().trim().length() > 2 && pwdPassword.getPassword().length > 5 && txtEmail.getText().trim().length() > 6 && pwdRetypepasswd.getPassword().length > 5 && getPassword().equals(new String(pwdRetypepasswd.getPassword()))) {	
 					okButton.setEnabled(true);
 				}
 				else {
 					okButton.setEnabled(false);
 				}
 			} else {
-				if((chckbxAllowcontentapp.isSelected() || chckbxAllowcontentresearch.isSelected() || chckbxAllowusageapp.isSelected() || chckbxAllowusageresearch.isSelected()) && chckbxAcceptLicense.isSelected()) {
+				if((chckbxAllowIRContent.isSelected() || chckbxAllowResearchContent.isSelected() || chckbxAllowIRUsage.isSelected() || chckbxAllowResearchUsage.isSelected())) {
 					okButton.setEnabled(true);
 				}
-				else if(!chckbxAllowcontentapp.isSelected() && !chckbxAllowcontentresearch.isSelected() && !chckbxAllowusageapp.isSelected() && !chckbxAllowusageresearch.isSelected() && !chckbxAllowbackup.isSelected()) {
+				else if(!chckbxAllowIRContent.isSelected() && !chckbxAllowResearchContent.isSelected() && !chckbxAllowIRUsage.isSelected() && !chckbxAllowResearchUsage.isSelected() && !chckbxAllowbackup.isSelected()) {
 					okButton.setEnabled(true);
 				}
 				else {
@@ -481,21 +401,24 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		if (allowContentResearch()) {
 			code += ALLOW_CONTENT_RESEARCH;
 		}
-		if (allowContentEnhanceApps()) {
-			code += ALLOW_CONTENT_ENHANCE_APP;
+		if (allowContentIR()) {
+			code += ALLOW_CONTENT_IR;
 		}
 		if (allowUsageResearch()) {
 			code += ALLOW_USAGE_RESEARCH;
 		}
-		if (allowUsageEnhanceApps()) {
-			code += ALLOW_USAGE_ENHANCE_APP;
+		if (allowUsageIR()) {
+			code += ALLOW_USAGE_IR;
+		}
+		if (allowRecommendations()) {
+			code += ALLOW_RECOMMENDATIONS;
 		}
 		
 		return code;
 	}
 	
 	private boolean checkAccountSettings() {
-		if(!chckbxAllowcontentapp.isSelected() && !chckbxAllowcontentresearch.isSelected() && !chckbxAllowusageapp.isSelected() && !chckbxAllowusageresearch.isSelected() && !chckbxAllowbackup.isSelected()) {
+		if(!chckbxAllowIRContent.isSelected() && !chckbxAllowResearchContent.isSelected() && !chckbxAllowIRUsage.isSelected() && !chckbxAllowResearchUsage.isSelected() && !chckbxAllowbackup.isSelected() && !chckbxAllowRecommendations.isSelected()) {
 			return true;
 		}
 		

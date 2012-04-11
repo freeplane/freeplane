@@ -34,9 +34,13 @@ public class DocearQuitAction extends QuitAction {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	public void actionPerformed(ActionEvent e) {		
+		quit(this);	
+	}
+	
+	public static void quit(Object src) {
 		if (DocearController.getController().shutdown()) {
-			DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.APPLICATION_CLOSED);
+			DocearController.getController().getDocearEventLogger().appendToLog(src, DocearLogEvent.APPLICATION_CLOSED);
 			System.exit(0);
-		}		
-	}	
+		}
+	}
 }
