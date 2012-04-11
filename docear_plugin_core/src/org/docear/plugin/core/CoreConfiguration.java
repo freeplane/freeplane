@@ -252,7 +252,7 @@ public class CoreConfiguration extends ALanguageController {
 		if(previousAction != null) {
 			Controller.getCurrentController().removeAction("QuitAction");
 		}
-		Controller.getCurrentController().addAction(new DocearQuitAction(previousAction));
+		Controller.getCurrentController().addAction(new DocearQuitAction());
 	}
 	
 	private void registerListeners() {

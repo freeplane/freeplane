@@ -48,7 +48,6 @@ import org.docear.plugin.core.workspace.node.LinkTypeReferencesNode;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.FreeplaneActionCascade;
 import org.freeplane.core.ui.IKeyStrokeInterceptor;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
@@ -129,7 +128,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 		this.addMenuEntries();
 		this.registerListeners();
 		
-		FreeplaneActionCascade.addAction(new ReferenceQuitAction());
+		//FreeplaneActionCascade.addAction(new ReferenceQuitAction());
 		this.initJabref();		
 	}
 	
@@ -320,6 +319,9 @@ public class ReferencesController extends ALanguageController implements IDocear
 					wrapper.replaceDatabase(file, true);
 				}
 			});
+		} 
+		else if(event.getType() == DocearEventType.APPLICATION_CLOSING) {
+			new ReferenceQuitAction().actionPerformed(null);
 		}
 	}
 
