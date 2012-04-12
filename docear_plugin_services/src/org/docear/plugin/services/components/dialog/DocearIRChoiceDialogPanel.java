@@ -158,33 +158,36 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
 		chckbxAllowbackup = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.backup"));
-		chckbxAllowbackup.setSelected(ServiceController.getController().isBackupEnabled());
+		chckbxAllowbackup.setSelected(Boolean.parseBoolean(ResourceController.getResourceController().getProperty(ServiceController.DOCEAR_SAVE_BACKUP, "true")));
 		chckbxAllowbackup.addActionListener(actionListener);
 		uploadPanel.add(chckbxAllowbackup, "2, 1");
 		
-		chckbxAllowIRUsage = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.ir.usage"));
-		chckbxAllowIRUsage.setSelected((ServiceController.getController().getInformationRetrievalCode()&ALLOW_USAGE_IR) > 0);
-		chckbxAllowIRUsage.addActionListener(actionListener);
+		int irNumber = Integer.parseInt(ResourceController.getResourceController().getProperty(ServiceController.DOCEAR_INFORMATION_RETRIEVAL, "31"));
 		
-		chckbxAllowResearchUsage = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.research.usage"));
-		chckbxAllowResearchUsage.setSelected((ServiceController.getController().getInformationRetrievalCode()&ALLOW_USAGE_RESEARCH) > 0);
-		chckbxAllowResearchUsage.addActionListener(actionListener);
+		chckbxAllowRecommendations = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.recommendations"));	
+		chckbxAllowRecommendations.addActionListener(actionListener);
+		chckbxAllowRecommendations.setSelected((irNumber&ALLOW_RECOMMENDATIONS) > 0);
+		uploadPanel.add(chckbxAllowRecommendations, "2, 3");
 		
 		chckbxAllowResearchContent = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.research.content"));
-		chckbxAllowResearchContent.addActionListener(actionListener);		
-		
-		chckbxAllowRecommendations = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.recommendations"));
-		chckbxAllowRecommendations.addActionListener(actionListener);		
-		chckbxAllowRecommendations.setSelected((ServiceController.getController().getInformationRetrievalCode()&ALLOW_RECOMMENDATIONS) > 0);
-		uploadPanel.add(chckbxAllowRecommendations, "2, 3");
-		chckbxAllowResearchContent.setSelected((ServiceController.getController().getInformationRetrievalCode()&ALLOW_CONTENT_RESEARCH) > 0);
+		chckbxAllowResearchContent.setSelected((irNumber&ALLOW_CONTENT_RESEARCH) > 0);
+		chckbxAllowResearchContent.addActionListener(actionListener);
 		uploadPanel.add(chckbxAllowResearchContent, "2, 5");
-		uploadPanel.add(chckbxAllowResearchUsage, "4, 5");
+		
+		chckbxAllowResearchUsage = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.research.usage"));
+		chckbxAllowResearchUsage.setSelected((irNumber&ALLOW_USAGE_RESEARCH) > 0);
+		chckbxAllowResearchUsage.addActionListener(actionListener);
+		uploadPanel.add(chckbxAllowResearchUsage, "4, 5");		
+				
 		
 		chckbxAllowIRContent = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.ir.content"));
-		chckbxAllowIRContent.setSelected((ServiceController.getController().getInformationRetrievalCode()&ALLOW_CONTENT_IR) > 0);
-		uploadPanel.add(chckbxAllowIRContent, "2, 7");
+		chckbxAllowIRContent.setSelected((irNumber&ALLOW_CONTENT_IR) > 0);
 		chckbxAllowIRContent.addActionListener(actionListener);
+		uploadPanel.add(chckbxAllowIRContent, "2, 7");
+		
+		chckbxAllowIRUsage = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.ir.usage"));
+		chckbxAllowIRUsage.setSelected((irNumber&ALLOW_USAGE_IR) > 0);
+		chckbxAllowIRUsage.addActionListener(actionListener);
 		uploadPanel.add(chckbxAllowIRUsage, "4, 7");
 		
 		JPanel userDataPane = new JPanel();
