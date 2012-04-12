@@ -475,7 +475,7 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 				return false;
 			}
 			else {
-				if (accountRegisterer.createRegisteredUser(getName(), getPassword(), getEmail(), null, wantsNewsletter(), isMale())) {
+				if (accountRegisterer.createRegisteredUser(getUserName(), getPassword(), getEmail(), null, wantsNewsletter(), isMale())) {
 					return true;
 				}
 				else {
