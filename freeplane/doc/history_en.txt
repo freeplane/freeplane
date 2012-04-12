@@ -1,4 +1,9 @@
 ===============================
+1.2.14 beta
+===============================
+Fix calculation of all font sizes
+
+===============================
 1.2.13 beta
 ===============================
 Search enhancements: Approximate search feature, control search via key presses, busy cursor, some fixes
@@ -7,7 +12,6 @@ New UI for folding
 Formatting option to display hyper links as HTML 
 Insert free nodes on double click + folding
 Options for editing on double click and folding on click inside a node
-Fix calculation of all font sizes
 Drop images if control is pressed and links to files otherwise
 Hyperlink in text as node text style option^
 Performance and memory optimizations for scaling of external bitmap images 
