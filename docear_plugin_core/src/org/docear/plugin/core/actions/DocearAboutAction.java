@@ -70,7 +70,7 @@ public class DocearAboutAction extends AboutAction {
 		addUri(box, resourceController.getProperty("homepage_url"), "Freeplane "+FreeplaneVersion.getVersion().toString());		
 		//addMessage(box, FreeplaneVersion.getVersion().getRevision());
 		addFormattedMessage(box, "java_version", Compat.JAVA_VERSION);
-		addFormattedMessage(box, "main_resource_directory", ResourceController.getResourceController().getResourceBaseDir());
+		addFormattedMessage(box, "docear.main_resource_directory", ResourceController.getResourceController().getResourceBaseDir());
 		addUri(box, resourceController.getProperty("license_url"), TextUtils.getText("license"));
 		addMessage(box, TextUtils.removeTranslateComment(TextUtils.getText("license_text")));
 		

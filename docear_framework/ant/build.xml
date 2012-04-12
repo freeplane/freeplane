@@ -332,9 +332,12 @@
 					<include name="build.xml" />
 					<include name="freeplane/**" />
 					<include name="freeplane_plugin*/**" />
+					<include name="docear_plugin*/**" />
+					<include name="Jabref_Beta_2_7_Docear/**" />
 					<include name="freeplane_ant/**" />
 					<include name="freeplane_mac/**" />
 					<include name="freeplane_framework/**" />
+					<include name="docear_framework/**" />
 					<include name="freeplane_devresources/**" />
 					<include name="JOrtho_0.4_freeplane/**" />
 					<include name="build.xml" />
@@ -354,6 +357,9 @@
 					<exclude name="freeplane_framework/windows-launcher/Objects/**" />
 					<exclude name="freeplane_framework/windows-launcher/*.layout" />
 					<exclude name="freeplane_framework/windows-launcher/Makefile.win" />
+					<exclude name="docear_framework/windows-launcher/Objects/**" />
+					<exclude name="docear_framework/windows-launcher/*.layout" />
+					<exclude name="docear_framework/windows-launcher/Makefile.win" />
 				</patternset>
 			</tarfileset>
 			<tarfileset prefix="${ApplicationNameToLowerCase}-${ver}" dir="${root}" mode="664">
