@@ -6,6 +6,7 @@ import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.communications.FiletransferClient;
 import org.docear.plugin.core.util.CoreUtils;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.LogUtils;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -62,7 +63,7 @@ public class AccountRegisterer {
 			}
 		} 
 		catch (Exception e) {		
-			e.printStackTrace();
+			LogUtils.warn(e);
 			return false;
 		}
 	}
@@ -84,7 +85,7 @@ public class AccountRegisterer {
 		queryParams.add("generalNewsLetter",  newsLetter==null ? null : newsLetter.toString());
 		queryParams.add("isMale",  isMale==null ? null : isMale.toString());
 
-		WebResource res = client.resource(CommunicationsController.getController().getServiceUri()).path("/user/"+name);
+		WebResource res = client.resource(CommunicationsController.getController().getServiceUri()).path("/user/"+name);		
 		ClientResponse response = res.post(ClientResponse.class, queryParams);
 		
 		if (response.getClientResponseStatus() == Status.OK) {
