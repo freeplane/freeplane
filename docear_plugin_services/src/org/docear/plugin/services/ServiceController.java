@@ -19,6 +19,9 @@ import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.mode.Controller;
 
 public class ServiceController {
+	public static final String DOCEAR_INFORMATION_RETRIEVAL = "docear_information_retrieval";
+	public static final String DOCEAR_SAVE_BACKUP = "docear_save_backup";
+
 	private final static ServiceController backupController = new ServiceController();
 	
 	private final ServiceRunner backupRunner = new ServiceRunner();
@@ -74,19 +77,19 @@ public class ServiceController {
 	}
 	
 	public boolean isBackupEnabled() {
-		return ResourceController.getResourceController().getBooleanProperty("docear_save_backup");
+		return ResourceController.getResourceController().getBooleanProperty(DOCEAR_SAVE_BACKUP);
 	}
 	
 	public void setBackupEnabled(boolean b) {
-		ResourceController.getResourceController().setProperty("docear_save_backup", b);
+		ResourceController.getResourceController().setProperty(DOCEAR_SAVE_BACKUP, b);
 	}
 	
 	public int getInformationRetrievalCode() {
-		return Integer.parseInt(ResourceController.getResourceController().getProperty("docear_information_retrieval", "0"));
+		return Integer.parseInt(ResourceController.getResourceController().getProperty(DOCEAR_INFORMATION_RETRIEVAL, "0"));
 	}
 	
 	public void setInformationRetrievalCode(int code) {
-		ResourceController.getResourceController().setProperty("docear_information_retrieval", ""+code);
+		ResourceController.getResourceController().setProperty(DOCEAR_INFORMATION_RETRIEVAL, ""+code);
 	}
 	
 	public File getBackupDirectory() {		
