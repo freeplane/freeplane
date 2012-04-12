@@ -33,35 +33,22 @@ import org.freeplane.plugin.workspace.nodes.WorkspaceRoot;
 
 public class WorkspaceChangeListener implements IWorkspaceEventListener {
 
-	private boolean workspacePrepared = false;
-	
+	private boolean workspacePrepared = false;	
 
 	public void openWorkspace(WorkspaceEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void closeWorkspace(WorkspaceEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void workspaceChanged(WorkspaceEvent event) {
 		if (DocearController.getController().isLicenseDialogNecessary()) 
 		{
 			DocearLicenseDialogAction.showDialog();
 		}
 	}
 
-	public void toolBarChanged(WorkspaceEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void closeWorkspace(WorkspaceEvent event) {}
 
-	public void workspaceReady(WorkspaceEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void workspaceChanged(WorkspaceEvent event) {}
+
+	public void toolBarChanged(WorkspaceEvent event) {}
+
+	public void workspaceReady(WorkspaceEvent event) {}
 
 	public void configurationLoaded(WorkspaceEvent event) {
 		linkWelcomeMindmapAfterWorkspaceCreation();
