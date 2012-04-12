@@ -314,7 +314,26 @@
 	</target>
     
     <target name="binzip" depends="build, mkdistdir">
-        <zip destfile="${dist}/${ApplicationNameToLowerCase}_bin.zip" compress="true">
+        <zip destfile="${dist}/${ApplicationNameToLowerCase}_windows.zip" compress="true">
+            <zipfileset dir="${build}" prefix="${ApplicationNameToLowerCase}-${ver}">
+                <exclude name="${ApplicationNameToLowerCase}.sh"/>
+            </zipfileset>
+            <zipfileset dir="${root}" prefix="${ApplicationNameToLowerCase}-${ver}">
+                <include name="${license}" />
+            </zipfileset>
+        </zip>
+        <tar destfile="${dist}/${ApplicationNameToLowerCase}_linux.tar.gz" compression="gzip" longfile="gnu">
+            <tarfileset dir="${build}" prefix="${ApplicationNameToLowerCase}-${ver}" mode="644">
+                <exclude name="${ApplicationNameToLowerCase}.sh"/>
+                <exclude name="${ApplicationNameToLowerCase}.bat"/>
+                <exclude name="${ApplicationNameToLowerCase}.exe"/>
+            </tarfileset>
+            <tarfileset file="${build}/${ApplicationNameToLowerCase}.sh" mode="775" prefix="${ApplicationNameToLowerCase}-${ver}"/>
+            <tarfileset dir="${root}" prefix="${ApplicationNameToLowerCase}-${ver}" mode="644">
+                <include name="${license}" />
+            </tarfileset>
+        </tar>
+        <zip destfile="${dist}/${ApplicationNameToLowerCase}_allos.zip" compress="true">
             <zipfileset dir="${build}" prefix="${ApplicationNameToLowerCase}-${ver}">
                 <exclude name="${ApplicationNameToLowerCase}.sh"/>
             </zipfileset>
@@ -326,8 +345,8 @@
     </target>
 
 	<target name="srczip" depends="mkdistdir, bzr_version_info">
-		<tar destfile="${dist}/${ApplicationNameToLowerCase}_src.tar.gz" compression="gzip" longfile="gnu">
-			<tarfileset prefix="${ApplicationNameToLowerCase}-${ver}" dir="${workspace}" mode="664">
+		<zip destfile="${dist}/${ApplicationNameToLowerCase}_source.zip" compress="true">
+			<zipfileset prefix="${ApplicationNameToLowerCase}-${ver}" dir="${workspace}">
 				<patternset id="freeplane.sources">
 					<include name="build.xml" />
 					<include name="freeplane/**" />
@@ -361,26 +380,26 @@
 					<exclude name="docear_framework/windows-launcher/*.layout" />
 					<exclude name="docear_framework/windows-launcher/Makefile.win" />
 				</patternset>
-			</tarfileset>
-			<tarfileset prefix="${ApplicationNameToLowerCase}-${ver}" dir="${root}" mode="664">
+			</zipfileset>
+			<zipfileset prefix="${ApplicationNameToLowerCase}-${ver}" dir="${root}">
 				<include name="${license}" />
 				<include name="${readme_src}" />
-			</tarfileset>
-		</tar>
+			</zipfileset>
+		</zip>
 
-		<tar destfile="${dist}/${ApplicationNameToLowerCase}_srcpure.tar.gz" compression="gzip" longfile="gnu">
-			<tarfileset prefix="${ApplicationNameToLowerCase}-${ver}" dir="${workspace}" mode="664">
+		<zip destfile="${dist}/${ApplicationNameToLowerCase}_srcpure.zip" compress="true">
+			<zipfileset prefix="${ApplicationNameToLowerCase}-${ver}" dir="${workspace}">
 				<patternset refid="freeplane.sources" />
 				<exclude name="**/*.exe" />
 				<exclude name="**/*.res" />
 				<exclude name="**/*.jar" />
 				<exclude name="**/*JavaApplicationStub*" />
-			</tarfileset>
-			<tarfileset prefix="${ApplicationNameToLowerCase}-${ver}" dir="${root}" mode="664">
+			</zipfileset>
+			<zipfileset prefix="${ApplicationNameToLowerCase}-${ver}" dir="${root}">
 				<include name="${license}" />
 				<include name="${readme_src}" />
-			</tarfileset>
-		</tar>
+			</zipfileset>
+		</zip>
 	</target>
 
 	<target name="installer" depends="build, mkdistdir">
