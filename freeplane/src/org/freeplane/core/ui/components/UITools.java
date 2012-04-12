@@ -68,6 +68,8 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 
+import com.lightdev.app.shtm.ScaledStyleSheet;
+
 /**
  * Utilities for accessing the GUI, creating dialogs etc.: In scripts available as "global variable" <code>ui</code>.
  * <p>
@@ -570,16 +572,7 @@ public class UITools {
 		return -1;
 	}
 
-	public static final float FONT_SCALE_FACTOR;
-	static {
-		float factor = 1f; 
-		try {
-	        factor = Toolkit.getDefaultToolkit().getScreenResolution()  / 72f;
-        }
-        catch (Exception e) {
-        }
-		FONT_SCALE_FACTOR = factor;
-	}
+	public static final float FONT_SCALE_FACTOR = ScaledStyleSheet.FONT_SCALE_FACTOR;
 	public static Font scale(Font font) {
 	    return font.deriveFont(font.getSize2D()*FONT_SCALE_FACTOR);
     }

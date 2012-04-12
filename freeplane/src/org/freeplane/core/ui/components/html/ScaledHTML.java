@@ -35,7 +35,7 @@ public class ScaledHTML extends BasicHTML{
      * string of html.
      */
     public static View createHTMLView(JComponent c, String html) {
-	ScaledEditorKit kit = getFactory();
+	ScaledEditorKit kit = ScaledEditorKit.create();
 	Document doc = kit.createDefaultDocument(c.getFont(),
                                                  c.getForeground());
 	Object base = c.getClientProperty(documentBaseKey);
@@ -67,23 +67,6 @@ public class ScaledHTML extends BasicHTML{
     	c.putClientProperty(BasicHTML.propertyKey, value);
     }
 
-    static ScaledEditorKit getFactory() {
-	if (basicHTMLFactory == null) {
-            basicHTMLViewFactory = new BasicHTMLViewFactory();
-	    basicHTMLFactory = new ScaledEditorKit();
-	}
-	return basicHTMLFactory;
-    }
-
-    /**
-     * The source of the html renderers
-     */
-    private static ScaledEditorKit basicHTMLFactory;
-
-    /**
-     * Creates the Views that visually represent the model.
-     */
-    static ViewFactory basicHTMLViewFactory;
 
     /**
      * Overrides to the default stylesheet.  Should consider

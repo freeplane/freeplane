@@ -539,19 +539,8 @@ public class EditNodeTextField extends EditNodeBase {
 			final float fontSize = (int) (Math.rint(font.getSize() * zoom));
 			font = font.deriveFont(fontSize);
 		}
-		final ScaledEditorKit kit = new ScaledEditorKit(){
-
-			@Override
-            public void write(Writer out, Document doc, int pos, int len) throws IOException, BadLocationException {
-	            if (doc instanceof HTMLDocument) {
-                    HTMLWriter w = new SHTMLWriter(out, (HTMLDocument)doc, pos, len);
-                    w.write();
-                } else {
-                    super.write(out, doc, pos, len);
-                }
-            }
-			
-		};
+//		final HTMLEditorKit kit = new HTMLEditorKit(){
+		final HTMLEditorKit kit = ScaledEditorKit.create();
 		textfield.setEditorKit(kit);
 
 		final InputMap inputMap = textfield.getInputMap();
@@ -602,11 +591,8 @@ public class EditNodeTextField extends EditNodeBase {
 	    final Color bgColor = getBackground();
 		ruleBuilder.append("background-color: ").append(ColorUtils.colorToString(bgColor)).append(";");
 		ruleBuilder.append("}\n");
-		ruleBuilder.append("p {margin-top:0;}\n");
 		final HTMLDocument document = (HTMLDocument) textfield.getDocument();
 		final StyleSheet styleSheet = document.getStyleSheet();
-		styleSheet.removeStyle("p");
-		styleSheet.removeStyle("body");
 		styleSheet.addRule(ruleBuilder.toString());
 		textfield.setText(text);
 		final MapView mapView = (MapView) viewController.getMapView();

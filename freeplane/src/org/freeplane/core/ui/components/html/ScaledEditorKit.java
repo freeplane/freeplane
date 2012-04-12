@@ -21,21 +21,31 @@ package org.freeplane.core.ui.components.html;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.io.IOException;
 import java.io.StringReader;
+import java.io.Writer;
 
+import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.ViewFactory;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.HTMLWriter;
 import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.components.html.ScaledHTML.BasicHTMLViewFactory;
 
+import com.lightdev.app.shtm.SHTMLWriter;
+import com.lightdev.app.shtm.ScaledStyleSheet;
 
 @SuppressWarnings("serial")
 public class ScaledEditorKit extends HTMLEditorKit {
 	/** Shared base style for all documents created by us use. */
 	private static StyleSheet defaultStyles;
+
+	private ScaledEditorKit() {
+	};
 
 	/**
 	 * Overriden to return our own slimmed down style sheet.
@@ -61,9 +71,7 @@ public class ScaledEditorKit extends HTMLEditorKit {
 	public Document createDefaultDocument() {
 		StyleSheet styles = getStyleSheet();
 		StyleSheet ss = new ScaledStyleSheet();
-
 		ss.addStyleSheet(styles);
-
 		HTMLDocument doc = new HTMLDocument(ss);
 		doc.setParser(getParser());
 		doc.setAsynchronousLoadPriority(4);
@@ -82,48 +90,58 @@ public class ScaledEditorKit extends HTMLEditorKit {
 		HTMLDocument doc = new HTMLDocument(ss);
 		doc.setPreservesUnknownTags(false);
 		doc.getStyleSheet().addRule(displayPropertiesToCSS(defaultFont, foreground));
-
 		doc.setParser(getParser());
 		doc.setAsynchronousLoadPriority(Integer.MAX_VALUE);
 		doc.setPreservesUnknownTags(false);
 		return doc;
 	}
-	
+
 	private String displayPropertiesToCSS(Font font, Color fg) {
-	    StringBuffer rule = new StringBuffer("body {");
-	    if (font != null) {
-	        rule.append(" font-family: ");
-	        rule.append(font.getFamily());
-	        rule.append(" ; ");
-	        rule.append(" font-size: ");
-	        final int fontSize = Math.round(font.getSize() / UITools.FONT_SCALE_FACTOR);
+		StringBuffer rule = new StringBuffer("body {");
+		if (font != null) {
+			rule.append(" font-family: ");
+			rule.append(font.getFamily());
+			rule.append(" ; ");
+			rule.append(" font-size: ");
+			final int fontSize = Math.round(font.getSize() / UITools.FONT_SCALE_FACTOR);
 			rule.append(fontSize);
-	        rule.append("pt ;");
-	        if (font.isBold()) {
-	            rule.append(" font-weight: 700 ; ");
-	        }
-	        if (font.isItalic()) {
-	            rule.append(" font-style: italic ; ");
-	        }
-	    }
-	    if (fg != null) {
-	        rule.append(" color: #");
-	        if (fg.getRed() < 16) {
-	            rule.append('0');
-	        }
-	        rule.append(Integer.toHexString(fg.getRed()));
-	        if (fg.getGreen() < 16) {
-	            rule.append('0');
-	        }
-	        rule.append(Integer.toHexString(fg.getGreen()));
-	        if (fg.getBlue() < 16) {
-	            rule.append('0');
-	        }
-	        rule.append(Integer.toHexString(fg.getBlue()));
-	        rule.append(" ; ");
-	    }
-	    rule.append(" }");
-	    return rule.toString();
+			rule.append("pt ;");
+			if (font.isBold()) {
+				rule.append(" font-weight: 700 ; ");
+			}
+			if (font.isItalic()) {
+				rule.append(" font-style: italic ; ");
+			}
+		}
+		if (fg != null) {
+			rule.append(" color: #");
+			if (fg.getRed() < 16) {
+				rule.append('0');
+			}
+			rule.append(Integer.toHexString(fg.getRed()));
+			if (fg.getGreen() < 16) {
+				rule.append('0');
+			}
+			rule.append(Integer.toHexString(fg.getGreen()));
+			if (fg.getBlue() < 16) {
+				rule.append('0');
+			}
+			rule.append(Integer.toHexString(fg.getBlue()));
+			rule.append(" ; ");
+		}
+		rule.append(" }");
+		return rule.toString();
+	}
+
+	@Override
+	public void write(Writer out, Document doc, int pos, int len) throws IOException, BadLocationException {
+		if (doc instanceof HTMLDocument) {
+			HTMLWriter w = new SHTMLWriter(out, (HTMLDocument) doc, pos, len);
+			w.write();
+		}
+		else {
+			super.write(out, doc, pos, len);
+		}
 	}
 
 	/**
@@ -131,6 +149,23 @@ public class ScaledEditorKit extends HTMLEditorKit {
 	 * load in the background.
 	 */
 	public ViewFactory getViewFactory() {
-		return ScaledHTML.basicHTMLViewFactory;
+		return basicHTMLViewFactory;
 	}
+
+	static public ScaledEditorKit create() {
+		if (kit == null) {
+			basicHTMLViewFactory = new BasicHTMLViewFactory();
+			kit = new ScaledEditorKit();
+		}
+		return kit;
+	}
+
+	/**
+	 * The source of the html renderers
+	 */
+	private static ScaledEditorKit kit;
+	/**
+	 * Creates the Views that visually represent the model.
+	 */
+	static ViewFactory basicHTMLViewFactory;
 }
