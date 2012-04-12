@@ -35,6 +35,7 @@ import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 public class FolderFileNode extends DefaultFileNode {
 	private static final Icon FOLDER_OPEN_ICON = new ImageIcon(DefaultFileNode.class.getResource("/images/16x16/folder-orange_open.png"));
 	private static final Icon FOLDER_CLOSED_ICON = new ImageIcon(DefaultFileNode.class.getResource("/images/16x16/folder-orange.png"));
+	private static final Icon NOT_EXISTING = new ImageIcon(DefaultFileNode.class.getResource("/images/16x16/folder-orange-missing.png"));
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -69,6 +70,12 @@ public class FolderFileNode extends DefaultFileNode {
 	}
 	
 	public boolean setIcons(DefaultTreeCellRenderer renderer) {
+		if(getFile() == null || !getFile().exists()) {
+			renderer.setLeafIcon(NOT_EXISTING);
+			renderer.setOpenIcon(NOT_EXISTING);
+			renderer.setClosedIcon(NOT_EXISTING);
+			return true;
+		}
 		renderer.setOpenIcon(FOLDER_OPEN_ICON);
 		renderer.setClosedIcon(FOLDER_CLOSED_ICON);
 		renderer.setLeafIcon(FOLDER_CLOSED_ICON);
@@ -171,7 +178,7 @@ public class FolderFileNode extends DefaultFileNode {
 			File targetDir = getFile();			
 			for(File srcFile : files) {
 				if(srcFile.isDirectory()) {
-					FileUtils.copyDirectoryToDirectory(srcFile, targetDir);
+						FileUtils.copyDirectoryToDirectory(srcFile, targetDir);
 				}
 				else {
 					FileUtils.copyFileToDirectory(srcFile, targetDir, true);

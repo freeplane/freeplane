@@ -18,7 +18,9 @@ import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
 import org.docear.plugin.core.logger.DocearEventLogger;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 
@@ -30,6 +32,9 @@ public class DocearController implements IDocearEventListener {
 	private final static String PLACEHOLDER_PROFILENAME = "@@PROFILENAME@@";
 	private static final String DEFAULT_LIBRARY_PATH = "workspace:/"+PLACEHOLDER_PROFILENAME+"/library";
 	private final static Pattern PATTERN = Pattern.compile(PLACEHOLDER_PROFILENAME);
+	static final String DOCEAR_FIRST_RUN_PROPERTY = "docear.already_initialized";
+	
+	private final static String DOCEAR_VERSION_NUMBER = "docear.version.number";
 	
 	private String applicationName;
 	private String applicationVersion;
@@ -47,12 +52,15 @@ public class DocearController implements IDocearEventListener {
 	private IDocearLibrary currentLibrary = null;
 	
 	private final Set<String> workingThreads = new HashSet<String>();
+	private final boolean firstRun;
+	
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 	
 	protected DocearController() {
+		firstRun = !ResourceController.getResourceController().getBooleanProperty(DOCEAR_FIRST_RUN_PROPERTY);
 		setApplicationIdentifiers();
 		addDocearEventListener(this);
 	}
@@ -60,6 +68,21 @@ public class DocearController implements IDocearEventListener {
 	 * METHODS
 	 **********************************************************************************/
 
+	public boolean isDocearFirstStart() {
+		return firstRun;
+	}
+	
+	public boolean isDocearNewVersion() {
+		int storedBuildNumber = Integer.parseInt(ResourceController.getResourceController().getProperty(DOCEAR_VERSION_NUMBER, "0"));
+		if (storedBuildNumber != this.applicationBuildNumber) {
+			ResourceController.getResourceController().setProperty(DOCEAR_VERSION_NUMBER, ""+this.applicationBuildNumber);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
 	public static DocearController getController() {
 		return docearController;
 	}
@@ -69,10 +92,6 @@ public class DocearController implements IDocearEventListener {
 			return;
 		}
 		workingThreads.add(handleId);		
-	}
-	
-	public synchronized boolean hasWorkingThreads() {
-		return !workingThreads.isEmpty();
 	}
 	
 	public synchronized void removeWorkingThreadHandle(String handleId) {
@@ -195,15 +214,44 @@ public class DocearController implements IDocearEventListener {
 		this.applicationBuildDate = applicationBuildDate;
 	}
 	
+	private synchronized boolean hasWorkingThreads() {
+		return !workingThreads.isEmpty();
+	}
+	
+	public boolean shutdown() {	
+		dispatchDocearEvent(new DocearEvent(this, DocearEventType.APPLICATION_CLOSING));
+		
+		Controller.getCurrentController().getViewController().saveProperties();
+		ResourceController.getResourceController().saveProperties();		
+		
+		if(Controller.getCurrentController().getViewController().quit()) {
+			while(hasWorkingThreads()) {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e1) {
+				}
+			}			
+		}
+		else {
+			return false;
+		}		
+		//extensionContainer.getExtensions().clear();
+		return true;
+	}
+	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 
 	public void handleEvent(DocearEvent event) {
-		if(event.getType() == DocearEventType.NEW_LIBRARY && event.getSource() instanceof IDocearLibrary) {
+		if(event.getType() == DocearEventType.APPLICATION_CLOSING) {
+			WorkspaceUtils.saveCurrentConfiguration();
+		}
+		else if(event.getType() == DocearEventType.NEW_LIBRARY && event.getSource() instanceof IDocearLibrary) {
 			this.currentLibrary = (IDocearLibrary) event.getSource();
 			LogUtils.info("DOCEAR: new DocearLibrary set");
-		}	
+		} 
+			
 	}
 	
 

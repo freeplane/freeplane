@@ -61,7 +61,7 @@ public class WorkspaceDocearServiceConnectionBar extends JToolBar {
 		button.setDisabledIcon(new ImageIcon(this.getClass().getResource("/images/arrow-refresh-disabled.png")));
 		
 		lblUsername = new JLabel("username");
-		lblUsername.setBorder(new EmptyBorder(marginInsets));
+		lblUsername.setBorder(new EmptyBorder(marginInsets));		
 		add(lblUsername);
 		
 		lblConnectionState = new JLabel(TextUtils.getText("docear.service.connect.bar.status.1")+":");

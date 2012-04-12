@@ -117,7 +117,12 @@ public class WorkspaceChooserDialogPanel extends JPanel {
 				add(label, "2, 2, 3, 1, default, top");
 			}
 			{
-				String text = TextUtils.format("workspace_chooser_help_2", System.getProperty("user.home")+File.separator+ResourceController.getResourceController().getProperty("ApplicationName","Freeplane").toLowerCase());
+				Object[] fields = new String[] {
+						(Compat.isWindowsOS() ? "C:\\" : System.getProperty("user.home"))
+						,System.getProperty("user.home")
+						,ResourceController.getResourceController().getProperty("ApplicationName","Freeplane").toLowerCase()
+				};
+				String text = TextUtils.format("workspace_chooser_help_2", fields);
 				label_1 = new JLabel((Compat.isWindowsOS() ? text: text.replace("\\", "/")));
 				add(label_1, "2, 4");
 			}

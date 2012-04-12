@@ -46,8 +46,10 @@ public class WorkspaceChangeListener implements IWorkspaceEventListener {
 	}
 
 	public void workspaceChanged(WorkspaceEvent event) {
-		// TODO Auto-generated method stub
-		
+		if (DocearController.getController().isDocearNewVersion()) 
+		{
+			DocearLicenseDialogAction.showDialog();
+		}
 	}
 
 	public void toolBarChanged(WorkspaceEvent event) {

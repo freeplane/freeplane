@@ -62,7 +62,8 @@ public class FiletransferClient {
 					
 					WebResource res = client.resource(CommunicationsController.getController().getServiceUri());
 					res = res.path("/user/" + CommunicationsController.getController().getUserName() + "/" + this.restFulPath);
-					ClientResponse response = res.type(MediaType.MULTIPART_FORM_DATA_TYPE).header("accessToken", CommunicationsController.getController().getAccessToken()).post(ClientResponse.class, formDataMultiPart);					
+					String accessToken = CommunicationsController.getController().getAccessToken();
+					ClientResponse response = res.type(MediaType.MULTIPART_FORM_DATA_TYPE).header("accessToken", accessToken).post(ClientResponse.class, formDataMultiPart);					
 					if(response==null || !response.getClientResponseStatus().equals(ClientResponse.Status.OK)) {
 						throw new IOException("file upload not accepted ("+ response+")");
 					}
