@@ -42,7 +42,7 @@ public class DocearLicenseDialogPanel extends JPanel {
 	};
 	
 	public DocearLicenseDialogPanel() {
-		setPreferredSize(new Dimension(450, 450));
+		setPreferredSize(new Dimension(600, 450));
 		
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,

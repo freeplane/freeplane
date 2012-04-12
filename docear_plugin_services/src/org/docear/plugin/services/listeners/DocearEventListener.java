@@ -10,7 +10,7 @@ public class DocearEventListener implements IDocearEventListener {
 
 	public void handleEvent(DocearEvent event) {
 		if(event.getType() == DocearEventType.LICENSES_ACCEPTED) {
-			if (DocearController.getController().isDocearNewVersion()) 
+			if (DocearController.getController().isLicenseDialogNecessary()) 
 			{
 				DocearAllowUploadChooserAction.showDialog(false);
 			}
