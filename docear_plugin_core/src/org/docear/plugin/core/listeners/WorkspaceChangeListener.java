@@ -7,6 +7,7 @@ import org.apache.commons.io.FileUtils;
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.IDocearLibrary;
+import org.docear.plugin.core.actions.DocearLicenseDialogAction;
 import org.docear.plugin.core.workspace.creator.FolderTypeLibraryCreator;
 import org.docear.plugin.core.workspace.creator.FolderTypeLiteratureRepositoryCreator;
 import org.docear.plugin.core.workspace.creator.FolderTypeProjectsCreator;
@@ -46,7 +47,7 @@ public class WorkspaceChangeListener implements IWorkspaceEventListener {
 	}
 
 	public void workspaceChanged(WorkspaceEvent event) {
-		if (DocearController.getController().isDocearNewVersion()) 
+		if (DocearController.getController().isLicenseDialogNecessary()) 
 		{
 			DocearLicenseDialogAction.showDialog();
 		}
@@ -98,8 +99,7 @@ public class WorkspaceChangeListener implements IWorkspaceEventListener {
 			
 			modifyContextMenus();
 		}
-		workspacePrepared  = true;
-		//controller.loadWorkspace();		
+		workspacePrepared  = true;		
 		copyInfoIfNeeded();		
 	}
 	

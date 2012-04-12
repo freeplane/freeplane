@@ -1,4 +1,4 @@
-package org.docear.plugin.core.listeners;
+package org.docear.plugin.core.actions;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -9,7 +9,6 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 import org.docear.plugin.core.DocearController;
-import org.docear.plugin.core.actions.DocearQuitAction;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.ui.DocearLicenseDialogPanel;
@@ -59,7 +58,8 @@ public class DocearLicenseDialogAction extends AFreeplaneAction {
 			DocearController.getController().dispatchDocearEvent(new DocearEvent(dialog, DocearEventType.LICENSES_ACCEPTED));
 		}	
 		else {
-			DocearQuitAction.quit(dialog);
+			//DocearQuitAction.quit(dialog);
+			System.exit(0);
 		}
 		
 	}

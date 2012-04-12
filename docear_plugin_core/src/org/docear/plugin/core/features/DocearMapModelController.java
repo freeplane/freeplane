@@ -10,7 +10,6 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.plugin.workspace.WorkspaceUtils;
 
 public class DocearMapModelController implements IExtension{
 	
