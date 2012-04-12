@@ -80,7 +80,7 @@ public class DocearController implements IDocearEventListener {
 			return true;
 		}
 		else {
-			return false||isLicenseDialogNecessary;
+			return false;//||isLicenseDialogNecessary;
 		}
 	}
 	

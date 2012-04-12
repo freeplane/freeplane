@@ -1,7 +1,6 @@
 package org.docear.plugin.communications.features;
 
 import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
 
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.communications.FiletransferClient;
@@ -36,7 +35,7 @@ public class AccountRegisterer {
 	public boolean createAnonymousUser() {
 		String name = createAnonymousUserName();		
 		try {
-			if (createUser(name, null, USER_TYPE_ANONYMOUS, null, null, false)) {
+			if (createUser(name, null, USER_TYPE_ANONYMOUS, null, null, false, null)) {
 				//ResourceController.getResourceController().setProperty(CommunicationsController.DOCEAR_CONNECTION_ANONYMOUS_USERNAME_PROPERTY, name);
 				CommunicationsController.getController().tryToConnect(name, null, false, true);
 				return true;
@@ -51,9 +50,9 @@ public class AccountRegisterer {
 		}
 	}
 	
-	public boolean createRegisteredUser(String name, String password, String email, Integer birthYear, Boolean newsLetter) {		
+	public boolean createRegisteredUser(String name, String password, String email, Integer birthYear, Boolean newsLetter, Boolean isMale) {		
 		try {
-			if (createUser(name, password, USER_TYPE_REGISTERED, email, birthYear, newsLetter)) {
+			if (createUser(name, password, USER_TYPE_REGISTERED, email, birthYear, newsLetter, isMale)) {
 				ResourceController.getResourceController().setProperty(CommunicationsController.DOCEAR_CONNECTION_USERNAME_PROPERTY, name);
 				CommunicationsController.getController().tryToConnect(name, password, true, true);
 				return true;
@@ -69,7 +68,7 @@ public class AccountRegisterer {
 	}
 	
 	
-	private boolean createUser(String name, String password, Integer type, String email, Integer birthYear, Boolean newsLetter) throws Exception {	
+	private boolean createUser(String name, String password, Integer type, String email, Integer birthYear, Boolean newsLetter, Boolean isMale) throws Exception {	
 		final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 		Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
 		MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();				
@@ -82,9 +81,8 @@ public class AccountRegisterer {
 		queryParams.add("middleName", null);
 		queryParams.add("lastName", null);
 		queryParams.add("birthYear", birthYear==null ? null : birthYear.toString());
-		queryParams.add("generalNewsLetter", newsLetter.toString());
-		queryParams.add("recommenderNewsLetter", newsLetter.toString());
-		queryParams.add("mindmappingNewsLetter", newsLetter.toString());
+		queryParams.add("generalNewsLetter",  newsLetter==null ? null : newsLetter.toString());
+		queryParams.add("isMale",  isMale==null ? null : isMale.toString());
 
 		WebResource res = client.resource(CommunicationsController.getController().getServiceUri()).path("/user/"+name);
 		ClientResponse response = res.post(ClientResponse.class, queryParams);

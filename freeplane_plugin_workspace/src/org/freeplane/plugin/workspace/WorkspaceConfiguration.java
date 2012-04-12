@@ -36,7 +36,6 @@ import org.freeplane.plugin.workspace.creator.FolderTypeVirtualCreator;
 import org.freeplane.plugin.workspace.creator.LinkCreator;
 import org.freeplane.plugin.workspace.creator.LinkTypeFileCreator;
 import org.freeplane.plugin.workspace.creator.WorkspaceRootCreator;
-import org.freeplane.plugin.workspace.event.WorkspaceEvent;
 import org.freeplane.plugin.workspace.io.xml.ConfigurationWriter;
 import org.freeplane.plugin.workspace.io.xml.WorkspaceNodeWriter;
 import org.freeplane.plugin.workspace.model.AWorkspaceNodeCreator;
@@ -94,9 +93,7 @@ public class WorkspaceConfiguration {
 		if (workspaceLocation == null) {
 			return false;
 		}
-		WorkspaceController.getController().fireOpenWorkspace(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_RELOAD, this));
 		File configFile = new File(workspaceLocation + File.separator + profile + File.separator + CONFIG_FILE_NAME);
-		boolean newConfig = false;
 		if (!configFile.exists()) {
 			// CREATE NEW WORKSPACE
 			File profileFolder = new File(workspaceLocation + File.separator + profile);
@@ -109,15 +106,11 @@ public class WorkspaceConfiguration {
 				}
 			}
 			copyDefaultConfigTo(configFile);
-			newConfig = true;
 		}
 
 		WorkspaceController.getController().getWorkspaceModel()
 				.removeAllElements((AWorkspaceTreeNode) WorkspaceController.getController().getWorkspaceModel().getRoot());
 		this.load(configFile.toURI().toURL());
-		if(newConfig) {
-			WorkspaceController.getController().fireWorkspaceReady(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_CHANGED, this));
-		}
 		return true;
 	}
 
