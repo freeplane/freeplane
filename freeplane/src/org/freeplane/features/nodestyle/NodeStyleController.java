@@ -230,7 +230,7 @@ public class NodeStyleController implements IExtension {
 	}
 
 	private static int getDefaultFontSize() {
-		return ResourceController.getResourceController().getIntProperty("defaultfontsize", 12);
+		return ResourceController.getResourceController().getIntProperty("defaultfontsize", 10);
 	}
 
 	public Font getDefaultFont(final MapModel map, final IStyle style) {
