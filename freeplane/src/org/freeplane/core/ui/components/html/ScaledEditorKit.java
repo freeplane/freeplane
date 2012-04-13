@@ -21,30 +21,25 @@ package org.freeplane.core.ui.components.html;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.io.IOException;
 import java.io.StringReader;
-import java.io.Writer;
 
-import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+import javax.swing.text.Element;
+import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
-import javax.swing.text.html.HTMLWriter;
+import javax.swing.text.html.ImageView;
 import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.ui.components.html.ScaledHTML.BasicHTMLViewFactory;
-
-import com.lightdev.app.shtm.SHTMLWriter;
-import com.lightdev.app.shtm.ScaledStyleSheet;
 
 @SuppressWarnings("serial")
 public class ScaledEditorKit extends HTMLEditorKit {
 	/** Shared base style for all documents created by us use. */
 	private static StyleSheet defaultStyles;
 
-	private ScaledEditorKit() {
+	protected ScaledEditorKit() {
 	};
 
 	/**
@@ -133,28 +128,35 @@ public class ScaledEditorKit extends HTMLEditorKit {
 		return rule.toString();
 	}
 
-	@Override
-	public void write(Writer out, Document doc, int pos, int len) throws IOException, BadLocationException {
-		if (doc instanceof HTMLDocument) {
-			HTMLWriter w = new SHTMLWriter(out, (HTMLDocument) doc, pos, len);
-			w.write();
-		}
-		else {
-			super.write(out, doc, pos, len);
-		}
-	}
-
 	/**
 	 * Returns the ViewFactory that is used to make sure the Views don't
 	 * load in the background.
 	 */
 	public ViewFactory getViewFactory() {
+		if (basicHTMLViewFactory == null) {
+			basicHTMLViewFactory = new BasicHTMLViewFactory();
+		}
 		return basicHTMLViewFactory;
 	}
 
+    /**
+    * BasicHTMLViewFactory extends HTMLFactory to force images to be loaded
+    * synchronously.
+    */
+   static class BasicHTMLViewFactory extends HTMLEditorKit.HTMLFactory {
+       public View create(Element elem) {
+           View view = super.create(elem);
+
+           if (view instanceof ImageView) {
+               ((ImageView)view).setLoadsSynchronously(true);
+           }
+           return view;
+       }
+   }
+
+
 	static public ScaledEditorKit create() {
 		if (kit == null) {
-			basicHTMLViewFactory = new BasicHTMLViewFactory();
 			kit = new ScaledEditorKit();
 		}
 		return kit;

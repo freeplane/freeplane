@@ -76,22 +76,6 @@ public class ScaledHTML extends BasicHTML{
     "p { margin-top: 0; margin-bottom: 0; margin-left: 0; margin-right: 0 }" +
     "body { margin-top: 0; margin-bottom: 0; margin-left: 0; margin-right: 0 }";
 
-     /**
-     * BasicHTMLViewFactory extends HTMLFactory to force images to be loaded
-     * synchronously.
-     */
-    static class BasicHTMLViewFactory extends HTMLEditorKit.HTMLFactory {
-        public View create(Element elem) {
-            View view = super.create(elem);
-
-            if (view instanceof ImageView) {
-                ((ImageView)view).setLoadsSynchronously(true);
-            }
-            return view;
-        }
-    }
-
- 
     /**
      * Root text view that acts as an HTML renderer.
      */

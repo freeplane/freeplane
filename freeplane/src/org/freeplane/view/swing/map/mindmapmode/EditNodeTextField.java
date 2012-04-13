@@ -539,8 +539,18 @@ public class EditNodeTextField extends EditNodeBase {
 			final float fontSize = (int) (Math.rint(font.getSize() * zoom));
 			font = font.deriveFont(fontSize);
 		}
-//		final HTMLEditorKit kit = new HTMLEditorKit(){
-		final HTMLEditorKit kit = ScaledEditorKit.create();
+		final HTMLEditorKit kit = new ScaledEditorKit(){
+			@Override
+			public void write(Writer out, Document doc, int pos, int len) throws IOException, BadLocationException {
+				if (doc instanceof HTMLDocument) {
+					HTMLWriter w = new SHTMLWriter(out, (HTMLDocument) doc, pos, len);
+					w.write();
+				}
+				else {
+					super.write(out, doc, pos, len);
+				}
+			}
+		};
 		textfield.setEditorKit(kit);
 
 		final InputMap inputMap = textfield.getInputMap();
