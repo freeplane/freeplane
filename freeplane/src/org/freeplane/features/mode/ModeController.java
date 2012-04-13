@@ -348,7 +348,7 @@ public class ModeController extends AController {
 		// http://stackoverflow.com/questions/3355469/1-pixel-table-border-in-jtextpane-using-html
 		// html/css example: http://www.wer-weiss-was.de/theme35/article3555660.html
 		final String style = "<style type='text/css'>" //
-		        + " body { font-size: 13pt; }" // FIXME: copy from NoteController.setNoteTooltip() ?
+		        + " body { font-size: 10pt; }" // FIXME: copy from NoteController.setNoteTooltip() ?
 		        + "</style>";
 		final StringBuilder text = new StringBuilder("<html><head>"+style+"</head><body>");
 		boolean tooltipSet = false;
