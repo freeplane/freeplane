@@ -1,10 +1,8 @@
 package org.docear.plugin.services.components.dialog;
 
 import java.awt.AWTEvent;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -24,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
@@ -42,10 +41,9 @@ import com.jgoodies.forms.layout.RowSpec;
 
 public class DocearIRChoiceDialogPanel extends JPanel {
 	public static final int ALLOW_CONTENT_RESEARCH = 1;
-	public static final int ALLOW_CONTENT_IR = 2;
+	public static final int ALLOW_INFORMATION_RETRIEVAL = 2;
 	public static final int ALLOW_USAGE_RESEARCH = 4;
-	public static final int ALLOW_USAGE_IR = 8;
-	public static final int ALLOW_RECOMMENDATIONS = 16;
+	public static final int ALLOW_RECOMMENDATIONS = 8;
 
 	private static final long serialVersionUID = 1L;
 
@@ -58,9 +56,8 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 	
 	private JCheckBox chckbxAllowbackup;
 	private JCheckBox chckbxAllowResearchContent;
-	private JCheckBox chckbxAllowIRContent;
+	private JCheckBox chckbxAllowIR;
 	private JCheckBox chckbxAllowResearchUsage;
-	private JCheckBox chckbxAllowIRUsage;
 
 	boolean removed = false;
 	private JButton okButton;
@@ -99,6 +96,11 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 	private JCheckBox chckbxSendnewsletter;
 	private JComboBox genderChooser;
 	private JLabel lblRequiredFields;
+	private JPanel optionalPanel;
+	private JLabel lblBirthyear;
+	private JTextField txtBirthYear;
+	private JLabel lblMoreinfo;
+	private JLabel lblConsideration;
 	
 	public DocearIRChoiceDialogPanel(boolean allowCancelAction) {
 		this.allowCancelAction = allowCancelAction;
@@ -107,48 +109,22 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 				ColumnSpec.decode("right:default:grow"),
 				FormFactory.RELATED_GAP_COLSPEC,},
 			new RowSpec[] {
-				RowSpec.decode("fill:35dlu"),
+				RowSpec.decode("fill:default"),
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("fill:default"),
 				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("fill:default"),}));
-		
-		JPanel headPanel = new JPanel();
-		headPanel.setBackground(Color.WHITE);
-		headPanel.setPreferredSize(new Dimension(400, 80));
-		headPanel.setMaximumSize(new Dimension(400, 80));
-		add(headPanel, "1, 1, 3, 1, fill, fill");
-		headPanel.setLayout(new FormLayout(new ColumnSpec[] {
-				FormFactory.RELATED_GAP_COLSPEC,
-				FormFactory.DEFAULT_COLSPEC,
-				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("left:default:grow"),
-				FormFactory.RELATED_GAP_COLSPEC,},
-			new RowSpec[] {
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("top:default:grow"),}));
-		
-		JLabel lblDescriptionhead = new JLabel(TextUtils.getText("docear.uploadchooser.header.title"));
-		lblDescriptionhead.setFont(new Font("Tahoma", Font.BOLD, 12));
-		headPanel.add(lblDescriptionhead, "2, 2, 3, 1");
-		
-		JLabel lblDescriptiontext = new JLabel(TextUtils.getText("docear.uploadchooser.header.help.text"));
-		JHyperlink link = new JHyperlink(TextUtils.getText("docear.uploadchooser.header.help.link.text"), "http://www.docear.org/support/user-manual/#backup");
-		
-		headPanel.add(lblDescriptiontext, "2, 4");
-		headPanel.add(link, "4, 4");
+				FormFactory.DEFAULT_ROWSPEC,}));
 		
 		JPanel uploadPanel = new JPanel();
 		uploadPanel.setBorder(new TitledBorder(null, TextUtils.getText("docear.uploadchooser.section.upload"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		add(uploadPanel, "2, 3, fill, fill");
+		add(uploadPanel, "2, 1, fill, fill");
 		uploadPanel.setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("left:default:grow"),
 				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("left:default:grow"),},
 			new RowSpec[] {
+				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
@@ -162,37 +138,37 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		chckbxAllowbackup.addActionListener(actionListener);
 		uploadPanel.add(chckbxAllowbackup, "2, 1");
 		
-		int irNumber = Integer.parseInt(ResourceController.getResourceController().getProperty(ServiceController.DOCEAR_INFORMATION_RETRIEVAL, "31"));
+		lblConsideration = new JLabel(TextUtils.getText("docear.uploadchooser.consideration.text"));
+		lblConsideration.setVerticalAlignment(SwingConstants.TOP);
+		lblConsideration.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		uploadPanel.add(lblConsideration, "2, 2, 3, 1");
+		
+		int irNumber = Integer.parseInt(ResourceController.getResourceController().getProperty(ServiceController.DOCEAR_INFORMATION_RETRIEVAL, "13"));
 		
 		chckbxAllowRecommendations = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.recommendations"));	
 		chckbxAllowRecommendations.addActionListener(actionListener);
 		chckbxAllowRecommendations.setSelected((irNumber&ALLOW_RECOMMENDATIONS) > 0);
-		uploadPanel.add(chckbxAllowRecommendations, "2, 3");
+		uploadPanel.add(chckbxAllowRecommendations, "2, 4");
 		
 		chckbxAllowResearchContent = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.research.content"));
 		chckbxAllowResearchContent.setSelected((irNumber&ALLOW_CONTENT_RESEARCH) > 0);
 		chckbxAllowResearchContent.addActionListener(actionListener);
-		uploadPanel.add(chckbxAllowResearchContent, "2, 5");
+		uploadPanel.add(chckbxAllowResearchContent, "2, 6");
 		
 		chckbxAllowResearchUsage = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.research.usage"));
 		chckbxAllowResearchUsage.setSelected((irNumber&ALLOW_USAGE_RESEARCH) > 0);
 		chckbxAllowResearchUsage.addActionListener(actionListener);
-		uploadPanel.add(chckbxAllowResearchUsage, "4, 5");		
-				
+		uploadPanel.add(chckbxAllowResearchUsage, "4, 6");
 		
-		chckbxAllowIRContent = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.ir.content"));
-		chckbxAllowIRContent.setSelected((irNumber&ALLOW_CONTENT_IR) > 0);
-		chckbxAllowIRContent.addActionListener(actionListener);
-		uploadPanel.add(chckbxAllowIRContent, "2, 7");
 		
-		chckbxAllowIRUsage = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.ir.usage"));
-		chckbxAllowIRUsage.setSelected((irNumber&ALLOW_USAGE_IR) > 0);
-		chckbxAllowIRUsage.addActionListener(actionListener);
-		uploadPanel.add(chckbxAllowIRUsage, "4, 7");
+		chckbxAllowIR = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.ir.content"));
+		chckbxAllowIR.setSelected((irNumber&ALLOW_INFORMATION_RETRIEVAL) > 0);
+		chckbxAllowIR.addActionListener(actionListener);
+		uploadPanel.add(chckbxAllowIR, "2, 8");
 		
 		JPanel userDataPane = new JPanel();
 		userDataPane.setBorder(new TitledBorder(null, TextUtils.getText("docear.uploadchooser.section.userdata"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		add(userDataPane, "2, 5, fill, fill");
+		add(userDataPane, "2, 3, fill, fill");
 		userDataPane.setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("default:grow"),
@@ -211,32 +187,30 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
+				RowSpec.decode("fill:default"),
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
 		rdbtnLogin = new JRadioButton(TextUtils.getText("docear.uploadchooser.method.login"));
-		userDataPane.add(rdbtnLogin, "2, 2");
-		rdbtnLogin.setSelected(true);
-		
 		rdbtnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				enableRegistration(false);
 				enableButtonIfPossible(e);
 			}		
 		});
+		userDataPane.add(rdbtnLogin, "2, 2");
 		
-		rdbtnRegister = new JRadioButton(TextUtils.getText("docear.uploadchooser.method.register"));
-		userDataPane.add(rdbtnRegister, "4, 2");
 		
+		
+		
+		rdbtnRegister = new JRadioButton(TextUtils.getText("docear.uploadchooser.method.register"));				
 		rdbtnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				enableRegistration(true);
 				enableButtonIfPossible(e);
 			}
 		});
+		userDataPane.add(rdbtnRegister, "4, 2");
 		
 		JLabel lblUsername = new JLabel(TextUtils.getText("docear.uploadchooser.username.label")+" *");
 		userDataPane.add(lblUsername, "2, 4");
@@ -244,20 +218,21 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		lblEmail = new JLabel(TextUtils.getText("docear.uploadchooser.mail.label")+" *");
 		userDataPane.add(lblEmail, "4, 4");
 		
-		txtUsername = new JTextField();
-		userDataPane.add(txtUsername, "2, 6");
+		txtUsername = new JTextField();		
 		txtUsername.setText(ResourceController.getResourceController().getProperty("docear.service.connect.username",""));
 		txtUsername.setColumns(10);
 		txtUsername.addKeyListener(keyListener);
+		userDataPane.add(txtUsername, "2, 6");
 		
 		
 		txtEmail = new JTextField();
-		userDataPane.add(txtEmail, "4, 6");
 		txtEmail.setColumns(10);
 		txtEmail.addKeyListener(keyListener);
+		userDataPane.add(txtEmail, "4, 6");
 		
 		JLabel lblPassword = new JLabel(TextUtils.getText("docear.uploadchooser.passwd.label1")+" *");
 		userDataPane.add(lblPassword, "2, 8");
+		
 		lblRetypePassword = new JLabel(TextUtils.getText("docear.uploadchooser.passwd.label2")+" *");
 		userDataPane.add(lblRetypePassword, "4, 8");
 		
@@ -269,23 +244,58 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		pwdRetypepasswd.addKeyListener(keyListener);
 		userDataPane.add(pwdRetypepasswd, "4, 10");
 		
+		optionalPanel = new JPanel();
+		userDataPane.add(optionalPanel, "2, 12, 3, 1, fill, fill");
+		optionalPanel.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("default:grow"),
+				FormFactory.RELATED_GAP_COLSPEC,
+				FormFactory.DEFAULT_COLSPEC,
+				FormFactory.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,}));
+		
 		lblGender = new JLabel(TextUtils.getText("docear.uploadchooser.gender.label"));
-		userDataPane.add(lblGender, "2, 12");
+		optionalPanel.add(lblGender, "1, 1");
+		
+		lblBirthyear = new JLabel(TextUtils.getText("docear.uploadchooser.birthyear.label"));
+		optionalPanel.add(lblBirthyear, "3, 1");
 		
 		lblNewsletter = new JLabel(TextUtils.getText("docear.uploadchooser.news.label"));
-		userDataPane.add(lblNewsletter, "4, 12");		
+		optionalPanel.add(lblNewsletter, "5, 1");
 		
 		genderChooser = new JComboBox(new Object[] {"",TextUtils.getText("docear.uploadchooser.gender.male"),TextUtils.getText("docear.uploadchooser.gender.female")});
+		optionalPanel.add(genderChooser, "1, 3");
 		genderChooser.setEditable(false);
-		userDataPane.add(genderChooser, "2, 14");
+		
+		txtBirthYear = new JTextField();
+		txtBirthYear.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtBirthYear.addKeyListener(new KeyListener() {
+			public void keyTyped(KeyEvent e) {
+				if(e.getKeyChar() >= 32 && !(txtBirthYear.getText().length() < 4 && e.getKeyChar() <= '9' && e.getKeyChar() >= '0')) {
+					e.consume();
+				}
+			}			
+			public void keyReleased(KeyEvent e) {}			
+			public void keyPressed(KeyEvent e) {}
+		});
+		txtBirthYear.setColumns(4);
+		optionalPanel.add(txtBirthYear, "3, 3, fill, default");
 		
 		chckbxSendnewsletter = new JCheckBox(TextUtils.getText("docear.uploadchooser.news.text"));
-		userDataPane.add(chckbxSendnewsletter, "4, 14");
+		chckbxSendnewsletter.setSelected(true);
+		optionalPanel.add(chckbxSendnewsletter, "5, 3");
 		
 		lblRequiredFields = new JLabel("* "+TextUtils.getText("docear.uploadchooser.required.text"));
 		lblRequiredFields.setFont(new Font("Tahoma", Font.BOLD, 9));
-		userDataPane.add(lblRequiredFields, "2, 16, 3, 1");
-		enableRegistration(false);
+		userDataPane.add(lblRequiredFields, "2, 14");
+		
+		lblMoreinfo = new JHyperlink(TextUtils.getText("docear.uploadchooser.more.text"), "http://www.docear.org/give-back/share-your-data/");
+		add(lblMoreinfo, "2, 5");
+		lblMoreinfo.setHorizontalAlignment(SwingConstants.TRAILING);
+		enableRegistration(true);
 	}
 	
 	
@@ -313,16 +323,12 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		return chckbxAllowResearchContent.isSelected();
 	}
 	
-	public final boolean allowContentIR() {
-		return chckbxAllowIRContent.isSelected();
+	public final boolean allowInformationRetrieval() {
+		return chckbxAllowIR.isSelected();
 	}
 	
 	public final boolean allowUsageResearch() {
 		return chckbxAllowResearchUsage.isSelected();
-	}
-	
-	public final boolean allowUsageIR() {
-		return chckbxAllowIRUsage.isSelected();
 	}
 	
 	public final boolean allowRecommendations() {
@@ -402,6 +408,20 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 				JOptionPane.showMessageDialog((Component) e.getSource(), TextUtils.getText("docear.uploadchooser.dialog_x.warn"),"", JOptionPane.WARNING_MESSAGE);
 			}		
 		});
+		((JDialog)container).addKeyListener(new KeyListener() {
+			
+			public void keyTyped(KeyEvent e) {
+				e.consume();
+			}
+			
+			public void keyReleased(KeyEvent e) {
+				e.consume();				
+			}
+			
+			public void keyPressed(KeyEvent e) {
+				e.consume();
+			}
+		});
 	}
 	
 	private void enableButtonIfPossible(AWTEvent event) {
@@ -417,10 +437,10 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 					okButton.setEnabled(false);
 				}
 			} else {
-				if((chckbxAllowIRContent.isSelected() || chckbxAllowResearchContent.isSelected() || chckbxAllowIRUsage.isSelected() || chckbxAllowResearchUsage.isSelected())) {
+				if((chckbxAllowIR.isSelected() || chckbxAllowResearchContent.isSelected() || chckbxAllowResearchUsage.isSelected())) {
 					okButton.setEnabled(true);
 				}
-				else if(!chckbxAllowIRContent.isSelected() && !chckbxAllowResearchContent.isSelected() && !chckbxAllowIRUsage.isSelected() && !chckbxAllowResearchUsage.isSelected() && !chckbxAllowbackup.isSelected()) {
+				else if(!chckbxAllowIR.isSelected() && !chckbxAllowResearchContent.isSelected() && !chckbxAllowResearchUsage.isSelected() && !chckbxAllowbackup.isSelected()) {
 					okButton.setEnabled(true);
 				}
 				else {
@@ -441,6 +461,8 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		genderChooser.setEnabled(enabled);
 		lblNewsletter.setEnabled(enabled);
 		chckbxSendnewsletter.setEnabled(enabled);
+		lblBirthyear.setEnabled(enabled);
+		txtBirthYear.setEnabled(enabled);
 		registrationNecessary = enabled;
 	}
 	
@@ -449,14 +471,11 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		if (allowContentResearch()) {
 			code += ALLOW_CONTENT_RESEARCH;
 		}
-		if (allowContentIR()) {
-			code += ALLOW_CONTENT_IR;
+		if (allowInformationRetrieval()) {
+			code += ALLOW_INFORMATION_RETRIEVAL;
 		}
 		if (allowUsageResearch()) {
 			code += ALLOW_USAGE_RESEARCH;
-		}
-		if (allowUsageIR()) {
-			code += ALLOW_USAGE_IR;
 		}
 		if (allowRecommendations()) {
 			code += ALLOW_RECOMMENDATIONS;
@@ -466,7 +485,7 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 	}
 	
 	private boolean checkAccountSettings() {
-		if(!chckbxAllowIRContent.isSelected() && !chckbxAllowResearchContent.isSelected() && !chckbxAllowIRUsage.isSelected() && !chckbxAllowResearchUsage.isSelected() && !chckbxAllowbackup.isSelected() && !chckbxAllowRecommendations.isSelected()) {
+		if(!chckbxAllowIR.isSelected() && !chckbxAllowResearchContent.isSelected() && !chckbxAllowResearchUsage.isSelected() && !chckbxAllowbackup.isSelected() && !chckbxAllowRecommendations.isSelected()) {
 			return true;
 		}
 		
