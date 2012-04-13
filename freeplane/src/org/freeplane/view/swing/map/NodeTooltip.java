@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.net.URI;
 import java.net.URL;
+import java.security.AccessControlException;
 
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
@@ -111,17 +112,36 @@ public class NodeTooltip extends JToolTip {
 
 	@Override
     public void setTipText(String tipText) {
+		try{
+        	setTipTextUnsafe(tipText);
+        }
+        catch (Exception e1) {
+        	if(e1 instanceof AccessControlException)
+        		LogUtils.warn(e1.getMessage());
+        	else
+        		LogUtils.severe(e1);
+            final String localizedMessage = e1.getLocalizedMessage();
+        	final String htmlEscapedText = HtmlUtils.plainToHTML(localizedMessage + '\n' + tipText);
+        	try{
+        		setTipTextUnsafe(htmlEscapedText);
+        	}
+        	catch (Exception e2){
+        	}
+        }
+    }
+
+	private void setTipTextUnsafe(String tipText) throws Exception{
 		tip.setText(tipText);
 		Dimension preferredSize = tip.getPreferredSize();
 		if (preferredSize.width < maximumWidth) {
 			return ;
 		}
-        final HTMLDocument document = (HTMLDocument) tip.getDocument();
-        document.getStyleSheet().addRule("body { width: " + maximumWidth  + "}");
-        // bad hack: call "setEditable" only to update view
-        tip.setEditable(true);
-        tip.setEditable(false);
-    }
+		final HTMLDocument document = (HTMLDocument) tip.getDocument();
+		document.getStyleSheet().addRule("body { width: " + maximumWidth  + "}");
+		// bad hack: call "setEditable" only to update view
+		tip.setEditable(true);
+		tip.setEditable(false);
+	}
 
 	@Override
     public Dimension getPreferredSize() {

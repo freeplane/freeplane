@@ -55,6 +55,7 @@ public class ScaledHTML extends BasicHTML{
 
      public static void updateRenderer(JComponent c, String text) {
     	View value = null;
+    	try{
     	View oldValue = (View)c.getClientProperty(propertyKey);
     	if (isHTMLString(text)) {
     		value = ScaledHTML.createHTMLView(c, text);
@@ -64,7 +65,10 @@ public class ScaledHTML extends BasicHTML{
     			oldValue.getView(i).setParent(null);
     		}
     	}
-    	c.putClientProperty(BasicHTML.propertyKey, value);
+    	}
+    	finally{
+    		c.putClientProperty(BasicHTML.propertyKey, value);
+    	}
     }
 
 
