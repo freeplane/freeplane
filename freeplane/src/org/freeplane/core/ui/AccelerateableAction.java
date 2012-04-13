@@ -197,6 +197,10 @@ public class AccelerateableAction implements IFreeplaneAction {
 		return originalAction.isSelected();
 	}
 
+	public void setSelected(boolean newValue) {
+		originalAction.setSelected(newValue);
+	}
+
 	public void newAccelerator(final JMenuItem editedItem, final KeyStroke newAccelerator) {
 		final Object key = menuBuilder.getKeyByUserObject(editedItem);
 		final String shortcutKey = menuBuilder.getShortcutKey(key.toString());
