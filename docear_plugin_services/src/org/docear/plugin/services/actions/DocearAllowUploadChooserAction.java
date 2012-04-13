@@ -1,8 +1,6 @@
 package org.docear.plugin.services.actions;
 
-import java.awt.Container;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -37,21 +35,9 @@ public class DocearAllowUploadChooserAction extends AFreeplaneAction {
 		buttonsList.add(new JButton(TextUtils.getText("docear.uploadchooser.button.ok")));
 		if (showCancelButton) {
 			buttonsList.add(new JButton(TextUtils.getText("docear.uploadchooser.button.cancel")));
-		}
+		}		
 		
-		
-		JButton[] dialogButtons = buttonsList.toArray(new JButton[] {});
-		
-//		dialogButtons[0].addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				Container cont = chooser.getParent();
-//				while(!(cont instanceof JOptionPane)) {
-//					cont = cont.getParent();
-//				}
-//				((JOptionPane)cont).setValue(e.getSource());				
-//			}
-//		});
-		
+		JButton[] dialogButtons = buttonsList.toArray(new JButton[] {});		
 		chooser.integrateButtons(dialogButtons);
 		
 		int result = JOptionPane.showOptionDialog(UITools.getFrame(), chooser, TextUtils.getText("docear.uploadchooser.title"), JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, dialogButtons, 1);
