@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.net.URISyntaxException;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -29,9 +30,11 @@ import javax.swing.border.TitledBorder;
 
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.communications.features.AccountRegisterer;
+import org.docear.plugin.communications.features.DocearServiceException;
 import org.docear.plugin.services.ServiceController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.swingplus.JHyperlink;
 
@@ -352,9 +355,26 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		okButton = buttons[0];
 		enableButtonIfPossible(null);
 		okButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (checkAccountSettings()) {
-					closeDialogManually();
+			public void actionPerformed(ActionEvent e) {				
+				try {
+					checkAccountSettings();
+					Container cont = getParent();
+					while(!(cont instanceof JOptionPane)) {
+						cont = cont.getParent();
+					}
+					((JOptionPane)cont).setValue(e.getSource());
+					//closeDialogManually();
+				} 
+				catch (DocearServiceException e1) {
+					JOptionPane.showMessageDialog(UITools.getFrame(), 
+							TextUtils.getText("docear.uploadchooser.warning.notregistered")+e1.getMessage(), 
+							TextUtils.getText("docear.uploadchooser.warning.notregistered.title"), 
+							JOptionPane.WARNING_MESSAGE);
+					LogUtils.warn(e1);
+				} 
+				catch (URISyntaxException e1) {
+					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText("docear.uploadchooser.warning.notregistered"), TextUtils.getText("docear.uploadchooser.warning.notregistered.title"), JOptionPane.WARNING_MESSAGE);
+					LogUtils.warn(e1);
 				}
 			}
 		});
@@ -465,7 +485,7 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		return code;
 	}
 	
-	private boolean checkAccountSettings() {
+	private boolean checkAccountSettings() throws DocearServiceException, URISyntaxException {
 		if(!chckbxAllowIRContent.isSelected() && !chckbxAllowResearchContent.isSelected() && !chckbxAllowIRUsage.isSelected() && !chckbxAllowResearchUsage.isSelected() && !chckbxAllowbackup.isSelected() && !chckbxAllowRecommendations.isSelected()) {
 			return true;
 		}
@@ -478,13 +498,7 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 				return false;
 			}
 			else {
-				if (accountRegisterer.createRegisteredUser(getUserName(), getPassword(), getEmail(), null, wantsNewsletter(), isMale())) {
-					return true;
-				}
-				else {
-					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText("docear.uploadchooser.warning.notregistered"), TextUtils.getText("docear.uploadchooser.warning.notregistered.title"), JOptionPane.WARNING_MESSAGE);
-					return false;
-				}
+				accountRegisterer.createRegisteredUser(getUserName(), getPassword(), getEmail(), null, wantsNewsletter(), isMale());
 			}
 		}
 				

@@ -42,15 +42,15 @@ public class DocearAllowUploadChooserAction extends AFreeplaneAction {
 		
 		JButton[] dialogButtons = buttonsList.toArray(new JButton[] {});
 		
-		dialogButtons[0].addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Container cont = chooser.getParent();
-				while(!(cont instanceof JOptionPane)) {
-					cont = cont.getParent();
-				}
-				((JOptionPane)cont).setValue(e.getSource());				
-			}
-		});
+//		dialogButtons[0].addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				Container cont = chooser.getParent();
+//				while(!(cont instanceof JOptionPane)) {
+//					cont = cont.getParent();
+//				}
+//				((JOptionPane)cont).setValue(e.getSource());				
+//			}
+//		});
 		
 		chooser.integrateButtons(dialogButtons);
 		

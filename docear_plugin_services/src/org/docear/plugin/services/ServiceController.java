@@ -12,7 +12,6 @@ import org.docear.plugin.services.actions.DocearAllowUploadChooserAction;
 import org.docear.plugin.services.listeners.DocearEventListener;
 import org.docear.plugin.services.listeners.MapLifeCycleListener;
 import org.docear.plugin.services.listeners.PropertiesActionListener;
-import org.docear.plugin.services.listeners.PropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
@@ -28,7 +27,6 @@ public class ServiceController {
 	private final File backupFolder = new File(CommunicationsController.getController().getCommunicationsQueuePath(), "mindmaps");
 	
 	private final IMapLifeCycleListener mapLifeCycleListener = new MapLifeCycleListener();
-	private final PropertyListener propertyListener = new PropertyListener();
 
 	private static FileFilter zipFilter = new FileFilter() {
 		public boolean accept(File f) {
@@ -56,8 +54,7 @@ public class ServiceController {
 	
 	public void initListeners() {
 		DocearController.getController().addDocearEventListener(new DocearEventListener());
-		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(mapLifeCycleListener);
-		ResourceController.getResourceController().addPropertyChangeListener(propertyListener);
+		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(mapLifeCycleListener);		
 		Controller.getCurrentController().getOptionPanelController().addButtonListener(new PropertiesActionListener());
 	}
 	
@@ -111,8 +108,9 @@ public class ServiceController {
 	
 	public boolean isInformationRetrievalAllowed() {
 		CommunicationsController commCtrl = CommunicationsController.getController();
-		boolean allowed = !isEmpty(commCtrl.getAccessToken()) || !isEmpty(commCtrl.getUserName());		
-		return allowed && getInformationRetrievalCode()>0 && commCtrl.allowTransmission();
+		boolean needUser = getInformationRetrievalCode()>0 && commCtrl.allowTransmission();
+		
+		return needUser && (!isEmpty(commCtrl.getAccessToken()) || !isEmpty(commCtrl.getUserName()));
 	}
 	
 	private boolean isEmpty(String s) {

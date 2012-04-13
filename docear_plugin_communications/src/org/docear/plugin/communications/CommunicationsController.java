@@ -12,7 +12,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Collection;
-import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -22,8 +21,8 @@ import javax.ws.rs.core.MultivaluedMap;
 import org.docear.plugin.communications.components.WorkspaceDocearServiceConnectionBar;
 import org.docear.plugin.communications.components.WorkspaceDocearServiceConnectionBar.CONNECTION_STATE;
 import org.docear.plugin.communications.components.dialog.DocearServiceConnectionWaitPanel;
-import org.docear.plugin.communications.components.dialog.DocearServiceLoginPanel;
 import org.docear.plugin.communications.features.AccountRegisterer;
+import org.docear.plugin.communications.features.DocearServiceException;
 import org.docear.plugin.core.ALanguageController;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
@@ -87,48 +86,6 @@ public class CommunicationsController extends ALanguageController implements Pro
 		return communicationsController;
 	}
 
-	public void showConnectionDialog() {
-		JButton[] dialogButtons = new JButton[] { new JButton(TextUtils.getOptionalText("docear.service.connect.dialog.button.ok")), new JButton(TextUtils.getOptionalText("docear.service.connect.dialog.button.cancel")) };
-		final DocearServiceLoginPanel loginPanel = new DocearServiceLoginPanel();
-		loginPanel.ctrlOKButton(dialogButtons[0]);
-		dialogButtons[0].addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Container cont = loginPanel.getParent();
-				while (!(cont instanceof JOptionPane)) {
-					cont = cont.getParent();
-				}
-				((JOptionPane) cont).setValue(e.getSource());
-				closeDialogManually(cont);
-
-			}
-		});
-		dialogButtons[1].addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Container cont = loginPanel.getParent();
-				closeDialogManually(cont);
-			}
-		});
-
-		loginPanel.setLicenseText(getLicenseText());
-		int choice = JOptionPane.showOptionDialog(UITools.getFrame(), loginPanel, TextUtils.getOptionalText("docear.service.connect.title"), JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, dialogButtons, dialogButtons[0]);
-		if (choice == 0) {
-			tryToConnect(loginPanel.getUsername(), loginPanel.getPassword(), true, true);
-		}
-	}
-
-	private String getLicenseText() {
-		StringBuilder text = new StringBuilder();
-		Scanner scanner = new Scanner(DocearController.class.getClassLoader().getResourceAsStream("/license.txt"));
-		try {
-			while (scanner.hasNextLine()) {
-				text.append(scanner.nextLine() + System.getProperty("line.separator"));
-			}
-		} finally {
-			scanner.close();
-		}
-		return text.toString();
-	}
-
 	private void closeDialogManually(Container container) {
 		while (!(container instanceof JDialog)) {
 			container = container.getParent();
@@ -136,7 +93,7 @@ public class CommunicationsController extends ALanguageController implements Pro
 		((JDialog) container).dispose();
 	}
 
-	public void tryToConnect(final String username, final String password, final boolean registeredUser, final boolean silent) {
+	public void tryToConnect(final String username, final String password, final boolean registeredUser, final boolean silent) throws DocearServiceException, URISyntaxException {
 		final String propertyUserName = registeredUser ? DOCEAR_CONNECTION_USERNAME_PROPERTY : DOCEAR_CONNECTION_ANONYMOUS_USERNAME_PROPERTY;
 		final String propertyAccessToken = registeredUser ? DOCEAR_CONNECTION_TOKEN_PROPERTY : DOCEAR_CONNECTION_ANONYMOUS_TOKEN_PROPERTY;
 
@@ -174,12 +131,11 @@ public class CommunicationsController extends ALanguageController implements Pro
 				webRes = client.resource(getServiceUri()).path("/authenticate/" + username);
 			}
 			// DOCEAR: should not happen because the URI is hard coded for now
-			catch (URISyntaxException ex) {
-				LogUtils.severe(ex);
+			catch (URISyntaxException ex) {				
 				if (!silent) {
 					dialogButtons[0].doClick();
 				}
-				return;
+				throw(ex);
 			}
 
 			try {
@@ -216,8 +172,8 @@ public class CommunicationsController extends ALanguageController implements Pro
 						message.append((char) chr);
 					}
 					is.close();
-					if (!silent) {
-						JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.format("docear.service.connect.failure", status, message.toString()), TextUtils.getText("docear.service.connect.failure.title"), JOptionPane.ERROR_MESSAGE);
+					if (!silent) {						
+						throw new DocearServiceException("");
 					}
 
 					ResourceController.getResourceController().setProperty(propertyUserName, "");
@@ -229,14 +185,12 @@ public class CommunicationsController extends ALanguageController implements Pro
 					}
 					ResourceController.getResourceController().setProperty(propertyAccessToken, "");
 				}
-			} catch (Exception e) {
-				
+			} catch (Exception e) {				
 				if (!silent) {
-					dialogButtons[0].doClick();
-					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.format("docear.service.connect.failure", "-1", e.getMessage()), TextUtils.getText("docear.service.connect.failure.title"), JOptionPane.ERROR_MESSAGE);
-				}
+					dialogButtons[0].doClick();					
+				}	
 				DocearController.getController().dispatchDocearEvent(new DocearEvent(FiletransferClient.class, FiletransferClient.NO_CONNECTION));
-				
+				throw(new DocearServiceException(TextUtils.getText("docear.login_failed")));				
 			}
 
 		} finally {
@@ -325,7 +279,12 @@ public class CommunicationsController extends ALanguageController implements Pro
 		String userName = ResourceController.getResourceController().getProperty(DOCEAR_CONNECTION_ANONYMOUS_USERNAME_PROPERTY);
 		if (isEmpty(userName)) {
 			AccountRegisterer ar = new AccountRegisterer();
-			ar.createAnonymousUser();
+			try {
+				ar.createAnonymousUser();
+			}
+			catch(Exception e) {
+				LogUtils.warn(e);
+			}
 			userName = ResourceController.getResourceController().getProperty(DOCEAR_CONNECTION_ANONYMOUS_USERNAME_PROPERTY);
 		}
 
@@ -349,7 +308,12 @@ public class CommunicationsController extends ALanguageController implements Pro
 		String accessToken = ResourceController.getResourceController().getProperty(DOCEAR_CONNECTION_ANONYMOUS_TOKEN_PROPERTY);
 		if (isEmpty(accessToken)) {
 			AccountRegisterer ar = new AccountRegisterer();
-			ar.createAnonymousUser();
+			try {
+				ar.createAnonymousUser();
+			}
+			catch(Exception e) {
+				LogUtils.warn(e);
+			}
 			accessToken = ResourceController.getResourceController().getProperty(DOCEAR_CONNECTION_ANONYMOUS_USERNAME_PROPERTY);
 		}
 		return accessToken;
