@@ -72,6 +72,7 @@ public class NodeTooltip extends JToolTip {
 	public NodeTooltip(){
 		tip  = new JEditorPane();
 		tip.setContentType("text/html");
+		tip.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
 		final HTMLEditorKit kit = ScaledEditorKit.create();
 		tip.setEditorKit(kit);
 		tip.setEditable(false);

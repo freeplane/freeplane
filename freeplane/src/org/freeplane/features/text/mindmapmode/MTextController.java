@@ -847,6 +847,7 @@ public class MTextController extends TextController {
 			}});
 
     	final JEditorPane editorPane = shtmlPanel.getEditorPane();
+    	editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
     	fireEditorPaneCreated(editorPane, purpose);
 		return shtmlPanel;
     }
@@ -866,6 +867,7 @@ public class MTextController extends TextController {
             }
      		
      	};
+     	editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
     	fireEditorPaneCreated(editorPane, purpose);
 		return editorPane;
     }
