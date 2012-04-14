@@ -828,6 +828,7 @@ public class MTextController extends TextController {
     			return resourceString;
     		}
     	});
+    	com.lightdev.app.shtm.ScaledStyleSheet.FONT_SCALE_FACTOR = UITools.FONT_SCALE_FACTOR;
     	SHTMLPanel.setActionBuilder(new ActionBuilder() {
 			
 			public void initActions(SHTMLPanel panel) {

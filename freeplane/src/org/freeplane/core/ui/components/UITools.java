@@ -571,11 +571,31 @@ public class UITools {
 		return -1;
 	}
 
-	public static final float FONT_SCALE_FACTOR = ScaledStyleSheet.FONT_SCALE_FACTOR;
+	public static final float FONT_SCALE_FACTOR;
+	static {
+		float factor = 1f; 
+		try {
+	        factor = UITools.getScreenResolution()  / 72f;
+        }
+        catch (Exception e) {
+        }
+		FONT_SCALE_FACTOR = factor;
+	}
+	
+	public static int getScreenResolution() {
+		final int systemScreenResolution = Toolkit.getDefaultToolkit().getScreenResolution();
+		if(ResourceController.getResourceController().getBooleanProperty("apply_system_screen_resolution")){
+			return systemScreenResolution;
+		}
+		else
+			return ResourceController.getResourceController().getIntProperty("user_defined_screen_resolution", systemScreenResolution);
+    }
+	
 	public static Font scale(Font font) {
-	    return font.deriveFont(font.getSize2D()*FONT_SCALE_FACTOR);
-    }
+		return font.deriveFont(font.getSize2D()*FONT_SCALE_FACTOR);
+	}
 	public static Font invertScale(Font font) {
-	    return font.deriveFont(font.getSize2D()/FONT_SCALE_FACTOR);
-    }
+		return font.deriveFont(font.getSize2D()/FONT_SCALE_FACTOR);
+	}
+	
 }

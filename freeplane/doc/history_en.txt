@@ -2,6 +2,7 @@
 1.2.14 beta
 ===============================
 Fix calculation of all font sizes
+Properties "Apply system screen resolution default" and "User defined screen resolution (dpi)"
 
 ===============================
 1.2.13 beta
@@ -13,7 +14,7 @@ Formatting option to display hyper links as HTML
 Insert free nodes on double click + folding
 Options for editing on double click and folding on click inside a node
 Drop images if control is pressed and links to files otherwise
-Hyperlink in text as node text style option^
+Hyperlink in text as node text style option
 Performance and memory optimizations for scaling of external bitmap images 
 
 ===============================

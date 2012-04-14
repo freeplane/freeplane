@@ -26,6 +26,8 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.html.CSS;
 import javax.swing.text.html.StyleSheet;
 
+import org.freeplane.core.ui.components.UITools;
+
 
 public class ScaledStyleSheet extends StyleSheet{
 	
@@ -39,33 +41,22 @@ public class ScaledStyleSheet extends StyleSheet{
 	    return super.getFont(font.getFamily(), font.getStyle(), Math.round(font.getSize2D() * fontScaleFactor));
     }
 
-	public static final float FONT_SCALE_FACTOR;
-	static {
-		float factor = 1f; 
-		try {
-	        factor = Toolkit.getDefaultToolkit().getScreenResolution()  / 72f;
-        }
-        catch (Exception e) {
-        }
-		FONT_SCALE_FACTOR = factor;
-	}
-	
 	private float getFontScaleFactor(AttributeSet a) {
 		final Object attribute = a.getAttribute(CSS.Attribute.FONT_SIZE);
 		if(attribute == null)
-			return FONT_SCALE_FACTOR;
+			return UITools.FONT_SCALE_FACTOR;
 		final String fontSize = attribute.toString();
 		final int fsLength = fontSize.length();
 		if(fsLength <= 1 
 				|| Character.isDigit(fontSize.charAt(fsLength-1))
 				|| fontSize.endsWith("pt"))
-			return FONT_SCALE_FACTOR;
+			return UITools.FONT_SCALE_FACTOR;
 		if(fontSize.endsWith("px"))
 			return 1/1.3f;
 		if(fontSize.endsWith("%") || fontSize.endsWith("em") || fontSize.endsWith("ex")
 				|| fontSize.endsWith("er"))
 			return getFontScaleFactor(a);
-		return FONT_SCALE_FACTOR;
+		return UITools.FONT_SCALE_FACTOR;
     }
 
 
