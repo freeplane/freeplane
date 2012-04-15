@@ -3,6 +3,7 @@
 ===============================
 Fix calculation of all font sizes
 Properties "Apply system screen resolution default" and "User defined screen resolution (dpi)"
+Various fixes for formatting of attributes
 
 ===============================
 1.2.13 beta
