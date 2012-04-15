@@ -435,8 +435,8 @@ public class MMapController extends MapController {
                 return i2 - i1;
             }
         };
-        if (!selected.isRoot()) {
-            final NodeModel parent = selected.getParentNode();
+        final NodeModel parent = selected.getParentNode();
+        if (parent != null) {
             final Vector<NodeModel> sortedChildren = getSortedSiblings(parent);
             final TreeSet<Integer> range = new TreeSet<Integer>(comparator);
             for (final NodeModel node : selecteds) {
