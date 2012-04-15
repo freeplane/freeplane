@@ -188,21 +188,6 @@ public abstract class MainView extends ZoomableLabel {
 		return xCoord >= iconR.x && xCoord < iconR.x + iconR.width;
 	}
 
-	private boolean canBeFolded() {
-		final NodeView nodeView = getNodeView();
-		final NodeModel node = nodeView.getModel();
-		if (node.hasChildren()){
-			if(node.isRoot()){
-				final MapController mapController = nodeView.getMap().getModeController().getMapController();
-				return FoldingMark.UNVISIBLE_CHILDREN_FOLDED.equals(foldingMarkType(mapController, node));
-			}
-			else
-				return true;
-		}
-		else
-			return false;
-	}
-
 	/**
 	 * Determines whether or not the xCoord is in the part p of the node: if
 	 * node is on the left: part [1-p,1] if node is on the right: part[ 0,p] of
@@ -272,7 +257,7 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	protected void paintFoldingMark(final NodeView nodeView, final Graphics2D g) {
-		if (! canBeFolded())
+		if (! hasChildren())
 			return;
 		final FoldingMark markType = foldingMarkType(getMap().getModeController().getMapController(), nodeView.getModel());
 	    Point mousePosition = null;
@@ -623,7 +608,7 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	public boolean isInFoldingRegion(Point p) {
-		if (canBeFolded() && p.y >= 0 && p.y < getHeight()) {
+		if (hasChildren() && p.y >= 0 && p.y < getHeight()) {
 			final boolean isLeft = getNodeView().isLeft();
 			final int width = Math.max(FOLDING_CIRCLE_WIDTH, getZoomedFoldingSymbolHalfWidth() * 2);
 			if (isLeft) {
@@ -638,6 +623,10 @@ public abstract class MainView extends ZoomableLabel {
         else
 			return false;
 	}
+
+	private boolean hasChildren() {
+	    return getNodeView().getModel().hasChildren();
+    }
 
 	public MouseArea getMouseArea() {
 		return mouseArea;

@@ -60,8 +60,9 @@ class FoldingCircle extends DrawableEllipse{
 	@Override
 	protected void drawShape(Graphics2D g, Shape shape, Rectangle r, NodeView nodeView) {
 		super.drawShape(g, shape, r, nodeView);
-		if(nodeView.getMainView().getMouseArea().equals(MouseArea.FOLDING))
-			g.setColor(Color.WHITE);
+		if(nodeView.isRoot() & ! folded || ! nodeView.getMainView().getMouseArea().equals(MouseArea.FOLDING))
+			return;
+		g.setColor(super.getFillColor(nodeView));
 		g.drawLine(r.x + r.width / 4, r.y + r.height / 2, r.x + r.width * 3/ 4, r.y + r.height / 2);
 		if(folded)
 			g.drawLine(r.x + r.width / 2, r.y + r.height / 4, r.x + r.width / 2, r.y + r.height * 3 / 4);

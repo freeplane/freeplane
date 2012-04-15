@@ -303,11 +303,11 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		final boolean inside = isInside(e);
 		final boolean inFoldingRegion = ! inside && isInFoldingRegion(e);
 		if (inside || inFoldingRegion) {
-			stopTimerForDelayedSelection();
-			final MainView component = (MainView) e.getComponent();
-			final NodeView nodeView = component.getNodeView();
-			ModeController mc = Controller.getCurrentController().getModeController();
 			if(inside){
+				stopTimerForDelayedSelection();
+				ModeController mc = Controller.getCurrentController().getModeController();
+				final MainView component = (MainView) e.getComponent();
+				final NodeView nodeView = component.getNodeView();
 				if(! nodeView.isSelected()){
 					Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(nodeView.getModel());
 				}
@@ -315,15 +315,22 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				showMenuAndConsumeEvent(popupmenu, e);
 			}
 			else if(inFoldingRegion){
-				final FoldingController foldingController = mc.getExtension(FoldingController.class);
-				if(foldingController == null)
-					return;
-				final JPopupMenu popupmenu = foldingController.createFoldingPopupMenu(nodeView.getModel());
-				AutoHide.start(popupmenu);
-				showMenuAndConsumeEvent(popupmenu, e);
+				showFoldingPopup(e);
 			}
 		}
 	}
+
+	private void showFoldingPopup(MouseEvent e) {
+		ModeController mc = Controller.getCurrentController().getModeController();
+		final FoldingController foldingController = mc.getExtension(FoldingController.class);
+		if(foldingController == null)
+			return;
+		final MainView component = (MainView) e.getComponent();
+		final NodeView nodeView = component.getNodeView();
+		final JPopupMenu popupmenu = foldingController.createFoldingPopupMenu(nodeView.getModel());
+		AutoHide.start(popupmenu);
+		showMenuAndConsumeEvent(popupmenu, e);
+    }
 
 	private void showMenuAndConsumeEvent(final JPopupMenu popupmenu, final MouseEvent e) {
 	    if (popupmenu != null) {
