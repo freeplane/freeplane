@@ -701,7 +701,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				return candidateView;
 			}
 		}
-		return null;
+		NodeView root = getRoot();
+		if(root.getModel().equals(node))
+			return root;
+		else
+			return null;
 	}
 
 	/*
@@ -976,14 +980,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		anchorContentLocation = new Point();
 		rootView = NodeViewFactory.getInstance().newNodeView(getModel().getRootNode(), 0, this, this);
 		anchor = rootView;
-		addHierarchyListener(new HierarchyListener() {
-			public void hierarchyChanged(HierarchyEvent e) {
-				if(isDisplayable()){
-					removeHierarchyListener(this);
-					rootView.insert();
-				}
-			}
-		});
 	}
 
 	public boolean isPrinting() {

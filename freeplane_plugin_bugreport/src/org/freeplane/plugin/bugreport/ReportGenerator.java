@@ -14,9 +14,14 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.StreamHandler;
@@ -24,6 +29,7 @@ import java.util.logging.StreamHandler;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.FreeplaneVersion;
@@ -34,9 +40,19 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.ViewController;
 
 public class ReportGenerator extends StreamHandler {
+	private static final String REMOTE_LOG = "RemoteLog";
+	private static final String NO_REPORTS_SENT_BEFORE = "no reports sent before";
+	private static final String LAST_BUG_REPORT_INFO = "last_bug_report_info";
+
 	private class SubmitRunner implements Runnable {
+		final private String lastReportInfo;
+
+		public SubmitRunner(String lastReportInfo) {
+			this.lastReportInfo = lastReportInfo;
+		}
+
 		public void run() {
-			runSubmit();
+			runSubmit(lastReportInfo);
 		}
 	}
 
@@ -247,7 +263,7 @@ public class ReportGenerator extends StreamHandler {
 		super.publish(record);
 	}
 
-	private void runSubmit() {
+	private void runSubmit(final String lastReportInfo) {
 		try {
 			close();
 			createInfo();
@@ -272,6 +288,7 @@ public class ReportGenerator extends StreamHandler {
 			final String option = showBugReportDialog();
 			if (BugReportDialogManager.ALLOWED.equals(option)) {
 				register.registerReport(hash);
+				setLastReportProperty(lastReportInfo);
 				final Map<String, String> report = new LinkedHashMap<String, String>();
 				report.put("hash", hash);
 				report.put("log", log);
@@ -292,6 +309,26 @@ public class ReportGenerator extends StreamHandler {
 			reportCollected = false;
 			isRunning = false;
 		}
+	}
+
+	private void setLastReportProperty(String lastReportInfo) {
+		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
+		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
+		String time = dateFormatGmt.format(new Date());
+		final String currentReportInfo = "at "  + time +  " CMT,  hash " + hash;
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				ResourceController.getResourceController().setProperty(LAST_BUG_REPORT_INFO, currentReportInfo);
+			}
+		});
+		StringBuilder sb = new StringBuilder(log.length() + 100);
+		sb.append(currentReportInfo);
+		sb.append('\n');
+		sb.append("previous report : ");
+		sb.append(lastReportInfo);
+		sb.append('\n');
+		sb.append(log);
+		log = sb.toString(); 
 	}
 
 	private String showBugReportDialog() {
@@ -368,7 +405,8 @@ public class ReportGenerator extends StreamHandler {
 
 	private void startSubmit() {
 		isRunning = true;
-		final Thread submitterThread = new Thread(new SubmitRunner(), "RemoteLog");
+		String lastReportInfo = ResourceController.getResourceController().getProperty(LAST_BUG_REPORT_INFO, NO_REPORTS_SENT_BEFORE);
+		final Thread submitterThread = new Thread(new SubmitRunner(lastReportInfo), REMOTE_LOG);
 		submitterThread.start();
 	}
 }
