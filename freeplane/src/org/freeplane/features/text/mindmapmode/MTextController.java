@@ -465,15 +465,22 @@ public class MTextController extends TextController {
 		final EditNodeBase.IEditControl editControl = new EditNodeBase.IEditControl() {
 			public void cancel() {
 				if (isNewNode) {
-					((MModeController) Controller.getCurrentModeController()).undo();
+					final String detailText = DetailTextModel.getDetailTextText(nodeModel);
+					final MModeController modeController = (MModeController) Controller.getCurrentModeController();
+					if(detailText != null)
+	                    modeController.undo();
+					modeController.resetRedo();
 				}
 				stop();
 			}
 
 			public void ok(final String newText) {
 				if(HtmlUtils.isEmpty(newText))
-					if (isNewNode) 
-						((MModeController) Controller.getCurrentModeController()).undo();
+					if (isNewNode) {
+						final MModeController modeController = (MModeController) Controller.getCurrentModeController();
+						modeController.undo();
+						modeController.resetRedo();
+					}
 					else
 						setDetailsHtmlText(nodeModel, null);
 				else
@@ -726,7 +733,9 @@ public class MTextController extends TextController {
 				if (isNewNode && nodeModel.getMap().equals(controller.getMap())) {
 				    if(nodeModel.getParent() != null){
 				        controller.getSelection().selectAsTheOnlyOneSelected(nodeModel);
-				        ((MModeController) Controller.getCurrentModeController()).undo();
+				        final MModeController modeController = (MModeController) Controller.getCurrentModeController();
+						modeController.undo();
+						modeController.resetRedo();
 				    }
 					final MapController mapController = Controller.getCurrentModeController().getMapController();
 					mapController.select(prevSelectedModel);
