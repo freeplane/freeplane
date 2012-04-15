@@ -182,6 +182,43 @@ public class ModeController extends AController {
 		execute(actor, map);
 	}
 
+	public void resolveParentExtensions(final Object key, final NodeModel to) {
+		for (final IExtensionCopier copier : copiers) {
+			copier.resolveParentExtensions(key, to);
+		}
+	}
+
+	public void undoableResolveParentExtensions(final Object key,  final NodeModel to) {
+		final MapModel map = to.getMap();
+		if (map == null) {
+			resolveParentExtensions(key, to);
+			return;
+		}
+		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
+		if (undoHandler == null) {
+			resolveParentExtensions(key, to);
+			return;
+		}
+		final NodeModel backup = new NodeModel(null);
+		copyExtensions(key, to, backup);
+		final IActor actor = new IActor() {
+			public void undo() {
+				copyExtensions(key, backup, to);
+				getMapController().nodeChanged(to);
+			}
+
+			public String getDescription() {
+				return "undoableCopyExtensions";
+			}
+
+			public void act() {
+				resolveParentExtensions(key, to);
+				getMapController().nodeChanged(to);
+			}
+		};
+		execute(actor, map);
+	}
+
 	void removeExtensions(final Object key, final NodeModel from) {
 		for (final IExtensionCopier copier : copiers) {
 			copier.remove(key, from, from);

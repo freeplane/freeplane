@@ -79,6 +79,9 @@ public class MCloudController extends CloudController {
 			}
 			from.removeExtension(fromStyle);
 		}
+
+		public void resolveParentExtensions(Object key, NodeModel to) {
+        }
 	}
 
 	public MCloudController(final ModeController modeController) {

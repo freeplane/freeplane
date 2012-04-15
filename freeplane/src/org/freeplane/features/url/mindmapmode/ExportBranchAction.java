@@ -42,8 +42,10 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.styles.LogicalStyleKeys;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.url.UrlManager;
@@ -118,7 +120,9 @@ class ExportBranchAction extends AFreeplaneAction {
 			((MLinkController) LinkController.getController()).setLink(existingNode,
 			    oldUri, false);
 			final int nodePosition = parent.getChildPosition(existingNode);
-			final MMapController mMapController = (MMapController) Controller.getCurrentModeController().getMapController();
+			final ModeController modeController = Controller.getCurrentModeController();
+			modeController.undoableResolveParentExtensions(LogicalStyleKeys.NODE_STYLE, existingNode);
+			final MMapController mMapController = (MMapController) modeController.getMapController();
 			mMapController.deleteNode(existingNode);
 			{
 				final IActor actor = new IActor() {
@@ -159,8 +163,8 @@ class ExportBranchAction extends AFreeplaneAction {
 			}
 			((MFileManager) UrlManager.getController()).save(map, chosenFile);
 			final NodeModel newNode = mMapController.addNewNode(parent, nodePosition, existingNode.isLeft());
-			((MTextController) TextController.getController()).setNodeText(newNode, existingNode
-			    .getText());
+			((MTextController) TextController.getController()).setNodeText(newNode, existingNode.getText());
+			modeController.undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, existingNode, newNode);
 			map.getFile();
 			((MLinkController) LinkController.getController()).setLink(newNode, newUri,
 			    false);

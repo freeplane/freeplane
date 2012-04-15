@@ -119,6 +119,8 @@ public class MLinkController extends LinkController {
 	        if(NodeLinks.formatNodeAsHyperlink(which) != null)
 	        	remove(key, from);
         }
+		public void resolveParentExtensions(Object key, NodeModel to) {
+        }
 	}
 	private final class CreateArrowLinkActor implements IActor {
 		private final String targetID;

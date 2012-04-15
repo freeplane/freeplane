@@ -176,6 +176,9 @@ public class MLogicalStyleController extends LogicalStyleController {
 			}
 			from.removeExtension(fromStyle);
 		}
+		
+		public void resolveParentExtensions(Object key, NodeModel to) {
+        }
 	}
 
 // 	private final ModeController modeController;
