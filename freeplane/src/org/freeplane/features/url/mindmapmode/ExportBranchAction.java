@@ -125,6 +125,7 @@ class ExportBranchAction extends AFreeplaneAction {
 					private final boolean wasFolded = existingNode.isFolded();
 
 					public void undo() {
+						PersistentNodeHook.removeMapExtensions(existingNode);
 						existingNode.setMap(parentMap);
 						existingNode.setFolded(wasFolded);
 					}
