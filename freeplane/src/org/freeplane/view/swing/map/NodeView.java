@@ -724,7 +724,7 @@ public class NodeView extends JComponent implements INodeView {
 		return preferredFoldingSymbolHalfWidth;
 	}
 
-	void insert() {
+	void insertChildViews() {
 		for (NodeModel child : getMap().getModeController().getMapController().childrenFolded(getModel())) {
 			insert(child, 0);
 		}
@@ -736,7 +736,6 @@ public class NodeView extends JComponent implements INodeView {
 	 */
 	NodeView insert(final NodeModel newNode, final int position) {
 		final NodeView newView = NodeViewFactory.getInstance().newNodeView(newNode, position, getMap(), this);
-		newView.insert();
 		return newView;
 	}
 
@@ -1235,7 +1234,7 @@ public class NodeView extends JComponent implements INodeView {
 		for (final ListIterator<NodeView> i = getChildrenViews().listIterator(); i.hasNext();) {
 			i.next().remove();
 		}
-		insert();
+		insertChildViews();
 		map.revalidateSelecteds();
 		revalidate();
 	}

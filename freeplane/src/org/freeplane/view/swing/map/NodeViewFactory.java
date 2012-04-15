@@ -128,27 +128,40 @@ class NodeViewFactory {
 	 */
 	NodeView newNodeView(final NodeModel model, final int position, final MapView map, final Container parent) {
 		final NodeView newView = new NodeView(model, position, map, parent);
-		model.addViewer(newView);
 		if(map.isDisplayable())
 			updateNewView(newView);
 		else
-			map.addHierarchyListener(new HierarchyListener() {
+			newView.addHierarchyListener(new HierarchyListener() {
 				public void hierarchyChanged(HierarchyEvent e) {
-					if(map.isDisplayable()){
-						map.removeHierarchyListener(this);
-						updateNewView(newView);
+					NodeView view = (NodeView) e.getComponent();
+					if(displayed(view, e)){
+						view.removeHierarchyListener(this);
+						updateNewView(view);
 					}
+					else if(removed(view, e)){
+						view.removeHierarchyListener(this);
+					}
+				}
+
+				private boolean removed(NodeView view, HierarchyEvent e) {
+					return 0 != (e.getChangeFlags() & HierarchyEvent.PARENT_CHANGED) && view.getParent() == null;
+				}
+
+				private boolean displayed(NodeView view, HierarchyEvent e) {
+					return 0 != (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) && view.isDisplayable();
 				}
 			});
 		return newView;
 	}
 
 	private void updateNewView(final NodeView newView) {
+		newView.getModel().addViewer(newView);
 		newView.setLayout(SelectableLayout.getInstance());
 		newView.setMainView(newMainView(newView));
 		updateNoteViewer(newView);
 		newView.update();
         fireNodeViewCreated(newView);
+        newView.insertChildViews();
 	}
 
 	private static Map<Color, Icon> coloredNoteIcons  = new HashMap<Color, Icon>();
