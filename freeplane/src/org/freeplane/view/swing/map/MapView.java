@@ -165,7 +165,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 		public NodeModel getSelected() {
 			final NodeView selected = MapView.this.getSelected();
-			return selected == null ? null : selected.getModel();
+			return selected.getModel();
 		}
 
 		public Set<NodeModel> getSelection() {
@@ -1692,7 +1692,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return;
 		}
 		selectedsValid = true;
-		final NodeModel selectedNode = getSelected().getModel();
+		final NodeView selectedView = getSelected();
+		if(selectedView == null){
+			final NodeView root = getRoot();
+			selectAsTheOnlyOneSelected(root);
+			centerNode(root);
+			return;
+		}
+		final NodeModel selectedNode = selectedView.getModel();
 		final ArrayList<NodeView> selectedNodes = new ArrayList<NodeView>(getSelection().size());
 		for (final NodeView nodeView : getSelection()) {
 			if (nodeView != null) {
@@ -1701,7 +1708,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		selection.clear();
 		for (final NodeView nodeView : selectedNodes) {
-			if (nodeView.isContentVisible() && nodeView.isDisplayable()) {
+			if (nodeView.isContentVisible()) {
 				if(getSelected() == null)
 					selection.add(nodeView);
 			}

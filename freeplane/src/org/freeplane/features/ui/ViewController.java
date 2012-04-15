@@ -244,12 +244,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			setViewportView(pNewMap);
 			final IMapSelection mapSelection = mapViewManager.getMapSelection();
 			final NodeModel selected = mapSelection.getSelected();
-			if (selected == null) {
-				mapSelection.selectRoot();
-			}
-			else {
-				mapSelection.scrollNodeToVisible(selected);
-			}
+			mapSelection.scrollNodeToVisible(selected);
 			setZoomComboBox(mapViewManager.getZoom());
 			obtainFocusForSelected();
 			newModeController = mapViewManager.getModeController(pNewMap);

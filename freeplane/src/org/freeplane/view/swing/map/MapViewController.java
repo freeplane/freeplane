@@ -112,6 +112,7 @@ public class MapViewController implements IMapViewManager {
 		mapViewChangeListeners.beforeMapViewChange(oldMapView, newMapView);
 		mapView = newMapView;
 		if (mapView != null) {
+			mapView.revalidateSelecteds();
 			final ModeController modeController = mapView.getModeController();
 			lastModeName = modeController.getModeName();
 			final float mapViewZoom = mapView.getZoom();
