@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.Collection;
 
+import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.OptionPanelController;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.OptionPanelController.PropertyLoadListener;
@@ -21,6 +22,15 @@ public abstract class ALanguageController {
 		optionController.addPropertyLoadListener(new PropertyLoadListener() {			
 			public void propertiesLoaded(Collection<IPropertyControl> properties) {
 				setLanguage();
+			}
+		});
+		
+		Controller.getCurrentController().getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
+			
+			public void propertyChanged(String propertyName, String newValue, String oldValue) {
+				if(propertyName.equalsIgnoreCase("language")){
+					setLanguage();
+				}
 			}
 		});
 	}
@@ -42,11 +52,11 @@ public abstract class ALanguageController {
 			return;
 		}
 		
-		File f = new File(res.getPath());
-		if (!f.exists()) {
-			lang = DEFAULT_LANGUAGE;
-			res = this.getClass().getResource("/translations/Resources_"+lang+".properties");
-		}
+//		File f = new File(res.getPath());
+//		if (!f.exists()) {
+//			lang = DEFAULT_LANGUAGE;
+//			res = this.getClass().getResource("/translations/Resources_"+lang+".properties");
+//		}
 				
 		resBundle.addResources(resBundle.getLanguageCode(), res);
 	}
