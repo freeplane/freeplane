@@ -337,8 +337,13 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 	public boolean changeName(String newName, boolean renameLink) {
 		String oldName = getName();
 		if(rename(newName)) {
-			setName(newName);
-			return true;
+			try {
+				WorkspaceUtils.getModel().changeNodeName(this, newName);
+				return true;
+			}
+			catch(Exception ex) {
+				// do nth.
+			};			
 		} 
 		else {
 			LogUtils.warn("cannot rename "+oldName);

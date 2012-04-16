@@ -431,8 +431,15 @@ public class FolderLinkNode extends AFolderNode implements IWorkspaceNodeActionL
 				}
 				File destFile = new File(oldFile.getParentFile(), newName);
 				if(oldFile.exists() && oldFile.renameTo(destFile)) {					
-					this.setName(newName);
-					return true;
+					//this.setName(newName);
+					try {
+						WorkspaceUtils.getModel().changeNodeName(this, newName);
+						return true;
+					}
+					catch(Exception ex) {
+						destFile.renameTo(oldFile);
+						return false;
+					}
 				}
 				else {
 					LogUtils.warn("cannot rename "+oldFile.getName());
@@ -443,8 +450,14 @@ public class FolderLinkNode extends AFolderNode implements IWorkspaceNodeActionL
 			}
 		}
 		else {
-			this.setName(newName);
-			return true;
+			//this.setName(newName);
+			try {
+				WorkspaceUtils.getModel().changeNodeName(this, newName);
+				return true;
+			}
+			catch(Exception ex) {
+				// do nth.
+			}
 		}
 		return false;
 	}

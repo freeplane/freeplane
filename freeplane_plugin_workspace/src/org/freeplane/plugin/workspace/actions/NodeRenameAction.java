@@ -72,9 +72,15 @@ public class NodeRenameAction extends AWorkspaceAction {
 				}
 			}
 			else {
-				targetNode.setName(newName);
-				WorkspaceUtils.saveCurrentConfiguration();
-				targetNode.refresh();
+				try {
+					WorkspaceUtils.getModel().changeNodeName(targetNode, newName);
+					WorkspaceUtils.saveCurrentConfiguration();
+					targetNode.refresh();
+				}
+				catch(Exception ex) {
+					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText("error_rename_file") + " ("+ex.getMessage()+")", 
+							TextUtils.getText("error_rename_file_title"), JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			
 		}

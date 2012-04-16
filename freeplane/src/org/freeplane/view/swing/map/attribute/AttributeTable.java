@@ -61,6 +61,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import org.freeplane.core.ui.components.TypedListCellRenderer;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.attribute.ColumnWidthChangeEvent;
@@ -679,17 +680,22 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	 *
 	 */
 	public void setOptimalColumnWidths() {
-		Component comp = null;
-		int cellWidth = 0;
-		int maxCellWidth = 2 * (int) (Math.ceil(getFontSize() + AttributeTable.TABLE_ROW_HEIGHT));
-		for (int col = 0; col < 2; col++) {
-			for (int row = 0; row < getRowCount(); row++) {
-				comp = AttributeTable.dtcr.getTableCellRendererComponent(this, getValueAt(row, col), false, false, row,
-				    col);
-				cellWidth = comp.getPreferredSize().width;
-				maxCellWidth = Math.max(cellWidth, maxCellWidth);
+		try {
+			Component comp = null;
+			int cellWidth = 0;
+			int maxCellWidth = 2 * (int) (Math.ceil(getFontSize() + AttributeTable.TABLE_ROW_HEIGHT));
+			for (int col = 0; col < 2; col++) {
+				for (int row = 0; row < getRowCount(); row++) {
+					comp = AttributeTable.dtcr.getTableCellRendererComponent(this, getValueAt(row, col), false, false, row,
+					    col);
+					cellWidth = comp.getPreferredSize().width;
+					maxCellWidth = Math.max(cellWidth, maxCellWidth);
+				}
+				getAttributeTableModel().setColumnWidth(col, maxCellWidth + 1);
 			}
-			getAttributeTableModel().setColumnWidth(col, maxCellWidth + 1);
+		}
+		catch (Exception e) {
+			LogUtils.warn(e);
 		}
 	}
 

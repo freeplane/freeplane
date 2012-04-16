@@ -25,6 +25,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.freeplane.core.util.LogUtils;
@@ -92,10 +93,35 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 		throw new UnsupportedFlavorException(flavor);
 	}
 
+	private DataFlavor[] flavArray = null; 
 	public DataFlavor[] getTransferDataFlavors() {
-		return new DataFlavor[] { DataFlavor.stringFlavor, MindMapNodesSelection.mindMapNodesFlavor,
-		        MindMapNodesSelection.rtfFlavor, MindMapNodesSelection.htmlFlavor,
-		        MindMapNodesSelection.dropActionFlavor };
+		//DOCEAR: fix to get all supported flavors
+		if(flavArray == null) {
+			List<DataFlavor> flavors = new ArrayList<DataFlavor>();
+			if (stringContent != null) {
+				flavors.add(DataFlavor.stringFlavor);
+			}
+			if (nodesContent != null) {
+				flavors.add(MindMapNodesSelection.mindMapNodesFlavor);
+			}
+			if (rtfContent != null) {
+				flavors.add(MindMapNodesSelection.rtfFlavor);
+			}
+			if (dropActionContent != null) {
+				flavors.add(MindMapNodesSelection.dropActionFlavor);
+			}
+			if (htmlContent != null) {
+				flavors.add(MindMapNodesSelection.htmlFlavor);
+			}
+			if ((fileList != null) && fileList.size() > 0) {
+				flavors.add(MindMapNodesSelection.fileListFlavor);
+			}
+			flavArray = flavors.toArray(new DataFlavor[]{});
+		}
+		return flavArray;
+//		return new DataFlavor[] { DataFlavor.stringFlavor, MindMapNodesSelection.mindMapNodesFlavor,
+//		        MindMapNodesSelection.rtfFlavor, MindMapNodesSelection.htmlFlavor,
+//		        MindMapNodesSelection.dropActionFlavor };
 	}
 
 	public boolean isDataFlavorSupported(final DataFlavor flavor) {

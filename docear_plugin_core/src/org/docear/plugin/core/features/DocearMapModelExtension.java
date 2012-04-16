@@ -1,14 +1,18 @@
 package org.docear.plugin.core.features;
 
+import java.net.URI;
+
 import org.freeplane.core.extension.IExtension;
 
 public class DocearMapModelExtension implements IExtension {
 	
-	public final static String MAP_ID_ATTRIBUTE = "id";
+	public final static String MAP_ID_ATTRIBUTE = "dcr_id";
+	public final static String MAP_URI_ATTRIBUTE = "dcr_uri";
 	
 	String version;
 	DocearMapType type;
 	String mapId;
+	URI uri;
 	
 	public DocearMapType getType() {
 		return type;
@@ -49,5 +53,15 @@ public class DocearMapModelExtension implements IExtension {
 	public void setMapId(String mapId) {
 		this.mapId = mapId;
 	}
+
+	public URI getUri() {
+		return uri;
+	}
+
+	public void setUri(URI uri) {
+		this.uri = uri;
+	}
+	
+	
 	
 }

@@ -15,16 +15,11 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
-import org.docear.plugin.core.features.DocearMapModelController;
-import org.docear.plugin.core.features.DocearMapModelExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.url.UrlManager;
-import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
@@ -159,7 +154,14 @@ public class LinkTypeIncomingNode extends ALinkNode implements IWorkspaceNodeAct
  
 	public boolean changeName(String newName, boolean renameLink) {
 		// simple set the node name
-		this.setName(newName);
-		return true;
+		//this.setName(newName);
+		try {
+			WorkspaceUtils.getModel().changeNodeName(this, newName);
+			return true;
+		}
+		catch(Exception ex) {
+			// do nth.
+		}
+		return false;
 	}
 }

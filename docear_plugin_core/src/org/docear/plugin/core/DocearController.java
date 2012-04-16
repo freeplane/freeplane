@@ -4,7 +4,12 @@
  */
 package org.docear.plugin.core;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
+import java.util.HashSet;
+import java.util.Properties;
+import java.util.Set;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,6 +20,7 @@ import org.docear.plugin.core.event.IDocearEventListener;
 import org.docear.plugin.core.logger.DocearEventLogger;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 
@@ -26,27 +32,105 @@ public class DocearController implements IDocearEventListener {
 	private final static String PLACEHOLDER_PROFILENAME = "@@PROFILENAME@@";
 	private static final String DEFAULT_LIBRARY_PATH = "workspace:/"+PLACEHOLDER_PROFILENAME+"/library";
 	private final static Pattern PATTERN = Pattern.compile(PLACEHOLDER_PROFILENAME);
+	static final String DOCEAR_FIRST_RUN_PROPERTY = "docear.already_initialized";
+	
+	private final static String DOCEAR_VERSION_NUMBER = "docear.version.number";
+	
+	private String applicationName;
+	private String applicationVersion;
+	private String applicationStatus;
+	private String applicationStatusVersion;
+	private int applicationBuildNumber;
+	private String applicationBuildDate;
+	
 	
 	private final DocearEventLogger docearEventLogger = new DocearEventLogger();
 	
 	private final Vector<IDocearEventListener> docearListeners = new Vector<IDocearEventListener>();		
 	private final static DocearController docearController = new DocearController();
 	
-	private IDocearLibrary currentLibrary = null;	
+	private IDocearLibrary currentLibrary = null;
+	
+	private final Set<String> workingThreads = new HashSet<String>();
+	private final boolean firstRun;
+	private boolean isLicenseDialogNecessary = false;
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 	
 	protected DocearController() {
+		firstRun = !ResourceController.getResourceController().getBooleanProperty(DOCEAR_FIRST_RUN_PROPERTY);
+		setApplicationIdentifiers();
 		addDocearEventListener(this);
 	}
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
 
+	public boolean isDocearFirstStart() {
+		return firstRun;
+	}
+	
+	public boolean isLicenseDialogNecessary() {		
+		int storedBuildNumber = Integer.parseInt(ResourceController.getResourceController().getProperty(DOCEAR_VERSION_NUMBER, "0"));
+		if (storedBuildNumber != this.applicationBuildNumber) {
+			ResourceController.getResourceController().setProperty(DOCEAR_VERSION_NUMBER, ""+this.applicationBuildNumber);
+			isLicenseDialogNecessary = true;
+			return true;
+		}
+		else {
+			return false;//||isLicenseDialogNecessary;
+		}
+	}
+	
 	public static DocearController getController() {
 		return docearController;
+	}
+	
+	public synchronized void addWorkingThreadHandle(String handleId) {
+		if(handleId == null) {
+			return;
+		}
+		workingThreads.add(handleId);		
+	}
+	
+	public synchronized void removeWorkingThreadHandle(String handleId) {
+		if(handleId == null) {
+			return;
+		}
+		workingThreads.remove(handleId);		
+	}
+	
+
+	
+	public void setApplicationIdentifiers() {
+		final Properties versionProperties = new Properties();
+		InputStream in = null;
+		try {
+			in = this.getClass().getResource("/version.properties").openStream();
+			versionProperties.load(in);
+		}
+		catch (final IOException e) {
+			
+		}
+		
+		final Properties buildProperties = new Properties();
+		in = null;
+		try {
+			in = this.getClass().getResource("/build.number").openStream();
+			buildProperties.load(in);
+		}
+		catch (final IOException e) {
+			
+		}
+		
+		setApplicationName("Docear");
+		setApplicationVersion(versionProperties.getProperty("docear_version"));
+		setApplicationStatus(versionProperties.getProperty("docear_version_status"));		
+		setApplicationStatusVersion(versionProperties.getProperty("docear_version_status_number"));
+		setApplicationBuildDate(versionProperties.getProperty("build_date"));
+		setApplicationBuildNumber(Integer.parseInt(buildProperties.getProperty("build.number")) -1);
 	}
 		
 	public void addDocearEventListener(IDocearEventListener listener) {
@@ -85,11 +169,75 @@ public class DocearController implements IDocearEventListener {
 		return this.docearEventLogger;
 	}
 	
+//	public String getApplicationVersion() {
+//		String version	= ResourceController.getResourceController().getProperty("docear_version");
+//		String status	= ResourceController.getResourceController().getProperty("docear_status");
+//		
+//		return version+" "+status;
+//	}
+	
+	public String getApplicationName() {
+		return this.applicationName;
+	}
+	
+	public void setApplicationName(String applicationName) {
+		this.applicationName = applicationName;
+	}
+	
 	public String getApplicationVersion() {
-		String version	= ResourceController.getResourceController().getProperty("docear_version");
-		String status	= ResourceController.getResourceController().getProperty("docear_status");
+		return applicationVersion;
+	}
+	public void setApplicationVersion(String applicationVersion) {
+		this.applicationVersion = applicationVersion;
+	}
+	public String getApplicationStatus() {
+		return applicationStatus;
+	}
+	public void setApplicationStatus(String applicationStatus) {
+		this.applicationStatus = applicationStatus;
+	}
+	public String getApplicationStatusVersion() {
+		return applicationStatusVersion;
+	}
+	public void setApplicationStatusVersion(String applicationStatusVersion) {
+		this.applicationStatusVersion = applicationStatusVersion;
+	}
+	public int getApplicationBuildNumber() {
+		return applicationBuildNumber;
+	}
+	public void setApplicationBuildNumber(int i) {
+		this.applicationBuildNumber = i;
+	}
+	public String getApplicationBuildDate() {
+		return applicationBuildDate;
+	}
+	public void setApplicationBuildDate(String applicationBuildDate) {
+		this.applicationBuildDate = applicationBuildDate;
+	}
+	
+	private synchronized boolean hasWorkingThreads() {
+		return !workingThreads.isEmpty();
+	}
+	
+	public boolean shutdown() {	
+		dispatchDocearEvent(new DocearEvent(this, DocearEventType.APPLICATION_CLOSING));
 		
-		return version+" "+status;
+		Controller.getCurrentController().getViewController().saveProperties();
+		ResourceController.getResourceController().saveProperties();		
+		
+		if(Controller.getCurrentController().getViewController().quit()) {
+			while(hasWorkingThreads()) {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e1) {
+				}
+			}			
+		}
+		else {
+			return false;
+		}		
+		//extensionContainer.getExtensions().clear();
+		return true;
 	}
 	
 	/***********************************************************************************
@@ -97,10 +245,14 @@ public class DocearController implements IDocearEventListener {
 	 **********************************************************************************/
 
 	public void handleEvent(DocearEvent event) {
-		if(event.getType() == DocearEventType.NEW_LIBRARY && event.getSource() instanceof IDocearLibrary) {
+		if(event.getType() == DocearEventType.APPLICATION_CLOSING) {
+			WorkspaceUtils.saveCurrentConfiguration();
+		}
+		else if(event.getType() == DocearEventType.NEW_LIBRARY && event.getSource() instanceof IDocearLibrary) {
 			this.currentLibrary = (IDocearLibrary) event.getSource();
 			LogUtils.info("DOCEAR: new DocearLibrary set");
-		}	
+		} 
+			
 	}
 	
 

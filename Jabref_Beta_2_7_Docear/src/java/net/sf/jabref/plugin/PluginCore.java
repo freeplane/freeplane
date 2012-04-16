@@ -172,8 +172,9 @@ public class PluginCore {
             }
 
         } catch (Exception e) {
+        	//DOCEAR changed from severe to warning 
             log
-                .severe(Globals
+                .warning(Globals
                     .lang("Error in starting plug-in system. Starting without, but some functionality may be missing.") +
                     "\n" + e.getLocalizedMessage());
         }

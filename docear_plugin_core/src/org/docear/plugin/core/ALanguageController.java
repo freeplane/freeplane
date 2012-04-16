@@ -18,8 +18,7 @@ public abstract class ALanguageController {
 		
 		final OptionPanelController optionController = Controller.getCurrentController().getOptionPanelController();
 		
-		optionController.addPropertyLoadListener(new PropertyLoadListener() {
-			
+		optionController.addPropertyLoadListener(new PropertyLoadListener() {			
 			public void propertiesLoaded(Collection<IPropertyControl> properties) {
 				setLanguage();
 			}
@@ -42,6 +41,7 @@ public abstract class ALanguageController {
 		if (res == null) {
 			return;
 		}
+		
 		File f = new File(res.getPath());
 		if (!f.exists()) {
 			lang = DEFAULT_LANGUAGE;

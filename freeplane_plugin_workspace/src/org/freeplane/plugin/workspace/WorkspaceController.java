@@ -12,6 +12,7 @@ import java.io.Writer;
 import java.util.Properties;
 import java.util.Vector;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
@@ -158,6 +159,15 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 	public FilesystemManager getFilesystemMgr() {
 		return this.fsReader;
 	}
+	
+	public void addToolBar(JComponent bar) {
+		getWorkspaceView().add(bar, BorderLayout.PAGE_END);
+		getWorkspaceView().repaint();
+	}
+	
+	public void removeToolBar(JComponent bar) {
+		getWorkspaceView().remove(bar);
+	}
 
 	public void saveConfigurationAsXML(Writer writer) {
 		getConfiguration().saveConfiguration(writer);
@@ -185,6 +195,7 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 			return;
 		}
 		loadInProcess = true;
+		WorkspaceController.getController().fireOpenWorkspace(new WorkspaceEvent(this));
 		if (getPreferences().getWorkspaceLocation() == null) {
 			WorkspaceUtils.showWorkspaceChooserDialog();
 		}
@@ -193,7 +204,7 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 		reloadView();
 		showWorkspace(Controller.getCurrentController().getResourceController().getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY));
 		getExpansionStateHandler().restoreExpansionStates();
-		fireWorkspaceReady(new WorkspaceEvent(null, getConfiguration()));
+		fireWorkspaceReady(new WorkspaceEvent(getConfiguration()));
 		loadInProcess = false;
 	}
 
@@ -239,13 +250,13 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 			return;
 		}
 		resetWorkspaceView();
-		fireConfigurationBeforeLoading(new WorkspaceEvent(null, getConfiguration()));
+		fireConfigurationBeforeLoading(new WorkspaceEvent(getConfiguration()));
 		if (getConfiguration().load()) {
-			fireConfigurationLoaded(new WorkspaceEvent(null, getConfiguration()));
+			fireConfigurationLoaded(new WorkspaceEvent(getConfiguration()));
 			showWorkspace(Controller.getCurrentController().getResourceController()
 					.getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY));
 			UrlManager.getController().setLastCurrentDir(new File(preferences.getWorkspaceLocation()));			
-			fireWorkspaceChanged(new WorkspaceEvent(WorkspaceEvent.WORKSPACE_CHANGED, getConfiguration()));
+			fireWorkspaceChanged(new WorkspaceEvent(getConfiguration()));
 		}
 		else {
 			showWorkspace(Controller.getCurrentController().getResourceController()

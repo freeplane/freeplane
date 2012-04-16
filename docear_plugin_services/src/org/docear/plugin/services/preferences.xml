@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preferences_structure>
+	<tabbed_pane>
+		<tab name="online_services">
+		    <separator name="account_options">		    			
+				<action name="docear.allow.upload.action" />
+			</separator>
+		</tab>			
+	</tabbed_pane>
+</preferences_structure>

@@ -9,7 +9,6 @@ import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.features.DocearMapModelExtension;
 import org.docear.plugin.core.logger.DocearLogEvent;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.mindmapmode.MMapModel;
@@ -47,7 +46,7 @@ public class MapLifeCycleAndViewListener implements IMapLifeCycleListener, IMapV
 		try {
 			FileUtils.touch(f);
 		} catch (IOException e) {
-			LogUtils.warn(e);
+			//LogUtils.warn(e);
 		}		
 	}
 
@@ -65,25 +64,22 @@ public class MapLifeCycleAndViewListener implements IMapLifeCycleListener, IMapV
 			File f = map.getFile();
 			if (f!=null) {
 				DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.MAP_SAVED, f);
+				setMapUri(map);
 			}
 		}
 	}
 		
-	@Override
 	public void afterViewChange(Component oldView, Component newView) {
 	}
 
-	@Override
 	public void afterViewClose(Component oldView) {
 	}
 
-	@Override
 	public void afterViewCreated(Component mapView) {
 		MapModel map = Controller.getCurrentController().getMapViewManager().getModel(mapView);
 		setMapIdIfNeeded(map);
 	}
 
-	@Override
 	public void beforeViewChange(Component oldView, Component newView) {
 	}
 
@@ -98,6 +94,15 @@ public class MapLifeCycleAndViewListener implements IMapLifeCycleListener, IMapV
 			dmme = map.getExtension(DocearMapModelExtension.class);
 		}
 	}
+	
+	private void setMapUri(MapModel map) {
+		DocearMapModelExtension dmme = map.getExtension(DocearMapModelExtension.class);		
+		if (dmme == null || dmme.getMapId() == null || dmme.getMapId().trim().length()==0) {
+			DocearMapModelController.setModelWithCurrentVersion(map);
+			dmme = map.getExtension(DocearMapModelExtension.class);
+		}
+	}
+	
 
 
 }

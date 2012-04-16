@@ -184,7 +184,7 @@
 </node>
 <node TEXT="Feedback" ID="ID_210411846" CREATED="1322907550711" MODIFIED="1322910644877">
 <font BOLD="true"/>
-<node TEXT="Please let us know what we can do better" ID="ID_1039608161" CREATED="1322912169719" MODIFIED="1322912184452" LINK="workspace:/../sciplore/Entwicklung/eclipse/docear/"/>
+<node TEXT="Please let us know what we can do better" ID="ID_1039608161" CREATED="1322912169719" MODIFIED="1322912184452" LINK="http://www.docear.org/support/idea-tracker/"/>
 <node TEXT="Read what others like about Docear (Testimonials)" ID="ID_734818819" CREATED="1322912062238" MODIFIED="1323419217994" LINK="http://docear.org/software/testimonials/"/>
 </node>
 <node TEXT="Usability" ID="ID_182288749" CREATED="1322907564736" MODIFIED="1322910644877">
@@ -274,7 +274,7 @@
 <node TEXT="Just copy and paste or drag&amp;drop an image to the mind map" ID="ID_452528799" CREATED="1323258499023" MODIFIED="1323258510560"/>
 <node TEXT="Example" ID="ID_1279466317" CREATED="1323258482873" MODIFIED="1323258489257">
 <node TEXT="Docear Logo" ID="ID_1178635212" CREATED="1323258343803" MODIFIED="1323258361211">
-<hook URI="../../docear_resources/welcome_files/docear_logo.png" SIZE="1.0" NAME="ExternalObject"/>
+<hook URI="docear-logo.png" SIZE="1.0" NAME="ExternalObject"/>
 </node>
 </node>
 </node>

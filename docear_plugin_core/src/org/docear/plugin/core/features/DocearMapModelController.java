@@ -5,6 +5,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
@@ -67,11 +68,14 @@ public class DocearMapModelController implements IExtension{
 		ResourceController resourceController = ResourceController.getResourceController();
 		mapModelExtension.setVersion(resourceController.getProperty("docear_map_extension_version"));
 		mapModelExtension.setMapId(createMapId());
+		if (map.getFile() != null) {			
+			mapModelExtension.setUri(LinkController.toLinkTypeDependantURI(map.getFile(), map.getFile()));
+		}
 		DocearMapModelController.setModel(map, mapModelExtension);
 	}
 	
 	public static String createMapId() {
-		return ""+System.currentTimeMillis()+"_"+CoreUtils.createRandomString(130);
+		return ""+System.currentTimeMillis()+"_"+CoreUtils.createRandomString(16);
 	}
 
 }

@@ -24,7 +24,6 @@ import org.freeplane.plugin.workspace.actions.FileNodeDeleteAction;
 import org.freeplane.plugin.workspace.actions.FileNodeNewFileAction;
 import org.freeplane.plugin.workspace.actions.FileNodeNewMindmapAction;
 import org.freeplane.plugin.workspace.actions.NodeCopyAction;
-import org.freeplane.plugin.workspace.actions.NodeCutAction;
 import org.freeplane.plugin.workspace.actions.NodeEnableMonitoringAction;
 import org.freeplane.plugin.workspace.actions.NodeNewFolderAction;
 import org.freeplane.plugin.workspace.actions.NodeNewLinkAction;

@@ -59,9 +59,13 @@
 		</copy>
 	</target>
 
-    <target name="build_core">
+   <target name="build_core">
+       <propertyfile file="../docear_plugin_core/resources/version.properties"> 
+           <entry  key="build_date" type="date" value="now" pattern="MM/dd/yyyy"/> 
+        </propertyfile> 
+
         <buildnumber file="../docear_plugin_core/resources/build.number"/>
-        <property name="ver_docear" value="${docear_version}_${docear_version_status}_build${build.number}" />
+        <property name="ver_docear" value="${docear_version}_${docear_version_status}${docear_version_status_number}_build${build.number}" />
 	    <condition property="ver" value="${ver_docear}" else="${ver_freeplane}">
             <equals arg1="${ApplicationNameToLowerCase}" arg2="docear"/>
 	    </condition>
@@ -233,12 +237,12 @@
         </antcall>
     </target>
 
-    <target name="build_docear_backup" unless="skip_backup">
+    <target name="build_docear_services" unless="skip_services">
         <antcall target="makePlugin" inheritall="false">
             <param name="anttarget" value="dist"/>
             <param name="targetdir" value="plugins"/>
-            <param name="plugindir" value="docear_plugin_backup"/>
-            <param name="pluginname" value="org.docear.plugin.backup"/>
+            <param name="plugindir" value="docear_plugin_services"/>
+            <param name="pluginname" value="org.docear.plugin.services"/>
         </antcall>
     </target>
 
@@ -253,7 +257,7 @@
 
 	
 	<target name="build" depends="build_core, build_latex, build_svg, build_script, build_formula, build_bugreport, build_accountmanager,
-    build_workspace, build_docear_core, build_docear_communications, build_docear_pdfutilities, build_docear_bibtex, build_docear_backup, 
+    build_workspace, build_docear_core, build_docear_communications, build_docear_pdfutilities, build_docear_bibtex, build_docear_services, 
     build_docear_optionpane, bzr_version_info">
        <mkdir dir="${build.resources}" />
         <copy todir="${build.resources}">
@@ -310,7 +314,26 @@
 	</target>
     
     <target name="binzip" depends="build, mkdistdir">
-        <zip destfile="${dist}/${ApplicationNameToLowerCase}_bin.zip" compress="true">
+        <zip destfile="${dist}/${ApplicationNameToLowerCase}_windows.zip" compress="true">
+            <zipfileset dir="${build}" prefix="${ApplicationNameToLowerCase}-${ver}">
+                <exclude name="${ApplicationNameToLowerCase}.sh"/>
+            </zipfileset>
+            <zipfileset dir="${root}" prefix="${ApplicationNameToLowerCase}-${ver}">
+                <include name="${license}" />
+            </zipfileset>
+        </zip>
+        <tar destfile="${dist}/${ApplicationNameToLowerCase}_linux.tar.gz" compression="gzip" longfile="gnu">
+            <tarfileset dir="${build}" prefix="${ApplicationNameToLowerCase}-${ver}" mode="644">
+                <exclude name="${ApplicationNameToLowerCase}.sh"/>
+                <exclude name="${ApplicationNameToLowerCase}.bat"/>
+                <exclude name="${ApplicationNameToLowerCase}.exe"/>
+            </tarfileset>
+            <tarfileset file="${build}/${ApplicationNameToLowerCase}.sh" mode="775" prefix="${ApplicationNameToLowerCase}-${ver}"/>
+            <tarfileset dir="${root}" prefix="${ApplicationNameToLowerCase}-${ver}" mode="644">
+                <include name="${license}" />
+            </tarfileset>
+        </tar>
+        <zip destfile="${dist}/${ApplicationNameToLowerCase}_allos.zip" compress="true">
             <zipfileset dir="${build}" prefix="${ApplicationNameToLowerCase}-${ver}">
                 <exclude name="${ApplicationNameToLowerCase}.sh"/>
             </zipfileset>
@@ -322,15 +345,18 @@
     </target>
 
 	<target name="srczip" depends="mkdistdir, bzr_version_info">
-		<tar destfile="${dist}/${ApplicationNameToLowerCase}_src.tar.gz" compression="gzip" longfile="gnu">
-			<tarfileset prefix="${ApplicationNameToLowerCase}-${ver}" dir="${workspace}" mode="664">
+		<zip destfile="${dist}/${ApplicationNameToLowerCase}_source.zip" compress="true">
+			<zipfileset prefix="${ApplicationNameToLowerCase}-${ver}" dir="${workspace}">
 				<patternset id="freeplane.sources">
 					<include name="build.xml" />
 					<include name="freeplane/**" />
 					<include name="freeplane_plugin*/**" />
+					<include name="docear_plugin*/**" />
+					<include name="Jabref_Beta_2_7_Docear/**" />
 					<include name="freeplane_ant/**" />
 					<include name="freeplane_mac/**" />
 					<include name="freeplane_framework/**" />
+					<include name="docear_framework/**" />
 					<include name="freeplane_devresources/**" />
 					<include name="JOrtho_0.4_freeplane/**" />
 					<include name="build.xml" />
@@ -350,27 +376,30 @@
 					<exclude name="freeplane_framework/windows-launcher/Objects/**" />
 					<exclude name="freeplane_framework/windows-launcher/*.layout" />
 					<exclude name="freeplane_framework/windows-launcher/Makefile.win" />
+					<exclude name="docear_framework/windows-launcher/Objects/**" />
+					<exclude name="docear_framework/windows-launcher/*.layout" />
+					<exclude name="docear_framework/windows-launcher/Makefile.win" />
 				</patternset>
-			</tarfileset>
-			<tarfileset prefix="${ApplicationNameToLowerCase}-${ver}" dir="${root}" mode="664">
+			</zipfileset>
+			<zipfileset prefix="${ApplicationNameToLowerCase}-${ver}" dir="${root}">
 				<include name="${license}" />
 				<include name="${readme_src}" />
-			</tarfileset>
-		</tar>
+			</zipfileset>
+		</zip>
 
-		<tar destfile="${dist}/${ApplicationNameToLowerCase}_srcpure.tar.gz" compression="gzip" longfile="gnu">
-			<tarfileset prefix="${ApplicationNameToLowerCase}-${ver}" dir="${workspace}" mode="664">
+		<zip destfile="${dist}/${ApplicationNameToLowerCase}_srcpure.zip" compress="true">
+			<zipfileset prefix="${ApplicationNameToLowerCase}-${ver}" dir="${workspace}">
 				<patternset refid="freeplane.sources" />
 				<exclude name="**/*.exe" />
 				<exclude name="**/*.res" />
 				<exclude name="**/*.jar" />
 				<exclude name="**/*JavaApplicationStub*" />
-			</tarfileset>
-			<tarfileset prefix="${ApplicationNameToLowerCase}-${ver}" dir="${root}" mode="664">
+			</zipfileset>
+			<zipfileset prefix="${ApplicationNameToLowerCase}-${ver}" dir="${root}">
 				<include name="${license}" />
 				<include name="${readme_src}" />
-			</tarfileset>
-		</tar>
+			</zipfileset>
+		</zip>
 	</target>
 
 	<target name="installer" depends="build, mkdistdir">
@@ -525,7 +554,7 @@
 	</target>
 	<target name="dmg4mac"  depends="bzr_version_info, macosxapp" if="isMacOs" >
 		<exec executable="hdiutil">
-		<arg line="create -srcfolder ${macappfullpath} ${dist}/docear-${ver_docear}.dmg"/>
+		<arg line="create -srcfolder ${macappfullpath} ${dist}/docear.dmg"/>
 		</exec>
 	</target>
 
@@ -605,7 +634,7 @@
           <ant antfile="ant/build.xml" target="clean" inheritall="false"
               dir="${workspace}/docear_plugin_bibtex"/>
           <ant antfile="ant/build.xml" target="clean" inheritall="false"
-              dir="${workspace}/docear_plugin_backup"/>
+              dir="${workspace}/docear_plugin_services"/>
           <ant antfile="ant/build.xml" target="clean" inheritall="false"
               dir="${workspace}/docear_plugin_optionpane"/>
 	</target>

@@ -1,5 +1,7 @@
 package org.docear.plugin.core.features;
 
+import java.net.URI;
+
 import org.docear.plugin.core.features.DocearMapModelExtension.DocearMapType;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
@@ -81,6 +83,21 @@ public class DocearMapModelExtensionXmlBuilder implements IElementDOMHandler, IE
 			}
 			
 		});
+		
+		reader.addAttributeHandler(DOCEAR_MAP_EXTENSION_XML_TAG, DocearMapModelExtension.MAP_URI_ATTRIBUTE, new IAttributeHandler() {
+			
+			public void setAttribute(Object node, String value) {
+				final MapModel mapModel = (MapModel) node;
+				
+				DocearMapModelExtension docearMapModel = mapModel.getExtension(DocearMapModelExtension.class);
+				if (docearMapModel == null) {
+					docearMapModel = new DocearMapModelExtension();
+				}			
+				docearMapModel.setUri(URI.create(value));
+				DocearMapModelController.setModel(mapModel, docearMapModel);
+			}
+			
+		});
 	}
 
 	public Object createElement(Object parent, String tag, XMLElement attributes) {
@@ -119,6 +136,10 @@ public class DocearMapModelExtensionXmlBuilder implements IElementDOMHandler, IE
 		final String mapId = modelExtension.getMapId();
 		if(mapId != null){
 			writer.addAttribute(DocearMapModelExtension.MAP_ID_ATTRIBUTE, mapId);
+		}
+		final URI mapUri = modelExtension.getUri();
+		if(mapUri != null){
+			writer.addAttribute(DocearMapModelExtension.MAP_URI_ATTRIBUTE, mapUri.toString());
 		}
 	}
 
