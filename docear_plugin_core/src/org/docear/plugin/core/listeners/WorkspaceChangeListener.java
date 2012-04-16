@@ -7,6 +7,7 @@ import org.apache.commons.io.FileUtils;
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.IDocearLibrary;
+import org.docear.plugin.core.actions.DocearLicenseDialogAction;
 import org.docear.plugin.core.workspace.creator.FolderTypeLibraryCreator;
 import org.docear.plugin.core.workspace.creator.FolderTypeLiteratureRepositoryCreator;
 import org.docear.plugin.core.workspace.creator.FolderTypeProjectsCreator;
@@ -32,35 +33,22 @@ import org.freeplane.plugin.workspace.nodes.WorkspaceRoot;
 
 public class WorkspaceChangeListener implements IWorkspaceEventListener {
 
-	private boolean workspacePrepared = false;
-	
+	private boolean workspacePrepared = false;	
 
 	public void openWorkspace(WorkspaceEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void closeWorkspace(WorkspaceEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void workspaceChanged(WorkspaceEvent event) {
-		if (DocearController.getController().isDocearNewVersion()) 
+		if (DocearController.getController().isLicenseDialogNecessary()) 
 		{
 			DocearLicenseDialogAction.showDialog();
 		}
 	}
 
-	public void toolBarChanged(WorkspaceEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void closeWorkspace(WorkspaceEvent event) {}
 
-	public void workspaceReady(WorkspaceEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void workspaceChanged(WorkspaceEvent event) {}
+
+	public void toolBarChanged(WorkspaceEvent event) {}
+
+	public void workspaceReady(WorkspaceEvent event) {}
 
 	public void configurationLoaded(WorkspaceEvent event) {
 		linkWelcomeMindmapAfterWorkspaceCreation();
@@ -98,8 +86,7 @@ public class WorkspaceChangeListener implements IWorkspaceEventListener {
 			
 			modifyContextMenus();
 		}
-		workspacePrepared  = true;
-		//controller.loadWorkspace();		
+		workspacePrepared  = true;		
 		copyInfoIfNeeded();		
 	}
 	

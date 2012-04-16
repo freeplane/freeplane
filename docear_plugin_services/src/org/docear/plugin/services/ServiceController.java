@@ -12,20 +12,21 @@ import org.docear.plugin.services.actions.DocearAllowUploadChooserAction;
 import org.docear.plugin.services.listeners.DocearEventListener;
 import org.docear.plugin.services.listeners.MapLifeCycleListener;
 import org.docear.plugin.services.listeners.PropertiesActionListener;
-import org.docear.plugin.services.listeners.PropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.mode.Controller;
 
 public class ServiceController {
+	public static final String DOCEAR_INFORMATION_RETRIEVAL = "docear_information_retrieval";
+	public static final String DOCEAR_SAVE_BACKUP = "docear_save_backup";
+
 	private final static ServiceController backupController = new ServiceController();
 	
 	private final ServiceRunner backupRunner = new ServiceRunner();
 	private final File backupFolder = new File(CommunicationsController.getController().getCommunicationsQueuePath(), "mindmaps");
 	
 	private final IMapLifeCycleListener mapLifeCycleListener = new MapLifeCycleListener();
-	private final PropertyListener propertyListener = new PropertyListener();
 
 	private static FileFilter zipFilter = new FileFilter() {
 		public boolean accept(File f) {
@@ -53,8 +54,7 @@ public class ServiceController {
 	
 	public void initListeners() {
 		DocearController.getController().addDocearEventListener(new DocearEventListener());
-		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(mapLifeCycleListener);
-		ResourceController.getResourceController().addPropertyChangeListener(propertyListener);
+		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(mapLifeCycleListener);		
 		Controller.getCurrentController().getOptionPanelController().addButtonListener(new PropertiesActionListener());
 	}
 	
@@ -74,19 +74,19 @@ public class ServiceController {
 	}
 	
 	public boolean isBackupEnabled() {
-		return ResourceController.getResourceController().getBooleanProperty("docear_save_backup");
+		return ResourceController.getResourceController().getBooleanProperty(DOCEAR_SAVE_BACKUP);
 	}
 	
 	public void setBackupEnabled(boolean b) {
-		ResourceController.getResourceController().setProperty("docear_save_backup", b);
+		ResourceController.getResourceController().setProperty(DOCEAR_SAVE_BACKUP, b);
 	}
 	
 	public int getInformationRetrievalCode() {
-		return Integer.parseInt(ResourceController.getResourceController().getProperty("docear_information_retrieval", "0"));
+		return Integer.parseInt(ResourceController.getResourceController().getProperty(DOCEAR_INFORMATION_RETRIEVAL, "0"));
 	}
 	
 	public void setInformationRetrievalCode(int code) {
-		ResourceController.getResourceController().setProperty("docear_information_retrieval", ""+code);
+		ResourceController.getResourceController().setProperty(DOCEAR_INFORMATION_RETRIEVAL, ""+code);
 	}
 	
 	public File getBackupDirectory() {		
@@ -108,8 +108,9 @@ public class ServiceController {
 	
 	public boolean isInformationRetrievalAllowed() {
 		CommunicationsController commCtrl = CommunicationsController.getController();
-		boolean allowed = !isEmpty(commCtrl.getAccessToken()) || !isEmpty(commCtrl.getUserName());		
-		return allowed && getInformationRetrievalCode()>0 && commCtrl.allowTransmission();
+		boolean needUser = getInformationRetrievalCode()>0 && commCtrl.allowTransmission();
+		
+		return needUser && (!isEmpty(commCtrl.getAccessToken()) || !isEmpty(commCtrl.getUserName()));
 	}
 	
 	private boolean isEmpty(String s) {

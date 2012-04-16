@@ -30,11 +30,12 @@ import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 
-class OnlineDocumentationAction extends AFreeplaneAction {
+//DOCEAR: allow public access to the class
+public class OnlineDocumentationAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private final URL url;
 
-	OnlineDocumentationAction( final String actionName, final String urlProperty) {
+	public OnlineDocumentationAction( final String actionName, final String urlProperty) {
 		super(actionName);
 		URL url = null;
 		try {
