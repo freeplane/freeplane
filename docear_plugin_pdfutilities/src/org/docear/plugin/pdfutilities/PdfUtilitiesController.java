@@ -469,6 +469,10 @@ public class PdfUtilitiesController extends ALanguageController{
 				boolean openOnPageActivated = Boolean.parseBoolean(properties.getProperty(OPEN_PDF_VIEWER_ON_PAGE_KEY));
 				if(openOnPageActivated){
 					String readerPath = properties.getProperty(OPEN_ON_PAGE_READER_PATH_KEY, ""); //$NON-NLS-1$
+					if(readerPath == null || readerPath.isEmpty()){
+						result.addError(TextUtils.getText(OPEN_ON_PAGE_ERROR_KEY));
+						return result;
+					}
 					if(readerPath != null && !readerPath.isEmpty()){ 
 						if(!(new PdfReaderFileFilter().accept(new File(readerPath)))){
 							if(new ExeFileFilter().accept(new File(readerPath))){
