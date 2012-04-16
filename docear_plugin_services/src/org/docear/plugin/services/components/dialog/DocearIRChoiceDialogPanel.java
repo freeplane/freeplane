@@ -303,7 +303,7 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 	
 	
 	
-	public final boolean isRegistrationNecessary() {
+	public final boolean useRegistration() {
 		return this.registrationNecessary;
 	}
 
@@ -376,7 +376,7 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 							TextUtils.getText("docear.uploadchooser.warning.notregistered")+e1.getMessage(), 
 							TextUtils.getText("docear.uploadchooser.warning.notregistered.title"), 
 							JOptionPane.WARNING_MESSAGE);
-					LogUtils.warn(e1);
+					LogUtils.info("DocearServiceException: "+e1.getMessage());
 				} 
 				catch (URISyntaxException e1) {
 					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText("docear.uploadchooser.warning.notregistered"), TextUtils.getText("docear.uploadchooser.warning.notregistered.title"), JOptionPane.WARNING_MESSAGE);
@@ -511,10 +511,12 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		
 		AccountRegisterer accountRegisterer = new AccountRegisterer();
 		int code = getIrCode();
-		if (isRegistrationNecessary()) {
-			if (isEmpty(getPassword()) || isEmpty(getEmail())  || !getPassword().equals(new String(pwdRetypepasswd.getPassword()))) {
-				JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText("docear.uploadchooser.warning.enterall"), TextUtils.getText("docear.uploadchooser.warning.enterall.title"), JOptionPane.WARNING_MESSAGE);
-				return false;
+		if (useRegistration()) {
+			if(!chckbxAllowbackup.isSelected() && isEmpty(getUserName()) && isEmpty(getPassword()) && isEmpty(new String(pwdRetypepasswd.getPassword())) && isEmpty(getEmail())) {
+				return true;
+			}
+			else if (isEmpty(getPassword()) || isEmpty(getEmail())  || !getPassword().equals(new String(pwdRetypepasswd.getPassword()))) {
+				throw new DocearServiceException(TextUtils.getText("docear.uploadchooser.warning.enterall"));
 			}
 			else {
 				accountRegisterer.createRegisteredUser(getUserName(), getPassword(), getEmail(), null, wantsNewsletter(), isMale());
