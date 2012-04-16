@@ -1,6 +1,6 @@
 package org.docear.plugin.bibtex.actions;
 
-import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
@@ -58,20 +58,35 @@ public class ShowInReferenceManagerAction extends AFreeplaneAction {
 	
 	public static void showInReferenceManager(String bibtexKey) {
 		if (bibtexKey != null && bibtexKey.length()>0) {
+			
 			BibtexEntry referenceEntry = ReferencesController.getController().getJabrefWrapper().getDatabase().getEntryByKey(bibtexKey);
 			MainTable table = ReferencesController.getController().getJabrefWrapper().getBasePanel().getMainTable();
+			
 			List<BibtexEntry> list = table.getSortedForTable();
+			int viewHeight = table.getPane().getHeight()-table.getTableHeader().getHeight();
+			Rectangle viewRect = new Rectangle(0,((JViewport)table.getParent()).getViewPosition().y, 4, viewHeight);
 			int pos = 0;
+			Rectangle rowArea = new Rectangle(); 
 			for(BibtexEntry row : list) {
 				if(row.equals(referenceEntry)) {
-					((JViewport)table.getParent()).setViewPosition(new Point(0, table.getRowHeight()*pos));
+					rowArea.setBounds(0, (table.getRowHeight()*pos), 2, table.getRowHeight());					
 					table.clearSelection();
-					table.addRowSelectionInterval(pos,pos);						
+					table.addRowSelectionInterval(pos,pos);
+					if(isRowOutsideViewArea(viewRect, rowArea)) {
+						((JViewport)table.getParent()).setViewPosition(rowArea.getLocation());
+					}
 					break;
 				}
 				pos++;
 			}
 		}
+	}
+	
+	private static boolean isRowOutsideViewArea(final Rectangle viewArea, final Rectangle row) {
+		if(viewArea.contains(row)) {
+			return false;
+		}
+		return true;
 	}
 
 }
