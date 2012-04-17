@@ -177,11 +177,12 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				}
 				
 				if(inside && e.getClickCount() == 1 && ResourceController.getResourceController().getBooleanProperty(FOLD_ON_CLICK_INSIDE)){
-					final boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mc.getMapController(), node));
+					final MapController mapController = mc.getMapController();
+					final boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node));
 					if(!shouldSelectOnClick(e)){
 						doubleClickTimer.start(new Runnable() {
 							public void run() {
-								mc.getMapController().setFolded(node, fold);
+								setFolded(mapController, node, fold);
 							}
 						});
 					}
@@ -195,7 +196,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			final MapController mapController = mc.getMapController();
 			boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node));
 			doubleClickTimer.cancel();
-			mapController.setFolded(node, fold);
+			setFolded(mapController, node, fold);
 			e.consume();
 			return;
 		}
@@ -203,6 +204,14 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			extendSelection(e);
 	}
 
+	private void setFolded(final MapController mapController, final NodeModel node, final boolean fold) {
+		if(node.isRoot()){
+			for (NodeModel child : mapController.childrenUnfolded(node))
+				 mapController.setFolded(child, fold);
+		}
+		else
+			mapController.setFolded(node, fold);
+    }
 
 	private boolean shouldSelectOnClick(MouseEvent e) {
 		if(isInside(e)){
