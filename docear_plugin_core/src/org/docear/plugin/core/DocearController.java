@@ -53,7 +53,8 @@ public class DocearController implements IDocearEventListener {
 	
 	private final Set<String> workingThreads = new HashSet<String>();
 	private final boolean firstRun;
-	private boolean isLicenseDialogNecessary = false;
+	private boolean isLicenseDialogNecessary = false;	
+	private boolean applicationShutdownAborted = false;
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -224,19 +225,31 @@ public class DocearController implements IDocearEventListener {
 		
 		Controller.getCurrentController().getViewController().saveProperties();
 		ResourceController.getResourceController().saveProperties();		
-		
+		if(!waitThreadsReady()){
+			return false;
+		}
 		if(Controller.getCurrentController().getViewController().quit()) {
-			while(hasWorkingThreads()) {
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e1) {
-				}
-			}			
+			if(!waitThreadsReady()){
+				return false;
+			}
 		}
 		else {
 			return false;
 		}		
-		//extensionContainer.getExtensions().clear();
+		return true;
+	}
+	
+	private boolean waitThreadsReady() {
+		while(hasWorkingThreads()) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e1) {
+			}				
+		}	
+		if(this.applicationShutdownAborted){
+			this.applicationShutdownAborted = false;
+			return false;
+		}
 		return true;
 	}
 	
@@ -247,6 +260,9 @@ public class DocearController implements IDocearEventListener {
 	public void handleEvent(DocearEvent event) {
 		if(event.getType() == DocearEventType.APPLICATION_CLOSING) {
 			WorkspaceUtils.saveCurrentConfiguration();
+		}
+		else if(event.getType() == DocearEventType.APPLICATION_CLOSING_ABORTED){
+			this.applicationShutdownAborted = true;
 		}
 		else if(event.getType() == DocearEventType.NEW_LIBRARY && event.getSource() instanceof IDocearLibrary) {
 			this.currentLibrary = (IDocearLibrary) event.getSource();

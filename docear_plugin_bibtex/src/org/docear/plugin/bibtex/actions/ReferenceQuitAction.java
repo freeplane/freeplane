@@ -9,8 +9,13 @@ import java.awt.event.ActionEvent;
 
 import net.sf.jabref.BibtexDatabase;
 import net.sf.jabref.BibtexEntry;
+import net.sf.jabref.Globals;
+import net.sf.jabref.export.SaveDatabaseAction;
 
 import org.docear.plugin.bibtex.ReferencesController;
+import org.docear.plugin.core.DocearController;
+import org.docear.plugin.core.event.DocearEvent;
+import org.docear.plugin.core.event.DocearEventType;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.QuitAction;
 
@@ -43,12 +48,28 @@ public class ReferenceQuitAction extends QuitAction {
 						entry.setField("docear_add_to_node", null);
 					}
 				}
-			
-				ReferencesController.getController().getJabrefWrapper().getBasePanel().runCommand("save");
+				if(ReferencesController.getController().getJabrefWrapper().getBasePanel().isUpdatedExternally()){
+					DocearController.getController().addWorkingThreadHandle("ReferenceQuitAction");
+					SaveDatabaseAction saveAction = new SaveDatabaseAction(ReferencesController.getController().getJabrefWrapper().getBasePanel());
+					saveAction.runCommand();
+					if (saveAction.isCancelled() || !saveAction.isSuccess()) {
+						// The action was either cancelled or
+						// unsuccessful.
+						// Break!
+						System.out.println("Close cancelled from jabref");
+						DocearController.getController().dispatchDocearEvent(new DocearEvent(this, DocearEventType.APPLICATION_CLOSING_ABORTED));
+					}
+					DocearController.getController().removeWorkingThreadHandle("ReferenceQuitAction");
+				}
+				else{
+					ReferencesController.getController().getJabrefWrapper().getBasePanel().runCommand("save");
+				}
 			}
 		} 
 		catch (Exception ex) {
 			LogUtils.warn(ex);
+		} catch (Throwable t) {
+			LogUtils.warn(t);
 		}
 	}
 }
