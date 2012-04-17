@@ -280,6 +280,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		
 		private void addSelectionForHooks(final NodeView node) {
+			if(! isSelected())
+				return;
 			final ModeController modeController = getModeController();
 			final MapController mapController = modeController.getMapController();
 			final NodeModel model = node.getModel();
@@ -329,7 +331,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 
 		private void removeSelectionForHooks(final NodeView node) {
-			if (node.getModel() == null) {
+			if (node.getModel() == null || ! isSelected()) {
 				return;
 			}
 			getModeController().getMapController().onDeselect(node.getModel());
@@ -1772,6 +1774,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
     public Color getDetailBackground() {
         return detailBackground;
+    }
+
+	private boolean isSelected() {
+	    return Controller.getCurrentController().getMapViewManager().getMapViewComponent() == MapView.this;
     }
     
 }
