@@ -103,12 +103,7 @@ public class JabRefAttributes {
 						attributeTable,
 						attributeTable.getAttributePosition(attributeKey));
 			}
-		}
-
-		NodeLinks nodeLinks = NodeLinks.getLinkExtension(node);
-		if (nodeLinks != null) {
-			nodeLinks.setHyperLink(null);
-		}
+		}		
 	}
 
 	public void updateReferenceOnPdf(URI uri, NodeModel node) {

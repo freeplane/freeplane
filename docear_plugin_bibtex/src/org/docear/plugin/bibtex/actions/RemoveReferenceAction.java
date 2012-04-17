@@ -2,9 +2,7 @@ package org.docear.plugin.bibtex.actions;
 
 import java.awt.event.ActionEvent;
 
-
 import org.docear.plugin.bibtex.ReferencesController;
-import org.docear.plugin.core.features.AnnotationModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.map.NodeModel;
@@ -37,13 +35,7 @@ public class RemoveReferenceAction extends AFreeplaneAction {
 		if (node == null) {
 			setEnabled(false);
 			return;
-		}
-		
-		AnnotationModel annotation = (AnnotationModel) node.getExtension(AnnotationModel.class);
-		if (annotation != null && annotation.getAnnotationID() != null) {
-			setEnabled(false);
-			return;
-		}
+		}		
 		
 		final String bibtexKey = ReferencesController.getController().getJabRefAttributes().getBibtexKey(node);
 		
