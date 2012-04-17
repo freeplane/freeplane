@@ -312,7 +312,7 @@ public class ReportGenerator extends StreamHandler {
 	}
 
 	private void setLastReportProperty(String lastReportInfo) {
-		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
+		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
 		String time = dateFormatGmt.format(new Date());
 		final String currentReportInfo = "at "  + time +  " CMT,  hash " + hash;
