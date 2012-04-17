@@ -234,12 +234,6 @@ public abstract class MainView extends ZoomableLabel {
 		if (mapController.isFolded(node) && (node.isVisible() || node.getFilterInfo().isAncestor())) {
 			return FoldingMark.ITSELF_FOLDED;
 		}
-		if(node.isRoot()){
-			for(final NodeModel child : mapController.childrenUnfolded(node)){
-				if(child.isFolded())
-					return FoldingMark.ITSELF_FOLDED;
-			}
-		}
 		for (final NodeModel child : mapController.childrenUnfolded(node)) {
 			if (!child.isVisible() && !FoldingMark.UNFOLDED.equals(foldingMarkType(mapController, child))) {
 				return FoldingMark.UNVISIBLE_CHILDREN_FOLDED;
@@ -263,7 +257,7 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	protected void paintFoldingMark(final NodeView nodeView, final Graphics2D g) {
-		if (! hasFoldableChildren())
+		if (! hasChildren())
 			return;
 		final FoldingMark markType = foldingMarkType(getMap().getModeController().getMapController(), nodeView.getModel());
 	    Point mousePosition = null;
@@ -291,8 +285,6 @@ public abstract class MainView extends ZoomableLabel {
             foldingCircle.draw(g, nodeView, new Rectangle(p.x, p.y, width, width));
 		}
 		else{
-			if(nodeView.isRoot() && ! markType.equals(FoldingMark.UNVISIBLE_CHILDREN_FOLDED))
-				return;
 			final int halfWidth = getZoomedFoldingSymbolHalfWidth();
 			final Point p = getNodeView().isLeft() ? getLeftPoint() : getRightPoint();
 			if (p.x <= 0) {
@@ -616,7 +608,7 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	public boolean isInFoldingRegion(Point p) {
-		if (hasFoldableChildren() && p.y >= 0 && p.y < getHeight()) {
+		if (hasChildren() && p.y >= 0 && p.y < getHeight()) {
 			final boolean isLeft = getNodeView().isLeft();
 			final int width = Math.max(FOLDING_CIRCLE_WIDTH, getZoomedFoldingSymbolHalfWidth() * 2);
 			if (isLeft) {
@@ -632,7 +624,7 @@ public abstract class MainView extends ZoomableLabel {
 			return false;
 	}
 
-	protected boolean hasFoldableChildren() {
+	private boolean hasChildren() {
 	    return getNodeView().getModel().hasChildren();
     }
 

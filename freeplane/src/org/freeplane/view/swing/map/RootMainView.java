@@ -28,13 +28,9 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.RenderingHints;
-import java.util.Enumeration;
-import java.util.List;
 
 import javax.swing.SwingConstants;
 
-import org.freeplane.features.map.MapController;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 
@@ -185,20 +181,4 @@ class RootMainView extends MainView {
 	public boolean isInDragRegion(Point p) {
 		return false;
 	}
-
-	@Override
-    protected boolean hasFoldableChildren() {
-		final NodeModel node = getNodeView().getModel();
-		if(! node.hasChildren())
-			return false;
-		final List<NodeModel> children = node.getChildren();
-		for(NodeModel child:children){
-			if(child.hasChildren())
-				return true;
-		}
-		return false;
-		
-    }
-	
-	
 }
