@@ -137,11 +137,14 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			List<AnnotationModel> newAnnotations = new ArrayList<AnnotationModel>();
 			Map<String, List<NodeModel>> equalChildIndex = new HashMap<String, List<NodeModel>>();
 			Map<AnnotationID, Collection<IAnnotation>> conflicts = new HashMap<AnnotationID, Collection<IAnnotation>>();
-			
+			private boolean isfolded;
+			private boolean canceledDuringPasting;
+			private NodeModel currentTarget;
 			protected Map<AnnotationID, Collection<IAnnotation>> doInBackground() throws Exception {
 				
 				//Controller.getCurrentController().getViewController().getMapView().setVisible(false);
 				for(final NodeModel target : targets){
+					currentTarget = target;
 					URI uri = NodeUtils.getPdfDirFromMonitoringNode(target);
 					if (uri != null) {
 						DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.MONITORING_FOLDER_READ, WorkspaceUtils.resolveURI(uri));			
@@ -164,7 +167,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					
 					if(!searchingOrphanedNodes(target)) continue;
 										
-					final boolean isfolded =  target.isFolded();
+					isfolded = target.isFolded();
 					if(newAnnotations.size() > 100){
 						fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
 						fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.8"));		 //$NON-NLS-1$
@@ -176,8 +179,9 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					        }
 						);
 					}	
-					
+					canceledDuringPasting = true;
 					if(!pasteNewNodesAndRemoveOrphanedNodes(target)){
+						canceledDuringPasting = false;
 						if(newAnnotations.size() > 100){
 							fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
 							fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.9")); //$NON-NLS-1$
@@ -271,7 +275,12 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 
 			@Override
 		    protected void done() {
-				if(this.isCancelled() || Thread.currentThread().isInterrupted()){					
+				if(this.isCancelled() || Thread.currentThread().isInterrupted()){
+					if(newAnnotations.size() > 100 && canceledDuringPasting){
+						if(currentTarget != null){
+		            		currentTarget.setFolded(isfolded);
+		            	}
+					}
 					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("AbstractMonitoringAction.15")); //$NON-NLS-1$
 				}
 				else{
@@ -285,7 +294,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			}
 			
 			private boolean canceled() throws InterruptedException{
-				//Thread.sleep(1L);
+				//Thread.sleep(1L);				
 				return (this.isCancelled() || Thread.currentThread().isInterrupted());
 			}
 			
