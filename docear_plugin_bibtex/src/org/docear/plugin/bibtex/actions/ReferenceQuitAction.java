@@ -6,10 +6,8 @@ package org.docear.plugin.bibtex.actions;
 
 import java.awt.event.ActionEvent;
 
-
 import net.sf.jabref.BibtexDatabase;
 import net.sf.jabref.BibtexEntry;
-import net.sf.jabref.Globals;
 import net.sf.jabref.export.SaveDatabaseAction;
 
 import org.docear.plugin.bibtex.ReferencesController;
@@ -52,11 +50,7 @@ public class ReferenceQuitAction extends QuitAction {
 					DocearController.getController().addWorkingThreadHandle("ReferenceQuitAction");
 					SaveDatabaseAction saveAction = new SaveDatabaseAction(ReferencesController.getController().getJabrefWrapper().getBasePanel());
 					saveAction.runCommand();
-					if (saveAction.isCancelled() || !saveAction.isSuccess()) {
-						// The action was either cancelled or
-						// unsuccessful.
-						// Break!
-						System.out.println("Close cancelled from jabref");
+					if (saveAction.isCancelled() || !saveAction.isSuccess()) {						
 						DocearController.getController().dispatchDocearEvent(new DocearEvent(this, DocearEventType.APPLICATION_CLOSING_ABORTED));
 					}
 					DocearController.getController().removeWorkingThreadHandle("ReferenceQuitAction");
