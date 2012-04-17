@@ -27,6 +27,10 @@ public class ServiceController {
 	private final File backupFolder = new File(CommunicationsController.getController().getCommunicationsQueuePath(), "mindmaps");
 	
 	private final IMapLifeCycleListener mapLifeCycleListener = new MapLifeCycleListener();
+	public static final int ALLOW_RECOMMENDATIONS = 8;
+	public static final int ALLOW_USAGE_RESEARCH = 4;
+	public static final int ALLOW_INFORMATION_RETRIEVAL = 2;
+	public static final int ALLOW_CONTENT_RESEARCH = 1;
 
 	private static FileFilter zipFilter = new FileFilter() {
 		public boolean accept(File f) {
@@ -83,6 +87,22 @@ public class ServiceController {
 	
 	public int getInformationRetrievalCode() {
 		return Integer.parseInt(ResourceController.getResourceController().getProperty(DOCEAR_INFORMATION_RETRIEVAL, "0"));
+	}
+	
+	public boolean isAllowedContentResearch() {
+		return (getInformationRetrievalCode() & ALLOW_CONTENT_RESEARCH) > 0;
+	}
+	
+	public boolean isAllowedInformationRetrieval() {
+		return (getInformationRetrievalCode() & ALLOW_INFORMATION_RETRIEVAL) > 0;
+	}
+	
+	public boolean isAllowedUsageResearch() {
+		return (getInformationRetrievalCode() & ALLOW_USAGE_RESEARCH) > 0;
+	}
+	
+	public boolean isAllowedRecommendations() {
+		return (getInformationRetrievalCode() & ALLOW_RECOMMENDATIONS) > 0;
 	}
 	
 	public void setInformationRetrievalCode(int code) {

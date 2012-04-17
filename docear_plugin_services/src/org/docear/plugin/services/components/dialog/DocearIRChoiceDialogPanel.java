@@ -43,11 +43,6 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
 public class DocearIRChoiceDialogPanel extends JPanel {
-	public static final int ALLOW_CONTENT_RESEARCH = 1;
-	public static final int ALLOW_INFORMATION_RETRIEVAL = 2;
-	public static final int ALLOW_USAGE_RESEARCH = 4;
-	public static final int ALLOW_RECOMMENDATIONS = 8;
-
 	private static final long serialVersionUID = 1L;
 
 	private final JTextField txtUsername;
@@ -150,22 +145,22 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		
 		chckbxAllowRecommendations = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.recommendations"));	
 		chckbxAllowRecommendations.addActionListener(actionListener);
-		chckbxAllowRecommendations.setSelected((irNumber&ALLOW_RECOMMENDATIONS) > 0);
+		chckbxAllowRecommendations.setSelected((irNumber&ServiceController.ALLOW_RECOMMENDATIONS) > 0);
 		uploadPanel.add(chckbxAllowRecommendations, "2, 4");
 		
 		chckbxAllowResearchContent = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.research.content"));
-		chckbxAllowResearchContent.setSelected((irNumber&ALLOW_CONTENT_RESEARCH) > 0);
+		chckbxAllowResearchContent.setSelected((irNumber&ServiceController.ALLOW_CONTENT_RESEARCH) > 0);
 		chckbxAllowResearchContent.addActionListener(actionListener);
 		uploadPanel.add(chckbxAllowResearchContent, "2, 6");
 		
 		chckbxAllowResearchUsage = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.research.usage"));
-		chckbxAllowResearchUsage.setSelected((irNumber&ALLOW_USAGE_RESEARCH) > 0);
+		chckbxAllowResearchUsage.setSelected((irNumber&ServiceController.ALLOW_USAGE_RESEARCH) > 0);
 		chckbxAllowResearchUsage.addActionListener(actionListener);
 		uploadPanel.add(chckbxAllowResearchUsage, "4, 6");
 		
 		
 		chckbxAllowIR = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.ir.content"));
-		chckbxAllowIR.setSelected((irNumber&ALLOW_INFORMATION_RETRIEVAL) > 0);
+		chckbxAllowIR.setSelected((irNumber&ServiceController.ALLOW_INFORMATION_RETRIEVAL) > 0);
 		chckbxAllowIR.addActionListener(actionListener);
 		uploadPanel.add(chckbxAllowIR, "2, 8");
 		
@@ -489,16 +484,16 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 	public int getIrCode() {
 		int code = 0;
 		if (allowContentResearch()) {
-			code += ALLOW_CONTENT_RESEARCH;
+			code += ServiceController.ALLOW_CONTENT_RESEARCH;
 		}
 		if (allowInformationRetrieval()) {
-			code += ALLOW_INFORMATION_RETRIEVAL;
+			code += ServiceController.ALLOW_INFORMATION_RETRIEVAL;
 		}
 		if (allowUsageResearch()) {
-			code += ALLOW_USAGE_RESEARCH;
+			code += ServiceController.ALLOW_USAGE_RESEARCH;
 		}
 		if (allowRecommendations()) {
-			code += ALLOW_RECOMMENDATIONS;
+			code += ServiceController.ALLOW_RECOMMENDATIONS;
 		}
 		
 		return code;
