@@ -33,6 +33,7 @@ import javax.swing.text.html.ImageView;
 import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.ColorUtils;
 
 @SuppressWarnings("serial")
 public class ScaledEditorKit extends HTMLEditorKit {
@@ -102,27 +103,14 @@ public class ScaledEditorKit extends HTMLEditorKit {
 			rule.append(fontSize);
 			rule.append("pt ;");
 			if (font.isBold()) {
-				rule.append(" font-weight: 700 ; ");
+				rule.append(" font-weight: bold ; ");
 			}
 			if (font.isItalic()) {
 				rule.append(" font-style: italic ; ");
 			}
 		}
 		if (fg != null) {
-			rule.append(" color: #");
-			if (fg.getRed() < 16) {
-				rule.append('0');
-			}
-			rule.append(Integer.toHexString(fg.getRed()));
-			if (fg.getGreen() < 16) {
-				rule.append('0');
-			}
-			rule.append(Integer.toHexString(fg.getGreen()));
-			if (fg.getBlue() < 16) {
-				rule.append('0');
-			}
-			rule.append(Integer.toHexString(fg.getBlue()));
-			rule.append(" ; ");
+			rule.append(" color: ").append(ColorUtils.colorToString(fg)).append(" ; ");
 		}
 		rule.append(" }");
 		return rule.toString();
