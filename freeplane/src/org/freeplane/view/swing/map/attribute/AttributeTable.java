@@ -453,7 +453,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			comboBox.setRenderer(new TypedListCellRenderer());
 			dce = new DefaultCellEditor(comboBox) {
 		        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int col) {
-		            return super.getTableCellEditorComponent(table, getValueForEdit(row, col), isSelected, row, col);
+		            return super.getTableCellEditorComponent(table, ((AttributeTable)table).getValueForEdit(row, col), isSelected, row, col);
 		        }
 			};
 			dce.setClickCountToStart(CLICK_COUNT_TO_START);
