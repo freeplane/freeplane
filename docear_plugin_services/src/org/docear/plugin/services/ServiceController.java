@@ -9,6 +9,8 @@ import javax.swing.SwingUtilities;
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.services.actions.DocearAllowUploadChooserAction;
+import org.docear.plugin.services.features.UpdateCheck;
+import org.docear.plugin.services.features.elements.Application;
 import org.docear.plugin.services.listeners.DocearEventListener;
 import org.docear.plugin.services.listeners.MapLifeCycleListener;
 import org.docear.plugin.services.listeners.PropertiesActionListener;
@@ -21,7 +23,7 @@ public class ServiceController {
 	public static final String DOCEAR_INFORMATION_RETRIEVAL = "docear_information_retrieval";
 	public static final String DOCEAR_SAVE_BACKUP = "docear_save_backup";
 
-	private final static ServiceController backupController = new ServiceController();
+	private final static ServiceController serviceController = new ServiceController();
 	
 	private final ServiceRunner backupRunner = new ServiceRunner();
 	private final File backupFolder = new File(CommunicationsController.getController().getCommunicationsQueuePath(), "mindmaps");
@@ -31,6 +33,8 @@ public class ServiceController {
 	public static final int ALLOW_USAGE_RESEARCH = 4;
 	public static final int ALLOW_INFORMATION_RETRIEVAL = 2;
 	public static final int ALLOW_CONTENT_RESEARCH = 1;
+	
+	private Application application;
 
 	private static FileFilter zipFilter = new FileFilter() {
 		public boolean accept(File f) {
@@ -50,10 +54,12 @@ public class ServiceController {
 	
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {				
-				backupRunner.run();			
+				backupRunner.run();
+				UpdateCheck updateCheck = new UpdateCheck();
 			}		
 		});
 		
+				
 	}
 	
 	public void initListeners() {
@@ -63,7 +69,7 @@ public class ServiceController {
 	}
 	
 	public static ServiceController getController() {
-		return backupController;
+		return serviceController;
 	}
 	
 	public ServiceRunner getBackupRunner() {
@@ -135,5 +141,13 @@ public class ServiceController {
 	
 	private boolean isEmpty(String s) {
 		return s == null || s.trim().length() == 0;
+	}
+
+	public Application getApplication() {
+		return application;
+	}
+
+	public void setApplication(Application application) {
+		this.application = application;
 	}
 }
