@@ -662,7 +662,10 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		boolean requestFocus = editorComponent != null && focusOwner != null && 
 		(focusOwner == editorComponent || SwingUtilities.isDescendingFrom(focusOwner, editorComponent)); 
 		getAttributeTableModel().editingCanceled();
+		final boolean focusCycleRoot = isFocusCycleRoot();
+		setFocusCycleRoot(true);
 		super.removeEditor();
+		setFocusCycleRoot(focusCycleRoot);
 		if(requestFocus)
 			requestFocusInWindow();
 	}
