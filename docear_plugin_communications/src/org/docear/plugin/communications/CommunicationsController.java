@@ -44,6 +44,7 @@ import org.freeplane.plugin.workspace.event.WorkspaceEvent;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
@@ -196,6 +197,11 @@ public class CommunicationsController extends ALanguageController implements Pro
 		} finally {
 			Thread.currentThread().setContextClassLoader(contextClassLoader);
 		}
+	}
+	
+	public String getLatestVersionXml() throws UniformInterfaceException, URISyntaxException {
+		ClientResponse response = client.resource(getServiceUri()).path("/applications/docear/versions/latest").accept("text/plain").get(ClientResponse.class);
+		return response.getEntity(String.class);
 	}
 
 	public boolean checkConnection() {

@@ -1,6 +1,7 @@
 package org.docear.plugin.services.features.creators;
 
-import java.util.ArrayList;
+import java.sql.Date;
+import java.util.HashMap;
 
 import org.docear.plugin.services.features.elements.Application;
 import org.docear.plugin.services.features.elements.Version;
@@ -14,7 +15,7 @@ public class VersionsCreator implements IElementDOMHandler {
 			return null;
 		}
 		
-		ArrayList<Version> versions = new ArrayList<Version>();
+		HashMap<Date, Version> versions = new HashMap<Date, Version>();
 		
 		if (parent instanceof Application) {
 			((Application) parent).setVersions(versions);

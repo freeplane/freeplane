@@ -2,7 +2,8 @@ package org.docear.plugin.services.features.creators;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.sql.Date;
+import java.util.HashMap;
 
 import org.docear.plugin.services.features.elements.Version;
 import org.freeplane.core.io.IElementDOMHandler;
@@ -30,8 +31,8 @@ public class VersionCreator implements IElementDOMHandler {
 		
 		Version version = new Version(id, href);
 		
-		if (parent instanceof ArrayList) {
-			((ArrayList<Version>) parent).add(version);
+		if (parent instanceof HashMap) {
+			((HashMap<Date, Version>) parent).put(version.getReleaseDate(), version);
 		}
 		return version;
 	}

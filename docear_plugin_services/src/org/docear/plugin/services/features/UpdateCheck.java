@@ -1,9 +1,13 @@
 package org.docear.plugin.services.features;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.StringReader;
 
+import javax.swing.JOptionPane;
+
+import org.docear.plugin.communications.CommunicationsController;
+import org.docear.plugin.core.DocearController;
 import org.docear.plugin.services.ServiceController;
+import org.docear.plugin.services.components.dialog.UpdateCheckerDialogPanel;
 import org.docear.plugin.services.features.creators.ApplicationCreator;
 import org.docear.plugin.services.features.creators.BuildNumberCreator;
 import org.docear.plugin.services.features.creators.MajorVersionCreator;
@@ -16,13 +20,19 @@ import org.docear.plugin.services.features.creators.StatusNumberCreator;
 import org.docear.plugin.services.features.creators.VersionCreator;
 import org.docear.plugin.services.features.creators.VersionsCreator;
 import org.docear.plugin.services.features.elements.Application;
+import org.docear.plugin.services.features.elements.Version;
 import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 
-public class UpdateCheck {	
+public class UpdateCheck {
+			
 	final private ReadManager readManager;
+	
+	private Application application;
 	
 	ApplicationCreator applicationCreator;
 	VersionsCreator versionsCreator;
@@ -41,17 +51,39 @@ public class UpdateCheck {
 		this.readManager = new ReadManager();
 		initReadManager();
 		
-		load(this.getClass().getResourceAsStream("/app.xml"));
-		Application application = ServiceController.getController().getApplication();
-		System.out.println("test");
+		String xml;
+		try {
+			xml = CommunicationsController.getController().getLatestVersionXml();
+			load(xml);
+			application = getApplication();
+			
+			Version latestVersion = getLatestAvailableVersion();			
+			Version runningVersion = getRunningVersion();
+			if (latestVersion == null || runningVersion == null) {
+				return;
+			}
+			
+			latestVersion.setMinorVersion(8);
+			latestVersion.setMajorVersion(8);
+			runningVersion.setBuildNumber(30);
+			
+			
+			int compCode = latestVersion.compareTo(runningVersion);
+			
+			UpdateCheckerDialogPanel dialogPanel = new UpdateCheckerDialogPanel("", getStringFromVersion(runningVersion), getStringFromVersion(latestVersion));
+			
+			JOptionPane.showMessageDialog(UITools.getFrame(), dialogPanel, TextUtils.getText("docear.new_version_available.title"), JOptionPane.INFORMATION_MESSAGE);
+		} catch (Exception e) {
+			LogUtils.warn(e.getMessage());
+		}
+		
 	}
 	
-	
-	public void load(final InputStream xmlStream) {		
+	public void load(final String xml) {		
 		final TreeXmlReader reader = new TreeXmlReader(readManager);
 		
 		try { 
-			reader.load(new InputStreamReader(xmlStream, "UTF-8"));			
+			reader.load(new StringReader(xml));			
 		}
 		catch (final Exception e) {
 			LogUtils.warn(e);
@@ -72,7 +104,50 @@ public class UpdateCheck {
 		readManager.addElementHandler("status_number", getStatusNumberCreator());
 		readManager.addElementHandler("release_notes", getReleaseNotesCreator());
 	}
-
+	
+	public Version getRunningVersion() {
+		try {
+			DocearController docearController = DocearController.getController();
+			Version version = new Version();		
+			String[] versionStrings = docearController.getApplicationVersion().split("\\.");
+			version.setMajorVersion(Integer.parseInt(versionStrings[0]));
+			version.setMiddleVersion(Integer.parseInt(versionStrings[1]));
+			version.setMinorVersion(Integer.parseInt(versionStrings[2]));
+			
+			version.setStatus(docearController.getApplicationStatus());
+			version.setStatusNumber(Integer.parseInt(docearController.getApplicationStatusVersion()));
+			version.setBuildNumber(docearController.getApplicationBuildNumber());
+			
+			return version;
+		}
+		catch(Exception e) {
+			LogUtils.warn(e);
+			return null;
+		}
+	}
+	
+	public Version getLatestAvailableVersion() {
+		return ServiceController.getController().getApplication().getVersions().entrySet().iterator().next().getValue();		
+	}
+	
+	private String getStringFromVersion(Version version) {
+		String versionString = ""+version.getMajorVersion()+"."+version.getMiddleVersion()+"."+version.getMinorVersion();
+		String status = version.getStatus();
+		if (status != null && status.length()>0) {
+			versionString += " "+status;
+		}
+		Integer statusNumber = version.getStatusNumber();
+		if (statusNumber != null && statusNumber > -1) {
+			versionString += statusNumber;
+		}
+		versionString += " build";
+		Integer buildNumber = version.getBuildNumber();
+		if (buildNumber != null && buildNumber>-1) {
+			versionString += buildNumber;
+		}
+		return versionString;
+	}
+	
 	private IElementHandler getReleaseNotesCreator() {		
 		if (this.releaseNotesCreator == null) {
 			this.releaseNotesCreator = new ReleaseNotesCreator();
@@ -159,5 +234,10 @@ public class UpdateCheck {
 		}
 		
 		return this.applicationCreator; 
+	}
+
+
+	public Application getApplication() {
+		return application;
 	}
 }

@@ -53,7 +53,6 @@ public class DocearController implements IDocearEventListener {
 	
 	private final Set<String> workingThreads = new HashSet<String>();
 	private final boolean firstRun;
-	private boolean isLicenseDialogNecessary = false;	
 	private boolean applicationShutdownAborted = false;
 	
 	/***********************************************************************************
@@ -77,11 +76,10 @@ public class DocearController implements IDocearEventListener {
 		int storedBuildNumber = Integer.parseInt(ResourceController.getResourceController().getProperty(DOCEAR_VERSION_NUMBER, "0"));
 		if (storedBuildNumber != this.applicationBuildNumber) {
 			ResourceController.getResourceController().setProperty(DOCEAR_VERSION_NUMBER, ""+this.applicationBuildNumber);
-			isLicenseDialogNecessary = true;
 			return true;
 		}
 		else {
-			return false;//||isLicenseDialogNecessary;
+			return false;
 		}
 	}
 	

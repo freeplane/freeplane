@@ -1,14 +1,16 @@
 package org.docear.plugin.services.features.elements;
 
 import java.net.URL;
-import java.util.ArrayList;
+import java.sql.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Application {
 	private final String id;
 	private final String name;
 	private final URL href;
 	
-	private ArrayList<Version> versions = new ArrayList<Version>();
+	private Map<Date, Version> versions = new HashMap<Date, Version>();
 	
 	public Application(String id, String name, URL href) {
 		this.id = id;
@@ -28,16 +30,16 @@ public class Application {
 		return href;
 	}
 
-	public ArrayList<Version> getVersions() {
+	public Map<Date, Version> getVersions() {
 		return versions;
 	}
 
-	public void setVersions(ArrayList<Version> versions) {
+	public void setVersions(HashMap<Date, Version> versions) {
 		this.versions = versions;
 	}
 	
 	public void addVersion(Version version) {
-		this.versions.add(version);
+		this.versions.put(version.getReleaseDate(), version);
 	}
 
 	
