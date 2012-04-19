@@ -63,11 +63,6 @@ public class UpdateCheck {
 				return;
 			}
 			
-			latestVersion.setMinorVersion(8);
-			latestVersion.setMajorVersion(8);
-			runningVersion.setBuildNumber(30);
-			
-			
 			int compCode = latestVersion.compareTo(runningVersion);
 			
 			UpdateCheckerDialogPanel dialogPanel = new UpdateCheckerDialogPanel("", getStringFromVersion(runningVersion), getStringFromVersion(latestVersion));
