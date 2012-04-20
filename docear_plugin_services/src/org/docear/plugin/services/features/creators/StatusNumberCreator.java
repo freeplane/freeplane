@@ -15,7 +15,7 @@ public class StatusNumberCreator implements IElementDOMHandler {
 			((Version) parent).setStatusNumber(Integer.parseInt(dom.getContent()));
 		}
 		catch (Exception e) {
-			LogUtils.warn(e);
+			LogUtils.warn(e.getMessage());
 		}
 	}
 	

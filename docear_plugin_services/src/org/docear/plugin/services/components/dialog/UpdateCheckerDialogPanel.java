@@ -2,12 +2,15 @@ package org.docear.plugin.services.components.dialog;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.TreeMap;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import org.docear.plugin.services.features.UpdateCheck;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.swingplus.JHyperlink;
@@ -18,12 +21,30 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
 public class UpdateCheckerDialogPanel extends JPanel {
+	class Option {
+		public String key;
+		public String text;
+		
+		public Option(String key, String text) {
+			this.key = key;
+			this.text = text;
+		}
+		
+		public String toString() {
+			return text;
+		}
+		public String getKey() {
+			return key;
+		}
+	}
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private JComboBox optionsComboBox;
+	
+	private TreeMap<String, Option> optionsMap = new TreeMap<String, Option>();
 	
 	/**
 	 * Create the dialog.
@@ -45,9 +66,9 @@ public class UpdateCheckerDialogPanel extends JPanel {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
-		JLabel lblBlubber = new JLabel(TextUtils.getText("docear.update_checker.message"));
-		add(lblBlubber, "1, 1, 3, 1, fill, top");
-		lblBlubber.setVerticalAlignment(SwingConstants.TOP);
+		JLabel lblMessage = new JLabel(TextUtils.getText("docear.update_checker.message"));
+		add(lblMessage, "1, 1, 3, 1, fill, top");
+		lblMessage.setVerticalAlignment(SwingConstants.TOP);
 		
 		try {
 			JLabel lblYouCanDownload = new JLabel(TextUtils.getText("docear.update_checker.you_can_download"));
@@ -73,17 +94,37 @@ public class UpdateCheckerDialogPanel extends JPanel {
 		JLabel lblNotify = new JLabel(TextUtils.getText("docear.update_checker.notify"));
 		add(lblNotify, "1, 9");
 		
+		optionsMap.put(UpdateCheck.DOCEAR_UPDATE_CHECKER_MAJOR, new Option(UpdateCheck.DOCEAR_UPDATE_CHECKER_MAJOR, TextUtils.getText("OptionPanel.docear.update_checker.major")));
+		optionsMap.put(UpdateCheck.DOCEAR_UPDATE_CHECKER_MIDDLE, new Option(UpdateCheck.DOCEAR_UPDATE_CHECKER_MIDDLE, TextUtils.getText("OptionPanel.docear.update_checker.middle")));
+		optionsMap.put(UpdateCheck.DOCEAR_UPDATE_CHECKER_MINOR, new Option(UpdateCheck.DOCEAR_UPDATE_CHECKER_MINOR, TextUtils.getText("OptionPanel.docear.update_checker.minor")));
+		optionsMap.put(UpdateCheck.DOCEAR_UPDATE_CHECKER_BETA, new Option(UpdateCheck.DOCEAR_UPDATE_CHECKER_BETA, TextUtils.getText("OptionPanel.docear.update_checker.beta")));
+		optionsMap.put(UpdateCheck.DOCEAR_UPDATE_CHECKER_ALL, new Option(UpdateCheck.DOCEAR_UPDATE_CHECKER_ALL, TextUtils.getText("OptionPanel.docear.update_checker.all")));
+		optionsMap.put(UpdateCheck.DOCEAR_UPDATE_CHECKER_DISABLE, new Option(UpdateCheck.DOCEAR_UPDATE_CHECKER_DISABLE, TextUtils.getText("OptionPanel.docear.update_checker.disable")));
 		
-		optionsComboBox = new JComboBox(new String[] {				
-				TextUtils.getText("docear.update_checker.major"),
-				TextUtils.getText("docear.update_checker.middle"),
-				TextUtils.getText("docear.update_checker.minor"),
-				TextUtils.getText("docear.update_checker.beta"),
-				TextUtils.getText("docear.update_checker.all"),
-				TextUtils.getText("docear.update_checker.disable")			
+		optionsComboBox = new JComboBox(new Option[] {				
+				optionsMap.get(UpdateCheck.DOCEAR_UPDATE_CHECKER_MAJOR),
+				optionsMap.get(UpdateCheck.DOCEAR_UPDATE_CHECKER_MIDDLE),
+				optionsMap.get(UpdateCheck.DOCEAR_UPDATE_CHECKER_MINOR),
+				optionsMap.get(UpdateCheck.DOCEAR_UPDATE_CHECKER_BETA),
+				optionsMap.get(UpdateCheck.DOCEAR_UPDATE_CHECKER_ALL),
+				optionsMap.get(UpdateCheck.DOCEAR_UPDATE_CHECKER_DISABLE)
 		});
+		optionsComboBox.setEditable(false);
+		
+		String choice = ResourceController.getResourceController().getProperty("docear.update_checker.options");
+		try {
+			optionsComboBox.setSelectedItem(optionsMap.get(choice));
+		}
+		catch (Exception e) {
+			LogUtils.warn(e);
+		}
 		
 		add(optionsComboBox, "3, 9, fill, default");		
+	}
+	
+	public String getChoice() {
+		Option o = (Option) optionsComboBox.getSelectedItem(); 
+		return o.getKey();		
 	}
 	
 

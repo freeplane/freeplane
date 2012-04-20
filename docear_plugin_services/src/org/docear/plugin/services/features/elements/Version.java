@@ -179,5 +179,23 @@ public class Version implements Comparable<Version> {
 		}
 		
 		return CompareCode.MAJOR.code;
-	}	
+	}
+	
+	public String toString() {
+		String versionString = ""+getMajorVersion()+"."+getMiddleVersion()+"."+getMinorVersion();
+		String status = getStatus();
+		if (status != null && status.length()>0) {
+			versionString += " "+status;
+		}
+		Integer statusNumber = getStatusNumber();
+		if (statusNumber != null && statusNumber > 0) {
+			versionString += statusNumber;
+		}
+		versionString += " build";
+		Integer buildNumber = getBuildNumber();
+		if (buildNumber != null && buildNumber>0) {
+			versionString += buildNumber;
+		}
+		return versionString;
+	}
 }
