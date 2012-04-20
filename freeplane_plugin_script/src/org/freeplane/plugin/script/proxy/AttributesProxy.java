@@ -17,6 +17,7 @@ import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.attribute.mindmapmode.MAttributeController;
+import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.ScriptContext;
 
@@ -35,17 +36,17 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		if (index == -1) {
 			return null;
 		}
-		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
-		return nodeAttributeTableModel.getAttribute(index).getValue();
+		final NodeAttributeTableModel attributeTableModel = getNodeAttributeTableModel();
+		return attributeTableModel.getAttribute(index).getValue();
 	}
 
 	public List<Object> getAll(final String name) {
-		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
-		if (nodeAttributeTableModel == null) {
+		final NodeAttributeTableModel attributeTableModel = getNodeAttributeTableModel();
+		if (attributeTableModel == null) {
 			return Collections.emptyList();
 		}
 		final ArrayList<Object> result = new ArrayList<Object>();
-		for (final Attribute attribute : nodeAttributeTableModel.getAttributes()) {
+		for (final Attribute attribute : attributeTableModel.getAttributes()) {
 			if (attribute.getName().equals(name)) {
 				result.add(attribute.getValue());
 			}
@@ -54,12 +55,12 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 	}
 
 	public List<String> getNames() {
-		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
-		if (nodeAttributeTableModel == null) {
+		final NodeAttributeTableModel attributeTableModel = getNodeAttributeTableModel();
+		if (attributeTableModel == null) {
 			return Collections.emptyList();
 		}
-		final ArrayList<String> result = new ArrayList<String>(nodeAttributeTableModel.getRowCount());
-		for (final Attribute a : nodeAttributeTableModel.getAttributes()) {
+		final ArrayList<String> result = new ArrayList<String>(attributeTableModel.getRowCount());
+		for (final Attribute a : attributeTableModel.getAttributes()) {
 			result.add(a.getName());
 		}
 		return result;
@@ -71,24 +72,24 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 	}
 	
 	public List<? extends Convertible> getValues() {
-		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
-		if (nodeAttributeTableModel == null) {
+		final NodeAttributeTableModel attributeTableModel = getNodeAttributeTableModel();
+		if (attributeTableModel == null) {
 			return Collections.emptyList();
 		}
-		final ArrayList<Convertible> result = new ArrayList<Convertible>(nodeAttributeTableModel.getRowCount());
-		for (final Attribute a : nodeAttributeTableModel.getAttributes()) {
+		final ArrayList<Convertible> result = new ArrayList<Convertible>(attributeTableModel.getRowCount());
+		for (final Attribute a : attributeTableModel.getAttributes()) {
 			result.add(ProxyUtils.attributeValueToConvertible(getDelegate(), getScriptContext(), a.getValue()));
 		}
 		return result;
 	}
 
 	public Map<String, Object> getMap() {
-		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
-		if (nodeAttributeTableModel == null) {
+		final NodeAttributeTableModel attributeTableModel = getNodeAttributeTableModel();
+		if (attributeTableModel == null) {
 			return Collections.emptyMap();
 		}
-		final LinkedHashMap<String, Object> result = new LinkedHashMap<String, Object>(nodeAttributeTableModel.getRowCount());
-		for (final Attribute a : nodeAttributeTableModel.getAttributes()) {
+		final LinkedHashMap<String, Object> result = new LinkedHashMap<String, Object>(attributeTableModel.getRowCount());
+		for (final Attribute a : attributeTableModel.getAttributes()) {
 			result.put(a.getName(), a.getValue());
 		}
 		return result;
@@ -96,13 +97,13 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 
 	public List<? extends Convertible> findValues(Closure<Boolean> closure) {
 		try {
-			final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
-			if (nodeAttributeTableModel == null) {
+			final NodeAttributeTableModel attributeTableModel = getNodeAttributeTableModel();
+			if (attributeTableModel == null) {
 				return Collections.emptyList();
 			}
 			final ArrayList<Convertible> result = new ArrayList<Convertible>(
-			    nodeAttributeTableModel.getRowCount());
-			for (final Attribute a : nodeAttributeTableModel.getAttributes()) {
+			    attributeTableModel.getRowCount());
+			for (final Attribute a : attributeTableModel.getAttributes()) {
 				final Object bool = closure.call(new Object[] { a.getName(), a.getValue() });
 				if (result == null) {
 					throw new RuntimeException("findValues(): closure returned null instead of boolean/Boolean");
@@ -123,36 +124,30 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 	}
 
 	public Object get(final int index) {
-		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
-		if (nodeAttributeTableModel == null) {
-			throw new IndexOutOfBoundsException("get:" + index);
-		}
-		return nodeAttributeTableModel.getValue(index);
+		return getAndCheckNodeAttributeTableModelForIndex(index, "get:").getValue(index);
 	}
 
-    public String getKey(int index) {
-		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
-		if (nodeAttributeTableModel == null) {
-			throw new IndexOutOfBoundsException("getKey:" + index);
+    private NodeAttributeTableModel getAndCheckNodeAttributeTableModelForIndex(final int index, String errorPrefix) {
+        final NodeAttributeTableModel attributeTableModel = getNodeAttributeTableModel();
+		if (attributeTableModel == null) {
+			throw new IndexOutOfBoundsException(errorPrefix + index);
 		}
-		return nodeAttributeTableModel.getAttribute(index).getName();
+        return attributeTableModel;
+    }
+
+    public String getKey(int index) {
+		return getAndCheckNodeAttributeTableModelForIndex(index, "getKey:").getAttribute(index).getName();
     }
 
 	public void set(final int index, final Object value) {
-		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
-		if (nodeAttributeTableModel == null) {
-			throw new IndexOutOfBoundsException("set1:" + index);
-		}
-        String oldPattern = null; // FIXME: read from old attribute at index
-		getAttributeController().performSetValueAt(nodeAttributeTableModel, ProxyUtils.transformObject(value, oldPattern), index, 1);
+		final NodeAttributeTableModel attributeTableModel = getAndCheckNodeAttributeTableModelForIndex(index, "set1:");
+        String oldPattern = getOldValueFormatPattern(attributeTableModel, index);
+		getAttributeController().performSetValueAt(attributeTableModel, ProxyUtils.transformObject(value, oldPattern), index, 1);
 	}
 
 	public void set(final int index, final String name, final Object value) {
-		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
-		if (nodeAttributeTableModel == null) {
-			throw new IndexOutOfBoundsException("set2:" + index);
-		}
-        String oldPattern = null; // FIXME: read from old attribute at index
+        final NodeAttributeTableModel attributeTableModel = getAndCheckNodeAttributeTableModelForIndex(index, "set2:");
+        String oldPattern = getOldValueFormatPattern(attributeTableModel, index);
 		getAttributeController().setAttribute(getDelegate(), index, new Attribute(name, ProxyUtils.transformObject(value, oldPattern)));
 	}
 
@@ -182,12 +177,12 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 	}
 
 	public boolean removeAll(final String name) {
-		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
-		if (nodeAttributeTableModel == null) {
+		final NodeAttributeTableModel attributeTableModel = getNodeAttributeTableModel();
+		if (attributeTableModel == null) {
 			return false;
 		}
 		final ArrayList<Integer> toRemove = new ArrayList<Integer>();
-		final Vector<Attribute> attributes = nodeAttributeTableModel.getAttributes();
+		final Vector<Attribute> attributes = attributeTableModel.getAttributes();
 		for (int i = 0; i < attributes.size(); ++i) {
 			if (attributes.get(i).getName().equals(name)) {
 				toRemove.add(i);
@@ -201,16 +196,13 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 	}
 
 	public void remove(final int index) {
-		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
-		if (nodeAttributeTableModel == null) {
-			throw new IndexOutOfBoundsException("remove:" + index);
-		}
+        getAndCheckNodeAttributeTableModelForIndex(index, "remove:");
 		getAttributeController().removeAttribute(getDelegate(), index);
 	}
 
 	public void clear() {
-		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
-		final int size = nodeAttributeTableModel.getRowCount();
+		final NodeAttributeTableModel attributeTableModel = getNodeAttributeTableModel();
+		final int size = attributeTableModel.getRowCount();
 		for (int i = size - 1; i >= 0; i--) {
 			getAttributeController().removeAttribute(getDelegate(), i);
 		}
@@ -219,13 +211,20 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 	public void set(final String name, final Object value) {
 		final int index = findFirst(name);
 		if (index == -1) {
-			String oldPattern = null; // FIXME: read from old attribute at index
-            getAttributeController().addAttribute(getDelegate(), new Attribute(name, ProxyUtils.transformObject(value, oldPattern )));
+            final Attribute attribute = new Attribute(name, ProxyUtils.transformObject(value, null));
+            getAttributeController().addAttribute(getDelegate(), attribute);
 		}
 		else {
-			getAttributeController().setAttribute(getDelegate(), index, new Attribute(name, ProxyUtils.transformObject(value, null)));
+		    final String oldPattern = getOldValueFormatPattern(getNodeAttributeTableModel(), index);
+			final Attribute attribute = new Attribute(name, ProxyUtils.transformObject(value, oldPattern));
+            getAttributeController().setAttribute(getDelegate(), index, attribute);
 		}
 	}
+
+    private String getOldValueFormatPattern(NodeAttributeTableModel attributeTableModel, int index) {
+        final Object value = attributeTableModel.getAttribute(index).getValue();
+        return (value instanceof IFormattedObject) ? ((IFormattedObject) value).getPattern() : null;
+    }
 
     public void add(final String name, final Object value) {
 		final Attribute attribute = new Attribute(name, ProxyUtils.transformObject(value, null));
@@ -233,11 +232,11 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 	}
 
 	public int size() {
-		final NodeAttributeTableModel nodeAttributeTableModel = getNodeAttributeTableModel();
-		if (nodeAttributeTableModel == null) {
+		final NodeAttributeTableModel attributeTableModel = getNodeAttributeTableModel();
+		if (attributeTableModel == null) {
 			return 0;
 		}
-		return nodeAttributeTableModel.getRowCount();
+		return attributeTableModel.getRowCount();
 	}
 	
 	public boolean isEmpty() {

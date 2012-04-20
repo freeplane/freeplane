@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.freeplane.features.filter.condition.ICondition;
+import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.FormattedNumber;
 import org.freeplane.features.format.IFormattedObject;
@@ -205,9 +206,8 @@ public class ProxyUtils {
 
 	/** used for node core texts and for attribute values. Note that it would lead to an error on reopening of a map
 	 * if we would allow to assign GStrings here. So all unknown stuff is cast to String. */
-    static Object transformObject(Object object, String pattern) {
-        if (object instanceof String)
-            object = ((MTextController) TextController.getController()).guessObjectOrURI(object, pattern);
+    static Object transformObject(Object objectToTransform, String pattern) {
+        final Object object = createFormattedObjectIfPossible(objectToTransform, pattern);
         if (object instanceof IFormattedObject)
     		return object;
     	else if (object instanceof Number)
@@ -220,6 +220,14 @@ public class ProxyUtils {
     	    return object;
         else
             return Convertible.toString(object);
+    }
+
+    private static Object createFormattedObjectIfPossible(Object object, String pattern) {
+        if (object instanceof String)
+            object = ((MTextController) TextController.getController()).guessObjectOrURI(object, pattern);
+        else if (pattern != null)
+            object = FormatController.format(object, pattern);
+        return object;
     }
 
     static FormattedDate createDefaultFormattedDate(final Date date) {

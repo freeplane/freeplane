@@ -147,6 +147,12 @@ public interface Proxy {
      *   node["a date"] = date
      *   assert node["a date"].object.getClass().simpleName == "FormattedDate"
      *   assert node["a date"].date == format(date)
+     *   // == enforce formats on attribute values
+     *   node["another date"] = format(date, 'yyyy|MM|dd')
+     *   assert node["another date"].date == format(date, 'yyyy|MM|dd')
+     *   // change the date while keeping the silly format
+     *   def index = node.attributes.findAttribute("another date")
+     *   node.attributes.set(index, new Date(0L))
      *   // == URLs
      *   def url = new URL("http://www.freeplane.org")
      *   node["url"] = url
