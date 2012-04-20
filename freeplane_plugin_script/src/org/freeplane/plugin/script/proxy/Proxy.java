@@ -44,7 +44,8 @@ public interface Proxy {
 	/** Node's attribute table: <code>node.attributes</code> - read-only.
 	 * <p>
 	 * Attributes are name - value pairs assigned to a node. A node may have multiple attributes
-	 * with the same name. */
+	 * with the same name. 
+	 */
 	interface AttributesRO {
 		/** alias for {@link #getFirst(String)}.
 		 * @deprecated before 1.1 - use {@link #get(int)}, {@link #getFirst(String)} or {@link #getAll(String)} instead. */
@@ -121,9 +122,42 @@ public interface Proxy {
 	}
 
 	/** Node's attribute table: <code>node.attributes</code> - read-write.
-	 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	 * FIXME: add note about formatted objects
-	 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	 * <p>
+	 * <b>Notes on attribute setters:</b><ul>
+	 * <li> All setter methods try to convert strings to dates, numbers or URLs.
+	 * <li> All setter methods apply a default formatting (for display) of the value for dates and numbers.
+	 * <li> Attributes don't have style properties so the value objects must know about the right formatting for
+	 *      themselves.
+	 * <li> To enforce a certain formatting use format(): <pre>node['creationDate'] = format(new Date(), 'MM/yyyy')</pre>
+     * </ul>
+     * <p>
+     * <b>Examples:</b>
+     * <pre>
+     *   // == text
+     *   node["attribute name"] = "a value"
+     *   assert node["attribute name"] == "a value"
+     *   assert node.attributes.getFirst("attribute name") == "a value" // the same
+     *   // == numbers and others
+     *   // converts numbers and other stuff with toString()
+     *   node["a number"] = 1.2
+     *   assert node["a number"].text == "1.2"
+     *   assert node["a number"].num == 1.2d
+     *   // == dates
+     *   def date = new Date()
+     *   node["a date"] = date
+     *   assert node["a date"].object.getClass().simpleName == "FormattedDate"
+     *   assert node["a date"].date == format(date)
+     *   // == URLs
+     *   def url = new URL("http://www.freeplane.org")
+     *   node["url"] = url
+     *   assert node["url"].object.getClass().simpleName == "URL"
+     *   assert node["url"].object == url
+     *   // == remove an attribute
+     *   node["removed attribute"] = "to be removed"
+     *   assert node["removed attribute"] == "to be removed"
+     *   node["removed attribute"] = null
+     *   assert node.attributes.findFirst("removed attribute") == -1
+     * </pre>
 	 */
 	interface Attributes extends AttributesRO {
 		/** sets the value of the attribute at an index. This method will not create new attributes.
@@ -170,6 +204,10 @@ public interface Proxy {
 
 		String getColorCode();
 
+        /**  @since 1.2 */
+		boolean hasEndArrow();
+
+		/**@deprecated since 1.2 - use {@link #hasEndArrow()} instead */
 		ArrowType getEndArrow();
 
 		String getMiddleLabel();
@@ -178,8 +216,12 @@ public interface Proxy {
 
 		String getSourceLabel();
 
+        /** @since 1.2 */
+		boolean hasStartArrow();
+		
+		/** @deprecated since 1.2 - use {@link #hasStartArrow()} instead */
 		ArrowType getStartArrow();
-
+		
 		Node getTarget();
 
 		String getTargetLabel();
@@ -196,6 +238,10 @@ public interface Proxy {
 		 *  @since 1.2 */
 		void setColorCode(String rgbString);
 
+		/** @since 1.2 */
+		void setEndArrow(boolean showArrow);
+
+        /** @deprecated since 1.2 - use {@link #setEndArrow(boolean)} instead */
 		void setEndArrow(ArrowType arrowType);
 
 		void setMiddleLabel(String label);
@@ -204,6 +250,10 @@ public interface Proxy {
 
 		void setSourceLabel(String label);
 
+        /** @since 1.2 */
+        void setStartArrow(boolean showArrow);
+
+        /** @deprecated since 1.2 - use {@link #setStartArrow(boolean)} instead */
 		void setStartArrow(ArrowType arrowType);
 
 		void setTargetLabel(String label);
@@ -701,9 +751,6 @@ public interface Proxy {
 		/** allows to access attribute values like array elements. Note that the returned type is a
 		 * {@link Convertible}, not a String. Nevertheless it behaves like a String in almost all respects,
 		 * that is, in Groovy scripts it understands all String methods like lenght(), matches() etc.
-		 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		 * FIXME: do lenght()... work for FormattedDate...?
-		 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		 * <pre>
 		 *   // standard way
 		 *   node.attributes.set("attribute name", "12")
@@ -782,6 +829,14 @@ public interface Proxy {
 
 		/** @deprecated since 1.2 - use {@link #getParent()} instead. */
 		Node getParentNode();
+
+        /** returns the next node with respect to this node in breadth-first order.
+         * Returns null if this node is the only one in the map. */
+        Node getNext();
+
+        /** returns the previous node with respect to this node in breadth-first order.
+         * Returns null if this node is the only one in the map. */
+        Node getPrevious();
 
 		/** The style attributes of a node can either be changed by assigning a named style like this:
 		 * <pre>node.style.name = 'style.ok'</pre>
@@ -1105,42 +1160,8 @@ public interface Proxy {
 
 		// Attributes
 		/**
-		 * Allows to set and to change attribute like array elements.
-		 * <p>
-		 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		 * FIXME: not correct anymore!
-		 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		 * 
-		 * Note that attributes are String valued. This methods provides automatic conversion to String in a way that
-		 * node["a name"].getXyz() methods will be able to convert the string properly to the wanted type.
-		 * Special conversion is provided for dates and calendars: They will be converted in a way that
-		 * node["a name"].date and node["a name"].calendar will work. All other types are converted via
-		 * value.toString():
-		 * <pre>
-		 *   // == text
-		 *   node["attribute name"] = "a value"
-		 *   assert node["attribute name"] == "a value"
-		 *   assert node.attributes.getFirst("attribute name") == "a value" // the same
-		 *   // == numbers and others
-		 *   // converts numbers and other stuff with toString()
-		 *   node["a number"] = 1.2
-		 *   assert node["a number"].text == "1.2"
-		 *   assert node["a number"].num == 1.2d
-		 *   // == dates
-		 *   // a date in some non-GMT time zone
-		 *   def date = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").
-		 *       parse("1970-01-01 00:00:00.000-0200")
-		 *   // converts to "1970-01-01T02:00:00.000+0000" (GMT)
-		 *   // - note the shift due to the different time zone
-		 *   node["a date"] = date
-		 *   assert node["a date"].text == "1970-01-01T02:00:00.000+0000"
-		 *   assert node["a date"].date == date
-		 *   // == remove an attribute
-		 *   node["removed attribute"] = "to be removed"
-		 *   assert node["removed attribute"] == "to be removed"
-		 *   node["removed attribute"] = null
-		 *   assert node.attributes.find("removed attribute") == -1
-		 * </pre>
+		 * Allows to set and to change attribute like array (or map) elements.
+		 * See description of {@link Attributes} for details.
 		 * @param value An object for conversion to String. Works well for all types that {@link Convertible}
 		 *        handles, particularly {@link Convertible}s itself. Use null to unset an attribute.
 		 * @return the new value

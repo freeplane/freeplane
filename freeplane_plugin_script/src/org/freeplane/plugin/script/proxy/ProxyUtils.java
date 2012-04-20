@@ -2,6 +2,7 @@ package org.freeplane.plugin.script.proxy;
 
 import groovy.lang.Closure;
 
+import java.net.URL;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,6 +20,8 @@ import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.FormattedNumber;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.text.TextController;
+import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
@@ -202,8 +205,10 @@ public class ProxyUtils {
 
 	/** used for node core texts and for attribute values. Note that it would lead to an error on reopening of a map
 	 * if we would allow to assign GStrings here. So all unknown stuff is cast to String. */
-    static Object transformObject(final Object object) {
-    	if (object instanceof IFormattedObject)
+    static Object transformObject(Object object, String pattern) {
+        if (object instanceof String)
+            object = ((MTextController) TextController.getController()).guessObjectOrURI(object, pattern);
+        if (object instanceof IFormattedObject)
     		return object;
     	else if (object instanceof Number)
             return new FormattedNumber((Number) object);
@@ -211,7 +216,9 @@ public class ProxyUtils {
             return createDefaultFormattedDate((Date) object);
     	else if (object instanceof Calendar)
             return createDefaultFormattedDate(((Calendar) object).getTime());
-    	else
+    	else if (object instanceof URL)
+    	    return object;
+        else
             return Convertible.toString(object);
     }
 

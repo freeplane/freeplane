@@ -143,7 +143,8 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		if (nodeAttributeTableModel == null) {
 			throw new IndexOutOfBoundsException("set1:" + index);
 		}
-		getAttributeController().performSetValueAt(nodeAttributeTableModel, value, index, 1);
+        String oldPattern = null; // FIXME: read from old attribute at index
+		getAttributeController().performSetValueAt(nodeAttributeTableModel, ProxyUtils.transformObject(value, oldPattern), index, 1);
 	}
 
 	public void set(final int index, final String name, final Object value) {
@@ -151,7 +152,8 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		if (nodeAttributeTableModel == null) {
 			throw new IndexOutOfBoundsException("set2:" + index);
 		}
-		getAttributeController().setAttribute(getDelegate(), index, new Attribute(name, value));
+        String oldPattern = null; // FIXME: read from old attribute at index
+		getAttributeController().setAttribute(getDelegate(), index, new Attribute(name, ProxyUtils.transformObject(value, oldPattern)));
 	}
 
 	public int findFirst(final String name) {
@@ -216,17 +218,17 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 
 	public void set(final String name, final Object value) {
 		final int index = findFirst(name);
-		final Attribute attribute = new Attribute(name, ProxyUtils.transformObject(value));
 		if (index == -1) {
-			getAttributeController().addAttribute(getDelegate(), attribute);
+			String oldPattern = null; // FIXME: read from old attribute at index
+            getAttributeController().addAttribute(getDelegate(), new Attribute(name, ProxyUtils.transformObject(value, oldPattern )));
 		}
 		else {
-			getAttributeController().setAttribute(getDelegate(), index, attribute);
+			getAttributeController().setAttribute(getDelegate(), index, new Attribute(name, ProxyUtils.transformObject(value, null)));
 		}
 	}
 
     public void add(final String name, final Object value) {
-		final Attribute attribute = new Attribute(name, ProxyUtils.transformObject(value));
+		final Attribute attribute = new Attribute(name, ProxyUtils.transformObject(value, null));
 		getAttributeController().addAttribute(getDelegate(), attribute);
 	}
 

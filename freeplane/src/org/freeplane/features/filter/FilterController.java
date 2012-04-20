@@ -66,9 +66,10 @@ import org.freeplane.features.filter.condition.NoFilteringCondition;
 import org.freeplane.features.filter.condition.SelectedViewCondition;
 import org.freeplane.features.filter.condition.SelectedViewSnapshotCondition;
 import org.freeplane.features.map.IMapSelectionListener;
-import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.MapController.Direction;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.MapNavigationUtils;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.ToggleToolbarAction;
 import org.freeplane.features.ui.ViewController;
@@ -119,11 +120,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
     }
 
 	private class FilterChangeListener implements ListDataListener, ChangeListener {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
 		/*
 		 * (non-Javadoc)
 		 * @see
@@ -551,11 +547,11 @@ public class FilterController implements IMapSelectionListener, IExtension {
 				switch (direction) {
 					case FORWARD:
 					case FORWARD_N_FOLD:
-						next = getNext(direction, next, end);
+						next = MapNavigationUtils.findNext(direction, next, end);
 						break;
 					case BACK:
 					case BACK_N_FOLD:
-						next = getPrevious(direction, next, end);
+						next = MapNavigationUtils.findPrevious(direction, next, end);
 						break;
 				}
 				if (next == null) {
@@ -570,74 +566,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			}
 		}
 		return null;
-	}
-
-	private NodeModel getNext(final Direction direction, NodeModel current, final NodeModel end) {
-		if (current.getChildCount() != 0) {
-			final NodeModel next = (NodeModel) current.getChildAt(0);
-			if (next.equals(end)) {
-				return null;
-			}
-			return next;
-		}
-		for (;;) {
-			final NodeModel parentNode = current.getParentNode();
-			if (parentNode == null) {
-				return current;
-			}
-			final int index = parentNode.getIndex(current) + 1;
-			final int childCount = parentNode.getChildCount();
-			if (index < childCount) {
-				if (direction == Direction.FORWARD_N_FOLD) {
-					Controller.getCurrentModeController().getMapController().setFolded(current, true);
-				}
-				final NodeModel next = (NodeModel) parentNode.getChildAt(index);
-				if (next.equals(end)) {
-					return null;
-				}
-				return next;
-			}
-			current = parentNode;
-			if (current.equals(end)) {
-				return null;
-			}
-		}
-	}
-
-	private NodeModel getPrevious(final Direction direction, NodeModel current, final NodeModel end) {
-		for (;;) {
-			final NodeModel parentNode = current.getParentNode();
-			if (parentNode == null) {
-				break;
-			}
-			if (direction == Direction.BACK_N_FOLD) {
-				Controller.getCurrentModeController().getMapController().setFolded(current, true);
-			}
-			final int index = parentNode.getIndex(current) - 1;
-			if (index < 0) {
-				if (direction == Direction.BACK_N_FOLD) {
-					Controller.getCurrentModeController().getMapController().setFolded(parentNode, true);
-				}
-				if (parentNode.equals(end)) {
-					return null;
-				}
-				return parentNode;
-			}
-			current = (NodeModel) parentNode.getChildAt(index);
-			if (current.equals(end)) {
-				return null;
-			}
-			break;
-		}
-		for (;;) {
-			if (current.getChildCount() == 0) {
-				if (current.equals(end)) {
-					return null;
-				}
-				return current;
-			}
-			current = (NodeModel) current.getChildAt(current.getChildCount() - 1);
-		}
 	}
 
 	public void redo() {
