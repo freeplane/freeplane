@@ -223,9 +223,7 @@ public class DocearLicenseDialogPanel extends JPanel {
 		String line;
 		while ((line = br.readLine()) != null) {
 			sb.append(line + System.getProperty("line.separator"));
-		} 
-	
-		System.out.println(sb.toString());
+		}
 	
 		br.close();
 		return sb.toString();

@@ -79,7 +79,6 @@ public class UpdateCheck {
 			}			
 			
 			xml = CommunicationsController.getController().getLatestVersionXml(minStatus);
-			System.out.println(xml);
 			load(xml);
 			application = getApplication();
 			
