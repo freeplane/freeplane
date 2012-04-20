@@ -30,6 +30,7 @@ import javax.swing.border.TitledBorder;
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.communications.features.AccountRegisterer;
 import org.docear.plugin.communications.features.DocearServiceException;
+import org.docear.plugin.communications.features.DocearServiceException.DocearServiceExceptionType;
 import org.docear.plugin.services.ServiceController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
@@ -364,7 +365,6 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 						cont = cont.getParent();
 					}
 					((JOptionPane)cont).setValue(e.getSource());
-					//closeDialogManually();
 				} 
 				catch (DocearServiceException e1) {
 					JOptionPane.showMessageDialog(UITools.getFrame(), 
@@ -372,6 +372,10 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 							TextUtils.getText("docear.uploadchooser.warning.notregistered.title"), 
 							JOptionPane.WARNING_MESSAGE);
 					LogUtils.info("DocearServiceException: "+e1.getMessage());
+					if(DocearServiceExceptionType.NO_CONNECTION.equals(e1.getType())) {
+						chckbxAllowbackup.setSelected(false);
+						clearUserData();
+					}
 				} 
 				catch (URISyntaxException e1) {
 					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText("docear.uploadchooser.warning.notregistered"), TextUtils.getText("docear.uploadchooser.warning.notregistered.title"), JOptionPane.WARNING_MESSAGE);
@@ -394,6 +398,13 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 			removeDialogWindowControls();			
 		}
 		super.paint(g);
+	}
+	
+	private void clearUserData() {
+		txtUsername.setText("");
+		txtEmail.setText("");
+		pwdPassword.setText("");
+		pwdRetypepasswd.setText("");
 	}
 		
 	private void closeDialogManually() {

@@ -1,5 +1,6 @@
 package org.docear.plugin.services.listeners;
 
+import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
@@ -8,8 +9,11 @@ import org.docear.plugin.services.actions.DocearAllowUploadChooserAction;
 public class DocearEventListener implements IDocearEventListener {
 
 	public void handleEvent(DocearEvent event) {
-		if(event.getType() == DocearEventType.LICENSES_ACCEPTED) {
+		if (event.getType() == DocearEventType.LICENSES_ACCEPTED) {
 			DocearAllowUploadChooserAction.showDialog(false);
+		}
+		else if( CommunicationsController.CONNECTION_BAR_CLICKED.equals(event.getSource()) ) {
+			DocearAllowUploadChooserAction.showDialog(true);
 		}
 	}
 
