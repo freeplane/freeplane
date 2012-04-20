@@ -64,6 +64,7 @@
                 <choice value="org.freeplane.plugin.bugreport.denied"/>
                 <choice value="org.freeplane.plugin.bugreport.ask"/>
             </combo>
+            <string name="org.freeplane.plugin.bugreport.userid"/>
         </separator>
     </tab>
     <tab name="Appearance">
